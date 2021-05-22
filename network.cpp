@@ -28,9 +28,6 @@ Value getHostName(const struct addrinfo* ai, int flags)
         }
     }
 
-    if (error)
-        return "";
-
     std::string host = buffer;
     free(buffer);
     return host;
