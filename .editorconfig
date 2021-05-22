@@ -1,0 +1,14 @@
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+tab_width = 8
+trim_trailing_whitespace = true
+
+[GNUmakefile]
+indent_size = 8
+indent_style = tab
+
+[*.{c,h}]
+indent_size = 4
+indent_style = space
