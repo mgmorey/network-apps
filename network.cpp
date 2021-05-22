@@ -4,11 +4,12 @@
 #include <netdb.h>	// struct addrinfo, getaddrinfo(), getnameinfo()
 #include <unistd.h>	// gethostname()
 
+#include <cstdlib>	// std::calloc()
 #include <iostream>	// std::cerr, std::endl
 
 Value getHostName(const struct addrinfo* ai, int flags)
 {
-    char* buffer = static_cast<char*>(calloc(sizeof(char), NI_MAXHOST));
+    char* buffer = static_cast<char*>(std::calloc(sizeof(char), NI_MAXHOST));
     socklen_t length = sizeof(char) * NI_MAXHOST;
     int error = 0;
 
