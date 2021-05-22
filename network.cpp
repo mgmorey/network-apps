@@ -12,7 +12,7 @@ Value getHostName(const struct addrinfo* ai, int flags)
     int error = 0;
 
     if (ai == NULL) {
-        error = gethostname(buffer, size);
+        error = gethostname(buffer, size - 1);
     }
     else {
         error = getnameinfo(ai->ai_addr,
