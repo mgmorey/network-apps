@@ -3,12 +3,11 @@
 #include <netdb.h>	// struct addrinfo, getaddrinfo(), getnameinfo()
 #include <unistd.h>	// gethostname()
 
-#include <climits>	// HOST_SIZE_MAX
 #include <iostream>	// std::cerr, std::endl
 
 Value getHostName(const struct addrinfo* ai, int flags)
 {
-    char host[HOST_NAME_MAX] = "";
+    char host[NI_MAXHOST] = "";
 
     if (ai == NULL)
         return gethostname(host, sizeof host) == 0 ? host : "";
