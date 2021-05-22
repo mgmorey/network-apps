@@ -1,5 +1,6 @@
 #include "network.h"
 
+#include <sys/socket.h>	// socklen_t
 #include <netdb.h>	// struct addrinfo, getaddrinfo(), getnameinfo()
 #include <unistd.h>	// gethostname()
 
@@ -8,16 +9,16 @@
 Value getHostName(const struct addrinfo* ai, int flags)
 {
     char* buffer = static_cast<char*>(calloc(sizeof(char), NI_MAXHOST));
-    std::size_t size = sizeof(char) * NI_MAXHOST;
+    socklen_t length = sizeof(char) * NI_MAXHOST;
     int error = 0;
 
     if (ai == NULL) {
-        error = gethostname(buffer, size - 1);
+        error = gethostname(buffer, length - 1);
     }
     else {
         error = getnameinfo(ai->ai_addr,
                             ai->ai_addrlen,
-                            buffer, size,
+                            buffer, length,
                             NULL, 0,
                             flags);
 
