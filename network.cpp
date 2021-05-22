@@ -7,23 +7,33 @@
 
 Value getHostName(const struct addrinfo* ai, int flags)
 {
-    char host[NI_MAXHOST] = "";
+    char* buffer = static_cast<char*>(calloc(sizeof(char), NI_MAXHOST));
+    std::size_t size = sizeof(char) * NI_MAXHOST;
+    int error = 0;
 
-    if (ai == NULL)
-        return gethostname(host, sizeof host) == 0 ? host : "";
-
-    int error = getnameinfo(ai->ai_addr,
+    if (ai == NULL) {
+        error = gethostname(buffer, size);
+    }
+    else {
+        error = getnameinfo(ai->ai_addr,
                             ai->ai_addrlen,
-                            host, sizeof host,
+                            buffer, size,
                             NULL, 0,
                             flags);
 
-    if (error)
-        std::cerr << "getnameinfo() returned " << error
-                  << " (" << gai_strerror(error)
-                  << ')' << std::endl;
+        if (error) {
+            std::cerr << "getnameinfo() returned " << error
+                      << " (" << gai_strerror(error)
+                      << ')' << std::endl;
+        }
+    }
 
-    return error == 0 ? host : "";
+    if (error)
+        return "";
+
+    std::string host = buffer;
+    free(buffer);
+    return host;
 }
 
 Values getIpAddress(const Value& host)
