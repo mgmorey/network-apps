@@ -20,8 +20,8 @@ Addresses getAddresses(const Address& host, int family, int flags)
     struct addrinfo hints = {
         flags,
         family,
-        SOCK_STREAM,
-        IPPROTO_TCP,
+        0,
+        0,
         0,
         NULL,
         NULL,
