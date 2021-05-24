@@ -1,13 +1,13 @@
 #ifndef NETWORK_H
 #define NETWORK_H
 
-#include <netdb.h>		// PF_UNSPEC, struct addrinfo
+#include <netdb.h>	// PF_UNSPEC, struct addrinfo
 
-#include <string>		// std::string
-#include <unordered_set>	// std::unordered_set
+#include <set>		// std::set
+#include <string>	// std::string
 
 typedef std::string Address;
-typedef std::unordered_set<Address> Addresses;
+typedef std::set<Address> Addresses;
 
 Addresses getAddresses(int family = PF_UNSPEC,
                        int flags = 0);
