@@ -1,22 +1,33 @@
 #include "network.h"
 
-#include <sys/socket.h>	// socklen_t
-#include <netdb.h>	// struct addrinfo, getaddrinfo(), getnameinfo()
+#include <sys/socket.h>	// SOCK_STREAM, socklen_t
+#include <netdb.h>	// IPPROTO_TCP, struct addrinfo,
+			// getaddrinfo(), getnameinfo()
 #include <unistd.h>	// gethostname()
 
 #include <cstdlib>	// std::calloc()
 #include <iostream>	// std::cerr, std::endl
 
-Values getAddresses()
+Values getAddresses(int family, int flags)
 {
-    return getAddresses(getHostname());
+    return getAddresses(getHostname(), family, flags);
 }
 
-Values getAddresses(const Value& host)
+Values getAddresses(const Value& host, int family, int flags)
 {
     Values addrs;
     struct addrinfo* list = NULL;
-    int error = getaddrinfo(host.c_str(), NULL, NULL, &list);
+    struct addrinfo hints = {
+        flags,
+        family,
+        SOCK_STREAM,
+        IPPROTO_TCP,
+        0,
+        NULL,
+        NULL,
+        NULL
+    };
+    int error = getaddrinfo(host.c_str(), NULL, &hints, &list);
 
     if (error) {
         std::cerr << "getaddrinfo() returned " << error
