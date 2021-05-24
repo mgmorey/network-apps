@@ -15,7 +15,6 @@ Addresses getAddresses(int family, int flags)
 
 Addresses getAddresses(const Address& host, int family, int flags)
 {
-    Addresses addrs;
     struct addrinfo* list = NULL;
     struct addrinfo hints = {
         flags,
@@ -28,6 +27,7 @@ Addresses getAddresses(const Address& host, int family, int flags)
         NULL
     };
     int error = getaddrinfo(host.c_str(), NULL, &hints, &list);
+    Addresses addrs;
 
     if (error) {
         std::cerr << "getaddrinfo() returned " << error
