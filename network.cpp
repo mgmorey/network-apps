@@ -1,21 +1,21 @@
 #include "network.h"
 
-#include <sys/socket.h>	// SOCK_STREAM, socklen_t
-#include <netdb.h>	// IPPROTO_TCP, struct addrinfo,
-			// getaddrinfo(), getnameinfo()
-#include <unistd.h>	// gethostname()
+#include <sys/socket.h>		// SOCK_STREAM, socklen_t
+#include <netdb.h>		// IPPROTO_TCP, struct addrinfo,
+				// getaddrinfo(), getnameinfo()
+#include <unistd.h>		// gethostname()
 
-#include <cstdlib>	// std::calloc()
-#include <iostream>	// std::cerr, std::endl
+#include <cstdlib>		// std::calloc()
+#include <iostream>		// std::cerr, std::endl
 
-Values getAddresses(int family, int flags)
+Addresses getAddresses(int family, int flags)
 {
     return getAddresses(getHostname(), family, flags);
 }
 
-Values getAddresses(const Value& host, int family, int flags)
+Addresses getAddresses(const Address& host, int family, int flags)
 {
-    Values addrs;
+    Addresses addrs;
     struct addrinfo* list = NULL;
     struct addrinfo hints = {
         flags,
@@ -37,13 +37,13 @@ Values getAddresses(const Value& host, int family, int flags)
     }
 
     for (const struct addrinfo* elem = list; elem != NULL; elem = elem->ai_next)
-        addrs.push_back(getNameInfo(*elem, NI_NUMERICHOST));
+        addrs.insert(getNameInfo(*elem, NI_NUMERICHOST));
 
     freeaddrinfo(list);
     return addrs;
 }
 
-Value getHostname()
+Address getHostname()
 {
     char* buffer = static_cast<char*>(std::calloc(sizeof(char), NI_MAXHOST));
     std::size_t length = sizeof(char) * NI_MAXHOST;
@@ -58,7 +58,7 @@ Value getHostname()
     return host;
 }
 
-Value getNameInfo(const struct addrinfo& ai, int flags)
+Address getNameInfo(const struct addrinfo& ai, int flags)
 {
     char* buffer = static_cast<char*>(std::calloc(sizeof(char), NI_MAXHOST));
     socklen_t length = sizeof(char) * NI_MAXHOST;
