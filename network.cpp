@@ -27,14 +27,14 @@ Addresses getAddresses(const Address& host, int family, int flags)
         NULL
     };
     int error = getaddrinfo(host.c_str(), NULL, &hints, &list);
-    Addresses addrs;
 
     if (error) {
         std::cerr << "getaddrinfo() returned " << error
                   << " (" << gai_strerror(error)
                   << ')' << std::endl;
-        return addrs;
     }
+
+    Addresses addrs;
 
     for (const struct addrinfo* elem = list; elem != NULL; elem = elem->ai_next)
         addrs.insert(getNameInfo(*elem, NI_NUMERICHOST));
