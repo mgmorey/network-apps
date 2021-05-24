@@ -5,8 +5,8 @@
 
 int main(void)
 {
-    Value host = getHostName();
-    Values addrs = getIpAddress(host);
+    Value host = getHostname();
+    Values addrs = getAddresses(host);
     std::cout << host << std::endl;
 
     for (Values::const_iterator it = addrs.begin(); it < addrs.end(); ++it)
