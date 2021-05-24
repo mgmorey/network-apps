@@ -31,7 +31,12 @@ Value getHostname()
 {
     char* buffer = static_cast<char*>(std::calloc(sizeof(char), NI_MAXHOST));
     std::size_t length = sizeof(char) * NI_MAXHOST;
-    gethostname(buffer, length - 1);
+    int error = gethostname(buffer, length - 1);
+
+    if (error) {
+        std::cerr << "gethostname() returned " << error << std::endl;
+    }
+
     std::string host = buffer;
     free(buffer);
     return host;
