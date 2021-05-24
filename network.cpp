@@ -34,14 +34,13 @@ Addresses getAddresses(const Address& host, int family, int flags)
                   << " (" << gai_strerror(error)
                   << ')' << std::endl;
     }
+    else {
+        for (const struct addrinfo* elem = list;
+             elem != NULL;
+             elem = elem->ai_next) {
+            addrs.insert(getNameInfo(*elem, NI_NUMERICHOST));
+        }
 
-    for (const struct addrinfo* elem = list;
-         elem != NULL;
-         elem = elem->ai_next) {
-        addrs.insert(getNameInfo(*elem, NI_NUMERICHOST));
-    }
-
-    if (list != NULL) {
         freeaddrinfo(list);
     }
 
