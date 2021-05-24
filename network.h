@@ -9,6 +9,7 @@
 typedef std::string Value;
 typedef std::vector<Value> Values;
 
+Values getAddresses();
 Values getAddresses(const Value& host);
 Value getHostname();
 Value getNameInfo(const struct addrinfo& ai, int flags = 0);

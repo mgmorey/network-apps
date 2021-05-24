@@ -7,6 +7,11 @@
 #include <cstdlib>	// std::calloc()
 #include <iostream>	// std::cerr, std::endl
 
+Values getAddresses()
+{
+    return getAddresses(getHostname());
+}
+
 Values getAddresses(const Value& host)
 {
     Values addrs;
