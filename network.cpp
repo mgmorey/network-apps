@@ -47,7 +47,7 @@ Addresses getAddresses(const Address& host, int family, int flags)
     return addrs;
 }
 
-Address getHostname()
+HostName getHostname()
 {
     char* buffer = static_cast<char*>(std::calloc(sizeof(char), NI_MAXHOST));
     std::size_t length = sizeof(char) * NI_MAXHOST;
@@ -62,7 +62,7 @@ Address getHostname()
     return host;
 }
 
-Address getNameInfo(const struct addrinfo& ai, int flags)
+NameInfo getNameInfo(const struct addrinfo& ai, int flags)
 {
     char* buffer = static_cast<char*>(std::calloc(sizeof(char), NI_MAXHOST));
     socklen_t length = sizeof(char) * NI_MAXHOST;
