@@ -1,8 +1,8 @@
 #include "network.h"
 
-#include <sys/socket.h>		// SOCK_STREAM, socklen_t
 #include <netdb.h>		// IPPROTO_TCP, struct addrinfo,
 				// getaddrinfo(), getnameinfo()
+#include <sys/socket.h>		// SOCK_STREAM, socklen_t
 #include <unistd.h>		// gethostname()
 
 #include <cstdlib>		// std::calloc()
