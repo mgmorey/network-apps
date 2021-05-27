@@ -54,6 +54,12 @@ socklen_t AddrInfo::getAddrLen() const
     return ai.ai_addrlen;
 }
 
+void AddrInfo::cleanup()
+{
+    free(ai.ai_addr);
+    free(ai.ai_canonname);
+}
+
 void AddrInfo::copy(const struct addrinfo& new_ai)
 {
     ai.ai_flags = new_ai.ai_flags;
@@ -76,12 +82,6 @@ void AddrInfo::copy(const struct addrinfo& new_ai)
     }
 
     ai.ai_next = NULL;
-}
-
-void AddrInfo::cleanup()
-{
-    free(ai.ai_addr);
-    free(ai.ai_canonname);
 }
 
 void AddrInfo::copy(const AddrInfo& addrInfo)
