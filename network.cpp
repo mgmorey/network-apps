@@ -99,8 +99,6 @@ void AddrInfo::copy(const struct addrinfo& new_ai)
     else {
         ai.ai_canonname = NULL;
     }
-
-    ai.ai_next = NULL;
 }
 
 void AddrInfo::copy(const AddrInfo& addrInfo)
@@ -111,7 +109,9 @@ void AddrInfo::copy(const AddrInfo& addrInfo)
 void AddrInfo::reset()
 {
     free(ai.ai_addr);
+    ai.ai_addr = NULL;
     free(ai.ai_canonname);
+    ai.ai_canonname = NULL;
 }
 
 void AddrInfo::setup()
