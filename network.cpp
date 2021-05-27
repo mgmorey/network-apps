@@ -11,29 +11,29 @@
 
 AddrInfo::AddrInfo()
 {
-    init();
+    setup();
 }
 
 AddrInfo::AddrInfo(struct addrinfo& new_ai)
 {
-    init();
+    setup();
     copy(new_ai);
 }
 
 AddrInfo::AddrInfo(const AddrInfo& addrInfo)
 {
-    init();
+    setup();
     copy(addrInfo);
 }
 
 AddrInfo::~AddrInfo()
 {
-    cleanup();
+    reset();
 }
 
 AddrInfo& AddrInfo::operator=(const struct addrinfo& new_ai)
 {
-    cleanup();
+    reset();
     copy(new_ai);
     return *this;
 }
@@ -44,7 +44,7 @@ AddrInfo& AddrInfo::operator=(const AddrInfo& addrInfo)
     return *this;
 }
 
-struct sockaddr* AddrInfo::getAddr() const
+const struct sockaddr* AddrInfo::getAddr() const
 {
     return ai.ai_addr;
 }
@@ -54,10 +54,29 @@ socklen_t AddrInfo::getAddrLen() const
     return ai.ai_addrlen;
 }
 
-void AddrInfo::cleanup()
+const char* AddrInfo::getCanonName() const
 {
-    free(ai.ai_addr);
-    free(ai.ai_canonname);
+    return ai.ai_canonname;
+}
+
+int AddrInfo::getFamily() const
+{
+    return ai.ai_family;
+}
+
+int AddrInfo::getFlags() const
+{
+    return ai.ai_flags;
+}
+
+int AddrInfo::getProtocol() const
+{
+    return ai.ai_protocol;
+}
+
+int AddrInfo::getSockType() const
+{
+    return ai.ai_socktype;
 }
 
 void AddrInfo::copy(const struct addrinfo& new_ai)
@@ -89,7 +108,13 @@ void AddrInfo::copy(const AddrInfo& addrInfo)
     copy(addrInfo.ai);
 }
 
-void AddrInfo::init()
+void AddrInfo::reset()
+{
+    free(ai.ai_addr);
+    free(ai.ai_canonname);
+}
+
+void AddrInfo::setup()
 {
     ai.ai_flags = 0;
     ai.ai_family = 0;

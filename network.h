@@ -24,14 +24,19 @@ public:
     ~AddrInfo();
     AddrInfo& operator=(const struct addrinfo& new_ai);
     AddrInfo& operator=(const AddrInfo& addrInfo);
-    struct sockaddr* getAddr() const;
+    const struct sockaddr* getAddr() const;
     socklen_t getAddrLen() const;
+    const char* getCanonName() const;
+    int getFamily() const;
+    int getFlags() const;
+    int getProtocol() const;
+    int getSockType() const;
 
 private:
-    void cleanup();
     void copy(const struct addrinfo& new_ai);
     void copy(const AddrInfo& addrInfo);
-    void init();
+    void reset();
+    void setup();
 
     struct addrinfo ai;
 };
