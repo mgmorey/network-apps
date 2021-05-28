@@ -12,7 +12,7 @@ class Addrinfo
 {
 public:
     Addrinfo();
-    Addrinfo(struct addrinfo& ai);
+    Addrinfo(const struct addrinfo& ai);
     Addrinfo(const Addrinfo& ai);
     ~Addrinfo();
     Addrinfo& operator=(const struct addrinfo& ai);
@@ -34,17 +34,17 @@ private:
     struct addrinfo ai;
 };
 
-typedef std::string Address;
+typedef std::pair<int, std::string> Address;
 typedef std::set<Address> Addresses;
 typedef std::vector<Addrinfo> Addrinfos;
 typedef std::string Hostname;
 typedef std::string Service;
 typedef std::pair<Hostname, Service> Nameinfo;
 
-Addresses get_addresses(const Address& host = "",
+Addresses get_addresses(const std::string& host = "",
                         int family = PF_UNSPEC,
                         int flags = 0);
-Addrinfos get_addrinfo(const Address& host,
+Addrinfos get_addrinfo(const std::string& host,
                        struct addrinfo* hints = NULL);
 Hostname get_hostname();
 Nameinfo get_nameinfo(const Addrinfo& ai, int flags);

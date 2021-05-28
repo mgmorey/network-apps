@@ -14,7 +14,7 @@ Addrinfo::Addrinfo()
     set_up();
 }
 
-Addrinfo::Addrinfo(struct addrinfo& ai)
+Addrinfo::Addrinfo(const struct addrinfo& ai)
 {
     set_up();
     copy(ai);
@@ -126,7 +126,7 @@ void Addrinfo::tear_down()
     ai.ai_canonname = NULL;
 }
 
-Addresses get_addresses(const Address& host, int family, int flags)
+Addresses get_addresses(const std::string& host, int family, int flags)
 {
     if (host.empty())
     {
@@ -150,22 +150,30 @@ Addresses get_addresses(const Address& host, int family, int flags)
          it != ai.end();
          ++it) {
         Nameinfo ni = get_nameinfo(*it, NI_NUMERICHOST);
-        result.insert(ni.first);
+        int family = it->get_family();
+        std::string name = ni.first;
+        Address address(family, name);
+        result.insert(address);
     }
 
     return result;
 }
 
-Addrinfos get_addrinfo(const Address& host, struct addrinfo* hints)
+Addrinfos get_addrinfo(const std::string& host, struct addrinfo* hints)
 {
     struct addrinfo* list = NULL;
     int error = getaddrinfo(host.c_str(), NULL, hints, &list);
     Addrinfos result;
 
     if (error) {
-        std::cerr << "getaddrinfo() returned " << error
-                  << " (" << gai_strerror(error)
-                  << ')' << std::endl;
+        std::cerr << "getaddrinfo("
+                  << host
+                  << ") returned "
+                  << error
+                  << " ("
+                  << gai_strerror(error)
+                  << ')'
+                  << std::endl;
     }
     else {
         for (const struct addrinfo* elem = list;
@@ -195,7 +203,11 @@ Hostname get_hostname()
     int error = gethostname(host, NI_MAXHOST - 1);
 
     if (error) {
-        std::cerr << "gethostname() returned " << error << std::endl;
+        std::cerr << "gethostname("
+                  << host
+                  << ") returned "
+                  << error
+                  << std::endl;
     }
 
     std::string result = host;
@@ -214,9 +226,12 @@ Nameinfo get_nameinfo(const Addrinfo& ai, int flags)
                             flags);
 
     if (error) {
-        std::cerr << "getnameinfo() returned " << error
-                  << " (" << gai_strerror(error)
-                  << ')' << std::endl;
+        std::cerr << "getnameinfo() returned "
+                  << error
+                  << " ("
+                  << gai_strerror(error)
+                  << ')'
+                  << std::endl;
     }
 
     Nameinfo result = Nameinfo(host, serv);
