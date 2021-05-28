@@ -144,16 +144,16 @@ Addresses get_addresses(const Address& host, int family, int flags)
         NULL
     };
     Addrinfos ai = get_addrinfo(host, &hints);
-    Addresses addresses;
+    Addresses result;
 
     for (Addrinfos::const_iterator it = ai.begin();
          it != ai.end();
          ++it) {
         Nameinfo nameInfo = get_nameinfo(*it, NI_NUMERICHOST);
-        addresses.insert(nameInfo.first);
+        result.insert(nameInfo.first);
     }
 
-    return addresses;
+    return result;
 }
 
 Addrinfos get_addrinfo(const Address& host, struct addrinfo* hints)
