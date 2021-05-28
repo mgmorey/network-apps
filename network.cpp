@@ -208,11 +208,10 @@ NameInfo getNameInfo(const AddrInfo& addrInfo, int flags)
 {
     char* host = static_cast<char*>(std::calloc(sizeof(char), NI_MAXHOST));
     char* serv = static_cast<char*>(std::calloc(sizeof(char), NI_MAXHOST));
-    socklen_t length = sizeof(char) * NI_MAXHOST;
     int error = getnameinfo(addrInfo.getAddr(),
                             addrInfo.getAddrLen(),
-                            host, length,
-                            serv, length,
+                            host, NI_MAXHOST,
+                            serv, NI_MAXHOST,
                             flags);
 
     if (error) {
