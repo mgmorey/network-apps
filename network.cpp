@@ -126,13 +126,13 @@ void Addrinfo::tear_down()
     ai.ai_canonname = NULL;
 }
 
-Addresses get_addresses(int family, int flags)
-{
-    return get_addresses(get_hostname(), family, flags);
-}
-
 Addresses get_addresses(const Address& host, int family, int flags)
 {
+    if (host.empty())
+    {
+        return get_addresses(get_hostname(), family, flags);
+    }
+
     struct addrinfo hints = {
         flags,
         family,

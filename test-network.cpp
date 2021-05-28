@@ -18,15 +18,20 @@ static void print_addresses(const Addresses& addrs,
     std::cout << std::endl;
 }
 
-int main(void)
+static void test_host(const std::string& host = "")
 {
-    Address host = get_hostname();
-    Addresses addrs = get_addresses();
-    Addresses addrs4 = get_addresses(PF_INET);
-    Addresses addrs6 = get_addresses(PF_INET6);
+    Addresses addrs = get_addresses(host);
+    Addresses addrs4 = get_addresses(host, PF_INET);
+    Addresses addrs6 = get_addresses(host, PF_INET6);
     std::cout << "Hostname:\t" << host << std::endl << std::endl;
     print_addresses(addrs, "All Addresses:");
     print_addresses(addrs4, "IPv4 Addresses:");
     print_addresses(addrs6, "IPv6 Addresses:");
+}
+
+int main(void)
+{
+    test_host();
+    test_host("example.com");
     return EXIT_SUCCESS;
 }
