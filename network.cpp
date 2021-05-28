@@ -198,9 +198,9 @@ Hostname get_hostname()
         std::cerr << "gethostname() returned " << error << std::endl;
     }
 
-    std::string hostname = host;
+    std::string result = host;
     free(host);
-    return hostname;
+    return result;
 }
 
 Nameinfo get_nameinfo(const Addrinfo& ai, int flags)
