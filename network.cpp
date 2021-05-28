@@ -149,8 +149,8 @@ Addresses getAddresses(const Address& host, int family, int flags)
     for (AddrInfos::const_iterator it = addrInfos.begin();
          it != addrInfos.end();
          ++it) {
-        Address address = getNameInfo(*it, NI_NUMERICHOST);
-        addresses.insert(address);
+        NameInfo nameInfo = getNameInfo(*it, NI_NUMERICHOST);
+        addresses.insert(nameInfo.first);
     }
 
     return addresses;
@@ -206,12 +206,13 @@ HostName getHostname()
 
 NameInfo getNameInfo(const AddrInfo& addrInfo, int flags)
 {
-    char* buffer = static_cast<char*>(std::calloc(sizeof(char), NI_MAXHOST));
+    char* host = static_cast<char*>(std::calloc(sizeof(char), NI_MAXHOST));
+    char* serv = static_cast<char*>(std::calloc(sizeof(char), NI_MAXHOST));
     socklen_t length = sizeof(char) * NI_MAXHOST;
     int error = getnameinfo(addrInfo.getAddr(),
                             addrInfo.getAddrLen(),
-                            buffer, length,
-                            NULL, 0,
+                            host, length,
+                            serv, 0,
                             flags);
 
     if (error) {
@@ -220,7 +221,8 @@ NameInfo getNameInfo(const AddrInfo& addrInfo, int flags)
                   << ')' << std::endl;
     }
 
-    std::string host = buffer;
-    free(buffer);
-    return host;
+    NameInfo result = NameInfo(host, serv);
+    free(host);
+    free(serv);
+    return result;
 }

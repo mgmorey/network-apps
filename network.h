@@ -13,7 +13,8 @@ typedef class AddrInfo AddrInfo;
 typedef std::set<Address> Addresses;
 typedef std::vector<AddrInfo> AddrInfos;
 typedef std::string HostName;
-typedef std::string NameInfo;
+typedef std::string Service;
+typedef std::pair<HostName, Service> NameInfo;
 
 class AddrInfo
 {
