@@ -143,11 +143,11 @@ Addresses get_addresses(const Address& host, int family, int flags)
         NULL,
         NULL
     };
-    Addrinfos addrInfos = get_addrinfo(host, &hints);
+    Addrinfos ai = get_addrinfo(host, &hints);
     Addresses addresses;
 
-    for (Addrinfos::const_iterator it = addrInfos.begin();
-         it != addrInfos.end();
+    for (Addrinfos::const_iterator it = ai.begin();
+         it != ai.end();
          ++it) {
         Nameinfo nameInfo = get_nameinfo(*it, NI_NUMERICHOST);
         addresses.insert(nameInfo.first);
@@ -204,12 +204,12 @@ Hostname get_hostname()
     return host;
 }
 
-Nameinfo get_nameinfo(const Addrinfo& addrInfo, int flags)
+Nameinfo get_nameinfo(const Addrinfo& ai, int flags)
 {
     char* host = static_cast<char*>(std::calloc(sizeof(char), NI_MAXHOST));
     char* serv = static_cast<char*>(std::calloc(sizeof(char), NI_MAXHOST));
-    int error = getnameinfo(addrInfo.get_addr(),
-                            addrInfo.get_addrlen(),
+    int error = getnameinfo(ai.get_addr(),
+                            ai.get_addrlen(),
                             host, NI_MAXHOST,
                             serv, NI_MAXHOST,
                             flags);

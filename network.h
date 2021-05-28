@@ -12,11 +12,11 @@ class Addrinfo
 {
 public:
     Addrinfo();
-    Addrinfo(struct addrinfo& new_ai);
-    Addrinfo(const Addrinfo& addrInfo);
+    Addrinfo(struct addrinfo& ai);
+    Addrinfo(const Addrinfo& ai);
     ~Addrinfo();
-    Addrinfo& operator=(const struct addrinfo& new_ai);
-    Addrinfo& operator=(const Addrinfo& addrInfo);
+    Addrinfo& operator=(const struct addrinfo& ai);
+    Addrinfo& operator=(const Addrinfo& ai);
     const struct sockaddr* get_addr() const;
     socklen_t get_addrlen() const;
     const char* get_canonname() const;
@@ -26,8 +26,8 @@ public:
     int get_socktype() const;
 
 private:
-    void copy(const struct addrinfo& new_ai);
-    void copy(const Addrinfo& addrInfo);
+    void copy(const struct addrinfo& ai);
+    void copy(const Addrinfo& ai);
     void reset();
     void set_up();
 
@@ -49,6 +49,6 @@ Addresses get_addresses(const Address& host,
 Addrinfos get_addrinfo(const Address& host,
                        struct addrinfo* hints = NULL);
 Hostname get_hostname();
-Nameinfo get_nameinfo(const Addrinfo& addrInfo, int flags);
+Nameinfo get_nameinfo(const Addrinfo& ai, int flags);
 
 #endif
