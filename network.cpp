@@ -212,7 +212,7 @@ NameInfo getNameInfo(const AddrInfo& addrInfo, int flags)
     int error = getnameinfo(addrInfo.getAddr(),
                             addrInfo.getAddrLen(),
                             host, length,
-                            serv, 0,
+                            serv, length,
                             flags);
 
     if (error) {
