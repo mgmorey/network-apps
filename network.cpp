@@ -222,7 +222,7 @@ NameInfo getNameInfo(const AddrInfo& addrInfo, int flags)
     }
 
     NameInfo result = NameInfo(host, serv);
-    free(host);
     free(serv);
+    free(host);
     return result;
 }
