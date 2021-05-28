@@ -14,10 +14,10 @@ AddrInfo::AddrInfo()
     setup();
 }
 
-AddrInfo::AddrInfo(struct addrinfo& new_ai)
+AddrInfo::AddrInfo(struct addrinfo& newAi)
 {
     setup();
-    copy(new_ai);
+    copy(newAi);
 }
 
 AddrInfo::AddrInfo(const AddrInfo& addrInfo)
@@ -31,10 +31,10 @@ AddrInfo::~AddrInfo()
     reset();
 }
 
-AddrInfo& AddrInfo::operator=(const struct addrinfo& new_ai)
+AddrInfo& AddrInfo::operator=(const struct addrinfo& newAi)
 {
     reset();
-    copy(new_ai);
+    copy(newAi);
     return *this;
 }
 
@@ -79,22 +79,22 @@ int AddrInfo::getSockType() const
     return ai.ai_socktype;
 }
 
-void AddrInfo::copy(const struct addrinfo& new_ai)
+void AddrInfo::copy(const struct addrinfo& newAi)
 {
-    ai.ai_flags = new_ai.ai_flags;
-    ai.ai_family = new_ai.ai_family;
-    ai.ai_socktype = new_ai.ai_socktype;
-    ai.ai_protocol = new_ai.ai_protocol;
-    ai.ai_addrlen = new_ai.ai_addrlen;
+    ai.ai_flags = newAi.ai_flags;
+    ai.ai_family = newAi.ai_family;
+    ai.ai_socktype = newAi.ai_socktype;
+    ai.ai_protocol = newAi.ai_protocol;
+    ai.ai_addrlen = newAi.ai_addrlen;
     ai.ai_addr = static_cast<sockaddr*>
         (std::calloc(sizeof(char), ai.ai_addrlen));
 
     if (ai.ai_addr != NULL) {
-        std::memcpy(ai.ai_addr, new_ai.ai_addr, ai.ai_addrlen);
+        std::memcpy(ai.ai_addr, newAi.ai_addr, ai.ai_addrlen);
     }
 
-    if (new_ai.ai_canonname != NULL) {
-        ai.ai_canonname = strdup(new_ai.ai_canonname);
+    if (newAi.ai_canonname != NULL) {
+        ai.ai_canonname = strdup(newAi.ai_canonname);
     }
     else {
         ai.ai_canonname = NULL;
