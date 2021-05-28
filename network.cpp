@@ -191,17 +191,16 @@ Addrinfos get_addrinfo(const Address& host, struct addrinfo* hints)
 
 Hostname get_hostname()
 {
-    char* buffer = static_cast<char*>(std::calloc(sizeof(char), NI_MAXHOST));
-    std::size_t length = sizeof(char) * NI_MAXHOST;
-    int error = gethostname(buffer, length - 1);
+    char* host = static_cast<char*>(std::calloc(sizeof(char), NI_MAXHOST));
+    int error = gethostname(host, NI_MAXHOST - 1);
 
     if (error) {
         std::cerr << "gethostname() returned " << error << std::endl;
     }
 
-    std::string host = buffer;
-    free(buffer);
-    return host;
+    std::string hostname = host;
+    free(host);
+    return hostname;
 }
 
 Nameinfo get_nameinfo(const Addrinfo& ai, int flags)
