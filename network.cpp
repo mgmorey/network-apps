@@ -14,16 +14,16 @@ AddrInfo::AddrInfo()
     setup();
 }
 
-AddrInfo::AddrInfo(struct addrinfo& newAi)
+AddrInfo::AddrInfo(struct addrinfo& ai)
 {
     setup();
-    copy(newAi);
+    copy(ai);
 }
 
-AddrInfo::AddrInfo(const AddrInfo& addrInfo)
+AddrInfo::AddrInfo(const AddrInfo& ai)
 {
     setup();
-    copy(addrInfo);
+    copy(ai);
 }
 
 AddrInfo::~AddrInfo()
@@ -31,16 +31,16 @@ AddrInfo::~AddrInfo()
     reset();
 }
 
-AddrInfo& AddrInfo::operator=(const struct addrinfo& newAi)
+AddrInfo& AddrInfo::operator=(const struct addrinfo& ai)
 {
     reset();
-    copy(newAi);
+    copy(ai);
     return *this;
 }
 
-AddrInfo& AddrInfo::operator=(const AddrInfo& addrInfo)
+AddrInfo& AddrInfo::operator=(const AddrInfo& ai)
 {
-    ai = addrInfo.ai;
+    this->ai = ai.ai;
     return *this;
 }
 
@@ -79,31 +79,31 @@ int AddrInfo::getSockType() const
     return ai.ai_socktype;
 }
 
-void AddrInfo::copy(const struct addrinfo& newAi)
+void AddrInfo::copy(const struct addrinfo& ai)
 {
-    ai.ai_flags = newAi.ai_flags;
-    ai.ai_family = newAi.ai_family;
-    ai.ai_socktype = newAi.ai_socktype;
-    ai.ai_protocol = newAi.ai_protocol;
-    ai.ai_addrlen = newAi.ai_addrlen;
-    ai.ai_addr = static_cast<sockaddr*>
-        (std::calloc(sizeof(char), ai.ai_addrlen));
+    this->ai.ai_flags = ai.ai_flags;
+    this->ai.ai_family = ai.ai_family;
+    this->ai.ai_socktype = ai.ai_socktype;
+    this->ai.ai_protocol = ai.ai_protocol;
+    this->ai.ai_addrlen = ai.ai_addrlen;
+    this->ai.ai_addr = static_cast<sockaddr*>
+        (std::calloc(sizeof(char), this->ai.ai_addrlen));
 
-    if (ai.ai_addr != NULL) {
-        std::memcpy(ai.ai_addr, newAi.ai_addr, ai.ai_addrlen);
+    if (this->ai.ai_addr != NULL) {
+        std::memcpy(this->ai.ai_addr, ai.ai_addr, ai.ai_addrlen);
     }
 
-    if (newAi.ai_canonname != NULL) {
-        ai.ai_canonname = strdup(newAi.ai_canonname);
+    if (ai.ai_canonname != NULL) {
+        this->ai.ai_canonname = strdup(ai.ai_canonname);
     }
     else {
-        ai.ai_canonname = NULL;
+        this->ai.ai_canonname = NULL;
     }
 }
 
-void AddrInfo::copy(const AddrInfo& addrInfo)
+void AddrInfo::copy(const AddrInfo& ai)
 {
-    copy(addrInfo.ai);
+    copy(ai.ai);
 }
 
 void AddrInfo::reset()
