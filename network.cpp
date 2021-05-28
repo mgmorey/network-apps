@@ -149,8 +149,8 @@ Addresses get_addresses(const Address& host, int family, int flags)
     for (Addrinfos::const_iterator it = ai.begin();
          it != ai.end();
          ++it) {
-        Nameinfo nameInfo = get_nameinfo(*it, NI_NUMERICHOST);
-        result.insert(nameInfo.first);
+        Nameinfo ni = get_nameinfo(*it, NI_NUMERICHOST);
+        result.insert(ni.first);
     }
 
     return result;
