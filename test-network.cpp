@@ -3,8 +3,8 @@
 #include <cstdlib>
 #include <iostream>
 
-static void printAddresses(const Addresses& addrs,
-                           const std::string& str)
+static void print_addresses(const Addresses& addrs,
+                            const std::string& str)
 {
     std::cout << str << std::endl << std::endl;
 
@@ -20,13 +20,13 @@ static void printAddresses(const Addresses& addrs,
 
 int main(void)
 {
-    Address host = getHostname();
-    Addresses addrs = getAddresses();
-    Addresses addrs4 = getAddresses(PF_INET);
-    Addresses addrs6 = getAddresses(PF_INET6);
+    Address host = get_hostname();
+    Addresses addrs = get_addresses();
+    Addresses addrs4 = get_addresses(PF_INET);
+    Addresses addrs6 = get_addresses(PF_INET6);
     std::cout << "Hostname:\t" << host << std::endl << std::endl;
-    printAddresses(addrs, "All Addresses:");
-    printAddresses(addrs4, "IPv4 Addresses:");
-    printAddresses(addrs6, "IPv6 Addresses:");
+    print_addresses(addrs, "All Addresses:");
+    print_addresses(addrs4, "IPv4 Addresses:");
+    print_addresses(addrs6, "IPv6 Addresses:");
     return EXIT_SUCCESS;
 }

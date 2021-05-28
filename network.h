@@ -8,48 +8,47 @@
 #include <string>		// std::string
 #include <vector>
 
-typedef std::string Address;
-typedef class AddrInfo AddrInfo;
-typedef std::set<Address> Addresses;
-typedef std::vector<AddrInfo> AddrInfos;
-typedef std::string HostName;
-typedef std::string Service;
-typedef std::pair<HostName, Service> NameInfo;
-
-class AddrInfo
+class Addrinfo
 {
 public:
-    AddrInfo();
-    AddrInfo(struct addrinfo& new_ai);
-    AddrInfo(const AddrInfo& addrInfo);
-    ~AddrInfo();
-    AddrInfo& operator=(const struct addrinfo& new_ai);
-    AddrInfo& operator=(const AddrInfo& addrInfo);
-    const struct sockaddr* getAddr() const;
-    socklen_t getAddrLen() const;
-    const char* getCanonName() const;
-    int getFamily() const;
-    int getFlags() const;
-    int getProtocol() const;
-    int getSockType() const;
+    Addrinfo();
+    Addrinfo(struct addrinfo& new_ai);
+    Addrinfo(const Addrinfo& addrInfo);
+    ~Addrinfo();
+    Addrinfo& operator=(const struct addrinfo& new_ai);
+    Addrinfo& operator=(const Addrinfo& addrInfo);
+    const struct sockaddr* get_addr() const;
+    socklen_t get_addrlen() const;
+    const char* get_canonname() const;
+    int get_family() const;
+    int get_flags() const;
+    int get_protocol() const;
+    int get_socktype() const;
 
 private:
     void copy(const struct addrinfo& new_ai);
-    void copy(const AddrInfo& addrInfo);
+    void copy(const Addrinfo& addrInfo);
     void reset();
-    void setup();
+    void set_up();
 
     struct addrinfo ai;
 };
 
-Addresses getAddresses(int family = PF_UNSPEC,
-                       int flags = 0);
-Addresses getAddresses(const Address& host,
-                       int family = PF_UNSPEC,
-                       int flags = 0);
-AddrInfos getAddrInfo(const Address& host,
-                      struct addrinfo* hints = NULL);
-HostName getHostname();
-NameInfo getNameInfo(const AddrInfo& addrInfo, int flags);
+typedef std::string Address;
+typedef std::set<Address> Addresses;
+typedef std::vector<Addrinfo> Addrinfos;
+typedef std::string Hostname;
+typedef std::string Service;
+typedef std::pair<Hostname, Service> Nameinfo;
+
+Addresses get_addresses(int family = PF_UNSPEC,
+                        int flags = 0);
+Addresses get_addresses(const Address& host,
+                        int family = PF_UNSPEC,
+                        int flags = 0);
+Addrinfos get_addrinfo(const Address& host,
+                       struct addrinfo* hints = NULL);
+Hostname get_hostname();
+Nameinfo get_nameinfo(const Addrinfo& addrInfo, int flags);
 
 #endif

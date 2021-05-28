@@ -9,77 +9,77 @@
 #include <cstring>		// std::memcpy(), std::strdup()
 #include <iostream>		// std::cerr, std::endl
 
-AddrInfo::AddrInfo()
+Addrinfo::Addrinfo()
 {
-    setup();
+    set_up();
 }
 
-AddrInfo::AddrInfo(struct addrinfo& ai)
+Addrinfo::Addrinfo(struct addrinfo& ai)
 {
-    setup();
+    set_up();
     copy(ai);
 }
 
-AddrInfo::AddrInfo(const AddrInfo& ai)
+Addrinfo::Addrinfo(const Addrinfo& ai)
 {
-    setup();
+    set_up();
     copy(ai);
 }
 
-AddrInfo::~AddrInfo()
+Addrinfo::~Addrinfo()
 {
     reset();
 }
 
-AddrInfo& AddrInfo::operator=(const struct addrinfo& ai)
+Addrinfo& Addrinfo::operator=(const struct addrinfo& ai)
 {
     reset();
     copy(ai);
     return *this;
 }
 
-AddrInfo& AddrInfo::operator=(const AddrInfo& ai)
+Addrinfo& Addrinfo::operator=(const Addrinfo& ai)
 {
     this->ai = ai.ai;
     return *this;
 }
 
-const struct sockaddr* AddrInfo::getAddr() const
+const struct sockaddr* Addrinfo::get_addr() const
 {
     return ai.ai_addr;
 }
 
-socklen_t AddrInfo::getAddrLen() const
+socklen_t Addrinfo::get_addrlen() const
 {
     return ai.ai_addrlen;
 }
 
-const char* AddrInfo::getCanonName() const
+const char* Addrinfo::get_canonname() const
 {
     return ai.ai_canonname;
 }
 
-int AddrInfo::getFamily() const
+int Addrinfo::get_family() const
 {
     return ai.ai_family;
 }
 
-int AddrInfo::getFlags() const
+int Addrinfo::get_flags() const
 {
     return ai.ai_flags;
 }
 
-int AddrInfo::getProtocol() const
+int Addrinfo::get_protocol() const
 {
     return ai.ai_protocol;
 }
 
-int AddrInfo::getSockType() const
+int Addrinfo::get_socktype() const
 {
     return ai.ai_socktype;
 }
 
-void AddrInfo::copy(const struct addrinfo& ai)
+void Addrinfo::copy(const struct addrinfo& ai)
 {
     this->ai.ai_flags = ai.ai_flags;
     this->ai.ai_family = ai.ai_family;
@@ -101,12 +101,12 @@ void AddrInfo::copy(const struct addrinfo& ai)
     }
 }
 
-void AddrInfo::copy(const AddrInfo& ai)
+void Addrinfo::copy(const Addrinfo& ai)
 {
     copy(ai.ai);
 }
 
-void AddrInfo::reset()
+void Addrinfo::reset()
 {
     free(ai.ai_addr);
     ai.ai_addr = NULL;
@@ -114,7 +114,7 @@ void AddrInfo::reset()
     ai.ai_canonname = NULL;
 }
 
-void AddrInfo::setup()
+void Addrinfo::set_up()
 {
     ai.ai_flags = 0;
     ai.ai_family = 0;
@@ -126,12 +126,12 @@ void AddrInfo::setup()
     ai.ai_next = NULL;
 }
 
-Addresses getAddresses(int family, int flags)
+Addresses get_addresses(int family, int flags)
 {
-    return getAddresses(getHostname(), family, flags);
+    return get_addresses(get_hostname(), family, flags);
 }
 
-Addresses getAddresses(const Address& host, int family, int flags)
+Addresses get_addresses(const Address& host, int family, int flags)
 {
     struct addrinfo hints = {
         flags,
@@ -143,24 +143,24 @@ Addresses getAddresses(const Address& host, int family, int flags)
         NULL,
         NULL
     };
-    AddrInfos addrInfos = getAddrInfo(host, &hints);
+    Addrinfos addrInfos = get_addrinfo(host, &hints);
     Addresses addresses;
 
-    for (AddrInfos::const_iterator it = addrInfos.begin();
+    for (Addrinfos::const_iterator it = addrInfos.begin();
          it != addrInfos.end();
          ++it) {
-        NameInfo nameInfo = getNameInfo(*it, NI_NUMERICHOST);
+        Nameinfo nameInfo = get_nameinfo(*it, NI_NUMERICHOST);
         addresses.insert(nameInfo.first);
     }
 
     return addresses;
 }
 
-AddrInfos getAddrInfo(const Address& host, struct addrinfo* hints)
+Addrinfos get_addrinfo(const Address& host, struct addrinfo* hints)
 {
     struct addrinfo* list = NULL;
     int error = getaddrinfo(host.c_str(), NULL, hints, &list);
-    AddrInfos result;
+    Addrinfos result;
 
     if (error) {
         std::cerr << "getaddrinfo() returned " << error
@@ -189,7 +189,7 @@ AddrInfos getAddrInfo(const Address& host, struct addrinfo* hints)
     return result;
 }
 
-HostName getHostname()
+Hostname get_hostname()
 {
     char* buffer = static_cast<char*>(std::calloc(sizeof(char), NI_MAXHOST));
     std::size_t length = sizeof(char) * NI_MAXHOST;
@@ -204,12 +204,12 @@ HostName getHostname()
     return host;
 }
 
-NameInfo getNameInfo(const AddrInfo& addrInfo, int flags)
+Nameinfo get_nameinfo(const Addrinfo& addrInfo, int flags)
 {
     char* host = static_cast<char*>(std::calloc(sizeof(char), NI_MAXHOST));
     char* serv = static_cast<char*>(std::calloc(sizeof(char), NI_MAXHOST));
-    int error = getnameinfo(addrInfo.getAddr(),
-                            addrInfo.getAddrLen(),
+    int error = getnameinfo(addrInfo.get_addr(),
+                            addrInfo.get_addrlen(),
                             host, NI_MAXHOST,
                             serv, NI_MAXHOST,
                             flags);
@@ -220,7 +220,7 @@ NameInfo getNameInfo(const AddrInfo& addrInfo, int flags)
                   << ')' << std::endl;
     }
 
-    NameInfo result = NameInfo(host, serv);
+    Nameinfo result = Nameinfo(host, serv);
     free(serv);
     free(host);
     return result;
