@@ -28,8 +28,8 @@ public:
 private:
     void copy(const struct addrinfo& ai);
     void copy(const Addrinfo& ai);
-    void reset();
     void set_up();
+    void tear_down();
 
     struct addrinfo ai;
 };

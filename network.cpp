@@ -28,12 +28,12 @@ Addrinfo::Addrinfo(const Addrinfo& ai)
 
 Addrinfo::~Addrinfo()
 {
-    reset();
+    tear_down();
 }
 
 Addrinfo& Addrinfo::operator=(const struct addrinfo& ai)
 {
-    reset();
+    tear_down();
     copy(ai);
     return *this;
 }
@@ -106,14 +106,6 @@ void Addrinfo::copy(const Addrinfo& ai)
     copy(ai.ai);
 }
 
-void Addrinfo::reset()
-{
-    free(ai.ai_addr);
-    ai.ai_addr = NULL;
-    free(ai.ai_canonname);
-    ai.ai_canonname = NULL;
-}
-
 void Addrinfo::set_up()
 {
     ai.ai_flags = 0;
@@ -124,6 +116,14 @@ void Addrinfo::set_up()
     ai.ai_addr = 0;
     ai.ai_canonname = NULL;
     ai.ai_next = NULL;
+}
+
+void Addrinfo::tear_down()
+{
+    free(ai.ai_addr);
+    ai.ai_addr = NULL;
+    free(ai.ai_canonname);
+    ai.ai_canonname = NULL;
 }
 
 Addresses get_addresses(int family, int flags)
