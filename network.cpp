@@ -144,7 +144,7 @@ Addresses get_addresses(const std::string& host, int family, int flags)
         NULL,
         NULL
     };
-    Addrinfos ai = get_addrinfo(host, &hints);
+    Addrinfos ai = get_addrinfo(host, "", &hints);
     Addresses result;
 
     for (Addrinfos::const_iterator it = ai.begin();
@@ -160,16 +160,23 @@ Addresses get_addresses(const std::string& host, int family, int flags)
     return result;
 }
 
-Addrinfos get_addrinfo(const std::string& host, struct addrinfo* hints)
+Addrinfos get_addrinfo(const std::string& node,
+                       const std::string& service,
+                       struct addrinfo* hints)
 {
     struct addrinfo* list = NULL;
-    int error = getaddrinfo(host.c_str(), NULL, hints, &list);
+    int error = getaddrinfo(node.empty() ? NULL : node.c_str(),
+                            service.empty() ? NULL : service.c_str(),
+                            hints,
+                            &list);
     Addrinfos result;
 
     if (error) {
-        std::cerr << "getaddrinfo("
-                  << host
-                  << ") returned "
+        std::cerr << "getaddrinfo(\""
+                  << node
+                  << "\", \""
+                  << service
+                  << "\") returned "
                   << error
                   << " ("
                   << gai_strerror(error)

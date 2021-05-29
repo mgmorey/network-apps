@@ -49,8 +49,9 @@ typedef std::pair<Hostname, Service> Nameinfo;
 Addresses get_addresses(const std::string& host = "",
                         int family = PF_UNSPEC,
                         int flags = 0);
-Addrinfos get_addrinfo(const std::string& host,
-                       struct addrinfo* hints = NULL);
+Addrinfos get_addrinfo(const std::string& node,
+                       const std::string& service = "",
+                       struct addrinfo* hints = NULL)
 Hostname get_hostname();
 Nameinfo get_nameinfo(const Addrinfo& ai, int flags);
 
