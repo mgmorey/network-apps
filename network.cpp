@@ -100,7 +100,8 @@ int Address::get_socktype() const
 std::string Address::to_string() const
 {
     char* host = static_cast<char*>(std::calloc(sizeof(char), NI_MAXHOST));
-    int error = getnameinfo(reinterpret_cast<const sockaddr*>(addr.data()), addr.size(),
+    int error = getnameinfo(reinterpret_cast<const sockaddr*>(addr.data()),
+                            addr.size(),
                             host, NI_MAXHOST,
                             NULL, 0,
                             NI_NUMERICHOST);
