@@ -38,8 +38,6 @@ static void print_addresses(const Addresses& addresses,
 
         std::cout << std::endl;
     }
-
-    std::cout << std::endl;
 }
 
 static void test_host(const std::string& host)
@@ -50,7 +48,9 @@ static void test_host(const std::string& host)
     std::cout << "Hostname: " << host << std::endl;
     std::cout << std::endl;
     print_addresses(all, "All");
+    std::cout << std::endl;
     print_addresses(ipv4, "IPv4");
+    std::cout << std::endl;
     print_addresses(ipv6, "IPv6");
 }
 
@@ -86,6 +86,7 @@ int main(void)
     }
 
     test_host(get_hostname());
+    std::cout << std::endl;
     test_host("example.com");
     result = EXIT_SUCCESS;
 
