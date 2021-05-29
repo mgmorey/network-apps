@@ -1,4 +1,4 @@
-LINK.o = $(CXX) $(LDFLAGS) $(TARGET_ARCH)
+SYSTEM_PREFIX := $(shell uname -s | cut -d- -f 1)
 
 ifeq "$(USING_DMALLOC)" "true"
 	CPPFLAGS += -DDMALLOC -DMALLOC_FUNC_CHECK
@@ -18,6 +18,12 @@ else
 endif
 
 CXXFLAGS += -std=c++98 -Wall -Werror -Wextra -Wpedantic
+
+ifeq "$(SYSTEM_PREFIX)" "MINGW64_NT"
+	LDLIBS += -lws2_32
+endif
+
+LINK.o = $(CXX) $(LDFLAGS) $(TARGET_ARCH)
 
 all_sources = $(library_sources) $(program_sources)
 library_sources = network.cpp
