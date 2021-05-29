@@ -58,6 +58,6 @@ Addrinfos get_addrinfo(const std::string& node,
                        const std::string& service = "",
                        struct addrinfo* hints = NULL);
 Hostname get_hostname();
-Nameinfo get_nameinfo(const Addrinfo& ai, int flags);
+Nameinfo get_nameinfo(const Address& address, int flags);
 
 #endif
