@@ -19,14 +19,12 @@ endif
 
 CXXFLAGS += -std=c++98 -Wall -Werror -Wextra -Wpedantic
 
-ifeq "$(SYSTEM_PREFIX)" "MINGW64_NT"
-	LDLIBS += -lws2_32
-else
 ifeq "$(SYSTEM_PREFIX)" "Darwin"
 	CPPFLAGS += -D_DARWIN_C_SOURCE
-else
+else ifeq "$(SYSTEM_PREFIX)" "CYGWIN_NT"
 	CPPFLAGS += -D_POSIX_C_SOURCE=200809L
-endif
+else ifeq "$(SYSTEM_PREFIX)" "MINGW64_NT"
+	LDLIBS += -lws2_32
 endif
 
 LINK.o = $(CXX) $(LDFLAGS) $(TARGET_ARCH)
