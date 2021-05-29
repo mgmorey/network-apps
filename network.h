@@ -6,7 +6,7 @@
 #include <ws2tcpip.h>		// struct addrinfo, getaddrinfo()
 #else
 #include <netdb.h>		// struct addrinfo
-#include <sys/socket.h>		// AF_UNSPEC
+#include <sys/socket.h>		// AF_UNSPEC, socklen_t
 #endif
 
 #include <set>			// std::set
@@ -27,7 +27,7 @@ public:
     bool operator!=(const Address& address) const;
     bool operator==(const Address& address) const;
     const sockaddr* get_addr() const;
-    std::size_t get_addrlen() const;
+    socklen_t get_addrlen() const;
     int get_family() const;
     int get_protocol() const;
     int get_socktype() const;
@@ -58,6 +58,7 @@ Addrinfos get_addrinfo(const std::string& node,
                        const std::string& service = "",
                        struct addrinfo* hints = NULL);
 Hostname get_hostname();
-Nameinfo get_nameinfo(const Address& address, int flags);
+Nameinfo get_nameinfo(const Address& address,
+                      int flags = 0);
 
 #endif

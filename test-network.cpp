@@ -4,27 +4,39 @@
 #include <winsock2.h>		// WSACleanup(), WSAStartup()
 #endif
 
-#include <cstdlib>
-#include <iostream>
+#include <cassert>		// assert()
+#include <cstdlib>		// EXIT_FAILURE, EXIT_SUCCESS
+#include <string>		// std::string
+#include <iostream>		// std::cout, std::endl
 
-static void print_addresses(const Addresses& addrs,
-                            const std::string& str)
+static void print_addresses(const Addresses& addresses,
+                            const std::string& family)
 {
-    if (addrs.empty()) {
+    if (addresses.empty()) {
         return;
     }
 
-    std::cout << str;
+    std::cout << family
+              << " addresses:"
+              << std::endl
+              << std::endl;
 
-    for (Addresses::const_iterator it = addrs.begin();
-         it != addrs.end();
+    for (Addresses::const_iterator it = addresses.begin();
+         it != addresses.end();
          ++it)
     {
-        if (it != addrs.begin()) {
-            std::cout << ' ';
+        std::string addr = it->to_string();
+        std::string host = get_nameinfo(*it).first;
+        std::cout << '\t'
+                  << addr;
+
+        if (host != addr) {
+            std::cout << " ("
+                      << host
+                      << ") ";
         }
 
-        std::cout << it->to_string();
+        std::cout << std::endl;
     }
 
     std::cout << std::endl;
@@ -32,13 +44,14 @@ static void print_addresses(const Addresses& addrs,
 
 static void test_host(const std::string& host)
 {
-    Addresses addrs = get_addresses(host);
-    Addresses addrs4 = get_addresses(host, PF_INET);
-    Addresses addrs6 = get_addresses(host, PF_INET6);
+    Addresses all = get_addresses(host);
+    Addresses ipv4 = get_addresses(host, AF_INET);
+    Addresses ipv6 = get_addresses(host, AF_INET6);
     std::cout << "Hostname: " << host << std::endl;
-    print_addresses(addrs, "All Addresses: ");
-    print_addresses(addrs4, "IPv4 Addresses: ");
-    print_addresses(addrs6, "IPv6 Addresses: ");
+    std::cout << std::endl;
+    print_addresses(all, "All");
+    print_addresses(ipv4, "IPv4");
+    print_addresses(ipv6, "IPv6");
 }
 
 static int wsa_set_up(void)
