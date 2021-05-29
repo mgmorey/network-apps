@@ -24,7 +24,7 @@ static void print_addresses(const Addresses& addrs,
             std::cout << ' ';
         }
 
-        std::cout << it->second;
+        std::cout << it->to_string();
     }
 
     std::cout << std::endl;

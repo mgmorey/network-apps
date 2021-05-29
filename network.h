@@ -2,48 +2,48 @@
 #define NETWORK_H
 
 #ifdef _WIN32
-#include <ws2tcpip.h>		// getaddrinfo(), struct addrinfo
+#include <winsock2.h>		// AF_UNSPEC, gethostname()
+#include <ws2tcpip.h>		// struct addrinfo, getaddrinfo()
 #else
 #include <netdb.h>		// struct addrinfo
 #include <sys/socket.h>		// AF_UNSPEC
 #endif
 
-#include <set>			// std::set
 #include <string>		// std::string
 #include <vector>		// std::vector
 #include <utility>		// std::pair
 
-class Addrinfo
+class Address
 {
 public:
-    Addrinfo();
-    Addrinfo(const struct addrinfo& ai);
-    Addrinfo(const Addrinfo& ai);
-    ~Addrinfo();
-    Addrinfo& operator=(const struct addrinfo& ai);
-    Addrinfo& operator=(const Addrinfo& ai);
-    const struct sockaddr* get_addr() const;
-    socklen_t get_addrlen() const;
-    const char* get_canonname() const;
+    Address();
+    Address(const Address& address);
+    Address(const struct addrinfo& ai);
+    Address& operator=(const Address& address);
+    Address& operator=(const struct addrinfo& ai);
+    const sockaddr* get_addr() const;
+    std::size_t get_addrlen() const;
     int get_family() const;
-    int get_flags() const;
     int get_protocol() const;
     int get_socktype() const;
+    std::string to_string() const;
 
 private:
+    void copy(const Address& address);
     void copy(const struct addrinfo& ai);
-    void copy(const Addrinfo& ai);
     void set_up();
-    void tear_down();
 
-    struct addrinfo ai;
+    std::string addr;
+    int family;
+    int protocol;
+    int socktype;
 };
 
-typedef std::pair<int, std::string> Address;
-typedef std::set<Address> Addresses;
-typedef std::vector<Addrinfo> Addrinfos;
 typedef std::string Hostname;
 typedef std::string Service;
+typedef std::vector<Address> Addresses;
+typedef std::pair<Address, Hostname> Addrinfo;
+typedef std::vector<Addrinfo> Addrinfos;
 typedef std::pair<Hostname, Service> Nameinfo;
 
 Addresses get_addresses(const std::string& host = "",
