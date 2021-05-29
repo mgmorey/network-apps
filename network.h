@@ -1,8 +1,6 @@
 #ifndef NETWORK_H
 #define NETWORK_H
 
-#define _POSIX_C_SOURCE		200809L
-
 #ifdef _WIN32
 #include <ws2tcpip.h>		// getaddrinfo(), struct addrinfo
 #else
@@ -12,7 +10,8 @@
 
 #include <set>			// std::set
 #include <string>		// std::string
-#include <vector>
+#include <vector>		// std::vector
+#include <utility>		// std::pair
 
 class Addrinfo
 {

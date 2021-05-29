@@ -4,6 +4,7 @@
 #include <winsock2.h>		// gethostname()
 #else
 #include <arpa/inet.h>		// inet (3) functions
+#include <netdb.h>		// NI_MAXHOST, struct addrinfo
 #include <netinet/in.h>		// Internet definitions
 #include <sys/socket.h>		// socket definitions
 #include <sys/types.h>		// type definitions
