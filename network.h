@@ -9,6 +9,7 @@
 #include <sys/socket.h>		// AF_UNSPEC
 #endif
 
+#include <set>			// std::set
 #include <string>		// std::string
 #include <vector>		// std::vector
 #include <utility>		// std::pair
@@ -21,6 +22,10 @@ public:
     Address(const struct addrinfo& ai);
     Address& operator=(const Address& address);
     Address& operator=(const struct addrinfo& ai);
+    bool operator<(const Address& address) const;
+    bool operator>(const Address& address) const;
+    bool operator!=(const Address& address) const;
+    bool operator==(const Address& address) const;
     const sockaddr* get_addr() const;
     std::size_t get_addrlen() const;
     int get_family() const;
@@ -41,7 +46,7 @@ private:
 
 typedef std::string Hostname;
 typedef std::string Service;
-typedef std::vector<Address> Addresses;
+typedef std::set<Address> Addresses;
 typedef std::pair<Address, Hostname> Addrinfo;
 typedef std::vector<Addrinfo> Addrinfos;
 typedef std::pair<Hostname, Service> Nameinfo;

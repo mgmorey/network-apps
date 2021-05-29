@@ -40,6 +40,38 @@ Address& Address::operator=(const struct addrinfo& ai)
     return *this;
 }
 
+bool Address::operator<(const Address& address) const
+{
+    return (family < address.family ||
+            protocol < address.protocol ||
+            socktype < address.socktype ||
+            addr < address.addr);
+}
+
+bool Address::operator>(const Address& address) const
+{
+    return (family > address.family ||
+            protocol > address.protocol ||
+            socktype > address.socktype ||
+            addr > address.addr);
+}
+
+bool Address::operator!=(const Address& address) const
+{
+    return (family != address.family ||
+            protocol != address.protocol ||
+            socktype != address.socktype ||
+            addr != address.addr);
+}
+
+bool Address::operator==(const Address& address) const
+{
+    return (family == address.family &&
+            protocol == address.protocol &&
+            socktype == address.socktype &&
+            addr == address.addr);
+}
+
 const sockaddr* Address::get_addr() const
 {
     return reinterpret_cast<const sockaddr*>(addr.data());
@@ -129,7 +161,7 @@ Addresses get_addresses(const std::string& host, int family, int flags)
     for (Addrinfos::const_iterator it = ai.begin();
          it != ai.end();
          ++it) {
-        result.push_back(it->first);
+        result.insert(it->first);
     }
 
     return result;
