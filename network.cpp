@@ -1,9 +1,14 @@
 #include "network.h"
 
-#include <netdb.h>		// IPPROTO_TCP, struct addrinfo,
-				// getaddrinfo(), getnameinfo()
-#include <sys/socket.h>		// SOCK_STREAM, socklen_t
-#include <unistd.h>		// gethostname()
+#ifdef _WIN32
+#include <winsock2.h>		// gethostname()
+#else
+#include <arpa/inet.h>		// inet (3) functions
+#include <netinet/in.h>		// Internet definitions
+#include <sys/socket.h>		// socket definitions
+#include <sys/types.h>		// type definitions
+#include <unistd.h>		// Unix functions
+#endif
 
 #include <cstdlib>		// std::calloc()
 #include <cstring>		// std::memcpy(), std::strdup()
@@ -128,11 +133,6 @@ void Addrinfo::tear_down()
 
 Addresses get_addresses(const std::string& host, int family, int flags)
 {
-    if (host.empty())
-    {
-        return get_addresses(get_hostname(), family, flags);
-    }
-
     struct addrinfo hints = {
         flags,
         family,
