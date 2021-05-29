@@ -1,6 +1,8 @@
 #ifndef NETWORK_H
 #define NETWORK_H
 
+#define _POSIX_C_SOURCE		200809L
+
 #include <netdb.h>		// struct addrinfo
 #include <sys/socket.h>		// PF_UNSPEC
 
