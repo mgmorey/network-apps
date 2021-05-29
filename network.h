@@ -51,7 +51,7 @@ Addresses get_addresses(const std::string& host = "",
                         int flags = 0);
 Addrinfos get_addrinfo(const std::string& node,
                        const std::string& service = "",
-                       struct addrinfo* hints = NULL)
+                       struct addrinfo* hints = NULL);
 Hostname get_hostname();
 Nameinfo get_nameinfo(const Addrinfo& ai, int flags);
 

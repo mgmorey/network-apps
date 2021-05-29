@@ -135,14 +135,14 @@ void Addrinfo::tear_down()
 Addresses get_addresses(const std::string& host, int family, int flags)
 {
     struct addrinfo hints = {
-        flags,
-        family,
-        0,
-        0,
-        0,
-        NULL,
-        NULL,
-        NULL
+        flags,		// ai_flags
+        family,		// ai_family
+        0,		// ai_socktype
+        0,		// ai_protocol
+        0,		// ai_addrlen
+        NULL,		// ai_canonname
+        NULL,		// ai_addr
+        NULL		// ai_next
     };
     Addrinfos ai = get_addrinfo(host, "", &hints);
     Addresses result;
