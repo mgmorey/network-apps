@@ -5,7 +5,7 @@
 #include <ws2tcpip.h>		// getaddrinfo(), struct addrinfo
 #else
 #include <netdb.h>		// struct addrinfo
-#include <sys/socket.h>		// PF_UNSPEC
+#include <sys/socket.h>		// AF_UNSPEC
 #endif
 
 #include <set>			// std::set
@@ -47,7 +47,7 @@ typedef std::string Service;
 typedef std::pair<Hostname, Service> Nameinfo;
 
 Addresses get_addresses(const std::string& host = "",
-                        int family = PF_UNSPEC,
+                        int family = AF_UNSPEC,
                         int flags = 0);
 Addrinfos get_addrinfo(const std::string& node,
                        const std::string& service = "",
