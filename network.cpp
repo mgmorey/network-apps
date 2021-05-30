@@ -249,13 +249,9 @@ int Socket::socket() const
                   << ") returned "
                   << fd
                   << std::endl;
-        goto clean_up;
     }
 
     return fd;
-
-clean_up:
-    return -1;
 }
 
 void Socket::copy(const Socket& socket)
