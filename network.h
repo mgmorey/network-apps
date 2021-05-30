@@ -14,6 +14,13 @@
 #include <vector>		// std::vector
 #include <utility>		// std::pair
 
+typedef std::string Hostname;
+typedef std::string Service;
+typedef std::pair<Hostname, Service> Nameinfo;
+typedef std::set<class Address> Addresses;
+typedef std::pair<class Address, Hostname> Addrinfo;
+typedef std::vector<Addrinfo> Addrinfos;
+
 class Address
 {
 public:
@@ -65,13 +72,6 @@ private:
     int protocol;
     int socktype;
 };
-
-typedef std::string Hostname;
-typedef std::string Service;
-typedef std::set<Address> Addresses;
-typedef std::pair<Address, Hostname> Addrinfo;
-typedef std::vector<Addrinfo> Addrinfos;
-typedef std::pair<Hostname, Service> Nameinfo;
 
 Addresses get_addresses(const std::string& host = "",
                         int family = AF_UNSPEC,
