@@ -87,18 +87,18 @@ static void test_connect(const std::string& host, const std::string& service)
 
 static void test_host(const std::string& host)
 {
-    Addresses all1(get_addresses(host));
+    Addresses all;
+    Addresses any(get_addresses(host, AF_UNSPEC));
     Addresses ipv4(get_addresses(host, AF_INET));
     Addresses ipv6(get_addresses(host, AF_INET6));
-    std::cout << "Hostname: " << host << std::endl;
-    print_addresses(all1, "All");
-    print_addresses(ipv4, "IPv4");
-    print_addresses(ipv6, "IPv6");
-    Addresses all2;
     std::set_union(ipv4.begin(), ipv4.end(),
                    ipv6.begin(), ipv6.end(),
-                   std::inserter(all2, all2.begin()));
-    assert(all1 == all2);
+                   std::inserter(all, all.begin()));
+    std::cout << "Hostname: " << host << std::endl;
+    print_addresses(all, "All");
+    print_addresses(any, "Any");
+    print_addresses(ipv4, "IPv4");
+    print_addresses(ipv6, "IPv6");
 }
 
 static int wsa_set_up(void)
