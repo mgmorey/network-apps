@@ -34,6 +34,7 @@ public:
     bool operator==(const Address& address) const;
     int connect(int fd) const;
     Nameinfo get_nameinfo(int flags = 0) const;
+    std::string get_service() const;
     std::string to_hostname() const;
     std::string to_string() const;
 

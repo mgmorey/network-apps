@@ -117,6 +117,11 @@ Nameinfo Address::get_nameinfo(int flags) const
     return result;
 }
 
+std::string Address::get_service() const
+{
+    return get_nameinfo().second;
+}
+
 std::string Address::to_hostname() const
 {
     return get_nameinfo().first;
