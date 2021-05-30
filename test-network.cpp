@@ -2,7 +2,9 @@
                                 // get_addresses(), get_sockets()
 
 #ifdef _WIN32
-#include <winsock2.h>		// WSACleanup(), WSAStartup()
+#include <winsock2.h>		// IPPROTO_TCP, WSACleanup(), WSAStartup()
+#else
+#include <netinet/in.h>		// IPPROTO_TCP
 #endif
 
 #include <algorithm>		// std::set_union()
@@ -94,9 +96,13 @@ static void test_host(const std::string& host)
     std::set_union(ipv4.begin(), ipv4.end(),
                    ipv6.begin(), ipv6.end(),
                    std::inserter(all, all.begin()));
+
     std::cout << "Hostname: " << host << std::endl;
-    print_addresses(all, "All");
-    print_addresses(any, "Any");
+
+    if (any != all) {
+        print_addresses(any, "Any");
+    }
+
     print_addresses(ipv4, "IPv4");
     print_addresses(ipv6, "IPv6");
 }
