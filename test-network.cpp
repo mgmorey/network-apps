@@ -1,7 +1,7 @@
 #include "network.h"
 
 #ifdef _WIN32
-#include <winsock2.h>		// WSACleanup(), WSAStartup()
+#include <winsock2.h>		// WSACleanup(), WSAStartup(), closesocket()
 #endif
 
 #include <cassert>		// assert()
@@ -38,6 +38,46 @@ static void print_addresses(const Addresses& addresses,
         }
 
         std::cout << std::endl;
+    }
+}
+
+static void test_connect(const std::string& host, const std::string& service)
+{
+    struct addrinfo hints = {
+        AI_CANONNAME,	// ai_flags
+        AF_UNSPEC,	// ai_family
+        SOCK_STREAM,	// ai_socktype
+        IPPROTO_TCP,	// ai_protocol
+        0,		// ai_adddrlen
+        NULL,		// ai_canonname
+        NULL,		// ai_addr
+        NULL		// ai_next
+    };
+
+    Addrinfos ai(get_addrinfo(host, service, &hints));
+    int fd = -1;
+
+    for (Addrinfos::const_iterator it = ai.begin();
+         it != ai.end();
+         ++it) {
+        Socket socket(it->first);
+        fd = socket.connect();
+
+        if (fd >= 0) {
+            break;
+        }
+    }
+
+    if (fd >= 0) {
+        std::cout << "Socket "
+                  << fd
+                  << " connected"
+                  << std::endl;
+        close(fd);
+        std::cout << "Socket "
+                  << fd
+                  << " closed"
+                  << std::endl;
     }
 }
 
@@ -78,6 +118,7 @@ static void wsa_tear_down(void)
 int main(void)
 {
     std::string hostname("example.com");
+    std::string service("http");
     int result = EXIT_FAILURE;
 
     if (wsa_set_up()) {
@@ -87,6 +128,8 @@ int main(void)
     test_host(get_hostname());
     std::cout << std::endl;
     test_host(hostname);
+    std::cout << std::endl;
+    test_connect(hostname, service);
     result = EXIT_SUCCESS;
 
 clean_up:

@@ -14,11 +14,15 @@
 #include <vector>		// std::vector
 #include <utility>		// std::pair
 
+#ifdef _WIN32
+#define close		closesocket
+#endif
+
 typedef std::string Hostname;
 typedef std::string Service;
 typedef std::pair<Hostname, Service> Nameinfo;
 typedef std::set<class Address> Addresses;
-typedef std::pair<class Address, Hostname> Addrinfo;
+typedef std::pair<class Socket, Hostname> Addrinfo;
 typedef std::vector<Addrinfo> Addrinfos;
 
 class Address
@@ -60,6 +64,7 @@ public:
     bool operator>(const Socket& socket) const;
     bool operator!=(const Socket& socket) const;
     bool operator==(const Socket& socket) const;
+    int connect();
     Address get_addr() const;
     int get_protocol() const;
     int get_socktype() const;

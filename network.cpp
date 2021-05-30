@@ -5,7 +5,7 @@
 #else
 #include <netdb.h>		// NI_MAXHOST, struct addrinfo
 #include <sys/socket.h>		// socket definitions
-#include <unistd.h>		// Unix functions
+#include <unistd.h>		// close()
 #endif
 
 #include <cstdlib>		// std::calloc()
@@ -166,6 +166,46 @@ bool Socket::operator==(const Socket& socket) const
             addr == socket.addr);
 }
 
+int Socket::connect()
+{
+    int error = -1;
+    int fd = ::socket(addr.get_family(), socktype, protocol);
+
+    if (fd == -1) {
+        std::cerr << "socket("
+                  << addr.get_family()
+                  << ", "
+                  << socktype
+                  << ", "
+                  << protocol
+                  << ") returned "
+                  << fd
+                  << std::endl;
+        goto clean_up;
+    }
+
+    error = ::connect(fd, addr.get_addr(), addr.get_addrlen());
+
+    if (error == -1) {
+        std::cerr << "connect("
+                  << fd
+                  << ") returned "
+                  << error
+                  << ": "
+                  << strerror(errno)
+                  << std::endl;
+        goto clean_up_socket;
+    }
+
+    return fd;
+
+clean_up_socket:
+    close(fd);
+
+clean_up:
+    return -1;
+}
+
 Address Socket::get_addr() const
 {
     return addr;
@@ -219,7 +259,8 @@ Addresses get_addresses(const std::string& host, int family, int flags)
     for (Addrinfos::const_iterator it = ai.begin();
          it != ai.end();
          ++it) {
-        result.insert(it->first);
+        Socket socket(it->first);
+        result.insert(socket.get_addr());
     }
 
     return result;
@@ -252,14 +293,14 @@ Addrinfos get_addrinfo(const std::string& node,
         for (const struct addrinfo* elem = list;
              elem != NULL;
              elem = elem->ai_next) {
-            Address address(*elem);
+            Socket socket(*elem);
             std::string cname;
 
             if (elem->ai_canonname != NULL) {
                 cname = elem->ai_canonname;
             }
 
-            result.push_back(Addrinfo(address, cname));
+            result.push_back(Addrinfo(socket, cname));
         }
 
         freeaddrinfo(list);
