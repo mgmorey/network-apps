@@ -79,6 +79,11 @@ int Address::get_family() const
     return family;
 }
 
+std::string Address::to_hostname() const
+{
+    return get_nameinfo(*this).first;
+}
+
 std::string Address::to_string() const
 {
     return get_nameinfo(*this, NI_NUMERICHOST).first;

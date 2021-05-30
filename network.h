@@ -36,6 +36,7 @@ public:
     const sockaddr* get_addr() const;
     socklen_t get_addrlen() const;
     int get_family() const;
+    std::string to_hostname() const;
     std::string to_string() const;
 
 private:
