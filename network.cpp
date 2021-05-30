@@ -309,7 +309,10 @@ void Socket::copy(const struct addrinfo& ai)
 {
     addr = ai;
 
-    if (ai.ai_canonname != NULL) {
+    if (ai.ai_canonname == NULL) {
+        cname.clear();
+    }
+    else {
         cname = ai.ai_canonname;
     }
 
