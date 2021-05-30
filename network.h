@@ -34,17 +34,14 @@ public:
     bool operator==(const Address& address) const;
     const struct sockaddr* get_addr() const;
     socklen_t get_addrlen() const;
-    int get_family() const;
     std::string to_hostname() const;
     std::string to_string() const;
 
 private:
     void copy(const Address& address);
     void copy(const struct addrinfo& ai);
-    void set_up();
 
     std::string addr;
-    int family;
 };
 
 class Socket

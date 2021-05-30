@@ -19,18 +19,15 @@
 
 Address::Address()
 {
-    set_up();
 }
 
 Address::Address(const Address& address)
 {
-    set_up();
     copy(address);
 }
 
 Address::Address(const struct addrinfo& ai)
 {
-    set_up();
     copy(ai);
 }
 
@@ -48,26 +45,22 @@ Address& Address::operator=(const struct addrinfo& ai)
 
 bool Address::operator<(const Address& address) const
 {
-    return (family < address.family ||
-            addr < address.addr);
+    return (addr < address.addr);
 }
 
 bool Address::operator>(const Address& address) const
 {
-    return (family > address.family ||
-            addr > address.addr);
+    return (addr > address.addr);
 }
 
 bool Address::operator!=(const Address& address) const
 {
-    return (family != address.family ||
-            addr != address.addr);
+    return (addr != address.addr);
 }
 
 bool Address::operator==(const Address& address) const
 {
-    return (family == address.family &&
-            addr == address.addr);
+    return (addr == address.addr);
 }
 
 const struct sockaddr* Address::get_addr() const
@@ -78,11 +71,6 @@ const struct sockaddr* Address::get_addr() const
 socklen_t Address::get_addrlen() const
 {
     return addr.size();
-}
-
-int Address::get_family() const
-{
-    return family;
 }
 
 std::string Address::to_hostname() const
@@ -98,7 +86,6 @@ std::string Address::to_string() const
 void Address::copy(const Address& address)
 {
     addr = address.addr;
-    family = address.family;
 }
 
 void Address::copy(const struct addrinfo& ai)
@@ -107,12 +94,6 @@ void Address::copy(const struct addrinfo& ai)
     const char* data = reinterpret_cast<const char*>(ai.ai_addr);
     std::size_t size = ai.ai_addrlen;
     addr.append(data, size);
-    family = ai.ai_family;
-}
-
-void Address::set_up()
-{
-    family = 0;
 }
 
 Socket::Socket()
