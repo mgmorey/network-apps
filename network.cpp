@@ -17,6 +17,15 @@
 #include <cstring>		// std::strerror()
 #include <iostream>		// std::cerr, std::endl
 
+void Address::close(int fd)
+{
+#ifdef _WIN32
+    closesocket(fd);
+#else
+    ::close(fd);
+#endif
+}
+
 Address::Address()
 {
 }
@@ -87,7 +96,7 @@ int Address::connect(int fd) const
     return fd;
 
 clean_up_socket:
-    close(fd);
+    Address::close(fd);
 
 clean_up:
     return -1;
@@ -158,15 +167,6 @@ socklen_t Address::size() const
 Socket::Socket()
 {
     set_up();
-}
-
-void Socket::close(int fd)
-{
-#ifdef _WIN32
-    closesocket(fd);
-#else
-    ::close(fd);
-#endif
 }
 
 Socket::Socket(const Socket& socket)
@@ -246,7 +246,7 @@ int Socket::connect(int fd) const
     return fd;
 
 clean_up_socket:
-    close(fd);
+    Address::close(fd);
 
 clean_up:
     return -1;
@@ -340,13 +340,31 @@ Addresses get_addresses(const std::string& node, int family, int flags)
         NULL,		// ai_addr
         NULL		// ai_next
     };
-    Sockets sockets = get_sockets(node, "", &hints);
+    struct addrinfo* list = NULL;
+    int error = getaddrinfo(node.empty() ? NULL : node.c_str(),
+                            NULL,
+                            &hints,
+                            &list);
     Addresses result;
 
-    for (Sockets::const_iterator it = sockets.begin();
-         it != sockets.end();
-         ++it) {
-        result.insert(it->get_addr());
+    if (error != 0) {
+        std::cerr << "getaddrinfo(\""
+                  << node
+                  << "\") returned "
+                  << error
+                  << " ("
+                  << gai_strerror(error)
+                  << ')'
+                  << std::endl;
+    }
+    else {
+        for (const struct addrinfo* elem = list;
+             elem != NULL;
+             elem = elem->ai_next) {
+            result.insert(*elem);
+        }
+
+        freeaddrinfo(list);
     }
 
     return result;

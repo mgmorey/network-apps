@@ -23,6 +23,8 @@ typedef std::vector<class Socket> Sockets;
 class Address
 {
 public:
+    static void close(int fd);
+
     Address();
     Address(const Address& address);
     Address(const struct addrinfo& ai);
@@ -50,8 +52,6 @@ private:
 class Socket
 {
 public:
-    static void close(int fd);
-
     Socket();
     Socket(const Socket& socket);
     Socket(const struct addrinfo& ai);

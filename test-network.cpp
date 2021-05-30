@@ -80,7 +80,7 @@ static void test_connect(const std::string& host, const std::string& service)
                   << " on socket "
                   << fd
                   << std::endl;
-        Socket::close(fd);
+        Address::close(fd);
         std::cout << "Closed socket "
                   << fd
                   << std::endl;
