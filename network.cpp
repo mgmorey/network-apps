@@ -102,7 +102,7 @@ clean_up:
     return -1;
 }
 
-Nameinfo Address::get_nameinfo(int flags) const
+Endpoint Address::get_endpoint(int flags) const
 {
     char* host = static_cast<char*>(std::calloc(sizeof(char), NI_MAXHOST));
     char* serv = static_cast<char*>(std::calloc(sizeof(char), NI_MAXHOST));
@@ -120,7 +120,7 @@ Nameinfo Address::get_nameinfo(int flags) const
                   << std::endl;
     }
 
-    Nameinfo result(host, serv);
+    Endpoint result(host, serv);
     free(serv);
     free(host);
     return result;
@@ -128,17 +128,17 @@ Nameinfo Address::get_nameinfo(int flags) const
 
 std::string Address::get_service() const
 {
-    return get_nameinfo().second;
+    return get_endpoint().second;
 }
 
 std::string Address::to_hostname() const
 {
-    return get_nameinfo().first;
+    return get_endpoint().first;
 }
 
 std::string Address::to_string() const
 {
-    return get_nameinfo(NI_NUMERICHOST).first;
+    return get_endpoint(NI_NUMERICHOST).first;
 }
 
 void Address::copy(const Address& address)

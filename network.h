@@ -16,7 +16,7 @@
 
 typedef std::string Hostname;
 typedef std::string Service;
-typedef std::pair<Hostname, Service> Nameinfo;
+typedef std::pair<Hostname, Service> Endpoint;
 typedef std::set<class Address> Addresses;
 typedef std::vector<class Socket> Sockets;
 
@@ -35,7 +35,7 @@ public:
     bool operator!=(const Address& address) const;
     bool operator==(const Address& address) const;
     int connect(int fd) const;
-    Nameinfo get_nameinfo(int flags = 0) const;
+    Endpoint get_endpoint(int flags = 0) const;
     std::string get_service() const;
     std::string to_hostname() const;
     std::string to_string() const;
