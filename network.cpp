@@ -17,6 +17,32 @@
 #include <cstring>		// std::strerror()
 #include <iostream>		// std::cerr, std::endl
 
+Nameinfo Address::get_nameinfo(const Address& address, int flags)
+{
+    char* host = static_cast<char*>(std::calloc(sizeof(char), NI_MAXHOST));
+    char* serv = static_cast<char*>(std::calloc(sizeof(char), NI_MAXHOST));
+    const struct sockaddr* addr = address.data();
+    socklen_t addrlen = address.size();
+    int error = getnameinfo(addr, addrlen,
+                            host, NI_MAXHOST,
+                            serv, NI_MAXHOST,
+                            flags);
+
+    if (error != 0) {
+        std::cerr << "getnameinfo() returned "
+                  << error
+                  << " ("
+                  << gai_strerror(error)
+                  << ')'
+                  << std::endl;
+    }
+
+    Nameinfo result(host, serv);
+    free(serv);
+    free(host);
+    return result;
+}
+
 Address::Address()
 {
 }
@@ -63,14 +89,34 @@ bool Address::operator==(const Address& address) const
     return (addr == address.addr);
 }
 
-const struct sockaddr* Address::get_addr() const
+int Address::connect(int fd) const
 {
-    return reinterpret_cast<const struct sockaddr*>(addr.data());
-}
+    int error = -1;
 
-socklen_t Address::get_addrlen() const
-{
-    return addr.size();
+    if (fd == -1) {
+        goto clean_up;
+    }
+
+    error = ::connect(fd, data(), size());
+
+    if (error == -1) {
+        std::cerr << "connect("
+                  << fd
+                  << ") returned "
+                  << error
+                  << ": "
+                  << std::strerror(errno)
+                  << std::endl;
+        goto clean_up_socket;
+    }
+
+    return fd;
+
+clean_up_socket:
+    close(fd);
+
+clean_up:
+    return -1;
 }
 
 std::string Address::to_hostname() const
@@ -94,6 +140,16 @@ void Address::copy(const struct addrinfo& ai)
     const char* data = reinterpret_cast<const char*>(ai.ai_addr);
     std::size_t size = ai.ai_addrlen;
     addr.append(data, size);
+}
+
+const struct sockaddr* Address::data() const
+{
+    return reinterpret_cast<const struct sockaddr*>(addr.data());
+}
+
+socklen_t Address::size() const
+{
+    return static_cast<socklen_t>(addr.size());
 }
 
 Socket::Socket()
@@ -178,7 +234,7 @@ int Socket::connect(int fd) const
         }
     }
 
-    error = ::connect(fd, addr.get_addr(), addr.get_addrlen());
+    error = addr.connect(fd);
 
     if (error == -1) {
         std::cerr << "connect("
@@ -349,33 +405,4 @@ Hostname get_hostname()
     std::string result(host);
     free(host);
     return result;
-}
-
-Nameinfo get_nameinfo(const struct sockaddr* addr, socklen_t addrlen, int flags)
-{
-    char* host = static_cast<char*>(std::calloc(sizeof(char), NI_MAXHOST));
-    char* serv = static_cast<char*>(std::calloc(sizeof(char), NI_MAXHOST));
-    int error = getnameinfo(addr, addrlen,
-                            host, NI_MAXHOST,
-                            serv, NI_MAXHOST,
-                            flags);
-
-    if (error != 0) {
-        std::cerr << "getnameinfo() returned "
-                  << error
-                  << " ("
-                  << gai_strerror(error)
-                  << ')'
-                  << std::endl;
-    }
-
-    Nameinfo result(host, serv);
-    free(serv);
-    free(host);
-    return result;
-}
-
-Nameinfo get_nameinfo(const Address& address, int flags)
-{
-    return get_nameinfo(address.get_addr(), address.get_addrlen(), flags);
 }

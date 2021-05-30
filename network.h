@@ -23,6 +23,9 @@ typedef std::vector<class Socket> Sockets;
 class Address
 {
 public:
+    static Nameinfo get_nameinfo(const Address& address,
+                                 int flags = 0);
+
     Address();
     Address(const Address& address);
     Address(const struct addrinfo& ai);
@@ -32,14 +35,15 @@ public:
     bool operator>(const Address& address) const;
     bool operator!=(const Address& address) const;
     bool operator==(const Address& address) const;
-    const struct sockaddr* get_addr() const;
-    socklen_t get_addrlen() const;
+    int connect(int fd) const;
     std::string to_hostname() const;
     std::string to_string() const;
 
 private:
     void copy(const Address& address);
     void copy(const struct addrinfo& ai);
+    const struct sockaddr* data() const;
+    socklen_t size() const;
 
     std::string addr;
 };
@@ -85,10 +89,5 @@ Sockets get_sockets(const std::string& node,
                     const std::string& service = "",
                     struct addrinfo* hints = NULL);
 Hostname get_hostname();
-Nameinfo get_nameinfo(const struct sockaddr* addr,
-                      socklen_t addrlen,
-                      int flags = 0);
-Nameinfo get_nameinfo(const Address& address,
-                      int flags = 0);
 
 #endif
