@@ -35,8 +35,8 @@ public:
     bool operator!=(const Address& address) const;
     bool operator==(const Address& address) const;
     int connect(int fd) const;
-    Endpoint get_endpoint(int flags = 0) const;
-    std::string get_service() const;
+    Endpoint endpoint(int flags = 0) const;
+    std::string service() const;
     std::string to_hostname() const;
     std::string to_string() const;
 
