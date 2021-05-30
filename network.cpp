@@ -17,32 +17,6 @@
 #include <cstring>		// std::strerror()
 #include <iostream>		// std::cerr, std::endl
 
-Nameinfo Address::get_nameinfo(const Address& address, int flags)
-{
-    char* host = static_cast<char*>(std::calloc(sizeof(char), NI_MAXHOST));
-    char* serv = static_cast<char*>(std::calloc(sizeof(char), NI_MAXHOST));
-    const struct sockaddr* addr = address.data();
-    socklen_t addrlen = address.size();
-    int error = getnameinfo(addr, addrlen,
-                            host, NI_MAXHOST,
-                            serv, NI_MAXHOST,
-                            flags);
-
-    if (error != 0) {
-        std::cerr << "getnameinfo() returned "
-                  << error
-                  << " ("
-                  << gai_strerror(error)
-                  << ')'
-                  << std::endl;
-    }
-
-    Nameinfo result(host, serv);
-    free(serv);
-    free(host);
-    return result;
-}
-
 Address::Address()
 {
 }
@@ -119,14 +93,38 @@ clean_up:
     return -1;
 }
 
+Nameinfo Address::get_nameinfo(int flags) const
+{
+    char* host = static_cast<char*>(std::calloc(sizeof(char), NI_MAXHOST));
+    char* serv = static_cast<char*>(std::calloc(sizeof(char), NI_MAXHOST));
+    int error = getnameinfo(data(), size(),
+                            host, NI_MAXHOST,
+                            serv, NI_MAXHOST,
+                            flags);
+
+    if (error != 0) {
+        std::cerr << "getnameinfo() returned "
+                  << error
+                  << " ("
+                  << gai_strerror(error)
+                  << ')'
+                  << std::endl;
+    }
+
+    Nameinfo result(host, serv);
+    free(serv);
+    free(host);
+    return result;
+}
+
 std::string Address::to_hostname() const
 {
-    return get_nameinfo(*this).first;
+    return get_nameinfo().first;
 }
 
 std::string Address::to_string() const
 {
-    return get_nameinfo(*this, NI_NUMERICHOST).first;
+    return get_nameinfo(NI_NUMERICHOST).first;
 }
 
 void Address::copy(const Address& address)

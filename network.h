@@ -23,9 +23,6 @@ typedef std::vector<class Socket> Sockets;
 class Address
 {
 public:
-    static Nameinfo get_nameinfo(const Address& address,
-                                 int flags = 0);
-
     Address();
     Address(const Address& address);
     Address(const struct addrinfo& ai);
@@ -36,6 +33,7 @@ public:
     bool operator!=(const Address& address) const;
     bool operator==(const Address& address) const;
     int connect(int fd) const;
+    Nameinfo get_nameinfo(int flags = 0) const;
     std::string to_hostname() const;
     std::string to_string() const;
 
