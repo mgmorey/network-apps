@@ -14,7 +14,7 @@ ifdef NDEBUG
         CPPFLAGS += -D_FORTIFY_SOURCE=2
         CXXFLAGS += -O2
 else
-	CXXFLAGS += -fno-omit-frame-pointer -g3 -Og
+	CXXFLAGS += -fno-omit-frame-pointer -g3 -O0
 endif
 
 CXXFLAGS += -std=c++98 -Wall -Werror -Wextra -Wpedantic
