@@ -73,7 +73,7 @@ static void test_connect(const std::string& host, const std::string& service)
                   << fd
                   << " connected"
                   << std::endl;
-        close(fd);
+        Socket::close(fd);
         std::cout << "Socket "
                   << fd
                   << " closed"

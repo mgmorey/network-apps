@@ -14,10 +14,6 @@
 #include <vector>		// std::vector
 #include <utility>		// std::pair
 
-#ifdef _WIN32
-#define close		closesocket
-#endif
-
 typedef std::string Hostname;
 typedef std::string Service;
 typedef std::pair<Hostname, Service> Nameinfo;
@@ -55,6 +51,8 @@ private:
 class Socket
 {
 public:
+    static void close(int fd);
+
     Socket();
     Socket(const Socket& socket);
     Socket(const struct addrinfo& ai);

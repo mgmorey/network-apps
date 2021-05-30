@@ -114,6 +114,15 @@ Socket::Socket()
     set_up();
 }
 
+void Socket::close(int fd)
+{
+#ifdef _WIN32
+    closesocket(fd);
+#else
+    ::close(fd);
+#endif
+}
+
 Socket::Socket(const Socket& socket)
 {
     set_up();
