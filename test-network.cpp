@@ -54,14 +54,13 @@ static void test_connect(const std::string& host, const std::string& service)
         NULL		// ai_next
     };
 
-    Addrinfos ai(get_addrinfo(host, service, &hints));
+    Sockets sockets(get_addrinfo(host, service, &hints));
     int fd = -1;
 
-    for (Addrinfos::const_iterator it = ai.begin();
-         it != ai.end();
+    for (Sockets::const_iterator it = sockets.begin();
+         it != sockets.end();
          ++it) {
-        Socket socket(it->first);
-        fd = socket.connect();
+        fd = it->connect();
 
         if (fd >= 0) {
             break;

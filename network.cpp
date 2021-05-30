@@ -175,7 +175,7 @@ bool Socket::operator==(const Socket& socket) const
             addr == socket.addr);
 }
 
-int Socket::connect()
+int Socket::connect() const
 {
     int error = -1;
     int fd = ::socket(addr.get_family(), socktype, protocol);
@@ -273,29 +273,28 @@ Addresses get_addresses(const std::string& host, int family, int flags)
         NULL,		// ai_addr
         NULL		// ai_next
     };
-    Addrinfos ai = get_addrinfo(host, "", &hints);
+    Sockets sockets = get_addrinfo(host, "", &hints);
     Addresses result;
 
-    for (Addrinfos::const_iterator it = ai.begin();
-         it != ai.end();
+    for (Sockets::const_iterator it = sockets.begin();
+         it != sockets.end();
          ++it) {
-        Socket socket(it->first);
-        result.insert(socket.get_addr());
+        result.insert(it->get_addr());
     }
 
     return result;
 }
 
-Addrinfos get_addrinfo(const std::string& node,
-                       const std::string& service,
-                       struct addrinfo* hints)
+Sockets get_addrinfo(const std::string& node,
+                     const std::string& service,
+                     struct addrinfo* hints)
 {
     struct addrinfo* list = NULL;
     int error = getaddrinfo(node.empty() ? NULL : node.c_str(),
                             service.empty() ? NULL : service.c_str(),
                             hints,
                             &list);
-    Addrinfos result;
+    Sockets result;
 
     if (error != 0) {
         std::cerr << "getaddrinfo(\""
@@ -313,14 +312,7 @@ Addrinfos get_addrinfo(const std::string& node,
         for (const struct addrinfo* elem = list;
              elem != NULL;
              elem = elem->ai_next) {
-            Socket socket(*elem);
-            std::string cname;
-
-            if (elem->ai_canonname != NULL) {
-                cname = elem->ai_canonname;
-            }
-
-            result.push_back(Addrinfo(socket, cname));
+            result.push_back(*elem);
         }
 
         freeaddrinfo(list);

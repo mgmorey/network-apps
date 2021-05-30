@@ -18,8 +18,7 @@ typedef std::string Hostname;
 typedef std::string Service;
 typedef std::pair<Hostname, Service> Nameinfo;
 typedef std::set<class Address> Addresses;
-typedef std::pair<class Socket, Hostname> Addrinfo;
-typedef std::vector<Addrinfo> Addrinfos;
+typedef std::vector<class Socket> Sockets;
 
 class Address
 {
@@ -62,7 +61,7 @@ public:
     bool operator>(const Socket& socket) const;
     bool operator!=(const Socket& socket) const;
     bool operator==(const Socket& socket) const;
-    int connect();
+    int connect() const;
     Address get_addr() const;
     std::string get_cname() const;
     int get_protocol() const;
@@ -82,9 +81,9 @@ private:
 Addresses get_addresses(const std::string& host = "",
                         int family = AF_UNSPEC,
                         int flags = 0);
-Addrinfos get_addrinfo(const std::string& node,
-                       const std::string& service = "",
-                       struct addrinfo* hints = NULL);
+Sockets get_addrinfo(const std::string& node,
+                     const std::string& service = "",
+                     struct addrinfo* hints = NULL);
 Hostname get_hostname();
 Nameinfo get_nameinfo(const struct sockaddr* addr,
                       socklen_t addrlen,
