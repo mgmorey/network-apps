@@ -43,32 +43,24 @@ Address& Address::operator=(const struct addrinfo& ai)
 bool Address::operator<(const Address& address) const
 {
     return (family < address.family ||
-            protocol < address.protocol ||
-            socktype < address.socktype ||
             addr < address.addr);
 }
 
 bool Address::operator>(const Address& address) const
 {
     return (family > address.family ||
-            protocol > address.protocol ||
-            socktype > address.socktype ||
             addr > address.addr);
 }
 
 bool Address::operator!=(const Address& address) const
 {
     return (family != address.family ||
-            protocol != address.protocol ||
-            socktype != address.socktype ||
             addr != address.addr);
 }
 
 bool Address::operator==(const Address& address) const
 {
     return (family == address.family &&
-            protocol == address.protocol &&
-            socktype == address.socktype &&
             addr == address.addr);
 }
 
@@ -85,16 +77,6 @@ socklen_t Address::get_addrlen() const
 int Address::get_family() const
 {
     return family;
-}
-
-int Address::get_protocol() const
-{
-    return protocol;
-}
-
-int Address::get_socktype() const
-{
-    return socktype;
 }
 
 std::string Address::to_string() const
@@ -123,22 +105,110 @@ void Address::copy(const Address& address)
 {
     addr = address.addr;
     family = address.family;
-    protocol = address.protocol;
-    socktype = address.socktype;
 }
 
 void Address::copy(const struct addrinfo& ai)
 {
     addr.clear();
-    addr.append(reinterpret_cast<const char*>(ai.ai_addr), ai.ai_addrlen);
+    const char* data = reinterpret_cast<const char*>(ai.ai_addr);
+    std::size_t size = ai.ai_addrlen;
+    addr.append(data, size);
     family = ai.ai_family;
-    protocol = ai.ai_protocol;
-    socktype = ai.ai_socktype;
 }
 
 void Address::set_up()
 {
     family = 0;
+}
+
+Socket::Socket()
+{
+    set_up();
+}
+
+Socket::Socket(const Socket& socket)
+{
+    set_up();
+    copy(socket);
+}
+
+Socket::Socket(const struct addrinfo& ai)
+{
+    set_up();
+    copy(ai);
+}
+
+Socket& Socket::operator=(const Socket& socket)
+{
+    copy(socket);
+    return *this;
+}
+
+Socket& Socket::operator=(const struct addrinfo& ai)
+{
+    copy(ai);
+    return *this;
+}
+
+bool Socket::operator<(const Socket& socket) const
+{
+    return (socktype < socket.socktype ||
+            protocol < socket.protocol ||
+            addr < socket.addr);
+}
+
+bool Socket::operator>(const Socket& socket) const
+{
+    return (socktype > socket.socktype ||
+            protocol > socket.protocol ||
+            addr > socket.addr);
+}
+
+bool Socket::operator!=(const Socket& socket) const
+{
+    return (socktype != socket.socktype ||
+            protocol != socket.protocol ||
+            addr != socket.addr);
+}
+
+bool Socket::operator==(const Socket& socket) const
+{
+    return (socktype == socket.socktype &&
+            protocol == socket.protocol &&
+            addr == socket.addr);
+}
+
+Address Socket::get_addr() const
+{
+    return addr;
+}
+
+int Socket::get_protocol() const
+{
+    return protocol;
+}
+
+int Socket::get_socktype() const
+{
+    return socktype;
+}
+
+void Socket::copy(const Socket& socket)
+{
+    addr = socket.addr;
+    protocol = socket.protocol;
+    socktype = socket.socktype;
+}
+
+void Socket::copy(const struct addrinfo& ai)
+{
+    addr = ai;
+    protocol = ai.ai_protocol;
+    socktype = ai.ai_socktype;
+}
+
+void Socket::set_up()
+{
     protocol = 0;
     socktype = 0;
 }

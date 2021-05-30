@@ -29,8 +29,6 @@ public:
     const sockaddr* get_addr() const;
     socklen_t get_addrlen() const;
     int get_family() const;
-    int get_protocol() const;
-    int get_socktype() const;
     std::string to_string() const;
 
 private:
@@ -40,6 +38,30 @@ private:
 
     std::string addr;
     int family;
+};
+
+class Socket
+{
+public:
+    Socket();
+    Socket(const Socket& socket);
+    Socket(const struct addrinfo& ai);
+    Socket& operator=(const Socket& socket);
+    Socket& operator=(const struct addrinfo& ai);
+    bool operator<(const Socket& socket) const;
+    bool operator>(const Socket& socket) const;
+    bool operator!=(const Socket& socket) const;
+    bool operator==(const Socket& socket) const;
+    Address get_addr() const;
+    int get_protocol() const;
+    int get_socktype() const;
+
+private:
+    void copy(const Socket& socket);
+    void copy(const struct addrinfo& ai);
+    void set_up();
+
+    Address addr;
     int protocol;
     int socktype;
 };
