@@ -64,9 +64,9 @@ bool Address::operator==(const Address& address) const
             addr == address.addr);
 }
 
-const sockaddr* Address::get_addr() const
+const struct sockaddr* Address::get_addr() const
 {
-    return reinterpret_cast<const sockaddr*>(addr.data());
+    return reinterpret_cast<const struct sockaddr*>(addr.data());
 }
 
 socklen_t Address::get_addrlen() const
@@ -286,7 +286,7 @@ Hostname get_hostname()
     return result;
 }
 
-Nameinfo get_nameinfo(const sockaddr* addr, socklen_t addrlen, int flags)
+Nameinfo get_nameinfo(const struct sockaddr* addr, socklen_t addrlen, int flags)
 {
     char* host = static_cast<char*>(std::calloc(sizeof(char), NI_MAXHOST));
     char* serv = static_cast<char*>(std::calloc(sizeof(char), NI_MAXHOST));

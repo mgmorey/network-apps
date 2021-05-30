@@ -33,7 +33,7 @@ public:
     bool operator>(const Address& address) const;
     bool operator!=(const Address& address) const;
     bool operator==(const Address& address) const;
-    const sockaddr* get_addr() const;
+    const struct sockaddr* get_addr() const;
     socklen_t get_addrlen() const;
     int get_family() const;
     std::string to_hostname() const;
@@ -81,7 +81,10 @@ Addrinfos get_addrinfo(const std::string& node,
                        const std::string& service = "",
                        struct addrinfo* hints = NULL);
 Hostname get_hostname();
-Nameinfo get_nameinfo(const sockaddr* addr, socklen_t addrlen, int flags = 0);
-Nameinfo get_nameinfo(const Address& address, int flags = 0);
+Nameinfo get_nameinfo(const struct sockaddr* addr,
+                      socklen_t addrlen,
+                      int flags = 0);
+Nameinfo get_nameinfo(const Address& address,
+                      int flags = 0);
 
 #endif
