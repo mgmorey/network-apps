@@ -69,7 +69,7 @@ static void test_connect(const std::string& host, const std::string& service)
         fd = it->connect();
 
         if (fd >= 0) {
-            hostname = it->get_cname();
+            hostname = it->canonical_hostname();
             break;
         }
     }

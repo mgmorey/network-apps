@@ -61,12 +61,8 @@ public:
     bool operator>(const Socket& socket) const;
     bool operator!=(const Socket& socket) const;
     bool operator==(const Socket& socket) const;
+    std::string canonical_hostname() const;
     int connect(int fd = -1) const;
-    Address get_addr() const;
-    std::string get_cname() const;
-    int get_family() const;
-    int get_protocol() const;
-    int get_socktype() const;
     int socket() const;
 
 private:

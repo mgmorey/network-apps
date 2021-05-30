@@ -252,29 +252,9 @@ clean_up:
     return -1;
 }
 
-Address Socket::get_addr() const
-{
-    return addr;
-}
-
-std::string Socket::get_cname() const
+std::string Socket::canonical_hostname() const
 {
     return cname;
-}
-
-int Socket::get_family() const
-{
-    return protocol;
-}
-
-int Socket::get_protocol() const
-{
-    return protocol;
-}
-
-int Socket::get_socktype() const
-{
-    return socktype;
 }
 
 int Socket::socket() const
