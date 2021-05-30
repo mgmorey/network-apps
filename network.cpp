@@ -12,7 +12,9 @@
 #include <unistd.h>		// close(), gethostname()
 #endif
 
+#include <cerrno>		// errno
 #include <cstdlib>		// std::calloc()
+#include <cstring>		// std::strerror()
 #include <iostream>		// std::cerr, std::endl
 
 Address::Address()
@@ -199,7 +201,7 @@ int Socket::connect(int fd) const
                   << ") returned "
                   << error
                   << ": "
-                  << strerror(errno)
+                  << std::strerror(errno)
                   << std::endl;
         goto clean_up_socket;
     }
