@@ -77,6 +77,7 @@ static void wsa_tear_down(void)
 
 int main(void)
 {
+    std::string hostname("example.com");
     int result = EXIT_FAILURE;
 
     if (wsa_set_up()) {
@@ -85,7 +86,7 @@ int main(void)
 
     test_host(get_hostname());
     std::cout << std::endl;
-    test_host("example.com");
+    test_host(hostname);
     result = EXIT_SUCCESS;
 
 clean_up:
