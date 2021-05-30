@@ -81,7 +81,7 @@ Addrinfos get_addrinfo(const std::string& node,
                        const std::string& service = "",
                        struct addrinfo* hints = NULL);
 Hostname get_hostname();
-Nameinfo get_nameinfo(const Address& address,
-                      int flags = 0);
+Nameinfo get_nameinfo(const sockaddr* addr, socklen_t addrlen, int flags = 0);
+Nameinfo get_nameinfo(const Address& address, int flags = 0);
 
 #endif

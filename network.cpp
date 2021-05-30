@@ -236,7 +236,7 @@ Addrinfos get_addrinfo(const std::string& node,
                             &list);
     Addrinfos result;
 
-    if (error) {
+    if (error != 0) {
         std::cerr << "getaddrinfo(\""
                   << node
                   << "\", \""
@@ -252,7 +252,7 @@ Addrinfos get_addrinfo(const std::string& node,
         for (const struct addrinfo* elem = list;
              elem != NULL;
              elem = elem->ai_next) {
-            Address address = *elem;
+            Address address(*elem);
             std::string cname;
 
             if (elem->ai_canonname != NULL) {
@@ -273,7 +273,7 @@ Hostname get_hostname()
     char* host = static_cast<char*>(std::calloc(sizeof(char), NI_MAXHOST));
     int error = gethostname(host, NI_MAXHOST - 1);
 
-    if (error) {
+    if (error != 0) {
         std::cerr << "gethostname("
                   << host
                   << ") returned "
@@ -281,21 +281,21 @@ Hostname get_hostname()
                   << std::endl;
     }
 
-    std::string result = host;
+    std::string result(host);
     free(host);
     return result;
 }
 
-Nameinfo get_nameinfo(const Address& address, int flags)
+Nameinfo get_nameinfo(const sockaddr* addr, socklen_t addrlen, int flags)
 {
     char* host = static_cast<char*>(std::calloc(sizeof(char), NI_MAXHOST));
     char* serv = static_cast<char*>(std::calloc(sizeof(char), NI_MAXHOST));
-    int error = getnameinfo(address.get_addr(), address.get_addrlen(),
+    int error = getnameinfo(addr, addrlen,
                             host, NI_MAXHOST,
                             serv, NI_MAXHOST,
                             flags);
 
-    if (error) {
+    if (error != 0) {
         std::cerr << "getnameinfo() returned "
                   << error
                   << " ("
@@ -304,8 +304,13 @@ Nameinfo get_nameinfo(const Address& address, int flags)
                   << std::endl;
     }
 
-    Nameinfo result = Nameinfo(host, serv);
+    Nameinfo result(host, serv);
     free(serv);
     free(host);
     return result;
+}
+
+Nameinfo get_nameinfo(const Address& address, int flags)
+{
+    return get_nameinfo(address.get_addr(), address.get_addrlen(), flags);
 }

@@ -26,8 +26,8 @@ static void print_addresses(const Addresses& addresses,
          it != addresses.end();
          ++it)
     {
-        std::string addr = it->to_string();
-        std::string host = it->to_hostname();
+        std::string addr(it->to_string());
+        std::string host(it->to_hostname());
         std::cout << '\t'
                   << addr;
 
@@ -43,9 +43,9 @@ static void print_addresses(const Addresses& addresses,
 
 static void test_host(const std::string& host)
 {
-    Addresses all = get_addresses(host);
-    Addresses ipv4 = get_addresses(host, AF_INET);
-    Addresses ipv6 = get_addresses(host, AF_INET6);
+    Addresses all(get_addresses(host));
+    Addresses ipv4(get_addresses(host, AF_INET));
+    Addresses ipv6(get_addresses(host, AF_INET6));
     std::cout << "Hostname: " << host << std::endl;
     print_addresses(all, "All");
     print_addresses(ipv4, "IPv4");
