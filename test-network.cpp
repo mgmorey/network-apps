@@ -55,6 +55,7 @@ static void test_connect(const std::string& host, const std::string& service)
     };
 
     Sockets sockets(get_addrinfo(host, service, &hints));
+    std::string cname;
     int fd = -1;
 
     for (Sockets::const_iterator it = sockets.begin();
@@ -63,19 +64,20 @@ static void test_connect(const std::string& host, const std::string& service)
         fd = it->connect();
 
         if (fd >= 0) {
+            cname = it->get_cname();
             break;
         }
     }
 
     if (fd >= 0) {
-        std::cout << "Socket "
+        std::cout << "Connected to "
+                  << cname
+                  << " on socket "
                   << fd
-                  << " connected"
                   << std::endl;
         Socket::close(fd);
-        std::cout << "Socket "
+        std::cout << "Closed socket "
                   << fd
-                  << " closed"
                   << std::endl;
     }
 }
