@@ -265,7 +265,7 @@ void Socket::set_up()
     socktype = 0;
 }
 
-Addresses get_addresses(const std::string& host, int family, int flags)
+Addresses get_addresses(const std::string& node, int family, int flags)
 {
     struct addrinfo hints = {
         flags,		// ai_flags
@@ -277,7 +277,7 @@ Addresses get_addresses(const std::string& host, int family, int flags)
         NULL,		// ai_addr
         NULL		// ai_next
     };
-    Sockets sockets = get_addrinfo(host, "", &hints);
+    Sockets sockets = get_addrinfo(node, "", &hints);
     Addresses result;
 
     for (Sockets::const_iterator it = sockets.begin();

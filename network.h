@@ -78,7 +78,7 @@ private:
     int socktype;
 };
 
-Addresses get_addresses(const std::string& host = "",
+Addresses get_addresses(const std::string& node = "",
                         int family = AF_UNSPEC,
                         int flags = 0);
 Sockets get_addrinfo(const std::string& node,
