@@ -211,6 +211,11 @@ Address Socket::get_addr() const
     return addr;
 }
 
+std::string Socket::get_cname() const
+{
+    return cname;
+}
+
 int Socket::get_protocol() const
 {
     return protocol;
@@ -224,6 +229,7 @@ int Socket::get_socktype() const
 void Socket::copy(const Socket& socket)
 {
     addr = socket.addr;
+    cname = socket.cname;
     protocol = socket.protocol;
     socktype = socket.socktype;
 }
@@ -231,6 +237,11 @@ void Socket::copy(const Socket& socket)
 void Socket::copy(const struct addrinfo& ai)
 {
     addr = ai;
+
+    if (ai.ai_canonname != NULL) {
+        cname = ai.ai_canonname;
+    }
+
     protocol = ai.ai_protocol;
     socktype = ai.ai_socktype;
 }

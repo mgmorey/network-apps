@@ -66,6 +66,7 @@ public:
     bool operator==(const Socket& socket) const;
     int connect();
     Address get_addr() const;
+    std::string get_cname() const;
     int get_protocol() const;
     int get_socktype() const;
 
@@ -75,6 +76,7 @@ private:
     void set_up();
 
     Address addr;
+    std::string cname;
     int protocol;
     int socktype;
 };
