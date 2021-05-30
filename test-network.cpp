@@ -16,6 +16,7 @@ static void print_addresses(const Addresses& addresses,
         return;
     }
 
+    std::cout << std::endl;
     std::cout << family
               << " addresses:"
               << std::endl
@@ -46,11 +47,8 @@ static void test_host(const std::string& host)
     Addresses ipv4 = get_addresses(host, AF_INET);
     Addresses ipv6 = get_addresses(host, AF_INET6);
     std::cout << "Hostname: " << host << std::endl;
-    std::cout << std::endl;
     print_addresses(all, "All");
-    std::cout << std::endl;
     print_addresses(ipv4, "IPv4");
-    std::cout << std::endl;
     print_addresses(ipv6, "IPv6");
 }
 
