@@ -81,24 +81,7 @@ int Address::get_family() const
 
 std::string Address::to_string() const
 {
-    char* host = static_cast<char*>(std::calloc(sizeof(char), NI_MAXHOST));
-    int error = getnameinfo(get_addr(), get_addrlen(),
-                            host, NI_MAXHOST,
-                            NULL, 0,
-                            NI_NUMERICHOST);
-
-    if (error) {
-        std::cerr << "getnameinfo() returned "
-                  << error
-                  << " ("
-                  << gai_strerror(error)
-                  << ')'
-                  << std::endl;
-    }
-
-    std::string result = host;
-    free(host);
-    return result;
+    return get_nameinfo(*this, NI_NUMERICHOST).first;
 }
 
 void Address::copy(const Address& address)
