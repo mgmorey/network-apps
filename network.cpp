@@ -1,11 +1,15 @@
 #include "network.h"
 
 #ifdef _WIN32
-#include <winsock2.h>		// AF_UNSPEC, gethostname()
+#include <winsock2.h>		// gethostname()
+#include <ws2tcpip.h>		// NI_MAXHOST, struct addrinfo,
+                                // getaddrinfo(), get_nameinfo(),
+                                // socklen_t
 #else
-#include <netdb.h>		// NI_MAXHOST, struct addrinfo
-#include <sys/socket.h>		// socket definitions
-#include <unistd.h>		// close()
+#include <netdb.h>		// NI_MAXHOST, struct addrinfo,
+                                // getaddrinfo(), get_nameinfo()
+#include <sys/socket.h>		// AF_UNSPEC, socklen_t
+#include <unistd.h>		// close(), gethostname()
 #endif
 
 #include <cstdlib>		// std::calloc()

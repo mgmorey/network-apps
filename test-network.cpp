@@ -1,4 +1,5 @@
-#include "network.h"
+#include "network.h"		// Addresses, Sockets,
+                                // get_addresses(), get_addrinfo()
 
 #ifdef _WIN32
 #include <winsock2.h>		// WSACleanup(), WSAStartup(), closesocket()

@@ -2,8 +2,8 @@
 #define NETWORK_H
 
 #ifdef _WIN32
-#include <winsock2.h>		// AF_UNSPEC, gethostname()
-#include <ws2tcpip.h>		// struct addrinfo, getaddrinfo()
+#include <winsock2.h>		// AF_UNSPEC
+#include <ws2tcpip.h>		// struct addrinfo, socklen_t
 #else
 #include <netdb.h>		// struct addrinfo
 #include <sys/socket.h>		// AF_UNSPEC, socklen_t
