@@ -2,13 +2,15 @@
                                 // get_addresses(), get_sockets()
 
 #ifdef _WIN32
-#include <winsock2.h>		// WSACleanup(), WSAStartup(), closesocket()
+#include <winsock2.h>		// WSACleanup(), WSAStartup()
 #endif
 
+#include <algorithm>		// std::set_union()
 #include <cassert>		// assert()
 #include <cstdlib>		// EXIT_FAILURE, EXIT_SUCCESS
-#include <string>		// std::string
 #include <iostream>		// std::cout, std::endl
+#include <iterator>		// std::inserter()
+#include <string>		// std::string
 
 static void print_addresses(const Addresses& addresses,
                             const std::string& family)
@@ -85,13 +87,18 @@ static void test_connect(const std::string& host, const std::string& service)
 
 static void test_host(const std::string& host)
 {
-    Addresses all(get_addresses(host));
+    Addresses all1(get_addresses(host));
     Addresses ipv4(get_addresses(host, AF_INET));
     Addresses ipv6(get_addresses(host, AF_INET6));
     std::cout << "Hostname: " << host << std::endl;
-    print_addresses(all, "All");
+    print_addresses(all1, "All");
     print_addresses(ipv4, "IPv4");
     print_addresses(ipv6, "IPv6");
+    Addresses all2;
+    std::set_union(ipv4.begin(), ipv4.end(),
+                   ipv6.begin(), ipv6.end(),
+                   std::inserter(all2, all2.begin()));
+    assert(all1 == all2);
 }
 
 static int wsa_set_up(void)
