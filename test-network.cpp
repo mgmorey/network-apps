@@ -1,5 +1,5 @@
 #include "network.h"		// Addresses, Sockets,
-                                // get_addresses(), get_addrinfo()
+                                // get_addresses(), get_sockets()
 
 #ifdef _WIN32
 #include <winsock2.h>		// WSACleanup(), WSAStartup(), closesocket()
@@ -55,9 +55,9 @@ static void test_connect(const std::string& host, const std::string& service)
         NULL		// ai_next
     };
 
-    Sockets sockets(get_addrinfo(host, service, &hints));
-    std::string cname;
     int fd = -1;
+    std::string hostname(host);
+    Sockets sockets(get_sockets(hostname, service, &hints));
 
     for (Sockets::const_iterator it = sockets.begin();
          it != sockets.end();
@@ -65,14 +65,14 @@ static void test_connect(const std::string& host, const std::string& service)
         fd = it->connect();
 
         if (fd >= 0) {
-            cname = it->get_cname();
+            hostname = it->get_cname();
             break;
         }
     }
 
     if (fd >= 0) {
         std::cout << "Connected to "
-                  << cname
+                  << hostname
                   << " on socket "
                   << fd
                   << std::endl;

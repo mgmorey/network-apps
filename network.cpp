@@ -277,7 +277,7 @@ Addresses get_addresses(const std::string& node, int family, int flags)
         NULL,		// ai_addr
         NULL		// ai_next
     };
-    Sockets sockets = get_addrinfo(node, "", &hints);
+    Sockets sockets = get_sockets(node, "", &hints);
     Addresses result;
 
     for (Sockets::const_iterator it = sockets.begin();
@@ -289,9 +289,9 @@ Addresses get_addresses(const std::string& node, int family, int flags)
     return result;
 }
 
-Sockets get_addrinfo(const std::string& node,
-                     const std::string& service,
-                     struct addrinfo* hints)
+Sockets get_sockets(const std::string& node,
+                    const std::string& service,
+                    struct addrinfo* hints)
 {
     struct addrinfo* list = NULL;
     int error = getaddrinfo(node.empty() ? NULL : node.c_str(),

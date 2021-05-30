@@ -81,9 +81,9 @@ private:
 Addresses get_addresses(const std::string& node = "",
                         int family = AF_UNSPEC,
                         int flags = 0);
-Sockets get_addrinfo(const std::string& node,
-                     const std::string& service = "",
-                     struct addrinfo* hints = NULL);
+Sockets get_sockets(const std::string& node,
+                    const std::string& service = "",
+                    struct addrinfo* hints = NULL);
 Hostname get_hostname();
 Nameinfo get_nameinfo(const struct sockaddr* addr,
                       socklen_t addrlen,
