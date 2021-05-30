@@ -240,13 +240,6 @@ int Socket::connect(int fd) const
     error = addr.connect(fd);
 
     if (error == -1) {
-        std::cerr << "connect("
-                  << fd
-                  << ") returned "
-                  << error
-                  << ": "
-                  << std::strerror(errno)
-                  << std::endl;
         goto clean_up_socket;
     }
 
