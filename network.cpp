@@ -179,22 +179,16 @@ bool Socket::operator==(const Socket& socket) const
             addr == socket.addr);
 }
 
-int Socket::connect() const
+int Socket::connect(int fd) const
 {
     int error = -1;
-    int fd = ::socket(addr.get_family(), socktype, protocol);
 
     if (fd == -1) {
-        std::cerr << "socket("
-                  << addr.get_family()
-                  << ", "
-                  << socktype
-                  << ", "
-                  << protocol
-                  << ") returned "
-                  << fd
-                  << std::endl;
-        goto clean_up;
+        fd = socket();
+
+        if (fd == -1) {
+            goto clean_up;
+        }
     }
 
     error = ::connect(fd, addr.get_addr(), addr.get_addrlen());
@@ -237,6 +231,29 @@ int Socket::get_protocol() const
 int Socket::get_socktype() const
 {
     return socktype;
+}
+
+int Socket::socket() const
+{
+    int fd = ::socket(addr.get_family(), socktype, protocol);
+
+    if (fd == -1) {
+        std::cerr << "socket("
+                  << addr.get_family()
+                  << ", "
+                  << socktype
+                  << ", "
+                  << protocol
+                  << ") returned "
+                  << fd
+                  << std::endl;
+        goto clean_up;
+    }
+
+    return fd;
+
+clean_up:
+    return -1;
 }
 
 void Socket::copy(const Socket& socket)
