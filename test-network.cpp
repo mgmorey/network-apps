@@ -100,8 +100,10 @@ static int wsa_set_up(void)
     WSADATA wsaData;
     error = WSAStartup(MAKEWORD(2, 0), &wsaData);
 
-    if (error) {
-        printf("WSAStartup() returned %d\n", error);
+    if (error != 0) {
+        std::cerr << "WSAStartup() returned "
+                  << error
+                  << std::endl;
     }
 #endif
 
