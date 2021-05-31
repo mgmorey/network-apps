@@ -13,8 +13,7 @@
 #endif
 
 #include <cerrno>		// errno
-#include <cstdlib>		// std::calloc()
-#include <cstring>		// std::strerror()
+#include <cstring>		// std::strerror(), std::strlen()
 #include <iostream>		// std::cerr, std::endl
 
 void Address::close(int fd)
@@ -110,11 +109,11 @@ clean_up:
 Endpoint Address::endpoint(int flags) const
 {
     assert(size());
-    char* host = static_cast<char*>(std::calloc(sizeof(char), NI_MAXHOST));
-    char* serv = static_cast<char*>(std::calloc(sizeof(char), NI_MAXHOST));
+    std::string host(NI_MAXHOST, '\0');
+    std::string service(NI_MAXHOST, '\0');
     int error = getnameinfo(data(), size(),
-                            host, NI_MAXHOST,
-                            serv, NI_MAXHOST,
+                            &host[0], NI_MAXHOST,
+                            &service[0], NI_MAXHOST,
                             flags);
 
     if (error != 0) {
@@ -125,11 +124,12 @@ Endpoint Address::endpoint(int flags) const
                   << ')'
                   << std::endl;
     }
+    else {
+        host.resize(std::strlen(host.c_str()));
+        service.resize(std::strlen(service.c_str()));
+    }
 
-    Endpoint result(host, serv);
-    free(serv);
-    free(host);
-    return result;
+    return(Endpoint(host, service));
 }
 
 std::string Address::service() const
@@ -379,20 +379,19 @@ Sockets get_sockets(const std::string& node,
 
 Hostname get_hostname()
 {
-    char* host = static_cast<char*>(std::calloc(sizeof(char), NI_MAXHOST));
-    int error = gethostname(host, NI_MAXHOST - 1);
+    std::string host(NI_MAXHOST, '\0');
+    int error = gethostname(&host[0], NI_MAXHOST - 1);
 
     if (error != 0) {
-        std::cerr << "gethostname("
-                  << host
-                  << ") returned "
+        std::cerr << "gethostname(...) returned "
                   << error
                   << std::endl;
     }
+    else {
+        host.resize(std::strlen(host.c_str()));
+    }
 
-    std::string result(host);
-    free(host);
-    return result;
+    return host;
 }
 
 void set_address_hints(struct addrinfo* ai, int family, int flags)
