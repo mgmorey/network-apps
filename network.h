@@ -28,6 +28,7 @@ public:
     Address();
     Address(const Address& address);
     Address(const struct addrinfo& ai);
+    ~Address();
     Address& operator=(const Address& address);
     Address& operator=(const struct addrinfo& ai);
     bool operator<(const Address& address) const;
@@ -55,6 +56,7 @@ public:
     Socket();
     Socket(const Socket& socket);
     Socket(const struct addrinfo& ai);
+    ~Socket();
     Socket& operator=(const Socket& socket);
     Socket& operator=(const struct addrinfo& ai);
     bool operator<(const Socket& socket) const;

@@ -30,6 +30,10 @@ Address::Address()
 {
 }
 
+Address::~Address()
+{
+}
+
 Address::Address(const Address& address)
 {
     copy(address);
@@ -174,6 +178,10 @@ socklen_t Address::size() const
 Socket::Socket()
 {
     set_up();
+}
+
+Socket::~Socket()
+{
 }
 
 Socket::Socket(const Socket& socket)
