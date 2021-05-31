@@ -7,11 +7,12 @@
 #include <netinet/in.h>		// IPPROTO_TCP
 #endif
 
-#include <algorithm>		// std::set_union()
+#include <algorithm>		// std::copy, std::set_union()
 #include <cassert>		// assert()
 #include <cstdlib>		// EXIT_FAILURE, EXIT_SUCCESS
 #include <iostream>		// std::cout, std::endl
 #include <iterator>		// std::inserter()
+#include <set>			// std::set
 #include <string>		// std::string
 
 static Addresses get_unique_addresses(const std::string& node = "",
@@ -96,19 +97,25 @@ static void test_connect(const std::string& host, const std::string& service)
     }
 }
 
+static void insert(const Addresses& a_list, std::set<Address>& a_set)
+{
+    std::copy(a_list.begin(), a_list.end(),
+              std::inserter(a_set, a_set.begin()));
+}
+
 static void test_host(const std::string& host)
 {
-    Addresses all;
+    std::cout << "Hostname: " << host << std::endl;
     Addresses any(get_unique_addresses(host));
     Addresses ipv4(get_unique_addresses(host, AF_INET));
     Addresses ipv6(get_unique_addresses(host, AF_INET6));
-    std::set_union(ipv4.begin(), ipv4.end(),
-                   ipv6.begin(), ipv6.end(),
-                   std::inserter(all, all.begin()));
+    std::set<Address> set_all;
+    insert(ipv4, set_all);
+    insert(ipv6, set_all);
+    std::set<Address> set_any;
+    insert(any, set_any);
 
-    std::cout << "Hostname: " << host << std::endl;
-
-    if (any != all) {
+    if (set_any != set_all) {
         print_addresses(any, "Any");
     }
 
