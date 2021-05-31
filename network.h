@@ -80,12 +80,13 @@ private:
 };
 
 template <class Container>
-void copy(Container& dest, const struct addrinfo* list);
+void copy_addrinfo(Container& dest, const struct addrinfo* list);
 
 template <class Container>
-Container get(const std::string& node,
-              const std::string& service,
-              const struct addrinfo* hints);
+void copy_addrinfo(Container& dest,
+                   const std::string& node,
+                   const std::string& service,
+                   const struct addrinfo* hints);
 
 Addresses get_addresses(const std::string& node = "",
                         int family = AF_UNSPEC,
@@ -94,5 +95,6 @@ Sockets get_sockets(const std::string& node,
                     const std::string& service = "",
                     const struct addrinfo* hints = NULL);
 Hostname get_hostname();
+void set_address_hints(struct addrinfo* ai, int family, int flags);
 
 #endif
