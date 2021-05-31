@@ -84,7 +84,7 @@ Addresses get_addresses(const std::string& node = "",
                         int flags = 0);
 Sockets get_sockets(const std::string& node,
                     const std::string& service = "",
-                    struct addrinfo* hints = NULL);
+                    const struct addrinfo* hints = NULL);
 Hostname get_hostname();
 
 #endif

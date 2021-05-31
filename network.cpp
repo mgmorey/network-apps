@@ -367,7 +367,7 @@ Addresses get_addresses(const std::string& node, int family, int flags)
 
 Sockets get_sockets(const std::string& node,
                     const std::string& service,
-                    struct addrinfo* hints)
+                    const struct addrinfo* hints)
 {
     struct addrinfo* list = NULL;
     int error = getaddrinfo(node.empty() ? NULL : node.c_str(),
