@@ -333,53 +333,16 @@ void copy(Container& dest, const struct addrinfo* list)
         }
 }
 
-Addresses get_addresses(const std::string& node, int family, int flags)
-{
-    struct addrinfo hints = {
-        flags,		// ai_flags
-        family,		// ai_family
-        0,		// ai_socktype
-        0,		// ai_protocol
-        0,		// ai_addrlen
-        NULL,		// ai_canonname
-        NULL,		// ai_addr
-        NULL		// ai_next
-    };
-    struct addrinfo* list = NULL;
-    int error = getaddrinfo(node.empty() ? NULL : node.c_str(),
-                            NULL,
-                            &hints,
-                            &list);
-    Addresses result;
-
-    if (error != 0) {
-        std::cerr << "getaddrinfo(\""
-                  << node
-                  << "\") returned "
-                  << error
-                  << " ("
-                  << gai_strerror(error)
-                  << ')'
-                  << std::endl;
-    }
-    else {
-        copy(result, list);
-        freeaddrinfo(list);
-    }
-
-    return result;
-}
-
-Sockets get_sockets(const std::string& node,
-                    const std::string& service,
-                    const struct addrinfo* hints)
+template <class Container>
+Container get(const std::string& node,
+              const std::string& service,
+              const struct addrinfo* hints)
 {
     struct addrinfo* list = NULL;
-    int error = getaddrinfo(node.empty() ? NULL : node.c_str(),
-                            service.empty() ? NULL : service.c_str(),
-                            hints,
-                            &list);
-    Sockets result;
+    const char* c_node = node.empty() ? NULL : node.c_str();
+    const char* c_service = service.empty() ? NULL : service.c_str();
+    int error = getaddrinfo(c_node, c_service, hints, &list);
+    Container result;
 
     if (error != 0) {
         std::cerr << "getaddrinfo(\""
@@ -399,6 +362,28 @@ Sockets get_sockets(const std::string& node,
     }
 
     return result;
+}
+
+Addresses get_addresses(const std::string& node, int family, int flags)
+{
+    struct addrinfo hints = {
+        flags,		// ai_flags
+        family,		// ai_family
+        0,		// ai_socktype
+        0,		// ai_protocol
+        0,		// ai_addrlen
+        NULL,		// ai_canonname
+        NULL,		// ai_addr
+        NULL		// ai_next
+    };
+    return get<Addresses>(node, "", &hints);
+}
+
+Sockets get_sockets(const std::string& node,
+                    const std::string& service,
+                    const struct addrinfo* hints)
+{
+    return get<Sockets>(node, service, hints);
 }
 
 Hostname get_hostname()
