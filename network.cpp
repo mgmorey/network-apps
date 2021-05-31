@@ -324,7 +324,7 @@ void Socket::set_up()
 }
 
 template <class Container>
-void copy_addrinfo(Container& dest, const struct addrinfo* list)
+void copy(Container& dest, const struct addrinfo* list)
 {
         for (const struct addrinfo* elem = list;
              elem != NULL;
@@ -363,7 +363,7 @@ Addresses get_addresses(const std::string& node, int family, int flags)
                   << std::endl;
     }
     else {
-        copy_addrinfo<Addresses>(result, list);
+        copy(result, list);
         freeaddrinfo(list);
     }
 
@@ -394,7 +394,7 @@ Sockets get_sockets(const std::string& node,
                   << std::endl;
     }
     else {
-        copy_addrinfo<Sockets>(result, list);
+        copy(result, list);
         freeaddrinfo(list);
     }
 
