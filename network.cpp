@@ -324,16 +324,6 @@ void Socket::set_up()
 }
 
 template <class Container>
-void copy_addrinfo(Container& dest, const struct addrinfo* list)
-{
-    for (const struct addrinfo* elem = list;
-         elem != NULL;
-         elem = elem->ai_next) {
-        dest.push_back(*elem);
-    }
-}
-
-template <class Container>
 void copy_addrinfo(Container& dest,
                    const std::string& node,
                    const std::string& service,
@@ -358,7 +348,13 @@ void copy_addrinfo(Container& dest,
     }
     else {
         assert(list != NULL);
-        copy_addrinfo(dest, list);
+
+        for (const struct addrinfo* elem = list;
+             elem != NULL;
+             elem = elem->ai_next) {
+            dest.push_back(*elem);
+        }
+
         freeaddrinfo(list);
     }
 }

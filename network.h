@@ -80,14 +80,10 @@ private:
 };
 
 template <class Container>
-void copy_addrinfo(Container& dest, const struct addrinfo* list);
-
-template <class Container>
 void copy_addrinfo(Container& dest,
                    const std::string& node,
                    const std::string& service,
                    const struct addrinfo* hints);
-
 Addresses get_addresses(const std::string& node = "",
                         int family = AF_UNSPEC,
                         int flags = 0);
