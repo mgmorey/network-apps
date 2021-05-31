@@ -30,10 +30,6 @@ Address::Address()
 {
 }
 
-Address::~Address()
-{
-}
-
 Address::Address(const Address& address)
 {
     copy(address);
@@ -42,6 +38,10 @@ Address::Address(const Address& address)
 Address::Address(const struct addrinfo& ai)
 {
     copy(ai);
+}
+
+Address::~Address()
+{
 }
 
 Address& Address::operator=(const Address& address)
@@ -180,10 +180,6 @@ Socket::Socket()
     set_up();
 }
 
-Socket::~Socket()
-{
-}
-
 Socket::Socket(const Socket& socket)
 {
     set_up();
@@ -194,6 +190,10 @@ Socket::Socket(const struct addrinfo& ai)
 {
     set_up();
     copy(ai);
+}
+
+Socket::~Socket()
+{
 }
 
 Socket& Socket::operator=(const Socket& socket)
