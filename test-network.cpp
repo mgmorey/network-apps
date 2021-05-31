@@ -99,7 +99,7 @@ static void test_connect(const std::string& host, const std::string& service)
 static void test_host(const std::string& host)
 {
     Addresses all;
-    Addresses any(get_unique_addresses(host, AF_UNSPEC));
+    Addresses any(get_unique_addresses(host));
     Addresses ipv4(get_unique_addresses(host, AF_INET));
     Addresses ipv6(get_unique_addresses(host, AF_INET6));
     std::set_union(ipv4.begin(), ipv4.end(),
