@@ -74,7 +74,7 @@ bool Address::operator==(const Address& address) const
 
 int Address::connect(int fd) const
 {
-    assert(!addr.empty());
+    assert(size());
     int error = -1;
 
     if (fd == -1) {
@@ -105,7 +105,7 @@ clean_up:
 
 Endpoint Address::endpoint(int flags) const
 {
-    assert(!addr.empty());
+    assert(size());
     char* host = static_cast<char*>(std::calloc(sizeof(char), NI_MAXHOST));
     char* serv = static_cast<char*>(std::calloc(sizeof(char), NI_MAXHOST));
     int error = getnameinfo(data(), size(),
@@ -130,19 +130,19 @@ Endpoint Address::endpoint(int flags) const
 
 std::string Address::service() const
 {
-    assert(!addr.empty());
+    assert(size());
     return endpoint().second;
 }
 
 std::string Address::to_hostname() const
 {
-    assert(!addr.empty());
+    assert(size());
     return endpoint().first;
 }
 
 std::string Address::to_string() const
 {
-    assert(!addr.empty());
+    assert(size());
     return endpoint(NI_NUMERICHOST).first;
 }
 
