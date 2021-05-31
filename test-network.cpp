@@ -24,6 +24,12 @@ static Addresses get_unique_addresses(const std::string& node = "",
     return addresses;
 }
 
+static void insert(const Addresses& a_list, std::set<Address>& a_set)
+{
+    std::copy(a_list.begin(), a_list.end(),
+              std::inserter(a_set, a_set.begin()));
+}
+
 static void print_addresses(const Addresses& addresses,
                             const std::string& family)
 {
@@ -95,12 +101,6 @@ static void test_connect(const std::string& host, const std::string& service)
                   << fd
                   << std::endl;
     }
-}
-
-static void insert(const Addresses& a_list, std::set<Address>& a_set)
-{
-    std::copy(a_list.begin(), a_list.end(),
-              std::inserter(a_set, a_set.begin()));
 }
 
 static void test_host(const std::string& host)
