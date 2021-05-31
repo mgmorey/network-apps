@@ -323,6 +323,16 @@ void Socket::set_up()
     socktype = 0;
 }
 
+template <class Container>
+void copy_addrinfo(Container& dest, const struct addrinfo* list)
+{
+        for (const struct addrinfo* elem = list;
+             elem != NULL;
+             elem = elem->ai_next) {
+            dest.push_back(*elem);
+        }
+}
+
 Addresses get_addresses(const std::string& node, int family, int flags)
 {
     struct addrinfo hints = {
@@ -353,12 +363,7 @@ Addresses get_addresses(const std::string& node, int family, int flags)
                   << std::endl;
     }
     else {
-        for (const struct addrinfo* elem = list;
-             elem != NULL;
-             elem = elem->ai_next) {
-            result.push_back(*elem);
-        }
-
+        copy_addrinfo<Addresses>(result, list);
         freeaddrinfo(list);
     }
 
@@ -389,12 +394,7 @@ Sockets get_sockets(const std::string& node,
                   << std::endl;
     }
     else {
-        for (const struct addrinfo* elem = list;
-             elem != NULL;
-             elem = elem->ai_next) {
-            result.push_back(*elem);
-        }
-
+        copy_addrinfo<Sockets>(result, list);
         freeaddrinfo(list);
     }
 

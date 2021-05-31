@@ -79,6 +79,9 @@ private:
     int socktype;
 };
 
+template <class Container>
+void copy_addrinfo(Container& dest, const struct addrinfo* list);
+
 Addresses get_addresses(const std::string& node = "",
                         int family = AF_UNSPEC,
                         int flags = 0);
