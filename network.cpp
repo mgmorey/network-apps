@@ -153,6 +153,8 @@ void Address::copy(const Address& address)
 
 void Address::copy(const struct addrinfo& ai)
 {
+    assert(ai.ai_addr != NULL);
+    assert(ai.ai_addrlen != 0);
     addr.clear();
     const char* data = reinterpret_cast<const char*>(ai.ai_addr);
     std::size_t size = ai.ai_addrlen;
