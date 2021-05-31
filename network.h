@@ -9,16 +9,16 @@
 #include <sys/socket.h>		// AF_UNSPEC, socklen_t
 #endif
 
-#include <set>			// std::set
+#include <list>			// std::list
 #include <string>		// std::string
-#include <vector>		// std::vector
 #include <utility>		// std::pair
 
 typedef std::string Hostname;
 typedef std::string Service;
+
 typedef std::pair<Hostname, Service> Endpoint;
-typedef std::set<class Address> Addresses;
-typedef std::vector<class Socket> Sockets;
+typedef std::list<class Address> Addresses;
+typedef std::list<class Socket> Sockets;
 
 class Address
 {

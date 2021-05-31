@@ -356,7 +356,7 @@ Addresses get_addresses(const std::string& node, int family, int flags)
         for (const struct addrinfo* elem = list;
              elem != NULL;
              elem = elem->ai_next) {
-            result.insert(*elem);
+            result.push_back(*elem);
         }
 
         freeaddrinfo(list);

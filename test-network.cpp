@@ -14,6 +14,15 @@
 #include <iterator>		// std::inserter()
 #include <string>		// std::string
 
+static Addresses get_unique_addresses(const std::string& node = "",
+                                      int family = AF_UNSPEC,
+                                      int flags = 0)
+{
+    Addresses addresses = get_addresses(node, family, flags);
+    addresses.unique();
+    return addresses;
+}
+
 static void print_addresses(const Addresses& addresses,
                             const std::string& family)
 {
@@ -90,9 +99,9 @@ static void test_connect(const std::string& host, const std::string& service)
 static void test_host(const std::string& host)
 {
     Addresses all;
-    Addresses any(get_addresses(host, AF_UNSPEC));
-    Addresses ipv4(get_addresses(host, AF_INET));
-    Addresses ipv6(get_addresses(host, AF_INET6));
+    Addresses any(get_unique_addresses(host, AF_UNSPEC));
+    Addresses ipv4(get_unique_addresses(host, AF_INET));
+    Addresses ipv6(get_unique_addresses(host, AF_INET6));
     std::set_union(ipv4.begin(), ipv4.end(),
                    ipv6.begin(), ipv6.end(),
                    std::inserter(all, all.begin()));
