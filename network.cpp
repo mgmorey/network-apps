@@ -13,7 +13,7 @@
 #endif
 
 #include <cerrno>		// errno
-#include <cstring>		// std::strerror(), std::strlen()
+#include <cstring>		// std::memcpy, std::strerror()
 #include <iostream>		// std::cerr, std::endl
 
 void Address::close(int fd)
