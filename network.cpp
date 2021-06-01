@@ -1,8 +1,8 @@
 #include "network.h"
 
 #ifdef _WIN32
-#include <winsock2.h>		// closesocket(), connect(), socket(),
-                                // gethostname()
+#include <winsock2.h>		// closesocket(), connect(),
+                                // gethostname(), socket()
 #include <ws2tcpip.h>		// NI_MAXHOST, struct addrinfo,
                                 // getaddrinfo(), getnameinfo(),
                                 // socklen_t
