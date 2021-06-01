@@ -9,7 +9,8 @@
 #else
 #include <netdb.h>		// NI_MAXHOST, struct addrinfo,
                                 // getaddrinfo(), getnameinfo()
-#include <sys/socket.h>		// AF_UNSPEC, socklen_t
+#include <sys/socket.h>		// AF_UNSPEC, connect(), socket(),
+                                // socklen_t
 #include <unistd.h>		// close(), gethostname()
 #endif
 
