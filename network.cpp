@@ -266,6 +266,11 @@ Socket& Socket::operator=(const struct addrinfo& other)
     return *this;
 }
 
+Socket::operator struct addrinfo() const
+{
+    return ai;
+}
+
 bool Socket::operator<(const Socket& other) const
 {
     return (ai.ai_protocol < other.ai.ai_protocol ||
@@ -296,11 +301,6 @@ bool Socket::operator==(const Socket& other) const
             ai.ai_socktype == other.ai.ai_socktype &&
             ai.ai_family == other.ai.ai_family &&
             address == other.address);
-}
-
-const struct addrinfo& Socket::addrinfo() const
-{
-    return ai;
 }
 
 std::string Socket::cname() const
@@ -396,8 +396,7 @@ Addresses get_addresses(const std::string& node, const struct addrinfo* hints)
 Addresses get_addresses(const std::string& node, int family, int flags)
 {
     Addresses result;
-    Socket socket(0, 0, family, flags);
-    struct addrinfo hints = socket.addrinfo();
+    struct addrinfo hints(Socket(0, 0, family, flags));
     Address::copy(result, node, "", &hints);
     result.unique();
     return result;

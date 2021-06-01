@@ -65,11 +65,11 @@ public:
     ~Socket();
     Socket& operator=(const Socket& other);
     Socket& operator=(const struct addrinfo& ai);
+    operator struct addrinfo() const;
     bool operator<(const Socket& other) const;
     bool operator>(const Socket& other) const;
     bool operator!=(const Socket& other) const;
     bool operator==(const Socket& other) const;
-    const struct addrinfo& addrinfo() const;
     std::string cname() const;
     int connect(int fd = -1) const;
     int socket() const;
