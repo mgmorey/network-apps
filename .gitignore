@@ -1,6 +1,9 @@
 # Backup files
 *~
 
+# Core files
+*.core
+
 # Log files
 *.log
 logfile
