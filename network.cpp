@@ -311,7 +311,7 @@ std::string Socket::cname() const
         result = ai.ai_canonname;
     }
 
-    return ai.ai_canonname;
+    return result;
 }
 
 int Socket::connect(int fd) const
