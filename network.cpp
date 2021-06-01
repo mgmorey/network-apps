@@ -12,6 +12,7 @@
 #include <unistd.h>		// close(), gethostname()
 #endif
 
+#include <cassert>		// assert()
 #include <cerrno>		// errno
 #include <cstring>		// std::memcpy, std::strerror()
 #include <iostream>		// std::cerr, std::endl

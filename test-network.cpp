@@ -8,7 +8,6 @@
 #endif
 
 #include <algorithm>		// std::copy, std::set_union()
-#include <cassert>		// assert()
 #include <cstdlib>		// EXIT_FAILURE, EXIT_SUCCESS
 #include <iostream>		// std::cout, std::endl
 #include <iterator>		// std::inserter()
