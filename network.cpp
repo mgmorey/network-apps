@@ -180,24 +180,24 @@ socklen_t Address::size() const
 
 Socket::Socket()
 {
-    set_up();
+    init();
 }
 
 Socket::Socket(const Socket& other)
 {
-    set_up();
+    init();
     copy(other);
 }
 
 Socket::Socket(const struct addrinfo& other)
 {
-    set_up();
+    init();
     copy(other);
 }
 
 Socket::Socket(int protocol, int socktype, int family, int flags)
 {
-    set_up(protocol, socktype, family, flags);
+    init(protocol, socktype, family, flags);
 }
 
 Socket::~Socket()
@@ -323,7 +323,7 @@ void Socket::copy(const struct addrinfo& other)
     copy_addrinfo(ai, other);
 }
 
-void Socket::set_up(int protocol, int socktype, int family, int flags)
+void Socket::init(int protocol, int socktype, int family, int flags)
 {
     init_addrinfo(ai, protocol, socktype, family, flags);
 }

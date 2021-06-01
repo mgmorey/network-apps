@@ -72,10 +72,10 @@ public:
 private:
     void copy(const Socket& other);
     void copy(const struct addrinfo& other);
-    void set_up(int protocol = 0,
-                int socktype = 0,
-                int family = 0,
-                int flags = 0);
+    void init(int protocol = 0,
+              int socktype = 0,
+              int family = 0,
+              int flags = 0);
 
     struct addrinfo ai;
 };
