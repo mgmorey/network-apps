@@ -14,15 +14,6 @@
 #include <set>			// std::set
 #include <string>		// std::string
 
-static Addresses get_unique_addresses(const std::string& node = "",
-                                      int family = AF_UNSPEC,
-                                      int flags = 0)
-{
-    Addresses addresses = get_addresses(node, family, flags);
-    addresses.unique();
-    return addresses;
-}
-
 static void insert(const Addresses& a_list, std::set<Address>& a_set)
 {
     std::copy(a_list.begin(), a_list.end(),
@@ -105,9 +96,9 @@ static void test_connect(const std::string& host, const std::string& service)
 static void test_host(const std::string& host)
 {
     std::cout << "Hostname: " << host << std::endl;
-    Addresses any(get_unique_addresses(host));
-    Addresses ipv4(get_unique_addresses(host, AF_INET));
-    Addresses ipv6(get_unique_addresses(host, AF_INET6));
+    Addresses any(get_addresses(host));
+    Addresses ipv4(get_addresses(host, AF_INET));
+    Addresses ipv6(get_addresses(host, AF_INET6));
     std::set<Address> set_all;
     insert(ipv4, set_all);
     insert(ipv6, set_all);

@@ -382,6 +382,7 @@ Addresses get_addresses(const std::string& node, int family, int flags)
     struct addrinfo hints;
     set_address_hints(&hints, family, flags);
     copy_addrinfo(result, node, "", &hints);
+    result.unique();
     return result;
 }
 
