@@ -376,6 +376,14 @@ void copy_addrinfo(Container& dest,
     }
 }
 
+Addresses get_addresses(const std::string& node, const struct addrinfo* hints)
+{
+    Addresses result;
+    copy_addrinfo(result, node, "", hints);
+    result.unique();
+    return result;
+}
+
 Addresses get_addresses(const std::string& node, int family, int flags)
 {
     Addresses result;

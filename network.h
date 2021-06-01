@@ -84,9 +84,9 @@ void copy_addrinfo(Container& dest,
                    const std::string& node,
                    const std::string& service,
                    const struct addrinfo* hints);
-Addresses get_addresses(const std::string& node = "",
-                        int family = AF_UNSPEC,
-                        int flags = 0);
+Addresses get_addresses(const std::string& node,
+                        const struct addrinfo* hints = NULL);
+Addresses get_addresses(const std::string& node, int family, int flags = 0);
 Sockets get_sockets(const std::string& node,
                     const std::string& service = "",
                     const struct addrinfo* hints = NULL);
