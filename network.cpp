@@ -125,8 +125,8 @@ Endpoint Address::endpoint(int flags) const
                   << std::endl;
     }
     else {
-        host.resize(std::strlen(host.c_str()));
-        service.resize(std::strlen(service.c_str()));
+        trim_zeros(host);
+        trim_zeros(service);
     }
 
     return(Endpoint(host, service));
@@ -388,7 +388,7 @@ Hostname get_hostname()
                   << std::endl;
     }
     else {
-        host.resize(std::strlen(host.c_str()));
+        trim_zeros(host);
     }
 
     return host;
@@ -408,4 +408,13 @@ void set_address_hints(struct addrinfo* ai, int family, int flags)
         NULL		// ai_next
     };
     std::memcpy(ai, &hints, sizeof *ai);
+}
+
+void trim_zeros(std::string& str)
+{
+    std::string::size_type pos = str.find('\0');
+
+    if (pos != std::string::npos) {
+        str.resize(pos);
+    }
 }

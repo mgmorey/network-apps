@@ -92,5 +92,6 @@ Sockets get_sockets(const std::string& node,
                     const struct addrinfo* hints = NULL);
 Hostname get_hostname();
 void set_address_hints(struct addrinfo* ai, int family, int flags);
+void trim_zeros(std::string& str);
 
 #endif
