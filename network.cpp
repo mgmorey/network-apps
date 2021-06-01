@@ -17,7 +17,7 @@
 #include <cassert>		// assert()
 #include <cerrno>		// errno
 #include <cstdio>		// free()
-#include <cstring>		// std::memcpy(), std::strdup(),
+#include <cstring>		// std::memcpy(), strdup(),
                                 // std::strerror()
 #include <iostream>		// std::cerr, std::endl
 
@@ -378,7 +378,7 @@ void Socket::copy(const struct addrinfo& other)
     ai.ai_addrlen = other.ai_addrlen;
     free(ai.ai_canonname);
     ai.ai_canonname = other.ai_canonname != NULL ?
-        std::strdup(other.ai_canonname) :
+        strdup(other.ai_canonname) :
         NULL;
     ai.ai_addr = other.ai_addr;
     ai.ai_next = NULL;
