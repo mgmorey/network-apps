@@ -345,7 +345,7 @@ void copy_addrinfo(Container& dest,
                       << '"';
         }
         else {
-            std::cerr << "(NULL)";
+            std::cerr << "NULL";
         }
 
         std::cerr << ", ";
