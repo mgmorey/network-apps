@@ -31,15 +31,15 @@ public:
                      const struct addrinfo* hints);
 
     Address();
-    Address(const Address& address);
-    Address(const struct addrinfo& ai);
+    Address(const Address& other);
+    Address(const struct addrinfo& other);
     ~Address();
-    Address& operator=(const Address& address);
-    Address& operator=(const struct addrinfo& ai);
-    bool operator<(const Address& address) const;
-    bool operator>(const Address& address) const;
-    bool operator!=(const Address& address) const;
-    bool operator==(const Address& address) const;
+    Address& operator=(const Address& other);
+    Address& operator=(const struct addrinfo& other);
+    bool operator<(const Address& other) const;
+    bool operator>(const Address& other) const;
+    bool operator!=(const Address& other) const;
+    bool operator==(const Address& other) const;
     int connect(int fd) const;
     Endpoint endpoint(int flags = 0) const;
     std::string service() const;
@@ -59,24 +59,24 @@ class Socket
 {
 public:
     Socket();
-    Socket(const Socket& socket);
-    Socket(const struct addrinfo& ai);
+    Socket(const Socket& other);
+    Socket(const struct addrinfo& other);
     Socket(int protocol, int socktype, int family, int flags = 0);
     ~Socket();
-    Socket& operator=(const Socket& socket);
+    Socket& operator=(const Socket& other);
     Socket& operator=(const struct addrinfo& ai);
-    bool operator<(const Socket& socket) const;
-    bool operator>(const Socket& socket) const;
-    bool operator!=(const Socket& socket) const;
-    bool operator==(const Socket& socket) const;
+    bool operator<(const Socket& other) const;
+    bool operator>(const Socket& other) const;
+    bool operator!=(const Socket& other) const;
+    bool operator==(const Socket& other) const;
     const struct addrinfo& addrinfo() const;
     std::string cname() const;
     int connect(int fd = -1) const;
     int socket() const;
 
 private:
-    void copy(const Socket& socket);
-    void copy(const struct addrinfo& ai);
+    void copy(const Socket& other);
+    void copy(const struct addrinfo& other);
     void set_up(int protocol = 0,
                 int socktype = 0,
                 int family = 0,

@@ -84,50 +84,50 @@ Address::Address()
 {
 }
 
-Address::Address(const Address& address)
+Address::Address(const Address& other)
 {
-    copy(address);
+    copy(other);
 }
 
-Address::Address(const struct addrinfo& ai)
+Address::Address(const struct addrinfo& other)
 {
-    copy(ai);
+    copy(other);
 }
 
 Address::~Address()
 {
 }
 
-Address& Address::operator=(const Address& address)
+Address& Address::operator=(const Address& other)
 {
-    copy(address);
+    copy(other);
     return *this;
 }
 
-Address& Address::operator=(const struct addrinfo& ai)
+Address& Address::operator=(const struct addrinfo& other)
 {
-    copy(ai);
+    copy(other);
     return *this;
 }
 
-bool Address::operator<(const Address& address) const
+bool Address::operator<(const Address& other) const
 {
-    return (addr < address.addr);
+    return (addr < other.addr);
 }
 
-bool Address::operator>(const Address& address) const
+bool Address::operator>(const Address& other) const
 {
-    return (addr > address.addr);
+    return (addr > other.addr);
 }
 
-bool Address::operator!=(const Address& address) const
+bool Address::operator!=(const Address& other) const
 {
-    return (addr != address.addr);
+    return (addr != other.addr);
 }
 
-bool Address::operator==(const Address& address) const
+bool Address::operator==(const Address& other) const
 {
-    return (addr == address.addr);
+    return (addr == other.addr);
 }
 
 int Address::connect(int fd) const
@@ -203,18 +203,18 @@ std::string Address::to_string() const
     return endpoint(NI_NUMERICHOST).first;
 }
 
-void Address::copy(const Address& address)
+void Address::copy(const Address& other)
 {
-    addr = address.addr;
+    addr = other.addr;
 }
 
-void Address::copy(const struct addrinfo& ai)
+void Address::copy(const struct addrinfo& other)
 {
-    assert(ai.ai_addr != NULL);
-    assert(ai.ai_addrlen != 0);
+    assert(other.ai_addr != NULL);
+    assert(other.ai_addrlen != 0);
     addr.clear();
-    const char* data = reinterpret_cast<const char*>(ai.ai_addr);
-    std::size_t size = ai.ai_addrlen;
+    const char* data = reinterpret_cast<const char*>(other.ai_addr);
+    std::size_t size = other.ai_addrlen;
     addr.append(data, size);
 }
 
@@ -254,48 +254,48 @@ Socket::~Socket()
 {
 }
 
-Socket& Socket::operator=(const Socket& socket)
+Socket& Socket::operator=(const Socket& other)
 {
-    copy(socket);
+    copy(other);
     return *this;
 }
 
-Socket& Socket::operator=(const struct addrinfo& ai)
+Socket& Socket::operator=(const struct addrinfo& other)
 {
-    copy(ai);
+    copy(other);
     return *this;
 }
 
-bool Socket::operator<(const Socket& socket) const
+bool Socket::operator<(const Socket& other) const
 {
-    return (ai.ai_protocol < socket.ai.ai_protocol ||
-            ai.ai_socktype < socket.ai.ai_socktype ||
-            ai.ai_family < socket.ai.ai_family ||
-            address < socket.address);
+    return (ai.ai_protocol < other.ai.ai_protocol ||
+            ai.ai_socktype < other.ai.ai_socktype ||
+            ai.ai_family < other.ai.ai_family ||
+            address < other.address);
 }
 
-bool Socket::operator>(const Socket& socket) const
+bool Socket::operator>(const Socket& other) const
 {
-    return (ai.ai_protocol > socket.ai.ai_protocol ||
-            ai.ai_socktype > socket.ai.ai_socktype ||
-            ai.ai_family > socket.ai.ai_family ||
-            address > socket.address);
+    return (ai.ai_protocol > other.ai.ai_protocol ||
+            ai.ai_socktype > other.ai.ai_socktype ||
+            ai.ai_family > other.ai.ai_family ||
+            address > other.address);
 }
 
-bool Socket::operator!=(const Socket& socket) const
+bool Socket::operator!=(const Socket& other) const
 {
-    return (ai.ai_protocol != socket.ai.ai_protocol ||
-            ai.ai_socktype != socket.ai.ai_socktype ||
-            ai.ai_family != socket.ai.ai_family ||
-            address != socket.address);
+    return (ai.ai_protocol != other.ai.ai_protocol ||
+            ai.ai_socktype != other.ai.ai_socktype ||
+            ai.ai_family != other.ai.ai_family ||
+            address != other.address);
 }
 
-bool Socket::operator==(const Socket& socket) const
+bool Socket::operator==(const Socket& other) const
 {
-    return (ai.ai_protocol == socket.ai.ai_protocol &&
-            ai.ai_socktype == socket.ai.ai_socktype &&
-            ai.ai_family == socket.ai.ai_family &&
-            address == socket.address);
+    return (ai.ai_protocol == other.ai.ai_protocol &&
+            ai.ai_socktype == other.ai.ai_socktype &&
+            ai.ai_family == other.ai.ai_family &&
+            address == other.address);
 }
 
 const struct addrinfo& Socket::addrinfo() const
