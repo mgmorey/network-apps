@@ -30,58 +30,6 @@ void Address::close(int fd)
 #endif
 }
 
-template <class Container>
-void Address::copy(Container& dest,
-                   const std::string& node,
-                   const std::string& service,
-                   const struct addrinfo* hints)
-{
-    struct addrinfo* list = NULL;
-    assert(!(node.empty() && service.empty()));
-    const char* c_node = node.empty() ? NULL : node.c_str();
-    const char* c_service = service.empty() ? NULL : service.c_str();
-    int error = getaddrinfo(c_node, c_service, hints, &list);
-
-    if (error != 0) {
-        std::cerr << "getaddrinfo(";
-
-        if (!node.empty()) {
-            std::cerr << '"'
-                      << node
-                      << '"';
-        }
-        else {
-            std::cerr << "NULL";
-        }
-
-        std::cerr << ", ";
-
-        if (!service.empty()) {
-            std::cerr << '"'
-                      << service
-                      << "\", ";
-        }
-
-        std::cerr << "...) returned "
-                  << error
-                  << " ("
-                  << gai_strerror(error)
-                  << ')'
-                  << std::endl;
-    }
-    else {
-        assert(list != NULL);
-
-        for (const struct addrinfo* elem = list;
-             elem != NULL;
-             elem = elem->ai_next) {
-            dest.push_back(*elem);
-        }
-
-        freeaddrinfo(list);
-    }
-}
-
 Address::Address()
 {
 }
@@ -254,6 +202,8 @@ Socket::Socket(int protocol, int socktype, int family, int flags)
 
 Socket::~Socket()
 {
+    free(ai.ai_addr);
+    free(ai.ai_canonname);
 }
 
 Socket& Socket::operator=(const Socket& other)
@@ -268,17 +218,12 @@ Socket& Socket::operator=(const struct addrinfo& other)
     return *this;
 }
 
-Socket::operator struct addrinfo() const
-{
-    return ai;
-}
-
 bool Socket::operator<(const Socket& other) const
 {
     return (ai.ai_protocol < other.ai.ai_protocol ||
             ai.ai_socktype < other.ai.ai_socktype ||
             ai.ai_family < other.ai.ai_family ||
-            address < other.address);
+            Address(*this) < Address(other));
 }
 
 bool Socket::operator>(const Socket& other) const
@@ -286,7 +231,7 @@ bool Socket::operator>(const Socket& other) const
     return (ai.ai_protocol > other.ai.ai_protocol ||
             ai.ai_socktype > other.ai.ai_socktype ||
             ai.ai_family > other.ai.ai_family ||
-            address > other.address);
+            Address(*this) > Address(other));
 }
 
 bool Socket::operator!=(const Socket& other) const
@@ -294,7 +239,7 @@ bool Socket::operator!=(const Socket& other) const
     return (ai.ai_protocol != other.ai.ai_protocol ||
             ai.ai_socktype != other.ai.ai_socktype ||
             ai.ai_family != other.ai.ai_family ||
-            address != other.address);
+            Address(*this) != Address(other));
 }
 
 bool Socket::operator==(const Socket& other) const
@@ -302,7 +247,12 @@ bool Socket::operator==(const Socket& other) const
     return (ai.ai_protocol == other.ai.ai_protocol &&
             ai.ai_socktype == other.ai.ai_socktype &&
             ai.ai_family == other.ai.ai_family &&
-            address == other.address);
+            Address(*this) == Address(other));
+}
+
+Socket::operator const struct addrinfo&() const
+{
+    return ai;
 }
 
 std::string Socket::cname() const
@@ -318,6 +268,7 @@ std::string Socket::cname() const
 
 int Socket::connect(int fd) const
 {
+    Address address(*this);
     int error = -1;
 
     if (fd == -1) {
@@ -364,42 +315,100 @@ int Socket::socket() const
 
 void Socket::copy(const Socket& other)
 {
-    address = other.address;
     copy(other.ai);
 }
 
 void Socket::copy(const struct addrinfo& other)
 {
-    address = other;
-    ai.ai_flags = other.ai_flags;
-    ai.ai_family = other.ai_family;
-    ai.ai_socktype = other.ai_socktype;
-    ai.ai_protocol = other.ai_protocol;
-    ai.ai_addrlen = other.ai_addrlen;
-    free(ai.ai_canonname);
-    ai.ai_canonname = other.ai_canonname != NULL ?
-        strdup(other.ai_canonname) :
-        NULL;
-    ai.ai_addr = other.ai_addr;
-    ai.ai_next = NULL;
+    copy_addrinfo(ai, other);
 }
 
 void Socket::set_up(int protocol, int socktype, int family, int flags)
 {
-    ai.ai_flags = flags;
-    ai.ai_family = family;
-    ai.ai_socktype = socktype;
-    ai.ai_protocol = protocol;
-    ai.ai_addrlen = 0;
-    ai.ai_canonname = NULL;
-    ai.ai_addr = NULL;
-    ai.ai_next = NULL;
+    init_addrinfo(ai, protocol, socktype, family, flags);
+}
+
+template <class Container>
+void copy_addrinfo(Container& dest,
+                   const std::string& node,
+                   const std::string& service,
+                   const struct addrinfo* hints)
+{
+    struct addrinfo* list = NULL;
+    assert(!(node.empty() && service.empty()));
+    const char* c_node = node.empty() ? NULL : node.c_str();
+    const char* c_service = service.empty() ? NULL : service.c_str();
+    int error = getaddrinfo(c_node, c_service, hints, &list);
+
+    if (error != 0) {
+        std::cerr << "getaddrinfo(";
+
+        if (!node.empty()) {
+            std::cerr << '"'
+                      << node
+                      << '"';
+        }
+        else {
+            std::cerr << "NULL";
+        }
+
+        std::cerr << ", ";
+
+        if (!service.empty()) {
+            std::cerr << '"'
+                      << service
+                      << "\", ";
+        }
+
+        std::cerr << "...) returned "
+                  << error
+                  << " ("
+                  << gai_strerror(error)
+                  << ')'
+                  << std::endl;
+    }
+    else {
+        assert(list != NULL);
+
+        for (const struct addrinfo* elem = list;
+             elem != NULL;
+             elem = elem->ai_next) {
+            dest.push_back(*elem);
+        }
+
+        freeaddrinfo(list);
+    }
+}
+
+void copy_addrinfo(struct addrinfo& dest, const struct addrinfo& src)
+{
+    dest.ai_flags = src.ai_flags;
+    dest.ai_family = src.ai_family;
+    dest.ai_socktype = src.ai_socktype;
+    dest.ai_protocol = src.ai_protocol;
+    dest.ai_addrlen = src.ai_addrlen;
+    free(dest.ai_canonname);
+    dest.ai_canonname = NULL;
+
+    if (src.ai_canonname != NULL) {
+        dest.ai_canonname = strdup(src.ai_canonname);
+    }
+
+    free(dest.ai_addr);
+    dest.ai_addr = NULL;
+
+    if (src.ai_addr != NULL) {
+        dest.ai_addr = static_cast<struct sockaddr*>(malloc(dest.ai_addrlen));
+        std::memcpy(dest.ai_addr, src.ai_addr, dest.ai_addrlen);
+    }
+
+    dest.ai_next = NULL;
 }
 
 Addresses get_addresses(const std::string& node, const struct addrinfo* hints)
 {
     Addresses result;
-    Address::copy(result, node, "", hints);
+    copy_addrinfo(result, node, "", hints);
     result.unique();
     return result;
 }
@@ -407,8 +416,9 @@ Addresses get_addresses(const std::string& node, const struct addrinfo* hints)
 Addresses get_addresses(const std::string& node, int family, int flags)
 {
     Addresses result;
-    struct addrinfo hints(Socket(0, 0, family, flags));
-    Address::copy(result, node, "", &hints);
+    Socket socket(0, 0, family, flags);
+    const struct addrinfo& hints = socket;
+    copy_addrinfo(result, node, "", &hints);
     result.unique();
     return result;
 }
@@ -418,7 +428,7 @@ Sockets get_sockets(const std::string& node,
                     const struct addrinfo* hints)
 {
     Sockets result;
-    Address::copy(result, node, service, hints);
+    copy_addrinfo(result, node, service, hints);
     return result;
 }
 
@@ -437,20 +447,21 @@ Hostname get_hostname()
     return host;
 }
 
-void set_address_hints(struct addrinfo* ai, int family, int flags)
+void init_addrinfo(struct addrinfo& dest,
+                   int protocol,
+                   int socktype,
+                   int family,
+                   int flags)
 {
-    assert(ai != NULL);
-    struct addrinfo hints = {
-        flags,		// ai_flags
-        family,		// ai_family
-        0,		// ai_socktype
-        0,		// ai_protocol
-        0,		// ai_addrlen
-        NULL,		// ai_canonname
-        NULL,		// ai_addr
-        NULL		// ai_next
-    };
-    std::memcpy(ai, &hints, sizeof *ai);
+    std::memset(&dest, '\0', sizeof dest);
+    dest.ai_flags = flags;
+    dest.ai_family = family;
+    dest.ai_socktype = socktype;
+    dest.ai_protocol = protocol;
+    dest.ai_addrlen = 0;
+    dest.ai_canonname = NULL;
+    dest.ai_addr = NULL;
+    dest.ai_next = NULL;
 }
 
 void trim_zeros(std::string& str)

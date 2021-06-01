@@ -24,11 +24,6 @@ class Address
 {
 public:
     static void close(int fd);
-    template <class Container>
-    static void copy(Container& dest,
-                     const std::string& node,
-                     const std::string& service,
-                     const struct addrinfo* hints);
 
     Address();
     Address(const Address& other);
@@ -65,11 +60,11 @@ public:
     ~Socket();
     Socket& operator=(const Socket& other);
     Socket& operator=(const struct addrinfo& ai);
-    operator struct addrinfo() const;
     bool operator<(const Socket& other) const;
     bool operator>(const Socket& other) const;
     bool operator!=(const Socket& other) const;
     bool operator==(const Socket& other) const;
+    operator const struct addrinfo&() const;
     std::string cname() const;
     int connect(int fd = -1) const;
     int socket() const;
@@ -82,18 +77,30 @@ private:
                 int family = 0,
                 int flags = 0);
 
-    Address address;
     struct addrinfo ai;
 };
 
-Addresses get_addresses(const std::string& node,
-                        const struct addrinfo* hints = NULL);
-Addresses get_addresses(const std::string& node, int family, int flags = 0);
-Sockets get_sockets(const std::string& node,
-                    const std::string& service = "",
-                    const struct addrinfo* hints = NULL);
-Hostname get_hostname();
-void set_address_hints(struct addrinfo* ai, int family, int flags);
-void trim_zeros(std::string& str);
+template <class Container>
+extern void copy_addrinfo(Container& dest,
+                          const std::string& node,
+                          const std::string& service,
+                          const struct addrinfo* hints);
+extern void copy_addrinfo(struct addrinfo& dest,
+                          const struct addrinfo& src);
+extern Addresses get_addresses(const std::string& node,
+                               const struct addrinfo* hints = NULL);
+extern Addresses get_addresses(const std::string& node,
+                               int family,
+                               int flags = 0);
+extern Sockets get_sockets(const std::string& node,
+                           const std::string& service = "",
+                           const struct addrinfo* hints = NULL);
+extern Hostname get_hostname();
+extern void init_addrinfo(struct addrinfo& dest,
+                          int protocol = 0,
+                          int socktype = 0,
+                          int family = 0,
+                          int flags = 0);
+extern void trim_zeros(std::string& str);
 
 #endif
