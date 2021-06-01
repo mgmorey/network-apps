@@ -374,7 +374,10 @@ void Socket::copy(const struct addrinfo& other)
     ai.ai_socktype = other.ai_socktype;
     ai.ai_protocol = other.ai_protocol;
     ai.ai_addrlen = other.ai_addrlen;
-    ai.ai_canonname = other.ai_canonname;
+    free(ai.ai_canonname);
+    ai.ai_canonname = other.ai_canonname != NULL ?
+        strdup(other.ai_canonname) :
+        NULL;
     ai.ai_addr = other.ai_addr;
     ai.ai_next = NULL;
 }
