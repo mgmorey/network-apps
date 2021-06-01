@@ -305,7 +305,13 @@ bool Socket::operator==(const Socket& other) const
 
 std::string Socket::cname() const
 {
-    return ai.ai_canonname == NULL ? "" : ai.ai_canonname;
+    std::string result;
+
+    if (ai.ai_canonname != NULL) {
+        result = ai.ai_canonname;
+    }
+
+    return ai.ai_canonname;
 }
 
 int Socket::connect(int fd) const
