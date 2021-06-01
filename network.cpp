@@ -28,6 +28,58 @@ void Address::close(int fd)
 #endif
 }
 
+template <class Container>
+void Address::copy(Container& dest,
+                   const std::string& node,
+                   const std::string& service,
+                   const struct addrinfo* hints)
+{
+    struct addrinfo* list = NULL;
+    assert(!(node.empty() && service.empty()));
+    const char* c_node = node.empty() ? NULL : node.c_str();
+    const char* c_service = service.empty() ? NULL : service.c_str();
+    int error = getaddrinfo(c_node, c_service, hints, &list);
+
+    if (error != 0) {
+        std::cerr << "getaddrinfo(";
+
+        if (!node.empty()) {
+            std::cerr << '"'
+                      << node
+                      << '"';
+        }
+        else {
+            std::cerr << "NULL";
+        }
+
+        std::cerr << ", ";
+
+        if (!service.empty()) {
+            std::cerr << '"'
+                      << service
+                      << "\", ";
+        }
+
+        std::cerr << "...) returned "
+                  << error
+                  << " ("
+                  << gai_strerror(error)
+                  << ')'
+                  << std::endl;
+    }
+    else {
+        assert(list != NULL);
+
+        for (const struct addrinfo* elem = list;
+             elem != NULL;
+             elem = elem->ai_next) {
+            dest.push_back(*elem);
+        }
+
+        freeaddrinfo(list);
+    }
+}
+
 Address::Address()
 {
 }
@@ -324,62 +376,10 @@ void Socket::set_up()
     socktype = 0;
 }
 
-template <class Container>
-void copy_addrinfo(Container& dest,
-                   const std::string& node,
-                   const std::string& service,
-                   const struct addrinfo* hints)
-{
-    struct addrinfo* list = NULL;
-    assert(!(node.empty() && service.empty()));
-    const char* c_node = node.empty() ? NULL : node.c_str();
-    const char* c_service = service.empty() ? NULL : service.c_str();
-    int error = getaddrinfo(c_node, c_service, hints, &list);
-
-    if (error != 0) {
-        std::cerr << "getaddrinfo(";
-
-        if (!node.empty()) {
-            std::cerr << '"'
-                      << node
-                      << '"';
-        }
-        else {
-            std::cerr << "NULL";
-        }
-
-        std::cerr << ", ";
-
-        if (!service.empty()) {
-            std::cerr << '"'
-                      << service
-                      << "\", ";
-        }
-
-        std::cerr << "...) returned "
-                  << error
-                  << " ("
-                  << gai_strerror(error)
-                  << ')'
-                  << std::endl;
-    }
-    else {
-        assert(list != NULL);
-
-        for (const struct addrinfo* elem = list;
-             elem != NULL;
-             elem = elem->ai_next) {
-            dest.push_back(*elem);
-        }
-
-        freeaddrinfo(list);
-    }
-}
-
 Addresses get_addresses(const std::string& node, const struct addrinfo* hints)
 {
     Addresses result;
-    copy_addrinfo(result, node, "", hints);
+    Address::copy(result, node, "", hints);
     result.unique();
     return result;
 }
@@ -389,7 +389,7 @@ Addresses get_addresses(const std::string& node, int family, int flags)
     Addresses result;
     struct addrinfo hints;
     set_address_hints(&hints, family, flags);
-    copy_addrinfo(result, node, "", &hints);
+    Address::copy(result, node, "", &hints);
     result.unique();
     return result;
 }
@@ -399,7 +399,7 @@ Sockets get_sockets(const std::string& node,
                     const struct addrinfo* hints)
 {
     Sockets result;
-    copy_addrinfo(result, node, service, hints);
+    Address::copy(result, node, service, hints);
     return result;
 }
 

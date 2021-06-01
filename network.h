@@ -24,6 +24,11 @@ class Address
 {
 public:
     static void close(int fd);
+    template <class Container>
+    static void copy(Container& dest,
+                     const std::string& node,
+                     const std::string& service,
+                     const struct addrinfo* hints);
 
     Address();
     Address(const Address& address);
@@ -79,11 +84,6 @@ private:
     int socktype;
 };
 
-template <class Container>
-void copy_addrinfo(Container& dest,
-                   const std::string& node,
-                   const std::string& service,
-                   const struct addrinfo* hints);
 Addresses get_addresses(const std::string& node,
                         const struct addrinfo* hints = NULL);
 Addresses get_addresses(const std::string& node, int family, int flags = 0);
