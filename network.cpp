@@ -16,7 +16,7 @@
 
 #include <cassert>		// assert()
 #include <cerrno>		// errno
-#include <cstdio>		// free()
+#include <cstdlib>		// free()
 #include <cstring>		// std::memcpy(), strdup(),
                                 // std::strerror()
 #include <iostream>		// std::cerr, std::endl
