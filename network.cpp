@@ -124,11 +124,9 @@ Endpoint Address::endpoint(int flags) const
                   << ')'
                   << std::endl;
     }
-    else {
-        trim_zeros(host);
-        trim_zeros(service);
-    }
 
+    trim_zeros(host);
+    trim_zeros(service);
     return(Endpoint(host, service));
 }
 
@@ -387,10 +385,8 @@ Hostname get_hostname()
                   << error
                   << std::endl;
     }
-    else {
-        trim_zeros(host);
-    }
 
+    trim_zeros(host);
     return host;
 }
 
