@@ -69,13 +69,13 @@ static void test_connect(const std::string& host, const std::string& service)
     std::string hostname(host);
     Sockets sockets(get_sockets(hostname, service, &hints));
 
-    for (Sockets::const_iterator it = sockets.begin();
+    for (Sockets::iterator it = sockets.begin();
          it != sockets.end();
          ++it) {
         fd = it->connect();
 
         if (fd >= 0) {
-            hostname = it->canonical_hostname();
+            hostname = it->cname();
             break;
         }
     }

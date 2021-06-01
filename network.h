@@ -61,6 +61,7 @@ public:
     Socket();
     Socket(const Socket& socket);
     Socket(const struct addrinfo& ai);
+    Socket(int protocol, int socktype, int family, int flags = 0);
     ~Socket();
     Socket& operator=(const Socket& socket);
     Socket& operator=(const struct addrinfo& ai);
@@ -68,20 +69,21 @@ public:
     bool operator>(const Socket& socket) const;
     bool operator!=(const Socket& socket) const;
     bool operator==(const Socket& socket) const;
-    std::string canonical_hostname() const;
+    const struct addrinfo& addrinfo() const;
+    std::string cname() const;
     int connect(int fd = -1) const;
     int socket() const;
 
 private:
     void copy(const Socket& socket);
     void copy(const struct addrinfo& ai);
-    void set_up();
+    void set_up(int protocol = 0,
+                int socktype = 0,
+                int family = 0,
+                int flags = 0);
 
-    Address addr;
-    std::string cname;
-    int family;
-    int protocol;
-    int socktype;
+    Address address;
+    struct addrinfo ai;
 };
 
 Addresses get_addresses(const std::string& node,

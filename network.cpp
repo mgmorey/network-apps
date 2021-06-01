@@ -233,16 +233,21 @@ Socket::Socket()
     set_up();
 }
 
-Socket::Socket(const Socket& socket)
+Socket::Socket(const Socket& other)
 {
     set_up();
-    copy(socket);
+    copy(other);
 }
 
-Socket::Socket(const struct addrinfo& ai)
+Socket::Socket(const struct addrinfo& other)
 {
     set_up();
-    copy(ai);
+    copy(other);
+}
+
+Socket::Socket(int protocol, int socktype, int family, int flags)
+{
+    set_up(protocol, socktype, family, flags);
 }
 
 Socket::~Socket()
@@ -263,34 +268,44 @@ Socket& Socket::operator=(const struct addrinfo& ai)
 
 bool Socket::operator<(const Socket& socket) const
 {
-    return (socktype < socket.socktype ||
-            protocol < socket.protocol ||
-            family < socket.family ||
-            addr < socket.addr);
+    return (ai.ai_protocol < socket.ai.ai_protocol ||
+            ai.ai_socktype < socket.ai.ai_socktype ||
+            ai.ai_family < socket.ai.ai_family ||
+            address < socket.address);
 }
 
 bool Socket::operator>(const Socket& socket) const
 {
-    return (socktype > socket.socktype ||
-            protocol > socket.protocol ||
-            family > socket.family ||
-            addr > socket.addr);
+    return (ai.ai_protocol > socket.ai.ai_protocol ||
+            ai.ai_socktype > socket.ai.ai_socktype ||
+            ai.ai_family > socket.ai.ai_family ||
+            address > socket.address);
 }
 
 bool Socket::operator!=(const Socket& socket) const
 {
-    return (socktype != socket.socktype ||
-            protocol != socket.protocol ||
-            family != socket.family ||
-            addr != socket.addr);
+    return (ai.ai_protocol != socket.ai.ai_protocol ||
+            ai.ai_socktype != socket.ai.ai_socktype ||
+            ai.ai_family != socket.ai.ai_family ||
+            address != socket.address);
 }
 
 bool Socket::operator==(const Socket& socket) const
 {
-    return (socktype == socket.socktype &&
-            protocol == socket.protocol &&
-            family == socket.family &&
-            addr == socket.addr);
+    return (ai.ai_protocol == socket.ai.ai_protocol &&
+            ai.ai_socktype == socket.ai.ai_socktype &&
+            ai.ai_family == socket.ai.ai_family &&
+            address == socket.address);
+}
+
+const struct addrinfo& Socket::addrinfo() const
+{
+    return ai;
+}
+
+std::string Socket::cname() const
+{
+    return ai.ai_canonname == NULL ? "" : ai.ai_canonname;
 }
 
 int Socket::connect(int fd) const
@@ -298,14 +313,14 @@ int Socket::connect(int fd) const
     int error = -1;
 
     if (fd == -1) {
-        fd = socket();
+        fd = this->socket();
 
         if (fd == -1) {
             goto clean_up;
         }
     }
 
-    error = addr.connect(fd);
+    error = address.connect(fd);
 
     if (error == -1) {
         goto clean_up_socket;
@@ -320,22 +335,17 @@ clean_up:
     return -1;
 }
 
-std::string Socket::canonical_hostname() const
-{
-    return cname;
-}
-
 int Socket::socket() const
 {
-    int fd = ::socket(family, socktype, protocol);
+    int fd = ::socket(ai.ai_family, ai.ai_socktype, ai.ai_protocol);
 
     if (fd == -1) {
         std::cerr << "socket("
-                  << family
+                  << ai.ai_family
                   << ", "
-                  << socktype
+                  << ai.ai_socktype
                   << ", "
-                  << protocol
+                  << ai.ai_protocol
                   << ") returned "
                   << fd
                   << std::endl;
@@ -344,36 +354,35 @@ int Socket::socket() const
     return fd;
 }
 
-void Socket::copy(const Socket& socket)
+void Socket::copy(const Socket& other)
 {
-    addr = socket.addr;
-    cname = socket.cname;
-    family = socket.family;
-    protocol = socket.protocol;
-    socktype = socket.socktype;
+    address = other.address;
+    copy(other.ai);
 }
 
-void Socket::copy(const struct addrinfo& ai)
+void Socket::copy(const struct addrinfo& other)
 {
-    addr = ai;
-
-    if (ai.ai_canonname == NULL) {
-        cname.clear();
-    }
-    else {
-        cname = ai.ai_canonname;
-    }
-
-    family = ai.ai_family;
-    protocol = ai.ai_protocol;
-    socktype = ai.ai_socktype;
+    address = other;
+    ai.ai_flags = other.ai_flags;
+    ai.ai_family = other.ai_family;
+    ai.ai_socktype = other.ai_socktype;
+    ai.ai_protocol = other.ai_protocol;
+    ai.ai_addrlen = other.ai_addrlen;
+    ai.ai_canonname = other.ai_canonname;
+    ai.ai_addr = other.ai_addr;
+    ai.ai_next = NULL;
 }
 
-void Socket::set_up()
+void Socket::set_up(int protocol, int socktype, int family, int flags)
 {
-    family = 0;
-    protocol = 0;
-    socktype = 0;
+    ai.ai_flags = flags;
+    ai.ai_family = family;
+    ai.ai_socktype = socktype;
+    ai.ai_protocol = protocol;
+    ai.ai_addrlen = 0;
+    ai.ai_canonname = NULL;
+    ai.ai_addr = NULL;
+    ai.ai_next = NULL;
 }
 
 Addresses get_addresses(const std::string& node, const struct addrinfo* hints)
@@ -387,8 +396,8 @@ Addresses get_addresses(const std::string& node, const struct addrinfo* hints)
 Addresses get_addresses(const std::string& node, int family, int flags)
 {
     Addresses result;
-    struct addrinfo hints;
-    set_address_hints(&hints, family, flags);
+    Socket socket(0, 0, family, flags);
+    struct addrinfo hints = socket.addrinfo();
     Address::copy(result, node, "", &hints);
     result.unique();
     return result;
