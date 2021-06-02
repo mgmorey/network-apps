@@ -74,13 +74,7 @@ bool Address::operator==(const Address& other) const
 int Address::connect(int fd) const
 {
     assert(size());
-    int error = -1;
-
-    if (fd == -1) {
-        goto clean_up;
-    }
-
-    error = ::connect(fd, data(), size());
+    int error = ::connect(fd, data(), size());
 
     if (error == -1) {
         std::cerr << "connect("
@@ -93,13 +87,11 @@ int Address::connect(int fd) const
         goto clean_up_socket;
     }
 
-    return fd;
+    return error;
 
 clean_up_socket:
     close_socket(fd);
-
-clean_up:
-    return -1;
+    return error;
 }
 
 Endpoint Address::endpoint(int flags) const
@@ -265,29 +257,17 @@ std::string Socket::cname() const
 int Socket::connect(int fd) const
 {
     Address address(*this);
-    int error = -1;
-
-    if (fd == -1) {
-        fd = this->socket();
-
-        if (fd == -1) {
-            goto clean_up;
-        }
-    }
-
-    error = address.connect(fd);
+    int error = address.connect(fd);
 
     if (error == -1) {
         goto clean_up_socket;
     }
 
-    return fd;
+    return error;
 
 clean_up_socket:
     close_socket(fd);
-
-clean_up:
-    return -1;
+    return error;
 }
 
 int Socket::socket() const
@@ -326,6 +306,10 @@ void Socket::init(int protocol, int socktype, int family, int flags)
 
 void close_socket(int fd)
 {
+    if (fd == -1) {
+        return;
+    }
+
 #ifdef _WIN32
     ::closesocket(fd);
 #else
@@ -344,9 +328,13 @@ ConnectResult connect_socket(const std::string& host,
     for (Sockets::const_iterator it = sockets.begin();
          it != sockets.end();
          ++it) {
-        fd = it->connect();
+        fd = it->socket();
 
-        if (fd >= 0) {
+        if (fd == -1) {
+            continue;
+        }
+
+        if (it->connect(fd) == 0) {
             canonical_name = it->cname();
             break;
         }
