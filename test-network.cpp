@@ -1,6 +1,5 @@
 #include "network-address.h"	// Address
 #include "network-addresses.h"	// Addresses, get_addresses()
-#include "network-connect.h"	// close_socket(), connect_socket()
 #include "network-hostname.h"	// get_hostname()
 #include "network-socket.h"	// Socket
 
