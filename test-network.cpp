@@ -55,7 +55,7 @@ static void print_addresses(const Addresses& addresses,
     }
 }
 
-static void test_host(const std::string& host)
+static void test_host(const Hostname& host)
 {
     std::cout << "Hostname: " << host << std::endl;
     Addresses any(get_addresses(host));

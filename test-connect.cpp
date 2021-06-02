@@ -17,7 +17,7 @@
 #include <set>			// std::set
 #include <string>		// std::string
 
-static void test_connect(std::string& host, const std::string& service)
+static void test_connect(const Hostname& host, const Service& service)
 {
     Socket hints(IPPROTO_TCP, SOCK_STREAM, AF_UNSPEC, AI_CANONNAME);
     ConnectResult result = connect_socket(host, service, hints);
