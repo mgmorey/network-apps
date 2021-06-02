@@ -69,4 +69,5 @@ Mkfile.old
 dkms.conf
 
 # Binary files
+test-connect
 test-network
