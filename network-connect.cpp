@@ -1,6 +1,6 @@
 #include "network-connect.h"
+#include "network-address.h"
 #include "network-sockets.h"
-#include "network-string.h"
 
 #ifdef _WIN32
 #include <winsock2.h>		// closesocket(), connect(),
@@ -53,7 +53,9 @@ ConnectResult connect_socket(const std::string& host,
             continue;
         }
 
-        if (it->connect(fd) == -1) {
+        Address address(*it);
+
+        if (address.connect(fd) == -1) {
             close_socket(fd);
         }
         else {

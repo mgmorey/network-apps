@@ -93,8 +93,8 @@ int Address::connect(int fd) const
 Endpoint Address::endpoint(int flags) const
 {
     assert(size());
-    std::string host(NI_MAXHOST, '\0');
-    std::string service(NI_MAXHOST, '\0');
+    Hostname host(NI_MAXHOST, '\0');
+    Service service(NI_MAXHOST, '\0');
     int error = getnameinfo(data(), size(),
                             &host[0], NI_MAXHOST,
                             &service[0], NI_MAXHOST,
@@ -114,21 +114,18 @@ Endpoint Address::endpoint(int flags) const
     return(Endpoint(host, service));
 }
 
-std::string Address::service() const
+Service Address::service() const
 {
-    assert(size());
     return endpoint().second;
 }
 
-std::string Address::to_hostname() const
+Hostname Address::to_hostname() const
 {
-    assert(size());
     return endpoint().first;
 }
 
 std::string Address::to_string() const
 {
-    assert(size());
     return endpoint(NI_NUMERICHOST).first;
 }
 

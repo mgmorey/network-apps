@@ -30,7 +30,6 @@ public:
     bool operator==(const Socket& other) const;
     operator const struct addrinfo&() const;
     std::string cname() const;
-    int connect(int fd) const;
     int socket() const;
 
 private:
