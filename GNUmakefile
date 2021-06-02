@@ -30,8 +30,9 @@ endif
 LINK.o = $(CXX) $(LDFLAGS) $(TARGET_ARCH)
 
 all_sources = $(library_sources) $(program_sources)
-library_sources = network.cpp network-address.cpp network-addresses.cpp \
-network-addrinfo.cpp network-socket.cpp network-sockets.cpp network-string.cpp
+library_sources = network-address.cpp network-addresses.cpp \
+network-addrinfo.cpp network-connect.cpp network-hostname.cpp \
+network-socket.cpp network-sockets.cpp network-string.cpp
 program_sources = test-connect.cpp test-network.cpp
 
 all_objects = $(library_objects) $(program_objects)
