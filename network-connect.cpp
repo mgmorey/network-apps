@@ -58,6 +58,7 @@ ConnectResult connect_socket(const std::string& host,
 
         if (address.connect(fd) == -1) {
             close_socket(fd);
+            fd = -1;
         }
         else {
             canonical_name = it->cname();
