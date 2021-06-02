@@ -200,6 +200,11 @@ Socket::Socket(int protocol, int socktype, int family, int flags)
     init(protocol, socktype, family, flags);
 }
 
+Socket::Socket(int family, int flags)
+{
+    init(0, 0, family, flags);
+}
+
 Socket::~Socket()
 {
     free(ai.ai_addr);
@@ -405,7 +410,8 @@ void copy_addrinfo(struct addrinfo& dest, const struct addrinfo& src)
     dest.ai_next = NULL;
 }
 
-Addresses get_addresses(const std::string& node, const struct addrinfo* hints)
+Addresses get_addresses(const std::string& node,
+                        const struct addrinfo* hints)
 {
     Addresses result;
     copy_addrinfo(result, node, "", hints);
@@ -413,14 +419,16 @@ Addresses get_addresses(const std::string& node, const struct addrinfo* hints)
     return result;
 }
 
-Addresses get_addresses(const std::string& node, int family, int flags)
+Addresses get_addresses(const std::string& node,
+                        const struct addrinfo& hints)
 {
-    Addresses result;
-    Socket socket(0, 0, family, flags);
-    const struct addrinfo& hints = socket;
-    copy_addrinfo(result, node, "", &hints);
-    result.unique();
-    return result;
+    return get_addresses(node, &hints);
+}
+
+Addresses get_addresses(const std::string& node,
+                        int family, int flags)
+{
+    return get_addresses(node, Socket(family, flags));
 }
 
 Sockets get_sockets(const std::string& node,

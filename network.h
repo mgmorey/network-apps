@@ -57,6 +57,7 @@ public:
     Socket(const Socket& other);
     Socket(const struct addrinfo& other);
     Socket(int protocol, int socktype, int family, int flags = 0);
+    Socket(int family, int flags = 0);
     ~Socket();
     Socket& operator=(const Socket& other);
     Socket& operator=(const struct addrinfo& ai);
@@ -90,8 +91,9 @@ extern void copy_addrinfo(struct addrinfo& dest,
 extern Addresses get_addresses(const std::string& node,
                                const struct addrinfo* hints = NULL);
 extern Addresses get_addresses(const std::string& node,
-                               int family,
-                               int flags = 0);
+                               const struct addrinfo& hints);
+extern Addresses get_addresses(const std::string& node,
+                               int family, int flags = 0);
 extern Sockets get_sockets(const std::string& node,
                            const std::string& service = "",
                            const struct addrinfo* hints = NULL);
