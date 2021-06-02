@@ -73,17 +73,17 @@ network-socket.h
 network-string.o: network-string.cpp network-string.h
 
 test-connect: test-connect.o network-address.o network-addresses.o \
-network-addrinfo.o network-connect.o network-hostname.o network-socket.o \
-network-sockets.o network-string.o
+network-addrinfo.o network-connect.o network-socket.o network-sockets.o \
+network-string.o
 
 test-connect.o: test-connect.cpp network-address.h network-addresses.h \
-network-addrinfo.h network-connect.h network-hostname.h network-socket.h \
-network-sockets.h network-types.h
+network-addrinfo.h network-connect.h network-socket.h network-sockets.h \
+network-types.h
 
 test-network: test-network.o network-address.o network-addresses.o \
-network-addrinfo.o network-connect.o network-hostname.o network-socket.o \
-network-sockets.o network-string.o
+network-addrinfo.o network-hostname.o network-socket.o network-sockets.o \
+network-string.o
 
 test-network.o: test-network.cpp network-address.h network-addresses.h \
-network-addrinfo.h network-connect.h network-hostname.h network-socket.h \
+network-addrinfo.h network-hostname.h network-socket.h \
 network-sockets.h network-types.h
