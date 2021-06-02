@@ -4,7 +4,7 @@
 #include "network-types.h"
 
 #ifdef _WIN32
-#include <ws2tcpip.h>		// struct addrinfo, socklen_t
+#include <ws2tcpip.h>		// struct addrinfo
 #else
 #include <netdb.h>		// struct addrinfo
 #endif

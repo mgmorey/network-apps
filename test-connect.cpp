@@ -5,17 +5,16 @@
 #include "network-socket.h"	// Socket
 
 #ifdef _WIN32
-#include <winsock2.h>		// IPPROTO_TCP, WSACleanup(), WSAStartup()
+#include <ws2tcpip.h>		// AI_CANONNAME
+#include <winsock2.h>		// AF_UNSPEC, IPPROTO_TCP,
+                                // SOCK_STREAM, WSACleanup(),
+                                // WSAStartup()
 #else
 #include <netinet/in.h>		// IPPROTO_TCP
 #endif
 
-#include <algorithm>		// std::copy(), std::set_union()
 #include <cstdlib>		// EXIT_FAILURE, EXIT_SUCCESS
 #include <iostream>		// std::cout, std::endl
-#include <iterator>		// std::inserter()
-#include <set>			// std::set
-#include <string>		// std::string
 
 static void test_connect(const Hostname& host, const Service& service)
 {
