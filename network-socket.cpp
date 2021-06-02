@@ -105,9 +105,9 @@ Socket::operator const struct addrinfo&() const
     return ai;
 }
 
-std::string Socket::cname() const
+Hostname Socket::cname() const
 {
-    std::string result;
+    Hostname result;
 
     if (ai.ai_canonname != NULL) {
         result = ai.ai_canonname;

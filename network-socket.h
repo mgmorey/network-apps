@@ -1,6 +1,8 @@
 #ifndef NETWORK_SOCKET_H
 #define NETWORK_SOCKET_H
 
+#include "network-types.h"
+
 #ifdef _WIN32
 #include <winsock2.h>		// AF_UNSPEC
 #include <ws2tcpip.h>		// struct addrinfo, socklen_t
@@ -29,7 +31,7 @@ public:
     bool operator!=(const Socket& other) const;
     bool operator==(const Socket& other) const;
     operator const struct addrinfo&() const;
-    std::string cname() const;
+    Hostname cname() const;
     int socket() const;
 
 private:
