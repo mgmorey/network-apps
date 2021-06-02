@@ -1,5 +1,6 @@
 #include "network-sockets.h"
 #include "network-addrinfo.h"
+#include "network-socket.h"
 
 #ifdef _WIN32
 #include <winsock2.h>		// closesocket(), connect(),
@@ -22,8 +23,8 @@
                                 // std::strerror()
 #include <iostream>		// std::cerr, std::endl
 
-Sockets get_sockets(const std::string& node,
-                    const std::string& service,
+Sockets get_sockets(const Hostname& node,
+                    const Service& service,
                     const struct addrinfo* hints)
 {
     Sockets result;
@@ -31,8 +32,8 @@ Sockets get_sockets(const std::string& node,
     return result;
 }
 
-Sockets get_sockets(const std::string& node,
-                    const std::string& service,
+Sockets get_sockets(const Hostname& node,
+                    const Service& service,
                     const struct addrinfo& hints)
 {
     return get_sockets(node, service, &hints);

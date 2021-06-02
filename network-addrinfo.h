@@ -1,6 +1,8 @@
 #ifndef NETWORK_ADDRINFO_H
 #define NETWORK_ADDRINFO_H
 
+#include "network-types.h"
+
 #ifdef _WIN32
 #include <winsock2.h>		// closesocket(), connect(),
                                 // gethostname(), socket()
@@ -24,8 +26,8 @@
 
 template <class Container>
 void copy_addrinfo(Container& dest,
-                   const std::string& node,
-                   const std::string& service,
+                   const Hostname& node,
+                   const Service& service,
                    const struct addrinfo* hints)
 {
     struct addrinfo* list = NULL;

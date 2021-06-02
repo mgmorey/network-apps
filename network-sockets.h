@@ -1,7 +1,7 @@
 #ifndef NETWORK_SOCKETS_H
 #define NETWORK_SOCKETS_H
 
-#include "network-socket.h"
+#include "network-types.h"
 
 #ifdef _WIN32
 #include <winsock2.h>		// AF_UNSPEC
@@ -17,11 +17,11 @@
 
 typedef std::list<class Socket> Sockets;
 
-extern Sockets get_sockets(const std::string& node,
-                           const std::string& service = "",
+extern Sockets get_sockets(const Hostname& node,
+                           const Service& service = "",
                            const struct addrinfo* hints = NULL);
-extern Sockets get_sockets(const std::string& node,
-                           const std::string& service,
+extern Sockets get_sockets(const Hostname& node,
+                           const Service& service,
                            const struct addrinfo& hints);
 
 #endif

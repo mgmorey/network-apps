@@ -1,6 +1,7 @@
 #include "network-connect.h"
 #include "network-address.h"
 #include "network-sockets.h"
+#include "network-socket.h"
 
 #ifdef _WIN32
 #include <winsock2.h>		// closesocket(), connect(),

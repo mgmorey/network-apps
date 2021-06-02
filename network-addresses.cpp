@@ -1,5 +1,6 @@
 #include "network-addresses.h"
 #include "network-addrinfo.h"
+#include "network-address.h"
 
 #ifdef _WIN32
 #include <winsock2.h>		// closesocket(), connect(),
@@ -22,7 +23,7 @@
                                 // std::strerror()
 #include <iostream>		// std::cerr, std::endl
 
-Addresses get_addresses(const std::string& node,
+Addresses get_addresses(const Hostname& node,
                         const struct addrinfo* hints)
 {
     Addresses result;
@@ -31,7 +32,7 @@ Addresses get_addresses(const std::string& node,
     return result;
 }
 
-Addresses get_addresses(const std::string& node,
+Addresses get_addresses(const Hostname& node,
                         const struct addrinfo& hints)
 {
     return get_addresses(node, &hints);
