@@ -21,7 +21,7 @@ static void test_connect(const Hostname& host, const Service& service)
 {
     Socket hints(IPPROTO_TCP, SOCK_STREAM, AF_UNSPEC, AI_CANONNAME);
     ConnectResult result = connect_socket(host, service, hints);
-    std::string canonical_name = result.second;
+    Hostname canonical_name = result.second;
     int fd = result.first;
 
     if (fd >= 0) {
