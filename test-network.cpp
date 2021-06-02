@@ -55,28 +55,6 @@ static void print_addresses(const Addresses& addresses,
     }
 }
 
-static void test_connect(std::string& host, const std::string& service)
-{
-    Socket hints(IPPROTO_TCP, SOCK_STREAM, AF_UNSPEC, AI_CANONNAME);
-    ConnectResult result = connect_socket(host, service, hints);
-    std::string canonical_name = result.second;
-    int fd = result.first;
-
-    if (fd >= 0) {
-        std::cout << "Connected to "
-                  << (!canonical_name.empty() ?
-                      canonical_name :
-                      host)
-                  << " on socket "
-                  << fd
-                  << std::endl;
-        close_socket(fd);
-        std::cout << "Closed socket "
-                  << fd
-                  << std::endl;
-    }
-}
-
 static void test_host(const std::string& host)
 {
     std::cout << "Hostname: " << host << std::endl;
@@ -125,7 +103,6 @@ static void wsa_tear_down(void)
 int main(void)
 {
     std::string hostname("example.com");
-    std::string service("http");
     int result = EXIT_FAILURE;
 
     if (wsa_set_up()) {
@@ -136,7 +113,6 @@ int main(void)
     std::cout << std::endl;
     test_host(hostname);
     std::cout << std::endl;
-    test_connect(hostname, service);
     result = EXIT_SUCCESS;
 
 clean_up:
