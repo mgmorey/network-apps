@@ -2,24 +2,19 @@
 #include "network-string.h"
 
 #ifdef _WIN32
-#include <winsock2.h>		// closesocket(), connect(),
-                                // gethostname(), socket()
+#include <winsock2.h>		// connect(),
 #include <ws2tcpip.h>		// NI_MAXHOST, struct addrinfo,
-                                // getaddrinfo(), getnameinfo(),
+                                // getnameinfo(),
                                 // socklen_t
 #else
 #include <netdb.h>		// NI_MAXHOST, struct addrinfo,
-                                // getaddrinfo(), getnameinfo()
-#include <sys/socket.h>		// AF_UNSPEC, connect(), socket(),
-                                // socklen_t
-#include <unistd.h>		// close(), gethostname()
+                                // getnameinfo()
+#include <sys/socket.h>		// connect(), socklen_t
 #endif
 
 #include <cassert>		// assert()
 #include <cerrno>		// errno
-#include <cstdlib>		// free()
-#include <cstring>		// std::memcpy(), strdup(),
-                                // std::strerror()
+#include <cstring>		// std::strerror()
 #include <iostream>		// std::cerr, std::endl
 
 Address::Address()
