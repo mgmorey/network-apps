@@ -52,45 +52,10 @@ static void print_addresses(const Addresses& addresses,
     }
 }
 
-static void test_connect(const std::string& host, const std::string& service)
+static void test_connect(std::string& host, const std::string& service)
 {
-    struct addrinfo hints = {
-        AI_CANONNAME,	// ai_flags
-        AF_UNSPEC,	// ai_family
-        SOCK_STREAM,	// ai_socktype
-        IPPROTO_TCP,	// ai_protocol
-        0,		// ai_adddrlen
-        NULL,		// ai_canonname
-        NULL,		// ai_addr
-        NULL		// ai_next
-    };
-
-    int fd = -1;
-    std::string hostname(host);
-    Sockets sockets(get_sockets(hostname, service, &hints));
-
-    for (Sockets::const_iterator it = sockets.begin();
-         it != sockets.end();
-         ++it) {
-        fd = it->connect();
-
-        if (fd >= 0) {
-            hostname = it->cname();
-            break;
-        }
-    }
-
-    if (fd >= 0) {
-        std::cout << "Connected to "
-                  << hostname
-                  << " on socket "
-                  << fd
-                  << std::endl;
-        close_socket(fd);
-        std::cout << "Closed socket "
-                  << fd
-                  << std::endl;
-    }
+    Socket hints(IPPROTO_TCP, SOCK_STREAM, AF_UNSPEC, AI_CANONNAME);
+    return connect_socket(host, service, hints);
 }
 
 static void test_host(const std::string& host)

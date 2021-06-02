@@ -333,6 +333,37 @@ void close_socket(int fd)
 #endif
 }
 
+void connect_socket(std::string& host,
+                    const std::string& service,
+                    const struct addrinfo &hints)
+{
+    Sockets sockets(get_sockets(host, service, hints));
+    int fd = -1;
+
+    for (Sockets::const_iterator it = sockets.begin();
+         it != sockets.end();
+         ++it) {
+        fd = it->connect();
+
+        if (fd >= 0) {
+            host = it->cname();
+            break;
+        }
+    }
+
+    if (fd >= 0) {
+        std::cout << "Connected to "
+                  << host
+                  << " on socket "
+                  << fd
+                  << std::endl;
+        close_socket(fd);
+        std::cout << "Closed socket "
+                  << fd
+                  << std::endl;
+    }
+}
+
 template <class Container>
 void copy_addrinfo(Container& dest,
                    const std::string& node,
@@ -438,6 +469,13 @@ Sockets get_sockets(const std::string& node,
     Sockets result;
     copy_addrinfo(result, node, service, hints);
     return result;
+}
+
+Sockets get_sockets(const std::string& node,
+                    const std::string& service,
+                    const struct addrinfo& hints)
+{
+    return get_sockets(node, service, &hints);
 }
 
 Hostname get_hostname()

@@ -80,6 +80,9 @@ private:
 };
 
 extern void close_socket(int fd);
+extern void connect_socket(std::string& host,
+                           const std::string& service,
+                           const struct addrinfo &hints);
 template <class Container>
 extern void copy_addrinfo(Container& dest,
                           const std::string& node,
@@ -96,6 +99,9 @@ extern Addresses get_addresses(const std::string& node,
 extern Sockets get_sockets(const std::string& node,
                            const std::string& service = "",
                            const struct addrinfo* hints = NULL);
+extern Sockets get_sockets(const std::string& node,
+                           const std::string& service,
+                           const struct addrinfo& hints);
 extern Hostname get_hostname();
 extern void init_addrinfo(struct addrinfo& dest,
                           int protocol = 0,
