@@ -16,6 +16,7 @@
 typedef std::string Hostname;
 typedef std::string Service;
 
+typedef std::pair<int, Hostname> ConnectResult;
 typedef std::pair<Hostname, Service> Endpoint;
 typedef std::list<class Address> Addresses;
 typedef std::list<class Socket> Sockets;
@@ -80,9 +81,9 @@ private:
 };
 
 extern void close_socket(int fd);
-extern void connect_socket(std::string& host,
-                           const std::string& service,
-                           const struct addrinfo &hints);
+extern ConnectResult connect_socket(const std::string& host,
+                                    const std::string& service,
+                                    const struct addrinfo &hints);
 template <class Container>
 extern void copy_addrinfo(Container& dest,
                           const std::string& node,

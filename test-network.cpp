@@ -55,7 +55,23 @@ static void print_addresses(const Addresses& addresses,
 static void test_connect(std::string& host, const std::string& service)
 {
     Socket hints(IPPROTO_TCP, SOCK_STREAM, AF_UNSPEC, AI_CANONNAME);
-    return connect_socket(host, service, hints);
+    ConnectResult result = connect_socket(host, service, hints);
+    std::string canonical_name = result.second;
+    int fd = result.first;
+
+    if (fd >= 0) {
+        std::cout << "Connected to "
+                  << (!canonical_name.empty() ?
+                      canonical_name :
+                      host)
+                  << " on socket "
+                  << fd
+                  << std::endl;
+        close_socket(fd);
+        std::cout << "Closed socket "
+                  << fd
+                  << std::endl;
+    }
 }
 
 static void test_host(const std::string& host)

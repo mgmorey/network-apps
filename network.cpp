@@ -333,11 +333,12 @@ void close_socket(int fd)
 #endif
 }
 
-void connect_socket(std::string& host,
-                    const std::string& service,
-                    const struct addrinfo &hints)
+ConnectResult connect_socket(const std::string& host,
+                             const std::string& service,
+                             const struct addrinfo &hints)
 {
     Sockets sockets(get_sockets(host, service, hints));
+    std::string canonical_name;
     int fd = -1;
 
     for (Sockets::const_iterator it = sockets.begin();
@@ -346,22 +347,12 @@ void connect_socket(std::string& host,
         fd = it->connect();
 
         if (fd >= 0) {
-            host = it->cname();
+            canonical_name = it->cname();
             break;
         }
     }
 
-    if (fd >= 0) {
-        std::cout << "Connected to "
-                  << host
-                  << " on socket "
-                  << fd
-                  << std::endl;
-        close_socket(fd);
-        std::cout << "Closed socket "
-                  << fd
-                  << std::endl;
-    }
+    return ConnectResult(fd, canonical_name);
 }
 
 template <class Container>
