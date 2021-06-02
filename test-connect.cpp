@@ -66,15 +66,15 @@ static void wsa_tear_down(void)
 
 int main(void)
 {
-    std::string hostname("example.com");
-    std::string service("http");
+    Hostname host("example.com");
+    Service service("http");
     int result = EXIT_FAILURE;
 
     if (wsa_set_up()) {
         goto clean_up;
     }
 
-    test_connect(hostname, service);
+    test_connect(host, service);
     result = EXIT_SUCCESS;
 
 clean_up:

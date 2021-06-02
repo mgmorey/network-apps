@@ -41,7 +41,7 @@ static void print_addresses(const Addresses& addresses,
          ++it)
     {
         std::string addr(it->to_string());
-        std::string host(it->to_hostname());
+        Hostname host(it->to_hostname());
         std::cout << '\t'
                   << addr;
 
