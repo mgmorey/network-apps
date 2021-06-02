@@ -37,8 +37,8 @@ void close_socket(int fd)
 #endif
 }
 
-ConnectResult connect_socket(const std::string& host,
-                             const std::string& service,
+ConnectResult connect_socket(const Hostname& host,
+                             const Service& service,
                              const struct addrinfo &hints)
 {
     Sockets sockets(get_sockets(host, service, hints));
