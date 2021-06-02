@@ -10,7 +10,9 @@
                                 // SOCK_STREAM, WSACleanup(),
                                 // WSAStartup()
 #else
+#include <netdb.h>		// AI_CANNONNAME
 #include <netinet/in.h>		// IPPROTO_TCP
+#include <sys/socket.h>		// AF_UNSPEC, SOCK_STREAM
 #endif
 
 #include <cstdlib>		// EXIT_FAILURE, EXIT_SUCCESS
