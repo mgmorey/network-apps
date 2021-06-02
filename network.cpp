@@ -21,15 +21,6 @@
                                 // std::strerror()
 #include <iostream>		// std::cerr, std::endl
 
-void Address::close(int fd)
-{
-#ifdef _WIN32
-    closesocket(fd);
-#else
-    ::close(fd);
-#endif
-}
-
 Address::Address()
 {
 }
@@ -105,7 +96,7 @@ int Address::connect(int fd) const
     return fd;
 
 clean_up_socket:
-    Address::close(fd);
+    close_socket(fd);
 
 clean_up:
     return -1;
@@ -293,7 +284,7 @@ int Socket::connect(int fd) const
     return fd;
 
 clean_up_socket:
-    Address::close(fd);
+    close_socket(fd);
 
 clean_up:
     return -1;
@@ -331,6 +322,15 @@ void Socket::copy(const struct addrinfo& other)
 void Socket::init(int protocol, int socktype, int family, int flags)
 {
     init_addrinfo(ai, protocol, socktype, family, flags);
+}
+
+void close_socket(int fd)
+{
+#ifdef _WIN32
+    ::closesocket(fd);
+#else
+    ::close(fd);
+#endif
 }
 
 template <class Container>

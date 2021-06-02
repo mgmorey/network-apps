@@ -69,7 +69,7 @@ static void test_connect(const std::string& host, const std::string& service)
     std::string hostname(host);
     Sockets sockets(get_sockets(hostname, service, &hints));
 
-    for (Sockets::iterator it = sockets.begin();
+    for (Sockets::const_iterator it = sockets.begin();
          it != sockets.end();
          ++it) {
         fd = it->connect();
@@ -86,7 +86,7 @@ static void test_connect(const std::string& host, const std::string& service)
                   << " on socket "
                   << fd
                   << std::endl;
-        Address::close(fd);
+        close_socket(fd);
         std::cout << "Closed socket "
                   << fd
                   << std::endl;

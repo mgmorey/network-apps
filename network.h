@@ -23,8 +23,6 @@ typedef std::list<class Socket> Sockets;
 class Address
 {
 public:
-    static void close(int fd);
-
     Address();
     Address(const Address& other);
     Address(const struct addrinfo& other);
@@ -81,6 +79,7 @@ private:
     struct addrinfo ai;
 };
 
+extern void close_socket(int fd);
 template <class Container>
 extern void copy_addrinfo(Container& dest,
                           const std::string& node,
