@@ -1,5 +1,8 @@
-#include "network.h"		// Addresses, Sockets,
-                                // get_addresses(), get_sockets()
+#include "network-address.h"	// Address
+#include "network-addresses.h"	// Addresses, get_addresses()
+#include "network-connect.h"	// close_socket(), connect_socket()
+#include "network-hostname.h"	// get_hostname()
+#include "network-socket.h"	// Socket
 
 #ifdef _WIN32
 #include <winsock2.h>		// IPPROTO_TCP, WSACleanup(), WSAStartup()
@@ -78,8 +81,8 @@ static void test_host(const std::string& host)
 {
     std::cout << "Hostname: " << host << std::endl;
     Addresses any(get_addresses(host));
-    Addresses ipv4(get_addresses(host, AF_INET));
-    Addresses ipv6(get_addresses(host, AF_INET6));
+    Addresses ipv4(get_addresses(host, Socket(AF_INET)));
+    Addresses ipv6(get_addresses(host, Socket(AF_INET6)));
     std::set<Address> set_all;
     insert(ipv4, set_all);
     insert(ipv6, set_all);

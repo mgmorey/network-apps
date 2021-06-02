@@ -1,4 +1,6 @@
-#include "network.h"
+#include "network-socket.h"
+#include "network-address.h"
+#include "network-addrinfo.h"
 
 #ifdef _WIN32
 #include <winsock2.h>		// closesocket(), connect(),
@@ -116,18 +118,7 @@ std::string Socket::cname() const
 
 int Socket::connect(int fd) const
 {
-    Address address(*this);
-    int error = address.connect(fd);
-
-    if (error == -1) {
-        goto clean_up_socket;
-    }
-
-    return error;
-
-clean_up_socket:
-    close_socket(fd);
-    return error;
+    return Address(*this).connect(fd);
 }
 
 int Socket::socket() const

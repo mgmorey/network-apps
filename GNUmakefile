@@ -30,7 +30,8 @@ endif
 LINK.o = $(CXX) $(LDFLAGS) $(TARGET_ARCH)
 
 all_sources = $(library_sources) $(program_sources)
-library_sources = network.cpp network-address.cpp network-socket.cpp
+library_sources = network.cpp network-address.cpp network-addresses.cpp \
+network-addrinfo.cpp network-socket.cpp network-sockets.cpp network-string.cpp
 program_sources = test-network.cpp
 
 all_objects = $(library_objects) $(program_objects)
@@ -49,12 +50,32 @@ clean:
 test: $(programs)
 	@for f in $^; do ./$$f; done
 
-network.o: network.cpp network.h
+network-address.o: network-address.cpp network-address.h network-string.h \
+network-types.h
 
-network-address.o: network-address.cpp network.h
+network-addresses.o: network-addresses.cpp network-address.h \
+network-addrinfo.h network-string.h network-types.h
 
-network-socket.o: network-socket.cpp network.h
+network-addrinfo.o: network-addrinfo.cpp network-addrinfo.h
 
-test-network: test-network.o network.o network-address.o network-socket.o
+network-connect.o: network-connect.cpp network-connect.h \
+network-sockets.h network-string.h network-types.h
 
-test-network.o: test-network.cpp network.h
+network-hostname.o: network-hostname.cpp network-hostname.h network-string.h \
+network-types.h
+
+network-socket.o: network-socket.cpp network-address.h network-addrinfo.h \
+network-types.h
+
+network-sockets.o: network-sockets.cpp network-address.h network-addrinfo.h \
+network-socket.h network-types.h
+
+network-string.o: network-string.cpp network-string.h
+
+test-network: test-network.o network-address.o network-addresses.o \
+network-addrinfo.o network-connect.o network-hostname.o network-socket.o \
+network-sockets.o network-string.o
+
+test-network.o: test-network.cpp network-address.h network-addresses.h \
+network-addrinfo.h network-connect.h network-hostname.h network-socket.h \
+network-sockets.h network-types.h
