@@ -7,6 +7,7 @@
 #include <ws2tcpip.h>		// struct addrinfo, socklen_t
 #else
 #include <netdb.h>		// struct addrinfo
+#include <sys/socket.h>		// socklen_t
 #endif
 
 #include <string>		// std::string
