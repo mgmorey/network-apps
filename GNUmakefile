@@ -55,9 +55,9 @@ network-address.o: network-address.cpp network-address.h network-string.h \
 network-types.h
 
 network-addresses.o: network-addresses.cpp network-address.h \
-network-addrinfo.h network-string.h network-types.h
+network-addresses.h network-addrinfo.h network-string.h network-types.h
 
-network-addrinfo.o: network-addrinfo.cpp network-addrinfo.h
+network-addrinfo.o: network-addrinfo.cpp network-addrinfo.h network-types.h
 
 network-connect.o: network-connect.cpp network-address.h network-connect.h \
 network-socket.h network-sockets.h
@@ -66,10 +66,10 @@ network-hostname.o: network-hostname.cpp network-hostname.h network-string.h \
 network-types.h
 
 network-socket.o: network-socket.cpp network-address.h network-addrinfo.h \
-network-types.h
+network-socket.h network-types.h
 
 network-sockets.o: network-sockets.cpp network-address.h network-addrinfo.h \
-network-socket.h
+network-socket.h network-sockets.h
 
 network-string.o: network-string.cpp network-string.h
 
