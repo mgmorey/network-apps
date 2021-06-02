@@ -41,8 +41,8 @@ public:
     std::string to_string() const;
 
 private:
-    void copy(const Address& address);
-    void copy(const struct addrinfo& ai);
+    void copy(const Address& other);
+    void copy(const struct addrinfo& other);
     const struct sockaddr* data() const;
     socklen_t size() const;
 
