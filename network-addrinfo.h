@@ -74,8 +74,7 @@ void copy_addrinfo(Container& dest,
     }
 }
 
-extern void copy_addrinfo(struct addrinfo& dest,
-                          const struct addrinfo& src);
+extern void copy_addrinfo(struct addrinfo& dest, const struct addrinfo& src);
 extern void init_addrinfo(struct addrinfo& dest,
                           int protocol = 0,
                           int socktype = 0,
