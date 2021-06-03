@@ -1,6 +1,5 @@
 #include "network-socket.h"
 #include "network-address.h"
-#include "network-addrinfo.h"
 
 #ifdef _WIN32
 #include <winsock2.h>		// struct sockaddr, socket()
