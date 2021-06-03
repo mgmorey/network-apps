@@ -1,5 +1,10 @@
 SYSTEM_PREFIX := $(shell uname -s | cut -d- -f 1)
 
+ifeq "$(SYSTEM_PREFIX)" "FreeBSD"
+	CPPFLAGS += -I/usr/local/include
+	LDLIBS += -L/usr/local/lib
+endif
+
 ifeq "$(USING_DMALLOC)" "true"
 	CPPFLAGS += -DDMALLOC -DMALLOC_FUNC_CHECK
 	LDLIBS += -ldmalloc
