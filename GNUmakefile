@@ -38,7 +38,11 @@ all_sources = $(library_sources) $(program_sources)
 library_sources = network-address.cpp network-addresses.cpp \
 network-connect.cpp network-hostname.cpp network-socket.cpp \
 network-sockets.cpp network-string.cpp
-program_sources = test-connect.cpp test-network.cpp
+program_sources = test-network.cpp
+
+ifndef HTTP_PROXY
+	program_sources += test-connect.cpp
+endif
 
 all_objects = $(library_objects) $(program_objects)
 library_objects = $(subst .cpp,.o,$(library_sources))
