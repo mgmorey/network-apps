@@ -31,8 +31,8 @@ LINK.o = $(CXX) $(LDFLAGS) $(TARGET_ARCH)
 
 all_sources = $(library_sources) $(program_sources)
 library_sources = network-address.cpp network-addresses.cpp \
-network-addrinfo.cpp network-connect.cpp network-hostname.cpp \
-network-socket.cpp network-sockets.cpp network-string.cpp
+network-connect.cpp network-hostname.cpp network-socket.cpp \
+network-sockets.cpp network-string.cpp
 program_sources = test-connect.cpp test-network.cpp
 
 all_objects = $(library_objects) $(program_objects)
@@ -57,8 +57,6 @@ network-types.h
 network-addresses.o: network-addresses.cpp network-address.h \
 network-addresses.h network-addrinfo.h network-string.h network-types.h
 
-network-addrinfo.o: network-addrinfo.cpp network-addrinfo.h network-types.h
-
 network-connect.o: network-connect.cpp network-address.h network-connect.h \
 network-socket.h network-sockets.h
 
@@ -74,16 +72,14 @@ network-socket.h network-sockets.h
 network-string.o: network-string.cpp network-string.h
 
 test-connect: test-connect.o network-address.o network-addresses.o \
-network-addrinfo.o network-connect.o network-socket.o network-sockets.o \
-network-string.o
+network-connect.o network-socket.o network-sockets.o network-string.o
 
 test-connect.o: test-connect.cpp network-address.h network-addresses.h \
 network-addrinfo.h network-connect.h network-socket.h network-sockets.h \
 network-types.h
 
 test-network: test-network.o network-address.o network-addresses.o \
-network-addrinfo.o network-hostname.o network-socket.o network-sockets.o \
-network-string.o
+network-hostname.o network-socket.o network-sockets.o network-string.o
 
 test-network.o: test-network.cpp network-address.h network-addresses.h \
 network-addrinfo.h network-hostname.h network-socket.h \

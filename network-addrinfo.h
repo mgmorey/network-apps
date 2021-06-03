@@ -4,13 +4,11 @@
 #include "network-types.h"
 
 #ifdef _WIN32
-#include <ws2tcpip.h>		// NI_MAXHOST, struct addrinfo,
-                                // getaddrinfo(), getnameinfo(),
-                                // socklen_t
+#include <ws2tcpip.h>		// struct addrinfo, freeaddrinfo(),
+                                // getaddrinfo()
 #else
-#include <netdb.h>		// NI_MAXHOST, struct addrinfo,
-                                // freeaddrinfo, getaddrinfo(),
-                                // getnameinfo()
+#include <netdb.h>		// struct addrinfo, freeaddrinfo(),
+                                // getaddrinfo()
 #endif
 
 #include <cassert>		// assert()
@@ -67,12 +65,5 @@ void copy_addrinfo(Container& dest,
         freeaddrinfo(list);
     }
 }
-
-extern void copy_addrinfo(struct addrinfo& dest, const struct addrinfo& src);
-extern void init_addrinfo(struct addrinfo& dest,
-                          int protocol = 0,
-                          int socktype = 0,
-                          int family = 0,
-                          int flags = 0);
 
 #endif
