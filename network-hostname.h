@@ -3,6 +3,9 @@
 
 #include "network-types.h"
 
-extern Hostname get_hostname();
+namespace Network
+{
+    extern Hostname get_hostname();
+}
 
 #endif

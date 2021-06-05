@@ -4,14 +4,14 @@
 #include "network-socket.h"
 
 #ifdef _WIN32
-#include <winsock2.h>		// closesocket()
-#include <ws2tcpip.h>		// struct addrinfo
+#include <winsock2.h>   // closesocket()
+#include <ws2tcpip.h>   // struct addrinfo
 #else
-#include <netdb.h>		// struct addrinfo
-#include <unistd.h>		// close()
+#include <netdb.h>      // struct addrinfo
+#include <unistd.h>     // close()
 #endif
 
-void close_socket(int fd)
+void Network::close_socket(int fd)
 {
     if (fd == -1) {
         return;
@@ -24,9 +24,9 @@ void close_socket(int fd)
 #endif
 }
 
-ConnectResult connect_socket(const Hostname& host,
-                             const Service& service,
-                             const struct addrinfo &hints)
+Network::ConnectResult Network::connect_socket(const Hostname& host,
+                                               const Service& service,
+                                               const struct addrinfo &hints)
 {
     Sockets sockets(get_sockets(host, service, hints));
     std::string canonical_name;

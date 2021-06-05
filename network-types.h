@@ -1,9 +1,12 @@
 #ifndef NETWORK_TYPES_H
 #define NETWORK_TYPES_H
 
-#include <string>		// std::string
+#include <string>       // std::string
 
-typedef std::string Hostname;
-typedef std::string Service;
+namespace Network
+{
+    typedef std::string Hostname;
+    typedef std::string Service;
+}
 
 #endif

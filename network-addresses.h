@@ -4,18 +4,21 @@
 #include "network-types.h"
 
 #ifdef _WIN32
-#include <ws2tcpip.h>		// struct addrinfo
+#include <ws2tcpip.h>   // struct addrinfo
 #else
-#include <netdb.h>		// struct addrinfo
+#include <netdb.h>      // struct addrinfo
 #endif
 
-#include <list>			// std::list
+#include <list>         // std::list
 
-typedef std::list<class Address> Addresses;
+namespace Network
+{
+    typedef std::list<class Address> Addresses;
 
-extern Addresses get_addresses(const Hostname& node,
-                               const struct addrinfo* hints = NULL);
-extern Addresses get_addresses(const Hostname& node,
-                               const struct addrinfo& hints);
+    extern Addresses get_addresses(const Hostname& node,
+                                   const struct addrinfo* hints = NULL);
+    extern Addresses get_addresses(const Hostname& node,
+                                   const struct addrinfo& hints);
+}
 
 #endif

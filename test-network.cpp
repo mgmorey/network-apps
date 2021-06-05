@@ -1,28 +1,29 @@
-#include "network-address.h"	// Address
-#include "network-addresses.h"	// Addresses, get_addresses()
-#include "network-hostname.h"	// get_hostname()
-#include "network-socket.h"	// Socket
+#include "network-address.h"    // Address
+#include "network-addresses.h"  // Addresses, get_addresses()
+#include "network-hostname.h"   // get_hostname()
+#include "network-socket.h"     // Socket
 
 #ifdef _WIN32
-#include <winsock2.h>		// IPPROTO_TCP, WSACleanup(), WSAStartup()
+#include <winsock2.h>   // IPPROTO_TCP, WSACleanup(), WSAStartup()
 #else
-#include <netinet/in.h>		// IPPROTO_TCP
+#include <netinet/in.h> // IPPROTO_TCP
 #endif
 
-#include <algorithm>		// std::copy, std::set_union()
-#include <cstdlib>		// EXIT_FAILURE, EXIT_SUCCESS
-#include <iostream>		// std::cout, std::endl
-#include <iterator>		// std::inserter()
-#include <set>			// std::set
-#include <string>		// std::string
+#include <algorithm>    // std::copy, std::set_union()
+#include <cstdlib>      // EXIT_FAILURE, EXIT_SUCCESS
+#include <iostream>     // std::cout, std::endl
+#include <iterator>     // std::inserter()
+#include <set>          // std::set
+#include <string>       // std::string
 
-static void insert(const Addresses& a_list, std::set<Address>& a_set)
+static void insert(const Network::Addresses& a_list,
+                   std::set<Network::Address>& a_set)
 {
     std::copy(a_list.begin(), a_list.end(),
               std::inserter(a_set, a_set.begin()));
 }
 
-static void print_addresses(const Addresses& addresses,
+static void print_addresses(const Network::Addresses& addresses,
                             const std::string& family)
 {
     if (addresses.empty()) {
@@ -35,12 +36,12 @@ static void print_addresses(const Addresses& addresses,
               << std::endl
               << std::endl;
 
-    for (Addresses::const_iterator it = addresses.begin();
+    for (Network::Addresses::const_iterator it = addresses.begin();
          it != addresses.end();
          ++it)
     {
         std::string addr(it->to_string());
-        Hostname host(it->to_hostname());
+        Network::Hostname host(it->to_hostname());
         std::cout << '\t'
                   << addr;
 
@@ -54,16 +55,18 @@ static void print_addresses(const Addresses& addresses,
     }
 }
 
-static void test_host(const Hostname& host)
+static void test_host(const Network::Hostname& host)
 {
     std::cout << "Hostname: " << host << std::endl;
-    Addresses any(get_addresses(host));
-    Addresses ipv4(get_addresses(host, Socket(AF_INET)));
-    Addresses ipv6(get_addresses(host, Socket(AF_INET6)));
-    std::set<Address> set_all;
+    Network::Socket hints_ipv4(AF_INET);
+    Network::Socket hints_ipv6(AF_INET6);
+    Network::Addresses any(Network::get_addresses(host));
+    Network::Addresses ipv4(Network::get_addresses(host, hints_ipv4));
+    Network::Addresses ipv6(Network::get_addresses(host, hints_ipv6));
+    std::set<Network::Address> set_all;
     insert(ipv4, set_all);
     insert(ipv6, set_all);
-    std::set<Address> set_any;
+    std::set<Network::Address> set_any;
     insert(any, set_any);
 
     if (set_any != set_all) {
@@ -108,7 +111,7 @@ int main(void)
         goto clean_up;
     }
 
-    test_host(get_hostname());
+    test_host(Network::get_hostname());
     std::cout << std::endl;
     test_host(hostname);
     std::cout << std::endl;

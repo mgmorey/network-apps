@@ -2,20 +2,20 @@
 #include "network-string.h"
 
 #ifdef _WIN32
-#include <winsock2.h>		// gethostname()
-#include <ws2tcpip.h>		// NI_MAXHOST
+#include <winsock2.h>   // gethostname()
+#include <ws2tcpip.h>   // NI_MAXHOST
 #else
-#include <netdb.h>		// NI_MAXHOST
-#include <unistd.h>		// gethostname()
+#include <netdb.h>      // NI_MAXHOST
+#include <unistd.h>     // gethostname()
 #endif
 
-#include <iostream>		// std::cerr, std::endl
-#include <string>		// std::string
+#include <iostream>     // std::cerr, std::endl
+#include <string>       // std::string
 
-Hostname get_hostname()
+Network::Hostname Network::get_hostname()
 {
     Hostname host(NI_MAXHOST, '\0');
-    int error = gethostname(&host[0], NI_MAXHOST - 1);
+    int error = ::gethostname(&host[0], NI_MAXHOST - 1);
 
     if (error != 0) {
         std::cerr << "gethostname(...) returned "

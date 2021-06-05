@@ -1,8 +1,8 @@
 #include "network-string.h"
 
-#include <string>		// std::string
+#include <string>       // std::string
 
-void trim_zeros(std::string& str)
+void Network::trim_zeros(std::string& str)
 {
     std::string::size_type pos = str.find('\0');
 

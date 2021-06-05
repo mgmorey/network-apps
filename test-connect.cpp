@@ -1,25 +1,26 @@
-#include "network-connect.h"	// close_socket(), connect_socket()
-#include "network-socket.h"	// Socket
+#include "network-connect.h"    // close_socket(), connect_socket()
+#include "network-socket.h"     // Socket
 
 #ifdef _WIN32
-#include <ws2tcpip.h>		// AI_CANONNAME
-#include <winsock2.h>		// AF_UNSPEC, IPPROTO_TCP,
-                                // SOCK_STREAM, WSACleanup(),
-                                // WSAStartup()
+#include <ws2tcpip.h>   // AI_CANONNAME
+#include <winsock2.h>   // AF_UNSPEC, IPPROTO_TCP, SOCK_STREAM,
+                        // WSACleanup(), WSAStartup()
 #else
-#include <netdb.h>		// AI_CANNONNAME
-#include <netinet/in.h>		// IPPROTO_TCP
-#include <sys/socket.h>		// AF_UNSPEC, SOCK_STREAM
+#include <netdb.h>      // AI_CANNONNAME
+#include <netinet/in.h> // IPPROTO_TCP
+#include <sys/socket.h> // AF_UNSPEC, SOCK_STREAM
 #endif
 
-#include <cstdlib>		// EXIT_FAILURE, EXIT_SUCCESS
-#include <iostream>		// std::cout, std::endl
+#include <cstdlib>      // EXIT_FAILURE, EXIT_SUCCESS
+#include <iostream>     // std::cout, std::endl
 
-static void test_connect(const Hostname& host, const Service& service)
+static void test_connect(const Network::Hostname& host,
+                         const Network::Service& service)
 {
-    Socket hints(IPPROTO_TCP, SOCK_STREAM, AF_UNSPEC, AI_CANONNAME);
-    ConnectResult result = connect_socket(host, service, hints);
-    Hostname canonical_name = result.second;
+    Network::Socket hints(IPPROTO_TCP, SOCK_STREAM, AF_UNSPEC, AI_CANONNAME);
+    Network::ConnectResult result =
+        Network::connect_socket(host, service, hints);
+    Network::Hostname canonical_name = result.second;
     int fd = result.first;
 
     if (fd >= 0) {
@@ -30,7 +31,7 @@ static void test_connect(const Hostname& host, const Service& service)
                   << " on socket "
                   << fd
                   << std::endl;
-        close_socket(fd);
+        Network::close_socket(fd);
         std::cout << "Closed socket "
                   << fd
                   << std::endl;
@@ -64,8 +65,8 @@ static void wsa_tear_down(void)
 
 int main(void)
 {
-    Hostname host("example.com");
-    Service service("http");
+    Network::Hostname host("example.com");
+    Network::Service service("http");
     int result = EXIT_FAILURE;
 
     if (wsa_set_up()) {
