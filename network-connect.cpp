@@ -1,13 +1,10 @@
-#include "network-connect.h"
-#include "network-address.h"
-#include "network-sockets.h"
-#include "network-socket.h"
+#include "network-connect.h"    // connect_socket()
+#include "network-address.h"    // Address
+#include "network-sockets.h"    // Sockets
 
 #ifdef _WIN32
 #include <winsock2.h>   // closesocket()
-#include <ws2tcpip.h>   // struct addrinfo
 #else
-#include <netdb.h>      // struct addrinfo
 #include <unistd.h>     // close()
 #endif
 

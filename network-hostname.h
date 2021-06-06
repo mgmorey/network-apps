@@ -1,7 +1,7 @@
 #ifndef NETWORK_HOSTNAME_H
 #define NETWORK_HOSTNAME_H
 
-#include "network-types.h"
+#include "network-types.h"      // Hostname
 
 namespace Network
 {

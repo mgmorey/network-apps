@@ -1,6 +1,4 @@
-#include "network-string.h"
-
-#include <string>       // std::string
+#include "network-string.h"     // trim_zeros()
 
 void Network::trim_zeros(std::string& str)
 {

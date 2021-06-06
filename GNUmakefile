@@ -60,14 +60,14 @@ clean:
 test: $(programs)
 	@for f in $^; do ./$$f; done
 
-network-address.o: network-address.cpp network-address.h network-string.h \
+network-address.o: network-address.cpp network-address.h network-endpoint.h \
+network-string.h network-types.h
+
+network-addresses.o: network-addresses.cpp network-addresses.h \
+network-address.h network-addrinfo.h network-endpoint.h network-string.h \
 network-types.h
 
-network-addresses.o: network-addresses.cpp network-address.h \
-network-addresses.h network-addrinfo.h network-endpoint.h network-string.h \
-network-types.h
-
-network-connect.o: network-connect.cpp network-address.h network-connect.h \
+network-connect.o: network-connect.cpp network-connect.h network-address.h \
 network-socket.h network-sockets.h
 
 network-endpoint.o: network-endpoint.cpp network-endpoint.h network-types.h
@@ -75,11 +75,11 @@ network-endpoint.o: network-endpoint.cpp network-endpoint.h network-types.h
 network-hostname.o: network-hostname.cpp network-hostname.h network-string.h \
 network-types.h
 
-network-socket.o: network-socket.cpp network-address.h network-socket.h \
+network-socket.o: network-socket.cpp network-socket.h network-address.h \
 network-types.h
 
-network-sockets.o: network-sockets.cpp network-address.h network-addrinfo.h \
-network-socket.h network-sockets.h
+network-sockets.o: network-sockets.cpp network-sockets.h network-address.h \
+network-addrinfo.h network-socket.h
 
 network-string.o: network-string.cpp network-string.h
 

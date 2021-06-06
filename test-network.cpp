@@ -42,8 +42,8 @@ static void print_addresses(const Network::Addresses& addresses,
          it != addresses.end();
          ++it)
     {
-        Network::Hostname hostname(Network::hostname(it->endpoint()));
-        Network::Nameinfo address(Network::hostname(it->endpoint(NI_NUMERICHOST)));
+        Network::Hostname address(it->hostname(NI_NUMERICHOST));
+        Network::Hostname hostname(it->hostname());
         std::cout << '\t'
                   << address;
 

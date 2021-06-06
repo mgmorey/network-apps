@@ -1,7 +1,8 @@
 #ifndef NETWORK_SOCKETS_H
 #define NETWORK_SOCKETS_H
 
-#include "network-types.h"
+#include "network-socket.h"     // Socket
+#include "network-types.h"      // Hostname, Service
 
 #ifdef _WIN32
 #include <ws2tcpip.h>   // struct addrinfo
@@ -13,7 +14,7 @@
 
 namespace Network
 {
-    typedef std::list<class Socket> Sockets;
+    typedef std::list<Socket> Sockets;
 
     extern Sockets get_sockets(const Hostname& node,
                                const Service& service = "",

@@ -1,7 +1,7 @@
 #ifndef NETWORK_ADDRINFO_H
 #define NETWORK_ADDRINFO_H
 
-#include "network-types.h"
+#include "network-types.h"      // Hostname, Service
 
 #ifdef _WIN32
 #include <ws2tcpip.h>   // struct addrinfo, freeaddrinfo(),
@@ -51,7 +51,7 @@ namespace Network
             std::cerr << "...) returned "
                       << error
                       << " ("
-                      << gai_strerror(error)
+                      << ::gai_strerror(error)
                       << ')'
                       << std::endl;
         }

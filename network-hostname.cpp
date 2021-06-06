@@ -1,5 +1,5 @@
-#include "network-hostname.h"
-#include "network-string.h"
+#include "network-hostname.h"   // get_hostname()
+#include "network-string.h"     // trim_zeros()
 
 #ifdef _WIN32
 #include <winsock2.h>   // gethostname()
@@ -10,12 +10,11 @@
 #endif
 
 #include <iostream>     // std::cerr, std::endl
-#include <string>       // std::string
 
 Network::Hostname Network::get_hostname()
 {
-    Hostname host(NI_MAXHOST, '\0');
-    int error = ::gethostname(&host[0], NI_MAXHOST - 1);
+    Hostname hostname(NI_MAXHOST, '\0');
+    int error = ::gethostname(&hostname[0], hostname.size() - 1);
 
     if (error != 0) {
         std::cerr << "gethostname(...) returned "
@@ -23,6 +22,6 @@ Network::Hostname Network::get_hostname()
                   << std::endl;
     }
 
-    trim_zeros(host);
-    return host;
+    trim_zeros(hostname);
+    return hostname;
 }

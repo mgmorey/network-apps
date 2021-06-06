@@ -1,7 +1,7 @@
 #ifndef NETWORK_SOCKET_H
 #define NETWORK_SOCKET_H
 
-#include "network-types.h"
+#include "network-types.h"      // Hostname
 
 #ifdef _WIN32
 #include <ws2tcpip.h>   // struct addrinfo

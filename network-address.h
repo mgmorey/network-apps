@@ -1,13 +1,14 @@
 #ifndef NETWORK_ADDRESS_H
 #define NETWORK_ADDRESS_H
 
-#include "network-types.h"
+#include "network-endpoint.h"   // Endpoint
 
 #ifdef _WIN32
+#include <winsock2.h>   // struct sockaddr, socket()
 #include <ws2tcpip.h>   // struct addrinfo, socklen_t
 #else
 #include <netdb.h>      // struct addrinfo
-#include <sys/socket.h> // socklen_t
+#include <sys/socket.h> // struct sockaddr, socket(), socklen_t
 #endif
 
 #include <string>       // std::string
@@ -15,8 +16,6 @@
 
 namespace Network
 {
-    typedef std::pair<Hostname, Service> Endpoint;
-
     class Address
     {
     public:
@@ -32,6 +31,8 @@ namespace Network
         bool operator==(const Address& other) const;
         int connect(int fd) const;
         Endpoint endpoint(int flags = 0) const;
+        Hostname hostname(int flags = 0) const;
+        Service service(int flags = 0) const;
 
     private:
         void copy(const Address& other);

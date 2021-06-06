@@ -1,6 +1,6 @@
-#include "network-address.h"
-#include "network-endpoint.h"
-#include "network-string.h"
+#include "network-address.h"    // Address
+#include "network-endpoint.h"   // Endpoint
+#include "network-string.h"     // trim_zeros()
 
 #ifdef _WIN32
 #include <winsock2.h>   // connect(),
@@ -106,6 +106,16 @@ Network::Endpoint Network::Address::endpoint(int flags) const
     trim_zeros(host);
     trim_zeros(service);
     return(Endpoint(host, service));
+}
+
+Network::Hostname Network::Address::hostname(int flags) const
+{
+    return endpoint(flags).first;
+}
+
+Network::Service Network::Address::service(int flags) const
+{
+    return endpoint(flags).second;
 }
 
 void Network::Address::copy(const Address& other)
