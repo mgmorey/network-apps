@@ -5,9 +5,10 @@
 #include "network-socket.h"     // Socket
 
 #ifdef _WIN32
-#include <winsock2.h>   // IPPROTO_TCP, WSACleanup(), WSAStartup()
+#include <ws2tcpip.h>   // NI_NUMERICHOST
+#include <winsock2.h>   // WSACleanup(), WSAStartup()
 #else
-#include <netinet/in.h> // IPPROTO_TCP
+#include <netdb.h>      // NI_NUMERICHOST
 #endif
 
 #include <algorithm>    // std::copy, std::set_union()
@@ -41,9 +42,8 @@ static void print_addresses(const Network::Addresses& addresses,
          it != addresses.end();
          ++it)
     {
-        Network::Nameinfo address(it->to_string());
-        Network::Endpoint endpoint(it->endpoint());
-        Network::Hostname hostname(Network::hostname(endpoint));
+        Network::Hostname hostname(Network::hostname(it->endpoint()));
+        Network::Nameinfo address(Network::hostname(it->endpoint(NI_NUMERICHOST)));
         std::cout << '\t'
                   << address;
 

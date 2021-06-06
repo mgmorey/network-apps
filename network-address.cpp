@@ -4,9 +4,8 @@
 
 #ifdef _WIN32
 #include <winsock2.h>   // connect(),
-#include <ws2tcpip.h>   // NI_MAXHOST, NI_MAXSERV, NI_NUMERICHOST,
-                        // struct addrinfo, gai_strerror(),
-                        // getnameinfo(), socklen_t
+#include <ws2tcpip.h>   // NI_MAXHOST, NI_MAXSERV, struct addrinfo,
+                        // gai_strerror(), getnameinfo(), socklen_t
 #else
 #include <netdb.h>      // NI_MAXHOST, struct addrinfo, getnameinfo()
 #include <sys/socket.h> // connect(), socklen_t
@@ -107,11 +106,6 @@ Network::Endpoint Network::Address::endpoint(int flags) const
     trim_zeros(host);
     trim_zeros(service);
     return(Endpoint(host, service));
-}
-
-Network::Nameinfo Network::Address::to_string() const
-{
-    return endpoint(NI_NUMERICHOST).first;
 }
 
 void Network::Address::copy(const Address& other)

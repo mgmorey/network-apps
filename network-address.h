@@ -32,9 +32,6 @@ namespace Network
         bool operator==(const Address& other) const;
         int connect(int fd) const;
         Endpoint endpoint(int flags = 0) const;
-        Service service() const;
-        Hostname to_hostname() const;
-        std::string to_string() const;
 
     private:
         void copy(const Address& other);
