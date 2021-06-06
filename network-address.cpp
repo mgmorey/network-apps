@@ -7,7 +7,8 @@
 #include <ws2tcpip.h>   // NI_MAXHOST, NI_MAXSERV, struct addrinfo,
                         // gai_strerror(), getnameinfo(), socklen_t
 #else
-#include <netdb.h>      // NI_MAXHOST, struct addrinfo, getnameinfo()
+#include <netdb.h>      // NI_MAXHOST, NI_MAXSERV, struct addrinfo,
+                        // gai_strerror(), getnameinfo()
 #include <sys/socket.h> // connect(), socklen_t
 #endif
 
