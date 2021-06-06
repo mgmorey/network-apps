@@ -26,7 +26,7 @@ namespace Network
         assert(!(node.empty() && service.empty()));
         const char* c_node = node.empty() ? NULL : node.c_str();
         const char* c_service = service.empty() ? NULL : service.c_str();
-        int error = getaddrinfo(c_node, c_service, hints, &list);
+        int error = ::getaddrinfo(c_node, c_service, hints, &list);
 
         if (error != 0) {
             std::cerr << "getaddrinfo(";
@@ -64,7 +64,7 @@ namespace Network
                 dest.push_back(*elem);
             }
 
-            freeaddrinfo(list);
+            ::freeaddrinfo(list);
         }
     }
 }
