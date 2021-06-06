@@ -84,10 +84,12 @@ network-addrinfo.h network-socket.h
 network-string.o: network-string.cpp network-string.h
 
 test-connect: test-connect.o network-address.o network-addresses.o \
-network-connect.o network-socket.o network-sockets.o network-string.o
+network-endpoint.o network-connect.o network-socket.o network-sockets.o \
+network-string.o
 
 test-connect.o: test-connect.cpp network-address.h network-addresses.h \
-network-connect.h network-socket.h network-sockets.h network-types.h
+network-endpoint.h network-connect.h network-socket.h network-sockets.h \
+network-types.h
 
 test-network: test-network.o network-address.o network-addresses.o \
 network-endpoint.o network-hostname.o network-socket.o network-sockets.o \

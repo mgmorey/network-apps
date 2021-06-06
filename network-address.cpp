@@ -1,5 +1,5 @@
 #include "network-address.h"    // Address
-#include "network-endpoint.h"   // Endpoint
+#include "network-endpoint.h"   // get_hostname(), get_service()
 #include "network-string.h"     // trim_zeros()
 
 #ifdef _WIN32
@@ -110,12 +110,12 @@ Network::Endpoint Network::Address::endpoint(int flags) const
 
 Network::Hostname Network::Address::hostname(int flags) const
 {
-    return endpoint(flags).first;
+    return get_hostname(endpoint(flags));
 }
 
 Network::Service Network::Address::service(int flags) const
 {
-    return endpoint(flags).second;
+    return get_service(endpoint(flags));
 }
 
 void Network::Address::copy(const Address& other)
