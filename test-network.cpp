@@ -1,5 +1,6 @@
 #include "network-address.h"    // Address
 #include "network-addresses.h"  // Addresses, get_addresses()
+#include "network-endpoint.h"   // Endpoint, hostname()
 #include "network-hostname.h"   // get_hostname()
 #include "network-socket.h"     // Socket
 
@@ -40,14 +41,15 @@ static void print_addresses(const Network::Addresses& addresses,
          it != addresses.end();
          ++it)
     {
-        std::string addr(it->to_string());
-        Network::Hostname host(it->to_hostname());
+        Network::Nameinfo address(it->to_string());
+        Network::Endpoint endpoint(it->endpoint());
+        Network::Hostname hostname(Network::hostname(endpoint));
         std::cout << '\t'
-                  << addr;
+                  << address;
 
-        if (host != addr) {
+        if (hostname != address) {
             std::cout << " ("
-                      << host
+                      << hostname
                       << ") ";
         }
 

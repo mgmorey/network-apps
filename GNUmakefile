@@ -36,8 +36,8 @@ LINK.o = $(CXX) $(LDFLAGS) $(TARGET_ARCH)
 
 all_sources = $(library_sources) $(program_sources)
 library_sources = network-address.cpp network-addresses.cpp \
-network-connect.cpp network-hostname.cpp network-socket.cpp \
-network-sockets.cpp network-string.cpp
+network-connect.cpp network-endpoint.cpp network-hostname.cpp \
+network-socket.cpp network-sockets.cpp network-string.cpp
 program_sources = test-network.cpp
 
 ifndef HTTP_PROXY
@@ -64,10 +64,13 @@ network-address.o: network-address.cpp network-address.h network-string.h \
 network-types.h
 
 network-addresses.o: network-addresses.cpp network-address.h \
-network-addresses.h network-addrinfo.h network-string.h network-types.h
+network-addresses.h network-addrinfo.h network-endpoint.h network-string.h \
+network-types.h
 
 network-connect.o: network-connect.cpp network-address.h network-connect.h \
 network-socket.h network-sockets.h
+
+network-endpoint.o: network-endpoint.cpp network-endpoint.h network-types.h
 
 network-hostname.o: network-hostname.cpp network-hostname.h network-string.h \
 network-types.h
@@ -87,7 +90,9 @@ test-connect.o: test-connect.cpp network-address.h network-addresses.h \
 network-connect.h network-socket.h network-sockets.h network-types.h
 
 test-network: test-network.o network-address.o network-addresses.o \
-network-hostname.o network-socket.o network-sockets.o network-string.o
+network-endpoint.o network-hostname.o network-socket.o network-sockets.o \
+network-string.o
 
 test-network.o: test-network.cpp network-address.h network-addresses.h \
-network-hostname.h network-socket.h network-sockets.h network-types.h
+network-endpoint.h network-hostname.h network-socket.h network-sockets.h \
+network-types.h

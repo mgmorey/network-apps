@@ -6,6 +6,7 @@
 namespace Network
 {
     typedef std::string Hostname;
+    typedef std::string Nameinfo;
     typedef std::string Service;
 }
 

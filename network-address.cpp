@@ -1,10 +1,12 @@
 #include "network-address.h"
+#include "network-endpoint.h"
 #include "network-string.h"
 
 #ifdef _WIN32
 #include <winsock2.h>   // connect(),
-#include <ws2tcpip.h>   // NI_MAXHOST, struct addrinfo, getnameinfo(),
-                        // socklen_t
+#include <ws2tcpip.h>   // NI_MAXHOST, NI_MAXSERV, NI_NUMERICHOST,
+                        // struct addrinfo, gai_strerror(),
+                        // getnameinfo(), socklen_t
 #else
 #include <netdb.h>      // NI_MAXHOST, struct addrinfo, getnameinfo()
 #include <sys/socket.h> // connect(), socklen_t
@@ -87,17 +89,17 @@ Network::Endpoint Network::Address::endpoint(int flags) const
 {
     assert(size());
     Hostname host(NI_MAXHOST, '\0');
-    Service service(NI_MAXHOST, '\0');
-    int error = getnameinfo(data(), size(),
-                            &host[0], NI_MAXHOST,
-                            &service[0], NI_MAXHOST,
-                            flags);
+    Service service(NI_MAXSERV, '\0');
+    int error = ::getnameinfo(data(), size(),
+                              &host[0], host.size(),
+                              &service[0], service.size(),
+                              flags);
 
     if (error != 0) {
         std::cerr << "getnameinfo() returned "
                   << error
                   << " ("
-                  << gai_strerror(error)
+                  << ::gai_strerror(error)
                   << ')'
                   << std::endl;
     }
@@ -107,17 +109,7 @@ Network::Endpoint Network::Address::endpoint(int flags) const
     return(Endpoint(host, service));
 }
 
-Network::Service Network::Address::service() const
-{
-    return endpoint().second;
-}
-
-Network::Hostname Network::Address::to_hostname() const
-{
-    return endpoint().first;
-}
-
-std::string Network::Address::to_string() const
+Network::Nameinfo Network::Address::to_string() const
 {
     return endpoint(NI_NUMERICHOST).first;
 }
