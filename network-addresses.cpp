@@ -4,10 +4,7 @@
 Network::Addresses Network::get_addresses(const Network::Hostname& node,
                                           const struct addrinfo* hints)
 {
-    Network::Addresses result;
-    copy_addrinfo(result, node, "", hints);
-    result.unique();
-    return result;
+    return get_addrinfo<Addresses>(node, "", hints);
 }
 
 Network::Addresses Network::get_addresses(const Network::Hostname& node,

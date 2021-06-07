@@ -67,6 +67,17 @@ namespace Network
             ::freeaddrinfo(list);
         }
     }
+
+    template <class Container>
+    Container get_addrinfo(const Hostname& node,
+                           const Service& service,
+                           const struct addrinfo* hints)
+    {
+        Container result;
+        copy_addrinfo(result, node, service, hints);
+        result.unique();
+        return result;
+    }
 }
 
 #endif

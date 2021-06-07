@@ -3,16 +3,7 @@
 
 Network::Sockets Network::get_sockets(const Hostname& node,
                                       const Service& service,
-                                      const struct addrinfo* hints)
-{
-    Sockets result;
-    copy_addrinfo(result, node, service, hints);
-    return result;
-}
-
-Network::Sockets Network::get_sockets(const Hostname& node,
-                                      const Service& service,
                                       const struct addrinfo& hints)
 {
-    return get_sockets(node, service, &hints);
+    return get_addrinfo<Sockets>(node, service, &hints);
 }
