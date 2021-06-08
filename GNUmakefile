@@ -63,19 +63,9 @@ clean:
 test: $(programs)
 	@for f in $^; do ./$$f; done
 
-libnetwork.a: \
-libnetwork.a(network-address.o) \
-libnetwork.a(network-addresses.o) \
-libnetwork.a(network-connect.o) \
-libnetwork.a(network-endpoint.o) \
-libnetwork.a(network-hostname.o) \
-libnetwork.a(network-socket.o) \
-libnetwork.a(network-sockets.o) \
-libnetwork.a(network-string.o)
+$(programs): libnetwork.a
 
-test-connect: test-connect.o libnetwork.a
-
-test-network: test-network.o libnetwork.a
+libnetwork.a: $(patsubst %.o,libnetwork.a(%.o),$(library_objects))
 
 include $(subst .cpp,.d,$(all_sources))
 
