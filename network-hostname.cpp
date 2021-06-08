@@ -1,5 +1,5 @@
 #include "network-hostname.h"   // get_hostname()
-#include "network-string.h"     // trim_zeros()
+#include "network-string.h"     // resize()
 
 #ifdef _WIN32
 #include <winsock2.h>   // gethostname()
