@@ -106,7 +106,7 @@ Network::Endpoint Network::Address::endpoint(int flags) const
 
     trim_zeros(host);
     trim_zeros(service);
-    return(Endpoint(host, service));
+    return Endpoint(host, service);
 }
 
 Network::Hostname Network::Address::hostname(int flags) const
