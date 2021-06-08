@@ -1,10 +1,13 @@
-#include "network-string.h"     // trim_zeros()
+#include "network-string.h"     // resize()
 
-void Network::trim_zeros(std::string& str)
+std::string Network::resize(const std::string& str)
 {
     std::string::size_type pos = str.find('\0');
+    std::string result(str);
 
     if (pos != std::string::npos) {
-        str.resize(pos);
+        result.resize(pos);
     }
+
+    return result;
 }

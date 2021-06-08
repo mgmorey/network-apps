@@ -22,6 +22,5 @@ Network::Hostname Network::get_hostname()
                   << std::endl;
     }
 
-    trim_zeros(hostname);
-    return hostname;
+    return resize(hostname);
 }

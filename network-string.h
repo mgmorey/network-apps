@@ -5,7 +5,7 @@
 
 namespace Network
 {
-    extern void trim_zeros(std::string& str);
+    extern std::string resize(const std::string& str);
 }
 
 #endif
