@@ -47,6 +47,7 @@ endif
 all_objects = $(library_objects) $(program_objects)
 library_objects = $(subst .cpp,.o,$(library_sources))
 program_objects = $(subst .cpp,.o,$(program_sources))
+libraries = network.a
 programs = $(subst .cpp,,$(program_sources))
 
 .PHONY:	all
@@ -54,11 +55,15 @@ all: $(programs)
 
 .PHONY:	clean
 clean:
-	@/bin/rm -f $(all_objects) $(programs)
+	@/bin/rm -f $(all_objects) $(libraries) $(programs)
 
 .PHONY:	test
 test: $(programs)
 	@for f in $^; do ./$$f; done
+
+network.a:	$(library_objects)
+	ar ru $@ $^
+	ranlib $@
 
 network-address.o: network-address.cpp network-address.h network-endpoint.h \
 network-string.h network-types.h
@@ -83,17 +88,13 @@ network-addrinfo.h network-socket.h
 
 network-string.o: network-string.cpp network-string.h
 
-test-connect: test-connect.o network-address.o network-addresses.o \
-network-endpoint.o network-connect.o network-socket.o network-sockets.o \
-network-string.o
+test-connect: test-connect.o network.a
 
 test-connect.o: test-connect.cpp network-address.h network-addresses.h \
 network-endpoint.h network-connect.h network-socket.h network-sockets.h \
 network-types.h
 
-test-network: test-network.o network-address.o network-addresses.o \
-network-endpoint.o network-hostname.o network-socket.o network-sockets.o \
-network-string.o
+test-network: test-network.o network.a
 
 test-network.o: test-network.cpp network-address.h network-addresses.h \
 network-endpoint.h network-hostname.h network-socket.h network-sockets.h \
