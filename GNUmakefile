@@ -32,6 +32,8 @@ else ifeq "$(SYSTEM_PREFIX)" "MINGW64_NT"
 	LDLIBS += -lws2_32
 endif
 
+LDLIBS += -L. -lnetwork
+
 LINK.o = $(CXX) $(LDFLAGS) $(TARGET_ARCH)
 
 all_sources = $(library_sources) $(program_sources)
@@ -47,7 +49,7 @@ endif
 all_objects = $(library_objects) $(program_objects)
 library_objects = $(subst .cpp,.o,$(library_sources))
 program_objects = $(subst .cpp,.o,$(program_sources))
-libraries = network.a
+libraries = libnetwork.a
 programs = $(subst .cpp,,$(program_sources))
 
 .PHONY:	all
@@ -61,41 +63,23 @@ clean:
 test: $(programs)
 	@for f in $^; do ./$$f; done
 
-network.a:	$(library_objects)
-	ar ru $@ $^
-	ranlib $@
+libnetwork.a: \
+libnetwork.a(network-address.o) \
+libnetwork.a(network-addresses.o) \
+libnetwork.a(network-connect.o) \
+libnetwork.a(network-endpoint.o) \
+libnetwork.a(network-hostname.o) \
+libnetwork.a(network-socket.o) \
+libnetwork.a(network-sockets.o) \
+libnetwork.a(network-string.o)
 
-network-address.o: network-address.cpp network-address.h network-endpoint.h \
-network-string.h network-types.h
+test-connect: test-connect.o libnetwork.a
 
-network-addresses.o: network-addresses.cpp network-addresses.h \
-network-address.h network-addrinfo.h network-endpoint.h network-string.h \
-network-types.h
+test-network: test-network.o libnetwork.a
 
-network-connect.o: network-connect.cpp network-connect.h network-address.h \
-network-socket.h network-sockets.h
+include $(subst .cpp,.d,$(all_sources))
 
-network-endpoint.o: network-endpoint.cpp network-endpoint.h network-types.h
-
-network-hostname.o: network-hostname.cpp network-hostname.h network-string.h \
-network-types.h
-
-network-socket.o: network-socket.cpp network-socket.h network-address.h \
-network-types.h
-
-network-sockets.o: network-sockets.cpp network-sockets.h network-address.h \
-network-addrinfo.h network-socket.h
-
-network-string.o: network-string.cpp network-string.h
-
-test-connect: test-connect.o network.a
-
-test-connect.o: test-connect.cpp network-address.h network-addresses.h \
-network-endpoint.h network-connect.h network-socket.h network-sockets.h \
-network-types.h
-
-test-network: test-network.o network.a
-
-test-network.o: test-network.cpp network-address.h network-addresses.h \
-network-endpoint.h network-hostname.h network-socket.h network-sockets.h \
-network-types.h
+%.d: %.cpp
+	@$(CXX) -M $(CPPFLAGS) $< > $@.$$$$; \
+	sed 's,\($*\)\.o[ :]*,\1.o $@ : ,g' < $@.$$$$ > $@; \
+	/bin/rm -f $@.$$$$
