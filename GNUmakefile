@@ -57,11 +57,11 @@ all: $(programs)
 
 .PHONY:	clean
 clean:
-	@/bin/rm -f $(all_objects) $(libraries) $(programs)
+	rm -f $(all_objects) $(libraries) $(programs)
 
 .PHONY:	test
 test: $(programs)
-	@for f in $^; do ./$$f; done
+	for f in $^; do ./$$f; done
 
 $(programs): libnetwork.a
 
@@ -70,6 +70,6 @@ libnetwork.a: $(patsubst %.o,libnetwork.a(%.o),$(library_objects))
 include $(subst .cpp,.d,$(all_sources))
 
 %.d: %.cpp
-	@$(CXX) -M $(CPPFLAGS) $< > $@.$$$$; \
-	sed 's,\($*\)\.o[ :]*,\1.o $@ : ,g' < $@.$$$$ > $@; \
-	/bin/rm -f $@.$$$$
+	@$(CXX) -M $(CPPFLAGS) $< >$@.$$$$; \
+sed 's,\($*\)\.o[ :]*,\1.o $@ : ,' $@.$$$$ >$@; \
+rm $@.$$$$
