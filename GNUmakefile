@@ -50,6 +50,8 @@ program_objects = $(subst .cpp,.o,$(program_sources))
 libraries = libnetwork.a
 programs = $(subst .cpp,,$(program_sources))
 
+.INTERMEDIATE: $(all_objects)
+
 .PHONY:	all
 all: $(programs)
 
