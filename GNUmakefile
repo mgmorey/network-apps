@@ -32,8 +32,6 @@ else ifeq "$(SYSTEM_PREFIX)" "MINGW64_NT"
 	LDLIBS += -lws2_32
 endif
 
-LDLIBS += -L. -lnetwork
-
 LINK.o = $(CXX) $(LDFLAGS) $(TARGET_ARCH)
 
 all_sources = $(library_sources) $(program_sources)
