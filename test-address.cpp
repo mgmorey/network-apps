@@ -13,7 +13,7 @@
 
 #include <algorithm>    // std::copy, std::set_union()
 #include <cstdlib>      // EXIT_FAILURE, EXIT_SUCCESS
-#include <iostream>     // std::cout, std::endl
+#include <iostream>     // std::cerr, std::cout, std::endl
 #include <iterator>     // std::inserter()
 #include <set>          // std::set
 #include <string>       // std::string

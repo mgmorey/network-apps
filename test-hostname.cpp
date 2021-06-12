@@ -5,7 +5,7 @@
 #endif
 
 #include <cstdlib>      // EXIT_FAILURE, EXIT_SUCCESS
-#include <iostream>     // std::cout, std::endl
+#include <iostream>     // std::cerr, std::cout, std::endl
 #include <string>       // std::string
 
 static int wsa_set_up(void)

@@ -12,7 +12,7 @@
 #endif
 
 #include <cstdlib>      // EXIT_FAILURE, EXIT_SUCCESS
-#include <iostream>     // std::cout, std::endl
+#include <iostream>     // std::cerr, std::cout, std::endl
 
 static void test_connect(const Network::Hostname& host,
                          const Network::Service& service)
