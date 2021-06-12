@@ -1,10 +1,7 @@
 #include "network-hostname.h"   // get_hostname()
 
 #ifdef _WIN32
-#include <ws2tcpip.h>   // NI_NUMERICHOST
 #include <winsock2.h>   // WSACleanup(), WSAStartup()
-#else
-#include <netdb.h>      // NI_NUMERICHOST
 #endif
 
 #include <cstdlib>      // EXIT_FAILURE, EXIT_SUCCESS
