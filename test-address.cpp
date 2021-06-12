@@ -59,7 +59,7 @@ static void print_addresses(const Network::Addresses& addresses,
 
 static void test_host(const Network::Hostname& host)
 {
-    std::cout << "Hostname: " << host << std::endl;
+    std::cout << "Host: " << host << std::endl;
     Network::Socket hints_ipv4(AF_INET);
     Network::Socket hints_ipv6(AF_INET6);
     Network::Addresses any(Network::get_addresses(host));
@@ -106,7 +106,6 @@ static void wsa_tear_down(void)
 
 int main(void)
 {
-    std::string hostname("example.com");
     int result = EXIT_FAILURE;
 
     if (wsa_set_up()) {
@@ -115,7 +114,7 @@ int main(void)
 
     test_host(Network::get_hostname());
     std::cout << std::endl;
-    test_host(hostname);
+    test_host("example.com");
     std::cout << std::endl;
     result = EXIT_SUCCESS;
 

@@ -5,20 +5,17 @@ ifeq "$(SYSTEM_PREFIX)" "FreeBSD"
 	LDLIBS += -L/usr/local/lib
 endif
 
-ifeq "$(USING_DMALLOC)" "true"
-	CPPFLAGS += -DDMALLOC -DMALLOC_FUNC_CHECK
-	LDLIBS += -ldmalloc
-endif
-
-ifeq "$(USING_LIBASAN)" "true"
-	CXXFLAGS += -fsanitize=address
-	LDLIBS += -lasan
-endif
-
 ifdef NDEBUG
         CPPFLAGS += -D_FORTIFY_SOURCE=2
         CXXFLAGS += -O2
 else
+ifeq "$(USING_DMALLOC)" "true"
+	CPPFLAGS += -DDMALLOC -DMALLOC_FUNC_CHECK
+	LDLIBS += -ldmalloc
+else ifeq "$(USING_LIBASAN)" "true"
+	CXXFLAGS += -fsanitize=address
+	LDLIBS += -lasan
+endif
 	CXXFLAGS += -fno-omit-frame-pointer -g3 -O0
 endif
 
@@ -38,7 +35,7 @@ all_sources = $(library_sources) $(program_sources)
 library_sources = network-address.cpp network-addresses.cpp \
 network-connect.cpp network-endpoint.cpp network-hostname.cpp \
 network-socket.cpp network-sockets.cpp network-string.cpp
-program_sources = test-network.cpp
+program_sources = test-address.cpp test-hostname.cpp
 
 ifndef HTTP_PROXY
 	program_sources += test-connect.cpp

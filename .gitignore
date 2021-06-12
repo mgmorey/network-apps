@@ -69,5 +69,6 @@ Mkfile.old
 dkms.conf
 
 # Binary files
+test-address
 test-connect
-test-network
+test-hostname
