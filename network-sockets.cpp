@@ -1,4 +1,4 @@
-#include "network-sockets.h"    // Sockets
+#include "network-sockets.h"    // Sockets, get_sockets()
 #include "network-addrinfo.h"   // copy_addrinfo()
 
 Network::Sockets Network::get_sockets(const Hostname& node,
