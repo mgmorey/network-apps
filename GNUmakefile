@@ -31,44 +31,43 @@ endif
 
 LINK.o = $(CXX) $(LDFLAGS) $(TARGET_ARCH)
 
-all_sources = $(library_sources) $(program_sources)
+executable_sources = test-address.cpp test-hostname.cpp
 library_sources = network-address.cpp network-addresses.cpp \
 network-connect.cpp network-endpoint.cpp network-hostname.cpp \
 network-socket.cpp network-sockets.cpp network-string.cpp
-program_sources = test-address.cpp test-hostname.cpp
 
 ifndef HTTP_PROXY
-	program_sources += test-connect.cpp
+	executable_sources += test-connect.cpp
 endif
 
-dependencies = $(subst .cpp,.d,$(all_sources))
-
-all_objects = $(library_objects) $(program_objects)
-library_objects = $(subst .cpp,.o,$(library_sources))
-program_objects = $(subst .cpp,.o,$(program_sources))
-
 libraries = libnetwork.a
+sources = $(executable_sources) $(library_sources)
 
-programs = $(subst .cpp,,$(program_sources))
+dependencies = $(subst .cpp,.d,$(sources))
+executables = $(subst .cpp,,$(executable_sources))
 
-.INTERMEDIATE: $(all_objects)
+executable_objects = $(subst .cpp,.o,$(executable_sources))
+library_objects = $(subst .cpp,.o,$(library_sources))
+objects = $(library_objects) $(executable_objects)
+
+.INTERMEDIATE: $(objects)
 
 .PHONY:	all
-all: $(programs)
+all: $(executables)
 
 .PHONY:	clean
 clean:
-	rm -f $(all_objects) $(libraries) $(programs)
+	rm -f $(executables) $(libraries) $(objects)
 
 .PHONY: realclean
 realclean: clean
 	rm -f $(dependencies)
 
 .PHONY:	test
-test: $(programs)
+test: $(executables)
 	for f in $^; do ./$$f; done
 
-$(programs): libnetwork.a
+$(executables): libnetwork.a
 
 libnetwork.a: $(patsubst %.o,libnetwork.a(%.o),$(library_objects))
 
