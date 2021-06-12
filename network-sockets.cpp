@@ -2,10 +2,15 @@
 #include "network-addrinfo.h"   // copy_addrinfo()
 #include "network-hostname.h"   // get_hostname()
 
-Network::Sockets Network::get_sockets(const Hostname& host,
+Network::Sockets Network::get_sockets(const Hostname& hostname,
                                       const Service& service,
                                       const struct addrinfo& hints)
 {
-    Hostname node(host.empty() && service.empty() ? get_hostname() : host);
+    Hostname node(hostname);
+
+    if (hostname.empty() && service.empty()) {
+        node = get_hostname();
+    }
+
     return get_addrinfo<Sockets>(node, service, &hints);
 }

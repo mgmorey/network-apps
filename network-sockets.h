@@ -16,7 +16,7 @@ namespace Network
 {
     typedef std::list<Socket> Sockets;
 
-    extern Sockets get_sockets(const Hostname& node,
+    extern Sockets get_sockets(const Hostname& hostname,
                                const Service& service,
                                const struct addrinfo& hints);
 }
