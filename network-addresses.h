@@ -18,11 +18,10 @@ namespace Network
 {
     typedef std::list<Address> Addresses;
 
-    extern Addresses get_addresses(const Hostname& node =
-                                   Network::get_hostname(),
+    extern Addresses get_addresses(const Hostname& node = get_hostname(),
                                    const Service& service = "",
                                    const struct addrinfo& hints =
-                                   Network::Socket(AF_UNSPEC));
+                                   Socket(AF_UNSPEC));
 }
 
 #endif
