@@ -14,12 +14,12 @@
 #include <cstdlib>      // EXIT_FAILURE, EXIT_SUCCESS
 #include <iostream>     // std::cerr, std::cout, std::endl
 
-static void test_connect(const Network::Hostname& host,
+static void test_connect(const Network::Hostname& hostname,
                          const Network::Service& service)
 {
     Network::Socket hints(IPPROTO_TCP, SOCK_STREAM, AF_UNSPEC, AI_CANONNAME);
     Network::ConnectResult result =
-        Network::connect_socket(host, service, hints);
+        Network::connect_socket(hostname, service, hints);
     Network::Hostname canonical_name = result.second;
     int fd = result.first;
 
@@ -27,7 +27,7 @@ static void test_connect(const Network::Hostname& host,
         std::cout << "Connected to "
                   << (!canonical_name.empty() ?
                       canonical_name :
-                      host)
+                      hostname)
                   << " on socket "
                   << fd
                   << std::endl;
@@ -65,7 +65,7 @@ static void wsa_tear_down(void)
 
 int main(void)
 {
-    Network::Hostname host("example.com");
+    Network::Hostname hostname("example.com");
     Network::Service service("http");
     int result = EXIT_FAILURE;
 
@@ -73,7 +73,7 @@ int main(void)
         goto clean_up;
     }
 
-    test_connect(host, service);
+    test_connect(hostname, service);
     result = EXIT_SUCCESS;
 
 clean_up:
