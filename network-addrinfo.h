@@ -23,10 +23,11 @@ namespace Network
                        const struct addrinfo* hints)
     {
         struct addrinfo* list = NULL;
-        assert(!(node.empty() && service.empty()));
-        const char* c_node = node.empty() ? NULL : node.c_str();
-        const char* c_service = service.empty() ? NULL : service.c_str();
-        int error = ::getaddrinfo(c_node, c_service, hints, &list);
+        assert(!node.empty() || !service.empty());
+        int error = ::getaddrinfo(node.empty() ? NULL : node.c_str(),
+                                  service.empty() ? NULL : service.c_str(),
+                                  hints,
+                                  &list);
 
         if (error != 0) {
             std::cerr << "getaddrinfo(";
