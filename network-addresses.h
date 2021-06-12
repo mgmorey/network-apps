@@ -2,7 +2,9 @@
 #define NETWORK_ADDRESSES_H
 
 #include "network-address.h"    // Address
-#include "network-types.h"      // Hostname
+#include "network-hostname.h"   // get_hostname()
+#include "network-socket.h"     // Socket
+#include "network-types.h"      // Hostname, Service
 
 #ifdef _WIN32
 #include <ws2tcpip.h>   // struct addrinfo
@@ -16,10 +18,11 @@ namespace Network
 {
     typedef std::list<Address> Addresses;
 
-    extern Addresses get_addresses(const Hostname& node,
-                                   const struct addrinfo* hints = NULL);
-    extern Addresses get_addresses(const Hostname& node,
-                                   const struct addrinfo& hints);
+    extern Addresses get_addresses(const Network::Hostname& node =
+                                   Network::get_hostname(),
+                                   const Network::Service& service = "",
+                                   const struct addrinfo& hints =
+                                   Network::Socket(AF_UNSPEC));
 }
 
 #endif

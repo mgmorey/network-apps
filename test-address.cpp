@@ -32,7 +32,6 @@ static void print_addresses(const Network::Addresses& addresses,
         return;
     }
 
-    std::cout << std::endl;
     std::cout << family
               << " addresses:"
               << std::endl
@@ -59,12 +58,16 @@ static void print_addresses(const Network::Addresses& addresses,
 
 static void test_host(const Network::Hostname& host)
 {
-    std::cout << "Host: " << host << std::endl;
+    if (!host.empty()) {
+        std::cout << "Host: " << host << std::endl;
+        std::cout << std::endl;
+    }
+
     Network::Socket hints_ipv4(AF_INET);
     Network::Socket hints_ipv6(AF_INET6);
     Network::Addresses any(Network::get_addresses(host));
-    Network::Addresses ipv4(Network::get_addresses(host, hints_ipv4));
-    Network::Addresses ipv6(Network::get_addresses(host, hints_ipv6));
+    Network::Addresses ipv4(Network::get_addresses(host, "", hints_ipv4));
+    Network::Addresses ipv6(Network::get_addresses(host, "", hints_ipv6));
     std::set<Network::Address> set_all;
     insert(ipv4, set_all);
     insert(ipv6, set_all);
@@ -73,9 +76,11 @@ static void test_host(const Network::Hostname& host)
 
     if (set_any != set_all) {
         print_addresses(any, "Any");
+        std::cout << std::endl;
     }
 
     print_addresses(ipv4, "IPv4");
+    std::cout << std::endl;
     print_addresses(ipv6, "IPv6");
 }
 
@@ -112,7 +117,7 @@ int main(void)
         goto clean_up;
     }
 
-    test_host(Network::get_hostname());
+    test_host("");
     std::cout << std::endl;
     test_host("example.com");
     std::cout << std::endl;
