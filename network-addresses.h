@@ -17,7 +17,7 @@ namespace Network
 {
     typedef std::list<Address> Addresses;
 
-    extern Addresses get_addresses(const Hostname& node = "",
+    extern Addresses get_addresses(const Hostname& host = "",
                                    const Service& service = "",
                                    const struct addrinfo& hints =
                                    Socket(AF_UNSPEC));

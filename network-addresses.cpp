@@ -2,11 +2,10 @@
 #include "network-addrinfo.h"   // get_addrinfo()
 #include "network-hostname.h"   // get_hostname()
 
-Network::Addresses Network::get_addresses(const Network::Hostname& node,
+Network::Addresses Network::get_addresses(const Network::Hostname& host,
                                           const Network::Service& service,
                                           const struct addrinfo& hints)
 {
-    return get_addrinfo<Addresses>(node.empty() ? get_hostname() : node,
-                                   service,
-                                   &hints);
+    Hostname node(host.empty() && service.empty() ? get_hostname() : host);
+    return get_addrinfo<Addresses>(node, service, &hints);
 }
