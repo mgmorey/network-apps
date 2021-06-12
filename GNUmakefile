@@ -41,10 +41,14 @@ ifndef HTTP_PROXY
 	program_sources += test-connect.cpp
 endif
 
+dependencies = $(subst .cpp,.d,$(all_sources))
+
 all_objects = $(library_objects) $(program_objects)
 library_objects = $(subst .cpp,.o,$(library_sources))
 program_objects = $(subst .cpp,.o,$(program_sources))
+
 libraries = libnetwork.a
+
 programs = $(subst .cpp,,$(program_sources))
 
 .INTERMEDIATE: $(all_objects)
@@ -56,6 +60,10 @@ all: $(programs)
 clean:
 	rm -f $(all_objects) $(libraries) $(programs)
 
+.PHONY: realclean
+realclean: clean
+	rm -f $(dependencies)
+
 .PHONY:	test
 test: $(programs)
 	for f in $^; do ./$$f; done
@@ -64,7 +72,7 @@ $(programs): libnetwork.a
 
 libnetwork.a: $(patsubst %.o,libnetwork.a(%.o),$(library_objects))
 
-include $(subst .cpp,.d,$(all_sources))
+include $(dependencies)
 
 %.d: %.cpp
 	@$(CXX) -M $(CPPFLAGS) $< >$@.$$$$; \
