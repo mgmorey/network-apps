@@ -53,11 +53,10 @@ namespace Network
             }
 
             os << "...) returned "
-               << error
+               << result
                << " ("
                << ::gai_strerror(result)
-               << ')'
-               << std::endl;
+               << ')';
 
             error = os.str();
         }
