@@ -12,16 +12,16 @@
 #endif
 
 #include <list>         // std::list
+#include <utility>      // std::pair
 
 namespace Network
 {
     typedef std::list<Address> Addresses;
-
-    extern Addresses get_addresses(std::string& error,
-                                   const Hostname& host = "",
-                                   const Service& service = "",
-                                   const struct addrinfo& hints =
-                                   Socket(AF_UNSPEC));
+    typedef std::pair<Addresses, std::string> AddressesResult;
+    extern AddressesResult get_addresses(const Hostname& host = "",
+                                         const Service& service = "",
+                                         const struct addrinfo& hints =
+                                         Socket(AF_UNSPEC));
 }
 
 #endif

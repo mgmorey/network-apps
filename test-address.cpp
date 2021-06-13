@@ -94,9 +94,10 @@ static void print_addresses(const Network::Addresses& addresses, int family)
 static Network::Addresses test_host(const Network::Hostname& host,
                                     int family, bool print = true)
 {
-    std::string error;
     Network::Socket hints(family);
-    Network::Addresses addresses(Network::get_addresses(error, host, "", hints));
+    Network::AddressesResult result(Network::get_addresses(host, "", hints));
+    Network::Addresses addresses(result.first);
+    std::string error(result.second);
 
     if (!error.empty()) {
         std::string description(get_family_description(family));

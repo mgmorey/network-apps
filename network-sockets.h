@@ -11,15 +11,15 @@
 #endif
 
 #include <list>         // std::list
+#include <utility>      // std::pair
 
 namespace Network
 {
     typedef std::list<Socket> Sockets;
-
-    extern Sockets get_sockets(std::string& error,
-                               const Hostname& host,
-                               const Service& service,
-                               const struct addrinfo& hints);
+    typedef std::pair<Sockets, std::string> SocketsResult;
+    extern SocketsResult get_sockets(const Hostname& host,
+                                     const Service& service,
+                                     const struct addrinfo& hints);
 }
 
 #endif

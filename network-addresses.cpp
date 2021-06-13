@@ -1,21 +1,22 @@
-#include "network-addresses.h"	// Addresses, Hostname, Service,
-                                // struct addrinfo, get_addresses()
+#include "network-addresses.h"	// Addresses, AddressesResult,
+                                // Hostname, Service, struct addrinfo,
+                                // get_addresses()
 #include "network-addrinfo.h"   // get_addrinfo()
 #include "network-hostname.h"   // HostnameResult, get_hostname()
 
 #include <string>       // std::string
 
-Network::Addresses Network::get_addresses(std::string& error,
-                                          const Network::Hostname& host,
-                                          const Network::Service& service,
-                                          const struct addrinfo& hints)
+Network::AddressesResult Network::get_addresses(const Hostname& host,
+                                                const Service& service,
+                                                const struct addrinfo& hints)
 {
+    std::string error;
     Hostname node(host);
 
     if (host.empty() && service.empty()) {
-        HostnameResult hostname_result = get_hostname();
-        node = hostname_result.first;
+        node = get_hostname().first;
     }
 
-    return get_addrinfo<Addresses>(error, node, service, &hints);
+    Addresses addresses(get_addrinfo<Addresses>(error, node, service, &hints));
+    return AddressesResult(addresses, error);
 }

@@ -28,8 +28,9 @@ Network::ConnectResult Network::connect(const Hostname& hostname,
                                         const Service& service,
                                         const struct addrinfo &hints)
 {
-    std::string error;
-    Sockets sockets(get_sockets(error, hostname, service, hints));
+    SocketsResult result(get_sockets(hostname, service, hints));
+    Sockets sockets(result.first);
+    std::string error(result.second);
     ConnectDetails details;
     int fd = -1;
 
