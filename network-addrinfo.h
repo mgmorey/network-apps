@@ -79,10 +79,10 @@ namespace Network
                            const Service& service,
                            const struct addrinfo* hints)
     {
-        Container result;
-        copy_addrinfo(result, error, node, service, hints);
-        result.unique();
-        return result;
+        Container container;
+        copy_addrinfo(container, error, node, service, hints);
+        container.unique();
+        return container;
     }
 }
 
