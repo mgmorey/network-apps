@@ -57,20 +57,13 @@ static void insert(const Network::Addresses& a_list,
 
 static void print_addresses(const Network::Addresses& addresses, int family)
 {
-    std::string description(get_family_description(family));
-
     if (addresses.empty()) {
         return;
     }
 
-    if (description.empty()) {
-        std::cout << "All";
-    }
-    else {
-        std::cout << description;
-    }
-
-    std::cout << " addresses:"
+    std::string description(get_family_description(family));
+    std::cout << (description.empty() ? "All" : description)
+              << " addresses:"
               << std::endl;
 
     for (Network::Addresses::const_iterator it = addresses.begin();
