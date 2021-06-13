@@ -12,7 +12,6 @@
 #endif
 
 #include <cassert>      // assert()
-#include <iostream>     // std::cerr, std::endl
 #include <sstream>      // std::ostringstream
 
 namespace Network
