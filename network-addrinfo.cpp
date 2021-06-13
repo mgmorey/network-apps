@@ -17,12 +17,12 @@ struct addrinfo* Network::get_addrinfo(Result& result,
 {
     struct addrinfo* list = NULL;
     assert(!node.empty() || !service.empty());
-    int code = ::getaddrinfo(node.empty() ? NULL : node.c_str(),
-                             service.empty() ? NULL : service.c_str(),
-                             hints,
-                             &list);
+    result.first = ::getaddrinfo(node.empty() ? NULL : node.c_str(),
+                                 service.empty() ? NULL : service.c_str(),
+                                 hints,
+                                 &list);
 
-    if (code != 0) {
+    if (result.first != 0) {
         std::ostringstream os;
         os << "getaddrinfo(";
 
@@ -44,15 +44,15 @@ struct addrinfo* Network::get_addrinfo(Result& result,
         }
 
         os << "...) returned "
-           << code
+           << result.first
            << " ("
-           << ::gai_strerror(code)
+           << ::gai_strerror(result.first)
            << ')';
 
-        result.first = code;
         result.second = os.str();
     }
     else {
+        result.second.clear();
         assert(list != NULL);
     }
 

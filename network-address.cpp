@@ -94,23 +94,23 @@ Network::EndpointResult Network::Address::endpoint(int flags) const
     std::string error;
     Hostname host(NI_MAXHOST, '\0');
     Service service(NI_MAXSERV, '\0');
-    int result = ::getnameinfo(data(), size(),
-                              &host[0], host.size(),
-                              &service[0], service.size(),
-                              flags);
+    int code = ::getnameinfo(data(), size(),
+                             &host[0], host.size(),
+                             &service[0], service.size(),
+                             flags);
 
-    if (result != 0) {
+    if (code != 0) {
         std::ostringstream os;
         os << "getnameinfo() returned "
-           << result
+           << code
            << " ("
-           << ::gai_strerror(result)
+           << ::gai_strerror(code)
            << ')';
         error = os.str();
     }
 
     Endpoint endpoint(resize(host), resize(service));
-    return EndpointResult(endpoint, Result(result, error));
+    return EndpointResult(endpoint, Result(code, error));
 }
 
 Network::Hostname Network::Address::hostname(int flags) const
