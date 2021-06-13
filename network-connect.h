@@ -10,10 +10,16 @@
 #include <netdb.h>      // struct addrinfo
 #endif
 
+#include <string>       // std::string
+#include <vector>       // std::vector
+#include <utility>      // std::pair
+
 namespace Network
 {
-    extern void close_socket(int fd);
-    extern Result connect_socket(const Hostname& host,
+    typedef std::vector<std::string> ConnectDetails;
+    typedef std::pair<int, ConnectDetails> ConnectResult;
+    extern void close(int fd);
+    extern ConnectResult connect(const Hostname& hostname,
                                  const Service& service,
                                  const struct addrinfo &hints);
 }

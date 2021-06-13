@@ -1,4 +1,5 @@
-#include "network-connect.h"    // Hostname, Result, Service, struct
+#include "network-connect.h"    // ConnectDetails, ConnectResult,
+                                // Hostname, Result, Service, struct
                                 // addrinfo, close_socket(),
                                 // connect_socket()
 #include "network-address.h"    // Address
@@ -10,7 +11,7 @@
 #include <unistd.h>     // close()
 #endif
 
-void Network::close_socket(int fd)
+void Network::close(int fd)
 {
     if (fd == -1) {
         return;
@@ -23,13 +24,12 @@ void Network::close_socket(int fd)
 #endif
 }
 
-Network::Result Network::connect_socket(const Hostname& host,
+Network::ConnectResult Network::connect(const Hostname& hostname,
                                         const Service& service,
                                         const struct addrinfo &hints)
 {
-    Sockets sockets(get_sockets(host, service, hints));
-    std::string canonical_name;
-    std::string error;
+    Sockets sockets(get_sockets(hostname, service, hints));
+    ConnectDetails details;
     int fd = -1;
 
     for (Sockets::const_iterator it = sockets.begin();
@@ -39,6 +39,7 @@ Network::Result Network::connect_socket(const Hostname& host,
         fd = socket_result.first;
 
         if (fd == Socket::SOCKET_BAD) {
+            details.push_back(socket_result.second);
             continue;
         }
 
@@ -46,25 +47,15 @@ Network::Result Network::connect_socket(const Hostname& host,
         Result connect_result(address.connect(fd));
 
         if (connect_result.first == Address::CONNECT_ERROR) {
-            close_socket(fd);
-            fd = -1;
+            close(fd);
+            fd = Socket::SOCKET_BAD;
+            details.push_back(connect_result.second);
         }
         else {
-            canonical_name = it->cname();
+            details.push_back(it->cname());
             break;
         }
     }
 
-    if (fd == Socket::SOCKET_BAD) {
-        if (socket_result.first == Socket::SOCKET_BAD) {
-            error = socket_result.second;
-        }
-        else if (connect_result.first == Address::CONNECT_ERROR) {
-            error = connect_result.second;
-        }
-
-        return Result(fd, error);
-    }
-
-    return Result(fd, canonical_name);
+    return ConnectResult(fd, details);
 }

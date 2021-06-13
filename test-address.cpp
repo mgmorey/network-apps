@@ -48,7 +48,6 @@ static void print_addresses(const Network::Addresses& addresses,
 
     std::cout << family
               << " addresses:"
-              << std::endl
               << std::endl;
 
     for (Network::Addresses::const_iterator it = addresses.begin();
@@ -56,12 +55,13 @@ static void print_addresses(const Network::Addresses& addresses,
          ++it)
     {
         Network::Hostname address(get_hostname(*it, NI_NUMERICHOST));
-        Network::Hostname hostname(get_hostname(*it));
 
         if (!address.empty()) {
             std::cout << '\t'
                       << address;
 
+            Network::Hostname hostname(get_hostname(*it));
+            
             if (hostname != address) {
                 std::cout << " ("
                           << hostname
@@ -77,7 +77,6 @@ static void test_host(const Network::Hostname& host)
 {
     if (!host.empty()) {
         std::cout << "Host: " << host << std::endl;
-        std::cout << std::endl;
     }
 
     Network::Socket hints_ipv4(AF_INET);
@@ -93,11 +92,9 @@ static void test_host(const Network::Hostname& host)
 
     if (set_any != set_all) {
         print_addresses(any, "Any");
-        std::cout << std::endl;
     }
 
     print_addresses(ipv4, "IPv4");
-    std::cout << std::endl;
     print_addresses(ipv6, "IPv6");
 }
 
@@ -135,9 +132,7 @@ int main(void)
     }
 
     test_host("");
-    std::cout << std::endl;
     test_host("example.com");
-    std::cout << std::endl;
     result = EXIT_SUCCESS;
 
 clean_up:

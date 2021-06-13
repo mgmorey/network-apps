@@ -19,16 +19,20 @@ static void test_connect(const Network::Hostname& hostname,
                          const Network::Service& service)
 {
     Network::Socket hints(IPPROTO_TCP, SOCK_STREAM, AF_UNSPEC, AI_CANONNAME);
-    Network::Result result = Network::connect_socket(hostname, service, hints);
+    Network::ConnectResult result(Network::connect(hostname, service, hints));
+    Network::ConnectDetails details(result.second);
     int fd = result.first;
 
     if (fd == Network::Socket::SOCKET_BAD) {
-        std::string error = result.second;
-        std::cerr << error
-                  << std::endl;
+        for (Network::ConnectDetails::const_iterator it = details.begin();
+             it != details.end();
+             ++it) {
+            std::cerr << *it
+                      << std::endl;
+        }
     }
     else {
-        Network::Hostname canonical_name = result.second;
+        Network::Hostname canonical_name = details[0];
         std::cout << "Connected to "
                   << (!canonical_name.empty() ?
                       canonical_name :
@@ -36,7 +40,7 @@ static void test_connect(const Network::Hostname& hostname,
                   << " on socket "
                   << fd
                   << std::endl;
-        Network::close_socket(fd);
+        Network::close(fd);
         std::cout << "Closed socket "
                   << fd
                   << std::endl;
