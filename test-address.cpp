@@ -106,7 +106,18 @@ static Network::Addresses test_host(const Network::Hostname& host,
     Network::Addresses addresses(Network::get_addresses(error, host, "", hints));
 
     if (!error.empty()) {
-        std::cerr << error
+        std::string description(get_family_description(family));
+
+        if (description.empty()) {
+            std::cerr << "No";
+        }
+        else {
+            std::cerr << "No "
+                      << description;
+        }
+        
+        std::cerr << " addresses: "
+                  << error
                   << std::endl;
     }
     else if (!addresses.empty() && print) {
