@@ -72,10 +72,10 @@ static void wsa_tear_down(void)
 #endif
 }
 
-int main(void)
+int main(int argc, char* argv[])
 {
-    Network::Hostname hostname("example.com");
-    Network::Service service("http");
+    Network::Hostname hostname(argc > 1 ? argv[1] : "example.com");
+    Network::Service service(argc > 2 ? argv[2] : "http");
     int result = EXIT_FAILURE;
 
     if (wsa_set_up()) {

@@ -61,7 +61,7 @@ static void print_addresses(const Network::Addresses& addresses,
                       << address;
 
             Network::Hostname hostname(get_hostname(*it));
-            
+
             if (hostname != address) {
                 std::cout << " ("
                           << hostname
@@ -73,17 +73,17 @@ static void print_addresses(const Network::Addresses& addresses,
     }
 }
 
-static void test_host(const Network::Hostname& host)
+static void test_host(const Network::Hostname& hostname = "")
 {
-    if (!host.empty()) {
-        std::cout << "Host: " << host << std::endl;
+    if (!hostname.empty()) {
+        std::cout << "Host: " << hostname << std::endl;
     }
 
     Network::Socket hints_ipv4(AF_INET);
     Network::Socket hints_ipv6(AF_INET6);
-    Network::Addresses any(Network::get_addresses(host));
-    Network::Addresses ipv4(Network::get_addresses(host, "", hints_ipv4));
-    Network::Addresses ipv6(Network::get_addresses(host, "", hints_ipv6));
+    Network::Addresses any(Network::get_addresses(hostname));
+    Network::Addresses ipv4(Network::get_addresses(hostname, "", hints_ipv4));
+    Network::Addresses ipv6(Network::get_addresses(hostname, "", hints_ipv6));
     std::set<Network::Address> set_all;
     insert(ipv4, set_all);
     insert(ipv6, set_all);
@@ -123,16 +123,20 @@ static void wsa_tear_down(void)
 #endif
 }
 
-int main(void)
+int main(int argc, char* argv[])
 {
+    Network::Hostname hostname(argc > 1 ? argv[1] : "example.com");
     int result = EXIT_FAILURE;
 
     if (wsa_set_up()) {
         goto clean_up;
     }
 
-    test_host("");
-    test_host("example.com");
+    if (argc <= 1) {
+        test_host();
+    }
+
+    test_host(hostname);
     result = EXIT_SUCCESS;
 
 clean_up:
