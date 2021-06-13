@@ -4,18 +4,18 @@
 #include "network-types.h"      // Hostname, Service
 
 #ifdef _WIN32
-#include <ws2tcpip.h>   // struct addrinfo, freeaddrinfo(),
-                        // getaddrinfo()
+#include <ws2tcpip.h>   // struct addrinfo, freeaddrinfo()
 #else
-#include <netdb.h>      // struct addrinfo, freeaddrinfo(),
-                        // getaddrinfo()
+#include <netdb.h>      // struct addrinfo, freeaddrinfo()
 #endif
-
-#include <cassert>      // assert()
-#include <sstream>      // std::ostringstream
 
 namespace Network
 {
+    extern struct addrinfo* get_addrinfo(std::string& error,
+                                         const Hostname& node,
+                                         const Service& service,
+                                         const struct addrinfo* hints);
+
     template <class Container>
     void copy_addrinfo(Container& dest,
                        std::string& error,
@@ -23,45 +23,9 @@ namespace Network
                        const Service& service,
                        const struct addrinfo* hints)
     {
-        struct addrinfo* list = NULL;
-        assert(!node.empty() || !service.empty());
-        int result = ::getaddrinfo(node.empty() ? NULL : node.c_str(),
-                                   service.empty() ? NULL : service.c_str(),
-                                   hints,
-                                   &list);
+        struct addrinfo* list = get_addrinfo(error, node, service, hints);
 
-        if (result != 0) {
-            std::ostringstream os;
-            os << "getaddrinfo(";
-
-            if (!node.empty()) {
-                os << '"'
-                   << node
-                   << '"';
-            }
-            else {
-                os << "NULL";
-            }
-
-            os << ", ";
-
-            if (!service.empty()) {
-                os << '"'
-                   << service
-                   << "\", ";
-            }
-
-            os << "...) returned "
-               << result
-               << " ("
-               << ::gai_strerror(result)
-               << ')';
-
-            error = os.str();
-        }
-        else {
-            assert(list != NULL);
-
+        if (list != NULL) {
             for (const struct addrinfo* elem = list;
                  elem != NULL;
                  elem = elem->ai_next) {
