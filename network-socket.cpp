@@ -1,4 +1,4 @@
-#include "network-socket.h"     // Socket
+#include "network-socket.h"     // Hostname, Result, Socket
 #include "network-address.h"    // Address
 
 #ifdef _WIN32
@@ -106,7 +106,7 @@ Network::Hostname Network::Socket::cname() const
     return result;
 }
 
-Network::Socket::SocketResult Network::Socket::socket() const
+Network::Result Network::Socket::socket() const
 {
     std::string error;
     int fd = ::socket(ai.ai_family, ai.ai_socktype, ai.ai_protocol);
@@ -124,7 +124,7 @@ Network::Socket::SocketResult Network::Socket::socket() const
         error = os.str();
     }
 
-    return SocketResult(fd, error);
+    return Result(fd, error);
 }
 
 void Network::Socket::copy(const Socket& other)

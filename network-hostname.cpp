@@ -1,4 +1,4 @@
-#include "network-hostname.h"   // get_hostname()
+#include "network-hostname.h"   // HostnameResult, get_hostname()
 #include "network-string.h"     // resize()
 
 #ifdef _WIN32

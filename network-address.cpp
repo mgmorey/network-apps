@@ -1,5 +1,5 @@
-#include "network-address.h"    // Address
-#include "network-endpoint.h"   // Endpoint, Endpoint_result,
+#include "network-address.h"    // Address, Hostname, Result, Service
+#include "network-endpoint.h"   // Endpoint, EndpointResult,
                                 // get_hostname(), get_service()
 #include "network-string.h"     // resize()
 
@@ -68,7 +68,7 @@ bool Network::Address::operator==(const Address& other) const
     return (addr == other.addr);
 }
 
-Network::Address::ConnectResult Network::Address::connect(int fd) const
+Network::Result Network::Address::connect(int fd) const
 {
     assert(size());
     std::string error;
@@ -85,7 +85,7 @@ Network::Address::ConnectResult Network::Address::connect(int fd) const
         error = os.str();
     }
 
-    return Address::ConnectResult(result, error);
+    return Result(result, error);
 }
 
 Network::EndpointResult Network::Address::endpoint(int flags) const

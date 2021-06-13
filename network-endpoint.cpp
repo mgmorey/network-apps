@@ -1,5 +1,5 @@
-#include "network-endpoint.h"   // Endpoint, get_hostname(),
-                                // get_service()
+#include "network-endpoint.h"   // Endpoint, Hostname, Service,
+                                // get_hostname(), get_service()
 
 Network::Hostname Network::get_hostname(const Network::Endpoint& endpoint)
 {

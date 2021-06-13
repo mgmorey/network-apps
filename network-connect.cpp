@@ -1,4 +1,6 @@
-#include "network-connect.h"    // connect_socket()
+#include "network-connect.h"    // Hostname, Result, Service, struct
+                                // addrinfo, close_socket(),
+                                // connect_socket()
 #include "network-address.h"    // Address
 #include "network-sockets.h"    // Sockets
 
@@ -21,13 +23,11 @@ void Network::close_socket(int fd)
 #endif
 }
 
-Network::ConnectResult Network::connect_socket(const Hostname& host,
-                                               const Service& service,
-                                               const struct addrinfo &hints)
+Network::Result Network::connect_socket(const Hostname& host,
+                                        const Service& service,
+                                        const struct addrinfo &hints)
 {
     Sockets sockets(get_sockets(host, service, hints));
-    Address::ConnectResult connect_result;
-    Socket::SocketResult socket_result;
     std::string canonical_name;
     std::string error;
     int fd = -1;
@@ -35,7 +35,7 @@ Network::ConnectResult Network::connect_socket(const Hostname& host,
     for (Sockets::const_iterator it = sockets.begin();
          it != sockets.end();
          ++it) {
-        socket_result = it->socket();
+        Result socket_result(it->socket());
         fd = socket_result.first;
 
         if (fd == Socket::SOCKET_BAD) {
@@ -43,7 +43,7 @@ Network::ConnectResult Network::connect_socket(const Hostname& host,
         }
 
         Address address(*it);
-        connect_result = address.connect(fd);
+        Result connect_result(address.connect(fd));
 
         if (connect_result.first == Address::CONNECT_ERROR) {
             close_socket(fd);
@@ -63,8 +63,8 @@ Network::ConnectResult Network::connect_socket(const Hostname& host,
             error = connect_result.second;
         }
 
-        return ConnectResult(fd, error);
+        return Result(fd, error);
     }
 
-    return ConnectResult(fd, canonical_name);
+    return Result(fd, canonical_name);
 }

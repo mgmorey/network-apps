@@ -1,4 +1,5 @@
-#include "network-connect.h"    // close_socket(), connect_socket()
+#include "network-connect.h"    // Result, Hostname, Service,
+                                // close_socket(), connect_socket()
 #include "network-socket.h"     // Socket
 
 #ifdef _WIN32
@@ -18,8 +19,7 @@ static void test_connect(const Network::Hostname& hostname,
                          const Network::Service& service)
 {
     Network::Socket hints(IPPROTO_TCP, SOCK_STREAM, AF_UNSPEC, AI_CANONNAME);
-    Network::ConnectResult result =
-        Network::connect_socket(hostname, service, hints);
+    Network::Result result = Network::connect_socket(hostname, service, hints);
     int fd = result.first;
 
     if (fd == Network::Socket::SOCKET_BAD) {

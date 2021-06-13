@@ -1,7 +1,7 @@
-#include "network-address.h"    // Address
+#include "network-address.h"    // Address, Hostname
 #include "network-addresses.h"  // Addresses, get_addresses()
-#include "network-endpoint.h"   // Endpoint, Endpoint_result,
-                                // get_hostname(), get_service()
+#include "network-endpoint.h"   // Endpoint, EndpointResult,
+                                // get_hostname()
 #include "network-hostname.h"   // get_hostname()
 #include "network-socket.h"     // Socket
 

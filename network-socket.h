@@ -1,6 +1,7 @@
 #ifndef NETWORK_SOCKET_H
 #define NETWORK_SOCKET_H
 
+#include "network-result.h"     // Result
 #include "network-types.h"      // Hostname
 
 #ifdef _WIN32
@@ -17,7 +18,6 @@ namespace Network
     class Socket
     {
     public:
-        typedef std::pair<int, std::string> SocketResult;
         enum { SOCKET_BAD = -1 };
         Socket();
         Socket(const Socket& other);
@@ -33,7 +33,7 @@ namespace Network
         bool operator==(const Socket& other) const;
         operator const struct addrinfo&() const;
         Hostname cname() const;
-        SocketResult socket() const;
+        Result socket() const;
 
     private:
         void copy(const Socket& other);
