@@ -19,6 +19,22 @@
 #include <set>          // std::set
 #include <string>       // std::string
 
+static std::string get_family_description(int family)
+{
+    std::string result;
+
+    switch (family) {
+    case AF_INET:
+        result = "IPv4";
+        break;
+    case AF_INET6:
+        result = "IPv6";
+        break;
+    }
+
+    return result;
+}
+
 static Network::Hostname get_hostname(const Network::Address& address,
                                       int flags = 0)
 {
@@ -39,15 +55,22 @@ static void insert(const Network::Addresses& a_list,
               std::inserter(a_set, a_set.begin()));
 }
 
-static void print_addresses(const Network::Addresses& addresses,
-                            const std::string& family)
+static void print_addresses(const Network::Addresses& addresses, int family)
 {
+    std::string description = get_family_description(family);
+
     if (addresses.empty()) {
         return;
     }
 
-    std::cout << family
-              << " addresses:"
+    if (description.empty()) {
+        std::cout << "All";
+    }
+    else {
+        std::cout << description;
+    }
+
+    std::cout << " addresses:"
               << std::endl;
 
     for (Network::Addresses::const_iterator it = addresses.begin();
@@ -56,46 +79,61 @@ static void print_addresses(const Network::Addresses& addresses,
     {
         Network::Hostname address(get_hostname(*it, NI_NUMERICHOST));
 
-        if (!address.empty()) {
-            std::cout << '\t'
-                      << address;
-
-            Network::Hostname hostname(get_hostname(*it));
-
-            if (hostname != address) {
-                std::cout << " ("
-                          << hostname
-                          << ") ";
-            }
-
-            std::cout << std::endl;
+        if (address.empty()) {
+            continue;
         }
+
+        std::cout << '\t'
+                  << address;
+
+        Network::Hostname hostname(get_hostname(*it));
+
+        if (hostname != address) {
+            std::cout << " ("
+                      << hostname
+                      << ") ";
+        }
+
+        std::cout << std::endl;
     }
 }
 
-static void test_host(const Network::Hostname& hostname = "")
+static Network::Addresses test_host(const Network::Hostname& host,
+                                    int family, bool print = true)
 {
-    if (!hostname.empty()) {
-        std::cout << "Host: " << hostname << std::endl;
+    std::string error;
+    Network::Socket hints(family);
+    Network::Addresses addresses(Network::get_addresses(error, host, "", hints));
+
+    if (!error.empty()) {
+        std::cerr << error
+                  << std::endl;
+    }
+    else if (!addresses.empty() && print) {
+        print_addresses(addresses, family);
     }
 
-    Network::Socket hints_ipv4(AF_INET);
-    Network::Socket hints_ipv6(AF_INET6);
-    Network::Addresses any(Network::get_addresses(hostname));
-    Network::Addresses ipv4(Network::get_addresses(hostname, "", hints_ipv4));
-    Network::Addresses ipv6(Network::get_addresses(hostname, "", hints_ipv6));
+    return addresses;
+}
+
+static void test_host(const Network::Hostname& host)
+{
+    if (!host.empty()) {
+        std::cout << "Host: " << host << std::endl;
+    }
+
+    Network::Addresses ipv4(test_host(host, AF_INET));
+    Network::Addresses ipv6(test_host(host, AF_INET6));
+    Network::Addresses any(test_host(host, AF_UNSPEC, false));
     std::set<Network::Address> set_all;
+    std::set<Network::Address> set_any;
     insert(ipv4, set_all);
     insert(ipv6, set_all);
-    std::set<Network::Address> set_any;
     insert(any, set_any);
 
     if (set_any != set_all) {
-        print_addresses(any, "Any");
+        print_addresses(any, AF_UNSPEC);
     }
-
-    print_addresses(ipv4, "IPv4");
-    print_addresses(ipv6, "IPv6");
 }
 
 static int wsa_set_up(void)
@@ -125,7 +163,7 @@ static void wsa_tear_down(void)
 
 int main(int argc, char* argv[])
 {
-    Network::Hostname hostname(argc > 1 ? argv[1] : "example.com");
+    Network::Hostname host(argc > 1 ? argv[1] : "example.com");
     int result = EXIT_FAILURE;
 
     if (wsa_set_up()) {
@@ -133,10 +171,10 @@ int main(int argc, char* argv[])
     }
 
     if (argc <= 1) {
-        test_host();
+        test_host("");
     }
 
-    test_host(hostname);
+    test_host(host);
     result = EXIT_SUCCESS;
 
 clean_up:

@@ -28,9 +28,15 @@ Network::ConnectResult Network::connect(const Hostname& hostname,
                                         const Service& service,
                                         const struct addrinfo &hints)
 {
-    Sockets sockets(get_sockets(hostname, service, hints));
+    std::string error;
+    Sockets sockets(get_sockets(error, hostname, service, hints));
     ConnectDetails details;
     int fd = -1;
+
+    if (!error.empty()) {
+        details.push_back(error);
+        return ConnectResult(fd, details);
+    }
 
     for (Sockets::const_iterator it = sockets.begin();
          it != sockets.end();

@@ -13,48 +13,53 @@
 
 #include <cassert>      // assert()
 #include <iostream>     // std::cerr, std::endl
+#include <sstream>      // std::ostringstream
 
 namespace Network
 {
     template <class Container>
     void copy_addrinfo(Container& dest,
+                       std::string& error,
                        const Hostname& node,
                        const Service& service,
                        const struct addrinfo* hints)
     {
         struct addrinfo* list = NULL;
         assert(!node.empty() || !service.empty());
-        int error = ::getaddrinfo(node.empty() ? NULL : node.c_str(),
-                                  service.empty() ? NULL : service.c_str(),
-                                  hints,
-                                  &list);
+        int result = ::getaddrinfo(node.empty() ? NULL : node.c_str(),
+                                   service.empty() ? NULL : service.c_str(),
+                                   hints,
+                                   &list);
 
-        if (error != 0) {
-            std::cerr << "getaddrinfo(";
+        if (result != 0) {
+            std::ostringstream os;
+            os << "getaddrinfo(";
 
             if (!node.empty()) {
-                std::cerr << '"'
-                          << node
-                          << '"';
+                os << '"'
+                   << node
+                   << '"';
             }
             else {
-                std::cerr << "NULL";
+                os << "NULL";
             }
 
-            std::cerr << ", ";
+            os << ", ";
 
             if (!service.empty()) {
-                std::cerr << '"'
-                          << service
-                          << "\", ";
+                os << '"'
+                   << service
+                   << "\", ";
             }
 
-            std::cerr << "...) returned "
-                      << error
-                      << " ("
-                      << ::gai_strerror(error)
-                      << ')'
-                      << std::endl;
+            os << "...) returned "
+               << error
+               << " ("
+               << ::gai_strerror(result)
+               << ')'
+               << std::endl;
+
+            error = os.str();
         }
         else {
             assert(list != NULL);
@@ -70,12 +75,13 @@ namespace Network
     }
 
     template <class Container>
-    Container get_addrinfo(const Hostname& node,
+    Container get_addrinfo(std::string& error,
+                           const Hostname& node,
                            const Service& service,
                            const struct addrinfo* hints)
     {
         Container result;
-        copy_addrinfo(result, node, service, hints);
+        copy_addrinfo(result, error, node, service, hints);
         result.unique();
         return result;
     }

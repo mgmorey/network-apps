@@ -2,16 +2,19 @@
 #include "network-addrinfo.h"   // copy_addrinfo()
 #include "network-hostname.h"   // get_hostname()
 
-Network::Sockets Network::get_sockets(const Hostname& hostname,
+#include <string>       // std::string
+
+Network::Sockets Network::get_sockets(std::string& error,
+                                      const Hostname& host,
                                       const Service& service,
                                       const struct addrinfo& hints)
 {
-    Hostname node(hostname);
+    Hostname node(host);
 
-    if (hostname.empty() && service.empty()) {
+    if (host.empty() && service.empty()) {
         HostnameResult hostname_result = get_hostname();
         node = hostname_result.first;
     }
 
-    return get_addrinfo<Sockets>(node, service, &hints);
+    return get_addrinfo<Sockets>(error, node, service, &hints);
 }
