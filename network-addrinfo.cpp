@@ -1,5 +1,5 @@
-#include "network-addrinfo.h"   // Hostname, Service, struct addrinfo,
-                                // get_addrinfo()
+#include "network-addrinfo.h"   // Hostname, Service, Result, struct
+                                // addrinfo, get_addrinfo()
 
 #ifdef _WIN32
 #include <ws2tcpip.h>   // struct addrinfo, getaddrinfo()
@@ -10,19 +10,19 @@
 #include <cassert>      // assert()
 #include <sstream>      // std::ostringstream
 
-struct addrinfo* Network::get_addrinfo(std::string& error,
+struct addrinfo* Network::get_addrinfo(Result& result,
                                        const Hostname& node,
                                        const Service& service,
                                        const struct addrinfo* hints)
 {
     struct addrinfo* list = NULL;
     assert(!node.empty() || !service.empty());
-    int result = ::getaddrinfo(node.empty() ? NULL : node.c_str(),
-                               service.empty() ? NULL : service.c_str(),
-                               hints,
-                               &list);
+    int code = ::getaddrinfo(node.empty() ? NULL : node.c_str(),
+                             service.empty() ? NULL : service.c_str(),
+                             hints,
+                             &list);
 
-    if (result != 0) {
+    if (code != 0) {
         std::ostringstream os;
         os << "getaddrinfo(";
 
@@ -44,12 +44,13 @@ struct addrinfo* Network::get_addrinfo(std::string& error,
         }
 
         os << "...) returned "
-           << result
+           << code
            << " ("
-           << ::gai_strerror(result)
+           << ::gai_strerror(code)
            << ')';
 
-        error = os.str();
+        result.first = code;
+        result.second = os.str();
     }
     else {
         assert(list != NULL);

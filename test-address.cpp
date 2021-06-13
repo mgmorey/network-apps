@@ -40,8 +40,8 @@ static Network::Hostname get_hostname(const Network::Address& address,
 {
     Network::EndpointResult endpoint_result(address.endpoint(flags));
 
-    if (!endpoint_result.second.empty()) {
-        std::cerr << endpoint_result.second
+    if (!endpoint_result.second.second.empty()) {
+        std::cerr << endpoint_result.second.second
                   << std::endl;
     }
 
@@ -97,10 +97,12 @@ static Network::Addresses test_host(const Network::Hostname& host,
     Network::Socket hints(family);
     Network::AddressesResult result(Network::get_addresses(host, "", hints));
     Network::Addresses addresses(result.first);
-    std::string error(result.second);
+    Network::Result addr_result(result.second);
+    int code = addr_result.first;
 
-    if (!error.empty()) {
+    if (code != 0) {
         std::string description(get_family_description(family));
+        std::string error(addr_result.second);
 
         if (description.empty()) {
             std::cerr << "No";

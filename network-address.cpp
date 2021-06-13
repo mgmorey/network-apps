@@ -110,7 +110,7 @@ Network::EndpointResult Network::Address::endpoint(int flags) const
     }
 
     Endpoint endpoint(resize(host), resize(service));
-    return EndpointResult(endpoint, error);
+    return EndpointResult(endpoint, Result(result, error));
 }
 
 Network::Hostname Network::Address::hostname(int flags) const

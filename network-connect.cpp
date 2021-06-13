@@ -30,37 +30,39 @@ Network::ConnectResult Network::connect(const Hostname& hostname,
 {
     SocketsResult result(get_sockets(hostname, service, hints));
     Sockets sockets(result.first);
-    std::string error(result.second);
+    Result sock_result(result.second);
+    int code = sock_result.first;
     ConnectDetails details;
     int fd = -1;
 
-    if (!error.empty()) {
+    if (code != 0) {
+        std::string error(sock_result.second);
         details.push_back(error);
-        return ConnectResult(fd, details);
     }
+    else {
+        for (Sockets::const_iterator it = sockets.begin();
+             it != sockets.end();
+             ++it) {
+            Result socket_result(it->socket());
+            fd = socket_result.first;
 
-    for (Sockets::const_iterator it = sockets.begin();
-         it != sockets.end();
-         ++it) {
-        Result socket_result(it->socket());
-        fd = socket_result.first;
+            if (fd == Socket::SOCKET_BAD) {
+                details.push_back(socket_result.second);
+                continue;
+            }
 
-        if (fd == Socket::SOCKET_BAD) {
-            details.push_back(socket_result.second);
-            continue;
-        }
+            Address address(*it);
+            Result connect_result(address.connect(fd));
 
-        Address address(*it);
-        Result connect_result(address.connect(fd));
-
-        if (connect_result.first == Address::CONNECT_ERROR) {
-            close(fd);
-            fd = Socket::SOCKET_BAD;
-            details.push_back(connect_result.second);
-        }
-        else {
-            details.push_back(it->cname());
-            break;
+            if (connect_result.first == Address::CONNECT_ERROR) {
+                close(fd);
+                fd = Socket::SOCKET_BAD;
+                details.push_back(connect_result.second);
+            }
+            else {
+                details.push_back(it->cname());
+                break;
+            }
         }
     }
 

@@ -2,6 +2,7 @@
 #define NETWORK_ADDRESSES_H
 
 #include "network-address.h"    // Address
+#include "network-result.h"     // Result
 #include "network-socket.h"     // Socket
 #include "network-types.h"      // Hostname, Service
 
@@ -17,7 +18,7 @@
 namespace Network
 {
     typedef std::list<Address> Addresses;
-    typedef std::pair<Addresses, std::string> AddressesResult;
+    typedef std::pair<Addresses, Result> AddressesResult;
     extern AddressesResult get_addresses(const Hostname& host = "",
                                          const Service& service = "",
                                          const struct addrinfo& hints =

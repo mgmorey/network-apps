@@ -1,6 +1,7 @@
 #ifndef NETWORK_SOCKETS_H
 #define NETWORK_SOCKETS_H
 
+#include "network-result.h"     // Result
 #include "network-socket.h"     // Socket
 #include "network-types.h"      // Hostname, Service
 
@@ -16,7 +17,7 @@
 namespace Network
 {
     typedef std::list<Socket> Sockets;
-    typedef std::pair<Sockets, std::string> SocketsResult;
+    typedef std::pair<Sockets, Result> SocketsResult;
     extern SocketsResult get_sockets(const Hostname& host,
                                      const Service& service,
                                      const struct addrinfo& hints);
