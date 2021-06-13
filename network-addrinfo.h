@@ -10,6 +10,8 @@
 #include <netdb.h>      // struct addrinfo, freeaddrinfo()
 #endif
 
+#include <utility>      // std::pair
+
 namespace Network
 {
     typedef std::pair<struct addrinfo*, Result> AddrinfoResult;
