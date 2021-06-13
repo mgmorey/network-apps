@@ -57,7 +57,7 @@ static void insert(const Network::Addresses& a_list,
 
 static void print_addresses(const Network::Addresses& addresses, int family)
 {
-    std::string description = get_family_description(family);
+    std::string description(get_family_description(family));
 
     if (addresses.empty()) {
         return;
