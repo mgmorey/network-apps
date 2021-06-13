@@ -74,14 +74,13 @@ namespace Network
     }
 
     template <class Container>
-    Container get_addrinfo(std::string& error,
-                           const Hostname& node,
+    Container get_addrinfo(const Hostname& node,
                            const Service& service,
                            const struct addrinfo* hints)
     {
         Container container;
-        copy_addrinfo(container, error, node, service, hints);
-        container.unique();
+        copy_addrinfo(container.first, container.second, node, service, hints);
+        container.first.unique();
         return container;
     }
 }
