@@ -79,7 +79,7 @@ Network::Result Network::Address::connect(int fd) const
         os << "connect("
            << fd
            << ") returned "
-           << error
+           << result
            << ": "
            << std::strerror(errno);
         error = os.str();
