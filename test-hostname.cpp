@@ -35,14 +35,26 @@ static void wsa_tear_down(void)
 
 int main(void)
 {
+    Network::HostnameResult hostname_result;
     int result = EXIT_FAILURE;
 
     if (wsa_set_up()) {
         goto clean_up;
     }
 
-    std::cout << "Hostname: " << Network::get_hostname() << std::endl;
-    result = EXIT_SUCCESS;
+    hostname_result = Network::get_hostname();
+
+    if (!hostname_result.second.empty()) {
+        std::cerr << hostname_result.second
+                  << std::endl;
+        result = EXIT_FAILURE;
+    }
+    else {
+        std::cout << "Hostname: "
+                  << hostname_result.first
+                  << std::endl;
+        result = EXIT_SUCCESS;
+    }
 
 clean_up:
     wsa_tear_down();

@@ -26,21 +26,26 @@ Network::ConnectResult Network::connect_socket(const Hostname& host,
                                                const struct addrinfo &hints)
 {
     Sockets sockets(get_sockets(host, service, hints));
+    Address::ConnectResult connect_result;
+    Socket::SocketResult socket_result;
     std::string canonical_name;
+    std::string error;
     int fd = -1;
 
     for (Sockets::const_iterator it = sockets.begin();
          it != sockets.end();
          ++it) {
-        fd = it->socket();
+        socket_result = it->socket();
+        fd = socket_result.first;
 
-        if (fd == -1) {
+        if (fd == Socket::SOCKET_BAD) {
             continue;
         }
 
         Address address(*it);
+        connect_result = address.connect(fd);
 
-        if (address.connect(fd) == -1) {
+        if (connect_result.first == Address::CONNECT_ERROR) {
             close_socket(fd);
             fd = -1;
         }
@@ -48,6 +53,17 @@ Network::ConnectResult Network::connect_socket(const Hostname& host,
             canonical_name = it->cname();
             break;
         }
+    }
+
+    if (fd == Socket::SOCKET_BAD) {
+        if (socket_result.first == Socket::SOCKET_BAD) {
+            error = socket_result.second;
+        }
+        else if (connect_result.first == Address::CONNECT_ERROR) {
+            error = connect_result.second;
+        }
+
+        return ConnectResult(fd, error);
     }
 
     return ConnectResult(fd, canonical_name);

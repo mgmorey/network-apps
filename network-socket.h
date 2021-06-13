@@ -9,11 +9,16 @@
 #include <netdb.h>      // struct addrinfo
 #endif
 
+#include <string>       // std::string
+#include <utility>      // std::pair
+
 namespace Network
 {
     class Socket
     {
     public:
+        typedef std::pair<int, std::string> SocketResult;
+        enum { SOCKET_BAD = -1 };
         Socket();
         Socket(const Socket& other);
         Socket(const struct addrinfo& other);
@@ -28,7 +33,7 @@ namespace Network
         bool operator==(const Socket& other) const;
         operator const struct addrinfo&() const;
         Hostname cname() const;
-        int socket() const;
+        SocketResult socket() const;
 
     private:
         void copy(const Socket& other);

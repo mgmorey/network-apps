@@ -9,11 +9,12 @@
 #include <netdb.h>      // struct addrinfo
 #endif
 
+#include <string>       // std::string
 #include <utility>      // std::pair
 
 namespace Network
 {
-    typedef std::pair<int, Hostname> ConnectResult;
+    typedef std::pair<int, std::string> ConnectResult;
 
     extern void close_socket(int fd);
     extern ConnectResult connect_socket(const Hostname& host,

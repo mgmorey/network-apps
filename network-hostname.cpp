@@ -9,18 +9,20 @@
 #include <unistd.h>     // gethostname()
 #endif
 
-#include <iostream>     // std::cerr, std::endl
+#include <sstream>      // std::ostringstream
 
-Network::Hostname Network::get_hostname()
+Network::HostnameResult Network::get_hostname()
 {
+    std::string error;
     Hostname hostname(NI_MAXHOST, '\0');
-    int error = ::gethostname(&hostname[0], hostname.size() - 1);
+    int result = ::gethostname(&hostname[0], hostname.size() - 1);
 
-    if (error != 0) {
-        std::cerr << "gethostname(...) returned "
-                  << error
-                  << std::endl;
+    if (result != 0) {
+        std::ostringstream os;
+        os << "gethostname(...) returned "
+           << result;
+        error = os.str();
     }
 
-    return resize(hostname);
+    return HostnameResult(resize(hostname), error);
 }

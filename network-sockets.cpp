@@ -9,7 +9,8 @@ Network::Sockets Network::get_sockets(const Hostname& hostname,
     Hostname node(hostname);
 
     if (hostname.empty() && service.empty()) {
-        node = get_hostname();
+        HostnameResult hostname_result = get_hostname();
+        node = hostname_result.first;
     }
 
     return get_addrinfo<Sockets>(node, service, &hints);

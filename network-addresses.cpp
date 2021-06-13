@@ -9,7 +9,8 @@ Network::Addresses Network::get_addresses(const Network::Hostname& hostname,
     Hostname node(hostname);
 
     if (hostname.empty() && service.empty()) {
-        node = get_hostname();
+        HostnameResult hostname_result = get_hostname();
+        node = hostname_result.first;
     }
 
     return get_addrinfo<Addresses>(node, service, &hints);

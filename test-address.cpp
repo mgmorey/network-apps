@@ -1,6 +1,7 @@
 #include "network-address.h"    // Address
 #include "network-addresses.h"  // Addresses, get_addresses()
-#include "network-endpoint.h"   // Endpoint, hostname()
+#include "network-endpoint.h"   // Endpoint, Endpoint_result,
+                                // get_hostname(), get_service()
 #include "network-hostname.h"   // get_hostname()
 #include "network-socket.h"     // Socket
 
@@ -17,6 +18,19 @@
 #include <iterator>     // std::inserter()
 #include <set>          // std::set
 #include <string>       // std::string
+
+static Network::Hostname get_hostname(const Network::Address& address,
+                                      int flags = 0)
+{
+    Network::EndpointResult endpoint_result(address.endpoint(flags));
+
+    if (!endpoint_result.second.empty()) {
+        std::cerr << endpoint_result.second
+                  << std::endl;
+    }
+
+    return Network::get_hostname(endpoint_result.first);
+}
 
 static void insert(const Network::Addresses& a_list,
                    std::set<Network::Address>& a_set)
@@ -41,18 +55,21 @@ static void print_addresses(const Network::Addresses& addresses,
          it != addresses.end();
          ++it)
     {
-        Network::Hostname address(it->hostname(NI_NUMERICHOST));
-        Network::Hostname hostname(it->hostname());
-        std::cout << '\t'
-                  << address;
+        Network::Hostname address(get_hostname(*it, NI_NUMERICHOST));
+        Network::Hostname hostname(get_hostname(*it));
 
-        if (hostname != address) {
-            std::cout << " ("
-                      << hostname
-                      << ") ";
+        if (!address.empty()) {
+            std::cout << '\t'
+                      << address;
+
+            if (hostname != address) {
+                std::cout << " ("
+                          << hostname
+                          << ") ";
+            }
+
+            std::cout << std::endl;
         }
-
-        std::cout << std::endl;
     }
 }
 

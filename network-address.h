@@ -1,7 +1,7 @@
 #ifndef NETWORK_ADDRESS_H
 #define NETWORK_ADDRESS_H
 
-#include "network-endpoint.h"   // Endpoint
+#include "network-endpoint.h"   // Endpoint, Endpoint_result,
 
 #ifdef _WIN32
 #include <winsock2.h>   // struct sockaddr, socket()
@@ -19,6 +19,8 @@ namespace Network
     class Address
     {
     public:
+        typedef std::pair<int, std::string> ConnectResult;
+        enum { CONNECT_ERROR = -1 };
         Address();
         Address(const Address& other);
         Address(const struct addrinfo& other);
@@ -29,8 +31,8 @@ namespace Network
         bool operator>(const Address& other) const;
         bool operator!=(const Address& other) const;
         bool operator==(const Address& other) const;
-        int connect(int fd) const;
-        Endpoint endpoint(int flags = 0) const;
+        ConnectResult connect(int fd) const;
+        EndpointResult endpoint(int flags = 0) const;
         Hostname hostname(int flags = 0) const;
         Service service(int flags = 0) const;
 

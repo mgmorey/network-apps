@@ -11,7 +11,7 @@
 
 #include <cstdlib>      // free()
 #include <cstring>      // std::memcpy(), strdup()
-#include <iostream>     // std::cerr, std::endl
+#include <sstream>      // std::ostringstream
 
 Network::Socket::Socket()
 {
@@ -106,23 +106,25 @@ Network::Hostname Network::Socket::cname() const
     return result;
 }
 
-int Network::Socket::socket() const
+Network::Socket::SocketResult Network::Socket::socket() const
 {
+    std::string error;
     int fd = ::socket(ai.ai_family, ai.ai_socktype, ai.ai_protocol);
 
-    if (fd == -1) {
-        std::cerr << "socket("
-                  << ai.ai_family
-                  << ", "
-                  << ai.ai_socktype
-                  << ", "
-                  << ai.ai_protocol
-                  << ") returned "
-                  << fd
-                  << std::endl;
+    if (fd == SOCKET_BAD) {
+        std::ostringstream os;
+        os << "socket("
+           << ai.ai_family
+           << ", "
+           << ai.ai_socktype
+           << ", "
+           << ai.ai_protocol
+           << ") returned "
+           << fd;
+        error = os.str();
     }
 
-    return fd;
+    return SocketResult(fd, error);
 }
 
 void Network::Socket::copy(const Socket& other)

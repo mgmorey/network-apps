@@ -8,6 +8,7 @@
 namespace Network
 {
     typedef std::pair<Hostname, Service> Endpoint;
+    typedef std::pair<Endpoint, std::string> EndpointResult;
 
     extern Hostname get_hostname(const Endpoint& endpoint);
     extern Service get_service(const Endpoint& endpoint);

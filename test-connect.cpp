@@ -20,10 +20,15 @@ static void test_connect(const Network::Hostname& hostname,
     Network::Socket hints(IPPROTO_TCP, SOCK_STREAM, AF_UNSPEC, AI_CANONNAME);
     Network::ConnectResult result =
         Network::connect_socket(hostname, service, hints);
-    Network::Hostname canonical_name = result.second;
     int fd = result.first;
 
-    if (fd >= 0) {
+    if (fd == Network::Socket::SOCKET_BAD) {
+        std::string error = result.second;
+        std::cerr << error
+                  << std::endl;
+    }
+    else {
+        Network::Hostname canonical_name = result.second;
         std::cout << "Connected to "
                   << (!canonical_name.empty() ?
                       canonical_name :

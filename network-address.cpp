@@ -1,5 +1,6 @@
 #include "network-address.h"    // Address
-#include "network-endpoint.h"   // get_hostname(), get_service()
+#include "network-endpoint.h"   // Endpoint, Endpoint_result,
+                                // get_hostname(), get_service()
 #include "network-string.h"     // resize()
 
 #ifdef _WIN32
@@ -15,7 +16,7 @@
 #include <cassert>      // assert()
 #include <cerrno>       // errno
 #include <cstring>      // std::strerror()
-#include <iostream>     // std::cerr, std::endl
+#include <sstream>      // std::ostringstream
 
 Network::Address::Address()
 {
@@ -67,54 +68,59 @@ bool Network::Address::operator==(const Address& other) const
     return (addr == other.addr);
 }
 
-int Network::Address::connect(int fd) const
+Network::Address::ConnectResult Network::Address::connect(int fd) const
 {
     assert(size());
-    int error = ::connect(fd, data(), size());
+    std::string error;
+    int result = ::connect(fd, data(), size());
 
-    if (error == -1) {
-        std::cerr << "connect("
-                  << fd
-                  << ") returned "
-                  << error
-                  << ": "
-                  << std::strerror(errno)
-                  << std::endl;
+    if (result == Address::CONNECT_ERROR) {
+        std::ostringstream os;
+        os << "connect("
+           << fd
+           << ") returned "
+           << error
+           << ": "
+           << std::strerror(errno);
+        error = os.str();
     }
 
-    return error;
+    return Address::ConnectResult(result, error);
 }
 
-Network::Endpoint Network::Address::endpoint(int flags) const
+Network::EndpointResult Network::Address::endpoint(int flags) const
 {
     assert(size());
+    std::string error;
     Hostname host(NI_MAXHOST, '\0');
     Service service(NI_MAXSERV, '\0');
-    int error = ::getnameinfo(data(), size(),
+    int result = ::getnameinfo(data(), size(),
                               &host[0], host.size(),
                               &service[0], service.size(),
                               flags);
 
-    if (error != 0) {
-        std::cerr << "getnameinfo() returned "
-                  << error
-                  << " ("
-                  << ::gai_strerror(error)
-                  << ')'
-                  << std::endl;
+    if (result != 0) {
+        std::ostringstream os;
+        os << "getnameinfo() returned "
+           << result
+           << " ("
+           << ::gai_strerror(result)
+           << ')';
+        error = os.str();
     }
 
-    return Endpoint(resize(host), resize(service));
+    Endpoint endpoint(resize(host), resize(service));
+    return EndpointResult(endpoint, error);
 }
 
 Network::Hostname Network::Address::hostname(int flags) const
 {
-    return get_hostname(endpoint(flags));
+    return get_hostname(endpoint(flags).first);
 }
 
 Network::Service Network::Address::service(int flags) const
 {
-    return get_service(endpoint(flags));
+    return get_service(endpoint(flags).first);
 }
 
 void Network::Address::copy(const Address& other)
