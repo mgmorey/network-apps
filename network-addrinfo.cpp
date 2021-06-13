@@ -10,19 +10,19 @@
 #include <cassert>      // assert()
 #include <sstream>      // std::ostringstream
 
-struct addrinfo* Network::get_addrinfo(Result& result,
-                                       const Hostname& node,
-                                       const Service& service,
-                                       const struct addrinfo* hints)
+Network::AddrinfoResult Network::get_addrinfo(const Hostname& node,
+                                              const Service& service,
+                                              const struct addrinfo* hints)
 {
+    std::string error;
     struct addrinfo* list = NULL;
     assert(!node.empty() || !service.empty());
-    result.first = ::getaddrinfo(node.empty() ? NULL : node.c_str(),
-                                 service.empty() ? NULL : service.c_str(),
-                                 hints,
-                                 &list);
+    int code = ::getaddrinfo(node.empty() ? NULL : node.c_str(),
+                             service.empty() ? NULL : service.c_str(),
+                             hints,
+                             &list);
 
-    if (result.first != 0) {
+    if (code != 0) {
         std::ostringstream os;
         os << "getaddrinfo(";
 
@@ -44,17 +44,16 @@ struct addrinfo* Network::get_addrinfo(Result& result,
         }
 
         os << "...) returned "
-           << result.first
+           << code
            << " ("
-           << ::gai_strerror(result.first)
+           << ::gai_strerror(code)
            << ')';
 
-        result.second = os.str();
+        error = os.str();
     }
     else {
-        result.second.clear();
         assert(list != NULL);
     }
 
-    return list;
+    return AddrinfoResult(list, Result(code, error));
 }

@@ -12,10 +12,11 @@
 
 namespace Network
 {
-    extern struct addrinfo* get_addrinfo(Result& result,
-                                         const Hostname& node,
-                                         const Service& service,
-                                         const struct addrinfo* hints);
+    typedef std::pair<struct addrinfo*, Result> AddrinfoResult;
+
+    extern AddrinfoResult get_addrinfo(const Hostname& node,
+                                       const Service& service,
+                                       const struct addrinfo* hints);
 
     template <class Container>
     void copy_addrinfo(Container& dest,
@@ -23,7 +24,9 @@ namespace Network
                        const Service& service,
                        const struct addrinfo* hints)
     {
-        struct addrinfo* list = get_addrinfo(dest.second, node, service, hints);
+        AddrinfoResult result(get_addrinfo(node, service, hints));
+        struct addrinfo* list = result.first;
+        dest.second = result.second;
 
         if (list == NULL) {
             return;
