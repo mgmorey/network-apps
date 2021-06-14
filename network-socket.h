@@ -29,7 +29,6 @@ namespace Network
         Socket& operator=(const struct addrinfo& ai);
         bool operator<(const Socket& other) const;
         bool operator>(const Socket& other) const;
-        bool operator!=(const Socket& other) const;
         bool operator==(const Socket& other) const;
         operator const struct addrinfo&() const;
         Hostname cname() const;

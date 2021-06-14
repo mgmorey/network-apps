@@ -58,11 +58,6 @@ bool Network::Address::operator>(const Address& other) const
     return (addr > other.addr);
 }
 
-bool Network::Address::operator!=(const Address& other) const
-{
-    return (addr != other.addr);
-}
-
 bool Network::Address::operator==(const Address& other) const
 {
     return (addr == other.addr);
@@ -72,20 +67,20 @@ Network::Result Network::Address::connect(int fd) const
 {
     assert(size());
     std::string error;
-    int result = ::connect(fd, data(), size());
+    int code = ::connect(fd, data(), size());
 
-    if (result == Address::CONNECT_ERROR) {
+    if (code == Address::CONNECT_ERROR) {
         std::ostringstream os;
         os << "connect("
            << fd
            << ") returned "
-           << result
+           << code
            << ": "
            << std::strerror(errno);
         error = os.str();
     }
 
-    return Result(result, error);
+    return Result(code, error);
 }
 
 Network::EndpointResult Network::Address::endpoint(int flags) const

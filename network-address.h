@@ -29,7 +29,6 @@ namespace Network
         Address& operator=(const struct addrinfo& other);
         bool operator<(const Address& other) const;
         bool operator>(const Address& other) const;
-        bool operator!=(const Address& other) const;
         bool operator==(const Address& other) const;
         Result connect(int fd) const;
         EndpointResult endpoint(int flags = 0) const;

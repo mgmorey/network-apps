@@ -74,14 +74,6 @@ bool Network::Socket::operator>(const Socket& other) const
             Address(*this) > Address(other));
 }
 
-bool Network::Socket::operator!=(const Socket& other) const
-{
-    return (ai.ai_protocol != other.ai.ai_protocol ||
-            ai.ai_socktype != other.ai.ai_socktype ||
-            ai.ai_family != other.ai.ai_family ||
-            Address(*this) != Address(other));
-}
-
 bool Network::Socket::operator==(const Socket& other) const
 {
     return (ai.ai_protocol == other.ai.ai_protocol &&
