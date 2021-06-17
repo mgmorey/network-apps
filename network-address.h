@@ -6,11 +6,11 @@
 #include "network-types.h"      // Hostname, Service
 
 #ifdef _WIN32
-#include <winsock2.h>   // struct sockaddr, socket()
+#include <winsock2.h>   // struct sockaddr
 #include <ws2tcpip.h>   // struct addrinfo, socklen_t
 #else
 #include <netdb.h>      // struct addrinfo
-#include <sys/socket.h> // struct sockaddr, socket(), socklen_t
+#include <sys/socket.h> // struct sockaddr, socklen_t
 #endif
 
 #include <string>       // std::string
