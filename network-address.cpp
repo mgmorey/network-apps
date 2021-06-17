@@ -1,4 +1,5 @@
 #include "network-address.h"    // Address, Hostname, Result, Service
+#include "network-addrstr.h"    // get_addrstr()
 #include "network-endpoint.h"   // Endpoint, EndpointResult,
                                 // get_hostname(), get_service()
 #include "network-string.h"     // resize()
@@ -18,8 +19,6 @@
 #include <cstring>      // std::strerror()
 #include <sstream>      // std::ostringstream
 
-static std::string to_string(const struct addrinfo& other);
-
 Network::Address::Address()
 {
 }
@@ -30,7 +29,7 @@ Network::Address::Address(const Address& other) :
 }
 
 Network::Address::Address(const struct addrinfo& other) :
-    addr(to_string(other))
+    addr(get_addrstr(other))
 {
 }
 
@@ -46,7 +45,7 @@ Network::Address& Network::Address::operator=(const Address& other)
 
 Network::Address& Network::Address::operator=(const struct addrinfo& other)
 {
-    addr = to_string(other);
+    addr = get_addrstr(other);
     return *this;
 }
 
@@ -128,15 +127,4 @@ inline const struct sockaddr* Network::Address::data() const
 inline socklen_t Network::Address::size() const
 {
     return static_cast<socklen_t>(addr.size());
-}
-
-static std::string to_string(const struct addrinfo& other)
-{
-    std::string result;
-    assert(other.ai_addr != NULL);
-    assert(other.ai_addrlen != 0);
-    const char* data = reinterpret_cast<const char*>(other.ai_addr);
-    std::size_t size = other.ai_addrlen;
-    result.append(data, size);
-    return result;
 }
