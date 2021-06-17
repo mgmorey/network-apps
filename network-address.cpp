@@ -22,9 +22,9 @@ Network::Address::Address()
 {
 }
 
-Network::Address::Address(const Address& other)
+Network::Address::Address(const Address& other) :
+    addr(other.addr)
 {
-    copy(other);
 }
 
 Network::Address::Address(const struct addrinfo& other)
@@ -38,7 +38,7 @@ Network::Address::~Address()
 
 Network::Address& Network::Address::operator=(const Address& other)
 {
-    copy(other);
+    addr = other.addr;
     return *this;
 }
 
@@ -116,11 +116,6 @@ Network::Hostname Network::Address::hostname(int flags) const
 Network::Service Network::Address::service(int flags) const
 {
     return get_service(endpoint(flags).first);
-}
-
-void Network::Address::copy(const Address& other)
-{
-    addr = other.addr;
 }
 
 void Network::Address::copy(const struct addrinfo& other)
