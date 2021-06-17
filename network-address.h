@@ -36,8 +36,8 @@ namespace Network
         Service service(int flags = 0) const;
 
     private:
-        const struct sockaddr* data() const;
-        socklen_t size() const;
+        inline const struct sockaddr* data() const;
+        inline socklen_t size() const;
 
         std::string addr;
     };

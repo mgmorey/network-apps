@@ -120,12 +120,12 @@ Network::Service Network::Address::service(int flags) const
     return get_service(endpoint(flags).first);
 }
 
-const struct sockaddr* Network::Address::data() const
+inline const struct sockaddr* Network::Address::data() const
 {
     return reinterpret_cast<const struct sockaddr*>(addr.data());
 }
 
-socklen_t Network::Address::size() const
+inline socklen_t Network::Address::size() const
 {
     return static_cast<socklen_t>(addr.size());
 }
