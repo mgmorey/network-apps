@@ -36,7 +36,6 @@ namespace Network
         Service service(int flags = 0) const;
 
     private:
-        void copy(const struct addrinfo& other);
         const struct sockaddr* data() const;
         socklen_t size() const;
 

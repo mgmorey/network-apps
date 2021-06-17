@@ -18,6 +18,8 @@
 #include <cstring>      // std::strerror()
 #include <sstream>      // std::ostringstream
 
+static std::string to_string(const struct addrinfo& other);
+
 Network::Address::Address()
 {
 }
@@ -27,9 +29,9 @@ Network::Address::Address(const Address& other) :
 {
 }
 
-Network::Address::Address(const struct addrinfo& other)
+Network::Address::Address(const struct addrinfo& other) :
+    addr(to_string(other))
 {
-    copy(other);
 }
 
 Network::Address::~Address()
@@ -44,7 +46,7 @@ Network::Address& Network::Address::operator=(const Address& other)
 
 Network::Address& Network::Address::operator=(const struct addrinfo& other)
 {
-    copy(other);
+    addr = to_string(other);
     return *this;
 }
 
@@ -118,16 +120,6 @@ Network::Service Network::Address::service(int flags) const
     return get_service(endpoint(flags).first);
 }
 
-void Network::Address::copy(const struct addrinfo& other)
-{
-    assert(other.ai_addr != NULL);
-    assert(other.ai_addrlen != 0);
-    addr.clear();
-    const char* data = reinterpret_cast<const char*>(other.ai_addr);
-    std::size_t size = other.ai_addrlen;
-    addr.append(data, size);
-}
-
 const struct sockaddr* Network::Address::data() const
 {
     return reinterpret_cast<const struct sockaddr*>(addr.data());
@@ -136,4 +128,15 @@ const struct sockaddr* Network::Address::data() const
 socklen_t Network::Address::size() const
 {
     return static_cast<socklen_t>(addr.size());
+}
+
+static std::string to_string(const struct addrinfo& other)
+{
+    std::string result;
+    assert(other.ai_addr != NULL);
+    assert(other.ai_addrlen != 0);
+    const char* data = reinterpret_cast<const char*>(other.ai_addr);
+    std::size_t size = other.ai_addrlen;
+    result.append(data, size);
+    return result;
 }
