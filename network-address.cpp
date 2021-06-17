@@ -71,7 +71,7 @@ Network::Result Network::Address::connect(int fd) const
     std::string error;
     int code = ::connect(fd, data(), size());
 
-    if (code == Address::CONNECT_ERROR) {
+    if (code == Address::connect_error) {
         std::ostringstream os;
         os << "connect("
            << fd

@@ -20,7 +20,7 @@ namespace Network
     class Address
     {
     public:
-        enum { CONNECT_ERROR = -1 };
+        enum { connect_error = -1 };
         Address();
         Address(const Address& other);
         Address(const struct addrinfo& other);
