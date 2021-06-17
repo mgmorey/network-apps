@@ -7,6 +7,7 @@
 #endif
 
 #include <cassert>      // assert()
+#include <cstddef>      // std::size_t
 
 std::string Network::get_addrstr(const struct addrinfo& other)
 {
