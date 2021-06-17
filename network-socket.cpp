@@ -13,31 +13,31 @@
 #include <cstring>      // std::memcpy(), strdup()
 #include <sstream>      // std::ostringstream
 
-Network::Socket::Socket()
+Network::Socket::Socket() :
+    ai(defaults())
 {
-    init();
 }
 
-Network::Socket::Socket(const Socket& other)
+Network::Socket::Socket(int family, int flags) :
+    ai(defaults(0, 0, family, flags))
 {
-    init();
-    copy(other);
 }
 
-Network::Socket::Socket(const struct addrinfo& other)
+Network::Socket::Socket(int protocol, int socktype, int family, int flags) :
+    ai(defaults(protocol, socktype, family, flags))
 {
-    init();
-    copy(other);
 }
 
-Network::Socket::Socket(int protocol, int socktype, int family, int flags)
+Network::Socket::Socket(const Socket& other) :
+    ai(defaults())
 {
-    init(protocol, socktype, family, flags);
+    *this = other;
 }
 
-Network::Socket::Socket(int family, int flags)
+Network::Socket::Socket(const struct addrinfo& other) :
+    ai(defaults())
 {
-    init(0, 0, family, flags);
+    *this = other;
 }
 
 Network::Socket::~Socket()
@@ -48,13 +48,34 @@ Network::Socket::~Socket()
 
 Network::Socket& Network::Socket::operator=(const Socket& other)
 {
-    copy(other);
+    *this = other.ai;
     return *this;
 }
 
 Network::Socket& Network::Socket::operator=(const struct addrinfo& other)
 {
-    copy(other);
+    ai.ai_flags = other.ai_flags;
+    ai.ai_family = other.ai_family;
+    ai.ai_socktype = other.ai_socktype;
+    ai.ai_protocol = other.ai_protocol;
+    ai.ai_addrlen = other.ai_addrlen;
+    free(ai.ai_canonname);
+    ai.ai_canonname = NULL;
+
+    if (other.ai_canonname != NULL) {
+        ai.ai_canonname = strdup(other.ai_canonname);
+    }
+
+    free(ai.ai_addr);
+    ai.ai_addr = NULL;
+
+    if (other.ai_addr != NULL) {
+        ai.ai_addr = static_cast<struct sockaddr*>
+            (malloc(ai.ai_addrlen));
+        std::memcpy(ai.ai_addr, other.ai_addr, ai.ai_addrlen);
+    }
+
+    ai.ai_next = NULL;
     return *this;
 }
 
@@ -119,46 +140,20 @@ Network::Result Network::Socket::socket() const
     return Result(fd, error);
 }
 
-void Network::Socket::copy(const Socket& other)
+struct addrinfo Network::Socket::defaults(int protocol,
+                                          int socktype,
+                                          int family,
+                                          int flags)
 {
-    copy(other.ai);
-}
-
-void Network::Socket::copy(const struct addrinfo& other)
-{
-    ai.ai_flags = other.ai_flags;
-    ai.ai_family = other.ai_family;
-    ai.ai_socktype = other.ai_socktype;
-    ai.ai_protocol = other.ai_protocol;
-    ai.ai_addrlen = other.ai_addrlen;
-    free(ai.ai_canonname);
-    ai.ai_canonname = NULL;
-
-    if (other.ai_canonname != NULL) {
-        ai.ai_canonname = strdup(other.ai_canonname);
-    }
-
-    free(ai.ai_addr);
-    ai.ai_addr = NULL;
-
-    if (other.ai_addr != NULL) {
-        ai.ai_addr = static_cast<struct sockaddr*>
-            (malloc(ai.ai_addrlen));
-        std::memcpy(ai.ai_addr, other.ai_addr, ai.ai_addrlen);
-    }
-
-    ai.ai_next = NULL;
-}
-
-void Network::Socket::init(int protocol, int socktype, int family, int flags)
-{
-    std::memset(&ai, '\0', sizeof ai);
-    ai.ai_flags = flags;
-    ai.ai_family = family;
-    ai.ai_socktype = socktype;
-    ai.ai_protocol = protocol;
-    ai.ai_addrlen = 0;
-    ai.ai_canonname = NULL;
-    ai.ai_addr = NULL;
-    ai.ai_next = NULL;
+    struct addrinfo ai = {
+        flags,		// ai_flags
+        family,		// ai_family
+        socktype,	// ai_socktype
+        protocol,	// ai_protocol
+        0,		// ai_addrlen
+        NULL,		// ai_addr
+        NULL,		// ai_canonname
+        NULL		// ai_next
+    };
+    return ai;
 }
