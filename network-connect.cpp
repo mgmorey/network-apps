@@ -46,7 +46,7 @@ Network::ConnectResult Network::connect(const Hostname& hostname,
             Result socket_result(it->socket());
             fd = socket_result.first;
 
-            if (fd == Socket::SOCKET_BAD) {
+            if (fd == Socket::socket_bad) {
                 details.push_back(socket_result.second);
                 continue;
             }
@@ -56,7 +56,7 @@ Network::ConnectResult Network::connect(const Hostname& hostname,
 
             if (connect_result.first == Address::connect_error) {
                 close(fd);
-                fd = Socket::SOCKET_BAD;
+                fd = Socket::socket_bad;
                 details.push_back(connect_result.second);
             }
             else {

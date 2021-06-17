@@ -18,7 +18,7 @@ namespace Network
     class Socket
     {
     public:
-        enum { SOCKET_BAD = -1 };
+        enum { socket_bad = -1 };
         Socket();
         Socket(const Socket& other);
         Socket(const struct addrinfo& other);

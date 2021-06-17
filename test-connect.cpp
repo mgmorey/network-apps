@@ -23,7 +23,7 @@ static void test_connect(const Network::Hostname& hostname,
     Network::ConnectDetails details(result.second);
     int fd = result.first;
 
-    if (fd == Network::Socket::SOCKET_BAD) {
+    if (fd == Network::Socket::socket_bad) {
         for (Network::ConnectDetails::const_iterator it = details.begin();
              it != details.end();
              ++it) {

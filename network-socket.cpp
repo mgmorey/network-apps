@@ -103,7 +103,7 @@ Network::Result Network::Socket::socket() const
     std::string error;
     int fd = ::socket(ai.ai_family, ai.ai_socktype, ai.ai_protocol);
 
-    if (fd == SOCKET_BAD) {
+    if (fd == socket_bad) {
         std::ostringstream os;
         os << "socket("
            << ai.ai_family
