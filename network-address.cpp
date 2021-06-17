@@ -15,7 +15,7 @@
 
 #include <cassert>      // assert()
 #include <cerrno>       // errno
-#include <cstring>      // std::strerror()
+#include <cstring>      // std::size_t, std::strerror()
 #include <sstream>      // std::ostringstream
 
 Network::Address::Address()
