@@ -15,7 +15,7 @@
 
 #include <cassert>      // assert()
 #include <cerrno>       // errno
-#include <cstring>      // std::size_t, std::strerror()
+#include <cstring>      // std::strerror()
 #include <sstream>      // std::ostringstream
 
 Network::Address::Address()
@@ -124,7 +124,7 @@ std::string Network::Address::address(const struct addrinfo& other)
     assert(other.ai_addr != NULL);
     assert(other.ai_addrlen != 0);
     const char* data = reinterpret_cast<const char*>(other.ai_addr);
-    std::size_t size = other.ai_addrlen;
+    std::string::size_type size = other.ai_addrlen;
     result.append(data, size);
     return result;
 }
