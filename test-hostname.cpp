@@ -8,6 +8,25 @@
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <string>       // std::string
 
+static void test_hostname()
+{
+    Network::HostnameResult result = Network::get_hostname();
+    Network::Result hostname_result = result.second;
+    int code = hostname_result.first;
+
+    if (code != 0) {
+        std::string error(hostname_result.second);
+        std::cerr << "No hostname: "
+                  << error
+                  << std::endl;
+    }
+    else {
+        std::cout << "Hostname: "
+                  << result.first
+                  << std::endl;
+    }
+}
+
 static int wsa_set_up(void)
 {
     int error = 0;
@@ -35,26 +54,14 @@ static void wsa_tear_down(void)
 
 int main(void)
 {
-    Network::HostnameResult hostname_result;
     int result = EXIT_FAILURE;
 
     if (wsa_set_up()) {
         goto clean_up;
     }
 
-    hostname_result = Network::get_hostname();
-
-    if (!hostname_result.second.empty()) {
-        std::cerr << hostname_result.second
-                  << std::endl;
-        result = EXIT_FAILURE;
-    }
-    else {
-        std::cout << "Hostname: "
-                  << hostname_result.first
-                  << std::endl;
-        result = EXIT_SUCCESS;
-    }
+    test_hostname();
+    result = EXIT_SUCCESS;
 
 clean_up:
     wsa_tear_down();

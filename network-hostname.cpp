@@ -15,14 +15,14 @@ Network::HostnameResult Network::get_hostname()
 {
     std::string error;
     Buffer hostname(NI_MAXHOST);
-    int result = ::gethostname(&hostname[0], hostname.size() - 1);
+    int code = ::gethostname(&hostname[0], hostname.size() - 1);
 
-    if (result != 0) {
+    if (code != 0) {
         std::ostringstream os;
         os << "gethostname(...) returned "
-           << result;
+           << code;
         error = os.str();
     }
 
-    return HostnameResult(hostname.data(), error);
+    return HostnameResult(hostname.data(), Result(code, error));
 }

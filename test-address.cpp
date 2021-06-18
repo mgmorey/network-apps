@@ -38,14 +38,18 @@ static std::string get_family_description(int family)
 static Network::Hostname get_hostname(const Network::Address& address,
                                       int flags = 0)
 {
-    Network::EndpointResult endpoint_result(address.endpoint(flags));
+    Network::EndpointResult result(address.endpoint(flags));
+    Network::Result endpoint_result = result.second;
+    int code = endpoint_result.first;
 
-    if (!endpoint_result.second.second.empty()) {
-        std::cerr << endpoint_result.second.second
+    if (code != 0) {
+        std::string error(endpoint_result.second);
+        std::cerr << "No endpoint: "
+                  << error
                   << std::endl;
     }
 
-    return Network::get_hostname(endpoint_result.first);
+    return Network::get_hostname(result.first);
 }
 
 static void insert(const Network::Addresses& a_list,
@@ -111,7 +115,7 @@ static Network::Addresses test_host(const Network::Hostname& host,
             std::cerr << "No "
                       << description;
         }
-        
+
         std::cerr << " addresses: "
                   << error
                   << std::endl;
