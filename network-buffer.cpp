@@ -22,8 +22,7 @@ const char& Network::Buffer::operator[](std::size_t pos) const
 std::string Network::Buffer::data() const
 {
     std::string result(str);
-    resize(result);
-    return result;
+    return trim(result);
 }
 
 std::size_t Network::Buffer::size() const
@@ -31,11 +30,13 @@ std::size_t Network::Buffer::size() const
     return str.size();
 }
 
-void Network::Buffer::resize(std::string& str)
+std::string Network::Buffer::trim(std::string& str)
 {
     std::size_t pos = str.find('\0');
 
     if (pos != std::string::npos) {
         str.resize(pos);
     }
+
+    return str;
 }
