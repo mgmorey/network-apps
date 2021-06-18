@@ -30,7 +30,7 @@ std::size_t Network::Buffer::size() const
     return str.size();
 }
 
-std::string Network::Buffer::trim(std::string& str)
+std::string& Network::Buffer::trim(std::string& str)
 {
     std::size_t pos = str.find('\0');
 
