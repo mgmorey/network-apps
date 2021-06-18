@@ -1,7 +1,7 @@
 #include "network-address.h"    // Address, Hostname, Result, Service
+#include "network-buffer.h"     // Buffer
 #include "network-endpoint.h"   // Endpoint, EndpointResult,
                                 // get_hostname(), get_service()
-#include "network-string.h"     // resize()
 
 #ifdef _WIN32
 #include <winsock2.h>   // connect(),
@@ -87,8 +87,8 @@ Network::EndpointResult Network::Address::endpoint(int flags) const
 {
     assert(size());
     std::string error;
-    Hostname host(NI_MAXHOST, '\0');
-    Service service(NI_MAXSERV, '\0');
+    Buffer host(NI_MAXHOST);
+    Buffer service(NI_MAXSERV);
     int code = ::getnameinfo(data(), size(),
                              &host[0], host.size(),
                              &service[0], service.size(),
@@ -104,8 +104,8 @@ Network::EndpointResult Network::Address::endpoint(int flags) const
         error = os.str();
     }
 
-    Endpoint endpoint(resize(host), resize(service));
-    return EndpointResult(endpoint, Result(code, error));
+    return EndpointResult(Endpoint(host.data(), service.data()),
+                          Result(code, error));
 }
 
 Network::Hostname Network::Address::hostname(int flags) const

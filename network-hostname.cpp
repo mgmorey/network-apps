@@ -1,5 +1,5 @@
 #include "network-hostname.h"   // HostnameResult, get_hostname()
-#include "network-string.h"     // resize()
+#include "network-buffer.h"     // Buffer
 
 #ifdef _WIN32
 #include <winsock2.h>   // gethostname()
@@ -14,7 +14,7 @@
 Network::HostnameResult Network::get_hostname()
 {
     std::string error;
-    Hostname hostname(NI_MAXHOST, '\0');
+    Buffer hostname(NI_MAXHOST);
     int result = ::gethostname(&hostname[0], hostname.size() - 1);
 
     if (result != 0) {
@@ -24,5 +24,5 @@ Network::HostnameResult Network::get_hostname()
         error = os.str();
     }
 
-    return HostnameResult(resize(hostname), error);
+    return HostnameResult(hostname.data(), error);
 }
