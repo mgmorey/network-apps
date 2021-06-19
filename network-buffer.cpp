@@ -5,10 +5,6 @@ Network::Buffer::Buffer(std::size_t size) :
 {
 }
 
-Network::Buffer::~Buffer()
-{
-}
-
 char& Network::Buffer::operator[](std::size_t pos)
 {
     return str[pos];

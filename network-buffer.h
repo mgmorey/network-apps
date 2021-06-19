@@ -10,7 +10,6 @@ namespace Network
     {
     public:
         Buffer(std::size_t size = 0);
-        ~Buffer();
         char& operator[](std::size_t pos);
         const char& operator[](std::size_t pos) const;
         std::string data() const;
