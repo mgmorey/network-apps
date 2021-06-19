@@ -1,12 +1,51 @@
-#include "network-endpoint.h"   // Endpoint, Hostname, Service,
-                                // get_hostname(), get_service()
+#include "network-endpoint.h"   // Endpoint
 
-Network::Hostname Network::get_hostname(const Network::Endpoint& endpoint)
+#ifdef _WIN32
+#include <ws2tcpip.h>   // NI_MAXHOST, NI_MAXSERV gai_strerror(),
+                        // getnameinfo()
+#else
+#include <netdb.h>      // NI_MAXHOST, NI_MAXSERV gai_strerror(),
+                        // getnameinfo()
+#endif
+
+#include <cassert>      // assert()
+#include <sstream>      // std::ostringstream
+
+Network::Endpoint::Endpoint(const Address& addr, int flags) :
+    code(0),
+    host(NI_MAXHOST),
+    serv(NI_MAXSERV)
 {
-    return endpoint.first;
+    assert(addr.size());
+    assert(host.size());
+    assert(serv.size());
+    code = ::getnameinfo(addr.data(), addr.size(),
+                         &host[0], host.size(),
+                         &serv[0], serv.size(),
+                         flags);
+
+    if (code != 0) {
+        std::ostringstream os;
+        os << "getnameinfo() returned "
+           << code
+           << " ("
+           << ::gai_strerror(code)
+           << ')';
+        error = os.str();
+    }
 }
 
-Network::Service Network::get_service(const Network::Endpoint& endpoint)
+Network::Hostname Network::Endpoint::hostname() const
 {
-    return endpoint.second;
+    return host.data();
+}
+
+Network::Service Network::Endpoint::service() const
+{
+    return serv.data();
+}
+
+Network::Result Network::Endpoint::result() const
+{
+    return Result(code, error);
 }

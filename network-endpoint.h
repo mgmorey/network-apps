@@ -1,17 +1,29 @@
 #ifndef NETWORK_ENDPOINT_H
 #define NETWORK_ENDPOINT_H
 
+#include "network-address.h"    // Address
+#include "network-buffer.h"     // Buffer
 #include "network-result.h"     // Result
 #include "network-types.h"      // Hostname, Service
 
-#include <utility>      // std::pair
+#include <string>       // std::string
 
 namespace Network
 {
-    typedef std::pair<Hostname, Service> Endpoint;
-    typedef std::pair<Endpoint, Result> EndpointResult;
-    extern Hostname get_hostname(const Endpoint& endpoint);
-    extern Service get_service(const Endpoint& endpoint);
+    class Endpoint
+    {
+    public:
+        Endpoint(const Address& other, int flags = 0);
+        Hostname hostname() const;
+        Service service() const;
+        Result result() const;
+
+    private:
+        int code;
+        std::string error;
+        Buffer host;
+        Buffer serv;
+    };
 }
 
 #endif

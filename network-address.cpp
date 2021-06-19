@@ -1,15 +1,10 @@
 #include "network-address.h"    // Address, Hostname, Result, Service
-#include "network-buffer.h"     // Buffer
-#include "network-endpoint.h"   // Endpoint, EndpointResult,
-                                // get_hostname(), get_service()
 
 #ifdef _WIN32
-#include <winsock2.h>   // connect(),
-#include <ws2tcpip.h>   // NI_MAXHOST, NI_MAXSERV, struct addrinfo,
-                        // gai_strerror(), getnameinfo(), socklen_t
+#include <winsock2.h>   // connect()
+#include <ws2tcpip.h>   // struct addrinfo, socklen_t
 #else
-#include <netdb.h>      // NI_MAXHOST, NI_MAXSERV, struct addrinfo,
-                        // gai_strerror(), getnameinfo()
+#include <netdb.h>      // struct addrinfo,
 #include <sys/socket.h> // connect(), socklen_t
 #endif
 
@@ -81,41 +76,6 @@ Network::Result Network::Address::connect(int fd) const
     }
 
     return Result(code, error);
-}
-
-Network::EndpointResult Network::Address::endpoint(int flags) const
-{
-    assert(size());
-    std::string error;
-    Buffer host(NI_MAXHOST);
-    Buffer service(NI_MAXSERV);
-    int code = ::getnameinfo(data(), size(),
-                             &host[0], host.size(),
-                             &service[0], service.size(),
-                             flags);
-
-    if (code != 0) {
-        std::ostringstream os;
-        os << "getnameinfo() returned "
-           << code
-           << " ("
-           << ::gai_strerror(code)
-           << ')';
-        error = os.str();
-    }
-
-    return EndpointResult(Endpoint(host.data(), service.data()),
-                          Result(code, error));
-}
-
-Network::Hostname Network::Address::hostname(int flags) const
-{
-    return get_hostname(endpoint(flags).first);
-}
-
-Network::Service Network::Address::service(int flags) const
-{
-    return get_service(endpoint(flags).first);
 }
 
 std::string Network::Address::address(const struct addrinfo& other)

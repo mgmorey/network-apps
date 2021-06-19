@@ -1,7 +1,6 @@
 #ifndef NETWORK_ADDRESS_H
 #define NETWORK_ADDRESS_H
 
-#include "network-endpoint.h"   // EndpointResult
 #include "network-result.h"     // Result
 #include "network-types.h"      // Hostname, Service
 
@@ -31,14 +30,12 @@ namespace Network
         bool operator>(const Address& other) const;
         bool operator==(const Address& other) const;
         Result connect(int fd) const;
-        EndpointResult endpoint(int flags = 0) const;
-        Hostname hostname(int flags = 0) const;
-        Service service(int flags = 0) const;
 
     private:
         static std::string address(const struct addrinfo& other);
         const struct sockaddr* data() const;
         socklen_t size() const;
+        friend class Endpoint;
 
         std::string addr;
     };

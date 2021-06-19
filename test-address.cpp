@@ -38,18 +38,18 @@ static std::string get_family_description(int family)
 static Network::Hostname get_hostname(const Network::Address& address,
                                       int flags = 0)
 {
-    Network::EndpointResult result(address.endpoint(flags));
-    Network::Result endpoint_result = result.second;
-    int code = endpoint_result.first;
+    Network::Endpoint endpoint(address, flags);
+    Network::Result result = endpoint.result();
+    int code = result.first;
 
     if (code != 0) {
-        std::string error(endpoint_result.second);
+        std::string error(result.second);
         std::cerr << "No endpoint: "
                   << error
                   << std::endl;
     }
 
-    return Network::get_hostname(result.first);
+    return endpoint.hostname();
 }
 
 static void insert(const Network::Addresses& a_list,
