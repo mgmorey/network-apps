@@ -42,20 +42,20 @@ Network::ConnectResult Network::connect(const Hostname& host,
     for (Sockets::const_iterator it = sockets.begin();
          it != sockets.end();
          ++it) {
-        Result sock_result(it->socket());
-        fd = sock_result.result();
+        result = it->socket();
+        fd = result.result();
 
         if (fd == Socket::socket_bad) {
-            details.push_back(sock_result.string());
+            details.push_back(result.string());
             continue;
         }
 
-        Result conn_result(Address(*it).connect(fd));
+        result = Address(*it).connect(fd);
 
-        if (conn_result.result() == Address::connect_error) {
+        if (result.result() == Address::connect_error) {
             close(fd);
             fd = Socket::socket_bad;
-            details.push_back(conn_result.string());
+            details.push_back(result.string());
         }
         else {
             details.push_back(it->cname());
