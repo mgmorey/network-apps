@@ -11,11 +11,6 @@
 #include <cassert>      // assert()
 #include <sstream>      // std::ostringstream
 
-Network::Endpoint Network::Endpoint::to_strings(const Address& other, int flags)
-{
-    return Endpoint(other, flags | NI_NUMERICHOST | NI_NUMERICSERV);
-}
-
 Network::Endpoint::Endpoint(const Address& addr, int flags) :
     code(0),
     host(NI_MAXHOST),
@@ -53,4 +48,10 @@ Network::Service Network::Endpoint::service() const
 Network::Result Network::Endpoint::result() const
 {
     return Result(code, error);
+}
+
+Network::Endpoint Network::to_endpoint(const Address& other, bool numeric)
+{
+    int flags = numeric ? NI_NUMERICHOST | NI_NUMERICSERV : 0;
+    return Endpoint(other, flags);
 }

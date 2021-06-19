@@ -13,7 +13,6 @@ namespace Network
     class Endpoint
     {
     public:
-        static Endpoint to_strings(const Address& other, int flags = 0);
         Endpoint(const Address& other, int flags = 0);
         Hostname hostname() const;
         Service service() const;
@@ -25,6 +24,9 @@ namespace Network
         Buffer host;
         Buffer serv;
     };
+
+    extern Endpoint to_endpoint(const Address& other,
+                                bool numeric = false);
 }
 
 #endif
