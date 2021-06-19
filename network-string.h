@@ -11,8 +11,7 @@
 #include <cstddef>      // std::size_t
 #include <string>       // std::string
 
-extern std::string to_hex(const struct sockaddr* data, socklen_t size);
-extern std::string to_hex(const char* data, std::size_t size);
+extern std::string to_hex(const struct sockaddr* addr, socklen_t len);
 extern std::string to_hex(const std::string& str);
 
 #endif
