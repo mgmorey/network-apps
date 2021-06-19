@@ -20,11 +20,7 @@ namespace Network
     {
     public:
         enum { connect_error = -1 };
-        Address();
-        Address(const Address& other);
         Address(const struct addrinfo& other);
-        ~Address();
-        Address& operator=(const Address& other);
         Address& operator=(const struct addrinfo& other);
         bool operator<(const Address& other) const;
         bool operator>(const Address& other) const;

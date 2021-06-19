@@ -13,28 +13,9 @@
 #include <cstring>      // std::strerror()
 #include <sstream>      // std::ostringstream
 
-Network::Address::Address()
-{
-}
-
-Network::Address::Address(const Address& other) :
-    addr(other.addr)
-{
-}
-
 Network::Address::Address(const struct addrinfo& other) :
     addr(address(other))
 {
-}
-
-Network::Address::~Address()
-{
-}
-
-Network::Address& Network::Address::operator=(const Address& other)
-{
-    addr = other.addr;
-    return *this;
 }
 
 Network::Address& Network::Address::operator=(const struct addrinfo& other)
