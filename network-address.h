@@ -19,6 +19,7 @@ namespace Network
     class Address
     {
         friend class Endpoint;
+        friend std::ostream& operator<<(std::ostream&, const Address&);
 
     public:
         enum { connect_error = -1 };
@@ -37,7 +38,9 @@ namespace Network
         std::string addr;
     };
 
-    extern Result connect(int fd, const struct addrinfo& ai);
+    extern Result connect(int fd,
+                          const struct addrinfo& ai,
+                          bool is_verbose = false);
 }
 
 #endif

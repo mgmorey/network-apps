@@ -1,16 +1,19 @@
 #include "network-address.h"    // Address, Hostname, Result, Service
+#include "network-string.h"     // to_hex()
 
 #ifdef _WIN32
 #include <winsock2.h>   // connect()
-#include <ws2tcpip.h>   // struct addrinfo, socklen_t
+#include <ws2tcpip.h>   // struct addrinfo, struct sockaddr, socklen_t
 #else
-#include <netdb.h>      // struct addrinfo,
+#include <netdb.h>      // struct addrinfo, struct sockaddr
 #include <sys/socket.h> // connect(), socklen_t
 #endif
 
 #include <cassert>      // assert()
 #include <cerrno>       // errno
 #include <cstring>      // std::strerror()
+#include <iostream>     // std::cerr, std::endl
+#include <ostream>      // std::ostream
 #include <sstream>      // std::ostringstream
 
 Network::Address::Address(const struct addrinfo& other) :
@@ -80,8 +83,25 @@ socklen_t Network::Address::size() const
     return static_cast<socklen_t>(addr.size());
 }
 
-Network::Result Network::connect(int fd, const struct addrinfo& ai)
+Network::Result Network::connect(int fd,
+                                 const struct addrinfo& ai,
+                                 bool is_verbose)
 {
     Network::Address address(ai);
+
+    if (is_verbose) {
+        std::cerr << "Trying "
+                  << address
+                  << std::endl;
+    }
+
     return address.connect(fd);
+}
+
+std::ostream& Network::operator<<(std::ostream& os, const Address& addr)
+{
+    os << "Address(addr="
+       << to_hex(addr.addr)
+       << ')';
+    return os;
 }

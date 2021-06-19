@@ -59,7 +59,7 @@ Network::ConnectResult Network::connect(const Hostname& host,
             continue;
         }
 
-        result = connect(fd, *it);
+        result = connect(fd, *it, true);
 
         if (result.result() == Address::connect_error) {
             close(fd);
