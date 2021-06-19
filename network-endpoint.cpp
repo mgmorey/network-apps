@@ -1,15 +1,20 @@
 #include "network-endpoint.h"   // Endpoint
 
 #ifdef _WIN32
-#include <ws2tcpip.h>   // NI_MAXHOST, NI_MAXSERV gai_strerror(),
-                        // getnameinfo()
+#include <ws2tcpip.h>   // NI_MAXHOST, NI_MAXSERV, NI_NUMERICHOST,
+                        // gai_strerror(), getnameinfo()
 #else
-#include <netdb.h>      // NI_MAXHOST, NI_MAXSERV gai_strerror(),
-                        // getnameinfo()
+#include <netdb.h>      // NI_MAXHOST, NI_MAXSERV, NI_NUMERICHOST,
+                        // gai_strerror(), getnameinfo()
 #endif
 
 #include <cassert>      // assert()
 #include <sstream>      // std::ostringstream
+
+Network::Endpoint Network::Endpoint::to_strings(const Address& other)
+{
+    return Endpoint(other, NI_NUMERICHOST | NI_NUMERICSERV);
+}
 
 Network::Endpoint::Endpoint(const Address& addr, int flags) :
     code(0),

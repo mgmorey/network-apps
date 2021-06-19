@@ -1,15 +1,11 @@
 #include "network-address.h"    // Address, Hostname
 #include "network-addresses.h"  // Addresses, get_addresses()
-#include "network-endpoint.h"   // Endpoint, EndpointResult,
-                                // get_hostname()
+#include "network-endpoint.h"   // Endpoint
 #include "network-hostname.h"   // get_hostname()
 #include "network-socket.h"     // Socket
 
 #ifdef _WIN32
-#include <ws2tcpip.h>   // NI_NUMERICHOST
 #include <winsock2.h>   // WSACleanup(), WSAStartup()
-#else
-#include <netdb.h>      // NI_NUMERICHOST
 #endif
 
 #include <algorithm>    // std::copy, std::set_union()
@@ -35,10 +31,23 @@ static std::string get_family_description(int family)
     return result;
 }
 
-static Network::Hostname get_hostname(const Network::Address& address,
-                                      int flags = 0)
+static Network::Hostname get_host_address(const Network::Address& address)
 {
-    Network::Endpoint endpoint(address, flags);
+    Network::Endpoint endpoint(Network::Endpoint::to_strings(address));
+    Network::Result result = endpoint.result();
+
+    if (result.nonzero()) {
+        std::cerr << "No endpoint: "
+                  << result.string()
+                  << std::endl;
+    }
+
+    return endpoint.hostname();
+}
+
+static Network::Hostname get_hostname(const Network::Address& address)
+{
+    Network::Endpoint endpoint(address);
     Network::Result result = endpoint.result();
 
     if (result.nonzero()) {
@@ -72,7 +81,7 @@ static void print_addresses(const Network::Addresses& addresses, int family)
          it != addresses.end();
          ++it)
     {
-        Network::Hostname address(get_hostname(*it, NI_NUMERICHOST));
+        Network::Hostname address(get_host_address(*it));
 
         if (address.empty()) {
             continue;
