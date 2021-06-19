@@ -24,45 +24,43 @@ void Network::close(int fd)
 #endif
 }
 
-Network::ConnectResult Network::connect(const Hostname& hostname,
+Network::ConnectResult Network::connect(const Hostname& host,
                                         const Service& service,
                                         const struct addrinfo &hints)
 {
-    SocketsResult result(get_sockets(hostname, service, hints));
+    SocketsResult result(get_sockets(host, service, hints));
     Sockets sockets(result.first);
-    Result sock_result(result.second);
-    int code = sock_result.first;
+    Result socks_result(result.second);
+    int code = socks_result.first;
+    int fd = Socket::socket_bad;
     ConnectDetails details;
-    int fd = -1;
 
     if (code != 0) {
-        std::string error(sock_result.second);
-        details.push_back(error);
+        details.push_back(socks_result.second);
+        return ConnectResult(fd, details);
     }
-    else {
-        for (Sockets::const_iterator it = sockets.begin();
-             it != sockets.end();
-             ++it) {
-            Result socket_result(it->socket());
-            fd = socket_result.first;
 
-            if (fd == Socket::socket_bad) {
-                details.push_back(socket_result.second);
-                continue;
-            }
+    for (Sockets::const_iterator it = sockets.begin();
+         it != sockets.end();
+         ++it) {
+        Result sock_result(it->socket());
+        fd = sock_result.first;
 
-            Address address(*it);
-            Result connect_result(address.connect(fd));
+        if (fd == Socket::socket_bad) {
+            details.push_back(sock_result.second);
+            continue;
+        }
 
-            if (connect_result.first == Address::connect_error) {
-                close(fd);
-                fd = Socket::socket_bad;
-                details.push_back(connect_result.second);
-            }
-            else {
-                details.push_back(it->cname());
-                break;
-            }
+        Result conn_result(Address(*it).connect(fd));
+
+        if (conn_result.first == Address::connect_error) {
+            close(fd);
+            fd = Socket::socket_bad;
+            details.push_back(conn_result.second);
+        }
+        else {
+            details.push_back(it->cname());
+            break;
         }
     }
 
