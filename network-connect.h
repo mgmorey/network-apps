@@ -21,7 +21,8 @@ namespace Network
     extern void close(int fd);
     extern ConnectResult connect(const Hostname& hostname,
                                  const Service& service,
-                                 const struct addrinfo &hints);
+                                 const struct addrinfo &hints,
+                                 bool is_verbose = false);
 }
 
 #endif

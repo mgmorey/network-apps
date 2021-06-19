@@ -11,6 +11,8 @@
 #include <unistd.h>     // close()
 #endif
 
+#include <iostream>     // std::cerr, std::endl
+
 void Network::close(int fd)
 {
     if (fd == -1) {
@@ -26,7 +28,8 @@ void Network::close(int fd)
 
 Network::ConnectResult Network::connect(const Hostname& host,
                                         const Service& service,
-                                        const struct addrinfo &hints)
+                                        const struct addrinfo &hints,
+                                        bool is_verbose)
 {
     SocketsResult socks_result(get_sockets(host, service, hints));
     Sockets sockets(socks_result.first);
@@ -42,6 +45,12 @@ Network::ConnectResult Network::connect(const Hostname& host,
     for (Sockets::const_iterator it = sockets.begin();
          it != sockets.end();
          ++it) {
+        if (is_verbose) {
+            std::cerr << "Trying "
+                      << (*it)
+                      << std::endl;
+        }
+
         result = it->socket();
         fd = result.result();
 
