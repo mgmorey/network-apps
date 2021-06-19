@@ -15,11 +15,11 @@
 #include <cstdlib>      // EXIT_FAILURE, EXIT_SUCCESS
 #include <iostream>     // std::cerr, std::cout, std::endl
 
-static void test_connect(const Network::Hostname& hostname,
+static void test_connect(const Network::Hostname& host,
                          const Network::Service& service)
 {
     Network::Socket hints(IPPROTO_TCP, SOCK_STREAM, AF_UNSPEC, AI_CANONNAME);
-    Network::ConnectResult result(Network::connect(hostname, service, hints));
+    Network::ConnectResult result(Network::connect(host, service, hints));
     Network::ConnectDetails details(result.second);
     int fd = result.first;
 
@@ -32,11 +32,11 @@ static void test_connect(const Network::Hostname& hostname,
         }
     }
     else {
-        Network::Hostname canonical_name = details[0];
+        Network::Hostname name = details[0];
         std::cout << "Connected to "
-                  << (!canonical_name.empty() ?
-                      canonical_name :
-                      hostname)
+                  << (!name.empty() ?
+                      name :
+                      host)
                   << " on socket "
                   << fd
                   << std::endl;
@@ -74,7 +74,7 @@ static void wsa_tear_down(void)
 
 int main(int argc, char* argv[])
 {
-    Network::Hostname hostname(argc > 1 ? argv[1] : "example.com");
+    Network::Hostname host(argc > 1 ? argv[1] : "example.com");
     Network::Service service(argc > 2 ? argv[2] : "http");
     int result = EXIT_FAILURE;
 
@@ -82,7 +82,7 @@ int main(int argc, char* argv[])
         goto clean_up;
     }
 
-    test_connect(hostname, service);
+    test_connect(host, service);
     result = EXIT_SUCCESS;
 
 clean_up:
