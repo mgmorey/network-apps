@@ -50,7 +50,7 @@ Network::ConnectResult Network::connect(const Hostname& host,
             continue;
         }
 
-        result = Address(*it).connect(fd);
+        result = connect(fd, *it);
 
         if (result.result() == Address::connect_error) {
             close(fd);

@@ -35,6 +35,8 @@ namespace Network
 
         std::string addr;
     };
+
+    extern Result connect(int fd, const struct addrinfo& ai);
 }
 
 #endif
