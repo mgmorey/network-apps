@@ -11,6 +11,7 @@
 
 #include <cstdlib>      // free()
 #include <cstring>      // std::memcpy(), strdup()
+#include <ostream>      // std::ostream
 #include <sstream>      // std::ostringstream
 
 Network::Socket::Socket() :
@@ -156,4 +157,26 @@ struct addrinfo Network::Socket::defaults(int protocol,
         NULL		// ai_next
     };
     return ai;
+}
+
+std::ostream& Network::operator<<(std::ostream& os, const Socket& sock)
+{
+    os << "Socket(flags="
+       << sock.ai.ai_flags
+       << ", family="
+       << sock.ai.ai_family
+       << ", socktype="
+       << sock.ai.ai_socktype
+       << ", protocol="
+       << sock.ai.ai_protocol
+       << ", addrlen="
+       << sock.ai.ai_addrlen
+       << ", addr="
+       << sock.ai.ai_addr
+       << ", canonname="
+       << sock.ai.ai_canonname
+       << ", next="
+       << sock.ai.ai_next
+       << ')';
+    return os;
 }

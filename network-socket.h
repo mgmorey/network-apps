@@ -17,6 +17,8 @@ namespace Network
 {
     class Socket
     {
+        friend std::ostream& operator<<(std::ostream&, const Socket&);
+
     public:
         enum { socket_bad = -1 };
         Socket();
@@ -42,6 +44,8 @@ namespace Network
 
         struct addrinfo ai;
     };
+
+    extern std::ostream& operator<<(std::ostream& os, const Socket& sock);
 }
 
 #endif
