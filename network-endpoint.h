@@ -13,7 +13,7 @@ namespace Network
     class Endpoint
     {
     public:
-        static Endpoint to_strings(const Address& other);
+        static Endpoint to_strings(const Address& other, int flags = 0);
         Endpoint(const Address& other, int flags = 0);
         Hostname hostname() const;
         Service service() const;

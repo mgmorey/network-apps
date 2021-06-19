@@ -11,9 +11,9 @@
 #include <cassert>      // assert()
 #include <sstream>      // std::ostringstream
 
-Network::Endpoint Network::Endpoint::to_strings(const Address& other)
+Network::Endpoint Network::Endpoint::to_strings(const Address& other, int flags)
 {
-    return Endpoint(other, NI_NUMERICHOST | NI_NUMERICSERV);
+    return Endpoint(other, flags | NI_NUMERICHOST | NI_NUMERICSERV);
 }
 
 Network::Endpoint::Endpoint(const Address& addr, int flags) :
