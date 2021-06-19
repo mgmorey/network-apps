@@ -173,7 +173,7 @@ std::ostream& Network::operator<<(std::ostream& os, const Socket& sock)
        << ", addrlen="
        << sock.ai.ai_addrlen
        << ", addr="
-       << to_hex(sock.ai.ai_addr, sock.ai.ai_addrlen)
+       << to_string(sock.ai.ai_addr, sock.ai.ai_addrlen)
        << ", canonname="
        << sock.ai.ai_canonname
        << ", next="

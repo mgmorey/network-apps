@@ -27,6 +27,9 @@ namespace Network
 
     extern Endpoint to_endpoint(const Address& other,
                                 bool numeric = false);
+    extern Hostname to_hostname(const Address& other,
+                                bool numeric = false);
+    extern Hostname to_string(const Address& other);
 }
 
 #endif

@@ -1,5 +1,5 @@
 #include "network-address.h"    // Address, Hostname, Result, Service
-#include "network-string.h"     // to_hex()
+#include "network-string.h"     // to_string()
 
 #ifdef _WIN32
 #include <winsock2.h>   // connect()
@@ -101,7 +101,7 @@ Network::Result Network::connect(int fd,
 std::ostream& Network::operator<<(std::ostream& os, const Address& addr)
 {
     os << "Address(addr="
-       << to_hex(addr.addr)
+       << to_string(addr.addr)
        << ')';
     return os;
 }

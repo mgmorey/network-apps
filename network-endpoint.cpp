@@ -55,3 +55,13 @@ Network::Endpoint Network::to_endpoint(const Address& other, bool numeric)
     int flags = numeric ? NI_NUMERICHOST | NI_NUMERICSERV : 0;
     return Endpoint(other, flags);
 }
+
+Network::Hostname Network::to_hostname(const Address& other, bool numeric)
+{
+    return to_endpoint(other, numeric).hostname();
+}
+
+Network::Hostname Network::to_string(const Address& other)
+{
+    return to_hostname(other, true);
+}
