@@ -2,11 +2,22 @@
 #define NETWORK_RESULT_H
 
 #include <string>       // std::string
-#include <utility>      // std::pair
 
 namespace Network
 {
-    typedef std::pair<int, std::string> Result;
+    class Result
+    {
+    public:
+        Result();
+        Result(int value, std::string str);
+        bool nonzero() const;
+        int result() const;
+        std::string string() const;
+
+    private:
+        int result_value;
+        std::string result_string;
+    };
 }
 
 #endif

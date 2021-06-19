@@ -10,19 +10,17 @@
 
 static void test_hostname()
 {
-    Network::HostnameResult result = Network::get_hostname();
-    Network::Result hostname_result = result.second;
-    int code = hostname_result.first;
+    Network::HostnameResult hostname_result = Network::get_hostname();
+    Network::Result result = hostname_result.second;
 
-    if (code != 0) {
-        std::string error(hostname_result.second);
+    if (result.nonzero()) {
         std::cerr << "No hostname: "
-                  << error
+                  << result.string()
                   << std::endl;
     }
     else {
         std::cout << "Hostname: "
-                  << result.first
+                  << hostname_result.first
                   << std::endl;
     }
 }

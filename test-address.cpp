@@ -40,12 +40,10 @@ static Network::Hostname get_hostname(const Network::Address& address,
 {
     Network::Endpoint endpoint(address, flags);
     Network::Result result = endpoint.result();
-    int code = result.first;
 
-    if (code != 0) {
-        std::string error(result.second);
+    if (result.nonzero()) {
         std::cerr << "No endpoint: "
-                  << error
+                  << result.string()
                   << std::endl;
     }
 
@@ -99,14 +97,13 @@ static Network::Addresses test_host(const Network::Hostname& host,
                                     int family, bool print = true)
 {
     Network::Socket hints(family);
-    Network::AddressesResult result(Network::get_addresses(host, "", hints));
-    Network::Addresses addresses(result.first);
-    Network::Result addr_result(result.second);
-    int code = addr_result.first;
+    Network::AddressesResult
+        addrs_result(Network::get_addresses(host, "", hints));
+    Network::Addresses addrs(addrs_result.first);
+    Network::Result result(addrs_result.second);
 
-    if (code != 0) {
+    if (result.nonzero()) {
         std::string description(get_family_description(family));
-        std::string error(addr_result.second);
 
         if (description.empty()) {
             std::cerr << "No";
@@ -117,14 +114,14 @@ static Network::Addresses test_host(const Network::Hostname& host,
         }
 
         std::cerr << " addresses: "
-                  << error
+                  << result.string()
                   << std::endl;
     }
-    else if (!addresses.empty() && print) {
-        print_addresses(addresses, family);
+    else if (!addrs.empty() && print) {
+        print_addresses(addrs, family);
     }
 
-    return addresses;
+    return addrs;
 }
 
 static void test_host(const Network::Hostname& host)
