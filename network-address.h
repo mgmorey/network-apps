@@ -18,6 +18,8 @@ namespace Network
 {
     class Address
     {
+        friend class Endpoint;
+
     public:
         enum { connect_error = -1 };
         Address(const struct addrinfo& other);
@@ -31,7 +33,6 @@ namespace Network
         static std::string address(const struct addrinfo& other);
         const struct sockaddr* data() const;
         socklen_t size() const;
-        friend class Endpoint;
 
         std::string addr;
     };
