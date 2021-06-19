@@ -2,10 +2,10 @@
 #define NETWORK_STRING_H
 
 #ifdef _WIN32
-#include <ws2tcpip.h>   // struct addrinfo, struct sockaddr, socklen_t
+#include <winsock2.h>   // struct sockaddr
+#include <ws2tcpip.h>   // socklen_t
 #else
-#include <netdb.h>      // struct addrinfo, struct sockaddr
-#include <sys/socket.h> // socklen_t
+#include <sys/socket.h> // struct sockaddr, socklen_t
 #endif
 
 #include <cstddef>      // std::size_t
