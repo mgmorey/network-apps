@@ -168,22 +168,22 @@ std::ostream& Network::operator<<(std::ostream& os,
     os << std::endl
        << "addrinfo("
        << "ai_flags=" << socket.ai.ai_flags
-       << ", " << std::endl << std::setw(9) << ' '
+       << ',' << std::endl << std::setw(9) << ' '
        << "ai_family=" << socket.ai.ai_family
-       << ", " << std::endl << std::setw(9) << ' '
+       << ',' << std::endl << std::setw(9) << ' '
        << "ai_socktype=" << socket.ai.ai_socktype
-       << ", " << std::endl << std::setw(9) << ' '
+       << ',' << std::endl << std::setw(9) << ' '
        << "ai_protocol=" << socket.ai.ai_protocol
-       << ", " << std::endl << std::setw(9) << ' '
+       << ',' << std::endl << std::setw(9) << ' '
        << "ai_addrlen=" << socket.ai.ai_addrlen
-       << ", " << std::endl << std::setw(9) << ' '
-       << "ai_addr=(sockaddr(" << to_string(socket.ai.ai_addr,
-                                            socket.ai.ai_addrlen) << ')'
-       << ", " << std::endl << std::setw(18) << ' '
+       << ',' << std::endl << std::setw(9) << ' '
+       << "ai_addr=(" << to_string(socket.ai.ai_addr,
+                                   socket.ai.ai_addrlen)
+       << ',' << std::endl << std::setw(18) << ' '
        << Address(socket) << ')'
-       << ", " << std::endl << std::setw(9) << ' '
+       << ',' << std::endl << std::setw(9) << ' '
        << "ai_canonname=\"" << socket.ai.ai_canonname
-       << "\", " << std::endl << std::setw(9) << ' '
+       << "\"," << std::endl << std::setw(9) << ' '
        << "...)"
        << std::endl;
     return os;
