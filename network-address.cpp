@@ -11,8 +11,6 @@
 #include <cassert>      // assert()
 #include <cerrno>       // errno
 #include <cstring>      // std::strerror()
-#include <iostream>     // std::cerr, std::endl
-#include <ostream>      // std::ostream
 #include <sstream>      // std::ostringstream
 
 Network::Address::Address(const struct addrinfo& other) :
