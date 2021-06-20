@@ -173,9 +173,11 @@ std::ostream& Network::operator<<(std::ostream& os, const Socket& sock)
        << sock.ai.ai_protocol
        << ", addrlen="
        << sock.ai.ai_addrlen
-       << ", addr="
+       << ", addr=("
+       << to_string(sock.ai.ai_addr, sock.ai.ai_addrlen)
+       << ", \""
        << to_string(Address(sock))
-       << ", canonname="
+       << "\"), canonname="
        << sock.ai.ai_canonname
        << ", next="
        << sock.ai.ai_next
