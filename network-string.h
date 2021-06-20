@@ -9,10 +9,9 @@
 #include <sys/socket.h> // struct sockaddr, socklen_t
 #endif
 
-#include <cstddef>      // std::size_t
 #include <string>       // std::string
 
-extern std::string to_string(const struct sockaddr* sa, socklen_t len);
+extern std::string to_string(const struct sockaddr* data, socklen_t size);
 extern std::string to_string(const struct addrinfo& ai);
 
 

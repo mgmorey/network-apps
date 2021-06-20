@@ -1,6 +1,6 @@
 #include "network-string.h"
 
-#include <iomanip>      // std::hex
+#include <iomanip>      // std::hex(), std::setfill(), std::setw()
 #include <sstream>      // std::ostringstream
 
 static std::string to_string(const char* data, std::size_t size)
@@ -16,13 +16,14 @@ static std::string to_string(const char* data, std::size_t size)
            << ch;
     }
 
+    assert(os.str().length() == size * 2 + 2);
     return os.str();
 }
 
-std::string to_string(const struct sockaddr* sa, socklen_t len)
+std::string to_string(const struct sockaddr* data, socklen_t size)
 {
-    return to_string(reinterpret_cast<const char*>(sa),
-                     len);
+    return to_string(reinterpret_cast<const char*>(data),
+                     size);
 }
 
 std::string to_string(const struct addrinfo& ai)
