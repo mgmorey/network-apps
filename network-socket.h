@@ -28,7 +28,7 @@ namespace Network
         Socket(const struct addrinfo& other);
         ~Socket();
         Socket& operator=(const Socket& other);
-        Socket& operator=(const struct addrinfo& ai);
+        Socket& operator=(const struct addrinfo& other);
         bool operator<(const Socket& other) const;
         bool operator>(const Socket& other) const;
         bool operator==(const Socket& other) const;
