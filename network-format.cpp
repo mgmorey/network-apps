@@ -25,15 +25,12 @@ Network::Format::Format(const std::string& delim, int indent,
 std::ostream& Network::operator<<(std::ostream& os,
                                   const Format& format)
 {
-    if (format.ind > 0) {
-        os << format.del << std::endl;
+    if (format.ind >= 0) {
+        os << format.del;
 
         if (format.ind > 0) {
-            os << std::string(format.ind, ' ');
+            os << std::endl << std::string(format.ind, ' ');
         }
-    }
-    else {
-        os << format.del;
     }
 
     if (!format.str.empty()) {
