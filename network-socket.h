@@ -45,7 +45,8 @@ namespace Network
         struct addrinfo ai;
     };
 
-    extern std::ostream& operator<<(std::ostream& os, const Socket& sock);
+    extern std::ostream& operator<<(std::ostream& os,
+                                    const Socket& socket);
 }
 
 #endif

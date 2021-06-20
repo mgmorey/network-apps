@@ -51,10 +51,7 @@ Network::Result Network::Endpoint::result() const
 std::ostream& Network::operator<<(std::ostream& os,
                                   const Address& address)
 {
-    os << "Address(addr="
-       << to_string(address)
-       << ')';
-    return os;
+    return os << '"' << to_string(address) << '"';
 }
 
 Network::Endpoint Network::to_endpoint(const Address& address,

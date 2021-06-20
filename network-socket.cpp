@@ -161,26 +161,25 @@ struct addrinfo Network::Socket::defaults(int protocol,
     return ai;
 }
 
-std::ostream& Network::operator<<(std::ostream& os, const Socket& sock)
+std::ostream& Network::operator<<(std::ostream& os,
+                                  const Socket& socket)
 {
-    os << "Socket(flags="
-       << sock.ai.ai_flags
-       << ", family="
-       << sock.ai.ai_family
-       << ", socktype="
-       << sock.ai.ai_socktype
-       << ", protocol="
-       << sock.ai.ai_protocol
-       << ", addrlen="
-       << sock.ai.ai_addrlen
-       << ", addr=("
-       << to_string(sock.ai.ai_addr, sock.ai.ai_addrlen)
-       << ", \""
-       << to_string(Address(sock))
-       << "\"), canonname="
-       << sock.ai.ai_canonname
-       << ", next="
-       << sock.ai.ai_next
-       << ')';
+    os << "addrinfo(ai_flags="
+       << socket.ai.ai_flags
+       << ", ai_family="
+       << socket.ai.ai_family
+       << ", ai_socktype="
+       << socket.ai.ai_socktype
+       << ", ai_protocol="
+       << socket.ai.ai_protocol
+       << ", ai_addrlen="
+       << socket.ai.ai_addrlen
+       << ", ai_addr=(sockaddr("
+       << to_string(socket.ai.ai_addr, socket.ai.ai_addrlen)
+       << "), "
+       << Address(socket)
+       << "), ai_canonname="
+       << socket.ai.ai_canonname
+       << ", ...)";
     return os;
 }
