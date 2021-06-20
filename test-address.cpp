@@ -31,21 +31,6 @@ static std::string get_family_description(int family)
     return result;
 }
 
-static Network::Hostname get_hostname(const Network::Address& address,
-                                      bool numeric)
-{
-    Network::Endpoint endpoint(Network::to_endpoint(address, numeric));
-    Network::Result result = endpoint.result();
-
-    if (result.nonzero()) {
-        std::cerr << "No endpoint: "
-                  << result.string()
-                  << std::endl;
-    }
-
-    return endpoint.hostname();
-}
-
 static void insert(const Network::Addresses& a_list,
                    std::set<Network::Address>& a_set)
 {
@@ -68,7 +53,7 @@ static void print_addresses(const Network::Addresses& addresses, int family)
          it != addresses.end();
          ++it)
     {
-        Network::Hostname address(get_hostname(*it, true));
+        Network::Hostname address(to_string(*it));
 
         if (address.empty()) {
             continue;
@@ -77,7 +62,7 @@ static void print_addresses(const Network::Addresses& addresses, int family)
         std::cout << '\t'
                   << address;
 
-        Network::Hostname hostname(get_hostname(*it, false));
+        Network::Hostname hostname(to_hostname(*it));
 
         if (hostname != address) {
             std::cout << " ("
