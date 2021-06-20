@@ -182,11 +182,11 @@ std::ostream& Network::operator<<(std::ostream& os,
        << Format(tabs[0], "ai_addr")
        << '(' << to_string(socket.ai.ai_addr,
                            socket.ai.ai_addrlen)
-       << Format(tabs[1], "")
+       << Format(tabs[1])
        << Address(socket) << ')'
        << Format(tabs[0], "ai_canonname")
        << '"' << socket.ai.ai_canonname << '"'
-       << Format(tabs[0], "")
+       << Format(tabs[0])
        << "...)"
        << std::endl;
     return os;
