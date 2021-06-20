@@ -1,6 +1,5 @@
 #include "network-socket.h"     // Hostname, Result, Socket
 #include "network-address.h"    // Address
-#include "network-endpoint.h"   // to_string()
 #include "network-format.h"     // Format
 #include "network-string.h"     // to_string()
 
@@ -167,8 +166,7 @@ std::ostream& Network::operator<<(std::ostream& os,
                                   const Socket& socket)
 {
     static const int tabs[2] = {9, 18};
-    os << std::endl
-       << "addrinfo("
+    os << "addrinfo("
        << Format("ai_flags")
        << socket.ai.ai_flags
        << Format(tabs[0], "ai_family")
@@ -180,14 +178,11 @@ std::ostream& Network::operator<<(std::ostream& os,
        << Format(tabs[0], "ai_addrlen")
        << socket.ai.ai_addrlen
        << Format(tabs[0], "ai_addr")
-       << '(' << to_string(socket.ai.ai_addr,
-                           socket.ai.ai_addrlen)
-       << Format(tabs[1])
-       << Address(socket) << ')'
+       << to_string(socket.ai.ai_addr,
+                    socket.ai.ai_addrlen)
        << Format(tabs[0], "ai_canonname")
        << '"' << socket.ai.ai_canonname << '"'
        << Format(tabs[0])
-       << "...)"
-       << std::endl;
+       << "...)";
     return os;
 }

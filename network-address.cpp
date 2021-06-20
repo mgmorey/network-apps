@@ -79,9 +79,3 @@ socklen_t Network::Address::size() const
 {
     return static_cast<socklen_t>(addr.size());
 }
-
-Network::Result Network::connect(int fd, const struct addrinfo& ai)
-{
-    Network::Address address(ai);
-    return address.connect(fd);
-}

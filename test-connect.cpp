@@ -36,10 +36,12 @@ static void test_connect(const Network::Hostname& host,
     else {
         Network::Hostname name = details[0];
         std::cout << "Connected to "
+                  << service
+                  << " on "
                   << (!name.empty() ?
                       name :
                       host)
-                  << " on socket "
+                  << " via socket "
                   << fd
                   << std::endl;
         Network::close(fd);
@@ -84,7 +86,6 @@ int main(int argc, char* argv[])
         goto clean_up;
     }
 
-    test_connect(host, service, false);
     test_connect(host, service, true);
     result = EXIT_SUCCESS;
 

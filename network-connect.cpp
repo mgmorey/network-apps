@@ -3,6 +3,7 @@
                                 // addrinfo, close_socket(),
                                 // connect_socket()
 #include "network-address.h"    // Address
+#include "network-endpoint.h"   // operator<<()
 #include "network-sockets.h"    // Sockets
 
 #ifdef _WIN32
@@ -46,8 +47,10 @@ Network::ConnectResult Network::connect(const Hostname& host,
          it != sockets.end();
          ++it) {
         if (verbose) {
-            std::cerr << "Trying socket: "
-                      << (*it);
+            std::cerr << "Trying socket:"
+                      << std::endl
+                      << (*it)
+                      << std::endl;
         }
 
         result = it->socket();
@@ -58,7 +61,7 @@ Network::ConnectResult Network::connect(const Hostname& host,
             continue;
         }
 
-        result = connect(fd, *it);
+        result = connect(fd, *it, verbose);
 
         if (result.result() == Address::connect_error) {
             close(fd);
@@ -72,4 +75,19 @@ Network::ConnectResult Network::connect(const Hostname& host,
     }
 
     return ConnectResult(fd, details);
+}
+
+Network::Result Network::connect(int fd, const struct addrinfo& ai,
+                                 bool verbose)
+{
+    Network::Address address(ai);
+
+    if (verbose) {
+        std::cerr << "Trying address:"
+                  << std::endl
+                  << address
+                  << std::endl;
+    }
+
+    return address.connect(fd);
 }

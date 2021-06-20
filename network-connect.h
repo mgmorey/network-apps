@@ -23,6 +23,8 @@ namespace Network
                                  const Service& service,
                                  const struct addrinfo &hints,
                                  bool verbose = false);
+    extern Result connect(int fd, const struct addrinfo& ai,
+                          bool verbose = false);
 }
 
 #endif
