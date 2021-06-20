@@ -22,7 +22,7 @@ namespace Network
     extern ConnectResult connect(const Hostname& hostname,
                                  const Service& service,
                                  const struct addrinfo &hints,
-                                 bool is_verbose = false);
+                                 bool verbose = false);
 }
 
 #endif

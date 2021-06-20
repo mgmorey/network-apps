@@ -1,4 +1,5 @@
 #include "network-address.h"    // Address, Hostname, Result, Service
+#include "network-endpoint.h"   // operator<<(), to_string()
 #include "network-string.h"     // to_string()
 
 #ifdef _WIN32
@@ -83,25 +84,8 @@ socklen_t Network::Address::size() const
     return static_cast<socklen_t>(addr.size());
 }
 
-Network::Result Network::connect(int fd,
-                                 const struct addrinfo& ai,
-                                 bool is_verbose)
+Network::Result Network::connect(int fd, const struct addrinfo& ai)
 {
     Network::Address address(ai);
-
-    if (is_verbose) {
-        std::cerr << "Trying "
-                  << address
-                  << std::endl;
-    }
-
     return address.connect(fd);
-}
-
-std::ostream& Network::operator<<(std::ostream& os, const Address& addr)
-{
-    os << "Address(addr="
-       << to_string(addr.addr)
-       << ')';
-    return os;
 }

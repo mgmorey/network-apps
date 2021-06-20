@@ -29,7 +29,7 @@ void Network::close(int fd)
 Network::ConnectResult Network::connect(const Hostname& host,
                                         const Service& service,
                                         const struct addrinfo &hints,
-                                        bool is_verbose)
+                                        bool verbose)
 {
     SocketsResult socks_result(get_sockets(host, service, hints));
     Sockets sockets(socks_result.first);
@@ -45,7 +45,7 @@ Network::ConnectResult Network::connect(const Hostname& host,
     for (Sockets::const_iterator it = sockets.begin();
          it != sockets.end();
          ++it) {
-        if (is_verbose) {
+        if (verbose) {
             std::cerr << "Trying "
                       << (*it)
                       << std::endl;
@@ -59,7 +59,7 @@ Network::ConnectResult Network::connect(const Hostname& host,
             continue;
         }
 
-        result = connect(fd, *it, true);
+        result = connect(fd, *it);
 
         if (result.result() == Address::connect_error) {
             close(fd);

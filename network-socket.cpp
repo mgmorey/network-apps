@@ -1,6 +1,7 @@
 #include "network-socket.h"     // Hostname, Result, Socket
 #include "network-address.h"    // Address
-#include "network-string.h"     // to_hex()
+#include "network-endpoint.h"   // to_string()
+#include "network-string.h"     // to_string()
 
 #ifdef _WIN32
 #include <winsock2.h>   // struct sockaddr, socket()
@@ -173,7 +174,7 @@ std::ostream& Network::operator<<(std::ostream& os, const Socket& sock)
        << ", addrlen="
        << sock.ai.ai_addrlen
        << ", addr="
-       << to_string(sock.ai.ai_addr, sock.ai.ai_addrlen)
+       << to_string(Address(sock))
        << ", canonname="
        << sock.ai.ai_canonname
        << ", next="

@@ -19,12 +19,19 @@ static std::string to_string(const char* data, std::size_t size)
     return os.str();
 }
 
-std::string to_string(const struct sockaddr* addr, socklen_t len)
+std::string to_string(const struct sockaddr* sa, socklen_t len)
 {
-    return to_string(reinterpret_cast<const char*>(addr), len);
+    return to_string(reinterpret_cast<const char*>(sa),
+                     len);
 }
 
-std::string to_string(const std::string& str)
+std::string to_string(const struct addrinfo& ai)
 {
-    return to_string(str.data(), str.size());
+    return to_string(reinterpret_cast<const char*>(ai.ai_addr),
+                     ai.ai_addrlen);
+}
+
+std::string to_string(const std::string& addr)
+{
+    return to_string(addr.data(), addr.size());
 }

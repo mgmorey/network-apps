@@ -50,6 +50,14 @@ Network::Result Network::Endpoint::result() const
     return Result(code, error);
 }
 
+std::ostream& Network::operator<<(std::ostream& os, const Address& address)
+{
+    os << "Address(addr="
+       << to_string(address)
+       << ')';
+    return os;
+}
+
 Network::Endpoint Network::to_endpoint(const Address& other, bool numeric)
 {
     int flags = numeric ? NI_NUMERICHOST | NI_NUMERICSERV : 0;
