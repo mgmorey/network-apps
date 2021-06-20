@@ -18,13 +18,13 @@
 #include <sstream>      // std::ostringstream
 
 Network::Address::Address(const struct addrinfo& other) :
-    addr(address(other))
+    addr(to_addr(other))
 {
 }
 
 Network::Address& Network::Address::operator=(const struct addrinfo& other)
 {
-    addr = address(other);
+    addr = to_addr(other);
     return *this;
 }
 
@@ -63,7 +63,7 @@ Network::Result Network::Address::connect(int fd) const
     return Result(code, error);
 }
 
-std::string Network::Address::address(const struct addrinfo& other)
+std::string Network::Address::to_addr(const struct addrinfo& other)
 {
     std::string result;
     assert(other.ai_addr != NULL);

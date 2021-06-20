@@ -30,7 +30,7 @@ namespace Network
         Result connect(int fd) const;
 
     private:
-        static std::string address(const struct addrinfo& other);
+        static std::string to_addr(const struct addrinfo& other);
         const struct sockaddr* data() const;
         socklen_t size() const;
 
