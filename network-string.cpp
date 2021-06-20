@@ -30,8 +30,3 @@ std::string to_string(const struct addrinfo& ai)
     return to_string(reinterpret_cast<const char*>(ai.ai_addr),
                      ai.ai_addrlen);
 }
-
-std::string to_string(const std::string& addr)
-{
-    return to_string(addr.data(), addr.size());
-}

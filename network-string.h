@@ -14,6 +14,6 @@
 
 extern std::string to_string(const struct sockaddr* sa, socklen_t len);
 extern std::string to_string(const struct addrinfo& ai);
-extern std::string to_string(const std::string& addr);
+
 
 #endif
