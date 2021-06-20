@@ -47,10 +47,8 @@ Network::ConnectResult Network::connect(const Hostname& host,
          it != sockets.end();
          ++it) {
         if (verbose) {
-            std::cerr << "Trying socket:"
-                      << std::endl
-                      << (*it)
-                      << std::endl;
+            std::cerr << "Trying socket:" << std::endl
+                      << (*it) << std::endl;
         }
 
         result = it->socket();
@@ -83,10 +81,8 @@ Network::Result Network::connect(int fd, const struct addrinfo& ai,
     Network::Address address(ai);
 
     if (verbose) {
-        std::cerr << "Trying address:"
-                  << std::endl
-                  << address
-                  << std::endl;
+        std::cerr << "Trying address:" << std::endl
+                  << address << std::endl;
     }
 
     return address.connect(fd);
