@@ -25,9 +25,3 @@ std::string to_string(const struct sockaddr* data, socklen_t size)
     return to_string(reinterpret_cast<const char*>(data),
                      size);
 }
-
-std::string to_string(const struct addrinfo& ai)
-{
-    return to_string(reinterpret_cast<const char*>(ai.ai_addr),
-                     ai.ai_addrlen);
-}
