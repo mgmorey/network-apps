@@ -11,15 +11,13 @@
 #include <cassert>      // assert()
 #include <sstream>      // std::ostringstream
 
-Network::Endpoint::Endpoint(const Address& addr, int flags) :
+Network::Endpoint::Endpoint(const Address& address, int flags) :
     code(0),
     host(NI_MAXHOST),
     serv(NI_MAXSERV)
 {
-    assert(addr.size());
-    assert(host.size());
-    assert(serv.size());
-    code = ::getnameinfo(addr.data(), addr.size(),
+    assert(address.size());
+    code = ::getnameinfo(address.data(), address.size(),
                          &host[0], host.size(),
                          &serv[0], serv.size(),
                          flags);

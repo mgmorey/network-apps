@@ -13,7 +13,7 @@ namespace Network
     class Endpoint
     {
     public:
-        Endpoint(const Address& other, int flags = 0);
+        Endpoint(const Address& address, int flags = 0);
         Hostname hostname() const;
         Service service() const;
         Result result() const;
