@@ -166,7 +166,7 @@ struct addrinfo Network::Socket::defaults(int protocol,
 std::ostream& Network::operator<<(std::ostream& os,
                                   const Socket& socket)
 {
-    const int tabs[2] = {9, 18};
+    static const int tabs[2] = {9, 18};
     os << std::endl
        << "addrinfo("
        << Format("ai_flags")
