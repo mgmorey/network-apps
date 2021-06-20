@@ -16,12 +16,10 @@
 #include <iostream>     // std::cerr, std::cout, std::endl
 
 static void test_connect(const Network::Hostname& host,
-                         const Network::Service& service,
-                         bool verbose)
+                         const Network::Service& service)
 {
     Network::Socket hints(IPPROTO_TCP, SOCK_STREAM, AF_UNSPEC, AI_CANONNAME);
-    Network::ConnectResult
-        result(Network::connect(host, service, hints, verbose));
+    Network::ConnectResult result(Network::connect(host, service, hints, true));
     Network::ConnectDetails details(result.second);
     int fd = result.first;
 
@@ -86,7 +84,7 @@ int main(int argc, char* argv[])
         goto clean_up;
     }
 
-    test_connect(host, service, true);
+    test_connect(host, service);
     result = EXIT_SUCCESS;
 
 clean_up:
