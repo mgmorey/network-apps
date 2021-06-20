@@ -1,6 +1,4 @@
 #include "network-address.h"    // Address, Hostname, Result, Service
-#include "network-endpoint.h"   // operator<<(), to_string()
-#include "network-string.h"     // to_string()
 
 #ifdef _WIN32
 #include <winsock2.h>   // connect()
