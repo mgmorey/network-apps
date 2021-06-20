@@ -34,8 +34,9 @@ LINK.o = $(CXX) $(LDFLAGS) $(TARGET_ARCH)
 executable_sources = test-address.cpp test-hostname.cpp
 library_sources = network-address.cpp network-addresses.cpp \
 network-addrinfo.cpp network-buffer.cpp network-connect.cpp \
-network-endpoint.cpp network-hostname.cpp network-result.cpp \
-network-socket.cpp network-sockets.cpp network-string.cpp
+network-endpoint.cpp network-format.cpp network-hostname.cpp \
+network-result.cpp network-socket.cpp network-sockets.cpp \
+network-string.cpp
 
 ifndef HTTP_PROXY
 	executable_sources += test-connect.cpp

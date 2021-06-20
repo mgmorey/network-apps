@@ -1,6 +1,7 @@
 #include "network-socket.h"     // Hostname, Result, Socket
 #include "network-address.h"    // Address
 #include "network-endpoint.h"   // to_string()
+#include "network-format.h"     // Format
 #include "network-string.h"     // to_string()
 
 #ifdef _WIN32
@@ -168,23 +169,24 @@ std::ostream& Network::operator<<(std::ostream& os,
     const int tabs[2] = {9, 18};
     os << std::endl
        << "addrinfo("
-       << "ai_flags=" << socket.ai.ai_flags
-       << ',' << std::endl << std::setw(tabs[0]) << ' '
-       << "ai_family=" << socket.ai.ai_family
-       << ',' << std::endl << std::setw(tabs[0]) << ' '
-       << "ai_socktype=" << socket.ai.ai_socktype
-       << ',' << std::endl << std::setw(tabs[0]) << ' '
-       << "ai_protocol=" << socket.ai.ai_protocol
-       << ',' << std::endl << std::setw(tabs[0]) << ' '
-       << "ai_addrlen=" << socket.ai.ai_addrlen
-       << ',' << std::endl << std::setw(tabs[0]) << ' '
-       << "ai_addr=(" << to_string(socket.ai.ai_addr,
-                                   socket.ai.ai_addrlen)
-       << ',' << std::endl << std::setw(tabs[1]) << ' '
+       << Format("ai_flags")
+       << socket.ai.ai_flags
+       << Format(tabs[0], "ai_family")
+       << socket.ai.ai_family
+       << Format(tabs[0], "ai_socktype")
+       << socket.ai.ai_socktype
+       << Format(tabs[0], "ai_protocol")
+       << socket.ai.ai_protocol
+       << Format(tabs[0], "ai_addrlen")
+       << socket.ai.ai_addrlen
+       << Format(tabs[0], "ai_addr")
+       << '(' << to_string(socket.ai.ai_addr,
+                           socket.ai.ai_addrlen)
+       << Format(tabs[1], "")
        << Address(socket) << ')'
-       << ',' << std::endl << std::setw(tabs[0]) << ' '
-       << "ai_canonname=\"" << socket.ai.ai_canonname
-       << "\"," << std::endl << std::setw(tabs[0]) << ' '
+       << Format(tabs[0], "ai_canonname")
+       << '"' << socket.ai.ai_canonname << '"'
+       << Format(tabs[0], "")
        << "...)"
        << std::endl;
     return os;
