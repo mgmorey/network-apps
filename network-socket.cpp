@@ -13,6 +13,7 @@
 
 #include <cstdlib>      // free()
 #include <cstring>      // std::memcpy(), strdup()
+#include <iomanip>      // std::setw()
 #include <ostream>      // std::ostream
 #include <sstream>      // std::ostringstream
 
@@ -164,22 +165,26 @@ struct addrinfo Network::Socket::defaults(int protocol,
 std::ostream& Network::operator<<(std::ostream& os,
                                   const Socket& socket)
 {
-    os << "addrinfo(ai_flags="
-       << socket.ai.ai_flags
-       << ", ai_family="
-       << socket.ai.ai_family
-       << ", ai_socktype="
-       << socket.ai.ai_socktype
-       << ", ai_protocol="
-       << socket.ai.ai_protocol
-       << ", ai_addrlen="
-       << socket.ai.ai_addrlen
-       << ", ai_addr=(sockaddr("
-       << to_string(socket.ai.ai_addr, socket.ai.ai_addrlen)
-       << "), "
-       << Address(socket)
-       << "), ai_canonname="
-       << socket.ai.ai_canonname
-       << ", ...)";
+    os << std::endl
+       << "addrinfo("
+       << "ai_flags=" << socket.ai.ai_flags
+       << ", " << std::endl << std::setw(9) << ' '
+       << "ai_family=" << socket.ai.ai_family
+       << ", " << std::endl << std::setw(9) << ' '
+       << "ai_socktype=" << socket.ai.ai_socktype
+       << ", " << std::endl << std::setw(9) << ' '
+       << "ai_protocol=" << socket.ai.ai_protocol
+       << ", " << std::endl << std::setw(9) << ' '
+       << "ai_addrlen=" << socket.ai.ai_addrlen
+       << ", " << std::endl << std::setw(9) << ' '
+       << "ai_addr=(sockaddr(" << to_string(socket.ai.ai_addr,
+                                            socket.ai.ai_addrlen) << ')'
+       << ", " << std::endl << std::setw(18) << ' '
+       << Address(socket) << ')'
+       << ", " << std::endl << std::setw(9) << ' '
+       << "ai_canonname=\"" << socket.ai.ai_canonname
+       << "\", " << std::endl << std::setw(9) << ' '
+       << "...)"
+       << std::endl;
     return os;
 }

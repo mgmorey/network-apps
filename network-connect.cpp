@@ -46,9 +46,8 @@ Network::ConnectResult Network::connect(const Hostname& host,
          it != sockets.end();
          ++it) {
         if (verbose) {
-            std::cerr << "Trying "
-                      << (*it)
-                      << std::endl;
+            std::cerr << "Trying socket: "
+                      << (*it);
         }
 
         result = it->socket();
