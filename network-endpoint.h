@@ -27,11 +27,11 @@ namespace Network
 
     extern std::ostream& operator<<(std::ostream& os,
                                     const Address& address);
-    extern Endpoint to_endpoint(const Address& other,
+    extern Endpoint to_endpoint(const Address& address,
                                 bool numeric = false);
-    extern Hostname to_hostname(const Address& other,
+    extern Hostname to_hostname(const Address& address,
                                 bool numeric = false);
-    extern Hostname to_string(const Address& other);
+    extern Hostname to_string(const Address& address);
 }
 
 #endif

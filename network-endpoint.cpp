@@ -50,7 +50,8 @@ Network::Result Network::Endpoint::result() const
     return Result(code, error);
 }
 
-std::ostream& Network::operator<<(std::ostream& os, const Address& address)
+std::ostream& Network::operator<<(std::ostream& os,
+                                  const Address& address)
 {
     os << "Address(addr="
        << to_string(address)
@@ -58,18 +59,20 @@ std::ostream& Network::operator<<(std::ostream& os, const Address& address)
     return os;
 }
 
-Network::Endpoint Network::to_endpoint(const Address& other, bool numeric)
+Network::Endpoint Network::to_endpoint(const Address& address,
+                                       bool numeric)
 {
     int flags = numeric ? NI_NUMERICHOST | NI_NUMERICSERV : 0;
-    return Endpoint(other, flags);
+    return Endpoint(address, flags);
 }
 
-Network::Hostname Network::to_hostname(const Address& other, bool numeric)
+Network::Hostname Network::to_hostname(const Address& address,
+                                       bool numeric)
 {
-    return to_endpoint(other, numeric).hostname();
+    return to_endpoint(address, numeric).hostname();
 }
 
-Network::Hostname Network::to_string(const Address& other)
+Network::Hostname Network::to_string(const Address& address)
 {
-    return to_hostname(other, true);
+    return to_hostname(address, true);
 }
