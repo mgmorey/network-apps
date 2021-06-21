@@ -14,6 +14,7 @@
 #include <iostream>     // std::cerr, std::endl
 #include <ostream>      // std::endl, std::ostream
 #include <utility>      // std::pair
+#include <vector>       // std::vector
 
 namespace Network
 {
@@ -24,6 +25,7 @@ namespace Network
     extern AddrinfoResult get_addrinfo(const Hostname& node,
                                        const Service& service,
                                        const struct addrinfo* hints);
+    extern void print_statistics(std::vector<std::size_t> sizes);
 
     template <class Container>
     void copy_addrinfo(Container& dest,
@@ -44,8 +46,12 @@ namespace Network
              elem != NULL;
              elem = elem->ai_next) {
             if (verbose) {
-                std::cerr << "Fetched addrinfo:" << std::endl
-                          << *elem << std::endl;
+                std::cerr << "Fetched addrinfo "
+                          << elem
+                          << ':'
+                          << std::endl
+                          << *elem
+                          << std::endl;
             }
             dest.first.push_back(*elem);
         }
@@ -60,16 +66,14 @@ namespace Network
                            bool verbose)
     {
         Container container;
+        std::vector<std::size_t> sizes;
         copy_addrinfo(container, node, service, hints, verbose);
-        std::size_t size0 = container.first.size();
+        sizes.push_back(container.first.size());
         container.first.unique();
-        std::size_t size1 = container.first.size();
-        std::size_t delta = size0 - size1;
+        sizes.push_back(container.first.size());
 
         if (verbose) {
-            std::cerr << std::setw(9) << size0 << " original items" << std::endl
-                      << std::setw(9) << size1 << " unique items" << std::endl
-                      << std::setw(9) << delta << " duplicates" << std::endl;
+            print_statistics(sizes);
         }
 
         return container;

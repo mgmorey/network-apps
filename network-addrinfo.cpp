@@ -88,3 +88,11 @@ Network::AddrinfoResult Network::get_addrinfo(const Hostname& node,
 
     return AddrinfoResult(list, Result(code, error));
 }
+
+void Network::print_statistics(std::vector<std::size_t> sizes)
+{
+    std::size_t delta = sizes[0] - sizes[1];
+    std::cerr << std::setw(9) << sizes[0] << " original items" << std::endl
+              << std::setw(9) << sizes[1] << " unique items" << std::endl
+              << std::setw(9) << delta << " duplicates" << std::endl;
+}
