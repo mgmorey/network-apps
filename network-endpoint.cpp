@@ -1,4 +1,5 @@
-#include "network-endpoint.h"   // Endpoint
+#include "network-endpoint.h"   // Address, Endpoint, Result,
+                                // to_string()
 
 #ifdef _WIN32
 #include <ws2tcpip.h>   // NI_MAXHOST, NI_MAXSERV, NI_NUMERICHOST,

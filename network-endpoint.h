@@ -6,6 +6,7 @@
 #include "network-result.h"     // Result
 #include "network-types.h"      // Hostname, Service
 
+#include <ostream>      // std::ostream
 #include <string>       // std::string
 
 namespace Network

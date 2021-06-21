@@ -1,6 +1,7 @@
 #include "network-addrinfo.h"   // AddrinfoResult, Hostname, Service,
                                 // Result, struct addrinfo,
-                                // get_addrinfo()
+                                // get_addrinfo(), std::ostream,
+                                // std::string
 #include "network-format.h"     // Format
 #include "network-string.h"     // to_string()
 
@@ -29,8 +30,7 @@ std::ostream& Network::operator<<(std::ostream& os,
        << Format(tabs[0], "ai_addrlen")
        << ai.ai_addrlen
        << Format(tabs[0], "ai_addr")
-       << to_string(ai.ai_addr,
-                    ai.ai_addrlen)
+       << to_string(ai.ai_addr, ai.ai_addrlen)
        << Format(tabs[0], "ai_canonname")
        << (ai.ai_canonname != NULL ?
            ai.ai_canonname :
