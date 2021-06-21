@@ -1,6 +1,8 @@
 #include "network-addrinfo.h"   // AddrinfoResult, Hostname, Service,
                                 // Result, struct addrinfo,
                                 // get_addrinfo()
+#include "network-format.h"     // Format
+#include "network-string.h"     // to_string()
 
 #ifdef _WIN32
 #include <ws2tcpip.h>   // struct addrinfo, getaddrinfo()

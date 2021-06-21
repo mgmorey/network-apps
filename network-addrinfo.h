@@ -1,9 +1,7 @@
 #ifndef NETWORK_ADDRINFO_H
 #define NETWORK_ADDRINFO_H
 
-#include "network-format.h"     // Format
 #include "network-result.h"     // Result
-#include "network-string.h"     // to_string()
 #include "network-types.h"      // Hostname, Service
 
 #ifdef _WIN32
