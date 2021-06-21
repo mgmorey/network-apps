@@ -20,7 +20,6 @@ namespace Network
     typedef std::list<Address> Addresses;
     typedef std::pair<Addresses, Result> AddressesResult;
     extern AddressesResult get_addresses(const Hostname& host = "",
-                                         const Service& service = "",
                                          const struct addrinfo& hints =
                                          Socket(),
                                          bool verbose = false);

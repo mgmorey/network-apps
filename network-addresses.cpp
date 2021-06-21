@@ -4,15 +4,14 @@
 #include "network-hostname.h"   // get_hostname()
 
 Network::AddressesResult Network::get_addresses(const Hostname& host,
-                                                const Service& service,
                                                 const struct addrinfo& hints,
                                                 bool verbose)
 {
     Hostname node(host);
 
-    if (host.empty() && service.empty()) {
+    if (host.empty()) {
         node = get_hostname().first;
     }
 
-    return get_addrinfo<AddressesResult>(node, service, &hints, verbose);
+    return get_addrinfo<AddressesResult>(node, "", &hints, verbose);
 }

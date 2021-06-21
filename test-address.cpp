@@ -17,13 +17,6 @@
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <string>       // std::string
 
-static Network::AddressesResult get_addresses(const Network::Hostname& host,
-                                              const struct addrinfo& hints,
-                                              bool verbose)
-{
-    return Network::get_addresses(host, "", hints, verbose);
-}
-
 static int get_family(const Network::Socket& socket)
 {
     const struct addrinfo& ai = static_cast<const struct addrinfo&>(socket);
