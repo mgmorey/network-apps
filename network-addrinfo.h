@@ -68,11 +68,15 @@ namespace Network
         Container container;
         std::vector<std::size_t> sizes;
         copy_addrinfo(container, node, service, hints, verbose);
-        sizes.push_back(container.first.size());
-        container.first.unique();
-        sizes.push_back(container.first.size());
 
         if (verbose) {
+            sizes.push_back(container.first.size());
+        }
+
+        container.first.unique();
+
+        if (verbose) {
+            sizes.push_back(container.first.size());
             print_statistics(sizes);
         }
 
