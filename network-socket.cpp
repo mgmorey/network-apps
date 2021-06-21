@@ -102,13 +102,8 @@ Network::Socket::operator const struct addrinfo&() const
 
 Network::Hostname Network::Socket::cname() const
 {
-    Hostname result;
-
-    if (ai.ai_canonname != NULL) {
-        result = ai.ai_canonname;
-    }
-
-    return result;
+    Hostname host(ai.ai_canonname == NULL ? "" : ai.ai_canonname);
+    return host;
 }
 
 Network::Result Network::Socket::socket() const
