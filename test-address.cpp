@@ -5,14 +5,16 @@
 #include "network-socket.h"     // Socket
 
 #ifdef _WIN32
-#include <winsock2.h>   // WSACleanup(), WSAStartup()
+#include <winsock2.h>   // IPPROTO_TCP, SOCK_STREAM, WSACleanup(),
+                        // WSAStartup()
+#else
+#include <netinet/in.h> // IPPROTO_IP, IPPROTO_TCP, IPPROTO_UDP
+#include <sys/socket.h> // AF_INET, AF_INET6, PF_INET, PF_INET6,
+                        // SOCK_DGRAM, SOCK_STREAM
 #endif
 
-#include <algorithm>    // std::copy, std::set_union()
 #include <cstdlib>      // EXIT_FAILURE, EXIT_SUCCESS
 #include <iostream>     // std::cerr, std::cout, std::endl
-#include <iterator>     // std::inserter()
-#include <set>          // std::set
 #include <string>       // std::string
 
 static std::string get_family_description(int family)
@@ -29,13 +31,6 @@ static std::string get_family_description(int family)
     }
 
     return result;
-}
-
-static void insert(const Network::Addresses& a_list,
-                   std::set<Network::Address>& a_set)
-{
-    std::copy(a_list.begin(), a_list.end(),
-              std::inserter(a_set, a_set.begin()));
 }
 
 static void print_addresses(const Network::Addresses& addresses, int family)
@@ -77,7 +72,7 @@ static void print_addresses(const Network::Addresses& addresses, int family)
 static Network::Addresses test_host(const Network::Hostname& host,
                                     int family, bool print = true)
 {
-    Network::Socket hints(family);
+    Network::Socket hints(IPPROTO_TCP, SOCK_STREAM, family);
     Network::AddressesResult
         addrs_result(Network::get_addresses(host, "", hints, true));
     Network::Addresses addrs(addrs_result.first);
@@ -113,16 +108,6 @@ static void test_host(const Network::Hostname& host)
 
     Network::Addresses ipv4(test_host(host, AF_INET));
     Network::Addresses ipv6(test_host(host, AF_INET6));
-    Network::Addresses any(test_host(host, AF_UNSPEC, false));
-    std::set<Network::Address> set_all;
-    std::set<Network::Address> set_any;
-    insert(ipv4, set_all);
-    insert(ipv6, set_all);
-    insert(any, set_any);
-
-    if (set_any != set_all) {
-        print_addresses(any, AF_UNSPEC);
-    }
 }
 
 static int wsa_set_up(void)
