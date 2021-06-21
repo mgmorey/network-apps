@@ -1,5 +1,6 @@
-#include "network-connect.h"    // Result, Hostname, Service,
-                                // close_socket(), connect_socket()
+#include "network-connect.h"    // ConnectDetails, ConnectResult,
+                                // Hostname, Result, Service, close(),
+                                // connect()
 #include "network-socket.h"     // Socket
 
 #ifdef _WIN32
