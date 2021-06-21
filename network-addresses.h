@@ -22,7 +22,7 @@ namespace Network
     extern AddressesResult get_addresses(const Hostname& host = "",
                                          const Service& service = "",
                                          const struct addrinfo& hints =
-                                         Socket(AF_UNSPEC),
+                                         Socket(),
                                          bool verbose = false);
 }
 
