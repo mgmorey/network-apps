@@ -17,6 +17,19 @@
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <string>       // std::string
 
+static Network::AddressesResult get_addresses(const Network::Hostname& host,
+                                              const struct addrinfo& hints,
+                                              bool verbose)
+{
+    return Network::get_addresses(host, "", hints, verbose);
+}
+
+static int get_family(const Network::Socket& socket)
+{
+    const struct addrinfo& ai = static_cast<const struct addrinfo&>(socket);
+    return ai.ai_family;
+}
+
 static std::string get_family_description(int family)
 {
     std::string result;
@@ -69,14 +82,14 @@ static void print_addresses(const Network::Addresses& addresses, int family)
     }
 }
 
-static Network::Addresses test_host(const Network::Hostname& host,
-                                    int family, bool print = true)
+static void test_host(const Network::Hostname& host,
+                      const Network::Socket& hints,
+                      bool verbose = true)
 {
-    Network::Socket hints(IPPROTO_TCP, SOCK_STREAM, family);
-    Network::AddressesResult
-        addrs_result(Network::get_addresses(host, "", hints, true));
+    Network::AddressesResult addrs_result(get_addresses(host, hints, verbose));
     Network::Addresses addrs(addrs_result.first);
     Network::Result result(addrs_result.second);
+    int family = get_family(hints);
 
     if (result.nonzero()) {
         std::string description(get_family_description(family));
@@ -93,21 +106,24 @@ static Network::Addresses test_host(const Network::Hostname& host,
                   << result.string()
                   << std::endl;
     }
-    else if (!addrs.empty() && print) {
+    else if (!addrs.empty()) {
         print_addresses(addrs, family);
     }
-
-    return addrs;
 }
 
 static void test_host(const Network::Hostname& host)
 {
-    if (!host.empty()) {
-        std::cout << "Host: " << host << std::endl;
+    if (host.empty()) {
+        Network::Socket hints;
+        test_host(host, hints, true);
     }
-
-    Network::Addresses ipv4(test_host(host, AF_INET));
-    Network::Addresses ipv6(test_host(host, AF_INET6));
+    else {
+        std::cout << "Host: " << host << std::endl;
+        Network::Socket hints4(IPPROTO_TCP, SOCK_STREAM, AF_INET);
+        Network::Socket hints6(IPPROTO_TCP, SOCK_STREAM, AF_INET6);
+        test_host(host, hints4, true);
+        test_host(host, hints6, true);
+    }
 }
 
 static int wsa_set_up(void)
