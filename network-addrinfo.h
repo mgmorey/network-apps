@@ -10,6 +10,7 @@
 #include <netdb.h>      // struct addrinfo, freeaddrinfo()
 #endif
 
+#include <iomanip>      // std::setw()
 #include <iostream>     // std::cerr, std::endl
 #include <ostream>      // std::endl, std::ostream
 #include <utility>      // std::pair
@@ -60,7 +61,17 @@ namespace Network
     {
         Container container;
         copy_addrinfo(container, node, service, hints, verbose);
+        std::size_t size0 = container.first.size();
         container.first.unique();
+        std::size_t size1 = container.first.size();
+        std::size_t delta = size0 - size1;
+
+        if (verbose) {
+            std::cerr << std::setw(9) << size0 << " original items" << std::endl
+                      << std::setw(9) << size1 << " unique items" << std::endl
+                      << std::setw(9) << delta << " duplicates" << std::endl;
+        }
+
         return container;
     }
 }
