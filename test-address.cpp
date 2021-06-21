@@ -114,7 +114,7 @@ static void test_host(const Network::Hostname& host,
 static void test_host(const Network::Hostname& host)
 {
     if (host.empty()) {
-        Network::Socket hints;
+        Network::Socket hints(IPPROTO_TCP, SOCK_STREAM, AF_UNSPEC);
         test_host(host, hints, true);
     }
     else {
