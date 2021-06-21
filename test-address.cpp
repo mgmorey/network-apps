@@ -79,7 +79,7 @@ static Network::Addresses test_host(const Network::Hostname& host,
 {
     Network::Socket hints(family);
     Network::AddressesResult
-        addrs_result(Network::get_addresses(host, "", hints));
+        addrs_result(Network::get_addresses(host, "", hints, true));
     Network::Addresses addrs(addrs_result.first);
     Network::Result result(addrs_result.second);
 

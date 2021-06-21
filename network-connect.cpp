@@ -3,6 +3,7 @@
                                 // addrinfo, close_socket(),
                                 // connect_socket()
 #include "network-address.h"    // Address
+#include "network-addrinfo.h"   // operator<<()
 #include "network-endpoint.h"   // operator<<()
 #include "network-sockets.h"    // Sockets
 
@@ -32,7 +33,7 @@ Network::ConnectResult Network::connect(const Hostname& host,
                                         const struct addrinfo &hints,
                                         bool verbose)
 {
-    SocketsResult socks_result(get_sockets(host, service, hints));
+    SocketsResult socks_result(get_sockets(host, service, hints, verbose));
     Sockets sockets(socks_result.first);
     Result result(socks_result.second);
     int fd = Socket::socket_bad;
@@ -81,8 +82,7 @@ Network::Result Network::connect(int fd, const struct addrinfo& ai,
     Network::Address address(ai);
 
     if (verbose) {
-        std::cerr << "Trying address:" << std::endl
-                  << address << std::endl;
+        std::cerr << "Trying address: " << address << std::endl;
     }
 
     return address.connect(fd);

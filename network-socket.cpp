@@ -13,8 +13,6 @@
 
 #include <cstdlib>      // free()
 #include <cstring>      // std::memcpy(), strdup()
-#include <iomanip>      // std::setw()
-#include <ostream>      // std::endl, std::ostream
 #include <sstream>      // std::ostringstream
 
 Network::Socket::Socket() :
@@ -160,29 +158,4 @@ struct addrinfo Network::Socket::defaults(int protocol,
         NULL		// ai_next
     };
     return ai;
-}
-
-std::ostream& Network::operator<<(std::ostream& os,
-                                  const Socket& socket)
-{
-    static const int tabs[1] = {9};
-    os << "addrinfo("
-       << Format("ai_flags")
-       << socket.ai.ai_flags
-       << Format(tabs[0], "ai_family")
-       << socket.ai.ai_family
-       << Format(tabs[0], "ai_socktype")
-       << socket.ai.ai_socktype
-       << Format(tabs[0], "ai_protocol")
-       << socket.ai.ai_protocol
-       << Format(tabs[0], "ai_addrlen")
-       << socket.ai.ai_addrlen
-       << Format(tabs[0], "ai_addr")
-       << to_string(socket.ai.ai_addr,
-                    socket.ai.ai_addrlen)
-       << Format(tabs[0], "ai_canonname")
-       << '"' << socket.ai.ai_canonname << '"'
-       << Format(tabs[0])
-       << "...)";
-    return os;
 }

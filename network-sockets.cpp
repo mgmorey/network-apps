@@ -5,7 +5,8 @@
 
 Network::SocketsResult Network::get_sockets(const Hostname& host,
                                             const Service& service,
-                                            const struct addrinfo& hints)
+                                            const struct addrinfo& hints,
+                                            bool verbose)
 {
     Hostname node(host);
 
@@ -13,5 +14,5 @@ Network::SocketsResult Network::get_sockets(const Hostname& host,
         node = get_hostname().first;
     }
 
-    return get_addrinfo<SocketsResult>(node, service, &hints);
+    return get_addrinfo<SocketsResult>(node, service, &hints, verbose);
 }

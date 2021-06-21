@@ -20,7 +20,8 @@ namespace Network
     typedef std::pair<Sockets, Result> SocketsResult;
     extern SocketsResult get_sockets(const Hostname& host,
                                      const Service& service,
-                                     const struct addrinfo& hints);
+                                     const struct addrinfo& hints,
+                                     bool verose = false);
 }
 
 #endif

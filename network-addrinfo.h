@@ -1,7 +1,9 @@
 #ifndef NETWORK_ADDRINFO_H
 #define NETWORK_ADDRINFO_H
 
+#include "network-format.h"     // Format
 #include "network-result.h"     // Result
+#include "network-string.h"     // to_string()
 #include "network-types.h"      // Hostname, Service
 
 #ifdef _WIN32
@@ -10,12 +12,16 @@
 #include <netdb.h>      // struct addrinfo, freeaddrinfo()
 #endif
 
+#include <iostream>     // std::cerr, std::endl
+#include <ostream>      // std::endl, std::ostream
 #include <utility>      // std::pair
 
 namespace Network
 {
     typedef std::pair<struct addrinfo*, Result> AddrinfoResult;
 
+    extern std::ostream& operator<<(std::ostream& os,
+                                    const struct addrinfo& ai);
     extern AddrinfoResult get_addrinfo(const Hostname& node,
                                        const Service& service,
                                        const struct addrinfo* hints);
@@ -24,7 +30,8 @@ namespace Network
     void copy_addrinfo(Container& dest,
                        const Hostname& node,
                        const Service& service,
-                       const struct addrinfo* hints)
+                       const struct addrinfo* hints,
+                       bool verbose)
     {
         AddrinfoResult result(get_addrinfo(node, service, hints));
         struct addrinfo* list = result.first;
@@ -37,6 +44,10 @@ namespace Network
         for (const struct addrinfo* elem = list;
              elem != NULL;
              elem = elem->ai_next) {
+            if (verbose) {
+                std::cerr << "Fetched addrinfo:" << std::endl
+                          << *elem << std::endl;
+            }
             dest.first.push_back(*elem);
         }
 
@@ -46,10 +57,11 @@ namespace Network
     template <class Container>
     Container get_addrinfo(const Hostname& node,
                            const Service& service,
-                           const struct addrinfo* hints)
+                           const struct addrinfo* hints,
+                           bool verbose)
     {
         Container container;
-        copy_addrinfo(container, node, service, hints);
+        copy_addrinfo(container, node, service, hints, verbose);
         container.first.unique();
         return container;
     }
