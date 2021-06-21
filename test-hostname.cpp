@@ -1,4 +1,5 @@
-#include "network-hostname.h"   // get_hostname()
+#include "network-hostname.h"   // Hostname, HostnameResult, Result,
+                                // get_hostname()
 
 #ifdef _WIN32
 #include <winsock2.h>   // WSACleanup(), WSAStartup()
@@ -10,8 +11,9 @@
 
 static void test_hostname()
 {
-    Network::HostnameResult hostname_result = Network::get_hostname();
-    Network::Result result = hostname_result.second;
+    Network::HostnameResult hostname_result(Network::get_hostname());
+    Network::Hostname hostname(hostname_result.first);
+    Network::Result result(hostname_result.second);
 
     if (result.nonzero()) {
         std::cerr << "No hostname: "
@@ -20,7 +22,7 @@ static void test_hostname()
     }
     else {
         std::cout << "Hostname: "
-                  << hostname_result.first
+                  << hostname
                   << std::endl;
     }
 }
