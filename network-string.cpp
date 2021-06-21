@@ -1,6 +1,7 @@
 #include "network-string.h"
 
-#include <iomanip>      // std::hex(), std::setfill(), std::setw()
+#include <cassert>      // assert()
+#include <iomanip>      // std::hex, std::setfill(), std::setw()
 #include <sstream>      // std::ostringstream
 
 static std::string to_string(const char* data, std::size_t size)
