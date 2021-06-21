@@ -20,7 +20,7 @@ static void test_connect(const Network::Hostname& host,
                          const Network::Service& service)
 {
     Network::Socket hints(IPPROTO_TCP, SOCK_STREAM, AF_UNSPEC, AI_CANONNAME);
-    Network::ConnectResult result(Network::connect(host, service, hints, true));
+    Network::ConnectResult result(connect(host, service, hints, true));
     Network::ConnectDetails details(result.second);
     int fd = result.first;
 
