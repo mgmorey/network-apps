@@ -10,6 +10,7 @@
 #include <netdb.h>      // struct addrinfo, freeaddrinfo()
 #endif
 
+#include <cstddef>      // std::size_t
 #include <iomanip>      // std::setw()
 #include <iostream>     // std::cerr, std::endl
 #include <ostream>      // std::endl, std::ostream
@@ -25,26 +26,27 @@ namespace Network
     extern AddrinfoResult get_addrinfo(const Hostname& node,
                                        const Service& service,
                                        const struct addrinfo* hints);
-    extern void print_statistics(std::vector<std::size_t> sizes);
+    extern void print_statistics(const std::vector<std::size_t>& sizes);
 
     template <class Container>
-    void copy_addrinfo(Container& dest,
-                       const Hostname& node,
-                       const Service& service,
-                       const struct addrinfo* hints,
-                       bool verbose)
+    std::size_t copy_addrinfo(Container& dest,
+                              const Hostname& node,
+                              const Service& service,
+                              const struct addrinfo* hints,
+                              bool verbose)
     {
         AddrinfoResult result(get_addrinfo(node, service, hints));
         struct addrinfo* list = result.first;
+        std::size_t size = 0;
         dest.second = result.second;
 
         if (list == NULL) {
-            return;
+            return size;
         }
 
         for (const struct addrinfo* elem = list;
              elem != NULL;
-             elem = elem->ai_next) {
+             elem = elem->ai_next, ++size) {
             if (verbose) {
                 std::cerr << "Fetched addrinfo "
                           << elem
@@ -53,10 +55,12 @@ namespace Network
                           << *elem
                           << std::endl;
             }
+
             dest.first.push_back(*elem);
         }
 
         ::freeaddrinfo(list);
+        return size;
     }
 
     template <class Container>
@@ -65,22 +69,26 @@ namespace Network
                            const struct addrinfo* hints,
                            bool verbose)
     {
-        Container container;
+        Container cont;
         std::vector<std::size_t> sizes;
-        copy_addrinfo(container, node, service, hints, verbose);
+        std::size_t size = copy_addrinfo(cont,
+                                         node,
+                                         service,
+                                         hints,
+                                         verbose);
 
         if (verbose) {
-            sizes.push_back(container.first.size());
+            sizes.push_back(size);
         }
 
-        container.first.unique();
+        cont.first.unique();
 
         if (verbose) {
-            sizes.push_back(container.first.size());
+            sizes.push_back(cont.first.size());
             print_statistics(sizes);
         }
 
-        return container;
+        return cont;
     }
 }
 

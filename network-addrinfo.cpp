@@ -89,12 +89,19 @@ Network::AddrinfoResult Network::get_addrinfo(const Hostname& node,
     return AddrinfoResult(list, Result(code, error));
 }
 
-void Network::print_statistics(std::vector<std::size_t> sizes)
+void Network::print_statistics(const std::vector<std::size_t>& sizes)
 {
+    static const int w = 9;
     assert(sizes.size() == 2);
     assert(sizes[0] >= sizes[1]);
-    std::size_t delta = sizes[0] - sizes[1];
-    std::cerr << std::setw(9) << sizes[0] << " original items" << std::endl
-              << std::setw(9) << sizes[1] << " unique items" << std::endl
-              << std::setw(9) << delta << " duplicates" << std::endl;
+
+    if (sizes[0]) {
+        std::size_t delta = sizes[0] - sizes[1];
+        std::cerr << std::setw(w) << sizes[0] << " original items" << std::endl
+                  << std::setw(w) << sizes[1] << " unique items" << std::endl;
+
+        if (delta) {
+            std::cerr << std::setw(w) << delta << " duplicates" << std::endl;
+        }
+    }
 }
