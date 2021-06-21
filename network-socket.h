@@ -19,9 +19,10 @@ namespace Network
     {
     public:
         enum { socket_bad = -1 };
-        Socket();
-        Socket(int family, int flags = 0);
-        Socket(int protocol, int socktype, int family, int flags = 0);
+        Socket(int protocol = 0,
+               int socktype = 0,
+               int family = 0,
+               int flags = 0);
         Socket(const Socket& other);
         Socket(const struct addrinfo& other);
         ~Socket();

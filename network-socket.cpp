@@ -15,16 +15,6 @@
 #include <cstring>      // std::memcpy(), strdup()
 #include <sstream>      // std::ostringstream
 
-Network::Socket::Socket() :
-    ai(defaults())
-{
-}
-
-Network::Socket::Socket(int family, int flags) :
-    ai(defaults(0, 0, family, flags))
-{
-}
-
 Network::Socket::Socket(int protocol, int socktype, int family, int flags) :
     ai(defaults(protocol, socktype, family, flags))
 {
