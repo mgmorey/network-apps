@@ -5,8 +5,9 @@
 #include "network-socket.h"     // Socket
 
 #ifdef _WIN32
-#include <winsock2.h>   // IPPROTO_TCP, SOCK_STREAM, WSACleanup(),
-                        // WSAStartup()
+#include <winsock2.h>   // AF_INET, AF_INET6, PF_INET, PF_INET6,
+                        // IPPROTO_IP, IPPROTO_TCP, IPPROTO_UDP,
+                        // SOCK_DGRAM, SOCK_STREAM
 #else
 #include <netinet/in.h> // IPPROTO_IP, IPPROTO_TCP, IPPROTO_UDP
 #include <sys/socket.h> // AF_INET, AF_INET6, PF_INET, PF_INET6,
@@ -106,14 +107,17 @@ static void test_host(const Network::Hostname& host,
 
 static void test_host(const Network::Hostname& host)
 {
+    static const int lflags = AI_ADDRCONFIG | AI_CANONNAME;
+    static const int rflags = AI_CANONNAME;
+
     if (host.empty()) {
-        Network::Socket hints(IPPROTO_TCP, SOCK_STREAM, AF_UNSPEC);
+        Network::Socket hints(IPPROTO_TCP, SOCK_STREAM, AF_UNSPEC, lflags);
         test_host(host, hints, true);
     }
     else {
         std::cout << "Host: " << host << std::endl;
-        Network::Socket hints4(IPPROTO_TCP, SOCK_STREAM, AF_INET);
-        Network::Socket hints6(IPPROTO_TCP, SOCK_STREAM, AF_INET6);
+        Network::Socket hints4(IPPROTO_TCP, SOCK_STREAM, AF_INET, rflags);
+        Network::Socket hints6(IPPROTO_TCP, SOCK_STREAM, AF_INET6, rflags);
         test_host(host, hints4, true);
         test_host(host, hints6, true);
     }

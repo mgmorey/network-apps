@@ -14,7 +14,7 @@ namespace Network
     class Endpoint
     {
     public:
-        Endpoint(const Address& address, int flags = 0);
+        Endpoint(const Address& address, int flags = 0, bool verbose = false);
         Hostname hostname() const;
         Service service() const;
         Result result() const;
@@ -29,10 +29,12 @@ namespace Network
     extern std::ostream& operator<<(std::ostream& os,
                                     const Address& address);
     extern Endpoint to_endpoint(const Address& address,
-                                bool numeric = false);
+                                bool numeric = false,
+                                bool verbose = false);
     extern Hostname to_hostname(const Address& address,
-                                bool numeric = false);
-    extern Hostname to_string(const Address& address);
+                                bool verbose = false);
+    extern Hostname to_string(const Address& address,
+                              bool verbose = false);
 }
 
 #endif

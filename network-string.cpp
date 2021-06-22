@@ -7,6 +7,12 @@
 static std::string to_string(const char* data, std::size_t size)
 {
     std::ostringstream os;
+
+    if (data == NULL) {
+        os << std::hex << 0;
+        return os.str();
+    }
+
     os << std::hex
        << "0x";
 

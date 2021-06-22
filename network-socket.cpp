@@ -1,7 +1,5 @@
 #include "network-socket.h"     // Hostname, Result, Socket
 #include "network-address.h"    // Address
-#include "network-format.h"     // Format
-#include "network-string.h"     // to_string()
 
 #ifdef _WIN32
 #include <winsock2.h>   // struct sockaddr, socket()
