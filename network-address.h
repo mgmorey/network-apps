@@ -29,6 +29,7 @@ namespace Network
         bool operator<(const Address& other) const;
         bool operator>(const Address& other) const;
         bool operator==(const Address& other) const;
+        Hostname canonical_name() const;
         Result connect(int fd) const;
 
     private:
@@ -36,6 +37,7 @@ namespace Network
         socklen_t size() const;
 
         std::string addr;
+        std::string name;
     };
 }
 

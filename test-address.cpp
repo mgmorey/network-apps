@@ -64,7 +64,11 @@ static void print_addresses(const Network::Addresses& addresses, int family)
         std::cout << '\t'
                   << address;
 
-        Network::Hostname hostname(to_hostname(*it));
+        Network::Hostname hostname(it->canonical_name());
+
+        if (hostname.empty()) {
+            hostname = to_hostname(*it);
+        }
 
         if (hostname != address) {
             std::cout << " ("
