@@ -17,6 +17,7 @@
 #include <cstdlib>      // EXIT_FAILURE, EXIT_SUCCESS
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <string>       // std::string
+#include <vector>       // std::vector
 
 static int get_family(const Network::Socket& socket)
 {
@@ -40,6 +41,36 @@ static std::string get_family_description(int family)
     return result;
 }
 
+static void print_address(const Network::Address& address)
+{
+    Network::Hostname addr(to_string(address));
+    Network::Hostname cname(address.canonical_name());
+    Network::Hostname host(to_hostname(address));
+    std::vector<Network::Hostname> names;
+
+    if (!cname.empty()) {
+        names.push_back(cname);
+    }
+
+    if (host != addr && host != cname) {
+        names.push_back(host);
+    }
+
+    std::cout << '\t' << addr << " (";
+
+    for (std::vector<Network::Hostname>::const_iterator it = names.begin();
+         it != names.end();
+         ++it) {
+        if (it != names.begin()) {
+            std::cout << ", ";
+        }
+
+        std::cout << (*it);
+    }
+
+    std::cout << ')' << std::endl;
+}
+
 static void print_addresses(const Network::Addresses& addresses, int family)
 {
     if (addresses.empty()) {
@@ -55,28 +86,7 @@ static void print_addresses(const Network::Addresses& addresses, int family)
          it != addresses.end();
          ++it)
     {
-        Network::Hostname address(to_string(*it));
-
-        if (address.empty()) {
-            continue;
-        }
-
-        std::cout << '\t'
-                  << address;
-
-        Network::Hostname hostname(it->canonical_name());
-
-        if (hostname.empty()) {
-            hostname = to_hostname(*it);
-        }
-
-        if (hostname != address) {
-            std::cout << " ("
-                      << hostname
-                      << ") ";
-        }
-
-        std::cout << std::endl;
+        print_address(*it);
     }
 }
 
