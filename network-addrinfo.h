@@ -70,6 +70,19 @@ namespace Network
         int value;
     };
 
+    class SockAddr
+    {
+        friend std::ostream& operator<<(std::ostream& os,
+                                        const SockAddr& sockaddr);
+
+    public:
+        SockAddr(const struct sockaddr* data, socklen_t size);
+
+    private:
+        bool null;
+        std::string value;
+    };
+
     class SockType
     {
         friend std::ostream& operator<<(std::ostream& os,
@@ -92,6 +105,8 @@ namespace Network
                                     const Name& name);
     extern std::ostream& operator<<(std::ostream& os,
                                     const Protocol& protocol);
+    extern std::ostream& operator<<(std::ostream& os,
+                                    const SockAddr& sockaddr);
     extern std::ostream& operator<<(std::ostream& os,
                                     const SockType& socktype);
     extern AddrinfoResult get_addrinfo(const Hostname& node,

@@ -1,5 +1,6 @@
 #include "network-endpoint.h"   // Address, Endpoint, Result,
                                 // to_string()
+#include "network-addrinfo.h"   // SockAddr
 
 #ifdef _WIN32
 #include <ws2tcpip.h>   // NI_MAXHOST, NI_MAXSERV, NI_NUMERICHOST,
@@ -58,7 +59,7 @@ Network::Result Network::Endpoint::result() const
 std::ostream& Network::operator<<(std::ostream& os,
                                   const Address& address)
 {
-    return os << to_string(address);
+    return os << SockAddr(address.data(), address.size());
 }
 
 Network::Endpoint Network::to_endpoint(const Address& address,

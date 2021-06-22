@@ -4,18 +4,18 @@
                                 // std::endl, std::ostream,
                                 // std::string
 #include "network-format.h"     // Format
-#include "network-string.h"     // to_string()
 
 #ifdef _WIN32
 #include <winsock2.h>   // AF_INET, AF_INET6, PF_INET, PF_INET6,
                         // IPPROTO_IP, IPPROTO_TCP, IPPROTO_UDP,
-                        // SOCK_DGRAM, SOCK_STREAM
-#include <ws2tcpip.h>   // struct addrinfo, getaddrinfo()
+                        // SOCK_DGRAM, SOCK_STREAM, struct sockaddr
+#include <ws2tcpip.h>   // struct addrinfo, getaddrinfo(), socklen_t
 #else
 #include <netdb.h>      // struct addrinfo, getaddrinfo()
 #include <netinet/in.h> // IPPROTO_IP, IPPROTO_TCP, IPPROTO_UDP
 #include <sys/socket.h> // AF_INET, AF_INET6, PF_INET, PF_INET6,
-                        // SOCK_DGRAM, SOCK_STREAM
+                        // SOCK_DGRAM, SOCK_STREAM, struct sockaddr,
+                        // socklen_t
 #endif
 
 #include <cassert>      // assert()
@@ -49,6 +49,12 @@ Network::Protocol::Protocol(int protocol) :
 {
 }
 
+Network::SockAddr::SockAddr(const struct sockaddr* data, socklen_t size) :
+    null(data == NULL),
+    value(reinterpret_cast<const char*>(data), size)
+{
+}
+
 Network::SockType::SockType(int socktype) :
     value(socktype)
 {
@@ -70,7 +76,7 @@ std::ostream& Network::operator<<(std::ostream& os,
        << Format(tabs[0], "ai_addrlen")
        << ai.ai_addrlen
        << Format(tabs[0], "ai_addr")
-       << to_string(ai.ai_addr, ai.ai_addrlen)
+       << SockAddr(ai.ai_addr, ai.ai_addrlen)
        << Format(tabs[0], "ai_canonname")
        << Name(ai.ai_canonname)
        << Format(tabs[0], "ai_next")
@@ -181,6 +187,33 @@ std::ostream& Network::operator<<(std::ostream& os,
 }
 
 std::ostream& Network::operator<<(std::ostream& os,
+                                  const SockAddr& sockaddr)
+{
+    if (sockaddr.null) {
+        os << std::hex << 0;
+        return os;
+    }
+
+    std::ostringstream oss;
+    oss << std::hex
+        << "0x";
+
+    const char* data = sockaddr.value.data();
+    std::size_t size = sockaddr.value.size();
+
+    for(const char* p = data; p < data + size; p++) {
+        short ch = static_cast<short>(*p & 0xFF);
+        oss << std::setfill('0')
+            << std::setw(2)
+            << ch;
+    }
+
+    assert(oss.str().length() == size * 2 + 2);
+    os << oss.str();
+    return os;
+}
+
+std::ostream& Network::operator<<(std::ostream& os,
                                   const SockType& socktype)
 {
     switch(socktype.value) {
@@ -215,7 +248,7 @@ Network::AddrinfoResult Network::get_addrinfo(const Hostname& node,
                   << hints
                   << ", ...)"
                   << std::endl
-                  << "Using hints (addrinfo) "
+                  << "Using addrinfo hints "
                   << hints
                   << ':'
                   << std::endl

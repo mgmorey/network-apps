@@ -19,6 +19,8 @@ namespace Network
     class Address
     {
         friend class Endpoint;
+        friend std::ostream& operator<<(std::ostream& os,
+                                        const Address& address);
 
     public:
         enum { connect_error = -1 };

@@ -1,11 +1,11 @@
 #include "network-address.h"    // Address, Result
 
 #ifdef _WIN32
-#include <winsock2.h>   // connect()
-#include <ws2tcpip.h>   // struct addrinfo, struct sockaddr, socklen_t
+#include <winsock2.h>   // connect(), struct sockaddr
+#include <ws2tcpip.h>   // struct addrinfo, socklen_t
 #else
-#include <netdb.h>      // struct addrinfo, struct sockaddr
-#include <sys/socket.h> // connect(), socklen_t
+#include <netdb.h>      // struct addrinfo
+#include <sys/socket.h> // connect(), struct sockaddr, socklen_t
 #endif
 
 #include <cassert>      // assert()
@@ -14,13 +14,14 @@
 #include <sstream>      // std::ostringstream
 
 Network::Address::Address(const struct addrinfo& other) :
-    addr(to_addr(other))
+    addr(reinterpret_cast<const char*>(other.ai_addr), other.ai_addrlen)
 {
 }
 
 Network::Address& Network::Address::operator=(const struct addrinfo& other)
 {
-    addr = to_addr(other);
+    addr.clear();
+    addr.append(reinterpret_cast<const char*>(other.ai_addr), other.ai_addrlen);
     return *this;
 }
 
@@ -57,17 +58,6 @@ Network::Result Network::Address::connect(int fd) const
     }
 
     return Result(code, error);
-}
-
-std::string Network::Address::to_addr(const struct addrinfo& other)
-{
-    std::string result;
-    assert(other.ai_addr != NULL);
-    assert(other.ai_addrlen != 0);
-    const char* data = reinterpret_cast<const char*>(other.ai_addr);
-    std::string::size_type size = other.ai_addrlen;
-    result.append(data, size);
-    return result;
 }
 
 const struct sockaddr* Network::Address::data() const
