@@ -11,9 +11,8 @@
 #endif
 
 #include <cstddef>      // std::size_t
-#include <iomanip>      // std::setw()
 #include <iostream>     // std::cerr, std::endl
-#include <ostream>      // std::endl, std::ostream
+#include <ostream>      // std::ostream
 #include <utility>      // std::pair
 #include <vector>       // std::vector
 
