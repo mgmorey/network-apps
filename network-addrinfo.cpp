@@ -119,9 +119,6 @@ std::ostream& Network::operator<<(std::ostream& os,
         {AI_ALL,                    "AI_ALL"},
         {AI_ADDRCONFIG,             "AI_ADDRCONFIG"},
         {AI_V4MAPPED,               "AI_V4MAPPED"},
-        {AI_NON_AUTHORITATIVE,      "AI_NON_AUTHORITATIVE"},
-        {AI_SECURE,                 "AI_SECURE"},
-        {AI_RETURN_PREFERRED_NAMES, "AI_RETURN_PREFERRED_NAMES"},
         {0,                         NULL}
     };
     std::ostringstream oss;
