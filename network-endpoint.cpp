@@ -1,5 +1,5 @@
 #include "network-endpoint.h"   // Address, Endpoint, Result,
-                                // operator<<(), to_string()
+                                // to_string()
 #include "network-sockaddr.h"   // SockAddr, operator<<()
 
 #ifdef _WIN32
