@@ -1,9 +1,6 @@
 #ifndef NETWORK_SOCKADDR_H
 #define NETWORK_SOCKADDR_H
 
-#include "network-result.h"     // Result
-#include "network-types.h"      // Hostname, Service
-
 #ifdef _WIN32
 #include <winsock2.h>   // struct sockaddr
 #include <ws2tcpip.h>   // socklen_t
