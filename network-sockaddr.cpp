@@ -7,7 +7,6 @@
 #include <sstream>      // std::ostringstream
 
 Network::SockAddr::SockAddr(const struct sockaddr* data, socklen_t size) :
-    null(data == NULL),
     value(reinterpret_cast<const char*>(data), size)
 {
 }
@@ -40,7 +39,7 @@ socklen_t Network::SockAddr::size() const
 std::ostream& Network::operator<<(std::ostream& os,
                                   const SockAddr& sockaddr)
 {
-    if (sockaddr.null) {
+    if (sockaddr.value.empty()) {
         os << 0;
         return os;
     }
