@@ -1,4 +1,4 @@
-#include "network-address.h"    // Address, Result
+#include "network-address.h"    // Address, Result, SockAddr
 
 #ifdef _WIN32
 #include <winsock2.h>   // connect()
@@ -8,7 +8,6 @@
 #include <sys/socket.h> // connect()
 #endif
 
-#include <cassert>      // assert()
 #include <cerrno>       // errno
 #include <cstring>      // std::strerror()
 #include <sstream>      // std::ostringstream
@@ -22,7 +21,7 @@ Network::Address::Address(const struct addrinfo& other) :
 Network::Address& Network::Address::operator=(const struct addrinfo& other)
 {
     addr = SockAddr(other.ai_addr, other.ai_addrlen);
-    name = (other.ai_canonname == NULL ? "" : other.ai_canonname);
+    name = other.ai_canonname == NULL ? "" : other.ai_canonname;
     return *this;
 }
 
