@@ -6,8 +6,8 @@
 #include <iomanip>	// std::hex
 #include <sstream>      // std::ostringstream
 
-Network::SockAddr::SockAddr(const struct sockaddr* data, socklen_t size) :
-    value(reinterpret_cast<const char*>(data), size)
+Network::SockAddr::SockAddr(const struct sockaddr* addr, socklen_t len) :
+    value(reinterpret_cast<const char*>(addr), len)
 {
 }
 

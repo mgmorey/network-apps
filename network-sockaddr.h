@@ -21,7 +21,7 @@ namespace Network
                                         const SockAddr& sockaddr);
 
     public:
-        SockAddr(const struct sockaddr* data, socklen_t size);
+        SockAddr(const struct sockaddr* addr, socklen_t len);
         bool operator<(const SockAddr& other) const;
         bool operator>(const SockAddr& other) const;
         bool operator==(const SockAddr& other) const;
