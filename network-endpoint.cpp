@@ -19,15 +19,15 @@ Network::Endpoint::Endpoint(const Address& address, int flags, bool verbose) :
     host(NI_MAXHOST),
     serv(NI_MAXSERV)
 {
-    assert(address.size());
-    code = ::getnameinfo(address.data(), address.size(),
+    SockAddr addr(address);
+    code = ::getnameinfo(addr.data(), addr.size(),
                          &host[0], host.size(),
                          &serv[0], serv.size(),
                          flags);
 
     if (verbose) {
         std::cerr << "Invoking getnameinfo("
-                  << SockAddr(address.data(), address.size())
+                  << addr
                   << ", ...)"
                   << std::endl;
     }

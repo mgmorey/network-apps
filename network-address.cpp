@@ -1,11 +1,11 @@
 #include "network-address.h"    // Address, Result
 
 #ifdef _WIN32
-#include <winsock2.h>   // connect(), struct sockaddr
-#include <ws2tcpip.h>   // struct addrinfo, socklen_t
+#include <winsock2.h>   // connect()
+#include <ws2tcpip.h>   // struct addrinfo
 #else
 #include <netdb.h>      // struct addrinfo
-#include <sys/socket.h> // connect(), struct sockaddr, socklen_t
+#include <sys/socket.h> // connect()
 #endif
 
 #include <cassert>      // assert()
@@ -14,32 +14,36 @@
 #include <sstream>      // std::ostringstream
 
 Network::Address::Address(const struct addrinfo& other) :
-    addr(SockAddr(other.ai_addr, other.ai_addrlen)),
+    addr(other.ai_addr, other.ai_addrlen),
     name(other.ai_canonname == NULL ? "" : other.ai_canonname)
 {
 }
 
 Network::Address& Network::Address::operator=(const struct addrinfo& other)
 {
-    addr.clear();
-    addr.append(SockAddr(other.ai_addr, other.ai_addrlen));
+    addr = SockAddr(other.ai_addr, other.ai_addrlen);
     name = (other.ai_canonname == NULL ? "" : other.ai_canonname);
     return *this;
 }
 
 bool Network::Address::operator<(const Address& other) const
 {
-    return (addr < other.addr);
+    return std::string(addr) < std::string(other.addr);
 }
 
 bool Network::Address::operator>(const Address& other) const
 {
-    return (addr > other.addr);
+    return std::string(addr) > std::string(other.addr);
 }
 
 bool Network::Address::operator==(const Address& other) const
 {
-    return (addr == other.addr);
+    return std::string(addr) == std::string(other.addr);
+}
+
+Network::Address::operator SockAddr() const
+{
+    return addr;
 }
 
 Network::Hostname Network::Address::canonical_name() const
@@ -49,9 +53,8 @@ Network::Hostname Network::Address::canonical_name() const
 
 Network::Result Network::Address::connect(int fd) const
 {
-    assert(size());
     std::string error;
-    int code = ::connect(fd, data(), size());
+    int code = ::connect(fd, addr.data(), addr.size());
 
     if (code == Address::connect_error) {
         std::ostringstream os;
@@ -65,14 +68,4 @@ Network::Result Network::Address::connect(int fd) const
     }
 
     return Result(code, error);
-}
-
-const struct sockaddr* Network::Address::data() const
-{
-    return reinterpret_cast<const struct sockaddr*>(addr.data());
-}
-
-socklen_t Network::Address::size() const
-{
-    return static_cast<socklen_t>(addr.size());
 }

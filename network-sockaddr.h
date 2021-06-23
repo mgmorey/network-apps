@@ -1,6 +1,8 @@
 #ifndef NETWORK_SOCKADDR_H
 #define NETWORK_SOCKADDR_H
 
+#include "network-result.h"     // Result
+
 #ifdef _WIN32
 #include <winsock2.h>   // struct sockaddr
 #include <ws2tcpip.h>   // socklen_t
@@ -15,14 +17,21 @@ namespace Network
 {
     class SockAddr
     {
+        friend class Address;
+        friend class Endpoint;
         friend std::ostream& operator<<(std::ostream& os,
                                         const SockAddr& sockaddr);
 
     public:
         SockAddr(const struct sockaddr* data, socklen_t size);
+        SockAddr(const std::string& other);
+        SockAddr& operator=(const std::string& other);
         operator std::string() const;
 
     private:
+        const struct sockaddr* data() const;
+        socklen_t size() const;
+
         bool null;
         std::string value;
     };
