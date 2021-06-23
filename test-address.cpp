@@ -19,13 +19,7 @@
 #include <string>       // std::string
 #include <vector>       // std::vector
 
-static int get_family(const Network::Socket& socket)
-{
-    const struct addrinfo& ai = static_cast<const struct addrinfo&>(socket);
-    return ai.ai_family;
-}
-
-static std::string get_family_description(int family)
+static std::string get_description(int family)
 {
     std::string result;
 
@@ -39,6 +33,12 @@ static std::string get_family_description(int family)
     }
 
     return result;
+}
+
+static int get_family(const Network::Socket& socket)
+{
+    const struct addrinfo& ai = static_cast<const struct addrinfo&>(socket);
+    return ai.ai_family;
 }
 
 static void print_address(const Network::Address& address)
@@ -71,14 +71,14 @@ static void print_address(const Network::Address& address)
     std::cout << ')' << std::endl;
 }
 
-static void print_addresses(const Network::Addresses& addresses, int family)
+static void print_addresses(const Network::Addresses& addresses,
+                            const std::string& desc)
 {
     if (addresses.empty()) {
         return;
     }
 
-    std::string description(get_family_description(family));
-    std::cout << (description.empty() ? "All" : description)
+    std::cout << (desc.empty() ? "All" : desc)
               << " addresses:"
               << std::endl;
 
@@ -98,16 +98,16 @@ static void test_host(const Network::Hostname& host,
     Network::Addresses addrs(addrs_result.first);
     Network::Result result(addrs_result.second);
     int family = get_family(hints);
+    std::string desc(get_description(family));
 
     if (result.nonzero()) {
-        std::string description(get_family_description(family));
 
-        if (description.empty()) {
+        if (desc.empty()) {
             std::cerr << "No";
         }
         else {
             std::cerr << "No "
-                      << description;
+                      << desc;
         }
 
         std::cerr << " addresses: "
@@ -115,7 +115,7 @@ static void test_host(const Network::Hostname& host,
                   << std::endl;
     }
     else if (!addrs.empty()) {
-        print_addresses(addrs, family);
+        print_addresses(addrs, desc);
     }
 }
 
