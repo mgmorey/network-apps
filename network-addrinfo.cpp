@@ -1,8 +1,8 @@
 #include "network-addrinfo.h"   // AddrinfoResult, Hostname, Service,
                                 // Result, struct addrinfo,
-                                // get_addrinfo(), std::cerr,
-                                // std::endl, std::ostream,
-                                // std::string
+                                // copy_addrinfo(), get_addrinfo(),
+                                // std::cerr, std::endl, std::ostream,
+                                // std::size_t, std::string
 #include "network-format.h"     // Format
 #include "network-sockaddr.h"   // SockAddr, operator<<()
 

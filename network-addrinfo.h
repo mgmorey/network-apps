@@ -13,6 +13,7 @@
 #include <cstddef>      // std::size_t
 #include <iostream>     // std::cerr, std::endl
 #include <ostream>      // std::ostream
+#include <string>       // std::string
 #include <utility>      // std::pair
 #include <vector>       // std::vector
 
