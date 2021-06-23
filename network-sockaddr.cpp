@@ -31,7 +31,7 @@ Network::SockAddr::operator const struct sockaddr*() const
     return reinterpret_cast<const struct sockaddr*>(value.data());
 }
 
-Network::SockAddr::operator socklen_t() const
+socklen_t Network::SockAddr::length() const
 {
     return static_cast<socklen_t>(value.size());
 }

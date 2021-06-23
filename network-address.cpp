@@ -49,7 +49,7 @@ Network::Hostname Network::Address::canonical_name() const
 Network::Result Network::Address::connect(int fd) const
 {
     std::string error;
-    int code = ::connect(fd, addr, addr);
+    int code = ::connect(fd, addr, addr.length());
 
     if (code == Address::connect_error) {
         std::ostringstream os;

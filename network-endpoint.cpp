@@ -20,7 +20,8 @@ Network::Endpoint::Endpoint(const Address& address, int flags, bool verbose) :
     serv(NI_MAXSERV)
 {
     SockAddr sockaddr(address);
-    code = ::getnameinfo(sockaddr, sockaddr,
+    code = ::getnameinfo(sockaddr,
+                         sockaddr.length(),
                          &host[0], host.size(),
                          &serv[0], serv.size(),
                          flags);

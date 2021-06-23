@@ -28,7 +28,7 @@ namespace Network
 
     private:
         operator const struct sockaddr*() const;
-        operator socklen_t() const;
+        socklen_t length() const;
 
         std::string value;
     };
