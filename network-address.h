@@ -2,6 +2,7 @@
 #define NETWORK_ADDRESS_H
 
 #include "network-result.h"     // Result
+#include "network-sockaddr.h"   // SockAddr
 #include "network-types.h"      // Hostname, Service
 
 #ifdef _WIN32

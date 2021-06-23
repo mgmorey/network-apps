@@ -14,7 +14,7 @@
 #include <sstream>      // std::ostringstream
 
 Network::Address::Address(const struct addrinfo& other) :
-    addr(reinterpret_cast<const char*>(other.ai_addr), other.ai_addrlen),
+    addr(SockAddr(other.ai_addr, other.ai_addrlen)),
     name(other.ai_canonname == NULL ? "" : other.ai_canonname)
 {
 }
@@ -22,7 +22,7 @@ Network::Address::Address(const struct addrinfo& other) :
 Network::Address& Network::Address::operator=(const struct addrinfo& other)
 {
     addr.clear();
-    addr.append(reinterpret_cast<const char*>(other.ai_addr), other.ai_addrlen);
+    addr.append(SockAddr(other.ai_addr, other.ai_addrlen));
     name = (other.ai_canonname == NULL ? "" : other.ai_canonname);
     return *this;
 }

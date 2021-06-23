@@ -12,6 +12,11 @@ Network::SockAddr::SockAddr(const struct sockaddr* data, socklen_t size) :
 {
 }
 
+Network::SockAddr::operator std::string() const
+{
+    return value;
+}
+
 std::ostream& Network::operator<<(std::ostream& os,
                                   const SockAddr& sockaddr)
 {

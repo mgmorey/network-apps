@@ -20,6 +20,7 @@ namespace Network
 
     public:
         SockAddr(const struct sockaddr* data, socklen_t size);
+        operator std::string() const;
 
     private:
         bool null;
