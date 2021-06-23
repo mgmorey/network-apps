@@ -4,18 +4,18 @@
                                 // std::endl, std::ostream,
                                 // std::string
 #include "network-format.h"     // Format
+#include "network-sockaddr.h"   // SockAddr, operator<<()
 
 #ifdef _WIN32
 #include <winsock2.h>   // AF_INET, AF_INET6, PF_INET, PF_INET6,
                         // IPPROTO_IP, IPPROTO_TCP, IPPROTO_UDP,
-                        // SOCK_DGRAM, SOCK_STREAM, struct sockaddr
-#include <ws2tcpip.h>   // struct addrinfo, getaddrinfo(), socklen_t
+                        // SOCK_DGRAM, SOCK_STREAM
+#include <ws2tcpip.h>   // struct addrinfo, getaddrinfo()
 #else
 #include <netdb.h>      // struct addrinfo, getaddrinfo()
 #include <netinet/in.h> // IPPROTO_IP, IPPROTO_TCP, IPPROTO_UDP
 #include <sys/socket.h> // AF_INET, AF_INET6, PF_INET, PF_INET6,
-                        // SOCK_DGRAM, SOCK_STREAM, struct sockaddr,
-                        // socklen_t
+                        // SOCK_DGRAM, SOCK_STREAM
 #endif
 
 #include <cassert>      // assert()
@@ -46,12 +46,6 @@ Network::Name::Name(const char* name) :
 
 Network::Protocol::Protocol(int protocol) :
     value(protocol)
-{
-}
-
-Network::SockAddr::SockAddr(const struct sockaddr* data, socklen_t size) :
-    null(data == NULL),
-    value(reinterpret_cast<const char*>(data), size)
 {
 }
 
@@ -178,33 +172,6 @@ std::ostream& Network::operator<<(std::ostream& os,
         os << protocol.value;
     }
 
-    return os;
-}
-
-std::ostream& Network::operator<<(std::ostream& os,
-                                  const SockAddr& sockaddr)
-{
-    if (sockaddr.null) {
-        os << 0;
-        return os;
-    }
-
-    std::ostringstream oss;
-    oss << std::hex
-        << "0x";
-
-    const char* data = sockaddr.value.data();
-    std::size_t size = sockaddr.value.size();
-
-    for(const char* p = data; p < data + size; p++) {
-        short ch = static_cast<short>(*p & 0xFF);
-        oss << std::setfill('0')
-            << std::setw(2)
-            << ch;
-    }
-
-    assert(oss.str().length() == size * 2 + 2);
-    os << oss.str();
     return os;
 }
 
