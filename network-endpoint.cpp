@@ -1,5 +1,6 @@
 #include "network-endpoint.h"   // Address, Endpoint, Result,
                                 // operator<<(), to_string()
+#include "network-addrinfo.h"   // SockAddr
 
 #ifdef _WIN32
 #include <ws2tcpip.h>   // NI_MAXHOST, NI_MAXSERV, NI_NUMERICHOST,
@@ -25,7 +26,9 @@ Network::Endpoint::Endpoint(const Address& address, int flags, bool verbose) :
                          flags);
 
     if (verbose) {
-        std::cerr << "Invoking getnameinfo(...)"
+        std::cerr << "Invoking getnameinfo("
+                  << SockAddr(address.data(), address.size())
+                  << ", ...)"
                   << std::endl;
     }
 

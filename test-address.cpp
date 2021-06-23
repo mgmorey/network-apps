@@ -45,7 +45,7 @@ static void print_address(const Network::Address& address)
 {
     Network::Hostname addr(to_string(address));
     Network::Hostname cname(address.canonical_name());
-    Network::Hostname host(to_hostname(address));
+    Network::Hostname host(to_hostname(address, true));
     std::vector<Network::Hostname> names;
 
     if (!cname.empty()) {
