@@ -26,8 +26,6 @@ namespace Network
         Buffer serv;
     };
 
-    extern std::ostream& operator<<(std::ostream& os,
-                                    const Address& address);
     extern Endpoint to_endpoint(const Address& address,
                                 bool numeric = false,
                                 bool verbose = false);

@@ -19,15 +19,15 @@ Network::Endpoint::Endpoint(const Address& address, int flags, bool verbose) :
     host(NI_MAXHOST),
     serv(NI_MAXSERV)
 {
-    SockAddr addr(address);
-    code = ::getnameinfo(addr.data(), addr.size(),
+    SockAddr sockaddr(address);
+    code = ::getnameinfo(sockaddr, sockaddr,
                          &host[0], host.size(),
                          &serv[0], serv.size(),
                          flags);
 
     if (verbose) {
         std::cerr << "Invoking getnameinfo("
-                  << addr
+                  << to_string(address)
                   << ", ...)"
                   << std::endl;
     }
@@ -56,12 +56,6 @@ Network::Service Network::Endpoint::service() const
 Network::Result Network::Endpoint::result() const
 {
     return Result(code, error);
-}
-
-std::ostream& Network::operator<<(std::ostream& os,
-                                  const Address& address)
-{
-    return os << to_string(address);
 }
 
 Network::Endpoint Network::to_endpoint(const Address& address,

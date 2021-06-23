@@ -27,8 +27,8 @@ namespace Network
         bool operator==(const SockAddr& other) const;
 
     private:
-        const struct sockaddr* data() const;
-        socklen_t size() const;
+        operator const struct sockaddr*() const;
+        operator socklen_t() const;
 
         std::string value;
     };

@@ -26,12 +26,12 @@ bool Network::SockAddr::operator==(const SockAddr& other) const
     return value == other.value;
 }
 
-const struct sockaddr* Network::SockAddr::data() const
+Network::SockAddr::operator const struct sockaddr*() const
 {
     return reinterpret_cast<const struct sockaddr*>(value.data());
 }
 
-socklen_t Network::SockAddr::size() const
+Network::SockAddr::operator socklen_t() const
 {
     return static_cast<socklen_t>(value.size());
 }

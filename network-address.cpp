@@ -41,11 +41,6 @@ bool Network::Address::operator==(const Address& other) const
     return addr == other.addr;
 }
 
-Network::Address::operator SockAddr() const
-{
-    return addr;
-}
-
 Network::Hostname Network::Address::canonical_name() const
 {
     return name;
@@ -54,7 +49,7 @@ Network::Hostname Network::Address::canonical_name() const
 Network::Result Network::Address::connect(int fd) const
 {
     std::string error;
-    int code = ::connect(fd, addr.data(), addr.size());
+    int code = ::connect(fd, addr, addr);
 
     if (code == Address::connect_error) {
         std::ostringstream os;
@@ -68,4 +63,9 @@ Network::Result Network::Address::connect(int fd) const
     }
 
     return Result(code, error);
+}
+
+Network::Address::operator SockAddr() const
+{
+    return addr;
 }

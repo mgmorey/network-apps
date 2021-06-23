@@ -82,7 +82,9 @@ Network::Result Network::connect(int fd, const struct addrinfo& ai,
     Network::Address address(ai);
 
     if (verbose) {
-        std::cerr << "Trying address: " << address << std::endl;
+        std::cerr << "Trying address: "
+                  << to_string(address)
+                  << std::endl;
     }
 
     return address.connect(fd);

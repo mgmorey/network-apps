@@ -19,6 +19,7 @@ namespace Network
 {
     class Address
     {
+        friend class Endpoint;
         friend std::ostream& operator<<(std::ostream& os,
                                         const Address& address);
 
@@ -29,11 +30,12 @@ namespace Network
         bool operator<(const Address& other) const;
         bool operator>(const Address& other) const;
         bool operator==(const Address& other) const;
-        operator SockAddr() const;
         Hostname canonical_name() const;
         Result connect(int fd) const;
 
     private:
+        operator SockAddr() const;
+
         SockAddr addr;
         std::string name;
     };
