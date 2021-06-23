@@ -28,17 +28,17 @@ Network::Address& Network::Address::operator=(const struct addrinfo& other)
 
 bool Network::Address::operator<(const Address& other) const
 {
-    return std::string(addr) < std::string(other.addr);
+    return addr < other.addr;
 }
 
 bool Network::Address::operator>(const Address& other) const
 {
-    return std::string(addr) > std::string(other.addr);
+    return addr > other.addr;
 }
 
 bool Network::Address::operator==(const Address& other) const
 {
-    return std::string(addr) == std::string(other.addr);
+    return addr == other.addr;
 }
 
 Network::Address::operator SockAddr() const

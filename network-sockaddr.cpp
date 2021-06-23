@@ -12,22 +12,19 @@ Network::SockAddr::SockAddr(const struct sockaddr* data, socklen_t size) :
 {
 }
 
-Network::SockAddr::SockAddr(const std::string& other) :
-    null(false),
-    value(other)
+bool Network::SockAddr::operator<(const SockAddr& other) const
 {
+    return value < other.value;
 }
 
-Network::SockAddr& Network::SockAddr::operator=(const std::string& other)
+bool Network::SockAddr::operator>(const SockAddr& other) const
 {
-    null = false;
-    value = other;
-    return *this;
+    return value > other.value;
 }
 
-Network::SockAddr::operator std::string() const
+bool Network::SockAddr::operator==(const SockAddr& other) const
 {
-    return value;
+    return value == other.value;
 }
 
 const struct sockaddr* Network::SockAddr::data() const
