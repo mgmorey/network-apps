@@ -15,3 +15,15 @@ Network::AddressesResult Network::get_addresses(const Hostname& host,
 
     return get_addrinfo<AddressesResult>(node, "", &hints, verbose);
 }
+
+Network::AddressesResult Network::get_addresses(const Hostname& host,
+                                                bool verbose)
+{
+    Hostname node(host);
+
+    if (host.empty()) {
+        node = get_hostname().first;
+    }
+
+    return get_addrinfo<AddressesResult>(node, "", NULL, verbose);
+}

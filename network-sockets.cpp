@@ -16,3 +16,16 @@ Network::SocketsResult Network::get_sockets(const Hostname& host,
 
     return get_addrinfo<SocketsResult>(node, service, &hints, verbose);
 }
+
+Network::SocketsResult Network::get_sockets(const Hostname& host,
+                                            const Service& service,
+                                            bool verbose)
+{
+    Hostname node(host);
+
+    if (host.empty() && service.empty()) {
+        node = get_hostname().first;
+    }
+
+    return get_addrinfo<SocketsResult>(node, service, NULL, verbose);
+}

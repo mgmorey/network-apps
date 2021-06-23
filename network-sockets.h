@@ -21,7 +21,10 @@ namespace Network
     extern SocketsResult get_sockets(const Hostname& host,
                                      const Service& service,
                                      const struct addrinfo& hints,
-                                     bool verose = false);
+                                     bool verbose = false);
+    extern SocketsResult get_sockets(const Hostname& host,
+                                     const Service& service,
+                                     bool verbose = false);
 }
 
 #endif

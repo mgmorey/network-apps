@@ -19,9 +19,11 @@ namespace Network
 {
     typedef std::list<Address> Addresses;
     typedef std::pair<Addresses, Result> AddressesResult;
-    extern AddressesResult get_addresses(const Hostname& host = "",
+    extern AddressesResult get_addresses(const Hostname& host,
                                          const struct addrinfo& hints =
                                          Socket(),
+                                         bool verbose = false);
+    extern AddressesResult get_addresses(const Hostname& host,
                                          bool verbose = false);
 }
 
