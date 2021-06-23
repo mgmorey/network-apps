@@ -152,12 +152,10 @@ std::ostream& Network::operator<<(std::ostream& os,
                                   const Name& name)
 {
     if (name.null) {
-        os << std::hex << 0;
+        os << 0;
     }
     else {
-        os << '"'
-           << name.value
-           << '"';
+        os << '"' << name.value << '"';
     }
 
     return os;
@@ -187,7 +185,7 @@ std::ostream& Network::operator<<(std::ostream& os,
                                   const SockAddr& sockaddr)
 {
     if (sockaddr.null) {
-        os << std::hex << 0;
+        os << 0;
         return os;
     }
 
