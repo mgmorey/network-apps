@@ -3,6 +3,7 @@
 
 #include "network-result.h"     // Result
 #include "network-types.h"      // Hostname, Service
+#include "network-sockets.h"    // Sockets, SocketsResult
 
 #ifdef _WIN32
 #include <ws2tcpip.h>   // struct addrinfo
@@ -22,6 +23,8 @@ namespace Network
     extern ConnectResult connect(const Hostname& hostname,
                                  const Service& service,
                                  const struct addrinfo &hints,
+                                 bool verbose = false);
+    extern ConnectResult connect(const Sockets& sockets,
                                  bool verbose = false);
     extern Result connect(int fd, const struct addrinfo& ai,
                           bool verbose = false);

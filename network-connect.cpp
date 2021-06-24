@@ -1,10 +1,10 @@
 #include "network-connect.h"    // ConnectDetails, ConnectResult,
-                                // Hostname, Result, Service, struct
-                                // addrinfo, close(), connect()
+                                // Hostname, Result, Service, Sockets,
+                                // SocketsResult, struct addrinfo,
+                                // close(), connect()
 #include "network-address.h"    // Address
 #include "network-addrinfo.h"   // operator<<()
 #include "network-endpoint.h"   // to_string()
-#include "network-sockets.h"    // Sockets
 
 #ifdef _WIN32
 #include <winsock2.h>   // closesocket()
@@ -35,13 +35,21 @@ Network::ConnectResult Network::connect(const Hostname& host,
     SocketsResult socks_result(get_sockets(host, service, hints, verbose));
     Sockets sockets(socks_result.first);
     Result result(socks_result.second);
-    int fd = Socket::socket_bad;
-    ConnectDetails details;
 
     if (result.nonzero()) {
+        ConnectDetails details;
         details.push_back(result.string());
-        return ConnectResult(fd, details);
+        return ConnectResult(Socket::socket_bad, details);
     }
+
+    return connect(sockets, verbose);
+}
+
+Network::ConnectResult Network::connect(const Sockets& sockets,
+                                        bool verbose)
+{
+    int fd = Socket::socket_bad;
+    ConnectDetails details;
 
     for (Sockets::const_iterator it = sockets.begin();
          it != sockets.end();
@@ -51,7 +59,7 @@ Network::ConnectResult Network::connect(const Hostname& host,
                       << (*it) << std::endl;
         }
 
-        result = it->socket();
+        Result result = it->socket();
         fd = result.result();
 
         if (fd == Socket::socket_bad) {
