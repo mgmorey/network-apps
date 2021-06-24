@@ -31,17 +31,7 @@ Network::ConnectResult Network::connect(const Endpoint& endpoint,
                                         const struct addrinfo &hints,
                                         bool verbose)
 {
-    Hostname host(endpoint.first);
-    Service service(endpoint.second);
-    return connect(host, service, hints, verbose);
-}
-
-Network::ConnectResult Network::connect(const Hostname& host,
-                                        const Service& service,
-                                        const struct addrinfo &hints,
-                                        bool verbose)
-{
-    SocketsResult socks_result(get_sockets(host, service, hints, verbose));
+    SocketsResult socks_result(get_sockets(endpoint, hints, verbose));
     Sockets sockets(socks_result.first);
     Result result(socks_result.second);
 

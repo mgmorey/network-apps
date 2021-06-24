@@ -24,10 +24,6 @@ namespace Network
     extern ConnectResult connect(const Endpoint& endpoint,
                                  const struct addrinfo &hints,
                                  bool verbose = false);
-    extern ConnectResult connect(const Hostname& hostname,
-                                 const Service& service,
-                                 const struct addrinfo &hints,
-                                 bool verbose = false);
     extern ConnectResult connect(const Sockets& sockets,
                                  bool verbose = false);
     extern Result connect(int fd, const struct addrinfo& ai,

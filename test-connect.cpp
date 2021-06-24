@@ -1,6 +1,6 @@
 #include "network-connect.h"    // ConnectDetails, ConnectResult,
-                                // Hostname, Result, Service, close(),
-                                // connect()
+                                // Endpoint, Hostname, Service,
+                                // close(), connect()
 #include "network-socket.h"     // Socket
 
 #ifdef _WIN32
@@ -16,12 +16,13 @@
 #include <cstdlib>      // EXIT_FAILURE, EXIT_SUCCESS
 #include <iostream>     // std::cerr, std::cout, std::endl
 
-static void test_connect(const Network::Hostname& host,
-                         const Network::Service& service)
+static void test_connect(const Network::Endpoint& endpoint)
 {
     Network::Socket hints(IPPROTO_TCP, SOCK_STREAM, AF_UNSPEC, AI_CANONNAME);
-    Network::ConnectResult result(connect(host, service, hints, true));
+    Network::ConnectResult result(connect(endpoint, hints, true));
     Network::ConnectDetails details(result.second);
+    Network::Hostname hostname(endpoint.first);
+    Network::Service service(endpoint.second);
     int fd = result.first;
 
     if (fd == Network::Socket::socket_bad) {
@@ -33,13 +34,13 @@ static void test_connect(const Network::Hostname& host,
         }
     }
     else {
-        Network::Hostname name = details[0];
+        Network::Hostname cname = details[0];
         std::cout << "Connected to "
                   << service
                   << " on "
-                  << (!name.empty() ?
-                      name :
-                      host)
+                  << (cname.empty() ?
+                      hostname :
+                      cname)
                   << " via socket "
                   << fd
                   << std::endl;
@@ -85,7 +86,7 @@ int main(int argc, char* argv[])
         goto clean_up;
     }
 
-    test_connect(host, service);
+    test_connect(Network::Endpoint(host, service));
     result = EXIT_SUCCESS;
 
 clean_up:
