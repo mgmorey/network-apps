@@ -40,13 +40,11 @@ std::ostream& Network::operator<<(std::ostream& os,
                                   const SockAddr& sockaddr)
 {
     if (sockaddr.value.empty()) {
-        os << 0;
-        return os;
+        return os << 0;
     }
 
     std::ostringstream oss;
-    oss << std::hex
-        << "0x";
+    oss << std::hex << "0x";
 
     const char* data = sockaddr.value.data();
     std::size_t size = sockaddr.value.size();
