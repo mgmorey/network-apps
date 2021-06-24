@@ -57,8 +57,6 @@ executable_objects = $(subst .cpp,.o,$(executable_sources))
 library_objects = $(subst .cpp,.o,$(library_sources))
 objects = $(library_objects) $(executable_objects)
 
-.INTERMEDIATE: $(objects)
-
 .PHONY:	all
 all: TAGS $(executables)
 
@@ -73,6 +71,8 @@ realclean: clean
 .PHONY:	test
 test: $(executables)
 	for f in $^; do ./$$f; done
+
+.INTERMEDIATE: $(objects)
 
 TAGS: *.cpp *.h
 	etags $^
