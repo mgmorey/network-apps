@@ -1,7 +1,6 @@
 #include "network-connect.h"    // ConnectDetails, ConnectResult,
                                 // Hostname, Result, Service, struct
-                                // addrinfo, close_socket(),
-                                // connect_socket()
+                                // addrinfo, close(), connect()
 #include "network-address.h"    // Address
 #include "network-addrinfo.h"   // operator<<()
 #include "network-endpoint.h"   // operator<<()
