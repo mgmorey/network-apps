@@ -3,7 +3,7 @@
                                 // addrinfo, close(), connect()
 #include "network-address.h"    // Address
 #include "network-addrinfo.h"   // operator<<()
-#include "network-endpoint.h"   // operator<<()
+#include "network-endpoint.h"   // to_string()
 #include "network-sockets.h"    // Sockets
 
 #ifdef _WIN32
