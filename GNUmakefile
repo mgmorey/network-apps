@@ -31,6 +31,11 @@ endif
 
 LINK.o = $(CXX) $(LDFLAGS) $(TARGET_ARCH)
 
+%.d: %.cpp
+	@$(CXX) -M $(CPPFLAGS) $< >$@.$$$$; \
+sed 's,\($*\)\.o[ :]*,\1.o $@ : ,' $@.$$$$ >$@; \
+rm $@.$$$$
+
 executable_sources = test-address.cpp test-hostname.cpp
 library_sources = network-address.cpp network-addresses.cpp \
 network-addrinfo.cpp network-buffer.cpp network-connect.cpp \
@@ -55,7 +60,7 @@ objects = $(library_objects) $(executable_objects)
 .INTERMEDIATE: $(objects)
 
 .PHONY:	all
-all: $(executables)
+all: TAGS $(executables)
 
 .PHONY:	clean
 clean:
@@ -63,19 +68,17 @@ clean:
 
 .PHONY: realclean
 realclean: clean
-	rm -f $(dependencies)
+	rm -f TAGS $(dependencies)
 
 .PHONY:	test
 test: $(executables)
 	for f in $^; do ./$$f; done
+
+TAGS: *.cpp *.h
+	etags $^
 
 $(executables): libnetwork.a
 
 libnetwork.a: $(patsubst %.o,libnetwork.a(%.o),$(library_objects))
 
 include $(dependencies)
-
-%.d: %.cpp
-	@$(CXX) -M $(CPPFLAGS) $< >$@.$$$$; \
-sed 's,\($*\)\.o[ :]*,\1.o $@ : ,' $@.$$$$ >$@; \
-rm $@.$$$$
