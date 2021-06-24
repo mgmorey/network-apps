@@ -4,7 +4,7 @@
                                 // close(), connect()
 #include "network-address.h"    // Address
 #include "network-addrinfo.h"   // operator<<()
-#include "network-endpoint.h"   // to_string()
+#include "network-endpoint.h"   // Endpoint, to_string()
 
 #ifdef _WIN32
 #include <winsock2.h>   // closesocket()
@@ -25,6 +25,15 @@ void Network::close(int fd)
 #else
     ::close(fd);
 #endif
+}
+
+Network::ConnectResult Network::connect(const Endpoint& endpoint,
+                                        const struct addrinfo &hints,
+                                        bool verbose)
+{
+    Hostname host(endpoint.first);
+    Service service(endpoint.second);
+    return connect(host, service, hints, verbose);
 }
 
 Network::ConnectResult Network::connect(const Hostname& host,
