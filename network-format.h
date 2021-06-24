@@ -1,8 +1,8 @@
 #ifndef NETWORK_FORMAT_H
 #define NETWORK_FORMAT_H
 
-#include <string>       // std::string
 #include <ostream>      // std::ostream
+#include <string>       // std::string
 
 namespace Network
 {
