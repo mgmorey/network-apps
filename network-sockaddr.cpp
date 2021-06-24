@@ -56,6 +56,5 @@ std::ostream& Network::operator<<(std::ostream& os,
     }
 
     assert(oss.str().length() == size * 2 + 2);
-    os << oss.str();
-    return os;
+    return os << oss.str();
 }
