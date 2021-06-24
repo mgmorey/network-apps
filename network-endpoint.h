@@ -8,13 +8,17 @@
 
 #include <ostream>      // std::ostream
 #include <string>       // std::string
+#include <utility>      // std::pair
 
 namespace Network
 {
-    class Endpoint
+    typedef std::pair<Hostname, Service> Endpoint;
+
+    class EndpointResult
     {
     public:
-        Endpoint(const Address& address, int flags = 0, bool verbose = false);
+        EndpointResult(const Address& address, int flags = 0, bool verbose = false);
+        Endpoint endpoint() const;
         Hostname hostname() const;
         Service service() const;
         Result result() const;
@@ -26,9 +30,9 @@ namespace Network
         Buffer serv;
     };
 
-    extern Endpoint to_endpoint(const Address& address,
-                                bool numeric = false,
-                                bool verbose = false);
+    extern EndpointResult to_endpoint(const Address& address,
+                                      bool numeric = false,
+                                      bool verbose = false);
     extern Hostname to_hostname(const Address& address,
                                 bool verbose = false);
     extern Hostname to_string(const Address& address,

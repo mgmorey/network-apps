@@ -1,5 +1,5 @@
-#include "network-endpoint.h"   // Address, Endpoint, Result,
-                                // to_string()
+#include "network-endpoint.h"   // Address, Endpoint, EndpointResult,
+                                // Result, to_string()
 #include "network-sockaddr.h"   // SockAddr, operator<<()
 
 #ifdef _WIN32
@@ -13,7 +13,9 @@
 #include <iostream>     // std::cerr, std::endl
 #include <sstream>      // std::ostringstream
 
-Network::Endpoint::Endpoint(const Address& address, int flags, bool verbose) :
+Network::EndpointResult::EndpointResult(const Address& address,
+                                        int flags,
+                                        bool verbose) :
     code(0),
     host(NI_MAXHOST),
     serv(NI_MAXSERV)
@@ -43,27 +45,32 @@ Network::Endpoint::Endpoint(const Address& address, int flags, bool verbose) :
     }
 }
 
-Network::Hostname Network::Endpoint::hostname() const
+Network::Endpoint Network::EndpointResult::endpoint() const
+{
+    return Endpoint(hostname(), service());
+}
+
+Network::Hostname Network::EndpointResult::hostname() const
 {
     return host.data();
 }
 
-Network::Service Network::Endpoint::service() const
+Network::Service Network::EndpointResult::service() const
 {
     return serv.data();
 }
 
-Network::Result Network::Endpoint::result() const
+Network::Result Network::EndpointResult::result() const
 {
     return Result(code, error);
 }
 
-Network::Endpoint Network::to_endpoint(const Address& address,
+Network::EndpointResult Network::to_endpoint(const Address& address,
                                        bool numeric,
                                        bool verbose)
 {
     int flags = numeric ? NI_NUMERICHOST | NI_NUMERICSERV : 0;
-    return Endpoint(address, flags, verbose);
+    return EndpointResult(address, flags, verbose);
 }
 
 Network::Hostname Network::to_hostname(const Address& address,
