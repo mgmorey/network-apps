@@ -45,7 +45,6 @@ std::ostream& Network::operator<<(std::ostream& os,
 
     std::ostringstream oss;
     oss << std::hex << "0x";
-
     const char* data = sockaddr.value.data();
     std::size_t size = sockaddr.value.size();
 
