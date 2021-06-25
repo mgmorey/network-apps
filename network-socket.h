@@ -15,7 +15,8 @@
 
 namespace Network
 {
-    class Socket
+    class Socket :
+        public addrinfo
     {
     public:
         enum { socket_bad = -1 };
@@ -31,7 +32,6 @@ namespace Network
         bool operator<(const Socket& other) const;
         bool operator>(const Socket& other) const;
         bool operator==(const Socket& other) const;
-        operator const addrinfo&() const;
         Hostname cname() const;
         Result socket() const;
 
@@ -40,8 +40,6 @@ namespace Network
                                  int socktype = 0,
                                  int family = 0,
                                  int flags = 0);
-
-        addrinfo ai;
     };
 }
 

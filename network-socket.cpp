@@ -14,109 +14,103 @@
 #include <sstream>      // std::ostringstream
 
 Network::Socket::Socket(int protocol, int socktype, int family, int flags) :
-    ai(defaults(protocol, socktype, family, flags))
+    addrinfo(defaults(protocol, socktype, family, flags))
 {
 }
 
 Network::Socket::Socket(const Socket& other) :
-    ai(defaults())
+    addrinfo(defaults())
 {
     *this = other;
 }
 
 Network::Socket::Socket(const addrinfo& other) :
-    ai(defaults())
+    addrinfo(defaults())
 {
     *this = other;
 }
 
 Network::Socket::~Socket()
 {
-    free(ai.ai_addr);
-    free(ai.ai_canonname);
+    free(ai_addr);
+    free(ai_canonname);
 }
 
 Network::Socket& Network::Socket::operator=(const Socket& other)
 {
-    *this = other.ai;
-    return *this;
+    return *this = static_cast<const addrinfo&>(other);
 }
 
 Network::Socket& Network::Socket::operator=(const addrinfo& other)
 {
-    ai.ai_flags = other.ai_flags;
-    ai.ai_family = other.ai_family;
-    ai.ai_socktype = other.ai_socktype;
-    ai.ai_protocol = other.ai_protocol;
-    ai.ai_addrlen = other.ai_addrlen;
-    free(ai.ai_canonname);
-    ai.ai_canonname = NULL;
+    ai_flags = other.ai_flags;
+    ai_family = other.ai_family;
+    ai_socktype = other.ai_socktype;
+    ai_protocol = other.ai_protocol;
+    ai_addrlen = other.ai_addrlen;
+    free(ai_canonname);
+    ai_canonname = NULL;
 
     if (other.ai_canonname != NULL) {
-        ai.ai_canonname = strdup(other.ai_canonname);
+        ai_canonname = strdup(other.ai_canonname);
     }
 
-    free(ai.ai_addr);
-    ai.ai_addr = NULL;
+    free(ai_addr);
+    ai_addr = NULL;
 
     if (other.ai_addr != NULL) {
-        ai.ai_addr = static_cast<sockaddr*>
-            (malloc(ai.ai_addrlen));
-        std::memcpy(ai.ai_addr, other.ai_addr, ai.ai_addrlen);
+        ai_addr = static_cast<sockaddr*>
+            (malloc(ai_addrlen));
+        std::memcpy(ai_addr, other.ai_addr, ai_addrlen);
     }
 
-    ai.ai_next = NULL;
+    ai_next = NULL;
     return *this;
 }
 
 bool Network::Socket::operator<(const Socket& other) const
 {
-    return (ai.ai_protocol < other.ai.ai_protocol ||
-            ai.ai_socktype < other.ai.ai_socktype ||
-            ai.ai_family < other.ai.ai_family ||
+    return (ai_protocol < other.ai_protocol ||
+            ai_socktype < other.ai_socktype ||
+            ai_family < other.ai_family ||
             Address(*this) < Address(other));
 }
 
 bool Network::Socket::operator>(const Socket& other) const
 {
-    return (ai.ai_protocol > other.ai.ai_protocol ||
-            ai.ai_socktype > other.ai.ai_socktype ||
-            ai.ai_family > other.ai.ai_family ||
+    return (ai_protocol > other.ai_protocol ||
+            ai_socktype > other.ai_socktype ||
+            ai_family > other.ai_family ||
             Address(*this) > Address(other));
 }
 
 bool Network::Socket::operator==(const Socket& other) const
 {
-    return (ai.ai_protocol == other.ai.ai_protocol &&
-            ai.ai_socktype == other.ai.ai_socktype &&
-            ai.ai_family == other.ai.ai_family &&
+    return (ai_protocol == other.ai_protocol &&
+            ai_socktype == other.ai_socktype &&
+            ai_family == other.ai_family &&
             Address(*this) == Address(other));
-}
-
-Network::Socket::operator const addrinfo&() const
-{
-    return ai;
 }
 
 Network::Hostname Network::Socket::cname() const
 {
-    Hostname host(ai.ai_canonname == NULL ? "" : ai.ai_canonname);
+    Hostname host(ai_canonname == NULL ? "" : ai_canonname);
     return host;
 }
 
 Network::Result Network::Socket::socket() const
 {
     std::string error;
-    int fd = ::socket(ai.ai_family, ai.ai_socktype, ai.ai_protocol);
+    int fd = ::socket(ai_family, ai_socktype, ai_protocol);
 
     if (fd == socket_bad) {
         std::ostringstream os;
         os << "socket("
-           << ai.ai_family
+           << ai_family
            << ", "
-           << ai.ai_socktype
+           << ai_socktype
            << ", "
-           << ai.ai_protocol
+           << ai_protocol
            << ") returned "
            << fd;
         error = os.str();
