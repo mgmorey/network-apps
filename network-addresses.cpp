@@ -4,7 +4,7 @@
 #include "network-hostname.h"   // get_hostname()
 
 Network::AddressesResult Network::get_addresses(const Hostname& host,
-                                                const struct addrinfo& hints,
+                                                const addrinfo& hints,
                                                 bool verbose)
 {
     Hostname node(host);

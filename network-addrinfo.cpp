@@ -55,7 +55,7 @@ Network::SockType::SockType(int socktype) :
 }
 
 std::ostream& Network::operator<<(std::ostream& os,
-                                  const struct addrinfo& ai)
+                                  const addrinfo& ai)
 {
     static const int tabs[1] = {9};
     os << "addrinfo("
@@ -194,11 +194,11 @@ std::ostream& Network::operator<<(std::ostream& os,
 
 Network::AddrinfoResult Network::get_addrinfo(const Hostname& node,
                                               const Service& service,
-                                              const struct addrinfo* hints,
+                                              const addrinfo* hints,
                                               bool verbose)
 {
     std::string error;
-    struct addrinfo* list = NULL;
+    addrinfo* list = NULL;
     assert(!node.empty() || !service.empty());
 
     if (verbose) {

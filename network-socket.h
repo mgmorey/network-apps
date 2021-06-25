@@ -24,24 +24,24 @@ namespace Network
                int family = 0,
                int flags = 0);
         Socket(const Socket& other);
-        Socket(const struct addrinfo& other);
+        Socket(const addrinfo& other);
         ~Socket();
         Socket& operator=(const Socket& other);
-        Socket& operator=(const struct addrinfo& other);
+        Socket& operator=(const addrinfo& other);
         bool operator<(const Socket& other) const;
         bool operator>(const Socket& other) const;
         bool operator==(const Socket& other) const;
-        operator const struct addrinfo&() const;
+        operator const addrinfo&() const;
         Hostname cname() const;
         Result socket() const;
 
     private:
-        static struct addrinfo defaults(int protocol = 0,
-                                        int socktype = 0,
-                                        int family = 0,
-                                        int flags = 0);
+        static addrinfo defaults(int protocol = 0,
+                                 int socktype = 0,
+                                 int family = 0,
+                                 int flags = 0);
 
-        struct addrinfo ai;
+        addrinfo ai;
     };
 }
 

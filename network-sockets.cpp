@@ -19,7 +19,7 @@ static Network::Hostname get_node(const Network::Endpoint& endpoint)
 }
 
 Network::SocketsResult Network::get_sockets(const Endpoint& endpoint,
-                                            const struct addrinfo& hints,
+                                            const addrinfo& hints,
                                             bool verbose)
 {
     Hostname node(get_node(endpoint));

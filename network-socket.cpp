@@ -24,7 +24,7 @@ Network::Socket::Socket(const Socket& other) :
     *this = other;
 }
 
-Network::Socket::Socket(const struct addrinfo& other) :
+Network::Socket::Socket(const addrinfo& other) :
     ai(defaults())
 {
     *this = other;
@@ -42,7 +42,7 @@ Network::Socket& Network::Socket::operator=(const Socket& other)
     return *this;
 }
 
-Network::Socket& Network::Socket::operator=(const struct addrinfo& other)
+Network::Socket& Network::Socket::operator=(const addrinfo& other)
 {
     ai.ai_flags = other.ai_flags;
     ai.ai_family = other.ai_family;
@@ -60,7 +60,7 @@ Network::Socket& Network::Socket::operator=(const struct addrinfo& other)
     ai.ai_addr = NULL;
 
     if (other.ai_addr != NULL) {
-        ai.ai_addr = static_cast<struct sockaddr*>
+        ai.ai_addr = static_cast<sockaddr*>
             (malloc(ai.ai_addrlen));
         std::memcpy(ai.ai_addr, other.ai_addr, ai.ai_addrlen);
     }
@@ -93,7 +93,7 @@ bool Network::Socket::operator==(const Socket& other) const
             Address(*this) == Address(other));
 }
 
-Network::Socket::operator const struct addrinfo&() const
+Network::Socket::operator const addrinfo&() const
 {
     return ai;
 }
@@ -125,12 +125,12 @@ Network::Result Network::Socket::socket() const
     return Result(fd, error);
 }
 
-struct addrinfo Network::Socket::defaults(int protocol,
-                                          int socktype,
-                                          int family,
-                                          int flags)
+addrinfo Network::Socket::defaults(int protocol,
+                                   int socktype,
+                                   int family,
+                                   int flags)
 {
-    struct addrinfo ai = {
+    addrinfo ai = {
         flags,		// ai_flags
         family,		// ai_family
         socktype,	// ai_socktype

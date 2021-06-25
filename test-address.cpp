@@ -37,7 +37,7 @@ static std::string get_description(int family)
 
 static int get_family(const Network::Socket& socket)
 {
-    const struct addrinfo& ai = static_cast<const struct addrinfo&>(socket);
+    const addrinfo& ai = static_cast<const addrinfo&>(socket);
     return ai.ai_family;
 }
 

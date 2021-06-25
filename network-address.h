@@ -25,8 +25,8 @@ namespace Network
 
     public:
         enum { connect_error = -1 };
-        Address(const struct addrinfo& other);
-        Address& operator=(const struct addrinfo& other);
+        Address(const addrinfo& other);
+        Address& operator=(const addrinfo& other);
         bool operator<(const Address& other) const;
         bool operator>(const Address& other) const;
         bool operator==(const Address& other) const;

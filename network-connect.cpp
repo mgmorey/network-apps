@@ -28,7 +28,7 @@ void Network::close(int fd)
 }
 
 Network::ConnectResult Network::connect(const Endpoint& endpoint,
-                                        const struct addrinfo &hints,
+                                        const addrinfo &hints,
                                         bool verbose)
 {
     SocketsResult socks_result(get_sockets(endpoint, hints, verbose));
@@ -82,7 +82,7 @@ Network::ConnectResult Network::connect(const Sockets& sockets,
     return ConnectResult(fd, details);
 }
 
-Network::Result Network::connect(int fd, const struct addrinfo& ai,
+Network::Result Network::connect(int fd, const addrinfo& ai,
                                  bool verbose)
 {
     Network::Address address(ai);

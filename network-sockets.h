@@ -20,7 +20,7 @@ namespace Network
     typedef std::list<Socket> Sockets;
     typedef std::pair<Sockets, Result> SocketsResult;
     extern SocketsResult get_sockets(const Endpoint& endpoint,
-                                     const struct addrinfo& hints,
+                                     const addrinfo& hints,
                                      bool verbose = false);
     extern SocketsResult get_sockets(const Endpoint& endpoint,
                                      bool verbose = false);

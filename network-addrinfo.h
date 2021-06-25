@@ -19,7 +19,7 @@
 
 namespace Network
 {
-    typedef std::pair<struct addrinfo*, Result> AddrinfoResult;
+    typedef std::pair<addrinfo*, Result> AddrinfoResult;
 
     class Family
     {
@@ -84,7 +84,7 @@ namespace Network
     };
 
     extern std::ostream& operator<<(std::ostream& os,
-                                    const struct addrinfo& ai);
+                                    const addrinfo& ai);
     extern std::ostream& operator<<(std::ostream& os,
                                     const Family& family);
     extern std::ostream& operator<<(std::ostream& os,
@@ -97,7 +97,7 @@ namespace Network
                                     const SockType& socktype);
     extern AddrinfoResult get_addrinfo(const Hostname& node,
                                        const Service& service,
-                                       const struct addrinfo* hints,
+                                       const addrinfo* hints,
                                        bool verbose);
     extern void print_statistics(const std::vector<std::size_t>& sizes);
 
@@ -105,11 +105,11 @@ namespace Network
     std::size_t copy_addrinfo(Container& dest,
                               const Hostname& node,
                               const Service& service,
-                              const struct addrinfo* hints,
+                              const addrinfo* hints,
                               bool verbose)
     {
         AddrinfoResult result(get_addrinfo(node, service, hints, verbose));
-        struct addrinfo* list = result.first;
+        addrinfo* list = result.first;
         std::size_t size = 0;
         dest.second = result.second;
 
@@ -117,7 +117,7 @@ namespace Network
             return size;
         }
 
-        for (const struct addrinfo* elem = list;
+        for (const addrinfo* elem = list;
              elem != NULL;
              elem = elem->ai_next, ++size) {
             if (verbose) {
@@ -139,7 +139,7 @@ namespace Network
     template <class Container>
     Container get_addrinfo(const Hostname& node,
                            const Service& service,
-                           const struct addrinfo* hints,
+                           const addrinfo* hints,
                            bool verbose)
     {
         Container cont;

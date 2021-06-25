@@ -21,13 +21,13 @@ namespace Network
                                         const SockAddr& sockaddr);
 
     public:
-        SockAddr(const struct sockaddr* addr, socklen_t len);
+        SockAddr(const sockaddr* addr, socklen_t len);
         bool operator<(const SockAddr& other) const;
         bool operator>(const SockAddr& other) const;
         bool operator==(const SockAddr& other) const;
 
     private:
-        operator const struct sockaddr*() const;
+        operator const sockaddr*() const;
         socklen_t length() const;
 
         std::string value;

@@ -6,7 +6,7 @@
 #include <iomanip>	// std::hex
 #include <sstream>      // std::ostringstream
 
-Network::SockAddr::SockAddr(const struct sockaddr* addr, socklen_t len) :
+Network::SockAddr::SockAddr(const sockaddr* addr, socklen_t len) :
     value(reinterpret_cast<const char*>(addr), len)
 {
 }
@@ -26,9 +26,9 @@ bool Network::SockAddr::operator==(const SockAddr& other) const
     return value == other.value;
 }
 
-Network::SockAddr::operator const struct sockaddr*() const
+Network::SockAddr::operator const sockaddr*() const
 {
-    return reinterpret_cast<const struct sockaddr*>(value.data());
+    return reinterpret_cast<const sockaddr*>(value.data());
 }
 
 socklen_t Network::SockAddr::length() const

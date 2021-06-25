@@ -22,11 +22,11 @@ namespace Network
     typedef std::pair<int, ConnectDetails> ConnectResult;
     extern void close(int fd);
     extern ConnectResult connect(const Endpoint& endpoint,
-                                 const struct addrinfo &hints,
+                                 const addrinfo &hints,
                                  bool verbose = false);
     extern ConnectResult connect(const Sockets& sockets,
                                  bool verbose = false);
-    extern Result connect(int fd, const struct addrinfo& ai,
+    extern Result connect(int fd, const addrinfo& ai,
                           bool verbose = false);
 }
 
