@@ -72,7 +72,9 @@ realclean: clean
 test: $(executables)
 	for f in $^; do ./$$f; done
 
+ifneq "$(SYSTEM_PREFIX)" "Darwin"
 .INTERMEDIATE: $(objects)
+endif
 
 TAGS: *.cpp *.h
 	etags $^
