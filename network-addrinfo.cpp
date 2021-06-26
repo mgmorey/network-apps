@@ -3,56 +3,24 @@
                                 // copy_addrinfo(), get_addrinfo(),
                                 // std::cerr, std::endl, std::ostream,
                                 // std::size_t, std::string
-#include "network-format.h"     // Format
+#include "network-family.h"     // Family, operator<<()
+#include "network-flags.h"      // Flags, operator<<()
+#include "network-format.h"     // Format, operator<<()
+#include "network-name.h"       // Name, operator<<()
+#include "network-protocol.h"   // Protocol, operator<<()
 #include "network-sockaddr.h"   // SockAddr, operator<<()
+#include "network-socktype.h"   // SockType, operator<<()
 
 #ifdef _WIN32
-#include <winsock2.h>   // AF_INET, AF_INET6, PF_INET, PF_INET6,
-                        // IPPROTO_IP, IPPROTO_TCP, IPPROTO_UDP,
-                        // SOCK_DGRAM, SOCK_STREAM
 #include <ws2tcpip.h>   // struct addrinfo, getaddrinfo()
 #else
 #include <netdb.h>      // struct addrinfo, getaddrinfo()
-#include <netinet/in.h> // IPPROTO_IP, IPPROTO_TCP, IPPROTO_UDP
-#include <sys/socket.h> // AF_INET, AF_INET6, PF_INET, PF_INET6,
-                        // SOCK_DGRAM, SOCK_STREAM
 #endif
 
 #include <cassert>      // assert()
-#include <iomanip>	// std::hex
+#include <ostream>      // std::ostream
 #include <sstream>      // std::ostringstream
-
-Network::Family::Family(int family) :
-    value(family)
-{
-}
-
-Network::Flags::Flags(int flags) :
-    value(flags)
-{
-}
-
-Network::Name::Name(const std::string &name) :
-    null(false),
-    value(name)
-{
-}
-
-Network::Name::Name(const char* name) :
-    null(name == NULL),
-    value(null ? "" : name)
-{
-}
-
-Network::Protocol::Protocol(int protocol) :
-    value(protocol)
-{
-}
-
-Network::SockType::SockType(int socktype) :
-    value(socktype)
-{
-}
+#include <string>       // std::string
 
 std::ostream& Network::operator<<(std::ostream& os,
                                   const addrinfo& ai)
@@ -76,119 +44,6 @@ std::ostream& Network::operator<<(std::ostream& os,
        << Format(tabs[0], "ai_next")
        << ai.ai_next
        << ')';
-    return os;
-}
-
-std::ostream& Network::operator<<(std::ostream& os,
-                                  const Family& family)
-{
-    switch(family.value) {
-    case AF_INET:
-        os << "AF_INET";
-        break;
-    case AF_INET6:
-        os << "AF_INET6";
-        break;
-    case AF_UNSPEC:
-        os << "AF_UNSPEC";
-        break;
-    default:
-        os << family.value;
-    }
-
-    return os;
-}
-
-std::ostream& Network::operator<<(std::ostream& os,
-                                  const Flags& flags)
-{
-    static struct values {
-        int flag;
-        const char* label;
-    } values[] = {
-        {AI_PASSIVE,                "AI_PASSIVE"},
-        {AI_CANONNAME,              "AI_CANONNAME"},
-        {AI_NUMERICHOST,            "AI_NUMERICHOST"},
-        {AI_NUMERICSERV,            "AI_NUMERICSERV"},
-        {AI_ALL,                    "AI_ALL"},
-        {AI_ADDRCONFIG,             "AI_ADDRCONFIG"},
-        {AI_V4MAPPED,               "AI_V4MAPPED"},
-        {0,                         NULL}
-    };
-    std::ostringstream oss;
-    std::size_t n = 0;
-
-    for(const struct values* p = values; p->flag; ++p) {
-        if (flags.value & p->flag) {
-            if (n) {
-                oss << " | ";
-            }
-
-            oss << p->label;
-            ++n;
-        }
-    }
-
-    if (n > 1) {
-        os << '(' << oss.str() << ')';
-    }
-    else if (n > 0) {
-        os << oss.str();
-    }
-    else {
-        os << 0;
-    }
-
-    return os;
-}
-
-std::ostream& Network::operator<<(std::ostream& os,
-                                  const Name& name)
-{
-    if (name.null) {
-        os << 0;
-    }
-    else {
-        os << '"' << name.value << '"';
-    }
-
-    return os;
-}
-
-std::ostream& Network::operator<<(std::ostream& os,
-                                  const Protocol& protocol)
-{
-    switch(protocol.value) {
-    case IPPROTO_IP:
-        os << "IPPROTO_IP";
-        break;
-    case IPPROTO_TCP:
-        os << "IPPROTO_TCP";
-        break;
-    case IPPROTO_UDP:
-        os << "IPPROTO_UDP";
-        break;
-    default:
-        os << protocol.value;
-    }
-
-    return os;
-}
-
-std::ostream& Network::operator<<(std::ostream& os,
-                                  const SockType& socktype)
-{
-    switch(socktype.value) {
-    case SOCK_DGRAM:
-        os << "SOCK_DGRAM";
-        break;
-    case SOCK_STREAM:
-        os << "SOCK_STREAM";
-        break;
-    default:
-        os << socktype.value;
-    }
-
     return os;
 }
 
@@ -236,7 +91,6 @@ Network::AddrinfoResult Network::get_addrinfo(const Hostname& node,
            << " ("
            << ::gai_strerror(code)
            << ')';
-
         error = os.str();
     }
     else {

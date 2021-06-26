@@ -21,80 +21,8 @@ namespace Network
 {
     typedef std::pair<addrinfo*, Result> AddrinfoResult;
 
-    class Family
-    {
-        friend std::ostream& operator<<(std::ostream& os,
-                                        const Family& family);
-
-    public:
-        Family(int family);
-
-    private:
-        int value;
-    };
-
-    class Flags
-    {
-        friend std::ostream& operator<<(std::ostream& os,
-                                        const Flags& flags);
-
-    public:
-        Flags(int flags);
-
-    private:
-        int value;
-    };
-
-    class Name
-    {
-        friend std::ostream& operator<<(std::ostream& os,
-                                        const Name& name);
-
-    public:
-        Name(const std::string& name);
-        Name(const char* name);
-
-    private:
-        bool null;
-        const std::string value;
-    };
-
-    class Protocol
-    {
-        friend std::ostream& operator<<(std::ostream& os,
-                                        const Protocol& protocol);
-
-    public:
-        Protocol(int protocol);
-
-    private:
-        int value;
-    };
-
-    class SockType
-    {
-        friend std::ostream& operator<<(std::ostream& os,
-                                        const SockType& socktype);
-
-    public:
-        SockType(int socktype);
-
-    private:
-        int value;
-    };
-
     extern std::ostream& operator<<(std::ostream& os,
                                     const addrinfo& ai);
-    extern std::ostream& operator<<(std::ostream& os,
-                                    const Family& family);
-    extern std::ostream& operator<<(std::ostream& os,
-                                    const Flags& flags);
-    extern std::ostream& operator<<(std::ostream& os,
-                                    const Name& name);
-    extern std::ostream& operator<<(std::ostream& os,
-                                    const Protocol& protocol);
-    extern std::ostream& operator<<(std::ostream& os,
-                                    const SockType& socktype);
     extern AddrinfoResult get_addrinfo(const Hostname& node,
                                        const Service& service,
                                        const addrinfo* hints,
