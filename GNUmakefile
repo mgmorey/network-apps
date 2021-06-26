@@ -31,11 +31,6 @@ endif
 
 LINK.o = $(CXX) $(LDFLAGS) $(TARGET_ARCH)
 
-%.d: %.cpp
-	$(CXX) -M $(CPPFLAGS) $< >$@.$$$$; \
-sed 's,\($*\)\.o[ :]*,\1.o $@ : ,' $@.$$$$ >$@; \
-rm $@.$$$$
-
 executable_sources = test-address.cpp test-hostname.cpp
 library_sources = network-address.cpp network-addresses.cpp \
 network-addrinfo.cpp network-buffer.cpp network-connect.cpp \
@@ -58,24 +53,22 @@ executable_objects = $(subst .cpp,.o,$(executable_sources))
 library_objects = $(subst .cpp,.o,$(library_sources))
 objects = $(library_objects) $(executable_objects)
 
-.PHONY:	all
 all: TAGS $(executables)
 
-.PHONY:	clean
 clean:
 	rm -f $(executables) $(libraries) $(objects)
 
-.PHONY: realclean
 realclean: clean
-	rm -f TAGS $(dependencies)
+	rm -f $(dependencies) TAGS
 
-.PHONY:	test
 test: $(executables)
 	for f in $^; do ./$$f; done
 
 ifneq "$(SYSTEM_PREFIX)" "Darwin"
 .INTERMEDIATE: $(objects)
 endif
+
+.PHONY: all clean realclean test
 
 TAGS: *.cpp *.h
 	etags $^
@@ -85,3 +78,8 @@ $(executables): libnetwork.a
 libnetwork.a: $(patsubst %.o,libnetwork.a(%.o),$(library_objects))
 
 include $(dependencies)
+
+%.d: %.cpp
+	$(CXX) -M $(CPPFLAGS) $< >$@.$$$$; \
+sed 's,\($*\)\.o[ :]*,\1.o $@ : ,' $@.$$$$ >$@; \
+rm $@.$$$$
