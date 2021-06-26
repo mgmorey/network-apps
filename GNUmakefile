@@ -32,9 +32,9 @@ endif
 LINK.o = $(CXX) $(LDFLAGS) $(TARGET_ARCH)
 
 %.d: %.cpp
-	@$(CXX) -M $(CPPFLAGS) $< >$@.$$$$; \
-sed 's,\($*\)\.o[ :]*,\1.o $@ : ,' $@.$$$$ >$@; \
-rm $@.$$$$
+	$(CXX) -M $(CPPFLAGS) $< >$@.$$$$; \
+	sed 's,\($*\)\.o[ :]*,\1.o $@ : ,' $@.$$$$ >$@; \
+	rm $@.$$$$
 
 executable_sources = test-address.cpp test-hostname.cpp
 library_sources = network-address.cpp network-addresses.cpp \
