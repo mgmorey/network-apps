@@ -6,8 +6,8 @@ ifeq "$(SYSTEM_PREFIX)" "FreeBSD"
 endif
 
 ifdef NDEBUG
-        CPPFLAGS += -D_FORTIFY_SOURCE=2
-        CXXFLAGS += -O2
+	CPPFLAGS += -D_FORTIFY_SOURCE=2
+	CXXFLAGS += -O2
 else
 ifeq "$(USING_DMALLOC)" "true"
 	CPPFLAGS += -DDMALLOC -DMALLOC_FUNC_CHECK
@@ -30,7 +30,7 @@ else ifeq "$(SYSTEM_PREFIX)" "MINGW64_NT"
 endif
 
 CPPFLAGS += -I include
-LINK.o = $(CXX) $(LDFLAGS) $(TARGET_ARCH)
+LINK.o = $(CXX) $(LDFLAGS)
 
 executable_sources = test-address.cpp test-hostname.cpp
 library_sources = network-address.cpp network-addresses.cpp \
@@ -51,8 +51,8 @@ sources = $(executable_sources) $(library_sources)
 dependencies = $(addprefix tmp/,$(subst .cpp,.dep,$(sources)))
 executables = $(subst .cpp,,$(executable_sources))
 
-executable_objects = $(subst .cpp,.o,$(executable_sources))
-library_objects = $(subst .cpp,.o,$(library_sources))
+executable_objects = $(addprefix tmp/,$(subst .cpp,.o,$(executable_sources)))
+library_objects = $(addprefix tmp/,$(subst .cpp,.o,$(library_sources)))
 objects = $(library_objects) $(executable_objects)
 
 all: TAGS $(executables)
@@ -79,11 +79,15 @@ include $(dependencies)
 
 .SECONDARY: $(objects)
 
+%: tmp/%.o
+	$(LINK.o) $(LDLIBS) -o $@ $^
+
+tmp/%.o: %.cpp
+	$(COMPILE.cpp) $(OUTPUT_OPTION) $<
+
 tmp/%.dep: %.cpp
-	mkdir -p tmp; \
-$(CXX) -M $(CPPFLAGS) $< >$@.$$$$; \
-sed 's,\($*\)\.o[ :]*,\1.o $@ TAGS: ,' \
-$@.$$$$ >$@; \
+	$(CXX) -M $(CPPFLAGS) $< >$@.$$$$ && \
+sed 's,\($*\)\.o[ :]*,\1.o $@ TAGS: ,' $@.$$$$ >$@; \
 rm $@.$$$$
 
 vpath %.cpp src
