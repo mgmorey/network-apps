@@ -29,6 +29,7 @@ else ifeq "$(SYSTEM_PREFIX)" "MINGW64_NT"
 	LDLIBS += -lws2_32
 endif
 
+CPPFLAGS += -I include
 LINK.o = $(CXX) $(LDFLAGS) $(TARGET_ARCH)
 
 executable_sources = test-address.cpp test-hostname.cpp
@@ -46,7 +47,7 @@ endif
 libraries = libnetwork.a
 sources = $(executable_sources) $(library_sources)
 
-dependencies = $(subst .cpp,.d,$(sources))
+dependencies = $(addprefix tmp/,$(subst .cpp,.dep,$(sources)))
 executables = $(subst .cpp,,$(executable_sources))
 
 executable_objects = $(subst .cpp,.o,$(executable_sources))
@@ -70,7 +71,7 @@ endif
 
 .PHONY: all clean realclean test
 
-TAGS: *.cpp *.h
+TAGS:
 	etags $^
 
 $(executables): libnetwork.a
@@ -79,7 +80,12 @@ libnetwork.a: $(patsubst %.o,libnetwork.a(%.o),$(library_objects))
 
 include $(dependencies)
 
-%.d: %.cpp
-	$(CXX) -M $(CPPFLAGS) $< >$@.$$$$; \
-sed 's,\($*\)\.o[ :]*,\1.o $@ : ,' $@.$$$$ >$@; \
+tmp/%.dep: %.cpp
+	mkdir -p tmp; \
+$(CXX) -M $(CPPFLAGS) $< >$@.$$$$; \
+sed 's,\($*\)\.o[ :]*,\1.o $@ TAGS: ,' \
+$@.$$$$ >$@; \
 rm $@.$$$$
+
+vpath %.cpp src
+vpath %.h include
