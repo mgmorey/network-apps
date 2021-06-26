@@ -15,7 +15,7 @@ const char& Network::Buffer::operator[](std::size_t pos) const
     return str[pos];
 }
 
-std::string Network::Buffer::data() const
+Network::Buffer::operator std::string() const
 {
     std::string result(str);
     return trim(result);

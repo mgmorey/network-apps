@@ -52,12 +52,12 @@ Network::Endpoint Network::EndpointResult::endpoint() const
 
 Network::Hostname Network::EndpointResult::hostname() const
 {
-    return host.data();
+    return host;
 }
 
 Network::Service Network::EndpointResult::service() const
 {
-    return serv.data();
+    return serv;
 }
 
 Network::Result Network::EndpointResult::result() const

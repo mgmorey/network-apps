@@ -12,7 +12,7 @@ namespace Network
         Buffer(std::size_t size = 0);
         char& operator[](std::size_t pos);
         const char& operator[](std::size_t pos) const;
-        std::string data() const;
+        operator std::string() const;
         std::size_t size() const;
 
     private:

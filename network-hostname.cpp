@@ -24,5 +24,5 @@ Network::HostnameResult Network::get_hostname()
         error = os.str();
     }
 
-    return HostnameResult(hostname.data(), Result(code, error));
+    return HostnameResult(hostname, Result(code, error));
 }
