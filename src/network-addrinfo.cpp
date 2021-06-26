@@ -22,31 +22,6 @@
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
 
-std::ostream& Network::operator<<(std::ostream& os,
-                                  const addrinfo& ai)
-{
-    static const int tabs[1] = {9};
-    os << "addrinfo("
-       << Format("ai_flags")
-       << Flags(ai.ai_flags)
-       << Format(tabs[0], "ai_family")
-       << Family(ai.ai_family)
-       << Format(tabs[0], "ai_socktype")
-       << SockType(ai.ai_socktype)
-       << Format(tabs[0], "ai_protocol")
-       << Protocol(ai.ai_protocol)
-       << Format(tabs[0], "ai_addrlen")
-       << ai.ai_addrlen
-       << Format(tabs[0], "ai_addr")
-       << SockAddr(ai.ai_addr, ai.ai_addrlen)
-       << Format(tabs[0], "ai_canonname")
-       << Name(ai.ai_canonname)
-       << Format(tabs[0], "ai_next")
-       << ai.ai_next
-       << ')';
-    return os;
-}
-
 Network::AddrinfoResult Network::get_addrinfo(const Hostname& node,
                                               const Service& service,
                                               const addrinfo* hints,
@@ -98,4 +73,29 @@ Network::AddrinfoResult Network::get_addrinfo(const Hostname& node,
     }
 
     return AddrinfoResult(list, Result(code, error));
+}
+
+std::ostream& Network::operator<<(std::ostream& os,
+                                  const addrinfo& ai)
+{
+    static const int tabs[1] = {9};
+    os << "addrinfo("
+       << Format("ai_flags")
+       << Flags(ai.ai_flags)
+       << Format(tabs[0], "ai_family")
+       << Family(ai.ai_family)
+       << Format(tabs[0], "ai_socktype")
+       << SockType(ai.ai_socktype)
+       << Format(tabs[0], "ai_protocol")
+       << Protocol(ai.ai_protocol)
+       << Format(tabs[0], "ai_addrlen")
+       << ai.ai_addrlen
+       << Format(tabs[0], "ai_addr")
+       << SockAddr(ai.ai_addr, ai.ai_addrlen)
+       << Format(tabs[0], "ai_canonname")
+       << Name(ai.ai_canonname)
+       << Format(tabs[0], "ai_next")
+       << ai.ai_next
+       << ')';
+    return os;
 }

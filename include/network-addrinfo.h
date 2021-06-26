@@ -22,12 +22,12 @@ namespace Network
 {
     typedef std::pair<addrinfo*, Result> AddrinfoResult;
 
-    extern std::ostream& operator<<(std::ostream& os,
-                                    const addrinfo& ai);
     extern AddrinfoResult get_addrinfo(const Hostname& node,
                                        const Service& service,
                                        const addrinfo* hints,
                                        bool verbose);
+    extern std::ostream& operator<<(std::ostream& os,
+                                    const addrinfo& ai);
 
     template <class Container>
     std::size_t copy_addrinfo(Container& dest,
