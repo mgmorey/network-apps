@@ -1,10 +1,9 @@
 #include "network-flags.h"      // Flags
 
 #ifdef _WIN32
-#include <winsock2.h>   // AF_INET, AF_INET6, PF_INET, PF_INET6,
-                        // IPPROTO_IP, IPPROTO_TCP, IPPROTO_UDP,
-                        // SOCK_DGRAM, SOCK_STREAM
-#include <ws2tcpip.h>   // struct addrinfo, getaddrinfo()
+#include <ws2tcpip.h>   // AI_ADDRCONFIG, AI_ALL, AI_CANONNAME,
+                        // AI_NUMERICHOST, AI_NUMERICSERV, AI_PASSIVE,
+                        // AI_V4MAPPED
 #else
 #include <netdb.h>      // AI_ADDRCONFIG, AI_ALL, AI_CANONNAME,
                         // AI_NUMERICHOST, AI_NUMERICSERV, AI_PASSIVE,
