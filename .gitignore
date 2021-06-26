@@ -68,8 +68,8 @@ logfile
 *.html
 *.json
 
-# Prerequisites
-*.d
+# Dependencies
+*.dep
 
 # POSIX executables
 test-address
