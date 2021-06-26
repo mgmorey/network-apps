@@ -4,13 +4,16 @@
 #include "network-socket.h"     // Socket
 
 #ifdef _WIN32
-#include <ws2tcpip.h>   // AI_CANONNAME
-#include <winsock2.h>   // AF_UNSPEC, IPPROTO_TCP, SOCK_STREAM,
-                        // WSACleanup(), WSAStartup()
+#include <ws2tcpip.h>   // AI_ADDRCONFIG, AI_ALL, AI_CANONNAME,
+#include <winsock2.h>   // AF_INET, AF_INET6, PF_INET, PF_INET6,
+                        // IPPROTO_IP, IPPROTO_TCP, IPPROTO_UDP,
+                        // SOCK_DGRAM, SOCK_STREAM, WSACleanup(),
+                        // WSAStartup()
 #else
-#include <netdb.h>      // AI_CANNONNAME
-#include <netinet/in.h> // IPPROTO_TCP
-#include <sys/socket.h> // AF_UNSPEC, SOCK_STREAM
+#include <netdb.h>      // AI_ADDRCONFIG, AI_ALL, AI_CANONNAME,
+#include <netinet/in.h> // IPPROTO_IP, IPPROTO_TCP, IPPROTO_UDP
+#include <sys/socket.h> // AF_INET, AF_INET6, PF_INET, PF_INET6,
+                        // SOCK_DGRAM, SOCK_STREAM
 #endif
 
 #include <cstdlib>      // EXIT_FAILURE, EXIT_SUCCESS

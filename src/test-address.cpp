@@ -6,15 +6,12 @@
 
 #ifdef _WIN32
 #include <ws2tcpip.h>   // AI_ADDRCONFIG, AI_ALL, AI_CANONNAME,
-                        // AI_NUMERICHOST, AI_NUMERICSERV, AI_PASSIVE,
-                        // AI_V4MAPPED
 #include <winsock2.h>   // AF_INET, AF_INET6, PF_INET, PF_INET6,
                         // IPPROTO_IP, IPPROTO_TCP, IPPROTO_UDP,
-                        // SOCK_DGRAM, SOCK_STREAM
+                        // SOCK_DGRAM, SOCK_STREAM, WSACleanup(),
+                        // WSAStartup()
 #else
 #include <netdb.h>      // AI_ADDRCONFIG, AI_ALL, AI_CANONNAME,
-                        // AI_NUMERICHOST, AI_NUMERICSERV, AI_PASSIVE,
-                        // AI_V4MAPPED
 #include <netinet/in.h> // IPPROTO_IP, IPPROTO_TCP, IPPROTO_UDP
 #include <sys/socket.h> // AF_INET, AF_INET6, PF_INET, PF_INET6,
                         // SOCK_DGRAM, SOCK_STREAM
