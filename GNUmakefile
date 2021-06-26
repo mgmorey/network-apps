@@ -65,12 +65,6 @@ realclean: clean
 test: $(executables)
 	for f in $^; do ./$$f; done
 
-ifneq "$(SYSTEM_PREFIX)" "Darwin"
-.INTERMEDIATE: $(objects)
-endif
-
-.PHONY: all clean realclean test
-
 TAGS:
 	etags $^
 
@@ -79,6 +73,10 @@ $(executables): libnetwork.a
 libnetwork.a: $(patsubst %.o,libnetwork.a(%.o),$(library_objects))
 
 include $(dependencies)
+
+.PHONY: all clean realclean test
+
+.SECONDARY: $(objects)
 
 tmp/%.dep: %.cpp
 	mkdir -p tmp; \
