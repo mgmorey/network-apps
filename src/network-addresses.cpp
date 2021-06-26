@@ -13,7 +13,7 @@ Network::AddressesResult Network::get_addresses(const Hostname& host,
         node = get_hostname().first;
     }
 
-    return get_addrinfo<AddressesResult>(node, "", &hints, verbose);
+    return get_addrinfo<AddressesResult>(node, "", &hints, true, verbose);
 }
 
 Network::AddressesResult Network::get_addresses(const Hostname& host,
@@ -25,5 +25,5 @@ Network::AddressesResult Network::get_addresses(const Hostname& host,
         node = get_hostname().first;
     }
 
-    return get_addrinfo<AddressesResult>(node, "", NULL, verbose);
+    return get_addrinfo<AddressesResult>(node, "", NULL, true, verbose);
 }

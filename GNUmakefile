@@ -38,7 +38,8 @@ network-addrinfo.cpp network-buffer.cpp network-connect.cpp \
 network-endpoint.cpp network-family.cpp network-flags.cpp \
 network-format.cpp network-hostname.cpp network-name.cpp \
 network-protocol.cpp network-result.cpp network-sockaddr.cpp \
-network-socket.cpp network-sockets.cpp network-socktype.cpp
+network-socket.cpp network-sockets.cpp network-socktype.cpp \
+network-unique.cpp
 
 ifndef HTTP_PROXY
 	executable_sources += test-connect.cpp

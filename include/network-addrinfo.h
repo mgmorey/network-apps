@@ -3,6 +3,7 @@
 
 #include "network-result.h"     // Result
 #include "network-types.h"      // Hostname, Service
+#include "network-unique.h"     // Unique, operator<<()
 
 #ifdef _WIN32
 #include <ws2tcpip.h>   // struct addrinfo, freeaddrinfo()
@@ -27,7 +28,6 @@ namespace Network
                                        const Service& service,
                                        const addrinfo* hints,
                                        bool verbose);
-    extern void print_statistics(const std::vector<std::size_t>& sizes);
 
     template <class Container>
     std::size_t copy_addrinfo(Container& dest,
@@ -68,6 +68,7 @@ namespace Network
     Container get_addrinfo(const Hostname& node,
                            const Service& service,
                            const addrinfo* hints,
+                           bool unique,
                            bool verbose)
     {
         Container cont;
@@ -82,11 +83,16 @@ namespace Network
             sizes.push_back(size);
         }
 
-        cont.first.unique();
+        if (unique) {
+            cont.first.unique();
+        }
 
         if (verbose) {
             sizes.push_back(cont.first.size());
-            print_statistics(sizes);
+            Unique unique(sizes);
+            std::cerr << "Fetched "
+                      << unique
+                      << std::endl;
         }
 
         return cont;

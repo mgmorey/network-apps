@@ -99,26 +99,3 @@ Network::AddrinfoResult Network::get_addrinfo(const Hostname& node,
 
     return AddrinfoResult(list, Result(code, error));
 }
-
-void Network::print_statistics(const std::vector<std::size_t>& sizes)
-{
-    assert(sizes.size() == 2);
-    assert(sizes[0] >= sizes[1]);
-
-    if (sizes[0]) {
-        std::cerr << "Fetched "
-                  << sizes[0]
-                  << " items";
-        std::size_t delta = sizes[0] - sizes[1];
-
-        if (delta) {
-            std::cerr << " ("
-                      << sizes[1]
-                      << " unique + "
-                      << delta
-                      << " duplicate)";
-        }
-
-        std::cerr << std::endl;
-    }
-}
