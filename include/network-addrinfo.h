@@ -45,9 +45,7 @@ namespace Network
             return size;
         }
 
-        for (const addrinfo* elem = list;
-             elem != NULL;
-             elem = elem->ai_next, ++size) {
+        for (const addrinfo* elem = list; elem != NULL; elem = elem->ai_next) {
             if (verbose) {
                 std::cerr << "Fetched addrinfo "
                           << elem
@@ -58,6 +56,7 @@ namespace Network
             }
 
             dest.first.push_back(*elem);
+            ++size;
         }
 
         ::freeaddrinfo(list);
