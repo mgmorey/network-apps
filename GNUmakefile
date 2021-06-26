@@ -45,11 +45,11 @@ ifndef HTTP_PROXY
 	executable_sources += test-connect.cpp
 endif
 
-libraries = libnetwork.a
 sources = $(executable_sources) $(library_sources)
 
 dependencies = $(addprefix tmp/,$(subst .cpp,.dep,$(sources)))
 executables = $(subst .cpp,,$(executable_sources))
+libraries = libnetwork.a
 
 executable_objects = $(addprefix tmp/,$(subst .cpp,.o,$(executable_sources)))
 library_objects = $(addprefix tmp/,$(subst .cpp,.o,$(library_sources)))
