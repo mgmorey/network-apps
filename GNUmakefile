@@ -32,6 +32,8 @@ endif
 CPPFLAGS += -I include
 LINK.o = $(CXX) $(LDFLAGS)
 
+prefix=/usr/local
+
 executable_sources = test-address.cpp test-hostname.cpp
 library_sources = network-address.cpp network-addresses.cpp \
 network-addrinfo.cpp network-buffer.cpp network-connect.cpp \
@@ -65,6 +67,10 @@ realclean: clean
 
 test: $(executables)
 	for f in $^; do ./$$f; done
+
+install: $(libraries)
+	install libnetwork.a $(prefix)/lib
+	install include/*.h $(prefix)/include
 
 TAGS:
 	etags $^
