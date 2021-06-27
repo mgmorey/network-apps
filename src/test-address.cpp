@@ -26,23 +26,23 @@
 
 static std::ostream& operator<<(std::ostream& os, const Network::Host& host)
 {
-    std::size_t n = 0;
-    std::list<std::string> values;
+    typedef std::list<std::string> Values;
     Network::SockAddr address(host.address());
+    Values values;
     values.push_back(to_string(address));
     values.push_back(to_hostname(address, true));
-    Network::Hostname cname(host.canonical_name());
-
-    if (!cname.empty()) {
-        values.push_back(cname);
-    }
-
+    values.push_back(host.canonical_name());
     values.unique();
+    std::size_t i = 0;
 
-    for (std::list<std::string>::const_iterator it = values.begin();
+    for (Values::const_iterator it = values.begin();
          it != values.end();
-         ++it, ++n) {
-        switch (n) {
+         ++i, ++it) {
+        if (it->empty()) {
+            continue;
+        }
+
+        switch (i) {
         case 0:
             os << '\t'
                << (*it)
