@@ -31,7 +31,7 @@ namespace Network
 
     private:
         static unsigned extract_family(const char*& data, std::size_t& size);
-        static unsigned extract_length(const char*& data);
+        static unsigned extract_length(const char*& data, std::size_t& size);
         static std::string to_hexadecimal(const std::string& value);
         operator const sockaddr*() const;
         operator std::string() const;

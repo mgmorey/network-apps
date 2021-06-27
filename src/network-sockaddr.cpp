@@ -38,8 +38,8 @@ std::string Network::SockAddr::data() const
 {
     const char* data = value.data();
     std::size_t size = value.size();
-#ifdef _DARWIN_C_SOURCE
-    extract_length(data);
+#ifdef SOCKADDR_HAS_SA_LEN
+    extract_length(data, size);
 #endif
     extract_family(data, size);
     return std::string(data, size);
@@ -47,24 +47,29 @@ std::string Network::SockAddr::data() const
 
 unsigned short Network::SockAddr::family() const
 {
+    unsigned short family = 0;
+    unsigned short length = 0;
     const char* data = value.data();
     std::size_t size = value.size();
-#ifdef _DARWIN_C_SOURCE
-    extract_length(data);
+#ifdef SOCKADDR_HAS_SA_LEN
+    length = extract_length(data, size);
 #endif
-    return extract_family(data, size);
+    family = extract_family(data, size);
+    return family;
 }
 
 unsigned short Network::SockAddr::length() const
 {
-#ifdef _DARWIN_C_SOURCE
+    unsigned short length = 0;
+#ifdef SOCKADDR_HAS_SA_LEN
     const char* data = value.data();
-    unsigned short length = extract_length(data);
-    assert(length == size());
-    return length;
+    std::size_t size = value.size();
+    length = extract_length(data, size);
+    assert(length == value.size());
 #else
-    return size();
+    length = size();
 #endif
+    return length;
 }
 
 unsigned Network::SockAddr::extract_family(const char*& data, std::size_t& size)
@@ -84,9 +89,11 @@ unsigned Network::SockAddr::extract_family(const char*& data, std::size_t& size)
     return family;
 }
 
-unsigned Network::SockAddr::extract_length(const char*& data)
+unsigned Network::SockAddr::extract_length(const char*& data, std::size_t& size)
 {
     unsigned char length = *(reinterpret_cast<const unsigned char*>(data));
+    data += sizeof length;
+    size -= sizeof length;
     return length;
 }
 
