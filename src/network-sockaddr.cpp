@@ -144,13 +144,20 @@ socklen_t Network::SockAddr::size() const
 std::ostream& Network::operator<<(std::ostream& os,
                                   const SockAddr& sa)
 {
-    const std::string delim(", ");
-    return os << "sockaddr("
-              << Format("sa_len")
-              << sa.length()
-              << Format(delim, 0, "sa_family")
-              << Family(sa.family())
-              << Format(delim, 0, "sa_data")
-              << SockAddr::to_hexadecimal(sa.data())
-              << ')';
+    if (sa.size()) {
+        const std::string delim(", ");
+        os << "sockaddr("
+           << Format("sa_len")
+           << sa.length()
+           << Format(delim, 0, "sa_family")
+           << Family(sa.family())
+           << Format(delim, 0, "sa_data")
+           << SockAddr::to_hexadecimal(sa.data())
+           << ')';
+    }
+    else {
+        os << "0x0";
+    }
+
+    return os;
 }

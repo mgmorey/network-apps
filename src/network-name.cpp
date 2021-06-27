@@ -16,7 +16,7 @@ std::ostream& Network::operator<<(std::ostream& os,
                                   const Name& name)
 {
     if (name.null) {
-        os << 0;
+        os << "0x0";
     }
     else {
         os << '"' << name.value << '"';
