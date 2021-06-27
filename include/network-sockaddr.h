@@ -18,26 +18,27 @@ namespace Network
         friend class EndpointResult;
         friend class Host;
         friend std::ostream& operator<<(std::ostream& os,
-                                        const SockAddr& addr);
+                                        const SockAddr& sa);
 
     public:
         SockAddr(const sockaddr* addr, socklen_t len);
         bool operator<(const SockAddr& other) const;
         bool operator>(const SockAddr& other) const;
         bool operator==(const SockAddr& other) const;
+        std::string data() const;
+        unsigned short family() const;
 
     private:
+        static std::string to_hexadecimal(const std::string& value);
         operator const sockaddr*() const;
         operator std::string() const;
-        const char* data() const;
         socklen_t length() const;
-        std::size_t size() const;
 
         std::string value;
     };
 
     extern std::ostream& operator<<(std::ostream& os,
-                                    const SockAddr& addr);
+                                    const SockAddr& sa);
 }
 
 #endif
