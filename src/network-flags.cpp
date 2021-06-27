@@ -34,27 +34,27 @@ std::ostream& Network::operator<<(std::ostream& os,
         {0,                         NULL}
     };
     std::ostringstream oss;
-    std::size_t n = 0;
+    std::size_t i = 0;
 
     for(const struct values* p = values; p->flag; ++p) {
         if (flags.value & p->flag) {
-            if (n) {
+            if (i++ > 0) {
                 oss << " | ";
             }
 
             oss << p->label;
-            ++n;
         }
     }
 
-    if (n > 1) {
-        os << '(' << oss.str() << ')';
-    }
-    else if (n > 0) {
-        os << oss.str();
-    }
-    else {
+    switch (i) {
+    case 0:
         os << 0;
+        break;
+    case 1:
+        os << oss.str();
+        break;
+    default:
+        os << '(' << oss.str() << ')';
     }
 
     return os;
