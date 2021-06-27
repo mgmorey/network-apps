@@ -2,8 +2,8 @@
 #define NETWORK_ENDPOINT_H
 
 #include "network-buffer.h"     // Buffer
-#include "network-host.h"       // Host
 #include "network-result.h"     // Result
+#include "network-sockaddr.h"   // SockAddr
 #include "network-types.h"      // Hostname, Service
 
 #include <ostream>      // std::ostream
@@ -17,7 +17,7 @@ namespace Network
     class EndpointResult
     {
     public:
-        EndpointResult(const Host& host, int flags = 0, bool verbose = false);
+        EndpointResult(const SockAddr& address, int flags = 0, bool verbose = false);
         Endpoint endpoint() const;
         Hostname hostname() const;
         Service service() const;
@@ -30,12 +30,12 @@ namespace Network
         Buffer service_buffer;
     };
 
-    extern EndpointResult to_endpoint(const Host& host,
+    extern EndpointResult to_endpoint(const SockAddr& address,
                                       bool numeric = false,
                                       bool verbose = false);
-    extern Hostname to_hostname(const Host& host,
+    extern Hostname to_hostname(const SockAddr& address,
                                 bool verbose = false);
-    extern Hostname to_string(const Host& host,
+    extern Hostname to_string(const SockAddr& address,
                               bool verbose = false);
 }
 

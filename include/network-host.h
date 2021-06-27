@@ -19,8 +19,6 @@ namespace Network
 {
     class Host
     {
-        friend class EndpointResult;
-
     public:
         enum { connect_error = -1 };
         Host(const addrinfo& other);
@@ -28,12 +26,11 @@ namespace Network
         bool operator<(const Host& other) const;
         bool operator>(const Host& other) const;
         bool operator==(const Host& other) const;
+        const SockAddr& address() const;
         Hostname canonical_name() const;
         Result connect(int fd) const;
 
     private:
-        const SockAddr& address() const;
-
         SockAddr addr;
         Hostname name;
     };

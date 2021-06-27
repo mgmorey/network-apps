@@ -53,14 +53,15 @@ static void print_host(const Network::Host& host)
         names.push_back(cname);
     }
 
-    std::string address(to_string(host));
-    Network::Hostname hostname(to_hostname(host, true));
+    Network::SockAddr address = host.address();
+    std::string address_string(to_string(address));
+    Network::Hostname hostname(to_hostname(address, true));
 
-    if (hostname != address && hostname != cname) {
+    if (hostname != address_string && hostname != cname) {
         names.push_back(hostname);
     }
 
-    std::cout << '\t' << address << " (";
+    std::cout << '\t' << address_string << " (";
 
     for (std::vector<Network::Hostname>::const_iterator it = names.begin();
          it != names.end();
