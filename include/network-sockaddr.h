@@ -18,7 +18,7 @@ namespace Network
         friend class Address;
         friend class EndpointResult;
         friend std::ostream& operator<<(std::ostream& os,
-                                        const SockAddr& sockaddr);
+                                        const SockAddr& addr);
 
     public:
         SockAddr(const sockaddr* addr, socklen_t len);
@@ -34,7 +34,7 @@ namespace Network
     };
 
     extern std::ostream& operator<<(std::ostream& os,
-                                    const SockAddr& sockaddr);
+                                    const SockAddr& addr);
 }
 
 #endif

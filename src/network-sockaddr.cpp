@@ -37,16 +37,16 @@ socklen_t Network::SockAddr::length() const
 }
 
 std::ostream& Network::operator<<(std::ostream& os,
-                                  const SockAddr& sockaddr)
+                                  const SockAddr& addr)
 {
-    if (sockaddr.value.empty()) {
+    if (addr.value.empty()) {
         return os << 0;
     }
 
     std::ostringstream oss;
     oss << std::hex << "0x";
-    const char* data = sockaddr.value.data();
-    std::size_t size = sockaddr.value.size();
+    const char* data = addr.value.data();
+    std::size_t size = addr.value.size();
 
     for(const char* p = data; p < data + size; p++) {
         short ch = static_cast<short>(*p & 0xFF);
