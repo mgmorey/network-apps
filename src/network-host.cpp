@@ -48,7 +48,7 @@ Network::Hostname Network::Host::canonical_name() const
 Network::Result Network::Host::connect(int fd) const
 {
     std::string error;
-    int code = ::connect(fd, addr, addr.length());
+    int code = ::connect(fd, addr, addr.size());
 
     if (code == Host::connect_error) {
         std::ostringstream os;

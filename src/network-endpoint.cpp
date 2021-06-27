@@ -19,7 +19,7 @@ Network::EndpointResult::EndpointResult(const SockAddr& address,
     host_buffer(NI_MAXHOST),
     service_buffer(NI_MAXSERV)
 {
-    code = ::getnameinfo(address, address.length(),
+    code = ::getnameinfo(address, address.size(),
                          &host_buffer[0], host_buffer.size(),
                          &service_buffer[0], service_buffer.size(),
                          flags);

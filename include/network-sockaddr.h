@@ -27,12 +27,15 @@ namespace Network
         bool operator==(const SockAddr& other) const;
         std::string data() const;
         unsigned short family() const;
+        unsigned short length() const;
 
     private:
+        static unsigned extract_family(const char*& data, std::size_t& size);
+        static unsigned extract_length(const char*& data);
         static std::string to_hexadecimal(const std::string& value);
         operator const sockaddr*() const;
         operator std::string() const;
-        socklen_t length() const;
+        socklen_t size() const;
 
         std::string value;
     };

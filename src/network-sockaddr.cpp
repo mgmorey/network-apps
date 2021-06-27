@@ -2,9 +2,16 @@
                                 // sockaddr, socklen_t, std::ostream,
                                 // std::string
 #include "network-family.h"     // Family, operator<<()
+#include "network-format.h"     // Format, operator<<()
+
+#ifdef _WIN32
+#include <winsock2.h>   // AF_INET, AF_INET6, PF_INET, PF_INET6
+#else
+#include <sys/socket.h> // AF_INET, AF_INET6, PF_INET, PF_INET6
+#endif
 
 #include <cassert>      // assert()
-#include <iomanip>	// std::hex
+#include <iomanip>      // std::hex
 #include <sstream>      // std::ostringstream
 
 Network::SockAddr::SockAddr(const sockaddr* addr, socklen_t len) :
@@ -31,22 +38,10 @@ std::string Network::SockAddr::data() const
 {
     const char* data = value.data();
     std::size_t size = value.size();
-    unsigned short family = 0;
-
-    switch (size) {
-    case 16:
-    case 28:
-        family = *(reinterpret_cast<const unsigned short*>(data));
-
-        switch (family) {
-        case AF_INET:
-        case AF_INET6:
-            data += sizeof family;
-            size -= sizeof family;
-            break;
-        }
-    }
-
+#ifdef _DARWIN_C_SOURCE
+    extract_length(data);
+#endif
+    extract_family(data, size);
     return std::string(data, size);
 }
 
@@ -54,15 +49,51 @@ unsigned short Network::SockAddr::family() const
 {
     const char* data = value.data();
     std::size_t size = value.size();
-    unsigned short family = 0;
+#ifdef _DARWIN_C_SOURCE
+    extract_length(data);
+#endif
+    return extract_family(data, size);
+}
 
-    switch (size) {
-    case 16:
-    case 28:
-        family = *(reinterpret_cast<const unsigned short*>(data));
+unsigned short Network::SockAddr::length() const
+{
+    const char* data = value.data();
+#ifdef _DARWIN_C_SOURCE
+    return extract_length(data);
+#endif
+}
+
+unsigned Network::SockAddr::extract_family(const char*& data, std::size_t& size)
+{
+    unsigned short family = *(reinterpret_cast<const unsigned short*>(data));
+
+    switch (family) {
+    case AF_INET:
+    case AF_INET6:
+        data += sizeof family;
+        size -= sizeof family;
+        break;
+    default:
+        family = 0;
     }
 
     return family;
+}
+
+unsigned Network::SockAddr::extract_length(const char*& data)
+{
+    unsigned char length = *(reinterpret_cast<const unsigned char*>(data));
+
+    switch (length) {
+    case 16:
+    case 28:
+        data += sizeof length;
+        break;
+    default:
+        length = 0;
+    }
+
+    return length;
 }
 
 std::string Network::SockAddr::to_hexadecimal(const std::string& value)
@@ -103,7 +134,7 @@ Network::SockAddr::operator std::string() const
     return value;
 }
 
-socklen_t Network::SockAddr::length() const
+socklen_t Network::SockAddr::size() const
 {
     return static_cast<socklen_t>(value.size());
 }
@@ -111,9 +142,13 @@ socklen_t Network::SockAddr::length() const
 std::ostream& Network::operator<<(std::ostream& os,
                                   const SockAddr& sa)
 {
-    return os << "sockaddr(sa_family="
+    const std::string delim(", ");
+    return os << "sockaddr("
+              << Format("sa_len")
+              << sa.length()
+              << Format(delim, 0, "sa_family")
               << Family(sa.family())
-              << ", sa_data="
+              << Format(delim, 0, "sa_data")
               << SockAddr::to_hexadecimal(sa.data())
               << ')';
 }
