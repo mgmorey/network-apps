@@ -59,7 +59,9 @@ unsigned short Network::SockAddr::length() const
 {
 #ifdef _DARWIN_C_SOURCE
     const char* data = value.data();
-    return extract_length(data);
+    unsigned short length = extract_length(data);
+    assert(length == size());
+    return length;
 #else
     return size();
 #endif
@@ -85,16 +87,6 @@ unsigned Network::SockAddr::extract_family(const char*& data, std::size_t& size)
 unsigned Network::SockAddr::extract_length(const char*& data)
 {
     unsigned char length = *(reinterpret_cast<const unsigned char*>(data));
-
-    switch (length) {
-    case 16:
-    case 28:
-        data += sizeof length;
-        break;
-    default:
-        length = 0;
-    }
-
     return length;
 }
 
