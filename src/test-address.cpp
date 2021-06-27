@@ -37,12 +37,12 @@ static std::ostream& operator<<(std::ostream& os, const Network::Host& host)
 
     for (Values::const_iterator it = values.begin();
          it != values.end();
-         ++i, ++it) {
+         ++it) {
         if (it->empty()) {
             continue;
         }
 
-        switch (i) {
+        switch (i++) {
         case 0:
             os << '\t'
                << (*it)
@@ -57,8 +57,11 @@ static std::ostream& operator<<(std::ostream& os, const Network::Host& host)
         }
     }
 
-    os << ')' << std::endl;
-    return os;
+    if (i) {
+        os << ')';
+    }
+
+    return os << std::endl;
 }
 
 static std::string get_description(const Network::Socket& hints)
