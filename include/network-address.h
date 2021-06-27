@@ -37,7 +37,7 @@ namespace Network
         operator SockAddr() const;
 
         SockAddr addr;
-        std::string name;
+        Hostname name;
     };
 }
 
