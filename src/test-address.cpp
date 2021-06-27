@@ -27,8 +27,8 @@
 static std::ostream& operator<<(std::ostream& os, const Network::Host& host)
 {
     typedef std::list<std::string> Values;
-    Network::SockAddr address(host.address());
     Values values;
+    Network::SockAddr address(host.address());
     values.push_back(to_string(address));
     values.push_back(to_hostname(address, true));
     values.push_back(host.canonical_name());
