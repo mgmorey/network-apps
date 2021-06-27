@@ -19,8 +19,47 @@
 
 #include <cstdlib>      // EXIT_FAILURE, EXIT_SUCCESS
 #include <iostream>     // std::cerr, std::cout, std::endl
+#include <ostream>      // std::ostream
+#include <sstream>      // std::ostringstream
 #include <string>       // std::string
 #include <vector>       // std::vector
+
+static std::ostream& operator<<(std::ostream& os, const Network::Host& host)
+{
+    std::size_t n = 0;
+    std::list<std::string> values;
+    Network::SockAddr address(host.address());
+    values.push_back(to_string(address));
+    values.push_back(to_hostname(address, true));
+    Network::Hostname cname(host.canonical_name());
+
+    if (!cname.empty()) {
+        values.push_back(cname);
+    }
+
+    values.unique();
+
+    for (std::list<std::string>::const_iterator it = values.begin();
+         it != values.end();
+         ++it, ++n) {
+        switch (n) {
+        case 0:
+            os << '\t'
+               << (*it)
+               << " (";
+            break;
+        case 1:
+            os << (*it);
+            break;
+        default:
+            os << ", "
+               << (*it);
+        }
+    }
+
+    os << ')' << std::endl;
+    return os;
+}
 
 static std::string get_description(const Network::Socket& hints)
 {
@@ -38,38 +77,6 @@ static std::string get_description(const Network::Socket& hints)
     return result;
 }
 
-static void print_host(const Network::Host& host)
-{
-    std::vector<Network::Hostname> names;
-    Network::Hostname cname(host.canonical_name());
-
-    if (!cname.empty()) {
-        names.push_back(cname);
-    }
-
-    Network::SockAddr address(host.address());
-    std::string address_string(to_string(address));
-    Network::Hostname hostname(to_hostname(address, true));
-
-    if (hostname != address_string && hostname != cname) {
-        names.push_back(hostname);
-    }
-
-    std::cout << '\t' << address_string << " (";
-
-    for (std::vector<Network::Hostname>::const_iterator it = names.begin();
-         it != names.end();
-         ++it) {
-        if (it != names.begin()) {
-            std::cout << ", ";
-        }
-
-        std::cout << (*it);
-    }
-
-    std::cout << ')' << std::endl;
-}
-
 static void print_hosts(const Network::Hosts& hosts,
                         const std::string& desc)
 {
@@ -85,7 +92,7 @@ static void print_hosts(const Network::Hosts& hosts,
          it != hosts.end();
          ++it)
     {
-        print_host(*it);
+        std::cout << (*it);
     }
 }
 
