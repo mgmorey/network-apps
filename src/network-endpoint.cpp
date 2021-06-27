@@ -1,6 +1,5 @@
 #include "network-endpoint.h"   // Endpoint, EndpointResult, Host,
-                                // Result, to_string()
-#include "network-sockaddr.h"   // SockAddr, operator<<()
+                                // Result, SockAddr, to_string()
 
 #ifdef _WIN32
 #include <ws2tcpip.h>   // NI_MAXHOST, NI_MAXSERV, NI_NUMERICHOST,
