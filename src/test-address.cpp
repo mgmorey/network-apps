@@ -44,8 +44,7 @@ static std::ostream& operator<<(std::ostream& os, const Network::Host& host)
 
         switch (i++) {
         case 0:
-            os << '\t'
-               << (*it)
+            os << (*it)
                << " (";
             break;
         case 1:
@@ -61,7 +60,21 @@ static std::ostream& operator<<(std::ostream& os, const Network::Host& host)
         os << ')';
     }
 
-    return os << std::endl;
+    return os;
+}
+
+static std::ostream& operator<<(std::ostream& os, const Network::Hosts& hosts)
+{
+    for (Network::Hosts::const_iterator it = hosts.begin();
+         it != hosts.end();
+         ++it)
+    {
+        os << '\t'
+           << (*it)
+           << std::endl;
+    }
+
+    return os;
 }
 
 static std::string get_description(const Network::Socket& hints)
@@ -80,50 +93,34 @@ static std::string get_description(const Network::Socket& hints)
     return result;
 }
 
-static void print_hosts(const Network::Hosts& hosts,
-                        const std::string& desc)
-{
-    if (hosts.empty()) {
-        return;
-    }
-
-    std::cout << (desc.empty() ? "All" : desc)
-              << " hosts:"
-              << std::endl;
-
-    for (Network::Hosts::const_iterator it = hosts.begin();
-         it != hosts.end();
-         ++it)
-    {
-        std::cout << (*it);
-    }
-}
-
 static void test_host(const Network::Hostname& host,
                       const Network::Socket& hints,
                       bool verbose = true)
 {
-    Network::HostsResult addrs_result(get_hosts(host, hints, verbose));
-    Network::Hosts addrs(addrs_result.first);
-    Network::Result result(addrs_result.second);
+    Network::HostsResult hosts_result(get_hosts(host, hints, verbose));
+    Network::Hosts hosts(hosts_result.first);
+    Network::Result result(hosts_result.second);
     std::string desc(get_description(hints));
 
     if (result.nonzero()) {
-
         if (desc.empty()) {
-            std::cerr << "No";
+            std::cout << "No";
         }
         else {
-            std::cerr << "No "
+            std::cout << "No "
                       << desc;
         }
 
-        std::cerr << " hosts: "
+        std::cout << " hosts:"
+                  << std::endl
                   << result.string()
                   << std::endl;
     }
-    else if (!addrs.empty()) {
-        print_hosts(addrs, desc);
+    else if (!hosts.empty()) {
+        std::cout << (desc.empty() ? "All" : desc)
+                  << " hosts:"
+                  << std::endl
+                  << hosts;
     }
 }
 
