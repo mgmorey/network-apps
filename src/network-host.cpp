@@ -64,7 +64,7 @@ Network::Result Network::Host::connect(int fd) const
     return Result(code, error);
 }
 
-Network::Host::operator SockAddr() const
+const Network::SockAddr& Network::Host::address() const
 {
     return addr;
 }

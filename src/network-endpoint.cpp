@@ -1,4 +1,4 @@
-#include "network-endpoint.h"   // Address, Endpoint, EndpointResult,
+#include "network-endpoint.h"   // Endpoint, EndpointResult, Host,
                                 // Result, to_string()
 #include "network-sockaddr.h"   // SockAddr, operator<<()
 
@@ -20,9 +20,8 @@ Network::EndpointResult::EndpointResult(const Host& host,
     host_buffer(NI_MAXHOST),
     service_buffer(NI_MAXSERV)
 {
-    SockAddr sockaddr(host);
-    code = ::getnameinfo(sockaddr,
-                         sockaddr.length(),
+    code = ::getnameinfo(host.address(),
+                         host.address().length(),
                          &host_buffer[0], host_buffer.size(),
                          &service_buffer[0], service_buffer.size(),
                          flags);

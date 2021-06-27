@@ -1,5 +1,5 @@
-#ifndef NETWORK_ADDRESS_H
-#define NETWORK_ADDRESS_H
+#ifndef NETWORK_HOST_H
+#define NETWORK_HOST_H
 
 #include "network-result.h"     // Result
 #include "network-sockaddr.h"   // SockAddr
@@ -20,8 +20,6 @@ namespace Network
     class Host
     {
         friend class EndpointResult;
-        friend std::ostream& operator<<(std::ostream& os,
-                                        const Host& address);
 
     public:
         enum { connect_error = -1 };
@@ -34,7 +32,7 @@ namespace Network
         Result connect(int fd) const;
 
     private:
-        operator SockAddr() const;
+        const SockAddr& address() const;
 
         SockAddr addr;
         Hostname name;

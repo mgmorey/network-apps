@@ -1,5 +1,5 @@
-#ifndef NETWORK_ADDRESSES_H
-#define NETWORK_ADDRESSES_H
+#ifndef NETWORK_HOSTS_H
+#define NETWORK_HOSTS_H
 
 #include "network-host.h"       // Host
 #include "network-result.h"     // Result
