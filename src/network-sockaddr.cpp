@@ -31,9 +31,24 @@ Network::SockAddr::operator const sockaddr*() const
     return reinterpret_cast<const sockaddr*>(value.data());
 }
 
+Network::SockAddr::operator std::string() const
+{
+    return value;
+}
+
+const char* Network::SockAddr::data() const
+{
+    return value.data();
+}
+
 socklen_t Network::SockAddr::length() const
 {
     return static_cast<socklen_t>(value.size());
+}
+
+std::size_t Network::SockAddr::size() const
+{
+    return value.size();
 }
 
 std::ostream& Network::operator<<(std::ostream& os,
@@ -45,8 +60,8 @@ std::ostream& Network::operator<<(std::ostream& os,
 
     std::ostringstream oss;
     oss << std::hex << "0x";
-    const char* data = addr.value.data();
-    std::size_t size = addr.value.size();
+    const char* data = addr.data();
+    std::size_t size = addr.size();
 
     for(const char* p = data; p < data + size; p++) {
         short ch = static_cast<short>(*p & 0xFF);
