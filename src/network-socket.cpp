@@ -1,5 +1,5 @@
 #include "network-socket.h"     // Hostname, Result, Socket
-#include "network-address.h"    // Address
+#include "network-host.h"       // Host
 
 #ifdef _WIN32
 #include <winsock2.h>   // struct sockaddr, socket()
@@ -73,7 +73,7 @@ bool Network::Socket::operator<(const Socket& other) const
     return (ai_protocol < other.ai_protocol ||
             ai_socktype < other.ai_socktype ||
             ai_family < other.ai_family ||
-            Address(*this) < Address(other));
+            Host(*this) < Host(other));
 }
 
 bool Network::Socket::operator>(const Socket& other) const
@@ -81,7 +81,7 @@ bool Network::Socket::operator>(const Socket& other) const
     return (ai_protocol > other.ai_protocol ||
             ai_socktype > other.ai_socktype ||
             ai_family > other.ai_family ||
-            Address(*this) > Address(other));
+            Host(*this) > Host(other));
 }
 
 bool Network::Socket::operator==(const Socket& other) const
@@ -89,7 +89,7 @@ bool Network::Socket::operator==(const Socket& other) const
     return (ai_protocol == other.ai_protocol &&
             ai_socktype == other.ai_socktype &&
             ai_family == other.ai_family &&
-            Address(*this) == Address(other));
+            Host(*this) == Host(other));
 }
 
 Network::Hostname Network::Socket::cname() const

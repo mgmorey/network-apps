@@ -15,8 +15,8 @@ namespace Network
 {
     class SockAddr
     {
-        friend class Address;
         friend class EndpointResult;
+        friend class Host;
         friend std::ostream& operator<<(std::ostream& os,
                                         const SockAddr& addr);
 

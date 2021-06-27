@@ -1,8 +1,8 @@
 #ifndef NETWORK_ENDPOINT_H
 #define NETWORK_ENDPOINT_H
 
-#include "network-address.h"    // Address
 #include "network-buffer.h"     // Buffer
+#include "network-host.h"       // Host
 #include "network-result.h"     // Result
 #include "network-types.h"      // Hostname, Service
 
@@ -17,7 +17,7 @@ namespace Network
     class EndpointResult
     {
     public:
-        EndpointResult(const Address& address, int flags = 0, bool verbose = false);
+        EndpointResult(const Host& host, int flags = 0, bool verbose = false);
         Endpoint endpoint() const;
         Hostname hostname() const;
         Service service() const;
@@ -26,16 +26,16 @@ namespace Network
     private:
         int code;
         std::string error;
-        Buffer host;
-        Buffer serv;
+        Buffer host_buffer;
+        Buffer service_buffer;
     };
 
-    extern EndpointResult to_endpoint(const Address& address,
+    extern EndpointResult to_endpoint(const Host& host,
                                       bool numeric = false,
                                       bool verbose = false);
-    extern Hostname to_hostname(const Address& address,
+    extern Hostname to_hostname(const Host& host,
                                 bool verbose = false);
-    extern Hostname to_string(const Address& address,
+    extern Hostname to_string(const Host& host,
                               bool verbose = false);
 }
 

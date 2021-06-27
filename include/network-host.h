@@ -17,19 +17,19 @@
 
 namespace Network
 {
-    class Address
+    class Host
     {
         friend class EndpointResult;
         friend std::ostream& operator<<(std::ostream& os,
-                                        const Address& address);
+                                        const Host& address);
 
     public:
         enum { connect_error = -1 };
-        Address(const addrinfo& other);
-        Address& operator=(const addrinfo& other);
-        bool operator<(const Address& other) const;
-        bool operator>(const Address& other) const;
-        bool operator==(const Address& other) const;
+        Host(const addrinfo& other);
+        Host& operator=(const addrinfo& other);
+        bool operator<(const Host& other) const;
+        bool operator>(const Host& other) const;
+        bool operator==(const Host& other) const;
         Hostname canonical_name() const;
         Result connect(int fd) const;
 

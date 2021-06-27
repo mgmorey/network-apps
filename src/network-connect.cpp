@@ -2,9 +2,9 @@
                                 // Hostname, Result, Service, Sockets,
                                 // SocketsResult, struct addrinfo,
                                 // close(), connect()
-#include "network-address.h"    // Address
 #include "network-addrinfo.h"   // operator<<()
 #include "network-endpoint.h"   // Endpoint, to_string()
+#include "network-host.h"       // Host
 
 #ifdef _WIN32
 #include <winsock2.h>   // closesocket()
@@ -68,7 +68,7 @@ Network::ConnectResult Network::connect(const Sockets& sockets,
 
         result = connect(fd, *it, verbose);
 
-        if (result.result() == Address::connect_error) {
+        if (result.result() == Host::connect_error) {
             close(fd);
             fd = Socket::socket_bad;
             details.push_back(result.string());
@@ -85,13 +85,13 @@ Network::ConnectResult Network::connect(const Sockets& sockets,
 Network::Result Network::connect(int fd, const addrinfo& ai,
                                  bool verbose)
 {
-    Network::Address address(ai);
+    Network::Host host(ai);
 
     if (verbose) {
-        std::cerr << "Trying address: "
-                  << to_string(address)
+        std::cerr << "Trying host: "
+                  << to_string(host)
                   << std::endl;
     }
 
-    return address.connect(fd);
+    return host.connect(fd);
 }

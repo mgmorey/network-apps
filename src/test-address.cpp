@@ -1,6 +1,6 @@
-#include "network-address.h"    // Address, Hostname
-#include "network-addresses.h"  // Addresses, get_addresses()
 #include "network-endpoint.h"   // to_string()
+#include "network-host.h"       // Host, Hostname
+#include "network-hosts.h"      // Hosts, get_hosts()
 #include "network-hostname.h"   // get_hostname()
 #include "network-socket.h"     // Socket
 
@@ -44,22 +44,23 @@ static int get_family(const Network::Socket& socket)
     return ai.ai_family;
 }
 
-static void print_address(const Network::Address& address)
+static void print_host(const Network::Host& host)
 {
-    Network::Hostname addr(to_string(address));
-    Network::Hostname cname(address.canonical_name());
-    Network::Hostname host(to_hostname(address, true));
     std::vector<Network::Hostname> names;
+    Network::Hostname cname(host.canonical_name());
 
     if (!cname.empty()) {
         names.push_back(cname);
     }
 
-    if (host != addr && host != cname) {
-        names.push_back(host);
+    std::string address(to_string(host));
+    Network::Hostname hostname(to_hostname(host, true));
+
+    if (hostname != address && hostname != cname) {
+        names.push_back(hostname);
     }
 
-    std::cout << '\t' << addr << " (";
+    std::cout << '\t' << address << " (";
 
     for (std::vector<Network::Hostname>::const_iterator it = names.begin();
          it != names.end();
@@ -74,22 +75,22 @@ static void print_address(const Network::Address& address)
     std::cout << ')' << std::endl;
 }
 
-static void print_addresses(const Network::Addresses& addresses,
-                            const std::string& desc)
+static void print_hosts(const Network::Hosts& hosts,
+                        const std::string& desc)
 {
-    if (addresses.empty()) {
+    if (hosts.empty()) {
         return;
     }
 
     std::cout << (desc.empty() ? "All" : desc)
-              << " addresses:"
+              << " hosts:"
               << std::endl;
 
-    for (Network::Addresses::const_iterator it = addresses.begin();
-         it != addresses.end();
+    for (Network::Hosts::const_iterator it = hosts.begin();
+         it != hosts.end();
          ++it)
     {
-        print_address(*it);
+        print_host(*it);
     }
 }
 
@@ -97,8 +98,8 @@ static void test_host(const Network::Hostname& host,
                       const Network::Socket& hints,
                       bool verbose = true)
 {
-    Network::AddressesResult addrs_result(get_addresses(host, hints, verbose));
-    Network::Addresses addrs(addrs_result.first);
+    Network::HostsResult addrs_result(get_hosts(host, hints, verbose));
+    Network::Hosts addrs(addrs_result.first);
     Network::Result result(addrs_result.second);
     int family = get_family(hints);
     std::string desc(get_description(family));
@@ -113,12 +114,12 @@ static void test_host(const Network::Hostname& host,
                       << desc;
         }
 
-        std::cerr << " addresses: "
+        std::cerr << " hosts: "
                   << result.string()
                   << std::endl;
     }
     else if (!addrs.empty()) {
-        print_addresses(addrs, desc);
+        print_hosts(addrs, desc);
     }
 }
 
