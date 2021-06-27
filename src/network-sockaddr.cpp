@@ -38,9 +38,7 @@ std::string Network::SockAddr::data() const
 {
     const char* data = value.data();
     std::size_t size = value.size();
-#ifdef SOCKADDR_HAS_SA_LEN
     extract_length(data, size);
-#endif
     extract_family(data, size);
     return std::string(data, size);
 }
@@ -49,23 +47,17 @@ unsigned short Network::SockAddr::family() const
 {
     const char* data = value.data();
     std::size_t size = value.size();
-#ifdef SOCKADDR_HAS_SA_LEN
     extract_length(data, size);
-#endif
     return extract_family(data, size);
 }
 
 unsigned short Network::SockAddr::length() const
 {
-#ifdef SOCKADDR_HAS_SA_LEN
     const char* data = value.data();
     std::size_t size = value.size();
     unsigned short length = extract_length(data, size);
     assert(length == value.size());
     return length;
-#else
-    return value.size();
-#endif
 }
 
 unsigned Network::SockAddr::extract_family(const char*& data, std::size_t& size)
@@ -87,10 +79,14 @@ unsigned Network::SockAddr::extract_family(const char*& data, std::size_t& size)
 
 unsigned Network::SockAddr::extract_length(const char*& data, std::size_t& size)
 {
+#ifdef SOCKADDR_HAS_SA_LEN
     unsigned char length = *(reinterpret_cast<const unsigned char*>(data));
     data += sizeof length;
     size -= sizeof length;
     return length;
+#else
+    return value.size();
+#endif
 }
 
 std::string Network::SockAddr::to_hexadecimal(const std::string& value)
