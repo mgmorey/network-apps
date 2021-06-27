@@ -1,14 +1,10 @@
 SYSTEM_PREFIX := $(shell uname -s | cut -d- -f 1)
 
-ifeq "$(SYSTEM_PREFIX)" "FreeBSD"
-	CPPFLAGS += -I/usr/local/include
-	LDLIBS += -L/usr/local/lib
-endif
-
 ifdef NDEBUG
 	CPPFLAGS += -D_FORTIFY_SOURCE=2
 	CXXFLAGS += -O2
 else
+	CXXFLAGS += -fno-omit-frame-pointer -g3 -O0
 ifeq "$(USING_DMALLOC)" "true"
 	CPPFLAGS += -DDMALLOC -DMALLOC_FUNC_CHECK
 	LDLIBS += -ldmalloc
@@ -16,20 +12,22 @@ else ifeq "$(USING_LIBASAN)" "true"
 	CXXFLAGS += -fsanitize=address
 	LDLIBS += -lasan
 endif
-	CXXFLAGS += -fno-omit-frame-pointer -g3 -O0
 endif
 
-CXXFLAGS += -std=c++98 -Wall -Werror -Wextra -Wpedantic
-
 ifeq "$(SYSTEM_PREFIX)" "Darwin"
-	CPPFLAGS += -D_DARWIN_C_SOURCE
+	CPPFLAGS += -D_DARWIN_C_SOURCE -DSOCKADDR_HAS_SA_LEN
 else ifeq "$(SYSTEM_PREFIX)" "CYGWIN_NT"
 	CPPFLAGS += -D_POSIX_C_SOURCE=200809L
+else ifeq "$(SYSTEM_PREFIX)" "FreeBSD"
+	CPPFLAGS += -DSOCKADDR_HAS_SA_LEN -I/usr/local/include
+	LDLIBS += -L/usr/local/lib
 else ifeq "$(SYSTEM_PREFIX)" "MINGW64_NT"
 	LDLIBS += -lws2_32
 endif
 
 CPPFLAGS += -I include
+CXXFLAGS += -std=c++98 -Wall -Werror -Wextra -Wpedantic
+
 LINK.o = $(CXX) $(LDFLAGS)
 
 prefix=/usr/local
