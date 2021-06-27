@@ -47,29 +47,25 @@ std::string Network::SockAddr::data() const
 
 unsigned short Network::SockAddr::family() const
 {
-    unsigned short family = 0;
-    unsigned short length = 0;
     const char* data = value.data();
     std::size_t size = value.size();
 #ifdef SOCKADDR_HAS_SA_LEN
-    length = extract_length(data, size);
+    extract_length(data, size);
 #endif
-    family = extract_family(data, size);
-    return family;
+    return extract_family(data, size);
 }
 
 unsigned short Network::SockAddr::length() const
 {
-    unsigned short length = 0;
 #ifdef SOCKADDR_HAS_SA_LEN
     const char* data = value.data();
     std::size_t size = value.size();
-    length = extract_length(data, size);
+    unsigned short length = extract_length(data, size);
     assert(length == value.size());
-#else
-    length = size();
-#endif
     return length;
+#else
+    return value.size();
+#endif
 }
 
 unsigned Network::SockAddr::extract_family(const char*& data, std::size_t& size)
