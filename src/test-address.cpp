@@ -22,11 +22,11 @@
 #include <string>       // std::string
 #include <vector>       // std::vector
 
-static std::string get_description(int family)
+static std::string get_description(const Network::Socket& hints)
 {
     std::string result;
 
-    switch (family) {
+    switch (addrinfo(hints).ai_family) {
     case AF_INET:
         result = "IPv4";
         break;
@@ -38,12 +38,6 @@ static std::string get_description(int family)
     return result;
 }
 
-static int get_family(const Network::Socket& socket)
-{
-    const addrinfo& ai = static_cast<const addrinfo&>(socket);
-    return ai.ai_family;
-}
-
 static void print_host(const Network::Host& host)
 {
     std::vector<Network::Hostname> names;
@@ -53,7 +47,7 @@ static void print_host(const Network::Host& host)
         names.push_back(cname);
     }
 
-    Network::SockAddr address = host.address();
+    Network::SockAddr address(host.address());
     std::string address_string(to_string(address));
     Network::Hostname hostname(to_hostname(address, true));
 
@@ -102,8 +96,7 @@ static void test_host(const Network::Hostname& host,
     Network::HostsResult addrs_result(get_hosts(host, hints, verbose));
     Network::Hosts addrs(addrs_result.first);
     Network::Result result(addrs_result.second);
-    int family = get_family(hints);
-    std::string desc(get_description(family));
+    std::string desc(get_description(hints));
 
     if (result.nonzero()) {
 
