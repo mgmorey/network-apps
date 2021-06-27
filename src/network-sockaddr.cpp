@@ -57,9 +57,11 @@ unsigned short Network::SockAddr::family() const
 
 unsigned short Network::SockAddr::length() const
 {
-    const char* data = value.data();
 #ifdef _DARWIN_C_SOURCE
+    const char* data = value.data();
     return extract_length(data);
+#else
+    return size();
 #endif
 }
 
