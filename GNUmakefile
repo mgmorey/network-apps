@@ -86,7 +86,7 @@ include $(dependencies)
 .SECONDARY: $(objects)
 
 %: tmp/%.o
-	$(LINK.o) $(LDLIBS) -o $@ $^
+	$(LINK.o) -o $@ $^ $(LDLIBS)
 
 tmp/%.o: %.cpp
 	$(COMPILE.cpp) $(OUTPUT_OPTION) $<
