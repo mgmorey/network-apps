@@ -29,8 +29,10 @@ static std::ostream& operator<<(std::ostream& os, const Network::Host& host)
     typedef std::list<std::string> Values;
     Values values;
     Network::SockAddr address(host.address());
-    values.push_back(to_string(address));
-    values.push_back(to_hostname(address, true));
+    Network::Endpoint endpoint(to_endpoint(address, false, true).first);
+    Network::Hostname hostname(endpoint.first);
+    values.push_back(address.addr());
+    values.push_back(hostname);
     values.push_back(host.canonical_name());
     values.unique();
     std::size_t i = 0;
