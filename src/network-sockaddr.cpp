@@ -6,7 +6,8 @@
 #include "network-format.h"     // Format, operator<<()
 
 #ifdef _WIN32
-#include <winsock2.h>   // AF_INET, AF_INET6, PF_INET, PF_INET6
+#include <winsock2.h>   // AF_INET, AF_INET6, PF_INET, PF_INET6,
+                        // inet_ntop()
 #else
 #include <arpa/inet.h>  // inet_ntop()
 #include <sys/socket.h> // AF_INET, AF_INET6, PF_INET, PF_INET6

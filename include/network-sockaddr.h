@@ -2,7 +2,8 @@
 #define NETWORK_SOCKADDR_H
 
 #ifdef _WIN32
-#include <winsock2.h>   // struct sockaddr
+#include <winsock2.h>   // struct sockaddr, struct sockaddr_in,
+                        // sockaddr_in6
 #include <ws2tcpip.h>   // socklen_t
 #else
 #include <netinet/in.h> // struct sockaddr_in, sockaddr_in6
