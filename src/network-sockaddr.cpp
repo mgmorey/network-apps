@@ -56,6 +56,11 @@ unsigned short Network::SockAddr::length() const
     const char* data = value.data();
     std::size_t size = value.size();
     unsigned short length = extract_length(data, size);
+
+    if (!length) {
+        length = value.size();
+    }
+
     assert(length == value.size());
     return length;
 }
@@ -85,7 +90,9 @@ unsigned Network::SockAddr::extract_length(const char*& data, std::size_t& size)
     size -= sizeof length;
     return length;
 #else
-    return value.size();
+    static_cast<void>(data);
+    static_cast<void>(size);
+    return 0;
 #endif
 }
 
