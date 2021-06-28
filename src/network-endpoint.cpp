@@ -1,5 +1,7 @@
-#include "network-endpoint.h"   // Endpoint, EndpointResult, Result,
-                                // SockAddr, to_string()
+#include "network-endpoint.h"   // Endpoint, EndpointResult, Hostname,
+                                // Result, SockAddr, to_endpoint(),
+                                // to_hostname(), to_string()
+#include "network-buffer.h"     // Buffer
 
 #ifdef _WIN32
 #include <ws2tcpip.h>   // NI_MAXHOST, NI_MAXSERV, NI_NUMERICHOST,
@@ -12,21 +14,20 @@
 #include <iostream>     // std::cerr, std::endl
 #include <sstream>      // std::ostringstream
 
-Network::EndpointResult::EndpointResult(const SockAddr& address,
-                                        int flags,
-                                        bool verbose) :
-    code(0),
-    host_buffer(NI_MAXHOST),
-    service_buffer(NI_MAXSERV)
+Network::EndpointResult Network::to_endpoint(const Network::SockAddr& address,
+                                             int flags, bool verbose)
 {
-    code = ::getnameinfo(address, address.size(),
-                         &host_buffer[0], host_buffer.size(),
-                         &service_buffer[0], service_buffer.size(),
-                         flags);
+    std::string error;
+    Buffer host_buffer(NI_MAXHOST);
+    Buffer service_buffer(NI_MAXSERV);
+    int code = ::getnameinfo(address, address.size(),
+                             &host_buffer[0], host_buffer.size(),
+                             &service_buffer[0], service_buffer.size(),
+                             flags);
 
     if (verbose) {
         std::cerr << "Invoking getnameinfo("
-                  << to_string(address)
+                  << address
                   << ", ...)"
                   << std::endl;
     }
@@ -40,26 +41,10 @@ Network::EndpointResult::EndpointResult(const SockAddr& address,
            << ')';
         error = os.str();
     }
-}
 
-Network::Endpoint Network::EndpointResult::endpoint() const
-{
-    return Endpoint(hostname(), service());
-}
-
-Network::Hostname Network::EndpointResult::hostname() const
-{
-    return host_buffer;
-}
-
-Network::Service Network::EndpointResult::service() const
-{
-    return service_buffer;
-}
-
-Network::Result Network::EndpointResult::result() const
-{
-    return Result(code, error);
+    return EndpointResult(Endpoint(host_buffer,
+                                   service_buffer),
+                          Result(code, error));
 }
 
 Network::EndpointResult Network::to_endpoint(const SockAddr& address,
@@ -67,17 +52,17 @@ Network::EndpointResult Network::to_endpoint(const SockAddr& address,
                                              bool verbose)
 {
     int flags = numeric ? NI_NUMERICHOST | NI_NUMERICSERV : 0;
-    return EndpointResult(address, flags, verbose);
+    return to_endpoint(address, flags, verbose);
 }
 
 Network::Hostname Network::to_hostname(const SockAddr& address,
                                        bool verbose)
 {
-    return to_endpoint(address, false, verbose).hostname();
+    return to_endpoint(address, false, verbose).first.first;
 }
 
 Network::Hostname Network::to_string(const SockAddr& address,
                                      bool verbose)
 {
-    return to_endpoint(address, true, verbose).hostname();
+    return to_endpoint(address, true, verbose).first.first;
 }
