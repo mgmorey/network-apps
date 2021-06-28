@@ -4,7 +4,6 @@ ifdef NDEBUG
 	CPPFLAGS += -D_FORTIFY_SOURCE=2
 	CXXFLAGS += -O2
 else
-	CXXFLAGS += -fno-omit-frame-pointer -g3 -O0
 ifeq "$(USING_DMALLOC)" "true"
 	CPPFLAGS += -DDMALLOC -DMALLOC_FUNC_CHECK
 	LDLIBS += -ldmalloc
@@ -12,6 +11,7 @@ else ifeq "$(USING_LIBASAN)" "true"
 	CXXFLAGS += -fsanitize=address
 	LDLIBS += -lasan
 endif
+	CXXFLAGS += -fno-omit-frame-pointer -g3 -O0
 endif
 
 ifeq "$(SYSTEM_PREFIX)" "Darwin"
