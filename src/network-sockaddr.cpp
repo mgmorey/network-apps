@@ -12,7 +12,7 @@
 
 #include <cassert>      // assert()
 #include <iomanip>      // std::hex
-#include <sstream>      // std::ostringstream
+#include <sstream>      // std::istringstream, std::ostringstream
 
 Network::SockAddr::SockAddr(const sockaddr* addr, socklen_t len) :
     value(reinterpret_cast<const char*>(addr), len)
@@ -34,30 +34,6 @@ bool Network::SockAddr::operator==(const SockAddr& other) const
     return value == other.value;
 }
 
-std::string Network::SockAddr::data() const
-{
-    const char* data = value.data();
-    std::size_t size = value.size();
-    static_cast<void>(length(data, size));
-    static_cast<void>(family(data, size));
-    return std::string(data, size);
-}
-
-int Network::SockAddr::family() const
-{
-    const char* data = value.data();
-    std::size_t size = value.size();
-    static_cast<void>(length(data, size));
-    return family(data, size);
-}
-
-int Network::SockAddr::length() const
-{
-    const char* data = value.data();
-    std::size_t size = value.size();
-    return length(data, size);
-}
-
 Network::SockAddr::operator const sockaddr*() const
 {
     return reinterpret_cast<const sockaddr*>(value.data());
@@ -68,7 +44,12 @@ Network::SockAddr::operator std::string() const
     return value;
 }
 
-int Network::SockAddr::family(const char*& data, std::size_t& size) const
+std::string Network::SockAddr::sa_data(const char*& data, std::size_t& size) const
+{
+    return std::string(data, size);
+}
+
+int Network::SockAddr::sa_family(const char*& data, std::size_t& size) const
 {
     unsigned short family = *(reinterpret_cast<const unsigned short*>(data));
 
@@ -85,7 +66,7 @@ int Network::SockAddr::family(const char*& data, std::size_t& size) const
     return family;
 }
 
-int Network::SockAddr::length(const char*& data, std::size_t& size) const
+int Network::SockAddr::sa_length(const char*& data, std::size_t& size) const
 {
 #ifdef SOCKADDR_HAS_SA_LEN
     unsigned char length = *(reinterpret_cast<const unsigned char*>(data));
@@ -108,15 +89,22 @@ socklen_t Network::SockAddr::size() const
 std::ostream& Network::operator<<(std::ostream& os,
                                   const SockAddr& sa)
 {
-    if (sa.size()) {
-        const std::string delim(", ");
+    static const std::string delim(", ");
+    static const int tabs[1] = {0};
+
+    if (sa.value.size()) {
+        const char* data = sa.value.data();
+        std::size_t size = sa.value.size();
+        int sa_length = sa.sa_length(data, size);
+        int sa_family = sa.sa_family(data, size);
+        std::string sa_data(sa.sa_data(data, size));
         os << "sockaddr("
            << Format("sa_len")
-           << sa.length()
-           << Format(delim, 0, "sa_family")
-           << Family(sa.family())
-           << Format(delim, 0, "sa_data")
-           << to_hexadecimal(sa.data())
+           << sa_length
+           << Format(delim, tabs[0], "sa_family")
+           << Family(sa_family)
+           << Format(delim, tabs[0], "sa_data")
+           << to_hexadecimal(sa_data)
            << ')';
     }
     else {

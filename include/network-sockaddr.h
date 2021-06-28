@@ -15,8 +15,6 @@ namespace Network
 {
     class SockAddr
     {
-        friend class EndpointResult;
-        friend class Host;
         friend std::ostream& operator<<(std::ostream& os,
                                         const SockAddr& sa);
 
@@ -25,16 +23,14 @@ namespace Network
         bool operator<(const SockAddr& other) const;
         bool operator>(const SockAddr& other) const;
         bool operator==(const SockAddr& other) const;
-        std::string data() const;
-        int family() const;
-        int length() const;
-
-    private:
         operator const sockaddr*() const;
         operator std::string() const;
-        int family(const char*& data, std::size_t& size) const;
-        int length(const char*& data, std::size_t& size) const;
         socklen_t size() const;
+
+    private:
+        std::string sa_data(const char*& data, std::size_t& size) const;
+        int sa_family(const char*& data, std::size_t& size) const;
+        int sa_length(const char*& data, std::size_t& size) const;
 
         std::string value;
     };
