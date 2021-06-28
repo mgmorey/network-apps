@@ -49,41 +49,30 @@ socklen_t Network::SockAddr::size() const
     return static_cast<socklen_t>(value.size());
 }
 
-std::string Network::SockAddr::sa_data(const char*& data, std::size_t& size) const
+std::string Network::SockAddr::sa_data() const
 {
-    return std::string(data, size);
+    std::size_t offset = offsetof(sockaddr, sa_data);
+    return std::string(value.data() + offset,
+                       value.size() - offset);
 }
 
-int Network::SockAddr::sa_family(const char*& data, std::size_t& size) const
+int Network::SockAddr::sa_family() const
 {
-    unsigned short family = *(reinterpret_cast<const unsigned short*>(data));
-
-    switch (family) {
-    case AF_INET:
-    case AF_INET6:
-        data += sizeof family;
-        size -= sizeof family;
-        break;
-    default:
-        family = 0;
-    }
-
+    const sockaddr* psa = static_cast<const sockaddr*>(*this);
+    int family = psa->sa_family;
     return family;
 }
 
-int Network::SockAddr::sa_length(const char*& data, std::size_t& size) const
+int Network::SockAddr::sa_length() const
 {
 #ifdef SOCKADDR_HAS_SA_LEN
-    unsigned char length = *(reinterpret_cast<const unsigned char*>(data));
-    assert(length == value.size());
-    data += sizeof length;
-    size -= sizeof length;
-    return length;
+    const sockaddr* psa = static_cast<const sockaddr*>(*this);
+    int length = psa->sa_len;
 #else
-    static_cast<void>(data);
-    static_cast<void>(size);
-    return value.size();
+    int length = value.size();
 #endif
+    assert(length = value.size());
+    return length;
 }
 
 std::ostream& Network::operator<<(std::ostream& os,
@@ -93,18 +82,13 @@ std::ostream& Network::operator<<(std::ostream& os,
     static const int tabs[1] = {0};
 
     if (sa.value.size()) {
-        const char* data = sa.value.data();
-        std::size_t size = sa.value.size();
-        int sa_length = sa.sa_length(data, size);
-        int sa_family = sa.sa_family(data, size);
-        std::string sa_data(sa.sa_data(data, size));
         os << "sockaddr("
            << Format("sa_len")
-           << sa_length
+           << sa.sa_length()
            << Format(delim, tabs[0], "sa_family")
-           << Family(sa_family)
+           << Family(sa.sa_family())
            << Format(delim, tabs[0], "sa_data")
-           << to_hexadecimal(sa_data)
+           << to_hexadecimal(sa.sa_data())
            << ')';
     }
     else {

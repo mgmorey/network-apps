@@ -28,9 +28,9 @@ namespace Network
         socklen_t size() const;
 
     private:
-        std::string sa_data(const char*& data, std::size_t& size) const;
-        int sa_family(const char*& data, std::size_t& size) const;
-        int sa_length(const char*& data, std::size_t& size) const;
+        std::string sa_data() const;
+        int sa_family() const;
+        int sa_length() const;
 
         std::string value;
     };
