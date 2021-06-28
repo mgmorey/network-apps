@@ -1,12 +1,14 @@
 #include "network-sockaddr.h"   // SockAddr, operator<<(), struct
                                 // sockaddr, socklen_t, std::ostream,
                                 // std::string
+#include "network-buffer.h"     // Buffer
 #include "network-family.h"     // Family, operator<<()
 #include "network-format.h"     // Format, operator<<()
 
 #ifdef _WIN32
 #include <winsock2.h>   // AF_INET, AF_INET6, PF_INET, PF_INET6
 #else
+#include <arpa/inet.h>  // inet_ntop()
 #include <sys/socket.h> // AF_INET, AF_INET6, PF_INET, PF_INET6
 #endif
 
@@ -45,6 +47,26 @@ Network::SockAddr::operator const sockaddr&() const
     return *static_cast<const sockaddr*>(*this);
 }
 
+Network::SockAddr::operator const sockaddr_in*() const
+{
+    return reinterpret_cast<const sockaddr_in*>(value.data());
+}
+
+Network::SockAddr::operator const sockaddr_in&() const
+{
+    return *static_cast<const sockaddr_in*>(*this);
+}
+
+Network::SockAddr::operator const sockaddr_in6*() const
+{
+    return reinterpret_cast<const sockaddr_in6*>(value.data());
+}
+
+Network::SockAddr::operator const sockaddr_in6&() const
+{
+    return *static_cast<const sockaddr_in6*>(*this);
+}
+
 Network::SockAddr::operator std::string() const
 {
     return value;
@@ -81,27 +103,46 @@ unsigned Network::SockAddr::sa_length() const
     return length;
 }
 
-std::ostream& Network::operator<<(std::ostream& os,
-                                  const SockAddr& sa)
+in_addr Network::SockAddr::sin_addr() const
 {
-    static const std::string delim(", ");
-    static const int tabs[1] = {0};
+    const sockaddr_in& sin = static_cast<const sockaddr_in&>(*this);
+    in_addr addr = sin.sin_addr;
+    return addr;
+}
 
-    if (sa.value.size()) {
-        os << "sockaddr("
-           << Format("sa_len")
-           << sa.sa_length()
-           << Format(delim, tabs[0], "sa_family")
-           << Family(sa.sa_family())
-           << Format(delim, tabs[0], "sa_data")
-           << to_hexadecimal(sa.sa_data())
-           << ')';
-    }
-    else {
-        os << "0x0";
-    }
+unsigned Network::SockAddr::sin_family() const
+{
+    const sockaddr_in& sin = static_cast<const sockaddr_in&>(*this);
+    unsigned family = sin.sin_family;
+    return family;
+}
 
-    return os;
+unsigned Network::SockAddr::sin_port() const
+{
+    const sockaddr_in& sin = static_cast<const sockaddr_in&>(*this);
+    unsigned port = sin.sin_port;
+    return port;
+}
+
+in6_addr Network::SockAddr::sin6_addr() const
+{
+    const sockaddr_in6& sin = static_cast<const sockaddr_in6&>(*this);
+    in6_addr addr = sin.sin6_addr;
+    return addr;
+}
+
+unsigned Network::SockAddr::sin6_family() const
+{
+    const sockaddr_in6& sin = static_cast<const sockaddr_in6&>(*this);
+    unsigned family = sin.sin6_family;
+    return family;
+}
+
+unsigned Network::SockAddr::sin6_port() const
+{
+    const sockaddr_in6& sin = static_cast<const sockaddr_in6&>(*this);
+    unsigned port = sin.sin6_port;
+    return port;
 }
 
 std::string Network::to_hexadecimal(const std::string& value)
@@ -130,4 +171,69 @@ std::string Network::to_hexadecimal(const std::string& value)
     }
 
     return result;
+}
+
+std::string Network::to_string(const in_addr& addr)
+{
+    Buffer buffer(INET_ADDRSTRLEN);
+    inet_ntop(AF_INET, &(addr), &buffer[0], buffer.size());
+    return buffer;
+}
+
+std::string Network::to_string(const in6_addr& addr)
+{
+    Buffer buffer(INET6_ADDRSTRLEN);
+    inet_ntop(AF_INET6, &(addr), &buffer[0], buffer.size());
+    return buffer;
+}
+
+std::ostream& Network::operator<<(std::ostream& os,
+                                  const SockAddr& sa)
+{
+    static const std::string delim(", ");
+    static const int tabs[1] = {0};
+
+    unsigned family = sa.sa_family();
+    unsigned length = sa.sa_length();
+
+    if (sa.value.size()) {
+        os << "sockaddr("
+           << Format("sa_len")
+           << length;
+
+        switch (family) {
+        case AF_INET:
+            os << Format(delim, tabs[0], "sin_family")
+               << Family(sa.sin_family())
+               << Format(delim, tabs[0], "sin_port")
+               << htons(sa.sin_port())
+               << Format(delim, tabs[0], "sin_addr")
+               << '"'
+               << to_string(sa.sin_addr())
+               << '"';
+            break;
+        case AF_INET6:
+            os << Format(delim, tabs[0], "sin6_family")
+               << Family(sa.sin6_family())
+               << Format(delim, tabs[0], "sin6_port")
+               << htons(sa.sin6_port())
+               << Format(delim, tabs[0], "sin6_addr")
+               << '"'
+               << to_string(sa.sin6_addr())
+               << '"';
+            break;
+        default:
+            os << Format(delim, tabs[0], "sa_family")
+               << Family(family)
+               << Format(delim, tabs[0], "sa_data")
+               << to_hexadecimal(sa.sa_data());
+        }
+
+        os << ')';
+    }
+    else {
+        os << "0x0";
+    }
+
+    return os;
 }

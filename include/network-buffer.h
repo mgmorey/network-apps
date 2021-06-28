@@ -16,7 +16,6 @@ namespace Network
         std::size_t size() const;
 
     private:
-        static std::string& trim(std::string& value);
         std::string value;
     };
 }
