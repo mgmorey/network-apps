@@ -12,7 +12,7 @@ namespace Network
     typedef std::pair<Hostname, Service> Endpoint;
     typedef std::pair<Endpoint, Result> EndpointResult;
 
-    extern EndpointResult to_endpoint(const Network::SockAddr& address,
+    extern EndpointResult to_endpoint(const SockAddr& address,
                                       int flags, bool verbose = false);
     extern EndpointResult to_endpoint(const SockAddr& address,
                                       bool numeric = false,
