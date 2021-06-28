@@ -54,15 +54,3 @@ Network::EndpointResult Network::to_endpoint(const SockAddr& address,
     int flags = numeric ? NI_NUMERICHOST | NI_NUMERICSERV : 0;
     return to_endpoint(address, flags, verbose);
 }
-
-Network::Hostname Network::to_hostname(const SockAddr& address,
-                                       bool verbose)
-{
-    return to_endpoint(address, false, verbose).first.first;
-}
-
-Network::Hostname Network::to_string(const SockAddr& address,
-                                     bool verbose)
-{
-    return to_endpoint(address, true, verbose).first.first;
-}

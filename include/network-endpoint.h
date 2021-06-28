@@ -17,10 +17,6 @@ namespace Network
     extern EndpointResult to_endpoint(const SockAddr& address,
                                       bool numeric = false,
                                       bool verbose = false);
-    extern Hostname to_hostname(const SockAddr& address,
-                                bool verbose = false);
-    extern Hostname to_string(const SockAddr& address,
-                              bool verbose = false);
 }
 
 #endif
