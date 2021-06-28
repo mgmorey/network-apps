@@ -24,6 +24,7 @@ namespace Network
         bool operator>(const SockAddr& other) const;
         bool operator==(const SockAddr& other) const;
         operator const sockaddr*() const;
+        operator const sockaddr&() const;
         operator std::string() const;
         socklen_t size() const;
 

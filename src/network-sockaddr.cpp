@@ -40,6 +40,11 @@ Network::SockAddr::operator const sockaddr*() const
     return reinterpret_cast<const sockaddr*>(value.data());
 }
 
+Network::SockAddr::operator const sockaddr&() const
+{
+    return *static_cast<const sockaddr*>(*this);
+}
+
 Network::SockAddr::operator std::string() const
 {
     return value;
@@ -59,16 +64,16 @@ std::string Network::SockAddr::sa_data() const
 
 unsigned Network::SockAddr::sa_family() const
 {
-    const sockaddr* psa = static_cast<const sockaddr*>(*this);
-    unsigned family = psa->sa_family;
+    const sockaddr& sa = static_cast<const sockaddr&>(*this);
+    unsigned family = sa.sa_family;
     return family;
 }
 
 unsigned Network::SockAddr::sa_length() const
 {
 #ifdef SOCKADDR_HAS_SA_LEN
-    const sockaddr* psa = static_cast<const sockaddr*>(*this);
-    unsigned length = psa->sa_len;
+    const sockaddr& sa = static_cast<const sockaddr&>(*this);
+    unsigned length = sa.sa_len;
 #else
     unsigned length = value.size();
 #endif
