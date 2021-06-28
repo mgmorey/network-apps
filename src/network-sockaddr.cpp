@@ -38,34 +38,37 @@ std::string Network::SockAddr::data() const
 {
     const char* data = value.data();
     std::size_t size = value.size();
-    extract_length(data, size);
-    extract_family(data, size);
+    static_cast<void>(length(data, size));
+    static_cast<void>(family(data, size));
     return std::string(data, size);
 }
 
-unsigned short Network::SockAddr::family() const
+int Network::SockAddr::family() const
 {
     const char* data = value.data();
     std::size_t size = value.size();
-    extract_length(data, size);
-    return extract_family(data, size);
+    static_cast<void>(length(data, size));
+    return family(data, size);
 }
 
-unsigned short Network::SockAddr::length() const
+int Network::SockAddr::length() const
 {
     const char* data = value.data();
     std::size_t size = value.size();
-    unsigned short length = extract_length(data, size);
-
-    if (!length) {
-        length = value.size();
-    }
-
-    assert(length == value.size());
-    return length;
+    return length(data, size);
 }
 
-unsigned Network::SockAddr::extract_family(const char*& data, std::size_t& size)
+Network::SockAddr::operator const sockaddr*() const
+{
+    return reinterpret_cast<const sockaddr*>(value.data());
+}
+
+Network::SockAddr::operator std::string() const
+{
+    return value;
+}
+
+int Network::SockAddr::family(const char*& data, std::size_t& size) const
 {
     unsigned short family = *(reinterpret_cast<const unsigned short*>(data));
 
@@ -82,21 +85,48 @@ unsigned Network::SockAddr::extract_family(const char*& data, std::size_t& size)
     return family;
 }
 
-unsigned Network::SockAddr::extract_length(const char*& data, std::size_t& size)
+int Network::SockAddr::length(const char*& data, std::size_t& size) const
 {
 #ifdef SOCKADDR_HAS_SA_LEN
     unsigned char length = *(reinterpret_cast<const unsigned char*>(data));
+    assert(length == value.size());
     data += sizeof length;
     size -= sizeof length;
     return length;
 #else
     static_cast<void>(data);
     static_cast<void>(size);
-    return 0;
+    return value.size();
 #endif
 }
 
-std::string Network::SockAddr::to_hexadecimal(const std::string& value)
+socklen_t Network::SockAddr::size() const
+{
+    return static_cast<socklen_t>(value.size());
+}
+
+std::ostream& Network::operator<<(std::ostream& os,
+                                  const SockAddr& sa)
+{
+    if (sa.size()) {
+        const std::string delim(", ");
+        os << "sockaddr("
+           << Format("sa_len")
+           << sa.length()
+           << Format(delim, 0, "sa_family")
+           << Family(sa.family())
+           << Format(delim, 0, "sa_data")
+           << to_hexadecimal(sa.data())
+           << ')';
+    }
+    else {
+        os << "0x0";
+    }
+
+    return os;
+}
+
+std::string Network::to_hexadecimal(const std::string& value)
 {
     const char* data = value.data();
     std::size_t size = value.size();
@@ -122,40 +152,4 @@ std::string Network::SockAddr::to_hexadecimal(const std::string& value)
     }
 
     return result;
-}
-
-Network::SockAddr::operator const sockaddr*() const
-{
-    return reinterpret_cast<const sockaddr*>(value.data());
-}
-
-Network::SockAddr::operator std::string() const
-{
-    return value;
-}
-
-socklen_t Network::SockAddr::size() const
-{
-    return static_cast<socklen_t>(value.size());
-}
-
-std::ostream& Network::operator<<(std::ostream& os,
-                                  const SockAddr& sa)
-{
-    if (sa.size()) {
-        const std::string delim(", ");
-        os << "sockaddr("
-           << Format("sa_len")
-           << sa.length()
-           << Format(delim, 0, "sa_family")
-           << Family(sa.family())
-           << Format(delim, 0, "sa_data")
-           << SockAddr::to_hexadecimal(sa.data())
-           << ')';
-    }
-    else {
-        os << "0x0";
-    }
-
-    return os;
 }

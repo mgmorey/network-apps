@@ -26,15 +26,14 @@ namespace Network
         bool operator>(const SockAddr& other) const;
         bool operator==(const SockAddr& other) const;
         std::string data() const;
-        unsigned short family() const;
-        unsigned short length() const;
+        int family() const;
+        int length() const;
 
     private:
-        static unsigned extract_family(const char*& data, std::size_t& size);
-        static unsigned extract_length(const char*& data, std::size_t& size);
-        static std::string to_hexadecimal(const std::string& value);
         operator const sockaddr*() const;
         operator std::string() const;
+        int family(const char*& data, std::size_t& size) const;
+        int length(const char*& data, std::size_t& size) const;
         socklen_t size() const;
 
         std::string value;
@@ -42,6 +41,7 @@ namespace Network
 
     extern std::ostream& operator<<(std::ostream& os,
                                     const SockAddr& sa);
+    extern std::string to_hexadecimal(const std::string& value);
 }
 
 #endif
