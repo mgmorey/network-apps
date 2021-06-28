@@ -20,8 +20,7 @@ namespace Network
     typedef std::list<Host> Hosts;
     typedef std::pair<Hosts, Result> HostsResult;
     extern HostsResult get_hosts(const Hostname& host,
-                                 const addrinfo& hints =
-                                 Socket(),
+                                 const addrinfo& hints,
                                  bool verbose = false);
     extern HostsResult get_hosts(const Hostname& host,
                                  bool verbose = false);
