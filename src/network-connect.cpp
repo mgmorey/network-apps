@@ -88,8 +88,10 @@ Network::Result Network::connect(int fd, const addrinfo& ai,
     Network::Host host(ai);
 
     if (verbose) {
-        std::cerr << "Trying address: "
-                  << to_string(host.address())
+        std::cerr << "Trying host "
+                  << host.address().addr()
+                  << " port "
+                  << host.address().port()
                   << std::endl;
     }
 
