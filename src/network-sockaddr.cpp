@@ -11,6 +11,7 @@
 #endif
 
 #include <cassert>      // assert()
+#include <cstddef>      // offsetof()
 #include <iomanip>      // std::hex
 #include <sstream>      // std::istringstream, std::ostringstream
 
