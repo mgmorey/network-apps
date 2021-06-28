@@ -44,6 +44,11 @@ Network::SockAddr::operator std::string() const
     return value;
 }
 
+socklen_t Network::SockAddr::size() const
+{
+    return static_cast<socklen_t>(value.size());
+}
+
 std::string Network::SockAddr::sa_data(const char*& data, std::size_t& size) const
 {
     return std::string(data, size);
@@ -79,11 +84,6 @@ int Network::SockAddr::sa_length(const char*& data, std::size_t& size) const
     static_cast<void>(size);
     return value.size();
 #endif
-}
-
-socklen_t Network::SockAddr::size() const
-{
-    return static_cast<socklen_t>(value.size());
 }
 
 std::ostream& Network::operator<<(std::ostream& os,
