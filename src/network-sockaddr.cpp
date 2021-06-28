@@ -57,22 +57,22 @@ std::string Network::SockAddr::sa_data() const
                        value.size() - offset);
 }
 
-int Network::SockAddr::sa_family() const
+unsigned Network::SockAddr::sa_family() const
 {
     const sockaddr* psa = static_cast<const sockaddr*>(*this);
-    int family = psa->sa_family;
+    unsigned family = psa->sa_family;
     return family;
 }
 
-int Network::SockAddr::sa_length() const
+unsigned Network::SockAddr::sa_length() const
 {
 #ifdef SOCKADDR_HAS_SA_LEN
     const sockaddr* psa = static_cast<const sockaddr*>(*this);
-    int length = psa->sa_len;
+    unsigned length = psa->sa_len;
 #else
-    int length = value.size();
+    unsigned length = value.size();
 #endif
-    assert(length = value.size());
+    assert(length == value.size());
     return length;
 }
 

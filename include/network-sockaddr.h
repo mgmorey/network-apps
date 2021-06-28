@@ -29,8 +29,8 @@ namespace Network
 
     private:
         std::string sa_data() const;
-        int sa_family() const;
-        int sa_length() const;
+        unsigned sa_family() const;
+        unsigned sa_length() const;
 
         std::string value;
     };
