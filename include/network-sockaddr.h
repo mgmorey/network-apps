@@ -32,6 +32,9 @@ namespace Network
         operator const sockaddr_in6*() const;
         operator const sockaddr_in6&() const;
         operator std::string() const;
+        std::string addr() const;
+        unsigned family() const;
+        unsigned port() const;
         socklen_t size() const;
 
     private:

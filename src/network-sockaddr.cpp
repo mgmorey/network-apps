@@ -15,7 +15,7 @@
 
 #include <cassert>      // assert()
 #include <cstddef>      // offsetof()
-#include <iomanip>      // std::hex
+#include <iomanip>      // std::hex, std::setfill(), std::setw()
 #include <sstream>      // std::istringstream, std::ostringstream
 
 Network::SockAddr::SockAddr(const sockaddr* addr, socklen_t len) :
@@ -25,17 +25,23 @@ Network::SockAddr::SockAddr(const sockaddr* addr, socklen_t len) :
 
 bool Network::SockAddr::operator<(const SockAddr& other) const
 {
-    return value < other.value;
+    return (family() < other.family() ||
+            port() < other.port() ||
+            addr() < other.addr());
 }
 
 bool Network::SockAddr::operator>(const SockAddr& other) const
 {
-    return value > other.value;
+    return (family() > other.family() ||
+            port() > other.port() ||
+            addr() > other.addr());
 }
 
 bool Network::SockAddr::operator==(const SockAddr& other) const
 {
-    return value == other.value;
+    return (family() == other.family() &&
+            port() == other.port() &&
+            addr() == other.addr());
 }
 
 Network::SockAddr::operator const sockaddr*() const
@@ -71,6 +77,42 @@ Network::SockAddr::operator const sockaddr_in6&() const
 Network::SockAddr::operator std::string() const
 {
     return value;
+}
+
+std::string Network::SockAddr::addr() const
+{
+    switch(sa_family()) {
+    case AF_INET:
+        return to_string(sin_addr());
+    case AF_INET6:
+        return to_string(sin6_addr());
+    }
+
+    return to_hexadecimal(sa_data());
+}
+
+unsigned Network::SockAddr::family() const
+{
+    switch(sa_family()) {
+    case AF_INET:
+        return sin_family();
+    case AF_INET6:
+        return sin6_family();
+    }
+
+    return sa_family();
+}
+
+unsigned Network::SockAddr::port() const
+{
+    switch(sa_family()) {
+    case AF_INET:
+        return htons(sin_port());
+    case AF_INET6:
+        return htons(sin6_port());
+    }
+
+    return 0;
 }
 
 socklen_t Network::SockAddr::size() const
@@ -177,14 +219,14 @@ std::string Network::to_hexadecimal(const std::string& value)
 std::string Network::to_string(const in_addr& addr)
 {
     Buffer buffer(INET_ADDRSTRLEN);
-    inet_ntop(AF_INET, &(addr), &buffer[0], buffer.size());
+    inet_ntop(AF_INET, &addr, &buffer[0], buffer.size());
     return buffer;
 }
 
 std::string Network::to_string(const in6_addr& addr)
 {
     Buffer buffer(INET6_ADDRSTRLEN);
-    inet_ntop(AF_INET6, &(addr), &buffer[0], buffer.size());
+    inet_ntop(AF_INET6, &addr, &buffer[0], buffer.size());
     return buffer;
 }
 
