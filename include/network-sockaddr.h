@@ -60,6 +60,10 @@ namespace Network
                                     const sockaddr_in& sin);
     extern std::ostream& operator<<(std::ostream& os,
                                     const sockaddr_in6& sin);
+    extern std::ostream& operator<<(std::ostream& os,
+                                    const in_addr& addr);
+    extern std::ostream& operator<<(std::ostream& os,
+                                    const in6_addr& addr);
 }
 
 #endif

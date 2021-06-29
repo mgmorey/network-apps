@@ -277,7 +277,7 @@ std::ostream& Network::operator<<(std::ostream& os,
        << Format(delim, tabs[0], "sin_port")
        << htons(sin.sin_port)
        << Format(delim, tabs[0], "sin_addr")
-       << to_string(sin.sin_addr)
+       << sin.sin_addr
        << ')';
     return os;
 }
@@ -294,7 +294,25 @@ std::ostream& Network::operator<<(std::ostream& os,
        << Format(delim, tabs[0], "sin6_port")
        << htons(sin.sin6_port)
        << Format(delim, tabs[0], "sin6_addr")
-       << to_string(sin.sin6_addr)
+       << sin.sin6_addr
+       << ')';
+    return os;
+}
+
+std::ostream& Network::operator<<(std::ostream& os,
+                                  const in_addr& addr)
+{
+    os << "in_addr("
+       << to_string(addr)
+       << ')';
+    return os;
+}
+
+std::ostream& Network::operator<<(std::ostream& os,
+                                  const in6_addr& addr)
+{
+    os << "in6_addr("
+       << to_string(addr)
        << ')';
     return os;
 }
