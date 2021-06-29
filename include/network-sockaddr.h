@@ -27,6 +27,14 @@ namespace Network
     {
         friend std::ostream& operator<<(std::ostream& os,
                                         const SockAddr& sa);
+        friend std::ostream& operator<<(std::ostream& os,
+                                        const sockaddr_in& sin);
+        friend std::ostream& operator<<(std::ostream& os,
+                                        const sockaddr_in6& sin);
+        friend std::ostream& operator<<(std::ostream& os,
+                                        const in_addr& addr);
+        friend std::ostream& operator<<(std::ostream& os,
+                                        const in6_addr& addr);
 
     public:
         SockAddr(const sockaddr* addr, socklen_t addrlen);
@@ -43,6 +51,9 @@ namespace Network
         socklen_t size() const;
 
     private:
+        static std::string to_string(const std::string& value);
+        static std::string to_string(const in_addr& addr);
+        static std::string to_string(const in6_addr& addr);
         std::string sa_data() const;
         family_type sa_family() const;
         socklen_t sa_length() const;
@@ -56,9 +67,6 @@ namespace Network
         std::string value;
     };
 
-    extern std::string to_string(const in_addr& addr);
-    extern std::string to_string(const in6_addr& addr);
-    extern std::string to_string_hex(const std::string& value);
     extern std::ostream& operator<<(std::ostream& os,
                                     const SockAddr& sa);
     extern std::ostream& operator<<(std::ostream& os,

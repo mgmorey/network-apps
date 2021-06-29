@@ -73,7 +73,7 @@ std::string Network::SockAddr::addr() const
         return to_string(sin6_addr());
     }
 
-    return to_string_hex(sa_data());
+    return to_string(sa_data());
 }
 
 Network::family_type Network::SockAddr::family() const
@@ -103,6 +103,48 @@ Network::port_type Network::SockAddr::port() const
 socklen_t Network::SockAddr::size() const
 {
     return static_cast<socklen_t>(value.size());
+}
+
+std::string Network::SockAddr::to_string(const std::string& value)
+{
+    const char* data = value.data();
+    std::size_t size = value.size();
+    std::ostringstream oss;
+    oss << std::hex;
+
+    for(const char* p = data; p < data + size; p++) {
+        short ch = static_cast<short>(*p & 0xFF);
+        oss << std::setfill('0')
+            << std::setw(2)
+            << ch;
+    }
+
+    std::string result("0x");
+    std::string str(oss.str());
+    assert(str.size() == size * 2);
+
+    if (str.empty()) {
+        result += "0";
+    }
+    else {
+        result += str;
+    }
+
+    return result;
+}
+
+std::string Network::SockAddr::to_string(const in_addr& addr)
+{
+    Buffer buffer(INET_ADDRSTRLEN);
+    inet_ntop(AF_INET, &addr, &buffer[0], buffer.size());
+    return buffer;
+}
+
+std::string Network::SockAddr::to_string(const in6_addr& addr)
+{
+    Buffer buffer(INET6_ADDRSTRLEN);
+    inet_ntop(AF_INET6, &addr, &buffer[0], buffer.size());
+    return buffer;
 }
 
 std::string Network::SockAddr::sa_data() const
@@ -173,48 +215,6 @@ Network::port_type Network::SockAddr::sin6_port() const
     return port;
 }
 
-std::string Network::to_string(const in_addr& addr)
-{
-    Buffer buffer(INET_ADDRSTRLEN);
-    inet_ntop(AF_INET, &addr, &buffer[0], buffer.size());
-    return buffer;
-}
-
-std::string Network::to_string(const in6_addr& addr)
-{
-    Buffer buffer(INET6_ADDRSTRLEN);
-    inet_ntop(AF_INET6, &addr, &buffer[0], buffer.size());
-    return buffer;
-}
-
-std::string Network::to_string_hex(const std::string& value)
-{
-    const char* data = value.data();
-    std::size_t size = value.size();
-    std::ostringstream oss;
-    oss << std::hex;
-
-    for(const char* p = data; p < data + size; p++) {
-        short ch = static_cast<short>(*p & 0xFF);
-        oss << std::setfill('0')
-            << std::setw(2)
-            << ch;
-    }
-
-    std::string result("0x");
-    std::string str(oss.str());
-    assert(str.size() == size * 2);
-
-    if (str.empty()) {
-        result += "0";
-    }
-    else {
-        result += str;
-    }
-
-    return result;
-}
-
 std::ostream& Network::operator<<(std::ostream& os,
                                   const SockAddr& sa)
 {
@@ -239,7 +239,7 @@ std::ostream& Network::operator<<(std::ostream& os,
                << Format(delim, tabs[0], "sa_family")
                << Family(family)
                << Format(delim, tabs[0], "sa_data")
-               << to_string_hex(sa.sa_data())
+               << SockAddr::to_string(sa.sa_data())
                << ')';
         }
     }
@@ -288,7 +288,7 @@ std::ostream& Network::operator<<(std::ostream& os,
                                   const in_addr& addr)
 {
     os << "in_addr("
-       << to_string(addr)
+       << SockAddr::to_string(addr)
        << ')';
     return os;
 }
@@ -297,7 +297,7 @@ std::ostream& Network::operator<<(std::ostream& os,
                                   const in6_addr& addr)
 {
     os << "in6_addr("
-       << to_string(addr)
+       << SockAddr::to_string(addr)
        << ')';
     return os;
 }
