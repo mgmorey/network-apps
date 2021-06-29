@@ -8,6 +8,7 @@
 #else
 #include <netinet/in.h> // struct sockaddr_in, struct sockaddr_in6
 #include <sys/socket.h> // struct sockaddr, socklen_t
+#include <sys/un.h>     // struct sockaddr_un
 #endif
 
 #include <ostream>      // std::ostream
@@ -31,6 +32,10 @@ namespace Network
                                         const sockaddr_in& sin);
         friend std::ostream& operator<<(std::ostream& os,
                                         const sockaddr_in6& sin);
+#ifndef _WIN32
+        friend std::ostream& operator<<(std::ostream& os,
+                                        const sockaddr_un& sin);
+#endif
         friend std::ostream& operator<<(std::ostream& os,
                                         const in_addr& addr);
         friend std::ostream& operator<<(std::ostream& os,
@@ -45,6 +50,9 @@ namespace Network
         operator const sockaddr&() const;
         operator const sockaddr_in&() const;
         operator const sockaddr_in6&() const;
+#ifndef _WIN32
+        operator const sockaddr_un&() const;
+#endif
         std::string addr() const;
         family_type family() const;
         port_type port() const;
@@ -63,6 +71,10 @@ namespace Network
         in6_addr sin6_addr() const;
         family_type sin6_family() const;
         port_type sin6_port() const;
+#ifndef _WIN32
+        family_type sun_family() const;
+        std::string sun_path() const;
+#endif
 
         std::string value;
     };
@@ -73,6 +85,10 @@ namespace Network
                                     const sockaddr_in& sin);
     extern std::ostream& operator<<(std::ostream& os,
                                     const sockaddr_in6& sin);
+#ifndef _WIN32
+    extern std::ostream& operator<<(std::ostream& os,
+                                    const sockaddr_un& sun);
+#endif
     extern std::ostream& operator<<(std::ostream& os,
                                     const in_addr& addr);
     extern std::ostream& operator<<(std::ostream& os,

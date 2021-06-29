@@ -64,6 +64,13 @@ Network::SockAddr::operator const sockaddr_in6&() const
     return *reinterpret_cast<const sockaddr_in6*>(value.data());
 }
 
+#ifndef _WIN32
+Network::SockAddr::operator const sockaddr_un&() const
+{
+    return *reinterpret_cast<const sockaddr_un*>(value.data());
+}
+#endif
+
 std::string Network::SockAddr::addr() const
 {
     switch(sa_family()) {
@@ -215,6 +222,22 @@ Network::port_type Network::SockAddr::sin6_port() const
     return port;
 }
 
+#ifndef _WIN32
+Network::family_type Network::SockAddr::sun_family() const
+{
+    const sockaddr_un& sun = static_cast<const sockaddr_un&>(*this);
+    port_type port = sun.sun_family;
+    return port;
+}
+
+std::string Network::SockAddr::sun_path() const
+{
+    const sockaddr_un& sun = static_cast<const sockaddr_un&>(*this);
+    std::string path(sun.sun_path);
+    return path;
+}
+#endif
+
 std::ostream& Network::operator<<(std::ostream& os,
                                   const SockAddr& sa)
 {
@@ -226,6 +249,11 @@ std::ostream& Network::operator<<(std::ostream& os,
 
     if (sa.value.size()) {
         switch (family) {
+#ifndef _WIN32
+        case AF_UNIX:
+            os << static_cast<const sockaddr_un&>(sa);
+            break;
+#endif
         case AF_INET:
             os << static_cast<const sockaddr_in&>(sa);
             break;
@@ -283,6 +311,23 @@ std::ostream& Network::operator<<(std::ostream& os,
        << ')';
     return os;
 }
+
+#ifndef _WIN32
+std::ostream& Network::operator<<(std::ostream& os,
+                                  const sockaddr_un& sun)
+{
+    static const std::string delim(", ");
+    static const int tabs[1] = {0};
+
+    os << "sockaddr_un("
+       << Format("sun_family")
+       << Family(sun.sun_family)
+       << Format(delim, tabs[0], "sun_path")
+       << sun.sun_path
+       << ')';
+    return os;
+}
+#endif
 
 std::ostream& Network::operator<<(std::ostream& os,
                                   const in_addr& addr)
