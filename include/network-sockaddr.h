@@ -15,6 +15,14 @@
 
 namespace Network
 {
+#ifdef _WIN32
+    typedef u_short family_type;
+    typedef u_short port_type;
+#else
+    typedef sa_family_t family_type;
+    typedef in_port_t port_type;
+#endif
+
     class SockAddr
     {
         friend std::ostream& operator<<(std::ostream& os,
@@ -33,20 +41,20 @@ namespace Network
         operator const sockaddr_in6&() const;
         operator std::string() const;
         std::string addr() const;
-        unsigned family() const;
-        unsigned port() const;
+        family_type family() const;
+        port_type port() const;
         socklen_t size() const;
 
     private:
         std::string sa_data() const;
-        unsigned sa_family() const;
-        unsigned sa_length() const;
+        family_type sa_family() const;
+        socklen_t sa_length() const;
         in_addr sin_addr() const;
-        unsigned sin_family() const;
-        unsigned sin_port() const;
+        family_type sin_family() const;
+        port_type sin_port() const;
         in6_addr sin6_addr() const;
-        unsigned sin6_family() const;
-        unsigned sin6_port() const;
+        family_type sin6_family() const;
+        port_type sin6_port() const;
 
         std::string value;
     };

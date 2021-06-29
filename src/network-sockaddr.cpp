@@ -91,7 +91,7 @@ std::string Network::SockAddr::addr() const
     return to_string_hex(sa_data());
 }
 
-unsigned Network::SockAddr::family() const
+Network::family_type Network::SockAddr::family() const
 {
     switch(sa_family()) {
     case AF_INET:
@@ -103,7 +103,7 @@ unsigned Network::SockAddr::family() const
     return sa_family();
 }
 
-unsigned Network::SockAddr::port() const
+Network::port_type Network::SockAddr::port() const
 {
     switch(sa_family()) {
     case AF_INET:
@@ -127,22 +127,22 @@ std::string Network::SockAddr::sa_data() const
                        value.size() - offset);
 }
 
-unsigned Network::SockAddr::sa_family() const
+Network::family_type Network::SockAddr::sa_family() const
 {
     const sockaddr& sa = static_cast<const sockaddr&>(*this);
-    unsigned family = sa.sa_family;
+    family_type family = sa.sa_family;
     return family;
 }
 
-unsigned Network::SockAddr::sa_length() const
+socklen_t Network::SockAddr::sa_length() const
 {
 #ifdef SOCKADDR_HAS_SA_LEN
     const sockaddr& sa = static_cast<const sockaddr&>(*this);
-    unsigned length = sa.sa_len;
+    socklen_t length = sa.sa_len;
 #else
-    unsigned length = value.size();
+    socklen_t length = size();
 #endif
-    assert(length == value.size());
+    assert(length == size());
     return length;
 }
 
@@ -153,17 +153,17 @@ in_addr Network::SockAddr::sin_addr() const
     return addr;
 }
 
-unsigned Network::SockAddr::sin_family() const
+Network::family_type Network::SockAddr::sin_family() const
 {
     const sockaddr_in& sin = static_cast<const sockaddr_in&>(*this);
-    unsigned family = sin.sin_family;
+    family_type family = sin.sin_family;
     return family;
 }
 
-unsigned Network::SockAddr::sin_port() const
+Network::port_type Network::SockAddr::sin_port() const
 {
     const sockaddr_in& sin = static_cast<const sockaddr_in&>(*this);
-    unsigned port = sin.sin_port;
+    port_type port = sin.sin_port;
     return port;
 }
 
@@ -174,17 +174,17 @@ in6_addr Network::SockAddr::sin6_addr() const
     return addr;
 }
 
-unsigned Network::SockAddr::sin6_family() const
+Network::family_type Network::SockAddr::sin6_family() const
 {
     const sockaddr_in6& sin = static_cast<const sockaddr_in6&>(*this);
-    unsigned family = sin.sin6_family;
+    family_type family = sin.sin6_family;
     return family;
 }
 
-unsigned Network::SockAddr::sin6_port() const
+Network::port_type Network::SockAddr::sin6_port() const
 {
     const sockaddr_in6& sin = static_cast<const sockaddr_in6&>(*this);
-    unsigned port = sin.sin6_port;
+    port_type port = sin.sin6_port;
     return port;
 }
 
@@ -236,8 +236,8 @@ std::ostream& Network::operator<<(std::ostream& os,
     static const std::string delim(", ");
     static const int tabs[1] = {0};
 
-    unsigned family = sa.sa_family();
-    unsigned length = sa.sa_length();
+    family_type family = sa.sa_family();
+    socklen_t length = sa.sa_length();
 
     if (sa.value.size()) {
         switch (family) {
