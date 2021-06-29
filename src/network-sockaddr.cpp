@@ -18,8 +18,8 @@
 #include <iomanip>      // std::hex, std::setfill(), std::setw()
 #include <sstream>      // std::istringstream, std::ostringstream
 
-Network::SockAddr::SockAddr(const sockaddr* addr, socklen_t len) :
-    value(reinterpret_cast<const char*>(addr), len)
+Network::SockAddr::SockAddr(const sockaddr* addr, socklen_t addrlen) :
+    value(reinterpret_cast<const char*>(addr), addrlen)
 {
 }
 

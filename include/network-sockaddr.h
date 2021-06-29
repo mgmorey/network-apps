@@ -29,7 +29,7 @@ namespace Network
                                         const SockAddr& sa);
 
     public:
-        SockAddr(const sockaddr* addr, socklen_t len);
+        SockAddr(const sockaddr* addr, socklen_t addrlen);
         bool operator<(const SockAddr& other) const;
         bool operator>(const SockAddr& other) const;
         bool operator==(const SockAddr& other) const;
