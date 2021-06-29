@@ -163,7 +163,7 @@ Network::family_type Network::SockAddr::sa_family() const
 
 socklen_t Network::SockAddr::sa_length() const
 {
-#ifdef SOCKADDR_HAS_SA_LEN
+#ifdef HAVE_SOCKADDR_SA_LEN
     const sockaddr& sa = static_cast<const sockaddr&>(*this);
     socklen_t length = sa.sa_len;
 #else

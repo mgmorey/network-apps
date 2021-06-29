@@ -15,17 +15,17 @@ endif
 endif
 
 ifeq "$(SYSTEM_PREFIX)" "Darwin"
-	CPPFLAGS += -D_DARWIN_C_SOURCE -DSOCKADDR_HAS_SA_LEN
+	CPPFLAGS += -D_DARWIN_C_SOURCE -DHAVE_SOCKADDR_SA_LEN
 else ifeq "$(SYSTEM_PREFIX)" "CYGWIN_NT"
 	CPPFLAGS += -D_POSIX_C_SOURCE=200809L
 else ifeq "$(SYSTEM_PREFIX)" "FreeBSD"
-	CPPFLAGS += -DSOCKADDR_HAS_SA_LEN -I/usr/local/include
+	CPPFLAGS += -DHAVE_SOCKADDR_SA_LEN -I/usr/local/include
 	LDLIBS += -L/usr/local/lib
 else ifeq "$(SYSTEM_PREFIX)" "MINGW64_NT"
 	LDLIBS += -lws2_32
 endif
 
-CPPFLAGS += -I include
+CPPFLAGS += -Iinclude
 CXXFLAGS += -std=c++98 -Wall -Werror -Wextra -Wpedantic
 
 LINK.o = $(CXX) $(LDFLAGS)
