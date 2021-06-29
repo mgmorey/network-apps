@@ -3,10 +3,10 @@
 
 #ifdef _WIN32
 #include <winsock2.h>   // struct sockaddr, struct sockaddr_in,
-                        // sockaddr_in6
+                        // struct sockaddr_in6
 #include <ws2tcpip.h>   // socklen_t
 #else
-#include <netinet/in.h> // struct sockaddr_in, sockaddr_in6
+#include <netinet/in.h> // struct sockaddr_in, struct sockaddr_in6
 #include <sys/socket.h> // struct sockaddr, socklen_t
 #endif
 
