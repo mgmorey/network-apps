@@ -51,13 +51,15 @@ namespace Network
         std::string value;
     };
 
-    extern std::string to_hexadecimal(const std::string& value);
     extern std::string to_string(const in_addr& addr);
     extern std::string to_string(const in6_addr& addr);
+    extern std::string to_string_hex(const std::string& value);
     extern std::ostream& operator<<(std::ostream& os,
                                     const SockAddr& sa);
     extern std::ostream& operator<<(std::ostream& os,
-                                    const in_addr& addr);
+                                    const sockaddr_in& sin);
+    extern std::ostream& operator<<(std::ostream& os,
+                                    const sockaddr_in6& sin);
 }
 
 #endif

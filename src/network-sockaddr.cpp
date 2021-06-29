@@ -88,7 +88,7 @@ std::string Network::SockAddr::addr() const
         return to_string(sin6_addr());
     }
 
-    return to_hexadecimal(sa_data());
+    return to_string_hex(sa_data());
 }
 
 unsigned Network::SockAddr::family() const
@@ -188,7 +188,21 @@ unsigned Network::SockAddr::sin6_port() const
     return port;
 }
 
-std::string Network::to_hexadecimal(const std::string& value)
+std::string Network::to_string(const in_addr& addr)
+{
+    Buffer buffer(INET_ADDRSTRLEN);
+    inet_ntop(AF_INET, &addr, &buffer[0], buffer.size());
+    return buffer;
+}
+
+std::string Network::to_string(const in6_addr& addr)
+{
+    Buffer buffer(INET6_ADDRSTRLEN);
+    inet_ntop(AF_INET6, &addr, &buffer[0], buffer.size());
+    return buffer;
+}
+
+std::string Network::to_string_hex(const std::string& value)
 {
     const char* data = value.data();
     std::size_t size = value.size();
@@ -216,20 +230,6 @@ std::string Network::to_hexadecimal(const std::string& value)
     return result;
 }
 
-std::string Network::to_string(const in_addr& addr)
-{
-    Buffer buffer(INET_ADDRSTRLEN);
-    inet_ntop(AF_INET, &addr, &buffer[0], buffer.size());
-    return buffer;
-}
-
-std::string Network::to_string(const in6_addr& addr)
-{
-    Buffer buffer(INET6_ADDRSTRLEN);
-    inet_ntop(AF_INET6, &addr, &buffer[0], buffer.size());
-    return buffer;
-}
-
 std::ostream& Network::operator<<(std::ostream& os,
                                   const SockAddr& sa)
 {
@@ -240,43 +240,61 @@ std::ostream& Network::operator<<(std::ostream& os,
     unsigned length = sa.sa_length();
 
     if (sa.value.size()) {
-        os << "sockaddr("
-           << Format("sa_len")
-           << length;
-
         switch (family) {
         case AF_INET:
-            os << Format(delim, tabs[0], "sin_family")
-               << Family(sa.sin_family())
-               << Format(delim, tabs[0], "sin_port")
-               << htons(sa.sin_port())
-               << Format(delim, tabs[0], "sin_addr")
-               << '"'
-               << to_string(sa.sin_addr())
-               << '"';
+            os << static_cast<const sockaddr_in&>(sa);
             break;
         case AF_INET6:
-            os << Format(delim, tabs[0], "sin6_family")
-               << Family(sa.sin6_family())
-               << Format(delim, tabs[0], "sin6_port")
-               << htons(sa.sin6_port())
-               << Format(delim, tabs[0], "sin6_addr")
-               << '"'
-               << to_string(sa.sin6_addr())
-               << '"';
+            os << static_cast<const sockaddr_in6&>(sa);
             break;
         default:
-            os << Format(delim, tabs[0], "sa_family")
+            os << "sockaddr("
+               << Format("sa_len")
+               << length
+               << Format(delim, tabs[0], "sa_family")
                << Family(family)
                << Format(delim, tabs[0], "sa_data")
-               << to_hexadecimal(sa.sa_data());
+               << to_string_hex(sa.sa_data())
+               << ')';
         }
-
-        os << ')';
     }
     else {
         os << "0x0";
     }
 
+    return os;
+}
+
+std::ostream& Network::operator<<(std::ostream& os,
+                                  const sockaddr_in& sin)
+{
+    static const std::string delim(", ");
+    static const int tabs[1] = {0};
+
+    os << "sockaddr_in("
+       << Format("sin_family")
+       << Family(sin.sin_family)
+       << Format(delim, tabs[0], "sin_port")
+       << htons(sin.sin_port)
+       << Format(delim, tabs[0], "sin_addr")
+       << to_string(sin.sin_addr)
+       << ')';
+    return os;
+}
+
+std::ostream& Network::operator<<(std::ostream& os,
+                                  const sockaddr_in6& sin)
+{
+    static const std::string delim(", ");
+    static const int tabs[1] = {0};
+
+    os << "sockaddr_in6("
+       << Format("sin6_family")
+       << Family(sin.sin6_family)
+       << Format(delim, tabs[0], "sin6_port")
+       << htons(sin.sin6_port)
+       << Format(delim, tabs[0], "sin6_addr")
+       << to_string(sin.sin6_addr)
+       << ')';
     return os;
 }
