@@ -57,6 +57,9 @@ dkms.conf
 # Backup files
 *~
 
+# Dependencies
+*.dep
+
 # Etags file
 TAGS
 
@@ -68,8 +71,8 @@ logfile
 *.html
 *.json
 
-# Dependencies
-*.dep
+# Temporary files
+*.tmp
 
 # POSIX executables
 test-address
