@@ -35,9 +35,7 @@ namespace Network
         bool operator==(const SockAddr& other) const;
         operator const sockaddr*() const;
         operator const sockaddr&() const;
-        operator const sockaddr_in*() const;
         operator const sockaddr_in&() const;
-        operator const sockaddr_in6*() const;
         operator const sockaddr_in6&() const;
         operator std::string() const;
         std::string addr() const;

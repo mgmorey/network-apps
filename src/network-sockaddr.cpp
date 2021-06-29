@@ -51,27 +51,17 @@ Network::SockAddr::operator const sockaddr*() const
 
 Network::SockAddr::operator const sockaddr&() const
 {
-    return *static_cast<const sockaddr*>(*this);
-}
-
-Network::SockAddr::operator const sockaddr_in*() const
-{
-    return reinterpret_cast<const sockaddr_in*>(value.data());
+    return *reinterpret_cast<const sockaddr*>(value.data());
 }
 
 Network::SockAddr::operator const sockaddr_in&() const
 {
-    return *static_cast<const sockaddr_in*>(*this);
-}
-
-Network::SockAddr::operator const sockaddr_in6*() const
-{
-    return reinterpret_cast<const sockaddr_in6*>(value.data());
+    return *reinterpret_cast<const sockaddr_in*>(value.data());
 }
 
 Network::SockAddr::operator const sockaddr_in6&() const
 {
-    return *static_cast<const sockaddr_in6*>(*this);
+    return *reinterpret_cast<const sockaddr_in6*>(value.data());
 }
 
 Network::SockAddr::operator std::string() const
