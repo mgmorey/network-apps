@@ -64,11 +64,6 @@ Network::SockAddr::operator const sockaddr_in6&() const
     return *reinterpret_cast<const sockaddr_in6*>(value.data());
 }
 
-Network::SockAddr::operator std::string() const
-{
-    return value;
-}
-
 std::string Network::SockAddr::addr() const
 {
     switch(sa_family()) {

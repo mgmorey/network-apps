@@ -37,7 +37,6 @@ namespace Network
         operator const sockaddr&() const;
         operator const sockaddr_in&() const;
         operator const sockaddr_in6&() const;
-        operator std::string() const;
         std::string addr() const;
         family_type family() const;
         port_type port() const;
