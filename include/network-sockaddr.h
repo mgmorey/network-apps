@@ -31,15 +31,15 @@ namespace Network
         friend std::ostream& operator<<(std::ostream& os,
                                         const sockaddr_in& sin);
         friend std::ostream& operator<<(std::ostream& os,
-                                        const sockaddr_in6& sin);
+                                        const in_addr& addr);
+        friend std::ostream& operator<<(std::ostream& os,
+                                        const sockaddr_in6& sin6);
+        friend std::ostream& operator<<(std::ostream& os,
+                                        const in6_addr& addr);
 #ifndef _WIN32
         friend std::ostream& operator<<(std::ostream& os,
                                         const sockaddr_un& sin);
 #endif
-        friend std::ostream& operator<<(std::ostream& os,
-                                        const in_addr& addr);
-        friend std::ostream& operator<<(std::ostream& os,
-                                        const in6_addr& addr);
 
     public:
         SockAddr(const sockaddr* addr, socklen_t addrlen);

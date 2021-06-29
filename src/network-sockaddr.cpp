@@ -205,22 +205,22 @@ Network::port_type Network::SockAddr::sin_port() const
 
 in6_addr Network::SockAddr::sin6_addr() const
 {
-    const sockaddr_in6& sin = static_cast<const sockaddr_in6&>(*this);
-    in6_addr addr = sin.sin6_addr;
-    return addr;
+    const sockaddr_in6& sin6 = static_cast<const sockaddr_in6&>(*this);
+    in6_addr addr6 = sin6.sin6_addr;
+    return addr6;
 }
 
 Network::family_type Network::SockAddr::sin6_family() const
 {
-    const sockaddr_in6& sin = static_cast<const sockaddr_in6&>(*this);
-    family_type family = sin.sin6_family;
+    const sockaddr_in6& sin6 = static_cast<const sockaddr_in6&>(*this);
+    family_type family = sin6.sin6_family;
     return family;
 }
 
 Network::port_type Network::SockAddr::sin6_port() const
 {
-    const sockaddr_in6& sin = static_cast<const sockaddr_in6&>(*this);
-    port_type port = sin.sin6_port;
+    const sockaddr_in6& sin6 = static_cast<const sockaddr_in6&>(*this);
+    port_type port = sin6.sin6_port;
     return port;
 }
 
@@ -298,18 +298,36 @@ std::ostream& Network::operator<<(std::ostream& os,
 }
 
 std::ostream& Network::operator<<(std::ostream& os,
-                                  const sockaddr_in6& sin)
+                                  const in_addr& addr)
+{
+    os << "in_addr("
+       << SockAddr::to_string(addr)
+       << ')';
+    return os;
+}
+
+std::ostream& Network::operator<<(std::ostream& os,
+                                  const sockaddr_in6& sin6)
 {
     static const std::string delim(", ");
     static const int tabs[1] = {0};
 
     os << "sockaddr_in6("
        << Format("sin6_family")
-       << Family(sin.sin6_family)
+       << Family(sin6.sin6_family)
        << Format(delim, tabs[0], "sin6_port")
-       << htons(sin.sin6_port)
+       << htons(sin6.sin6_port)
        << Format(delim, tabs[0], "sin6_addr")
-       << sin.sin6_addr
+       << sin6.sin6_addr
+       << ')';
+    return os;
+}
+
+std::ostream& Network::operator<<(std::ostream& os,
+                                  const in6_addr& addr)
+{
+    os << "in6_addr("
+       << SockAddr::to_string(addr)
        << ')';
     return os;
 }
@@ -330,21 +348,3 @@ std::ostream& Network::operator<<(std::ostream& os,
     return os;
 }
 #endif
-
-std::ostream& Network::operator<<(std::ostream& os,
-                                  const in_addr& addr)
-{
-    os << "in_addr("
-       << SockAddr::to_string(addr)
-       << ')';
-    return os;
-}
-
-std::ostream& Network::operator<<(std::ostream& os,
-                                  const in6_addr& addr)
-{
-    os << "in6_addr("
-       << SockAddr::to_string(addr)
-       << ')';
-    return os;
-}
