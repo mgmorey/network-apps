@@ -15,9 +15,8 @@
 
 namespace Network
 {
-    typedef std::pair<fd_type, fd_type> SocketPair;
     typedef std::pair<fd_type, Result> SocketResult;
-    typedef std::pair<SocketPair, Result> SocketPairResult;
+    typedef std::pair<FdPair, Result> SocketPairResult;
 
     class Socket :
         public addrinfo
