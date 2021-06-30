@@ -25,7 +25,7 @@ Network::ConnectResult Network::connect(const Endpoint& endpoint,
 
     if (result.nonzero()) {
         ConnectDetails details;
-        details.push_back(result.string());
+        details.push_back(result);
         return ConnectResult(fd_null, details);
     }
 
@@ -45,20 +45,21 @@ Network::ConnectResult Network::connect(const Sockets& sockets,
         fd = socket_result.first;
 
         if (fd == fd_null) {
-            details.push_back(socket_result.second.string());
+            details.push_back(socket_result.second);
             continue;
         }
 
         Host host(*it);
-        Result result(host.connect(fd, verbose));
+        Result connect_result(host.connect(fd, verbose));
 
-        if (result.result() == Host::connect_error) {
+        if (connect_result.result() == Host::connect_error) {
             close(fd);
             fd = fd_null;
-            details.push_back(result.string());
+            details.push_back(connect_result);
         }
         else {
-            details.push_back(it->cname());
+            Result result(0, it->cname());
+            details.push_back(result);
             break;
         }
     }

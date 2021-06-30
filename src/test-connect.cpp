@@ -23,22 +23,22 @@
 static void test_connect(const Network::Endpoint& endpoint)
 {
     Network::Socket hints(AF_UNSPEC, SOCK_STREAM, IPPROTO_TCP, AI_CANONNAME);
-    Network::ConnectResult result(connect(endpoint, hints, true));
-    Network::ConnectDetails details(result.second);
+    Network::ConnectResult connect_result(connect(endpoint, hints, true));
+    Network::ConnectDetails details(connect_result.second);
+    Network::fd_type fd = connect_result.first;
     Network::Hostname hostname(endpoint.first);
     Network::Service service(endpoint.second);
-    Network::fd_type fd = result.first;
 
     if (fd == Network::fd_null) {
         for (Network::ConnectDetails::const_iterator it = details.begin();
              it != details.end();
              ++it) {
-            std::cerr << *it
+            std::cerr << it->string()
                       << std::endl;
         }
     }
     else {
-        Network::Hostname cname = details[0];
+        Network::Hostname cname = details.front().string();
         std::cout << "Connected to "
                   << service
                   << " on "
