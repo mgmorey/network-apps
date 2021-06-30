@@ -29,7 +29,7 @@ static void test_connect(const Network::Endpoint& endpoint)
     Network::Service service(endpoint.second);
     Network::fd_type fd = result.first;
 
-    if (fd == Network::Socket::fd_null) {
+    if (fd == Network::fd_null) {
         for (Network::ConnectDetails::const_iterator it = details.begin();
              it != details.end();
              ++it) {
