@@ -48,11 +48,9 @@ Network::Hostname Network::Host::canonical_name() const
 
 Network::Result Network::Host::connect(fd_type fd, bool verbose) const
 {
-    if (verbose) {
-        std::cerr << "Trying host "
-                  << address().addr()
-                  << " port "
-                  << address().port()
+    if (verbose && addr.size()) {
+        std::cerr << "Trying host at "
+                  << addr
                   << std::endl;
     }
 
