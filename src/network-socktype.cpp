@@ -49,14 +49,6 @@ std::ostream& Network::operator<<(std::ostream& os,
         case SOCK_SEQPACKET:
             oss << "SOCK_SEQPACKET";
             break;
-#ifndef _WIN32
-        case SOCK_DCCP:
-            oss << "SOCK_DCCP";
-            break;
-        case SOCK_PACKET:
-            oss << "SOCK_PACKET";
-            break;
-#endif
         default:
             oss << socktype.value;
         }
