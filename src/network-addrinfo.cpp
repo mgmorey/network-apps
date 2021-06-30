@@ -91,18 +91,9 @@ std::ostream& Network::operator<<(std::ostream& os,
        << Family(family)
        << Format(tabs[0], "ai_socktype")
        << SockType(socktype)
-       << Format(tabs[0], "ai_protocol");
-
-    switch (family) {
-    case AF_INET:
-    case AF_INET6:
-        os << Protocol(protocol);
-        break;
-    default:
-        os << protocol;
-    }
-
-    os << Format(tabs[0], "ai_addrlen")
+       << Format(tabs[0], "ai_protocol")
+       << Protocol(family, protocol)
+       << Format(tabs[0], "ai_addrlen")
        << ai.ai_addrlen
        << Format(tabs[0], "ai_addr")
        << SockAddr(ai.ai_addr, ai.ai_addrlen)
