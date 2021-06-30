@@ -33,20 +33,18 @@ LINK.o = $(CXX) $(LDFLAGS)
 prefix=/usr/local
 
 executable_sources = test-address.cpp test-hostname.cpp
-library_sources = network-addrinfo.cpp network-buffer.cpp \
-network-close.cpp network-connect.cpp network-endpoint.cpp \
-network-family.cpp network-flags.cpp network-format.cpp \
-network-host.cpp network-hosts.cpp network-hostname.cpp \
-network-name.cpp network-protocol.cpp network-result.cpp \
-network-sockaddr.cpp network-socket.cpp network-sockets.cpp \
-network-socktype.cpp network-unique.cpp
+library_sources = network-addrinfo.cpp network-buffer.cpp network-close.cpp \
+network-connect.cpp network-endpoint.cpp network-family.cpp network-flags.cpp \
+network-format.cpp network-host.cpp network-hosts.cpp network-hostname.cpp \
+network-name.cpp network-protocol.cpp network-result.cpp network-sockaddr.cpp \
+network-socket.cpp network-sockets.cpp network-socktype.cpp network-unique.cpp
 
 ifndef HTTP_PROXY
 	executable_sources += test-connect.cpp
 endif
 
 ifneq "$(SYSTEM_PREFIX)" "MINGW64_NT"
-	executable_sources += test-socket.cpp
+	executable_sources += test-socket.cpp unix-client.cpp unix-server.cpp
 endif
 
 sources = $(executable_sources) $(library_sources)
@@ -68,7 +66,10 @@ realclean: clean
 	rm -f $(dependencies) TAGS
 
 test: $(executables)
-	for f in $^; do ./$$f; done
+	for f in $^; do if expr $$f ':' 'test-.*' >/dev/null; then ./$$f; fi; done
+
+unix: $(executables)
+	./unix-server & (sleep 1; ./unix-client 2 2; ./unix-client 10 6; ./unix-client DOWN)
 
 install: $(libraries)
 	install libnetwork.a $(prefix)/lib

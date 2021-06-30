@@ -79,3 +79,5 @@ test-address
 test-connect
 test-hostname
 test-socket
+unix-client
+unix-server
