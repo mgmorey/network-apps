@@ -19,14 +19,14 @@ Network::ConnectResult Network::connect(const Endpoint& endpoint,
                                         const addrinfo &hints,
                                         bool verbose)
 {
-    SocketsResult socks_result(get_sockets(endpoint, hints, verbose));
-    Sockets sockets(socks_result.first);
-    Result result(socks_result.second);
+    SocketsResult sockets_result(get_sockets(endpoint, hints, verbose));
+    Sockets sockets(sockets_result.first);
+    Result result(sockets_result.second);
 
     if (result.nonzero()) {
         ConnectDetails details;
         details.push_back(result.string());
-        return ConnectResult(Socket::socket_bad, details);
+        return ConnectResult(Socket::fd_null, details);
     }
 
     return connect(sockets, verbose);
@@ -35,25 +35,26 @@ Network::ConnectResult Network::connect(const Endpoint& endpoint,
 Network::ConnectResult Network::connect(const Sockets& sockets,
                                         bool verbose)
 {
-    int fd = Socket::socket_bad;
+    fd_type fd = Socket::fd_null;
     ConnectDetails details;
 
     for (Sockets::const_iterator it = sockets.begin();
          it != sockets.end();
          ++it) {
-        Result result = it->socket(verbose);
-        fd = result.result();
+        SocketResult socket_result(it->socket(verbose));
+        fd = socket_result.first;
 
-        if (fd == Socket::socket_bad) {
-            details.push_back(result.string());
+        if (fd == Socket::fd_null) {
+            details.push_back(socket_result.second.string());
             continue;
         }
 
-        result = connect(fd, *it, verbose);
+        Host host(*it);
+        Result result(host.connect(fd, verbose));
 
         if (result.result() == Host::connect_error) {
             close(fd);
-            fd = Socket::socket_bad;
+            fd = Socket::fd_null;
             details.push_back(result.string());
         }
         else {
@@ -63,11 +64,4 @@ Network::ConnectResult Network::connect(const Sockets& sockets,
     }
 
     return ConnectResult(fd, details);
-}
-
-Network::Result Network::connect(int fd, const addrinfo& ai,
-                                 bool verbose)
-{
-    Network::Host host(ai);
-    return host.connect(fd, verbose);
 }

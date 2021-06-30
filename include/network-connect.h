@@ -19,14 +19,12 @@
 namespace Network
 {
     typedef std::vector<std::string> ConnectDetails;
-    typedef std::pair<int, ConnectDetails> ConnectResult;
+    typedef std::pair<fd_type, ConnectDetails> ConnectResult;
     extern ConnectResult connect(const Endpoint& endpoint,
                                  const addrinfo &hints,
                                  bool verbose = false);
     extern ConnectResult connect(const Sockets& sockets,
                                  bool verbose = false);
-    extern Result connect(int fd, const addrinfo& ai,
-                          bool verbose = false);
 }
 
 #endif

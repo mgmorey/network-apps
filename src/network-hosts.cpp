@@ -1,5 +1,4 @@
-#include "network-hosts.h"      // HostsResult, Hostname, Service,
-                                // struct addrinfo, get_hosts()
+#include "network-hosts.h"      // HostsResult, Hostname, get_hosts()
 #include "network-addrinfo.h"   // get_addrinfo()
 #include "network-hostname.h"   // get_hostname()
 

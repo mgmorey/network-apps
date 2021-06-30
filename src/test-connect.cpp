@@ -27,9 +27,9 @@ static void test_connect(const Network::Endpoint& endpoint)
     Network::ConnectDetails details(result.second);
     Network::Hostname hostname(endpoint.first);
     Network::Service service(endpoint.second);
-    int fd = result.first;
+    Network::fd_type fd = result.first;
 
-    if (fd == Network::Socket::socket_bad) {
+    if (fd == Network::Socket::fd_null) {
         for (Network::ConnectDetails::const_iterator it = details.begin();
              it != details.end();
              ++it) {
