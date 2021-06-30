@@ -3,6 +3,7 @@
                                 // SocketsResult, struct addrinfo,
                                 // connect()
 #include "network-addrinfo.h"   // operator<<()
+#include "network-close.h"      // close()
 #include "network-endpoint.h"   // Endpoint, to_string()
 #include "network-host.h"       // Host
 
