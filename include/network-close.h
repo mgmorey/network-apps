@@ -1,4 +1,4 @@
-#ifndef NETWORK_CLOSE_Hx
+#ifndef NETWORK_CLOSE_H
 #define NETWORK_CLOSE_H
 
 namespace Network

@@ -19,16 +19,18 @@ Network::SockType::SockType(int socktype) :
 std::ostream& Network::operator<<(std::ostream& os,
                                   const SockType& socktype)
 {
-#ifndef _WIN32
     static struct values {
         int flag;
         const char* label;
     } values[] = {
+#ifdef SOCK_CLOEXEC
         {SOCK_CLOEXEC,              "SOCK_CLOEXEC"},
+#endif
+#ifdef SOCK_NONBLOCK
         {SOCK_NONBLOCK,             "SOCK_NONBLOCK"},
+#endif
         {0,                         NULL}
     };
-#endif
     std::ostringstream oss;
     std::size_t i = 0;
 
@@ -55,7 +57,6 @@ std::ostream& Network::operator<<(std::ostream& os,
         ++i;
     }
 
-#ifndef _WIN32
     for(const struct values* p = values; p->flag; ++p) {
         if (socktype.value & p->flag) {
             if (i++ > 0) {
@@ -65,7 +66,6 @@ std::ostream& Network::operator<<(std::ostream& os,
             oss << p->label;
         }
     }
-#endif
 
     switch (i) {
     case 0:
