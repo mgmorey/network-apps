@@ -1,4 +1,4 @@
-#include "network-close.h"      // close()
+#include "network-close.h"      // close(), fd_null, fd_type
 
 #ifdef _WIN32
 #include <winsock2.h>   // closesocket()
@@ -6,9 +6,9 @@
 #include <unistd.h>     // close()
 #endif
 
-void Network::close(int fd)
+void Network::close(fd_type fd)
 {
-    if (fd == -1) {
+    if (fd == fd_null) {
         return;
     }
 
