@@ -2,18 +2,22 @@
 #define NETWORK_FD_H
 
 #ifdef _WIN32
-#include <winsock2.h>   // SOCKET
+#include <winsock2.h>   // INVALID_SOCKET, SOCKET
+#endif
+
+#ifndef INVALID_SOCKET
+#define INVALID_SOCKET	(-1)
 #endif
 
 namespace Network
 {
 #ifdef _WIN32
-    enum { fd_null = static_cast<SOCKET>(INVALID_SOCKET) };
     typedef SOCKET fd_type;
 #else
-    enum { fd_null = -1 };
     typedef int fd_type;
 #endif
+
+    enum { fd_null = INVALID_SOCKET };
 }
 
 #endif
