@@ -9,6 +9,8 @@
 #define INVALID_SOCKET	(-1)
 #endif
 
+#include <utility>      // std::pair
+
 namespace Network
 {
 #ifdef _WIN32
@@ -16,6 +18,7 @@ namespace Network
 #else
     typedef int fd_type;
 #endif
+    typedef std::pair<fd_type, fd_type> FdPair;
 
     enum { fd_null = INVALID_SOCKET };
 }
