@@ -2,6 +2,7 @@
 #define NETWORK_CONNECT_H
 
 #include "network-endpoint.h"   // Endpoint
+#include "network-fd.h"         // type_fd
 #include "network-result.h"     // Result
 #include "network-types.h"      // Hostname, Service
 #include "network-sockets.h"    // Sockets, SocketsResult
