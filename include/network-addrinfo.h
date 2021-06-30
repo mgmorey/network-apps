@@ -78,20 +78,22 @@ namespace Network
                                          hints,
                                          verbose);
 
-        if (verbose) {
-            sizes.push_back(size);
-        }
+        if (size) {
+            if (verbose) {
+                sizes.push_back(size);
+            }
 
-        if (unique) {
-            cont.first.unique();
-        }
+            if (unique) {
+                cont.first.unique();
+            }
 
-        if (verbose) {
-            sizes.push_back(cont.first.size());
-            Unique unique(sizes);
-            std::cerr << "Fetched "
-                      << unique
-                      << std::endl;
+            if (verbose) {
+                sizes.push_back(cont.first.size());
+                Unique unique(sizes);
+                std::cerr << "Fetched "
+                          << unique
+                          << std::endl;
+            }
         }
 
         return cont;
