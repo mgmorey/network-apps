@@ -64,11 +64,14 @@ Network::Result Network::Host::connect(fd_type fd, bool verbose) const
            << ") returned "
            << code
            << ": "
-           << std::strerror(errno);
+           << std::strerror(errno)
+           << " (errno = "
+           << errno
+           << ')';
         error = os.str();
     }
 
-    return Result(code, error);
+    return Result(errno, error);
 }
 
 const Network::SockAddr& Network::Host::address() const
