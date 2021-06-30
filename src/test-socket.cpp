@@ -9,9 +9,9 @@
 static void test_socket()
 {
     Network::Socket socket(AF_UNIX, SOCK_STREAM, 0);
-    Network::SocketResult socket_result(socket.socketpair(true));
-    Network::SocketPair socket_pair(socket_result.first);
-    Network::Result result = socket_result.second;
+    Network::SocketPairResult socketpair_result(socket.socketpair(true));
+    Network::SocketPair socket_pair(socketpair_result.first);
+    Network::Result result = socketpair_result.second;
 
     if (result.nonzero()) {
         std::cerr << result.string()
