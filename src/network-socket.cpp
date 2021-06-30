@@ -155,7 +155,7 @@ Network::SocketPairResult Network::Socket::socketpair(bool verbose) const
         error = os.str();
     }
 
-    return SocketPairResult(SocketPair(fds[0], fds[1]),
+    return SocketPairResult(FdPair(fds[0], fds[1]),
                             Result(code, error));
 }
 #endif
