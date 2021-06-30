@@ -1,6 +1,7 @@
+#include "network-close.h"      // close()
 #include "network-connect.h"    // ConnectDetails, ConnectResult,
                                 // Endpoint, Hostname, Service,
-                                // close(), connect()
+                                // connect()
 #include "network-socket.h"     // Socket
 
 #ifdef _WIN32
@@ -21,7 +22,7 @@
 
 static void test_connect(const Network::Endpoint& endpoint)
 {
-    Network::Socket hints(IPPROTO_TCP, SOCK_STREAM, AF_UNSPEC, AI_CANONNAME);
+    Network::Socket hints(AF_UNSPEC, SOCK_STREAM, IPPROTO_TCP, AI_CANONNAME);
     Network::ConnectResult result(connect(endpoint, hints, true));
     Network::ConnectDetails details(result.second);
     Network::Hostname hostname(endpoint.first);

@@ -1,4 +1,5 @@
 #include "network-socket.h"     // Hostname, Result, Socket
+#include "network-addrinfo.h"   // operator<<()
 #include "network-host.h"       // Host
 
 #ifdef _WIN32
@@ -11,10 +12,11 @@
 
 #include <cstdlib>      // free()
 #include <cstring>      // std::memcpy(), strdup()
+#include <iostream>     // std::cerr, std::endl
 #include <sstream>      // std::ostringstream
 
-Network::Socket::Socket(int protocol, int socktype, int family, int flags) :
-    addrinfo(defaults(protocol, socktype, family, flags))
+Network::Socket::Socket(int family, int socktype, int protocol, int flags) :
+    addrinfo(defaults(family, socktype, protocol, flags))
 {
 }
 
@@ -98,8 +100,15 @@ Network::Hostname Network::Socket::cname() const
     return host;
 }
 
-Network::Result Network::Socket::socket() const
+Network::Result Network::Socket::socket(bool verbose) const
 {
+    if (verbose) {
+        std::cerr << "Trying socket:"
+                  << std::endl
+                  << *this
+                  << std::endl;
+    }
+
     std::string error;
     int fd = ::socket(ai_family, ai_socktype, ai_protocol);
 
@@ -119,9 +128,41 @@ Network::Result Network::Socket::socket() const
     return Result(fd, error);
 }
 
-addrinfo Network::Socket::defaults(int protocol,
+#ifndef _WIN32
+Network::SocketResult Network::Socket::socketpair(bool verbose) const
+{
+    if (verbose) {
+        std::cerr << "Trying socket:"
+                  << std::endl
+                  << *this
+                  << std::endl;
+    }
+
+    std::string error;
+    int fds[2] = {socket_bad, socket_bad};
+    int code = ::socketpair(ai_family, ai_socktype, ai_protocol, fds);
+
+    if (code != 0) {
+        std::ostringstream os;
+        os << "socketpair("
+           << ai_family
+           << ", "
+           << ai_socktype
+           << ", "
+           << ai_protocol
+           << ") returned "
+           << code;
+        error = os.str();
+    }
+
+    return SocketResult(SocketPair(fds[0], fds[1]),
+                        Result(code, error));
+}
+#endif
+
+addrinfo Network::Socket::defaults(int family,
                                    int socktype,
-                                   int family,
+                                   int protocol,
                                    int flags)
 {
     addrinfo ai = {

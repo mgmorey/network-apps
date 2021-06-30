@@ -132,13 +132,13 @@ static void test_host(const Network::Hostname& host)
     static const int rflags = AI_CANONNAME;
 
     if (host.empty()) {
-        Network::Socket hints(IPPROTO_TCP, SOCK_STREAM, AF_UNSPEC, lflags);
+        Network::Socket hints(AF_UNSPEC, SOCK_STREAM, IPPROTO_TCP, lflags);
         test_host(host, hints, true);
     }
     else {
         std::cout << "Host: " << host << std::endl;
-        Network::Socket hints4(IPPROTO_TCP, SOCK_STREAM, AF_INET, rflags);
-        Network::Socket hints6(IPPROTO_TCP, SOCK_STREAM, AF_INET6, rflags);
+        Network::Socket hints4(AF_INET, SOCK_STREAM, IPPROTO_TCP, rflags);
+        Network::Socket hints6(AF_INET6, SOCK_STREAM, IPPROTO_TCP, rflags);
         test_host(host, hints4, true);
         test_host(host, hints6, true);
     }

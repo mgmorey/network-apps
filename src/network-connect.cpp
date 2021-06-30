@@ -1,7 +1,7 @@
 #include "network-connect.h"    // ConnectDetails, ConnectResult,
                                 // Hostname, Result, Service, Sockets,
                                 // SocketsResult, struct addrinfo,
-                                // close(), connect()
+                                // connect()
 #include "network-addrinfo.h"   // operator<<()
 #include "network-endpoint.h"   // Endpoint, to_string()
 #include "network-host.h"       // Host
@@ -13,19 +13,6 @@
 #endif
 
 #include <iostream>     // std::cerr, std::endl
-
-void Network::close(int fd)
-{
-    if (fd == -1) {
-        return;
-    }
-
-#ifdef _WIN32
-    ::closesocket(fd);
-#else
-    ::close(fd);
-#endif
-}
 
 Network::ConnectResult Network::connect(const Endpoint& endpoint,
                                         const addrinfo &hints,
@@ -53,12 +40,7 @@ Network::ConnectResult Network::connect(const Sockets& sockets,
     for (Sockets::const_iterator it = sockets.begin();
          it != sockets.end();
          ++it) {
-        if (verbose) {
-            std::cerr << "Trying socket:" << std::endl
-                      << (*it) << std::endl;
-        }
-
-        Result result = it->socket();
+        Result result = it->socket(verbose);
         fd = result.result();
 
         if (fd == Socket::socket_bad) {
@@ -86,14 +68,5 @@ Network::Result Network::connect(int fd, const addrinfo& ai,
                                  bool verbose)
 {
     Network::Host host(ai);
-
-    if (verbose) {
-        std::cerr << "Trying host "
-                  << host.address().addr()
-                  << " port "
-                  << host.address().port()
-                  << std::endl;
-    }
-
-    return host.connect(fd);
+    return host.connect(fd, verbose);
 }

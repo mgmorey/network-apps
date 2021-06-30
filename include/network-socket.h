@@ -10,19 +10,21 @@
 #include <netdb.h>      // struct addrinfo
 #endif
 
-#include <string>       // std::string
 #include <utility>      // std::pair
 
 namespace Network
 {
+    typedef std::pair<int, int> SocketPair;
+    typedef std::pair<SocketPair, Result> SocketResult;
+
     class Socket :
         public addrinfo
     {
     public:
         enum { socket_bad = -1 };
-        Socket(int protocol = 0,
+        Socket(int family = 0,
                int socktype = 0,
-               int family = 0,
+               int protocol = 0,
                int flags = 0);
         Socket(const Socket& other);
         Socket(const addrinfo& other);
@@ -33,7 +35,10 @@ namespace Network
         bool operator>(const Socket& other) const;
         bool operator==(const Socket& other) const;
         Hostname cname() const;
-        Result socket() const;
+        Result socket(bool verbose = false) const;
+#ifndef _WIN32
+        SocketResult socketpair(bool verbose = false) const;
+#endif
 
     private:
         static addrinfo defaults(int protocol = 0,

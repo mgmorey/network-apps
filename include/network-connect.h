@@ -20,7 +20,6 @@ namespace Network
 {
     typedef std::vector<std::string> ConnectDetails;
     typedef std::pair<int, ConnectDetails> ConnectResult;
-    extern void close(int fd);
     extern ConnectResult connect(const Endpoint& endpoint,
                                  const addrinfo &hints,
                                  bool verbose = false);

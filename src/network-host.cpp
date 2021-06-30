@@ -10,6 +10,7 @@
 
 #include <cerrno>       // errno
 #include <cstring>      // std::strerror()
+#include <iostream>     // std::cerr, std::endl
 #include <sstream>      // std::ostringstream
 
 Network::Host::Host(const addrinfo& other) :
@@ -45,8 +46,16 @@ Network::Hostname Network::Host::canonical_name() const
     return name;
 }
 
-Network::Result Network::Host::connect(int fd) const
+Network::Result Network::Host::connect(int fd, bool verbose) const
 {
+    if (verbose) {
+        std::cerr << "Trying host "
+                  << address().addr()
+                  << " port "
+                  << address().port()
+                  << std::endl;
+    }
+
     std::string error;
     int code = ::connect(fd, addr, addr.size());
 

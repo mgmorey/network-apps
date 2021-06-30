@@ -27,10 +27,6 @@ Network::AddrinfoResult Network::get_addrinfo(const Hostname& node,
                                               const addrinfo* hints,
                                               bool verbose)
 {
-    std::string error;
-    addrinfo* list = NULL;
-    assert(!node.empty() || !service.empty());
-
     if (verbose) {
         std::cerr << "Invoking getaddrinfo("
                   << Name(node)
@@ -48,6 +44,9 @@ Network::AddrinfoResult Network::get_addrinfo(const Hostname& node,
                   << std::endl;
     }
 
+    std::string error;
+    addrinfo* list = NULL;
+    assert(!node.empty() || !service.empty());
     int code = ::getaddrinfo(node.empty() ? NULL : node.c_str(),
                              service.empty() ? NULL : service.c_str(),
                              hints,
@@ -79,16 +78,31 @@ std::ostream& Network::operator<<(std::ostream& os,
                                   const addrinfo& ai)
 {
     static const int tabs[1] = {9};
+
+    int flags = ai.ai_flags;
+    int family = ai.ai_family;
+    int socktype = ai.ai_socktype;
+    int protocol = ai.ai_protocol;
+
     os << "addrinfo("
        << Format("ai_flags")
-       << Flags(ai.ai_flags)
+       << Flags(flags)
        << Format(tabs[0], "ai_family")
-       << Family(ai.ai_family)
+       << Family(family)
        << Format(tabs[0], "ai_socktype")
-       << SockType(ai.ai_socktype)
-       << Format(tabs[0], "ai_protocol")
-       << Protocol(ai.ai_protocol)
-       << Format(tabs[0], "ai_addrlen")
+       << SockType(socktype)
+       << Format(tabs[0], "ai_protocol");
+
+    switch (family) {
+    case AF_INET:
+    case AF_INET6:
+        os << Protocol(protocol);
+        break;
+    default:
+        os << protocol;
+    }
+
+    os << Format(tabs[0], "ai_addrlen")
        << ai.ai_addrlen
        << Format(tabs[0], "ai_addr")
        << SockAddr(ai.ai_addr, ai.ai_addrlen)

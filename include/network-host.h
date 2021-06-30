@@ -24,7 +24,7 @@ namespace Network
         bool operator==(const Host& other) const;
         const SockAddr& address() const;
         Hostname canonical_name() const;
-        Result connect(int fd) const;
+        Result connect(int fd, bool verbose = false) const;
 
     private:
         SockAddr addr;
