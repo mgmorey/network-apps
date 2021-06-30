@@ -95,7 +95,7 @@ tmp/%.o: %.cpp
 
 tmp/%.dep: %.cpp
 	$(CXX) -M $(CPPFLAGS) $< >$@.$$$$ && \
-sed 's,\($*\)\.o[ :]*,\1.o $@ TAGS: ,' $@.$$$$ >$@; \
+sed 's,\($*\)\.o[ :]*,tmp/\1.o $@ TAGS: ,' $@.$$$$ >$@; \
 rm $@.$$$$
 
 vpath %.cpp src
