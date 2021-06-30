@@ -24,7 +24,7 @@ std::ostream& Network::operator<<(std::ostream& os,
         int flag;
         const char* label;
     } values[] = {
-        {SOCK_CLOEXEC,              "SOCK_SLOEXEC"},
+        {SOCK_CLOEXEC,              "SOCK_CLOEXEC"},
         {SOCK_NONBLOCK,             "SOCK_NONBLOCK"},
         {0,                         NULL}
     };
