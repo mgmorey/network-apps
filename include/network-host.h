@@ -7,9 +7,14 @@
 #include "network-types.h"      // Hostname, Service
 
 #ifdef _WIN32
+#include <winsock2.h>   // SOCKET_ERROR
 #include <ws2tcpip.h>   // struct addrinfo
 #else
 #include <netdb.h>      // struct addrinfo
+#endif
+
+#ifndef SOCKET_ERROR
+#define SOCKET_ERROR	(-1)
 #endif
 
 namespace Network
@@ -17,7 +22,7 @@ namespace Network
     class Host
     {
     public:
-        enum { connect_error = -1 };
+        enum { connect_error = SOCKET_ERROR };
         Host(const addrinfo& other);
         Host& operator=(const addrinfo& other);
         bool operator<(const Host& other) const;
