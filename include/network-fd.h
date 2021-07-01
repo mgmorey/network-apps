@@ -9,8 +9,6 @@
 #define INVALID_SOCKET	(-1)
 #endif
 
-#include <utility>      // std::pair
-
 namespace Network
 {
 #ifdef _WIN32
