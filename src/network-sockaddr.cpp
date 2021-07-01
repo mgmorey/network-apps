@@ -343,7 +343,7 @@ std::ostream& Network::operator<<(std::ostream& os,
        << Format("sun_family")
        << Family(sun.sun_family)
        << Format(delim, tabs[0], "sun_path")
-       << sun.sun_path
+       << '"' << sun.sun_path << '"'
        << ')';
     return os;
 }

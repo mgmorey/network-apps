@@ -2,6 +2,7 @@
 #include "network-connect.h"    // ConnectDetails, ConnectResult,
                                 // Endpoint, Hostname, Service,
                                 // connect()
+#include "network-fd.h"         // fd_type
 #include "network-peername.h"   // get_peername()
 #include "network-socket.h"     // Socket
 
@@ -21,14 +22,31 @@
 #include <cstdlib>      // EXIT_FAILURE, EXIT_SUCCESS
 #include <iostream>     // std::cerr, std::cout, std::endl
 
+static void test_peer(Network::fd_type fd)
+{
+    Network::SockAddrResult sa_result(Network::get_peername(fd, true));
+    Network::Result result(sa_result.second);
+
+    if (result.nonzero()) {
+        std::cerr << result.string()
+                  << std::endl;
+    }
+    else {
+        Network::SockAddr sockaddr(sa_result.first);
+        std::cout << "Socket "
+                  << fd
+                  << " connected to "
+                  << sockaddr
+                  << std::endl;
+    }
+}
+
 static void test_connect(const Network::Endpoint& endpoint)
 {
     Network::Socket hints(AF_UNSPEC, SOCK_STREAM, IPPROTO_TCP, AI_CANONNAME);
     Network::ConnectResult connect_result(connect(endpoint, hints, true));
     Network::ConnectDetails details(connect_result.second);
     Network::fd_type fd = connect_result.first;
-    Network::Hostname hostname(endpoint.first);
-    Network::Service service(endpoint.second);
 
     if (fd == Network::fd_null) {
         for (Network::ConnectDetails::const_iterator it = details.begin();
@@ -40,33 +58,22 @@ static void test_connect(const Network::Endpoint& endpoint)
     }
     else {
         Network::Hostname cname = details.front().string();
-
-        std::cout << "Connected socket "
+        Network::Hostname hostname(endpoint.first);
+        Network::Service service(endpoint.second);
+        std::cout << "Socket "
                   << fd
-                  << " to "
+                  << " connected to "
                   << service
                   << " on "
                   << (cname.empty() ?
                       hostname :
                       cname)
                   << std::endl;
-        Network::SockAddrResult sa_result(Network::get_peername(fd, true));
-        Network::SockAddr sockaddr(sa_result.first);
-        Network::Result result(sa_result.second);
-
-        if (result.nonzero()) {
-            std::cerr << result.string()
-                      << std::endl;
-        }
-        else {
-            std::cout << "Peer is at "
-                      << sockaddr
-                      << std::endl;
-        }
-
+        test_peer(fd);
         Network::close(fd);
-        std::cout << "Closed socket "
+        std::cout << "Socket "
                   << fd
+                  << " closed"
                   << std::endl;
     }
 }

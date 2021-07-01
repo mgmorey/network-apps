@@ -1,12 +1,32 @@
 #include "network-close.h"      // close()
+#include "network-fd.h"         // fd_type
 #include "network-host.h"       // Host
-
+#include "network-peername.h"   // get_peername()
 #include "network-socket.h"     // Socket
 
 #include <sys/socket.h> // AF_UNIX, SOCK_DGRAM, SOCK_STREAM
 
 #include <cstdlib>      // EXIT_FAILURE, EXIT_SUCCESS
 #include <iostream>     // std::cerr, std::cout, std::endl
+
+static void test_peer(Network::fd_type fd)
+{
+    Network::SockAddrResult sa_result(Network::get_peername(fd, true));
+    Network::Result result(sa_result.second);
+
+    if (result.nonzero()) {
+        std::cerr << result.string()
+                  << std::endl;
+    }
+    else {
+        Network::SockAddr sockaddr(sa_result.first);
+        std::cout << "Socket "
+                  << fd
+                  << " connected to "
+                  << sockaddr
+                  << std::endl;
+    }
+}
 
 static void test_socket()
 {
@@ -20,20 +40,20 @@ static void test_socket()
     }
     else {
         Network::FdPair fds(socketpair_result.first);
-        std::cout << "Opened sockets "
+        std::cout << "Socket "
                   << fds.first
-                  << " and "
+                  << " connected to socket "
                   << fds.second
                   << std::endl;
-        Network::Host host(socket);
-        Network::Result first_result(host.connect(fds.first, true));
-        Network::Result second_result(host.connect(fds.second, true));
+        test_peer(fds.first);
+        test_peer(fds.second);
         Network::close(fds.first);
         Network::close(fds.second);
-        std::cout << "Closed sockets "
+        std::cout << "Sockets "
                   << fds.first
                   << " and "
                   << fds.second
+                  << " closed"
                   << std::endl;
     }
 }
