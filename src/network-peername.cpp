@@ -14,7 +14,7 @@
 #include <iostream>     // std::cerr, std::endl
 #include <sstream>      // std::ostringstream
 
-Network::SockAddrResult Network::get_peername(fd_type fd, bool verbose)
+Network::SockAddrResult Network::get_peername(sock_fd_type fd, bool verbose)
 {
     if (verbose) {
         std::cerr << "Invoking getpeername("

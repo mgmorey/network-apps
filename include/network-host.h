@@ -1,7 +1,7 @@
 #ifndef NETWORK_HOST_H
 #define NETWORK_HOST_H
 
-#include "network-fd.h"         // fd_type
+#include "network-fd.h"         // sock_fd_type
 #include "network-result.h"     // Result
 #include "network-sockaddr.h"   // SockAddr
 #include "network-types.h"      // Hostname, Service
@@ -30,7 +30,7 @@ namespace Network
         bool operator==(const Host& other) const;
         const SockAddr& address() const;
         Hostname canonical_name() const;
-        Result connect(fd_type fd, bool verbose = false) const;
+        Result connect(sock_fd_type fd, bool verbose = false) const;
 
     private:
         SockAddr addr;

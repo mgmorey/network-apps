@@ -14,13 +14,12 @@
 namespace Network
 {
 #ifdef _WIN32
-    typedef SOCKET fd_type;
+    typedef SOCKET sock_fd_type;
 #else
-    typedef int fd_type;
+    typedef int sock_fd_type;
 #endif
-    typedef std::pair<fd_type, fd_type> FdPair;
 
-    enum { fd_null = INVALID_SOCKET };
+    enum { sock_fd_null = INVALID_SOCKET };
 }
 
 #endif

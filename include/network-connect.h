@@ -18,7 +18,7 @@
 namespace Network
 {
     typedef std::vector<Result> ConnectDetails;
-    typedef std::pair<fd_type, ConnectDetails> ConnectResult;
+    typedef std::pair<sock_fd_type, ConnectDetails> ConnectResult;
     extern ConnectResult connect(const Endpoint& endpoint,
                                  const addrinfo &hints,
                                  bool verbose = false);

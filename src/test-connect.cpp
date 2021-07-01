@@ -2,7 +2,7 @@
 #include "network-connect.h"    // ConnectDetails, ConnectResult,
                                 // Endpoint, Hostname, Service,
                                 // connect()
-#include "network-fd.h"         // fd_type
+#include "network-fd.h"         // sock_fd_type
 #include "network-peername.h"   // get_peername()
 #include "network-socket.h"     // Socket
 
@@ -22,7 +22,7 @@
 #include <cstdlib>      // EXIT_FAILURE, EXIT_SUCCESS
 #include <iostream>     // std::cerr, std::cout, std::endl
 
-static void test_peer(Network::fd_type fd)
+static void test_peer(Network::sock_fd_type fd)
 {
     Network::SockAddrResult sa_result(Network::get_peername(fd, true));
     Network::Result result(sa_result.second);
@@ -46,9 +46,9 @@ static void test_connect(const Network::Endpoint& endpoint)
     Network::Socket hints(AF_UNSPEC, SOCK_STREAM, IPPROTO_TCP, AI_CANONNAME);
     Network::ConnectResult connect_result(connect(endpoint, hints, true));
     Network::ConnectDetails details(connect_result.second);
-    Network::fd_type fd = connect_result.first;
+    Network::sock_fd_type fd = connect_result.first;
 
-    if (fd == Network::fd_null) {
+    if (fd == Network::sock_fd_null) {
         for (Network::ConnectDetails::const_iterator it = details.begin();
              it != details.end();
              ++it) {

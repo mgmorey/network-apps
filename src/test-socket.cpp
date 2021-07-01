@@ -1,5 +1,5 @@
 #include "network-close.h"      // close()
-#include "network-fd.h"         // fd_type
+#include "network-fd.h"         // sock_fd_type
 #include "network-host.h"       // Host
 #include "network-peername.h"   // get_peername()
 #include "network-socket.h"     // Socket
@@ -9,7 +9,7 @@
 #include <cstdlib>      // EXIT_FAILURE, EXIT_SUCCESS
 #include <iostream>     // std::cerr, std::cout, std::endl
 
-static void test_peer(Network::fd_type fd)
+static void test_peer(Network::sock_fd_type fd)
 {
     Network::SockAddrResult sa_result(Network::get_peername(fd, true));
     Network::Result result(sa_result.second);
@@ -30,8 +30,8 @@ static void test_peer(Network::fd_type fd)
 
 static void test_socket()
 {
-    Network::Socket socket(AF_UNIX, SOCK_STREAM, 0);
-    Network::SocketPairResult socketpair_result(socket.socketpair(true));
+    Network::Socket socket(AF_UNIX, SOCK_STREAM);
+    Network::SocketpairResult socketpair_result(socket.socketpair(true));
     Network::Result result(socketpair_result.second);
 
     if (result.nonzero()) {

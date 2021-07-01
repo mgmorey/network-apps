@@ -1,7 +1,7 @@
 #ifndef NETWORK_SOCKET_H
 #define NETWORK_SOCKET_H
 
-#include "network-fd.h"         // fd_type
+#include "network-fd.h"         // sock_fd_type
 #include "network-result.h"     // Result
 #include "network-types.h"      // Hostname
 
@@ -15,8 +15,9 @@
 
 namespace Network
 {
-    typedef std::pair<fd_type, Result> SocketResult;
-    typedef std::pair<FdPair, Result> SocketPairResult;
+    typedef std::pair<sock_fd_type, sock_fd_type> FdPair;
+    typedef std::pair<sock_fd_type, Result> SocketResult;
+    typedef std::pair<FdPair, Result> SocketpairResult;
 
     class Socket :
         public addrinfo
@@ -37,7 +38,7 @@ namespace Network
         Hostname cname() const;
         SocketResult socket(bool verbose = false) const;
 #ifndef _WIN32
-        SocketPairResult socketpair(bool verbose = false) const;
+        SocketpairResult socketpair(bool verbose = false) const;
 #endif
 
     private:

@@ -46,7 +46,7 @@ Network::Hostname Network::Host::canonical_name() const
     return name;
 }
 
-Network::Result Network::Host::connect(fd_type fd, bool verbose) const
+Network::Result Network::Host::connect(sock_fd_type fd, bool verbose) const
 {
     if (verbose && addr.size()) {
         std::cerr << "Trying "

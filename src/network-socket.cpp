@@ -110,9 +110,9 @@ Network::SocketResult Network::Socket::socket(bool verbose) const
     }
 
     std::string error;
-    fd_type fd = ::socket(ai_family, ai_socktype, ai_protocol);
+    sock_fd_type fd = ::socket(ai_family, ai_socktype, ai_protocol);
 
-    if (fd == fd_null) {
+    if (fd == sock_fd_null) {
         std::ostringstream os;
         os << "socket("
            << ai_family
@@ -129,7 +129,7 @@ Network::SocketResult Network::Socket::socket(bool verbose) const
 }
 
 #ifndef _WIN32
-Network::SocketPairResult Network::Socket::socketpair(bool verbose) const
+Network::SocketpairResult Network::Socket::socketpair(bool verbose) const
 {
     if (verbose) {
         std::cerr << "Trying socket:"
@@ -139,7 +139,7 @@ Network::SocketPairResult Network::Socket::socketpair(bool verbose) const
     }
 
     std::string error;
-    int fds[2] = {fd_null, fd_null};
+    int fds[2] = {sock_fd_null, sock_fd_null};
     int code = ::socketpair(ai_family, ai_socktype, ai_protocol, fds);
 
     if (code != 0) {
@@ -155,7 +155,7 @@ Network::SocketPairResult Network::Socket::socketpair(bool verbose) const
         error = os.str();
     }
 
-    return SocketPairResult(FdPair(fds[0], fds[1]),
+    return SocketpairResult(FdPair(fds[0], fds[1]),
                             Result(code, error));
 }
 #endif

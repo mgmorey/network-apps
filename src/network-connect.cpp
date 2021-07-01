@@ -26,7 +26,7 @@ Network::ConnectResult Network::connect(const Endpoint& endpoint,
     if (result.nonzero()) {
         ConnectDetails details;
         details.push_back(result);
-        return ConnectResult(fd_null, details);
+        return ConnectResult(sock_fd_null, details);
     }
 
     return connect(sockets, verbose);
@@ -35,7 +35,7 @@ Network::ConnectResult Network::connect(const Endpoint& endpoint,
 Network::ConnectResult Network::connect(const Sockets& sockets,
                                         bool verbose)
 {
-    fd_type fd = fd_null;
+    sock_fd_type fd = sock_fd_null;
     ConnectDetails details;
 
     for (Sockets::const_iterator it = sockets.begin();
@@ -44,7 +44,7 @@ Network::ConnectResult Network::connect(const Sockets& sockets,
         SocketResult socket_result(it->socket(verbose));
         fd = socket_result.first;
 
-        if (fd == fd_null) {
+        if (fd == sock_fd_null) {
             details.push_back(socket_result.second);
             continue;
         }
@@ -54,7 +54,7 @@ Network::ConnectResult Network::connect(const Sockets& sockets,
 
         if (connect_result.result() == Host::connect_error) {
             close(fd);
-            fd = fd_null;
+            fd = sock_fd_null;
             details.push_back(connect_result);
         }
         else {
