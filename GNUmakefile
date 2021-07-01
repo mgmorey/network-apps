@@ -74,7 +74,7 @@ unix: $(executables)
 
 install: $(libraries)
 	install libnetwork.a $(prefix)/lib
-	install include/*.h $(prefix)/include
+	install include/network*.h $(prefix)/include
 
 TAGS:
 	etags $^
