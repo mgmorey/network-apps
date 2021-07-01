@@ -70,7 +70,7 @@ int main(void)
         perror("atexit");
         exit(EXIT_FAILURE);
     }
-    
+
     /*
      * Prepare for accepting connections. The backlog size is set
      * to 20. So while one request is being processed other requests
