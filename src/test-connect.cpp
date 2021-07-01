@@ -2,6 +2,7 @@
 #include "network-connect.h"    // ConnectDetails, ConnectResult,
                                 // Endpoint, Hostname, Service,
                                 // connect()
+#include "network-peername.h"   // get_peername()
 #include "network-socket.h"     // Socket
 
 #ifdef _WIN32
@@ -39,15 +40,30 @@ static void test_connect(const Network::Endpoint& endpoint)
     }
     else {
         Network::Hostname cname = details.front().string();
-        std::cout << "Connected to "
+
+        std::cout << "Connected socket "
+                  << fd
+                  << " to "
                   << service
                   << " on "
                   << (cname.empty() ?
                       hostname :
                       cname)
-                  << " via socket "
-                  << fd
                   << std::endl;
+        Network::SockAddrResult sa_result(Network::get_peername(fd, true));
+        Network::SockAddr sockaddr(sa_result.first);
+        Network::Result result(sa_result.second);
+
+        if (result.nonzero()) {
+            std::cerr << result.string()
+                      << std::endl;
+        }
+        else {
+            std::cout << "Peer is at "
+                      << sockaddr
+                      << std::endl;
+        }
+
         Network::close(fd);
         std::cout << "Closed socket "
                   << fd

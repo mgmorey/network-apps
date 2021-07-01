@@ -36,8 +36,9 @@ executable_sources = test-address.cpp test-hostname.cpp
 library_sources = network-addrinfo.cpp network-buffer.cpp network-close.cpp \
 network-connect.cpp network-endpoint.cpp network-family.cpp network-flags.cpp \
 network-format.cpp network-host.cpp network-hosts.cpp network-hostname.cpp \
-network-name.cpp network-protocol.cpp network-result.cpp network-sockaddr.cpp \
-network-socket.cpp network-sockets.cpp network-socktype.cpp network-unique.cpp
+network-name.cpp network-peername.cpp network-protocol.cpp network-result.cpp \
+network-sockaddr.cpp network-socket.cpp network-sockets.cpp \
+network-socktype.cpp network-unique.cpp
 
 ifndef HTTP_PROXY
 	executable_sources += test-connect.cpp
