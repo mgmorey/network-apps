@@ -4,8 +4,7 @@
 #include "network-endpoint.h"   // Endpoint
 #include "network-fd.h"         // type_fd
 #include "network-result.h"     // Result
-#include "network-types.h"      // Hostname, Service
-#include "network-sockets.h"    // Sockets, SocketsResult
+#include "network-sockets.h"    // Sockets
 
 #ifdef _WIN32
 #include <ws2tcpip.h>   // struct addrinfo
@@ -13,13 +12,12 @@
 #include <netdb.h>      // struct addrinfo
 #endif
 
-#include <string>       // std::string
 #include <vector>       // std::vector
 #include <utility>      // std::pair
 
 namespace Network
 {
-    typedef std::vector<std::string> ConnectDetails;
+    typedef std::vector<Result> ConnectDetails;
     typedef std::pair<fd_type, ConnectDetails> ConnectResult;
     extern ConnectResult connect(const Endpoint& endpoint,
                                  const addrinfo &hints,
