@@ -38,10 +38,5 @@ compile="$1"
 stem="$2"
 
 files="${output}${files:+ $files}"
-
-if [ "$(dirname "$output")" = . -a -n "${dir}" ]; then
-    output="$dir/$output"
-fi
-
 expr=$(printf "$FORMAT\n" "$stem" "${dir:+$dir/}" "$files")
-$compile | sed "$expr" >"${output:=$stem.dep}"
+$compile | sed "$expr" >"${output:-${dir:+$dir/}$stem.dep}"

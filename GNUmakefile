@@ -104,7 +104,7 @@ tmp/%.o: %.cpp
 	$(COMPILE.cpp) $(OUTPUT_OPTION) $<
 
 tmp/%.dep: %.cpp
-	./make-makefile -d tmp -f TAGS -o "$@" "$(CXX) -MM $(CPPFLAGS) $<" "$*"
+	./make-makefile -d tmp -f TAGS "$(CXX) -MM $(CPPFLAGS) $<" "$*"
 
 vpath %.cpp src
 vpath %.h include
