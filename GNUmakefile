@@ -61,7 +61,7 @@ library_objects = $(addprefix tmp/,$(subst .cpp,.o,$(library_sources)))
 objects = $(library_objects) $(executable_objects)
 tmp_dir = tmp
 
-all: TAGS $(executables)
+all: $(executables) TAGS
 
 clean:
 	rm -f $(executables) $(libraries) $(objects)
