@@ -47,13 +47,7 @@ namespace Network
         bool operator>(const Address& other) const;
         bool operator==(const Address& other) const;
         operator const sockaddr*() const;
-        operator const sockaddr&() const;
-        operator const sockaddr_in&() const;
-        operator const sockaddr_in6&() const;
-#ifndef _WIN32
-        operator const sockaddr_un&() const;
-#endif
-        std::string addr() const;
+        operator std::string() const;
         family_type family() const;
         port_type port() const;
         socklen_t size() const;
@@ -62,6 +56,12 @@ namespace Network
         static std::string to_string(const std::string& value);
         static std::string to_string(const in_addr& addr);
         static std::string to_string(const in6_addr& addr);
+        operator const sockaddr&() const;
+        operator const sockaddr_in&() const;
+        operator const sockaddr_in6&() const;
+#ifndef _WIN32
+        operator const sockaddr_un&() const;
+#endif
         std::string sa_data() const;
         family_type sa_family() const;
         socklen_t sa_length() const;

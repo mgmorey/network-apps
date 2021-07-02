@@ -1,6 +1,6 @@
 #include "network-address.h"    // Address
-#include "network-endpoint.h"   // to_string()
-#include "network-host.h"       // Host, Hostname
+#include "network-endpoint.h"   // to_endpoint()
+#include "network-host.h"       // Host, Hostname, Result
 #include "network-hosts.h"      // Hosts, get_hosts()
 #include "network-hostname.h"   // get_hostname()
 #include "network-socket.h"     // Socket
@@ -20,47 +20,55 @@
 
 #include <cstdlib>      // EXIT_FAILURE, EXIT_SUCCESS
 #include <iostream>     // std::cerr, std::cout, std::endl
+#include <list>         // std::list
 #include <ostream>      // std::ostream
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
-#include <vector>       // std::vector
 
 static std::ostream& operator<<(std::ostream& os, const Network::Host& host)
 {
-    typedef std::list<std::string> Values;
-    Values values;
-    Network::Address address(host);
-    Network::Endpoint endpoint(to_endpoint(address, false, true).first);
-    Network::Hostname hostname(endpoint.first);
-    values.push_back(address.addr());
-    values.push_back(hostname);
-    values.push_back(host.canonical_name());
-    values.unique();
-    std::size_t i = 0;
+    Network::EndpointResult endpoint_result(to_endpoint(host, false, true));
+    Network::Endpoint endpoint(endpoint_result.first);
+    Network::Result result(endpoint_result.second);
 
-    for (Values::const_iterator it = values.begin();
-         it != values.end();
-         ++it) {
-        if (it->empty()) {
-            continue;
-        }
-
-        switch (i++) {
-        case 0:
-            os << (*it)
-               << " (";
-            break;
-        case 1:
-            os << (*it);
-            break;
-        default:
-            os << ", "
-               << (*it);
-        }
+    if (result.nonzero()) {
+        std::cerr << result
+                  << std::endl;
     }
+    else {
+        typedef std::list<std::string> Values;
+        Values values;
+        Network::Address address(host);
+        values.push_back(address);
+        values.push_back(endpoint.first);
+        values.push_back(host.canonical_name());
+        values.unique();
+        std::size_t i = 0;
 
-    if (i) {
-        os << ')';
+        for (Values::const_iterator it = values.begin();
+             it != values.end();
+             ++it) {
+            if (it->empty()) {
+                continue;
+            }
+
+            switch (i++) {
+            case 0:
+                os << (*it)
+                   << " (";
+                break;
+            case 1:
+                os << (*it);
+                break;
+            default:
+                os << ", "
+                   << (*it);
+            }
+        }
+
+        if (i) {
+            os << ')';
+        }
     }
 
     return os;

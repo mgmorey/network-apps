@@ -29,21 +29,21 @@ bool Network::Address::operator<(const Address& other) const
 {
     return (family() < other.family() ||
             port() < other.port() ||
-            addr() < other.addr());
+            *this < other);
 }
 
 bool Network::Address::operator>(const Address& other) const
 {
     return (family() > other.family() ||
             port() > other.port() ||
-            addr() > other.addr());
+            *this > other);
 }
 
 bool Network::Address::operator==(const Address& other) const
 {
     return (family() == other.family() &&
             port() == other.port() &&
-            addr() == other.addr());
+            *this == other);
 }
 
 Network::Address::operator const sockaddr*() const
@@ -51,29 +51,7 @@ Network::Address::operator const sockaddr*() const
     return reinterpret_cast<const sockaddr*>(value.data());
 }
 
-Network::Address::operator const sockaddr&() const
-{
-    return *reinterpret_cast<const sockaddr*>(value.data());
-}
-
-Network::Address::operator const sockaddr_in&() const
-{
-    return *reinterpret_cast<const sockaddr_in*>(value.data());
-}
-
-Network::Address::operator const sockaddr_in6&() const
-{
-    return *reinterpret_cast<const sockaddr_in6*>(value.data());
-}
-
-#ifndef _WIN32
-Network::Address::operator const sockaddr_un&() const
-{
-    return *reinterpret_cast<const sockaddr_un*>(value.data());
-}
-#endif
-
-std::string Network::Address::addr() const
+Network::Address::operator std::string() const
 {
     switch(sa_family()) {
     case AF_INET:
@@ -155,6 +133,28 @@ std::string Network::Address::to_string(const in6_addr& addr)
     inet_ntop(AF_INET6, &addr, &buffer[0], buffer.size());
     return buffer;
 }
+
+Network::Address::operator const sockaddr&() const
+{
+    return *reinterpret_cast<const sockaddr*>(value.data());
+}
+
+Network::Address::operator const sockaddr_in&() const
+{
+    return *reinterpret_cast<const sockaddr_in*>(value.data());
+}
+
+Network::Address::operator const sockaddr_in6&() const
+{
+    return *reinterpret_cast<const sockaddr_in6*>(value.data());
+}
+
+#ifndef _WIN32
+Network::Address::operator const sockaddr_un&() const
+{
+    return *reinterpret_cast<const sockaddr_un*>(value.data());
+}
+#endif
 
 std::string Network::Address::sa_data() const
 {
