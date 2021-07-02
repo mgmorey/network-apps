@@ -241,26 +241,26 @@ std::string Network::Address::sun_path() const
 #endif
 
 std::ostream& Network::operator<<(std::ostream& os,
-                                  const Address& sa)
+                                  const Address& address)
 {
     static const std::string delim(", ");
     static const int tabs[1] = {0};
 
-    family_type family = sa.sa_family();
-    socklen_t length = sa.sa_length();
+    family_type family = address.sa_family();
+    socklen_t length = address.sa_length();
 
-    if (sa.value.size()) {
+    if (address.value.size()) {
         switch (family) {
 #ifndef _WIN32
         case AF_UNIX:
-            os << static_cast<const sockaddr_un&>(sa);
+            os << static_cast<const sockaddr_un&>(address);
             break;
 #endif
         case AF_INET:
-            os << static_cast<const sockaddr_in&>(sa);
+            os << static_cast<const sockaddr_in&>(address);
             break;
         case AF_INET6:
-            os << static_cast<const sockaddr_in6&>(sa);
+            os << static_cast<const sockaddr_in6&>(address);
             break;
         default:
             os << "sockaddr("
@@ -269,7 +269,7 @@ std::ostream& Network::operator<<(std::ostream& os,
                << Format(delim, tabs[0], "sa_family")
                << Family(family)
                << Format(delim, tabs[0], "sa_data")
-               << Address::to_string(sa.sa_data())
+               << Address::to_string(address.sa_data())
                << ')';
         }
     }

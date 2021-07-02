@@ -27,7 +27,7 @@ namespace Network
     class Address
     {
         friend std::ostream& operator<<(std::ostream& os,
-                                        const Address& sa);
+                                        const Address& address);
         friend std::ostream& operator<<(std::ostream& os,
                                         const sockaddr_in& sin);
         friend std::ostream& operator<<(std::ostream& os,
@@ -80,7 +80,7 @@ namespace Network
     };
 
     extern std::ostream& operator<<(std::ostream& os,
-                                    const Address& sa);
+                                    const Address& address);
     extern std::ostream& operator<<(std::ostream& os,
                                     const sockaddr_in& sin);
     extern std::ostream& operator<<(std::ostream& os,
