@@ -16,25 +16,25 @@ parse_arguments() {
             (c)
                 command="$OPTARG"
                 ;;
-	    (d)
+            (d)
                 parse_dir
-	        ;;
-	    (f)
-	        files="$OPTARG"
-	        ;;
-	    (o)
+                ;;
+            (f)
+                files="$OPTARG"
+                ;;
+            (o)
                 parse_output
                 ;;
-	    (s)
-	        parse_suffix
-	        ;;
+            (s)
+                parse_suffix
+                ;;
             (h)
                 usage
                 exit 0
                 ;;
-	    (\?)
-	        exit 2
-	        ;;
+            (\?)
+                exit 2
+                ;;
         esac
     done
 
@@ -69,7 +69,7 @@ parse_dir() {
                     "$script" "$OPTARG" "$output"
         exit 2
     else
-	dir="$OPTARG"
+        dir="$OPTARG"
     fi
 }
 
@@ -87,7 +87,7 @@ parse_output() {
                     "$script" "$OPTARG" "$suffix"
         exit 2
     else
-	output="$OPTARG"
+        output="$OPTARG"
     fi
 }
 
@@ -97,7 +97,7 @@ parse_suffix() {
                     "$script" "$OPTARG" "$output"
         exit 2
     else
-	suffix="$OPTARG"
+        suffix="$OPTARG"
     fi
 }
 
@@ -115,7 +115,7 @@ EOF
 
 usage_error() {
     if [ $# -gt 0 ]; then
-	printf "$@" >&2
+        printf "$@" >&2
     fi
 
     printf '%s\n' '' >&2
