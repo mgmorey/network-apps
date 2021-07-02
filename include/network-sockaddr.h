@@ -17,8 +17,8 @@
 namespace Network
 {
 #ifdef _WIN32
-    typedef u_short family_type;
-    typedef u_short port_type;
+    typedef unsigned short family_type;
+    typedef unsigned short port_type;
 #else
     typedef sa_family_t family_type;
     typedef in_port_t port_type;
