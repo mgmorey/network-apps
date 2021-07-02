@@ -5,16 +5,16 @@ SED='s|\\(%s\\)\\.o[ :]*|%s\\1.o %s: \\\\\\
 s/^[ ]*//'
 
 parse_arguments() {
-    compile=
+    command=
     dir=
     files=
     output=
-    suffix=.d
+    suffix=
 
-    while getopts c:d:f:o:s: opt; do
+    while getopts c:d:f:o:s:h opt; do
         case $opt in
             (c)
-                compile="$OPTARG"
+                command="$OPTARG"
                 ;;
 	    (d)
                 parse_dir
@@ -26,8 +26,12 @@ parse_arguments() {
                 parse_output
                 ;;
 	    (s)
-	        suffix="$OPTARG"
+	        parse_suffix
 	        ;;
+            (h)
+                usage
+                exit 0
+                ;;
 	    (\?)
 	        exit 2
 	        ;;
@@ -37,11 +41,11 @@ parse_arguments() {
     shift $(($OPTIND - 1))
 
     if [ $# -gt 1 ]; then
-        printf '%s: Too many arguments\n' "$script" >&2
+        usage_error '%s: Too many arguments\n' "$script"
         exit 2
     elif [ $# -lt 1 ]; then
         if [ -z "$output" ]; then
-            printf '%s: Not enough arguments\n' "$script" >&2
+            usage_error '%s: Not enough arguments\n' "$script"
             exit 2
         else
             dir="$(dirname "$output" | sed 's|^\./||')"
@@ -51,17 +55,18 @@ parse_arguments() {
         stem="$1"
     fi
 
-    output="${output:-${dir:+$dir/}$stem$suffix}"
+    output="${output:-${dir:+$dir/}$stem${suffix:-.d}}"
+    files="$output${files:+ $files}"
 }
 
 parse_dir() {
     if [ ! -d "$OPTARG" ]; then
-        printf '%s: "%s": No such directory\n' \
-               "$script" "$OPTARG" >&2
+        usage_error '%s: "%s": No such directory\n' \
+                    "$script" "$OPTARG"
         exit 2
-    elif [ "$output" ]; then
-        printf '%s: Argument "-d %s" conflicts with argument "-o %s"\n' \
-               "$script" "$OPTARG" "$output" >&2
+    elif [ -n "$output" ]; then
+        usage_error '%s: Argument "-d %s" conflicts with argument "-o %s"\n' \
+                    "$script" "$OPTARG" "$output"
         exit 2
     else
 	dir="$OPTARG"
@@ -70,20 +75,52 @@ parse_dir() {
 
 parse_output() {
     if [ ! -d "$(dirname "$OPTARG")" ]; then
-        printf '%s: "%s": No such directory\n' \
-               "$script" "$(dirname $OPTARG)" >&2
+        usage_error '%s: "%s": No such directory\n' \
+                    "$script" "$(dirname $OPTARG)"
         exit 2
-    elif [ "$dir" ]; then
-        printf '%s: Argument "-o %s" conflicts with argument "-d %s"\n' \
-               "$script" "$OPTARG" "$dir" >&2
+    elif [ -n "$dir" ]; then
+        usage_error '%s: Argument "-o %s" conflicts with argument "-d %s"\n' \
+                    "$script" "$OPTARG" "$dir"
+        exit 2
+    elif [ -n "$suffix" ]; then
+        usage_error '%s: Argument "-o %s" conflicts with argument "-s %s"\n' \
+                    "$script" "$OPTARG" "$suffix"
         exit 2
     else
 	output="$OPTARG"
     fi
 }
 
+parse_suffix() {
+    if [ -n "$output" ]; then
+        usage_error '%s: Argument "-s %s" conflicts with argument "-o %s"\n' \
+                    "$script" "$OPTARG" "$output"
+        exit 2
+    else
+	suffix="$OPTARG"
+    fi
+}
+
 sed_makefile() {
-    sed "$(printf "$SED\n" "$stem" "${dir:+$dir/}" "$output${files:+ $files}")"
+    sed "$(printf "$SED\n" "$stem" "${dir:+$dir/}" "$files")"
+}
+
+usage() {
+    cat <<EOF >&2
+Usage: $script [-c COMMAND] [-d DIR] [-f FILE [FILE [...]]] [-s SUFFIX] STEM
+       $script [-c COMMAND] [-f FILE [FILE [...]]] [-o OUTPUT]
+       $script -h
+EOF
+}
+
+usage_error() {
+    if [ $# -gt 0 ]; then
+	printf "$@" >&2
+    fi
+
+    printf '%s\n' '' >&2
+    usage
+    exit 2
 }
 
 script="$(basename "$0")"
@@ -92,8 +129,8 @@ parse_arguments "$@"
 
 exec >"$output"
 
-if [ -n "$compile" ]; then
-    $compile | sed_makefile
+if [ -n "$command" ]; then
+    $command | sed_makefile
 else
     sed_makefile
 fi
