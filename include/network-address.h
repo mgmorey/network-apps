@@ -51,6 +51,7 @@ namespace Network
         family_type family() const;
         port_type port() const;
         socklen_t size() const;
+        std::string text() const;
 
     private:
         static std::string to_string(const std::string& value);

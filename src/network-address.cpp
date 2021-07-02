@@ -29,21 +29,21 @@ bool Network::Address::operator<(const Address& other) const
 {
     return (family() < other.family() ||
             port() < other.port() ||
-            value < other.value);
+            text() < other.text());
 }
 
 bool Network::Address::operator>(const Address& other) const
 {
     return (family() > other.family() ||
             port() > other.port() ||
-            value > other.value);
+            text() > other.text());
 }
 
 bool Network::Address::operator==(const Address& other) const
 {
     return (family() == other.family() &&
             port() == other.port() &&
-            value == other.value);
+            text() == other.text());
 }
 
 Network::Address::operator const sockaddr*() const
@@ -53,14 +53,7 @@ Network::Address::operator const sockaddr*() const
 
 Network::Address::operator std::string() const
 {
-    switch(sa_family()) {
-    case AF_INET:
-        return to_string(sin_addr());
-    case AF_INET6:
-        return to_string(sin6_addr());
-    }
-
-    return to_string(sa_data());
+    return text();
 }
 
 Network::family_type Network::Address::family() const
@@ -90,6 +83,18 @@ Network::port_type Network::Address::port() const
 socklen_t Network::Address::size() const
 {
     return static_cast<socklen_t>(value.size());
+}
+
+std::string Network::Address::text() const
+{
+    switch(sa_family()) {
+    case AF_INET:
+        return to_string(sin_addr());
+    case AF_INET6:
+        return to_string(sin6_addr());
+    }
+
+    return to_string(sa_data());
 }
 
 std::string Network::Address::to_string(const std::string& value)
