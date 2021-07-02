@@ -96,7 +96,7 @@ tmp/%.o: %.cpp
 	$(COMPILE.cpp) $(OUTPUT_OPTION) $<
 
 tmp/%.dep: %.cpp
-	$(CXX) -M $(CPPFLAGS) $< >$@.$$$$ && \
+	$(CXX) -MM $(CPPFLAGS) $< >$@.$$$$ && \
 sed 's,\($*\)\.o[ :]*,tmp/\1.o $@ TAGS: ,' $@.$$$$ >$@; \
 rm $@.$$$$
 
