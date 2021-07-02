@@ -1,0 +1,46 @@
+#!/bin/sh -eu
+
+FORMAT='s,\\(%s\\)\\.o[ :]*,%s\\1.o %s: ,'
+
+dir=
+files=
+output=
+
+while getopts d:f:o: opt; do
+    case $opt in
+	(d)
+            if [ -d "$OPTARG" ]; then
+	        dir=$OPTARG
+            else
+                printf '%s: No such directory\n' "$dir" >&2
+            fi
+	    ;;
+	(f)
+	    files=$OPTARG
+	    ;;
+	(o)
+            if [ -d "$(dirname "$OPTARG")" ]; then
+	        output=$OPTARG
+            else
+                printf '%s: No such directory\n' "$(dirname $OPTARG)" >&2
+            fi
+            ;;
+	(\?)
+	    exit 2
+	    ;;
+    esac
+done
+
+shift $(($OPTIND - 1))
+
+compile="$1"
+stem="$2"
+
+files="${output}${files:+ $files}"
+
+if [ "$(dirname "$output")" = . -a -n "${dir}" ]; then
+    output="$dir/$output"
+fi
+
+expr=$(printf "$FORMAT\n" "$stem" "${dir:+$dir/}" "$files")
+$compile | sed "$expr" >"${output:=$stem.dep}"
