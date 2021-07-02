@@ -14,48 +14,53 @@
 #include <sstream>      // std::ostringstream
 
 Network::Host::Host(const addrinfo& other) :
-    addr(other.ai_addr, other.ai_addrlen),
-    name(other.ai_canonname == NULL ? "" : other.ai_canonname)
+    address(other.ai_addr, other.ai_addrlen),
+    cname(other.ai_canonname == NULL ? "" : other.ai_canonname)
 {
 }
 
 Network::Host& Network::Host::operator=(const addrinfo& other)
 {
-    addr = Address(other.ai_addr, other.ai_addrlen);
-    name = other.ai_canonname == NULL ? "" : other.ai_canonname;
+    address = Address(other.ai_addr, other.ai_addrlen);
+    cname = other.ai_canonname == NULL ? "" : other.ai_canonname;
     return *this;
 }
 
 bool Network::Host::operator<(const Host& other) const
 {
-    return addr < other.addr;
+    return address < other.address;
 }
 
 bool Network::Host::operator>(const Host& other) const
 {
-    return addr > other.addr;
+    return address > other.address;
 }
 
 bool Network::Host::operator==(const Host& other) const
 {
-    return addr == other.addr;
+    return address == other.address;
+}
+
+Network::Host::operator Address() const
+{
+    return address;
 }
 
 Network::Hostname Network::Host::canonical_name() const
 {
-    return name;
+    return cname;
 }
 
 Network::Result Network::Host::connect(sock_fd_type fd, bool verbose) const
 {
-    if (verbose && addr.size()) {
+    if (verbose && address.size()) {
         std::cerr << "Trying "
-                  << addr
+                  << address
                   << std::endl;
     }
 
     std::string error;
-    int code = ::connect(fd, addr, addr.size());
+    int code = ::connect(fd, address, address.size());
 
     if (code == Host::connect_error) {
         std::ostringstream os;
@@ -72,9 +77,4 @@ Network::Result Network::Host::connect(sock_fd_type fd, bool verbose) const
     }
 
     return Result(errno, error);
-}
-
-const Network::Address& Network::Host::address() const
-{
-    return addr;
 }

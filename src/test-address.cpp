@@ -29,7 +29,7 @@ static std::ostream& operator<<(std::ostream& os, const Network::Host& host)
 {
     typedef std::list<std::string> Values;
     Values values;
-    Network::Address address(host.address());
+    Network::Address address(host);
     Network::Endpoint endpoint(to_endpoint(address, false, true).first);
     Network::Hostname hostname(endpoint.first);
     values.push_back(address.addr());

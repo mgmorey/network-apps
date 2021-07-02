@@ -28,13 +28,13 @@ namespace Network
         bool operator<(const Host& other) const;
         bool operator>(const Host& other) const;
         bool operator==(const Host& other) const;
-        const Address& address() const;
+        operator Address() const;
         Hostname canonical_name() const;
         Result connect(sock_fd_type fd, bool verbose = false) const;
 
     private:
-        Address addr;
-        Hostname name;
+        Address address;
+        Hostname cname;
     };
 }
 
