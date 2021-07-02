@@ -84,15 +84,15 @@ namespace Network
     extern std::ostream& operator<<(std::ostream& os,
                                     const sockaddr_in& sin);
     extern std::ostream& operator<<(std::ostream& os,
-                                    const sockaddr_in6& sin);
+                                    const in_addr& addr);
+    extern std::ostream& operator<<(std::ostream& os,
+                                    const sockaddr_in6& sin6);
+    extern std::ostream& operator<<(std::ostream& os,
+                                    const in6_addr& addr);
 #ifndef _WIN32
     extern std::ostream& operator<<(std::ostream& os,
                                     const sockaddr_un& sun);
 #endif
-    extern std::ostream& operator<<(std::ostream& os,
-                                    const in_addr& addr);
-    extern std::ostream& operator<<(std::ostream& os,
-                                    const in6_addr& addr);
 }
 
 #endif
