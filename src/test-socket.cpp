@@ -15,7 +15,8 @@ static void test_peer(Network::sock_fd_type fd)
     Network::Result result(sa_result.second);
 
     if (result.nonzero()) {
-        std::cerr << result.string()
+        std::cerr << "No address: "
+                  << result
                   << std::endl;
     }
     else {
@@ -35,7 +36,7 @@ static void test_socket()
     Network::Result result(socketpair_result.second);
 
     if (result.nonzero()) {
-        std::cerr << result.string()
+        std::cerr << result
                   << std::endl;
     }
     else {

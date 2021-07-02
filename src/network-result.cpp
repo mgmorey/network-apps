@@ -25,3 +25,9 @@ std::string Network::Result::string() const
 {
     return result_string;
 }
+
+std::ostream& Network::operator<<(std::ostream& os,
+                                  const Result& result)
+{
+    return os << result.string();
+}

@@ -28,7 +28,8 @@ static void test_peer(Network::sock_fd_type fd)
     Network::Result result(sa_result.second);
 
     if (result.nonzero()) {
-        std::cerr << result.string()
+        std::cerr << "No address: "
+                  << result
                   << std::endl;
     }
     else {
@@ -52,7 +53,7 @@ static void test_connect(const Network::Endpoint& endpoint)
         for (Network::ConnectDetails::const_iterator it = details.begin();
              it != details.end();
              ++it) {
-            std::cerr << it->string()
+            std::cerr << (*it)
                       << std::endl;
         }
     }

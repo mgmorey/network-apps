@@ -1,6 +1,7 @@
 #ifndef NETWORK_RESULT_H
 #define NETWORK_RESULT_H
 
+#include <ostream>      // std::ostream
 #include <string>       // std::string
 
 namespace Network
@@ -18,6 +19,9 @@ namespace Network
         int result_value;
         std::string result_string;
     };
+
+    extern std::ostream& operator<<(std::ostream& os,
+                                    const Result& result);
 }
 
 #endif

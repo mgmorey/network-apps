@@ -17,7 +17,7 @@ static void test_hostname()
 
     if (result.nonzero()) {
         std::cerr << "No hostname: "
-                  << result.string()
+                  << result
                   << std::endl;
     }
     else {

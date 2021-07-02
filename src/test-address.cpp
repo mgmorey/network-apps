@@ -115,7 +115,7 @@ static void test_host(const Network::Hostname& host,
 
         std::cout << " hosts:"
                   << std::endl
-                  << result.string()
+                  << result
                   << std::endl;
     }
     else if (!hosts.empty()) {
