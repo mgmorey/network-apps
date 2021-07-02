@@ -37,6 +37,6 @@ shift $(($OPTIND - 1))
 compile="$1"
 stem="$2"
 
-files="${output}${files:+ $files}"
+files="${output:-${dir:+$dir/}$stem.dep}${files:+ $files}"
 expr=$(printf "$FORMAT\n" "$stem" "${dir:+$dir/}" "$files")
 $compile | sed "$expr" >"${output:-${dir:+$dir/}$stem.dep}"
