@@ -1,6 +1,7 @@
 #!/bin/sh -eu
 
-FORMAT='s,\\(%s\\)\\.o[ :]*,%s\\1.o %s: ,'
+FORMAT='s,\\(%s\\)\\.o[ :]*,%s\\1.o %s: \\\\\\
+  ,'
 
 dir=
 files=
