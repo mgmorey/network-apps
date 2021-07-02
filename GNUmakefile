@@ -51,12 +51,15 @@ endif
 sources = $(executable_sources) $(library_sources)
 
 dependencies = $(addprefix tmp/,$(subst .cpp,.dep,$(sources)))
+dependencies_dir = tmp
+
 executables = $(subst .cpp,,$(executable_sources))
 libraries = libnetwork.a
 
 executable_objects = $(addprefix tmp/,$(subst .cpp,.o,$(executable_sources)))
 library_objects = $(addprefix tmp/,$(subst .cpp,.o,$(library_sources)))
 objects = $(library_objects) $(executable_objects)
+tmp_dir = tmp
 
 all: TAGS $(executables)
 
@@ -83,6 +86,11 @@ $(executables): libnetwork.a
 
 libnetwork.a: $(patsubst %.o,libnetwork.a(%.o),$(library_objects))
 
+$(dependencies) $(objects): | $(tmp_dir)
+
+$(tmp_dir):
+	mkdir -p $(tmp_dir)
+
 include $(dependencies)
 
 .PHONY: all clean realclean test
@@ -96,9 +104,7 @@ tmp/%.o: %.cpp
 	$(COMPILE.cpp) $(OUTPUT_OPTION) $<
 
 tmp/%.dep: %.cpp
-	$(CXX) -MM $(CPPFLAGS) $< >$@.$$$$ && \
-sed 's,\($*\)\.o[ :]*,tmp/\1.o $@ TAGS: ,' $@.$$$$ >$@; \
-rm $@.$$$$
+	./make-makefile -d tmp -f TAGS -o "$@" "$(CXX) -MM $(CPPFLAGS) $<" "$*"
 
 vpath %.cpp src
 vpath %.h include
