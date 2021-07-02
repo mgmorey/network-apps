@@ -1,3 +1,4 @@
+#include "network-address.h"    // Address
 #include "network-endpoint.h"   // to_string()
 #include "network-host.h"       // Host, Hostname
 #include "network-hosts.h"      // Hosts, get_hosts()
@@ -28,7 +29,7 @@ static std::ostream& operator<<(std::ostream& os, const Network::Host& host)
 {
     typedef std::list<std::string> Values;
     Values values;
-    Network::SockAddr address(host.address());
+    Network::Address address(host.address());
     Network::Endpoint endpoint(to_endpoint(address, false, true).first);
     Network::Hostname hostname(endpoint.first);
     values.push_back(address.addr());

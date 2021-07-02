@@ -3,12 +3,12 @@
                                 // copy_addrinfo(), get_addrinfo(),
                                 // std::cerr, std::endl, std::ostream,
                                 // std::size_t, std::string
+#include "network-address.h"    // Address, operator<<()
 #include "network-family.h"     // Family, operator<<()
 #include "network-flags.h"      // Flags, operator<<()
 #include "network-format.h"     // Format, operator<<()
 #include "network-name.h"       // Name, operator<<()
 #include "network-protocol.h"   // Protocol, operator<<()
-#include "network-sockaddr.h"   // SockAddr, operator<<()
 #include "network-socktype.h"   // SockType, operator<<()
 
 #ifdef _WIN32
@@ -96,7 +96,7 @@ std::ostream& Network::operator<<(std::ostream& os,
        << Format(tabs[0], "ai_addrlen")
        << ai.ai_addrlen
        << Format(tabs[0], "ai_addr")
-       << SockAddr(ai.ai_addr, ai.ai_addrlen)
+       << Address(ai.ai_addr, ai.ai_addrlen)
        << Format(tabs[0], "ai_canonname")
        << Name(ai.ai_canonname)
        << Format(tabs[0], "ai_next")

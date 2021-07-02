@@ -1,4 +1,4 @@
-#include "network-peername.h"       // SockAddrResult, get_peername()
+#include "network-peername.h"       // AddressResult, get_peername()
 
 #ifdef _WIN32
 #include <winsock2.h>   // getpeername(), struct sockaddr, struct
@@ -14,7 +14,7 @@
 #include <iostream>     // std::cerr, std::endl
 #include <sstream>      // std::ostringstream
 
-Network::SockAddrResult Network::get_peername(sock_fd_type fd, bool verbose)
+Network::AddressResult Network::get_peername(sock_fd_type fd, bool verbose)
 {
     if (verbose) {
         std::cerr << "Invoking getpeername("
@@ -51,5 +51,5 @@ Network::SockAddrResult Network::get_peername(sock_fd_type fd, bool verbose)
         error = os.str();
     }
 
-    return SockAddrResult(SockAddr(addr, addrlen), Result(code, error));
+    return AddressResult(Address(addr, addrlen), Result(code, error));
 }

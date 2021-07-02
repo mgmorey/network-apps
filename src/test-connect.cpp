@@ -1,9 +1,10 @@
+#include "network-address.h"    // Address
 #include "network-close.h"      // close()
 #include "network-connect.h"    // ConnectDetails, ConnectResult,
                                 // Endpoint, Hostname, Service,
                                 // connect()
 #include "network-fd.h"         // sock_fd_type
-#include "network-peername.h"   // get_peername()
+#include "network-peername.h"   // AddressResult, get_peername()
 #include "network-socket.h"     // Socket
 
 #ifdef _WIN32
@@ -24,8 +25,8 @@
 
 static void test_peer(Network::sock_fd_type fd)
 {
-    Network::SockAddrResult sa_result(Network::get_peername(fd, true));
-    Network::Result result(sa_result.second);
+    Network::AddressResult address_result(Network::get_peername(fd, true));
+    Network::Result result(address_result.second);
 
     if (result.nonzero()) {
         std::cerr << "No address: "
@@ -33,11 +34,11 @@ static void test_peer(Network::sock_fd_type fd)
                   << std::endl;
     }
     else {
-        Network::SockAddr sockaddr(sa_result.first);
+        Network::Address address(address_result.first);
         std::cout << "Socket "
                   << fd
                   << " connected to "
-                  << sockaddr
+                  << address
                   << std::endl;
     }
 }

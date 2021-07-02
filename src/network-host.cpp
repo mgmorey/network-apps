@@ -1,4 +1,4 @@
-#include "network-host.h"       // Host, Result, SockAddr
+#include "network-host.h"       // Address, Host, Result
 
 #ifdef _WIN32
 #include <winsock2.h>   // connect()
@@ -21,7 +21,7 @@ Network::Host::Host(const addrinfo& other) :
 
 Network::Host& Network::Host::operator=(const addrinfo& other)
 {
-    addr = SockAddr(other.ai_addr, other.ai_addrlen);
+    addr = Address(other.ai_addr, other.ai_addrlen);
     name = other.ai_canonname == NULL ? "" : other.ai_canonname;
     return *this;
 }
@@ -74,7 +74,7 @@ Network::Result Network::Host::connect(sock_fd_type fd, bool verbose) const
     return Result(errno, error);
 }
 
-const Network::SockAddr& Network::Host::address() const
+const Network::Address& Network::Host::address() const
 {
     return addr;
 }

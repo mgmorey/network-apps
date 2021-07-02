@@ -1,5 +1,5 @@
-#include "network-endpoint.h"   // Endpoint, EndpointResult, Hostname,
-                                // Result, SockAddr, to_endpoint(),
+#include "network-endpoint.h"   // Address, Endpoint, EndpointResult,
+                                // Hostname, Result, to_endpoint(),
                                 // to_hostname(), to_string()
 #include "network-buffer.h"     // Buffer
 
@@ -14,7 +14,7 @@
 #include <iostream>     // std::cerr, std::endl
 #include <sstream>      // std::ostringstream
 
-Network::EndpointResult Network::to_endpoint(const Network::SockAddr& address,
+Network::EndpointResult Network::to_endpoint(const Address& address,
                                              int flags, bool verbose)
 {
     std::string error;
@@ -47,7 +47,7 @@ Network::EndpointResult Network::to_endpoint(const Network::SockAddr& address,
                           Result(code, error));
 }
 
-Network::EndpointResult Network::to_endpoint(const SockAddr& address,
+Network::EndpointResult Network::to_endpoint(const Address& address,
                                              bool numeric,
                                              bool verbose)
 {

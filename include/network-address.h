@@ -24,10 +24,10 @@ namespace Network
     typedef in_port_t port_type;
 #endif
 
-    class SockAddr
+    class Address
     {
         friend std::ostream& operator<<(std::ostream& os,
-                                        const SockAddr& sa);
+                                        const Address& sa);
         friend std::ostream& operator<<(std::ostream& os,
                                         const sockaddr_in& sin);
         friend std::ostream& operator<<(std::ostream& os,
@@ -42,10 +42,10 @@ namespace Network
 #endif
 
     public:
-        SockAddr(const sockaddr* addr, socklen_t addrlen);
-        bool operator<(const SockAddr& other) const;
-        bool operator>(const SockAddr& other) const;
-        bool operator==(const SockAddr& other) const;
+        Address(const sockaddr* addr, socklen_t addrlen);
+        bool operator<(const Address& other) const;
+        bool operator>(const Address& other) const;
+        bool operator==(const Address& other) const;
         operator const sockaddr*() const;
         operator const sockaddr&() const;
         operator const sockaddr_in&() const;
@@ -80,7 +80,7 @@ namespace Network
     };
 
     extern std::ostream& operator<<(std::ostream& os,
-                                    const SockAddr& sa);
+                                    const Address& sa);
     extern std::ostream& operator<<(std::ostream& os,
                                     const sockaddr_in& sin);
     extern std::ostream& operator<<(std::ostream& os,

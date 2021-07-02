@@ -1,7 +1,8 @@
+#include "network-address.h"    // Address
 #include "network-close.h"      // close()
 #include "network-fd.h"         // sock_fd_type
 #include "network-host.h"       // Host
-#include "network-peername.h"   // get_peername()
+#include "network-peername.h"   // AddressResult, get_peername()
 #include "network-socket.h"     // Socket
 
 #include <sys/socket.h> // AF_UNIX, SOCK_DGRAM, SOCK_STREAM
@@ -11,8 +12,8 @@
 
 static void test_peer(Network::sock_fd_type fd)
 {
-    Network::SockAddrResult sa_result(Network::get_peername(fd, true));
-    Network::Result result(sa_result.second);
+    Network::AddressResult address_result(Network::get_peername(fd, true));
+    Network::Result result(address_result.second);
 
     if (result.nonzero()) {
         std::cerr << "No address: "
@@ -20,7 +21,7 @@ static void test_peer(Network::sock_fd_type fd)
                   << std::endl;
     }
     else {
-        Network::SockAddr sockaddr(sa_result.first);
+        Network::Address sockaddr(address_result.first);
         std::cout << "Socket "
                   << fd
                   << " connected to "

@@ -1,9 +1,9 @@
 #ifndef NETWORK_HOST_H
 #define NETWORK_HOST_H
 
+#include "network-address.h"    // Address
 #include "network-fd.h"         // sock_fd_type
 #include "network-result.h"     // Result
-#include "network-sockaddr.h"   // SockAddr
 #include "network-types.h"      // Hostname, Service
 
 #ifdef _WIN32
@@ -28,12 +28,12 @@ namespace Network
         bool operator<(const Host& other) const;
         bool operator>(const Host& other) const;
         bool operator==(const Host& other) const;
-        const SockAddr& address() const;
+        const Address& address() const;
         Hostname canonical_name() const;
         Result connect(sock_fd_type fd, bool verbose = false) const;
 
     private:
-        SockAddr addr;
+        Address addr;
         Hostname name;
     };
 }
