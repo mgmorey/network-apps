@@ -29,21 +29,21 @@ bool Network::Address::operator<(const Address& other) const
 {
     return (family() < other.family() ||
             port() < other.port() ||
-            *this < other);
+            value < other.value);
 }
 
 bool Network::Address::operator>(const Address& other) const
 {
     return (family() > other.family() ||
             port() > other.port() ||
-            *this > other);
+            value > other.value);
 }
 
 bool Network::Address::operator==(const Address& other) const
 {
     return (family() == other.family() &&
             port() == other.port() &&
-            *this == other);
+            value == other.value);
 }
 
 Network::Address::operator const sockaddr*() const
