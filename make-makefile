@@ -3,40 +3,62 @@
 FORMAT='s,\\(%s\\)\\.o[ :]*,%s\\1.o %s: \\\\\\
 ,'
 
-dir=
-files=
-output=
+parse_arguments() {
+    compile=
+    dir=
+    files=
+    output=
 
-while getopts d:f:o: opt; do
-    case $opt in
-	(d)
-            if [ -d "$OPTARG" ]; then
-	        dir=$OPTARG
-            else
-                printf '%s: No such directory\n' "$dir" >&2
-            fi
-	    ;;
-	(f)
-	    files=$OPTARG
-	    ;;
-	(o)
-            if [ -d "$(dirname "$OPTARG")" ]; then
-	        output=$OPTARG
-            else
-                printf '%s: No such directory\n' "$(dirname $OPTARG)" >&2
-            fi
-            ;;
-	(\?)
-	    exit 2
-	    ;;
-    esac
-done
+    while getopts c:d:f:o: opt; do
+        case $opt in
+            (c)
+                compile="$OPTARG"
+                ;;
+	    (d)
+                if [ -d "$OPTARG" ]; then
+	            dir=$OPTARG
+                else
+                    printf '%s: No such directory\n' "$OPTARG" >&2
+                    exit 2
+                fi
+	        ;;
+	    (f)
+	        files=$OPTARG
+	        ;;
+	    (o)
+                if [ -d "$(dirname "$OPTARG")" ]; then
+	            output=$OPTARG
+                else
+                    printf '%s: No such directory\n' "$(dirname $OPTARG)" >&2
+                    exit 2
+                fi
+                ;;
+	    (\?)
+	        exit 2
+	        ;;
+        esac
+    done
 
-shift $(($OPTIND - 1))
+    shift $(($OPTIND - 1))
 
-compile="$1"
-stem="$2"
+    if [ $# -lt 1 ]; then
+        printf '%s: Not enough arguments\n' "$script" >&2
+        exit 1
+    fi
 
-files="${output:-${dir:+$dir/}$stem.dep}${files:+ $files}"
+    stem="$1"
+}
+
+script="$(basename "$0")"
+
+parse_arguments "$@"
+
+output="${output:-${dir:+$dir/}$stem.dep}"
+files="$output${files:+ $files}"
 expr=$(printf "$FORMAT\n" "$stem" "${dir:+$dir/}" "$files")
-$compile | sed "$expr" >"${output:-${dir:+$dir/}$stem.dep}"
+
+if [ -n "$compile" ]; then
+    $compile
+else
+    cat
+fi | sed -e "$expr" -e 's/^[ ]*//' >"$output"
