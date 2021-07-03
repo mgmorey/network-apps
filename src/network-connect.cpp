@@ -4,7 +4,8 @@
                                 // connect()
 #include "network-addrinfo.h"   // operator<<()
 #include "network-close.h"      // close()
-#include "network-endpoint.h"   // Endpoint, to_string()
+#include "network-endpoint.h"   // Endpoint
+#include "network-fd.h"         // sock_fd_null, sock_fd_tyep
 #include "network-host.h"       // Host
 
 #ifdef _WIN32
@@ -49,8 +50,8 @@ Network::ConnectResult Network::connect(const Sockets& sockets,
             continue;
         }
 
-        const Host host(*it);
-        const Result connect_result(host.connect(fd, verbose));
+        const Address address(static_cast<Host>(*it));
+        const Result connect_result(address.connect(fd, verbose));
 
         if (connect_result.result() == Address::connect_error) {
             close(fd);

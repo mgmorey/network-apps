@@ -43,8 +43,3 @@ Network::Hostname Network::Host::canonical_name() const
 {
     return cname;
 }
-
-Network::Result Network::Host::connect(sock_fd_type fd, bool verbose) const
-{
-    return address.connect(fd, verbose);
-}
