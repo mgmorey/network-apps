@@ -13,7 +13,6 @@
 #include <sys/un.h>     // struct sockaddr_un
 #endif
 
-#include <ostream>      // std::ostream
 #include <string>       // std::string
 
 namespace Network
