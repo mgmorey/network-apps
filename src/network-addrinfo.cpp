@@ -22,10 +22,10 @@
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
 
-Network::AddrinfoResult Network::get_addrinfo(const Hostname& node,
-                                              const Service& service,
-                                              const addrinfo* hints,
-                                              bool verbose)
+Network::AiResult Network::get_addrinfo(const Hostname& node,
+                                        const Service& service,
+                                        const addrinfo* hints,
+                                        bool verbose)
 {
     if (verbose) {
         std::cerr << "Invoking getaddrinfo("
@@ -71,7 +71,7 @@ Network::AddrinfoResult Network::get_addrinfo(const Hostname& node,
         assert(list != NULL);
     }
 
-    return AddrinfoResult(list, Result(code, error));
+    return AiResult(list, Result(code, error));
 }
 
 std::ostream& Network::operator<<(std::ostream& os,

@@ -20,9 +20,9 @@
 
 namespace Network
 {
-    typedef std::pair<addrinfo*, Result> AddrinfoResult;
+    typedef std::pair<addrinfo*, Result> AiResult;
 
-    extern AddrinfoResult get_addrinfo(const Hostname& node,
+    extern AiResult get_addrinfo(const Hostname& node,
                                        const Service& service,
                                        const addrinfo* hints,
                                        bool verbose);
@@ -36,10 +36,10 @@ namespace Network
                               const addrinfo* hints,
                               bool verbose)
     {
-        AddrinfoResult result(get_addrinfo(node, service, hints, verbose));
-        addrinfo* list = result.first;
+        const AiResult ai_result(get_addrinfo(node, service, hints, verbose));
+        addrinfo* list = ai_result.first;
+        dest.second = ai_result.second;
         std::size_t size = 0;
-        dest.second = result.second;
 
         if (list == NULL) {
             return size;
@@ -72,11 +72,11 @@ namespace Network
     {
         Container cont;
         std::vector<std::size_t> sizes;
-        std::size_t size = copy_addrinfo(cont,
-                                         node,
-                                         service,
-                                         hints,
-                                         verbose);
+        const std::size_t size = copy_addrinfo(cont,
+                                               node,
+                                               service,
+                                               hints,
+                                               verbose);
 
         if (size) {
             if (verbose) {
@@ -89,7 +89,7 @@ namespace Network
 
             if (verbose) {
                 sizes.push_back(cont.first.size());
-                Unique unique(sizes);
+                const Unique unique(sizes);
                 std::cerr << "Fetched "
                           << unique
                           << std::endl;
