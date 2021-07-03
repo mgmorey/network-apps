@@ -4,10 +4,10 @@
 
 #include <cstdlib>      // EXIT_FAILURE, EXIT_SUCCESS
 #include <iostream>     // std::cerr, std::cout, std::endl
-#include <string>       // std::string
 
-static void test_hostname()
+int main(void)
 {
+    const Network::Context context;
     const Network::HostnameResult hostname_result(Network::get_hostname());
     const Network::Hostname hostname(hostname_result.first);
     const Network::Result result(hostname_result.second);
@@ -22,12 +22,7 @@ static void test_hostname()
                   << hostname
                   << std::endl;
     }
-}
 
-int main(void)
-{
-    const Network::Context context;
-    test_hostname();
     static_cast<void>(context);
     return EXIT_SUCCESS;
 }
