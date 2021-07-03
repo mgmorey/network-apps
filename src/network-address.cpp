@@ -5,12 +5,11 @@
 
 #ifdef _WIN32
 #include <winsock2.h>   // AF_INET, AF_INET6, AF_UNIX, AF_UNSPEC,
-                        // PF_INET, PF_INET6, PF_UNIX, PF_UNSPEC
-                        // inet_ntop()
+                        // htons(), inet_ntop()
 #else
 #include <arpa/inet.h>  // inet_ntop()
 #include <sys/socket.h> // AF_INET, AF_INET6, AF_UNIX, AF_UNSPEC,
-                        // PF_INET, PF_INET6, PF_UNIX, PF_UNSPEC
+                        // htons()
 #endif
 
 #include <cassert>      // assert()
@@ -44,6 +43,11 @@ bool Network::Address::operator==(const Address& other) const
             text() == other.text());
 }
 
+bool Network::Address::empty() const
+{
+    return value.empty();
+}
+
 Network::Address::family_type Network::Address::family() const
 {
     switch(sa_family()) {
@@ -57,18 +61,6 @@ Network::Address::family_type Network::Address::family() const
         return sin6_family();
     default:
         return sa_family();
-    }
-}
-
-std::string Network::Address::path() const
-{
-    switch(sa_family()) {
-#ifndef _WIN32
-    case AF_UNIX:
-        return sun_text();
-#endif
-    default:
-        return "";
     }
 }
 
@@ -250,10 +242,15 @@ Network::Address::family_type Network::Address::sun_family() const
     return port;
 }
 
-std::string Network::Address::sun_text() const
+std::string Network::Address::sun_path() const
 {
     const sockaddr_un& sun = static_cast<const sockaddr_un&>(*this);
     std::string path(sun.sun_path);
     return path;
+}
+
+std::string Network::Address::sun_text() const
+{
+    return sun_path();
 }
 #endif

@@ -1,6 +1,7 @@
 #include "network-address.h"    // Address, Endpoint, EndpointResult,
                                 // Hostname, Result, to_endpoint()
 #include "network-buffer.h"     // Buffer
+#include "stream-address.h"     // operator<<()
 
 #ifdef _WIN32
 #include <ws2tcpip.h>   // NI_MAXHOST, NI_MAXSERV, NI_NUMERICHOST,

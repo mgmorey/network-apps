@@ -6,6 +6,7 @@
 #include "network-fd.h"         // sock_fd_type
 #include "network-peername.h"   // AddressResult, get_peername()
 #include "network-socket.h"     // Socket
+#include "stream-address.h"     // operator<<()
 
 #ifdef _WIN32
 #include <ws2tcpip.h>   // AI_ADDRCONFIG, AI_ALL, AI_CANONNAME,

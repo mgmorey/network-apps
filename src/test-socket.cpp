@@ -4,6 +4,7 @@
 #include "network-host.h"       // Host
 #include "network-peername.h"   // AddressResult, get_peername()
 #include "network-socket.h"     // Socket
+#include "stream-address.h"     // operator<<()
 
 #include <sys/socket.h> // AF_UNIX, SOCK_DGRAM, SOCK_STREAM
 
@@ -21,11 +22,11 @@ static void test_peer(Network::sock_fd_type fd)
                   << std::endl;
     }
     else {
-        Network::Address sockaddr(addr_result.first);
+        Network::Address address(addr_result.first);
         std::cout << "Socket "
                   << fd
                   << " connected to "
-                  << sockaddr
+                  << address
                   << std::endl;
     }
 }

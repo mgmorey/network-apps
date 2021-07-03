@@ -21,8 +21,6 @@ namespace Network
     class Address
     {
         friend class Host;
-        friend std::ostream& operator<<(std::ostream& os,
-                                        const Address& address);
 
     public:
 #ifdef _WIN32
@@ -37,8 +35,8 @@ namespace Network
         bool operator<(const Address& other) const;
         bool operator>(const Address& other) const;
         bool operator==(const Address& other) const;
+        bool empty() const;
         family_type family() const;
-        std::string path() const;
         port_type port() const;
         std::string text() const;
         EndpointResult to_endpoint(int flags,
@@ -71,6 +69,7 @@ namespace Network
 #ifndef _WIN32
         operator const sockaddr_un&() const;
         family_type sun_family() const;
+        std::string sun_path() const;
         std::string sun_text() const;
 #endif
 

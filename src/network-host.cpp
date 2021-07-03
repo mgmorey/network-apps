@@ -1,4 +1,5 @@
 #include "network-host.h"       // Address, Host, Result
+#include "stream-address.h"     // operator<<()
 
 #ifdef _WIN32
 #include <winsock2.h>   // connect()

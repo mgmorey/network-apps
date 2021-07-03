@@ -1,16 +1,16 @@
 #include "stream-address.h"     // operator<<()
-#include "network-address.h"    // Address, operator<<(), struct
-                                // sockaddr, socklen_t, std::ostream,
+#include "network-address.h"    // Address, struct sockaddr,
+                                // socklen_t, std::ostream,
                                 // std::string
 #include "network-family.h"     // Family, operator<<()
 #include "network-format.h"     // Format, operator<<()
 
 #ifdef _WIN32
 #include <winsock2.h>   // AF_INET, AF_INET6, AF_UNIX, AF_UNSPEC,
-                        // PF_INET, PF_INET6, PF_UNIX, PF_UNSPEC
+                        // ntohs()
 #else
 #include <sys/socket.h> // AF_INET, AF_INET6, AF_UNIX, AF_UNSPEC,
-                        // PF_INET, PF_INET6, PF_UNIX, PF_UNSPEC
+                        // ntohs()
 #endif
 
 std::ostream& Network::operator<<(std::ostream& os,
@@ -19,44 +19,47 @@ std::ostream& Network::operator<<(std::ostream& os,
     static const std::string delim(", ");
     static const int tabs[1] = {0};
 
-    const Address::family_type family = address.sa_family();
-    const socklen_t length = address.sa_length();
+    if (address.empty()) {
+        os << "0x0";
+    }
+    else {
+        const Address::family_type family = address.family();
+        const Address::port_type port = address.port();
+        const std::string text = address.text();
 
-    if (address.value.size()) {
         switch (family) {
 #ifndef _WIN32
         case AF_UNIX:
             os << "sockaddr_un("
                << Format("sun_path")
-               << address.sun_text()
+               << text
                << ')';
             break;
 #endif
         case AF_INET:
             os << "sockaddr_sin("
-               << Format("sin_addr")
-               << address.sin_text()
+               << Format("sin_port")
+               << port
+               << Format(delim, tabs[0], "sin_addr")
+               << text
                << ')';
             break;
         case AF_INET6:
             os << "sockaddr_sin6("
-               << Format("sin6_addr")
-               << address.sin6_text()
+               << Format("sin6_port")
+               << port
+               << Format(delim, tabs[0], "sin6_addr")
+               << text
                << ')';
             break;
         default:
             os << "sockaddr("
-               << Format("sa_len")
-               << length
-               << Format(delim, tabs[0], "sa_family")
+               << Format("sa_family")
                << Family(family)
                << Format(delim, tabs[0], "sa_data")
-               << address.sa_text()
+               << text
                << ')';
         }
-    }
-    else {
-        os << "0x0";
     }
 
     return os;
