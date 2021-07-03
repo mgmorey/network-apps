@@ -4,7 +4,7 @@
 #include "network-address.h"    // Address
 #include "network-fd.h"         // sock_fd_type
 #include "network-result.h"     // Result
-#include "network-types.h"      // Hostname, Service
+#include "network-types.h"      // Hostname
 
 #ifdef _WIN32
 #include <winsock2.h>   // SOCKET_ERROR
