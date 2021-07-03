@@ -19,9 +19,9 @@ Network::ConnectResult Network::connect(const Endpoint& endpoint,
                                         const addrinfo &hints,
                                         bool verbose)
 {
-    SocketsResult sockets_result(get_sockets(endpoint, hints, verbose));
-    Sockets sockets(sockets_result.first);
-    Result result(sockets_result.second);
+    const SocketsResult sockets_result(get_sockets(endpoint, hints, verbose));
+    const Sockets sockets(sockets_result.first);
+    const Result result(sockets_result.second);
 
     if (result.nonzero()) {
         ConnectDetails details;
@@ -41,7 +41,7 @@ Network::ConnectResult Network::connect(const Sockets& sockets,
     for (Sockets::const_iterator it = sockets.begin();
          it != sockets.end();
          ++it) {
-        SocketResult socket_result(it->socket(verbose));
+        const SocketResult socket_result(it->socket(verbose));
         fd = socket_result.first;
 
         if (fd == sock_fd_null) {
@@ -49,8 +49,8 @@ Network::ConnectResult Network::connect(const Sockets& sockets,
             continue;
         }
 
-        Host host(*it);
-        Result connect_result(host.connect(fd, verbose));
+        const Host host(*it);
+        const Result connect_result(host.connect(fd, verbose));
 
         if (connect_result.result() == Host::connect_error) {
             close(fd);
@@ -58,7 +58,7 @@ Network::ConnectResult Network::connect(const Sockets& sockets,
             details.push_back(connect_result);
         }
         else {
-            Result result(0, it->cname());
+            const Result result(0, it->cname());
             details.push_back(result);
             break;
         }

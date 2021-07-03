@@ -111,9 +111,9 @@ std::string Network::Address::to_string(const std::string& value)
             << ch;
     }
 
-    std::string result("0x");
-    std::string str(oss.str());
+    const std::string str(oss.str());
     assert(str.size() == size * 2);
+    std::string result("0x");
 
     if (str.empty()) {
         result += "0";
@@ -163,7 +163,7 @@ Network::Address::operator const sockaddr_un&() const
 
 std::string Network::Address::sa_data() const
 {
-    std::size_t offset = offsetof(sockaddr, sa_data);
+    static const std::size_t offset = offsetof(sockaddr, sa_data);
     return std::string(value.data() + offset,
                        value.size() - offset);
 }
@@ -251,8 +251,8 @@ std::ostream& Network::operator<<(std::ostream& os,
     static const std::string delim(", ");
     static const int tabs[1] = {0};
 
-    family_type family = address.sa_family();
-    socklen_t length = address.sa_length();
+    const family_type family = address.sa_family();
+    const socklen_t length = address.sa_length();
 
     if (address.value.size()) {
         switch (family) {

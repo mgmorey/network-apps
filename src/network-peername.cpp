@@ -35,7 +35,7 @@ Network::AddressResult Network::get_peername(sock_fd_type fd, bool verbose)
     std::string buffer(size, '\0');
     sockaddr* addr = reinterpret_cast<sockaddr*>(&buffer[0]);
     socklen_t addrlen = buffer.size();
-    int code = ::getpeername(fd, addr, &addrlen);
+    const int code = ::getpeername(fd, addr, &addrlen);
 
     if (code != 0) {
         std::ostringstream os;

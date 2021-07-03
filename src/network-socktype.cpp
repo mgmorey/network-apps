@@ -19,7 +19,7 @@ Network::SockType::SockType(int socktype) :
 std::ostream& Network::operator<<(std::ostream& os,
                                   const SockType& socktype)
 {
-    static struct values {
+    static const struct values {
         int flag;
         const char* label;
     } values[] = {

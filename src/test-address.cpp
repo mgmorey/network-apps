@@ -27,9 +27,9 @@
 
 static std::ostream& operator<<(std::ostream& os, const Network::Host& host)
 {
-    Network::EndpointResult endpoint_result(to_endpoint(host, false, true));
-    Network::Endpoint endpoint(endpoint_result.first);
-    Network::Result result(endpoint_result.second);
+    const Network::EndpointResult endp_result(to_endpoint(host, false, true));
+    const Network::Endpoint endpoint(endp_result.first);
+    const Network::Result result(endp_result.second);
 
     if (result.nonzero()) {
         std::cerr << result
@@ -38,7 +38,7 @@ static std::ostream& operator<<(std::ostream& os, const Network::Host& host)
     else {
         typedef std::list<std::string> Values;
         Values values;
-        Network::Address address(host);
+        const Network::Address address(host);
         values.push_back(address);
         values.push_back(endpoint.first);
         values.push_back(host.canonical_name());
@@ -108,10 +108,10 @@ static void test_host(const Network::Hostname& host,
                       const Network::Socket& hints,
                       bool verbose = true)
 {
-    Network::HostsResult hosts_result(get_hosts(host, hints, verbose));
-    Network::Hosts hosts(hosts_result.first);
-    Network::Result result(hosts_result.second);
-    std::string desc(get_description(hints));
+    const Network::HostsResult hosts_result(get_hosts(host, hints, verbose));
+    const Network::Hosts hosts(hosts_result.first);
+    const Network::Result result(hosts_result.second);
+    const std::string desc(get_description(hints));
 
     if (result.nonzero()) {
         if (desc.empty()) {
@@ -180,7 +180,7 @@ static void wsa_tear_down(void)
 
 int main(int argc, char* argv[])
 {
-    Network::Hostname host(argc > 1 ? argv[1] : "example.com");
+    const Network::Hostname host(argc > 1 ? argv[1] : "example.com");
     int result = EXIT_FAILURE;
 
     if (wsa_set_up()) {

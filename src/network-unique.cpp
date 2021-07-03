@@ -20,8 +20,8 @@ std::ostream& Network::operator<<(std::ostream& os,
                                   const Unique& unique)
 {
     if (unique.item_counts[0]) {
-        std::size_t delta = unique.delta();
-        
+        const std::size_t delta = unique.delta();
+
         os << unique.item_counts[0] << ' '
            << (unique.item_noun.empty() ? "items" :
                unique.item_noun);

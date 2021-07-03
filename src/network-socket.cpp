@@ -96,8 +96,7 @@ bool Network::Socket::operator==(const Socket& other) const
 
 Network::Hostname Network::Socket::cname() const
 {
-    Hostname host(ai_canonname == NULL ? "" : ai_canonname);
-    return host;
+    return Hostname(ai_canonname == NULL ? "" : ai_canonname);
 }
 
 Network::SocketResult Network::Socket::socket(bool verbose) const
@@ -110,7 +109,7 @@ Network::SocketResult Network::Socket::socket(bool verbose) const
     }
 
     std::string error;
-    sock_fd_type fd = ::socket(ai_family, ai_socktype, ai_protocol);
+    const sock_fd_type fd = ::socket(ai_family, ai_socktype, ai_protocol);
 
     if (fd == sock_fd_null) {
         std::ostringstream os;
@@ -140,7 +139,7 @@ Network::SocketpairResult Network::Socket::socketpair(bool verbose) const
 
     std::string error;
     int fds[2] = {sock_fd_null, sock_fd_null};
-    int code = ::socketpair(ai_family, ai_socktype, ai_protocol, fds);
+    const int code = ::socketpair(ai_family, ai_socktype, ai_protocol, fds);
 
     if (code != 0) {
         std::ostringstream os;
@@ -165,7 +164,7 @@ addrinfo Network::Socket::defaults(int family,
                                    int protocol,
                                    int flags)
 {
-    addrinfo ai = {
+    const addrinfo ai = {
         flags,		// ai_flags
         family,		// ai_family
         socktype,	// ai_socktype

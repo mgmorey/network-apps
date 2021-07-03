@@ -20,10 +20,10 @@ Network::EndpointResult Network::to_endpoint(const Address& address,
     std::string error;
     Buffer host_buffer(NI_MAXHOST);
     Buffer service_buffer(NI_MAXSERV);
-    int code = ::getnameinfo(address, address.size(),
-                             &host_buffer[0], host_buffer.size(),
-                             &service_buffer[0], service_buffer.size(),
-                             flags);
+    const int code = ::getnameinfo(address, address.size(),
+                                   &host_buffer[0], host_buffer.size(),
+                                   &service_buffer[0], service_buffer.size(),
+                                   flags);
 
     if (verbose) {
         std::cerr << "Invoking getnameinfo("
@@ -51,6 +51,6 @@ Network::EndpointResult Network::to_endpoint(const Address& address,
                                              bool numeric,
                                              bool verbose)
 {
-    int flags = numeric ? NI_NUMERICHOST | NI_NUMERICSERV : 0;
+    const int flags = numeric ? NI_NUMERICHOST | NI_NUMERICSERV : 0;
     return to_endpoint(address, flags, verbose);
 }

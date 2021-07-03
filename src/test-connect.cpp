@@ -25,8 +25,8 @@
 
 static void test_peer(Network::sock_fd_type fd)
 {
-    Network::AddressResult address_result(Network::get_peername(fd, true));
-    Network::Result result(address_result.second);
+    const Network::AddressResult addr_result(Network::get_peername(fd, true));
+    const Network::Result result(addr_result.second);
 
     if (result.nonzero()) {
         std::cerr << "No address: "
@@ -34,7 +34,7 @@ static void test_peer(Network::sock_fd_type fd)
                   << std::endl;
     }
     else {
-        Network::Address address(address_result.first);
+        const Network::Address address(addr_result.first);
         std::cout << "Socket "
                   << fd
                   << " connected to "
@@ -45,10 +45,13 @@ static void test_peer(Network::sock_fd_type fd)
 
 static void test_connect(const Network::Endpoint& endpoint)
 {
-    Network::Socket hints(AF_UNSPEC, SOCK_STREAM, IPPROTO_TCP, AI_CANONNAME);
-    Network::ConnectResult connect_result(connect(endpoint, hints, true));
-    Network::ConnectDetails details(connect_result.second);
-    Network::sock_fd_type fd = connect_result.first;
+    const Network::Socket hints(AF_UNSPEC,
+                                SOCK_STREAM,
+                                IPPROTO_TCP,
+                                AI_CANONNAME);
+    const Network::ConnectResult connect_result(connect(endpoint, hints, true));
+    const Network::ConnectDetails details(connect_result.second);
+    const Network::sock_fd_type fd = connect_result.first;
 
     if (fd == Network::sock_fd_null) {
         for (Network::ConnectDetails::const_iterator it = details.begin();
@@ -59,9 +62,9 @@ static void test_connect(const Network::Endpoint& endpoint)
         }
     }
     else {
-        Network::Hostname cname = details.front().string();
-        Network::Hostname hostname(endpoint.first);
-        Network::Service service(endpoint.second);
+        const Network::Hostname cname = details.front().string();
+        const Network::Hostname hostname(endpoint.first);
+        const Network::Service service(endpoint.second);
         std::cout << "Socket "
                   << fd
                   << " connected to "
@@ -107,8 +110,8 @@ static void wsa_tear_down(void)
 
 int main(int argc, char* argv[])
 {
-    Network::Hostname host(argc > 1 ? argv[1] : "example.com");
-    Network::Service service(argc > 2 ? argv[2] : "http");
+    const Network::Hostname host(argc > 1 ? argv[1] : "example.com");
+    const Network::Service service(argc > 2 ? argv[2] : "http");
     int result = EXIT_FAILURE;
 
     if (wsa_set_up()) {

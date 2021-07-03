@@ -11,9 +11,9 @@
 
 static void test_hostname()
 {
-    Network::HostnameResult hostname_result(Network::get_hostname());
-    Network::Hostname hostname(hostname_result.first);
-    Network::Result result(hostname_result.second);
+    const Network::HostnameResult hostname_result(Network::get_hostname());
+    const Network::Hostname hostname(hostname_result.first);
+    const Network::Result result(hostname_result.second);
 
     if (result.nonzero()) {
         std::cerr << "No hostname: "

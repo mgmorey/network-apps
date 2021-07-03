@@ -47,10 +47,10 @@ Network::AddrinfoResult Network::get_addrinfo(const Hostname& node,
     std::string error;
     addrinfo* list = NULL;
     assert(!node.empty() || !service.empty());
-    int code = ::getaddrinfo(node.empty() ? NULL : node.c_str(),
-                             service.empty() ? NULL : service.c_str(),
-                             hints,
-                             &list);
+    const int code = ::getaddrinfo(node.empty() ? NULL : node.c_str(),
+                                   service.empty() ? NULL : service.c_str(),
+                                   hints,
+                                   &list);
 
     if (code != 0) {
         std::ostringstream os;
@@ -79,10 +79,10 @@ std::ostream& Network::operator<<(std::ostream& os,
 {
     static const int tabs[1] = {9};
 
-    int flags = ai.ai_flags;
-    int family = ai.ai_family;
-    int socktype = ai.ai_socktype;
-    int protocol = ai.ai_protocol;
+    const int flags = ai.ai_flags;
+    const int family = ai.ai_family;
+    const int socktype = ai.ai_socktype;
+    const int protocol = ai.ai_protocol;
 
     os << "addrinfo("
        << Format("ai_flags")

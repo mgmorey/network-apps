@@ -6,23 +6,13 @@ Network::HostsResult Network::get_hosts(const Hostname& host,
                                         const addrinfo& hints,
                                         bool verbose)
 {
-    Hostname node(host);
-
-    if (host.empty()) {
-        node = get_hostname().first;
-    }
-
+    const Hostname node(host.empty() ? get_hostname().first : host);
     return get_addrinfo<HostsResult>(node, "", &hints, true, verbose);
 }
 
 Network::HostsResult Network::get_hosts(const Hostname& host,
                                         bool verbose)
 {
-    Hostname node(host);
-
-    if (host.empty()) {
-        node = get_hostname().first;
-    }
-
+    const Hostname node(host.empty() ? get_hostname().first : host);
     return get_addrinfo<HostsResult>(node, "", NULL, true, verbose);
 }

@@ -60,7 +60,7 @@ Network::Result Network::Host::connect(sock_fd_type fd, bool verbose) const
     }
 
     std::string error;
-    int code = ::connect(fd, address, address.size());
+    const int code = ::connect(fd, address, address.size());
 
     if (code == Host::connect_error) {
         std::ostringstream os;
