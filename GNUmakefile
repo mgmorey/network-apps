@@ -2,7 +2,7 @@ SYSTEM_PREFIX := $(shell uname -s | cut -d- -f 1)
 
 ifdef NDEBUG
 	CPPFLAGS += -D_FORTIFY_SOURCE=2
-	CXXFLAGS += -O2
+	CXXFLAGS += -O3
 else
 ifeq "$(USING_DMALLOC)" "true"
 	CPPFLAGS += -DDMALLOC -DMALLOC_FUNC_CHECK
