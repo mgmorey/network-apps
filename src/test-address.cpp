@@ -39,7 +39,6 @@ static std::ostream& operator<<(std::ostream& os, const Network::Host& host)
     else {
         typedef std::list<std::string> Values;
         Values values;
-        const Network::Address address(host);
         values.push_back(address);
         values.push_back(endpoint.first);
         values.push_back(host.canonical_name());
