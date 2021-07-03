@@ -3,6 +3,7 @@
 #include "network-connect.h"    // ConnectDetails, ConnectResult,
                                 // Endpoint, Hostname, Service,
                                 // connect()
+#include "network-context.h"    // Context
 #include "network-fd.h"         // sock_fd_type
 #include "network-peername.h"   // AddressResult, get_peername()
 #include "network-socket.h"     // Socket
@@ -12,8 +13,7 @@
 #include <ws2tcpip.h>   // AI_ADDRCONFIG, AI_ALL, AI_CANONNAME,
 #include <winsock2.h>   // AF_INET, AF_INET6, PF_INET, PF_INET6,
                         // IPPROTO_IP, IPPROTO_TCP, IPPROTO_UDP,
-                        // SOCK_DGRAM, SOCK_STREAM, WSACleanup(),
-                        // WSAStartup()
+                        // SOCK_DGRAM, SOCK_STREAM
 #else
 #include <netdb.h>      // AI_ADDRCONFIG, AI_ALL, AI_CANONNAME,
 #include <netinet/in.h> // IPPROTO_IP, IPPROTO_TCP, IPPROTO_UDP
@@ -81,48 +81,15 @@ static void test_connect(const Network::Endpoint& endpoint,
     }
 }
 
-static int wsa_set_up(void)
-{
-    int error = 0;
-
-#ifdef WIN32
-    WSADATA wsaData;
-    error = WSAStartup(MAKEWORD(2, 0), &wsaData);
-
-    if (error != 0) {
-        std::cerr << "WSAStartup() returned "
-                  << error
-                  << std::endl;
-    }
-#endif
-
-    return error;
-}
-
-static void wsa_tear_down(void)
-{
-#ifdef WIN32
-    WSACleanup();
-#endif
-}
-
 int main(int argc, char* argv[])
 {
     static const Network::Socket
         hints(AF_UNSPEC, SOCK_STREAM, IPPROTO_TCP, AI_CANONNAME);
 
+    const Network::Context context;
     const Network::Hostname host(argc > 1 ? argv[1] : "example.com");
     const Network::Service service(argc > 2 ? argv[2] : "http");
-    int result = EXIT_FAILURE;
-
-    if (wsa_set_up()) {
-        goto clean_up;
-    }
-
     test_connect(Network::Endpoint(host, service), hints);
-    result = EXIT_SUCCESS;
-
-clean_up:
-    wsa_tear_down();
-    return result;
+    static_cast<void>(context);
+    return EXIT_SUCCESS;
 }

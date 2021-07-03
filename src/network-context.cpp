@@ -4,6 +4,8 @@
 #include <winsock2.h>   // WSACleanup(), WSAStartup()
 #endif
 
+#include <iostream>     // std::cerr, std::endl
+
 Network::Context::Context()
 {
     if (!count++) {
@@ -28,3 +30,5 @@ Network::Context::~Context()
 #endif
     }
 }
+
+std::size_t Network::Context::count;
