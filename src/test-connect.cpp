@@ -44,12 +44,9 @@ static void test_peer(Network::sock_fd_type fd)
     }
 }
 
-static void test_connect(const Network::Endpoint& endpoint)
+static void test_connect(const Network::Endpoint& endpoint,
+                         const Network::Socket& hints)
 {
-    const Network::Socket hints(AF_UNSPEC,
-                                SOCK_STREAM,
-                                IPPROTO_TCP,
-                                AI_CANONNAME);
     const Network::ConnectResult connect_result(connect(endpoint, hints, true));
     const Network::ConnectDetails details(connect_result.second);
     const Network::sock_fd_type fd = connect_result.first;
@@ -111,6 +108,9 @@ static void wsa_tear_down(void)
 
 int main(int argc, char* argv[])
 {
+    static const Network::Socket
+        hints(AF_UNSPEC, SOCK_STREAM, IPPROTO_TCP, AI_CANONNAME);
+
     const Network::Hostname host(argc > 1 ? argv[1] : "example.com");
     const Network::Service service(argc > 2 ? argv[2] : "http");
     int result = EXIT_FAILURE;
@@ -119,7 +119,7 @@ int main(int argc, char* argv[])
         goto clean_up;
     }
 
-    test_connect(Network::Endpoint(host, service));
+    test_connect(Network::Endpoint(host, service), hints);
     result = EXIT_SUCCESS;
 
 clean_up:
