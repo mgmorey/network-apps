@@ -38,7 +38,8 @@ network-close.cpp network-connect.cpp network-endpoint.cpp network-family.cpp \
 network-flags.cpp network-format.cpp network-host.cpp network-hosts.cpp \
 network-hostname.cpp network-name.cpp network-peername.cpp \
 network-protocol.cpp network-result.cpp network-socket.cpp \
-network-sockets.cpp network-socktype.cpp network-unique.cpp
+network-sockets.cpp network-socktype.cpp network-unique.cpp \
+stream-address.cpp stream-addrinfo.cpp
 
 ifndef HTTP_PROXY
 	executable_sources += test-connect.cpp
@@ -77,7 +78,7 @@ unix: $(executables)
 
 install: $(libraries)
 	install libnetwork.a $(prefix)/lib
-	install include/network*.h $(prefix)/include
+	install include/network-*.h include/stream-*.h $(prefix)/include
 
 TAGS:
 	etags $^
