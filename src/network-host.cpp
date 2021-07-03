@@ -54,7 +54,9 @@ Network::Hostname Network::Host::canonical_name() const
 
 Network::Result Network::Host::connect(sock_fd_type fd, bool verbose) const
 {
-    if (verbose && address.addrlen()) {
+    assert(!address.empty());
+
+    if (verbose) {
         std::cerr << "Trying "
                   << address
                   << std::endl;

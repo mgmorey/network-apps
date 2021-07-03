@@ -28,6 +28,14 @@
 static std::ostream& operator<<(std::ostream& os, const Network::Host& host)
 {
     const Network::Address address(host);
+
+    if (address.empty()) {
+        std::cerr << "No address for host "
+                  << host
+                  << std::endl;
+        return os;
+    }
+
     const Network::EndpointResult endp_result(address.to_endpoint(false, true));
     const Network::Endpoint endpoint(endp_result.first);
     const Network::Result result(endp_result.second);

@@ -17,6 +17,7 @@
 Network::EndpointResult
 Network::Address::to_endpoint(int flags, bool verbose) const
 {
+    assert(!empty());
     std::string error;
     Buffer host_buffer(NI_MAXHOST);
     Buffer service_buffer(NI_MAXSERV);
