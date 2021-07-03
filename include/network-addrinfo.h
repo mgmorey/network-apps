@@ -4,6 +4,7 @@
 #include "network-result.h"     // Result
 #include "network-types.h"      // Hostname, Service
 #include "network-unique.h"     // Unique, operator<<()
+#include "stream-addrinfo.h"    // operator<<()
 
 #ifdef _WIN32
 #include <ws2tcpip.h>   // struct addrinfo, freeaddrinfo()
@@ -13,7 +14,6 @@
 
 #include <cstddef>      // std::size_t
 #include <iostream>     // std::cerr, std::endl
-#include <ostream>      // std::ostream
 #include <string>       // std::string
 #include <utility>      // std::pair
 #include <vector>       // std::vector
@@ -26,8 +26,6 @@ namespace Network
                                        const Service& service,
                                        const addrinfo* hints,
                                        bool verbose);
-    extern std::ostream& operator<<(std::ostream& os,
-                                    const addrinfo& ai);
 
     template <class Container>
     std::size_t copy_addrinfo(Container& dest,
