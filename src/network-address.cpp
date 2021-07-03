@@ -44,21 +44,32 @@ bool Network::Address::operator==(const Address& other) const
             text() == other.text());
 }
 
-Network::Address::operator std::string() const
-{
-    return text();
-}
-
 Network::Address::family_type Network::Address::family() const
 {
     switch(sa_family()) {
+#ifndef _WIN32
+    case AF_UNIX:
+        return sun_family();
+#endif
     case AF_INET:
         return sin_family();
     case AF_INET6:
         return sin6_family();
+    default:
+        return sa_family();
     }
+}
 
-    return sa_family();
+std::string Network::Address::path() const
+{
+    switch(sa_family()) {
+#ifndef _WIN32
+    case AF_UNIX:
+        return sun_text();
+#endif
+    default:
+        return "";
+    }
 }
 
 Network::Address::port_type Network::Address::port() const
@@ -68,86 +79,26 @@ Network::Address::port_type Network::Address::port() const
         return htons(sin_port());
     case AF_INET6:
         return htons(sin6_port());
+    default:
+        return 0;
     }
-
-    return 0;
 }
 
 std::string Network::Address::text() const
 {
     switch(sa_family()) {
-    case AF_INET:
-        return to_string(sin_addr());
-    case AF_INET6:
-        return to_string(sin6_addr());
-    }
-
-    return to_string(sa_data());
-}
-
-std::string Network::Address::to_string(const std::string& value)
-{
-    const char* data = value.data();
-    std::size_t size = value.size();
-    std::ostringstream oss;
-    oss << std::hex;
-
-    for(const char* p = data; p < data + size; p++) {
-        short ch = static_cast<short>(*p & 0xFF);
-        oss << std::setfill('0')
-            << std::setw(2)
-            << ch;
-    }
-
-    const std::string str(oss.str());
-    assert(str.size() == size * 2);
-    std::string result("0x");
-
-    if (str.empty()) {
-        result += "0";
-    }
-    else {
-        result += str;
-    }
-
-    return result;
-}
-
-std::string Network::Address::to_string(const in_addr& addr)
-{
-    Buffer buffer(INET_ADDRSTRLEN);
-    inet_ntop(AF_INET, &addr, &buffer[0], buffer.size());
-    return buffer;
-}
-
-std::string Network::Address::to_string(const in6_addr& addr)
-{
-    Buffer buffer(INET6_ADDRSTRLEN);
-    inet_ntop(AF_INET6, &addr, &buffer[0], buffer.size());
-    return buffer;
-}
-
-Network::Address::operator const sockaddr&() const
-{
-    return *reinterpret_cast<const sockaddr*>(value.data());
-}
-
-Network::Address::operator const sockaddr_in&() const
-{
-    return *reinterpret_cast<const sockaddr_in*>(value.data());
-}
-
-Network::Address::operator const sockaddr_in6&() const
-{
-    return *reinterpret_cast<const sockaddr_in6*>(value.data());
-}
-
 #ifndef _WIN32
-Network::Address::operator const sockaddr_un&() const
-{
-    return *reinterpret_cast<const sockaddr_un*>(value.data());
-}
+    case AF_UNIX:
+        return sun_text();
 #endif
+    case AF_INET:
+        return sin_text();
+    case AF_INET6:
+        return sin6_text();
+    default:
+        return sa_text();
+    }
+}
 
 const sockaddr* Network::Address::addr() const
 {
@@ -157,6 +108,11 @@ const sockaddr* Network::Address::addr() const
 socklen_t Network::Address::addrlen() const
 {
     return static_cast<socklen_t>(value.size());
+}
+
+Network::Address::operator const sockaddr&() const
+{
+    return *reinterpret_cast<const sockaddr*>(value.data());
 }
 
 std::string Network::Address::sa_data() const
@@ -185,6 +141,39 @@ socklen_t Network::Address::sa_length() const
     return length;
 }
 
+std::string Network::Address::sa_text() const
+{
+    const char* data = value.data();
+    std::size_t size = value.size();
+    std::ostringstream oss;
+    oss << std::hex;
+
+    for(const char* p = data; p < data + size; p++) {
+        short ch = static_cast<short>(*p & 0xFF);
+        oss << std::setfill('0')
+            << std::setw(2)
+            << ch;
+    }
+
+    const std::string str(oss.str());
+    assert(str.size() == size * 2);
+    std::string result("0x");
+
+    if (str.empty()) {
+        result += "0";
+    }
+    else {
+        result += str;
+    }
+
+    return result;
+}
+
+Network::Address::operator const sockaddr_in&() const
+{
+    return *reinterpret_cast<const sockaddr_in*>(value.data());
+}
+
 in_addr Network::Address::sin_addr() const
 {
     const sockaddr_in& sin = static_cast<const sockaddr_in&>(*this);
@@ -204,6 +193,19 @@ Network::Address::port_type Network::Address::sin_port() const
     const sockaddr_in& sin = static_cast<const sockaddr_in&>(*this);
     port_type port = sin.sin_port;
     return port;
+}
+
+std::string Network::Address::sin_text() const
+{
+    Buffer buffer(INET_ADDRSTRLEN);
+    const sockaddr_in& sin = static_cast<const sockaddr_in&>(*this);
+    inet_ntop(AF_INET, &sin.sin_addr, &buffer[0], buffer.size());
+    return buffer;
+}
+
+Network::Address::operator const sockaddr_in6&() const
+{
+    return *reinterpret_cast<const sockaddr_in6*>(value.data());
 }
 
 in6_addr Network::Address::sin6_addr() const
@@ -227,7 +229,20 @@ Network::Address::port_type Network::Address::sin6_port() const
     return port;
 }
 
+std::string Network::Address::sin6_text() const
+{
+    Buffer buffer(INET6_ADDRSTRLEN);
+    const in6_addr& addr = sin6_addr();
+    inet_ntop(AF_INET6, &addr, &buffer[0], buffer.size());
+    return buffer;
+}
+
 #ifndef _WIN32
+Network::Address::operator const sockaddr_un&() const
+{
+    return *reinterpret_cast<const sockaddr_un*>(value.data());
+}
+
 Network::Address::family_type Network::Address::sun_family() const
 {
     const sockaddr_un& sun = static_cast<const sockaddr_un&>(*this);
@@ -235,7 +250,7 @@ Network::Address::family_type Network::Address::sun_family() const
     return port;
 }
 
-std::string Network::Address::sun_path() const
+std::string Network::Address::sun_text() const
 {
     const sockaddr_un& sun = static_cast<const sockaddr_un&>(*this);
     std::string path(sun.sun_path);

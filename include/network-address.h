@@ -49,8 +49,8 @@ namespace Network
         bool operator<(const Address& other) const;
         bool operator>(const Address& other) const;
         bool operator==(const Address& other) const;
-        operator std::string() const;
         family_type family() const;
+        std::string path() const;
         port_type port() const;
         std::string text() const;
         EndpointResult to_endpoint(int flags,
@@ -59,30 +59,31 @@ namespace Network
                                    bool verbose = false) const;
 
     private:
-        static std::string to_string(const std::string& value);
-        static std::string to_string(const in_addr& addr);
-        static std::string to_string(const in6_addr& addr);
-
-        operator const sockaddr&() const;
-        operator const sockaddr_in&() const;
-        operator const sockaddr_in6&() const;
-#ifndef _WIN32
-        operator const sockaddr_un&() const;
-#endif
         const sockaddr* addr() const;
         socklen_t addrlen() const;
+
+        operator const sockaddr&() const;
         std::string sa_data() const;
         family_type sa_family() const;
         socklen_t sa_length() const;
+        std::string sa_text() const;
+
+        operator const sockaddr_in&() const;
         in_addr sin_addr() const;
         family_type sin_family() const;
         port_type sin_port() const;
+        std::string sin_text() const;
+
+        operator const sockaddr_in6&() const;
         in6_addr sin6_addr() const;
         family_type sin6_family() const;
         port_type sin6_port() const;
+        std::string sin6_text() const;
+
 #ifndef _WIN32
+        operator const sockaddr_un&() const;
         family_type sun_family() const;
-        std::string sun_path() const;
+        std::string sun_text() const;
 #endif
 
         std::string value;

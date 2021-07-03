@@ -26,14 +26,23 @@ std::ostream& Network::operator<<(std::ostream& os,
         switch (family) {
 #ifndef _WIN32
         case AF_UNIX:
-            os << static_cast<const sockaddr_un&>(address);
+            os << "sockaddr_un("
+               << Format("sun_path")
+               << address.sun_text()
+               << ')';
             break;
 #endif
         case AF_INET:
-            os << static_cast<const sockaddr_in&>(address);
+            os << "sockaddr_sin("
+               << Format("sin_addr")
+               << address.sin_text()
+               << ')';
             break;
         case AF_INET6:
-            os << static_cast<const sockaddr_in6&>(address);
+            os << "sockaddr_sin6("
+               << Format("sin6_addr")
+               << address.sin6_text()
+               << ')';
             break;
         default:
             os << "sockaddr("
@@ -42,7 +51,7 @@ std::ostream& Network::operator<<(std::ostream& os,
                << Format(delim, tabs[0], "sa_family")
                << Family(family)
                << Format(delim, tabs[0], "sa_data")
-               << Address::to_string(address.sa_data())
+               << address.sa_text()
                << ')';
         }
     }
@@ -52,72 +61,3 @@ std::ostream& Network::operator<<(std::ostream& os,
 
     return os;
 }
-
-std::ostream& Network::operator<<(std::ostream& os,
-                                  const sockaddr_in& sin)
-{
-    static const std::string delim(", ");
-    static const int tabs[1] = {0};
-
-    os << "sockaddr_in("
-       << Format("sin_family")
-       << Family(sin.sin_family)
-       << Format(delim, tabs[0], "sin_port")
-       << htons(sin.sin_port)
-       << Format(delim, tabs[0], "sin_addr")
-       << sin.sin_addr
-       << ')';
-    return os;
-}
-
-std::ostream& Network::operator<<(std::ostream& os,
-                                  const in_addr& addr)
-{
-    os << "in_addr("
-       << Address::to_string(addr)
-       << ')';
-    return os;
-}
-
-std::ostream& Network::operator<<(std::ostream& os,
-                                  const sockaddr_in6& sin6)
-{
-    static const std::string delim(", ");
-    static const int tabs[1] = {0};
-
-    os << "sockaddr_in6("
-       << Format("sin6_family")
-       << Family(sin6.sin6_family)
-       << Format(delim, tabs[0], "sin6_port")
-       << htons(sin6.sin6_port)
-       << Format(delim, tabs[0], "sin6_addr")
-       << sin6.sin6_addr
-       << ')';
-    return os;
-}
-
-std::ostream& Network::operator<<(std::ostream& os,
-                                  const in6_addr& addr)
-{
-    os << "in6_addr("
-       << Address::to_string(addr)
-       << ')';
-    return os;
-}
-
-#ifndef _WIN32
-std::ostream& Network::operator<<(std::ostream& os,
-                                  const sockaddr_un& sun)
-{
-    static const std::string delim(", ");
-    static const int tabs[1] = {0};
-
-    os << "sockaddr_un("
-       << Format("sun_family")
-       << Family(sun.sun_family)
-       << Format(delim, tabs[0], "sun_path")
-       << '"' << sun.sun_path << '"'
-       << ')';
-    return os;
-}
-#endif
