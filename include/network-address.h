@@ -23,18 +23,6 @@ namespace Network
         friend class Host;
         friend std::ostream& operator<<(std::ostream& os,
                                         const Address& address);
-        friend std::ostream& operator<<(std::ostream& os,
-                                        const sockaddr_in& sin);
-        friend std::ostream& operator<<(std::ostream& os,
-                                        const in_addr& addr);
-        friend std::ostream& operator<<(std::ostream& os,
-                                        const sockaddr_in6& sin6);
-        friend std::ostream& operator<<(std::ostream& os,
-                                        const in6_addr& addr);
-#ifndef _WIN32
-        friend std::ostream& operator<<(std::ostream& os,
-                                        const sockaddr_un& sin);
-#endif
 
     public:
 #ifdef _WIN32
