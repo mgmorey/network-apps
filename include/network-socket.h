@@ -36,6 +36,7 @@ namespace Network
         bool operator>(const Socket& other) const;
         bool operator==(const Socket& other) const;
         Hostname cname() const;
+        int family() const;
         SocketResult socket(bool verbose = false) const;
 #ifndef _WIN32
         SocketpairResult socketpair(bool verbose = false) const;

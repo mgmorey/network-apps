@@ -99,6 +99,11 @@ Network::Hostname Network::Socket::cname() const
     return Hostname(ai_canonname == NULL ? "" : ai_canonname);
 }
 
+int Network::Socket::family() const
+{
+    return ai_family;
+}
+
 Network::SocketResult Network::Socket::socket(bool verbose) const
 {
     if (verbose) {

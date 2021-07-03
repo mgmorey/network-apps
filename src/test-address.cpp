@@ -100,7 +100,7 @@ static std::string get_description(const Network::Socket& hints)
 {
     std::string result;
 
-    switch (addrinfo(hints).ai_family) {
+    switch (hints.ai_family) {
     case AF_INET:
         result = "IPv4";
         break;
