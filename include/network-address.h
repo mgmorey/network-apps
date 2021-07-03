@@ -16,14 +16,6 @@
 
 namespace Network
 {
-#ifdef _WIN32
-    typedef unsigned short family_type;
-    typedef unsigned short port_type;
-#else
-    typedef sa_family_t family_type;
-    typedef in_port_t port_type;
-#endif
-
     class Address
     {
         friend std::ostream& operator<<(std::ostream& os,
@@ -42,6 +34,14 @@ namespace Network
 #endif
 
     public:
+#ifdef _WIN32
+        typedef unsigned short family_type;
+        typedef unsigned short port_type;
+#else
+        typedef sa_family_t family_type;
+        typedef in_port_t port_type;
+#endif
+
         Address(const sockaddr* addr, socklen_t addrlen);
         bool operator<(const Address& other) const;
         bool operator>(const Address& other) const;
