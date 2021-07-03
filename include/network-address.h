@@ -1,5 +1,5 @@
-#ifndef NETWORK_SOCKADDR_H
-#define NETWORK_SOCKADDR_H
+#ifndef NETWORK_ADDRESS_H
+#define NETWORK_ADDRESS_H
 
 #ifdef _WIN32
 #include <winsock2.h>   // struct sockaddr, struct sockaddr_in,
