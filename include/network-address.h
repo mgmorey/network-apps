@@ -2,10 +2,12 @@
 #define NETWORK_ADDRESS_H
 
 #include "network-endpoint.h"   // Endpoint, EndpointResult
+#include "network-fd.h"         // sock_fd_type
+#include "network-result.h"     // Result
 
 #ifdef _WIN32
 #include <winsock2.h>   // struct sockaddr, struct sockaddr_in,
-                        // struct sockaddr_in6
+                        // struct sockaddr_in6, SOCKET_ERROR
 #include <ws2tcpip.h>   // socklen_t
 #else
 #include <netinet/in.h> // struct sockaddr_in, struct sockaddr_in6
@@ -15,12 +17,14 @@
 
 #include <string>       // std::string
 
+#ifndef SOCKET_ERROR
+#define SOCKET_ERROR	(-1)
+#endif
+
 namespace Network
 {
     class Address
     {
-        friend class Host;
-
     public:
 #ifdef _WIN32
         typedef unsigned short family_type;
@@ -29,11 +33,13 @@ namespace Network
         typedef sa_family_t family_type;
         typedef in_port_t port_type;
 #endif
+        enum { connect_error = SOCKET_ERROR };
 
         Address(const sockaddr* addr, socklen_t addrlen);
         bool operator<(const Address& other) const;
         bool operator>(const Address& other) const;
         bool operator==(const Address& other) const;
+        Result connect(sock_fd_type fd, bool verbose = false) const;
         bool empty() const;
         family_type family() const;
         port_type port() const;

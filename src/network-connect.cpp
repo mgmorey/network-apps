@@ -52,7 +52,7 @@ Network::ConnectResult Network::connect(const Sockets& sockets,
         const Host host(*it);
         const Result connect_result(host.connect(fd, verbose));
 
-        if (connect_result.result() == Host::connect_error) {
+        if (connect_result.result() == Address::connect_error) {
             close(fd);
             fd = sock_fd_null;
             details.push_back(connect_result);

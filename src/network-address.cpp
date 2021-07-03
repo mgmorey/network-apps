@@ -2,19 +2,23 @@
                                 // socklen_t, std::ostream,
                                 // std::string
 #include "network-buffer.h"     // Buffer
+#include "stream-address.h"     // operator<<()
 
 #ifdef _WIN32
 #include <winsock2.h>   // AF_INET, AF_INET6, AF_UNIX, AF_UNSPEC,
-                        // htons(), inet_ntop()
+                        // connect(), htons(), inet_ntop()
 #else
 #include <arpa/inet.h>  // inet_ntop()
 #include <sys/socket.h> // AF_INET, AF_INET6, AF_UNIX, AF_UNSPEC,
-                        // htons()
+                        // connect(), htons()
 #endif
 
 #include <cassert>      // assert()
+#include <cerrno>       // errno
 #include <cstddef>      // offsetof()
+#include <cstring>      // std::strerror()
 #include <iomanip>      // std::hex, std::setfill(), std::setw()
+#include <iostream>     // std::cerr, std::endl
 #include <sstream>      // std::ostringstream
 
 Network::Address::Address(const sockaddr* addr, socklen_t addrlen) :
@@ -41,6 +45,38 @@ bool Network::Address::operator==(const Address& other) const
     return (family() == other.family() &&
             port() == other.port() &&
             text() == other.text());
+}
+
+Network::Result Network::Address::connect(sock_fd_type fd, bool verbose) const
+{
+    assert(!empty());
+
+    if (verbose) {
+        std::cerr << "Trying "
+                  << *this
+                  << std::endl;
+    }
+
+    std::string error;
+    const int code = ::connect(fd, addr(), addrlen());
+
+    if (code == connect_error) {
+        std::ostringstream os;
+        os << "connect("
+           << fd
+           << ", "
+           << *this
+           << ") returned "
+           << code
+           << ": "
+           << std::strerror(errno)
+           << " (errno = "
+           << errno
+           << ')';
+        error = os.str();
+    }
+
+    return Result(errno, error);
 }
 
 bool Network::Address::empty() const
