@@ -27,7 +27,8 @@
 
 static std::ostream& operator<<(std::ostream& os, const Network::Host& host)
 {
-    const Network::EndpointResult endp_result(to_endpoint(host, false, true));
+    const Network::Address address(host);
+    const Network::EndpointResult endp_result(address.to_endpoint(false, true));
     const Network::Endpoint endpoint(endp_result.first);
     const Network::Result result(endp_result.second);
 

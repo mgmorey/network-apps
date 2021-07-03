@@ -1,6 +1,5 @@
-#include "network-endpoint.h"   // Address, Endpoint, EndpointResult,
-                                // Hostname, Result, to_endpoint(),
-                                // to_hostname(), to_string()
+#include "network-address.h"    // Address, Endpoint, EndpointResult,
+                                // Hostname, Result, to_endpoint()
 #include "network-buffer.h"     // Buffer
 
 #ifdef _WIN32
@@ -14,20 +13,20 @@
 #include <iostream>     // std::cerr, std::endl
 #include <sstream>      // std::ostringstream
 
-Network::EndpointResult Network::to_endpoint(const Address& address,
-                                             int flags, bool verbose)
+Network::EndpointResult
+Network::Address::to_endpoint(int flags, bool verbose) const
 {
     std::string error;
     Buffer host_buffer(NI_MAXHOST);
     Buffer service_buffer(NI_MAXSERV);
-    const int code = ::getnameinfo(address, address.size(),
+    const int code = ::getnameinfo(addr(), addrlen(),
                                    &host_buffer[0], host_buffer.size(),
                                    &service_buffer[0], service_buffer.size(),
                                    flags);
 
     if (verbose) {
         std::cerr << "Invoking getnameinfo("
-                  << address
+                  << *this
                   << ", ...)"
                   << std::endl;
     }
@@ -35,7 +34,7 @@ Network::EndpointResult Network::to_endpoint(const Address& address,
     if (code != 0) {
         std::ostringstream os;
         os << "getnameinfo("
-           << address
+           << *this
            << ", ...) returned "
            << code
            << " ("
@@ -47,10 +46,9 @@ Network::EndpointResult Network::to_endpoint(const Address& address,
     return EndpointResult(Endpoint(host_buffer, service_buffer), Result(code, error));
 }
 
-Network::EndpointResult Network::to_endpoint(const Address& address,
-                                             bool numeric,
-                                             bool verbose)
+Network::EndpointResult
+Network::Address::to_endpoint(bool numeric, bool verbose) const
 {
     const int flags = numeric ? NI_NUMERICHOST | NI_NUMERICSERV : 0;
-    return to_endpoint(address, flags, verbose);
+    return to_endpoint(flags, verbose);
 }

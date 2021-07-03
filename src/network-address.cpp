@@ -44,11 +44,6 @@ bool Network::Address::operator==(const Address& other) const
             text() == other.text());
 }
 
-Network::Address::operator const sockaddr*() const
-{
-    return reinterpret_cast<const sockaddr*>(value.data());
-}
-
 Network::Address::operator std::string() const
 {
     return text();
@@ -76,11 +71,6 @@ Network::Address::port_type Network::Address::port() const
     }
 
     return 0;
-}
-
-socklen_t Network::Address::size() const
-{
-    return static_cast<socklen_t>(value.size());
 }
 
 std::string Network::Address::text() const
@@ -159,6 +149,16 @@ Network::Address::operator const sockaddr_un&() const
 }
 #endif
 
+const sockaddr* Network::Address::addr() const
+{
+    return reinterpret_cast<const sockaddr*>(value.data());
+}
+
+socklen_t Network::Address::addrlen() const
+{
+    return static_cast<socklen_t>(value.size());
+}
+
 std::string Network::Address::sa_data() const
 {
     static const std::size_t offset = offsetof(sockaddr, sa_data);
@@ -179,9 +179,9 @@ socklen_t Network::Address::sa_length() const
     const sockaddr& sa = static_cast<const sockaddr&>(*this);
     socklen_t length = sa.sa_len;
 #else
-    socklen_t length = size();
+    socklen_t length = addrlen();
 #endif
-    assert(length == size());
+    assert(length == addrlen());
     return length;
 }
 

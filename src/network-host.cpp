@@ -53,14 +53,14 @@ Network::Hostname Network::Host::canonical_name() const
 
 Network::Result Network::Host::connect(sock_fd_type fd, bool verbose) const
 {
-    if (verbose && address.size()) {
+    if (verbose && address.addrlen()) {
         std::cerr << "Trying "
                   << address
                   << std::endl;
     }
 
     std::string error;
-    const int code = ::connect(fd, address, address.size());
+    const int code = ::connect(fd, address.addr(), address.addrlen());
 
     if (code == Host::connect_error) {
         std::ostringstream os;

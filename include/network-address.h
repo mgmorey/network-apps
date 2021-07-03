@@ -1,6 +1,8 @@
 #ifndef NETWORK_ADDRESS_H
 #define NETWORK_ADDRESS_H
 
+#include "network-endpoint.h"   // Endpoint, EndpointResult
+
 #ifdef _WIN32
 #include <winsock2.h>   // struct sockaddr, struct sockaddr_in,
                         // struct sockaddr_in6
@@ -18,6 +20,7 @@ namespace Network
 {
     class Address
     {
+        friend class Host;
         friend std::ostream& operator<<(std::ostream& os,
                                         const Address& address);
         friend std::ostream& operator<<(std::ostream& os,
@@ -46,23 +49,28 @@ namespace Network
         bool operator<(const Address& other) const;
         bool operator>(const Address& other) const;
         bool operator==(const Address& other) const;
-        operator const sockaddr*() const;
         operator std::string() const;
         family_type family() const;
         port_type port() const;
-        socklen_t size() const;
         std::string text() const;
+        EndpointResult to_endpoint(int flags,
+                                   bool verbose = false) const;
+        EndpointResult to_endpoint(bool numeric = false,
+                                   bool verbose = false) const;
 
     private:
         static std::string to_string(const std::string& value);
         static std::string to_string(const in_addr& addr);
         static std::string to_string(const in6_addr& addr);
+
         operator const sockaddr&() const;
         operator const sockaddr_in&() const;
         operator const sockaddr_in6&() const;
 #ifndef _WIN32
         operator const sockaddr_un&() const;
 #endif
+        const sockaddr* addr() const;
+        socklen_t addrlen() const;
         std::string sa_data() const;
         family_type sa_family() const;
         socklen_t sa_length() const;
