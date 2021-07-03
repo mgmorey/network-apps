@@ -34,7 +34,9 @@ Network::EndpointResult Network::to_endpoint(const Address& address,
 
     if (code != 0) {
         std::ostringstream os;
-        os << "getnameinfo(...) returned "
+        os << "getnameinfo("
+           << address
+           << ", ...) returned "
            << code
            << " ("
            << ::gai_strerror(code)
@@ -42,9 +44,7 @@ Network::EndpointResult Network::to_endpoint(const Address& address,
         error = os.str();
     }
 
-    return EndpointResult(Endpoint(host_buffer,
-                                   service_buffer),
-                          Result(code, error));
+    return EndpointResult(Endpoint(host_buffer, service_buffer), Result(code, error));
 }
 
 Network::EndpointResult Network::to_endpoint(const Address& address,
