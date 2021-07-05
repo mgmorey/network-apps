@@ -175,9 +175,17 @@ addrinfo Network::Socket::defaults(int family,
         socktype,	// ai_socktype
         protocol,	// ai_protocol
         0,		// ai_addrlen
-        NULL,		// ai_addr
         NULL,		// ai_canonname
+        NULL,		// ai_addr
         NULL		// ai_next
     };
+    assert(ai.ai_flags == flags);
+    assert(ai.ai_family == family);
+    assert(ai.ai_socktype == socktype);
+    assert(ai.ai_protocol == protocol);
+    assert(ai.ai_addrlen == 0);
+    assert(ai.ai_canonname == NULL);
+    assert(ai.ai_addr == NULL);
+    assert(ai.ai_next == NULL);
     return ai;
 }
