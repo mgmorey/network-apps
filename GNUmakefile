@@ -33,12 +33,14 @@ LINK.o = $(CXX) $(LDFLAGS)
 prefix=/usr/local
 
 executable_sources = test-address.cpp test-hostname.cpp
-library_sources = network-address.cpp network-addrinfo.cpp network-buffer.cpp \
-network-close.cpp network-connect.cpp network-context.cpp network-endpoint.cpp \
-network-family.cpp network-flags.cpp network-format.cpp network-host.cpp \
-network-hosts.cpp network-hostname.cpp network-name.cpp network-peername.cpp \
-network-protocol.cpp network-result.cpp network-socket.cpp network-sockets.cpp \
-network-socktype.cpp network-unique.cpp stream-address.cpp stream-addrinfo.cpp
+library_sources = network-address.cpp network-addrinfo.cpp \
+network-buffer.cpp network-close.cpp network-connect.cpp \
+network-context.cpp network-endpoint.cpp network-family.cpp \
+network-flags.cpp network-format.cpp network-host.cpp \
+network-hosts.cpp network-hostname.cpp network-nullable.cpp \
+network-peername.cpp network-protocol.cpp network-result.cpp \
+network-socket.cpp network-sockets.cpp network-socktype.cpp \
+network-unique.cpp stream-address.cpp stream-addrinfo.cpp
 
 ifndef HTTP_PROXY
 	executable_sources += test-connect.cpp

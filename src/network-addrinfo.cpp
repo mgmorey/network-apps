@@ -7,7 +7,7 @@
 #include "network-family.h"     // Family, operator<<()
 #include "network-flags.h"      // Flags, operator<<()
 #include "network-format.h"     // Format, operator<<()
-#include "network-name.h"       // Name, operator<<()
+#include "network-nullable.h"   // Nullable, operator<<()
 #include "network-protocol.h"   // Protocol, operator<<()
 #include "network-socktype.h"   // SockType, operator<<()
 
@@ -29,9 +29,9 @@ Network::AiResult Network::get_addrinfo(const Hostname& node,
 {
     if (verbose) {
         std::cerr << "Invoking getaddrinfo("
-                  << Name(node)
+                  << Nullable(node)
                   << ", "
-                  << Name(service)
+                  << Nullable(service)
                   << ", "
                   << hints
                   << ", ...)"
@@ -55,9 +55,9 @@ Network::AiResult Network::get_addrinfo(const Hostname& node,
     if (code != 0) {
         std::ostringstream os;
         os << "getaddrinfo("
-           << Name(node)
+           << Nullable(node)
            << ", "
-           << Name(service)
+           << Nullable(service)
            << ", "
            << hints
            << ") returned "

@@ -3,7 +3,7 @@
 #include "network-family.h"     // Family, operator<<()
 #include "network-flags.h"      // Flags, operator<<()
 #include "network-format.h"     // Format, operator<<()
-#include "network-name.h"       // Name, operator<<()
+#include "network-nullable.h"   // Nullable, operator<<()
 #include "network-protocol.h"   // Protocol, operator<<()
 #include "network-socktype.h"   // SockType, operator<<()
 #include "stream-address.h"     // Address, operator<<()
@@ -38,7 +38,7 @@ std::ostream& Network::operator<<(std::ostream& os,
        << Format(tabs[0], "ai_addr")
        << Address(ai.ai_addr, ai.ai_addrlen)
        << Format(tabs[0], "ai_canonname")
-       << Name(ai.ai_canonname)
+       << Nullable(ai.ai_canonname)
        << Format(tabs[0], "ai_next")
        << ai.ai_next
        << ')';

@@ -8,14 +8,14 @@
 
 Network::Host::Host(const addrinfo& other) :
     address(other.ai_addr, other.ai_addrlen),
-    cname(other.ai_canonname == NULL ? "" : other.ai_canonname)
+    cname(other.ai_canonname)
 {
 }
 
 Network::Host& Network::Host::operator=(const addrinfo& other)
 {
     address = Address(other.ai_addr, other.ai_addrlen);
-    cname = other.ai_canonname == NULL ? "" : other.ai_canonname;
+    cname = other.ai_canonname;
     return *this;
 }
 
@@ -39,7 +39,7 @@ Network::Host::operator Address() const
     return address;
 }
 
-Network::Hostname Network::Host::canonical_name() const
+Network::Nullable Network::Host::canonical_name() const
 {
     return cname;
 }

@@ -3,6 +3,7 @@
 
 #include "network-address.h"    // Address
 #include "network-fd.h"         // sock_fd_type
+#include "network-nullable.h"   // Nullable
 #include "network-result.h"     // Result
 #include "network-types.h"      // Hostname
 
@@ -23,11 +24,11 @@ namespace Network
         bool operator>(const Host& other) const;
         bool operator==(const Host& other) const;
         operator Address() const;
-        Hostname canonical_name() const;
+        Nullable canonical_name() const;
 
     private:
         Address address;
-        Hostname cname;
+        Nullable cname;
     };
 }
 
