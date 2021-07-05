@@ -12,6 +12,7 @@ namespace Network
                                         const Nullable& nullable);
 
     public:
+        Nullable();
         Nullable(const std::string& other);
         Nullable(const char* other);
         Nullable& operator=(const std::string& other);

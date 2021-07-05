@@ -1,5 +1,10 @@
 #include "network-nullable.h"   // Nullable
 
+Network::Nullable::Nullable() :
+    value_is_null(false)
+{
+}
+
 Network::Nullable::Nullable(const std::string &other) :
     value_is_null(false),
     value(other)
