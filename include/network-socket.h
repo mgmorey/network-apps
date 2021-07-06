@@ -11,6 +11,7 @@
 #include <netdb.h>      // struct addrinfo
 #endif
 
+#include <string>       // std::string
 #include <utility>      // std::pair
 
 namespace Network
@@ -47,6 +48,9 @@ namespace Network
                                  int socktype = 0,
                                  int family = 0,
                                  int flags = 0);
+
+        static const std::string delim;
+        static const int tabs[1];
     };
 }
 

@@ -1,5 +1,9 @@
 #include "network-socket.h"     // Hostname, Result, Socket
 #include "network-addrinfo.h"   // operator<<()
+#include "network-family.h"     // Family
+#include "network-format.h"     // Format
+#include "network-protocol.h"   // Protocol
+#include "network-socktype.h"   // SockType
 #include "network-host.h"       // Host
 
 #ifdef _WIN32
@@ -120,11 +124,12 @@ Network::SocketResult Network::Socket::socket(bool verbose) const
     if (fd == sock_fd_null) {
         std::ostringstream os;
         os << "socket("
-           << ai_family
-           << ", "
-           << ai_socktype
-           << ", "
-           << ai_protocol
+           << Format("domain")
+           << Family(ai_family)
+           << Format(delim, tabs[0], "type")
+           << SockType(ai_socktype)
+           << Format(delim, tabs[0], "protocol")
+           << Protocol(ai_family, ai_protocol)
            << ") returned "
            << fd;
         error = os.str();
@@ -150,11 +155,12 @@ Network::SocketpairResult Network::Socket::socketpair(bool verbose) const
     if (code != 0) {
         std::ostringstream os;
         os << "socketpair("
-           << ai_family
-           << ", "
-           << ai_socktype
-           << ", "
-           << ai_protocol
+           << Format("domain")
+           << Family(ai_family)
+           << Format(delim, tabs[0], "type")
+           << SockType(ai_socktype)
+           << Format(delim, tabs[0], "protocol")
+           << Protocol(ai_family, ai_protocol)
            << ") returned "
            << code;
         error = os.str();
@@ -190,3 +196,6 @@ addrinfo Network::Socket::defaults(int family,
     assert(ai.ai_next == NULL);
     return ai;
 }
+
+const std::string Network::Socket::delim(", ");
+const int Network::Socket::tabs[1] = {0};
