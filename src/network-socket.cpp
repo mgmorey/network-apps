@@ -10,6 +10,7 @@
 #include <sys/socket.h> // struct sockaddr, socket()
 #endif
 
+#include <cassert>      // assert()
 #include <cstdlib>      // free()
 #include <cstring>      // std::memcpy(), strdup()
 #include <iostream>     // std::cerr, std::endl
