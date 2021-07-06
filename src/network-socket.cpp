@@ -15,8 +15,9 @@
 #endif
 
 #include <cassert>      // assert()
+#include <cerrno>       // errno
 #include <cstdlib>      // free()
-#include <cstring>      // std::memcpy(), strdup()
+#include <cstring>      // std::memcpy(), strdup(), std::strerror()
 #include <iostream>     // std::cerr, std::endl
 #include <sstream>      // std::ostringstream
 
@@ -131,7 +132,12 @@ Network::SocketResult Network::Socket::socket(bool verbose) const
            << Format(delim, tabs[0], "protocol")
            << Protocol(ai_family, ai_protocol)
            << ") returned "
-           << fd;
+           << fd
+           << ": "
+           << std::strerror(errno)
+           << " (errno = "
+           << errno
+           << ')';
         error = os.str();
     }
 
@@ -162,7 +168,12 @@ Network::SocketpairResult Network::Socket::socketpair(bool verbose) const
            << Format(delim, tabs[0], "protocol")
            << Protocol(ai_family, ai_protocol)
            << ") returned "
-           << code;
+           << code
+           << ": "
+           << std::strerror(errno)
+           << " (errno = "
+           << errno
+           << ')';
         error = os.str();
     }
 
