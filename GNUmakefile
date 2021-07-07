@@ -100,7 +100,7 @@ include $(dependencies)
 .SECONDARY: $(objects)
 
 %: tmp/%.o
-	$(LINK.o) -o $@ $^ $(LDLIBS)
+	$(LINK.o) -Wl,-map,$@.map -o $@ $^ $(LDLIBS)
 
 tmp/%.o: %.cpp
 	$(COMPILE.cpp) $(OUTPUT_OPTION) $<
