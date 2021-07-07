@@ -70,15 +70,16 @@ maps = $(subst .cpp,.map,$(executable_sources))
 executable_objects = $(addprefix $(tmp_dir)/,$(subst .cpp,.o,$(executable_sources)))
 library_objects = $(addprefix $(tmp_dir)/,$(subst .cpp,.o,$(library_sources)))
 objects = $(library_objects) $(executable_objects)
+
 tmp_dir = tmp
 
 all: $(executables) TAGS
 
 clean:
-	rm -f $(executables) $(libraries) $(objects)
+	rm -f $(executables) $(libraries) $(objects) $(maps) $(listings)
 
 realclean: clean
-	rm -f $(dependencies) $(listings) $(maps) TAGS
+	rm -f $(dependencies) TAGS
 
 test: $(executables)
 	for f in $^; do if expr $$f ':' 'test-.*' >/dev/null; then ./$$f; fi; done
