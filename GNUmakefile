@@ -59,14 +59,16 @@ endif
 
 sources = $(executable_sources) $(library_sources)
 
-dependencies = $(addprefix tmp/,$(subst .cpp,.dep,$(sources)))
-dependencies_dir = tmp
+dependencies = $(addprefix $(tmp_dir)/,$(subst .cpp,.dep,$(sources)))
+listings = $(addprefix $(tmp_dir)/,$(subst .cpp,.lst,$(sources)))
 
 executables = $(subst .cpp,,$(executable_sources))
 libraries = libnetwork.a
 
-executable_objects = $(addprefix tmp/,$(subst .cpp,.o,$(executable_sources)))
-library_objects = $(addprefix tmp/,$(subst .cpp,.o,$(library_sources)))
+maps = $(subst .cpp,.map,$(executable_sources))
+
+executable_objects = $(addprefix $(tmp_dir)/,$(subst .cpp,.o,$(executable_sources)))
+library_objects = $(addprefix $(tmp_dir)/,$(subst .cpp,.o,$(library_sources)))
 objects = $(library_objects) $(executable_objects)
 tmp_dir = tmp
 
@@ -76,7 +78,7 @@ clean:
 	rm -f $(executables) $(libraries) $(objects)
 
 realclean: clean
-	rm -f $(dependencies) TAGS
+	rm -f $(dependencies) $(listings) $(maps) TAGS
 
 test: $(executables)
 	for f in $^; do if expr $$f ':' 'test-.*' >/dev/null; then ./$$f; fi; done
@@ -106,13 +108,13 @@ include $(dependencies)
 
 .SECONDARY: $(objects)
 
-%: tmp/%.o
+%: $(tmp_dir)/%.o
 	$(LINK.o) -o $@ $^ $(LDLIBS)
 
-tmp/%.o: %.cpp
+$(tmp_dir)/%.o: %.cpp
 	$(COMPILE.cpp) $(OUTPUT_OPTION) $<
 
-tmp/%.dep: %.cpp
+$(tmp_dir)/%.dep: %.cpp
 	$(CXX) $(CPPFLAGS) -MM $< | ./make-makefile -f TAGS -o $@
 
 vpath %.cpp src
