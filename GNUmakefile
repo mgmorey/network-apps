@@ -28,6 +28,12 @@ endif
 CPPFLAGS += -Iinclude
 CXXFLAGS += -std=c++98 -Wall -Werror -Wextra -Wpedantic
 
+ifeq "$(SYSTEM_PREFIX)" "Darwin"
+	LDFLAGS += -Wl,-map,$@.map
+else
+	LDFLAGS += -Wl,-Map=$@.map
+endif
+
 LINK.o = $(CXX) $(LDFLAGS)
 
 prefix=/usr/local
@@ -100,7 +106,7 @@ include $(dependencies)
 .SECONDARY: $(objects)
 
 %: tmp/%.o
-	$(LINK.o) -Wl,-map,$@.map -o $@ $^ $(LDLIBS)
+	$(LINK.o) -o $@ $^ $(LDLIBS)
 
 tmp/%.o: %.cpp
 	$(COMPILE.cpp) $(OUTPUT_OPTION) $<
