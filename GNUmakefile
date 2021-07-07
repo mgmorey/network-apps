@@ -31,7 +31,9 @@ CXXFLAGS += -std=c++98 -Wall -Werror -Wextra -Wpedantic
 ifeq "$(SYSTEM_PREFIX)" "Darwin"
 	LDFLAGS += -Wl,-map,$@.map
 else
+ifneq "$(SYSTEM_PREFIX)" "FreeBSD"
 	CXXFLAGS += -Wa,-adghln=$(subst .o,.lst,$@)
+endif
 	LDFLAGS += -Wl,-Map=$@.map
 endif
 
