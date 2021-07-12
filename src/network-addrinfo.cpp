@@ -62,9 +62,8 @@ Network::AiResult Network::get_addrinfo(const Hostname& node,
            << hints
            << ") returned "
            << code
-           << " ("
-           << ::gai_strerror(code)
-           << ')';
+           << ": "
+           << ::gai_strerror(code);
         error = os.str();
     }
     else {
