@@ -58,27 +58,28 @@ static void test_connect(const Network::Endpoint& endpoint,
             std::cerr << (*it)
                       << std::endl;
         }
+
+        return;
     }
-    else {
-        const Network::Hostname cname = details.front().string();
-        const Network::Hostname hostname(endpoint.first);
-        const Network::Service service(endpoint.second);
-        std::cout << "Socket "
-                  << fd
-                  << " connected to "
-                  << service
-                  << " on "
-                  << (cname.empty() ?
-                      hostname :
-                      cname)
-                  << std::endl;
-        test_peer(fd);
-        Network::close(fd);
-        std::cout << "Socket "
-                  << fd
-                  << " closed"
-                  << std::endl;
-    }
+
+    const Network::Hostname cname = details.front().string();
+    const Network::Hostname hostname(endpoint.first);
+    const Network::Service service(endpoint.second);
+    std::cout << "Socket "
+              << fd
+              << " connected to "
+              << service
+              << " on "
+              << (cname.empty() ?
+                  hostname :
+                  cname)
+              << std::endl;
+    test_peer(fd);
+    Network::close(fd);
+    std::cout << "Socket "
+              << fd
+              << " closed"
+              << std::endl;
 }
 
 int main(int argc, char* argv[])
