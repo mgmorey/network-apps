@@ -92,9 +92,11 @@ realclean: clean
 test: $(executables)
 	for f in $^; do if expr $$f ':' 'test-.*' >/dev/null; then ./$$f; fi; done
 
+.PHONY:	unix
 unix: $(executables)
 	./unix-server & (sleep 1; ./unix-client 2 2; ./unix-client 10 6; ./unix-client DOWN)
 
+.PHONY:	install
 install: $(libraries)
 	install libnetwork.a $(prefix)/lib
 	install include/network-*.h include/stream-*.h $(prefix)/include
