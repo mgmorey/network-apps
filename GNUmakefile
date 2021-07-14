@@ -2,16 +2,18 @@ SYSTEM_PREFIX := $(shell uname -s | cut -d- -f 1)
 
 ifdef NDEBUG
 	CPPFLAGS += -D_FORTIFY_SOURCE=2
-	CXXFLAGS += -O3
+	CXXFLAGS += -O2
 else
 ifeq "$(USING_DMALLOC)" "true"
 	CPPFLAGS += -DDMALLOC -DMALLOC_FUNC_CHECK
 	LDLIBS += -ldmalloc
 else ifeq "$(USING_LIBASAN)" "true"
-	CXXFLAGS += -fsanitize=address
-	LDLIBS += -lasan
+	CXXFLAGS += -fsanitize=address -fno-omit-frame-pointer
+	LDFLAGS += -fsanitize=address
+else
+	CXXFLAGS += -fno-omit-frame-pointer
 endif
-	CXXFLAGS += -fno-omit-frame-pointer -g3 -O0
+	CXXFLAGS += -g3 -O0
 endif
 
 ifeq "$(SYSTEM_PREFIX)" "Darwin"
@@ -75,14 +77,18 @@ objects = $(library_objects) $(executable_objects)
 
 tmp_dir = tmp
 
+.PHONY:	all
 all: $(executables) TAGS
 
+.PHONY:	clean
 clean:
 	rm -f $(executables) $(libraries) $(objects) $(maps) $(listings)
 
+.PHONY:	realclean
 realclean: clean
 	rm -f $(dependencies) TAGS
 
+.PHONY:	test
 test: $(executables)
 	for f in $^; do if expr $$f ':' 'test-.*' >/dev/null; then ./$$f; fi; done
 
@@ -106,8 +112,6 @@ $(tmp_dir):
 	mkdir -p $(tmp_dir)
 
 include $(dependencies)
-
-.PHONY: all clean realclean test
 
 .SECONDARY: $(objects)
 
