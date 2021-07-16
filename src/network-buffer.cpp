@@ -1,24 +1,24 @@
-#include "network-buffer.h"     // Buffer
+#include "network-buffer.h"     // Buffer, std::string
 
-Network::Buffer::Buffer(std::size_t size) :
-    value(size, '\0')
+Network::Buffer::Buffer(std::string::size_type t_size) :
+    m_value(t_size, '\0')
 {
 }
 
-char& Network::Buffer::operator[](std::size_t pos)
+char& Network::Buffer::operator[](std::string::size_type t_pos)
 {
-    return value[pos];
+    return m_value[t_pos];
 }
 
-const char& Network::Buffer::operator[](std::size_t pos) const
+const char& Network::Buffer::operator[](std::string::size_type t_pos) const
 {
-    return value[pos];
+    return m_value[t_pos];
 }
 
 Network::Buffer::operator std::string() const
 {
-    std::string result(value);
-    const std::size_t pos = result.find('\0');
+    std::string result(m_value);
+    const std::string::size_type pos = result.find('\0');
 
     if (pos != std::string::npos) {
         result.erase(pos);
@@ -27,7 +27,7 @@ Network::Buffer::operator std::string() const
     return result;
 }
 
-std::size_t Network::Buffer::size() const
+std::string::size_type Network::Buffer::size() const
 {
-    return value.size();
+    return m_value.size();
 }

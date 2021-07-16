@@ -43,7 +43,8 @@ LINK.o = $(CXX) $(LDFLAGS)
 
 prefix=/usr/local
 
-executable_sources = test-address.cpp test-hostname.cpp
+executable_sources = test-address.cpp test-buffer.cpp \
+test-hostname.cpp
 library_sources = network-address.cpp network-addrinfo.cpp \
 network-buffer.cpp network-close.cpp network-connect.cpp \
 network-context.cpp network-endpoint.cpp network-family.cpp \
