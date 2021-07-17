@@ -41,7 +41,9 @@ endif
 
 LINK.o = $(CXX) $(LDFLAGS)
 
-prefix=/usr/local
+prefix = /usr/local
+
+sources = $(executable_sources) $(library_sources)
 
 executable_sources = test-address.cpp test-buffer.cpp \
 test-hostname.cpp
@@ -62,19 +64,17 @@ ifneq "$(SYSTEM_PREFIX)" "MINGW64_NT"
 	executable_sources += test-socket.cpp unix-client.cpp unix-server.cpp
 endif
 
-sources = $(executable_sources) $(library_sources)
-
-dependencies = $(addprefix $(tmp_dir)/,$(subst .cpp,.dep,$(sources)))
-listings = $(addprefix $(tmp_dir)/,$(subst .cpp,.lst,$(sources)))
-
 executables = $(subst .cpp,,$(executable_sources))
 libraries = libnetwork.a
 
-maps = $(subst .cpp,.map,$(executable_sources))
+objects = $(library_objects) $(executable_objects)
 
 executable_objects = $(addprefix $(tmp_dir)/,$(subst .cpp,.o,$(executable_sources)))
 library_objects = $(addprefix $(tmp_dir)/,$(subst .cpp,.o,$(library_sources)))
-objects = $(library_objects) $(executable_objects)
+
+dependencies = $(addprefix $(tmp_dir)/,$(subst .cpp,.dep,$(sources)))
+listings = $(addprefix $(tmp_dir)/,$(subst .cpp,.lst,$(sources)))
+maps = $(subst .cpp,.map,$(executable_sources))
 
 tmp_dir = tmp
 
