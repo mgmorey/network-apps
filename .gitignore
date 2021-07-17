@@ -79,6 +79,7 @@ logfile
 
 # POSIX executables
 test-address
+test-buffer
 test-connect
 test-hostname
 test-socket
