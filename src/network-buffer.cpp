@@ -17,14 +17,8 @@ const char& Network::Buffer::operator[](std::string::size_type t_pos) const
 
 Network::Buffer::operator std::string() const
 {
-    std::string result(m_value);
-    const std::string::size_type pos = result.find('\0');
-
-    if (pos != std::string::npos) {
-        result.erase(pos);
-    }
-
-    return result;
+    const std::string::size_type pos = m_value.find('\0');
+    return m_value.substr(0, pos);
 }
 
 std::string::size_type Network::Buffer::size() const
