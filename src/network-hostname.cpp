@@ -18,10 +18,10 @@ Network::HostnameResult Network::get_hostname()
     const int code = ::gethostname(&hostname[0], hostname.size() - 1);
 
     if (code != 0) {
-        std::ostringstream os;
-        os << "gethostname(...) returned "
-           << code;
-        error = os.str();
+        std::ostringstream oss;
+        oss << "gethostname(...) returned "
+            << code;
+        error = oss.str();
     }
 
     return HostnameResult(hostname, Result(code, error));

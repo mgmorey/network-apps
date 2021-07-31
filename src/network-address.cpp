@@ -61,19 +61,19 @@ Network::Result Network::Address::connect(sock_fd_type fd, bool verbose) const
     const int code = ::connect(fd, addr(), addrlen());
 
     if (code == connect_error) {
-        std::ostringstream os;
-        os << "connect("
-           << fd
-           << ", "
-           << *this
-           << ") returned "
-           << code
-           << ": "
-           << std::strerror(errno)
-           << " (errno = "
-           << errno
-           << ')';
-        error = os.str();
+        std::ostringstream oss;
+        oss << "connect("
+            << fd
+            << ", "
+            << *this
+            << ") returned "
+            << code
+            << ": "
+            << std::strerror(errno)
+            << " (errno = "
+            << errno
+            << ')';
+        error = oss.str();
     }
 
     return Result(errno, error);

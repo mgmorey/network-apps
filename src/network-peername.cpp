@@ -38,17 +38,17 @@ Network::AddressResult Network::get_peername(sock_fd_type fd, bool verbose)
     const int code = ::getpeername(fd, addr, &addrlen);
 
     if (code != 0) {
-        std::ostringstream os;
-        os << "getpeername("
-           << fd
-           << ", ...) returned "
-           << code
-           << ": "
-           << std::strerror(errno)
-           << " (errno = "
-           << errno
-           << ')';
-        error = os.str();
+        std::ostringstream oss;
+        oss << "getpeername("
+            << fd
+            << ", ...) returned "
+            << code
+            << ": "
+            << std::strerror(errno)
+            << " (errno = "
+            << errno
+            << ')';
+        error = oss.str();
     }
 
     return AddressResult(Address(addr, addrlen), Result(code, error));

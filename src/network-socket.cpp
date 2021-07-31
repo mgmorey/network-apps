@@ -123,22 +123,22 @@ Network::SocketResult Network::Socket::socket(bool verbose) const
     const sock_fd_type fd = ::socket(ai_family, ai_socktype, ai_protocol);
 
     if (fd == sock_fd_null) {
-        std::ostringstream os;
-        os << "socket("
-           << Format("domain")
-           << Family(ai_family)
-           << Format(delim, tabs[0], "type")
-           << SockType(ai_socktype)
-           << Format(delim, tabs[0], "protocol")
-           << Protocol(ai_family, ai_protocol)
-           << ") returned "
-           << fd
-           << ": "
-           << std::strerror(errno)
-           << " (errno = "
-           << errno
-           << ')';
-        error = os.str();
+        std::ostringstream oss;
+        oss << "socket("
+            << Format("domain")
+            << Family(ai_family)
+            << Format(delim, tabs[0], "type")
+            << SockType(ai_socktype)
+            << Format(delim, tabs[0], "protocol")
+            << Protocol(ai_family, ai_protocol)
+            << ") returned "
+            << fd
+            << ": "
+            << std::strerror(errno)
+            << " (errno = "
+            << errno
+            << ')';
+        error = oss.str();
     }
 
     return SocketResult(fd, Result(0, error));
@@ -159,22 +159,22 @@ Network::SocketpairResult Network::Socket::socketpair(bool verbose) const
     const int code = ::socketpair(ai_family, ai_socktype, ai_protocol, fds);
 
     if (code != 0) {
-        std::ostringstream os;
-        os << "socketpair("
-           << Format("domain")
-           << Family(ai_family)
-           << Format(delim, tabs[0], "type")
-           << SockType(ai_socktype)
-           << Format(delim, tabs[0], "protocol")
-           << Protocol(ai_family, ai_protocol)
-           << ") returned "
-           << code
-           << ": "
-           << std::strerror(errno)
-           << " (errno = "
-           << errno
-           << ')';
-        error = os.str();
+        std::ostringstream oss;
+        oss << "socketpair("
+            << Format("domain")
+            << Family(ai_family)
+            << Format(delim, tabs[0], "type")
+            << SockType(ai_socktype)
+            << Format(delim, tabs[0], "protocol")
+            << Protocol(ai_family, ai_protocol)
+            << ") returned "
+            << code
+            << ": "
+            << std::strerror(errno)
+            << " (errno = "
+            << errno
+            << ')';
+        error = oss.str();
     }
 
     return SocketpairResult(FdPair(fds[0], fds[1]),

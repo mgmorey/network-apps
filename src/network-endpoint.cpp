@@ -35,15 +35,15 @@ Network::Address::to_endpoint(int flags, bool verbose) const
     }
 
     if (code != 0) {
-        std::ostringstream os;
-        os << "getnameinfo("
-           << *this
-           << ", ...) returned "
-           << code
-           << " ("
-           << ::gai_strerror(code)
-           << ')';
-        error = os.str();
+        std::ostringstream oss;
+        oss << "getnameinfo("
+            << *this
+            << ", ...) returned "
+            << code
+            << " ("
+            << ::gai_strerror(code)
+            << ')';
+        error = oss.str();
     }
 
     return EndpointResult(Endpoint(host_buffer, service_buffer), Result(code, error));

@@ -53,18 +53,18 @@ Network::AiResult Network::get_addrinfo(const Hostname& node,
                                    &list);
 
     if (code != 0) {
-        std::ostringstream os;
-        os << "getaddrinfo("
-           << Nullable(node)
-           << ", "
-           << Nullable(service)
-           << ", "
-           << hints
-           << ") returned "
-           << code
-           << ": "
-           << ::gai_strerror(code);
-        error = os.str();
+        std::ostringstream oss;
+        oss << "getaddrinfo("
+            << Nullable(node)
+            << ", "
+            << Nullable(service)
+            << ", "
+            << hints
+            << ") returned "
+            << code
+            << ": "
+            << ::gai_strerror(code);
+        error = oss.str();
     }
     else {
         assert(list != NULL);

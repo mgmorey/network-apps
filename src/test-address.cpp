@@ -22,7 +22,6 @@
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <list>         // std::list
 #include <ostream>      // std::ostream
-#include <sstream>      // std::ostringstream
 #include <string>       // std::string
 
 static std::ostream& operator<<(std::ostream& os, const Network::Host& host)
