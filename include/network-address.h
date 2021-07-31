@@ -1,7 +1,7 @@
 #ifndef NETWORK_ADDRESS_H
 #define NETWORK_ADDRESS_H
 
-#include "network-endpoint.h"   // Endpoint, EndpointResult
+#include "network-endpoint.h"   // EndpointResult
 #include "network-fd.h"         // sock_fd_type
 #include "network-result.h"     // Result
 
