@@ -1,17 +1,16 @@
-/*
- * File unix-client.c
- */
+#include "unix-common.h"        // BUFFER_SIZE, SOCKET_NAME
 
-#include "unix-common.h"
+#include <sys/socket.h>         // SOCK_SEQPACKET, ::connect(),
+                                // ::socket()
+#include <sys/un.h>             // AF_UNIX
+#include <unistd.h>             // ::close(), ::read(), ::write()
 
-#include <sys/socket.h>
-#include <sys/un.h>
-
-#include <errno.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
+#include <cerrno>       // errno
+#include <cstdio>       // std::fprintf(), std::perror(),
+                        // std::printf()
+#include <cstdlib>      // std::exit()
+#include <cstring>      // std::memset(), std::strcmp(),
+                        // std::strcpy(), std::strncpy()
 
 int main(int argc, char *argv[])
 {
@@ -21,75 +20,71 @@ int main(int argc, char *argv[])
     int data_socket;
     char buffer[BUFFER_SIZE];
 
-    /* Create local socket. */
+    // Create local socket.
+    data_socket = ::socket(AF_UNIX, SOCK_SEQPACKET, 0);
 
-    data_socket = socket(AF_UNIX, SOCK_SEQPACKET, 0);
     if (data_socket == -1) {
-        perror("socket");
-        exit(EXIT_FAILURE);
+        std::perror("socket");
+        std::exit(EXIT_FAILURE);
     }
 
-    /*
-     * For portability clear the whole structure, since some
-     * implementations have additional (nonstandard) fields in
-     * the structure.
-     */
+    // For portability clear the whole structure, since some
+    // implementations have additional (nonstandard) fields in the
+    // structure.
+    std::memset(&addr, 0, sizeof addr);
 
-    memset(&addr, 0, sizeof(addr));
-
-    /* Connect socket to socket address. */
-
+    // Connect socket to socket address.
     addr.sun_family = AF_UNIX;
-    strncpy(addr.sun_path, SOCKET_NAME, sizeof(addr.sun_path) - 1);
+    std::strncpy(addr.sun_path, SOCKET_NAME, sizeof addr.sun_path - 1);
 
-    ret = connect(data_socket, (const struct sockaddr *) &addr,
-                  sizeof(addr));
+    ret = ::connect(data_socket, (const struct sockaddr*)&addr,
+                    sizeof addr);
+
     if (ret == -1) {
-        fprintf(stderr, "The server is down.\n");
-        exit(EXIT_FAILURE);
+        std::fprintf(stderr, "The server is down.\n");
+        std::exit(EXIT_FAILURE);
     }
 
-    /* Send arguments. */
+    // Send arguments.
 
     for (int i = 1; i < argc; ++i) {
-        ret = write(data_socket, argv[i], strlen(argv[i]) + 1);
+        ret = ::write(data_socket, argv[i], strlen(argv[i]) + 1);
+
         if (ret == -1) {
-            perror("write");
+            std::perror("write");
             break;
         }
-        if (!strcmp(argv[1], "DOWN")) {
+
+        if (!std::strcmp(argv[1], "DOWN")) {
             down_flag = 1;
             break;
         }
     }
 
     if (!down_flag) {
-        /* Request result. */
+        // Request result.
+        std::strcpy(buffer, "END");
+        ret = ::write(data_socket, buffer, strlen(buffer) + 1);
 
-        strcpy(buffer, "END");
-        ret = write(data_socket, buffer, strlen(buffer) + 1);
         if (ret == -1) {
-            perror("write");
-            exit(EXIT_FAILURE);
+            std::perror("write");
+            std::exit(EXIT_FAILURE);
         }
 
-        /* Receive result. */
+        // Receive result.
+        ret = ::read(data_socket, buffer, sizeof(buffer));
 
-        ret = read(data_socket, buffer, sizeof(buffer));
         if (ret == -1) {
-            perror("read");
-            exit(EXIT_FAILURE);
+            std::perror("read");
+            std::exit(EXIT_FAILURE);
         }
 
-        /* Ensure buffer is 0-terminated. */
-
+        // Ensure buffer is 0-terminated.
         buffer[sizeof(buffer) - 1] = 0;
-
-        printf("Result = %s\n", buffer);
+        std::printf("Result = %s\n", buffer);
     }
 
-    /* Close socket. */
-
-    close(data_socket);
-    exit(EXIT_SUCCESS);
+    // Close socket.
+    ::close(data_socket);
+    std::exit(EXIT_SUCCESS);
 }

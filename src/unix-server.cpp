@@ -1,31 +1,32 @@
-/*
- * File unix-server.c
- */
+#include "unix-common.h"        // BUFFER_SIZE, SOCKET_NAME
 
-#include "unix-common.h"
+#include <sys/socket.h>         // SOCK_SEQPACKET, ::accept(),
+                                // ::bind(), ::connect(), ::listen(),
+                                // ::socket()
+#include <sys/un.h>             // AF_UNIX
+#include <unistd.h>             // ::close(), ::read(), ::unlink(),
+                                // ::write()
 
-#include <sys/socket.h>
-#include <sys/un.h>
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
+#include <cstdio>       // std::fprintf(), std::perror(),
+                        // std::printf()
+#include <cstdlib>      // std::atexit(), std::exit(), std::strtol()
+#include <cstring>      // std::memset(), std::strcmp(),
+                        // std::strcpy(), std::strncpy()
 
 static int connection_socket = -1;
 
 static void clean_up(void)
 {
-    /* Close the socket. */
+    // Close the socket.
     if (connection_socket >= 0) {
-        fprintf(stderr, "Closing socket %d.\n", connection_socket);
-        close(connection_socket);
+        std::fprintf(stderr, "Closing socket %d.\n", connection_socket);
+        ::close(connection_socket);
         connection_socket = -1;
     }
 
-    /* Unlink the socket. */
-    fprintf(stderr, "Removing file %s.\n", SOCKET_NAME);
-    unlink(SOCKET_NAME);
+    // Unlink the socket.
+    std::fprintf(stderr, "Removing file %s.\n", SOCKET_NAME);
+    ::unlink(SOCKET_NAME);
 }
 
 int main(void)
@@ -37,116 +38,110 @@ int main(void)
     int result;
     char buffer[BUFFER_SIZE];
 
-    /* Create local socket. */
+    // Create local socket.
+    connection_socket = ::socket(AF_UNIX, SOCK_SEQPACKET, 0);
 
-    connection_socket = socket(AF_UNIX, SOCK_SEQPACKET, 0);
     if (connection_socket == -1) {
-        perror("socket");
-        exit(EXIT_FAILURE);
+        std::perror("socket");
+        std::exit(EXIT_FAILURE);
     }
 
-    /*
-     * For portability clear the whole structure, since some
-     * implementations have additional (nonstandard) fields in
-     * the structure.
-     */
+    // For portability clear the whole structure, since some
+    // implementations have additional (nonstandard) fields in the
+    // structure.
+    std::memset(&name, 0, sizeof(name));
 
-    memset(&name, 0, sizeof(name));
-
-    /* Bind socket to socket name. */
-
+    // Bind socket to socket name.
     name.sun_family = AF_UNIX;
-    strncpy(name.sun_path, SOCKET_NAME, sizeof(name.sun_path) - 1);
+    std::strncpy(name.sun_path, SOCKET_NAME, sizeof name.sun_path - 1);
+    ret = ::bind(connection_socket, (const struct sockaddr*)&name,
+                 sizeof name);
 
-    ret = bind(connection_socket, (const struct sockaddr *) &name,
-               sizeof(name));
     if (ret == -1) {
-        perror("bind");
-        exit(EXIT_FAILURE);
+        std::perror("bind");
+        std::exit(EXIT_FAILURE);
     }
 
-    ret = atexit(clean_up);
+    ret = std::atexit(clean_up);
+
     if (ret == -1) {
-        perror("atexit");
-        exit(EXIT_FAILURE);
+        std::perror("atexit");
+        std::exit(EXIT_FAILURE);
     }
 
-    /*
-     * Prepare for accepting connections. The backlog size is set
-     * to 20. So while one request is being processed other requests
-     * can be waiting.
-     */
+    // Prepare for accepting connections. The backlog size is set to
+    // 20. So while one request is being processed other requests can
+    // be waiting.
+    ret = ::listen(connection_socket, 20);
 
-    ret = listen(connection_socket, 20);
     if (ret == -1) {
-        perror("listen");
-        exit(EXIT_FAILURE);
+        std::perror("listen");
+        std::exit(EXIT_FAILURE);
     }
 
-    /* This is the main loop for handling connections. */
-
+    // This is the main loop for handling connections.
     for (;;) {
 
-        /* Wait for incoming connection. */
+        // Wait for incoming connection.
+        data_socket = ::accept(connection_socket, NULL, NULL);
 
-        data_socket = accept(connection_socket, NULL, NULL);
         if (data_socket == -1) {
-            perror("accept");
-            exit(EXIT_FAILURE);
+            std::perror("accept");
+            std::exit(EXIT_FAILURE);
         }
 
         result = 0;
+
         for (;;) {
 
-            /* Wait for next data packet. */
+            // Wait for next data packet.
+            ret = ::read(data_socket, buffer, sizeof(buffer));
 
-            ret = read(data_socket, buffer, sizeof(buffer));
             if (ret == -1) {
-                perror("read");
-                exit(EXIT_FAILURE);
+                std::perror("read");
+                std::exit(EXIT_FAILURE);
             }
 
-            /* Ensure buffer is 0-terminated. */
-
+            // Ensure buffer is 0-terminated.
             buffer[sizeof(buffer) - 1] = 0;
 
-            /* Handle commands. */
+            // Handle commands.
 
-            if (!strncmp(buffer, "DOWN", sizeof(buffer))) {
+            if (!std::strncmp(buffer, "DOWN", sizeof buffer)) {
                 down_flag = 1;
                 break;
             }
 
-            if (!strncmp(buffer, "END", sizeof(buffer))) {
+            if (!std::strncmp(buffer, "END", sizeof buffer)) {
                 break;
             }
 
-            /* Add received summand. */
-
-            result += atoi(buffer);
+            // Add received summand.
+            result += std::strtol(buffer, NULL, 10);
         }
 
         if (!down_flag) {
-            /* Send result. */
+            // Send result.
 
-            sprintf(buffer, "%d", result);
-            ret = write(data_socket, buffer, sizeof(buffer));
+            std::sprintf(buffer, "%d", result);
+            ret = ::write(data_socket, buffer, sizeof buffer);
+
             if (ret == -1) {
-                perror("write");
-                exit(EXIT_FAILURE);
+                std::perror("write");
+                std::exit(EXIT_FAILURE);
             }
         }
 
-        /* Close socket. */
+        // Close socket.
 
-        close(data_socket);
+        ::close(data_socket);
 
-        /* Quit on DOWN command. */
+        // Quit on DOWN command.
 
         if (down_flag) {
             break;
         }
     }
 
-    exit(EXIT_SUCCESS);
+    std::exit(EXIT_SUCCESS);
 }
