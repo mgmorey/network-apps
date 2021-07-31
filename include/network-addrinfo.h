@@ -23,9 +23,9 @@ namespace Network
     typedef std::pair<addrinfo*, Result> AiResult;
 
     extern AiResult get_addrinfo(const Hostname& node,
-                                       const Service& service,
-                                       const addrinfo* hints,
-                                       bool verbose);
+                                 const Service& service,
+                                 const addrinfo* hints,
+                                 bool verbose);
 
     template <class Container>
     std::size_t copy_addrinfo(Container& dest,
