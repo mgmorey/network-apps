@@ -6,31 +6,26 @@
 
 static Network::Hostname get_node(const Network::Endpoint& endpoint)
 {
-    Network::Hostname result;
-
     if (endpoint.first.empty() && endpoint.second.empty()) {
-        result = Network::get_hostname().first;
-    }
-    else {
-        result = endpoint.first;
+        return Network::get_hostname().first;
     }
 
-    return result;
+    return endpoint.first;
 }
 
 Network::SocketsResult Network::get_sockets(const Endpoint& endpoint,
                                             const addrinfo& hints,
                                             bool verbose)
 {
-    Hostname node(get_node(endpoint));
-    Service service(endpoint.second);
+    const Hostname node(get_node(endpoint));
+    const Service service(endpoint.second);
     return get_addrinfo<SocketsResult>(node, service, &hints, false, verbose);
 }
 
 Network::SocketsResult Network::get_sockets(const Endpoint& endpoint,
                                             bool verbose)
 {
-    Hostname node(get_node(endpoint));
-    Service service(endpoint.second);
+    const Hostname node(get_node(endpoint));
+    const Service service(endpoint.second);
     return get_addrinfo<SocketsResult>(node, service, NULL, false, verbose);
 }

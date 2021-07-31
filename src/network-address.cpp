@@ -153,7 +153,7 @@ std::string Network::Address::sa_data() const
 Network::Address::family_type Network::Address::sa_family() const
 {
     const sockaddr& sa = static_cast<const sockaddr&>(*this);
-    family_type family = sa.sa_family;
+    const family_type family = sa.sa_family;
     return family;
 }
 
@@ -161,9 +161,9 @@ socklen_t Network::Address::sa_length() const
 {
 #ifdef HAVE_SOCKADDR_SA_LEN
     const sockaddr& sa = static_cast<const sockaddr&>(*this);
-    socklen_t length = sa.sa_len;
+    const socklen_t length = sa.sa_len;
 #else
-    socklen_t length = addrlen();
+    const socklen_t length = addrlen();
 #endif
     assert(length == addrlen());
     return length;
@@ -172,7 +172,7 @@ socklen_t Network::Address::sa_length() const
 std::string Network::Address::sa_text() const
 {
     const char* data = value.data();
-    std::size_t size = value.size();
+    const std::size_t size = value.size();
     std::ostringstream oss;
     oss << std::hex;
 
@@ -205,21 +205,21 @@ Network::Address::operator const sockaddr_in&() const
 in_addr Network::Address::sin_addr() const
 {
     const sockaddr_in& sin = static_cast<const sockaddr_in&>(*this);
-    in_addr addr = sin.sin_addr;
+    const in_addr addr = sin.sin_addr;
     return addr;
 }
 
 Network::Address::family_type Network::Address::sin_family() const
 {
     const sockaddr_in& sin = static_cast<const sockaddr_in&>(*this);
-    family_type family = sin.sin_family;
+    const family_type family = sin.sin_family;
     return family;
 }
 
 Network::Address::port_type Network::Address::sin_port() const
 {
     const sockaddr_in& sin = static_cast<const sockaddr_in&>(*this);
-    port_type port = sin.sin_port;
+    const port_type port = sin.sin_port;
     return port;
 }
 
@@ -227,7 +227,7 @@ std::string Network::Address::sin_text() const
 {
     Buffer buffer(INET_ADDRSTRLEN);
     const sockaddr_in& sin = static_cast<const sockaddr_in&>(*this);
-    inet_ntop(AF_INET, &sin.sin_addr, &buffer[0], buffer.size());
+    ::inet_ntop(AF_INET, &sin.sin_addr, &buffer[0], buffer.size());
     return buffer;
 }
 
@@ -239,21 +239,21 @@ Network::Address::operator const sockaddr_in6&() const
 in6_addr Network::Address::sin6_addr() const
 {
     const sockaddr_in6& sin6 = static_cast<const sockaddr_in6&>(*this);
-    in6_addr addr6 = sin6.sin6_addr;
+    const in6_addr addr6 = sin6.sin6_addr;
     return addr6;
 }
 
 Network::Address::family_type Network::Address::sin6_family() const
 {
     const sockaddr_in6& sin6 = static_cast<const sockaddr_in6&>(*this);
-    family_type family = sin6.sin6_family;
+    const family_type family = sin6.sin6_family;
     return family;
 }
 
 Network::Address::port_type Network::Address::sin6_port() const
 {
     const sockaddr_in6& sin6 = static_cast<const sockaddr_in6&>(*this);
-    port_type port = sin6.sin6_port;
+    const port_type port = sin6.sin6_port;
     return port;
 }
 
@@ -261,7 +261,7 @@ std::string Network::Address::sin6_text() const
 {
     Buffer buffer(INET6_ADDRSTRLEN);
     const in6_addr& addr = sin6_addr();
-    inet_ntop(AF_INET6, &addr, &buffer[0], buffer.size());
+    ::inet_ntop(AF_INET6, &addr, &buffer[0], buffer.size());
     return buffer;
 }
 
@@ -274,14 +274,14 @@ Network::Address::operator const sockaddr_un&() const
 Network::Address::family_type Network::Address::sun_family() const
 {
     const sockaddr_un& sun = static_cast<const sockaddr_un&>(*this);
-    port_type port = sun.sun_family;
+    const port_type port = sun.sun_family;
     return port;
 }
 
 std::string Network::Address::sun_path() const
 {
     const sockaddr_un& sun = static_cast<const sockaddr_un&>(*this);
-    std::string path(sun.sun_path);
+    const std::string path(sun.sun_path);
     return path;
 }
 
