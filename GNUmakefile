@@ -13,6 +13,11 @@ else ifeq "$(USING_LIBASAN)" "true"
 else
 	CXXFLAGS += -fno-omit-frame-pointer
 endif
+ifeq "$(SYSTEM_PREFIX)" "Darwin"
+	CPPFLAGS += -D_LIBCPP_DEBUG=1
+else
+	CPPFLAGS += -D_GLIBCXX_DEBUG
+endif
 	CXXFLAGS += -g3 -O0
 endif
 
