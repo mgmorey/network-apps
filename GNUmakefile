@@ -86,6 +86,10 @@ tmp_dir = tmp
 .PHONY:	all
 all: $(executables) TAGS
 
+.PHONY:	check
+check:
+	cppcheck --cppcheck-build-dir=tmp --enable=all --quiet --std=c++03 $(CPPFLAGS) .
+
 .PHONY:	clean
 clean:
 	rm -f $(executables) $(libraries) $(objects) $(maps) $(listings)

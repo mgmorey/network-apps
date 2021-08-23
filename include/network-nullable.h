@@ -18,7 +18,6 @@ namespace Network
         Nullable& operator=(const std::string& other);
         Nullable& operator=(const char* other);
         operator std::string() const;
-        bool null() const;
 
     private:
         bool value_is_null;

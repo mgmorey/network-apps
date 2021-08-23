@@ -44,9 +44,9 @@ namespace Network
 #endif
 
     private:
-        static addrinfo defaults(int protocol = 0,
+        static addrinfo defaults(int family = 0,
                                  int socktype = 0,
-                                 int family = 0,
+                                 int protocol = 0,
                                  int flags = 0);
 
         static const std::string delim;

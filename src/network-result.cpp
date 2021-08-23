@@ -5,7 +5,7 @@ Network::Result::Result() :
 {
 }
 
-Network::Result::Result(int value, std::string str) :
+Network::Result::Result(int value, const std::string& str) :
     result_value(value),
     result_string(str)
 {

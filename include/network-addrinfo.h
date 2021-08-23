@@ -87,9 +87,9 @@ namespace Network
 
             if (verbose) {
                 sizes.push_back(cont.first.size());
-                const Unique unique(sizes);
+                const Unique counts(sizes);
                 std::cerr << "Fetched "
-                          << unique
+                          << counts
                           << std::endl;
             }
         }

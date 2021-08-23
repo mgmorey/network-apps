@@ -56,7 +56,6 @@ namespace Network
         operator const sockaddr&() const;
         std::string sa_data() const;
         family_type sa_family() const;
-        socklen_t sa_length() const;
         std::string sa_text() const;
 
         operator const sockaddr_in&() const;

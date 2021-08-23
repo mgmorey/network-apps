@@ -10,7 +10,7 @@ namespace Network
     {
     public:
         Result();
-        Result(int value, std::string str);
+        Result(int value, const std::string& str);
         bool nonzero() const;
         int result() const;
         std::string string() const;

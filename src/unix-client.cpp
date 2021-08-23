@@ -18,7 +18,6 @@ int main(int argc, char *argv[])
     int down_flag = 0;
     int ret;
     int data_socket;
-    char buffer[BUFFER_SIZE];
 
     // Create local socket.
     data_socket = ::socket(AF_UNIX, SOCK_SEQPACKET, 0);
@@ -62,6 +61,8 @@ int main(int argc, char *argv[])
     }
 
     if (!down_flag) {
+        char buffer[BUFFER_SIZE];
+
         // Request result.
         std::strcpy(buffer, "END");
         ret = ::write(data_socket, buffer, strlen(buffer) + 1);

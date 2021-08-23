@@ -34,8 +34,6 @@ int main(void)
     struct sockaddr_un name;
     int down_flag = 0;
     int ret;
-    int data_socket;
-    int result;
     char buffer[BUFFER_SIZE];
 
     // Create local socket.
@@ -81,6 +79,7 @@ int main(void)
 
     // This is the main loop for handling connections.
     for (;;) {
+        int data_socket;
 
         // Wait for incoming connection.
         data_socket = ::accept(connection_socket, NULL, NULL);
@@ -90,7 +89,7 @@ int main(void)
             std::exit(EXIT_FAILURE);
         }
 
-        result = 0;
+        int result = 0;
 
         for (;;) {
 

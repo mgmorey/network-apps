@@ -157,18 +157,6 @@ Network::Address::family_type Network::Address::sa_family() const
     return family;
 }
 
-socklen_t Network::Address::sa_length() const
-{
-#ifdef HAVE_SOCKADDR_SA_LEN
-    const sockaddr& sa = static_cast<const sockaddr&>(*this);
-    const socklen_t length = sa.sa_len;
-#else
-    const socklen_t length = addrlen();
-#endif
-    assert(length == addrlen());
-    return length;
-}
-
 std::string Network::Address::sa_text() const
 {
     const char* data = value.data();

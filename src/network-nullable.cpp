@@ -36,11 +36,6 @@ Network::Nullable::operator std::string() const
     return value;
 }
 
-bool Network::Nullable::null() const
-{
-    return value_is_null;
-}
-
 std::ostream& Network::operator<<(std::ostream& os,
                                   const Nullable& nullable)
 {
