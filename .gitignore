@@ -63,6 +63,7 @@ dkms.conf
 # CppCheck files
 *.a1
 *.s2
+files.txt
 
 # Dependencies
 *.dep
