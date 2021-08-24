@@ -35,19 +35,19 @@ namespace Network
 #endif
         enum { connect_error = SOCKET_ERROR };
 
-        Address(const sockaddr* addr, socklen_t addrlen);
-        bool operator<(const Address& other) const;
-        bool operator>(const Address& other) const;
-        bool operator==(const Address& other) const;
-        Result connect(sock_fd_type fd, bool verbose = false) const;
+        Address(const sockaddr* t_addr, socklen_t t_addrlen);
+        bool operator<(const Address& t_address) const;
+        bool operator>(const Address& t_address) const;
+        bool operator==(const Address& t_address) const;
+        Result connect(sock_fd_type t_fd, bool t_verbose = false) const;
         bool empty() const;
         family_type family() const;
         port_type port() const;
         std::string text() const;
-        EndpointResult to_endpoint(int flags,
-                                   bool verbose = false) const;
-        EndpointResult to_endpoint(bool numeric = false,
-                                   bool verbose = false) const;
+        EndpointResult to_endpoint(int t_flags,
+                                   bool t_verbose = false) const;
+        EndpointResult to_endpoint(bool t_numeric = false,
+                                   bool t_verbose = false) const;
 
     private:
         const sockaddr* addr() const;

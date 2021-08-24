@@ -24,33 +24,33 @@ namespace Network
         public addrinfo
     {
     public:
-        Socket(int family = 0,
-               int socktype = 0,
-               int protocol = 0,
-               int flags = 0);
-        Socket(const Socket& other);
-        Socket(const addrinfo& other);
+        Socket(int t_family = 0,
+               int t_socktype = 0,
+               int t_protocol = 0,
+               int t_flags = 0);
+        Socket(const Socket& t_socket);
+        Socket(const addrinfo& t_socket);
         ~Socket();
-        Socket& operator=(const Socket& other);
-        Socket& operator=(const addrinfo& other);
-        bool operator<(const Socket& other) const;
-        bool operator>(const Socket& other) const;
-        bool operator==(const Socket& other) const;
+        Socket& operator=(const Socket& t_socket);
+        Socket& operator=(const addrinfo& t_socket);
+        bool operator<(const Socket& t_socket) const;
+        bool operator>(const Socket& t_socket) const;
+        bool operator==(const Socket& t_socket) const;
         Hostname cname() const;
         int family() const;
-        SocketResult socket(bool verbose = false) const;
+        SocketResult socket(bool t_verbose = false) const;
 #ifndef _WIN32
-        SocketpairResult socketpair(bool verbose = false) const;
+        SocketpairResult socketpair(bool t_verbose = false) const;
 #endif
 
     private:
-        static addrinfo defaults(int family = 0,
-                                 int socktype = 0,
-                                 int protocol = 0,
-                                 int flags = 0);
+        static addrinfo defaults(int t_family = 0,
+                                 int t_socktype = 0,
+                                 int t_protocol = 0,
+                                 int t_flags = 0);
 
-        static const std::string delim;
-        static const int tabs[1];
+        static const std::string m_delim;
+        static const int m_tabs[1];
     };
 }
 

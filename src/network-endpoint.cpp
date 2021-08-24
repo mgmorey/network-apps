@@ -16,7 +16,7 @@
 #include <sstream>      // std::ostringstream
 
 Network::EndpointResult
-Network::Address::to_endpoint(int flags, bool verbose) const
+Network::Address::to_endpoint(int t_flags, bool t_verbose) const
 {
     assert(!empty());
     std::string error;
@@ -25,9 +25,9 @@ Network::Address::to_endpoint(int flags, bool verbose) const
     const int code = ::getnameinfo(addr(), addrlen(),
                                    &host_buffer[0], host_buffer.size(),
                                    &service_buffer[0], service_buffer.size(),
-                                   flags);
+                                   t_flags);
 
-    if (verbose) {
+    if (t_verbose) {
         std::cerr << "Invoking getnameinfo("
                   << *this
                   << ", ...)"
@@ -50,8 +50,8 @@ Network::Address::to_endpoint(int flags, bool verbose) const
 }
 
 Network::EndpointResult
-Network::Address::to_endpoint(bool numeric, bool verbose) const
+Network::Address::to_endpoint(bool t_numeric, bool t_verbose) const
 {
-    const int flags = numeric ? NI_NUMERICHOST | NI_NUMERICSERV : 0;
-    return to_endpoint(flags, verbose);
+    const int flags = t_numeric ? NI_NUMERICHOST | NI_NUMERICSERV : 0;
+    return to_endpoint(flags, t_verbose);
 }
