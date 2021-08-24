@@ -8,7 +8,7 @@ ifeq "$(USING_DMALLOC)" "true"
 	CPPFLAGS += -DDMALLOC -DMALLOC_FUNC_CHECK
 	LDLIBS += -ldmalloc
 else ifeq "$(USING_LIBASAN)" "true"
-	CXXFLAGS += -fsanitize=address -fno-omit-frame-pointer
+	CXXFLAGS += -fno-omit-frame-pointer -fsanitize=address -fsanitize-address-use-after-scope
 	LDFLAGS += -fsanitize=address
 else
 	CXXFLAGS += -fno-omit-frame-pointer
