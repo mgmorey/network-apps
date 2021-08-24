@@ -210,8 +210,8 @@ Network::Address::port_type Network::Address::sin_port() const
 std::string Network::Address::sin_text() const
 {
     Buffer buffer(INET_ADDRSTRLEN);
-    const sockaddr_in& sin = static_cast<const sockaddr_in&>(*this);
-    ::inet_ntop(AF_INET, &sin.sin_addr, &buffer[0], buffer.size());
+    const in_addr& in = sin_addr();
+    ::inet_ntop(AF_INET, &in, &buffer[0], buffer.size());
     return buffer;
 }
 
