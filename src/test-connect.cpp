@@ -8,6 +8,7 @@
 #include "network-peername.h"   // AddressResult, get_peername()
 #include "network-socket.h"     // Socket
 #include "stream-address.h"     // operator<<()
+#include "stream-container.h"   // operator<<()
 
 #ifdef _WIN32
 #include <winsock2.h>   // AF_INET, AF_INET6, PF_INET, PF_INET6,
@@ -36,9 +37,7 @@ static void test_connect(const Network::Endpoint& endpoint,
     const Network::sock_fd_type sock_fd = connect_result.first;
 
     if (sock_fd == Network::sock_fd_null) {
-        std::copy(connect_details.begin(), connect_details.end(),
-                  std::ostream_iterator<Network::Result>
-                  (std::cerr, "\n"));
+        std::cerr << connect_details;
         return;
     }
 
