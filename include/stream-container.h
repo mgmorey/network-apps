@@ -1,19 +1,28 @@
 #ifndef STREAM_CONTAINER_H
 #define STREAM_CONTAINER_H
 
-#include <algorithm>    // std::copy()
-#include <iterator>     // std::ostream_iterator
 #include <ostream>      // std::ostream
+#include <string>       // std::string
 
 namespace Network
 {
     template <class Container>
-    std::ostream& operator<<(std::ostream& os, const Container& cont)
+    std::ostream& print(std::ostream& os,
+                        const Container& cont,
+                        const std::string& before = "",
+                        const std::string& after = "\n")
     {
-        std::ostream_iterator<typename Container::value_type> output(os, "\n");
         typename Container::const_iterator first(cont.begin());
         typename Container::const_iterator last(cont.end());
-        std::copy(first, last, output);
+
+        for (typename Container::const_iterator it = first;
+             it != last;
+             ++it) {
+            os << before
+               << *it
+               << after;
+        }
+
         return os;
     }
 }
