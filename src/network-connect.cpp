@@ -9,7 +9,6 @@
 #include "network-host.h"       // Host
 
 #include <algorithm>    // std::find_if()
-#include <iostream>     // std::cerr, std::endl
 
 Network::Connector::Connector(ConnectDetails& t_connect_details,
                               sock_fd_type& t_sock_fd,
