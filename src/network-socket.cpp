@@ -120,9 +120,11 @@ Network::SocketResult Network::Socket::socket(bool t_verbose) const
     }
 
     std::string error;
-    const sock_fd_type fd = ::socket(ai_family, ai_socktype, ai_protocol);
+    const sock_fd_type sock_fd = ::socket(ai_family,
+                                          ai_socktype,
+                                          ai_protocol);
 
-    if (fd == sock_fd_null) {
+    if (sock_fd == sock_fd_null) {
         std::ostringstream oss;
         oss << "socket("
             << Format("domain")
@@ -132,7 +134,7 @@ Network::SocketResult Network::Socket::socket(bool t_verbose) const
             << Format(m_delim, m_tabs[0], "protocol")
             << Protocol(ai_family, ai_protocol)
             << ") returned "
-            << fd
+            << sock_fd
             << ": "
             << std::strerror(errno)
             << " (errno = "
@@ -141,7 +143,7 @@ Network::SocketResult Network::Socket::socket(bool t_verbose) const
         error = oss.str();
     }
 
-    return SocketResult(fd, Result(0, error));
+    return SocketResult(sock_fd, Result(0, error));
 }
 
 #ifndef _WIN32

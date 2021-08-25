@@ -35,11 +35,12 @@ namespace Network
 #endif
         enum { connect_error = SOCKET_ERROR };
 
-        Address(const sockaddr* t_addr, socklen_t t_addrlen);
+        Address(const sockaddr* t_sockaddr, socklen_t t_socklen);
         bool operator<(const Address& t_address) const;
         bool operator>(const Address& t_address) const;
         bool operator==(const Address& t_address) const;
-        Result connect(sock_fd_type t_fd, bool t_verbose = false) const;
+        Result connect(sock_fd_type t_sock_fd,
+                       bool t_verbose = false) const;
         bool empty() const;
         family_type family() const;
         port_type port() const;

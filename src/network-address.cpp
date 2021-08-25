@@ -21,8 +21,8 @@
 #include <iostream>     // std::cerr, std::endl
 #include <sstream>      // std::ostringstream
 
-Network::Address::Address(const sockaddr* t_addr, socklen_t t_addrlen) :
-    m_value(reinterpret_cast<const char*>(t_addr), t_addrlen)
+Network::Address::Address(const sockaddr* t_sockaddr, socklen_t t_socklen) :
+    m_value(reinterpret_cast<const char*>(t_sockaddr), t_socklen)
 {
 }
 
@@ -47,7 +47,8 @@ bool Network::Address::operator==(const Address& t_address) const
             text() == t_address.text());
 }
 
-Network::Result Network::Address::connect(sock_fd_type t_fd, bool t_verbose) const
+Network::Result Network::Address::connect(sock_fd_type t_sock_fd,
+                                          bool t_verbose) const
 {
     assert(!empty());
 
@@ -58,12 +59,12 @@ Network::Result Network::Address::connect(sock_fd_type t_fd, bool t_verbose) con
     }
 
     std::string error;
-    const int code = ::connect(t_fd, addr(), addrlen());
+    const int code = ::connect(t_sock_fd, addr(), addrlen());
 
     if (code == connect_error) {
         std::ostringstream oss;
         oss << "connect("
-            << t_fd
+            << t_sock_fd
             << ", "
             << *this
             << ") returned "
