@@ -9,10 +9,8 @@ namespace Network
     template <class Container>
     std::ostream& operator<<(std::ostream& os, const Container& cont)
     {
-        std::copy(cont.begin(), cont.end(),
-                  std::ostream_iterator<typename
-                  Container::value_type>
-                  (os, "\n"));
+        std::ostream_iterator<typename Container::value_type> output(os, "\n");
+        std::copy(cont.begin(), cont.end(), output);
         return os;
     }
 }
