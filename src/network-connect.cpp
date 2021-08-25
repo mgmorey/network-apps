@@ -8,12 +8,6 @@
 #include "network-fd.h"         // sock_fd_null, sock_fd_type
 #include "network-host.h"       // Host
 
-#ifdef _WIN32
-#include <winsock2.h>   // closesocket()
-#else
-#include <unistd.h>     // close()
-#endif
-
 #include <algorithm>    // std::find_if()
 #include <iostream>     // std::cerr, std::endl
 
