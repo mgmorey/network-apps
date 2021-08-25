@@ -11,8 +11,8 @@ namespace Network
     std::ostream& operator<<(std::ostream& os, const Container& cont)
     {
         std::ostream_iterator<typename Container::value_type> output(os, "\n");
-        typename Container::const_iterator first(std::begin(cont));
-        typename Container::const_iterator last(std::end(cont));
+        typename Container::const_iterator first(cont.begin());
+        typename Container::const_iterator last(cont.end());
         std::copy(first, last, output);
         return os;
     }
