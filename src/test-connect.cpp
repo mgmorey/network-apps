@@ -21,52 +21,32 @@
                         // SOCK_DGRAM, SOCK_STREAM
 #endif
 
+#include <algorithm>    // std::copy()
 #include <cstdlib>      // EXIT_FAILURE, EXIT_SUCCESS
 #include <iostream>     // std::cerr, std::cout, std::endl
+#include <iterator>     // std::ostream_iterator
 
-static void test_peer(Network::sock_fd_type fd)
-{
-    const Network::AddressResult addr_result(Network::get_peername(fd, true));
-    const Network::Result result(addr_result.second);
-
-    if (result.nonzero()) {
-        std::cerr << "No address: "
-                  << result
-                  << std::endl;
-    }
-    else {
-        const Network::Address address(addr_result.first);
-        std::cout << "Socket "
-                  << fd
-                  << " connected to "
-                  << address
-                  << std::endl;
-    }
-}
+static void test_peer(Network::sock_fd_type sock_fd);
 
 static void test_connect(const Network::Endpoint& endpoint,
                          const Network::Socket& hints)
 {
     const Network::ConnectResult connect_result(connect(endpoint, hints, true));
-    const Network::ConnectDetails details(connect_result.second);
-    const Network::sock_fd_type fd = connect_result.first;
+    const Network::ConnectDetails connect_details(connect_result.second);
+    const Network::sock_fd_type sock_fd = connect_result.first;
 
-    if (fd == Network::sock_fd_null) {
-        for (Network::ConnectDetails::const_iterator it = details.begin();
-             it != details.end();
-             ++it) {
-            std::cerr << (*it)
-                      << std::endl;
-        }
-
+    if (sock_fd == Network::sock_fd_null) {
+        std::copy(connect_details.begin(), connect_details.end(),
+                  std::ostream_iterator<Network::Result>
+                  (std::cerr, "\n"));
         return;
     }
 
-    const Network::Hostname cname = details.front().string();
+    const Network::Hostname cname = connect_details.front().string();
     const Network::Hostname hostname(endpoint.first);
     const Network::Service service(endpoint.second);
     std::cout << "Socket "
-              << fd
+              << sock_fd
               << " connected to "
               << service
               << " on "
@@ -74,12 +54,33 @@ static void test_connect(const Network::Endpoint& endpoint,
                   hostname :
                   cname)
               << std::endl;
-    test_peer(fd);
-    Network::close(fd);
+    test_peer(sock_fd);
+    Network::close(sock_fd);
     std::cout << "Socket "
-              << fd
+              << sock_fd
               << " closed"
               << std::endl;
+}
+
+static void test_peer(Network::sock_fd_type sock_fd)
+{
+    const Network::AddressResult
+        address_result(Network::get_peername(sock_fd, true));
+    const Network::Result result(address_result.second);
+
+    if (result.nonzero()) {
+        std::cerr << "No address: "
+                  << result
+                  << std::endl;
+    }
+    else {
+        const Network::Address address(address_result.first);
+        std::cout << "Socket "
+                  << sock_fd
+                  << " connected to "
+                  << address
+                  << std::endl;
+    }
 }
 
 int main(int argc, char* argv[])

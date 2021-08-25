@@ -19,6 +19,21 @@ namespace Network
 {
     typedef std::vector<Result> ConnectDetails;
     typedef std::pair<sock_fd_type, ConnectDetails> ConnectResult;
+
+    class Connector
+    {
+    public:
+        Connector(ConnectDetails& t_connect_details,
+                  sock_fd_type& t_sock_fd,
+                  bool t_verbose);
+        bool operator()(Socket socket);
+
+    private:
+        ConnectDetails& m_connect_details;
+        sock_fd_type& m_sock_fd;
+        bool m_verbose;
+    };
+
     extern ConnectResult connect(const Endpoint& endpoint,
                                  const addrinfo &hints,
                                  bool verbose = false);
