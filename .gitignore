@@ -91,5 +91,6 @@ test-buffer
 test-connect
 test-hostname
 test-socket
+test-stream
 unix-client
 unix-server
