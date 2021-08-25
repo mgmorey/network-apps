@@ -1,8 +1,7 @@
 #include "network-connect.h"    // ConnectDetails, ConnectResult,
-                                // Hostname, Result, Service, Sockets,
-                                // SocketsResult, struct addrinfo,
-                                // connect()
-#include "network-addrinfo.h"   // operator<<()
+                                // Hostname, Result, Sockets,
+                                // SocketsResult, struct addrinfo
+#include "network-address.h"    // Address
 #include "network-close.h"      // close()
 #include "network-endpoint.h"   // Endpoint
 #include "network-fd.h"         // sock_fd_null, sock_fd_type
@@ -39,8 +38,7 @@ bool Network::Connector::operator()(Socket socket)
         return false;
     }
 
-    const Result result(0, socket.cname());
-    m_connect_details.push_back(result);
+    m_connect_details.push_back(Result(0, socket.cname()));
     return true;
 }
 
