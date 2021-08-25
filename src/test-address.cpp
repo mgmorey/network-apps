@@ -18,11 +18,13 @@
                         // SOCK_DGRAM, SOCK_STREAM
 #endif
 
+#include <algorithm>    // std::unique()
 #include <cstdlib>      // EXIT_FAILURE, EXIT_SUCCESS
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <list>         // std::list
 #include <ostream>      // std::ostream
 #include <string>       // std::string
+#include <vector>       // std::vector
 
 static std::ostream& operator<<(std::ostream& os, const Network::Host& host)
 {
@@ -42,40 +44,36 @@ static std::ostream& operator<<(std::ostream& os, const Network::Host& host)
     if (result.nonzero()) {
         std::cerr << result
                   << std::endl;
+        return os;
     }
-    else {
-        typedef std::list<std::string> Values;
-        Values values;
-        values.push_back(address.text());
-        values.push_back(endpoint.first);
-        values.push_back(host.canonical_name());
-        values.unique();
-        std::size_t i = 0;
 
-        for (Values::const_iterator it = values.begin();
-             it != values.end();
-             ++it) {
-            if (it->empty()) {
-                continue;
-            }
+    std::vector<std::string> values;
+    values.push_back(address.text());
+    values.push_back(endpoint.first);
+    values.push_back(host.canonical_name());
+    values.erase(std::unique(values.begin(), values.end()), values.end());
 
-            switch (i++) {
-            case 0:
-                os << (*it)
-                   << " (";
-                break;
-            case 1:
-                os << (*it);
-                break;
-            default:
-                os << ", "
-                   << (*it);
-            }
+    for (std::size_t i = 0; i < values.size(); ++i) {
+        if (values[i].empty()) {
+            continue;
         }
 
-        if (i) {
-            os << ')';
+        switch (i) {
+        case 0:
+            os << values[i]
+               << " (";
+            break;
+        case 1:
+            os << values[i];
+            break;
+        default:
+            os << ", "
+               << values[i];
         }
+    }
+
+    if (values.size()) {
+        os << ')';
     }
 
     return os;
@@ -88,7 +86,7 @@ static std::ostream& operator<<(std::ostream& os, const Network::Hosts& hosts)
          ++it)
     {
         os << '\t'
-           << (*it)
+           << *it
            << std::endl;
     }
 
