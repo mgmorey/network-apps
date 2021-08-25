@@ -22,10 +22,8 @@
                         // SOCK_DGRAM, SOCK_STREAM
 #endif
 
-#include <algorithm>    // std::copy()
 #include <cstdlib>      // EXIT_FAILURE, EXIT_SUCCESS
 #include <iostream>     // std::cerr, std::cout, std::endl
-#include <iterator>     // std::ostream_iterator
 
 static void test_peer(Network::sock_fd_type sock_fd);
 
