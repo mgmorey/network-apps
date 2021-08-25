@@ -14,11 +14,12 @@
 #include <iostream>     // std::cerr, std::endl
 #include <sstream>      // std::ostringstream
 
-Network::AddressResult Network::get_peername(sock_fd_type fd, bool verbose)
+Network::AddressResult Network::get_peername(sock_fd_type sock_fd,
+                                             bool verbose)
 {
     if (verbose) {
         std::cerr << "Invoking getpeername("
-                  << fd
+                  << sock_fd
                   << ", ...)"
                   << std::endl;
     }
@@ -35,12 +36,12 @@ Network::AddressResult Network::get_peername(sock_fd_type fd, bool verbose)
     std::string buffer(size, '\0');
     sockaddr* addr = reinterpret_cast<sockaddr*>(&buffer[0]);
     socklen_t addrlen = buffer.size();
-    const int code = ::getpeername(fd, addr, &addrlen);
+    const int code = ::getpeername(sock_fd, addr, &addrlen);
 
     if (code != 0) {
         std::ostringstream oss;
         oss << "getpeername("
-            << fd
+            << sock_fd
             << ", ...) returned "
             << code
             << ": "

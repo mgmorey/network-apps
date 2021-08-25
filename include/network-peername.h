@@ -10,7 +10,8 @@
 namespace Network
 {
     typedef std::pair<Address, Result> AddressResult;
-    extern AddressResult get_peername(sock_fd_type fd, bool verbose = false);
+    extern AddressResult get_peername(sock_fd_type sock_fd,
+                                      bool verbose = false);
 }
 
 #endif
