@@ -21,8 +21,14 @@
 #include <iostream>     // std::cerr, std::endl
 #include <sstream>      // std::ostringstream
 
-Network::Socket::Socket(int t_family, int t_socktype, int t_protocol, int t_flags) :
-    addrinfo(defaults(t_family, t_socktype, t_protocol, t_flags))
+Network::Socket::Socket(int t_family,
+                        int t_socktype,
+                        int t_protocol,
+                        int t_flags) :
+    addrinfo(defaults(t_family,
+                      t_socktype,
+                      t_protocol,
+                      t_flags))
 {
 }
 
