@@ -157,8 +157,11 @@ Network::SocketpairResult Network::Socket::socketpair(bool t_verbose) const
     }
 
     std::string error;
-    int fds[2] = {sock_fd_null, sock_fd_null};
-    const int code = ::socketpair(ai_family, ai_socktype, ai_protocol, fds);
+    int sock_fd[2] = {sock_fd_null, sock_fd_null};
+    const int code = ::socketpair(ai_family,
+                                  ai_socktype,
+                                  ai_protocol,
+                                  sock_fd);
 
     if (code != 0) {
         std::ostringstream oss;
@@ -179,7 +182,7 @@ Network::SocketpairResult Network::Socket::socketpair(bool t_verbose) const
         error = oss.str();
     }
 
-    return SocketpairResult(FdPair(fds[0], fds[1]),
+    return SocketpairResult(FdPair(sock_fd[0], sock_fd[1]),
                             Result(code, error));
 }
 #endif
