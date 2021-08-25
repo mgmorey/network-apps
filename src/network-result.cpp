@@ -1,29 +1,29 @@
 #include "network-result.h"     // Result
 
 Network::Result::Result() :
-    result_value(0)
+    m_value(0)
 {
 }
 
-Network::Result::Result(int value, const std::string& str) :
-    result_value(value),
-    result_string(str)
+Network::Result::Result(int t_value, const std::string& t_string) :
+    m_string(t_string),
+    m_value(t_value)
 {
 }
 
 bool Network::Result::nonzero() const
 {
-    return result_value != 0;
+    return m_value != 0;
 }
 
 int Network::Result::result() const
 {
-    return result_value;
+    return m_value;
 }
 
 std::string Network::Result::string() const
 {
-    return result_string;
+    return m_string;
 }
 
 std::ostream& Network::operator<<(std::ostream& os,

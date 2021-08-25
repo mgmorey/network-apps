@@ -8,7 +8,7 @@
 
 Network::Context::Context()
 {
-    if (!count++) {
+    if (!m_count++) {
 #ifdef WIN32
         WSADATA wsaData;
         const int code = WSAStartup(MAKEWORD(2, 0), &wsaData);
@@ -24,11 +24,11 @@ Network::Context::Context()
 
 Network::Context::~Context()
 {
-    if (!--count) {
+    if (!--m_count) {
 #ifdef WIN32
         WSACleanup();
 #endif
     }
 }
 
-std::size_t Network::Context::count;
+std::size_t Network::Context::m_count;

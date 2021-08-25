@@ -26,7 +26,7 @@ namespace Network
         Connector(ConnectDetails& t_connect_details,
                   sock_fd_type& t_sock_fd,
                   bool t_verbose);
-        bool operator()(Socket socket);
+        bool operator()(Socket t_socket);
 
     private:
         ConnectDetails& m_connect_details;

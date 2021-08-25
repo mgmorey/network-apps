@@ -18,17 +18,17 @@ namespace Network
     class Host
     {
     public:
-        Host(const addrinfo& other);
-        Host& operator=(const addrinfo& other);
-        bool operator<(const Host& other) const;
-        bool operator>(const Host& other) const;
-        bool operator==(const Host& other) const;
+        Host(const addrinfo& ai);
+        Host& operator=(const addrinfo& t_addrinfo);
+        bool operator<(const Host& t_addrinfo) const;
+        bool operator>(const Host& t_addrinfo) const;
+        bool operator==(const Host& t_addrinfo) const;
         operator Address() const;
         Nullable canonical_name() const;
 
     private:
-        Address address;
-        Nullable cname;
+        Address m_address;
+        Nullable m_cname;
     };
 }
 

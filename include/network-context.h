@@ -12,7 +12,7 @@ namespace Network
         ~Context();
 
     private:
-        static std::size_t count;
+        static std::size_t m_count;
     };
 }
 

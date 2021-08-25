@@ -20,11 +20,11 @@ Network::Address::to_endpoint(int t_flags, bool t_verbose) const
 {
     assert(!empty());
     std::string error;
-    Buffer host_buffer(NI_MAXHOST);
-    Buffer service_buffer(NI_MAXSERV);
+    Buffer host(NI_MAXHOST);
+    Buffer service(NI_MAXSERV);
     const int code = ::getnameinfo(addr(), addrlen(),
-                                   &host_buffer[0], host_buffer.size(),
-                                   &service_buffer[0], service_buffer.size(),
+                                   &host[0], host.size(),
+                                   &service[0], service.size(),
                                    t_flags);
 
     if (t_verbose) {
@@ -46,7 +46,7 @@ Network::Address::to_endpoint(int t_flags, bool t_verbose) const
         error = oss.str();
     }
 
-    return EndpointResult(Endpoint(host_buffer, service_buffer), Result(code, error));
+    return EndpointResult(Endpoint(host, service), Result(code, error));
 }
 
 Network::EndpointResult

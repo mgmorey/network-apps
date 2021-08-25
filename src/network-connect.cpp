@@ -18,9 +18,9 @@ Network::Connector::Connector(ConnectDetails& t_connect_details,
 {
 }
 
-bool Network::Connector::operator()(Socket socket)
+bool Network::Connector::operator()(Socket t_socket)
 {
-    const SocketResult socket_result(socket.socket(m_verbose));
+    const SocketResult socket_result(t_socket.socket(m_verbose));
     m_sock_fd = socket_result.first;
 
     if (m_sock_fd == sock_fd_null) {
@@ -28,7 +28,7 @@ bool Network::Connector::operator()(Socket socket)
         return false;
     }
 
-    const Address address(static_cast<Host>(socket));
+    const Address address(static_cast<Host>(t_socket));
     const Result connect_result(address.connect(m_sock_fd, m_verbose));
 
     if (connect_result.result() == Address::connect_error) {
@@ -38,7 +38,7 @@ bool Network::Connector::operator()(Socket socket)
         return false;
     }
 
-    m_connect_details.push_back(Result(0, socket.cname()));
+    m_connect_details.push_back(Result(0, t_socket.cname()));
     return true;
 }
 

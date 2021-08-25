@@ -22,7 +22,7 @@
 #include <sstream>      // std::ostringstream
 
 Network::Address::Address(const sockaddr* t_addr, socklen_t t_addrlen) :
-    value(reinterpret_cast<const char*>(t_addr), t_addrlen)
+    m_value(reinterpret_cast<const char*>(t_addr), t_addrlen)
 {
 }
 
@@ -81,7 +81,7 @@ Network::Result Network::Address::connect(sock_fd_type t_fd, bool t_verbose) con
 
 bool Network::Address::empty() const
 {
-    return value.empty();
+    return m_value.empty();
 }
 
 Network::Address::family_type Network::Address::family() const
@@ -130,24 +130,24 @@ std::string Network::Address::text() const
 
 const sockaddr* Network::Address::addr() const
 {
-    return reinterpret_cast<const sockaddr*>(value.data());
+    return reinterpret_cast<const sockaddr*>(m_value.data());
 }
 
 socklen_t Network::Address::addrlen() const
 {
-    return static_cast<socklen_t>(value.size());
+    return static_cast<socklen_t>(m_value.size());
 }
 
 Network::Address::operator const sockaddr&() const
 {
-    return *reinterpret_cast<const sockaddr*>(value.data());
+    return *reinterpret_cast<const sockaddr*>(m_value.data());
 }
 
 std::string Network::Address::sa_data() const
 {
     static const std::size_t offset = offsetof(sockaddr, sa_data);
-    return std::string(value.data() + offset,
-                       value.size() - offset);
+    return std::string(m_value.data() + offset,
+                       m_value.size() - offset);
 }
 
 Network::Address::family_type Network::Address::sa_family() const
@@ -158,8 +158,8 @@ Network::Address::family_type Network::Address::sa_family() const
 
 std::string Network::Address::sa_text() const
 {
-    const char* data = value.data();
-    const std::size_t size = value.size();
+    const char* data = m_value.data();
+    const std::size_t size = m_value.size();
     std::ostringstream oss;
     oss << std::hex;
 
@@ -186,7 +186,7 @@ std::string Network::Address::sa_text() const
 
 Network::Address::operator const sockaddr_in&() const
 {
-    return *reinterpret_cast<const sockaddr_in*>(value.data());
+    return *reinterpret_cast<const sockaddr_in*>(m_value.data());
 }
 
 in_addr Network::Address::sin_addr() const
@@ -217,7 +217,7 @@ std::string Network::Address::sin_text() const
 
 Network::Address::operator const sockaddr_in6&() const
 {
-    return *reinterpret_cast<const sockaddr_in6*>(value.data());
+    return *reinterpret_cast<const sockaddr_in6*>(m_value.data());
 }
 
 in6_addr Network::Address::sin6_addr() const
@@ -249,7 +249,7 @@ std::string Network::Address::sin6_text() const
 #ifndef _WIN32
 Network::Address::operator const sockaddr_un&() const
 {
-    return *reinterpret_cast<const sockaddr_un*>(value.data());
+    return *reinterpret_cast<const sockaddr_un*>(m_value.data());
 }
 
 Network::Address::family_type Network::Address::sun_family() const

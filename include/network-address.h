@@ -77,7 +77,7 @@ namespace Network
         std::string sun_text() const;
 #endif
 
-        std::string value;
+        std::string m_value;
     };
 }
 

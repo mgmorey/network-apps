@@ -13,14 +13,16 @@ namespace Network
         friend std::ostream& operator<<(std::ostream& os, const Unique&);
 
     public:
-        Unique(const std::vector<std::size_t>& counts,
-               const std::string& noun = "");
+        typedef std::vector<std::size_t> Counts;
+
+        Unique(const Counts& m_counts,
+               const std::string& m_noun = "");
 
     private:
         std::size_t delta() const;
 
-        std::vector<std::size_t> item_counts;
-        std::string item_noun;
+        Counts m_counts;
+        std::string m_noun;
     };
 
     extern std::ostream& operator<<(std::ostream& os,

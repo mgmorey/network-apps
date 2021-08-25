@@ -6,40 +6,40 @@
 #include <netdb.h>      // struct addrinfo
 #endif
 
-Network::Host::Host(const addrinfo& other) :
-    address(other.ai_addr, other.ai_addrlen),
-    cname(other.ai_canonname)
+Network::Host::Host(const addrinfo& t_addrinfo) :
+    m_address(t_addrinfo.ai_addr, t_addrinfo.ai_addrlen),
+    m_cname(t_addrinfo.ai_canonname)
 {
 }
 
-Network::Host& Network::Host::operator=(const addrinfo& other)
+Network::Host& Network::Host::operator=(const addrinfo& t_addrinfo)
 {
-    address = Address(other.ai_addr, other.ai_addrlen);
-    cname = other.ai_canonname;
+    m_address = Address(t_addrinfo.ai_addr, t_addrinfo.ai_addrlen);
+    m_cname = t_addrinfo.ai_canonname;
     return *this;
 }
 
-bool Network::Host::operator<(const Host& other) const
+bool Network::Host::operator<(const Host& t_addrinfo) const
 {
-    return address < other.address;
+    return m_address < t_addrinfo.m_address;
 }
 
-bool Network::Host::operator>(const Host& other) const
+bool Network::Host::operator>(const Host& t_addrinfo) const
 {
-    return address > other.address;
+    return m_address > t_addrinfo.m_address;
 }
 
-bool Network::Host::operator==(const Host& other) const
+bool Network::Host::operator==(const Host& t_addrinfo) const
 {
-    return address == other.address;
+    return m_address == t_addrinfo.m_address;
 }
 
 Network::Host::operator Address() const
 {
-    return address;
+    return m_address;
 }
 
 Network::Nullable Network::Host::canonical_name() const
 {
-    return cname;
+    return m_cname;
 }

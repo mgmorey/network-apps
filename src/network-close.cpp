@@ -6,15 +6,15 @@
 #include <unistd.h>     // close()
 #endif
 
-void Network::close(sock_fd_type fd)
+void Network::close(sock_fd_type sock_fd)
 {
-    if (fd == sock_fd_null) {
+    if (sock_fd == sock_fd_null) {
         return;
     }
 
 #ifdef _WIN32
-    ::closesocket(fd);
+    ::closesocket(sock_fd);
 #else
-    ::close(fd);
+    ::close(sock_fd);
 #endif
 }

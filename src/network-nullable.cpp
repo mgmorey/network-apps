@@ -1,49 +1,49 @@
 #include "network-nullable.h"   // Nullable
 
 Network::Nullable::Nullable() :
-    value_is_null(false)
+    m_value_is_null(false)
 {
 }
 
-Network::Nullable::Nullable(const std::string &other) :
-    value_is_null(false),
-    value(other)
+Network::Nullable::Nullable(const std::string &t_nullable) :
+    m_value_is_null(false),
+    m_value(t_nullable)
 {
 }
 
-Network::Nullable::Nullable(const char* other) :
-    value_is_null(other == NULL),
-    value(other == NULL ? "" : other)
+Network::Nullable::Nullable(const char* t_value) :
+    m_value_is_null(t_value == NULL),
+    m_value(t_value == NULL ? "" : t_value)
 {
 }
 
-Network::Nullable& Network::Nullable::operator=(const std::string &other)
+Network::Nullable& Network::Nullable::operator=(const std::string &t_nullable)
 {
-    value_is_null = false;
-    value = other;
+    m_value_is_null = false;
+    m_value = t_nullable;
     return *this;
 }
 
-Network::Nullable& Network::Nullable::operator=(const char* other)
+Network::Nullable& Network::Nullable::operator=(const char* t_value)
 {
-    value_is_null = other == NULL;
-    value = other == NULL ? "" : other;
+    m_value_is_null = t_value == NULL;
+    m_value = t_value == NULL ? "" : t_value;
     return *this;
 }
 
 Network::Nullable::operator std::string() const
 {
-    return value;
+    return m_value;
 }
 
 std::ostream& Network::operator<<(std::ostream& os,
                                   const Nullable& nullable)
 {
-    if (nullable.value_is_null) {
+    if (nullable.m_value_is_null) {
         os << "0x0";
     }
     else {
-        os << '"' << nullable.value << '"';
+        os << '"' << nullable.m_value << '"';
     }
 
     return os;

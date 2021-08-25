@@ -10,14 +10,14 @@ namespace Network
     {
     public:
         Result();
-        Result(int value, const std::string& str);
+        Result(int t_value, const std::string& t_string);
         bool nonzero() const;
         int result() const;
         std::string string() const;
 
     private:
-        int result_value;
-        std::string result_string;
+        std::string m_string;
+        int m_value;
     };
 
     extern std::ostream& operator<<(std::ostream& os,

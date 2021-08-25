@@ -13,15 +13,15 @@ namespace Network
 
     public:
         Nullable();
-        Nullable(const std::string& other);
-        Nullable(const char* other);
-        Nullable& operator=(const std::string& other);
-        Nullable& operator=(const char* other);
+        Nullable(const std::string& t_nullable);
+        Nullable(const char* t_value);
+        Nullable& operator=(const std::string& t_nullable);
+        Nullable& operator=(const char* t_value);
         operator std::string() const;
 
     private:
-        bool value_is_null;
-        std::string value;
+        bool m_value_is_null;
+        std::string m_value;
     };
 
     extern std::ostream& operator<<(std::ostream& os,
