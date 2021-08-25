@@ -1,18 +1,44 @@
-#include "network-peername.h"       // AddressResult, get_peername()
+#include "network-peername.h"       // AddressBuffer, AddressResult,
+                                    // Result, get_peername(),
+                                    // sock_fd_type
 
 #ifdef _WIN32
-#include <winsock2.h>   // getpeername(), struct sockaddr, struct
-                        // sockaddr_storage
+#include <winsock2.h>   // getpeername(), struct sockaddr_storage
 #else
-#include <sys/socket.h> // getpeername(), struct sockaddr, struct
-                        // sockaddr_storage, struct sockaddr_un
+#include <sys/socket.h> // getpeername(), struct sockaddr_storage,
+                        // struct sockaddr_un
 #endif
 
+#include <algorithm>    // std::max()
 #include <cerrno>       // errno
 #include <cstddef>      // std::size_t
 #include <cstring>      // std::strerror()
 #include <iostream>     // std::cerr, std::endl
 #include <sstream>      // std::ostringstream
+
+Network::AddressBuffer::AddressBuffer() :
+    Buffer(capacity())
+{
+}
+
+sockaddr* Network::AddressBuffer::addr()
+{
+    return reinterpret_cast<sockaddr*>(&(*this)[0]);
+}
+
+socklen_t Network::AddressBuffer::addrlen() const
+{
+    return static_cast<socklen_t>(size());
+}
+
+std::size_t Network::AddressBuffer::capacity()
+{
+    std::size_t size = sizeof(sockaddr_storage);
+#ifndef _WIN32
+    size = std::max(size, sizeof(sockaddr_un));
+#endif
+    return size;
+}
 
 Network::AddressResult Network::get_peername(sock_fd_type sock_fd,
                                              bool verbose)
@@ -24,18 +50,10 @@ Network::AddressResult Network::get_peername(sock_fd_type sock_fd,
                   << std::endl;
     }
 
-    std::size_t size = sizeof(sockaddr_storage);
-
-#ifndef _WIN32
-    if (size < sizeof(sockaddr_un)) {
-        size = sizeof(sockaddr_un);
-    }
-#endif
-
     std::string error;
-    std::string buffer(size, '\0');
-    sockaddr* addr = reinterpret_cast<sockaddr*>(&buffer[0]);
-    socklen_t addrlen = buffer.size();
+    AddressBuffer buffer;
+    sockaddr* addr = buffer.addr();
+    socklen_t addrlen = buffer.addrlen();
     const int code = ::getpeername(sock_fd, addr, &addrlen);
 
     if (code != 0) {
