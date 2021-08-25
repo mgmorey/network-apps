@@ -39,7 +39,7 @@ static void test_connect(const Network::Endpoint& endpoint,
         return;
     }
 
-    const Network::Hostname cname = connect_details.front().string();
+    const Network::Hostname cname(connect_details.front().string());
     const Network::Hostname hostname(endpoint.first);
     const Network::Service service(endpoint.second);
     std::cout << "Socket "
