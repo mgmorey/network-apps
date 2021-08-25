@@ -5,7 +5,7 @@
 #include "network-addrinfo.h"   // operator<<()
 #include "network-close.h"      // close()
 #include "network-endpoint.h"   // Endpoint
-#include "network-fd.h"         // sock_fd_null, sock_fd_tyep
+#include "network-fd.h"         // sock_fd_null, sock_fd_type
 #include "network-host.h"       // Host
 
 #ifdef _WIN32
