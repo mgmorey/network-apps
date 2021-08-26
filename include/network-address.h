@@ -6,8 +6,8 @@
 #include "network-result.h"     // Result
 
 #ifdef _WIN32
-#include <winsock2.h>   // struct sockaddr, struct sockaddr_in,
-                        // struct sockaddr_in6, SOCKET_ERROR
+#include <winsock2.h>   // struct sockaddr, struct sockaddr_in, struct
+                        // sockaddr_in6
 #include <ws2tcpip.h>   // socklen_t
 #else
 #include <netinet/in.h> // struct sockaddr_in, struct sockaddr_in6
@@ -16,10 +16,6 @@
 #endif
 
 #include <string>       // std::string
-
-#ifndef SOCKET_ERROR
-#define SOCKET_ERROR	(-1)
-#endif
 
 namespace Network
 {
@@ -33,7 +29,7 @@ namespace Network
         typedef sa_family_t family_type;
         typedef in_port_t port_type;
 #endif
-        enum { connect_error = SOCKET_ERROR };
+        enum { connect_error = -1 };
 
         Address(const sockaddr* t_sockaddr, socklen_t t_socklen);
         bool operator<(const Address& t_address) const;
