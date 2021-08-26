@@ -42,6 +42,16 @@ bool Network::Connect::operator()(const Socket& t_socket)
     return true;
 }
 
+Network::ConnectResult Network::connect(const Sockets& sockets,
+                                        bool verbose)
+{
+    ConnectResults results;
+    sock_fd_type sock_fd = sock_fd_null;
+    static_cast<void>(std::find_if(sockets.begin(), sockets.end(),
+                                   Connect(results, sock_fd, verbose)));
+    return ConnectResult(sock_fd, results);
+}
+
 Network::ConnectResult Network::connect(const Endpoint& endpoint,
                                         const addrinfo& hints,
                                         bool verbose)
@@ -57,14 +67,4 @@ Network::ConnectResult Network::connect(const Endpoint& endpoint,
     }
 
     return connect(sockets, verbose);
-}
-
-Network::ConnectResult Network::connect(const Sockets& sockets,
-                                        bool verbose)
-{
-    ConnectResults results;
-    sock_fd_type sock_fd = sock_fd_null;
-    static_cast<void>(std::find_if(sockets.begin(), sockets.end(),
-                                   Connect(results, sock_fd, verbose)));
-    return ConnectResult(sock_fd, results);
 }

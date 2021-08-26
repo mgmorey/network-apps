@@ -34,10 +34,10 @@ namespace Network
         bool m_verbose;
     };
 
+    extern ConnectResult connect(const Sockets& sockets,
+                                 bool verbose = false);
     extern ConnectResult connect(const Endpoint& endpoint,
                                  const addrinfo& hints,
-                                 bool verbose = false);
-    extern ConnectResult connect(const Sockets& sockets,
                                  bool verbose = false);
 }
 
