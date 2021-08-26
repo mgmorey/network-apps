@@ -26,10 +26,10 @@
 #include <string>       // std::string
 #include <vector>       // std::vector
 
-class Comparator
+class Equal
 {
 public:
-    Comparator(const std::string& t_key = "") :
+    Equal(const std::string& t_key = "") :
         m_key(t_key)
     {
     }
@@ -43,12 +43,12 @@ private:
     std::string m_key;
 };
 
-class Formatter
+class Print
 {
 public:
     typedef std::vector<std::string> Values;
 
-    Formatter(std::ostream& t_os) :
+    Print(std::ostream& t_os) :
         m_os(t_os)
     {
     }
@@ -84,7 +84,7 @@ public:
                      values.end());
         values.erase(std::remove_if(values.begin(),
                                     values.end(),
-                                    Comparator()),
+                                    Equal()),
                      values.end());
 
         if (!values.empty()) {
@@ -97,17 +97,14 @@ public:
         m_os << '\t';
 
         for (std::size_t i = 0; i < values.size(); ++i) {
-            switch (i) {
-            case 0:
-                m_os << values[i]
-                     << " (";
-                break;
-            case 1:
-                m_os << values[i];
-                break;
-            default:
-                m_os << ", "
-                     << values[i];
+            if (i > 1) {
+                m_os << ", ";
+            }
+
+            m_os << values[i];
+
+            if (!i) {
+                m_os << " (";
             }
         }
 
@@ -121,7 +118,7 @@ private:
 
 static std::ostream& operator<<(std::ostream& os, const Network::Hosts& hosts)
 {
-    std::for_each(hosts.begin(), hosts.end(), Formatter(os));
+    std::for_each(hosts.begin(), hosts.end(), Print(os));
     return os;
 }
 
