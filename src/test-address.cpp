@@ -26,6 +26,23 @@
 #include <string>       // std::string
 #include <vector>       // std::vector
 
+class Comparator
+{
+public:
+    Comparator(const std::string& t_key = "") :
+        m_key(t_key)
+    {
+    }
+
+    bool operator()(const std::string& t_string)
+    {
+        return t_string == m_key;
+    }
+
+private:
+    std::string m_key;
+};
+
 class Formatter
 {
 public:
@@ -36,7 +53,7 @@ public:
     {
     }
 
-    void operator()(Network::Host t_host)
+    void operator()(const Network::Host& t_host)
     {
         const Network::Address address(t_host);
 
@@ -58,7 +75,18 @@ public:
             return;
         }
 
-        print(push_back(address, endpoint, t_host));
+        Values values;
+        values.push_back(address.text());
+        values.push_back(endpoint.first);
+        values.push_back(t_host.canonical_name());
+        values.erase(std::unique(values.begin(),
+                                 values.end()),
+                     values.end());
+        values.erase(std::remove_if(values.begin(),
+                                    values.end(),
+                                    Comparator()),
+                     values.end());
+        print(values);
     }
 
     void print(const Values& values)
@@ -66,10 +94,6 @@ public:
         m_os << '\t';
 
         for (std::size_t i = 0; i < values.size(); ++i) {
-            if (values[i].empty()) {
-                continue;
-            }
-
             switch (i) {
             case 0:
                 m_os << values[i]
@@ -89,18 +113,6 @@ public:
         }
 
         m_os << std::endl;
-    }
-
-    Values push_back(const Network::Address& t_address,
-                     const Network::Endpoint& t_endpoint,
-                     const Network::Host& t_host)
-    {
-        Values values;
-        values.push_back(t_address.text());
-        values.push_back(t_endpoint.first);
-        values.push_back(t_host.canonical_name());
-        values.erase(std::unique(values.begin(), values.end()), values.end());
-        return values;
     }
 
 private:
