@@ -1,17 +1,19 @@
-#include "network-socket.h"     // Hostname, Result, Socket
-#include "network-addrinfo.h"   // operator<<()
+#include "network-socket.h"     // FdPair, Hostname, Result, Socket,
+                                // SocketPairResult, SocketResult,
+                                // sock_fd_type
 #include "network-family.h"     // Family
 #include "network-format.h"     // Format
+#include "network-host.h"       // Host
 #include "network-protocol.h"   // Protocol
 #include "network-socktype.h"   // SockType
-#include "network-host.h"       // Host
+#include "stream-addrinfo.h"    // operator<<()
 
 #ifdef _WIN32
 #include <winsock2.h>   // struct sockaddr, socket()
 #include <ws2tcpip.h>   // struct addrinfo
 #else
 #include <netdb.h>      // struct addrinfo
-#include <sys/socket.h> // struct sockaddr, socket()
+#include <sys/socket.h> // struct sockaddr, socket(), socketpair()
 #endif
 
 #include <cassert>      // assert()
@@ -169,7 +171,7 @@ Network::SocketpairResult Network::Socket::socketpair(bool t_verbose) const
                                   ai_protocol,
                                   sock_fd);
 
-    if (code != 0) {
+    if (code == socket_error) {
         std::ostringstream oss;
         oss << "socketpair("
             << Format("domain")
