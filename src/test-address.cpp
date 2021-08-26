@@ -1,10 +1,13 @@
 #include "network-address.h"    // Address
 #include "network-context.h"    // Context
-#include "network-endpoint.h"   // to_endpoint()
-#include "network-host.h"       // Host, Hostname, Result
-#include "network-hosts.h"      // Hosts, get_hosts()
+#include "network-endpoint.h"   // Endpoint, EndpointResult,
+                                // to_endpoint()
+#include "network-host.h"       // Host
+#include "network-hosts.h"      // Hosts, HostsResult, get_hosts()
 #include "network-hostname.h"   // get_hostname()
+#include "network-result.h"     // Result
 #include "network-socket.h"     // Socket
+#include "network-types.h"      // Hostname, Service
 
 #ifdef _WIN32
 #include <winsock2.h>   // AF_INET, AF_INET6, AF_UNSPEC, IPPROTO_TCP,
