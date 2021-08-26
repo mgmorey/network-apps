@@ -18,7 +18,7 @@
                         // SOCK_DGRAM, SOCK_STREAM
 #endif
 
-#include <algorithm>    // std::unique()
+#include <algorithm>    // std::for_each(), std::unique()
 #include <cstdlib>      // EXIT_FAILURE, EXIT_SUCCESS
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <list>         // std::list
@@ -26,70 +26,86 @@
 #include <string>       // std::string
 #include <vector>       // std::vector
 
-static std::ostream& operator<<(std::ostream& os, const Network::Host& host)
+class Formatter
 {
-    const Network::Address address(host);
+public:
+    typedef std::vector<std::string> Values;
 
-    if (address.empty()) {
-        std::cerr << "No address for host "
-                  << host
-                  << std::endl;
-        return os;
+    Formatter(std::ostream& t_os) :
+        m_os(t_os)
+    {
     }
 
-    const Network::EndpointResult endp_result(address.to_endpoint(false, true));
-    const Network::Endpoint endpoint(endp_result.first);
-    const Network::Result result(endp_result.second);
+    void operator()(Network::Host t_host)
+    {
+        const Network::Address address(t_host);
 
-    if (result.nonzero()) {
-        std::cerr << result
-                  << std::endl;
-        return os;
-    }
-
-    std::vector<std::string> values;
-    values.push_back(address.text());
-    values.push_back(endpoint.first);
-    values.push_back(host.canonical_name());
-    values.erase(std::unique(values.begin(), values.end()), values.end());
-
-    for (std::size_t i = 0; i < values.size(); ++i) {
-        if (values[i].empty()) {
-            continue;
+        if (address.empty()) {
+            std::cerr << "No address for host "
+                      << t_host.canonical_name()
+                      << std::endl;
+            return;
         }
 
-        switch (i) {
-        case 0:
-            os << values[i]
-               << " (";
-            break;
-        case 1:
-            os << values[i];
-            break;
-        default:
-            os << ", "
-               << values[i];
+        const Network::EndpointResult
+            endpoint_result(address.to_endpoint(false, true));
+        const Network::Endpoint endpoint(endpoint_result.first);
+        const Network::Result result(endpoint_result.second);
+
+        if (result.nonzero()) {
+            std::cerr << result
+                      << std::endl;
+            return;
         }
+
+        const Values values(push_back(address, endpoint, t_host));
+        m_os << '\t';
+
+        for (std::size_t i = 0; i < values.size(); ++i) {
+            if (values[i].empty()) {
+                continue;
+            }
+
+            switch (i) {
+            case 0:
+                m_os << values[i]
+                   << " (";
+                break;
+            case 1:
+                m_os << values[i];
+                break;
+            default:
+                m_os << ", "
+                   << values[i];
+            }
+        }
+
+        if (values.size()) {
+            m_os << ')';
+        }
+
+        m_os << std::endl;
     }
 
-    if (values.size()) {
-        os << ')';
+    Values push_back(const Network::Address& t_address,
+                     const Network::Endpoint& t_endpoint,
+                     const Network::Host& t_host)
+    {
+        Values values;
+        values.push_back(t_address.text());
+        values.push_back(t_endpoint.first);
+        values.push_back(t_host.canonical_name());
+        values.erase(std::unique(values.begin(), values.end()), values.end());
+        return values;
     }
 
-    return os;
-}
+private:
+    std::ostream& m_os;
+};
 
 static std::ostream& operator<<(std::ostream& os, const Network::Hosts& hosts)
 {
-    for (Network::Hosts::const_iterator it = hosts.begin();
-         it != hosts.end();
-         ++it)
-    {
-        os << '\t'
-           << *it
-           << std::endl;
-    }
-
+    std::for_each(hosts.begin(), hosts.end(), Formatter(os));
     return os;
 }
 
