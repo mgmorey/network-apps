@@ -7,24 +7,33 @@
 #include "network-socket.h"     // Socket
 
 #ifdef _WIN32
-#include <winsock2.h>   // AF_INET, AF_INET6, PF_INET, PF_INET6,
-                        // IPPROTO_IP, IPPROTO_TCP, IPPROTO_UDP,
-                        // SOCK_DGRAM, SOCK_STREAM
-#include <ws2tcpip.h>   // AI_ADDRCONFIG, AI_ALL, AI_CANONNAME,
+#include <winsock2.h>   // AF_INET, AF_INET6, IPPROTO_TCP, SOCK_STREAM
+#include <ws2tcpip.h>   // AI_ADDRCONFIG, AI_CANONNAME,
 #else
-#include <netdb.h>      // AI_ADDRCONFIG, AI_ALL, AI_CANONNAME,
-#include <netinet/in.h> // IPPROTO_IP, IPPROTO_TCP, IPPROTO_UDP
-#include <sys/socket.h> // AF_INET, AF_INET6, PF_INET, PF_INET6,
-                        // SOCK_DGRAM, SOCK_STREAM
+#include <netdb.h>      // AI_ADDRCONFIG, AI_CANONNAME,
+#include <netinet/in.h> // IPPROTO_TCP
+#include <sys/socket.h> // AF_INET, AF_INET6, SOCK_STREAM
 #endif
 
-#include <algorithm>    // std::for_each(), std::unique()
+#include <algorithm>    // std::for_each(), std::remove_if(),
+                        // std::unique()
 #include <cstdlib>      // EXIT_FAILURE, EXIT_SUCCESS
 #include <iostream>     // std::cerr, std::cout, std::endl
-#include <list>         // std::list
 #include <ostream>      // std::ostream
 #include <string>       // std::string
 #include <vector>       // std::vector
+
+template <class Container, class Functor>
+void remove_if(Container& cont, Functor func)
+{
+    cont.erase(std::remove_if(cont.begin(), cont.end(), func), cont.end());
+}
+
+template <class Container>
+void unique(Container& cont)
+{
+    cont.erase(std::unique(cont.begin(), cont.end()), cont.end());
+}
 
 class Equal
 {
@@ -71,17 +80,14 @@ public:
         values.push_back(address.text());
         values.push_back(endpoint.first);
         values.push_back(t_host.canonical_name());
-        values.erase(std::unique(values.begin(),
-                                 values.end()),
-                     values.end());
-        values.erase(std::remove_if(values.begin(),
-                                    values.end(),
-                                    Equal()),
-                     values.end());
+        remove_if(values, Equal());
+        unique(values);
 
-        if (!values.empty()) {
-            print(values);
+        if (values.empty()) {
+            return;
         }
+
+        print(values);
     }
 
     void print(const Values& values)
@@ -152,13 +158,17 @@ static void test_host(const Network::Hostname& host,
                   << std::endl
                   << result
                   << std::endl;
+        return;
     }
-    else if (!hosts.empty()) {
-        std::cout << (description.empty() ? "All" : description)
-                  << " hosts:"
-                  << std::endl
-                  << hosts;
+
+    if (hosts.empty()) {
+        return;
     }
+
+    std::cout << (description.empty() ? "All" : description)
+              << " hosts:"
+              << std::endl
+              << hosts;
 }
 
 static void test_host(const Network::Hostname& host)
