@@ -56,14 +56,6 @@ public:
     void operator()(const Network::Host& t_host)
     {
         const Network::Address address(t_host);
-
-        if (address.empty()) {
-            std::cerr << "No address for host "
-                      << t_host.canonical_name()
-                      << std::endl;
-            return;
-        }
-
         const Network::EndpointResult
             endpoint_result(address.to_endpoint(false, true));
         const Network::Endpoint endpoint(endpoint_result.first);
@@ -142,18 +134,18 @@ static void test_host(const Network::Hostname& host,
                       const Network::Socket& hints,
                       bool verbose = true)
 {
+    const std::string description(get_description(hints));
     const Network::HostsResult hosts_result(get_hosts(host, hints, verbose));
     const Network::Hosts hosts(hosts_result.first);
     const Network::Result result(hosts_result.second);
-    const std::string desc(get_description(hints));
 
     if (result.nonzero()) {
-        if (desc.empty()) {
+        if (description.empty()) {
             std::cout << "No";
         }
         else {
             std::cout << "No "
-                      << desc;
+                      << description;
         }
 
         std::cout << " hosts:"
@@ -162,7 +154,7 @@ static void test_host(const Network::Hostname& host,
                   << std::endl;
     }
     else if (!hosts.empty()) {
-        std::cout << (desc.empty() ? "All" : desc)
+        std::cout << (description.empty() ? "All" : description)
                   << " hosts:"
                   << std::endl
                   << hosts;
