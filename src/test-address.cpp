@@ -86,7 +86,10 @@ public:
                                     values.end(),
                                     Comparator()),
                      values.end());
-        print(values);
+
+        if (!values.empty()) {
+            print(values);
+        }
     }
 
     void print(const Values& values)
@@ -97,22 +100,19 @@ public:
             switch (i) {
             case 0:
                 m_os << values[i]
-                   << " (";
+                     << " (";
                 break;
             case 1:
                 m_os << values[i];
                 break;
             default:
                 m_os << ", "
-                   << values[i];
+                     << values[i];
             }
         }
 
-        if (values.size()) {
-            m_os << ')';
-        }
-
-        m_os << std::endl;
+        m_os << ')'
+             << std::endl;
     }
 
 private:
