@@ -3,18 +3,20 @@
 #include "network-fd.h"         // sock_fd_type
 #include "network-host.h"       // Host
 #include "network-peername.h"   // AddressResult, get_peername()
-#include "network-socket.h"     // Socket
+#include "network-result.h"     // Result
+#include "network-socket.h"     // FdPair, Socket, SocketpairResult
 #include "stream-address.h"     // operator<<()
 
-#include <sys/socket.h> // AF_UNIX, SOCK_DGRAM, SOCK_STREAM
+#include <sys/socket.h> // AF_UNIX, SOCK_STREAM
 
 #include <cstdlib>      // EXIT_FAILURE, EXIT_SUCCESS
 #include <iostream>     // std::cerr, std::cout, std::endl
 
-static void test_peer(Network::sock_fd_type fd)
+static void test_peer(Network::sock_fd_type sock_fd)
 {
-    const Network::AddressResult addr_result(Network::get_peername(fd, true));
-    const Network::Result result(addr_result.second);
+    const Network::AddressResult
+        address_result(Network::get_peername(sock_fd, true));
+    const Network::Result result(address_result.second);
 
     if (result.nonzero()) {
         std::cerr << "No address: "
@@ -22,9 +24,9 @@ static void test_peer(Network::sock_fd_type fd)
                   << std::endl;
     }
     else {
-        Network::Address address(addr_result.first);
+        Network::Address address(address_result.first);
         std::cout << "Socket "
-                  << fd
+                  << sock_fd
                   << " connected to "
                   << address
                   << std::endl;
@@ -34,7 +36,8 @@ static void test_peer(Network::sock_fd_type fd)
 int main(void)
 {
     const Network::Socket socket(AF_UNIX, SOCK_STREAM);
-    const Network::SocketpairResult socketpair_result(socket.socketpair(true));
+    const Network::SocketpairResult
+        socketpair_result(socket.socketpair(true));
     const Network::Result result(socketpair_result.second);
 
     if (result.nonzero()) {
@@ -42,20 +45,20 @@ int main(void)
                   << std::endl;
     }
     else {
-        const Network::FdPair fds(socketpair_result.first);
+        const Network::FdPair sock_fd(socketpair_result.first);
         std::cout << "Socket "
-                  << fds.first
+                  << sock_fd.first
                   << " connected to socket "
-                  << fds.second
+                  << sock_fd.second
                   << std::endl;
-        test_peer(fds.first);
-        test_peer(fds.second);
-        Network::close(fds.first);
-        Network::close(fds.second);
+        test_peer(sock_fd.first);
+        test_peer(sock_fd.second);
+        Network::close(sock_fd.first);
+        Network::close(sock_fd.second);
         std::cout << "Sockets "
-                  << fds.first
+                  << sock_fd.first
                   << " and "
-                  << fds.second
+                  << sock_fd.second
                   << " closed"
                   << std::endl;
     }
