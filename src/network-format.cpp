@@ -1,44 +1,46 @@
 #include "network-format.h"     // Format, std::ostream, std::string
 
-Network::Format::Format(const std::string& key) :
-    str(key),
-    del(del_default),
-    ind(ind_default)
+Network::Format::Format(const std::string& t_key) :
+    m_value(t_key),
+    m_delimiter(m_delimiter_default),
+    m_indent(m_indent_default)
 {
 }
 
-Network::Format::Format(int indent, const std::string& key) :
-    str(key),
-    del(del_default),
-    ind(indent)
+Network::Format::Format(int t_indent, const std::string& t_key) :
+    m_value(t_key),
+    m_delimiter(m_delimiter_default),
+    m_indent(t_indent)
 {
 }
 
-Network::Format::Format(const std::string& delim, int indent,
-                        const std::string& key) :
-    str(key),
-    del(delim),
-    ind(indent)
+Network::Format::Format(const std::string& t_delimiter, int t_indent,
+                        const std::string& t_key) :
+    m_value(t_key),
+    m_delimiter(t_delimiter),
+    m_indent(t_indent)
 {
 }
 
 std::ostream& Network::operator<<(std::ostream& os,
                                   const Format& format)
 {
-    if (format.ind >= 0) {
-        os << format.del;
+    if (format.m_indent >= 0) {
+        os << format.m_delimiter;
 
-        if (format.ind > 0) {
-            os << std::endl << std::string(format.ind, ' ');
+        if (format.m_indent > 0) {
+            os << std::endl
+               << std::string(format.m_indent, ' ');
         }
     }
 
-    if (!format.str.empty()) {
-        os << format.str << '=';
+    if (!format.m_value.empty()) {
+        os << format.m_value
+           << '=';
     }
 
     return os;
 }
 
-const std::string Network::Format::del_default = ",";
-const int Network::Format::ind_default = -1;
+const std::string Network::Format::m_delimiter_default = ",";
+const int Network::Format::m_indent_default = -1;

@@ -13,17 +13,17 @@ namespace Network
                                         const Format& format);
 
     public:
-        Format(const std::string& key);
-        Format(int indent, const std::string& key = "");
-        Format(const std::string& delim, int indent,
+        Format(const std::string& t_key);
+        Format(int t_indent, const std::string& t_key = "");
+        Format(const std::string& t_delimiter, int indent,
                const std::string& key = "");
 
     private:
-        static const std::string del_default;
-        static const int ind_default;
-        std::string str;
-        std::string del;
-        int ind;
+        static const std::string m_delimiter_default;
+        static const int m_indent_default;
+        std::string m_value;
+        std::string m_delimiter;
+        int m_indent;
     };
 
     extern std::ostream& operator<<(std::ostream& os,
