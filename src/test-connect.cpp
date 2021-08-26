@@ -1,6 +1,6 @@
 #include "network-address.h"    // Address
 #include "network-close.h"      // close()
-#include "network-connect.h"    // ConnectDetails, ConnectResult,
+#include "network-connect.h"    // ConnectResult, ConnectResults
                                 // Endpoint, Hostname, Service,
                                 // connect()
 #include "network-context.h"    // Context
@@ -30,16 +30,16 @@ static void test_peer(Network::sock_fd_type sock_fd);
 static void test_connect(const Network::Endpoint& endpoint,
                          const Network::Socket& hints)
 {
-    const Network::ConnectResult connect_result(connect(endpoint, hints, true));
-    const Network::ConnectDetails connect_details(connect_result.second);
-    const Network::sock_fd_type sock_fd = connect_result.first;
+    const Network::ConnectResult result(connect(endpoint, hints, true));
+    const Network::ConnectResults results(result.second);
+    const Network::sock_fd_type sock_fd = result.first;
 
     if (sock_fd == Network::sock_fd_null) {
-        print(std::cerr, connect_details);
+        print(std::cerr, results);
         return;
     }
 
-    const Network::Hostname cname(connect_details.front().string());
+    const Network::Hostname cname(results.front().string());
     const Network::Hostname hostname(endpoint.first);
     const Network::Service service(endpoint.second);
     std::cout << "Socket "
@@ -82,8 +82,10 @@ static void test_peer(Network::sock_fd_type sock_fd)
 
 int main(int argc, char* argv[])
 {
-    static const Network::Socket
-        hints(AF_UNSPEC, SOCK_STREAM, IPPROTO_TCP, AI_CANONNAME);
+    static const Network::Socket hints(AF_UNSPEC,
+                                       SOCK_STREAM,
+                                       IPPROTO_TCP,
+                                       AI_CANONNAME);
 
     const Network::Context context;
     const Network::Hostname host(argc > 1 ? argv[1] : "example.com");

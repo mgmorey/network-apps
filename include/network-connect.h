@@ -2,7 +2,7 @@
 #define NETWORK_CONNECT_H
 
 #include "network-endpoint.h"   // Endpoint
-#include "network-fd.h"         // type_fd
+#include "network-fd.h"         // sock_fd_type
 #include "network-result.h"     // Result
 #include "network-sockets.h"    // Sockets
 
@@ -17,25 +17,25 @@
 
 namespace Network
 {
-    typedef std::vector<Result> ConnectDetails;
-    typedef std::pair<sock_fd_type, ConnectDetails> ConnectResult;
+    typedef std::vector<Result> ConnectResults;
+    typedef std::pair<sock_fd_type, ConnectResults> ConnectResult;
 
-    class Connector
+    class Connect
     {
     public:
-        Connector(ConnectDetails& t_connect_details,
-                  sock_fd_type& t_sock_fd,
-                  bool t_verbose);
-        bool operator()(Socket t_socket);
+        Connect(ConnectResults& t_results,
+                sock_fd_type& t_sock_fd,
+                bool t_verbose);
+        bool operator()(const Socket& t_socket);
 
     private:
-        ConnectDetails& m_connect_details;
+        ConnectResults& m_results;
         sock_fd_type& m_sock_fd;
         bool m_verbose;
     };
 
     extern ConnectResult connect(const Endpoint& endpoint,
-                                 const addrinfo &hints,
+                                 const addrinfo& hints,
                                  bool verbose = false);
     extern ConnectResult connect(const Sockets& sockets,
                                  bool verbose = false);
