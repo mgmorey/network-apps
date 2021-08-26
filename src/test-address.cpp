@@ -58,7 +58,11 @@ public:
             return;
         }
 
-        const Values values(push_back(address, endpoint, t_host));
+        print(push_back(address, endpoint, t_host));
+    }
+
+    void print(const Values& values)
+    {
         m_os << '\t';
 
         for (std::size_t i = 0; i < values.size(); ++i) {
