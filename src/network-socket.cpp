@@ -1,5 +1,5 @@
 #include "network-socket.h"     // FdPair, Hostname, Result, Socket,
-                                // SocketPairResult, SocketResult,
+                                // SocketpairResult, SocketResult,
                                 // sock_fd_type
 #include "network-family.h"     // Family
 #include "network-format.h"     // Format
