@@ -7,12 +7,13 @@
 #include "network-socket.h"     // Socket
 
 #ifdef _WIN32
-#include <winsock2.h>   // AF_INET, AF_INET6, IPPROTO_TCP, SOCK_STREAM
+#include <winsock2.h>   // AF_INET, AF_INET6, AF_UNSPEC, IPPROTO_TCP,
+                        // SOCK_STREAM
 #include <ws2tcpip.h>   // AI_ADDRCONFIG, AI_CANONNAME,
 #else
 #include <netdb.h>      // AI_ADDRCONFIG, AI_CANONNAME,
 #include <netinet/in.h> // IPPROTO_TCP
-#include <sys/socket.h> // AF_INET, AF_INET6, SOCK_STREAM
+#include <sys/socket.h> // AF_INET, AF_INET6, AF_UNSPEC, SOCK_STREAM
 #endif
 
 #include <algorithm>    // std::for_each(), std::remove_if(),
