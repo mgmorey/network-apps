@@ -12,19 +12,19 @@
 
 #include <ostream>      // std::ostream
 
-Network::Protocol::Protocol(int family, int protocol) :
-    fam(family),
-    proto(protocol)
+Network::Protocol::Protocol(int t_family, int t_value) :
+    m_family(t_family),
+    m_value(t_value)
 {
 }
 
 std::ostream& Network::operator<<(std::ostream& os,
                                   const Protocol& protocol)
 {
-    switch(protocol.fam) {
+    switch(protocol.m_family) {
     case AF_INET:
     case AF_INET6:
-        switch(protocol.proto) {
+        switch(protocol.m_value) {
         case IPPROTO_IP:
             os << "IPPROTO_IP";
             break;
@@ -44,11 +44,11 @@ std::ostream& Network::operator<<(std::ostream& os,
             os << "IPPROTO_RAW";
             break;
         default:
-            os << protocol.proto;
+            os << protocol.m_value;
         }
         break;
     default:
-        os << protocol.proto;
+        os << protocol.m_value;
     }
 
     return os;

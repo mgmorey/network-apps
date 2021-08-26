@@ -11,8 +11,8 @@
 
 #include <sstream>      // std::ostringstream
 
-Network::SockType::SockType(int socktype) :
-    value(socktype)
+Network::SockType::SockType(int t_value) :
+    m_value(t_value)
 {
 }
 
@@ -34,8 +34,8 @@ std::ostream& Network::operator<<(std::ostream& os,
     std::ostringstream oss;
     std::size_t i = 0;
 
-    if (socktype.value & 00000017) {
-        switch (socktype.value & 00000017) {
+    if (socktype.m_value & 00000017) {
+        switch (socktype.m_value & 00000017) {
         case SOCK_STREAM:
             oss << "SOCK_STREAM";
             break;
@@ -52,13 +52,13 @@ std::ostream& Network::operator<<(std::ostream& os,
             oss << "SOCK_SEQPACKET";
             break;
         default:
-            oss << socktype.value;
+            oss << socktype.m_value;
         }
         ++i;
     }
 
     for(const struct values* p = values; p->flag; ++p) {
-        if (socktype.value & p->flag) {
+        if (socktype.m_value & p->flag) {
             if (i++ > 0) {
                 oss << " | ";
             }

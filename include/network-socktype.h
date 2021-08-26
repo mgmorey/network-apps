@@ -11,10 +11,10 @@ namespace Network
                                         const SockType& socktype);
 
     public:
-        SockType(int socktype);
+        SockType(int t_value);
 
     private:
-        int value;
+        int m_value;
     };
 
     extern std::ostream& operator<<(std::ostream& os,

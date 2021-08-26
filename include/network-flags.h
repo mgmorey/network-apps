@@ -11,10 +11,10 @@ namespace Network
                                         const Flags& flags);
 
     public:
-        Flags(int flags);
+        Flags(int t_value);
 
     private:
-        int value;
+        int m_value;
     };
 
     extern std::ostream& operator<<(std::ostream& os,

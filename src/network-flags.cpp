@@ -12,8 +12,8 @@
 
 #include <sstream>      // std::ostringstream
 
-Network::Flags::Flags(int flags) :
-    value(flags)
+Network::Flags::Flags(int t_value) :
+    m_value(t_value)
 {
 }
 
@@ -38,7 +38,7 @@ std::ostream& Network::operator<<(std::ostream& os,
     std::size_t i = 0;
 
     for(const Value* p = values; p->flag; ++p) {
-        if (flags.value & p->flag) {
+        if (flags.m_value & p->flag) {
             if (i++ > 0) {
                 oss << " | ";
             }

@@ -11,11 +11,11 @@ namespace Network
                                         const Protocol& protocol);
 
     public:
-        Protocol(int family, int protocol);
+        Protocol(int t_family, int t_value);
 
     private:
-        int fam;
-        int proto;
+        int m_family;
+        int m_value;
     };
 
     extern std::ostream& operator<<(std::ostream& os,
