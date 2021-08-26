@@ -34,9 +34,9 @@ public:
     {
     }
 
-    bool operator()(const std::string& t_string)
+    bool operator()(const std::string& t_value)
     {
-        return t_string == m_key;
+        return t_value == m_key;
     }
 
 private:
