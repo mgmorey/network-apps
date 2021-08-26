@@ -69,7 +69,6 @@ namespace Network
                            bool verbose)
     {
         Container cont;
-        std::vector<std::size_t> sizes;
         const std::size_t size = copy_addrinfo(cont,
                                                node,
                                                service,
@@ -77,6 +76,8 @@ namespace Network
                                                verbose);
 
         if (size) {
+            std::vector<std::size_t> sizes;
+
             if (verbose) {
                 sizes.push_back(size);
             }
