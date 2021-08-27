@@ -12,12 +12,12 @@
 #include <netdb.h>      // struct addrinfo
 #endif
 
-#include <list>         // std::list
 #include <utility>      // std::pair
+#include <vector>       // std::vector
 
 namespace Network
 {
-    typedef std::list<Socket> Sockets;
+    typedef std::vector<Socket> Sockets;
     typedef std::pair<Sockets, Result> SocketsResult;
     extern SocketsResult get_sockets(const Endpoint& endpoint,
                                      const addrinfo* hints = NULL,

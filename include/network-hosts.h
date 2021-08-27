@@ -12,12 +12,12 @@
 #include <netdb.h>      // struct addrinfo
 #endif
 
-#include <list>         // std::list
 #include <utility>      // std::pair
+#include <vector>       // std::vector
 
 namespace Network
 {
-    typedef std::list<Host> Hosts;
+    typedef std::vector<Host> Hosts;
     typedef std::pair<Hosts, Result> HostsResult;
     extern HostsResult get_hosts(const Hostname& host,
                                  const addrinfo* hints = NULL,
