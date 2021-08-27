@@ -20,7 +20,7 @@ Network::SocketResult Network::Connect::operator()(const Socket& t_socket)
     SocketResult result(t_socket.socket(m_verbose));
 
     if (result.first != sock_fd_null) {
-        const Result connect_result(connect(result.first, t_socket));
+        const Result connect_result(connect(t_socket, result.first));
 
         if (connect_result.nonzero()) {
             close(result.first);
@@ -39,11 +39,11 @@ Network::SocketResult Network::Connect::operator()(const Socket& t_socket)
     return result;
 }
 
-Network::Result Network::Connect::connect(const sock_fd_type& sock_fd,
-                                          const Socket& t_socket)
+Network::Result Network::Connect::connect(const Socket& t_socket,
+                                          sock_fd_type t_sock_fd)
 {
     const Address address(static_cast<Host>(t_socket));
-    return address.connect(sock_fd, m_verbose);
+    return address.connect(t_sock_fd, m_verbose);
 }
 
 Network::SocketResults Network::connect(const Endpoint& endpoint,
