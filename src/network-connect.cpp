@@ -17,26 +17,26 @@ Network::Connect::Connect(bool t_verbose) :
 
 Network::SocketResult Network::Connect::operator()(const Socket& t_socket)
 {
-    SocketResult result(t_socket.socket(m_verbose));
+    SocketResult socket_result(t_socket.socket(m_verbose));
 
-    if (result.first != sock_fd_null) {
-        const Result connect_result(connect(t_socket, result.first));
+    if (socket_result.first != sock_fd_null) {
+        const Result connect_result(connect(t_socket, socket_result.first));
 
         if (connect_result.nonzero()) {
-            close(result.first);
-            result.first = sock_fd_null;
-            result.second = connect_result;
+            close(socket_result.first);
+            socket_result.first = sock_fd_null;
+            socket_result.second = connect_result;
         }
         else {
-            result.second = Result(0, t_socket.cname());
+            socket_result.second = Result(0, t_socket.cname());
         }
     }
 
-    assert(result.first != sock_fd_null ?
-           result.second.result() == 0 :
-           result.second.result() != 0 &&
-           result.second.string() != "");
-    return result;
+    assert(socket_result.first != sock_fd_null ?
+           socket_result.second.result() == 0 :
+           socket_result.second.result() != 0 &&
+           socket_result.second.string() != "");
+    return socket_result;
 }
 
 Network::Result Network::Connect::connect(const Socket& t_socket,
