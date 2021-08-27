@@ -1,11 +1,10 @@
-#include "network-connect.h"    // ConnectResult, ConnectResults,
-                                // Endpoint, Hostname, Result,
-                                // Sockets, SocketsResult, struct
-                                // addrinfo, sock_fd_type
+#include "network-connect.h"    // Endpoint, Result, SocketResults,
+                                // SocketsResult
 #include "network-address.h"    // Address
 #include "network-close.h"      // close()
 #include "network-fd.h"         // sock_fd_null
 #include "network-host.h"       // Host
+#include "network-sockets.h"    // Sockets
 
 #include <algorithm>    // std::transform()
 #include <cassert>      // assert()
@@ -41,16 +40,6 @@ Network::SocketResult Network::Connect::operator()(const Socket& t_socket)
     return result;
 }
 
-Network::SocketResults Network::connect(const Sockets& sockets,
-                                        bool verbose)
-{
-    SocketResults results;
-    std::transform(sockets.begin(), sockets.end(),
-                   std::back_inserter(results),
-                   Connect(verbose));
-    return results;
-}
-
 Network::SocketResults Network::connect(const Endpoint& endpoint,
                                         const addrinfo& hints,
                                         bool verbose)
@@ -59,10 +48,8 @@ Network::SocketResults Network::connect(const Endpoint& endpoint,
     const SocketsResult sockets_result(get_sockets(endpoint, hints, verbose));
     const Sockets sockets(sockets_result.first);
     const Result result(sockets_result.second);
-
-    if (!result.nonzero()) {
-        results = connect(sockets, verbose);
-    }
-
+    std::transform(sockets.begin(), sockets.end(),
+                   std::back_inserter(results),
+                   Connect(verbose));
     return results;
 }

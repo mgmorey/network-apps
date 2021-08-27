@@ -2,9 +2,8 @@
 #define NETWORK_CONNECT_H
 
 #include "network-endpoint.h"   // Endpoint
-#include "network-fd.h"         // sock_fd_type
 #include "network-result.h"     // Result
-#include "network-sockets.h"    // Sockets
+#include "network-socket.h"     // Socket
 
 #ifdef _WIN32
 #include <ws2tcpip.h>   // struct addrinfo
@@ -29,8 +28,6 @@ namespace Network
         bool m_verbose;
     };
 
-    extern SocketResults connect(const Sockets& sockets,
-                                 bool verbose = false);
     extern SocketResults connect(const Endpoint& endpoint,
                                  const addrinfo& hints,
                                  bool verbose = false);
