@@ -34,9 +34,10 @@ Network::SocketResult Network::Connect::operator()(const Socket& t_socket)
         }
     }
 
-    assert(result.first == sock_fd_null ?
-           result.second.result() != 0 && result.second.string() != "":
-           result.second.result() == 0);
+    assert(result.first != sock_fd_null ?
+           result.second.result() == 0 :
+           result.second.result() != 0 &&
+           result.second.string() != "");
     return result;
 }
 
