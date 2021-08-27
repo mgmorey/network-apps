@@ -27,13 +27,10 @@ Network::SocketResult Network::Connect::operator()(const Socket& t_socket)
 
     if (connect_result.nonzero()) {
         close(socket_result.first);
-        socket_result.first = sock_fd_null;
-        socket_result.second = connect_result;
-    }
-    else {
-        socket_result.second = Result(0, t_socket.cname());
+        return SocketResult(sock_fd_null, connect_result);
     }
 
+    socket_result.second = Result(0, t_socket.cname());
     return socket_result;
 }
 
