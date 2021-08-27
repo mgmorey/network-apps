@@ -56,12 +56,12 @@ private:
     std::string m_key;
 };
 
-class Print
+class Test
 {
 public:
     typedef std::vector<std::string> Values;
 
-    Print(std::ostream& t_os) :
+    Test(std::ostream& t_os) :
         m_os(t_os)
     {
     }
@@ -169,7 +169,7 @@ static void test_host(const Network::Hostname& host,
 
         std::cout << " hosts:"
                   << std::endl;
-        std::for_each(hosts.begin(), hosts.end(), Print(std::cout));
+        std::for_each(hosts.begin(), hosts.end(), Test(std::cout));
     }
 }
 

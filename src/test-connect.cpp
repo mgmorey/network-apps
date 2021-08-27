@@ -26,11 +26,11 @@
 #include <cstdlib>      // EXIT_FAILURE, EXIT_SUCCESS
 #include <iostream>     // std::cerr, std::cout, std::endl
 
-class Print
+class Test
 {
 public:
-    Print(std::ostream& t_os,
-          const Network::Endpoint& t_endpoint) :
+    Test(std::ostream& t_os,
+         const Network::Endpoint& t_endpoint) :
         m_os(t_os),
         m_endpoint(t_endpoint)
     {
@@ -57,7 +57,7 @@ public:
                      hostname :
                      cname)
                  << std::endl;
-            print_peer(sock_fd);
+            test_peer(sock_fd);
             Network::close(sock_fd);
             m_os << "Socket "
                  << sock_fd
@@ -66,7 +66,7 @@ public:
         }
     }
 
-    void print_peer(Network::sock_fd_type sock_fd)
+    void test_peer(Network::sock_fd_type sock_fd)
     {
         const Network::AddressResult
             address_result(Network::get_peername(sock_fd, true));
@@ -96,7 +96,7 @@ static void test_connect(const Network::Endpoint& endpoint,
                          const Network::Socket& hints)
 {
     const Network::SocketResults results(connect(endpoint, hints, true));
-    std::for_each(results.begin(), results.end(), Print(std::cout, endpoint));
+    std::for_each(results.begin(), results.end(), Test(std::cout, endpoint));
 }
 
 int main(int argc, char* argv[])
