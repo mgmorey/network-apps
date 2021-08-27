@@ -27,6 +27,16 @@
 #include <string>       // std::string
 #include <vector>       // std::vector
 
+template <class Container>
+class Empty
+{
+public:
+    bool operator()(const Container& t_value)
+    {
+        return t_value.empty();
+    }
+};
+
 template <class Container, class Functor>
 void remove_if(Container& cont, Functor func)
 {
@@ -38,23 +48,6 @@ void unique(Container& cont)
 {
     cont.erase(std::unique(cont.begin(), cont.end()), cont.end());
 }
-
-class Equal
-{
-public:
-    Equal(const std::string& t_key = "") :
-        m_key(t_key)
-    {
-    }
-
-    bool operator()(const std::string& t_value)
-    {
-        return t_value == m_key;
-    }
-
-private:
-    std::string m_key;
-};
 
 class Test
 {
@@ -84,7 +77,7 @@ public:
         values.push_back(address.text());
         values.push_back(endpoint.first);
         values.push_back(t_host.canonical_name());
-        remove_if(values, Equal());
+        remove_if(values, Empty<std::string>());
         unique(values);
 
         if (values.empty()) {
