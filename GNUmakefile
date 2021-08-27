@@ -1,3 +1,4 @@
+GCC_4_8_5_RH := g++ (GCC) 4.8.5 20150623 (Red Hat 4.8.5-44)
 SYSTEM_PREFIX := $(shell uname -s | cut -d- -f 1)
 
 ifdef NDEBUG
@@ -8,7 +9,10 @@ ifeq "$(USING_DMALLOC)" "true"
 	CPPFLAGS += -DDMALLOC -DMALLOC_FUNC_CHECK
 	LDLIBS += -ldmalloc
 else ifeq "$(USING_LIBASAN)" "true"
-	CXXFLAGS += -fno-omit-frame-pointer -fsanitize=address -fsanitize-address-use-after-scope
+	CXXFLAGS += -fno-omit-frame-pointer -fsanitize=address
+ifneq "$(shell $(CXX) --version | head -n 1)" "$(GCC_4_8_5_RH)"
+	CXXFLAGS += -fsanitize-address-use-after-scope
+endif
 	LDFLAGS += -fsanitize=address
 else
 	CXXFLAGS += -fno-omit-frame-pointer
