@@ -1,6 +1,5 @@
 #include "network-sockets.h"    // Endpoint, Hostname, Service,
-                                // SocketsResult, struct addrinfo,
-                                // get_sockets()
+                                // SocketsResult, struct addrinfo
 #include "network-addrinfo.h"   // insert_addrinfo()
 #include "network-hostname.h"   // get_hostname()
 
