@@ -7,64 +7,59 @@
 #include "network-fd.h"         // sock_fd_null
 #include "network-host.h"       // Host
 
-#include <algorithm>    // std::find_if()
+#include <algorithm>    // std::transform()
+#include <iterator>     // std::back_inserter()
 
-Network::Connect::Connect(ConnectResults& t_results,
-                          sock_fd_type& t_sock_fd,
-                          bool t_verbose) :
-    m_results(t_results),
-    m_sock_fd(t_sock_fd),
+Network::Connect::Connect(bool t_verbose) :
     m_verbose(t_verbose)
 {
 }
 
-bool Network::Connect::operator()(const Socket& t_socket)
+Network::SocketResult Network::Connect::operator()(const Socket& t_socket)
 {
-    const SocketResult socket_result(t_socket.socket(m_verbose));
-    m_sock_fd = socket_result.first;
+    SocketResult socket_result(t_socket.socket(m_verbose));
+    Network::sock_fd_type& sock_fd = socket_result.first;
+    Result& result = socket_result.second;
 
-    if (m_sock_fd == sock_fd_null) {
-        m_results.push_back(socket_result.second);
-        return false;
+    if (sock_fd != sock_fd_null) {
+        const Address address(static_cast<Host>(t_socket));
+        const Result connect_result(address.connect(sock_fd, m_verbose));
+
+        if (connect_result.nonzero()) {
+            close(sock_fd);
+            sock_fd = sock_fd_null;
+            result = connect_result;
+        }
+        else {
+            result = Result(0, t_socket.cname());
+        }
     }
 
-    const Address address(static_cast<Host>(t_socket));
-    const Result result(address.connect(m_sock_fd, m_verbose));
-
-    if (result.result()) {
-        close(m_sock_fd);
-        m_sock_fd = sock_fd_null;
-        m_results.push_back(result);
-        return false;
-    }
-
-    m_results.push_back(Result(0, t_socket.cname()));
-    return true;
+    return socket_result;
 }
 
-Network::ConnectResult Network::connect(const Sockets& sockets,
+Network::SocketResults Network::connect(const Sockets& sockets,
                                         bool verbose)
 {
-    ConnectResults results;
-    sock_fd_type sock_fd = sock_fd_null;
-    static_cast<void>(std::find_if(sockets.begin(), sockets.end(),
-                                   Connect(results, sock_fd, verbose)));
-    return ConnectResult(sock_fd, results);
+    SocketResults results;
+    std::transform(sockets.begin(), sockets.end(),
+                   std::back_inserter(results),
+                   Connect(verbose));
+    return results;
 }
 
-Network::ConnectResult Network::connect(const Endpoint& endpoint,
+Network::SocketResults Network::connect(const Endpoint& endpoint,
                                         const addrinfo& hints,
                                         bool verbose)
 {
+    SocketResults results;
     const SocketsResult sockets_result(get_sockets(endpoint, hints, verbose));
     const Sockets sockets(sockets_result.first);
     const Result result(sockets_result.second);
 
-    if (result.nonzero()) {
-        ConnectResults results;
-        results.push_back(result);
-        return ConnectResult(sock_fd_null, results);
+    if (!result.nonzero()) {
+        results = connect(sockets, verbose);
     }
 
-    return connect(sockets, verbose);
+    return results;
 }

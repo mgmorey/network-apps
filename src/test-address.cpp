@@ -118,12 +118,6 @@ private:
     std::ostream& m_os;
 };
 
-static std::ostream& operator<<(std::ostream& os, const Network::Hosts& hosts)
-{
-    std::for_each(hosts.begin(), hosts.end(), Print(os));
-    return os;
-}
-
 static std::string get_description(const Network::Socket& hints)
 {
     std::string result;
@@ -164,15 +158,19 @@ static void test_host(const Network::Hostname& host,
                   << std::endl;
         return;
     }
+    else if (!hosts.empty()) {
+        if (description.empty()) {
+            std::cout << "All";
+        }
+        else {
+            std::cout << "All "
+                      << description;
+        }
 
-    if (hosts.empty()) {
-        return;
+        std::cout << " hosts:"
+                  << std::endl;
+        std::for_each(hosts.begin(), hosts.end(), Print(std::cout));
     }
-
-    std::cout << (description.empty() ? "All" : description)
-              << " hosts:"
-              << std::endl
-              << hosts;
 }
 
 static void test_host(const Network::Hostname& host)

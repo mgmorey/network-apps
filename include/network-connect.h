@@ -17,26 +17,21 @@
 
 namespace Network
 {
-    typedef std::vector<Result> ConnectResults;
-    typedef std::pair<sock_fd_type, ConnectResults> ConnectResult;
+    typedef std::vector<SocketResult> SocketResults;
 
     class Connect
     {
     public:
-        Connect(ConnectResults& t_results,
-                sock_fd_type& t_sock_fd,
-                bool t_verbose);
-        bool operator()(const Socket& t_socket);
+        Connect(bool t_verbose);
+        SocketResult operator()(const Socket& t_socket);
 
     private:
-        ConnectResults& m_results;
-        sock_fd_type& m_sock_fd;
         bool m_verbose;
     };
 
-    extern ConnectResult connect(const Sockets& sockets,
+    extern SocketResults connect(const Sockets& sockets,
                                  bool verbose = false);
-    extern ConnectResult connect(const Endpoint& endpoint,
+    extern SocketResults connect(const Endpoint& endpoint,
                                  const addrinfo& hints,
                                  bool verbose = false);
 }
