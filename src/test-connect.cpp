@@ -57,7 +57,7 @@ public:
                      hostname :
                      cname)
                  << std::endl;
-            print(sock_fd);
+            print_peer(sock_fd);
             Network::close(sock_fd);
             m_os << "Socket "
                  << sock_fd
@@ -66,7 +66,7 @@ public:
         }
     }
 
-    void print(Network::sock_fd_type sock_fd)
+    void print_peer(Network::sock_fd_type sock_fd)
     {
         const Network::AddressResult
             address_result(Network::get_peername(sock_fd, true));
