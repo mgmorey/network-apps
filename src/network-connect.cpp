@@ -8,6 +8,7 @@
 #include "network-host.h"       // Host
 
 #include <algorithm>    // std::transform()
+#include <cassert>      // assert()
 #include <iterator>     // std::back_inserter()
 
 Network::Connect::Connect(bool t_verbose) :
