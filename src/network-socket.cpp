@@ -127,6 +127,7 @@ Network::SocketResult Network::Socket::socket(bool t_verbose) const
                   << std::endl;
     }
 
+    errno = 0;
     std::string error;
     const sock_fd_type sock_fd = ::socket(ai_family,
                                           ai_socktype,
@@ -151,7 +152,11 @@ Network::SocketResult Network::Socket::socket(bool t_verbose) const
         error = oss.str();
     }
 
-    return SocketResult(sock_fd, Result(0, error));
+    Result result(errno, error);
+    assert(result.result() ?
+           result.string() != "" :
+           result.string() == "");
+    return SocketResult(sock_fd, result);
 }
 
 #ifndef _WIN32
@@ -164,6 +169,7 @@ Network::SocketpairResult Network::Socket::socketpair(bool t_verbose) const
                   << std::endl;
     }
 
+    errno = 0;
     std::string error;
     int sock_fd[2] = {sock_fd_null, sock_fd_null};
     const int code = ::socketpair(ai_family,
@@ -190,8 +196,12 @@ Network::SocketpairResult Network::Socket::socketpair(bool t_verbose) const
         error = oss.str();
     }
 
-    return SocketpairResult(FdPair(sock_fd[0], sock_fd[1]),
-                            Result(code, error));
+    FdPair fd_pair(sock_fd[0], sock_fd[1]);
+    Result result(errno, error);
+    assert(result.result() ?
+           result.string() != "" :
+           result.string() == "");
+    return SocketpairResult(fd_pair, result);
 }
 #endif
 

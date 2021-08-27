@@ -77,7 +77,11 @@ Network::Result Network::Address::connect(sock_fd_type t_sock_fd,
         error = oss.str();
     }
 
-    return Result(errno, error);
+    Result result(errno, error);
+    assert(result.result() ?
+           result.string() != "" :
+           result.string() == "");
+    return result;
 }
 
 bool Network::Address::empty() const

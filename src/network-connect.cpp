@@ -18,15 +18,14 @@ Network::Connect::Connect(bool t_verbose) :
 Network::SocketResult Network::Connect::operator()(const Socket& t_socket)
 {
     SocketResult result(t_socket.socket(m_verbose));
-    Network::sock_fd_type& sock_fd = result.first;
 
-    if (sock_fd != sock_fd_null) {
+    if (result.first != sock_fd_null) {
         const Address address(static_cast<Host>(t_socket));
-        const Result connect_result(address.connect(sock_fd, m_verbose));
+        const Result connect_result(address.connect(result.first, m_verbose));
 
         if (connect_result.nonzero()) {
-            close(sock_fd);
-            sock_fd = sock_fd_null;
+            close(result.first);
+            result.first = sock_fd_null;
             result.second = connect_result;
         }
         else {
@@ -34,6 +33,9 @@ Network::SocketResult Network::Connect::operator()(const Socket& t_socket)
         }
     }
 
+    assert(result.first == sock_fd_null ?
+           result.second.result() != 0 && result.second.string() != "":
+           result.second.result() == 0);
     return result;
 }
 
