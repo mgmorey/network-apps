@@ -24,6 +24,7 @@ std::ostream& Network::operator<<(std::ostream& os,
     switch(protocol.m_family) {
     case AF_INET:
     case AF_INET6:
+    case AF_UNSPEC:
         switch(protocol.m_value) {
         case IPPROTO_IP:
             os << "IPPROTO_IP";
