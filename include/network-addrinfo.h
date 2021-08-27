@@ -27,20 +27,18 @@ namespace Network
                                  const addrinfo* hints,
                                  bool verbose);
 
-    template <class Container>
-    std::size_t copy_addrinfo(Container& dest,
-                              const Hostname& node,
-                              const Service& service,
-                              const addrinfo* hints,
-                              bool verbose)
+    template <class OutputIt>
+    Result insert_addrinfo(OutputIt iter,
+                           const Hostname& node,
+                           const Service& service,
+                           const addrinfo* hints,
+                           bool verbose)
     {
         const AiResult ai_result(get_addrinfo(node, service, hints, verbose));
         addrinfo* list = ai_result.first;
-        dest.second = ai_result.second;
-        std::size_t size = 0;
 
         if (list == NULL) {
-            return size;
+            return ai_result.second;
         }
 
         for (const addrinfo* elem = list; elem != NULL; elem = elem->ai_next) {
@@ -53,49 +51,11 @@ namespace Network
                           << std::endl;
             }
 
-            dest.first.push_back(*elem);
-            ++size;
+            *iter++ = *elem;
         }
 
         ::freeaddrinfo(list);
-        return size;
-    }
-
-    template <class Container>
-    Container get_addrinfo(const Hostname& node,
-                           const Service& service,
-                           const addrinfo* hints,
-                           bool unique,
-                           bool verbose)
-    {
-        Container cont;
-        const std::size_t size = copy_addrinfo(cont,
-                                               node,
-                                               service,
-                                               hints,
-                                               verbose);
-
-        if (size) {
-            std::vector<std::size_t> sizes;
-
-            if (verbose) {
-                sizes.push_back(size);
-            }
-
-            if (unique) {
-                cont.first.unique();
-            }
-
-            if (verbose) {
-                sizes.push_back(cont.first.size());
-                const Unique counts(sizes);
-                std::cerr << "Fetched "
-                          << counts
-                          << std::endl;
-            }
-        }
-
-        return cont;
+        return ai_result.second;
     }
 }
 

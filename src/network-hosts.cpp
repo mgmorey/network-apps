@@ -2,17 +2,25 @@
 #include "network-addrinfo.h"   // get_addrinfo()
 #include "network-hostname.h"   // get_hostname()
 
+#include <iterator>     // std::back_inserter()
+
 Network::HostsResult Network::get_hosts(const Hostname& host,
                                         const addrinfo& hints,
                                         bool verbose)
 {
+    HostsResult result;
     const Hostname node(host.empty() ? get_hostname().first : host);
-    return get_addrinfo<HostsResult>(node, "", &hints, true, verbose);
+    result.second = insert_addrinfo(std::back_inserter(result.first),
+                                    node, "", &hints, verbose);
+    return result;
 }
 
 Network::HostsResult Network::get_hosts(const Hostname& host,
                                         bool verbose)
 {
+    HostsResult result;
     const Hostname node(host.empty() ? get_hostname().first : host);
-    return get_addrinfo<HostsResult>(node, "", NULL, true, verbose);
+    result.second = insert_addrinfo(std::back_inserter(result.first),
+                                    node, "", NULL, verbose);
+    return result;
 }
