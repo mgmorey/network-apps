@@ -26,23 +26,6 @@
 #include <cstdlib>      // EXIT_FAILURE, EXIT_SUCCESS
 #include <iostream>     // std::cerr, std::cout, std::endl
 
-class Equal
-{
-public:
-    Equal(const std::string& t_key = "") :
-        m_key(t_key)
-    {
-    }
-
-    bool operator()(const std::string& t_value)
-    {
-        return t_value == m_key;
-    }
-
-private:
-    std::string m_key;
-};
-
 class Print
 {
 public:
