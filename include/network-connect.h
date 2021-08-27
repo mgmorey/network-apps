@@ -23,6 +23,8 @@ namespace Network
     public:
         Connect(bool t_verbose);
         SocketResult operator()(const Socket& t_socket);
+        Result connect(const sock_fd_type& sock_fd,
+                       const Socket& t_socket);
 
     private:
         bool m_verbose;
