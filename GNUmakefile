@@ -90,7 +90,7 @@ all: $(executables) TAGS
 
 .PHONY:	check
 check:
-	cppcheck --cppcheck-build-dir=tmp --enable=all --quiet --std=c++03 $(CPPFLAGS) .
+	cppcheck --cppcheck-build-dir=tmp --enable=all --inline-suppr --quiet --std=c++03 $(CPPFLAGS) .
 
 .PHONY:	clean
 clean:
