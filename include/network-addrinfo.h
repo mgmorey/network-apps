@@ -19,12 +19,12 @@
 
 namespace Network
 {
-    typedef std::pair<addrinfo*, Result> AiResult;
+    typedef std::pair<addrinfo*, Result> AddrInfoResult;
 
-    extern AiResult get_addrinfo(const Hostname& node,
-                                 const Service& service,
-                                 const addrinfo* hints,
-                                 bool verbose);
+    extern AddrInfoResult get_addrinfo(const Hostname& node,
+                                       const Service& service,
+                                       const addrinfo* hints,
+                                       bool verbose);
 
     template<typename OutputIt>
     Result insert_addrinfo(const Hostname& node,
@@ -33,7 +33,8 @@ namespace Network
                            bool verbose,
                            OutputIt it)
     {
-        const AiResult ai_result(get_addrinfo(node, service, hints, verbose));
+        const AddrInfoResult
+            ai_result(get_addrinfo(node, service, hints, verbose));
         addrinfo* list = ai_result.first;
 
         if (list == nullptr) {

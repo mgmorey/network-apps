@@ -1,4 +1,4 @@
-#include "network-addrinfo.h"   // AddrinfoResult, Hostname, Service,
+#include "network-addrinfo.h"   // AddrInfoResult, Hostname, Service,
                                 // Result, struct addrinfo,
                                 // copy_addrinfo(), get_addrinfo(),
                                 // std::cerr, std::endl, std::ostream,
@@ -22,10 +22,10 @@
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
 
-Network::AiResult Network::get_addrinfo(const Hostname& node,
-                                        const Service& service,
-                                        const addrinfo* hints,
-                                        bool verbose)
+Network::AddrInfoResult Network::get_addrinfo(const Hostname& node,
+                                              const Service& service,
+                                              const addrinfo* hints,
+                                              bool verbose)
 {
     if (verbose) {
         std::cerr << "Invoking getaddrinfo("
@@ -70,5 +70,9 @@ Network::AiResult Network::get_addrinfo(const Hostname& node,
         assert(list != nullptr);
     }
 
-    return AiResult(list, Result(code, error));
+    Result result(code, error);
+    assert(result.result() ?
+           result.string() != "" :
+           result.string() == "");
+    return AddrInfoResult(list, result);
 }
