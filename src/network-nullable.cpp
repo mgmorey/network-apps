@@ -12,8 +12,8 @@ Network::Nullable::Nullable(const std::string &t_nullable) :
 }
 
 Network::Nullable::Nullable(const char* t_value) :
-    m_value_is_null(t_value == NULL),
-    m_value(t_value == NULL ? "" : t_value)
+    m_value_is_null(t_value == nullptr),
+    m_value(t_value == nullptr ? "" : t_value)
 {
 }
 
@@ -26,8 +26,8 @@ Network::Nullable& Network::Nullable::operator=(const std::string &t_nullable)
 
 Network::Nullable& Network::Nullable::operator=(const char* t_value)
 {
-    m_value_is_null = t_value == NULL;
-    m_value = t_value == NULL ? "" : t_value;
+    m_value_is_null = t_value == nullptr;
+    m_value = t_value == nullptr ? "" : t_value;
     return *this;
 }
 

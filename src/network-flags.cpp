@@ -32,12 +32,12 @@ std::ostream& Network::operator<<(std::ostream& os,
         {AI_ALL,                    "AI_ALL"},
         {AI_ADDRCONFIG,             "AI_ADDRCONFIG"},
         {AI_V4MAPPED,               "AI_V4MAPPED"},
-        {0,                         NULL}
+        {0,                         nullptr}
     };
     std::ostringstream oss;
     std::size_t i = 0;
 
-    for(const Value* p = values; p->flag; ++p) {
+    for(const Value* p = values; p->label != nullptr; ++p) {
         if (flags.m_value & p->flag) {
             if (i++ > 0) {
                 oss << " | ";

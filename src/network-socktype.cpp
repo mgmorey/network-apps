@@ -29,7 +29,7 @@ std::ostream& Network::operator<<(std::ostream& os,
 #ifdef SOCK_NONBLOCK
         {SOCK_NONBLOCK,             "SOCK_NONBLOCK"},
 #endif
-        {0,                         NULL}
+        {0,                         nullptr}
     };
     std::ostringstream oss;
     std::size_t i = 0;
@@ -57,7 +57,7 @@ std::ostream& Network::operator<<(std::ostream& os,
         ++i;
     }
 
-    for(const struct values* p = values; p->flag; ++p) {
+    for(const struct values* p = values; p->label != nullptr; ++p) {
         if (socktype.m_value & p->flag) {
             if (i++ > 0) {
                 oss << " | ";

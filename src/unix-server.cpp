@@ -82,7 +82,7 @@ int main(void)
         int data_socket;
 
         // Wait for incoming connection.
-        data_socket = ::accept(connection_socket, NULL, NULL);
+        data_socket = ::accept(connection_socket, nullptr, nullptr);
 
         if (data_socket == -1) {
             std::perror("accept");
@@ -116,7 +116,7 @@ int main(void)
             }
 
             // Add received summand.
-            result += std::strtol(buffer, NULL, 10);
+            result += std::strtol(buffer, nullptr, 10);
         }
 
         if (!down_flag) {

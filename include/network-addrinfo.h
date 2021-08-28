@@ -36,11 +36,11 @@ namespace Network
         const AiResult ai_result(get_addrinfo(node, service, hints, verbose));
         addrinfo* list = ai_result.first;
 
-        if (list == NULL) {
+        if (list == nullptr) {
             return ai_result.second;
         }
 
-        for (const addrinfo* elem = list; elem != NULL; elem = elem->ai_next) {
+        for (const addrinfo* elem = list; elem != nullptr; elem = elem->ai_next) {
             if (verbose) {
                 std::cerr << "Fetched addrinfo "
                           << elem

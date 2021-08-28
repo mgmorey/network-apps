@@ -45,10 +45,10 @@ Network::AiResult Network::get_addrinfo(const Hostname& node,
     }
 
     std::string error;
-    addrinfo* list = NULL;
+    addrinfo* list = nullptr;
     assert(!node.empty() || !service.empty());
-    const int code = ::getaddrinfo(node.empty() ? NULL : node.c_str(),
-                                   service.empty() ? NULL : service.c_str(),
+    const int code = ::getaddrinfo(node.empty() ? nullptr : node.c_str(),
+                                   service.empty() ? nullptr : service.c_str(),
                                    hints,
                                    &list);
 
@@ -67,7 +67,7 @@ Network::AiResult Network::get_addrinfo(const Hostname& node,
         error = oss.str();
     }
     else {
-        assert(list != NULL);
+        assert(list != nullptr);
     }
 
     return AiResult(list, Result(code, error));

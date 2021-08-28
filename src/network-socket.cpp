@@ -65,22 +65,22 @@ Network::Socket& Network::Socket::operator=(const addrinfo& t_socket)
     ai_protocol = t_socket.ai_protocol;
     ai_addrlen = t_socket.ai_addrlen;
     free(ai_canonname);
-    ai_canonname = NULL;
+    ai_canonname = nullptr;
 
-    if (t_socket.ai_canonname != NULL) {
+    if (t_socket.ai_canonname != nullptr) {
         ai_canonname = strdup(t_socket.ai_canonname);
     }
 
     free(ai_addr);
-    ai_addr = NULL;
+    ai_addr = nullptr;
 
-    if (t_socket.ai_addr != NULL) {
+    if (t_socket.ai_addr != nullptr) {
         ai_addr = static_cast<sockaddr*>
             (malloc(ai_addrlen));
         std::memcpy(ai_addr, t_socket.ai_addr, ai_addrlen);
     }
 
-    ai_next = NULL;
+    ai_next = nullptr;
     return *this;
 }
 
@@ -110,7 +110,7 @@ bool Network::Socket::operator==(const Socket& t_socket) const
 
 Network::Hostname Network::Socket::cname() const
 {
-    return Hostname(ai_canonname == NULL ? "" : ai_canonname);
+    return Hostname(ai_canonname == nullptr ? "" : ai_canonname);
 }
 
 int Network::Socket::family() const
@@ -216,18 +216,18 @@ addrinfo Network::Socket::defaults(int t_family,
         t_socktype,	// ai_socktype
         t_protocol,	// ai_protocol
         0,		// ai_addrlen
-        NULL,		// ai_canonname
-        NULL,		// ai_addr
-        NULL		// ai_next
+        nullptr,	// ai_canonname
+        nullptr,	// ai_addr
+        nullptr		// ai_next
     };
     assert(ai.ai_flags == t_flags);
     assert(ai.ai_family == t_family);
     assert(ai.ai_socktype == t_socktype);
     assert(ai.ai_protocol == t_protocol);
     assert(ai.ai_addrlen == 0);
-    assert(ai.ai_canonname == NULL);
-    assert(ai.ai_addr == NULL);
-    assert(ai.ai_next == NULL);
+    assert(ai.ai_canonname == nullptr);
+    assert(ai.ai_addr == nullptr);
+    assert(ai.ai_next == nullptr);
     return ai;
 }
 

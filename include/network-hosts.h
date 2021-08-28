@@ -20,7 +20,7 @@ namespace Network
     typedef std::vector<Host> Hosts;
     typedef std::pair<Hosts, Result> HostsResult;
     extern HostsResult get_hosts(const Hostname& host,
-                                 const addrinfo* hints = NULL,
+                                 const addrinfo* hints = nullptr,
                                  bool verbose = false);
     extern HostsResult get_hosts(const Hostname& host,
                                  const addrinfo& hints,
