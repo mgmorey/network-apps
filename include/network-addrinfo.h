@@ -11,7 +11,6 @@
 #include <netdb.h>      // struct addrinfo, freeaddrinfo()
 #endif
 
-#include <cstddef>      // std::size_t
 #include <iostream>     // std::cerr, std::endl
 #include <string>       // std::string
 #include <utility>      // std::pair
