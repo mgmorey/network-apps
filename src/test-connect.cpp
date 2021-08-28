@@ -31,10 +31,10 @@ namespace TestConnect
     class Test
     {
     public:
-        Test(std::ostream& t_os,
-             const Network::Endpoint& t_endpoint) :
-            m_os(t_os),
-            m_endpoint(t_endpoint)
+        Test(const Network::Endpoint& t_endpoint,
+             std::ostream& t_os) :
+            m_endpoint(t_endpoint),
+            m_os(t_os)
         {
         }
 
@@ -89,8 +89,8 @@ namespace TestConnect
         }
 
     private:
-        std::ostream& m_os;
         Network::Endpoint m_endpoint;
+        std::ostream& m_os;
     };
 
     static void test_connect(const Network::Endpoint& endpoint,
