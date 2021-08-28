@@ -26,25 +26,6 @@ namespace Network
                                        bool verbose);
 
     template<typename OutputIt>
-    void insert_addrinfo(const addrinfo* in,
-                         bool verbose,
-                         OutputIt out)
-    {
-        for (; in != nullptr; in = in->ai_next) {
-            if (verbose) {
-                std::cerr << "Fetched addrinfo "
-                          << in
-                          << ':'
-                          << std::endl
-                          << *in
-                          << std::endl;
-            }
-
-            *out++ = *in;
-        }
-    }
-
-    template<typename OutputIt>
     Result insert_addrinfo(const Hostname& node,
                            const Service& service,
                            const addrinfo* hints,
@@ -55,7 +36,21 @@ namespace Network
             result(get_addrinfo(node, service, hints, verbose));
 
         if (result.first != nullptr) {
-            insert_addrinfo(result.first, verbose, out);
+            const addrinfo* in = result.first;
+
+            for (; in != nullptr; in = in->ai_next) {
+                if (verbose) {
+                    std::cerr << "Fetched addrinfo "
+                              << in
+                              << ':'
+                              << std::endl
+                              << *in
+                              << std::endl;
+                }
+
+                *out++ = *in;
+            }
+
             ::freeaddrinfo(result.first);
         }
 
