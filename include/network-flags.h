@@ -11,7 +11,7 @@ namespace Network
                                         const Flags& flags);
 
     public:
-        Flags(int t_value);
+        explicit Flags(int t_value);
 
     private:
         int m_value;

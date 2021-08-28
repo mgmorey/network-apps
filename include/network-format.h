@@ -13,8 +13,8 @@ namespace Network
                                         const Format& format);
 
     public:
-        Format(const std::string& t_key);
-        Format(int t_indent, const std::string& t_key = "");
+        explicit Format(const std::string& t_key);
+        explicit Format(int t_indent, const std::string& t_key = "");
         Format(const std::string& t_delimiter, int indent,
                const std::string& key = "");
 

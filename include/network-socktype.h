@@ -11,7 +11,7 @@ namespace Network
                                         const SockType& socktype);
 
     public:
-        SockType(int t_value);
+        explicit SockType(int t_value);
 
     private:
         int m_value;

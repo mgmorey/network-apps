@@ -18,6 +18,7 @@ namespace Network
     class Host
     {
     public:
+        // cppcheck-suppress noExplicitConstructor
         Host(const addrinfo& ai);
         Host& operator=(const addrinfo& t_addrinfo);
         bool operator<(const Host& t_addrinfo) const;

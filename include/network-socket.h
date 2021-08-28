@@ -36,6 +36,7 @@ namespace Network
                int t_protocol = 0,
                int t_flags = 0);
         Socket(const Socket& t_socket);
+        // cppcheck-suppress noExplicitConstructor
         Socket(const addrinfo& t_socket);
         ~Socket();
         Socket& operator=(const Socket& t_socket);

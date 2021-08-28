@@ -13,8 +13,8 @@ namespace Network
 
     public:
         Nullable();
-        Nullable(const std::string& t_nullable);
-        Nullable(const char* t_value);
+        explicit Nullable(const std::string& t_nullable);
+        explicit Nullable(const char* t_value);
         Nullable& operator=(const std::string& t_nullable);
         Nullable& operator=(const char* t_value);
         operator std::string() const;

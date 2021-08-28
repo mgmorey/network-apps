@@ -11,7 +11,7 @@ namespace Network
                                         const Family& family);
 
     public:
-        Family(int t_value);
+        explicit Family(int t_value);
 
     private:
         int m_value;
