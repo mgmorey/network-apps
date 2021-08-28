@@ -32,8 +32,7 @@ namespace Network
                            bool verbose,
                            OutputIt out)
     {
-        const AddrInfoResult
-            result(get_addrinfo(node, service, hints, verbose));
+        const auto result(get_addrinfo(node, service, hints, verbose));
 
         if (result.first != nullptr) {
             const addrinfo* in = result.first;
