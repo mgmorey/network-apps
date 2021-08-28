@@ -1,8 +1,6 @@
 #include "network-addrinfo.h"   // AddrInfoResult, Hostname, Service,
                                 // Result, struct addrinfo,
-                                // copy_addrinfo(), get_addrinfo(),
-                                // std::cerr, std::endl, std::ostream,
-                                // std::size_t, std::string
+                                // get_addrinfo(), insert_addrinfo()
 #include "network-address.h"    // Address, operator<<()
 #include "network-family.h"     // Family, operator<<()
 #include "network-flags.h"      // Flags, operator<<()
@@ -17,6 +15,7 @@
 #include <netdb.h>      // struct addrinfo, getaddrinfo()
 #endif
 
+#include <iostream>     // std::cerr, std::endl
 #include <cassert>      // assert()
 #include <ostream>      // std::ostream
 #include <sstream>      // std::ostringstream
