@@ -17,13 +17,13 @@ Network::Connect::Connect(bool t_verbose) :
 
 Network::SocketResult Network::Connect::operator()(const Socket& t_socket)
 {
-    SocketResult socket_result(t_socket.socket(m_verbose));
+    auto socket_result(t_socket.socket(m_verbose));
 
     if (socket_result.first == sock_fd_null) {
         return socket_result;
     }
 
-    const Result connect_result(connect(t_socket, socket_result.first));
+    const auto connect_result(connect(t_socket, socket_result.first));
 
     if (connect_result.nonzero()) {
         close(socket_result.first);
@@ -37,7 +37,7 @@ Network::SocketResult Network::Connect::operator()(const Socket& t_socket)
 Network::Result Network::Connect::connect(const Socket& t_socket,
                                           sock_fd_type t_sock_fd)
 {
-    const Address address(static_cast<Host>(t_socket));
+    const auto address(static_cast<Address>(static_cast<Host>(t_socket)));
     return address.connect(t_sock_fd, m_verbose);
 }
 
@@ -46,9 +46,9 @@ Network::SocketResults Network::connect(const Endpoint& endpoint,
                                         bool verbose)
 {
     SocketResults results;
-    const SocketsResult sockets_result(get_sockets(endpoint, hints, verbose));
-    const Sockets sockets(sockets_result.first);
-    const Result result(sockets_result.second);
+    const auto sockets_result(get_sockets(endpoint, hints, verbose));
+    const auto sockets(sockets_result.first);
+    const auto result(sockets_result.second);
     std::transform(sockets.begin(), sockets.end(),
                    std::back_inserter(results),
                    Connect(verbose));

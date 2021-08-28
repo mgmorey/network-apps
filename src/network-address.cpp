@@ -150,7 +150,7 @@ Network::Address::operator const sockaddr&() const
 
 std::string Network::Address::sa_data() const
 {
-    static const std::size_t offset = offsetof(sockaddr, sa_data);
+    constexpr std::size_t offset = offsetof(sockaddr, sa_data);
     return std::string(m_value.data() + offset,
                        m_value.size() - offset);
 }
