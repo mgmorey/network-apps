@@ -27,7 +27,7 @@ namespace Network
                                  const addrinfo* hints,
                                  bool verbose);
 
-    template <class OutputIt>
+    template <typename OutputIt>
     Result insert_addrinfo(OutputIt iter,
                            const Hostname& node,
                            const Service& service,

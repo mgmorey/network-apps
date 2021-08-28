@@ -6,7 +6,7 @@
 
 namespace Network
 {
-    template <class Container>
+    template <typename Container>
     std::ostream& print(std::ostream& os,
                         const Container& cont,
                         const std::string& before = "",

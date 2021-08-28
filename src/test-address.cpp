@@ -27,7 +27,7 @@
 #include <string>       // std::string
 #include <vector>       // std::vector
 
-template <class Container>
+template <typename Container>
 class Empty
 {
 public:
@@ -37,13 +37,13 @@ public:
     }
 };
 
-template <class Container, class Functor>
+template <typename Container, typename Functor>
 void remove_if(Container& cont, Functor func)
 {
     cont.erase(std::remove_if(cont.begin(), cont.end(), func), cont.end());
 }
 
-template <class Container>
+template <typename Container>
 void unique(Container& cont)
 {
     cont.erase(std::unique(cont.begin(), cont.end()), cont.end());
