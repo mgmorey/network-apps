@@ -63,11 +63,10 @@ namespace TestAddress
 
         void operator()(const Network::Host& t_host)
         {
-            const Network::Address address(t_host);
-            const Network::EndpointResult
-                endpoint_result(address.to_endpoint(false, true));
-            const Network::Endpoint endpoint(endpoint_result.first);
-            const Network::Result result(endpoint_result.second);
+            const auto address(static_cast<Network::Address>(t_host));
+            const auto endpoint_result(address.to_endpoint(false, true));
+            const auto endpoint(endpoint_result.first);
+            const auto result(endpoint_result.second);
 
             if (result.nonzero()) {
                 std::cerr << result
@@ -75,10 +74,11 @@ namespace TestAddress
                 return;
             }
 
-            Values values;
-            values.push_back(address.text());
-            values.push_back(endpoint.first);
-            values.push_back(t_host.canonical_name());
+            Values values = {
+                address.text(),
+                endpoint.first,
+                t_host.canonical_name()
+            };
             remove_if(values, Empty<std::string>());
             unique(values);
 
@@ -133,11 +133,10 @@ namespace TestAddress
                           const Network::Socket& hints,
                           bool verbose = true)
     {
-        const std::string description(get_description(hints));
-        const Network::HostsResult
-            hosts_result(get_hosts(host, hints, verbose));
-        const Network::Hosts hosts(hosts_result.first);
-        const Network::Result result(hosts_result.second);
+        const auto description(get_description(hints));
+        const auto hosts_result(get_hosts(host, hints, verbose));
+        const auto hosts(hosts_result.first);
+        const auto result(hosts_result.second);
 
         if (result.nonzero()) {
             if (description.empty()) {
@@ -171,17 +170,18 @@ namespace TestAddress
 
     static void test_host(const Network::Hostname& host)
     {
-        static const int lflags = AI_ADDRCONFIG | AI_CANONNAME;
-        static const int rflags = AI_CANONNAME;
+        const auto flags = (host.empty() ?
+                            AI_ADDRCONFIG | AI_CANONNAME :
+                            AI_CANONNAME);
 
         if (host.empty()) {
-            Network::Socket hints(AF_UNSPEC, SOCK_STREAM, IPPROTO_TCP, lflags);
+            Network::Socket hints(AF_UNSPEC, SOCK_STREAM, IPPROTO_TCP, flags);
             test_host(host, hints, true);
         }
         else {
             std::cout << "Host: " << host << std::endl;
-            Network::Socket hints4(AF_INET, SOCK_STREAM, IPPROTO_TCP, rflags);
-            Network::Socket hints6(AF_INET6, SOCK_STREAM, IPPROTO_TCP, rflags);
+            Network::Socket hints4(AF_INET, SOCK_STREAM, IPPROTO_TCP, flags);
+            Network::Socket hints6(AF_INET6, SOCK_STREAM, IPPROTO_TCP, flags);
             test_host(host, hints4, true);
             test_host(host, hints6, true);
         }
@@ -191,7 +191,7 @@ namespace TestAddress
 int main(int argc, char* argv[])
 {
     const Network::Context context;
-    const Network::Hostname host(argc > 1 ? argv[1] : "example.com");
+    const auto host(argc > 1 ? argv[1] : "example.com");
 
     if (argc <= 1) {
         TestAddress::test_host("");

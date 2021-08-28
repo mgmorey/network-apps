@@ -16,9 +16,8 @@ namespace TestSocket
 {
     static void test_peer(Network::sock_fd_type sock_fd)
     {
-        const Network::AddressResult
-            address_result(Network::get_peername(sock_fd, true));
-        const Network::Result result(address_result.second);
+        const auto address_result(Network::get_peername(sock_fd, true));
+        const auto result(address_result.second);
 
         if (result.nonzero()) {
             std::cerr << "No address: "
@@ -39,16 +38,15 @@ namespace TestSocket
 int main(void)
 {
     const Network::Socket socket(AF_UNIX, SOCK_STREAM);
-    const Network::SocketpairResult
-        socketpair_result(socket.socketpair(true));
-    const Network::Result result(socketpair_result.second);
+    const auto socketpair_result(socket.socketpair(true));
+    const auto result(socketpair_result.second);
 
     if (result.nonzero()) {
         std::cerr << result
                   << std::endl;
     }
     else {
-        const Network::FdPair sock_fd(socketpair_result.first);
+        const auto sock_fd(socketpair_result.first);
         std::cout << "Socket "
                   << sock_fd.first
                   << " connected to socket "
