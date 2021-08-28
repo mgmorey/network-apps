@@ -12,24 +12,27 @@
 #include <cstdlib>      // EXIT_FAILURE, EXIT_SUCCESS
 #include <iostream>     // std::cerr, std::cout, std::endl
 
-static void test_peer(Network::sock_fd_type sock_fd)
+namespace TestSocket
 {
-    const Network::AddressResult
-        address_result(Network::get_peername(sock_fd, true));
-    const Network::Result result(address_result.second);
+    static void test_peer(Network::sock_fd_type sock_fd)
+    {
+        const Network::AddressResult
+            address_result(Network::get_peername(sock_fd, true));
+        const Network::Result result(address_result.second);
 
-    if (result.nonzero()) {
-        std::cerr << "No address: "
-                  << result
-                  << std::endl;
-    }
-    else {
-        Network::Address address(address_result.first);
-        std::cout << "Socket "
-                  << sock_fd
-                  << " connected to "
-                  << address
-                  << std::endl;
+        if (result.nonzero()) {
+            std::cerr << "No address: "
+                      << result
+                      << std::endl;
+        }
+        else {
+            Network::Address address(address_result.first);
+            std::cout << "Socket "
+                      << sock_fd
+                      << " connected to "
+                      << address
+                      << std::endl;
+        }
     }
 }
 
@@ -51,8 +54,8 @@ int main(void)
                   << " connected to socket "
                   << sock_fd.second
                   << std::endl;
-        test_peer(sock_fd.first);
-        test_peer(sock_fd.second);
+        TestSocket::test_peer(sock_fd.first);
+        TestSocket::test_peer(sock_fd.second);
         Network::close(sock_fd.first);
         Network::close(sock_fd.second);
         std::cout << "Sockets "

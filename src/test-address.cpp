@@ -27,160 +27,164 @@
 #include <string>       // std::string
 #include <vector>       // std::vector
 
-template<typename Container>
-class Empty
+namespace TestAddress
 {
-public:
-    bool operator()(const Container& t_value)
+    template<typename Container>
+    class Empty
     {
-        return t_value.empty();
-    }
-};
+    public:
+        bool operator()(const Container& t_value)
+        {
+            return t_value.empty();
+        }
+    };
 
-template<typename Container, typename Functor>
-void remove_if(Container& cont, Functor func)
-{
-    cont.erase(std::remove_if(cont.begin(), cont.end(), func), cont.end());
-}
-
-template<typename Container>
-void unique(Container& cont)
-{
-    cont.erase(std::unique(cont.begin(), cont.end()), cont.end());
-}
-
-class Test
-{
-public:
-    typedef std::vector<std::string> Values;
-
-    Test(std::ostream& t_os) :
-        m_os(t_os)
+    template<typename Container, typename Functor>
+    void remove_if(Container& cont, Functor func)
     {
+        cont.erase(std::remove_if(cont.begin(), cont.end(), func), cont.end());
     }
 
-    void operator()(const Network::Host& t_host)
+    template<typename Container>
+    void unique(Container& cont)
     {
-        const Network::Address address(t_host);
-        const Network::EndpointResult
-            endpoint_result(address.to_endpoint(false, true));
-        const Network::Endpoint endpoint(endpoint_result.first);
-        const Network::Result result(endpoint_result.second);
+        cont.erase(std::unique(cont.begin(), cont.end()), cont.end());
+    }
+
+    class Test
+    {
+    public:
+        typedef std::vector<std::string> Values;
+
+        explicit Test(std::ostream& t_os) :
+            m_os(t_os)
+        {
+        }
+
+        void operator()(const Network::Host& t_host)
+        {
+            const Network::Address address(t_host);
+            const Network::EndpointResult
+                endpoint_result(address.to_endpoint(false, true));
+            const Network::Endpoint endpoint(endpoint_result.first);
+            const Network::Result result(endpoint_result.second);
+
+            if (result.nonzero()) {
+                std::cerr << result
+                          << std::endl;
+                return;
+            }
+
+            Values values;
+            values.push_back(address.text());
+            values.push_back(endpoint.first);
+            values.push_back(t_host.canonical_name());
+            remove_if(values, Empty<std::string>());
+            unique(values);
+
+            if (values.empty()) {
+                return;
+            }
+
+            print(values);
+        }
+
+        void print(const Values& values)
+        {
+            m_os << '\t';
+
+            for (std::size_t i = 0; i < values.size(); ++i) {
+                if (i > 1) {
+                    m_os << ", ";
+                }
+
+                m_os << values[i];
+
+                if (!i) {
+                    m_os << " (";
+                }
+            }
+
+            m_os << ')'
+                 << std::endl;
+        }
+
+    private:
+        std::ostream& m_os;
+    };
+
+    static std::string get_description(const Network::Socket& hints)
+    {
+        std::string result;
+
+        switch (hints.ai_family) {
+        case AF_INET:
+            result = "IPv4";
+            break;
+        case AF_INET6:
+            result = "IPv6";
+            break;
+        }
+
+        return result;
+    }
+
+    static void test_host(const Network::Hostname& host,
+                          const Network::Socket& hints,
+                          bool verbose = true)
+    {
+        const std::string description(get_description(hints));
+        const Network::HostsResult
+            hosts_result(get_hosts(host, hints, verbose));
+        const Network::Hosts hosts(hosts_result.first);
+        const Network::Result result(hosts_result.second);
 
         if (result.nonzero()) {
-            std::cerr << result
+            if (description.empty()) {
+                std::cout << "No";
+            }
+            else {
+                std::cout << "No "
+                          << description;
+            }
+
+            std::cout << " hosts:"
+                      << std::endl
+                      << result
                       << std::endl;
             return;
         }
+        else if (!hosts.empty()) {
+            if (description.empty()) {
+                std::cout << "All";
+            }
+            else {
+                std::cout << "All "
+                          << description;
+            }
 
-        Values values;
-        values.push_back(address.text());
-        values.push_back(endpoint.first);
-        values.push_back(t_host.canonical_name());
-        remove_if(values, Empty<std::string>());
-        unique(values);
-
-        if (values.empty()) {
-            return;
+            std::cout << " hosts:"
+                      << std::endl;
+            std::for_each(hosts.begin(), hosts.end(), Test(std::cout));
         }
-
-        print(values);
     }
 
-    void print(const Values& values)
+    static void test_host(const Network::Hostname& host)
     {
-        m_os << '\t';
+        static const int lflags = AI_ADDRCONFIG | AI_CANONNAME;
+        static const int rflags = AI_CANONNAME;
 
-        for (std::size_t i = 0; i < values.size(); ++i) {
-            if (i > 1) {
-                m_os << ", ";
-            }
-
-            m_os << values[i];
-
-            if (!i) {
-                m_os << " (";
-            }
-        }
-
-        m_os << ')'
-             << std::endl;
-    }
-
-private:
-    std::ostream& m_os;
-};
-
-static std::string get_description(const Network::Socket& hints)
-{
-    std::string result;
-
-    switch (hints.ai_family) {
-    case AF_INET:
-        result = "IPv4";
-        break;
-    case AF_INET6:
-        result = "IPv6";
-        break;
-    }
-
-    return result;
-}
-
-static void test_host(const Network::Hostname& host,
-                      const Network::Socket& hints,
-                      bool verbose = true)
-{
-    const std::string description(get_description(hints));
-    const Network::HostsResult hosts_result(get_hosts(host, hints, verbose));
-    const Network::Hosts hosts(hosts_result.first);
-    const Network::Result result(hosts_result.second);
-
-    if (result.nonzero()) {
-        if (description.empty()) {
-            std::cout << "No";
+        if (host.empty()) {
+            Network::Socket hints(AF_UNSPEC, SOCK_STREAM, IPPROTO_TCP, lflags);
+            test_host(host, hints, true);
         }
         else {
-            std::cout << "No "
-                      << description;
+            std::cout << "Host: " << host << std::endl;
+            Network::Socket hints4(AF_INET, SOCK_STREAM, IPPROTO_TCP, rflags);
+            Network::Socket hints6(AF_INET6, SOCK_STREAM, IPPROTO_TCP, rflags);
+            test_host(host, hints4, true);
+            test_host(host, hints6, true);
         }
-
-        std::cout << " hosts:"
-                  << std::endl
-                  << result
-                  << std::endl;
-        return;
-    }
-    else if (!hosts.empty()) {
-        if (description.empty()) {
-            std::cout << "All";
-        }
-        else {
-            std::cout << "All "
-                      << description;
-        }
-
-        std::cout << " hosts:"
-                  << std::endl;
-        std::for_each(hosts.begin(), hosts.end(), Test(std::cout));
-    }
-}
-
-static void test_host(const Network::Hostname& host)
-{
-    static const int lflags = AI_ADDRCONFIG | AI_CANONNAME;
-    static const int rflags = AI_CANONNAME;
-
-    if (host.empty()) {
-        Network::Socket hints(AF_UNSPEC, SOCK_STREAM, IPPROTO_TCP, lflags);
-        test_host(host, hints, true);
-    }
-    else {
-        std::cout << "Host: " << host << std::endl;
-        Network::Socket hints4(AF_INET, SOCK_STREAM, IPPROTO_TCP, rflags);
-        Network::Socket hints6(AF_INET6, SOCK_STREAM, IPPROTO_TCP, rflags);
-        test_host(host, hints4, true);
-        test_host(host, hints6, true);
     }
 }
 
@@ -190,10 +194,10 @@ int main(int argc, char* argv[])
     const Network::Hostname host(argc > 1 ? argv[1] : "example.com");
 
     if (argc <= 1) {
-        test_host("");
+        TestAddress::test_host("");
     }
 
-    test_host(host);
+    TestAddress::test_host(host);
     static_cast<void>(context);
     return EXIT_SUCCESS;
 }
