@@ -98,7 +98,7 @@ namespace TestConnect
     {
         const auto results(connect(endpoint, hints, true));
         std::for_each(results.begin(), results.end(),
-                      Test(std::cout, endpoint));
+                      Test(endpoint, std::cout));
     }
 }
 
