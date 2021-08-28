@@ -3,7 +3,6 @@
 
 #include "network-result.h"     // Result
 #include "network-types.h"      // Hostname, Service
-#include "network-unique.h"     // Unique, operator<<()
 #include "stream-addrinfo.h"    // operator<<()
 
 #ifdef _WIN32
@@ -28,11 +27,11 @@ namespace Network
                                  bool verbose);
 
     template<typename OutputIt>
-    Result insert_addrinfo(OutputIt iter,
-                           const Hostname& node,
+    Result insert_addrinfo(const Hostname& node,
                            const Service& service,
                            const addrinfo* hints,
-                           bool verbose)
+                           bool verbose,
+                           OutputIt it)
     {
         const AiResult ai_result(get_addrinfo(node, service, hints, verbose));
         addrinfo* list = ai_result.first;
@@ -51,7 +50,7 @@ namespace Network
                           << std::endl;
             }
 
-            *iter++ = *elem;
+            *it++ = *elem;
         }
 
         ::freeaddrinfo(list);
