@@ -10,9 +10,9 @@
 #include "network-socktype.h"   // SockType, operator<<()
 
 #ifdef _WIN32
-#include <ws2tcpip.h>   // struct addrinfo, getaddrinfo()
+#include <ws2tcpip.h>   // getaddrinfo()
 #else
-#include <netdb.h>      // struct addrinfo, getaddrinfo()
+#include <netdb.h>      // getaddrinfo()
 #endif
 
 #include <iostream>     // std::cerr, std::endl
