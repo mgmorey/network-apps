@@ -6,20 +6,15 @@
 
 namespace Network
 {
-    template<typename Container>
-    std::ostream& print(std::ostream& os,
-                        const Container& cont,
+    template<typename T>
+    std::ostream& print(const T& value,
+                        std::ostream& os,
                         const std::string& before = "",
                         const std::string& after = "\n")
     {
-        typename Container::const_iterator first(cont.begin());
-        typename Container::const_iterator last(cont.end());
-
-        for (typename Container::const_iterator it = first;
-             it != last;
-             ++it) {
+        for (auto elem : value) {
             os << before
-               << *it
+               << elem
                << after;
         }
 
