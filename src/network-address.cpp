@@ -17,7 +17,8 @@
 #include <cerrno>       // errno
 #include <cstddef>      // offsetof()
 #include <cstring>      // std::strerror()
-#include <iomanip>      // std::hex, std::setfill(), std::setw()
+#include <iomanip>      // std::hex, std::setfill(), std::setw(),
+                        // std::uppercase
 #include <iostream>     // std::cerr, std::endl
 #include <sstream>      // std::ostringstream
 
@@ -163,20 +164,17 @@ Network::Address::family_type Network::Address::sa_family() const
 
 std::string Network::Address::sa_text() const
 {
-    const char* data = m_value.data();
-    const std::size_t size = m_value.size();
     std::ostringstream oss;
     oss << std::hex;
 
-    for(const char* p = data; p < data + size; p++) {
-        short ch = static_cast<short>(*p & 0xFF);
+    for (auto c : m_value) {
         oss << std::setfill('0')
             << std::setw(2)
-            << ch;
+            << std::uppercase
+            << static_cast<short>(c & 0xFF);
     }
 
-    const std::string str(oss.str());
-    assert(str.size() == size * 2);
+    const auto str(oss.str());
     std::string result("0x");
 
     if (str.empty()) {
