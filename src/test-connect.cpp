@@ -1,4 +1,4 @@
-#include "network-address.h"    // Address
+#include "network-address.h"    // Address, operator<<()
 #include "network-close.h"      // close()
 #include "network-connect.h"    // ConnectResult, ConnectResults
                                 // Endpoint, Hostname, Service,
@@ -7,7 +7,6 @@
 #include "network-fd.h"         // sock_fd_type
 #include "network-peername.h"   // AddressResult, get_peername()
 #include "network-socket.h"     // Socket
-#include "stream-address.h"     // operator<<()
 
 #ifdef _WIN32
 #include <winsock2.h>   // AF_INET, AF_INET6, PF_INET, PF_INET6,

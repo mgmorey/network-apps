@@ -15,6 +15,7 @@
 #include <cstring>      // std::strerror()
 #include <iostream>     // std::cerr, std::endl
 #include <sstream>      // std::ostringstream
+#include <string>       // std::string
 
 Network::AddressBuffer::AddressBuffer() :
     Buffer(capacity())

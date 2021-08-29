@@ -1,8 +1,6 @@
-#include "network-address.h"    // Address, struct sockaddr,
-                                // socklen_t, std::ostream,
-                                // std::string
+#include "network-address.h"    // Address, operator<<(), struct
+                                // sockaddr, socklen_t
 #include "network-buffer.h"     // Buffer
-#include "stream-address.h"     // operator<<()
 
 #ifdef _WIN32
 #include <winsock2.h>   // AF_INET, AF_INET6, AF_UNIX, AF_UNSPEC,
@@ -20,7 +18,9 @@
 #include <iomanip>      // std::hex, std::setfill(), std::setw(),
                         // std::uppercase
 #include <iostream>     // std::cerr, std::endl
+#include <ostream>      // std::ostream
 #include <sstream>      // std::ostringstream
+#include <string>       // std::string
 
 Network::Address::Address(const sockaddr* t_sockaddr, socklen_t t_socklen) :
     m_value(reinterpret_cast<const char*>(t_sockaddr), t_socklen)

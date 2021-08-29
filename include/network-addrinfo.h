@@ -3,7 +3,6 @@
 
 #include "network-result.h"     // Result
 #include "network-types.h"      // Hostname, Service
-#include "stream-addrinfo.h"    // operator<<()
 
 #ifdef _WIN32
 #include <ws2tcpip.h>   // struct addrinfo, freeaddrinfo()
@@ -12,6 +11,7 @@
 #endif
 
 #include <iostream>     // std::cerr, std::endl
+#include <ostream>      // std::ostream
 #include <string>       // std::string
 #include <utility>      // std::pair
 #include <vector>       // std::vector
@@ -19,6 +19,9 @@
 namespace Network
 {
     typedef std::pair<addrinfo*, Result> AddrInfoResult;
+
+    extern std::ostream& operator<<(std::ostream& os,
+                                    const addrinfo& ai);
 
     extern AddrInfoResult get_addrinfo(const Hostname& node,
                                        const Service& service,

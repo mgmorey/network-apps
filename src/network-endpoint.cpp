@@ -1,7 +1,6 @@
 #include "network-address.h"    // Address, Endpoint, EndpointResult,
-                                // Hostname, Result, to_endpoint()
+                                // Result, operator<<(), to_endpoint()
 #include "network-buffer.h"     // Buffer
-#include "stream-address.h"     // operator<<()
 
 #ifdef _WIN32
 #include <ws2tcpip.h>   // NI_MAXHOST, NI_MAXSERV, NI_NUMERICHOST,
@@ -13,7 +12,9 @@
 
 #include <cassert>      // assert()
 #include <iostream>     // std::cerr, std::endl
+#include <ostream>      // std::ostream
 #include <sstream>      // std::ostringstream
+#include <string>       // std::string
 
 Network::EndpointResult
 Network::Address::to_endpoint(int t_flags, bool t_verbose) const

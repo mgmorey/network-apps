@@ -15,6 +15,7 @@
 #include <sys/un.h>     // struct sockaddr_un
 #endif
 
+#include <ostream>      // std::ostream
 #include <string>       // std::string
 
 namespace Network
@@ -76,6 +77,9 @@ namespace Network
 
         std::string m_value;
     };
+
+    extern std::ostream& operator<<(std::ostream& os,
+                                    const Address& address);
 }
 
 #endif

@@ -1,18 +1,19 @@
-#include "stream-addrinfo.h"    // struct addrinfo, std::ostream,
-                                // operator<<()
+#include "network-address.h"    // Address, operator<<()
+#include "network-addrinfo.h"   // operator<<()
 #include "network-family.h"     // Family, operator<<()
 #include "network-flags.h"      // Flags, operator<<()
 #include "network-format.h"     // Format, operator<<()
 #include "network-nullable.h"   // Nullable, operator<<()
 #include "network-protocol.h"   // Protocol, operator<<()
 #include "network-socktype.h"   // SockType, operator<<()
-#include "stream-address.h"     // Address, operator<<()
 
 #ifdef _WIN32
 #include <ws2tcpip.h>   // struct addrinfo
 #else
 #include <netdb.h>      // struct addrinfo
 #endif
+
+#include <ostream>      // std::ostream
 
 std::ostream& Network::operator<<(std::ostream& os,
                                   const addrinfo& ai)

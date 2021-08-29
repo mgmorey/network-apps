@@ -1,12 +1,12 @@
 #include "network-socket.h"     // FdPair, Hostname, Result, Socket,
                                 // SocketpairResult, SocketResult,
                                 // sock_fd_type
+#include "network-addrinfo.h"   // operator<<()
 #include "network-family.h"     // Family
 #include "network-format.h"     // Format
 #include "network-host.h"       // Host
 #include "network-protocol.h"   // Protocol
 #include "network-socktype.h"   // SockType
-#include "stream-addrinfo.h"    // operator<<()
 
 #ifdef _WIN32
 #include <winsock2.h>   // struct sockaddr, socket()
