@@ -8,7 +8,6 @@
 #include "network-peername.h"   // AddressResult, get_peername()
 #include "network-socket.h"     // Socket
 #include "stream-address.h"     // operator<<()
-#include "stream-container.h"   // print()
 
 #ifdef _WIN32
 #include <winsock2.h>   // AF_INET, AF_INET6, PF_INET, PF_INET6,
