@@ -41,36 +41,43 @@ namespace TestConnect
         void operator()(const Network::SocketResult& t_socket_result)
         {
             const auto sock_fd = t_socket_result.first;
+            const auto result = t_socket_result.second;
 
             if (sock_fd == Network::sock_fd_null) {
-                std::cerr << t_socket_result.second
+                std::cerr << result
                           << std::endl;
             }
             else {
-                const auto cname(t_socket_result.second.string());
-                const auto hostname(m_endpoint.first);
-                const auto service(m_endpoint.second);
-                m_os << "Socket "
-                     << sock_fd
-                     << " connected to "
-                     << service
-                     << " on "
-                     << (cname.empty() ?
-                         hostname :
-                         cname)
-                     << std::endl;
-                test_peer(sock_fd);
-                Network::close(sock_fd);
-                m_os << "Socket "
-                     << sock_fd
-                     << " closed"
-                     << std::endl;
+                test_socket(sock_fd, result);
             }
         }
 
-        void test_peer(Network::sock_fd_type sock_fd)
+        void test_socket(Network::sock_fd_type t_sock_fd,
+                         const Network::Result& t_result)
         {
-            const auto address_result(Network::get_peername(sock_fd, true));
+            const auto cname(t_result.string());
+            const auto hostname(m_endpoint.first);
+            const auto service(m_endpoint.second);
+            m_os << "Socket "
+                 << t_sock_fd
+                 << " connected to "
+                 << service
+                 << " on "
+                 << (cname.empty() ?
+                     hostname :
+                     cname)
+                 << std::endl;
+            test_socket_peer(t_sock_fd);
+            Network::close(t_sock_fd);
+            m_os << "Socket "
+                 << t_sock_fd
+                 << " closed"
+                 << std::endl;
+        }
+
+        void test_socket_peer(Network::sock_fd_type t_sock_fd)
+        {
+            const auto address_result(Network::get_peername(t_sock_fd, true));
             const auto address(address_result.first);
             const auto result(address_result.second);
 
@@ -81,7 +88,7 @@ namespace TestConnect
             }
             else {
                 m_os << "Socket "
-                     << sock_fd
+                     << t_sock_fd
                      << " connected to "
                      << address
                      << std::endl;
