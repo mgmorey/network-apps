@@ -167,7 +167,7 @@ std::string Network::Address::sa_text() const
     std::ostringstream oss;
     oss << std::hex;
 
-    for (auto c : m_value) {
+    for (const auto c : m_value) {
         oss << std::setfill('0')
             << std::setw(2)
             << std::uppercase
