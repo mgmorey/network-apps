@@ -1,5 +1,5 @@
-#include "network-address.h"    // Address, operator<<()
 #include "network-addrinfo.h"   // operator<<()
+#include "network-address.h"    // Address, operator<<()
 #include "network-family.h"     // Family, operator<<()
 #include "network-flags.h"      // Flags, operator<<()
 #include "network-format.h"     // Format, operator<<()

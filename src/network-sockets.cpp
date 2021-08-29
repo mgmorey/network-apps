@@ -1,6 +1,6 @@
 #include "network-sockets.h"    // Endpoint, Hostname, Service,
                                 // SocketsResult, struct addrinfo
-#include "network-addrinfo.h"   // insert_addrinfo()
+#include "network-addrinfo.h"   // AddrInfo, operator<<()
 #include "network-hostname.h"   // get_hostname()
 
 #include <iterator>     // std::back_inserter()

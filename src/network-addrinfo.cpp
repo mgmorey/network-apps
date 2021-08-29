@@ -1,6 +1,6 @@
 #include "network-addrinfo.h"   // AddrInfo, Hostname, Service,
                                 // Result, struct addrinfo,
-                                // insert_addrinfo()
+                                // operator<<()
 #include "network-address.h"    // Address, operator<<()
 #include "network-family.h"     // Family, operator<<()
 #include "network-flags.h"      // Flags, operator<<()
