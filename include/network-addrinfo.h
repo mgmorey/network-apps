@@ -30,10 +30,11 @@ namespace Network
         {
             typedef std::ptrdiff_t difference_type;
             typedef std::input_iterator_tag iterator_category;
-            typedef const addrinfo* pointer;
-            typedef const addrinfo& reference;
+            typedef addrinfo* pointer;
+            typedef addrinfo& reference;
             typedef addrinfo value_type;
 
+            // cppcheck-suppress noExplicitConstructor
             InputIterator(pointer t_pointer);
             reference operator*() const;
             pointer operator->() const;
