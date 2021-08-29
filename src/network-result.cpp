@@ -1,5 +1,8 @@
 #include "network-result.h"     // Result
 
+#include <ostream>      // std::ostream
+#include <string>       // std::string
+
 Network::Result::Result() :
     m_value(0)
 {
