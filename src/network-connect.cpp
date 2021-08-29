@@ -25,7 +25,7 @@ Network::SocketResult Network::Connect::operator()(const Socket& t_socket)
 
     const auto connect_result(connect(t_socket, socket_result.first));
 
-    if (connect_result.nonzero()) {
+    if (connect_result.result() != 0) {
         close(socket_result.first);
         return SocketResult(sock_fd_null, connect_result);
     }

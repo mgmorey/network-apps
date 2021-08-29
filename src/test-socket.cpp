@@ -17,7 +17,7 @@ namespace TestSocket
         const auto address_result(Network::get_peername(sock_fd, true));
         const auto result(address_result.second);
 
-        if (result.nonzero()) {
+        if (result.result() != 0) {
             std::cerr << "No address: "
                       << result
                       << std::endl;
@@ -39,7 +39,7 @@ int main(void)
     const auto socketpair_result(socket.socketpair(true));
     const auto result(socketpair_result.second);
 
-    if (result.nonzero()) {
+    if (result.result() != 0) {
         std::cerr << result
                   << std::endl;
     }

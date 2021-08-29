@@ -78,7 +78,7 @@ namespace TestConnect
             const auto address(address_result.first);
             const auto result(address_result.second);
 
-            if (result.nonzero()) {
+            if (result.result() != 0) {
                 std::cerr << "No address: "
                           << result
                           << std::endl;

@@ -67,7 +67,7 @@ namespace TestAddress
             const auto endpoint(endpoint_result.first);
             const auto result(endpoint_result.second);
 
-            if (result.nonzero()) {
+            if (result.result() != 0) {
                 std::cerr << result
                           << std::endl;
                 return;
@@ -137,7 +137,7 @@ namespace TestAddress
         const auto hosts(hosts_result.first);
         const auto result(hosts_result.second);
 
-        if (result.nonzero()) {
+        if (result.result() != 0) {
             if (description.empty()) {
                 std::cout << "No";
             }

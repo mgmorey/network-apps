@@ -11,11 +11,6 @@ Network::Result::Result(int t_value, const std::string& t_string) :
 {
 }
 
-bool Network::Result::nonzero() const
-{
-    return m_value != 0;
-}
-
 int Network::Result::result() const
 {
     return m_value;

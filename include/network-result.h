@@ -6,12 +6,10 @@
 
 namespace Network
 {
-    class Result
+    struct Result
     {
-    public:
         Result();
         Result(int t_value, const std::string& t_string);
-        bool nonzero() const;
         int result() const;
         std::string string() const;
 

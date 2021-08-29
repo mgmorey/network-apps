@@ -11,7 +11,7 @@ int main(void)
     const auto hostname(hostname_result.first);
     const auto result(hostname_result.second);
 
-    if (result.nonzero()) {
+    if (result.result() != 0) {
         std::cerr << "No hostname: "
                   << result
                   << std::endl;
