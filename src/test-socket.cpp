@@ -1,11 +1,10 @@
-#include "network-address.h"    // Address
+#include "network-address.h"    // Address, operator<<()
 #include "network-close.h"      // close()
 #include "network-fd.h"         // sock_fd_type
 #include "network-host.h"       // Host
 #include "network-peername.h"   // AddressResult, get_peername()
 #include "network-result.h"     // Result
 #include "network-socket.h"     // FdPair, Socket, SocketpairResult
-#include "stream-address.h"     // operator<<()
 
 #include <sys/socket.h> // AF_UNIX, SOCK_STREAM
 
