@@ -34,7 +34,7 @@ std::ostream& Network::operator<<(std::ostream& os,
     std::ostringstream oss;
     std::size_t i = 0;
 
-    for(const auto value : values) {
+    for(const auto& value : values) {
         if (flags.m_value & value.first) {
             if (i++ > 0) {
                 oss << " | ";

@@ -56,7 +56,7 @@ std::ostream& Network::operator<<(std::ostream& os,
         ++i;
     }
 
-    for(const auto value : values) {
+    for(const auto& value : values) {
         if (socktype.m_value & value.first) {
             if (i++ > 0) {
                 oss << " | ";
