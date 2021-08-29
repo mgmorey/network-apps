@@ -68,6 +68,7 @@ Network::Socket& Network::Socket::operator=(const addrinfo& t_socket)
     ai_canonname = nullptr;
 
     if (t_socket.ai_canonname != nullptr) {
+        // cppcheck-suppress strdupCalled
         ai_canonname = strdup(t_socket.ai_canonname);
     }
 
