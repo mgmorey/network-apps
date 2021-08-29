@@ -21,7 +21,6 @@
 
 #include <algorithm>    // std::for_each(), std::remove_if(),
                         // std::unique()
-#include <cstdlib>      // EXIT_FAILURE, EXIT_SUCCESS
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <ostream>      // std::ostream
 #include <string>       // std::string
@@ -199,5 +198,4 @@ int main(int argc, char* argv[])
 
     TestAddress::test_host(host);
     static_cast<void>(context);
-    return EXIT_SUCCESS;
 }

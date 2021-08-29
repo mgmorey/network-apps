@@ -2,7 +2,6 @@
 #include "network-hostname.h"   // Hostname, HostnameResult, Result,
                                 // get_hostname()
 
-#include <cstdlib>      // EXIT_FAILURE, EXIT_SUCCESS
 #include <iostream>     // std::cerr, std::cout, std::endl
 
 int main(void)
@@ -24,5 +23,4 @@ int main(void)
     }
 
     static_cast<void>(context);
-    return EXIT_SUCCESS;
 }

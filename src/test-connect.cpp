@@ -22,7 +22,6 @@
 #endif
 
 #include <algorithm>    // std::for_each()
-#include <cstdlib>      // EXIT_FAILURE, EXIT_SUCCESS
 #include <iostream>     // std::cerr, std::cout, std::endl
 
 namespace TestConnect
@@ -124,5 +123,4 @@ int main(int argc, char* argv[])
     const auto endpoint(Network::Endpoint(host, service));
     TestConnect::test_connect(endpoint, hints);
     static_cast<void>(context);
-    return EXIT_SUCCESS;
 }

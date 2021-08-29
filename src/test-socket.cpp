@@ -9,7 +9,6 @@
 
 #include <sys/socket.h> // AF_UNIX, SOCK_STREAM
 
-#include <cstdlib>      // EXIT_FAILURE, EXIT_SUCCESS
 #include <iostream>     // std::cerr, std::cout, std::endl
 
 namespace TestSocket
@@ -63,5 +62,4 @@ int main(void)
                   << " closed"
                   << std::endl;
     }
-    return EXIT_SUCCESS;
 }

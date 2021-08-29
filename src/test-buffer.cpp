@@ -1,7 +1,6 @@
 #include "network-buffer.h"     // Buffer, std::string
 
 #include <cassert>      // assert()
-#include <cstdlib>      // EXIT_SUCCESS
 #include <cstring>      // std::memset()
 
 namespace TestBuffer
@@ -32,5 +31,4 @@ int main(void)
 {
     TestBuffer::test_buffer();
     TestBuffer::test_string();
-    return EXIT_SUCCESS;
 }

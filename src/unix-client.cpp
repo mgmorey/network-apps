@@ -87,5 +87,4 @@ int main(int argc, char *argv[])
 
     // Close socket.
     ::close(data_socket);
-    std::exit(EXIT_SUCCESS);
 }

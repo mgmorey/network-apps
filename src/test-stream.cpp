@@ -1,6 +1,5 @@
 #include "stream-container.h"   // print()
 
-#include <cstdlib>      // EXIT_FAILURE, EXIT_SUCCESS
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <list>         // std::list
 #include <string>       // std::string
@@ -25,5 +24,4 @@ int main()
 {
     TestStream::test_list();
     TestStream::test_vector();
-    return EXIT_SUCCESS;
 }

@@ -141,6 +141,4 @@ int main(void)
             break;
         }
     }
-
-    std::exit(EXIT_SUCCESS);
 }
