@@ -71,6 +71,7 @@ namespace TestConnect
         void test_peer(Network::sock_fd_type sock_fd)
         {
             const auto address_result(Network::get_peername(sock_fd, true));
+            const auto address(address_result.first);
             const auto result(address_result.second);
 
             if (result.nonzero()) {
@@ -79,7 +80,6 @@ namespace TestConnect
                           << std::endl;
             }
             else {
-                const auto address(address_result.first);
                 m_os << "Socket "
                      << sock_fd
                      << " connected to "
