@@ -20,7 +20,7 @@ Network::HostsResult Network::get_hosts(const Hostname& host,
     HostsResult result;
     const auto node(get_node(host));
     auto it(std::back_inserter(result.first));
-    result.second = insert_addrinfo(node, "", hints, verbose, it);
+    result.second = AddrInfo::insert(node, "", hints, verbose, it);
     return result;
 }
 

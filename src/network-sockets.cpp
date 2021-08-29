@@ -22,7 +22,7 @@ Network::SocketsResult Network::get_sockets(const Endpoint& endpoint,
     const auto node(get_node(endpoint));
     const auto service(endpoint.second);
     auto it(std::back_inserter(result.first));
-    result.second = insert_addrinfo(node, service, hints, verbose, it);
+    result.second = AddrInfo::insert(node, service, hints, verbose, it);
     return result;
 }
 
