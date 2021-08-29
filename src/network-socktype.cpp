@@ -29,11 +29,12 @@ std::ostream& Network::operator<<(std::ostream& os,
         {0,                         nullptr}
     };
 
+    constexpr auto mask = 00000017;
     std::ostringstream oss;
     std::size_t i = 0;
 
-    if (socktype.m_value & 00000017) {
-        switch (socktype.m_value & 00000017) {
+    if (socktype.m_value & mask) {
+        switch (socktype.m_value & mask) {
         case SOCK_STREAM:
             oss << "SOCK_STREAM";
             break;
