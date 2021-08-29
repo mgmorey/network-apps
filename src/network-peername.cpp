@@ -33,7 +33,7 @@ socklen_t Network::AddressBuffer::addrlen() const
 
 std::size_t Network::AddressBuffer::capacity()
 {
-    std::size_t size = sizeof(sockaddr_storage);
+    auto size = sizeof(sockaddr_storage);
 #ifndef _WIN32
     size = std::max(size, sizeof(sockaddr_un));
 #endif
