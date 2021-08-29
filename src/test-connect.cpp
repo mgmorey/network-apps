@@ -111,14 +111,17 @@ namespace TestConnect
 
 int main(int argc, char* argv[])
 {
+    constexpr auto host_default = "example.com";
+    constexpr auto service_default = "http";
+
     static const Network::Socket hints(AF_UNSPEC,
                                        SOCK_STREAM,
                                        IPPROTO_TCP,
                                        AI_CANONNAME);
 
     const Network::Context context;
-    const auto host(argc > 1 ? argv[1] : "example.com");
-    const auto service(argc > 2 ? argv[2] : "http");
+    const auto host(argc > 1 ? argv[1] : host_default);
+    const auto service(argc > 2 ? argv[2] : service_default);
     const auto endpoint(Network::Endpoint(host, service));
     TestConnect::test_connect(endpoint, hints);
     static_cast<void>(context);
