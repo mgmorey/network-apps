@@ -35,16 +35,16 @@ namespace TestSocket
 
 int main(void)
 {
-    const Network::Socket socket(AF_UNIX, SOCK_STREAM);
-    const auto socketpair_result(socket.socketpair(true));
-    const auto result(socketpair_result.second);
+    const Network::Socket network_socket(AF_UNIX, SOCK_STREAM);
+    const auto socketpair(network_socket.socketpair(true));
+    const auto result(socketpair.second);
 
     if (result.result() != 0) {
         std::cerr << result
                   << std::endl;
     }
     else {
-        const auto sock_fd(socketpair_result.first);
+        const auto sock_fd(socketpair.first);
         std::cout << "Socket "
                   << sock_fd.first
                   << " connected to socket "
