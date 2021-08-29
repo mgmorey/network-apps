@@ -11,6 +11,7 @@
 #endif
 
 #include <sstream>      // std::ostringstream
+#include <utility>      // std::pair
 
 Network::Flags::Flags(int t_value) :
     m_value(t_value)
@@ -20,10 +21,7 @@ Network::Flags::Flags(int t_value) :
 std::ostream& Network::operator<<(std::ostream& os,
                                   const Flags& flags)
 {
-    constexpr struct values {
-        int flag;
-        const char* label;
-    } values[] = {
+    static constexpr std::pair<int, const char*> values[] = {
         {AI_PASSIVE,                "AI_PASSIVE"},
         {AI_CANONNAME,              "AI_CANONNAME"},
         {AI_NUMERICHOST,            "AI_NUMERICHOST"},
@@ -31,19 +29,18 @@ std::ostream& Network::operator<<(std::ostream& os,
         {AI_ALL,                    "AI_ALL"},
         {AI_ADDRCONFIG,             "AI_ADDRCONFIG"},
         {AI_V4MAPPED,               "AI_V4MAPPED"},
-        {0,                         nullptr}
     };
 
     std::ostringstream oss;
     std::size_t i = 0;
 
-    for(const auto* p = values; p->label != nullptr; ++p) {
-        if (flags.m_value & p->flag) {
+    for(const auto value : values) {
+        if (flags.m_value & value.first) {
             if (i++ > 0) {
                 oss << " | ";
             }
 
-            oss << p->label;
+            oss << value.second;
         }
     }
 

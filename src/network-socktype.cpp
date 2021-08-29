@@ -19,10 +19,7 @@ Network::SockType::SockType(int t_value) :
 std::ostream& Network::operator<<(std::ostream& os,
                                   const SockType& socktype)
 {
-    constexpr struct values {
-        int flag;
-        const char* label;
-    } values[] = {
+    static constexpr std::pair<int, const char*> values[] = {
 #ifdef SOCK_CLOEXEC
         {SOCK_CLOEXEC,              "SOCK_CLOEXEC"},
 #endif
@@ -58,13 +55,13 @@ std::ostream& Network::operator<<(std::ostream& os,
         ++i;
     }
 
-    for(const auto* p = values; p->label != nullptr; ++p) {
-        if (socktype.m_value & p->flag) {
+    for(const auto value : values) {
+        if (socktype.m_value & value.first) {
             if (i++ > 0) {
                 oss << " | ";
             }
 
-            oss << p->label;
+            oss << value.second;
         }
     }
 
