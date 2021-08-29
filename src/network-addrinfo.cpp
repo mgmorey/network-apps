@@ -53,18 +53,6 @@ Network::AddrInfo::InputIterator::operator++(int)
     return it;
 }
 
-bool Network::AddrInfo::operator==(const InputIterator& left,
-                                   const InputIterator& right)
-{
-    return left.m_pointer == right.m_pointer;
-}
-
-bool Network::AddrInfo::operator!=(const InputIterator& left,
-                                   const InputIterator& right)
-{
-    return left.m_pointer != right.m_pointer;
-}
-
 Network::AddrInfo::List::List(const Hostname& t_node,
                               const Service& t_service,
                               const addrinfo* t_hints,
@@ -142,4 +130,16 @@ Network::Result
 Network::AddrInfo::List::result() const
 {
     return m_result;
+}
+
+bool Network::AddrInfo::operator==(const InputIterator& left,
+                                   const InputIterator& right)
+{
+    return left.m_pointer == right.m_pointer;
+}
+
+bool Network::AddrInfo::operator!=(const InputIterator& left,
+                                   const InputIterator& right)
+{
+    return left.m_pointer != right.m_pointer;
 }

@@ -66,6 +66,11 @@ namespace Network
             Result m_result;
         };
 
+        extern bool operator==(const InputIterator& left,
+                               const InputIterator& right);
+        extern bool operator!=(const InputIterator& left,
+                               const InputIterator& right);
+
         template<typename OutputIt>
         Result insert(const Hostname& node,
                       const Service& service,
