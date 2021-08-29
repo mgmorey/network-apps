@@ -19,7 +19,7 @@ Network::SockType::SockType(int t_value) :
 std::ostream& Network::operator<<(std::ostream& os,
                                   const SockType& socktype)
 {
-    static const struct values {
+    constexpr struct values {
         int flag;
         const char* label;
     } values[] = {
@@ -31,6 +31,7 @@ std::ostream& Network::operator<<(std::ostream& os,
 #endif
         {0,                         nullptr}
     };
+
     std::ostringstream oss;
     std::size_t i = 0;
 
@@ -57,7 +58,7 @@ std::ostream& Network::operator<<(std::ostream& os,
         ++i;
     }
 
-    for(const struct values* p = values; p->label != nullptr; ++p) {
+    for(const auto* p = values; p->label != nullptr; ++p) {
         if (socktype.m_value & p->flag) {
             if (i++ > 0) {
                 oss << " | ";

@@ -20,11 +20,10 @@ Network::Flags::Flags(int t_value) :
 std::ostream& Network::operator<<(std::ostream& os,
                                   const Flags& flags)
 {
-    typedef struct {
+    constexpr struct values {
         int flag;
         const char* label;
-    } Value;
-    static const Value values[] = {
+    } values[] = {
         {AI_PASSIVE,                "AI_PASSIVE"},
         {AI_CANONNAME,              "AI_CANONNAME"},
         {AI_NUMERICHOST,            "AI_NUMERICHOST"},
@@ -34,10 +33,11 @@ std::ostream& Network::operator<<(std::ostream& os,
         {AI_V4MAPPED,               "AI_V4MAPPED"},
         {0,                         nullptr}
     };
+
     std::ostringstream oss;
     std::size_t i = 0;
 
-    for(const Value* p = values; p->label != nullptr; ++p) {
+    for(const auto* p = values; p->label != nullptr; ++p) {
         if (flags.m_value & p->flag) {
             if (i++ > 0) {
                 oss << " | ";
