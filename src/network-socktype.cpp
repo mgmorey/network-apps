@@ -19,7 +19,7 @@ Network::SockType::SockType(int t_value) :
 std::ostream& Network::operator<<(std::ostream& os,
                                   const SockType& socktype)
 {
-    static constexpr std::pair<int, const char*> values[] = {
+    static const std::pair<int, const char*> values[] = {
 #ifdef SOCK_CLOEXEC
         {SOCK_CLOEXEC,              "SOCK_CLOEXEC"},
 #endif
