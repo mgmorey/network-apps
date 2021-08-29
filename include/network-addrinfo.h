@@ -63,7 +63,7 @@ namespace Network
             Result result() const;
 
         private:
-            addrinfo* m_addrinfo;
+            addrinfo* m_pointer;
             Result m_result;
         };
 

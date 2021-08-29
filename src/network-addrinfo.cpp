@@ -57,7 +57,7 @@ Network::AddrInfo::List::List(const Hostname& t_node,
                               const Service& t_service,
                               const addrinfo* t_hints,
                               bool t_verbose) :
-    m_addrinfo(nullptr)
+    m_pointer(nullptr)
 {
     assert(!t_node.empty() || !t_service.empty());
 
@@ -81,7 +81,7 @@ Network::AddrInfo::List::List(const Hostname& t_node,
     std::string error;
     const char* node = t_node.empty() ? nullptr : t_node.c_str();
     const char* service = t_service.empty() ? nullptr : t_service.c_str();
-    const int code = ::getaddrinfo(node, service, t_hints, &m_addrinfo);
+    const int code = ::getaddrinfo(node, service, t_hints, &m_pointer);
 
     if (code != 0) {
         std::ostringstream oss;
@@ -98,7 +98,7 @@ Network::AddrInfo::List::List(const Hostname& t_node,
         error = oss.str();
     }
     else {
-        assert(m_addrinfo != nullptr);
+        assert(m_pointer != nullptr);
     }
 
     m_result = Result(code, error);
@@ -109,15 +109,15 @@ Network::AddrInfo::List::List(const Hostname& t_node,
 
 Network::AddrInfo::List::~List()
 {
-    if (m_addrinfo != nullptr) {
-        ::freeaddrinfo(m_addrinfo);
+    if (m_pointer != nullptr) {
+        ::freeaddrinfo(m_pointer);
     }
 }
 
 Network::AddrInfo::InputIterator
 Network::AddrInfo::List::begin() const
 {
-    return m_addrinfo;
+    return m_pointer;
 }
 
 Network::AddrInfo::InputIterator
