@@ -19,8 +19,8 @@ namespace Network
                const std::string& key = "");
 
     private:
-        static const std::string m_delimiter_default;
-        static const int m_indent_default;
+        static constexpr auto m_delimiter_default = ",";
+        static constexpr auto m_indent_default = -1;
         std::string m_value;
         std::string m_delimiter;
         int m_indent;

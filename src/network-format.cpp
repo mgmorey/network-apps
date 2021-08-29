@@ -41,6 +41,3 @@ std::ostream& Network::operator<<(std::ostream& os,
 
     return os;
 }
-
-const std::string Network::Format::m_delimiter_default = ",";
-const int Network::Format::m_indent_default = -1;
