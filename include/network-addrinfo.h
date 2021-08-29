@@ -13,8 +13,7 @@
 #include <algorithm>    // std::for_each()
 #include <cstddef>      // std::ptrdiff_t
 #include <iostream>     // std::cerr, std::endl
-#include <iterator>     // std::begin(), std::end(),
-                        // std::input_iterator_tag
+#include <iterator>     // std::input_iterator_tag
 #include <ostream>      // std::ostream
 #include <string>       // std::string
 #include <utility>      // std::pair
@@ -74,9 +73,18 @@ namespace Network
                       bool verbose,
                       OutputIt out)
         {
-            auto insert = [&out](addrinfo in) {*out++ = in;};
+            auto lambda = [&](const addrinfo& in) {
+                if (verbose) {
+                    std::cerr << "Fetched addrinfo:"
+                              << std::endl
+                              << in
+                              << std::endl;
+                }
+
+                *out++ = in;
+            };
             const auto list(List(node, service, hints, verbose));
-            std::for_each(std::begin(list), std::end(list), insert);
+            std::for_each(list.begin(), list.end(), lambda);
             return list.result();
         }
     }
