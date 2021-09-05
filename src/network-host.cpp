@@ -12,26 +12,32 @@ Network::Host::Host(const addrinfo& t_addrinfo) :
 {
 }
 
-Network::Host& Network::Host::operator=(const addrinfo& t_addrinfo)
+Network::Host::Host(const Socket& t_socket) :
+    m_address(t_socket.m_address),
+    m_cname(t_socket.m_canonname)
 {
-    m_address = Address(t_addrinfo.ai_addr, t_addrinfo.ai_addrlen);
-    m_cname = t_addrinfo.ai_canonname;
+}
+
+Network::Host& Network::Host::operator=(const Socket& t_socket)
+{
+    m_address = t_socket.m_address;
+    m_cname = t_socket.m_canonname;
     return *this;
 }
 
-bool Network::Host::operator<(const Host& t_addrinfo) const
+bool Network::Host::operator<(const Host& t_host) const
 {
-    return m_address < t_addrinfo.m_address;
+    return m_address < t_host.m_address;
 }
 
-bool Network::Host::operator>(const Host& t_addrinfo) const
+bool Network::Host::operator>(const Host& t_host) const
 {
-    return m_address > t_addrinfo.m_address;
+    return m_address > t_host.m_address;
 }
 
-bool Network::Host::operator==(const Host& t_addrinfo) const
+bool Network::Host::operator==(const Host& t_host) const
 {
-    return m_address == t_addrinfo.m_address;
+    return m_address == t_host.m_address;
 }
 
 Network::Host::operator Address() const

@@ -116,7 +116,7 @@ namespace TestAddress
     {
         std::string result;
 
-        switch (hints.ai_family) {
+        switch (hints.family()) {
         case AF_INET:
             result = "IPv4";
             break;

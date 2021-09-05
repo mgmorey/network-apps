@@ -1,7 +1,9 @@
 #ifndef NETWORK_SOCKET_H
 #define NETWORK_SOCKET_H
 
+#include "network-address.h"    // Address
 #include "network-fd.h"         // sock_fd_type
+#include "network-nullable.h"   // Nullable
 #include "network-result.h"     // Result
 #include "network-types.h"      // Hostname
 
@@ -27,23 +29,21 @@ namespace Network
 
     enum { socket_error = SOCKET_ERROR };
 
-    class Socket :
-        public addrinfo
+    struct Socket
     {
-    public:
+        friend struct Host;
+
         Socket(int t_family = 0,
                int t_socktype = 0,
                int t_protocol = 0,
                int t_flags = 0);
-        Socket(const Socket& t_socket);
         // cppcheck-suppress noExplicitConstructor
         Socket(const addrinfo& t_socket);
-        ~Socket();
-        Socket& operator=(const Socket& t_socket);
         Socket& operator=(const addrinfo& t_socket);
         bool operator<(const Socket& t_socket) const;
         bool operator>(const Socket& t_socket) const;
         bool operator==(const Socket& t_socket) const;
+        operator addrinfo() const;
         Hostname cname() const;
         int family() const;
         SocketResult socket(bool t_verbose = false) const;
@@ -52,14 +52,17 @@ namespace Network
 #endif
 
     private:
-        static addrinfo defaults(int t_family = 0,
-                                 int t_socktype = 0,
-                                 int t_protocol = 0,
-                                 int t_flags = 0);
-
         static const std::string m_delim;
         static const int m_tabs[1];
+
+        int m_flags;
+        int m_family;
+        int m_socktype;
+        int m_protocol;
+        Nullable m_canonname;
+        Address m_address;
     };
+
 }
 
 #endif

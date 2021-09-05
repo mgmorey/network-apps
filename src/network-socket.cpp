@@ -4,7 +4,6 @@
 #include "network-addrinfo.h"   // operator<<()
 #include "network-family.h"     // Family
 #include "network-format.h"     // Format
-#include "network-host.h"       // Host
 #include "network-protocol.h"   // Protocol
 #include "network-socktype.h"   // SockType
 
@@ -27,96 +26,82 @@ Network::Socket::Socket(int t_family,
                         int t_socktype,
                         int t_protocol,
                         int t_flags) :
-    addrinfo(defaults(t_family,
-                      t_socktype,
-                      t_protocol,
-                      t_flags))
+    m_flags(t_flags),
+    m_family(t_family),
+    m_socktype(t_socktype),
+    m_protocol(t_protocol)
 {
-}
-
-Network::Socket::Socket(const Socket& t_socket) :
-    addrinfo(defaults())
-{
-    *this = t_socket;
 }
 
 Network::Socket::Socket(const addrinfo& t_socket) :
-    addrinfo(defaults())
+    m_flags(t_socket.ai_flags),
+    m_family(t_socket.ai_family),
+    m_socktype(t_socket.ai_socktype),
+    m_protocol(t_socket.ai_protocol),
+    m_canonname(t_socket.ai_canonname),
+    m_address(t_socket.ai_addr, t_socket.ai_addrlen)
 {
     *this = t_socket;
 }
 
-Network::Socket::~Socket()
+Network::Socket& Network::Socket::operator=(const addrinfo& t_addrinfo)
 {
-    free(ai_addr);
-    free(ai_canonname);
-}
-
-Network::Socket& Network::Socket::operator=(const Socket& t_socket)
-{
-    return *this = static_cast<const addrinfo&>(t_socket);
-}
-
-Network::Socket& Network::Socket::operator=(const addrinfo& t_socket)
-{
-    ai_flags = t_socket.ai_flags;
-    ai_family = t_socket.ai_family;
-    ai_socktype = t_socket.ai_socktype;
-    ai_protocol = t_socket.ai_protocol;
-    ai_addrlen = t_socket.ai_addrlen;
-    free(ai_canonname);
-    ai_canonname = nullptr;
-
-    if (t_socket.ai_canonname != nullptr) {
-        // cppcheck-suppress strdupCalled
-        ai_canonname = strdup(t_socket.ai_canonname);
-    }
-
-    free(ai_addr);
-    ai_addr = nullptr;
-
-    if (t_socket.ai_addr != nullptr) {
-        ai_addr = static_cast<sockaddr*>
-            (malloc(ai_addrlen));
-        std::memcpy(ai_addr, t_socket.ai_addr, ai_addrlen);
-    }
-
-    ai_next = nullptr;
+    m_flags = t_addrinfo.ai_flags;
+    m_family = t_addrinfo.ai_family;
+    m_socktype = t_addrinfo.ai_socktype;
+    m_protocol = t_addrinfo.ai_protocol;
+    m_canonname = t_addrinfo.ai_canonname;
+    m_address = Address(t_addrinfo.ai_addr, t_addrinfo.ai_addrlen);
     return *this;
 }
 
 bool Network::Socket::operator<(const Socket& t_socket) const
 {
-    return (ai_protocol < t_socket.ai_protocol ||
-            ai_socktype < t_socket.ai_socktype ||
-            ai_family < t_socket.ai_family ||
-            Host(*this) < Host(t_socket));
+    return (m_protocol < t_socket.m_protocol ||
+            m_socktype < t_socket.m_socktype ||
+            m_family < t_socket.m_family ||
+            m_address < t_socket.m_address);
 }
 
 bool Network::Socket::operator>(const Socket& t_socket) const
 {
-    return (ai_protocol > t_socket.ai_protocol ||
-            ai_socktype > t_socket.ai_socktype ||
-            ai_family > t_socket.ai_family ||
-            Host(*this) > Host(t_socket));
+    return (m_protocol > t_socket.m_protocol ||
+            m_socktype > t_socket.m_socktype ||
+            m_family > t_socket.m_family ||
+            m_address > t_socket.m_address);
 }
 
 bool Network::Socket::operator==(const Socket& t_socket) const
 {
-    return (ai_protocol == t_socket.ai_protocol &&
-            ai_socktype == t_socket.ai_socktype &&
-            ai_family == t_socket.ai_family &&
-            Host(*this) == Host(t_socket));
+    return (m_protocol == t_socket.m_protocol &&
+            m_socktype == t_socket.m_socktype &&
+            m_family == t_socket.m_family &&
+            m_address == t_socket.m_address);
+}
+
+Network::Socket::operator addrinfo() const
+{
+    addrinfo ai = {
+        m_flags,
+        m_family,
+        m_socktype,
+        m_protocol,
+        0,
+        nullptr,
+        nullptr,
+        nullptr
+    };
+    return ai;
 }
 
 Network::Hostname Network::Socket::cname() const
 {
-    return Hostname(ai_canonname == nullptr ? "" : ai_canonname);
+    return m_canonname;
 }
 
 int Network::Socket::family() const
 {
-    return ai_family;
+    return m_family;
 }
 
 Network::SocketResult Network::Socket::socket(bool t_verbose) const
@@ -130,19 +115,19 @@ Network::SocketResult Network::Socket::socket(bool t_verbose) const
 
     errno = 0;
     std::string error;
-    const sock_fd_type sock_fd = ::socket(ai_family,
-                                          ai_socktype,
-                                          ai_protocol);
+    const sock_fd_type sock_fd = ::socket(m_family,
+                                          m_socktype,
+                                          m_protocol);
 
     if (sock_fd == sock_fd_null) {
         std::ostringstream oss;
         oss << "socket("
             << Format("domain")
-            << Family(ai_family)
+            << Family(m_family)
             << Format(m_delim, m_tabs[0], "type")
-            << SockType(ai_socktype)
+            << SockType(m_socktype)
             << Format(m_delim, m_tabs[0], "protocol")
-            << Protocol(ai_family, ai_protocol)
+            << Protocol(m_family, m_protocol)
             << ") returned "
             << sock_fd
             << ": "
@@ -173,20 +158,20 @@ Network::SocketpairResult Network::Socket::socketpair(bool t_verbose) const
     errno = 0;
     std::string error;
     int sock_fd[2] = {sock_fd_null, sock_fd_null};
-    const int code = ::socketpair(ai_family,
-                                  ai_socktype,
-                                  ai_protocol,
+    const int code = ::socketpair(m_family,
+                                  m_socktype,
+                                  m_protocol,
                                   sock_fd);
 
     if (code == socket_error) {
         std::ostringstream oss;
         oss << "socketpair("
             << Format("domain")
-            << Family(ai_family)
+            << Family(m_family)
             << Format(m_delim, m_tabs[0], "type")
-            << SockType(ai_socktype)
+            << SockType(m_socktype)
             << Format(m_delim, m_tabs[0], "protocol")
-            << Protocol(ai_family, ai_protocol)
+            << Protocol(m_family, m_protocol)
             << ") returned "
             << code
             << ": "
@@ -205,32 +190,6 @@ Network::SocketpairResult Network::Socket::socketpair(bool t_verbose) const
     return SocketpairResult(fd_pair, result);
 }
 #endif
-
-addrinfo Network::Socket::defaults(int t_family,
-                                   int t_socktype,
-                                   int t_protocol,
-                                   int t_flags)
-{
-    const addrinfo ai = {
-        t_flags,	// ai_flags
-        t_family,	// ai_family
-        t_socktype,	// ai_socktype
-        t_protocol,	// ai_protocol
-        0,		// ai_addrlen
-        nullptr,	// ai_canonname
-        nullptr,	// ai_addr
-        nullptr		// ai_next
-    };
-    assert(ai.ai_flags == t_flags);
-    assert(ai.ai_family == t_family);
-    assert(ai.ai_socktype == t_socktype);
-    assert(ai.ai_protocol == t_protocol);
-    assert(ai.ai_addrlen == 0);
-    assert(ai.ai_canonname == nullptr);
-    assert(ai.ai_addr == nullptr);
-    assert(ai.ai_next == nullptr);
-    return ai;
-}
 
 const std::string Network::Socket::m_delim(", ");
 const int Network::Socket::m_tabs[1] = {0};

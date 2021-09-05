@@ -55,7 +55,7 @@ Network::AddrInfo::InputIterator::operator++(int)
 
 Network::AddrInfo::List::List(const Hostname& t_node,
                               const Service& t_service,
-                              const addrinfo* t_hints,
+                              const Socket* t_hints,
                               bool t_verbose) :
     m_pointer(nullptr)
 {
@@ -79,9 +79,17 @@ Network::AddrInfo::List::List(const Hostname& t_node,
     }
 
     std::string error;
+    addrinfo ai = {0, 0, 0, 0, 0, nullptr, nullptr, nullptr};
+    addrinfo* pai = nullptr;
+
+    if (t_hints != nullptr) {
+        ai = *t_hints;
+        pai = &ai;
+    }
+
     const char* node = t_node.empty() ? nullptr : t_node.c_str();
     const char* service = t_service.empty() ? nullptr : t_service.c_str();
-    const int code = ::getaddrinfo(node, service, t_hints, &m_pointer);
+    const int code = ::getaddrinfo(node, service, pai, &m_pointer);
 
     if (code != 0) {
         std::ostringstream oss;

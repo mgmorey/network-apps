@@ -31,7 +31,7 @@ namespace Network
     };
 
     extern SocketResults connect(const Endpoint& endpoint,
-                                 const addrinfo& hints,
+                                 const Socket& hints,
                                  bool verbose = false);
 }
 

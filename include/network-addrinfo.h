@@ -2,6 +2,7 @@
 #define NETWORK_ADDRINFO_H
 
 #include "network-result.h"     // Result
+#include "network-socket.h"     // Socket
 #include "network-types.h"      // Hostname, Service
 
 #ifdef _WIN32
@@ -55,7 +56,7 @@ namespace Network
         public:
             List(const Hostname& node,
                  const Service& service,
-                 const addrinfo* hints,
+                 const Socket* hints,
                  bool verbose);
             ~List();
             InputIterator begin() const;
@@ -75,7 +76,7 @@ namespace Network
         template<typename OutputIt>
         Result insert(const Hostname& node,
                       const Service& service,
-                      const addrinfo* hints,
+                      const Socket* hints,
                       bool verbose,
                       OutputIt out)
         {

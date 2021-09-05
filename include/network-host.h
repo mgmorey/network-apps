@@ -5,6 +5,7 @@
 #include "network-fd.h"         // sock_fd_type
 #include "network-nullable.h"   // Nullable
 #include "network-result.h"     // Result
+#include "network-socket.h"     // Socket
 #include "network-types.h"      // Hostname
 
 #ifdef _WIN32
@@ -15,15 +16,15 @@
 
 namespace Network
 {
-    class Host
+    struct Host
     {
-    public:
         // cppcheck-suppress noExplicitConstructor
-        Host(const addrinfo& ai);
-        Host& operator=(const addrinfo& t_addrinfo);
-        bool operator<(const Host& t_addrinfo) const;
-        bool operator>(const Host& t_addrinfo) const;
-        bool operator==(const Host& t_addrinfo) const;
+        Host(const addrinfo& t_addrinfo);
+        Host(const Socket& t_socket);
+        Host& operator=(const Socket& t_socket);
+        bool operator<(const Host& t_host) const;
+        bool operator>(const Host& t_host) const;
+        bool operator==(const Host& t_host) const;
         operator Address() const;
         Nullable canonical_name() const;
 

@@ -14,7 +14,7 @@ static Network::Hostname get_node(const Network::Hostname& hostname)
 }
 
 Network::HostsResult Network::get_hosts(const Hostname& host,
-                                        const addrinfo* hints,
+                                        const Socket* hints,
                                         bool verbose)
 {
     HostsResult result;
@@ -25,7 +25,7 @@ Network::HostsResult Network::get_hosts(const Hostname& host,
 }
 
 Network::HostsResult Network::get_hosts(const Hostname& host,
-                                        const addrinfo& hints,
+                                        const Socket& hints,
                                         bool verbose)
 {
     return get_hosts(host, &hints, verbose);
