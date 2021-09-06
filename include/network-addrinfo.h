@@ -17,8 +17,6 @@
 #include <iterator>     // std::input_iterator_tag
 #include <ostream>      // std::ostream
 #include <string>       // std::string
-#include <utility>      // std::pair
-#include <vector>       // std::vector
 
 namespace Network
 {
