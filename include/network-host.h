@@ -2,9 +2,7 @@
 #define NETWORK_HOST_H
 
 #include "network-address.h"    // Address
-#include "network-fd.h"         // sock_fd_type
 #include "network-nullable.h"   // Nullable
-#include "network-result.h"     // Result
 #include "network-socket.h"     // Socket
 #include "network-types.h"      // Hostname
 
@@ -20,7 +18,7 @@ namespace Network
     {
         // cppcheck-suppress noExplicitConstructor
         Host(const addrinfo& t_addrinfo);
-        Host(const Socket& t_socket);
+        explicit Host(const Socket& t_socket);
         Host& operator=(const Socket& t_socket);
         bool operator<(const Host& t_host) const;
         bool operator>(const Host& t_host) const;
@@ -29,8 +27,8 @@ namespace Network
         Nullable canonical_name() const;
 
     private:
+        Nullable m_canonname;
         Address m_address;
-        Nullable m_cname;
     };
 }
 
