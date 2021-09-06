@@ -17,9 +17,26 @@
 
 #include <iostream>     // std::cerr, std::endl
 #include <cassert>      // assert()
-#include <ostream>      // std::ostream
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
+
+static addrinfo* get_hints(addrinfo* info, const Network::Socket* hints)
+{
+    if (hints == nullptr) {
+        info = nullptr;
+    }
+    else {
+        *info = static_cast<addrinfo>(*hints);
+    }
+
+    return info;
+}
+
+static addrinfo get_info()
+{
+    addrinfo info = {0, 0, 0, 0, 0, nullptr, nullptr, nullptr};
+    return info;
+}
 
 Network::AddrInfo::InputIterator::InputIterator(pointer t_pointer) :
     m_pointer(t_pointer)
@@ -79,17 +96,11 @@ Network::AddrInfo::List::List(const Hostname& t_node,
     }
 
     std::string error;
-    addrinfo ai = {0, 0, 0, 0, 0, nullptr, nullptr, nullptr};
-    addrinfo* pai = nullptr;
-
-    if (t_hints != nullptr) {
-        ai = *t_hints;
-        pai = &ai;
-    }
-
+    addrinfo info = get_info();
+    addrinfo* hints = get_hints(&info, t_hints);
     const char* node = t_node.empty() ? nullptr : t_node.c_str();
     const char* service = t_service.empty() ? nullptr : t_service.c_str();
-    const int code = ::getaddrinfo(node, service, pai, &m_pointer);
+    const int code = ::getaddrinfo(node, service, hints, &m_pointer);
 
     if (code != 0) {
         std::ostringstream oss;
