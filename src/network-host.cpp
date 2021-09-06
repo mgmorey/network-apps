@@ -1,27 +1,21 @@
-#include "network-host.h"       // Address, Host, Result
-
-#ifdef _WIN32
-#include <ws2tcpip.h>   // struct addrinfo
-#else
-#include <netdb.h>      // struct addrinfo
-#endif
+#include "network-host.h"       // Address, Host, struct addrinfo
 
 Network::Host::Host(const addrinfo& t_addrinfo) :
-    m_address(t_addrinfo.ai_addr, t_addrinfo.ai_addrlen),
-    m_cname(t_addrinfo.ai_canonname)
+    m_canonname(t_addrinfo.ai_canonname),
+    m_address(t_addrinfo.ai_addr, t_addrinfo.ai_addrlen)
 {
 }
 
 Network::Host::Host(const Socket& t_socket) :
-    m_address(t_socket.m_address),
-    m_cname(t_socket.m_canonname)
+    m_canonname(t_socket.m_canonname),
+    m_address(t_socket.m_address)
 {
 }
 
 Network::Host& Network::Host::operator=(const Socket& t_socket)
 {
+    m_canonname = t_socket.m_canonname;
     m_address = t_socket.m_address;
-    m_cname = t_socket.m_canonname;
     return *this;
 }
 
@@ -47,5 +41,5 @@ Network::Host::operator Address() const
 
 Network::Nullable Network::Host::canonical_name() const
 {
-    return m_cname;
+    return m_canonname;
 }
