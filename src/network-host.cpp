@@ -6,19 +6,6 @@ Network::Host::Host(const addrinfo& t_addrinfo) :
 {
 }
 
-Network::Host::Host(const Socket& t_socket) :
-    m_canonname(t_socket.m_canonname),
-    m_address(t_socket.m_address)
-{
-}
-
-Network::Host& Network::Host::operator=(const Socket& t_socket)
-{
-    m_canonname = t_socket.m_canonname;
-    m_address = t_socket.m_address;
-    return *this;
-}
-
 bool Network::Host::operator<(const Host& t_host) const
 {
     return m_address < t_host.m_address;

@@ -18,8 +18,6 @@ namespace Network
     {
         // cppcheck-suppress noExplicitConstructor
         Host(const addrinfo& t_addrinfo);
-        explicit Host(const Socket& t_socket);
-        Host& operator=(const Socket& t_socket);
         bool operator<(const Host& t_host) const;
         bool operator>(const Host& t_host) const;
         bool operator==(const Host& t_host) const;
