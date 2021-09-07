@@ -59,6 +59,7 @@ Network::Result Network::Address::connect(sock_fd_type t_sock_fd,
                   << std::endl;
     }
 
+    errno = 0;
     std::string error;
     const int code = ::connect(t_sock_fd, addr(), addrlen());
 

@@ -62,7 +62,7 @@ namespace TestAddress
 
         void operator()(const Network::Host& t_host)
         {
-            const auto address(static_cast<Network::Address>(t_host));
+            const auto address(t_host.address());
             const auto endpoint_result(address.to_endpoint(false, true));
             const auto endpoint(endpoint_result.first);
             const auto result(endpoint_result.second);

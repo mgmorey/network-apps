@@ -1,6 +1,6 @@
-#include "network-socket.h"     // FdPair, Hostname, Result, Socket,
-                                // SocketpairResult, SocketResult,
-                                // sock_fd_type
+#include "network-socket.h"     // Address, FdPair, Hostname, Result,
+                                // Socket, SocketpairResult,
+                                // SocketResult, sock_fd_type
 #include "network-addrinfo.h"   // operator<<()
 #include "network-family.h"     // Family
 #include "network-format.h"     // Format
@@ -32,15 +32,14 @@ Network::Socket::Socket(int t_family,
 {
 }
 
-Network::Socket::Socket(const addrinfo& t_socket) :
-    m_flags(t_socket.ai_flags),
-    m_family(t_socket.ai_family),
-    m_socktype(t_socket.ai_socktype),
-    m_protocol(t_socket.ai_protocol),
-    m_canonname(t_socket.ai_canonname),
-    m_address(t_socket.ai_addr, t_socket.ai_addrlen)
+Network::Socket::Socket(const addrinfo& t_addrinfo) :
+    m_flags(t_addrinfo.ai_flags),
+    m_family(t_addrinfo.ai_family),
+    m_socktype(t_addrinfo.ai_socktype),
+    m_protocol(t_addrinfo.ai_protocol),
+    m_address(t_addrinfo.ai_addr, t_addrinfo.ai_addrlen),
+    m_canonname(t_addrinfo.ai_canonname)
 {
-    *this = t_socket;
 }
 
 Network::Socket& Network::Socket::operator=(const addrinfo& t_addrinfo)
@@ -49,8 +48,8 @@ Network::Socket& Network::Socket::operator=(const addrinfo& t_addrinfo)
     m_family = t_addrinfo.ai_family;
     m_socktype = t_addrinfo.ai_socktype;
     m_protocol = t_addrinfo.ai_protocol;
-    m_canonname = t_addrinfo.ai_canonname;
     m_address = Address(t_addrinfo.ai_addr, t_addrinfo.ai_addrlen);
+    m_canonname = t_addrinfo.ai_canonname;
     return *this;
 }
 

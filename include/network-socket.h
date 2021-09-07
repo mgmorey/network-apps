@@ -38,8 +38,8 @@ namespace Network
                int t_protocol = 0,
                int t_flags = 0);
         // cppcheck-suppress noExplicitConstructor
-        Socket(const addrinfo& t_socket);
-        Socket& operator=(const addrinfo& t_socket);
+        Socket(const addrinfo& t_addrinfo);
+        Socket& operator=(const addrinfo& t_addrinfo);
         bool operator<(const Socket& t_socket) const;
         bool operator>(const Socket& t_socket) const;
         bool operator==(const Socket& t_socket) const;
@@ -59,8 +59,8 @@ namespace Network
         int m_family;
         int m_socktype;
         int m_protocol;
-        Nullable m_canonname;
         Address m_address;
+        Nullable m_canonname;
     };
 
 }

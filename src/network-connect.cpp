@@ -36,7 +36,7 @@ Network::SocketResult Network::Connect::operator()(const Socket& t_socket)
 Network::Result Network::Connect::connect(const Socket& t_socket,
                                           sock_fd_type t_sock_fd)
 {
-    const auto address(static_cast<Address>(static_cast<Host>(t_socket)));
+    const auto address(static_cast<Host>(t_socket).address());
     return address.connect(t_sock_fd, m_verbose);
 }
 
