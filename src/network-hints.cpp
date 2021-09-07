@@ -28,6 +28,27 @@ Network::Hints& Network::Hints::operator=(const addrinfo& t_addrinfo)
     return *this;
 }
 
+bool Network::Hints::operator<(const Hints& t_hints) const
+{
+    return (m_protocol < t_hints.m_protocol ||
+            m_socktype < t_hints.m_socktype ||
+            m_family < t_hints.m_family);
+}
+
+bool Network::Hints::operator>(const Hints& t_hints) const
+{
+    return (m_protocol > t_hints.m_protocol ||
+            m_socktype > t_hints.m_socktype ||
+            m_family > t_hints.m_family);
+}
+
+bool Network::Hints::operator==(const Hints& t_hints) const
+{
+    return (m_protocol == t_hints.m_protocol &&
+            m_socktype == t_hints.m_socktype &&
+            m_family == t_hints.m_family);
+}
+
 Network::Hints::operator addrinfo() const
 {
     addrinfo ai = {

@@ -37,37 +37,27 @@ Network::Socket::Socket(const addrinfo& t_addrinfo) :
 
 Network::Socket& Network::Socket::operator=(const addrinfo& t_addrinfo)
 {
-    m_flags = t_addrinfo.ai_flags;
-    m_family = t_addrinfo.ai_family;
-    m_socktype = t_addrinfo.ai_socktype;
-    m_protocol = t_addrinfo.ai_protocol;
-    m_address = Address(t_addrinfo.ai_addr, t_addrinfo.ai_addrlen);
-    m_canonname = t_addrinfo.ai_canonname;
+    static_cast<Hints>(*this) = t_addrinfo;
+    static_cast<Host>(*this) = t_addrinfo;
     return *this;
 }
 
 bool Network::Socket::operator<(const Socket& t_socket) const
 {
-    return (m_protocol < t_socket.m_protocol ||
-            m_socktype < t_socket.m_socktype ||
-            m_family < t_socket.m_family ||
-            m_address < t_socket.m_address);
+    return (static_cast<Hints>(*this) < t_socket ||
+            static_cast<Host>(*this) < t_socket);
 }
 
 bool Network::Socket::operator>(const Socket& t_socket) const
 {
-    return (m_protocol > t_socket.m_protocol ||
-            m_socktype > t_socket.m_socktype ||
-            m_family > t_socket.m_family ||
-            m_address > t_socket.m_address);
+    return (static_cast<Hints>(*this) > t_socket ||
+            static_cast<Host>(*this) > t_socket);
 }
 
 bool Network::Socket::operator==(const Socket& t_socket) const
 {
-    return (m_protocol == t_socket.m_protocol &&
-            m_socktype == t_socket.m_socktype &&
-            m_family == t_socket.m_family &&
-            m_address == t_socket.m_address);
+    return (static_cast<Hints>(*this) == t_socket &&
+            static_cast<Host>(*this) == t_socket);
 }
 
 Network::SocketResult Network::Socket::socket(bool t_verbose) const

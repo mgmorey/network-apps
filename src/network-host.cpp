@@ -1,14 +1,21 @@
 #include "network-host.h"       // Address, Host, Nullable, struct
                                 // addrinfo
 
+Network::Host::Host()
+{
+}
+
 Network::Host::Host(const addrinfo& t_addrinfo) :
     m_address(t_addrinfo.ai_addr, t_addrinfo.ai_addrlen),
     m_canonname(t_addrinfo.ai_canonname)
 {
 }
 
-Network::Host::Host()
+Network::Host& Network::Host::operator=(const addrinfo& t_addrinfo)
 {
+    m_address = Address(t_addrinfo.ai_addr, t_addrinfo.ai_addrlen);
+    m_canonname = t_addrinfo.ai_canonname;
+    return *this;
 }
 
 bool Network::Host::operator<(const Host& t_host) const

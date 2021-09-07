@@ -18,6 +18,9 @@ namespace Network
         // cppcheck-suppress noExplicitConstructor
         Hints(const addrinfo& t_addrinfo);
         Hints& operator=(const addrinfo& t_addrinfo);
+        bool operator<(const Hints& t_hints) const;
+        bool operator>(const Hints& t_hints) const;
+        bool operator==(const Hints& t_hints) const;
         operator addrinfo() const;
         int family() const;
 
