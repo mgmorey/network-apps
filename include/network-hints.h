@@ -15,9 +15,6 @@ namespace Network
               int t_socktype = 0,
               int t_protocol = 0,
               int t_flags = 0);
-        bool operator<(const Hints& t_hints) const;
-        bool operator>(const Hints& t_hints) const;
-        bool operator==(const Hints& t_hints) const;
         operator addrinfo() const;
         int family() const;
 
