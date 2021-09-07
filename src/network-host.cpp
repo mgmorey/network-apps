@@ -1,4 +1,5 @@
-#include "network-host.h"       // Address, Host, struct addrinfo
+#include "network-host.h"       // Address, Host, Nullable, struct
+                                // addrinfo
 
 Network::Host::Host(const addrinfo& t_addrinfo) :
     m_canonname(t_addrinfo.ai_canonname),
