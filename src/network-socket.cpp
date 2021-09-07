@@ -92,7 +92,12 @@ Network::Socket::operator addrinfo() const
     return ai;
 }
 
-Network::Hostname Network::Socket::cname() const
+Network::Address Network::Socket::address() const
+{
+    return m_address;
+}
+
+Network::Nullable Network::Socket::canonical_name() const
 {
     return m_canonname;
 }

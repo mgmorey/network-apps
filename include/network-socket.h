@@ -5,7 +5,6 @@
 #include "network-fd.h"         // sock_fd_type
 #include "network-nullable.h"   // Nullable
 #include "network-result.h"     // Result
-#include "network-types.h"      // Hostname
 
 #ifdef _WIN32
 #include <winsock2.h>   // SOCKET_ERROR
@@ -31,8 +30,6 @@ namespace Network
 
     struct Socket
     {
-        friend struct Host;
-
         Socket(int t_family = 0,
                int t_socktype = 0,
                int t_protocol = 0,
@@ -44,7 +41,8 @@ namespace Network
         bool operator>(const Socket& t_socket) const;
         bool operator==(const Socket& t_socket) const;
         operator addrinfo() const;
-        Hostname cname() const;
+        Address address() const;
+        Nullable canonical_name() const;
         int family() const;
         SocketResult socket(bool t_verbose = false) const;
 #ifndef _WIN32

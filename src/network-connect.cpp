@@ -29,15 +29,14 @@ Network::SocketResult Network::Connect::operator()(const Socket& t_socket)
         return SocketResult(sock_fd_null, connect_result);
     }
 
-    socket_result.second = Result(0, t_socket.cname());
+    socket_result.second = Result(0, t_socket.canonical_name());
     return socket_result;
 }
 
 Network::Result Network::Connect::connect(const Socket& t_socket,
                                           sock_fd_type t_sock_fd)
 {
-    const auto address(static_cast<Host>(t_socket).address());
-    return address.connect(t_sock_fd, m_verbose);
+    return t_socket.address().connect(t_sock_fd, m_verbose);
 }
 
 Network::SocketResults Network::connect(const Endpoint& endpoint,
