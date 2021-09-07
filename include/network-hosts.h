@@ -4,7 +4,7 @@
 #include "network-host.h"       // Host
 #include "network-result.h"     // Result
 #include "network-socket.h"     // Socket
-#include "network-types.h"      // Hostname, Service
+#include "network-types.h"      // Hostname
 
 #ifdef _WIN32
 #include <ws2tcpip.h>   // struct addrinfo
