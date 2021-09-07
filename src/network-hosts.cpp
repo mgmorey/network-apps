@@ -1,4 +1,4 @@
-#include "network-hosts.h"      // Hostname, HostsResult
+#include "network-hosts.h"      // Hostname, HostsResult, get_hosts()
 #include "network-addrinfo.h"   // AddrInfo, operator<<()
 #include "network-hostname.h"   // get_hostname()
 
