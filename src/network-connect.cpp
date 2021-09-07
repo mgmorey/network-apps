@@ -1,10 +1,9 @@
-#include "network-connect.h"    // Endpoint, Result, SocketResults,
-                                // SocketsResult
-#include "network-address.h"    // Address
+#include "network-connect.h"    // Endpoint, Result, SocketResult,
+                                // SocketResults,
 #include "network-close.h"      // close()
 #include "network-fd.h"         // sock_fd_null
-#include "network-host.h"       // Host
-#include "network-sockets.h"    // Sockets
+#include "network-hints.h"      // Hints
+#include "network-sockets.h"    // get_sockets()
 
 #include <algorithm>    // std::transform()
 #include <iterator>     // std::back_inserter()
@@ -40,7 +39,7 @@ Network::Result Network::Connect::connect(const Socket& t_socket,
 }
 
 Network::SocketResults Network::connect(const Endpoint& endpoint,
-                                        const Socket& hints,
+                                        const Hints& hints,
                                         bool verbose)
 {
     SocketResults results;

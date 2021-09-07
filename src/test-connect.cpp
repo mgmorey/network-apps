@@ -98,7 +98,7 @@ namespace TestConnect
     };
 
     static void test_connect(const Network::Endpoint& endpoint,
-                             const Network::Socket& hints)
+                             const Network::Hints& hints)
     {
         const auto results(connect(endpoint, hints, true));
         std::for_each(results.begin(), results.end(),
@@ -111,10 +111,10 @@ int main(int argc, char* argv[])
     constexpr auto host_default = "example.com";
     constexpr auto service_default = "http";
 
-    static const Network::Socket hints(AF_UNSPEC,
-                                       SOCK_STREAM,
-                                       IPPROTO_TCP,
-                                       AI_CANONNAME);
+    static const Network::Hints hints(AF_UNSPEC,
+                                      SOCK_STREAM,
+                                      IPPROTO_TCP,
+                                      AI_CANONNAME);
 
     const Network::Context context;
     const auto host(argc > 1 ? argv[1] : host_default);

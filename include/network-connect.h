@@ -2,14 +2,9 @@
 #define NETWORK_CONNECT_H
 
 #include "network-endpoint.h"   // Endpoint
+#include "network-hints.h"      // Hints
 #include "network-result.h"     // Result
-#include "network-socket.h"     // Socket
-
-#ifdef _WIN32
-#include <ws2tcpip.h>   // struct addrinfo
-#else
-#include <netdb.h>      // struct addrinfo
-#endif
+#include "network-socket.h"     // SocketResult
 
 #include <vector>       // std::vector
 #include <utility>      // std::pair
@@ -31,7 +26,7 @@ namespace Network
     };
 
     extern SocketResults connect(const Endpoint& endpoint,
-                                 const Socket& hints,
+                                 const Hints& hints,
                                  bool verbose = false);
 }
 

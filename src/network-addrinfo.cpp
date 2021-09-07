@@ -1,5 +1,5 @@
-#include "network-addrinfo.h"   // AddrInfo, Hostname, Service,
-                                // Result, struct addrinfo,
+#include "network-addrinfo.h"   // AddrInfo, Hints, Hostname, Result
+                                // Service, struct addrinfo,
                                 // operator<<()
 #include "network-address.h"    // Address, operator<<()
 #include "network-family.h"     // Family, operator<<()
@@ -20,7 +20,7 @@
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
 
-static addrinfo* get_hints(addrinfo* info, const Network::Socket* hints)
+static addrinfo* get_hints(addrinfo* info, const Network::Hints* hints)
 {
     if (hints == nullptr) {
         info = nullptr;
@@ -72,7 +72,7 @@ Network::AddrInfo::InputIterator::operator++(int)
 
 Network::AddrInfo::List::List(const Hostname& t_node,
                               const Service& t_service,
-                              const Socket* t_hints,
+                              const Hints* t_hints,
                               bool t_verbose) :
     m_pointer(nullptr)
 {

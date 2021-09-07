@@ -1,9 +1,9 @@
 #ifndef NETWORK_HOSTS_H
 #define NETWORK_HOSTS_H
 
+#include "network-hints.h"      // Hints
 #include "network-host.h"       // Host
 #include "network-result.h"     // Result
-#include "network-socket.h"     // Socket
 #include "network-types.h"      // Hostname
 
 #ifdef _WIN32
@@ -20,10 +20,10 @@ namespace Network
     typedef std::vector<Host> Hosts;
     typedef std::pair<Hosts, Result> HostsResult;
     extern HostsResult get_hosts(const Hostname& host,
-                                 const Socket* hints = nullptr,
+                                 const Hints* hints = nullptr,
                                  bool verbose = false);
     extern HostsResult get_hosts(const Hostname& host,
-                                 const Socket& hints,
+                                 const Hints& hints,
                                  bool verbose = false);
 }
 

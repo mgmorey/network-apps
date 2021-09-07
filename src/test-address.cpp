@@ -2,6 +2,7 @@
 #include "network-context.h"    // Context
 #include "network-endpoint.h"   // Endpoint, EndpointResult,
                                 // to_endpoint()
+#include "network-hints.h"      // Hints
 #include "network-host.h"       // Host
 #include "network-hosts.h"      // Hosts, HostsResult, get_hosts()
 #include "network-hostname.h"   // get_hostname()
@@ -112,7 +113,7 @@ namespace TestAddress
         std::ostream& m_os;
     };
 
-    static std::string get_description(const Network::Socket& hints)
+    static std::string get_description(const Network::Hints& hints)
     {
         std::string result;
 
@@ -129,7 +130,7 @@ namespace TestAddress
     }
 
     static void test_host(const Network::Hostname& host,
-                          const Network::Socket& hints,
+                          const Network::Hints& hints,
                           bool verbose = true)
     {
         const auto description(get_description(hints));
@@ -174,13 +175,13 @@ namespace TestAddress
                             AI_CANONNAME);
 
         if (host.empty()) {
-            Network::Socket hints(AF_UNSPEC, SOCK_STREAM, IPPROTO_TCP, flags);
+            Network::Hints hints(AF_UNSPEC, SOCK_STREAM, IPPROTO_TCP, flags);
             test_host(host, hints, true);
         }
         else {
             std::cout << "Host: " << host << std::endl;
-            Network::Socket hints4(AF_INET, SOCK_STREAM, IPPROTO_TCP, flags);
-            Network::Socket hints6(AF_INET6, SOCK_STREAM, IPPROTO_TCP, flags);
+            Network::Hints hints4(AF_INET, SOCK_STREAM, IPPROTO_TCP, flags);
+            Network::Hints hints6(AF_INET6, SOCK_STREAM, IPPROTO_TCP, flags);
             test_host(host, hints4, true);
             test_host(host, hints6, true);
         }

@@ -15,7 +15,7 @@ static Network::Hostname get_node(const Network::Endpoint& endpoint)
 }
 
 Network::SocketsResult Network::get_sockets(const Endpoint& endpoint,
-                                            const Socket* hints,
+                                            const Hints* hints,
                                             bool verbose)
 {
     SocketsResult result;
@@ -27,7 +27,7 @@ Network::SocketsResult Network::get_sockets(const Endpoint& endpoint,
 }
 
 Network::SocketsResult Network::get_sockets(const Endpoint& endpoint,
-                                            const Socket& hints,
+                                            const Hints& hints,
                                             bool verbose)
 {
     return get_sockets(endpoint, &hints, verbose);
