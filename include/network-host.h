@@ -20,6 +20,7 @@ namespace Network
         bool operator>(const Host& t_host) const;
         bool operator==(const Host& t_host) const;
         operator Address() const;
+        Address address() const;
         Nullable canonical_name() const;
 
     private:

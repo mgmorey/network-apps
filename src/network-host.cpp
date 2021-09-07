@@ -27,6 +27,11 @@ Network::Host::operator Address() const
     return m_address;
 }
 
+Network::Address Network::Host::address() const
+{
+    return m_address;
+}
+
 Network::Nullable Network::Host::canonical_name() const
 {
     return m_canonname;
