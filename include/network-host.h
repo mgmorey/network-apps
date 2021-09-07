@@ -3,8 +3,6 @@
 
 #include "network-address.h"    // Address
 #include "network-nullable.h"   // Nullable
-#include "network-socket.h"     // Socket
-#include "network-types.h"      // Hostname
 
 #ifdef _WIN32
 #include <ws2tcpip.h>   // struct addrinfo
