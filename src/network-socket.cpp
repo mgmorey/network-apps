@@ -25,20 +25,13 @@ Network::Socket::Socket(int t_family,
                         int t_socktype,
                         int t_protocol,
                         int t_flags) :
-    m_flags(t_flags),
-    m_family(t_family),
-    m_socktype(t_socktype),
-    m_protocol(t_protocol)
+    Hints(t_family, t_socktype, t_protocol, t_flags)
 {
 }
 
 Network::Socket::Socket(const addrinfo& t_addrinfo) :
-    m_flags(t_addrinfo.ai_flags),
-    m_family(t_addrinfo.ai_family),
-    m_socktype(t_addrinfo.ai_socktype),
-    m_protocol(t_addrinfo.ai_protocol),
-    m_address(t_addrinfo.ai_addr, t_addrinfo.ai_addrlen),
-    m_canonname(t_addrinfo.ai_canonname)
+    Hints(t_addrinfo),
+    Host(t_addrinfo)
 {
 }
 
@@ -75,36 +68,6 @@ bool Network::Socket::operator==(const Socket& t_socket) const
             m_socktype == t_socket.m_socktype &&
             m_family == t_socket.m_family &&
             m_address == t_socket.m_address);
-}
-
-Network::Socket::operator addrinfo() const
-{
-    addrinfo ai = {
-        m_flags,
-        m_family,
-        m_socktype,
-        m_protocol,
-        0,
-        nullptr,
-        nullptr,
-        nullptr
-    };
-    return ai;
-}
-
-Network::Address Network::Socket::address() const
-{
-    return m_address;
-}
-
-Network::Nullable Network::Socket::canonical_name() const
-{
-    return m_canonname;
-}
-
-int Network::Socket::family() const
-{
-    return m_family;
 }
 
 Network::SocketResult Network::Socket::socket(bool t_verbose) const

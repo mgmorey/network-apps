@@ -15,10 +15,13 @@ namespace Network
               int t_socktype = 0,
               int t_protocol = 0,
               int t_flags = 0);
+        // cppcheck-suppress noExplicitConstructor
+        Hints(const addrinfo& t_addrinfo);
+        Hints& operator=(const addrinfo& t_addrinfo);
         operator addrinfo() const;
         int family() const;
 
-    private:
+    protected:
         int m_flags;
         int m_family;
         int m_socktype;

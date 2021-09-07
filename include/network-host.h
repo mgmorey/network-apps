@@ -14,6 +14,7 @@ namespace Network
 {
     struct Host
     {
+        Host();
         // cppcheck-suppress noExplicitConstructor
         Host(const addrinfo& t_addrinfo);
         bool operator<(const Host& t_host) const;
@@ -22,7 +23,7 @@ namespace Network
         Address address() const;
         Nullable canonical_name() const;
 
-    private:
+    protected:
         Address m_address;
         Nullable m_canonname;
     };

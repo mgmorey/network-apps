@@ -7,6 +7,10 @@ Network::Host::Host(const addrinfo& t_addrinfo) :
 {
 }
 
+Network::Host::Host()
+{
+}
+
 bool Network::Host::operator<(const Host& t_host) const
 {
     return m_address < t_host.m_address;

@@ -1,9 +1,9 @@
 #ifndef NETWORK_SOCKET_H
 #define NETWORK_SOCKET_H
 
-#include "network-address.h"    // Address
+#include "network-hints.h"      // Hints
+#include "network-host.h"       // Address, Host, Nullable
 #include "network-fd.h"         // sock_fd_type
-#include "network-nullable.h"   // Nullable
 #include "network-result.h"     // Result
 
 #ifdef _WIN32
@@ -28,7 +28,9 @@ namespace Network
 
     enum { socket_error = SOCKET_ERROR };
 
-    struct Socket
+    struct Socket :
+        public Hints,
+        public Host
     {
         Socket(int t_family = 0,
                int t_socktype = 0,
@@ -40,10 +42,6 @@ namespace Network
         bool operator<(const Socket& t_socket) const;
         bool operator>(const Socket& t_socket) const;
         bool operator==(const Socket& t_socket) const;
-        operator addrinfo() const;
-        Address address() const;
-        Nullable canonical_name() const;
-        int family() const;
         SocketResult socket(bool t_verbose = false) const;
 #ifndef _WIN32
         SocketpairResult socketpair(bool t_verbose = false) const;
@@ -52,13 +50,6 @@ namespace Network
     private:
         static const std::string m_delim;
         static const int m_tabs[1];
-
-        int m_flags;
-        int m_family;
-        int m_socktype;
-        int m_protocol;
-        Address m_address;
-        Nullable m_canonname;
     };
 
 }
