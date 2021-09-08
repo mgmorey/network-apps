@@ -62,9 +62,9 @@ bool Network::Socket::operator==(const Socket& t_socket) const
 
 Network::Socket::operator addrinfo() const
 {
-    Address::sock_len_type address_length = m_address.addrlen();
-    char* canonical_name = const_cast<char*>(m_canonname.c_str());
-    sockaddr* socket_address = const_cast<sockaddr*>(m_address.addr());
+    const auto t_address_length = m_address.addrlen();
+    const auto t_canonical_name = const_cast<char*>(m_canonname.c_str());
+    const auto t_socket_address = const_cast<sockaddr*>(m_address.addr());
     addrinfo ai = {
         m_flags,
         m_family,
@@ -79,10 +79,10 @@ Network::Socket::operator addrinfo() const
     assert(ai.ai_family == m_family);
     assert(ai.ai_socktype == m_socktype);
     assert(ai.ai_protocol == m_protocol);
-    ai.ai_addr = socket_address;
-    ai.ai_addrlen = address_length;
-    ai.ai_canonname = canonical_name;
     assert(ai.ai_next == nullptr);
+    ai.ai_addr = t_socket_address;
+    ai.ai_addrlen = t_address_length;
+    ai.ai_canonname = t_canonical_name;
     return ai;
 }
 
