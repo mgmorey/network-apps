@@ -32,13 +32,6 @@ static addrinfo* get_hints(addrinfo* info, const Network::Hints* hints)
     return info;
 }
 
-static addrinfo get_info()
-{
-    Network::Hints hints;
-    addrinfo info(hints);
-    return info;
-}
-
 Network::AddrInfo::InputIterator::InputIterator(pointer t_pointer) :
     m_pointer(t_pointer)
 {
@@ -97,7 +90,7 @@ Network::AddrInfo::List::List(const Hostname& t_node,
     }
 
     std::string error;
-    addrinfo info = get_info();
+    addrinfo info = Hints();
     addrinfo* hints = get_hints(&info, t_hints);
     const char* node = t_node.empty() ? nullptr : t_node.c_str();
     const char* service = t_service.empty() ? nullptr : t_service.c_str();
