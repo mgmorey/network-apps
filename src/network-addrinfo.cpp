@@ -26,7 +26,7 @@ static addrinfo* get_hints(addrinfo* info, const Network::Hints* hints)
         info = nullptr;
     }
     else {
-        *info = static_cast<addrinfo>(*hints);
+        *info = *hints;
     }
 
     return info;
@@ -34,7 +34,8 @@ static addrinfo* get_hints(addrinfo* info, const Network::Hints* hints)
 
 static addrinfo get_info()
 {
-    addrinfo info = {0, 0, 0, 0, 0, nullptr, nullptr, nullptr};
+    Network::Hints hints;
+    addrinfo info(hints);
     return info;
 }
 
