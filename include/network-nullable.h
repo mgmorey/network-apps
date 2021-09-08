@@ -21,7 +21,7 @@ namespace Network
         const char* c_str() const;
 
     private:
-        bool m_value_is_null;
+        bool m_is_null;
         std::string m_value;
     };
 
