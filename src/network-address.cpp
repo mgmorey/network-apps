@@ -22,7 +22,7 @@
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
 
-Network::Address::Address(const sockaddr* t_sockaddr, socklen_t t_socklen) :
+Network::Address::Address(const sockaddr* t_sockaddr, sock_len_type t_socklen) :
     m_value(reinterpret_cast<const char*>(t_sockaddr), t_socklen)
 {
 }
@@ -140,9 +140,9 @@ const sockaddr* Network::Address::addr() const
     return reinterpret_cast<const sockaddr*>(m_value.data());
 }
 
-socklen_t Network::Address::addrlen() const
+Network::Address::sock_len_type Network::Address::addrlen() const
 {
-    return static_cast<socklen_t>(m_value.size());
+    return static_cast<sock_len_type>(m_value.size());
 }
 
 Network::Address::operator const sockaddr&() const

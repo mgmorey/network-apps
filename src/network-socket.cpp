@@ -62,14 +62,17 @@ bool Network::Socket::operator==(const Socket& t_socket) const
 
 Network::Socket::operator addrinfo() const
 {
+    Address::sock_len_type address_length = m_address.addrlen();
+    char* canonical_name = const_cast<char*>(m_canonname.c_str());
+    sockaddr* socket_address = const_cast<sockaddr*>(m_address.addr());
     addrinfo ai = {
         m_flags,
         m_family,
         m_socktype,
         m_protocol,
-        m_address.addrlen(),
-        const_cast<char*>(m_canonname.c_str()),
-        const_cast<sockaddr*>(m_address.addr()),
+        address_length,
+        canonical_name,
+        socket_address,
         nullptr
     };
     return ai;

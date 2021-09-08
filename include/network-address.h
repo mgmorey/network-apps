@@ -26,19 +26,21 @@ namespace Network
 #ifdef _WIN32
         typedef unsigned short family_type;
         typedef unsigned short port_type;
+        typedef std::size_t sock_len_type;
 #else
         typedef sa_family_t family_type;
         typedef in_port_t port_type;
+        typedef socklen_t sock_len_type;
 #endif
         enum { connect_error = -1 };
 
         Address(const sockaddr* t_sockaddr = nullptr,
-                socklen_t t_socklen = 0);
+                sock_len_type t_socklen = 0);
         bool operator<(const Address& t_address) const;
         bool operator>(const Address& t_address) const;
         bool operator==(const Address& t_address) const;
         const sockaddr* addr() const;
-        socklen_t addrlen() const;
+        sock_len_type addrlen() const;
         Result connect(sock_fd_type t_sock_fd,
                        bool t_verbose = false) const;
         bool empty() const;
