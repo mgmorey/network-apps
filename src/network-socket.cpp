@@ -68,8 +68,8 @@ Network::Socket::operator addrinfo() const
         m_socktype,
         m_protocol,
         m_address.addrlen(),
-        const_cast<sockaddr*>(m_address.addr()),
         const_cast<char*>(m_canonname.c_str()),
+        const_cast<sockaddr*>(m_address.addr()),
         nullptr
     };
     return ai;
