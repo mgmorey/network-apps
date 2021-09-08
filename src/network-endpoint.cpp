@@ -12,7 +12,6 @@
 
 #include <cassert>      // assert()
 #include <iostream>     // std::cerr, std::endl
-#include <ostream>      // std::ostream
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
 
