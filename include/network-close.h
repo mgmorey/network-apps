@@ -5,7 +5,7 @@
 
 namespace Network
 {
-    extern void close(sock_fd_type sock_fd);
+    extern sock_fd_type close(sock_fd_type sock_fd);
 }
 
 #endif
