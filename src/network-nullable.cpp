@@ -1,7 +1,7 @@
 #include "network-nullable.h"   // Nullable
 
 Network::Nullable::Nullable() :
-    m_value_is_null(false)
+    m_value_is_null(true)
 {
 }
 
@@ -38,7 +38,7 @@ Network::Nullable::operator std::string() const
 
 const char* Network::Nullable::c_str() const
 {
-    return m_value.c_str();
+    return m_value_is_null ? NULL : m_value.c_str();
 }
 
 std::ostream& Network::operator<<(std::ostream& os,
