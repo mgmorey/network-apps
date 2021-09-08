@@ -36,6 +36,11 @@ Network::Nullable::operator std::string() const
     return m_value;
 }
 
+const char* Network::Nullable::c_str() const
+{
+    return m_value.c_str();
+}
+
 std::ostream& Network::operator<<(std::ostream& os,
                                   const Nullable& nullable)
 {

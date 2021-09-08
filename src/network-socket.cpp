@@ -60,6 +60,21 @@ bool Network::Socket::operator==(const Socket& t_socket) const
             static_cast<Host>(*this) == t_socket);
 }
 
+Network::Socket::operator addrinfo() const
+{
+    addrinfo ai = {
+        m_flags,
+        m_family,
+        m_socktype,
+        m_protocol,
+        m_address.addrlen(),
+        const_cast<sockaddr*>(m_address.addr()),
+        const_cast<char*>(m_canonname.c_str()),
+        nullptr
+    };
+    return ai;
+}
+
 Network::SocketResult Network::Socket::socket(bool t_verbose) const
 {
     if (t_verbose) {

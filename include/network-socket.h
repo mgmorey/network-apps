@@ -42,6 +42,7 @@ namespace Network
         bool operator<(const Socket& t_socket) const;
         bool operator>(const Socket& t_socket) const;
         bool operator==(const Socket& t_socket) const;
+        operator addrinfo() const;
         SocketResult socket(bool t_verbose = false) const;
 #ifndef _WIN32
         SocketpairResult socketpair(bool t_verbose = false) const;

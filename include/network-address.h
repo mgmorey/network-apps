@@ -37,6 +37,8 @@ namespace Network
         bool operator<(const Address& t_address) const;
         bool operator>(const Address& t_address) const;
         bool operator==(const Address& t_address) const;
+        const sockaddr* addr() const;
+        socklen_t addrlen() const;
         Result connect(sock_fd_type t_sock_fd,
                        bool t_verbose = false) const;
         bool empty() const;
@@ -48,10 +50,7 @@ namespace Network
         EndpointResult to_endpoint(bool t_numeric = false,
                                    bool t_verbose = false) const;
 
-    private:
-        const sockaddr* addr() const;
-        socklen_t addrlen() const;
-
+    protected:
         operator const sockaddr&() const;
         std::string sa_data() const;
         family_type sa_family() const;
@@ -76,6 +75,7 @@ namespace Network
         std::string sun_text() const;
 #endif
 
+    private:
         std::string m_value;
     };
 

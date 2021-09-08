@@ -18,6 +18,7 @@ namespace Network
         Nullable& operator=(const std::string& t_nullable);
         Nullable& operator=(const char* t_value);
         operator std::string() const;
+        const char* c_str() const;
 
     private:
         bool m_value_is_null;
