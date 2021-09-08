@@ -51,6 +51,7 @@ Network::AddressResult Network::get_peername(sock_fd_type sock_fd,
                   << std::endl;
     }
 
+    errno = 0;
     std::string error;
     AddressBuffer buffer;
     sockaddr* addr = buffer.addr();
