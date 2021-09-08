@@ -1,5 +1,7 @@
 #include "network-hints.h"      // Hints, struct addrinfo
 
+#include <cassert>      // assert()
+
 Network::Hints::Hints(int t_family,
                         int t_socktype,
                         int t_protocol,
@@ -61,6 +63,14 @@ Network::Hints::operator addrinfo() const
         nullptr,
         nullptr
     };
+    assert(ai.ai_flags == m_flags);
+    assert(ai.ai_family == m_family);
+    assert(ai.ai_socktype == m_socktype);
+    assert(ai.ai_protocol == m_protocol);
+    assert(ai.ai_addrlen == 0);
+    assert(ai.ai_addr == nullptr);
+    assert(ai.ai_canonname == nullptr);
+    assert(ai.ai_next == nullptr);
     return ai;
 }
 

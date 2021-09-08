@@ -66,11 +66,6 @@ Network::Socket::operator addrinfo() const
     const auto t_canonical_name = const_cast<char*>(m_canonname.c_str());
     const auto t_socket_address = const_cast<sockaddr*>(m_address.addr());
     addrinfo ai = static_cast<Hints>(*this);
-    assert(ai.ai_flags == m_flags);
-    assert(ai.ai_family == m_family);
-    assert(ai.ai_socktype == m_socktype);
-    assert(ai.ai_protocol == m_protocol);
-    assert(ai.ai_next == nullptr);
     ai.ai_addr = t_socket_address;
     ai.ai_addrlen = t_address_length;
     ai.ai_canonname = t_canonical_name;
