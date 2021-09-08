@@ -70,11 +70,19 @@ Network::Socket::operator addrinfo() const
         m_family,
         m_socktype,
         m_protocol,
-        address_length,
-        canonical_name,
-        socket_address,
+        0,
+        nullptr,
+        nullptr,
         nullptr
     };
+    assert(ai.ai_flags == m_flags);
+    assert(ai.ai_family == m_family);
+    assert(ai.ai_socktype == m_socktype);
+    assert(ai.ai_protocol == m_protocol);
+    ai.ai_addr = socket_address;
+    ai.ai_addrlen = address_length;
+    ai.ai_canonname = canonical_name;
+    assert(ai.ai_next == nullptr);
     return ai;
 }
 
