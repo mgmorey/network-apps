@@ -1,5 +1,5 @@
 #include "network-address.h"    // Address, operator<<(), struct
-                                // sockaddr, socklen_t
+                                // sockaddr, sock_len_type
 #include "network-buffer.h"     // Buffer
 
 #ifdef _WIN32
@@ -14,11 +14,9 @@
 #include <cassert>      // assert()
 #include <cerrno>       // errno
 #include <cstddef>      // offsetof()
-#include <cstring>      // std::strerror()
 #include <iomanip>      // std::hex, std::setfill(), std::setw(),
                         // std::uppercase
 #include <iostream>     // std::cerr, std::endl
-#include <ostream>      // std::ostream
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
 
