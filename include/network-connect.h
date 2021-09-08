@@ -18,6 +18,7 @@ namespace Network
     public:
         explicit Connect(bool t_verbose);
         SocketResult operator()(const Socket& t_socket);
+        SocketResult connect(const Socket& t_socket);
         Result connect(const Socket& t_socket,
                        sock_fd_type t_sock_fd);
 

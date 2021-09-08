@@ -15,6 +15,11 @@ Network::Connect::Connect(bool t_verbose) :
 
 Network::SocketResult Network::Connect::operator()(const Socket& t_socket)
 {
+    return connect(t_socket);
+}
+
+Network::SocketResult Network::Connect::connect(const Socket& t_socket)
+{
     auto socket_result(t_socket.socket(m_verbose));
 
     if (socket_result.first == sock_fd_null) {
