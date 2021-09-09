@@ -37,6 +37,11 @@ namespace TestConnect
 
         void operator()(const Network::SocketResult& t_socket_result)
         {
+            test_socket(t_socket_result);
+        }
+
+        void test_socket(const Network::SocketResult& t_socket_result)
+        {
             const auto sock_fd = t_socket_result.first;
             const auto result = t_socket_result.second;
 
