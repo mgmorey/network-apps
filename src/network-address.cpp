@@ -249,6 +249,7 @@ std::string Network::Address::sin6_text() const
 }
 
 #ifndef _WIN32
+
 Network::Address::operator const sockaddr_un&() const
 {
     return *reinterpret_cast<const sockaddr_un*>(m_value.data());
@@ -270,4 +271,5 @@ std::string Network::Address::sun_text() const
 {
     return sun_path();
 }
+
 #endif
