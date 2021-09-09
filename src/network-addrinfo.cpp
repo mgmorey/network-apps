@@ -1,13 +1,7 @@
 #include "network-addrinfo.h"   // AddrInfo, Hints, Hostname, Result
                                 // Service, struct addrinfo,
                                 // operator<<()
-#include "network-address.h"    // Address, operator<<()
-#include "network-family.h"     // Family, operator<<()
-#include "network-flags.h"      // Flags, operator<<()
-#include "network-format.h"     // Format, operator<<()
 #include "network-nullable.h"   // Nullable, operator<<()
-#include "network-protocol.h"   // Protocol, operator<<()
-#include "network-socktype.h"   // SockType, operator<<()
 
 #ifdef _WIN32
 #include <ws2tcpip.h>   // freeaddrinfo(), getaddrinfo()
