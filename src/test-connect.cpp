@@ -18,6 +18,7 @@
 #include <netinet/in.h> // IPPROTO_IP, IPPROTO_TCP, IPPROTO_UDP
 #include <sys/socket.h> // AF_INET, AF_INET6, PF_INET, PF_INET6,
                         // SOCK_DGRAM, SOCK_STREAM
+#include <unistd.h>     // getopt(), optarg, opterr, optind, optopt
 #endif
 
 #include <algorithm>    // std::for_each()
@@ -25,6 +26,8 @@
 
 namespace TestConnect
 {
+    static bool verbose = false;
+
     class Test
     {
     public:
@@ -102,10 +105,33 @@ namespace TestConnect
         std::ostream& m_os;
     };
 
+    static bool parse_arguments(int& argc, char* argv[])
+    {
+        int ch = '\0';
+
+        while ((ch = ::getopt(argc, argv, "v")) != -1) {
+            switch (ch) {
+            case 'v':
+                verbose = true;
+                break;
+            case '?':
+                std::cerr << "Usage: "
+                          << argv[0]
+                          << " [-v]"
+                          << std::endl;
+                return false;
+            default:
+                abort();
+            }
+        }
+
+        return true;
+    }
+
     static void test_connect(const Network::Endpoint& endpoint,
                              const Network::Hints& hints)
     {
-        const auto results(connect(endpoint, &hints, true));
+        const auto results(connect(endpoint, &hints, verbose));
         std::for_each(results.begin(), results.end(),
                       Test(endpoint, std::cout));
     }
@@ -122,6 +148,13 @@ int main(int argc, char* argv[])
                                       AI_CANONNAME);
 
     const Network::Context context;
+
+    if (!TestConnect::parse_arguments(argc, argv)) {
+        exit(EXIT_FAILURE);
+    }
+
+    argc -= optind;
+    argv += optind;
     const auto host(argc > 1 ? argv[1] : host_default);
     const auto service(argc > 2 ? argv[2] : service_default);
     const auto endpoint(Network::Endpoint(host, service));

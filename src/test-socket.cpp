@@ -7,11 +7,37 @@
 #include "network-socket.h"     // FdPair, Socket, SocketpairResult
 
 #include <sys/socket.h> // AF_UNIX, SOCK_STREAM
+#include <unistd.h>     // getopt(), optarg, opterr, optind, optopt
 
 #include <iostream>     // std::cerr, std::cout, std::endl
 
 namespace TestSocket
 {
+    static bool verbose = false;
+
+    static bool parse_arguments(int& argc, char* argv[])
+    {
+        int ch = '\0';
+
+        while ((ch = ::getopt(argc, argv, "v")) != -1) {
+            switch (ch) {
+            case 'v':
+                verbose = true;
+                break;
+            case '?':
+                std::cerr << "Usage: "
+                          << argv[0]
+                          << " [-v]"
+                          << std::endl;
+                return false;
+            default:
+                abort();
+            }
+        }
+
+        return true;
+    }
+
     static void test_peer(Network::sock_fd_type sock_fd)
     {
         const auto address_result(Network::get_peername(sock_fd, true));
@@ -33,10 +59,14 @@ namespace TestSocket
     }
 }
 
-int main(void)
+int main(int argc, char* argv[])
 {
+    if (!TestSocket::parse_arguments(argc, argv)) {
+        exit(EXIT_FAILURE);
+    }
+
     const Network::Socket network_socket(AF_UNIX, SOCK_STREAM);
-    const auto socketpair(network_socket.socketpair(true));
+    const auto socketpair(network_socket.socketpair(TestSocket::verbose));
     const auto result(socketpair.second);
 
     if (result.result() != 0) {

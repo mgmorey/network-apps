@@ -18,6 +18,7 @@
 #include <netdb.h>      // AI_ADDRCONFIG, AI_CANONNAME,
 #include <netinet/in.h> // IPPROTO_TCP
 #include <sys/socket.h> // AF_INET, AF_INET6, AF_UNSPEC, SOCK_STREAM
+#include <unistd.h>     // getopt(), optarg, opterr, optind, optopt
 #endif
 
 #include <algorithm>    // std::for_each(), std::remove_if(),
@@ -29,6 +30,8 @@
 
 namespace TestAddress
 {
+    static bool verbose = false;
+
     template<typename Container>
     class Empty
     {
@@ -64,7 +67,7 @@ namespace TestAddress
         void operator()(const Network::Host& t_host)
         {
             const auto address(t_host.address());
-            const auto endpoint_result(address.to_endpoint(false, true));
+            const auto endpoint_result(address.to_endpoint(false, verbose));
             const auto endpoint(endpoint_result.first);
             const auto result(endpoint_result.second);
 
@@ -129,9 +132,31 @@ namespace TestAddress
         return result;
     }
 
+    static bool parse_arguments(int& argc, char* argv[])
+    {
+        int ch = '\0';
+
+        while ((ch = ::getopt(argc, argv, "v")) != -1) {
+            switch (ch) {
+            case 'v':
+                verbose = true;
+                break;
+            case '?':
+                std::cerr << "Usage: "
+                          << argv[0]
+                          << " [-v]"
+                          << std::endl;
+                return false;
+            default:
+                abort();
+            }
+        }
+
+        return true;
+    }
+
     static void test_host(const Network::Hostname& host,
-                          const Network::Hints& hints,
-                          bool verbose = true)
+                          const Network::Hints& hints)
     {
         const auto description(get_description(hints));
         const auto hosts_result(get_hosts(host, &hints, verbose));
@@ -176,14 +201,14 @@ namespace TestAddress
 
         if (host.empty()) {
             Network::Hints hints(AF_UNSPEC, SOCK_STREAM, IPPROTO_TCP, flags);
-            test_host(host, hints, true);
+            test_host(host, hints);
         }
         else {
             std::cout << "Host: " << host << std::endl;
             Network::Hints hints4(AF_INET, SOCK_STREAM, IPPROTO_TCP, flags);
             Network::Hints hints6(AF_INET6, SOCK_STREAM, IPPROTO_TCP, flags);
-            test_host(host, hints4, true);
-            test_host(host, hints6, true);
+            test_host(host, hints4);
+            test_host(host, hints6);
         }
     }
 }
@@ -191,6 +216,13 @@ namespace TestAddress
 int main(int argc, char* argv[])
 {
     const Network::Context context;
+
+    if (!TestAddress::parse_arguments(argc, argv)) {
+        exit(EXIT_FAILURE);
+    }
+
+    argc -= optind;
+    argv += optind;
     const auto host(argc > 1 ? argv[1] : "example.com");
 
     if (argc <= 1) {
