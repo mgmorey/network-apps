@@ -60,18 +60,6 @@ bool Network::Socket::operator==(const Socket& t_socket) const
             static_cast<Host>(*this) == t_socket);
 }
 
-Network::Socket::operator addrinfo() const
-{
-    const auto t_address_length = m_address.addrlen();
-    const auto t_canonical_name = const_cast<char*>(m_canonname.c_str());
-    const auto t_socket_address = const_cast<sockaddr*>(m_address.addr());
-    addrinfo ai = static_cast<Hints>(*this);
-    ai.ai_addr = t_socket_address;
-    ai.ai_addrlen = t_address_length;
-    ai.ai_canonname = t_canonical_name;
-    return ai;
-}
-
 Network::SocketResult Network::Socket::socket(bool t_verbose) const
 {
     if (t_verbose) {

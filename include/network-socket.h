@@ -32,6 +32,9 @@ namespace Network
         public Hints,
         public Host
     {
+        friend std::ostream& operator<<(std::ostream& os,
+                                        const Socket& sock);
+
         Socket(int t_family = 0,
                int t_socktype = 0,
                int t_protocol = 0,
@@ -42,7 +45,6 @@ namespace Network
         bool operator<(const Socket& t_socket) const;
         bool operator>(const Socket& t_socket) const;
         bool operator==(const Socket& t_socket) const;
-        operator addrinfo() const;
         SocketResult socket(bool t_verbose = false) const;
 #ifndef _WIN32
         SocketpairResult socketpair(bool t_verbose = false) const;
@@ -53,6 +55,8 @@ namespace Network
         static const int m_tabs[1];
     };
 
+    extern std::ostream& operator<<(std::ostream& os,
+                                    const Socket& sock);
 }
 
 #endif
