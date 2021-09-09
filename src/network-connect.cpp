@@ -21,16 +21,16 @@ Network::SocketResult Network::Connect::operator()(const Socket& t_socket)
 Network::SocketResult Network::Connect::connect(const Socket& t_socket)
 {
     auto socket_result(t_socket.socket(m_verbose));
+    const auto sock_fd = socket_result.first;
 
-    if (socket_result.first == sock_fd_null) {
+    if (sock_fd == sock_fd_null) {
         return socket_result;
     }
 
-    const auto connect_result(connect(t_socket, socket_result.first));
+    const auto connect_result(connect(t_socket, sock_fd));
 
     if (connect_result.result() != 0) {
-        close(socket_result.first);
-        return SocketResult(sock_fd_null, connect_result);
+        return SocketResult(close(sock_fd), connect_result);
     }
 
     socket_result.second = Result(0, t_socket.canonical_name());
