@@ -74,7 +74,22 @@ Network::Hints::operator addrinfo() const
     return ai;
 }
 
+int Network::Hints::flags() const
+{
+    return m_flags;
+}
+
 int Network::Hints::family() const
 {
     return m_family;
+}
+
+int Network::Hints::socktype() const
+{
+    return m_socktype;
+}
+
+int Network::Hints::protocol() const
+{
+    return m_protocol;
 }

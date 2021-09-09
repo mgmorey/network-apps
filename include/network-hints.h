@@ -22,7 +22,10 @@ namespace Network
         bool operator>(const Hints& t_hints) const;
         bool operator==(const Hints& t_hints) const;
         operator addrinfo() const;
+        int flags() const;
         int family() const;
+        int socktype() const;
+        int protocol() const;
 
     protected:
         int m_flags;
