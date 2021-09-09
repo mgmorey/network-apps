@@ -54,9 +54,9 @@ Network::AddressResult Network::get_peername(sock_fd_type sock_fd,
     errno = 0;
     std::string error;
     AddressBuffer buffer;
-    sockaddr* addr = buffer.addr();
-    socklen_t addrlen = buffer.addrlen();
-    const int code = ::getpeername(sock_fd, addr, &addrlen);
+    auto addr = buffer.addr();
+    auto addrlen = buffer.addrlen();
+    const auto code = ::getpeername(sock_fd, addr, &addrlen);
 
     if (code != 0) {
         std::ostringstream oss;

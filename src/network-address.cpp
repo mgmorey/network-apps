@@ -59,7 +59,7 @@ Network::Result Network::Address::connect(sock_fd_type t_sock_fd,
 
     errno = 0;
     std::string error;
-    const int code = ::connect(t_sock_fd, addr(), addrlen());
+    const auto code = ::connect(t_sock_fd, addr(), addrlen());
 
     if (code == connect_error) {
         std::ostringstream oss;

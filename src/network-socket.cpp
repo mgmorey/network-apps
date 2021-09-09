@@ -83,9 +83,7 @@ Network::SocketResult Network::Socket::socket(bool t_verbose) const
 
     errno = 0;
     std::string error;
-    const sock_fd_type sock_fd = ::socket(m_family,
-                                          m_socktype,
-                                          m_protocol);
+    const auto sock_fd = ::socket(m_family, m_socktype, m_protocol);
 
     if (sock_fd == sock_fd_null) {
         std::ostringstream oss;
@@ -114,6 +112,7 @@ Network::SocketResult Network::Socket::socket(bool t_verbose) const
 }
 
 #ifndef _WIN32
+
 Network::SocketpairResult Network::Socket::socketpair(bool t_verbose) const
 {
     if (t_verbose) {
@@ -126,10 +125,7 @@ Network::SocketpairResult Network::Socket::socketpair(bool t_verbose) const
     errno = 0;
     std::string error;
     int sock_fd[2] = {sock_fd_null, sock_fd_null};
-    const int code = ::socketpair(m_family,
-                                  m_socktype,
-                                  m_protocol,
-                                  sock_fd);
+    const auto code = ::socketpair(m_family, m_socktype, m_protocol, sock_fd);
 
     if (code == socket_error) {
         std::ostringstream oss;
@@ -157,6 +153,7 @@ Network::SocketpairResult Network::Socket::socketpair(bool t_verbose) const
            result.string() == "");
     return SocketpairResult(fd_pair, result);
 }
+
 #endif
 
 const std::string Network::Socket::m_delim(", ");

@@ -91,10 +91,10 @@ Network::AddrInfo::List::List(const Hostname& t_node,
 
     std::string error;
     addrinfo info = Hints();
-    addrinfo* hints = get_hints(&info, t_hints);
-    const char* node = t_node.empty() ? nullptr : t_node.c_str();
-    const char* service = t_service.empty() ? nullptr : t_service.c_str();
-    const int code = ::getaddrinfo(node, service, hints, &m_pointer);
+    auto hints = get_hints(&info, t_hints);
+    const auto node = t_node.empty() ? nullptr : t_node.c_str();
+    const auto service = t_service.empty() ? nullptr : t_service.c_str();
+    const auto code = ::getaddrinfo(node, service, hints, &m_pointer);
 
     if (code != 0) {
         std::ostringstream oss;

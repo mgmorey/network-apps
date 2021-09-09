@@ -22,10 +22,10 @@ Network::Address::to_endpoint(int t_flags, bool t_verbose) const
     std::string error;
     Buffer host(NI_MAXHOST);
     Buffer service(NI_MAXSERV);
-    const int code = ::getnameinfo(addr(), addrlen(),
-                                   &host[0], host.size(),
-                                   &service[0], service.size(),
-                                   t_flags);
+    const auto code = ::getnameinfo(addr(), addrlen(),
+                                    &host[0], host.size(),
+                                    &service[0], service.size(),
+                                    t_flags);
 
     if (t_verbose) {
         std::cerr << "Invoking getnameinfo("
