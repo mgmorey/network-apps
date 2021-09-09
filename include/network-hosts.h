@@ -22,9 +22,6 @@ namespace Network
     extern HostsResult get_hosts(const Hostname& host,
                                  const Hints* hints = nullptr,
                                  bool verbose = false);
-    extern HostsResult get_hosts(const Hostname& host,
-                                 const Hints& hints,
-                                 bool verbose = false);
 }
 
 #endif

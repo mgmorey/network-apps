@@ -134,7 +134,7 @@ namespace TestAddress
                           bool verbose = true)
     {
         const auto description(get_description(hints));
-        const auto hosts_result(get_hosts(host, hints, verbose));
+        const auto hosts_result(get_hosts(host, &hints, verbose));
         const auto hosts(hosts_result.first);
         const auto result(hosts_result.second);
 

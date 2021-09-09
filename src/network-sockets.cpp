@@ -25,10 +25,3 @@ Network::SocketsResult Network::get_sockets(const Endpoint& endpoint,
     result.second = AddrInfo::insert(node, service, hints, verbose, it);
     return result;
 }
-
-Network::SocketsResult Network::get_sockets(const Endpoint& endpoint,
-                                            const Hints& hints,
-                                            bool verbose)
-{
-    return get_sockets(endpoint, &hints, verbose);
-}

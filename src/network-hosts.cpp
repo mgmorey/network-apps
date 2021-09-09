@@ -23,10 +23,3 @@ Network::HostsResult Network::get_hosts(const Hostname& host,
     result.second = AddrInfo::insert(node, "", hints, verbose, it);
     return result;
 }
-
-Network::HostsResult Network::get_hosts(const Hostname& host,
-                                        const Hints& hints,
-                                        bool verbose)
-{
-    return get_hosts(host, &hints, verbose);
-}

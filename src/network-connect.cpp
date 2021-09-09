@@ -44,7 +44,7 @@ Network::Result Network::Connect::connect(const Socket& t_socket,
 }
 
 Network::SocketResults Network::connect(const Endpoint& endpoint,
-                                        const Hints& hints,
+                                        const Hints* hints,
                                         bool verbose)
 {
     SocketResults results;

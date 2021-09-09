@@ -17,9 +17,6 @@ namespace Network
     extern SocketsResult get_sockets(const Endpoint& endpoint,
                                      const Hints* hints = nullptr,
                                      bool verbose = false);
-    extern SocketsResult get_sockets(const Endpoint& endpoint,
-                                     const Hints& hints,
-                                     bool verbose = false);
 }
 
 #endif

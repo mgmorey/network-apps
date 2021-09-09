@@ -27,7 +27,7 @@ namespace Network
     };
 
     extern SocketResults connect(const Endpoint& endpoint,
-                                 const Hints& hints,
+                                 const Hints* hints = nullptr,
                                  bool verbose = false);
 }
 
