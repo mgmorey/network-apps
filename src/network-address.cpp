@@ -14,6 +14,7 @@
 #include <cassert>      // assert()
 #include <cerrno>       // errno
 #include <cstddef>      // offsetof()
+#include <cstring>      // std::strerror()
 #include <iomanip>      // std::hex, std::setfill(), std::setw(),
                         // std::uppercase
 #include <iostream>     // std::cerr, std::endl
