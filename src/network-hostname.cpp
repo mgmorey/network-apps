@@ -1,4 +1,5 @@
-#include "network-hostname.h"   // HostnameResult, get_hostname()
+#include "network-hostname.h"   // Hostname, HostnameResult,
+                                // get_hostname()
 #include "network-buffer.h"     // Buffer
 
 #ifdef _WIN32
@@ -25,4 +26,14 @@ Network::HostnameResult Network::get_hostname()
     }
 
     return HostnameResult(hostname, Result(code, error));
+}
+
+Network::Hostname Network::get_hostname(const Network::Hostname& hostname)
+{
+    return hostname.empty() ? get_hostname().first : hostname;
+}
+
+Network::Hostname Network::get_hostname(const Network::Endpoint& endpoint)
+{
+    return endpoint.first.empty() ? get_hostname().first : endpoint.first;
 }
