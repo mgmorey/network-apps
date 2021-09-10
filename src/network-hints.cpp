@@ -54,23 +54,19 @@ bool Network::Hints::operator==(const Hints& t_hints) const
 Network::Hints::operator addrinfo() const
 {
     addrinfo ai = {
-        static_cast<int>(m_flags),
-        static_cast<int>(m_family),
-        static_cast<int>(m_socktype),
-        static_cast<int>(m_protocol),
+        0,
+        0,
+        0,
+        0,
         0,
         nullptr,
         nullptr,
         nullptr
     };
-    assert(ai.ai_flags == static_cast<int>(m_flags));
-    assert(ai.ai_family == static_cast<int>(m_family));
-    assert(ai.ai_socktype == static_cast<int>(m_socktype));
-    assert(ai.ai_protocol == static_cast<int>(m_protocol));
-    assert(ai.ai_addrlen == 0);
-    assert(ai.ai_addr == nullptr);
-    assert(ai.ai_canonname == nullptr);
-    assert(ai.ai_next == nullptr);
+    ai.ai_flags = static_cast<int>(m_flags);
+    ai.ai_family = static_cast<int>(m_family);
+    ai.ai_socktype = static_cast<int>(m_socktype);
+    ai.ai_protocol = static_cast<int>(m_protocol);
     return ai;
 }
 
