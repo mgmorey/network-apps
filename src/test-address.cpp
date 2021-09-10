@@ -5,7 +5,6 @@
                                 // to_endpoint()
 #include "network-hints.h"      // Hints
 #include "network-host.h"       // Host
-#include "network-hosts.h"      // Hosts, HostsResult, get_hosts()
 #include "network-hostname.h"   // get_hostname()
 #include "network-result.h"     // Result
 #include "network-socket.h"     // Socket
@@ -172,7 +171,7 @@ namespace TestAddress
                           const Network::Hints& hints)
     {
         const auto description(get_description(hints));
-        const auto hosts_result(get_hosts(host, &hints, verbose));
+        const auto hosts_result(get_hosts(host, &hints));
         const auto hosts(hosts_result.first);
         const auto result(hosts_result.second);
 
