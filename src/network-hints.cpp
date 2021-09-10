@@ -32,32 +32,23 @@ Network::Hints& Network::Hints::operator=(const addrinfo& t_addrinfo)
 
 bool Network::Hints::operator<(const Hints& t_hints) const
 {
-    return (static_cast<int>(m_protocol) <
-            static_cast<int>(t_hints.m_protocol) ||
-            static_cast<int>(m_socktype) <
-            static_cast<int>(t_hints.m_socktype) ||
-            static_cast<int>(m_family) <
-            static_cast<int>(t_hints.m_family));
+    return (m_protocol < t_hints.m_protocol ||
+            m_socktype < t_hints.m_socktype ||
+            m_family < t_hints.m_family);
 }
 
 bool Network::Hints::operator>(const Hints& t_hints) const
 {
-    return (static_cast<int>(m_protocol) >
-            static_cast<int>(t_hints.m_protocol) ||
-            static_cast<int>(m_socktype) >
-            static_cast<int>(t_hints.m_socktype) ||
-            static_cast<int>(m_family) >
-            static_cast<int>(t_hints.m_family));
+    return (m_protocol > t_hints.m_protocol ||
+            m_socktype > t_hints.m_socktype ||
+            m_family > t_hints.m_family);
 }
 
 bool Network::Hints::operator==(const Hints& t_hints) const
 {
-    return (static_cast<int>(m_protocol) ==
-            static_cast<int>(t_hints.m_protocol) &&
-            static_cast<int>(m_socktype) ==
-            static_cast<int>(t_hints.m_socktype) &&
-            static_cast<int>(m_family) ==
-            static_cast<int>(t_hints.m_family));
+    return (m_protocol == t_hints.m_protocol &&
+            m_socktype == t_hints.m_socktype &&
+            m_family == t_hints.m_family);
 }
 
 Network::Hints::operator addrinfo() const
