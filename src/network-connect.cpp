@@ -2,7 +2,7 @@
                                 // SocketResults,
 #include "network-addrinfo.h"   // AddrInfo
 #include "network-close.h"      // close()
-#include "network-fd.h"         // sock_fd_null
+#include "network-fd.h"         // sock_fd_null, sock_fd_type
 #include "network-hints.h"      // Hints
 
 #include <algorithm>    // std::transform()
