@@ -16,6 +16,17 @@ Network::SockType::SockType(int t_value) :
 {
 }
 
+Network::SockType& Network::SockType::operator=(int t_value)
+{
+    m_value = t_value;
+    return *this;
+}
+
+Network::SockType::operator int() const
+{
+    return m_value;
+}
+
 std::ostream& Network::operator<<(std::ostream& os,
                                   const SockType& socktype)
 {

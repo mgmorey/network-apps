@@ -71,17 +71,19 @@ Network::SocketResult Network::Socket::socket(bool t_verbose) const
 
     errno = 0;
     std::string error;
-    const auto sock_fd = ::socket(m_family, m_socktype, m_protocol);
+    const auto sock_fd = ::socket(static_cast<int>(m_family),
+                                  static_cast<int>(m_socktype),
+                                  static_cast<int>(m_protocol));
 
     if (sock_fd == sock_fd_null) {
         std::ostringstream oss;
         oss << "socket("
             << Format("domain")
-            << Family(m_family)
+            << m_family
             << Format(m_delim, m_tabs[0], "type")
-            << SockType(m_socktype)
+            << m_socktype
             << Format(m_delim, m_tabs[0], "protocol")
-            << Protocol(m_family, m_protocol)
+            << m_protocol
             << ") returned "
             << sock_fd
             << ": "
@@ -113,17 +115,20 @@ Network::SocketpairResult Network::Socket::socketpair(bool t_verbose) const
     errno = 0;
     std::string error;
     int sock_fd[2] = {sock_fd_null, sock_fd_null};
-    const auto code = ::socketpair(m_family, m_socktype, m_protocol, sock_fd);
+    const auto code = ::socketpair(static_cast<int>(m_family),
+                                   static_cast<int>(m_socktype),
+                                   static_cast<int>(m_protocol),
+                                   sock_fd);
 
     if (code == socket_error) {
         std::ostringstream oss;
         oss << "socketpair("
             << Format("domain")
-            << Family(m_family)
+            << m_family
             << Format(m_delim, m_tabs[0], "type")
-            << SockType(m_socktype)
+            << m_socktype
             << Format(m_delim, m_tabs[0], "protocol")
-            << Protocol(m_family, m_protocol)
+            << m_protocol
             << ") returned "
             << code
             << ": "

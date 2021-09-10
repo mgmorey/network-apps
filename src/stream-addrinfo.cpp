@@ -20,20 +20,20 @@ std::ostream& Network::operator<<(std::ostream& os,
 {
     static const int tabs[1] = {9};
 
-    const auto flags = ai.ai_flags;
-    const auto family = ai.ai_family;
-    const auto socktype = ai.ai_socktype;
-    const auto protocol = ai.ai_protocol;
+    const Flags flags(ai.ai_flags);
+    const Family family(ai.ai_family);
+    const SockType socktype(ai.ai_socktype);
+    const Protocol protocol(family, ai.ai_protocol);
 
     os << "addrinfo("
        << Format("ai_flags")
-       << Flags(flags)
+       << flags
        << Format(tabs[0], "ai_family")
-       << Family(family)
+       << family
        << Format(tabs[0], "ai_socktype")
-       << SockType(socktype)
+       << socktype
        << Format(tabs[0], "ai_protocol")
-       << Protocol(family, protocol)
+       << protocol
        << Format(tabs[0], "ai_addrlen")
        << ai.ai_addrlen
        << Format(tabs[0], "ai_addr")

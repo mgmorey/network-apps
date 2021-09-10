@@ -12,6 +12,8 @@ namespace Network
 
     public:
         explicit SockType(int t_value);
+        SockType& operator=(int t_value);
+        explicit operator int() const;
 
     private:
         int m_value;

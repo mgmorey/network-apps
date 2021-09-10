@@ -1,6 +1,11 @@
 #ifndef NETWORK_HINTS_H
 #define NETWORK_HINTS_H
 
+#include "network-family.h"     // Family, operator<<()
+#include "network-flags.h"      // Flags, operator<<()
+#include "network-protocol.h"   // Protocol, operator<<()
+#include "network-socktype.h"   // SockType, operator<<()
+
 #ifdef _WIN32
 #include <ws2tcpip.h>   // struct addrinfo
 #else
@@ -28,10 +33,10 @@ namespace Network
         int protocol() const;
 
     protected:
-        int m_flags;
-        int m_family;
-        int m_socktype;
-        int m_protocol;
+        Flags m_flags;
+        Family m_family;
+        SockType m_socktype;
+        Protocol m_protocol;
     };
 
 }

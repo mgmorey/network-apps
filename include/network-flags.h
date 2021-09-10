@@ -12,6 +12,8 @@ namespace Network
 
     public:
         explicit Flags(int t_value);
+        Flags& operator=(int t_value);
+        explicit operator int() const;
 
     private:
         int m_value;

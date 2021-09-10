@@ -1,6 +1,8 @@
 #ifndef NETWORK_PROTOCOL_H
 #define NETWORK_PROTOCOL_H
 
+#include "network-family.h"     // Family
+
 #include <ostream>      // std::ostream
 
 namespace Network
@@ -11,10 +13,12 @@ namespace Network
                                         const Protocol& protocol);
 
     public:
-        Protocol(int t_family, int t_value);
+        Protocol(Family t_family, int t_value);
+        Protocol& operator=(int t_value);
+        explicit operator int() const;
 
     private:
-        int m_family;
+        Family m_family;
         int m_value;
     };
 

@@ -13,20 +13,15 @@ std::ostream& Network::operator<<(std::ostream& os,
 {
     static const int tabs[1] = {7};
 
-    const auto flags = sock.m_flags;
-    const auto family = sock.m_family;
-    const auto socktype = sock.m_socktype;
-    const auto protocol = sock.m_protocol;
-
     os << "Socket("
        << Format("m_flags")
-       << Flags(flags)
+       << sock.m_flags
        << Format(tabs[0], "m_family")
-       << Family(family)
+       << sock.m_family
        << Format(tabs[0], "m_socktype")
-       << SockType(socktype)
+       << sock.m_socktype
        << Format(tabs[0], "m_protocol")
-       << Protocol(family, protocol)
+       << sock.m_protocol
        << Format(tabs[0], "m_address")
        << sock.m_address
        << Format(tabs[0], "m_canonname")
