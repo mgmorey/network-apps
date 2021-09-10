@@ -11,6 +11,7 @@
 #include "network-types.h"      // Hostname, Service
 
 #ifdef _WIN32
+#include <getopt.h>     // getopt(), optarg, opterr, optind, optopt
 #include <winsock2.h>   // AF_INET, AF_INET6, AF_UNSPEC, IPPROTO_TCP,
                         // SOCK_STREAM
 #include <ws2tcpip.h>   // AI_ADDRCONFIG, AI_CANONNAME,

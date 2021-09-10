@@ -9,6 +9,7 @@
 #include "network-socket.h"     // Socket
 
 #ifdef _WIN32
+#include <getopt.h>     // getopt(), optarg, opterr, optind, optopt
 #include <winsock2.h>   // AF_INET, AF_INET6, PF_INET, PF_INET6,
                         // IPPROTO_IP, IPPROTO_TCP, IPPROTO_UDP,
                         // SOCK_DGRAM, SOCK_STREAM
