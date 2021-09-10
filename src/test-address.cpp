@@ -85,9 +85,9 @@ namespace TestAddress
             Values values = {
                 address.text(),
                 endpoint.first,
-                t_host.canonical_name()
+                Network::Hostname(t_host.canonical_name())
             };
-            remove_if(values, Empty<std::string>());
+            remove_if(values, Empty<Network::Hostname>());
             unique(values);
 
             if (values.empty()) {

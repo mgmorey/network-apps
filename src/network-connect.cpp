@@ -45,7 +45,8 @@ Network::SocketResult Network::Connect::connect(const Socket& t_socket)
         return SocketResult(close(sock_fd), connect_result);
     }
 
-    socket_result.second = Result(0, t_socket.canonical_name());
+    Network::Hostname hostname(t_socket.canonical_name());
+    socket_result.second = Result(0, hostname);
     return socket_result;
 }
 
