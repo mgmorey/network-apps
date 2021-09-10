@@ -215,7 +215,7 @@ std::string Network::Address::sin_text() const
     Buffer buffer(INET_ADDRSTRLEN);
     const in_addr& in = sin_addr();
     ::inet_ntop(AF_INET, &in, &buffer[0], buffer.size());
-    return buffer;
+    return std::string(buffer);
 }
 
 Network::Address::operator const sockaddr_in6&() const
@@ -246,7 +246,7 @@ std::string Network::Address::sin6_text() const
     Buffer buffer(INET6_ADDRSTRLEN);
     const in6_addr& in6 = sin6_addr();
     ::inet_ntop(AF_INET6, &in6, &buffer[0], buffer.size());
-    return buffer;
+    return std::string(buffer);
 }
 
 #ifndef _WIN32
