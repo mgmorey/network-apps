@@ -1,6 +1,8 @@
 #ifndef NETWORK_ADDRINFO_H
 #define NETWORK_ADDRINFO_H
 
+#include "network-endpoint.h"   // Endpoint
+#include "network-hostname.h"   // get_hostname()
 #include "network-hints.h"      // Hints
 #include "network-result.h"     // Result
 #include "network-types.h"      // Hostname, Service
@@ -14,7 +16,8 @@
 #include <algorithm>    // std::for_each()
 #include <cstddef>      // std::ptrdiff_t
 #include <iostream>     // std::cerr, std::endl
-#include <iterator>     // std::input_iterator_tag
+#include <iterator>     // std::back_inserter(),
+                        // std::input_iterator_tag
 #include <ostream>      // std::ostream
 #include <string>       // std::string
 
@@ -91,6 +94,19 @@ namespace Network
             const auto list(List(node, service, hints, verbose));
             std::for_each(list.begin(), list.end(), lambda);
             return list.result();
+        }
+
+        template<typename Container>
+        Container get(const Endpoint& endpoint,
+                      const Hints* hints,
+                      bool verbose)
+        {
+            Container result;
+            const auto node(get_hostname(endpoint));
+            const auto service(endpoint.second);
+            result.second = insert(node, service, hints, verbose,
+                                   std::back_inserter(result.first));
+            return result;
         }
     }
 }

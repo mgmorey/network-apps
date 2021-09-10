@@ -19,7 +19,7 @@ namespace Network
 {
     typedef std::vector<Host> Hosts;
     typedef std::pair<Hosts, Result> HostsResult;
-    extern HostsResult get_hosts(const Hostname& host,
+    extern HostsResult get_hosts(const Hostname& hostname,
                                  const Hints* hints = nullptr,
                                  bool verbose = false);
 }
