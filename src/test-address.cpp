@@ -27,6 +27,7 @@
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <ostream>      // std::ostream
 #include <string>       // std::string
+#include <utility>      // std::pair
 #include <vector>       // std::vector
 
 namespace TestAddress
