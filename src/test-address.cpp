@@ -1,4 +1,5 @@
 #include "network-address.h"    // Address
+#include "network-addrinfo.h"   // AddrInfo
 #include "network-context.h"    // Context
 #include "network-endpoint.h"   // Endpoint, EndpointResult,
                                 // to_endpoint()
@@ -31,6 +32,9 @@
 
 namespace TestAddress
 {
+    typedef std::vector<Network::Host> Hosts;
+    typedef std::pair<Hosts, Network::Result> HostsResult;
+
     static bool verbose = false;
 
     template<typename Container>
@@ -133,6 +137,14 @@ namespace TestAddress
         return result;
     }
 
+    HostsResult get_hosts(const Network::Hostname& hostname,
+                          const Network::Hints* hints)
+    {
+        const auto host(Network::get_hostname(hostname));
+        const auto endpoint(Network::Endpoint(host, ""));
+        return Network::AddrInfo::get<HostsResult>(endpoint, hints, verbose);
+    }
+
     static bool parse_arguments(int& argc, char* argv[])
     {
         int ch;
@@ -184,8 +196,7 @@ namespace TestAddress
                 std::cout << "All";
             }
             else {
-                std::cout << "All "
-                          << description;
+                std::cout << description;
             }
 
             std::cout << " hosts:"
