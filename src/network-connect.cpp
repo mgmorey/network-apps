@@ -1,12 +1,24 @@
 #include "network-connect.h"    // Endpoint, Result, SocketResult,
                                 // SocketResults,
+#include "network-addrinfo.h"   // AddrInfo
 #include "network-close.h"      // close()
 #include "network-fd.h"         // sock_fd_null
 #include "network-hints.h"      // Hints
-#include "network-sockets.h"    // get_sockets()
 
 #include <algorithm>    // std::transform()
 #include <iterator>     // std::back_inserter()
+#include <utility>      // std::pair
+#include <vector>       // std::vector
+
+typedef std::vector<Network::Socket> Sockets;
+typedef std::pair<Sockets, Network::Result> SocketsResult;
+
+static SocketsResult get_sockets(const Network::Endpoint& endpoint,
+                                 const Network::Hints* hints,
+                                 bool verbose)
+{
+    return Network::AddrInfo::get<SocketsResult>(endpoint, hints, verbose);
+}
 
 Network::Connect::Connect(bool t_verbose) :
     m_verbose(t_verbose)
