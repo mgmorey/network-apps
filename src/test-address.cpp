@@ -135,7 +135,7 @@ namespace TestAddress
 
     static bool parse_arguments(int& argc, char* argv[])
     {
-        int ch = '\0';
+        int ch;
 
         while ((ch = ::getopt(argc, argv, "v")) != -1) {
             switch (ch) {
