@@ -1,11 +1,14 @@
 #ifndef NETWORK_FLAGS_H
 #define NETWORK_FLAGS_H
 
+#include "network-integer.h"    // Integer
+
 #include <ostream>      // std::ostream
 
 namespace Network
 {
-    class Flags
+    class Flags :
+        public Integer
     {
         friend std::ostream& operator<<(std::ostream& os,
                                         const Flags& flags);
@@ -13,10 +16,6 @@ namespace Network
     public:
         explicit Flags(int t_value);
         Flags& operator=(int t_value);
-        explicit operator int() const;
-
-    private:
-        int m_value;
     };
 
     extern std::ostream& operator<<(std::ostream& os,

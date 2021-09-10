@@ -13,8 +13,8 @@
 #include <ostream>      // std::ostream
 
 Network::Protocol::Protocol(Family t_family, int t_value) :
-    m_family(t_family),
-    m_value(t_value)
+    Integer(t_value),
+    m_family(t_family)
 {
 }
 
@@ -22,11 +22,6 @@ Network::Protocol& Network::Protocol::operator=(int t_value)
 {
     m_value = t_value;
     return *this;
-}
-
-Network::Protocol::operator int() const
-{
-    return m_value;
 }
 
 std::ostream& Network::operator<<(std::ostream& os,

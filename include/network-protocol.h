@@ -2,12 +2,14 @@
 #define NETWORK_PROTOCOL_H
 
 #include "network-family.h"     // Family
+#include "network-integer.h"    // Integer
 
 #include <ostream>      // std::ostream
 
 namespace Network
 {
-    class Protocol
+    class Protocol :
+        public Integer
     {
         friend std::ostream& operator<<(std::ostream& os,
                                         const Protocol& protocol);
@@ -15,11 +17,9 @@ namespace Network
     public:
         Protocol(Family t_family, int t_value);
         Protocol& operator=(int t_value);
-        explicit operator int() const;
 
     private:
         Family m_family;
-        int m_value;
     };
 
     extern std::ostream& operator<<(std::ostream& os,

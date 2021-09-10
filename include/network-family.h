@@ -1,11 +1,14 @@
 #ifndef NETWORK_FAMILY_H
 #define NETWORK_FAMILY_H
 
+#include "network-integer.h"    // Integer
+
 #include <ostream>      // std::ostream
 
 namespace Network
 {
-    class Family
+    class Family :
+        public Integer
     {
         friend std::ostream& operator<<(std::ostream& os,
                                         const Family& family);
@@ -13,10 +16,6 @@ namespace Network
     public:
         explicit Family(int t_value);
         Family& operator=(int t_value);
-        explicit operator int() const;
-
-    private:
-        int m_value;
     };
 
     extern std::ostream& operator<<(std::ostream& os,

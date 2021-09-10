@@ -14,7 +14,7 @@
 #include <utility>      // std::pair
 
 Network::Flags::Flags(int t_value) :
-    m_value(t_value)
+    Integer(t_value)
 {
 }
 
@@ -22,11 +22,6 @@ Network::Flags& Network::Flags::operator=(int t_value)
 {
     m_value = t_value;
     return *this;
-}
-
-Network::Flags::operator int() const
-{
-    return m_value;
 }
 
 std::ostream& Network::operator<<(std::ostream& os,

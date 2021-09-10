@@ -9,7 +9,7 @@
 #endif
 
 Network::Family::Family(int t_family) :
-    m_value(t_family)
+    Integer(t_family)
 {
 }
 
@@ -17,11 +17,6 @@ Network::Family& Network::Family::operator=(int t_value)
 {
     m_value = t_value;
     return *this;
-}
-
-Network::Family::operator int() const
-{
-    return m_value;
 }
 
 std::ostream& Network::operator<<(std::ostream& os,
