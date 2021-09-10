@@ -61,7 +61,7 @@ network-flags.cpp network-format.cpp network-hints.cpp \
 network-host.cpp network-hostname.cpp network-nullable.cpp \
 network-peername.cpp network-protocol.cpp network-result.cpp \
 network-socket.cpp network-socktype.cpp stream-address.cpp \
-stream-addrinfo.cpp stream-socket.cpp
+stream-addrinfo.cpp stream-hints.cpp stream-socket.cpp
 
 ifndef HTTP_PROXY
 	executable_sources += test-connect.cpp

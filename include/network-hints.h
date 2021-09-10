@@ -16,6 +16,9 @@ namespace Network
 {
     struct Hints
     {
+        friend std::ostream& operator<<(std::ostream& os,
+                                        const Hints& hints);
+
         Hints(int t_family = 0,
               int t_socktype = 0,
               int t_protocol = 0,
@@ -39,6 +42,8 @@ namespace Network
         Protocol m_protocol;
     };
 
+    extern std::ostream& operator<<(std::ostream& os,
+                                    const Hints& hints);
 }
 
 #endif
