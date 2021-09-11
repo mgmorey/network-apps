@@ -22,9 +22,10 @@
 #include <unistd.h>     // getopt(), optarg, opterr, optind, optopt
 #endif
 
-#include <algorithm>    // std::for_each(), std::remove_if(),
+#include <algorithm>    // std::for_each(), std::remove()
                         // std::unique()
 #include <iostream>     // std::cerr, std::cout, std::endl
+#include <iterator>     // std::distance()
 #include <ostream>      // std::ostream
 #include <string>       // std::string
 #include <utility>      // std::pair
@@ -37,26 +38,22 @@ namespace TestAddress
 
     static bool verbose = false;
 
-    template<typename Container>
-    class Empty
+    template<typename T, typename U>
+    auto erase(T& c, const U& value)
     {
-    public:
-        bool operator()(const Container& t_value)
-        {
-            return t_value.empty();
-        }
-    };
-
-    template<typename Container, typename Functor>
-    void remove_if(Container& cont, Functor func)
-    {
-        cont.erase(std::remove_if(cont.begin(), cont.end(), func), cont.end());
+        auto it = std::remove(c.begin(), c.end(), value);
+        auto r = std::distance(it, c.end());
+        c.erase(it, c.end());
+        return r;
     }
 
-    template<typename Container>
-    void unique(Container& cont)
+    template<typename T>
+    auto unique(T& c)
     {
-        cont.erase(std::unique(cont.begin(), cont.end()), cont.end());
+        auto it = std::unique(c.begin(), c.end());
+        auto r = std::distance(it, c.end());
+        c.erase(it, c.end());
+        return r;
     }
 
     class Test
@@ -87,7 +84,7 @@ namespace TestAddress
                 endpoint.first,
                 Network::Hostname(t_host.canonical_name())
             };
-            remove_if(values, Empty<Network::Hostname>());
+            erase(values, "");
             unique(values);
 
             if (values.empty()) {
