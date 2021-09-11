@@ -124,8 +124,9 @@ namespace TestAddress
     static std::string get_description(const Network::Hints& hints)
     {
         std::string result;
+        const auto family = static_cast<int>(hints.family());
 
-        switch (static_cast<int>(hints.family())) {
+        switch (family) {
         case AF_INET:
             result = "IPv4";
             break;

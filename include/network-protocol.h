@@ -17,6 +17,7 @@ namespace Network
     public:
         Protocol(Family t_family, int t_value);
         Protocol& operator=(int t_value);
+        Family family() const;
 
     private:
         Family m_family;

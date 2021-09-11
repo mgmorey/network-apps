@@ -24,10 +24,17 @@ Network::Protocol& Network::Protocol::operator=(int t_value)
     return *this;
 }
 
+Network::Family Network::Protocol::family() const
+{
+    return m_family;
+}
+
 std::ostream& Network::operator<<(std::ostream& os,
                                   const Protocol& protocol)
 {
-    switch(static_cast<int>(protocol.m_family)) {
+    const auto family = static_cast<int>(protocol.family());
+
+    switch(family) {
     case AF_INET:
     case AF_INET6:
     case AF_UNSPEC:
