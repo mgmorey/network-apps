@@ -35,7 +35,7 @@ else ifeq "$(SYSTEM_PREFIX)" "MINGW64_NT"
 endif
 
 CPPFLAGS += -Iinclude
-CXXFLAGS += -std=c++11 -Wall -Werror -Wextra -Wpedantic -Wshadow
+CXXFLAGS += -std=c++14 -Wall -Werror -Wextra -Wpedantic -Wshadow
 
 ifeq "$(SYSTEM_PREFIX)" "Darwin"
 	LDFLAGS += -Wl,-map,$@.map
