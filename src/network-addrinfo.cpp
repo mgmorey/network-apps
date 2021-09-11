@@ -70,12 +70,6 @@ Network::AddrInfo::List::List(const Hostname& t_node,
         std::cerr << "Using "
                   << *t_hints
                   << std::endl;
-        std::cerr << "Invoking getaddrinfo("
-                  << Nullable(t_node)
-                  << ", "
-                  << Nullable(t_service)
-                  << ", ...)"
-                  << std::endl;
     }
 
     std::string error;
@@ -83,6 +77,16 @@ Network::AddrInfo::List::List(const Hostname& t_node,
     auto hints = get_hints(&info, t_hints);
     const auto node = t_node.empty() ? nullptr : t_node.c_str();
     const auto service = t_service.empty() ? nullptr : t_service.c_str();
+
+    if (t_verbose) {
+        std::cerr << "Invoking getaddrinfo("
+                  << node
+                  << ", "
+                  << service
+                  << ", ...)"
+                  << std::endl;
+    }
+
     const auto code = ::getaddrinfo(node, service, hints, &m_pointer);
 
     if (code != 0) {
