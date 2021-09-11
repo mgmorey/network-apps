@@ -70,22 +70,22 @@ Network::Hints::operator addrinfo() const
     return ai;
 }
 
-int Network::Hints::flags() const
+Network::Flags Network::Hints::flags() const
 {
-    return static_cast<int>(m_flags);
+    return m_flags;
 }
 
-int Network::Hints::family() const
+Network::Family Network::Hints::family() const
 {
-    return static_cast<int>(m_family);
+    return m_family;
 }
 
-int Network::Hints::socktype() const
+Network::SockType Network::Hints::socktype() const
 {
-    return static_cast<int>(m_socktype);
+    return m_socktype;
 }
 
-int Network::Hints::protocol() const
+Network::Protocol Network::Hints::protocol() const
 {
-    return static_cast<int>(m_protocol);
+    return m_protocol;
 }

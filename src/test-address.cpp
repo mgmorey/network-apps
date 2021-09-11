@@ -125,7 +125,7 @@ namespace TestAddress
     {
         std::string result;
 
-        switch (hints.family()) {
+        switch (static_cast<int>(hints.family())) {
         case AF_INET:
             result = "IPv4";
             break;
