@@ -1,10 +1,5 @@
-#include "network-socket.h"     // Socket
-#include "network-address.h"    // Address, operator<<()
-#include "network-family.h"     // Family, operator<<()
-#include "network-flags.h"      // Flags, operator<<()
+#include "network-socket.h"     // Socket, operator<<()
 #include "network-format.h"     // Format, operator<<()
-#include "network-protocol.h"   // Protocol, operator<<()
-#include "network-socktype.h"   // SockType, operator<<()
 
 #include <ostream>      // std::ostream
 
