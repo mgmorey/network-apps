@@ -67,19 +67,14 @@ Network::AddrInfo::List::List(const Hostname& t_node,
     assert(!t_node.empty() || !t_service.empty());
 
     if (t_verbose) {
+        std::cerr << "Using "
+                  << *t_hints
+                  << std::endl;
         std::cerr << "Invoking getaddrinfo("
                   << Nullable(t_node)
                   << ", "
                   << Nullable(t_service)
-                  << ", "
-                  << t_hints
                   << ", ...)"
-                  << std::endl
-                  << "Using addrinfo hints "
-                  << t_hints
-                  << ':'
-                  << std::endl
-                  << *t_hints
                   << std::endl;
     }
 
