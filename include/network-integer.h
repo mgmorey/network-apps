@@ -14,7 +14,7 @@ namespace Network
         explicit operator int() const;
 
     protected:
-        int m_value;
+        int m_value {0};
     };
 }
 
