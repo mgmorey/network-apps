@@ -61,15 +61,15 @@ namespace TestSocket
 
     static void test_socket(const Network::Socket& unix_socket)
     {
-        const auto pair(unix_socket.socketpair(verbose));
-        const auto result(pair.second);
+        const auto pair_result(unix_socket.socketpair(verbose));
+        const auto socket_fd(pair_result.first);
+        const auto result(pair_result.second);
 
         if (result.result() != 0) {
             std::cerr << result
                       << std::endl;
         }
         else {
-            const auto socket_fd(pair.first);
             std::cout << "Socket "
                       << socket_fd.first
                       << " connected to socket "
