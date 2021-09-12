@@ -2,7 +2,7 @@
 #define NETWORK_ADDRESS_H
 
 #include "network-endpoint.h"   // EndpointResult
-#include "network-fd.h"         // sock_fd_type
+#include "network-fd.h"         // SocketFd
 #include "network-result.h"     // Result
 
 #ifdef _WIN32
@@ -39,7 +39,7 @@ namespace Network
         bool operator<(const Address& t_address) const;
         bool operator>(const Address& t_address) const;
         bool operator==(const Address& t_address) const;
-        Result connect(sock_fd_type t_sock_fd,
+        Result connect(SocketFd t_socket_fd,
                        bool t_verbose = false) const;
         bool empty() const;
         family_type family() const;

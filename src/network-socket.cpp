@@ -1,6 +1,6 @@
-#include "network-socket.h"     // Address, FdPair, Hostname, Result,
-                                // Socket, SocketpairResult,
-                                // SocketResult, sock_fd_type
+#include "network-socket.h"     // Address, Hostname, Result, Socket,
+                                // SocketFdPair, SocketpairResult,
+                                // SocketResult
 #include "network-addrinfo.h"   // operator<<()
 #include "network-family.h"     // Family
 #include "network-format.h"     // Format
@@ -114,11 +114,11 @@ Network::SocketpairResult Network::Socket::socketpair(bool t_verbose) const
 
     errno = 0;
     std::string error;
-    int sock_fd[2] = {sock_fd_null, sock_fd_null};
+    sock_fd_type fd[2] = {sock_fd_null, sock_fd_null};
     const auto code = ::socketpair(static_cast<int>(m_family),
                                    static_cast<int>(m_socktype),
                                    static_cast<int>(m_protocol),
-                                   sock_fd);
+                                   fd);
 
     if (code == socket_error) {
         std::ostringstream oss;
@@ -139,12 +139,12 @@ Network::SocketpairResult Network::Socket::socketpair(bool t_verbose) const
         error = oss.str();
     }
 
-    FdPair fd_pair(sock_fd[0], sock_fd[1]);
+    SocketFdPair pair(fd[0], fd[1]);
     Result result(errno, error);
     assert(result.result() ?
            result.string() != "" :
            result.string() == "");
-    return SocketpairResult(fd_pair, result);
+    return SocketpairResult(pair, result);
 }
 
 #endif

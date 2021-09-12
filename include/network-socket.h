@@ -3,7 +3,7 @@
 
 #include "network-hints.h"      // Hints
 #include "network-host.h"       // Address, Host, Nullable
-#include "network-fd.h"         // sock_fd_type
+#include "network-fd.h"         // SocketFd
 #include "network-result.h"     // Result
 
 #ifdef _WIN32
@@ -22,9 +22,9 @@
 
 namespace Network
 {
-    typedef std::pair<sock_fd_type, sock_fd_type> FdPair;
-    typedef std::pair<sock_fd_type, Result> SocketResult;
-    typedef std::pair<FdPair, Result> SocketpairResult;
+    typedef std::pair<SocketFd, SocketFd> SocketFdPair;
+    typedef std::pair<SocketFd, Result> SocketResult;
+    typedef std::pair<SocketFdPair, Result> SocketpairResult;
 
     enum { socket_error = SOCKET_ERROR };
 

@@ -2,7 +2,7 @@
                                 // SocketResults,
 #include "network-addrinfo.h"   // AddrInfo
 #include "network-close.h"      // close()
-#include "network-fd.h"         // sock_fd_null, sock_fd_type
+#include "network-fd.h"         // SocketFd, sock_fd_null, sock_fd_type
 #include "network-hints.h"      // Hints
 
 #include <algorithm>    // std::transform()
@@ -33,16 +33,16 @@ Network::SocketResult Network::Connect::operator()(const Socket& t_socket)
 Network::SocketResult Network::Connect::connect(const Socket& t_socket)
 {
     auto socket_result(t_socket.socket(m_verbose));
-    const auto sock_fd = socket_result.first;
+    const auto socket_fd = socket_result.first;
 
-    if (sock_fd == sock_fd_null) {
+    if (!socket_fd) {
         return socket_result;
     }
 
-    const auto connect_result(connect(t_socket, sock_fd));
+    const auto connect_result(connect(t_socket, socket_fd));
 
     if (connect_result.result() != 0) {
-        return SocketResult(close(sock_fd), connect_result);
+        return SocketResult(close(socket_fd), connect_result);
     }
 
     Network::Hostname hostname(t_socket.canonical_name());
@@ -51,9 +51,9 @@ Network::SocketResult Network::Connect::connect(const Socket& t_socket)
 }
 
 Network::Result Network::Connect::connect(const Socket& t_socket,
-                                          sock_fd_type t_sock_fd)
+                                          SocketFd t_socket_fd)
 {
-    return t_socket.address().connect(t_sock_fd, m_verbose);
+    return t_socket.address().connect(t_socket_fd, m_verbose);
 }
 
 Network::SocketResults Network::connect(const Endpoint& endpoint,

@@ -47,7 +47,7 @@ bool Network::Address::operator==(const Address& t_address) const
             text() == t_address.text());
 }
 
-Network::Result Network::Address::connect(sock_fd_type t_sock_fd,
+Network::Result Network::Address::connect(SocketFd t_socket_fd,
                                           bool t_verbose) const
 {
     assert(!empty());
@@ -60,12 +60,13 @@ Network::Result Network::Address::connect(sock_fd_type t_sock_fd,
 
     errno = 0;
     std::string error;
-    const auto code = ::connect(t_sock_fd, addr(), addrlen());
+    const auto fd = static_cast<sock_fd_type>(t_socket_fd);
+    const auto code = ::connect(fd, addr(), addrlen());
 
     if (code == connect_error) {
         std::ostringstream oss;
         oss << "connect("
-            << t_sock_fd
+            << fd
             << ", "
             << *this
             << ") returned "

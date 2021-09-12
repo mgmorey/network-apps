@@ -1,4 +1,5 @@
-#include "network-close.h"      // close(), sock_fd_null, sock_fd_type
+#include "network-close.h"      // SocketFd, close(), sock_fd_null,
+                                // sock_fd_type
 
 #ifdef _WIN32
 #include <winsock2.h>   // closesocket()
@@ -6,15 +7,17 @@
 #include <unistd.h>     // close()
 #endif
 
-Network::sock_fd_type Network::close(sock_fd_type sock_fd)
+Network::SocketFd Network::close(SocketFd socket_fd)
 {
-    if (sock_fd != sock_fd_null) {
+    auto fd = static_cast<sock_fd_type>(socket_fd);
+
+    if (fd != sock_fd_null) {
 #ifdef _WIN32
-        ::closesocket(sock_fd);
+        ::closesocket(fd);
 #else
-        ::close(sock_fd);
+        ::close(fd);
 #endif
     }
 
-    return sock_fd_null;
+    return SocketFd(sock_fd_null);
 }

@@ -2,9 +2,10 @@
 #define NETWORK_CONNECT_H
 
 #include "network-endpoint.h"   // Endpoint
+#include "network-fd.h"         // SocketFd
 #include "network-hints.h"      // Hints
 #include "network-result.h"     // Result
-#include "network-socket.h"     // SocketResult
+#include "network-socket.h"     // Socket, SocketResult
 
 #include <vector>       // std::vector
 #include <utility>      // std::pair
@@ -20,7 +21,7 @@ namespace Network
         SocketResult operator()(const Socket& t_socket);
         SocketResult connect(const Socket& t_socket);
         Result connect(const Socket& t_socket,
-                       sock_fd_type t_sock_fd);
+                       SocketFd t_socket_fd);
 
     private:
         bool m_verbose;

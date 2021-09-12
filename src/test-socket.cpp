@@ -1,10 +1,11 @@
 #include "network-address.h"    // Address, operator<<()
 #include "network-close.h"      // close()
-#include "network-fd.h"         // sock_fd_type
+#include "network-fd.h"         // SocketFd
 #include "network-host.h"       // Host
 #include "network-peername.h"   // AddressResult, get_peername()
 #include "network-result.h"     // Result
-#include "network-socket.h"     // FdPair, Socket, SocketpairResult
+#include "network-socket.h"     // Socket, SocketFdPair,
+                                // SocketpairResult
 
 #include <sys/socket.h> // AF_UNIX, SOCK_STREAM
 #include <unistd.h>     // getopt(), optarg, opterr, optind, optopt
@@ -38,9 +39,9 @@ namespace TestSocket
         return true;
     }
 
-    static void test_peer(Network::sock_fd_type sock_fd)
+    static void test_peer(Network::SocketFd socket_fd)
     {
-        const auto address_result(Network::get_peername(sock_fd, true));
+        const auto address_result(Network::get_peername(socket_fd, true));
         const auto result(address_result.second);
 
         if (result.result() != 0) {
@@ -51,9 +52,38 @@ namespace TestSocket
         else {
             Network::Address address(address_result.first);
             std::cout << "Socket "
-                      << sock_fd
+                      << socket_fd
                       << " connected to "
                       << address
+                      << std::endl;
+        }
+    }
+
+    static void test_socket(const Network::Socket& unix_socket)
+    {
+        const auto pair(unix_socket.socketpair(verbose));
+        const auto result(pair.second);
+
+        if (result.result() != 0) {
+            std::cerr << result
+                      << std::endl;
+        }
+        else {
+            const auto socket_fd(pair.first);
+            std::cout << "Socket "
+                      << socket_fd.first
+                      << " connected to socket "
+                      << socket_fd.second
+                      << std::endl;
+            test_peer(socket_fd.first);
+            test_peer(socket_fd.second);
+            Network::close(socket_fd.first);
+            Network::close(socket_fd.second);
+            std::cout << "Sockets "
+                      << socket_fd.first
+                      << " and "
+                      << socket_fd.second
+                      << " closed"
                       << std::endl;
         }
     }
@@ -65,30 +95,6 @@ int main(int argc, char* argv[])
         exit(EXIT_FAILURE);
     }
 
-    const Network::Socket network_socket(AF_UNIX, SOCK_STREAM);
-    const auto socketpair(network_socket.socketpair(TestSocket::verbose));
-    const auto result(socketpair.second);
-
-    if (result.result() != 0) {
-        std::cerr << result
-                  << std::endl;
-    }
-    else {
-        const auto sock_fd(socketpair.first);
-        std::cout << "Socket "
-                  << sock_fd.first
-                  << " connected to socket "
-                  << sock_fd.second
-                  << std::endl;
-        TestSocket::test_peer(sock_fd.first);
-        TestSocket::test_peer(sock_fd.second);
-        Network::close(sock_fd.first);
-        Network::close(sock_fd.second);
-        std::cout << "Sockets "
-                  << sock_fd.first
-                  << " and "
-                  << sock_fd.second
-                  << " closed"
-                  << std::endl;
-    }
+    const Network::Socket unix_socket(AF_UNIX, SOCK_STREAM);
+    TestSocket::test_socket(unix_socket);
 }

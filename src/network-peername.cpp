@@ -1,6 +1,6 @@
 #include "network-peername.h"       // AddressBuffer, AddressResult,
-                                    // Result, get_peername(),
-                                    // sock_fd_type
+                                    // Result, SocketFd,
+                                    // get_peername()
 
 #ifdef _WIN32
 #include <winsock2.h>   // getpeername(), struct sockaddr_storage
@@ -41,12 +41,12 @@ std::size_t Network::AddressBuffer::capacity()
     return size;
 }
 
-Network::AddressResult Network::get_peername(sock_fd_type sock_fd,
+Network::AddressResult Network::get_peername(SocketFd socket_fd,
                                              bool verbose)
 {
     if (verbose) {
         std::cerr << "Invoking getpeername("
-                  << sock_fd
+                  << socket_fd
                   << ", ...)"
                   << std::endl;
     }
@@ -56,12 +56,13 @@ Network::AddressResult Network::get_peername(sock_fd_type sock_fd,
     AddressBuffer buffer;
     auto addr = buffer.addr();
     auto addrlen = buffer.addrlen();
-    const auto code = ::getpeername(sock_fd, addr, &addrlen);
+    const auto fd = static_cast<sock_fd_type>(socket_fd);
+    const auto code = ::getpeername(fd, addr, &addrlen);
 
     if (code != 0) {
         std::ostringstream oss;
         oss << "getpeername("
-            << sock_fd
+            << fd
             << ", ...) returned "
             << code
             << ": "
