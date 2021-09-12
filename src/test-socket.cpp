@@ -1,7 +1,7 @@
 #include "network-address.h"    // Address, operator<<()
 #include "network-close.h"      // close()
 #include "network-fd.h"         // SocketFd
-#include "network-host.h"       // Host
+#include "network-hints.h"      // Hints
 #include "network-peername.h"   // AddressResult, get_peername()
 #include "network-result.h"     // Result
 #include "network-socket.h"     // Socket, SocketFdPair,
@@ -59,9 +59,10 @@ namespace TestSocket
         }
     }
 
-    static void test_socket(const Network::Socket& unix_socket)
+    static void test_socket(const Network::Hints& hints)
     {
-        const auto pair_result(unix_socket.socketpair(verbose));
+        const Network::Socket sock(hints);
+        const auto pair_result(sock.socketpair(verbose));
         const auto socket_fd(pair_result.first);
         const auto result(pair_result.second);
 
@@ -95,6 +96,6 @@ int main(int argc, char* argv[])
         exit(EXIT_FAILURE);
     }
 
-    const Network::Socket unix_socket(AF_UNIX, SOCK_STREAM);
-    TestSocket::test_socket(unix_socket);
+    const Network::Socket hints(AF_UNIX, SOCK_STREAM);
+    TestSocket::test_socket(hints);
 }
