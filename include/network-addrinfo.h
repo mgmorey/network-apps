@@ -49,7 +49,7 @@ namespace Network
                                    const InputIterator& right);
 
         private:
-            pointer m_pointer;
+            pointer m_pointer {nullptr};
         };
 
         class List
@@ -65,7 +65,7 @@ namespace Network
             Result result() const;
 
         private:
-            addrinfo* m_pointer;
+            addrinfo* m_pointer {nullptr};
             Result m_result;
         };
 

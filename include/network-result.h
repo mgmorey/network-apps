@@ -15,7 +15,7 @@ namespace Network
 
     private:
         std::string m_string;
-        int m_value;
+        int m_value {0};
     };
 
     extern std::ostream& operator<<(std::ostream& os,

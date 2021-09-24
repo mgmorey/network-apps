@@ -24,7 +24,7 @@ namespace Network
                        SocketFd t_socket_fd);
 
     private:
-        bool m_verbose;
+        bool m_verbose {false};
     };
 
     extern SocketResults connect(const Endpoint& endpoint,
