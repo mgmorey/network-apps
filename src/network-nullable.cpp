@@ -2,8 +2,7 @@
 
 #include <ostream>      // std::ostream
 
-Network::Nullable::Nullable() :
-    m_is_null(true)
+Network::Nullable::Nullable()
 {
 }
 
