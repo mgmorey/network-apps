@@ -9,9 +9,9 @@ namespace TestBuffer
 
     static void test_buffer()
     {
-        Network::Buffer buffer(size);
+        Network::Buffer buffer {size};
         assert(buffer.size() == size);
-        std::string string(buffer);
+        std::string string {buffer};
         assert(string.size() == 0);
         assert(string.find('\0') == std::string::npos);
     }

@@ -54,7 +54,7 @@ Network::AddressResult Network::get_peername(SocketFd socket_fd,
     errno = 0;
     std::string error;
     AddressBuffer buffer;
-    auto addr = buffer.addr();
+    auto addr {buffer.addr()};
     auto addrlen = buffer.addrlen();
     const auto fd = static_cast<sock_fd_type>(socket_fd);
     const auto code = ::getpeername(fd, addr, &addrlen);

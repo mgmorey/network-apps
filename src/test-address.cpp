@@ -41,8 +41,8 @@ namespace TestAddress
     template<typename T, typename U>
     auto erase(T& c, const U& value)
     {
-        auto it = std::remove(c.begin(), c.end(), value);
-        auto r = std::distance(it, c.end());
+        auto it {std::remove(c.begin(), c.end(), value)};
+        auto r {std::distance(it, c.end())};
         c.erase(it, c.end());
         return r;
     }
@@ -50,8 +50,8 @@ namespace TestAddress
     template<typename T>
     auto unique(T& c)
     {
-        auto it = std::unique(c.begin(), c.end());
-        auto r = std::distance(it, c.end());
+        auto it {std::unique(c.begin(), c.end())};
+        auto r {std::distance(it, c.end())};
         c.erase(it, c.end());
         return r;
     }
@@ -68,10 +68,10 @@ namespace TestAddress
 
         void operator()(const Network::Host& t_host)
         {
-            const auto address(t_host.address());
-            const auto endpoint_result(address.to_endpoint(false, verbose));
-            const auto endpoint(endpoint_result.first);
-            const auto result(endpoint_result.second);
+            const auto address {t_host.address()};
+            const auto endpoint_result {address.to_endpoint(false, verbose)};
+            const auto endpoint {endpoint_result.first};
+            const auto result {endpoint_result.second};
 
             if (result.result() != 0) {
                 std::cerr << result
@@ -138,8 +138,8 @@ namespace TestAddress
     HostsResult get_hosts(const Network::Hostname& hostname,
                           const Network::Hints* hints)
     {
-        const auto host(Network::get_hostname(hostname));
-        const auto endpoint(Network::Endpoint(host, ""));
+        const auto host {Network::get_hostname(hostname)};
+        const auto endpoint {Network::Endpoint(host, "")};
         return Network::AddrInfo::get<HostsResult>(endpoint, hints, verbose);
     }
 
@@ -169,10 +169,10 @@ namespace TestAddress
     static void test_host(const Network::Hostname& host,
                           const Network::Hints& hints)
     {
-        const auto description(get_description(hints));
-        const auto hosts_result(get_hosts(host, &hints));
-        const auto hosts(hosts_result.first);
-        const auto result(hosts_result.second);
+        const auto description {get_description(hints)};
+        const auto hosts_result {get_hosts(host, &hints)};
+        const auto hosts {hosts_result.first};
+        const auto result {hosts_result.second};
 
         if (result.result() != 0) {
             if (description.empty()) {

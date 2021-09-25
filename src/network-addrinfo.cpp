@@ -74,9 +74,9 @@ Network::AddrInfo::List::List(const Hostname& t_node,
 
     std::string error;
     addrinfo info = Hints();
-    const auto hints = get_hints(&info, t_hints);
-    const auto node = t_node.empty() ? nullptr : t_node.c_str();
-    const auto service = t_service.empty() ? nullptr : t_service.c_str();
+    const auto hints {get_hints(&info, t_hints)};
+    const auto node {t_node.empty() ? nullptr : t_node.c_str()};
+    const auto service {t_service.empty() ? nullptr : t_service.c_str()};
 
     if (t_verbose) {
         std::cerr << "Invoking getaddrinfo("

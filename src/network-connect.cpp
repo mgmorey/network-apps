@@ -32,20 +32,20 @@ Network::SocketResult Network::Connect::operator()(const Socket& t_socket)
 
 Network::SocketResult Network::Connect::connect(const Socket& t_socket)
 {
-    auto socket_result(t_socket.socket(m_verbose));
+    auto socket_result {t_socket.socket(m_verbose)};
     const auto socket_fd = socket_result.first;
 
     if (!socket_fd) {
         return socket_result;
     }
 
-    const auto connect_result(connect(t_socket, socket_fd));
+    const auto connect_result {connect(t_socket, socket_fd)};
 
     if (connect_result.result() != 0) {
         return SocketResult(close(socket_fd), connect_result);
     }
 
-    Network::Hostname hostname(t_socket.canonical_name());
+    Network::Hostname hostname {t_socket.canonical_name()};
     socket_result.second = Result(0, hostname);
     return socket_result;
 }
@@ -61,9 +61,9 @@ Network::SocketResults Network::connect(const Endpoint& endpoint,
                                         bool verbose)
 {
     SocketResults results;
-    const auto sockets_result(get_sockets(endpoint, hints, verbose));
-    const auto sockets(sockets_result.first);
-    const auto result(sockets_result.second);
+    const auto sockets_result {get_sockets(endpoint, hints, verbose)};
+    const auto sockets {sockets_result.first};
+    const auto result {sockets_result.second};
     std::transform(sockets.begin(), sockets.end(),
                    std::back_inserter(results),
                    Connect(verbose));

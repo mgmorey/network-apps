@@ -93,7 +93,7 @@ bool Network::Address::empty() const
 
 Network::Address::family_type Network::Address::family() const
 {
-    switch(sa_family()) {
+    switch (sa_family()) {
 #ifndef _WIN32
     case AF_UNIX:
         return sun_family();
@@ -109,7 +109,7 @@ Network::Address::family_type Network::Address::family() const
 
 Network::Address::port_type Network::Address::port() const
 {
-    switch(sa_family()) {
+    switch (sa_family()) {
     case AF_INET:
         return htons(sin_port());
     case AF_INET6:
@@ -121,7 +121,7 @@ Network::Address::port_type Network::Address::port() const
 
 std::string Network::Address::text() const
 {
-    switch(sa_family()) {
+    switch (sa_family()) {
 #ifndef _WIN32
     case AF_UNIX:
         return sun_text();
@@ -159,7 +159,7 @@ std::string Network::Address::sa_data() const
 
 Network::Address::family_type Network::Address::sa_family() const
 {
-    const auto& sa = static_cast<const sockaddr&>(*this);
+    const auto& sa {static_cast<const sockaddr&>(*this)};
     return sa.sa_family;
 }
 
@@ -168,15 +168,15 @@ std::string Network::Address::sa_text() const
     std::ostringstream oss;
     oss << std::hex;
 
-    for (const auto c : m_value) {
+    for (const auto ch : m_value) {
         oss << std::setfill('0')
             << std::setw(2)
             << std::uppercase
-            << static_cast<short>(c & 0xFF);
+            << static_cast<short>(ch & 0xFF);
     }
 
-    const auto str(oss.str());
-    std::string result("0x");
+    const auto str {oss.str()};
+    std::string result {"0x"};
 
     if (str.empty()) {
         result += "0";
@@ -195,26 +195,26 @@ Network::Address::operator const sockaddr_in&() const
 
 in_addr Network::Address::sin_addr() const
 {
-    const auto& sin = static_cast<const sockaddr_in&>(*this);
+    const auto& sin {static_cast<const sockaddr_in&>(*this)};
     return sin.sin_addr;
 }
 
 Network::Address::family_type Network::Address::sin_family() const
 {
-    const auto& sin = static_cast<const sockaddr_in&>(*this);
+    const auto& sin {static_cast<const sockaddr_in&>(*this)};
     return sin.sin_family;
 }
 
 Network::Address::port_type Network::Address::sin_port() const
 {
-    const auto& sin = static_cast<const sockaddr_in&>(*this);
+    const auto& sin {static_cast<const sockaddr_in&>(*this)};
     return sin.sin_port;
 }
 
 std::string Network::Address::sin_text() const
 {
-    Buffer buffer(INET_ADDRSTRLEN);
-    const auto in = sin_addr();
+    Buffer buffer {INET_ADDRSTRLEN};
+    const auto in {sin_addr()};
     ::inet_ntop(AF_INET, &in, &buffer[0], buffer.size());
     return std::string(buffer);
 }
@@ -226,26 +226,26 @@ Network::Address::operator const sockaddr_in6&() const
 
 in6_addr Network::Address::sin6_addr() const
 {
-    const auto& sin6 = static_cast<const sockaddr_in6&>(*this);
+    const auto& sin6 {static_cast<const sockaddr_in6&>(*this)};
     return sin6.sin6_addr;
 }
 
 Network::Address::family_type Network::Address::sin6_family() const
 {
-    const auto& sin6 = static_cast<const sockaddr_in6&>(*this);
+    const auto& sin6 {static_cast<const sockaddr_in6&>(*this)};
     return sin6.sin6_family;
 }
 
 Network::Address::port_type Network::Address::sin6_port() const
 {
-    const auto& sin6 = static_cast<const sockaddr_in6&>(*this);
+    const auto& sin6 {static_cast<const sockaddr_in6&>(*this)};
     return sin6.sin6_port;
 }
 
 std::string Network::Address::sin6_text() const
 {
-    Buffer buffer(INET6_ADDRSTRLEN);
-    const auto in6 = sin6_addr();
+    Buffer buffer {INET6_ADDRSTRLEN};
+    const auto in6 {sin6_addr()};
     ::inet_ntop(AF_INET6, &in6, &buffer[0], buffer.size());
     return std::string(buffer);
 }
@@ -259,13 +259,13 @@ Network::Address::operator const sockaddr_un&() const
 
 Network::Address::family_type Network::Address::sun_family() const
 {
-    const auto& sun = static_cast<const sockaddr_un&>(*this);
+    const auto& sun {static_cast<const sockaddr_un&>(*this)};
     return sun.sun_family;
 }
 
 std::string Network::Address::sun_path() const
 {
-    const auto& sun = static_cast<const sockaddr_un&>(*this);
+    const auto& sun {static_cast<const sockaddr_un&>(*this)};
     return std::string(sun.sun_path);
 }
 

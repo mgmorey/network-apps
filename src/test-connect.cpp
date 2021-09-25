@@ -61,9 +61,9 @@ namespace TestConnect
         void test_socket(Network::SocketFd t_socket_fd,
                          const Network::Result& t_result)
         {
-            const auto cname(t_result.string());
-            const auto hostname(m_endpoint.first);
-            const auto service(m_endpoint.second);
+            const auto cname {t_result.string()};
+            const auto hostname {m_endpoint.first};
+            const auto service {m_endpoint.second};
             m_os << "Socket "
                  << t_socket_fd
                  << " connected to "
@@ -83,9 +83,9 @@ namespace TestConnect
 
         void test_socket_peer(Network::SocketFd t_socket_fd)
         {
-            const auto address_result(Network::get_peername(t_socket_fd, true));
-            const auto address(address_result.first);
-            const auto result(address_result.second);
+            const auto address_result {Network::get_peername(t_socket_fd, true)};
+            const auto address {address_result.first};
+            const auto result {address_result.second};
 
             if (result.result() != 0) {
                 std::cerr << "No address: "
@@ -132,7 +132,7 @@ namespace TestConnect
     static void test_connect(const Network::Endpoint& endpoint,
                              const Network::Hints& hints)
     {
-        const auto results(connect(endpoint, &hints, verbose));
+        const auto results {connect(endpoint, &hints, verbose)};
         std::for_each(results.begin(), results.end(),
                       Test(endpoint, std::cout));
     }
@@ -156,9 +156,9 @@ int main(int argc, char* argv[])
 
     argc -= optind;
     argv += optind;
-    const auto host(argc > 1 ? argv[1] : host_default);
-    const auto service(argc > 2 ? argv[2] : service_default);
-    const auto endpoint(Network::Endpoint(host, service));
+    const auto host {argc > 1 ? argv[1] : host_default};
+    const auto service {argc > 2 ? argv[2] : service_default};
+    const auto endpoint {Network::Endpoint(host, service)};
     TestConnect::test_connect(endpoint, hints);
     static_cast<void>(context);
 }

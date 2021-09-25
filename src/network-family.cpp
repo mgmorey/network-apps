@@ -22,7 +22,7 @@ Network::Family& Network::Family::operator=(int t_value)
 std::ostream& Network::operator<<(std::ostream& os,
                                   const Family& family)
 {
-    switch(family.m_value) {
+    switch (family.m_value) {
     case AF_UNSPEC:
         os << "AF_UNSPEC";
         break;

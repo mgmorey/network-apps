@@ -20,8 +20,8 @@ Network::Address::to_endpoint(int t_flags, bool t_verbose) const
 {
     assert(!empty());
     std::string error;
-    Buffer host(NI_MAXHOST);
-    Buffer service(NI_MAXSERV);
+    Buffer host {NI_MAXHOST};
+    Buffer service {NI_MAXSERV};
     const auto code = ::getnameinfo(addr(), addrlen(),
                                     &host[0], host.size(),
                                     &service[0], service.size(),
