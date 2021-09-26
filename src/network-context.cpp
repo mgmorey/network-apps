@@ -1,4 +1,4 @@
-#include "network-context.h"    // Context
+#include "network-context.h"    // Context, Result
 #include "network-error.h"      // format_error(), get_last_error(),
                                 // reset_last_error()
 
@@ -6,20 +6,21 @@
 #include <winsock2.h>   // WSACleanup(), WSAStartup()
 #endif
 
-#include <iostream>     // std::cerr, std::endl
+#include <ostream>      // std::ostringstream
 
 Network::Context::Context()
 {
     if (!m_count++) {
-#ifdef WIN32
-        WSADATA wsaData;
-        const auto code {::WSAStartup(MAKEWORD(2, 0), &wsaData)};
+#ifdef _WIN32
+        const auto code {::WSAStartup(MAKEWORD(2, 0), &m_data)};
 
         if (code != 0) {
-            std::cerr << "Call to WSAStartup() returned "
-                      << code
-                      << ": "
-                      << format_error(code);
+            std::ostringstream oss;
+            oss << "Call to WSAStartup() returned "
+                << code
+                << ": "
+                << format_error(code);
+            m_result = Result(code, oss.str());
         }
 #endif
     }
@@ -28,10 +29,15 @@ Network::Context::Context()
 Network::Context::~Context()
 {
     if (!--m_count) {
-#ifdef WIN32
+#ifdef _WIN32
         ::WSACleanup();
 #endif
     }
+}
+
+Network::Result Network::Context::result()
+{
+    return m_result;
 }
 
 std::size_t Network::Context::m_count;
