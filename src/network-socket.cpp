@@ -2,6 +2,8 @@
                                 // SocketFdPair, SocketpairResult,
                                 // SocketResult
 #include "network-addrinfo.h"   // operator<<()
+#include "network-error.h"      // format_error(), get_last_error(),
+                                // set_last_error()
 #include "network-family.h"     // Family
 #include "network-format.h"     // Format
 #include "network-protocol.h"   // Protocol
@@ -16,8 +18,6 @@
 #endif
 
 #include <cassert>      // assert()
-#include <cerrno>       // errno
-#include <cstring>      // std::strerror()
 #include <iostream>     // std::cerr, std::endl
 #include <sstream>      // std::ostringstream
 
@@ -69,13 +69,14 @@ Network::SocketResult Network::Socket::socket(bool t_verbose) const
                   << std::endl;
     }
 
-    errno = 0;
     std::string error;
+    auto code {reset_last_error()};
     const auto sock_fd {::socket(static_cast<int>(m_family),
                                  static_cast<int>(m_socktype),
                                  static_cast<int>(m_protocol))};
 
     if (sock_fd == sock_fd_null) {
+        code = get_last_error();
         std::ostringstream oss;
         oss << "socket("
             << Format("domain")
@@ -84,17 +85,14 @@ Network::SocketResult Network::Socket::socket(bool t_verbose) const
             << m_socktype
             << Format(m_delim, m_tab, "protocol")
             << m_protocol
-            << ") returned "
-            << sock_fd
+            << ") failed with error "
+            << code
             << ": "
-            << std::strerror(errno)
-            << " (errno = "
-            << errno
-            << ')';
+            << format_error(code);
         error = oss.str();
     }
 
-    Result result(errno, error);
+    Result result(code, error);
     assert(result.result() ?
            result.string() != "" :
            result.string() == "");
@@ -112,15 +110,16 @@ Network::SocketpairResult Network::Socket::socketpair(bool t_verbose) const
                   << std::endl;
     }
 
-    errno = 0;
     std::string error;
+    auto code {reset_last_error()};
     sock_fd_type fd[2] {sock_fd_null, sock_fd_null};
-    const auto code {::socketpair(static_cast<int>(m_family),
-                                  static_cast<int>(m_socktype),
-                                  static_cast<int>(m_protocol),
-                                  fd)};
+    const auto code {};
 
-    if (code == socket_error) {
+    if (::socketpair(static_cast<int>(m_family),
+                     static_cast<int>(m_socktype),
+                     static_cast<int>(m_protocol),
+                     fd) == socket_error) {
+        code = get_last_error();
         std::ostringstream oss;
         oss << "socketpair("
             << Format("domain")
@@ -129,18 +128,15 @@ Network::SocketpairResult Network::Socket::socketpair(bool t_verbose) const
             << m_socktype
             << Format(m_delim, m_tab, "protocol")
             << m_protocol
-            << ") returned "
+            << ") failed with error "
             << code
             << ": "
-            << std::strerror(errno)
-            << " (errno = "
-            << errno
-            << ')';
+            << format_error(code);
         error = oss.str();
     }
 
     SocketFdPair pair(fd[0], fd[1]);
-    Result result(errno, error);
+    Result result(code, error);
     assert(result.result() ?
            result.string() != "" :
            result.string() == "");

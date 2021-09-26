@@ -1,6 +1,8 @@
 #include "network-address.h"    // Address, operator<<(), struct
                                 // sockaddr, sock_len_type
 #include "network-buffer.h"     // Buffer
+#include "network-error.h"      // format_error(), get_last_error(),
+                                // set_last_error()
 
 #ifdef _WIN32
 #include <winsock2.h>   // AF_INET, AF_INET6, AF_UNIX, AF_UNSPEC,
@@ -12,9 +14,7 @@
 #endif
 
 #include <cassert>      // assert()
-#include <cerrno>       // errno
 #include <cstddef>      // offsetof()
-#include <cstring>      // std::strerror()
 #include <iomanip>      // std::hex, std::setfill(), std::setw(),
                         // std::uppercase
 #include <iostream>     // std::cerr, std::endl
@@ -58,28 +58,25 @@ Network::Result Network::Address::connect(SocketFd t_socket_fd,
                   << std::endl;
     }
 
-    errno = 0;
     std::string error;
+    auto code {reset_last_error()};
     const auto fd {static_cast<sock_fd_type>(t_socket_fd)};
-    const auto code {::connect(fd, addr(), addrlen())};
 
-    if (code == connect_error) {
+    if (::connect(fd, addr(), addrlen()) == connect_error) {
+        code = get_last_error();
         std::ostringstream oss;
         oss << "connect("
             << fd
             << ", "
             << *this
-            << ") returned "
+            << ") failed with error "
             << code
             << ": "
-            << std::strerror(errno)
-            << " (errno = "
-            << errno
-            << ')';
+            << format_error(code);
         error = oss.str();
     }
 
-    Result result(errno, error);
+    Result result(code, error);
     assert(result.result() ?
            result.string() != "" :
            result.string() == "");

@@ -1,6 +1,8 @@
-#include "network-peername.h"       // AddressBuffer, AddressResult,
-                                    // Result, SocketFd,
-                                    // get_peername()
+#include "network-peername.h"   // AddressBuffer, AddressResult,
+                                // Result, SocketFd,
+                                // get_peername()
+#include "network-error.h"      // format_error(), get_last_error(),
+                                // set_last_error()
 
 #ifdef _WIN32
 #include <winsock2.h>   // getpeername(), struct sockaddr_storage
@@ -10,9 +12,8 @@
 #endif
 
 #include <algorithm>    // std::max()
-#include <cerrno>       // errno
+#include <cassert>      // assert()
 #include <cstddef>      // std::size_t
-#include <cstring>      // std::strerror()
 #include <iostream>     // std::cerr, std::endl
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
@@ -51,27 +52,28 @@ Network::AddressResult Network::get_peername(SocketFd socket_fd,
                   << std::endl;
     }
 
-    errno = 0;
     std::string error;
     AddressBuffer buffer;
     auto addr {buffer.addr()};
     auto addrlen {buffer.addrlen()};
+    auto code {reset_last_error()};
     const auto fd {static_cast<sock_fd_type>(socket_fd)};
-    const auto code {::getpeername(fd, addr, &addrlen)};
 
-    if (code != 0) {
+    if (::getpeername(fd, addr, &addrlen) != 0) {
+        code = get_last_error();
         std::ostringstream oss;
         oss << "getpeername("
             << fd
-            << ", ...) returned "
+            << ", ...) failed with error "
             << code
             << ": "
-            << std::strerror(errno)
-            << " (errno = "
-            << errno
-            << ')';
+            << format_error(code);
         error = oss.str();
     }
 
-    return AddressResult(Address(addr, addrlen), Result(code, error));
+    Result result(code, error);
+    assert(result.result() ?
+           result.string() != "" :
+           result.string() == "");
+    return AddressResult(Address(addr, addrlen), result);
 }
