@@ -2,7 +2,8 @@
 #include "network-error.h"      // format_error()
 
 #ifdef _WIN32
-#include <winsock2.h>   // WSACleanup(), WSAStartup()
+#include <winsock2.h>   // MAKEWORD(), WORD, WSACleanup(),
+                        // WSAStartup()
 #endif
 
 #include <sstream>      // std::ostringstream
