@@ -27,7 +27,7 @@
 
 namespace TestConnect
 {
-    static bool verbose = false;
+    static bool verbose {false};
 
     class Test
     {

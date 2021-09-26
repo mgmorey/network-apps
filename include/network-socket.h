@@ -52,7 +52,7 @@ namespace Network
 
     private:
         static const std::string m_delim;
-        static const int m_tabs[1];
+        static const int m_tab;
     };
 
     extern std::ostream& operator<<(std::ostream& os,

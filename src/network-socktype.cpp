@@ -25,7 +25,7 @@ Network::SockType& Network::SockType::operator=(int t_value)
 std::ostream& Network::operator<<(std::ostream& os,
                                   const SockType& socktype)
 {
-    static const std::pair<int, const char*> values[] = {
+    static const std::pair<int, const char*> values[] {
 #ifdef SOCK_CLOEXEC
         {SOCK_CLOEXEC,              "SOCK_CLOEXEC"},
 #endif
@@ -35,9 +35,9 @@ std::ostream& Network::operator<<(std::ostream& os,
         {0,                         nullptr}
     };
 
-    constexpr auto mask = 00000017;
+    constexpr auto mask {0000017};
     std::ostringstream oss;
-    std::size_t i = 0;
+    std::size_t i {0};
 
     if (socktype.m_value & mask) {
         switch (socktype.m_value & mask) {

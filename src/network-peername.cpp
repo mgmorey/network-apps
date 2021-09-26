@@ -34,7 +34,7 @@ socklen_t Network::AddressBuffer::addrlen() const
 
 std::size_t Network::AddressBuffer::capacity()
 {
-    auto size = sizeof(sockaddr_storage);
+    auto size {sizeof(sockaddr_storage)};
 #ifndef _WIN32
     size = std::max(size, sizeof(sockaddr_un));
 #endif
@@ -55,9 +55,9 @@ Network::AddressResult Network::get_peername(SocketFd socket_fd,
     std::string error;
     AddressBuffer buffer;
     auto addr {buffer.addr()};
-    auto addrlen = buffer.addrlen();
-    const auto fd = static_cast<sock_fd_type>(socket_fd);
-    const auto code = ::getpeername(fd, addr, &addrlen);
+    auto addrlen {buffer.addrlen()};
+    const auto fd {static_cast<sock_fd_type>(socket_fd)};
+    const auto code {::getpeername(fd, addr, &addrlen)};
 
     if (code != 0) {
         std::ostringstream oss;

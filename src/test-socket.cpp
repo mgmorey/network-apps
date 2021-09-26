@@ -14,7 +14,7 @@
 
 namespace TestSocket
 {
-    static bool verbose = false;
+    static bool verbose {false};
 
     static bool parse_arguments(int& argc, char* argv[])
     {
@@ -41,8 +41,8 @@ namespace TestSocket
 
     static void test_peer(Network::SocketFd socket_fd)
     {
-        const auto address_result(Network::get_peername(socket_fd, true));
-        const auto result(address_result.second);
+        const auto address_result {Network::get_peername(socket_fd, true)};
+        const auto result {address_result.second};
 
         if (result.result() != 0) {
             std::cerr << "No address: "
@@ -61,10 +61,10 @@ namespace TestSocket
 
     static void test_socket(const Network::Hints& hints)
     {
-        const Network::Socket sock(hints);
-        const auto pair_result(sock.socketpair(verbose));
-        const auto socket_fd(pair_result.first);
-        const auto result(pair_result.second);
+        const Network::Socket sock {hints};
+        const auto pair_result {sock.socketpair(verbose)};
+        const auto socket_fd {pair_result.first};
+        const auto result {pair_result.second};
 
         if (result.result() != 0) {
             std::cerr << result

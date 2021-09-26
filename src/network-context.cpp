@@ -11,7 +11,7 @@ Network::Context::Context()
     if (!m_count++) {
 #ifdef WIN32
         WSADATA wsaData;
-        const auto code = WSAStartup(MAKEWORD(2, 0), &wsaData);
+        const auto code {WSAStartup(MAKEWORD(2, 0), &wsaData)};
 
         if (code != 0) {
             std::cerr << "WSAStartup() returned "

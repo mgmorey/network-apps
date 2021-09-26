@@ -6,17 +6,17 @@
 std::ostream& Network::operator<<(std::ostream& os,
                                   const Hints& hints)
 {
-    static const std::string delim(", ");
-    static const int tabs[1] = {0};
+    static const std::string delim {", "};
+    static const int tab {0};
 
     os << "Hints("
        << Format("m_flags")
        << hints.m_flags
-       << Format(delim, tabs[0], "m_family")
+       << Format(delim, tab, "m_family")
        << hints.m_family
-       << Format(delim, tabs[0], "m_socktype")
+       << Format(delim, tab, "m_socktype")
        << hints.m_socktype
-       << Format(delim, tabs[0], "m_protocol")
+       << Format(delim, tab, "m_protocol")
        << hints.m_protocol
        << ')';
     return os;

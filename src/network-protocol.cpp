@@ -32,7 +32,7 @@ Network::Family Network::Protocol::family() const
 std::ostream& Network::operator<<(std::ostream& os,
                                   const Protocol& protocol)
 {
-    const auto family = static_cast<int>(protocol.family());
+    const auto family {static_cast<int>(protocol.family())};
 
     switch (family) {
     case AF_INET:

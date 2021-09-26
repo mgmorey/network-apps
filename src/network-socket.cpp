@@ -71,18 +71,18 @@ Network::SocketResult Network::Socket::socket(bool t_verbose) const
 
     errno = 0;
     std::string error;
-    const auto sock_fd = ::socket(static_cast<int>(m_family),
-                                  static_cast<int>(m_socktype),
-                                  static_cast<int>(m_protocol));
+    const auto sock_fd {::socket(static_cast<int>(m_family),
+                                 static_cast<int>(m_socktype),
+                                 static_cast<int>(m_protocol))};
 
     if (sock_fd == sock_fd_null) {
         std::ostringstream oss;
         oss << "socket("
             << Format("domain")
             << m_family
-            << Format(m_delim, m_tabs[0], "type")
+            << Format(m_delim, m_tab, "type")
             << m_socktype
-            << Format(m_delim, m_tabs[0], "protocol")
+            << Format(m_delim, m_tab, "protocol")
             << m_protocol
             << ") returned "
             << sock_fd
@@ -114,20 +114,20 @@ Network::SocketpairResult Network::Socket::socketpair(bool t_verbose) const
 
     errno = 0;
     std::string error;
-    sock_fd_type fd[2] = {sock_fd_null, sock_fd_null};
-    const auto code = ::socketpair(static_cast<int>(m_family),
-                                   static_cast<int>(m_socktype),
-                                   static_cast<int>(m_protocol),
-                                   fd);
+    sock_fd_type fd[2] {sock_fd_null, sock_fd_null};
+    const auto code {::socketpair(static_cast<int>(m_family),
+                                  static_cast<int>(m_socktype),
+                                  static_cast<int>(m_protocol),
+                                  fd)};
 
     if (code == socket_error) {
         std::ostringstream oss;
         oss << "socketpair("
             << Format("domain")
             << m_family
-            << Format(m_delim, m_tabs[0], "type")
+            << Format(m_delim, m_tab, "type")
             << m_socktype
-            << Format(m_delim, m_tabs[0], "protocol")
+            << Format(m_delim, m_tab, "protocol")
             << m_protocol
             << ") returned "
             << code
@@ -149,5 +149,5 @@ Network::SocketpairResult Network::Socket::socketpair(bool t_verbose) const
 
 #endif
 
-const std::string Network::Socket::m_delim(", ");
-const int Network::Socket::m_tabs[1] = {0};
+const std::string Network::Socket::m_delim {", "};
+const int Network::Socket::m_tab {0};

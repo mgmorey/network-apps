@@ -5,7 +5,7 @@
 
 namespace TestBuffer
 {
-    constexpr std::string::size_type size = 1024;
+    constexpr std::string::size_type size {1024};
 
     static void test_buffer()
     {

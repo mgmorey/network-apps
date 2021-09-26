@@ -36,7 +36,7 @@ namespace TestAddress
     typedef std::vector<Network::Host> Hosts;
     typedef std::pair<Hosts, Network::Result> HostsResult;
 
-    static bool verbose = false;
+    static bool verbose {false};
 
     template<typename T, typename U>
     auto erase(T& c, const U& value)
@@ -121,7 +121,7 @@ namespace TestAddress
     static std::string get_description(const Network::Hints& hints)
     {
         std::string result;
-        const auto family = static_cast<int>(hints.family());
+        const auto family {static_cast<int>(hints.family())};
 
         switch (family) {
         case AF_INET:
@@ -205,15 +205,13 @@ namespace TestAddress
 
     static void test_host(const Network::Hostname& host)
     {
-        const auto flags = (host.empty() ?
-                            AI_ADDRCONFIG | AI_CANONNAME :
-                            AI_CANONNAME);
-
         if (host.empty()) {
+            const auto flags {AI_ADDRCONFIG | AI_CANONNAME};
             Network::Hints hints(AF_UNSPEC, SOCK_STREAM, IPPROTO_TCP, flags);
             test_host(host, hints);
         }
         else {
+            const auto flags {AI_CANONNAME};
             std::cout << "Host: " << host << std::endl;
             Network::Hints hints4(AF_INET, SOCK_STREAM, IPPROTO_TCP, flags);
             Network::Hints hints6(AF_INET6, SOCK_STREAM, IPPROTO_TCP, flags);

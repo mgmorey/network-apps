@@ -15,8 +15,8 @@
 std::ostream& Network::operator<<(std::ostream& os,
                                   const Address& address)
 {
-    static const std::string delim(", ");
-    static const int tabs[1] = {0};
+    static const std::string delim {", "};
+    static const int tab {0};
 
     if (address.empty()) {
         os << "0x0";
@@ -39,7 +39,7 @@ std::ostream& Network::operator<<(std::ostream& os,
             os << "sockaddr_sin("
                << Format("sin_port")
                << port
-               << Format(delim, tabs[0], "sin_addr")
+               << Format(delim, tab, "sin_addr")
                << text
                << ')';
             break;
@@ -47,7 +47,7 @@ std::ostream& Network::operator<<(std::ostream& os,
             os << "sockaddr_sin6("
                << Format("sin6_port")
                << port
-               << Format(delim, tabs[0], "sin6_addr")
+               << Format(delim, tab, "sin6_addr")
                << text
                << ')';
             break;
@@ -55,7 +55,7 @@ std::ostream& Network::operator<<(std::ostream& os,
             os << "sockaddr("
                << Format("sa_family")
                << Family(family)
-               << Format(delim, tabs[0], "sa_data")
+               << Format(delim, tab, "sa_data")
                << text
                << ')';
         }

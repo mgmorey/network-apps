@@ -60,8 +60,8 @@ Network::Result Network::Address::connect(SocketFd t_socket_fd,
 
     errno = 0;
     std::string error;
-    const auto fd = static_cast<sock_fd_type>(t_socket_fd);
-    const auto code = ::connect(fd, addr(), addrlen());
+    const auto fd {static_cast<sock_fd_type>(t_socket_fd)};
+    const auto code {::connect(fd, addr(), addrlen())};
 
     if (code == connect_error) {
         std::ostringstream oss;

@@ -33,7 +33,7 @@ Network::SocketResult Network::Connect::operator()(const Socket& t_socket)
 Network::SocketResult Network::Connect::connect(const Socket& t_socket)
 {
     auto socket_result {t_socket.socket(m_verbose)};
-    const auto socket_fd = socket_result.first;
+    const auto socket_fd {socket_result.first};
 
     if (!socket_fd) {
         return socket_result;

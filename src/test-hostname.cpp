@@ -7,9 +7,9 @@
 int main(void)
 {
     const Network::Context context;
-    const auto hostname_result(Network::get_hostname());
-    const auto hostname(hostname_result.first);
-    const auto result(hostname_result.second);
+    const auto hostname_result {Network::get_hostname()};
+    const auto hostname {hostname_result.first};
+    const auto result {hostname_result.second};
 
     if (result.result() != 0) {
         std::cerr << "No hostname: "

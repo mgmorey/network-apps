@@ -52,6 +52,6 @@ Network::Address::to_endpoint(int t_flags, bool t_verbose) const
 Network::EndpointResult
 Network::Address::to_endpoint(bool t_numeric, bool t_verbose) const
 {
-    const int flags = t_numeric ? NI_NUMERICHOST | NI_NUMERICSERV : 0;
+    const int flags {t_numeric ? NI_NUMERICHOST | NI_NUMERICSERV : 0};
     return to_endpoint(flags, t_verbose);
 }

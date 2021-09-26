@@ -9,7 +9,7 @@
 
 Network::SocketFd Network::close(SocketFd socket_fd)
 {
-    auto fd = static_cast<sock_fd_type>(socket_fd);
+    auto fd {static_cast<sock_fd_type>(socket_fd)};
 
     if (fd != sock_fd_null) {
 #ifdef _WIN32

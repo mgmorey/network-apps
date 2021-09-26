@@ -6,20 +6,20 @@
 std::ostream& Network::operator<<(std::ostream& os,
                                   const Socket& sock)
 {
-    static const int tabs[1] = {7};
+    static const int tab {7};
 
     os << "Socket("
        << Format("m_flags")
        << sock.m_flags
-       << Format(tabs[0], "m_family")
+       << Format(tab, "m_family")
        << sock.m_family
-       << Format(tabs[0], "m_socktype")
+       << Format(tab, "m_socktype")
        << sock.m_socktype
-       << Format(tabs[0], "m_protocol")
+       << Format(tab, "m_protocol")
        << sock.m_protocol
-       << Format(tabs[0], "m_address")
+       << Format(tab, "m_address")
        << sock.m_address
-       << Format(tabs[0], "m_canonname")
+       << Format(tab, "m_canonname")
        << sock.m_canonname
        << ')';
     return os;

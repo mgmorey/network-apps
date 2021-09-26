@@ -27,7 +27,7 @@ Network::Flags& Network::Flags::operator=(int t_value)
 std::ostream& Network::operator<<(std::ostream& os,
                                   const Flags& flags)
 {
-    static const std::pair<int, const char*> values[] = {
+    static const std::pair<int, const char*> values[] {
         {AI_PASSIVE,                "AI_PASSIVE"},
         {AI_CANONNAME,              "AI_CANONNAME"},
         {AI_NUMERICHOST,            "AI_NUMERICHOST"},
@@ -38,7 +38,7 @@ std::ostream& Network::operator<<(std::ostream& os,
     };
 
     std::ostringstream oss;
-    std::size_t i = 0;
+    std::size_t i {0};
 
     for(const auto& value : values) {
         if (flags.m_value & value.first) {
