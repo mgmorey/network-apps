@@ -24,6 +24,7 @@
 
 #include <algorithm>    // std::for_each(), std::remove()
                         // std::unique()
+#include <cstdlib>      // EXIT_FAILURE, std::exit()
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <iterator>     // std::distance()
 #include <ostream>      // std::ostream
@@ -135,17 +136,18 @@ namespace TestAddress
         return result;
     }
 
-    HostsResult get_hosts(const Network::Hostname& hostname,
-                          const Network::Hints* hints)
+    static HostsResult get_hosts(const Network::Hostname& hostname,
+                                 const Network::Hints* hints)
     {
         const auto host {Network::get_hostname(hostname)};
         const auto endpoint {Network::Endpoint(host, "")};
         return Network::AddrInfo::get<HostsResult>(endpoint, hints, verbose);
     }
 
-    static bool parse_arguments(int& argc, char* argv[])
+    static std::vector<std::string> parse_arguments(int argc, char** argv)
     {
-        int ch;
+        std::vector<std::string> args {argv[0]};
+        int ch {};
 
         while ((ch = ::getopt(argc, argv, "v")) != -1) {
             switch (ch) {
@@ -157,13 +159,17 @@ namespace TestAddress
                           << argv[0]
                           << " [-v]"
                           << std::endl;
-                return false;
+                std::exit(EXIT_FAILURE);
             default:
                 abort();
             }
         }
 
-        return true;
+        for (auto index = optind; index < argc; ++index) {
+            args.push_back(argv[index]);
+        }
+
+        return args;
     }
 
     static void test_host(const Network::Hostname& host,
@@ -224,16 +230,10 @@ namespace TestAddress
 int main(int argc, char* argv[])
 {
     const Network::Context context;
+    const auto args {TestAddress::parse_arguments(argc, argv)};
+    const auto host(args.size() > 1 ? args[1] : "example.com");
 
-    if (!TestAddress::parse_arguments(argc, argv)) {
-        exit(EXIT_FAILURE);
-    }
-
-    argc -= optind;
-    argv += optind;
-    const auto host(argc > 1 ? argv[1] : "example.com");
-
-    if (argc <= 1) {
+    if (args.size() <= 1) {
         TestAddress::test_host("");
     }
 

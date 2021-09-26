@@ -23,7 +23,10 @@
 #endif
 
 #include <algorithm>    // std::for_each()
+#include <cstdlib>      // EXIT_FAILURE, std::exit()
 #include <iostream>     // std::cerr, std::cout, std::endl
+#include <string>       // std::string
+#include <vector>       // std::vector
 
 namespace TestConnect
 {
@@ -106,9 +109,10 @@ namespace TestConnect
         std::ostream& m_os;
     };
 
-    static bool parse_arguments(int& argc, char* argv[])
+    static std::vector<std::string> parse_arguments(int argc, char** argv)
     {
-        int ch;
+        std::vector<std::string> args {argv[0]};
+        int ch {};
 
         while ((ch = ::getopt(argc, argv, "v")) != -1) {
             switch (ch) {
@@ -120,13 +124,17 @@ namespace TestConnect
                           << argv[0]
                           << " [-v]"
                           << std::endl;
-                return false;
+                std::exit(EXIT_FAILURE);
             default:
                 abort();
             }
         }
 
-        return true;
+        for (auto index = optind; index < argc; ++index) {
+            args.push_back(argv[index]);
+        }
+
+        return args;
     }
 
     static void test_connect(const Network::Endpoint& endpoint,
@@ -149,15 +157,9 @@ int main(int argc, char* argv[])
                                       AI_CANONNAME);
 
     const Network::Context context;
-
-    if (!TestConnect::parse_arguments(argc, argv)) {
-        exit(EXIT_FAILURE);
-    }
-
-    argc -= optind;
-    argv += optind;
-    const auto host {argc > 1 ? argv[1] : host_default};
-    const auto service {argc > 2 ? argv[2] : service_default};
+    const auto args {TestConnect::parse_arguments(argc, argv)};
+    const auto host {args.size() > 1 ? args[1] : host_default};
+    const auto service {args.size() > 2 ? args[2] : service_default};
     const auto endpoint {Network::Endpoint(host, service)};
     TestConnect::test_connect(endpoint, hints);
     static_cast<void>(context);

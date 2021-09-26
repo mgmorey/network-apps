@@ -10,15 +10,19 @@
 #include <sys/socket.h> // AF_UNIX, SOCK_STREAM
 #include <unistd.h>     // getopt(), optarg, opterr, optind, optopt
 
+#include <cstdlib>      // EXIT_FAILURE, std::exit()
 #include <iostream>     // std::cerr, std::cout, std::endl
+#include <string>       // std::string
+#include <vector>       // std::vector
 
 namespace TestSocket
 {
     static bool verbose {false};
 
-    static bool parse_arguments(int& argc, char* argv[])
+    static std::vector<std::string> parse_arguments(int argc, char** argv)
     {
-        int ch;
+        std::vector<std::string> args {argv[0]};
+        int ch {};
 
         while ((ch = ::getopt(argc, argv, "v")) != -1) {
             switch (ch) {
@@ -30,13 +34,17 @@ namespace TestSocket
                           << argv[0]
                           << " [-v]"
                           << std::endl;
-                return false;
+                std::exit(EXIT_FAILURE);
             default:
                 abort();
             }
         }
 
-        return true;
+        for (auto index = optind; index < argc; ++index) {
+            args.push_back(argv[index]);
+        }
+
+        return args;
     }
 
     static void test_peer(Network::SocketFd socket_fd)
@@ -92,10 +100,7 @@ namespace TestSocket
 
 int main(int argc, char* argv[])
 {
-    if (!TestSocket::parse_arguments(argc, argv)) {
-        exit(EXIT_FAILURE);
-    }
-
+    TestSocket::parse_arguments(argc, argv);
     const Network::Socket hints(AF_UNIX, SOCK_STREAM);
     TestSocket::test_socket(hints);
 }
