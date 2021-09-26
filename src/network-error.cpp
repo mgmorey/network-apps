@@ -11,29 +11,34 @@
 #include <cstring>      // std::strerror()
 #endif
 
-std::string Network::format_error(int code)
+std::string Network::format_error(error_type code)
 {
 #ifdef _WIN32
-    DWORD dwFlags {
+    DWORD flags {
         FORMAT_MESSAGE_ALLOCATE_BUFFER |
         FORMAT_MESSAGE_FROM_SYSTEM |
         FORMAT_MESSAGE_IGNORE_INSERTS
     };
-    DWORD dwLanguageId {MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT)};
-    LPVOID lpMsgBuf {};
-    LPTSTR lpBuffer {reinterpret_cast<LPTSTR>(&lpMsgBuf)};
-    ::FormatMessage(dwFlags, nullptr, code, dwLanguageId, lpBuffer, 0, nullptr);
-    std::string error {static_cast<LPTSTR>(lpMsgBuf)};
-    const auto pos {error.find('\n')};
-    error = error.substr(0, pos);
-    ::LocalFree(lpMsgBuf);
-    return error;
+    DWORD lang {MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT)};
+    LPVOID buffer {nullptr};
+    LPTSTR pbuffer {reinterpret_cast<LPTSTR>(&buffer)};
+
+    if(::FormatMessage(flags, nullptr, code, lang, pbuffer, 0, nullptr)) {
+        std::string error {static_cast<LPTSTR>(buffer)};
+        const auto pos {error.find('\n')};
+        error = error.substr(0, pos);
+        ::LocalFree(buffer);
+        return error;
+    }
+    else {
+        return "";
+    }
 #else
     return std::strerror(code);
 #endif
 }
 
-int Network::get_last_error()
+Network::error_type Network::get_last_error()
 {
 #ifdef _WIN32
     return ::WSAGetLastError();
@@ -42,9 +47,9 @@ int Network::get_last_error()
 #endif
 }
 
-int Network::reset_last_error()
+Network::error_type Network::reset_last_error()
 {
-    int code {0};
+    error_type code {0};
 #ifndef _WIN32
     errno = code;
 #endif
