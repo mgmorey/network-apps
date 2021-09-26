@@ -113,7 +113,6 @@ Network::SocketpairResult Network::Socket::socketpair(bool t_verbose) const
     std::string error;
     auto code {reset_last_error()};
     sock_fd_type fd[2] {sock_fd_null, sock_fd_null};
-    const auto code {};
 
     if (::socketpair(static_cast<int>(m_family),
                      static_cast<int>(m_socktype),
