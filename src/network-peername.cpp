@@ -2,7 +2,7 @@
                                 // Result, SocketFd,
                                 // get_peername()
 #include "network-error.h"      // format_error(), get_last_error(),
-                                // set_last_error()
+                                // reset_last_error()
 
 #ifdef _WIN32
 #include <winsock2.h>   // getpeername(), struct sockaddr_storage
@@ -46,7 +46,7 @@ Network::AddressResult Network::get_peername(SocketFd socket_fd,
                                              bool verbose)
 {
     if (verbose) {
-        std::cerr << "Invoking getpeername("
+        std::cerr << "Calling getpeername("
                   << socket_fd
                   << ", ...)"
                   << std::endl;
@@ -62,7 +62,7 @@ Network::AddressResult Network::get_peername(SocketFd socket_fd,
     if (::getpeername(fd, addr, &addrlen) != 0) {
         code = get_last_error();
         std::ostringstream oss;
-        oss << "getpeername("
+        oss << "Call to getpeername("
             << fd
             << ", ...) failed with error "
             << code

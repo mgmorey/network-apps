@@ -78,7 +78,7 @@ Network::SocketResult Network::Socket::socket(bool t_verbose) const
     if (sock_fd == sock_fd_null) {
         code = get_last_error();
         std::ostringstream oss;
-        oss << "socket("
+        oss << "Call to socket("
             << Format("domain")
             << m_family
             << Format(m_delim, m_tab, "type")
@@ -120,7 +120,7 @@ Network::SocketpairResult Network::Socket::socketpair(bool t_verbose) const
                      fd) == socket_error) {
         code = get_last_error();
         std::ostringstream oss;
-        oss << "socketpair("
+        oss << "Call to socketpair("
             << Format("domain")
             << m_family
             << Format(m_delim, m_tab, "type")

@@ -28,7 +28,7 @@ Network::Address::to_endpoint(int t_flags, bool t_verbose) const
                                     t_flags);
 
     if (t_verbose) {
-        std::cerr << "Invoking getnameinfo("
+        std::cerr << "Calling getnameinfo("
                   << *this
                   << ", ...)"
                   << std::endl;
@@ -36,7 +36,7 @@ Network::Address::to_endpoint(int t_flags, bool t_verbose) const
 
     if (code != 0) {
         std::ostringstream oss;
-        oss << "getnameinfo("
+        oss << "Call to getnameinfo("
             << *this
             << ", ...) returned "
             << code

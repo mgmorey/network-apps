@@ -1,6 +1,8 @@
 #include "network-hostname.h"   // Hostname, HostnameResult,
                                 // get_hostname()
 #include "network-buffer.h"     // Buffer
+#include "network-error.h"      // format_error(), get_last_error(),
+                                // reset_last_error()
 
 #ifdef _WIN32
 #include <winsock2.h>   // gethostname()
@@ -20,8 +22,10 @@ Network::HostnameResult Network::get_hostname()
 
     if (code != 0) {
         std::ostringstream oss;
-        oss << "gethostname(...) returned "
-            << code;
+        oss << "Call to gethostname(...) returned "
+            << code
+            << ": "
+            << format_error(code);
         error = oss.str();
     }
 

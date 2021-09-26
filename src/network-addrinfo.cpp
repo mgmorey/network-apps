@@ -79,7 +79,7 @@ Network::AddrInfo::List::List(const Hostname& t_node,
     const auto service {t_service.empty() ? nullptr : t_service.c_str()};
 
     if (t_verbose) {
-        std::cerr << "Invoking getaddrinfo("
+        std::cerr << "Calling getaddrinfo("
                   << (node == nullptr ? "<NULL>" : node)
                   << ", "
                   << (service == nullptr ? "<NULL>" : service)
@@ -91,7 +91,7 @@ Network::AddrInfo::List::List(const Hostname& t_node,
 
     if (code != 0) {
         std::ostringstream oss;
-        oss << "getaddrinfo("
+        oss << "Call to getaddrinfo("
             << Nullable(node)
             << ", "
             << Nullable(service)

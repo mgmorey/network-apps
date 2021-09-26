@@ -2,7 +2,7 @@
                                 // sockaddr, sock_len_type
 #include "network-buffer.h"     // Buffer
 #include "network-error.h"      // format_error(), get_last_error(),
-                                // set_last_error()
+                                // reset_last_error()
 
 #ifdef _WIN32
 #include <winsock2.h>   // AF_INET, AF_INET6, AF_UNIX, AF_UNSPEC,
@@ -65,7 +65,7 @@ Network::Result Network::Address::connect(SocketFd t_socket_fd,
     if (::connect(fd, addr(), addrlen()) == connect_error) {
         code = get_last_error();
         std::ostringstream oss;
-        oss << "connect("
+        oss << "Call to connect("
             << fd
             << ", "
             << *this
