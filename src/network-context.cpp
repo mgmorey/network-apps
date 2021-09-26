@@ -11,7 +11,8 @@ Network::Context::Context()
 {
     if (!m_count++) {
 #ifdef _WIN32
-        const auto code {::WSAStartup(MAKEWORD(2, 0), &m_data)};
+        const WORD version {MAKEWORD(2, 2)};
+        const auto code {::WSAStartup(version, &m_data)};
 
         if (code != 0) {
             std::ostringstream oss;

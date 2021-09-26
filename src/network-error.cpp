@@ -14,14 +14,14 @@
 std::string Network::format_error(error_type code)
 {
 #ifdef _WIN32
-    DWORD flags {
+    LPVOID buffer {nullptr};
+    const DWORD flags {
         FORMAT_MESSAGE_ALLOCATE_BUFFER |
         FORMAT_MESSAGE_FROM_SYSTEM |
         FORMAT_MESSAGE_IGNORE_INSERTS
     };
-    DWORD lang {MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT)};
-    LPVOID buffer {nullptr};
-    LPTSTR pbuffer {reinterpret_cast<LPTSTR>(&buffer)};
+    const DWORD lang {MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT)};
+    const LPTSTR pbuffer {reinterpret_cast<LPTSTR>(&buffer)};
 
     if(::FormatMessage(flags, nullptr, code, lang, pbuffer, 0, nullptr)) {
         std::string error {static_cast<LPTSTR>(buffer)};
