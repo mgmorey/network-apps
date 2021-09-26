@@ -64,8 +64,17 @@ Network::SocketResults Network::connect(const Endpoint& endpoint,
     const auto sockets_result {get_sockets(endpoint, hints, verbose)};
     const auto sockets {sockets_result.first};
     const auto result {sockets_result.second};
-    std::transform(sockets.begin(), sockets.end(),
-                   std::back_inserter(results),
-                   Connect(verbose));
+
+    if (result.result() != 0) {
+        SocketFd fd {sock_fd_null};
+        SocketResult socket_result(fd, result);
+        results.push_back(socket_result);
+    }
+    else {
+        std::transform(sockets.begin(), sockets.end(),
+                       std::back_inserter(results),
+                       Connect(verbose));
+    }
+
     return results;
 }
