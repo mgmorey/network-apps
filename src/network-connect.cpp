@@ -66,8 +66,8 @@ Network::SocketResults Network::connect(const Endpoint& endpoint,
     const auto result {sockets_result.second};
 
     if (result.result() != 0) {
-        SocketFd fd {sock_fd_null};
-        SocketResult socket_result(fd, result);
+        SocketFd socket_fd {sock_fd_null};
+        SocketResult socket_result(socket_fd, result);
         results.push_back(socket_result);
     }
     else {
