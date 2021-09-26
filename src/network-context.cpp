@@ -6,7 +6,7 @@
 #include <winsock2.h>   // WSACleanup(), WSAStartup()
 #endif
 
-#include <ostream>      // std::ostringstream
+#include <sstream>      // std::ostringstream
 
 Network::Context::Context()
 {

@@ -3,6 +3,10 @@
 
 #include "network-result.h"     // Result
 
+#ifdef _WIN32
+#include <winsock2.h>   // WSADATA
+#endif
+
 #include <cstddef>      // std::size_t
 
 namespace Network
