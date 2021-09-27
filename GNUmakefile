@@ -53,7 +53,7 @@ prefix = /usr/local
 sources = $(executable_sources) $(library_sources)
 
 executable_sources = test-address.cpp test-buffer.cpp \
-test-hostname.cpp
+test-connect.cpp test-hostname.cpp
 library_sources = network-address.cpp network-addrinfo.cpp \
 network-buffer.cpp network-close.cpp network-connect.cpp \
 network-context.cpp network-endpoint.cpp network-error.cpp \
@@ -63,10 +63,6 @@ network-integer.cpp network-nullable.cpp network-peername.cpp \
 network-protocol.cpp network-result.cpp network-socket.cpp \
 network-socktype.cpp stream-address.cpp stream-addrinfo.cpp \
 stream-hints.cpp stream-socket.cpp
-
-ifndef HTTP_PROXY
-	executable_sources += test-connect.cpp
-endif
 
 ifneq "$(SYSTEM_PREFIX)" "MINGW64_NT"
 	executable_sources += test-socket.cpp unix-client.cpp unix-server.cpp
