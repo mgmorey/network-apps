@@ -91,7 +91,7 @@ namespace Network
 
                 *out++ = in;
             };
-            const auto list(List(node, service, hints, verbose));
+            const auto list {List(node, service, hints, verbose)};
             std::for_each(list.begin(), list.end(), lambda);
             return list.result();
         }
@@ -102,8 +102,8 @@ namespace Network
                       bool verbose)
         {
             Container result;
-            const auto node(get_hostname(endpoint));
-            const auto service(endpoint.second);
+            const auto node {get_hostname(endpoint)};
+            const auto service {endpoint.second};
             result.second = insert(node, service, hints, verbose,
                                    std::back_inserter(result.first));
             return result;
