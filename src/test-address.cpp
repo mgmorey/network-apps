@@ -40,21 +40,20 @@ namespace TestAddress
     static bool verbose {false};
 
     template<typename T, typename U>
-    auto erase(T& c, const U& value)
+    void erase(T& c, const U& value)
     {
-        auto it {std::remove(c.begin(), c.end(), value)};
-        auto r {std::distance(it, c.end())};
-        c.erase(it, c.end());
-        return r;
+        c.erase(std::remove(c.begin(),
+                            c.end(),
+                            value),
+                c.end());
     }
 
     template<typename T>
-    auto unique(T& c)
+    void unique(T& c)
     {
-        auto it {std::unique(c.begin(), c.end())};
-        auto r {std::distance(it, c.end())};
-        c.erase(it, c.end());
-        return r;
+        c.erase(std::unique(c.begin(),
+                            c.end()),
+                c.end());
     }
 
     class Test
