@@ -17,8 +17,7 @@ const char& Network::Buffer::operator[](std::string::size_type t_pos) const
 
 Network::Buffer::operator std::string() const
 {
-    const auto pos {m_value.find('\0')};
-    return m_value.substr(0, pos);
+    return m_value.substr(0, m_value.find('\0'));
 }
 
 std::string::size_type Network::Buffer::size() const
