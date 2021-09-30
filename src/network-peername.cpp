@@ -71,7 +71,7 @@ Network::AddressResult Network::get_peername(SocketFd socket_fd,
         error = oss.str();
     }
 
-    Result result(code, error);
+    Result result {code, error};
     assert(result.result() ?
            result.string() != "" :
            result.string() == "");

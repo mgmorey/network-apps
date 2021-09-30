@@ -76,7 +76,7 @@ Network::Result Network::Address::connect(SocketFd t_socket_fd,
         error = oss.str();
     }
 
-    Result result(code, error);
+    Result result {code, error};
     assert(result.result() ?
            result.string() != "" :
            result.string() == "");

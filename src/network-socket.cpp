@@ -92,7 +92,7 @@ Network::SocketResult Network::Socket::socket(bool t_verbose) const
         error = oss.str();
     }
 
-    Result result(code, error);
+    Result result {code, error};
     assert(result.result() ?
            result.string() != "" :
            result.string() == "");
@@ -134,8 +134,8 @@ Network::SocketpairResult Network::Socket::socketpair(bool t_verbose) const
         error = oss.str();
     }
 
-    SocketFdPair pair(fd[0], fd[1]);
-    Result result(code, error);
+    SocketFdPair pair {fd[0], fd[1]};
+    Result result {code, error};
     assert(result.result() ?
            result.string() != "" :
            result.string() == "");
