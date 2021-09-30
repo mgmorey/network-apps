@@ -30,7 +30,11 @@ Network::HostnameResult Network::get_hostname()
         error = oss.str();
     }
 
-    return HostnameResult(hostname, Result(code, error));
+    Result result {code, error};
+    assert(result.result() ?
+           result.string() != "" :
+           result.string() == "");
+    return HostnameResult(hostname, result);
 }
 
 Network::Hostname Network::get_hostname(const Network::Hostname& hostname)
