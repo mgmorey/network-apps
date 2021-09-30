@@ -148,8 +148,8 @@ namespace TestConnect
 
 int main(int argc, char* argv[])
 {
-    constexpr auto host_default = "example.com";
-    constexpr auto service_default = "http";
+    constexpr auto host_default {"example.com"};
+    constexpr auto service_default {"http"};
 
     static const Network::Hints hints(AF_UNSPEC,
                                       SOCK_STREAM,
