@@ -22,9 +22,9 @@ std::ostream& Network::operator<<(std::ostream& os,
         os << "0x0";
     }
     else {
-        const auto family = address.family();
-        const auto port = address.port();
-        const auto text = address.text();
+        const auto family {address.family()};
+        const auto port {address.port()};
+        const auto text {address.text()};
 
         switch (family) {
 #ifndef _WIN32
