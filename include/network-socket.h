@@ -7,7 +7,6 @@
 #include "network-result.h"     // Result
 
 #ifdef _WIN32
-#include <winsock2.h>   // SOCKET_ERROR
 #include <ws2tcpip.h>   // struct addrinfo
 #else
 #include <netdb.h>      // struct addrinfo
@@ -16,17 +15,11 @@
 #include <string>       // std::string
 #include <utility>      // std::pair
 
-#ifndef SOCKET_ERROR
-#define SOCKET_ERROR	(-1)
-#endif
-
 namespace Network
 {
     typedef std::pair<SocketFd, SocketFd> SocketFdPair;
     typedef std::pair<SocketFd, Result> SocketResult;
     typedef std::pair<SocketFdPair, Result> SocketpairResult;
-
-    enum { socket_error = SOCKET_ERROR };
 
     struct Socket :
         public Hints,

@@ -57,7 +57,7 @@ Network::AddressResult Network::get_peername(SocketFd socket_fd,
     auto addr {buffer.addr()};
     auto addrlen {buffer.addrlen()};
     auto code {reset_last_error()};
-    const auto fd {static_cast<sock_fd_type>(socket_fd)};
+    const auto fd {static_cast<fd_type>(socket_fd)};
 
     if (::getpeername(fd, addr, &addrlen) != 0) {
         code = get_last_error();

@@ -2,7 +2,7 @@
                                 // SocketResults,
 #include "network-addrinfo.h"   // AddrInfo
 #include "network-close.h"      // close()
-#include "network-fd.h"         // SocketFd, sock_fd_null, sock_fd_type
+#include "network-fd.h"         // SocketFd, fd_null, fd_type
 #include "network-hints.h"      // Hints
 
 #include <algorithm>    // std::transform()
@@ -66,7 +66,7 @@ Network::SocketResults Network::connect(const Endpoint& endpoint,
     const auto result {sockets_result.second};
 
     if (result.result() != 0) {
-        SocketFd socket_fd {sock_fd_null};
+        SocketFd socket_fd {fd_null};
         SocketResult socket_result(socket_fd, result);
         results.push_back(socket_result);
     }

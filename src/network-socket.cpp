@@ -71,11 +71,11 @@ Network::SocketResult Network::Socket::socket(bool t_verbose) const
 
     std::string error;
     auto code {reset_last_error()};
-    const auto sock_fd {::socket(static_cast<int>(m_family),
-                                 static_cast<int>(m_socktype),
-                                 static_cast<int>(m_protocol))};
+    const auto fd {::socket(static_cast<int>(m_family),
+                            static_cast<int>(m_socktype),
+                            static_cast<int>(m_protocol))};
 
-    if (sock_fd == sock_fd_null) {
+    if (fd == fd_null) {
         code = get_last_error();
         std::ostringstream oss;
         oss << "Call to socket("
@@ -96,7 +96,7 @@ Network::SocketResult Network::Socket::socket(bool t_verbose) const
     assert(result.result() ?
            result.string() != "" :
            result.string() == "");
-    return SocketResult(sock_fd, result);
+    return SocketResult(fd, result);
 }
 
 #ifndef _WIN32
@@ -112,7 +112,7 @@ Network::SocketpairResult Network::Socket::socketpair(bool t_verbose) const
 
     std::string error;
     auto code {reset_last_error()};
-    sock_fd_type fd[2] {sock_fd_null, sock_fd_null};
+    fd_type fd[2] {fd_null, fd_null};
 
     if (::socketpair(static_cast<int>(m_family),
                      static_cast<int>(m_socktype),
