@@ -15,11 +15,14 @@
 #include <sys/un.h>     // struct sockaddr_un
 #endif
 
+#include <cstddef>      // std::byte
 #include <ostream>      // std::ostream
-#include <string>       // std::string
+#include <vector>       // std::vector
 
 namespace Network
 {
+    typedef std::vector<std::byte> Bytes;
+
     class Address
     {
     public:
@@ -55,7 +58,7 @@ namespace Network
         sock_len_type addrlen() const;
 
         operator const sockaddr&() const;
-        std::string sa_data() const;
+        Bytes sa_data() const;
         family_type sa_family() const;
         std::string sa_text() const;
 
@@ -79,7 +82,7 @@ namespace Network
 #endif
 
     private:
-        std::string m_value;
+        Bytes m_value;
     };
 
     extern std::ostream& operator<<(std::ostream& os,

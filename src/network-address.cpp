@@ -21,9 +21,10 @@
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
 
-Network::Address::Address(const sockaddr* t_sockaddr, sock_len_type t_socklen) :
-    m_value(reinterpret_cast<const char*>(t_sockaddr), t_socklen)
+Network::Address::Address(const sockaddr* t_sockaddr, sock_len_type t_socklen)
 {
+    auto first {reinterpret_cast<const std::byte*>(t_sockaddr)};
+    m_value = Bytes(first, first + t_socklen);
 }
 
 bool Network::Address::operator<(const Address& t_address) const
@@ -147,11 +148,11 @@ Network::Address::operator const sockaddr&() const
     return *reinterpret_cast<const sockaddr*>(m_value.data());
 }
 
-std::string Network::Address::sa_data() const
+Network::Bytes Network::Address::sa_data() const
 {
     constexpr auto offset {offsetof(sockaddr, sa_data)};
-    return std::string(m_value.data() + offset,
-                       m_value.size() - offset);
+    auto first {reinterpret_cast<const std::byte*>(&m_value[0])};
+    return Bytes(first + offset, first + m_value.size() - offset);
 }
 
 Network::Address::family_type Network::Address::sa_family() const
@@ -169,7 +170,7 @@ std::string Network::Address::sa_text() const
         oss << std::setfill('0')
             << std::setw(2)
             << std::uppercase
-            << static_cast<short>(ch & 0xFF);
+            << static_cast<short>(ch);
     }
 
     const auto str {oss.str()};
