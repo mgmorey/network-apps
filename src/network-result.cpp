@@ -3,20 +3,19 @@
 #include <ostream>      // std::ostream
 #include <string>       // std::string
 
-Network::Result::Result() :
-    m_value(0)
+Network::Result::Result()
 {
 }
 
-Network::Result::Result(int t_value, const std::string& t_string) :
+Network::Result::Result(result_type t_value, const std::string& t_string) :
     m_string(t_string),
-    m_value(t_value)
+    m_result(t_value)
 {
 }
 
-int Network::Result::result() const
+Network::result_type Network::Result::result() const
 {
-    return m_value;
+    return m_result;
 }
 
 std::string Network::Result::string() const

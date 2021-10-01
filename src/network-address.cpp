@@ -59,7 +59,7 @@ Network::Result Network::Address::connect(SocketFd t_socket_fd,
     }
 
     std::string error;
-    auto code {reset_last_error()};
+    auto code {static_cast<result_type>(reset_last_error())};
     const auto fd {static_cast<sock_fd_type>(t_socket_fd)};
 
     if (::connect(fd, addr(), addrlen()) == connect_error) {

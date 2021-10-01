@@ -6,16 +6,18 @@
 
 namespace Network
 {
+    typedef long result_type;
+
     struct Result
     {
         Result();
-        Result(int t_value, const std::string& t_string);
-        int result() const;
+        Result(result_type t_value, const std::string& t_string);
+        result_type result() const;
         std::string string() const;
 
     private:
         std::string m_string;
-        int m_value {0};
+        result_type m_result {0};
     };
 
     extern std::ostream& operator<<(std::ostream& os,

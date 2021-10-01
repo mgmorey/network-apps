@@ -12,13 +12,14 @@
 #include <unistd.h>     // gethostname()
 #endif
 
+#include <cassert>      // assert()
 #include <sstream>      // std::ostringstream
 
 Network::HostnameResult Network::get_hostname()
 {
     std::string error;
     Buffer hostname {NI_MAXHOST};
-    auto code {reset_last_error()};
+    auto code {static_cast<result_type>(reset_last_error())};
 
     if (::gethostname(&hostname[0], hostname.size() - 1) != 0) {
         code = get_last_error();
