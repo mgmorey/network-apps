@@ -70,7 +70,7 @@ Network::SocketResult Network::Socket::socket(bool t_verbose) const
     }
 
     std::string error;
-    auto code {static_cast<result_type>(reset_last_error())};
+    auto code {reset_last_error()};
     const auto sock_fd {::socket(static_cast<int>(m_family),
                                  static_cast<int>(m_socktype),
                                  static_cast<int>(m_protocol))};
@@ -111,7 +111,7 @@ Network::SocketpairResult Network::Socket::socketpair(bool t_verbose) const
     }
 
     std::string error;
-    auto code {static_cast<result_type>(reset_last_error())};
+    auto code {reset_last_error()};
     sock_fd_type fd[2] {sock_fd_null, sock_fd_null};
 
     if (::socketpair(static_cast<int>(m_family),

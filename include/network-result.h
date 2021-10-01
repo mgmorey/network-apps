@@ -6,7 +6,7 @@
 
 namespace Network
 {
-    typedef long result_type;
+    typedef long long result_type;
 
     struct Result
     {
