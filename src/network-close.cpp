@@ -1,5 +1,4 @@
-#include "network-close.h"      // SocketFd, close(), fd_null,
-                                // fd_type
+#include "network-close.h"      // SocketFd, close(), fd_null, fd_type
 
 #ifdef _WIN32
 #include <winsock2.h>   // closesocket()
