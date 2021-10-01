@@ -25,13 +25,13 @@ namespace Network
 
     enum { fd_null = INVALID_SOCKET };
 
-    class SocketFd
+    class Fd
     {
         friend std::ostream& operator<<(std::ostream& os,
-                                        const SocketFd& socket_fd);
+                                        const Fd& socket_fd);
 
     public:
-        explicit SocketFd(fd_type t_fd)
+        explicit Fd(fd_type t_fd)
         {
             m_value = t_fd;
         }
@@ -51,7 +51,7 @@ namespace Network
     };
 
     inline std::ostream& operator<<(std::ostream& os,
-                                    const SocketFd& socket_fd)
+                                    const Fd& socket_fd)
     {
         os << socket_fd.m_value;
         return os;

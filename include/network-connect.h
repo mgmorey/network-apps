@@ -2,7 +2,7 @@
 #define NETWORK_CONNECT_H
 
 #include "network-endpoint.h"   // Endpoint
-#include "network-fd.h"         // SocketFd
+#include "network-fd.h"         // Fd
 #include "network-hints.h"      // Hints
 #include "network-result.h"     // Result
 #include "network-socket.h"     // Socket, SocketResult
@@ -21,7 +21,7 @@ namespace Network
         SocketResult operator()(const Socket& t_socket);
         SocketResult connect(const Socket& t_socket);
         Result connect(const Socket& t_socket,
-                       SocketFd t_socket_fd);
+                       Fd t_socket_fd);
 
     private:
         bool m_verbose {false};

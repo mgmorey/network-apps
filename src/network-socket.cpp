@@ -1,5 +1,5 @@
 #include "network-socket.h"     // Address, Hostname, Result, Socket,
-                                // SocketFdPair, SocketpairResult,
+                                // FdPair, SocketpairResult,
                                 // SocketResult
 #include "network-addrinfo.h"   // operator<<()
 #include "network-error.h"      // format_error(), get_last_error(),
@@ -134,7 +134,7 @@ Network::SocketpairResult Network::Socket::socketpair(bool t_verbose) const
         error = oss.str();
     }
 
-    SocketFdPair pair {fd[0], fd[1]};
+    FdPair pair {fd[0], fd[1]};
     Result result {code, error};
     assert(result.result() ?
            result.string() != "" :

@@ -3,7 +3,7 @@
 
 #include "network-address.h"    // Address
 #include "network-buffer.h"     // Buffer
-#include "network-fd.h"         // SocketFd
+#include "network-fd.h"         // Fd
 #include "network-result.h"     // Result
 
 #ifdef _WIN32
@@ -30,7 +30,7 @@ namespace Network
         static std::size_t capacity();
     };
 
-    extern AddressResult get_peername(SocketFd socket_fd,
+    extern AddressResult get_peername(Fd socket_fd,
                                       bool verbose = false);
 }
 

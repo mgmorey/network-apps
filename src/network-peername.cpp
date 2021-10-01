@@ -1,6 +1,5 @@
-#include "network-peername.h"   // AddressBuffer, AddressResult,
-                                // Result, SocketFd,
-                                // get_peername()
+#include "network-peername.h"   // AddressBuffer, AddressResult, Fd,
+                                // Result, get_peername()
 #include "network-error.h"      // format_error(), get_last_error(),
                                 // reset_last_error()
 
@@ -42,7 +41,7 @@ std::size_t Network::AddressBuffer::capacity()
     return size;
 }
 
-Network::AddressResult Network::get_peername(SocketFd socket_fd,
+Network::AddressResult Network::get_peername(Fd socket_fd,
                                              bool verbose)
 {
     if (verbose) {

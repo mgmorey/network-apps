@@ -4,7 +4,7 @@
                                 // Endpoint, Hostname, Service,
                                 // connect()
 #include "network-context.h"    // Context
-#include "network-fd.h"         // SocketFd
+#include "network-fd.h"         // Fd
 #include "network-peername.h"   // AddressResult, get_peername()
 #include "network-socket.h"     // Socket
 
@@ -61,7 +61,7 @@ namespace TestConnect
             }
         }
 
-        void test_socket(Network::SocketFd t_socket_fd,
+        void test_socket(Network::Fd t_socket_fd,
                          const Network::Result& t_result)
         {
             const auto cname {t_result.string()};
@@ -84,7 +84,7 @@ namespace TestConnect
                  << std::endl;
         }
 
-        void test_socket_peer(Network::SocketFd t_socket_fd)
+        void test_socket_peer(Network::Fd t_socket_fd)
         {
             const auto address_result {Network::get_peername(t_socket_fd, true)};
             const auto address {address_result.first};

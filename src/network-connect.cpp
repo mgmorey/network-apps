@@ -2,7 +2,7 @@
                                 // SocketResults,
 #include "network-addrinfo.h"   // AddrInfo
 #include "network-close.h"      // close()
-#include "network-fd.h"         // SocketFd, fd_null, fd_type
+#include "network-fd.h"         // Fd, fd_null, fd_type
 #include "network-hints.h"      // Hints
 
 #include <algorithm>    // std::transform()
@@ -51,7 +51,7 @@ Network::SocketResult Network::Connect::connect(const Socket& t_socket)
 }
 
 Network::Result Network::Connect::connect(const Socket& t_socket,
-                                          SocketFd t_socket_fd)
+                                          Fd t_socket_fd)
 {
     return t_socket.address().connect(t_socket_fd, m_verbose);
 }
@@ -66,7 +66,7 @@ Network::SocketResults Network::connect(const Endpoint& endpoint,
     const auto result {sockets_result.second};
 
     if (result.result() != 0) {
-        SocketFd socket_fd {fd_null};
+        Fd socket_fd {fd_null};
         SocketResult socket_result(socket_fd, result);
         results.push_back(socket_result);
     }

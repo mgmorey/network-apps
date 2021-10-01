@@ -1,10 +1,10 @@
 #include "network-address.h"    // Address, operator<<()
 #include "network-close.h"      // close()
-#include "network-fd.h"         // SocketFd
+#include "network-fd.h"         // Fd
 #include "network-hints.h"      // Hints
 #include "network-peername.h"   // AddressResult, get_peername()
 #include "network-result.h"     // Result
-#include "network-socket.h"     // Socket, SocketFdPair,
+#include "network-socket.h"     // Socket, FdPair,
                                 // SocketpairResult
 
 #include <sys/socket.h> // AF_UNIX, SOCK_STREAM
@@ -47,7 +47,7 @@ namespace TestSocket
         return args;
     }
 
-    static void test_peer(Network::SocketFd socket_fd)
+    static void test_peer(Network::Fd socket_fd)
     {
         const auto address_result {Network::get_peername(socket_fd, true)};
         const auto result {address_result.second};

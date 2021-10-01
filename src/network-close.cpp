@@ -1,4 +1,4 @@
-#include "network-close.h"      // SocketFd, close(), fd_null, fd_type
+#include "network-close.h"      // Fd, close(), fd_null, fd_type
 
 #ifdef _WIN32
 #include <winsock2.h>   // closesocket()
@@ -6,7 +6,7 @@
 #include <unistd.h>     // close()
 #endif
 
-Network::SocketFd Network::close(SocketFd socket_fd)
+Network::Fd Network::close(Fd socket_fd)
 {
     auto fd {static_cast<fd_type>(socket_fd)};
 
@@ -18,5 +18,5 @@ Network::SocketFd Network::close(SocketFd socket_fd)
 #endif
     }
 
-    return SocketFd(fd_null);
+    return Fd(fd_null);
 }

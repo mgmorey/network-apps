@@ -2,8 +2,8 @@
 #define NETWORK_SOCKET_H
 
 #include "network-hints.h"      // Hints
+#include "network-fd.h"         // Fd
 #include "network-host.h"       // Address, Host, Nullable
-#include "network-fd.h"         // SocketFd
 #include "network-result.h"     // Result
 
 #ifdef _WIN32
@@ -17,9 +17,9 @@
 
 namespace Network
 {
-    typedef std::pair<SocketFd, SocketFd> SocketFdPair;
-    typedef std::pair<SocketFd, Result> SocketResult;
-    typedef std::pair<SocketFdPair, Result> SocketpairResult;
+    typedef std::pair<Fd, Fd> FdPair;
+    typedef std::pair<Fd, Result> SocketResult;
+    typedef std::pair<FdPair, Result> SocketpairResult;
 
     struct Socket :
         public Hints,
