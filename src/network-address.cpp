@@ -51,6 +51,11 @@ bool Network::Address::operator==(const Address& t_address) const
             text() == t_address.text());
 }
 
+Network::Address::operator Network::Bytes() const
+{
+    return m_value;
+}
+
 Network::Result Network::Address::connect(Fd t_fd, bool t_verbose) const
 {
     assert(!empty());
