@@ -49,7 +49,7 @@ namespace TestSocket
 
     static void test_peer(Network::Fd fd)
     {
-        const auto address_result {Network::get_peername(fd, true)};
+        const auto address_result {Network::get_peername(fd, verbose)};
         const auto result {address_result.second};
 
         if (result.result() != 0) {
