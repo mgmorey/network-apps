@@ -8,6 +8,7 @@
                                 // SocketpairResult
 
 #include <sys/socket.h> // AF_UNIX, SOCK_STREAM
+#include <sys/un.h>     // struct sockaddr_un
 #include <unistd.h>     // getopt(), optarg, opterr, optind, optopt
 
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
@@ -96,6 +97,22 @@ namespace TestSocket
                       << std::endl;
         }
     }
+
+    static void test_socket()
+    {
+        sockaddr_un sun = {
+#ifdef HAVE_SOCKADDR_SA_LEN
+            sizeof sun,
+#endif
+            AF_UNIX,
+            "/tmp/socket0"
+        };
+        sockaddr* sa = reinterpret_cast<sockaddr*>(&sun);
+        Network::Address addr(sa, sizeof sun);
+        std::cout << "Unix address: "
+                  << addr
+                  << std::endl;
+    }
 }
 
 int main(int argc, char* argv[])
@@ -103,4 +120,5 @@ int main(int argc, char* argv[])
     TestSocket::parse_arguments(argc, argv);
     const Network::Socket hints(AF_UNIX, SOCK_STREAM);
     TestSocket::test_socket(hints);
+    TestSocket::test_socket();
 }
