@@ -68,13 +68,14 @@ Network::Result Network::Address::connect(Fd t_fd, bool t_verbose) const
 
     std::string error;
     auto code {reset_last_error()};
-    const auto fd {static_cast<fd_type>(t_fd)};
+    const auto sock {static_cast<fd_type>(t_fd)};
+    const auto value {::connect(sock, addr(), addrlen())};
 
-    if (::connect(fd, addr(), addrlen()) == connect_error) {
+    if (value == connect_error) {
         code = get_last_error();
         std::ostringstream oss;
         oss << "Call to connect("
-            << fd
+            << sock
             << ", "
             << *this
             << ") failed with error "

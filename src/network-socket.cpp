@@ -71,11 +71,11 @@ Network::SocketResult Network::Socket::socket(bool t_verbose) const
 
     std::string error;
     auto code {reset_last_error()};
-    const auto fd {::socket(static_cast<int>(m_family),
-                            static_cast<int>(m_socktype),
-                            static_cast<int>(m_protocol))};
+    const auto value {::socket(static_cast<int>(m_family),
+                               static_cast<int>(m_socktype),
+                               static_cast<int>(m_protocol))};
 
-    if (fd == fd_null) {
+    if (value == fd_null) {
         code = get_last_error();
         std::ostringstream oss;
         oss << "Call to socket("
@@ -96,7 +96,7 @@ Network::SocketResult Network::Socket::socket(bool t_verbose) const
     assert(result.result() ?
            result.string() != "" :
            result.string() == "");
-    return SocketResult(fd, result);
+    return SocketResult(value, result);
 }
 
 #ifndef _WIN32
@@ -112,12 +112,13 @@ Network::SocketpairResult Network::Socket::socketpair(bool t_verbose) const
 
     std::string error;
     auto code {reset_last_error()};
-    fd_type fd[2] {fd_null, fd_null};
+    fd_type fds[2] {fd_null, fd_null};
+    const auto value {::socketpair(static_cast<int>(m_family),
+                                   static_cast<int>(m_socktype),
+                                   static_cast<int>(m_protocol),
+                                   fds)};
 
-    if (::socketpair(static_cast<int>(m_family),
-                     static_cast<int>(m_socktype),
-                     static_cast<int>(m_protocol),
-                     fd) == socket_error) {
+    if (value == socket_error) {
         code = get_last_error();
         std::ostringstream oss;
         oss << "Call to socketpair("
@@ -134,7 +135,7 @@ Network::SocketpairResult Network::Socket::socketpair(bool t_verbose) const
         error = oss.str();
     }
 
-    FdPair pair {fd[0], fd[1]};
+    FdPair pair {fds[0], fds[1]};
     Result result {code, error};
     assert(result.result() ?
            result.string() != "" :

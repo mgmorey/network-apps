@@ -52,11 +52,13 @@ Network::AddressResult Network::get_peername(Fd fd, bool verbose)
 
     std::string error;
     AddressBuffer buffer;
-    auto addr {buffer.addr()};
+    auto address {buffer.addr()};
     auto addrlen {buffer.addrlen()};
     auto code {reset_last_error()};
+    const auto sock {static_cast<fd_type>(fd)};
+    const auto value {::getpeername(sock, address, &addrlen)};
 
-    if (::getpeername(static_cast<fd_type>(fd), addr, &addrlen) != 0) {
+    if (value != 0) {
         code = get_last_error();
         std::ostringstream oss;
         oss << "Call to getpeername("
@@ -72,5 +74,5 @@ Network::AddressResult Network::get_peername(Fd fd, bool verbose)
     assert(result.result() ?
            result.string() != "" :
            result.string() == "");
-    return AddressResult(Address(addr, addrlen), result);
+    return AddressResult(Address(address, addrlen), result);
 }
