@@ -186,7 +186,7 @@ std::string Network::Address::sa_text() const
         oss << std::setfill('0')
             << std::setw(2)
             << std::uppercase
-            << static_cast<short>(ch);
+            << static_cast<int>(ch);
     }
 
     const auto str {oss.str()};
