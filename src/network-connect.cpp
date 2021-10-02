@@ -39,7 +39,7 @@ Network::SocketResult Network::Connect::connect(const Socket& t_socket)
         return socket_result;
     }
 
-    const auto connect_result {connect(t_socket, fd)};
+    const auto connect_result {connect(fd, t_socket)};
 
     if (connect_result.result() != 0) {
         return SocketResult(close(fd), connect_result);
@@ -50,7 +50,7 @@ Network::SocketResult Network::Connect::connect(const Socket& t_socket)
     return socket_result;
 }
 
-Network::Result Network::Connect::connect(const Socket& t_socket, Fd t_fd)
+Network::Result Network::Connect::connect(Fd t_fd, const Socket& t_socket)
 {
     return t_socket.address().connect(t_fd, m_verbose);
 }

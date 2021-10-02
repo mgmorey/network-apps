@@ -20,7 +20,7 @@ namespace Network
         explicit Connect(bool t_verbose);
         SocketResult operator()(const Socket& t_socket);
         SocketResult connect(const Socket& t_socket);
-        Result connect(const Socket& t_socket, Fd t_fd);
+        Result connect(Fd t_fd, const Socket& t_socket);
 
     private:
         bool m_verbose {false};
