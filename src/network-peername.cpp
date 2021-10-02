@@ -41,8 +41,7 @@ std::size_t Network::AddressBuffer::capacity()
     return size;
 }
 
-Network::AddressResult Network::get_peername(Fd fd,
-                                             bool verbose)
+Network::AddressResult Network::get_peername(Fd fd, bool verbose)
 {
     if (verbose) {
         std::cerr << "Calling getpeername("

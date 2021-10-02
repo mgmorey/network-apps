@@ -30,8 +30,7 @@ namespace Network
         static std::size_t capacity();
     };
 
-    extern AddressResult get_peername(Fd fd,
-                                      bool verbose = false);
+    extern AddressResult get_peername(Fd fd, bool verbose = false);
 }
 
 #endif
