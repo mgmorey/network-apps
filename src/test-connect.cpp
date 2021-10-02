@@ -75,7 +75,7 @@ namespace TestConnect
                      hostname :
                      cname)
                  << std::endl;
-            test_socket_peer(t_fd);
+            test_peer(t_fd);
             Network::close(t_fd);
             m_os << "Socket "
                  << t_fd
@@ -83,7 +83,7 @@ namespace TestConnect
                  << std::endl;
         }
 
-        void test_socket_peer(Network::Fd t_fd)
+        void test_peer(Network::Fd t_fd)
         {
             const auto address_result {Network::get_peername(t_fd, verbose)};
             const auto address {address_result.first};
