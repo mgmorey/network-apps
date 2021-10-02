@@ -182,11 +182,11 @@ std::string Network::Address::sa_text() const
     std::ostringstream oss;
     oss << std::hex;
 
-    for (const auto ch : m_value) {
+    for (const auto byte : m_value) {
         oss << std::setfill('0')
             << std::setw(2)
             << std::uppercase
-            << static_cast<int>(ch);
+            << static_cast<int>(byte);
     }
 
     const auto str {oss.str()};
