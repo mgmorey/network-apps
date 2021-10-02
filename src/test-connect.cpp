@@ -61,14 +61,14 @@ namespace TestConnect
             }
         }
 
-        void test_socket(Network::Fd t_socket_fd,
+        void test_socket(Network::Fd t_fd,
                          const Network::Result& t_result)
         {
             const auto cname {t_result.string()};
             const auto hostname {m_endpoint.first};
             const auto service {m_endpoint.second};
             m_os << "Socket "
-                 << t_socket_fd
+                 << t_fd
                  << " connected to "
                  << service
                  << " on "
@@ -76,17 +76,17 @@ namespace TestConnect
                      hostname :
                      cname)
                  << std::endl;
-            test_socket_peer(t_socket_fd);
-            Network::close(t_socket_fd);
+            test_socket_peer(t_fd);
+            Network::close(t_fd);
             m_os << "Socket "
-                 << t_socket_fd
+                 << t_fd
                  << " closed"
                  << std::endl;
         }
 
-        void test_socket_peer(Network::Fd t_socket_fd)
+        void test_socket_peer(Network::Fd t_fd)
         {
-            const auto address_result {Network::get_peername(t_socket_fd, true)};
+            const auto address_result {Network::get_peername(t_fd, true)};
             const auto address {address_result.first};
             const auto result {address_result.second};
 
@@ -97,7 +97,7 @@ namespace TestConnect
             }
             else {
                 m_os << "Socket "
-                     << t_socket_fd
+                     << t_fd
                      << " connected to "
                      << address
                      << std::endl;
