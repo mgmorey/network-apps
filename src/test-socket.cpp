@@ -50,6 +50,7 @@ namespace TestSocket
     static void test_peer(Network::Fd fd)
     {
         const auto address_result {Network::get_peername(fd, verbose)};
+        const auto address(address_result.first);
         const auto result {address_result.second};
 
         if (result.result() != 0) {
@@ -58,7 +59,6 @@ namespace TestSocket
                       << std::endl;
         }
         else {
-            Network::Address address(address_result.first);
             std::cout << "Socket "
                       << fd
                       << " connected to "
