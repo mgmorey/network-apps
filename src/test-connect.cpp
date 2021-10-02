@@ -61,8 +61,7 @@ namespace TestConnect
             }
         }
 
-        void test_socket(Network::Fd t_fd,
-                         const Network::Result& t_result)
+        void test_socket(Network::Fd t_fd, const Network::Result& t_result)
         {
             const auto cname {t_result.string()};
             const auto hostname {m_endpoint.first};

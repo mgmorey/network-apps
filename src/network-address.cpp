@@ -48,8 +48,7 @@ bool Network::Address::operator==(const Address& t_address) const
             text() == t_address.text());
 }
 
-Network::Result Network::Address::connect(Fd t_fd,
-                                          bool t_verbose) const
+Network::Result Network::Address::connect(Fd t_fd, bool t_verbose) const
 {
     assert(!empty());
 

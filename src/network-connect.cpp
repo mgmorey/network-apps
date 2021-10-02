@@ -50,8 +50,7 @@ Network::SocketResult Network::Connect::connect(const Socket& t_socket)
     return socket_result;
 }
 
-Network::Result Network::Connect::connect(const Socket& t_socket,
-                                          Fd t_fd)
+Network::Result Network::Connect::connect(const Socket& t_socket, Fd t_fd)
 {
     return t_socket.address().connect(t_fd, m_verbose);
 }
