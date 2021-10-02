@@ -148,12 +148,12 @@ Network::Address::operator const sockaddr&() const
 
 const std::byte* Network::Address::cbegin() const
 {
-    return m_value.data();
+    return data();
 }
 
 const std::byte* Network::Address::cend() const
 {
-    return m_value.data() + m_value.size();
+    return data() + size();
 }
 
 const std::byte* Network::Address::data() const
@@ -308,13 +308,13 @@ std::string Network::Address::sun_text() const
 
 const std::byte* Network::Address::cbegin(const sockaddr* t_sockaddr)
 {
-    return reinterpret_cast<const std::byte*>(t_sockaddr);
+    return data(t_sockaddr);
 }
 
 const std::byte* Network::Address::cend(const sockaddr* t_sockaddr,
                                         sock_len_type t_socklen)
 {
-    return reinterpret_cast<const std::byte*>(t_sockaddr) + t_socklen;
+    return data(t_sockaddr) + size(t_socklen);
 }
 
 const std::byte* Network::Address::data(const sockaddr* t_sockaddr)
