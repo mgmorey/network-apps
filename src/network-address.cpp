@@ -21,6 +21,10 @@
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
 
+Network::Address::Address()
+{
+}
+
 Network::Address::Address(const sockaddr* t_sockaddr, sock_len_type t_socklen) :
     m_value(cbegin(t_sockaddr), cend(t_sockaddr, t_socklen))
 {
@@ -327,9 +331,13 @@ std::size_t Network::Address::size(sock_len_type t_socklen)
     return t_socklen;
 }
 
-std::string Network::Address::to_string(const Bytes& bytes)
+std::string Network::Address::to_string(const Bytes& t_value)
 {
-    const auto data {reinterpret_cast<const char*>(bytes.data())};
-    const auto size {bytes.size()};
-    return std::string(data, size);
+    std::string result(t_value.size(), '\0');
+
+    for (std::string::size_type i = 0; i < t_value.size(); ++i) {
+        result[i] = static_cast<std::string::value_type>(t_value[i]);
+    }
+
+    return result;
 }
