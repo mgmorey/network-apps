@@ -6,10 +6,8 @@
 #include <unistd.h>     // close()
 #endif
 
-Network::Fd Network::close(Fd socket_fd)
+Network::fd_type Network::close(fd_type fd)
 {
-    auto fd {static_cast<fd_type>(socket_fd)};
-
     if (fd != fd_null) {
 #ifdef _WIN32
         ::closesocket(fd);
@@ -18,5 +16,10 @@ Network::Fd Network::close(Fd socket_fd)
 #endif
     }
 
-    return Fd(fd_null);
+    return fd_null;
+}
+
+Network::Fd Network::close(Fd fd)
+{
+    return Fd(close(static_cast<fd_type>(fd)));
 }

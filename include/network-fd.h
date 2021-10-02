@@ -28,7 +28,7 @@ namespace Network
     class Fd
     {
         friend std::ostream& operator<<(std::ostream& os,
-                                        const Fd& socket_fd);
+                                        const Fd& fd);
 
     public:
         explicit Fd(fd_type t_fd)
@@ -51,9 +51,9 @@ namespace Network
     };
 
     inline std::ostream& operator<<(std::ostream& os,
-                                    const Fd& socket_fd)
+                                    const Fd& fd)
     {
-        os << socket_fd.m_value;
+        os << fd.m_value;
         return os;
     }
 }

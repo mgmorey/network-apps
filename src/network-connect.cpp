@@ -33,16 +33,16 @@ Network::SocketResult Network::Connect::operator()(const Socket& t_socket)
 Network::SocketResult Network::Connect::connect(const Socket& t_socket)
 {
     auto socket_result {t_socket.socket(m_verbose)};
-    const auto socket_fd {socket_result.first};
+    const auto fd {socket_result.first};
 
-    if (!socket_fd) {
+    if (!fd) {
         return socket_result;
     }
 
-    const auto connect_result {connect(t_socket, socket_fd)};
+    const auto connect_result {connect(t_socket, fd)};
 
     if (connect_result.result() != 0) {
-        return SocketResult(close(socket_fd), connect_result);
+        return SocketResult(close(fd), connect_result);
     }
 
     Network::Hostname hostname {t_socket.canonical_name()};
@@ -51,9 +51,9 @@ Network::SocketResult Network::Connect::connect(const Socket& t_socket)
 }
 
 Network::Result Network::Connect::connect(const Socket& t_socket,
-                                          Fd t_socket_fd)
+                                          Fd t_fd)
 {
-    return t_socket.address().connect(t_socket_fd, m_verbose);
+    return t_socket.address().connect(t_fd, m_verbose);
 }
 
 Network::SocketResults Network::connect(const Endpoint& endpoint,
@@ -66,8 +66,8 @@ Network::SocketResults Network::connect(const Endpoint& endpoint,
     const auto result {sockets_result.second};
 
     if (result.result() != 0) {
-        Fd socket_fd {fd_null};
-        SocketResult socket_result(socket_fd, result);
+        Fd fd {fd_null};
+        SocketResult socket_result(fd, result);
         results.push_back(socket_result);
     }
     else {

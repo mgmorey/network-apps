@@ -21,7 +21,7 @@ namespace Network
         SocketResult operator()(const Socket& t_socket);
         SocketResult connect(const Socket& t_socket);
         Result connect(const Socket& t_socket,
-                       Fd t_socket_fd);
+                       Fd t_fd);
 
     private:
         bool m_verbose {false};

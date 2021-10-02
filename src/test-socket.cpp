@@ -47,9 +47,9 @@ namespace TestSocket
         return args;
     }
 
-    static void test_peer(Network::Fd socket_fd)
+    static void test_peer(Network::Fd fd)
     {
-        const auto address_result {Network::get_peername(socket_fd, true)};
+        const auto address_result {Network::get_peername(fd, true)};
         const auto result {address_result.second};
 
         if (result.result() != 0) {
@@ -60,7 +60,7 @@ namespace TestSocket
         else {
             Network::Address address(address_result.first);
             std::cout << "Socket "
-                      << socket_fd
+                      << fd
                       << " connected to "
                       << address
                       << std::endl;
@@ -71,7 +71,7 @@ namespace TestSocket
     {
         const Network::Socket sock {hints};
         const auto pair_result {sock.socketpair(verbose)};
-        const auto socket_fd {pair_result.first};
+        const auto fd {pair_result.first};
         const auto result {pair_result.second};
 
         if (result.result() != 0) {
@@ -80,18 +80,18 @@ namespace TestSocket
         }
         else {
             std::cout << "Socket "
-                      << socket_fd.first
+                      << fd.first
                       << " connected to socket "
-                      << socket_fd.second
+                      << fd.second
                       << std::endl;
-            test_peer(socket_fd.first);
-            test_peer(socket_fd.second);
-            Network::close(socket_fd.first);
-            Network::close(socket_fd.second);
+            test_peer(fd.first);
+            test_peer(fd.second);
+            Network::close(fd.first);
+            Network::close(fd.second);
             std::cout << "Sockets "
-                      << socket_fd.first
+                      << fd.first
                       << " and "
-                      << socket_fd.second
+                      << fd.second
                       << " closed"
                       << std::endl;
         }

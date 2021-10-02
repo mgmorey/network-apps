@@ -42,7 +42,7 @@ namespace Network
         bool operator<(const Address& t_address) const;
         bool operator>(const Address& t_address) const;
         bool operator==(const Address& t_address) const;
-        Result connect(Fd t_socket_fd,
+        Result connect(Fd t_fd,
                        bool t_verbose = false) const;
         bool empty() const;
         family_type family() const;

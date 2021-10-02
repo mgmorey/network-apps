@@ -41,12 +41,12 @@ std::size_t Network::AddressBuffer::capacity()
     return size;
 }
 
-Network::AddressResult Network::get_peername(Fd socket_fd,
+Network::AddressResult Network::get_peername(Fd fd,
                                              bool verbose)
 {
     if (verbose) {
         std::cerr << "Calling getpeername("
-                  << socket_fd
+                  << fd
                   << ", ...)"
                   << std::endl;
     }
@@ -56,9 +56,8 @@ Network::AddressResult Network::get_peername(Fd socket_fd,
     auto addr {buffer.addr()};
     auto addrlen {buffer.addrlen()};
     auto code {reset_last_error()};
-    const auto fd {static_cast<fd_type>(socket_fd)};
 
-    if (::getpeername(fd, addr, &addrlen) != 0) {
+    if (::getpeername(static_cast<fd_type>(fd), addr, &addrlen) != 0) {
         code = get_last_error();
         std::ostringstream oss;
         oss << "Call to getpeername("

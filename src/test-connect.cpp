@@ -49,15 +49,15 @@ namespace TestConnect
 
         void test_socket(const Network::SocketResult& t_socket_result)
         {
-            const auto socket_fd {t_socket_result.first};
+            const auto fd {t_socket_result.first};
             const auto result {t_socket_result.second};
 
-            if (!socket_fd) {
+            if (!fd) {
                 std::cerr << result
                           << std::endl;
             }
             else {
-                test_socket(socket_fd, result);
+                test_socket(fd, result);
             }
         }
 
