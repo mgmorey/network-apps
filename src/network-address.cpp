@@ -168,7 +168,7 @@ std::size_t Network::Address::size() const
 
 Network::Bytes Network::Address::sa_data() const
 {
-    return Bytes(cbegin() + m_sa_offset, cend() - m_sa_offset);
+    return Bytes(cbegin() + m_sa_data_offset, cend() - m_sa_data_offset);
 }
 
 Network::Address::family_type Network::Address::sa_family() const
@@ -280,7 +280,12 @@ Network::Address::family_type Network::Address::sun_family() const
 std::string Network::Address::sun_path() const
 {
     const auto& sun {static_cast<const sockaddr_un&>(*this)};
-    return std::string(sun.sun_path);
+    const std::string path {
+        m_value.size() < m_sun_path_offset ?
+        sun.sun_path :
+        ""
+    };
+    return path.substr(0, path.find('\0'));
 }
 
 std::string Network::Address::sun_text() const

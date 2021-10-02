@@ -91,7 +91,14 @@ namespace Network
         static const std::byte* data(const sockaddr* addr);
         static std::size_t size(sock_len_type addrlen);
 
-        static constexpr auto m_sa_offset {offsetof(sockaddr, sa_data)};
+        static constexpr auto m_sa_data_offset {
+            offsetof(sockaddr, sa_data)
+        };
+#ifndef _WIN32
+        static constexpr auto m_sun_path_offset {
+            offsetof(sockaddr_un, sun_path)
+        };
+#endif
 
         Bytes m_value;
     };
