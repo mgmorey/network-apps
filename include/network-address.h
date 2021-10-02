@@ -80,7 +80,7 @@ namespace Network
 #ifndef _WIN32
         operator const sockaddr_un&() const;
         family_type sun_family() const;
-        std::string sun_path() const;
+        Bytes sun_path() const;
         std::string sun_text() const;
 #endif
 
@@ -90,6 +90,7 @@ namespace Network
                                      sock_len_type addrlen);
         static const std::byte* data(const sockaddr* addr);
         static std::size_t size(sock_len_type addrlen);
+        static std::string to_string(const Bytes& bytes);
 
         static constexpr auto m_sa_data_offset {
             offsetof(sockaddr, sa_data)
