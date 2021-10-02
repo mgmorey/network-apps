@@ -149,7 +149,7 @@ Network::Address::operator const sockaddr&() const
 
 Network::Bytes Network::Address::sa_data() const
 {
-    constexpr auto offset {offsetof(sockaddr, sa_data)};
+    static constexpr auto offset {offsetof(sockaddr, sa_data)};
     auto first {reinterpret_cast<const std::byte*>(&m_value[0])};
     return Bytes(first + offset, first + m_value.size() - offset);
 }
