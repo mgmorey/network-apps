@@ -86,7 +86,7 @@ namespace TestConnect
 
         void test_socket_peer(Network::Fd t_fd)
         {
-            const auto address_result {Network::get_peername(t_fd, true)};
+            const auto address_result {Network::get_peername(t_fd, verbose)};
             const auto address {address_result.first};
             const auto result {address_result.second};
 
