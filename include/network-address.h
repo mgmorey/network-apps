@@ -37,8 +37,9 @@ namespace Network
 #endif
         enum { connect_error = -1 };
 
-        Address(const sockaddr* t_sockaddr = nullptr,
-                sock_len_type t_socklen = 0);
+        Address();
+        Address(const sockaddr* t_sockaddr,
+                sock_len_type t_socklen);
         bool operator<(const Address& t_address) const;
         bool operator>(const Address& t_address) const;
         bool operator==(const Address& t_address) const;
