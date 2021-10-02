@@ -148,17 +148,17 @@ Network::Address::operator const sockaddr&() const
 
 const std::byte* Network::Address::cbegin() const
 {
-    return &m_value[0];
+    return m_value.data();
 }
 
 const std::byte* Network::Address::cend() const
 {
-    return &m_value[m_value.size()];
+    return m_value.data() + m_value.size();
 }
 
 const std::byte* Network::Address::data() const
 {
-    return &m_value[0];
+    return m_value.data();
 }
 
 std::size_t Network::Address::size() const
