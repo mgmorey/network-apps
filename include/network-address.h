@@ -17,6 +17,7 @@
 
 #include <cstddef>      // std::byte
 #include <ostream>      // std::ostream
+#include <string>       // std::string
 #include <vector>       // std::vector
 
 namespace Network
