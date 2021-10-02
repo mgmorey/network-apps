@@ -21,10 +21,9 @@
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
 
-Network::Address::Address(const sockaddr* t_sockaddr, sock_len_type t_socklen)
+Network::Address::Address(const sockaddr* t_sockaddr, sock_len_type t_socklen) :
+    m_value(cbegin(t_sockaddr), cend(t_sockaddr, t_socklen))
 {
-    auto first {reinterpret_cast<const std::byte*>(t_sockaddr)};
-    m_value = Bytes(first, first + t_socklen);
 }
 
 bool Network::Address::operator<(const Address& t_address) const
@@ -147,11 +146,29 @@ Network::Address::operator const sockaddr&() const
     return *reinterpret_cast<const sockaddr*>(m_value.data());
 }
 
+const std::byte* Network::Address::cbegin() const
+{
+    return &m_value[0];
+}
+
+const std::byte* Network::Address::cend() const
+{
+    return &m_value[m_value.size()];
+}
+
+const std::byte* Network::Address::data() const
+{
+    return &m_value[0];
+}
+
+std::size_t Network::Address::size() const
+{
+    return m_value.size();
+}
+
 Network::Bytes Network::Address::sa_data() const
 {
-    static constexpr auto offset {offsetof(sockaddr, sa_data)};
-    auto first {reinterpret_cast<const std::byte*>(&m_value[0])};
-    return Bytes(first + offset, first + m_value.size() - offset);
+    return Bytes(cbegin() + m_offset, cend() - m_offset);
 }
 
 Network::Address::family_type Network::Address::sa_family() const
@@ -272,3 +289,14 @@ std::string Network::Address::sun_text() const
 }
 
 #endif
+
+const std::byte* Network::Address::cbegin(const sockaddr* t_sockaddr)
+{
+    return reinterpret_cast<const std::byte*>(t_sockaddr);
+}
+
+const std::byte* Network::Address::cend(const sockaddr* t_sockaddr,
+                                        sock_len_type t_socklen)
+{
+    return reinterpret_cast<const std::byte*>(t_sockaddr) + t_socklen;
+}

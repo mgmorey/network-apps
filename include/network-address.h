@@ -55,6 +55,10 @@ namespace Network
     protected:
         const sockaddr* addr() const;
         sock_len_type addrlen() const;
+        const std::byte* cbegin() const;
+        const std::byte* cend() const;
+        const std::byte* data() const;
+        std::size_t size() const;
 
         operator const sockaddr&() const;
         Bytes sa_data() const;
@@ -81,6 +85,12 @@ namespace Network
 #endif
 
     private:
+        static const std::byte* cbegin(const sockaddr* addr);
+        static const std::byte* cend(const sockaddr* addr,
+                                     sock_len_type addrlen);
+
+        static constexpr auto m_offset {offsetof(sockaddr, sa_data)};
+
         Bytes m_value;
     };
 
