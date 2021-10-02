@@ -300,3 +300,13 @@ const std::byte* Network::Address::cend(const sockaddr* t_sockaddr,
 {
     return reinterpret_cast<const std::byte*>(t_sockaddr) + t_socklen;
 }
+
+const std::byte* Network::Address::data(const sockaddr* t_sockaddr)
+{
+    return reinterpret_cast<const std::byte*>(t_sockaddr);
+}
+
+std::size_t Network::Address::size(sock_len_type t_socklen)
+{
+    return t_socklen;
+}

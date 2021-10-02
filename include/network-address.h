@@ -88,6 +88,8 @@ namespace Network
         static const std::byte* cbegin(const sockaddr* addr);
         static const std::byte* cend(const sockaddr* addr,
                                      sock_len_type addrlen);
+        static const std::byte* data(const sockaddr* addr);
+        static std::size_t size(sock_len_type addrlen);
 
         static constexpr auto m_offset {offsetof(sockaddr, sa_data)};
 
