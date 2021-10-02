@@ -168,7 +168,7 @@ std::size_t Network::Address::size() const
 
 Network::Bytes Network::Address::sa_data() const
 {
-    return Bytes(cbegin() + m_offset, cend() - m_offset);
+    return Bytes(cbegin() + m_sa_offset, cend() - m_sa_offset);
 }
 
 Network::Address::family_type Network::Address::sa_family() const
