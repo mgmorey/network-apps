@@ -24,7 +24,7 @@ Network::Address::Address()
 }
 
 Network::Address::Address(const sockaddr* t_sockaddr, sock_len_type t_socklen) :
-    m_value(cbegin(t_sockaddr), cend(t_sockaddr, t_socklen))
+    Network::Bytes(cbegin(t_sockaddr), cend(t_sockaddr, t_socklen))
 {
 }
 
@@ -49,14 +49,9 @@ bool Network::Address::operator==(const Address& t_address) const
             text() == t_address.text());
 }
 
-Network::Address::operator Network::Bytes() const
-{
-    return m_value;
-}
-
 bool Network::Address::empty() const
 {
-    return m_value.empty();
+    return m_bytes.empty();
 }
 
 Network::Address::family_type Network::Address::family() const
@@ -125,12 +120,12 @@ const std::byte* Network::Address::cend() const
 
 const std::byte* Network::Address::data() const
 {
-    return m_value.data();
+    return m_bytes.data();
 }
 
 std::size_t Network::Address::size() const
 {
-    return m_value.size();
+    return m_bytes.size();
 }
 
 const sockaddr& Network::Address::sa() const
@@ -144,10 +139,10 @@ Network::Bytes Network::Address::sa_data() const
     const auto end {cend() - m_sa_data_offset};
 
     if (begin <= end) {
-        return Bytes(begin, end);
+        return Network::Bytes(begin, end);
     }
     else {
-        return Bytes();
+        return Network::Bytes();
     }
 }
 
@@ -161,11 +156,11 @@ std::string Network::Address::sa_text() const
     std::ostringstream oss;
     oss << std::hex;
 
-    for (const auto i : m_value) {
+    for (const auto by : m_bytes) {
         oss << std::setfill('0')
             << std::setw(2)
             << std::uppercase
-            << static_cast<int>(i);
+            << static_cast<int>(by);
     }
 
     const auto str {oss.str()};
@@ -289,15 +284,4 @@ const std::byte* Network::Address::data(const sockaddr* t_sockaddr)
 std::size_t Network::Address::size(sock_len_type t_socklen)
 {
     return t_socklen;
-}
-
-std::string Network::Address::to_string(const Bytes& t_value)
-{
-    std::string result(t_value.size(), '\0');
-
-    for (std::string::size_type i = 0; i < t_value.size(); ++i) {
-        result[i] = static_cast<std::string::value_type>(t_value[i]);
-    }
-
-    return result;
 }

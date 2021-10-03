@@ -1,6 +1,7 @@
 #ifndef NETWORK_ADDRESS_H
 #define NETWORK_ADDRESS_H
 
+#include "network-bytes.h"      // Bytes
 #include "network-endpoint.h"   // EndpointResult
 #include "network-fd.h"         // Fd
 #include "network-result.h"     // Result
@@ -22,9 +23,8 @@
 
 namespace Network
 {
-    typedef std::vector<std::byte> Bytes;
-
-    class Address
+    class Address :
+        public Bytes
     {
         friend Result connect(Fd, const Address&, bool);
 
@@ -45,7 +45,6 @@ namespace Network
         bool operator<(const Address& t_address) const;
         bool operator>(const Address& t_address) const;
         bool operator==(const Address& t_address) const;
-        operator Bytes() const;
         bool empty() const;
         family_type family() const;
         port_type port() const;
@@ -93,7 +92,6 @@ namespace Network
                                      sock_len_type addrlen);
         static const std::byte* data(const sockaddr* addr);
         static std::size_t size(sock_len_type addrlen);
-        static std::string to_string(const Bytes& bytes);
 
         static constexpr auto m_sa_data_offset {
             offsetof(sockaddr, sa_data)
@@ -103,8 +101,6 @@ namespace Network
             offsetof(sockaddr_un, sun_path)
         };
 #endif
-
-        Bytes m_value;
     };
 
     extern std::ostream& operator<<(std::ostream& os,
