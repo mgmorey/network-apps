@@ -8,6 +8,7 @@
 #include "network-socket.h"     // Socket
 
 #include <algorithm>    // std::transform()
+#include <cassert>      // assert()
 #include <iterator>     // std::back_inserter()
 #include <sstream>      // std::ostringstream
 #include <utility>      // std::pair
@@ -68,30 +69,28 @@ Network::Result Network::connect(Fd fd, const Address& address, bool verbose)
                   << std::endl;
     }
 
-    std::string error;
-    auto code {reset_last_error()};
-    const auto sock {static_cast<fd_type>(fd)};
-    const auto value {::connect(sock, address.addr(), address.addrlen())};
+    std::string message;
+    auto error {reset_last_error()};
+    const auto code {::connect(fd, address.addr(), address.addrlen())};
 
-    if (value == connect_error) {
-        code = get_last_error();
+    if (code == connect_error) {
+        error = get_last_error();
         std::ostringstream oss;
         oss << "Call to connect("
-            << sock
+            << fd
             << ", "
             << address
             << ") failed with error "
-            << code
+            << error
             << ": "
-            << format_error(code);
-        error = oss.str();
+            << format_error(error);
+        message = oss.str();
     }
 
-    Result result {code, error};
-    assert(result.result() ?
-           result.string() != "" :
-           result.string() == "");
-    return result;
+    assert(error == 0 ?
+           message == "" :
+           message != "");
+    return {error, message};
 }
 
 Network::SocketResults Network::connect(const Endpoint& endpoint,

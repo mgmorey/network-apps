@@ -72,45 +72,45 @@ Network::AddrInfo::List::List(const Hostname& t_node,
                   << std::endl;
     }
 
-    std::string error;
+    std::string message;
     addrinfo ai = Network::Hints();
     const auto hints {get_hints(&ai, t_hints)};
     const auto node {t_node.empty() ? nullptr : t_node.c_str()};
-    const auto service {t_service.empty() ? nullptr : t_service.c_str()};
+    const auto serv {t_service.empty() ? nullptr : t_service.c_str()};
 
     if (t_verbose) {
         std::cerr << "Calling getaddrinfo("
                   << (node == nullptr ? "<NULL>" : node)
                   << ", "
-                  << (service == nullptr ? "<NULL>" : service)
+                  << (serv == nullptr ? "<NULL>" : serv)
                   << ", ...)"
                   << std::endl;
     }
 
-    const auto code = ::getaddrinfo(node, service, hints, &m_pointer);
+    const auto error = ::getaddrinfo(node, serv, hints, &m_pointer);
 
-    if (code != 0) {
+    if (error != 0) {
         std::ostringstream oss;
         oss << "Call to getaddrinfo("
             << Nullable(node)
             << ", "
-            << Nullable(service)
+            << Nullable(serv)
             << ", "
             << t_hints
             << ") returned "
-            << code
+            << error
             << ": "
-            << ::gai_strerror(code);
-        error = oss.str();
+            << ::gai_strerror(error);
+        message = oss.str();
     }
     else {
         assert(m_pointer != nullptr);
     }
 
-    m_result = Result(code, error);
-    assert(m_result.result() ?
-           m_result.string() != "" :
-           m_result.string() == "");
+    assert(error == 0 ?
+           message == "" :
+           message != "");
+    m_result = {error, message};
 }
 
 Network::AddrInfo::List::~List()

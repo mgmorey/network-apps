@@ -19,13 +19,13 @@ Network::EndpointResult
 Network::Address::to_endpoint(int t_flags, bool t_verbose) const
 {
     assert(!empty());
-    std::string error;
+    std::string message;
     Buffer host {NI_MAXHOST};
-    Buffer service {NI_MAXSERV};
-    const auto code {::getnameinfo(addr(), addrlen(),
-                                   &host[0], host.size(),
-                                   &service[0], service.size(),
-                                   t_flags)};
+    Buffer serv {NI_MAXSERV};
+    const auto error {::getnameinfo(addr(), addrlen(),
+                                    &host[0], host.size(),
+                                    &serv[0], serv.size(),
+                                    t_flags)};
 
     if (t_verbose) {
         std::cerr << "Calling getnameinfo("
@@ -34,23 +34,22 @@ Network::Address::to_endpoint(int t_flags, bool t_verbose) const
                   << std::endl;
     }
 
-    if (code != 0) {
+    if (error != 0) {
         std::ostringstream oss;
         oss << "Call to getnameinfo("
             << *this
             << ", ...) returned "
-            << code
+            << error
             << " ("
-            << ::gai_strerror(code)
+            << ::gai_strerror(error)
             << ')';
-        error = oss.str();
+        message = oss.str();
     }
 
-    Result result {code, error};
-    assert(result.result() ?
-           result.string() != "" :
-           result.string() == "");
-    return EndpointResult(Endpoint(host, service), result);
+    assert(error == 0 ?
+           message == "" :
+           message != "");
+    return EndpointResult(Endpoint(host, serv), {error, message});
 }
 
 Network::EndpointResult

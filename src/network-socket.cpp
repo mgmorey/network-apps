@@ -69,14 +69,14 @@ Network::SocketResult Network::Socket::socket(bool t_verbose) const
                   << std::endl;
     }
 
-    std::string error;
-    auto code {reset_last_error()};
-    const auto value {::socket(static_cast<int>(m_family),
+    std::string message;
+    auto error {reset_last_error()};
+    const auto fd {::socket(static_cast<int>(m_family),
                                static_cast<int>(m_socktype),
                                static_cast<int>(m_protocol))};
 
-    if (value == fd_null) {
-        code = get_last_error();
+    if (fd == fd_null) {
+        error = get_last_error();
         std::ostringstream oss;
         oss << "Call to socket("
             << Format("domain")
@@ -86,17 +86,16 @@ Network::SocketResult Network::Socket::socket(bool t_verbose) const
             << Format(m_delim, m_tab, "protocol")
             << m_protocol
             << ") failed with error "
-            << code
+            << error
             << ": "
-            << format_error(code);
-        error = oss.str();
+            << format_error(error);
+        message = oss.str();
     }
 
-    Result result {code, error};
-    assert(result.result() ?
-           result.string() != "" :
-           result.string() == "");
-    return SocketResult(value, result);
+    assert(error == 0 ?
+           message == "" :
+           message != "");
+    return SocketResult(fd, {error, message});
 }
 
 #ifndef _WIN32
@@ -110,16 +109,16 @@ Network::SocketpairResult Network::Socket::socketpair(bool t_verbose) const
                   << std::endl;
     }
 
-    std::string error;
-    auto code {reset_last_error()};
-    fd_type fds[2] {fd_null, fd_null};
+    std::string message;
+    auto error {reset_last_error()};
+    auto fds[] {fd_null, fd_null};
     const auto value {::socketpair(static_cast<int>(m_family),
                                    static_cast<int>(m_socktype),
                                    static_cast<int>(m_protocol),
                                    fds)};
 
     if (value == socket_error) {
-        code = get_last_error();
+        error = get_last_error();
         std::ostringstream oss;
         oss << "Call to socketpair("
             << Format("domain")
@@ -129,18 +128,16 @@ Network::SocketpairResult Network::Socket::socketpair(bool t_verbose) const
             << Format(m_delim, m_tab, "protocol")
             << m_protocol
             << ") failed with error "
-            << code
+            << error
             << ": "
-            << format_error(code);
-        error = oss.str();
+            << format_error(error);
+        message = oss.str();
     }
 
-    FdPair pair {fds[0], fds[1]};
-    Result result {code, error};
-    assert(result.result() ?
-           result.string() != "" :
-           result.string() == "");
-    return SocketpairResult(pair, result);
+    assert(error == 0 ?
+           message == "" :
+           message != "");
+    return {{fds[0], fds[1]}, {error, message}};
 }
 
 #endif

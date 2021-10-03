@@ -32,7 +32,7 @@ namespace Network
 #ifdef _WIN32
         typedef unsigned short family_type;
         typedef unsigned short port_type;
-        typedef std::size_t sock_len_type;
+        typedef int sock_len_type;
 #else
         typedef sa_family_t family_type;
         typedef in_port_t port_type;

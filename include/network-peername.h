@@ -24,7 +24,7 @@ namespace Network
     public:
         AddressBuffer();
         sockaddr* addr();
-        socklen_t addrlen() const;
+        Address::sock_len_type addrlen() const;
 
     private:
         static std::size_t capacity();

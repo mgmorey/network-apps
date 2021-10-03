@@ -36,7 +36,7 @@ namespace Network
             m_value = t_fd;
         }
 
-        explicit operator fd_type() const
+        operator fd_type() const
         {
             return m_value;
         }

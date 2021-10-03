@@ -27,9 +27,9 @@ sockaddr* Network::AddressBuffer::addr()
     return reinterpret_cast<sockaddr*>(&(*this)[0]);
 }
 
-socklen_t Network::AddressBuffer::addrlen() const
+Network::Address::sock_len_type Network::AddressBuffer::addrlen() const
 {
-    return static_cast<socklen_t>(size());
+    return static_cast<Network::Address::sock_len_type>(size());
 }
 
 std::size_t Network::AddressBuffer::capacity()
@@ -50,29 +50,27 @@ Network::AddressResult Network::get_peername(Fd fd, bool verbose)
                   << std::endl;
     }
 
-    std::string error;
+    std::string message;
     AddressBuffer buffer;
     auto address {buffer.addr()};
     auto addrlen {buffer.addrlen()};
-    auto code {reset_last_error()};
-    const auto sock {static_cast<fd_type>(fd)};
-    const auto value {::getpeername(sock, address, &addrlen)};
+    auto error {reset_last_error()};
+    const auto code {::getpeername(fd, address, &addrlen)};
 
-    if (value != 0) {
-        code = get_last_error();
+    if (code != 0) {
+        error = get_last_error();
         std::ostringstream oss;
         oss << "Call to getpeername("
             << fd
             << ", ...) failed with error "
-            << code
+            << error
             << ": "
-            << format_error(code);
-        error = oss.str();
+            << format_error(error);
+        message = oss.str();
     }
 
-    Result result {code, error};
-    assert(result.result() ?
-           result.string() != "" :
-           result.string() == "");
-    return AddressResult(Address(address, addrlen), result);
+    assert(error == 0 ?
+           message == "" :
+           message != "");
+    return {{address, addrlen}, {error, message}};
 }
