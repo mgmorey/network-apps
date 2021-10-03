@@ -26,6 +26,8 @@ namespace Network
 
     class Address
     {
+        friend Result connect(Fd, const Address&, bool);
+
     public:
 #ifdef _WIN32
         typedef unsigned short family_type;
@@ -36,7 +38,6 @@ namespace Network
         typedef in_port_t port_type;
         typedef socklen_t sock_len_type;
 #endif
-        enum { connect_error = -1 };
 
         Address();
         Address(const sockaddr* t_sockaddr,
@@ -45,7 +46,6 @@ namespace Network
         bool operator>(const Address& t_address) const;
         bool operator==(const Address& t_address) const;
         operator Bytes() const;
-        Result connect(Fd t_fd, bool t_verbose = false) const;
         bool empty() const;
         family_type family() const;
         port_type port() const;

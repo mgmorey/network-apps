@@ -14,18 +14,21 @@ namespace Network
 {
     typedef std::vector<SocketResult> SocketResults;
 
+    enum { connect_error = -1 };
+
     class Connect
     {
     public:
         explicit Connect(bool t_verbose);
-        SocketResult operator()(const Socket& t_socket);
-        SocketResult connect(const Socket& t_socket);
-        Result connect(Fd t_fd, const Socket& t_socket);
+        SocketResult operator()(const Socket& t_socket) const;
+        SocketResult connect(const Socket& t_socket) const;
+        Result connect(Fd t_fd, const Socket& t_socket) const;
 
     private:
         bool m_verbose {false};
     };
 
+    extern Result connect(Fd fd, const Address& address, bool verbose = false);
     extern SocketResults connect(const Endpoint& endpoint,
                                  const Hints* hints = nullptr,
                                  bool verbose = false);

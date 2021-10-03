@@ -1,8 +1,6 @@
 #include "network-address.h"    // Address, operator<<(), struct
                                 // sockaddr, sock_len_type
 #include "network-buffer.h"     // Buffer
-#include "network-error.h"      // format_error(), get_last_error(),
-                                // reset_last_error()
 
 #ifdef _WIN32
 #include <winsock2.h>   // AF_INET, AF_INET6, AF_UNIX, AF_UNSPEC,
@@ -54,42 +52,6 @@ bool Network::Address::operator==(const Address& t_address) const
 Network::Address::operator Network::Bytes() const
 {
     return m_value;
-}
-
-Network::Result Network::Address::connect(Fd t_fd, bool t_verbose) const
-{
-    assert(!empty());
-
-    if (t_verbose) {
-        std::cerr << "Trying "
-                  << *this
-                  << std::endl;
-    }
-
-    std::string error;
-    auto code {reset_last_error()};
-    const auto sock {static_cast<fd_type>(t_fd)};
-    const auto value {::connect(sock, addr(), addrlen())};
-
-    if (value == connect_error) {
-        code = get_last_error();
-        std::ostringstream oss;
-        oss << "Call to connect("
-            << sock
-            << ", "
-            << *this
-            << ") failed with error "
-            << code
-            << ": "
-            << format_error(code);
-        error = oss.str();
-    }
-
-    Result result {code, error};
-    assert(result.result() ?
-           result.string() != "" :
-           result.string() == "");
-    return result;
 }
 
 bool Network::Address::empty() const

@@ -2,11 +2,14 @@
                                 // SocketResults,
 #include "network-addrinfo.h"   // AddrInfo
 #include "network-close.h"      // close()
+#include "network-error.h"      // format_error(), get_last_error(),
+                                // reset_last_error()
 #include "network-fd.h"         // Fd, fd_null, fd_type
-#include "network-hints.h"      // Hints
+#include "network-socket.h"     // Socket
 
 #include <algorithm>    // std::transform()
 #include <iterator>     // std::back_inserter()
+#include <sstream>      // std::ostringstream
 #include <utility>      // std::pair
 #include <vector>       // std::vector
 
@@ -25,12 +28,12 @@ Network::Connect::Connect(bool t_verbose) :
 {
 }
 
-Network::SocketResult Network::Connect::operator()(const Socket& t_socket)
+Network::SocketResult Network::Connect::operator()(const Socket& t_socket) const
 {
     return connect(t_socket);
 }
 
-Network::SocketResult Network::Connect::connect(const Socket& t_socket)
+Network::SocketResult Network::Connect::connect(const Socket& t_socket) const
 {
     auto socket_result {t_socket.socket(m_verbose)};
     const auto fd {socket_result.first};
@@ -50,9 +53,45 @@ Network::SocketResult Network::Connect::connect(const Socket& t_socket)
     return socket_result;
 }
 
-Network::Result Network::Connect::connect(Fd t_fd, const Socket& t_socket)
+Network::Result Network::Connect::connect(Fd t_fd, const Socket& t_socket) const
 {
-    return t_socket.address().connect(t_fd, m_verbose);
+    return Network::connect(t_fd, t_socket.address(), m_verbose);
+}
+
+Network::Result Network::connect(Fd fd, const Address& address, bool verbose)
+{
+    assert(!address.empty());
+
+    if (verbose) {
+        std::cerr << "Trying "
+                  << address
+                  << std::endl;
+    }
+
+    std::string error;
+    auto code {reset_last_error()};
+    const auto sock {static_cast<fd_type>(fd)};
+    const auto value {::connect(sock, address.addr(), address.addrlen())};
+
+    if (value == connect_error) {
+        code = get_last_error();
+        std::ostringstream oss;
+        oss << "Call to connect("
+            << sock
+            << ", "
+            << address
+            << ") failed with error "
+            << code
+            << ": "
+            << format_error(code);
+        error = oss.str();
+    }
+
+    Result result {code, error};
+    assert(result.result() ?
+           result.string() != "" :
+           result.string() == "");
+    return result;
 }
 
 Network::SocketResults Network::connect(const Endpoint& endpoint,
