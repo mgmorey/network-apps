@@ -24,7 +24,7 @@ Network::Address::Address()
 }
 
 Network::Address::Address(const sockaddr* t_sockaddr, sock_len_type t_socklen) :
-    Network::Bytes(cbegin(t_sockaddr), cend(t_sockaddr, t_socklen))
+    m_value(data(t_sockaddr), data(t_sockaddr) + t_socklen)
 {
 }
 
@@ -51,7 +51,7 @@ bool Network::Address::operator==(const Address& t_address) const
 
 bool Network::Address::empty() const
 {
-    return m_bytes.empty();
+    return m_value.empty();
 }
 
 Network::Address::family_type Network::Address::family() const
@@ -108,24 +108,14 @@ Network::Address::sock_len_type Network::Address::addrlen() const
     return static_cast<sock_len_type>(size());
 }
 
-const std::byte* Network::Address::cbegin() const
-{
-    return data();
-}
-
-const std::byte* Network::Address::cend() const
-{
-    return data() + size();
-}
-
 const std::byte* Network::Address::data() const
 {
-    return m_bytes.data();
+    return m_value.data();
 }
 
 std::size_t Network::Address::size() const
 {
-    return m_bytes.size();
+    return m_value.size();
 }
 
 const sockaddr& Network::Address::sa() const
@@ -135,11 +125,11 @@ const sockaddr& Network::Address::sa() const
 
 Network::Bytes Network::Address::sa_data() const
 {
-    const auto begin {cbegin() + m_sa_data_offset};
-    const auto end {cend() - m_sa_data_offset};
+    const auto first {data() + m_sa_data_offset};
+    const auto last {data() + size() - m_sa_data_offset};
 
-    if (begin <= end) {
-        return Network::Bytes(begin, end);
+    if (first <= last) {
+        return Network::Bytes(first, last);
     }
     else {
         return Network::Bytes();
@@ -154,26 +144,8 @@ Network::Address::family_type Network::Address::sa_family() const
 std::string Network::Address::sa_text() const
 {
     std::ostringstream oss;
-    oss << std::hex;
-
-    for (const auto by : m_bytes) {
-        oss << std::setfill('0')
-            << std::setw(2)
-            << std::uppercase
-            << static_cast<int>(by);
-    }
-
-    const auto str {oss.str()};
-    std::string result {"0x"};
-
-    if (str.empty()) {
-        result += "0";
-    }
-    else {
-        result += str;
-    }
-
-    return result;
+    oss << m_value;
+    return oss.str();
 }
 
 const sockaddr_in& Network::Address::sin() const
@@ -246,11 +218,11 @@ Network::Address::family_type Network::Address::sun_family() const
 
 Network::Bytes Network::Address::sun_path() const
 {
-    const auto begin {cbegin() + m_sun_path_offset};
-    const auto end {cend() - m_sun_path_offset};
+    const auto first {data() + m_sun_path_offset};
+    const auto last {data() + size() - m_sun_path_offset};
 
-    if (begin <= end) {
-        return Bytes(begin, end);
+    if (first <= last) {
+        return Bytes(first, last);
     }
     else {
         return Bytes();
@@ -264,17 +236,6 @@ std::string Network::Address::sun_text() const
 }
 
 #endif
-
-const std::byte* Network::Address::cbegin(const sockaddr* t_sockaddr)
-{
-    return data(t_sockaddr);
-}
-
-const std::byte* Network::Address::cend(const sockaddr* t_sockaddr,
-                                        sock_len_type t_socklen)
-{
-    return data(t_sockaddr) + size(t_socklen);
-}
 
 const std::byte* Network::Address::data(const sockaddr* t_sockaddr)
 {

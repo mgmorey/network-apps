@@ -23,10 +23,9 @@
 
 namespace Network
 {
-    class Address :
-        public Bytes
+    class Address
     {
-        friend Result connect(Fd, const Address&, bool);
+        friend Result connect(Fd fd, const Address& address, bool verbose);
 
     public:
 #ifdef _WIN32
@@ -57,8 +56,6 @@ namespace Network
     protected:
         const sockaddr* addr() const;
         sock_len_type addrlen() const;
-        const std::byte* cbegin() const;
-        const std::byte* cend() const;
         const std::byte* data() const;
         std::size_t size() const;
 
@@ -87,9 +84,6 @@ namespace Network
 #endif
 
     private:
-        static const std::byte* cbegin(const sockaddr* addr);
-        static const std::byte* cend(const sockaddr* addr,
-                                     sock_len_type addrlen);
         static const std::byte* data(const sockaddr* addr);
         static std::size_t size(sock_len_type addrlen);
 
@@ -101,6 +95,8 @@ namespace Network
             offsetof(sockaddr_un, sun_path)
         };
 #endif
+
+        Bytes m_value;
     };
 
     extern std::ostream& operator<<(std::ostream& os,
