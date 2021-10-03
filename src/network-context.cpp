@@ -23,7 +23,7 @@ Network::Context::Context(bool t_verbose)
                 << format_error(error);
             m_result = {error, oss.str()};
         }
-        else if (m_verbose) {
+        else if (t_verbose) {
             std::cerr << "Microsoft Windows Sockets Data:"
                       << std::endl
                       << "    Description: "
