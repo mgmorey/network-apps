@@ -3,6 +3,7 @@
 #include "network-buffer.h"     // Buffer
 #include "network-error.h"      // format_error(), get_last_error(),
                                 // reset_last_error()
+#include "network-result.h"     // Result
 
 #ifdef _WIN32
 #include <winsock2.h>   // gethostname()
@@ -35,7 +36,8 @@ Network::HostnameResult Network::get_hostname()
     assert(error == 0 ?
            message == "" :
            message != "");
-    return HostnameResult(hostname, {error, message});
+    const Result result(error, message);
+    return HostnameResult(hostname, result);
 }
 
 Network::Hostname Network::get_hostname(const Network::Hostname& hostname)

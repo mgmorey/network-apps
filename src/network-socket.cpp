@@ -95,7 +95,8 @@ Network::SocketResult Network::Socket::socket(bool t_verbose) const
     assert(error == 0 ?
            message == "" :
            message != "");
-    return SocketResult(fd, {error, message});
+    const Result result(error, message);
+    return SocketResult(fd, result);
 }
 
 #ifndef _WIN32
