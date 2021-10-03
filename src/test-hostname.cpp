@@ -66,6 +66,14 @@ int main(int argc, char* argv[])
 {
     const auto args {TestHostname::parse_arguments(argc, argv)};
     const Network::Context context(TestHostname::verbose);
-    TestHostname::test_hostname();
+
+    if (context.result().result() != 0) {
+        std::cerr << context.result()
+                  << std::endl;
+    }
+    else {
+        TestHostname::test_hostname();
+    }
+
     static_cast<void>(context);
 }

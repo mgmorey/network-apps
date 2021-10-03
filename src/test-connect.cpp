@@ -147,9 +147,8 @@ namespace TestConnect
 
 int main(int argc, char* argv[])
 {
-    constexpr auto host_default {"example.com"};
-    constexpr auto service_default {"http"};
-
+    static constexpr auto host_default {"example.com"};
+    static constexpr auto service_default {"http"};
     static const Network::Hints hints(AF_UNSPEC,
                                       SOCK_STREAM,
                                       IPPROTO_TCP,
@@ -157,9 +156,17 @@ int main(int argc, char* argv[])
 
     const auto args {TestConnect::parse_arguments(argc, argv)};
     const Network::Context context(TestConnect::verbose);
-    const auto host {args.size() > 1 ? args[1] : host_default};
-    const auto service {args.size() > 2 ? args[2] : service_default};
-    const auto endpoint {Network::Endpoint(host, service)};
-    TestConnect::test_connect(endpoint, hints);
+
+    if (context.result().result() != 0) {
+        std::cerr << context.result()
+                  << std::endl;
+    }
+    else {
+        const auto host {args.size() > 1 ? args[1] : host_default};
+        const auto service {args.size() > 2 ? args[2] : service_default};
+        const auto endpoint {Network::Endpoint(host, service)};
+        TestConnect::test_connect(endpoint, hints);
+    }
+
     static_cast<void>(context);
 }

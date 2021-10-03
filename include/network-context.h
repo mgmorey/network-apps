@@ -16,7 +16,7 @@ namespace Network
     public:
         Context(bool t_verbose = false);
         ~Context();
-        Result result();
+        Result result() const;
 
     private:
 #ifdef _WIN32

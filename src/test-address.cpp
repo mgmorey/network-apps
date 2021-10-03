@@ -230,12 +230,20 @@ int main(int argc, char* argv[])
 {
     const auto args {TestAddress::parse_arguments(argc, argv)};
     const Network::Context context(TestAddress::verbose);
-    const auto host(args.size() > 1 ? args[1] : "example.com");
 
-    if (args.size() <= 1) {
-        TestAddress::test_host("");
+    if (context.result().result() != 0) {
+        std::cerr << context.result()
+                  << std::endl;
+    }
+    else {
+        const auto host(args.size() > 1 ? args[1] : "example.com");
+
+        if (args.size() <= 1) {
+            TestAddress::test_host("");
+        }
+
+        TestAddress::test_host(host);
     }
 
-    TestAddress::test_host(host);
     static_cast<void>(context);
 }
