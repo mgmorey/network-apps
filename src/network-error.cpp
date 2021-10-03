@@ -11,7 +11,7 @@
 #include <cstring>      // std::strerror()
 #endif
 
-std::string Network::format_error(error_type code)
+std::string Network::format_error(error_type error)
 {
 #ifdef _WIN32
     LPVOID buffer {nullptr};
@@ -23,18 +23,18 @@ std::string Network::format_error(error_type code)
     const DWORD lang {MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT)};
     const LPTSTR pbuffer {reinterpret_cast<LPTSTR>(&buffer)};
 
-    if(::FormatMessage(flags, nullptr, code, lang, pbuffer, 0, nullptr)) {
-        std::string error {static_cast<LPTSTR>(buffer)};
-        const auto pos {error.find('\n')};
-        error = error.substr(0, pos);
+    if(::FormatMessage(flags, nullptr, error, lang, pbuffer, 0, nullptr)) {
+        std::string message {static_cast<LPTSTR>(buffer)};
+        const auto pos {message.find('\n')};
+        message = message.substr(0, pos);
         ::LocalFree(buffer);
-        return error;
+        return message;
     }
     else {
         return "";
     }
 #else
-    return std::strerror(code);
+    return std::strerror(error);
 #endif
 }
 
@@ -49,9 +49,9 @@ Network::error_type Network::get_last_error()
 
 Network::error_type Network::reset_last_error()
 {
-    error_type code {0};
+    error_type error {0};
 #ifndef _WIN32
-    errno = code;
+    errno = error;
 #endif
-    return code;
+    return error;
 }
