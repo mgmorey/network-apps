@@ -13,15 +13,15 @@ Network::Context::Context()
     if (!m_count++) {
 #ifdef _WIN32
         const WORD version {MAKEWORD(2, 2)};
-        const auto code {::WSAStartup(version, &m_data)};
+        const auto error {::WSAStartup(version, &m_data)};
 
-        if (code != 0) {
+        if (error != 0) {
             std::ostringstream oss;
             oss << "Call to WSAStartup() returned "
-                << code
+                << error
                 << ": "
-                << format_error(code);
-            m_result = Result(code, oss.str());
+                << format_error(error);
+            m_result = {error, oss.str()};
         }
 #endif
     }
