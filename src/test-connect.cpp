@@ -155,8 +155,8 @@ int main(int argc, char* argv[])
                                       IPPROTO_TCP,
                                       AI_CANONNAME);
 
-    const Network::Context context;
     const auto args {TestConnect::parse_arguments(argc, argv)};
+    const Network::Context context(TestConnect::verbose);
     const auto host {args.size() > 1 ? args[1] : host_default};
     const auto service {args.size() > 2 ? args[2] : service_default};
     const auto endpoint {Network::Endpoint(host, service)};

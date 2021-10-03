@@ -2,18 +2,17 @@
 #include "network-error.h"      // format_error()
 
 #ifdef _WIN32
-#include <winsock2.h>   // MAKEWORD(), WORD, WSACleanup(),
-                        // WSAStartup()
+#include <winsock2.h>   // WSACleanup(), WSAStartup()
 #endif
 
+#include <iostream>     // std::cerr, std::endl
 #include <sstream>      // std::ostringstream
 
-Network::Context::Context()
+Network::Context::Context(bool t_verbose)
 {
     if (!m_count++) {
 #ifdef _WIN32
-        const WORD version {MAKEWORD(2, 2)};
-        const auto error {::WSAStartup(version, &m_data)};
+        const auto error {::WSAStartup(m_version, &m_data)};
 
         if (error != 0) {
             std::ostringstream oss;
@@ -22,6 +21,16 @@ Network::Context::Context()
                 << ": "
                 << format_error(error);
             m_result = {error, oss.str()};
+        }
+        else if (t_verbose) {
+            std::cerr << "Microsoft Windows Sockets Data:"
+                      << std::endl
+                      << "\tDescription: "
+                      << m_data.szDescription
+                      << std::endl
+                      << "\tSystem Status: "
+                      << m_data.szSystemStatus
+                      << std::endl;
         }
 #endif
     }
@@ -42,3 +51,4 @@ Network::Result Network::Context::result()
 }
 
 std::size_t Network::Context::m_count;
+WSADATA Network::Context::m_data;

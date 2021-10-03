@@ -228,8 +228,8 @@ namespace TestAddress
 
 int main(int argc, char* argv[])
 {
-    const Network::Context context;
     const auto args {TestAddress::parse_arguments(argc, argv)};
+    const Network::Context context(TestAddress::verbose);
     const auto host(args.size() > 1 ? args[1] : "example.com");
 
     if (args.size() <= 1) {
