@@ -111,7 +111,7 @@ Network::SocketpairResult Network::Socket::socketpair(bool t_verbose) const
 
     std::string message;
     auto error {reset_last_error()};
-    auto fds[] {fd_null, fd_null};
+    fd_type fds[] {fd_null, fd_null};
     const auto value {::socketpair(static_cast<int>(m_family),
                                    static_cast<int>(m_socktype),
                                    static_cast<int>(m_protocol),
@@ -137,7 +137,7 @@ Network::SocketpairResult Network::Socket::socketpair(bool t_verbose) const
     assert(error == 0 ?
            message == "" :
            message != "");
-    return {{fds[0], fds[1]}, {error, message}};
+    return SocketpairResult(FdPair(fds[0], fds[1]), {error, message});
 }
 
 #endif
