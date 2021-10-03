@@ -3,6 +3,7 @@
 
 #ifdef _WIN32
 #include <winsock2.h>   // WSACleanup(), WSAStartup()
+#include <windows.h>    // HIBYTE(), LOBYTE()
 #endif
 
 #include <iostream>     // std::cerr, std::endl
@@ -10,8 +11,8 @@
 
 Network::Context::Context(bool t_verbose)
 {
-    if (!m_count++) {
 #ifdef _WIN32
+    if (!m_count++) {
         const auto error {::WSAStartup(m_version, &m_data)};
 
         if (error != 0) {
@@ -25,24 +26,29 @@ Network::Context::Context(bool t_verbose)
         else if (t_verbose) {
             std::cerr << "Microsoft Windows Sockets Data:"
                       << std::endl
-                      << "\tDescription: "
+                      << "    Description: "
                       << m_data.szDescription
                       << std::endl
-                      << "\tSystem Status: "
+                      << "    System Status: "
                       << m_data.szSystemStatus
+                      << std::endl
+                      << "    System Version: "
+                      << static_cast<int>(LOBYTE(m_data.wVersion))
+                      << '.'
+                      << static_cast<int>(HIBYTE(m_data.wVersion))
                       << std::endl;
         }
-#endif
     }
+#endif
 }
 
 Network::Context::~Context()
 {
-    if (!--m_count) {
 #ifdef _WIN32
+    if (!--m_count) {
         ::WSACleanup();
-#endif
     }
+#endif
 }
 
 Network::Result Network::Context::result()
@@ -50,5 +56,7 @@ Network::Result Network::Context::result()
     return m_result;
 }
 
+#ifdef _WIN32
 std::size_t Network::Context::m_count;
 WSADATA Network::Context::m_data;
+#endif

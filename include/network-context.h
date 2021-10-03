@@ -4,7 +4,7 @@
 #include "network-result.h"     // Result
 
 #ifdef _WIN32
-#include <winsock2.h>   // MAKEWORD(), WSADATA
+#include <winsock2.h>   // MAKEWORD(), WSADATA, WORD
 #endif
 
 #include <cstddef>      // std::size_t
@@ -19,9 +19,9 @@ namespace Network
         Result result();
 
     private:
+#ifdef _WIN32
         static constexpr WORD m_version {MAKEWORD(2, 2)};
         static std::size_t m_count;
-#ifdef _WIN32
         static WSADATA m_data;
 #endif
 
