@@ -40,8 +40,7 @@ std::ostream& Network::operator<<(std::ostream& os,
        << Address(ai.ai_addr, ai.ai_addrlen)
        << Format(tab, "ai_canonname")
        << Nullable(ai.ai_canonname)
-       << Format(tab, "ai_next")
-       << ai.ai_next
-       << ')';
+       << Format(tab)
+       << "...)";
     return os;
 }

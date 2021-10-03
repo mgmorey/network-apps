@@ -95,9 +95,7 @@ Network::AddrInfo::List::List(const Hostname& t_node,
             << Nullable(node)
             << ", "
             << Nullable(serv)
-            << ", "
-            << t_hints
-            << ") returned "
+            << ", ...) returned "
             << error
             << ": "
             << ::gai_strerror(error);
