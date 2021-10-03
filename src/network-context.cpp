@@ -59,6 +59,6 @@ Network::Result Network::Context::result() const
 }
 
 #ifdef _WIN32
-std::size_t Network::Context::m_count;
+unsigned Network::Context::m_count;
 WSADATA Network::Context::m_data;
 #endif
