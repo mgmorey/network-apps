@@ -17,6 +17,7 @@ namespace Network
         Context(bool t_verbose = false);
         ~Context();
         Result result() const;
+        bool verbose() const;
 
     private:
 #ifdef _WIN32
@@ -26,7 +27,6 @@ namespace Network
 #endif
 
         Result m_result;
-        bool m_verbose {false};
     };
 }
 

@@ -9,8 +9,7 @@
 #include <iostream>     // std::cerr, std::endl
 #include <sstream>      // std::ostringstream
 
-Network::Context::Context(bool t_verbose) :
-    m_verbose(t_verbose)
+Network::Context::Context(bool t_verbose)
 {
 #ifdef _WIN32
     if (!m_count++) {
@@ -40,6 +39,8 @@ Network::Context::Context(bool t_verbose) :
                       << std::endl;
         }
     }
+#else
+    static_cast<void>(t_verbose);
 #endif
 }
 
