@@ -63,25 +63,25 @@ namespace Network
         const std::byte* data() const;
         std::size_t size() const;
 
-        operator const sockaddr&() const;
+        const sockaddr& sa() const;
         Bytes sa_data() const;
         family_type sa_family() const;
         std::string sa_text() const;
 
-        operator const sockaddr_in&() const;
+        const sockaddr_in& sin() const;
         in_addr sin_addr() const;
         family_type sin_family() const;
         port_type sin_port() const;
         std::string sin_text() const;
 
-        operator const sockaddr_in6&() const;
+        const sockaddr_in6& sin6() const;
         in6_addr sin6_addr() const;
         family_type sin6_family() const;
         port_type sin6_port() const;
         std::string sin6_text() const;
 
 #ifndef _WIN32
-        operator const sockaddr_un&() const;
+        const sockaddr_un& sun() const;
         family_type sun_family() const;
         Bytes sun_path() const;
         std::string sun_text() const;

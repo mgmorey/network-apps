@@ -133,7 +133,7 @@ std::size_t Network::Address::size() const
     return m_value.size();
 }
 
-Network::Address::operator const sockaddr&() const
+const sockaddr& Network::Address::sa() const
 {
     return *reinterpret_cast<const sockaddr*>(data());
 }
@@ -153,8 +153,7 @@ Network::Bytes Network::Address::sa_data() const
 
 Network::Address::family_type Network::Address::sa_family() const
 {
-    const auto& sa {static_cast<const sockaddr&>(*this)};
-    return sa.sa_family;
+    return sa().sa_family;
 }
 
 std::string Network::Address::sa_text() const
@@ -182,27 +181,24 @@ std::string Network::Address::sa_text() const
     return result;
 }
 
-Network::Address::operator const sockaddr_in&() const
+const sockaddr_in& Network::Address::sin() const
 {
     return *reinterpret_cast<const sockaddr_in*>(data());
 }
 
 in_addr Network::Address::sin_addr() const
 {
-    const auto& sin {static_cast<const sockaddr_in&>(*this)};
-    return sin.sin_addr;
+    return sin().sin_addr;
 }
 
 Network::Address::family_type Network::Address::sin_family() const
 {
-    const auto& sin {static_cast<const sockaddr_in&>(*this)};
-    return sin.sin_family;
+    return sin().sin_family;
 }
 
 Network::Address::port_type Network::Address::sin_port() const
 {
-    const auto& sin {static_cast<const sockaddr_in&>(*this)};
-    return sin.sin_port;
+    return sin().sin_port;
 }
 
 std::string Network::Address::sin_text() const
@@ -213,27 +209,24 @@ std::string Network::Address::sin_text() const
     return std::string(buffer);
 }
 
-Network::Address::operator const sockaddr_in6&() const
+const sockaddr_in6& Network::Address::sin6() const
 {
     return *reinterpret_cast<const sockaddr_in6*>(data());
 }
 
 in6_addr Network::Address::sin6_addr() const
 {
-    const auto& sin6 {static_cast<const sockaddr_in6&>(*this)};
-    return sin6.sin6_addr;
+    return sin6().sin6_addr;
 }
 
 Network::Address::family_type Network::Address::sin6_family() const
 {
-    const auto& sin6 {static_cast<const sockaddr_in6&>(*this)};
-    return sin6.sin6_family;
+    return sin6().sin6_family;
 }
 
 Network::Address::port_type Network::Address::sin6_port() const
 {
-    const auto& sin6 {static_cast<const sockaddr_in6&>(*this)};
-    return sin6.sin6_port;
+    return sin6().sin6_port;
 }
 
 std::string Network::Address::sin6_text() const
@@ -246,15 +239,14 @@ std::string Network::Address::sin6_text() const
 
 #ifndef _WIN32
 
-Network::Address::operator const sockaddr_un&() const
+const sockaddr_un& Network::Address::sun() const
 {
     return *reinterpret_cast<const sockaddr_un*>(data());
 }
 
 Network::Address::family_type Network::Address::sun_family() const
 {
-    const auto& sun {static_cast<const sockaddr_un&>(*this)};
-    return sun.sun_family;
+    return sun().sun_family;
 }
 
 Network::Bytes Network::Address::sun_path() const
