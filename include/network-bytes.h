@@ -17,7 +17,8 @@ namespace Network
     public:
         Bytes();
         Bytes(const std::byte* first, const std::byte* last);
-        std::byte* data();
+        const std::byte* cbegin(std::size_t t_offset = 0) const;
+        const std::byte* cend(std::size_t t_offset = 0) const;
         const std::byte* data() const;
         bool empty() const;
         std::size_t size() const;

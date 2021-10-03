@@ -125,8 +125,8 @@ const sockaddr& Network::Address::sa() const
 
 Network::Bytes Network::Address::sa_data() const
 {
-    const auto first {data() + m_sa_data_offset};
-    const auto last {data() + size() - m_sa_data_offset};
+    const auto first {m_value.cbegin(m_sa_data_offset)};
+    const auto last {m_value.cend(m_sa_data_offset)};
 
     if (first <= last) {
         return Network::Bytes(first, last);
@@ -218,8 +218,8 @@ Network::Address::family_type Network::Address::sun_family() const
 
 Network::Bytes Network::Address::sun_path() const
 {
-    const auto first {data() + m_sun_path_offset};
-    const auto last {data() + size() - m_sun_path_offset};
+    const auto first {m_value.cbegin(m_sun_path_offset)};
+    const auto last {m_value.cend(m_sun_path_offset)};
 
     if (first <= last) {
         return Bytes(first, last);

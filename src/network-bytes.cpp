@@ -11,9 +11,14 @@ Network::Bytes::Bytes(const std::byte* first, const std::byte* last) :
 {
 }
 
-std::byte* Network::Bytes::data()
+const std::byte* Network::Bytes::cbegin(std::size_t t_offset) const
 {
-    return m_bytes.data();
+    return data() + t_offset;
+}
+
+const std::byte* Network::Bytes::cend(std::size_t t_offset) const
+{
+    return data() + size() - t_offset;
 }
 
 const std::byte* Network::Bytes::data() const
