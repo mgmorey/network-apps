@@ -26,6 +26,7 @@ namespace Network
 #endif
 
         Result m_result;
+        bool m_verbose {false};
     };
 }
 

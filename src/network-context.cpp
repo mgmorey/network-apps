@@ -9,7 +9,8 @@
 #include <iostream>     // std::cerr, std::endl
 #include <sstream>      // std::ostringstream
 
-Network::Context::Context(bool t_verbose)
+Network::Context::Context(bool t_verbose) :
+    m_verbose(t_verbose)
 {
 #ifdef _WIN32
     if (!m_count++) {
@@ -23,7 +24,7 @@ Network::Context::Context(bool t_verbose)
                 << format_error(error);
             m_result = {error, oss.str()};
         }
-        else if (t_verbose) {
+        else if (m_verbose) {
             std::cerr << "Microsoft Windows Sockets Data:"
                       << std::endl
                       << "    Description: "
