@@ -12,17 +12,17 @@ namespace Network
     {
         friend std::ostream& operator<<(std::ostream& os,
                                         const Bytes& bytes);
+        friend std::string to_string(const Bytes& bytes);
 
     public:
         Bytes();
-        Bytes(const std::byte* begin, const std::byte* end);
-        std::byte& operator[](std::size_t t_index);
-        const std::byte& operator[](std::size_t t_index) const;
+        Bytes(const std::byte* first, const std::byte* last);
+        std::byte* data();
         const std::byte* data() const;
         bool empty() const;
         std::size_t size() const;
 
-    protected:
+    private:
         std::vector<std::byte> m_bytes;
     };
 

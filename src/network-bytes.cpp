@@ -6,19 +6,14 @@ Network::Bytes::Bytes()
 {
 }
 
-Network::Bytes::Bytes(const std::byte* begin, const std::byte* end) :
-    m_bytes(begin, end)
+Network::Bytes::Bytes(const std::byte* first, const std::byte* last) :
+    m_bytes(first, last)
 {
 }
 
-std::byte& Network::Bytes::operator[](std::size_t t_index)
+std::byte* Network::Bytes::data()
 {
-    return m_bytes[t_index];
-}
-
-const std::byte& Network::Bytes::operator[](std::size_t t_index) const
-{
-    return m_bytes[t_index];
+    return m_bytes.data();
 }
 
 const std::byte* Network::Bytes::data() const
@@ -38,10 +33,10 @@ std::size_t Network::Bytes::size() const
 
 std::string Network::to_string(const Bytes& bytes)
 {
-    std::string text(bytes.size(), '\0');
+    std::string text(bytes.m_bytes.size(), '\0');
 
     for (std::string::size_type i = 0; i < bytes.size(); ++i) {
-        text[i] = static_cast<std::string::value_type>(bytes[i]);
+        text[i] = static_cast<char>(bytes.m_bytes[i]);
     }
 
     return text;

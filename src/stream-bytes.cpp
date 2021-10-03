@@ -9,7 +9,7 @@ std::ostream& Network::operator<<(std::ostream& os,
 {
     os << "0x";
 
-    if (bytes.empty()) {
+    if (bytes.m_bytes.empty()) {
         os << '0';
     }
     else {
