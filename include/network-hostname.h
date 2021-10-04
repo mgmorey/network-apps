@@ -10,6 +10,7 @@
 namespace Network
 {
     typedef std::pair<Hostname, Result> HostnameResult;
+
     extern HostnameResult get_hostname();
     extern Hostname get_hostname(const Hostname& hostname);
     extern Hostname get_hostname(const Endpoint& endpoint);
