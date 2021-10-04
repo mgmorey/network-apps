@@ -27,6 +27,9 @@ namespace Network
     protected:
         Address m_address;
         Nullable m_canonname;
+
+    public:
+        static SockAddr get_sockaddr(const addrinfo& ai);
     };
 }
 
