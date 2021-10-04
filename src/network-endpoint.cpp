@@ -1,8 +1,9 @@
-#include "network-address.h"    // Address, Endpoint, EndpointResult,
-                                // Result, operator<<(), to_endpoint()
+#include "network-endpoint.h"   // Endpoint, EndpointResult, Result,
+                                // to_endpoint()
+#include "network-address.h"    // Address, operator<<()
 #include "network-buffer.h"     // Buffer
-#include "network-sockaddr.h"   // SockAddr, get_sockaddr_length(),
-                                // get_sockaddr_pointer()
+#include "network-sockaddr.h"   // get_length(), get_pointer()
+#include "network-types.h"      // SockAddr
 
 #ifdef _WIN32
 #include <ws2tcpip.h>   // NI_MAXHOST, NI_MAXSERV, NI_NUMERICHOST,
@@ -18,11 +19,11 @@
 #include <string>       // std::string
 
 Network::EndpointResult
-Network::Address::to_endpoint(int t_flags, bool t_verbose) const
+Network::to_endpoint(const Address& address, int flags, bool verbose)
 {
-    assert(!empty());
+    assert(!address.empty());
     std::string message;
-    SockAddr addr {*this};
+    SockAddr addr {address};
     Buffer host {NI_MAXHOST};
     Buffer serv {NI_MAXSERV};
     auto addr_len {get_length(addr)};
@@ -30,11 +31,11 @@ Network::Address::to_endpoint(int t_flags, bool t_verbose) const
     const auto error {::getnameinfo(addr_ptr, addr_len,
                                     &host[0], host.size(),
                                     &serv[0], serv.size(),
-                                    t_flags)};
+                                    flags)};
 
-    if (t_verbose) {
+    if (verbose) {
         std::cerr << "Calling getnameinfo("
-                  << *this
+                  << address
                   << ", ...)"
                   << std::endl;
     }
@@ -42,7 +43,7 @@ Network::Address::to_endpoint(int t_flags, bool t_verbose) const
     if (error != 0) {
         std::ostringstream oss;
         oss << "Call to getnameinfo("
-            << *this
+            << address
             << ", ...) returned "
             << error
             << " ("
@@ -54,12 +55,13 @@ Network::Address::to_endpoint(int t_flags, bool t_verbose) const
     assert(error == 0 ?
            message == "" :
            message != "");
-    return EndpointResult(Endpoint(host, serv), {error, message});
+    const Endpoint endpoint(Endpoint(host, serv));
+    return EndpointResult(endpoint, {error, message});
 }
 
 Network::EndpointResult
-Network::Address::to_endpoint(bool t_numeric, bool t_verbose) const
+Network::to_endpoint(const Address& address, bool numeric, bool verbose)
 {
-    const int flags {t_numeric ? NI_NUMERICHOST | NI_NUMERICSERV : 0};
-    return to_endpoint(flags, t_verbose);
+    const int flags {numeric ? NI_NUMERICHOST | NI_NUMERICSERV : 0};
+    return to_endpoint(address, flags, verbose);
 }

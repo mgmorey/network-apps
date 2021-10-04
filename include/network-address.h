@@ -1,7 +1,6 @@
 #ifndef NETWORK_ADDRESS_H
 #define NETWORK_ADDRESS_H
 
-#include "network-endpoint.h"   // EndpointResult
 #include "network-fd.h"         // Fd
 #include "network-result.h"     // Result
 #include "network-types.h"      // SockAddr
@@ -45,10 +44,6 @@ namespace Network
         family_type family() const;
         port_type port() const;
         std::string text() const;
-        EndpointResult to_endpoint(int t_flags,
-                                   bool t_verbose = false) const;
-        EndpointResult to_endpoint(bool t_numeric = false,
-                                   bool t_verbose = false) const;
 
     protected:
         const sockaddr& sa() const;

@@ -71,7 +71,7 @@ namespace TestAddress
         void operator()(const Network::Host& t_host)
         {
             const auto address {t_host.address()};
-            const auto endpoint_result {address.to_endpoint(false, verbose)};
+            const auto endpoint_result {to_endpoint(address, false, verbose)};
             const auto endpoint {endpoint_result.first};
             const auto result {endpoint_result.second};
 
