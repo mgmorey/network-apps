@@ -24,11 +24,6 @@ Network::Address::Address()
 {
 }
 
-Network::Address::Address(const sockaddr* t_sockaddr, sock_len_type t_socklen) :
-    m_value(data(t_sockaddr), data(t_sockaddr) + size(t_socklen))
-{
-}
-
 Network::Address::Address(const value_type& t_value) :
     m_value(t_value)
 {
@@ -64,16 +59,6 @@ bool Network::Address::operator==(const Address& t_address) const
 Network::Address::operator value_type() const
 {
     return m_value;
-}
-
-const sockaddr* Network::Address::addr() const
-{
-    return reinterpret_cast<const sockaddr*>(m_value.data());
-}
-
-Network::Address::sock_len_type Network::Address::addrlen() const
-{
-    return static_cast<sock_len_type>(m_value.size());
 }
 
 bool Network::Address::empty() const
@@ -225,13 +210,3 @@ std::string Network::Address::sun_text() const
 }
 
 #endif
-
-const std::byte* Network::Address::data(const sockaddr* t_sockaddr)
-{
-    return reinterpret_cast<const std::byte*>(t_sockaddr);
-}
-
-std::size_t Network::Address::size(sock_len_type t_socklen)
-{
-    return t_socklen;
-}

@@ -1,6 +1,8 @@
 #include "network-address.h"    // Address, Endpoint, EndpointResult,
                                 // Result, operator<<(), to_endpoint()
 #include "network-buffer.h"     // Buffer
+#include "network-sockaddr.h"   // SockAddr, get_sockaddr_length(),
+                                // get_sockaddr_pointer()
 
 #ifdef _WIN32
 #include <ws2tcpip.h>   // NI_MAXHOST, NI_MAXSERV, NI_NUMERICHOST,
@@ -20,9 +22,12 @@ Network::Address::to_endpoint(int t_flags, bool t_verbose) const
 {
     assert(!empty());
     std::string message;
+    SockAddr addr {*this};
     Buffer host {NI_MAXHOST};
     Buffer serv {NI_MAXSERV};
-    const auto error {::getnameinfo(addr(), addrlen(),
+    auto addr_len {get_length(addr)};
+    auto addr_ptr {get_pointer(addr)};
+    const auto error {::getnameinfo(addr_ptr, addr_len,
                                     &host[0], host.size(),
                                     &serv[0], serv.size(),
                                     t_flags)};

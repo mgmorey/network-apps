@@ -2,7 +2,7 @@
 #define NETWORK_ENDPOINT_H
 
 #include "network-result.h"     // Result
-#include "network-types.h"      // Hostname, Service
+#include "network-types.h"      // Hostname, Service, SockAddr
 
 #include <utility>      // std::pair
 

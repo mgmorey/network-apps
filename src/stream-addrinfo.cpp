@@ -5,6 +5,7 @@
 #include "network-format.h"     // Format, operator<<()
 #include "network-nullable.h"   // Nullable, operator<<()
 #include "network-protocol.h"   // Protocol, operator<<()
+#include "network-sockaddr.h"   // get_sockaddr()
 #include "network-socktype.h"   // SockType, operator<<()
 
 #ifdef _WIN32
@@ -37,7 +38,7 @@ std::ostream& Network::operator<<(std::ostream& os,
        << Format(tab, "ai_addrlen")
        << ai.ai_addrlen
        << Format(tab, "ai_addr")
-       << Address(ai.ai_addr, ai.ai_addrlen)
+       << Address(get_sockaddr(ai.ai_addr, ai.ai_addrlen))
        << Format(tab, "ai_canonname")
        << Nullable(ai.ai_canonname)
        << Format(tab)

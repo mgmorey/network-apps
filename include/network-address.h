@@ -28,25 +28,19 @@ namespace Network
 #ifdef _WIN32
         typedef unsigned short family_type;
         typedef unsigned short port_type;
-        typedef int sock_len_type;
 #else
         typedef sa_family_t family_type;
         typedef in_port_t port_type;
-        typedef socklen_t sock_len_type;
 #endif
         typedef SockAddr value_type;
 
         Address();
-        Address(const sockaddr* t_sockaddr,
-                sock_len_type t_socklen);
         Address(const value_type& t_value);
         Address& operator=(const value_type& t_value);
         bool operator<(const Address& t_address) const;
         bool operator>(const Address& t_address) const;
         bool operator==(const Address& t_address) const;
         operator value_type() const;
-        const sockaddr* addr() const;
-        sock_len_type addrlen() const;
         bool empty() const;
         family_type family() const;
         port_type port() const;
@@ -82,9 +76,6 @@ namespace Network
 #endif
 
     private:
-        static const std::byte* data(const sockaddr* addr);
-        static std::size_t size(sock_len_type addrlen);
-
         static constexpr auto m_sa_data_offset {
             offsetof(sockaddr, sa_data)
         };

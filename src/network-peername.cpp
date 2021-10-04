@@ -2,12 +2,12 @@
                                 // Result, get_peername()
 #include "network-error.h"      // format_error(), get_last_error(),
                                 // reset_last_error()
+#include "network-sockaddr.h"   // SockAddr, get_sockaddr()
 
 #ifdef _WIN32
-#include <winsock2.h>   // getpeername(), struct sockaddr_storage
+#include <winsock2.h>   // getpeername()
 #else
-#include <sys/socket.h> // getpeername(), struct sockaddr_storage,
-                        // struct sockaddr_un
+#include <sys/socket.h> // getpeername()
 #endif
 
 #include <algorithm>    // std::max()
@@ -16,30 +16,6 @@
 #include <iostream>     // std::cerr, std::endl
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
-
-Network::AddressBuffer::AddressBuffer() :
-    Buffer(capacity())
-{
-}
-
-sockaddr* Network::AddressBuffer::addr()
-{
-    return reinterpret_cast<sockaddr*>(&(*this)[0]);
-}
-
-Network::Address::sock_len_type Network::AddressBuffer::addrlen() const
-{
-    return static_cast<Network::Address::sock_len_type>(size());
-}
-
-std::size_t Network::AddressBuffer::capacity()
-{
-    auto size {sizeof(sockaddr_storage)};
-#ifndef _WIN32
-    size = std::max(size, sizeof(sockaddr_un));
-#endif
-    return size;
-}
 
 Network::AddressResult Network::get_peername(Fd fd, bool verbose)
 {
@@ -51,11 +27,11 @@ Network::AddressResult Network::get_peername(Fd fd, bool verbose)
     }
 
     std::string message;
-    AddressBuffer buffer;
-    auto address {buffer.addr()};
-    auto addrlen {buffer.addrlen()};
+    auto addr {get_sockaddr()};
+    auto addr_len {get_length(addr)};
+    auto addr_ptr {get_pointer(addr)};
     auto error {reset_last_error()};
-    const auto code {::getpeername(fd, address, &addrlen)};
+    const auto code {::getpeername(fd, addr_ptr, &addr_len)};
 
     if (code != 0) {
         error = get_last_error();
@@ -72,5 +48,5 @@ Network::AddressResult Network::get_peername(Fd fd, bool verbose)
     assert(error == 0 ?
            message == "" :
            message != "");
-    return {{address, addrlen}, {error, message}};
+    return AddressResult(addr, {error, message});
 }

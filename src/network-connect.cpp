@@ -5,6 +5,9 @@
 #include "network-error.h"      // format_error(), get_last_error(),
                                 // reset_last_error()
 #include "network-fd.h"         // Fd, fd_null, fd_type
+#include "network-host.h"       // get_sockaddr()
+#include "network-sockaddr.h"   // SockAddr, get_sockaddr_length(),
+                                // get_sockaddr_pointer()
 #include "network-socket.h"     // Socket
 
 #include <algorithm>    // std::transform()
@@ -70,8 +73,11 @@ Network::Result Network::connect(Fd fd, const Address& address, bool verbose)
     }
 
     std::string message;
+    SockAddr addr {address};
     auto error {reset_last_error()};
-    const auto code {::connect(fd, address.addr(), address.addrlen())};
+    auto addr_len {get_length(addr)};
+    auto addr_ptr {get_pointer(addr)};
+    const auto code {::connect(fd, addr_ptr, addr_len)};
 
     if (code == connect_error) {
         error = get_last_error();
