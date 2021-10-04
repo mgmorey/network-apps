@@ -1,6 +1,7 @@
 #include "network-address.h"    // Address, operator<<(), struct
                                 // sockaddr, sock_len_type
 #include "network-buffer.h"     // Buffer
+#include "network-string.h"     // to_string()
 
 #ifdef _WIN32
 #include <winsock2.h>   // AF_INET, AF_INET6, AF_UNIX, AF_UNSPEC,
@@ -125,15 +126,7 @@ const sockaddr& Network::Address::sa() const
 
 Network::Address::value_type Network::Address::sa_data() const
 {
-    const auto first {m_value.cbegin(m_sa_data_offset)};
-    const auto last {m_value.cend(m_sa_data_offset)};
-
-    if (first <= last) {
-        return value_type(first, last);
-    }
-    else {
-        return value_type();
-    }
+    return m_value.substr(m_sa_data_offset);
 }
 
 Network::Address::family_type Network::Address::sa_family() const
@@ -143,9 +136,7 @@ Network::Address::family_type Network::Address::sa_family() const
 
 std::string Network::Address::sa_text() const
 {
-    std::ostringstream oss;
-    oss << m_value;
-    return oss.str();
+    return to_string(m_value, true);
 }
 
 const sockaddr_in& Network::Address::sin() const
@@ -218,20 +209,12 @@ Network::Address::family_type Network::Address::sun_family() const
 
 Network::Address::value_type Network::Address::sun_path() const
 {
-    const auto first {m_value.cbegin(m_sun_path_offset)};
-    const auto last {m_value.cend(m_sun_path_offset)};
-
-    if (first <= last) {
-        return value_type(first, last);
-    }
-    else {
-        return value_type();
-    }
+    return m_value.substr(m_sa_data_offset);
 }
 
 std::string Network::Address::sun_text() const
 {
-    const auto text {to_string(sun_path())};
+    const auto text {to_string(sun_path(), false)};
     return text.substr(0, text.find('\0'));
 }
 

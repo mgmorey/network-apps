@@ -1,7 +1,6 @@
 #ifndef NETWORK_ADDRESS_H
 #define NETWORK_ADDRESS_H
 
-#include "network-bytestr.h"    // ByteString
 #include "network-endpoint.h"   // EndpointResult
 #include "network-fd.h"         // Fd
 #include "network-result.h"     // Result
@@ -16,7 +15,7 @@
 #include <sys/un.h>     // struct sockaddr_un
 #endif
 
-#include <cstddef>      // std::byte
+#include <cstddef>      // std::byte, std::size_t
 #include <ostream>      // std::ostream
 #include <string>       // std::string
 
@@ -36,7 +35,7 @@ namespace Network
         typedef in_port_t port_type;
         typedef socklen_t sock_len_type;
 #endif
-        typedef ByteString value_type;
+        typedef std::basic_string<std::byte> value_type;
 
         Address();
         Address(const sockaddr* t_sockaddr,
