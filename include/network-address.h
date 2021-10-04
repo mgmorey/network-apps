@@ -36,6 +36,7 @@ namespace Network
         typedef in_port_t port_type;
         typedef socklen_t sock_len_type;
 #endif
+        typedef ByteString value_type;
 
         Address();
         Address(const sockaddr* t_sockaddr,
@@ -59,7 +60,7 @@ namespace Network
         std::size_t size() const;
 
         const sockaddr& sa() const;
-        ByteString sa_data() const;
+        value_type sa_data() const;
         family_type sa_family() const;
         std::string sa_text() const;
 
@@ -78,7 +79,7 @@ namespace Network
 #ifndef _WIN32
         const sockaddr_un& sun() const;
         family_type sun_family() const;
-        ByteString sun_path() const;
+        value_type sun_path() const;
         std::string sun_text() const;
 #endif
 
@@ -95,7 +96,7 @@ namespace Network
         };
 #endif
 
-        ByteString m_value;
+        value_type m_value;
     };
 
     extern std::ostream& operator<<(std::ostream& os,
