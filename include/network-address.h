@@ -55,8 +55,6 @@ namespace Network
     protected:
         const sockaddr* addr() const;
         sock_len_type addrlen() const;
-        const std::byte* data() const;
-        std::size_t size() const;
 
         const sockaddr& sa() const;
         value_type sa_data() const;
