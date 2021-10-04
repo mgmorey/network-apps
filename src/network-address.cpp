@@ -25,8 +25,19 @@ Network::Address::Address()
 }
 
 Network::Address::Address(const sockaddr* t_sockaddr, sock_len_type t_socklen) :
-    m_value(data(t_sockaddr), data(t_sockaddr) + t_socklen)
+    m_value(data(t_sockaddr), data(t_sockaddr) + size(t_socklen))
 {
+}
+
+Network::Address::Address(const value_type& t_value) :
+    m_value(t_value)
+{
+}
+
+Network::Address& Network::Address::operator=(const value_type& t_value)
+{
+    m_value = t_value;
+    return *this;
 }
 
 bool Network::Address::operator<(const Address& t_address) const
@@ -48,6 +59,11 @@ bool Network::Address::operator==(const Address& t_address) const
     return (family() == t_address.family() &&
             port() == t_address.port() &&
             text() == t_address.text());
+}
+
+Network::Address::operator value_type() const
+{
+    return m_value;
 }
 
 bool Network::Address::empty() const

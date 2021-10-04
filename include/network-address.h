@@ -39,9 +39,12 @@ namespace Network
         Address();
         Address(const sockaddr* t_sockaddr,
                 sock_len_type t_socklen);
+        Address(const value_type& t_value);
+        Address& operator=(const value_type& t_value);
         bool operator<(const Address& t_address) const;
         bool operator>(const Address& t_address) const;
         bool operator==(const Address& t_address) const;
+        operator value_type() const;
         const sockaddr* addr() const;
         sock_len_type addrlen() const;
         bool empty() const;
