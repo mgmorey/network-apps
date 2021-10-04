@@ -4,6 +4,7 @@
 #include "network-hints.h"      // Hints
 #include "network-peername.h"   // AddressResult, get_peername()
 #include "network-result.h"     // Result
+#include "network-sockaddr.h"   // get_sockaddr()
 #include "network-socket.h"     // Socket, FdPair,
                                 // SocketpairResult
 
@@ -107,10 +108,10 @@ namespace TestSocket
             AF_UNIX,
             "/tmp/socket0"
         };
-        sockaddr* sa = reinterpret_cast<sockaddr*>(&sun);
-        Network::Address addr(sa, sizeof sun);
+        auto addr_ptr {reinterpret_cast<sockaddr*>(&sun)};
+        Network::Address address {Network::get_sockaddr(addr_ptr, sizeof sun)};
         std::cout << "Unix address: "
-                  << addr
+                  << address
                   << std::endl;
     }
 }
