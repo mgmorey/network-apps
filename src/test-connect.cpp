@@ -30,6 +30,9 @@
 
 namespace TestConnect
 {
+    static constexpr auto HOST {"example.com"};
+    static constexpr auto SERVICE {"http"};
+
     static bool verbose {false};
 
     class Test
@@ -147,8 +150,6 @@ namespace TestConnect
 
 int main(int argc, char* argv[])
 {
-    static constexpr auto host_default {"example.com"};
-    static constexpr auto service_default {"http"};
     static const Network::Hints hints(AF_UNSPEC,
                                       SOCK_STREAM,
                                       IPPROTO_TCP,
@@ -162,8 +163,8 @@ int main(int argc, char* argv[])
                   << std::endl;
     }
     else {
-        const auto host {args.size() > 1 ? args[1] : host_default};
-        const auto service {args.size() > 2 ? args[2] : service_default};
+        const auto host {args.size() > 1 ? args[1] : TestConnect::HOST};
+        const auto service {args.size() > 2 ? args[2] : TestConnect::SERVICE};
         const auto endpoint {Network::Endpoint(host, service)};
         TestConnect::test_connect(endpoint, hints);
     }

@@ -37,6 +37,8 @@ namespace TestAddress
     typedef std::vector<Network::Host> Hosts;
     typedef std::pair<Hosts, Network::Result> HostsResult;
 
+    static constexpr auto HOST {"example.com"};
+
     static bool verbose {false};
 
     template<typename T, typename U>
@@ -236,7 +238,7 @@ int main(int argc, char* argv[])
                   << std::endl;
     }
     else {
-        const auto host(args.size() > 1 ? args[1] : "example.com");
+        const auto host(args.size() > 1 ? args[1] : TestAddress::HOST);
 
         if (args.size() <= 1) {
             TestAddress::test_host("");
