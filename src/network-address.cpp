@@ -123,16 +123,16 @@ const sockaddr& Network::Address::sa() const
     return *reinterpret_cast<const sockaddr*>(data());
 }
 
-Network::Bytes Network::Address::sa_data() const
+Network::ByteString Network::Address::sa_data() const
 {
     const auto first {m_value.cbegin(m_sa_data_offset)};
     const auto last {m_value.cend(m_sa_data_offset)};
 
     if (first <= last) {
-        return Network::Bytes(first, last);
+        return Network::ByteString(first, last);
     }
     else {
-        return Network::Bytes();
+        return Network::ByteString();
     }
 }
 
@@ -216,16 +216,16 @@ Network::Address::family_type Network::Address::sun_family() const
     return sun().sun_family;
 }
 
-Network::Bytes Network::Address::sun_path() const
+Network::ByteString Network::Address::sun_path() const
 {
     const auto first {m_value.cbegin(m_sun_path_offset)};
     const auto last {m_value.cend(m_sun_path_offset)};
 
     if (first <= last) {
-        return Bytes(first, last);
+        return ByteString(first, last);
     }
     else {
-        return Bytes();
+        return ByteString();
     }
 }
 

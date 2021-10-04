@@ -1,7 +1,7 @@
 #ifndef NETWORK_ADDRESS_H
 #define NETWORK_ADDRESS_H
 
-#include "network-bytes.h"      // Bytes
+#include "network-bytestr.h"    // ByteString
 #include "network-endpoint.h"   // EndpointResult
 #include "network-fd.h"         // Fd
 #include "network-result.h"     // Result
@@ -19,7 +19,6 @@
 #include <cstddef>      // std::byte
 #include <ostream>      // std::ostream
 #include <string>       // std::string
-#include <vector>       // std::vector
 
 namespace Network
 {
@@ -60,7 +59,7 @@ namespace Network
         std::size_t size() const;
 
         const sockaddr& sa() const;
-        Bytes sa_data() const;
+        ByteString sa_data() const;
         family_type sa_family() const;
         std::string sa_text() const;
 
@@ -79,7 +78,7 @@ namespace Network
 #ifndef _WIN32
         const sockaddr_un& sun() const;
         family_type sun_family() const;
-        Bytes sun_path() const;
+        ByteString sun_path() const;
         std::string sun_text() const;
 #endif
 
@@ -96,7 +95,7 @@ namespace Network
         };
 #endif
 
-        Bytes m_value;
+        ByteString m_value;
     };
 
     extern std::ostream& operator<<(std::ostream& os,
