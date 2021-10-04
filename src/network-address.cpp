@@ -66,6 +66,16 @@ Network::Address::operator value_type() const
     return m_value;
 }
 
+const sockaddr* Network::Address::addr() const
+{
+    return reinterpret_cast<const sockaddr*>(m_value.data());
+}
+
+Network::Address::sock_len_type Network::Address::addrlen() const
+{
+    return static_cast<sock_len_type>(m_value.size());
+}
+
 bool Network::Address::empty() const
 {
     return m_value.empty();
@@ -113,16 +123,6 @@ std::string Network::Address::text() const
     default:
         return sa_text();
     }
-}
-
-const sockaddr* Network::Address::addr() const
-{
-    return reinterpret_cast<const sockaddr*>(m_value.data());
-}
-
-Network::Address::sock_len_type Network::Address::addrlen() const
-{
-    return static_cast<sock_len_type>(m_value.size());
 }
 
 const sockaddr& Network::Address::sa() const
