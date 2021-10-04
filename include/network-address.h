@@ -23,8 +23,6 @@ namespace Network
 {
     class Address
     {
-        friend Result connect(Fd fd, const Address& address, bool verbose);
-
     public:
 #ifdef _WIN32
         typedef unsigned short family_type;
@@ -43,6 +41,8 @@ namespace Network
         bool operator<(const Address& t_address) const;
         bool operator>(const Address& t_address) const;
         bool operator==(const Address& t_address) const;
+        const sockaddr* addr() const;
+        sock_len_type addrlen() const;
         bool empty() const;
         family_type family() const;
         port_type port() const;
@@ -53,9 +53,6 @@ namespace Network
                                    bool t_verbose = false) const;
 
     protected:
-        const sockaddr* addr() const;
-        sock_len_type addrlen() const;
-
         const sockaddr& sa() const;
         value_type sa_data() const;
         family_type sa_family() const;
