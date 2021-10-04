@@ -4,6 +4,7 @@
 #include "network-endpoint.h"   // EndpointResult
 #include "network-fd.h"         // Fd
 #include "network-result.h"     // Result
+#include "network-types.h"      // SockAddr
 
 #ifdef _WIN32
 #include <winsock2.h>   // struct sockaddr, struct sockaddr_in, struct
@@ -33,7 +34,7 @@ namespace Network
         typedef in_port_t port_type;
         typedef socklen_t sock_len_type;
 #endif
-        typedef std::basic_string<std::byte> value_type;
+        typedef SockAddr value_type;
 
         Address();
         Address(const sockaddr* t_sockaddr,
