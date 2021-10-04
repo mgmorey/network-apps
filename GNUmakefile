@@ -1,3 +1,4 @@
+CXX_STANDARD := c++17
 GCC_4_8_5_RH := g++ (GCC) 4.8.5 20150623 (Red Hat 4.8.5-44)
 SYSTEM_PREFIX := $(shell uname -s | cut -d- -f 1)
 
@@ -35,7 +36,7 @@ else ifeq "$(SYSTEM_PREFIX)" "MINGW64_NT"
 endif
 
 CPPFLAGS += -Iinclude
-CXXFLAGS += -std=c++17 -Wall -Werror -Wextra -Wpedantic -Wshadow
+CXXFLAGS += -std=$(CXX_STANDARD) -Wall -Werror -Wextra -Wpedantic -Wshadow
 
 ifeq "$(SYSTEM_PREFIX)" "Darwin"
 	LDFLAGS += -Wl,-map,$@.map
@@ -88,7 +89,7 @@ all: $(executables) TAGS
 
 .PHONY:	check
 check:
-	cppcheck --cppcheck-build-dir=tmp --enable=all --inline-suppr --quiet --std=c++17 $(CPPFLAGS) .
+	cppcheck --cppcheck-build-dir=tmp --enable=all --inline-suppr --quiet --std=$(CXX_STANDARD) $(CPPFLAGS) .
 
 .PHONY:	clean
 clean:
