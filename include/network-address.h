@@ -6,13 +6,12 @@
 #include "network-types.h"      // SockAddr
 
 #ifdef _WIN32
-#include <winsock2.h>   // struct sockaddr, struct sockaddr_in, struct
-                        // sockaddr_in6
+#include <winsock2.h>   // sockaddr, sockaddr_in, sockaddr_in6
 #include <ws2tcpip.h>   // socklen_t
 #else
-#include <netinet/in.h> // struct sockaddr_in, struct sockaddr_in6
-#include <sys/socket.h> // struct sockaddr, socklen_t
-#include <sys/un.h>     // struct sockaddr_un
+#include <netinet/in.h> // sockaddr_in, sockaddr_in6
+#include <sys/socket.h> // sockaddr, socklen_t
+#include <sys/un.h>     // sockaddr_un
 #endif
 
 #include <cstddef>      // std::byte, std::size_t

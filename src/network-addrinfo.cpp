@@ -1,6 +1,5 @@
 #include "network-addrinfo.h"   // AddrInfo, Hints, Hostname, Result
-                                // Service, struct addrinfo,
-                                // operator<<()
+                                // Service, addrinfo, operator<<()
 #include "network-nullable.h"   // Nullable, operator<<()
 
 #ifdef _WIN32

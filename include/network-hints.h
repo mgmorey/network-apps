@@ -7,9 +7,9 @@
 #include "network-socktype.h"   // SockType, operator<<()
 
 #ifdef _WIN32
-#include <ws2tcpip.h>   // struct addrinfo
+#include <ws2tcpip.h>   // addrinfo
 #else
-#include <netdb.h>      // struct addrinfo
+#include <netdb.h>      // addrinfo
 #endif
 
 namespace Network

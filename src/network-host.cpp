@@ -1,5 +1,4 @@
-#include "network-host.h"       // Address, Host, Nullable, struct
-                                // addrinfo
+#include "network-host.h"       // Address, Host, Nullable, addrinfo
 #include "network-types.h"      // SockAddr
 
 Network::Host::Host()

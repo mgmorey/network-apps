@@ -31,7 +31,7 @@ static void clean_up(void)
 
 int main(void)
 {
-    struct sockaddr_un name;
+    sockaddr_un name;
     int down_flag = 0;
     int ret;
     char buffer[BUFFER_SIZE];
@@ -52,8 +52,7 @@ int main(void)
     // Bind socket to socket name.
     name.sun_family = AF_UNIX;
     std::strncpy(name.sun_path, SOCKET_NAME, sizeof name.sun_path - 1);
-    ret = ::bind(connection_socket, (const struct sockaddr*)&name,
-                 sizeof name);
+    ret = ::bind(connection_socket, (const sockaddr*)&name, sizeof name);
 
     if (ret == -1) {
         std::perror("bind");

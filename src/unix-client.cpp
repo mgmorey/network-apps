@@ -14,7 +14,7 @@
 
 int main(int argc, char *argv[])
 {
-    struct sockaddr_un addr;
+    sockaddr_un addr;
     int down_flag = 0;
     int ret;
     int data_socket;
@@ -36,8 +36,7 @@ int main(int argc, char *argv[])
     addr.sun_family = AF_UNIX;
     std::strncpy(addr.sun_path, SOCKET_NAME, sizeof addr.sun_path - 1);
 
-    ret = ::connect(data_socket, (const struct sockaddr*)&addr,
-                    sizeof addr);
+    ret = ::connect(data_socket, (const sockaddr*)&addr, sizeof addr);
 
     if (ret == -1) {
         std::fprintf(stderr, "The server is down.\n");

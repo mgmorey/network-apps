@@ -8,9 +8,9 @@
 #include "network-types.h"      // Hostname, Service
 
 #ifdef _WIN32
-#include <ws2tcpip.h>   // struct addrinfo
+#include <ws2tcpip.h>   // addrinfo
 #else
-#include <netdb.h>      // struct addrinfo
+#include <netdb.h>      // addrinfo
 #endif
 
 #include <algorithm>    // std::for_each()

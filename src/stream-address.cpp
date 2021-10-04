@@ -1,6 +1,5 @@
-#include "network-address.h"    // Address, operator<<(), struct
-                                // sockaddr, socklen_t, std::ostream,
-                                // std::string
+#include "network-address.h"    // Address, operator<<(), sockaddr,
+                                // std::ostream, std::string
 #include "network-family.h"     // Family, operator<<()
 #include "network-format.h"     // Format, operator<<()
 

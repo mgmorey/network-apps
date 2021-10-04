@@ -1,4 +1,4 @@
-#include "network-hints.h"      // Hints, struct addrinfo
+#include "network-hints.h"      // Hints, addrinfo
 
 #include <cassert>      // assert()
 

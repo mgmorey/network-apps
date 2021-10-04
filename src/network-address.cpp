@@ -1,5 +1,4 @@
-#include "network-address.h"    // Address, operator<<(), struct
-                                // sockaddr, sock_len_type
+#include "network-address.h"    // Address, operator<<(), sockaddr
 #include "network-buffer.h"     // Buffer
 #include "network-string.h"     // to_string()
 

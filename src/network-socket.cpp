@@ -10,11 +10,11 @@
 #include "network-socktype.h"   // SockType
 
 #ifdef _WIN32
-#include <winsock2.h>   // struct sockaddr, socket()
-#include <ws2tcpip.h>   // struct addrinfo
+#include <winsock2.h>   // sockaddr, socket()
+#include <ws2tcpip.h>   // addrinfo
 #else
-#include <netdb.h>      // struct addrinfo
-#include <sys/socket.h> // struct sockaddr, socket(), socketpair()
+#include <netdb.h>      // addrinfo
+#include <sys/socket.h> // sockaddr, socket(), socketpair()
 #endif
 
 #include <cassert>      // assert()

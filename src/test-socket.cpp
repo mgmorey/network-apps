@@ -8,7 +8,7 @@
                                 // SocketpairResult
 
 #include <sys/socket.h> // AF_UNIX, SOCK_STREAM
-#include <sys/un.h>     // struct sockaddr_un
+#include <sys/un.h>     // sockaddr_un
 #include <unistd.h>     // getopt(), optarg, opterr, optind, optopt
 
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
