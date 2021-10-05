@@ -78,8 +78,7 @@ namespace TestSocket
             AF_UNIX,
             "/tmp/socket0"
         };
-        auto addr_ptr {reinterpret_cast<sockaddr*>(&sun)};
-        Network::Address address {Network::get_sockaddr(addr_ptr, sizeof sun)};
+        Network::Address address {Network::get_sockaddr(&sun, sizeof sun)};
         std::cout << "Unix address: "
                   << address
                   << std::endl;

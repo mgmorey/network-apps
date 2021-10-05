@@ -60,3 +60,14 @@ Network::SockAddr Network::get_sockaddr(const sockaddr* addr_ptr,
     assert(addr.size() >= static_cast<std::size_t>(addr_len));
     return addr;
 }
+
+#ifndef _WIN32
+
+Network::SockAddr Network::get_sockaddr(const sockaddr_un* addr_ptr,
+                                        socklen_type addr_len)
+{
+    assert(addr_len == sizeof *addr_ptr);
+    return get_sockaddr(reinterpret_cast<const sockaddr*>(addr_ptr), addr_len);
+}
+
+#endif

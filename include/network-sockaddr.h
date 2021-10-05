@@ -19,6 +19,10 @@ namespace Network
     extern sockaddr* get_pointer(SockAddr& addr);
     extern SockAddr get_sockaddr(const sockaddr* addr_ptr = nullptr,
                                  socklen_type addr_len = 0);
+#ifndef _WIN32
+    extern SockAddr get_sockaddr(const sockaddr_un* addr_ptr,
+                                 socklen_type addr_len);
+#endif
 }
 
 #endif
