@@ -5,6 +5,7 @@
 #include <winsock2.h>   // sockaddr
 #else
 #include <sys/socket.h> // sockaddr
+#include <sys/un.h>     // sockaddr_un
 #endif
 
 #include "network-socklen.h"    // socklen_type

@@ -42,21 +42,21 @@ sockaddr* Network::get_pointer(SockAddr& addr)
     return reinterpret_cast<sockaddr*>(addr.data());
 }
 
-Network::SockAddr Network::get_sockaddr(const sockaddr* sockaddr_ptr,
-                                        socklen_type sockaddr_len)
+Network::SockAddr Network::get_sockaddr(const sockaddr* addr_ptr,
+                                        socklen_type addr_len)
 {
-    assert(sockaddr_len ? sockaddr_ptr != nullptr : sockaddr_ptr == nullptr);
+    assert(addr_len ? addr_ptr != nullptr : addr_ptr == nullptr);
     SockAddr addr;
 
-    if (sockaddr_ptr == nullptr) {
+    if (addr_ptr == nullptr) {
         addr.assign(get_capacity(), static_cast<std::byte>(0));
     }
     else {
-        const auto size {static_cast<SockAddr::size_type>(sockaddr_len)};
-        const auto data {reinterpret_cast<const std::byte*>(sockaddr_ptr)};
+        const auto size {static_cast<SockAddr::size_type>(addr_len)};
+        const auto data {reinterpret_cast<const std::byte*>(addr_ptr)};
         addr.assign(data, data + size);
     }
 
-    assert(addr.size() >= static_cast<std::size_t>(sockaddr_len));
+    assert(addr.size() >= static_cast<std::size_t>(addr_len));
     return addr;
 }
