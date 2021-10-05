@@ -69,7 +69,23 @@ namespace TestSocket
         }
     }
 
-    static void test_socket(const Network::Hints& hints)
+    static void test_socket()
+    {
+        sockaddr_un sun = {
+#ifdef HAVE_SOCKADDR_SA_LEN
+            sizeof sun,
+#endif
+            AF_UNIX,
+            "/tmp/socket0"
+        };
+        auto addr_ptr {reinterpret_cast<sockaddr*>(&sun)};
+        Network::Address address {Network::get_sockaddr(addr_ptr, sizeof sun)};
+        std::cout << "Unix address: "
+                  << address
+                  << std::endl;
+    }
+
+    static void test_socketpair(const Network::Hints& hints)
     {
         const Network::Socket sock {hints};
         const auto pair_result {sock.socketpair(verbose)};
@@ -98,28 +114,12 @@ namespace TestSocket
                       << std::endl;
         }
     }
-
-    static void test_socket()
-    {
-        sockaddr_un sun = {
-#ifdef HAVE_SOCKADDR_SA_LEN
-            sizeof sun,
-#endif
-            AF_UNIX,
-            "/tmp/socket0"
-        };
-        auto addr_ptr {reinterpret_cast<sockaddr*>(&sun)};
-        Network::Address address {Network::get_sockaddr(addr_ptr, sizeof sun)};
-        std::cout << "Unix address: "
-                  << address
-                  << std::endl;
-    }
 }
 
 int main(int argc, char* argv[])
 {
     TestSocket::parse_arguments(argc, argv);
     const Network::Socket hints(AF_UNIX, SOCK_STREAM);
-    TestSocket::test_socket(hints);
+    TestSocket::test_socketpair(hints);
     TestSocket::test_socket();
 }
