@@ -10,6 +10,7 @@
 #include <sys/socket.h> // AF_INET, AF_INET6, AF_UNIX, htons()
 #endif
 
+#include <algorithm>    // std::min()
 #include <cassert>      // assert()
 #include <cstddef>      // offsetof()
 #include <iomanip>      // std::hex, std::setfill(), std::setw(),
@@ -198,7 +199,15 @@ Network::Address::family_type Network::Address::sun_family() const
 
 Network::Address::value_type Network::Address::sun_path() const
 {
-    return m_value.substr(m_sa_data_offset);
+    constexpr auto max_len {sizeof(sockaddr_un) - m_sun_path_offset};
+#ifdef HAVE_SOCKADDR_SA_LEN
+    const auto min_len {static_cast<std::size_t>(sun().sun_len)};
+    const auto length {std::min(max_len, min_len)};
+#else
+    const auto length {max_len};
+#endif
+    const auto offset {m_sun_path_offset};
+    return m_value.substr(offset, length);
 }
 
 std::string Network::Address::sun_text() const
