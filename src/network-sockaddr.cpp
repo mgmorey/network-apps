@@ -10,6 +10,7 @@
 #include <algorithm>    // std::max()
 #include <cassert>      // assert()
 #include <cstddef>      // std::byte, std::size_t
+#include <cstring>      // std::strncpy()
 
 static constexpr Network::SockAddr::size_type get_capacity()
 {
@@ -82,6 +83,23 @@ Network::SockAddr Network::get_sockaddr(const sockaddr_un* addr_ptr,
 {
     assert(addr_len == sizeof *addr_ptr);
     return get_sockaddr(reinterpret_cast<const sockaddr*>(addr_ptr), addr_len);
+}
+
+Network::SockAddr Network::get_sockaddr(const Pathname& path)
+{
+    sockaddr_un sun = {
+#ifdef HAVE_SOCKADDR_SA_LEN
+        sizeof sun,
+#endif
+        AF_UNIX,
+        ""
+    };
+    assert(path.size() < sizeof sun.sun_path);
+    std::strncpy(sun.sun_path, path.c_str(), sizeof sun.sun_path);
+#ifdef HAVE_SOCKADDR_SA_LEN
+    sun.sun_len = SUN_LEN(&sun);
+#endif
+    return Network::get_sockaddr(&sun, sizeof sun);
 }
 
 #endif

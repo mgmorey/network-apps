@@ -28,6 +28,7 @@ namespace Network
 #ifndef _WIN32
     extern SockAddr get_sockaddr(const sockaddr_un* addr_ptr,
                                  socklen_type addr_len);
+    extern SockAddr get_sockaddr(const Pathname& path);
 #endif
 }
 
