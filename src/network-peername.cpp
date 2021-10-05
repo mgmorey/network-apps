@@ -48,5 +48,6 @@ Network::AddressResult Network::get_peername(Fd fd, bool verbose)
     assert(error == 0 ?
            message == "" :
            message != "");
-    return AddressResult(addr, {error, message});
+    const Address address(addr);
+    return AddressResult(address, {error, message});
 }
