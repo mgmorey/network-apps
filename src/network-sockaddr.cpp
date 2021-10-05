@@ -106,6 +106,7 @@ Network::SockAddr Network::get_sockaddr(const Pathname& path)
     const auto str {path.substr(0, len)};
     const auto ptr {str.c_str()};
     std::strncpy(sun.sun_path, ptr, len);
+    sun.sun_path[len] = '\0';
     sun.sun_family = AF_UNIX;
 #ifdef HAVE_SOCKADDR_SA_LEN
     sun.sun_len = get_length(&sun);
