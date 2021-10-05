@@ -23,6 +23,17 @@ static constexpr Network::SockAddr::size_type get_capacity()
     return std::max(storage_size, unix_size);
 }
 
+#ifndef _WIN32
+static Network::socklen_type get_length(const sockaddr_un* addr_ptr)
+{
+#ifdef HAVE_SOCKADDR_SA_LEN
+    return static_cast<Network::socklen_type>(SUN_LEN(addr_ptr));
+#else
+    return static_cast<Network::socklen_type>(sizeof *addr_ptr);
+#endif
+}
+#endif
+
 Network::socklen_type Network::get_length(const SockAddr& addr)
 {
     return static_cast<socklen_type>(addr.size());
@@ -81,8 +92,10 @@ Network::SockAddr Network::get_sockaddr(const sockaddr_in6* addr_ptr,
 Network::SockAddr Network::get_sockaddr(const sockaddr_un* addr_ptr,
                                         socklen_type addr_len)
 {
-    assert(addr_len == sizeof *addr_ptr);
-    return get_sockaddr(reinterpret_cast<const sockaddr*>(addr_ptr), addr_len);
+    const auto data {reinterpret_cast<const sockaddr*>(addr_ptr)};
+    const auto size {get_length(addr_ptr)};
+    assert(addr_len == size);
+    return get_sockaddr(data, size);
 }
 
 Network::SockAddr Network::get_sockaddr(const Pathname& path)
@@ -97,10 +110,11 @@ Network::SockAddr Network::get_sockaddr(const Pathname& path)
     const auto size {sizeof sun.sun_path};
     std::strncpy(sun.sun_path, path.c_str(), size);
     sun.sun_path[size - 1] = '\0';
+    const auto length {get_length(&sun)};
 #ifdef HAVE_SOCKADDR_SA_LEN
-    sun.sun_len = SUN_LEN(&sun);
+    sun.sun_len = length;
 #endif
-    return get_sockaddr(&sun, sizeof sun);
+    return get_sockaddr(&sun, length);
 }
 
 #endif

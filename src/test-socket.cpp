@@ -19,6 +19,8 @@
 
 namespace TestSocket
 {
+    static constexpr auto PATH {"/tmp/socket0"};
+
     static bool verbose {false};
 
     static std::vector<std::string> parse_arguments(int argc, char** argv)
@@ -71,7 +73,7 @@ namespace TestSocket
 
     static void test_socket()
     {
-        Network::SockAddr addr {Network::get_sockaddr("/tmp/socket0")};
+        Network::SockAddr addr {Network::get_sockaddr(PATH)};
         Network::Address address {addr};
         std::cout << "Unix address: "
                   << address
