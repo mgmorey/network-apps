@@ -61,6 +61,20 @@ Network::SockAddr Network::get_sockaddr(const sockaddr* addr_ptr,
     return addr;
 }
 
+Network::SockAddr Network::get_sockaddr(const sockaddr_in* addr_ptr,
+                                        socklen_type addr_len)
+{
+    assert(addr_len == sizeof *addr_ptr);
+    return get_sockaddr(reinterpret_cast<const sockaddr*>(addr_ptr), addr_len);
+}
+
+Network::SockAddr Network::get_sockaddr(const sockaddr_in6* addr_ptr,
+                                        socklen_type addr_len)
+{
+    assert(addr_len == sizeof *addr_ptr);
+    return get_sockaddr(reinterpret_cast<const sockaddr*>(addr_ptr), addr_len);
+}
+
 #ifndef _WIN32
 
 Network::SockAddr Network::get_sockaddr(const sockaddr_un* addr_ptr,
