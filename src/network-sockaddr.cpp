@@ -53,8 +53,8 @@ Network::SockAddr Network::get_sockaddr(const sockaddr* addr_ptr,
         addr.assign(get_capacity(), static_cast<std::byte>(0));
     }
     else {
-        const auto size {static_cast<SockAddr::size_type>(addr_len)};
         const auto data {reinterpret_cast<const std::byte*>(addr_ptr)};
+        const auto size {static_cast<SockAddr::size_type>(addr_len)};
         addr.assign(data, data + size);
     }
 
@@ -94,12 +94,13 @@ Network::SockAddr Network::get_sockaddr(const Pathname& path)
         AF_UNIX,
         ""
     };
-    assert(path.size() < sizeof sun.sun_path);
-    std::strncpy(sun.sun_path, path.c_str(), sizeof sun.sun_path);
+    const auto size {sizeof sun.sun_path};
+    std::strncpy(sun.sun_path, path.c_str(), size);
+    sun.sun_path[size - 1] = '\0';
 #ifdef HAVE_SOCKADDR_SA_LEN
     sun.sun_len = SUN_LEN(&sun);
 #endif
-    return Network::get_sockaddr(&sun, sizeof sun);
+    return get_sockaddr(&sun, sizeof sun);
 }
 
 #endif
