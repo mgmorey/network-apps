@@ -6,7 +6,8 @@
 #include "network-types.h"      // SockAddr
 
 #ifdef _WIN32
-#include <winsock2.h>   // sockaddr, sockaddr_in, sockaddr_in6
+#include <winsock2.h>   // sockaddr, sockaddr_in
+#include <ws2tcpip.h>   // sockaddr_in6
 #else
 #include <netinet/in.h> // sockaddr_in, sockaddr_in6
 #include <sys/socket.h> // sockaddr

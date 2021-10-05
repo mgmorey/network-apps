@@ -10,6 +10,12 @@
                                 // get_sockaddr_pointer()
 #include "network-socket.h"     // Socket
 
+#ifdef _WIN32
+#include <winsock2.h>   // connect()
+#else
+#include <sys/socket.h> // connect()
+#endif
+
 #include <algorithm>    // std::transform()
 #include <cassert>      // assert()
 #include <iterator>     // std::back_inserter()

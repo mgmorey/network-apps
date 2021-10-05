@@ -3,12 +3,11 @@
 #include "network-string.h"     // to_string()
 
 #ifdef _WIN32
-#include <winsock2.h>   // AF_INET, AF_INET6, AF_UNIX, AF_UNSPEC,
-                        // connect(), htons(), inet_ntop()
+#include <winsock2.h>   // AF_INET, AF_INET6, AF_UNIX, htons()
+#include <ws2tcpip.h>   // inet_ntop()
 #else
 #include <arpa/inet.h>  // inet_ntop()
-#include <sys/socket.h> // AF_INET, AF_INET6, AF_UNIX, AF_UNSPEC,
-                        // connect(), htons()
+#include <sys/socket.h> // AF_INET, AF_INET6, AF_UNIX, htons()
 #endif
 
 #include <cassert>      // assert()
