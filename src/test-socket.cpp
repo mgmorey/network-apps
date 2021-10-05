@@ -71,17 +71,8 @@ namespace TestSocket
 
     static void test_socket()
     {
-        sockaddr_un sun = {
-#ifdef HAVE_SOCKADDR_SA_LEN
-            sizeof sun,
-#endif
-            AF_UNIX,
-            "/tmp/socket0"
-        };
-#ifdef HAVE_SOCKADDR_SA_LEN
-        sun.sun_len = SUN_LEN(&sun);
-#endif
-        Network::Address address {Network::get_sockaddr(&sun, sizeof sun)};
+        Network::SockAddr addr {Network::get_sockaddr("/tmp/socket0")};
+        Network::Address address {addr};
         std::cout << "Unix address: "
                   << address
                   << std::endl;
