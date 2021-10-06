@@ -56,28 +56,11 @@ int Network::get_family(const SockAddr& addr)
     return sa->sa_family;
 }
 
-int Network::get_family(SockAddr& addr)
-{
-    const auto sa {reinterpret_cast<sockaddr*>(addr.data())};
-    return sa->sa_family;
-}
-
 Network::socklen_type Network::get_length(const SockAddr& addr)
 {
     const auto size {static_cast<socklen_type>(addr.size())};
 #ifdef HAVE_SOCKADDR_SA_LEN
     const auto sa {reinterpret_cast<const sockaddr*>(addr.data())};
-    return sa->sa_len ? sa->sa_len : size;
-#else
-    return size;
-#endif
-}
-
-Network::socklen_type Network::get_length(SockAddr& addr)
-{
-    const auto size {static_cast<socklen_type>(addr.size())};
-#ifdef HAVE_SOCKADDR_SA_LEN
-    const auto sa {reinterpret_cast<sockaddr*>(addr.data())};
     return sa->sa_len ? sa->sa_len : size;
 #else
     return size;

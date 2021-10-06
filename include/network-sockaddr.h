@@ -16,9 +16,7 @@
 namespace Network
 {
     extern int get_family(const SockAddr& addr);
-    extern int get_family(SockAddr& addr);
     extern socklen_type get_length(const SockAddr& addr);
-    extern socklen_type get_length(SockAddr& addr);
     extern const sockaddr* get_pointer(const SockAddr& addr);
     extern sockaddr* get_pointer(SockAddr& addr);
     extern SockAddr get_sockaddr(const sockaddr* sa = nullptr,
