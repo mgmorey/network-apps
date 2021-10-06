@@ -65,7 +65,7 @@ Network::SockAddr Network::get_sockaddr(const sockaddr* addr_ptr,
         addr.assign(data, data + size);
     }
 
-    assert(addr.size() >= static_cast<std::size_t>(addr_len));
+    assert(static_cast<std::size_t>(addr_len) <= addr.size());
     return addr;
 }
 
