@@ -1,10 +1,10 @@
 #include "network-sockaddr.h"   // SockAddr, sockaddr, socklen_type
+#include "network-unix.h"       // SUN_LEN(), sockaddr_un
 
 #ifdef _WIN32
 #include <winsock2.h>   // sockaddr_storage
 #else
 #include <sys/socket.h> // sockaddr_storage
-#include <sys/un.h>     // SUN_LEN(), sockaddr_un
 #endif
 
 #include <algorithm>    // std::max()
@@ -12,12 +12,6 @@
 #include <cstddef>      // std::byte, std::size_t
 #include <cstring>      // std::memset(), std::strlen(),
                         // std::strncpy()
-
-#ifndef _WIN32
-#ifndef SUN_LEN
-#define SUN_LEN(sun)	(sizeof *(sun) + std::strlen((sun)->sun_path))
-#endif
-#endif
 
 static constexpr Network::SockAddr::size_type get_capacity()
 {
