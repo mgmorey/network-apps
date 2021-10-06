@@ -4,7 +4,7 @@
 #include <winsock2.h>   // sockaddr_storage
 #else
 #include <sys/socket.h> // sockaddr_storage
-#include <sys/un.h>     // sockaddr_un
+#include <sys/un.h>     // SUN_LEN(), sockaddr_un
 #endif
 
 #include <algorithm>    // std::max()
@@ -13,8 +13,10 @@
 #include <cstring>      // std::memset(), std::strlen(),
                         // std::strncpy()
 
+#ifndef _WIN32
 #ifndef SUN_LEN
-#define SUN_LEN(sun)	(sizeof (*sun) + std::strlen((sun)->sun_path))
+#define SUN_LEN(sun)	(sizeof *(sun) + std::strlen((sun)->sun_path))
+#endif
 #endif
 
 static constexpr Network::SockAddr::size_type get_capacity()
