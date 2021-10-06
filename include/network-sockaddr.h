@@ -26,7 +26,7 @@ namespace Network
     extern SockAddr get_sockaddr(const sockaddr_in* sin,
                                  std::size_t size);
     extern SockAddr get_sockaddr(const sockaddr_in6* sin6,
-                                 std::size_t addr_len);
+                                 std::size_t size);
 #ifndef _WIN32
     extern SockAddr get_sockaddr(const sockaddr_un* sun,
                                  std::size_t size);
