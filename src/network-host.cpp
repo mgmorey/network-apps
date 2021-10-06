@@ -46,7 +46,7 @@ Network::Nullable Network::Host::canonical_name() const
 
 Network::SockAddr Network::Host::get_sockaddr(const addrinfo& ai)
 {
-    const auto data {reinterpret_cast<const std::byte*>(ai.ai_addr)};
+    const auto data {reinterpret_cast<const Byte*>(ai.ai_addr)};
     const auto size {static_cast<std::size_t>(ai.ai_addrlen)};
     const SockAddr addr(data, data + size);
     assert(addr.empty() || is_valid(addr));

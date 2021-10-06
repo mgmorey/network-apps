@@ -90,11 +90,11 @@ Network::SockAddr Network::get_sockaddr(const sockaddr* sa,
     SockAddr addr;
 
     if (sa == nullptr) {
-        addr.assign(get_capacity(), static_cast<std::byte>(0));
+        addr.assign(get_capacity(), static_cast<Byte>(0));
         assert(size <= addr.size());
     }
     else {
-        const auto data {reinterpret_cast<const std::byte*>(sa)};
+        const auto data {reinterpret_cast<const Byte*>(sa)};
         addr.assign(data, data + size);
         assert(size == get_size(addr));
         assert(size == addr.size());
