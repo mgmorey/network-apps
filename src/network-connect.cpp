@@ -6,9 +6,9 @@
                                 // reset_last_error()
 #include "network-fd.h"         // Fd, fd_null, fd_type
 #include "network-host.h"       // get_sockaddr()
-#include "network-sockaddr.h"   // SockAddr, get_sockaddr_length(),
-                                // get_sockaddr_pointer()
+#include "network-sockaddr.h"   // get_length(), get_pointer()
 #include "network-socket.h"     // Socket
+#include "network-types.h"      // Hostname, SockAddr
 
 #ifdef _WIN32
 #include <winsock2.h>   // connect()
