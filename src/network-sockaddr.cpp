@@ -2,9 +2,11 @@
 #include "network-unix.h"       // SUN_LEN(), sockaddr_un
 
 #ifdef _WIN32
-#include <winsock2.h>   // sockaddr_storage
+#include <winsock2.h>   // AF_INET, AF_INET6, AF_LOCAL, AF_UNIX,
+                        // sockaddr_storage
 #else
-#include <sys/socket.h> // sockaddr_storage
+#include <sys/socket.h> // AF_INET, AF_INET6, AF_LOCAL, AF_UNIX,
+                        // sockaddr_storage
 #endif
 
 #include <algorithm>    // std::max()
@@ -22,6 +24,18 @@ static constexpr Network::SockAddr::size_type get_capacity()
     constexpr auto unix_size {sizeof(sockaddr_un)};
 #endif
     return std::max(storage_size, unix_size);
+}
+
+int Network::get_family(const SockAddr& addr)
+{
+    const auto sa {reinterpret_cast<const sockaddr*>(addr.data())};
+    return sa->sa_family;
+}
+
+int Network::get_family(SockAddr& addr)
+{
+    const auto sa {reinterpret_cast<sockaddr*>(addr.data())};
+    return sa->sa_family;
 }
 
 Network::socklen_type Network::get_length(const SockAddr& addr)
@@ -104,3 +118,27 @@ Network::SockAddr Network::get_sockaddr(const Pathname& path)
 }
 
 #endif
+
+Network::SockAddr Network::resize(const SockAddr& addr)
+{
+    const auto family {get_family(addr)};
+    std::size_t size {};
+
+    switch (family) {
+    case AF_INET:
+        size = sizeof(sockaddr_in);
+        break;
+    case AF_INET6:
+        size = sizeof(sockaddr_in6);
+        break;
+#ifndef _WIN32
+    case AF_UNIX:
+        size = sizeof(sockaddr_un);
+        break;
+#endif
+    default:
+        size = addr.size();
+    }
+
+    return size == addr.size() ? addr : addr.substr(0, size);
+}

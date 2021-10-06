@@ -44,6 +44,9 @@ Network::AddressResult Network::get_peername(Fd fd, bool verbose)
             << format_error(error);
         message = oss.str();
     }
+    else {
+        addr = resize(addr);
+    }
 
     assert(error == 0 ?
            message == "" :
