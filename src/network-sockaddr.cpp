@@ -59,9 +59,8 @@ sockaddr* Network::get_pointer(SockAddr& addr)
 }
 
 Network::SockAddr Network::get_sockaddr(const sockaddr* addr_ptr,
-                                        socklen_type addr_len)
+                                        std::size_t addr_len)
 {
-    assert(addr_len >= 0);
     assert(addr_len ? addr_ptr != nullptr : addr_ptr == nullptr);
     SockAddr addr;
 
@@ -80,7 +79,7 @@ Network::SockAddr Network::get_sockaddr(const sockaddr* addr_ptr,
 }
 
 Network::SockAddr Network::get_sockaddr(const sockaddr_in* addr_ptr,
-                                        socklen_type addr_len)
+                                        std::size_t addr_len)
 {
     const auto sa {reinterpret_cast<const sockaddr*>(addr_ptr)};
     assert(addr_len == sizeof(sockaddr_in));
@@ -88,7 +87,7 @@ Network::SockAddr Network::get_sockaddr(const sockaddr_in* addr_ptr,
 }
 
 Network::SockAddr Network::get_sockaddr(const sockaddr_in6* addr_ptr,
-                                        socklen_type addr_len)
+                                        std::size_t addr_len)
 {
     const auto sa {reinterpret_cast<const sockaddr*>(addr_ptr)};
     assert(addr_len == sizeof(sockaddr_in6));
@@ -98,7 +97,7 @@ Network::SockAddr Network::get_sockaddr(const sockaddr_in6* addr_ptr,
 #ifndef _WIN32
 
 Network::SockAddr Network::get_sockaddr(const sockaddr_un* addr_ptr,
-                                        socklen_type addr_len)
+                                        std::size_t addr_len)
 {
     const auto sa {reinterpret_cast<const sockaddr*>(addr_ptr)};
     assert(addr_len == sizeof(sockaddr_un));

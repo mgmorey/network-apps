@@ -22,14 +22,14 @@ namespace Network
     extern const sockaddr* get_pointer(const SockAddr& addr);
     extern sockaddr* get_pointer(SockAddr& addr);
     extern SockAddr get_sockaddr(const sockaddr* addr_ptr = nullptr,
-                                 socklen_type addr_len = 0);
+                                 std::size_t addr_len = 0);
     extern SockAddr get_sockaddr(const sockaddr_in* addr_ptr,
-                                 socklen_type addr_len);
+                                 std::size_t addr_len);
     extern SockAddr get_sockaddr(const sockaddr_in6* addr_ptr,
-                                 socklen_type addr_len);
+                                 std::size_t addr_len);
 #ifndef _WIN32
     extern SockAddr get_sockaddr(const sockaddr_un* addr_ptr,
-                                 socklen_type addr_len);
+                                 std::size_t addr_len);
     extern SockAddr get_sockaddr(const Pathname& path);
 #endif
     extern SockAddr resize(const SockAddr& addr);
