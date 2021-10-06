@@ -102,11 +102,10 @@ Network::SockAddr Network::get_sockaddr(const sockaddr_un* addr_ptr,
 Network::SockAddr Network::get_sockaddr(const Pathname& path)
 {
     sockaddr_un sun;
-    const auto len {sizeof sun.sun_path - 1};
-    const auto str {path.substr(0, len)};
-    const auto ptr {str.c_str()};
-    std::strncpy(sun.sun_path, ptr, len);
-    sun.sun_path[len] = '\0';
+    const auto data {path.c_str()};
+    const auto size {sizeof sun.sun_path};
+    std::strncpy(sun.sun_path, data, size - 1);
+    sun.sun_path[size - 1] = '\0';
     sun.sun_family = AF_UNIX;
 #ifdef HAVE_SOCKADDR_SA_LEN
     sun.sun_len = get_length(&sun);
