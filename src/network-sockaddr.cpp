@@ -61,6 +61,7 @@ sockaddr* Network::get_pointer(SockAddr& addr)
 Network::SockAddr Network::get_sockaddr(const sockaddr* addr_ptr,
                                         socklen_type addr_len)
 {
+    assert(addr_len >= 0);
     assert(addr_len ? addr_ptr != nullptr : addr_ptr == nullptr);
     SockAddr addr;
 
@@ -70,7 +71,7 @@ Network::SockAddr Network::get_sockaddr(const sockaddr* addr_ptr,
     else {
         const auto data {reinterpret_cast<const std::byte*>(addr_ptr)};
         const auto size {static_cast<SockAddr::size_type>(addr_len)};
-        assert(addr_len > sizeof *addr_ptr);
+        assert(size > sizeof *addr_ptr);
         addr.assign(data, data + size);
     }
 
