@@ -64,12 +64,24 @@ int Network::get_family(SockAddr& addr)
 
 Network::socklen_type Network::get_length(const SockAddr& addr)
 {
-    return static_cast<socklen_type>(addr.size());
+    const auto size {static_cast<socklen_type>(addr.size())};
+#ifdef HAVE_SOCKADDR_SA_LEN
+    const auto sa {reinterpret_cast<const sockaddr*>(addr.data())};
+    return sa->sa_len ? sa->sa_len : size;
+#else
+    return size;
+#endif
 }
 
 Network::socklen_type Network::get_length(SockAddr& addr)
 {
-    return static_cast<socklen_type>(addr.size());
+    const auto size {static_cast<socklen_type>(addr.size())};
+#ifdef HAVE_SOCKADDR_SA_LEN
+    const auto sa {reinterpret_cast<sockaddr*>(addr.data())};
+    return sa->sa_len ? sa->sa_len : size;
+#else
+    return size;
+#endif
 }
 
 const sockaddr* Network::get_pointer(const SockAddr& addr)
