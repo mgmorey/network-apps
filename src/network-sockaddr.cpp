@@ -114,30 +114,24 @@ Network::SockAddr Network::get_sockaddr(const sockaddr* sa,
     return addr;
 }
 
-Network::SockAddr Network::get_sockaddr(const sockaddr_in* sin,
-                                        std::size_t size)
+Network::SockAddr Network::get_sockaddr(const sockaddr_in* sin)
 {
     const auto sa {reinterpret_cast<const sockaddr*>(sin)};
-    assert(size == sizeof(sockaddr_in));
-    return get_sockaddr(sa, size);
+    return get_sockaddr(sa, sizeof *sin);
 }
 
-Network::SockAddr Network::get_sockaddr(const sockaddr_in6* sin6,
-                                        std::size_t size)
+Network::SockAddr Network::get_sockaddr(const sockaddr_in6* sin6)
 {
     const auto sa {reinterpret_cast<const sockaddr*>(sin6)};
-    assert(size == sizeof(sockaddr_in6));
-    return get_sockaddr(sa, size);
+    return get_sockaddr(sa, sizeof *sin6);
 }
 
 #ifndef _WIN32
 
-Network::SockAddr Network::get_sockaddr(const sockaddr_un* sun,
-                                        std::size_t size)
+Network::SockAddr Network::get_sockaddr(const sockaddr_un* sun)
 {
     const auto sa {reinterpret_cast<const sockaddr*>(sun)};
-    assert(size == sizeof(sockaddr_un));
-    return get_sockaddr(sa, size);
+    return get_sockaddr(sa, sizeof *sun);
 }
 
 Network::SockAddr Network::get_sockaddr(const Pathname& path)
@@ -151,7 +145,7 @@ Network::SockAddr Network::get_sockaddr(const Pathname& path)
     addr.sun_len = SUN_LEN(&addr);
 #endif
     assert(std::strlen(addr.sun_path) == path.size());
-    return get_sockaddr(&addr, sizeof addr);
+    return get_sockaddr(&addr);
 }
 
 #endif
