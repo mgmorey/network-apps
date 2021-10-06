@@ -133,8 +133,32 @@ Network::SockAddr Network::get_sockaddr(const Pathname& path)
 
 #endif
 
+bool Network::is_valid(const SockAddr& addr)
+{
+    if (addr.empty()) {
+        return true;
+    }
+    else {
+        const auto family {get_family(addr)};
+        const auto length {get_length(addr)};
+
+        switch (family) {
+        case AF_INET:
+            return length == sizeof(sockaddr_in);
+        case AF_INET6:
+            return length == sizeof(sockaddr_in6);
+#ifndef _WIN32
+        case AF_UNIX:
+            return length > 0 && length <= sizeof(sockaddr_un);
+#endif
+        default:
+            return false;
+        }
+    }
+}
+
 Network::SockAddr Network::resize(const SockAddr& addr)
 {
     const auto size {get_size(addr)};
-    return size == addr.size() ? addr : addr.substr(0, size);
+    return addr.substr(0, size);
 }

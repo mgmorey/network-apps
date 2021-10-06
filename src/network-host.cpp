@@ -1,4 +1,5 @@
 #include "network-host.h"       // Address, Host, Nullable, addrinfo
+#include "network-sockaddr.h"   // is_valid()
 #include "network-types.h"      // SockAddr
 
 Network::Host::Host()
@@ -45,7 +46,9 @@ Network::Nullable Network::Host::canonical_name() const
 
 Network::SockAddr Network::Host::get_sockaddr(const addrinfo& ai)
 {
-    auto data {reinterpret_cast<const std::byte*>(ai.ai_addr)};
-    auto size {static_cast<std::size_t>(ai.ai_addrlen)};
-    return SockAddr(data, data + size);
+    const auto data {reinterpret_cast<const std::byte*>(ai.ai_addr)};
+    const auto size {static_cast<std::size_t>(ai.ai_addrlen)};
+    const SockAddr addr(data, data + size);
+    assert(is_valid(addr));
+    return addr;
 }
