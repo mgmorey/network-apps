@@ -26,6 +26,30 @@ static constexpr Network::SockAddr::size_type get_capacity()
     return std::max(storage_size, unix_size);
 }
 
+static std::size_t get_size(const Network::SockAddr& addr)
+{
+    const auto family {Network::get_family(addr)};
+    std::size_t size {};
+
+    switch (family) {
+    case AF_INET:
+        size = sizeof(sockaddr_in);
+        break;
+    case AF_INET6:
+        size = sizeof(sockaddr_in6);
+        break;
+#ifndef _WIN32
+    case AF_UNIX:
+        size = sizeof(sockaddr_un);
+        break;
+#endif
+    default:
+        size = addr.size();
+    }
+
+    return size;
+}
+
 int Network::get_family(const SockAddr& addr)
 {
     const auto sa {reinterpret_cast<const sockaddr*>(addr.data())};
@@ -66,15 +90,15 @@ Network::SockAddr Network::get_sockaddr(const sockaddr* addr_ptr,
 
     if (addr_ptr == nullptr) {
         addr.assign(get_capacity(), static_cast<std::byte>(0));
+        assert(addr_len <= addr.size());
     }
     else {
         const auto data {reinterpret_cast<const std::byte*>(addr_ptr)};
-        const auto size {static_cast<SockAddr::size_type>(addr_len)};
-        assert(size > sizeof *addr_ptr);
-        addr.assign(data, data + size);
+        addr.assign(data, data + addr_len);
+        assert(addr_len == get_size(addr));
+        assert(addr_len == addr.size());
     }
 
-    assert(static_cast<std::size_t>(addr_len) <= addr.size());
     return addr;
 }
 
@@ -122,24 +146,6 @@ Network::SockAddr Network::get_sockaddr(const Pathname& path)
 
 Network::SockAddr Network::resize(const SockAddr& addr)
 {
-    const auto family {get_family(addr)};
-    std::size_t size {};
-
-    switch (family) {
-    case AF_INET:
-        size = sizeof(sockaddr_in);
-        break;
-    case AF_INET6:
-        size = sizeof(sockaddr_in6);
-        break;
-#ifndef _WIN32
-    case AF_UNIX:
-        size = sizeof(sockaddr_un);
-        break;
-#endif
-    default:
-        size = addr.size();
-    }
-
+    const auto size {get_size(addr)};
     return size == addr.size() ? addr : addr.substr(0, size);
 }
