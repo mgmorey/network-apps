@@ -21,15 +21,15 @@ namespace Network
     extern socklen_type get_length(SockAddr& addr);
     extern const sockaddr* get_pointer(const SockAddr& addr);
     extern sockaddr* get_pointer(SockAddr& addr);
-    extern SockAddr get_sockaddr(const sockaddr* addr_ptr = nullptr,
-                                 std::size_t addr_len = 0);
-    extern SockAddr get_sockaddr(const sockaddr_in* addr_ptr,
-                                 std::size_t addr_len);
-    extern SockAddr get_sockaddr(const sockaddr_in6* addr_ptr,
+    extern SockAddr get_sockaddr(const sockaddr* sa = nullptr,
+                                 std::size_t size = 0);
+    extern SockAddr get_sockaddr(const sockaddr_in* sin,
+                                 std::size_t size);
+    extern SockAddr get_sockaddr(const sockaddr_in6* sin6,
                                  std::size_t addr_len);
 #ifndef _WIN32
-    extern SockAddr get_sockaddr(const sockaddr_un* addr_ptr,
-                                 std::size_t addr_len);
+    extern SockAddr get_sockaddr(const sockaddr_un* sun,
+                                 std::size_t size);
     extern SockAddr get_sockaddr(const Pathname& path);
 #endif
     extern SockAddr resize(const SockAddr& addr);
