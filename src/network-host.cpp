@@ -49,6 +49,6 @@ Network::SockAddr Network::Host::get_sockaddr(const addrinfo& ai)
     const auto data {reinterpret_cast<const std::byte*>(ai.ai_addr)};
     const auto size {static_cast<std::size_t>(ai.ai_addrlen)};
     const SockAddr addr(data, data + size);
-    assert(is_valid(addr));
+    assert(addr.empty() || is_valid(addr));
     return addr;
 }
