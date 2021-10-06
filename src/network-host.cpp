@@ -45,7 +45,7 @@ Network::Nullable Network::Host::canonical_name() const
 
 Network::SockAddr Network::Host::get_sockaddr(const addrinfo& ai)
 {
-    auto addr {reinterpret_cast<const std::byte*>(ai.ai_addr)};
-    auto addrlen {static_cast<std::size_t>(ai.ai_addrlen)};
-    return SockAddr(addr, addr + addrlen);
+    auto data {reinterpret_cast<const std::byte*>(ai.ai_addr)};
+    auto size {static_cast<std::size_t>(ai.ai_addrlen)};
+    return SockAddr(data, data + size);
 }
