@@ -2,7 +2,8 @@
                                 // to_endpoint()
 #include "network-address.h"    // Address, operator<<()
 #include "network-buffer.h"     // Buffer
-#include "network-sockaddr.h"   // get_length(), get_pointer()
+#include "network-sockaddr.h"   // get_length(), get_max_size(),
+                                // get_pointer()
 #include "network-types.h"      // SockAddr
 
 #ifdef _WIN32

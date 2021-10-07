@@ -6,7 +6,8 @@
                                 // reset_last_error()
 #include "network-fd.h"         // Fd, fd_null, fd_type
 #include "network-host.h"       // get_sockaddr()
-#include "network-sockaddr.h"   // get_length(), get_pointer()
+#include "network-sockaddr.h"   // get_length(), get_max_size(),
+                                // get_pointer()
 #include "network-socket.h"     // Socket
 #include "network-types.h"      // Hostname, SockAddr
 
