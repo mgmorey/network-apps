@@ -166,9 +166,14 @@ bool Network::is_valid(const SockAddr& addr)
     auto length {static_cast<std::size_t>(get_length(addr))};
 
     if (!length) {
+#ifdef HAVE_SOCKADDR_SA_LEN
+        return false;
+#else
         length = addr.size();
+#endif
     }
-    else if (length > addr.size()) {
+
+    if (length > addr.size()) {
         return false;
     }
 
