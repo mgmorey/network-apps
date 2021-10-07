@@ -70,6 +70,7 @@ Network::SocketResult Network::Socket::socket(bool t_verbose) const
     }
 
     Result result;
+    // cppcheck-suppress variableScope
     auto error {reset_last_error()};
     const auto fd {::socket(static_cast<int>(m_family),
                             static_cast<int>(m_socktype),
@@ -108,6 +109,7 @@ Network::SocketpairResult Network::Socket::socketpair(bool t_verbose) const
 
     Result result;
     fd_type fds[] {fd_null, fd_null};
+    // cppcheck-suppress variableScope
     auto error {reset_last_error()};
     auto code {::socketpair(static_cast<int>(m_family),
                              static_cast<int>(m_socktype),

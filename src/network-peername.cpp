@@ -32,6 +32,7 @@ Network::AddressResult Network::get_peername(Fd fd, bool verbose)
     auto addr {get_sockaddr()};
     auto addr_ptr {get_pointer(addr)};
     auto addr_len {get_length(addr)};
+    // cppcheck-suppress variableScope
     auto error {reset_last_error()};
 
     if (::getpeername(fd, addr_ptr, &addr_len)) {

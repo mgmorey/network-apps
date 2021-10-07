@@ -20,6 +20,7 @@ Network::HostnameResult Network::get_hostname()
 {
     Result result;
     Buffer host {NI_MAXHOST};
+    // cppcheck-suppress variableScope
     auto error {reset_last_error()};
 
     if (::gethostname(&host[0], host.size() - 1)) {
