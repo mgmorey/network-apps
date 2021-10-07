@@ -98,7 +98,7 @@ namespace TestAddress
 
         void print(const Values& values)
         {
-            m_os << '\t';
+            m_os << "    ";
 
             for (std::size_t i = 0; i < values.size(); ++i) {
                 if (i > 1) {
