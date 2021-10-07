@@ -71,9 +71,9 @@ Network::SocketResult Network::Socket::socket(bool t_verbose) const
 
     std::string message;
     auto error {reset_last_error()};
-    const auto fd {::socket(static_cast<int>(m_family),
-                               static_cast<int>(m_socktype),
-                               static_cast<int>(m_protocol))};
+    auto fd {::socket(static_cast<int>(m_family),
+                      static_cast<int>(m_socktype),
+                      static_cast<int>(m_protocol))};
 
     if (fd == fd_null) {
         error = get_last_error();
@@ -111,14 +111,14 @@ Network::SocketpairResult Network::Socket::socketpair(bool t_verbose) const
     }
 
     std::string message;
-    auto error {reset_last_error()};
     fd_type fds[] {fd_null, fd_null};
-    const auto value {::socketpair(static_cast<int>(m_family),
-                                   static_cast<int>(m_socktype),
-                                   static_cast<int>(m_protocol),
-                                   fds)};
+    auto error {reset_last_error()};
+    auto code {::socketpair(static_cast<int>(m_family),
+                             static_cast<int>(m_socktype),
+                             static_cast<int>(m_protocol),
+                             fds)};
 
-    if (value == socket_error) {
+    if (code == socket_error) {
         error = get_last_error();
         std::ostringstream oss;
         oss << "Call to socketpair("

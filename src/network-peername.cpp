@@ -1,7 +1,7 @@
 #include "network-peername.h"   // AddressBuffer, AddressResult, Fd,
                                 // Result, get_peername()
 #include "network-error.h"      // format_error(), get_last_error(),
-                                // reset_last_error()
+                                // ureset_last_error()
 #include "network-sockaddr.h"   // get_pointer(), get_sockaddr()
 #include "network-socklen.h"    // socklen_type
 #include "network-types.h"      // SockAddr
@@ -33,7 +33,7 @@ Network::AddressResult Network::get_peername(Fd fd, bool verbose)
     auto addr_ptr {get_pointer(addr)};
     auto addr_len {static_cast<socklen_t>(addr.size())};
     auto error {reset_last_error()};
-    const auto code {::getpeername(fd, addr_ptr, &addr_len)};
+    auto code {::getpeername(fd, addr_ptr, &addr_len)};
 
     if (code != 0) {
         error = get_last_error();

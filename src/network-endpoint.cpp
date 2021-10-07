@@ -2,8 +2,7 @@
                                 // to_endpoint()
 #include "network-address.h"    // Address, operator<<()
 #include "network-buffer.h"     // Buffer
-#include "network-sockaddr.h"   // get_length(), get_max_size(),
-                                // get_pointer()
+#include "network-sockaddr.h"   // get_length(), get_pointer()
 #include "network-types.h"      // SockAddr
 
 #ifdef _WIN32
@@ -30,11 +29,10 @@ Network::to_endpoint(const Address& address, int flags, bool verbose)
     Buffer serv {NI_MAXSERV};
     auto addr_ptr {get_pointer(addr)};
     auto addr_len {static_cast<std::size_t>(get_length(addr))};
-    auto addr_size {static_cast<std::size_t>(get_max_size(addr))};
-    const auto error {::getnameinfo(addr_ptr, addr_len ? addr_len : addr_size,
-                                    &host[0], host.size(),
-                                    &serv[0], serv.size(),
-                                    flags)};
+    auto error {::getnameinfo(addr_ptr, addr_len ? addr_len : addr.size(),
+                              &host[0], host.size(),
+                              &serv[0], serv.size(),
+                              flags)};
 
     if (verbose) {
         std::cerr << "Calling getnameinfo("

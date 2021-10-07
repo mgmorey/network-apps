@@ -21,7 +21,7 @@ Network::HostnameResult Network::get_hostname()
     std::string message;
     Buffer hostname {NI_MAXHOST};
     auto error {reset_last_error()};
-    const auto code {::gethostname(&hostname[0], hostname.size() - 1)};
+    auto code {::gethostname(&hostname[0], hostname.size() - 1)};
 
     if (code != 0) {
         error = get_last_error();

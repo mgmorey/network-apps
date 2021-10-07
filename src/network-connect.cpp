@@ -6,8 +6,7 @@
                                 // reset_last_error()
 #include "network-fd.h"         // Fd, fd_null, fd_type
 #include "network-host.h"       // get_sockaddr()
-#include "network-sockaddr.h"   // get_length(), get_max_size(),
-                                // get_pointer()
+#include "network-sockaddr.h"   // get_length(), get_pointer()
 #include "network-socket.h"     // Socket
 #include "network-types.h"      // Hostname, SockAddr
 
@@ -81,11 +80,10 @@ Network::Result Network::connect(Fd fd, const Address& address, bool verbose)
 
     std::string message;
     SockAddr addr {address};
-    auto error {reset_last_error()};
     auto addr_ptr {get_pointer(addr)};
     auto addr_len {static_cast<std::size_t>(get_length(addr))};
-    auto addr_size {static_cast<std::size_t>(get_max_size(addr))};
-    const auto code {::connect(fd, addr_ptr, addr_len ? addr_len : addr_size)};
+    auto error {reset_last_error()};
+    auto code {::connect(fd, addr_ptr, addr_len ? addr_len : addr.size())};
 
     if (code == connect_error) {
         error = get_last_error();
