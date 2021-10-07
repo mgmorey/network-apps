@@ -29,25 +29,22 @@ static constexpr Network::SockAddr::size_type get_capacity()
 static std::size_t get_size(const Network::SockAddr& addr)
 {
     const auto family {Network::get_family(addr)};
-    std::size_t size {};
 
     switch (family) {
     case AF_INET:
-        size = sizeof(sockaddr_in);
+        return sizeof(sockaddr_in);
         break;
     case AF_INET6:
-        size = sizeof(sockaddr_in6);
+        return sizeof(sockaddr_in6);
         break;
 #ifndef _WIN32
     case AF_UNIX:
-        size = sizeof(sockaddr_un);
+        return sizeof(sockaddr_un);
         break;
 #endif
     default:
-        size = addr.size();
+        return 0;
     }
-
-    return size;
 }
 
 int Network::get_family(const SockAddr& addr)
@@ -59,17 +56,15 @@ int Network::get_family(const SockAddr& addr)
 Network::socklen_type Network::get_length(const SockAddr& addr)
 {
     const auto sa {reinterpret_cast<const sockaddr*>(addr.data())};
-    const auto size {static_cast<socklen_type>(addr.size())};
 
     if (!sa->sa_family) {
-        return size;
+        return 0;
     }
 
 #ifdef HAVE_SOCKADDR_SA_LEN
-    assert(sa->sa_len);
     return sa->sa_len;
 #else
-    return size;
+    return 0;
 #endif
 }
 
@@ -141,25 +136,28 @@ Network::SockAddr Network::get_sockaddr(const Pathname& path)
 
 bool Network::is_valid(const SockAddr& addr)
 {
-    const auto family {get_family(addr)};
+    // const auto family {get_family(addr)};
     const auto length {get_length(addr)};
+    const auto size {get_size(addr)};
 
-    switch (family) {
-    case AF_INET:
-        return static_cast<std::size_t>(length) == sizeof(sockaddr_in);
-    case AF_INET6:
-        return static_cast<std::size_t>(length) == sizeof(sockaddr_in6);
-#ifndef _WIN32
-    case AF_UNIX:
-        return static_cast<std::size_t>(length) <= sizeof(sockaddr_un);
-#endif
-    default:
+    if (size < static_cast<std::size_t>(length)) {
         return false;
     }
+
+    if (addr.size() < size) {
+        return false;
+    }
+
+    return true;
 }
 
 Network::SockAddr Network::resize(const SockAddr& addr)
 {
-    const auto size {get_size(addr)};
+    auto size {get_size(addr)};
+
+    if (!size) {
+        size = addr.size();
+    }
+
     return addr.substr(0, size);
 }
