@@ -31,6 +31,10 @@ static std::size_t get_sa_length(const Network::SockAddr& addr)
     const auto sa {reinterpret_cast<const sockaddr*>(addr.data())};
     assert(sa != nullptr);
 
+    if (addr.empty()) {
+        return 0;
+    }
+
 #ifdef HAVE_SOCKADDR_SA_LEN
     return sa->sa_len;
 #else
@@ -42,6 +46,11 @@ int Network::get_family(const SockAddr& addr)
 {
     const auto sa {reinterpret_cast<const sockaddr*>(addr.data())};
     assert(sa != nullptr);
+
+    if (addr.empty()) {
+        return 0;
+    }
+
     return sa->sa_family;
 }
 
@@ -144,6 +153,10 @@ Network::SockAddr Network::get_sockaddr(const Pathname& path)
 
 bool Network::is_valid(const SockAddr& addr)
 {
+    if (addr.empty()) {
+        return false;
+    }
+
     const auto family {get_family(addr)};
 
     switch (family) {
@@ -165,23 +178,21 @@ bool Network::is_valid(const SockAddr& addr)
         return false;
     }
 
-    auto length {static_cast<std::size_t>(get_sa_length(addr))};
-
-    if (!length) {
 #ifdef HAVE_SOCKADDR_SA_LEN
+    const auto sa_length {static_cast<std::size_t>(get_sa_length(addr))};
+
+    if (!sa_length) {
         return false;
-#else
-        length = addr.size();
+    }
+
+    if (sa_length > max_size) {
+        return false;
+    }
+
+    if (addr.size() > sa_length) {
+        return false;
+    }
 #endif
-    }
-
-    if (length > addr.size()) {
-        return false;
-    }
-
-    if (length > max_size) {
-        return false;
-    }
 
     return true;
 }
