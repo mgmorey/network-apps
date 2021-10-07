@@ -24,13 +24,13 @@ namespace Network
     {
     public:
 #ifdef _WIN32
-        typedef unsigned short family_type;
-        typedef unsigned short port_type;
+        using family_type = unsigned short;
+        using port_type = unsigned short;
 #else
-        typedef sa_family_t family_type;
-        typedef in_port_t port_type;
+        using family_type = sa_family_t;
+        using port_type = in_port_t;
 #endif
-        typedef SockAddr value_type;
+        using value_type = SockAddr;
 
         Address();
         explicit Address(const value_type& t_value);

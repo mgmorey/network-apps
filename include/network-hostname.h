@@ -9,7 +9,7 @@
 
 namespace Network
 {
-    typedef std::pair<Hostname, Result> HostnameResult;
+    using HostnameResult = std::pair<Hostname, Result>;
 
     extern HostnameResult get_hostname();
     extern Hostname get_hostname(const Hostname& hostname);

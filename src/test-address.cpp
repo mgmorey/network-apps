@@ -34,8 +34,8 @@
 
 namespace TestAddress
 {
-    typedef std::vector<Network::Host> Hosts;
-    typedef std::pair<Hosts, Network::Result> HostsResult;
+    using Hosts = std::vector<Network::Host>;
+    using HostsResult = std::pair<Hosts, Network::Result>;
 
     static constexpr auto HOST {"example.com"};
 
@@ -61,7 +61,7 @@ namespace TestAddress
     class Test
     {
     public:
-        typedef std::vector<std::string> Values;
+        using Values = std::vector<std::string>;
 
         explicit Test(std::ostream& t_os) :
             m_os(t_os)

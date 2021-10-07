@@ -15,9 +15,9 @@
 namespace Network
 {
 #ifdef _WIN32
-    typedef DWORD error_type;
+    using error_type = DWORD;
 #else
-    typedef int error_type;
+    using error_type = int;
 #endif
 
     enum { socket_error = SOCKET_ERROR };

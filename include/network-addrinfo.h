@@ -30,11 +30,11 @@ namespace Network
     {
         struct InputIterator
         {
-            typedef std::ptrdiff_t difference_type;
-            typedef std::input_iterator_tag iterator_category;
-            typedef addrinfo* pointer;
-            typedef addrinfo& reference;
-            typedef addrinfo value_type;
+            using difference_type = std::ptrdiff_t;
+            using iterator_category = std::input_iterator_tag;
+            using pointer = addrinfo*;
+            using reference = addrinfo&;
+            using value_type = addrinfo;
 
             // cppcheck-suppress noExplicitConstructor
             InputIterator(pointer t_pointer);

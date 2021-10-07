@@ -12,7 +12,7 @@
 
 namespace Network
 {
-    typedef std::vector<SocketResult> SocketResults;
+    using SocketResults = std::vector<SocketResult>;
 
     enum { connect_error = -1 };
 

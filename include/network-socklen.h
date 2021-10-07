@@ -8,9 +8,9 @@
 namespace Network
 {
 #ifdef _WIN32
-        typedef int socklen_type;
+        using socklen_type = int;
 #else
-        typedef socklen_t socklen_type;
+        using socklen_type = socklen_t;
 #endif
 }
 

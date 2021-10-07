@@ -17,9 +17,9 @@
 
 namespace Network
 {
-    typedef std::pair<Fd, Fd> FdPair;
-    typedef std::pair<Fd, Result> SocketResult;
-    typedef std::pair<FdPair, Result> SocketpairResult;
+    using FdPair = std::pair<Fd, Fd>;
+    using SocketResult = std::pair<Fd, Result>;
+    using SocketpairResult = std::pair<FdPair, Result>;
 
     struct Socket :
         public Hints,

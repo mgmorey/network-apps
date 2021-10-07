@@ -18,9 +18,9 @@
 namespace Network
 {
 #ifdef _WIN32
-    typedef SOCKET fd_type;
+    using fd_type = SOCKET;
 #else
-    typedef int fd_type;
+    using fd_type = int;
 #endif
 
     enum { fd_null = INVALID_SOCKET };

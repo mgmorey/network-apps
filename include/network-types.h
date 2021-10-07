@@ -6,13 +6,13 @@
 
 namespace Network
 {
-    typedef std::byte Byte;
-    typedef std::basic_string<Byte> ByteString;
+    using Byte = std::byte;
+    using ByteString = std::basic_string<Byte>;
 
-    typedef std::string Hostname;
-    typedef std::string Pathname;
-    typedef std::string Service;
-    typedef ByteString SockAddr;
+    using Hostname = std::string;
+    using Pathname = std::string;
+    using Service = std::string;
+    using SockAddr = ByteString;
 }
 
 #endif

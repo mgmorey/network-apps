@@ -23,8 +23,8 @@
 #include <utility>      // std::pair
 #include <vector>       // std::vector
 
-typedef std::vector<Network::Socket> Sockets;
-typedef std::pair<Sockets, Network::Result> SocketsResult;
+using Sockets = std::vector<Network::Socket>;
+using SocketsResult = std::pair<Sockets, Network::Result>;
 
 static SocketsResult get_sockets(const Network::Endpoint& endpoint,
                                  const Network::Hints* hints,

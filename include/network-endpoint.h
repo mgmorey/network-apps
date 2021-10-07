@@ -9,8 +9,8 @@
 
 namespace Network
 {
-    typedef std::pair<Hostname, Service> Endpoint;
-    typedef std::pair<Endpoint, Result> EndpointResult;
+    using Endpoint = std::pair<Hostname, Service>;
+    using EndpointResult = std::pair<Endpoint, Result>;
 
     EndpointResult get_endpoint(const Address& address, int flags,
                                 bool verbose = false);
