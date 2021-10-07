@@ -1,6 +1,5 @@
-CXX_STANDARD := c++17
-GCC_4_8_5_RH := g++ (GCC) 4.8.5 20150623 (Red Hat 4.8.5-44)
-SYSTEM_PREFIX := $(shell uname -s | cut -d- -f 1)
+STANDARD := c++17
+SYSTEM := $(shell uname -s | cut -d- -f 1)
 
 ifdef NDEBUG
 	CPPFLAGS += -D_FORTIFY_SOURCE=2
@@ -11,37 +10,36 @@ ifeq "$(USING_DMALLOC)" "true"
 	LDLIBS += -ldmalloc
 else ifeq "$(USING_LIBASAN)" "true"
 	CXXFLAGS += -fno-omit-frame-pointer -fsanitize=address
-ifneq "$(shell $(CXX) --version | head -n 1)" "$(GCC_4_8_5_RH)"
 	CXXFLAGS += -fsanitize-address-use-after-scope
-endif
 	LDFLAGS += -fsanitize=address
 else
 	CXXFLAGS += -fno-omit-frame-pointer
 endif
-ifneq "$(SYSTEM_PREFIX)" "Darwin"
+ifneq "$(SYSTEM)" "Darwin"
 	CPPFLAGS += -D_GLIBCXX_DEBUG
 endif
 	CXXFLAGS += -g3 -O0
 endif
 
-ifeq "$(SYSTEM_PREFIX)" "Darwin"
+ifeq "$(SYSTEM)" "Darwin"
 	CPPFLAGS += -D_DARWIN_C_SOURCE -DHAVE_SOCKADDR_SA_LEN
-else ifeq "$(SYSTEM_PREFIX)" "CYGWIN_NT"
+else ifeq "$(SYSTEM)" "CYGWIN_NT"
 	CPPFLAGS += -D_POSIX_C_SOURCE=200809L
-else ifeq "$(SYSTEM_PREFIX)" "FreeBSD"
-	CPPFLAGS += -DHAVE_SOCKADDR_SA_LEN -I/usr/local/include
+else ifeq "$(SYSTEM)" "FreeBSD"
+	CPPFLAGS += -DHAVE_SOCKADDR_SA_LEN
+	CPPFLAGS += -I/usr/local/include
 	LDLIBS += -L/usr/local/lib
-else ifeq "$(SYSTEM_PREFIX)" "MINGW64_NT"
+else ifeq "$(SYSTEM)" "MINGW64_NT"
 	LDLIBS += -lws2_32
 endif
 
 CPPFLAGS += -Iinclude
-CXXFLAGS += -std=$(CXX_STANDARD) -Wall -Werror -Wextra -Wpedantic -Wshadow
+CXXFLAGS += -std=$(STANDARD) -Wall -Werror -Wextra -Wpedantic -Wshadow
 
-ifeq "$(SYSTEM_PREFIX)" "Darwin"
+ifeq "$(SYSTEM)" "Darwin"
 	LDFLAGS += -Wl,-map,$@.map
 else
-ifneq "$(SYSTEM_PREFIX)" "FreeBSD"
+ifneq "$(SYSTEM)" "FreeBSD"
 	CXXFLAGS += -Wa,-adghln=$(subst .o,.lst,$@)
 endif
 	LDFLAGS += -Wl,-Map=$@.map
@@ -65,7 +63,7 @@ network-protocol.cpp network-result.cpp network-sockaddr.cpp \
 network-socket.cpp network-socktype.cpp stream-address.cpp \
 stream-addrinfo.cpp stream-hints.cpp stream-socket.cpp
 
-ifneq "$(SYSTEM_PREFIX)" "MINGW64_NT"
+ifneq "$(SYSTEM)" "MINGW64_NT"
 	executable_sources += test-socket.cpp unix-client.cpp unix-server.cpp
 endif
 
@@ -88,7 +86,7 @@ all: $(executables) TAGS
 
 .PHONY:	check
 check:
-	cppcheck --cppcheck-build-dir=tmp --enable=all --inline-suppr --quiet --std=$(CXX_STANDARD) $(CPPFLAGS) .
+	cppcheck --cppcheck-build-dir=tmp --enable=all --inline-suppr --quiet --std=$(STANDARD) $(CPPFLAGS) .
 
 .PHONY:	clean
 clean:
