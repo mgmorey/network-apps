@@ -71,9 +71,9 @@ Network::SocketResult Network::Socket::socket(bool t_verbose) const
 
     std::string message;
     auto error {reset_last_error()};
-    auto fd {::socket(static_cast<int>(m_family),
-                      static_cast<int>(m_socktype),
-                      static_cast<int>(m_protocol))};
+    const auto fd {::socket(static_cast<int>(m_family),
+                            static_cast<int>(m_socktype),
+                            static_cast<int>(m_protocol))};
 
     if (fd == fd_null) {
         error = get_last_error();

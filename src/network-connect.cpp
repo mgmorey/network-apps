@@ -79,11 +79,11 @@ Network::Result Network::connect(Fd fd, const Address& address, bool verbose)
     }
 
     std::string message;
-    SockAddr addr {address};
-    auto addr_ptr {get_pointer(addr)};
-    auto addr_len {get_length(addr)};
+    const SockAddr addr {address};
+    const auto addr_ptr {get_pointer(addr)};
+    const auto addr_len {get_length(addr)};
     auto error {reset_last_error()};
-    auto code {::connect(fd, addr_ptr, addr_len)};
+    const auto code {::connect(fd, addr_ptr, addr_len)};
 
     if (code == connect_error) {
         error = get_last_error();

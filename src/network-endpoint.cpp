@@ -27,12 +27,12 @@ Network::get_endpoint(const Address& address, int flags, bool verbose)
     SockAddr addr {address};
     Buffer host {NI_MAXHOST};
     Buffer serv {NI_MAXSERV};
-    auto addr_ptr {get_pointer(addr)};
-    auto addr_len {get_length(addr)};
-    auto error {::getnameinfo(addr_ptr, addr_len,
-                              &host[0], host.size(),
-                              &serv[0], serv.size(),
-                              flags)};
+    const auto addr_ptr {get_pointer(addr)};
+    const auto addr_len {get_length(addr)};
+    const auto error {::getnameinfo(addr_ptr, addr_len,
+                                    &host[0], host.size(),
+                                    &serv[0], serv.size(),
+                                    flags)};
 
     if (verbose) {
         std::cerr << "Calling getnameinfo("

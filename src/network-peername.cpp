@@ -31,9 +31,9 @@ Network::AddressResult Network::get_peername(Fd fd, bool verbose)
     std::string message;
     auto addr {get_sockaddr()};
     auto addr_ptr {get_pointer(addr)};
-    auto addr_len {static_cast<socklen_t>(addr.size())};
+    auto addr_len {get_length(addr)};
     auto error {reset_last_error()};
-    auto code {::getpeername(fd, addr_ptr, &addr_len)};
+    const auto code {::getpeername(fd, addr_ptr, &addr_len)};
 
     if (code != 0) {
         error = get_last_error();
