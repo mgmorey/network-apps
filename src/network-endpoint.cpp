@@ -29,8 +29,8 @@ Network::to_endpoint(const Address& address, int flags, bool verbose)
     Buffer host {NI_MAXHOST};
     Buffer serv {NI_MAXSERV};
     auto addr_ptr {get_pointer(addr)};
-    std::size_t addr_len {get_length(addr)};
-    std::size_t addr_size {get_max_size(addr)};
+    auto addr_len {static_cast<std::size_t>(get_length(addr))};
+    auto addr_size {static_cast<std::size_t>(get_max_size(addr))};
     const auto error {::getnameinfo(addr_ptr, addr_len ? addr_len : addr_size,
                                     &host[0], host.size(),
                                     &serv[0], serv.size(),

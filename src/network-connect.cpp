@@ -83,8 +83,8 @@ Network::Result Network::connect(Fd fd, const Address& address, bool verbose)
     SockAddr addr {address};
     auto error {reset_last_error()};
     auto addr_ptr {get_pointer(addr)};
-    std::size_t addr_len {get_length(addr)};
-    std::size_t addr_size {get_max_size(addr)};
+    auto addr_len {static_cast<std::size_t>(get_length(addr))};
+    auto addr_size {static_cast<std::size_t>(get_max_size(addr))};
     const auto code {::connect(fd, addr_ptr, addr_len ? addr_len : addr_size)};
 
     if (code == connect_error) {
