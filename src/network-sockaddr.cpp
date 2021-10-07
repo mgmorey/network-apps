@@ -146,12 +146,12 @@ bool Network::is_valid(const SockAddr& addr)
 
     switch (family) {
     case AF_INET:
-        return length == sizeof(sockaddr_in);
+        return static_cast<std::size_t>(length) == sizeof(sockaddr_in);
     case AF_INET6:
-        return length == sizeof(sockaddr_in6);
+        return static_cast<std::size_t>(length) == sizeof(sockaddr_in6);
 #ifndef _WIN32
     case AF_UNIX:
-        return length > 0 && length <= sizeof(sockaddr_un);
+        return static_cast<std::size_t>(length) <= sizeof(sockaddr_un);
 #endif
     default:
         return false;
