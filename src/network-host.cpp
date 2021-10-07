@@ -2,6 +2,8 @@
 #include "network-sockaddr.h"   // is_valid()
 #include "network-types.h"      // SockAddr
 
+#include <cassert>      // assert()
+
 Network::Host::Host()
 {
 }
