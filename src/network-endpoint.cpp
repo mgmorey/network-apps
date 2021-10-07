@@ -1,5 +1,5 @@
 #include "network-endpoint.h"   // Endpoint, EndpointResult, Result,
-                                // to_endpoint()
+                                // get_endpoint()
 #include "network-address.h"    // Address, operator<<()
 #include "network-buffer.h"     // Buffer
 #include "network-sockaddr.h"   // get_length(), get_pointer()
@@ -20,7 +20,7 @@
 #include <string>       // std::string
 
 Network::EndpointResult
-Network::to_endpoint(const Address& address, int flags, bool verbose)
+Network::get_endpoint(const Address& address, int flags, bool verbose)
 {
     assert(!address.empty());
     std::string message;
@@ -61,8 +61,8 @@ Network::to_endpoint(const Address& address, int flags, bool verbose)
 }
 
 Network::EndpointResult
-Network::to_endpoint(const Address& address, bool numeric, bool verbose)
+Network::get_endpoint(const Address& address, bool numeric, bool verbose)
 {
     const int flags {numeric ? NI_NUMERICHOST | NI_NUMERICSERV : 0};
-    return to_endpoint(address, flags, verbose);
+    return get_endpoint(address, flags, verbose);
 }

@@ -2,7 +2,7 @@
 #include "network-addrinfo.h"   // AddrInfo
 #include "network-context.h"    // Context
 #include "network-endpoint.h"   // Endpoint, EndpointResult,
-                                // to_endpoint()
+                                // get_endpoint()
 #include "network-hints.h"      // Hints
 #include "network-host.h"       // Host
 #include "network-hostname.h"   // get_hostname()
@@ -71,7 +71,7 @@ namespace TestAddress
         void operator()(const Network::Host& t_host)
         {
             const auto address {t_host.address()};
-            const auto endpoint_result {to_endpoint(address, false, verbose)};
+            const auto endpoint_result {get_endpoint(address, false, verbose)};
             const auto endpoint {endpoint_result.first};
             const auto result {endpoint_result.second};
 
