@@ -26,7 +26,30 @@ static constexpr Network::SockAddr::size_type get_capacity()
     return std::max(storage_size, unix_size);
 }
 
-static std::size_t get_size(const Network::SockAddr& addr)
+int Network::get_family(const SockAddr& addr)
+{
+    const auto sa {reinterpret_cast<const sockaddr*>(addr.data())};
+    assert(sa != nullptr);
+    return sa->sa_family;
+}
+
+Network::socklen_type Network::get_length(const SockAddr& addr)
+{
+    const auto sa {reinterpret_cast<const sockaddr*>(addr.data())};
+    assert(sa != nullptr);
+
+    if (!sa->sa_family) {
+        return 0;
+    }
+
+#ifdef HAVE_SOCKADDR_SA_LEN
+    return sa->sa_len;
+#else
+    return 0;
+#endif
+}
+
+std::size_t Network::get_max_size(const Network::SockAddr& addr)
 {
     const auto family {Network::get_family(addr)};
 
@@ -47,35 +70,18 @@ static std::size_t get_size(const Network::SockAddr& addr)
     }
 }
 
-int Network::get_family(const SockAddr& addr)
-{
-    const auto sa {reinterpret_cast<const sockaddr*>(addr.data())};
-    return sa->sa_family;
-}
-
-Network::socklen_type Network::get_length(const SockAddr& addr)
-{
-    const auto sa {reinterpret_cast<const sockaddr*>(addr.data())};
-
-    if (!sa->sa_family) {
-        return 0;
-    }
-
-#ifdef HAVE_SOCKADDR_SA_LEN
-    return sa->sa_len;
-#else
-    return 0;
-#endif
-}
-
 const sockaddr* Network::get_pointer(const SockAddr& addr)
 {
-    return reinterpret_cast<const sockaddr*>(addr.data());
+    const auto ptr {reinterpret_cast<const sockaddr*>(addr.data())};
+    assert(ptr != nullptr);
+    return ptr;
 }
 
 sockaddr* Network::get_pointer(SockAddr& addr)
 {
-    return reinterpret_cast<sockaddr*>(addr.data());
+    const auto ptr {reinterpret_cast<sockaddr*>(addr.data())};
+    assert(ptr != nullptr);
+    return ptr;
 }
 
 Network::SockAddr Network::get_sockaddr(const sockaddr* sa,
@@ -91,7 +97,7 @@ Network::SockAddr Network::get_sockaddr(const sockaddr* sa,
     else {
         const auto data {reinterpret_cast<const Byte*>(sa)};
         addr.assign(data, data + size);
-        assert(size == get_size(addr));
+        assert(size == get_max_size(addr));
         assert(size == addr.size());
     }
 
@@ -136,28 +142,39 @@ Network::SockAddr Network::get_sockaddr(const Pathname& path)
 
 bool Network::is_valid(const SockAddr& addr)
 {
-    // const auto family {get_family(addr)};
-    const auto length {get_length(addr)};
-    const auto size {get_size(addr)};
+    const auto family {get_family(addr)};
 
-    if (size < static_cast<std::size_t>(length)) {
+    switch (family) {
+    case AF_INET:
+        break;
+    case AF_INET6:
+        break;
+#ifndef _WIN32
+    case AF_UNIX:
+        break;
+#endif
+    default:
         return false;
     }
 
-    if (addr.size() < size) {
+    const auto max_size {get_max_size(addr)};
+
+    if (addr.size() > max_size) {
+        return false;
+    }
+
+    auto length {static_cast<std::size_t>(get_length(addr))};
+
+    if (!length) {
+        length = addr.size();
+    }
+    else if (length > addr.size()) {
+        return false;
+    }
+
+    if (length > max_size) {
         return false;
     }
 
     return true;
-}
-
-Network::SockAddr Network::resize(const SockAddr& addr)
-{
-    auto size {get_size(addr)};
-
-    if (!size) {
-        size = addr.size();
-    }
-
-    return addr.substr(0, size);
 }

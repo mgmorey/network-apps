@@ -13,6 +13,7 @@
                         // gai_strerror(), getnameinfo()
 #endif
 
+#include <algorithm>    // std::max()
 #include <cassert>      // assert()
 #include <iostream>     // std::cerr, std::endl
 #include <sstream>      // std::ostringstream
@@ -26,9 +27,10 @@ Network::to_endpoint(const Address& address, int flags, bool verbose)
     SockAddr addr {address};
     Buffer host {NI_MAXHOST};
     Buffer serv {NI_MAXSERV};
-    auto addr_len {get_length(addr)};
     auto addr_ptr {get_pointer(addr)};
-    const auto error {::getnameinfo(addr_ptr, addr_len,
+    std::size_t addr_len {get_length(addr)};
+    std::size_t addr_size {get_max_size(addr)};
+    const auto error {::getnameinfo(addr_ptr, addr_len ? addr_len : addr_size,
                                     &host[0], host.size(),
                                     &serv[0], serv.size(),
                                     flags)};

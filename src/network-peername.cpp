@@ -2,8 +2,8 @@
                                 // Result, get_peername()
 #include "network-error.h"      // format_error(), get_last_error(),
                                 // reset_last_error()
-#include "network-sockaddr.h"   // get_length(), get_pointer(),
-                                // get_sockaddr()
+#include "network-sockaddr.h"   // get_pointer(), get_sockaddr()
+#include "network-socklen.h"    // socklen_type
 #include "network-types.h"      // SockAddr
 
 #ifdef _WIN32
@@ -30,8 +30,8 @@ Network::AddressResult Network::get_peername(Fd fd, bool verbose)
 
     std::string message;
     auto addr {get_sockaddr()};
-    auto addr_len {get_length(addr)};
     auto addr_ptr {get_pointer(addr)};
+    auto addr_len {static_cast<socklen_t>(addr.size())};
     auto error {reset_last_error()};
     const auto code {::getpeername(fd, addr_ptr, &addr_len)};
 
@@ -47,8 +47,8 @@ Network::AddressResult Network::get_peername(Fd fd, bool verbose)
         message = oss.str();
     }
     else {
+        addr = addr.substr(0, addr_len);
         assert(is_valid(addr));
-        addr = resize(addr);
     }
 
     assert(error == 0 ?
