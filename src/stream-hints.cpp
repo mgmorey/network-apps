@@ -11,13 +11,13 @@ std::ostream& Network::operator<<(std::ostream& os,
 
     os << "Hints("
        << Format("m_flags")
-       << hints.m_flags
+       << hints.flags()
        << Format(delim, tab, "m_family")
-       << hints.m_family
+       << hints.family()
        << Format(delim, tab, "m_socktype")
-       << hints.m_socktype
+       << hints.socktype()
        << Format(delim, tab, "m_protocol")
-       << hints.m_protocol
+       << hints.protocol()
        << ')';
     return os;
 }
