@@ -28,14 +28,13 @@ Network::AddressResult Network::get_peername(Fd fd, bool verbose)
                   << std::endl;
     }
 
-    std::string message;
+    Result result;
     auto addr {get_sockaddr()};
     auto addr_ptr {get_pointer(addr)};
     auto addr_len {get_length(addr)};
     auto error {reset_last_error()};
-    const auto code {::getpeername(fd, addr_ptr, &addr_len)};
 
-    if (code != 0) {
+    if (::getpeername(fd, addr_ptr, &addr_len)) {
         error = get_last_error();
         std::ostringstream oss;
         oss << "Call to getpeername("
@@ -44,16 +43,13 @@ Network::AddressResult Network::get_peername(Fd fd, bool verbose)
             << error
             << ": "
             << format_error(error);
-        message = oss.str();
+        result = {error, oss.str()};
     }
     else {
         addr = addr.substr(0, addr_len);
         assert(is_valid(addr));
     }
 
-    assert(error == 0 ?
-           message == "" :
-           message != "");
     const Address address(addr);
-    return AddressResult(address, {error, message});
+    return AddressResult(address, result);
 }

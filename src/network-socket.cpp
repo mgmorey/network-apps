@@ -69,7 +69,7 @@ Network::SocketResult Network::Socket::socket(bool t_verbose) const
                   << std::endl;
     }
 
-    std::string message;
+    Result result;
     auto error {reset_last_error()};
     const auto fd {::socket(static_cast<int>(m_family),
                             static_cast<int>(m_socktype),
@@ -89,13 +89,9 @@ Network::SocketResult Network::Socket::socket(bool t_verbose) const
             << error
             << ": "
             << format_error(error);
-        message = oss.str();
+        result = {error, oss.str()};
     }
 
-    assert(error == 0 ?
-           message == "" :
-           message != "");
-    const Result result(error, message);
     return SocketResult(fd, result);
 }
 
@@ -110,7 +106,7 @@ Network::SocketpairResult Network::Socket::socketpair(bool t_verbose) const
                   << std::endl;
     }
 
-    std::string message;
+    Result result;
     fd_type fds[] {fd_null, fd_null};
     auto error {reset_last_error()};
     auto code {::socketpair(static_cast<int>(m_family),
@@ -132,13 +128,11 @@ Network::SocketpairResult Network::Socket::socketpair(bool t_verbose) const
             << error
             << ": "
             << format_error(error);
-        message = oss.str();
+        result = {error, oss.str()};
     }
 
-    assert(error == 0 ?
-           message == "" :
-           message != "");
-    return SocketpairResult(FdPair(fds[0], fds[1]), {error, message});
+    const FdPair pair(fds[0], fds[1]);
+    return SocketpairResult(pair, result);
 }
 
 #endif

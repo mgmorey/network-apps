@@ -71,7 +71,6 @@ Network::AddrInfo::List::List(const Hostname& t_node,
                   << std::endl;
     }
 
-    std::string message;
     addrinfo ai = Network::Hints();
     const auto hints {get_hints(&ai, t_hints)};
     const auto node {t_node.empty() ? nullptr : t_node.c_str()};
@@ -86,9 +85,7 @@ Network::AddrInfo::List::List(const Hostname& t_node,
                   << std::endl;
     }
 
-    const auto error = ::getaddrinfo(node, serv, hints, &m_pointer);
-
-    if (error != 0) {
+    if (const auto error = ::getaddrinfo(node, serv, hints, &m_pointer)) {
         std::ostringstream oss;
         oss << "Call to getaddrinfo("
             << Nullable(node)
@@ -98,16 +95,11 @@ Network::AddrInfo::List::List(const Hostname& t_node,
             << error
             << ": "
             << ::gai_strerror(error);
-        message = oss.str();
+        m_result = {error, oss.str()};
     }
     else {
         assert(m_pointer != nullptr);
     }
-
-    assert(error == 0 ?
-           message == "" :
-           message != "");
-    m_result = {error, message};
 }
 
 Network::AddrInfo::List::~List()

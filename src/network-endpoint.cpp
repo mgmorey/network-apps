@@ -23,16 +23,12 @@ Network::EndpointResult
 Network::get_endpoint(const Address& address, int flags, bool verbose)
 {
     assert(!address.empty());
-    std::string message;
+    Result result;
     SockAddr addr {address};
     Buffer host {NI_MAXHOST};
     Buffer serv {NI_MAXSERV};
     const auto addr_ptr {get_pointer(addr)};
     const auto addr_len {get_length(addr)};
-    const auto error {::getnameinfo(addr_ptr, addr_len,
-                                    &host[0], host.size(),
-                                    &serv[0], serv.size(),
-                                    flags)};
 
     if (verbose) {
         std::cerr << "Calling getnameinfo("
@@ -41,7 +37,12 @@ Network::get_endpoint(const Address& address, int flags, bool verbose)
                   << std::endl;
     }
 
-    if (error != 0) {
+    const auto error {::getnameinfo(addr_ptr, addr_len,
+                                    &host[0], host.size(),
+                                    &serv[0], serv.size(),
+                                    flags)};
+
+    if (error) {
         std::ostringstream oss;
         oss << "Call to getnameinfo("
             << address
@@ -50,14 +51,11 @@ Network::get_endpoint(const Address& address, int flags, bool verbose)
             << " ("
             << ::gai_strerror(error)
             << ')';
-        message = oss.str();
+        result = {error, oss.str()};
     }
 
-    assert(error == 0 ?
-           message == "" :
-           message != "");
     const Endpoint endpoint(Endpoint(host, serv));
-    return EndpointResult(endpoint, {error, message});
+    return EndpointResult(endpoint, result);
 }
 
 Network::EndpointResult

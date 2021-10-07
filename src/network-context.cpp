@@ -13,9 +13,7 @@ Network::Context::Context(bool t_verbose)
 {
 #ifdef _WIN32
     if (!m_count++) {
-        const auto error {::WSAStartup(m_version, &m_data)};
-
-        if (error != 0) {
+        if (const auto error {::WSAStartup(m_version, &m_data)}) {
             std::ostringstream oss;
             oss << "Call to WSAStartup() returned "
                 << error

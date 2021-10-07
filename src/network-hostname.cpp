@@ -18,25 +18,20 @@
 
 Network::HostnameResult Network::get_hostname()
 {
-    std::string message;
+    Result result;
     Buffer host {NI_MAXHOST};
     auto error {reset_last_error()};
-    const auto code {::gethostname(&host[0], host.size() - 1)};
 
-    if (code != 0) {
+    if (::gethostname(&host[0], host.size() - 1)) {
         error = get_last_error();
         std::ostringstream oss;
-        oss << "Call to gethostname(...) returned "
-            << code
+        oss << "Call to gethostname(...) failed with error "
+            << error
             << ": "
             << format_error(error);
-        message = oss.str();
+        result = {error, oss.str()};
     }
 
-    assert(error == 0 ?
-           message == "" :
-           message != "");
-    const Result result(error, message);
     return HostnameResult(host, result);
 }
 

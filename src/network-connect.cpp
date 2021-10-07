@@ -78,7 +78,7 @@ Network::Result Network::connect(Fd fd, const Address& address, bool verbose)
                   << std::endl;
     }
 
-    std::string message;
+    Result result;
     const SockAddr addr {address};
     const auto addr_ptr {get_pointer(addr)};
     const auto addr_len {get_length(addr)};
@@ -96,13 +96,10 @@ Network::Result Network::connect(Fd fd, const Address& address, bool verbose)
             << error
             << ": "
             << format_error(error);
-        message = oss.str();
+        result = {error, oss.str()};
     }
 
-    assert(error == 0 ?
-           message == "" :
-           message != "");
-    return {error, message};
+    return result;
 }
 
 Network::SocketResults Network::connect(const Endpoint& endpoint,
