@@ -81,9 +81,9 @@ Network::Result Network::connect(Fd fd, const Address& address, bool verbose)
     std::string message;
     SockAddr addr {address};
     auto addr_ptr {get_pointer(addr)};
-    auto addr_len {static_cast<std::size_t>(get_length(addr))};
+    auto addr_len {get_length(addr)};
     auto error {reset_last_error()};
-    auto code {::connect(fd, addr_ptr, addr_len ? addr_len : addr.size())};
+    auto code {::connect(fd, addr_ptr, addr_len)};
 
     if (code == connect_error) {
         error = get_last_error();
