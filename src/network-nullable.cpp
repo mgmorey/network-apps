@@ -7,27 +7,27 @@ Network::Nullable::Nullable()
 }
 
 Network::Nullable::Nullable(const std::string &t_nullable) :
-    m_is_null(false),
+    m_null(false),
     m_value(t_nullable)
 {
 }
 
 Network::Nullable::Nullable(const char* t_value) :
-    m_is_null(t_value == nullptr),
+    m_null(t_value == nullptr),
     m_value(t_value == nullptr ? "" : t_value)
 {
 }
 
 Network::Nullable& Network::Nullable::operator=(const std::string &t_nullable)
 {
-    m_is_null = false;
+    m_null = false;
     m_value = t_nullable;
     return *this;
 }
 
 Network::Nullable& Network::Nullable::operator=(const char* t_value)
 {
-    m_is_null = (t_value == nullptr);
+    m_null = (t_value == nullptr);
     m_value = (t_value == nullptr) ? "" : t_value;
     return *this;
 }
@@ -39,7 +39,7 @@ Network::Nullable::operator std::string() const
 
 Network::Nullable::operator const char*() const
 {
-    return m_is_null ? nullptr : m_value.c_str();
+    return m_null ? nullptr : m_value.c_str();
 }
 
 bool Network::Nullable::empty() const
@@ -49,7 +49,7 @@ bool Network::Nullable::empty() const
 
 bool Network::Nullable::null() const
 {
-    return m_is_null;
+    return m_null;
 }
 
 std::ostream& Network::operator<<(std::ostream& os,

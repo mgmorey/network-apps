@@ -25,7 +25,7 @@ namespace Network
         bool null() const;
 
     private:
-        bool m_is_null;
+        bool m_null;
         std::string m_value;
     };
 
