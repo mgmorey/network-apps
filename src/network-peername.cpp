@@ -21,19 +21,23 @@
 
 Network::AddressResult Network::get_peername(Fd fd, bool verbose)
 {
-    if (verbose) {
-        std::cerr << "Calling getpeername("
-                  << fd
-                  << ", ...)"
-                  << std::endl;
-    }
-
     Result result;
     auto addr {get_sockaddr()};
     auto addr_ptr {get_pointer(addr)};
     auto addr_len {get_length(addr)};
     // cppcheck-suppress variableScope
     auto error {reset_last_error()};
+
+    if (verbose) {
+        std::cerr << "Calling getpeername("
+                  << fd
+                  << ", "
+                  << Address(addr)
+                  << ", "
+                  << static_cast<int>(addr_len)
+                  << ", ...)"
+                  << std::endl;
+    }
 
     if (::getpeername(fd, addr_ptr, &addr_len)) {
         error = get_last_error();
