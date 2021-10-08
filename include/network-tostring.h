@@ -1,5 +1,5 @@
-#ifndef NETWORK_STRING_H
-#define NETWORK_STRING_H
+#ifndef NETWORK_TOSTRING_H
+#define NETWORK_TOSTRING_H
 
 #include <cstddef>      // std::size_t
 #include <iomanip>      // std::hex, std::setfill(), std::setw(),
