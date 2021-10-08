@@ -1,7 +1,7 @@
 #ifndef NETWORK_TYPES_H
 #define NETWORK_TYPES_H
 
-#include "network-optional.h"   // Optional
+#include "network-string.h"   // String
 
 #include <cstddef>      // std::byte
 #include <string>       // std::string
@@ -14,8 +14,8 @@ namespace Network
     using Pathname = std::string;
     using SockAddr = ByteString;
 
-    using Hostname = Optional;
-    using Service = Optional;
+    using Hostname = String;
+    using Service = String;
 }
 
 #endif
