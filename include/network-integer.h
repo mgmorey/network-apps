@@ -7,7 +7,8 @@ namespace Network
     class Integer
     {
     public:
-        explicit Integer(T t_value) :
+        // cppcheck-suppress noExplicitConstructor
+        Integer(T t_value) :
             m_value(t_value)
         {
         }
@@ -33,7 +34,7 @@ namespace Network
             return (m_value == t_integer.m_value);
         }
 
-        explicit operator T() const
+        operator T() const
         {
             return m_value;
         }

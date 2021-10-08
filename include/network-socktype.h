@@ -8,7 +8,7 @@
 namespace Network
 {
     class SockType :
-        public Integer<int>
+        public Integer<short>
     {
         friend std::ostream& operator<<(std::ostream& os,
                                         const SockType& socktype);

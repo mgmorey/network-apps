@@ -9,7 +9,7 @@
 namespace Network
 {
     class Protocol :
-        public Integer<int>
+        public Integer<short>
     {
         friend std::ostream& operator<<(std::ostream& os,
                                         const Protocol& protocol);

@@ -8,7 +8,7 @@
 namespace Network
 {
     class Family :
-        public Integer<int>
+        public Integer<short>
     {
         friend std::ostream& operator<<(std::ostream& os,
                                         const Family& family);
