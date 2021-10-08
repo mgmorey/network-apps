@@ -35,7 +35,7 @@ std::ostream& Network::operator<<(std::ostream& os,
             break;
 #endif
         case AF_INET:
-            os << "sockaddr_sin("
+            os << "sockaddr_in("
                << Format("sin_port")
                << port
                << Format(delim, tab, "sin_addr")
@@ -43,7 +43,7 @@ std::ostream& Network::operator<<(std::ostream& os,
                << ')';
             break;
         case AF_INET6:
-            os << "sockaddr_sin6("
+            os << "sockaddr_in6("
                << Format("sin6_port")
                << port
                << Format(delim, tab, "sin6_addr")
