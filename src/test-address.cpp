@@ -212,7 +212,7 @@ namespace TestAddress
 
     static void test_host(const Network::Hostname& host)
     {
-        if (host.empty()) {
+        if (host.null() || host.empty()) {
             const auto flags {AI_ADDRCONFIG | AI_CANONNAME};
             Network::Hints hints(AF_UNSPEC, SOCK_STREAM, IPPROTO_TCP, flags);
             test_host(host, hints);

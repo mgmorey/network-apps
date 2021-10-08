@@ -58,13 +58,11 @@ Network::AddrInfo::InputIterator::operator++(int)
 }
 
 Network::AddrInfo::List::List(const Hostname& t_node,
-                              const Service& t_service,
+                              const Service& t_serv,
                               const Hints* t_hints,
                               bool t_verbose) :
     m_pointer(nullptr)
 {
-    assert(!t_node.empty() || !t_service.empty());
-
     if (t_verbose) {
         std::cerr << "Using "
                   << *t_hints
@@ -73,24 +71,22 @@ Network::AddrInfo::List::List(const Hostname& t_node,
 
     addrinfo ai = Network::Hints();
     const auto hints {get_hints(&ai, t_hints)};
-    const auto node {t_node.empty() ? nullptr : t_node.c_str()};
-    const auto serv {t_service.empty() ? nullptr : t_service.c_str()};
 
     if (t_verbose) {
         std::cerr << "Calling getaddrinfo("
-                  << (node == nullptr ? "<NULL>" : node)
+                  << t_node
                   << ", "
-                  << (serv == nullptr ? "<NULL>" : serv)
+                  << t_serv
                   << ", ...)"
                   << std::endl;
     }
 
-    if (const auto error = ::getaddrinfo(node, serv, hints, &m_pointer)) {
+    if (const auto error = ::getaddrinfo(t_node, t_serv, hints, &m_pointer)) {
         std::ostringstream oss;
         oss << "Call to getaddrinfo("
-            << Nullable(node)
+            << t_node
             << ", "
-            << Nullable(serv)
+            << t_serv
             << ", ...) returned "
             << error
             << ": "

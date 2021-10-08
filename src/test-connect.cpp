@@ -66,7 +66,7 @@ namespace TestConnect
 
         void test_socket(Network::Fd t_fd, const Network::Result& t_result)
         {
-            const auto cname {t_result.string()};
+            const Network::Nullable cname {t_result.string()};
             const auto hostname {m_endpoint.first};
             const auto service {m_endpoint.second};
             m_os << "Socket "
@@ -74,7 +74,7 @@ namespace TestConnect
                  << " connected to "
                  << service
                  << " on "
-                 << (cname.empty() ?
+                 << ((cname.null () || cname.empty()) ?
                      hostname :
                      cname)
                  << std::endl;

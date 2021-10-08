@@ -13,12 +13,16 @@ namespace Network
 
     public:
         Nullable();
-        explicit Nullable(const std::string& t_nullable);
-        explicit Nullable(const char* t_value);
+        // cppcheck-suppress noExplicitConstructor
+        Nullable(const std::string& t_nullable);
+        // cppcheck-suppress noExplicitConstructor
+        Nullable(const char* t_value);
         Nullable& operator=(const std::string& t_nullable);
         Nullable& operator=(const char* t_value);
-        explicit operator std::string() const;
-        const char* c_str() const;
+        operator std::string() const;
+        operator const char*() const;
+        bool empty() const;
+        bool null() const;
 
     private:
         bool m_is_null;
