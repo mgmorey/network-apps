@@ -141,7 +141,7 @@ namespace TestAddress
                                  const Network::Hints* hints)
     {
         const auto host {Network::get_hostname(hostname)};
-        const auto endpoint {Network::Endpoint(host, "")};
+        const auto endpoint {Network::Endpoint(host, nullptr)};
         return Network::AddrInfo::get<HostsResult>(endpoint, hints, verbose);
     }
 
