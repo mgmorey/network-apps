@@ -14,7 +14,7 @@ namespace Network
 
     EndpointResult get_endpoint(const Address& address, int flags,
                                 bool verbose = false);
-    EndpointResult get_endpoint(const Address& address, bool t_numeric = false,
+    EndpointResult get_endpoint(const Address& address, bool numeric = false,
                                 bool verbose = false);
 }
 
