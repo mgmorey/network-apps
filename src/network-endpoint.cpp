@@ -25,8 +25,8 @@ Network::get_endpoint(const Address& address, int flags, bool verbose)
     assert(!address.empty());
     Result result;
     SockAddr addr {address};
-    Buffer host_buffer {NI_MAXHOST};
-    Buffer serv_buffer {NI_MAXSERV};
+    Buffer host {NI_MAXHOST};
+    Buffer serv {NI_MAXSERV};
     const auto addr_ptr {get_pointer(addr)};
     const auto addr_len {get_length(addr)};
 
@@ -38,8 +38,8 @@ Network::get_endpoint(const Address& address, int flags, bool verbose)
     }
 
     const auto error {::getnameinfo(addr_ptr, addr_len,
-                                    &host_buffer[0], host_buffer.size(),
-                                    &serv_buffer[0], serv_buffer.size(),
+                                    &host[0], host.size(),
+                                    &serv[0], serv.size(),
                                     flags)};
 
     if (error) {
@@ -54,7 +54,7 @@ Network::get_endpoint(const Address& address, int flags, bool verbose)
         result = {error, oss.str()};
     }
 
-    const Endpoint endpoint(host_buffer, serv_buffer);
+    const Endpoint endpoint(host, serv);
     return EndpointResult(endpoint, result);
 }
 
