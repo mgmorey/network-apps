@@ -111,10 +111,7 @@ Network::SocketpairResult Network::Socket::socketpair(bool t_verbose) const
     fd_type fds[] {fd_null, fd_null};
     // cppcheck-suppress variableScope
     auto error {reset_last_error()};
-    auto code {::socketpair(static_cast<int>(m_family),
-                             static_cast<int>(m_socktype),
-                             static_cast<int>(m_protocol),
-                             fds)};
+    auto code {::socketpair(m_family, m_socktype, m_protocol, fds)};
 
     if (code == socket_error) {
         error = get_last_error();
