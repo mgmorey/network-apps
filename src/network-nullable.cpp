@@ -1,7 +1,5 @@
 #include "network-nullable.h"   // Nullable
 
-#include <ostream>      // std::ostream
-
 Network::Nullable::Nullable()
 {
 }
@@ -50,17 +48,4 @@ bool Network::Nullable::empty() const
 bool Network::Nullable::null() const
 {
     return m_null;
-}
-
-std::ostream& Network::operator<<(std::ostream& os,
-                                  const Nullable& nullable)
-{
-    if (nullable.null()) {
-        os << "nullptr";
-    }
-    else {
-        os << '"' << nullable.m_value << '"';
-    }
-
-    return os;
 }
