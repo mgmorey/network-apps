@@ -17,7 +17,6 @@
 #include <sys/socket.h> // sockaddr, socket(), socketpair()
 #endif
 
-#include <cassert>      // assert()
 #include <iostream>     // std::cerr, std::endl
 #include <sstream>      // std::ostringstream
 
