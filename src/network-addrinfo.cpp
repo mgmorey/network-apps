@@ -1,6 +1,5 @@
 #include "network-addrinfo.h"   // AddrInfo, Hints, Hostname, Result
                                 // Service, addrinfo, operator<<()
-#include "network-nullable.h"   // Nullable, operator<<()
 
 #ifdef _WIN32
 #include <ws2tcpip.h>   // freeaddrinfo(), getaddrinfo()

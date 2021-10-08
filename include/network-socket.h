@@ -3,7 +3,7 @@
 
 #include "network-hints.h"      // Hints
 #include "network-fd.h"         // Fd
-#include "network-host.h"       // Address, Host, Nullable
+#include "network-host.h"       // Address, Host
 #include "network-result.h"     // Result
 
 #ifdef _WIN32

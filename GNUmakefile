@@ -58,10 +58,10 @@ network-buffer.cpp network-close.cpp network-connect.cpp \
 network-context.cpp network-endpoint.cpp network-error.cpp \
 network-family.cpp network-flags.cpp network-format.cpp \
 network-hints.cpp network-host.cpp network-hostname.cpp \
-network-nullable.cpp network-peername.cpp network-protocol.cpp \
+network-optional.cpp network-peername.cpp network-protocol.cpp \
 network-result.cpp network-sockaddr.cpp network-socket.cpp \
 network-socktype.cpp stream-address.cpp stream-addrinfo.cpp \
-stream-hints.cpp stream-nullable.cpp stream-socket.cpp
+stream-hints.cpp stream-optional.cpp stream-socket.cpp
 
 ifneq "$(SYSTEM)" "MINGW64_NT"
 	executable_sources += test-socket.cpp unix-client.cpp unix-server.cpp

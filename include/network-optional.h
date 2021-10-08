@@ -1,24 +1,24 @@
-#ifndef NETWORK_NULLABLE_H
-#define NETWORK_NULLABLE_H
+#ifndef NETWORK_OPTIONAL_H
+#define NETWORK_OPTIONAL_H
 
 #include <ostream>      // std::ostream
 #include <string>       // std::string
 
 namespace Network
 {
-    class Nullable
+    class Optional
     {
         friend std::ostream& operator<<(std::ostream& os,
-                                        const Nullable& nullable);
+                                        const Optional& optional);
 
     public:
-        Nullable();
+        Optional();
         // cppcheck-suppress noExplicitConstructor
-        Nullable(const std::string& t_nullable);
+        Optional(const std::string& t_optional);
         // cppcheck-suppress noExplicitConstructor
-        Nullable(const char* t_value);
-        Nullable& operator=(const std::string& t_nullable);
-        Nullable& operator=(const char* t_value);
+        Optional(const char* t_value);
+        Optional& operator=(const std::string& t_optional);
+        Optional& operator=(const char* t_value);
         operator std::string() const;
         operator const char*() const;
         bool empty() const;
@@ -30,7 +30,7 @@ namespace Network
     };
 
     extern std::ostream& operator<<(std::ostream& os,
-                                    const Nullable& nullable);
+                                    const Optional& optional);
 }
 
 #endif
