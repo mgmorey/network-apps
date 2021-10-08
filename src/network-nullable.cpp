@@ -39,7 +39,7 @@ Network::Nullable::operator std::string() const
 
 Network::Nullable::operator const char*() const
 {
-    return null() ? nullptr : m_value.c_str();
+    return m_is_null ? nullptr : m_value.c_str();
 }
 
 bool Network::Nullable::empty() const
