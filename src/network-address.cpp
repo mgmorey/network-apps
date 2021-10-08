@@ -1,6 +1,7 @@
-#include "network-address.h"    // Address, operator<<(), sockaddr
+#include "network-address.h"    // Address, sockaddr, sockaddr_in,
+                                // sockaddr_in6, sockaddr_un
 #include "network-buffer.h"     // Buffer
-#include "network-string.h"     // to_string()
+#include "network-tostring.h"   // to_string()
 
 #ifdef _WIN32
 #include <winsock2.h>   // AF_INET, AF_INET6, AF_UNIX, htons()
@@ -11,12 +12,6 @@
 #endif
 
 #include <algorithm>    // std::min()
-#include <cassert>      // assert()
-#include <cstddef>      // offsetof()
-#include <iomanip>      // std::hex, std::setfill(), std::setw(),
-                        // std::uppercase
-#include <iostream>     // std::cerr, std::endl
-#include <sstream>      // std::ostringstream
 #include <string>       // std::string
 
 Network::Address::Address()

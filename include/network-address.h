@@ -14,7 +14,7 @@
 #include <sys/un.h>     // sockaddr_un
 #endif
 
-#include <cstddef>      // std::byte, std::size_t
+#include <cstddef>      // offsetof(), std::byte, std::size_t
 #include <ostream>      // std::ostream
 #include <string>       // std::string
 
