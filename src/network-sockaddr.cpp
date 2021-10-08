@@ -9,11 +9,10 @@
                         // sockaddr_storage
 #endif
 
-#include <algorithm>    // std::max()
+#include <algorithm>    // std::max(), std::min()
 #include <cassert>      // assert()
 #include <cstddef>      // std::byte, std::size_t
-#include <cstring>      // std::memset(), std::strlen(),
-                        // std::strncpy()
+#include <cstring>      // std::memcpy(), std::memset()
 
 static constexpr Network::SockAddr::size_type get_capacity()
 {
@@ -138,13 +137,14 @@ Network::SockAddr Network::get_sockaddr(const sockaddr_un* sun)
 Network::SockAddr Network::get_sockaddr(const Pathname& path)
 {
     sockaddr_un addr;
+    const std::string string {path};
+    const auto length {std::min(string.size(), sizeof addr.sun_path - 1)};
     std::memset(&addr, '\0', sizeof addr);
-    std::strncpy(addr.sun_path, path, sizeof addr.sun_path - 1);
-    addr.sun_path[sizeof addr.sun_path - 1] = '\0';
-    addr.sun_family = AF_LOCAL;
+    std::memcpy(addr.sun_path, string.data(), length);
 #ifdef HAVE_SOCKADDR_SA_LEN
     addr.sun_len = SUN_LEN(&addr);
 #endif
+    addr.sun_family = AF_LOCAL;
     return get_sockaddr(&addr);
 }
 
