@@ -1,4 +1,4 @@
-#include "network-string.h"   // String
+#include "network-string.h"     // String, operator<<()
 
 #include <ostream>      // std::ostream
 

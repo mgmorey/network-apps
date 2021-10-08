@@ -139,13 +139,12 @@ Network::SockAddr Network::get_sockaddr(const Pathname& path)
 {
     sockaddr_un addr;
     std::memset(&addr, '\0', sizeof addr);
-    std::strncpy(addr.sun_path, path.c_str(), sizeof addr.sun_path - 1);
+    std::strncpy(addr.sun_path, path, sizeof addr.sun_path - 1);
     addr.sun_path[sizeof addr.sun_path - 1] = '\0';
     addr.sun_family = AF_LOCAL;
 #ifdef HAVE_SOCKADDR_SA_LEN
     addr.sun_len = SUN_LEN(&addr);
 #endif
-    assert(std::strlen(addr.sun_path) == path.size());
     return get_sockaddr(&addr);
 }
 

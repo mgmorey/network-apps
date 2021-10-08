@@ -3,10 +3,10 @@
 #include "network-family.h"     // Family, operator<<()
 #include "network-flags.h"      // Flags, operator<<()
 #include "network-format.h"     // Format, operator<<()
-#include "network-string.h"     // String, operator<<()
 #include "network-protocol.h"   // Protocol, operator<<()
 #include "network-sockaddr.h"   // get_sockaddr()
 #include "network-socktype.h"   // SockType, operator<<()
+#include "network-types.h"      // Hostname, operator<<()
 
 #ifdef _WIN32
 #include <ws2tcpip.h>   // addrinfo
@@ -40,7 +40,7 @@ std::ostream& Network::operator<<(std::ostream& os,
        << Format(tab, "ai_addr")
        << Address(get_sockaddr(ai.ai_addr, ai.ai_addrlen))
        << Format(tab, "ai_canonname")
-       << String(ai.ai_canonname)
+       << Hostname(ai.ai_canonname)
        << Format(tab)
        << "...)";
     return os;

@@ -2,7 +2,7 @@
 #define NETWORK_HOST_H
 
 #include "network-address.h"    // Address
-#include "network-string.h"     // String
+#include "network-types.h"      // Hostname
 
 #ifdef _WIN32
 #include <ws2tcpip.h>   // addrinfo
@@ -22,11 +22,11 @@ namespace Network
         bool operator>(const Host& t_host) const;
         bool operator==(const Host& t_host) const;
         Address address() const;
-        String canonical_name() const;
+        Hostname canonical_name() const;
 
     protected:
         Address m_address;
-        String m_canonname;
+        Hostname m_canonname;
 
     public:
         static SockAddr get_sockaddr(const addrinfo& ai);

@@ -10,7 +10,7 @@ namespace Network
         {
         }
 
-        Optional(bool t_null) :
+        explicit Optional(bool t_null) :
             m_null(t_null)
         {
         }
@@ -19,7 +19,7 @@ namespace Network
         {
             return m_null;
         }
-            
+
 
     protected:
         bool m_null {true};

@@ -1,6 +1,5 @@
 #include "network-host.h"       // Address, Host, addrinfo
 #include "network-sockaddr.h"   // is_valid()
-#include "network-types.h"      // SockAddr, String
 
 #include <cassert>      // assert()
 
@@ -41,7 +40,7 @@ Network::Address Network::Host::address() const
     return m_address;
 }
 
-Network::String Network::Host::canonical_name() const
+Network::Hostname Network::Host::canonical_name() const
 {
     return m_canonname;
 }

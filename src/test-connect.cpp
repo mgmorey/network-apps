@@ -66,7 +66,7 @@ namespace TestConnect
 
         void test_socket(Network::Fd t_fd, const Network::Result& t_result)
         {
-            const Network::String cname {t_result.string()};
+            const Network::Hostname cname {t_result.string()};
             const auto hostname {m_endpoint.first};
             const auto service {m_endpoint.second};
             m_os << "Socket "
