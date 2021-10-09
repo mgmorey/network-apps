@@ -102,7 +102,6 @@ Network::SockAddr Network::get_sockaddr(const sockaddr* sa,
 
     if (sa == nullptr) {
         addr.assign(get_capacity(), static_cast<Byte>(0));
-        assert(size <= addr.size());
     }
     else {
         const auto data {reinterpret_cast<const Byte*>(sa)};
@@ -140,11 +139,11 @@ Network::SockAddr Network::get_sockaddr(const Pathname& path)
     const std::string string {path};
     const auto length {std::min(string.size(), sizeof addr.sun_path - 1)};
     std::memset(&addr, '\0', sizeof addr);
-    std::memcpy(addr.sun_path, string.data(), length);
 #ifdef HAVE_SOCKADDR_SA_LEN
-    addr.sun_len = SUN_LEN(&addr);
+    addr.sun_len = sizeof addr - sizeof addr.sun_path + length;
 #endif
     addr.sun_family = AF_LOCAL;
+    std::memcpy(addr.sun_path, string.data(), length);
     return get_sockaddr(&addr);
 }
 
@@ -180,16 +179,30 @@ bool Network::is_valid(const SockAddr& addr)
 #ifdef HAVE_SOCKADDR_SA_LEN
     const auto sa_length {static_cast<std::size_t>(get_sa_length(addr))};
 
-    if (!sa_length) {
-        return false;
-    }
+    switch (family) {
+    case AF_INET:
+        if (sa_length != sizeof(sockaddr_in)) {
+            return false;
+        }
+        break;
+    case AF_INET6:
+        if (sa_length != sizeof(sockaddr_in6)) {
+            return false;
+        }
+        break;
+#ifndef _WIN32
+    case AF_UNIX:
+    {
+        const auto sun_pointer {
+            reinterpret_cast<const sockaddr_un*>(addr.data())
+        };
 
-    if (sa_length > max_size) {
-        return false;
+        if (sa_length < SUN_LEN(sun_pointer)) {
+            return false;
+        }
+        break;
     }
-
-    if (addr.size() > sa_length) {
-        return false;
+#endif
     }
 #endif
 
