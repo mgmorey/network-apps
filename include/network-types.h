@@ -1,8 +1,7 @@
 #ifndef NETWORK_TYPES_H
 #define NETWORK_TYPES_H
 
-#include "network-bytes.h"    // Byte, ByteString
-#include "network-string.h"   // String
+#include "network-string.h"   // ByteString, String
 
 namespace Network
 {
