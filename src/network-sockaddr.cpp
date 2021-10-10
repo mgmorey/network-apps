@@ -136,14 +136,13 @@ Network::SockAddr Network::get_sockaddr(const sockaddr_un* sun)
 Network::SockAddr Network::get_sockaddr(const Pathname& path)
 {
     sockaddr_un addr;
-    const std::string string {path};
-    const auto length {std::min(string.size(), sizeof addr.sun_path - 1)};
+    const auto length {std::min(path.length(), sizeof addr.sun_path - 1)};
     std::memset(&addr, '\0', sizeof addr);
 #ifdef HAVE_SOCKADDR_SA_LEN
     addr.sun_len = sizeof addr - sizeof addr.sun_path + length;
 #endif
     addr.sun_family = AF_LOCAL;
-    std::memcpy(addr.sun_path, string.data(), length);
+    std::memcpy(addr.sun_path, path, length);
     return get_sockaddr(&addr);
 }
 
