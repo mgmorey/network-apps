@@ -47,9 +47,9 @@ Network::Hostname Network::Host::canonical_name() const
 
 Network::SockAddr Network::Host::get_sockaddr(const addrinfo& ai)
 {
-    const auto data {reinterpret_cast<const Byte*>(ai.ai_addr)};
-    const auto size {static_cast<std::size_t>(ai.ai_addrlen)};
-    const SockAddr addr(data, data + size);
-    assert(addr.empty() || is_valid(addr));
-    return addr;
+    const auto addr_data {reinterpret_cast<const Byte*>(ai.ai_addr)};
+    const auto addr_size {static_cast<std::size_t>(ai.ai_addrlen)};
+    const SockAddr sock_addr(addr_data, addr_data + addr_size);
+    assert(sock_addr.empty() || is_valid(sock_addr));
+    return sock_addr;
 }

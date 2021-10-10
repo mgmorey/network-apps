@@ -79,9 +79,9 @@ Network::Result Network::connect(Fd fd, const Address& address, bool verbose)
     }
 
     Result result;
-    const SockAddr addr {address};
-    const auto addr_ptr {get_pointer(addr)};
-    const auto addr_len {get_length(addr)};
+    const SockAddr sock_addr {address};
+    const auto addr_ptr {get_pointer(sock_addr)};
+    const auto addr_len {get_length(sock_addr)};
     // cppcheck-suppress variableScope
     auto error {reset_last_error()};
     const auto code {::connect(fd, addr_ptr, addr_len)};

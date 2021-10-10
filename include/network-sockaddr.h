@@ -15,11 +15,11 @@
 
 namespace Network
 {
-    extern int get_family(const SockAddr& addr);
-    extern socklen_type get_length(const SockAddr& addr);
-    extern std::size_t get_max_size(const SockAddr& addr);
-    extern const sockaddr* get_pointer(const SockAddr& addr);
-    extern sockaddr* get_pointer(SockAddr& addr);
+    extern int get_family(const SockAddr& sock_addr);
+    extern socklen_type get_length(const SockAddr& sock_addr);
+    extern std::size_t get_max_size(const SockAddr& sock_addr);
+    extern const sockaddr* get_pointer(const SockAddr& sock_addr);
+    extern sockaddr* get_pointer(SockAddr& sock_addr);
     extern SockAddr get_sockaddr(const sockaddr* sa = nullptr,
                                  std::size_t size = 0);
     extern SockAddr get_sockaddr(const sockaddr_in* sin);
@@ -28,7 +28,7 @@ namespace Network
     extern SockAddr get_sockaddr(const sockaddr_un* sun);
     extern SockAddr get_sockaddr(const Pathname& path);
 #endif
-    extern bool is_valid(const SockAddr& addr);
+    extern bool is_valid(const SockAddr& sock_addr);
 }
 
 #endif

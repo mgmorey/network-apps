@@ -25,12 +25,12 @@ static constexpr Network::SockAddr::size_type get_capacity()
     return std::max(storage_size, unix_size);
 }
 
-static std::size_t get_sa_length(const Network::SockAddr& addr)
+static std::size_t get_sa_length(const Network::SockAddr& sock_addr)
 {
-    const auto sa {reinterpret_cast<const sockaddr*>(addr.data())};
+    const auto sa {reinterpret_cast<const sockaddr*>(sock_addr.data())};
     assert(sa != nullptr);
 
-    if (addr.empty()) {
+    if (sock_addr.empty()) {
         return 0;
     }
 
@@ -41,27 +41,27 @@ static std::size_t get_sa_length(const Network::SockAddr& addr)
 #endif
 }
 
-int Network::get_family(const SockAddr& addr)
+int Network::get_family(const SockAddr& sock_addr)
 {
-    const auto sa {reinterpret_cast<const sockaddr*>(addr.data())};
+    const auto sa {reinterpret_cast<const sockaddr*>(sock_addr.data())};
     assert(sa != nullptr);
 
-    if (addr.empty()) {
+    if (sock_addr.empty()) {
         return 0;
     }
 
     return sa->sa_family;
 }
 
-Network::socklen_type Network::get_length(const SockAddr& addr)
+Network::socklen_type Network::get_length(const SockAddr& sock_addr)
 {
-    const auto length {static_cast<std::size_t>(get_sa_length(addr))};
-    return static_cast<socklen_type>(length ? length : addr.size());
+    const auto length {static_cast<std::size_t>(get_sa_length(sock_addr))};
+    return static_cast<socklen_type>(length ? length : sock_addr.size());
 }
 
-std::size_t Network::get_max_size(const Network::SockAddr& addr)
+std::size_t Network::get_max_size(const Network::SockAddr& sock_addr)
 {
-    const auto family {Network::get_family(addr)};
+    const auto family {Network::get_family(sock_addr)};
 
     switch (family) {
     case AF_INET:
@@ -80,16 +80,16 @@ std::size_t Network::get_max_size(const Network::SockAddr& addr)
     }
 }
 
-const sockaddr* Network::get_pointer(const SockAddr& addr)
+const sockaddr* Network::get_pointer(const SockAddr& sock_addr)
 {
-    const auto ptr {reinterpret_cast<const sockaddr*>(addr.data())};
+    const auto ptr {reinterpret_cast<const sockaddr*>(sock_addr.data())};
     assert(ptr != nullptr);
     return ptr;
 }
 
-sockaddr* Network::get_pointer(SockAddr& addr)
+sockaddr* Network::get_pointer(SockAddr& sock_addr)
 {
-    const auto ptr {reinterpret_cast<sockaddr*>(addr.data())};
+    const auto ptr {reinterpret_cast<sockaddr*>(sock_addr.data())};
     assert(ptr != nullptr);
     return ptr;
 }
@@ -98,19 +98,19 @@ Network::SockAddr Network::get_sockaddr(const sockaddr* sa,
                                         std::size_t size)
 {
     assert(size ? sa != nullptr : sa == nullptr);
-    SockAddr addr;
+    SockAddr sock_addr;
 
     if (sa == nullptr) {
-        addr.assign(get_capacity(), static_cast<Byte>(0));
+        sock_addr.assign(get_capacity(), static_cast<Byte>(0));
     }
     else {
-        const auto data {reinterpret_cast<const Byte*>(sa)};
-        addr.assign(data, data + size);
-        assert(size == get_max_size(addr));
-        assert(size == addr.size());
+        const auto addr_data {reinterpret_cast<const Byte*>(sa)};
+        sock_addr.assign(addr_data, addr_data + size);
+        assert(size == get_max_size(sock_addr));
+        assert(size == sock_addr.size());
     }
 
-    return addr;
+    return sock_addr;
 }
 
 Network::SockAddr Network::get_sockaddr(const sockaddr_in* sin)
@@ -148,13 +148,13 @@ Network::SockAddr Network::get_sockaddr(const Pathname& path)
 
 #endif
 
-bool Network::is_valid(const SockAddr& addr)
+bool Network::is_valid(const SockAddr& sock_addr)
 {
-    if (addr.empty()) {
+    if (sock_addr.empty()) {
         return false;
     }
 
-    const auto family {get_family(addr)};
+    const auto family {get_family(sock_addr)};
 
     switch (family) {
     case AF_INET:
@@ -169,14 +169,14 @@ bool Network::is_valid(const SockAddr& addr)
         return false;
     }
 
-    const auto max_size {get_max_size(addr)};
+    const auto max_size {get_max_size(sock_addr)};
 
-    if (addr.size() > max_size) {
+    if (sock_addr.size() > max_size) {
         return false;
     }
 
 #ifdef HAVE_SOCKADDR_SA_LEN
-    const auto sa_length {static_cast<std::size_t>(get_sa_length(addr))};
+    const auto sa_length {static_cast<std::size_t>(get_sa_length(sock_addr))};
 
     switch (family) {
     case AF_INET:
@@ -193,7 +193,7 @@ bool Network::is_valid(const SockAddr& addr)
     case AF_UNIX:
     {
         const auto sun_pointer {
-            reinterpret_cast<const sockaddr_un*>(addr.data())
+            reinterpret_cast<const sockaddr_un*>(sock_addr.data())
         };
 
         if (sa_length < SUN_LEN(sun_pointer)) {
