@@ -73,8 +73,7 @@ namespace TestSocket
 
     static void test_socket()
     {
-        Network::SockAddr addr {Network::get_sockaddr(PATH)};
-        Network::Address address {addr};
+        Network::Address address {Network::get_sockaddr(PATH)};
         std::cout << "Unix address: "
                   << address
                   << std::endl;
