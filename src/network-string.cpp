@@ -41,7 +41,27 @@ Network::String::operator const char*() const
     return m_null ? nullptr : m_value.c_str();
 }
 
+const char* Network::String::data() const
+{
+    return m_value.data();
+}
+
+char* Network::String::data()
+{
+    return m_value.data();
+}
+
 bool Network::String::empty() const
 {
     return m_value.empty();
+}
+
+std::string::size_type Network::String::length() const
+{
+    return m_value.length();
+}
+
+std::string::size_type Network::String::size() const
+{
+    return m_value.size();
 }

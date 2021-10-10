@@ -24,7 +24,11 @@ namespace Network
         String& operator=(const char* t_value);
         operator std::string() const;
         operator const char*() const;
+        char* data();
+        const char* data() const;
         bool empty() const;
+        std::string::size_type length() const;
+        std::string::size_type size() const;
 
     private:
         std::string m_value;
