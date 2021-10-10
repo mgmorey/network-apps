@@ -24,11 +24,11 @@ Network::get_endpoint(const Address& address, int flags, bool verbose)
 {
     assert(!address.empty());
     Result result;
-    SockAddr addr {address};
     Buffer host {NI_MAXHOST};
     Buffer serv {NI_MAXSERV};
-    const auto addr_ptr {get_pointer(addr)};
-    const auto addr_len {get_length(addr)};
+    const SockAddr sock_addr {address};
+    const auto addr_ptr {get_pointer(sock_addr)};
+    const auto addr_len {get_length(sock_addr)};
 
     if (verbose) {
         std::cerr << "Calling getnameinfo("
