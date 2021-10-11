@@ -1,8 +1,7 @@
-#include "network-address.h"    // Address, operator<<()
 #include "network-close.h"      // close()
-#include "network-connect.h"    // ConnectResult, ConnectResults
-                                // Endpoint, Hostname, Service,
-                                // connect()
+#include "network-connect.h"    // Address, Endpoint, Fd, Hints,
+                                // Socket, SocketResult, connect(),
+                                // operator<<()
 #include "network-context.h"    // Context
 #include "network-fd.h"         // Fd
 #include "network-hostname.h"   // get_hostname()
