@@ -20,6 +20,7 @@ namespace Network
     using error_type = int;
 #endif
 
+    enum { bind_error = -1 };
     enum { connect_error = -1 };
     enum { socket_error = SOCKET_ERROR };
     extern std::string format_error(error_type code);
