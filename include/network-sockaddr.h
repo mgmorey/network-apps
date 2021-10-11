@@ -28,7 +28,7 @@ namespace Network
     extern SockAddr get_sockaddr(const sockaddr_un* sun);
     extern SockAddr get_sockaddr(const Pathname& path);
 #endif
-    extern bool valid(const SockAddr& sock_addr);
+    extern bool is_valid(const SockAddr& sock_addr);
 }
 
 #endif

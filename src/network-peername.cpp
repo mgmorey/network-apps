@@ -2,7 +2,8 @@
                                 // Result, get_peername()
 #include "network-error.h"      // format_error(), get_last_error(),
                                 // reset_last_error()
-#include "network-sockaddr.h"   // get_pointer(), get_sockaddr()
+#include "network-sockaddr.h"   // get_pointer(), get_sockaddr(),
+                                // is_valid()
 
 #ifdef _WIN32
 #include <winsock2.h>   // getpeername()
@@ -50,7 +51,7 @@ Network::AddressResult Network::get_peername(Fd fd, bool verbose)
     }
     else {
         sock_addr.resize(addr_len);
-        assert(valid(sock_addr));
+        assert(is_valid(sock_addr));
     }
 
     const Address address(sock_addr);
