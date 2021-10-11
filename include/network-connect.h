@@ -11,8 +11,6 @@
 
 namespace Network
 {
-    enum { connect_error = -1 };
-
     class Connect
     {
     public:
