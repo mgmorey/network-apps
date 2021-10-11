@@ -50,7 +50,7 @@ Network::AddressResult Network::get_peername(Fd fd, bool verbose)
     }
     else {
         sock_addr.resize(addr_len);
-        assert(is_valid(sock_addr));
+        assert(valid(sock_addr));
     }
 
     const Address address(sock_addr);

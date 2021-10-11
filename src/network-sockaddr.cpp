@@ -148,7 +148,7 @@ Network::SockAddr Network::get_sockaddr(const Pathname& path)
 
 #endif
 
-bool Network::is_valid(const SockAddr& sock_addr)
+bool Network::valid(const SockAddr& sock_addr)
 {
     if (sock_addr.empty()) {
         return false;
