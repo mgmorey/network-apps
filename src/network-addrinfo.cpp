@@ -63,7 +63,8 @@ Network::AddrInfo::List::List(const Hostname& t_node,
     m_pointer(nullptr)
 {
     if (t_verbose) {
-        std::cerr << "Using "
+        std::cerr << "Trying socket hints:"
+                  << std::endl
                   << *t_hints
                   << std::endl;
     }

@@ -7,7 +7,7 @@ std::ostream& Network::operator<<(std::ostream& os,
                                   const Hints& hints)
 {
     static const std::string delim {", "};
-    static const int tab {0};
+    static const int tab {6};
 
     os << "Hints("
        << Format("m_flags")
