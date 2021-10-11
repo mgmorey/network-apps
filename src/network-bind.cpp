@@ -81,9 +81,19 @@ Network::Result Network::bind(Fd fd, const Address& address, bool verbose)
     const auto addr_len {get_length(sock_addr)};
     // cppcheck-suppress variableScope
     auto error {reset_last_error()};
-    const auto code {::bind(fd, addr_ptr, addr_len)};
 
-    if (code == bind_error) {
+    if (verbose) {
+        std::cerr << "Calling bind("
+                  << fd
+                  << ", "
+                  << address
+                  << ", "
+                  << static_cast<int>(addr_len)
+                  << ')'
+                  << std::endl;
+    }
+
+    if (::bind(fd, addr_ptr, addr_len) == bind_error) {
         error = get_last_error();
         std::ostringstream oss;
         oss << "Call to bind("

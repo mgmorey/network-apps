@@ -81,9 +81,19 @@ Network::Result Network::connect(Fd fd, const Address& address, bool verbose)
     const auto addr_len {get_length(sock_addr)};
     // cppcheck-suppress variableScope
     auto error {reset_last_error()};
-    const auto code {::connect(fd, addr_ptr, addr_len)};
 
-    if (code == connect_error) {
+    if (verbose) {
+        std::cerr << "Calling connect("
+                  << fd
+                  << ", "
+                  << address
+                  << ", "
+                  << static_cast<int>(addr_len)
+                  << ')'
+                  << std::endl;
+    }
+
+    if (::connect(fd, addr_ptr, addr_len) == connect_error) {
         error = get_last_error();
         std::ostringstream oss;
         oss << "Call to connect("
