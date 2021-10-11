@@ -5,7 +5,7 @@
                                 // connect()
 #include "network-context.h"    // Context
 #include "network-fd.h"         // Fd
-#include "network-peername.h"   // AddressResult, get_peername()
+#include "network-peername.h"   // get_peername()
 #include "network-socket.h"     // Socket
 
 #ifdef _WIN32

@@ -18,7 +18,8 @@
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
 
-Network::AddressResult Network::get_peername(Fd fd, bool verbose)
+std::pair<Network::Address, Network::Result>
+Network::get_peername(Fd fd, bool verbose)
 {
     Result result;
     auto sock_addr {get_sockaddr()};
@@ -55,5 +56,5 @@ Network::AddressResult Network::get_peername(Fd fd, bool verbose)
     }
 
     const Address address(sock_addr);
-    return AddressResult(address, result);
+    return std::pair(address, result);
 }

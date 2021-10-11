@@ -2,7 +2,7 @@
 #include "network-close.h"      // close()
 #include "network-fd.h"         // Fd
 #include "network-hints.h"      // Hints
-#include "network-peername.h"   // AddressResult, get_peername()
+#include "network-peername.h"   // get_peername()
 #include "network-result.h"     // Result
 #include "network-sockaddr.h"   // get_sockaddr()
 #include "network-socket.h"     // Socket, FdPair,

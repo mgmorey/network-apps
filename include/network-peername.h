@@ -10,9 +10,7 @@
 
 namespace Network
 {
-    using AddressResult = std::pair<Address, Result>;
-
-    extern AddressResult get_peername(Fd fd, bool verbose = false);
+    extern std::pair<Address, Result> get_peername(Fd fd, bool verbose = false);
 }
 
 #endif
