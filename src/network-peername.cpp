@@ -1,10 +1,8 @@
 #include "network-peername.h"   // AddressBuffer, AddressResult, Fd,
                                 // Result, get_peername()
 #include "network-error.h"      // format_error(), get_last_error(),
-                                // ureset_last_error()
+                                // reset_last_error()
 #include "network-sockaddr.h"   // get_pointer(), get_sockaddr()
-#include "network-socklen.h"    // socklen_type
-#include "network-types.h"      // SockAddr
 
 #ifdef _WIN32
 #include <winsock2.h>   // getpeername()
@@ -22,9 +20,9 @@
 Network::AddressResult Network::get_peername(Fd fd, bool verbose)
 {
     Result result;
-    auto addr {get_sockaddr()};
-    auto addr_ptr {get_pointer(addr)};
-    auto addr_len {get_length(addr)};
+    auto sock_addr {get_sockaddr()};
+    auto addr_ptr {get_pointer(sock_addr)};
+    auto addr_len {get_length(sock_addr)};
     // cppcheck-suppress variableScope
     auto error {reset_last_error()};
 
@@ -32,7 +30,7 @@ Network::AddressResult Network::get_peername(Fd fd, bool verbose)
         std::cerr << "Calling getpeername("
                   << fd
                   << ", "
-                  << Address(addr)
+                  << Address(sock_addr)
                   << ", "
                   << static_cast<int>(addr_len)
                   << ", ...)"
@@ -51,10 +49,10 @@ Network::AddressResult Network::get_peername(Fd fd, bool verbose)
         result = {error, oss.str()};
     }
     else {
-        addr = addr.substr(0, addr_len);
-        assert(is_valid(addr));
+        sock_addr.resize(addr_len);
+        assert(is_valid(sock_addr));
     }
 
-    const Address address(addr);
+    const Address address(sock_addr);
     return AddressResult(address, result);
 }

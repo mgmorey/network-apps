@@ -4,11 +4,9 @@
 #include "network-close.h"      // close()
 #include "network-error.h"      // format_error(), get_last_error(),
                                 // reset_last_error()
-#include "network-fd.h"         // Fd, fd_null, fd_type
-#include "network-host.h"       // get_sockaddr()
+#include "network-fd.h"         // Fd, fd_null
 #include "network-sockaddr.h"   // get_length(), get_pointer()
 #include "network-socket.h"     // Socket
-#include "network-types.h"      // Hostname, SockAddr
 
 #ifdef _WIN32
 #include <winsock2.h>   // connect()
@@ -58,7 +56,7 @@ Network::SocketResult Network::Connect::connect(const Socket& t_socket) const
         return SocketResult(close(fd), connect_result);
     }
 
-    Network::Hostname hostname {t_socket.canonical_name()};
+    const auto hostname {t_socket.canonical_name()};
     socket_result.second = Result(0, hostname);
     return socket_result;
 }

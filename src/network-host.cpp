@@ -1,5 +1,5 @@
 #include "network-host.h"       // Address, Host, addrinfo
-#include "network-sockaddr.h"   // is_valid()
+#include "network-sockaddr.h"   // SockAddr, is_valid()
 
 #include <cassert>      // assert()
 

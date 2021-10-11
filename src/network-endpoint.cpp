@@ -2,8 +2,8 @@
                                 // get_endpoint()
 #include "network-address.h"    // Address, operator<<()
 #include "network-buffer.h"     // Buffer
-#include "network-sockaddr.h"   // get_length(), get_pointer()
-#include "network-types.h"      // SockAddr
+#include "network-sockaddr.h"   // SockAddr, get_length(),
+                                // get_pointer()
 
 #ifdef _WIN32
 #include <ws2tcpip.h>   // NI_MAXHOST, NI_MAXSERV, NI_NUMERICHOST,
