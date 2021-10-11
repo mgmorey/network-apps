@@ -2,8 +2,8 @@
                                 // Result, get_peername()
 #include "network-error.h"      // format_error(), get_last_error(),
                                 // reset_last_error()
-#include "network-sockaddr.h"   // get_pointer(), get_sockaddr(),
-                                // is_valid()
+#include "network-sockaddr.h"   // get_length(), get_pointer(),
+                                // get_sockaddr(), is_valid()
 
 #ifdef _WIN32
 #include <winsock2.h>   // getpeername()

@@ -1,8 +1,7 @@
 #ifndef NETWORK_PEERNAME_H
 #define NETWORK_PEERNAME_H
 
-#include "network-address.h"    // Address, sockaddr, sock_len_type
-#include "network-buffer.h"     // Buffer
+#include "network-address.h"    // Address
 #include "network-fd.h"         // Fd
 #include "network-result.h"     // Result
 
