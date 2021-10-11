@@ -1,14 +1,13 @@
 #ifndef NETWORK_CONNECT_H
 #define NETWORK_CONNECT_H
 
-#include "network-endpoint.h"   // Endpoint
+#include "network-endpoint.h"   // Address, Endpoint
 #include "network-fd.h"         // Fd
 #include "network-hints.h"      // Hints
 #include "network-result.h"     // Result
 #include "network-socket.h"     // Socket, SocketResult
 
 #include <vector>       // std::vector
-#include <utility>      // std::pair
 
 namespace Network
 {

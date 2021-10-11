@@ -1,12 +1,11 @@
-#include "network-connect.h"    // Endpoint, Result, SocketResult,
-                                // SocketResults,
+#include "network-connect.h"    // Address, Endpoint, Fd, Hints,
+                                // Result, Socket, SocketResult,
+                                // fd_null
 #include "network-addrinfo.h"   // AddrInfo
 #include "network-close.h"      // close()
 #include "network-error.h"      // format_error(), get_last_error(),
                                 // reset_last_error()
-#include "network-fd.h"         // Fd, fd_null
 #include "network-sockaddr.h"   // get_length(), get_pointer()
-#include "network-socket.h"     // Socket
 
 #ifdef _WIN32
 #include <winsock2.h>   // connect()
