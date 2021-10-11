@@ -101,11 +101,11 @@ Network::Result Network::connect(Fd fd, const Address& address, bool verbose)
     return result;
 }
 
-Network::SocketResults Network::connect(const Endpoint& endpoint,
-                                        const Hints* hints,
-                                        bool verbose)
+std::vector<Network::SocketResult> Network::connect(const Endpoint& endpoint,
+                                                    const Hints* hints,
+                                                    bool verbose)
 {
-    SocketResults results;
+    std::vector<SocketResult> results;
     const auto sockets_result {get_sockets(endpoint, hints, verbose)};
     const auto sockets {sockets_result.first};
     const auto result {sockets_result.second};

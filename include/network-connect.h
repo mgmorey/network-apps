@@ -12,8 +12,6 @@
 
 namespace Network
 {
-    using SocketResults = std::vector<SocketResult>;
-
     enum { connect_error = -1 };
 
     class Connect
@@ -29,9 +27,9 @@ namespace Network
     };
 
     extern Result connect(Fd fd, const Address& address, bool verbose = false);
-    extern SocketResults connect(const Endpoint& endpoint,
-                                 const Hints* hints = nullptr,
-                                 bool verbose = false);
+    extern std::vector<SocketResult> connect(const Endpoint& endpoint,
+                                             const Hints* hints = nullptr,
+                                             bool verbose = false);
 }
 
 #endif
