@@ -5,7 +5,9 @@
                                 // connect()
 #include "network-context.h"    // Context
 #include "network-fd.h"         // Fd
+#include "network-hostname.h"   // get_hostname()
 #include "network-peername.h"   // get_peername()
+#include "network-sockname.h"   // get_sockname()
 #include "network-socket.h"     // Socket
 
 #ifdef _WIN32
@@ -50,6 +52,51 @@ namespace TestConnect
             test_socket(t_socket_result);
         }
 
+        Network::Hostname get_hostname()
+        {
+            const auto hostname_result {Network::get_hostname()};
+            const auto hostname {hostname_result.first};
+            const auto result {hostname_result.second};
+
+            if (result.result() != 0) {
+                std::cerr << "No hostname available: "
+                          << result
+                          << std::endl;
+            }
+
+            return hostname;
+        }
+
+        Network::Address get_peername(Network::Fd t_fd)
+        {
+            const auto address_result {Network::get_peername(t_fd, verbose)};
+            const auto address {address_result.first};
+            const auto result {address_result.second};
+
+            if (result.result()) {
+                std::cerr << "No peer information available: "
+                          << result
+                          << std::endl;
+            }
+
+            return address;
+        }
+
+        Network::Address get_sockname(Network::Fd t_fd)
+        {
+            const auto address_result {Network::get_sockname(t_fd, verbose)};
+            const auto address {address_result.first};
+            const auto result {address_result.second};
+
+            if (result.result()) {
+                std::cerr << "No socket information available: "
+                          << result
+                          << std::endl;
+            }
+
+            return address;
+        }
+
         void test_socket(const Network::SocketResult& t_socket_result)
         {
             const auto fd {t_socket_result.first};
@@ -66,17 +113,20 @@ namespace TestConnect
 
         void test_socket(Network::Fd t_fd, const Network::Result& t_result)
         {
-            const Network::Hostname cname {t_result.string()};
-            const auto hostname {m_endpoint.first};
-            const auto service {m_endpoint.second};
+            const auto hostname {get_hostname()};
+            const auto cname {t_result.string()};
+            const auto host {m_endpoint.first};
+            const auto serv {m_endpoint.second};
             m_os << "Socket "
                  << t_fd
-                 << " connected to "
-                 << service
+                 << " connected "
+                 << static_cast<std::string>(hostname)
+                 << " to "
+                 << static_cast<std::string>(serv)
                  << " on "
-                 << ((cname.null () || cname.empty()) ?
-                     hostname :
-                     cname)
+                 << ((cname.empty()) ?
+                     static_cast<std::string>(host) :
+                     static_cast<std::string>(cname))
                  << std::endl;
             test_peer(t_fd);
             Network::close(t_fd);
@@ -88,20 +138,16 @@ namespace TestConnect
 
         void test_peer(Network::Fd t_fd)
         {
-            const auto address_result {Network::get_peername(t_fd, verbose)};
-            const auto address {address_result.first};
-            const auto result {address_result.second};
+            const auto peer {get_peername(t_fd)};
+            const auto sock {get_sockname(t_fd)};
 
-            if (result.result() != 0) {
-                std::cerr << "No address: "
-                          << result
-                          << std::endl;
-            }
-            else {
+            if (!peer.empty() && !sock.empty()) {
                 m_os << "Socket "
                      << t_fd
-                     << " connected to "
-                     << address
+                     << " connected "
+                     << sock
+                     << " to "
+                     << peer
                      << std::endl;
             }
         }
