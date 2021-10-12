@@ -60,9 +60,9 @@ network-error.cpp network-family.cpp network-flags.cpp \
 network-format.cpp network-hints.cpp network-host.cpp \
 network-hostname.cpp network-string.cpp network-peername.cpp \
 network-protocol.cpp network-result.cpp network-sockaddr.cpp \
-network-socket.cpp network-sockname.cpp network-socktype.cpp \
-stream-address.cpp stream-addrinfo.cpp stream-hints.cpp \
-stream-socket.cpp stream-string.cpp
+network-socket.cpp network-sockets.cpp network-sockname.cpp \
+network-socktype.cpp stream-address.cpp stream-addrinfo.cpp \
+stream-hints.cpp stream-socket.cpp stream-string.cpp
 
 ifneq "$(SYSTEM)" "MINGW64_NT"
 	executable_sources += test-socket.cpp unix-client.cpp unix-server.cpp
