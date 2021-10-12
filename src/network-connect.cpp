@@ -1,11 +1,11 @@
 #include "network-connect.h"    // Address, Endpoint, Fd, Hints,
                                 // Result, Socket, SocketResult,
                                 // fd_null
-#include "network-addrinfo.h"   // AddrInfo
 #include "network-close.h"      // close()
 #include "network-error.h"      // format_error(), get_last_error(),
                                 // reset_last_error()
 #include "network-sockaddr.h"   // get_length(), get_pointer()
+#include "network-sockets.h"    // get_sockets()
 
 #ifdef _WIN32
 #include <winsock2.h>   // connect()
@@ -15,20 +15,11 @@
 
 #include <algorithm>    // std::transform()
 #include <cassert>      // assert()
+#include <iostream>     // std::cerr, std::endl
 #include <iterator>     // std::back_inserter()
 #include <sstream>      // std::ostringstream
 #include <utility>      // std::pair
 #include <vector>       // std::vector
-
-using Sockets = std::vector<Network::Socket>;
-using SocketsResult = std::pair<Sockets, Network::Result>;
-
-static SocketsResult get_sockets(const Network::Endpoint& endpoint,
-                                 const Network::Hints* hints,
-                                 bool verbose)
-{
-    return Network::AddrInfo::get<SocketsResult>(endpoint, hints, verbose);
-}
 
 Network::Connect::Connect(bool t_verbose) :
     m_verbose(t_verbose)
