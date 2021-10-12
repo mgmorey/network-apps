@@ -93,7 +93,7 @@ Network::Result Network::bind(Fd fd, const Address& address, bool verbose)
                   << std::endl;
     }
 
-    if (::bind(fd, addr_ptr, addr_len) == bind_error) {
+    if (::bind(fd, addr_ptr, addr_len) == socket_error) {
         error = get_last_error();
         std::ostringstream oss;
         oss << "Call to bind("

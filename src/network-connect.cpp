@@ -93,7 +93,7 @@ Network::Result Network::connect(Fd fd, const Address& address, bool verbose)
                   << std::endl;
     }
 
-    if (::connect(fd, addr_ptr, addr_len) == connect_error) {
+    if (::connect(fd, addr_ptr, addr_len) == socket_error) {
         error = get_last_error();
         std::ostringstream oss;
         oss << "Call to connect("
