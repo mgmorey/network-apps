@@ -1,12 +1,12 @@
 #include "network-addrinfo.h"   // operator<<()
-#include "network-address.h"    // Address, operator<<()
 #include "network-family.h"     // Family, operator<<()
 #include "network-flags.h"      // Flags, operator<<()
 #include "network-format.h"     // Format, operator<<()
 #include "network-protocol.h"   // Protocol, operator<<()
 #include "network-sockaddr.h"   // get_sockaddr()
 #include "network-socktype.h"   // SockType, operator<<()
-#include "network-types.h"      // Hostname, operator<<()
+#include "network-tostring.h"   // to_string()
+#include "network-types.h"      // Hostname
 
 #ifdef _WIN32
 #include <ws2tcpip.h>   // addrinfo
@@ -38,7 +38,7 @@ std::ostream& Network::operator<<(std::ostream& os,
        << Format(tab, "ai_addrlen")
        << ai.ai_addrlen
        << Format(tab, "ai_addr")
-       << Address(get_sockaddr(ai.ai_addr, ai.ai_addrlen))
+       << to_string(get_sockaddr(ai.ai_addr, ai.ai_addrlen), true)
        << Format(tab, "ai_canonname")
        << Hostname(ai.ai_canonname)
        << Format(tab)
