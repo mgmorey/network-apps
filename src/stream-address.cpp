@@ -1,6 +1,5 @@
 #include "network-address.h"    // Address, operator<<(),
                                 // std::ostream, std::string
-#include "network-family.h"     // Family, operator<<()
 #include "network-format.h"     // Format, operator<<()
 
 #ifdef _WIN32
@@ -8,6 +7,44 @@
 #else
 #include <sys/socket.h> // AF_INET, AF_INET6, AF_UNIX
 #endif
+
+static std::string get_prefix(Network::Address::family_type family)
+{
+    switch (family) {
+#ifndef _WIN32
+    case AF_UNIX:
+        return "sun";
+        break;
+#endif
+    case AF_INET:
+        return "sin";
+        break;
+    case AF_INET6:
+        return "sin6";
+        break;
+    default:
+        return "sa";
+    }
+}
+
+static std::string get_suffix(Network::Address::family_type family)
+{
+    switch (family) {
+#ifndef _WIN32
+    case AF_UNIX:
+        return "un";
+        break;
+#endif
+    case AF_INET:
+        return "in";
+        break;
+    case AF_INET6:
+        return "in6";
+        break;
+    default:
+        return "";
+    }
+}
 
 std::ostream& Network::operator<<(std::ostream& os,
                                   const Address& address)
@@ -19,43 +56,47 @@ std::ostream& Network::operator<<(std::ostream& os,
         os << "0x0";
     }
     else {
-        const auto family {address.family()};
-        const auto port {address.port()};
-        const auto text {address.text()};
+        const int family {address.family()};
+        const long length {address.length()};
+        const long port {address.port()};
+        const std::string prefix {get_prefix(family)};
+        const std::string suffix {get_suffix(family)};
+        const std::string text {address.text()};
+
+        os << (suffix.empty() ? "sockaddr" : "sockaddr_")
+           << suffix
+           << '(';
+
+#ifdef HAVE_SOCKADDR_SA_LEN
+            os << Format(prefix + "_len")
+               << length
+               << Format(delim, tab, prefix + "_family")
+               << family;
+#else
+            os << Format(prefix + "_family")
+               << family;
+#endif
 
         switch (family) {
 #ifndef _WIN32
         case AF_UNIX:
-            os << "sockaddr_un("
-               << Format("sun_path")
-               << text
-               << ')';
+            os << Format(delim, tab, prefix + "_path")
+               << text;
             break;
 #endif
         case AF_INET:
-            os << "sockaddr_in("
-               << Format("sin_port")
-               << port
-               << Format(delim, tab, "sin_addr")
-               << text
-               << ')';
-            break;
         case AF_INET6:
-            os << "sockaddr_in6("
-               << Format("sin6_port")
+            os << Format(delim, tab, prefix + "_port")
                << port
-               << Format(delim, tab, "sin6_addr")
-               << text
-               << ')';
+               << Format(delim, tab, prefix + "_addr")
+               << text;
             break;
         default:
-            os << "sockaddr("
-               << Format("sa_family")
-               << Family(family)
-               << Format(delim, tab, "sa_data")
-               << text
-               << ')';
+            os << Format(delim, tab, prefix + "_data")
+               << text;
         }
+
+        os << ')';
     }
 
     return os;

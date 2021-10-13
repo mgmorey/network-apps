@@ -76,6 +76,22 @@ Network::Address::family_type Network::Address::family() const
     }
 }
 
+Network::Address::length_type Network::Address::length() const
+{
+    switch (sa_family()) {
+#ifndef _WIN32
+    case AF_UNIX:
+        return sun_length();
+#endif
+    case AF_INET:
+        return sin_length();
+    case AF_INET6:
+        return sin6_length();
+    default:
+        return sa_length();
+    }
+}
+
 Network::Address::port_type Network::Address::port() const
 {
     switch (sa_family()) {
@@ -119,6 +135,15 @@ Network::Address::family_type Network::Address::sa_family() const
     return sa().sa_family;
 }
 
+Network::Address::length_type Network::Address::sa_length() const
+{
+#ifdef HAVE_SOCKADDR_SA_LEN
+    return sa().sa_len;
+#else
+    return 0;
+#endif
+}
+
 std::string Network::Address::sa_text() const
 {
     return to_string(m_value, true);
@@ -137,6 +162,15 @@ in_addr Network::Address::sin_addr() const
 Network::Address::family_type Network::Address::sin_family() const
 {
     return sin().sin_family;
+}
+
+Network::Address::length_type Network::Address::sin_length() const
+{
+#ifdef HAVE_SOCKADDR_SA_LEN
+    return sin().sin_len;
+#else
+    return 0;
+#endif
 }
 
 Network::Address::port_type Network::Address::sin_port() const
@@ -167,6 +201,15 @@ Network::Address::family_type Network::Address::sin6_family() const
     return sin6().sin6_family;
 }
 
+Network::Address::length_type Network::Address::sin6_length() const
+{
+#ifdef HAVE_SOCKADDR_SA_LEN
+    return sin6().sin6_len;
+#else
+    return 0;
+#endif
+}
+
 Network::Address::port_type Network::Address::sin6_port() const
 {
     return sin6().sin6_port;
@@ -190,6 +233,11 @@ const sockaddr_un& Network::Address::sun() const
 Network::Address::family_type Network::Address::sun_family() const
 {
     return sun().sun_family;
+}
+
+Network::Address::length_type Network::Address::sun_length() const
+{
+    return 0;
 }
 
 Network::Address::value_type Network::Address::sun_path() const

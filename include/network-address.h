@@ -3,15 +3,16 @@
 
 #include "network-fd.h"         // Fd
 #include "network-result.h"     // Result
+#include "network-socklen.h"    // socklen_type
 #include "network-types.h"      // SockAddr
 
 #ifdef _WIN32
-#include <winsock2.h>   // sockaddr, sockaddr_in
-#include <ws2tcpip.h>   // sockaddr_in6
+#include <winsock2.h>       // sockaddr, sockaddr_in
+#include <ws2tcpip.h>       // sockaddr_in6
 #else
-#include <netinet/in.h> // sockaddr_in, sockaddr_in6
-#include <sys/socket.h> // sockaddr
-#include <sys/un.h>     // sockaddr_un
+#include <netinet/in.h>     // sockaddr_in, sockaddr_in6
+#include <sys/socket.h>     // sockaddr
+#include <sys/un.h>         // sockaddr_un
 #endif
 
 #include <cstddef>      // offsetof(), std::byte, std::size_t
@@ -30,6 +31,7 @@ namespace Network
         using family_type = sa_family_t;
         using port_type = in_port_t;
 #endif
+        using length_type = socklen_type;
         using value_type = SockAddr;
 
         Address();
@@ -41,6 +43,7 @@ namespace Network
         operator value_type() const;
         bool empty() const;
         family_type family() const;
+        length_type length() const;
         port_type port() const;
         std::string text() const;
 
@@ -48,23 +51,27 @@ namespace Network
         const sockaddr& sa() const;
         value_type sa_data() const;
         family_type sa_family() const;
+        length_type sa_length() const;
         std::string sa_text() const;
 
         const sockaddr_in& sin() const;
         in_addr sin_addr() const;
         family_type sin_family() const;
+        length_type sin_length() const;
         port_type sin_port() const;
         std::string sin_text() const;
 
         const sockaddr_in6& sin6() const;
         in6_addr sin6_addr() const;
         family_type sin6_family() const;
+        length_type sin6_length() const;
         port_type sin6_port() const;
         std::string sin6_text() const;
 
 #ifndef _WIN32
         const sockaddr_un& sun() const;
         family_type sun_family() const;
+        length_type sun_length() const;
         value_type sun_path() const;
         std::string sun_text() const;
 #endif
