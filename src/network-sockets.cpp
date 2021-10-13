@@ -6,6 +6,5 @@ Network::SocketsResult Network::get_sockets(const Network::Endpoint& endpoint,
                                             const Network::Hints* hints,
                                             bool verbose)
 {
-    return Network::AddrInfo::get<Network::SocketsResult>
-        (endpoint, hints, verbose);
+    return AddrInfo::get<SocketsResult>(endpoint, hints, verbose);
 }
