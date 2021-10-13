@@ -56,9 +56,11 @@ std::ostream& Network::operator<<(std::ostream& os,
         os << "0x0";
     }
     else {
-        const int family {address.family()};
+#ifdef HAVE_SOCKADDR_SA_LEN
         const long length {address.length()};
-        const long port {address.port()};
+#endif
+        const int family {address.family()};
+        const int port {address.port()};
         const std::string prefix {get_prefix(family)};
         const std::string suffix {get_suffix(family)};
         const std::string text {address.text()};
