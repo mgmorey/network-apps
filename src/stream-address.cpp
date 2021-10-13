@@ -1,14 +1,12 @@
-#include "network-address.h"    // Address, operator<<(), sockaddr,
+#include "network-address.h"    // Address, operator<<(),
                                 // std::ostream, std::string
 #include "network-family.h"     // Family, operator<<()
 #include "network-format.h"     // Format, operator<<()
 
 #ifdef _WIN32
-#include <winsock2.h>   // AF_INET, AF_INET6, AF_UNIX, AF_UNSPEC,
-                        // ntohs()
+#include <winsock2.h>   // AF_INET, AF_INET6, AF_UNIX
 #else
-#include <sys/socket.h> // AF_INET, AF_INET6, AF_UNIX, AF_UNSPEC,
-                        // ntohs()
+#include <sys/socket.h> // AF_INET, AF_INET6, AF_UNIX
 #endif
 
 std::ostream& Network::operator<<(std::ostream& os,
