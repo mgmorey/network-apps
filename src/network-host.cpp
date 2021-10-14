@@ -1,7 +1,5 @@
-#include "network-host.h"       // Address, Host, addrinfo
-#include "network-sockaddr.h"   // SockAddr, is_valid()
-
-#include <cassert>      // assert()
+#include "network-host.h"       // Address, Host, Hostname, SockAddr,
+                                // addrinfo
 
 Network::Host::Host()
 {
