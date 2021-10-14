@@ -1,4 +1,5 @@
 #include "network-sockaddr.h"   // SockAddr, sockaddr, socklen_type
+#include "network-tostring.h"   // to_string()
 #include "network-unix.h"       // SUN_LEN(), sockaddr_un
 
 #ifdef _WIN32
@@ -152,6 +153,12 @@ Network::SockAddr Network::get_sockaddr(const Pathname& path)
 
 bool Network::is_valid(const SockAddr& sock_addr, bool verbose)
 {
+    if (verbose) {
+        std::cerr << "Validating socket address: "
+                  << to_string(sock_addr, true)
+                  << std::endl;
+    }
+
     if (sock_addr.empty()) {
         return false;
     }
@@ -159,7 +166,7 @@ bool Network::is_valid(const SockAddr& sock_addr, bool verbose)
     const auto family {get_family(sock_addr)};
 
     if (verbose) {
-        std::cerr << "Socket address family: "
+        std::cerr << "    Socket address family: "
                   << family
                   << std::endl;
     }
@@ -180,10 +187,10 @@ bool Network::is_valid(const SockAddr& sock_addr, bool verbose)
     const auto max_size {get_max_size(sock_addr)};
 
     if (verbose) {
-        std::cerr << "Actual socket address size: "
+        std::cerr << "    Actual socket address size: "
                   << sock_addr.size()
                   << std::endl
-                  << "Maximum socket address size: "
+                  << "    Maximum socket address size: "
                   << max_size
                   << std::endl;
     }
@@ -196,7 +203,7 @@ bool Network::is_valid(const SockAddr& sock_addr, bool verbose)
     const auto sa_length {static_cast<std::size_t>(get_sa_length(sock_addr))};
 
     if (verbose) {
-        std::cerr << "Stored socket address length: "
+        std::cerr << "    Stored socket address length: "
                   << sa_length
                   << std::endl;
     }

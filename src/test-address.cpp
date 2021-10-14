@@ -1,14 +1,12 @@
 #include "network-address.h"    // Address
 #include "network-addrinfo.h"   // AddrInfo
 #include "network-context.h"    // Context
-#include "network-endpoint.h"   // Endpoint, EndpointResult,
-                                // get_endpoint()
+#include "network-endpoint.h"   // Endpoint, EndpointResult, Hostname,
+                                // Result, SockAddr, get_endpoint()
 #include "network-hints.h"      // Hints
 #include "network-host.h"       // Host
 #include "network-hostname.h"   // get_hostname()
-#include "network-result.h"     // Result
-#include "network-socket.h"     // Socket
-#include "network-types.h"      // Hostname, Service
+#include "network-sockaddr.h"   // is_valid()
 
 #ifdef _WIN32
 #include <getopt.h>     // getopt(), optarg, opterr, optind, optopt
@@ -24,6 +22,7 @@
 
 #include <algorithm>    // std::for_each(), std::remove()
                         // std::unique()
+#include <cassert>      // assert()
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <iterator>     // std::distance()
@@ -71,29 +70,33 @@ namespace TestAddress
         void operator()(const Network::Host& t_host)
         {
             const auto address {t_host.address()};
-            const auto endpoint_result {get_endpoint(address, false, verbose)};
-            const auto endpoint {endpoint_result.first};
-            const auto result {endpoint_result.second};
+            const Network::SockAddr sock_addr {address};
 
-            if (result.result() != 0) {
-                std::cerr << result
-                          << std::endl;
-                return;
+            if (Network::is_valid(sock_addr, verbose)) {
+                const auto endpoint_result {get_endpoint(address, false, verbose)};
+                const auto endpoint {endpoint_result.first};
+                const auto result {endpoint_result.second};
+
+                if (result.result() != 0) {
+                    std::cerr << result
+                              << std::endl;
+                    return;
+                }
+
+                Values values = {
+                    address.text(),
+                    endpoint.first,
+                    Network::Hostname(t_host.canonical_name())
+                };
+                erase(values, "");
+                unique(values);
+
+                if (values.empty()) {
+                    return;
+                }
+
+                print(values);
             }
-
-            Values values = {
-                address.text(),
-                endpoint.first,
-                Network::Hostname(t_host.canonical_name())
-            };
-            erase(values, "");
-            unique(values);
-
-            if (values.empty()) {
-                return;
-            }
-
-            print(values);
         }
 
         void print(const Values& values)
