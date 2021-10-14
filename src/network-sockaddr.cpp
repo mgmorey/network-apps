@@ -1,5 +1,6 @@
-#include "network-sockaddr.h"   // SockAddr, sockaddr, socklen_type
-#include "network-tostring.h"   // to_string()
+#include "network-sockaddr.h"   // SockAddr, operator<<(), sockaddr,
+                                // sockaddr_in, sockaddr_in6,
+                                // socklen_type
 #include "network-unix.h"       // SUN_LEN(), sockaddr_un
 
 #ifdef _WIN32
