@@ -74,9 +74,12 @@ namespace TestSocket
     static void test_socket()
     {
         Network::Address address {Network::get_sockaddr(PATH)};
-        std::cout << "Unix address: "
-                  << address
-                  << std::endl;
+
+        if (Network::is_valid(address, verbose)) {
+            std::cout << "Unix address: "
+                      << address
+                      << std::endl;
+        }
     }
 
     static void test_socketpair(const Network::Hints& hints)
