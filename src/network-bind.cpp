@@ -4,7 +4,8 @@
 #include "network-close.h"      // close()
 #include "network-error.h"      // format_error(), get_last_error(),
                                 // reset_last_error()
-#include "network-sockaddr.h"   // get_length(), get_pointer()
+#include "network-sockaddr.h"   // get_length(), get_pointer(),
+                                // is_valid()
 #include "network-sockets.h"    // get_sockets()
 
 #ifdef _WIN32
@@ -58,7 +59,7 @@ Network::Result Network::Bind::bind(Fd t_fd, const Socket& t_socket) const
 
 Network::Result Network::bind(Fd fd, const Address& address, bool verbose)
 {
-    assert(!address.empty());
+    assert(is_valid(address, verbose));
 
     if (verbose) {
         std::cerr << "Trying "
