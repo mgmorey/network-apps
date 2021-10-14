@@ -69,9 +69,8 @@ namespace TestAddress
         void operator()(const Network::Host& t_host)
         {
             const auto address {t_host.address()};
-            const Network::SockAddr sock_addr {address};
 
-            if (Network::is_valid(sock_addr, verbose)) {
+            if (Network::is_valid(address, verbose)) {
                 const auto endpoint_result {get_endpoint(address, false, verbose)};
                 const auto endpoint {endpoint_result.first};
                 const auto result {endpoint_result.second};
