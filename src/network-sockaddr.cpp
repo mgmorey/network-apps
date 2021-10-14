@@ -169,10 +169,10 @@ bool Network::is_valid(const SockAddr& sock_addr, bool verbose)
 
     if (verbose) {
         std::cerr << std::left
-                  << std::setw(36)
-                  << "    Socket address family: "
+                  << std::setw(20)
+                  << "    Family:"
                   << std::right
-                  << std::setw(4)
+                  << std::setw(5)
                   << family
                   << std::endl;
     }
@@ -194,17 +194,17 @@ bool Network::is_valid(const SockAddr& sock_addr, bool verbose)
 
     if (verbose) {
         std::cerr << std::left
-                  << std::setw(36)
-                  << "    Actual socket address size: "
+                  << std::setw(20)
+                  << "    Actual size:"
                   << std::right
-                  << std::setw(4)
+                  << std::setw(5)
                   << sock_addr.size()
                   << std::endl
                   << std::left
-                  << std::setw(36)
-                  << "    Maximum socket address size: "
+                  << std::setw(20)
+                  << "    Maximum size:"
                   << std::right
-                  << std::setw(4)
+                  << std::setw(5)
                   << max_size
                   << std::endl;
     }
@@ -218,10 +218,10 @@ bool Network::is_valid(const SockAddr& sock_addr, bool verbose)
 
     if (verbose) {
         std::cerr << std::left
-                  << std::setw(36)
-                  << "    Stored socket address length: "
+                  << std::setw(20)
+                  << "    Stored length:"
                   << std::right
-                  << std::setw(4)
+                  << std::setw(5)
                   << sa_length
                   << std::endl;
     }
@@ -247,10 +247,10 @@ bool Network::is_valid(const SockAddr& sock_addr, bool verbose)
 
         if (verbose) {
             std::cerr << std::left
-                      << std::setw(36)
-                      << "    Computed socket address length: "
+                      << std::setw(20)
+                      << "    Computed length:"
                       << std::right
-                      << std::setw(4)
+                      << std::setw(5)
                       << sun_length
                       << std::endl;
         }
