@@ -237,7 +237,11 @@ Network::Address::family_type Network::Address::sun_family() const
 
 Network::Address::length_type Network::Address::sun_length() const
 {
+#ifdef HAVE_SOCKADDR_SA_LEN
+    return sun().sun_len;
+#else
     return 0;
+#endif
 }
 
 Network::Address::value_type Network::Address::sun_path() const
