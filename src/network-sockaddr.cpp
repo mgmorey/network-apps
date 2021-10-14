@@ -27,6 +27,7 @@ static constexpr Network::SockAddr::size_type get_capacity()
 
 static std::size_t get_sa_length(const Network::SockAddr& sock_addr)
 {
+#ifdef HAVE_SOCKADDR_SA_LEN
     const auto sa {reinterpret_cast<const sockaddr*>(sock_addr.data())};
     assert(sa != nullptr);
 
@@ -34,9 +35,9 @@ static std::size_t get_sa_length(const Network::SockAddr& sock_addr)
         return 0;
     }
 
-#ifdef HAVE_SOCKADDR_SA_LEN
     return sa->sa_len;
 #else
+    static_cast<void>(sock_addr);
     return 0;
 #endif
 }
