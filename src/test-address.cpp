@@ -25,7 +25,6 @@
 #include <cassert>      // assert()
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
 #include <iostream>     // std::cerr, std::cout, std::endl
-#include <iterator>     // std::distance()
 #include <ostream>      // std::ostream
 #include <string>       // std::string
 #include <utility>      // std::pair
