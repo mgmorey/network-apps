@@ -13,6 +13,7 @@
 
 #include <algorithm>    // std::max(), std::min()
 #include <cassert>      // assert()
+#include <iomanip>      // std::left, std::right, std::setw()
 #include <iostream>     // std::cerr, std::endl
 #include <cstddef>      // std::byte, std::size_t
 #include <cstring>      // std::memcpy(), std::memset()
@@ -167,7 +168,11 @@ bool Network::is_valid(const SockAddr& sock_addr, bool verbose)
     const auto family {get_family(sock_addr)};
 
     if (verbose) {
-        std::cerr << "    Socket address family: "
+        std::cerr << std::left
+                  << std::setw(36)
+                  << "    Socket address family: "
+                  << std::right
+                  << std::setw(4)
                   << family
                   << std::endl;
     }
@@ -188,10 +193,18 @@ bool Network::is_valid(const SockAddr& sock_addr, bool verbose)
     const auto max_size {get_max_size(sock_addr)};
 
     if (verbose) {
-        std::cerr << "    Actual socket address size: "
+        std::cerr << std::left
+                  << std::setw(36)
+                  << "    Actual socket address size: "
+                  << std::right
+                  << std::setw(4)
                   << sock_addr.size()
                   << std::endl
+                  << std::left
+                  << std::setw(36)
                   << "    Maximum socket address size: "
+                  << std::right
+                  << std::setw(4)
                   << max_size
                   << std::endl;
     }
@@ -204,7 +217,11 @@ bool Network::is_valid(const SockAddr& sock_addr, bool verbose)
     const auto sa_length {static_cast<std::size_t>(get_sa_length(sock_addr))};
 
     if (verbose) {
-        std::cerr << "    Stored socket address length: "
+        std::cerr << std::left
+                  << std::setw(36)
+                  << "    Stored socket address length: "
+                  << std::right
+                  << std::setw(4)
                   << sa_length
                   << std::endl;
     }
@@ -226,8 +243,19 @@ bool Network::is_valid(const SockAddr& sock_addr, bool verbose)
         const auto sun_pointer {
             reinterpret_cast<const sockaddr_un*>(sock_addr.data())
         };
+        const auto sun_length {SUN_LEN(sun_pointer)};
 
-        if (sa_length < SUN_LEN(sun_pointer)) {
+        if (verbose) {
+            std::cerr << std::left
+                      << std::setw(36)
+                      << "    Computed socket address length: "
+                      << std::right
+                      << std::setw(4)
+                      << sun_length
+                      << std::endl;
+        }
+
+        if (sa_length < sun_length) {
             return false;
         }
         break;
