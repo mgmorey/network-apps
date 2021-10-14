@@ -7,6 +7,7 @@
 #include "network-sockaddr.h"   // get_sockaddr()
 #include "network-socket.h"     // Socket, FdPair,
                                 // SocketpairResult
+#include "network-sockname.h"   // get_sockname()
 
 #include <sys/socket.h> // AF_UNIX, SOCK_STREAM
 #include <sys/un.h>     // sockaddr_un
@@ -51,22 +52,48 @@ namespace TestSocket
         return args;
     }
 
-    static void test_peer(Network::Fd fd)
+    static Network::Address get_peer(Network::Fd t_fd)
     {
-        const auto address_result {Network::get_peername(fd, verbose)};
-        const auto address(address_result.first);
+        const auto address_result {Network::get_peername(t_fd, verbose)};
+        const auto address {address_result.first};
         const auto result {address_result.second};
 
-        if (result.result() != 0) {
-            std::cerr << "No address: "
+        if (result.result()) {
+            std::cerr << "No peer information available: "
                       << result
                       << std::endl;
         }
-        else {
+
+        return address;
+    }
+
+    static Network::Address get_sock(Network::Fd t_fd)
+    {
+        const auto address_result {Network::get_sockname(t_fd, verbose)};
+        const auto address {address_result.first};
+        const auto result {address_result.second};
+
+        if (result.result()) {
+            std::cerr << "No socket information available: "
+                      << result
+                      << std::endl;
+        }
+
+        return address;
+    }
+
+    static void test_peer(Network::Fd fd)
+    {
+        const auto peer {get_peer(fd)};
+        const auto sock {get_sock(fd)};
+
+        if (!peer.empty() && !sock.empty()) {
             std::cout << "Socket "
                       << fd
-                      << " connected to "
-                      << address
+                      << " connected "
+                      << sock
+                      << " to "
+                      << peer
                       << std::endl;
         }
     }
@@ -76,7 +103,7 @@ namespace TestSocket
         Network::Address address {Network::get_sockaddr(PATH)};
 
         if (Network::is_valid(address, verbose)) {
-            std::cout << "Unix address: "
+            std::cout << "Unix domain address: "
                       << address
                       << std::endl;
         }
