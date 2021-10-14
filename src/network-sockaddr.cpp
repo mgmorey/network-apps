@@ -155,7 +155,7 @@ bool Network::is_valid(const SockAddr& sock_addr, bool verbose)
 {
     if (verbose) {
         std::cerr << "Validating socket address: "
-                  << to_string(sock_addr, true)
+                  << sock_addr
                   << std::endl;
     }
 

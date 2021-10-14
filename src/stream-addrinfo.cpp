@@ -3,9 +3,8 @@
 #include "network-flags.h"      // Flags, operator<<()
 #include "network-format.h"     // Format, operator<<()
 #include "network-protocol.h"   // Protocol, operator<<()
-#include "network-sockaddr.h"   // get_sockaddr()
+#include "network-sockaddr.h"   // get_sockaddr(), operator<<()
 #include "network-socktype.h"   // SockType, operator<<()
-#include "network-tostring.h"   // to_string()
 #include "network-types.h"      // Hostname
 
 #ifdef _WIN32
@@ -38,7 +37,7 @@ std::ostream& Network::operator<<(std::ostream& os,
        << Format(tab, "ai_addrlen")
        << ai.ai_addrlen
        << Format(tab, "ai_addr")
-       << to_string(get_sockaddr(ai.ai_addr, ai.ai_addrlen), true)
+       << get_sockaddr(ai.ai_addr, ai.ai_addrlen)
        << Format(tab, "ai_canonname")
        << Hostname(ai.ai_canonname)
        << Format(tab)

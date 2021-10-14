@@ -1,17 +1,19 @@
 #ifndef NETWORK_SOCKADDR_H
 #define NETWORK_SOCKADDR_H
 
-#ifdef _WIN32
-#include <winsock2.h>   // sockaddr, sockaddr_in
-#include <ws2tcpip.h>   // sockaddr_in6
-#else
-#include <netinet/in.h> // sockaddr_in, sockaddr_in6
-#include <sys/socket.h> // sockaddr
-#include <sys/un.h>     // sockaddr_un
-#endif
-
 #include "network-socklen.h"    // socklen_type
 #include "network-types.h"      // SockAddr
+
+#ifdef _WIN32
+#include <winsock2.h>       // sockaddr, sockaddr_in
+#include <ws2tcpip.h>       // sockaddr_in6
+#else
+#include <netinet/in.h>     // sockaddr_in, sockaddr_in6
+#include <sys/socket.h>     // sockaddr
+#include <sys/un.h>         // sockaddr_un
+#endif
+
+#include <ostream>      // std::ostream
 
 namespace Network
 {
@@ -29,6 +31,8 @@ namespace Network
     extern SockAddr get_sockaddr(const Pathname& path);
 #endif
     extern bool is_valid(const SockAddr& sock_addr, bool verbose = false);
+    extern std::ostream& operator<<(std::ostream& os,
+                                    const SockAddr& sock_addr);
 }
 
 #endif
