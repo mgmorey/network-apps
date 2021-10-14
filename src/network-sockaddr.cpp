@@ -11,6 +11,7 @@
 
 #include <algorithm>    // std::max(), std::min()
 #include <cassert>      // assert()
+#include <iostream>     // std::cerr, std::endl
 #include <cstddef>      // std::byte, std::size_t
 #include <cstring>      // std::memcpy(), std::memset()
 
@@ -149,13 +150,19 @@ Network::SockAddr Network::get_sockaddr(const Pathname& path)
 
 #endif
 
-bool Network::is_valid(const SockAddr& sock_addr)
+bool Network::is_valid(const SockAddr& sock_addr, bool verbose)
 {
     if (sock_addr.empty()) {
         return false;
     }
 
     const auto family {get_family(sock_addr)};
+
+    if (verbose) {
+        std::cerr << "Socket address family: "
+                  << family
+                  << std::endl;
+    }
 
     switch (family) {
     case AF_INET:
@@ -172,12 +179,27 @@ bool Network::is_valid(const SockAddr& sock_addr)
 
     const auto max_size {get_max_size(sock_addr)};
 
+    if (verbose) {
+        std::cerr << "Actual socket address size: "
+                  << sock_addr.size()
+                  << std::endl
+                  << "Maximum socket address size: "
+                  << max_size
+                  << std::endl;
+    }
+
     if (sock_addr.size() > max_size) {
         return false;
     }
 
 #ifdef HAVE_SOCKADDR_SA_LEN
     const auto sa_length {static_cast<std::size_t>(get_sa_length(sock_addr))};
+
+    if (verbose) {
+        std::cerr << "Stored socket address length: "
+                  << sa_length
+                  << std::endl;
+    }
 
     switch (family) {
     case AF_INET:
