@@ -110,12 +110,35 @@ Network::SockAddr Network::get_sockaddr(const sockaddr* sa,
     else {
         const auto addr_data {reinterpret_cast<const Byte*>(sa)};
         sock_addr.assign(addr_data, addr_data + size);
-        assert(size == get_max_size(sock_addr));
-        assert(size == sock_addr.size());
     }
 
     return sock_addr;
 }
+
+#ifndef _WIN32
+
+Network::SockAddr Network::get_sockaddr(const sockaddr_un* sun,
+                                        std::size_t size)
+{
+    const auto sa {reinterpret_cast<const sockaddr*>(sun)};
+    return get_sockaddr(sa, size);
+}
+
+Network::SockAddr Network::get_sockaddr(const Pathname& path)
+{
+    sockaddr_un addr;
+    const auto path_len {std::min(path.length(), sizeof addr.sun_path - 1)};
+    const auto addr_len {sizeof addr - sizeof addr.sun_path + path_len};
+    std::memset(&addr, '\0', sizeof addr);
+#ifdef HAVE_SOCKADDR_SA_LEN
+    addr.sun_len = addr_len;
+#endif
+    addr.sun_family = AF_LOCAL;
+    std::memcpy(addr.sun_path, path, path_len);
+    return get_sockaddr(&addr, addr_len + 1);
+}
+
+#endif
 
 Network::SockAddr Network::get_sockaddr(const sockaddr_in* sin)
 {
@@ -128,29 +151,6 @@ Network::SockAddr Network::get_sockaddr(const sockaddr_in6* sin6)
     const auto sa {reinterpret_cast<const sockaddr*>(sin6)};
     return get_sockaddr(sa, sizeof *sin6);
 }
-
-#ifndef _WIN32
-
-Network::SockAddr Network::get_sockaddr(const sockaddr_un* sun)
-{
-    const auto sa {reinterpret_cast<const sockaddr*>(sun)};
-    return get_sockaddr(sa, sizeof *sun);
-}
-
-Network::SockAddr Network::get_sockaddr(const Pathname& path)
-{
-    sockaddr_un addr;
-    const auto length {std::min(path.length(), sizeof addr.sun_path - 1)};
-    std::memset(&addr, '\0', sizeof addr);
-#ifdef HAVE_SOCKADDR_SA_LEN
-    addr.sun_len = sizeof addr - sizeof addr.sun_path + length;
-#endif
-    addr.sun_family = AF_LOCAL;
-    std::memcpy(addr.sun_path, path, length);
-    return get_sockaddr(&addr);
-}
-
-#endif
 
 bool Network::is_valid(const SockAddr& sock_addr, bool verbose)
 {
@@ -213,7 +213,7 @@ bool Network::is_valid(const SockAddr& sock_addr, bool verbose)
     }
 
 #ifdef HAVE_SOCKADDR_SA_LEN
-    const auto sa_length {static_cast<std::size_t>(get_sa_length(sock_addr))};
+    const auto sa_len {static_cast<std::size_t>(get_sa_length(sock_addr))};
 
     if (verbose) {
         std::cerr << std::left
@@ -221,18 +221,18 @@ bool Network::is_valid(const SockAddr& sock_addr, bool verbose)
                   << "    Stored length:"
                   << std::right
                   << std::setw(5)
-                  << sa_length
+                  << sa_len
                   << std::endl;
     }
 
     switch (family) {
     case AF_INET:
-        if (sa_length != sizeof(sockaddr_in)) {
+        if (sa_len != sizeof(sockaddr_in)) {
             return false;
         }
         break;
     case AF_INET6:
-        if (sa_length != sizeof(sockaddr_in6)) {
+        if (sa_len != sizeof(sockaddr_in6)) {
             return false;
         }
         break;
@@ -242,7 +242,7 @@ bool Network::is_valid(const SockAddr& sock_addr, bool verbose)
         const auto sun_pointer {
             reinterpret_cast<const sockaddr_un*>(sock_addr.data())
         };
-        const auto sun_length {SUN_LEN(sun_pointer)};
+        const auto sun_len {SUN_LEN(sun_pointer)};
 
         if (verbose) {
             std::cerr << std::left
@@ -250,11 +250,11 @@ bool Network::is_valid(const SockAddr& sock_addr, bool verbose)
                       << "    Computed length:"
                       << std::right
                       << std::setw(5)
-                      << sun_length
+                      << sun_len
                       << std::endl;
         }
 
-        if (sa_length < sun_length) {
+        if (sa_len < sun_len) {
             return false;
         }
         break;

@@ -24,12 +24,13 @@ namespace Network
     extern sockaddr* get_pointer(SockAddr& sock_addr);
     extern SockAddr get_sockaddr(const sockaddr* sa = nullptr,
                                  std::size_t size = 0);
-    extern SockAddr get_sockaddr(const sockaddr_in* sin);
-    extern SockAddr get_sockaddr(const sockaddr_in6* sin6);
 #ifndef _WIN32
-    extern SockAddr get_sockaddr(const sockaddr_un* sun);
+    extern SockAddr get_sockaddr(const sockaddr_un* sun,
+                                 std::size_t size = sizeof(sockaddr_un));
     extern SockAddr get_sockaddr(const Pathname& path);
 #endif
+    extern SockAddr get_sockaddr(const sockaddr_in* sin);
+    extern SockAddr get_sockaddr(const sockaddr_in6* sin6);
     extern bool is_valid(const SockAddr& sock_addr, bool verbose = false);
 }
 
