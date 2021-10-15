@@ -52,11 +52,11 @@ namespace TestSocket
         return args;
     }
 
-    static Network::Address get_peer(Network::Fd t_fd)
+    Network::Address get_peer(Network::Fd t_fd)
     {
-        const auto address_result {Network::get_peername(t_fd, verbose)};
-        const auto address {address_result.first};
-        const auto result {address_result.second};
+        const auto peername_result {Network::get_peername(t_fd, verbose)};
+        const auto sock_addr {peername_result.first};
+        const auto result {peername_result.second};
 
         if (result.result()) {
             std::cerr << "No peer information available: "
@@ -64,14 +64,14 @@ namespace TestSocket
                       << std::endl;
         }
 
-        return address;
+        return sock_addr;
     }
 
-    static Network::Address get_sock(Network::Fd t_fd)
+    Network::Address get_sock(Network::Fd t_fd)
     {
-        const auto address_result {Network::get_sockname(t_fd, verbose)};
-        const auto address {address_result.first};
-        const auto result {address_result.second};
+        const auto sockname_result {Network::get_sockname(t_fd, verbose)};
+        const auto sock_addr {sockname_result.first};
+        const auto result {sockname_result.second};
 
         if (result.result()) {
             std::cerr << "No socket information available: "
@@ -79,7 +79,7 @@ namespace TestSocket
                       << std::endl;
         }
 
-        return address;
+        return sock_addr;
     }
 
     static void test_peer(Network::Fd fd)

@@ -35,7 +35,7 @@ namespace Network
         using value_type = SockAddr;
 
         Address();
-        explicit Address(const value_type& t_value);
+        Address(const value_type& t_value);
         Address& operator=(const value_type& t_value);
         bool operator<(const Address& t_address) const;
         bool operator>(const Address& t_address) const;

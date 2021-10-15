@@ -1,5 +1,5 @@
-#include "network-sockname.h"   // AddressBuffer, AddressResult, Fd,
-                                // Result, get_sockname()
+#include "network-sockname.h"   // Fd, Result, SockAddr,
+                                // get_sockname()
 #include "network-error.h"      // format_error(), get_last_error(),
                                 // reset_last_error()
 #include "network-sockaddr.h"   // get_length(), get_pointer(),
@@ -18,7 +18,7 @@
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
 
-std::pair<Network::Address, Network::Result>
+std::pair<Network::SockAddr, Network::Result>
 Network::get_sockname(Fd fd, bool verbose)
 {
     Result result;
@@ -59,6 +59,5 @@ Network::get_sockname(Fd fd, bool verbose)
         assert(is_valid(sock_addr, verbose));
     }
 
-    const Address address(sock_addr);
-    return std::pair(address, result);
+    return std::pair(sock_addr, result);
 }

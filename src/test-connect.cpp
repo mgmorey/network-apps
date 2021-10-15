@@ -1,3 +1,4 @@
+#include "network-address.h"    // Address
 #include "network-close.h"      // close()
 #include "network-connect.h"    // Address, Endpoint, Fd, Hints,
                                 // Socket, SocketResult, connect(),
@@ -6,6 +7,7 @@
 #include "network-fd.h"         // Fd
 #include "network-hostname.h"   // get_hostname()
 #include "network-peername.h"   // get_peername()
+#include "network-sockaddr.h"   // operator<<()
 #include "network-sockname.h"   // get_sockname()
 #include "network-socket.h"     // Socket
 
@@ -68,9 +70,9 @@ namespace TestConnect
 
         Network::Address get_peer(Network::Fd t_fd)
         {
-            const auto address_result {Network::get_peername(t_fd, verbose)};
-            const auto address {address_result.first};
-            const auto result {address_result.second};
+            const auto peername_result {Network::get_peername(t_fd, verbose)};
+            const auto sock_addr {peername_result.first};
+            const auto result {peername_result.second};
 
             if (result.result()) {
                 std::cerr << "No peer information available: "
@@ -78,14 +80,14 @@ namespace TestConnect
                           << std::endl;
             }
 
-            return address;
+            return sock_addr;
         }
 
         Network::Address get_sock(Network::Fd t_fd)
         {
-            const auto address_result {Network::get_sockname(t_fd, verbose)};
-            const auto address {address_result.first};
-            const auto result {address_result.second};
+            const auto sockname_result {Network::get_sockname(t_fd, verbose)};
+            const auto sock_addr {sockname_result.first};
+            const auto result {sockname_result.second};
 
             if (result.result()) {
                 std::cerr << "No socket information available: "
@@ -93,7 +95,7 @@ namespace TestConnect
                           << std::endl;
             }
 
-            return address;
+            return sock_addr;
         }
 
         void test_socket(const Network::SocketResult& t_socket_result)
