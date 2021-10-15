@@ -35,6 +35,7 @@ namespace Network
         using value_type = SockAddr;
 
         Address();
+        // cppcheck-suppress noExplicitConstructor
         Address(const value_type& t_value);
         Address& operator=(const value_type& t_value);
         bool operator<(const Address& t_address) const;

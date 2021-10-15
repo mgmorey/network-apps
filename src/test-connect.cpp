@@ -1,13 +1,11 @@
-#include "network-address.h"    // Address
+#include "network-address.h"    // Address, operator<<()
 #include "network-close.h"      // close()
 #include "network-connect.h"    // Address, Endpoint, Fd, Hints,
-                                // Socket, SocketResult, connect(),
-                                // operator<<()
+                                // Socket, SocketResult, connect()
 #include "network-context.h"    // Context
 #include "network-fd.h"         // Fd
 #include "network-hostname.h"   // get_hostname()
 #include "network-peername.h"   // get_peername()
-#include "network-sockaddr.h"   // operator<<()
 #include "network-sockname.h"   // get_sockname()
 #include "network-socket.h"     // Socket
 

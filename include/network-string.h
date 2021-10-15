@@ -38,6 +38,8 @@ namespace Network
     };
 
     extern std::ostream& operator<<(std::ostream& os,
+                                    const ByteString& string);
+    extern std::ostream& operator<<(std::ostream& os,
                                     const String& string);
 }
 

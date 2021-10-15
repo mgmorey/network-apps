@@ -31,8 +31,6 @@ namespace Network
     extern SockAddr get_sockaddr(const Pathname& path);
 #endif
     extern bool is_valid(const SockAddr& sock_addr, bool verbose = false);
-    extern std::ostream& operator<<(std::ostream& os,
-                                    const SockAddr& sock_addr);
 }
 
 #endif
