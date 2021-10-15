@@ -33,7 +33,7 @@ bool Network::Host::operator==(const Host& t_host) const
     return m_address == t_host.m_address;
 }
 
-Network::Address Network::Host::address() const
+Network::SockAddr Network::Host::address() const
 {
     return m_address;
 }

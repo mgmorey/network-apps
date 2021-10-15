@@ -1,8 +1,7 @@
 #ifndef NETWORK_HOST_H
 #define NETWORK_HOST_H
 
-#include "network-address.h"    // Address
-#include "network-types.h"      // Hostname
+#include "network-types.h"      // Hostname, SockAddr
 
 #ifdef _WIN32
 #include <ws2tcpip.h>   // addrinfo
@@ -21,11 +20,11 @@ namespace Network
         bool operator<(const Host& t_host) const;
         bool operator>(const Host& t_host) const;
         bool operator==(const Host& t_host) const;
-        Address address() const;
+        SockAddr address() const;
         Hostname canonical_name() const;
 
     protected:
-        Address m_address;
+        SockAddr m_address;
         Hostname m_canonname;
 
     public:

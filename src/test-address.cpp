@@ -68,7 +68,7 @@ namespace TestAddress
 
         void operator()(const Network::Host& t_host)
         {
-            const auto address {t_host.address()};
+            const Network::Address address {t_host.address()};
             const auto endpoint_result {get_endpoint(address, false, verbose)};
             const auto endpoint {endpoint_result.first};
             const auto result {endpoint_result.second};
