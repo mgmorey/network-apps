@@ -40,13 +40,13 @@ namespace Network
 
     extern Result open(Fd fd,
                        const SockAddr& sock_addr,
-                       open_method_type method,
-                       std::string name,
+                       const open_method_type method,
+                       const std::string& name,
                        bool verbose);
     extern std::vector<SocketResult> open(const Endpoint& endpoint,
                                           const Hints* hints,
-                                          open_method_type method,
-                                          std::string name,
+                                          const open_method_type method,
+                                          const std::string& name,
                                           bool verbose);
 }
 

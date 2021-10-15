@@ -19,8 +19,8 @@
 
 std::pair<Network::SockAddr, Network::Result>
 Network::get_name(Fd fd,
-                  name_method_type method,
-                  std::string name,
+                  const name_method_type method,
+                  const std::string& name,
                   bool verbose)
 {
     Result result;

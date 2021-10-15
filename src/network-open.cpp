@@ -57,8 +57,8 @@ Network::Result Network::Open::open(Fd t_fd, const Socket& t_socket) const
 
 Network::Result Network::open(Fd fd,
                               const SockAddr& sock_addr,
-                              open_method_type method,
-                              std::string name,
+                              const open_method_type method,
+                              const std::string& name,
                               bool verbose)
 {
     Result result;
@@ -102,8 +102,8 @@ Network::Result Network::open(Fd fd,
 
 std::vector<Network::SocketResult> Network::open(const Endpoint& endpoint,
                                                  const Hints* hints,
-                                                 open_method_type method,
-                                                 std::string name,
+                                                 const open_method_type method,
+                                                 const std::string& name,
                                                  bool verbose)
 {
     std::vector<SocketResult> results;
