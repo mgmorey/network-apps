@@ -59,8 +59,6 @@ Network::Result Network::Bind::bind(Fd t_fd, const Socket& t_socket) const
 
 Network::Result Network::bind(Fd fd, const Address& address, bool verbose)
 {
-    assert(is_valid(address, verbose));
-
     if (verbose) {
         std::cerr << "Trying "
                   << address
@@ -69,6 +67,7 @@ Network::Result Network::bind(Fd fd, const Address& address, bool verbose)
 
     Result result;
     const SockAddr sock_addr {address};
+    assert(is_valid(sock_addr, verbose));
     const auto addr_ptr {get_pointer(sock_addr)};
     const auto addr_len {get_length(sock_addr)};
     // cppcheck-suppress variableScope
