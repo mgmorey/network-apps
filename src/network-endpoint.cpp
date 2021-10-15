@@ -3,7 +3,7 @@
 #include "network-address.h"    // Address, operator<<()
 #include "network-buffer.h"     // Buffer
 #include "network-sockaddr.h"   // SockAddr, get_length(),
-                                // get_pointer()
+                                // get_pointer(), operator<<()
 
 #ifdef _WIN32
 #include <ws2tcpip.h>   // NI_MAXHOST, NI_MAXSERV, NI_NUMERICHOST,
@@ -22,18 +22,22 @@
 Network::EndpointResult
 Network::get_endpoint(const Address& address, int flags, bool verbose)
 {
-    assert(!address.empty());
     Result result;
     Buffer host {NI_MAXHOST};
     Buffer serv {NI_MAXSERV};
     const SockAddr sock_addr {address};
+    assert(is_valid(sock_addr, verbose));
     const auto addr_ptr {get_pointer(sock_addr)};
     const auto addr_len {get_length(sock_addr)};
 
     if (verbose) {
         std::cerr << "Calling getnameinfo("
-                  << address
-                  << ", ...)"
+                  << sock_addr
+                  << ", "
+                  << addr_len
+                  << ", ..., "
+                  << flags
+                  << ')'
                   << std::endl;
     }
 
@@ -45,8 +49,12 @@ Network::get_endpoint(const Address& address, int flags, bool verbose)
     if (error) {
         std::ostringstream oss;
         oss << "Call to getnameinfo("
-            << address
-            << ", ...) returned "
+            << sock_addr
+            << ", "
+            << addr_len
+            << ", ..., "
+            << flags
+            << ") returned "
             << error
             << " ("
             << ::gai_strerror(error)
