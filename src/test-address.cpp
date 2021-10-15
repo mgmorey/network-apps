@@ -69,32 +69,29 @@ namespace TestAddress
         void operator()(const Network::Host& t_host)
         {
             const auto address {t_host.address()};
+            const auto endpoint_result {get_endpoint(address, false, verbose)};
+            const auto endpoint {endpoint_result.first};
+            const auto result {endpoint_result.second};
 
-            if (Network::is_valid(address, verbose)) {
-                const auto endpoint_result {get_endpoint(address, false, verbose)};
-                const auto endpoint {endpoint_result.first};
-                const auto result {endpoint_result.second};
-
-                if (result.result() != 0) {
-                    std::cerr << result
-                              << std::endl;
-                    return;
-                }
-
-                Values values = {
-                    address.text(),
-                    endpoint.first,
-                    Network::Hostname(t_host.canonical_name())
-                };
-                erase(values, "");
-                unique(values);
-
-                if (values.empty()) {
-                    return;
-                }
-
-                print(values);
+            if (result.result() != 0) {
+                std::cerr << result
+                          << std::endl;
+                return;
             }
+
+            Values values = {
+                address.text(),
+                endpoint.first,
+                Network::Hostname(t_host.canonical_name())
+            };
+            erase(values, "");
+            unique(values);
+
+            if (values.empty()) {
+                return;
+            }
+
+            print(values);
         }
 
         void print(const Values& values)
