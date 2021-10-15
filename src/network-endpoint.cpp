@@ -1,10 +1,8 @@
 #include "network-endpoint.h"   // Endpoint, EndpointResult, Result,
-                                // get_endpoint()
-#include "network-address.h"    // Address, operator<<()
+                                // SockAddr, get_endpoint()
 #include "network-buffer.h"     // Buffer
-#include "network-sockaddr.h"   // SockAddr, get_length(),
-                                // get_pointer(), is_valid(),
-                                // operator<<()
+#include "network-sockaddr.h"   // get_length(), get_pointer(),
+                                // is_valid(), operator<<()
 
 #ifdef _WIN32
 #include <ws2tcpip.h>   // NI_MAXHOST, NI_MAXSERV, NI_NUMERICHOST,
@@ -21,12 +19,11 @@
 #include <string>       // std::string
 
 Network::EndpointResult
-Network::get_endpoint(const Address& address, int flags, bool verbose)
+Network::get_endpoint(const SockAddr& sock_addr, int flags, bool verbose)
 {
     Result result;
     Buffer host {NI_MAXHOST};
     Buffer serv {NI_MAXSERV};
-    const SockAddr sock_addr {address};
     assert(is_valid(sock_addr, verbose));
     const auto addr_ptr {get_pointer(sock_addr)};
     const auto addr_len {get_length(sock_addr)};
@@ -68,8 +65,8 @@ Network::get_endpoint(const Address& address, int flags, bool verbose)
 }
 
 Network::EndpointResult
-Network::get_endpoint(const Address& address, bool numeric, bool verbose)
+Network::get_endpoint(const SockAddr& sock_addr, bool numeric, bool verbose)
 {
     const int flags {numeric ? NI_NUMERICHOST | NI_NUMERICSERV : 0};
-    return get_endpoint(address, flags, verbose);
+    return get_endpoint(sock_addr, flags, verbose);
 }
