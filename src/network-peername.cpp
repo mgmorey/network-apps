@@ -32,7 +32,7 @@ Network::get_peername(Fd fd, bool verbose)
         std::cerr << "Calling getpeername("
                   << fd
                   << ", "
-                  << Address(sock_addr)
+                  << sock_addr
                   << ", "
                   << static_cast<int>(addr_len)
                   << ", ...)"
@@ -44,6 +44,10 @@ Network::get_peername(Fd fd, bool verbose)
         std::ostringstream oss;
         oss << "Call to getpeername("
             << fd
+            << ", "
+            << sock_addr
+            << ", "
+            << static_cast<int>(addr_len)
             << ", ...) failed with error "
             << error
             << ": "

@@ -32,7 +32,7 @@ Network::get_sockname(Fd fd, bool verbose)
         std::cerr << "Calling getsockname("
                   << fd
                   << ", "
-                  << Address(sock_addr)
+                  << sock_addr
                   << ", "
                   << static_cast<int>(addr_len)
                   << ", ...)"
@@ -44,6 +44,10 @@ Network::get_sockname(Fd fd, bool verbose)
         std::ostringstream oss;
         oss << "Call to getsockname("
             << fd
+            << ", "
+            << sock_addr
+            << ", "
+            << static_cast<int>(addr_len)
             << ", ...) failed with error "
             << error
             << ": "
