@@ -9,18 +9,18 @@ std::ostream& Network::operator<<(std::ostream& os,
     static const int tab {7};
 
     os << "Socket("
-       << Format("m_flags")
-       << sock.m_flags
-       << Format(tab, "m_family")
-       << sock.m_family
-       << Format(tab, "m_socktype")
-       << sock.m_socktype
-       << Format(tab, "m_protocol")
-       << sock.m_protocol
-       << Format(tab, "m_sock_addr")
-       << sock.m_sock_addr
-       << Format(tab, "m_canonname")
-       << sock.m_canonname
+       << Format("flags")
+       << sock.flags()
+       << Format(tab, "family")
+       << sock.family()
+       << Format(tab, "socktype")
+       << sock.socktype()
+       << Format(tab, "protocol")
+       << sock.protocol()
+       << Format(tab, "address")
+       << sock.address()
+       << Format(tab, "canonical_name")
+       << sock.canonical_name()
        << ')';
     return os;
 }

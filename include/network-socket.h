@@ -25,9 +25,6 @@ namespace Network
         public Hints,
         public Host
     {
-        friend std::ostream& operator<<(std::ostream& os,
-                                        const Socket& sock);
-
         Socket(int t_family = 0,
                int t_socktype = 0,
                int t_protocol = 0,

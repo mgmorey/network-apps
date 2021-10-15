@@ -10,13 +10,13 @@ std::ostream& Network::operator<<(std::ostream& os,
     static const int tab {6};
 
     os << "Hints("
-       << Format("m_flags")
+       << Format("flags")
        << hints.flags()
-       << Format(delim, tab, "m_family")
+       << Format(delim, tab, "family")
        << hints.family()
-       << Format(delim, tab, "m_socktype")
+       << Format(delim, tab, "socktype")
        << hints.socktype()
-       << Format(delim, tab, "m_protocol")
+       << Format(delim, tab, "protocol")
        << hints.protocol()
        << ')';
     return os;
