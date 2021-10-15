@@ -58,11 +58,12 @@ network-bind.cpp network-buffer.cpp network-close.cpp \
 network-connect.cpp network-context.cpp network-endpoint.cpp \
 network-error.cpp network-family.cpp network-flags.cpp \
 network-format.cpp network-hints.cpp network-host.cpp \
-network-hostname.cpp network-string.cpp network-peername.cpp \
-network-protocol.cpp network-result.cpp network-sockaddr.cpp \
-network-socket.cpp network-sockets.cpp network-sockname.cpp \
-network-socktype.cpp stream-address.cpp stream-addrinfo.cpp \
-stream-hints.cpp stream-socket.cpp stream-string.cpp
+network-hostname.cpp network-name.cpp network-open.cpp \
+network-peername.cpp network-protocol.cpp network-result.cpp \
+network-sockaddr.cpp network-socket.cpp network-sockets.cpp \
+network-sockname.cpp network-socktype.cpp network-string.cpp \
+stream-address.cpp stream-addrinfo.cpp stream-hints.cpp \
+stream-socket.cpp stream-string.cpp
 
 ifneq "$(SYSTEM)" "MINGW64_NT"
 	executable_sources += test-socket.cpp unix-client.cpp unix-server.cpp

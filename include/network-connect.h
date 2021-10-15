@@ -12,18 +12,6 @@
 
 namespace Network
 {
-    class Connect
-    {
-    public:
-        explicit Connect(bool t_verbose);
-        SocketResult operator()(const Socket& t_socket) const;
-        SocketResult connect(const Socket& t_socket) const;
-        Result connect(Fd t_fd, const Socket& t_socket) const;
-
-    private:
-        bool m_verbose {false};
-    };
-
     extern Result connect(Fd fd, const SockAddr& sock_addr, bool verbose = false);
     extern std::vector<SocketResult> connect(const Endpoint& endpoint,
                                              const Hints* hints = nullptr,
