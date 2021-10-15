@@ -1,10 +1,9 @@
 #ifndef NETWORK_SOCKETS_H
 #define NETWORK_SOCKETS_H
 
-#include "network-endpoint.h"   // Address, Endpoint
-#include "network-hints.h"      // Hints
-#include "network-result.h"     // Result
-#include "network-socket.h"     // Socket, SocketResult
+#include "network-endpoint.h"   // Endpoint
+#include "network-socket.h"     // Fd, Hints, Result, Socket,
+                                // SocketResult
 
 #include <vector>       // std::vector
 

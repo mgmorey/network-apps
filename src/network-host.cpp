@@ -1,5 +1,4 @@
-#include "network-host.h"       // Address, Host, Hostname, SockAddr,
-                                // addrinfo
+#include "network-host.h"       // Host, Hostname, SockAddr, addrinfo
 
 Network::Host::Host()
 {
