@@ -1,11 +1,11 @@
-#include "network-connect.h"    // Address, Endpoint, Fd, Hints,
-                                // Result, Socket, SocketResult,
-                                // fd_null
+#include "network-connect.h"    // Endpoint, Fd, Hints, Result,
+                                // Socket, SockAddr, SocketResult,
+                                // fd_null, operator<<()
 #include "network-close.h"      // close()
 #include "network-error.h"      // format_error(), get_last_error(),
                                 // reset_last_error()
-#include "network-sockaddr.h"   // SockAddr, get_length(),
-                                // get_pointer(), is_valid()
+#include "network-sockaddr.h"   // get_length(), get_pointer(),
+                                // is_valid()
 #include "network-sockets.h"    // get_sockets()
 
 #ifdef _WIN32
@@ -57,17 +57,9 @@ Network::Result Network::Connect::connect(Fd t_fd, const Socket& t_socket) const
     return Network::connect(t_fd, t_socket.address(), m_verbose);
 }
 
-Network::Result Network::connect(Fd fd, const Address& address, bool verbose)
+Network::Result Network::connect(Fd fd, const SockAddr& sock_addr, bool verbose)
 {
-
-    if (verbose) {
-        std::cerr << "Trying "
-                  << address
-                  << std::endl;
-    }
-
     Result result;
-    const SockAddr sock_addr {address};
     assert(is_valid(sock_addr, verbose));
     const auto addr_ptr {get_pointer(sock_addr)};
     const auto addr_len {get_length(sock_addr)};
@@ -78,7 +70,7 @@ Network::Result Network::connect(Fd fd, const Address& address, bool verbose)
         std::cerr << "Calling connect("
                   << fd
                   << ", "
-                  << address
+                  << sock_addr
                   << ", "
                   << static_cast<int>(addr_len)
                   << ')'
@@ -91,7 +83,7 @@ Network::Result Network::connect(Fd fd, const Address& address, bool verbose)
         oss << "Call to connect("
             << fd
             << ", "
-            << address
+            << sock_addr
             << ") failed with error "
             << error
             << ": "
