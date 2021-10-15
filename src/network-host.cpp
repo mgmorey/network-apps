@@ -6,36 +6,36 @@ Network::Host::Host()
 }
 
 Network::Host::Host(const addrinfo& t_addrinfo) :
-    m_address(get_sockaddr(t_addrinfo)),
+    m_sock_addr(get_sockaddr(t_addrinfo)),
     m_canonname(t_addrinfo.ai_canonname)
 {
 }
 
 Network::Host& Network::Host::operator=(const addrinfo& t_addrinfo)
 {
-    m_address = get_sockaddr(t_addrinfo);
+    m_sock_addr = get_sockaddr(t_addrinfo);
     m_canonname = t_addrinfo.ai_canonname;
     return *this;
 }
 
 bool Network::Host::operator<(const Host& t_host) const
 {
-    return m_address < t_host.m_address;
+    return m_sock_addr < t_host.m_sock_addr;
 }
 
 bool Network::Host::operator>(const Host& t_host) const
 {
-    return m_address > t_host.m_address;
+    return m_sock_addr > t_host.m_sock_addr;
 }
 
 bool Network::Host::operator==(const Host& t_host) const
 {
-    return m_address == t_host.m_address;
+    return m_sock_addr == t_host.m_sock_addr;
 }
 
 Network::SockAddr Network::Host::address() const
 {
-    return m_address;
+    return m_sock_addr;
 }
 
 Network::Hostname Network::Host::canonical_name() const

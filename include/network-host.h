@@ -24,7 +24,7 @@ namespace Network
         Hostname canonical_name() const;
 
     protected:
-        SockAddr m_address;
+        SockAddr m_sock_addr;
         Hostname m_canonname;
 
     public:

@@ -17,8 +17,8 @@ std::ostream& Network::operator<<(std::ostream& os,
        << sock.m_socktype
        << Format(tab, "m_protocol")
        << sock.m_protocol
-       << Format(tab, "m_address")
-       << sock.m_address
+       << Format(tab, "m_sock_addr")
+       << sock.m_sock_addr
        << Format(tab, "m_canonname")
        << sock.m_canonname
        << ')';
