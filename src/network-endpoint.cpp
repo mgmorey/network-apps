@@ -3,7 +3,8 @@
 #include "network-address.h"    // Address, operator<<()
 #include "network-buffer.h"     // Buffer
 #include "network-sockaddr.h"   // SockAddr, get_length(),
-                                // get_pointer(), operator<<()
+                                // get_pointer(), is_valid(),
+                                // operator<<()
 
 #ifdef _WIN32
 #include <ws2tcpip.h>   // NI_MAXHOST, NI_MAXSERV, NI_NUMERICHOST,

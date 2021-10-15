@@ -4,8 +4,8 @@
 #include "network-close.h"      // close()
 #include "network-error.h"      // format_error(), get_last_error(),
                                 // reset_last_error()
-#include "network-sockaddr.h"   // get_length(), get_pointer(),
-                                // is_valid()
+#include "network-sockaddr.h"   // SockAddr, get_length(),
+                                // get_pointer(), is_valid()
 #include "network-sockets.h"    // get_sockets()
 
 #ifdef _WIN32
