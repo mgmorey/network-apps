@@ -33,14 +33,14 @@ static std::size_t get_max_size(const Network::SockAddr& sock_addr)
     const auto family {Network::get_family(sock_addr)};
 
     switch (family) {
-    case AF_INET:
-        return sizeof(sockaddr_in);
-    case AF_INET6:
-        return sizeof(sockaddr_in6);
 #ifndef _WIN32
     case AF_UNIX:
         return sizeof(sockaddr_un);
 #endif
+    case AF_INET:
+        return sizeof(sockaddr_in);
+    case AF_INET6:
+        return sizeof(sockaddr_in6);
     default:
         return 0;
     }
@@ -51,12 +51,21 @@ static std::size_t get_min_size(const Network::SockAddr& sock_addr)
     const auto family {Network::get_family(sock_addr)};
 
     switch (family) {
+#ifndef _WIN32
+    case AF_UNIX:
+        {
+            const auto sun {
+                reinterpret_cast<const sockaddr_un*>(sock_addr.data())
+            };
+            return sizeof *sun - sizeof sun->sun_path;
+        }
+#endif
     case AF_INET:
         return sizeof(sockaddr_in);
     case AF_INET6:
         return sizeof(sockaddr_in6);
     default:
-        return 0;
+        return sizeof(sockaddr);
     }
 }
 
@@ -82,7 +91,7 @@ static std::size_t get_sa_length(const Network::SockAddr& sock_addr)
 static std::size_t get_sun_length(const sockaddr_un* sun)
 {
     const auto path_size {strnlen(sun->sun_path, sizeof(sun->sun_path))};
-    const auto min_size {sizeof(*sun) - sizeof(sun->sun_path) + path_size};
+    const auto min_size {sizeof *sun - sizeof sun->sun_path + path_size};
     return std::max(sizeof(sockaddr), min_size);
 }
 #endif
