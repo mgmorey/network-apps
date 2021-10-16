@@ -28,6 +28,38 @@ static constexpr Network::SockAddr::size_type get_capacity()
     return std::max(storage_size, unix_size);
 }
 
+static std::size_t get_max_size(const Network::SockAddr& sock_addr)
+{
+    const auto family {Network::get_family(sock_addr)};
+
+    switch (family) {
+    case AF_INET:
+        return sizeof(sockaddr_in);
+    case AF_INET6:
+        return sizeof(sockaddr_in6);
+#ifndef _WIN32
+    case AF_UNIX:
+        return sizeof(sockaddr_un);
+#endif
+    default:
+        return 0;
+    }
+}
+
+static std::size_t get_min_size(const Network::SockAddr& sock_addr)
+{
+    const auto family {Network::get_family(sock_addr)};
+
+    switch (family) {
+    case AF_INET:
+        return sizeof(sockaddr_in);
+    case AF_INET6:
+        return sizeof(sockaddr_in6);
+    default:
+        return 0;
+    }
+}
+
 static std::size_t get_sa_length(const Network::SockAddr& sock_addr)
 {
 #ifdef HAVE_SOCKADDR_SA_LEN
@@ -74,60 +106,18 @@ Network::socklen_type Network::get_length(const SockAddr& sock_addr)
     return static_cast<socklen_type>(length ? length : sock_addr.size());
 }
 
-std::size_t Network::get_max_size(const Network::SockAddr& sock_addr)
-{
-    const auto family {Network::get_family(sock_addr)};
-
-    switch (family) {
-    case AF_INET:
-        return sizeof(sockaddr_in);
-        break;
-    case AF_INET6:
-        return sizeof(sockaddr_in6);
-        break;
-#ifndef _WIN32
-    case AF_UNIX:
-        return sizeof(sockaddr_un);
-        break;
-#endif
-    default:
-        return 0;
-    }
-}
-
-std::size_t Network::get_min_size(const Network::SockAddr& sock_addr)
-{
-    const auto family {Network::get_family(sock_addr)};
-
-    switch (family) {
-    case AF_INET:
-        return sizeof(sockaddr_in);
-        break;
-    case AF_INET6:
-        return sizeof(sockaddr_in6);
-        break;
-#ifndef _WIN32
-    case AF_UNIX:
-        return sizeof(sockaddr);
-        break;
-#endif
-    default:
-        return 0;
-    }
-}
-
 const sockaddr* Network::get_pointer(const SockAddr& sock_addr)
 {
-    const auto ptr {reinterpret_cast<const sockaddr*>(sock_addr.data())};
-    assert(ptr != nullptr);
-    return ptr;
+    const auto sa {reinterpret_cast<const sockaddr*>(sock_addr.data())};
+    assert(sa != nullptr);
+    return sa;
 }
 
 sockaddr* Network::get_pointer(SockAddr& sock_addr)
 {
-    const auto ptr {reinterpret_cast<sockaddr*>(sock_addr.data())};
-    assert(ptr != nullptr);
-    return ptr;
+    const auto sa {reinterpret_cast<sockaddr*>(sock_addr.data())};
+    assert(sa != nullptr);
+    return sa;
 }
 
 Network::SockAddr Network::get_sockaddr(const sockaddr* sa,
@@ -162,14 +152,14 @@ Network::SockAddr Network::get_sockaddr(const Pathname& path)
     std::memset(&addr, '\0', sizeof addr);
     const auto path_size {std::min(path.size(), sizeof addr.sun_path - 1)};
     const auto min_size {sizeof addr - sizeof addr.sun_path + path_size};
-    const auto sun_len {std::max(sizeof(sockaddr), min_size)};
-    const auto len {std::max(sizeof(sockaddr), min_size + 1)};
     std::memcpy(addr.sun_path, path, path_size);
     addr.sun_family = AF_LOCAL;
 #ifdef HAVE_SOCKADDR_SA_LEN
+    const auto sun_len {std::max(sizeof(sockaddr), min_size)};
     addr.sun_len = sun_len;
     assert(addr.sun_len == get_sun_length(&addr));
 #endif
+    const auto len {std::max(sizeof(sockaddr), min_size + 1)};
     return get_sockaddr(&addr, len);
 }
 

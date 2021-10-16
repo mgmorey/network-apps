@@ -13,6 +13,7 @@
 #include <sys/un.h>     // sockaddr_un
 #include <unistd.h>     // getopt(), optarg, opterr, optind, optopt
 
+#include <cassert>      // assert()
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <string>       // std::string
@@ -21,6 +22,7 @@
 namespace TestSocket
 {
     static constexpr auto PATH_12 {"/tmp/6789012"};
+    static constexpr auto PATH_15 {"/tmp/6789012345"};
     static constexpr auto PATH_16 {"/tmp/67890123456"};
     static constexpr auto PATH_20 {"/tmp/678901234567890"};
 
@@ -146,6 +148,7 @@ int main(int argc, char* argv[])
     const Network::Socket hints(AF_UNIX, SOCK_STREAM);
     TestSocket::test_socketpair(hints);
     TestSocket::test_socket(TestSocket::PATH_12);
+    TestSocket::test_socket(TestSocket::PATH_15);
     TestSocket::test_socket(TestSocket::PATH_16);
     TestSocket::test_socket(TestSocket::PATH_20);
 }
