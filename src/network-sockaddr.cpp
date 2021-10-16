@@ -259,30 +259,15 @@ bool Network::is_valid(const SockAddr& sock_addr, bool verbose)
                   << std::endl;
     }
 
-    switch (family) {
-#ifndef _WIN32
-    case AF_UNIX:
+    if (family == AF_UNIX) {
         if (!(min_size <= sa_len && sa_len <= sock_addr.size())) {
             return false;
         }
-        else {
-            break;
-        }
-#endif
-    default:
-        if (!(sa_len == sock_addr.size())) {
-            return false;
-        }
-    }
 
 #ifndef _WIN32
-    switch (family) {
-    case AF_UNIX:
-    {
-        const auto sun_pointer {
-            reinterpret_cast<const sockaddr_un*>(sock_addr.data())
-        };
-        const auto sun_len {get_sun_length(sun_pointer)};
+
+        const auto sun {reinterpret_cast<const sockaddr_un*>(sock_addr.data())};
+        const auto sun_len {get_sun_length(sun)};
 
         if (verbose) {
             std::cerr << std::left
@@ -294,15 +279,18 @@ bool Network::is_valid(const SockAddr& sock_addr, bool verbose)
                       << std::endl;
         }
 
-        if (!(sa_len == sun_len || sa_len == min_size)) {
+        if (!(sa_len == sun_len)) {
             return false;
         }
-        else {
-            break;
+
+#endif
+
+    }
+    else {
+        if (!(sa_len == sock_addr.size())) {
+            return false;
         }
     }
-    }
-#endif
 
 #endif
 
