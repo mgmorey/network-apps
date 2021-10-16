@@ -8,7 +8,7 @@
 namespace Network
 {
     class Flags :
-        public Integer<unsigned short>
+        public Integer<short>
     {
         friend std::ostream& operator<<(std::ostream& os,
                                         const Flags& flags);

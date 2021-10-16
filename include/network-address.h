@@ -24,14 +24,9 @@ namespace Network
     class Address
     {
     public:
-#ifdef _WIN32
-        using family_type = unsigned short;
-        using port_type = unsigned short;
-#else
-        using family_type = sa_family_t;
-        using port_type = in_port_t;
-#endif
-        using length_type = socklen_type;
+        using family_type = short;
+        using port_type = short;
+        using length_type = short;
         using value_type = SockAddr;
 
         Address();
