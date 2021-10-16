@@ -45,6 +45,17 @@ static std::size_t get_sa_length(const Network::SockAddr& sock_addr)
 #endif
 }
 
+#ifndef _WIN32
+#ifdef HAVE_SOCKADDR_SA_LEN
+static std::size_t get_sun_length(const sockaddr_un* sun)
+{
+    const auto path_size {strnlen(sun->sun_path, sizeof(sun->sun_path))};
+    const auto min_size {sizeof(*sun) - sizeof(sun->sun_path) + path_size};
+    return std::max(sizeof(sockaddr), min_size);
+}
+#endif
+#endif
+
 int Network::get_family(const SockAddr& sock_addr)
 {
     const auto sa {reinterpret_cast<const sockaddr*>(sock_addr.data())};
@@ -175,17 +186,6 @@ Network::SockAddr Network::get_sockaddr(const sockaddr_in6* sin6)
     const auto sa {reinterpret_cast<const sockaddr*>(sin6)};
     return get_sockaddr(sa, sizeof *sin6);
 }
-
-#ifndef _WIN32
-#ifdef HAVE_SOCKADDR_SA_LEN
-std::size_t Network::get_sun_length(const sockaddr_un* sun)
-{
-    const auto path_size = strnlen(sun->sun_path, sizeof(sun->sun_path));
-    const auto min_size = sizeof(*sun) - sizeof(sun->sun_path) + path_size;
-    return std::max(sizeof(sockaddr), min_size);
-}
-#endif
-#endif
 
 bool Network::is_valid(const SockAddr& sock_addr, bool verbose)
 {
