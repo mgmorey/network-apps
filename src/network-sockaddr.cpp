@@ -255,6 +255,8 @@ bool Network::is_valid(const SockAddr& sock_addr, bool verbose)
         return false;
     }
 
+#ifdef HAVE_SOCKADDR_SA_LEN
+
     const auto sa_len {static_cast<std::size_t>(get_sa_length(sock_addr))};
 
     if (verbose) {
@@ -284,7 +286,6 @@ bool Network::is_valid(const SockAddr& sock_addr, bool verbose)
     }
 
 #ifndef _WIN32
-#ifdef HAVE_SOCKADDR_SA_LEN
     switch (family) {
     case AF_UNIX:
     {
@@ -312,6 +313,7 @@ bool Network::is_valid(const SockAddr& sock_addr, bool verbose)
     }
     }
 #endif
+
 #endif
 
     return true;
