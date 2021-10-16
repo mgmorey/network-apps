@@ -149,16 +149,17 @@ Network::SockAddr Network::get_sockaddr(const Pathname& path)
 {
     sockaddr_un addr;
     std::memset(&addr, '\0', sizeof addr);
-    const auto path_len {std::min(path.length(), sizeof addr.sun_path)};
-    std::memcpy(addr.sun_path, path, path_len);
-    const auto sun_len {get_sun_length(&addr)};
-    const auto min_len {sizeof(sockaddr)};
-    const auto length {std::max(min_len, sun_len)};
+    const auto path_size {std::min(path.size(), sizeof addr.sun_path - 1)};
+    const auto min_size {sizeof addr - sizeof addr.sun_path + path_size};
+    const auto sun_len {std::max(sizeof(sockaddr), min_size)};
+    const auto len {std::max(sizeof(sockaddr), min_size + 1)};
+    std::memcpy(addr.sun_path, path, path_size);
     addr.sun_family = AF_LOCAL;
 #ifdef HAVE_SOCKADDR_SA_LEN
-    addr.sun_len = length;
+    addr.sun_len = sun_len;
+    assert(addr.sun_len == get_sun_length(&addr));
 #endif
-    return get_sockaddr(&addr, length);
+    return get_sockaddr(&addr, len);
 }
 
 #endif
@@ -176,11 +177,14 @@ Network::SockAddr Network::get_sockaddr(const sockaddr_in6* sin6)
 }
 
 #ifndef _WIN32
+#ifdef HAVE_SOCKADDR_SA_LEN
 std::size_t Network::get_sun_length(const sockaddr_un* sun)
 {
-    return (sizeof(*sun) - sizeof(sun->sun_path) +
-            strnlen(sun->sun_path, sizeof(sun->sun_path)));
+    const auto path_size = strnlen(sun->sun_path, sizeof(sun->sun_path));
+    const auto min_size = sizeof(*sun) - sizeof(sun->sun_path) + path_size;
+    return std::max(sizeof(sockaddr), min_size);
 }
+#endif
 #endif
 
 bool Network::is_valid(const SockAddr& sock_addr, bool verbose)
@@ -279,8 +283,8 @@ bool Network::is_valid(const SockAddr& sock_addr, bool verbose)
         }
     }
 
-#ifdef HAVE_SOCKADDR_SA_LEN
 #ifndef _WIN32
+#ifdef HAVE_SOCKADDR_SA_LEN
     switch (family) {
     case AF_UNIX:
     {

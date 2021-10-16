@@ -32,7 +32,11 @@ namespace Network
 #endif
     extern SockAddr get_sockaddr(const sockaddr_in* sin);
     extern SockAddr get_sockaddr(const sockaddr_in6* sin6);
+#ifndef _WIN32
+#ifdef HAVE_SOCKADDR_SA_LEN
     extern std::size_t get_sun_length(const sockaddr_un* sun);
+#endif
+#endif
     extern bool is_valid(const SockAddr& sock_addr, bool verbose = false);
 }
 
