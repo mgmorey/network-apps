@@ -20,7 +20,9 @@
 
 namespace TestSocket
 {
-    static constexpr auto PATH {"/tmp/socket0"};
+    static constexpr auto PATH_12 {"/tmp/6789012"};
+    static constexpr auto PATH_16 {"/tmp/67890123456"};
+    static constexpr auto PATH_20 {"/tmp/678901234567890"};
 
     static bool verbose {false};
 
@@ -98,15 +100,13 @@ namespace TestSocket
         }
     }
 
-    static void test_socket()
+    static void test_socket(const std::string& path)
     {
-        Network::Address address {Network::get_sockaddr(PATH)};
-
-        if (Network::is_valid(address, verbose)) {
-            std::cout << "Unix domain address: "
-                      << address
-                      << std::endl;
-        }
+        Network::Address address {Network::get_sockaddr(path)};
+        assert(is_valid(address, verbose));
+        std::cout << "Unix domain address: "
+                  << address
+                  << std::endl;
     }
 
     static void test_socketpair(const Network::Hints& hints)
@@ -145,5 +145,7 @@ int main(int argc, char* argv[])
     TestSocket::parse_arguments(argc, argv);
     const Network::Socket hints(AF_UNIX, SOCK_STREAM);
     TestSocket::test_socketpair(hints);
-    TestSocket::test_socket();
+    TestSocket::test_socket(TestSocket::PATH_12);
+    TestSocket::test_socket(TestSocket::PATH_16);
+    TestSocket::test_socket(TestSocket::PATH_20);
 }
