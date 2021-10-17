@@ -187,7 +187,7 @@ namespace TestConnect
     static void test_connect(const Network::Endpoint& endpoint,
                              const Network::Hints& hints)
     {
-        const auto results {connect(endpoint, &hints, verbose)};
+        const auto results {Network::connect(endpoint, &hints, verbose)};
         std::for_each(results.begin(), results.end(),
                       Test(endpoint, std::cout));
     }

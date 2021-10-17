@@ -1,7 +1,7 @@
 #include "network-address.h"    // Address, operator<<()
-#include "network-close.h"      // close()
 #include "network-bind.h"       // Address, Endpoint, Fd, Hints,
                                 // Socket, SocketResult, bind()
+#include "network-close.h"      // close()
 #include "network-context.h"    // Context
 #include "network-fd.h"         // Fd
 #include "network-hostname.h"   // get_hostname()
@@ -49,21 +49,6 @@ namespace TestBind
         void operator()(const Network::SocketResult& t_socket_result)
         {
             test_socket(t_socket_result);
-        }
-
-        Network::Hostname get_host()
-        {
-            const auto hostname_result {Network::get_hostname()};
-            const auto hostname {hostname_result.first};
-            const auto result {hostname_result.second};
-
-            if (result.result() != 0) {
-                std::cerr << "No hostname available: "
-                          << result
-                          << std::endl;
-            }
-
-            return hostname;
         }
 
         Network::Address get_sock(Network::Fd t_fd)
@@ -162,9 +147,9 @@ namespace TestBind
     }
 
     static void test_bind(const Network::Endpoint& endpoint,
-                             const Network::Hints& hints)
+                          const Network::Hints& hints)
     {
-        const auto results {bind(endpoint, &hints, verbose)};
+        const auto results {Network::bind(endpoint, &hints, verbose)};
         std::for_each(results.begin(), results.end(),
                       Test(endpoint, std::cout));
     }
