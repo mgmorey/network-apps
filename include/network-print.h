@@ -10,6 +10,8 @@ namespace Network
     template<typename Container>
     std::ostream& print(std::ostream& os, const Container& value)
     {
+        std::ios format {nullptr};
+        format.copyfmt(os);
         os << "0x";
 
         if (value.empty()) {
@@ -26,6 +28,7 @@ namespace Network
             }
         }
 
+        os.copyfmt(format);
         return os;
     }
 }
