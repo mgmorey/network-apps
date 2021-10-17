@@ -1,7 +1,7 @@
 #include "network-address.h"    // Address, operator<<()
 #include "network-close.h"      // close()
-#include "network-connect.h"    // Address, Endpoint, Fd, Hints,
-                                // Socket, SocketResult, connect()
+#include "network-bind.h"       // Address, Endpoint, Fd, Hints,
+                                // Socket, SocketResult, bind()
 #include "network-context.h"    // Context
 #include "network-fd.h"         // Fd
 #include "network-hostname.h"   // get_hostname()
@@ -29,10 +29,10 @@
 #include <string>       // std::string
 #include <vector>       // std::vector
 
-namespace TestConnect
+namespace TestBind
 {
-    static constexpr auto HOST {"example.com"};
-    static constexpr auto SERVICE {"http"};
+    static constexpr auto HOST {"localhost"};
+    static constexpr auto SERVICE {"8080"};
 
     static bool verbose {false};
 
@@ -64,21 +64,6 @@ namespace TestConnect
             }
 
             return hostname;
-        }
-
-        Network::Address get_peer(Network::Fd t_fd)
-        {
-            const auto peername_result {Network::get_peername(t_fd, verbose)};
-            const auto sock_addr {peername_result.first};
-            const auto result {peername_result.second};
-
-            if (result.result()) {
-                std::cerr << "No peer information available: "
-                          << result
-                          << std::endl;
-            }
-
-            return sock_addr;
         }
 
         Network::Address get_sock(Network::Fd t_fd)
@@ -114,18 +99,13 @@ namespace TestConnect
         {
             const auto hostname {get_host()};
             const auto cname {t_result.string()};
-            const auto host {m_endpoint.first};
             const auto serv {m_endpoint.second};
             m_os << "Socket "
                  << t_fd
-                 << " connected "
-                 << static_cast<std::string>(hostname)
-                 << " to "
+                 << " bound to "
                  << static_cast<std::string>(serv)
                  << " on "
-                 << ((cname.empty()) ?
-                     static_cast<std::string>(host) :
-                     static_cast<std::string>(cname))
+                 << static_cast<std::string>(hostname)
                  << std::endl;
             test_socket(t_fd);
             Network::close(t_fd);
@@ -137,16 +117,13 @@ namespace TestConnect
 
         void test_socket(Network::Fd t_fd)
         {
-            const auto peer {get_peer(t_fd)};
             const auto sock {get_sock(t_fd)};
 
-            if (!peer.empty() && !sock.empty()) {
+            if (!sock.empty()) {
                 m_os << "Socket "
                      << t_fd
-                     << " connected "
+                     << " bound to "
                      << sock
-                     << " to "
-                     << peer
                      << std::endl;
             }
         }
@@ -184,10 +161,10 @@ namespace TestConnect
         return args;
     }
 
-    static void test_connect(const Network::Endpoint& endpoint,
+    static void test_bind(const Network::Endpoint& endpoint,
                              const Network::Hints& hints)
     {
-        const auto results {connect(endpoint, &hints, verbose)};
+        const auto results {bind(endpoint, &hints, verbose)};
         std::for_each(results.begin(), results.end(),
                       Test(endpoint, std::cout));
     }
@@ -200,18 +177,18 @@ int main(int argc, char* argv[])
                                       IPPROTO_TCP,
                                       AI_CANONNAME);
 
-    const auto args {TestConnect::parse_arguments(argc, argv)};
-    const Network::Context context(TestConnect::verbose);
+    const auto args {TestBind::parse_arguments(argc, argv)};
+    const Network::Context context(TestBind::verbose);
 
     if (context.result().result() != 0) {
         std::cerr << context.result()
                   << std::endl;
     }
     else {
-        const auto host {args.size() > 1 ? args[1] : TestConnect::HOST};
-        const auto service {args.size() > 2 ? args[2] : TestConnect::SERVICE};
+        const auto host {args.size() > 1 ? args[1] : TestBind::HOST};
+        const auto service {args.size() > 2 ? args[2] : TestBind::SERVICE};
         const auto endpoint {Network::Endpoint(host, service)};
-        TestConnect::test_connect(endpoint, hints);
+        TestBind::test_bind(endpoint, hints);
     }
 
     static_cast<void>(context);
