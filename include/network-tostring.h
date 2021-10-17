@@ -10,37 +10,15 @@
 namespace Network
 {
     template<typename Container>
-    std::string to_string(const Container& value, bool encode = false)
+    std::string to_string(const Container& value)
     {
-        if (encode) {
-            std::ostringstream oss;
-            oss << "0x";
+        std::string text(value.size(), '\0');
 
-            if (value.empty()) {
-                oss << '0';
-            }
-            else {
-                oss << std::hex;
-
-                for (const auto by : value) {
-                    oss << std::setfill('0')
-                        << std::setw(2)
-                        << std::uppercase
-                        << static_cast<int>(by);
-                }
-            }
-
-            return oss.str();
+        for (std::string::size_type i = 0; i < value.size(); ++i) {
+            text[i] = static_cast<char>(value[i]);
         }
-        else {
-            std::string text(value.size(), '\0');
 
-            for (std::string::size_type i = 0; i < value.size(); ++i) {
-                text[i] = static_cast<char>(value[i]);
-            }
-
-            return text;
-        }
+        return text;
     }
 }
 

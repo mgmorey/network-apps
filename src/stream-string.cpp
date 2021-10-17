@@ -1,13 +1,12 @@
+#include "network-print.h"      // print()
 #include "network-string.h"     // String, operator<<()
-#include "network-tostring.h"   // to_string()
 
 #include <ostream>      // std::ostream
 
 std::ostream& Network::operator<<(std::ostream& os,
                                   const ByteString& string)
 {
-    os << to_string(string, true);
-    return os;
+    return print(os, string);
 }
 
 std::ostream& Network::operator<<(std::ostream& os,

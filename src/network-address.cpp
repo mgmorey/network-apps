@@ -1,6 +1,7 @@
 #include "network-address.h"    // Address, sockaddr, sockaddr_in,
                                 // sockaddr_in6, sockaddr_un
 #include "network-buffer.h"     // Buffer
+#include "network-print.h"      // print()
 #include "network-tostring.h"   // to_string()
 
 #ifdef _WIN32
@@ -146,7 +147,9 @@ Network::Address::length_type Network::Address::sa_length() const
 
 std::string Network::Address::sa_text() const
 {
-    return to_string(m_value, true);
+    std::ostringstream oss;
+    print(oss, m_value);
+    return oss.str();
 }
 
 const sockaddr_in& Network::Address::sin() const
@@ -259,7 +262,7 @@ Network::Address::value_type Network::Address::sun_path() const
 
 std::string Network::Address::sun_text() const
 {
-    const auto text {to_string(sun_path(), false)};
+    const auto text {to_string(sun_path())};
     return text.substr(0, text.find('\0'));
 }
 
