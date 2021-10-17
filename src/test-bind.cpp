@@ -97,15 +97,15 @@ namespace TestBind
 
         void test_socket(Network::Fd t_fd, const Network::Result& t_result)
         {
-            const auto hostname {get_host()};
             const auto cname {t_result.string()};
+            const auto host {m_endpoint.first};
             const auto serv {m_endpoint.second};
             m_os << "Socket "
                  << t_fd
                  << " bound to "
                  << static_cast<std::string>(serv)
                  << " on "
-                 << static_cast<std::string>(hostname)
+                 << static_cast<std::string>(host)
                  << std::endl;
             test_socket(t_fd);
             Network::close(t_fd);
