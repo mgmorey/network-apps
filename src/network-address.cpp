@@ -249,15 +249,14 @@ Network::Address::length_type Network::Address::sun_length() const
 
 Network::Address::value_type Network::Address::sun_path() const
 {
-    constexpr auto max_len {sizeof(sockaddr_un) - m_sun_path_offset};
-#ifdef HAVE_SOCKADDR_SA_LEN
-    const auto min_len {static_cast<std::size_t>(sun().sun_len)};
-    const auto length {std::min(max_len, min_len)};
-#else
-    const auto length {max_len};
-#endif
-    const auto offset {m_sun_path_offset};
-    return m_value.substr(offset, length);
+    if (m_value.size() <= m_sun_path_offset) {
+        return "";
+    }
+    else {
+        const auto length {get_sun_path_length(sun)};
+        const auto offset {m_sun_path_offset};
+        return m_value.substr(offset, length);
+    }
 }
 
 std::string Network::Address::sun_text() const

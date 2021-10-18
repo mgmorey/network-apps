@@ -12,9 +12,10 @@
 
 #include <algorithm>    // std::max(), std::min()
 #include <cassert>      // assert()
+#include <cstddef>      // std::size_t
+#include <cstring>      // strnlen()
 #include <iomanip>      // std::left, std::right, std::setw()
 #include <iostream>     // std::cerr, std::endl
-#include <cstddef>      // std::byte, std::size_t
 #include <cstring>      // std::memcpy(), std::memset()
 
 static constexpr Network::SockAddr::size_type get_capacity()
@@ -86,17 +87,6 @@ static std::size_t get_sa_length(const Network::SockAddr& sock_addr)
 #endif
 }
 
-#ifndef _WIN32
-#ifdef HAVE_SOCKADDR_SA_LEN
-static std::size_t get_sun_length(const sockaddr_un* sun)
-{
-    const auto path_size {strnlen(sun->sun_path, sizeof(sun->sun_path))};
-    const auto min_size {sizeof *sun - sizeof sun->sun_path + path_size};
-    return std::max(sizeof(sockaddr), min_size);
-}
-#endif
-#endif
-
 int Network::get_family(const SockAddr& sock_addr)
 {
     const auto sa {reinterpret_cast<const sockaddr*>(sock_addr.data())};
@@ -146,6 +136,18 @@ Network::SockAddr Network::get_sockaddr(const sockaddr* sa,
     return sock_addr;
 }
 
+Network::SockAddr Network::get_sockaddr(const sockaddr_in* sin)
+{
+    const auto sa {reinterpret_cast<const sockaddr*>(sin)};
+    return get_sockaddr(sa, sizeof *sin);
+}
+
+Network::SockAddr Network::get_sockaddr(const sockaddr_in6* sin6)
+{
+    const auto sa {reinterpret_cast<const sockaddr*>(sin6)};
+    return get_sockaddr(sa, sizeof *sin6);
+}
+
 #ifndef _WIN32
 
 Network::SockAddr Network::get_sockaddr(const sockaddr_un* sun,
@@ -172,19 +174,19 @@ Network::SockAddr Network::get_sockaddr(const Pathname& path)
     return get_sockaddr(&addr, len);
 }
 
+std::size_t Network::get_sun_length(const sockaddr_un* sun)
+{
+    const auto path_len {get_sun_path_length(sun)};
+    const auto min_size {sizeof *sun - sizeof sun->sun_path + path_len};
+    return std::max(sizeof(sockaddr), min_size);
+}
+
+std::size_t Network::get_sun_path_length(const sockaddr_un* sun)
+{
+    return strnlen(sun->sun_path, sizeof(sun->sun_path));
+}
+
 #endif
-
-Network::SockAddr Network::get_sockaddr(const sockaddr_in* sin)
-{
-    const auto sa {reinterpret_cast<const sockaddr*>(sin)};
-    return get_sockaddr(sa, sizeof *sin);
-}
-
-Network::SockAddr Network::get_sockaddr(const sockaddr_in6* sin6)
-{
-    const auto sa {reinterpret_cast<const sockaddr*>(sin6)};
-    return get_sockaddr(sa, sizeof *sin6);
-}
 
 bool Network::is_valid(const SockAddr& sock_addr, bool verbose)
 {
