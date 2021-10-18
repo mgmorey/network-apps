@@ -2,6 +2,7 @@
                                 // sockaddr_in6, sockaddr_un
 #include "network-buffer.h"     // Buffer
 #include "network-print.h"      // print()
+#include "network-sockaddr.h"   // get_sun_path_length()
 #include "network-tostring.h"   // to_string()
 
 #ifdef _WIN32
@@ -249,14 +250,13 @@ Network::Address::length_type Network::Address::sun_length() const
 
 Network::Address::value_type Network::Address::sun_path() const
 {
-    if (m_value.size() <= m_sun_path_offset) {
-        return "";
-    }
-    else {
-        const auto length {get_sun_path_length(sun)};
-        const auto offset {m_sun_path_offset};
-        return m_value.substr(offset, length);
-    }
+    const auto length {
+        m_value.size() > m_sun_path_offset ?
+        get_sun_path_length(&sun()) :
+        0
+    };
+    const auto offset {m_sun_path_offset};
+    return m_value.substr(offset, length);
 }
 
 std::string Network::Address::sun_text() const
