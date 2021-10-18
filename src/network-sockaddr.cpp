@@ -183,7 +183,15 @@ std::size_t Network::get_sun_length(const sockaddr_un* sun)
 
 std::size_t Network::get_sun_path_length(const sockaddr_un* sun)
 {
-    return strnlen(sun->sun_path, sizeof(sun->sun_path));
+#ifdef HAVE_SOCKADDR_SA_LEN
+    static constexpr auto path_offset {offsetof(sockaddr_un, sun_path)};
+    static_assert(path_offset >= 0);
+    assert(sun->sun_len >= path_offset);
+    const auto max_path_len {sun->sun_len - path_offset};
+#else
+    const auto max_path_len {sizeof sun->sun_path};
+#endif
+    return strnlen(sun->sun_path, max_path_len);
 }
 
 #endif
