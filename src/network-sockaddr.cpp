@@ -168,28 +168,38 @@ Network::SockAddr Network::get_sockaddr(const Pathname& path)
 #ifdef HAVE_SOCKADDR_SA_LEN
     const auto sun_len {std::max(sizeof(sockaddr), min_size)};
     addr.sun_len = sun_len;
-    assert(addr.sun_len == get_sun_length(&addr));
+    assert(addr.sun_len == get_sun_length(&addr, sizeof addr));
 #endif
     const auto len {std::max(sizeof(sockaddr), min_size + 1)};
     return get_sockaddr(&addr, len);
 }
 
-std::size_t Network::get_sun_length(const sockaddr_un* sun)
+std::size_t Network::get_sun_length(const sockaddr_un* sun,
+                                    std::size_t size)
 {
-    const auto path_len {get_sun_path_length(sun)};
+    const auto path_len {get_sun_path_length(sun, size)};
     const auto min_size {sizeof *sun - sizeof sun->sun_path + path_len};
     return std::max(sizeof(sockaddr), min_size);
 }
 
-std::size_t Network::get_sun_path_length(const sockaddr_un* sun)
+std::size_t Network::get_sun_path_length(const sockaddr_un* sun,
+                                         std::size_t size)
 {
-#ifdef HAVE_SOCKADDR_SA_LEN
     static constexpr auto path_offset {offsetof(sockaddr_un, sun_path)};
-    static_assert(path_offset >= 0);
-    assert(sun->sun_len >= path_offset);
-    const auto max_path_len {sun->sun_len - path_offset};
+
+    assert(size >= path_offset);
+    assert(size <= path_offset + sizeof sun->sun_path);
+    size = std::min(size, path_offset);
+    size = std::max(size, path_offset + sizeof sun->sun_path);
+#ifdef HAVE_SOCKADDR_SA_LEN
+    std::size_t len {sun->sun_len};
+    assert(len >= path_offset);
+    assert(len <= size);
+    len = std::min(size, path_offset);
+    len = std::max(len, size);
+    const auto max_path_len {std::min(size, len) - path_offset};
 #else
-    const auto max_path_len {sizeof sun->sun_path};
+    const auto max_path_len {std::min(size - path_offset, sizeof sun->sun_path)};
 #endif
     return strnlen(sun->sun_path, max_path_len);
 }
@@ -286,7 +296,7 @@ bool Network::is_valid(const SockAddr& sock_addr, bool verbose)
 #ifndef _WIN32
 
         const auto sun {reinterpret_cast<const sockaddr_un*>(sock_addr.data())};
-        const auto sun_len {get_sun_length(sun)};
+        const auto sun_len {get_sun_length(sun, sock_addr.size())};
 
         if (verbose) {
             std::cerr << std::left

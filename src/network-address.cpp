@@ -250,10 +250,10 @@ Network::Address::length_type Network::Address::sun_length() const
 
 Network::Address::value_type Network::Address::sun_path() const
 {
+    const auto size {m_value.size()};
     const auto length {
-        m_value.size() > m_sun_path_offset ?
-        get_sun_path_length(sun()) :
-        0
+        m_sun_path_offset < size ? 0 :
+        get_sun_path_length(sun(), size)
     };
     const auto offset {m_sun_path_offset};
     return m_value.substr(offset, length);
