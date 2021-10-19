@@ -252,7 +252,7 @@ Network::Address::value_type Network::Address::sun_path() const
 {
     const auto size {m_value.size()};
     const auto length {
-        m_sun_path_offset < size ? 0 :
+        size < m_sun_path_offset ? 0 :
         get_sun_path_length(sun(), size)
     };
     const auto offset {m_sun_path_offset};
