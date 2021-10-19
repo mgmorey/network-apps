@@ -57,14 +57,20 @@ bool Network::Socket::operator==(const Socket& t_socket) const
 
 Network::SocketResult Network::Socket::socket(bool t_verbose) const
 {
+    Result result;
+
     if (t_verbose) {
-        std::cerr << "Trying socket:"
-                  << std::endl
-                  << *this
+        std::cerr << "Calling socket("
+                  << Format("domain")
+                  << m_family
+                  << Format(m_delim, m_tab, "type")
+                  << m_socktype
+                  << Format(m_delim, m_tab, "protocol")
+                  << m_protocol
+                  << "...)"
                   << std::endl;
     }
 
-    Result result;
     // cppcheck-suppress variableScope
     auto error {reset_last_error()};
     const auto fd {::socket(static_cast<int>(m_family),
@@ -81,7 +87,7 @@ Network::SocketResult Network::Socket::socket(bool t_verbose) const
             << m_socktype
             << Format(m_delim, m_tab, "protocol")
             << m_protocol
-            << ") failed with error "
+            << "...) failed with error "
             << error
             << ": "
             << format_error(error);
@@ -95,15 +101,21 @@ Network::SocketResult Network::Socket::socket(bool t_verbose) const
 
 Network::SocketpairResult Network::Socket::socketpair(bool t_verbose) const
 {
+    Result result;
+    fd_type fds[] {fd_null, fd_null};
+
     if (t_verbose) {
-        std::cerr << "Trying socket:"
-                  << std::endl
-                  << *this
+        std::cerr << "Calling socketpair("
+                  << Format("domain")
+                  << m_family
+                  << Format(m_delim, m_tab, "type")
+                  << m_socktype
+                  << Format(m_delim, m_tab, "protocol")
+                  << m_protocol
+                  << "...)"
                   << std::endl;
     }
 
-    Result result;
-    fd_type fds[] {fd_null, fd_null};
     // cppcheck-suppress variableScope
     auto error {reset_last_error()};
     auto code {::socketpair(m_family, m_socktype, m_protocol, fds)};
@@ -118,7 +130,7 @@ Network::SocketpairResult Network::Socket::socketpair(bool t_verbose) const
             << m_socktype
             << Format(m_delim, m_tab, "protocol")
             << m_protocol
-            << ") failed with error "
+            << "...) failed with error "
             << error
             << ": "
             << format_error(error);
