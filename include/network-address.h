@@ -24,9 +24,9 @@ namespace Network
     class Address
     {
     public:
-        using family_type = short;
-        using port_type = short;
-        using length_type = short;
+        using family_type = unsigned short;
+        using port_type = unsigned short;
+        using length_type = unsigned short;
         using value_type = SockAddr;
 
         Address();
