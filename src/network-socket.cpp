@@ -67,7 +67,7 @@ Network::SocketResult Network::Socket::socket(bool t_verbose) const
                   << m_socktype
                   << Format(m_delim, m_tab, "protocol")
                   << m_protocol
-                  << "...)"
+                  << ", ...)"
                   << std::endl;
     }
 
@@ -87,7 +87,7 @@ Network::SocketResult Network::Socket::socket(bool t_verbose) const
             << m_socktype
             << Format(m_delim, m_tab, "protocol")
             << m_protocol
-            << "...) failed with error "
+            << ", ...) failed with error "
             << error
             << ": "
             << format_error(error);
@@ -112,7 +112,7 @@ Network::SocketpairResult Network::Socket::socketpair(bool t_verbose) const
                   << m_socktype
                   << Format(m_delim, m_tab, "protocol")
                   << m_protocol
-                  << "...)"
+                  << ", ...)"
                   << std::endl;
     }
 
@@ -130,7 +130,7 @@ Network::SocketpairResult Network::Socket::socketpair(bool t_verbose) const
             << m_socktype
             << Format(m_delim, m_tab, "protocol")
             << m_protocol
-            << "...) failed with error "
+            << ", ...) failed with error "
             << error
             << ": "
             << format_error(error);
