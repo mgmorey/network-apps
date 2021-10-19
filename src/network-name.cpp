@@ -27,8 +27,6 @@ Network::get_name(Fd fd,
     auto sock_addr {get_sockaddr()};
     auto addr_ptr {get_pointer(sock_addr)};
     auto addr_len {get_length(sock_addr)};
-    // cppcheck-suppress variableScope
-    auto error {reset_last_error()};
 
     if (verbose) {
         std::cerr << "Calling "
@@ -42,6 +40,9 @@ Network::get_name(Fd fd,
                   << ", ...)"
                   << std::endl;
     }
+
+    // cppcheck-suppress variableScope
+    auto error {reset_last_error()};
 
     if (method(fd, addr_ptr, &addr_len)) {
         error = get_last_error();
