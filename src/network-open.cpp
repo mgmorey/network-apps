@@ -65,8 +65,6 @@ Network::Result Network::open(Fd fd,
     assert(is_valid(sock_addr, verbose));
     const auto addr_ptr {get_pointer(sock_addr)};
     const auto addr_len {get_length(sock_addr)};
-    // cppcheck-suppress variableScope
-    auto error {reset_last_error()};
 
     if (verbose) {
         std::cerr << "Calling "
@@ -80,6 +78,9 @@ Network::Result Network::open(Fd fd,
                   << ')'
                   << std::endl;
     }
+
+    // cppcheck-suppress variableScope
+    auto error {reset_last_error()};
 
     if (method(fd, addr_ptr, addr_len) == socket_error) {
         error = get_last_error();
