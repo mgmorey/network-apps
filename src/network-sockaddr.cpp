@@ -174,6 +174,8 @@ Network::SockAddr Network::get_sockaddr(const Pathname& path)
     return get_sockaddr(&addr, len);
 }
 
+#ifdef HAVE_SOCKADDR_SA_LEN
+
 std::size_t Network::get_sun_length(const sockaddr_un* sun,
                                     std::size_t size)
 {
@@ -181,6 +183,8 @@ std::size_t Network::get_sun_length(const sockaddr_un* sun,
     const auto min_size {sizeof *sun - sizeof sun->sun_path + path_len};
     return std::max(sizeof(sockaddr), min_size);
 }
+
+#endif
 
 std::size_t Network::get_sun_path_length(const sockaddr_un* sun,
                                          std::size_t size)

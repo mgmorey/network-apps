@@ -29,8 +29,10 @@ namespace Network
     extern SockAddr get_sockaddr(const sockaddr_un* sun,
                                  std::size_t size = sizeof(sockaddr_un));
     extern SockAddr get_sockaddr(const Pathname& path);
+#ifdef HAVE_SOCKADDR_SA_LEN
     extern std::size_t get_sun_length(const sockaddr_un* sun,
                                       std::size_t size);
+#endif
     extern std::size_t get_sun_path_length(const sockaddr_un* sun,
                                            std::size_t size);
 #endif
