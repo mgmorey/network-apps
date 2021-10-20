@@ -1,6 +1,8 @@
 STANDARD := c++17
 SYSTEM := $(shell uname -s | cut -d- -f 1)
 
+CPPCHECK_FLAGS += --cppcheck-build-dir=tmp --enable=all --inline-suppr --quiet --std=$(STANDARD)
+
 ifdef NDEBUG
 	CPPFLAGS += -D_FORTIFY_SOURCE=2
 	CXXFLAGS += -O2
@@ -30,6 +32,7 @@ else ifeq "$(SYSTEM)" "FreeBSD"
 	CPPFLAGS += -I/usr/local/include
 	LDLIBS += -L/usr/local/lib
 else ifeq "$(SYSTEM)" "MINGW64_NT"
+	CPPCHECK_FLAGS += -D_WIN32
 	LDLIBS += -lws2_32
 endif
 
@@ -88,7 +91,7 @@ all: $(executables) TAGS
 
 .PHONY:	check
 check:
-	cppcheck --cppcheck-build-dir=tmp --enable=all --inline-suppr --quiet --std=$(STANDARD) $(CPPFLAGS) .
+	cppcheck $(CPPCHECK_FLAGS) $(CPPFLAGS) .
 
 .PHONY:	clean
 clean:
