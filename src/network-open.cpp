@@ -79,11 +79,10 @@ Network::Result Network::open(Fd fd,
                   << std::endl;
     }
 
-    // cppcheck-suppress variableScope
-    auto error {reset_last_error()};
+    reset_last_error();
 
     if (method(fd, addr_ptr, addr_len) == socket_error) {
-        error = get_last_error();
+        auto error = get_last_error();
         std::ostringstream oss;
         oss << "Call to "
             << name
