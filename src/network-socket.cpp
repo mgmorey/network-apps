@@ -67,18 +67,15 @@ Network::SocketResult Network::Socket::socket(bool t_verbose) const
                   << m_socktype
                   << Format(m_delim, m_tab, "protocol")
                   << m_protocol
-                  << ", ...)"
+                  << ')'
                   << std::endl;
     }
 
-    // cppcheck-suppress variableScope
-    auto error {reset_last_error()};
-    const auto fd {::socket(static_cast<int>(m_family),
-                            static_cast<int>(m_socktype),
-                            static_cast<int>(m_protocol))};
+    reset_last_error();
+    const auto fd {::socket(m_family, m_socktype, m_protocol)};
 
     if (fd == fd_null) {
-        error = get_last_error();
+        auto error = get_last_error();
         std::ostringstream oss;
         oss << "Call to socket("
             << Format("domain")
@@ -87,7 +84,7 @@ Network::SocketResult Network::Socket::socket(bool t_verbose) const
             << m_socktype
             << Format(m_delim, m_tab, "protocol")
             << m_protocol
-            << ", ...) failed with error "
+            << ") failed with error "
             << error
             << ": "
             << format_error(error);
@@ -116,12 +113,11 @@ Network::SocketpairResult Network::Socket::socketpair(bool t_verbose) const
                   << std::endl;
     }
 
-    // cppcheck-suppress variableScope
-    auto error {reset_last_error()};
+    reset_last_error();
     auto code {::socketpair(m_family, m_socktype, m_protocol, fds)};
 
     if (code == socket_error) {
-        error = get_last_error();
+        auto error = get_last_error();
         std::ostringstream oss;
         oss << "Call to socketpair("
             << Format("domain")
