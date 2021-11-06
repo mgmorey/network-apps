@@ -9,7 +9,7 @@
 #endif
 
 std::pair<Network::SockAddr, Network::Result>
-Network::get_peername(Fd fd, bool verbose)
+Network::get_peername(const Fd& fd, bool verbose)
 {
     return get_name(fd, ::getpeername, "getpeername", verbose);
 }

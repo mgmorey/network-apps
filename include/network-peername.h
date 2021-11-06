@@ -9,7 +9,8 @@
 
 namespace Network
 {
-    extern std::pair<SockAddr, Result> get_peername(Fd fd, bool verbose = false);
+    extern std::pair<SockAddr, Result> get_peername(const Fd& fd,
+                                                    bool verbose = false);
 }
 
 #endif
