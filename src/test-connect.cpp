@@ -66,7 +66,7 @@ namespace TestConnect
             return hostname;
         }
 
-        Network::Address get_peer(Network::Fd t_fd)
+        Network::Address get_peer(const Network::Fd& t_fd)
         {
             const auto peername_result {Network::get_peername(t_fd, verbose)};
             const auto sock_addr {peername_result.first};
@@ -81,7 +81,7 @@ namespace TestConnect
             return sock_addr;
         }
 
-        Network::Address get_sock(Network::Fd t_fd)
+        Network::Address get_sock(const Network::Fd& t_fd)
         {
             const auto sockname_result {Network::get_sockname(t_fd, verbose)};
             const auto sock_addr {sockname_result.first};
@@ -110,7 +110,8 @@ namespace TestConnect
             }
         }
 
-        void test_socket(Network::Fd t_fd, const Network::Result& t_result)
+        void test_socket(const Network::Fd& t_fd,
+                         const Network::Result& t_result)
         {
             const auto hostname {get_host()};
             const auto cname {t_result.string()};
@@ -135,7 +136,7 @@ namespace TestConnect
                  << std::endl;
         }
 
-        void test_socket(Network::Fd t_fd)
+        void test_socket(const Network::Fd& t_fd)
         {
             const auto peer {get_peer(t_fd)};
             const auto sock {get_sock(t_fd)};

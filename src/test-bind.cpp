@@ -51,7 +51,7 @@ namespace TestBind
             test_socket(t_socket_result);
         }
 
-        Network::Address get_sock(Network::Fd t_fd)
+        Network::Address get_sock(const Network::Fd& t_fd)
         {
             const auto sockname_result {Network::get_sockname(t_fd, verbose)};
             const auto sock_addr {sockname_result.first};
@@ -80,7 +80,8 @@ namespace TestBind
             }
         }
 
-        void test_socket(Network::Fd t_fd, const Network::Result& t_result)
+        void test_socket(const Network::Fd& t_fd,
+                         const Network::Result& t_result)
         {
             const auto cname {t_result.string()};
             const auto host {m_endpoint.first};
@@ -100,7 +101,7 @@ namespace TestBind
                  << std::endl;
         }
 
-        void test_socket(Network::Fd t_fd)
+        void test_socket(const Network::Fd& t_fd)
         {
             const auto sock {get_sock(t_fd)};
 

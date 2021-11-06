@@ -56,7 +56,7 @@ namespace TestSocket
         return args;
     }
 
-    Network::Address get_peer(Network::Fd t_fd)
+    Network::Address get_peer(const Network::Fd& t_fd)
     {
         const auto peername_result {Network::get_peername(t_fd, verbose)};
         const auto sock_addr {peername_result.first};
@@ -71,7 +71,7 @@ namespace TestSocket
         return sock_addr;
     }
 
-    Network::Address get_sock(Network::Fd t_fd)
+    Network::Address get_sock(const Network::Fd& t_fd)
     {
         const auto sockname_result {Network::get_sockname(t_fd, verbose)};
         const auto sock_addr {sockname_result.first};
@@ -86,7 +86,7 @@ namespace TestSocket
         return sock_addr;
     }
 
-    static void test_peer(Network::Fd fd)
+    static void test_peer(const Network::Fd& fd)
     {
         const auto peer {get_peer(fd)};
         const auto sock {get_sock(fd)};
