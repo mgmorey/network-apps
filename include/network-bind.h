@@ -12,7 +12,9 @@
 
 namespace Network
 {
-    extern Result bind(Fd fd, const SockAddr& sock_addr, bool verbose = false);
+    extern Result bind(const Fd& fd,
+                       const SockAddr& sock_addr,
+                       bool verbose = false);
     extern std::vector<SocketResult> bind(const Endpoint& endpoint,
                                           const Hints* hints = nullptr,
                                           bool verbose = false);

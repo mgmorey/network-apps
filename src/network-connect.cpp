@@ -9,7 +9,9 @@
 #include <sys/socket.h>     // connect()
 #endif
 
-Network::Result Network::connect(Fd fd, const SockAddr& sock_addr, bool verbose)
+Network::Result Network::connect(const Fd& fd,
+                                 const SockAddr& sock_addr,
+                                 bool verbose)
 {
     return open(fd, sock_addr, ::connect, "connect", verbose);
 }

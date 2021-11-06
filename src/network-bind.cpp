@@ -9,7 +9,9 @@
 #include <sys/socket.h>     // bind()
 #endif
 
-Network::Result Network::bind(Fd fd, const SockAddr& sock_addr, bool verbose)
+Network::Result Network::bind(const Fd& fd,
+                              const SockAddr& sock_addr,
+                              bool verbose)
 {
     return open(fd, sock_addr, ::bind, "bind", verbose);
 }
