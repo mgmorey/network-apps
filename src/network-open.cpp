@@ -1,6 +1,6 @@
 #include "network-open.h"       // Endpoint, Fd, Hints, Result,
                                 // Socket, SockAddr, SocketResult,
-                                // fd_null, operator<<()
+                                // fd_null, open(), operator<<()
 #include "network-close.h"      // close()
 #include "network-error.h"      // format_error(), get_last_error(),
                                 // reset_last_error()
@@ -16,8 +16,8 @@
 #include <utility>      // std::pair
 #include <vector>       // std::vector
 
-Network::Open::Open(open_method_type t_method,
-                    std::string t_name,
+Network::Open::Open(const open_method_type* t_method,
+                    const std::string& t_name,
                     bool t_verbose) :
     m_method(t_method),
     m_name(t_name),
@@ -50,14 +50,15 @@ Network::SocketResult Network::Open::open(const Socket& t_socket) const
     return socket_result;
 }
 
-Network::Result Network::Open::open(Fd t_fd, const Socket& t_socket) const
+Network::Result Network::Open::open(const Fd& t_fd, const Socket& t_socket) const
 {
-    return Network::open(t_fd, t_socket.address(), m_method, m_name, m_verbose);
+    const auto sock_addr {t_socket.address()};
+    return Network::open(t_fd, sock_addr, m_method, m_name, m_verbose);
 }
 
-Network::Result Network::open(Fd fd,
+Network::Result Network::open(const Fd& fd,
                               const SockAddr& sock_addr,
-                              const open_method_type method,
+                              const open_method_type* method,
                               const std::string& name,
                               bool verbose)
 {
@@ -102,7 +103,7 @@ Network::Result Network::open(Fd fd,
 
 std::vector<Network::SocketResult> Network::open(const Endpoint& endpoint,
                                                  const Hints* hints,
-                                                 const open_method_type method,
+                                                 const open_method_type* method,
                                                  const std::string& name,
                                                  bool verbose)
 {

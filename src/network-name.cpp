@@ -18,8 +18,8 @@
 #include <string>       // std::string
 
 std::pair<Network::SockAddr, Network::Result>
-Network::get_name(Fd fd,
-                  const name_method_type method,
+Network::get_name(const Fd& fd,
+                  const name_method_type* method,
                   const std::string& name,
                   bool verbose)
 {

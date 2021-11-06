@@ -2,7 +2,7 @@
 #define NETWORK_OPEN_H
 
 #include "network-endpoint.h"   // Endpoint
-#include "network-fd.h"         // Fd
+#include "network-fd.h"         // Fd, fd_type
 #include "network-hints.h"      // Hints
 #include "network-result.h"     // Result
 #include "network-socket.h"     // Socket, SocketResult
@@ -20,32 +20,32 @@
 
 namespace Network
 {
-    typedef int (*open_method_type)(fd_type, const sockaddr*, socklen_t);
+    typedef int open_method_type(fd_type, const sockaddr*, socklen_t);
 
     class Open
     {
     public:
-        explicit Open(open_method_type t_method,
-                      std::string t_name,
+        explicit Open(const open_method_type* t_method,
+                      const std::string& t_name,
                       bool t_verbose);
         SocketResult operator()(const Socket& t_socket) const;
         SocketResult open(const Socket& t_socket) const;
-        Result open(Fd t_fd, const Socket& t_socket) const;
+        Result open(const Fd& t_fd, const Socket& t_socket) const;
 
     private:
-        open_method_type m_method {nullptr};
+        open_method_type* m_method {nullptr};
         std::string m_name {""};
         bool m_verbose {false};
     };
 
-    extern Result open(Fd fd,
+    extern Result open(const Fd& fd,
                        const SockAddr& sock_addr,
-                       const open_method_type method,
+                       const open_method_type* method,
                        const std::string& name,
                        bool verbose);
     extern std::vector<SocketResult> open(const Endpoint& endpoint,
                                           const Hints* hints,
-                                          const open_method_type method,
+                                          const open_method_type* method,
                                           const std::string& name,
                                           bool verbose);
 }
