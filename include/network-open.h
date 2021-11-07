@@ -20,8 +20,8 @@
 
 namespace Network
 {
-    typedef std::vector<SocketResult> SocketResults;
-    typedef int open_method_type(fd_type, const sockaddr*, socklen_t);
+    using SocketResults = std::vector<SocketResult>;
+    using open_method_type = int(fd_type, const sockaddr*, socklen_t);
 
     class Open
     {

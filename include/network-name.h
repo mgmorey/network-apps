@@ -17,7 +17,7 @@
 
 namespace Network
 {
-    typedef int name_method_type(fd_type, sockaddr*, socklen_t *);
+    using name_method_type = int(fd_type, sockaddr*, socklen_t *);
 
     extern std::pair<SockAddr, Result> get_name(const Fd& fd,
                                                 const name_method_type* method,
