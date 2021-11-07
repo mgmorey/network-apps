@@ -101,13 +101,13 @@ Network::Result Network::open(const Fd& fd,
     return result;
 }
 
-std::vector<Network::SocketResult> Network::open(const Endpoint& endpoint,
-                                                 const Hints* hints,
-                                                 const open_method_type* method,
-                                                 const std::string& name,
-                                                 bool verbose)
+Network::SocketResults Network::open(const Endpoint& endpoint,
+                                     const Hints* hints,
+                                     const open_method_type* method,
+                                     const std::string& name,
+                                     bool verbose)
 {
-    std::vector<SocketResult> results;
+    SocketResults results;
     const auto sockets_result {get_sockets(endpoint, hints, verbose)};
     const auto sockets {sockets_result.first};
     const auto result {sockets_result.second};

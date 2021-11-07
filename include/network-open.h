@@ -20,6 +20,7 @@
 
 namespace Network
 {
+    typedef std::vector<SocketResult> SocketResults;
     typedef int open_method_type(fd_type, const sockaddr*, socklen_t);
 
     class Open
@@ -43,11 +44,11 @@ namespace Network
                        const open_method_type* method,
                        const std::string& name,
                        bool verbose);
-    extern std::vector<SocketResult> open(const Endpoint& endpoint,
-                                          const Hints* hints,
-                                          const open_method_type* method,
-                                          const std::string& name,
-                                          bool verbose);
+    extern SocketResults open(const Endpoint& endpoint,
+                              const Hints* hints,
+                              const open_method_type* method,
+                              const std::string& name,
+                              bool verbose);
 }
 
 #endif
