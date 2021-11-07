@@ -1,6 +1,5 @@
 #include "network-bind.h"       // Endpoint, Fd, Hints, Result,
-                                // Socket, SockAddr, SocketResult,
-                                // fd_null, open(), operator<<()
+                                // SockAddr, SocketResult, bind()
 #include "network-open.h"       // open()
 
 #ifdef _WIN32
