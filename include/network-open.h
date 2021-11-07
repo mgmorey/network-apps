@@ -21,7 +21,7 @@
 namespace Network
 {
     using SocketResults = std::vector<SocketResult>;
-    using open_method_type = int(fd_type, const sockaddr*, socklen_t);
+    using open_method_type = int (fd_type, const sockaddr*, socklen_t);
 
     class Open
     {
