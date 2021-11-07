@@ -16,7 +16,7 @@
 #include <utility>      // std::pair
 #include <vector>       // std::vector
 
-Network::Open::Open(const open_method_type* t_method,
+Network::Open::Open(open_method_type* t_method,
                     const std::string& t_name,
                     bool t_verbose) :
     m_method(t_method),
@@ -58,7 +58,7 @@ Network::Result Network::Open::open(const Fd& t_fd, const Socket& t_socket) cons
 
 Network::Result Network::open(const Fd& fd,
                               const SockAddr& sock_addr,
-                              const open_method_type* method,
+                              open_method_type* method,
                               const std::string& name,
                               bool verbose)
 {
@@ -103,7 +103,7 @@ Network::Result Network::open(const Fd& fd,
 
 Network::SocketResults Network::open(const Endpoint& endpoint,
                                      const Hints* hints,
-                                     const open_method_type* method,
+                                     open_method_type* method,
                                      const std::string& name,
                                      bool verbose)
 {

@@ -26,7 +26,7 @@ namespace Network
     class Open
     {
     public:
-        explicit Open(const open_method_type* t_method,
+        explicit Open(open_method_type* t_method,
                       const std::string& t_name,
                       bool t_verbose);
         SocketResult operator()(const Socket& t_socket) const;
@@ -41,12 +41,12 @@ namespace Network
 
     extern Result open(const Fd& fd,
                        const SockAddr& sock_addr,
-                       const open_method_type* method,
+                       open_method_type* method,
                        const std::string& name,
                        bool verbose);
     extern SocketResults open(const Endpoint& endpoint,
                               const Hints* hints,
-                              const open_method_type* method,
+                              open_method_type* method,
                               const std::string& name,
                               bool verbose);
 }
