@@ -1,6 +1,6 @@
 #include "network-bind.h"       // Endpoint, Fd, Hints, Result,
-                                // SockAddr, SocketResult, bind()
-#include "network-open.h"       // open()
+                                // SockAddr, SocketResults, bind(),
+                                // open()
 
 #ifdef _WIN32
 #include <winsock2.h>       // bind()
@@ -15,9 +15,9 @@ Network::Result Network::bind(const Fd& fd,
     return open(fd, sock_addr, ::bind, "bind", verbose);
 }
 
-std::vector<Network::SocketResult> Network::bind(const Endpoint& endpoint,
-                                                 const Hints* hints,
-                                                 bool verbose)
+Network::SocketResults Network::bind(const Endpoint& endpoint,
+                                     const Hints* hints,
+                                     bool verbose)
 {
     return open(endpoint, hints, ::bind, "bind", verbose);
 }

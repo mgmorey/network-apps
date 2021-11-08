@@ -1,6 +1,6 @@
 #include "network-connect.h"    // Endpoint, Fd, Hints, Result,
-                                // SockAddr, SocketResult, connect()
-#include "network-open.h"       // open()
+                                // SockAddr, SocketResults, connect(),
+                                // open()
 
 #ifdef _WIN32
 #include <winsock2.h>       // connect()
@@ -15,9 +15,9 @@ Network::Result Network::connect(const Fd& fd,
     return open(fd, sock_addr, ::connect, "connect", verbose);
 }
 
-std::vector<Network::SocketResult> Network::connect(const Endpoint& endpoint,
-                                                    const Hints* hints,
-                                                    bool verbose)
+Network::SocketResults Network::connect(const Endpoint& endpoint,
+                                        const Hints* hints,
+                                        bool verbose)
 {
     return open(endpoint, hints, ::connect, "connect", verbose);
 }
