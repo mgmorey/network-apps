@@ -19,7 +19,7 @@
 
 std::pair<Network::SockAddr, Network::Result>
 Network::get_name(const Fd& fd,
-                  name_method_type* method,
+                  get_name_function_type* get_name,
                   const std::string& name,
                   bool verbose)
 {
@@ -43,7 +43,7 @@ Network::get_name(const Fd& fd,
 
     reset_last_error();
 
-    if (method(fd, addr_ptr, &addr_len)) {
+    if (get_name(fd, addr_ptr, &addr_len)) {
         auto error = get_last_error();
         std::ostringstream oss;
         oss << "Call to "

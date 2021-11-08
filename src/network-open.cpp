@@ -16,10 +16,10 @@
 #include <utility>      // std::pair
 #include <vector>       // std::vector
 
-Network::Open::Open(open_method_type* t_method,
+Network::Open::Open(open_function_type* t_open,
                     const std::string& t_name,
                     bool t_verbose) :
-    m_method(t_method),
+    m_open(t_open),
     m_name(t_name),
     m_verbose(t_verbose)
 {
@@ -53,12 +53,12 @@ Network::SocketResult Network::Open::open(const Socket& t_socket) const
 Network::Result Network::Open::open(const Fd& t_fd, const Socket& t_socket) const
 {
     const auto sock_addr {t_socket.address()};
-    return Network::open(t_fd, sock_addr, m_method, m_name, m_verbose);
+    return Network::open(t_fd, sock_addr, m_open, m_name, m_verbose);
 }
 
 Network::Result Network::open(const Fd& fd,
                               const SockAddr& sock_addr,
-                              open_method_type* method,
+                              open_function_type* open,
                               const std::string& name,
                               bool verbose)
 {
@@ -82,7 +82,7 @@ Network::Result Network::open(const Fd& fd,
 
     reset_last_error();
 
-    if (method(fd, addr_ptr, addr_len) == socket_error) {
+    if (open(fd, addr_ptr, addr_len) == socket_error) {
         auto error = get_last_error();
         std::ostringstream oss;
         oss << "Call to "
@@ -103,7 +103,7 @@ Network::Result Network::open(const Fd& fd,
 
 Network::SocketResults Network::open(const Endpoint& endpoint,
                                      const Hints* hints,
-                                     open_method_type* method,
+                                     open_function_type* open,
                                      const std::string& name,
                                      bool verbose)
 {
@@ -120,7 +120,7 @@ Network::SocketResults Network::open(const Endpoint& endpoint,
     else {
         std::transform(sockets.begin(), sockets.end(),
                        std::back_inserter(results),
-                       Open(method, name, verbose));
+                       Open(open, name, verbose));
     }
 
     return results;
