@@ -18,9 +18,8 @@
 #include <string>       // std::string
 
 Network::SockAddrResult
-Network::get_name(const Fd& fd,
-                  get_name_function_type get_name_function_ptr,
-                  const std::string& get_name_function_str,
+Network::get_name(const GetNameMethod& method,
+                  const Fd& fd,
                   bool verbose)
 {
     Result result;
@@ -30,7 +29,7 @@ Network::get_name(const Fd& fd,
 
     if (verbose) {
         std::cerr << "Calling "
-                  << get_name_function_str
+                  << method.second
                   << '('
                   << fd
                   << ", "
@@ -43,11 +42,11 @@ Network::get_name(const Fd& fd,
 
     reset_last_error();
 
-    if (get_name_function_ptr(fd, addr_ptr, &addr_len)) {
+    if (method.first(fd, addr_ptr, &addr_len)) {
         auto error = get_last_error();
         std::ostringstream oss;
         oss << "Call to "
-            << get_name_function_str
+            << method.second
             << '('
             << fd
             << ", "

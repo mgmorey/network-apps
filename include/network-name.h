@@ -17,12 +17,12 @@
 
 namespace Network
 {
+    using GetNameFunction = int (*)(fd_type, sockaddr*, socklen_t *);
+    using GetNameMethod = std::pair<GetNameFunction, std::string>;
     using SockAddrResult = std::pair<SockAddr, Result>;
-    using get_name_function_type = int (*)(fd_type, sockaddr*, socklen_t *);
 
-    extern SockAddrResult get_name(const Fd& fd,
-                                   get_name_function_type get_name_function_ptr,
-                                   const std::string& get_name_function_str,
+    extern SockAddrResult get_name(const GetNameMethod& method,
+                                   const Fd& fd,
                                    bool verbose);
 }
 

@@ -8,16 +8,18 @@
 #include <sys/socket.h>     // bind()
 #endif
 
+static Network::OpenMethod method {::bind, "bind"};
+
 Network::Result Network::bind(const Fd& fd,
                               const SockAddr& sock_addr,
                               bool verbose)
 {
-    return open(fd, sock_addr, ::bind, "bind", verbose);
+    return open(method, fd, sock_addr, verbose);
 }
 
 Network::SocketResults Network::bind(const Endpoint& endpoint,
                                      const Hints* hints,
                                      bool verbose)
 {
-    return open(endpoint, hints, ::bind, "bind", verbose);
+    return open(method, endpoint, hints, verbose);
 }

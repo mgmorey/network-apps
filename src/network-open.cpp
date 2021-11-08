@@ -16,11 +16,8 @@
 #include <utility>      // std::pair
 #include <vector>       // std::vector
 
-Network::Open::Open(open_function_type t_open_function_ptr,
-                    const std::string& t_open_function_str,
-                    bool t_verbose) :
-    m_open_function_ptr(t_open_function_ptr),
-    m_open_function_str(t_open_function_str),
+Network::Open::Open(const OpenMethod& t_method, bool t_verbose) :
+    m_method(t_method),
     m_verbose(t_verbose)
 {
 }
@@ -53,16 +50,12 @@ Network::SocketResult Network::Open::open(const Socket& t_socket) const
 Network::Result Network::Open::open(const Fd& t_fd, const Socket& t_socket) const
 {
     const auto sock_addr {t_socket.address()};
-    return Network::open(t_fd, sock_addr,
-                         m_open_function_ptr,
-                         m_open_function_str,
-                         m_verbose);
+    return Network::open(m_method, t_fd, sock_addr, m_verbose);
 }
 
-Network::Result Network::open(const Fd& fd,
+Network::Result Network::open(const OpenMethod& method,
+                              const Fd& fd,
                               const SockAddr& sock_addr,
-                              open_function_type open_function_ptr,
-                              const std::string& open_function_str,
                               bool verbose)
 {
     Result result;
@@ -72,7 +65,7 @@ Network::Result Network::open(const Fd& fd,
 
     if (verbose) {
         std::cerr << "Calling "
-                  << open_function_str
+                  << method.second
                   << '('
                   << fd
                   << ", "
@@ -85,11 +78,11 @@ Network::Result Network::open(const Fd& fd,
 
     reset_last_error();
 
-    if (open_function_ptr(fd, addr_ptr, addr_len) == socket_error) {
+    if (method.first(fd, addr_ptr, addr_len) == socket_error) {
         auto error = get_last_error();
         std::ostringstream oss;
         oss << "Call to "
-            << open_function_str
+            << method.second
             << '('
             << fd
             << ", "
@@ -104,10 +97,9 @@ Network::Result Network::open(const Fd& fd,
     return result;
 }
 
-Network::SocketResults Network::open(const Endpoint& endpoint,
+Network::SocketResults Network::open(const OpenMethod& method,
+                                     const Endpoint& endpoint,
                                      const Hints* hints,
-                                     open_function_type open_function_ptr,
-                                     const std::string& open_function_str,
                                      bool verbose)
 {
     SocketResults results;
@@ -123,9 +115,7 @@ Network::SocketResults Network::open(const Endpoint& endpoint,
     else {
         std::transform(sockets.begin(), sockets.end(),
                        std::back_inserter(results),
-                       Open(open_function_ptr,
-                            open_function_str,
-                            verbose));
+                       Open(method, verbose));
     }
 
     return results;
