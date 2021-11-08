@@ -21,33 +21,33 @@
 namespace Network
 {
     using SocketResults = std::vector<SocketResult>;
-    using open_function_type = int (fd_type, const sockaddr*, socklen_t);
+    using open_function_type = int (*)(fd_type, const sockaddr*, socklen_t);
 
     class Open
     {
     public:
-        explicit Open(open_function_type* t_open,
-                      const std::string& t_name,
+        explicit Open(open_function_type t_open_function_ptr,
+                      const std::string& t_open_function_str,
                       bool t_verbose);
         SocketResult operator()(const Socket& t_socket) const;
         SocketResult open(const Socket& t_socket) const;
         Result open(const Fd& t_fd, const Socket& t_socket) const;
 
     private:
-        open_function_type* m_open {nullptr};
-        std::string m_name {""};
+        open_function_type m_open_function_ptr {nullptr};
+        std::string m_open_function_str {""};
         bool m_verbose {false};
     };
 
     extern Result open(const Fd& fd,
                        const SockAddr& sock_addr,
-                       open_function_type* open,
-                       const std::string& name,
+                       open_function_type open_function_ptr,
+                       const std::string& open_function_str,
                        bool verbose);
     extern SocketResults open(const Endpoint& endpoint,
                               const Hints* hints,
-                              open_function_type* open,
-                              const std::string& name,
+                              open_function_type open_function_ptr,
+                              const std::string& open_function_str,
                               bool verbose);
 }
 
