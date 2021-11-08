@@ -59,18 +59,22 @@ std::ostream& Network::operator<<(std::ostream& os,
     }
 
     const Family family {address.family()};
+    const auto length {address.length()};
     const auto prefix {get_prefix(family)};
     const auto suffix {get_suffix(family)};
     os << (suffix.empty() ? "sockaddr" : "sockaddr_")
        << suffix
        << '(';
-#ifdef HAVE_SOCKADDR_SA_LEN
-    os << Format(prefix + "_len")
-       << address.length()
-       << Format(delim, tab, prefix + "_family");
-#else
-    os << Format(prefix + "_family");
-#endif
+
+    if (length) {
+        os << Format(prefix + "_len")
+           << address.length()
+           << Format(delim, tab, prefix + "_family");
+    }
+    else {
+        os << Format(prefix + "_family");
+    }
+
     os << family;
 
     switch (family) {
