@@ -1,5 +1,4 @@
-#include "network-peername.h"   // Fd, Result, SockAddr,
-                                // get_peername()
+#include "network-peername.h"   // Fd, SockAddrResult, get_peername()
 #include "network-name.h"       // get_name()
 
 #ifdef _WIN32
@@ -8,8 +7,7 @@
 #include <sys/socket.h> // getpeername()
 #endif
 
-std::pair<Network::SockAddr, Network::Result>
-Network::get_peername(const Fd& fd, bool verbose)
+Network::SockAddrResult Network::get_peername(const Fd& fd, bool verbose)
 {
     return get_name(fd, ::getpeername, "getpeername", verbose);
 }
