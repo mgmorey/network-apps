@@ -7,7 +7,7 @@
 #include <sys/socket.h> // getpeername()
 #endif
 
-static Network::GetNameMethod method {::getpeername, "getpeername"};
+static const Network::GetNameMethod method {::getpeername, "getpeername"};
 
 Network::SockAddrResult Network::get_peername(const Fd& fd, bool verbose)
 {

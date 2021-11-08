@@ -7,7 +7,7 @@
 #include <sys/socket.h>     // getsockname()
 #endif
 
-static Network::GetNameMethod method {::getsockname, "getsockname"};
+static const Network::GetNameMethod method {::getsockname, "getsockname"};
 
 Network::SockAddrResult Network::get_sockname(const Fd& fd, bool verbose)
 {
