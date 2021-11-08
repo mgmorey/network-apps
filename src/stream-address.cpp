@@ -1,5 +1,6 @@
 #include "network-address.h"    // Address, operator<<(),
                                 // std::ostream, std::string
+#include "network-family.h"     // Family, operator<<()
 #include "network-format.h"     // Format, operator<<()
 
 #ifdef _WIN32
@@ -56,27 +57,25 @@ std::ostream& Network::operator<<(std::ostream& os,
         os << "0x0";
     }
     else {
-#ifdef HAVE_SOCKADDR_SA_LEN
-        const long length {address.length()};
-#endif
-        const int family {address.family()};
-        const int port {address.port()};
-        const std::string prefix {get_prefix(family)};
-        const std::string suffix {get_suffix(family)};
-        const std::string text {address.text()};
+        const Family family {address.family()};
+        const auto port {address.port()};
+        const auto prefix {get_prefix(family)};
+        const auto suffix {get_suffix(family)};
+        const auto text {address.text()};
 
         os << (suffix.empty() ? "sockaddr" : "sockaddr_")
            << suffix
            << '(';
 
 #ifdef HAVE_SOCKADDR_SA_LEN
-            os << Format(prefix + "_len")
-               << length
-               << Format(delim, tab, prefix + "_family")
-               << family;
+        const auto length {address.length()};
+        os << Format(prefix + "_len")
+           << length
+           << Format(delim, tab, prefix + "_family")
+           << family;
 #else
-            os << Format(prefix + "_family")
-               << family;
+        os << Format(prefix + "_family")
+           << family;
 #endif
 
         switch (family) {
