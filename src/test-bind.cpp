@@ -166,7 +166,7 @@ int main(int argc, char* argv[])
     const auto args {TestBind::parse_arguments(argc, argv)};
     const Network::Context context(TestBind::verbose);
 
-    if (context.result().result() != 0) {
+    if (context.result().result()) {
         std::cerr << context.result()
                   << std::endl;
     }

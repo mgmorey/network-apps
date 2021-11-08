@@ -57,7 +57,7 @@ namespace TestConnect
             const auto hostname {hostname_result.first};
             const auto result {hostname_result.second};
 
-            if (result.result() != 0) {
+            if (result.result()) {
                 std::cerr << "No hostname available: "
                           << result
                           << std::endl;
@@ -204,7 +204,7 @@ int main(int argc, char* argv[])
     const auto args {TestConnect::parse_arguments(argc, argv)};
     const Network::Context context(TestConnect::verbose);
 
-    if (context.result().result() != 0) {
+    if (context.result().result()) {
         std::cerr << context.result()
                   << std::endl;
     }

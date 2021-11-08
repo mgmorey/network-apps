@@ -49,7 +49,7 @@ namespace TestHostname
         const auto hostname {hostname_result.first};
         const auto result {hostname_result.second};
 
-        if (result.result() != 0) {
+        if (result.result()) {
             std::cerr << "No hostname: "
                       << result
                       << std::endl;
@@ -67,7 +67,7 @@ int main(int argc, char* argv[])
     const auto args {TestHostname::parse_arguments(argc, argv)};
     const Network::Context context(TestHostname::verbose);
 
-    if (context.result().result() != 0) {
+    if (context.result().result()) {
         std::cerr << context.result()
                   << std::endl;
     }

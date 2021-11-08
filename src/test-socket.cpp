@@ -118,7 +118,7 @@ namespace TestSocket
         const auto fd {pair_result.first};
         const auto result {pair_result.second};
 
-        if (result.result() != 0) {
+        if (result.result()) {
             std::cerr << result
                       << std::endl;
         }

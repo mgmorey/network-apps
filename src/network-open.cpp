@@ -38,7 +38,7 @@ Network::SocketResult Network::Open::open(const Socket& t_socket) const
 
     const auto open_result {open(fd, t_socket)};
 
-    if (open_result.result() != 0) {
+    if (open_result.result()) {
         return SocketResult(close(fd), open_result);
     }
 
@@ -107,7 +107,7 @@ Network::SocketResults Network::open(const OpenMethod& method,
     const auto sockets {sockets_result.first};
     const auto result {sockets_result.second};
 
-    if (result.result() != 0) {
+    if (result.result()) {
         Fd fd {fd_null};
         SocketResult socket_result(fd, result);
         results.push_back(socket_result);

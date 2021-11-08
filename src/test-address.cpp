@@ -73,7 +73,7 @@ namespace TestAddress
             const auto endpoint {endpoint_result.first};
             const auto result {endpoint_result.second};
 
-            if (result.result() != 0) {
+            if (result.result()) {
                 std::cerr << result
                           << std::endl;
                 return;
@@ -179,7 +179,7 @@ namespace TestAddress
         const auto hosts {hosts_result.first};
         const auto result {hosts_result.second};
 
-        if (result.result() != 0) {
+        if (result.result()) {
             if (description.empty()) {
                 std::cout << "No";
             }
@@ -231,7 +231,7 @@ int main(int argc, char* argv[])
     const auto args {TestAddress::parse_arguments(argc, argv)};
     const Network::Context context(TestAddress::verbose);
 
-    if (context.result().result() != 0) {
+    if (context.result().result()) {
         std::cerr << context.result()
                   << std::endl;
     }
