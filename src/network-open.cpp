@@ -53,8 +53,7 @@ Network::Result Network::Open::open(Fd t_fd, const Socket& t_socket) const
     return Network::open(m_method, t_fd, sock_addr, m_verbose);
 }
 
-Network::Result Network::open(OpenMethod method,
-                              Fd fd,
+Network::Result Network::open(OpenMethod method, Fd fd,
                               const SockAddr& sock_addr,
                               bool verbose)
 {

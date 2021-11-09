@@ -38,8 +38,7 @@ namespace Network
         bool m_verbose {false};
     };
 
-    extern Result open(OpenMethod method,
-                       Fd fd,
+    extern Result open(OpenMethod method, Fd fd,
                        const SockAddr& sock_addr,
                        bool verbose);
     extern SocketResults open(OpenMethod method,
