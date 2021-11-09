@@ -53,9 +53,7 @@ namespace TestConnect
 
         Network::Hostname get_host()
         {
-            const auto hostname_result {Network::get_hostname()};
-            const auto hostname {hostname_result.first};
-            const auto result {hostname_result.second};
+            const auto [hostname,result] {Network::get_hostname()};
 
             if (result.result()) {
                 std::cerr << "No hostname available: "
@@ -68,9 +66,7 @@ namespace TestConnect
 
         Network::Address get_peer(const Network::Fd& t_fd)
         {
-            const auto peername_result {Network::get_peername(t_fd, verbose)};
-            const auto sock_addr {peername_result.first};
-            const auto result {peername_result.second};
+            const auto [addr,result] {Network::get_peername(t_fd, verbose)};
 
             if (result.result()) {
                 std::cerr << "No peer information available: "
@@ -78,14 +74,12 @@ namespace TestConnect
                           << std::endl;
             }
 
-            return sock_addr;
+            return addr;
         }
 
         Network::Address get_sock(const Network::Fd& t_fd)
         {
-            const auto sockname_result {Network::get_sockname(t_fd, verbose)};
-            const auto sock_addr {sockname_result.first};
-            const auto result {sockname_result.second};
+            const auto [addr,result] {Network::get_sockname(t_fd, verbose)};
 
             if (result.result()) {
                 std::cerr << "No socket information available: "
@@ -93,7 +87,7 @@ namespace TestConnect
                           << std::endl;
             }
 
-            return sock_addr;
+            return addr;
         }
 
         void test_socket(const Network::SocketResult& t_socket_result)
