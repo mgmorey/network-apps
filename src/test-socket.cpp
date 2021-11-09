@@ -58,7 +58,7 @@ namespace TestSocket
 
     Network::Address get_peer(const Network::Fd& t_fd)
     {
-        const auto [addr,result] {Network::get_peername(t_fd, verbose)};
+        const auto [addr, result] {Network::get_peername(t_fd, verbose)};
 
         if (result.result()) {
             std::cerr << "No peer information available: "
@@ -71,7 +71,7 @@ namespace TestSocket
 
     Network::Address get_sock(const Network::Fd& t_fd)
     {
-        const auto [addr,result] {Network::get_sockname(t_fd, verbose)};
+        const auto [addr, result] {Network::get_sockname(t_fd, verbose)};
 
         if (result.result()) {
             std::cerr << "No socket information available: "
@@ -110,7 +110,7 @@ namespace TestSocket
     static void test_socketpair(const Network::Hints& hints)
     {
         const Network::Socket sock {hints};
-        const auto [fd,result] {sock.socketpair(verbose)};
+        const auto [fd, result] {sock.socketpair(verbose)};
 
         if (result.result()) {
             std::cerr << result

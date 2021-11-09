@@ -45,7 +45,7 @@ namespace TestHostname
 
     static void test_hostname()
     {
-        const auto [hostname,result] {Network::get_hostname()};
+        const auto [hostname, result] {Network::get_hostname()};
 
         if (result.result()) {
             std::cerr << "No hostname: "

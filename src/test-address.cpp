@@ -69,7 +69,7 @@ namespace TestAddress
         void operator()(const Network::Host& t_host)
         {
             const auto addr {t_host.address()};
-            const auto [endpoint,result] {get_endpoint(addr)};
+            const auto [endpoint, result] {get_endpoint(addr)};
 
             if (result.result()) {
                 std::cerr << result
@@ -180,7 +180,7 @@ namespace TestAddress
                           const Network::Hints& hints)
     {
         const auto description {get_description(hints)};
-        const auto [hosts,result] {get_hosts(host, &hints)};
+        const auto [hosts, result] {get_hosts(host, &hints)};
 
         if (result.result()) {
             if (description.empty()) {

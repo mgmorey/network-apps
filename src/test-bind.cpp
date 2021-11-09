@@ -53,7 +53,7 @@ namespace TestBind
 
         Network::Address get_sock(const Network::Fd& t_fd)
         {
-            const auto [addr,result] {Network::get_sockname(t_fd, verbose)};
+            const auto [addr, result] {Network::get_sockname(t_fd, verbose)};
 
             if (result.result()) {
                 std::cerr << "No socket information available: "

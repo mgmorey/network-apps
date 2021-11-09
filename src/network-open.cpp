@@ -29,7 +29,7 @@ Network::SocketResult Network::Open::operator()(const Socket& t_socket) const
 
 Network::SocketResult Network::Open::open(const Socket& t_socket) const
 {
-    const auto [fd,result] {t_socket.socket(m_verbose)};
+    const auto [fd, result] {t_socket.socket(m_verbose)};
 
     if (!fd) {
         return {fd, result};
@@ -100,7 +100,7 @@ Network::SocketResults Network::open(const OpenMethod& method,
                                      bool verbose)
 {
     SocketResults results;
-    const auto [sockets,result] {get_sockets(endpoint, hints, verbose)};
+    const auto [sockets, result] {get_sockets(endpoint, hints, verbose)};
 
     if (result.result()) {
         Fd fd {fd_null};

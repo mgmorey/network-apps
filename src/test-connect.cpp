@@ -53,7 +53,7 @@ namespace TestConnect
 
         Network::Hostname get_host()
         {
-            const auto [hostname,result] {Network::get_hostname()};
+            const auto [hostname, result] {Network::get_hostname()};
 
             if (result.result()) {
                 std::cerr << "No hostname available: "
@@ -66,7 +66,7 @@ namespace TestConnect
 
         Network::Address get_peer(const Network::Fd& t_fd)
         {
-            const auto [addr,result] {Network::get_peername(t_fd, verbose)};
+            const auto [addr, result] {Network::get_peername(t_fd, verbose)};
 
             if (result.result()) {
                 std::cerr << "No peer information available: "
@@ -79,7 +79,7 @@ namespace TestConnect
 
         Network::Address get_sock(const Network::Fd& t_fd)
         {
-            const auto [addr,result] {Network::get_sockname(t_fd, verbose)};
+            const auto [addr, result] {Network::get_sockname(t_fd, verbose)};
 
             if (result.result()) {
                 std::cerr << "No socket information available: "
