@@ -102,9 +102,7 @@ Network::SocketResults Network::open(const OpenMethod& method,
                                      bool verbose)
 {
     SocketResults results;
-    const auto sockets_result {get_sockets(endpoint, hints, verbose)};
-    const auto sockets {sockets_result.first};
-    const auto result {sockets_result.second};
+    const auto [sockets,result] {get_sockets(endpoint, hints, verbose)};
 
     if (result.result()) {
         Fd fd {fd_null};
