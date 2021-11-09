@@ -180,9 +180,7 @@ namespace TestAddress
                           const Network::Hints& hints)
     {
         const auto description {get_description(hints)};
-        const auto hosts_result {get_hosts(host, &hints)};
-        const auto hosts {hosts_result.first};
-        const auto result {hosts_result.second};
+        const auto [hosts,result] {get_hosts(host, &hints)};
 
         if (result.result()) {
             if (description.empty()) {
