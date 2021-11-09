@@ -28,7 +28,7 @@ namespace Network
     class Open
     {
     public:
-        explicit Open(OpenMethod t_method, bool t_verbose);
+        explicit Open(const OpenMethod& t_method, bool t_verbose);
         SocketResult operator()(const Socket& t_socket) const;
         SocketResult open(const Socket& t_socket) const;
         Result open(Fd t_fd, const Socket& t_socket) const;
@@ -38,10 +38,10 @@ namespace Network
         bool m_verbose {false};
     };
 
-    extern Result open(OpenMethod method, Fd fd,
+    extern Result open(const OpenMethod& method, Fd fd,
                        const SockAddr& sock_addr,
                        bool verbose);
-    extern SocketResults open(OpenMethod method,
+    extern SocketResults open(const OpenMethod& method,
                               const Endpoint& endpoint,
                               const Hints* hints,
                               bool verbose);

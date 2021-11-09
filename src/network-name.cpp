@@ -18,7 +18,7 @@
 #include <string>       // std::string
 
 Network::SockAddrResult
-Network::get_name(GetNameMethod method, Fd fd, bool verbose)
+Network::get_name(const GetNameMethod& method, Fd fd, bool verbose)
 {
     Result result;
     auto sock_addr {get_sockaddr()};
