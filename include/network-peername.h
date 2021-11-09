@@ -5,7 +5,7 @@
 
 namespace Network
 {
-    extern SockAddrResult get_peername(const Fd& fd, bool verbose = false);
+    extern SockAddrResult get_peername(Fd fd, bool verbose = false);
 }
 
 #endif

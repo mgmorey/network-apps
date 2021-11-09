@@ -10,7 +10,7 @@
 
 static const Network::OpenMethod method {::bind, "bind"};
 
-Network::Result Network::bind(const Fd& fd,
+Network::Result Network::bind(Fd fd,
                               const SockAddr& sock_addr,
                               bool verbose)
 {

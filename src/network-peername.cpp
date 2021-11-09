@@ -9,7 +9,7 @@
 
 static const Network::GetNameMethod method {::getpeername, "getpeername"};
 
-Network::SockAddrResult Network::get_peername(const Fd& fd, bool verbose)
+Network::SockAddrResult Network::get_peername(Fd fd, bool verbose)
 {
     return get_name(method, fd, verbose);
 }

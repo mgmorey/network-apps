@@ -21,9 +21,8 @@ namespace Network
     using GetNameMethod = std::pair<GetNameFunction, std::string>;
     using SockAddrResult = std::pair<SockAddr, Result>;
 
-    extern SockAddrResult get_name(const GetNameMethod& method,
-                                   const Fd& fd,
-                                   bool verbose);
+    extern SockAddrResult get_name(GetNameMethod method,
+                                   Fd fd, bool verbose);
 }
 
 #endif

@@ -5,7 +5,7 @@
 
 namespace Network
 {
-    extern SockAddrResult get_sockname(const Fd& fd, bool verbose = false);
+    extern SockAddrResult get_sockname(Fd fd, bool verbose = false);
 }
 
 #endif

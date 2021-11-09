@@ -10,7 +10,7 @@
 
 static const Network::OpenMethod method {::connect, "connect"};
 
-Network::Result Network::connect(const Fd& fd,
+Network::Result Network::connect(Fd fd,
                                  const SockAddr& sock_addr,
                                  bool verbose)
 {
