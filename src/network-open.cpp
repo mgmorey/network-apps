@@ -29,11 +29,10 @@ Network::SocketResult Network::Open::operator()(const Socket& t_socket) const
 
 Network::SocketResult Network::Open::open(const Socket& t_socket) const
 {
-    auto socket_result {t_socket.socket(m_verbose)};
-    const auto fd {socket_result.first};
+    const auto [fd,result] {t_socket.socket(m_verbose)};
 
     if (!fd) {
-        return socket_result;
+        return {fd, result};
     }
 
     const auto open_result {open(fd, t_socket)};
@@ -43,8 +42,7 @@ Network::SocketResult Network::Open::open(const Socket& t_socket) const
     }
 
     const auto hostname {t_socket.canonical_name()};
-    socket_result.second = Result(0, hostname);
-    return socket_result;
+    return {fd, Result(0, hostname)};
 }
 
 Network::Result Network::Open::open(Fd t_fd, const Socket& t_socket) const
