@@ -5,11 +5,11 @@
                                 // is_valid(), operator<<()
 
 #ifdef _WIN32
-#include <ws2tcpip.h>   // NI_MAXHOST, NI_MAXSERV, NI_NUMERICHOST,
-                        // gai_strerror(), getnameinfo()
+#include <ws2tcpip.h>   // NI_MAXHOST, NI_MAXSERV, gai_strerror(),
+                        // getnameinfo()
 #else
-#include <netdb.h>      // NI_MAXHOST, NI_MAXSERV, NI_NUMERICHOST,
-                        // gai_strerror(), getnameinfo()
+#include <netdb.h>      // NI_MAXHOST, NI_MAXSERV, gai_strerror(),
+                        // getnameinfo()
 #endif
 
 #include <algorithm>    // std::max()
@@ -19,18 +19,18 @@
 #include <string>       // std::string
 
 Network::EndpointResult
-Network::get_endpoint(const SockAddr& sock_addr, int flags, bool verbose)
+Network::get_endpoint(const SockAddr& addr, int flags, bool verbose)
 {
     Result result;
     Buffer host {NI_MAXHOST};
     Buffer serv {NI_MAXSERV};
-    assert(is_valid(sock_addr, verbose));
-    const auto addr_ptr {get_pointer(sock_addr)};
-    const auto addr_len {get_length(sock_addr)};
+    assert(is_valid(addr, verbose));
+    const auto addr_ptr {get_pointer(addr)};
+    const auto addr_len {get_length(addr)};
 
     if (verbose) {
         std::cerr << "Calling getnameinfo("
-                  << sock_addr
+                  << addr
                   << ", "
                   << addr_len
                   << ", ..., "
@@ -47,7 +47,7 @@ Network::get_endpoint(const SockAddr& sock_addr, int flags, bool verbose)
     if (error) {
         std::ostringstream oss;
         oss << "Call to getnameinfo("
-            << sock_addr
+            << addr
             << ", "
             << addr_len
             << ", ..., "
