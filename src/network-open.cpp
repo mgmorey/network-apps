@@ -47,18 +47,18 @@ Network::SocketResult Network::Open::open(const Socket& t_socket) const
 
 Network::Result Network::Open::open(Fd t_fd, const Socket& t_socket) const
 {
-    const auto sock_addr {t_socket.address()};
-    return Network::open(m_method, t_fd, sock_addr, m_verbose);
+    const auto addr {t_socket.address()};
+    return Network::open(m_method, t_fd, addr, m_verbose);
 }
 
 Network::Result Network::open(const OpenMethod& method, Fd fd,
-                              const SockAddr& sock_addr,
+                              const SockAddr& addr,
                               bool verbose)
 {
     Result result;
-    assert(is_valid(sock_addr, verbose));
-    const auto addr_ptr {get_pointer(sock_addr)};
-    const auto addr_len {get_length(sock_addr)};
+    assert(is_valid(addr, verbose));
+    const auto addr_ptr {get_pointer(addr)};
+    const auto addr_len {get_length(addr)};
 
     if (verbose) {
         std::cerr << "Calling "
@@ -66,7 +66,7 @@ Network::Result Network::open(const OpenMethod& method, Fd fd,
                   << '('
                   << fd
                   << ", "
-                  << sock_addr
+                  << addr
                   << ", "
                   << static_cast<int>(addr_len)
                   << ')'
@@ -83,7 +83,7 @@ Network::Result Network::open(const OpenMethod& method, Fd fd,
             << '('
             << fd
             << ", "
-            << sock_addr
+            << addr
             << ") failed with error "
             << error
             << ": "

@@ -8,7 +8,7 @@
 namespace Network
 {
     extern Result connect(Fd fd,
-                          const SockAddr& sock_addr,
+                          const SockAddr& addr,
                           bool verbose = false);
     extern SocketResults connect(const Endpoint& endpoint,
                                  const Hints* hints = nullptr,

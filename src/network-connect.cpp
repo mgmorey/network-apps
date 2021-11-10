@@ -11,10 +11,10 @@
 static const Network::OpenMethod method {::connect, "connect"};
 
 Network::Result Network::connect(Fd fd,
-                                 const SockAddr& sock_addr,
+                                 const SockAddr& addr,
                                  bool verbose)
 {
-    return open(method, fd, sock_addr, verbose);
+    return open(method, fd, addr, verbose);
 }
 
 Network::SocketResults Network::connect(const Endpoint& endpoint,

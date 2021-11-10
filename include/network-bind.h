@@ -8,7 +8,7 @@
 namespace Network
 {
     extern Result bind(Fd fd,
-                       const SockAddr& sock_addr,
+                       const SockAddr& addr,
                        bool verbose = false);
     extern SocketResults bind(const Endpoint& endpoint,
                               const Hints* hints = nullptr,

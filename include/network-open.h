@@ -39,7 +39,7 @@ namespace Network
     };
 
     extern Result open(const OpenMethod& method, Fd fd,
-                       const SockAddr& sock_addr,
+                       const SockAddr& addr,
                        bool verbose);
     extern SocketResults open(const OpenMethod& method,
                               const Endpoint& endpoint,
