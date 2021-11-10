@@ -122,18 +122,14 @@ namespace TestAddress
 
     static std::string get_description(const Network::Hints& hints)
     {
-        std::string result;
-
         switch (hints.family()) {
         case AF_INET:
-            result = "IPv4";
-            break;
+            return "IPv4";
         case AF_INET6:
-            result = "IPv6";
-            break;
+            return "IPv6";
+        default:
+            return "";
         }
-
-        return result;
     }
 
     static HostsResult get_hosts(const Network::Hostname& hostname,
