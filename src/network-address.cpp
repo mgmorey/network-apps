@@ -186,7 +186,7 @@ std::string Network::Address::sin_text() const
 {
     Buffer buffer {INET_ADDRSTRLEN};
     const auto in {sin_addr()};
-    ::inet_ntop(AF_INET, &in, &buffer[0], buffer.size());
+    ::inet_ntop(AF_INET, &in, buffer.data(), buffer.size());
     return std::string(buffer);
 }
 
@@ -223,7 +223,7 @@ std::string Network::Address::sin6_text() const
 {
     Buffer buffer {INET6_ADDRSTRLEN};
     const auto in6 {sin6_addr()};
-    ::inet_ntop(AF_INET6, &in6, &buffer[0], buffer.size());
+    ::inet_ntop(AF_INET6, &in6, buffer.data(), buffer.size());
     return std::string(buffer);
 }
 

@@ -5,19 +5,19 @@ Network::Buffer::Buffer(std::string::size_type t_size) :
 {
 }
 
-char& Network::Buffer::operator[](std::string::size_type t_pos)
-{
-    return m_value[t_pos];
-}
-
-const char& Network::Buffer::operator[](std::string::size_type t_pos) const
-{
-    return m_value[t_pos];
-}
-
 Network::Buffer::operator std::string() const
 {
     return m_value.substr(0, m_value.find('\0'));
+}
+
+const char* Network::Buffer::data() const
+{
+    return m_value.data();
+}
+
+char* Network::Buffer::data()
+{
+    return m_value.data();
 }
 
 std::string::size_type Network::Buffer::size() const

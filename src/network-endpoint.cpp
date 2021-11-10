@@ -40,8 +40,8 @@ Network::get_endpoint(const SockAddr& addr, int flags, bool verbose)
     }
 
     const auto error {::getnameinfo(addr_ptr, addr_len,
-                                    &host[0], host.size(),
-                                    &serv[0], serv.size(),
+                                    host.data(), host.size(),
+                                    serv.data(), serv.size(),
                                     flags)};
 
     if (error) {

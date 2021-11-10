@@ -22,7 +22,7 @@ Network::HostnameResult Network::get_hostname()
     Buffer host_buffer {NI_MAXHOST};
     reset_last_error();
 
-    if (::gethostname(&host_buffer[0], host_buffer.size() - 1)) {
+    if (::gethostname(host_buffer.data(), host_buffer.size() - 1)) {
         auto error = get_last_error();
         std::ostringstream oss;
         oss << "Call to gethostname(...) failed with error "
