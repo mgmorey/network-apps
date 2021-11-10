@@ -74,17 +74,17 @@ namespace TestAddress
             if (result.result()) {
                 std::cerr << result
                           << std::endl;
-                return;
             }
-
-            Values values = {
-                address.text(),
-                endpoint.first,
-                Network::Hostname(t_host.canonical_name())
-            };
-            erase(values, "");
-            unique(values);
-            print(values);
+            else {
+                Values values = {
+                    address.text(),
+                    endpoint.first,
+                    Network::Hostname(t_host.canonical_name())
+                };
+                erase(values, "");
+                unique(values);
+                print(values);
+            }
         }
 
         Network::EndpointResult get_endpoint(const Network::SockAddr& addr)
@@ -123,9 +123,8 @@ namespace TestAddress
     static std::string get_description(const Network::Hints& hints)
     {
         std::string result;
-        const auto family {static_cast<int>(hints.family())};
 
-        switch (family) {
+        switch (hints.family()) {
         case AF_INET:
             result = "IPv4";
             break;
