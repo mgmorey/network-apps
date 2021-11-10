@@ -11,7 +11,7 @@ namespace Network
     using Endpoint = std::pair<Hostname, Service>;
     using EndpointResult = std::pair<Endpoint, Result>;
 
-    EndpointResult get_endpoint(const SockAddr& sock_addr, int flags,
+    EndpointResult get_endpoint(const SockAddr& addr, int flags,
                                 bool verbose = false);
 }
 
