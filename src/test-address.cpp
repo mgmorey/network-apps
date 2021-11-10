@@ -68,8 +68,8 @@ namespace TestAddress
 
         void operator()(const Network::Host& t_host)
         {
-            const auto addr {t_host.address()};
-            const auto [endpoint, result] {get_endpoint(addr)};
+            const Network::Address address {t_host.address()};
+            const auto [endpoint, result] {get_endpoint(address)};
 
             if (result.result()) {
                 std::cerr << result
@@ -77,7 +77,6 @@ namespace TestAddress
                 return;
             }
 
-            const Network::Address address {addr};
             Values values = {
                 address.text(),
                 endpoint.first,
@@ -85,22 +84,20 @@ namespace TestAddress
             };
             erase(values, "");
             unique(values);
-
-            if (values.empty()) {
-                return;
-            }
-
             print(values);
         }
 
-        Network::EndpointResult get_endpoint(const Network::SockAddr& sock_addr)
+        Network::EndpointResult get_endpoint(const Network::SockAddr& addr)
         {
-            const auto flags {NI_NUMERICHOST | NI_NUMERICSERV};
-            return Network::get_endpoint(sock_addr, flags, verbose);
+            return Network::get_endpoint(addr, 0, verbose);
         }
 
         void print(const Values& values)
         {
+            if (values.empty()) {
+                return;
+            }
+
             m_os << "    ";
 
             for (std::size_t i = 0; i < values.size(); ++i) {
