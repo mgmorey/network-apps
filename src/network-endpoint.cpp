@@ -63,10 +63,3 @@ Network::get_endpoint(const SockAddr& sock_addr, int flags, bool verbose)
     const Endpoint endpoint(host, serv);
     return EndpointResult(endpoint, result);
 }
-
-Network::EndpointResult
-Network::get_endpoint(const SockAddr& sock_addr, bool numeric, bool verbose)
-{
-    const int flags {numeric ? NI_NUMERICHOST | NI_NUMERICSERV : 0};
-    return get_endpoint(sock_addr, flags, verbose);
-}

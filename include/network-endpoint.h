@@ -13,8 +13,6 @@ namespace Network
 
     EndpointResult get_endpoint(const SockAddr& sock_addr, int flags,
                                 bool verbose = false);
-    EndpointResult get_endpoint(const SockAddr& sock_addr, bool numeric = false,
-                                bool verbose = false);
 }
 
 #endif
