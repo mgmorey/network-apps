@@ -51,8 +51,7 @@ namespace Network
 
     inline std::ostream& operator<<(std::ostream& os, Fd fd)
     {
-        os << fd.m_value;
-        return os;
+        return os << fd.m_value;
     }
 }
 
