@@ -76,7 +76,7 @@ Network::Result Network::open(const OpenMethod& method, Fd fd,
     reset_last_error();
 
     if (method.first(fd, addr_ptr, addr_len) == socket_error) {
-        auto error = get_last_error();
+        const auto error = get_last_error();
         std::ostringstream oss;
         oss << "Call to "
             << method.second
@@ -103,8 +103,8 @@ Network::SocketResults Network::open(const OpenMethod& method,
     const auto [sockets, result] {get_sockets(endpoint, hints, verbose)};
 
     if (result.result()) {
-        Fd fd {fd_null};
-        SocketResult socket_result(fd, result);
+        const Fd fd {fd_null};
+        const SocketResult socket_result(fd, result);
         results.push_back(socket_result);
     }
     else {
