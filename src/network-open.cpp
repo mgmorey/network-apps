@@ -1,12 +1,13 @@
 #include "network-open.h"       // Endpoint, Fd, Hints, Result,
                                 // Socket, SockAddr, SocketResult,
-                                // fd_null, open(), operator<<()
+                                // fd_null, get_sockets(), open(),
+                                // operator<<()
+#include "network-addrinfo.h"   // AddrInfo
 #include "network-close.h"      // close()
 #include "network-error.h"      // format_error(), get_last_error(),
                                 // reset_last_error()
 #include "network-sockaddr.h"   // get_length(), get_pointer(),
                                 // is_valid()
-#include "network-sockets.h"    // get_sockets()
 
 #include <algorithm>    // std::transform()
 #include <cassert>      // assert()
@@ -43,6 +44,13 @@ Network::SocketResult Network::Open::open(const Socket& t_socket) const
 
     const auto hostname {t_socket.canonical_name()};
     return {fd, Result(0, hostname)};
+}
+
+Network::SocketsResult Network::get_sockets(const Network::Endpoint& endpoint,
+                                            const Network::Hints* hints,
+                                            bool verbose)
+{
+    return AddrInfo::get<SocketsResult>(endpoint, hints, verbose);
 }
 
 Network::Result Network::Open::open(Fd t_fd, const Socket& t_socket) const

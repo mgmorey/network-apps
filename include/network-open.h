@@ -23,6 +23,8 @@ namespace Network
 {
     using OpenFunction = int (*)(fd_type, const sockaddr*, socklen_t);
     using OpenMethod = std::pair<OpenFunction, std::string>;
+    using Sockets = std::vector<Socket>;
+    using SocketsResult = std::pair<Sockets, Result>;
     using SocketResults = std::vector<SocketResult>;
 
     class Open
@@ -38,6 +40,9 @@ namespace Network
         bool m_verbose {false};
     };
 
+    extern SocketsResult get_sockets(const Endpoint& endpoint,
+                                     const Hints* hints,
+                                     bool verbose);
     extern Result open(const OpenMethod& method, Fd fd,
                        const SockAddr& addr,
                        bool verbose);
