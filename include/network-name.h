@@ -14,12 +14,13 @@
 #endif
 
 #include <utility>      // std::pair
+#include <variant>      // std::variant
 
 namespace Network
 {
     using GetNameFunction = int (*)(fd_type, sockaddr*, socklen_t *);
     using GetNameMethod = std::pair<GetNameFunction, std::string>;
-    using SockAddrResult = std::pair<SockAddr, Result>;
+    using SockAddrResult = std::variant<SockAddr, Result>;
 
     extern SockAddrResult get_name(const GetNameMethod& method, Fd fd,
                                    bool verbose);

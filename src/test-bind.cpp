@@ -39,9 +39,9 @@ namespace TestBind
     class Test
     {
     public:
-        Test(const Network::Endpoint& t_endpoint,
+        Test(const Network::Endpoint& t_endp,
              std::ostream& t_os) :
-            m_endpoint(t_endpoint),
+            m_endpoint(t_endp),
             m_os(t_os)
         {
         }
@@ -51,17 +51,18 @@ namespace TestBind
             test_socket(t_socket_result);
         }
 
-        Network::Address get_sock(const Network::Fd& t_fd)
+        Network::SockAddrResult get_sockname(const Network::Fd& t_fd)
         {
-            const auto [addr, result] {Network::get_sockname(t_fd, verbose)};
+            const auto sockname_result {Network::get_sockname(t_fd, verbose)};
 
-            if (result.result()) {
-                std::cerr << "No socket information available: "
+            if (std::holds_alternative<Network::Result>(sockname_result)) {
+                const auto result {std::get<Network::Result>(sockname_result)};
+                std::cerr << "No host information available: "
                           << result
                           << std::endl;
             }
 
-            return addr;
+            return sockname_result;
         }
 
         void test_socket(const Network::SocketResult& t_socket_result)
@@ -101,13 +102,14 @@ namespace TestBind
 
         void test_socket(const Network::Fd& t_fd)
         {
-            const auto sock {get_sock(t_fd)};
+            const auto sockname_result {get_sockname(t_fd)};
 
-            if (!sock.empty()) {
+            if (std::holds_alternative<Network::SockAddr>(sockname_result)) {
+                const auto self {std::get<Network::SockAddr>(sockname_result)};
                 m_os << "Socket "
                      << t_fd
                      << " bound to "
-                     << sock
+                     << Network::Address(self)
                      << std::endl;
             }
         }
@@ -145,12 +147,12 @@ namespace TestBind
         return args;
     }
 
-    static void test_bind(const Network::Endpoint& endpoint,
+    static void test_bind(const Network::Endpoint& endp,
                           const Network::Hints& hints)
     {
-        const auto results {Network::bind(endpoint, &hints, verbose)};
+        const auto results {Network::bind(endp, &hints, verbose)};
         std::for_each(results.begin(), results.end(),
-                      Test(endpoint, std::cout));
+                      Test(endp, std::cout));
     }
 }
 
@@ -170,9 +172,9 @@ int main(int argc, char* argv[])
     }
     else {
         const auto host {args.size() > 1 ? args[1] : TestBind::HOST};
-        const auto service {args.size() > 2 ? args[2] : TestBind::SERVICE};
-        const auto endpoint {Network::Endpoint(host, service)};
-        TestBind::test_bind(endpoint, hints);
+        const auto serv {args.size() > 2 ? args[2] : TestBind::SERVICE};
+        const auto endp {Network::Endpoint(host, serv)};
+        TestBind::test_bind(endp, hints);
     }
 
     static_cast<void>(context);

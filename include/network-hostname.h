@@ -5,15 +5,15 @@
 #include "network-result.h"     // Result
 #include "network-types.h"      // Hostname
 
-#include <utility>      // std::pair
+#include <variant>      // std::variant
 
 namespace Network
 {
-    using HostnameResult = std::pair<Hostname, Result>;
+    using HostnameResult = std::variant<Hostname, Result>;
 
     extern HostnameResult get_hostname();
-    extern Hostname get_hostname(const Hostname& hostname);
-    extern Hostname get_hostname(const Endpoint& endpoint);
+    extern HostnameResult get_hostname(const Hostname& hostname);
+    extern HostnameResult get_hostname(const Endpoint& endpoint);
 }
 
 #endif

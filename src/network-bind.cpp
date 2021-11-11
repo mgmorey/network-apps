@@ -19,9 +19,9 @@ Network::Result Network::bind(Fd fd,
     return open(method, fd, addr, verbose);
 }
 
-Network::SocketResults Network::bind(const Endpoint& endpoint,
+Network::SocketResults Network::bind(const Endpoint& endp,
                                      const Hints* hints,
                                      bool verbose)
 {
-    return open(method, endpoint, hints, verbose);
+    return open(method, endp, hints, verbose);
 }

@@ -55,12 +55,11 @@ Network::SockAddrResult Network::get_name(const GetNameMethod& method, Fd fd,
             << error
             << ": "
             << format_error(error);
-        result = {error, oss.str()};
+        return Result(error, oss.str());
     }
     else {
         addr.resize(addr_len);
         assert(is_valid(addr, verbose));
+        return addr;
     }
-
-    return std::pair(addr, result);
 }

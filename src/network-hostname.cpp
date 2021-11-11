@@ -18,7 +18,6 @@
 
 Network::HostnameResult Network::get_hostname()
 {
-    Result result;
     Buffer host_buffer {NI_MAXHOST};
     reset_last_error();
 
@@ -29,18 +28,18 @@ Network::HostnameResult Network::get_hostname()
             << error
             << ": "
             << format_error(error);
-        result = {error, oss.str()};
+        return Result(error, oss.str());
     }
 
-    return HostnameResult(host_buffer, result);
+    return String(host_buffer);
 }
 
-Network::Hostname Network::get_hostname(const Network::Hostname& host)
+Network::HostnameResult Network::get_hostname(const Network::Hostname& host)
 {
-    return (host.null() || host.empty()) ? get_hostname().first : host;
+    return (host.null() || host.empty()) ? get_hostname() : host;
 }
 
-Network::Hostname Network::get_hostname(const Network::Endpoint& endpoint)
+Network::HostnameResult Network::get_hostname(const Network::Endpoint& endp)
 {
-    return endpoint.first.empty() ? get_hostname().first : endpoint.first;
+    return endp.first.empty() ? get_hostname() : endp.first;
 }

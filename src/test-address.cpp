@@ -28,12 +28,13 @@
 #include <ostream>      // std::ostream
 #include <string>       // std::string
 #include <utility>      // std::pair
+#include <variant>      // std::variant
 #include <vector>       // std::vector
 
 namespace TestAddress
 {
     using Hosts = std::vector<Network::Host>;
-    using HostsResult = std::pair<Hosts, Network::Result>;
+    using HostsResult = std::variant<Hosts, Network::Result>;
 
     static constexpr auto HOST {"example.com"};
 
@@ -69,7 +70,7 @@ namespace TestAddress
         void operator()(const Network::Host& t_host)
         {
             const Network::Address address {t_host.address()};
-            const auto [endpoint, result] {get_endpoint(address)};
+            const auto [endp, result] {get_endpoint(address)};
 
             if (result.result()) {
                 std::cerr << result
@@ -78,7 +79,7 @@ namespace TestAddress
             else {
                 Values values = {
                     address.text(),
-                    endpoint.first,
+                    endp.first,
                     Network::Hostname(t_host.canonical_name())
                 };
                 erase(values, "");
@@ -132,12 +133,37 @@ namespace TestAddress
         }
     }
 
+    static HostsResult get_hosts(const Network::Hostname& node,
+                                 const Network::Service& serv,
+                                 const Network::Hints* hints)
+    {
+        Hosts hosts;
+        const auto result {Network::AddrInfo::insert(node, serv, hints, verbose,
+                                                     std::back_inserter(hosts))};
+
+        if (result.result()) {
+            return result;
+        }
+
+        return hosts;
+    }
+
     static HostsResult get_hosts(const Network::Hostname& hostname,
                                  const Network::Hints* hints)
     {
-        const auto host {Network::get_hostname(hostname)};
-        const auto endpoint {Network::Endpoint(host, nullptr)};
-        return Network::AddrInfo::get<HostsResult>(endpoint, hints, verbose);
+        const auto hostname_result {Network::get_hostname(hostname)};
+
+        if (std::holds_alternative<Network::Result>(hostname_result)) {
+            return std::get<Network::Result>(hostname_result);
+        }
+        else if (std::holds_alternative<Network::Hostname>(hostname_result)) {
+            const auto host {std::get<Network::Hostname>(hostname_result)};
+            const auto endp {Network::Endpoint(host, nullptr)};
+            return get_hosts(host, endp.second, hints);
+        }
+        else {
+            abort();
+        }
     }
 
     static std::vector<std::string> parse_arguments(int argc, char** argv)
@@ -172,9 +198,11 @@ namespace TestAddress
                           const Network::Hints& hints)
     {
         const auto description {get_description(hints)};
-        const auto [hosts, result] {get_hosts(host, &hints)};
+        const auto hosts_result {get_hosts(host, &hints)};
 
-        if (result.result()) {
+        if (std::holds_alternative<Network::Result>(hosts_result)) {
+            const auto result {std::get<Network::Result>(hosts_result)};
+
             if (description.empty()) {
                 std::cout << "No";
             }
@@ -187,19 +215,22 @@ namespace TestAddress
                       << std::endl
                       << result
                       << std::endl;
-            return;
         }
-        else if (!hosts.empty()) {
-            if (description.empty()) {
-                std::cout << "All";
-            }
-            else {
-                std::cout << description;
-            }
+        else {
+            const auto hosts {std::get<Hosts>(hosts_result)};
 
-            std::cout << " hosts:"
-                      << std::endl;
-            std::for_each(hosts.begin(), hosts.end(), Test(std::cout));
+            if (!hosts.empty()) {
+                if (description.empty()) {
+                    std::cout << "All";
+                }
+                else {
+                    std::cout << description;
+                }
+
+                std::cout << " hosts:"
+                          << std::endl;
+                std::for_each(hosts.begin(), hosts.end(), Test(std::cout));
+            }
         }
     }
 

@@ -39,8 +39,7 @@ namespace TestConnect
     class Test
     {
     public:
-        Test(const Network::Endpoint& t_endpoint,
-             std::ostream& t_os) :
+        Test(const Network::Endpoint& t_endpoint, std::ostream& t_os) :
             m_endpoint(t_endpoint),
             m_os(t_os)
         {
@@ -53,41 +52,49 @@ namespace TestConnect
 
         Network::Hostname get_host()
         {
-            const auto [hostname, result] {Network::get_hostname()};
+            Network::Hostname hostname;
+            const auto hostname_result {Network::get_hostname()};
 
-            if (result.result()) {
+            if (std::holds_alternative<Network::Result>(hostname_result)) {
+                const auto result {std::get<Network::Result>(hostname_result)};
+
                 std::cerr << "No hostname available: "
                           << result
                           << std::endl;
+            }
+            else {
+                hostname = std::get<Network::Hostname>(hostname_result);
             }
 
             return hostname;
         }
 
-        Network::Address get_peer(const Network::Fd& t_fd)
+        Network::SockAddrResult get_peername(const Network::Fd& t_fd)
         {
-            const auto [addr, result] {Network::get_peername(t_fd, verbose)};
+            const auto peername_result {Network::get_peername(t_fd, verbose)};
 
-            if (result.result()) {
+            if (std::holds_alternative<Network::Result>(peername_result)) {
+                const auto result {std::get<Network::Result>(peername_result)};
                 std::cerr << "No peer information available: "
                           << result
                           << std::endl;
             }
 
-            return addr;
+            return peername_result;
         }
 
-        Network::Address get_sock(const Network::Fd& t_fd)
+        Network::SockAddrResult get_sockname(const Network::Fd& t_fd)
         {
-            const auto [addr, result] {Network::get_sockname(t_fd, verbose)};
+            const auto sockname_result {Network::get_sockname(t_fd, verbose)};
 
-            if (result.result()) {
-                std::cerr << "No socket information available: "
+            if (std::holds_alternative<Network::Result>(sockname_result)) {
+                const auto result {std::get<Network::Result>(sockname_result)};
+                std::cerr << "No host information available: "
                           << result
                           << std::endl;
             }
 
-            return addr;
+            return sockname_result;
         }
 
         void test_socket(const Network::SocketResult& t_socket_result)
@@ -132,16 +139,19 @@ namespace TestConnect
 
         void test_socket(const Network::Fd& t_fd)
         {
-            const auto peer {get_peer(t_fd)};
-            const auto sock {get_sock(t_fd)};
+            const auto peername_result {get_peername(t_fd)};
+            const auto sockname_result {get_sockname(t_fd)};
 
-            if (!peer.empty() && !sock.empty()) {
+            if (std::holds_alternative<Network::SockAddr>(peername_result) &&
+                std::holds_alternative<Network::SockAddr>(sockname_result)) {
+                const auto peer {std::get<Network::SockAddr>(peername_result)};
+                const auto self {std::get<Network::SockAddr>(sockname_result)};
                 m_os << "Socket "
                      << t_fd
                      << " connected "
-                     << sock
+                     << Network::Address(self)
                      << " to "
-                     << peer
+                     << Network::Address(peer)
                      << std::endl;
             }
         }
@@ -179,12 +189,12 @@ namespace TestConnect
         return args;
     }
 
-    static void test_connect(const Network::Endpoint& endpoint,
+    static void test_connect(const Network::Endpoint& endp,
                              const Network::Hints& hints)
     {
-        const auto results {Network::connect(endpoint, &hints, verbose)};
+        const auto results {Network::connect(endp, &hints, verbose)};
         std::for_each(results.begin(), results.end(),
-                      Test(endpoint, std::cout));
+                      Test(endp, std::cout));
     }
 }
 
@@ -204,9 +214,9 @@ int main(int argc, char* argv[])
     }
     else {
         const auto host {args.size() > 1 ? args[1] : TestConnect::HOST};
-        const auto service {args.size() > 2 ? args[2] : TestConnect::SERVICE};
-        const auto endpoint {Network::Endpoint(host, service)};
-        TestConnect::test_connect(endpoint, hints);
+        const auto serv {args.size() > 2 ? args[2] : TestConnect::SERVICE};
+        const auto endp {Network::Endpoint(host, serv)};
+        TestConnect::test_connect(endp, hints);
     }
 
     static_cast<void>(context);

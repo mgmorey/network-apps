@@ -19,9 +19,9 @@ Network::Result Network::connect(Fd fd,
     return open(method, fd, addr, verbose);
 }
 
-Network::SocketResults Network::connect(const Endpoint& endpoint,
+Network::SocketResults Network::connect(const Endpoint& endp,
                                         const Hints* hints,
                                         bool verbose)
 {
-    return open(method, endpoint, hints, verbose);
+    return open(method, endp, hints, verbose);
 }

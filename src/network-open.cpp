@@ -52,11 +52,36 @@ Network::Result Network::Open::open(Fd t_fd, const Socket& t_socket) const
     return Network::open(m_method, t_fd, addr, m_verbose);
 }
 
-Network::SocketsResult Network::get_sockets(const Network::Endpoint& endpoint,
+Network::SocketsResult Network::get_sockets(const Network::Hostname& node,
+                                            const Network::Service& serv,
                                             const Network::Hints* hints,
                                             bool verbose)
 {
-    return AddrInfo::get<SocketsResult>(endpoint, hints, verbose);
+    Sockets sockets;
+    const auto result {AddrInfo::insert(node, serv, hints, verbose,
+                                        std::back_inserter(sockets))};
+    return {sockets, result};
+}
+
+Network::SocketsResult Network::get_sockets(const Network::Endpoint& endp,
+                                            const Network::Hints* hints,
+                                            bool verbose)
+{
+    SocketsResult sockets_result;
+    const auto hostname_result {Network::get_hostname(endp)};
+
+    if (std::holds_alternative<Result>(hostname_result)) {
+        sockets_result.second = std::get<Result>(hostname_result);
+    }
+    else if (std::holds_alternative<Hostname>(hostname_result)) {
+        const auto host {std::get<Network::Hostname>(hostname_result)};
+        sockets_result = get_sockets(host, endp.second, hints, verbose);
+    }
+    else {
+        abort();
+    }
+
+    return sockets_result;
 }
 
 Network::Result Network::open(const OpenMethod& method, Fd fd,
@@ -103,12 +128,12 @@ Network::Result Network::open(const OpenMethod& method, Fd fd,
 }
 
 Network::SocketResults Network::open(const OpenMethod& method,
-                                     const Endpoint& endpoint,
+                                     const Endpoint& endp,
                                      const Hints* hints,
                                      bool verbose)
 {
     SocketResults results;
-    const auto [sockets, result] {get_sockets(endpoint, hints, verbose)};
+    const auto [sockets, result] {get_sockets(endp, hints, verbose)};
 
     if (result.result()) {
         const Fd fd {fd_null};

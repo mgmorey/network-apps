@@ -60,6 +60,6 @@ Network::get_endpoint(const SockAddr& addr, int flags, bool verbose)
         result = {error, oss.str()};
     }
 
-    const Endpoint endpoint(host, serv);
-    return EndpointResult(endpoint, result);
+    const Endpoint endp(host, serv);
+    return EndpointResult(endp, result);
 }

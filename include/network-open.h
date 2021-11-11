@@ -40,14 +40,18 @@ namespace Network
         bool m_verbose {false};
     };
 
-    extern SocketsResult get_sockets(const Endpoint& endpoint,
+    extern SocketsResult get_sockets(const Hostname& node,
+                                     const Service& serv,
+                                     const Hints* hints,
+                                     bool verbose);
+    extern SocketsResult get_sockets(const Endpoint& endp,
                                      const Hints* hints,
                                      bool verbose);
     extern Result open(const OpenMethod& method, Fd fd,
                        const SockAddr& addr,
                        bool verbose);
     extern SocketResults open(const OpenMethod& method,
-                              const Endpoint& endpoint,
+                              const Endpoint& endp,
                               const Hints* hints,
                               bool verbose);
 }

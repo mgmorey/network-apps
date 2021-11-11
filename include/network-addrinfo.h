@@ -95,19 +95,6 @@ namespace Network
             std::for_each(list.begin(), list.end(), lambda);
             return list.result();
         }
-
-        template<typename Container>
-        Container get(const Endpoint& endpoint,
-                      const Hints* hints,
-                      bool verbose)
-        {
-            Container result;
-            const auto node {get_hostname(endpoint)};
-            const auto service {endpoint.second};
-            result.second = insert(node, service, hints, verbose,
-                                   std::back_inserter(result.first));
-            return result;
-        }
     }
 }
 
