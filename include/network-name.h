@@ -18,10 +18,8 @@
 
 namespace Network
 {
-    using GetNameBinding = std::pair<
-        int (*)(fd_type, sockaddr*, socklen_t *),
-        std::string
-        >;
+    using GetName = int (*)(fd_type, sockaddr*, socklen_t*);
+    using GetNameBinding = std::pair<GetName, std::string>;
     using SockAddrResult = std::variant<SockAddr, Result>;
 
     extern SockAddrResult get_name(const GetNameBinding& binding, Fd fd,

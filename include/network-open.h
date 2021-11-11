@@ -21,18 +21,16 @@
 
 namespace Network
 {
-    using OpenBinding = std::pair<
-        int (*)(fd_type, const sockaddr*, socklen_t),
-        std::string
-        >;
+    using Open = int (*)(fd_type, const sockaddr*, socklen_t);
+    using OpenBinding = std::pair<Open, std::string>;
     using Sockets = std::vector<Socket>;
     using SocketsResult = std::pair<Sockets, Result>;
     using SocketResults = std::vector<SocketResult>;
 
-    class Open
+    class Transform
     {
     public:
-        explicit Open(const OpenBinding& t_binding, bool t_verbose);
+        explicit Transform(const OpenBinding& t_binding, bool t_verbose);
         SocketResult operator()(const Socket& t_socket) const;
         SocketResult open(const Socket& t_socket) const;
         Result open(Fd t_fd, const Socket& t_socket) const;

@@ -18,18 +18,19 @@
 #include <variant>      // std::get(), std::holds_alternative()
 #include <vector>       // std::vector
 
-Network::Open::Open(const OpenBinding& t_binding, bool t_verbose) :
+Network::Transform::Transform(const OpenBinding& t_binding, bool t_verbose) :
     m_binding(t_binding),
     m_verbose(t_verbose)
 {
 }
 
-Network::SocketResult Network::Open::operator()(const Socket& t_socket) const
+Network::SocketResult
+Network::Transform::operator()(const Socket& t_socket) const
 {
     return open(t_socket);
 }
 
-Network::SocketResult Network::Open::open(const Socket& t_socket) const
+Network::SocketResult Network::Transform::open(const Socket& t_socket) const
 {
     const auto [fd, result] {t_socket.socket(m_verbose)};
 
@@ -47,7 +48,7 @@ Network::SocketResult Network::Open::open(const Socket& t_socket) const
     return {fd, Result(0, hostname)};
 }
 
-Network::Result Network::Open::open(Fd t_fd, const Socket& t_socket) const
+Network::Result Network::Transform::open(Fd t_fd, const Socket& t_socket) const
 {
     const auto addr {t_socket.address()};
     return Network::open(m_binding, t_fd, addr, m_verbose);
@@ -144,7 +145,7 @@ Network::SocketResults Network::open(const OpenBinding& binding,
     else {
         std::transform(sockets.begin(), sockets.end(),
                        std::back_inserter(results),
-                       Open(binding, verbose));
+                       Transform(binding, verbose));
     }
 
     return results;
