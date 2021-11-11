@@ -39,11 +39,17 @@ Network::SocketResult Network::Open::open(const Socket& t_socket) const
     const auto open_result {open(fd, t_socket)};
 
     if (open_result.result()) {
-        return SocketResult(close(fd), open_result);
+        return {close(fd), open_result};
     }
 
     const auto hostname {t_socket.canonical_name()};
     return {fd, Result(0, hostname)};
+}
+
+Network::Result Network::Open::open(Fd t_fd, const Socket& t_socket) const
+{
+    const auto addr {t_socket.address()};
+    return Network::open(m_method, t_fd, addr, m_verbose);
 }
 
 Network::SocketsResult Network::get_sockets(const Network::Endpoint& endpoint,
@@ -51,12 +57,6 @@ Network::SocketsResult Network::get_sockets(const Network::Endpoint& endpoint,
                                             bool verbose)
 {
     return AddrInfo::get<SocketsResult>(endpoint, hints, verbose);
-}
-
-Network::Result Network::Open::open(Fd t_fd, const Socket& t_socket) const
-{
-    const auto addr {t_socket.address()};
-    return Network::open(m_method, t_fd, addr, m_verbose);
 }
 
 Network::Result Network::open(const OpenMethod& method, Fd fd,
