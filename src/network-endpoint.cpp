@@ -25,8 +25,8 @@ Network::get_endpoint(const SockAddr& addr, int flags, bool verbose)
     Buffer host {NI_MAXHOST};
     Buffer serv {NI_MAXSERV};
     assert(is_valid(addr, verbose));
-    const auto addr_ptr {get_pointer(addr)};
     const auto addr_len {get_length(addr)};
+    const auto addr_ptr {get_pointer(addr)};
 
     if (verbose) {
         std::cerr << "Calling getnameinfo("

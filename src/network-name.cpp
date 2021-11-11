@@ -22,8 +22,8 @@ Network::SockAddrResult Network::get_name(const GetNameMethod& method, Fd fd,
 {
     Result result;
     auto addr {get_sockaddr()};
-    auto addr_ptr {get_pointer(addr)};
     auto addr_len {get_length(addr)};
+    auto addr_ptr {get_pointer(addr)};
 
     if (verbose) {
         std::cerr << "Calling "
