@@ -32,8 +32,6 @@ namespace Network
     public:
         explicit Transform(const OpenBinding& t_binding, bool t_verbose);
         SocketResult operator()(const Socket& t_socket) const;
-        SocketResult open(const Socket& t_socket) const;
-        Result open(Fd t_fd, const Socket& t_socket) const;
 
     private:
         OpenBinding m_binding {nullptr, ""};

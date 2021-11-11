@@ -27,18 +27,14 @@ Network::Transform::Transform(const OpenBinding& t_binding, bool t_verbose) :
 Network::SocketResult
 Network::Transform::operator()(const Socket& t_socket) const
 {
-    return open(t_socket);
-}
-
-Network::SocketResult Network::Transform::open(const Socket& t_socket) const
-{
     const auto [fd, result] {t_socket.socket(m_verbose)};
 
     if (!fd) {
         return {fd, result};
     }
 
-    const auto open_result {open(fd, t_socket)};
+    const auto addr {t_socket.address()};
+    const auto open_result {Network::open(m_binding, fd, addr, m_verbose)};
 
     if (open_result.result()) {
         return {close(fd), open_result};
@@ -46,12 +42,6 @@ Network::SocketResult Network::Transform::open(const Socket& t_socket) const
 
     const auto hostname {t_socket.canonical_name()};
     return {fd, Result(0, hostname)};
-}
-
-Network::Result Network::Transform::open(Fd t_fd, const Socket& t_socket) const
-{
-    const auto addr {t_socket.address()};
-    return Network::open(m_binding, t_fd, addr, m_verbose);
 }
 
 Network::SocketsResult Network::get_sockets(const Network::Hostname& node,
