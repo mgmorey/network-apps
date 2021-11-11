@@ -18,8 +18,8 @@
 #include <variant>      // std::get(), std::holds_alternative()
 #include <vector>       // std::vector
 
-Network::Open::Open(const OpenMethod& t_method, bool t_verbose) :
-    m_method(t_method),
+Network::Open::Open(const OpenBinding& t_binding, bool t_verbose) :
+    m_binding(t_binding),
     m_verbose(t_verbose)
 {
 }
@@ -50,7 +50,7 @@ Network::SocketResult Network::Open::open(const Socket& t_socket) const
 Network::Result Network::Open::open(Fd t_fd, const Socket& t_socket) const
 {
     const auto addr {t_socket.address()};
-    return Network::open(m_method, t_fd, addr, m_verbose);
+    return Network::open(m_binding, t_fd, addr, m_verbose);
 }
 
 Network::SocketsResult Network::get_sockets(const Network::Hostname& node,
@@ -85,7 +85,7 @@ Network::SocketsResult Network::get_sockets(const Network::Endpoint& endp,
     return sockets_result;
 }
 
-Network::Result Network::open(const OpenMethod& method, Fd fd,
+Network::Result Network::open(const OpenBinding& binding, Fd fd,
                               const SockAddr& addr,
                               bool verbose)
 {
@@ -96,7 +96,7 @@ Network::Result Network::open(const OpenMethod& method, Fd fd,
 
     if (verbose) {
         std::cerr << "Calling "
-                  << method.second
+                  << binding.second
                   << '('
                   << fd
                   << ", "
@@ -109,11 +109,11 @@ Network::Result Network::open(const OpenMethod& method, Fd fd,
 
     reset_last_error();
 
-    if (method.first(fd, addr_ptr, addr_len) == socket_error) {
+    if (binding.first(fd, addr_ptr, addr_len) == socket_error) {
         const auto error = get_last_error();
         std::ostringstream oss;
         oss << "Call to "
-            << method.second
+            << binding.second
             << '('
             << fd
             << ", "
@@ -128,7 +128,7 @@ Network::Result Network::open(const OpenMethod& method, Fd fd,
     return result;
 }
 
-Network::SocketResults Network::open(const OpenMethod& method,
+Network::SocketResults Network::open(const OpenBinding& binding,
                                      const Endpoint& endp,
                                      const Hints* hints,
                                      bool verbose)
@@ -144,7 +144,7 @@ Network::SocketResults Network::open(const OpenMethod& method,
     else {
         std::transform(sockets.begin(), sockets.end(),
                        std::back_inserter(results),
-                       Open(method, verbose));
+                       Open(binding, verbose));
     }
 
     return results;

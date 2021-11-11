@@ -21,8 +21,10 @@
 
 namespace Network
 {
-    using OpenFunction = int (*)(fd_type, const sockaddr*, socklen_t);
-    using OpenMethod = std::pair<OpenFunction, std::string>;
+    using OpenBinding = std::pair<
+        int (*)(fd_type, const sockaddr*, socklen_t),
+        std::string
+        >;
     using Sockets = std::vector<Socket>;
     using SocketsResult = std::pair<Sockets, Result>;
     using SocketResults = std::vector<SocketResult>;
@@ -30,13 +32,13 @@ namespace Network
     class Open
     {
     public:
-        explicit Open(const OpenMethod& t_method, bool t_verbose);
+        explicit Open(const OpenBinding& t_binding, bool t_verbose);
         SocketResult operator()(const Socket& t_socket) const;
         SocketResult open(const Socket& t_socket) const;
         Result open(Fd t_fd, const Socket& t_socket) const;
 
     private:
-        OpenMethod m_method {nullptr, ""};
+        OpenBinding m_binding {nullptr, ""};
         bool m_verbose {false};
     };
 
@@ -47,10 +49,10 @@ namespace Network
     extern SocketsResult get_sockets(const Endpoint& endp,
                                      const Hints* hints,
                                      bool verbose);
-    extern Result open(const OpenMethod& method, Fd fd,
+    extern Result open(const OpenBinding& binding, Fd fd,
                        const SockAddr& addr,
                        bool verbose);
-    extern SocketResults open(const OpenMethod& method,
+    extern SocketResults open(const OpenBinding& binding,
                               const Endpoint& endp,
                               const Hints* hints,
                               bool verbose);

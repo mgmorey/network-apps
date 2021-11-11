@@ -17,7 +17,7 @@
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
 
-Network::SockAddrResult Network::get_name(const GetNameMethod& method, Fd fd,
+Network::SockAddrResult Network::get_name(const GetNameBinding& binding, Fd fd,
                                           bool verbose)
 {
     Result result;
@@ -27,7 +27,7 @@ Network::SockAddrResult Network::get_name(const GetNameMethod& method, Fd fd,
 
     if (verbose) {
         std::cerr << "Calling "
-                  << method.second
+                  << binding.second
                   << '('
                   << fd
                   << ", "
@@ -40,11 +40,11 @@ Network::SockAddrResult Network::get_name(const GetNameMethod& method, Fd fd,
 
     reset_last_error();
 
-    if (method.first(fd, addr_ptr, &addr_len)) {
+    if (binding.first(fd, addr_ptr, &addr_len)) {
         auto error = get_last_error();
         std::ostringstream oss;
         oss << "Call to "
-            << method.second
+            << binding.second
             << '('
             << fd
             << ", "
