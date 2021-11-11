@@ -8,7 +8,9 @@
 #include <sys/socket.h>     // bind()
 #endif
 
-static const Network::OpenMethod method {::bind, "bind"};
+using namespace std::literals::string_literals;
+
+static const Network::OpenMethod method {::bind, "bind"s};
 
 Network::Result Network::bind(Fd fd,
                               const SockAddr& addr,

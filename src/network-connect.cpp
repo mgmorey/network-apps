@@ -8,7 +8,9 @@
 #include <sys/socket.h>     // connect()
 #endif
 
-static const Network::OpenMethod method {::connect, "connect"};
+using namespace std::literals::string_literals;
+
+static const Network::OpenMethod method {::connect, "connect"s};
 
 Network::Result Network::connect(Fd fd,
                                  const SockAddr& addr,
