@@ -15,6 +15,7 @@
 #include <iterator>     // std::back_inserter()
 #include <sstream>      // std::ostringstream
 #include <utility>      // std::pair
+#include <variant>      // std::get(), std::holds_alternative()
 #include <vector>       // std::vector
 
 Network::Open::Open(const OpenMethod& t_method, bool t_verbose) :

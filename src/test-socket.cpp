@@ -17,6 +17,7 @@
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <string>       // std::string
+#include <variant>      // std::get(), std::holds_alternative()
 #include <vector>       // std::vector
 
 namespace TestSocket
@@ -56,44 +57,49 @@ namespace TestSocket
         return args;
     }
 
-    Network::Address get_peer(const Network::Fd& t_fd)
+    Network::SockAddrResult get_peeraddr(const Network::Fd& fd)
     {
-        const auto [addr, result] {Network::get_peername(t_fd, verbose)};
+        const auto peername_result {Network::get_peername(fd, verbose)};
 
-        if (result.result()) {
+        if (std::holds_alternative<Network::Result>(peername_result)) {
+            const auto result {std::get<Network::Result>(peername_result)};
             std::cerr << "No peer information available: "
                       << result
                       << std::endl;
         }
 
-        return addr;
+        return peername_result;
     }
 
-    Network::Address get_sock(const Network::Fd& t_fd)
+    Network::SockAddrResult get_sockaddr(const Network::Fd& fd)
     {
-        const auto [addr, result] {Network::get_sockname(t_fd, verbose)};
+        const auto sock_result {Network::get_sockname(fd, verbose)};
 
-        if (result.result()) {
-            std::cerr << "No socket information available: "
+        if (std::holds_alternative<Network::Result>(sock_result)) {
+            const auto result {std::get<Network::Result>(sock_result)};
+            std::cerr << "No host information available: "
                       << result
                       << std::endl;
         }
 
-        return addr;
+        return sock_result;
     }
 
-    static void test_peer(const Network::Fd& fd)
+    static void test_socket(const Network::Fd& fd)
     {
-        const auto peer {get_peer(fd)};
-        const auto sock {get_sock(fd)};
+        const auto peer_result {get_peeraddr(fd)};
+        const auto sock_result {get_sockaddr(fd)};
 
-        if (!peer.empty() && !sock.empty()) {
+        if (std::holds_alternative<Network::SockAddr>(peer_result) &&
+            std::holds_alternative<Network::SockAddr>(sock_result)) {
+            const auto peer {std::get<Network::SockAddr>(peer_result)};
+            const auto self {std::get<Network::SockAddr>(sock_result)};
             std::cout << "Socket "
                       << fd
                       << " connected "
-                      << sock
+                      << Network::Address(self)
                       << " to "
-                      << peer
+                      << Network::Address(peer)
                       << std::endl;
         }
     }
@@ -122,8 +128,8 @@ namespace TestSocket
                       << " connected to socket "
                       << fd.second
                       << std::endl;
-            test_peer(fd.first);
-            test_peer(fd.second);
+            test_socket(fd.first);
+            test_socket(fd.second);
             Network::close(fd.first);
             Network::close(fd.second);
             std::cout << "Sockets "

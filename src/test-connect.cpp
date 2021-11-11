@@ -27,6 +27,7 @@
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <string>       // std::string
+#include <variant>      // std::get(), std::holds_alternative()
 #include <vector>       // std::vector
 
 namespace TestConnect
@@ -69,7 +70,7 @@ namespace TestConnect
             return hostname;
         }
 
-        Network::SockAddrResult get_peername(const Network::Fd& t_fd)
+        Network::SockAddrResult get_peeraddr(const Network::Fd& t_fd)
         {
             const auto peername_result {Network::get_peername(t_fd, verbose)};
 
@@ -83,7 +84,7 @@ namespace TestConnect
             return peername_result;
         }
 
-        Network::SockAddrResult get_sockname(const Network::Fd& t_fd)
+        Network::SockAddrResult get_sockaddr(const Network::Fd& t_fd)
         {
             const auto sockname_result {Network::get_sockname(t_fd, verbose)};
 
@@ -139,13 +140,13 @@ namespace TestConnect
 
         void test_socket(const Network::Fd& t_fd)
         {
-            const auto peername_result {get_peername(t_fd)};
-            const auto sockname_result {get_sockname(t_fd)};
+            const auto peer_result {get_peeraddr(t_fd)};
+            const auto sock_result {get_sockaddr(t_fd)};
 
-            if (std::holds_alternative<Network::SockAddr>(peername_result) &&
-                std::holds_alternative<Network::SockAddr>(sockname_result)) {
-                const auto peer {std::get<Network::SockAddr>(peername_result)};
-                const auto self {std::get<Network::SockAddr>(sockname_result)};
+            if (std::holds_alternative<Network::SockAddr>(peer_result) &&
+                std::holds_alternative<Network::SockAddr>(sock_result)) {
+                const auto peer {std::get<Network::SockAddr>(peer_result)};
+                const auto self {std::get<Network::SockAddr>(sock_result)};
                 m_os << "Socket "
                      << t_fd
                      << " connected "
