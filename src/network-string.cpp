@@ -1,10 +1,5 @@
 #include "network-string.h"   // String
 
-Network::String::String() :
-    Optional(true)
-{
-}
-
 Network::String::String(const std::string &t_string) :
     Optional(false),
     m_value(t_string)

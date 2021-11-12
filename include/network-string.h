@@ -18,7 +18,7 @@ namespace Network
                                         const String& string);
 
     public:
-        String();
+        String() = default;
         // cppcheck-suppress noExplicitConstructor
         String(const std::string& t_string);
         // cppcheck-suppress noExplicitConstructor

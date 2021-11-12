@@ -6,9 +6,7 @@ namespace Network
     class Optional
     {
     public:
-        Optional()
-        {
-        }
+        Optional() = default;
 
         explicit Optional(bool t_null) :
             m_null(t_null)
