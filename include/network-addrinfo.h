@@ -81,7 +81,7 @@ namespace Network
                       bool verbose,
                       OutputIt out)
         {
-            auto lambda = [&](const addrinfo& in) {
+            static const auto lambda = [&](const addrinfo& in) {
                 if (verbose) {
                     std::cerr << "Fetched addrinfo:"
                               << std::endl
