@@ -40,9 +40,6 @@ namespace TestConnect
     class Test
     {
     public:
-<<<<<<< HEAD
-        static Network::Hostname get_host()
-=======
         Test(const Network::Endpoint& t_endpoint, std::ostream& t_os) :
             m_endpoint(t_endpoint),
             m_os(t_os)
@@ -55,7 +52,6 @@ namespace TestConnect
         }
 
         Network::Hostname get_host()
->>>>>>> 40077bc8c54207d2a0ac663a3b9baad7634c4d39
         {
             Network::Hostname hostname;
             const auto hostname_result {Network::get_hostname()};
@@ -74,24 +70,7 @@ namespace TestConnect
             return hostname;
         }
 
-<<<<<<< HEAD
-        Test(const Network::Endpoint& t_endpoint,
-             std::ostream& t_os) :
-            m_endpoint(t_endpoint),
-            m_hostname(get_host()),
-            m_os(t_os)
-        {
-        }
-
-        void operator()(const Network::SocketResult& t_socket_result)
-        {
-            test_socket(t_socket_result);
-        }
-
-        Network::Address get_peer(const Network::Fd& t_fd)
-=======
         Network::SockAddrResult get_peeraddr(const Network::Fd& t_fd)
->>>>>>> 40077bc8c54207d2a0ac663a3b9baad7634c4d39
         {
             const auto peername_result {Network::get_peername(t_fd, verbose)};
 
@@ -129,27 +108,28 @@ namespace TestConnect
                           << std::endl;
             }
             else {
-                test_socket(fd);
+                test_socket(fd, result);
             }
         }
 
-        void test_socket(const Network::Fd& t_fd)
+        void test_socket(const Network::Fd& t_fd,
+                         const Network::Result& t_result)
         {
+            const auto hostname {get_host()};
+            const auto cname {t_result.string()};
             const auto host {m_endpoint.first};
             const auto serv {m_endpoint.second};
-            const auto peer {get_peer(t_fd)};
-            const auto sock {get_sock(t_fd)};
             m_os << "Socket "
                  << t_fd
                  << " connected "
-                 << m_hostname
+                 << static_cast<std::string>(hostname)
                  << " to "
-                 << serv
+                 << static_cast<std::string>(serv)
                  << " on "
-                 << host
+                 << ((cname.empty()) ?
+                     static_cast<std::string>(host) :
+                     static_cast<std::string>(cname))
                  << std::endl;
-<<<<<<< HEAD
-=======
             test_socket(t_fd);
             Network::close(t_fd);
             m_os << "Socket "
@@ -162,7 +142,6 @@ namespace TestConnect
         {
             const auto peer_result {get_peeraddr(t_fd)};
             const auto sock_result {get_sockaddr(t_fd)};
->>>>>>> 40077bc8c54207d2a0ac663a3b9baad7634c4d39
 
             if (std::holds_alternative<Network::SockAddr>(peer_result) &&
                 std::holds_alternative<Network::SockAddr>(sock_result)) {
@@ -176,17 +155,10 @@ namespace TestConnect
                      << Network::Address(peer)
                      << std::endl;
             }
-
-            Network::close(t_fd);
-            m_os << "Socket "
-                 << t_fd
-                 << " closed"
-                 << std::endl;
         }
 
     private:
         Network::Endpoint m_endpoint;
-        Network::Hostname m_hostname;
         std::ostream& m_os;
     };
 
