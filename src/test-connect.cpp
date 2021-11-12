@@ -40,28 +40,11 @@ namespace TestConnect
     class Test
     {
     public:
-        static Network::Hostname get_host()
-        {
-            Network::Hostname hostname;
-            const auto hostname_result {Network::get_hostname()};
-
-            if (std::holds_alternative<Network::Result>(hostname_result)) {
-                const auto result {std::get<Network::Result>(hostname_result)};
-
-                std::cerr << "No hostname available: "
-                          << result
-                          << std::endl;
-            }
-            else {
-                hostname = std::get<Network::Hostname>(hostname_result);
-            }
-
-            return hostname;
-        }
-
-        Test(const Network::Endpoint& t_endpoint, std::ostream& t_os) :
+        Test(const Network::Endpoint& t_endpoint,
+             const Network::Hostname& t_hostname,
+             std::ostream& t_os) :
             m_endpoint(t_endpoint),
-            m_hostname(get_host()),
+            m_hostname(t_hostname),
             m_os(t_os)
         {
         }
@@ -155,6 +138,25 @@ namespace TestConnect
         std::ostream& m_os;
     };
 
+    static Network::Hostname get_host()
+    {
+        Network::Hostname hostname;
+        const auto hostname_result {Network::get_hostname()};
+
+        if (std::holds_alternative<Network::Result>(hostname_result)) {
+            const auto result {std::get<Network::Result>(hostname_result)};
+
+            std::cerr << "No hostname available: "
+                      << result
+                      << std::endl;
+        }
+        else {
+            hostname = std::get<Network::Hostname>(hostname_result);
+        }
+
+        return hostname;
+    }
+
     static std::vector<std::string> parse_arguments(int argc, char** argv)
     {
         std::vector<std::string> args {argv[0]};
@@ -186,9 +188,10 @@ namespace TestConnect
     static void test_connect(const Network::Endpoint& endp,
                              const Network::Hints& hints)
     {
+        const auto host {get_host()};
         const auto results {Network::connect(endp, &hints, verbose)};
         std::for_each(results.begin(), results.end(),
-                      Test(endp, std::cout));
+                      Test(endp, host, std::cout));
     }
 }
 
