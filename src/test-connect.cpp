@@ -195,7 +195,7 @@ int main(int argc, char* argv[])
     const auto args {TestConnect::parse_arguments(argc, argv)};
     const Network::Context context(TestConnect::verbose);
 
-    if (context.result().result()) {
+    if (context.result()) {
         std::cerr << context.result()
                   << std::endl;
     }

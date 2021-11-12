@@ -7,10 +7,15 @@ Network::Result::Result()
 {
 }
 
-Network::Result::Result(result_type t_value, const std::string& t_string) :
-    m_string(t_string),
-    m_result(t_value)
+Network::Result::Result(result_type t_result, const std::string& t_string) :
+    m_result(t_result),
+    m_string(t_string)
 {
+}
+
+Network::Result::operator bool() const
+{
+    return m_result || !m_string.empty();
 }
 
 Network::result_type Network::Result::result() const

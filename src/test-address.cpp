@@ -73,7 +73,7 @@ namespace TestAddress
             const Network::Address address {t_host.address()};
             const auto [endp, result] {get_endpoint(address)};
 
-            if (result.result()) {
+            if (result) {
                 std::cerr << result
                           << std::endl;
             }
@@ -142,7 +142,7 @@ namespace TestAddress
         const auto result {Network::AddrInfo::insert(node, serv, hints, verbose,
                                                      std::back_inserter(hosts))};
 
-        if (result.result()) {
+        if (result) {
             return result;
         }
 
@@ -258,7 +258,7 @@ int main(int argc, char* argv[])
     const auto args {TestAddress::parse_arguments(argc, argv)};
     const Network::Context context(TestAddress::verbose);
 
-    if (context.result().result()) {
+    if (context.result()) {
         std::cerr << context.result()
                   << std::endl;
     }

@@ -47,7 +47,7 @@ Network::Transform::open(Fd fd, const SockAddr& addr) const
 {
     const auto result {Network::open(m_binding, fd, addr, m_verbose)};
 
-    if (result.result()) {
+    if (result) {
         return result;
     }
     else {
@@ -85,7 +85,7 @@ Network::SocketsResult Network::get_sockets(const Network::Hostname& node,
     const auto result {AddrInfo::insert(node, serv, hints, verbose,
                                         std::back_inserter(sockets))};
 
-    if (result.result()) {
+    if (result) {
         return result;
     }
 

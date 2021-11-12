@@ -12,12 +12,13 @@ namespace Network
     {
         Result();
         Result(result_type t_value, const std::string& t_string);
+        operator bool() const;
         result_type result() const;
         std::string string() const;
 
     private:
-        std::string m_string;
         result_type m_result {0};
+        std::string m_string;
     };
 
     extern std::ostream& operator<<(std::ostream& os,

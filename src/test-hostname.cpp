@@ -68,7 +68,7 @@ int main(int argc, char* argv[])
     const auto args {TestHostname::parse_arguments(argc, argv)};
     const Network::Context context(TestHostname::verbose);
 
-    if (context.result().result()) {
+    if (context.result()) {
         std::cerr << context.result()
                   << std::endl;
     }
