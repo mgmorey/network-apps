@@ -13,7 +13,6 @@ namespace Network
 
     extern HostnameResult get_hostname();
     extern HostnameResult get_hostname(const Hostname& hostname);
-    extern HostnameResult get_hostname(const Endpoint& endpoint);
 }
 
 #endif

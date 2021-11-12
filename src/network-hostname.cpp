@@ -36,10 +36,5 @@ Network::HostnameResult Network::get_hostname()
 
 Network::HostnameResult Network::get_hostname(const Network::Hostname& host)
 {
-    return (host.null() || host.empty()) ? get_hostname() : host;
-}
-
-Network::HostnameResult Network::get_hostname(const Network::Endpoint& endp)
-{
-    return endp.first.empty() ? get_hostname() : endp.first;
+    return host.null() ? get_hostname() : host;
 }
