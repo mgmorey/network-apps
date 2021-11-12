@@ -138,25 +138,6 @@ namespace TestConnect
         std::ostream& m_os;
     };
 
-    static Network::Hostname get_host()
-    {
-        Network::Hostname hostname;
-        const auto hostname_result {Network::get_hostname()};
-
-        if (std::holds_alternative<Network::Result>(hostname_result)) {
-            const auto result {std::get<Network::Result>(hostname_result)};
-
-            std::cerr << "No hostname available: "
-                      << result
-                      << std::endl;
-        }
-        else {
-            hostname = std::get<Network::Hostname>(hostname_result);
-        }
-
-        return hostname;
-    }
-
     static std::vector<std::string> parse_arguments(int argc, char** argv)
     {
         std::vector<std::string> args {argv[0]};
@@ -185,13 +166,24 @@ namespace TestConnect
         return args;
     }
 
-    static void test_connect(const Network::Endpoint& endp,
+    static void test_connect(const Network::Endpoint& endpoint,
                              const Network::Hints& hints)
     {
-        const auto host {get_host()};
-        const auto results {Network::connect(endp, &hints, verbose)};
-        std::for_each(results.begin(), results.end(),
-                      Test(endp, host, std::cout));
+        const auto hostname_result {Network::get_hostname()};
+
+        if (std::holds_alternative<Network::Result>(hostname_result)) {
+            const auto result {std::get<Network::Result>(hostname_result)};
+
+            std::cerr << "No hostname available: "
+                      << result
+                      << std::endl;
+        }
+        else {
+            const auto hostname {std::get<Network::Hostname>(hostname_result)};
+            const auto results {Network::connect(endpoint, &hints, verbose)};
+            std::for_each(results.begin(), results.end(),
+                          Test(endpoint, hostname, std::cout));
+        }
     }
 }
 
