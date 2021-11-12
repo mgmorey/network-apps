@@ -54,11 +54,14 @@ namespace TestHostname
                       << result
                       << std::endl;
         }
-        else {
+        else if (std::holds_alternative<Network::Hostname>(hostname_result)) {
             const auto hostname = std::get<Network::Hostname>(hostname_result);
             std::cout << "Hostname: "
                       << hostname
                       << std::endl;
+        }
+        else {
+            abort();
         }
     }
 }

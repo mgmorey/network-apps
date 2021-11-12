@@ -57,9 +57,12 @@ namespace TestConnect
                 std::cerr << result
                           << std::endl;
             }
-            if (std::holds_alternative<Network::Fd>(t_socket_result)) {
+            else if (std::holds_alternative<Network::Fd>(t_socket_result)) {
                 const auto fd {std::get<Network::Fd>(t_socket_result)};
                 test_socket(fd);
+            }
+            else {
+                abort();
             }
         }
 

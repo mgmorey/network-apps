@@ -217,7 +217,7 @@ namespace TestAddress
                       << result
                       << std::endl;
         }
-        else {
+        else if (std::holds_alternative<Hosts>(hosts_result)) {
             const auto hosts {std::get<Hosts>(hosts_result)};
 
             if (!hosts.empty()) {
@@ -233,11 +233,14 @@ namespace TestAddress
                 std::for_each(hosts.begin(), hosts.end(), Test(std::cout));
             }
         }
+        else {
+            abort();
+        }
     }
 
     static void test_host(const Network::Hostname& host)
     {
-        if (host.null() || host.empty()) {
+        if (host.null()) {
             const auto flags {AI_ADDRCONFIG | AI_CANONNAME};
             Network::Hints hints(AF_UNSPEC, SOCK_STREAM, IPPROTO_TCP, flags);
             test_host(host, hints);
@@ -266,7 +269,7 @@ int main(int argc, char* argv[])
         const auto host(args.size() > 1 ? args[1] : TestAddress::HOST);
 
         if (args.size() <= 1) {
-            TestAddress::test_host("");
+            TestAddress::test_host(nullptr);
         }
 
         TestAddress::test_host(host);
