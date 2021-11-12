@@ -57,9 +57,8 @@ Network::SockAddrResult Network::get_name(const GetNameBinding& binding, Fd fd,
             << format_error(error);
         return Result(error, oss.str());
     }
-    else {
-        addr.resize(addr_len);
-        assert(is_valid(addr, verbose));
-        return addr;
-    }
+
+    addr.resize(addr_len);
+    assert(is_valid(addr, verbose));
+    return addr;
 }
