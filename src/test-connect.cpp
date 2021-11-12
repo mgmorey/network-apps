@@ -24,6 +24,7 @@
 #endif
 
 #include <algorithm>    // std::for_each()
+#include <cassert>      // assert()
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <string>       // std::string
@@ -51,7 +52,15 @@ namespace TestConnect
 
         void operator()(const Network::SocketResult& t_socket_result)
         {
-            test_socket(t_socket_result);
+            if (std::holds_alternative<Network::Result>(t_socket_result)) {
+                const auto result {std::get<Network::Result>(t_socket_result)};
+                std::cerr << result
+                          << std::endl;
+            }
+            if (std::holds_alternative<Network::Fd>(t_socket_result)) {
+                const auto fd {std::get<Network::Fd>(t_socket_result)};
+                test_socket(fd);
+            }
         }
 
         Network::SockAddrResult get_peeraddr(const Network::Fd& t_fd)
@@ -80,20 +89,6 @@ namespace TestConnect
             }
 
             return sockname_result;
-        }
-
-        void test_socket(const Network::SocketResult& t_socket_result)
-        {
-            const auto fd {t_socket_result.first};
-            const auto result {t_socket_result.second};
-
-            if (!fd) {
-                std::cerr << result
-                          << std::endl;
-            }
-            else {
-                test_socket(fd);
-            }
         }
 
         void test_socket(const Network::Fd& t_fd)
@@ -173,16 +168,19 @@ namespace TestConnect
 
         if (std::holds_alternative<Network::Result>(hostname_result)) {
             const auto result {std::get<Network::Result>(hostname_result)};
-
             std::cerr << "No hostname available: "
                       << result
                       << std::endl;
         }
-        else {
+        else if (std::holds_alternative<Network::Hostname>(hostname_result)) {
             const auto hostname {std::get<Network::Hostname>(hostname_result)};
-            const auto results {Network::connect(endpoint, &hints, verbose)};
-            std::for_each(results.begin(), results.end(),
+            const auto socket_results {Network::connect(endpoint, &hints, verbose)};
+            assert(!socket_results.empty());
+            std::for_each(socket_results.begin(), socket_results.end(),
                           Test(endpoint, hostname, std::cout));
+        }
+        else {
+            abort();
         }
     }
 }

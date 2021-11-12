@@ -14,12 +14,13 @@
 
 #include <string>       // std::string
 #include <utility>      // std::pair
+#include <variant>      // std::variant
 
 namespace Network
 {
     using FdPair = std::pair<Fd, Fd>;
-    using SocketResult = std::pair<Fd, Result>;
-    using SocketpairResult = std::pair<FdPair, Result>;
+    using SocketResult = std::variant<Fd, Result>;
+    using SocketpairResult = std::variant<FdPair, Result>;
 
     struct Socket :
         public Hints,

@@ -57,54 +57,7 @@ namespace TestSocket
         return args;
     }
 
-    Network::SockAddrResult get_peeraddr(const Network::Fd& fd)
-    {
-        const auto peername_result {Network::get_peername(fd, verbose)};
-
-        if (std::holds_alternative<Network::Result>(peername_result)) {
-            const auto result {std::get<Network::Result>(peername_result)};
-            std::cerr << "No peer information available: "
-                      << result
-                      << std::endl;
-        }
-
-        return peername_result;
-    }
-
-    Network::SockAddrResult get_sockaddr(const Network::Fd& fd)
-    {
-        const auto sock_result {Network::get_sockname(fd, verbose)};
-
-        if (std::holds_alternative<Network::Result>(sock_result)) {
-            const auto result {std::get<Network::Result>(sock_result)};
-            std::cerr << "No host information available: "
-                      << result
-                      << std::endl;
-        }
-
-        return sock_result;
-    }
-
-    static void test_socket(const Network::Fd& fd)
-    {
-        const auto peer_result {get_peeraddr(fd)};
-        const auto sock_result {get_sockaddr(fd)};
-
-        if (std::holds_alternative<Network::SockAddr>(peer_result) &&
-            std::holds_alternative<Network::SockAddr>(sock_result)) {
-            const auto peer {std::get<Network::SockAddr>(peer_result)};
-            const auto self {std::get<Network::SockAddr>(sock_result)};
-            std::cout << "Socket "
-                      << fd
-                      << " connected "
-                      << Network::Address(self)
-                      << " to "
-                      << Network::Address(peer)
-                      << std::endl;
-        }
-    }
-
-    static void test_socket(const std::string& path)
+    static void test_path(const std::string& path)
     {
         Network::Address address {Network::get_sockaddr(path)};
         assert(is_valid(address, verbose));
@@ -116,20 +69,21 @@ namespace TestSocket
     static void test_socketpair(const Network::Hints& hints)
     {
         const Network::Socket sock {hints};
-        const auto [fd, result] {sock.socketpair(verbose)};
+        const auto socketpair_result {sock.socketpair(verbose)};
 
-        if (result.result()) {
+        if (std::holds_alternative<Network::Result>(socketpair_result)) {
+            const auto result {std::get<Network::Result>(socketpair_result)};
             std::cerr << result
                       << std::endl;
         }
-        else {
+        else if (std::holds_alternative<Network::FdPair>(socketpair_result)) {
+            const auto fd {std::get<Network::FdPair>(socketpair_result)};
             std::cout << "Socket "
                       << fd.first
                       << " connected to socket "
                       << fd.second
                       << std::endl;
-            test_socket(fd.first);
-            test_socket(fd.second);
+
             Network::close(fd.first);
             Network::close(fd.second);
             std::cout << "Sockets "
@@ -139,6 +93,9 @@ namespace TestSocket
                       << " closed"
                       << std::endl;
         }
+        else {
+            abort();
+        }
     }
 }
 
@@ -147,8 +104,8 @@ int main(int argc, char* argv[])
     TestSocket::parse_arguments(argc, argv);
     const Network::Socket hints(AF_UNIX, SOCK_STREAM);
     TestSocket::test_socketpair(hints);
-    TestSocket::test_socket(TestSocket::PATH_12);
-    TestSocket::test_socket(TestSocket::PATH_14);
-    TestSocket::test_socket(TestSocket::PATH_16);
-    TestSocket::test_socket(TestSocket::PATH_20);
+    TestSocket::test_path(TestSocket::PATH_12);
+    TestSocket::test_path(TestSocket::PATH_14);
+    TestSocket::test_path(TestSocket::PATH_16);
+    TestSocket::test_path(TestSocket::PATH_20);
 }

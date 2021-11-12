@@ -27,32 +27,32 @@ Network::Transform::Transform(const OpenBinding& t_binding, bool t_verbose) :
 Network::SocketResult
 Network::Transform::operator()(const Socket& t_socket) const
 {
-    const auto [fd, result] {t_socket.socket(m_verbose)};
+    const auto socket_result {t_socket.socket(m_verbose)};
 
-    if (!fd) {
-        return {fd, result};
+    if (std::holds_alternative<Result>(socket_result)) {
+        const auto result {std::get<Result>(socket_result)};
+        return result;
     }
-
-    const auto addr {t_socket.address()};
-    const auto open_result {Network::open(m_binding, fd, addr, m_verbose)};
-
-    if (open_result.result()) {
-        return {close(fd), open_result};
+    else if (std::holds_alternative<Fd>(socket_result)) {
+        const auto fd {std::get<Fd>(socket_result)};
+        return open(fd, t_socket.address());
     }
-
-    const auto hostname {t_socket.canonical_name()};
-    return {fd, Result(0, hostname)};
+    else {
+        abort();
+    }
 }
 
-Network::SocketsResult Network::get_sockets(const Network::Hostname& node,
-                                            const Network::Service& serv,
-                                            const Network::Hints* hints,
-                                            bool verbose)
+Network::SocketResult
+Network::Transform::open(Fd fd, const SockAddr& addr) const
 {
-    Sockets sockets;
-    const auto result {AddrInfo::insert(node, serv, hints, verbose,
-                                        std::back_inserter(sockets))};
-    return {sockets, result};
+    const auto result {Network::open(m_binding, fd, addr, m_verbose)};
+
+    if (result.result()) {
+        return result;
+    }
+    else {
+        return fd;
+    }
 }
 
 Network::SocketsResult Network::get_sockets(const Network::Endpoint& endp,
@@ -63,7 +63,7 @@ Network::SocketsResult Network::get_sockets(const Network::Endpoint& endp,
     const auto hostname_result {Network::get_hostname(endp)};
 
     if (std::holds_alternative<Result>(hostname_result)) {
-        sockets_result.second = std::get<Result>(hostname_result);
+        return std::get<Result>(hostname_result);
     }
     else if (std::holds_alternative<Hostname>(hostname_result)) {
         const auto host {std::get<Network::Hostname>(hostname_result)};
@@ -74,6 +74,43 @@ Network::SocketsResult Network::get_sockets(const Network::Endpoint& endp,
     }
 
     return sockets_result;
+}
+
+Network::SocketsResult Network::get_sockets(const Network::Hostname& node,
+                                            const Network::Service& serv,
+                                            const Network::Hints* hints,
+                                            bool verbose)
+{
+    Sockets sockets;
+    const auto result {AddrInfo::insert(node, serv, hints, verbose,
+                                        std::back_inserter(sockets))};
+
+    if (result.result()) {
+        return result;
+    }
+
+    return sockets;
+}
+
+Network::SocketResults Network::open(const OpenBinding& binding,
+                                     const Endpoint& endp,
+                                     const Hints* hints,
+                                     bool verbose)
+{
+    SocketResults results;
+    const auto sockets_result {get_sockets(endp, hints, verbose)};
+
+    if (std::holds_alternative<Result>(sockets_result)) {
+        results.push_back(std::get<Result>(sockets_result));
+    }
+    else if (std::holds_alternative<Sockets>(sockets_result)) {
+        const auto sockets {std::get<Sockets>(sockets_result)};
+        std::transform(sockets.begin(), sockets.end(),
+                       std::back_inserter(results),
+                       Transform(binding, verbose));
+    }
+
+    return results;
 }
 
 Network::Result Network::open(const OpenBinding& binding, Fd fd,
@@ -117,26 +154,4 @@ Network::Result Network::open(const OpenBinding& binding, Fd fd,
     }
 
     return result;
-}
-
-Network::SocketResults Network::open(const OpenBinding& binding,
-                                     const Endpoint& endp,
-                                     const Hints* hints,
-                                     bool verbose)
-{
-    SocketResults results;
-    const auto [sockets, result] {get_sockets(endp, hints, verbose)};
-
-    if (result.result()) {
-        const Fd fd {fd_null};
-        const SocketResult socket_result(fd, result);
-        results.push_back(socket_result);
-    }
-    else {
-        std::transform(sockets.begin(), sockets.end(),
-                       std::back_inserter(results),
-                       Transform(binding, verbose));
-    }
-
-    return results;
 }

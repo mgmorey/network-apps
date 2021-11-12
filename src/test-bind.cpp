@@ -24,6 +24,7 @@
 #endif
 
 #include <algorithm>    // std::for_each()
+#include <cassert>      // assert()
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <string>       // std::string
@@ -40,16 +41,24 @@ namespace TestBind
     class Test
     {
     public:
-        Test(const Network::Endpoint& t_endp,
+        Test(const Network::Endpoint& t_endpoint,
              std::ostream& t_os) :
-            m_endpoint(t_endp),
+            m_endpoint(t_endpoint),
             m_os(t_os)
         {
         }
 
         void operator()(const Network::SocketResult& t_socket_result)
         {
-            test_socket(t_socket_result);
+            if (std::holds_alternative<Network::Result>(t_socket_result)) {
+                const auto result {std::get<Network::Result>(t_socket_result)};
+                std::cerr << result
+                          << std::endl;
+            }
+            if (std::holds_alternative<Network::Fd>(t_socket_result)) {
+                const auto fd {std::get<Network::Fd>(t_socket_result)};
+                test_socket(fd);
+            }
         }
 
         Network::SockAddrResult get_sockaddr(const Network::Fd& t_fd)
@@ -66,26 +75,11 @@ namespace TestBind
             return sockname_result;
         }
 
-        void test_socket(const Network::SocketResult& t_socket_result)
+        void test_socket(const Network::Fd& t_fd)
         {
-            const auto fd {t_socket_result.first};
-            const auto result {t_socket_result.second};
-
-            if (!fd) {
-                std::cerr << result
-                          << std::endl;
-            }
-            else {
-                test_socket(fd, result);
-            }
-        }
-
-        void test_socket(const Network::Fd& t_fd,
-                         const Network::Result& t_result)
-        {
-            const auto cname {t_result.string()};
             const auto host {m_endpoint.first};
             const auto serv {m_endpoint.second};
+            const auto sock_result {get_sockaddr(t_fd)};
             m_os << "Socket "
                  << t_fd
                  << " bound to "
@@ -93,17 +87,6 @@ namespace TestBind
                  << " on "
                  << static_cast<std::string>(host)
                  << std::endl;
-            test_socket(t_fd);
-            Network::close(t_fd);
-            m_os << "Socket "
-                 << t_fd
-                 << " closed"
-                 << std::endl;
-        }
-
-        void test_socket(const Network::Fd& t_fd)
-        {
-            const auto sock_result {get_sockaddr(t_fd)};
 
             if (std::holds_alternative<Network::SockAddr>(sock_result)) {
                 const auto self {std::get<Network::SockAddr>(sock_result)};
@@ -113,6 +96,12 @@ namespace TestBind
                      << Network::Address(self)
                      << std::endl;
             }
+
+            Network::close(t_fd);
+            m_os << "Socket "
+                 << t_fd
+                 << " closed"
+                 << std::endl;
         }
 
     private:
@@ -148,12 +137,13 @@ namespace TestBind
         return args;
     }
 
-    static void test_bind(const Network::Endpoint& endp,
+    static void test_bind(const Network::Endpoint& endpoint,
                           const Network::Hints& hints)
     {
-        const auto results {Network::bind(endp, &hints, verbose)};
-        std::for_each(results.begin(), results.end(),
-                      Test(endp, std::cout));
+        const auto socket_results {Network::bind(endpoint, &hints, verbose)};
+        assert(!socket_results.empty());
+        std::for_each(socket_results.begin(), socket_results.end(),
+                      Test(endpoint, std::cout));
     }
 }
 

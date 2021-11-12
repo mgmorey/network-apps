@@ -88,10 +88,10 @@ Network::SocketResult Network::Socket::socket(bool t_verbose) const
             << error
             << ": "
             << format_error(error);
-        result = {error, oss.str()};
+        return Result(error, oss.str());
     }
 
-    return SocketResult(fd, result);
+    return Fd(fd);
 }
 
 #ifndef _WIN32
@@ -130,11 +130,10 @@ Network::SocketpairResult Network::Socket::socketpair(bool t_verbose) const
             << error
             << ": "
             << format_error(error);
-        result = {error, oss.str()};
+        return Result(error, oss.str());
     }
 
-    const FdPair pair(fds[0], fds[1]);
-    return SocketpairResult(pair, result);
+    return FdPair(fds[0], fds[1]);
 }
 
 #endif
