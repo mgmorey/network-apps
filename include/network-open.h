@@ -16,6 +16,7 @@
 #include <sys/socket.h>     // sockaddr, socklen_t
 #endif
 
+#include <string>       // std::string
 #include <utility>      // std::pair
 #include <vector>       // std::vector
 
