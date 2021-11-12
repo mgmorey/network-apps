@@ -109,6 +109,9 @@ Network::SocketResults Network::open(const OpenBinding& binding,
                        std::back_inserter(results),
                        Transform(binding, verbose));
     }
+    else {
+        abort();
+    }
 
     return results;
 }
