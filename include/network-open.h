@@ -41,7 +41,7 @@ namespace Network
         bool m_verbose {false};
     };
 
-    extern SocketsResult get_sockets(const Endpoint& endp,
+    extern SocketsResult get_sockets(const Endpoint& endpoint,
                                      const Hints* hints,
                                      bool verbose);
     extern SocketsResult get_sockets(const Hostname& node,
@@ -49,7 +49,7 @@ namespace Network
                                      const Hints* hints,
                                      bool verbose);
     extern SocketResults open(const OpenBinding& binding,
-                              const Endpoint& endp,
+                              const Endpoint& endpoint,
                               const Hints* hints,
                               bool verbose);
     extern Result open(const OpenBinding& binding, Fd fd,
