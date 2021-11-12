@@ -13,7 +13,7 @@ namespace Network
 {
     struct Host
     {
-        Host();
+        Host() = default;
         // cppcheck-suppress noExplicitConstructor
         Host(const addrinfo& t_addrinfo);
         Host& operator=(const addrinfo& t_addrinfo);

@@ -16,10 +16,6 @@
 #include <algorithm>    // std::min()
 #include <string>       // std::string
 
-Network::Address::Address()
-{
-}
-
 Network::Address::Address(const value_type& t_value) :
     m_value(t_value)
 {
