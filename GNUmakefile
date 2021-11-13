@@ -55,7 +55,7 @@ prefix = /usr/local
 sources = $(executable_sources) $(library_sources)
 
 executable_sources = test-address.cpp test-bind.cpp \
-test-buffer.cpp test-connect.cpp test-hostname.cpp
+test-connect.cpp test-hostname.cpp
 library_sources = network-address.cpp network-addrinfo.cpp \
 network-bind.cpp network-close.cpp network-connect.cpp \
 network-context.cpp network-endpoint.cpp network-error.cpp \

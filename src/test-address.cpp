@@ -1,12 +1,6 @@
-#include "network/address.h"    // Address
-#include "network/addrinfo.h"   // AddrInfo
-#include "network/context.h"    // Context
-#include "network/endpoint.h"   // Endpoint, EndpointResult, Hostname,
-                                // Result, get_endpoint()
-#include "network/hints.h"      // Hints
-#include "network/host.h"       // Host
-#include "network/hostname.h"   // get_hostname()
-#include "network/sockaddr.h"   // is_valid()
+#include "network/network.h"    // Address, AddrInfo, Hints, Hostname,
+                                // Service, get_endpoint(),
+                                // get_hostname()
 
 #ifdef _WIN32
 #include <getopt.h>     // getopt(), optarg, opterr, optind, optopt
