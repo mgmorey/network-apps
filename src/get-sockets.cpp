@@ -1,4 +1,4 @@
-#include "network/get-sockets.h"    // get_sockets()
+#include "network/sockets.h"        // get_sockets()
 #include "network/addrinfo.h"       // AddrInfo
 #include "network/open.h"           // Endpoint, Fd, Hints, Result,
                                     // Socket, SockAddr, SocketResult,

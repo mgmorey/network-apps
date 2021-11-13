@@ -2,7 +2,7 @@
 #define NETWORK_ADDRINFO_H
 
 #include "network/endpoint.h"       // Endpoint
-#include "network/get-hostname.h"   // get_hostname()
+#include "network/hostname.h"       // get_hostname()
 #include "network/hints.h"          // Hints
 #include "network/result.h"         // Result
 #include "network/types.h"          // Hostname, Service

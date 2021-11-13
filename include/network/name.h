@@ -1,9 +1,9 @@
 #ifndef NETWORK_NAME_H
 #define NETWORK_NAME_H
 
-#include "network/fd.h"         // Fd, fd_type
-#include "network/result.h"     // Result
-#include "network/types.h"      // SockAddr
+#include "network/fd.h"             // Fd, fd_type
+#include "network/result.h"         // Result
+#include "network/types.h"          // SockAddr
 
 #ifdef _WIN32
 #include <winsock2.h>       // sockaddr, socklen_t

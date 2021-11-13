@@ -1,5 +1,5 @@
-#ifndef NETWORK_GET_HOSTNAME_H
-#define NETWORK_GET_HOSTNAME_H
+#ifndef NETWORK_HOSTNAME_H
+#define NETWORK_HOSTNAME_H
 
 #include "network/stringresult.h"   // StringResult
 #include "network/types.h"          // Hostname

@@ -1,9 +1,9 @@
-#ifndef NETWORK_GET_SOCKETS_H
-#define NETWORK_GET_SOCKETS_H
+#ifndef NETWORK_SOCKETS_H
+#define NETWORK_SOCKETS_H
 
-#include "network/endpoint.h"   // Endpoint
-#include "network/hints.h"      // Hints
-#include "network/socket.h"     // Socket, SocketResult
+#include "network/endpoint.h"       // Endpoint
+#include "network/hints.h"          // Hints
+#include "network/socket.h"         // Socket, SocketResult
 
 #include <utility>      // std::pair
 #include <variant>      // std::variant

@@ -1,10 +1,10 @@
 #ifndef NETWORK_HINTS_H
 #define NETWORK_HINTS_H
 
-#include "network/family.h"     // Family, operator<<()
-#include "network/flags.h"      // Flags, operator<<()
-#include "network/protocol.h"   // Protocol, operator<<()
-#include "network/socktype.h"   // SockType, operator<<()
+#include "network/family.h"         // Family, operator<<()
+#include "network/flags.h"          // Flags, operator<<()
+#include "network/protocol.h"       // Protocol, operator<<()
+#include "network/socktype.h"       // SockType, operator<<()
 
 #ifdef _WIN32
 #include <ws2tcpip.h>   // addrinfo

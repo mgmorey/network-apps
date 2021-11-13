@@ -1,7 +1,7 @@
 #ifndef NETWORK_SOCKTYPE_H
 #define NETWORK_SOCKTYPE_H
 
-#include "network/integer.h"    // Integer
+#include "network/integer.h"        // Integer
 
 #include <ostream>      // std::ostream
 

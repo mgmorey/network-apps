@@ -3,7 +3,7 @@
 
 #include "network/endpoint.h"       // Endpoint
 #include "network/fd.h"             // Fd, fd_type
-#include "network/get-sockets.h"    // get_sockets()
+#include "network/sockets.h"        // get_sockets()
 #include "network/hints.h"          // Hints
 #include "network/result.h"         // Result
 #include "network/socket.h"         // Socket, SocketResult

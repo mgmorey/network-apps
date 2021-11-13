@@ -1,7 +1,7 @@
 #ifndef NETWORK_FLAGS_H
 #define NETWORK_FLAGS_H
 
-#include "network/integer.h"    // Integer
+#include "network/integer.h"        // Integer
 
 #include <ostream>      // std::ostream
 

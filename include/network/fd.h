@@ -2,7 +2,7 @@
 #define NETWORK_FD_H
 
 #ifdef _WIN32
-#include <winsock2.h>   // INVALID_SOCKET, SOCKET
+#include <winsock2.h>       // INVALID_SOCKET, SOCKET
 #endif
 
 #include <ostream>     // std::ostream

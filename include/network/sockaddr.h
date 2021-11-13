@@ -1,8 +1,8 @@
 #ifndef NETWORK_SOCKADDR_H
 #define NETWORK_SOCKADDR_H
 
-#include "network/socklen.h"    // socklen_type
-#include "network/types.h"      // SockAddr
+#include "network/socklen.h"        // socklen_type
+#include "network/types.h"          // SockAddr
 
 #ifdef _WIN32
 #include <winsock2.h>       // sockaddr, sockaddr_in

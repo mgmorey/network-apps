@@ -2,8 +2,8 @@
 #define NETWORK_ERROR_H
 
 #ifdef _WIN32
-#include <winsock2.h>   // SOCKET_ERROR
-#include <windows.h>    // DWORD
+#include <winsock2.h>       // SOCKET_ERROR
+#include <windows.h>        // DWORD
 #endif
 
 #include <string>       // std::string
