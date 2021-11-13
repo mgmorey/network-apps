@@ -1,19 +1,9 @@
 #include "network/open.h"       // Endpoint, Fd, Hints, Result,
-                                // Socket, SockAddr, SocketResult,
-                                // fd_null, get_sockets(), open(),
-                                // operator<<()
-#include "network/close.h"      // close()
-#include "network/error.h"      // format_error(), get_last_error(),
-                                // reset_last_error()
-#include "network/sockaddr.h"   // get_length(), get_pointer(),
-                                // is_valid()
+                                // Sockets, SockAddr, SocketResult,
+                                // get_sockets(), open(), operator<<()
 
 #include <algorithm>    // std::transform()
-#include <cassert>      // assert()
-#include <iostream>     // std::cerr, std::endl
 #include <iterator>     // std::back_inserter()
-#include <sstream>      // std::ostringstream
-#include <utility>      // std::pair
 #include <variant>      // std::get(), std::holds_alternative()
 
 Network::Open::Open(const OpenHandler& t_handler, bool t_verbose) :
