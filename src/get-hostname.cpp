@@ -1,9 +1,10 @@
-#include "network/hostname.h"   // Hostname, HostnameResult,
-                                // get_hostname()
-#include "network/buffer.h"     // Buffer
-#include "network/error.h"      // format_error(), get_last_error(),
-                                // reset_last_error()
-#include "network/result.h"     // Result
+#include "network/get-hostname.h"   // Hostname, HostnameResult,
+                                    // get_hostname()
+#include "network/buffer.h"         // Buffer
+#include "network/error.h"          // format_error(),
+                                    // get_last_error(),
+                                    // reset_last_error()
+#include "network/result.h"         // Result
 
 #ifdef _WIN32
 #include <winsock2.h>   // gethostname()
@@ -16,8 +17,12 @@
 #include <cassert>      // assert()
 #include <sstream>      // std::ostringstream
 
-Network::HostnameResult Network::get_hostname()
+Network::HostnameResult Network::get_hostname(const Network::Hostname& host)
 {
+    if (!host.null()) {
+        return std::string(host);
+    }
+
     Buffer host_buffer {NI_MAXHOST};
     reset_last_error();
 
@@ -31,10 +36,5 @@ Network::HostnameResult Network::get_hostname()
         return Result(error, oss.str());
     }
 
-    return OptionalString(host_buffer);
-}
-
-Network::HostnameResult Network::get_hostname(const Network::Hostname& host)
-{
-    return host.null() ? get_hostname() : host;
+    return std::string(host_buffer);
 }

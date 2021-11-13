@@ -151,8 +151,8 @@ namespace TestAddress
         if (std::holds_alternative<Network::Result>(hostname_result)) {
             return std::get<Network::Result>(hostname_result);
         }
-        else if (std::holds_alternative<Network::Hostname>(hostname_result)) {
-            const auto host {std::get<Network::Hostname>(hostname_result)};
+        else if (std::holds_alternative<std::string>(hostname_result)) {
+            const auto host {std::get<std::string>(hostname_result)};
             const auto endp {Network::Endpoint(host, nullptr)};
             return get_hosts(host, endp.second, hints);
         }

@@ -169,8 +169,8 @@ namespace TestConnect
                       << result
                       << std::endl;
         }
-        else if (std::holds_alternative<Network::Hostname>(hostname_result)) {
-            const auto hostname {std::get<Network::Hostname>(hostname_result)};
+        else if (std::holds_alternative<std::string>(hostname_result)) {
+            const auto hostname {std::get<std::string>(hostname_result)};
             const auto socket_results {Network::connect(endpoint, &hints, verbose)};
             assert(!socket_results.empty());
             std::for_each(socket_results.begin(), socket_results.end(),

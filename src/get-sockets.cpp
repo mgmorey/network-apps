@@ -1,8 +1,9 @@
-#include "network/open.h"       // Endpoint, Fd, Hints, Result,
-                                // Socket, SockAddr, SocketResult,
-                                // fd_null, get_sockets(), open(),
-                                // operator<<()
-#include "network/addrinfo.h"   // AddrInfo
+#include "network/get-sockets.h"    // get_sockets()
+#include "network/addrinfo.h"       // AddrInfo
+#include "network/open.h"           // Endpoint, Fd, Hints, Result,
+                                    // Socket, SockAddr, SocketResult,
+                                    // fd_null, get_sockets(), open(),
+                                    // operator<<()
 
 #include <variant>      // std::get(), std::holds_alternative()
 
@@ -17,8 +18,8 @@ Network::get_sockets(const Network::Endpoint& endpoint,
     if (std::holds_alternative<Result>(hostname_result)) {
         return std::get<Result>(hostname_result);
     }
-    else if (std::holds_alternative<Hostname>(hostname_result)) {
-        const auto host {std::get<Network::Hostname>(hostname_result)};
+    else if (std::holds_alternative<std::string>(hostname_result)) {
+        const auto host {std::get<std::string>(hostname_result)};
         sockets_result = get_sockets(host, endpoint.second, hints, verbose);
     }
     else {
