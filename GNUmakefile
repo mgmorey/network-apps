@@ -62,10 +62,10 @@ lib_sources = address.cpp addrinfo.cpp bind.cpp close.cpp connect.cpp	\
 context.cpp get-endpoint.cpp error.cpp family.cpp flags.cpp		\
 format.cpp hints.cpp host.cpp get-hostname.cpp get-name.cpp		\
 get-socket.cpp get-socketpair.cpp get-sockets.cpp open-endpoint.cpp	\
-open-fd.cpp get-peername.cpp protocol.cpp result.cpp sockaddr.cpp	\
-socket.cpp get-sockname.cpp socktype.cpp string.cpp			\
-stream-address.cpp stream-addrinfo.cpp stream-hints.cpp			\
-stream-socket.cpp stream-string.cpp
+open-fd.cpp get-peername.cpp optionalstring.cpp protocol.cpp		\
+result.cpp sockaddr.cpp socket.cpp get-sockname.cpp socktype.cpp	\
+stream-address.cpp stream-addrinfo.cpp stream-byte.cpp			\
+stream-hints.cpp stream-optionalstring.cpp stream-socket.cpp
 
 ifneq "$(SYSTEM)" "MINGW64_NT"
 	exec_sources += test-socket.cpp unix-client.cpp	\

@@ -1,30 +1,27 @@
-#ifndef NETWORK_STRING_H
-#define NETWORK_STRING_H
+#ifndef NETWORK_OPTIONALSTRING_H
+#define NETWORK_OPTIONALSTRING_H
 
-#include "network/byte.h"       // Byte
 #include "network/optional.h"   // Optional
 
 #include <ostream>      // std::ostream
-#include <string>       // std::basic_string, std::string
+#include <string>       // std::string
 
 namespace Network
 {
-    using ByteString = std::basic_string<Byte>;
-
-    class String :
+    class OptionalString :
         public Optional
     {
         friend std::ostream& operator<<(std::ostream& os,
-                                        const String& string);
+                                        const OptionalString& string);
 
     public:
-        String() = default;
+        OptionalString() = default;
         // cppcheck-suppress noExplicitConstructor
-        String(const std::string& t_string);
+        OptionalString(const std::string& t_string);
         // cppcheck-suppress noExplicitConstructor
-        String(const char* t_value);
-        String& operator=(const std::string& t_string);
-        String& operator=(const char* t_value);
+        OptionalString(const char* t_value);
+        OptionalString& operator=(const std::string& t_string);
+        OptionalString& operator=(const char* t_value);
         operator std::string() const;
         operator const char*() const;
         char* data();
@@ -38,9 +35,7 @@ namespace Network
     };
 
     extern std::ostream& operator<<(std::ostream& os,
-                                    const ByteString& string);
-    extern std::ostream& operator<<(std::ostream& os,
-                                    const String& string);
+                                    const OptionalString& string);
 }
 
 #endif

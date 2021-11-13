@@ -31,7 +31,7 @@ Network::HostnameResult Network::get_hostname()
         return Result(error, oss.str());
     }
 
-    return String(host_buffer);
+    return OptionalString(host_buffer);
 }
 
 Network::HostnameResult Network::get_hostname(const Network::Hostname& host)
