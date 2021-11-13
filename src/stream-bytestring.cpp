@@ -1,5 +1,6 @@
+#include "network/bytestring.h" // operator<<()
+#include "network/byte.h"       // Byte
 #include "network/print.h"      // print()
-#include "network/byte.h"       // Byte, operator<<()
 
 #include <ostream>      // std::ostream
 

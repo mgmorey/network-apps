@@ -64,7 +64,7 @@ format.cpp hints.cpp host.cpp get-hostname.cpp get-name.cpp		\
 get-socket.cpp get-socketpair.cpp get-sockets.cpp open-endpoint.cpp	\
 open-fd.cpp get-peername.cpp optionalstring.cpp protocol.cpp		\
 result.cpp sockaddr.cpp socket.cpp get-sockname.cpp socktype.cpp	\
-stream-address.cpp stream-addrinfo.cpp stream-byte.cpp			\
+stream-address.cpp stream-addrinfo.cpp stream-bytestring.cpp		\
 stream-hints.cpp stream-optionalstring.cpp stream-socket.cpp
 
 ifneq "$(SYSTEM)" "MINGW64_NT"
