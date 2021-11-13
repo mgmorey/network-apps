@@ -1,5 +1,5 @@
 #include "network/name.h"       // Fd, GetNameHandler, Result,
-                                // SockAddrResult
+                                // SockAddrResult, get_name()
 #include "network/error.h"      // format_error(), get_last_error(),
                                 // reset_last_error()
 #include "network/sockaddr.h"   // get_length(), get_pointer(),
