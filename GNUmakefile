@@ -1,7 +1,8 @@
 STANDARD := c++17
 SYSTEM := $(shell uname -s | cut -d- -f 1)
 
-CPPCHECK_FLAGS += --cppcheck-build-dir=tmp --enable=all --inline-suppr --quiet --std=$(STANDARD)
+CPPCHECK_FLAGS += --cppcheck-build-dir=tmp --enable=all	\
+--inline-suppr --quiet --std=$(STANDARD)
 
 ifdef NDEBUG
 	CPPFLAGS += -D_FORTIFY_SOURCE=2
@@ -52,36 +53,37 @@ LINK.o = $(CXX) $(LDFLAGS)
 
 prefix = /usr/local
 
-sources = $(executable_sources) $(library_sources)
+sources = $(exec_sources) $(lib_sources)
 
-executable_sources = test-address.cpp test-bind.cpp \
-test-connect.cpp test-hostname.cpp
-library_sources = network-address.cpp network-addrinfo.cpp \
-network-bind.cpp network-close.cpp network-connect.cpp \
-network-context.cpp network-endpoint.cpp network-error.cpp \
-network-family.cpp network-flags.cpp network-format.cpp \
-network-hints.cpp network-host.cpp network-hostname.cpp \
-network-name.cpp network-open.cpp network-peername.cpp \
-network-protocol.cpp network-result.cpp network-sockaddr.cpp \
-network-socket.cpp network-sockname.cpp network-socktype.cpp \
-network-string.cpp stream-address.cpp stream-addrinfo.cpp \
-stream-hints.cpp stream-socket.cpp stream-string.cpp
+exec_sources = test-address.cpp test-bind.cpp test-connect.cpp	\
+test-hostname.cpp
+
+lib_sources = address.cpp addrinfo.cpp bind.cpp close.cpp		\
+connect.cpp context.cpp endpoint.cpp error.cpp family.cpp flags.cpp	\
+format.cpp hints.cpp host.cpp hostname.cpp name.cpp open.cpp		\
+peername.cpp protocol.cpp result.cpp sockaddr.cpp socket.cpp		\
+sockname.cpp socktype.cpp string.cpp stream-address.cpp			\
+stream-addrinfo.cpp stream-hints.cpp stream-socket.cpp			\
+stream-string.cpp
 
 ifneq "$(SYSTEM)" "MINGW64_NT"
-	executable_sources += test-socket.cpp unix-client.cpp unix-server.cpp
+	exec_sources += test-socket.cpp unix-client.cpp	\
+	unix-server.cpp
 endif
 
-executables = $(subst .cpp,,$(executable_sources))
+executables = $(subst .cpp,,$(exec_sources))
 libraries = libnetwork.a
 
-objects = $(library_objects) $(executable_objects)
+objects = $(lib_objects) $(exec_objects)
 
-executable_objects = $(addprefix $(tmp_dir)/,$(subst .cpp,.o,$(executable_sources)))
-library_objects = $(addprefix $(tmp_dir)/,$(subst .cpp,.o,$(library_sources)))
+exec_objects = $(addprefix $(tmp_dir)/,$(subst	\
+.cpp,.o,$(exec_sources)))
+lib_objects = $(addprefix $(tmp_dir)/,$(subst	\
+.cpp,.o,$(lib_sources)))
 
 dependencies = $(addprefix $(tmp_dir)/,$(subst .cpp,.dep,$(sources)))
 listings = $(addprefix $(tmp_dir)/,$(subst .cpp,.lst,$(sources)))
-maps = $(subst .cpp,.map,$(executable_sources))
+maps = $(subst .cpp,.map,$(exec_sources))
 
 tmp_dir = tmp
 
@@ -102,11 +104,11 @@ realclean: clean
 
 .PHONY:	test
 test: $(executables)
-	for f in $^; do if expr $$f ':' 'test-.*' >/dev/null; then ./$$f; fi; done
+	for f in test-*; do test -x $$f && ./$$f; done
 
 .PHONY:	unix
 unix: $(executables)
-	./unix-server & (sleep 1; ./unix-client 2 2; ./unix-client 10 6; ./unix-client DOWN)
+	./unix-server & (sleep 1; ./unix-client 2 2; ./unix-client DOWN)
 
 .PHONY:	install
 install: $(libraries)
@@ -118,7 +120,7 @@ TAGS:
 
 $(executables): libnetwork.a
 
-libnetwork.a: $(patsubst %.o,libnetwork.a(%.o),$(library_objects))
+libnetwork.a: $(patsubst %.o,libnetwork.a(%.o),$(lib_objects))
 
 $(dependencies) $(objects): | $(tmp_dir)
 
