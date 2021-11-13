@@ -38,14 +38,14 @@ namespace Network
         bool operator==(const Socket& t_sock) const;
     };
 
+    extern std::ostream& operator<<(std::ostream& os,
+                                    const Socket& sock);
     extern SocketResult get_socket(const Socket& sock,
                                    bool verbose = false);
 #ifndef _WIN32
     extern SocketpairResult get_socketpair(const Socket& sock,
                                            bool verbose = false);
 #endif
-    extern std::ostream& operator<<(std::ostream& os,
-                                    const Socket& sock);
 }
 
 #endif
