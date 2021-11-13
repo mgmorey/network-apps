@@ -104,7 +104,7 @@ realclean: clean
 
 .PHONY:	test
 test: $(executables)
-	for f in test-*; do test -x $$f && ./$$f; done
+	for f in test-*; do if [ -x $$f ]; then ./$$f; fi; done
 
 .PHONY:	unix
 unix: $(executables)
