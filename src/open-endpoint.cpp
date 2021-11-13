@@ -1,6 +1,6 @@
 #include "network/open.h"       // Endpoint, Fd, Hints, OpenHandler,
-                                // Result, Sockets, SockAddr,
-                                // SocketResult, SocketResults,
+                                // Result, SockAddr, SocketResult,
+                                // SocketResults, Sockets,
                                 // get_sockets(), open(), operator<<()
 
 #include <algorithm>    // std::transform()
