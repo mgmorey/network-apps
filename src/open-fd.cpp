@@ -1,4 +1,4 @@
-#include "network/open.h"       // Fd, Result, SockAddr, fd_null,
+#include "network/open.h"       // Fd, Result, OpenHandler, SockAddr,
                                 // open(), operator<<()
 #include "network/error.h"      // format_error(), get_last_error(),
                                 // reset_last_error()

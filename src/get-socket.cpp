@@ -1,5 +1,6 @@
-#include "network/socket.h"     // Result, Socket, SocketpairResult,
-                                // SocketResult, operator<<()
+#include "network/socket.h"     // Fd, Result, Socket,
+                                // SocketpairResult, SocketResult,
+                                // operator<<()
 #include "network/error.h"      // format_error(), get_last_error(),
                                 // set_last_error()
 #include "network/format.h"     // Format
