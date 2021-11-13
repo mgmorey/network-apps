@@ -58,13 +58,14 @@ sources = $(exec_sources) $(lib_sources)
 exec_sources = test-address.cpp test-bind.cpp test-connect.cpp	\
 test-hostname.cpp
 
-lib_sources = address.cpp addrinfo.cpp bind.cpp close.cpp		\
-connect.cpp context.cpp endpoint.cpp error.cpp family.cpp flags.cpp	\
-format.cpp hints.cpp host.cpp hostname.cpp name.cpp open.cpp		\
-peername.cpp protocol.cpp result.cpp sockaddr.cpp socket.cpp		\
-sockname.cpp socktype.cpp string.cpp stream-address.cpp			\
-stream-addrinfo.cpp stream-hints.cpp stream-socket.cpp			\
-stream-string.cpp
+lib_sources = address.cpp addrinfo.cpp bind.cpp close.cpp connect.cpp	\
+context.cpp get-endpoint.cpp error.cpp family.cpp flags.cpp		\
+format.cpp hints.cpp host.cpp get-hostname.cpp get-name.cpp		\
+get-socket.cpp get-socketpair.cpp get-sockets.cpp open-endpoint.cpp	\
+open-fd.cpp get-peername.cpp protocol.cpp result.cpp sockaddr.cpp	\
+socket.cpp get-sockname.cpp socktype.cpp string.cpp			\
+stream-address.cpp stream-addrinfo.cpp stream-hints.cpp			\
+stream-socket.cpp stream-string.cpp
 
 ifneq "$(SYSTEM)" "MINGW64_NT"
 	exec_sources += test-socket.cpp unix-client.cpp	\

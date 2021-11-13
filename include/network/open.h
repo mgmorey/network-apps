@@ -1,12 +1,13 @@
 #ifndef NETWORK_OPEN_H
 #define NETWORK_OPEN_H
 
-#include "network/endpoint.h"   // Endpoint
-#include "network/fd.h"         // Fd, fd_type
-#include "network/hints.h"      // Hints
-#include "network/result.h"     // Result
-#include "network/socket.h"     // Socket, SocketResult
-#include "network/types.h"      // SockAddr, operator<<()
+#include "network/endpoint.h"       // Endpoint
+#include "network/fd.h"             // Fd, fd_type
+#include "network/get-sockets.h"    // get_sockets()
+#include "network/hints.h"          // Hints
+#include "network/result.h"         // Result
+#include "network/socket.h"         // Socket, SocketResult
+#include "network/types.h"          // SockAddr
 
 #ifdef _WIN32
 #include <winsock2.h>       // sockaddr, socklen_t
@@ -18,16 +19,11 @@
 
 #include <string>       // std::string
 #include <utility>      // std::pair
-#include <variant>      // std::variant
-#include <vector>       // std::vector
 
 namespace Network
 {
     using OpenFunction = int (*)(fd_type, const sockaddr*, socklen_t);
     using OpenHandler = std::pair<OpenFunction, std::string>;
-    using Sockets = std::vector<Socket>;
-    using SocketResults = std::vector<SocketResult>;
-    using SocketsResult = std::variant<Sockets, Result>;
 
     class Open
     {
@@ -41,13 +37,6 @@ namespace Network
         bool m_verbose {false};
     };
 
-    extern SocketsResult get_sockets(const Endpoint& endpoint,
-                                     const Hints* hints,
-                                     bool verbose);
-    extern SocketsResult get_sockets(const Hostname& node,
-                                     const Service& serv,
-                                     const Hints* hints,
-                                     bool verbose);
     extern SocketResults open(const OpenHandler& handler,
                               const Endpoint& endpoint,
                               const Hints* hints,
