@@ -1,4 +1,4 @@
-#include "network-addrinfo.h"   // AddrInfo, Hints, Hostname, Result
+#include "network/addrinfo.h"   // AddrInfo, Hints, Hostname, Result
                                 // Service, addrinfo, operator<<()
 
 #ifdef _WIN32

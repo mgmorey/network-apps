@@ -1,4 +1,4 @@
-#include "network-protocol.h"   // Protocol
+#include "network/protocol.h"   // Protocol
 
 #ifdef _WIN32
 #include <winsock2.h>   // AF_INET, AF_INET6, AF_UNIX, AF_UNSPEC,

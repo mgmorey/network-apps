@@ -1,5 +1,5 @@
-#include "network-hints.h"      // Hints, operator<<()
-#include "network-format.h"     // Format, operator<<()
+#include "network/hints.h"      // Hints, operator<<()
+#include "network/format.h"     // Format, operator<<()
 
 #include <ostream>      // std::ostream
 

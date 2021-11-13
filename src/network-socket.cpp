@@ -1,9 +1,9 @@
-#include "network-socket.h"     // FdPair, Hints, Host, Result,
+#include "network/socket.h"     // FdPair, Hints, Host, Result,
                                 // Socket, SocketpairResult,
                                 // SocketResult, operator<<()
-#include "network-error.h"      // format_error(), get_last_error(),
+#include "network/error.h"      // format_error(), get_last_error(),
                                 // set_last_error()
-#include "network-format.h"     // Format
+#include "network/format.h"     // Format
 
 #ifdef _WIN32
 #include <winsock2.h>   // sockaddr, socket()

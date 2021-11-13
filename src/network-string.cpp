@@ -1,4 +1,4 @@
-#include "network-string.h"   // String
+#include "network/string.h"   // String
 
 Network::String::String(const std::string &t_string) :
     Optional(false),

@@ -1,8 +1,8 @@
 #ifndef NETWORK_STRING_H
 #define NETWORK_STRING_H
 
-#include "network-byte.h"       // Byte
-#include "network-optional.h"   // Optional
+#include "network/byte.h"       // Byte
+#include "network/optional.h"   // Optional
 
 #include <ostream>      // std::ostream
 #include <string>       // std::basic_string, std::string

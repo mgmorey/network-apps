@@ -1,4 +1,4 @@
-#include "network-connect.h"    // Endpoint, Fd, Hints, Result,
+#include "network/connect.h"    // Endpoint, Fd, Hints, Result,
                                 // SockAddr, SocketResults, connect(),
                                 // open()
 

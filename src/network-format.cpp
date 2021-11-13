@@ -1,4 +1,4 @@
-#include "network-format.h"     // Format, std::ostream, std::string
+#include "network/format.h"     // Format, std::ostream, std::string
 
 Network::Format::Format(const std::string& t_key) :
     m_value(t_key),

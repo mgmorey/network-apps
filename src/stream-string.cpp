@@ -1,5 +1,5 @@
-#include "network-print.h"      // print()
-#include "network-string.h"     // String, operator<<()
+#include "network/print.h"      // print()
+#include "network/string.h"     // String, operator<<()
 
 #include <ostream>      // std::ostream
 

@@ -1,4 +1,4 @@
-#include "network-socktype.h"   // SockType, operator<<()
+#include "network/socktype.h"   // SockType, operator<<()
 
 #ifdef _WIN32
 #include <winsock2.h>   // SOCK_DGRAM, SOCK_RAW, SOCK_RDM,

@@ -1,7 +1,7 @@
 #ifndef NETWORK_PEERNAME_H
 #define NETWORK_PEERNAME_H
 
-#include "network-name.h"       // Fd, SockAddrResult
+#include "network/name.h"       // Fd, SockAddrResult
 
 namespace Network
 {

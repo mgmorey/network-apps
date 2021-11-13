@@ -1,13 +1,13 @@
-#include "network-address.h"    // Address, operator<<()
-#include "network-close.h"      // close()
-#include "network-fd.h"         // Fd
-#include "network-hints.h"      // Hints
-#include "network-peername.h"   // get_peername()
-#include "network-result.h"     // Result
-#include "network-sockaddr.h"   // get_sockaddr()
-#include "network-socket.h"     // Socket, FdPair,
+#include "network/address.h"    // Address, operator<<()
+#include "network/close.h"      // close()
+#include "network/fd.h"         // Fd
+#include "network/hints.h"      // Hints
+#include "network/peername.h"   // get_peername()
+#include "network/result.h"     // Result
+#include "network/sockaddr.h"   // get_sockaddr()
+#include "network/socket.h"     // Socket, FdPair,
                                 // SocketpairResult
-#include "network-sockname.h"   // get_sockname()
+#include "network/sockname.h"   // get_sockname()
 
 #include <sys/socket.h> // AF_UNIX, SOCK_STREAM
 #include <sys/un.h>     // sockaddr_un

@@ -111,7 +111,7 @@ unix: $(executables)
 .PHONY:	install
 install: $(libraries)
 	install libnetwork.a $(prefix)/lib
-	install include/network-*.h $(prefix)/include
+	install include/network/*.h $(prefix)/include
 
 TAGS:
 	etags $^
@@ -139,4 +139,4 @@ $(tmp_dir)/%.dep: %.cpp
 	$(CXX) $(CPPFLAGS) -MM $< | ./make-makefile -f TAGS -o $@
 
 vpath %.cpp src
-vpath %.h include
+vpath %.h include/network

@@ -1,7 +1,7 @@
 #ifndef NETWORK_CONTEXT_H
 #define NETWORK_CONTEXT_H
 
-#include "network-result.h"     // Result
+#include "network/result.h"     // Result
 
 #ifdef _WIN32
 #include <winsock2.h>   // MAKEWORD(), WORD, WSADATA

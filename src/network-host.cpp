@@ -1,4 +1,4 @@
-#include "network-host.h"       // Host, Hostname, SockAddr, addrinfo
+#include "network/host.h"       // Host, Hostname, SockAddr, addrinfo
 
 Network::Host::Host(const addrinfo& t_addrinfo) :
     m_sock_addr(get_sockaddr(t_addrinfo)),

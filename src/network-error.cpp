@@ -1,4 +1,4 @@
-#include "network-error.h"      // get_last_error(),
+#include "network/error.h"      // get_last_error(),
                                 // reset_last_error(), std::string
 
 #ifdef _WIN32

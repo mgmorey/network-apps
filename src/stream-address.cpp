@@ -1,7 +1,7 @@
-#include "network-address.h"    // Address, operator<<(),
+#include "network/address.h"    // Address, operator<<(),
                                 // std::ostream, std::string
-#include "network-family.h"     // Family, operator<<()
-#include "network-format.h"     // Format, operator<<()
+#include "network/family.h"     // Family, operator<<()
+#include "network/format.h"     // Format, operator<<()
 
 #ifdef _WIN32
 #include <winsock2.h>   // AF_INET, AF_INET6, AF_UNIX

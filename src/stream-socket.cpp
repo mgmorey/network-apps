@@ -1,5 +1,5 @@
-#include "network-socket.h"     // Socket, operator<<()
-#include "network-format.h"     // Format, operator<<()
+#include "network/socket.h"     // Socket, operator<<()
+#include "network/format.h"     // Format, operator<<()
 
 #include <ostream>      // std::ostream
 

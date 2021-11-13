@@ -1,4 +1,4 @@
-#include "network-result.h"     // Result
+#include "network/result.h"     // Result
 
 #include <ostream>      // std::ostream
 #include <string>       // std::string

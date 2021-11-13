@@ -1,4 +1,4 @@
-#include "network-buffer.h"     // Buffer, std::string
+#include "network/buffer.h"     // Buffer, std::string
 
 #include <cassert>      // assert()
 #include <cstring>      // std::memset()

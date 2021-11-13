@@ -1,8 +1,8 @@
 #ifndef NETWORK_PROTOCOL_H
 #define NETWORK_PROTOCOL_H
 
-#include "network-family.h"     // Family
-#include "network-integer.h"    // Integer
+#include "network/family.h"     // Family
+#include "network/integer.h"    // Integer
 
 #include <ostream>      // std::ostream
 

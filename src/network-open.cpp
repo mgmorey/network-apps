@@ -1,12 +1,12 @@
-#include "network-open.h"       // Endpoint, Fd, Hints, Result,
+#include "network/open.h"       // Endpoint, Fd, Hints, Result,
                                 // Socket, SockAddr, SocketResult,
                                 // fd_null, get_sockets(), open(),
                                 // operator<<()
-#include "network-addrinfo.h"   // AddrInfo
-#include "network-close.h"      // close()
-#include "network-error.h"      // format_error(), get_last_error(),
+#include "network/addrinfo.h"   // AddrInfo
+#include "network/close.h"      // close()
+#include "network/error.h"      // format_error(), get_last_error(),
                                 // reset_last_error()
-#include "network-sockaddr.h"   // get_length(), get_pointer(),
+#include "network/sockaddr.h"   // get_length(), get_pointer(),
                                 // is_valid()
 
 #include <algorithm>    // std::transform()

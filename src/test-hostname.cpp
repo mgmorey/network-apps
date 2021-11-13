@@ -1,5 +1,5 @@
-#include "network-context.h"    // Context
-#include "network-hostname.h"   // Hostname, HostnameResult, Result,
+#include "network/context.h"    // Context
+#include "network/hostname.h"   // Hostname, HostnameResult, Result,
                                 // get_hostname()
 
 #include <iostream>     // std::cerr, std::cout, std::endl

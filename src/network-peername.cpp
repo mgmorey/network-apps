@@ -1,5 +1,5 @@
-#include "network-peername.h"   // Fd, SockAddrResult, get_peername()
-#include "network-name.h"       // get_name()
+#include "network/peername.h"   // Fd, SockAddrResult, get_peername()
+#include "network/name.h"       // get_name()
 
 #ifdef _WIN32
 #include <winsock2.h>   // getpeername()

@@ -1,9 +1,9 @@
-#include "network-hostname.h"   // Hostname, HostnameResult,
+#include "network/hostname.h"   // Hostname, HostnameResult,
                                 // get_hostname()
-#include "network-buffer.h"     // Buffer
-#include "network-error.h"      // format_error(), get_last_error(),
+#include "network/buffer.h"     // Buffer
+#include "network/error.h"      // format_error(), get_last_error(),
                                 // reset_last_error()
-#include "network-result.h"     // Result
+#include "network/result.h"     // Result
 
 #ifdef _WIN32
 #include <winsock2.h>   // gethostname()

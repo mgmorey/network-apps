@@ -1,7 +1,7 @@
-#include "network-endpoint.h"   // Endpoint, EndpointResult, Result,
+#include "network/endpoint.h"   // Endpoint, EndpointResult, Result,
                                 // SockAddr, get_endpoint()
-#include "network-buffer.h"     // Buffer
-#include "network-sockaddr.h"   // get_length(), get_pointer(),
+#include "network/buffer.h"     // Buffer
+#include "network/sockaddr.h"   // get_length(), get_pointer(),
                                 // is_valid(), operator<<()
 
 #ifdef _WIN32

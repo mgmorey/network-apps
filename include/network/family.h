@@ -1,7 +1,7 @@
 #ifndef NETWORK_FAMILY_H
 #define NETWORK_FAMILY_H
 
-#include "network-integer.h"    // Integer
+#include "network/integer.h"    // Integer
 
 #include <ostream>      // std::ostream
 

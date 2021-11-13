@@ -1,7 +1,7 @@
-#include "network-name.h"       // Fd, Result, SockAddr
-#include "network-error.h"      // format_error(), get_last_error(),
+#include "network/name.h"       // Fd, Result, SockAddr
+#include "network/error.h"      // format_error(), get_last_error(),
                                 // reset_last_error()
-#include "network-sockaddr.h"   // get_length(), get_pointer(),
+#include "network/sockaddr.h"   // get_length(), get_pointer(),
                                 // get_sockaddr(), is_valid()
 
 #ifdef _WIN32

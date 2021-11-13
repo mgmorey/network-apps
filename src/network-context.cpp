@@ -1,5 +1,5 @@
-#include "network-context.h"    // Context, Result
-#include "network-error.h"      // format_error()
+#include "network/context.h"    // Context, Result
+#include "network/error.h"      // format_error()
 
 #ifdef _WIN32
 #include <winsock2.h>   // WSACleanup(), WSAStartup()

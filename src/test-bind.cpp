@@ -1,13 +1,13 @@
-#include "network-address.h"    // Address, operator<<()
-#include "network-bind.h"       // Address, Endpoint, Fd, Hints,
+#include "network/address.h"    // Address, operator<<()
+#include "network/bind.h"       // Address, Endpoint, Fd, Hints,
                                 // Socket, SocketResult, bind()
-#include "network-close.h"      // close()
-#include "network-context.h"    // Context
-#include "network-fd.h"         // Fd
-#include "network-hostname.h"   // get_hostname()
-#include "network-peername.h"   // get_peername()
-#include "network-sockname.h"   // get_sockname()
-#include "network-socket.h"     // Socket
+#include "network/close.h"      // close()
+#include "network/context.h"    // Context
+#include "network/fd.h"         // Fd
+#include "network/hostname.h"   // get_hostname()
+#include "network/peername.h"   // get_peername()
+#include "network/sockname.h"   // get_sockname()
+#include "network/socket.h"     // Socket
 
 #ifdef _WIN32
 #include <getopt.h>     // getopt(), optarg, opterr, optind, optopt
