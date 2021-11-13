@@ -1,21 +1,14 @@
-#include "network/name.h"       // Fd, Result, SockAddr
+#include "network/name.h"       // Fd, GetNameHandler, Result,
+                                // SockAddrResult
 #include "network/error.h"      // format_error(), get_last_error(),
                                 // reset_last_error()
 #include "network/sockaddr.h"   // get_length(), get_pointer(),
                                 // get_sockaddr(), is_valid()
 
-#ifdef _WIN32
-#include <winsock2.h>   // getname()
-#else
-#include <sys/socket.h> // getname()
-#endif
-
 #include <algorithm>    // std::max()
 #include <cassert>      // assert()
-#include <cstddef>      // std::size_t
 #include <iostream>     // std::cerr, std::endl
 #include <sstream>      // std::ostringstream
-#include <string>       // std::string
 
 Network::SockAddrResult Network::get_name(const GetNameHandler& handler, Fd fd,
                                           bool verbose)
