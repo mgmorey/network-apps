@@ -69,7 +69,7 @@ namespace TestSocket
     static void test_socketpair(const Network::Hints& hints)
     {
         const Network::Socket sock {hints};
-        const auto socketpair_result {sock.socketpair(verbose)};
+        const auto socketpair_result {get_socketpair(sock, verbose)};
 
         if (std::holds_alternative<Network::Result>(socketpair_result)) {
             const auto result {std::get<Network::Result>(socketpair_result)};

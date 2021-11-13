@@ -9,9 +9,9 @@
 
 using namespace std::literals::string_literals;
 
-static const Network::GetNameBinding binding {::getsockname, "getsockname"s};
+static const Network::GetNameHandler handler {::getsockname, "getsockname"s};
 
 Network::SockAddrResult Network::get_sockname(Fd fd, bool verbose)
 {
-    return get_name(binding, fd, verbose);
+    return get_name(handler, fd, verbose);
 }

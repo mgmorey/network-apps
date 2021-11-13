@@ -16,6 +16,9 @@
 #include <iostream>     // std::cerr, std::endl
 #include <sstream>      // std::ostringstream
 
+static const std::string delim {", "};
+static const int tab {0};
+
 Network::Socket::Socket(int t_family,
                         int t_socktype,
                         int t_protocol,
@@ -37,53 +40,54 @@ Network::Socket& Network::Socket::operator=(const addrinfo& t_addrinfo)
     return *this;
 }
 
-bool Network::Socket::operator<(const Socket& t_socket) const
+bool Network::Socket::operator<(const Socket& t_sock) const
 {
-    return (static_cast<Hints>(*this) < t_socket ||
-            static_cast<Host>(*this) < t_socket);
+    return (static_cast<Hints>(*this) < t_sock ||
+            static_cast<Host>(*this) < t_sock);
 }
 
-bool Network::Socket::operator>(const Socket& t_socket) const
+bool Network::Socket::operator>(const Socket& t_sock) const
 {
-    return (static_cast<Hints>(*this) > t_socket ||
-            static_cast<Host>(*this) > t_socket);
+    return (static_cast<Hints>(*this) > t_sock ||
+            static_cast<Host>(*this) > t_sock);
 }
 
-bool Network::Socket::operator==(const Socket& t_socket) const
+bool Network::Socket::operator==(const Socket& t_sock) const
 {
-    return (static_cast<Hints>(*this) == t_socket &&
-            static_cast<Host>(*this) == t_socket);
+    return (static_cast<Hints>(*this) == t_sock &&
+            static_cast<Host>(*this) == t_sock);
 }
 
-Network::SocketResult Network::Socket::socket(bool t_verbose) const
+extern Network::SocketResult Network::get_socket(const Socket& sock,
+                                                 bool verbose)
 {
     Result result;
 
-    if (t_verbose) {
+    if (verbose) {
         std::cerr << "Calling socket("
                   << Format("domain")
-                  << m_family
-                  << Format(m_delim, m_tab, "type")
-                  << m_socktype
-                  << Format(m_delim, m_tab, "protocol")
-                  << m_protocol
+                  << sock.family()
+                  << Format(delim, tab, "type")
+                  << sock.socktype()
+                  << Format(delim, tab, "protocol")
+                  << sock.protocol()
                   << ')'
                   << std::endl;
     }
 
     reset_last_error();
-    const auto fd {::socket(m_family, m_socktype, m_protocol)};
+    const auto fd {::socket(sock.family(), sock.socktype(), sock.protocol())};
 
     if (fd == fd_null) {
         auto error = get_last_error();
         std::ostringstream oss;
         oss << "Call to socket("
             << Format("domain")
-            << m_family
-            << Format(m_delim, m_tab, "type")
-            << m_socktype
-            << Format(m_delim, m_tab, "protocol")
-            << m_protocol
+            << sock.family()
+            << Format(delim, tab, "type")
+            << sock.socktype()
+            << Format(delim, tab, "protocol")
+            << sock.protocol()
             << ") failed with error "
             << error
             << ": "
@@ -96,36 +100,37 @@ Network::SocketResult Network::Socket::socket(bool t_verbose) const
 
 #ifndef _WIN32
 
-Network::SocketpairResult Network::Socket::socketpair(bool t_verbose) const
+extern Network::SocketpairResult Network::get_socketpair(const Socket& sock,
+                                                         bool verbose)
 {
     Result result;
     fd_type fds[] {fd_null, fd_null};
 
-    if (t_verbose) {
+    if (verbose) {
         std::cerr << "Calling socketpair("
                   << Format("domain")
-                  << m_family
-                  << Format(m_delim, m_tab, "type")
-                  << m_socktype
-                  << Format(m_delim, m_tab, "protocol")
-                  << m_protocol
+                  << sock.family()
+                  << Format(delim, tab, "type")
+                  << sock.socktype()
+                  << Format(delim, tab, "protocol")
+                  << sock.protocol()
                   << ", ...)"
                   << std::endl;
     }
 
     reset_last_error();
-    auto code {::socketpair(m_family, m_socktype, m_protocol, fds)};
+    auto code {::socketpair(sock.family(), sock.socktype(), sock.protocol(), fds)};
 
     if (code == socket_error) {
         auto error = get_last_error();
         std::ostringstream oss;
         oss << "Call to socketpair("
             << Format("domain")
-            << m_family
-            << Format(m_delim, m_tab, "type")
-            << m_socktype
-            << Format(m_delim, m_tab, "protocol")
-            << m_protocol
+            << sock.family()
+            << Format(delim, tab, "type")
+            << sock.socktype()
+            << Format(delim, tab, "protocol")
+            << sock.protocol()
             << ", ...) failed with error "
             << error
             << ": "
@@ -137,6 +142,3 @@ Network::SocketpairResult Network::Socket::socketpair(bool t_verbose) const
 }
 
 #endif
-
-const std::string Network::Socket::m_delim {", "};
-const int Network::Socket::m_tab {0};

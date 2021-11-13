@@ -33,19 +33,17 @@ namespace Network
         // cppcheck-suppress noExplicitConstructor
         Socket(const addrinfo& t_addrinfo);
         Socket& operator=(const addrinfo& t_addrinfo);
-        bool operator<(const Socket& t_socket) const;
-        bool operator>(const Socket& t_socket) const;
-        bool operator==(const Socket& t_socket) const;
-        SocketResult socket(bool t_verbose = false) const;
-#ifndef _WIN32
-        SocketpairResult socketpair(bool t_verbose = false) const;
-#endif
-
-    private:
-        static const std::string m_delim;
-        static const int m_tab;
+        bool operator<(const Socket& t_sock) const;
+        bool operator>(const Socket& t_sock) const;
+        bool operator==(const Socket& t_sock) const;
     };
 
+    extern SocketResult get_socket(const Socket& sock,
+                                   bool verbose = false);
+#ifndef _WIN32
+    extern SocketpairResult get_socketpair(const Socket& sock,
+                                           bool verbose = false);
+#endif
     extern std::ostream& operator<<(std::ostream& os,
                                     const Socket& sock);
 }

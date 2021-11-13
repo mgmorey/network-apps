@@ -23,21 +23,21 @@
 
 namespace Network
 {
-    using Open = int (*)(fd_type, const sockaddr*, socklen_t);
-    using OpenBinding = std::pair<Open, std::string>;
+    using OpenFunction = int (*)(fd_type, const sockaddr*, socklen_t);
+    using OpenHandler = std::pair<OpenFunction, std::string>;
     using Sockets = std::vector<Socket>;
     using SocketResults = std::vector<SocketResult>;
     using SocketsResult = std::variant<Sockets, Result>;
 
-    class Transform
+    class Open
     {
     public:
-        explicit Transform(const OpenBinding& t_binding, bool t_verbose);
-        SocketResult operator()(const Socket& t_socket) const;
-        SocketResult open(Fd fd, const SockAddr& addr) const;
+        explicit Open(const OpenHandler& t_handler, bool t_verbose);
+        SocketResult operator()(const Socket& t_sock) const;
+        SocketResult open(Fd t_fd, const SockAddr& t_addr) const;
 
     private:
-        OpenBinding m_binding {nullptr, ""};
+        OpenHandler m_handler {nullptr, ""};
         bool m_verbose {false};
     };
 
@@ -48,11 +48,11 @@ namespace Network
                                      const Service& serv,
                                      const Hints* hints,
                                      bool verbose);
-    extern SocketResults open(const OpenBinding& binding,
+    extern SocketResults open(const OpenHandler& handler,
                               const Endpoint& endpoint,
                               const Hints* hints,
                               bool verbose);
-    extern Result open(const OpenBinding& binding, Fd fd,
+    extern Result open(const OpenHandler& handler, Fd fd,
                        const SockAddr& addr,
                        bool verbose);
 }

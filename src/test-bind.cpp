@@ -86,9 +86,9 @@ namespace TestBind
             m_os << "Socket "
                  << t_fd
                  << " bound to "
-                 << static_cast<std::string>(serv)
+                 << serv
                  << " on "
-                 << static_cast<std::string>(host)
+                 << host
                  << std::endl;
 
             if (std::holds_alternative<Network::SockAddr>(sock_result)) {

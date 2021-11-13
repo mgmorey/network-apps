@@ -10,18 +10,18 @@
 
 using namespace std::literals::string_literals;
 
-static const Network::OpenBinding binding {::connect, "connect"s};
+static const Network::OpenHandler handler {::connect, "connect"s};
 
 Network::Result Network::connect(Fd fd,
                                  const SockAddr& addr,
                                  bool verbose)
 {
-    return open(binding, fd, addr, verbose);
+    return open(handler, fd, addr, verbose);
 }
 
 Network::SocketResults Network::connect(const Endpoint& endp,
                                         const Hints* hints,
                                         bool verbose)
 {
-    return open(binding, endp, hints, verbose);
+    return open(handler, endp, hints, verbose);
 }

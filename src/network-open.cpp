@@ -18,16 +18,16 @@
 #include <variant>      // std::get(), std::holds_alternative()
 #include <vector>       // std::vector
 
-Network::Transform::Transform(const OpenBinding& t_binding, bool t_verbose) :
-    m_binding(t_binding),
+Network::Open::Open(const OpenHandler& t_handler, bool t_verbose) :
+    m_handler(t_handler),
     m_verbose(t_verbose)
 {
 }
 
 Network::SocketResult
-Network::Transform::operator()(const Socket& t_socket) const
+Network::Open::operator()(const Socket& t_sock) const
 {
-    const auto socket_result {t_socket.socket(m_verbose)};
+    const auto socket_result {get_socket(t_sock, m_verbose)};
 
     if (std::holds_alternative<Result>(socket_result)) {
         const auto result {std::get<Result>(socket_result)};
@@ -35,7 +35,7 @@ Network::Transform::operator()(const Socket& t_socket) const
     }
     else if (std::holds_alternative<Fd>(socket_result)) {
         const auto fd {std::get<Fd>(socket_result)};
-        return open(fd, t_socket.address());
+        return open(fd, t_sock.address());
     }
     else {
         abort();
@@ -43,15 +43,15 @@ Network::Transform::operator()(const Socket& t_socket) const
 }
 
 Network::SocketResult
-Network::Transform::open(Fd fd, const SockAddr& addr) const
+Network::Open::open(Fd t_fd, const SockAddr& t_addr) const
 {
-    const auto result {Network::open(m_binding, fd, addr, m_verbose)};
+    const auto result {Network::open(m_handler, t_fd, t_addr, m_verbose)};
 
     if (result) {
         return result;
     }
     else {
-        return fd;
+        return t_fd;
     }
 }
 
@@ -95,7 +95,7 @@ Network::get_sockets(const Network::Hostname& node,
 }
 
 Network::SocketResults
-Network::open(const OpenBinding& binding,
+Network::open(const OpenHandler& handler,
               const Endpoint& endpoint,
               const Hints* hints,
               bool verbose)
@@ -110,7 +110,7 @@ Network::open(const OpenBinding& binding,
         const auto sockets {std::get<Sockets>(sockets_result)};
         std::transform(sockets.begin(), sockets.end(),
                        std::back_inserter(results),
-                       Transform(binding, verbose));
+                       Open(handler, verbose));
     }
     else {
         abort();
@@ -120,7 +120,7 @@ Network::open(const OpenBinding& binding,
 }
 
 Network::Result
-Network::open(const OpenBinding& binding, Fd fd,
+Network::open(const OpenHandler& handler, Fd fd,
               const SockAddr& addr,
               bool verbose)
 {
@@ -131,7 +131,7 @@ Network::open(const OpenBinding& binding, Fd fd,
 
     if (verbose) {
         std::cerr << "Calling "
-                  << binding.second
+                  << handler.second
                   << '('
                   << fd
                   << ", "
@@ -144,11 +144,11 @@ Network::open(const OpenBinding& binding, Fd fd,
 
     reset_last_error();
 
-    if (binding.first(fd, addr_ptr, addr_len) == socket_error) {
+    if (handler.first(fd, addr_ptr, addr_len) == socket_error) {
         const auto error = get_last_error();
         std::ostringstream oss;
         oss << "Call to "
-            << binding.second
+            << handler.second
             << '('
             << fd
             << ", "
