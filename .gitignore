@@ -88,10 +88,8 @@ logfile
 # POSIX executables
 test-address
 test-bind
-test-buffer
 test-connect
 test-hostname
 test-socket
-test-stream
 unix-client
 unix-server
