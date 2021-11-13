@@ -9,7 +9,7 @@ std::ostream& Network::operator<<(std::ostream& os,
         os << "nullptr";
     }
     else {
-        os << '"' << string.m_value << '"';
+        os << '"' << std::string(string) << '"';
     }
 
     return os;

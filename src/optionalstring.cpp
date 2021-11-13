@@ -1,21 +1,22 @@
 #include "network/optionalstring.h" // OptionalString
 
 Network::OptionalString::OptionalString(const std::string &t_string) :
-    Optional(false),
     m_value(t_string)
 {
 }
 
-Network::OptionalString::OptionalString(const char* t_value) :
-    Optional(t_value == nullptr),
-    m_value(t_value == nullptr ? "" : t_value)
+Network::OptionalString::OptionalString(const char* t_value)
 {
+    m_value.reset();
+
+    if (t_value != nullptr) {
+        m_value = t_value;
+    }
 }
 
 Network::OptionalString&
 Network::OptionalString::operator=(const std::string &t_string)
 {
-    m_null = false;
     m_value = t_string;
     return *this;
 }
@@ -23,42 +24,51 @@ Network::OptionalString::operator=(const std::string &t_string)
 Network::OptionalString&
 Network::OptionalString::operator=(const char* t_value)
 {
-    m_null = (t_value == nullptr);
-    m_value = (t_value == nullptr) ? "" : t_value;
+    m_value.reset();
+
+    if (t_value != nullptr) {
+        m_value = t_value;
+    }
+
     return *this;
 }
 
 Network::OptionalString::operator std::string() const
 {
-    return m_value;
+    return m_value.value_or("");
 }
 
 Network::OptionalString::operator const char*() const
 {
-    return m_null ? nullptr : m_value.c_str();
+    return m_value.has_value() ? m_value.value().c_str() : nullptr;
 }
 
 const char* Network::OptionalString::data() const
 {
-    return m_value.data();
+    return m_value.has_value() ? m_value.value().data() : nullptr;
 }
 
 char* Network::OptionalString::data()
 {
-    return m_value.data();
+    return m_value.has_value() ? m_value.value().data() : nullptr;
 }
 
 bool Network::OptionalString::empty() const
 {
-    return m_value.empty();
+    return m_value.has_value() ? m_value.value().empty() : true;
 }
 
 std::string::size_type Network::OptionalString::length() const
 {
-    return m_value.length();
+    return m_value.has_value() ? m_value.value().size() : 0;
+}
+
+bool Network::OptionalString::null() const
+{
+    return !m_value.has_value();
 }
 
 std::string::size_type Network::OptionalString::size() const
 {
-    return m_value.size();
+    return m_value.has_value() ? m_value.value().size() : 0;
 }

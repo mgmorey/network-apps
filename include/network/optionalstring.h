@@ -1,19 +1,14 @@
 #ifndef NETWORK_OPTIONALSTRING_H
 #define NETWORK_OPTIONALSTRING_H
 
-#include "network/optional.h"       // Optional
-
+#include <optional>     // std::optional
 #include <ostream>      // std::ostream
 #include <string>       // std::string
 
 namespace Network
 {
-    class OptionalString :
-        public Optional
+    class OptionalString
     {
-        friend std::ostream& operator<<(std::ostream& os,
-                                        const OptionalString& string);
-
     public:
         OptionalString() = default;
         // cppcheck-suppress noExplicitConstructor
@@ -28,10 +23,11 @@ namespace Network
         const char* data() const;
         bool empty() const;
         std::string::size_type length() const;
+        bool null() const;
         std::string::size_type size() const;
 
     private:
-        std::string m_value;
+        std::optional<std::string> m_value {};
     };
 
     extern std::ostream& operator<<(std::ostream& os,
