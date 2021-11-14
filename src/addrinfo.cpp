@@ -59,9 +59,10 @@ Network::AddrInfo::InputIterator::operator++(int)
 Network::AddrInfo::List::List(const Hostname& t_node,
                               const Service& t_serv,
                               const Hints* t_hints,
-                              bool t_verbose) :
-    m_pointer(nullptr)
+                              bool t_verbose)
 {
+    assert(m_pointer == nullptr);
+
     if (t_verbose) {
         std::cerr << "Trying socket hints:"
                   << std::endl
