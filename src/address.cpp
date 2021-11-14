@@ -14,6 +14,7 @@
 #endif
 
 #include <algorithm>    // std::min()
+#include <sstream>      // std::ostringstream
 #include <string>       // std::string
 
 Network::Address::Address(const value_type& t_value) :
