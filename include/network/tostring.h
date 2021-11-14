@@ -1,10 +1,6 @@
 #ifndef NETWORK_TOSTRING_H
 #define NETWORK_TOSTRING_H
 
-#include <cstddef>      // std::size_t
-#include <iomanip>      // std::hex, std::setfill(), std::setw(),
-                        // std::uppercase
-#include <sstream>      // std::ostringstream
 #include <string>       // std::string
 
 namespace Network
