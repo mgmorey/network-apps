@@ -76,7 +76,7 @@ namespace Network
 
         template<typename OutputIt>
         Result insert(const Hostname& node,
-                      const Service& service,
+                      const Service& serv,
                       const Hints* hints,
                       bool verbose,
                       OutputIt out)
@@ -91,7 +91,7 @@ namespace Network
 
                 *out++ = in;
             };
-            const auto list {List(node, service, hints, verbose)};
+            const auto list {List(node, serv, hints, verbose)};
             std::for_each(list.begin(), list.end(), lambda);
             return list.result();
         }
