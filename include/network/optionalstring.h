@@ -22,8 +22,8 @@ namespace Network
         char* data();
         const char* data() const;
         bool empty() const;
+        bool has_value() const;
         std::string::size_type length() const;
-        bool null() const;
         std::string::size_type size() const;
 
     private:

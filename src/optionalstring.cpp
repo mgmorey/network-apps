@@ -58,14 +58,14 @@ bool Network::OptionalString::empty() const
     return m_value.has_value() ? m_value.value().empty() : true;
 }
 
+bool Network::OptionalString::has_value() const
+{
+    return m_value.has_value();
+}
+
 std::string::size_type Network::OptionalString::length() const
 {
     return m_value.has_value() ? m_value.value().size() : 0;
-}
-
-bool Network::OptionalString::null() const
-{
-    return !m_value.has_value();
 }
 
 std::string::size_type Network::OptionalString::size() const

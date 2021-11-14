@@ -19,7 +19,7 @@
 
 Network::HostnameResult Network::get_hostname(const Network::Hostname& host)
 {
-    if (!host.null()) {
+    if (host.has_value()) {
         return std::string(host);
     }
 

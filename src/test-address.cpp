@@ -230,18 +230,18 @@ namespace TestAddress
 
     static void test_host(const Network::Hostname& host)
     {
-        if (host.null()) {
-            const auto flags {AI_ADDRCONFIG | AI_CANONNAME};
-            Network::Hints hints(AF_UNSPEC, SOCK_STREAM, IPPROTO_TCP, flags);
-            test_host(host, hints);
-        }
-        else {
+        if (host.has_value()) {
             const auto flags {AI_CANONNAME};
             std::cout << "Host: " << host << std::endl;
             Network::Hints hints4(AF_INET, SOCK_STREAM, IPPROTO_TCP, flags);
             Network::Hints hints6(AF_INET6, SOCK_STREAM, IPPROTO_TCP, flags);
             test_host(host, hints4);
             test_host(host, hints6);
+        }
+        else {
+            const auto flags {AI_ADDRCONFIG | AI_CANONNAME};
+            Network::Hints hints(AF_UNSPEC, SOCK_STREAM, IPPROTO_TCP, flags);
+            test_host(host, hints);
         }
     }
 }

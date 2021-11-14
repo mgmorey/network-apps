@@ -5,11 +5,11 @@
 std::ostream& Network::operator<<(std::ostream& os,
                                   const OptionalString& string)
 {
-    if (string.null()) {
-        os << "nullptr";
+    if (string.has_value()) {
+        os << '"' << std::string(string) << '"';
     }
     else {
-        os << '"' << std::string(string) << '"';
+        os << "nullptr";
     }
 
     return os;
