@@ -1,7 +1,7 @@
 #include "network/network.h"    // get_hostname()
 
 #include <iostream>     // std::cerr, std::cout, std::endl
-#include <variant>      // std::get(), std::holds_alternative()
+#include <variant>      // std::visit()
 #include <vector>       // std::vector
 
 #ifdef _WIN32
@@ -45,22 +45,18 @@ namespace TestHostname
     static void test_hostname()
     {
         const auto hostname_result {Network::get_hostname()};
-
-        if (std::holds_alternative<Network::Result>(hostname_result)) {
-            const auto result {std::get<Network::Result>(hostname_result)};
-            std::cerr << "No hostname available: "
-                      << result
-                      << std::endl;
-        }
-        else if (std::holds_alternative<std::string>(hostname_result)) {
-            const auto hostname = std::get<std::string>(hostname_result);
-            std::cout << "Hostname: "
-                      << hostname
-                      << std::endl;
-        }
-        else {
-            abort();
-        }
+        std::visit(Network::Overload {
+                [&](const std::string& hostname) {
+                    std::cout << "Hostname: "
+                              << hostname
+                              << std::endl;
+                },
+                [&](const Network::Result& result) {
+                    std::cerr << "No hostname available: "
+                              << result
+                              << std::endl;
+                }
+            }, hostname_result);
     }
 }
 

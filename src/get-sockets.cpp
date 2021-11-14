@@ -4,8 +4,9 @@
                                     // Socket, SockAddr, SocketResult,
                                     // fd_null, get_sockets(), open(),
                                     // operator<<()
+#include "network/overload.h"       // Overload
 
-#include <variant>      // std::get(), std::holds_alternative()
+#include <variant>      // std::visit()
 
 Network::SocketsResult
 Network::get_sockets(const Network::Endpoint& endpoint,
@@ -14,18 +15,17 @@ Network::get_sockets(const Network::Endpoint& endpoint,
 {
     SocketsResult sockets_result;
     const auto hostname_result {Network::get_hostname(endpoint.first)};
-
-    if (std::holds_alternative<Result>(hostname_result)) {
-        return std::get<Result>(hostname_result);
-    }
-    else if (std::holds_alternative<std::string>(hostname_result)) {
-        const auto host {std::get<std::string>(hostname_result)};
-        sockets_result = get_sockets(host, endpoint.second, hints, verbose);
-    }
-    else {
-        abort();
-    }
-
+    std::visit(Network::Overload {
+            [&](const std::string& host) {
+                sockets_result = get_sockets(host,
+                                             endpoint.second,
+                                             hints,
+                                             verbose);
+            },
+            [&](const Network::Result& result) {
+                sockets_result = result;
+            }
+        }, hostname_result);
     return sockets_result;
 }
 

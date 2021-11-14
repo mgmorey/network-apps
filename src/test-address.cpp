@@ -22,8 +22,7 @@
 #include <ostream>      // std::ostream
 #include <string>       // std::string
 #include <utility>      // std::pair
-#include <variant>      // std::get(), std::holds_alternative(),
-                        // std::variant
+#include <variant>      // std::variant, std::visit()
 #include <vector>       // std::vector
 
 namespace TestAddress

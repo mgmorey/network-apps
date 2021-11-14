@@ -6,7 +6,7 @@
 
 #include <algorithm>    // std::transform()
 #include <iterator>     // std::back_inserter()
-#include <variant>      // std::get(), std::holds_alternative()
+#include <variant>      // std::visit()
 
 Network::Open::Open(const OpenHandler& t_handler, bool t_verbose) :
     m_handler(t_handler),

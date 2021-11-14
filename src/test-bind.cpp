@@ -21,7 +21,8 @@
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <string>       // std::string
-#include <variant>      // std::get(), std::holds_alternative()
+#include <variant>      // std::get(), std::holds_alternative(),
+                        // std::visit()
 #include <vector>       // std::vector
 
 namespace TestBind

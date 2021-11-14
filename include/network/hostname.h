@@ -4,8 +4,6 @@
 #include "network/stringresult.h"   // StringResult
 #include "network/types.h"          // Hostname
 
-#include <variant>      // std::variant
-
 namespace Network
 {
     using HostnameResult = StringResult;
