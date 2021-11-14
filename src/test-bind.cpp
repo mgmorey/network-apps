@@ -57,14 +57,14 @@ namespace TestBind
         Network::SockAddrResult get_sockaddr(const Network::Fd& t_fd)
         {
             const auto sockname_result {Network::get_sockname(t_fd, verbose)};
-
-            if (std::holds_alternative<Network::Result>(sockname_result)) {
-                const auto result {std::get<Network::Result>(sockname_result)};
-                std::cerr << "No host information available: "
-                          << result
-                          << std::endl;
-            }
-
+            std::visit(Network::Overload {
+                    [&](const Network::SockAddr&) {
+                    },
+                    [&](const Network::Result& result) {
+                        std::cerr << result
+                                  << std::endl;
+                    }
+                }, sockname_result);
             return sockname_result;
         }
 
