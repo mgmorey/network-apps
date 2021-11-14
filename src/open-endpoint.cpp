@@ -21,7 +21,10 @@ Network::open(const OpenHandler& handler,
                     const auto addr {sock.address()};
                     const auto result = open(handler, fd, addr, verbose);
 
-                    if (!result) {
+                    if (result) {
+                        socket_result = result;
+                    }
+                    else {
                         socket_result = fd;
                     }
                 },
