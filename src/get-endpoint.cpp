@@ -57,9 +57,8 @@ Network::get_endpoint(const SockAddr& addr, int flags, bool verbose)
             << " ("
             << ::gai_strerror(error)
             << ')';
-        result = {error, oss.str()};
+        return Result(error, oss.str());
     }
 
-    const Endpoint endp(host, serv);
-    return EndpointResult(endp, result);
+    return Endpoint (host, serv);
 }

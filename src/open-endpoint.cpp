@@ -2,6 +2,7 @@
                                 // Result, SockAddr, SocketResult,
                                 // SocketResults, Sockets,
                                 // get_sockets(), open(), operator<<()
+#include "network/overload.h"   // Overload
 
 #include <algorithm>    // std::transform()
 #include <iterator>     // std::back_inserter()
@@ -16,19 +17,16 @@ Network::Open::Open(const OpenHandler& t_handler, bool t_verbose) :
 Network::SocketResult
 Network::Open::operator()(const Socket& t_sock) const
 {
-    const auto socket_result {get_socket(t_sock, m_verbose)};
-
-    if (std::holds_alternative<Result>(socket_result)) {
-        const auto result {std::get<Result>(socket_result)};
-        return result;
-    }
-    else if (std::holds_alternative<Fd>(socket_result)) {
-        const auto fd {std::get<Fd>(socket_result)};
-        return open(fd, t_sock.address());
-    }
-    else {
-        abort();
-    }
+    auto socket_result {get_socket(t_sock, m_verbose)};
+    std::visit(Overload {
+            [&](Fd fd) {
+                socket_result = open(fd, t_sock.address());
+            },
+            [&](const Result& result) {
+                socket_result = result;
+            }
+        }, socket_result);
+    return socket_result;
 }
 
 Network::SocketResult
@@ -52,19 +50,15 @@ Network::open(const OpenHandler& handler,
 {
     SocketResults results;
     const auto sockets_result {get_sockets(endpoint, hints, verbose)};
-
-    if (std::holds_alternative<Result>(sockets_result)) {
-        results.push_back(std::get<Result>(sockets_result));
-    }
-    else if (std::holds_alternative<Sockets>(sockets_result)) {
-        const auto sockets {std::get<Sockets>(sockets_result)};
-        std::transform(sockets.begin(), sockets.end(),
-                       std::back_inserter(results),
-                       Open(handler, verbose));
-    }
-    else {
-        abort();
-    }
-
+    std::visit(Overload {
+            [&](const Sockets& sockets) {
+                std::transform(sockets.begin(), sockets.end(),
+                               std::back_inserter(results),
+                               Open(handler, verbose));
+            },
+            [&](const Result& result) {
+                results.push_back(result);
+            }
+        }, sockets_result);
     return results;
 }

@@ -1,5 +1,5 @@
 #include "network/network.h"    // Address, AddrInfo, Hints, Hostname,
-                                // Service, get_endpoint(),
+                                // Overload, Service, get_endpoint(),
                                 // get_hostname()
 
 #ifdef _WIN32
@@ -65,22 +65,23 @@ namespace TestAddress
         void operator()(const Network::Host& t_host)
         {
             const Network::Address address {t_host.address()};
-            const auto [endp, result] {get_endpoint(address)};
-
-            if (result) {
-                std::cerr << result
-                          << std::endl;
-            }
-            else {
-                Values values = {
-                    address.text(),
-                    endp.first,
-                    Network::Hostname(t_host.canonical_name())
-                };
-                erase(values, "");
-                unique(values);
-                print(values);
-            }
+            const auto endpoint_result {get_endpoint(address)};
+            std::visit(Network::Overload {
+                    [&](const Network::Endpoint& endpoint) {
+                        Values values = {
+                            address.text(),
+                            endpoint.first,
+                            Network::Hostname(t_host.canonical_name())
+                        };
+                        erase(values, "");
+                        unique(values);
+                        print(values);
+                    },
+                    [&](const Network::Result& result) {
+                        std::cerr << result
+                                  << std::endl;
+                    }
+                }, endpoint_result);
         }
 
         Network::EndpointResult get_endpoint(const Network::SockAddr& addr)
@@ -139,26 +140,26 @@ namespace TestAddress
         if (result) {
             return result;
         }
-
-        return hosts;
+        else {
+            return hosts;
+        }
     }
 
     static HostsResult get_hosts(const Network::Hostname& hostname,
                                  const Network::Hints* hints)
     {
+        HostsResult hosts_result;
         const auto hostname_result {Network::get_hostname(hostname)};
-
-        if (std::holds_alternative<Network::Result>(hostname_result)) {
-            return std::get<Network::Result>(hostname_result);
-        }
-        else if (std::holds_alternative<std::string>(hostname_result)) {
-            const auto host {std::get<std::string>(hostname_result)};
-            const auto endp {Network::Endpoint(host, nullptr)};
-            return get_hosts(host, endp.second, hints);
-        }
-        else {
-            abort();
-        }
+        std::visit(Network::Overload {
+                [&](const std::string& host) {
+                    const auto endp {Network::Endpoint(host, nullptr)};
+                    hosts_result = get_hosts(host, endp.second, hints);
+                },
+                [&](const Network::Result& result) {
+                    hosts_result = result;
+                }
+            }, hostname_result);
+        return hosts_result;
     }
 
     static std::vector<std::string> parse_arguments(int argc, char** argv)
@@ -194,42 +195,37 @@ namespace TestAddress
     {
         const auto description {get_description(hints)};
         const auto hosts_result {get_hosts(host, &hints)};
+        std::visit(Network::Overload {
+                [&](const Hosts& hosts) {
+                    if (!hosts.empty()) {
+                        if (description.empty()) {
+                            std::cout << "All";
+                        }
+                        else {
+                            std::cout << description;
+                        }
 
-        if (std::holds_alternative<Network::Result>(hosts_result)) {
-            const auto result {std::get<Network::Result>(hosts_result)};
+                        std::cout << " hosts:"
+                                  << std::endl;
+                        std::for_each(hosts.begin(), hosts.end(),
+                                      Test(std::cout));
+                    }
+                },
+                [&](const Network::Result& result) {
+                    if (description.empty()) {
+                        std::cout << "No";
+                    }
+                    else {
+                        std::cout << "No "
+                                  << description;
+                    }
 
-            if (description.empty()) {
-                std::cout << "No";
-            }
-            else {
-                std::cout << "No "
-                          << description;
-            }
-
-            std::cout << " hosts:"
-                      << std::endl
-                      << result
-                      << std::endl;
-        }
-        else if (std::holds_alternative<Hosts>(hosts_result)) {
-            const auto hosts {std::get<Hosts>(hosts_result)};
-
-            if (!hosts.empty()) {
-                if (description.empty()) {
-                    std::cout << "All";
+                    std::cout << " hosts:"
+                              << std::endl
+                              << result
+                              << std::endl;
                 }
-                else {
-                    std::cout << description;
-                }
-
-                std::cout << " hosts:"
-                          << std::endl;
-                std::for_each(hosts.begin(), hosts.end(), Test(std::cout));
-            }
-        }
-        else {
-            abort();
-        }
+            }, hosts_result);
     }
 
     static void test_host(const Network::Hostname& host)

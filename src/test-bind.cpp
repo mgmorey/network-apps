@@ -1,6 +1,6 @@
-#include "network/network.h"    // Address, Hints, SocketResult,
-                                // bind(), close(), get_sockaddr(),
-                                // get_sockname()
+#include "network/network.h"    // Address, Hints, Overload,
+                                // SocketResult, bind(), close(),
+                                // get_sockaddr(), get_sockname()
 
 #ifdef _WIN32
 #include <getopt.h>     // getopt(), optarg, opterr, optind, optopt
@@ -43,18 +43,15 @@ namespace TestBind
 
         void operator()(const Network::SocketResult& t_socket_result)
         {
-            if (std::holds_alternative<Network::Result>(t_socket_result)) {
-                const auto result {std::get<Network::Result>(t_socket_result)};
-                std::cerr << result
-                          << std::endl;
-            }
-            else if (std::holds_alternative<Network::Fd>(t_socket_result)) {
-                const auto fd {std::get<Network::Fd>(t_socket_result)};
-                test_socket(fd);
-            }
-            else {
-                abort();
-            }
+            std::visit(Network::Overload {
+                    [&](Network::Fd fd) {
+                        test_socket(fd);
+                    },
+                    [&](const Network::Result& result) {
+                        std::cerr << result
+                                  << std::endl;
+                    }
+                }, t_socket_result);
         }
 
         Network::SockAddrResult get_sockaddr(const Network::Fd& t_fd)

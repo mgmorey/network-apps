@@ -1,5 +1,5 @@
-#include "network/network.h"    // Address, FdPair, Hints, Socket,
-                                // close(), get_peername(),
+#include "network/network.h"    // Address, FdPair, Hints, Overload,
+                                // Socket, close(), get_peername(),
                                 // get_sockaddr(), get_socketpair(),
                                 // get_sockname()
 
@@ -64,32 +64,28 @@ namespace TestSocket
     {
         const Network::Socket sock {hints};
         const auto socketpair_result {get_socketpair(sock, verbose)};
+        std::visit(Network::Overload {
+                [&](const Network::FdPair& fd) {
+                    std::cout << "Socket "
+                              << fd.first
+                              << " connected to socket "
+                              << fd.second
+                              << std::endl;
 
-        if (std::holds_alternative<Network::Result>(socketpair_result)) {
-            const auto result {std::get<Network::Result>(socketpair_result)};
-            std::cerr << result
-                      << std::endl;
-        }
-        else if (std::holds_alternative<Network::FdPair>(socketpair_result)) {
-            const auto fd {std::get<Network::FdPair>(socketpair_result)};
-            std::cout << "Socket "
-                      << fd.first
-                      << " connected to socket "
-                      << fd.second
-                      << std::endl;
-
-            Network::close(fd.first);
-            Network::close(fd.second);
-            std::cout << "Sockets "
-                      << fd.first
-                      << " and "
-                      << fd.second
-                      << " closed"
-                      << std::endl;
-        }
-        else {
-            abort();
-        }
+                    Network::close(fd.first);
+                    Network::close(fd.second);
+                    std::cout << "Sockets "
+                              << fd.first
+                              << " and "
+                              << fd.second
+                              << " closed"
+                              << std::endl;
+                },
+                [&](const Network::Result& result) {
+                    std::cerr << result
+                              << std::endl;
+                }
+            }, socketpair_result);
     }
 }
 

@@ -8,6 +8,7 @@
 #include "network/connect.h"        // connect()
 #include "network/context.h"        // Context
 #include "network/endpoint.h"       // get_endpoint()
+#include "network/overload.h"       // overload
 #include "network/hostname.h"       // get_hostname()
 #include "network/peername.h"       // get_peername()
 #include "network/sockaddr.h"       // get_sockaddr()

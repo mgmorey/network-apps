@@ -1,4 +1,4 @@
-#include "network/network.h"    // Address, Hints, Hostname,
+#include "network/network.h"    // Address, Hints, Hostname, Overload,
                                 // SocketResult, close(), connect()
                                 // get_peername(), get_sockaddr(),
                                 // get_sockname()
@@ -46,18 +46,15 @@ namespace TestConnect
 
         void operator()(const Network::SocketResult& t_socket_result)
         {
-            if (std::holds_alternative<Network::Result>(t_socket_result)) {
-                const auto result {std::get<Network::Result>(t_socket_result)};
-                std::cerr << result
-                          << std::endl;
-            }
-            else if (std::holds_alternative<Network::Fd>(t_socket_result)) {
-                const auto fd {std::get<Network::Fd>(t_socket_result)};
-                test_socket(fd);
-            }
-            else {
-                abort();
-            }
+            std::visit(Network::Overload {
+                    [&](Network::Fd fd) {
+                        test_socket(fd);
+                    },
+                    [&](const Network::Result& result) {
+                        std::cerr << result
+                                  << std::endl;
+                    }
+                }, t_socket_result);
         }
 
         Network::SockAddrResult get_peeraddr(const Network::Fd& t_fd)
@@ -162,23 +159,21 @@ namespace TestConnect
                              const Network::Hints& hints)
     {
         const auto hostname_result {Network::get_hostname()};
-
-        if (std::holds_alternative<Network::Result>(hostname_result)) {
-            const auto result {std::get<Network::Result>(hostname_result)};
-            std::cerr << "No hostname available: "
-                      << result
-                      << std::endl;
-        }
-        else if (std::holds_alternative<std::string>(hostname_result)) {
-            const auto hostname {std::get<std::string>(hostname_result)};
-            const auto socket_results {Network::connect(endpoint, &hints, verbose)};
-            assert(!socket_results.empty());
-            std::for_each(socket_results.begin(), socket_results.end(),
-                          Test(endpoint, hostname, std::cout));
-        }
-        else {
-            abort();
-        }
+        std::visit(Network::Overload {
+                [&](const std::string& hostname) {
+                    const auto socket_results {
+                        Network::connect(endpoint, &hints, verbose)
+                    };
+                    assert(!socket_results.empty());
+                    std::for_each(socket_results.begin(), socket_results.end(),
+                                  Test(endpoint, hostname, std::cout));
+                },
+                [&](const Network::Result& result) {
+                    std::cerr << "No hostname available: "
+                              << result
+                              << std::endl;
+                }
+            }, hostname_result);
     }
 }
 
