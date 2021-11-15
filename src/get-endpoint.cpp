@@ -60,5 +60,5 @@ Network::get_endpoint(const SockAddr& addr, int flags, bool verbose)
         return Result(error, oss.str());
     }
 
-    return Endpoint (host, serv);
+    return Endpoint(host, serv);
 }
