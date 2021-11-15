@@ -18,11 +18,6 @@ namespace Network
             return m_value.substr(0, m_value.find('\0'));
         }
 
-        const char* data() const
-        {
-            return m_value.data();
-        }
-
         char* data()
         {
             return m_value.data();
