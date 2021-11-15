@@ -33,22 +33,12 @@ Network::OptionalString::operator=(const char* t_value)
     return *this;
 }
 
-Network::OptionalString::operator std::string() const
-{
-    return m_value.value_or("");
-}
-
 Network::OptionalString::operator const char*() const
 {
     return m_value.has_value() ? m_value.value().c_str() : nullptr;
 }
 
 const char* Network::OptionalString::data() const
-{
-    return m_value.has_value() ? m_value.value().data() : nullptr;
-}
-
-char* Network::OptionalString::data()
 {
     return m_value.has_value() ? m_value.value().data() : nullptr;
 }
@@ -71,4 +61,9 @@ std::string::size_type Network::OptionalString::length() const
 std::string::size_type Network::OptionalString::size() const
 {
     return m_value.has_value() ? m_value.value().size() : 0;
+}
+
+std::string Network::OptionalString::value_or(const std::string& value) const
+{
+    return m_value.value_or(value);
 }
