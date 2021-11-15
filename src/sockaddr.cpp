@@ -54,12 +54,7 @@ static std::size_t get_min_size(const Network::SockAddr& sock_addr)
     switch (family) {
 #ifndef _WIN32
     case AF_UNIX:
-        {
-            const auto sun {
-                reinterpret_cast<const sockaddr_un*>(sock_addr.data())
-            };
-            return sizeof *sun - sizeof sun->sun_path;
-        }
+        return offsetof(sockaddr_un, sun_path);
 #endif
     case AF_INET:
         return sizeof(sockaddr_in);
