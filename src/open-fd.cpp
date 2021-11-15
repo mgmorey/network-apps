@@ -1,3 +1,4 @@
+#include "network/address.h"    // Address, operator<<()
 #include "network/open.h"       // Fd, Result, OpenHandler, SockAddr,
                                 // open(), operator<<()
 #include "network/error.h"      // format_error(), get_last_error(),
@@ -25,7 +26,7 @@ Network::open(const OpenHandler& handler, Fd fd,
                   << '('
                   << fd
                   << ", "
-                  << addr
+                  << Address(addr)
                   << ", "
                   << static_cast<int>(addr_len)
                   << ')'
@@ -42,7 +43,7 @@ Network::open(const OpenHandler& handler, Fd fd,
             << '('
             << fd
             << ", "
-            << addr
+            << Address(addr)
             << ") failed with error "
             << error
             << ": "
