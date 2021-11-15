@@ -92,8 +92,15 @@ tmp_dir = tmp
 all: $(executables) TAGS
 
 .PHONY:	check
-check:
+check:	cppcheck
+
+.PHONY:	cppcheck
+cppcheck:	$(sources)
 	cppcheck $(CPPCHECK_FLAGS) $(CPPFLAGS) .
+
+.PHONY:	clang-tidy
+clang-tidy:	$(sources)
+	clang-tidy $^ -- -std=$(STANDARD) $(CPPFLAGS)
 
 .PHONY:	clean
 clean:
@@ -116,7 +123,7 @@ install: $(libraries)
 	install libnetwork.a $(prefix)/lib
 	install include/network/*.h $(prefix)/include
 
-TAGS:
+TAGS:	$(sources)
 	etags $^
 
 $(executables): libnetwork.a
