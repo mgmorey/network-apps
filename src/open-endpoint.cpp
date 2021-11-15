@@ -14,7 +14,7 @@ Network::open(const OpenHandler& handler,
               const Hints* hints,
               bool verbose)
 {
-    static const auto lambda = [&](const Socket& sock) {
+    const auto lambda = [&](const Socket& sock) {
         auto socket_result {get_socket(sock, verbose)};
         std::visit(Overload {
                 [&](Fd fd) {
