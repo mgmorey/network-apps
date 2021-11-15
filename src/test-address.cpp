@@ -30,8 +30,6 @@ namespace TestAddress
     using Hosts = std::vector<Network::Host>;
     using HostsResult = std::variant<Hosts, Network::Result>;
 
-    static constexpr auto HOST {"example.com"};
-
     static bool verbose {false};
 
     template<typename T, typename U>
@@ -69,8 +67,8 @@ namespace TestAddress
                     [&](const Network::Endpoint& endpoint) {
                         Values values = {
                             address.text(),
-                            endpoint.first,
-                            Network::Hostname(t_host.canonical_name())
+                            endpoint.first.value_or(""),
+                            t_host.canonical_name().value_or(""),
                         };
                         erase(values, "");
                         unique(values);
@@ -196,19 +194,21 @@ namespace TestAddress
         const auto hosts_result {get_hosts(host, &hints)};
         std::visit(Network::Overload {
                 [&](const Hosts& hosts) {
-                    if (!hosts.empty()) {
-                        if (description.empty()) {
-                            std::cout << "All";
-                        }
-                        else {
-                            std::cout << description;
-                        }
-
-                        std::cout << " hosts:"
-                                  << std::endl;
-                        std::for_each(hosts.begin(), hosts.end(),
-                                      Test(std::cout));
+                    if (hosts.empty()) {
+                        return;
                     }
+
+                    if (description.empty()) {
+                        std::cout << "All";
+                    }
+                    else {
+                        std::cout << description;
+                    }
+
+                    std::cout << " hosts:"
+                              << std::endl;
+                    std::for_each(hosts.begin(), hosts.end(),
+                                  Test(std::cout));
                 },
                 [&](const Network::Result& result) {
                     if (description.empty()) {
@@ -254,14 +254,11 @@ int main(int argc, char* argv[])
         std::cerr << context.result()
                   << std::endl;
     }
+    else if (args.size() > 1) {
+        TestAddress::test_host(args[1]);
+    }
     else {
-        const auto host(args.size() > 1 ? args[1] : TestAddress::HOST);
-
-        if (args.size() <= 1) {
-            TestAddress::test_host(nullptr);
-        }
-
-        TestAddress::test_host(host);
+        TestAddress::test_host(nullptr);
     }
 
     static_cast<void>(context);
