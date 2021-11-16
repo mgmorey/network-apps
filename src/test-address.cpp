@@ -20,6 +20,7 @@
 #include <cassert>      // assert()
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
 #include <iostream>     // std::cerr, std::cout, std::endl
+#include <optional>     // std::nullopt
 #include <ostream>      // std::ostream
 #include <string>       // std::string
 #include <utility>      // std::pair
@@ -223,7 +224,7 @@ int main(int argc, char* argv[])
         TestAddress::test_host(args[1]);
     }
     else {
-        TestAddress::test_host(nullptr);
+        TestAddress::test_host(std::nullopt);
     }
 
     static_cast<void>(context);

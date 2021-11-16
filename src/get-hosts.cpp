@@ -5,6 +5,7 @@
 #include "network/overload.h"       // overload
 
 #include <iterator>     // std::back_inserter()
+#include <optional>     // std::nullopt
 #include <string>       // std::string
 #include <variant>      // std::visit()
 
@@ -19,7 +20,7 @@ Network::HostsResult Network::get_hosts(const Network::Hostname& host,
                 Hosts hosts;
                 const auto result {
                     AddrInfo::insert(hostname,
-                                     nullptr,
+                                     std::nullopt,
                                      hints,
                                      verbose,
                                      std::back_inserter(hosts))
