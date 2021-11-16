@@ -42,7 +42,7 @@
 *.idb
 *.pdb
 
-# Stackdumps
+# Stackdump files
 *.stackdump
 
 # Kernel Module Compile Results
