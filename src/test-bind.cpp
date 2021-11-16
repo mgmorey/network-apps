@@ -1,6 +1,8 @@
-#include "network/network.h"    // Address, Hints, Overload,
-                                // SocketResult, bind(), close(),
-                                // get_sockaddr(), get_sockname()
+#include "network/network.h"        // Address, Endpoint, Hints,
+                                    // Overload, SockAddr,
+                                    // SockAddrResult, SocketResult,
+                                    // bind(), close(),
+                                    // get_sockaddr(), get_sockname()
 
 #ifdef _WIN32
 #include <getopt.h>     // getopt(), optarg, opterr, optind, optopt

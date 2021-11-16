@@ -1,4 +1,4 @@
-#include "network/network.h"    // get_hostname()
+#include "network/network.h"        // get_hostname()
 
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <variant>      // std::visit()
