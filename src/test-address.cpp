@@ -126,31 +126,28 @@ namespace TestAddress
         }
     }
 
-    static HostsResult get_hosts(const Network::Hostname& node,
-                                 const Network::Service& serv,
-                                 const Network::Hints* hints)
-    {
-        Hosts hosts;
-        const auto result {Network::AddrInfo::insert(node, serv, hints, verbose,
-                                                     std::back_inserter(hosts))};
-
-        if (result) {
-            return result;
-        }
-        else {
-            return hosts;
-        }
-    }
-
     static HostsResult get_hosts(const Network::Hostname& hostname,
                                  const Network::Hints* hints)
     {
         HostsResult hosts_result;
         const auto hostname_result {Network::get_hostname(hostname)};
         std::visit(Network::Overload {
-                [&](const std::string& host) {
-                    const auto endp {Network::Endpoint(host, nullptr)};
-                    hosts_result = get_hosts(host, endp.second, hints);
+                [&](const std::string& hostname) {
+                    Hosts hosts;
+                    const auto result {
+                        Network::AddrInfo::insert(hostname,
+                                                  nullptr,
+                                                  hints,
+                                                  verbose,
+                                                  std::back_inserter(hosts))
+                    };
+
+                    if (result) {
+                        hosts_result = result;
+                    }
+                    else {
+                        hosts_result = hosts;
+                    }
                 },
                 [&](const Network::Result& result) {
                     hosts_result = result;
