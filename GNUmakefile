@@ -106,7 +106,7 @@ clean:
 
 .PHONY:	realclean
 realclean: clean
-	rm -rf TAGS *.stackdump $(tmp_dir)
+	rm -rf TAGS *.core *.stackdump $(tmp_dir)
 
 .PHONY:	test
 test: $(executables)
