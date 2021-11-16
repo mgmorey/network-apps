@@ -38,11 +38,6 @@ Network::OptionalString::operator const char*() const
     return m_value.has_value() ? m_value.value().c_str() : nullptr;
 }
 
-const char* Network::OptionalString::data() const
-{
-    return m_value.has_value() ? m_value.value().data() : nullptr;
-}
-
 bool Network::OptionalString::empty() const
 {
     return m_value.has_value() ? m_value.value().empty() : true;
@@ -51,11 +46,6 @@ bool Network::OptionalString::empty() const
 bool Network::OptionalString::has_value() const
 {
     return m_value.has_value();
-}
-
-std::string::size_type Network::OptionalString::length() const
-{
-    return m_value.has_value() ? m_value.value().size() : 0;
 }
 
 std::string::size_type Network::OptionalString::size() const
