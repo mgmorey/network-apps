@@ -37,8 +37,13 @@ Network::get_sockets(const Network::Hostname& node,
                      bool verbose)
 {
     Sockets sockets;
-    const auto result {AddrInfo::insert(node, serv, hints, verbose,
-                                        std::back_inserter(sockets))};
+    const auto result {
+        AddrInfo::insert(node,
+                         serv,
+                         hints,
+                         verbose,
+                         std::back_inserter(sockets))
+    };
 
     if (result) {
         return result;
