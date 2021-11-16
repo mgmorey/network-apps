@@ -1,6 +1,5 @@
-#include "network/socket.h"     // Fd, Result, Socket,
-                                // SocketpairResult, SocketResult,
-                                // operator<<()
+#include "network/socket.h"     // Fd, FdResult, Result, Socket,
+                                // fd_null, operator<<()
 #include "network/error.h"      // format_error(), get_last_error(),
                                 // set_last_error()
 #include "network/format.h"     // Format
@@ -17,8 +16,8 @@
 static const std::string delim {", "};
 static const int tab {0};
 
-extern Network::SocketResult Network::get_socket(const Socket& sock,
-                                                 bool verbose)
+extern Network::FdResult Network::get_socket(const Socket& sock,
+                                             bool verbose)
 {
     Result result;
 

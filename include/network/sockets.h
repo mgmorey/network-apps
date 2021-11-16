@@ -3,7 +3,7 @@
 
 #include "network/endpoint.h"       // Endpoint
 #include "network/hints.h"          // Hints
-#include "network/socket.h"         // Socket, SocketResult
+#include "network/socket.h"         // FdResult, Socket
 
 #include <utility>      // std::pair
 #include <variant>      // std::variant
@@ -11,8 +11,9 @@
 
 namespace Network
 {
+    using FdResults = std::vector<FdResult>;
     using Sockets = std::vector<Socket>;
-    using SocketResults = std::vector<SocketResult>;
+
     using SocketsResult = std::variant<Sockets, Result>;
 
     extern SocketsResult get_sockets(const Endpoint& endpoint,

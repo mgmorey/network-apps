@@ -6,7 +6,7 @@
 #include "network/sockets.h"        // get_sockets()
 #include "network/hints.h"          // Hints
 #include "network/result.h"         // Result
-#include "network/socket.h"         // Socket, SocketResult
+#include "network/socket.h"         // FdResult, Socket
 #include "network/types.h"          // SockAddr
 
 #ifdef _WIN32
@@ -29,18 +29,18 @@ namespace Network
     {
     public:
         explicit Open(const OpenHandler& t_handler, bool t_verbose);
-        SocketResult operator()(const Socket& t_sock) const;
-        SocketResult open(Fd t_fd, const SockAddr& t_addr) const;
+        FdResult operator()(const Socket& t_sock) const;
+        FdResult open(Fd t_fd, const SockAddr& t_addr) const;
 
     private:
         OpenHandler m_handler {nullptr, ""};
         bool m_verbose {false};
     };
 
-    extern SocketResults open(const OpenHandler& handler,
-                              const Endpoint& endpoint,
-                              const Hints* hints,
-                              bool verbose);
+    extern FdResults open(const OpenHandler& handler,
+                          const Endpoint& endpoint,
+                          const Hints* hints,
+                          bool verbose);
     extern Result open(const OpenHandler& handler, Fd fd,
                        const SockAddr& addr,
                        bool verbose);

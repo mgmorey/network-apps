@@ -1,14 +1,14 @@
-#include "network/open.h"       // Endpoint, Fd, Hints, OpenHandler,
-                                // Result, SockAddr, SocketResult,
-                                // SocketResults, Sockets,
-                                // get_sockets(), open(), operator<<()
+#include "network/open.h"       // Endpoint, Fd, FdResult, FdResults,
+                                // Hints, OpenHandler, Result,
+                                // SockAddr, Sockets, get_sockets(),
+                                // open(), operator<<()
 #include "network/overload.h"   // Overload
 
 #include <algorithm>    // std::transform()
 #include <iterator>     // std::back_inserter()
 #include <variant>      // std::visit()
 
-Network::SocketResults
+Network::FdResults
 Network::open(const OpenHandler& handler,
               const Endpoint& endpoint,
               const Hints* hints,
@@ -34,7 +34,7 @@ Network::open(const OpenHandler& handler,
         return socket_result;
     };
     const auto sockets_result {get_sockets(endpoint, hints, verbose)};
-    SocketResults results;
+    FdResults results;
     std::visit(Overload {
             [&](const Sockets& sockets) {
                 std::transform(sockets.begin(), sockets.end(),

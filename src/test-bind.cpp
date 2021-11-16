@@ -1,8 +1,8 @@
-#include "network/network.h"        // Address, Endpoint, Hints,
-                                    // Overload, SockAddr,
-                                    // SockAddrResult, SocketResult,
-                                    // bind(), close(),
-                                    // get_sockaddr(), get_sockname()
+#include "network/network.h"        // Address, Endpoint, FdResult,
+                                    // Hints, Overload, SockAddr,
+                                    // SockAddrResult, bind(),
+                                    // close(), get_sockaddr(),
+                                    // get_sockname()
 
 #ifdef _WIN32
 #include <getopt.h>     // getopt(), optarg, opterr, optind, optopt
@@ -44,7 +44,7 @@ namespace TestBind
         {
         }
 
-        void operator()(const Network::SocketResult& t_socket_result)
+        void operator()(const Network::FdResult& t_socket_result)
         {
             std::visit(Network::Overload {
                     [&](Network::Fd fd) {

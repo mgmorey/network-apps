@@ -1,7 +1,8 @@
 #ifndef _WIN32
 
-#include "network/socket.h"     // FdPair, Result, Socket,
-                                // SocketpairResult operator<<()
+#include "network/socket.h"     // FdPair, FdPairResult, Result,
+                                // Socket, fd_null, fd_type,
+                                // operator<<()
 #include "network/error.h"      // format_error(), get_last_error(),
                                 // set_last_error()
 #include "network/format.h"     // Format
@@ -14,8 +15,8 @@
 static const std::string delim {", "};
 static const int tab {0};
 
-extern Network::SocketpairResult Network::get_socketpair(const Socket& sock,
-                                                         bool verbose)
+extern Network::FdPairResult Network::get_socketpair(const Socket& sock,
+                                                     bool verbose)
 {
     Result result;
     fd_type fds[] {fd_null, fd_null};

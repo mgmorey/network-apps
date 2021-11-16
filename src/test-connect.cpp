@@ -1,6 +1,6 @@
-#include "network/network.h"        // Address, Endpoint, Hints,
-                                    // Hostname, Overload, SockAddr,
-                                    // SockAddrResult, SocketResult,
+#include "network/network.h"        // Address, Endpoint, FdResult,
+                                    // Hints, Hostname, Overload,
+                                    // SockAddr, SockAddrResult,
                                     // close(), connect()
                                     // get_peername(), get_sockaddr(),
                                     // get_sockname()
@@ -47,7 +47,7 @@ namespace TestConnect
         {
         }
 
-        void operator()(const Network::SocketResult& t_socket_result)
+        void operator()(const Network::FdResult& t_socket_result)
         {
             std::visit(Network::Overload {
                     [&](Network::Fd fd) {

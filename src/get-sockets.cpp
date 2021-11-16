@@ -1,9 +1,9 @@
-#include "network/sockets.h"        // Sockets, SocketResults,
+#include "network/sockets.h"        // FdResults, Sockets,
                                     // SocketsResult, get_sockets()
 #include "network/addrinfo.h"       // AddrInfo
-#include "network/open.h"           // Endpoint, Fd, Hints, Result,
-                                    // Socket, SockAddr, SocketResult,
-                                    // fd_null, get_sockets(), open(),
+#include "network/open.h"           // Endpoint, Fd, FdResult, Hints,
+                                    // Result, Socket, SockAddr,
+                                    // get_sockets(), open(),
                                     // operator<<()
 #include "network/overload.h"       // Overload
 

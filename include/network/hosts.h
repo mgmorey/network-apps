@@ -12,6 +12,7 @@
 namespace Network
 {
     using Hosts = std::vector<Host>;
+
     using HostsResult = std::variant<Hosts, Result>;
 
     extern HostsResult get_hosts(const Hostname& host = nullptr,

@@ -19,8 +19,9 @@
 namespace Network
 {
     using FdPair = std::pair<Fd, Fd>;
-    using SocketResult = std::variant<Fd, Result>;
-    using SocketpairResult = std::variant<FdPair, Result>;
+
+    using FdPairResult = std::variant<FdPair, Result>;
+    using FdResult = std::variant<Fd, Result>;
 
     struct Socket :
         public Hints,
@@ -40,11 +41,11 @@ namespace Network
 
     extern std::ostream& operator<<(std::ostream& os,
                                     const Socket& sock);
-    extern SocketResult get_socket(const Socket& sock,
-                                   bool verbose = false);
+    extern FdResult get_socket(const Socket& sock,
+                               bool verbose = false);
 #ifndef _WIN32
-    extern SocketpairResult get_socketpair(const Socket& sock,
-                                           bool verbose = false);
+    extern FdPairResult get_socketpair(const Socket& sock,
+                                       bool verbose = false);
 #endif
 }
 
