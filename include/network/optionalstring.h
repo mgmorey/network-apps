@@ -1,7 +1,7 @@
 #ifndef NETWORK_OPTIONALSTRING_H
 #define NETWORK_OPTIONALSTRING_H
 
-#include <optional>     // std::optional
+#include <optional>     // std::nullopt_t, std::optional
 #include <ostream>      // std::ostream
 #include <string>       // std::string
 
