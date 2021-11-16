@@ -1,4 +1,6 @@
-#include "network/hosts.h"          // Hosts, HostsResult, get_hosts()
+#include "network/hosts.h"          // Hints, Host, Hosts, Hostname,
+                                    // HostsResult, Result,
+                                    // get_hosts()
 #include "network/addrinfo.h"       // AddrInfo
 #include "network/overload.h"       // overload
 
