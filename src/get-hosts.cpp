@@ -1,7 +1,5 @@
 #include "network/hosts.h"          // Hosts, HostsResult, get_hosts()
 #include "network/addrinfo.h"       // AddrInfo
-#include "network/endpoint.h"       // Endpoint, get_endpoint()
-#include "network/hosts.h"          // Hosts, HostsResult, get_hosts()
 #include "network/overload.h"       // overload
 
 #include <iterator>     // std::back_inserter()
