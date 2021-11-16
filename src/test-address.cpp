@@ -1,6 +1,7 @@
-#include "network/network.h"    // Address, AddrInfo, Hints, Hostname,
-                                // Overload, Service, get_endpoint(),
-                                // get_hostname()
+#include "network/network.h"        // Address, AddrInfo, Hints,
+                                    // Hostname, Overload, Service,
+                                    // get_endpoint(), get_hostname(),
+                                    // get_hosts()
 
 #ifdef _WIN32
 #include <getopt.h>     // getopt(), optarg, opterr, optind, optopt
@@ -27,9 +28,6 @@
 
 namespace TestAddress
 {
-    using Hosts = std::vector<Network::Host>;
-    using HostsResult = std::variant<Hosts, Network::Result>;
-
     static bool verbose {false};
 
     template<typename T, typename U>
@@ -126,36 +124,6 @@ namespace TestAddress
         }
     }
 
-    static HostsResult get_hosts(const Network::Hostname& hostname,
-                                 const Network::Hints* hints)
-    {
-        HostsResult hosts_result;
-        const auto hostname_result {Network::get_hostname(hostname)};
-        std::visit(Network::Overload {
-                [&](const std::string& hostname) {
-                    Hosts hosts;
-                    const auto result {
-                        Network::AddrInfo::insert(hostname,
-                                                  nullptr,
-                                                  hints,
-                                                  verbose,
-                                                  std::back_inserter(hosts))
-                    };
-
-                    if (result) {
-                        hosts_result = result;
-                    }
-                    else {
-                        hosts_result = hosts;
-                    }
-                },
-                [&](const Network::Result& result) {
-                    hosts_result = result;
-                }
-            }, hostname_result);
-        return hosts_result;
-    }
-
     static std::vector<std::string> parse_arguments(int argc, char** argv)
     {
         std::vector<std::string> args {argv[0]};
@@ -188,9 +156,9 @@ namespace TestAddress
                           const Network::Hints& hints)
     {
         const auto description {get_description(hints)};
-        const auto hosts_result {get_hosts(host, &hints)};
+        const auto hosts_result {Network::get_hosts(host, &hints)};
         std::visit(Network::Overload {
-                [&](const Hosts& hosts) {
+                [&](const Network::Hosts& hosts) {
                     if (hosts.empty()) {
                         return;
                     }
