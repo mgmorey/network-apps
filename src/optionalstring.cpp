@@ -1,8 +1,8 @@
 #include "network/optionalstring.h" // OptionalString
 
-Network::OptionalString::OptionalString(const std::nullopt_t& t_value)
+Network::OptionalString::OptionalString(const std::nullopt_t& t_value) :
+    m_value(t_value)
 {
-    static_cast<void>(t_value);
 }
 
 Network::OptionalString::OptionalString(const std::string& t_value) :
@@ -20,8 +20,7 @@ Network::OptionalString::OptionalString(const char* t_value)
 Network::OptionalString&
 Network::OptionalString::operator=(const std::nullopt_t& t_value)
 {
-    static_cast<void>(t_value);
-    m_value.reset();
+    m_value = t_value;
     return *this;
 }
 
