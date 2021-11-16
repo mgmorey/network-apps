@@ -6,7 +6,7 @@ std::ostream& Network::operator<<(std::ostream& os,
                                   const OptionalString& string)
 {
     if (string.has_value()) {
-        os << '"' << std::string(string) << '"';
+        os << '"' << string.value() << '"';
     }
     else {
         os << "nullptr";

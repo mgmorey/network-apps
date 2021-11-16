@@ -20,7 +20,7 @@
 Network::HostnameResult Network::get_hostname(const Network::Hostname& host)
 {
     if (host.has_value()) {
-        return std::string(host);
+        return host.value();
     }
 
     Buffer host_buffer {NI_MAXHOST};
