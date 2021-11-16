@@ -81,18 +81,18 @@ namespace Network
                       bool verbose,
                       OutputIt out)
         {
-            const auto lambda = [&](const addrinfo& in) {
-                if (verbose) {
-                    std::cerr << "Fetched addrinfo:"
-                              << std::endl
-                              << in
-                              << std::endl;
-                }
-
-                *out++ = in;
-            };
             const auto list {List(node, serv, hints, verbose)};
-            std::for_each(list.begin(), list.end(), lambda);
+            std::for_each(list.begin(), list.end(),
+                          [&](const addrinfo& in) {
+                              if (verbose) {
+                                  std::cerr << "Fetched addrinfo:"
+                                            << std::endl
+                                            << in
+                                            << std::endl;
+                              }
+
+                              *out++ = in;
+                          });
             return list.result();
         }
     }
