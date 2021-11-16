@@ -12,9 +12,12 @@ namespace Network
     public:
         OptionalString() = default;
         // cppcheck-suppress noExplicitConstructor
+        OptionalString(const OptionalString& t_string);
+        // cppcheck-suppress noExplicitConstructor
         OptionalString(const std::string& t_string);
         // cppcheck-suppress noExplicitConstructor
         OptionalString(const char* t_value);
+        OptionalString& operator=(const OptionalString& t_string);
         OptionalString& operator=(const std::string& t_string);
         OptionalString& operator=(const char* t_value);
         operator const char*() const;
