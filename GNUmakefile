@@ -104,6 +104,10 @@ clang-tidy:	$(sources)
 clean:
 	rm -f $(executables) $(libraries) $(objects) $(maps) $(listings)
 
+.PHONY:	dos2unix
+dos2unix:
+	dos2unix *.log *.map $(tmp_dir)/*.lst $(tmp_dir)/*.txt
+
 .PHONY:	realclean
 realclean: clean
 	rm -rf TAGS *.core *.stackdump $(tmp_dir)
