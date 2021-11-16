@@ -34,9 +34,10 @@ Network::OptionalString::operator=(const std::string& t_value)
 Network::OptionalString&
 Network::OptionalString::operator=(const char* t_value)
 {
-    m_value.reset();
-
-    if (t_value != nullptr) {
+    if (t_value == nullptr) {
+        m_value.reset();
+    }
+    else {
         m_value = t_value;
     }
 
