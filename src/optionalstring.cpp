@@ -1,7 +1,13 @@
 #include "network/optionalstring.h" // OptionalString
 
-Network::OptionalString::OptionalString(const std::string& t_string) :
-    m_value(t_string)
+Network::OptionalString::OptionalString(const std::nullopt_t& t_value)
+{
+    static_cast<void>(t_value);
+    m_value.reset();
+}
+
+Network::OptionalString::OptionalString(const std::string& t_value) :
+    m_value(t_value)
 {
 }
 
@@ -15,9 +21,17 @@ Network::OptionalString::OptionalString(const char* t_value)
 }
 
 Network::OptionalString&
-Network::OptionalString::operator=(const std::string& t_string)
+Network::OptionalString::operator=(const std::nullopt_t& t_value)
 {
-    m_value = t_string;
+    static_cast<void>(t_value);
+    m_value.reset();
+    return *this;
+}
+
+Network::OptionalString&
+Network::OptionalString::operator=(const std::string& t_value)
+{
+    m_value = t_value;
     return *this;
 }
 
@@ -58,7 +72,7 @@ std::string Network::OptionalString::value() const
     return m_value.value_or("");
 }
 
-std::string Network::OptionalString::value_or(const std::string& value) const
+std::string Network::OptionalString::value_or(const std::string& t_value) const
 {
-    return m_value.value_or(value);
+    return m_value.value_or(t_value);
 }
