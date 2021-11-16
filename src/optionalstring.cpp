@@ -1,10 +1,5 @@
 #include "network/optionalstring.h" // OptionalString
 
-Network::OptionalString::OptionalString(const OptionalString& t_string) :
-    m_value(t_string)
-{
-}
-
 Network::OptionalString::OptionalString(const std::string& t_string) :
     m_value(t_string)
 {
@@ -17,13 +12,6 @@ Network::OptionalString::OptionalString(const char* t_value)
     if (t_value != nullptr) {
         m_value = t_value;
     }
-}
-
-Network::OptionalString&
-Network::OptionalString::operator=(const OptionalString& t_string)
-{
-    m_value = t_string;
-    return *this;
 }
 
 Network::OptionalString&
