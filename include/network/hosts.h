@@ -1,7 +1,6 @@
 #ifndef NETWORK_HOSTS_H
 #define NETWORK_HOSTS_H
 
-#include "network/endpoint.h"       // Endpoint
 #include "network/hints.h"          // Hints
 #include "network/host.h"           // Host
 #include "network/result.h"         // Result
