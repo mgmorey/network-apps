@@ -93,10 +93,7 @@ tmp_dir = tmp
 all: $(executables) TAGS
 
 .PHONY:	check
-check:	cppcheck
-
-.PHONY:	cppcheck
-cppcheck:	$(sources)
+check:
 	cppcheck $(CPPCHECK_FLAGS) $(CPPFLAGS) .
 
 .PHONY:	clang-tidy
@@ -109,7 +106,8 @@ clean:
 
 .PHONY:	realclean
 realclean: clean
-	rm -f $(dependencies) TAGS
+	rm -f *.stackdump TAGS
+	rm -rf $(tmp_dir)
 
 .PHONY:	test
 test: $(executables)
