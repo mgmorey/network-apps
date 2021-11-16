@@ -1,3 +1,4 @@
+#include "network/hosts.h"          // Hosts, HostsResult, get_hosts()
 #include "network/addrinfo.h"       // AddrInfo
 #include "network/endpoint.h"       // Endpoint, get_endpoint()
 #include "network/hosts.h"          // Hosts, HostsResult, get_hosts()
@@ -18,11 +19,11 @@ Network::HostsResult Network::get_hosts(const Network::Hostname& host,
             [&](const std::string& hostname) {
                 Network::Hosts hosts;
                 const auto result {
-                    Network::AddrInfo::insert(hostname,
-                                              nullptr,
-                                              hints,
-                                              verbose,
-                                              std::back_inserter(hosts))
+                    AddrInfo::insert(hostname,
+                                     nullptr,
+                                     hints,
+                                     verbose,
+                                     std::back_inserter(hosts))
                 };
 
                 if (result) {

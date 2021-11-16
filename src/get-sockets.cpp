@@ -1,4 +1,5 @@
-#include "network/sockets.h"        // get_sockets()
+#include "network/sockets.h"        // Sockets, SocketResults,
+                                    // SocketsResult, get_sockets()
 #include "network/addrinfo.h"       // AddrInfo
 #include "network/open.h"           // Endpoint, Fd, Hints, Result,
                                     // Socket, SockAddr, SocketResult,
@@ -14,7 +15,7 @@ Network::get_sockets(const Network::Endpoint& endpoint,
                      bool verbose)
 {
     SocketsResult sockets_result;
-    const auto hostname_result {Network::get_hostname(endpoint.first)};
+    const auto hostname_result {get_hostname(endpoint.first)};
     std::visit(Network::Overload {
             [&](const std::string& host) {
                 sockets_result = get_sockets(host,
