@@ -3,7 +3,6 @@
 Network::OptionalString::OptionalString(const std::nullopt_t& t_value)
 {
     static_cast<void>(t_value);
-    m_value.reset();
 }
 
 Network::OptionalString::OptionalString(const std::string& t_value) :
@@ -13,8 +12,6 @@ Network::OptionalString::OptionalString(const std::string& t_value) :
 
 Network::OptionalString::OptionalString(const char* t_value)
 {
-    m_value.reset();
-
     if (t_value != nullptr) {
         m_value = t_value;
     }
