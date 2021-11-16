@@ -7,6 +7,8 @@
                                     // operator<<()
 #include "network/overload.h"       // Overload
 
+#include <iterator>     // std::back_inserter()
+#include <string>       // std::string
 #include <variant>      // std::visit()
 
 Network::SocketsResult
