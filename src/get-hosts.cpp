@@ -7,7 +7,6 @@
 #include <iterator>     // std::back_inserter()
 #include <string>       // std::string
 #include <variant>      // std::visit()
-#include <vector>       // std::vector
 
 Network::HostsResult Network::get_hosts(const Network::Hostname& host,
                                         const Network::Hints* hints,
