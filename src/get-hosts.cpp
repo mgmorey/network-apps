@@ -13,11 +13,11 @@ Network::HostsResult Network::get_hosts(const Network::Hostname& host,
                                         const Network::Hints* hints,
                                         bool verbose)
 {
-    Network::HostsResult hosts_result;
+    HostsResult hosts_result;
     const auto hostname_result {get_hostname(host)};
-    std::visit(Network::Overload {
+    std::visit(Overload {
             [&](const std::string& hostname) {
-                Network::Hosts hosts;
+                Hosts hosts;
                 const auto result {
                     AddrInfo::insert(hostname,
                                      nullptr,
@@ -33,7 +33,7 @@ Network::HostsResult Network::get_hosts(const Network::Hostname& host,
                     hosts_result = hosts;
                 }
             },
-            [&](const Network::Result& result) {
+            [&](const Result& result) {
                 hosts_result = result;
             }
         }, hostname_result);

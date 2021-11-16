@@ -16,14 +16,14 @@ Network::get_sockets(const Network::Endpoint& endpoint,
 {
     SocketsResult sockets_result;
     const auto hostname_result {get_hostname(endpoint.first)};
-    std::visit(Network::Overload {
+    std::visit(Overload {
             [&](const std::string& host) {
                 sockets_result = get_sockets(host,
                                              endpoint.second,
                                              hints,
                                              verbose);
             },
-            [&](const Network::Result& result) {
+            [&](const Result& result) {
                 sockets_result = result;
             }
         }, hostname_result);
