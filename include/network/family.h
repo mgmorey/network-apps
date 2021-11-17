@@ -8,14 +8,14 @@
 namespace Network
 {
     class Family :
-        public Integer<short>
+        public Integer<unsigned short>
     {
         friend std::ostream& operator<<(std::ostream& os,
                                         const Family& family);
 
     public:
-        explicit Family(int t_value);
-        Family& operator=(int t_value);
+        explicit Family(unsigned short t_value);
+        Family& operator=(unsigned short t_value);
     };
 
     extern std::ostream& operator<<(std::ostream& os,
