@@ -19,6 +19,7 @@
                         // std::unique()
 #include <cassert>      // assert()
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
+#include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <optional>     // std::nullopt
 #include <ostream>      // std::ostream
@@ -214,19 +215,25 @@ namespace TestAddress
 
 int main(int argc, char* argv[])
 {
-    const auto args {TestAddress::parse_arguments(argc, argv)};
-    const Network::Context context(TestAddress::verbose);
+    try {
+        const auto args {TestAddress::parse_arguments(argc, argv)};
+        const Network::Context context(TestAddress::verbose);
 
-    if (context.result()) {
-        std::cerr << context.result()
+        if (context.result()) {
+            std::cerr << context.result()
+                      << std::endl;
+        }
+        else if (args.size() > 1) {
+            TestAddress::test_host(args[1]);
+        }
+        else {
+            TestAddress::test_host(std::nullopt);
+        }
+
+        static_cast<void>(context);
+    }
+    catch (std::exception& error) {
+        std::cerr << error.what()
                   << std::endl;
     }
-    else if (args.size() > 1) {
-        TestAddress::test_host(args[1]);
-    }
-    else {
-        TestAddress::test_host(std::nullopt);
-    }
-
-    static_cast<void>(context);
 }

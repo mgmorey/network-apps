@@ -21,6 +21,7 @@
 #include <algorithm>    // std::for_each()
 #include <cassert>      // assert()
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
+#include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <string>       // std::string
 #include <variant>      // std::get(), std::holds_alternative(),
@@ -150,19 +151,25 @@ int main(int argc, char* argv[])
                                       IPPROTO_TCP,
                                       AI_CANONNAME);
 
-    const auto args {TestBind::parse_arguments(argc, argv)};
-    const Network::Context context(TestBind::verbose);
+    try {
+        const auto args {TestBind::parse_arguments(argc, argv)};
+        const Network::Context context(TestBind::verbose);
 
-    if (context.result()) {
-        std::cerr << context.result()
+        if (context.result()) {
+            std::cerr << context.result()
+                      << std::endl;
+        }
+        else {
+            const auto host {args.size() > 1 ? args[1] : TestBind::HOST};
+            const auto serv {args.size() > 2 ? args[2] : TestBind::SERVICE};
+            const auto endp {Network::Endpoint(host, serv)};
+            TestBind::test_bind(endp, hints);
+        }
+
+        static_cast<void>(context);
+    }
+    catch (std::exception& error) {
+        std::cerr << error.what()
                   << std::endl;
     }
-    else {
-        const auto host {args.size() > 1 ? args[1] : TestBind::HOST};
-        const auto serv {args.size() > 2 ? args[2] : TestBind::SERVICE};
-        const auto endp {Network::Endpoint(host, serv)};
-        TestBind::test_bind(endp, hints);
-    }
-
-    static_cast<void>(context);
 }

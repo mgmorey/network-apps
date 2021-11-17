@@ -1,14 +1,15 @@
 #include "network/network.h"        // get_hostname()
 
-#include <iostream>     // std::cerr, std::cout, std::endl
-#include <variant>      // std::visit()
-#include <vector>       // std::vector
-
 #ifdef _WIN32
 #include <getopt.h>     // getopt(), optarg, opterr, optind, optopt
 #else
 #include <unistd.h>     // getopt(), optarg, opterr, optind, optopt
 #endif
+
+#include <exception>    // std::exception
+#include <iostream>     // std::cerr, std::cout, std::endl
+#include <variant>      // std::visit()
+#include <vector>       // std::vector
 
 namespace TestHostname
 {
@@ -62,16 +63,22 @@ namespace TestHostname
 
 int main(int argc, char* argv[])
 {
-    const auto args {TestHostname::parse_arguments(argc, argv)};
-    const Network::Context context(TestHostname::verbose);
+    try {
+        const auto args {TestHostname::parse_arguments(argc, argv)};
+        const Network::Context context(TestHostname::verbose);
 
-    if (context.result()) {
-        std::cerr << context.result()
+        if (context.result()) {
+            std::cerr << context.result()
+                      << std::endl;
+        }
+        else {
+            TestHostname::test_hostname();
+        }
+
+        static_cast<void>(context);
+    }
+    catch (std::exception& error) {
+        std::cerr << error.what()
                   << std::endl;
     }
-    else {
-        TestHostname::test_hostname();
-    }
-
-    static_cast<void>(context);
 }

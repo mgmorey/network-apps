@@ -10,6 +10,7 @@
 
 #include <cassert>      // assert()
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
+#include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <string>       // std::string
 #include <variant>      // std::visit()
@@ -92,11 +93,17 @@ namespace TestSocket
 
 int main(int argc, char* argv[])
 {
-    TestSocket::parse_arguments(argc, argv);
-    const Network::Socket hints(AF_UNIX, SOCK_STREAM);
-    TestSocket::test_socketpair(hints);
-    TestSocket::test_path(TestSocket::PATH_12);
-    TestSocket::test_path(TestSocket::PATH_14);
-    TestSocket::test_path(TestSocket::PATH_16);
-    TestSocket::test_path(TestSocket::PATH_20);
+    try {
+        TestSocket::parse_arguments(argc, argv);
+        const Network::Socket hints(AF_UNIX, SOCK_STREAM);
+        TestSocket::test_socketpair(hints);
+        TestSocket::test_path(TestSocket::PATH_12);
+        TestSocket::test_path(TestSocket::PATH_14);
+        TestSocket::test_path(TestSocket::PATH_16);
+        TestSocket::test_path(TestSocket::PATH_20);
+    }
+    catch (std::exception& error) {
+        std::cerr << error.what()
+                  << std::endl;
+    }
 }
