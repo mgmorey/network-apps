@@ -23,7 +23,7 @@ namespace TestSocket
     static constexpr auto PATH_16 {"/tmp/67890123456"};
     static constexpr auto PATH_20 {"/tmp/678901234567890"};
 
-    static bool verbose {false};
+    static bool verbose {false};  // NOLINT
 
     static std::vector<std::string> parse_arguments(int argc, char** argv)
     {

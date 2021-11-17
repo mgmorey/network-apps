@@ -34,7 +34,7 @@ namespace TestConnect
     static constexpr auto HOST {"example.com"};
     static constexpr auto SERVICE {"http"};
 
-    static bool verbose {false};
+    static bool verbose {false};  // NOLINT
 
     class Test
     {

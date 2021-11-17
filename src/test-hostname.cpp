@@ -13,7 +13,7 @@
 
 namespace TestHostname
 {
-    static bool verbose {false};
+    static bool verbose {false};  // NOLINT
 
     static std::vector<std::string> parse_arguments(int argc, char** argv)
     {

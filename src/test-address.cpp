@@ -30,7 +30,7 @@
 
 namespace TestAddress
 {
-    static bool verbose {false};
+    static bool verbose {false};  // NOLINT
 
     template<typename T, typename U>
     void erase(T& c, const U& value)

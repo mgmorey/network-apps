@@ -33,7 +33,7 @@ namespace TestBind
     static constexpr auto HOST {"localhost"};
     static constexpr auto SERVICE {"8080"};
 
-    static bool verbose {false};
+    static bool verbose {false};  // NOLINT
 
     class Test
     {
