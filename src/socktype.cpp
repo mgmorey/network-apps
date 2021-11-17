@@ -10,13 +10,14 @@
 #endif
 
 #include <sstream>      // std::ostringstream
+#include <vector>       // std::vector
 
-Network::SockType::SockType(int t_value) :
+Network::SockType::SockType(unsigned short t_value) :
     Integer(t_value)
 {
 }
 
-Network::SockType& Network::SockType::operator=(int t_value)
+Network::SockType& Network::SockType::operator=(unsigned short t_value)
 {
     m_value = t_value;
     return *this;
@@ -25,7 +26,7 @@ Network::SockType& Network::SockType::operator=(int t_value)
 std::ostream& Network::operator<<(std::ostream& os,
                                   const SockType& socktype)
 {
-    static const std::pair<int, const char*> values[] {
+    static const std::vector<std::pair<int, const char*>> values {
 #ifdef SOCK_CLOEXEC
         {SOCK_CLOEXEC,              "SOCK_CLOEXEC"},
 #endif

@@ -8,14 +8,14 @@
 namespace Network
 {
     class SockType :
-        public Integer<short>
+        public Integer<unsigned short>
     {
         friend std::ostream& operator<<(std::ostream& os,
                                         const SockType& socktype);
 
     public:
-        explicit SockType(int t_value);
-        SockType& operator=(int t_value);
+        explicit SockType(unsigned short t_value);
+        SockType& operator=(unsigned short t_value);
     };
 
     extern std::ostream& operator<<(std::ostream& os,
