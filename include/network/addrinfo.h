@@ -41,7 +41,7 @@ namespace Network
             reference operator*() const;
             pointer operator->() const;
             InputIterator& operator++();
-            InputIterator operator++(int);
+            const InputIterator operator++(int);
 
             friend bool operator==(const InputIterator& left,
                                    const InputIterator& right);
@@ -55,13 +55,14 @@ namespace Network
         class List
         {
         public:
-            List(const Hostname& node,
-                 const Service& service,
-                 const Hints* hints,
-                 bool verbose);
+            static InputIterator end();
+
+            List(const Hostname& t_node,
+                 const Service& t_serv,
+                 const Hints* t_hints,
+                 bool t_verbose);
             ~List();
             InputIterator begin() const;
-            InputIterator end() const;
             Result result() const;
 
         private:

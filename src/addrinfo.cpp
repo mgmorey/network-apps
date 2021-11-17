@@ -7,8 +7,8 @@
 #include <netdb.h>      // freeaddrinfo(), getaddrinfo()
 #endif
 
-#include <iostream>     // std::cerr, std::endl
 #include <cassert>      // assert()
+#include <iostream>     // std::cerr, std::endl
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
 
@@ -48,7 +48,7 @@ Network::AddrInfo::InputIterator::operator++()
     return *this;
 }
 
-Network::AddrInfo::InputIterator
+const Network::AddrInfo::InputIterator
 Network::AddrInfo::InputIterator::operator++(int)
 {
     InputIterator it(*this);
@@ -56,13 +56,17 @@ Network::AddrInfo::InputIterator::operator++(int)
     return it;
 }
 
+Network::AddrInfo::InputIterator
+Network::AddrInfo::List::end()
+{
+    return nullptr;
+}
+
 Network::AddrInfo::List::List(const Hostname& t_node,
                               const Service& t_serv,
                               const Hints* t_hints,
                               bool t_verbose)
 {
-    assert(m_pointer == nullptr);
-
     if (t_verbose) {
         std::cerr << "Trying socket hints:"
                   << std::endl
@@ -71,7 +75,7 @@ Network::AddrInfo::List::List(const Hostname& t_node,
     }
 
     addrinfo ai = Network::Hints();
-    const auto hints {get_hints(&ai, t_hints)};
+    auto *const hints {get_hints(&ai, t_hints)};
 
     if (t_verbose) {
         std::cerr << "Calling getaddrinfo("
@@ -94,9 +98,6 @@ Network::AddrInfo::List::List(const Hostname& t_node,
             << ::gai_strerror(error);
         m_result = {error, oss.str()};
     }
-    else {
-        assert(m_pointer != nullptr);
-    }
 }
 
 Network::AddrInfo::List::~List()
@@ -110,12 +111,6 @@ Network::AddrInfo::InputIterator
 Network::AddrInfo::List::begin() const
 {
     return m_pointer;
-}
-
-Network::AddrInfo::InputIterator
-Network::AddrInfo::List::end() const
-{
-    return nullptr;
 }
 
 Network::Result
