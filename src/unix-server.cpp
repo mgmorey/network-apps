@@ -12,28 +12,35 @@
 #include <cstdlib>      // std::atexit(), std::exit(), std::strtol()
 #include <cstring>      // std::memset(), std::strcmp(),
                         // std::strcpy(), std::strncpy()
+#include <iostream>     // std::cerr, std::endl
 
-static int connection_socket = -1;
+static int connection_socket = -1;  // NOLINT
 
-static void clean_up(void)
+static void clean_up()
 {
     // Close the socket.
     if (connection_socket >= 0) {
-        std::fprintf(stderr, "Closing socket %d.\n", connection_socket);
+        std::cerr << "Closing socket"
+                  << connection_socket
+                  << '.'
+                  << std::endl;
         ::close(connection_socket);
         connection_socket = -1;
     }
 
     // Unlink the socket.
-    std::fprintf(stderr, "Removing file %s.\n", SOCKET_NAME);
+    std::cerr << "Removing file"
+              << SOCKET_NAME
+              << '.'
+              << std::endl;
     ::unlink(SOCKET_NAME);
 }
 
-int main(void)
+int main()
 {
-    sockaddr_un name;
+    sockaddr_un name {};
     int down_flag = 0;
-    int ret;
+    long ret = 0;
     char buffer[BUFFER_SIZE];
 
     // Create local socket.
@@ -47,12 +54,14 @@ int main(void)
     // For portability clear the whole structure, since some
     // implementations have additional (nonstandard) fields in the
     // structure.
-    std::memset(&name, 0, sizeof(name));
+    std::memset(&name, 0, sizeof name);
 
     // Bind socket to socket name.
     name.sun_family = AF_UNIX;
     std::strncpy(name.sun_path, SOCKET_NAME, sizeof name.sun_path - 1);
-    ret = ::bind(connection_socket, (const sockaddr*)&name, sizeof name);
+    ret = ::bind(connection_socket,
+                 reinterpret_cast<const sockaddr*>(&name),
+                 sizeof name);
 
     if (ret == -1) {
         std::perror("bind");
@@ -69,7 +78,8 @@ int main(void)
     // Prepare for accepting connections. The backlog size is set to
     // 20. So while one request is being processed other requests can
     // be waiting.
-    ret = ::listen(connection_socket, 20);
+    const auto backlog_size {20};
+    ret = ::listen(connection_socket, backlog_size);
 
     if (ret == -1) {
         std::perror("listen");
@@ -78,7 +88,7 @@ int main(void)
 
     // This is the main loop for handling connections.
     for (;;) {
-        int data_socket;
+        int data_socket = 0;
 
         // Wait for incoming connection.
         data_socket = ::accept(connection_socket, nullptr, nullptr);
@@ -88,12 +98,12 @@ int main(void)
             std::exit(EXIT_FAILURE);
         }
 
-        int result = 0;
+        long result = 0;
 
         for (;;) {
 
             // Wait for next data packet.
-            ret = ::read(data_socket, buffer, sizeof(buffer));
+            ret = ::read(data_socket, buffer, sizeof buffer);
 
             if (ret == -1) {
                 std::perror("read");
@@ -101,7 +111,7 @@ int main(void)
             }
 
             // Ensure buffer is 0-terminated.
-            buffer[sizeof(buffer) - 1] = 0;
+            buffer[sizeof buffer - 1] = 0;
 
             // Handle commands.
 
@@ -115,13 +125,14 @@ int main(void)
             }
 
             // Add received summand.
-            result += std::strtol(buffer, nullptr, 10);
+            const auto radix {10};
+            result += std::strtol(buffer, nullptr, radix);
         }
 
         if (!down_flag) {
             // Send result.
 
-            std::sprintf(buffer, "%d", result);
+            std::sprintf(buffer, "%ld", result);
             ret = ::write(data_socket, buffer, sizeof buffer);
 
             if (ret == -1) {

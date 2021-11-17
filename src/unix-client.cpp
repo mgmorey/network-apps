@@ -11,13 +11,14 @@
 #include <cstdlib>      // std::exit()
 #include <cstring>      // std::memset(), std::strcmp(),
                         // std::strcpy(), std::strncpy()
+#include <iostream>     // std::cerr, std::endl
 
 int main(int argc, char *argv[])
 {
     sockaddr_un addr {};
-    int down_flag = 0;
-    int ret = 0;
     int data_socket = 0;
+    int down_flag = 0;
+    long ret = 0;
 
     // Create local socket.
     data_socket = ::socket(AF_UNIX, SOCK_SEQPACKET, 0);
@@ -36,10 +37,13 @@ int main(int argc, char *argv[])
     addr.sun_family = AF_UNIX;
     std::strncpy(addr.sun_path, SOCKET_NAME, sizeof addr.sun_path - 1);
 
-    ret = ::connect(data_socket, (const sockaddr*)&addr, sizeof addr);
+    ret = ::connect(data_socket,
+                    reinterpret_cast<const sockaddr*>(&addr),
+                    sizeof addr);
 
     if (ret == -1) {
-        std::fprintf(stderr, "The server is down.\n");
+        std::cerr << "The server is down."
+                  << std::endl;
         std::exit(EXIT_FAILURE);
     }
 
@@ -72,7 +76,7 @@ int main(int argc, char *argv[])
         }
 
         // Receive result.
-        ret = ::read(data_socket, buffer, sizeof(buffer));
+        ret = ::read(data_socket, buffer, sizeof buffer);
 
         if (ret == -1) {
             std::perror("read");
@@ -80,8 +84,11 @@ int main(int argc, char *argv[])
         }
 
         // Ensure buffer is 0-terminated.
-        buffer[sizeof(buffer) - 1] = 0;
-        std::printf("Result = %s\n", buffer);
+        buffer[sizeof buffer - 1] = 0;
+        std::cerr << "Result = "
+                  << buffer
+                  << '.'
+                  << std::endl;
     }
 
     // Close socket.
