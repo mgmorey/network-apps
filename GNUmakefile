@@ -98,7 +98,7 @@ check:
 
 .PHONY:	clang-tidy
 clang-tidy:	$(sources)
-	clang-tidy $^ -- -std=$(STANDARD) $(CPPFLAGS)
+	clang-tidy $^ -config-file='.clang-tidy' -- -std=$(STANDARD) $(CPPFLAGS)
 
 .PHONY:	clean
 clean:
