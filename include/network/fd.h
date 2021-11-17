@@ -30,7 +30,8 @@ namespace Network
         friend std::ostream& operator<<(std::ostream& os, Fd fd);
 
     public:
-        explicit Fd(fd_type t_fd)
+        // cppcheck-suppress noExplicitConstructor
+        Fd(fd_type t_fd)
         {
             m_value = t_fd;
         }

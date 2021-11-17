@@ -18,7 +18,7 @@
 #include "network/peername.h"       // SockAddrResult, get_peername()
 #include "network/result.h"         // Result
 #include "network/sockaddr.h"       // get_sockaddr()
-#include "network/socket.h"         // FdPair, FdPairResult, FdResult,
+#include "network/socket.h"         // FdResult, Fds, FdsResult
                                     // Socket
 #include "network/sockets.h"        // FdResults, Sockets,
                                     // SocketsResult, get_sockets()

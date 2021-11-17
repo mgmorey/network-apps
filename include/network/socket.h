@@ -12,16 +12,17 @@
 #include <netdb.h>      // addrinfo
 #endif
 
+#include <array>        // std::array
 #include <string>       // std::string
 #include <utility>      // std::pair
 #include <variant>      // std::variant
 
 namespace Network
 {
-    using FdPair = std::pair<Fd, Fd>;
+    using Fds = std::array<Fd, 2>;
 
-    using FdPairResult = std::variant<FdPair, Result>;
     using FdResult = std::variant<Fd, Result>;
+    using FdsResult = std::variant<Fds, Result>;
 
     struct Socket :
         public Hints,
@@ -44,8 +45,8 @@ namespace Network
     extern FdResult get_socket(const Socket& sock,
                                bool verbose = false);
 #ifndef _WIN32
-    extern FdPairResult get_socketpair(const Socket& sock,
-                                       bool verbose = false);
+    extern FdsResult get_socketpair(const Socket& sock,
+                                    bool verbose = false);
 #endif
 }
 

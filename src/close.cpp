@@ -21,5 +21,5 @@ Network::fd_type Network::close(fd_type fd)
 
 Network::Fd Network::close(Fd fd)
 {
-    return Fd(close(static_cast<fd_type>(fd)));
+    return {close(static_cast<fd_type>(fd))};
 }

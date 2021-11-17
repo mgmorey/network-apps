@@ -1,4 +1,4 @@
-#include "network/network.h"        // Address, FdPair, Hints,
+#include "network/network.h"        // Address, Fd, Fds, Hints,
                                     // Overload, Socket, close(),
                                     // get_peername(), get_sockaddr(),
                                     // get_socketpair(),
@@ -67,19 +67,19 @@ namespace TestSocket
         const Network::Socket sock {hints};
         const auto socketpair_result {get_socketpair(sock, verbose)};
         std::visit(Network::Overload {
-                [&](const Network::FdPair& fd) {
+                [&](const Network::Fds& fds) {
                     std::cout << "Socket "
-                              << fd.first
+                              << fds[0]
                               << " connected to socket "
-                              << fd.second
+                              << fds[1]
                               << std::endl;
 
-                    Network::close(fd.first);
-                    Network::close(fd.second);
+                    Network::close(fds[0]);
+                    Network::close(fds[1]);
                     std::cout << "Sockets "
-                              << fd.first
+                              << fds[0]
                               << " and "
-                              << fd.second
+                              << fds[1]
                               << " closed"
                               << std::endl;
                 },

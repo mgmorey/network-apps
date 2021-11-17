@@ -1,25 +1,25 @@
 #ifndef _WIN32
 
-#include "network/socket.h"     // FdPair, FdPairResult, Result,
-                                // Socket, fd_null, fd_type,
-                                // operator<<()
+#include "network/socket.h"     // Fds, FdsResult, Result, Socket,
+                                // fd_null, fd_type, operator<<()
 #include "network/error.h"      // format_error(), get_last_error(),
                                 // set_last_error()
 #include "network/format.h"     // Format
 
 #include <sys/socket.h> // socketpair()
 
+#include <array>        // std::array
 #include <iostream>     // std::cerr, std::endl
 #include <sstream>      // std::ostringstream
 
 static const std::string delim {", "};
 static const int tab {0};
 
-extern Network::FdPairResult Network::get_socketpair(const Socket& sock,
-                                                     bool verbose)
+extern Network::FdsResult Network::get_socketpair(const Socket& sock,
+                                                  bool verbose)
 {
     Result result;
-    fd_type fds[] {fd_null, fd_null};
+    std::array<fd_type, 2> fds {fd_null, fd_null};
 
     if (verbose) {
         std::cerr << "Calling socketpair("
@@ -34,7 +34,10 @@ extern Network::FdPairResult Network::get_socketpair(const Socket& sock,
     }
 
     reset_last_error();
-    auto code {::socketpair(sock.family(), sock.socktype(), sock.protocol(), fds)};
+    auto code {::socketpair(sock.family(),
+                            sock.socktype(),
+                            sock.protocol(),
+                            fds.data())};
 
     if (code == socket_error) {
         auto error = get_last_error();
@@ -53,7 +56,7 @@ extern Network::FdPairResult Network::get_socketpair(const Socket& sock,
         return Result(error, oss.str());
     }
 
-    return FdPair(fds[0], fds[1]);
+    return Fds {fds[0], fds[1]};
 }
 
 #endif
