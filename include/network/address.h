@@ -1,6 +1,7 @@
 #ifndef NETWORK_ADDRESS_H
 #define NETWORK_ADDRESS_H
 
+#include "network/family.h"         // Family
 #include "network/fd.h"             // Fd
 #include "network/result.h"         // Result
 #include "network/socklen.h"        // socklen_type
@@ -24,7 +25,6 @@ namespace Network
     class Address
     {
     public:
-        using family_type = unsigned short;
         using port_type = unsigned short;
         using length_type = unsigned short;
         using value_type = SockAddr;

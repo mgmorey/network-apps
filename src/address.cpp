@@ -60,7 +60,7 @@ bool Network::Address::empty() const
     return m_value.empty();
 }
 
-Network::Address::family_type Network::Address::family() const
+Network::family_type Network::Address::family() const
 {
     switch (sa_family()) {
 #ifndef _WIN32
@@ -130,7 +130,7 @@ Network::Address::value_type Network::Address::sa_data() const
     return m_value.substr(m_sa_data_offset);
 }
 
-Network::Address::family_type Network::Address::sa_family() const
+Network::family_type Network::Address::sa_family() const
 {
     return sa()->sa_family;
 }
@@ -161,7 +161,7 @@ in_addr Network::Address::sin_addr() const
     return sin()->sin_addr;
 }
 
-Network::Address::family_type Network::Address::sin_family() const
+Network::family_type Network::Address::sin_family() const
 {
     return sin()->sin_family;
 }
@@ -198,7 +198,7 @@ in6_addr Network::Address::sin6_addr() const
     return sin6()->sin6_addr;
 }
 
-Network::Address::family_type Network::Address::sin6_family() const
+Network::family_type Network::Address::sin6_family() const
 {
     return sin6()->sin6_family;
 }
@@ -232,7 +232,7 @@ const sockaddr_un* Network::Address::sun() const
     return reinterpret_cast<const sockaddr_un*>(m_value.data());
 }
 
-Network::Address::family_type Network::Address::sun_family() const
+Network::family_type Network::Address::sun_family() const
 {
     return sun()->sun_family;
 }
