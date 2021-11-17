@@ -36,7 +36,7 @@ namespace TestHostname
         }
 
         for (auto index = optind; index < argc; ++index) {
-            args.push_back(argv[index]);
+            args.emplace_back(argv[index]);
         }
 
         return args;

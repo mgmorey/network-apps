@@ -60,9 +60,9 @@ namespace TestConnect
                 }, t_socket_result);
         }
 
-        Network::SockAddrResult get_peeraddr(const Network::Fd& t_fd)
+        static Network::SockAddrResult get_peeraddr(const Network::Fd& t_fd)
         {
-            const auto peername_result {Network::get_peername(t_fd, verbose)};
+            auto peername_result {Network::get_peername(t_fd, verbose)};
             std::visit(Network::Overload {
                     [&](const Network::SockAddr&) {
                     },
@@ -74,9 +74,9 @@ namespace TestConnect
             return peername_result;
         }
 
-        Network::SockAddrResult get_sockaddr(const Network::Fd& t_fd)
+        static Network::SockAddrResult get_sockaddr(const Network::Fd& t_fd)
         {
-            const auto sockname_result {Network::get_sockname(t_fd, verbose)};
+            auto sockname_result {Network::get_sockname(t_fd, verbose)};
             std::visit(Network::Overload {
                     [&](const Network::SockAddr&) {
                     },
@@ -152,7 +152,7 @@ namespace TestConnect
         }
 
         for (auto index = optind; index < argc; ++index) {
-            args.push_back(argv[index]);
+            args.emplace_back(argv[index]);
         }
 
         return args;
@@ -167,7 +167,6 @@ namespace TestConnect
                     const auto socket_results {
                         Network::connect(endpoint, &hints, verbose)
                     };
-                    assert(!socket_results.empty());
                     std::for_each(socket_results.begin(), socket_results.end(),
                                   Test(endpoint, hostname, std::cout));
                 },

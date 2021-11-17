@@ -80,7 +80,8 @@ namespace TestAddress
                 }, endpoint_result);
         }
 
-        Network::EndpointResult get_endpoint(const Network::SockAddr& addr)
+        static Network::EndpointResult
+        get_endpoint(const Network::SockAddr& addr)
         {
             return Network::get_endpoint(addr, 0, verbose);
         }
@@ -147,7 +148,7 @@ namespace TestAddress
         }
 
         for (auto index = optind; index < argc; ++index) {
-            args.push_back(argv[index]);
+            args.emplace_back(argv[index]);
         }
 
         return args;
