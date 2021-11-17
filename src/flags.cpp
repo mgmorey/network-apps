@@ -12,13 +12,14 @@
 
 #include <sstream>      // std::ostringstream
 #include <utility>      // std::pair
+#include <vector>       // std::vector
 
-Network::Flags::Flags(int t_value) :
+Network::Flags::Flags(unsigned short t_value) :
     Integer(t_value)
 {
 }
 
-Network::Flags& Network::Flags::operator=(int t_value)
+Network::Flags& Network::Flags::operator=(unsigned short t_value)
 {
     m_value = t_value;
     return *this;
@@ -27,7 +28,7 @@ Network::Flags& Network::Flags::operator=(int t_value)
 std::ostream& Network::operator<<(std::ostream& os,
                                   const Flags& flags)
 {
-    static const std::pair<int, const char*> values[] {
+    static const std::vector<std::pair<int, const char*>> values {
         {AI_PASSIVE,                "AI_PASSIVE"},
         {AI_CANONNAME,              "AI_CANONNAME"},
         {AI_NUMERICHOST,            "AI_NUMERICHOST"},

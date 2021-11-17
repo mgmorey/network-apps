@@ -8,14 +8,14 @@
 namespace Network
 {
     class Flags :
-        public Integer<short>
+        public Integer<unsigned short>
     {
         friend std::ostream& operator<<(std::ostream& os,
                                         const Flags& flags);
 
     public:
-        explicit Flags(int t_value);
-        Flags& operator=(int t_value);
+        explicit Flags(unsigned short t_value);
+        Flags& operator=(unsigned short t_value);
     };
 
     extern std::ostream& operator<<(std::ostream& os,
