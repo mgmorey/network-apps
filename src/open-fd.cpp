@@ -18,7 +18,7 @@ Network::open(const OpenHandler& handler, Fd fd,
     Result result;
     assert(is_valid(addr, verbose));
     const auto addr_len {get_length(addr)};
-    const auto addr_ptr {get_pointer(addr)};
+    const auto *const addr_ptr {get_pointer(addr)};
 
     if (verbose) {
         std::cerr << "Calling "
