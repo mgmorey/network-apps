@@ -48,6 +48,8 @@ Network::Context::~Context()
     if (!--m_count) {
         ::WSACleanup();
     }
+#else
+    static_cast<void>(m_result);
 #endif
 }
 
