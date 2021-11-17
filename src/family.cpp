@@ -8,12 +8,12 @@
                         // PF_INET, PF_INET6, PF_UNIX, PF_UNSPEC
 #endif
 
-Network::Family::Family(unsigned short t_value) :
+Network::Family::Family(family_type t_value) :
     Integer(t_value)
 {
 }
 
-Network::Family& Network::Family::operator=(unsigned short t_value)
+Network::Family& Network::Family::operator=(family_type t_value)
 {
     m_value = t_value;
     return *this;
