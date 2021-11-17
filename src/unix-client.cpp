@@ -14,10 +14,10 @@
 
 int main(int argc, char *argv[])
 {
-    sockaddr_un addr;
+    sockaddr_un addr {};
     int down_flag = 0;
-    int ret;
-    int data_socket;
+    int ret = 0;
+    int data_socket = 0;
 
     // Create local socket.
     data_socket = ::socket(AF_UNIX, SOCK_SEQPACKET, 0);
