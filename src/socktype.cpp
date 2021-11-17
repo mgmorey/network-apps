@@ -12,12 +12,12 @@
 #include <sstream>      // std::ostringstream
 #include <vector>       // std::vector
 
-Network::SockType::SockType(unsigned short t_value) :
+Network::SockType::SockType(socktype_type t_value) :
     Integer(t_value)
 {
 }
 
-Network::SockType& Network::SockType::operator=(unsigned short t_value)
+Network::SockType& Network::SockType::operator=(socktype_type t_value)
 {
     m_value = t_value;
     return *this;
