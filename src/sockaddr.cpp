@@ -13,10 +13,13 @@
 #include <algorithm>    // std::max(), std::min()
 #include <cassert>      // assert()
 #include <cstddef>      // std::size_t
+#include <cstring>      // std::memcpy(), std::memset()
 #include <cstring>      // strnlen()
 #include <iomanip>      // std::left, std::right, std::setw()
 #include <iostream>     // std::cerr, std::endl
-#include <cstring>      // std::memcpy(), std::memset()
+
+static const auto key_width {20};
+static const auto value_width {5};
 
 static constexpr Network::SockAddr::size_type get_capacity()
 {
@@ -68,7 +71,7 @@ static std::size_t get_min_size(const Network::SockAddr& sock_addr)
 static std::size_t get_sa_length(const Network::SockAddr& sock_addr)
 {
 #ifdef HAVE_SOCKADDR_SA_LEN
-    const auto sa {reinterpret_cast<const sockaddr*>(sock_addr.data())};
+    const auto *const sa {reinterpret_cast<const sockaddr*>(sock_addr.data())};
     assert(sa != nullptr);
 
     if (sock_addr.empty()) {
@@ -84,7 +87,7 @@ static std::size_t get_sa_length(const Network::SockAddr& sock_addr)
 
 int Network::get_family(const SockAddr& sock_addr)
 {
-    const auto sa {reinterpret_cast<const sockaddr*>(sock_addr.data())};
+    const auto *const sa {reinterpret_cast<const sockaddr*>(sock_addr.data())};
     assert(sa != nullptr);
 
     if (sock_addr.empty()) {
@@ -102,14 +105,14 @@ Network::socklen_type Network::get_length(const SockAddr& sock_addr)
 
 const sockaddr* Network::get_pointer(const SockAddr& sock_addr)
 {
-    const auto sa {reinterpret_cast<const sockaddr*>(sock_addr.data())};
+    const auto *const sa {reinterpret_cast<const sockaddr*>(sock_addr.data())};
     assert(sa != nullptr);
     return sa;
 }
 
 sockaddr* Network::get_pointer(SockAddr& sock_addr)
 {
-    const auto sa {reinterpret_cast<sockaddr*>(sock_addr.data())};
+    auto *const sa {reinterpret_cast<sockaddr*>(sock_addr.data())};
     assert(sa != nullptr);
     return sa;
 }
@@ -124,8 +127,8 @@ Network::SockAddr Network::get_sockaddr(const sockaddr* sa,
         sock_addr.assign(get_capacity(), static_cast<Byte>(0));
     }
     else {
-        const auto addr_data {reinterpret_cast<const Byte*>(sa)};
-        sock_addr.assign(addr_data, addr_data + size);
+        const auto *const data {reinterpret_cast<const Byte*>(sa)};
+        sock_addr.assign(data, data + size);
     }
 
     return sock_addr;
@@ -133,13 +136,13 @@ Network::SockAddr Network::get_sockaddr(const sockaddr* sa,
 
 Network::SockAddr Network::get_sockaddr(const sockaddr_in* sin)
 {
-    const auto sa {reinterpret_cast<const sockaddr*>(sin)};
+    const auto *const sa {reinterpret_cast<const sockaddr*>(sin)};
     return get_sockaddr(sa, sizeof *sin);
 }
 
 Network::SockAddr Network::get_sockaddr(const sockaddr_in6* sin6)
 {
-    const auto sa {reinterpret_cast<const sockaddr*>(sin6)};
+    const auto *const sa {reinterpret_cast<const sockaddr*>(sin6)};
     return get_sockaddr(sa, sizeof *sin6);
 }
 
@@ -148,13 +151,13 @@ Network::SockAddr Network::get_sockaddr(const sockaddr_in6* sin6)
 Network::SockAddr Network::get_sockaddr(const sockaddr_un* sun,
                                         std::size_t size)
 {
-    const auto sa {reinterpret_cast<const sockaddr*>(sun)};
+    const auto *const sa {reinterpret_cast<const sockaddr*>(sun)};
     return get_sockaddr(sa, size);
 }
 
 Network::SockAddr Network::get_sockaddr(const Pathname& path)
 {
-    sockaddr_un addr;
+    sockaddr_un addr {};
     std::memset(&addr, '\0', sizeof addr);
     const auto path_size {std::min(path.size(), sizeof addr.sun_path - 1)};
     const auto min_size {sizeof addr - sizeof addr.sun_path + path_size};
@@ -221,10 +224,10 @@ bool Network::is_valid(const SockAddr& sock_addr, bool verbose)
 
     if (verbose) {
         std::cerr << std::left
-                  << std::setw(20)
+                  << std::setw(key_width)
                   << "    Family:"
                   << std::right
-                  << std::setw(5)
+                  << std::setw(value_width)
                   << family
                   << std::endl;
     }
@@ -247,24 +250,24 @@ bool Network::is_valid(const SockAddr& sock_addr, bool verbose)
 
     if (verbose) {
         std::cerr << std::left
-                  << std::setw(20)
+                  << std::setw(key_width)
                   << "    Actual size:"
                   << std::right
-                  << std::setw(5)
+                  << std::setw(value_width)
                   << sock_addr.size()
                   << std::endl
                   << std::left
-                  << std::setw(20)
+                  << std::setw(key_width)
                   << "    Minimum size:"
                   << std::right
-                  << std::setw(5)
+                  << std::setw(value_width)
                   << min_size
                   << std::endl
                   << std::left
-                  << std::setw(20)
+                  << std::setw(key_width)
                   << "    Maximum size:"
                   << std::right
-                  << std::setw(5)
+                  << std::setw(value_width)
                   << max_size
                   << std::endl;
     }
@@ -279,10 +282,10 @@ bool Network::is_valid(const SockAddr& sock_addr, bool verbose)
 
     if (verbose) {
         std::cerr << std::left
-                  << std::setw(20)
+                  << std::setw(key_width)
                   << "    Stored length:"
                   << std::right
-                  << std::setw(5)
+                  << std::setw(value_width)
                   << sa_len
                   << std::endl;
     }
@@ -294,15 +297,15 @@ bool Network::is_valid(const SockAddr& sock_addr, bool verbose)
 
 #ifndef _WIN32
 
-        const auto sun {reinterpret_cast<const sockaddr_un*>(sock_addr.data())};
+        const auto *const sun {reinterpret_cast<const sockaddr_un*>(sock_addr.data())};
         const auto sun_len {get_sun_length(sun, sock_addr.size())};
 
         if (verbose) {
             std::cerr << std::left
-                      << std::setw(20)
+                      << std::setw(key_width)
                       << "    Computed length:"
                       << std::right
-                      << std::setw(5)
+                      << std::setw(value_width)
                       << sun_len
                       << std::endl;
         }
