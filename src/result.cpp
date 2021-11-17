@@ -3,10 +3,6 @@
 #include <ostream>      // std::ostream
 #include <string>       // std::string
 
-Network::Result::Result()
-{
-}
-
 Network::Result::Result(result_type t_result, const std::string& t_string) :
     m_result(t_result),
     m_string(t_string)

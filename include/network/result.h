@@ -10,8 +10,8 @@ namespace Network
 
     struct Result
     {
-        Result();
-        Result(result_type t_value, const std::string& t_string);
+        Result() = default;
+        Result(result_type t_result, const std::string& t_string);
         operator bool() const;
         result_type result() const;
         std::string string() const;
