@@ -21,7 +21,7 @@ namespace Network
 #endif
 
     enum { socket_error = SOCKET_ERROR };
-    extern std::string format_error(error_type code);
+    extern std::string format_error(error_type error);
     extern error_type get_last_error();
     extern error_type reset_last_error();
 }
