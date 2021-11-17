@@ -235,10 +235,8 @@ bool Network::is_valid(const SockAddr& sock_addr, bool verbose)
     switch (family) {
 #ifndef _WIN32
     case AF_UNIX:
-        break;
 #endif
     case AF_INET:
-        break;
     case AF_INET6:
         break;
     default:
