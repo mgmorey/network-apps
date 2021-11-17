@@ -9,7 +9,7 @@
 #include <sys/socket.h> // AF_INET, AF_INET6, AF_UNIX
 #endif
 
-static std::string get_prefix(Network::Address::family_type family)
+static std::string get_prefix(Network::family_type family)
 {
     switch (family) {
 #ifndef _WIN32
@@ -28,7 +28,7 @@ static std::string get_prefix(Network::Address::family_type family)
     }
 }
 
-static std::string get_suffix(Network::Address::family_type family)
+static std::string get_suffix(Network::family_type family)
 {
     switch (family) {
 #ifndef _WIN32
