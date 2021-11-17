@@ -9,14 +9,14 @@
 namespace Network
 {
     class Protocol :
-        public Integer<short>
+        public Integer<unsigned short>
     {
         friend std::ostream& operator<<(std::ostream& os,
                                         const Protocol& protocol);
 
     public:
-        Protocol(Family t_family, int t_value);
-        Protocol& operator=(int t_value);
+        Protocol(Family t_family, unsigned short t_value);
+        Protocol& operator=(unsigned short t_value);
         Family family() const;
 
     private:
