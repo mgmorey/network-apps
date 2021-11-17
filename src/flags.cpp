@@ -14,12 +14,12 @@
 #include <utility>      // std::pair
 #include <vector>       // std::vector
 
-Network::Flags::Flags(unsigned short t_value) :
+Network::Flags::Flags(flags_type t_value) :
     Integer(t_value)
 {
 }
 
-Network::Flags& Network::Flags::operator=(unsigned short t_value)
+Network::Flags& Network::Flags::operator=(flags_type t_value)
 {
     m_value = t_value;
     return *this;
