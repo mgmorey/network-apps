@@ -7,20 +7,20 @@
 
 #include <ostream>     // std::ostream
 
-#ifndef INVALID_SOCKET
-#ifdef _WIN32
-#define INVALID_SOCKET	(~0)
-#else
-#define INVALID_SOCKET	(-1)
-#endif
-#endif
-
 namespace Network
 {
 #ifdef _WIN32
     using fd_type = SOCKET;
 #else
     using fd_type = int;
+#endif
+
+#ifndef INVALID_SOCKET
+#ifdef _WIN32
+    constexpr fd_type INVALID_SOCKET {~0};
+#else
+    constexpr fd_type INVALID_SOCKET {-1};
+#endif
 #endif
 
     enum { fd_null = INVALID_SOCKET };
@@ -31,12 +31,13 @@ namespace Network
 
     public:
         // cppcheck-suppress noExplicitConstructor
-        Fd(fd_type t_fd)
+        // NOLINTNEXTLINE
+        Fd(fd_type t_fd) :
+            m_value(t_fd)
         {
-            m_value = t_fd;
         }
 
-        operator fd_type() const
+        operator fd_type() const  // NOLINT
         {
             return m_value;
         }
