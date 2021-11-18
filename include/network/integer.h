@@ -20,21 +20,6 @@ namespace Network
             return *this;
         }
 
-        bool operator<(const Integer& t_integer) const
-        {
-            return (m_value < t_integer.m_value);
-        }
-
-        bool operator>(const Integer& t_integer) const
-        {
-            return (m_value > t_integer.m_value);
-        }
-
-        bool operator==(const Integer& t_integer) const
-        {
-            return (m_value == t_integer.m_value);
-        }
-
         operator T() const  /// NOLINT
         {
             return m_value;
