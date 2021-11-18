@@ -13,7 +13,7 @@ namespace Network
         {
         }
 
-        operator std::string() const
+        operator std::string() const  // NOLINT
         {
             return m_value.substr(0, m_value.find('\0'));
         }
@@ -23,7 +23,7 @@ namespace Network
             return m_value.data();
         }
 
-        std::string::size_type size() const
+        [[nodiscard]] std::string::size_type size() const
         {
             return m_value.size();
         }
