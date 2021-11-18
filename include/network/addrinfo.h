@@ -2,8 +2,8 @@
 #define NETWORK_ADDRINFO_H
 
 #include "network/endpoint.h"       // Endpoint
-#include "network/hostname.h"       // get_hostname()
 #include "network/hints.h"          // Hints
+#include "network/hostname.h"       // get_hostname()
 #include "network/result.h"         // Result
 #include "network/types.h"          // Hostname, Service
 
@@ -32,16 +32,15 @@ namespace Network
         {
             using difference_type = std::ptrdiff_t;
             using iterator_category = std::input_iterator_tag;
-            using pointer = addrinfo*;
-            using reference = addrinfo&;
+            using pointer = const addrinfo*;
+            using reference = const addrinfo&;
             using value_type = addrinfo;
 
             // cppcheck-suppress noExplicitConstructor
-            InputIterator(pointer t_pointer);
+            InputIterator(pointer t_pointer);  // NOLINT
             reference operator*() const;
             pointer operator->() const;
             InputIterator& operator++();
-            const InputIterator operator++(int);
 
             friend bool operator==(const InputIterator& left,
                                    const InputIterator& right);
@@ -57,13 +56,18 @@ namespace Network
         public:
             static InputIterator end();
 
+            List() = delete;
+            List(const List&) = delete;
+            List(const List&&) = delete;
             List(const Hostname& t_node,
                  const Service& t_serv,
                  const Hints* t_hints,
                  bool t_verbose);
             ~List();
-            InputIterator begin() const;
-            Result result() const;
+            List& operator=(const List&) = delete;
+            List& operator=(const List&&) = delete;
+            [[nodiscard]] InputIterator begin() const;
+            [[nodiscard]] Result result() const;
 
         private:
             addrinfo* m_pointer {nullptr};
@@ -83,7 +87,7 @@ namespace Network
                       OutputIt out)
         {
             const auto list {List(node, serv, hints, verbose)};
-            std::for_each(list.begin(), list.end(),
+            std::for_each(list.begin(), List::end(),
                           [&](const addrinfo& in) {
                               if (verbose) {
                                   std::cerr << "Fetched addrinfo:"

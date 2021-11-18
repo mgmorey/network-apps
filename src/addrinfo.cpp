@@ -48,14 +48,6 @@ Network::AddrInfo::InputIterator::operator++()
     return *this;
 }
 
-const Network::AddrInfo::InputIterator
-Network::AddrInfo::InputIterator::operator++(int)
-{
-    InputIterator it(*this);
-    ++(*this);
-    return it;
-}
-
 Network::AddrInfo::InputIterator
 Network::AddrInfo::List::end()
 {
