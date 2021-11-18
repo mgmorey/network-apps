@@ -9,7 +9,7 @@ Network::Hints::Hints(int t_family,
     m_flags(t_flags),
     m_family(t_family),
     m_socktype(t_socktype),
-    m_protocol(m_family, t_protocol)
+    m_protocol(t_protocol)
 {
 }
 
@@ -17,7 +17,7 @@ Network::Hints::Hints(const addrinfo& t_addrinfo) :
     m_flags(t_addrinfo.ai_flags),
     m_family(t_addrinfo.ai_family),
     m_socktype(t_addrinfo.ai_socktype),
-    m_protocol(m_family, t_addrinfo.ai_protocol)
+    m_protocol(t_addrinfo.ai_protocol)
 {
 }
 
@@ -72,20 +72,20 @@ Network::Hints::operator addrinfo() const
 
 Network::Flags Network::Hints::flags() const
 {
-    return m_flags;
+    return Flags(m_flags);
 }
 
 Network::Family Network::Hints::family() const
 {
-    return m_family;
+    return Family(m_family);
 }
 
 Network::SockType Network::Hints::socktype() const
 {
-    return m_socktype;
+    return SockType(m_socktype);
 }
 
 Network::Protocol Network::Hints::protocol() const
 {
-    return m_protocol;
+    return {m_family, m_protocol};
 }

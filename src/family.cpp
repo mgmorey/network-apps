@@ -13,16 +13,10 @@ Network::Family::Family(family_type t_value) :
 {
 }
 
-Network::Family& Network::Family::operator=(family_type t_value)
-{
-    m_value = t_value;
-    return *this;
-}
-
 std::ostream& Network::operator<<(std::ostream& os,
                                   const Family& family)
 {
-    switch (family.m_value) {
+    switch (family) {
     case AF_UNSPEC:
         os << "AF_UNSPEC";
         break;
@@ -36,7 +30,7 @@ std::ostream& Network::operator<<(std::ostream& os,
         os << "AF_INET6";
         break;
     default:
-        os << family.m_value;
+        os << static_cast<family_type>(family);
     }
 
     return os;

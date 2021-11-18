@@ -18,7 +18,6 @@ namespace Network
 
     public:
         explicit SockType(socktype_type t_value);
-        SockType& operator=(socktype_type t_value);
     };
 
     extern std::ostream& operator<<(std::ostream& os,

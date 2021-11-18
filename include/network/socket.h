@@ -28,12 +28,12 @@ namespace Network
         public Hints,
         public Host
     {
-        Socket(int t_family = 0,
-               int t_socktype = 0,
-               int t_protocol = 0,
-               int t_flags = 0);
+        explicit Socket(int t_family = 0,
+                        int t_socktype = 0,
+                        int t_protocol = 0,
+                        int t_flags = 0);
         // cppcheck-suppress noExplicitConstructor
-        Socket(const addrinfo& t_addrinfo);
+        Socket(const addrinfo& t_addrinfo);  // NOLINT
         Socket& operator=(const addrinfo& t_addrinfo);
         bool operator<(const Socket& t_sock) const;
         bool operator>(const Socket& t_sock) const;

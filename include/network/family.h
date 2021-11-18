@@ -18,7 +18,6 @@ namespace Network
 
     public:
         explicit Family(family_type t_value);
-        Family& operator=(family_type t_value);
     };
 
     extern std::ostream& operator<<(std::ostream& os,

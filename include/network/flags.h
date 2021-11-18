@@ -18,7 +18,6 @@ namespace Network
 
     public:
         explicit Flags(flags_type t_value);
-        Flags& operator=(flags_type t_value);
     };
 
     extern std::ostream& operator<<(std::ostream& os,

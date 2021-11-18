@@ -17,12 +17,6 @@ Network::SockType::SockType(socktype_type t_value) :
 {
 }
 
-Network::SockType& Network::SockType::operator=(socktype_type t_value)
-{
-    m_value = t_value;
-    return *this;
-}
-
 std::ostream& Network::operator<<(std::ostream& os,
                                   const SockType& socktype)
 {
@@ -40,8 +34,8 @@ std::ostream& Network::operator<<(std::ostream& os,
     std::ostringstream oss;
     std::size_t i {0};
 
-    if (socktype.m_value & mask) {
-        switch (socktype.m_value & mask) {
+    if ((socktype & mask) != 0) {
+        switch (socktype & mask) {
         case SOCK_STREAM:
             oss << "SOCK_STREAM";
             break;
@@ -58,13 +52,13 @@ std::ostream& Network::operator<<(std::ostream& os,
             oss << "SOCK_SEQPACKET";
             break;
         default:
-            oss << socktype.m_value;
+            oss << static_cast<socktype_type>(socktype);
         }
         ++i;
     }
 
     for(const auto& value : values) {
-        if (socktype.m_value & value.first) {
+        if ((socktype & value.first) != 0) {
             if (i++ > 0) {
                 oss << " | ";
             }

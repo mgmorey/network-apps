@@ -66,7 +66,7 @@ std::ostream& Network::operator<<(std::ostream& os,
        << suffix
        << '(';
 
-    if (length) {
+    if (length != 0) {
         os << Format(prefix + "_len")
            << address.length()
            << Format(delim, tab, prefix + "_family");

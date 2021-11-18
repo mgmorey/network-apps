@@ -13,22 +13,21 @@ namespace Network
 {
     struct Host
     {
+        static SockAddr get_sockaddr(const addrinfo& ai);
+
         Host() = default;
         // cppcheck-suppress noExplicitConstructor
-        Host(const addrinfo& t_addrinfo);
+        Host(const addrinfo& t_addrinfo);  // NOLINT
         Host& operator=(const addrinfo& t_addrinfo);
         bool operator<(const Host& t_host) const;
         bool operator>(const Host& t_host) const;
         bool operator==(const Host& t_host) const;
-        SockAddr address() const;
-        Hostname canonical_name() const;
+        [[nodiscard]] SockAddr address() const;
+        [[nodiscard]] Hostname canonical_name() const;
 
-    protected:
+    private:
         SockAddr m_sock_addr;
         Hostname m_canonname;
-
-    public:
-        static SockAddr get_sockaddr(const addrinfo& ai);
     };
 }
 

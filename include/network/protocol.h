@@ -18,9 +18,8 @@ namespace Network
                                         const Protocol& protocol);
 
     public:
-        Protocol(Family t_family, protocol_type t_value);
-        Protocol& operator=(protocol_type t_value);
-        Family family() const;
+        Protocol(family_type t_family, protocol_type t_value);
+        [[nodiscard]] Family family() const;
 
     private:
         Family m_family;

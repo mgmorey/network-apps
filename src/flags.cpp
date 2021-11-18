@@ -19,12 +19,6 @@ Network::Flags::Flags(flags_type t_value) :
 {
 }
 
-Network::Flags& Network::Flags::operator=(flags_type t_value)
-{
-    m_value = t_value;
-    return *this;
-}
-
 std::ostream& Network::operator<<(std::ostream& os,
                                   const Flags& flags)
 {
@@ -42,7 +36,7 @@ std::ostream& Network::operator<<(std::ostream& os,
     std::size_t i {0};
 
     for(const auto& value : values) {
-        if (flags.m_value & value.first) {
+        if ((flags & value.first) != 0) {
             if (i++ > 0) {
                 oss << " | ";
             }
