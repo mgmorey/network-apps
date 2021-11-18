@@ -33,7 +33,7 @@ Network::SockAddrResult Network::get_name(const GetNameHandler& handler, Fd fd,
 
     reset_last_error();
 
-    if (handler.first(fd, addr_ptr, &addr_len)) {
+    if (handler.first(fd, addr_ptr, &addr_len) != 0) {
         auto error = get_last_error();
         std::ostringstream oss;
         oss << "Call to "
