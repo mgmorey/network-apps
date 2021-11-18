@@ -8,16 +8,16 @@
 
 #include <string>       // std::string
 
-#ifndef SOCKET_ERROR
-#define SOCKET_ERROR	(-1)
-#endif
-
 namespace Network
 {
 #ifdef _WIN32
     using error_type = DWORD;
 #else
     using error_type = int;
+#endif
+
+#ifndef SOCKET_ERROR
+    constexpr error_type SOCKET_ERROR {-1};
 #endif
 
     enum { socket_error = SOCKET_ERROR };
