@@ -12,9 +12,9 @@
 #include "network/fd.h"             // Fd, fd_null
 #include "network/hints.h"          // Hints
 #include "network/host.h"           // Host
+#include "network/hostname.h"       // get_hostname()
 #include "network/hosts.h"          // Hosts, HostsResult, get_hosts()
 #include "network/overload.h"       // Overload
-#include "network/hostname.h"       // get_hostname()
 #include "network/peername.h"       // SockAddrResult, get_peername()
 #include "network/result.h"         // Result
 #include "network/sockaddr.h"       // get_sockaddr()
