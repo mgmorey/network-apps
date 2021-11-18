@@ -11,7 +11,7 @@ Network::Result::Result(result_type t_result, const std::string& t_string) :
 
 Network::Result::operator bool() const
 {
-    return m_result || !m_string.empty();
+    return m_result != 0 || !m_string.empty();
 }
 
 Network::result_type Network::Result::result() const
