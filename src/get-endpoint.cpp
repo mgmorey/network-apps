@@ -44,7 +44,7 @@ Network::get_endpoint(const SockAddr& addr, int flags, bool verbose)
                                     serv.data(), serv.size(),
                                     flags)};
 
-    if (error) {
+    if (error != 0) {
         std::ostringstream oss;
         oss << "Call to getnameinfo("
             << addr
