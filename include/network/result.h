@@ -12,9 +12,9 @@ namespace Network
     {
         Result() = default;
         Result(result_type t_result, const std::string& t_string);
-        operator bool() const;
-        result_type result() const;
-        std::string string() const;
+        operator bool() const;  // NOLINT
+        [[nodiscard]] result_type result() const;
+        [[nodiscard]] std::string string() const;
 
     private:
         result_type m_result {0};
