@@ -12,9 +12,14 @@ namespace Network
     class Context
     {
     public:
+        Context() = delete;
+        Context(const Context&) = delete;
+        Context(const Context&&) = delete;
         explicit Context(bool t_verbose = false);
         ~Context();
-        Result result() const;
+        Context& operator=(const Context&) = delete;
+        Context& operator=(const Context&&) = delete;
+        [[nodiscard]] Result result() const;
 
     private:
 #ifdef _WIN32
