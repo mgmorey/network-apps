@@ -30,45 +30,45 @@ namespace Network
         using value_type = SockAddr;
 
         // cppcheck-suppress noExplicitConstructor
-        Address(value_type t_value);
+        Address(value_type t_value);  // NOLINT
         Address& operator=(const value_type& t_value);
         bool operator<(const Address& t_address) const;
         bool operator>(const Address& t_address) const;
         bool operator==(const Address& t_address) const;
-        operator value_type() const;
-        bool empty() const;
-        family_type family() const;
-        length_type length() const;
-        port_type port() const;
-        std::string text() const;
+        operator value_type() const;  // NOLINT
+        [[nodiscard]] bool empty() const;
+        [[nodiscard]] family_type family() const;
+        [[nodiscard]] length_type length() const;
+        [[nodiscard]] port_type port() const;
+        [[nodiscard]] std::string text() const;
 
     protected:
-        const sockaddr* sa() const;
-        value_type sa_data() const;
-        family_type sa_family() const;
-        length_type sa_length() const;
-        std::string sa_text() const;
+        [[nodiscard]] const sockaddr* sa() const;
+        [[nodiscard]] value_type sa_data() const;
+        [[nodiscard]] family_type sa_family() const;
+        [[nodiscard]] length_type sa_length() const;
+        [[nodiscard]] std::string sa_text() const;
 
-        const sockaddr_in* sin() const;
-        in_addr sin_addr() const;
-        family_type sin_family() const;
-        length_type sin_length() const;
-        port_type sin_port() const;
-        std::string sin_text() const;
+        [[nodiscard]] const sockaddr_in* sin() const;
+        [[nodiscard]] in_addr sin_addr() const;
+        [[nodiscard]] family_type sin_family() const;
+        [[nodiscard]] length_type sin_length() const;
+        [[nodiscard]] port_type sin_port() const;
+        [[nodiscard]] std::string sin_text() const;
 
-        const sockaddr_in6* sin6() const;
-        in6_addr sin6_addr() const;
-        family_type sin6_family() const;
-        length_type sin6_length() const;
-        port_type sin6_port() const;
-        std::string sin6_text() const;
+        [[nodiscard]] const sockaddr_in6* sin6() const;
+        [[nodiscard]] in6_addr sin6_addr() const;
+        [[nodiscard]] family_type sin6_family() const;
+        [[nodiscard]] length_type sin6_length() const;
+        [[nodiscard]] port_type sin6_port() const;
+        [[nodiscard]] std::string sin6_text() const;
 
 #ifndef _WIN32
-        const sockaddr_un* sun() const;
-        family_type sun_family() const;
-        length_type sun_length() const;
-        value_type sun_path() const;
-        std::string sun_text() const;
+        [[nodiscard]] const sockaddr_un* sun() const;
+        [[nodiscard]] family_type sun_family() const;
+        [[nodiscard]] length_type sun_length() const;
+        [[nodiscard]] value_type sun_path() const;
+        [[nodiscard]] std::string sun_text() const;
 #endif
 
     private:
