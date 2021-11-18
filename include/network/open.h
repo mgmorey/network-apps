@@ -3,10 +3,10 @@
 
 #include "network/endpoint.h"       // Endpoint
 #include "network/fd.h"             // Fd, fd_type
-#include "network/sockets.h"        // get_sockets()
 #include "network/hints.h"          // Hints
 #include "network/result.h"         // Result
 #include "network/socket.h"         // FdResult, Socket
+#include "network/sockets.h"        // get_sockets()
 #include "network/types.h"          // SockAddr
 
 #ifdef _WIN32
@@ -29,8 +29,8 @@ namespace Network
     {
     public:
         explicit Open(const OpenHandler& t_handler, bool t_verbose);
-        FdResult operator()(const Socket& t_sock) const;
-        FdResult open(Fd t_fd, const SockAddr& t_addr) const;
+        [[nodiscard]] FdResult operator()(const Socket& t_sock) const;
+        [[nodiscard]] FdResult open(Fd t_fd, const SockAddr& t_addr) const;
 
     private:
         OpenHandler m_handler {nullptr, ""};
