@@ -102,7 +102,7 @@ namespace TestAddress
 
                 m_os << values[i];
 
-                if (!i) {
+                if (i == 0U) {
                     m_os << " (";
                 }
             }
