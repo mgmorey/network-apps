@@ -100,7 +100,7 @@ int Network::get_family(const SockAddr& sock_addr)
 Network::socklen_type Network::get_length(const SockAddr& sock_addr)
 {
     const auto length {static_cast<std::size_t>(get_sa_length(sock_addr))};
-    return static_cast<socklen_type>(length ? length : sock_addr.size());
+    return static_cast<socklen_type>(length != 0 ? length : sock_addr.size());
 }
 
 const sockaddr* Network::get_pointer(const SockAddr& sock_addr)
