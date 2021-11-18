@@ -8,6 +8,7 @@ namespace Network
     {
     public:
         // cppcheck-suppress noExplicitConstructor
+        // NOLINTNEXTLINE
         Integer(T t_value) :
             m_value(t_value)
         {
@@ -34,12 +35,12 @@ namespace Network
             return (m_value == t_integer.m_value);
         }
 
-        operator T() const
+        operator T() const  /// NOLINT
         {
             return m_value;
         }
 
-    protected:
+    private:
         T m_value {0};
     };
 }
