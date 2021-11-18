@@ -1,6 +1,11 @@
+#ifndef UNIX_COMMON_H
+#define UNIX_COMMON_H
+
 /*
  * File connection.h
  */
 
-#define SOCKET_NAME "/tmp/9Lq7BNBnBycd6nxy.socket"
-#define BUFFER_SIZE 12
+constexpr auto SOCKET_NAME {"/tmp/9Lq7BNBnBycd6nxy.socket"};
+constexpr auto BUFFER_SIZE {12};
+
+#endif

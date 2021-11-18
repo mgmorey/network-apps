@@ -115,12 +115,12 @@ int main()
 
             // Handle commands.
 
-            if (!std::strncmp(buffer, "DOWN", sizeof buffer)) {
+            if (std::strncmp(buffer, "DOWN", sizeof buffer) == 0) {
                 down_flag = 1;
                 break;
             }
 
-            if (!std::strncmp(buffer, "END", sizeof buffer)) {
+            if (std::strncmp(buffer, "END", sizeof buffer) == 0) {
                 break;
             }
 
@@ -129,7 +129,7 @@ int main()
             result += std::strtol(buffer, nullptr, radix);
         }
 
-        if (!down_flag) {
+        if (down_flag != 0) {
             // Send result.
 
             std::sprintf(buffer, "%ld", result);

@@ -57,13 +57,13 @@ int main(int argc, char *argv[])
             break;
         }
 
-        if (!std::strcmp(argv[1], "DOWN")) {
+        if (std::strcmp(argv[1], "DOWN") == 0) {
             down_flag = 1;
             break;
         }
     }
 
-    if (!down_flag) {
+    if (down_flag == 0) {
         char buffer[BUFFER_SIZE];
 
         // Request result.
