@@ -11,14 +11,14 @@
                                     // get_endpoint()
 #include "network/fd.h"             // Fd, fd_null
 #include "network/fdpair.h"         // FdPair
+#include "network/get-hosts.h"      // HostVectorResult, get_hosts()
+#include "network/get-socket.h"     // FdResult, get_socket()
+#include "network/get-socketpair.h" // FdPairResult, get_socketpair()
+#include "network/get-sockets.h"    // SocketVectorResult, get_sockets()
 #include "network/hints.h"          // Hints
 #include "network/host.h"           // Host
 #include "network/hostname.h"       // get_hostname()
 #include "network/hostvector.h"     // HostVector
-#include "network/get-hosts.h"      // HostVectorResult, get_hosts()
-#include "network/get-socket.h"     // FdResult, get_socket()
-#include "network/get-sockets.h"    // SocketVectorResult, get_sockets()
-#include "network/get-socketpair.h" // FdPairResult, get_socketpair()
 #include "network/overload.h"       // Overload
 #include "network/peername.h"       // SockAddrResult, get_peername()
 #include "network/result.h"         // Result
