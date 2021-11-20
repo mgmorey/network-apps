@@ -2,6 +2,7 @@
 #define NETWORK_GET_HOSTNAME_H
 
 #include "network/hostnameresult.h" // HostnameResult
+#include "network/types.h"          // Hostname
 
 #include <optional>     // std::nullopt
 
