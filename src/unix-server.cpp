@@ -147,7 +147,7 @@ int main()
 
         // Quit on DOWN command.
 
-        if (down_flag) {
+        if (down_flag != 0) {
             break;
         }
     }
