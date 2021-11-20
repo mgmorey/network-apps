@@ -2,6 +2,7 @@
 #define NETWORK_SOCKET_H
 
 #include "network/fd.h"             // Fd
+#include "network/fdarray.h"        // FdArray
 #include "network/hints.h"          // Hints
 #include "network/host.h"           // Host
 #include "network/result.h"         // Result
@@ -12,17 +13,14 @@
 #include <netdb.h>      // addrinfo
 #endif
 
-#include <array>        // std::array
 #include <string>       // std::string
 #include <utility>      // std::pair
 #include <variant>      // std::variant
 
 namespace Network
 {
-    using Fds = std::array<Fd, 2>;
-
+    using FdArrayResult = std::variant<FdArray, Result>;
     using FdResult = std::variant<Fd, Result>;
-    using FdsResult = std::variant<Fds, Result>;
 
     struct Socket :
         public Hints,
@@ -45,8 +43,8 @@ namespace Network
     extern FdResult get_socket(const Socket& sock,
                                bool verbose = false);
 #ifndef _WIN32
-    extern FdsResult get_socketpair(const Socket& sock,
-                                    bool verbose = false);
+    extern FdArrayResult get_socketpair(const Socket& sock,
+                                        bool verbose = false);
 #endif
 }
 
