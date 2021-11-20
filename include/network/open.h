@@ -2,11 +2,11 @@
 #define NETWORK_OPEN_H
 
 #include "network/endpoint.h"       // Endpoint
-#include "network/fd.h"             // Fd, fd_type
+#include "network/fdresultvector.h" // Fd, FdResult, FdResultVector
 #include "network/hints.h"          // Hints
+#include "network/get-socket.h"     // FdResult, get_socket()
 #include "network/result.h"         // Result
-#include "network/socket.h"         // FdResult, Socket
-#include "network/sockets.h"        // get_sockets()
+#include "network/socket.h"         // Socket
 #include "network/types.h"          // SockAddr
 
 #ifdef _WIN32
@@ -37,10 +37,10 @@ namespace Network
         bool m_verbose {false};
     };
 
-    extern FdResults open(const OpenHandler& handler,
-                          const Endpoint& endpoint,
-                          const Hints* hints,
-                          bool verbose);
+    extern FdResultVector open(const OpenHandler& handler,
+                               const Endpoint& endpoint,
+                               const Hints* hints,
+                               bool verbose);
     extern Result open(const OpenHandler& handler, Fd fd,
                        const SockAddr& addr,
                        bool verbose);

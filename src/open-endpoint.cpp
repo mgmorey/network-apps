@@ -1,14 +1,19 @@
-#include "network/open.h"       // Endpoint, Fd, FdResult, FdResults,
-                                // Hints, OpenHandler, Result,
-                                // SockAddr, Sockets, get_sockets(),
-                                // open(), operator<<()
-#include "network/overload.h"   // Overload
+#include "network/open.h"           // Endpoint, Fd, FdResult,
+                                    // FdResultVector, Hints,
+                                    // OpenHandler, Result,
+                                    // get_socket(), open(),
+                                    // operator<<()
+#include "network/get-socket.h"     // FdResult, get_socket()
+#include "network/get-sockets.h"    // SocketVector,
+                                    // SocketVectorResult,
+                                    // get_sockets()
+#include "network/overload.h"       // Overload
 
 #include <algorithm>    // std::transform()
 #include <iterator>     // std::back_inserter()
 #include <variant>      // std::visit()
 
-Network::FdResults
+Network::FdResultVector
 Network::open(const OpenHandler& handler,
               const Endpoint& endpoint,
               const Hints* hints,
@@ -19,7 +24,7 @@ Network::open(const OpenHandler& handler,
         std::visit(Overload {
                 [&](Fd fd) {
                     const auto addr {sock.address()};
-                    const auto result = open(handler, fd, addr, verbose);
+                    const auto result {open(handler, fd, addr, verbose)};
 
                     if (result) {
                         socket_result = result;
@@ -34,9 +39,9 @@ Network::open(const OpenHandler& handler,
         return socket_result;
     };
     const auto sockets_result {get_sockets(endpoint, hints, verbose)};
-    FdResults results;
+    FdResultVector results;
     std::visit(Overload {
-            [&](const Sockets& sockets) {
+            [&](const SocketVector& sockets) {
                 std::transform(sockets.begin(), sockets.end(),
                                std::back_inserter(results),
                                lambda);

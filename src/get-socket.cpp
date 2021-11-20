@@ -1,13 +1,13 @@
-#include "network/socket.h"     // Fd, FdResult, Result, Socket,
-                                // fd_null, operator<<()
-#include "network/error.h"      // format_error(), get_last_error(),
-                                // set_last_error()
-#include "network/format.h"     // Format
+#include "network/get-socket.h"     // Fd, FdResult, Result, Socket,
+                                    // fd_null, get_socket(), operator<<()
+#include "network/error.h"          // format_error(), get_last_error(),
+                                    // set_last_error()
+#include "network/format.h"         // Format
 
 #ifdef _WIN32
-#include <winsock2.h>   // socket()
+#include <winsock2.h>       // socket()
 #else
-#include <sys/socket.h> // socket(), socketpair()
+#include <sys/socket.h>     // socket(), socketpair()
 #endif
 
 #include <iostream>     // std::cerr, std::endl

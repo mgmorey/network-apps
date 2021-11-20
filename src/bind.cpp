@@ -1,5 +1,6 @@
-#include "network/bind.h"       // Endpoint, Fd, FdResults, Hints,
-                                // Result, SockAddr, bind(), open()
+#include "network/bind.h"       // Endpoint, Fd, FdResultVector,
+                                // Hints, Result, SockAddr, bind(),
+                                // open()
 
 #ifdef _WIN32
 #include <winsock2.h>       // bind()
@@ -18,9 +19,9 @@ Network::Result Network::bind(Fd fd,
     return open(handler, fd, addr, verbose);
 }
 
-Network::FdResults Network::bind(const Endpoint& endp,
-                                 const Hints* hints,
-                                 bool verbose)
+Network::FdResultVector Network::bind(const Endpoint& endp,
+                                      const Hints* hints,
+                                      bool verbose)
 {
     return open(handler, endp, hints, verbose);
 }

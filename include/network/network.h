@@ -16,14 +16,15 @@
 #include "network/hostname.h"       // get_hostname()
 #include "network/hostvector.h"     // HostVector
 #include "network/get-hosts.h"      // HostVectorResult, get_hosts()
+#include "network/get-socket.h"     // FdResult, get_socket()
+#include "network/get-sockets.h"    // SocketVectorResult, get_sockets()
+#include "network/get-socketpair.h" // FdPairResult, get_socketpair()
 #include "network/overload.h"       // Overload
 #include "network/peername.h"       // SockAddrResult, get_peername()
 #include "network/result.h"         // Result
 #include "network/sockaddr.h"       // get_sockaddr()
-#include "network/socket.h"         // FdPair, FdPairResult,
-                                    // FdResult, Socket
-#include "network/sockets.h"        // FdResults, Sockets,
-                                    // SocketsResult, get_sockets()
+#include "network/socket.h"         // Socket
+#include "network/socketvector.h"   // SocketVector
 #include "network/sockname.h"       // SockAddrResult, get_sockname()
 #include "network/types.h"          // Hostname, Pathname, Service,
                                     // SockAddr

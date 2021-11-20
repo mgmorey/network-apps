@@ -1,11 +1,8 @@
 #ifndef NETWORK_SOCKET_H
 #define NETWORK_SOCKET_H
 
-#include "network/fd.h"             // Fd
-#include "network/fdpair.h"         // FdPair
 #include "network/hints.h"          // Hints
 #include "network/host.h"           // Host
-#include "network/result.h"         // Result
 
 #ifdef _WIN32
 #include <ws2tcpip.h>   // addrinfo
@@ -13,15 +10,8 @@
 #include <netdb.h>      // addrinfo
 #endif
 
-#include <string>       // std::string
-#include <utility>      // std::pair
-#include <variant>      // std::variant
-
 namespace Network
 {
-    using FdPairResult = std::variant<FdPair, Result>;
-    using FdResult = std::variant<Fd, Result>;
-
     struct Socket :
         public Hints,
         public Host
@@ -40,12 +30,6 @@ namespace Network
 
     extern std::ostream& operator<<(std::ostream& os,
                                     const Socket& sock);
-    extern FdResult get_socket(const Socket& sock,
-                               bool verbose = false);
-#ifndef _WIN32
-    extern FdPairResult get_socketpair(const Socket& sock,
-                                       bool verbose = false);
-#endif
 }
 
 #endif
