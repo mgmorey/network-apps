@@ -3,8 +3,8 @@
 
 #include "network/endpoint.h"       // Endpoint
 #include "network/fdresultvector.h" // Fd, FdResult, FdResultVector
-#include "network/hints.h"          // Hints
 #include "network/get-socket.h"     // FdResult, get_socket()
+#include "network/hints.h"          // Hints
 #include "network/result.h"         // Result
 #include "network/socket.h"         // Socket
 #include "network/types.h"          // SockAddr
