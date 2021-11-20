@@ -2,6 +2,7 @@
                                     // Service, SocketVectorResult,
                                     // get_sockets()
 #include "network/addrinfo.h"       // AddrInfo
+#include "network/get-hostname.h"   // HostnameResult, get_hostname()
 #include "network/overload.h"       // Overload
 
 #include <iterator>     // std::back_inserter()

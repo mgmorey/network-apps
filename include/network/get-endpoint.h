@@ -1,5 +1,5 @@
-#ifndef NETWORK_ENDPOINTRESULT_H
-#define NETWORK_ENDPOINTRESULT_H
+#ifndef NETWORK_GET_ENDPOINT_H
+#define NETWORK_GET_ENDPOINT_H
 
 #include "network/endpointresult.h" // Endpoint
 #include "network/types.h"          // SockAddr

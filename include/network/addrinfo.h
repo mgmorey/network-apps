@@ -3,7 +3,6 @@
 
 #include "network/endpoint.h"       // Endpoint
 #include "network/hints.h"          // Hints
-#include "network/hostname.h"       // get_hostname()
 #include "network/result.h"         // Result
 #include "network/types.h"          // Hostname, Service
 

@@ -1,0 +1,13 @@
+#ifndef NETWORK_GET_HOSTNAME_H
+#define NETWORK_GET_HOSTNAME_H
+
+#include "network/hostnameresult.h" // HostnameResult
+
+#include <optional>     // std::nullopt
+
+namespace Network
+{
+    extern HostnameResult get_hostname(const Hostname& host = std::nullopt);
+}
+
+#endif

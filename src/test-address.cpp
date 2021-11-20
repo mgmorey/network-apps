@@ -1,7 +1,6 @@
 #include "network/network.h"        // Address, AddrInfo, Hints,
                                     // Hostname, Overload, Service,
-                                    // get_endpoint(), get_hostname(),
-                                    // get_hosts()
+                                    // get_endpoint(), get_hosts()
 
 #ifdef _WIN32
 #include <getopt.h>     // getopt(), optarg, opterr, optind, optopt

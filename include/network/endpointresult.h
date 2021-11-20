@@ -1,5 +1,5 @@
-#ifndef NETWORK_GET_ENDPOINT_H
-#define NETWORK_GET_ENDPOINT_H
+#ifndef NETWORK_ENDPOINTRESULT_H
+#define NETWORK_ENDPOINTRESULT_H
 
 #include "network/endpoint.h"       // Endpoint, Result
 

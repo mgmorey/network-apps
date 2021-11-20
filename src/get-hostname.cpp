@@ -1,4 +1,4 @@
-#include "network/hostname.h"       // Hostname, HostnameResult,
+#include "network/get-hostname.h"   // Hostname, HostnameResult,
                                     // get_hostname()
 #include "network/buffer.h"         // Buffer
 #include "network/error.h"          // format_error(),

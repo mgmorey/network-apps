@@ -2,6 +2,7 @@
                                     // HostVector, HostVectorResult,
                                     // Result, get_hosts()
 #include "network/addrinfo.h"       // AddrInfo
+#include "network/get-hostname.h"   // HostnameResult, get_hostname()
 #include "network/overload.h"       // overload
 
 #include <iterator>     // std::back_inserter()

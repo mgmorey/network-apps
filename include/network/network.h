@@ -7,8 +7,8 @@
 #include "network/close.h"          // close()
 #include "network/connect.h"        // connect()
 #include "network/context.h"        // Context
-#include "network/get-endpoint.h"   // Endpoint, EndpointResult,
-                                    // get_endpoint()
+#include "network/get-endpoint.h"   // EndpointResult, get_endpoint()
+#include "network/get-hostname.h"   // HostnameResult, get_hostname()
 #include "network/get-hosts.h"      // HostVectorResult, get_hosts()
 #include "network/get-socket.h"     // Fd, FdResult, Socket,
                                     // get_socket()
@@ -18,7 +18,6 @@
                                     // get_sockets()
 #include "network/hints.h"          // Hints
 #include "network/host.h"           // Host
-#include "network/hostname.h"       // Hostname, get_hostname()
 #include "network/overload.h"       // Overload
 #include "network/peername.h"       // SockAddrResult, get_peername()
 #include "network/result.h"         // Result
