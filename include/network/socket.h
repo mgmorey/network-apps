@@ -2,7 +2,7 @@
 #define NETWORK_SOCKET_H
 
 #include "network/fd.h"             // Fd
-#include "network/fdarray.h"        // FdArray
+#include "network/fdpair.h"         // FdPair
 #include "network/hints.h"          // Hints
 #include "network/host.h"           // Host
 #include "network/result.h"         // Result
@@ -19,7 +19,7 @@
 
 namespace Network
 {
-    using FdArrayResult = std::variant<FdArray, Result>;
+    using FdPairResult = std::variant<FdPair, Result>;
     using FdResult = std::variant<Fd, Result>;
 
     struct Socket :
@@ -43,8 +43,8 @@ namespace Network
     extern FdResult get_socket(const Socket& sock,
                                bool verbose = false);
 #ifndef _WIN32
-    extern FdArrayResult get_socketpair(const Socket& sock,
-                                        bool verbose = false);
+    extern FdPairResult get_socketpair(const Socket& sock,
+                                       bool verbose = false);
 #endif
 }
 

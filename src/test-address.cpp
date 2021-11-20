@@ -161,7 +161,7 @@ namespace TestAddress
         const auto description {get_description(hints)};
         const auto hosts_result {Network::get_hosts(host, &hints)};
         std::visit(Network::Overload {
-                [&](const Network::Hosts& hosts) {
+                [&](const Network::HostVector& hosts) {
                     if (hosts.empty()) {
                         return;
                     }

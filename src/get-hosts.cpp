@@ -1,6 +1,6 @@
-#include "network/hosts.h"          // Hints, Host, Hosts, Hostname,
-                                    // HostsResult, Result,
-                                    // get_hosts()
+#include "network/get-hosts.h"      // Hints, Host, Hostname,
+                                    // HostVector, HostVectorResult,
+                                    // Result, get_hosts()
 #include "network/addrinfo.h"       // AddrInfo
 #include "network/overload.h"       // overload
 
@@ -9,15 +9,15 @@
 #include <string>       // std::string
 #include <variant>      // std::visit()
 
-Network::HostsResult Network::get_hosts(const Network::Hostname& host,
-                                        const Network::Hints* hints,
-                                        bool verbose)
+Network::HostVectorResult Network::get_hosts(const Network::Hostname& host,
+                                             const Network::Hints* hints,
+                                             bool verbose)
 {
-    HostsResult hosts_result;
+    HostVectorResult hosts_result;
     const auto hostname_result {get_hostname(host)};
     std::visit(Overload {
             [&](const std::string& hostname) {
-                Hosts hosts;
+                HostVector hosts;
                 const auto result {
                     AddrInfo::insert(hostname,
                                      std::nullopt,

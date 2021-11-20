@@ -1,5 +1,5 @@
-#ifndef NETWORK_FDARRAY_H
-#define NETWORK_FDARRAY_H
+#ifndef NETWORK_FDPAIR_H
+#define NETWORK_FDPAIR_H
 
 #include "network/fd.h"             // Fd
 
@@ -7,7 +7,7 @@
 
 namespace Network
 {
-    using FdArray = std::array<Fd, 2>;
+    using FdPair = std::array<Fd, 2>;
 }
 
 #endif

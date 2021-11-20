@@ -10,16 +10,17 @@
 #include "network/endpoint.h"       // Endpoint, EndpointResult,
                                     // get_endpoint()
 #include "network/fd.h"             // Fd, fd_null
-#include "network/fdarray.h"        // FdArray
+#include "network/fdpair.h"         // FdPair
 #include "network/hints.h"          // Hints
 #include "network/host.h"           // Host
 #include "network/hostname.h"       // get_hostname()
-#include "network/hosts.h"          // Hosts, HostsResult, get_hosts()
+#include "network/hostvector.h"     // HostVector
+#include "network/get-hosts.h"      // HostVectorResult, get_hosts()
 #include "network/overload.h"       // Overload
 #include "network/peername.h"       // SockAddrResult, get_peername()
 #include "network/result.h"         // Result
 #include "network/sockaddr.h"       // get_sockaddr()
-#include "network/socket.h"         // FdArray, FdArrayResult,
+#include "network/socket.h"         // FdPair, FdPairResult,
                                     // FdResult, Socket
 #include "network/sockets.h"        // FdResults, Sockets,
                                     // SocketsResult, get_sockets()

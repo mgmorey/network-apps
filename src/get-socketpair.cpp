@@ -1,6 +1,6 @@
 #ifndef _WIN32
 
-#include "network/socket.h"     // FdArray, FdArrayResult, Result,
+#include "network/socket.h"     // FdPair, FdPairResult, Result,
                                 // Socket, fd_null, fd_type,
                                 // operator<<()
 #include "network/error.h"      // format_error(), get_last_error(),
@@ -16,8 +16,8 @@
 static const std::string delim {", "};
 static const int tab {0};
 
-extern Network::FdArrayResult Network::get_socketpair(const Socket& sock,
-                                                      bool verbose)
+extern Network::FdPairResult Network::get_socketpair(const Socket& sock,
+                                                     bool verbose)
 {
     Result result;
     std::array<fd_type, 2> fds {fd_null, fd_null};
@@ -57,7 +57,7 @@ extern Network::FdArrayResult Network::get_socketpair(const Socket& sock,
         return Result(error, oss.str());
     }
 
-    return FdArray {fds[0], fds[1]};
+    return FdPair {fds[0], fds[1]};
 }
 
 #endif
