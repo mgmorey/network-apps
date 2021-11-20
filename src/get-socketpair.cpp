@@ -1,11 +1,11 @@
 #ifndef _WIN32
 
-#include "network/socket.h"     // FdPair, FdPairResult, Result,
-                                // Socket, fd_null, fd_type,
-                                // operator<<()
-#include "network/error.h"      // format_error(), get_last_error(),
-                                // set_last_error()
-#include "network/format.h"     // Format
+#include "network/get-socketpair.h" // FdPair, FdPairResult, Result,
+                                    // Socket, fd_null, fd_type,
+                                    // get_socketpair(), operator<<()
+#include "network/error.h"          // format_error(), get_last_error(),
+                                    // set_last_error()
+#include "network/format.h"         // Format
 
 #include <sys/socket.h> // socketpair()
 

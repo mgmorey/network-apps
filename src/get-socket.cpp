@@ -7,7 +7,7 @@
 #ifdef _WIN32
 #include <winsock2.h>       // socket()
 #else
-#include <sys/socket.h>     // socket(), socketpair()
+#include <sys/socket.h>     // socket()
 #endif
 
 #include <iostream>     // std::cerr, std::endl
