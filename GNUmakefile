@@ -58,13 +58,13 @@ sources = $(exec_sources) $(lib_sources)
 exec_sources = test-address.cpp test-bind.cpp test-connect.cpp	\
 test-hostname.cpp
 
-lib_sources = address.cpp addrinfo.cpp bind.cpp close.cpp connect.cpp	\
-context.cpp get-endpoint.cpp error.cpp family.cpp flags.cpp		\
-format.cpp hints.cpp host.cpp get-hostname.cpp get-hosts.cpp		\
-get-name.cpp get-socket.cpp get-socketpair.cpp get-sockets.cpp		\
-open-endpoint.cpp open-fd.cpp get-peername.cpp optionalstring.cpp	\
-protocol.cpp result.cpp sockaddr.cpp socket.cpp get-sockname.cpp	\
-socktype.cpp stream-address.cpp stream-addrinfo.cpp			\
+lib_sources = address.cpp addrinfo.cpp bind.cpp buffer.cpp close.cpp	\
+connect.cpp context.cpp get-endpoint.cpp error.cpp family.cpp		\
+flags.cpp format.cpp hints.cpp host.cpp get-hostname.cpp		\
+get-hosts.cpp get-name.cpp get-socket.cpp get-socketpair.cpp		\
+get-sockets.cpp open-endpoint.cpp open-fd.cpp get-peername.cpp		\
+optionalstring.cpp protocol.cpp result.cpp sockaddr.cpp socket.cpp	\
+get-sockname.cpp socktype.cpp stream-address.cpp stream-addrinfo.cpp	\
 stream-bytestring.cpp stream-hints.cpp stream-optionalstring.cpp	\
 stream-socket.cpp
 
