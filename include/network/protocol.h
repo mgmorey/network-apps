@@ -1,7 +1,7 @@
 #ifndef NETWORK_PROTOCOL_H
 #define NETWORK_PROTOCOL_H
 
-#include "network/family.h"         // Family
+#include "network/family.h"         // Family, family_type
 #include "network/integer.h"        // Integer
 #include "network/socketargument.h" // socket_argument_type
 
