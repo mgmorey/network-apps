@@ -14,6 +14,7 @@
                         // std::strcpy(), std::strncpy()
 #include <iostream>     // std::cerr, std::endl
 
+static constexpr auto backlog_size {20};
 static constexpr auto radix {10};
 
 static int sock {-1};  // NOLINT
@@ -22,18 +23,16 @@ static void clean_up()
 {
     // Close the socket.
     if (sock >= 0) {
-        std::cerr << "Closing socket"
+        std::cerr << "Closing socket "
                   << sock
-                  << '.'
                   << std::endl;
         ::close(sock);
         sock = -1;
     }
 
     // Unlink the socket.
-    std::cerr << "Removing file"
+    std::cerr << "Removing file "
               << SOCKET_NAME
-              << '.'
               << std::endl;
     ::unlink(SOCKET_NAME);
 }
@@ -79,7 +78,6 @@ int main()
     // Prepare for accepting connections. The backlog size is set to
     // 20. So while one request is being processed other requests can
     // be waiting.
-    const auto backlog_size {20};
     error = ::listen(sock, backlog_size);
 
     if (error == -1) {

@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
                       sizeof addr);
 
     if (error == -1) {
-        std::cerr << "The server is down."
+        std::cerr << "Service is unavailable"
                   << std::endl;
         std::exit(EXIT_FAILURE);
     }
@@ -84,9 +84,8 @@ int main(int argc, char *argv[])
 
         // Ensure buffer is 0-terminated.
         buffer[sizeof buffer - 1] = '\0';
-        std::cerr << "Result = "
+        std::cerr << "Result: "
                   << buffer
-                  << '.'
                   << std::endl;
     }
 
