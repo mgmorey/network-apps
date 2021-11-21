@@ -1,5 +1,4 @@
-#include "network/sockname.h"   // Fd, SockAddrResult, get_sockname()
-#include "network/name.h"       // get_name()
+#include "network/get-sockname.h"   // Fd, SockAddrResult, get_sockname()
 
 #ifdef _WIN32
 #include <winsock2.h>       // getsockname()

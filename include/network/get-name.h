@@ -1,5 +1,5 @@
-#ifndef NETWORK_NAME_H
-#define NETWORK_NAME_H
+#ifndef NETWORK_GET_NAME_H
+#define NETWORK_GET_NAME_H
 
 #include "network/fd.h"             // Fd, fd_type
 #include "network/result.h"         // Result
