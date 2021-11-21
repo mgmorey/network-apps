@@ -67,7 +67,7 @@ int main(int argc, char *argv[])
         Network::Buffer buffer(BUFFER_SIZE);
 
         // Request result.
-        std::strcpy(buffer.data(), "END");
+        std::strncpy(buffer.data(), "END", buffer.size());
         error = ::write(sock, buffer.data(), std::strlen(buffer.data()) + 1);
 
         if (error == -1) {

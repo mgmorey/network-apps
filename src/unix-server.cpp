@@ -14,6 +14,8 @@
 #include <cstring>      // std::memset(), std::strcmp(),
                         // std::strcpy(), std::strncpy()
 #include <iostream>     // std::cerr, std::endl
+#include <sstream>      // std::ostringstream
+#include <string>       // std::string
 
 static constexpr auto backlog_size {20};
 static constexpr auto radix {10};
@@ -128,9 +130,11 @@ int main()
 
         if (!shutdown) {
             // Send sum.
-
-            std::sprintf(buffer.data(), "%ld", sum);
-            error = ::write(data_socket, buffer.data(), buffer.size());
+            std::ostringstream oss;
+            oss << sum
+                << '\0';
+            std::string str {oss.str()};
+            error = ::write(data_socket, str.data(), str.size());
 
             if (error == -1) {
                 std::perror("write");
