@@ -1,9 +1,8 @@
 #ifndef NETWORK_BIND_H
 #define NETWORK_BIND_H
 
-#include "network/open.h"           // Endpoint, Fd, FdResult,
-                                    // FdResultVector, Hints, Result,
-                                    // SockAddr
+#include "network/open.h"           // Endpoint, Fd, FdResultVector,
+                                    // Hints, Result, SockAddr
 
 namespace Network
 {
