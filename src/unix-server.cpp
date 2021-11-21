@@ -1,3 +1,4 @@
+#include "network/network.h"    // Buffer
 #include "unix-common.h"        // BUFFER_SIZE, SOCKET_NAME
 
 #include <sys/socket.h>         // SOCK_SEQPACKET, ::accept(),
@@ -39,10 +40,10 @@ static void clean_up()
 
 int main()
 {
+    Network::Buffer buffer(BUFFER_SIZE);
     sockaddr_un name {};
     long error {0};
     bool shutdown {false};
-    char buffer[BUFFER_SIZE] {};
 
     // Create local socket.
     sock = ::socket(AF_UNIX, SOCK_SEQPACKET, 0);
@@ -102,37 +103,34 @@ int main()
         for (;;) {
 
             // Wait for next data packet.
-            error = ::read(data_socket, buffer, sizeof buffer);
+            error = ::read(data_socket, buffer.data(), buffer.size());
 
             if (error == -1) {
                 std::perror("read");
                 std::exit(EXIT_FAILURE);
             }
 
-            // Ensure buffer is 0-terminated.
-            buffer[sizeof buffer - 1] = '\0';
-
             // Handle commands.
 
-            if (std::strncmp(buffer, "DOWN", sizeof buffer) == 0) {
+            if (std::strncmp(buffer.data(), "DOWN", buffer.size()) == 0) {
                 shutdown = true;
                 break;
             }
 
-            if (std::strncmp(buffer, "END", sizeof buffer) == 0) {
+            if (std::strncmp(buffer.data(), "END", buffer.size()) == 0) {
                 break;
             }
 
             // Add received summand.
-            const auto term {std::strtol(buffer, nullptr, radix)};
+            const auto term {std::strtol(buffer.data(), nullptr, radix)};
             sum += term;
         }
 
         if (!shutdown) {
             // Send sum.
 
-            std::sprintf(buffer, "%ld", sum);
-            error = ::write(data_socket, buffer, sizeof buffer);
+            std::sprintf(buffer.data(), "%ld", sum);
+            error = ::write(data_socket, buffer.data(), buffer.size());
 
             if (error == -1) {
                 std::perror("write");

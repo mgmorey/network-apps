@@ -1,3 +1,4 @@
+#include "network/network.h"    // Buffer
 #include "unix-common.h"        // BUFFER_SIZE, SOCKET_NAME
 
 #include <sys/socket.h>         // SOCK_SEQPACKET, ::connect(),
@@ -63,11 +64,11 @@ int main(int argc, char *argv[])
     }
 
     if (!shutdown) {
-        char buffer[BUFFER_SIZE] {};
+        Network::Buffer buffer(BUFFER_SIZE);
 
         // Request result.
-        std::strcpy(buffer, "END");
-        error = ::write(sock, buffer, std::strlen(buffer) + 1);
+        std::strcpy(buffer.data(), "END");
+        error = ::write(sock, buffer.data(), std::strlen(buffer.data()) + 1);
 
         if (error == -1) {
             std::perror("write");
@@ -75,15 +76,13 @@ int main(int argc, char *argv[])
         }
 
         // Receive result.
-        error = ::read(sock, buffer, sizeof buffer);
+        error = ::read(sock, buffer.data(), buffer.size());
 
         if (error == -1) {
             std::perror("read");
             std::exit(EXIT_FAILURE);
         }
 
-        // Ensure buffer is 0-terminated.
-        buffer[sizeof buffer - 1] = '\0';
         std::cerr << "Result: "
                   << buffer
                   << std::endl;
