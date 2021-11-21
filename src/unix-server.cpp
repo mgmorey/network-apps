@@ -112,7 +112,7 @@ int main()
             }
 
             // Ensure buffer is 0-terminated.
-            buffer[sizeof buffer - 1] = 0;
+            buffer[sizeof buffer - 1] = '\0';
 
             // Handle commands.
 

@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
     // Send arguments.
 
     for (int i = 1; i < argc; ++i) {
-        error = ::write(sock, argv[i], strlen(argv[i]) + 1);
+        error = ::write(sock, argv[i], std::strlen(argv[i]) + 1);
 
         if (error == -1) {
             std::perror("write");
@@ -67,7 +67,7 @@ int main(int argc, char *argv[])
 
         // Request result.
         std::strcpy(buffer, "END");
-        error = ::write(sock, buffer, strlen(buffer) + 1);
+        error = ::write(sock, buffer, std::strlen(buffer) + 1);
 
         if (error == -1) {
             std::perror("write");
@@ -83,7 +83,7 @@ int main(int argc, char *argv[])
         }
 
         // Ensure buffer is 0-terminated.
-        buffer[sizeof buffer - 1] = 0;
+        buffer[sizeof buffer - 1] = '\0';
         std::cerr << "Result = "
                   << buffer
                   << '.'
