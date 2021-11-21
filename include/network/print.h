@@ -3,7 +3,7 @@
 
 #include <iomanip>      // std::hex, std::setfill(), std::setw(),
                         // std::uppercase
-#include <ostream>      // std::ostream
+#include <ostream>      // std::ios, std::ostream
 
 namespace Network
 {
@@ -22,9 +22,9 @@ namespace Network
 
             for (const auto by : value) {
                 os << std::setfill('0')
-                    << std::setw(2)
-                    << std::uppercase
-                    << static_cast<int>(by);
+                   << std::setw(2)
+                   << std::uppercase
+                   << static_cast<int>(by);
             }
         }
 
