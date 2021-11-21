@@ -61,7 +61,7 @@ int main()
     name.sun_family = AF_UNIX;
     std::strncpy(name.sun_path, SOCKET_NAME, sizeof name.sun_path - 1);
     error = ::bind(sock, reinterpret_cast<const sockaddr*>(&name),
-                    sizeof name);
+                   sizeof name);
 
     if (error == -1) {
         std::perror("bind");
