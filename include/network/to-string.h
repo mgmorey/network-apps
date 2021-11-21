@@ -1,5 +1,5 @@
-#ifndef NETWORK_TOSTRING_H
-#define NETWORK_TOSTRING_H
+#ifndef NETWORK_TO_STRING_H
+#define NETWORK_TO_STRING_H
 
 #include <string>       // std::string
 
