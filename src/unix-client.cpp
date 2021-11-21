@@ -63,7 +63,7 @@ int main(int argc, char *argv[])
     }
 
     if (!shutdown) {
-        char buffer[BUFFER_SIZE];
+        char buffer[BUFFER_SIZE] {};
 
         // Request result.
         std::strcpy(buffer, "END");
