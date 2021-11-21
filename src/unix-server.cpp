@@ -14,18 +14,20 @@
                         // std::strcpy(), std::strncpy()
 #include <iostream>     // std::cerr, std::endl
 
-static int connection_socket = -1;  // NOLINT
+static constexpr auto radix {10};
+
+static int sock {-1};  // NOLINT
 
 static void clean_up()
 {
     // Close the socket.
-    if (connection_socket >= 0) {
+    if (sock >= 0) {
         std::cerr << "Closing socket"
-                  << connection_socket
+                  << sock
                   << '.'
                   << std::endl;
-        ::close(connection_socket);
-        connection_socket = -1;
+        ::close(sock);
+        sock = -1;
     }
 
     // Unlink the socket.
@@ -39,14 +41,14 @@ static void clean_up()
 int main()
 {
     sockaddr_un name {};
-    int down_flag = 0;
-    long ret = 0;
-    char buffer[BUFFER_SIZE];
+    long error {0};
+    bool shutdown {false};
+    char buffer[BUFFER_SIZE] {};
 
     // Create local socket.
-    connection_socket = ::socket(AF_UNIX, SOCK_SEQPACKET, 0);
+    sock = ::socket(AF_UNIX, SOCK_SEQPACKET, 0);
 
-    if (connection_socket == -1) {
+    if (sock == -1) {
         std::perror("socket");
         std::exit(EXIT_FAILURE);
     }
@@ -59,18 +61,17 @@ int main()
     // Bind socket to socket name.
     name.sun_family = AF_UNIX;
     std::strncpy(name.sun_path, SOCKET_NAME, sizeof name.sun_path - 1);
-    ret = ::bind(connection_socket,
-                 reinterpret_cast<const sockaddr*>(&name),
-                 sizeof name);
+    error = ::bind(sock, reinterpret_cast<const sockaddr*>(&name),
+                    sizeof name);
 
-    if (ret == -1) {
+    if (error == -1) {
         std::perror("bind");
         std::exit(EXIT_FAILURE);
     }
 
-    ret = std::atexit(clean_up);
+    error = std::atexit(clean_up);
 
-    if (ret == -1) {
+    if (error == -1) {
         std::perror("atexit");
         std::exit(EXIT_FAILURE);
     }
@@ -79,9 +80,9 @@ int main()
     // 20. So while one request is being processed other requests can
     // be waiting.
     const auto backlog_size {20};
-    ret = ::listen(connection_socket, backlog_size);
+    error = ::listen(sock, backlog_size);
 
-    if (ret == -1) {
+    if (error == -1) {
         std::perror("listen");
         std::exit(EXIT_FAILURE);
     }
@@ -91,21 +92,21 @@ int main()
         int data_socket = 0;
 
         // Wait for incoming connection.
-        data_socket = ::accept(connection_socket, nullptr, nullptr);
+        data_socket = ::accept(sock, nullptr, nullptr);
 
         if (data_socket == -1) {
             std::perror("accept");
             std::exit(EXIT_FAILURE);
         }
 
-        long result = 0;
+        long sum {0};
 
         for (;;) {
 
             // Wait for next data packet.
-            ret = ::read(data_socket, buffer, sizeof buffer);
+            error = ::read(data_socket, buffer, sizeof buffer);
 
-            if (ret == -1) {
+            if (error == -1) {
                 std::perror("read");
                 std::exit(EXIT_FAILURE);
             }
@@ -116,7 +117,7 @@ int main()
             // Handle commands.
 
             if (std::strncmp(buffer, "DOWN", sizeof buffer) == 0) {
-                down_flag = 1;
+                shutdown = true;
                 break;
             }
 
@@ -125,17 +126,17 @@ int main()
             }
 
             // Add received summand.
-            const auto radix {10};
-            result += std::strtol(buffer, nullptr, radix);
+            const auto term {std::strtol(buffer, nullptr, radix)};
+            sum += term;
         }
 
-        if (down_flag != 0) {
-            // Send result.
+        if (!shutdown) {
+            // Send sum.
 
-            std::sprintf(buffer, "%ld", result);
-            ret = ::write(data_socket, buffer, sizeof buffer);
+            std::sprintf(buffer, "%ld", sum);
+            error = ::write(data_socket, buffer, sizeof buffer);
 
-            if (ret == -1) {
+            if (error == -1) {
                 std::perror("write");
                 std::exit(EXIT_FAILURE);
             }
@@ -147,7 +148,7 @@ int main()
 
         // Quit on DOWN command.
 
-        if (down_flag != 0) {
+        if (shutdown) {
             break;
         }
     }

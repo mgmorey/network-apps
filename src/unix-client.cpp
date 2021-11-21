@@ -16,14 +16,14 @@
 int main(int argc, char *argv[])
 {
     sockaddr_un addr {};
-    int data_socket = 0;
-    int down_flag = 0;
-    long ret = 0;
+    long error {0};
+    bool shutdown {false};
+    int sock {0};
 
     // Create local socket.
-    data_socket = ::socket(AF_UNIX, SOCK_SEQPACKET, 0);
+    sock = ::socket(AF_UNIX, SOCK_SEQPACKET, 0);
 
-    if (data_socket == -1) {
+    if (sock == -1) {
         std::perror("socket");
         std::exit(EXIT_FAILURE);
     }
@@ -37,11 +37,10 @@ int main(int argc, char *argv[])
     addr.sun_family = AF_UNIX;
     std::strncpy(addr.sun_path, SOCKET_NAME, sizeof addr.sun_path - 1);
 
-    ret = ::connect(data_socket,
-                    reinterpret_cast<const sockaddr*>(&addr),
-                    sizeof addr);
+    error = ::connect(sock, reinterpret_cast<const sockaddr*>(&addr),
+                      sizeof addr);
 
-    if (ret == -1) {
+    if (error == -1) {
         std::cerr << "The server is down."
                   << std::endl;
         std::exit(EXIT_FAILURE);
@@ -50,35 +49,35 @@ int main(int argc, char *argv[])
     // Send arguments.
 
     for (int i = 1; i < argc; ++i) {
-        ret = ::write(data_socket, argv[i], strlen(argv[i]) + 1);
+        error = ::write(sock, argv[i], strlen(argv[i]) + 1);
 
-        if (ret == -1) {
+        if (error == -1) {
             std::perror("write");
             break;
         }
 
         if (std::strcmp(argv[1], "DOWN") == 0) {
-            down_flag = 1;
+            shutdown = true;
             break;
         }
     }
 
-    if (down_flag == 0) {
+    if (!shutdown) {
         char buffer[BUFFER_SIZE];
 
         // Request result.
         std::strcpy(buffer, "END");
-        ret = ::write(data_socket, buffer, strlen(buffer) + 1);
+        error = ::write(sock, buffer, strlen(buffer) + 1);
 
-        if (ret == -1) {
+        if (error == -1) {
             std::perror("write");
             std::exit(EXIT_FAILURE);
         }
 
         // Receive result.
-        ret = ::read(data_socket, buffer, sizeof buffer);
+        error = ::read(sock, buffer, sizeof buffer);
 
-        if (ret == -1) {
+        if (error == -1) {
             std::perror("read");
             std::exit(EXIT_FAILURE);
         }
@@ -92,5 +91,5 @@ int main(int argc, char *argv[])
     }
 
     // Close socket.
-    ::close(data_socket);
+    ::close(sock);
 }
