@@ -1,4 +1,4 @@
-#include "network/network.h"    // Buffer
+#include "network/network.h"    // Buffer, connect(), get_sockaddr()
 #include "unix-common.h"        // BUFFER_SIZE, SOCKET_NAME
 
 #include <sys/socket.h>         // SOCK_SEQPACKET, ::connect(),
