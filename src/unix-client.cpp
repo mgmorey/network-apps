@@ -16,30 +16,20 @@
 
 int main(int argc, char *argv[])
 {
-    sockaddr_un addr {};
-    long error {0};
     bool shutdown {false};
-    int sock {0};
 
     // Create local socket.
-    sock = ::socket(AF_UNIX, SOCK_SEQPACKET, 0);
+    Network::Fd sock {::socket(AF_UNIX, SOCK_SEQPACKET, 0)};
 
     if (sock == -1) {
         std::perror("socket");
         std::exit(EXIT_FAILURE);
     }
 
-    // For portability clear the whole structure, since some
-    // implementations have additional (nonstandard) fields in the
-    // structure.
-    std::memset(&addr, 0, sizeof addr);
-
     // Connect socket to socket address.
-    addr.sun_family = AF_UNIX;
-    std::strncpy(addr.sun_path, SOCKET_NAME, sizeof addr.sun_path - 1);
-
-    error = ::connect(sock, reinterpret_cast<const sockaddr*>(&addr),
-                      sizeof addr);
+    const auto sock_addr {Network::get_sockaddr(SOCKET_NAME)};
+    const auto sock_result {Network::connect(sock, sock_addr)};
+    auto error {sock_result.result()};
 
     if (error == -1) {
         std::cerr << "Service is unavailable"

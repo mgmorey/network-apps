@@ -16,11 +16,12 @@
 #include <iostream>     // std::cerr, std::endl
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
+#include <variant>      // std::get(), std::holds_alternative()
 
 static constexpr auto backlog_size {20};
 static constexpr auto radix {10};
 
-static int sock {-1};  // NOLINT
+static Network::Fd sock;  // NOLINT
 
 static void clean_up()
 {
@@ -29,8 +30,7 @@ static void clean_up()
         std::cerr << "Closing socket "
                   << sock
                   << std::endl;
-        ::close(sock);
-        sock = -1;
+        sock = Network::close(sock);
     }
 
     // Unlink the socket.
@@ -43,8 +43,6 @@ static void clean_up()
 int main()
 {
     Network::Buffer buffer(BUFFER_SIZE);
-    sockaddr_un name {};
-    long error {0};
     bool shutdown {false};
 
     // Create local socket.
@@ -55,16 +53,10 @@ int main()
         std::exit(EXIT_FAILURE);
     }
 
-    // For portability clear the whole structure, since some
-    // implementations have additional (nonstandard) fields in the
-    // structure.
-    std::memset(&name, 0, sizeof name);
-
     // Bind socket to socket name.
-    name.sun_family = AF_UNIX;
-    std::strncpy(name.sun_path, SOCKET_NAME, sizeof name.sun_path - 1);
-    error = ::bind(sock, reinterpret_cast<const sockaddr*>(&name),
-                   sizeof name);
+    const auto sock_addr {Network::get_sockaddr(SOCKET_NAME)};
+    const auto sock_result {Network::bind(sock, sock_addr)};
+    auto error {sock_result.result()};
 
     if (error == -1) {
         std::perror("bind");
