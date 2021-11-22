@@ -30,6 +30,8 @@ namespace Network
         friend std::ostream& operator<<(std::ostream& os, Fd fd);
 
     public:
+        Fd() = default;
+
         // cppcheck-suppress noExplicitConstructor
         // NOLINTNEXTLINE
         Fd(fd_type t_fd) :
