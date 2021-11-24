@@ -19,11 +19,12 @@ namespace Network
                const std::string& key = "");
 
     private:
-        static constexpr auto m_delimiter_default = ",";
-        static constexpr auto m_indent_default = -1;
+        static constexpr auto m_delimiter_default {","};
+        static constexpr auto m_indent_default {-1};
+
+        std::string m_delimiter {m_delimiter_default};
+        int m_indent {m_indent_default};
         std::string m_value;
-        std::string m_delimiter;
-        int m_indent;
     };
 
     extern std::ostream& operator<<(std::ostream& os,
