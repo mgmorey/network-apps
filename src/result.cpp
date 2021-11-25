@@ -2,10 +2,17 @@
 
 #include <ostream>      // std::ostream
 #include <string>       // std::string
+#include <utility>      // std::utility
 
 Network::Result::Result(result_type t_result, const std::string& t_string) :
     m_result(t_result),
     m_string(t_string)
+{
+}
+
+Network::Result::Result(result_type t_result, std::string&& t_string) :
+    m_result(t_result),
+    m_string(std::move(t_string))
 {
 }
 

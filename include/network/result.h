@@ -12,6 +12,7 @@ namespace Network
     {
         Result() = default;
         Result(result_type t_result, const std::string& t_string);
+        Result(result_type t_result, std::string&& t_string);
         operator bool() const;  // NOLINT
         [[nodiscard]] result_type result() const;
         [[nodiscard]] std::string string() const;
