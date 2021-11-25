@@ -25,6 +25,7 @@
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <string>       // std::string
+#include <utility>      // std::move()
 #include <variant>      // std::get(), std::holds_alternative,
                         // std::visit()
 #include <vector>       // std::vector
@@ -39,11 +40,11 @@ namespace TestConnect
     class Test
     {
     public:
-        Test(const Network::Endpoint& t_endpoint,
-             const Network::Hostname& t_hostname,
+        Test(Network::Endpoint t_endpoint,
+             Network::Hostname t_hostname,
              std::ostream& t_os) :
-            m_endpoint(t_endpoint),
-            m_hostname(t_hostname),
+            m_endpoint(std::move(t_endpoint)),
+            m_hostname(std::move(t_hostname)),
             m_os(t_os)
         {
         }

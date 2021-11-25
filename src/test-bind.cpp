@@ -26,6 +26,7 @@
 #include <string>       // std::string
 #include <variant>      // std::get(), std::holds_alternative(),
                         // std::visit()
+#include <utility>      // std::move()
 #include <vector>       // std::vector
 
 namespace TestBind
@@ -38,9 +39,8 @@ namespace TestBind
     class Test
     {
     public:
-        Test(const Network::Endpoint& t_endpoint,
-             std::ostream& t_os) :
-            m_endpoint(t_endpoint),
+        Test(Network::Endpoint t_endpoint, std::ostream& t_os) :
+            m_endpoint(std::move(t_endpoint)),
             m_os(t_os)
         {
         }
