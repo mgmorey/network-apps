@@ -1,22 +1,10 @@
 #include "network/format.h"     // Format, std::ostream, std::string
 
-Network::Format::Format(const std::string& t_key) :
-    m_value(t_key)
-{
-}
-
-Network::Format::Format(int t_indent, const std::string& t_key) :
-    m_indent(t_indent),
-    m_value(t_key)
-{
-}
-
-Network::Format::Format(const std::string& t_delimiter,
-                        int t_indent,
+Network::Format::Format(const std::string& t_delimiter, int t_indent,
                         const std::string& t_key) :
     m_delimiter(t_delimiter),
     m_indent(t_indent),
-    m_value(t_key)
+    m_key(t_key)
 {
 }
 
@@ -32,8 +20,8 @@ std::ostream& Network::operator<<(std::ostream& os,
         }
     }
 
-    if (!format.m_value.empty()) {
-        os << format.m_value
+    if (!format.m_key.empty()) {
+        os << format.m_key
            << '=';
     }
 
