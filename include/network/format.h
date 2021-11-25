@@ -13,16 +13,16 @@ namespace Network
                                         const Format& format);
 
     public:
-        explicit Format(const std::string& t_key) :
+        explicit Format(std::string t_key) :
             Format(m_delimiter_default,
                    m_indent_default,
-                   t_key) {}
-        explicit Format(int t_indent, const std::string& t_key = "") :
+                   std::move(t_key)) {}
+        explicit Format(int t_indent, std::string t_key = "") :
             Format(m_delimiter_default,
                    t_indent,
-                   t_key) {}
-        Format(const std::string& t_delimiter, int indent,
-               const std::string& key = "");
+                   std::move(t_key)) {}
+        Format(std::string t_delimiter, int indent,
+               std::string key = "");
 
     private:
         static constexpr auto m_delimiter_default {","};

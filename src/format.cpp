@@ -1,10 +1,12 @@
 #include "network/format.h"     // Format, std::ostream, std::string
 
-Network::Format::Format(const std::string& t_delimiter, int t_indent,
-                        const std::string& t_key) :
-    m_delimiter(t_delimiter),
+#include <utility>      // std::move()
+
+Network::Format::Format(std::string t_delimiter, int t_indent,
+                        std::string t_key) :
+    m_delimiter(std::move(t_delimiter)),
     m_indent(t_indent),
-    m_key(t_key)
+    m_key(std::move(t_key))
 {
 }
 
