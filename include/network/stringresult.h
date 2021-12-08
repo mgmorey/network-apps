@@ -3,6 +3,7 @@
 
 #include "network/result.h"         // Result
 
+#include <string>       // std::string
 #include <variant>      // std::variant
 
 namespace Network
