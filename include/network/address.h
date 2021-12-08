@@ -1,10 +1,7 @@
 #ifndef NETWORK_ADDRESS_H
 #define NETWORK_ADDRESS_H
 
-#include "network/family.h"         // Family
-#include "network/fd.h"             // Fd
-#include "network/result.h"         // Result
-#include "network/socklen.h"        // socklen_type
+#include "network/family.h"         // family_type
 #include "network/types.h"          // SockAddr
 
 #ifdef _WIN32
@@ -16,7 +13,7 @@
 #include <sys/un.h>         // sockaddr_un
 #endif
 
-#include <cstddef>      // offsetof(), std::byte, std::size_t
+#include <cstddef>      // offsetof()
 #include <ostream>      // std::ostream
 #include <string>       // std::string
 
