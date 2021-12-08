@@ -14,10 +14,8 @@
 #include <algorithm>    // std::for_each()
 #include <cstddef>      // std::ptrdiff_t
 #include <iostream>     // std::cerr, std::endl
-#include <iterator>     // std::back_inserter(),
-                        // std::input_iterator_tag
+#include <iterator>     // std::input_iterator_tag
 #include <ostream>      // std::ostream
-#include <string>       // std::string
 
 namespace Network
 {
