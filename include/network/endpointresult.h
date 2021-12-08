@@ -1,7 +1,8 @@
 #ifndef NETWORK_ENDPOINTRESULT_H
 #define NETWORK_ENDPOINTRESULT_H
 
-#include "network/endpoint.h"       // Endpoint, Result
+#include "network/endpoint.h"       // Endpoint
+#include "network/result.h"         // Result
 
 #include <variant>      // std::variant
 
