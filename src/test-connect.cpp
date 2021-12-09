@@ -20,6 +20,7 @@
 #endif
 
 #include <algorithm>    // std::for_each()
+#include <cassert>      // assert()
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
@@ -168,6 +169,7 @@ namespace TestConnect
                     const auto socket_results {
                         Network::connect(endpoint, &hints, verbose)
                     };
+                    assert(!socket_results.empty());
                     std::for_each(socket_results.begin(), socket_results.end(),
                                   Test(endpoint, hostname, std::cout));
                 },
