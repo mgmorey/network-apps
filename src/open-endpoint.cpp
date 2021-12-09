@@ -19,6 +19,7 @@ Network::open(const OpenHandler& handler,
               const Hints* hints,
               bool verbose)
 {
+    FdResultVector results;
     const auto lambda = [&](const Socket& sock) {
         auto socket_result {get_socket(sock, verbose)};
         std::visit(Overload {
@@ -39,7 +40,6 @@ Network::open(const OpenHandler& handler,
         return socket_result;
     };
     const auto sockets_result {get_sockets(endpoint, hints, verbose)};
-    FdResultVector results;
     std::visit(Overload {
             [&](const SocketVector& sockets) {
                 std::transform(sockets.begin(), sockets.end(),
