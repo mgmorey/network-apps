@@ -8,7 +8,6 @@
 #include <netdb.h>      // freeaddrinfo(), getaddrinfo()
 #endif
 
-#include <cassert>      // assert()
 #include <iostream>     // std::cerr, std::endl
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
