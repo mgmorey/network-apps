@@ -1,7 +1,5 @@
 #include "network/hints.h"      // Hints, addrinfo
 
-#include <cassert>      // assert()
-
 Network::Hints::Hints(int t_family,
                       int t_socktype,
                       int t_protocol,
