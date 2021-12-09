@@ -13,7 +13,6 @@
 #include <sys/socket.h> // AF_INET, AF_INET6, AF_UNIX, htons()
 #endif
 
-#include <algorithm>    // std::min()
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
 #include <utility>      // std::move
