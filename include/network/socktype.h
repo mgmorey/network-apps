@@ -13,15 +13,15 @@ namespace Network
     class SockType :
         public Integer<socktype_type>
     {
-        friend std::ostream& operator<<(std::ostream& os,
-                                        const SockType& socktype);
+        friend auto operator<<(std::ostream& os,
+                               const SockType& socktype) -> std::ostream&;
 
     public:
         explicit SockType(socktype_type t_value);
     };
 
-    extern std::ostream& operator<<(std::ostream& os,
-                                    const SockType& socktype);
+    extern auto operator<<(std::ostream& os,
+                           const SockType& socktype) -> std::ostream&;
 }
 
 #endif

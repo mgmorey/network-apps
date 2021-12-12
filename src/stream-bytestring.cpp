@@ -4,8 +4,8 @@
 
 #include <ostream>      // std::ostream
 
-std::ostream& Network::operator<<(std::ostream& os,
-                                  const ByteString& string)
+auto Network::operator<<(std::ostream& os,
+                         const ByteString& string) -> std::ostream&
 {
     return print(os, string);
 }

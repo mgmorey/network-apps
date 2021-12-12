@@ -11,15 +11,15 @@ namespace Network
     public:
         explicit Buffer(std::string::size_type t_size);
         operator std::string() const;  // NOLINT
-        char* data();
-        [[nodiscard]] std::string::size_type size() const;
+        auto data() -> char*;
+        [[nodiscard]] auto size() const -> std::string::size_type;
 
     private:
         std::string m_value;
     };
 
-    extern std::ostream& operator<<(std::ostream& os,
-                                    const Buffer& buffer);
+    extern auto operator<<(std::ostream& os,
+                           const Buffer& buffer) -> std::ostream&;
 }
 
 #endif

@@ -31,7 +31,7 @@ namespace TestAddress
     static bool verbose {false};  // NOLINT
 
     template<typename T, typename U>
-    void erase(T& c, const U& value)
+    auto erase(T& c, const U& value) -> void
     {
         c.erase(std::remove(c.begin(),
                             c.end(),
@@ -40,7 +40,7 @@ namespace TestAddress
     }
 
     template<typename T>
-    void unique(T& c)
+    auto unique(T& c) -> void
     {
         c.erase(std::unique(c.begin(),
                             c.end()),
@@ -57,7 +57,7 @@ namespace TestAddress
         {
         }
 
-        void operator()(const Network::Host& t_host)
+        auto operator()(const Network::Host& t_host) -> void
         {
             const Network::Address address {t_host.address()};
             const auto endpoint_result {get_endpoint(address)};
@@ -79,13 +79,13 @@ namespace TestAddress
                 }, endpoint_result);
         }
 
-        static Network::EndpointResult
-        get_endpoint(const Network::SockAddr& addr)
+        static auto get_endpoint(const Network::SockAddr& addr) ->
+            Network::EndpointResult
         {
             return Network::get_endpoint(addr, 0, verbose);
         }
 
-        void print(const Values& values)
+        auto print(const Values& values) -> void
         {
             if (values.empty()) {
                 return;
@@ -113,7 +113,7 @@ namespace TestAddress
         std::ostream& m_os;
     };
 
-    static std::string get_description(const Network::Hints& hints)
+    static auto get_description(const Network::Hints& hints) -> std::string
     {
         switch (hints.family()) {
         case AF_INET:
@@ -125,7 +125,8 @@ namespace TestAddress
         }
     }
 
-    static std::vector<std::string> parse_arguments(int argc, char** argv)
+    static auto parse_arguments(int argc, char** argv) ->
+        std::vector<std::string>
     {
         std::vector<std::string> args {argv[0]};
         int ch {};
@@ -153,8 +154,8 @@ namespace TestAddress
         return args;
     }
 
-    static void test_host(const Network::Hostname& host,
-                          const Network::Hints& hints)
+    static auto test_host(const Network::Hostname& host,
+                          const Network::Hints& hints) -> void
     {
         const auto description {get_description(hints)};
         const auto hosts_result {Network::get_hosts(host, &hints)};
@@ -193,7 +194,7 @@ namespace TestAddress
             }, hosts_result);
     }
 
-    static void test_host(const Network::Hostname& host)
+    static auto test_host(const Network::Hostname& host) -> void
     {
         if (host.has_value()) {
             const auto flags {AI_CANONNAME};
@@ -211,7 +212,7 @@ namespace TestAddress
     }
 }
 
-int main(int argc, char* argv[])
+auto main(int argc, char* argv[]) -> int
 {
     try {
         const auto args {TestAddress::parse_arguments(argc, argv)};

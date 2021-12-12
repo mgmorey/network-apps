@@ -17,8 +17,8 @@ Network::SockType::SockType(socktype_type t_value) :
 {
 }
 
-std::ostream& Network::operator<<(std::ostream& os,
-                                  const SockType& socktype)
+auto Network::operator<<(std::ostream& os,
+                         const SockType& socktype) -> std::ostream&
 {
     static const std::vector<std::pair<int, const char*>> values {
 #ifdef SOCK_CLOEXEC
@@ -57,7 +57,7 @@ std::ostream& Network::operator<<(std::ostream& os,
         ++i;
     }
 
-    for(const auto& value : values) {
+    for (const auto& value : values) {
         if ((socktype & value.first) != 0) {
             if (i++ > 0) {
                 oss << " | ";

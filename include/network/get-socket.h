@@ -6,8 +6,8 @@
 
 namespace Network
 {
-    extern FdResult get_socket(const Socket& sock,
-                               bool verbose = false);
+    extern auto get_socket(const Socket& sock,
+                           bool verbose = false) -> FdResult;
 }
 
 #endif

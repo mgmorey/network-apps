@@ -19,8 +19,8 @@ Network::Flags::Flags(flags_type t_value) :
 {
 }
 
-std::ostream& Network::operator<<(std::ostream& os,
-                                  const Flags& flags)
+auto Network::operator<<(std::ostream& os,
+                         const Flags& flags) -> std::ostream&
 {
     static const std::vector<std::pair<int, const char*>> values {
         {AI_PASSIVE,                "AI_PASSIVE"},

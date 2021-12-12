@@ -13,13 +13,13 @@ namespace Network
 {
     using SocketVectorResult = std::variant<SocketVector, Result>;
 
-    extern SocketVectorResult get_sockets(const Endpoint& endpoint,
-                                          const Hints* hints,
-                                          bool verbose);
-    extern SocketVectorResult get_sockets(const Hostname& node,
-                                          const Service& serv,
-                                          const Hints* hints,
-                                          bool verbose);
+    extern auto get_sockets(const Endpoint& endpoint,
+                            const Hints* hints,
+                            bool verbose) -> SocketVectorResult;
+    extern auto get_sockets(const Hostname& node,
+                            const Service& serv,
+                            const Hints* hints,
+                            bool verbose) -> SocketVectorResult;
 }
 
 #endif

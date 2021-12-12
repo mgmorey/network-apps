@@ -13,11 +13,10 @@
 #include <iterator>     // std::back_inserter()
 #include <variant>      // std::visit()
 
-Network::FdResultVector
-Network::open(const OpenHandler& handler,
-              const Endpoint& endpoint,
-              const Hints* hints,
-              bool verbose)
+auto Network::open(const OpenHandler& handler,
+                   const Endpoint& endpoint,
+                   const Hints* hints,
+                   bool verbose) -> Network::FdResultVector
 {
     FdResultVector results;
     const auto lambda = [&](const Socket& sock) {

@@ -10,9 +10,9 @@
 #include <string>       // std::string
 #include <variant>      // std::visit()
 
-Network::HostVectorResult Network::get_hosts(const Network::Hostname& host,
-                                             const Network::Hints* hints,
-                                             bool verbose)
+auto Network::get_hosts(const Network::Hostname& host,
+                        const Network::Hints* hints,
+                        bool verbose) -> Network::HostVectorResult
 {
     HostVectorResult hosts_result;
     const auto hostname_result {get_hostname(host)};

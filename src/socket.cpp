@@ -20,26 +20,26 @@ Network::Socket::Socket(const addrinfo& t_addrinfo) :
 {
 }
 
-Network::Socket& Network::Socket::operator=(const addrinfo& t_addrinfo)
+auto Network::Socket::operator=(const addrinfo& t_addrinfo) -> Network::Socket&
 {
     static_cast<Hints>(*this) = t_addrinfo;
     static_cast<Host>(*this) = t_addrinfo;
     return *this;
 }
 
-bool Network::Socket::operator<(const Socket& t_sock) const
+auto Network::Socket::operator<(const Socket& t_sock) const -> bool
 {
     return (static_cast<Hints>(*this) < t_sock ||
             static_cast<Host>(*this) < t_sock);
 }
 
-bool Network::Socket::operator>(const Socket& t_sock) const
+auto Network::Socket::operator>(const Socket& t_sock) const -> bool
 {
     return (static_cast<Hints>(*this) > t_sock ||
             static_cast<Host>(*this) > t_sock);
 }
 
-bool Network::Socket::operator==(const Socket& t_sock) const
+auto Network::Socket::operator==(const Socket& t_sock) const -> bool
 {
     return (static_cast<Hints>(*this) == t_sock &&
             static_cast<Host>(*this) == t_sock);

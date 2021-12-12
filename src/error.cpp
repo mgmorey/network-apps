@@ -11,7 +11,7 @@
 #include <cstring>      // std::strerror()
 #endif
 
-std::string Network::format_error(error_type error)
+auto Network::format_error(error_type error) -> std::string
 {
 #ifdef _WIN32
     LPVOID buffer {nullptr};
@@ -38,7 +38,7 @@ std::string Network::format_error(error_type error)
 #endif
 }
 
-Network::error_type Network::get_last_error()
+auto Network::get_last_error() -> Network::error_type
 {
 #ifdef _WIN32
     return ::WSAGetLastError();
@@ -47,7 +47,7 @@ Network::error_type Network::get_last_error()
 #endif
 }
 
-Network::error_type Network::reset_last_error()
+auto Network::reset_last_error() -> Network::error_type
 {
     error_type error {0};
 #ifndef _WIN32

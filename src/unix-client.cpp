@@ -14,7 +14,7 @@
                         // std::strcpy(), std::strncpy()
 #include <iostream>     // std::cerr, std::endl
 
-int main(int argc, char *argv[])
+auto main(int argc, char *argv[]) -> int
 {
     bool shutdown {false};
 

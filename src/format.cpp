@@ -10,8 +10,8 @@ Network::Format::Format(std::string t_delimiter, int t_indent,
 {
 }
 
-std::ostream& Network::operator<<(std::ostream& os,
-                                  const Format& format)
+auto Network::operator<<(std::ostream& os,
+                         const Format& format) -> std::ostream&
 {
     if (format.m_indent >= 0) {
         os << format.m_delimiter;

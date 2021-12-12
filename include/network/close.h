@@ -5,8 +5,8 @@
 
 namespace Network
 {
-    extern fd_type close(fd_type fd);
-    extern Fd close(Fd fd);
+    extern auto close(fd_type fd) -> fd_type;
+    extern auto close(Fd fd) -> Fd;
 }
 
 #endif

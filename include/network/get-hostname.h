@@ -8,7 +8,8 @@
 
 namespace Network
 {
-    extern HostnameResult get_hostname(const Hostname& host = std::nullopt);
+    extern auto get_hostname(const Hostname& host = std::nullopt) ->
+        HostnameResult;
 }
 
 #endif

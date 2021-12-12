@@ -15,7 +15,8 @@ namespace TestHostname
 {
     static bool verbose {false};  // NOLINT
 
-    static std::vector<std::string> parse_arguments(int argc, char** argv)
+    static auto parse_arguments(int argc, char** argv) ->
+        std::vector<std::string>
     {
         std::vector<std::string> args {argv[0]};
         int ch {};
@@ -43,7 +44,7 @@ namespace TestHostname
         return args;
     }
 
-    static void test_hostname()
+    static auto test_hostname() -> void
     {
         const auto hostname_result {Network::get_hostname()};
         std::visit(Network::Overload {
@@ -61,7 +62,7 @@ namespace TestHostname
     }
 }
 
-int main(int argc, char* argv[])
+auto main(int argc, char* argv[]) -> int
 {
     try {
         const auto args {TestHostname::parse_arguments(argc, argv)};

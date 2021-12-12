@@ -18,13 +18,13 @@ Network::Protocol::Protocol(family_type t_family, protocol_type t_value) :
 {
 }
 
-Network::Family Network::Protocol::family() const
+auto Network::Protocol::family() const -> Network::Family
 {
     return m_family;
 }
 
-std::ostream& Network::operator<<(std::ostream& os,
-                                  const Protocol& protocol)
+auto Network::operator<<(std::ostream& os,
+                         const Protocol& protocol) -> std::ostream&
 {
     const auto family {static_cast<int>(protocol.family())};
 

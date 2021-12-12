@@ -2,8 +2,8 @@
 
 #include <ostream>      // std::ostream
 
-std::ostream& Network::operator<<(std::ostream& os,
-                                  const OptionalString& string)
+auto Network::operator<<(std::ostream& os,
+                         const OptionalString& string) -> std::ostream&
 {
     if (string.has_value()) {
         os << '"' << string.value() << '"';

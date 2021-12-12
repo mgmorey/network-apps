@@ -13,15 +13,15 @@ namespace Network
     class Flags :
         public Integer<flags_type>
     {
-        friend std::ostream& operator<<(std::ostream& os,
-                                        const Flags& flags);
+        friend auto operator<<(std::ostream& os,
+                               const Flags& flags) -> std::ostream&;
 
     public:
         explicit Flags(flags_type t_value);
     };
 
-    extern std::ostream& operator<<(std::ostream& os,
-                                    const Flags& flags);
+    extern auto operator<<(std::ostream& os,
+                           const Flags& flags) -> std::ostream&;
 }
 
 #endif

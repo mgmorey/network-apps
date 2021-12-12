@@ -6,12 +6,12 @@
 
 namespace Network
 {
-    extern Result connect(Fd fd,
-                          const SockAddr& addr,
-                          bool verbose = false);
-    extern FdResultVector connect(const Endpoint& endpoint,
-                                  const Hints* hints = nullptr,
-                                  bool verbose = false);
+    extern auto connect(Fd fd,
+                        const SockAddr& addr,
+                        bool verbose = false) -> Result;
+    extern auto connect(const Endpoint& endpoint,
+                        const Hints* hints = nullptr,
+                        bool verbose = false) -> FdResultVector;
 }
 
 #endif

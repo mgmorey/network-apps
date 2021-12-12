@@ -49,7 +49,7 @@ namespace TestConnect
         {
         }
 
-        void operator()(const Network::FdResult& t_socket_result)
+        auto operator()(const Network::FdResult& t_socket_result) -> void
         {
             std::visit(Network::Overload {
                     [&](Network::Fd fd) {
@@ -62,7 +62,8 @@ namespace TestConnect
                 }, t_socket_result);
         }
 
-        static Network::SockAddrResult get_peeraddr(const Network::Fd& t_fd)
+        static auto get_peeraddr(const Network::Fd& t_fd) ->
+            Network::SockAddrResult
         {
             auto peername_result {Network::get_peername(t_fd, verbose)};
             std::visit(Network::Overload {
@@ -76,7 +77,8 @@ namespace TestConnect
             return peername_result;
         }
 
-        static Network::SockAddrResult get_sockaddr(const Network::Fd& t_fd)
+        static auto get_sockaddr(const Network::Fd& t_fd) ->
+            Network::SockAddrResult
         {
             auto sockname_result {Network::get_sockname(t_fd, verbose)};
             std::visit(Network::Overload {
@@ -90,7 +92,7 @@ namespace TestConnect
             return sockname_result;
         }
 
-        void test_socket(const Network::Fd& t_fd)
+        auto test_socket(const Network::Fd& t_fd) -> void
         {
             const auto host {m_endpoint.first};
             const auto serv {m_endpoint.second};
@@ -132,7 +134,8 @@ namespace TestConnect
         std::ostream& m_os;
     };
 
-    static std::vector<std::string> parse_arguments(int argc, char** argv)
+    static auto parse_arguments(int argc, char** argv) ->
+        std::vector<std::string>
     {
         std::vector<std::string> args {argv[0]};
         int ch {};
@@ -160,8 +163,8 @@ namespace TestConnect
         return args;
     }
 
-    static void test_connect(const Network::Endpoint& endpoint,
-                             const Network::Hints& hints)
+    static auto test_connect(const Network::Endpoint& endpoint,
+                             const Network::Hints& hints) -> void
     {
         const auto hostname_result {Network::get_hostname()};
         std::visit(Network::Overload {
@@ -169,7 +172,6 @@ namespace TestConnect
                     const auto socket_results {
                         Network::connect(endpoint, &hints, verbose)
                     };
-                    assert(!socket_results.empty());
                     std::for_each(socket_results.begin(), socket_results.end(),
                                   Test(endpoint, hostname, std::cout));
                 },
@@ -182,7 +184,7 @@ namespace TestConnect
     }
 }
 
-int main(int argc, char* argv[])
+auto main(int argc, char* argv[]) -> int
 {
     static const Network::Hints hints(AF_UNSPEC,
                                       SOCK_STREAM,

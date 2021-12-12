@@ -15,18 +15,18 @@ Network::Result::operator bool() const
     return m_result != 0 || !m_string.empty();
 }
 
-Network::result_type Network::Result::result() const
+auto Network::Result::result() const -> Network::result_type
 {
     return m_result;
 }
 
-std::string Network::Result::string() const
+auto Network::Result::string() const -> std::string
 {
     return m_string;
 }
 
-std::ostream& Network::operator<<(std::ostream& os,
-                                  const Result& result)
+auto Network::operator<<(std::ostream& os,
+                         const Result& result) -> std::ostream&
 {
     return os << result.string();
 }

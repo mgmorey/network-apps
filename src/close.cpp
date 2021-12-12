@@ -6,7 +6,7 @@
 #include <unistd.h>     // close()
 #endif
 
-Network::fd_type Network::close(fd_type fd)
+auto Network::close(fd_type fd) -> Network::fd_type
 {
     if (fd != fd_null) {
 #ifdef _WIN32
@@ -19,7 +19,7 @@ Network::fd_type Network::close(fd_type fd)
     return fd_null;
 }
 
-Network::Fd Network::close(Fd fd)
+auto Network::close(Fd fd) -> Network::Fd
 {
     return {close(static_cast<fd_type>(fd))};
 }

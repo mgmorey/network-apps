@@ -22,14 +22,14 @@ namespace Network
                         int t_flags = 0);
         // cppcheck-suppress noExplicitConstructor
         Socket(const addrinfo& t_addrinfo);  // NOLINT
-        Socket& operator=(const addrinfo& t_addrinfo);
-        bool operator<(const Socket& t_sock) const;
-        bool operator>(const Socket& t_sock) const;
-        bool operator==(const Socket& t_sock) const;
+        auto operator=(const addrinfo& t_addrinfo) -> Socket&;
+        auto operator<(const Socket& t_sock) const -> bool;
+        auto operator>(const Socket& t_sock) const -> bool;
+        auto operator==(const Socket& t_sock) const -> bool;
     };
 
-    extern std::ostream& operator<<(std::ostream& os,
-                                    const Socket& sock);
+    extern auto operator<<(std::ostream& os,
+                           const Socket& sock) -> std::ostream&;
 }
 
 #endif

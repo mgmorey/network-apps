@@ -3,8 +3,8 @@
 
 #include <ostream>      // std::ostream
 
-std::ostream& Network::operator<<(std::ostream& os,
-                                  const Hints& hints)
+auto Network::operator<<(std::ostream& os,
+                         const Hints& hints) -> std::ostream&
 {
     static const std::string delim {", "};
     static const int tab {6};

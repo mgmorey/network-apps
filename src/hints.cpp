@@ -19,7 +19,7 @@ Network::Hints::Hints(const addrinfo& t_addrinfo) :
 {
 }
 
-Network::Hints& Network::Hints::operator=(const addrinfo& t_addrinfo)
+auto Network::Hints::operator=(const addrinfo& t_addrinfo) -> Network::Hints&
 {
     m_flags = t_addrinfo.ai_flags;
     m_family = t_addrinfo.ai_family;
@@ -28,21 +28,21 @@ Network::Hints& Network::Hints::operator=(const addrinfo& t_addrinfo)
     return *this;
 }
 
-bool Network::Hints::operator<(const Hints& t_hints) const
+auto Network::Hints::operator<(const Hints& t_hints) const -> bool
 {
     return (m_protocol < t_hints.m_protocol ||
             m_socktype < t_hints.m_socktype ||
             m_family < t_hints.m_family);
 }
 
-bool Network::Hints::operator>(const Hints& t_hints) const
+auto Network::Hints::operator>(const Hints& t_hints) const -> bool
 {
     return (m_protocol > t_hints.m_protocol ||
             m_socktype > t_hints.m_socktype ||
             m_family > t_hints.m_family);
 }
 
-bool Network::Hints::operator==(const Hints& t_hints) const
+auto Network::Hints::operator==(const Hints& t_hints) const -> bool
 {
     return (m_protocol == t_hints.m_protocol &&
             m_socktype == t_hints.m_socktype &&
@@ -68,22 +68,22 @@ Network::Hints::operator addrinfo() const
     return ai;
 }
 
-Network::Flags Network::Hints::flags() const
+auto Network::Hints::flags() const -> Network::Flags
 {
     return Flags(m_flags);
 }
 
-Network::Family Network::Hints::family() const
+auto Network::Hints::family() const -> Network::Family
 {
     return Family(m_family);
 }
 
-Network::SockType Network::Hints::socktype() const
+auto Network::Hints::socktype() const -> Network::SockType
 {
     return SockType(m_socktype);
 }
 
-Network::Protocol Network::Hints::protocol() const
+auto Network::Hints::protocol() const -> Network::Protocol
 {
     return {m_family, m_protocol};
 }

@@ -7,8 +7,8 @@
 namespace Network
 {
 #ifndef _WIN32
-    extern FdPairResult get_socketpair(const Socket& sock,
-                                       bool verbose = false);
+    extern auto get_socketpair(const Socket& sock,
+                               bool verbose = false) -> FdPairResult;
 #endif
 }
 

@@ -28,44 +28,44 @@ namespace Network
 
         // cppcheck-suppress noExplicitConstructor
         Address(value_type t_value);  // NOLINT
-        Address& operator=(const value_type& t_value);
-        bool operator<(const Address& t_address) const;
-        bool operator>(const Address& t_address) const;
-        bool operator==(const Address& t_address) const;
+        auto operator=(const value_type& t_value) -> Address&;
+        auto operator<(const Address& t_address) const -> bool;
+        auto operator>(const Address& t_address) const -> bool;
+        auto operator==(const Address& t_address) const -> bool;
         operator value_type() const;  // NOLINT
-        [[nodiscard]] bool empty() const;
-        [[nodiscard]] family_type family() const;
-        [[nodiscard]] length_type length() const;
-        [[nodiscard]] port_type port() const;
-        [[nodiscard]] std::string text() const;
+        [[nodiscard]] auto empty() const -> bool;
+        [[nodiscard]] auto family() const -> family_type;
+        [[nodiscard]] auto length() const -> length_type;
+        [[nodiscard]] auto port() const -> port_type;
+        [[nodiscard]] auto text() const -> std::string;
 
     protected:
-        [[nodiscard]] const sockaddr* sa() const;
-        [[nodiscard]] value_type sa_data() const;
-        [[nodiscard]] family_type sa_family() const;
-        [[nodiscard]] length_type sa_length() const;
-        [[nodiscard]] std::string sa_text() const;
+        [[nodiscard]] auto sa() const -> const sockaddr*;
+        [[nodiscard]] auto sa_data() const -> value_type;
+        [[nodiscard]] auto sa_family() const -> family_type;
+        [[nodiscard]] auto sa_length() const -> length_type;
+        [[nodiscard]] auto sa_text() const -> std::string;
 
-        [[nodiscard]] const sockaddr_in* sin() const;
-        [[nodiscard]] in_addr sin_addr() const;
-        [[nodiscard]] family_type sin_family() const;
-        [[nodiscard]] length_type sin_length() const;
-        [[nodiscard]] port_type sin_port() const;
-        [[nodiscard]] std::string sin_text() const;
+        [[nodiscard]] auto sin() const -> const sockaddr_in*;
+        [[nodiscard]] auto sin_addr() const -> in_addr;
+        [[nodiscard]] auto sin_family() const -> family_type;
+        [[nodiscard]] auto sin_length() const -> length_type;
+        [[nodiscard]] auto sin_port() const -> port_type;
+        [[nodiscard]] auto sin_text() const -> std::string;
 
-        [[nodiscard]] const sockaddr_in6* sin6() const;
-        [[nodiscard]] in6_addr sin6_addr() const;
-        [[nodiscard]] family_type sin6_family() const;
-        [[nodiscard]] length_type sin6_length() const;
-        [[nodiscard]] port_type sin6_port() const;
-        [[nodiscard]] std::string sin6_text() const;
+        [[nodiscard]] auto sin6() const -> const sockaddr_in6*;
+        [[nodiscard]] auto sin6_addr() const -> in6_addr;
+        [[nodiscard]] auto sin6_family() const -> family_type;
+        [[nodiscard]] auto sin6_length() const -> length_type;
+        [[nodiscard]] auto sin6_port() const -> port_type;
+        [[nodiscard]] auto sin6_text() const -> std::string;
 
 #ifndef _WIN32
-        [[nodiscard]] const sockaddr_un* sun() const;
-        [[nodiscard]] family_type sun_family() const;
-        [[nodiscard]] length_type sun_length() const;
-        [[nodiscard]] value_type sun_path() const;
-        [[nodiscard]] std::string sun_text() const;
+        [[nodiscard]] auto sun() const -> const sockaddr_un*;
+        [[nodiscard]] auto sun_family() const -> family_type;
+        [[nodiscard]] auto sun_length() const -> length_type;
+        [[nodiscard]] auto sun_path() const -> value_type;
+        [[nodiscard]] auto sun_text() const -> std::string;
 #endif
 
     private:
@@ -81,8 +81,8 @@ namespace Network
         value_type m_value;
     };
 
-    extern std::ostream& operator<<(std::ostream& os,
-                                    const Address& address);
+    extern auto operator<<(std::ostream& os,
+                           const Address& address) -> std::ostream&;
 }
 
 #endif

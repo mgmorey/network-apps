@@ -24,8 +24,8 @@ namespace Network
 
     using SockAddrResult = std::variant<SockAddr, Result>;
 
-    extern SockAddrResult get_name(const GetNameHandler& handler, Fd fd,
-                                   bool verbose);
+    extern auto get_name(const GetNameHandler& handler, Fd fd,
+                         bool verbose) -> SockAddrResult;
 }
 
 #endif

@@ -17,9 +17,9 @@ namespace Network
         Context(const Context&&) = delete;
         explicit Context(bool t_verbose = false);
         ~Context();
-        Context& operator=(const Context&) = delete;
-        Context& operator=(const Context&&) = delete;
-        [[nodiscard]] Result result() const;
+        auto operator=(const Context&) -> Context& = delete;
+        auto operator=(const Context&&) -> Context& = delete;
+        [[nodiscard]] auto result() const -> Result;
 
     private:
 #ifdef _WIN32

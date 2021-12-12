@@ -1,4 +1,4 @@
-Checks:          'clang-diagnostic-*,clang-analyzer-*,*,-altera-*,-android-*,-bugprone-easily-swappable-parameters,-cert-err58-cpp,-clang-analyzer-alpha.*,-concurrency-mt-unsafe,-cppcoreguidelines-pro-bounds-array-to-pointer-decay,-cppcoreguidelines-pro-bounds-pointer-arithmetic,-cppcoreguidelines-pro-type-reinterpret-cast,-cppcoreguidelines-slicing,-fuchsia-*,-google-*,-hicpp-no-array-decay,-hicpp-signed-bitwise,-linuxkernel-*,-llvm-namespace-comment,-llvmlibc-*,-modernize-use-trailing-return-type,-objc-*,-openmp-*,-zircon-*'
+Checks:          'clang-diagnostic-*,clang-analyzer-*,*,-altera-*,-android-*,-bugprone-easily-swappable-parameters,-cert-err58-cpp,-clang-analyzer-alpha.*,-concurrency-mt-unsafe,-cppcoreguidelines-pro-bounds-array-to-pointer-decay,-cppcoreguidelines-pro-bounds-pointer-arithmetic,-cppcoreguidelines-pro-type-reinterpret-cast,-cppcoreguidelines-slicing,-fuchsia-*,-google-*,-hicpp-no-array-decay,-hicpp-signed-bitwise,-linuxkernel-*,-llvm-namespace-comment,-llvmlibc-*,-objc-*,-openmp-*,-zircon-*'
 WarningsAsErrors: ''
 HeaderFilterRegex: ''
 AnalyzeTemporaryDtors: false

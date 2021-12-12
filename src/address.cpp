@@ -22,27 +22,27 @@ Network::Address::Address(value_type t_value) :
 {
 }
 
-Network::Address& Network::Address::operator=(const value_type& t_value)
+auto Network::Address::operator=(const value_type& t_value) -> Network::Address&
 {
     m_value = t_value;
     return *this;
 }
 
-bool Network::Address::operator<(const Address& t_address) const
+auto Network::Address::operator<(const Address& t_address) const -> bool
 {
     return (family() < t_address.family() ||
             port() < t_address.port() ||
             text() < t_address.text());
 }
 
-bool Network::Address::operator>(const Address& t_address) const
+auto Network::Address::operator>(const Address& t_address) const -> bool
 {
     return (family() > t_address.family() ||
             port() > t_address.port() ||
             text() > t_address.text());
 }
 
-bool Network::Address::operator==(const Address& t_address) const
+auto Network::Address::operator==(const Address& t_address) const -> bool
 {
     return (family() == t_address.family() &&
             port() == t_address.port() &&
@@ -54,12 +54,12 @@ Network::Address::operator value_type() const
     return m_value;
 }
 
-bool Network::Address::empty() const
+auto Network::Address::empty() const -> bool
 {
     return m_value.empty();
 }
 
-Network::family_type Network::Address::family() const
+auto Network::Address::family() const -> Network::family_type
 {
     switch (sa_family()) {
 #ifndef _WIN32
@@ -75,7 +75,7 @@ Network::family_type Network::Address::family() const
     }
 }
 
-Network::Address::length_type Network::Address::length() const
+auto Network::Address::length() const -> Network::Address::length_type
 {
     switch (sa_family()) {
 #ifndef _WIN32
@@ -91,7 +91,7 @@ Network::Address::length_type Network::Address::length() const
     }
 }
 
-Network::Address::port_type Network::Address::port() const
+auto Network::Address::port() const -> Network::Address::port_type
 {
     switch (sa_family()) {
     case AF_INET:
@@ -103,7 +103,7 @@ Network::Address::port_type Network::Address::port() const
     }
 }
 
-std::string Network::Address::text() const
+auto Network::Address::text() const -> std::string
 {
     switch (sa_family()) {
 #ifndef _WIN32
@@ -119,22 +119,22 @@ std::string Network::Address::text() const
     }
 }
 
-const sockaddr* Network::Address::sa() const
+auto Network::Address::sa() const -> const sockaddr*
 {
     return reinterpret_cast<const sockaddr*>(m_value.data());
 }
 
-Network::Address::value_type Network::Address::sa_data() const
+auto Network::Address::sa_data() const -> Network::Address::value_type
 {
     return m_value.substr(m_sa_data_offset);
 }
 
-Network::family_type Network::Address::sa_family() const
+auto Network::Address::sa_family() const -> Network::family_type
 {
     return sa()->sa_family;
 }
 
-Network::Address::length_type Network::Address::sa_length() const
+auto Network::Address::sa_length() const -> Network::Address::length_type
 {
 #ifdef HAVE_SOCKADDR_SA_LEN
     return sa()->sa_len;
@@ -143,29 +143,29 @@ Network::Address::length_type Network::Address::sa_length() const
 #endif
 }
 
-std::string Network::Address::sa_text() const
+auto Network::Address::sa_text() const -> std::string
 {
     std::ostringstream oss;
     print(oss, m_value);
     return oss.str();
 }
 
-const sockaddr_in* Network::Address::sin() const
+auto Network::Address::sin() const -> const sockaddr_in*
 {
     return reinterpret_cast<const sockaddr_in*>(m_value.data());
 }
 
-in_addr Network::Address::sin_addr() const
+auto Network::Address::sin_addr() const -> in_addr
 {
     return sin()->sin_addr;
 }
 
-Network::family_type Network::Address::sin_family() const
+auto Network::Address::sin_family() const -> Network::family_type
 {
     return sin()->sin_family;
 }
 
-Network::Address::length_type Network::Address::sin_length() const
+auto Network::Address::sin_length() const -> Network::Address::length_type
 {
 #ifdef HAVE_SOCKADDR_SA_LEN
     return sin()->sin_len;
@@ -174,12 +174,12 @@ Network::Address::length_type Network::Address::sin_length() const
 #endif
 }
 
-Network::Address::port_type Network::Address::sin_port() const
+auto Network::Address::sin_port() const -> Network::Address::port_type
 {
     return sin()->sin_port;
 }
 
-std::string Network::Address::sin_text() const
+auto Network::Address::sin_text() const -> std::string
 {
     Buffer buffer {INET_ADDRSTRLEN};
     const auto in {sin_addr()};
@@ -187,22 +187,22 @@ std::string Network::Address::sin_text() const
     return std::string(buffer);
 }
 
-const sockaddr_in6* Network::Address::sin6() const
+auto Network::Address::sin6() const -> const sockaddr_in6*
 {
     return reinterpret_cast<const sockaddr_in6*>(m_value.data());
 }
 
-in6_addr Network::Address::sin6_addr() const
+auto Network::Address::sin6_addr() const -> in6_addr
 {
     return sin6()->sin6_addr;
 }
 
-Network::family_type Network::Address::sin6_family() const
+auto Network::Address::sin6_family() const -> Network::family_type
 {
     return sin6()->sin6_family;
 }
 
-Network::Address::length_type Network::Address::sin6_length() const
+auto Network::Address::sin6_length() const -> Network::Address::length_type
 {
 #ifdef HAVE_SOCKADDR_SA_LEN
     return sin6()->sin6_len;
@@ -211,12 +211,12 @@ Network::Address::length_type Network::Address::sin6_length() const
 #endif
 }
 
-Network::Address::port_type Network::Address::sin6_port() const
+auto Network::Address::sin6_port() const -> Network::Address::port_type
 {
     return sin6()->sin6_port;
 }
 
-std::string Network::Address::sin6_text() const
+auto Network::Address::sin6_text() const -> std::string
 {
     Buffer buffer {INET6_ADDRSTRLEN};
     const auto in6 {sin6_addr()};
@@ -226,17 +226,17 @@ std::string Network::Address::sin6_text() const
 
 #ifndef _WIN32
 
-const sockaddr_un* Network::Address::sun() const
+auto Network::Address::sun() const -> const sockaddr_un*
 {
     return reinterpret_cast<const sockaddr_un*>(m_value.data());
 }
 
-Network::family_type Network::Address::sun_family() const
+auto Network::Address::sun_family() const -> Network::family_type
 {
     return sun()->sun_family;
 }
 
-Network::Address::length_type Network::Address::sun_length() const
+auto Network::Address::sun_length() const -> Network::Address::length_type
 {
 #ifdef HAVE_SOCKADDR_SA_LEN
     return sun()->sun_len;
@@ -245,7 +245,7 @@ Network::Address::length_type Network::Address::sun_length() const
 #endif
 }
 
-Network::Address::value_type Network::Address::sun_path() const
+auto Network::Address::sun_path() const -> Network::Address::value_type
 {
     const auto size {m_value.size()};
     const auto length {
@@ -256,7 +256,7 @@ Network::Address::value_type Network::Address::sun_path() const
     return m_value.substr(offset, length);
 }
 
-std::string Network::Address::sun_text() const
+auto Network::Address::sun_text() const -> std::string
 {
     const auto text {to_string(sun_path())};
     return text.substr(0, text.find('\0'));

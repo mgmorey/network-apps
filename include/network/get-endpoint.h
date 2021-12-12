@@ -6,8 +6,8 @@
 
 namespace Network
 {
-    EndpointResult get_endpoint(const SockAddr& addr, int flags,
-                                bool verbose = false);
+    extern auto get_endpoint(const SockAddr& addr, int flags,
+                             bool verbose = false) -> EndpointResult;
 }
 
 #endif

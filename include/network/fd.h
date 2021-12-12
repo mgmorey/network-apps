@@ -27,7 +27,7 @@ namespace Network
 
     class Fd
     {
-        friend std::ostream& operator<<(std::ostream& os, Fd fd);
+        friend auto operator<<(std::ostream& os, Fd fd) -> std::ostream&;
 
     public:
         Fd() = default;
@@ -53,7 +53,7 @@ namespace Network
         fd_type m_value {fd_null};
     };
 
-    inline std::ostream& operator<<(std::ostream& os, Fd fd)
+    inline auto operator<<(std::ostream& os, Fd fd) -> std::ostream&
     {
         return os << fd.m_value;
     }

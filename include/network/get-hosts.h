@@ -12,9 +12,9 @@ namespace Network
 {
     using HostVectorResult = std::variant<HostVector, Result>;
 
-    extern HostVectorResult get_hosts(const Hostname& host = nullptr,
-                                      const Hints* hints = nullptr,
-                                      bool verbose = false);
+    extern auto get_hosts(const Hostname& host = nullptr,
+                          const Hints* hints = nullptr,
+                          bool verbose = false) ->  HostVectorResult;
 }
 
 #endif

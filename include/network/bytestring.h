@@ -9,8 +9,8 @@ namespace Network
 {
     using ByteString = std::basic_string<Byte>;
 
-    extern std::ostream& operator<<(std::ostream& os,
-                                    const ByteString& string);
+    extern auto operator<<(std::ostream& os,
+                           const ByteString& string) -> std::ostream&;
 }
 
 #endif

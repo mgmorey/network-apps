@@ -6,12 +6,12 @@
 
 namespace Network
 {
-    extern Result bind(Fd fd,
-                       const SockAddr& addr,
-                       bool verbose = false);
-    extern FdResultVector bind(const Endpoint& endpoint,
-                               const Hints* hints = nullptr,
-                               bool verbose = false);
+    extern auto bind(Fd fd,
+                     const SockAddr& addr,
+                     bool verbose = false) -> Result;
+    extern auto bind(const Endpoint& endpoint,
+                     const Hints* hints = nullptr,
+                     bool verbose = false) -> FdResultVector ;
 }
 
 #endif

@@ -14,19 +14,19 @@ namespace Network
     class Protocol :
         public Integer<protocol_type>
     {
-        friend std::ostream& operator<<(std::ostream& os,
-                                        const Protocol& protocol);
+        friend auto operator<<(std::ostream& os,
+                               const Protocol& protocol) -> std::ostream&;
 
     public:
         Protocol(family_type t_family, protocol_type t_value);
-        [[nodiscard]] Family family() const;
+        [[nodiscard]] auto family() const -> Family;
 
     private:
         Family m_family;
     };
 
-    extern std::ostream& operator<<(std::ostream& os,
-                                    const Protocol& protocol);
+    extern auto operator<<(std::ostream& os,
+                           const Protocol& protocol) -> std::ostream&;
 }
 
 #endif

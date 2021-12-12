@@ -19,8 +19,8 @@
 
 namespace Network
 {
-    extern std::ostream& operator<<(std::ostream& os,
-                                    const addrinfo& ai);
+    extern auto operator<<(std::ostream& os,
+                           const addrinfo& ai) -> std::ostream&;
 
     namespace AddrInfo
     {
@@ -34,14 +34,14 @@ namespace Network
 
             // cppcheck-suppress noExplicitConstructor
             InputIterator(pointer t_pointer);  // NOLINT
-            reference operator*() const;
-            pointer operator->() const;
-            InputIterator& operator++();
+            auto operator*() const -> reference;
+            auto operator->() const -> pointer;
+            auto operator++() -> InputIterator&;
 
-            friend bool operator==(const InputIterator& left,
-                                   const InputIterator& right);
-            friend bool operator!=(const InputIterator& left,
-                                   const InputIterator& right);
+            friend auto operator==(const InputIterator& left,
+                                   const InputIterator& right) -> bool;
+            friend auto operator!=(const InputIterator& left,
+                                   const InputIterator& right) -> bool;
 
         private:
             pointer m_pointer {nullptr};
@@ -50,7 +50,7 @@ namespace Network
         class List
         {
         public:
-            static InputIterator end();
+            static auto end() -> InputIterator;
 
             List() = delete;
             List(const List&) = delete;
@@ -60,27 +60,27 @@ namespace Network
                  const Hints* t_hints,
                  bool t_verbose);
             ~List();
-            List& operator=(const List&) = delete;
-            List& operator=(const List&&) = delete;
-            [[nodiscard]] InputIterator begin() const;
-            [[nodiscard]] Result result() const;
+            auto operator=(const List&) -> List& = delete;
+            auto operator=(const List&&) -> List& = delete;
+            [[nodiscard]] auto begin() const -> InputIterator;
+            [[nodiscard]] auto result() const -> Result;
 
         private:
             addrinfo* m_pointer {nullptr};
             Result m_result;
         };
 
-        extern bool operator==(const InputIterator& left,
-                               const InputIterator& right);
-        extern bool operator!=(const InputIterator& left,
-                               const InputIterator& right);
+        extern auto operator==(const InputIterator& left,
+                               const InputIterator& right) -> bool;
+        extern auto operator!=(const InputIterator& left,
+                               const InputIterator& right) ->  bool;
 
         template<typename OutputIt>
-        Result insert(const Hostname& node,
-                      const Service& serv,
-                      const Hints* hints,
-                      bool verbose,
-                      OutputIt out)
+        auto insert(const Hostname& node,
+                    const Service& serv,
+                    const Hints* hints,
+                    bool verbose,
+                    OutputIt out) -> Result
         {
             const auto list {List(node, serv, hints, verbose)};
             std::for_each(list.begin(), List::end(),

@@ -13,15 +13,15 @@ namespace Network
     class Family :
         public Integer<family_type>
     {
-        friend std::ostream& operator<<(std::ostream& os,
-                                        const Family& family);
+        friend auto operator<<(std::ostream& os,
+                               const Family& family) -> std::ostream&;
 
     public:
         explicit Family(family_type t_value);
     };
 
-    extern std::ostream& operator<<(std::ostream& os,
-                                    const Family& family);
+    extern auto operator<<(std::ostream& os,
+                           const Family& family) -> std::ostream& ;
 }
 
 #endif

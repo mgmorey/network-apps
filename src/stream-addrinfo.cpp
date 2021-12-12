@@ -15,8 +15,8 @@
 
 #include <ostream>      // std::ostream
 
-std::ostream& Network::operator<<(std::ostream& os,
-                                  const addrinfo& ai)
+auto Network::operator<<(std::ostream& os,
+                         const addrinfo& ai) -> std::ostream&
 {
     static const int tab {9};
 

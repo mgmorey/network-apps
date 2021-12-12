@@ -9,8 +9,8 @@ namespace Network
 
     class Format
     {
-        friend std::ostream& operator<<(std::ostream& os,
-                                        const Format& format);
+        friend auto operator<<(std::ostream& os,
+                               const Format& format) -> std::ostream&;
 
     public:
         explicit Format(std::string t_key) :
@@ -33,8 +33,8 @@ namespace Network
         std::string m_key;
     };
 
-    extern std::ostream& operator<<(std::ostream& os,
-                                    const Format& format);
+    extern auto operator<<(std::ostream& os,
+                           const Format& format) -> std::ostream&;
 }
 
 #endif

@@ -14,7 +14,7 @@ namespace Network
         {
         }
 
-        Integer& operator=(T t_value)
+        auto operator=(T t_value) -> Integer&
         {
             m_value = t_value;
             return *this;

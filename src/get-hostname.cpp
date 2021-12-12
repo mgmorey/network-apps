@@ -17,7 +17,8 @@
 #include <cassert>      // assert()
 #include <sstream>      // std::ostringstream
 
-Network::HostnameResult Network::get_hostname(const Network::Hostname& host)
+auto Network::get_hostname(const Network::Hostname& host) ->
+    Network::HostnameResult
 {
     if (host.has_value()) {
         return host.value();

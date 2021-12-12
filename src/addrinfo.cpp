@@ -12,7 +12,7 @@
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
 
-static addrinfo* get_hints(addrinfo* info, const Network::Hints* hints)
+static auto get_hints(addrinfo* info, const Network::Hints* hints) -> addrinfo*
 {
     if (hints == nullptr) {
         info = nullptr;
@@ -29,27 +29,26 @@ Network::AddrInfo::InputIterator::InputIterator(pointer t_pointer) :
 {
 }
 
-Network::AddrInfo::InputIterator::reference
-Network::AddrInfo::InputIterator::operator*() const
+auto Network::AddrInfo::InputIterator::operator*() const ->
+    Network::AddrInfo::InputIterator::reference
 {
     return *m_pointer;
 }
 
-Network::AddrInfo::InputIterator::pointer
-Network::AddrInfo::InputIterator::operator->() const
+auto Network::AddrInfo::InputIterator::operator->() const ->
+    Network::AddrInfo::InputIterator::pointer
 {
     return m_pointer;
 }
 
-Network::AddrInfo::InputIterator&
-Network::AddrInfo::InputIterator::operator++()
+auto Network::AddrInfo::InputIterator::operator++() ->
+    Network::AddrInfo::InputIterator&
 {
     m_pointer = m_pointer->ai_next;
     return *this;
 }
 
-Network::AddrInfo::InputIterator
-Network::AddrInfo::List::end()
+auto Network::AddrInfo::List::end() -> Network::AddrInfo::InputIterator
 {
     return nullptr;
 }
@@ -99,26 +98,24 @@ Network::AddrInfo::List::~List()
     }
 }
 
-Network::AddrInfo::InputIterator
-Network::AddrInfo::List::begin() const
+auto Network::AddrInfo::List::begin() const -> Network::AddrInfo::InputIterator
 {
     return m_pointer;
 }
 
-Network::Result
-Network::AddrInfo::List::result() const
+auto Network::AddrInfo::List::result() const -> Network::Result
 {
     return m_result;
 }
 
-bool Network::AddrInfo::operator==(const InputIterator& left,
-                                   const InputIterator& right)
+auto Network::AddrInfo::operator==(const InputIterator& left,
+                                   const InputIterator& right) -> bool
 {
     return left.m_pointer == right.m_pointer;
 }
 
-bool Network::AddrInfo::operator!=(const InputIterator& left,
-                                   const InputIterator& right)
+auto Network::AddrInfo::operator!=(const InputIterator& left,
+                                   const InputIterator& right) -> bool
 {
     return left.m_pointer != right.m_pointer;
 }

@@ -10,7 +10,7 @@ using namespace std::literals::string_literals;
 
 static const Network::GetNameHandler handler {::getsockname, "getsockname"s};
 
-Network::SockAddrResult Network::get_sockname(Fd fd, bool verbose)
+auto Network::get_sockname(Fd fd, bool verbose) -> Network::SockAddrResult
 {
     return get_name(handler, fd, verbose);
 }

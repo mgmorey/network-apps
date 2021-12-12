@@ -16,8 +16,8 @@
 static const std::string delim {", "};
 static const int tab {0};
 
-extern Network::FdPairResult Network::get_socketpair(const Socket& sock,
-                                                     bool verbose)
+auto Network::get_socketpair(const Socket& sock,
+                             bool verbose) -> Network::FdPairResult
 {
     Result result;
     std::array<fd_type, 2> fds {fd_null, fd_null};

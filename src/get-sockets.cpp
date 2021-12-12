@@ -9,10 +9,9 @@
 #include <string>       // std::string
 #include <variant>      // std::visit()
 
-Network::SocketVectorResult
-Network::get_sockets(const Network::Endpoint& endpoint,
-                     const Network::Hints* hints,
-                     bool verbose)
+auto Network::get_sockets(const Network::Endpoint& endpoint,
+                          const Network::Hints* hints,
+                          bool verbose) -> Network::SocketVectorResult
 {
     SocketVectorResult sockets_result;
     const auto hostname_result {get_hostname(endpoint.first)};
@@ -30,11 +29,10 @@ Network::get_sockets(const Network::Endpoint& endpoint,
     return sockets_result;
 }
 
-Network::SocketVectorResult
-Network::get_sockets(const Network::Hostname& node,
-                     const Network::Service& serv,
-                     const Network::Hints* hints,
-                     bool verbose)
+auto Network::get_sockets(const Network::Hostname& node,
+                          const Network::Service& serv,
+                          const Network::Hints* hints,
+                          bool verbose) -> Network::SocketVectorResult
 {
     SocketVector sockets;
     const auto result {

@@ -12,16 +12,16 @@ using namespace std::literals::string_literals;
 
 static const Network::OpenHandler handler {::bind, "bind"s};
 
-Network::Result Network::bind(Fd fd,
-                              const SockAddr& addr,
-                              bool verbose)
+auto Network::bind(Fd fd,
+                   const SockAddr& addr,
+                   bool verbose) -> Network::Result
 {
     return open(handler, fd, addr, verbose);
 }
 
-Network::FdResultVector Network::bind(const Endpoint& endp,
-                                      const Hints* hints,
-                                      bool verbose)
+auto Network::bind(const Endpoint& endp,
+                   const Hints* hints,
+                   bool verbose) -> Network::FdResultVector
 {
     return open(handler, endp, hints, verbose);
 }

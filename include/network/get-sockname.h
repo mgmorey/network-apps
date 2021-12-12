@@ -5,7 +5,7 @@
 
 namespace Network
 {
-    extern SockAddrResult get_sockname(Fd fd, bool verbose = false);
+    extern auto get_sockname(Fd fd, bool verbose = false) -> SockAddrResult;
 }
 
 #endif

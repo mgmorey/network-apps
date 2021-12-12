@@ -8,7 +8,7 @@
 namespace Network
 {
     template<typename Container>
-    std::ostream& print(std::ostream& os, const Container& value)
+    auto print(std::ostream& os, const Container& value) -> std::ostream&
     {
         std::ios format {nullptr};
         format.copyfmt(os);

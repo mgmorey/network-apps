@@ -17,26 +17,28 @@
 
 namespace Network
 {
-    extern int get_family(const SockAddr& sock_addr);
-    extern socklen_type get_length(const SockAddr& sock_addr);
-    extern const sockaddr* get_pointer(const SockAddr& sock_addr);
-    extern sockaddr* get_pointer(SockAddr& sock_addr);
-    extern SockAddr get_sockaddr(const sockaddr* sa = nullptr,
-                                 std::size_t size = 0);
-    extern SockAddr get_sockaddr(const sockaddr_in* sin);
-    extern SockAddr get_sockaddr(const sockaddr_in6* sin6);
+    extern auto get_family(const SockAddr& sock_addr) -> int;
+    extern auto get_length(const SockAddr& sock_addr) -> socklen_type;
+    extern auto get_pointer(const SockAddr& sock_addr) -> const sockaddr*;
+    extern auto get_pointer(SockAddr& sock_addr) -> sockaddr*;
+    extern auto get_sockaddr(const sockaddr* sa = nullptr,
+                             std::size_t size = 0) -> SockAddr;
+    extern auto get_sockaddr(const sockaddr_in* sin) -> SockAddr;
+    extern auto get_sockaddr(const sockaddr_in6* sin6) -> SockAddr;
 #ifndef _WIN32
-    extern SockAddr get_sockaddr(const sockaddr_un* sun,
-                                 std::size_t size = sizeof(sockaddr_un));
-    extern SockAddr get_sockaddr(const Pathname& path);
+    extern auto get_sockaddr(const sockaddr_un* sun,
+                             std::size_t size = sizeof(sockaddr_un)) ->
+        SockAddr;
+    extern auto get_sockaddr(const Pathname& path) -> SockAddr;
 #ifdef HAVE_SOCKADDR_SA_LEN
-    extern std::size_t get_sun_length(const sockaddr_un* sun,
-                                      std::size_t size);
+    extern auto get_sun_length(const sockaddr_un* sun,
+                               std::size_t size) -> std::size_t;
 #endif
-    extern std::size_t get_sun_path_length(const sockaddr_un* sun,
-                                           std::size_t size);
+    extern auto get_sun_path_length(const sockaddr_un* sun,
+                                    std::size_t size) -> std::size_t;
 #endif
-    extern bool is_valid(const SockAddr& sock_addr, bool verbose = false);
+    extern auto is_valid(const SockAddr& sock_addr,
+                         bool verbose = false) -> bool ;
 }
 
 #endif

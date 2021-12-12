@@ -13,18 +13,18 @@ Network::Buffer::operator std::string() const
     return m_value.substr(0, m_value.find('\0'));
 }
 
-char* Network::Buffer::data()
+auto Network::Buffer::data() -> char*
 {
     return m_value.data();
 }
 
-std::string::size_type Network::Buffer::size() const
+auto Network::Buffer::size() const -> std::string::size_type
 {
     return m_value.size();
 }
 
-std::ostream& Network::operator<<(std::ostream& os,
-                                  const Network::Buffer& buffer)
+auto Network::operator<<(std::ostream& os,
+                         const Network::Buffer& buffer) -> std::ostream&
 {
     return os << std::string(buffer);
 }

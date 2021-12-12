@@ -16,8 +16,8 @@
 static const std::string delim {", "};
 static const int tab {0};
 
-extern Network::FdResult Network::get_socket(const Socket& sock,
-                                             bool verbose)
+auto Network::get_socket(const Socket& sock,
+                         bool verbose) -> Network::FdResult
 {
     Result result;
 

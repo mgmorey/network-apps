@@ -53,7 +53,7 @@ Network::Context::~Context()
 #endif
 }
 
-Network::Result Network::Context::result() const
+auto Network::Context::result() const -> Network::Result
 {
     return m_result;
 }

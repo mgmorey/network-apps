@@ -11,8 +11,8 @@
 #include <iostream>     // std::cerr, std::endl
 #include <sstream>      // std::ostringstream
 
-Network::SockAddrResult Network::get_name(const GetNameHandler& handler, Fd fd,
-                                          bool verbose)
+auto Network::get_name(const GetNameHandler& handler, Fd fd,
+                       bool verbose) -> Network::SockAddrResult
 {
     Result result;
     auto addr {get_sockaddr()};

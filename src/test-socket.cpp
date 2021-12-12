@@ -24,7 +24,8 @@ namespace TestSocket
 
     static bool verbose {false};  // NOLINT
 
-    static std::vector<std::string> parse_arguments(int argc, char** argv)
+    static auto parse_arguments(int argc, char** argv) ->
+        std::vector<std::string>
     {
         std::vector<std::string> args {argv[0]};
         int ch {};
@@ -52,7 +53,7 @@ namespace TestSocket
         return args;
     }
 
-    static void test_path(const std::string& path)
+    static auto test_path(const std::string& path) -> void
     {
         Network::Address address {Network::get_sockaddr(path)};
         assert(is_valid(address, verbose));
@@ -61,7 +62,7 @@ namespace TestSocket
                   << std::endl;
     }
 
-    static void test_socketpair(const Network::Hints& hints)
+    static auto test_socketpair(const Network::Hints& hints) -> void
     {
         const Network::Socket sock {hints};
         const auto socketpair_result {get_socketpair(sock, verbose)};
@@ -90,7 +91,7 @@ namespace TestSocket
     }
 }
 
-int main(int argc, char* argv[])
+auto main(int argc, char* argv[]) -> int
 {
     try {
         TestSocket::parse_arguments(argc, argv);

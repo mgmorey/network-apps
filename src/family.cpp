@@ -13,8 +13,8 @@ Network::Family::Family(family_type t_value) :
 {
 }
 
-std::ostream& Network::operator<<(std::ostream& os,
-                                  const Family& family)
+auto Network::operator<<(std::ostream& os,
+                         const Family& family) -> std::ostream&
 {
     switch (family) {
     case AF_UNSPEC:

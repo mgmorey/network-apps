@@ -23,7 +23,7 @@ static constexpr auto radix {10};
 
 static Network::Fd sock;  // NOLINT
 
-static void clean_up()
+static auto clean_up() -> void
 {
     // Close the socket.
     if (sock >= 0) {
@@ -40,7 +40,7 @@ static void clean_up()
     ::unlink(SOCKET_NAME);
 }
 
-int main()
+auto main() -> int
 {
     Network::Buffer buffer(BUFFER_SIZE);
     bool shutdown {false};

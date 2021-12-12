@@ -22,15 +22,15 @@ namespace Network
                        int t_flags = 0);
         // cppcheck-suppress noExplicitConstructor
         Hints(const addrinfo& t_addrinfo);  // NOLINT
-        Hints& operator=(const addrinfo& t_addrinfo);
-        bool operator<(const Hints& t_hints) const;
-        bool operator>(const Hints& t_hints) const;
-        bool operator==(const Hints& t_hints) const;
+        auto operator=(const addrinfo& t_addrinfo) -> Hints&;
+        auto operator<(const Hints& t_hints) const -> bool;
+        auto operator>(const Hints& t_hints) const -> bool;
+        auto operator==(const Hints& t_hints) const -> bool;
         operator addrinfo() const;  // NOLINT
-        [[nodiscard]] Flags flags() const;
-        [[nodiscard]] Family family() const;
-        [[nodiscard]] SockType socktype() const;
-        [[nodiscard]] Protocol protocol() const;
+        [[nodiscard]] auto flags() const -> Flags;
+        [[nodiscard]] auto family() const -> Family;
+        [[nodiscard]] auto socktype() const -> SockType;
+        [[nodiscard]] auto protocol() const -> Protocol;
 
     private:
         Integer<flags_type> m_flags;
@@ -39,8 +39,8 @@ namespace Network
         Integer<protocol_type> m_protocol;
     };
 
-    extern std::ostream& operator<<(std::ostream& os,
-                                    const Hints& hints);
+    extern auto operator<<(std::ostream& os,
+                           const Hints& hints) ->  std::ostream&;
 }
 
 #endif

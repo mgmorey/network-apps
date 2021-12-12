@@ -3,8 +3,8 @@
 
 #include <ostream>      // std::ostream
 
-std::ostream& Network::operator<<(std::ostream& os,
-                                  const Socket& sock)
+auto Network::operator<<(std::ostream& os,
+                         const Socket& sock) -> std::ostream&
 {
     static const int tab {7};
 

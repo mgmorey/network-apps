@@ -6,7 +6,7 @@
 namespace Network
 {
     template<typename Container>
-    std::string to_string(const Container& value)
+    auto to_string(const Container& value) -> std::string
     {
         std::string text(value.size(), '\0');
 

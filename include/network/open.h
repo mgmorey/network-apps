@@ -25,25 +25,13 @@ namespace Network
     using OpenFunction = int (*)(fd_type, const sockaddr*, socklen_t);
     using OpenHandler = std::pair<OpenFunction, std::string>;
 
-    class Open
-    {
-    public:
-        explicit Open(const OpenHandler& t_handler, bool t_verbose);
-        [[nodiscard]] FdResult operator()(const Socket& t_sock) const;
-        [[nodiscard]] FdResult open(Fd t_fd, const SockAddr& t_addr) const;
-
-    private:
-        OpenHandler m_handler {nullptr, ""};
-        bool m_verbose {false};
-    };
-
-    extern FdResultVector open(const OpenHandler& handler,
-                               const Endpoint& endpoint,
-                               const Hints* hints,
-                               bool verbose);
-    extern Result open(const OpenHandler& handler, Fd fd,
-                       const SockAddr& addr,
-                       bool verbose);
+    extern auto open(const OpenHandler& handler,
+                     const Endpoint& endpoint,
+                     const Hints* hints,
+                     bool verbose) -> FdResultVector;
+    extern auto open(const OpenHandler& handler, Fd fd,
+                     const SockAddr& addr,
+                     bool verbose) -> Result;
 }
 
 #endif

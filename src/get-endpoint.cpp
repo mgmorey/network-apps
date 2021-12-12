@@ -19,8 +19,8 @@
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
 
-Network::EndpointResult
-Network::get_endpoint(const SockAddr& addr, int flags, bool verbose)
+auto Network::get_endpoint(const SockAddr& addr, int flags, bool verbose) ->
+    Network::EndpointResult
 {
     Result result;
     Buffer host {NI_MAXHOST};
