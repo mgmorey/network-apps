@@ -38,7 +38,7 @@ namespace Network
                                     std::size_t size) -> std::size_t;
 #endif
     extern auto is_valid(const SockAddr& sock_addr,
-                         bool verbose = false) -> bool ;
+                         bool verbose = false) -> bool;
 }
 
 #endif
