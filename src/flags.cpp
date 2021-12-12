@@ -23,13 +23,13 @@ auto Network::operator<<(std::ostream& os,
                          const Flags& flags) -> std::ostream&
 {
     static const std::vector<std::pair<int, const char*>> values {
-        {AI_PASSIVE,                "AI_PASSIVE"},
-        {AI_CANONNAME,              "AI_CANONNAME"},
-        {AI_NUMERICHOST,            "AI_NUMERICHOST"},
-        {AI_NUMERICSERV,            "AI_NUMERICSERV"},
-        {AI_ALL,                    "AI_ALL"},
-        {AI_ADDRCONFIG,             "AI_ADDRCONFIG"},
-        {AI_V4MAPPED,               "AI_V4MAPPED"},
+        {AI_PASSIVE,        "AI_PASSIVE"},
+        {AI_CANONNAME,      "AI_CANONNAME"},
+        {AI_NUMERICHOST,    "AI_NUMERICHOST"},
+        {AI_NUMERICSERV,    "AI_NUMERICSERV"},
+        {AI_ALL,            "AI_ALL"},
+        {AI_ADDRCONFIG,     "AI_ADDRCONFIG"},
+        {AI_V4MAPPED,       "AI_V4MAPPED"},
     };
 
     std::ostringstream oss;

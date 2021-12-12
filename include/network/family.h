@@ -21,7 +21,7 @@ namespace Network
     };
 
     extern auto operator<<(std::ostream& os,
-                           const Family& family) -> std::ostream& ;
+                           const Family& family) -> std::ostream&;
 }
 
 #endif

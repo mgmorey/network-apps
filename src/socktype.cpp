@@ -22,12 +22,12 @@ auto Network::operator<<(std::ostream& os,
 {
     static const std::vector<std::pair<int, const char*>> values {
 #ifdef SOCK_CLOEXEC
-        {SOCK_CLOEXEC,              "SOCK_CLOEXEC"},
+        {SOCK_CLOEXEC,      "SOCK_CLOEXEC"},
 #endif
 #ifdef SOCK_NONBLOCK
-        {SOCK_NONBLOCK,             "SOCK_NONBLOCK"},
+        {SOCK_NONBLOCK,     "SOCK_NONBLOCK"},
 #endif
-        {0,                         nullptr}
+        {0,             nullptr}
     };
 
     constexpr auto mask {0000017};

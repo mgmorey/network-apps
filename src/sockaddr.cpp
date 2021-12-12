@@ -201,7 +201,8 @@ auto Network::get_sun_path_length(const sockaddr_un* sun,
     len = std::min(len, size);
     const auto max_path_len {std::min(size, len) - path_offset};
 #else
-    const auto max_path_len {std::min(size - path_offset, sizeof sun->sun_path)};
+    const auto max_path_len {std::min(size - path_offset,
+                                      sizeof sun->sun_path)};
 #endif
     return strnlen(sun->sun_path, max_path_len);
 }
