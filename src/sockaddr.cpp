@@ -1,5 +1,7 @@
-#include "network/sockaddr.h"   // SockAddr, sockaddr, sockaddr_in,
-                                // sockaddr_in6, socklen_type
+#include "network/sockaddr.h"           // SockAddr, sockaddr,
+                                        // sockaddr_in, sockaddr_in6,
+                                        // sock_len_type
+#include "network/family-type.h"        // family_type
 
 #ifdef _WIN32
 #include <winsock2.h>   // AF_INET, AF_INET6, AF_LOCAL, AF_UNIX,
@@ -32,21 +34,21 @@ static constexpr auto get_capacity() -> Network::SockAddr::size_type
     return std::max(storage_size, unix_size);
 }
 
-static auto get_family(const Network::SockAddr& sock_addr) -> int
+static auto get_family(const Network::SockAddr& addr) -> Network::family_type
 {
-    const auto *const sa {reinterpret_cast<const sockaddr*>(sock_addr.data())};
+    const auto *const sa {reinterpret_cast<const sockaddr*>(addr.data())};
     assert(sa != nullptr);
 
-    if (sock_addr.empty()) {
+    if (addr.empty()) {
         return 0;
     }
 
     return sa->sa_family;
 }
 
-static auto get_max_size(const Network::SockAddr& sock_addr) -> std::size_t
+static auto get_max_size(const Network::SockAddr& addr) -> std::size_t
 {
-    const auto family {get_family(sock_addr)};
+    const auto family {get_family(addr)};
 
     switch (family) {
 #ifndef _WIN32
@@ -62,9 +64,9 @@ static auto get_max_size(const Network::SockAddr& sock_addr) -> std::size_t
     }
 }
 
-static auto get_min_size(const Network::SockAddr& sock_addr) -> std::size_t
+static auto get_min_size(const Network::SockAddr& addr) -> std::size_t
 {
-    const auto family {get_family(sock_addr)};
+    const auto family {get_family(addr)};
 
     switch (family) {
 #ifndef _WIN32
@@ -80,39 +82,39 @@ static auto get_min_size(const Network::SockAddr& sock_addr) -> std::size_t
     }
 }
 
-static auto get_sa_length(const Network::SockAddr& sock_addr) -> std::size_t
+static auto get_sa_length(const Network::SockAddr& addr) -> std::size_t
 {
 #ifdef HAVE_SOCKADDR_SA_LEN
-    const auto *const sa {reinterpret_cast<const sockaddr*>(sock_addr.data())};
+    const auto *const sa {reinterpret_cast<const sockaddr*>(addr.data())};
     assert(sa != nullptr);
 
-    if (sock_addr.empty()) {
+    if (addr.empty()) {
         return 0;
     }
 
     return sa->sa_len;
 #else
-    static_cast<void>(sock_addr);
+    static_cast<void>(addr);
     return 0;
 #endif
 }
 
-auto Network::get_length(const SockAddr& sock_addr) -> Network::socklen_type
+auto Network::get_length(const SockAddr& addr) -> Network::sock_len_type
 {
-    const auto length {static_cast<std::size_t>(get_sa_length(sock_addr))};
-    return static_cast<socklen_type>(length != 0 ? length : sock_addr.size());
+    const auto length {static_cast<std::size_t>(get_sa_length(addr))};
+    return static_cast<sock_len_type>(length != 0 ? length : addr.size());
 }
 
-auto Network::get_pointer(const SockAddr& sock_addr) -> const sockaddr*
+auto Network::get_pointer(const SockAddr& addr) -> const sockaddr*
 {
-    const auto *const sa {reinterpret_cast<const sockaddr*>(sock_addr.data())};
+    const auto *const sa {reinterpret_cast<const sockaddr*>(addr.data())};
     assert(sa != nullptr);
     return sa;
 }
 
-auto Network::get_pointer(SockAddr& sock_addr) -> sockaddr*
+auto Network::get_pointer(SockAddr& addr) -> sockaddr*
 {
-    auto *const sa {reinterpret_cast<sockaddr*>(sock_addr.data())};
+    auto *const sa {reinterpret_cast<sockaddr*>(addr.data())};
     assert(sa != nullptr);
     return sa;
 }
@@ -121,17 +123,17 @@ auto Network::get_sockaddr(const sockaddr* sa,
                            std::size_t size) -> Network::SockAddr
 {
     assert(size ? sa != nullptr : sa == nullptr);
-    SockAddr sock_addr;
+    SockAddr addr;
 
     if (sa == nullptr) {
-        sock_addr.assign(get_capacity(), static_cast<Byte>(0));
+        addr.assign(get_capacity(), static_cast<Byte>(0));
     }
     else {
         const auto *const data {reinterpret_cast<const Byte*>(sa)};
-        sock_addr.assign(data, data + size);
+        addr.assign(data, data + size);
     }
 
-    return sock_addr;
+    return addr;
 }
 
 auto Network::get_sockaddr(const sockaddr_in* sin) -> Network::SockAddr
@@ -209,19 +211,19 @@ auto Network::get_sun_path_length(const sockaddr_un* sun,
 
 #endif
 
-auto Network::is_valid(const SockAddr& sock_addr, bool verbose) -> bool
+auto Network::is_valid(const SockAddr& addr, bool verbose) -> bool
 {
     if (verbose) {
         std::cerr << "Validating socket address: "
-                  << sock_addr
+                  << addr
                   << std::endl;
     }
 
-    if (sock_addr.empty()) {
+    if (addr.empty()) {
         return false;
     }
 
-    const auto family {get_family(sock_addr)};
+    const auto family {get_family(addr)};
 
     if (verbose) {
         std::cerr << std::left
@@ -244,8 +246,8 @@ auto Network::is_valid(const SockAddr& sock_addr, bool verbose) -> bool
         return false;
     }
 
-    const auto max_size {get_max_size(sock_addr)};
-    const auto min_size {get_min_size(sock_addr)};
+    const auto max_size {get_max_size(addr)};
+    const auto min_size {get_min_size(addr)};
 
     if (verbose) {
         std::cerr << std::left
@@ -253,7 +255,7 @@ auto Network::is_valid(const SockAddr& sock_addr, bool verbose) -> bool
                   << "    Actual size:"
                   << std::right
                   << std::setw(value_width)
-                  << sock_addr.size()
+                  << addr.size()
                   << std::endl
                   << std::left
                   << std::setw(key_width)
@@ -271,13 +273,13 @@ auto Network::is_valid(const SockAddr& sock_addr, bool verbose) -> bool
                   << std::endl;
     }
 
-    if (!(min_size <= sock_addr.size() && sock_addr.size() <= max_size)) {
+    if (!(min_size <= addr.size() && addr.size() <= max_size)) {
         return false;
     }
 
 #ifdef HAVE_SOCKADDR_SA_LEN
 
-    const auto sa_len {static_cast<std::size_t>(get_sa_length(sock_addr))};
+    const auto sa_len {static_cast<std::size_t>(get_sa_length(addr))};
 
     if (verbose) {
         std::cerr << std::left
@@ -290,14 +292,14 @@ auto Network::is_valid(const SockAddr& sock_addr, bool verbose) -> bool
     }
 
     if (family == AF_UNIX) {
-        if (!(min_size <= sa_len && sa_len <= sock_addr.size())) {
+        if (!(min_size <= sa_len && sa_len <= addr.size())) {
             return false;
         }
 
 #ifndef _WIN32
 
-        const auto *const sun {reinterpret_cast<const sockaddr_un*>(sock_addr.data())};
-        const auto sun_len {get_sun_length(sun, sock_addr.size())};
+        const auto *const sun {reinterpret_cast<const sockaddr_un*>(addr.data())};
+        const auto sun_len {get_sun_length(sun, addr.size())};
 
         if (verbose) {
             std::cerr << std::left
@@ -317,7 +319,7 @@ auto Network::is_valid(const SockAddr& sock_addr, bool verbose) -> bool
 
     }
     else {
-        if (!(sa_len == sock_addr.size())) {
+        if (!(sa_len == addr.size())) {
             return false;
         }
     }

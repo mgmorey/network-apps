@@ -1,15 +1,13 @@
 #ifndef NETWORK_FLAGS_H
 #define NETWORK_FLAGS_H
 
-#include "network/integer.h"        // Integer
-#include "network/socketargument.h" // socket_argument_type
+#include "network/flags-type.h"         // flags_type
+#include "network/integer.h"            // Integer
 
 #include <ostream>      // std::ostream
 
 namespace Network
 {
-    using flags_type = socket_argument_type;
-
     class Flags :
         public Integer<flags_type>
     {

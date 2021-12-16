@@ -1,16 +1,14 @@
 #ifndef NETWORK_PROTOCOL_H
 #define NETWORK_PROTOCOL_H
 
-#include "network/family.h"         // Family, family_type
-#include "network/integer.h"        // Integer
-#include "network/socketargument.h" // socket_argument_type
+#include "network/family.h"             // Family, family_type
+#include "network/integer.h"            // Integer
+#include "network/protocol-type.h"      // protocol_type
 
 #include <ostream>      // std::ostream
 
 namespace Network
 {
-    using protocol_type = socket_argument_type;
-
     class Protocol :
         public Integer<protocol_type>
     {

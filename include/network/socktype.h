@@ -1,15 +1,13 @@
 #ifndef NETWORK_SOCKTYPE_H
 #define NETWORK_SOCKTYPE_H
 
-#include "network/integer.h"        // Integer
-#include "network/socketargument.h" // socket_argument_type
+#include "network/integer.h"            // Integer
+#include "network/socktype-type.h"      // socktype_type
 
 #include <ostream>      // std::ostream
 
 namespace Network
 {
-    using socktype_type = socket_argument_type;
-
     class SockType :
         public Integer<socktype_type>
     {

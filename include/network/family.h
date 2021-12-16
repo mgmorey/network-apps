@@ -1,15 +1,13 @@
 #ifndef NETWORK_FAMILY_H
 #define NETWORK_FAMILY_H
 
-#include "network/integer.h"        // Integer
-#include "network/socketargument.h" // socket_argument_type
+#include "network/family-type.h"        // family_type
+#include "network/integer.h"            // Integer
 
 #include <ostream>      // std::ostream
 
 namespace Network
 {
-    using family_type = socket_argument_type;
-
     class Family :
         public Integer<family_type>
     {
