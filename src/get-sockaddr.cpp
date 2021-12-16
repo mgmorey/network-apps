@@ -61,7 +61,7 @@ auto Network::get_sockaddr(const sockaddr_un* sun,
                            std::size_t size) -> Network::SockAddr
 {
     const auto *const sa {reinterpret_cast<const sockaddr*>(sun)};
-    return get_sockaddr(sa, size);
+    return get_sockaddr(sa, size != 0 ? size : sizeof(sockaddr_un));
 }
 
 auto Network::get_sockaddr(const Pathname& path) -> Network::SockAddr

@@ -21,8 +21,7 @@ namespace Network
     extern auto get_sockaddr(const sockaddr_in6* sin6) -> SockAddr;
 #ifndef _WIN32
     extern auto get_sockaddr(const sockaddr_un* sun,
-                             std::size_t size = sizeof(sockaddr_un)) ->
-        SockAddr;
+                             std::size_t size = 0) -> SockAddr;
     extern auto get_sockaddr(const Pathname& path) -> SockAddr;
 #endif
 }
