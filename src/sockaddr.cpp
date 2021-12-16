@@ -32,9 +32,21 @@ static constexpr auto get_capacity() -> Network::SockAddr::size_type
     return std::max(storage_size, unix_size);
 }
 
+static auto get_family(const Network::SockAddr& sock_addr) -> int
+{
+    const auto *const sa {reinterpret_cast<const sockaddr*>(sock_addr.data())};
+    assert(sa != nullptr);
+
+    if (sock_addr.empty()) {
+        return 0;
+    }
+
+    return sa->sa_family;
+}
+
 static auto get_max_size(const Network::SockAddr& sock_addr) -> std::size_t
 {
-    const auto family {Network::get_family(sock_addr)};
+    const auto family {get_family(sock_addr)};
 
     switch (family) {
 #ifndef _WIN32
@@ -52,7 +64,7 @@ static auto get_max_size(const Network::SockAddr& sock_addr) -> std::size_t
 
 static auto get_min_size(const Network::SockAddr& sock_addr) -> std::size_t
 {
-    const auto family {Network::get_family(sock_addr)};
+    const auto family {get_family(sock_addr)};
 
     switch (family) {
 #ifndef _WIN32
@@ -83,18 +95,6 @@ static auto get_sa_length(const Network::SockAddr& sock_addr) -> std::size_t
     static_cast<void>(sock_addr);
     return 0;
 #endif
-}
-
-auto Network::get_family(const SockAddr& sock_addr) -> int
-{
-    const auto *const sa {reinterpret_cast<const sockaddr*>(sock_addr.data())};
-    assert(sa != nullptr);
-
-    if (sock_addr.empty()) {
-        return 0;
-    }
-
-    return sa->sa_family;
 }
 
 auto Network::get_length(const SockAddr& sock_addr) -> Network::socklen_type

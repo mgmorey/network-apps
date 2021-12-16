@@ -17,7 +17,6 @@
 
 namespace Network
 {
-    extern auto get_family(const SockAddr& sock_addr) -> int;
     extern auto get_length(const SockAddr& sock_addr) -> socklen_type;
     extern auto get_pointer(const SockAddr& sock_addr) -> const sockaddr*;
     extern auto get_pointer(SockAddr& sock_addr) -> sockaddr*;
