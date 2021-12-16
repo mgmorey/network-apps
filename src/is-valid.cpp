@@ -1,6 +1,7 @@
 #include "network/is-valid.h"           // SockAddr, is_valid()
 #include "network/family-type.h"        // family_type
-#include "network/get-sun-length.h"     // get_sun_length()
+#include "network/get-sa-length.h"      // SockAddr, get_sa_length()
+#include "network/get-sun-length.h"     // SockAddr, get_sun_length()
 
 #ifdef _WIN32
 #else
@@ -74,23 +75,6 @@ static auto get_min_size(const Network::SockAddr& addr) -> std::size_t
     default:
         return sizeof(sockaddr);
     }
-}
-
-static auto get_sa_length(const Network::SockAddr& addr) -> std::size_t
-{
-#ifdef HAVE_SOCKADDR_SA_LEN
-    const auto *const sa {reinterpret_cast<const sockaddr*>(addr.data())};
-    assert(sa != nullptr);
-
-    if (addr.empty()) {
-        return 0;
-    }
-
-    return sa->sa_len;
-#else
-    static_cast<void>(addr);
-    return 0;
-#endif
 }
 
 auto Network::is_valid(const SockAddr& addr, bool verbose) -> bool
