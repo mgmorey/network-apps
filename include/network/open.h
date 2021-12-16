@@ -6,8 +6,8 @@
 #include "network/get-socket.h"     // FdResult, get_socket()
 #include "network/hints.h"          // Hints
 #include "network/result.h"         // Result
+#include "network/sockaddr.h"       // SockAddr
 #include "network/socket.h"         // Socket
-#include "network/types.h"          // SockAddr
 
 #ifdef _WIN32
 #include <winsock2.h>       // sockaddr, socklen_t

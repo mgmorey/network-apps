@@ -1,0 +1,212 @@
+#include "network/is-valid.h"           // SockAddr, is_valid()
+#include "network/family-type.h"        // family_type
+#include "network/get-sun-length.h"     // get_sun_length()
+
+#ifdef _WIN32
+#else
+#endif
+
+#ifdef _WIN32
+#include <winsock2.h>       // AF_INET, AF_INET6, AF_LOCAL, AF_UNIX,
+                            // sockaddr, sockaddr_in, sockaddr_storage
+#include <ws2tcpip.h>       // sockaddr_in6
+#else
+#include <netinet/in.h>     // sockaddr_in, sockaddr_in6
+#include <sys/socket.h>     // AF_INET, AF_INET6, AF_LOCAL, AF_UNIX,
+                            // sockaddr, sockaddr_storage
+#include <sys/un.h>         // sockaddr_un
+#endif
+
+#include <algorithm>    // std::max(), std::min()
+#include <cassert>      // assert()
+#include <cstddef>      // std::size_t
+#include <cstring>      // std::memcpy(), std::memset()
+#include <cstring>      // strnlen()
+#include <iomanip>      // std::left, std::right, std::setw()
+#include <iostream>     // std::cerr, std::endl
+
+static const auto key_width {20};
+static const auto value_width {5};
+
+static auto get_family(const Network::SockAddr& addr) -> Network::family_type
+{
+    const auto *const sa {reinterpret_cast<const sockaddr*>(addr.data())};
+    assert(sa != nullptr);
+
+    if (addr.empty()) {
+        return 0;
+    }
+
+    return sa->sa_family;
+}
+
+static auto get_max_size(const Network::SockAddr& addr) -> std::size_t
+{
+    const auto family {get_family(addr)};
+
+    switch (family) {
+#ifndef _WIN32
+    case AF_UNIX:
+        return sizeof(sockaddr_un);
+#endif
+    case AF_INET:
+        return sizeof(sockaddr_in);
+    case AF_INET6:
+        return sizeof(sockaddr_in6);
+    default:
+        return 0;
+    }
+}
+
+static auto get_min_size(const Network::SockAddr& addr) -> std::size_t
+{
+    const auto family {get_family(addr)};
+
+    switch (family) {
+#ifndef _WIN32
+    case AF_UNIX:
+        return offsetof(sockaddr_un, sun_path);
+#endif
+    case AF_INET:
+        return sizeof(sockaddr_in);
+    case AF_INET6:
+        return sizeof(sockaddr_in6);
+    default:
+        return sizeof(sockaddr);
+    }
+}
+
+static auto get_sa_length(const Network::SockAddr& addr) -> std::size_t
+{
+#ifdef HAVE_SOCKADDR_SA_LEN
+    const auto *const sa {reinterpret_cast<const sockaddr*>(addr.data())};
+    assert(sa != nullptr);
+
+    if (addr.empty()) {
+        return 0;
+    }
+
+    return sa->sa_len;
+#else
+    static_cast<void>(addr);
+    return 0;
+#endif
+}
+
+auto Network::is_valid(const SockAddr& addr, bool verbose) -> bool
+{
+    if (verbose) {
+        std::cerr << "Validating socket address: "
+                  << addr
+                  << std::endl;
+    }
+
+    if (addr.empty()) {
+        return false;
+    }
+
+    const auto family {get_family(addr)};
+
+    if (verbose) {
+        std::cerr << std::left
+                  << std::setw(key_width)
+                  << "    Family:"
+                  << std::right
+                  << std::setw(value_width)
+                  << family
+                  << std::endl;
+    }
+
+    switch (family) {
+#ifndef _WIN32
+    case AF_UNIX:
+#endif
+    case AF_INET:
+    case AF_INET6:
+        break;
+    default:
+        return false;
+    }
+
+    const auto max_size {get_max_size(addr)};
+    const auto min_size {get_min_size(addr)};
+
+    if (verbose) {
+        std::cerr << std::left
+                  << std::setw(key_width)
+                  << "    Actual size:"
+                  << std::right
+                  << std::setw(value_width)
+                  << addr.size()
+                  << std::endl
+                  << std::left
+                  << std::setw(key_width)
+                  << "    Minimum size:"
+                  << std::right
+                  << std::setw(value_width)
+                  << min_size
+                  << std::endl
+                  << std::left
+                  << std::setw(key_width)
+                  << "    Maximum size:"
+                  << std::right
+                  << std::setw(value_width)
+                  << max_size
+                  << std::endl;
+    }
+
+    if (!(min_size <= addr.size() && addr.size() <= max_size)) {
+        return false;
+    }
+
+#ifdef HAVE_SOCKADDR_SA_LEN
+
+    const auto sa_len {static_cast<std::size_t>(get_sa_length(addr))};
+
+    if (verbose) {
+        std::cerr << std::left
+                  << std::setw(key_width)
+                  << "    Stored length:"
+                  << std::right
+                  << std::setw(value_width)
+                  << sa_len
+                  << std::endl;
+    }
+
+    if (family == AF_UNIX) {
+        if (!(min_size <= sa_len && sa_len <= addr.size())) {
+            return false;
+        }
+
+#ifndef _WIN32
+
+        const auto *const sun {reinterpret_cast<const sockaddr_un*>(addr.data())};
+        const auto sun_len {get_sun_length(sun, addr.size())};
+
+        if (verbose) {
+            std::cerr << std::left
+                      << std::setw(key_width)
+                      << "    Computed length:"
+                      << std::right
+                      << std::setw(value_width)
+                      << sun_len
+                      << std::endl;
+        }
+
+        if (!(sa_len == sun_len)) {
+            return false;
+        }
+
+#endif
+
+    }
+    else {
+        if (!(sa_len == addr.size())) {
+            return false;
+        }
+    }
+
+#endif
+
+    return true;
+}

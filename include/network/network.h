@@ -22,9 +22,9 @@
 #include "network/get-sockname.h"   // SockAddrResult, get_sockname()
 #include "network/hints.h"          // Hints
 #include "network/host.h"           // Host
+#include "network/is-valid.h"       // is_valid()
 #include "network/overload.h"       // Overload
 #include "network/result.h"         // Result
-#include "network/types.h"          // Hostname, Pathname, Service,
-                                    // SockAddr
+#include "network/types.h"          // Hostname, Pathname, Service
 
 #endif

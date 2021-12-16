@@ -1,11 +1,11 @@
 #ifndef NETWORK_GET_SOCKETS_H
 #define NETWORK_GET_SOCKETS_H
 
-#include "network/endpoint.h"       // Endpoint
-#include "network/hints.h"          // Hints
-#include "network/result.h"         // Result
-#include "network/socketvector.h"   // SocketVector
-#include "network/types.h"          // Hostname, Service
+#include "network/endpoint.h"           // Endpoint
+#include "network/hints.h"              // Hints
+#include "network/result.h"             // Result
+#include "network/socketvector.h"       // SocketVector
+#include "network/string-types.h"       // Hostname, Service
 
 #include <variant>      // std::variant
 

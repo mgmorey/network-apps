@@ -1,7 +1,7 @@
 #ifndef NETWORK_ENDPOINT_H
 #define NETWORK_ENDPOINT_H
 
-#include "network/types.h"          // Hostname, Service
+#include "network/string-types.h"       // Hostname, Service
 
 #include <utility>      // std::pair
 

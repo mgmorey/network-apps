@@ -3,9 +3,10 @@
 #include "network/error.h"              // format_error(),
                                         // get_last_error(),
                                         // reset_last_error()
-#include "network/get-sockaddr.h"       // SockAddr, get_length(),
-                                        // get_pointer(),
-                                        // get_sockaddr(), is_valid()
+#include "network/get-length.h"         // SockAddr, get_length()
+#include "network/get-pointer.h"        // SockAddr, get_pointer()
+#include "network/get-sockaddr.h"       // SockAddr, get_sockaddr()
+#include "network/is-valid.h"           // SockAddr, is_valid()
 
 #include <algorithm>    // std::max()
 #include <cassert>      // assert()

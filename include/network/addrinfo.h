@@ -1,9 +1,9 @@
 #ifndef NETWORK_ADDRINFO_H
 #define NETWORK_ADDRINFO_H
 
-#include "network/hints.h"          // Hints
-#include "network/result.h"         // Result
-#include "network/types.h"          // Hostname, Service
+#include "network/hints.h"              // Hints
+#include "network/result.h"             // Result
+#include "network/string-types.h"       // Hostname, Service
 
 #ifdef _WIN32
 #include <ws2tcpip.h>   // addrinfo

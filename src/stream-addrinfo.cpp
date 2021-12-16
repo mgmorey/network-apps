@@ -5,7 +5,7 @@
 #include "network/get-sockaddr.h"       // SockAddr, get_sockaddr()
 #include "network/protocol.h"           // Protocol, operator<<()
 #include "network/socktype.h"           // SockType, operator<<()
-#include "network/types.h"              // Hostname, operator<<()
+#include "network/string-types.h"       // Hostname
 
 #ifdef _WIN32
 #include <ws2tcpip.h>   // addrinfo

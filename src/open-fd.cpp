@@ -4,9 +4,9 @@
 #include "network/error.h"              // format_error(),
                                         // get_last_error(),
                                         // reset_last_error()
-#include "network/get-sockaddr.h"       // SockAddr, get_length(),
-                                        // get_pointer(), is_valid(),
-                                        // operator<<()
+#include "network/get-length.h"         // SockAddr, get_length()
+#include "network/get-pointer.h"        // SockAddr, get_pointer()
+#include "network/is-valid.h"           // SockAddr, is_valid()
 
 #include <cassert>      // assert()
 #include <iostream>     // std::cerr, std::endl

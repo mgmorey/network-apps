@@ -2,7 +2,7 @@
                                         // sockaddr_in, sockaddr_in6,
                                         // sockaddr_un
 #include "network/buffer.h"             // Buffer
-#include "network/get-sockaddr.h"       // get_sun_path_length()
+#include "network/get-sun-length.h"     // get_sun_path_length()
 #include "network/print.h"              // print()
 #include "network/to-string.h"          // to_string()
 

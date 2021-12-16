@@ -1,7 +1,8 @@
 #ifndef NETWORK_HOST_H
 #define NETWORK_HOST_H
 
-#include "network/types.h"          // Hostname, SockAddr
+#include "network/sockaddr.h"           // SockAddr
+#include "network/string-types.h"       // Hostname
 
 #ifdef _WIN32
 #include <ws2tcpip.h>   // addrinfo

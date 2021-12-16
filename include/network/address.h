@@ -1,8 +1,8 @@
 #ifndef NETWORK_ADDRESS_H
 #define NETWORK_ADDRESS_H
 
-#include "network/family.h"         // family_type
-#include "network/types.h"          // SockAddr
+#include "network/family.h"             // family_type
+#include "network/sockaddr.h"           // SockAddr
 
 #ifdef _WIN32
 #include <winsock2.h>       // sockaddr, sockaddr_in
