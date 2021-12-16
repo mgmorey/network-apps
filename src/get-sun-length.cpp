@@ -1,8 +1,9 @@
 #include "network/get-sun-length.h"     // SockAddr, get_sun_length(),
-                                        // get_sun_path_length()
+                                        // get_sun_path_length(),
+                                        // sockaddr_un
 
 #ifndef _WIN32
-#include <sys/un.h>     // sockaddr_un
+#include <sys/socket.h>     // sockaddr
 #endif
 
 #include <algorithm>    // std::max(), std::min()

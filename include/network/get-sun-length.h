@@ -3,10 +3,7 @@
 
 #include "network/sockaddr.h"           // SockAddr
 
-#ifdef _WIN32
-#include <winsock2.h>       // sockaddr, sockaddr_in
-#else
-#include <sys/socket.h>     // sockaddr
+#ifndef _WIN32
 #include <sys/un.h>         // sockaddr_un
 #endif
 
