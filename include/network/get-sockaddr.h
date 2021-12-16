@@ -1,5 +1,5 @@
-#ifndef NETWORK_SOCKADDR_H
-#define NETWORK_SOCKADDR_H
+#ifndef NETWORK_GET_SOCKADDR_H
+#define NETWORK_GET_SOCKADDR_H
 
 #include "network/sock-len-type.h"      // sock_len_type
 #include "network/types.h"              // SockAddr

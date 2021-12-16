@@ -1,11 +1,11 @@
-#include "network/addrinfo.h"   // operator<<()
-#include "network/family.h"     // Family, operator<<()
-#include "network/flags.h"      // Flags, operator<<()
-#include "network/format.h"     // Format, operator<<()
-#include "network/protocol.h"   // Protocol, operator<<()
-#include "network/sockaddr.h"   // get_sockaddr()
-#include "network/socktype.h"   // SockType, operator<<()
-#include "network/types.h"      // Hostname, operator<<()
+#include "network/addrinfo.h"           // operator<<()
+#include "network/family.h"             // Family, operator<<()
+#include "network/flags.h"              // Flags, operator<<()
+#include "network/format.h"             // Format, operator<<()
+#include "network/get-sockaddr.h"       // SockAddr, get_sockaddr()
+#include "network/protocol.h"           // Protocol, operator<<()
+#include "network/socktype.h"           // SockType, operator<<()
+#include "network/types.h"              // Hostname, operator<<()
 
 #ifdef _WIN32
 #include <ws2tcpip.h>   // addrinfo
