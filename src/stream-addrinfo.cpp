@@ -3,9 +3,9 @@
 #include "network/flags.h"              // Flags, operator<<()
 #include "network/format.h"             // Format, operator<<()
 #include "network/get-sockaddr.h"       // SockAddr, get_sockaddr()
+#include "network/hostname.h"           // Hostname
 #include "network/protocol.h"           // Protocol, operator<<()
 #include "network/socktype.h"           // SockType, operator<<()
-#include "network/string-types.h"       // Hostname
 
 #ifdef _WIN32
 #include <ws2tcpip.h>   // addrinfo

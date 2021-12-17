@@ -3,9 +3,10 @@
 
 #include "network/endpoint.h"           // Endpoint
 #include "network/hints.h"              // Hints
+#include "network/hostname.h"           // Hostname
 #include "network/result.h"             // Result
+#include "network/service.h"            // Service
 #include "network/socketvector.h"       // SocketVector
-#include "network/string-types.h"       // Hostname, Service
 
 #include <variant>      // std::variant
 
