@@ -1,8 +1,8 @@
 #ifndef NETWORK_GET_SOCKADDR_H
 #define NETWORK_GET_SOCKADDR_H
 
-#include "network/sockaddr.h"           // SockAddr
 #include "network/pathname.h"           // Pathname
+#include "network/sockaddr.h"           // SockAddr
 
 #ifdef _WIN32
 #include <winsock2.h>       // sockaddr, sockaddr_in
