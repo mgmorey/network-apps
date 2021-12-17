@@ -1,4 +1,13 @@
-STANDARD := c++17
+ifeq "$(CXX)" "g++"
+ifeq "$(shell bin/gcc-9-or-earlier)" "true"
+	STANDARD := c++2a
+else
+	STANDARD := c++20
+endif
+else
+	STANDARD := c++20
+endif
+
 SYSTEM := $(shell uname -s | cut -d- -f 1)
 
 CPPCHECK_FLAGS += --cppcheck-build-dir=tmp --enable=all	\
@@ -151,7 +160,7 @@ $(tmp_dir)/%.o: %.cpp
 	$(COMPILE.cpp) $(OUTPUT_OPTION) $<
 
 $(tmp_dir)/%.dep: %.cpp
-	$(CXX) $(CPPFLAGS) -MM $< | ./make-makefile -f TAGS -o $@
+	$(CXX) $(CPPFLAGS) -MM $< | bin/make-makefile -f TAGS -o $@
 
 vpath %.cpp src
 vpath %.h include/network

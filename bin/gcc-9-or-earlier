@@ -1,0 +1,18 @@
+#!/bin/sh -eu
+
+gcc_version=$(gcc -dumpfullversion 2>/dev/null || gcc -dumpversion)
+gcc_version_major=$(echo $gcc_version | cut -d. -f1)
+
+is_gcc_9_or_earlier() {
+    if [ "$gcc_version_major" -lt 10 ]; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+if is_gcc_9_or_earlier; then
+    echo true
+else
+    echo false
+fi
