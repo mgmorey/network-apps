@@ -102,8 +102,7 @@ tmp_dir = tmp
 all: $(executables) TAGS
 
 .PHONY:	check
-check:
-	cppcheck $(CPPCHECK_FLAGS) $(CPPFLAGS) .
+check: cppcheck
 
 .PHONY:	clang-tidy
 clang-tidy:	$(sources)
@@ -113,6 +112,10 @@ clang-tidy:	$(sources)
 .PHONY:	clean
 clean:
 	rm -f $(executables) $(libraries) $(objects) $(maps) $(listings)
+
+.PHONY:	cppcheck
+cppcheck:
+	cppcheck $(CPPCHECK_FLAGS) $(CPPFLAGS) .
 
 .PHONY:	dos2unix
 dos2unix:
