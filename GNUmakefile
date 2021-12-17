@@ -1,11 +1,9 @@
-ifeq "$(CXX)" "g++"
+STANDARD := c++20
+
+ifeq "$(STANDARD)" "c++20"
 ifeq "$(shell bin/gcc-9-or-earlier)" "true"
 	STANDARD := c++2a
-else
-	STANDARD := c++20
 endif
-else
-	STANDARD := c++20
 endif
 
 SYSTEM := $(shell uname -s | cut -d- -f 1)
