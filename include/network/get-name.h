@@ -20,7 +20,7 @@
 namespace Network
 {
     using GetNameFunction = int (*)(fd_type, sockaddr*, socklen_t*);
-    using GetNameHandler = std::pair<GetNameFunction, std::string>;
+    using GetNameHandler = std::pair<GetNameFunction, const char*>;
 
     using SockAddrResult = std::variant<SockAddr, Result>;
 

@@ -8,7 +8,7 @@
 #include <sys/socket.h>     // connect()
 #endif
 
-static const Network::OpenHandler handler {::connect, "connect"};
+static constexpr Network::OpenHandler handler {::connect, "connect"};
 
 auto Network::connect(Fd fd,
                       const SockAddr& addr,

@@ -23,7 +23,7 @@
 namespace Network
 {
     using OpenFunction = int (*)(fd_type, const sockaddr*, socklen_t);
-    using OpenHandler = std::pair<OpenFunction, std::string>;
+    using OpenHandler = std::pair<OpenFunction, const char*>;
 
     extern auto open(const OpenHandler& handler,
                      const Endpoint& endpoint,

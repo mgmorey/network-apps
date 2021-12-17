@@ -8,7 +8,7 @@
 #include <sys/socket.h>     // bind()
 #endif
 
-static const Network::OpenHandler handler {::bind, "bind"};
+static constexpr Network::OpenHandler handler {::bind, "bind"};
 
 auto Network::bind(Fd fd,
                    const SockAddr& addr,

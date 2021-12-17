@@ -6,7 +6,7 @@
 #include <sys/socket.h> // getpeername()
 #endif
 
-static const Network::GetNameHandler handler {::getpeername, "getpeername"};
+static constexpr Network::GetNameHandler handler {::getpeername, "getpeername"};
 
 auto Network::get_peername(Fd fd, bool verbose) -> Network::SockAddrResult
 {
