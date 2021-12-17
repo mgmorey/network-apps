@@ -7,7 +7,7 @@ auto Network::get_sa_length(const SockAddr& addr) -> Network::sock_len_type
 {
 #ifdef HAVE_SOCKADDR_SA_LEN
     const auto *const sa {reinterpret_cast<const sockaddr*>(addr.data())};
-    assert(sa != nullptr);
+    assert(sa != nullptr);  // NOLINT
 
     if (addr.empty()) {
         return 0;

@@ -32,7 +32,7 @@ static const auto value_width {5};
 static auto get_family(const Network::SockAddr& addr) -> Network::family_type
 {
     const auto *const sa {reinterpret_cast<const sockaddr*>(addr.data())};
-    assert(sa != nullptr);
+    assert(sa != nullptr);  // NOLINT
 
     if (addr.empty()) {
         return 0;

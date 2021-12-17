@@ -59,7 +59,7 @@ namespace TestSocket
     static auto test_path(const std::string& path) -> void
     {
         Network::Address address {Network::get_sockaddr(path)};
-        assert(is_valid(address, verbose));
+        assert(is_valid(address, verbose));  // NOLINT
         std::cout << "Unix domain address: "
                   << address
                   << std::endl;

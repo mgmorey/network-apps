@@ -27,12 +27,12 @@ auto Network::get_sockaddr(const Pathname& path) -> Network::SockAddr
     std::memset(&addr, '\0', sizeof addr);
     const auto path_size {std::min(path.size(), sizeof addr.sun_path - 1)};
     const auto min_size {sizeof addr - sizeof addr.sun_path + path_size};
-    std::memcpy(addr.sun_path, path, path_size);
+    std::memcpy(addr.sun_path, path, path_size);  // NOLINT
     addr.sun_family = AF_LOCAL;
 #ifdef HAVE_SOCKADDR_SA_LEN
     const auto sun_len {std::max(sizeof(sockaddr), min_size)};
     addr.sun_len = sun_len;
-    assert(addr.sun_len == get_sun_length(&addr, sizeof addr));
+    assert(addr.sun_len == get_sun_length(&addr, sizeof addr));  // NOLINT
 #endif
     const auto len {std::max(sizeof(sockaddr), min_size + 1)};
     return get_sockaddr(&addr, len);

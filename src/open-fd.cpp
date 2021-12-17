@@ -17,7 +17,7 @@ auto Network::open(const OpenHandler& handler, Fd fd,
                    bool verbose) -> Network::Result
 {
     Result result;
-    assert(is_valid(addr, verbose));
+    assert(is_valid(addr, verbose));  // NOLINT
     const auto addr_len {get_length(addr)};
     const auto *const addr_ptr {get_pointer(addr)};
 

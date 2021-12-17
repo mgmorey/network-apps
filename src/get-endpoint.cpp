@@ -25,7 +25,7 @@ auto Network::get_endpoint(const SockAddr& addr, int flags, bool verbose) ->
     Result result;
     Buffer host {NI_MAXHOST};
     Buffer serv {NI_MAXSERV};
-    assert(is_valid(addr, verbose));
+    assert(is_valid(addr, verbose));  // NOLINT
     const auto addr_len {get_length(addr)};
     const auto *const addr_ptr {get_pointer(addr)};
 

@@ -27,7 +27,7 @@ static constexpr auto get_capacity() -> Network::SockAddr::size_type
 auto Network::get_sockaddr(const sockaddr* sa,
                            std::size_t size) -> Network::SockAddr
 {
-    assert(size ? sa != nullptr : sa == nullptr);
+    assert(size ? sa != nullptr : sa == nullptr);  // NOLINT
 
     if (sa == nullptr) {
         return {get_capacity(), static_cast<Byte>(0)};

@@ -55,6 +55,6 @@ auto Network::get_name(const GetNameHandler& handler, Fd fd,
     }
 
     addr.resize(addr_len);
-    assert(is_valid(addr, verbose));
+    assert(is_valid(addr, verbose));  // NOLINT
     return addr;
 }
