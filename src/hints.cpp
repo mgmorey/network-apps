@@ -1,9 +1,9 @@
 #include "network/hints.h"      // Hints, addrinfo
 
-Network::Hints::Hints(int t_family,
-                      int t_socktype,
-                      int t_protocol,
-                      int t_flags) :
+Network::Hints::Hints(family_type t_family,
+                      socktype_type t_socktype,
+                      protocol_type t_protocol,
+                      flags_type t_flags) :
     m_flags(t_flags),
     m_family(t_family),
     m_socktype(t_socktype),

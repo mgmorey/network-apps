@@ -16,10 +16,10 @@ namespace Network
 {
     struct Hints
     {
-        explicit Hints(int t_family = 0,
-                       int t_socktype = 0,
-                       int t_protocol = 0,
-                       int t_flags = 0);
+        explicit Hints(family_type t_family = 0,
+                       socktype_type t_socktype = 0,
+                       protocol_type t_protocol = 0,
+                       flags_type t_flags = 0);
         // cppcheck-suppress noExplicitConstructor
         Hints(const addrinfo& t_addrinfo);  // NOLINT
         auto operator=(const addrinfo& t_addrinfo) -> Hints&;
