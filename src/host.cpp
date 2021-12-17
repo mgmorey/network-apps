@@ -1,7 +1,6 @@
 #include "network/host.h"               // Host, Hostname, SockAddr,
                                         // addrinfo
-
-#include <span>         // std::span()
+#include "network/get-sockaddr.h"       // SockAddr, get_sockaddr()
 
 Network::Host::Host(const addrinfo& t_addrinfo) :
     m_sock_addr(get_sockaddr(t_addrinfo)),
@@ -43,8 +42,5 @@ auto Network::Host::canonical_name() const -> Network::Hostname
 
 auto Network::Host::get_sockaddr(const addrinfo& ai) -> Network::SockAddr
 {
-    const auto *const chars {reinterpret_cast<const Byte*>(ai.ai_addr)};
-    const auto size {static_cast<std::size_t>(ai.ai_addrlen)};
-    const auto bytes {std::span(chars, size)};
-    return {bytes.data(), bytes.size()};
+    return Network::get_sockaddr(ai.ai_addr, ai.ai_addrlen);
 }
