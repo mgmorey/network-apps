@@ -2,15 +2,16 @@
                                         // sockaddr
 
 #ifdef _WIN32
-#include <winsock2.h>   // sockaddr_storage
+#include <winsock2.h>       // sockaddr_storage
 #else
-#include <sys/socket.h> // sockaddr_storage
-#include <sys/un.h>     // sockaddr_un
+#include <sys/socket.h>     // sockaddr_storage
+#include <sys/un.h>         // sockaddr_un
 #endif
 
 #include <algorithm>    // std::max()
 #include <cassert>      // assert()
 #include <cstddef>      // std::size_t
+#include <span>         // std::span()
 
 static constexpr auto get_capacity() -> Network::SockAddr::size_type
 {
@@ -33,8 +34,9 @@ auto Network::get_sockaddr(const sockaddr* sa,
         addr.assign(get_capacity(), static_cast<Byte>(0));
     }
     else {
-        const auto *const data {reinterpret_cast<const Byte*>(sa)};
-        addr.assign(data, data + size);
+        const auto *const chars {reinterpret_cast<const Byte*>(sa)};
+        const auto bytes {std::span(chars, size)};
+        addr.assign(bytes.data(), bytes.size());
     }
 
     return addr;
