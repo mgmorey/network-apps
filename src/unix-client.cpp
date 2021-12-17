@@ -13,6 +13,7 @@
 #include <cstring>      // std::memset(), std::strcmp(),
                         // std::strcpy(), std::strncpy()
 #include <iostream>     // std::cerr, std::endl
+#include <span>         // std::span()
 
 auto main(int argc, char *argv[]) -> int
 {
@@ -39,15 +40,17 @@ auto main(int argc, char *argv[]) -> int
 
     // Send arguments.
 
+    const auto args = std::span(argv, size_t(argc));
+
     for (int i = 1; i < argc; ++i) {
-        error = ::write(sock, argv[i], std::strlen(argv[i]) + 1);
+        error = ::write(sock, args[i], std::strlen(args[i]) + 1);
 
         if (error == -1) {
             std::perror("write");
             break;
         }
 
-        if (std::strcmp(argv[1], "DOWN") == 0) {
+        if (std::strcmp(args[1], "DOWN") == 0) {
             shutdown = true;
             break;
         }

@@ -21,6 +21,7 @@
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <optional>     // std::nullopt
 #include <ostream>      // std::ostream
+#include <span>         // std::span()
 #include <string>       // std::string
 #include <utility>      // std::pair
 #include <variant>      // std::variant, std::visit()
@@ -128,7 +129,7 @@ namespace TestAddress
     static auto parse_arguments(int argc, char** argv) ->
         std::vector<std::string>
     {
-        std::vector<std::string> args {argv[0]};
+        std::vector<std::string> result {*argv};
         int ch {};
 
         while ((ch = ::getopt(argc, argv, "v")) != -1) {
@@ -138,7 +139,7 @@ namespace TestAddress
                 break;
             case '?':
                 std::cerr << "Usage: "
-                          << argv[0]
+                          << *argv
                           << " [-v]"
                           << std::endl;
                 std::exit(EXIT_FAILURE);
@@ -147,11 +148,13 @@ namespace TestAddress
             }
         }
 
+        const auto args = std::span(argv, size_t(argc));
+
         for (auto index = optind; index < argc; ++index) {
-            args.emplace_back(argv[index]);
+            result.emplace_back(args[index]);
         }
 
-        return args;
+        return result;
     }
 
     static auto test_host(const Network::Hostname& host,

@@ -24,6 +24,7 @@
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
+#include <span>         // std::span()
 #include <string>       // std::string
 #include <utility>      // std::move()
 #include <variant>      // std::get(), std::holds_alternative,
@@ -137,7 +138,7 @@ namespace TestConnect
     static auto parse_arguments(int argc, char** argv) ->
         std::vector<std::string>
     {
-        std::vector<std::string> args {argv[0]};
+        std::vector<std::string> result {*argv};
         int ch {};
 
         while ((ch = ::getopt(argc, argv, "v")) != -1) {
@@ -147,7 +148,7 @@ namespace TestConnect
                 break;
             case '?':
                 std::cerr << "Usage: "
-                          << argv[0]
+                          << *argv
                           << " [-v]"
                           << std::endl;
                 std::exit(EXIT_FAILURE);
@@ -156,11 +157,13 @@ namespace TestConnect
             }
         }
 
+        const auto args = std::span(argv, size_t(argc));
+
         for (auto index = optind; index < argc; ++index) {
-            args.emplace_back(argv[index]);
+            result.emplace_back(args[index]);
         }
 
-        return args;
+        return result;
     }
 
     static auto test_connect(const Network::Endpoint& endpoint,
