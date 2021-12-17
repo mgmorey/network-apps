@@ -6,9 +6,7 @@
 #include <sys/socket.h>     // getsockname()
 #endif
 
-using namespace std::literals::string_literals;
-
-static const Network::GetNameHandler handler {::getsockname, "getsockname"s};
+static const Network::GetNameHandler handler {::getsockname, "getsockname"};
 
 auto Network::get_sockname(Fd fd, bool verbose) -> Network::SockAddrResult
 {

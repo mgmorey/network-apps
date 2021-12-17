@@ -13,8 +13,8 @@
 #include <iostream>     // std::cerr, std::endl
 #include <sstream>      // std::ostringstream
 
-static const std::string delim {", "};
-static const int tab {0};
+static constexpr auto delim {", "};
+static constexpr auto tab {0};
 
 auto Network::get_socket(const Socket& sock,
                          bool verbose) -> Network::FdResult

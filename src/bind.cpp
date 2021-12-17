@@ -8,9 +8,7 @@
 #include <sys/socket.h>     // bind()
 #endif
 
-using namespace std::literals::string_literals;
-
-static const Network::OpenHandler handler {::bind, "bind"s};
+static const Network::OpenHandler handler {::bind, "bind"};
 
 auto Network::bind(Fd fd,
                    const SockAddr& addr,

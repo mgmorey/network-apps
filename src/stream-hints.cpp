@@ -6,8 +6,8 @@
 auto Network::operator<<(std::ostream& os,
                          const Hints& hints) -> std::ostream&
 {
-    static const std::string delim {", "};
-    static const int tab {6};
+    static constexpr auto delim {", "};
+    static constexpr auto tab {6};
 
     os << "Hints("
        << Format("flags")

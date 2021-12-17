@@ -50,8 +50,8 @@ static auto get_suffix(Network::family_type family) -> std::string
 auto Network::operator<<(std::ostream& os,
                          const Address& address) -> std::ostream&
 {
-    static const std::string delim {", "};
-    static const int tab {0};
+    static constexpr auto delim {", "};
+    static constexpr auto tab {0};
 
     if (address.empty()) {
         os << "0x0";
