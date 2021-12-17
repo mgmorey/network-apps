@@ -28,16 +28,12 @@ auto Network::get_sockaddr(const sockaddr* sa,
                            std::size_t size) -> Network::SockAddr
 {
     assert(size ? sa != nullptr : sa == nullptr);
-    SockAddr addr;
 
     if (sa == nullptr) {
-        addr.assign(get_capacity(), static_cast<Byte>(0));
-    }
-    else {
-        const auto *const chars {reinterpret_cast<const Byte*>(sa)};
-        const auto bytes {std::span(chars, size)};
-        addr.assign(bytes.data(), bytes.size());
+        return {get_capacity(), static_cast<Byte>(0)};
     }
 
-    return addr;
+    const auto *const chars {reinterpret_cast<const Byte*>(sa)};
+    const auto bytes {std::span(chars, size)};
+    return {bytes.data(), bytes.size()};
 }
