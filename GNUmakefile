@@ -58,16 +58,17 @@ sources = $(exec_sources) $(lib_sources)
 exec_sources = test-address.cpp test-bind.cpp test-connect.cpp	\
 test-hostname.cpp
 
-lib_sources = address.cpp addrinfo.cpp bind.cpp buffer.cpp close.cpp	\
-connect.cpp context.cpp error.cpp family.cpp flags.cpp format.cpp	\
-get-endpoint.cpp get-hostname.cpp get-hosts.cpp get-length.cpp		\
-get-name.cpp get-pointer.cpp get-sa-length.cpp get-sockaddr.cpp		\
-get-socket.cpp get-socketpair.cpp get-sockets.cpp get-peername.cpp	\
-get-sockname.cpp get-sun-length.cpp hints.cpp host.cpp is-valid.cpp	\
-open-endpoint.cpp open-fd.cpp optionalstring.cpp protocol.cpp		\
-result.cpp socket.cpp socktype.cpp stream-address.cpp			\
-stream-addrinfo.cpp stream-bytestring.cpp stream-hints.cpp		\
-stream-optionalstring.cpp stream-socket.cpp
+lib_sources = address.cpp address-in.cpp address-un.cpp addrinfo.cpp	\
+bind.cpp buffer.cpp close.cpp connect.cpp context.cpp error.cpp		\
+family.cpp flags.cpp format.cpp get-endpoint.cpp get-hostname.cpp	\
+get-hosts.cpp get-length.cpp get-name.cpp get-pointer.cpp		\
+get-sa-length.cpp get-sockaddr.cpp get-sockaddr-in.cpp			\
+get-sockaddr-un.cpp get-socket.cpp get-socketpair.cpp get-sockets.cpp	\
+get-peername.cpp get-sockname.cpp get-sun-length.cpp hints.cpp		\
+host.cpp is-valid.cpp open-endpoint.cpp open-fd.cpp			\
+optionalstring.cpp protocol.cpp result.cpp socket.cpp socktype.cpp	\
+stream-address.cpp stream-addrinfo.cpp stream-bytestring.cpp		\
+stream-hints.cpp stream-optionalstring.cpp stream-socket.cpp
 
 ifneq "$(SYSTEM)" "MINGW64_NT"
 	exec_sources += test-socket.cpp unix-client.cpp	\
