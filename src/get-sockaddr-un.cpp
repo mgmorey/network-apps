@@ -7,7 +7,7 @@
 #include <sys/un.h>     // sockaddr_un
 #endif
 
-#include <algorithm>    // std::copy(), std::max(), std::min()
+#include <algorithm>    // std::max(), std::min()
 #include <cassert>      // assert()
 #include <cstddef>      // std::size_t
 #include <string>       // std::string
