@@ -27,7 +27,7 @@ auto Network::get_sockaddr(const Pathname& pathname) -> Network::SockAddr
     const auto path {pathname.value_or("")};
     const auto path_size {std::min(path.size(), sizeof addr.sun_path - 1)};
     const auto min_size {sizeof addr - sizeof addr.sun_path + path_size};
-    std::copy(path.begin(), path.end(), addr.sun_path);
+    path.copy(addr.sun_path, path_size);
     addr.sun_family = AF_LOCAL;
 #ifdef HAVE_SOCKADDR_SA_LEN
     addr.sun_len = std::max(sizeof(sockaddr), min_size);
