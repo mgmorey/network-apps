@@ -11,6 +11,7 @@
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
+#include <optional>     // std::nullopt
 #include <span>         // std::span()
 #include <string>       // std::string
 #include <variant>      // std::visit()
@@ -56,9 +57,9 @@ namespace TestSocket
         return result;
     }
 
-    static auto test_path(const std::string& path) -> void
+    static auto test_path(const Network::Pathname& pathname) -> void
     {
-        Network::Address address {Network::get_sockaddr(path)};
+        Network::Address address {Network::get_sockaddr(pathname)};
         assert(is_valid(address, verbose));  // NOLINT
         std::cout << "Unix domain address: "
                   << address
@@ -100,6 +101,7 @@ auto main(int argc, char* argv[]) -> int
         TestSocket::parse_arguments(argc, argv);
         const Network::Socket hints(AF_UNIX, SOCK_STREAM);
         TestSocket::test_socketpair(hints);
+        TestSocket::test_path(std::nullopt);
         TestSocket::test_path(TestSocket::PATH_12);
         TestSocket::test_path(TestSocket::PATH_14);
         TestSocket::test_path(TestSocket::PATH_16);

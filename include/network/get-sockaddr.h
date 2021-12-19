@@ -13,6 +13,8 @@
 #include <sys/un.h>         // sockaddr_un
 #endif
 
+#include <optional>     // std::nullopt
+
 namespace Network
 {
     extern auto get_sockaddr(const sockaddr* sa = nullptr,
@@ -22,7 +24,7 @@ namespace Network
 #ifndef _WIN32
     extern auto get_sockaddr(const sockaddr_un* sun,
                              std::size_t size = 0) -> SockAddr;
-    extern auto get_sockaddr(const Pathname& path) -> SockAddr;
+    extern auto get_sockaddr(const Pathname& pathname) -> SockAddr;
 #endif
 }
 
