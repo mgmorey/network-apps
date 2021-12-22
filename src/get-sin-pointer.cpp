@@ -5,20 +5,20 @@
 
 auto Network::get_sin_pointer(const SockAddr& addr) -> const sockaddr_in*
 {
-    return {reinterpret_cast<const sockaddr_in*>(addr.data())};
+    return reinterpret_cast<const sockaddr_in*>(addr.data());
 }
 
 auto Network::get_sin_pointer(SockAddr& addr) -> sockaddr_in*
 {
-    return {reinterpret_cast<sockaddr_in*>(addr.data())};
+    return reinterpret_cast<sockaddr_in*>(addr.data());
 }
 
 auto Network::get_sin6_pointer(const SockAddr& addr) -> const sockaddr_in6*
 {
-    return {reinterpret_cast<const sockaddr_in6*>(addr.data())};
+    return reinterpret_cast<const sockaddr_in6*>(addr.data());
 }
 
 auto Network::get_sin6_pointer(SockAddr& addr) -> sockaddr_in6*
 {
-    return {reinterpret_cast<sockaddr_in6*>(addr.data())};
+    return reinterpret_cast<sockaddr_in6*>(addr.data());
 }

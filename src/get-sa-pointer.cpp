@@ -3,10 +3,10 @@
 
 auto Network::get_sa_pointer(const SockAddr& addr) -> const sockaddr*
 {
-    return {reinterpret_cast<const sockaddr*>(addr.data())};
+    return reinterpret_cast<const sockaddr*>(addr.data());
 }
 
 auto Network::get_sa_pointer(SockAddr& addr) -> sockaddr*
 {
-    return {reinterpret_cast<sockaddr*>(addr.data())};
+    return reinterpret_cast<sockaddr*>(addr.data());
 }

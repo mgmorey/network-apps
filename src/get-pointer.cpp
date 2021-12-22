@@ -5,10 +5,10 @@
 
 auto Network::get_pointer(const SockAddr& addr) -> const sockaddr*
 {
-    return {get_sa_pointer(addr)};
+    return get_sa_pointer(addr);
 }
 
 auto Network::get_pointer(SockAddr& addr) -> sockaddr*
 {
-    return {get_sa_pointer(addr)};
+    return get_sa_pointer(addr);
 }
