@@ -1,6 +1,7 @@
 #include "network/address.h"            // Address, sockaddr,
                                         // sockaddr_un
 #include "network/get-sun-length.h"     // get_sun_path_length()
+#include "network/get-sun-pointer.h"    // get_sun_pointer()
 #include "network/to-string.h"          // to_string()
 
 #include <string>       // std::string
@@ -9,7 +10,7 @@
 
 auto Network::Address::sun() const -> const sockaddr_un*
 {
-    return reinterpret_cast<const sockaddr_un*>(m_value.data());
+    return get_sun_pointer(m_value);
 }
 
 auto Network::Address::sun_family() const -> Network::family_type

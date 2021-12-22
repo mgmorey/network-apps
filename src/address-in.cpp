@@ -1,6 +1,7 @@
 #include "network/address.h"            // Address, sockaddr,
                                         // sockaddr_in, sockaddr_in6
 #include "network/buffer.h"             // Buffer
+#include "network/get-sin-pointer.h"    // get_sin_pointer()
 
 #ifdef _WIN32
 #include <winsock2.h>   // AF_INET, AF_INET6
@@ -14,7 +15,7 @@
 
 auto Network::Address::sin() const -> const sockaddr_in*
 {
-    return reinterpret_cast<const sockaddr_in*>(m_value.data());
+    return get_sin_pointer(m_value);
 }
 
 auto Network::Address::sin_addr() const -> in_addr

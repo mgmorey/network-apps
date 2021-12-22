@@ -1,4 +1,5 @@
 #include "network/address.h"            // Address, sockaddr,
+#include "network/get-sa-pointer.h"     // get_sa_pointer()
 #include "network/print.h"              // print()
 
 #ifdef _WIN32
@@ -115,7 +116,7 @@ auto Network::Address::text() const -> std::string
 
 auto Network::Address::sa() const -> const sockaddr*
 {
-    return reinterpret_cast<const sockaddr*>(m_value.data());
+    return get_sa_pointer(m_value);
 }
 
 auto Network::Address::sa_data() const -> Network::Address::value_type
