@@ -2,10 +2,7 @@
 #include "network/get-sa-family.h"      // SockAddr, get_sa_family()
 #include "network/get-sa-length.h"      // SockAddr, get_sa_length()
 #include "network/get-sun-length.h"     // SockAddr, get_sun_length()
-
-#ifdef _WIN32
-#else
-#endif
+#include "network/get-sun-pointer.h"    // SockAddr, get_sun_pointer()
 
 #ifdef _WIN32
 #include <winsock2.h>       // AF_INET, AF_INET6, AF_LOCAL, AF_UNIX,
@@ -152,7 +149,7 @@ auto Network::is_valid(const SockAddr& addr, bool verbose) -> bool
 
 #ifndef _WIN32
 
-        const auto *const sun {reinterpret_cast<const sockaddr_un*>(addr.data())};
+        const auto *const sun {get_sun_pointer(addr)};
         const auto sun_len {get_sun_length(sun, addr.size())};
 
         if (verbose) {
