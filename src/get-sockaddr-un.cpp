@@ -1,10 +1,12 @@
 #include "network/get-sockaddr.h"       // SockAddr, get_sockaddr(),
-                                        // sockaddr
-#include "network/get-sun-length.h"     // SockAddr, get_sun_length()
+                                        // sockaddr, sockaddr_in,
+                                        // sockaddr_in6, sockaddr_un
+#include "network/get-sa-pointer.h"     // get_sa_pointer()
+#include "network/get-sun-length.h"     // get_sun_length()
+#include "network/get-sun-pointer.h"    // get_sun_pointer()
 
 #ifndef _WIN32
-#include <sys/socket.h> // AF_LOCAL
-#include <sys/un.h>     // sockaddr_un
+#include <sys/socket.h>     // AF_LOCAL
 #endif
 
 #include <algorithm>    // std::max(), std::min()
@@ -17,7 +19,7 @@
 auto Network::get_sockaddr(const sockaddr_un* sun,
                            std::size_t size) -> Network::SockAddr
 {
-    const auto *const sa {reinterpret_cast<const sockaddr*>(sun)};
+    const auto *const sa {get_sa_pointer(sun)};
     return get_sockaddr(sa, size != 0 ? size : sizeof(sockaddr_un));
 }
 
