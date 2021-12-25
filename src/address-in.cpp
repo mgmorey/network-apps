@@ -52,7 +52,7 @@ auto Network::Address::sin_text() const -> std::string
 
 auto Network::Address::sin6() const -> const sockaddr_in6*
 {
-    return reinterpret_cast<const sockaddr_in6*>(m_value.data());
+    return get_sin6_pointer(m_value);
 }
 
 auto Network::Address::sin6_addr() const -> in6_addr
