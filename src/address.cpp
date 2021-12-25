@@ -1,5 +1,6 @@
-#include "network/address.h"            // Address, sockaddr,
-#include "network/get-sa-pointer.h"     // get_sa_pointer()
+#include "network/address.h"            // Address, SockAddr, sockaddr
+#include "network/get-sa-family.h"      // SockAddr, get_sa_family()
+#include "network/get-sa-pointer.h"     // SockAddr, get_sa_pointer()
 #include "network/print.h"              // print()
 
 #ifdef _WIN32
@@ -126,7 +127,7 @@ auto Network::Address::sa_data() const -> Network::Address::value_type
 
 auto Network::Address::sa_family() const -> Network::family_type
 {
-    return sa()->sa_family;
+    return get_sa_family(m_value);
 }
 
 auto Network::Address::sa_length() const -> Network::Address::length_type

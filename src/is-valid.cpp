@@ -1,5 +1,5 @@
 #include "network/is-valid.h"           // SockAddr, is_valid()
-#include "network/family-type.h"        // family_type
+#include "network/get-sa-family.h"      // SockAddr, get_sa_family()
 #include "network/get-sa-length.h"      // SockAddr, get_sa_length()
 #include "network/get-sun-length.h"     // SockAddr, get_sun_length()
 
@@ -29,21 +29,9 @@
 static const auto key_width {20};
 static const auto value_width {5};
 
-static auto get_family(const Network::SockAddr& addr) -> Network::family_type
-{
-    const auto *const sa {reinterpret_cast<const sockaddr*>(addr.data())};
-    assert(sa != nullptr);  // NOLINT
-
-    if (addr.empty()) {
-        return 0;
-    }
-
-    return sa->sa_family;
-}
-
 static auto get_max_size(const Network::SockAddr& addr) -> std::size_t
 {
-    const auto family {get_family(addr)};
+    const auto family {Network::get_sa_family(addr)};
 
     switch (family) {
 #ifndef _WIN32
@@ -61,7 +49,7 @@ static auto get_max_size(const Network::SockAddr& addr) -> std::size_t
 
 static auto get_min_size(const Network::SockAddr& addr) -> std::size_t
 {
-    const auto family {get_family(addr)};
+    const auto family {Network::get_sa_family(addr)};
 
     switch (family) {
 #ifndef _WIN32
@@ -89,7 +77,7 @@ auto Network::is_valid(const SockAddr& addr, bool verbose) -> bool
         return false;
     }
 
-    const auto family {get_family(addr)};
+    const auto family {get_sa_family(addr)};
 
     if (verbose) {
         std::cerr << std::left
