@@ -6,7 +6,7 @@
 
 namespace Network
 {
-    extern auto get_sa_family(const SockAddr& addr) -> Network::family_type;
+    extern auto get_sa_family(const SockAddr& addr) -> family_type;
 }
 
 #endif
