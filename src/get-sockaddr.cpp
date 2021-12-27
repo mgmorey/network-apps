@@ -1,5 +1,6 @@
 #include "network/get-sockaddr.h"       // SockAddr, get_sockaddr(),
                                         // sockaddr
+#include "network/get-byte-pointer.h"   // get_byte_pointer()
 
 #ifdef _WIN32
 #include <winsock2.h>       // sockaddr_storage
@@ -33,7 +34,7 @@ auto Network::get_sockaddr(const sockaddr* sa,
         return {get_capacity(), static_cast<Byte>(0)};
     }
 
-    const auto *const chars {reinterpret_cast<const Byte*>(sa)};
-    const auto bytes {std::span(chars, size)};
-    return {bytes.data(), bytes.size()};
+    const auto *const bytes {get_byte_pointer(sa)};
+    const auto span {std::span(bytes, size)};
+    return {span.data(), span.size()};
 }

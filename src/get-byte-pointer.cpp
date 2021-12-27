@@ -1,0 +1,12 @@
+#include "network/get-byte-pointer.h"   // get_byte_pointer(),
+                                        // sockaddr
+
+auto Network::get_byte_pointer(const sockaddr* sa) -> const Byte*
+{
+    return reinterpret_cast<const Byte*>(sa);
+}
+
+auto Network::get_byte_pointer(sockaddr* sa) -> Byte*
+{
+    return reinterpret_cast<Byte*>(sa);
+}
