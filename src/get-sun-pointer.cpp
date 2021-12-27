@@ -5,12 +5,12 @@
 
 auto Network::get_sun_pointer(const SockAddr& addr) -> const sockaddr_un*
 {
-    return reinterpret_cast<const sockaddr_un*>(addr.data());
+    return reinterpret_cast<const sockaddr_un*>(addr.data());  // NOLINT
 }
 
 auto Network::get_sun_pointer(SockAddr& addr) -> sockaddr_un*
 {
-    return reinterpret_cast<sockaddr_un*>(addr.data());
+    return reinterpret_cast<sockaddr_un*>(addr.data());  // NOLINT
 }
 
 #endif
