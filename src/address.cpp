@@ -58,34 +58,12 @@ auto Network::Address::empty() const -> bool
 
 auto Network::Address::family() const -> Network::family_type
 {
-    switch (sa_family()) {
-#ifndef _WIN32
-    case AF_UNIX:
-        return sun_family();
-#endif
-    case AF_INET:
-        return sin_family();
-    case AF_INET6:
-        return sin6_family();
-    default:
-        return sa_family();
-    }
+    return sa_family();
 }
 
 auto Network::Address::length() const -> Network::Address::length_type
 {
-    switch (sa_family()) {
-#ifndef _WIN32
-    case AF_UNIX:
-        return sun_length();
-#endif
-    case AF_INET:
-        return sin_length();
-    case AF_INET6:
-        return sin6_length();
-    default:
-        return sa_length();
-    }
+    return sa_length();
 }
 
 auto Network::Address::port() const -> Network::Address::port_type

@@ -48,22 +48,16 @@ namespace Network
 
         [[nodiscard]] auto sin() const -> const sockaddr_in*;
         [[nodiscard]] auto sin_addr() const -> in_addr;
-        [[nodiscard]] auto sin_family() const -> family_type;
-        [[nodiscard]] auto sin_length() const -> length_type;
         [[nodiscard]] auto sin_port() const -> port_type;
         [[nodiscard]] auto sin_text() const -> std::string;
 
         [[nodiscard]] auto sin6() const -> const sockaddr_in6*;
         [[nodiscard]] auto sin6_addr() const -> in6_addr;
-        [[nodiscard]] auto sin6_family() const -> family_type;
-        [[nodiscard]] auto sin6_length() const -> length_type;
         [[nodiscard]] auto sin6_port() const -> port_type;
         [[nodiscard]] auto sin6_text() const -> std::string;
 
 #ifndef _WIN32
         [[nodiscard]] auto sun() const -> const sockaddr_un*;
-        [[nodiscard]] auto sun_family() const -> family_type;
-        [[nodiscard]] auto sun_length() const -> length_type;
         [[nodiscard]] auto sun_path() const -> value_type;
         [[nodiscard]] auto sun_text() const -> std::string;
 #endif

@@ -13,20 +13,6 @@ auto Network::Address::sun() const -> const sockaddr_un*
     return get_sun_pointer(m_value);
 }
 
-auto Network::Address::sun_family() const -> Network::family_type
-{
-    return sun()->sun_family;
-}
-
-auto Network::Address::sun_length() const -> Network::Address::length_type
-{
-#ifdef HAVE_SOCKADDR_SA_LEN
-    return sun()->sun_len;
-#else
-    return 0;
-#endif
-}
-
 auto Network::Address::sun_path() const -> Network::Address::value_type
 {
     const auto size {m_value.size()};

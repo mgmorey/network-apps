@@ -23,20 +23,6 @@ auto Network::Address::sin_addr() const -> in_addr
     return sin()->sin_addr;
 }
 
-auto Network::Address::sin_family() const -> Network::family_type
-{
-    return sin()->sin_family;
-}
-
-auto Network::Address::sin_length() const -> Network::Address::length_type
-{
-#ifdef HAVE_SOCKADDR_SA_LEN
-    return sin()->sin_len;
-#else
-    return 0;
-#endif
-}
-
 auto Network::Address::sin_port() const -> Network::Address::port_type
 {
     return sin()->sin_port;
@@ -58,20 +44,6 @@ auto Network::Address::sin6() const -> const sockaddr_in6*
 auto Network::Address::sin6_addr() const -> in6_addr
 {
     return sin6()->sin6_addr;
-}
-
-auto Network::Address::sin6_family() const -> Network::family_type
-{
-    return sin6()->sin6_family;
-}
-
-auto Network::Address::sin6_length() const -> Network::Address::length_type
-{
-#ifdef HAVE_SOCKADDR_SA_LEN
-    return sin6()->sin6_len;
-#else
-    return 0;
-#endif
 }
 
 auto Network::Address::sin6_port() const -> Network::Address::port_type
