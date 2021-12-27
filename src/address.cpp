@@ -1,5 +1,6 @@
 #include "network/address.h"            // Address, SockAddr, sockaddr
 #include "network/get-sa-family.h"      // SockAddr, get_sa_family()
+#include "network/get-sa-length.h"      // SockAddr, get_sa_length()
 #include "network/get-sa-pointer.h"     // SockAddr, get_sa_pointer()
 #include "network/print.h"              // print()
 
@@ -132,11 +133,7 @@ auto Network::Address::sa_family() const -> Network::family_type
 
 auto Network::Address::sa_length() const -> Network::Address::length_type
 {
-#ifdef HAVE_SOCKADDR_SA_LEN
-    return sa()->sa_len;
-#else
-    return 0;
-#endif
+    return get_sa_length(m_value);
 }
 
 auto Network::Address::sa_text() const -> std::string
