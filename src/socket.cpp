@@ -22,25 +22,25 @@ Network::Socket::Socket(const addrinfo& t_addrinfo) :
 
 auto Network::Socket::operator=(const addrinfo& t_addrinfo) -> Network::Socket&
 {
-    static_cast<Hints>(*this) = t_addrinfo;
-    static_cast<Host>(*this) = t_addrinfo;
+    static_cast<Hints>(*this) = t_addrinfo;  // NOLINT
+    static_cast<Host>(*this) = t_addrinfo;  // NOLINT
     return *this;
 }
 
 auto Network::Socket::operator<(const Socket& t_sock) const -> bool
 {
-    return (static_cast<Hints>(*this) < t_sock ||
-            static_cast<Host>(*this) < t_sock);
+    return (static_cast<Hints>(*this) < t_sock ||  // NOLINT
+            static_cast<Host>(*this) < t_sock);  // NOLINT
 }
 
 auto Network::Socket::operator>(const Socket& t_sock) const -> bool
 {
-    return (static_cast<Hints>(*this) > t_sock ||
-            static_cast<Host>(*this) > t_sock);
+    return (static_cast<Hints>(*this) > t_sock ||  // NOLINT
+            static_cast<Host>(*this) > t_sock);  // NOLINT
 }
 
 auto Network::Socket::operator==(const Socket& t_sock) const -> bool
 {
-    return (static_cast<Hints>(*this) == t_sock &&
-            static_cast<Host>(*this) == t_sock);
+    return (static_cast<Hints>(*this) == t_sock &&  // NOLINT
+            static_cast<Host>(*this) == t_sock);  // NOLINT
 }
