@@ -1,6 +1,6 @@
 #include "network/get-sockaddr.h"       // SockAddr, get_sockaddr(),
                                         // sockaddr
-#include "network/get-byte-pointer.h"   // get_byte_pointer()
+#include "network/get-byte-pointer.h"   // Byte, get_byte_pointer()
 
 #ifdef _WIN32
 #include <winsock2.h>       // sockaddr_storage
