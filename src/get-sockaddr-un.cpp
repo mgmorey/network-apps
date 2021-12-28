@@ -10,32 +10,31 @@
 #endif
 
 #include <algorithm>    // std::max(), std::min()
+#include <array>        // std::array
 #include <cassert>      // assert()
 #include <cstddef>      // std::size_t
+#include <span>         // std::as_bytes(), std::span
 #include <string>       // std::string
 
 #ifndef _WIN32
 
-auto Network::get_sockaddr(const sockaddr_un* sun,
-                           std::size_t size) -> Network::SockAddr
-{
-    const auto *const sa {get_sa_pointer(sun)};
-    return get_sockaddr(sa, size != 0 ? size : sizeof(sockaddr_un));
-}
-
 auto Network::get_sockaddr(const Pathname& pathname) -> Network::SockAddr
 {
-    sockaddr_un addr {};
+    std::array<sockaddr_un, 1> sun {};
     const auto path {pathname.value_or("")};
-    const auto path_size {std::min(path.size(), sizeof addr.sun_path - 1)};
-    const auto min_size {sizeof addr - sizeof addr.sun_path + path_size};
-    path.copy(addr.sun_path, path_size);  // NOLINT
-    addr.sun_family = AF_LOCAL;
+    const auto path_size {std::min(path.size(), sizeof sun[0].sun_path - 1)};
+    const auto min_size {sizeof sun[0] - sizeof sun[0].sun_path + path_size};
+    const auto size {std::max(sizeof(sockaddr), min_size + 1)};
+    path.copy(sun[0].sun_path, path_size);  // NOLINT
+    sun[0].sun_family = AF_LOCAL;
 #ifdef HAVE_SOCKADDR_SA_LEN
-    addr.sun_len = std::max(sizeof(sockaddr), min_size);
-    assert(addr.sun_len == get_sun_length(&addr, sizeof addr));  // NOLINT
+    sun[0].sun_len = std::max(sizeof(sockaddr), min_size);
+    assert(sun[0].sun_len == get_sun_length(&sun[0], sizeof sun[0]));  // NOLINT
 #endif
-    return get_sockaddr(&addr, std::max(sizeof(sockaddr), min_size + 1));
+    const auto bytes {std::as_bytes(std::span(sun))};
+    SockAddr addr {bytes.data(), bytes.size()};
+    addr.resize(size);
+    return addr;
 }
 
 #endif
