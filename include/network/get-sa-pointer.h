@@ -20,10 +20,6 @@ namespace Network
     extern auto get_sa_pointer(sockaddr_in* sin) -> sockaddr*;
     extern auto get_sa_pointer(const sockaddr_in6* sin6) -> const sockaddr*;
     extern auto get_sa_pointer(sockaddr_in6* sin6) -> sockaddr*;
-#ifndef _WIN32
-    extern auto get_sa_pointer(const sockaddr_un* sun) -> const sockaddr*;
-    extern auto get_sa_pointer(sockaddr_un* sun) -> sockaddr*;
-#endif
 }
 
 #endif

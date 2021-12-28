@@ -1,7 +1,6 @@
 #include "network/get-sockaddr.h"       // SockAddr, get_sockaddr(),
                                         // sockaddr, sockaddr_in,
                                         // sockaddr_in6, sockaddr_un
-#include "network/get-sa-pointer.h"     // get_sa_pointer()
 #include "network/get-sun-length.h"     // get_sun_length()
 #include "network/get-sun-pointer.h"    // get_sun_pointer()
 

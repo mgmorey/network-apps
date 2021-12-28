@@ -31,17 +31,3 @@ auto Network::get_sa_pointer(sockaddr_in6* sin6) -> sockaddr*
 {
     return reinterpret_cast<sockaddr*>(sin6);  // NOLINT
 }
-
-#ifndef _WIN32
-
-auto Network::get_sa_pointer(const sockaddr_un* sun) -> const sockaddr*
-{
-    return reinterpret_cast<const sockaddr*>(sun);  // NOLINT
-}
-
-auto Network::get_sa_pointer(sockaddr_un* sun) -> sockaddr*
-{
-    return reinterpret_cast<sockaddr*>(sun);  // NOLINT
-}
-
-#endif
