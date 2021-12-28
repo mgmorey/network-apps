@@ -12,7 +12,7 @@
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <optional>     // std::nullopt
-#include <span>         // std::span()
+#include <span>         // std::span
 #include <string>       // std::string
 #include <variant>      // std::visit()
 #include <vector>       // std::vector

@@ -12,7 +12,7 @@
 #include <algorithm>    // std::max()
 #include <cassert>      // assert()
 #include <cstddef>      // std::size_t
-#include <span>         // std::span()
+#include <span>         // std::span
 
 static constexpr auto get_capacity() -> Network::SockAddr::size_type
 {

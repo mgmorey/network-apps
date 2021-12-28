@@ -24,7 +24,7 @@
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
-#include <span>         // std::span()
+#include <span>         // std::span
 #include <string>       // std::string
 #include <utility>      // std::move()
 #include <variant>      // std::get(), std::holds_alternative,

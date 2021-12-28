@@ -13,7 +13,7 @@
 #include <cstring>      // std::memset(), std::strcmp(),
                         // std::strcpy(), std::strncpy()
 #include <iostream>     // std::cerr, std::endl
-#include <span>         // std::span()
+#include <span>         // std::span
 
 auto main(int argc, char *argv[]) -> int
 {
