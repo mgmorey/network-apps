@@ -1,8 +1,6 @@
 #include "network/get-sockaddr.h"       // SockAddr, get_sockaddr(),
-                                        // sockaddr, sockaddr_in,
-                                        // sockaddr_in6, sockaddr_un
+                                        // sockaddr_un
 #include "network/get-sun-length.h"     // get_sun_length()
-#include "network/get-sun-pointer.h"    // get_sun_pointer()
 
 #ifndef _WIN32
 #include <sys/socket.h>     // AF_LOCAL
@@ -11,9 +9,7 @@
 #include <algorithm>    // std::max(), std::min()
 #include <array>        // std::array
 #include <cassert>      // assert()
-#include <cstddef>      // std::size_t
 #include <span>         // std::as_bytes(), std::span
-#include <string>       // std::string
 
 #ifndef _WIN32
 
