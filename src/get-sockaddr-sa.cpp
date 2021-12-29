@@ -1,6 +1,6 @@
-#include "network/get-sockaddr.h"       // ByteSpan, SockAddr,
+#include "network/get-sockaddr.h"       // Byte, ByteSpan, SockAddr,
                                         // get_sockaddr(), sockaddr
-#include "network/get-bytespan.h"       // get_bytespan()
+#include "network/get-bytespan.h"       // get_bytespan(), std::span
 
 #ifdef _WIN32
 #include <winsock2.h>       // sockaddr_storage
@@ -11,7 +11,6 @@
 
 #include <algorithm>    // std::max()
 #include <cstddef>      // std::size_t
-#include <span>         // std::span
 
 static constexpr auto get_capacity() -> Network::SockAddr::size_type
 {
