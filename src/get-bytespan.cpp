@@ -1,5 +1,6 @@
 #include "network/get-bytespan.h"       // ByteSpan, get_bytespan(),
-                                        // sockaddr, std::span
+                                        // sockaddr, std::size_t,
+                                        // std::span
 
 auto Network::get_bytespan(const sockaddr* sa,
                            std::size_t size) -> Network::ByteSpan
