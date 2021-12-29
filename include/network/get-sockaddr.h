@@ -17,7 +17,8 @@
 
 namespace Network
 {
-    extern auto get_sockaddr(const sockaddr* sa = nullptr,
+    extern auto get_sockaddr() -> SockAddr;
+    extern auto get_sockaddr(const sockaddr* psa,
                              std::size_t size = 0) -> SockAddr;
     extern auto get_sockaddr(const sockaddr_in* sin) -> SockAddr;
     extern auto get_sockaddr(const sockaddr_in6* sin6) -> SockAddr;

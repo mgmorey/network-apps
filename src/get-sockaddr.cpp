@@ -10,9 +10,9 @@
 #endif
 
 #include <algorithm>    // std::max()
-#include <cassert>      // assert()
+#include <array>        // std::array
 #include <cstddef>      // std::size_t
-#include <span>         // std::span
+#include <span>         // std::as_bytes(), std::span
 
 static constexpr auto get_capacity() -> Network::SockAddr::size_type
 {
@@ -25,16 +25,21 @@ static constexpr auto get_capacity() -> Network::SockAddr::size_type
     return std::max(storage_size, unix_size);
 }
 
-auto Network::get_sockaddr(const sockaddr* sa,
+auto Network::get_sockaddr() -> Network::SockAddr
+{
+    return {get_capacity(), static_cast<Byte>(0)};
+}
+
+auto Network::get_sockaddr(const sockaddr* psa,
                            std::size_t size) -> Network::SockAddr
 {
-    assert(size ? sa != nullptr : sa == nullptr);  // NOLINT
+    const std::array<sockaddr, 1> sa {*psa};
+    const auto bytes {std::as_bytes(std::span(sa))};
+    SockAddr addr {bytes.data(), bytes.size()};
 
-    if (sa == nullptr) {
-        return {get_capacity(), static_cast<Byte>(0)};
+    if (size != 0) {
+        addr.resize(size);
     }
 
-    const auto *const bytes {get_byte_pointer(sa)};
-    const auto span {std::span(bytes, size)};
-    return {span.data(), span.size()};
+    return addr;
 }

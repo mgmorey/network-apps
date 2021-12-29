@@ -42,5 +42,7 @@ auto Network::Host::canonical_name() const -> Network::Hostname
 
 auto Network::Host::get_sockaddr(const addrinfo& ai) -> Network::SockAddr
 {
-    return Network::get_sockaddr(ai.ai_addr, ai.ai_addrlen);
+    return (ai.ai_addr == nullptr ?
+            Network::get_sockaddr() :
+            Network::get_sockaddr(ai.ai_addr, ai.ai_addrlen));
 }
