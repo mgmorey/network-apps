@@ -9,9 +9,8 @@
 #endif
 
 #include <algorithm>    // std::max()
-#include <array>        // std::array
 #include <cstddef>      // std::size_t
-#include <span>         // std::as_bytes(), std::span
+#include <span>         // std::span
 
 static constexpr auto get_capacity() -> Network::SockAddr::size_type
 {
@@ -32,13 +31,7 @@ auto Network::get_sockaddr() -> Network::SockAddr
 auto Network::get_sockaddr(const sockaddr* psa,
                            std::size_t size) -> Network::SockAddr
 {
-    const std::array<sockaddr, 1> sa {*psa};
-    const auto bytes {std::as_bytes(std::span(sa))};
-    SockAddr addr {bytes.data(), bytes.size()};
-
-    if (size != 0) {
-        addr.resize(size);
-    }
-
-    return addr;
+    const auto *const data {reinterpret_cast<const Byte*>(psa)};  // NOLINT
+    const auto bytes {std::span(data, size)};
+    return {bytes.data(), bytes.size()};
 }
