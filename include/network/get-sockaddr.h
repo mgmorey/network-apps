@@ -8,7 +8,7 @@
 #ifdef _WIN32
 #include <winsock2.h>       // sockaddr
 #else
-#include <sys/socket.h>     // sockaddr
+#include <sys/socket.h>     // sockaddr, sockaddr_storage
 #include <sys/un.h>         // sockaddr_un
 #endif
 
