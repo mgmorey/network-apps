@@ -14,8 +14,8 @@
 
 namespace Network
 {
-    extern auto get_sockaddr(const ByteSpan& span) -> Network::SockAddr;
     extern auto get_sockaddr() -> SockAddr;
+    extern auto get_sockaddr(const ByteSpan& span) -> SockAddr;
     extern auto get_sockaddr(const sockaddr* sa,
                              std::size_t size) -> SockAddr;
 #ifndef _WIN32
