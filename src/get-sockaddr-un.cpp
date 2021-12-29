@@ -13,10 +13,9 @@
 
 #ifndef _WIN32
 
-auto Network::get_sockaddr(const Pathname& pathname) -> Network::SockAddr
+auto Network::get_sockaddr(const Pathname& path) -> Network::SockAddr
 {
     std::array<sockaddr_un, 1> sun {};
-    const auto path {pathname.value_or("")};
     const auto path_size {std::min(path.size(), sizeof sun[0].sun_path - 1)};
     const auto min_size {sizeof sun[0] - sizeof sun[0].sun_path + path_size};
     const auto size {std::max(sizeof(sockaddr), min_size + 1)};

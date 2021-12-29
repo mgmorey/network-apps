@@ -22,7 +22,7 @@ namespace Network
     extern auto get_sockaddr(const sockaddr_in* sin) -> SockAddr;
     extern auto get_sockaddr(const sockaddr_in6* sin6) -> SockAddr;
 #ifndef _WIN32
-    extern auto get_sockaddr(const Pathname& pathname) -> SockAddr;
+    extern auto get_sockaddr(const Pathname& path) -> SockAddr;
 #endif
 }
 
