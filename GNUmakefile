@@ -71,13 +71,13 @@ family.cpp flags.cpp format.cpp get-bytespan.cpp get-endpoint.cpp	\
 get-hostname.cpp get-hosts.cpp get-length.cpp get-name.cpp		\
 get-pointer.cpp get-sa-family.cpp get-sa-length.cpp			\
 get-sa-pointer.cpp get-sin-pointer.cpp get-sockaddr.cpp			\
-get-sockaddr-sa.cpp get-sockaddr-path.cpp get-socket.cpp		\
-get-socketpair.cpp get-sockets.cpp get-peername.cpp get-sockname.cpp	\
-get-sun-length.cpp get-sun-pointer.cpp hints.cpp host.cpp		\
-is-valid.cpp open-endpoint.cpp open-fd.cpp optionalstring.cpp		\
-protocol.cpp result.cpp socket.cpp socktype.cpp stream-address.cpp	\
-stream-addrinfo.cpp stream-bytestring.cpp stream-hints.cpp		\
-stream-optionalstring.cpp stream-socket.cpp
+get-sockaddr-path.cpp get-sockaddr-sa.cpp get-sockaddr-sun.cpp		\
+get-socket.cpp get-socketpair.cpp get-sockets.cpp get-peername.cpp	\
+get-sockname.cpp get-sun-length.cpp get-sun-pointer.cpp hints.cpp	\
+host.cpp is-valid.cpp open-endpoint.cpp open-fd.cpp			\
+optionalstring.cpp protocol.cpp result.cpp socket.cpp socktype.cpp	\
+stream-address.cpp stream-addrinfo.cpp stream-bytestring.cpp		\
+stream-hints.cpp stream-optionalstring.cpp stream-socket.cpp
 
 ifneq "$(SYSTEM)" "MINGW64_NT"
 	exec_sources += test-socket.cpp unix-client.cpp	\

@@ -7,14 +7,18 @@
 #include <winsock2.h>       // sockaddr
 #else
 #include <sys/socket.h>     // sockaddr
+#include <sys/un.h>         // sockaddr_un
 #endif
 
+#include <cstddef>      // std::size_t
 #include <span>         // std::span
 
 namespace Network
 {
-    extern auto get_bytespan(const sockaddr* psa,
+    extern auto get_bytespan(const sockaddr* sa,
                              std::size_t size) -> ByteSpan;
+    extern auto get_bytespan(const sockaddr_un* sun,
+                             std::size_t size = sizeof *sun) -> ByteSpan;
 }
 
 #endif
