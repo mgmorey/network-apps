@@ -101,9 +101,9 @@ auto Network::is_valid(const SockAddr& addr, bool verbose) -> bool
         return false;
     }
 
-    const auto max_size {::get_max_size(addr)};
-    const auto min_size {::get_min_size(addr)};
-    const auto size {addr.size()};
+    const auto max_addr_size {::get_max_size(addr)};
+    const auto min_addr_size {::get_min_size(addr)};
+    const auto addr_size {addr.size()};
 
     if (verbose) {
         std::cerr << std::left
@@ -111,25 +111,25 @@ auto Network::is_valid(const SockAddr& addr, bool verbose) -> bool
                   << "    Actual size:"
                   << std::right
                   << std::setw(value_width)
-                  << size
+                  << addr_size
                   << std::endl
                   << std::left
                   << std::setw(key_width)
                   << "    Minimum size:"
                   << std::right
                   << std::setw(value_width)
-                  << min_size
+                  << min_addr_size
                   << std::endl
                   << std::left
                   << std::setw(key_width)
                   << "    Maximum size:"
                   << std::right
                   << std::setw(value_width)
-                  << max_size
+                  << max_addr_size
                   << std::endl;
     }
 
-    if (!(min_size <= size && size <= max_size)) {
+    if (!(min_addr_size <= addr_size && addr_size <= max_addr_size)) {
         return false;
     }
 
@@ -148,14 +148,14 @@ auto Network::is_valid(const SockAddr& addr, bool verbose) -> bool
     }
 
     if (family == AF_UNIX) {
-        if (!(min_size <= sa_len && sa_len <= size)) {
+        if (!(min_addr_size <= sa_len && sa_len <= addr_size)) {
             return false;
         }
 
 #ifndef _WIN32
 
         const auto *const sun {get_sun_pointer(addr)};
-        const auto sun_len {get_sun_length(sun, size)};
+        const auto sun_len {get_sun_length(sun, addr_size)};
 
         if (verbose) {
             std::cerr << std::left
@@ -175,7 +175,7 @@ auto Network::is_valid(const SockAddr& addr, bool verbose) -> bool
 
     }
     else if (family == AF_INET || family == AF_INET6) {
-        if (!(sa_len == size)) {
+        if (!(sa_len == addr_size)) {
             return false;
         }
     }
