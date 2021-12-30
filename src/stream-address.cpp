@@ -60,8 +60,8 @@ auto Network::operator<<(std::ostream& os,
 
     const Family family {address.family()};
     const auto length {address.length()};
-    const auto prefix {get_prefix(family)};
-    const auto suffix {get_suffix(family)};
+    const auto prefix {::get_prefix(family)};
+    const auto suffix {::get_suffix(family)};
     os << (suffix.empty() ? "sockaddr" : "sockaddr_")
        << suffix
        << '(';
