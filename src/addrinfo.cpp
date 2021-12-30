@@ -66,7 +66,7 @@ Network::AddrInfo::List::List(const Hostname& t_node,
     }
 
     addrinfo ai = Network::Hints();
-    auto *const hints {get_hints(&ai, t_hints)};
+    auto *const hints {::get_hints(&ai, t_hints)};
 
     if (t_verbose) {
         std::cerr << "Calling getaddrinfo("
