@@ -3,6 +3,7 @@
 
 #include "network/offsets.h"            // sa_data_offset,
                                         // sun_path_offset
-#include "network/sizes.h"              // max_size, ss_size, sun_size
+#include "network/sizes.h"              // sockaddr_size_max, ss_size,
+                                        // sun_size
 
 #endif

@@ -19,7 +19,7 @@ namespace Network
 #else
     constexpr auto sun_size {sizeof(sockaddr_un)};
 #endif
-    constexpr auto max_size {std::max(ss_size, sun_size)};
+    constexpr auto sockaddr_size_max {std::max(ss_size, sun_size)};
 }
 
 #endif

@@ -3,7 +3,7 @@
 #include "network/get-sa-length.h"      // get_sa_length()
 #include "network/get-sun-length.h"     // get_sun_length()
 #include "network/get-sun-pointer.h"    // get_sun_pointer()
-#include "network/sizes.h"              // max_size
+#include "network/sizes.h"              // sockaddr_size_max
 
 #ifdef _WIN32
 #include <winsock2.h>       // AF_INET, AF_INET6, AF_LOCAL, AF_UNIX,
@@ -33,7 +33,7 @@ static auto get_max_size(const Network::SockAddr& addr) -> std::size_t
 
     switch (family) {
     case AF_UNSPEC:
-        return Network::max_size;
+        return Network::sockaddr_size_max;
 #ifndef _WIN32
     case AF_UNIX:
         return sizeof(sockaddr_un);
