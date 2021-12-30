@@ -1,7 +1,7 @@
 STANDARD := c++20
 
 ifeq "$(STANDARD)" "c++20"
-ifeq "$(shell bin/gcc-9-or-earlier)" "true"
+ifeq "$(shell bin/g++-9-or-earlier)" "true"
 	STANDARD := c++2a
 endif
 endif
