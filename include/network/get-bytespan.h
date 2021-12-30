@@ -17,8 +17,11 @@ namespace Network
 {
     extern auto get_bytespan(const sockaddr* sa,
                              std::size_t size) -> ByteSpan;
+#ifndef _WIN32
     extern auto get_bytespan(const sockaddr_un* sun,
-                             std::size_t size = sizeof *sun) -> ByteSpan;
+                             std::size_t size =
+                             sizeof(sockaddr_un)) -> ByteSpan;
+#endif
 }
 
 #endif
