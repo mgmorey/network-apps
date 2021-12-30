@@ -3,6 +3,7 @@
                                         // sockaddr_in6
 #include "network/buffer.h"             // Buffer
 #include "network/get-sin-pointer.h"    // get_sin_pointer()
+#include "network/get-sin6-pointer.h"   // get_sin6_pointer()
 
 #ifdef _WIN32
 #include <winsock2.h>   // AF_INET, AF_INET6
