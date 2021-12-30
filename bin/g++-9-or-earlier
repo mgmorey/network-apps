@@ -1,28 +1,28 @@
 #!/bin/sh -eu
 
 is_gxx_9_or_earlier() {
-	cxx=${CXX-g++}
+    cxx=${CXX-g++}
 
-	if [ "${cxx%-*}" != g++ ]; then
-		return 1
-	fi
+    if [ "${cxx%-*}" != g++ ]; then
+	return 1
+    fi
 
-	if ! which $cxx >/dev/null 2>&1; then
-		return 1
-	fi
+    if ! which $cxx >/dev/null 2>&1; then
+	return 1
+    fi
 
-	version=$($cxx -dumpfullversion 2>/dev/null || $cxx -dumpversion)
-	version_major=$(echo $version | cut -d. -f1)
+    version=$($cxx -dumpfullversion 2>/dev/null || $cxx -dumpversion)
+    version_major=$(echo $version | cut -d. -f1)
 
-	if [ -n "$version_major" ] && [ "$version_major" -ge 10 ]; then
-		return 1
-	fi
+    if [ -n "$version_major" ] && [ "$version_major" -ge 10 ]; then
+	return 1
+    fi
 
-	return 0
+    return 0
 }
 
 if is_gxx_9_or_earlier; then
-	echo true
+    echo true
 else
-	echo false
+    echo false
 fi
