@@ -3,14 +3,17 @@
 
 #include "network/bytespan.h"           // ByteSpan
 #include "network/pathname.h"           // Pathname
+#include "network/sizes.h"              // sun_size
 #include "network/sockaddr.h"           // SockAddr
 
 #ifdef _WIN32
 #include <winsock2.h>       // sockaddr
 #else
-#include <sys/socket.h>     // sockaddr, sockaddr_storage
+#include <sys/socket.h>     // sockaddr
 #include <sys/un.h>         // sockaddr_un
 #endif
+
+#include <cstddef>      // std::size_t
 
 namespace Network
 {
@@ -20,8 +23,7 @@ namespace Network
                              std::size_t size) -> SockAddr;
 #ifndef _WIN32
     extern auto get_sockaddr(const sockaddr_un* sun,
-                             std::size_t size =
-                             sizeof(sockaddr_un)) -> SockAddr;
+                             std::size_t size = sun_size) -> SockAddr;
     extern auto get_sockaddr(const Pathname& path) -> SockAddr;
 #endif
 }
