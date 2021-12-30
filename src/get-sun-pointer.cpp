@@ -6,13 +6,13 @@
 auto Network::get_sun_pointer(const SockAddr& addr) -> const sockaddr_un*
 {
     const void* pointer = addr.data();
-    return reinterpret_cast<const sockaddr_un*>(pointer);
+    return static_cast<const sockaddr_un*>(pointer);
 }
 
 auto Network::get_sun_pointer(SockAddr& addr) -> sockaddr_un*
 {
     void* pointer = addr.data();
-    return reinterpret_cast<sockaddr_un*>(pointer);
+    return static_cast<sockaddr_un*>(pointer);
 }
 
 #endif
