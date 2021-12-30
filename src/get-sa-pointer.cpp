@@ -4,30 +4,36 @@
 
 auto Network::get_sa_pointer(const SockAddr& addr) -> const sockaddr*
 {
-    return reinterpret_cast<const sockaddr*>(addr.data());  // NOLINT
+    const void* pointer = addr.data();
+    return static_cast<const sockaddr*>(pointer);
 }
 
 auto Network::get_sa_pointer(SockAddr& addr) -> sockaddr*
 {
-    return reinterpret_cast<sockaddr*>(addr.data());  // NOLINT
+    void* pointer = addr.data();
+    return static_cast<sockaddr*>(pointer);
 }
 
 auto Network::get_sa_pointer(const sockaddr_in* sin) -> const sockaddr*
 {
-    return reinterpret_cast<const sockaddr*>(sin);  // NOLINT
+    const void* pointer = sin;
+    return static_cast<const sockaddr*>(pointer);
 }
 
 auto Network::get_sa_pointer(sockaddr_in* sin) -> sockaddr*
 {
-    return reinterpret_cast<sockaddr*>(sin);  // NOLINT
+    void* pointer = sin;
+    return static_cast<sockaddr*>(pointer);
 }
 
 auto Network::get_sa_pointer(const sockaddr_in6* sin6) -> const sockaddr*
 {
-    return reinterpret_cast<const sockaddr*>(sin6);  // NOLINT
+    const void* pointer = sin6;
+    return static_cast<const sockaddr*>(pointer);
 }
 
 auto Network::get_sa_pointer(sockaddr_in6* sin6) -> sockaddr*
 {
-    return reinterpret_cast<sockaddr*>(sin6);  // NOLINT
+    void* pointer = sin6;
+    return static_cast<sockaddr*>(pointer);
 }
