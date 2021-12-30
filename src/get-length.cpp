@@ -4,6 +4,5 @@
 
 auto Network::get_length(const SockAddr& addr) -> Network::sock_len_type
 {
-    const auto length {get_sa_length(addr)};
-    return length == 0 ? addr.size() : length;
+    return get_sa_length(addr, addr.length());
 }
