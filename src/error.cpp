@@ -13,6 +13,7 @@
 
 auto Network::format_error(error_type error) -> std::string
 {
+    std::string message;
 #ifdef _WIN32
     LPVOID buffer {nullptr};
     const DWORD flags {
@@ -21,30 +22,30 @@ auto Network::format_error(error_type error) -> std::string
         FORMAT_MESSAGE_IGNORE_INSERTS
     };
     const DWORD lang {MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT)};
-    const LPTSTR pbuffer {reinterpret_cast<LPTSTR>(&buffer)};
+    const LPVOID pbuffer = &buffer;
+    const LPTSTR pstring {static_cast<LPTSTR>(pbuffer)};
 
-    if(::FormatMessage(flags, nullptr, error, lang, pbuffer, 0, nullptr)) {
-        std::string message {static_cast<LPTSTR>(buffer)};
+    if(::FormatMessage(flags, nullptr, error, lang, pstring, 0, nullptr)) {
+        message = static_cast<LPTSTR>(buffer);
         const auto pos {message.find('\n')};
         message = message.substr(0, pos);
         ::LocalFree(buffer);
-        return message;
-    }
-    else {
-        return "";
     }
 #else
-    return std::strerror(error);
+    message = std::strerror(error);
 #endif
+    return message;
 }
 
 auto Network::get_last_error() -> Network::error_type
 {
+    error_type error {0};
 #ifdef _WIN32
-    return ::WSAGetLastError();
+    error = ::WSAGetLastError();
 #else
-    return errno;
+    error = errno;
 #endif
+    return error;
 }
 
 auto Network::reset_last_error() -> Network::error_type
