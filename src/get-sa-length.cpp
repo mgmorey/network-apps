@@ -1,15 +1,11 @@
 #include "network/get-sa-length.h"      // SockAddr, get_sa_length(),
                                         // sockaddr, sock_len_type
-#include "network/get-pointer.h"        // SockAddr, get_pointer(),
-                                        // sockaddr
-
-#include <cassert>      // assert()
+#include "network/get-sa-pointer.h"     // get_sa_pointer()
 
 auto Network::get_sa_length(const SockAddr& addr) -> Network::sock_len_type
 {
 #ifdef HAVE_SOCKADDR_SA_LEN
-    const auto *const sa {get_pointer(addr)};
-    assert(sa != nullptr);  // NOLINT
+    const auto *const sa {get_sa_pointer(addr)};
 
     if (addr.empty()) {
         return 0;
