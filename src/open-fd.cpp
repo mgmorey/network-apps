@@ -5,7 +5,7 @@
                                         // get_last_error(),
                                         // reset_last_error()
 #include "network/get-length.h"         // SockAddr, get_length()
-#include "network/get-pointer.h"        // SockAddr, get_pointer()
+#include "network/get-sa-pointer.h"     // SockAddr, get_sa_pointer()
 #include "network/is-valid.h"           // SockAddr, is_valid()
 
 #include <cassert>      // assert()
@@ -19,7 +19,7 @@ auto Network::open(const OpenHandler& handler, Fd fd,
     Result result;
     assert(is_valid(addr, verbose));  // NOLINT
     const auto addr_len {get_length(addr)};
-    const auto *const addr_ptr {get_pointer(addr)};
+    const auto *const addr_ptr {get_sa_pointer(addr)};
 
     if (verbose) {
         std::cerr << "Calling "

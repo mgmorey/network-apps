@@ -4,7 +4,7 @@
                                         // get_last_error(),
                                         // reset_last_error()
 #include "network/get-length.h"         // SockAddr, get_length()
-#include "network/get-pointer.h"        // SockAddr, get_pointer()
+#include "network/get-sa-pointer.h"     // SockAddr, get_sa_pointer()
 #include "network/get-sockaddr.h"       // SockAddr, get_sockaddr()
 #include "network/is-valid.h"           // SockAddr, is_valid()
 
@@ -19,7 +19,7 @@ auto Network::get_name(const GetNameHandler& handler, Fd fd,
     Result result;
     auto addr {get_sockaddr()};
     auto addr_len {get_length(addr)};
-    auto *addr_ptr {get_pointer(addr)};
+    auto *addr_ptr {get_sa_pointer(addr)};
 
     if (verbose) {
         std::cerr << "Calling "

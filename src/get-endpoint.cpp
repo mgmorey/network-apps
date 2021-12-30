@@ -2,7 +2,7 @@
                                         // Result, get_endpoint()
 #include "network/buffer.h"             // Buffer
 #include "network/get-length.h"         // SockAddr, get_length()
-#include "network/get-pointer.h"        // SockAddr, get_pointer()
+#include "network/get-sa-pointer.h"     // SockAddr, get_sa_pointer()
 #include "network/is-valid.h"           // SockAddr, is_valid()
 
 #ifdef _WIN32
@@ -27,7 +27,7 @@ auto Network::get_endpoint(const SockAddr& addr, int flags, bool verbose) ->
     Buffer serv {NI_MAXSERV};
     assert(is_valid(addr, verbose));  // NOLINT
     const auto addr_len {get_length(addr)};
-    const auto *const addr_ptr {get_pointer(addr)};
+    const auto *const addr_ptr {get_sa_pointer(addr)};
 
     if (verbose) {
         std::cerr << "Calling getnameinfo("
