@@ -3,23 +3,11 @@
                                         // sockaddr_storage,
                                         // sockaddr_un
 #include "network/get-bytespan.h"       // get_bytespan(), std::size_t
-
-#include <algorithm>    // std::max()
-
-static constexpr auto get_capacity() -> Network::SockAddr::size_type
-{
-    constexpr auto storage_size {sizeof(sockaddr_storage)};
-#ifdef _WIN32
-    constexpr auto unix_size {static_cast<std::size_t>(0)};
-#else
-    constexpr auto unix_size {sizeof(sockaddr_un)};
-#endif
-    return std::max(storage_size, unix_size);
-}
+#include "network/get-max-size.h"       // get_max_size()
 
 auto Network::get_sockaddr() -> Network::SockAddr
 {
     const auto data {static_cast<Byte>(0)};
-    const auto size {get_capacity()};
+    const auto size {get_max_size()};
     return {size, data};
 }

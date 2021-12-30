@@ -6,7 +6,8 @@
 
 namespace Network
 {
-    extern auto get_sa_length(const SockAddr& addr) -> sock_len_type;
+    extern auto get_sa_length(const SockAddr& addr,
+                              sock_len_type length = 0) -> sock_len_type;
 }
 
 #endif

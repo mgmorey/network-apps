@@ -1,8 +1,9 @@
 #include "network/is-valid.h"           // SockAddr, is_valid()
-#include "network/get-sa-family.h"      // SockAddr, get_sa_family()
-#include "network/get-sa-length.h"      // SockAddr, get_sa_length()
-#include "network/get-sun-length.h"     // SockAddr, get_sun_length()
-#include "network/get-sun-pointer.h"    // SockAddr, get_sun_pointer()
+#include "network/get-max-size.h"       // get_max_size()
+#include "network/get-sa-family.h"      // get_sa_family()
+#include "network/get-sa-length.h"      // get_sa_length()
+#include "network/get-sun-length.h"     // get_sun_length()
+#include "network/get-sun-pointer.h"    // get_sun_pointer()
 
 #ifdef _WIN32
 #include <winsock2.h>       // AF_INET, AF_INET6, AF_LOCAL, AF_UNIX,
@@ -31,6 +32,8 @@ static auto get_max_size(const Network::SockAddr& addr) -> std::size_t
     const auto family {Network::get_sa_family(addr)};
 
     switch (family) {
+    case AF_UNSPEC:
+        return get_max_size();
 #ifndef _WIN32
     case AF_UNIX:
         return sizeof(sockaddr_un);
@@ -58,7 +61,7 @@ static auto get_min_size(const Network::SockAddr& addr) -> std::size_t
     case AF_INET6:
         return sizeof(sockaddr_in6);
     default:
-        return sizeof(sockaddr);
+        return 0;
     }
 }
 
@@ -87,6 +90,7 @@ auto Network::is_valid(const SockAddr& addr, bool verbose) -> bool
     }
 
     switch (family) {
+    case AF_UNSPEC:
 #ifndef _WIN32
     case AF_UNIX:
 #endif
@@ -99,6 +103,7 @@ auto Network::is_valid(const SockAddr& addr, bool verbose) -> bool
 
     const auto max_size {get_max_size(addr)};
     const auto min_size {get_min_size(addr)};
+    const auto size {addr.size()};
 
     if (verbose) {
         std::cerr << std::left
@@ -106,7 +111,7 @@ auto Network::is_valid(const SockAddr& addr, bool verbose) -> bool
                   << "    Actual size:"
                   << std::right
                   << std::setw(value_width)
-                  << addr.size()
+                  << size
                   << std::endl
                   << std::left
                   << std::setw(key_width)
@@ -124,7 +129,7 @@ auto Network::is_valid(const SockAddr& addr, bool verbose) -> bool
                   << std::endl;
     }
 
-    if (!(min_size <= addr.size() && addr.size() <= max_size)) {
+    if (!(min_size <= size && size <= max_size)) {
         return false;
     }
 
@@ -143,14 +148,14 @@ auto Network::is_valid(const SockAddr& addr, bool verbose) -> bool
     }
 
     if (family == AF_UNIX) {
-        if (!(min_size <= sa_len && sa_len <= addr.size())) {
+        if (!(min_size <= sa_len && sa_len <= size)) {
             return false;
         }
 
 #ifndef _WIN32
 
         const auto *const sun {get_sun_pointer(addr)};
-        const auto sun_len {get_sun_length(sun, addr.size())};
+        const auto sun_len {get_sun_length(sun, size)};
 
         if (verbose) {
             std::cerr << std::left
@@ -169,8 +174,8 @@ auto Network::is_valid(const SockAddr& addr, bool verbose) -> bool
 #endif
 
     }
-    else {
-        if (!(sa_len == addr.size())) {
+    else if (family == AF_INET || family == AF_INET6) {
+        if (!(sa_len == size)) {
             return false;
         }
     }
