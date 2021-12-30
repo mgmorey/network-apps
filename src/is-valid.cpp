@@ -33,7 +33,7 @@ static auto get_max_size(const Network::SockAddr& addr) -> std::size_t
 
     switch (family) {
     case AF_UNSPEC:
-        return get_max_size();
+        return Network::get_max_size();
 #ifndef _WIN32
     case AF_UNIX:
         return sizeof(sockaddr_un);
@@ -101,8 +101,8 @@ auto Network::is_valid(const SockAddr& addr, bool verbose) -> bool
         return false;
     }
 
-    const auto max_size {get_max_size(addr)};
-    const auto min_size {get_min_size(addr)};
+    const auto max_size {::get_max_size(addr)};
+    const auto min_size {::get_min_size(addr)};
     const auto size {addr.size()};
 
     if (verbose) {

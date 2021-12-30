@@ -68,8 +68,8 @@ test-hostname.cpp
 lib_sources = address.cpp address-in.cpp address-un.cpp addrinfo.cpp	\
 bind.cpp buffer.cpp close.cpp connect.cpp context.cpp error.cpp		\
 family.cpp flags.cpp format.cpp get-bytespan.cpp get-endpoint.cpp	\
-get-hostname.cpp get-hosts.cpp get-length.cpp get-name.cpp		\
-get-sa-family.cpp get-sa-length.cpp get-sa-pointer.cpp			\
+get-hostname.cpp get-hosts.cpp get-length.cpp get-max-size.cpp		\
+get-name.cpp get-sa-family.cpp get-sa-length.cpp get-sa-pointer.cpp	\
 get-sin-pointer.cpp get-sockaddr-any.cpp get-sockaddr-byte.cpp		\
 get-sockaddr-path.cpp get-sockaddr-sa.cpp get-sockaddr-sun.cpp		\
 get-socket.cpp get-socketpair.cpp get-sockets.cpp get-peername.cpp	\
