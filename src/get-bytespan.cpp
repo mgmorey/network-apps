@@ -8,9 +8,13 @@ auto Network::get_bytespan(const sockaddr* sa,
     return {data, size};
 }
 
+#ifndef _WIN32
+
 auto Network::get_bytespan(const sockaddr_un* sun,
                            std::size_t size) -> Network::ByteSpan
 {
     const auto *const data {reinterpret_cast<const Byte*>(sun)};  // NOLINT
     return {data, size};
 }
+
+#endif
