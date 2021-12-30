@@ -1,7 +1,8 @@
-#include "network/address.h"            // Address, sockaddr,
-                                        // sockaddr_un
+#include "network/address.h"            // Address, sockaddr_un,
+                                        // value_type
 #include "network/get-sun-length.h"     // get_sun_path_length()
 #include "network/get-sun-pointer.h"    // get_sun_pointer()
+#include "network/offsets.h"            // sun_path_offset
 #include "network/to-string.h"          // to_string()
 
 #include <string>       // std::string
@@ -17,10 +18,10 @@ auto Network::Address::sun_path() const -> Network::Address::value_type
 {
     const auto size {m_value.size()};
     const auto length {
-        size < m_sun_path_offset ? 0 :
+        size < sun_path_offset ? 0 :
         get_sun_path_length(sun(), size)
     };
-    const auto offset {m_sun_path_offset};
+    const auto offset {sun_path_offset};
     return m_value.substr(offset, length);
 }
 

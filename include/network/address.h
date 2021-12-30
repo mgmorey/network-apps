@@ -1,7 +1,7 @@
 #ifndef NETWORK_ADDRESS_H
 #define NETWORK_ADDRESS_H
 
-#include "network/family.h"             // family_type
+#include "network/family-type.h"        // family_type
 #include "network/sockaddr.h"           // SockAddr
 
 #ifdef _WIN32
@@ -63,15 +63,6 @@ namespace Network
 #endif
 
     private:
-        static constexpr auto m_sa_data_offset {
-            offsetof(sockaddr, sa_data)
-        };
-#ifndef _WIN32
-        static constexpr auto m_sun_path_offset {
-            offsetof(sockaddr_un, sun_path)
-        };
-#endif
-
         value_type m_value;
     };
 

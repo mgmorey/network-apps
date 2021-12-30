@@ -1,7 +1,10 @@
-#include "network/address.h"            // Address, SockAddr, sockaddr
-#include "network/get-sa-family.h"      // SockAddr, get_sa_family()
-#include "network/get-sa-length.h"      // SockAddr, get_sa_length()
-#include "network/get-sa-pointer.h"     // SockAddr, get_sa_pointer()
+#include "network/address.h"            // Address, length_type,
+                                        // sa_data_offset, sockaddr,
+                                        // value_type
+#include "network/get-sa-family.h"      // get_sa_family()
+#include "network/get-sa-length.h"      // get_sa_length()
+#include "network/get-sa-pointer.h"     // get_sa_pointer()
+#include "network/offsets.h"            // sa_data_offset
 #include "network/print.h"              // print()
 
 #ifdef _WIN32
@@ -101,7 +104,7 @@ auto Network::Address::sa() const -> const sockaddr*
 
 auto Network::Address::sa_data() const -> Network::Address::value_type
 {
-    return m_value.substr(m_sa_data_offset);
+    return m_value.substr(sa_data_offset);
 }
 
 auto Network::Address::sa_family() const -> Network::family_type

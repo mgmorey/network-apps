@@ -1,7 +1,6 @@
 #ifndef NETWORK_TYPES_H
 #define NETWORK_TYPES_H
 
-#include "network/sockaddr.h"           // SockAddr
 #include "network/string-types.h"       // Hostname, Pathname,
                                         // Service
 

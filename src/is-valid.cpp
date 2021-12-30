@@ -1,9 +1,9 @@
 #include "network/is-valid.h"           // SockAddr, is_valid()
-#include "network/get-max-size.h"       // get_max_size()
 #include "network/get-sa-family.h"      // get_sa_family()
 #include "network/get-sa-length.h"      // get_sa_length()
 #include "network/get-sun-length.h"     // get_sun_length()
 #include "network/get-sun-pointer.h"    // get_sun_pointer()
+#include "network/sizes.h"              // max_size
 
 #ifdef _WIN32
 #include <winsock2.h>       // AF_INET, AF_INET6, AF_LOCAL, AF_UNIX,
@@ -33,7 +33,7 @@ static auto get_max_size(const Network::SockAddr& addr) -> std::size_t
 
     switch (family) {
     case AF_UNSPEC:
-        return Network::get_max_size();
+        return Network::max_size;
 #ifndef _WIN32
     case AF_UNIX:
         return sizeof(sockaddr_un);

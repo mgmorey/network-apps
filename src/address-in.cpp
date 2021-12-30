@@ -1,5 +1,6 @@
-#include "network/address.h"            // Address, sockaddr,
-                                        // sockaddr_in, sockaddr_in6
+#include "network/address.h"            // Address, in_addr, in6_addr,
+                                        // port_type, sockaddr_in,
+                                        // sockaddr_in6
 #include "network/buffer.h"             // Buffer
 #include "network/get-sin-pointer.h"    // get_sin_pointer()
 
