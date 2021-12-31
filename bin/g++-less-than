@@ -1,0 +1,40 @@
+#!/bin/sh -eu
+
+GXX_VERSION_MIN=10
+
+get_version() {
+    version=$("$1" -dumpfullversion 2>/dev/null || "$1" -dumpversion)
+    printf '%s\n' "${version:-0}" | cut -d. -f1
+}
+
+is_gxx() {
+    if ! [ "${1%-*}" = g++ ]; then
+	return 1
+    fi
+
+    if ! which "$1" >/dev/null 2>&1; then
+	return 1
+    fi
+
+    return 0
+}
+
+is_gxx_less_than() {
+    if ! is_gxx "${2%-*}"; then
+	return 1
+    fi
+
+    if ! [ "$(get_version "$2")" -lt "$1" ]; then
+	return 1
+    fi
+
+    return 0
+}
+
+if is_gxx_less_than "${1-$GXX_VERSION_MIN}" "${2-${CXX-g++}}"; then
+    less=true
+else
+    less=false
+fi
+
+printf '%s\n' "$less"
