@@ -2,13 +2,15 @@
                                         // get_sa_family()
 #include "network/get-sa-pointer.h"     // get_sa_pointer(), sockaddr
 
-auto Network::get_sa_family(const SockAddr& addr) -> Network::family_type
+auto Network::get_sa_family(const SockAddr& addr,
+                            family_type family) -> Network::family_type
 {
     const auto *const sa {get_sa_pointer(addr)};
-    family_type family {};
 
     if (offsetof(sockaddr, sa_family) + sizeof sa->sa_family <= addr.size()) {
-        family = sa->sa_family;
+        if (sa->sa_family != 0) {
+            family = sa->sa_family;
+        }
     }
 
     return family;
