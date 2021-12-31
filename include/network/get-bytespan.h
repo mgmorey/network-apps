@@ -16,6 +16,8 @@
 
 namespace Network
 {
+    extern auto get_bytespan(const void* pointer,
+                             std::size_t size) -> ByteSpan;
     extern auto get_bytespan(const sockaddr* sa,
                              std::size_t size) -> ByteSpan;
 #ifndef _WIN32
