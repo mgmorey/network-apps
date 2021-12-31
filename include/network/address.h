@@ -6,8 +6,9 @@
 
 #ifdef _WIN32
 #include <winsock2.h>       // sockaddr, sockaddr_in
-#include <ws2tcpip.h>       // sockaddr_in6
+#include <ws2tcpip.h>       // inet_ntop(), sockaddr_in6
 #else
+#include <arpa/inet.h>      // inet_ntop()
 #include <netinet/in.h>     // sockaddr_in, sockaddr_in6
 #include <sys/socket.h>     // sockaddr
 #include <sys/un.h>         // sockaddr_un
