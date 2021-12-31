@@ -1,6 +1,7 @@
 #ifndef NETWORK_OPEN_H
 #define NETWORK_OPEN_H
 
+#include "network/bytes.h"              // Bytes
 #include "network/endpoint.h"           // Endpoint
 #include "network/fdresultvector.h"     // Fd, FdResultVector
 #include "network/hints.h"              // Hints

@@ -4,6 +4,7 @@
 #include "network/address.h"            // Address
 #include "network/addrinfo.h"           // AddrInfo
 #include "network/bind.h"               // bind()
+#include "network/bytes.h"              // Bytes
 #include "network/close.h"              // close()
 #include "network/connect.h"            // connect()
 #include "network/context.h"            // Context

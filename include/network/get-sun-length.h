@@ -1,6 +1,7 @@
 #ifndef NETWORK_GET_SUN_LENGTH_H
 #define NETWORK_GET_SUN_LENGTH_H
 
+#include "network/bytes.h"              // Bytes
 #include "network/sockaddr.h"           // SockAddr
 
 #ifndef _WIN32

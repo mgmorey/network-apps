@@ -1,6 +1,7 @@
 #ifndef NETWORK_HOST_H
 #define NETWORK_HOST_H
 
+#include "network/bytes.h"              // Bytes
 #include "network/hostname.h"           // Hostname
 #include "network/sockaddr.h"           // SockAddr
 

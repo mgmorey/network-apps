@@ -1,6 +1,7 @@
 #ifndef NETWORK_GET_SA_FAMILY_H
 #define NETWORK_GET_SA_FAMILY_H
 
+#include "network/bytes.h"              // Bytes
 #include "network/family-type.h"        // family_type
 #include "network/sockaddr.h"           // SockAddr
 

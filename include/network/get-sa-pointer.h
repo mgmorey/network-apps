@@ -1,6 +1,7 @@
 #ifndef NETWORK_GET_SA_POINTER_H
 #define NETWORK_GET_SA_POINTER_H
 
+#include "network/bytes.h"              // Bytes
 #include "network/sockaddr.h"           // SockAddr
 
 #ifdef _WIN32

@@ -1,6 +1,7 @@
 #ifndef NETWORK_GET_SOCKADDR_H
 #define NETWORK_GET_SOCKADDR_H
 
+#include "network/bytes.h"              // Bytes
 #include "network/bytespan.h"           // ByteSpan
 #include "network/pathname.h"           // Pathname
 #include "network/sizes.h"              // sun_size

@@ -1,6 +1,7 @@
 #ifndef NETWORK_GET_NAME_H
 #define NETWORK_GET_NAME_H
 
+#include "network/bytes.h"              // Bytes
 #include "network/fd.h"                 // Fd, fd_type
 #include "network/result.h"             // Result
 #include "network/sockaddr.h"           // SockAddr
