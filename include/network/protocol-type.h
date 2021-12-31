@@ -1,11 +1,11 @@
 #ifndef NETWORK_PROTOCOL_TYPE_H
 #define NETWORK_PROTOCOL_TYPE_H
 
-#include "network/sock-arg-type.h"      // sock_arg_type
+#include "network/socket-hint-type.h"   // socket_hint_type
 
 namespace Network
 {
-    using protocol_type = sock_arg_type;
+    using protocol_type = socket_hint_type;
 }
 
 #endif
