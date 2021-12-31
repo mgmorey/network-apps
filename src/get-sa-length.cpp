@@ -9,7 +9,7 @@ auto Network::get_sa_length(const SockAddr& addr,
     const auto *const sa {get_sa_pointer(addr)};
 
     if (offsetof(sockaddr, sa_len) + sizeof sa->sa_len <= addr.size()) {
-        if (sa->sa_len > 0) {
+        if (sa->sa_len != 0) {
             length = sa->sa_len;
         }
     }
