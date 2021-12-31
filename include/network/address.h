@@ -3,7 +3,6 @@
 
 #include "network/bytes.h"              // Bytes
 #include "network/family-type.h"        // family_type
-#include "network/sockaddr.h"           // SockAddr
 
 #ifdef _WIN32
 #include <winsock2.h>       // sockaddr, sockaddr_in
@@ -26,7 +25,7 @@ namespace Network
     public:
         using port_type = unsigned short;
         using length_type = unsigned short;
-        using value_type = SockAddr;
+        using value_type = Bytes;
 
         // cppcheck-suppress noExplicitConstructor
         Address(value_type t_value);  // NOLINT

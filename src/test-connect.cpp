@@ -1,9 +1,9 @@
-#include "network/network.h"        // Address, Endpoint, FdResult,
-                                    // Hints, Hostname, Overload,
-                                    // SockAddr, SockAddrResult,
-                                    // close(), connect(),
-                                    // get_hostname(), get_peername(),
-                                    // get_sockaddr(), get_sockname()
+#include "network/network.h"        // Address, Bytes, BytesResult,
+                                    // Endpoint, FdResult, Hints,
+                                    // Hostname, Overload, close(),
+                                    // connect(), get_hostname(),
+                                    // get_peername(), get_sockaddr(),
+                                    // get_sockname()
 
 #ifdef _WIN32
 #include <getopt.h>     // getopt(), optarg, opterr, optind, optopt
@@ -64,11 +64,11 @@ namespace TestConnect
         }
 
         static auto get_peeraddr(const Network::Fd& t_fd) ->
-            Network::SockAddrResult
+            Network::BytesResult
         {
             auto peername_result {Network::get_peername(t_fd, verbose)};
             std::visit(Network::Overload {
-                    [&](const Network::SockAddr&) {
+                    [&](const Network::Bytes&) {
                     },
                     [&](const Network::Result& result) {
                         std::cerr << result
@@ -79,11 +79,11 @@ namespace TestConnect
         }
 
         static auto get_sockaddr(const Network::Fd& t_fd) ->
-            Network::SockAddrResult
+            Network::BytesResult
         {
             auto sockname_result {Network::get_sockname(t_fd, verbose)};
             std::visit(Network::Overload {
-                    [&](const Network::SockAddr&) {
+                    [&](const Network::Bytes&) {
                     },
                     [&](const Network::Result& result) {
                         std::cerr << result
@@ -109,10 +109,10 @@ namespace TestConnect
                  << host
                  << std::endl;
 
-            if (std::holds_alternative<Network::SockAddr>(peer_result) &&
-                std::holds_alternative<Network::SockAddr>(sock_result)) {
-                const auto peer {std::get<Network::SockAddr>(peer_result)};
-                const auto self {std::get<Network::SockAddr>(sock_result)};
+            if (std::holds_alternative<Network::Bytes>(peer_result) &&
+                std::holds_alternative<Network::Bytes>(sock_result)) {
+                const auto peer {std::get<Network::Bytes>(peer_result)};
+                const auto self {std::get<Network::Bytes>(sock_result)};
                 m_os << "Socket "
                      << t_fd
                      << " connected "

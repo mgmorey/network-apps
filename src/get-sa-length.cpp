@@ -1,8 +1,8 @@
-#include "network/get-sa-length.h"      // SockAddr, get_sa_length(),
+#include "network/get-sa-length.h"      // Bytes, get_sa_length(),
                                         // sock_len_type
 #include "network/get-sa-pointer.h"     // get_sa_pointer(), sockaddr
 
-auto Network::get_sa_length(const SockAddr& addr,
+auto Network::get_sa_length(const Bytes& addr,
                             sock_len_type length) -> Network::sock_len_type
 {
 #ifdef HAVE_SOCKADDR_SA_LEN

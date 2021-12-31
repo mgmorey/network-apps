@@ -3,11 +3,10 @@
 
 #include "network/bytes.h"              // Bytes
 #include "network/sock-len-type.h"      // sock_len_type
-#include "network/sockaddr.h"           // SockAddr
 
 namespace Network
 {
-    extern auto get_sa_length(const SockAddr& addr,
+    extern auto get_sa_length(const Bytes& addr,
                               sock_len_type length = 0) -> sock_len_type;
 }
 

@@ -1,4 +1,4 @@
-#include "network/get-sockname.h"   // Fd, SockAddrResult, get_sockname()
+#include "network/get-sockname.h"   // BytesResult, Fd, get_sockname()
 
 #ifdef _WIN32
 #include <winsock2.h>       // getsockname()
@@ -8,7 +8,7 @@
 
 static constexpr Network::GetNameHandler handler {::getsockname, "getsockname"};
 
-auto Network::get_sockname(Fd fd, bool verbose) -> Network::SockAddrResult
+auto Network::get_sockname(Fd fd, bool verbose) -> Network::BytesResult
 {
     return get_name(handler, fd, verbose);
 }

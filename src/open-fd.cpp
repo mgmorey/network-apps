@@ -4,16 +4,16 @@
 #include "network/error.h"              // format_error(),
                                         // get_last_error(),
                                         // reset_last_error()
-#include "network/get-length.h"         // SockAddr, get_length()
-#include "network/get-sa-pointer.h"     // SockAddr, get_sa_pointer()
-#include "network/is-valid.h"           // SockAddr, is_valid()
+#include "network/get-length.h"         // Bytes, get_length()
+#include "network/get-sa-pointer.h"     // Bytes, get_sa_pointer()
+#include "network/is-valid.h"           // Bytes, is_valid()
 
 #include <cassert>      // assert()
 #include <iostream>     // std::cerr, std::endl
 #include <sstream>      // std::ostringstream
 
 auto Network::open(const OpenHandler& handler, Fd fd,
-                   const SockAddr& addr,
+                   const Bytes& addr,
                    bool verbose) -> Network::Result
 {
     Result result;

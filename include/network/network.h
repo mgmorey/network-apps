@@ -14,7 +14,7 @@
                                         // get_hostname()
 #include "network/get-hosts.h"          // HostVectorResult,
                                         // get_hosts()
-#include "network/get-peername.h"       // SockAddrResult,
+#include "network/get-peername.h"       // BytesResult,
                                         // get_peername()
 #include "network/get-sockaddr.h"       // get_sockaddr()
 #include "network/get-socket.h"         // Fd, FdResult, Socket,
@@ -23,12 +23,11 @@
                                         // get_socketpair()
 #include "network/get-sockets.h"        // SocketVectorResult,
                                         // get_sockets()
-#include "network/get-sockname.h"       // SockAddrResult,
+#include "network/get-sockname.h"       // BytesResult,
                                         // get_sockname()
 #include "network/is-valid.h"           // is_valid()
 #include "network/overload.h"           // Overload
 #include "network/result.h"             // Result
-#include "network/sockaddr.h"           // SockAddr
 #include "network/socket.h"             // Hints, Host, Socket
 #include "network/types.h"              // Buffer, Hostname, Pathname
                                         // Service

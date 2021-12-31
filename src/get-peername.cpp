@@ -1,4 +1,4 @@
-#include "network/get-peername.h"   // Fd, SockAddrResult, get_peername()
+#include "network/get-peername.h"   // BytesResult, Fd, get_peername()
 
 #ifdef _WIN32
 #include <winsock2.h>   // getpeername()
@@ -8,7 +8,7 @@
 
 static constexpr Network::GetNameHandler handler {::getpeername, "getpeername"};
 
-auto Network::get_peername(Fd fd, bool verbose) -> Network::SockAddrResult
+auto Network::get_peername(Fd fd, bool verbose) -> Network::BytesResult
 {
     return get_name(handler, fd, verbose);
 }

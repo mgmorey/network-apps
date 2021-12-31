@@ -80,7 +80,7 @@ namespace TestAddress
                 }, endpoint_result);
         }
 
-        static auto get_endpoint(const Network::SockAddr& addr) ->
+        static auto get_endpoint(const Network::Bytes& addr) ->
             Network::EndpointResult
         {
             return Network::get_endpoint(addr, 0, verbose);

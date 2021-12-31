@@ -2,7 +2,6 @@
 #define NETWORK_GET_SA_POINTER_H
 
 #include "network/bytes.h"              // Bytes
-#include "network/sockaddr.h"           // SockAddr
 
 #ifdef _WIN32
 #include <winsock2.h>       // sockaddr
@@ -12,8 +11,8 @@
 
 namespace Network
 {
-    extern auto get_sa_pointer(const SockAddr& addr) -> const sockaddr*;
-    extern auto get_sa_pointer(SockAddr& addr) -> sockaddr*;
+    extern auto get_sa_pointer(const Bytes& addr) -> const sockaddr*;
+    extern auto get_sa_pointer(Bytes& addr) -> sockaddr*;
 }
 
 #endif

@@ -1,4 +1,4 @@
-#include "network/get-sun-length.h"     // SockAddr, get_sun_length(),
+#include "network/get-sun-length.h"     // Bytes, get_sun_length(),
                                         // get_sun_path_length(),
                                         // sockaddr_un
 

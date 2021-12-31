@@ -1,6 +1,6 @@
-#include "network/host.h"               // Host, Hostname, SockAddr,
+#include "network/host.h"               // Bytes, Host, Hostname,
                                         // addrinfo
-#include "network/get-sockaddr.h"       // SockAddr, get_sockaddr()
+#include "network/get-sockaddr.h"       // Bytes, get_sockaddr()
 
 Network::Host::Host(const addrinfo& t_addrinfo) :
     m_sock_addr(get_sockaddr(t_addrinfo)),
@@ -30,7 +30,7 @@ auto Network::Host::operator==(const Host& t_host) const -> bool
     return m_sock_addr == t_host.m_sock_addr;
 }
 
-auto Network::Host::address() const -> Network::SockAddr
+auto Network::Host::address() const -> Network::Bytes
 {
     return m_sock_addr;
 }
@@ -40,7 +40,7 @@ auto Network::Host::canonical_name() const -> Network::Hostname
     return m_canonname;
 }
 
-auto Network::Host::get_sockaddr(const addrinfo& ai) -> Network::SockAddr
+auto Network::Host::get_sockaddr(const addrinfo& ai) -> Network::Bytes
 {
     return (ai.ai_addr == nullptr ?
             Network::get_sockaddr() :

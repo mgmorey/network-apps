@@ -1,4 +1,4 @@
-#include "network/get-sockaddr.h"       // SockAddr, get_sockaddr(),
+#include "network/get-sockaddr.h"       // Bytes, get_sockaddr(),
                                         // sockaddr_un
 #include "network/get-bytespan.h"       // get_bytespan()
 #include "network/get-sun-length.h"     // get_sun_length()
@@ -12,7 +12,7 @@
 
 #ifndef _WIN32
 
-auto Network::get_sockaddr(const Pathname& path) -> Network::SockAddr
+auto Network::get_sockaddr(const Pathname& path) -> Network::Bytes
 {
     sockaddr_un sun {};
     const auto path_size {std::min(path.size(), sizeof sun.sun_path - 1)};

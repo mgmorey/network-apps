@@ -2,7 +2,7 @@
 #include "network/family.h"             // Family, operator<<()
 #include "network/flags.h"              // Flags, operator<<()
 #include "network/format.h"             // Format, operator<<()
-#include "network/get-sockaddr.h"       // SockAddr, get_sockaddr()
+#include "network/get-sockaddr.h"       // Bytes, get_sockaddr()
 #include "network/hostname.h"           // Hostname
 #include "network/protocol.h"           // Protocol, operator<<()
 #include "network/socktype.h"           // SockType, operator<<()

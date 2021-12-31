@@ -6,7 +6,6 @@
 #include "network/fdresultvector.h"     // Fd, FdResultVector
 #include "network/hints.h"              // Hints
 #include "network/result.h"             // Result
-#include "network/sockaddr.h"           // SockAddr
 #include "network/socket.h"             // Socket
 
 #ifdef _WIN32
@@ -30,7 +29,7 @@ namespace Network
                      const Hints* hints,
                      bool verbose) -> FdResultVector;
     extern auto open(const OpenHandler& handler, Fd fd,
-                     const SockAddr& addr,
+                     const Bytes& addr,
                      bool verbose) -> Result;
 }
 

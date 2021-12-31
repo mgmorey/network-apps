@@ -1,8 +1,8 @@
-#include "network/get-sa-family.h"      // SockAddr, family_type,
+#include "network/get-sa-family.h"      // Bytes, family_type,
                                         // get_sa_family()
 #include "network/get-sa-pointer.h"     // get_sa_pointer(), sockaddr
 
-auto Network::get_sa_family(const SockAddr& addr,
+auto Network::get_sa_family(const Bytes& addr,
                             family_type family) -> Network::family_type
 {
     const auto *const sa {get_sa_pointer(addr)};

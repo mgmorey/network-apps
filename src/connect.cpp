@@ -1,6 +1,6 @@
-#include "network/connect.h"    // Endpoint, Fd, FdResultVector,
-                                // Hints, Result, SockAddr, connect(),
-                                // open()
+#include "network/connect.h"    // Bytes, Endpoint, Fd,
+                                // FdResultVector, Hints, Result,
+                                // connect(), open()
 
 #ifdef _WIN32
 #include <winsock2.h>       // connect()
@@ -11,7 +11,7 @@
 static constexpr Network::OpenHandler handler {::connect, "connect"};
 
 auto Network::connect(Fd fd,
-                      const SockAddr& addr,
+                      const Bytes& addr,
                       bool verbose) -> Network::Result
 {
     return open(handler, fd, addr, verbose);

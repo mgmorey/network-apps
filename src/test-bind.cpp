@@ -1,8 +1,7 @@
-#include "network/network.h"        // Address, Endpoint, FdResult,
-                                    // Hints, Overload, SockAddr,
-                                    // SockAddrResult, bind(),
-                                    // close(), get_sockaddr(),
-                                    // get_sockname()
+#include "network/network.h"        // Address, Bytes, Endpoint,
+                                    // FdResult, Hints, Overload,
+                                    // bind(), close(),
+                                    // get_sockaddr(), get_sockname()
 
 #ifdef _WIN32
 #include <getopt.h>     // getopt(), optarg, opterr, optind, optopt
@@ -60,11 +59,11 @@ namespace TestBind
         }
 
         static auto get_sockaddr(const Network::Fd& t_fd) ->
-            Network::SockAddrResult
+            Network::BytesResult
         {
             auto sockname_result {Network::get_sockname(t_fd, verbose)};
             std::visit(Network::Overload {
-                    [&](const Network::SockAddr&) {
+                    [&](const Network::Bytes&) {
                     },
                     [&](const Network::Result& result) {
                         std::cerr << result
@@ -87,8 +86,8 @@ namespace TestBind
                  << host
                  << std::endl;
 
-            if (std::holds_alternative<Network::SockAddr>(sock_result)) {
-                const auto self {std::get<Network::SockAddr>(sock_result)};
+            if (std::holds_alternative<Network::Bytes>(sock_result)) {
+                const auto self {std::get<Network::Bytes>(sock_result)};
                 m_os << "Socket "
                      << t_fd
                      << " bound to "

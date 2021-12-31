@@ -1,9 +1,9 @@
 #include "network/get-endpoint.h"       // Endpoint, EndpointResult,
                                         // Result, get_endpoint()
 #include "network/buffer.h"             // Buffer
-#include "network/get-length.h"         // SockAddr, get_length()
-#include "network/get-sa-pointer.h"     // SockAddr, get_sa_pointer()
-#include "network/is-valid.h"           // SockAddr, is_valid()
+#include "network/get-length.h"         // Bytes, get_length()
+#include "network/get-sa-pointer.h"     // Bytes, get_sa_pointer()
+#include "network/is-valid.h"           // Bytes, is_valid()
 
 #ifdef _WIN32
 #include <ws2tcpip.h>   // NI_MAXHOST, NI_MAXSERV, gai_strerror(),
@@ -19,7 +19,7 @@
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
 
-auto Network::get_endpoint(const SockAddr& addr, int flags, bool verbose) ->
+auto Network::get_endpoint(const Bytes& addr, int flags, bool verbose) ->
     Network::EndpointResult
 {
     Result result;

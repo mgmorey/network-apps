@@ -3,7 +3,6 @@
 
 #include "network/bytes.h"              // Bytes
 #include "network/hostname.h"           // Hostname
-#include "network/sockaddr.h"           // SockAddr
 
 #ifdef _WIN32
 #include <ws2tcpip.h>   // addrinfo
@@ -15,7 +14,7 @@ namespace Network
 {
     struct Host
     {
-        static auto get_sockaddr(const addrinfo& ai) -> SockAddr;
+        static auto get_sockaddr(const addrinfo& ai) -> Bytes;
 
         Host() = default;
         // cppcheck-suppress noExplicitConstructor
@@ -24,11 +23,11 @@ namespace Network
         auto operator<(const Host& t_host) const -> bool;
         auto operator>(const Host& t_host) const -> bool;
         auto operator==(const Host& t_host) const -> bool;
-        [[nodiscard]] auto address() const -> SockAddr;
+        [[nodiscard]] auto address() const -> Bytes;
         [[nodiscard]] auto canonical_name() const -> Hostname;
 
     private:
-        SockAddr m_sock_addr;
+        Bytes m_sock_addr;
         Hostname m_canonname;
     };
 }

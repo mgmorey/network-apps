@@ -1,4 +1,4 @@
-#include "network/is-valid.h"           // SockAddr, is_valid()
+#include "network/is-valid.h"           // Bytes, is_valid()
 #include "network/get-sa-family.h"      // get_sa_family()
 #include "network/get-sa-length.h"      // get_sa_length()
 #include "network/get-sun-length.h"     // get_sun_length()
@@ -27,7 +27,7 @@
 static const auto key_width {20};
 static const auto value_width {5};
 
-static auto get_max_size(const Network::SockAddr& addr) -> std::size_t
+static auto get_max_size(const Network::Bytes& addr) -> std::size_t
 {
     const auto family {Network::get_sa_family(addr)};
 
@@ -47,7 +47,7 @@ static auto get_max_size(const Network::SockAddr& addr) -> std::size_t
     }
 }
 
-static auto get_min_size(const Network::SockAddr& addr) -> std::size_t
+static auto get_min_size(const Network::Bytes& addr) -> std::size_t
 {
     const auto family {Network::get_sa_family(addr)};
 
@@ -65,7 +65,7 @@ static auto get_min_size(const Network::SockAddr& addr) -> std::size_t
     }
 }
 
-auto Network::is_valid(const SockAddr& addr, bool verbose) -> bool
+auto Network::is_valid(const Bytes& addr, bool verbose) -> bool
 {
     if (verbose) {
         std::cerr << "Validating socket address: "

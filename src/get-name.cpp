@@ -1,12 +1,12 @@
-#include "network/get-name.h"           // Fd, GetNameHandler, Result,
-                                        // SockAddrResult, get_name()
+#include "network/get-name.h"           // Bytes, Fd, GetNameHandler,
+                                        // Result, get_name()
 #include "network/error.h"              // format_error(),
                                         // get_last_error(),
                                         // reset_last_error()
-#include "network/get-length.h"         // SockAddr, get_length()
-#include "network/get-sa-pointer.h"     // SockAddr, get_sa_pointer()
-#include "network/get-sockaddr.h"       // SockAddr, get_sockaddr()
-#include "network/is-valid.h"           // SockAddr, is_valid()
+#include "network/get-length.h"         // Bytes, get_length()
+#include "network/get-sa-pointer.h"     // Bytes, get_sa_pointer()
+#include "network/get-sockaddr.h"       // Bytes, get_sockaddr()
+#include "network/is-valid.h"           // Bytes, is_valid()
 
 #include <algorithm>    // std::max()
 #include <cassert>      // assert()
@@ -14,7 +14,7 @@
 #include <sstream>      // std::ostringstream
 
 auto Network::get_name(const GetNameHandler& handler, Fd fd,
-                       bool verbose) -> Network::SockAddrResult
+                       bool verbose) -> Network::BytesResult
 {
     Result result;
     auto addr {get_sockaddr()};

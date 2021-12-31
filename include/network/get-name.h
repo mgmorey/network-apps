@@ -4,7 +4,6 @@
 #include "network/bytes.h"              // Bytes
 #include "network/fd.h"                 // Fd, fd_type
 #include "network/result.h"             // Result
-#include "network/sockaddr.h"           // SockAddr
 
 #ifdef _WIN32
 #include <winsock2.h>       // sockaddr, socklen_t
@@ -20,13 +19,12 @@
 
 namespace Network
 {
+    using BytesResult = std::variant<Bytes, Result>;
     using GetNameFunction = int (*)(fd_type, sockaddr*, socklen_t*);
     using GetNameHandler = std::pair<GetNameFunction, const char*>;
 
-    using SockAddrResult = std::variant<SockAddr, Result>;
-
     extern auto get_name(const GetNameHandler& handler, Fd fd,
-                         bool verbose) -> SockAddrResult;
+                         bool verbose) -> BytesResult;
 }
 
 #endif

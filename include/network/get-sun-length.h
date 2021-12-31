@@ -1,12 +1,11 @@
 #ifndef NETWORK_GET_SUN_LENGTH_H
 #define NETWORK_GET_SUN_LENGTH_H
 
-#include "network/bytes.h"              // Bytes
-#include "network/sockaddr.h"           // SockAddr
-
 #ifndef _WIN32
 #include <sys/un.h>         // sockaddr_un
 #endif
+
+#include <cstddef>      // std::size_t
 
 namespace Network
 {
