@@ -1,13 +1,12 @@
 #ifndef NETWORK_OPEN_H
 #define NETWORK_OPEN_H
 
-#include "network/endpoint.h"       // Endpoint
-#include "network/fdresultvector.h" // Fd, FdResult, FdResultVector
-#include "network/get-socket.h"     // FdResult, get_socket()
-#include "network/hints.h"          // Hints
-#include "network/result.h"         // Result
-#include "network/sockaddr.h"       // SockAddr
-#include "network/socket.h"         // Socket
+#include "network/endpoint.h"           // Endpoint
+#include "network/fdresultvector.h"     // Fd, FdResultVector
+#include "network/hints.h"              // Hints
+#include "network/result.h"             // Result
+#include "network/sockaddr.h"           // SockAddr
+#include "network/socket.h"             // Socket
 
 #ifdef _WIN32
 #include <winsock2.h>       // sockaddr, socklen_t
