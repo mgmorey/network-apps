@@ -14,8 +14,8 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/get-sun-path.h"       // Bytes, Pathname
-                                        // get_sun_path()
-#include "network/get-sun-length.h"     // get_sun_path_length(), sockaddr_un
+                                        // get_sun_path(), sockaddr_un
+#include "network/get-sun-length.h"     // get_sun_path_length()
 #include "network/get-sun-pointer.h"    // get_sun_pointer()
 
 #include <cstring>      // strnlen()
