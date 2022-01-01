@@ -30,16 +30,20 @@
 auto Network::get_sockaddr(const Pathname& path) -> Network::Bytes
 {
     sockaddr_un sun {};
-    const auto path_size {std::min(path.size(), sizeof sun.sun_path - 1)};
-    const auto min_size {sizeof sun - sizeof sun.sun_path + path_size};
-    const auto size {std::max(sizeof(sockaddr), min_size + 1)};
-    path.copy(sun.sun_path, path_size);  // NOLINT
-    sun.sun_family = AF_LOCAL;
+    const auto path_max {std::min(path.size(), sizeof sun.sun_path - 1)};
+    const auto sun_min {sizeof sun - sizeof sun.sun_path + path_max};
+    const auto sun_max {std::max(sizeof(sockaddr), sun_min + 1)};
 #ifdef HAVE_SOCKADDR_SA_LEN
-    sun.sun_len = std::max(sizeof(sockaddr), min_size);
-    assert(sun.sun_len == get_sun_length(&sun, sizeof sun));  // NOLINT
+    const auto sun_len {std::max(sizeof(sockaddr), sun_min)};
+    sun.sun_len = sun_len;
 #endif
-    return get_sockaddr(&sun, size);
+    sun.sun_family = AF_LOCAL;
+
+    if (path.has_value()) {
+        path.value().copy(sun.sun_path, path_max);  // NOLINT
+    }
+
+    return get_sockaddr(&sun, sun_max);
 }
 
 #endif
