@@ -178,6 +178,7 @@ namespace TestAddress
         const Network::Bytes addr;
         assert(Network::get_sa_family(addr, 0) == 0);  // NOLINT
         assert(Network::get_sa_length(addr, 0) == 0);  // NOLINT
+        assert(Network::is_valid(addr) == false);  // NOLINT
     }
 
     static auto test_host(const Network::Hostname& host,
