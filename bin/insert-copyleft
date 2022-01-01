@@ -45,6 +45,7 @@ insert_copyleft() {
 	printf '\n' >>$tmpfile
 	cat $file >>$tmpfile
 	cp -f $tmpfile $file
+	rm -f $tmpfile
     done
 }
 
