@@ -29,8 +29,12 @@
                                         // get_hostname()
 #include "network/get-hosts.h"          // HostVectorResult,
                                         // get_hosts()
+#include "network/get-length.h"         // get_length()
 #include "network/get-peername.h"       // BytesResult,
                                         // get_peername()
+#include "network/get-sa-family.h"      // get_sa_family()
+#include "network/get-sa-length.h"      // get_sa_length()
+#include "network/get-sa-pointer.h"     // get_sa_pointer()
 #include "network/get-sockaddr.h"       // get_sockaddr()
 #include "network/get-socket.h"         // Fd, FdResult, Socket,
                                         // get_socket()

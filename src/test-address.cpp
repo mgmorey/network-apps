@@ -31,6 +31,7 @@
 
 #include <algorithm>    // std::for_each(), std::remove()
                         // std::unique()
+#include <cassert>      // assert()
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
@@ -172,6 +173,13 @@ namespace TestAddress
         return result;
     }
 
+    static auto test_address_empty() -> void
+    {
+        const Network::Bytes addr;
+        assert(Network::get_sa_family(addr, 0) == 0);  // NOLINT
+        assert(Network::get_sa_length(addr, 0) == 0);  // NOLINT
+    }
+
     static auto test_host(const Network::Hostname& host,
                           const Network::Hints& hints) -> void
     {
@@ -240,11 +248,18 @@ auto main(int argc, char* argv[]) -> int
             std::cerr << context.result()
                       << std::endl;
         }
-        else if (args.size() > 1) {
-            TestAddress::test_host(args[1]);
-        }
         else {
-            TestAddress::test_host(std::nullopt);
+            TestAddress::test_address_empty();
+            Network::Hostname hostname;
+
+            if (args.size() > 1) {
+                hostname = args[1];
+            }
+            else {
+                hostname = std::nullopt;
+            }
+
+            TestAddress::test_host(hostname);
         }
 
         static_cast<void>(context);
