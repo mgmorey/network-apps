@@ -29,8 +29,6 @@ namespace Network
     extern auto get_sun_length(const sockaddr_un* sun,
                                std::size_t size) -> std::size_t;
 #endif
-    extern auto get_sun_path_length(const sockaddr_un* sun,
-                                    std::size_t size) -> std::size_t;
 #endif
 }
 

@@ -20,6 +20,11 @@
 
 #include <cstring>      // strnlen()
 
+#include <algorithm>    // std::max(), std::min()
+#include <cassert>      // assert()
+#include <cstddef>      // std::size_t
+#include <cstring>      // strnlen()
+
 #ifndef _WIN32
 
 auto Network::get_sun_path(const Bytes& addr,
@@ -34,6 +39,29 @@ auto Network::get_sun_path(const Bytes& addr,
     }
 
     return path;
+}
+
+auto Network::get_sun_path_length(const sockaddr_un* sun,
+                                  std::size_t size) -> std::size_t
+{
+    static constexpr auto path_offset {offsetof(sockaddr_un, sun_path)};
+
+    assert(size >= path_offset);  // NOLINT
+    assert(size <= path_offset + sizeof sun->sun_path);  // NOLINT
+    size = std::max(size, path_offset);
+    size = std::min(size, path_offset + sizeof sun->sun_path);
+#ifdef HAVE_SOCKADDR_SA_LEN
+    std::size_t len {sun->sun_len};
+    assert(len >= path_offset);  // NOLINT
+    assert(len <= size);  // NOLINT
+    len = std::max(len, path_offset);
+    len = std::min(len, size);
+    const auto max_path_len {std::min(size, len) - path_offset};
+#else
+    const auto max_path_len {std::min(size - path_offset,
+                                      sizeof sun->sun_path)};
+#endif
+    return strnlen(sun->sun_path, max_path_len);  // NOLINT
 }
 
 #endif
