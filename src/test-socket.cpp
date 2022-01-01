@@ -26,6 +26,7 @@
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
+#include <optional>     // std::nullopt
 #include <span>         // std::span
 #include <string>       // std::string
 #include <variant>      // std::visit()
@@ -115,6 +116,7 @@ auto main(int argc, char* argv[]) -> int
         TestSocket::parse_arguments(argc, argv);
         const Network::Socket hints(AF_UNIX, SOCK_STREAM);
         TestSocket::test_socketpair(hints);
+        TestSocket::test_path(std::nullopt);
         TestSocket::test_path(TestSocket::PATH_12);
         TestSocket::test_path(TestSocket::PATH_14);
         TestSocket::test_path(TestSocket::PATH_16);
