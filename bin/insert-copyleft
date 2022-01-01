@@ -1,0 +1,64 @@
+#!/bin/sh
+
+get_file_prefix() {
+    case "$(basename "$file")" in
+	(*.C|*.c|*.cpp|*.cxx|*.h|*.hpp|*.hxx)
+	    prefix='//'
+	    ;;
+	(*)
+	    prefix='#'
+	    ;;
+    esac
+
+    printf '%s\n' "$prefix"
+}
+
+get_source_files() {
+    find . \
+	 ! -name $copyleft \
+	 '(' \
+	 -name GNUmakefile -o \
+	 -name '*.[ch]' -o \
+	 -name '*.[ch]pp' -o \
+	 -name '*.[ch]xx' \
+	 ')' \
+	 -type f
+}
+
+insert_copyleft() {
+    copyleft="${script_prefix}Copyleft"
+
+    if ! [ -e "$copyleft" ]; then
+	return 1
+    fi
+
+    files=$(get_source_files)
+
+    for file in $files; do
+	if grep -q Copyright "$file"; then
+	    continue
+	fi
+
+	tmpfile=$(mktemp)
+	prefix=$(get_file_prefix "$file")
+	sed 's|^#|'"$prefix"'|' $copyleft >>$tmpfile
+	printf '\n' >>$tmpfile
+	cat $file >>$tmpfile
+	cp -f $tmpfile $file
+    done
+}
+
+script=$(basename "$0")
+
+case "$0" in
+    (*/*)
+	script_dir=$(cd "$(dirname "$0")" && pwd)
+	;;
+    (*)
+	script_dir=
+	;;
+esac
+
+script_prefix=${script_dir:+$script_dir/}
+
+insert_copyleft
