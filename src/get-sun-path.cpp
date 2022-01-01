@@ -18,6 +18,8 @@
 #include "network/get-sun-length.h"     // get_sun_path_length(), sockaddr_un
 #include "network/get-sun-pointer.h"    // get_sun_pointer()
 
+#include <cstring>      // strnlen()
+
 #ifndef _WIN32
 
 auto Network::get_sun_path(const Bytes& addr,
@@ -26,7 +28,9 @@ auto Network::get_sun_path(const Bytes& addr,
     const auto *const sun {get_sun_pointer(addr)};
 
     if (offsetof(sockaddr_un, sun_path) <= addr.size()) {
-        path = sun->sun_path;
+        const auto size {addr.size() - offsetof(sockaddr_un, sun_path)};
+        const auto length {strnlen(sun->sun_path, size)};  // NOLINT
+        path = std::string(sun->sun_path, length);  // NOLINT
     }
 
     return path;
