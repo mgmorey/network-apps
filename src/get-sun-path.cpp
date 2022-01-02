@@ -38,7 +38,7 @@ auto Network::get_sun_path(const Bytes& addr,
 {
     assert(get_sa_family(addr) == AF_UNIX);  // NOLINT
 
-    if (addr.size() < sun_path_offset) {
+    if (addr.size() <= sun_path_offset) {
         return path;
     }
 
