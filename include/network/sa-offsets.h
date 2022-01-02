@@ -20,18 +20,18 @@
 #include <winsock2.h>       // sa_data, sockaddr
 #else
 #include <sys/socket.h>     // sa_data, sockaddr
-#include <sys/un.h>         // sockaddr_un, sun_path
+#include <sys/un.h>         // sockaddr_un
 #endif
 
-#include <cstddef>      // offsetof(), std::size_t
+#include <cstddef>      // offsetof()
 
 namespace Network
 {
-    constexpr auto sa_data_offset {offsetof(sockaddr, sa_data)};
 #ifdef HAVE_SOCKADDR_SA_LEN
     constexpr auto sa_len_offset {offsetof(sockaddr, sa_len)};
 #endif
     constexpr auto sa_family_offset {offsetof(sockaddr, sa_family)};
+    constexpr auto sa_data_offset {offsetof(sockaddr, sa_data)};
 }
 
 #endif

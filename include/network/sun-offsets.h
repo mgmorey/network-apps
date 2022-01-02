@@ -20,13 +20,12 @@
 #include <sys/un.h>         // sockaddr_un
 #endif
 
-#include <cstddef>      // offsetof(), std::size_t
+#include <cstddef>      // offsetof()
 
 namespace Network
 {
-#ifdef _WIN32
-    constexpr auto sun_path_offset {static_cast<std::size_t>(0)};
-#else
+#ifndef _WIN32
+    constexpr auto sun_family_offset {offsetof(sockaddr_un, sun_family)};
     constexpr auto sun_path_offset {offsetof(sockaddr_un, sun_path)};
 #endif
 }
