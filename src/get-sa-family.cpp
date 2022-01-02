@@ -21,13 +21,20 @@
 auto Network::get_sa_family(const Bytes& addr,
                             family_type family) -> Network::family_type
 {
-    const auto *const sa {get_sa_pointer(addr)};
-
-    if (sa_family_offset + sizeof sa->sa_family <= addr.size()) {
-        if (sa->sa_family != 0) {
-            family = sa->sa_family;
-        }
+    if (addr.empty()) {
+        return family;
     }
 
+    const auto *const sa {get_sa_pointer(addr)};
+
+    if (addr.size() < sa_family_offset + sizeof sa->sa_family) {
+        return family;
+    }
+
+    if (sa->sa_family == 0) {
+        return family;
+    }
+
+    family = sa->sa_family;
     return family;
 }

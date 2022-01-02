@@ -22,15 +22,22 @@ auto Network::get_sa_length(const Bytes& addr,
                             sock_len_type length) -> Network::sock_len_type
 {
 #ifdef HAVE_SOCKADDR_SA_LEN
+    if (addr.empty()) {
+        return length;
+    }
+
     const auto *const sa {get_sa_pointer(addr)};
 
-    if (sa_len_offset + sizeof sa->sa_len <= addr.size()) {
-        if (sa->sa_len != 0) {
-            length = sa->sa_len;
-        }
+    if (addr.size() < sa_len_offset + sizeof sa->sa_len) {
+        return length;
     }
+
+    if (sa->sa_len == 0) {
+        return length;
+    }
+
+    return sa->sa_len;
 #else
-    static_cast<void>(addr);
-#endif
     return length;
+#endif
 }

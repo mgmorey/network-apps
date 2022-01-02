@@ -29,17 +29,20 @@
 #ifndef _WIN32
 
 auto Network::get_sun_path(const Bytes& addr,
-                           Pathname path) -> Pathname
+                           const Pathname& path) -> Pathname
 {
-    const auto *const sun {get_sun_pointer(addr)};
-
-    if (sun_path_offset <= addr.size()) {
-        const auto size {addr.size() - sun_path_offset};
-        const auto len {strnlen(sun->sun_path, size)};  // NOLINT
-        path = std::string(sun->sun_path, len);  // NOLINT
+    if (addr.empty()) {
+        return path;
     }
 
-    return path;
+    if (addr.size() < sun_path_offset) {
+        return path;
+    }
+
+    const auto size {addr.size() - sun_path_offset};
+    const auto *const sun {get_sun_pointer(addr)};
+    const auto len {strnlen(sun->sun_path, size)};  // NOLINT
+    return std::string(sun->sun_path, len);  // NOLINT
 }
 
 auto Network::get_sun_path_length(const sockaddr_un* sun,

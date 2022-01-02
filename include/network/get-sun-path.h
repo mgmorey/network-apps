@@ -29,7 +29,7 @@ namespace Network
 {
 #ifndef _WIN32
     extern auto get_sun_path(const Bytes& addr,
-                             Pathname path = std::nullopt) -> Pathname;
+                             const Pathname& path = std::nullopt) -> Pathname;
     extern auto get_sun_path_length(const sockaddr_un* sun,
                                     std::size_t size) -> std::size_t;
 #endif
