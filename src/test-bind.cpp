@@ -13,23 +13,25 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/network.h"        // Address, Bytes, Endpoint,
-                                    // FdResult, Hints, Overload,
-                                    // bind(), close(),
-                                    // get_sockaddr(), get_sockname()
+#include "network/network.h"            // Address, Bytes,
+                                        // BytesResult, Endpoint,
+                                        // FdResult, Hints, Overload,
+                                        // bind(), close(),
+                                        // get_sockaddr(),
+                                        // get_sockname()
 
 #ifdef _WIN32
-#include <getopt.h>     // getopt(), optarg, opterr, optind, optopt
-#include <winsock2.h>   // AF_INET, AF_INET6, PF_INET, PF_INET6,
-                        // IPPROTO_IP, IPPROTO_TCP, IPPROTO_UDP,
-                        // SOCK_DGRAM, SOCK_STREAM
-#include <ws2tcpip.h>   // AI_ADDRCONFIG, AI_ALL, AI_CANONNAME,
+#include <getopt.h>         // getopt(), optarg, opterr, optind
+#include <winsock2.h>       // AF_INET, AF_INET6, PF_INET, PF_INET6,
+                            // IPPROTO_IP, IPPROTO_TCP, IPPROTO_UDP,
+                            // SOCK_DGRAM, SOCK_STREAM
+#include <ws2tcpip.h>       // AI_ADDRCONFIG, AI_ALL, AI_CANONNAME
 #else
-#include <netdb.h>      // AI_ADDRCONFIG, AI_ALL, AI_CANONNAME,
-#include <netinet/in.h> // IPPROTO_IP, IPPROTO_TCP, IPPROTO_UDP
-#include <sys/socket.h> // AF_INET, AF_INET6, PF_INET, PF_INET6,
-                        // SOCK_DGRAM, SOCK_STREAM
-#include <unistd.h>     // getopt(), optarg, opterr, optind, optopt
+#include <netdb.h>          // AI_ADDRCONFIG, AI_ALL, AI_CANONNAME
+#include <netinet/in.h>     // IPPROTO_IP, IPPROTO_TCP, IPPROTO_UDP
+#include <sys/socket.h>     // AF_INET, AF_INET6, PF_INET, PF_INET6,
+                            // SOCK_DGRAM, SOCK_STREAM
+#include <unistd.h>         // getopt(), optarg, opterr, optind
 #endif
 
 #include <algorithm>    // std::for_each()

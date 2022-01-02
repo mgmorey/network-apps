@@ -18,9 +18,9 @@
                                     // get_sockaddr(),
                                     // get_socketpair()
 
-#include <sys/socket.h> // AF_UNIX, SOCK_STREAM
-#include <sys/un.h>     // sockaddr_un
-#include <unistd.h>     // getopt(), optarg, opterr, optind, optopt
+#include <sys/socket.h>     // AF_UNIX, AF_UNSPEC, SOCK_STREAM
+#include <sys/un.h>         // sockaddr_un
+#include <unistd.h>         // getopt(), optarg, opterr, optind
 
 #include <cassert>      // assert()
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
@@ -75,9 +75,9 @@ namespace TestSocket
     static auto test_address_empty() -> void
     {
         const Network::Bytes addr;
-        assert(Network::get_sa_family(addr, 0) == 0);  // NOLINT
         assert(Network::get_sa_length(addr, 0) == 0);  // NOLINT
-        assert(Network::get_sun_path(addr) == nullptr);  // NOLINT
+        assert(Network::get_sa_family(addr, 0) == AF_UNSPEC);  // NOLINT
+        assert(Network::get_sun_path(addr).has_value() == false);  // NOLINT
         assert(Network::is_valid(addr) == false);  // NOLINT
     }
 

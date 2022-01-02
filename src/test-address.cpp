@@ -18,15 +18,16 @@
                                     // get_endpoint(), get_hosts()
 
 #ifdef _WIN32
-#include <getopt.h>     // getopt(), optarg, opterr, optind, optopt
-#include <winsock2.h>   // AF_INET, AF_INET6, AF_UNSPEC, IPPROTO_TCP,
-                        // SOCK_STREAM
-#include <ws2tcpip.h>   // AI_ADDRCONFIG, AI_CANONNAME,
+#include <getopt.h>         // getopt(), optarg, opterr, optind
+#include <winsock2.h>       // AF_INET, AF_INET6, AF_UNSPEC,
+                            // IPPROTO_TCP, SOCK_STREAM
+#include <ws2tcpip.h>       // AI_ADDRCONFIG, AI_CANONNAME
 #else
-#include <netdb.h>      // AI_ADDRCONFIG, AI_CANONNAME,
-#include <netinet/in.h> // IPPROTO_TCP
-#include <sys/socket.h> // AF_INET, AF_INET6, AF_UNSPEC, SOCK_STREAM
-#include <unistd.h>     // getopt(), optarg, opterr, optind, optopt
+#include <netdb.h>          // AI_ADDRCONFIG, AI_CANONNAME
+#include <netinet/in.h>     // IPPROTO_TCP
+#include <sys/socket.h>     // AF_INET, AF_INET6, AF_UNSPEC,
+                            // SOCK_STREAM
+#include <unistd.h>         // getopt(), optarg, opterr, optind
 #endif
 
 #include <algorithm>    // std::for_each(), std::remove()
@@ -176,8 +177,8 @@ namespace TestAddress
     static auto test_address_empty() -> void
     {
         const Network::Bytes addr;
-        assert(Network::get_sa_family(addr, 0) == 0);  // NOLINT
         assert(Network::get_sa_length(addr, 0) == 0);  // NOLINT
+        assert(Network::get_sa_family(addr, 0) == AF_UNSPEC);  // NOLINT
         assert(Network::is_valid(addr) == false);  // NOLINT
     }
 

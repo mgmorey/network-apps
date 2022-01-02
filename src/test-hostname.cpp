@@ -16,9 +16,9 @@
 #include "network/network.h"        // get_hostname()
 
 #ifdef _WIN32
-#include <getopt.h>     // getopt(), optarg, opterr, optind, optopt
+#include <getopt.h>         // getopt(), optarg, opterr, optind
 #else
-#include <unistd.h>     // getopt(), optarg, opterr, optind, optopt
+#include <unistd.h>         // getopt(), optarg, opterr, optind
 #endif
 
 #include <exception>    // std::exception
