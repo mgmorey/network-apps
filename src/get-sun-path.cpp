@@ -48,8 +48,8 @@ auto Network::get_sun_path_length(const sockaddr_un* sun,
 {
     assert(sun_path_offset <= size &&
            size <= sun_path_offset + sizeof sun->sun_path);  // NOLINT
-    size = std::max(size, sun_path_offset);
-    size = std::min(size, sun_path_offset + sizeof sun->sun_path);
+    size = std::min(sun_path_offset + sizeof sun->sun_path,
+                    std::max(sun_path_offset, size));
 #ifdef HAVE_SOCKADDR_SA_LEN
     std::size_t len {sun->sun_len};
     assert(sun_path_offset <= len && len <= size);  // NOLINT
