@@ -16,6 +16,8 @@
 #include "network/is-valid.h"           // Bytes, is_valid()
 #include "network/get-sa-family.h"      // get_sa_family()
 #include "network/get-sa-length.h"      // get_sa_length()
+#include "network/get-sockaddr-size.h"  // get_sockaddr_size_max(),
+                                        // get_sockaddr_size_min()
 #include "network/get-sun-length.h"     // get_sun_length()
 #include "network/get-sun-pointer.h"    // get_sun_pointer()
 #include "network/offsets.h"            // sun_path_offset
@@ -43,44 +45,6 @@
 
 static const auto key_width {20};
 static const auto value_width {5};
-
-static auto get_max_size(const Network::Bytes& addr) -> std::size_t
-{
-    const auto family {Network::get_sa_family(addr)};
-
-    switch (family) {
-    case AF_UNSPEC:
-        return Network::sockaddr_size_max;
-#ifndef _WIN32
-    case AF_UNIX:
-        return Network::sun_size;
-#endif
-    case AF_INET:
-        return Network::sin_size;
-    case AF_INET6:
-        return Network::sin6_size;
-    default:
-        return 0;
-    }
-}
-
-static auto get_min_size(const Network::Bytes& addr) -> std::size_t
-{
-    const auto family {Network::get_sa_family(addr)};
-
-    switch (family) {
-#ifndef _WIN32
-    case AF_UNIX:
-        return Network::sun_path_offset;
-#endif
-    case AF_INET:
-        return Network::sin_size;
-    case AF_INET6:
-        return Network::sin6_size;
-    default:
-        return 0;
-    }
-}
 
 auto Network::is_valid(const Bytes& addr, bool verbose) -> bool
 {
@@ -119,8 +83,8 @@ auto Network::is_valid(const Bytes& addr, bool verbose) -> bool
     }
 
     const auto addr_size {addr.size()};
-    const auto addr_size_max {::get_max_size(addr)};
-    const auto addr_size_min {::get_min_size(addr)};
+    const auto addr_size_max {get_sockaddr_size_max(addr)};
+    const auto addr_size_min {get_sockaddr_size_min(addr)};
 
     if (verbose) {
         std::cerr << std::left
@@ -184,9 +148,7 @@ auto Network::is_valid(const Bytes& addr, bool verbose) -> bool
                       << std::endl;
         }
 
-        if (!(sa_len == sun_len)) {
-            return false;
-        }
+        assert(sa_len == sun_len);  // NOLINT
 
 #endif
 

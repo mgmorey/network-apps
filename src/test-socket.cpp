@@ -77,18 +77,24 @@ namespace TestSocket
         const Network::Bytes addr;
         assert(Network::get_sa_length(addr, 0) == 0);  // NOLINT
         assert(Network::get_sa_family(addr, 0) == AF_UNSPEC);  // NOLINT
-        assert(Network::get_sun_path(addr).has_value() == false);  // NOLINT
         assert(Network::is_valid(addr) == false);  // NOLINT
     }
 
     static auto test_path(const Network::Pathname& path) -> void
     {
         const auto addr {Network::get_sockaddr(path)};
-        std::string sun_path {Network::get_sun_path(addr)};
-        std::cout << "Unix domain path: "
-                  << sun_path
-                  << std::endl;
-        assert(sun_path == std::string(path));  // NOLINT
+        Network::Pathname sun_path {Network::get_sun_path(addr)};
+
+        if (path.has_value()) {
+            std::cout << "Unix domain path: "
+                      << sun_path
+                      << std::endl;
+            assert(sun_path.value() == path.value());  // NOLINT
+        }
+        else {
+            assert(sun_path.has_value() == true);  // NOLINT
+        }
+
         assert(Network::is_valid(addr, verbose));  // NOLINT
         Network::Address address {addr};
         std::cout << "Unix domain address: "
@@ -132,6 +138,7 @@ auto main(int argc, char* argv[]) -> int
         TestSocket::test_address_empty();
         const Network::Socket hints(AF_UNIX, SOCK_STREAM);
         TestSocket::test_socketpair(hints);
+        TestSocket::test_path(std::nullopt);
         TestSocket::test_path(TestSocket::PATH_12);
         TestSocket::test_path(TestSocket::PATH_14);
         TestSocket::test_path(TestSocket::PATH_16);

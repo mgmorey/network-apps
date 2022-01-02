@@ -17,7 +17,7 @@
                                         // sockaddr_un
 #include "network/get-bytespan.h"       // get_bytespan()
 #include "network/get-sun-length.h"     // get_sun_length()
-#include "network/sa-sizes.h"           // sa_size
+#include "network/sun-offsets.h"        // sun_path_offset
 
 #ifndef _WIN32
 #include <sys/socket.h>     // AF_LOCAL
@@ -32,10 +32,10 @@ auto Network::get_sockaddr(const Pathname& path) -> Network::Bytes
 {
     sockaddr_un sun {};
     const auto path_max {std::min(path.size(), sizeof sun.sun_path - 1)};
-    const auto sun_min {sizeof sun - sizeof sun.sun_path + path_max};
-    const auto sun_max {std::max(sa_size, sun_min + 1)};
+    const auto sun_len_min {sizeof sun  - sizeof sun.sun_path + path_max};
+    const auto sun_len_max {std::max(sun_path_offset, sun_len_min + 1)};
 #ifdef HAVE_SOCKADDR_SA_LEN
-    const auto sun_len {std::max(sa_size, sun_min)};
+    const auto sun_len {std::max(sun_path_offset, sun_len_min)};
     sun.sun_len = sun_len;
 #endif
     sun.sun_family = AF_LOCAL;
@@ -44,7 +44,7 @@ auto Network::get_sockaddr(const Pathname& path) -> Network::Bytes
         path.value().copy(sun.sun_path, path_max);  // NOLINT
     }
 
-    return get_sockaddr(&sun, sun_max);
+    return get_sockaddr(&sun, sun_len_max);
 }
 
 #endif

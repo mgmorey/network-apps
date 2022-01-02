@@ -36,10 +36,6 @@
 auto Network::get_sun_path(const Bytes& addr,
                            const Pathname& path) -> Pathname
 {
-    if (addr.empty()) {
-        return path;
-    }
-
     assert(get_sa_family(addr) == AF_UNIX);  // NOLINT
 
     if (addr.size() < sun_path_offset) {
@@ -47,6 +43,7 @@ auto Network::get_sun_path(const Bytes& addr,
     }
 
     const auto *const sun {get_sun_pointer(addr)};
+    assert(sun->sun_family == AF_UNIX);  // NOLINT
     auto len_max {addr.size() - sun_path_offset};
     auto len {strnlen(sun->sun_path, len_max)};  // NOLINT
     return std::string(sun->sun_path, len);  // NOLINT
