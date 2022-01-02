@@ -74,7 +74,6 @@ namespace Network
 
 #ifndef _WIN32
         [[nodiscard]] auto sun() const -> const sockaddr_un*;
-        [[nodiscard]] auto sun_path() const -> value_type;
         [[nodiscard]] auto sun_text() const -> std::string;
 #endif
 
