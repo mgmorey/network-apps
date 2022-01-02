@@ -71,14 +71,6 @@ namespace TestSocket
         return result;
     }
 
-    static auto test_address_empty() -> void
-    {
-        const Network::Bytes addr;
-        assert(Network::get_sa_length(addr, 0) == 0);  // NOLINT
-        assert(Network::get_sa_family(addr, 0) == AF_UNSPEC);  // NOLINT
-        assert(Network::is_valid(addr) == false);  // NOLINT
-    }
-
     static auto test_path(const Network::Pathname& path) -> void
     {
         const auto addr {Network::get_sockaddr(path)};
@@ -134,7 +126,6 @@ auto main(int argc, char* argv[]) -> int
 {
     try {
         TestSocket::parse_arguments(argc, argv);
-        TestSocket::test_address_empty();
         const Network::Socket hints(AF_UNIX, SOCK_STREAM);
         TestSocket::test_socketpair(hints);
         TestSocket::test_path(std::nullopt);
