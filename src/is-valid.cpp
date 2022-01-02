@@ -18,7 +18,9 @@
 #include "network/get-sa-length.h"      // get_sa_length()
 #include "network/get-sun-length.h"     // get_sun_length()
 #include "network/get-sun-pointer.h"    // get_sun_pointer()
-#include "network/sizes.h"              // sockaddr_size_max
+#include "network/offsets.h"            // sun_path_offset
+#include "network/sizes.h"              // sin_size, sin6_size,
+                                        // sockaddr_size_max, sun_size
 
 #ifdef _WIN32
 #include <winsock2.h>       // AF_INET, AF_INET6, AF_LOCAL, AF_UNIX,
@@ -51,12 +53,12 @@ static auto get_max_size(const Network::Bytes& addr) -> std::size_t
         return Network::sockaddr_size_max;
 #ifndef _WIN32
     case AF_UNIX:
-        return sizeof(sockaddr_un);
+        return Network::sun_size;
 #endif
     case AF_INET:
-        return sizeof(sockaddr_in);
+        return Network::sin_size;
     case AF_INET6:
-        return sizeof(sockaddr_in6);
+        return Network::sin6_size;
     default:
         return 0;
     }
@@ -69,12 +71,12 @@ static auto get_min_size(const Network::Bytes& addr) -> std::size_t
     switch (family) {
 #ifndef _WIN32
     case AF_UNIX:
-        return offsetof(sockaddr_un, sun_path);
+        return Network::sun_path_offset;
 #endif
     case AF_INET:
-        return sizeof(sockaddr_in);
+        return Network::sin_size;
     case AF_INET6:
-        return sizeof(sockaddr_in6);
+        return Network::sin6_size;
     default:
         return 0;
     }
@@ -116,9 +118,9 @@ auto Network::is_valid(const Bytes& addr, bool verbose) -> bool
         return false;
     }
 
-    const auto max_addr_size {::get_max_size(addr)};
-    const auto min_addr_size {::get_min_size(addr)};
     const auto addr_size {addr.size()};
+    const auto addr_size_max {::get_max_size(addr)};
+    const auto addr_size_min {::get_min_size(addr)};
 
     if (verbose) {
         std::cerr << std::left
@@ -133,18 +135,18 @@ auto Network::is_valid(const Bytes& addr, bool verbose) -> bool
                   << "    Minimum size:"
                   << std::right
                   << std::setw(value_width)
-                  << min_addr_size
+                  << addr_size_min
                   << std::endl
                   << std::left
                   << std::setw(key_width)
                   << "    Maximum size:"
                   << std::right
                   << std::setw(value_width)
-                  << max_addr_size
+                  << addr_size_max
                   << std::endl;
     }
 
-    if (!(min_addr_size <= addr_size && addr_size <= max_addr_size)) {
+    if (!(addr_size_min <= addr_size && addr_size <= addr_size_max)) {
         return false;
     }
 
@@ -163,7 +165,7 @@ auto Network::is_valid(const Bytes& addr, bool verbose) -> bool
     }
 
     if (family == AF_UNIX) {
-        if (!(min_addr_size <= sa_len && sa_len <= addr_size)) {
+        if (!(addr_size_min <= sa_len && sa_len <= addr_size)) {
             return false;
         }
 

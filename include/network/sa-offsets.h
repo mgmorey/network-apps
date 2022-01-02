@@ -28,6 +28,8 @@
 namespace Network
 {
     constexpr auto sa_data_offset {offsetof(sockaddr, sa_data)};
+    constexpr auto sa_len_offset {offsetof(sockaddr, sa_len)};
+    constexpr auto sa_family_offset {offsetof(sockaddr, sa_family)};
 }
 
 #endif

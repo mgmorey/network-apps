@@ -13,20 +13,18 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_SIZES_H
-#define NETWORK_SIZES_H
+#ifndef NETWORK_SA_SIZES_H
+#define NETWORK_SA_SIZES_H
 
-#include "network/sa-sizes.h"           // sa_size
-#include "network/sin-sizes.h"          // sin_size
-#include "network/sin6-sizes.h"         // sin6_size
-#include "network/ss-sizes.h"           // ss_size
-#include "network/sun-sizes.h"          // sun_size
-
-#include <algorithm>    // std::max()
+#ifdef _WIN32
+#include <winsock2.h>       // sockaddr
+#else
+#include <sys/socket.h>     // sockaddr
+#endif
 
 namespace Network
 {
-    constexpr auto sockaddr_size_max {std::max(ss_size, sun_size)};
+    constexpr auto sa_size {sizeof(sockaddr)};
 }
 
 #endif

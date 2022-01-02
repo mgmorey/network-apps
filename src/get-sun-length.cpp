@@ -16,6 +16,7 @@
 #include "network/get-sun-length.h"     // Bytes, get_sun_length(),
                                         // sockaddr_un
 #include "network/get-sun-path.h"       // get_sun_path_length()
+#include "network/sa-sizes.h"           // sa_size
 
 #ifndef _WIN32
 #include <sys/socket.h>     // sockaddr
@@ -33,7 +34,7 @@ auto Network::get_sun_length(const sockaddr_un* sun,
 {
     const auto path_len {get_sun_path_length(sun, size)};
     const auto min_size {sizeof *sun - sizeof sun->sun_path + path_len};
-    return std::max(sizeof(sockaddr), min_size);
+    return std::max(sa_size, min_size);
 }
 
 #endif
