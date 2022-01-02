@@ -16,6 +16,7 @@
 #include "network/get-sa-length.h"      // Bytes, get_sa_length(),
                                         // sock_len_type
 #include "network/get-sa-pointer.h"     // get_sa_pointer(), sockaddr
+#include "network/sa-offsets.h"         // sa_len_offset
 
 auto Network::get_sa_length(const Bytes& addr,
                             sock_len_type length) -> Network::sock_len_type
@@ -23,7 +24,7 @@ auto Network::get_sa_length(const Bytes& addr,
 #ifdef HAVE_SOCKADDR_SA_LEN
     const auto *const sa {get_sa_pointer(addr)};
 
-    if (offsetof(sockaddr, sa_len) + sizeof sa->sa_len <= addr.size()) {
+    if (sa_len_offset + sizeof sa->sa_len <= addr.size()) {
         if (sa->sa_len != 0) {
             length = sa->sa_len;
         }
