@@ -13,16 +13,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_BYTESPAN_H
-#define NETWORK_BYTESPAN_H
+#ifndef NETWORK_BYTE_TYPE_H
+#define NETWORK_BYTE_TYPE_H
 
-#include "network/byte.h"               // Byte
-
-#include <span>         // std::span
+#include <cstddef>      // std::byte
 
 namespace Network
 {
-    using ByteSpan = std::span<const Byte>;
+    using byte_type = std::byte;
 }
 
 #endif

@@ -13,16 +13,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_BYTESPAN_H
-#define NETWORK_BYTESPAN_H
+#ifndef NETWORK_BYTE_TESTS_H
+#define NETWORK_BYTE_TESTS_H
 
-#include "network/byte.h"               // Byte
-
-#include <span>         // std::span
+#include "network/byte-type.h"          // byte-type
 
 namespace Network
 {
-    using ByteSpan = std::span<const Byte>;
+    static_assert(sizeof(byte_type) == sizeof(char));
 }
 
 #endif

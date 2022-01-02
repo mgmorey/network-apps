@@ -16,12 +16,11 @@
 #ifndef NETWORK_BYTE_H
 #define NETWORK_BYTE_H
 
-#include <cstddef>      // std::byte
+#include "network/byte-asserts.h"       // byte_type
 
 namespace Network
 {
-    using Byte = std::byte;
-    static_assert(sizeof(Byte) == 1);
+    using Byte = byte_type;
 }
 
 #endif

@@ -16,14 +16,13 @@
 #ifndef NETWORK_BYTESTRING_H
 #define NETWORK_BYTESTRING_H
 
-#include "network/byte.h"           // Byte
+#include "network/byte.h"               // Byte
 
-#include <ostream>      // std::ios, std::ostream
+#include <ostream>      // std::ostream
 #include <string>       // std::basic_string
 
 namespace Network
 {
-    static_assert(sizeof(Byte) == 1);
     using ByteString = std::basic_string<Byte>;
 
     extern auto operator<<(std::ostream& os,
