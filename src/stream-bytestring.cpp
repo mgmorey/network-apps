@@ -37,7 +37,7 @@ auto Network::operator<<(std::ostream& os,
             os << std::setfill('0')
                << std::setw(2)
                << std::uppercase
-               << static_cast<int>(byte);
+               << std::to_integer<unsigned>(byte);
         }
     }
 
