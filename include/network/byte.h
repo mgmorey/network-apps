@@ -21,6 +21,7 @@
 namespace Network
 {
     using Byte = std::byte;
+    static_assert(sizeof(Byte) == 1);
 }
 
 #endif
