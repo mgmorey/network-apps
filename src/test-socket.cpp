@@ -13,10 +13,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/network.h"        // Address, FdPair, Hints,
-                                    // Overload, Socket, close(),
-                                    // get_sockaddr(),
-                                    // get_socketpair()
+#include "network/network.h"            // Address, FdPair, Hints,
+                                        // Overload, Socket, close(),
+                                        // get_sockaddr(),
+                                        // get_socketpair()
 
 #include <sys/socket.h>     // AF_UNIX, AF_UNSPEC, SOCK_STREAM
 #include <sys/un.h>         // sockaddr_un
