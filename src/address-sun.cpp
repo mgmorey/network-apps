@@ -19,7 +19,6 @@
                                         // get_sun_path_length()
 #include "network/get-sun-pointer.h"    // get_sun_pointer()
 #include "network/offsets.h"            // sun_path_offset
-#include "network/to-string.h"          // to_string()
 
 #include <string>       // std::string
 
