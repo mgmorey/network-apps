@@ -14,13 +14,13 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/address.h"            // Address, length_type,
+                                        // operator<<()
                                         // sa_data_offset, sockaddr,
                                         // value_type
 #include "network/get-sa-family.h"      // get_sa_family()
 #include "network/get-sa-length.h"      // get_sa_length()
 #include "network/get-sa-pointer.h"     // get_sa_pointer()
 #include "network/offsets.h"            // sa_data_offset
-#include "network/print.h"              // print()
 
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
@@ -48,6 +48,6 @@ auto Network::Address::sa_length() const -> Network::Address::length_type
 auto Network::Address::sa_text() const -> std::string
 {
     std::ostringstream oss;
-    print(oss, m_value);
+    oss << m_value;
     return oss.str();
 }

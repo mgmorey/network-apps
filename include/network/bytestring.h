@@ -18,6 +18,7 @@
 
 #include "network/byte.h"           // Byte
 
+#include <ostream>      // std::ios, std::ostream
 #include <string>       // std::basic_string
 
 namespace Network
@@ -25,7 +26,7 @@ namespace Network
     using ByteString = std::basic_string<Byte>;
 
     extern auto operator<<(std::ostream& os,
-                           const ByteString& string) -> std::ostream&;
+                           const ByteString& bytes) -> std::ostream&;
 }
 
 #endif

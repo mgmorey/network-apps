@@ -13,14 +13,34 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/bytestring.h" // operator<<()
-#include "network/byte.h"       // Byte
-#include "network/print.h"      // print()
+#include "network/bytestring.h"         // Byte, ByteString,
+                                        // operator<<(), std::ios,
+                                        // std::ostream
 
-#include <ostream>      // std::ostream
+#include <iomanip>      // std::hex, std::setfill(), std::setw(),
+                        // std::uppercase
 
 auto Network::operator<<(std::ostream& os,
-                         const ByteString& string) -> std::ostream&
+                         const ByteString& bytes) -> std::ostream&
 {
-    return print(os, string);
+    std::ios format {nullptr};
+    format.copyfmt(os);
+    os << "0x";
+
+    if (bytes.empty()) {
+        os << '0';
+    }
+    else {
+        os << std::hex;
+
+        for (const auto byte : bytes) {
+            os << std::setfill('0')
+               << std::setw(2)
+               << std::uppercase
+               << static_cast<int>(byte);
+        }
+    }
+
+    os.copyfmt(format);
+    return os;
 }
