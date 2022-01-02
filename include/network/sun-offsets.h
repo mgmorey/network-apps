@@ -13,10 +13,22 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_OFFSETS_H
-#define NETWORK_OFFSETS_H
+#ifndef NETWORK_SUN_OFFSETS_H
+#define NETWORK_SUN_OFFSETS_H
 
-#include "network/sa-offsets.h"         // sa_data_offset
-#include "network/sun-offsets.h"        // sun_path_offset
+#ifndef _WIN32
+#include <sys/un.h>         // sockaddr_un
+#endif
+
+#include <cstddef>      // offsetof(), std::size_t
+
+namespace Network
+{
+#ifdef _WIN32
+    constexpr auto sun_path_offset {static_cast<std::size_t>(0)};
+#else
+    constexpr auto sun_path_offset {offsetof(sockaddr_un, sun_path)};
+#endif
+}
 
 #endif
