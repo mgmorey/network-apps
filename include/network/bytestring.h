@@ -23,6 +23,7 @@
 
 namespace Network
 {
+    static_assert(sizeof(Byte) == 1);
     using ByteString = std::basic_string<Byte>;
 
     extern auto operator<<(std::ostream& os,
