@@ -28,7 +28,9 @@
 namespace Network
 {
     constexpr auto sa_data_offset {offsetof(sockaddr, sa_data)};
+#ifdef HAVE_SOCKADDR_SA_LEN
     constexpr auto sa_len_offset {offsetof(sockaddr, sa_len)};
+#endif
     constexpr auto sa_family_offset {offsetof(sockaddr, sa_family)};
 }
 
