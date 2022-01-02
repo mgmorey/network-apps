@@ -15,9 +15,16 @@
 
 #include "network/get-sun-path.h"       // Bytes, Pathname
                                         // get_sun_path(), sockaddr_un
+#include "network/get-sa-family.h"      // get_sa_family()
 #include "network/get-sun-length.h"     // get_sun_path_length()
 #include "network/get-sun-pointer.h"    // get_sun_pointer()
 #include "network/sun-offsets.h"        // sun_path_offset
+
+#ifdef _WIN32
+#include <winsock2.h>       // AF_UNIX
+#else
+#include <sys/socket.h>     // AF_UNIX
+#endif
 
 #include <algorithm>    // std::max(), std::min()
 #include <cassert>      // assert()
@@ -32,6 +39,8 @@ auto Network::get_sun_path(const Bytes& addr,
     if (addr.empty()) {
         return path;
     }
+
+    assert(get_sa_family(addr) == AF_UNIX);  // NOLINT
 
     if (addr.size() < sun_path_offset) {
         return path;
