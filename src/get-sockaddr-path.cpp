@@ -24,15 +24,14 @@
 #endif
 
 #include <algorithm>    // std::max(), std::min()
-#include <cassert>      // assert()
 
 #ifndef _WIN32
 
 auto Network::get_sockaddr(const Pathname& path) -> Network::Bytes
 {
     sockaddr_un sun {};
-    const auto path_max {std::min(path.size(), sizeof sun.sun_path - 1)};
-    const auto sun_len_min {sizeof sun  - sizeof sun.sun_path + path_max};
+    const auto path_len_max {std::min(path.size(), sizeof sun.sun_path - 1)};
+    const auto sun_len_min {sizeof sun - sizeof sun.sun_path + path_len_max};
     const auto sun_len_max {std::max(sun_path_offset, sun_len_min + 1)};
 #ifdef HAVE_SOCKADDR_SA_LEN
     const auto sun_len {std::max(sun_path_offset, sun_len_min)};
@@ -41,7 +40,7 @@ auto Network::get_sockaddr(const Pathname& path) -> Network::Bytes
     sun.sun_family = AF_LOCAL;
 
     if (path.has_value()) {
-        path.value().copy(sun.sun_path, path_max);  // NOLINT
+        path.value().copy(sun.sun_path, path_len_max);  // NOLINT
     }
 
     return get_sockaddr(&sun, sun_len_max);
