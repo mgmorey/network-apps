@@ -15,22 +15,22 @@
 
 #include "network/get-sin6-port.h"      // Bytes, port_type,
                                         // get_sin6_port()
+#include "network/get-sa-family.h"      // get_sa_family()
 #include "network/get-sin6-pointer.h"   // get_sin6_pointer()
 #include "network/sin6-offsets.h"       // sin6_port_offset
 
 #ifdef _WIN32
-#include <winsock2.h>       // ntohs()
+#include <winsock2.h>       // AF_INET6, ntohs()
 #else
-#include <netinet/in.h>     // ntohs()
+#include <netinet/in.h>     // AF_INET6, ntohs()
 #endif
+
+#include <cassert>      // assert()
 
 auto Network::get_sin6_port(const Bytes& addr,
                             port_type port) -> Network::port_type
 {
-    if (addr.empty()) {
-        return port;
-    }
-
+    assert(get_sa_family(addr) == AF_INET6);  // NOLINT
     const auto *const sin6 {get_sin6_pointer(addr)};
 
     if (addr.size() < sin6_port_offset + sizeof sin6->sin6_port) {
