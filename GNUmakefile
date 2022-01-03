@@ -13,66 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-STANDARD := c++20
-
-ifeq "$(STANDARD)" "c++20"
-ifeq "$(shell bin/g++-less-than 10 $(CXX))" "true"
-	STANDARD := c++2a
-endif
-endif
-
-SYSTEM := $(shell uname -s | cut -d- -f 1)
-
-CPPCHECK_FLAGS += --cppcheck-build-dir=tmp --enable=all	\
---inline-suppr --quiet --std=$(STANDARD)
-
-ifdef NDEBUG
-	CPPFLAGS += -D_FORTIFY_SOURCE=2
-	CXXFLAGS += -O2
-else
-ifeq "$(USING_DMALLOC)" "true"
-	CPPFLAGS += -DDMALLOC -DMALLOC_FUNC_CHECK
-	LDLIBS += -ldmalloc
-else ifeq "$(USING_LIBASAN)" "true"
-	CXXFLAGS += -fno-omit-frame-pointer -fsanitize=address
-	CXXFLAGS += -fsanitize-address-use-after-scope
-	LDFLAGS += -fsanitize=address
-else
-	CXXFLAGS += -fno-omit-frame-pointer
-endif
-ifneq "$(SYSTEM)" "FreeBSD"
-	CPPFLAGS += -DUSING_STD_BYTE
-endif
-ifneq "$(SYSTEM)" "Darwin"
-	CPPFLAGS += -D_GLIBCXX_DEBUG
-endif
-	CXXFLAGS += -g3 -O0
-endif
-
-ifeq "$(SYSTEM)" "Darwin"
-	CPPFLAGS += -D_DARWIN_C_SOURCE -DHAVE_SOCKADDR_SA_LEN
-else ifeq "$(SYSTEM)" "CYGWIN_NT"
-	CPPFLAGS += -D_POSIX_C_SOURCE=200809L
-else ifeq "$(SYSTEM)" "FreeBSD"
-	CPPFLAGS += -DHAVE_SOCKADDR_SA_LEN
-	CPPFLAGS += -I/usr/local/include
-	LDLIBS += -L/usr/local/lib
-else ifeq "$(SYSTEM)" "MINGW64_NT"
-	CPPCHECK_FLAGS += -D_WIN32
-	LDLIBS += -lws2_32
-endif
-
-CPPFLAGS += -Iinclude
-CXXFLAGS += -std=$(STANDARD) -Wall -Werror -Wextra -Wpedantic -Wshadow
-
-ifeq "$(SYSTEM)" "Darwin"
-	LDFLAGS += -Wl,-map,$@.map
-else
-ifneq "$(SYSTEM)" "FreeBSD"
-	CXXFLAGS += -Wa,-adghln=$(subst .o,.lst,$@)
-endif
-	LDFLAGS += -Wl,-Map=$@.map
-endif
+include flags.mk
 
 LINK.o = $(CXX) $(LDFLAGS)
 
