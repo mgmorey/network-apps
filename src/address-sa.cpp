@@ -13,17 +13,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/address.h"            // Address, length_type,
-                                        // operator<<()
-                                        // sa_data_offset, sockaddr,
+#include "network/address.h"            // Address, family_type,
+                                        // length_type, std::string,
                                         // value_type
 #include "network/get-sa-family.h"      // get_sa_family()
 #include "network/get-sa-length.h"      // get_sa_length()
 #include "network/get-sa-pointer.h"     // get_sa_pointer()
 #include "network/offsets.h"            // sa_data_offset
-
-#include <sstream>      // std::ostringstream
-#include <string>       // std::string
+#include "network/to-string.h"          // to_string()
 
 auto Network::Address::sa() const -> const sockaddr*
 {
@@ -47,7 +44,5 @@ auto Network::Address::sa_length() const -> Network::Address::length_type
 
 auto Network::Address::sa_text() const -> std::string
 {
-    std::ostringstream oss;
-    oss << m_value;
-    return oss.str();
+    return to_string(m_value);
 }

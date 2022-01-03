@@ -13,18 +13,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_BYTE_TYPE_H
-#define NETWORK_BYTE_TYPE_H
+#include "network/to-string.h"          // ByteString, operator<<(),
+                                        // std::string(), to_string()
 
-#include <cstddef>      // std::byte
+#include <sstream>      // std::ostringstream
 
-namespace Network
+auto Network::to_string(const ByteString& bytes) -> std::string
 {
-#ifdef USING_STD_BYTE
-    using byte_type = std::byte;
-#else
-    using byte_type = unsigned char;
-#endif
+    std::ostringstream oss;
+    oss << bytes;
+    return oss.str();
 }
-
-#endif

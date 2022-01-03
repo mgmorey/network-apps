@@ -13,18 +13,22 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_BYTE_TYPE_H
-#define NETWORK_BYTE_TYPE_H
+#ifndef NETWORK_TO_INTEGER_H
+#define NETWORK_TO_INTEGER_H
 
-#include <cstddef>      // std::byte
+#include "network/byte.h"               // Byte, std::to_integer()
 
 namespace Network
 {
+    template<typename T>
+    constexpr auto to_integer(Byte byte) -> T
+    {
 #ifdef USING_STD_BYTE
-    using byte_type = std::byte;
+        return std::to_integer<T>(byte);
 #else
-    using byte_type = unsigned char;
+        return static_cast<T>(byte);
 #endif
+    }
 }
 
 #endif

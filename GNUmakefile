@@ -40,6 +40,9 @@ else ifeq "$(USING_LIBASAN)" "true"
 else
 	CXXFLAGS += -fno-omit-frame-pointer
 endif
+ifneq "$(SYSTEM)" "FreeBSD"
+	CPPFLAGS += -DUSING_STD_BYTE
+endif
 ifneq "$(SYSTEM)" "Darwin"
 	CPPFLAGS += -D_GLIBCXX_DEBUG
 endif
@@ -94,7 +97,7 @@ get-sun-path.cpp get-sun-pointer.cpp hints.cpp host.cpp is-valid.cpp	\
 open-endpoint.cpp open-fd.cpp optionalstring.cpp protocol.cpp		\
 result.cpp socket.cpp socktype.cpp stream-address.cpp			\
 stream-addrinfo.cpp stream-bytestring.cpp stream-hints.cpp		\
-stream-optionalstring.cpp stream-socket.cpp
+stream-optionalstring.cpp stream-socket.cpp to-string.cpp
 
 ifneq "$(SYSTEM)" "MINGW64_NT"
 	exec_sources += test-socket.cpp unix-client.cpp	\
