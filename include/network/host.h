@@ -32,8 +32,10 @@ namespace Network
         static auto get_sockaddr(const addrinfo& ai) -> Bytes;
 
         Host() = default;
+        Host(const Host& t_host) = default;
         // cppcheck-suppress noExplicitConstructor
         Host(const addrinfo& t_addrinfo);  // NOLINT
+        auto operator=(const Host& t_host) -> Host& = default;
         auto operator=(const addrinfo& t_addrinfo) -> Host&;
         auto operator<(const Host& t_host) const -> bool;
         auto operator>(const Host& t_host) const -> bool;
