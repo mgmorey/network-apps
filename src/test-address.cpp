@@ -187,9 +187,9 @@ namespace TestAddress
                           const Network::Hints& hints) -> void
     {
         const auto description {get_description(hints)};
-        const auto hosts_result {Network::get_hosts(host, &hints)};
+        auto hosts_result {Network::get_hosts(host, &hints)};
         std::visit(Network::Overload {
-                [&](const Network::HostVector& hosts) {
+                [&](Network::HostVector& hosts) {
                     if (hosts.empty()) {
                         return;
                     }
@@ -203,6 +203,7 @@ namespace TestAddress
 
                     std::cout << " hosts:"
                               << std::endl;
+                    unique(hosts);
                     std::for_each(hosts.begin(), hosts.end(),
                                   Test(std::cout));
                 },
@@ -228,15 +229,12 @@ namespace TestAddress
         if (host.has_value()) {
             const auto flags {AI_CANONNAME};
             std::cout << "Host: " << host << std::endl;
-            Network::Hints hints4(AF_INET, SOCK_STREAM, IPPROTO_TCP, flags);
-            Network::Hints hints6(AF_INET6, SOCK_STREAM, IPPROTO_TCP, flags);
-            test_host(host, hints4);
-            test_host(host, hints6);
+            test_host(host, Network::Hints(AF_INET, 0, 0, flags));
+            test_host(host, Network::Hints(AF_INET6, 0, 0, flags));
         }
         else {
             const auto flags {AI_ADDRCONFIG | AI_CANONNAME};
-            Network::Hints hints(AF_UNSPEC, SOCK_STREAM, IPPROTO_TCP, flags);
-            test_host(host, hints);
+            test_host(host, Network::Hints(AF_UNSPEC, 0, 0, flags));
         }
     }
 }
