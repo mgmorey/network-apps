@@ -22,7 +22,8 @@
 #ifdef _WIN32
 #include <winsock2.h>       // AF_INET6, ntohs()
 #else
-#include <netinet/in.h>     // AF_INET6, ntohs()
+#include <netinet/in.h>     // ntohs()
+#include <sys/socket.h>     // AF_INET6
 #endif
 
 #include <cassert>      // assert()
