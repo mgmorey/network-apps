@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/address.h"            // AF_INET, INET6_ADDRSTRLEN,
+#include "network/address.h"            // AF_INET, INET_ADDRSTRLEN,
                                         // Address, in_addr
                                         // inet_ntop(), port_type,
                                         // sockaddr_in
