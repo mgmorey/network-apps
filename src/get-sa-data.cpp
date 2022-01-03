@@ -17,6 +17,8 @@
 #include "network/get-sa-family.h"      // get_sa_family()
 #include "network/sa-offsets.h"         // sa_data_offset
 
+#include <cassert>      // assert()
+
 auto Network::get_sa_data(const Bytes& addr) -> Network::Bytes
 {
     assert(get_sa_family(addr) != 0);  // NOLINT
