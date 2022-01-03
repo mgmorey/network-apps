@@ -20,7 +20,6 @@
 
 #ifdef _WIN32
 #include <winsock2.h>       // ntohs()
-#include <ws2tcpip.h>       // ntohs()
 #else
 #include <netinet/in.h>     // ntohs()
 #endif
