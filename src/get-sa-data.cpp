@@ -22,5 +22,6 @@
 auto Network::get_sa_data(const Bytes& addr) -> Network::Bytes
 {
     assert(get_sa_family(addr) != 0);  // NOLINT
+    assert(sa_data_offset <= addr.size());  // NOLINT
     return addr.substr(sa_data_offset);
 }
