@@ -21,7 +21,8 @@
 #ifdef _WIN32
 #include <winsock2.h>       // AF_INET, in_addr, ntohs()
 #else
-#include <netinet/in.h>     // AF_INET, in_addr, ntohs()
+#include <netinet/in.h>     // in_addr
+#include <sys/socket.h>     // AF_INET, ntohs()
 #endif
 
 #include <cassert>      // assert()

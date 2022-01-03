@@ -19,9 +19,10 @@
 #include "network/sin6-offsets.h"       // sin6_addr_offset
 
 #ifdef _WIN32
-#include <winsock2.h>       // AF_INET, in6_addr, ntohs()
+#include <winsock2.h>       // AF_INET6, in_addr, ntohs()
 #else
-#include <netinet/in.h>     // AF_INET, in6_addr, ntohs()
+#include <netinet/in.h>     // in6_addr
+#include <sys/socket.h>     // AF_INET6, ntohs()
 #endif
 
 #include <cassert>      // assert()
