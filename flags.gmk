@@ -13,8 +13,13 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-include language.gmk
-include system.gmk
+SYSTEM := $(shell uname -s | cut -d- -f 1)
+
+ifeq "$(LANGUAGE)" "c++20"
+ifeq "$(shell bin/g++-less-than 10 $(CXX))" "true"
+	LANGUAGE := c++2a
+endif
+endif
 
 ifdef NDEBUG
 	CPPFLAGS += -D_FORTIFY_SOURCE=2

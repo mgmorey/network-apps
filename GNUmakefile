@@ -13,6 +13,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+LANGUAGE := c++20
+
 include flags.gmk
 
 LINK.o = $(CXX) $(LDFLAGS)
@@ -72,7 +74,7 @@ check: cppcheck
 .PHONY:	clang-tidy
 clang-tidy:	$(sources)
 	clang-tidy $^ -config-file='.clang-tidy' -header-filter='.*' --	\
--std=$(STANDARD) $(CPPFLAGS)
+-std=$(LANGUAGE) $(CPPFLAGS)
 
 .PHONY:	clean
 clean:
