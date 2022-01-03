@@ -13,8 +13,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-include language.mk
-include system.mk
+include language.gmk
+include system.gmk
 
 ifdef NDEBUG
 	CPPFLAGS += -D_FORTIFY_SOURCE=2
@@ -72,3 +72,7 @@ endif
 
 CPPCHECK_FLAGS += --cppcheck-build-dir=tmp --enable=all	\
 --inline-suppr --quiet --std=$(LANGUAGE)
+
+# Local Variables:
+# mode: makefile
+# End:
