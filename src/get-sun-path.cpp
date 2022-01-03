@@ -52,7 +52,7 @@ auto Network::get_sun_path(const Bytes& addr,
 auto Network::get_sun_path_length(const sockaddr_un* sun,
                                   std::size_t size) -> std::size_t
 {
-    assert(sun_path_offset <= size &&
+    assert(sun_path_offset <= size &&  // NOLINT
            size <= sun_path_offset + sizeof sun->sun_path);  // NOLINT
     size = std::min(sun_path_offset + sizeof sun->sun_path,
                     std::max(sun_path_offset, size));
