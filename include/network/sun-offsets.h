@@ -25,6 +25,9 @@
 namespace Network
 {
 #ifndef _WIN32
+#ifdef HAVE_SOCKADDR_SA_LEN
+    constexpr auto sun_len_offset {offsetof(sockaddr_un, sun_len)};
+#endif
     constexpr auto sun_family_offset {offsetof(sockaddr_un, sun_family)};
     constexpr auto sun_path_offset {offsetof(sockaddr_un, sun_path)};
 #endif

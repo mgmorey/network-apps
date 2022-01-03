@@ -26,8 +26,12 @@
 
 namespace Network
 {
+#ifdef HAVE_SOCKADDR_SA_LEN
+    constexpr auto sin_len_offset {offsetof(sockaddr_in, sin_len)};
+#endif
     constexpr auto sin_family_offset {offsetof(sockaddr_in, sin_family)};
     constexpr auto sin_port_offset {offsetof(sockaddr_in, sin_port)};
+    constexpr auto sin_addr_offset {offsetof(sockaddr_in, sin_addr)};
 }
 
 #endif
