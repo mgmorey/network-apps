@@ -30,16 +30,16 @@ close.cpp connect.cpp context.cpp error.cpp family.cpp flags.cpp	\
 format.cpp get-bytespan.cpp get-endpoint.cpp get-hostname.cpp		\
 get-hosts.cpp get-length.cpp get-name.cpp get-sa-data.cpp		\
 get-sa-family.cpp get-sa-length.cpp get-sa-pointer.cpp			\
-get-sin-pointer.cpp get-sin6-pointer.cpp get-sockaddr-any.cpp		\
-get-sockaddr-byte.cpp get-sockaddr-path.cpp get-sockaddr-sa.cpp		\
-get-sockaddr-size.cpp get-sockaddr-sun.cpp get-socket.cpp		\
-get-socketpair.cpp get-sockets.cpp get-peername.cpp get-sockname.cpp	\
-get-sun-length.cpp get-sun-path.cpp get-sun-pointer.cpp hints.cpp	\
-host.cpp is-valid.cpp open-endpoint.cpp open-fd.cpp			\
-optionalstring.cpp protocol.cpp result.cpp socket.cpp socktype.cpp	\
-stream-address.cpp stream-addrinfo.cpp stream-bytestring.cpp		\
-stream-hints.cpp stream-optionalstring.cpp stream-socket.cpp		\
-to-string.cpp
+get-sin-pointer.cpp get-sin-port.cpp get-sin6-pointer.cpp		\
+get-sin6-port.cpp get-sockaddr-any.cpp get-sockaddr-byte.cpp		\
+get-sockaddr-path.cpp get-sockaddr-sa.cpp get-sockaddr-size.cpp		\
+get-sockaddr-sun.cpp get-socket.cpp get-socketpair.cpp			\
+get-sockets.cpp get-peername.cpp get-sockname.cpp get-sun-length.cpp	\
+get-sun-path.cpp get-sun-pointer.cpp hints.cpp host.cpp is-valid.cpp	\
+open-endpoint.cpp open-fd.cpp optionalstring.cpp protocol.cpp		\
+result.cpp socket.cpp socktype.cpp stream-address.cpp			\
+stream-addrinfo.cpp stream-bytestring.cpp stream-hints.cpp		\
+stream-optionalstring.cpp stream-socket.cpp to-string.cpp
 
 ifneq "$(SYSTEM)" "MINGW64_NT"
 	exec_sources += test-socket.cpp unix-client.cpp	\
