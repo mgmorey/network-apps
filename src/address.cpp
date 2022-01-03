@@ -14,12 +14,11 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/address.h"            // AF_INET, AF_INET6, AF_UNIX,
-                                        // Address, htons(),
-                                        // length_type, value_type
+                                        // Address, length_type,
+                                        // port_type, value_type
 #include "network/get-sa-family.h"      // get_sa_family()
 #include "network/get-sa-length.h"      // get_sa_length()
 #include "network/get-sa-pointer.h"     // get_sa_pointer()
-#include "network/offsets.h"            // sa_data_offset
 
 #include <string>       // std::string
 #include <utility>      // std::move
@@ -71,18 +70,18 @@ auto Network::Address::family() const -> Network::family_type
     return sa_family();
 }
 
-auto Network::Address::length() const -> Network::Address::length_type
+auto Network::Address::length() const -> Network::length_type
 {
     return sa_length();
 }
 
-auto Network::Address::port() const -> Network::Address::port_type
+auto Network::Address::port() const -> Network::port_type
 {
     switch (sa_family()) {
     case AF_INET:
-        return htons(sin_port());
+        return sin_port();
     case AF_INET6:
-        return htons(sin6_port());
+        return sin6_port();
     default:
         return 0;
     }

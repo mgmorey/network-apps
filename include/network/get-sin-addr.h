@@ -13,30 +13,22 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-sin6-port.h"      // Bytes, port_type,
-                                        // get_sin6_port()
-#include "network/get-sin6-pointer.h"   // get_sin6_pointer()
-#include "network/sin6-offsets.h"       // sin6_port_offset
+#ifndef NETWORK_GET_SIN_ADDR_H
+#define NETWORK_GET_SIN_ADDR_H
+
+#include "network/bytes.h"              // Bytes
 
 #ifdef _WIN32
-#include <winsock2.h>       // ntohs()
-#include <ws2tcpip.h>       // ntohs()
+#include <winsock2.h>       // in_addr
+#include <ws2tcpip.h>       // in_addr
 #else
-#include <netinet/in.h>     // ntohs()
+#include <netinet/in.h>     // in_addr
 #endif
 
-auto Network::get_sin6_port(const Bytes& addr,
-                            port_type port) -> Network::port_type
+namespace Network
 {
-    if (addr.empty()) {
-        return port;
-    }
-
-    const auto *const sin6 {get_sin6_pointer(addr)};
-
-    if (addr.size() < sin6_port_offset + sizeof sin6->sin6_port) {
-        return port;
-    }
-
-    return ntohs(sin6->sin6_port);
+    extern auto get_sin_addr(const Bytes& addr,
+                             const in_addr& ip = {}) -> in_addr;
 }
+
+#endif

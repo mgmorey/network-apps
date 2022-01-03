@@ -15,8 +15,15 @@
 
 #include "network/get-sin-port.h"       // Bytes, port_type,
                                         // get_sin_port()
-#include "network/get-sin-pointer.h"    // get_sin_pointer(), sockaddr
+#include "network/get-sin-pointer.h"    // get_sin_pointer()
 #include "network/sin-offsets.h"        // sin_port_offset
+
+#ifdef _WIN32
+#include <winsock2.h>       // ntohs()
+#include <ws2tcpip.h>       // ntohs()
+#else
+#include <netinet/in.h>     // ntohs()
+#endif
 
 auto Network::get_sin_port(const Bytes& addr,
                            port_type port) -> Network::port_type
@@ -31,10 +38,5 @@ auto Network::get_sin_port(const Bytes& addr,
         return port;
     }
 
-    if (sin->sin_port == 0) {
-        return port;
-    }
-
-    port = sin->sin_port;
-    return port;
+    return ntohs(sin->sin_port);
 }

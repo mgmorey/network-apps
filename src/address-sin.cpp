@@ -18,7 +18,9 @@
                                         // inet_ntop(), port_type,
                                         // sockaddr_in
 #include "network/buffer.h"             // Buffer
+#include "network/get-sin-addr.h"       // get_sin_addr()
 #include "network/get-sin-pointer.h"    // get_sin_pointer()
+#include "network/get-sin-port.h"       // get_sin_port()
 
 #include <string>       // std::string
 
@@ -29,12 +31,12 @@ auto Network::Address::sin() const -> const sockaddr_in*
 
 auto Network::Address::sin_addr() const -> in_addr
 {
-    return sin()->sin_addr;
+    return get_sin_addr(m_value);
 }
 
-auto Network::Address::sin_port() const -> Network::Address::port_type
+auto Network::Address::sin_port() const -> Network::port_type
 {
-    return sin()->sin_port;
+    return get_sin_port(m_value);
 }
 
 auto Network::Address::sin_text() const -> std::string

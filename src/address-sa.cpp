@@ -16,10 +16,10 @@
 #include "network/address.h"            // Address, family_type,
                                         // length_type, std::string,
                                         // value_type
+#include "network/get-sa-data.h"        // get_sa_data()
 #include "network/get-sa-family.h"      // get_sa_family()
 #include "network/get-sa-length.h"      // get_sa_length()
 #include "network/get-sa-pointer.h"     // get_sa_pointer()
-#include "network/offsets.h"            // sa_data_offset
 #include "network/to-string.h"          // to_string()
 
 auto Network::Address::sa() const -> const sockaddr*
@@ -29,7 +29,7 @@ auto Network::Address::sa() const -> const sockaddr*
 
 auto Network::Address::sa_data() const -> Network::Address::value_type
 {
-    return m_value.substr(sa_data_offset);
+    return get_sa_data(m_value);
 }
 
 auto Network::Address::sa_family() const -> Network::family_type
@@ -37,7 +37,7 @@ auto Network::Address::sa_family() const -> Network::family_type
     return get_sa_family(m_value);
 }
 
-auto Network::Address::sa_length() const -> Network::Address::length_type
+auto Network::Address::sa_length() const -> Network::length_type
 {
     return get_sa_length(m_value);
 }

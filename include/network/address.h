@@ -18,6 +18,8 @@
 
 #include "network/bytes.h"              // Bytes, operator<<()
 #include "network/family-type.h"        // family_type
+#include "network/length-type.h"        // length_type
+#include "network/port-type.h"          // port_type
 
 #ifdef _WIN32
 #include <winsock2.h>       // sockaddr, sockaddr_in
@@ -38,8 +40,6 @@ namespace Network
     class Address
     {
     public:
-        using port_type = unsigned short;
-        using length_type = unsigned short;
         using value_type = Bytes;
 
         // cppcheck-suppress noExplicitConstructor
