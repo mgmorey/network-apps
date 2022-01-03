@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_BYTE_TESTS_H
-#define NETWORK_BYTE_TESTS_H
+#ifndef NETWORK_BYTE_ASSERTS_H
+#define NETWORK_BYTE_ASSERTS_H
 
 #include "network/byte-type.h"          // byte-type
 
