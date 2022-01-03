@@ -42,7 +42,7 @@ get-sun-pointer.cpp hints.cpp host.cpp is-valid.cpp open-endpoint.cpp	\
 open-fd.cpp optionalstring.cpp protocol.cpp result.cpp socket.cpp	\
 socktype.cpp stream-address.cpp stream-addrinfo.cpp			\
 stream-bytestring.cpp stream-hints.cpp stream-optionalstring.cpp	\
-stream-socket.cpp to-string.cpp
+stream-socket.cpp to-string.cpp to-string-sin.cpp to-string-sin6.cpp
 
 ifneq "$(SYSTEM)" "MINGW64_NT"
 	exec_sources += test-socket.cpp unix-client.cpp	\

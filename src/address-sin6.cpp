@@ -21,8 +21,7 @@
 #include "network/get-sin6-addr.h"      // get_sin6_addr()
 #include "network/get-sin6-pointer.h"   // get_sin6_pointer()
 #include "network/get-sin6-port.h"      // get_sin6_port()
-
-#include <string>       // std::string
+#include "network/to-string-sin6.h"     // std::string, to_string()
 
 auto Network::Address::sin6() const -> const sockaddr_in6*
 {
@@ -41,8 +40,6 @@ auto Network::Address::sin6_port() const -> Network::port_type
 
 auto Network::Address::sin6_text() const -> std::string
 {
-    Buffer buffer {INET6_ADDRSTRLEN};
-    const auto in6 {sin6_addr()};
-    ::inet_ntop(AF_INET6, &in6, buffer.data(), buffer.size());
-    return std::string(buffer);
+    const auto addr {sin6_addr()};
+    return to_string(addr);
 }

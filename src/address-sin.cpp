@@ -21,8 +21,7 @@
 #include "network/get-sin-addr.h"       // get_sin_addr()
 #include "network/get-sin-pointer.h"    // get_sin_pointer()
 #include "network/get-sin-port.h"       // get_sin_port()
-
-#include <string>       // std::string
+#include "network/to-string-sin.h"      // std::string, to_string()
 
 auto Network::Address::sin() const -> const sockaddr_in*
 {
@@ -41,8 +40,6 @@ auto Network::Address::sin_port() const -> Network::port_type
 
 auto Network::Address::sin_text() const -> std::string
 {
-    Buffer buffer {INET_ADDRSTRLEN};
-    const auto in {sin_addr()};
-    ::inet_ntop(AF_INET, &in, buffer.data(), buffer.size());
-    return std::string(buffer);
+    const auto addr {sin_addr()};
+    return to_string(addr);
 }
