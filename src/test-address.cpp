@@ -86,13 +86,13 @@ namespace TestAddress
     {
         const Network::Hints hints {AF_INET, 0, 0, 0};
         const Network::Hostname localhost {"localhost"};
-        std::cout << "Socket address for host: "
-                  << localhost
-                  << std::endl;
         const auto hosts_result {Network::get_hosts(localhost, &hints)};
         std::visit(Network::Overload {
                 [&](const Network::HostVector& hosts) {
                     assert(hosts.size() == 1);			// NOLINT
+                    std::cout << "Socket address for host: "
+                              << localhost
+                              << std::endl;
                     const auto host {hosts[0]};
                     const auto addr {host.address()};
                     const Network::Address address {addr};
@@ -121,7 +121,10 @@ namespace TestAddress
                     assert(text == "127.0.0.1");		// NOLINT
                 },
                 [&](const Network::Result& result) {
-                    std::cout << result
+                    std::cout << "No address for host: "
+                              << localhost
+                              << ": "
+                              << result
                               << std::endl;
                 }
             }, hosts_result);
