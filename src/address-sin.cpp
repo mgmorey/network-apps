@@ -23,11 +23,6 @@
 #include "network/get-sin-port.h"       // get_sin_port()
 #include "network/to-string-sin.h"      // std::string, to_string()
 
-auto Network::Address::sin() const -> const sockaddr_in*
-{
-    return get_sin_pointer(m_value);
-}
-
 auto Network::Address::sin_addr() const -> in_addr
 {
     return get_sin_addr(m_value);

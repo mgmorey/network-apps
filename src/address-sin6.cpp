@@ -23,11 +23,6 @@
 #include "network/get-sin6-port.h"      // get_sin6_port()
 #include "network/to-string-sin6.h"     // std::string, to_string()
 
-auto Network::Address::sin6() const -> const sockaddr_in6*
-{
-    return get_sin6_pointer(m_value);
-}
-
 auto Network::Address::sin6_addr() const -> in6_addr
 {
     return get_sin6_addr(m_value);

@@ -22,11 +22,6 @@
 #include "network/get-sa-pointer.h"     // get_sa_pointer()
 #include "network/to-string.h"          // to_string()
 
-auto Network::Address::sa() const -> const sockaddr*
-{
-    return get_sa_pointer(m_value);
-}
-
 auto Network::Address::sa_data() const -> Network::Address::value_type
 {
     return get_sa_data(m_value);

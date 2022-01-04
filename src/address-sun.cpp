@@ -24,11 +24,6 @@
 
 #ifndef _WIN32
 
-auto Network::Address::sun() const -> const sockaddr_un*
-{
-    return get_sun_pointer(m_value);
-}
-
 auto Network::Address::sun_text() const -> std::string
 {
     return get_sun_path(m_value);
