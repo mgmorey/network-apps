@@ -18,8 +18,8 @@
 #include "network/buffer.h"             // Buffer
 
 #ifdef _WIN32
-#include <winsock2.h>       // AF_INET, INET_ADDRSTRLEN, inet_ntop()
-#include <ws2tcpip.h>       // AF_INET, INET_ADDRSTRLEN, inet_ntop()
+#include <winsock2.h>       // AF_INET
+#include <ws2tcpip.h>       // INET_ADDRSTRLEN, inet_ntop()
 #else
 #include <arpa/inet.h>      // inet_ntop()
 #include <sys/socket.h>     // AF_INET, INET_ADDRSTRLEN

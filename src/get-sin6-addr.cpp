@@ -13,22 +13,21 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-sin6-addr.h"      // Bytes, get_sin6_addr()
+#include "network/get-sin6-addr.h"      // Bytes, get_sin6_addr(),
+                                        // in6_addr
 #include "network/get-sa-family.h"      // get_sa_family()
 #include "network/get-sin6-pointer.h"   // get_sin6_pointer()
 #include "network/sin6-offsets.h"       // sin6_addr_offset
 
 #ifdef _WIN32
-#include <winsock2.h>       // AF_INET6, in_addr, ntohs()
+#include <winsock2.h>       // AF_INET6
 #else
-#include <netinet/in.h>     // in6_addr
-#include <sys/socket.h>     // AF_INET6, ntohs()
+#include <sys/socket.h>     // AF_INET6
 #endif
 
 #include <cassert>      // assert()
 
-auto Network::get_sin6_addr(const Bytes& addr,
-                            const in6_addr& ip) -> in6_addr
+auto Network::get_sin6_addr(const Bytes& addr, const in6_addr& ip) -> in6_addr
 {
     assert(get_sa_family(addr) == AF_INET6);  // NOLINT
     const auto *const sin6 {get_sin6_pointer(addr)};

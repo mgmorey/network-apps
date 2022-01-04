@@ -17,7 +17,6 @@
 #define NETWORK_TO_STRING_SIN6_H
 
 #ifdef _WIN32
-#include <winsock2.h>       // in6_addr
 #include <ws2tcpip.h>       // in6_addr
 #else
 #include <netinet/in.h>     // in6_addr

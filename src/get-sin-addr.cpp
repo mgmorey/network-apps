@@ -13,22 +13,21 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-sin-addr.h"       // Bytes, get_sin_addr()
+#include "network/get-sin-addr.h"       // Bytes, get_sin_addr(),
+                                        // in_addr
 #include "network/get-sa-family.h"      // get_sa_family()
 #include "network/get-sin-pointer.h"    // get_sin_pointer()
 #include "network/sin-offsets.h"        // sin_addr_offset
 
 #ifdef _WIN32
-#include <winsock2.h>       // AF_INET, in_addr, ntohs()
+#include <winsock2.h>       // AF_INET
 #else
-#include <netinet/in.h>     // in_addr
-#include <sys/socket.h>     // AF_INET, ntohs()
+#include <sys/socket.h>     // AF_INET
 #endif
 
 #include <cassert>      // assert()
 
-auto Network::get_sin_addr(const Bytes& addr,
-                            const in_addr& ip) -> in_addr
+auto Network::get_sin_addr(const Bytes& addr, const in_addr& ip) -> in_addr
 {
     assert(get_sa_family(addr) == AF_INET);  // NOLINT
     const auto *const sin {get_sin_pointer(addr)};

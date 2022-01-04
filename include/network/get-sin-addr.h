@@ -20,7 +20,6 @@
 
 #ifdef _WIN32
 #include <winsock2.h>       // in_addr
-#include <ws2tcpip.h>       // in_addr
 #else
 #include <netinet/in.h>     // in_addr
 #endif
