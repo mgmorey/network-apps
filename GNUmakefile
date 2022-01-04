@@ -24,7 +24,7 @@ prefix = /usr/local
 sources = $(exec_sources) $(lib_sources)
 
 exec_sources = test-address.cpp test-bind.cpp test-connect.cpp	\
-test-hostname.cpp
+test-host.cpp test-hostname.cpp
 
 lib_sources = address.cpp address-sa.cpp address-sin.cpp		\
 address-sin6.cpp address-sun.cpp addrinfo.cpp bind.cpp buffer.cpp	\
