@@ -43,6 +43,23 @@ namespace TestAddress
 {
     static bool verbose {false};  // NOLINT
 
+    template<typename T, typename U>
+    auto erase(T& c, const U& value) -> void
+    {
+        c.erase(std::remove(c.begin(),
+                            c.end(),
+                            value),
+                c.end());
+    }
+
+    template<typename T>
+    auto erase_duplicates(T& c) -> void
+    {
+        c.erase(std::unique(c.begin(),
+                            c.end()),
+                c.end());
+    }
+
     static auto parse_arguments(int argc, char** argv) ->
         std::vector<std::string>
     {
@@ -87,9 +104,10 @@ namespace TestAddress
         const Network::Hints hints
             {AF_INET, SOCK_STREAM, IPPROTO_TCP, AI_ADDRCONFIG};
         const Network::Hostname localhost {"localhost"};
-        const auto hosts_result {Network::get_hosts(localhost, &hints)};
+        auto hosts_result {Network::get_hosts(localhost, &hints)};
         std::visit(Network::Overload {
-                [&](const Network::HostVector& hosts) {
+                [&](Network::HostVector& hosts) {
+                    erase_duplicates(hosts);
                     assert(hosts.size() == 1);			// NOLINT
                     std::cout << "Socket address for host: "
                               << localhost

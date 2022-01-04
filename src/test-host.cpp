@@ -33,7 +33,6 @@
 
 #include <algorithm>    // std::for_each(), std::remove()
                         // std::unique()
-#include <cassert>      // assert()
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
@@ -59,7 +58,7 @@ namespace TestHost
     }
 
     template<typename T>
-    auto unique(T& c) -> void
+    auto erase_duplicates(T& c) -> void
     {
         c.erase(std::unique(c.begin(),
                             c.end()),
@@ -88,7 +87,7 @@ namespace TestHost
                             t_host.canonical_name().value_or(""),
                         };
                         erase(values, "");
-                        unique(values);
+                        erase_duplicates(values);
                         print(values);
                     },
                     [&](const Network::Result& result) {
@@ -182,6 +181,8 @@ namespace TestHost
         auto hosts_result {Network::get_hosts(host, &hints)};
         std::visit(Network::Overload {
                 [&](Network::HostVector& hosts) {
+                    erase_duplicates(hosts);
+
                     if (hosts.empty()) {
                         return;
                     }
@@ -195,7 +196,6 @@ namespace TestHost
 
                     std::cout << " hosts:"
                               << std::endl;
-                    unique(hosts);
                     std::for_each(hosts.begin(), hosts.end(),
                                   Test(std::cout));
                 },
