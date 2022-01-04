@@ -77,9 +77,9 @@ namespace TestAddress
     static auto test_address_empty() -> void
     {
         const Network::Bytes addr;
-        assert(Network::get_sa_length(addr, 0) == 0);  // NOLINT
-        assert(Network::get_sa_family(addr, 0) == AF_UNSPEC);  // NOLINT
-        assert(Network::is_valid(addr) == false);  // NOLINT
+        assert(Network::get_sa_length(addr, 0) == 0);		// NOLINT
+        assert(Network::get_sa_family(addr, 0) == AF_UNSPEC);	// NOLINT
+        assert(Network::is_valid(addr) == false);		// NOLINT
     }
 
     static auto test_address_localhost() -> void
@@ -92,7 +92,7 @@ namespace TestAddress
         const auto hosts_result {Network::get_hosts(localhost, &hints)};
         std::visit(Network::Overload {
                 [&](const Network::HostVector& hosts) {
-                    assert(hosts.size() == 1);  // NOLINT
+                    assert(hosts.size() == 1);			// NOLINT
                     const auto host {hosts[0]};
                     const auto addr {host.address()};
                     const Network::Address address {addr};
@@ -116,9 +116,9 @@ namespace TestAddress
                               << "Address: "
                               << text
                               << std::endl;
-                    assert(family == AF_INET);		// NOLINT
-                    assert(port == 0);			// NOLINT
-                    assert(text == "127.0.0.1");	// NOLINT
+                    assert(family == AF_INET);			// NOLINT
+                    assert(port == 0);				// NOLINT
+                    assert(text == "127.0.0.1");		// NOLINT
                 },
                 [&](const Network::Result& result) {
                     std::cout << result
