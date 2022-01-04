@@ -183,6 +183,51 @@ namespace TestAddress
         assert(Network::is_valid(addr) == false);  // NOLINT
     }
 
+    static auto test_address_localhost() -> void
+    {
+        const Network::Hints hints {AF_INET, 0, 0, 0};
+        const Network::Hostname localhost {"localhost"};
+        std::cout << "Socket address for host: "
+                  << localhost
+                  << std::endl;
+        const auto hosts_result {Network::get_hosts(localhost, &hints)};
+        std::visit(Network::Overload {
+                [&](const Network::HostVector& hosts) {
+                    assert(hosts.size() == 1);  // NOLINT
+                    const auto host {hosts[0]};
+                    const auto addr {host.address()};
+                    const Network::Address address {addr};
+                    const auto length {address.length()};
+                    std::cout << "    "
+                              << "Length: "
+                              << length
+                              << std::endl;
+                    const auto family {address.family()};
+                    std::cout << "    "
+                              << "Family: "
+                              << family
+                              << std::endl;
+                    const auto port {address.port()};
+                    std::cout << "    "
+                              << "Port: "
+                              << port
+                              << std::endl;
+                    const auto text {address.text()};
+                    std::cout << "    "
+                              << "Address: "
+                              << text
+                              << std::endl;
+                    assert(family == AF_INET);		// NOLINT
+                    assert(port == 0);			// NOLINT
+                    assert(text == "127.0.0.1");	// NOLINT
+                },
+                [&](const Network::Result& result) {
+                    std::cout << result
+                              << std::endl;
+                }
+            }, hosts_result);
+    }
+
     static auto test_host(const Network::Hostname& host,
                           const Network::Hints& hints) -> void
     {
@@ -251,6 +296,7 @@ auto main(int argc, char* argv[]) -> int
         }
         else {
             TestAddress::test_address_empty();
+            TestAddress::test_address_localhost();
             Network::Hostname hostname;
 
             if (args.size() > 1) {
