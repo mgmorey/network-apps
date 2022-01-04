@@ -21,10 +21,19 @@ ifeq "$(shell bin/is-g++-less-than 10 $(CXX))" "true"
 endif
 endif
 
+ifeq "$(SYSTEM)" "Darwin"
+	CPPFLAGS += -D_DARWIN_C_SOURCE
+else ifeq "$(SYSTEM)" "CYGWIN_NT"
+	CPPFLAGS += -D_POSIX_C_SOURCE=200809L
+endif
+
 ifdef NDEBUG
 	CPPFLAGS += -D_FORTIFY_SOURCE=2
 	CXXFLAGS += -O2
 else
+ifeq "$(shell bin/is-g++ $(CXX))" "true"
+	CPPFLAGS += -D_GLIBCXX_DEBUG
+endif
 ifeq "$(USING_DMALLOC)" "true"
 	CPPFLAGS += -DDMALLOC -DMALLOC_FUNC_CHECK
 	LDLIBS += -ldmalloc
@@ -35,17 +44,16 @@ else ifeq "$(USING_LIBASAN)" "true"
 else
 	CXXFLAGS += -fno-omit-frame-pointer
 endif
-ifeq "$(shell bin/is-g++ $(CXX))" "true"
-	CPPFLAGS += -D_GLIBCXX_DEBUG
-endif
 	CXXFLAGS += -g3 -O0
 endif
 
 ifeq "$(SYSTEM)" "Darwin"
-	CPPFLAGS += -D_DARWIN_C_SOURCE
-else ifeq "$(SYSTEM)" "CYGWIN_NT"
-	CPPFLAGS += -D_POSIX_C_SOURCE=200809L
+	CPPFLAGS += -DHAVE_SOCKADDR_SA_LEN
 else ifeq "$(SYSTEM)" "FreeBSD"
+	CPPFLAGS += -DHAVE_SOCKADDR_SA_LEN
+endif
+
+ifeq "$(SYSTEM)" "FreeBSD"
 	CPPFLAGS += -I/usr/local/include
 	LDLIBS += -L/usr/local/lib
 else ifeq "$(SYSTEM)" "MINGW64_NT"
@@ -53,14 +61,9 @@ else ifeq "$(SYSTEM)" "MINGW64_NT"
 	LDLIBS += -lws2_32
 endif
 
-ifeq "$(SYSTEM)" "Darwin"
-	CPPFLAGS += -DHAVE_SOCKADDR_SA_LEN
-else ifeq "$(SYSTEM)" "FreeBSD"
-	CPPFLAGS += -DHAVE_SOCKADDR_SA_LEN
-endif
-
-CPPFLAGS += -DUSING_STD_BYTE
-CPPFLAGS += -Iinclude
+CPPCHECK_FLAGS += --cppcheck-build-dir=tmp --enable=all	\
+--inline-suppr --quiet --std=$(LANGUAGE)
+CPPFLAGS += -DUSING_STD_BYTE -Iinclude
 CXXFLAGS += -std=$(LANGUAGE) -Wall -Werror -Wextra -Wpedantic -Wshadow
 
 ifeq "$(SYSTEM)" "Darwin"
@@ -71,9 +74,6 @@ ifneq "$(SYSTEM)" "FreeBSD"
 endif
 	LDFLAGS += -Wl,-Map=$@.map
 endif
-
-CPPCHECK_FLAGS += --cppcheck-build-dir=tmp --enable=all	\
---inline-suppr --quiet --std=$(LANGUAGE)
 
 # Local Variables:
 # mode: makefile
