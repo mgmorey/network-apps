@@ -23,8 +23,9 @@ prefix = /usr/local
 
 sources = $(exec_sources) $(lib_sources)
 
-exec_sources = test-address.cpp test-bind.cpp test-connect.cpp	\
+test_sources = test-address.cpp test-bind.cpp test-connect.cpp	\
 test-host.cpp test-hostname.cpp
+unix_sources =
 
 lib_sources = address.cpp address-sa.cpp address-sin.cpp		\
 address-sin6.cpp address-sun.cpp addrinfo.cpp bind.cpp buffer.cpp	\
@@ -45,11 +46,16 @@ stream-bytestring.cpp stream-hints.cpp stream-optionalstring.cpp	\
 stream-socket.cpp to-string.cpp to-string-sin.cpp to-string-sin6.cpp
 
 ifneq "$(SYSTEM)" "MINGW64_NT"
-	exec_sources += test-socket.cpp unix-client.cpp	\
-	unix-server.cpp
+	test_sources += test-socket.cpp
+	unix_sources += unix-client.cpp	unix-server.cpp
 endif
 
-executables = $(subst .cpp,,$(exec_sources))
+executables = $(test_executables) $(unix_executables)
+test_executables = $(subst .cpp,,$(test_sources))
+unix_executables = $(subst .cpp,,$(unix_sources))
+
+exec_sources = $(test_sources) $(unix_sources)
+
 libraries = libnetwork.a
 
 objects = $(lib_objects) $(exec_objects)
@@ -93,11 +99,11 @@ realclean: clean
 	rm -rf TAGS *.core *.stackdump $(tmp_dir)
 
 .PHONY:	test
-test: $(executables)
-	for f in test-*; do if [ -x $$f ]; then ./$$f; fi; done
+test: $(test_executables)
+	for f in $(executables); do if [ -x $$f ]; then ./$$f; fi; done
 
 .PHONY:	unix
-unix: $(executables)
+unix: $(unix_executables)
 	./unix-server & (sleep 1; ./unix-client 2 2; ./unix-client DOWN)
 
 .PHONY:	install
