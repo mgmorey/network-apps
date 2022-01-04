@@ -87,13 +87,13 @@ namespace TestAddress
         const Network::Hints hints
             {AF_INET, SOCK_STREAM, IPPROTO_TCP, AI_ADDRCONFIG};
         const Network::Hostname localhost {"localhost"};
-        auto hosts_result {Network::get_hosts(localhost, &hints)};
+        const auto hosts_result {Network::get_hosts(localhost, &hints)};
         std::visit(Network::Overload {
-                [&](Network::HostVector& hosts) {
-                    assert(hosts.size() == 1);			// NOLINT
+                [&](const Network::HostVector& hosts) {
                     std::cout << "Socket address for host: "
                               << localhost
                               << std::endl;
+                    assert(hosts.size() == 1);			// NOLINT
                     const auto host {hosts[0]};
                     const auto addr {host.address()};
                     const Network::Address address {addr};

@@ -21,7 +21,6 @@
 #include "network/overload.h"       // overload
 
 #include <algorithm>    // std::unique()
-#include <cassert>      // assert()
 #include <iterator>     // std::back_inserter()
 #include <optional>     // std::nullopt
 #include <string>       // std::string
@@ -51,7 +50,6 @@ auto Network::get_hosts(const Network::Hostname& host,
                     hosts.erase(std::unique(hosts.begin(),
                                             hosts.end()),
                                 hosts.end());
-                    assert(hosts.size() == 1);  // NOLINT
                     hosts_result = hosts;
                 }
             },
