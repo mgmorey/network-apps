@@ -16,7 +16,7 @@
 SYSTEM := $(shell uname -s | cut -d- -f 1)
 
 ifeq "$(LANGUAGE)" "c++20"
-ifeq "$(shell bin/g++-less-than 10 $(CXX))" "true"
+ifeq "$(shell bin/is-g++-less-than 10 $(CXX))" "true"
 	LANGUAGE := c++2a
 endif
 endif
@@ -35,7 +35,7 @@ else ifeq "$(USING_LIBASAN)" "true"
 else
 	CXXFLAGS += -fno-omit-frame-pointer
 endif
-ifneq "$(SYSTEM)" "Darwin"
+ifeq "$(shell bin/is-g++ $(CXX))" "true"
 	CPPFLAGS += -D_GLIBCXX_DEBUG
 endif
 	CXXFLAGS += -g3 -O0
@@ -59,10 +59,7 @@ else ifeq "$(SYSTEM)" "FreeBSD"
 	CPPFLAGS += -DHAVE_SOCKADDR_SA_LEN
 endif
 
-ifneq "$(SYSTEM)" "FreeBSD"
-	CPPFLAGS += -DUSING_STD_BYTE
-endif
-
+CPPFLAGS += -DUSING_STD_BYTE
 CPPFLAGS += -Iinclude
 CXXFLAGS += -std=$(LANGUAGE) -Wall -Werror -Wextra -Wpedantic -Wshadow
 
