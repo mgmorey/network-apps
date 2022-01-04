@@ -219,14 +219,20 @@ namespace TestHost
     static auto test_host(const Network::Hostname& host) -> void
     {
         if (host.has_value()) {
-            const auto flags {AI_CANONNAME};
             std::cout << "Host: " << host << std::endl;
-            test_host(host, Network::Hints(AF_INET, 0, 0, flags));
-            test_host(host, Network::Hints(AF_INET6, 0, 0, flags));
+            constexpr auto flags {AI_CANONNAME};
+            const Network::Hints ipv4_hints
+                {AF_INET, SOCK_STREAM, IPPROTO_TCP, flags};
+            test_host(host, ipv4_hints);
+            const Network::Hints ipv6_hints
+                {AF_INET6, SOCK_STREAM, IPPROTO_TCP, flags};
+            test_host(host, ipv6_hints);
         }
         else {
             const auto flags {AI_ADDRCONFIG | AI_CANONNAME};
-            test_host(host, Network::Hints(AF_UNSPEC, 0, 0, flags));
+            const Network::Hints hints
+                {AF_UNSPEC, SOCK_STREAM, IPPROTO_TCP, flags};
+            test_host(host, hints);
         }
     }
 }

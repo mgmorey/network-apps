@@ -102,7 +102,7 @@ namespace TestAddress
                               << "Length: "
                               << length
                               << std::endl;
-                    const auto family {address.family()};
+                    const Network::Family family {address.family()};
                     std::cout << "    "
                               << "Family: "
                               << family

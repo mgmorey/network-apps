@@ -23,6 +23,8 @@
 #include "network/close.h"              // close()
 #include "network/connect.h"            // connect()
 #include "network/context.h"            // Context
+#include "network/family.h"             // Family
+#include "network/flags.h"              // Flags
 #include "network/get-endpoint.h"       // EndpointResult,
                                         // get_endpoint()
 #include "network/get-hostname.h"       // HostnameResult,
@@ -51,8 +53,10 @@
 #include "network/get-sun-pointer.h"    // get_sun_pointer()
 #include "network/is-valid.h"           // is_valid()
 #include "network/overload.h"           // Overload
+#include "network/protocol.h"           // Protocol
 #include "network/result.h"             // Result
 #include "network/socket.h"             // Hints, Host, Socket
+#include "network/socktype.h"           // SockType
 #include "network/types.h"              // Buffer, Hostname, Pathname
                                         // Service
 
