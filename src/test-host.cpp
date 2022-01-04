@@ -48,23 +48,6 @@ namespace TestHost
 {
     static bool verbose {false};  // NOLINT
 
-    template<typename T, typename U>
-    auto erase(T& c, const U& value) -> void
-    {
-        c.erase(std::remove(c.begin(),
-                            c.end(),
-                            value),
-                c.end());
-    }
-
-    template<typename T>
-    auto erase_duplicates(T& c) -> void
-    {
-        c.erase(std::unique(c.begin(),
-                            c.end()),
-                c.end());
-    }
-
     class Test
     {
     public:
@@ -86,8 +69,13 @@ namespace TestHost
                             endpoint.first.value_or(""),
                             t_host.canonical_name().value_or(""),
                         };
-                        erase(values, "");
-                        erase_duplicates(values);
+                        values.erase(std::remove(values.begin(),
+                                                 values.end(),
+                                                 ""),
+                                values.end());
+                        values.erase(std::unique(values.begin(),
+                                                 values.end()),
+                                     values.end());
                         print(values);
                     },
                     [&](const Network::Result& result) {
@@ -181,8 +169,6 @@ namespace TestHost
         auto hosts_result {Network::get_hosts(host, &hints)};
         std::visit(Network::Overload {
                 [&](Network::HostVector& hosts) {
-                    erase_duplicates(hosts);
-
                     if (hosts.empty()) {
                         return;
                     }
