@@ -22,16 +22,12 @@
 #include "network/port-type.h"          // port_type
 
 #ifdef _WIN32
-#include <winsock2.h>       // sockaddr, sockaddr_in
-#include <ws2tcpip.h>       // inet_ntop(), sockaddr_in6
+#include <winsock2.h>       // in_addr
+#include <ws2tcpip.h>       // in6_addr
 #else
-#include <arpa/inet.h>      // inet_ntop()
-#include <netinet/in.h>     // sockaddr_in, sockaddr_in6
-#include <sys/socket.h>     // sockaddr
-#include <sys/un.h>         // sockaddr_un
+#include <netinet/in.h>     // in_addr, in6_addr
 #endif
 
-#include <cstddef>      // offsetof()
 #include <ostream>      // std::ostream
 #include <string>       // std::string
 
