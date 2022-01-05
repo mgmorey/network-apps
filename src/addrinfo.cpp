@@ -80,7 +80,7 @@ Network::AddrInfo::List::List(const Hostname& t_node,
                   << std::endl;
     }
 
-    addrinfo ai = Network::Hints();
+    addrinfo ai {};
     auto *const hints {::get_hints(&ai, t_hints)};
 
     if (t_verbose) {
