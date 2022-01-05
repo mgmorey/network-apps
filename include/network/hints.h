@@ -48,10 +48,10 @@ namespace Network
         [[nodiscard]] auto protocol() const -> Protocol;
 
     private:
-        Integer<flags_type> m_flags;
-        Integer<family_type> m_family;
-        Integer<socktype_type> m_socktype;
-        Integer<protocol_type> m_protocol;
+        flags_type m_flags {};
+        family_type m_family {};
+        socktype_type m_socktype {};
+        protocol_type m_protocol {};
     };
 
     extern auto operator<<(std::ostream& os,
