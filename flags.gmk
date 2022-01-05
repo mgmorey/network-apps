@@ -24,6 +24,9 @@ endif
 endif
 endif
 
+CPPCHECK_FLAGS += --cppcheck-build-dir=tmp --enable=all	\
+--inline-suppr --quiet --std=$(LANGUAGE)
+
 ifeq "$(SYSTEM)" "Darwin"
 	CPPFLAGS += -D_DARWIN_C_SOURCE
 else ifeq "$(SYSTEM)" "CYGWIN_NT"
@@ -61,6 +64,8 @@ else ifeq "$(SYSTEM)" "FreeBSD"
 	CPPFLAGS += -DHAVE_SOCKADDR_SA_LEN
 endif
 
+CPPFLAGS += -DUSING_STD_BYTE
+
 ifeq "$(SYSTEM)" "FreeBSD"
 	CPPFLAGS += -I/usr/local/include
 	LDLIBS += -L/usr/local/lib
@@ -69,9 +74,7 @@ else ifeq "$(SYSTEM)" "MINGW64_NT"
 	LDLIBS += -lws2_32
 endif
 
-CPPCHECK_FLAGS += --cppcheck-build-dir=tmp --enable=all	\
---inline-suppr --quiet --std=$(LANGUAGE)
-CPPFLAGS += -DUSING_STD_BYTE -Iinclude
+CPPFLAGS += -Iinclude
 CXXFLAGS += -std=$(LANGUAGE) -Wall -Werror -Wextra -Wpedantic -Wshadow
 
 ifeq "$(SYSTEM)" "Darwin"
