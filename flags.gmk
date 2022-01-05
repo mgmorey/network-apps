@@ -13,10 +13,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-IS_GCC := $(shell bin/is-g++ $(CXX))
+IS_GXX := $(shell bin/is-g++ $(CXX))
 SYSTEM := $(shell uname -s | cut -d- -f 1)
 
-ifeq "$(IS_GCC)" "true"
+ifeq "$(IS_GXX)" "true"
 ifeq "$(LANGUAGE)" "c++20"
 ifeq "$(shell bin/is-g++-less-than 10 $(CXX))" "true"
 	LANGUAGE := c++2a
@@ -34,7 +34,7 @@ ifdef NDEBUG
 	CPPFLAGS += -D_FORTIFY_SOURCE=2
 	CXXFLAGS += -O2
 else
-ifeq "$(IS_GCC)" "true"
+ifeq "$(IS_GXX)" "true"
 	CPPFLAGS += -D_GLIBCXX_DEBUG
 endif
 ifeq "$(USING_DMALLOC)" "true"
@@ -47,7 +47,7 @@ else ifeq "$(USING_LIBASAN)" "true"
 else
 	CXXFLAGS += -fno-omit-frame-pointer
 endif
-ifeq "$(IS_GCC)" "true"
+ifeq "$(IS_GXX)" "true"
 	CXXFLAGS += -ggdb
 else
 	CXXFLAGS += -g3
