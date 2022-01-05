@@ -18,41 +18,41 @@
 #include "network/get-sockaddr.h"       // Bytes, get_sockaddr()
 
 Network::Host::Host(const addrinfo& t_addrinfo) :
-    m_sock_addr(get_sockaddr(t_addrinfo)),
-    m_canonname(t_addrinfo.ai_canonname)
+    m_addr(get_sockaddr(t_addrinfo)),
+    m_name(t_addrinfo.ai_canonname)
 {
 }
 
 auto Network::Host::operator=(const addrinfo& t_addrinfo) -> Network::Host&
 {
-    m_sock_addr = get_sockaddr(t_addrinfo);
-    m_canonname = t_addrinfo.ai_canonname;
+    m_addr = get_sockaddr(t_addrinfo);
+    m_name = t_addrinfo.ai_canonname;
     return *this;
 }
 
 auto Network::Host::operator<(const Host& t_host) const -> bool
 {
-    return m_sock_addr < t_host.m_sock_addr;
+    return m_addr < t_host.m_addr;
 }
 
 auto Network::Host::operator>(const Host& t_host) const -> bool
 {
-    return m_sock_addr > t_host.m_sock_addr;
+    return m_addr > t_host.m_addr;
 }
 
 auto Network::Host::operator==(const Host& t_host) const -> bool
 {
-    return m_sock_addr == t_host.m_sock_addr;
+    return m_addr == t_host.m_addr;
 }
 
 auto Network::Host::address() const -> Network::Bytes
 {
-    return m_sock_addr;
+    return m_addr;
 }
 
 auto Network::Host::canonical_name() const -> Network::Hostname
 {
-    return m_canonname;
+    return m_name;
 }
 
 auto Network::Host::get_sockaddr(const addrinfo& ai) -> Network::Bytes

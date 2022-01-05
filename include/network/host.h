@@ -47,8 +47,8 @@ namespace Network
         [[nodiscard]] auto canonical_name() const -> Hostname;
 
     private:
-        Bytes m_sock_addr;
-        Hostname m_canonname;
+        Bytes m_addr;
+        Hostname m_name;
     };
 }
 
