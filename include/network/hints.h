@@ -42,6 +42,7 @@ namespace Network
         Hints(const addrinfo& t_addrinfo);  // NOLINT
         ~Hints() = default;
         auto operator=(const Hints& t_hints) -> Hints& = default;
+        auto operator=(Hints&& t_hints) -> Hints& = default;
         auto operator=(const addrinfo& t_addrinfo) -> Hints&;
         auto operator<(const Hints& t_hints) const -> bool;
         auto operator>(const Hints& t_hints) const -> bool;

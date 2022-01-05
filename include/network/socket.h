@@ -42,6 +42,7 @@ namespace Network
         Socket(const addrinfo& t_addrinfo);  // NOLINT
         ~Socket() = default;
         auto operator=(const Socket& t_sock) -> Socket& = default;
+        auto operator=(Socket&& t_sock) -> Socket& = default;
         auto operator=(const addrinfo& t_addrinfo) -> Socket&;
         auto operator<(const Socket& t_sock) const -> bool;
         auto operator>(const Socket& t_sock) const -> bool;
