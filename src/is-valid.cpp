@@ -43,8 +43,8 @@
 #include <iomanip>      // std::left, std::right, std::setw()
 #include <iostream>     // std::cerr, std::endl
 
-static const auto key_width {20};
-static const auto value_width {5};
+constexpr auto key_width {20};
+constexpr auto value_width {5};
 
 auto Network::is_valid(const Bytes& addr, bool verbose) -> bool
 {
