@@ -34,7 +34,7 @@ namespace Network
         Socket() = default;
         Socket(const Socket& t_sock) = default;
         Socket(Socket&& t_sock) = default;
-        explicit Socket(int t_family = 0,
+        explicit Socket(int t_family,
                         int t_socktype = 0,
                         int t_protocol = 0,
                         int t_flags = 0);
