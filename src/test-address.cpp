@@ -42,8 +42,7 @@
 
 namespace TestAddress
 {
-    constexpr auto key_width {15};
-    constexpr auto value_width {10};
+    constexpr auto key_width {20};
 
     static bool verbose {false};  // NOLINT
 
@@ -81,68 +80,88 @@ namespace TestAddress
     static auto test_address_empty() -> void
     {
         const Network::Bytes addr;
-        assert(Network::get_sa_length(addr, 0) == 0);		// NOLINT
-        assert(Network::get_sa_family(addr, 0) == AF_UNSPEC);	// NOLINT
+        const auto size {addr.size()};
+        const auto length {Network::get_sa_length(addr)};
+        const auto family {Network::get_sa_family(addr)};
+        assert(size == 0);					// NOLINT
+        assert(length == 0);					// NOLINT
+        assert(family == AF_UNSPEC);				// NOLINT
         assert(Network::is_valid(addr) == false);		// NOLINT
     }
 
-    static auto test_address_localhost(const Network::Host& host) -> void
+    static auto test_address_localhost(const Network::Bytes& addr) -> void
     {
-        const auto addr {host.address()};
         const auto size {addr.size()};
-        std::cout << std::left
-                  << std::setw(key_width)
-                  << "    Size: "
-                  << std::left
-                  << std::setw(value_width)
-                  << size
-                  << std::endl;
+
+        switch (Network::get_sa_family(addr)) {
+        case AF_INET:
+            assert(size == sizeof(sockaddr_in));	// NOLINT
+            break;
+        case AF_INET6:
+            assert(size == sizeof(sockaddr_in6));	// NOLINT
+            break;
+        default:
+            assert(false);				// NOLINT
+        }
+
+        assert(Network::is_valid(addr, verbose));	// NOLINT
         const Network::Address address {addr};
         const auto length {address.length()};
+        const auto family {address.family()};
+        const auto text {address.text()};
+        std::cout << "    "
+                  << Network::Family(family)
+                  << ':'
+                  << std::endl;
         std::cout << std::left
                   << std::setw(key_width)
-                  << "    Length: "
-                  << std::left
-                  << std::setw(value_width)
+                  << "        Size: "
+                  << size
+                  << std::endl;
+        std::cout << std::left
+                  << std::setw(key_width)
+                  << "        Length: "
                   << length
                   << std::endl;
-        const Network::Family family {address.family()};
         std::cout << std::left
                   << std::setw(key_width)
-                  << "    Family: "
-                  << std::left
-                  << std::setw(value_width)
-                  << family
-                  << std::endl;
-        const auto text {address.text()};
-        std::cout << std::left
-                  << std::setw(key_width)
-                  << "    Address: "
-                  << std::left
-                  << std::setw(value_width)
+                  << "        Address: "
                   << text
                   << std::endl;
-        assert(size == sizeof(sockaddr_in));	// NOLINT
-        assert(length <= addr.size());		// NOLINT
-        assert(family == AF_INET);		// NOLINT
-        assert(text == "127.0.0.1");		// NOLINT
+
+        switch (family) {
+        case AF_INET:
+            assert(text == "127.0.0.1");		// NOLINT
+            break;
+        case AF_INET6:
+            assert(text == "::1");			// NOLINT
+            break;
+        default:
+            assert(false);				// NOLINT
+        }
     }
 
     static auto test_address_localhost() -> void
     {
         const Network::Hostname localhost {"localhost"};
         const Network::Hints hints
-            {AF_INET, SOCK_STREAM, IPPROTO_TCP, AI_ADDRCONFIG};
+            {AF_UNSPEC, SOCK_STREAM, IPPROTO_TCP, AI_ADDRCONFIG};
         const auto hosts_result {Network::get_hosts(localhost, &hints)};
         std::visit(Network::Overload {
                 [&](const Network::HostVector& hosts) {
-                    std::cout << "Socket address for local host: "
-                              << std::endl;
-                    assert(hosts.size() == 1);  // NOLINT
-                    test_address_localhost(hosts[0]);
+                        std::cout << "Socket addresses for "
+                                  << std::string(localhost)
+                                  << ": "
+                                  << std::endl;
+
+                    for (const auto& host : hosts) {
+                        test_address_localhost(host.address());
+                    }
                 },
                 [&](const Network::Result& result) {
-                    std::cout << "No local host address: "
+                    std::cout << "No "
+                              << localhost
+                              << " addresses: "
                               << result
                               << std::endl;
                 }
