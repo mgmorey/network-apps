@@ -13,11 +13,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+IS_GCC := $(shell bin/is-g++ $(CXX))
 SYSTEM := $(shell uname -s | cut -d- -f 1)
 
+ifeq "$(IS_GCC)" "true"
 ifeq "$(LANGUAGE)" "c++20"
 ifeq "$(shell bin/is-g++-less-than 10 $(CXX))" "true"
 	LANGUAGE := c++2a
+endif
 endif
 endif
 
@@ -31,7 +34,7 @@ ifdef NDEBUG
 	CPPFLAGS += -D_FORTIFY_SOURCE=2
 	CXXFLAGS += -O2
 else
-ifeq "$(shell bin/is-g++ $(CXX))" "true"
+ifeq "$(IS_GCC)" "true"
 	CPPFLAGS += -D_GLIBCXX_DEBUG
 endif
 ifeq "$(USING_DMALLOC)" "true"
@@ -44,7 +47,12 @@ else ifeq "$(USING_LIBASAN)" "true"
 else
 	CXXFLAGS += -fno-omit-frame-pointer
 endif
-	CXXFLAGS += -g3 -O0
+ifeq "$(IS_GCC)" "true"
+	CXXFLAGS += -ggdb
+else
+	CXXFLAGS += -g3
+endif
+	CXXFLAGS += -O0
 endif
 
 ifeq "$(SYSTEM)" "Darwin"
