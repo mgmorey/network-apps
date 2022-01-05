@@ -66,16 +66,7 @@ auto Network::Hints::operator==(const Hints& t_hints) const -> bool
 
 Network::Hints::operator addrinfo() const
 {
-    addrinfo ai = {
-        0,
-        0,
-        0,
-        0,
-        0,
-        nullptr,
-        nullptr,
-        nullptr
-    };
+    addrinfo ai {};
     ai.ai_flags = static_cast<int>(m_flags);
     ai.ai_family = static_cast<int>(m_family);
     ai.ai_socktype = static_cast<int>(m_socktype);
