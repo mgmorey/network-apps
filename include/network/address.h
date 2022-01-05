@@ -38,6 +38,7 @@ namespace Network
     public:
         using value_type = Bytes;
 
+        Address() = default;
         Address(const Address& t_address) = default;
         Address(Address&& t_address) = default;
         // cppcheck-suppress noExplicitConstructor
