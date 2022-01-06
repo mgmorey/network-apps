@@ -27,7 +27,7 @@ Network::Fd::operator fd_type() const
 
 Network::Fd::operator bool() const
 {
-    return m_value != fd_null;;
+    return m_value != fd_null;
 }
 
 auto Network::operator<<(std::ostream& os, Fd fd) -> std::ostream&
