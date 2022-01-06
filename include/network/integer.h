@@ -24,7 +24,7 @@ namespace Network
     public:
         Integer() = default;
         Integer(const Integer& t_integer) = default;
-        Integer(Integer&& t_integer) = default;
+        Integer(Integer&& t_integer) noexcept = default;
 
         // cppcheck-suppress noExplicitConstructor
         // NOLINTNEXTLINE
@@ -35,7 +35,7 @@ namespace Network
 
         ~Integer() = default;
         auto operator=(const Integer& t_integer) -> Integer& = default;
-        auto operator=(Integer&& t_integer) -> Integer& = default;
+        auto operator=(Integer&& t_integer) noexcept -> Integer& = default;
 
         auto operator=(T t_value) -> Integer&
         {

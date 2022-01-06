@@ -33,7 +33,7 @@ namespace Network
     {
         Socket() = default;
         Socket(const Socket& t_sock) = default;
-        Socket(Socket&& t_sock) = default;
+        Socket(Socket&& t_sock) noexcept = default;
         explicit Socket(int t_family,
                         int t_socktype = 0,
                         int t_protocol = 0,
@@ -42,7 +42,7 @@ namespace Network
         Socket(const addrinfo& t_addrinfo);  // NOLINT
         ~Socket() = default;
         auto operator=(const Socket& t_sock) -> Socket& = default;
-        auto operator=(Socket&& t_sock) -> Socket& = default;
+        auto operator=(Socket&& t_sock) noexcept -> Socket& = default;
         auto operator=(const addrinfo& t_addrinfo) -> Socket&;
         auto operator<(const Socket& t_sock) const -> bool;
         auto operator>(const Socket& t_sock) const -> bool;
