@@ -20,7 +20,7 @@ get_version() {
 }
 
 is_clang() {
-    get_version "$1" | cut -d' ' -f 1,2 | egrep -q '(Apple|FreeBSD) clang'
+    get_version "$1" | egrep -q '^(Apple|FreeBSD|Homebrew) clang'
 }
 
 if is_clang "${1-clang}"; then
