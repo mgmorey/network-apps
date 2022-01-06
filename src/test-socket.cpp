@@ -34,13 +34,6 @@
 
 namespace TestSocket
 {
-    static const std::vector<Network::Pathname> paths = {
-        std::nullopt,
-        "/tmp/678",
-        "/tmp/67890123456",
-        "/tmp/6789012345678901234"
-    };
-
     static bool verbose {false};  // NOLINT
 
     static auto parse_arguments(int argc, char** argv) ->
@@ -129,11 +122,18 @@ auto main(int argc, char* argv[]) -> int
 {
     static const Network::Socket hints {AF_UNIX, SOCK_STREAM};
 
+    const std::vector<Network::Pathname> paths = {
+        std::nullopt,
+        "/tmp/678",
+        "/tmp/67890123456",
+        "/tmp/6789012345678901234"
+    };
+
     try {
         TestSocket::parse_arguments(argc, argv);
         TestSocket::test_socketpair(hints);
 
-        for (const auto& path : TestSocket::paths) {
+        for (const auto& path : paths) {
             TestSocket::test_path(path);
         }
     }
