@@ -13,19 +13,23 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-IS_GXX := $(shell bin/is-g++ $(CXX))
+IS_CLANG := $(shell bin/is-clang $(CXX))
+IS_GCC := $(shell bin/is-gcc $(CXX))
 SYSTEM := $(shell uname -s | cut -d- -f 1)
 
-ifeq "$(IS_GXX)" "true"
+ifeq "$(IS_GCC)" "true"
 ifeq "$(LANGUAGE)" "c++20"
-ifeq "$(shell bin/is-g++-less-than 10 $(CXX))" "true"
+ifeq "$(shell bin/is-gcc-less-than 10 $(CXX))" "true"
 	LANGUAGE := c++2a
 endif
 endif
 endif
 
-CPPCHECK_FLAGS += --cppcheck-build-dir=tmp --enable=all	\
---inline-suppr --quiet --std=$(LANGUAGE)
+CPPCHECK_FLAGS += --cppcheck-build-dir=tmp --enable=all --inline-suppr --quiet
+
+ifdef LANGUAGE
+	CPPCHECK_FLAGS += --std=$(LANGUAGE)
+endif
 
 ifeq "$(SYSTEM)" "MINGW64_NT"
 	CPPCHECK_FLAGS += -D_WIN32
@@ -43,7 +47,7 @@ endif
 
 ifdef NDEBUG
 	CPPFLAGS += -D_FORTIFY_SOURCE=2
-else ifeq "$(IS_GXX)" "true"
+else ifeq "$(IS_GCC)" "true"
 	CPPFLAGS += -D_GLIBCXX_DEBUG
 endif
 
@@ -65,7 +69,7 @@ ifeq "$(USING_LIBASAN)" "true"
 else
 	CXXFLAGS += -fno-omit-frame-pointer
 endif
-ifeq "$(IS_GXX)" "true"
+ifeq "$(IS_GCC)" "true"
 	CXXFLAGS += -ggdb
 else
 	CXXFLAGS += -g3
@@ -79,10 +83,8 @@ endif
 
 CXXFLAGS += -Wall -Werror -Wextra -Wpedantic -Wshadow
 
-ifneq "$(SYSTEM)" "Darwin"
-ifneq "$(SYSTEM)" "FreeBSD"
+ifeq "$(IS_GCC)" "true"
 	CXXFLAGS += -Wa,-adghln=$(subst .o,.lst,$@)
-endif
 endif
 
 ifndef NDEBUG
@@ -91,10 +93,10 @@ ifeq "$(USING_LIBASAN)" "true"
 endif
 endif
 
-ifeq "$(SYSTEM)" "Darwin"
-	LDFLAGS += -Wl,-map,$@.map
-else
+ifeq "$(IS_GCC)" "true"
 	LDFLAGS += -Wl,-Map=$@.map
+else ifeq "$(IS_CLANG)" "true"
+	LDFLAGS += -Wl,-map,$@.map
 endif
 
 ifeq "$(SYSTEM)" "FreeBSD"

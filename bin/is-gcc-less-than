@@ -15,45 +15,30 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-GXX_VERSION_MIN=10
+GCC_VERSION_MIN=10
 
-get_version() {
-    version=$("$1" -dumpfullversion 2>/dev/null || "$1" -dumpversion)
-    printf '%s\n' "${version:-0}" | cut -d. -f1
+get_gcc_major_version() {
+    get_gcc_version "$1" | cut -d. -f1
 }
 
-is_gxx() {
-    if ! [ "${1%-*}" = g++ ]; then
-	return 1
-    fi
+get_gcc_version() {
+    "$1" -dumpfullversion 2>/dev/null || "$1" -dumpversion
+}
 
-    if ! which "$1" >/dev/null 2>&1; then
-	return 1
-    fi
+is_gcc_less_than() {
+    gcc_major_version=$(get_gcc_major_version "$2")
 
-    if "$1" --version 2>/dev/null | head -n 1 | grep -q '^Apple clang'; then
+    if ! [ "${gcc_major_version:-0}" -lt "$1" ]; then
 	return 1
     fi
 
     return 0
 }
 
-is_gxx_less_than() {
-    if ! is_gxx "${2%-*}"; then
-	return 1
-    fi
-
-    if ! [ "$(get_version "$2")" -lt "$1" ]; then
-	return 1
-    fi
-
-    return 0
-}
-
-if is_gxx_less_than "${1-$GXX_VERSION_MIN}" "${2-${CXX-g++}}"; then
-    less=true
+if is_gcc_less_than "${1-$GCC_VERSION_MIN}" "${2-gcc}"; then
+    result=true
 else
-    less=false
+    result=false
 fi
 
-printf '%s\n' "$less"
+printf '%s\n' "$result"

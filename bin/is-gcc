@@ -15,26 +15,18 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-is_gxx() {
-    if ! [ "${1%-*}" = g++ ]; then
-	return 1
-    fi
-
-    if ! which "$1" >/dev/null 2>&1; then
-	return 1
-    fi
-
-    if "$1" --version 2>/dev/null | head -n 1 | grep -q '^Apple clang'; then
-	return 1
-    fi
-
-    return 0
+get_version() {
+    "$1" --version 2>/dev/null | head -n 1
 }
 
-if is_gxx "${1-${CXX-g++}}"; then
-    gxx=true
+is_gcc() {
+    get_version "$1" | cut -d' ' -f 1,2 | egrep -q '(cc|gcc|g\+\+) \(GCC\)'
+}
+
+if is_gcc "${1-gcc}"; then
+    result=true
 else
-    gxx=false
+    result=false
 fi
 
-printf '%s\n' "$gxx"
+printf '%s\n' "$result"
