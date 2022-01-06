@@ -46,6 +46,8 @@ namespace Network
 
     public:
         Fd() = default;
+        Fd(const Fd& t_fd) = default;
+        Fd(Fd&& t_fd) = default;
 
         // cppcheck-suppress noExplicitConstructor
         // NOLINTNEXTLINE
@@ -53,6 +55,10 @@ namespace Network
             m_value(t_fd)
         {
         }
+
+        ~Fd() = default;
+        auto operator=(const Fd& t_fd) -> Fd& = default;
+        auto operator=(Fd&& t_fd) -> Fd& = default;
 
         operator fd_type() const  // NOLINT
         {
