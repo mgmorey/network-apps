@@ -48,36 +48,19 @@ namespace Network
         Fd() = default;
         Fd(const Fd& t_fd) = default;
         Fd(Fd&& t_fd) = default;
-
         // cppcheck-suppress noExplicitConstructor
-        // NOLINTNEXTLINE
-        Fd(fd_type t_fd) :
-            m_value(t_fd)
-        {
-        }
-
+        Fd(fd_type t_fd);  // NOLINT
         ~Fd() = default;
         auto operator=(const Fd& t_fd) -> Fd& = default;
         auto operator=(Fd&& t_fd) -> Fd& = default;
-
-        operator fd_type() const  // NOLINT
-        {
-            return m_value;
-        }
-
-        explicit operator bool() const
-        {
-            return m_value != fd_null;;
-        }
+        operator fd_type() const;  // NOLINT
+        explicit operator bool() const;
 
     private:
         fd_type m_value {fd_null};
     };
 
-    inline auto operator<<(std::ostream& os, Fd fd) -> std::ostream&
-    {
-        return os << fd.m_value;
-    }
+    auto operator<<(std::ostream& os, Fd fd) -> std::ostream&;
 }
 
 #endif
