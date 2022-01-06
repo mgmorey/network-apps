@@ -15,12 +15,16 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+grep_version() {
+    egrep -q '^(Apple|FreeBSD|Homebrew) clang'
+}
+
 get_version() {
     "$1" --version 2>/dev/null | head -n 1
 }
 
 is_clang() {
-    get_version "$1" | egrep -q '^(Apple|FreeBSD|Homebrew) clang'
+    get_version "$1" | grep_version
 }
 
 if is_clang "${1-clang}"; then
