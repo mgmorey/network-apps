@@ -20,7 +20,7 @@ get_version() {
 }
 
 is_gcc() {
-    get_version "$1" | cut -d' ' -f 1,2 | egrep -q '(cc|gcc|g\+\+) \(GCC\)'
+    get_version "$1" | cut -d' ' -f 1 | egrep -q '(cc|gcc|g\+\+)'
 }
 
 if is_gcc "${1-gcc}"; then
