@@ -27,6 +27,14 @@ endif
 CPPCHECK_FLAGS += --cppcheck-build-dir=tmp --enable=all	\
 --inline-suppr --quiet --std=$(LANGUAGE)
 
+ifeq "$(SYSTEM)" "MINGW64_NT"
+	CPPCHECK_FLAGS += -D_WIN32
+endif
+
+ifeq "$(SYSTEM)" "FreeBSD"
+	CPPFLAGS += -I/usr/local/include
+endif
+
 ifeq "$(SYSTEM)" "Darwin"
 	CPPFLAGS += -D_DARWIN_C_SOURCE
 else ifeq "$(SYSTEM)" "CYGWIN_NT"
@@ -35,18 +43,25 @@ endif
 
 ifdef NDEBUG
 	CPPFLAGS += -D_FORTIFY_SOURCE=2
-	CXXFLAGS += -O2
-else
-ifeq "$(IS_GXX)" "true"
+else ifeq "$(IS_GXX)" "true"
 	CPPFLAGS += -D_GLIBCXX_DEBUG
 endif
-ifeq "$(USING_DMALLOC)" "true"
-	CPPFLAGS += -DDMALLOC -DMALLOC_FUNC_CHECK
-	LDLIBS += -ldmalloc
-else ifeq "$(USING_LIBASAN)" "true"
+
+ifeq "$(SYSTEM)" "Darwin"
+	CPPFLAGS += -DHAVE_SOCKADDR_SA_LEN
+else ifeq "$(SYSTEM)" "FreeBSD"
+	CPPFLAGS += -DHAVE_SOCKADDR_SA_LEN
+endif
+
+CPPFLAGS += -DUSING_STD_BYTE
+CPPFLAGS += -Iinclude
+
+ifdef NDEBUG
+	CXXFLAGS += -O2
+else
+ifeq "$(USING_LIBASAN)" "true"
 	CXXFLAGS += -fno-omit-frame-pointer -fsanitize=address
 	CXXFLAGS += -fsanitize-address-use-after-scope
-	LDFLAGS += -fsanitize=address
 else
 	CXXFLAGS += -fno-omit-frame-pointer
 endif
@@ -58,32 +73,34 @@ endif
 	CXXFLAGS += -O0
 endif
 
-ifeq "$(SYSTEM)" "Darwin"
-	CPPFLAGS += -DHAVE_SOCKADDR_SA_LEN
-else ifeq "$(SYSTEM)" "FreeBSD"
-	CPPFLAGS += -DHAVE_SOCKADDR_SA_LEN
+ifdef LANGUAGE
+	CXXFLAGS += -std=$(LANGUAGE)
 endif
 
-CPPFLAGS += -DUSING_STD_BYTE
+CXXFLAGS += -Wall -Werror -Wextra -Wpedantic -Wshadow
 
-ifeq "$(SYSTEM)" "FreeBSD"
-	CPPFLAGS += -I/usr/local/include
-	LDLIBS += -L/usr/local/lib
-else ifeq "$(SYSTEM)" "MINGW64_NT"
-	CPPCHECK_FLAGS += -D_WIN32
-	LDLIBS += -lws2_32
+ifneq "$(SYSTEM)" "Darwin"
+ifneq "$(SYSTEM)" "FreeBSD"
+	CXXFLAGS += -Wa,-adghln=$(subst .o,.lst,$@)
+endif
 endif
 
-CPPFLAGS += -Iinclude
-CXXFLAGS += -std=$(LANGUAGE) -Wall -Werror -Wextra -Wpedantic -Wshadow
+ifndef NDEBUG
+ifeq "$(USING_LIBASAN)" "true"
+	LDFLAGS += -fsanitize=address
+endif
+endif
 
 ifeq "$(SYSTEM)" "Darwin"
 	LDFLAGS += -Wl,-map,$@.map
 else
-ifneq "$(SYSTEM)" "FreeBSD"
-	CXXFLAGS += -Wa,-adghln=$(subst .o,.lst,$@)
-endif
 	LDFLAGS += -Wl,-Map=$@.map
+endif
+
+ifeq "$(SYSTEM)" "FreeBSD"
+	LDLIBS += -L/usr/local/lib
+else ifeq "$(SYSTEM)" "MINGW64_NT"
+	LDLIBS += -lws2_32
 endif
 
 # Local Variables:
