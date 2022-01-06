@@ -44,7 +44,7 @@
 #include <iostream>     // std::cerr, std::endl
 
 constexpr auto key_width {20};
-constexpr auto value_width {5};
+constexpr auto value_width {10};
 
 auto Network::is_valid(const Bytes& addr, bool verbose) -> bool
 {

@@ -43,6 +43,7 @@
 namespace TestAddress
 {
     constexpr auto key_width {20};
+    constexpr auto value_width {10};
 
     static bool verbose {false};  // NOLINT
 
@@ -115,17 +116,23 @@ namespace TestAddress
                   << std::endl;
         std::cout << std::left
                   << std::setw(key_width)
-                  << "        Size: "
+                  << "        Size:"
+                  << std::right
+                  << std::setw(value_width)
                   << size
                   << std::endl;
         std::cout << std::left
                   << std::setw(key_width)
-                  << "        Length: "
+                  << "        Length:"
+                  << std::right
+                  << std::setw(value_width)
                   << length
                   << std::endl;
         std::cout << std::left
                   << std::setw(key_width)
-                  << "        Address: "
+                  << "        Address:"
+                  << std::right
+                  << std::setw(value_width)
                   << text
                   << std::endl;
 
