@@ -32,21 +32,23 @@ compare_versions() (
     nfields=${3:-1}
 
     if [ $nfields -le 1 -o $delta -ne 0 ]; then
-	if [ $delta -eq 0 ]; then
-	    result=equal
-	elif [ $delta -gt 0 ]; then
-	    result=greater
-	elif [ $delta -lt 0 ]; then
-	    result=less
-	else
-	    result=none
-	fi
-
-	printf '%s\n' $result
+	printf '%s\n' $delta
 	return 0
     fi
 
     compare_versions "${1#*.}" "${2#*.}" $((nfields - 1))
 )
 
-compare_versions "${1:-0}" "${2:-0}" 3
+delta=$(compare_versions "${1:-0}" "${2:-0}" 3)
+
+if [ $delta -eq 0 ]; then
+    result=equal
+elif [ $delta -gt 0 ]; then
+    result=greater
+elif [ $delta -lt 0 ]; then
+    result=less
+else
+    result=none
+fi
+
+printf '%s\n' $result
