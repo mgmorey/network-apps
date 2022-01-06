@@ -13,13 +13,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+COMPILER_VERSION := $(shell bin/get-compiler-version)
 IS_CLANG := $(shell bin/is-clang $(CXX))
 IS_GCC := $(shell bin/is-gcc $(CXX))
 SYSTEM := $(shell uname -s | cut -d- -f 1)
 
 ifeq "$(IS_GCC)" "true"
 ifeq "$(LANGUAGE)" "c++20"
-ifeq "$(shell bin/is-gcc-less-than 10 $(CXX))" "true"
+ifeq "$(shell bin/compare-versions $(COMPILER_VERSION) 10.0.0)" "less"
 	LANGUAGE := c++2a
 endif
 endif
