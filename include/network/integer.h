@@ -22,12 +22,20 @@ namespace Network
     class Integer
     {
     public:
+        Integer() = default;
+        Integer(const Integer& t_integer) = default;
+        Integer(Integer&& t_integer) = default;
+
         // cppcheck-suppress noExplicitConstructor
         // NOLINTNEXTLINE
         Integer(T t_value) :
             m_value(t_value)
         {
         }
+
+        ~Integer() = default;
+        auto operator=(const Integer& t_integer) -> Integer& = default;
+        auto operator=(Integer&& t_integer) -> Integer& = default;
 
         auto operator=(T t_value) -> Integer&
         {
