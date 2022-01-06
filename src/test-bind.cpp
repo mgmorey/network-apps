@@ -48,8 +48,8 @@
 
 namespace TestBind
 {
-    static constexpr auto HOST {"localhost"};
-    static constexpr auto SERVICE {"8085"};
+    static constexpr auto localhost {"localhost"};
+    static constexpr auto localservice {"8085"};
 
     static bool verbose {false};  // NOLINT
 
@@ -167,24 +167,23 @@ namespace TestBind
 
 auto main(int argc, char* argv[]) -> int
 {
-    static const Network::Hints hints(AF_UNSPEC,
-                                      SOCK_STREAM,
-                                      IPPROTO_TCP,
-                                      AI_CANONNAME);
+    static const Network::Hints hints
+        {AF_UNSPEC, SOCK_STREAM, IPPROTO_TCP, AI_CANONNAME};
 
     try {
         const auto args {TestBind::parse_arguments(argc, argv)};
-        const Network::Context context(TestBind::verbose);
+        const Network::Context context {TestBind::verbose};
 
         if (context.result()) {
             std::cerr << context.result()
                       << std::endl;
         }
         else {
-            const auto host {args.size() > 1 ? args[1] : TestBind::HOST};
-            const auto serv {args.size() > 2 ? args[2] : TestBind::SERVICE};
-            const auto endp {Network::Endpoint(host, serv)};
-            TestBind::test_bind(endp, hints);
+            const Network::Endpoint endpoint {
+                args.size() > 1 ? args[1] : TestBind::localhost,
+                args.size() > 2 ? args[2] : TestBind::localservice
+            };
+            TestBind::test_bind(endpoint, hints);
         }
 
         static_cast<void>(context);

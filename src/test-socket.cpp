@@ -34,9 +34,12 @@
 
 namespace TestSocket
 {
-    static constexpr auto PATH_08 {"/tmp/678"};
-    static constexpr auto PATH_16 {"/tmp/67890123456"};
-    static constexpr auto PATH_24 {"/tmp/6789012345678901234"};
+    static const std::vector<Network::Pathname> paths = {
+        std::nullopt,
+        "/tmp/678",
+        "/tmp/67890123456",
+        "/tmp/6789012345678901234"
+    };
 
     static bool verbose {false};  // NOLINT
 
@@ -124,14 +127,15 @@ namespace TestSocket
 
 auto main(int argc, char* argv[]) -> int
 {
+    static const Network::Socket hints {AF_UNIX, SOCK_STREAM};
+
     try {
         TestSocket::parse_arguments(argc, argv);
-        const Network::Socket hints(AF_UNIX, SOCK_STREAM);
         TestSocket::test_socketpair(hints);
-        TestSocket::test_path(std::nullopt);
-        TestSocket::test_path(TestSocket::PATH_08);
-        TestSocket::test_path(TestSocket::PATH_16);
-        TestSocket::test_path(TestSocket::PATH_24);
+
+        for (const auto& path : TestSocket::paths) {
+            TestSocket::test_path(path);
+        }
     }
     catch (std::exception& error) {
         std::cerr << error.what()

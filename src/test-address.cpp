@@ -143,9 +143,10 @@ namespace TestAddress
 
     static auto test_address_localhost() -> void
     {
-        const Network::Hostname localhost {"localhost"};
-        const Network::Hints hints
+        static const Network::Hints hints
             {AF_UNSPEC, SOCK_STREAM, IPPROTO_TCP, AI_ADDRCONFIG};
+        static const Network::Hostname localhost {"localhost"};
+
         const auto hosts_result {Network::get_hosts(localhost, &hints)};
         std::visit(Network::Overload {
                 [&](const Network::HostVector& hosts) {

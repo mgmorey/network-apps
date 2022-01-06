@@ -50,8 +50,8 @@
 
 namespace TestConnect
 {
-    static constexpr auto HOST {"example.com"};
-    static constexpr auto SERVICE {"http"};
+    static constexpr auto localhost {"example.com"};
+    static constexpr auto localservice {"http"};
 
     static bool verbose {false};  // NOLINT
 
@@ -206,24 +206,23 @@ namespace TestConnect
 
 auto main(int argc, char* argv[]) -> int
 {
-    static const Network::Hints hints(AF_UNSPEC,
-                                      SOCK_STREAM,
-                                      IPPROTO_TCP,
-                                      AI_CANONNAME);
+    static const Network::Hints hints
+        {AF_UNSPEC, SOCK_STREAM, IPPROTO_TCP, AI_CANONNAME};
 
     try {
         const auto args {TestConnect::parse_arguments(argc, argv)};
-        const Network::Context context(TestConnect::verbose);
+        const Network::Context context {TestConnect::verbose};
 
         if (context.result()) {
             std::cerr << context.result()
                       << std::endl;
         }
         else {
-            const auto host {args.size() > 1 ? args[1] : TestConnect::HOST};
-            const auto serv {args.size() > 2 ? args[2] : TestConnect::SERVICE};
-            const auto endp {Network::Endpoint(host, serv)};
-            TestConnect::test_connect(endp, hints);
+            const Network::Endpoint endpoint {
+                args.size() > 1 ? args[1] : TestConnect::localhost,
+                args.size() > 2 ? args[2] : TestConnect::localservice
+            };
+            TestConnect::test_connect(endpoint, hints);
         }
 
         static_cast<void>(context);
