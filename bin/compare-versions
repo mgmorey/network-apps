@@ -39,7 +39,14 @@ compare_versions() (
     compare_versions "${1#*.}" "${2#*.}" $((nfields - 1))
 )
 
-delta=$(compare_versions "${1:-0}" "${2:-0}" 3)
+qualify() {
+    printf '%s\n' "$1" | sed '
+s/^\([0-9][0-9]*\.[0-9][0-9]*\)$/\1.0/
+s/^\([0-9][0-9]*\)$/\1.0.0/
+'
+}
+
+delta=$(compare_versions "$(qualify "${1:-0}")" "$(qualify "${2:-0}")" 3)
 
 if [ $delta -eq 0 ]; then
     result=equal
