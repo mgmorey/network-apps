@@ -20,7 +20,7 @@ SYSTEM := $(shell uname -s | cut -d- -f 1)
 
 ifeq "$(IS_GCC)" "true"
 ifeq "$(LANGUAGE)" "c++20"
-ifeq "$(shell bin/compare-versions $(COMPILER_VERSION) 10.0.0)" "less"
+ifeq "$(shell bin/compare-versions $(COMPILER_VERSION) 10)" "less"
 	LANGUAGE := c++2a
 endif
 endif
