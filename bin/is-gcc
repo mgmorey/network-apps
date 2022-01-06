@@ -20,7 +20,8 @@ get_version() {
 }
 
 is_gcc() {
-    get_version "$1" | egrep -q '^(cc|gcc|g\+\+) \(Debian .*|GCC|SUSE Linux\)'
+    get_version "$1" | \
+	egrep -q '^(cc|gcc|g\+\+) \(Debian .*|GCC|SUSE Linux|Ubuntu .*\)'
 }
 
 if is_gcc "${1-gcc}"; then
