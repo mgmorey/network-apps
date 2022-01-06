@@ -113,7 +113,7 @@ namespace TestConnect
         auto test_socket(const Network::Fd& t_fd) -> void
         {
             const auto host {m_endpoint.first};
-            const auto serv {m_endpoint.second};
+            const auto service {m_endpoint.second};
             const auto peer_result {get_peeraddr(t_fd)};
             const auto sock_result {get_sockaddr(t_fd)};
             m_os << "Socket "
@@ -121,7 +121,7 @@ namespace TestConnect
                  << " connected "
                  << m_hostname
                  << " to "
-                 << serv
+                 << service
                  << " on "
                  << host
                  << std::endl;

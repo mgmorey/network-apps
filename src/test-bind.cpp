@@ -93,12 +93,12 @@ namespace TestBind
         auto test_socket(const Network::Fd& t_fd) -> void
         {
             const auto host {m_endpoint.first};
-            const auto serv {m_endpoint.second};
+            const auto service {m_endpoint.second};
             const auto sock_result {get_sockaddr(t_fd)};
             m_os << "Socket "
                  << t_fd
                  << " bound to "
-                 << serv
+                 << service
                  << " on "
                  << host
                  << std::endl;
