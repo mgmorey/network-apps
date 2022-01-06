@@ -31,12 +31,14 @@ ifdef LANGUAGE
 	CPPCHECK_FLAGS += --std=$(LANGUAGE)
 endif
 
-ifeq "$(SYSTEM)" "MINGW64_NT"
-	CPPCHECK_FLAGS += -D_WIN32
-endif
-
 ifeq "$(SYSTEM)" "FreeBSD"
 	CPPFLAGS += -I/usr/local/include
+endif
+
+CPPFLAGS += -Iinclude
+
+ifeq "$(SYSTEM)" "MINGW64_NT"
+	CPPCHECK_FLAGS += -D_WIN32
 endif
 
 ifeq "$(SYSTEM)" "Darwin"
@@ -58,16 +60,11 @@ else ifeq "$(SYSTEM)" "FreeBSD"
 endif
 
 CPPFLAGS += -DUSING_STD_BYTE
-CPPFLAGS += -Iinclude
 
-ifdef NDEBUG
-	CXXFLAGS += -O2
-else
-ifeq "$(USING_LIBASAN)" "true"
-	CXXFLAGS += -fno-omit-frame-pointer -fsanitize=address
-	CXXFLAGS += -fsanitize-address-use-after-scope
-else
+ifndef NDEBUG
 	CXXFLAGS += -fno-omit-frame-pointer
+ifeq "$(USING_LIBASAN)" "true"
+	CXXFLAGS += -fsanitize=address -fsanitize-address-use-after-scope
 endif
 ifeq "$(IS_GCC)" "true"
 	CXXFLAGS += -ggdb
@@ -75,6 +72,8 @@ else
 	CXXFLAGS += -g3
 endif
 	CXXFLAGS += -O0
+else
+	CXXFLAGS += -O2
 endif
 
 ifdef LANGUAGE
