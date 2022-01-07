@@ -23,11 +23,7 @@ namespace Network
     template<typename T>
     constexpr auto to_integer(Byte byte) -> T
     {
-#ifdef USING_STD_BYTE
         return std::to_integer<T>(byte);
-#else
-        return static_cast<T>(byte);
-#endif
     }
 }
 

@@ -20,11 +20,7 @@
 
 namespace Network
 {
-#ifdef USING_STD_BYTE
     using byte_type = std::byte;
-#else
-    using byte_type = unsigned char;
-#endif
 }
 
 #endif

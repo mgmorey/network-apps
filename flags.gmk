@@ -77,8 +77,6 @@ else ifeq "$(SYSTEM)" "FreeBSD"
 	CPPFLAGS += -DHAVE_SOCKADDR_SA_LEN
 endif
 
-CPPFLAGS += -DUSING_STD_BYTE
-
 ifndef NDEBUG
 	CXXFLAGS += -fno-omit-frame-pointer
 ifeq "$(USING_LIBASAN)" "true"
