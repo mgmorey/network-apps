@@ -16,7 +16,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 grep_version() {
-    egrep -q '^(g?cc|[cg]\+\+)(\.exe)? \(Debian .*|FreeBSD Ports Collection|GCC|SUSE Linux|Ubuntu .*|.*, Built by MSYS2 project\)'
+    grep -Eq '^(g?cc|[cg]\+\+)(\.exe)? \(Debian .*|FreeBSD Ports Collection|GCC|SUSE Linux|Ubuntu .*|.*, Built by MSYS2 project\)'
 }
 
 get_version() {

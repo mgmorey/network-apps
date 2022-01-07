@@ -16,7 +16,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 grep_version() {
-    egrep -q '^(Apple|FreeBSD|Homebrew) clang'
+    grep -Eq '^(Apple|FreeBSD|Homebrew) clang'
 }
 
 get_version() {
