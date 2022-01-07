@@ -78,8 +78,8 @@ check: cppcheck
 
 .PHONY:	clang-tidy
 clang-tidy:	$(sources)
-	clang-tidy $^ -config-file='.clang-tidy' -header-filter='.*' --	\
--std=$(LANGUAGE) $(CPPFLAGS)
+	clang-tidy$(CLANG_SUFFIX) $^ -config-file='.clang-tidy'	\
+-header-filter='.*' -- -std=$(LANGUAGE) $(CPPFLAGS)
 
 .PHONY:	clean
 clean:
