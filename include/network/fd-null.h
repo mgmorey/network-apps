@@ -16,22 +16,20 @@
 #ifndef NETWORK_FD_NULL_H
 #define NETWORK_FD_NULL_H
 
-#include "network/fd-type.h"            // fd_type
-
 #ifdef _WIN32
 #include <winsock2.h>       // INVALID_SOCKET
 #endif
 
-namespace Network
-{
 #ifndef INVALID_SOCKET
 #ifdef _WIN32
-    constexpr fd_type INVALID_SOCKET {~0};
+#define INVALID_SOCKET	(~0)	// NOLINT
 #else
-    constexpr fd_type INVALID_SOCKET {-1};
+#define INVALID_SOCKET	(-1)	// NOLINT
 #endif
 #endif
 
+namespace Network
+{
     enum { fd_null = INVALID_SOCKET };
 }
 
