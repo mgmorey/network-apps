@@ -17,6 +17,7 @@
 #define NETWORK_ERROR_TYPE_H
 
 #ifdef _WIN32
+#include <winsock2.h>       // Include winsock2.h before windows.h
 #include <windows.h>        // DWORD
 #endif
 
