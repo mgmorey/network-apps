@@ -78,7 +78,7 @@ namespace TestAddress
         return result;
     }
 
-    static auto test_address_empty() -> void
+    static auto test_address() -> void
     {
         const Network::Bytes addr;
         const auto size {addr.size()};
@@ -90,22 +90,32 @@ namespace TestAddress
         assert(Network::is_valid(addr) == false);		// NOLINT
     }
 
+    static auto test_address_any() -> void
+    {
+        const Network::Bytes addr {Network::get_sockaddr()};
+        const auto size {addr.size()};
+        const auto family {Network::get_sa_family(addr)};
+        assert(size == Network::sockaddr_size_max);		// NOLINT
+        assert(family == AF_UNSPEC);				// NOLINT
+        assert(Network::is_valid(addr) == true);		// NOLINT
+    }
+
     static auto test_address_localhost(const Network::Bytes& addr) -> void
     {
         const auto size {addr.size()};
 
         switch (Network::get_sa_family(addr)) {
         case AF_INET:
-            assert(size == sizeof(sockaddr_in));	// NOLINT
+            assert(size == Network::sin_size);			// NOLINT
             break;
         case AF_INET6:
-            assert(size == sizeof(sockaddr_in6));	// NOLINT
+            assert(size == Network::sin6_size);			// NOLINT
             break;
         default:
-            assert(false);				// NOLINT
+            assert(false);					// NOLINT
         }
 
-        assert(Network::is_valid(addr, verbose));	// NOLINT
+        assert(Network::is_valid(addr, verbose));		// NOLINT
         const Network::Address address {addr};
         const auto length {address.length()};
         const auto family {address.family()};
@@ -188,7 +198,8 @@ auto main(int argc, char* argv[]) -> int
                       << std::endl;
         }
         else {
-            TestAddress::test_address_empty();
+            TestAddress::test_address();
+            TestAddress::test_address_any();
             TestAddress::test_address_localhost();
         }
 

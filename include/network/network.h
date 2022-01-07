@@ -57,6 +57,10 @@
 #include "network/result.h"             // Result
 #include "network/socket.h"             // Hints, Host, Socket
 #include "network/socktype.h"           // SockType
+#include "network/sizes.h"              // sa_size, sin_size,
+                                        // sin6_size,
+                                        // sockaddr_size_max, ss_size,
+                                        // sun_size
 #include "network/types.h"              // Buffer, Hostname, Pathname
                                         // Service
 
