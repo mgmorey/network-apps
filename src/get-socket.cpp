@@ -65,8 +65,8 @@ auto Network::get_socket(const Socket& sock,
             << error
             << ": "
             << format_error(error);
-        return Result(error, oss.str());
+        return Result {error, oss.str()};
     }
 
-    return Fd(fd);
+    return Fd {fd};
 }
