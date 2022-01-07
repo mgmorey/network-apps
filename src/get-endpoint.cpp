@@ -39,7 +39,7 @@ auto Network::get_endpoint(const Bytes& addr, int flags, bool verbose) ->
 {
     Result result;
     Buffer host {NI_MAXHOST};
-    Buffer serv {NI_MAXSERV};
+    Buffer service {NI_MAXSERV};
     assert(is_valid(addr, verbose));  // NOLINT
     const auto addr_len {get_length(addr)};
     const auto *const addr_ptr {get_sa_pointer(addr)};
@@ -57,7 +57,7 @@ auto Network::get_endpoint(const Bytes& addr, int flags, bool verbose) ->
 
     const auto error {::getnameinfo(addr_ptr, addr_len,
                                     host.data(), host.size(),
-                                    serv.data(), serv.size(),
+                                    service.data(), service.size(),
                                     flags)};
 
     if (error != 0) {
@@ -73,8 +73,8 @@ auto Network::get_endpoint(const Bytes& addr, int flags, bool verbose) ->
             << " ("
             << ::gai_strerror(error)
             << ')';
-        return Result(error, oss.str());
+        return Result {error, oss.str()};
     }
 
-    return Endpoint(host, serv);
+    return Endpoint {host, service};
 }
