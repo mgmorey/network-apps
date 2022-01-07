@@ -15,22 +15,16 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+get_flavor() {
+    sed -n 's/^.* [(]\(.*\)[)] .*$/\1/p'
+}
+
 get_version() {
     "$1" --version 2>/dev/null | head -n 1
 }
 
-grep_version() {
-    grep -Eq '^((.+) )?clang version .*$'
+get_gcc_flavor() {
+    get_version "$1" | get_flavor
 }
 
-is_clang() {
-    get_version "$1" | grep_version
-}
-
-if is_clang "${1-clang}"; then
-    result=true
-else
-    result=false
-fi
-
-printf '%s\n' "$result"
+get_gcc_flavor "${1-gcc}"

@@ -29,7 +29,7 @@ endif
 ifdef SDKROOT
 ifeq "$(SYSTEM)" "Darwin"
 ifeq "$(IS_CLANG)" "true"
-ifeq "$(shell bin/get-clang-flavor $(CXX))" "Apple"
+ifeq "$(shell bin/get-clang-flavor $(CXX))" "Apple clang"
 CPPFLAGS := $(shell bin/remove-option -I$(SDKROOT)/usr/include "$(CPPFLAGS)")
 LDFLAGS := $(shell bin/remove-option -L$(SDKROOT)/usr/lib "$(LDFLAGS)")
 endif
@@ -38,8 +38,14 @@ endif
 endif
 
 ifdef USING_LIBASAN
-ifeq "$(SYSTEM)" "FreeBSD"
+ifeq "$(IS_CLANG)" "true"
+ifeq "$(shell bin/get-clang-flavor $(CXX))" "FreeBSD clang"
 	USING_LIBASAN := false
+endif
+else ifeq "$(IS_GCC)" "true"
+ifeq "$(shell bin/get-gcc-flavor $(CXX))" "FreeBSD Ports Collection"
+	USING_LIBASAN := false
+endif
 endif
 endif
 
@@ -111,7 +117,7 @@ endif
 ifeq "$(IS_GCC)" "true"
 	LDFLAGS += -Wl,-Map=$@.map
 else ifeq "$(IS_CLANG)" "true"
-ifeq "$(SYSTEM)" "Darwin"
+ifeq "$(shell bin/get-clang-flavor $(CXX))" "Apple clang"
 	LDFLAGS += -Wl,-map,$@.map
 endif
 endif
