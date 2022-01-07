@@ -13,37 +13,26 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_FD_H
-#define NETWORK_FD_H
+#ifndef NETWORK_FD_NULL_H
+#define NETWORK_FD_NULL_H
 
-#include "network/fd-null.h"            // fd_null
 #include "network/fd-type.h"            // fd_type
 
-#include <ostream>     // std::ostream
+#ifdef _WIN32
+#include <winsock2.h>       // INVALID_SOCKET
+#endif
 
 namespace Network
 {
-    class Fd
-    {
-        friend auto operator<<(std::ostream& os, Fd fd) -> std::ostream&;
+#ifndef INVALID_SOCKET
+#ifdef _WIN32
+    constexpr fd_type INVALID_SOCKET {~0};
+#else
+    constexpr fd_type INVALID_SOCKET {-1};
+#endif
+#endif
 
-    public:
-        Fd() = default;
-        Fd(const Fd& t_fd) = default;
-        Fd(Fd&& t_fd) noexcept = default;
-        // cppcheck-suppress noExplicitConstructor
-        Fd(fd_type t_fd);  // NOLINT
-        ~Fd() = default;
-        auto operator=(const Fd& t_fd) -> Fd& = default;
-        auto operator=(Fd&& t_fd) noexcept -> Fd& = default;
-        operator fd_type() const;  // NOLINT
-        explicit operator bool() const;
-
-    private:
-        fd_type m_value {fd_null};
-    };
-
-    auto operator<<(std::ostream& os, Fd fd) -> std::ostream&;
+    enum { fd_null = INVALID_SOCKET };
 }
 
 #endif
