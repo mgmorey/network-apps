@@ -49,8 +49,8 @@ auto Network::get_hostname(const Network::Hostname& host) ->
             << error
             << ": "
             << format_error(error);
-        return Result(error, oss.str());
+        return Result {error, oss.str()};
     }
 
-    return std::string(host_buffer);
+    return std::string {host_buffer};
 }
