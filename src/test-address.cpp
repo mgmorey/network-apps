@@ -158,7 +158,7 @@ namespace TestAddress
         std::visit(Network::Overload {
                 [&](const Network::HostVector& hosts) {
                         std::cout << "Socket addresses for "
-                                  << std::string(localhost)
+                                  << std::string {localhost}
                                   << ": "
                                   << std::endl;
 

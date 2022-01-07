@@ -36,36 +36,36 @@
 auto Network::get_sun_path(const Bytes& addr,
                            const Pathname& path) -> Pathname
 {
-    assert(get_sa_family(addr) == AF_UNIX);  // NOLINT
+    assert(get_sa_family(addr) == AF_UNIX);			// NOLINT
 
     if (addr.size() <= sun_path_offset) {
         return path;
     }
 
     const auto *const sun {get_sun_pointer(addr)};
-    assert(sun->sun_family == AF_UNIX);  // NOLINT
+    assert(sun->sun_family == AF_UNIX);				// NOLINT
     auto len_max {addr.size() - sun_path_offset};
-    auto len {strnlen(sun->sun_path, len_max)};  // NOLINT
-    return std::string(sun->sun_path, len);  // NOLINT
+    auto len {strnlen(sun->sun_path, len_max)};			// NOLINT
+    return std::string {sun->sun_path, len};			// NOLINT
 }
 
 auto Network::get_sun_path_length(const sockaddr_un* sun,
                                   std::size_t size) -> std::size_t
 {
-    assert(sun_path_offset <= size &&  // NOLINT
-           size <= sun_path_offset + sizeof sun->sun_path);  // NOLINT
+    assert(sun_path_offset <= size &&  				// NOLINT
+           size <= sun_path_offset + sizeof sun->sun_path);	// NOLINT
     size = std::min(sun_path_offset + sizeof sun->sun_path,
                     std::max(sun_path_offset, size));
 #ifdef HAVE_SOCKADDR_SA_LEN
     std::size_t len {sun->sun_len};
-    assert(sun_path_offset <= len && len <= size);  // NOLINT
+    assert(sun_path_offset <= len && len <= size);		// NOLINT
     len = std::min(size, std::max(sun_path_offset, len));
     const auto max_path_len {std::min(size, len) - sun_path_offset};
 #else
     const auto max_path_len {std::min(size - sun_path_offset,
                                       sizeof sun->sun_path)};
 #endif
-    return strnlen(sun->sun_path, max_path_len);  // NOLINT
+    return strnlen(sun->sun_path, max_path_len);		// NOLINT
 }
 
 #endif

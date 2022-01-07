@@ -29,5 +29,5 @@ auto Network::to_string(const in_addr& addr) -> std::string
 {
     Buffer buffer {INET_ADDRSTRLEN};
     ::inet_ntop(AF_INET, &addr, buffer.data(), buffer.size());
-    return std::string(buffer);
+    return std::string {buffer};
 }
