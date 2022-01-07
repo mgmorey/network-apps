@@ -51,20 +51,18 @@ ifneq "$(SYSTEM)" "MINGW64_NT"
 	unix_sources += unix-client.cpp	unix-server.cpp
 endif
 
-executables = $(test_executables) $(unix_executables)
-test_executables = $(subst .cpp,,$(test_sources))
-unix_executables = $(subst .cpp,,$(unix_sources))
+executables = $(test_execs) $(unix_execs)
+test_execs = $(subst .cpp,,$(test_sources))
+unix_execs = $(subst .cpp,,$(unix_sources))
 
 exec_sources = $(test_sources) $(unix_sources)
 
 libraries = libnetwork.a
 
-objects = $(lib_objects) $(exec_objects)
+objects = $(lib_objs) $(exec_objs)
 
-exec_objects = $(addprefix $(tmp_dir)/,$(subst	\
-.cpp,.o,$(exec_sources)))
-lib_objects = $(addprefix $(tmp_dir)/,$(subst	\
-.cpp,.o,$(lib_sources)))
+exec_objs = $(addprefix $(tmp_dir)/,$(subst .cpp,.o,$(exec_sources)))
+lib_objs = $(addprefix $(tmp_dir)/,$(subst .cpp,.o,$(lib_sources)))
 
 dependencies = $(addprefix $(tmp_dir)/,$(subst .cpp,.dep,$(sources)))
 listings = $(addprefix $(tmp_dir)/,$(subst .cpp,.lst,$(sources)))
@@ -100,11 +98,11 @@ realclean: clean
 	rm -rf TAGS *.core *.stackdump $(tmp_dir)
 
 .PHONY:	test
-test: $(test_executables)
-	for f in $(test_executables); do ./$$f; done
+test: $(test_execs)
+	for f in $(test_execs); do ./$$f; done
 
 .PHONY:	unix
-unix: $(unix_executables)
+unix: $(unix_execs)
 	./unix-server & (sleep 1; ./unix-client 2 2; ./unix-client DOWN)
 
 .PHONY:	install
@@ -117,7 +115,7 @@ TAGS:	$(sources)
 
 $(executables): libnetwork.a
 
-libnetwork.a: $(patsubst %.o,libnetwork.a(%.o),$(lib_objects))
+libnetwork.a: $(patsubst %.o,libnetwork.a(%.o),$(lib_objs))
 
 $(dependencies) $(objects): | $(tmp_dir)
 
