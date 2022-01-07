@@ -181,7 +181,7 @@ auto main(int argc, char* argv[]) -> int
 {
     try {
         const auto args {TestAddress::parse_arguments(argc, argv)};
-        const Network::Context context(TestAddress::verbose);
+        const Network::Context context {TestAddress::verbose};
 
         if (context.result()) {
             std::cerr << context.result()
