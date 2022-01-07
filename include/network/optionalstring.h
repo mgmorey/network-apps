@@ -29,24 +29,23 @@ namespace Network
         OptionalString(const OptionalString&) = default;
         OptionalString(OptionalString&&) noexcept = default;
         // cppcheck-suppress noExplicitConstructor
-        OptionalString(const std::nullopt_t& t_value);  // NOLINT
+        OptionalString(const std::nullopt_t& t_value);		// NOLINT
         // cppcheck-suppress noExplicitConstructor
-        OptionalString(const std::string& t_value);  // NOLINT
+        OptionalString(const std::string& t_value);		// NOLINT
         // cppcheck-suppress noExplicitConstructor
-        OptionalString(const char* t_value);  // NOLINT
+        OptionalString(const char* t_value);			// NOLINT
         ~OptionalString() = default;
         auto operator=(const OptionalString&) -> OptionalString& = default;
         auto operator=(OptionalString&&) noexcept -> OptionalString& = default;
-        auto operator=(const std::nullopt_t& t_value) ->
-            OptionalString&;  // NOLINT
-        auto operator=(const std::string& t_value) ->
-            OptionalString&;  // NOLINT
-        auto operator=(const char* t_value) ->
-            OptionalString&;  // NOLINT
-        operator std::string() const;  // NOLINT
-        operator const char*() const;  // NOLINT
+        // NOLINTNEXTLINE
+        auto operator=(const std::nullopt_t& t_value) -> OptionalString&;
+        // NOLINTNEXTLINE
+        auto operator=(const std::string& t_value) -> OptionalString&;
+        // NOLINTNEXTLINE
+        auto operator=(const char* t_value) -> OptionalString&;
+        operator std::string() const;				// NOLINT
+        operator const char*() const;				// NOLINT
         [[nodiscard]] auto has_value() const -> bool;
-        [[nodiscard]] auto size() const -> std::string::size_type;
         [[nodiscard]] auto value() const -> std::string;
         [[nodiscard]] auto value_or(const std::string& t_value) const ->
             std::string;
@@ -55,6 +54,10 @@ namespace Network
         std::optional<std::string> m_value {};
     };
 
+    extern auto operator==(const OptionalString& left,
+                           const OptionalString& right) -> bool;
+    extern auto operator!=(const OptionalString& left,
+                           const OptionalString& right) -> bool;
     extern auto operator<<(std::ostream& os,
                            const OptionalString& string) -> std::ostream&;
 }

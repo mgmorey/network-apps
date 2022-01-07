@@ -39,7 +39,7 @@ namespace Network
 #ifndef _WIN32
     extern auto get_sockaddr(const sockaddr_un* sun,
                              std::size_t size = sun_size) -> Bytes;
-    extern auto get_sockaddr(const Pathname& path) -> Bytes;
+    extern auto get_sockaddr(const Pathname& pathname) -> Bytes;
 #endif
 }
 

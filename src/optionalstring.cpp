@@ -74,18 +74,25 @@ auto Network::OptionalString::has_value() const -> bool
     return m_value.has_value();
 }
 
-auto Network::OptionalString::size() const -> std::string::size_type
-{
-    return m_value.has_value() ? m_value.value().size() : 0;
-}
-
 auto Network::OptionalString::value() const -> std::string
 {
-    return m_value.value_or("");
+    return m_value.value();
 }
 
 auto Network::OptionalString::value_or(const std::string& t_value) const ->
     std::string
 {
     return m_value.value_or(t_value);
+}
+
+auto Network::operator==(const OptionalString& left,
+                         const OptionalString& right) -> bool
+{
+    return left.value() == right.value();
+}
+
+auto Network::operator!=(const OptionalString& left,
+                         const OptionalString& right) -> bool
+{
+    return left.value() != right.value();
 }

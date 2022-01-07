@@ -76,13 +76,13 @@ namespace TestSocket
             std::cout << "Unix domain path: "
                       << sun_path
                       << std::endl;
-            assert(sun_path.value() == path.value());  // NOLINT
+            assert(sun_path == path);			// NOLINT
         }
         else {
-            assert(sun_path.has_value() == false);  // NOLINT
+            assert(sun_path.has_value() == false);	// NOLINT
         }
 
-        assert(Network::is_valid(addr, verbose));  // NOLINT
+        assert(Network::is_valid(addr, verbose));	// NOLINT
         Network::Address address {addr};
         std::cout << "Unix domain address: "
                   << address
