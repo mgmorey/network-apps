@@ -13,7 +13,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-COMPILER_VERSION := $(shell bin/get-compiler-version)
+COMPILER_COMMAND := $(shell which $(CXX))
+COMPILER_VERSION := $(shell bin/get-compiler-version $(CXX))
 IS_CLANG := $(shell bin/is-clang $(CXX))
 IS_GCC := $(shell bin/is-gcc $(CXX))
 SYSTEM := $(shell uname -s | cut -d- -f 1)
@@ -22,6 +23,15 @@ ifeq "$(IS_GCC)" "true"
 ifeq "$(LANGUAGE)" "c++20"
 ifeq "$(shell bin/compare-versions $(COMPILER_VERSION) 10)" "less"
 	LANGUAGE := c++2a
+endif
+endif
+endif
+
+ifdef SDKROOT
+ifeq "$(SYSTEM)" "Darwin"
+ifeq "$(shell dirname $(COMPILER_COMMAND))" "/usr/bin"
+CPPFLAGS := $(shell bin/remove-option -I$(SDKROOT)/usr/include "$(CPPFLAGS)")
+LDFLAGS := $(shell bin/remove-option -L$(SDKROOT)/usr/lib "$(LDFLAGS)")
 endif
 endif
 endif
