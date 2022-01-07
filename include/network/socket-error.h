@@ -13,18 +13,22 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_ERROR_H
-#define NETWORK_ERROR_H
+#ifndef NETWORK_SOCKET_ERROR_H
+#define NETWORK_SOCKET_ERROR_H
 
 #include "network/error-type.h"         // error_type
 
-#include <string>       // std::string
+#ifdef _WIN32
+#include <winsock2.h>       // SOCKET_ERROR
+#endif
+
+#ifndef SOCKET_ERROR
+#define SOCKET_ERROR	(-1)	// NOLINT
+#endif
 
 namespace Network
 {
-    extern auto format_error(error_type error) -> std::string;
-    extern auto get_last_error() -> error_type;
-    extern auto reset_last_error() -> error_type;
+    enum : error_type { socket_error = SOCKET_ERROR };
 }
 
 #endif

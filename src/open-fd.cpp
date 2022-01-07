@@ -22,6 +22,7 @@
 #include "network/get-length.h"         // Bytes, get_length()
 #include "network/get-sa-pointer.h"     // Bytes, get_sa_pointer()
 #include "network/is-valid.h"           // Bytes, is_valid()
+#include "network/socket-error.h"       // socket_error
 
 #include <cassert>      // assert()
 #include <iostream>     // std::cerr, std::endl

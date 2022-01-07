@@ -13,18 +13,20 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_ERROR_H
-#define NETWORK_ERROR_H
+#ifndef NETWORK_ERROR_TYPE_H
+#define NETWORK_ERROR_TYPE_H
 
-#include "network/error-type.h"         // error_type
-
-#include <string>       // std::string
+#ifdef _WIN32
+#include <windows.h>        // DWORD
+#endif
 
 namespace Network
 {
-    extern auto format_error(error_type error) -> std::string;
-    extern auto get_last_error() -> error_type;
-    extern auto reset_last_error() -> error_type;
+#ifdef _WIN32
+    using error_type = DWORD;
+#else
+    using error_type = int;
+#endif
 }
 
 #endif

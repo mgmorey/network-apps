@@ -15,14 +15,17 @@
 
 #ifndef _WIN32
 
-#include "network/get-socketpair.h" // FdPair, FdPairResult, Result,
-                                    // Socket, fd_null, fd_type,
-                                    // get_socketpair(), operator<<()
-#include "network/error.h"          // format_error(), get_last_error(),
-                                    // set_last_error()
-#include "network/format.h"         // Format
+#include "network/get-socketpair.h"     // FdPair, FdPairResult,
+                                        // Result, Socket, fd_null,
+                                        // fd_type, get_socketpair(),
+                                        // operator<<()
+#include "network/error.h"              // format_error(),
+                                        // get_last_error(),
+                                        // set_last_error()
+#include "network/format.h"             // Format
+#include "network/socket-error.h"       // socket_error
 
-#include <sys/socket.h> // socketpair()
+#include <sys/socket.h>     // socketpair()
 
 #include <array>        // std::array
 #include <iostream>     // std::cerr, std::endl
