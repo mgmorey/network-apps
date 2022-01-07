@@ -110,7 +110,7 @@ install: $(libraries)
 	install libnetwork.a $(prefix)/lib
 	install include/network/*.h $(prefix)/include
 
-TAGS:	$(sources)
+TAGS:
 	printf '%s\n' $^ | etags --declarations --language=c++ -
 
 $(executables): libnetwork.a
