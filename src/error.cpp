@@ -17,10 +17,10 @@
                                 // reset_last_error(), std::string
 
 #ifdef _WIN32
-#include <winsock2.h>   // WSAGetLastError()
-#include <windows.h>    // FORMAT_MESSAGE*, LANG_NEUTRAL,
-                        // MAKELANGID(), SUBLANG_DEFAULT,
-                        // FormatMessage(), LocalFree()
+#include <winsock2.h>       // WSAGetLastError()
+#include <windows.h>        // FORMAT_MESSAGE*, LANG_NEUTRAL,
+                            // MAKELANGID(), SUBLANG_DEFAULT,
+                            // FormatMessage(), LocalFree()
 #else
 #include <cerrno>       // errno
 #include <cstring>      // std::strerror()
