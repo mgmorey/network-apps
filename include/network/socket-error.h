@@ -16,8 +16,6 @@
 #ifndef NETWORK_SOCKET_ERROR_H
 #define NETWORK_SOCKET_ERROR_H
 
-#include "network/error-type.h"         // error_type
-
 #ifdef _WIN32
 #include <winsock2.h>       // SOCKET_ERROR
 #endif
@@ -28,7 +26,7 @@
 
 namespace Network
 {
-    enum : error_type { socket_error = SOCKET_ERROR };
+    enum { socket_error = SOCKET_ERROR };
 }
 
 #endif
