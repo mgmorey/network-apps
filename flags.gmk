@@ -37,6 +37,12 @@ endif
 endif
 endif
 
+ifdef USING_LIBASAN
+ifeq "$(SYSTEM)" "FreeBSD"
+	USING_LIBASAN := false
+endif
+endif
+
 CPPCHECK_FLAGS += --cppcheck-build-dir=tmp --enable=all --inline-suppr --quiet
 
 ifdef LANGUAGE
