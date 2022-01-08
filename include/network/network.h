@@ -62,8 +62,8 @@
                                         // sin6_size,
                                         // sockaddr_size_max, ss_size,
                                         // sun_size
-#include "network/socket.h"             // Hints, Host, Socket
 #include "network/socket-error.h"       // socket_error
+#include "network/socket.h"             // Hints, Host, Socket
 #include "network/socktype.h"           // SockType
 #include "network/types.h"              // Buffer, Hostname, Pathname
                                         // Service
