@@ -20,7 +20,7 @@ get_version() {
 }
 
 get_version_string() {
-    "$1" --version 2>/dev/null | head -n 1
+    "$1" --version 2>/dev/null
 }
 
 get_llvm_version() {
