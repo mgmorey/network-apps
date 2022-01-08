@@ -23,7 +23,7 @@
 #include <sys/socket.h>     // connect()
 #endif
 
-static constexpr Network::OpenHandler handler {::connect, "connect"};
+static const Network::OpenHandler handler {::connect, "connect"};
 
 auto Network::connect(Fd fd,
                       const Bytes& addr,

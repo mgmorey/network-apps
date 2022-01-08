@@ -23,7 +23,7 @@
 #include <sys/socket.h>     // bind()
 #endif
 
-static constexpr Network::OpenHandler handler {::bind, "bind"};
+static const Network::OpenHandler handler {::bind, "bind"};
 
 auto Network::bind(Fd fd,
                    const Bytes& addr,

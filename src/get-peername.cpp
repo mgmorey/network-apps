@@ -21,7 +21,7 @@
 #include <sys/socket.h> // getpeername()
 #endif
 
-static constexpr Network::GetNameHandler handler {::getpeername, "getpeername"};
+static const Network::GetNameHandler handler {::getpeername, "getpeername"};
 
 auto Network::get_peername(Fd fd, bool verbose) -> Network::BytesResult
 {
