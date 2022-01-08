@@ -38,21 +38,21 @@ auto Network::Address::operator<(const Address& t_address) const -> bool
 {
     return (family() < t_address.family() ||
             port() < t_address.port() ||
-            text() < t_address.text());
+            text() < t_address.text());  // NOLINT
 }
 
 auto Network::Address::operator>(const Address& t_address) const -> bool
 {
     return (family() > t_address.family() ||
             port() > t_address.port() ||
-            text() > t_address.text());
+            text() > t_address.text());  // NOLINT
 }
 
 auto Network::Address::operator==(const Address& t_address) const -> bool
 {
     return (family() == t_address.family() &&
             port() == t_address.port() &&
-            text() == t_address.text());
+            text() == t_address.text());  // NOLINT
 }
 
 Network::Address::operator value_type() const
