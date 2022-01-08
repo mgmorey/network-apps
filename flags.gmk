@@ -115,7 +115,7 @@ endif
 ifeq "$(IS_GCC)" "true"
 	LDFLAGS += -Wl,-Map=$@.map
 else ifeq "$(IS_CLANG)" "true"
-ifeq "$(shell bin/get-clang-flavor $(CXX))" "Apple clang"
+ifeq "$(SYSTEM)" "Darwin"
 	LDFLAGS += -Wl,-map,$@.map
 endif
 endif
