@@ -81,6 +81,7 @@ namespace TestBind
             auto sockname_result {Network::get_sockname(t_fd, verbose)};
             std::visit(Network::Overloaded {
                     [&](const Network::Bytes& addr) {
+                        static_cast<void>(addr);
                     },
                     [&](const Network::Result& result) {
                         std::cerr << result

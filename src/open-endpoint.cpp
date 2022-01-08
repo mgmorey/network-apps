@@ -49,6 +49,7 @@ auto Network::open(const OpenHandler& handler,
                     }
                 },
                 [&](const Result& result) {
+                    static_cast<void>(result);
                 }
             }, socket_result);
         return socket_result;

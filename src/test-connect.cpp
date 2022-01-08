@@ -86,6 +86,7 @@ namespace TestConnect
             auto peername_result {Network::get_peername(t_fd, verbose)};
             std::visit(Network::Overloaded {
                     [&](const Network::Bytes& addr) {
+                        static_cast<void>(addr);
                     },
                     [&](const Network::Result& result) {
                         std::cerr << result
@@ -101,6 +102,7 @@ namespace TestConnect
             auto sockname_result {Network::get_sockname(t_fd, verbose)};
             std::visit(Network::Overloaded {
                     [&](const Network::Bytes& addr) {
+                        static_cast<void>(addr);
                     },
                     [&](const Network::Result& result) {
                         std::cerr << result
