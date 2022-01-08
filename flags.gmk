@@ -13,6 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+CLANG_TIDY_VERSION := $(shell bin/get-llvm-version clang-tidy$(LLVM_SUFFIX))
 COMPILER_VERSION := $(shell bin/get-compiler-version $(CXX))
 IS_CLANG := $(shell bin/is-clang $(CXX))
 IS_GCC := $(shell bin/is-gcc $(CXX))
@@ -124,8 +125,12 @@ else ifeq "$(SYSTEM)" "MINGW64_NT"
 	LDLIBS += -lws2_32
 endif
 
-TIDY_FLAGS = -config= -header-filter='.*'
-TIDY_FLAGS += -- -std=$(STANDARD) $(CPPFLAGS)
+ifeq "$(shell bin/compare-versions $(CLANG_TIDY_VERSION) 13)" "less"
+	TIDY_FLAGS = -config=
+else
+	TIDY_FLAGS = -config-file='.clang-tidy'
+endif
+TIDY_FLAGS += -header-filter='.*' -- -std=$(STANDARD) $(CPPFLAGS)
 
 # Local Variables:
 # mode: makefile
