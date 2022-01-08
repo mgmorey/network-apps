@@ -19,7 +19,7 @@ IS_GCC := $(shell bin/is-gcc $(CXX))
 SYSTEM := $(shell uname -s | cut -d- -f 1)
 
 ifeq "$(IS_GCC)" "true"
-ifeq "$(LANGUAGE)" "c++20"
+ifeq "$(STANDARD)" "c++20"
 ifeq "$(shell bin/compare-versions $(COMPILER_VERSION) 10)" "less"
 	LANGUAGE := c++2a
 endif
@@ -47,10 +47,10 @@ endif
 endif
 endif
 
-CPPCHECK_FLAGS += --cppcheck-build-dir=tmp --enable=all --inline-suppr --quiet
+CPPCHECK_FLAGS = --cppcheck-build-dir=tmp --enable=all --inline-suppr --quiet
 
 ifdef LANGUAGE
-	CPPCHECK_FLAGS += --std=$(LANGUAGE)
+	CPPCHECK_FLAGS += --std=$(STANDARD)
 endif
 
 ifeq "$(SYSTEM)" "MINGW64_NT"
@@ -97,7 +97,7 @@ else
 endif
 
 ifdef LANGUAGE
-	CXXFLAGS += -std=$(LANGUAGE)
+	CXXFLAGS += -std=$(STANDARD)
 endif
 
 CXXFLAGS += -Wall -Werror -Wextra -Wpedantic -Wshadow
@@ -125,6 +125,9 @@ ifeq "$(SYSTEM)" "FreeBSD"
 else ifeq "$(SYSTEM)" "MINGW64_NT"
 	LDLIBS += -lws2_32
 endif
+
+TIDY_FLAGS = -config-file='.clang-tidy' -header-filter='.*'
+TIDY_FLAGS += -- -std=$(STANDARD) $(CPPFLAGS)
 
 # Local Variables:
 # mode: makefile

@@ -13,19 +13,34 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-LANGUAGE := c++20
+LANGUAGE := c++
+STANDARD := $(LANGUAGE)20
 
 include flags.gmk
 
 LINK.o = $(CXX) $(LDFLAGS)
 
 prefix = /usr/local
+tmp_dir = tmp
+
+executables = $(test_execs) $(unix_execs)
+test_execs = $(subst .cpp,,$(test_sources))
+unix_execs = $(subst .cpp,,$(unix_sources))
+
+libraries = libnetwork.a
+
+objects = $(lib_objs) $(exec_objs)
+
+exec_objs = $(addprefix $(tmp_dir)/,$(subst .cpp,.o,$(exec_sources)))
+lib_objs = $(addprefix $(tmp_dir)/,$(subst .cpp,.o,$(lib_sources)))
+
+dependencies = $(addprefix $(tmp_dir)/,$(subst .cpp,.dep,$(sources)))
+listings = $(addprefix $(tmp_dir)/,$(subst .cpp,.lst,$(sources)))
+maps = $(subst .cpp,.map,$(exec_sources))
 
 sources = $(exec_sources) $(lib_sources)
 
-test_sources = test-address.cpp test-bind.cpp test-connect.cpp	\
-test-host.cpp test-hostname.cpp
-unix_sources =
+exec_sources = $(test_sources) $(unix_sources)
 
 lib_sources = address.cpp address-sa.cpp address-sin.cpp		\
 address-sin6.cpp address-sun.cpp addrinfo.cpp bind.cpp buffer.cpp	\
@@ -46,40 +61,18 @@ stream-addrinfo.cpp stream-bytestring.cpp stream-hints.cpp		\
 stream-optionalstring.cpp stream-socket.cpp to-string.cpp		\
 to-string-sin.cpp to-string-sin6.cpp
 
+test_sources = test-address.cpp test-bind.cpp test-connect.cpp	\
+test-host.cpp test-hostname.cpp
+
 ifneq "$(SYSTEM)" "MINGW64_NT"
 	test_sources += test-socket.cpp
-	unix_sources += unix-client.cpp	unix-server.cpp
+	unix_sources = unix-client.cpp unix-server.cpp
+else
+	unix_sources =
 endif
-
-executables = $(test_execs) $(unix_execs)
-test_execs = $(subst .cpp,,$(test_sources))
-unix_execs = $(subst .cpp,,$(unix_sources))
-
-exec_sources = $(test_sources) $(unix_sources)
-
-libraries = libnetwork.a
-
-objects = $(lib_objs) $(exec_objs)
-
-exec_objs = $(addprefix $(tmp_dir)/,$(subst .cpp,.o,$(exec_sources)))
-lib_objs = $(addprefix $(tmp_dir)/,$(subst .cpp,.o,$(lib_sources)))
-
-dependencies = $(addprefix $(tmp_dir)/,$(subst .cpp,.dep,$(sources)))
-listings = $(addprefix $(tmp_dir)/,$(subst .cpp,.lst,$(sources)))
-maps = $(subst .cpp,.map,$(exec_sources))
-
-tmp_dir = tmp
 
 .PHONY:	all
 all: $(executables) TAGS
-
-.PHONY:	check
-check: cppcheck
-
-.PHONY:	clang-tidy
-clang-tidy:	$(sources)
-	clang-tidy$(CLANG_SUFFIX) $^ -config-file='.clang-tidy'	\
--header-filter='.*' -- -std=$(LANGUAGE) $(CPPFLAGS)
 
 .PHONY:	clean
 clean:
@@ -93,6 +86,11 @@ cppcheck:
 dos2unix:
 	dos2unix *.log *.map $(tmp_dir)/*.lst $(tmp_dir)/*.txt
 
+.PHONY:	install
+install: $(libraries)
+	install libnetwork.a $(prefix)/lib
+	install include/network/*.h $(prefix)/include
+
 .PHONY:	realclean
 realclean: clean
 	rm -rf TAGS *.core *.stackdump $(tmp_dir)
@@ -101,17 +99,16 @@ realclean: clean
 test: $(test_execs)
 	for f in $(test_execs); do ./$$f; done
 
-.PHONY:	unix
-unix: $(unix_execs)
+.PHONY:	test-unix
+test-unix: $(unix_execs)
 	./unix-server & (sleep 1; ./unix-client 2 2; ./unix-client DOWN)
 
-.PHONY:	install
-install: $(libraries)
-	install libnetwork.a $(prefix)/lib
-	install include/network/*.h $(prefix)/include
+.PHONY:	tidy
+tidy:	$(sources)
+	clang-tidy$(CLANG_SUFFIX) $^ $(TIDY_FLAGS)
 
 TAGS:
-	printf '%s\n' $^ | etags --declarations --language=c++ -
+	printf '%s\n' $^ | etags --declarations --language=$(LANGUAGE) -
 
 $(executables): libnetwork.a
 
