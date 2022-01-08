@@ -28,7 +28,7 @@
 auto Network::get_sockaddr(const Pathname& pathname) -> Network::Bytes
 {
     sockaddr_un sun {};
-    const auto path_len {pathname.value_or("").length()};
+    const auto path_len {pathname.has_value() ? pathname.value().length() : 0};
     const auto path_len_max {std::min(path_len, sizeof sun.sun_path - 1)};
     auto sun_len_min {sizeof sun - sizeof sun.sun_path + path_len_max};
 #ifdef HAVE_SOCKADDR_SA_LEN
