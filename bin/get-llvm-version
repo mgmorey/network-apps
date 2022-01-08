@@ -16,7 +16,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 get_version() {
-    sed -n 's/^.*[ ]*LLVM version \(.*\)$/\1/p'
+    sed -n 's/[A-Za-z]* LLVM version \(.*\)$/\1/p'
 }
 
 get_version_string() {
