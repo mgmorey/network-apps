@@ -112,12 +112,10 @@ ifeq "$(USING_LIBASAN)" "true"
 endif
 endif
 
-ifeq "$(IS_GCC)" "true"
+ifeq "$(SYSTEM)" "Linux"
 	LDFLAGS += -Wl,-Map=$@.map
-else ifeq "$(IS_CLANG)" "true"
-ifeq "$(SYSTEM)" "Darwin"
+else ifeq "$(SYSTEM)" "Darwin"
 	LDFLAGS += -Wl,-map,$@.map
-endif
 endif
 
 ifeq "$(SYSTEM)" "FreeBSD"
