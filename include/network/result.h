@@ -26,7 +26,7 @@ namespace Network
     struct Result
     {
         Result() = default;
-        Result(result_type t_result, std::string t_string);
+        Result(result_type t_number, std::string t_string);
         operator bool() const;  // NOLINT
         [[nodiscard]] auto number() const -> result_type;
         [[nodiscard]] auto string() const -> std::string;
