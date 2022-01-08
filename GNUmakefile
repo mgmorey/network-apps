@@ -99,13 +99,13 @@ realclean: clean
 test: $(test_execs)
 	for f in $(test_execs); do ./$$f; done
 
-.PHONY:	test-unix
-test-unix: $(unix_execs)
-	./unix-server & (sleep 1; ./unix-client 2 2; ./unix-client DOWN)
-
 .PHONY:	tidy
 tidy:	$(sources)
 	clang-tidy$(LLVM_SUFFIX) $^ $(TIDY_FLAGS)
+
+.PHONY:	unix
+unix: $(unix_execs)
+	./unix-server & (sleep 1; ./unix-client 2 2; ./unix-client DOWN)
 
 TAGS:
 	printf '%s\n' $^ | etags --declarations --language=$(LANGUAGE) -
