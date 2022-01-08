@@ -1,4 +1,4 @@
-Checks:          'clang-diagnostic-*,clang-analyzer-*,*,-altera-*,-android-*,-bugprone-easily-swappable-parameters,-clang-analyzer-alpha.*,-concurrency-mt-unsafe,-fuchsia-*,-google-*,-hicpp-signed-bitwise,-linuxkernel-*,-llvm-namespace-comment,-llvmlibc-*,-objc-*,-openmp-*,-zircon-*'
+Checks:          'clang-diagnostic-*,clang-analyzer-*,*,-altera-*,-android-*,-bugprone-easily-swappable-parameters,-clang-analyzer-alpha.*,-concurrency-mt-unsafe,-fuchsia-*,-google-*,-hicpp-signed-bitwise,-linuxkernel-*,-llvm-namespace-comment,-llvmlibc-*,-objc-*,-openmp-*,-readability-simplify-boolean-expr,-zircon-*'
 WarningsAsErrors: ''
 HeaderFilterRegex: ''
 AnalyzeTemporaryDtors: false
@@ -221,8 +221,6 @@ CheckOptions:
     value:           ''
   - key:             readability-uniqueptr-delete-release.PreferResetCall
     value:           'false'
-  - key:             misc-throw-by-value-catch-by-reference.MaxSize
-    value:           '-1'
   - key:             misc-definitions-in-headers.UseHeaderFileExtension
     value:           'true'
   - key:             google-readability-namespace-comments.SpacesBeforeComments
@@ -305,8 +303,6 @@ CheckOptions:
     value:           'true'
   - key:             readability-identifier-naming.GetConfigPerFile
     value:           'true'
-  - key:             cert-err61-cpp.MaxSize
-    value:           '-1'
   - key:             cert-sig30-c.AsyncSafeFunctionSet
     value:           POSIX
   - key:             hicpp-member-init.UseAssignment
@@ -373,8 +369,6 @@ CheckOptions:
     value:           'true'
   - key:             modernize-use-override.FinalSpelling
     value:           final
-  - key:             cert-err09-cpp.MaxSize
-    value:           '-1'
   - key:             readability-suspicious-call-argument.JaroWinklerDissimilarBelow
     value:           '75'
   - key:             hicpp-use-equals-default.IgnoreMacros
