@@ -19,12 +19,12 @@ get_flavor() {
     sed -n 's/^.* [(]\(.*\)[)] .*$/\1/p'
 }
 
-get_version() {
+get_version_string() {
     "$1" --version 2>/dev/null | head -n 1
 }
 
 get_gcc_flavor() {
-    get_version "$1" | get_flavor
+    get_version_string "$1" | get_flavor
 }
 
 get_gcc_flavor "${1-gcc}"
