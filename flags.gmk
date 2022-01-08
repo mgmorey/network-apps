@@ -124,7 +124,7 @@ else ifeq "$(SYSTEM)" "MINGW64_NT"
 	LDLIBS += -lws2_32
 endif
 
-TIDY_FLAGS = -config-file='.clang-tidy' -header-filter='.*'
+TIDY_FLAGS = -config= -header-filter='.*'
 TIDY_FLAGS += -- -std=$(STANDARD) $(CPPFLAGS)
 
 # Local Variables:
