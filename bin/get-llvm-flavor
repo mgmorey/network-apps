@@ -16,11 +16,11 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 get_version() {
-    sed -n 's/^\(.*[ ]*LLVM\) version .*$/\1/p'
+    sed -n 's/\([A-Za-z]*\) LLVM version .*$/\1/p'
 }
 
 get_version_string() {
-    "$1" --version 2>/dev/null | head -n 1
+    "$1" --version 2>/dev/null
 }
 
 get_llvm_version() {
