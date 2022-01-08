@@ -23,12 +23,11 @@
 #include <sys/socket.h>     // connect()
 #endif
 
-static const Network::OpenHandler handler {::connect, "connect"};
-
 auto Network::connect(Fd fd,
                       const Bytes& addr,
                       bool verbose) -> Network::Result
 {
+    const Network::OpenHandler handler {::connect, "connect"};
     return open(handler, fd, addr, verbose);
 }
 
@@ -36,5 +35,6 @@ auto Network::connect(const Endpoint& endp,
                       const Hints* hints,
                       bool verbose) -> Network::FdResultVector
 {
+    const Network::OpenHandler handler {::connect, "connect"};
     return open(handler, endp, hints, verbose);
 }
