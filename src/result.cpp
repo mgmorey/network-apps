@@ -19,20 +19,20 @@
 #include <string>       // std::string
 #include <utility>      // std::move()
 
-Network::Result::Result(result_type t_result, std::string t_string) :
-    m_result(t_result),
-    m_string(std::move(t_string))
+Network::Result::Result(result_type t_number, std::string t_string) :
+    m_string(std::move(t_string)),
+    m_number(t_number)
 {
 }
 
 Network::Result::operator bool() const
 {
-    return m_result != 0 || !m_string.empty();
+    return m_number != 0 || !m_string.empty();
 }
 
-auto Network::Result::result() const -> Network::result_type
+auto Network::Result::number() const -> Network::result_type
 {
-    return m_result;
+    return m_number;
 }
 
 auto Network::Result::string() const -> std::string

@@ -71,16 +71,16 @@ auto main() -> int
     // Bind socket to socket name.
     const auto sock_addr {Network::get_sockaddr(SOCKET_NAME)};
     const auto sock_result {Network::bind(sock, sock_addr)};
-    auto error {sock_result.result()};
+    auto result {sock_result.number()};
 
-    if (error == -1) {
+    if (result == -1) {
         std::perror("bind");
         std::exit(EXIT_FAILURE);
     }
 
-    error = std::atexit(clean_up);
+    result = std::atexit(clean_up);
 
-    if (error == -1) {
+    if (result == -1) {
         std::perror("atexit");
         std::exit(EXIT_FAILURE);
     }
@@ -88,9 +88,9 @@ auto main() -> int
     // Prepare for accepting connections. The backlog size is set to
     // 20. So while one request is being processed other requests can
     // be waiting.
-    error = ::listen(sock, backlog_size);
+    result = ::listen(sock, backlog_size);
 
-    if (error == -1) {
+    if (result == -1) {
         std::perror("listen");
         std::exit(EXIT_FAILURE);
     }
@@ -112,9 +112,9 @@ auto main() -> int
         for (;;) {
 
             // Wait for next data packet.
-            error = ::read(data_socket, buffer.data(), buffer.size());
+            result = ::read(data_socket, buffer.data(), buffer.size());
 
-            if (error == -1) {
+            if (result == -1) {
                 std::perror("read");
                 std::exit(EXIT_FAILURE);
             }
@@ -141,9 +141,9 @@ auto main() -> int
             oss << sum
                 << '\0';
             std::string str {oss.str()};
-            error = ::write(data_socket, str.data(), str.size());
+            result = ::write(data_socket, str.data(), str.size());
 
-            if (error == -1) {
+            if (result == -1) {
                 std::perror("write");
                 std::exit(EXIT_FAILURE);
             }

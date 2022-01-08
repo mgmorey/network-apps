@@ -28,12 +28,12 @@ namespace Network
         Result() = default;
         Result(result_type t_result, std::string t_string);
         operator bool() const;  // NOLINT
-        [[nodiscard]] auto result() const -> result_type;
+        [[nodiscard]] auto number() const -> result_type;
         [[nodiscard]] auto string() const -> std::string;
 
     private:
-        result_type m_result {0};
         std::string m_string;
+        result_type m_number {0};
     };
 
     extern auto operator<<(std::ostream& os,
