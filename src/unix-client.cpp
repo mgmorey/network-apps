@@ -13,7 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/network.h"    // Buffer, connect(), get_sockaddr()
+#include "network/network.h"    // Buffer, Fd, close(), connect(),
+                                // get_sockaddr(), socket_error
 #include "unix-common.h"        // BUFFER_SIZE, SOCKET_NAME
 
 #include <sys/socket.h>         // SOCK_SEQPACKET, ::connect(),
@@ -45,9 +46,9 @@ auto main(int argc, char *argv[]) -> int
     // Connect socket to socket address.
     const auto sock_addr {Network::get_sockaddr(SOCKET_NAME)};
     const auto sock_result {Network::connect(sock, sock_addr)};
-    auto result {sock_result.number()};
+    auto connect_result {sock_result.number()};
 
-    if (result == Network::socket_error) {
+    if (connect_result == Network::socket_error) {
         std::cerr << "Service is unavailable"
                   << std::endl;
         std::exit(EXIT_FAILURE);
@@ -58,7 +59,9 @@ auto main(int argc, char *argv[]) -> int
     const auto args = std::span(argv, size_t(argc));
 
     for (int i = 1; i < argc; ++i) {
-        result = ::write(sock, args[i], std::strlen(args[i]) + 1);
+        const auto result {::write(sock,
+                                   args[i],
+                                   std::strlen(args[i]) + 1)};
 
         if (result == -1) {
             std::perror("write");
@@ -76,7 +79,9 @@ auto main(int argc, char *argv[]) -> int
 
         // Request result.
         std::strncpy(buffer.data(), "END", buffer.size());
-        result = ::write(sock, buffer.data(), std::strlen(buffer.data()) + 1);
+        auto result {::write(sock,
+                             buffer.data(),
+                             std::strlen(buffer.data()) + 1)};
 
         if (result == -1) {
             std::perror("write");
