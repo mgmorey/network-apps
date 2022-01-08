@@ -13,11 +13,12 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-socket.h"     // Fd, FdResult, Result, Socket,
-                                    // fd_null, get_socket(), operator<<()
-#include "network/error.h"          // format_error(), get_last_error(),
-                                    // set_last_error()
-#include "network/format.h"         // Format
+#include "network/get-socket.h"         // Fd, FdResult, Result, Socket,
+                                        // fd_null, get_socket(), operator<<()
+#include "network/format.h"             // Format
+#include "network/os-error.h"           // format_os_error(),
+                                        // get_last_os_error(),
+                                        // reset_last_os_error()
 
 #ifdef _WIN32
 #include <winsock2.h>       // socket()
@@ -48,11 +49,11 @@ auto Network::get_socket(const Socket& sock,
                   << std::endl;
     }
 
-    reset_last_error();
+    reset_last_os_error();
     const auto fd {::socket(sock.family(), sock.socktype(), sock.protocol())};
 
     if (fd == fd_null) {
-        auto error = get_last_error();
+        auto error = get_last_os_error();
         std::ostringstream oss;
         oss << "Call to socket("
             << Format("domain")
@@ -64,7 +65,7 @@ auto Network::get_socket(const Socket& sock,
             << ") failed with error "
             << error
             << ": "
-            << format_error(error);
+            << format_os_error(error);
         return Result {error, oss.str()};
     }
 

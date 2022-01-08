@@ -14,7 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/network.h"            // Address, Bytes, Hints,
-                                        // Hostname, Overload,
+                                        // Hostname, Overloaded,
                                         // Service, get_endpoint(),
                                         // get_hosts()
 
@@ -62,7 +62,7 @@ namespace TestHost
         {
             const Network::Address address {t_host.address()};
             const auto endpoint_result {get_endpoint(address)};
-            std::visit(Network::Overload {
+            std::visit(Network::Overloaded {
                     [&](const Network::Endpoint& endpoint) {
                         Values values = {
                             address.text(),
@@ -167,7 +167,7 @@ namespace TestHost
     {
         const auto description {get_description(hints)};
         auto hosts_result {Network::get_hosts(host, &hints)};
-        std::visit(Network::Overload {
+        std::visit(Network::Overloaded {
                 [&](Network::HostVector& hosts) {
                     if (hosts.empty()) {
                         return;

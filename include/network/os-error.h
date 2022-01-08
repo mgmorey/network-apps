@@ -13,18 +13,18 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_ERROR_H
-#define NETWORK_ERROR_H
+#ifndef NETWORK_OS_ERROR_H
+#define NETWORK_OS_ERROR_H
 
-#include "network/error-type.h"         // error_type
+#include "network/os-error-type.h"      // os_error_type
 
 #include <string>       // std::string
 
 namespace Network
 {
-    extern auto format_error(error_type error) -> std::string;
-    extern auto get_last_error() -> error_type;
-    extern auto reset_last_error() -> error_type;
+    extern auto format_os_error(os_error_type error) -> std::string;
+    extern auto get_last_os_error() -> os_error_type;
+    extern auto reset_last_os_error() -> os_error_type;
 }
 
 #endif

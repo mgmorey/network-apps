@@ -15,7 +15,7 @@
 
 #include "network/network.h"            // Address, Bytes,
                                         // BytesResult, Endpoint,
-                                        // FdResult, Hints, Overload,
+                                        // FdResult, Hints, Overloaded,
                                         // bind(), close(),
                                         // get_sockaddr(),
                                         // get_sockname()
@@ -64,7 +64,7 @@ namespace TestBind
 
         auto operator()(const Network::FdResult& t_socket_result) -> void
         {
-            std::visit(Network::Overload {
+            std::visit(Network::Overloaded {
                     [&](Network::Fd fd) {
                         test_socket(fd);
                     },
@@ -79,7 +79,7 @@ namespace TestBind
             Network::BytesResult
         {
             auto sockname_result {Network::get_sockname(t_fd, verbose)};
-            std::visit(Network::Overload {
+            std::visit(Network::Overloaded {
                     [&](const Network::Bytes&) {
                     },
                     [&](const Network::Result& result) {

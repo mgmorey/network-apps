@@ -13,8 +13,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/error.h"      // get_last_error(),
-                                // reset_last_error(), std::string
+#include "network/os-error.h"           // format_os_error(),
+                                        // get_last_os_error(),
+                                        // os_error_type,
+                                        // reset_last_os_error(),
+                                        // std::string
 
 #ifdef _WIN32
 #include <winsock2.h>       // WSAGetLastError()
@@ -26,7 +29,7 @@
 #include <cstring>      // std::strerror()
 #endif
 
-auto Network::format_error(error_type error) -> std::string
+auto Network::format_os_error(os_error_type error) -> std::string
 {
     std::string message;
 #ifdef _WIN32
@@ -52,9 +55,9 @@ auto Network::format_error(error_type error) -> std::string
     return message;
 }
 
-auto Network::get_last_error() -> Network::error_type
+auto Network::get_last_os_error() -> Network::os_error_type
 {
-    error_type error {0};
+    os_error_type error {0};
 #ifdef _WIN32
     error = ::WSAGetLastError();
 #else
@@ -63,9 +66,9 @@ auto Network::get_last_error() -> Network::error_type
     return error;
 }
 
-auto Network::reset_last_error() -> Network::error_type
+auto Network::reset_last_os_error() -> Network::os_error_type
 {
-    error_type error {0};
+    os_error_type error {0};
 #ifndef _WIN32
     errno = error;
 #endif

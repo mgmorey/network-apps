@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/context.h"    // Context, Result
-#include "network/error.h"      // format_error()
+#include "network/context.h"            // Context, Result
+#include "network/os-error.h"           // format_os_error()
 
 #ifdef _WIN32
 #include <winsock2.h>   // WSACleanup(), WSAStartup()
@@ -33,7 +33,7 @@ Network::Context::Context(bool t_verbose)
             oss << "Call to WSAStartup() returned "
                 << error
                 << ": "
-                << format_error(error);
+                << format_os_error(error);
             m_result = {error, oss.str()};
         }
         else if (t_verbose) {

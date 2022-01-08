@@ -22,7 +22,7 @@
 #include "network/get-sockets.h"    // SocketVector,
                                     // SocketVectorResult,
                                     // get_sockets()
-#include "network/overload.h"       // Overload
+#include "network/overloaded.h"     // Overloaded
 
 #include <algorithm>    // std::transform()
 #include <iterator>     // std::back_inserter()
@@ -36,7 +36,7 @@ auto Network::open(const OpenHandler& handler,
     FdResultVector results;
     const auto lambda = [&](const Socket& sock) {
         auto socket_result {get_socket(sock, verbose)};
-        std::visit(Overload {
+        std::visit(Overloaded {
                 [&](Fd fd) {
                     const auto addr {sock.address()};
                     const auto result {open(handler, fd, addr, verbose)};
@@ -54,7 +54,7 @@ auto Network::open(const OpenHandler& handler,
         return socket_result;
     };
     const auto sockets_result {get_sockets(endpoint, hints, verbose)};
-    std::visit(Overload {
+    std::visit(Overloaded {
             [&](const SocketVector& sockets) {
                 std::transform(sockets.begin(), sockets.end(),
                                std::back_inserter(results),

@@ -15,13 +15,13 @@
 
 #include "network/get-name.h"           // Bytes, Fd, GetNameHandler,
                                         // Result, get_name()
-#include "network/error.h"              // format_error(),
-                                        // get_last_error(),
-                                        // reset_last_error()
 #include "network/get-length.h"         // Bytes, get_length()
 #include "network/get-sa-pointer.h"     // Bytes, get_sa_pointer()
 #include "network/get-sockaddr.h"       // Bytes, get_sockaddr()
 #include "network/is-valid.h"           // Bytes, is_valid()
+#include "network/os-error.h"           // format_os_error(),
+                                        // get_os_last_error(),
+                                        // reset_os_last_error()
 
 #include <algorithm>    // std::max()
 #include <cassert>      // assert()
@@ -49,10 +49,10 @@ auto Network::get_name(const GetNameHandler& handler, Fd fd,
                   << std::endl;
     }
 
-    reset_last_error();
+    reset_last_os_error();
 
     if (handler.first(fd, addr_ptr, &addr_len) != 0) {
-        auto error = get_last_error();
+        auto error = get_last_os_error();
         std::ostringstream oss;
         oss << "Call to "
             << handler.second
@@ -65,7 +65,7 @@ auto Network::get_name(const GetNameHandler& handler, Fd fd,
             << ", ...) failed with error "
             << error
             << ": "
-            << format_error(error);
+            << format_os_error(error);
         return Result {error, oss.str()};
     }
 

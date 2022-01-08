@@ -18,7 +18,7 @@
                                     // get_sockets()
 #include "network/addrinfo.h"       // AddrInfo
 #include "network/get-hostname.h"   // HostnameResult, get_hostname()
-#include "network/overload.h"       // Overload
+#include "network/overloaded.h"     // Overloaded
 
 #include <iterator>     // std::back_inserter()
 #include <string>       // std::string
@@ -30,7 +30,7 @@ auto Network::get_sockets(const Network::Endpoint& endpoint,
 {
     SocketVectorResult sockets_result;
     const auto hostname_result {get_hostname(endpoint.first)};
-    std::visit(Overload {
+    std::visit(Overloaded {
             [&](const std::string& host) {
                 sockets_result = get_sockets(host,
                                              endpoint.second,

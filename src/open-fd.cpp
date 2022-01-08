@@ -14,14 +14,14 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/address.h"            // Address, operator<<()
-#include "network/open.h"               // Fd, Result, OpenHandler,
-                                        // open(), operator<<()
-#include "network/error.h"              // format_error(),
-                                        // get_last_error(),
-                                        // reset_last_error()
 #include "network/get-length.h"         // Bytes, get_length()
 #include "network/get-sa-pointer.h"     // Bytes, get_sa_pointer()
 #include "network/is-valid.h"           // Bytes, is_valid()
+#include "network/open.h"               // Fd, Result, OpenHandler,
+                                        // open(), operator<<()
+#include "network/os-error.h"           // format_os_error(),
+                                        // get_last_os_error(),
+                                        // reset_last_os_error()
 #include "network/socket-error.h"       // socket_error
 
 #include <cassert>      // assert()
@@ -50,10 +50,10 @@ auto Network::open(const OpenHandler& handler, Fd fd,
                   << std::endl;
     }
 
-    reset_last_error();
+    reset_last_os_error();
 
     if (handler.first(fd, addr_ptr, addr_len) == socket_error) {
-        const auto error = get_last_error();
+        const auto error = get_last_os_error();
         std::ostringstream oss;
         oss << "Call to "
             << handler.second
@@ -64,7 +64,7 @@ auto Network::open(const OpenHandler& handler, Fd fd,
             << ") failed with error "
             << error
             << ": "
-            << format_error(error);
+            << format_os_error(error);
         result = {error, oss.str()};
     }
 

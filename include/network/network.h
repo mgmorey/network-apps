@@ -23,9 +23,6 @@
 #include "network/close.h"              // close()
 #include "network/connect.h"            // connect()
 #include "network/context.h"            // Context
-#include "network/error.h"              // format_error(),
-                                        // get_last_error(),
-                                        // reset_last_error()
 #include "network/family.h"             // Family
 #include "network/flags.h"              // Flags
 #include "network/get-endpoint.h"       // EndpointResult,
@@ -55,7 +52,10 @@
 #include "network/get-sun-path.h"       // get_sun_path()
 #include "network/get-sun-pointer.h"    // get_sun_pointer()
 #include "network/is-valid.h"           // is_valid()
-#include "network/overload.h"           // Overload
+#include "network/os-error.h"           // format_os_error(),
+                                        // get_last_os_error(),
+                                        // reset_last_os_error()
+#include "network/overloaded.h"         // Overloaded
 #include "network/protocol.h"           // Protocol
 #include "network/result.h"             // Result
 #include "network/sizes.h"              // sa_size, sin_size,

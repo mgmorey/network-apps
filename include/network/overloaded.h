@@ -13,21 +13,22 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_ERROR_TYPE_H
-#define NETWORK_ERROR_TYPE_H
-
-#ifdef _WIN32
-#include <winsock2.h>       // Include winsock2.h before windows.h
-#include <windows.h>        // DWORD
-#endif
+#ifndef NETWORK_OVERLOADED_H
+#define NETWORK_OVERLOADED_H
 
 namespace Network
 {
-#ifdef _WIN32
-    using error_type = DWORD;
-#else
-    using error_type = int;
-#endif
+    // The following are based upon examples provided in section
+    // 13.5.1 of "A Tour of C++" (Second Edition) by Bjarne
+    // Stroustrup.
+
+    template<typename... Ts>
+    struct Overloaded : Ts... {
+        using Ts::operator()...;
+    };
+
+    template<typename... Ts>
+    Overloaded(Ts...) -> Overloaded<Ts...>; // deduction guide
 }
 
 #endif

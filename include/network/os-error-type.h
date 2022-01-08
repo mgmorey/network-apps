@@ -13,15 +13,21 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_OVERLOAD_H
-#define NETWORK_OVERLOAD_H
+#ifndef NETWORK_OS_ERROR_TYPE_H
+#define NETWORK_OS_ERROR_TYPE_H
+
+#ifdef _WIN32
+#include <winsock2.h>       // Always include winsock2.h before windows.h
+#include <windows.h>        // DWORD
+#endif
 
 namespace Network
 {
-    template<typename... Ts>
-    struct Overload : Ts... { using Ts::operator()...; };
-    template<typename... Ts>
-    Overload(Ts...) -> Overload<Ts...>; // omit in C++20
+#ifdef _WIN32
+    using os_error_type = DWORD;
+#else
+    using os_error_type = int;
+#endif
 }
 
 #endif

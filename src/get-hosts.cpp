@@ -18,7 +18,7 @@
                                     // Result, get_hosts()
 #include "network/addrinfo.h"       // AddrInfo
 #include "network/get-hostname.h"   // HostnameResult, get_hostname()
-#include "network/overload.h"       // overload
+#include "network/overloaded.h"     // Overloaded
 
 #include <algorithm>    // std::unique()
 #include <iterator>     // std::back_inserter()
@@ -32,7 +32,7 @@ auto Network::get_hosts(const Network::Hostname& host,
 {
     HostVectorResult hosts_result;
     const auto hostname_result {get_hostname(host)};
-    std::visit(Overload {
+    std::visit(Overloaded {
             [&](const std::string& hostname) {
                 HostVector hosts;
                 const auto result {

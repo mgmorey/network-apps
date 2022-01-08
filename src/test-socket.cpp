@@ -14,7 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/network.h"            // Address, FdPair, Hints,
-                                        // Overload, Socket, close(),
+                                        // Overloaded, Socket, close(),
                                         // get_sockaddr(),
                                         // get_socketpair()
 
@@ -93,7 +93,7 @@ namespace TestSocket
     {
         const Network::Socket sock {hints};
         const auto socketpair_result {get_socketpair(sock, verbose)};
-        std::visit(Network::Overload {
+        std::visit(Network::Overloaded {
                 [&](const Network::FdPair& fds) {
                     std::cout << "Socket "
                               << fds[0]

@@ -19,10 +19,10 @@
                                         // Result, Socket, fd_null,
                                         // fd_type, get_socketpair(),
                                         // operator<<()
-#include "network/error.h"              // format_error(),
-                                        // get_last_error(),
-                                        // set_last_error()
 #include "network/format.h"             // Format
+#include "network/os-error.h"           // format_os_error(),
+                                        // get_last_os_error(),
+                                        // reset_last_os_error()
 #include "network/socket-error.h"       // socket_error
 
 #include <sys/socket.h>     // socketpair()
@@ -52,14 +52,14 @@ auto Network::get_socketpair(const Socket& sock,
                   << std::endl;
     }
 
-    reset_last_error();
+    reset_last_os_error();
     auto code {::socketpair(sock.family(),
                             sock.socktype(),
                             sock.protocol(),
                             fds.data())};
 
     if (code == socket_error) {
-        auto error = get_last_error();
+        auto error = get_last_os_error();
         std::ostringstream oss;
         oss << "Call to socketpair("
             << Format("domain")
@@ -71,7 +71,7 @@ auto Network::get_socketpair(const Socket& sock,
             << ", ...) failed with error "
             << error
             << ": "
-            << format_error(error);
+            << format_os_error(error);
         return Result(error, oss.str());
     }
 

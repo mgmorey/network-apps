@@ -16,7 +16,7 @@
 #include "network/network.h"            // Address, Bytes,
                                         // BytesResult, Endpoint,
                                         // FdResult, Hints, Hostname,
-                                        // Overload, close(),
+                                        // Overloaded, close(),
                                         // connect(), get_hostname(),
                                         // get_peername(),
                                         // get_sockaddr(),
@@ -69,7 +69,7 @@ namespace TestConnect
 
         auto operator()(const Network::FdResult& t_socket_result) -> void
         {
-            std::visit(Network::Overload {
+            std::visit(Network::Overloaded {
                     [&](Network::Fd fd) {
                         test_socket(fd);
                     },
@@ -84,7 +84,7 @@ namespace TestConnect
             Network::BytesResult
         {
             auto peername_result {Network::get_peername(t_fd, verbose)};
-            std::visit(Network::Overload {
+            std::visit(Network::Overloaded {
                     [&](const Network::Bytes&) {
                     },
                     [&](const Network::Result& result) {
@@ -99,7 +99,7 @@ namespace TestConnect
             Network::BytesResult
         {
             auto sockname_result {Network::get_sockname(t_fd, verbose)};
-            std::visit(Network::Overload {
+            std::visit(Network::Overloaded {
                     [&](const Network::Bytes&) {
                     },
                     [&](const Network::Result& result) {
@@ -187,7 +187,7 @@ namespace TestConnect
                              const Network::Hints& hints) -> void
     {
         const auto hostname_result {Network::get_hostname()};
-        std::visit(Network::Overload {
+        std::visit(Network::Overloaded {
                 [&](const std::string& hostname) {
                     const auto socket_results {
                         Network::connect(endpoint, &hints, verbose)

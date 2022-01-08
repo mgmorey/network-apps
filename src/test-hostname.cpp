@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/network.h"            // get_hostname()
+#include "network/network.h"            // Overloaded, get_hostname()
 
 #ifdef _WIN32
 #include <getopt.h>         // getopt(), optarg, opterr, optind
@@ -65,7 +65,7 @@ namespace TestHostname
     static auto test_hostname() -> void
     {
         const auto hostname_result {Network::get_hostname()};
-        std::visit(Network::Overload {
+        std::visit(Network::Overloaded {
                 [&](const std::string& hostname) {
                     std::cout << "Hostname: "
                               << hostname
