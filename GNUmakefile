@@ -105,7 +105,7 @@ test-unix: $(unix_execs)
 
 .PHONY:	tidy
 tidy:	$(sources)
-	clang-tidy$(CLANG_SUFFIX) $^ $(TIDY_FLAGS)
+	clang-tidy$(LLVM_SUFFIX) $^ $(TIDY_FLAGS)
 
 TAGS:
 	printf '%s\n' $^ | etags --declarations --language=$(LANGUAGE) -
