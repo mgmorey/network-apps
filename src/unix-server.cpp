@@ -63,7 +63,7 @@ auto main() -> int
     // Create local socket.
     sock = ::socket(AF_UNIX, SOCK_SEQPACKET, 0);
 
-    if (sock == Network::invalid_socket) {
+    if (sock == Network::fd_null) {
         std::perror("socket");
         std::exit(EXIT_FAILURE);
     }
@@ -73,7 +73,7 @@ auto main() -> int
     const auto sock_result {Network::bind(sock, sock_addr)};
     auto result {sock_result.number()};
 
-    if (result == socket_error) {
+    if (result == Network::socket_error) {
         std::perror("bind");
         std::exit(EXIT_FAILURE);
     }
