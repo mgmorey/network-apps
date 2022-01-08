@@ -48,7 +48,7 @@ auto Network::open(const OpenHandler& handler,
                         socket_result = fd;
                     }
                 },
-                [&](const Result&) {
+                [&](const Result& result) {
                 }
             }, socket_result);
         return socket_result;

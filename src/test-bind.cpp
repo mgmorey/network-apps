@@ -80,7 +80,7 @@ namespace TestBind
         {
             auto sockname_result {Network::get_sockname(t_fd, verbose)};
             std::visit(Network::Overloaded {
-                    [&](const Network::Bytes&) {
+                    [&](const Network::Bytes& addr) {
                     },
                     [&](const Network::Result& result) {
                         std::cerr << result
@@ -104,7 +104,7 @@ namespace TestBind
                  << std::endl;
 
             if (std::holds_alternative<Network::Bytes>(sock_result)) {
-                const auto self {std::get<Network::Bytes>(sock_result)};
+                const auto& self {std::get<Network::Bytes>(sock_result)};
                 m_os << "Socket "
                      << t_fd
                      << " bound to "

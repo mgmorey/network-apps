@@ -85,7 +85,7 @@ namespace TestConnect
         {
             auto peername_result {Network::get_peername(t_fd, verbose)};
             std::visit(Network::Overloaded {
-                    [&](const Network::Bytes&) {
+                    [&](const Network::Bytes& addr) {
                     },
                     [&](const Network::Result& result) {
                         std::cerr << result
@@ -100,7 +100,7 @@ namespace TestConnect
         {
             auto sockname_result {Network::get_sockname(t_fd, verbose)};
             std::visit(Network::Overloaded {
-                    [&](const Network::Bytes&) {
+                    [&](const Network::Bytes& addr) {
                     },
                     [&](const Network::Result& result) {
                         std::cerr << result
@@ -128,8 +128,8 @@ namespace TestConnect
 
             if (std::holds_alternative<Network::Bytes>(peer_result) &&
                 std::holds_alternative<Network::Bytes>(sock_result)) {
-                const auto peer {std::get<Network::Bytes>(peer_result)};
-                const auto self {std::get<Network::Bytes>(sock_result)};
+                const auto& peer {std::get<Network::Bytes>(peer_result)};
+                const auto& self {std::get<Network::Bytes>(sock_result)};
                 m_os << "Socket "
                      << t_fd
                      << " connected "
