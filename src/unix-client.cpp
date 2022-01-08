@@ -45,9 +45,9 @@ auto main(int argc, char *argv[]) -> int
     // Connect socket to socket address.
     const auto sock_addr {Network::get_sockaddr(SOCKET_NAME)};
     const auto sock_result {Network::connect(sock, sock_addr)};
-    auto error {sock_result.number()};
+    auto result {sock_result.number()};
 
-    if (error == Network::socket_error) {
+    if (result == Network::socket_error) {
         std::cerr << "Service is unavailable"
                   << std::endl;
         std::exit(EXIT_FAILURE);
@@ -58,9 +58,9 @@ auto main(int argc, char *argv[]) -> int
     const auto args = std::span(argv, size_t(argc));
 
     for (int i = 1; i < argc; ++i) {
-        error = ::write(sock, args[i], std::strlen(args[i]) + 1);
+        result = ::write(sock, args[i], std::strlen(args[i]) + 1);
 
-        if (error == -1) {
+        if (result == -1) {
             std::perror("write");
             break;
         }
@@ -76,17 +76,17 @@ auto main(int argc, char *argv[]) -> int
 
         // Request result.
         std::strncpy(buffer.data(), "END", buffer.size());
-        error = ::write(sock, buffer.data(), std::strlen(buffer.data()) + 1);
+        result = ::write(sock, buffer.data(), std::strlen(buffer.data()) + 1);
 
-        if (error == -1) {
+        if (result == -1) {
             std::perror("write");
             std::exit(EXIT_FAILURE);
         }
 
         // Receive result.
-        error = ::read(sock, buffer.data(), buffer.size());
+        result = ::read(sock, buffer.data(), buffer.size());
 
-        if (error == -1) {
+        if (result == -1) {
             std::perror("read");
             std::exit(EXIT_FAILURE);
         }
