@@ -47,7 +47,7 @@ auto main(int argc, char *argv[]) -> int
     const auto sock_result {Network::connect(sock, sock_addr)};
     auto error {sock_result.result()};
 
-    if (error == -1) {
+    if (error == Network::socket_error) {
         std::cerr << "Service is unavailable"
                   << std::endl;
         std::exit(EXIT_FAILURE);

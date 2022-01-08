@@ -23,6 +23,9 @@
 #include "network/close.h"              // close()
 #include "network/connect.h"            // connect()
 #include "network/context.h"            // Context
+#include "network/error.h"              // format_error(),
+                                        // get_last_error(),
+                                        // reset_last_error()
 #include "network/family.h"             // Family
 #include "network/flags.h"              // Flags
 #include "network/get-endpoint.h"       // EndpointResult,
@@ -60,6 +63,7 @@
                                         // sockaddr_size_max, ss_size,
                                         // sun_size
 #include "network/socket.h"             // Hints, Host, Socket
+#include "network/socket-error.h"       // socket_error
 #include "network/socktype.h"           // SockType
 #include "network/types.h"              // Buffer, Hostname, Pathname
                                         // Service
