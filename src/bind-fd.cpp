@@ -13,28 +13,19 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/connect.h"    // Bytes, Endpoint, Fd,
-                                // FdResultVector, Hints, Result,
-                                // connect(), open()
+#include "network/bind.h"               // Bytes, Fd, Result, bind(),
+                                        // open()
 
 #ifdef _WIN32
-#include <winsock2.h>       // connect()
+#include <winsock2.h>       // bind()
 #else
-#include <sys/socket.h>     // connect()
+#include <sys/socket.h>     // bind()
 #endif
 
-auto Network::connect(Fd fd,
-                      const Bytes& addr,
-                      bool verbose) -> Network::Result
+auto Network::bind(Fd fd,
+                   const Bytes& addr,
+                   bool verbose) -> Network::Result
 {
-    const Network::OpenHandler handler {::connect, "connect"};
+    const Network::OpenHandler handler {::bind, "bind"};
     return open(handler, fd, addr, verbose);
-}
-
-auto Network::connect(const Endpoint& endp,
-                      const Hints& hints,
-                      bool verbose) -> Network::FdResultVector
-{
-    const Network::OpenHandler handler {::connect, "connect"};
-    return open(handler, endp, hints, verbose);
 }
