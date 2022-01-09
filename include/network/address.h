@@ -62,11 +62,9 @@ namespace Network
         [[nodiscard]] auto sa_family() const -> family_type;
         [[nodiscard]] auto sa_length() const -> length_type;
         [[nodiscard]] auto sa_text() const -> std::string;
-
         [[nodiscard]] auto sin_addr() const -> in_addr;
         [[nodiscard]] auto sin_port() const -> port_type;
         [[nodiscard]] auto sin_text() const -> std::string;
-
         [[nodiscard]] auto sin6_addr() const -> in6_addr;
         [[nodiscard]] auto sin6_port() const -> port_type;
         [[nodiscard]] auto sin6_text() const -> std::string;
