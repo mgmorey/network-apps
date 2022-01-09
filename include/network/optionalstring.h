@@ -37,11 +37,8 @@ namespace Network
         ~OptionalString() = default;
         auto operator=(const OptionalString&) -> OptionalString& = default;
         auto operator=(OptionalString&&) noexcept -> OptionalString& = default;
-        // NOLINTNEXTLINE
         auto operator=(const std::nullopt_t& t_value) -> OptionalString&;
-        // NOLINTNEXTLINE
         auto operator=(const std::string& t_value) -> OptionalString&;
-        // NOLINTNEXTLINE
         auto operator=(const char* t_value) -> OptionalString&;
         explicit operator std::string() const;
         explicit operator const char*() const;
