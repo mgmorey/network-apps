@@ -16,7 +16,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 get_flavor() {
-    sed -n 's/\(.*\) LLVM version .*/\1/p'
+    sed -n 's/\([A-Za-z][A-Za-z]*\)*[ ]*LLVM version .*/\1/p'
 }
 
 "$1" --version 2>/dev/null | get_flavor

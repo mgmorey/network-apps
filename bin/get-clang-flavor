@@ -16,15 +16,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 get_flavor() {
-    sed -n 's/^\(.*[ ]*clang\) version .*$/\1/p'
+    sed -n 's/\([A-Za-z][A-Za-z]*\)*[ ]*clang version .*/\1/p'
 }
 
-get_version_string() {
-    "$1" --version 2>/dev/null | head -n 1
-}
-
-get_clang_flavor() {
-    get_version_string "$1" | get_flavor
-}
-
-get_clang_flavor "${1-clang}"
+"$1" --version 2>/dev/null | head -n 1 | get_flavor "${1-clang}"
