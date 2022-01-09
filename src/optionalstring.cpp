@@ -61,12 +61,17 @@ auto Network::OptionalString::operator=(const char* t_value) ->
 
 Network::OptionalString::operator std::string() const
 {
-    return m_value.value_or("");
+    return m_value.value();
 }
 
 Network::OptionalString::operator const char*() const
 {
     return m_value.has_value() ? m_value.value().c_str() : nullptr;
+}
+
+Network::OptionalString::operator bool() const
+{
+    return m_value.has_value();
 }
 
 auto Network::OptionalString::has_value() const -> bool
