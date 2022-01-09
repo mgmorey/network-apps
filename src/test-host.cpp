@@ -32,7 +32,6 @@
 #endif
 
 #include <algorithm>    // std::for_each(), std::remove()
-                        // std::unique()
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
@@ -72,9 +71,7 @@ namespace TestHost
                                                  values.end(),
                                                  ""),
                                 values.end());
-                        values.erase(std::unique(values.begin(),
-                                                 values.end()),
-                                     values.end());
+                        Network::uniquify(values);
                         print(values);
                     },
                     [&](const Network::Result& result) {

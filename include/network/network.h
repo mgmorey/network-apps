@@ -66,5 +66,6 @@
 #include "network/socktype.h"           // SockType
 #include "network/types.h"              // Buffer, Hostname, Pathname
                                         // Service
+#include "network/uniquify.h"           // Uniquify
 
 #endif

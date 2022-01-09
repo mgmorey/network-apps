@@ -19,8 +19,8 @@
 #include "network/addrinfo.h"       // AddrInfo
 #include "network/get-hostname.h"   // HostnameResult, get_hostname()
 #include "network/overloaded.h"     // Overloaded
+#include "network/uniquify.h"       // Uniquify
 
-#include <algorithm>    // std::unique()
 #include <iterator>     // std::back_inserter()
 #include <optional>     // std::nullopt
 #include <string>       // std::string
@@ -47,9 +47,7 @@ auto Network::get_hosts(const Network::Hostname& host,
                     hosts_result = result;
                 }
                 else {
-                    hosts.erase(std::unique(hosts.begin(),
-                                            hosts.end()),
-                                hosts.end());
+                    uniquify(hosts);
                     hosts_result = hosts;
                 }
             },
