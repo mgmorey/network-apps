@@ -36,7 +36,6 @@
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
-#include <optional>     // std::nullopt
 #include <ostream>      // std::ostream
 #include <span>         // std::span
 #include <string>       // std::string
