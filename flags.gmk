@@ -105,10 +105,10 @@ ifeq "$(USING_LIBASAN)" "true"
 endif
 endif
 
-ifeq "$(SYSTEM)" "Linux"
-	LDFLAGS += -Wl,-Map=$@.map
-else ifeq "$(SYSTEM)" "Darwin"
+ifeq "$(SYSTEM)" "Darwin"
 	LDFLAGS += -Wl,-map,$@.map
+else ifneq "$(SYSTEM)" "FreeBSD"
+	LDFLAGS += -Wl,-Map=$@.map
 endif
 
 ifeq "$(SYSTEM)" "FreeBSD"
