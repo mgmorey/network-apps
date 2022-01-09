@@ -32,17 +32,17 @@ auto Network::Host::operator=(const addrinfo& t_addrinfo) -> Network::Host&
 
 auto Network::Host::operator<(const Host& t_host) const -> bool
 {
-    return m_addr < t_host.m_addr;
+    return m_addr < t_host.m_addr;  // NOLINT
 }
 
 auto Network::Host::operator>(const Host& t_host) const -> bool
 {
-    return m_addr > t_host.m_addr;
+    return m_addr > t_host.m_addr;  // NOLINT
 }
 
 auto Network::Host::operator==(const Host& t_host) const -> bool
 {
-    return m_addr == t_host.m_addr;
+    return m_addr == t_host.m_addr;  // NOLINT
 }
 
 auto Network::Host::address() const -> Network::Bytes
