@@ -23,8 +23,7 @@
 
 namespace Network
 {
-    extern auto get_hostname(const Hostname& host = std::nullopt) ->
-        HostnameResult;
+    extern auto get_hostname(const Hostname& host = {}) -> HostnameResult;
 }
 
 #endif

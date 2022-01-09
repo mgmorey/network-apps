@@ -44,7 +44,8 @@ auto main(int argc, char *argv[]) -> int
     }
 
     // Connect socket to socket address.
-    const auto sock_addr {Network::get_sockaddr(SOCKET_NAME)};
+    const Network::Pathname pathname {SOCKET_NAME};
+    const auto sock_addr {Network::get_sockaddr(pathname)};
     const auto sock_result {Network::connect(sock, sock_addr)};
     auto connect_result {sock_result.number()};
 

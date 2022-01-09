@@ -123,10 +123,10 @@ auto main(int argc, char* argv[]) -> int
     static const Network::Socket hints {AF_UNIX, SOCK_STREAM};
 
     const std::vector<Network::Pathname> paths = {
-        std::nullopt,
-        "/tmp/678",
-        "/tmp/67890123456",
-        "/tmp/6789012345678901234"
+        static_cast<Network::Pathname>(std::nullopt),
+        static_cast<Network::Pathname>("/tmp/678"),
+        static_cast<Network::Pathname>("/tmp/67890123456"),
+        static_cast<Network::Pathname>("/tmp/6789012345678901234")
     };
 
     try {

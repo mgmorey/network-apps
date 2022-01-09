@@ -71,7 +71,8 @@ auto main() -> int
     }
 
     // Bind socket to socket name.
-    const auto sock_addr {Network::get_sockaddr(SOCKET_NAME)};
+    const Network::Pathname pathname {SOCKET_NAME};
+    const auto sock_addr {Network::get_sockaddr(pathname)};
     const auto sock_result {Network::bind(sock, sock_addr)};
     auto result {sock_result.number()};
 

@@ -28,12 +28,9 @@ namespace Network
         OptionalString() = default;
         OptionalString(const OptionalString&) = default;
         OptionalString(OptionalString&&) noexcept = default;
-        // cppcheck-suppress noExplicitConstructor
-        OptionalString(const std::nullopt_t& t_value);		// NOLINT
-        // cppcheck-suppress noExplicitConstructor
-        OptionalString(const std::string& t_value);		// NOLINT
-        // cppcheck-suppress noExplicitConstructor
-        OptionalString(const char* t_value);			// NOLINT
+        explicit OptionalString(const std::nullopt_t& t_value);
+        explicit OptionalString(const std::string& t_value);
+        explicit OptionalString(const char* t_value);
         ~OptionalString() = default;
         auto operator=(const OptionalString&) -> OptionalString& = default;
         auto operator=(OptionalString&&) noexcept -> OptionalString& = default;

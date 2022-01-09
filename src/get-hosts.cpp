@@ -36,8 +36,8 @@ auto Network::get_hosts(const Network::Hostname& host,
             [&](const std::string& hostname) {
                 HostVector hosts;
                 const auto result {
-                    AddrInfo::insert(hostname,
-                                     std::nullopt,
+                    AddrInfo::insert(static_cast<Hostname>(hostname),
+                                     static_cast<Service>(std::nullopt),
                                      hints,
                                      verbose,
                                      std::back_inserter(hosts))

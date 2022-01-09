@@ -32,8 +32,9 @@ auto Network::get_sockets(const Network::Endpoint& endpoint,
     const auto hostname_result {get_hostname(endpoint.first)};
     std::visit(Overloaded {
             [&](const std::string& host) {
-                sockets_result = get_sockets(host,
-                                             endpoint.second,
+                const Service service {endpoint.second};
+                sockets_result = get_sockets(static_cast<Hostname>(host),
+                                             service,
                                              hints,
                                              verbose);
             },

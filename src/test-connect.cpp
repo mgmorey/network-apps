@@ -195,7 +195,9 @@ namespace TestConnect
                         Network::connect(endpoint, hints, verbose)
                     };
                     std::for_each(socket_results.begin(), socket_results.end(),
-                                  Test(endpoint, hostname, std::cout));
+                                  Test(endpoint,
+                                       static_cast<Network::Hostname>(hostname),
+                                       std::cout));
                 },
                 [&](const Network::Result& result) {
                     std::cerr << "No hostname available: "
