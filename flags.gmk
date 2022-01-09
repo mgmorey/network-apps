@@ -19,14 +19,6 @@ IS_CLANG := $(shell bin/is-clang $(CXX))
 IS_GCC := $(shell bin/is-gcc $(CXX))
 SYSTEM := $(shell uname -s | cut -d- -f 1)
 
-ifeq "$(IS_GCC)" "true"
-ifeq "$(STANDARD)" "c++20"
-ifeq "$(shell bin/compare-versions $(COMPILER_VERSION) 10)" "less"
-	LANGUAGE := c++2a
-endif
-endif
-endif
-
 ifdef SDKROOT
 ifeq "$(IS_CLANG)" "true"
 ifeq "$(shell bin/get-clang-flavor $(CXX))" "Apple"
