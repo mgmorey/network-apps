@@ -68,7 +68,6 @@ namespace Network
         [[nodiscard]] auto sin6_addr() const -> in6_addr;
         [[nodiscard]] auto sin6_port() const -> port_type;
         [[nodiscard]] auto sin6_text() const -> std::string;
-
 #ifndef _WIN32
         [[nodiscard]] auto sun_text() const -> std::string;
 #endif
