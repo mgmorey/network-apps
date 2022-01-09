@@ -204,8 +204,10 @@ namespace TestHost
 
     static auto test_host(const Network::Hostname& host) -> void
     {
-        if (host.has_value()) {
-            std::cout << "Host: " << host << std::endl;
+        if (static_cast<bool>(host)) {
+            std::cout << "Host: "
+                      << static_cast<std::string>(host)
+                      << std::endl;
             constexpr auto flags {AI_CANONNAME};
             const Network::Hints ipv4_hints
                 {AF_INET, SOCK_STREAM, IPPROTO_TCP, flags};
@@ -234,16 +236,16 @@ auto main(int argc, char* argv[]) -> int
                       << std::endl;
         }
         else {
-            Network::Hostname hostname;
+            Network::Hostname host;
 
             if (args.size() > 1) {
-                hostname = args[1];
+                host = args[1];
             }
             else {
-                hostname = std::nullopt;
+                host = {};
             }
 
-            TestHost::test_host(hostname);
+            TestHost::test_host(host);
         }
 
         static_cast<void>(context);
