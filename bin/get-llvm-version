@@ -16,15 +16,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 get_version() {
-    sed -n 's/[A-Za-z]* LLVM version \(.*\)$/\1/p'
+    sed -n 's/.*LLVM version \([0-9][0-9]*\(\.[0-9][0-9]*\)*\).*/\1/p'
 }
 
-get_version_string() {
-    "$1" --version 2>/dev/null
-}
-
-get_llvm_version() {
-    get_version_string "$1" | get_version
-}
-
-get_llvm_version "$1"
+"$1" --version 2>/dev/null | get_version
