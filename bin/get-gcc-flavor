@@ -16,15 +16,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 get_flavor() {
-    sed -n 's/^.* [(]\(.*\)[)] .*$/\1/p'
+    sed -n '1s/^.* [(]\(.*\)[)] .*$/\1/p'
 }
 
-get_version_string() {
-    "$1" --version 2>/dev/null | head -n 1
-}
-
-get_gcc_flavor() {
-    get_version_string "$1" | get_flavor
-}
-
-get_gcc_flavor "${1-gcc}"
+"${1-gcc}" --version 2>/dev/null | get_flavor

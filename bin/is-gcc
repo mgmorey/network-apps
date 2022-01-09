@@ -15,16 +15,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-get_version() {
-    "$1" --version 2>/dev/null | head -n 1
-}
-
 grep_version() {
     grep -Eq '^(g?cc|[cg]\+\+)(\.exe)? \(.+\) .+$'
 }
 
 is_gcc() {
-    get_version "$1" | grep_version
+    "$1" --version 2>/dev/null | grep_version
 }
 
 if is_gcc "${1-gcc}"; then
