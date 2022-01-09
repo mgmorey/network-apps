@@ -25,7 +25,7 @@
 #include <variant>      // std::visit()
 
 auto Network::get_sockets(const Network::Endpoint& endpoint,
-                          const Network::Hints* hints,
+                          const Network::Hints& hints,
                           bool verbose) -> Network::SocketVectorResult
 {
     SocketVectorResult sockets_result;
@@ -46,7 +46,7 @@ auto Network::get_sockets(const Network::Endpoint& endpoint,
 
 auto Network::get_sockets(const Network::Hostname& node,
                           const Network::Service& serv,
-                          const Network::Hints* hints,
+                          const Network::Hints& hints,
                           bool verbose) -> Network::SocketVectorResult
 {
     SocketVector sockets;

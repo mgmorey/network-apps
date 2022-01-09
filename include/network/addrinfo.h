@@ -59,7 +59,7 @@ namespace Network
                                    const InputIterator& right) -> bool;
 
         private:
-            pointer m_pointer {nullptr};
+            pointer m_list {nullptr};
         };
 
         class List
@@ -71,8 +71,8 @@ namespace Network
             List(const List&) = delete;
             List(const List&&) = delete;
             List(const Hostname& t_node,
-                 const Service& t_serv,
-                 const Hints* t_hints,
+                 const Service& t_service,
+                 const Hints& t_hints,
                  bool t_verbose);
             ~List();
             auto operator=(const List&) -> List& = delete;
@@ -81,7 +81,7 @@ namespace Network
             [[nodiscard]] auto result() const -> Result;
 
         private:
-            addrinfo* m_pointer {nullptr};
+            addrinfo* m_list {nullptr};
             Result m_result;
         };
 
@@ -93,7 +93,7 @@ namespace Network
         template<typename OutputIt>
         auto insert(const Hostname& node,
                     const Service& service,
-                    const Hints* hints,
+                    const Hints& hints,
                     bool verbose,
                     OutputIt out) -> Result
         {

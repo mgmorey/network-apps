@@ -162,7 +162,7 @@ namespace TestHost
                           const Network::Hints& hints) -> void
     {
         const auto description {get_description(hints)};
-        auto hosts_result {Network::get_hosts(host, &hints)};
+        auto hosts_result {Network::get_hosts(host, hints)};
         std::visit(Network::Overloaded {
                 [&](Network::HostVector& hosts) {
                     if (hosts.empty()) {

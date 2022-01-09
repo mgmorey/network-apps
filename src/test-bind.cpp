@@ -159,7 +159,7 @@ namespace TestBind
     static auto test_bind(const Network::Endpoint& endpoint,
                           const Network::Hints& hints) -> void
     {
-        const auto socket_results {Network::bind(endpoint, &hints, verbose)};
+        const auto socket_results {Network::bind(endpoint, hints, verbose)};
         assert(!socket_results.empty());  // NOLINT
         std::for_each(socket_results.begin(), socket_results.end(),
                       Test(endpoint, std::cout));

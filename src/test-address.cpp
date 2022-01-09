@@ -164,7 +164,7 @@ namespace TestAddress
             {AF_UNSPEC, SOCK_STREAM, IPPROTO_TCP, AI_ADDRCONFIG};
         static const Network::Hostname localhost {"localhost"};
 
-        const auto hosts_result {Network::get_hosts(localhost, &hints)};
+        const auto hosts_result {Network::get_hosts(localhost, hints)};
         std::visit(Network::Overloaded {
                 [&](const Network::HostVector& hosts) {
                         std::cout << "Socket addresses for "

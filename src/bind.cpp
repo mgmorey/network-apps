@@ -32,7 +32,7 @@ auto Network::bind(Fd fd,
 }
 
 auto Network::bind(const Endpoint& endp,
-                   const Hints* hints,
+                   const Hints& hints,
                    bool verbose) -> Network::FdResultVector
 {
     const Network::OpenHandler handler {::bind, "bind"};

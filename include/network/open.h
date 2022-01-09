@@ -41,7 +41,7 @@ namespace Network
 
     extern auto open(const OpenHandler& handler,
                      const Endpoint& endpoint,
-                     const Hints* hints,
+                     const Hints& hints,
                      bool verbose) -> FdResultVector;
     extern auto open(const OpenHandler& handler, Fd fd,
                      const Bytes& addr,

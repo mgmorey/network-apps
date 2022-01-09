@@ -27,8 +27,8 @@ namespace Network
 {
     using HostVectorResult = std::variant<HostVector, Result>;
 
-    extern auto get_hosts(const Hostname& host = nullptr,
-                          const Hints* hints = nullptr,
+    extern auto get_hosts(const Hostname& host,
+                          const Hints& hints,
                           bool verbose = false) ->  HostVectorResult;
 }
 

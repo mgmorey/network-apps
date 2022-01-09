@@ -32,7 +32,7 @@ auto Network::connect(Fd fd,
 }
 
 auto Network::connect(const Endpoint& endp,
-                      const Hints* hints,
+                      const Hints& hints,
                       bool verbose) -> Network::FdResultVector
 {
     const Network::OpenHandler handler {::connect, "connect"};

@@ -43,8 +43,8 @@ namespace Network
         auto operator=(const std::string& t_value) -> OptionalString&;
         // NOLINTNEXTLINE
         auto operator=(const char* t_value) -> OptionalString&;
-        operator std::string() const;				// NOLINT
-        operator const char*() const;				// NOLINT
+        explicit operator std::string() const;
+        explicit operator const char*() const;
         explicit operator bool() const;
         [[nodiscard]] auto has_value() const -> bool;
         [[nodiscard]] auto value() const -> std::string;

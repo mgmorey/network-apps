@@ -30,7 +30,7 @@
 
 auto Network::open(const OpenHandler& handler,
                    const Endpoint& endpoint,
-                   const Hints* hints,
+                   const Hints& hints,
                    bool verbose) -> Network::FdResultVector
 {
     FdResultVector results;

@@ -25,7 +25,7 @@ namespace Network
                      const Bytes& addr,
                      bool verbose = false) -> Result;
     extern auto bind(const Endpoint& endpoint,
-                     const Hints* hints = nullptr,
+                     const Hints& hints,
                      bool verbose = false) -> FdResultVector ;
 }
 

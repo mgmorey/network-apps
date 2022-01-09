@@ -192,7 +192,7 @@ namespace TestConnect
         std::visit(Network::Overloaded {
                 [&](const std::string& hostname) {
                     const auto socket_results {
-                        Network::connect(endpoint, &hints, verbose)
+                        Network::connect(endpoint, hints, verbose)
                     };
                     std::for_each(socket_results.begin(), socket_results.end(),
                                   Test(endpoint, hostname, std::cout));

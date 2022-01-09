@@ -30,11 +30,11 @@ namespace Network
     using SocketVectorResult = std::variant<SocketVector, Result>;
 
     extern auto get_sockets(const Endpoint& endpoint,
-                            const Hints* hints,
+                            const Hints& hints,
                             bool verbose) -> SocketVectorResult;
     extern auto get_sockets(const Hostname& node,
                             const Service& serv,
-                            const Hints* hints,
+                            const Hints& hints,
                             bool verbose) -> SocketVectorResult;
 }
 
