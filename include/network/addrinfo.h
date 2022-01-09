@@ -27,7 +27,6 @@
 #include <netdb.h>      // addrinfo
 #endif
 
-#include <algorithm>    // std::for_each()
 #include <cstddef>      // std::ptrdiff_t
 #include <iostream>     // std::cerr, std::endl
 #include <iterator>     // std::input_iterator_tag
@@ -93,23 +92,24 @@ namespace Network
 
         template<typename OutputIt>
         auto insert(const Hostname& node,
-                    const Service& serv,
+                    const Service& service,
                     const Hints* hints,
                     bool verbose,
                     OutputIt out) -> Result
         {
-            const auto list {List(node, serv, hints, verbose)};
-            std::for_each(list.begin(), List::end(),
-                          [&](const addrinfo& in) {
-                              if (verbose) {
-                                  std::cerr << "Fetched addrinfo:"
-                                            << std::endl
-                                            << in
-                                            << std::endl;
-                              }
+            const auto list {List(node, service, hints, verbose)};
 
-                              *out++ = in;
-                          });
+            for (const auto& in : list) {
+                if (verbose) {
+                    std::cerr << "Fetched addrinfo:"
+                              << std::endl
+                              << in
+                              << std::endl;
+                }
+
+                *out++ = in;
+            }
+
             return list.result();
         }
     }
