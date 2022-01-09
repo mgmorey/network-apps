@@ -17,7 +17,6 @@
 #define NETWORK_NETWORK_H
 
 #include "network/address.h"            // Address
-#include "network/addrinfo.h"           // AddrInfo
 #include "network/bind.h"               // bind()
 #include "network/bytes.h"              // Bytes
 #include "network/close.h"              // close()
