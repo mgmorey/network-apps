@@ -29,7 +29,7 @@ endif
 
 ifdef SDKROOT
 ifeq "$(IS_CLANG)" "true"
-ifeq "$(shell bin/get-clang-flavor $(CXX))" "Apple clang"
+ifeq "$(shell bin/get-clang-flavor $(CXX))" "Apple"
 CPPFLAGS := $(shell bin/remove-option -I$(SDKROOT)/usr/include "$(CPPFLAGS)")
 LDFLAGS := $(shell bin/remove-option -L$(SDKROOT)/usr/lib "$(LDFLAGS)")
 endif
@@ -38,7 +38,7 @@ endif
 
 ifdef USING_LIBASAN
 ifeq "$(IS_CLANG)" "true"
-ifeq "$(shell bin/get-clang-flavor $(CXX))" "FreeBSD clang"
+ifeq "$(shell bin/get-clang-flavor $(CXX))" "FreeBSD"
 	USING_LIBASAN := false
 endif
 else ifeq "$(IS_GCC)" "true"
