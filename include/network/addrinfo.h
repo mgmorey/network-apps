@@ -16,8 +16,8 @@
 #ifndef NETWORK_ADDRINFO_H
 #define NETWORK_ADDRINFO_H
 
-#include "network/hints.h"              // Hints
 #include "network/hostname.h"           // Hostname
+#include "network/optionalhints.h"      // OptionalHints
 #include "network/result.h"             // Result
 #include "network/service.h"            // Service
 
@@ -72,7 +72,7 @@ namespace Network
             List(const List&&) = delete;
             List(const Hostname& t_node,
                  const Service& t_service,
-                 const Hints& t_hints,
+                 const OptionalHints& t_hints,
                  bool t_verbose);
             ~List();
             auto operator=(const List&) -> List& = delete;
@@ -93,7 +93,7 @@ namespace Network
         template<typename OutputIt>
         auto insert(const Hostname& node,
                     const Service& service,
-                    const Hints& hints,
+                    const OptionalHints& hints,
                     bool verbose,
                     OutputIt out) -> Result
         {

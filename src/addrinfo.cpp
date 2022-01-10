@@ -58,16 +58,22 @@ auto Network::AddrInfo::List::end() -> Network::AddrInfo::InputIterator
 
 Network::AddrInfo::List::List(const Hostname& t_node,
                               const Service& t_service,
-                              const Hints& t_hints,
+                              const OptionalHints& t_hints,
                               bool t_verbose)
 {
-    addrinfo addrinfo_hints = t_hints;
+    addrinfo hints {};
+
+    if (t_hints) {
+        hints = *t_hints;
+    }
 
     if (t_verbose) {
+        if (t_hints) {
         std::cerr << "Trying socket hints:"
                   << std::endl
-                  << t_hints
+                  << *t_hints
                   << std::endl;
+        }
     }
 
     if (t_verbose) {
@@ -81,7 +87,7 @@ Network::AddrInfo::List::List(const Hostname& t_node,
 
     if (const auto error = ::getaddrinfo(static_cast<const char*>(t_node),
                                          static_cast<const char*>(t_service),
-                                         &addrinfo_hints,
+                                         t_hints ? &hints : NULL,
                                          &m_list)) {
         std::ostringstream oss;
         oss << "Call to getaddrinfo("

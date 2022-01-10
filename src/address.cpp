@@ -16,9 +16,6 @@
 #include "network/address.h"            // AF_INET, AF_INET6, AF_UNIX,
                                         // Address, length_type,
                                         // port_type, value_type
-#include "network/get-sa-family.h"      // get_sa_family()
-#include "network/get-sa-length.h"      // get_sa_length()
-#include "network/get-sa-pointer.h"     // get_sa_pointer()
 
 #include <string>       // std::string
 #include <utility>      // std::move
@@ -58,6 +55,11 @@ auto Network::Address::operator==(const Address& t_address) const -> bool
 Network::Address::operator value_type() const
 {
     return m_value;
+}
+
+auto Network::Address::data() const -> Network::Address::value_type
+{
+    return sa_data();
 }
 
 auto Network::Address::empty() const -> bool

@@ -27,7 +27,7 @@
 #include <variant>      // std::visit()
 
 auto Network::get_hosts(const Network::Hostname& host,
-                        const Network::Hints& hints,
+                        const Network::OptionalHints& hints,
                         bool verbose) -> Network::HostVectorResult
 {
     HostVectorResult hosts_result;

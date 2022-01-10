@@ -51,6 +51,7 @@ namespace Network
         auto operator>(const Address& t_address) const -> bool;
         auto operator==(const Address& t_address) const -> bool;
         operator value_type() const;  // NOLINT
+        [[nodiscard]] auto data() const -> value_type;
         [[nodiscard]] auto empty() const -> bool;
         [[nodiscard]] auto family() const -> family_type;
         [[nodiscard]] auto length() const -> length_type;

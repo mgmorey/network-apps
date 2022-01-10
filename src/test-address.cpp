@@ -119,10 +119,11 @@ namespace TestAddress
         const Network::Address address {addr};
         const auto length {address.length()};
         const auto family {address.family()};
+        const auto data {address.data()};
+        const auto port {address.port()};
         const auto text {address.text()};
         std::cout << "    "
                   << Network::Family(family)
-                  << ':'
                   << std::endl;
         std::cout << std::left
                   << std::setw(key_width)
@@ -137,6 +138,13 @@ namespace TestAddress
                   << std::right
                   << std::setw(value_width)
                   << length
+                  << std::endl;
+        std::cout << std::left
+                  << std::setw(key_width)
+                  << "        Port:"
+                  << std::right
+                  << std::setw(value_width)
+                  << port
                   << std::endl;
         std::cout << std::left
                   << std::setw(key_width)
@@ -160,21 +168,28 @@ namespace TestAddress
 
     static auto test_address_localhost() -> void
     {
-        static const Network::Hints hints
-            {AF_UNSPEC, SOCK_STREAM, IPPROTO_TCP, AI_ADDRCONFIG};
         static const Network::Hostname localhost {"localhost"};
 
-        const auto hosts_result {Network::get_hosts(localhost, hints)};
+        const auto hosts_result {Network::get_hosts(localhost)};
         std::visit(Network::Overloaded {
                 [&](const Network::HostVector& hosts) {
-                        std::cout << "Socket addresses for "
-                                  << static_cast<std::string>(localhost)
-                                  << ": "
-                                  << std::endl;
+                    std::cout << "Socket addresses for "
+                              << static_cast<std::string>(localhost)
+                              << ": "
+                              << std::endl;
+
+                    std::vector<Network::Bytes> addrs;
 
                     for (const auto& host : hosts) {
-                        test_address_localhost(host.address());
+                        addrs.push_back(host.address());
                     }
+
+                    Network::uniquify(addrs);
+
+                    for (const auto& addr : addrs) {
+                        test_address_localhost(addr);
+                    }
+
                 },
                 [&](const Network::Result& result) {
                     std::cout << "No "

@@ -64,6 +64,7 @@
 #include "network/socket-error.h"       // socket_error
 #include "network/socket.h"             // Hints, Host, Socket
 #include "network/socktype.h"           // SockType
+#include "network/to-string.h"          // to_string()
 #include "network/types.h"              // Buffer, Hostname, Pathname
                                         // Service
 #include "network/uniquify.h"           // Uniquify

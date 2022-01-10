@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/hints.h"      // Hints, addrinfo
+#include "network/hints.h"              // Hints, addrinfo
 
 Network::Hints::Hints(family_type t_family,
                       socktype_type t_socktype,
