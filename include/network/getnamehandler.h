@@ -20,7 +20,6 @@
 #include <winsock2.h>       // sockaddr, socklen_t
 #include <ws2tcpip.h>       // socklen_t
 #else
-#include <netdb.h>          // socklen_t
 #include <sys/socket.h>     // sockaddr, socklen_t
 #endif
 
