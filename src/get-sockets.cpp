@@ -46,14 +46,14 @@ auto Network::get_sockets(const Network::Endpoint& endpoint,
 }
 
 auto Network::get_sockets(const Network::Hostname& node,
-                          const Network::Service& serv,
+                          const Network::Service& service,
                           const Network::Hints& hints,
                           bool verbose) -> Network::SocketVectorResult
 {
     SocketVector sockets;
     const auto result {
         AddrInfo::insert(node,
-                         serv,
+                         service,
                          hints,
                          verbose,
                          std::back_inserter(sockets))

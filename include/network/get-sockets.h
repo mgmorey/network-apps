@@ -33,7 +33,7 @@ namespace Network
                             const Hints& hints,
                             bool verbose) -> SocketVectorResult;
     extern auto get_sockets(const Hostname& node,
-                            const Service& serv,
+                            const Service& service,
                             const Hints& hints,
                             bool verbose) -> SocketVectorResult;
 }
