@@ -13,17 +13,23 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_GET_NAME_H
-#define NETWORK_GET_NAME_H
+#ifndef NETWORK_OPENHANDLER_H
+#define NETWORK_OPENHANDLER_H
 
-#include "network/bytesresult.h"        // BytesResult
-#include "network/fd.h"                 // Fd
-#include "network/getnamehandler.h"     // GetNameHandler
+#ifdef _WIN32
+#include <winsock2.h>       // sockaddr, socklen_t
+#include <ws2tcpip.h>       // socklen_t
+#else
+#include <netdb.h>          // socklen_t
+#include <sys/socket.h>     // sockaddr, socklen_t
+#endif
+
+#include <utility>      // std::pair
 
 namespace Network
 {
-    extern auto get_name(const GetNameHandler& handler, Fd fd,
-                         bool verbose) -> BytesResult;
+    using OpenFunction = int (*)(fd_type, const sockaddr*, socklen_t);
+    using OpenHandler = std::pair<OpenFunction, const char*>;
 }
 
 #endif

@@ -13,17 +13,17 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_GET_NAME_H
-#define NETWORK_GET_NAME_H
+#ifndef NETWORK_BYTESRESULT_H
+#define NETWORK_BYTESRESULT_H
 
-#include "network/bytesresult.h"        // BytesResult
-#include "network/fd.h"                 // Fd
-#include "network/getnamehandler.h"     // GetNameHandler
+#include "network/bytes.h"              // Bytes
+#include "network/result.h"             // Result
+
+#include <variant>      // std::variant
 
 namespace Network
 {
-    extern auto get_name(const GetNameHandler& handler, Fd fd,
-                         bool verbose) -> BytesResult;
+    using BytesResult = std::variant<Bytes, Result>;
 }
 
 #endif
