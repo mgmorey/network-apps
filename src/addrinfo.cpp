@@ -25,7 +25,6 @@
 
 #include <iostream>     // std::cerr, std::endl
 #include <memory>       // std::unique_ptr
-#include <optional>     // std::optional
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
 
@@ -63,11 +62,9 @@ Network::AddrInfo::List::List(const Hostname& t_node,
                               const OptionalHints& t_hints,
                               bool t_verbose)
 {
-    std::optional<std::unique_ptr<addrinfo>> hints;
-
-    if (t_hints) {
-        hints = std::make_unique<addrinfo>(*t_hints);
-    }
+    std::unique_ptr<addrinfo> hints = t_hints ?
+        std::make_unique<addrinfo>(*t_hints) :
+        nullptr;
 
     if (t_verbose) {
         if (t_hints) {
@@ -89,7 +86,7 @@ Network::AddrInfo::List::List(const Hostname& t_node,
 
     if (const auto error = ::getaddrinfo(static_cast<const char*>(t_node),
                                          static_cast<const char*>(t_service),
-                                         hints ? hints->get() : NULL,
+                                         hints.get(),
                                          &m_list)) {
         std::ostringstream oss;
         oss << "Call to getaddrinfo("
