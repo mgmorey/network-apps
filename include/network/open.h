@@ -18,10 +18,8 @@
 
 #include "network/bytes.h"              // Bytes
 #include "network/endpoint.h"           // Endpoint
-#include "network/fdresultvector.h"     // Fd, FdResultVector
+#include "network/fdresultvector.h"     // Fd, FdResultVector, Result
 #include "network/hints.h"              // Hints
-#include "network/result.h"             // Result
-#include "network/socket.h"             // Socket
 
 #ifdef _WIN32
 #include <winsock2.h>       // sockaddr, socklen_t
