@@ -20,8 +20,7 @@
 #include "network/endpoint.h"           // Endpoint
 #include "network/fdresultvector.h"     // Fd, FdResultVector, Result
 #include "network/hints.h"              // Hints
-#include "network/openhandler.h"        // OpenHandler, sockaddr,
-                                        // socklen_t
+#include "network/openhandler.h"        // OpenHandler
 
 namespace Network
 {
