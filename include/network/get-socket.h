@@ -16,8 +16,8 @@
 #ifndef NETWORK_GET_SOCKET_H
 #define NETWORK_GET_SOCKET_H
 
-#include "network/fdresult.h"       // FdResult
-#include "network/socket.h"         // Socket
+#include "network/fdresult.h"           // FdResult
+#include "network/socket.h"             // Socket
 
 namespace Network
 {

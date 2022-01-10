@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/socket.h"     // Socket, operator<<()
-#include "network/format.h"     // Format, operator<<()
+#include "network/socket.h"         // Socket, operator<<()
+#include "network/format.h"         // Format, operator<<()
 
 #include <ostream>      // std::ostream
 

@@ -13,9 +13,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/network.h"    // Buffer, Fd, close(), connect(),
-                                // get_sockaddr(), socket_error
-#include "unix-common.h"        // BUFFER_SIZE, SOCKET_NAME
+#include "network/network.h"            // Buffer, Fd, close(),
+                                        // connect(), get_sockaddr(),
+                                        // socket_error
+#include "unix-common.h"                // BUFFER_SIZE, SOCKET_NAME
 
 #include <sys/socket.h>         // SOCK_SEQPACKET, ::connect(),
                                 // ::socket()

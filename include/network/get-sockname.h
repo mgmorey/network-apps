@@ -16,7 +16,7 @@
 #ifndef NETWORK_GET_SOCKNAME_H
 #define NETWORK_GET_SOCKNAME_H
 
-#include "network/get-name.h"       // BytesResult, Fd
+#include "network/get-name.h"           // BytesResult, Fd
 
 namespace Network
 {

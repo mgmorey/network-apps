@@ -13,8 +13,6 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef _WIN32
-
 #include "network/get-socketpair.h"     // FdPair, FdPairResult,
                                         // Result, Socket, fd_null,
                                         // fd_type, get_socketpair(),
@@ -33,6 +31,8 @@
 
 static constexpr auto delim {", "};
 static constexpr auto tab {0};
+
+#ifndef _WIN32
 
 auto Network::get_socketpair(const Socket& sock,
                              bool verbose) -> Network::FdPairResult

@@ -13,9 +13,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/addrinfo.h"       // AddrInfo, Hints, Hostname,
-                                    // Result, Service, addrinfo,
-                                    // operator<<()
+#include "network/addrinfo.h"           // AddrInfo, Hints, Hostname,
+                                        // Result, Service, addrinfo,
+                                        // operator<<()
 
 #ifdef _WIN32
 #include <ws2tcpip.h>   // freeaddrinfo(), getaddrinfo()

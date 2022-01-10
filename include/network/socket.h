@@ -16,8 +16,8 @@
 #ifndef NETWORK_SOCKET_H
 #define NETWORK_SOCKET_H
 
-#include "network/hints.h"          // Hints
-#include "network/host.h"           // Host
+#include "network/hints.h"              // Hints
+#include "network/host.h"               // Host
 
 #ifdef _WIN32
 #include <ws2tcpip.h>   // addrinfo

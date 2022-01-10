@@ -13,10 +13,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/address.h"    // Address, operator<<(),
-                                // std::ostream, std::string
-#include "network/family.h"     // Family, operator<<()
-#include "network/format.h"     // Format, operator<<()
+#include "network/address.h"            // Address, operator<<(),
+                                        // std::ostream, std::string
+#include "network/family.h"             // Family, operator<<()
+#include "network/format.h"             // Format, operator<<()
 
 #ifdef _WIN32
 #include <winsock2.h>   // AF_INET, AF_INET6, AF_UNIX

@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/optionalstring.h" // OptionalString
+#include "network/optionalstring.h"     // OptionalString
 
 Network::OptionalString::OptionalString(const std::nullopt_t& t_value) :
     m_value(t_value)

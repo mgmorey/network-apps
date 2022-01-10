@@ -16,7 +16,7 @@
 #ifndef NETWORK_HOSTNAMERESULT_H
 #define NETWORK_HOSTNAMERESULT_H
 
-#include "network/stringresult.h"   // StringResult
+#include "network/stringresult.h"       // StringResult
 
 namespace Network
 {

@@ -16,7 +16,7 @@
 #ifndef NETWORK_HOSTVECTOR_H
 #define NETWORK_HOSTVECTOR_H
 
-#include "network/host.h"           // Host
+#include "network/host.h"               // Host
 
 #include <vector>       // std::vector
 

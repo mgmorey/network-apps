@@ -16,7 +16,7 @@
 #ifndef NETWORK_FDPAIR_H
 #define NETWORK_FDPAIR_H
 
-#include "network/fd.h"             // Fd
+#include "network/fd.h"                 // Fd
 
 #include <array>        // std::array
 

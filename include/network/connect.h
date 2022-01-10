@@ -16,8 +16,9 @@
 #ifndef NETWORK_CONNECT_H
 #define NETWORK_CONNECT_H
 
-#include "network/open.h"           // Bytes, Endpoint, Fd,
-                                    // FdResultVector, Hints, Result
+#include "network/open.h"               // Bytes, Endpoint, Fd,
+                                        // FdResultVector, Hints,
+                                        // Result
 
 namespace Network
 {

@@ -13,7 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/optionalstring.h" // OptionalString, operator<<()
+#include "network/optionalstring.h"     // OptionalString,
+                                        // operator<<()
 
 #include <ostream>      // std::ostream
 

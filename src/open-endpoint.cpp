@@ -13,12 +13,13 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/open.h"           // Endpoint, Fd, FdResultVector,
-                                    // Hints, OpenHandler, Result,
-                                    // open(), operator<<()
-#include "network/get-socket.h"     // get_socket()
-#include "network/get-sockets.h"    // SocketVector, get_sockets()
-#include "network/overloaded.h"     // Overloaded
+#include "network/open.h"               // Endpoint, Fd,
+                                        // FdResultVector, Hints,
+                                        // OpenHandler, Result,
+                                        // open(), operator<<()
+#include "network/get-socket.h"         // get_socket()
+#include "network/get-sockets.h"        // SocketVector, get_sockets()
+#include "network/overloaded.h"         // Overloaded
 
 #include <algorithm>    // std::transform()
 #include <iterator>     // std::back_inserter()

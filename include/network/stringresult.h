@@ -16,7 +16,7 @@
 #ifndef NETWORK_STRINGRESULT_H
 #define NETWORK_STRINGRESULT_H
 
-#include "network/result.h"         // Result
+#include "network/result.h"             // Result
 
 #include <string>       // std::string
 #include <variant>      // std::variant

@@ -16,8 +16,9 @@
 #ifndef NETWORK_BIND_H
 #define NETWORK_BIND_H
 
-#include "network/open.h"           // Bytes, Endpoint, Fd,
-                                    // FdResultVector, Hints, Result
+#include "network/open.h"               // Bytes, Endpoint, Fd,
+                                        // FdResultVector, Hints,
+                                        // Result
 
 namespace Network
 {

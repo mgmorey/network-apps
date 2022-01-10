@@ -13,7 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-peername.h"   // BytesResult, Fd, get_peername()
+#include "network/get-peername.h"       // BytesResult, Fd,
+                                        // get_peername()
 
 #ifdef _WIN32
 #include <winsock2.h>   // getpeername()

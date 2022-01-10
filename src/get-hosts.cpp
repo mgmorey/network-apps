@@ -13,13 +13,15 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-hosts.h"      // Hints, Host, Hostname,
-                                    // HostVector, HostVectorResult,
-                                    // Result, get_hosts()
-#include "network/addrinfo.h"       // AddrInfo
-#include "network/get-hostname.h"   // HostnameResult, get_hostname()
-#include "network/overloaded.h"     // Overloaded
-#include "network/uniquify.h"       // Uniquify
+#include "network/get-hosts.h"          // Host, Hostname, HostVector,
+                                        // HostVectorResult,
+                                        // OptionalHints, Result,
+                                        // get_hosts()
+#include "network/addrinfo.h"           // AddrInfo
+#include "network/get-hostname.h"       // HostnameResult,
+                                        // get_hostname()
+#include "network/overloaded.h"         // Overloaded
+#include "network/uniquify.h"           // Uniquify
 
 #include <iterator>     // std::back_inserter()
 #include <optional>     // std::nullopt

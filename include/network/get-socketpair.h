@@ -16,8 +16,8 @@
 #ifndef NETWORK_GET_SOCKETPAIR_H
 #define NETWORK_GET_SOCKETPAIR_H
 
-#include "network/fdpairresult.h"   // FdPairResult
-#include "network/socket.h"         // Socket
+#include "network/fdpairresult.h"       // FdPairResult
+#include "network/socket.h"             // Socket
 
 namespace Network
 {
