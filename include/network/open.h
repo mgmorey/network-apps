@@ -38,12 +38,13 @@ namespace Network
     using OpenHandler = std::pair<OpenFunction, const char*>;
 
     extern auto open(const OpenHandler& handler,
+                     Fd fd,
+                     const Bytes& addr,
+                     bool verbose) -> Result;
+    extern auto open(const OpenHandler& handler,
                      const Endpoint& endpoint,
                      const Hints& hints,
                      bool verbose) -> FdResultVector;
-    extern auto open(const OpenHandler& handler, Fd fd,
-                     const Bytes& addr,
-                     bool verbose) -> Result;
 }
 
 #endif
