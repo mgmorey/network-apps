@@ -17,7 +17,7 @@
 #define NETWORK_OPENHANDLER_H
 
 #ifdef _WIN32
-#include <winsock2.h>       // sockaddr, socklen_t
+#include <winsock2.h>       // sockaddr
 #include <ws2tcpip.h>       // socklen_t
 #else
 #include <sys/socket.h>     // sockaddr, socklen_t
