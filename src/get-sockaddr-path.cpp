@@ -37,7 +37,7 @@ auto Network::get_sockaddr(const Pathname& pathname) -> Network::Bytes
     sun.sun_family = AF_LOCAL;
 
     if (pathname.has_value()) {
-        pathname.value().copy(sun.sun_path, path_len_max);	// NOLINT
+        pathname.value().copy(sun.sun_path, path_len_max);  // NOLINT
         sun_len_min += sizeof(char);
     }
 
