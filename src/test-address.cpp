@@ -77,49 +77,13 @@ namespace TestAddress
         return result;
     }
 
-    static auto test_address() -> void
+    static auto print_address(const Network::Address& address) -> void
     {
-        const Network::Bytes addr;
-        const auto size {addr.size()};
-        const auto length {Network::get_sa_length(addr)};
-        const auto family {Network::get_sa_family(addr)};
-        assert(size == 0);					// NOLINT
-        assert(length == 0);					// NOLINT
-        assert(family == AF_UNSPEC);				// NOLINT
-        assert(Network::is_valid(addr) == false);		// NOLINT
-    }
-
-    static auto test_address_any() -> void
-    {
-        const Network::Bytes addr {Network::get_sockaddr()};
-        const auto size {addr.size()};
-        const auto family {Network::get_sa_family(addr)};
-        assert(size == Network::sockaddr_size_max);		// NOLINT
-        assert(family == AF_UNSPEC);				// NOLINT
-        assert(Network::is_valid(addr) == true);		// NOLINT
-    }
-
-    static auto test_address_localhost(const Network::Bytes& addr) -> void
-    {
-        const auto size {addr.size()};
-
-        switch (Network::get_sa_family(addr)) {
-        case AF_INET:
-            assert(size == Network::sin_size);			// NOLINT
-            break;
-        case AF_INET6:
-            assert(size == Network::sin6_size);			// NOLINT
-            break;
-        default:
-            assert(false);					// NOLINT
-        }
-
-        assert(Network::is_valid(addr, verbose));		// NOLINT
-        const Network::Address address {addr};
         const auto length {address.length()};
         const auto family {address.family()};
         const auto data {address.data()};
         const auto port {address.port()};
+        const auto size {address.size()};
         const auto text {address.text()};
         std::cout << "    "
                   << Network::Family(family)
@@ -152,16 +116,60 @@ namespace TestAddress
                   << std::setw(value_width)
                   << text
                   << std::endl;
+    }
+
+    static auto test_address() -> void
+    {
+        const Network::Bytes addr;
+        const auto size {addr.size()};
+        const auto length {Network::get_sa_length(addr)};
+        const auto family {Network::get_sa_family(addr)};
+        assert(size == 0);					// NOLINT
+        assert(length == 0);					// NOLINT
+        assert(family == AF_UNSPEC);				// NOLINT
+        assert(Network::is_valid(addr) == false);		// NOLINT
+    }
+
+    static auto test_address_any() -> void
+    {
+        const Network::Bytes addr {Network::get_sockaddr()};
+        const auto size {addr.size()};
+        const auto family {Network::get_sa_family(addr)};
+        assert(size == Network::sockaddr_size_max);		// NOLINT
+        assert(family == AF_UNSPEC);				// NOLINT
+        assert(Network::is_valid(addr) == true);		// NOLINT
+    }
+
+    static auto test_address_localhost(const Network::Bytes& addr) -> void
+    {
+        const Network::Address address {addr};
+        const auto family {address.family()};
+        const auto size {address.size()};
+        const auto text {address.text()};
 
         switch (family) {
         case AF_INET:
-            assert(text == "127.0.0.1");		// NOLINT
+            assert(size == Network::sin_size);			// NOLINT
             break;
         case AF_INET6:
-            assert(text == "::1");			// NOLINT
+            assert(size == Network::sin6_size);			// NOLINT
             break;
         default:
-            assert(false);				// NOLINT
+            assert(false);					// NOLINT
+        }
+
+        assert(Network::is_valid(addr, verbose));		// NOLINT
+        print_address(address);
+
+        switch (family) {
+        case AF_INET:
+            assert(text == "127.0.0.1");			// NOLINT
+            break;
+        case AF_INET6:
+            assert(text == "::1");				// NOLINT
+            break;
+        default:
+            assert(false);					// NOLINT
         }
     }
 
