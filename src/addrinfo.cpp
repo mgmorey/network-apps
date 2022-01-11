@@ -79,22 +79,25 @@ Network::AddrInfo::List::List(const OptionalHostname& t_hostname,
 
     if (t_verbose) {
         std::cerr << "Calling getaddrinfo("
-                  << t_hostname
+                  << t_hostname.value_or("<nullptr>")
                   << ", "
-                  << t_service
+                  << t_service.value_or("<nullptr>")
                   << ", ...)"
                   << std::endl;
     }
 
-    if (const auto error = ::getaddrinfo(static_cast<const char*>(t_hostname),
-                                         static_cast<const char*>(t_service),
+    const char* hostname {t_hostname ? t_hostname->c_str() : nullptr};
+    const char* service {t_service ? t_service->c_str() : nullptr};
+
+    if (const auto error = ::getaddrinfo(hostname,
+                                         service,
                                          hints.get(),
                                          &m_list)) {
         std::ostringstream oss;
         oss << "Call to getaddrinfo("
-            << t_hostname
+            << t_hostname.value_or("<nullptr>")
             << ", "
-            << t_service
+            << t_service.value_or("<nullptr>")
             << ", ...) returned "
             << error
             << ": "

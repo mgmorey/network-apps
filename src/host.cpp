@@ -18,15 +18,21 @@
 #include "network/get-sockaddr.h"       // Bytes, get_sockaddr()
 
 Network::Host::Host(const addrinfo& t_addrinfo) :
-    m_addr(get_sockaddr(t_addrinfo)),
-    m_name(t_addrinfo.ai_canonname)
+    m_addr(get_sockaddr(t_addrinfo))
 {
+    if (t_addrinfo.ai_canonname != nullptr) {
+        m_name = t_addrinfo.ai_canonname;
+    }
 }
 
 auto Network::Host::operator=(const addrinfo& t_addrinfo) -> Network::Host&
 {
     m_addr = get_sockaddr(t_addrinfo);
-    m_name = t_addrinfo.ai_canonname;
+
+    if (t_addrinfo.ai_canonname != nullptr) {
+        m_name = t_addrinfo.ai_canonname;
+    }
+
     return *this;
 }
 

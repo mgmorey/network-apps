@@ -51,6 +51,7 @@
 #include "network/get-sun-path.h"       // get_sun_path()
 #include "network/get-sun-pointer.h"    // get_sun_pointer()
 #include "network/is-valid.h"           // is_valid()
+#include "network/optionalstring.h"     // operator<<()
 #include "network/os-error.h"           // format_os_error(),
                                         // get_last_os_error(),
                                         // reset_last_os_error()

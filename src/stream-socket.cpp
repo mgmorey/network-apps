@@ -35,7 +35,7 @@ auto Network::operator<<(std::ostream& os,
        << Format(tab, "address")
        << sock.address()
        << Format(tab, "canonical_name")
-       << sock.canonical_name()
+       << sock.canonical_name().value_or("<nullptr>")
        << ')';
     return os;
 }

@@ -26,7 +26,7 @@
 
 auto Network::Address::sun_text() const -> std::string
 {
-    return get_sun_path(m_value).value_or({});
+    return *get_sun_path(m_value);
 }
 
 #endif

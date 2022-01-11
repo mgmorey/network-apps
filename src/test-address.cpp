@@ -182,7 +182,7 @@ namespace TestAddress
         std::visit(Network::Overloaded {
                 [&](const Network::HostVector& hosts) {
                     std::cout << "Socket addresses for "
-                              << static_cast<std::string>(localhost)
+                              << localhost.value_or("<nullptr>")
                               << ": "
                               << std::endl;
 
@@ -201,7 +201,7 @@ namespace TestAddress
                 },
                 [&](const Network::Result& result) {
                     std::cout << "No "
-                              << static_cast<std::string>(localhost)
+                              << localhost.value_or("<nullptr>")
                               << " addresses: "
                               << result
                               << std::endl;

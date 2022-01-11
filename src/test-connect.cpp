@@ -115,18 +115,18 @@ namespace TestConnect
 
         auto test_socket(const Network::Fd& t_fd) -> void
         {
-            const auto host {m_endpoint.first};
+            const auto hostname {m_endpoint.first};
             const auto service {m_endpoint.second};
             const auto peer_result {get_peeraddr(t_fd)};
             const auto sock_result {get_sockaddr(t_fd)};
             m_os << "Socket "
                  << t_fd
                  << " connected "
-                 << m_hostname
+                 << (m_hostname ? *m_hostname : "<nullptr>")
                  << " to "
-                 << service
+                 << (service ? *service : "<nullptr>")
                  << " on "
-                 << host
+                 << (hostname ? *hostname : "<nullptr>")
                  << std::endl;
 
             if (std::holds_alternative<Network::Bytes>(peer_result) &&

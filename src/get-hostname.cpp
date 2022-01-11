@@ -36,8 +36,8 @@
 auto Network::get_hostname(const OptionalHostname& hostname) ->
     Network::HostnameResult
 {
-    if (hostname.has_value()) {
-        return hostname.value();
+    if (hostname) {
+        return *hostname;
     }
 
     Buffer host_buffer {NI_MAXHOST};

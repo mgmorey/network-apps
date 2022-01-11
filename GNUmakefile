@@ -55,11 +55,10 @@ get-sockaddr-path.cpp get-sockaddr-sa.cpp get-sockaddr-size.cpp		\
 get-sockaddr-sun.cpp get-socket.cpp get-socketpair.cpp			\
 get-sockets.cpp get-peername.cpp get-sockname.cpp get-sun-length.cpp	\
 get-sun-path.cpp get-sun-pointer.cpp hints.cpp host.cpp is-valid.cpp	\
-open-endpoint.cpp open-fd.cpp optionalstring.cpp os-error.cpp		\
-protocol.cpp result.cpp socket.cpp socktype.cpp stream-address.cpp	\
-stream-addrinfo.cpp stream-bytestring.cpp stream-hints.cpp		\
-stream-optionalstring.cpp stream-socket.cpp to-string.cpp		\
-to-string-sin.cpp to-string-sin6.cpp
+open-endpoint.cpp open-fd.cpp os-error.cpp protocol.cpp result.cpp	\
+socket.cpp socktype.cpp stream-address.cpp stream-addrinfo.cpp		\
+stream-bytestring.cpp stream-hints.cpp stream-socket.cpp		\
+to-string.cpp to-string-sin.cpp to-string-sin6.cpp
 
 test_sources = test-address.cpp test-bind.cpp test-connect.cpp	\
 test-host.cpp test-hostname.cpp

@@ -33,7 +33,7 @@
 auto Network::operator<<(std::ostream& os,
                          const addrinfo& ai) -> std::ostream&
 {
-    static const int tab {9};
+    static constexpr auto tab {9};
 
     const Flags flags(ai.ai_flags);
     const Family family(ai.ai_family);
@@ -54,7 +54,7 @@ auto Network::operator<<(std::ostream& os,
        << Format(tab, "ai_addr")
        << get_sockaddr(ai.ai_addr, ai.ai_addrlen)
        << Format(tab, "ai_canonname")
-       << OptionalHostname(ai.ai_canonname)
+       << (ai.ai_canonname == nullptr ? "<nullptr>" : ai.ai_canonname)
        << Format(tab)
        << "...)";
     return os;

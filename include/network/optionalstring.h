@@ -16,45 +16,12 @@
 #ifndef NETWORK_OPTIONALSTRING_H
 #define NETWORK_OPTIONALSTRING_H
 
-#include <optional>     // std::nullopt_t, std::optional
-#include <ostream>      // std::ostream
+#include <optional>     // std::optional
 #include <string>       // std::string
 
 namespace Network
 {
-    class OptionalString
-    {
-    public:
-        OptionalString() = default;
-        OptionalString(const OptionalString&) = default;
-        OptionalString(OptionalString&&) noexcept = default;
-        explicit OptionalString(const std::nullopt_t& t_value);
-        explicit OptionalString(const std::string& t_value);
-        explicit OptionalString(const char* t_value);
-        ~OptionalString() = default;
-        auto operator=(const OptionalString&) -> OptionalString& = default;
-        auto operator=(OptionalString&&) noexcept -> OptionalString& = default;
-        auto operator=(const std::nullopt_t& t_value) -> OptionalString&;
-        auto operator=(const std::string& t_value) -> OptionalString&;
-        auto operator=(const char* t_value) -> OptionalString&;
-        explicit operator std::string() const;
-        explicit operator const char*() const;
-        explicit operator bool() const;
-        [[nodiscard]] auto has_value() const -> bool;
-        [[nodiscard]] auto value() const -> std::string;
-        [[nodiscard]] auto value_or(const std::string& t_value) const ->
-            std::string;
-
-    private:
-        std::optional<std::string> m_value {};
-    };
-
-    extern auto operator==(const OptionalString& left,
-                           const OptionalString& right) -> bool;
-    extern auto operator!=(const OptionalString& left,
-                           const OptionalString& right) -> bool;
-    extern auto operator<<(std::ostream& os,
-                           const OptionalString& string) -> std::ostream&;
+    using OptionalString = std::optional<std::string>;
 }
 
 #endif

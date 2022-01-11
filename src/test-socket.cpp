@@ -72,17 +72,17 @@ namespace TestSocket
         const auto addr {Network::get_sockaddr(pathname)};
         Network::OptionalPathname sun_path {Network::get_sun_path(addr)};
 
-        if (pathname.has_value()) {
+        if (pathname) {
             std::cout << "Unix domain path: "
-                      << sun_path
+                      << (sun_path ? *sun_path : "<nullptr>")
                       << std::endl;
-            assert(sun_path == pathname);		// NOLINT
+            assert(sun_path == pathname);			// NOLINT
         }
         else {
-            assert(sun_path.has_value() == false);	// NOLINT
+            assert(static_cast<bool>(sun_path) == false);	// NOLINT
         }
 
-        assert(Network::is_valid(addr, verbose));	// NOLINT
+        assert(Network::is_valid(addr, verbose));		// NOLINT
         Network::Address address {addr};
         std::cout << "Unix domain address: "
                   << address

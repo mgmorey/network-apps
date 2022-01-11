@@ -198,25 +198,25 @@ namespace TestHost
             }, hosts_result);
     }
 
-    static auto test_host(const Network::OptionalHostname& host) -> void
+    static auto test_host(const Network::OptionalHostname& hostname) -> void
     {
-        if (static_cast<bool>(host)) {
+        if (hostname) {
             std::cout << "Host: "
-                      << static_cast<std::string>(host)
+                      << hostname.value_or("<nullptr>")
                       << std::endl;
             constexpr auto flags {AI_CANONNAME};
             const Network::Hints ipv4_hints
                 {AF_INET, SOCK_STREAM, IPPROTO_TCP, flags};
-            test_host(host, ipv4_hints);
+            test_host(hostname, ipv4_hints);
             const Network::Hints ipv6_hints
                 {AF_INET6, SOCK_STREAM, IPPROTO_TCP, flags};
-            test_host(host, ipv6_hints);
+            test_host(hostname, ipv6_hints);
         }
         else {
             const auto flags {AI_ADDRCONFIG | AI_CANONNAME};
             const Network::Hints hints
                 {AF_UNSPEC, SOCK_STREAM, IPPROTO_TCP, flags};
-            test_host(host, hints);
+            test_host(hostname, hints);
         }
     }
 }
