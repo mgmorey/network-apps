@@ -23,7 +23,10 @@
                                         // reset_last_os_error()
 #include "network/socket-error.h"       // socket_error
 
+#ifndef _WIN32
+
 #include <sys/socket.h>     // socketpair()
+
 
 #include <array>        // std::array
 #include <iostream>     // std::cerr, std::endl
@@ -31,8 +34,6 @@
 
 static constexpr auto delim {", "};
 static constexpr auto tab {0};
-
-#ifndef _WIN32
 
 auto Network::get_socketpair(const Socket& sock,
                              bool verbose) -> Network::FdPairResult
