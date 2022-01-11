@@ -16,7 +16,7 @@
 #ifndef NETWORK_HOST_H
 #define NETWORK_HOST_H
 
-#include "network/bytes.h"              // Bytes
+#include "network/bytestring.h"         // ByteString
 #include "network/optionalhostname.h"   // OptionalHostname
 
 #ifdef _WIN32
@@ -29,8 +29,6 @@ namespace Network
 {
     struct Host
     {
-        static auto get_sockaddr(const addrinfo& ai) -> Bytes;
-
         Host() = default;
         Host(const Host& t_host) = default;
         Host(Host&& t_host) noexcept = default;
@@ -43,11 +41,14 @@ namespace Network
         auto operator<(const Host& t_host) const -> bool;
         auto operator>(const Host& t_host) const -> bool;
         auto operator==(const Host& t_host) const -> bool;
-        [[nodiscard]] auto address() const -> Bytes;
+        [[nodiscard]] auto address() const -> ByteString;
         [[nodiscard]] auto canonical_name() const -> OptionalHostname;
 
+    protected:
+        static auto to_canonical_name(const char* t_str) -> OptionalHostname;
+
     private:
-        Bytes m_addr;
+        ByteString m_addr;
         OptionalHostname m_name;
     };
 }
