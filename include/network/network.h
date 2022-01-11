@@ -26,7 +26,7 @@
 #include "network/flags.h"              // Flags
 #include "network/get-endpoint.h"       // EndpointResult,
                                         // get_endpoint()
-#include "network/get-hostname.h"       // HostnameResult,
+#include "network/get-hostname.h"       // OptoinalHostnameResult,
                                         // get_hostname()
 #include "network/get-hosts.h"          // HostVectorResult,
                                         // get_hosts()
@@ -65,7 +65,10 @@
 #include "network/socket.h"             // Hints, Host, Socket
 #include "network/socktype.h"           // SockType
 #include "network/to-string.h"          // to_string()
-#include "network/types.h"              // Buffer, Hostname, Pathname
+#include "network/types.h"              // Buffer, Hostname,
+                                        // OptionalHostname,
+                                        // OptionalPathname,
+                                        // OptionalService, Pathname,
                                         // Service
 #include "network/uniquify.h"           // Uniquify
 

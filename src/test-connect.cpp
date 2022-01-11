@@ -15,7 +15,8 @@
 
 #include "network/network.h"            // Address, Bytes,
                                         // BytesResult, Endpoint,
-                                        // FdResult, Hints, Hostname,
+                                        // FdResult, Hints,
+                                        // OptionalHostname,
                                         // Overloaded, close(),
                                         // connect(), get_hostname(),
                                         // get_peername(),
@@ -59,7 +60,7 @@ namespace TestConnect
     {
     public:
         Test(Network::Endpoint t_endpoint,
-             Network::Hostname t_hostname,
+             Network::OptionalHostname t_hostname,
              std::ostream& t_os) :
             m_endpoint(std::move(t_endpoint)),
             m_hostname(std::move(t_hostname)),
@@ -150,7 +151,7 @@ namespace TestConnect
 
     private:
         Network::Endpoint m_endpoint;
-        Network::Hostname m_hostname;
+        Network::OptionalHostname m_hostname;
         std::ostream& m_os;
     };
 
@@ -196,7 +197,8 @@ namespace TestConnect
                     };
                     std::for_each(socket_results.begin(), socket_results.end(),
                                   Test(endpoint,
-                                       static_cast<Network::Hostname>(hostname),
+                                       static_cast<Network::OptionalHostname>
+                                       (hostname),
                                        std::cout));
                 },
                 [&](const Network::Result& result) {

@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/host.h"               // Bytes, Host, Hostname,
-                                        // addrinfo
+#include "network/host.h"               // Bytes, Host,
+                                        // OptionalHostname, addrinfo
 #include "network/get-sockaddr.h"       // Bytes, get_sockaddr()
 
 Network::Host::Host(const addrinfo& t_addrinfo) :
@@ -50,7 +50,7 @@ auto Network::Host::address() const -> Network::Bytes
     return m_addr;
 }
 
-auto Network::Host::canonical_name() const -> Network::Hostname
+auto Network::Host::canonical_name() const -> Network::OptionalHostname
 {
     return m_name;
 }

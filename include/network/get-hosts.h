@@ -16,9 +16,9 @@
 #ifndef NETWORK_GET_HOSTS_H
 #define NETWORK_GET_HOSTS_H
 
-#include "network/hostname.h"           // Hostname
 #include "network/hostvector.h"         // HostVector
 #include "network/optionalhints.h"      // OptionalHints
+#include "network/optionalhostname.h"   // OptionalHostname
 #include "network/result.h"             // Result
 
 #include <variant>      // std::variant
@@ -27,7 +27,7 @@ namespace Network
 {
     using HostVectorResult = std::variant<HostVector, Result>;
 
-    extern auto get_hosts(const Hostname& host,
+    extern auto get_hosts(const OptionalHostname& hostname_default,
                           const OptionalHints& hints = {},
                           bool verbose = false) ->  HostVectorResult;
 }

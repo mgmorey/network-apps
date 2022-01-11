@@ -67,16 +67,16 @@ namespace TestSocket
         return result;
     }
 
-    static auto test_path(const Network::Pathname& path) -> void
+    static auto test_path(const Network::OptionalPathname& pathname) -> void
     {
-        const auto addr {Network::get_sockaddr(path)};
-        Network::Pathname sun_path {Network::get_sun_path(addr)};
+        const auto addr {Network::get_sockaddr(pathname)};
+        Network::OptionalPathname sun_path {Network::get_sun_path(addr)};
 
-        if (path.has_value()) {
+        if (pathname.has_value()) {
             std::cout << "Unix domain path: "
                       << sun_path
                       << std::endl;
-            assert(sun_path == path);			// NOLINT
+            assert(sun_path == pathname);		// NOLINT
         }
         else {
             assert(sun_path.has_value() == false);	// NOLINT
@@ -122,11 +122,11 @@ auto main(int argc, char* argv[]) -> int
 {
     static const Network::Socket hints {AF_UNIX, SOCK_STREAM};
 
-    const std::vector<Network::Pathname> paths = {
-        static_cast<Network::Pathname>(std::nullopt),
-        static_cast<Network::Pathname>("/tmp/678"),
-        static_cast<Network::Pathname>("/tmp/67890123456"),
-        static_cast<Network::Pathname>("/tmp/6789012345678901234")
+    const std::vector<Network::OptionalPathname> paths = {
+        static_cast<Network::OptionalPathname>(std::nullopt),
+        static_cast<Network::OptionalPathname>("/tmp/678"),
+        static_cast<Network::OptionalPathname>("/tmp/67890123456"),
+        static_cast<Network::OptionalPathname>("/tmp/6789012345678901234")
     };
 
     try {

@@ -14,8 +14,8 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/network.h"            // Address, Bytes, Hints,
-                                        // Hostname, Overloaded,
-                                        // Service, get_endpoint(),
+                                        // OptionalHostname,
+                                        // Overloaded, get_endpoint(),
                                         // get_hosts()
 
 #ifdef _WIN32
@@ -158,7 +158,7 @@ namespace TestHost
         return result;
     }
 
-    static auto test_host(const Network::Hostname& host,
+    static auto test_host(const Network::OptionalHostname& host,
                           const Network::Hints& hints) -> void
     {
         const auto description {get_description(hints)};
@@ -198,7 +198,7 @@ namespace TestHost
             }, hosts_result);
     }
 
-    static auto test_host(const Network::Hostname& host) -> void
+    static auto test_host(const Network::OptionalHostname& host) -> void
     {
         if (static_cast<bool>(host)) {
             std::cout << "Host: "
@@ -232,16 +232,16 @@ auto main(int argc, char* argv[]) -> int
                       << std::endl;
         }
         else {
-            Network::Hostname host;
+            Network::OptionalHostname hostname;
 
             if (args.size() > 1) {
-                host = args[1];
+                hostname = args[1];
             }
             else {
-                host = {};
+                hostname = {};
             }
 
-            TestHost::test_host(host);
+            TestHost::test_host(hostname);
         }
 
         static_cast<void>(context);

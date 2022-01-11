@@ -13,9 +13,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/addrinfo.h"           // AddrInfo, Hints, Hostname,
-                                        // Result, Service, addrinfo,
-                                        // operator<<()
+#include "network/addrinfo.h"           // AddrInfo, List,
+                                        // OptionalHints,
+                                        // OptionalHostname,
+                                        // OptionalService, Result,
+                                        // addrinfo, operator<<()
 
 #ifdef _WIN32
 #include <ws2tcpip.h>   // freeaddrinfo(), getaddrinfo()
@@ -57,8 +59,8 @@ auto Network::AddrInfo::List::end() -> Network::AddrInfo::InputIterator
     return nullptr;
 }
 
-Network::AddrInfo::List::List(const Hostname& t_node,
-                              const Service& t_service,
+Network::AddrInfo::List::List(const OptionalHostname& t_hostname,
+                              const OptionalService& t_service,
                               const OptionalHints& t_hints,
                               bool t_verbose)
 {
@@ -77,20 +79,20 @@ Network::AddrInfo::List::List(const Hostname& t_node,
 
     if (t_verbose) {
         std::cerr << "Calling getaddrinfo("
-                  << t_node
+                  << t_hostname
                   << ", "
                   << t_service
                   << ", ...)"
                   << std::endl;
     }
 
-    if (const auto error = ::getaddrinfo(static_cast<const char*>(t_node),
+    if (const auto error = ::getaddrinfo(static_cast<const char*>(t_hostname),
                                          static_cast<const char*>(t_service),
                                          hints.get(),
                                          &m_list)) {
         std::ostringstream oss;
         oss << "Call to getaddrinfo("
-            << t_node
+            << t_hostname
             << ", "
             << t_service
             << ", ...) returned "

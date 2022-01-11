@@ -13,7 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/network.h"            // Buffer, Fd, bind(),
+#include "network/network.h"            // Buffer, Fd,
+                                        // OptionalPathname, bind(),
                                         // close(), fd_null,
                                         // get_sockaddr(),
                                         // socket_error
@@ -71,7 +72,7 @@ auto main() -> int
     }
 
     // Bind socket to socket name.
-    const Network::Pathname pathname {SOCKET_NAME};
+    const Network::OptionalPathname pathname {SOCKET_NAME};
     const auto sock_addr {Network::get_sockaddr(pathname)};
     const auto sock_result {Network::bind(sock, sock_addr)};
     auto result {sock_result.number()};

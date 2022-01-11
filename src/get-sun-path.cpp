@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-sun-path.h"       // Bytes, Pathname
+#include "network/get-sun-path.h"       // Bytes, OptionalPathname
                                         // get_sun_path(), sockaddr_un
 #include "network/get-sa-family.h"      // get_sa_family()
 #include "network/get-sun-length.h"     // get_sun_path_length()
@@ -34,12 +34,12 @@
 #ifndef _WIN32
 
 auto Network::get_sun_path(const Bytes& addr,
-                           const Pathname& path) -> Pathname
+                           const OptionalPathname& pathname) -> OptionalPathname
 {
     assert(get_sa_family(addr) == AF_UNIX);			// NOLINT
 
     if (addr.size() <= sun_path_offset) {
-        return path;
+        return pathname;
     }
 
     const auto *const sun {get_sun_pointer(addr)};
@@ -47,7 +47,7 @@ auto Network::get_sun_path(const Bytes& addr,
     auto len_max {addr.size() - sun_path_offset};
     auto len {strnlen(sun->sun_path, len_max)};			// NOLINT
     const std::string result {sun->sun_path, len};		// NOLINT
-    return static_cast<Pathname>(result);
+    return static_cast<OptionalPathname>(result);
 }
 
 auto Network::get_sun_path_length(const sockaddr_un* sun,

@@ -13,9 +13,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-hosts.h"          // Host, Hostname, HostVector,
+#include "network/get-hosts.h"          // Host, HostVector,
                                         // HostVectorResult,
-                                        // OptionalHints, Result,
+                                        // OptionalHints,
+                                        // OptionalHostname, Result,
                                         // get_hosts()
 #include "network/addrinfo.h"           // AddrInfo
 #include "network/get-hostname.h"       // HostnameResult,
@@ -28,18 +29,18 @@
 #include <string>       // std::string
 #include <variant>      // std::visit()
 
-auto Network::get_hosts(const Network::Hostname& host,
+auto Network::get_hosts(const Network::OptionalHostname& hostname_default,
                         const Network::OptionalHints& hints,
                         bool verbose) -> Network::HostVectorResult
 {
     HostVectorResult hosts_result;
-    const auto hostname_result {get_hostname(host)};
+    const auto hostname_result {get_hostname(hostname_default)};
     std::visit(Overloaded {
             [&](const std::string& hostname) {
                 HostVector hosts;
                 const auto result {
-                    AddrInfo::insert(static_cast<Hostname>(hostname),
-                                     static_cast<Service>(std::nullopt),
+                    AddrInfo::insert(static_cast<OptionalHostname>(hostname),
+                                     static_cast<OptionalService>(std::nullopt),
                                      hints,
                                      verbose,
                                      std::back_inserter(hosts))

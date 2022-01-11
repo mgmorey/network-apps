@@ -13,7 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/network.h"            // Address, Bytes, Hostname,
+#include "network/network.h"            // Address, Bytes,
+                                        // OptionalHostname,
                                         // Overloaded, get_hosts()
 
 #ifdef _WIN32
@@ -175,7 +176,7 @@ namespace TestAddress
 
     static auto test_address_localhost() -> void
     {
-        static const Network::Hostname localhost {"localhost"};
+        static const Network::OptionalHostname localhost {"localhost"};
 
         const auto hosts_result {Network::get_hosts(localhost)};
         std::visit(Network::Overloaded {

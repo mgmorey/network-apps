@@ -17,7 +17,7 @@
 #define NETWORK_GET_SUN_PATH_H
 
 #include "network/bytes.h"              // Bytes
-#include "network/pathname.h"           // Pathname
+#include "network/optionalpathname.h"   // OptionalPathname
 
 #ifndef _WIN32
 #include <sys/un.h>         // sockaddr_un
@@ -29,7 +29,8 @@ namespace Network
 {
 #ifndef _WIN32
     extern auto get_sun_path(const Bytes& addr,
-                             const Pathname& path = {}) -> Pathname;
+                             const OptionalPathname& pathname = {}) ->
+        OptionalPathname;
     extern auto get_sun_path_length(const sockaddr_un* sun,
                                     std::size_t size) -> std::size_t;
 #endif

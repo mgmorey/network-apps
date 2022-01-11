@@ -13,8 +13,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-sockets.h"        // Hints, Hostname, Result,
-                                        // Service,
+#include "network/get-sockets.h"        // Hints, Result,
+                                        // OptionalHostname,
+                                        // OptionalService,
                                         // SocketVectorResult,
                                         // get_sockets()
 #include "network/addrinfo.h"           // AddrInfo
@@ -26,19 +27,19 @@
 #include <string>       // std::string
 #include <variant>      // std::visit()
 
-auto Network::get_sockets(const Network::Endpoint& endpoint,
-                          const Network::Hints& hints,
+auto Network::get_sockets(const Endpoint& endpoint,
+                          const Hints& hints,
                           bool verbose) -> Network::SocketVectorResult
 {
     SocketVectorResult sockets_result;
     const auto hostname_result {get_hostname(endpoint.first)};
     std::visit(Overloaded {
-            [&](const std::string& host) {
-                const Service service {endpoint.second};
-                sockets_result = get_sockets(static_cast<Hostname>(host),
-                                             service,
-                                             hints,
-                                             verbose);
+            [&](const std::string& hostname) {
+                sockets_result =
+                    get_sockets(static_cast<OptionalHostname>(hostname),
+                                static_cast<OptionalService>(endpoint.second),
+                                hints,
+                                verbose);
             },
             [&](const Result& result) {
                 sockets_result = result;
@@ -47,14 +48,14 @@ auto Network::get_sockets(const Network::Endpoint& endpoint,
     return sockets_result;
 }
 
-auto Network::get_sockets(const Network::Hostname& node,
-                          const Network::Service& service,
-                          const Network::Hints& hints,
+auto Network::get_sockets(const OptionalHostname& hostname,
+                          const OptionalService& service,
+                          const Hints& hints,
                           bool verbose) -> Network::SocketVectorResult
 {
     SocketVector sockets;
     const auto result {
-        AddrInfo::insert(node,
+        AddrInfo::insert(hostname,
                          service,
                          hints,
                          verbose,

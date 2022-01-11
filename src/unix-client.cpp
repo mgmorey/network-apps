@@ -13,7 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/network.h"            // Buffer, Fd, close(),
+#include "network/network.h"            // Buffer, Fd,
+                                        // OptionalPathname, close(),
                                         // connect(), get_sockaddr(),
                                         // socket_error
 #include "unix-common.h"                // BUFFER_SIZE, SOCKET_NAME
@@ -45,7 +46,7 @@ auto main(int argc, char *argv[]) -> int
     }
 
     // Connect socket to socket address.
-    const Network::Pathname pathname {SOCKET_NAME};
+    const Network::OptionalPathname pathname {SOCKET_NAME};
     const auto sock_addr {Network::get_sockaddr(pathname)};
     const auto sock_result {Network::connect(sock, sock_addr)};
     auto connect_result {sock_result.number()};

@@ -16,11 +16,11 @@
 #ifndef NETWORK_SERVICE_H
 #define NETWORK_SERVICE_H
 
-#include "network/optionalstring.h"     // OptionalString
+#include <string>       // std::string
 
 namespace Network
 {
-    using Service = OptionalString;
+    using Service = std::string;
 }
 
 #endif

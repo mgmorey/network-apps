@@ -18,7 +18,7 @@
 #include "network/flags.h"              // Flags, operator<<()
 #include "network/format.h"             // Format, operator<<()
 #include "network/get-sockaddr.h"       // Bytes, get_sockaddr()
-#include "network/hostname.h"           // Hostname
+#include "network/optionalhostname.h"   // OptionalHostname
 #include "network/protocol.h"           // Protocol, operator<<()
 #include "network/socktype.h"           // SockType, operator<<()
 
@@ -54,7 +54,7 @@ auto Network::operator<<(std::ostream& os,
        << Format(tab, "ai_addr")
        << get_sockaddr(ai.ai_addr, ai.ai_addrlen)
        << Format(tab, "ai_canonname")
-       << Hostname(ai.ai_canonname)
+       << OptionalHostname(ai.ai_canonname)
        << Format(tab)
        << "...)";
     return os;

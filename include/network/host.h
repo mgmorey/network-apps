@@ -17,7 +17,7 @@
 #define NETWORK_HOST_H
 
 #include "network/bytes.h"              // Bytes
-#include "network/hostname.h"           // Hostname
+#include "network/optionalhostname.h"   // OptionalHostname
 
 #ifdef _WIN32
 #include <ws2tcpip.h>   // addrinfo
@@ -44,11 +44,11 @@ namespace Network
         auto operator>(const Host& t_host) const -> bool;
         auto operator==(const Host& t_host) const -> bool;
         [[nodiscard]] auto address() const -> Bytes;
-        [[nodiscard]] auto canonical_name() const -> Hostname;
+        [[nodiscard]] auto canonical_name() const -> OptionalHostname;
 
     private:
         Bytes m_addr;
-        Hostname m_name;
+        OptionalHostname m_name;
     };
 }
 

@@ -18,7 +18,7 @@
 
 #include "network/bytes.h"              // Bytes
 #include "network/bytespan.h"           // ByteSpan
-#include "network/pathname.h"           // Pathname
+#include "network/optionalpathname.h"   // OptionalPathname
 #include "network/sizes.h"              // sun_size
 
 #ifdef _WIN32
@@ -39,7 +39,7 @@ namespace Network
 #ifndef _WIN32
     extern auto get_sockaddr(const sockaddr_un* sun,
                              std::size_t size = sun_size) -> Bytes;
-    extern auto get_sockaddr(const Pathname& pathname) -> Bytes;
+    extern auto get_sockaddr(const OptionalPathname& pathname) -> Bytes;
 #endif
 }
 

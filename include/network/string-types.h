@@ -18,6 +18,9 @@
 
 #include "network/buffer.h"             // Buffer
 #include "network/hostname.h"           // Hostname
+#include "network/optionalhostname.h"   // OptionalHostname
+#include "network/optionalpathname.h"   // OptionalPathname
+#include "network/optionalservice.h"    // OptionalService
 #include "network/pathname.h"           // Pathmame
 #include "network/service.h"            // Service
 

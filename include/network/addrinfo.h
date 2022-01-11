@@ -16,10 +16,10 @@
 #ifndef NETWORK_ADDRINFO_H
 #define NETWORK_ADDRINFO_H
 
-#include "network/hostname.h"           // Hostname
 #include "network/optionalhints.h"      // OptionalHints
+#include "network/optionalhostname.h"   // OptionalHostname
+#include "network/optionalservice.h"    // OptionalService
 #include "network/result.h"             // Result
-#include "network/service.h"            // Service
 
 #ifdef _WIN32
 #include <ws2tcpip.h>   // addrinfo
@@ -70,8 +70,8 @@ namespace Network
             List() = delete;
             List(const List&) = delete;
             List(const List&&) = delete;
-            List(const Hostname& t_node,
-                 const Service& t_service,
+            List(const OptionalHostname& t_hostname,
+                 const OptionalService& t_service,
                  const OptionalHints& t_hints,
                  bool t_verbose);
             ~List();
@@ -91,13 +91,13 @@ namespace Network
                                const InputIterator& right) ->  bool;
 
         template<typename OutputIt>
-        auto insert(const Hostname& node,
-                    const Service& service,
+        auto insert(const OptionalHostname& hostname,
+                    const OptionalService& service,
                     const OptionalHints& hints,
                     bool verbose,
                     OutputIt out) -> Result
         {
-            const auto list {List(node, service, hints, verbose)};
+            const auto list {List(hostname, service, hints, verbose)};
 
             for (const auto& in : list) {
                 if (verbose) {

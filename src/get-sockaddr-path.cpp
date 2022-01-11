@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-sockaddr.h"       // Bytes, get_sockaddr(),
-                                        // sockaddr_un
+#include "network/get-sockaddr.h"       // Bytes, OptionalPathname,
+                                        // get_sockaddr(), sockaddr_un
 #include "network/sun-offsets.h"        // sun_path_offset
 
 #ifndef _WIN32
@@ -25,7 +25,7 @@
 
 #ifndef _WIN32
 
-auto Network::get_sockaddr(const Pathname& pathname) -> Network::Bytes
+auto Network::get_sockaddr(const OptionalPathname& pathname) -> Network::Bytes
 {
     sockaddr_un sun {};
     const auto path_len {pathname.has_value() ? pathname.value().length() : 0};

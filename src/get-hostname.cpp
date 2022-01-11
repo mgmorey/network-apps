@@ -13,7 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-hostname.h"       // Hostname, HostnameResult,
+#include "network/get-hostname.h"       // HostnameResult,
+                                        // OptionalHostname,
                                         // get_hostname()
 #include "network/buffer.h"             // Buffer
 #include "network/os-error.h"           // format_os_error(),
@@ -32,11 +33,11 @@
 #include <cassert>      // assert()
 #include <sstream>      // std::ostringstream
 
-auto Network::get_hostname(const Network::Hostname& host) ->
+auto Network::get_hostname(const OptionalHostname& hostname) ->
     Network::HostnameResult
 {
-    if (host.has_value()) {
-        return host.value();
+    if (hostname.has_value()) {
+        return hostname.value();
     }
 
     Buffer host_buffer {NI_MAXHOST};

@@ -13,18 +13,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_GET_HOSTNAME_H
-#define NETWORK_GET_HOSTNAME_H
+#ifndef NETWORK_OPTIONALSERVICE_H
+#define NETWORK_OPTIONALSERVICE_H
 
-#include "network/hostnameresult.h"     // HostnameResult
-#include "network/optionalhostname.h"   // OptionalHostname
-
-#include <optional>     // std::nullopt
+#include "network/optionalstring.h"     // OptionalString
 
 namespace Network
 {
-    extern auto get_hostname(const OptionalHostname& hostname = {}) ->
-        HostnameResult;
+    using OptionalService = OptionalString;
 }
 
 #endif
