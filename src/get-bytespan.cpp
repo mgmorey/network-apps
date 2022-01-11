@@ -14,7 +14,8 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/get-bytespan.h"       // ByteSpan, get_bytespan(),
-                                        // sockaddr, std::size_t
+                                        // sockaddr, sockaddr_un,
+                                        // std::size_t
 
 auto Network::get_bytespan(const void* pointer,
                            std::size_t size) -> Network::ByteSpan
