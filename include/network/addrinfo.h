@@ -65,8 +65,6 @@ namespace Network
         class List
         {
         public:
-            static auto end() -> InputIterator;
-
             List() = delete;
             List(const List&) = delete;
             List(const List&&) = delete;
@@ -78,7 +76,11 @@ namespace Network
             auto operator=(const List&) -> List& = delete;
             auto operator=(const List&&) -> List& = delete;
             [[nodiscard]] auto begin() const -> InputIterator;
+            static auto end() -> InputIterator;
             [[nodiscard]] auto result() const -> Result;
+
+        protected:
+            static auto to_c_str(const OptionalString& str) -> const char*;
 
         private:
             addrinfo* m_list {nullptr};

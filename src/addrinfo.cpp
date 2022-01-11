@@ -54,11 +54,6 @@ auto Network::AddrInfo::InputIterator::operator++() ->
     return *this;
 }
 
-auto Network::AddrInfo::List::end() -> Network::AddrInfo::InputIterator
-{
-    return nullptr;
-}
-
 Network::AddrInfo::List::List(const OptionalHostname& t_hostname,
                               const OptionalService& t_service,
                               const OptionalHints& t_hints,
@@ -86,11 +81,8 @@ Network::AddrInfo::List::List(const OptionalHostname& t_hostname,
                   << std::endl;
     }
 
-    const char* hostname {t_hostname ? t_hostname->c_str() : nullptr};
-    const char* service {t_service ? t_service->c_str() : nullptr};
-
-    if (const auto error = ::getaddrinfo(hostname,
-                                         service,
+    if (const auto error = ::getaddrinfo(to_c_str(t_hostname),
+                                         to_c_str(t_service),
                                          hints.get(),
                                          &m_list)) {
         std::ostringstream oss;
@@ -118,9 +110,19 @@ auto Network::AddrInfo::List::begin() const -> Network::AddrInfo::InputIterator
     return m_list;
 }
 
+auto Network::AddrInfo::List::end() -> Network::AddrInfo::InputIterator
+{
+    return nullptr;
+}
+
 auto Network::AddrInfo::List::result() const -> Network::Result
 {
     return m_result;
+}
+
+auto Network::AddrInfo::List::to_c_str(const OptionalString& str) -> const char*
+{
+    return str ? str->c_str() : nullptr;
 }
 
 auto Network::AddrInfo::operator==(const InputIterator& left,
