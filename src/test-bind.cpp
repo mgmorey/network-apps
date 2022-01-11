@@ -17,7 +17,6 @@
                                         // BytesResult, Endpoint,
                                         // FdResult, Hints, Overloaded,
                                         // bind(), close(),
-                                        // get_sockaddr(),
                                         // get_sockname()
 
 #ifdef _WIN32

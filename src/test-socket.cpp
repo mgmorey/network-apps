@@ -14,9 +14,9 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/network.h"            // Address, FdPair, Hints,
-                                        // Overloaded, Socket, close(),
-                                        // get_sockaddr(),
-                                        // get_socketpair()
+                                        // Overloaded, Socket,
+                                        // close(), get_socketpair(),
+                                        // to_byte_string()
 
 #include <sys/socket.h>     // AF_UNIX, AF_UNSPEC, SOCK_STREAM
 #include <sys/un.h>         // sockaddr_un
@@ -69,7 +69,7 @@ namespace TestSocket
 
     static auto test_path(const Network::OptionalPathname& pathname) -> void
     {
-        const auto addr {Network::get_sockaddr(pathname)};
+        const auto addr {Network::to_byte_string(pathname)};
         Network::OptionalPathname sun_path {Network::get_sun_path(addr)};
 
         if (pathname) {

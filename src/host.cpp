@@ -15,17 +15,17 @@
 
 #include "network/host.h"               // ByteString, Host,
                                         // OptionalHostname, addrinfo
-#include "network/get-sockaddr.h"       // get_sockaddr()
+#include "network/to-byte-string.h"     // to_byte_string()
 
 Network::Host::Host(const addrinfo& t_addrinfo) :
-    m_addr(get_sockaddr(t_addrinfo.ai_addr, t_addrinfo.ai_addrlen)),
+    m_addr(to_byte_string(t_addrinfo.ai_addr, t_addrinfo.ai_addrlen)),
     m_name(to_canonical_name(t_addrinfo.ai_canonname))
 {
 }
 
 auto Network::Host::operator=(const addrinfo& t_addrinfo) -> Network::Host&
 {
-    m_addr = get_sockaddr(t_addrinfo.ai_addr, t_addrinfo.ai_addrlen);
+    m_addr = to_byte_string(t_addrinfo.ai_addr, t_addrinfo.ai_addrlen);
     m_name = to_canonical_name(t_addrinfo.ai_canonname);
     return *this;
 }

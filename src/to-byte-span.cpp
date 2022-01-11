@@ -13,31 +13,31 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-bytespan.h"       // ByteSpan, get_bytespan(),
-                                        // sockaddr, sockaddr_un,
-                                        // std::size_t
+#include "network/to-byte-span.h"       // ByteSpan, sockaddr,
+                                        // sockaddr_un, std::size_t,
+                                        // to_byte_span()
 
-auto Network::get_bytespan(const void* pointer,
+auto Network::to_byte_span(const void* pointer,
                            std::size_t size) -> Network::ByteSpan
 {
     const auto* const data {static_cast<const Byte*>(pointer)};
     return {data, size};
 }
 
-auto Network::get_bytespan(const sockaddr* sa,
+auto Network::to_byte_span(const sockaddr* sa,
                            std::size_t size) -> Network::ByteSpan
 {
     const void* pointer = sa;
-    return get_bytespan(pointer, size);
+    return to_byte_span(pointer, size);
 }
 
 #ifndef _WIN32
 
-auto Network::get_bytespan(const sockaddr_un* sun,
+auto Network::to_byte_span(const sockaddr_un* sun,
                            std::size_t size) -> Network::ByteSpan
 {
     const void* pointer = sun;
-    return get_bytespan(pointer, size);
+    return to_byte_span(pointer, size);
 }
 
 #endif

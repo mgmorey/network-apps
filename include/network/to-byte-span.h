@@ -13,15 +13,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_GET_SOCKADDR_H
-#define NETWORK_GET_SOCKADDR_H
+#ifndef NETWORK_TO_BYTE_SPAN_H
+#define NETWORK_TO_BYTE_SPAN_H
 
-#include "network/bytes.h"              // Bytes
 #include "network/bytespan.h"           // ByteSpan
-#include "network/optionalpathname.h"   // OptionalPathname
-#ifndef _WIN32
-#include "network/sun-sizes.h"          // sun_size
-#endif
+#include "network/sizes.h"              // sun_size
 
 #ifdef _WIN32
 #include <winsock2.h>       // sockaddr
@@ -31,16 +27,17 @@
 #endif
 
 #include <cstddef>      // std::size_t
+#include <span>         // std::span
 
 namespace Network
 {
-    extern auto get_sockaddr(const ByteSpan& span) -> Bytes;
-    extern auto get_sockaddr(const sockaddr* sa,
-                             std::size_t size) -> Bytes;
+    extern auto to_byte_span(const void* pointer,
+                             std::size_t size) -> ByteSpan;
+    extern auto to_byte_span(const sockaddr* sa,
+                             std::size_t size) -> ByteSpan;
 #ifndef _WIN32
-    extern auto get_sockaddr(const sockaddr_un* sun,
-                             std::size_t size = sun_size) -> Bytes;
-    extern auto get_sockaddr(const OptionalPathname& pathname = {}) -> Bytes;
+    extern auto to_byte_span(const sockaddr_un* sun,
+                             std::size_t size = sun_size) -> ByteSpan;
 #endif
 }
 

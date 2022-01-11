@@ -20,7 +20,6 @@
                                         // Overloaded, close(),
                                         // connect(), get_hostname(),
                                         // get_peername(),
-                                        // get_sockaddr(),
                                         // get_sockname()
 
 #ifdef _WIN32

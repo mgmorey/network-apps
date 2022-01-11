@@ -13,17 +13,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_GET_SOCKADDR_SIZE_H
-#define NETWORK_GET_SOCKADDR_SIZE_H
+#include "network/to-byte-string.h"     // ByteString, ByteSpan,
+                                        // to_byte_string()
 
-#include "network/bytes.h"              // Bytes
-
-#include <cstddef>      // std::size_t
-
-namespace Network
+auto Network::to_byte_string(const ByteSpan& span) -> Network::ByteString
 {
-    extern auto get_sockaddr_size_max(const Bytes& addr) -> std::size_t;
-    extern auto get_sockaddr_size_min(const Bytes& addr) -> std::size_t;
+    return {span.data(), span.size()};
 }
-
-#endif

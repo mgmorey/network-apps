@@ -17,11 +17,11 @@
 #include "network/family.h"             // Family, operator<<()
 #include "network/flags.h"              // Flags, operator<<()
 #include "network/format.h"             // Format, operator<<()
-#include "network/get-sockaddr.h"       // Bytes, get_sockaddr()
 #include "network/optionalhostname.h"   // OptionalHostname
 #include "network/protocol.h"           // Protocol, operator<<()
 #include "network/socktype.h"           // SockType, operator<<()
 #include "network/string-null.h"        // string_null
+#include "network/to-byte-string.h"     // Bytes, to_byte_string()
 
 #ifdef _WIN32
 #include <ws2tcpip.h>   // addrinfo
@@ -53,7 +53,7 @@ auto Network::operator<<(std::ostream& os,
        << Format(tab, "ai_addrlen")
        << ai.ai_addrlen
        << Format(tab, "ai_addr")
-       << get_sockaddr(ai.ai_addr, ai.ai_addrlen)
+       << to_byte_string(ai.ai_addr, ai.ai_addrlen)
        << Format(tab, "ai_canonname")
        << (ai.ai_canonname == nullptr ? string_null : ai.ai_canonname)
        << Format(tab)

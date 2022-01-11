@@ -15,8 +15,8 @@
 
 #include "network/network.h"            // Buffer, Fd,
                                         // OptionalPathname, close(),
-                                        // connect(), get_sockaddr(),
-                                        // socket_error
+                                        // connect(), socket_error,
+                                        // to_byte_string()
 #include "unix-common.h"                // BUFFER_SIZE, SOCKET_NAME
 
 #include <sys/socket.h>         // SOCK_SEQPACKET, ::connect(),
@@ -47,7 +47,7 @@ auto main(int argc, char *argv[]) -> int
 
     // Connect socket to socket address.
     const Network::OptionalPathname pathname {SOCKET_NAME};
-    const auto sock_addr {Network::get_sockaddr(pathname)};
+    const auto sock_addr {Network::to_byte_string(pathname)};
     const auto sock_result {Network::connect(sock, sock_addr)};
     auto connect_result {sock_result.number()};
 

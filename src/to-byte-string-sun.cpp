@@ -13,16 +13,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-sockaddr.h"       // Bytes, get_sockaddr(),
-                                        // sockaddr, std::size_t
-#include "network/get-bytespan.h"       // get_bytespan()
+#include "network/to-byte-string.h"     // ByteString, sockaddr_un,
+                                        // to_byte_string()
+#include "network/to-byte-span.h"       // to_byte_span()
 
-auto Network::get_sockaddr(const sockaddr* sa,
-                           std::size_t size) -> Network::Bytes
+#ifndef _WIN32
+
+auto Network::to_byte_string(const sockaddr_un* sun,
+                           std::size_t size) -> Network::ByteString
 {
-    if (sa == nullptr) {
-        return {};
-    }
-
-    return get_sockaddr(get_bytespan(sa, size));
+    return to_byte_string(to_byte_span(sun, size));
 }
+
+#endif

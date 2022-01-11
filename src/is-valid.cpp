@@ -16,8 +16,8 @@
 #include "network/is-valid.h"           // Bytes, is_valid()
 #include "network/get-sa-family.h"      // get_sa_family()
 #include "network/get-sa-length.h"      // get_sa_length()
-#include "network/get-sockaddr-size.h"  // get_sockaddr_size_max(),
-                                        // get_sockaddr_size_min()
+#include "network/get-size.h"           // get_size_max(),
+                                        // get_size_min()
 #include "network/get-sun-length.h"     // get_sun_length()
 #include "network/get-sun-pointer.h"    // get_sun_pointer()
 #include "network/offsets.h"            // sun_path_offset
@@ -83,8 +83,8 @@ auto Network::is_valid(const Bytes& addr, bool verbose) -> bool
     }
 
     const auto addr_size {addr.size()};
-    const auto addr_size_max {get_sockaddr_size_max(addr)};
-    const auto addr_size_min {get_sockaddr_size_min(addr)};
+    const auto addr_size_max {get_size_max(addr)};
+    const auto addr_size_min {get_size_min(addr)};
 
     if (verbose) {
         std::cerr << std::left

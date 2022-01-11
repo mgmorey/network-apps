@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-sockaddr-size.h"  // get_sockaddr_size_max(),
-                                        // get_sockaddr_size_min()
+#include "network/get-size.h"           // get_size_max(),
+                                        // get_size_min()
 #include "network/get-sa-family.h"      // get_sa_family()
 #include "network/offsets.h"            // sun_path_offset
 #include "network/sizes.h"              // sin_size, sin6_size,
@@ -31,7 +31,7 @@
 #include <sys/un.h>         // sockaddr_un
 #endif
 
-auto Network::get_sockaddr_size_max(const Network::Bytes& addr) -> std::size_t
+auto Network::get_size_max(const Network::Bytes& addr) -> std::size_t
 {
     const auto family {get_sa_family(addr)};
 
@@ -51,7 +51,7 @@ auto Network::get_sockaddr_size_max(const Network::Bytes& addr) -> std::size_t
     }
 }
 
-auto Network::get_sockaddr_size_min(const Network::Bytes& addr) -> std::size_t
+auto Network::get_size_min(const Network::Bytes& addr) -> std::size_t
 {
     const auto family {get_sa_family(addr)};
 

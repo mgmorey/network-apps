@@ -38,7 +38,6 @@
 #include "network/get-sa-pointer.h"     // get_sa_pointer()
 #include "network/get-sin-pointer.h"    // get_sin_pointer()
 #include "network/get-sin6-pointer.h"   // get_sin6_pointer()
-#include "network/get-sockaddr.h"       // get_sockaddr()
 #include "network/get-socket.h"         // Fd, FdResult, Socket,
                                         // get_socket()
 #include "network/get-socketpair.h"     // FdPair, FdPairResult,
@@ -66,6 +65,8 @@
 #include "network/socket.h"             // Hints, Host, Socket
 #include "network/socktype.h"           // SockType
 #include "network/string-null.h"        // string_null
+#include "network/to-byte-span.h"       // to_byte_span()
+#include "network/to-byte-string.h"     // to_byte_string()
 #include "network/to-string.h"          // to_string()
 #include "network/types.h"              // Buffer, Hostname,
                                         // OptionalHostname,
