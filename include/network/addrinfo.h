@@ -80,7 +80,7 @@ namespace Network
             [[nodiscard]] auto result() const -> Result;
 
         protected:
-            static auto to_c_str(const OptionalString& str) -> const char*;
+            static auto to_c_string(const OptionalString& str) -> const char*;
 
         private:
             addrinfo* m_list {nullptr};

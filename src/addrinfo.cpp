@@ -82,8 +82,8 @@ Network::AddrInfo::List::List(const OptionalHostname& t_hostname,
                   << std::endl;
     }
 
-    if (const auto error = ::getaddrinfo(to_c_str(t_hostname),
-                                         to_c_str(t_service),
+    if (const auto error = ::getaddrinfo(to_c_string(t_hostname),
+                                         to_c_string(t_service),
                                          hints.get(),
                                          &m_list)) {
         std::ostringstream oss;
@@ -121,7 +121,8 @@ auto Network::AddrInfo::List::result() const -> Network::Result
     return m_result;
 }
 
-auto Network::AddrInfo::List::to_c_str(const OptionalString& str) -> const char*
+auto Network::AddrInfo::List::to_c_string(const OptionalString& str) ->
+    const char*
 {
     return str ? str->c_str() : nullptr;
 }
