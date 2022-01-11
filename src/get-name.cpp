@@ -15,13 +15,13 @@
 
 #include "network/get-name.h"           // Bytes, Fd, GetNameHandler,
                                         // Result, get_name()
-#include "network/get-length.h"         // Bytes, get_length()
-#include "network/get-sa-pointer.h"     // Bytes, get_sa_pointer()
-#include "network/get-sockaddr.h"       // Bytes, get_sockaddr()
-#include "network/is-valid.h"           // Bytes, is_valid()
+#include "network/get-length.h"         // get_length()
+#include "network/get-sa-pointer.h"     // get_sa_pointer()
+#include "network/is-valid.h"           // is_valid()
 #include "network/os-error.h"           // format_os_error(),
                                         // get_os_last_error(),
                                         // reset_os_last_error()
+#include "network/sizes.h"              // sockaddr_size_max
 
 #include <algorithm>    // std::max()
 #include <cassert>      // assert()
@@ -31,10 +31,9 @@
 auto Network::get_name(const GetNameHandler& handler, Fd fd,
                        bool verbose) -> Network::BytesResult
 {
-    Result result;
-    auto addr {get_sockaddr()};
+    Bytes addr {sockaddr_size_max, static_cast<Byte>('\0')};
     auto addr_len {get_length(addr)};
-    auto *addr_ptr {get_sa_pointer(addr)};
+    auto* addr_ptr {get_sa_pointer(addr)};
 
     if (verbose) {
         std::cerr << "Calling "
