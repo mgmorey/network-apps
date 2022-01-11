@@ -30,6 +30,7 @@
 #include <unistd.h>         // getopt(), optarg, opterr, optind
 #endif
 
+#include <algorithm>    // std::sort()
 #include <cassert>      // assert()
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
 #include <exception>    // std::exception
@@ -182,6 +183,7 @@ namespace TestAddress
                         addrs.push_back(host.address());
                     }
 
+                    std::sort(addrs.begin(), addrs.end());
                     Network::uniquify(addrs);
 
                     for (const auto& addr : addrs) {

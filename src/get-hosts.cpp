@@ -24,6 +24,7 @@
 #include "network/overloaded.h"         // Overloaded
 #include "network/uniquify.h"           // Uniquify
 
+#include <algorithm>    // std::sort()
 #include <iterator>     // std::back_inserter()
 #include <optional>     // std::nullopt
 #include <string>       // std::string
@@ -50,6 +51,7 @@ auto Network::get_hosts(const Network::OptionalHostname& hostname_default,
                     hosts_result = result;
                 }
                 else {
+                    std::sort(hosts.begin(), hosts.end());
                     uniquify(hosts);
                     hosts_result = hosts;
                 }

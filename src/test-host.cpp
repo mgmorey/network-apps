@@ -65,12 +65,12 @@ namespace TestHost
                         Values values = {
                             address.text(),
                             endpoint.first.value_or(""),
-                            t_host.canonical_name().value_or(""),
+                            t_host.canonical_name().value_or("")
                         };
                         values.erase(std::remove(values.begin(),
                                                  values.end(),
                                                  ""),
-                                values.end());
+                                     values.end());
                         Network::uniquify(values);
                         print(values);
                     },

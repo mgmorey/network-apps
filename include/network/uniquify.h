@@ -16,14 +16,13 @@
 #ifndef NETWORK_UNIQUIFY_H
 #define NETWORK_UNIQUIFY_H
 
-#include <algorithm>    // std::sort(), std::unique()
+#include <algorithm>    // std::unique()
 
 namespace Network
 {
     template<typename Container>
     auto uniquify(Container& cont) -> void
     {
-        std::sort(cont.begin(), cont.end());
         cont.erase(std::unique(cont.begin(),
                                cont.end()),
                    cont.end());
