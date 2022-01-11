@@ -17,6 +17,12 @@
                                         // Address, length_type,
                                         // port_type, value_type
 
+#ifdef _WIN32
+#include <winsock2.h>       // AF_INET, AF_INET6, AF_UNIX
+#else
+#include <sys/socket.h>     // AF_INET, AF_INET6, AF_UNIX
+#endif
+
 #include <string>       // std::string
 #include <utility>      // std::move
 
