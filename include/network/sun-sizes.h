@@ -24,9 +24,7 @@
 
 namespace Network
 {
-#ifdef _WIN32
-    constexpr auto sun_size {static_cast<std::size_t>(0)};
-#else
+#ifndef _WIN32
     constexpr auto sun_size {sizeof(sockaddr_un)};
 #endif
 }

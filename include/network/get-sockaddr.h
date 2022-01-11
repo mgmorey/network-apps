@@ -19,7 +19,9 @@
 #include "network/bytes.h"              // Bytes
 #include "network/bytespan.h"           // ByteSpan
 #include "network/optionalpathname.h"   // OptionalPathname
+#ifndef _WIN32
 #include "network/sun-sizes.h"          // sun_size
+#endif
 
 #ifdef _WIN32
 #include <winsock2.h>       // sockaddr
