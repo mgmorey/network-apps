@@ -21,7 +21,6 @@
 
 namespace Network
 {
-
     class Format
     {
         friend auto operator<<(std::ostream& os,
