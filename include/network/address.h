@@ -16,7 +16,7 @@
 #ifndef NETWORK_ADDRESS_H
 #define NETWORK_ADDRESS_H
 
-#include "network/bytes.h"              // Bytes, operator<<()
+#include "network/bytestring.h"         // ByteString, operator<<()
 #include "network/family-type.h"        // family_type
 #include "network/length-type.h"        // length_type
 #include "network/port-type.h"          // port_type
@@ -36,7 +36,7 @@ namespace Network
     class Address
     {
     public:
-        using value_type = Bytes;
+        using value_type = ByteString;
 
         Address() = default;
         Address(const Address& t_address) = default;
