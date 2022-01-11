@@ -32,7 +32,6 @@
 
 namespace Network
 {
-    extern auto get_sockaddr() -> Bytes;
     extern auto get_sockaddr(const ByteSpan& span) -> Bytes;
     extern auto get_sockaddr(const sockaddr* sa,
                              std::size_t size) -> Bytes;

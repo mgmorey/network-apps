@@ -14,12 +14,15 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/get-sockaddr.h"       // Bytes, get_sockaddr(),
-                                        // sockaddr
-#include "network/get-bytespan.h"       // get_bytespan(),
-                                        // std::size_t
+                                        // sockaddr, std::size_t
+#include "network/get-bytespan.h"       // get_bytespan()
 
 auto Network::get_sockaddr(const sockaddr* sa,
                            std::size_t size) -> Network::Bytes
 {
+    if (sa == nullptr) {
+        return {};
+    }
+
     return get_sockaddr(get_bytespan(sa, size));
 }
