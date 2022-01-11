@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/is-valid.h"           // Bytes, is_valid()
+#include "network/is-valid.h"           // ByteString, is_valid()
 #include "network/get-sa-family.h"      // get_sa_family()
 #include "network/get-sa-length.h"      // get_sa_length()
 #include "network/get-size.h"           // get_size_max(),
@@ -43,11 +43,11 @@
 #include <iomanip>      // std::left, std::right, std::setw()
 #include <iostream>     // std::cerr, std::endl
 
-constexpr auto key_width {20};
-constexpr auto value_width {10};
-
-auto Network::is_valid(const Bytes& addr, bool verbose) -> bool
+auto Network::is_valid(const ByteString& addr, bool verbose) -> bool
 {
+    constexpr auto key_width {20};
+    constexpr auto value_width {10};
+
     if (verbose) {
         std::cerr << "Validating socket address: "
                   << addr
