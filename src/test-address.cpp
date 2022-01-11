@@ -131,16 +131,6 @@ namespace TestAddress
         assert(Network::is_valid(addr) == false);		// NOLINT
     }
 
-    static auto test_address_any() -> void
-    {
-        const Network::Bytes addr {Network::get_sockaddr()};
-        const auto size {addr.size()};
-        const auto family {Network::get_sa_family(addr)};
-        assert(size == Network::sockaddr_size_max);		// NOLINT
-        assert(family == AF_UNSPEC);				// NOLINT
-        assert(Network::is_valid(addr) == true);		// NOLINT
-    }
-
     static auto test_address_localhost(const Network::Bytes& addr) -> void
     {
         const Network::Address address {addr};
@@ -222,7 +212,6 @@ auto main(int argc, char* argv[]) -> int
         }
         else {
             TestAddress::test_address();
-            TestAddress::test_address_any();
             TestAddress::test_address_localhost();
         }
 
