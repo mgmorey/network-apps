@@ -18,6 +18,7 @@
                                         // OptionalHostname,
                                         // OptionalService, Result,
                                         // addrinfo, operator<<()
+#include "network/string-null.h"        // string_null
 
 #ifdef _WIN32
 #include <ws2tcpip.h>   // freeaddrinfo(), getaddrinfo()
@@ -74,9 +75,9 @@ Network::AddrInfo::List::List(const OptionalHostname& t_hostname,
 
     if (t_verbose) {
         std::cerr << "Calling getaddrinfo("
-                  << t_hostname.value_or("<nullptr>")
+                  << t_hostname.value_or(string_null)
                   << ", "
-                  << t_service.value_or("<nullptr>")
+                  << t_service.value_or(string_null)
                   << ", ...)"
                   << std::endl;
     }
@@ -87,9 +88,9 @@ Network::AddrInfo::List::List(const OptionalHostname& t_hostname,
                                          &m_list)) {
         std::ostringstream oss;
         oss << "Call to getaddrinfo("
-            << t_hostname.value_or("<nullptr>")
+            << t_hostname.value_or(string_null)
             << ", "
-            << t_service.value_or("<nullptr>")
+            << t_service.value_or(string_null)
             << ", ...) returned "
             << error
             << ": "

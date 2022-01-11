@@ -202,7 +202,7 @@ namespace TestHost
     {
         if (hostname) {
             std::cout << "Host: "
-                      << hostname.value_or("<nullptr>")
+                      << hostname.value_or(Network::string_null)
                       << std::endl;
             constexpr auto flags {AI_CANONNAME};
             const Network::Hints ipv4_hints

@@ -21,6 +21,7 @@
 #include "network/optionalhostname.h"   // OptionalHostname
 #include "network/protocol.h"           // Protocol, operator<<()
 #include "network/socktype.h"           // SockType, operator<<()
+#include "network/string-null.h"        // string_null
 
 #ifdef _WIN32
 #include <ws2tcpip.h>   // addrinfo
@@ -54,7 +55,7 @@ auto Network::operator<<(std::ostream& os,
        << Format(tab, "ai_addr")
        << get_sockaddr(ai.ai_addr, ai.ai_addrlen)
        << Format(tab, "ai_canonname")
-       << (ai.ai_canonname == nullptr ? "<nullptr>" : ai.ai_canonname)
+       << (ai.ai_canonname == nullptr ? string_null : ai.ai_canonname)
        << Format(tab)
        << "...)";
     return os;

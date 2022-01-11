@@ -74,7 +74,7 @@ namespace TestSocket
 
         if (pathname) {
             std::cout << "Unix domain path: "
-                      << (sun_path ? *sun_path : "<nullptr>")
+                      << sun_path.value_or(string_null)
                       << std::endl;
             assert(sun_path == pathname);			// NOLINT
         }

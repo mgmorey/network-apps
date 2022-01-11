@@ -122,11 +122,11 @@ namespace TestConnect
             m_os << "Socket "
                  << t_fd
                  << " connected "
-                 << (m_hostname ? *m_hostname : "<nullptr>")
+                 << m_hostname.value_or(Network::string_null)
                  << " to "
-                 << (service ? *service : "<nullptr>")
+                 << service.value_or(Network::string_null)
                  << " on "
-                 << (hostname ? *hostname : "<nullptr>")
+                 << hostname.value_or(Network::string_null)
                  << std::endl;
 
             if (std::holds_alternative<Network::Bytes>(peer_result) &&

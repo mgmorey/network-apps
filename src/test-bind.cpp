@@ -99,9 +99,9 @@ namespace TestBind
             m_os << "Socket "
                  << t_fd
                  << " bound to "
-                 << (service ? *service : "<nullptr>")
+                 << service.value_or(Network::string_null)
                  << " on "
-                 << (hostname ? *hostname : "<nullptr>")
+                 << hostname.value_or(Network::string_null)
                  << std::endl;
 
             if (std::holds_alternative<Network::Bytes>(sock_result)) {
