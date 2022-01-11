@@ -29,12 +29,12 @@
 #include <iostream>     // std::cerr, std::endl
 #include <sstream>      // std::ostringstream
 
-static constexpr auto delim {", "};
-static constexpr auto tab {0};
-
 auto Network::get_socket(const Socket& sock,
                          bool verbose) -> Network::FdResult
 {
+    constexpr auto delim {", "};
+    constexpr auto tab {0};
+
     Result result;
 
     if (verbose) {

@@ -34,7 +34,7 @@
 auto Network::operator<<(std::ostream& os,
                          const addrinfo& ai) -> std::ostream&
 {
-    static constexpr auto tab {9};
+    constexpr auto tab {9};
 
     const Flags flags(ai.ai_flags);
     const Family family(ai.ai_family);

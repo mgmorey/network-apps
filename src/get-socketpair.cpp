@@ -32,12 +32,12 @@
 #include <iostream>     // std::cerr, std::endl
 #include <sstream>      // std::ostringstream
 
-static constexpr auto delim {", "};
-static constexpr auto tab {0};
-
 auto Network::get_socketpair(const Socket& sock,
                              bool verbose) -> Network::FdPairResult
 {
+    constexpr auto delim {", "};
+    constexpr auto tab {0};
+
     Result result;
     std::array<fd_type, 2> fds {fd_null, fd_null};
 

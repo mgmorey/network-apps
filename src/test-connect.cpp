@@ -50,8 +50,8 @@
 
 namespace TestConnect
 {
-    static constexpr auto localhost {"example.com"};
-    static constexpr auto localservice {"http"};
+    constexpr auto localhost {"example.com"};
+    constexpr auto localservice {"http"};
 
     static bool verbose {false};  // NOLINT
 

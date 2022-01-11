@@ -47,8 +47,8 @@
 
 namespace TestBind
 {
-    static constexpr auto localhost {"localhost"};
-    static constexpr auto localservice {"8085"};
+    constexpr auto localhost {"localhost"};
+    constexpr auto localservice {"8085"};
 
     static bool verbose {false};  // NOLINT
 
