@@ -13,8 +13,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/to-byte-span.h"       // ByteSpan, sockaddr,
+#include "network/to-byte-span-sa.h"    // ByteSpan, sockaddr,
                                         // std::size_t, to_byte_span()
+#include "network/to-byte-span.h"       // to_byte_span()
 
 auto Network::to_byte_span(const sockaddr* sa,
                            std::size_t size) -> Network::ByteSpan

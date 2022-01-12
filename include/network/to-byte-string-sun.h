@@ -13,15 +13,28 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_TO_BYTE_STRING_H
-#define NETWORK_TO_BYTE_STRING_H
+#ifndef NETWORK_TO_BYTE_STRING_SUN_H
+#define NETWORK_TO_BYTE_STRING_SUN_H
 
-#include "network/bytespan.h"           // ByteSpan
 #include "network/bytestring.h"         // ByteString
+#include "network/optionalpathname.h"   // OptionalPathname
+#ifndef _WIN32
+#include "network/sun-sizes.h"          // sun_size
+#endif
+
+#ifndef _WIN32
+#include <sys/un.h>         // sockaddr_un
+#endif
+
+#include <cstddef>      // std::size_t
 
 namespace Network
 {
-    extern auto to_byte_string(const ByteSpan& span) -> ByteString;
+#ifndef _WIN32
+    extern auto to_byte_string(const sockaddr_un* sun,
+                               std::size_t size = sun_size) -> ByteString;
+    extern auto to_byte_string(const OptionalPathname& pathname = {}) -> ByteString;
+#endif
 }
 
 #endif

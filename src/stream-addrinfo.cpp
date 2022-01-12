@@ -21,7 +21,7 @@
 #include "network/protocol.h"           // Protocol, operator<<()
 #include "network/socktype.h"           // SockType, operator<<()
 #include "network/string-null.h"        // string_null
-#include "network/to-byte-string.h"     // Bytes, to_byte_string()
+#include "network/to-byte-string-sa.h"  // Bytes, to_byte_string()
 
 #ifdef _WIN32
 #include <ws2tcpip.h>   // addrinfo

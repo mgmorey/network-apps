@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/to-byte-string.h"     // ByteString,
+#include "network/to-byte-string-sun.h" // ByteString,
                                         // OptionalPathname,
                                         // sockaddr_un,
                                         // to_byte_string()

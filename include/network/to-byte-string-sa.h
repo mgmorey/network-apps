@@ -13,15 +13,23 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_TO_BYTE_STRING_H
-#define NETWORK_TO_BYTE_STRING_H
+#ifndef NETWORK_TO_BYTE_STRING_SA_H
+#define NETWORK_TO_BYTE_STRING_SA_H
 
-#include "network/bytespan.h"           // ByteSpan
 #include "network/bytestring.h"         // ByteString
+
+#ifdef _WIN32
+#include <winsock2.h>       // sockaddr
+#else
+#include <sys/socket.h>     // sockaddr
+#endif
+
+#include <cstddef>      // std::size_t
 
 namespace Network
 {
-    extern auto to_byte_string(const ByteSpan& span) -> ByteString;
+    extern auto to_byte_string(const sockaddr* sa,
+                               std::size_t size) -> ByteString;
 }
 
 #endif

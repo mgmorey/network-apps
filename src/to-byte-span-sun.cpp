@@ -13,8 +13,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/to-byte-span.h"       // ByteSpan, sockaddr_un,
+#include "network/to-byte-span-sun.h"   // ByteSpan, sockaddr_un,
                                         // std::size_t, to_byte_span()
+#include "network/to-byte-span.h"       // to_byte_span()
 
 #ifndef _WIN32
 

@@ -17,28 +17,13 @@
 #define NETWORK_TO_BYTE_SPAN_H
 
 #include "network/bytespan.h"           // ByteSpan
-#include "network/sizes.h"              // sun_size
-
-#ifdef _WIN32
-#include <winsock2.h>       // sockaddr
-#else
-#include <sys/socket.h>     // sockaddr
-#include <sys/un.h>         // sockaddr_un
-#endif
 
 #include <cstddef>      // std::size_t
-#include <span>         // std::span
 
 namespace Network
 {
     extern auto to_byte_span(const void* pointer,
                              std::size_t size) -> ByteSpan;
-    extern auto to_byte_span(const sockaddr* sa,
-                             std::size_t size) -> ByteSpan;
-#ifndef _WIN32
-    extern auto to_byte_span(const sockaddr_un* sun,
-                             std::size_t size = sun_size) -> ByteSpan;
-#endif
 }
 
 #endif

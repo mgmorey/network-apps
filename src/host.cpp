@@ -15,7 +15,7 @@
 
 #include "network/host.h"               // ByteString, Host,
                                         // OptionalHostname, addrinfo
-#include "network/to-byte-string.h"     // to_byte_string()
+#include "network/to-byte-string-sa.h"  // to_byte_string()
 
 Network::Host::Host(const addrinfo& t_addrinfo) :
     m_addr(to_byte_string(t_addrinfo.ai_addr, t_addrinfo.ai_addrlen)),
