@@ -18,7 +18,6 @@
 
 #include "network/address.h"            // Address
 #include "network/bind.h"               // bind()
-#include "network/bytes.h"              // Bytes
 #include "network/close.h"              // close()
 #include "network/connect.h"            // connect()
 #include "network/context.h"            // Context
@@ -68,8 +67,8 @@
 #include "network/to-byte-span.h"       // to_byte_span()
 #include "network/to-byte-string.h"     // to_byte_string()
 #include "network/to-string.h"          // to_string()
-#include "network/types.h"              // Buffer, Hostname,
-                                        // OptionalHostname,
+#include "network/types.h"              // Buffer, ByteString,
+                                        // Hostname, OptionalHostname,
                                         // OptionalPathname,
                                         // OptionalService, Pathname,
                                         // Service
