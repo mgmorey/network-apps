@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/connect.h"            // Endpoint, FdResultVector,
+#include "network/connect-endpoint.h"   // Endpoint, FdResultVector,
                                         // Hints, connect(), open()
 
 #ifdef _WIN32

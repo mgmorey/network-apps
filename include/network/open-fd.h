@@ -13,21 +13,20 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_BIND_H
-#define NETWORK_BIND_H
+#ifndef NETWORK_OPEN_FD_H
+#define NETWORK_OPEN_FD_H
 
-#include "network/open.h"               // Bytes, Endpoint, Fd,
-                                        // FdResultVector, Hints,
-                                        // OsErrorResult
+#include "network/bytes.h"              // Bytes
+#include "network/fdresultvector.h"     // Fd
+#include "network/openhandler.h"        // OpenHandler
+#include "network/oserrorresult.h"      // OsErrorResult
 
 namespace Network
 {
-    extern auto bind(Fd fd,
+    extern auto open(const OpenHandler& handler,
+                     Fd fd,
                      const Bytes& addr,
-                     bool verbose = false) -> OsErrorResult;
-    extern auto bind(const Endpoint& endpoint,
-                     const Hints& hints,
-                     bool verbose = false) -> FdResultVector;
+                     bool verbose) -> OsErrorResult;
 }
 
 #endif

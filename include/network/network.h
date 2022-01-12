@@ -17,9 +17,11 @@
 #define NETWORK_NETWORK_H
 
 #include "network/address.h"            // Address
-#include "network/bind.h"               // bind()
+#include "network/bind-endpoint.h"      // bind()
+#include "network/bind-fd.h"            // bind()
 #include "network/close.h"              // close()
-#include "network/connect.h"            // connect()
+#include "network/connect-endpoint.h"   // connect()
+#include "network/connect-fd.h"         // connect()
 #include "network/context.h"            // Context
 #include "network/family.h"             // Family
 #include "network/flags.h"              // Flags
