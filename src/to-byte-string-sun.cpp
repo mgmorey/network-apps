@@ -15,7 +15,7 @@
 
 #include "network/to-byte-string-sun.h" // ByteString, sockaddr_un,
                                         // to_byte_string()
-#include "network/to-byte-span.h"       // to_byte_span()
+#include "network/to-byte-span-void.h"  // to_byte_span()
 #include "network/to-byte-string.h"     // to_byte_string()
 
 #ifndef _WIN32

@@ -15,7 +15,7 @@
 
 #include "network/to-byte-span-sa.h"    // ByteSpan, sockaddr,
                                         // std::size_t, to_byte_span()
-#include "network/to-byte-span.h"       // to_byte_span()
+#include "network/to-byte-span-void.h"  // to_byte_span()
 
 auto Network::to_byte_span(const sockaddr* sa,
                            std::size_t size) -> Network::ByteSpan

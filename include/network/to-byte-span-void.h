@@ -13,12 +13,17 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/to-byte-span.h"       // ByteSpan, std::size_t,
-                                        // to_byte_span()
+#ifndef NETWORK_TO_BYTE_SPAN_VOID_H
+#define NETWORK_TO_BYTE_SPAN_VOID_H
 
-auto Network::to_byte_span(const void* pointer,
-                           std::size_t size) -> Network::ByteSpan
+#include "network/bytespan.h"           // ByteSpan
+
+#include <cstddef>      // std::size_t
+
+namespace Network
 {
-    const auto* const data {static_cast<const Byte*>(pointer)};
-    return {data, size};
+    extern auto to_byte_span(const void* pointer,
+                             std::size_t size) -> ByteSpan;
 }
+
+#endif
