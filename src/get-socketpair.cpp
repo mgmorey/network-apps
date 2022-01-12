@@ -71,7 +71,7 @@ auto Network::get_socketpair(const Socket& sock,
             << error
             << ": "
             << format_os_error(error);
-        return Result {error, oss.str()};
+        return OsErrorResult {error, oss.str()};
     }
 
     return FdPair {fds[0], fds[1]};
