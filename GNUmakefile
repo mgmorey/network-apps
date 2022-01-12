@@ -56,9 +56,10 @@ get-sun-path.cpp get-sun-pointer.cpp hints.cpp host.cpp is-valid.cpp	\
 open-endpoint.cpp open-fd.cpp os-error.cpp protocol.cpp result.cpp	\
 socket.cpp socktype.cpp stream-address.cpp stream-addrinfo.cpp		\
 stream-bytestring.cpp stream-hints.cpp stream-socket.cpp		\
-to-byte-span.cpp to-byte-string.cpp to-byte-string-path.cpp		\
-to-byte-string-sa.cpp to-byte-string-sun.cpp to-string.cpp		\
-to-string-sin.cpp to-string-sin6.cpp
+to-byte-span.cpp to-byte-span-sa.cpp to-byte-span-sun.cpp		\
+to-byte-string.cpp to-byte-string-sa.cpp to-byte-string-sun.cpp		\
+to-byte-string-sun-path.cpp to-string.cpp to-string-sin.cpp		\
+to-string-sin6.cpp
 
 test_sources = test-address.cpp test-bind.cpp test-connect.cpp	\
 test-host.cpp test-hostname.cpp
