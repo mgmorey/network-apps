@@ -17,10 +17,11 @@
 #define NETWORK_INTEGERRESULT_H
 
 #include "network/result.h"             // Result
+#include "network/result-type.h"        // result_type
 
 namespace Network
 {
-    using IntegerResult = Result<int>;
+    using IntegerResult = Result<result_type>;
 }
 
 #endif
