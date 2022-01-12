@@ -54,12 +54,11 @@ auto Network::get_socketpair(const Socket& sock,
     }
 
     reset_last_os_error();
-    auto code {::socketpair(sock.family(),
-                            sock.socktype(),
-                            sock.protocol(),
-                            fds.data())};
 
-    if (code == socket_error) {
+    if ((::socketpair(sock.family(),
+                      sock.socktype(),
+                      sock.protocol(),
+                      fds.data())) == socket_error) {
         const auto error = get_last_os_error();
         std::ostringstream oss;
         oss << "Call to socketpair("
