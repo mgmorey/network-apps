@@ -50,7 +50,7 @@ auto Network::get_hostname(const OptionalHostname& hostname) ->
             << error
             << ": "
             << format_os_error(error);
-        return Result {error, oss.str()};
+        return OsErrorResult {error, oss.str()};
     }
 
     return std::string {host_buffer};

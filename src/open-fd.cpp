@@ -65,7 +65,7 @@ auto Network::open(const OpenHandler& handler,
             << error
             << ": "
             << format_os_error(error);
-        return Result {error, oss.str()};
+        return OsErrorResult {error, oss.str()};
     }
 
     return OsErrorResult {};

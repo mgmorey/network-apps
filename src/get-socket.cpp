@@ -64,7 +64,7 @@ auto Network::get_socket(const Socket& sock,
             << error
             << ": "
             << format_os_error(error);
-        return Result {error, oss.str()};
+        return OsErrorResult {error, oss.str()};
     }
 
     return Fd {fd};

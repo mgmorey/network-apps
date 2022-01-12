@@ -72,7 +72,7 @@ auto Network::get_endpoint(const Bytes& addr, int flags, bool verbose) ->
             << " ("
             << ::gai_strerror(error)
             << ')';
-        return Result {error, oss.str()};
+        return IntegerResult {error, oss.str()};
     }
 
     return Endpoint {host, service};

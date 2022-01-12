@@ -64,7 +64,7 @@ auto Network::get_name(const GetNameHandler& handler, Fd fd,
             << error
             << ": "
             << format_os_error(error);
-        return Result {error, oss.str()};
+        return OsErrorResult {error, oss.str()};
     }
 
     addr.resize(addr_len);
