@@ -21,7 +21,7 @@
 #include "network/os-error.h"           // format_os_error(),
                                         // get_os_last_error(),
                                         // reset_os_last_error()
-#include "network/sizes.h"              // sockaddr_size_max
+#include "network/ss-sizes.h"           // ss_size
 
 #include <algorithm>    // std::max()
 #include <cassert>      // assert()
@@ -31,7 +31,7 @@
 auto Network::get_name(const GetNameHandler& handler, Fd fd,
                        bool verbose) -> Network::BytesResult
 {
-    Bytes addr {sockaddr_size_max, static_cast<Byte>('\0')};
+    Bytes addr {ss_size, Byte {}};
     auto addr_len {get_length(addr)};
     auto* addr_ptr {get_sa_pointer(addr)};
 
