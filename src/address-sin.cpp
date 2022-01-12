@@ -35,6 +35,5 @@ auto Network::Address::sin_port() const -> Network::port_type
 
 auto Network::Address::sin_text() const -> std::string
 {
-    const auto addr {sin_addr()};
-    return to_string(addr);
+    return to_string(sin_addr());
 }
