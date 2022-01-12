@@ -15,9 +15,9 @@
 
 #include "network/open.h"               // Endpoint, Fd,
                                         // FdResultVector, Hints,
-                                        // OpenHandler, Result,
+                                        // OpenHandler, OsErrorResult,
                                         // open(), operator<<()
-#include "network/get-socket.h"         // get_socket()
+#include "network/get-socket.h"         // IntegerResult, get_socket()
 #include "network/get-sockets.h"        // SocketVector, get_sockets()
 #include "network/overloaded.h"         // Overloaded
 
@@ -45,7 +45,7 @@ auto Network::open(const OpenHandler& handler,
                         socket_result = fd;
                     }
                 },
-                [&](const Result& result) {
+                [&](const OsErrorResult& result) {
                     static_cast<void>(result);
                 }
             }, socket_result);
@@ -58,7 +58,7 @@ auto Network::open(const OpenHandler& handler,
                                std::back_inserter(results),
                                lambda);
             },
-            [&](const Result& result) {
+            [&](const IntegerResult& result) {
                 results.push_back(result);
             }
         }, sockets_result);

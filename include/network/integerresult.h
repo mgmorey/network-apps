@@ -13,35 +13,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#ifndef NETWORK_INTEGERRESULT_H
+#define NETWORK_INTEGERRESULT_H
+
 #include "network/result.h"             // Result
 
-#include <ostream>      // std::ostream
-#include <string>       // std::string
-#include <utility>      // std::move()
-
-Network::Result::Result(result_type t_number, std::string t_string) :
-    m_string(std::move(t_string)),
-    m_number(t_number)
+namespace Network
 {
+    using IntegerResult = Result<int>;
 }
 
-Network::Result::operator bool() const
-{
-    return m_number != 0 || !m_string.empty();
-}
-
-auto Network::Result::number() const -> Network::result_type
-{
-    return m_number;
-}
-
-auto Network::Result::string() const -> std::string
-{
-    return m_string;
-}
-
-auto Network::operator<<(std::ostream& os,
-                         const Result& result) -> std::ostream&
-{
-    return os << result.string();
-}
+#endif

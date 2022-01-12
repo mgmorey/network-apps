@@ -17,13 +17,13 @@
 #define NETWORK_FDPAIRRESULT_H
 
 #include "network/fdpair.h"             // FdPair
-#include "network/result.h"             // Result
+#include "network/oserrorresult.h"      // OsErrorResult
 
 #include <variant>      // std::variant
 
 namespace Network
 {
-    using FdPairResult = std::variant<FdPair, Result>;
+    using FdPairResult = std::variant<FdPair, OsErrorResult>;
 }
 
 #endif

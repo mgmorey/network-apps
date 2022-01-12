@@ -56,7 +56,7 @@ auto Network::get_hosts(const Network::OptionalHostname& hostname_default,
                     hosts_result = hosts;
                 }
             },
-            [&](const Result& result) {
+            [&](const IntegerResult& result) {
                 hosts_result = result;
             }
         }, hostname_result);

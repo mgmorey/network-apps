@@ -110,7 +110,7 @@ namespace TestSocket
                               << " closed"
                               << std::endl;
                 },
-                [&](const Network::Result& result) {
+                [&](const Network::OsErrorResult& result) {
                     std::cerr << result
                               << std::endl;
                 }

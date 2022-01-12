@@ -31,7 +31,7 @@
 auto Network::open(const OpenHandler& handler,
                    Fd fd,
                    const Bytes& addr,
-                   bool verbose) -> Network::Result
+                   bool verbose) -> Network::OsErrorResult
 {
     assert(is_valid(addr, verbose));  // NOLINT
     const auto addr_len {get_length(addr)};
@@ -68,5 +68,5 @@ auto Network::open(const OpenHandler& handler,
         return Result {error, oss.str()};
     }
 
-    return Result {};
+    return OsErrorResult {};
 }

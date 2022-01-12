@@ -17,13 +17,13 @@
 #define NETWORK_BYTESRESULT_H
 
 #include "network/bytes.h"              // Bytes
-#include "network/result.h"             // Result
+#include "network/oserrorresult.h"      // OsErrorResult
 
 #include <variant>      // std::variant
 
 namespace Network
 {
-    using BytesResult = std::variant<Bytes, Result>;
+    using BytesResult = std::variant<Bytes, OsErrorResult>;
 }
 
 #endif

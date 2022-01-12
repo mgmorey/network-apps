@@ -35,8 +35,6 @@ auto Network::get_socket(const Socket& sock,
     constexpr auto delim {", "};
     constexpr auto tab {0};
 
-    Result result;
-
     if (verbose) {
         std::cerr << "Calling socket("
                   << Format("domain")

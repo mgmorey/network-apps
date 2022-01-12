@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/bind.h"               // Bytes, Fd, Result, bind(),
-                                        // open()
+#include "network/bind.h"               // Bytes, Fd, OsErrorResult,
+                                        // bind(), open()
 
 #ifdef _WIN32
 #include <winsock2.h>       // bind()
@@ -24,7 +24,7 @@
 
 auto Network::bind(Fd fd,
                    const Bytes& addr,
-                   bool verbose) -> Network::Result
+                   bool verbose) -> Network::OsErrorResult
 {
     const Network::OpenHandler handler {::bind, "bind"};
     return open(handler, fd, addr, verbose);

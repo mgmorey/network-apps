@@ -37,7 +37,6 @@
 auto Network::get_endpoint(const Bytes& addr, int flags, bool verbose) ->
     Network::EndpointResult
 {
-    Result result;
     Buffer host {NI_MAXHOST};
     Buffer service {NI_MAXSERV};
     assert(is_valid(addr, verbose));  // NOLINT

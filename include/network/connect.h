@@ -18,13 +18,13 @@
 
 #include "network/open.h"               // Bytes, Endpoint, Fd,
                                         // FdResultVector, Hints,
-                                        // Result
+                                        // OsErrorResult
 
 namespace Network
 {
     extern auto connect(Fd fd,
                         const Bytes& addr,
-                        bool verbose = false) -> Result;
+                        bool verbose = false) -> OsErrorResult;
     extern auto connect(const Endpoint& endpoint,
                         const Hints& hints,
                         bool verbose = false) -> FdResultVector;

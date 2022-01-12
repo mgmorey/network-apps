@@ -53,8 +53,8 @@ get-sin-port.cpp get-sin6-addr.cpp get-sin6-pointer.cpp			\
 get-sin6-port.cpp get-size.cpp get-socket.cpp get-socketpair.cpp	\
 get-sockets.cpp get-peername.cpp get-sockname.cpp get-sun-length.cpp	\
 get-sun-path.cpp get-sun-pointer.cpp hints.cpp host.cpp is-valid.cpp	\
-open-endpoint.cpp open-fd.cpp os-error.cpp protocol.cpp result.cpp	\
-socket.cpp socktype.cpp stream-address.cpp stream-addrinfo.cpp		\
+open-endpoint.cpp open-fd.cpp os-error.cpp protocol.cpp socket.cpp	\
+socktype.cpp stream-address.cpp stream-addrinfo.cpp			\
 stream-bytestring.cpp stream-hints.cpp stream-socket.cpp		\
 to-byte-span-sa.cpp to-byte-span-sun.cpp to-byte-span-void.cpp		\
 to-byte-string.cpp to-byte-string-sa.cpp to-byte-string-sun.cpp		\

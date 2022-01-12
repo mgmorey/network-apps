@@ -68,7 +68,7 @@ Network::Context::~Context()
 #endif
 }
 
-auto Network::Context::result() const -> Network::Result
+auto Network::Context::result() const -> Network::IntegerResult
 {
     return m_result;
 }

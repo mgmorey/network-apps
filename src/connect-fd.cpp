@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/connect.h"            // Bytes, Fd, Result,
+#include "network/connect.h"            // Bytes, Fd, OsErrorResult,
                                         // connect(), open()
 
 #ifdef _WIN32
@@ -24,7 +24,7 @@
 
 auto Network::connect(Fd fd,
                       const Bytes& addr,
-                      bool verbose) -> Network::Result
+                      bool verbose) -> Network::OsErrorResult
 {
     const Network::OpenHandler handler {::connect, "connect"};
     return open(handler, fd, addr, verbose);

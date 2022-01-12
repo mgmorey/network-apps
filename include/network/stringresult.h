@@ -16,14 +16,14 @@
 #ifndef NETWORK_STRINGRESULT_H
 #define NETWORK_STRINGRESULT_H
 
-#include "network/result.h"             // Result
+#include "network/oserrorresult.h"      // OsErrorResult
 
 #include <string>       // std::string
 #include <variant>      // std::variant
 
 namespace Network
 {
-    using StringResult = std::variant<std::string, Result>;
+    using StringResult = std::variant<std::string, OsErrorResult>;
 }
 
 #endif

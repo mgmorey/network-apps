@@ -13,14 +13,15 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_RESULT_TYPE_H
-#define NETWORK_RESULT_TYPE_H
+#ifndef NETWORK_OSERRORRESULT_H
+#define NETWORK_OSERRORRESULT_H
 
 #include "network/os-error-type.h"      // os_error_type
+#include "network/result.h"             // Result
 
 namespace Network
 {
-    using result_type = os_error_type;
+    using OsErrorResult = Result<os_error_type>;
 }
 
 #endif

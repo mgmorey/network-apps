@@ -24,7 +24,6 @@
 #include "network/os-error-type.h"      // os_error_type
 #include "network/port-type.h"          // port_type
 #include "network/protocol-type.h"      // protocol_type
-#include "network/result-type.h"        // result_type
 #include "network/sock-len-type.h"      // sock_len_type
 #include "network/socktype-type.h"      // socktype_type
 

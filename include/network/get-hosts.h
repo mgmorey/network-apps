@@ -17,15 +17,15 @@
 #define NETWORK_GET_HOSTS_H
 
 #include "network/hostvector.h"         // HostVector
+#include "network/integerresult.h"      // IntegerResult
 #include "network/optionalhints.h"      // OptionalHints
 #include "network/optionalhostname.h"   // OptionalHostname
-#include "network/result.h"             // Result
 
 #include <variant>      // std::variant
 
 namespace Network
 {
-    using HostVectorResult = std::variant<HostVector, Result>;
+    using HostVectorResult = std::variant<HostVector, IntegerResult>;
 
     extern auto get_hosts(const OptionalHostname& hostname_default,
                           const OptionalHints& hints = {},

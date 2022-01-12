@@ -38,7 +38,6 @@ auto Network::get_socketpair(const Socket& sock,
     constexpr auto delim {", "};
     constexpr auto tab {0};
 
-    Result result;
     std::array<fd_type, 2> fds {fd_null, fd_null};
 
     if (verbose) {

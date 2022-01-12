@@ -74,7 +74,7 @@ namespace TestHost
                         Network::uniquify(values);
                         print(values);
                     },
-                    [&](const Network::Result& result) {
+                    [&](const Network::IntegerResult& result) {
                         std::cerr << result
                                   << std::endl;
                     }
@@ -181,7 +181,7 @@ namespace TestHost
                     std::for_each(hosts.begin(), hosts.end(),
                                   Test(std::cout));
                 },
-                [&](const Network::Result& result) {
+                [&](const Network::IntegerResult& result) {
                     if (description.empty()) {
                         std::cout << "No";
                     }

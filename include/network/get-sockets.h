@@ -18,16 +18,16 @@
 
 #include "network/endpoint.h"           // Endpoint
 #include "network/hints.h"              // Hints
+#include "network/integerresult.h"      // IntegerResult
 #include "network/optionalhostname.h"   // OptionalHostname
 #include "network/optionalservice.h"    // OptionalService
-#include "network/result.h"             // Result
 #include "network/socketvector.h"       // SocketVector
 
 #include <variant>      // std::variant
 
 namespace Network
 {
-    using SocketVectorResult = std::variant<SocketVector, Result>;
+    using SocketVectorResult = std::variant<SocketVector, IntegerResult>;
 
     extern auto get_sockets(const Endpoint& endpoint,
                             const Hints& hints,

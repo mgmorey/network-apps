@@ -16,28 +16,41 @@
 #ifndef NETWORK_RESULT_H
 #define NETWORK_RESULT_H
 
-#include "network/result-type.h"        // result_type
-
 #include <ostream>      // std::ostream
 #include <string>       // std::string
 
 namespace Network
 {
+    template<typename T>
     struct Result
     {
         Result() = default;
-        Result(result_type t_number, std::string t_string);
-        operator bool() const;  // NOLINT
-        [[nodiscard]] auto number() const -> result_type;
-        [[nodiscard]] auto string() const -> std::string;
+
+        Result(T t_number, std::string t_string) :
+            m_string(std::move(t_string)),
+            m_number(t_number)
+        {
+        }
+
+        operator bool() const  // NOLINT
+        {
+            return m_number != 0 || !m_string.empty();
+        }
+
+        [[nodiscard]] auto number() const -> T
+        {
+            return m_number;
+        }
+
+        [[nodiscard]] auto string() const -> std::string
+        {
+            return m_string;
+        }
 
     private:
         std::string m_string;
-        result_type m_number {0};
+        T m_number {0};
     };
-
-    extern auto operator<<(std::ostream& os,
-                           const Result& result) -> std::ostream&;
 }
 
 #endif

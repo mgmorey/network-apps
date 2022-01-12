@@ -18,7 +18,8 @@
 
 #include "network/bytes.h"              // Bytes
 #include "network/endpoint.h"           // Endpoint
-#include "network/fdresultvector.h"     // Fd, FdResultVector, Result
+#include "network/fdresultvector.h"     // Fd, FdResultVector,
+                                        // OsErrorResult
 #include "network/hints.h"              // Hints
 #include "network/openhandler.h"        // OpenHandler
 
@@ -27,7 +28,7 @@ namespace Network
     extern auto open(const OpenHandler& handler,
                      Fd fd,
                      const Bytes& addr,
-                     bool verbose) -> Result;
+                     bool verbose) -> OsErrorResult;
     extern auto open(const OpenHandler& handler,
                      const Endpoint& endpoint,
                      const Hints& hints,
