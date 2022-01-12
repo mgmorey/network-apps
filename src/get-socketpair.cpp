@@ -60,7 +60,7 @@ auto Network::get_socketpair(const Socket& sock,
                             fds.data())};
 
     if (code == socket_error) {
-        auto error = get_last_os_error();
+        const auto error = get_last_os_error();
         std::ostringstream oss;
         oss << "Call to socketpair("
             << Format("domain")
@@ -73,7 +73,7 @@ auto Network::get_socketpair(const Socket& sock,
             << error
             << ": "
             << format_os_error(error);
-        return Result(error, oss.str());
+        return Result {error, oss.str()};
     }
 
     return FdPair {fds[0], fds[1]};
