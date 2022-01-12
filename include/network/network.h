@@ -71,7 +71,13 @@
                                         // Hostname, OptionalHostname,
                                         // OptionalPathname,
                                         // OptionalService, Pathname,
-                                        // Service
+                                        // Service, byte_type,
+                                        // family_type, fd_type,
+                                        // flags_type, length_type,
+                                        // os_error_type, port_type,
+                                        // protocol_type, result_type,
+                                        // sock_len_type,
+                                        // socktype_type
 #include "network/uniquify.h"           // Uniquify
 
 #endif
