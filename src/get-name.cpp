@@ -23,7 +23,6 @@
                                         // reset_os_last_error()
 #include "network/ss-sizes.h"           // ss_size
 
-#include <algorithm>    // std::max()
 #include <cassert>      // assert()
 #include <iostream>     // std::cerr, std::endl
 #include <sstream>      // std::ostringstream
