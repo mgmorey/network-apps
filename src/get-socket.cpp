@@ -53,7 +53,7 @@ auto Network::get_socket(const Socket& sock,
     const auto fd {::socket(sock.family(), sock.socktype(), sock.protocol())};
 
     if (fd == fd_null) {
-        auto error = get_last_os_error();
+        const auto error = get_last_os_error();
         std::ostringstream oss;
         oss << "Call to socket("
             << Format("domain")
