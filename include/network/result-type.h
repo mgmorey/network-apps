@@ -16,9 +16,11 @@
 #ifndef NETWORK_RESULT_TYPE_H
 #define NETWORK_RESULT_TYPE_H
 
+#include "network/os-error-type.h"      // os_error_type
+
 namespace Network
 {
-    using result_type = long long;
+    using result_type = os_error_type;
 }
 
 #endif
