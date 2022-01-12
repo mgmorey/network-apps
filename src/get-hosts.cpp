@@ -13,10 +13,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-hosts.h"          // Host, HostVector,
+#include "network/get-hosts.h"          // ErrorResult, Host,
+                                        // HostVector,
                                         // HostVectorResult,
                                         // OptionalHints,
-                                        // OptionalHostname, Result,
+                                        // OptionalHostname,
                                         // get_hosts()
 #include "network/addrinfo.h"           // AddrInfo
 #include "network/get-hostname.h"       // HostnameResult,
@@ -56,7 +57,7 @@ auto Network::get_hosts(const Network::OptionalHostname& hostname_default,
                     hosts_result = hosts;
                 }
             },
-            [&](const IntegerResult& result) {
+            [&](const ErrorResult& result) {
                 hosts_result = result;
             }
         }, hostname_result);

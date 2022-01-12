@@ -13,15 +13,15 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_INTEGERRESULT_H
-#define NETWORK_INTEGERRESULT_H
+#ifndef NETWORK_ERRORRESULT_H
+#define NETWORK_ERRORRESULT_H
 
-#include "network/result.h"             // Result
 #include "network/result-type.h"        // result_type
+#include "network/result.h"             // Result
 
 namespace Network
 {
-    using IntegerResult = Result<result_type>;
+    using ErrorResult = Result<result_type>;
 }
 
 #endif

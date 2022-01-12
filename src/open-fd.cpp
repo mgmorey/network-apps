@@ -13,8 +13,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/open.h"               // Fd, Result, OpenHandler,
-                                        // open(), operator<<()
+#include "network/open.h"               // Fd, OpenHandler,
+                                        // OsErrorResult, open(),
+                                        // operator<<()
 #include "network/address.h"            // Address, operator<<()
 #include "network/get-length.h"         // Bytes, get_length()
 #include "network/get-sa-pointer.h"     // Bytes, get_sa_pointer()

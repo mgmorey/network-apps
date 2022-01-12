@@ -13,7 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/network.h"            // Address, Bytes, Hints,
+#include "network/network.h"            // Address, Bytes,
+                                        // ErrorResult, Hints,
                                         // OptionalHostname,
                                         // Overloaded, get_endpoint(),
                                         // get_hosts()
@@ -74,7 +75,7 @@ namespace TestHost
                         Network::uniquify(values);
                         print(values);
                     },
-                    [&](const Network::IntegerResult& result) {
+                    [&](const Network::ErrorResult& result) {
                         std::cerr << result
                                   << std::endl;
                     }
@@ -181,7 +182,7 @@ namespace TestHost
                     std::for_each(hosts.begin(), hosts.end(),
                                   Test(std::cout));
                 },
-                [&](const Network::IntegerResult& result) {
+                [&](const Network::ErrorResult& result) {
                     if (description.empty()) {
                         std::cout << "No";
                     }

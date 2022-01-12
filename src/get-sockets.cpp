@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-sockets.h"        // Hints, IntegerResult,
+#include "network/get-sockets.h"        // Hints, ErrorResult,
                                         // OptionalHostname,
                                         // OptionalService,
                                         // SocketVectorResult,
@@ -41,7 +41,7 @@ auto Network::get_sockets(const Endpoint& endpoint,
                                 hints,
                                 verbose);
             },
-            [&](const IntegerResult& result) {
+            [&](const ErrorResult& result) {
                 sockets_result = result;
             }
         }, hostname_result);

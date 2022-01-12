@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/addrinfo.h"           // AddrInfo, IntegerResult,
+#include "network/addrinfo.h"           // AddrInfo, ErrorResult,
                                         // List, OptionalHints,
                                         // OptionalHostname,
                                         // OptionalService, addrinfo,
@@ -116,7 +116,7 @@ auto Network::AddrInfo::List::end() -> Network::AddrInfo::InputIterator
     return nullptr;
 }
 
-auto Network::AddrInfo::List::result() const -> Network::IntegerResult
+auto Network::AddrInfo::List::result() const -> Network::ErrorResult
 {
     return m_result;
 }

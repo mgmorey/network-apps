@@ -14,8 +14,9 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/get-socketpair.h"     // FdPair, FdPairResult,
-                                        // Result, Socket, fd_null,
-                                        // fd_type, get_socketpair(),
+                                        // OsErrorResult, Socket,
+                                        // fd_null, fd_type,
+                                        // get_socketpair(),
                                         // operator<<()
 #include "network/format.h"             // Format
 #include "network/os-error.h"           // format_os_error(),

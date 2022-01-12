@@ -16,7 +16,7 @@
 #ifndef NETWORK_ADDRINFO_H
 #define NETWORK_ADDRINFO_H
 
-#include "network/integerresult.h"      // IntegerResult
+#include "network/errorresult.h"        // ErrorResult
 #include "network/optionalhints.h"      // OptionalHints
 #include "network/optionalhostname.h"   // OptionalHostname
 #include "network/optionalservice.h"    // OptionalService
@@ -77,14 +77,14 @@ namespace Network
             auto operator=(const List&&) -> List& = delete;
             [[nodiscard]] auto begin() const -> InputIterator;
             static auto end() -> InputIterator;
-            [[nodiscard]] auto result() const -> IntegerResult;
+            [[nodiscard]] auto result() const -> ErrorResult;
 
         protected:
             static auto to_c_string(const OptionalString& str) -> const char*;
 
         private:
             addrinfo* m_list {nullptr};
-            IntegerResult m_result;
+            ErrorResult m_result;
         };
 
         extern auto operator==(const InputIterator& left,
@@ -97,7 +97,7 @@ namespace Network
                     const OptionalService& service,
                     const OptionalHints& hints,
                     bool verbose,
-                    OutputIt out) -> IntegerResult
+                    OutputIt out) -> ErrorResult
         {
             const auto list {List(hostname, service, hints, verbose)};
 

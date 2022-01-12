@@ -17,8 +17,8 @@
 #define NETWORK_GET_SOCKETS_H
 
 #include "network/endpoint.h"           // Endpoint
+#include "network/errorresult.h"        // ErrorResult
 #include "network/hints.h"              // Hints
-#include "network/integerresult.h"      // IntegerResult
 #include "network/optionalhostname.h"   // OptionalHostname
 #include "network/optionalservice.h"    // OptionalService
 #include "network/socketvector.h"       // SocketVector
@@ -27,7 +27,7 @@
 
 namespace Network
 {
-    using SocketVectorResult = std::variant<SocketVector, IntegerResult>;
+    using SocketVectorResult = std::variant<SocketVector, ErrorResult>;
 
     extern auto get_sockets(const Endpoint& endpoint,
                             const Hints& hints,

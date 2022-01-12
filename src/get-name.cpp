@@ -14,7 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/get-name.h"           // Bytes, Fd, GetNameHandler,
-                                        // Result, get_name()
+                                        // OsErrorResult, get_name()
 #include "network/get-length.h"         // get_length()
 #include "network/get-sa-pointer.h"     // get_sa_pointer()
 #include "network/is-valid.h"           // is_valid()

@@ -17,8 +17,9 @@
                                         // BytesResult, Endpoint,
                                         // FdResult, Hints,
                                         // OptionalHostname,
-                                        // Overloaded, close(),
-                                        // connect(), get_hostname(),
+                                        // OsErrorResult, Overloaded,
+                                        // close(), connect(),
+                                        // get_hostname(),
                                         // get_peername(),
                                         // get_sockname()
 

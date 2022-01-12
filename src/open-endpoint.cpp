@@ -13,11 +13,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/open.h"               // Endpoint, Fd,
+#include "network/open.h"               // Endpoint, ErrorResult, Fd,
                                         // FdResultVector, Hints,
                                         // OpenHandler, OsErrorResult,
                                         // open(), operator<<()
-#include "network/get-socket.h"         // IntegerResult, get_socket()
+#include "network/get-socket.h"         // ErrorResult, get_socket()
 #include "network/get-sockets.h"        // SocketVector, get_sockets()
 #include "network/overloaded.h"         // Overloaded
 
@@ -58,7 +58,7 @@ auto Network::open(const OpenHandler& handler,
                                std::back_inserter(results),
                                lambda);
             },
-            [&](const IntegerResult& result) {
+            [&](const ErrorResult& result) {
                 results.push_back(result);
             }
         }, sockets_result);

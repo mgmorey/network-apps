@@ -16,7 +16,7 @@
 #ifndef NETWORK_CONTEXT_H
 #define NETWORK_CONTEXT_H
 
-#include "network/integerresult.h"      // IntegerResult
+#include "network/errorresult.h"        // ErrorResult
 
 #ifdef _WIN32
 #include <winsock2.h>       // MAKEWORD(), WORD, WSADATA
@@ -34,7 +34,7 @@ namespace Network
         ~Context();
         auto operator=(const Context&) -> Context& = delete;
         auto operator=(const Context&&) -> Context& = delete;
-        [[nodiscard]] auto result() const -> IntegerResult;
+        [[nodiscard]] auto result() const -> ErrorResult;
 
     private:
 #ifdef _WIN32
@@ -43,7 +43,7 @@ namespace Network
         static WSADATA m_data;
 #endif
 
-        IntegerResult m_result;
+        ErrorResult m_result;
     };
 }
 

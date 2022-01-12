@@ -17,13 +17,13 @@
 #define NETWORK_ENDPOINTRESULT_H
 
 #include "network/endpoint.h"           // Endpoint
-#include "network/integerresult.h"      // IntegerResult
+#include "network/errorresult.h"        // ErrorResult
 
 #include <variant>      // std::variant
 
 namespace Network
 {
-    using EndpointResult = std::variant<Endpoint, IntegerResult>;
+    using EndpointResult = std::variant<Endpoint, ErrorResult>;
 }
 
 #endif

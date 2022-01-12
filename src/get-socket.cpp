@@ -13,8 +13,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-socket.h"         // Fd, FdResult, Result, Socket,
-                                        // fd_null, get_socket(), operator<<()
+#include "network/get-socket.h"         // Fd, FdResult,
+                                        // OsErrorResult, Socket,
+                                        // fd_null, get_socket(),
+                                        // operator<<()
 #include "network/format.h"             // Format
 #include "network/os-error.h"           // format_os_error(),
                                         // get_last_os_error(),

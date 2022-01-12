@@ -14,7 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/get-endpoint.h"       // Endpoint, EndpointResult,
-                                        // Result, get_endpoint()
+                                        // ErrorResult, get_endpoint()
 #include "network/buffer.h"             // Buffer
 #include "network/get-length.h"         // Bytes, get_length()
 #include "network/get-sa-pointer.h"     // Bytes, get_sa_pointer()
@@ -72,7 +72,7 @@ auto Network::get_endpoint(const Bytes& addr, int flags, bool verbose) ->
             << " ("
             << ::gai_strerror(error)
             << ')';
-        return IntegerResult {error, oss.str()};
+        return ErrorResult {error, oss.str()};
     }
 
     return Endpoint {host, service};

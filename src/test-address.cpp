@@ -180,7 +180,7 @@ namespace TestAddress
                         test_address_localhost(host.address());
                     }
                 },
-                [&](const Network::IntegerResult& result) {
+                [&](const Network::ErrorResult& result) {
                     std::cout << "No "
                               << localhost.value_or(Network::string_null)
                               << " addresses: "

@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/context.h"            // Context, Result
+#include "network/context.h"            // Context, ErrorResult
 #include "network/os-error.h"           // format_os_error()
 
 #ifdef _WIN32
@@ -68,7 +68,7 @@ Network::Context::~Context()
 #endif
 }
 
-auto Network::Context::result() const -> Network::IntegerResult
+auto Network::Context::result() const -> Network::ErrorResult
 {
     return m_result;
 }

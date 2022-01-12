@@ -15,7 +15,8 @@
 
 #include "network/network.h"            // Address, Bytes,
                                         // BytesResult, Endpoint,
-                                        // FdResult, Hints, Overloaded,
+                                        // FdResult, Hints,
+                                        // OsErrorResult, Overloaded,
                                         // bind(), close(),
                                         // get_sockname()
 

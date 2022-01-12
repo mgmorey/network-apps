@@ -20,7 +20,7 @@
 #include "network/os-error.h"           // format_os_error(),
                                         // get_last_os_error(),
                                         // reset_last_os_error()
-#include "network/result.h"             // Result
+#include "network/oserrorresult.h"      // OsErrorResult
 
 #ifdef _WIN32
 #include <winsock2.h>   // gethostname()

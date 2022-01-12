@@ -13,7 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/network.h"            // Overloaded, get_hostname()
+#include "network/network.h"            // OsErrorResult, Overloaded,
+                                        // get_hostname()
 
 #ifdef _WIN32
 #include <getopt.h>         // getopt(), optarg, opterr, optind
