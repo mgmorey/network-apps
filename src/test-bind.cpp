@@ -69,7 +69,7 @@ namespace TestBind
                         test_socket(fd);
                     },
                     [&](const Network::OsErrorResult& result) {
-                        std::cerr << result
+                        std::cerr << result.string()
                                   << std::endl;
                     }
                 }, t_socket_result);
@@ -84,7 +84,7 @@ namespace TestBind
                         static_cast<void>(addr);
                     },
                     [&](const Network::OsErrorResult& result) {
-                        std::cerr << result
+                        std::cerr << result.string()
                                   << std::endl;
                     }
                 }, sockname_result);

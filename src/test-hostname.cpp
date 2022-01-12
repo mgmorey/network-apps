@@ -74,7 +74,7 @@ namespace TestHostname
                 },
                 [&](const Network::OsErrorResult& result) {
                     std::cerr << "No hostname available: "
-                              << result
+                              << result.string()
                               << std::endl;
                 }
             }, hostname_result);

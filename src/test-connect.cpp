@@ -75,7 +75,7 @@ namespace TestConnect
                         test_socket(fd);
                     },
                     [&](const Network::OsErrorResult& result) {
-                        std::cerr << result
+                        std::cerr << result.string()
                                   << std::endl;
                     }
                 }, t_socket_result);
@@ -90,7 +90,7 @@ namespace TestConnect
                         static_cast<void>(addr);
                     },
                     [&](const Network::OsErrorResult& result) {
-                        std::cerr << result
+                        std::cerr << result.string()
                                   << std::endl;
                     }
                 }, peername_result);
@@ -106,7 +106,7 @@ namespace TestConnect
                         static_cast<void>(addr);
                     },
                     [&](const Network::OsErrorResult& result) {
-                        std::cerr << result
+                        std::cerr << result.string()
                                   << std::endl;
                     }
                 }, sockname_result);
@@ -203,7 +203,7 @@ namespace TestConnect
                 },
                 [&](const Network::OsErrorResult& result) {
                     std::cerr << "No hostname available: "
-                              << result
+                              << result.string()
                               << std::endl;
                 }
             }, hostname_result);

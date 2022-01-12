@@ -184,7 +184,7 @@ namespace TestAddress
                     std::cout << "No "
                               << localhost.value_or(Network::string_null)
                               << " addresses: "
-                              << result
+                              << result.string()
                               << std::endl;
                 }
             }, hosts_result);

@@ -111,7 +111,7 @@ namespace TestSocket
                               << std::endl;
                 },
                 [&](const Network::OsErrorResult& result) {
-                    std::cerr << result
+                    std::cerr << result.string()
                               << std::endl;
                 }
             }, socketpair_result);

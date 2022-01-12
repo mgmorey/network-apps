@@ -76,7 +76,7 @@ namespace TestHost
                         print(values);
                     },
                     [&](const Network::ErrorResult& result) {
-                        std::cerr << result
+                        std::cerr << result.string()
                                   << std::endl;
                     }
                 }, endpoint_result);
@@ -193,7 +193,7 @@ namespace TestHost
 
                     std::cout << " hosts:"
                               << std::endl
-                              << result
+                              << result.string()
                               << std::endl;
                 }
             }, hosts_result);
