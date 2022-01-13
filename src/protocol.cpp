@@ -13,7 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/protocol.h"           // Protocol
+#include "network/protocol.h"           // Protocol, operator<<(),
+                                        // std::ostream
 
 #ifdef _WIN32
 #include <winsock2.h>   // AF_INET, AF_INET6, AF_UNIX, AF_UNSPEC,
@@ -24,8 +25,6 @@
                         // IPPROTO_RAW, IPPROTO_TCP, IPPROTO_UDP
 #include <sys/socket.h> // AF_INET, AF_INET6, AF_UNIX, AF_UNSPEC,
 #endif
-
-#include <ostream>      // std::ostream
 
 Network::Protocol::Protocol(family_type t_family, protocol_type t_value) :
     Integer(t_value),
