@@ -13,53 +13,37 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-hosts.h"          // ErrorResult, Host,
+#include "network/get-hosts.h"          // ErrorResult, Hostname,
                                         // HostVector,
                                         // HostVectorResult,
-                                        // OptionalHints,
-                                        // OptionalHostname,
-                                        // get_hosts()
+                                        // OptionalHints, get_hosts()
 #include "network/addrinfo.h"           // AddrInfo
-#include "network/get-hostname.h"       // HostnameResult,
-                                        // get_hostname()
 #include "network/overloaded.h"         // Overloaded
-#include "network/uniquify.h"           // Uniquify
+#include "network/uniquify.h"           // uniquify()
 
 #include <algorithm>    // std::sort()
 #include <iterator>     // std::back_inserter()
 #include <optional>     // std::nullopt
-#include <string>       // std::string
-#include <variant>      // std::visit()
 
-auto Network::get_hosts(const Network::OptionalHostname& hostname_default,
+auto Network::get_hosts(const Network::Hostname& hostname,
                         const Network::OptionalHints& hints,
                         bool verbose) -> Network::HostVectorResult
 {
-    HostVectorResult hosts_result;
-    const auto hostname_result {get_hostname(hostname_default)};
-    std::visit(Overloaded {
-            [&](const std::string& hostname) {
-                HostVector hosts;
-                const auto result {
-                    AddrInfo::insert(static_cast<OptionalHostname>(hostname),
-                                     static_cast<OptionalService>(std::nullopt),
-                                     hints,
-                                     verbose,
-                                     std::back_inserter(hosts))
-                };
+    HostVector hosts;
 
-                if (result) {
-                    hosts_result = result;
-                }
-                else {
-                    std::sort(hosts.begin(), hosts.end());
-                    uniquify(hosts);
-                    hosts_result = hosts;
-                }
-            },
-            [&](const ErrorResult& result) {
-                hosts_result = result;
-            }
-        }, hostname_result);
-    return hosts_result;
+    const auto result {
+        AddrInfo::insert(static_cast<OptionalHostname>(hostname),
+                         static_cast<OptionalService>(std::nullopt),
+                         hints,
+                         verbose,
+                         std::back_inserter(hosts))
+    };
+
+    if (result) {
+        return result;
+    }
+
+    std::sort(hosts.begin(), hosts.end());
+    uniquify(hosts);
+    return hosts;
 }

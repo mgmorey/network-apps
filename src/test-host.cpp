@@ -17,7 +17,7 @@
                                         // ErrorResult, Hints,
                                         // OptionalHostname,
                                         // Overloaded, get_endpoint(),
-                                        // get_hosts()
+                                        // get_hostname(), get_hosts()
 
 #ifdef _WIN32
 #include <getopt.h>         // getopt(), optarg, opterr, optind
@@ -159,13 +159,17 @@ namespace TestHost
         return result;
     }
 
-    static auto test_host(const Network::OptionalHostname& host,
+    static auto test_host(const Network::Hostname& hostname,
                           const Network::Hints& hints) -> void
     {
         const auto description {get_description(hints)};
-        auto hosts_result {Network::get_hosts(host, hints)};
+        auto hosts_result {Network::get_hosts(hostname, hints)};
         std::visit(Network::Overloaded {
                 [&](Network::HostVector& hosts) {
+                    std::cout << "Host: "
+                              << hostname
+                              << std::endl;
+
                     if (hosts.empty()) {
                         return;
                     }
@@ -199,24 +203,19 @@ namespace TestHost
             }, hosts_result);
     }
 
-    static auto test_host(const Network::OptionalHostname& hostname) -> void
+    static auto test_host(const Network::Hostname& hostname, bool named) -> void
     {
-        if (hostname) {
-            std::cout << "Host: "
-                      << hostname.value_or(Network::string_null)
-                      << std::endl;
-            constexpr auto flags {AI_CANONNAME};
-            const Network::Hints ipv4_hints
-                {AF_INET, SOCK_STREAM, IPPROTO_TCP, flags};
-            test_host(hostname, ipv4_hints);
-            const Network::Hints ipv6_hints
-                {AF_INET6, SOCK_STREAM, IPPROTO_TCP, flags};
-            test_host(hostname, ipv6_hints);
-        }
-        else {
-            const auto flags {AI_ADDRCONFIG | AI_CANONNAME};
-            const Network::Hints hints
-                {AF_UNSPEC, SOCK_STREAM, IPPROTO_TCP, flags};
+        constexpr auto flags {AI_CANONNAME};
+        constexpr auto protocol {IPPROTO_TCP};
+        constexpr auto socktype {SOCK_STREAM};
+        const Network::Hints inet {AF_INET, socktype, protocol, flags};
+        const Network::Hints inet6 {AF_INET6, socktype, protocol, flags};
+        const Network::Hints unspec {AF_UNSPEC, socktype, protocol, flags};
+        const std::vector<Network::Hints> vinet {inet, inet6};
+        const std::vector<Network::Hints> vunspec {unspec};
+        const auto& vhints = named ? vinet : vunspec;
+
+        for (const auto& hints : vhints) {
             test_host(hostname, hints);
         }
     }
@@ -233,16 +232,24 @@ auto main(int argc, char* argv[]) -> int
                       << std::endl;
         }
         else {
-            Network::OptionalHostname hostname;
+            Network::Hostname hostname;
 
             if (args.size() > 1) {
-                hostname = args[1];
+                TestHost::test_host(args[1], true);
             }
             else {
-                hostname = {};
+                const auto hostname_result {Network::get_hostname()};
+                std::visit(Network::Overloaded {
+                        [&](const std::string& hostname) {
+                            TestHost::test_host(hostname, false);
+                        },
+                        [&](const Network::OsErrorResult& result) {
+                            std::cerr << "No hostname available: "
+                                      << result.string()
+                                      << std::endl;
+                        }
+                    }, hostname_result);
             }
-
-            TestHost::test_host(hostname);
         }
 
         static_cast<void>(context);

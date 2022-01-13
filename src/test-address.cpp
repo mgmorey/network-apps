@@ -13,8 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/network.h"            // Address, Bytes,
-                                        // OptionalHostname,
+#include "network/network.h"            // Address, Bytes, Hostname,
                                         // Overloaded, get_hosts()
 
 #ifdef _WIN32
@@ -166,13 +165,13 @@ namespace TestAddress
 
     static auto test_address_localhost() -> void
     {
-        static const Network::OptionalHostname localhost {"localhost"};
+        static const Network::Hostname localhost {"localhost"};
 
         const auto hosts_result {Network::get_hosts(localhost)};
         std::visit(Network::Overloaded {
                 [&](const Network::HostVector& hosts) {
                     std::cout << "Socket addresses for "
-                              << localhost.value_or(Network::string_null)
+                              << localhost
                               << ": "
                               << std::endl;
 
@@ -182,7 +181,7 @@ namespace TestAddress
                 },
                 [&](const Network::ErrorResult& result) {
                     std::cout << "No "
-                              << localhost.value_or(Network::string_null)
+                              << localhost
                               << " addresses: "
                               << result.string()
                               << std::endl;
