@@ -13,7 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/fd.h"                 // Fd, fd_type, operator<<()
+#include "network/fd.h"                 // Fd, fd_type, operator<<(),
+                                        // std::ostream
 
 Network::Fd::Fd(fd_type t_fd) :
     m_value(t_fd)
