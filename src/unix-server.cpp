@@ -116,9 +116,9 @@ auto main() -> int
         for (;;) {
 
             // Wait for next data packet.
-            result = ::read(data_socket, buffer.data(), buffer.size());
+            const auto size = ::read(data_socket, buffer.data(), buffer.size());
 
-            if (result == -1) {
+            if (size == -1) {
                 std::perror("read");
                 std::exit(EXIT_FAILURE);
             }
@@ -145,9 +145,9 @@ auto main() -> int
             oss << sum
                 << '\0';
             std::string str {oss.str()};
-            result = ::write(data_socket, str.data(), str.size());
+            const auto size = ::write(data_socket, str.data(), str.size());
 
-            if (result == -1) {
+            if (size == -1) {
                 std::perror("write");
                 std::exit(EXIT_FAILURE);
             }
