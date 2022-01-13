@@ -45,6 +45,9 @@ namespace Network
 
         ErrorResult m_result;
     };
+
+    extern auto operator<<(std::ostream& os,
+                           const Context& context) -> std::ostream&;
 }
 
 #endif

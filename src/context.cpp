@@ -77,3 +77,9 @@ auto Network::Context::result() const -> Network::ErrorResult
 unsigned Network::Context::m_count;
 WSADATA Network::Context::m_data;
 #endif
+
+auto Network::operator<<(std::ostream& os,
+                         const Context& context) -> std::ostream&
+{
+    return os << context.result().string();
+}

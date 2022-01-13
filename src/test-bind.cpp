@@ -184,7 +184,7 @@ auto main(int argc, char* argv[]) -> int
         const Network::Context context {TestBind::verbose};
 
         if (context.result()) {
-            std::cerr << context.result().string()
+            std::cerr << context
                       << std::endl;
         }
         else {
