@@ -74,6 +74,10 @@ to-string-sin6.cpp
 test_sources = test-address.cpp test-bind.cpp test-connect.cpp	\
 test-context.cpp test-host.cpp test-hostname.cpp
 
+ifneq "$(SYSTEM)" "MINGW64_NT"
+	test_sources += test-socket.cpp
+endif
+
 unix_sources = unix-client.cpp unix-server.cpp
 
 .PHONY:	all
