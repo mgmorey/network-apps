@@ -39,7 +39,7 @@ auto Network::Buffer::size() const -> std::string::size_type
 }
 
 auto Network::operator<<(std::ostream& os,
-                         const Network::Buffer& buffer) -> std::ostream&
+                         const Buffer& buffer) -> std::ostream&
 {
     return os << std::string {buffer};
 }
