@@ -62,7 +62,7 @@ namespace TestBind
         {
         }
 
-        auto operator()(const Network::FdResult& t_socket_result) -> void
+        auto operator()(const Network::FdResult& t_fd_result) -> void
         {
             std::visit(Network::Overloaded {
                     [&](Network::Fd fd) {
@@ -72,7 +72,7 @@ namespace TestBind
                         std::cerr << result.string()
                                   << std::endl;
                     }
-                }, t_socket_result);
+                }, t_fd_result);
         }
 
         static auto get_sockaddr(const Network::Fd& t_fd) ->
@@ -159,10 +159,18 @@ namespace TestBind
     static auto test_bind(const Network::Endpoint& endpoint,
                           const Network::Hints& hints) -> void
     {
-        const auto socket_results {Network::bind(endpoint, hints, verbose)};
-        assert(!socket_results.empty());  // NOLINT
-        std::for_each(socket_results.begin(), socket_results.end(),
-                      Test(endpoint, std::cout));
+        const auto open_result {Network::bind(endpoint, hints, verbose)};
+        std::visit(Network::Overloaded {
+                [&](const Network::FdResultVector& fd_results) {
+                    assert(!fd_results.empty());  // NOLINT
+                    std::for_each(fd_results.begin(), fd_results.end(),
+                                  Test(endpoint, std::cout));
+                },
+                [&](const Network::ErrorResult& result) {
+                    std::cerr << result.string()
+                              << std::endl;
+                }
+            }, open_result);
     }
 }
 

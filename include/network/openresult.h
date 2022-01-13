@@ -23,7 +23,7 @@
 
 namespace Network
 {
-    using OpenResult = FdResultVector;
+    using OpenResult = std::variant<FdResultVector, ErrorResult>;
 }
 
 #endif

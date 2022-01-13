@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/bind-endpoint.h"      // Endpoint, FdResultVector,
-                                        // Hints, bind(), open()
+#include "network/bind-endpoint.h"      // Endpoint, Hints,
+                                        // OpenResult, bind(), open()
 
 #ifdef _WIN32
 #include <winsock2.h>       // bind()
@@ -22,10 +22,10 @@
 #include <sys/socket.h>     // bind()
 #endif
 
-auto Network::bind(const Endpoint& endp,
+auto Network::bind(const Endpoint& endpoint,
                    const Hints& hints,
-                   bool verbose) -> Network::FdResultVector
+                   bool verbose) -> Network::OpenResult
 {
     const Network::OpenHandler handler {::bind, "bind"};
-    return open(handler, endp, hints, verbose);
+    return open(handler, endpoint, hints, verbose);
 }

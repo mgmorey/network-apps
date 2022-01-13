@@ -16,14 +16,13 @@
 #ifndef NETWORK_BIND_ENDPOINT_H
 #define NETWORK_BIND_ENDPOINT_H
 
-#include "network/open-endpoint.h"      // Endpoint, FdResultVector,
-                                        // Hints
+#include "network/open-endpoint.h"      // Endpoint, Hints, OpenResult
 
 namespace Network
 {
     extern auto bind(const Endpoint& endpoint,
                      const Hints& hints,
-                     bool verbose = false) -> FdResultVector;
+                     bool verbose = false) -> OpenResult;
 }
 
 #endif

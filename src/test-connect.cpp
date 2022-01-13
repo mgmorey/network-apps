@@ -68,7 +68,7 @@ namespace TestConnect
         {
         }
 
-        auto operator()(const Network::FdResult& t_socket_result) -> void
+        auto operator()(const Network::FdResult& t_fd_result) -> void
         {
             std::visit(Network::Overloaded {
                     [&](Network::Fd fd) {
@@ -78,7 +78,7 @@ namespace TestConnect
                         std::cerr << result.string()
                                   << std::endl;
                     }
-                }, t_socket_result);
+                }, t_fd_result);
         }
 
         static auto get_peeraddr(const Network::Fd& t_fd) ->
@@ -192,14 +192,23 @@ namespace TestConnect
         const auto hostname_result {Network::get_hostname()};
         std::visit(Network::Overloaded {
                 [&](const std::string& hostname) {
-                    const auto socket_results {
+                    const auto open_result {
                         Network::connect(endpoint, hints, verbose)
                     };
-                    std::for_each(socket_results.begin(), socket_results.end(),
-                                  Test(endpoint,
-                                       static_cast<Network::OptionalHostname>
-                                       (hostname),
-                                       std::cout));
+                    std::visit(Network::Overloaded {
+                            [&](const Network::FdResultVector& fd_results) {
+                                assert(!fd_results.empty());  // NOLINT
+                                std::for_each(fd_results.begin(),
+                                              fd_results.end(),
+                                              Test(endpoint,
+                                                   hostname,
+                                                   std::cout));
+                            },
+                            [&](const Network::ErrorResult& result) {
+                                std::cerr << result.string()
+                                          << std::endl;
+                            }
+                        }, open_result);
                 },
                 [&](const Network::OsErrorResult& result) {
                     std::cerr << "No hostname available: "

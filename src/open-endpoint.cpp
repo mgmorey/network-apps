@@ -61,13 +61,8 @@ auto Network::open(const OpenHandler& handler,
                                lambda);
                 open_result = OpenResult {fd_results};
             },
-            [&](const ErrorResult& error_result) {
-                OsErrorResult os_error_result {
-                    error_result.number(),
-                    error_result.string()
-                };
-                fd_results.push_back(os_error_result);
-                open_result = OpenResult {fd_results};
+            [&](const ErrorResult& result) {
+                open_result = OpenResult {result};
             }
         }, sockets_result);
     return open_result;
