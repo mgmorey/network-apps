@@ -13,8 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/socket.h"             // Hints, Host, Socket,
-                                        // operator<<()
+#include "network/socket.h"             // Hints, Host, Socket
 
 #ifdef _WIN32
 #include <ws2tcpip.h>   // addrinfo
