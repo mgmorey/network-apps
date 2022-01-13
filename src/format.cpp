@@ -14,7 +14,8 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/format.h"             // Format, operator<<(),
-                                        // std::ostream, std::string
+                                        // std::endl, std::ostream,
+                                        // std::string
 
 #include <utility>      // std::move()
 
