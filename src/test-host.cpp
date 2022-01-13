@@ -36,6 +36,7 @@
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
+#include <iterator>     // std::next()
 #include <ostream>      // std::ostream
 #include <span>         // std::span
 #include <string>       // std::string
@@ -128,6 +129,26 @@ namespace TestHost
         }
     }
 
+    static auto get_hints_vector(bool named) -> std::vector<Network::Hints>
+    {
+        constexpr auto flags {AI_CANONNAME};
+        constexpr auto protocol {IPPROTO_TCP};
+        constexpr auto socktype {SOCK_STREAM};
+        std::vector<Network::Hints> result;
+
+        if (named) {
+            const Network::Hints inet {AF_INET, socktype, protocol, flags};
+            const Network::Hints inet6 {AF_INET6, socktype, protocol, flags};
+            result = {inet, inet6};
+        }
+        else {
+            const Network::Hints unspec {AF_UNSPEC, socktype, protocol, flags};
+            result = {unspec};
+        }
+
+        return result;
+    }
+
     static auto parse_arguments(int argc, char** argv) ->
         std::vector<std::string>
     {
@@ -166,10 +187,6 @@ namespace TestHost
         auto hosts_result {Network::get_hosts(hostname, hints)};
         std::visit(Network::Overloaded {
                 [&](Network::HostVector& hosts) {
-                    std::cout << "Host: "
-                              << hostname
-                              << std::endl;
-
                     if (hosts.empty()) {
                         return;
                     }
@@ -205,15 +222,13 @@ namespace TestHost
 
     static auto test_host(const Network::Hostname& hostname, bool named) -> void
     {
-        constexpr auto flags {AI_CANONNAME};
-        constexpr auto protocol {IPPROTO_TCP};
-        constexpr auto socktype {SOCK_STREAM};
-        const Network::Hints inet {AF_INET, socktype, protocol, flags};
-        const Network::Hints inet6 {AF_INET6, socktype, protocol, flags};
-        const Network::Hints unspec {AF_UNSPEC, socktype, protocol, flags};
-        const std::vector<Network::Hints> vinet {inet, inet6};
-        const std::vector<Network::Hints> vunspec {unspec};
-        const auto& vhints = named ? vinet : vunspec;
+        if (named) {
+            std::cout << "Host: "
+                      << hostname
+                      << std::endl;
+        }
+
+        const auto vhints {get_hints_vector(named)};
 
         for (const auto& hints : vhints) {
             test_host(hostname, hints);
@@ -232,10 +247,12 @@ auto main(int argc, char* argv[]) -> int
                       << std::endl;
         }
         else {
-            Network::Hostname hostname;
-
             if (args.size() > 1) {
-                TestHost::test_host(args[1], true);
+                std::for_each(std::next(args.begin()), args.end(),
+                              [&](const auto& hostname)
+                              {
+                                  TestHost::test_host(hostname, true);
+                              });
             }
             else {
                 const auto hostname_result {Network::get_hostname()};
