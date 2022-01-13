@@ -13,11 +13,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/network.h"            // Address, Bytes,
-                                        // ErrorResult, Hints,
-                                        // OptionalHostname,
-                                        // Overloaded, get_endpoint(),
-                                        // get_hostname(), get_hosts()
+#include "network/network.h"            // Address, Bytes, Context,
+                                        // Endpoint, EndpointResult,
+                                        // ErrorResult, Hints, Host,
+                                        // Hostname, Overloaded,
+                                        // get_endpoint(),
+                                        // get_hostname(),
+                                        // get_hosts(), skip_first(),
+                                        // uniquify()
 
 #ifdef _WIN32
 #include <getopt.h>         // getopt(), optarg, opterr, optind
@@ -248,11 +251,9 @@ auto main(int argc, char* argv[]) -> int
         }
         else {
             if (args.size() > 1) {
-                std::for_each(std::next(args.begin()), args.end(),
-                              [&](const auto& hostname)
-                              {
-                                  TestHost::test_host(hostname, true);
-                              });
+                for (const auto& hostname : Network::skip_first(args)) {
+                    TestHost::test_host(hostname, true);
+                }
             }
             else {
                 const auto hostname_result {Network::get_hostname()};
