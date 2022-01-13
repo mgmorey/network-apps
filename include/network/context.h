@@ -24,16 +24,30 @@
 
 #include <ostream>      // std::ostream
 
+#ifdef _WIN32
+#define WSA_VERSION	(MAKEWORD(2, 2))	// NOLINT
+#else
+#define WSA_VERSION	(0)			// NOLINT
+#endif
+
 namespace Network
 {
     class Context
     {
     public:
+#ifdef _WIN32
+        using version_type = WORD;
+#else
+        using version_type = unsigned short;
+#endif
+
+        static constexpr version_type m_version {WSA_VERSION};
+
         Context() = delete;
         Context(const Context&) = delete;
         Context(const Context&&) = delete;
         explicit Context(bool t_verbose = false,
-                         WORD t_version = m_version);
+                         version_type t_version = m_version);
         ~Context();
         auto operator=(const Context&) -> Context& = delete;
         auto operator=(const Context&&) -> Context& = delete;
@@ -41,7 +55,6 @@ namespace Network
 
     protected:
 #ifdef _WIN32
-        static constexpr WORD m_version {MAKEWORD(2, 2)};
         static unsigned m_count;
         static WSADATA m_data;
 #endif

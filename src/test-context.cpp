@@ -22,6 +22,7 @@
 #endif
 
 #include <cassert>      // assert()
+#include <climits>      // USHRT_MAX
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <span>         // std::span
@@ -30,7 +31,7 @@
 namespace TestContext
 {
 #ifdef _WIN32
-    constexpr auto version_invalid {MAKEWORD(9, 9)};
+    constexpr auto version_invalid {MAKEWORD(0, 0)};
 #endif
     static bool verbose {false};  // NOLINT
 
@@ -66,20 +67,29 @@ namespace TestContext
     }
 
     static auto test_context(const Network::Context& context,
-                             short unsigned version = 0) -> void
+                             short unsigned version = USHRT_MAX) -> void
     {
+        constexpr auto error_number {203};
+        constexpr auto error_string {
+            "Call to WSAStartup() returned 10092: The system could not "
+            "find the environment option that was entered.\r"
+        };
         const auto& result {context.result()};
 
         switch(version) {
 #ifdef _WIN32
         case version_invalid:
-            assert(result.number() == 0);	// NOLINT
-            assert(result.string() == "");	// NOLINT
+            assert(result.number() == error_number);	// NOLINT
+            assert(result.string() == error_string);	// NOLINT
             break;
 #endif
+        case USHRT_MAX:
+            assert(result.number() == 0);		// NOLINT
+            assert(result.string() == "");		// NOLINT
+            break;
         default:
-            assert(result.number() == 0);	// NOLINT
-            assert(result.string() == "");	// NOLINT
+            assert(result.number() == 0);		// NOLINT
+            assert(result.string() == "");		// NOLINT
         }
     }
 

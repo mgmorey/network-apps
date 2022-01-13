@@ -32,7 +32,7 @@ unsigned Network::Context::m_count;
 WSADATA Network::Context::m_data;
 #endif
 
-Network::Context::Context(bool t_verbose, WORD t_version)
+Network::Context::Context(bool t_verbose, version_type t_version)
 {
 #ifdef _WIN32
     if (!m_count++) {
