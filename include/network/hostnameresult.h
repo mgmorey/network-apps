@@ -16,11 +16,14 @@
 #ifndef NETWORK_HOSTNAMERESULT_H
 #define NETWORK_HOSTNAMERESULT_H
 
-#include "network/stringresult.h"       // StringResult
+#include "network/hostname.h"           // Hostname
+#include "network/oserrorresult.h"      // OsErrorResult
+
+#include <variant>      // std::variant
 
 namespace Network
 {
-    using HostnameResult = StringResult;
+    using HostnameResult = std::variant<Hostname, OsErrorResult>;
 }
 
 #endif

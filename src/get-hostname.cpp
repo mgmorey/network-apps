@@ -13,14 +13,13 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-hostname.h"       // HostnameResult,
-                                        // OptionalHostname,
+#include "network/get-hostname.h"       // Hostname, HostnameResult,
+                                        // OsErrorResult,
                                         // get_hostname()
 #include "network/buffer.h"             // Buffer
 #include "network/os-error.h"           // format_os_error(),
                                         // get_last_os_error(),
                                         // reset_last_os_error()
-#include "network/oserrorresult.h"      // OsErrorResult
 
 #ifdef _WIN32
 #include <winsock2.h>   // gethostname()
@@ -30,16 +29,10 @@
 #include <unistd.h>     // gethostname()
 #endif
 
-#include <cassert>      // assert()
 #include <sstream>      // std::ostringstream
 
-auto Network::get_hostname(const OptionalHostname& hostname) ->
-    Network::HostnameResult
+auto Network::get_hostname() -> Network::HostnameResult
 {
-    if (hostname) {
-        return *hostname;
-    }
-
     Buffer host_buffer {NI_MAXHOST};
     reset_last_os_error();
 
@@ -53,5 +46,5 @@ auto Network::get_hostname(const OptionalHostname& hostname) ->
         return OsErrorResult {error, oss.str()};
     }
 
-    return std::string {host_buffer};
+    return Hostname {host_buffer};
 }

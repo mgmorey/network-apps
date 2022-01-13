@@ -23,8 +23,7 @@
 
 namespace Network
 {
-    extern auto get_hostname(const OptionalHostname& hostname = {}) ->
-        HostnameResult;
+    extern auto get_hostname() -> HostnameResult;
 }
 
 #endif
