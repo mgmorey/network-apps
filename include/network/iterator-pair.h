@@ -21,10 +21,17 @@ namespace Network
     template <typename It>
     struct iterator_pair
     {
-        It begin() const { return m_begin; }
-        It end() const { return m_end; }
-        It m_begin;
-        It m_end;
+        [[nodiscard]] auto begin() const -> It
+        {
+            return m_begin;
+        }
+
+        [[nodiscard]] auto end() const -> It {
+            return m_end;
+        }
+
+        It m_begin;	// NOLINT
+        It m_end;	// NOLINT
     };
 }
 
