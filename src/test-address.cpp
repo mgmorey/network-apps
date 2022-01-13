@@ -197,7 +197,7 @@ auto main(int argc, char* argv[]) -> int
         const Network::Context context {TestAddress::verbose};
 
         if (context.result()) {
-            std::cerr << context.result()
+            std::cerr << context.result().string()
                       << std::endl;
         }
         else {
