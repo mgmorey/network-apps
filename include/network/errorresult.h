@@ -16,12 +16,12 @@
 #ifndef NETWORK_ERRORRESULT_H
 #define NETWORK_ERRORRESULT_H
 
-#include "network/result-type.h"        // result_type
+#include "network/error-type.h"         // error_type
 #include "network/result.h"             // Result
 
 namespace Network
 {
-    using ErrorResult = Result<result_type>;
+    using ErrorResult = Result<error_type>;
 }
 
 #endif
