@@ -23,7 +23,12 @@ LINK.o = $(CXX) $(LDFLAGS)
 prefix = /usr/local
 tmp_dir = tmp
 
-executables = $(test_execs) $(unix_execs)
+executables = $(test_execs)
+
+ifneq "$(SYSTEM)" "MINGW64_NT"
+	executables += $(unix_execs)
+endif
+
 test_execs = $(subst .cpp,,$(test_sources))
 unix_execs = $(subst .cpp,,$(unix_sources))
 
@@ -40,7 +45,11 @@ maps = $(subst .cpp,.map,$(exec_sources))
 
 sources = $(exec_sources) $(lib_sources)
 
-exec_sources = $(test_sources) $(unix_sources)
+exec_sources = $(test_sources)
+
+ifneq "$(SYSTEM)" "MINGW64_NT"
+	exec_sources += $(unix_sources)
+endif
 
 lib_sources = address.cpp address-sa.cpp address-sin.cpp		\
 address-sin6.cpp address-sun.cpp addrinfo.cpp bind-endpoint.cpp		\
@@ -63,14 +72,9 @@ to-byte-string-sun-path.cpp to-string.cpp to-string-sin.cpp		\
 to-string-sin6.cpp
 
 test_sources = test-address.cpp test-bind.cpp test-connect.cpp	\
-test-host.cpp test-hostname.cpp
+test-context.cpp test-host.cpp test-hostname.cpp
 
-ifneq "$(SYSTEM)" "MINGW64_NT"
-	test_sources += test-socket.cpp
-	unix_sources = unix-client.cpp unix-server.cpp
-else
-	unix_sources =
-endif
+unix_sources = unix-client.cpp unix-server.cpp
 
 .PHONY:	all
 all: $(executables) TAGS

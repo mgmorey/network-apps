@@ -16,11 +16,13 @@
 #ifndef NETWORK_CONTEXT_H
 #define NETWORK_CONTEXT_H
 
-#include "network/errorresult.h"        // ErrorResult
+#include "network/oserrorresult.h"        // OsErrorResult
 
 #ifdef _WIN32
 #include <winsock2.h>       // MAKEWORD(), WORD, WSADATA
 #endif
+
+#include <ostream>      // std::ostream
 
 namespace Network
 {
@@ -30,20 +32,22 @@ namespace Network
         Context() = delete;
         Context(const Context&) = delete;
         Context(const Context&&) = delete;
-        explicit Context(bool t_verbose = false);
+        explicit Context(bool t_verbose = false,
+                         WORD t_version = m_version);
         ~Context();
         auto operator=(const Context&) -> Context& = delete;
         auto operator=(const Context&&) -> Context& = delete;
-        [[nodiscard]] auto result() const -> ErrorResult;
+        [[nodiscard]] auto result() const -> OsErrorResult;
 
-    private:
+    protected:
 #ifdef _WIN32
         static constexpr WORD m_version {MAKEWORD(2, 2)};
         static unsigned m_count;
         static WSADATA m_data;
 #endif
 
-        ErrorResult m_result;
+    private:
+        OsErrorResult m_result {};
     };
 
     extern auto operator<<(std::ostream& os,

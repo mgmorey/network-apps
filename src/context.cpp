@@ -13,9 +13,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/context.h"            // Context, ErrorResult,
+#include "network/context.h"            // Context, OsErrorResult,
                                         // operator<<(), std::ostream
-#include "network/os-error.h"           // format_os_error()
+#include "network/os-error.h"           // format_os_error(),
+                                        // get_last_os_error(),
+                                        // reset_last_os_error()
 
 #ifdef _WIN32
 #include <winsock2.h>   // WSACleanup(), WSAStartup()
@@ -30,14 +32,18 @@ unsigned Network::Context::m_count;
 WSADATA Network::Context::m_data;
 #endif
 
-Network::Context::Context(bool t_verbose)
+Network::Context::Context(bool t_verbose, WORD t_version)
 {
 #ifdef _WIN32
     if (!m_count++) {
-        if (const auto error {::WSAStartup(m_version, &m_data)}) {
+        reset_last_os_error();
+        const auto code {::WSAStartup(t_version, &m_data)};
+
+        if (code != 0) {
+            const auto error = get_last_os_error();
             std::ostringstream oss;
             oss << "Call to WSAStartup() returned "
-                << error
+                << code
                 << ": "
                 << format_os_error(error);
             m_result = {error, oss.str()};
@@ -74,7 +80,7 @@ Network::Context::~Context()
 #endif
 }
 
-auto Network::Context::result() const -> Network::ErrorResult
+auto Network::Context::result() const -> Network::OsErrorResult
 {
     return m_result;
 }
