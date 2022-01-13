@@ -24,13 +24,6 @@
 
 #include <iterator>     // std::back_inserter()
 
-auto Network::get_sockets(const Endpoint& endpoint,
-                          const Hints& hints,
-                          bool verbose) -> Network::SocketVectorResult
-{
-    return get_sockets(endpoint.first, endpoint.second, hints, verbose);
-}
-
 auto Network::get_sockets(const OptionalHostname& hostname,
                           const OptionalService& service,
                           const Hints& hints,
@@ -50,4 +43,11 @@ auto Network::get_sockets(const OptionalHostname& hostname,
     }
 
     return sockets;
+}
+
+auto Network::get_sockets(const Endpoint& endpoint,
+                          const Hints& hints,
+                          bool verbose) -> Network::SocketVectorResult
+{
+    return get_sockets(endpoint.first, endpoint.second, hints, verbose);
 }
