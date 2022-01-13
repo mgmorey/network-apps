@@ -13,11 +13,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/addrinfo.h"           // operator<<()
+#include "network/addrinfo.h"           // operator<<(), std::ostream
 #include "network/family.h"             // Family, operator<<()
 #include "network/flags.h"              // Flags, operator<<()
 #include "network/format.h"             // Format, operator<<()
-#include "network/optionalhostname.h"   // OptionalHostname
 #include "network/protocol.h"           // Protocol, operator<<()
 #include "network/socktype.h"           // SockType, operator<<()
 #include "network/string-null.h"        // string_null
@@ -28,8 +27,6 @@
 #else
 #include <netdb.h>      // addrinfo
 #endif
-
-#include <ostream>      // std::ostream
 
 auto Network::operator<<(std::ostream& os,
                          const addrinfo& ai) -> std::ostream&
