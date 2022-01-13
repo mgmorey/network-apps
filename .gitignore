@@ -89,6 +89,7 @@ logfile
 test-address
 test-bind
 test-connect
+test-context
 test-host
 test-hostname
 test-socket
