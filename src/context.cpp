@@ -25,6 +25,11 @@
 #include <iostream>     // std::cerr, std::endl
 #include <sstream>      // std::ostringstream
 
+#ifdef _WIN32
+unsigned Network::Context::m_count;
+WSADATA Network::Context::m_data;
+#endif
+
 Network::Context::Context(bool t_verbose)
 {
 #ifdef _WIN32
@@ -73,11 +78,6 @@ auto Network::Context::result() const -> Network::ErrorResult
 {
     return m_result;
 }
-
-#ifdef _WIN32
-unsigned Network::Context::m_count;
-WSADATA Network::Context::m_data;
-#endif
 
 auto Network::operator<<(std::ostream& os,
                          const Context& context) -> std::ostream&
