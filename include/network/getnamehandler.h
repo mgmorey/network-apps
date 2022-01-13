@@ -16,6 +16,8 @@
 #ifndef NETWORK_GETNAMEHANDLER_H
 #define NETWORK_GETNAMEHANDLER_H
 
+#include "network/fd-type.h"            // fd_type
+
 #ifdef _WIN32
 #include <winsock2.h>       // sockaddr
 #include <ws2tcpip.h>       // socklen_t
