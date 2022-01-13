@@ -13,10 +13,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/hints.h"              // Hints, operator<<()
+#include "network/hints.h"              // Hints, operator<<(),
+                                        // std::ostream
 #include "network/format.h"             // Format, operator<<()
-
-#include <ostream>      // std::ostream
 
 auto Network::operator<<(std::ostream& os,
                          const Hints& hints) -> std::ostream&
