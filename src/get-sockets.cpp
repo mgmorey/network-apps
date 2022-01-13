@@ -14,7 +14,8 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/get-sockets.h"        // Endpoint, ErrorResult,
-                                        // Hints, OptionalHostname,
+                                        // OptionalHints,
+                                        // OptionalHostname,
                                         // OptionalService,
                                         // SocketVector,
                                         // SocketVectorResult,
@@ -26,7 +27,7 @@
 
 auto Network::get_sockets(const OptionalHostname& hostname,
                           const OptionalService& service,
-                          const Hints& hints,
+                          const OptionalHints& hints,
                           bool verbose) -> Network::SocketVectorResult
 {
     SocketVector sockets;
@@ -46,7 +47,7 @@ auto Network::get_sockets(const OptionalHostname& hostname,
 }
 
 auto Network::get_sockets(const Endpoint& endpoint,
-                          const Hints& hints,
+                          const OptionalHints& hints,
                           bool verbose) -> Network::SocketVectorResult
 {
     return get_sockets(endpoint.first, endpoint.second, hints, verbose);

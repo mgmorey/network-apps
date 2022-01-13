@@ -18,7 +18,7 @@
 
 #include "network/endpoint.h"           // Endpoint
 #include "network/errorresult.h"        // ErrorResult
-#include "network/hints.h"              // Hints
+#include "network/optionalhints.h"      // OptionalHints
 #include "network/optionalhostname.h"   // OptionalHostname
 #include "network/optionalservice.h"    // OptionalService
 #include "network/socketvector.h"       // SocketVector
@@ -31,10 +31,10 @@ namespace Network
 
     extern auto get_sockets(const OptionalHostname& hostname,
                             const OptionalService& service,
-                            const Hints& hints,
+                            const OptionalHints& hints,
                             bool verbose) -> SocketVectorResult;
     extern auto get_sockets(const Endpoint& endpoint,
-                            const Hints& hints,
+                            const OptionalHints& hints,
                             bool verbose) -> SocketVectorResult;
 }
 
