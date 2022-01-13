@@ -33,6 +33,7 @@ namespace TestContext
 #ifdef _WIN32
     constexpr auto version_invalid {MAKEWORD(0, 0)};
 #endif
+    constexpr auto version_null {USHRT_MAX};
     static bool verbose {false};  // NOLINT
 
     static auto parse_arguments(int argc, char** argv) ->
@@ -67,13 +68,15 @@ namespace TestContext
     }
 
     static auto test_context(const Network::Context& context,
-                             short unsigned version = USHRT_MAX) -> void
+                             short unsigned version = version_null) -> void
     {
+#ifdef _WIN32
         constexpr auto error_number {203};
         constexpr auto error_string {
             "Call to WSAStartup() returned 10092: The system could not "
             "find the environment option that was entered.\r"
         };
+#endif
         const auto& result {context.result()};
 
         switch(version) {
@@ -83,7 +86,7 @@ namespace TestContext
             assert(result.string() == error_string);	// NOLINT
             break;
 #endif
-        case USHRT_MAX:
+        case version_null:
             assert(result.number() == 0);		// NOLINT
             assert(result.string() == "");		// NOLINT
             break;
@@ -93,16 +96,16 @@ namespace TestContext
         }
     }
 
-    static auto test_context(short unsigned version) -> void
+    static auto test_context(short unsigned version = version_null) -> void
     {
-        const Network::Context context {verbose, version};
-        test_context(context, version);
-    }
-
-    static auto test_context() -> void
-    {
-        const Network::Context context {verbose};
-        test_context(context);
+        if (version == version_null) {
+            const Network::Context context {verbose};
+            test_context(context);
+        }
+        else {
+            const Network::Context context {verbose, version};
+            test_context(context, version);
+        }
     }
 }
 
