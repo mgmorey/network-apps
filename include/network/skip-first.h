@@ -16,14 +16,14 @@
 #ifndef NETWORK_SKIP_FIRST_H
 #define NETWORK_SKIP_FIRST_H
 
-#include "network/iterator-pair.h"      // iterator_pair
+#include "network/iteratorpair.h"       // IteratorPair
 
 #include <iterator>     // std::next()
 
 namespace Network
 {
     template <typename Range>
-    auto skip_first(Range& r) -> iterator_pair<decltype(r.begin())>
+    auto skip_first(Range& r) -> IteratorPair<decltype(r.begin())>
     {
         return {r.begin() == r.end() ? r.begin() : std::next(r.begin()), r.end()};
     }

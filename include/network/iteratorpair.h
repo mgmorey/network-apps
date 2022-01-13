@@ -13,25 +13,33 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_ITERATOR_PAIR_H
-#define NETWORK_ITERATOR_PAIR_H
+#ifndef NETWORK_ITERATORPAIR_H
+#define NETWORK_ITERATORPAIR_H
 
 namespace Network
 {
     template <typename It>
-    struct iterator_pair
+    struct IteratorPair
     {
+        IteratorPair(It t_begin, It t_end) :
+            m_begin(t_begin),
+            m_end(t_end)
+        {
+        }
+
         [[nodiscard]] auto begin() const -> It
         {
             return m_begin;
         }
 
-        [[nodiscard]] auto end() const -> It {
+        [[nodiscard]] auto end() const -> It
+        {
             return m_end;
         }
 
-        It m_begin;	// NOLINT
-        It m_end;	// NOLINT
+    private:
+        It m_begin;
+        It m_end;
     };
 }
 

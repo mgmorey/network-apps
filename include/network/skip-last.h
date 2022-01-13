@@ -16,14 +16,14 @@
 #ifndef NETWORK_SKIP_LAST_H
 #define NETWORK_SKIP_LAST_H
 
-#include "network/iterator-pair.h"      // iterator_pair
+#include "network/iteratorpair.h"       // IteratorPair
 
 #include <iterator>     // std::prev()
 
 namespace Network
 {
     template <typename Range>
-    auto skip_last(Range& r) -> iterator_pair<decltype(r.begin())>
+    auto skip_last(Range& r) -> IteratorPair<decltype(r.begin())>
     {
         return {r.begin(), r.begin() == r.end() ? r.end() : std::prev(r.end())};
     }
