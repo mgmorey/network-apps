@@ -13,7 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/context.h"            // Context, ErrorResult
+#include "network/context.h"            // Context, ErrorResult,
+                                        // operator<<()
 #include "network/os-error.h"           // format_os_error()
 
 #ifdef _WIN32

@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/format.h"             // Format, std::ostream,
-                                        // std::string
+#include "network/format.h"             // Format, operator<<(),
+                                        // std::ostream, std::string
 
 #include <utility>      // std::move()
 
