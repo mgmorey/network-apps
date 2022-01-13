@@ -66,6 +66,7 @@ Network::Context::Context(bool t_verbose, version_type t_version)
     }
 #else
     static_cast<void>(t_verbose);
+    static_cast<void>(t_version);
 #endif
 }
 
