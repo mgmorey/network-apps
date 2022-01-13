@@ -23,12 +23,9 @@
 #include "network/context.h"            // Context
 #include "network/family.h"             // Family
 #include "network/flags.h"              // Flags
-#include "network/get-endpoint.h"       // EndpointResult,
-                                        // get_endpoint()
-#include "network/get-hostname.h"       // OptoinalHostnameResult,
-                                        // get_hostname()
-#include "network/get-hosts.h"          // HostVectorResult,
-                                        // get_hosts()
+#include "network/get-endpoint.h"       // get_endpoint()
+#include "network/get-hostname.h"       // get_hostname()
+#include "network/get-hosts.h"          // get_hosts()
 #include "network/get-length.h"         // get_length()
 #include "network/get-peername.h"       // BytesResult,
                                         // get_peername()
@@ -37,19 +34,14 @@
 #include "network/get-sa-pointer.h"     // get_sa_pointer()
 #include "network/get-sin-pointer.h"    // get_sin_pointer()
 #include "network/get-sin6-pointer.h"   // get_sin6_pointer()
-#include "network/get-socket.h"         // Fd, FdResult, Socket,
-                                        // get_socket()
-#include "network/get-socketpair.h"     // FdPair, FdPairResult,
-                                        // get_socketpair()
-#include "network/get-sockets.h"        // SocketVectorResult,
-                                        // get_sockets()
-#include "network/get-sockname.h"       // BytesResult,
-                                        // get_sockname()
+#include "network/get-socket.h"         // get_socket()
+#include "network/get-socketpair.h"     // get_socketpair()
+#include "network/get-sockets.h"        // get_sockets()
+#include "network/get-sockname.h"       // get_sockname()
 #include "network/get-sun-length.h"     // get_sun_length()
 #include "network/get-sun-path.h"       // get_sun_path()
 #include "network/get-sun-pointer.h"    // get_sun_pointer()
 #include "network/is-valid.h"           // is_valid()
-#include "network/optionalstring.h"     // operator<<()
 #include "network/os-error.h"           // format_os_error(),
                                         // get_last_os_error(),
                                         // reset_last_os_error()
@@ -66,10 +58,7 @@
 #include "network/socket.h"             // Hints, Host, Socket
 #include "network/socktype.h"           // SockType
 #include "network/string-null.h"        // string_null
-#include "network/to-byte-span-sa.h"    // to_byte_span()
-#include "network/to-byte-span-sun.h"   // to_byte_span()
-#include "network/to-byte-string-sa.h"  // to_byte_string()
-#include "network/to-byte-string-sun.h" // to_byte_string()
+#include "network/to-byte-span.h"       // to_byte_span()
 #include "network/to-byte-string.h"     // to_byte_string()
 #include "network/to-string.h"          // to_string()
 #include "network/types.h"              // Buffer, ByteString,

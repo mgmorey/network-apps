@@ -13,11 +13,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_TO_BYTE_STRING_H
-#define NETWORK_TO_BYTE_STRING_H
+#ifndef NETWORK_TO_STRING_BS_H
+#define NETWORK_TO_STRING_BS_H
 
-#include "network/to-byte-string-bs.h"  // to_byte_string()
-#include "network/to-byte-string-sa.h"  // to_byte_string()
-#include "network/to-byte-string-sun.h" // to_byte_string()
+#include "network/bytestring.h"         // ByteString
+
+#include <string>       // std::string
+
+namespace Network
+{
+    extern auto to_string(const ByteString& bytes) -> std::string;
+}
 
 #endif

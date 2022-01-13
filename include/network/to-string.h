@@ -16,13 +16,8 @@
 #ifndef NETWORK_TO_STRING_H
 #define NETWORK_TO_STRING_H
 
-#include "network/bytestring.h"         // ByteString
-
-#include <string>       // std::string
-
-namespace Network
-{
-    extern auto to_string(const ByteString& bytes) -> std::string;
-}
+#include "network/to-string-bs.h"       // to_string()
+#include "network/to-string-sin.h"      // to_string()
+#include "network/to-string-sin6.h"     // to_string()
 
 #endif
