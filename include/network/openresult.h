@@ -13,20 +13,17 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_OPEN_ENDPOINT_H
-#define NETWORK_OPEN_ENDPOINT_H
+#ifndef NETWORK_OPENRESULT_H
+#define NETWORK_OPENRESULT_H
 
-#include "network/endpoint.h"           // Endpoint
-#include "network/hints.h"              // Hints
-#include "network/openhandler.h"        // OpenHandler
-#include "network/openresult.h"         // OpenResult
+#include "network/errorresult.h"        // ErrorResult
+#include "network/fdresultvector.h"     // FdResultVector
+
+#include <variant>      // std::variant
 
 namespace Network
 {
-    extern auto open(const OpenHandler& handler,
-                     const Endpoint& endpoint,
-                     const Hints& hints,
-                     bool verbose) -> OpenResult;
+    using OpenResult = FdResultVector;
 }
 
 #endif

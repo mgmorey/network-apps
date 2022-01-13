@@ -14,7 +14,8 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/open-endpoint.h"      // Endpoint, FdResultVector,
-                                        // Hints, OpenHandler, open()
+                                        // Hints, OpenHandler,
+                                        // OpenResult, open()
 #include "network/open-fd.h"            // Bytes, Fd, OpenHandler,
                                         // OsErrorResult, open()
 #include "network/get-socket.h"         // ErrorResult, get_socket()
@@ -28,9 +29,10 @@
 auto Network::open(const OpenHandler& handler,
                    const Endpoint& endpoint,
                    const Hints& hints,
-                   bool verbose) -> Network::FdResultVector
+                   bool verbose) -> Network::OpenResult
 {
-    FdResultVector results;
+    OpenResult open_result;
+    FdResultVector fd_results;
     const auto lambda = [&](const Socket& sock) {
         auto socket_result {get_socket(sock, verbose)};
         std::visit(Overloaded {
@@ -55,16 +57,18 @@ auto Network::open(const OpenHandler& handler,
     std::visit(Overloaded {
             [&](const SocketVector& sockets) {
                 std::transform(sockets.begin(), sockets.end(),
-                               std::back_inserter(results),
+                               std::back_inserter(fd_results),
                                lambda);
+                open_result = OpenResult {fd_results};
             },
             [&](const ErrorResult& error_result) {
                 OsErrorResult os_error_result {
                     error_result.number(),
                     error_result.string()
                 };
-                results.push_back(os_error_result);
+                fd_results.push_back(os_error_result);
+                open_result = OpenResult {fd_results};
             }
         }, sockets_result);
-    return results;
+    return open_result;
 }
