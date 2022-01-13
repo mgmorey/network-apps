@@ -17,18 +17,13 @@
 #define NETWORK_GET_SOCKETS_H
 
 #include "network/endpoint.h"           // Endpoint
-#include "network/errorresult.h"        // ErrorResult
 #include "network/optionalhints.h"      // OptionalHints
 #include "network/optionalhostname.h"   // OptionalHostname
 #include "network/optionalservice.h"    // OptionalService
-#include "network/socketvector.h"       // SocketVector
-
-#include <variant>      // std::variant
+#include "network/socketvectorresult.h" // SocketVectorResult
 
 namespace Network
 {
-    using SocketVectorResult = std::variant<SocketVector, ErrorResult>;
-
     extern auto get_sockets(const OptionalHostname& hostname,
                             const OptionalService& service,
                             const OptionalHints& hints,

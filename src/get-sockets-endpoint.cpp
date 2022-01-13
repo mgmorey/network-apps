@@ -13,33 +13,13 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-sockets.h"        // OptionalHints,
-                                        // OptionalHostname,
-                                        // OptionalService,
-                                        // SocketVector,
+#include "network/get-sockets.h"        // Endpoint, OptionalHints,
                                         // SocketVectorResult,
                                         // get_sockets()
-#include "network/addrinfo.h"           // AddrInfo
 
-#include <iterator>     // std::back_inserter()
-
-auto Network::get_sockets(const OptionalHostname& hostname,
-                          const OptionalService& service,
+auto Network::get_sockets(const Endpoint& endpoint,
                           const OptionalHints& hints,
                           bool verbose) -> Network::SocketVectorResult
 {
-    SocketVector sockets;
-    const auto result {
-        AddrInfo::insert(hostname,
-                         service,
-                         hints,
-                         verbose,
-                         std::back_inserter(sockets))
-    };
-
-    if (result) {
-        return result;
-    }
-
-    return sockets;
+    return get_sockets(endpoint.first, endpoint.second, hints, verbose);
 }
