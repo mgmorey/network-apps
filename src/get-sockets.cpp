@@ -13,39 +13,22 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-sockets.h"        // Hints, ErrorResult,
-                                        // OptionalHostname,
+#include "network/get-sockets.h"        // Endpoint, ErrorResult,
+                                        // Hints, OptionalHostname,
                                         // OptionalService,
+                                        // SocketVector,
                                         // SocketVectorResult,
                                         // get_sockets()
 #include "network/addrinfo.h"           // AddrInfo
-#include "network/get-hostname.h"       // HostnameResult,
-                                        // get_hostname()
 #include "network/overloaded.h"         // Overloaded
 
 #include <iterator>     // std::back_inserter()
-#include <string>       // std::string
-#include <variant>      // std::visit()
 
 auto Network::get_sockets(const Endpoint& endpoint,
                           const Hints& hints,
                           bool verbose) -> Network::SocketVectorResult
 {
-    SocketVectorResult sockets_result;
-    const auto hostname_result {get_hostname(endpoint.first)};
-    std::visit(Overloaded {
-            [&](const std::string& hostname) {
-                sockets_result =
-                    get_sockets(static_cast<OptionalHostname>(hostname),
-                                static_cast<OptionalService>(endpoint.second),
-                                hints,
-                                verbose);
-            },
-            [&](const ErrorResult& result) {
-                sockets_result = result;
-            }
-        }, hostname_result);
-    return sockets_result;
+    return get_sockets(endpoint.first, endpoint.second, hints, verbose);
 }
 
 auto Network::get_sockets(const OptionalHostname& hostname,

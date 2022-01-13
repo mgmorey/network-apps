@@ -30,7 +30,6 @@ auto Network::get_hosts(const Network::Hostname& hostname,
                         bool verbose) -> Network::HostVectorResult
 {
     HostVector hosts;
-
     const auto result {
         AddrInfo::insert(static_cast<OptionalHostname>(hostname),
                          static_cast<OptionalService>(std::nullopt),
