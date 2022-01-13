@@ -58,8 +58,12 @@ auto Network::open(const OpenHandler& handler,
                                std::back_inserter(results),
                                lambda);
             },
-            [&](const ErrorResult& result) {
-                results.push_back(result);
+            [&](const ErrorResult& error_result) {
+                OsErrorResult os_error_result {
+                    error_result.number(),
+                    error_result.string()
+                };
+                results.push_back(os_error_result);
             }
         }, sockets_result);
     return results;
