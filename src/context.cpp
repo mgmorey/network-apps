@@ -14,7 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/context.h"            // Context, ErrorResult,
-                                        // operator<<()
+                                        // operator<<(), std::ostream
 #include "network/os-error.h"           // format_os_error()
 
 #ifdef _WIN32
