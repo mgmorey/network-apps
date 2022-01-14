@@ -121,7 +121,7 @@ namespace TestContext
 #else
         constexpr auto status_string {""};
         constexpr auto system_string {""};
-        constexpr auto version_string {""};
+        constexpr auto version_string {"0"};
 #endif
         const Network::Context context;
         const auto& result {context.result()};
