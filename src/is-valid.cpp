@@ -40,7 +40,7 @@
 #include <cstddef>      // std::size_t
 #include <cstring>      // std::memcpy(), std::memset()
 #include <cstring>      // strnlen()
-#include <iomanip>      // std::left, std::right, std::setw()
+#include <iomanip>      // std::right, std::setw()
 #include <iostream>     // std::cerr, std::endl
 
 auto Network::is_valid(const ByteString& addr, bool verbose) -> bool
@@ -61,12 +61,8 @@ auto Network::is_valid(const ByteString& addr, bool verbose) -> bool
     const auto family {get_sa_family(addr)};
 
     if (verbose) {
-        std::cerr << std::left
-                  << std::setw(key_width)
-                  << "    Family:"
-                  << std::right
-                  << std::setw(value_width)
-                  << family
+        std::cerr << std::setw(key_width) << "    Family:"
+                  << std::right << std::setw(value_width) << family
                   << std::endl;
     }
 
@@ -87,26 +83,14 @@ auto Network::is_valid(const ByteString& addr, bool verbose) -> bool
     const auto addr_size_min {get_size_min(addr)};
 
     if (verbose) {
-        std::cerr << std::left
-                  << std::setw(key_width)
-                  << "    Actual size:"
-                  << std::right
-                  << std::setw(value_width)
-                  << addr_size
+        std::cerr << std::setw(key_width) << "    Actual size: "
+                  << std::right << std::setw(value_width) << addr_size
                   << std::endl
-                  << std::left
-                  << std::setw(key_width)
-                  << "    Minimum size:"
-                  << std::right
-                  << std::setw(value_width)
-                  << addr_size_min
+                  << std::setw(key_width) << "    Minimum size: "
+                  << std::right << std::setw(value_width) << addr_size_min
                   << std::endl
-                  << std::left
-                  << std::setw(key_width)
-                  << "    Maximum size:"
-                  << std::right
-                  << std::setw(value_width)
-                  << addr_size_max
+                  << std::setw(key_width) << "    Maximum size: "
+                  << std::right << std::setw(value_width) << addr_size_max
                   << std::endl;
     }
 
@@ -119,12 +103,8 @@ auto Network::is_valid(const ByteString& addr, bool verbose) -> bool
     const auto sa_len {static_cast<std::size_t>(get_sa_length(addr))};
 
     if (verbose) {
-        std::cerr << std::left
-                  << std::setw(key_width)
-                  << "    Stored length:"
-                  << std::right
-                  << std::setw(value_width)
-                  << sa_len
+        std::cerr << std::setw(key_width) << "    Stored length: "
+                  << std::right << std::setw(value_width) << sa_len
                   << std::endl;
     }
 
@@ -139,12 +119,8 @@ auto Network::is_valid(const ByteString& addr, bool verbose) -> bool
         const auto sun_len {get_sun_length(sun, addr_size)};
 
         if (verbose) {
-            std::cerr << std::left
-                      << std::setw(key_width)
-                      << "    Computed length:"
-                      << std::right
-                      << std::setw(value_width)
-                      << sun_len
+            std::cerr << std::setw(key_width) << "    Computed length: "
+                      << std::right << std::setw(value_width) << sun_len
                       << std::endl;
         }
 
