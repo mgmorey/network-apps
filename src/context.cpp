@@ -34,6 +34,8 @@
 #define WSA_VERSION	(0)			// NOLINT
 #endif
 
+static constexpr Network::Context::version_type version_default = WSA_VERSION;
+
 #ifdef _WIN32
 unsigned Network::Context::m_count;
 WSADATA Network::Context::m_data;
@@ -44,7 +46,7 @@ Network::Context::Context(const OptionalVersion& t_version)
 #ifdef _WIN32
     if (!m_count++) {
         reset_last_os_error();
-        const version_type version = t_version ? *t_version : WSA_VERSION;
+        const version_type version = t_version ? *t_version : version_default;
         const auto code {::WSAStartup(version, &m_data)};
 
         if (code != 0) {
