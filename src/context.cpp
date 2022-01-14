@@ -90,7 +90,6 @@ auto Network::operator<<(std::ostream& os,
 {
 #ifdef _WIN32
     const auto& data = context.m_data;
-
     os << "Microsoft Windows Sockets Data:"
        << std::endl
        << "    Description: "
@@ -104,6 +103,8 @@ auto Network::operator<<(std::ostream& os,
        << '.'
        << static_cast<int>(HIBYTE(data.wVersion))
        << std::endl;
+#else
+    static_cast<void>(context);
 #endif
     return os;
 }
