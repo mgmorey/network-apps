@@ -45,7 +45,10 @@ namespace Network
         ~Context();
         explicit operator bool() const;
         [[nodiscard]] auto result() const -> OsErrorResult;
-        [[nodiscard]] auto version() const -> version_type;
+        [[nodiscard]] auto status_string() const -> std::string;
+        [[nodiscard]] auto system_string() const -> std::string;
+        [[nodiscard]] auto version_number() const -> version_type;
+        [[nodiscard]] auto version_string() const -> std::string;
 
     protected:
 #ifdef _WIN32

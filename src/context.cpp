@@ -85,7 +85,25 @@ auto Network::Context::result() const -> Network::OsErrorResult
     return m_result;
 }
 
-auto Network::Context::version() const -> Network::Context::version_type
+auto Network::Context::status_string() const -> std::string
+{
+#ifdef _WIN32
+    return m_data.szSystemStatus;
+#else
+    return "";
+#endif
+}
+
+auto Network::Context::system_string() const -> std::string
+{
+#ifdef _WIN32
+    return m_data.szDescription;
+#else
+    return "";
+#endif
+}
+
+auto Network::Context::version_number() const -> Network::Context::version_type
 {
 #ifdef _WIN32
     return m_data.wVersion;
@@ -94,23 +112,33 @@ auto Network::Context::version() const -> Network::Context::version_type
 #endif
 }
 
+auto Network::Context::version_string() const -> std::string
+{
+    const version_type version {version_number()};
+#ifdef _WIN32
+    const unsigned major {LOBYTE(version)};
+    const unsigned minor {HIBYTE(version)};
+    return (std::to_string(major) + "." +
+            std::to_string(minor));
+#else
+    return std::to_string(version);
+#endif
+}
+
 auto Network::operator<<(std::ostream& os,
                          const Context& context) -> std::ostream&
 {
 #ifdef _WIN32
-    const auto& data = context.m_data;
     os << "Microsoft Windows Sockets Data:"
        << std::endl
        << "    Description: "
-       << data.szDescription
+       << context.system_string()
        << std::endl
        << "    System Status: "
-       << data.szSystemStatus
+       << context.status_string()
        << std::endl
        << "    System Version: "
-       << static_cast<int>(LOBYTE(data.wVersion))
-       << '.'
-       << static_cast<int>(HIBYTE(data.wVersion))
+       << context.version_string()
        << std::endl;
 #else
     static_cast<void>(context);
