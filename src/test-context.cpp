@@ -96,11 +96,11 @@ namespace TestContext
     static auto test_context(short unsigned version = version_null) -> void
     {
         if (version == version_null) {
-            const Network::Context context {verbose};
+            const Network::Context context;
             test_context(context);
         }
         else {
-            const Network::Context context {verbose, version};
+            const Network::Context context {version};
             test_context(context, version);
         }
     }

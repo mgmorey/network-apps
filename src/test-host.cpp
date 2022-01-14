@@ -243,13 +243,13 @@ auto main(int argc, char* argv[]) -> int
 {
     try {
         const auto args {TestHost::parse_arguments(argc, argv)};
-        const Network::Context context {TestHost::verbose};
+        const Network::Context context;
 
-        if (context.result()) {
-            std::cerr << context
-                      << std::endl;
+        if (!context || TestHost::verbose) {
+            std::cerr << context;
         }
-        else {
+
+        if (context) {
             if (args.size() > 1) {
                 for (const auto& hostname : Network::skip_first(args)) {
                     TestHost::test_host(hostname, true);
@@ -269,8 +269,10 @@ auto main(int argc, char* argv[]) -> int
                     }, hostname_result);
             }
         }
-
-        static_cast<void>(context);
+        else {
+            std::cerr << context.result()
+                      << std::endl;
+        }
     }
     catch (std::exception& error) {
         std::cerr << error.what()

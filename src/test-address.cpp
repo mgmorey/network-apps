@@ -194,18 +194,20 @@ auto main(int argc, char* argv[]) -> int
 {
     try {
         const auto args {TestAddress::parse_arguments(argc, argv)};
-        const Network::Context context {TestAddress::verbose};
+        const Network::Context context;
 
-        if (context.result()) {
-            std::cerr << context
-                      << std::endl;
+        if (TestAddress::verbose) {
+            std::cerr << context;
         }
-        else {
+
+        if (context) {
             TestAddress::test_address();
             TestAddress::test_address_localhost();
         }
-
-        static_cast<void>(context);
+        else {
+            std::cerr << context.result()
+                      << std::endl;
+        }
     }
     catch (std::exception& error) {
         std::cerr << error.what()

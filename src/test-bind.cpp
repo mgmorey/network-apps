@@ -181,21 +181,23 @@ auto main(int argc, char* argv[]) -> int
 
     try {
         const auto args {TestBind::parse_arguments(argc, argv)};
-        const Network::Context context {TestBind::verbose};
+        const Network::Context context;
 
-        if (context.result()) {
-            std::cerr << context
-                      << std::endl;
+        if (TestBind::verbose) {
+            std::cerr << context;
         }
-        else {
+
+        if (context) {
             const Network::Endpoint endpoint {
                 args.size() > 1 ? args[1] : TestBind::localhost,
                 args.size() > 2 ? args[2] : TestBind::localservice
             };
             TestBind::test_bind(endpoint, hints);
         }
-
-        static_cast<void>(context);
+        else {
+            std::cerr << context.result()
+                      << std::endl;
+        }
     }
     catch (std::exception& error) {
         std::cerr << error.what()

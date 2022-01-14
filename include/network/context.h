@@ -34,6 +34,9 @@ namespace Network
 {
     class Context
     {
+        friend auto operator<<(std::ostream& os,
+                               const Context& context) -> std::ostream&;
+
     public:
 #ifdef _WIN32
         using version_type = WORD;
@@ -43,15 +46,11 @@ namespace Network
 
         static constexpr version_type m_version {WSA_VERSION};
 
-        Context() = delete;
-        Context(const Context&) = delete;
-        Context(const Context&&) = delete;
-        explicit Context(bool t_verbose = false,
-                         version_type t_version = m_version);
+        explicit Context(version_type t_version = m_version);
         ~Context();
-        auto operator=(const Context&) -> Context& = delete;
-        auto operator=(const Context&&) -> Context& = delete;
+        explicit operator bool() const;
         [[nodiscard]] auto result() const -> OsErrorResult;
+        [[nodiscard]] auto version() const -> version_type;
 
     protected:
 #ifdef _WIN32

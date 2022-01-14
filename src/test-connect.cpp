@@ -226,18 +226,22 @@ auto main(int argc, char* argv[]) -> int
 
     try {
         const auto args {TestConnect::parse_arguments(argc, argv)};
-        const Network::Context context {TestConnect::verbose};
+        const Network::Context context;
 
-        if (context.result()) {
-            std::cerr << context
-                      << std::endl;
+        if (TestConnect::verbose) {
+            std::cerr << context;
         }
-        else {
+
+        if (context) {
             const Network::Endpoint endpoint {
                 args.size() > 1 ? args[1] : TestConnect::localhost,
                 args.size() > 2 ? args[2] : TestConnect::localservice
             };
             TestConnect::test_connect(endpoint, hints);
+        }
+        else {
+            std::cerr << context.result()
+                      << std::endl;
         }
 
         static_cast<void>(context);

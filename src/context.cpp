@@ -13,7 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/context.h"            // Context, OsErrorResult,
+#include "network/context.h"            // Context, OsError,
+                                        // OsErrorResult,
                                         // operator<<(), std::ostream
 #include "network/os-error.h"           // format_os_error(),
                                         // get_last_os_error(),
@@ -32,7 +33,7 @@ unsigned Network::Context::m_count;
 WSADATA Network::Context::m_data;
 #endif
 
-Network::Context::Context(bool t_verbose, version_type t_version)
+Network::Context::Context(version_type t_version)
 {
 #ifdef _WIN32
     if (!m_count++) {
@@ -48,24 +49,8 @@ Network::Context::Context(bool t_verbose, version_type t_version)
                 << format_os_error(error);
             m_result = {error, oss.str()};
         }
-        else if (t_verbose) {
-            std::cerr << "Microsoft Windows Sockets Data:"
-                      << std::endl
-                      << "    Description: "
-                      << m_data.szDescription
-                      << std::endl
-                      << "    System Status: "
-                      << m_data.szSystemStatus
-                      << std::endl
-                      << "    System Version: "
-                      << static_cast<int>(LOBYTE(m_data.wVersion))
-                      << '.'
-                      << static_cast<int>(HIBYTE(m_data.wVersion))
-                      << std::endl;
-        }
     }
 #else
-    static_cast<void>(t_verbose);
     static_cast<void>(t_version);
 #endif
 }
@@ -81,13 +66,44 @@ Network::Context::~Context()
 #endif
 }
 
+Network::Context::operator bool() const
+{
+    return m_result == 0;
+}
+
 auto Network::Context::result() const -> Network::OsErrorResult
 {
     return m_result;
 }
 
+auto Network::Context::version() const -> Network::Context::version_type
+{
+#ifdef _WIN32
+    return m_data.wVersion;
+#else
+    return 0;
+#endif
+}
+
 auto Network::operator<<(std::ostream& os,
                          const Context& context) -> std::ostream&
 {
-    return os << context.result().string();
+#ifdef _WIN32
+    const auto& data = context.m_data;
+
+    os << "Microsoft Windows Sockets Data:"
+       << std::endl
+       << "    Description: "
+       << data.szDescription
+       << std::endl
+       << "    System Status: "
+       << data.szSystemStatus
+       << std::endl
+       << "    System Version: "
+       << static_cast<int>(LOBYTE(data.wVersion))
+       << '.'
+       << static_cast<int>(HIBYTE(data.wVersion))
+       << std::endl;
+#endif
+    return os;
 }
