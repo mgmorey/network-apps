@@ -45,8 +45,8 @@ auto Network::format_os_error(os_error_type error) -> std::string
 
     if(::FormatMessage(flags, nullptr, error, lang, pstring, 0, nullptr)) {
         message = static_cast<LPTSTR>(buffer);
-        const auto pos {message.find('\n')};
-        message = message.substr(0, pos);
+        const auto cr {message.rfind('\r')};
+        message = message.substr(0, cr);
         ::LocalFree(buffer);
     }
 #else

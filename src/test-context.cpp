@@ -99,7 +99,7 @@ namespace TestContext
         constexpr auto number {203};
         constexpr auto string {
             "Call to WSAStartup() returned 10092: The system could not "
-            "find the environment option that was entered.\r"
+            "find the environment option that was entered."
         };
 #else
         constexpr auto number {0};
@@ -149,7 +149,7 @@ namespace TestContext
         constexpr auto string {
             "Call to gethostname(...) failed with error 10093: "
             "Either the application has not called WSAStartup, "
-            "or WSAStartup failed.\r"
+            "or WSAStartup failed."
         };
 #else
         constexpr auto number {0};
