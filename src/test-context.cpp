@@ -33,6 +33,8 @@ namespace TestContext
 {
 #ifdef _WIN32
     constexpr auto version_invalid {MAKEWORD(0, 0)};
+#else
+    constexpr auto version_invalid {0};
 #endif
     constexpr auto version_null {USHRT_MAX};
 
