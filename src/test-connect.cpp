@@ -41,6 +41,7 @@
 #include <cassert>      // assert()
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
 #include <exception>    // std::exception
+#include <iomanip>      // std::right, std::setw()
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <span>         // std::span
 #include <string>       // std::string
@@ -51,6 +52,8 @@
 
 namespace TestConnect
 {
+    constexpr auto fd_width {6};
+    constexpr auto indent_width {fd_width + 18};
     constexpr auto localhost {"example.com"};
     constexpr auto localservice {"http"};
 
@@ -120,7 +123,7 @@ namespace TestConnect
             const auto peer_result {get_peeraddr(t_fd)};
             const auto sock_result {get_sockaddr(t_fd)};
             m_os << "Socket "
-                 << t_fd
+                 << std::right << std::setw(fd_width) << t_fd
                  << " connected "
                  << m_hostname.value_or(Network::string_null)
                  << " to "
@@ -134,17 +137,18 @@ namespace TestConnect
                 const auto& peer {std::get<Network::Bytes>(peer_result)};
                 const auto& self {std::get<Network::Bytes>(sock_result)};
                 m_os << "Socket "
-                     << t_fd
+                     << std::right << std::setw(fd_width) << t_fd
                      << " connected "
                      << Network::Address(self)
-                     << " to "
+                     << std::endl
+                     << std::right << std::setw(indent_width) << "to "
                      << Network::Address(peer)
                      << std::endl;
             }
 
             Network::close(t_fd);
             m_os << "Socket "
-                 << t_fd
+                 << std::right << std::setw(fd_width) << t_fd
                  << " closed"
                  << std::endl;
         }

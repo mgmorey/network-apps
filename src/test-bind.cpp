@@ -38,6 +38,7 @@
 #include <cassert>      // assert()
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
 #include <exception>    // std::exception
+#include <iomanip>      // std::right, std::setw()
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <span>         // std::span
 #include <string>       // std::string
@@ -48,6 +49,7 @@
 
 namespace TestBind
 {
+    constexpr auto fd_width {6};
     constexpr auto localhost {"localhost"};
     constexpr auto localservice {"8085"};
 
@@ -97,7 +99,7 @@ namespace TestBind
             const auto service {m_endpoint.second};
             const auto sock_result {get_sockaddr(t_fd)};
             m_os << "Socket "
-                 << t_fd
+                 << std::right << std::setw(fd_width) << t_fd
                  << " bound to "
                  << service.value_or(Network::string_null)
                  << " on "
@@ -107,7 +109,7 @@ namespace TestBind
             if (std::holds_alternative<Network::Bytes>(sock_result)) {
                 const auto& self {std::get<Network::Bytes>(sock_result)};
                 m_os << "Socket "
-                     << t_fd
+                     << std::right << std::setw(fd_width) << t_fd
                      << " bound to "
                      << Network::Address(self)
                      << std::endl;
@@ -115,7 +117,7 @@ namespace TestBind
 
             Network::close(t_fd);
             m_os << "Socket "
-                 << t_fd
+                 << std::right << std::setw(fd_width) << t_fd
                  << " closed"
                  << std::endl;
         }
