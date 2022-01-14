@@ -80,7 +80,7 @@ namespace TestContext
 #endif
         const auto& result {context.result()};
 
-        switch (version) {
+        switch (version) {				// NOLINT
 #ifdef _WIN32
         case version_invalid:
             assert(result.number() == error_number);	// NOLINT
