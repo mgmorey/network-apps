@@ -23,7 +23,6 @@
 #endif
 
 #include <cassert>      // assert()
-#include <climits>      // USHRT_MAX
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <span>         // std::span
