@@ -92,8 +92,7 @@ namespace TestAddress
                   << std::right << std::setw(value_width) << size
                   << std::endl;
         std::cout << std::setw(key_width) << "        Length:"
-                  << std::right << std::setw(value_width)
-                  << length
+                  << std::right << std::setw(value_width) << length
                   << std::endl;
         std::cout << std::setw(key_width) << "        Port:"
                   << std::right << std::setw(value_width) << port
