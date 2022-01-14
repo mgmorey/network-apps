@@ -71,13 +71,14 @@ namespace TestContext
         return result;
     }
 
-    static auto get_hostname_as_result() -> Network::OsErrorResult
+    static auto get_hostname_error_result() -> Network::OsErrorResult
     {
         Network::OsErrorResult result;
         const auto hostname_result {Network::get_hostname()};
         std::visit(Network::Overloaded {
                 [&](const std::string& hostname) {
-                    result = {0, hostname};
+                    static_cast<void>(hostname);
+                    result = {0, ""};
                 },
                 [&](const Network::OsErrorResult& error_result) {
                     result = error_result;
@@ -129,10 +130,10 @@ namespace TestContext
     static auto test_hostname_with_context() -> void
     {
         const Network::Context context;
-        const auto result {get_hostname_as_result()};
+        const auto result {get_hostname_error_result()};
         print_error_result(result);
         assert(result.number() == 0);		// NOLINT
-        assert(result.string() != "");		// NOLINT
+        assert(result.string() == "");		// NOLINT
     }
 
     static auto test_hostname_without_context() -> void
@@ -148,7 +149,7 @@ namespace TestContext
         constexpr auto number {0};
         constexpr auto string {""};
 #endif
-        const auto result {get_hostname_as_result()};
+        const auto result {get_hostname_error_result()};
         print_error_result(result);
         assert(result.number() == number);	// NOLINT
         assert(result.string() == string);	// NOLINT
