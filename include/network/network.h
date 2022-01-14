@@ -21,6 +21,15 @@
 #include "network/close.h"              // close()
 #include "network/connect.h"            // connect()
 #include "network/constants.h"          // fd_null, sa_data_offset,
+                                        // sa_size, sin_addr_offset,
+                                        // sin6_addr_offset,
+                                        // sin_family_offset,
+                                        // sin6_family_offset,
+                                        // sin_len_offset,
+                                        // sin6_len_offset,
+                                        // sin_port_offset,
+                                        // sin6_port_offset, sin_size,
+                                        // sin6_size,
                                         // sockaddr_size_max,
                                         // socket_error, ss_size,
                                         // string_null,
@@ -53,10 +62,6 @@
 #include "network/overloaded.h"         // Overloaded
 #include "network/protocol.h"           // Protocol
 #include "network/result.h"             // Result
-#include "network/sizes.h"              // sa_size, sin_size,
-                                        // sin6_size,
-                                        // sockaddr_size_max, ss_size,
-                                        // sun_size
 #include "network/skip-first.h"         // skip_first()
 #include "network/skip-last.h"          // skip_last()
 #include "network/socket-error.h"       // socket_error
