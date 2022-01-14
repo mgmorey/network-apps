@@ -13,18 +13,17 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_GET_HOSTS_H
-#define NETWORK_GET_HOSTS_H
+#ifndef NETWORK_HOSTVECTORRESULT_H
+#define NETWORK_HOSTVECTORRESULT_H
 
-#include "network/hostname.h"           // Hostname
-#include "network/hostvectorresult.h"   // HostVectorResult
-#include "network/optionalhints.h"      // OptionalHints
+#include "network/errorresult.h"        // ErrorResult
+#include "network/hostvector.h"         // HostVector
+
+#include <variant>      // std::variant
 
 namespace Network
 {
-    extern auto get_hosts(const Hostname& hostname,
-                          const OptionalHints& hints = {},
-                          bool verbose = false) ->  HostVectorResult;
+    using HostVectorResult = std::variant<HostVector, ErrorResult>;
 }
 
 #endif
