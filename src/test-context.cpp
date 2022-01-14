@@ -31,12 +31,7 @@
 
 namespace TestContext
 {
-#ifdef _WIN32
-    constexpr auto version_invalid {MAKEWORD(0, 0)};
-#else
     constexpr auto version_invalid {0};
-#endif
-    constexpr auto version_null {USHRT_MAX};
 
     static bool verbose {false};  // NOLINT
 
@@ -99,7 +94,7 @@ namespace TestContext
         }
     }
 
-    static auto test_context_invalid() -> void
+    static auto test_context_version_invalid() -> void
     {
 #ifdef _WIN32
         constexpr auto number {203};
@@ -118,7 +113,7 @@ namespace TestContext
         assert(result.string() == string);	// NOLINT
     }
 
-    static auto test_context_valid() -> void
+    static auto test_context_version_valid() -> void
     {
         const Network::Context context;
         const auto& result {context.result()};
@@ -160,8 +155,8 @@ auto main(int argc, char* argv[]) -> int
 {
     try {
         const auto args {TestContext::parse_arguments(argc, argv)};
-        TestContext::test_context_invalid();
-        TestContext::test_context_valid();
+        TestContext::test_context_version_invalid();
+        TestContext::test_context_version_valid();
         TestContext::test_hostname_with_context();
         TestContext::test_hostname_without_context();
     }
