@@ -16,9 +16,12 @@
 #ifndef NETWORK_CONSTANTS_H
 #define NETWORK_CONSTANTS_H
 
+#include "network/fd-null.h"            // fd_null
 #include "network/offsets.h"            // sa_data_offset,
                                         // sun_path_offset
 #include "network/sizes.h"              // sockaddr_size_max, ss_size,
                                         // sun_size
+#include "network/socket-error.h"       // socket_error
+#include "network/string-null.h"        // string_null
 
 #endif
