@@ -106,7 +106,7 @@ realclean: clean
 
 .PHONY:	test
 test: $(test_execs)
-	for f in $(test_execs); do ./$$f; done
+	for f in $(test_execs); do ./$$f >$$f.log; done
 
 .PHONY:	tidy
 tidy:	$(sources)
