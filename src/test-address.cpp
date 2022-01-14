@@ -32,7 +32,7 @@
 #include <cassert>      // assert()
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
 #include <exception>    // std::exception
-#include <iomanip>      // std::left, std::right, std::setw()
+#include <iomanip>      // std::right, std::setw()
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <span>         // std::span
 #include <string>       // std::string
@@ -88,16 +88,16 @@ namespace TestAddress
         std::cout << "    "
                   << Network::Family(family)
                   << std::endl;
-        std::cout << std::setw(key_width) << "        Size:"
+        std::cout << std::setw(key_width) << "        Size: "
                   << std::right << std::setw(value_width) << size
                   << std::endl;
-        std::cout << std::setw(key_width) << "        Length:"
+        std::cout << std::setw(key_width) << "        Length: "
                   << std::right << std::setw(value_width) << length
                   << std::endl;
-        std::cout << std::setw(key_width) << "        Port:"
+        std::cout << std::setw(key_width) << "        Port: "
                   << std::right << std::setw(value_width) << port
                   << std::endl;
-        std::cout << std::setw(key_width) << "        Address:"
+        std::cout << std::setw(key_width) << "        Address: "
                   << std::right << std::setw(value_width) << text
                   << std::endl;
     }
