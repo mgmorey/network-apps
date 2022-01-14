@@ -21,24 +21,31 @@
                                         // reset_last_os_error()
 
 #ifdef _WIN32
-#include <winsock2.h>   // WSACleanup(), WSAStartup()
-#include <windows.h>    // HIBYTE(), LOBYTE()
+#include <winsock2.h>       // WSACleanup(), WSAStartup()
+#include <windows.h>        // HIBYTE(), LOBYTE(), MAKEWORD()
 #endif
 
 #include <iostream>     // std::cerr, std::endl
 #include <sstream>      // std::ostringstream
 
 #ifdef _WIN32
+#define WSA_VERSION	(MAKEWORD(2, 2))	// NOLINT
+#else
+#define WSA_VERSION	(0)			// NOLINT
+#endif
+
+#ifdef _WIN32
 unsigned Network::Context::m_count;
 WSADATA Network::Context::m_data;
 #endif
 
-Network::Context::Context(version_type t_version)
+Network::Context::Context(const OptionalVersion& t_version)
 {
 #ifdef _WIN32
     if (!m_count++) {
         reset_last_os_error();
-        const auto code {::WSAStartup(t_version, &m_data)};
+        const version_type version = t_version ? *t_version : WSA_VERSION;
+        const auto code {::WSAStartup(version, &m_data)};
 
         if (code != 0) {
             const auto error = get_last_os_error();

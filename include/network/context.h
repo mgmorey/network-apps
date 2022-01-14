@@ -19,16 +19,12 @@
 #include "network/oserrorresult.h"        // OsErrorResult
 
 #ifdef _WIN32
-#include <winsock2.h>       // MAKEWORD(), WORD, WSADATA
+#include <winsock2.h>       // WSADATA
+#include <windows.h>        // WORD
 #endif
 
+#include <optional>     // std::optional
 #include <ostream>      // std::ostream
-
-#ifdef _WIN32
-#define WSA_VERSION	(MAKEWORD(2, 2))	// NOLINT
-#else
-#define WSA_VERSION	(0)			// NOLINT
-#endif
 
 namespace Network
 {
@@ -41,12 +37,11 @@ namespace Network
 #ifdef _WIN32
         using version_type = WORD;
 #else
-        using version_type = unsigned short;
+        using version_type = unsigned;
 #endif
+        using OptionalVersion = std::optional<version_type>;
 
-        static constexpr version_type m_version {WSA_VERSION};
-
-        explicit Context(version_type t_version = m_version);
+        explicit Context(const OptionalVersion& t_version = {});
         ~Context();
         explicit operator bool() const;
         [[nodiscard]] auto result() const -> OsErrorResult;
@@ -59,7 +54,7 @@ namespace Network
 #endif
 
     private:
-        OsErrorResult m_result {};
+        OsErrorResult m_result;
     };
 
     extern auto operator<<(std::ostream& os,
