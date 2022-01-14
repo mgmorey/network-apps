@@ -14,9 +14,8 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/get-sun-path.h"       // Bytes, OptionalPathname
-                                        // get_sun_path(), sockaddr_un
+                                        // get_sun_path()
 #include "network/get-sa-family.h"      // get_sa_family()
-#include "network/get-sun-length.h"     // get_sun_path_length()
 #include "network/get-sun-pointer.h"    // get_sun_pointer()
 #include "network/sun-offsets.h"        // sun_path_offset
 
@@ -48,25 +47,6 @@ auto Network::get_sun_path(const Bytes& addr,
     auto len {strnlen(sun->sun_path, len_max)};			// NOLINT
     const std::string result {sun->sun_path, len};		// NOLINT
     return static_cast<OptionalPathname>(result);
-}
-
-auto Network::get_sun_path_length(const sockaddr_un* sun,
-                                  std::size_t size) -> std::size_t
-{
-    assert(sun_path_offset <= size &&  				// NOLINT
-           size <= sun_path_offset + sizeof sun->sun_path);	// NOLINT
-    size = std::min(sun_path_offset + sizeof sun->sun_path,
-                    std::max(sun_path_offset, size));
-#ifdef HAVE_SOCKADDR_SA_LEN
-    std::size_t len {sun->sun_len};
-    assert(sun_path_offset <= len && len <= size);		// NOLINT
-    len = std::min(size, std::max(sun_path_offset, len));
-    const auto max_path_len {std::min(size, len) - sun_path_offset};
-#else
-    const auto max_path_len {std::min(size - sun_path_offset,
-                                      sizeof sun->sun_path)};
-#endif
-    return strnlen(sun->sun_path, max_path_len);		// NOLINT
 }
 
 #endif

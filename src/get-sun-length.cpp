@@ -13,9 +13,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-sun-length.h"     // Bytes, get_sun_length(),
-                                        // sockaddr_un
-#include "network/get-sun-path.h"       // get_sun_path_length()
+#include "network/get-sun-length.h"     // get_sun_length(),
+                                        // sockaddr_un, std::size_t
+#include "network/get-sun-path-length.h"// get_sun_path_length(),
 
 #ifndef _WIN32
 #ifdef HAVE_SOCKADDR_SA_LEN
