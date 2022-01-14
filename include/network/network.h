@@ -20,6 +20,11 @@
 #include "network/bind.h"               // bind()
 #include "network/close.h"              // close()
 #include "network/connect.h"            // connect()
+#include "network/constants.h"          // fd_null, sa_data_offset,
+                                        // sockaddr_size_max,
+                                        // socket_error, ss_size,
+                                        // string_null,
+                                        // sun_path_offset, sun_size
 #include "network/context.h"            // Context
 #include "network/family.h"             // Family
 #include "network/flags.h"              // Flags
