@@ -13,7 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/network.h"            // Context, OsErrorResult
+#include "network/network.h"            // Context, OsErrorResult,
+                                        // Overloaded, get_hostname()
 
 #ifdef _WIN32
 #include <getopt.h>         // getopt(), optarg, opterr, optind
@@ -68,41 +69,87 @@ namespace TestContext
         return result;
     }
 
-    static auto test_context(const Network::Context& context,
-                             short unsigned version = version_null) -> void
+    static auto get_hostname_as_result() -> Network::OsErrorResult
     {
-#ifdef _WIN32
-        constexpr auto error_number {203};
-        constexpr auto error_string {
-            "Call to WSAStartup() returned 10092: The system could not "
-            "find the environment option that was entered.\r"
-        };
-#endif
-        const auto& result {context.result()};
+        Network::OsErrorResult result;
+        const auto hostname_result {Network::get_hostname()};
+        std::visit(Network::Overloaded {
+                [&](const std::string& hostname) {
+                    result = {0, hostname};
+                },
+                [&](const Network::OsErrorResult& error_result) {
+                    result = error_result;
+                }
+            }, hostname_result);
+        return result;
+    }
 
-        switch (version) {				// NOLINT
-#ifdef _WIN32
-        case version_invalid:
-            assert(result.number() == error_number);	// NOLINT
-            assert(result.string() == error_string);	// NOLINT
-            break;
-#endif
-        default:
-            assert(result.number() == 0);		// NOLINT
-            assert(result.string() == "");		// NOLINT
+    static auto print_error_result(const Network::OsErrorResult& result) -> void
+    {
+        if (result.number() != 0 && verbose) {
+            std::cerr << "Number: "
+                      << result.number()
+                      << std::endl
+                      << "String: "
+                      << result.string()
+                      << std::endl;
         }
     }
 
-    static auto test_context(short unsigned version = version_null) -> void
+    static auto test_context_invalid() -> void
     {
-        if (version == version_null) {
-            const Network::Context context;
-            test_context(context);
-        }
-        else {
-            const Network::Context context {version};
-            test_context(context, version);
-        }
+#ifdef _WIN32
+        constexpr auto number {203};
+        constexpr auto string {
+            "Call to WSAStartup() returned 10092: The system could not "
+            "find the environment option that was entered.\r"
+        };
+#else
+        constexpr auto number {0};
+        constexpr auto string {""};
+#endif
+        const Network::Context context {version_invalid};
+        const auto& result {context.result()};
+        print_error_result(result);
+        assert(result.number() == number);	// NOLINT
+        assert(result.string() == string);	// NOLINT
+    }
+
+    static auto test_context_valid() -> void
+    {
+        const Network::Context context;
+        const auto& result {context.result()};
+        print_error_result(result);
+        assert(result.number() == 0);		// NOLINT
+        assert(result.string() == "");		// NOLINT
+    }
+
+    static auto test_hostname_with_context() -> void
+    {
+        const Network::Context context;
+        const auto result {get_hostname_as_result()};
+        print_error_result(result);
+        assert(result.number() == 0);		// NOLINT
+        assert(result.string() != "");		// NOLINT
+    }
+
+    static auto test_hostname_without_context() -> void
+    {
+#ifdef _WIN32
+        constexpr auto number {10093};
+        constexpr auto string {
+            "Call to gethostname(...) failed with error 10093: "
+            "Either the application has not called WSAStartup, "
+            "or WSAStartup failed.\r"
+        };
+#else
+        constexpr auto number {0};
+        constexpr auto string {""};
+#endif
+        const auto result {get_hostname_as_result()};
+        print_error_result(result);
+        assert(result.number() == number);	// NOLINT
+        assert(result.string() == string);	// NOLINT
     }
 }
 
@@ -110,10 +157,10 @@ auto main(int argc, char* argv[]) -> int
 {
     try {
         const auto args {TestContext::parse_arguments(argc, argv)};
-#ifdef _WIN32
-        TestContext::test_context(TestContext::version_invalid);
-#endif
-        TestContext::test_context();
+        TestContext::test_context_invalid();
+        TestContext::test_context_valid();
+        TestContext::test_hostname_with_context();
+        TestContext::test_hostname_without_context();
     }
     catch (std::exception& error) {
         std::cerr << error.what()
