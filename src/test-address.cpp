@@ -88,33 +88,18 @@ namespace TestAddress
         std::cout << "    "
                   << Network::Family(family)
                   << std::endl;
-        std::cout << std::left
-                  << std::setw(key_width)
-                  << "        Size:"
-                  << std::right
-                  << std::setw(value_width)
-                  << size
+        std::cout << std::setw(key_width) << "        Size:"
+                  << std::right << std::setw(value_width) << size
                   << std::endl;
-        std::cout << std::left
-                  << std::setw(key_width)
-                  << "        Length:"
-                  << std::right
-                  << std::setw(value_width)
+        std::cout << std::setw(key_width) << "        Length:"
+                  << std::right << std::setw(value_width)
                   << length
                   << std::endl;
-        std::cout << std::left
-                  << std::setw(key_width)
-                  << "        Port:"
-                  << std::right
-                  << std::setw(value_width)
-                  << port
+        std::cout << std::setw(key_width) << "        Port:"
+                  << std::right << std::setw(value_width) << port
                   << std::endl;
-        std::cout << std::left
-                  << std::setw(key_width)
-                  << "        Address:"
-                  << std::right
-                  << std::setw(value_width)
-                  << text
+        std::cout << std::setw(key_width) << "        Address:"
+                  << std::right << std::setw(value_width) << text
                   << std::endl;
     }
 
