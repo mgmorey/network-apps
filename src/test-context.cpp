@@ -108,17 +108,29 @@ namespace TestContext
         const Network::Context context {version_invalid};
         const auto& result {context.result()};
         print_error_result(result);
-        assert(result.number() == number);	// NOLINT
-        assert(result.string() == string);	// NOLINT
+        assert(result.number() == number);			// NOLINT
+        assert(result.string() == string);			// NOLINT
     }
 
     static auto test_context_version_valid() -> void
     {
+#ifdef _WIN32
+        constexpr auto status_string {"Running"};
+        constexpr auto system_string {"WinSock 2.0"};
+        constexpr auto version_string {"2.2"};
+#else
+        constexpr auto status_string {""};
+        constexpr auto system_string {""};
+        constexpr auto version_string {""};
+#endif
         const Network::Context context;
         const auto& result {context.result()};
         print_error_result(result);
-        assert(result.number() == 0);		// NOLINT
-        assert(result.string() == "");		// NOLINT
+        assert(result.number() == 0);				// NOLINT
+        assert(result.string() == "");				// NOLINT
+        assert(context.status_string() == status_string);	// NOLINT
+        assert(context.system_string() == system_string);	// NOLINT
+        assert(context.version_string() == version_string);	// NOLINT
     }
 
     static auto test_hostname_with_context() -> void
@@ -126,8 +138,8 @@ namespace TestContext
         const Network::Context context;
         const auto result {get_hostname_error_result()};
         print_error_result(result);
-        assert(result.number() == 0);		// NOLINT
-        assert(result.string() == "");		// NOLINT
+        assert(result.number() == 0);				// NOLINT
+        assert(result.string() == "");				// NOLINT
     }
 
     static auto test_hostname_without_context() -> void
@@ -145,8 +157,8 @@ namespace TestContext
 #endif
         const auto result {get_hostname_error_result()};
         print_error_result(result);
-        assert(result.number() == number);	// NOLINT
-        assert(result.string() == string);	// NOLINT
+        assert(result.number() == number);			// NOLINT
+        assert(result.string() == string);			// NOLINT
     }
 }
 
