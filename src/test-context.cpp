@@ -34,6 +34,7 @@ namespace TestContext
     constexpr auto version_invalid {MAKEWORD(0, 0)};
 #endif
     constexpr auto version_null {USHRT_MAX};
+
     static bool verbose {false};  // NOLINT
 
     static auto parse_arguments(int argc, char** argv) ->
@@ -79,17 +80,13 @@ namespace TestContext
 #endif
         const auto& result {context.result()};
 
-        switch(version) {
+        switch (version) {
 #ifdef _WIN32
         case version_invalid:
             assert(result.number() == error_number);	// NOLINT
             assert(result.string() == error_string);	// NOLINT
             break;
 #endif
-        case version_null:
-            assert(result.number() == 0);		// NOLINT
-            assert(result.string() == "");		// NOLINT
-            break;
         default:
             assert(result.number() == 0);		// NOLINT
             assert(result.string() == "");		// NOLINT
