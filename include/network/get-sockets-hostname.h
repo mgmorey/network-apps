@@ -13,10 +13,20 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_GET_SOCKETS_H
-#define NETWORK_GET_SOCKETS_H
+#ifndef NETWORK_GET_SOCKETS_HOSTNAME_H
+#define NETWORK_GET_SOCKETS_HOSTNAME_H
 
-#include "network/get-sockets-endpoint.h"       // get_sockets()
-#include "network/get-sockets-hostname.h"       // get_sockets()
+#include "network/optionalhints.h"              // OptionalHints
+#include "network/optionalhostname.h"           // OptionalHostname
+#include "network/optionalservice.h"            // OptionalService
+#include "network/socketvectorresult.h"         // SocketVectorResult
+
+namespace Network
+{
+    extern auto get_sockets(const OptionalHostname& hostname,
+                            const OptionalService& service,
+                            const OptionalHints& hints,
+                            bool verbose) -> SocketVectorResult;
+}
 
 #endif

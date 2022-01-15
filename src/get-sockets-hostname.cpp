@@ -13,12 +13,13 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-sockets.h"        // OptionalHints,
-                                        // OptionalHostname,
-                                        // OptionalService,
-                                        // SocketVector,
-                                        // SocketVectorResult,
-                                        // get_sockets()
+#include "network/get-sockets-hostname.h"       // OptionalHints,
+                                                // OptionalHostname,
+                                                // OptionalService,
+                                                // SocketVector,
+                                                // SocketVectorResult,
+                                                // get_sockets()
+
 #include "network/addrinfo.h"           // AddrInfo
 
 #include <iterator>     // std::back_inserter()

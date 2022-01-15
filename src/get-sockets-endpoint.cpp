@@ -13,13 +13,19 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-sockets.h"        // Endpoint, OptionalHints,
-                                        // SocketVectorResult,
-                                        // get_sockets()
+#include "network/get-sockets-endpoint.h"       // Endpoint,
+                                                // OptionalHints,
+                                                // SocketVectorResult,
+                                                // get_sockets()
+#include "network/get-sockets-hostname.h"       // OptionalHostname,
+                                                // OptionalService,
+                                                // get_sockets()
 
 auto Network::get_sockets(const Endpoint& endpoint,
                           const OptionalHints& hints,
                           bool verbose) -> Network::SocketVectorResult
 {
-    return get_sockets(endpoint.first, endpoint.second, hints, verbose);
+    const auto& hostname {endpoint.first};
+    const auto& service {endpoint.second};
+    return get_sockets(hostname, service, hints, verbose);
 }
