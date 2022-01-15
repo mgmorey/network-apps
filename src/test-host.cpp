@@ -245,33 +245,27 @@ auto main(int argc, char* argv[]) -> int
         const auto args {TestHost::parse_arguments(argc, argv)};
         const Network::Context context;
 
-        if (!context || TestHost::verbose) {
+        if (TestHost::verbose) {
             std::cerr << context;
         }
 
-        if (context) {
-            if (args.size() > 1) {
-                for (const auto& hostname : Network::skip_first(args)) {
-                    TestHost::test_host(hostname, true);
-                }
-            }
-            else {
-                const auto hostname_result {Network::get_hostname()};
-                std::visit(Network::Overloaded {
-                        [&](const std::string& hostname) {
-                            TestHost::test_host(hostname, false);
-                        },
-                        [&](const Network::OsErrorResult& result) {
-                            std::cerr << "No hostname available: "
-                                      << result.string()
-                                      << std::endl;
-                        }
-                    }, hostname_result);
+        if (args.size() > 1) {
+            for (const auto& hostname : Network::skip_first(args)) {
+                TestHost::test_host(hostname, true);
             }
         }
         else {
-            std::cerr << context.result()
-                      << std::endl;
+            const auto hostname_result {Network::get_hostname()};
+            std::visit(Network::Overloaded {
+                    [&](const std::string& hostname) {
+                        TestHost::test_host(hostname, false);
+                    },
+                    [&](const Network::OsErrorResult& result) {
+                        std::cerr << "No hostname available: "
+                                  << result.string()
+                                  << std::endl;
+                    }
+                }, hostname_result);
         }
     }
     catch (std::exception& error) {

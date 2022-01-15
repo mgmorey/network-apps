@@ -16,7 +16,7 @@
 #ifndef NETWORK_CONTEXT_H
 #define NETWORK_CONTEXT_H
 
-#include "network/oserrorresult.h"        // OsErrorResult
+#include "network/errorresult.h"        // ErrorResult
 
 #ifdef _WIN32
 #include <winsock2.h>       // WSADATA
@@ -47,21 +47,20 @@ namespace Network
         ~Context();
         auto operator=(const Context&) -> Context& = delete;
         auto operator=(const Context&&) -> Context& = delete;
-        explicit operator bool() const;
-        [[nodiscard]] auto result() const -> OsErrorResult;
+        static auto create(const OptionalVersion& t_version) -> error_type;
+        static auto destroy(error_type error_code) -> void;
+        static auto dispatch(error_type error_code) -> void;
         [[nodiscard]] static auto status_string() -> std::string;
         [[nodiscard]] static auto system_string() -> std::string;
         [[nodiscard]] static auto version_number() -> version_type;
         [[nodiscard]] static auto version_string() -> std::string;
 
-    protected:
+    private:
 #ifdef _WIN32
         static unsigned m_count;
         static WSADATA m_data;
+        error_type m_error_code;
 #endif
-
-    private:
-        OsErrorResult m_result;
     };
 
     extern auto operator<<(std::ostream& os,

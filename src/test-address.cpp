@@ -184,14 +184,8 @@ auto main(int argc, char* argv[]) -> int
             std::cerr << context;
         }
 
-        if (context) {
-            TestAddress::test_address();
-            TestAddress::test_address_localhost();
-        }
-        else {
-            std::cerr << context.result()
-                      << std::endl;
-        }
+        TestAddress::test_address();
+        TestAddress::test_address_localhost();
     }
     catch (std::exception& error) {
         std::cerr << error.what()

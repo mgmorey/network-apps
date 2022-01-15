@@ -20,6 +20,7 @@
 #include "network/bind.h"               // bind()
 #include "network/close.h"              // close()
 #include "network/connect.h"            // connect()
+#include "network/context.h"            // Context
 #include "network/constants.h"          // fd_null, sa_data_offset,
                                         // sa_size, sin_addr_offset,
                                         // sin6_addr_offset,
@@ -35,6 +36,8 @@
                                         // string_null,
                                         // sun_path_offset, sun_size
 #include "network/context.h"            // Context
+#include "network/exceptions.h"         // Error, LogicError,
+                                        // RuntimeError
 #include "network/family.h"             // Family
 #include "network/flags.h"              // Flags
 #include "network/get-endpoint.h"       // get_endpoint()

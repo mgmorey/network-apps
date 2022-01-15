@@ -13,8 +13,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/network.h"            // Context, OsErrorResult,
-                                        // Overloaded, get_hostname()
+#include "network/network.h"            // Context, ErrorResult,
+                                        // OsErrorResult, Overloaded,
+                                        // get_hostname()
 
 #ifdef _WIN32
 #include <getopt.h>         // getopt(), optarg, opterr, optind
@@ -83,7 +84,7 @@ namespace TestContext
 
     static auto print_error_result(const Network::OsErrorResult& result) -> void
     {
-        if (result.number() != 0 && verbose) {
+        if (verbose) {
             std::cerr << "Number: "
                       << result.number()
                       << std::endl
@@ -93,23 +94,55 @@ namespace TestContext
         }
     }
 
+    static auto print_exception(const Network::Error& error) -> void
+    {
+        if (verbose) {
+            std::cerr << "Exception: "
+                      << error.what()
+                      << std::endl;
+        }
+    }
+
+    static auto print_strings() -> void
+    {
+        if (verbose) {
+            std::cerr << "Status: "
+                      << Network::Context::status_string()
+                      << std::endl
+                      << "System: "
+                      << Network::Context::system_string()
+                      << std::endl
+                      << "Version: "
+                      << Network::Context::version_string()
+                      << std::endl;
+        }
+    }
+
+    static auto test_context_strings() -> void
+    {
+        print_strings();
+        assert(Network::Context::status_string() == "");	// NOLINT
+        assert(Network::Context::system_string() == "");	// NOLINT
+        assert(Network::Context::version_string() == "0.0");	// NOLINT
+    }
+
     static auto test_context_version_invalid() -> void
     {
-#ifdef _WIN32
-        constexpr auto number {203};
-        constexpr auto string {
-            "Call to WSAStartup() returned 10092: The system could not "
-            "find the environment option that was entered."
+        constexpr auto error_version_not_supported {
+            "The Windows Sockets version requested is not supported."
         };
-#else
-        constexpr auto number {0};
-        constexpr auto string {""};
-#endif
-        const Network::Context context {version_invalid};
-        const auto& result {context.result()};
-        print_error_result(result);
-        assert(result.number() == number);			// NOLINT
-        assert(result.string() == string);			// NOLINT
+        std::string what;
+
+        try {
+            const Network::Context context {version_invalid};
+            static_cast<void>(context);
+        }
+        catch (Network::Error& error) {
+            print_exception(error);
+            what = error.what();
+        }
+
+        assert(what == error_version_not_supported);		// NOLINT
     }
 
     static auto test_context_version_valid() -> void
@@ -120,21 +153,28 @@ namespace TestContext
         constexpr auto version_string {"2.2"};
 #else
         constexpr auto system_string {""};
-        constexpr auto version_string {"0"};
+        constexpr auto version_string {"0.0"};
 #endif
-        const Network::Context context;
-        const auto& result {context.result()};
-        print_error_result(result);
-        assert(result.number() == 0);				// NOLINT
-        assert(result.string() == "");				// NOLINT
-        assert(context.status_string() == status_string);	// NOLINT
-        assert(context.system_string() == system_string);	// NOLINT
-        assert(context.version_string() == version_string);	// NOLINT
+        std::string what;
+
+        try {
+            const Network::Context context;
+            assert(context.status_string() == status_string);	// NOLINT
+            assert(context.system_string() == system_string);	// NOLINT
+            assert(context.version_string() == version_string);	// NOLINT
+        }
+        catch (Network::Error& error) {
+            print_exception(error);
+            what = error.what();
+        }
+
+        assert(what == "");					// NOLINT
     }
 
     static auto test_hostname_with_context() -> void
     {
         const Network::Context context;
+        static_cast<void>(context);
         const auto result {get_hostname_error_result()};
         print_error_result(result);
         assert(result.number() == 0);				// NOLINT
@@ -165,10 +205,11 @@ auto main(int argc, char* argv[]) -> int
 {
     try {
         const auto args {TestContext::parse_arguments(argc, argv)};
-        TestContext::test_context_version_invalid();
+        TestContext::test_context_strings();
         TestContext::test_context_version_valid();
-        TestContext::test_hostname_with_context();
+        TestContext::test_context_version_invalid();
         TestContext::test_hostname_without_context();
+        TestContext::test_hostname_with_context();
     }
     catch (std::exception& error) {
         std::cerr << error.what()

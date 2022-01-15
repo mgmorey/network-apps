@@ -13,17 +13,20 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/context.h"            // Context, OsErrorResult,
+#include "network/context.h"            // Context, ErrorResult,
                                         // operator<<(), std::ostream
-#include "network/os-error.h"           // format_os_error(),
-                                        // get_last_os_error(),
-                                        // reset_last_os_error()
+#include "network/exceptions.h"         // Error, LogicError,
+                                        // RunTimeError
+#include "network/format-os-error.h"    // format_os_error()
 
 #ifdef _WIN32
-#include <winsock2.h>       // WSACleanup(), WSAStartup()
+#include <winsock2.h>       // WSACleanup(), WSAStartup(), WSAEFAULT,
+                            // WSAEPROCLIM, WSASYSNOTREADY,
+                            // WSAVERNOTSUPPORTED
 #include <windows.h>        // HIBYTE(), LOBYTE(), MAKEWORD()
 #endif
 
+#include <cstring>      // std::memset()
 #include <iostream>     // std::cerr, std::endl
 #include <sstream>      // std::ostringstream
 
@@ -33,6 +36,7 @@
 #define VERSION_DEFAULT	(0)			// NOLINT
 #endif
 
+constexpr Network::Context::version_type version_default {VERSION_DEFAULT};
 
 #ifdef _WIN32
 unsigned Network::Context::m_count;
@@ -41,48 +45,75 @@ WSADATA Network::Context::m_data;
 
 Network::Context::Context(const OptionalVersion& t_version)
 {
-#ifdef _WIN32
-    constexpr version_type version_default {VERSION_DEFAULT};
+    try {
+        if ((m_error_code = create(t_version)) != 0) {
+            dispatch(m_error_code);
+        }
 
-    if (!m_count++) {
-        reset_last_os_error();
-        const version_type version = t_version ? *t_version : version_default;
-        const auto code {::WSAStartup(version, &m_data)};
-
-        if (code != 0) {
-            const auto error = get_last_os_error();
-            std::ostringstream oss;
-            oss << "Call to WSAStartup() returned "
-                << code
-                << ": "
-                << format_os_error(error);
-            m_result = {error, oss.str()};
+        if (status_string() != "Running") {
+            throw RuntimeError("Network is down");
         }
     }
-#else
-    static_cast<void>(t_version);
-#endif
+    catch (Network::Error& error) {
+        destroy(m_error_code);
+        throw error;
+    }
 }
 
 Network::Context::~Context()
 {
+    destroy(m_error_code);
+}
+
+auto Network::Context::create(const OptionalVersion& t_version) -> error_type
+{
+    error_type error_code {0};
+    const version_type version {t_version ? *t_version : version_default};
+
 #ifdef _WIN32
-    if (!--m_count) {
-        ::WSACleanup();
+    if (!m_count++) {
+        error_code = ::WSAStartup(version, &m_data);
     }
 #else
-    static_cast<void>(m_result);
+    static_cast<void>(version);
+#endif
+    return error_code;
+}
+
+auto Network::Context::destroy(error_type error_code) -> void
+{
+#ifdef _WIN32
+    if (!--m_count) {
+        if (error_code == 0) {
+            ::WSACleanup();
+            std::memset(&m_data, '\0', sizeof m_data);
+        }
+    }
+#else
+    static_cast<void>(error_code);
 #endif
 }
 
-Network::Context::operator bool() const
+auto Network::Context::dispatch(error_type error_code) -> void
 {
-    return !m_result;
-}
+    const auto what {format_os_error(error_code)};
 
-auto Network::Context::result() const -> Network::OsErrorResult
-{
-    return m_result;
+    switch (error_code) {
+    case 0:
+        break;
+#ifdef _WIN32
+    case WSAEFAULT:
+    case WSAVERNOTSUPPORTED:
+        throw LogicError(what);
+        break;
+    case WSAEPROCLIM:
+    case WSASYSNOTREADY:
+        throw RuntimeError(what);
+        break;
+#endif
+    default:
+        throw Error(what);
+    }
 }
 
 auto Network::Context::status_string() -> std::string
@@ -114,15 +145,16 @@ auto Network::Context::version_number() -> Network::Context::version_type
 
 auto Network::Context::version_string() -> std::string
 {
-    const version_type version {version_number()};
 #ifdef _WIN32
+    const version_type version {version_number()};
     const unsigned major {LOBYTE(version)};
     const unsigned minor {HIBYTE(version)};
+#else
+    const unsigned major {0};
+    const unsigned minor {0};
+#endif
     return (std::to_string(major) + "." +
             std::to_string(minor));
-#else
-    return std::to_string(version);
-#endif
 }
 
 auto Network::operator<<(std::ostream& os,

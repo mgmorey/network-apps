@@ -189,17 +189,11 @@ auto main(int argc, char* argv[]) -> int
             std::cerr << context;
         }
 
-        if (context) {
-            const Network::Endpoint endpoint {
-                args.size() > 1 ? args[1] : TestBind::localhost,
-                args.size() > 2 ? args[2] : TestBind::localservice
-            };
-            TestBind::test_bind(endpoint, hints);
-        }
-        else {
-            std::cerr << context.result()
-                      << std::endl;
-        }
+        const Network::Endpoint endpoint {
+            args.size() > 1 ? args[1] : TestBind::localhost,
+            args.size() > 2 ? args[2] : TestBind::localservice
+        };
+        TestBind::test_bind(endpoint, hints);
     }
     catch (std::exception& error) {
         std::cerr << error.what()

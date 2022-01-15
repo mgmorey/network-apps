@@ -236,19 +236,11 @@ auto main(int argc, char* argv[]) -> int
             std::cerr << context;
         }
 
-        if (context) {
-            const Network::Endpoint endpoint {
-                args.size() > 1 ? args[1] : TestConnect::localhost,
-                args.size() > 2 ? args[2] : TestConnect::localservice
-            };
-            TestConnect::test_connect(endpoint, hints);
-        }
-        else {
-            std::cerr << context.result()
-                      << std::endl;
-        }
-
-        static_cast<void>(context);
+        const Network::Endpoint endpoint {
+            args.size() > 1 ? args[1] : TestConnect::localhost,
+            args.size() > 2 ? args[2] : TestConnect::localservice
+        };
+        TestConnect::test_connect(endpoint, hints);
     }
     catch (std::exception& error) {
         std::cerr << error.what()

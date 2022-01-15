@@ -91,13 +91,7 @@ auto main(int argc, char* argv[]) -> int
             std::cerr << context;
         }
 
-        if (context) {
-            TestHostname::test_hostname();
-        }
-        else {
-            std::cerr << context.result()
-                      << std::endl;
-        }
+        TestHostname::test_hostname();
     }
     catch (std::exception& error) {
         std::cerr << error.what()
