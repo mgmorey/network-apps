@@ -114,12 +114,11 @@ namespace TestContext
 
     static auto test_context_version_valid() -> void
     {
-#ifdef _WIN32
         constexpr auto status_string {"Running"};
+#ifdef _WIN32
         constexpr auto system_string {"WinSock 2.0"};
         constexpr auto version_string {"2.2"};
 #else
-        constexpr auto status_string {""};
         constexpr auto system_string {""};
         constexpr auto version_string {"0"};
 #endif

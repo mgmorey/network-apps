@@ -90,7 +90,7 @@ auto Network::Context::status_string() -> std::string
 #ifdef _WIN32
     return m_data.szSystemStatus;
 #else
-    return "";
+    return "Running";
 #endif
 }
 
