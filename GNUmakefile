@@ -56,12 +56,12 @@ address-sin6.cpp address-sun.cpp addrinfo.cpp bind-endpoint.cpp		\
 bind-fd.cpp buffer.cpp close.cpp connect-endpoint.cpp connect-fd.cpp	\
 context.cpp family.cpp fd.cpp flags.cpp format.cpp			\
 format-os-error.cpp get-endpoint.cpp get-hostname.cpp get-hosts.cpp	\
-get-last-os-error.cpp get-length.cpp get-name.cpp get-sa-data.cpp	\
-get-sa-family.cpp get-sa-length.cpp get-sa-pointer.cpp			\
-get-sin-addr.cpp get-sin-pointer.cpp get-sin-port.cpp			\
-get-sin6-addr.cpp get-sin6-pointer.cpp get-sin6-port.cpp get-size.cpp	\
-get-socket.cpp get-socketpair.cpp get-sockets.cpp			\
-get-sockets-endpoint.cpp get-peername.cpp get-sockname.cpp		\
+get-last-os-error.cpp get-length.cpp get-name.cpp get-peername.cpp	\
+get-sa-data.cpp get-sa-family.cpp get-sa-length.cpp			\
+get-sa-pointer.cpp get-sin-addr.cpp get-sin-pointer.cpp			\
+get-sin-port.cpp get-sin6-addr.cpp get-sin6-pointer.cpp			\
+get-sin6-port.cpp get-size.cpp get-socket.cpp get-socketpair.cpp	\
+get-sockets-endpoint.cpp get-sockets-hostname.cpp get-sockname.cpp	\
 get-sun-length.cpp get-sun-path.cpp get-sun-path-length.cpp		\
 get-sun-pointer.cpp hints.cpp host.cpp is-valid.cpp open-endpoint.cpp	\
 open-fd.cpp protocol.cpp reset-last-os-error.cpp socket.cpp		\
