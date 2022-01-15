@@ -53,15 +53,14 @@ namespace Network
         [[nodiscard]] auto version_string() const -> std::string;
 
     protected:
-        [[nodiscard]] static auto create(version_type version) -> error_type;
-        static auto destroy(error_type error_code) -> void;
+        static auto cleanup(error_type error_code) -> void;
         static auto dispatch(error_type error_code) -> void;
 
     private:
 #ifdef _WIN32
-        WSADATA m_wsadata;
+        WSADATA m_wsadata {};
 #endif
-        error_type m_error_code;
+        error_type m_error_code {0};
     };
 
     extern auto operator<<(std::ostream& os,

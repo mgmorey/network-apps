@@ -42,7 +42,13 @@ Network::Context::Context(const OptionalVersion& t_version)
     const version_type version {t_version ? *t_version : version_default};
 
     try {
-        if ((m_error_code = create(version)) != 0) {
+#ifdef _WIN32
+        m_error_code = ::WSAStartup(version, &m_wsadata);
+#else
+        static_cast<void>(version);
+#endif
+
+        if (m_error_code != 0) {
             dispatch(m_error_code);
         }
 
@@ -51,16 +57,17 @@ Network::Context::Context(const OptionalVersion& t_version)
         }
     }
     catch (const Network::Error& error) {
-        destroy(m_error_code);
+        cleanup(m_error_code);
         // warning: thrown exception type is not nothrow copy
         // constructible [cert-err60-cpp]
+        // NOLINTNEXTLINE
         throw error;
     }
 }
 
 Network::Context::~Context()
 {
-    destroy(m_error_code);
+    cleanup(m_error_code);
 }
 
 auto Network::Context::status_string() const -> std::string
@@ -104,18 +111,7 @@ auto Network::Context::version_string() const -> std::string
             std::to_string(minor));
 }
 
-auto Network::Context::create(version_type version) -> error_type
-{
-    error_type error_code {0};
-#ifdef _WIN32
-    error_code = ::WSAStartup(version, &m_wsadata);
-#else
-    static_cast<void>(version);
-#endif
-    return error_code;
-}
-
-auto Network::Context::destroy(error_type error_code) -> void
+auto Network::Context::cleanup(error_type error_code) -> void
 {
     if (error_code == 0) {
 #ifdef _WIN32
@@ -129,8 +125,6 @@ auto Network::Context::dispatch(error_type error_code) -> void
     const auto what {format_os_error(error_code)};
 
     switch (error_code) {  // NOLINT
-    case 0:
-        break;
 #ifdef _WIN32
     case WSAEFAULT:
     case WSAVERNOTSUPPORTED:
