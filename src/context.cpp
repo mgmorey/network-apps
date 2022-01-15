@@ -77,7 +77,7 @@ Network::Context::~Context()
 
 Network::Context::operator bool() const
 {
-    return m_result == 0 ? true : false;
+    return !m_result;
 }
 
 auto Network::Context::result() const -> Network::OsErrorResult
