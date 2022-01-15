@@ -13,8 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/context.h"            // Context, OsError,
-                                        // OsErrorResult,
+#include "network/context.h"            // Context, OsErrorResult,
                                         // operator<<(), std::ostream
 #include "network/os-error.h"           // format_os_error(),
                                         // get_last_os_error(),
