@@ -29,12 +29,11 @@
 #include <sstream>      // std::ostringstream
 
 #ifdef _WIN32
-#define WSA_VERSION	(MAKEWORD(2, 2))	// NOLINT
+#define VERSION_DEFAULT	(MAKEWORD(2, 2))	// NOLINT
 #else
-#define WSA_VERSION	(0)			// NOLINT
+#define VERSION_DEFAULT	(0)			// NOLINT
 #endif
 
-static constexpr Network::Context::version_type version_default = WSA_VERSION;
 
 #ifdef _WIN32
 unsigned Network::Context::m_count;
@@ -44,6 +43,8 @@ WSADATA Network::Context::m_data;
 Network::Context::Context(const OptionalVersion& t_version)
 {
 #ifdef _WIN32
+    constexpr version_type version_default {VERSION_DEFAULT};
+
     if (!m_count++) {
         reset_last_os_error();
         const version_type version = t_version ? *t_version : version_default;
