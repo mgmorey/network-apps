@@ -103,22 +103,22 @@ namespace TestContext
         }
     }
 
-    static auto print_strings() -> void
+    static auto print_strings(const Network::Context& context) -> void
     {
         if (verbose) {
             std::cerr << "Status: "
-                      << Network::Context::status_string()
+                      << context.status_string()
                       << std::endl
                       << "System: "
-                      << Network::Context::system_string()
+                      << context.system_string()
                       << std::endl
                       << "Version: "
-                      << Network::Context::version_string()
+                      << context.version_string()
                       << std::endl;
         }
     }
 
-    static auto test_context_strings() -> void
+    static auto test_context(const Network::Context& context) -> void
     {
         constexpr auto status {"Running"};
 #ifdef _WIN32
@@ -128,10 +128,10 @@ namespace TestContext
         constexpr auto system {""};
         constexpr auto version {"0.0"};
 #endif
-        print_strings();
-        assert(Network::Context::status_string() == status);	// NOLINT
-        assert(Network::Context::system_string() == system);	// NOLINT
-        assert(Network::Context::version_string() == version);	// NOLINT
+        print_strings(context);
+        assert(context.status_string() == status);		// NOLINT
+        assert(context.system_string() == system);		// NOLINT
+        assert(context.version_string() == version);		// NOLINT
     }
 
     static auto test_context_version_invalid() -> void
@@ -163,7 +163,7 @@ namespace TestContext
 
         try {
             const Network::Context context;
-            TestContext::test_context_strings();
+            TestContext::test_context(context);
         }
         catch (Network::Error& error) {
             print_exception(error);

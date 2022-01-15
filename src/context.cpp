@@ -37,11 +37,6 @@
 
 constexpr Network::Context::version_type version_default {VERSION_DEFAULT};
 
-unsigned Network::Context::m_count;
-#ifdef _WIN32
-WSADATA Network::Context::m_wsadata;
-#endif
-
 Network::Context::Context(const OptionalVersion& t_version)
 {
     const version_type version {t_version ? *t_version : version_default};
@@ -55,8 +50,10 @@ Network::Context::Context(const OptionalVersion& t_version)
             throw RuntimeError("Network is down");
         }
     }
-    catch (Network::Error& error) {
+    catch (const Network::Error& error) {
         destroy(m_error_code);
+        // warning: thrown exception type is not nothrow copy
+        // constructible [cert-err60-cpp]
         throw error;
     }
 }
@@ -66,30 +63,64 @@ Network::Context::~Context()
     destroy(m_error_code);
 }
 
-auto Network::Context::cleanup() -> void
+auto Network::Context::status_string() const -> std::string
 {
 #ifdef _WIN32
-    ::WSACleanup();
+    return m_wsadata.szSystemStatus;
+#else
+    return "Running";
 #endif
+}
+
+auto Network::Context::system_string() const -> std::string
+{
+#ifdef _WIN32
+    return m_wsadata.szDescription;
+#else
+    return "";
+#endif
+}
+
+auto Network::Context::version_number() const -> Network::Context::version_type
+{
+#ifdef _WIN32
+    return m_wsadata.wVersion;
+#else
+    return 0;
+#endif
+}
+
+auto Network::Context::version_string() const -> std::string
+{
+    const version_type version {version_number()};
+#ifdef _WIN32
+    const unsigned major {LOBYTE(version)};
+    const unsigned minor {HIBYTE(version)};
+#else
+    const unsigned major {version / 16};
+    const unsigned minor {version % 16};
+#endif
+    return (std::to_string(major) + "." +
+            std::to_string(minor));
 }
 
 auto Network::Context::create(version_type version) -> error_type
 {
     error_type error_code {0};
-
-    if (!m_count++) {
-        error_code = startup(version);
-    }
-
+#ifdef _WIN32
+    error_code = ::WSAStartup(version, &m_wsadata);
+#else
+    static_cast<void>(version);
+#endif
     return error_code;
 }
 
 auto Network::Context::destroy(error_type error_code) -> void
 {
-    if (!--m_count) {
-        if (error_code == 0) {
-            cleanup();
-        }
+    if (error_code == 0) {
+#ifdef _WIN32
+        ::WSACleanup();
+#endif
     }
 }
 
@@ -97,7 +128,7 @@ auto Network::Context::dispatch(error_type error_code) -> void
 {
     const auto what {format_os_error(error_code)};
 
-    switch (error_code) {
+    switch (error_code) {  // NOLINT
     case 0:
         break;
 #ifdef _WIN32
@@ -113,58 +144,6 @@ auto Network::Context::dispatch(error_type error_code) -> void
     default:
         throw Error(what);
     }
-}
-
-auto Network::Context::startup(version_type version) -> error_type
-{
-    error_type error_code {0};
-#ifdef _WIN32
-    error_code = ::WSAStartup(version, &m_wsadata);
-#else
-    static_cast<void>(version);
-#endif
-    return error_code;
-}
-
-auto Network::Context::status_string() -> std::string
-{
-#ifdef _WIN32
-    return m_wsadata.szSystemStatus;
-#else
-    return "Running";
-#endif
-}
-
-auto Network::Context::system_string() -> std::string
-{
-#ifdef _WIN32
-    return m_wsadata.szDescription;
-#else
-    return "";
-#endif
-}
-
-auto Network::Context::version_number() -> Network::Context::version_type
-{
-#ifdef _WIN32
-    return m_wsadata.wVersion;
-#else
-    return 0;
-#endif
-}
-
-auto Network::Context::version_string() -> std::string
-{
-#ifdef _WIN32
-    const version_type version {version_number()};
-    const unsigned major {LOBYTE(version)};
-    const unsigned minor {HIBYTE(version)};
-#else
-    const unsigned major {0};
-    const unsigned minor {0};
-#endif
-    return (std::to_string(major) + "." +
-            std::to_string(minor));
 }
 
 auto Network::operator<<(std::ostream& os,

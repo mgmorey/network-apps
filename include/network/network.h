@@ -20,7 +20,6 @@
 #include "network/bind.h"               // bind()
 #include "network/close.h"              // close()
 #include "network/connect.h"            // connect()
-#include "network/context.h"            // Context
 #include "network/constants.h"          // fd_null, sa_data_offset,
                                         // sa_size, sin_addr_offset,
                                         // sin6_addr_offset,
