@@ -23,6 +23,10 @@ LINK.o = $(CXX) $(LDFLAGS)
 prefix = /usr/local
 tmp_dir = tmp
 
+artifacts = $(executables) $(libraries) $(objects) $(maps) $(listings)
+
+corefiles = *.core *.stackdump
+
 executables = $(test_execs)
 
 ifneq "$(SYSTEM)" "MINGW64_NT"
@@ -86,7 +90,7 @@ all: $(executables) TAGS
 
 .PHONY:	clean
 clean:
-	rm -f $(executables) $(libraries) $(objects) $(maps) $(listings)
+	rm -f $(artifacts)
 
 .PHONY:	cppcheck
 cppcheck:
@@ -102,8 +106,8 @@ install: $(libraries)
 	install include/network/*.h $(prefix)/include
 
 .PHONY:	realclean
-realclean: clean
-	rm -rf TAGS *.core *.stackdump $(tmp_dir)
+realclean:
+	rm -rf TAGS $(artifacts) $(corefiles) $(tmp_dir)
 
 .PHONY:	test
 test: $(test_execs)
@@ -129,7 +133,9 @@ $(dependencies) $(objects): | $(tmp_dir)
 $(tmp_dir):
 	mkdir -p $(tmp_dir)
 
+ifneq "$(MAKECMDGOALS)" "realclean"
 include $(dependencies)
+endif
 
 .SECONDARY: $(objects)
 
