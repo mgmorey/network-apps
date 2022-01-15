@@ -13,10 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/os-error.h"           // format_os_error(),
-                                        // get_last_os_error(),
-                                        // os_error_type,
-                                        // reset_last_os_error(),
+#include "network/format-os-error.h"    // format_os_error(),
                                         // std::string
 
 #ifdef _WIN32

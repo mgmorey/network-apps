@@ -13,22 +13,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-last-os-error.h"  // get_last_os_error(),
-                                        // os_error_type
+#ifndef NETWORK_FORMAT_OS_ERROR_H
+#define NETWORK_FORMAT_OS_ERROR_H
 
-#ifdef _WIN32
-#include <winsock2.h>       // WSAGetLastError()
-#else
-#include <cerrno>           // errno
-#endif
+#include "network/os-error-type.h"      // os_error_type
 
-auto Network::get_last_os_error() -> Network::os_error_type
+#include <string>       // std::string
+
+namespace Network
 {
-    os_error_type error {0};
-#ifdef _WIN32
-    error = ::WSAGetLastError();
-#else
-    error = errno;
-#endif
-    return error;
+    extern auto format_os_error(os_error_type error) -> std::string;
 }
+
+#endif

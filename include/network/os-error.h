@@ -16,15 +16,8 @@
 #ifndef NETWORK_OS_ERROR_H
 #define NETWORK_OS_ERROR_H
 
-#include "network/os-error-type.h"      // os_error_type
-
-#include <string>       // std::string
-
-namespace Network
-{
-    extern auto format_os_error(os_error_type error) -> std::string;
-    extern auto get_last_os_error() -> os_error_type;
-    extern auto reset_last_os_error() -> os_error_type;
-}
+#include "network/format-os-error.h"    // format_os_error()
+#include "network/get-last-os-error.h"  // get_last_os_error()
+#include "network/reset-last-os-error.h"// reset_last_os_error()
 
 #endif
