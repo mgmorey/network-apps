@@ -120,17 +120,29 @@ namespace TestContext
 
     static auto test_context_strings() -> void
     {
+        constexpr auto status {"Running"};
+#ifdef _WIN32
+        constexpr auto system {"WinSock 2.0"};
+        constexpr auto version {"2.2"};
+#else
+        constexpr auto system {""};
+        constexpr auto version {"0.0"};
+#endif
         print_strings();
-        assert(Network::Context::status_string() == "");	// NOLINT
-        assert(Network::Context::system_string() == "");	// NOLINT
-        assert(Network::Context::version_string() == "0.0");	// NOLINT
+        assert(Network::Context::status_string() == status);	// NOLINT
+        assert(Network::Context::system_string() == system);	// NOLINT
+        assert(Network::Context::version_string() == version);	// NOLINT
     }
 
     static auto test_context_version_invalid() -> void
     {
+#ifdef _WIN32
         constexpr auto error_version_not_supported {
             "The Windows Sockets version requested is not supported."
         };
+#else
+        constexpr auto error_version_not_supported {""};
+#endif
         std::string what;
 
         try {
@@ -147,21 +159,11 @@ namespace TestContext
 
     static auto test_context_version_valid() -> void
     {
-        constexpr auto status_string {"Running"};
-#ifdef _WIN32
-        constexpr auto system_string {"WinSock 2.0"};
-        constexpr auto version_string {"2.2"};
-#else
-        constexpr auto system_string {""};
-        constexpr auto version_string {"0.0"};
-#endif
         std::string what;
 
         try {
             const Network::Context context;
-            assert(context.status_string() == status_string);	// NOLINT
-            assert(context.system_string() == system_string);	// NOLINT
-            assert(context.version_string() == version_string);	// NOLINT
+            TestContext::test_context_strings();
         }
         catch (Network::Error& error) {
             print_exception(error);
@@ -205,7 +207,6 @@ auto main(int argc, char* argv[]) -> int
 {
     try {
         const auto args {TestContext::parse_arguments(argc, argv)};
-        TestContext::test_context_strings();
         TestContext::test_context_version_valid();
         TestContext::test_context_version_invalid();
         TestContext::test_hostname_without_context();

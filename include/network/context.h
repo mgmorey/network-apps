@@ -47,20 +47,22 @@ namespace Network
         ~Context();
         auto operator=(const Context&) -> Context& = delete;
         auto operator=(const Context&&) -> Context& = delete;
-        static auto create(const OptionalVersion& t_version) -> error_type;
+        static auto cleanup() -> void;
+        [[nodiscard]] static auto create(version_type version) -> error_type;
         static auto destroy(error_type error_code) -> void;
         static auto dispatch(error_type error_code) -> void;
+        [[nodiscard]] static auto startup(version_type version) -> error_type;
         [[nodiscard]] static auto status_string() -> std::string;
         [[nodiscard]] static auto system_string() -> std::string;
         [[nodiscard]] static auto version_number() -> version_type;
         [[nodiscard]] static auto version_string() -> std::string;
 
     private:
-#ifdef _WIN32
         static unsigned m_count;
-        static WSADATA m_data;
-        error_type m_error_code;
+#ifdef _WIN32
+        static WSADATA m_wsadata;
 #endif
+        error_type m_error_code;
     };
 
     extern auto operator<<(std::ostream& os,
