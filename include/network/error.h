@@ -18,24 +18,25 @@
 
 #include <exception>   // std::exception
 #include <string>      // std::string
+#include <utility>     // std::move
 
 namespace Network
 {
     class Error : public std::exception
     {
     public:
-        explicit Error(const std::string& t_what) :
-            m_what(t_what)
+        explicit Error(std::string t_str) :
+            m_str(std::move(t_str))
         {
         }
 
-        virtual auto what() const throw() -> const char*
+        [[nodiscard]] auto what() const noexcept -> const char*
         {
-            return m_what.c_str();
+            return m_str.c_str();
         }
 
     private:
-        std::string m_what;
+        std::string m_str;
     };
 }
 

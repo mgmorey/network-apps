@@ -16,15 +16,16 @@
 #ifndef NETWORK_LOGICERROR_H
 #define NETWORK_LOGICERROR_H
 
-#include "network/error.h"              // Error
+#include "network/error.h"              // Error, std::move,
+                                        // std::string
 
 namespace Network
 {
     class LogicError : public Error
     {
     public:
-        explicit LogicError(const std::string& t_what) :
-            Error(t_what)
+        explicit LogicError(std::string t_what) :
+            Error(std::move(t_what))
         {
         }
     };

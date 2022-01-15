@@ -16,15 +16,16 @@
 #ifndef NETWORK_RUNTIMEERROR_H
 #define NETWORK_RUNTIMEERROR_H
 
-#include "network/error.h"              // Error
+#include "network/error.h"              // Error, std::move,
+                                        // std::string
 
 namespace Network
 {
     class RuntimeError : public Error
     {
     public:
-        explicit RuntimeError(const std::string& t_what) :
-            Error(t_what)
+        explicit RuntimeError(std::string t_what) :
+            Error(std::move(t_what))
         {
         }
     };
