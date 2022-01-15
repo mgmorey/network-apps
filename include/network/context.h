@@ -42,13 +42,17 @@ namespace Network
         using OptionalVersion = std::optional<version_type>;
 
         explicit Context(const OptionalVersion& t_version = {});
+        Context(const Context&) = delete;
+        Context(const Context&&) = delete;
         ~Context();
+        auto operator=(const Context&) -> Context& = delete;
+        auto operator=(const Context&&) -> Context& = delete;
         explicit operator bool() const;
         [[nodiscard]] auto result() const -> OsErrorResult;
-        [[nodiscard]] auto status_string() const -> std::string;
-        [[nodiscard]] auto system_string() const -> std::string;
-        [[nodiscard]] auto version_number() const -> version_type;
-        [[nodiscard]] auto version_string() const -> std::string;
+        [[nodiscard]] static auto status_string() -> std::string;
+        [[nodiscard]] static auto system_string() -> std::string;
+        [[nodiscard]] static auto version_number() -> version_type;
+        [[nodiscard]] static auto version_string() -> std::string;
 
     protected:
 #ifdef _WIN32

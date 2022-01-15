@@ -77,7 +77,7 @@ Network::Context::~Context()
 
 Network::Context::operator bool() const
 {
-    return m_result == 0;
+    return m_result == 0 ? true : false;
 }
 
 auto Network::Context::result() const -> Network::OsErrorResult
@@ -85,7 +85,7 @@ auto Network::Context::result() const -> Network::OsErrorResult
     return m_result;
 }
 
-auto Network::Context::status_string() const -> std::string
+auto Network::Context::status_string() -> std::string
 {
 #ifdef _WIN32
     return m_data.szSystemStatus;
@@ -94,7 +94,7 @@ auto Network::Context::status_string() const -> std::string
 #endif
 }
 
-auto Network::Context::system_string() const -> std::string
+auto Network::Context::system_string() -> std::string
 {
 #ifdef _WIN32
     return m_data.szDescription;
@@ -103,7 +103,7 @@ auto Network::Context::system_string() const -> std::string
 #endif
 }
 
-auto Network::Context::version_number() const -> Network::Context::version_type
+auto Network::Context::version_number() -> Network::Context::version_type
 {
 #ifdef _WIN32
     return m_data.wVersion;
@@ -112,7 +112,7 @@ auto Network::Context::version_number() const -> Network::Context::version_type
 #endif
 }
 
-auto Network::Context::version_string() const -> std::string
+auto Network::Context::version_string() -> std::string
 {
     const version_type version {version_number()};
 #ifdef _WIN32
