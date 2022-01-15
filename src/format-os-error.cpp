@@ -20,12 +20,11 @@
                                         // std::string
 
 #ifdef _WIN32
-#include <winsock2.h>       // WSAGetLastError()
+#include <winsock2.h>       // Always include winsock2 before windows.h on Windows
 #include <windows.h>        // FORMAT_MESSAGE*, LANG_NEUTRAL,
                             // MAKELANGID(), SUBLANG_DEFAULT,
                             // FormatMessage(), LocalFree()
 #else
-#include <cerrno>       // errno
 #include <cstring>      // std::strerror()
 #endif
 
@@ -53,24 +52,4 @@ auto Network::format_os_error(os_error_type error) -> std::string
     message = std::strerror(error);
 #endif
     return message;
-}
-
-auto Network::get_last_os_error() -> Network::os_error_type
-{
-    os_error_type error {0};
-#ifdef _WIN32
-    error = ::WSAGetLastError();
-#else
-    error = errno;
-#endif
-    return error;
-}
-
-auto Network::reset_last_os_error() -> Network::os_error_type
-{
-    os_error_type error {0};
-#ifndef _WIN32
-    errno = error;
-#endif
-    return error;
 }

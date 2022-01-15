@@ -54,17 +54,18 @@ endif
 lib_sources = address.cpp address-sa.cpp address-sin.cpp		\
 address-sin6.cpp address-sun.cpp addrinfo.cpp bind-endpoint.cpp		\
 bind-fd.cpp buffer.cpp close.cpp connect-endpoint.cpp connect-fd.cpp	\
-context.cpp family.cpp fd.cpp flags.cpp format.cpp get-endpoint.cpp	\
-get-hostname.cpp get-hosts.cpp get-length.cpp get-name.cpp		\
-get-sa-data.cpp get-sa-family.cpp get-sa-length.cpp			\
-get-sa-pointer.cpp get-sin-addr.cpp get-sin-pointer.cpp			\
-get-sin-port.cpp get-sin6-addr.cpp get-sin6-pointer.cpp			\
-get-sin6-port.cpp get-size.cpp get-socket.cpp get-socketpair.cpp	\
-get-sockets.cpp get-sockets-endpoint.cpp get-peername.cpp		\
-get-sockname.cpp get-sun-length.cpp get-sun-path.cpp			\
-get-sun-path-length.cpp get-sun-pointer.cpp hints.cpp host.cpp		\
-is-valid.cpp open-endpoint.cpp open-fd.cpp os-error.cpp protocol.cpp	\
-socket.cpp socktype.cpp stream-address.cpp stream-addrinfo.cpp		\
+context.cpp family.cpp fd.cpp flags.cpp format.cpp			\
+format-os-error.cpp get-endpoint.cpp get-hostname.cpp get-hosts.cpp	\
+get-last-os-error.cpp get-length.cpp get-name.cpp get-sa-data.cpp	\
+get-sa-family.cpp get-sa-length.cpp get-sa-pointer.cpp			\
+get-sin-addr.cpp get-sin-pointer.cpp get-sin-port.cpp			\
+get-sin6-addr.cpp get-sin6-pointer.cpp get-sin6-port.cpp get-size.cpp	\
+get-socket.cpp get-socketpair.cpp get-sockets.cpp			\
+get-sockets-endpoint.cpp get-peername.cpp get-sockname.cpp		\
+get-sun-length.cpp get-sun-path.cpp get-sun-path-length.cpp		\
+get-sun-pointer.cpp hints.cpp host.cpp is-valid.cpp open-endpoint.cpp	\
+open-fd.cpp protocol.cpp reset-last-os-error.cpp socket.cpp		\
+socktype.cpp stream-address.cpp stream-addrinfo.cpp			\
 stream-bytestring.cpp stream-hints.cpp stream-socket.cpp		\
 to-byte-span-sa.cpp to-byte-span-sun.cpp to-byte-span-void.cpp		\
 to-byte-string-bs.cpp to-byte-string-path.cpp to-byte-string-sa.cpp	\

@@ -13,21 +13,18 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_OS_ERROR_TYPE_H
-#define NETWORK_OS_ERROR_TYPE_H
+#include "network/os-error.h"           // os_error_type,
+                                        // reset_last_os_error()
 
-#ifdef _WIN32
-#include <winsock2.h>       // Always include winsock2 before windows.h on Windows
-#include <windows.h>        // DWORD
+#ifndef _WIN32
+#include <cerrno>       // errno
 #endif
 
-namespace Network
+auto Network::reset_last_os_error() -> Network::os_error_type
 {
-#ifdef _WIN32
-    using os_error_type = DWORD;
-#else
-    using os_error_type = int;
+    os_error_type error {0};
+#ifndef _WIN32
+    errno = error;
 #endif
+    return error;
 }
-
-#endif
