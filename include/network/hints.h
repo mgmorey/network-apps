@@ -32,17 +32,17 @@ namespace Network
     struct Hints
     {
         Hints() = default;
-        Hints(const Hints& t_hints) = default;
-        Hints(Hints&& t_hints) noexcept = default;
         explicit Hints(family_type t_family,
                        socktype_type t_socktype = 0,
                        protocol_type t_protocol = 0,
                        flags_type t_flags = 0);
         // cppcheck-suppress noExplicitConstructor
         Hints(const addrinfo& t_addrinfo);  // NOLINT
+        Hints(const Hints&) = default;
+        Hints(Hints&&) noexcept = default;
         ~Hints() = default;
-        auto operator=(const Hints& t_hints) -> Hints& = default;
-        auto operator=(Hints&& t_hints) noexcept -> Hints& = default;
+        auto operator=(const Hints&) -> Hints& = default;
+        auto operator=(Hints&&) noexcept -> Hints& = default;
         auto operator=(const addrinfo& t_addrinfo) -> Hints&;
         auto operator<(const Hints& t_hints) const -> bool;
         auto operator>(const Hints& t_hints) const -> bool;

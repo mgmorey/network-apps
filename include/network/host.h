@@ -30,14 +30,14 @@ namespace Network
     struct Host
     {
         Host() = default;
-        Host(const Host& t_host) = default;
-        Host(Host&& t_host) noexcept = default;
         // cppcheck-suppress noExplicitConstructor
         Host(const addrinfo& t_addrinfo);  // NOLINT
+        Host(const Host&) = default;
+        Host(Host&&) noexcept = default;
         ~Host() = default;
-        auto operator=(const Host& t_host) -> Host& = default;
-        auto operator=(Host&& t_host) noexcept -> Host& = default;
         auto operator=(const addrinfo& t_addrinfo) -> Host&;
+        auto operator=(const Host&) -> Host& = default;
+        auto operator=(Host&&) noexcept -> Host& = default;
         auto operator<(const Host& t_host) const -> bool;
         auto operator>(const Host& t_host) const -> bool;
         auto operator==(const Host& t_host) const -> bool;

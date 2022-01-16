@@ -48,7 +48,7 @@ namespace Network
         }
 
     private:
-        std::string m_string;
+        std::string m_string {};
         T m_number {0};
     };
 }

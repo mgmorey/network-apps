@@ -22,20 +22,18 @@ namespace Network
     class Integer
     {
     public:
-        Integer() = default;
-        Integer(const Integer& t_integer) = default;
-        Integer(Integer&& t_integer) noexcept = default;
-
         // cppcheck-suppress noExplicitConstructor
         // NOLINTNEXTLINE
-        Integer(T t_value) :
+        Integer(T t_value = 0) :
             m_value(t_value)
         {
         }
 
+        Integer(const Integer&) = default;
+        Integer(Integer&&) noexcept = default;
         ~Integer() = default;
-        auto operator=(const Integer& t_integer) -> Integer& = default;
-        auto operator=(Integer&& t_integer) noexcept -> Integer& = default;
+        auto operator=(const Integer&) -> Integer& = default;
+        auto operator=(Integer&&) noexcept -> Integer& = default;
 
         auto operator=(T t_value) -> Integer&
         {
@@ -43,7 +41,7 @@ namespace Network
             return *this;
         }
 
-        operator T() const  /// NOLINT
+        operator T() const  // NOLINT
         {
             return m_value;
         }

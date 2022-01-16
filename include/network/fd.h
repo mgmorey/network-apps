@@ -28,14 +28,13 @@ namespace Network
         friend auto operator<<(std::ostream& os, Fd fd) -> std::ostream&;
 
     public:
-        Fd() = default;
-        Fd(const Fd& t_fd) = default;
-        Fd(Fd&& t_fd) noexcept = default;
         // cppcheck-suppress noExplicitConstructor
-        Fd(fd_type t_fd);  // NOLINT
+        Fd(fd_type t_fd = fd_null);  // NOLINT
+        Fd(const Fd&) = default;
+        Fd(Fd&&) noexcept = default;
         ~Fd() = default;
-        auto operator=(const Fd& t_fd) -> Fd& = default;
-        auto operator=(Fd&& t_fd) noexcept -> Fd& = default;
+        auto operator=(const Fd&) -> Fd& = default;
+        auto operator=(Fd&&) noexcept -> Fd& = default;
         operator fd_type() const;  // NOLINT
         explicit operator bool() const;
 

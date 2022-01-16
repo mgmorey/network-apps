@@ -32,17 +32,17 @@ namespace Network
         public Host
     {
         Socket() = default;
-        Socket(const Socket& t_sock) = default;
-        Socket(Socket&& t_sock) noexcept = default;
         explicit Socket(int t_family,
                         int t_socktype = 0,
                         int t_protocol = 0,
                         int t_flags = 0);
         // cppcheck-suppress noExplicitConstructor
         Socket(const addrinfo& t_addrinfo);  // NOLINT
+        Socket(const Socket&) = default;
+        Socket(Socket&&) noexcept = default;
         ~Socket() = default;
-        auto operator=(const Socket& t_sock) -> Socket& = default;
-        auto operator=(Socket&& t_sock) noexcept -> Socket& = default;
+        auto operator=(const Socket&) -> Socket& = default;
+        auto operator=(Socket&&) noexcept -> Socket& = default;
         auto operator=(const addrinfo& t_addrinfo) -> Socket&;
         auto operator<(const Socket& t_sock) const -> bool;
         auto operator>(const Socket& t_sock) const -> bool;

@@ -24,9 +24,14 @@ namespace Network
     class Buffer
     {
     public:
-        explicit Buffer(std::string::size_type t_size);
+        explicit Buffer(std::string::size_type t_size = 0);
+        Buffer(const Buffer&) = default;
+        Buffer(Buffer&&) noexcept = default;
+        ~Buffer() = default;
+        auto operator=(const Buffer&) -> Buffer& = default;
+        auto operator=(Buffer&&) noexcept -> Buffer& = default;
         operator std::string() const;  // NOLINT
-        auto data() -> char*;
+        [[nodiscard]] auto data() -> char*;
         [[nodiscard]] auto size() const -> std::string::size_type;
 
     private:
