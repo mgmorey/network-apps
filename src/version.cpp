@@ -37,7 +37,8 @@ Network::Version::operator std::string() const noexcept
             std::to_string(m_value / m_radix));
 }
 
-auto Network::operator<<(std::ostream& os, Version version) -> std::ostream&
+auto Network::operator<<(std::ostream& os,
+                         const Version& version) -> std::ostream&
 {
     return os << static_cast<std::string>(version);
 }

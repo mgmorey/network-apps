@@ -24,7 +24,8 @@ namespace Network
 {
     class Version
     {
-        friend auto operator<<(std::ostream& os, Version version) -> std::ostream&;
+        friend auto operator<<(std::ostream& os,
+                               const Version& version) -> std::ostream&;
 
     public:
         // cppcheck-suppress noExplicitConstructor
@@ -43,7 +44,8 @@ namespace Network
         version_type m_value {0x0U};
     };
 
-    extern auto operator<<(std::ostream& os, Version version) -> std::ostream&;
+    extern auto operator<<(std::ostream& os,
+                           const Version& version) -> std::ostream&;
 }
 
 #endif
