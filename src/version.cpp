@@ -21,6 +21,11 @@ Network::Version::Version(version_type t_version) :
 {
 }
 
+Network::Version::Version(version_type t_major, version_type t_minor) :
+    m_value(t_minor * m_radix + t_major)
+{
+}
+
 Network::Version::operator version_type() const
 {
     return m_value;

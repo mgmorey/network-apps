@@ -31,7 +31,7 @@
 
 namespace TestContext
 {
-    static const Network::Version version_invalid {0};
+    static const Network::Version version_invalid {0, 0};
 
     static bool verbose {false};  // NOLINT
 

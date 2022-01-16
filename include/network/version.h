@@ -28,7 +28,8 @@ namespace Network
 
     public:
         // cppcheck-suppress noExplicitConstructor
-        Version(version_type t_version = 0);  // NOLINT
+        Version(version_type t_version);  // NOLINT
+        Version(version_type t_major, version_type t_minor);
         Version(const Version&) = default;
         Version(Version&&) noexcept = default;
         ~Version() = default;
@@ -37,7 +38,8 @@ namespace Network
         operator version_type() const;  // NOLINT
 
     private:
-        version_type m_value {0};
+        static constexpr auto m_radix {0x100U};
+        version_type m_value {0x0U};
     };
 
     extern auto operator<<(std::ostream& os, Version version) -> std::ostream&;
