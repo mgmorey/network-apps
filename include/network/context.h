@@ -17,7 +17,7 @@
 #define NETWORK_CONTEXT_H
 
 #include "network/contextdata.h"        // ContextData
-#include "network/errorresult.h"        // ErrorResult
+#include "network/error-type.h"         // error_type
 #include "network/version.h"            // Version
 
 #include <optional>     // std::optional

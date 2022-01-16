@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/context.h"            // Context, ErrorResult,
-                                        // Version, operator<<(),
+#include "network/context.h"            // Context, Version,
+                                        // error_type, operator<<(),
                                         // std::ostream
 #include "network/exceptions.h"         // Error, LogicError,
                                         // RunTimeError
