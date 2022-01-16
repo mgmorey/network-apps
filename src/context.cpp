@@ -30,17 +30,25 @@
 #include <sstream>      // std::ostringstream
 
 constexpr auto status_running {"Running"};
+constexpr auto system_bsdsock {"Berkeley Software Distribution Sockets"};
 constexpr auto version_radix {256U};
 
 Network::Context::Context(const OptionalVersion& t_version)
 {
-    try {
-        const auto version {t_version ? *t_version : version_number(2, 2)};
 #ifdef _WIN32
-        m_error_code = ::WSAStartup(version, &m_data);
+    const auto default_version {version(2, 2)};
+#else
+    const auto default_version {version(0, 0)};
+#endif
+
+    try {
+        const auto request_version {t_version ? *t_version : default_version};
+#ifdef _WIN32
+        m_error_code = ::WSAStartup(request_version, &m_data);
 #else
         m_data.m_status = status_running;
-        m_data.m_version = version;
+        m_data.m_system = system_bsdsock;
+        m_data.m_version = request_version;
 #endif
 
         if (m_error_code != 0) {
@@ -125,8 +133,8 @@ auto Network::Context::dispatch(error_type error_code) -> void
     }
 }
 
-auto Network::Context::version_number(version_type major,
-                                      version_type minor) -> Network::version_type
+auto Network::Context::version(version_type major,
+                               version_type minor) -> Network::version_type
 {
     return minor * version_radix + major;
 }
@@ -142,20 +150,18 @@ auto Network::Context::version_string(version_type version) -> std::string
 auto Network::operator<<(std::ostream& os,
                          const Context& context) -> std::ostream&
 {
-#ifdef _WIN32
-    os << "Microsoft Windows Sockets Data:"
-       << std::endl
-       << "    Description: "
-       << context.system_string()
-       << std::endl
-       << "    System Status: "
-       << context.status_string()
-       << std::endl
-       << "    System Version: "
-       << context.version_string()
+    const auto status {context.status_string()};
+    const auto system {context.system_string()};
+    const auto version {context.version_string()};
+    os << system;
+
+    if (version != "0.0") {
+        os << " Version "
+           << version;
+    }
+
+    os << ' '
+       << status
        << std::endl;
-#else
-    static_cast<void>(context);
-#endif
     return os;
 }
