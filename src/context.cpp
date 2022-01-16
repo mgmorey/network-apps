@@ -29,19 +29,13 @@
 #include <iostream>     // std::cerr, std::endl
 #include <sstream>      // std::ostringstream
 
-#ifdef _WIN32
-#define VERSION_DEFAULT	(MAKEWORD(2, 2))	// NOLINT
-#else
-#define VERSION_DEFAULT	(0)			// NOLINT
-#endif
-
 constexpr auto status_running {"Running"};
-constexpr Network::version_type version_default {VERSION_DEFAULT};
+constexpr auto version_radix {256U};
 
 Network::Context::Context(const OptionalVersion& t_version)
 {
     try {
-        const auto version {t_version ? *t_version : version_default};
+        const auto version {t_version ? *t_version : version_number(2, 2)};
 #ifdef _WIN32
         m_error_code = ::WSAStartup(version, &m_data);
 #else
@@ -96,12 +90,7 @@ auto Network::Context::version_number() const -> Network::version_type
 
 auto Network::Context::version_string() const -> std::string
 {
-    constexpr auto radix {256U};
-    const auto version {version_number()};
-    const auto version_major = version % radix;
-    const auto version_minor = version / radix;
-    return (std::to_string(version_major) + "." +
-            std::to_string(version_minor));
+    return version_string(version_number());
 }
 
 auto Network::Context::cleanup(error_type error_code) -> void
@@ -134,6 +123,20 @@ auto Network::Context::dispatch(error_type error_code) -> void
     default:
         throw Error {error_str};
     }
+}
+
+auto Network::Context::version_number(version_type major,
+                                      version_type minor) -> Network::version_type
+{
+    return minor * version_radix + major;
+}
+
+auto Network::Context::version_string(version_type version) -> std::string
+{
+    const auto major = version % version_radix;
+    const auto minor = version / version_radix;
+    return (std::to_string(major) + "." +
+            std::to_string(minor));
 }
 
 auto Network::operator<<(std::ostream& os,
