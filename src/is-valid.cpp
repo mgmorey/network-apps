@@ -61,7 +61,7 @@ auto Network::is_valid(const ByteString& addr, bool verbose) -> bool
     const auto family {get_sa_family(addr)};
 
     if (verbose) {
-        std::cerr << std::setw(key_width) << "    Family:"
+        std::cerr << std::setw(key_width) << "    Family: "
                   << std::right << std::setw(value_width) << family
                   << std::endl;
     }
