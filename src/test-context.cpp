@@ -172,7 +172,11 @@ namespace TestContext
 
     static auto test_context_cleanup() -> void
     {
+#ifdef _WIN32
         assert(TestContext::Context::cleanup() != 0);		// NOLINT
+#else
+        assert(TestContext::Context::cleanup() == 0);		// NOLINT
+#endif
     }
 
     static auto test_context_invalid_version() -> void
@@ -189,7 +193,7 @@ namespace TestContext
         }
 
         assert(what == expected_error_invalid_version);		// NOLINT
-        assert(TestContext::Context::cleanup() != 0);		// NOLINT
+        TestContext::test_context_cleanup();
     }
 
     static auto test_context_valid_with_destroy() -> void
@@ -207,7 +211,7 @@ namespace TestContext
         }
 
         assert(what == "");					// NOLINT
-        assert(TestContext::Context::cleanup() != 0);		// NOLINT
+        TestContext::test_context_cleanup();
     }
 
     static auto test_context_valid_without_destroy() -> void
@@ -224,7 +228,7 @@ namespace TestContext
         }
 
         assert(what == "");					// NOLINT
-        assert(TestContext::Context::cleanup() != 0);		// NOLINT
+        TestContext::test_context_cleanup();
     }
 
     static auto test_hostname_with_context() -> void
