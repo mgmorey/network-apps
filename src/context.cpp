@@ -38,8 +38,8 @@ Network::Context::Context(const OptionalVersion& t_version)
 {
 #ifdef _WIN32
     try {
-        const auto request_version {t_version ? *t_version : {2, 2}};
-        m_error_code = ::WSAStartup(request_version, &m_data);
+        const auto version {t_version ? *t_version : Version {2, 2}};
+        m_error_code = ::WSAStartup(version, &m_data);
 
         if (m_error_code != 0) {
             const auto error_str {format_os_error(m_error_code)};
