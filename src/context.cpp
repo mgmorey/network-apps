@@ -36,7 +36,6 @@
 
 constexpr auto status_running {"Running"};
 constexpr auto system_bsdsock {"Berkeley Software Distribution Sockets"};
-constexpr auto version_radix {256U};
 
 Network::Context::Context(const OptionalVersion& t_version)
 {
