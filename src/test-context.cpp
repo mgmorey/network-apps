@@ -123,11 +123,10 @@ namespace TestContext
         constexpr auto status {"Running"};
 #ifdef _WIN32
         constexpr auto system {"WinSock 2.0"};
-        constexpr auto version {"2.2"};
 #else
         constexpr auto system {""};
-        constexpr auto version {"0.0"};
 #endif
+        constexpr auto version {"2.2"};
         print_strings(context);
         assert(context.status_string() == status);		// NOLINT
         assert(context.system_string() == system);		// NOLINT
