@@ -22,7 +22,8 @@
 
 namespace Network
 {
-    class Error : public std::exception
+    class Error :
+        public std::exception
     {
     public:
         explicit Error(std::string t_str) :

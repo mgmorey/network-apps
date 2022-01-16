@@ -21,7 +21,8 @@
 
 namespace Network
 {
-    class LogicError : public Error
+    class LogicError :
+        public Error
     {
     public:
         explicit LogicError(std::string t_what) :
