@@ -35,26 +35,22 @@
 #define VERSION_DEFAULT	(0)			// NOLINT
 #endif
 
+constexpr auto status_running {"Running"};
 constexpr Network::version_type version_default {VERSION_DEFAULT};
 
 Network::Context::Context(const OptionalVersion& t_version)
 {
-    const version_type version {t_version ? *t_version : version_default};
-
     try {
+        const auto version {t_version ? *t_version : version_default};
 #ifdef _WIN32
         m_error_code = ::WSAStartup(version, &m_data);
 #else
-        m_data.m_status = "Running";
+        m_data.m_status = status_running;
         m_data.m_version = version;
 #endif
 
         if (m_error_code != 0) {
             dispatch(m_error_code);
-        }
-
-        if (status_string() != "Running") {
-            throw RuntimeError("Network is down");
         }
     }
     catch (const Network::Error& error) {
@@ -100,45 +96,43 @@ auto Network::Context::version_number() const -> Network::version_type
 
 auto Network::Context::version_string() const -> std::string
 {
-    const auto radix {256U};
-    const version_type version {version_number()};
-#ifdef _WIN32
-    const version_type major {LOBYTE(version)};
-    const version_type minor {HIBYTE(version)};
-#else
-    const version_type major = version % radix;
-    const version_type minor = version / radix;
-#endif
-    return (std::to_string(major) + "." +
-            std::to_string(minor));
+    constexpr auto radix {256U};
+    const auto version {version_number()};
+    const auto version_major = version % radix;
+    const auto version_minor = version / radix;
+    return (std::to_string(version_major) + "." +
+            std::to_string(version_minor));
 }
 
 auto Network::Context::cleanup(error_type error_code) -> void
 {
     if (error_code == 0) {
 #ifdef _WIN32
-        ::WSACleanup();
+        if ((error_code = ::WSACleanup()) != 0 ) {
+            std::cerr << format_os_error(error_code)
+                      << std::endl;
+        }
 #endif
     }
 }
 
 auto Network::Context::dispatch(error_type error_code) -> void
 {
-    const auto what {format_os_error(error_code)};
+    const auto error_str {format_os_error(error_code)};
 
     switch (error_code) {  // NOLINT
 #ifdef _WIN32
     case WSAEFAULT:
     case WSAVERNOTSUPPORTED:
-        throw LogicError(what);
+        throw LogicError {error_str};
         break;
     case WSAEPROCLIM:
     case WSASYSNOTREADY:
-        throw RuntimeError(what);
+        throw RuntimeError {error_str};
         break;
 #endif
     default:
-        throw Error(what);
+        throw Error {error_str};
     }
 }
 
