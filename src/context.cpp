@@ -70,7 +70,7 @@ Network::Context::~Context()
     cleanup(m_error_code);
 }
 
-auto Network::Context::status_string() const -> std::string
+auto Network::Context::status() const -> std::string
 {
 #ifdef _WIN32
     return m_data.szSystemStatus;
@@ -79,7 +79,7 @@ auto Network::Context::status_string() const -> std::string
 #endif
 }
 
-auto Network::Context::system_string() const -> std::string
+auto Network::Context::system() const -> std::string
 {
 #ifdef _WIN32
     return m_data.szDescription;
@@ -88,7 +88,7 @@ auto Network::Context::system_string() const -> std::string
 #endif
 }
 
-auto Network::Context::version_number() const -> Network::Version
+auto Network::Context::version() const -> Network::Version
 {
 #ifdef _WIN32
     return m_data.wVersion;
@@ -132,9 +132,9 @@ auto Network::Context::dispatch(error_type error_code) -> void
 auto Network::operator<<(std::ostream& os,
                          const Context& context) -> std::ostream&
 {
-    const auto status {context.status_string()};
-    const auto system {context.system_string()};
-    const auto version {context.version_number()};
+    const auto status {context.status()};
+    const auto system {context.system()};
+    const auto version {context.version()};
     os << system;
 
     if (version != 0) {

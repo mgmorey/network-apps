@@ -39,9 +39,9 @@ namespace Network
         ~Context();
         auto operator=(const Context&) -> Context& = delete;
         auto operator=(const Context&&) -> Context& = delete;
-        [[nodiscard]] auto status_string() const -> std::string;
-        [[nodiscard]] auto system_string() const -> std::string;
-        [[nodiscard]] auto version_number() const -> Version;
+        [[nodiscard]] auto status() const -> std::string;
+        [[nodiscard]] auto system() const -> std::string;
+        [[nodiscard]] auto version() const -> Version;
 
     protected:
         static auto cleanup(error_type error_code) -> void;

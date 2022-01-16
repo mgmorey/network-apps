@@ -31,7 +31,19 @@
 
 namespace TestContext
 {
-    static const Network::Version version_invalid {0, 0};
+#ifdef _WIN32
+    static const auto expected_status {"Running"};
+    static const auto expected_system {"WinSock 2.0"};
+    static const auto expected_version {Network::Version {2, 2}};
+    static const auto invalid_version {Network::Version {0, 0}};
+#else
+    static const auto expected_status {"Running"};
+    static const auto expected_system {
+        "Berkeley Software Distribution Sockets"
+    };
+    static const auto expected_version {Network::Version {0, 0}};
+    static const auto invalid_version {Network::Version {0, 0}};
+#endif
 
     static bool verbose {false};  // NOLINT
 
@@ -107,34 +119,26 @@ namespace TestContext
     {
         if (verbose) {
             std::cerr << "Status: "
-                      << context.status_string()
+                      << context.status()
                       << std::endl
                       << "System: "
-                      << context.system_string()
+                      << context.system()
                       << std::endl
                       << "Version: "
-                      << context.version_number()
+                      << context.version()
                       << std::endl;
         }
     }
 
     static auto test_context(const Network::Context& context) -> void
     {
-        static const std::string status {"Running"};
-#ifdef _WIN32
-        static const std::string system {"WinSock 2.0"};
-        static const Network::Version version {2, 2};
-#else
-        static const std::string system {"Berkeley Software Distribution Sockets"};
-        static const Network::Version version {0, 0};
-#endif
         print_strings(context);
-        assert(context.status_string() == status);		// NOLINT
-        assert(context.system_string() == system);		// NOLINT
-        assert(context.version_number() == version);		// NOLINT
+        assert(context.status() == expected_status);		// NOLINT
+        assert(context.system() == expected_system);		// NOLINT
+        assert(context.version() == expected_version);		// NOLINT
     }
 
-    static auto test_context_version_invalid() -> void
+    static auto test_context_invalid_version() -> void
     {
 #ifdef _WIN32
         constexpr auto error_version_not_supported {
@@ -146,7 +150,7 @@ namespace TestContext
         std::string what;
 
         try {
-            const Network::Context context {version_invalid};
+            const Network::Context context {invalid_version};
             static_cast<void>(context);
         }
         catch (Network::Error& error) {
@@ -157,7 +161,7 @@ namespace TestContext
         assert(what == error_version_not_supported);		// NOLINT
     }
 
-    static auto test_context_version_valid() -> void
+    static auto test_context_valid_version() -> void
     {
         std::string what;
 
@@ -207,8 +211,8 @@ auto main(int argc, char* argv[]) -> int
 {
     try {
         const auto args {TestContext::parse_arguments(argc, argv)};
-        TestContext::test_context_version_valid();
-        TestContext::test_context_version_invalid();
+        TestContext::test_context_valid_version();
+        TestContext::test_context_invalid_version();
         TestContext::test_hostname_without_context();
         TestContext::test_hostname_with_context();
     }
