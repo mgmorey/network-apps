@@ -31,7 +31,7 @@ namespace Network
 
         RuntimeError(const RuntimeError&) = default;
         RuntimeError(RuntimeError&&) noexcept = default;
-        ~RuntimeError() = default;
+        ~RuntimeError() override = default;
         auto operator=(const RuntimeError&) -> RuntimeError& = default;
         auto operator=(RuntimeError&&) noexcept -> RuntimeError& = default;
     };

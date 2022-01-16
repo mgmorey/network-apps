@@ -31,7 +31,7 @@ namespace Network
 
         LogicError(const LogicError&) = default;
         LogicError(LogicError&&) noexcept = default;
-        ~LogicError() = default;
+        ~LogicError() override = default;
         auto operator=(const LogicError&) -> LogicError& = default;
         auto operator=(LogicError&&) noexcept -> LogicError& = default;
     };

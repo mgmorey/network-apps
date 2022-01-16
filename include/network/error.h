@@ -32,11 +32,11 @@ namespace Network
 
         Error(const Error&) = default;
         Error(Error&&) noexcept = default;
-        ~Error() = default;
+        ~Error() override = default;
         auto operator=(const Error&) -> Error& = default;
         auto operator=(Error&&) noexcept -> Error& = default;
 
-        [[nodiscard]] auto what() const noexcept -> const char*
+        [[nodiscard]] const char* what() const noexcept override // NOLINT
         {
             return m_str.c_str();
         }
