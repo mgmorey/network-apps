@@ -110,7 +110,7 @@ namespace TestContext
         return result;
     }
 
-    static auto get_hostname_error_result() -> Network::OsErrorResult
+    static auto get_hostname() -> Network::OsErrorResult
     {
         Network::OsErrorResult result;
         const auto hostname_result {Network::get_hostname()};
@@ -233,20 +233,25 @@ namespace TestContext
 
     static auto test_hostname_with_context() -> void
     {
+        const auto expected_result {Network::Result {0, ""}};
         TestContext::Context context;
         static_cast<void>(context);
-        const auto result {get_hostname_error_result()};
-        print_error_result(result);
-        assert(result.number() == 0);				// NOLINT
-        assert(result.string() == "");				// NOLINT
+        const auto actual_result {get_hostname()};
+        print_error_result(actual_result);
+        assert(actual_result == expected_result);		// NOLINT
     }
 
     static auto test_hostname_without_context() -> void
     {
-        const auto result {get_hostname_error_result()};
-        print_error_result(result);
-        assert(result.number() == expected_result_number);	// NOLINT
-        assert(result.string() == expected_result_string);	// NOLINT
+        const auto expected_result {
+            Network::Result {
+                expected_result_number,
+                expected_result_string
+            }
+        };
+        const auto actual_result {get_hostname()};
+        print_error_result(actual_result);
+        assert(actual_result == expected_result);		// NOLINT
     }
 }
 
@@ -258,8 +263,8 @@ auto main(int argc, char* argv[]) -> int
         TestContext::test_context_invalid_version();
         TestContext::test_context_valid_with_destroy();
         TestContext::test_context_valid_without_destroy();
-        TestContext::test_hostname_without_context();
         TestContext::test_hostname_with_context();
+        TestContext::test_hostname_without_context();
     }
     catch (std::exception& error) {
         std::cerr << error.what()

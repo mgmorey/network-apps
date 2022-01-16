@@ -32,6 +32,18 @@ namespace Network
         {
         }
 
+        auto operator==(const Result<T>& t_result) const -> bool
+        {
+            return (number() == t_result.number() &&
+                    string() == t_result.string());
+        }
+
+        auto operator!=(const Result<T>& t_result) const -> bool
+        {
+            return (number() != t_result.number() ||
+                    string() != t_result.string());
+        }
+
         operator bool() const  // NOLINT
         {
             return m_number != 0 || !m_string.empty();
