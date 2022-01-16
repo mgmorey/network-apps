@@ -38,11 +38,13 @@ namespace TestContext
     static const auto expected_error_invalid_version {
         "The Windows Sockets version requested is not supported."
     };
-    static const auto expected_result_number {WSANOTINITIALISED};
-    static const auto expected_result_string {
-        "Call to gethostname(...) failed with error 10093: "
-        "Either the application has not called WSAStartup, "
-        "or WSAStartup failed."
+    static const auto expected_result_uninitialized {
+        Network::Result {
+            WSANOTINITIALISED,
+            "Call to gethostname(...) failed with error 10093: "
+            "Either the application has not called WSAStartup, "
+            "or WSAStartup failed."
+        }
     };
     static const auto expected_status {"Running"};
     static const auto expected_system {"WinSock 2.0"};
@@ -246,15 +248,9 @@ namespace TestContext
 
     static auto test_hostname_without_context() -> void
     {
-        const auto expected_result {
-            Network::Result {
-                expected_result_number,
-                expected_result_string
-            }
-        };
         const auto actual_result {get_hostname()};
         print_error_result(actual_result);
-        assert(actual_result == expected_result);		// NOLINT
+        assert(actual_result == expected_result_uninitialized);	// NOLINT
     }
 }
 
