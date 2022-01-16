@@ -16,12 +16,9 @@
 #ifndef NETWORK_CONTEXT_H
 #define NETWORK_CONTEXT_H
 
+#include "network/contextdata.h"        // ContextData
 #include "network/errorresult.h"        // ErrorResult
 #include "network/version-type.h"       // version_type
-
-#ifdef _WIN32
-#include <winsock2.h>       // WSADATA
-#endif
 
 #include <optional>     // std::optional
 #include <ostream>      // std::ostream
@@ -52,9 +49,7 @@ namespace Network
         static auto dispatch(error_type error_code) -> void;
 
     private:
-#ifdef _WIN32
-        WSADATA m_wsadata {};
-#endif
+        ContextData m_data;
         error_type m_error_code {0};
     };
 

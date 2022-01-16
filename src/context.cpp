@@ -43,9 +43,10 @@ Network::Context::Context(const OptionalVersion& t_version)
 
     try {
 #ifdef _WIN32
-        m_error_code = ::WSAStartup(version, &m_wsadata);
+        m_error_code = ::WSAStartup(version, &m_data);
 #else
-        static_cast<void>(version);
+        m_data.status = "Running";
+        m_data.version = version;
 #endif
 
         if (m_error_code != 0) {
@@ -73,27 +74,27 @@ Network::Context::~Context()
 auto Network::Context::status_string() const -> std::string
 {
 #ifdef _WIN32
-    return m_wsadata.szSystemStatus;
+    return m_data.szSystemStatus;
 #else
-    return "Running";
+    return m_data.m_status;
 #endif
 }
 
 auto Network::Context::system_string() const -> std::string
 {
 #ifdef _WIN32
-    return m_wsadata.szDescription;
+    return m_data.szDescription;
 #else
-    return "";
+    return m_data.m_system;
 #endif
 }
 
 auto Network::Context::version_number() const -> Network::version_type
 {
 #ifdef _WIN32
-    return m_wsadata.wVersion;
+    return m_data.wVersion;
 #else
-    return 0;
+    return m_data.version;
 #endif
 }
 
