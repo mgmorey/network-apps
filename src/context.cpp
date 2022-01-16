@@ -45,8 +45,8 @@ Network::Context::Context(const OptionalVersion& t_version)
 #ifdef _WIN32
         m_error_code = ::WSAStartup(version, &m_data);
 #else
-        m_data.status = "Running";
-        m_data.version = version;
+        m_data.m_status = "Running";
+        m_data.m_version = version;
 #endif
 
         if (m_error_code != 0) {
@@ -94,19 +94,20 @@ auto Network::Context::version_number() const -> Network::version_type
 #ifdef _WIN32
     return m_data.wVersion;
 #else
-    return m_data.version;
+    return m_data.m_version;
 #endif
 }
 
 auto Network::Context::version_string() const -> std::string
 {
+    const auto radix {256U};
     const version_type version {version_number()};
 #ifdef _WIN32
-    const unsigned major {LOBYTE(version)};
-    const unsigned minor {HIBYTE(version)};
+    const version_type major {LOBYTE(version)};
+    const version_type minor {HIBYTE(version)};
 #else
-    const unsigned major {version / 16};
-    const unsigned minor {version % 16};
+    const version_type major = version % radix;
+    const version_type minor = version / radix;
 #endif
     return (std::to_string(major) + "." +
             std::to_string(minor));

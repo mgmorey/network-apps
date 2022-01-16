@@ -22,6 +22,8 @@
 #include <winsock2.h>       // WSADATA
 #endif
 
+#include <string>       // std::string
+
 namespace Network
 {
 #ifdef _WIN32
