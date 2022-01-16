@@ -67,7 +67,12 @@ Network::Context::Context(const OptionalVersion& t_version)
 
 Network::Context::~Context()
 {
-    cleanup(m_error_code);
+    m_error_code = cleanup(m_error_code);
+
+    if (m_error_code != 0) {
+        std::cerr << format_os_error(m_error_code)
+                  << std::endl;
+    }
 }
 
 auto Network::Context::status() const -> std::string
@@ -97,16 +102,15 @@ auto Network::Context::version() const -> Network::Version
 #endif
 }
 
-auto Network::Context::cleanup(error_type error_code) -> void
+auto Network::Context::cleanup(error_type error_code) -> Network::error_type
 {
-    if (error_code == 0) {
 #ifdef _WIN32
-        if ((error_code = ::WSACleanup()) != 0 ) {
-            std::cerr << format_os_error(error_code)
-                      << std::endl;
-        }
-#endif
+    if (error_code == 0) {
+        error_code = ::WSACleanup();
     }
+#endif
+
+    return error_code;
 }
 
 auto Network::Context::dispatch(error_type error_code) -> void

@@ -44,7 +44,7 @@ namespace Network
         [[nodiscard]] auto version() const -> Version;
 
     protected:
-        static auto cleanup(error_type error_code) -> void;
+        static auto cleanup(error_type error_code = 0) -> error_type;
         static auto dispatch(error_type error_code) -> void;
 
     private:
