@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_CONTEXT_DATA_H
-#define NETWORK_CONTEXT_DATA_H
+#ifndef NETWORK_CONTEXTDATA_H
+#define NETWORK_CONTEXTDATA_H
 
 #include "network/version-type.h"       // version_type
 
