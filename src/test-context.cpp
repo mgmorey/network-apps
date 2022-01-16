@@ -52,8 +52,7 @@ namespace TestContext
     static const auto invalid_version {Network::Version {0, 0}};
 #else
     static const auto expected_error_invalid_version {""};
-    static const auto expected_result_number {0};
-    static const auto expected_result_string {""};
+    static const auto expected_result_uninitialized {Network::Result {0, ""}};
     static const auto expected_status {"Running"};
     static const auto expected_system {
         "Berkeley Software Distribution Sockets"
@@ -241,16 +240,16 @@ namespace TestContext
         const auto expected_result {Network::Result {0, ""}};
         TestContext::Context context;
         static_cast<void>(context);
-        const auto actual_result {get_hostname()};
-        print_error_result(actual_result);
-        assert(actual_result == expected_result);		// NOLINT
+        const auto result {get_hostname()};
+        print_error_result(result);
+        assert(result == expected_result);			// NOLINT
     }
 
     static auto test_hostname_without_context() -> void
     {
-        const auto actual_result {get_hostname()};
-        print_error_result(actual_result);
-        assert(actual_result == expected_result_uninitialized);	// NOLINT
+        const auto result {get_hostname()};
+        print_error_result(result);
+        assert(result == expected_result_uninitialized);	// NOLINT
     }
 }
 
