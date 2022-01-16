@@ -18,7 +18,7 @@
 
 #include "network/contextdata.h"        // ContextData
 #include "network/errorresult.h"        // ErrorResult
-#include "network/version-type.h"       // version_type
+#include "network/version.h"            // Version
 
 #include <optional>     // std::optional
 #include <ostream>      // std::ostream
@@ -31,7 +31,7 @@ namespace Network
                                const Context& context) -> std::ostream&;
 
     public:
-        using OptionalVersion = std::optional<version_type>;
+        using OptionalVersion = std::optional<Version>;
 
         explicit Context(const OptionalVersion& t_version = {});
         Context(const Context&) = delete;
@@ -41,15 +41,15 @@ namespace Network
         auto operator=(const Context&&) -> Context& = delete;
         [[nodiscard]] auto status_string() const -> std::string;
         [[nodiscard]] auto system_string() const -> std::string;
-        [[nodiscard]] auto version_number() const -> version_type;
+        [[nodiscard]] auto version_number() const -> Version;
         [[nodiscard]] auto version_string() const -> std::string;
 
     protected:
         static auto cleanup(error_type error_code) -> void;
         static auto dispatch(error_type error_code) -> void;
-        static auto version(version_type major,
-                            version_type minor) -> version_type;
-        static auto version_string(version_type version) -> std::string;
+        static auto version(const Version& major,
+                            const Version& minor) -> Version;
+        static auto version_string(const Version& version) -> std::string;
 
     private:
         ContextData m_data;

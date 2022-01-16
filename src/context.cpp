@@ -14,7 +14,8 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/context.h"            // Context, ErrorResult,
-                                        // operator<<(), std::ostream
+                                        // Version, operator<<(),
+                                        // std::ostream
 #include "network/exceptions.h"         // Error, LogicError,
                                         // RunTimeError
 #include "network/format-os-error.h"    // format_os_error()
@@ -87,7 +88,7 @@ auto Network::Context::system_string() const -> std::string
 #endif
 }
 
-auto Network::Context::version_number() const -> Network::version_type
+auto Network::Context::version_number() const -> Network::Version
 {
 #ifdef _WIN32
     return m_data.wVersion;
@@ -133,13 +134,13 @@ auto Network::Context::dispatch(error_type error_code) -> void
     }
 }
 
-auto Network::Context::version(version_type major,
-                               version_type minor) -> Network::version_type
+auto Network::Context::version(const Version& major,
+                               const Version& minor) -> Network::Version
 {
     return minor * version_radix + major;
 }
 
-auto Network::Context::version_string(version_type version) -> std::string
+auto Network::Context::version_string(const Version& version) -> std::string
 {
     const auto major = version % version_radix;
     const auto minor = version / version_radix;

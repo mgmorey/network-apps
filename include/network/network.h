@@ -84,6 +84,7 @@
                                         // protocol_type, result_type,
                                         // sock_len_type,
                                         // socktype_type
-#include "network/uniquify.h"           // Uniquify
+#include "network/uniquify.h"           // uniquify()
+#include "network/version.h"            // Version
 
 #endif

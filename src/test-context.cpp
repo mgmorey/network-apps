@@ -15,7 +15,7 @@
 
 #include "network/network.h"            // Context, ErrorResult,
                                         // OsErrorResult, Overloaded,
-                                        // get_hostname()
+                                        // Version, get_hostname()
 
 #ifdef _WIN32
 #include <getopt.h>         // getopt(), optarg, opterr, optind
@@ -31,7 +31,7 @@
 
 namespace TestContext
 {
-    constexpr auto version_invalid {0};
+    static const Network::Version version_invalid {0};
 
     static bool verbose {false};  // NOLINT
 
