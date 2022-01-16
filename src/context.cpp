@@ -97,11 +97,6 @@ auto Network::Context::version_number() const -> Network::Version
 #endif
 }
 
-auto Network::Context::version_string() const -> std::string
-{
-    return version_string(version_number());
-}
-
 auto Network::Context::cleanup(error_type error_code) -> void
 {
     if (error_code == 0) {
@@ -134,23 +129,15 @@ auto Network::Context::dispatch(error_type error_code) -> void
     }
 }
 
-auto Network::Context::version_string(const Version& version) -> std::string
-{
-    const auto major = version % version_radix;
-    const auto minor = version / version_radix;
-    return (std::to_string(major) + "." +
-            std::to_string(minor));
-}
-
 auto Network::operator<<(std::ostream& os,
                          const Context& context) -> std::ostream&
 {
     const auto status {context.status_string()};
     const auto system {context.system_string()};
-    const auto version {context.version_string()};
+    const auto version {context.version_number()};
     os << system;
 
-    if (version != "0.0") {
+    if (version != 0) {
         os << " Version "
            << version;
     }

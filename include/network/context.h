@@ -42,12 +42,10 @@ namespace Network
         [[nodiscard]] auto status_string() const -> std::string;
         [[nodiscard]] auto system_string() const -> std::string;
         [[nodiscard]] auto version_number() const -> Version;
-        [[nodiscard]] auto version_string() const -> std::string;
 
     protected:
         static auto cleanup(error_type error_code) -> void;
         static auto dispatch(error_type error_code) -> void;
-        static auto version_string(const Version& version) -> std::string;
 
     private:
         ContextData m_data;

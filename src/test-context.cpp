@@ -113,25 +113,25 @@ namespace TestContext
                       << context.system_string()
                       << std::endl
                       << "Version: "
-                      << context.version_string()
+                      << context.version_number()
                       << std::endl;
         }
     }
 
     static auto test_context(const Network::Context& context) -> void
     {
-        constexpr auto status {"Running"};
+        static const std::string status {"Running"};
 #ifdef _WIN32
-        constexpr auto system {"WinSock 2.0"};
-        constexpr auto version {"2.2"};
+        static const std::string system {"WinSock 2.0"};
+        static const Network::Version version {2, 2};
 #else
-        constexpr auto system {"Berkeley Software Distribution Sockets"};
-        constexpr auto version {"0.0"};
+        static const std::string system {"Berkeley Software Distribution Sockets"};
+        static const Network::Version version {0, 0};
 #endif
         print_strings(context);
         assert(context.status_string() == status);		// NOLINT
         assert(context.system_string() == system);		// NOLINT
-        assert(context.version_string() == version);		// NOLINT
+        assert(context.version_number() == version);		// NOLINT
     }
 
     static auto test_context_version_invalid() -> void
