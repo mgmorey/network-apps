@@ -16,7 +16,6 @@
 #ifndef NETWORK_RESULT_H
 #define NETWORK_RESULT_H
 
-#include <ostream>      // std::ostream
 #include <string>       // std::string
 
 namespace Network
