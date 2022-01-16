@@ -17,10 +17,10 @@
 #define NETWORK_CONTEXT_H
 
 #include "network/errorresult.h"        // ErrorResult
+#include "network/version-type.h"       // version_type
 
 #ifdef _WIN32
 #include <winsock2.h>       // WSADATA
-#include <windows.h>        // WORD
 #endif
 
 #include <optional>     // std::optional
@@ -34,11 +34,6 @@ namespace Network
                                const Context& context) -> std::ostream&;
 
     public:
-#ifdef _WIN32
-        using version_type = WORD;
-#else
-        using version_type = unsigned;
-#endif
         using OptionalVersion = std::optional<version_type>;
 
         explicit Context(const OptionalVersion& t_version = {});

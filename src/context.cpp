@@ -35,7 +35,7 @@
 #define VERSION_DEFAULT	(0)			// NOLINT
 #endif
 
-constexpr Network::Context::version_type version_default {VERSION_DEFAULT};
+constexpr Network::version_type version_default {VERSION_DEFAULT};
 
 Network::Context::Context(const OptionalVersion& t_version)
 {
@@ -88,7 +88,7 @@ auto Network::Context::system_string() const -> std::string
 #endif
 }
 
-auto Network::Context::version_number() const -> Network::Context::version_type
+auto Network::Context::version_number() const -> Network::version_type
 {
 #ifdef _WIN32
     return m_wsadata.wVersion;
