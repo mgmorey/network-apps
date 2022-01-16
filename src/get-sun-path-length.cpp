@@ -13,9 +13,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-sun-path-length.h"// get_sun_path_length(),
-                                        // sockaddr_un, std::size_t
-#include "network/sun-offsets.h"        // sun_path_offset
+#include "network/get-sun-path-length.h"        // get_sun_path_length(),
+                                                // sockaddr_un,
+                                                // std::size_t
+#include "network/sun-offsets.h"                // sun_path_offset
 
 #include <algorithm>    // std::max(), std::min()
 #include <cassert>      // assert()

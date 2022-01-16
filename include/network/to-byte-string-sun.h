@@ -17,7 +17,6 @@
 #define NETWORK_TO_BYTE_STRING_SUN_H
 
 #include "network/bytestring.h"         // ByteString
-#include "network/optionalpathname.h"   // OptionalPathname
 #ifndef _WIN32
 #include "network/sun-sizes.h"          // sun_size
 #endif
@@ -33,7 +32,6 @@ namespace Network
 #ifndef _WIN32
     extern auto to_byte_string(const sockaddr_un* sun,
                                std::size_t size = sun_size) -> ByteString;
-    extern auto to_byte_string(const OptionalPathname& pathname = {}) -> ByteString;
 #endif
 }
 

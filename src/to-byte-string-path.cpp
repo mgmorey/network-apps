@@ -13,12 +13,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/to-byte-string-sun.h" // ByteString,
-                                        // OptionalPathname,
-                                        // sockaddr_un,
-                                        // to_byte_string()
+#include "network/to-byte-string-path.h"        // ByteString,
+                                                // OptionalPathname,
+                                                // to_byte_string()
+#include "network/to-byte-string-sun.h"         // sockaddr_un,
+                                                // to_byte_string()
+
 #ifndef _WIN32
-#include "network/sun-offsets.h"        // sun_path_offset
+#include "network/sun-offsets.h"                // sun_path_offset
 #endif
 
 #ifndef _WIN32

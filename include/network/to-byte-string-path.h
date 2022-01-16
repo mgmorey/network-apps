@@ -13,20 +13,15 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-sun-length.h"             // get_sun_length(),
-                                                // sockaddr_un,
-                                                // std::size_t
-#include "network/get-sun-path-length.h"        // get_sun_path_length(),
+#ifndef NETWORK_TO_BYTE_STRING_PATH_H
+#define NETWORK_TO_BYTE_STRING_PATH_H
 
-#ifndef _WIN32
-#ifdef HAVE_SOCKADDR_SA_LEN
+#include "network/bytestring.h"         // ByteString
+#include "network/optionalpathname.h"   // OptionalPathname
 
-auto Network::get_sun_length(const sockaddr_un* sun,
-                             std::size_t size) -> std::size_t
+namespace Network
 {
-    const auto path_len {get_sun_path_length(sun, size)};
-    return sizeof *sun - sizeof sun->sun_path + path_len;
+    extern auto to_byte_string(const OptionalPathname& pathname) -> ByteString;
 }
 
-#endif
 #endif

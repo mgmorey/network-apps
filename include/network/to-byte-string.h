@@ -16,8 +16,9 @@
 #ifndef NETWORK_TO_BYTE_STRING_H
 #define NETWORK_TO_BYTE_STRING_H
 
-#include "network/to-byte-string-bs.h"  // to_byte_string()
-#include "network/to-byte-string-sa.h"  // to_byte_string()
-#include "network/to-byte-string-sun.h" // to_byte_string()
+#include "network/to-byte-string-bs.h"          // to_byte_string()
+#include "network/to-byte-string-path.h"        // to_byte_string()
+#include "network/to-byte-string-sa.h"          // to_byte_string()
+#include "network/to-byte-string-sun.h"         // to_byte_string()
 
 #endif
