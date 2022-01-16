@@ -16,7 +16,7 @@
 #ifndef NETWORK_CONTEXTDATA_H
 #define NETWORK_CONTEXTDATA_H
 
-#include "network/version-type.h"       // version_type
+#include "network/version.h"            // Version
 
 #ifdef _WIN32
 #include <winsock2.h>       // WSADATA
@@ -31,9 +31,9 @@ namespace Network
 #else
     struct ContextData
     {
-        std::string m_status {};
-        std::string m_system {};
-        version_type m_version {0};
+        std::string m_status {"Running"};
+        std::string m_system {"Berkeley Software Distribution Sockets"};
+        Version m_version {0, 0};
     };
 #endif
 }

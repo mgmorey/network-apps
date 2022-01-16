@@ -34,32 +34,17 @@
 #include <iostream>     // std::cerr, std::endl
 #include <sstream>      // std::ostringstream
 
-constexpr auto status_running {"Running"};
-constexpr auto system_bsdsock {"Berkeley Software Distribution Sockets"};
-
 Network::Context::Context(const OptionalVersion& t_version)
 {
 #ifdef _WIN32
-    const Version default_version {2, 2};
-#else
-    const Version default_version {0, 0};
-#endif
-
     try {
-        const auto request_version {t_version ? *t_version : default_version};
-#ifdef _WIN32
+        const auto request_version {t_version ? *t_version : {2, 2}};
         m_error_code = ::WSAStartup(request_version, &m_data);
-#else
-        m_data.m_status = status_running;
-        m_data.m_system = system_bsdsock;
-        m_data.m_version = request_version;
-#endif
 
         if (m_error_code != 0) {
             const auto error_str {format_os_error(m_error_code)};
 
             switch (m_error_code) {  // NOLINT
-#ifdef _WIN32
             case WSAEFAULT:
             case WSAVERNOTSUPPORTED:
                 throw LogicError {error_str};
@@ -68,7 +53,6 @@ Network::Context::Context(const OptionalVersion& t_version)
             case WSASYSNOTREADY:
                 throw RuntimeError {error_str};
                 break;
-#endif
             default:
                 throw Error {error_str};
             }
@@ -79,13 +63,17 @@ Network::Context::Context(const OptionalVersion& t_version)
             m_error_code = cleanup();
         }
 
-        // warning: thrown exception type is not nothrow copy
-        // constructible [cert-err60-cpp]
+        // Warning from clang-tidy: thrown exception type is not
+        // nothrow copy constructible [cert-err60-cpp]
+
         // NOLINTNEXTLINE
         throw error;
     }
 
     m_data_dirty = true;
+#else
+    static_cast<void>(t_version);
+#endif
 }
 
 Network::Context::~Context()

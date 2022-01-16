@@ -35,24 +35,19 @@
 namespace TestContext
 {
 #ifdef _WIN32
+    static const auto expected_code_initialized {0};
+    static const auto expected_code_uninitialized {WSANOTINITIALISED};
     static const auto expected_error_invalid_version {
         "The Windows Sockets version requested is not supported."
-    };
-    static const auto expected_result_uninitialized {
-        Network::Result {
-            WSANOTINITIALISED,
-            "Call to gethostname(...) failed with error 10093: "
-            "Either the application has not called WSAStartup, "
-            "or WSAStartup failed."
-        }
     };
     static const auto expected_status {"Running"};
     static const auto expected_system {"WinSock 2.0"};
     static const auto expected_version {Network::Version {2, 2}};
     static const auto invalid_version {Network::Version {0, 0}};
 #else
+    static const auto expected_code_initialized {0};
+    static const auto expected_code_uninitialized {0};
     static const auto expected_error_invalid_version {""};
-    static const auto expected_result_uninitialized {Network::Result {0, ""}};
     static const auto expected_status {"Running"};
     static const auto expected_system {
         "Berkeley Software Distribution Sockets"
@@ -130,7 +125,7 @@ namespace TestContext
         return result;
     }
 
-    static auto print_error_result(const Network::OsErrorResult& result) -> void
+    static auto print_result(const Network::OsErrorResult& result) -> void
     {
         if (verbose) {
             std::cerr << "Number: "
@@ -237,19 +232,18 @@ namespace TestContext
 
     static auto test_hostname_with_context() -> void
     {
-        const auto expected_result {Network::Result {0, ""}};
         TestContext::Context context;
         static_cast<void>(context);
         const auto result {get_hostname()};
-        print_error_result(result);
-        assert(result == expected_result);			// NOLINT
+        print_result(result);
+        assert(result.number() == expected_code_initialized);	// NOLINT
     }
 
     static auto test_hostname_without_context() -> void
     {
         const auto result {get_hostname()};
-        print_error_result(result);
-        assert(result == expected_result_uninitialized);	// NOLINT
+        print_result(result);
+        assert(result.number() == expected_code_uninitialized);	// NOLINT
     }
 }
 
