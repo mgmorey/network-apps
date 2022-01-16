@@ -28,15 +28,15 @@ namespace Network
 
     public:
         // cppcheck-suppress noExplicitConstructor
-        Version(version_type t_version);  // NOLINT
-        Version(version_type t_major, version_type t_minor);
-        Version(const Version&) = default;
+        Version(version_type t_version) noexcept;  // NOLINT
+        Version(version_type t_major, version_type t_minor) noexcept;
+        Version(const Version&) noexcept = default;
         Version(Version&&) noexcept = default;
-        ~Version() = default;
-        auto operator=(const Version&) -> Version& = default;
+        ~Version() noexcept = default;
+        auto operator=(const Version&) noexcept -> Version& = default;
         auto operator=(Version&&) noexcept -> Version& = default;
-        operator version_type() const;  // NOLINT
-        operator std::string() const;  // NOLINT
+        operator version_type() const noexcept;  // NOLINT
+        operator std::string() const noexcept;  // NOLINT
 
     private:
         static constexpr auto m_radix {0x100U};

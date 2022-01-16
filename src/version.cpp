@@ -16,22 +16,22 @@
 #include "network/version.h"            // Version, version_type, operator<<(),
                                         // std::ostream
 
-Network::Version::Version(version_type t_version) :
+Network::Version::Version(version_type t_version) noexcept :
     m_value(t_version)
 {
 }
 
-Network::Version::Version(version_type t_major, version_type t_minor) :
+Network::Version::Version(version_type t_major, version_type t_minor) noexcept :
     m_value(t_minor * m_radix + t_major)
 {
 }
 
-Network::Version::operator version_type() const
+Network::Version::operator version_type() const noexcept
 {
     return m_value;
 }
 
-Network::Version::operator std::string() const
+Network::Version::operator std::string() const noexcept
 {
     return (std::to_string(m_value % m_radix) + "." +
             std::to_string(m_value / m_radix));
