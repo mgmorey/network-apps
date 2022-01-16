@@ -31,6 +31,8 @@
 
 namespace TestContext
 {
+    static bool verbose {false};  // NOLINT
+
 #ifdef _WIN32
     static const auto expected_error_invalid_version {
         "The Windows Sockets version requested is not supported."
@@ -57,7 +59,25 @@ namespace TestContext
     static const auto invalid_version {Network::Version {0, 0}};
 #endif
 
-    static bool verbose {false};  // NOLINT
+    class Context :
+        public Network::Context
+    {
+    public:
+        explicit Context(const OptionalVersion& t_version = {}) :
+            Network::Context(t_version)
+        {
+        }
+
+        static auto cleanup() -> Network::error_type
+        {
+            return Network::Context::cleanup(verbose);
+        }
+
+        auto destroy() -> Network::error_type
+        {
+            return Network::Context::destroy(verbose);
+        }
+    };
 
     static auto parse_arguments(int argc, char** argv) ->
         std::vector<std::string>
@@ -127,7 +147,7 @@ namespace TestContext
         }
     }
 
-    static auto print_strings(const Network::Context& context) -> void
+    static auto print_strings(const TestContext::Context& context) -> void
     {
         if (verbose) {
             std::cerr << "Status: "
@@ -142,7 +162,7 @@ namespace TestContext
         }
     }
 
-    static auto test_context(const Network::Context& context) -> void
+    static auto test_context(const TestContext::Context& context) -> void
     {
         print_strings(context);
         assert(context.status() == expected_status);		// NOLINT
@@ -150,12 +170,17 @@ namespace TestContext
         assert(context.version() == expected_version);		// NOLINT
     }
 
+    static auto test_context_cleanup() -> void
+    {
+        assert(TestContext::Context::cleanup() != 0);		// NOLINT
+    }
+
     static auto test_context_invalid_version() -> void
     {
         std::string what;
 
         try {
-            const Network::Context context {invalid_version};
+            const TestContext::Context context {invalid_version};
             static_cast<void>(context);
         }
         catch (Network::Error& error) {
@@ -164,14 +189,33 @@ namespace TestContext
         }
 
         assert(what == expected_error_invalid_version);		// NOLINT
+        assert(TestContext::Context::cleanup() != 0);		// NOLINT
     }
 
-    static auto test_context_valid_version() -> void
+    static auto test_context_valid_with_destroy() -> void
     {
         std::string what;
 
         try {
-            const Network::Context context;
+            TestContext::Context context;
+            TestContext::test_context(context);
+            assert(context.destroy() == 0);			// NOLINT
+        }
+        catch (Network::Error& error) {
+            print_exception(error);
+            what = error.what();
+        }
+
+        assert(what == "");					// NOLINT
+        assert(TestContext::Context::cleanup() != 0);		// NOLINT
+    }
+
+    static auto test_context_valid_without_destroy() -> void
+    {
+        std::string what;
+
+        try {
+            const TestContext::Context context;
             TestContext::test_context(context);
         }
         catch (Network::Error& error) {
@@ -180,11 +224,12 @@ namespace TestContext
         }
 
         assert(what == "");					// NOLINT
+        assert(TestContext::Context::cleanup() != 0);		// NOLINT
     }
 
     static auto test_hostname_with_context() -> void
     {
-        const Network::Context context;
+        TestContext::Context context;
         static_cast<void>(context);
         const auto result {get_hostname_error_result()};
         print_error_result(result);
@@ -205,8 +250,10 @@ auto main(int argc, char* argv[]) -> int
 {
     try {
         const auto args {TestContext::parse_arguments(argc, argv)};
-        TestContext::test_context_valid_version();
+        TestContext::test_context_cleanup();
         TestContext::test_context_invalid_version();
+        TestContext::test_context_valid_with_destroy();
+        TestContext::test_context_valid_without_destroy();
         TestContext::test_hostname_without_context();
         TestContext::test_hostname_with_context();
     }

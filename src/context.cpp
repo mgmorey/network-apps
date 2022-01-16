@@ -14,11 +14,15 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/context.h"            // Context, Version,
-                                        // error_type, operator<<(),
-                                        // std::ostream
+                                        // operator<<(),
+                                        // os_error_type, std::ostream
+#include "network/error-type.h"         // error_type
 #include "network/exceptions.h"         // Error, LogicError,
                                         // RunTimeError
-#include "network/format-os-error.h"    // format_os_error()
+#include "network/os-error.h"           // format_os_error(),
+                                        // get_last_os_error(),
+                                        // reset_last_os_error()
+#include "network/socket-error.h"       // socket_error
 
 #ifdef _WIN32
 #include <winsock2.h>       // WSACleanup(), WSAStartup(), WSAEFAULT,
@@ -53,25 +57,42 @@ Network::Context::Context(const OptionalVersion& t_version)
 #endif
 
         if (m_error_code != 0) {
-            dispatch(m_error_code);
+            const auto error_str {format_os_error(m_error_code)};
+
+            switch (m_error_code) {  // NOLINT
+#ifdef _WIN32
+            case WSAEFAULT:
+            case WSAVERNOTSUPPORTED:
+                throw LogicError {error_str};
+                break;
+            case WSAEPROCLIM:
+            case WSASYSNOTREADY:
+                throw RuntimeError {error_str};
+                break;
+#endif
+            default:
+                throw Error {error_str};
+            }
         }
     }
     catch (const Network::Error& error) {
-        cleanup(m_error_code);
+        if (m_error_code == 0) {
+            m_error_code = cleanup();
+        }
+
         // warning: thrown exception type is not nothrow copy
         // constructible [cert-err60-cpp]
         // NOLINTNEXTLINE
         throw error;
     }
+
+    m_data_dirty = true;
 }
 
 Network::Context::~Context()
 {
-    m_error_code = cleanup(m_error_code);
-
-    if (m_error_code != 0) {
-        std::cerr << format_os_error(m_error_code)
-                  << std::endl;
+    if (m_error_code == 0) {
+        static_cast<void>(destroy());
     }
 }
 
@@ -102,35 +123,36 @@ auto Network::Context::version() const -> Network::Version
 #endif
 }
 
-auto Network::Context::cleanup(error_type error_code) -> Network::error_type
+auto Network::Context::cleanup(bool verbose) -> Network::os_error_type
 {
+    reset_last_os_error();
+    error_type result {0};
 #ifdef _WIN32
-    if (error_code == 0) {
-        error_code = ::WSACleanup();
-    }
+    result = ::WSACleanup();
 #endif
 
-    return error_code;
+    if (result == socket_error) {
+        const auto error_code {get_last_os_error()};
+
+        if (verbose) {
+            const auto error_str {format_os_error(error_code)};
+            std::cerr << "Call to WSACleanup() failed with error "
+                      << error_code
+                      << (error_str.empty() ? "" : ": " + error_str)
+                      << std::endl;
+        }
+
+        return error_code;
+    }
+
+    return 0;
 }
 
-auto Network::Context::dispatch(error_type error_code) -> void
+auto Network::Context::destroy(bool verbose) -> Network::os_error_type
 {
-    const auto error_str {format_os_error(error_code)};
-
-    switch (error_code) {  // NOLINT
-#ifdef _WIN32
-    case WSAEFAULT:
-    case WSAVERNOTSUPPORTED:
-        throw LogicError {error_str};
-        break;
-    case WSAEPROCLIM:
-    case WSASYSNOTREADY:
-        throw RuntimeError {error_str};
-        break;
-#endif
-    default:
-        throw Error {error_str};
-    }
+    m_error_code = cleanup(verbose);
+    m_data_dirty = false;
+    return m_error_code;
 }
 
 auto Network::operator<<(std::ostream& os,

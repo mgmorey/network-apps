@@ -17,7 +17,7 @@
 #define NETWORK_CONTEXT_H
 
 #include "network/contextdata.h"        // ContextData
-#include "network/error-type.h"         // error_type
+#include "network/os-error-type.h"      // os_error_type
 #include "network/version.h"            // Version
 
 #include <optional>     // std::optional
@@ -44,12 +44,13 @@ namespace Network
         [[nodiscard]] auto version() const -> Version;
 
     protected:
-        static auto cleanup(error_type error_code = 0) -> error_type;
-        static auto dispatch(error_type error_code) -> void;
+        static auto cleanup(bool verbose = false) -> os_error_type;
+        auto destroy(bool verbose = false) -> os_error_type;
 
     private:
-        ContextData m_data;
-        error_type m_error_code {0};
+        ContextData m_data {};
+        bool m_data_dirty {false};
+        os_error_type m_error_code {0};
     };
 
     extern auto operator<<(std::ostream& os,
