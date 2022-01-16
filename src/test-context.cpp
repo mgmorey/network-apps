@@ -19,6 +19,9 @@
 
 #ifdef _WIN32
 #include <getopt.h>         // getopt(), optarg, opterr, optind
+#include <winsock2.h>       // WSAEFAULT, WSAEPROCLIM,
+                            // WSANOTINITIALISED, WSASYSNOTREADY,
+                            // WSAVERNOTSUPPORTED
 #else
 #include <unistd.h>         // getopt(), optarg, opterr, optind
 #endif
@@ -31,17 +34,15 @@
 
 namespace TestContext
 {
-    static bool verbose {false};  // NOLINT
-
 #ifdef _WIN32
     static const auto expected_error_invalid_version {
         "The Windows Sockets version requested is not supported."
     };
-    static const auto expected_result_number {10093};
+    static const auto expected_result_number {WSANOTINITIALISED};
     static const auto expected_result_string {
         "Call to gethostname(...) failed with error 10093: "
-            "Either the application has not called WSAStartup, "
-            "or WSAStartup failed."
+        "Either the application has not called WSAStartup, "
+        "or WSAStartup failed."
     };
     static const auto expected_status {"Running"};
     static const auto expected_system {"WinSock 2.0"};
@@ -58,6 +59,8 @@ namespace TestContext
     static const auto expected_version {Network::Version {0, 0}};
     static const auto invalid_version {Network::Version {0, 0}};
 #endif
+
+    static bool verbose {false};  // NOLINT
 
     class Context :
         public Network::Context

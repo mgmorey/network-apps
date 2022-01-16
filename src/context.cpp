@@ -26,8 +26,8 @@
 
 #ifdef _WIN32
 #include <winsock2.h>       // WSACleanup(), WSAStartup(), WSAEFAULT,
-                            // WSAEPROCLIM, WSASYSNOTREADY,
-                            // WSAVERNOTSUPPORTED
+                            // WSAEPROCLIM, WSANOTINITIALISED,
+                            // WSASYSNOTREADY, WSAVERNOTSUPPORTED
 #include <windows.h>        // HIBYTE(), LOBYTE(), MAKEWORD()
 #endif
 
