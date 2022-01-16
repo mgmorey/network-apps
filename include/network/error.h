@@ -30,6 +30,12 @@ namespace Network
         {
         }
 
+        Error(const Error&) = default;
+        Error(Error&&) noexcept = default;
+        ~Error() = default;
+        auto operator=(const Error&) -> Error& = default;
+        auto operator=(Error&&) noexcept -> Error& = default;
+
         [[nodiscard]] auto what() const noexcept -> const char*
         {
             return m_str.c_str();

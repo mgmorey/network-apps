@@ -28,6 +28,12 @@ namespace Network
             Error(std::move(t_what))
         {
         }
+
+        RuntimeError(const RuntimeError&) = default;
+        RuntimeError(RuntimeError&&) noexcept = default;
+        ~RuntimeError() = default;
+        auto operator=(const RuntimeError&) -> RuntimeError& = default;
+        auto operator=(RuntimeError&&) noexcept -> RuntimeError& = default;
     };
 }
 

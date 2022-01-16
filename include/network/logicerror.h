@@ -28,6 +28,12 @@ namespace Network
             Error(std::move(t_what))
         {
         }
+
+        LogicError(const LogicError&) = default;
+        LogicError(LogicError&&) noexcept = default;
+        ~LogicError() = default;
+        auto operator=(const LogicError&) -> LogicError& = default;
+        auto operator=(LogicError&&) noexcept -> LogicError& = default;
     };
 }
 
