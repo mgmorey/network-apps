@@ -24,37 +24,37 @@ namespace Network
     template<typename T>
     struct Result
     {
-        Result() = default;
+        Result() noexcept = default;
 
-        Result(T t_number, std::string t_string) :
+        Result(T t_number, std::string t_string) noexcept :
             m_string(std::move(t_string)),
             m_number(t_number)
         {
         }
 
-        auto operator==(const Result<T>& t_result) const -> bool
+        auto operator==(const Result<T>& t_result) const noexcept -> bool
         {
             return (number() == t_result.number() &&
                     string() == t_result.string());
         }
 
-        auto operator!=(const Result<T>& t_result) const -> bool
+        auto operator!=(const Result<T>& t_result) const noexcept -> bool
         {
             return (number() != t_result.number() ||
                     string() != t_result.string());
         }
 
-        operator bool() const  // NOLINT
+        operator bool() const noexcept  // NOLINT
         {
             return m_number != 0 || !m_string.empty();
         }
 
-        [[nodiscard]] auto number() const -> T
+        [[nodiscard]] auto number() const noexcept -> T
         {
             return m_number;
         }
 
-        [[nodiscard]] auto string() const -> std::string
+        [[nodiscard]] auto string() const noexcept -> std::string
         {
             return m_string;
         }
