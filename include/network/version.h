@@ -36,6 +36,7 @@ namespace Network
         auto operator=(const Version&) -> Version& = default;
         auto operator=(Version&&) noexcept -> Version& = default;
         operator version_type() const;  // NOLINT
+        operator std::string() const;  // NOLINT
 
     private:
         static constexpr auto m_radix {0x100U};

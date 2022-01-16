@@ -31,6 +31,12 @@ Network::Version::operator version_type() const
     return m_value;
 }
 
+Network::Version::operator std::string() const
+{
+    return (std::to_string(m_value % m_radix) + "." +
+            std::to_string(m_value / m_radix));
+}
+
 auto Network::operator<<(std::ostream& os, Version version) -> std::ostream&
 {
     return os << version.m_value;
