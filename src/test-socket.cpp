@@ -137,7 +137,7 @@ auto main(int argc, char* argv[]) -> int
             TestSocket::test_path(path);
         }
     }
-    catch (std::exception& error) {
+    catch (const std::exception& error) {
         std::cerr << error.what()
                   << std::endl;
     }

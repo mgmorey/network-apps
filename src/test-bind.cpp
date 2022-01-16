@@ -195,7 +195,7 @@ auto main(int argc, char* argv[]) -> int
         };
         TestBind::test_bind(endpoint, hints);
     }
-    catch (std::exception& error) {
+    catch (const std::exception& error) {
         std::cerr << error.what()
                   << std::endl;
     }

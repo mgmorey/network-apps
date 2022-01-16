@@ -191,7 +191,7 @@ namespace TestContext
             const TestContext::Context context {invalid_version};
             static_cast<void>(context);
         }
-        catch (Network::Error& error) {
+        catch (const Network::Error& error) {
             print_exception(error);
             what = error.what();
         }
@@ -209,7 +209,7 @@ namespace TestContext
             TestContext::test_context(context);
             assert(context.destroy() == 0);			// NOLINT
         }
-        catch (Network::Error& error) {
+        catch (const Network::Error& error) {
             print_exception(error);
             what = error.what();
         }
@@ -226,7 +226,7 @@ namespace TestContext
             const TestContext::Context context;
             TestContext::test_context(context);
         }
-        catch (Network::Error& error) {
+        catch (const Network::Error& error) {
             print_exception(error);
             what = error.what();
         }
@@ -264,7 +264,7 @@ auto main(int argc, char* argv[]) -> int
         TestContext::test_hostname_with_context();
         TestContext::test_hostname_without_context();
     }
-    catch (std::exception& error) {
+    catch (const std::exception& error) {
         std::cerr << error.what()
                   << std::endl;
     }

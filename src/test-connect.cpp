@@ -242,7 +242,7 @@ auto main(int argc, char* argv[]) -> int
         };
         TestConnect::test_connect(endpoint, hints);
     }
-    catch (std::exception& error) {
+    catch (const std::exception& error) {
         std::cerr << error.what()
                   << std::endl;
     }

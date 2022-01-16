@@ -187,7 +187,7 @@ auto main(int argc, char* argv[]) -> int
         TestAddress::test_address();
         TestAddress::test_address_localhost();
     }
-    catch (std::exception& error) {
+    catch (const std::exception& error) {
         std::cerr << error.what()
                   << std::endl;
     }
