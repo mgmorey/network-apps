@@ -32,11 +32,23 @@
 namespace TestContext
 {
 #ifdef _WIN32
+    static const auto expected_error_invalid_version {
+        "The Windows Sockets version requested is not supported."
+    };
+    static const auto expected_result_number {10093};
+    static const auto expected_result_string {
+        "Call to gethostname(...) failed with error 10093: "
+            "Either the application has not called WSAStartup, "
+            "or WSAStartup failed."
+    };
     static const auto expected_status {"Running"};
     static const auto expected_system {"WinSock 2.0"};
     static const auto expected_version {Network::Version {2, 2}};
     static const auto invalid_version {Network::Version {0, 0}};
 #else
+    static const auto expected_error_invalid_version {""};
+    static const auto expected_result_number {0};
+    static const auto expected_result_string {""};
     static const auto expected_status {"Running"};
     static const auto expected_system {
         "Berkeley Software Distribution Sockets"
@@ -140,13 +152,6 @@ namespace TestContext
 
     static auto test_context_invalid_version() -> void
     {
-#ifdef _WIN32
-        constexpr auto error_version_not_supported {
-            "The Windows Sockets version requested is not supported."
-        };
-#else
-        constexpr auto error_version_not_supported {""};
-#endif
         std::string what;
 
         try {
@@ -158,7 +163,7 @@ namespace TestContext
             what = error.what();
         }
 
-        assert(what == error_version_not_supported);		// NOLINT
+        assert(what == expected_error_invalid_version);		// NOLINT
     }
 
     static auto test_context_valid_version() -> void
@@ -189,21 +194,10 @@ namespace TestContext
 
     static auto test_hostname_without_context() -> void
     {
-#ifdef _WIN32
-        constexpr auto number {10093};
-        constexpr auto string {
-            "Call to gethostname(...) failed with error 10093: "
-            "Either the application has not called WSAStartup, "
-            "or WSAStartup failed."
-        };
-#else
-        constexpr auto number {0};
-        constexpr auto string {""};
-#endif
         const auto result {get_hostname_error_result()};
         print_error_result(result);
-        assert(result.number() == number);			// NOLINT
-        assert(result.string() == string);			// NOLINT
+        assert(result.number() == expected_result_number);	// NOLINT
+        assert(result.string() == expected_result_string);	// NOLINT
     }
 }
 
