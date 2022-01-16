@@ -37,9 +37,9 @@ constexpr auto version_radix {256U};
 Network::Context::Context(const OptionalVersion& t_version)
 {
 #ifdef _WIN32
-    const auto default_version {version(2, 2)};
+    const Version default_version {2, 2};
 #else
-    const auto default_version {version(0, 0)};
+    const Version default_version {0, 0};
 #endif
 
     try {
@@ -132,12 +132,6 @@ auto Network::Context::dispatch(error_type error_code) -> void
     default:
         throw Error {error_str};
     }
-}
-
-auto Network::Context::version(const Version& major,
-                               const Version& minor) -> Network::Version
-{
-    return minor * version_radix + major;
 }
 
 auto Network::Context::version_string(const Version& version) -> std::string

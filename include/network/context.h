@@ -47,8 +47,6 @@ namespace Network
     protected:
         static auto cleanup(error_type error_code) -> void;
         static auto dispatch(error_type error_code) -> void;
-        static auto version(const Version& major,
-                            const Version& minor) -> Version;
         static auto version_string(const Version& version) -> std::string;
 
     private:
