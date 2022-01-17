@@ -167,7 +167,7 @@ auto Network::operator<<(std::ostream& os,
     const auto version {context.version()};
     os << system;
 
-    if (version != 0) {
+    if (version) {
         os << " Version "
            << version;
     }
