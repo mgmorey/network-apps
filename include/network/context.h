@@ -47,9 +47,9 @@ namespace Network
     private:
         os_error_type m_error_code {0};
         bool m_is_initialized {false};
-        std::string m_status {""};
-        std::string m_system {""};
-        Version m_version {0};
+        std::string m_status;
+        std::string m_system;
+        Version m_version;
     };
 
     extern auto operator<<(std::ostream& os,
