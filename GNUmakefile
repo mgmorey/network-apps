@@ -19,41 +19,8 @@ STANDARD := $(LANGUAGE)20
 include flags.gmk
 
 LINK.o = $(CXX) $(LDFLAGS)
-
 prefix = /usr/local
 tmp_dir = tmp
-
-artifacts = $(executables) $(libraries) $(objects) $(maps) $(listings)
-
-corefiles = *.core *.stackdump
-
-executables = $(test_execs)
-
-ifneq "$(SYSTEM)" "MINGW64_NT"
-	executables += $(unix_execs)
-endif
-
-test_execs = $(subst .cpp,,$(test_sources))
-unix_execs = $(subst .cpp,,$(unix_sources))
-
-libraries = libnetwork.a
-
-objects = $(lib_objs) $(exec_objs)
-
-exec_objs = $(addprefix $(tmp_dir)/,$(subst .cpp,.o,$(exec_sources)))
-lib_objs = $(addprefix $(tmp_dir)/,$(subst .cpp,.o,$(lib_sources)))
-
-dependencies = $(addprefix $(tmp_dir)/,$(subst .cpp,.dep,$(sources)))
-listings = $(addprefix $(tmp_dir)/,$(subst .cpp,.lst,$(sources)))
-maps = $(subst .cpp,.map,$(exec_sources))
-
-sources = $(exec_sources) $(lib_sources)
-
-exec_sources = $(test_sources)
-
-ifneq "$(SYSTEM)" "MINGW64_NT"
-	exec_sources += $(unix_sources)
-endif
 
 lib_sources = address.cpp address-sa.cpp address-sin.cpp		\
 address-sin6.cpp address-sun.cpp addrinfo.cpp bind-endpoint.cpp		\
@@ -76,14 +43,40 @@ to-byte-span-void.cpp to-byte-string-bs.cpp to-byte-string-path.cpp	\
 to-byte-string-sa.cpp to-byte-string-sun.cpp to-string-bs.cpp		\
 to-string-sin.cpp to-string-sin6.cpp version.cpp
 
-test_sources = test-address.cpp test-bind.cpp test-connect.cpp	\
+common_sources = test-address.cpp test-bind.cpp test-connect.cpp	\
 test-context.cpp test-host.cpp test-hostname.cpp
+posix_sources = test-socket.cpp
+unix_sources = unix-client.cpp unix-server.cpp
 
-ifneq "$(SYSTEM)" "MINGW64_NT"
-	test_sources += test-socket.cpp
+ifeq "$(SYSTEM)" "MINGW64_NT"
+	exec_sources = $(common_sources)
+else ifeq "$(SYSTEM)" "CYGWIN_NT"
+	exec_sources = $(common_sources) $(posix_sources)
+else ifeq "$(SYSTEM)" "Darwin"
+	exec_sources = $(common_sources) $(posix_sources)
+else ifeq "$(SYSTEM)" "FreeBSD"
+	exec_sources = $(common_sources) $(posix_sources) $(unix_sources)
+else ifeq "$(SYSTEM)" "Linux"
+	exec_sources = $(common_sources) $(posix_sources) $(unix_sources)
 endif
 
-unix_sources = unix-client.cpp unix-server.cpp
+sources = $(lib_sources) $(exec_sources)
+executables = $(subst .cpp,,$(exec_sources))
+
+exec_objs = $(addprefix $(tmp_dir)/,$(subst .cpp,.o,$(exec_sources)))
+lib_objs = $(addprefix $(tmp_dir)/,$(subst .cpp,.o,$(lib_sources)))
+objects = $(exec_objs) $(lib_objs)
+
+libraries = libnetwork.a
+
+listings = $(addprefix $(tmp_dir)/,$(subst .cpp,.lst,$(sources)))
+maps = $(subst .cpp,.map,$(exec_sources))
+
+artifacts = $(executables) $(objects) $(libraries) $(listings) $(maps)
+
+dependencies = $(addprefix $(tmp_dir)/,$(subst .cpp,.dep,$(sources)))
+
+corefiles = *.core *.stackdump
 
 .PHONY:	all
 all: $(executables) TAGS
@@ -110,25 +103,36 @@ realclean:
 	rm -rf TAGS $(artifacts) $(corefiles) $(tmp_dir)
 
 .PHONY:	test
-test: $(test_execs)
-	for f in $(test_execs); do ./$$f >$$f.log; done
+test: $(filter test-%, $(executables))
+	for f in $^; do ./$$f >$$f.log; done
 
 .PHONY:	tidy
 tidy:	$(sources)
 	clang-tidy$(LLVM_SUFFIX) $^ $(TIDY_FLAGS)
 
 .PHONY:	unix
-unix: $(unix_execs)
+unix: $(filter unix-%, $(executables))
 	./unix-server & (sleep 1; ./unix-client 2 2; ./unix-client DOWN)
+
+.SECONDARY: $(objects)
 
 TAGS:
 	printf '%s\n' $^ | etags --declarations --language=$(LANGUAGE) -
 
-$(executables): libnetwork.a
+$(tmp_dir)/%.dep: %.cpp
+	$(CXX) $(CPPFLAGS) -MM $< | bin/make-makefile -f TAGS -o $@
+
+$(tmp_dir)/%.o: %.cpp
+	$(COMPILE.cpp) $(OUTPUT_OPTION) $<
+
+%: $(tmp_dir)/%.o
+	$(LINK.o) -o $@ $^ $(LDLIBS)
 
 libnetwork.a: $(patsubst %.o,libnetwork.a(%.o),$(lib_objs))
 
-$(dependencies) $(objects): | $(tmp_dir)
+$(executables): libnetwork.a
+
+$(objects) $(dependencies): | $(tmp_dir)
 
 $(tmp_dir):
 	mkdir -p $(tmp_dir)
@@ -136,17 +140,6 @@ $(tmp_dir):
 ifneq "$(MAKECMDGOALS)" "realclean"
 include $(dependencies)
 endif
-
-.SECONDARY: $(objects)
-
-%: $(tmp_dir)/%.o
-	$(LINK.o) -o $@ $^ $(LDLIBS)
-
-$(tmp_dir)/%.o: %.cpp
-	$(COMPILE.cpp) $(OUTPUT_OPTION) $<
-
-$(tmp_dir)/%.dep: %.cpp
-	$(CXX) $(CPPFLAGS) -MM $< | bin/make-makefile -f TAGS -o $@
 
 vpath %.cpp src
 vpath %.h include/network
