@@ -43,6 +43,8 @@ namespace TestContext
     };
     static const auto expected_status {"Running"};
     static const auto expected_system {"WinSock 2.0"};
+    static const auto expected_test_status {"Running"};
+    static const auto expected_test_system {"WinSock 2.0 (Test)"};
     static const auto expected_version {Network::Version {2, 2}};
     static const auto invalid_version {Network::Version {0, 0}};
 #else
@@ -52,6 +54,10 @@ namespace TestContext
     static const auto expected_status {"Running"};
     static const auto expected_system {
         "Berkeley Software Distribution Sockets"
+    };
+    static const auto expected_test_status {"Running"};
+    static const auto expected_test_system {
+        "Berkeley Software Distribution Sockets (Test)"
     };
     static const auto expected_version {Network::Version {}};
     static const auto invalid_version {Network::Version {0, 0}};
@@ -63,10 +69,10 @@ namespace TestContext
         public Network::Context
     {
     public:
-        explicit Context(const Network::Version& t_version =
-                         Network::version_null) :
+        explicit Context(const Network::Version& t_version = {}) :
             Network::Context(t_version)
         {
+            system(system() + " (Test)");
         }
 
         static auto cleanup() -> Network::error_type
@@ -148,33 +154,74 @@ namespace TestContext
         }
     }
 
-    static auto print_strings(const TestContext::Context& context) -> void
+    static auto print_context(const Network::Context& context,
+                              const std::string& description = "") -> void
     {
         if (verbose) {
-            std::cerr << "Status: "
+            std::cerr << "Context "
+                      << &context
+                      << (description.empty() ? "" : ": " + description)
+                      << std::endl
+                      << "    Status: "
                       << context.status()
                       << std::endl
-                      << "System: "
+                      << "    System: "
                       << context.system()
                       << std::endl
-                      << "Version: "
+                      << "    Version: "
                       << context.version()
                       << std::endl;
         }
     }
 
-    static auto test_context(const TestContext::Context& context) -> void
+    static auto test_context(const Network::Context& context,
+                             const std::string& description = "",
+                             const Network::Version& version = {}) -> void
     {
-        print_strings(context);
+        print_context(context, description);
         assert(context.status() == expected_status);		// NOLINT
         assert(context.system() == expected_system);		// NOLINT
-        assert(context.version() == expected_version);		// NOLINT
+        assert(context.version() == (version ? version :
+                                     expected_version));	// NOLINT
+    }
+
+    static auto test_context(const TestContext::Context& context,
+                             const std::string& description = "",
+                             const Network::Version& version = {}) -> void
+    {
+        print_context(context, (description.empty() ? "" :
+                                description + " (test)"));
+        assert(context.status() == expected_test_status);	// NOLINT
+        assert(context.system() == expected_test_system);	// NOLINT
+        assert(context.version() == (version ? version :
+                                     expected_version));	// NOLINT
     }
 
     static auto test_context_cleanup() -> void
     {
         const auto code {TestContext::Context::cleanup()};
         assert(code == expected_code_uninitialized);		// NOLINT
+    }
+
+    static auto test_context_global_instance() -> void
+    {
+        std::string status1;
+        std::string status2;
+        std::string what;
+
+        try {
+            auto& context1 {Network::Context::instance()};
+            auto& context2 {Network::Context::instance()};
+            test_context(context1, "global");
+            test_context(context2, "global");
+            assert(&context1 == &context2);			// NOLINT
+        }
+        catch (const Network::Error& error) {
+            print_exception(error);
+            what = error.what();
+        }
+
+        assert(what == "");					// NOLINT
     }
 
     static auto test_context_invalid_version() -> void
@@ -194,13 +241,34 @@ namespace TestContext
         TestContext::test_context_cleanup();
     }
 
+    static auto test_context_local_instances() -> void
+    {
+        Network::Version version1 {1, 0};
+        Network::Version version2 {2, 0};
+        std::string what;
+
+        try {
+            Network::Context context1 {version1};
+            Network::Context context2 {version2};
+            test_context(context1, "local 1", version1);
+            test_context(context2, "local 2", version2);
+            assert(&context1 != &context2);			// NOLINT
+        }
+        catch (const Network::Error& error) {
+            print_exception(error);
+            what = error.what();
+        }
+
+        assert(what == "");					// NOLINT
+    }
+
     static auto test_context_valid_with_destroy() -> void
     {
         std::string what;
 
         try {
             TestContext::Context context;
-            TestContext::test_context(context);
+            test_context(context, "local 3");
             assert(context.destroy() == 0);			// NOLINT
         }
         catch (const Network::Error& error) {
@@ -218,7 +286,7 @@ namespace TestContext
 
         try {
             const TestContext::Context context;
-            TestContext::test_context(context);
+            test_context(context, "local 4");
         }
         catch (const Network::Error& error) {
             print_exception(error);
@@ -251,11 +319,14 @@ auto main(int argc, char* argv[]) -> int
     try {
         const auto args {TestContext::parse_arguments(argc, argv)};
         TestContext::test_context_cleanup();
+        TestContext::test_context_global_instance();
         TestContext::test_context_invalid_version();
+        TestContext::test_context_local_instances();
         TestContext::test_context_valid_with_destroy();
         TestContext::test_context_valid_without_destroy();
         TestContext::test_hostname_initialized();
         TestContext::test_hostname_uninitialized();
+        TestContext::test_context_cleanup();
     }
     catch (const std::exception& error) {
         std::cerr << error.what()

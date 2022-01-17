@@ -35,14 +35,25 @@
 #include <iostream>     // std::cerr, std::endl
 #include <sstream>      // std::ostringstream
 
+#ifdef _WIN32
 static const auto default_version {Network::Version {2, 2}};
+#else
+static const auto default_version {Network::version_null};
+#endif
+
+auto Network::Context::instance() -> Context&
+{
+    static Context g_context;
+    return g_context;
+}
 
 Network::Context::Context(const Version& t_version)
 {
+    const auto version {t_version ? t_version : default_version};
+
     try {
 #ifdef _WIN32
         WSADATA data {};
-        const auto version {t_version == ~0 ? default_version : t_version};
         m_error_code = ::WSAStartup(version, &data);
 
         if (m_error_code != 0) {
@@ -65,13 +76,13 @@ Network::Context::Context(const Version& t_version)
             m_status = data.szSystemStatus;
             m_system = data.szDescription;
             m_version = data.wVersion;
-            m_is_initialized = true;
+            m_is_started = true;
         }
 #else
-        static_cast<void>(t_version);
         m_status = "Running";
         m_system = "Berkeley Software Distribution Sockets";
-        m_is_initialized = true;
+        m_version = version;
+        m_is_started = true;
 #endif
         // Test for class invariant conditions and possibly throw
         // exceptions here if one or more conditions are not met.
@@ -85,9 +96,9 @@ Network::Context::Context(const Version& t_version)
         }
     }
     catch (const Error& error) {
-        if (m_is_initialized) {
+        if (m_is_started) {
             m_error_code = cleanup(false);
-            m_is_initialized = false;
+            m_is_started = false;
         }
 
         // TODO: Remediate the condition resulting in the following
@@ -101,7 +112,7 @@ Network::Context::Context(const Version& t_version)
 
 Network::Context::~Context()
 {
-    if (m_is_initialized) {
+    if (m_is_started) {
         static_cast<void>(destroy());
     }
 }
@@ -154,8 +165,23 @@ auto Network::Context::cleanup(bool verbose) -> Network::os_error_type
 auto Network::Context::destroy(bool verbose) -> Network::os_error_type
 {
     m_error_code = cleanup(verbose);
-    m_is_initialized = false;
+    m_is_started = false;
     return m_error_code;
+}
+
+auto Network::Context::status(const std::string& t_status) -> void
+{
+    m_status = t_status;
+}
+
+auto Network::Context::system(const std::string& t_system) -> void
+{
+    m_system = t_system;
+}
+
+auto Network::Context::version(const Version& t_version) -> void
+{
+    m_version = t_version;
 }
 
 auto Network::operator<<(std::ostream& os,

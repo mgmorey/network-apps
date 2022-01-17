@@ -29,7 +29,8 @@ namespace Network
                                const Context& context) -> std::ostream&;
 
     public:
-        explicit Context(const Version& t_version = version_null);
+        static auto instance() -> Context&;
+        explicit Context(const Version& t_version = {});
         Context(const Context&) = delete;
         Context(const Context&&) = delete;
         ~Context();
@@ -43,10 +44,13 @@ namespace Network
     protected:
         static auto cleanup(bool verbose = false) -> os_error_type;
         auto destroy(bool verbose = false) -> os_error_type;
+        auto status(const std::string& t_status) -> void;
+        auto system(const std::string& t_system) -> void;
+        auto version(const Version& t_version) -> void;
 
     private:
         os_error_type m_error_code {0};
-        bool m_is_initialized {false};
+        bool m_is_started {false};
         std::string m_status;
         std::string m_system;
         Version m_version;
