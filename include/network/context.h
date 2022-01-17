@@ -46,6 +46,7 @@ namespace Network
     protected:
         static auto cleanup(bool verbose = false) -> os_error_type;
         auto destroy(bool verbose = false) -> os_error_type;
+        auto error() const -> os_error_type;
 
     private:
         ContextData m_data {};

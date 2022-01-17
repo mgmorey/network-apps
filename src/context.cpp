@@ -57,10 +57,14 @@ Network::Context::Context(const OptionalVersion& t_version)
                 throw Error {error_str};
             }
         }
+        else {
+            m_data_dirty = true;
+        }
     }
     catch (const Network::Error& error) {
-        if (m_error_code == 0) {
-            m_error_code = cleanup();
+        if (m_data_dirty) {
+            m_error_code = cleanup(false);
+            m_data_dirty = false;
         }
 
         // Warning from clang-tidy: thrown exception type is not
@@ -72,7 +76,6 @@ Network::Context::Context(const OptionalVersion& t_version)
 #else
     static_cast<void>(t_version);
 #endif
-    m_data_dirty = true;
 }
 
 Network::Context::~Context()
@@ -138,6 +141,11 @@ auto Network::Context::destroy(bool verbose) -> Network::os_error_type
 {
     m_error_code = cleanup(verbose);
     m_data_dirty = false;
+    return m_error_code;
+}
+
+auto Network::Context::error() const -> Network::os_error_type
+{
     return m_error_code;
 }
 
