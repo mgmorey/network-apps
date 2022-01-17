@@ -25,9 +25,6 @@ namespace Network
 {
     class Context
     {
-        friend auto operator<<(std::ostream& os,
-                               const Context& context) -> std::ostream&;
-
     public:
         static auto instance() -> Context&;
         explicit Context(const Version& t_version = {});
