@@ -222,6 +222,7 @@ namespace TestContext
         }
 
         assert(what == "");					// NOLINT
+        TestContext::Context::cleanup();
     }
 
     static auto test_context_invalid_version() -> void
