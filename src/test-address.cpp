@@ -13,8 +13,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/network.h"            // Address, Bytes, Hostname,
-                                        // Overloaded, get_hosts()
+#include "network/network.h"            // Address, Bytes, Context,
+                                        // ErrorResult, Family,
+                                        // Hostname, HostVector,
+                                        // Overloaded, get_hosts(),
+                                        // get_sa_family(),
+                                        // get_sa_length(),
+                                        // is_valid(), sin_size,
+                                        // sin6_size
 
 #ifdef _WIN32
 #include <getopt.h>         // getopt(), optarg, opterr, optind

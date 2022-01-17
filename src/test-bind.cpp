@@ -14,11 +14,12 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/network.h"            // Address, Bytes,
-                                        // BytesResult, Endpoint,
-                                        // FdResult, Hints,
+                                        // BytesResult, Context,
+                                        // Endpoint, FdResult,
+                                        // FdResultVector, Hints,
                                         // OsErrorResult, Overloaded,
                                         // bind(), close(),
-                                        // get_sockname()
+                                        // get_sockname(), string_null
 
 #ifdef _WIN32
 #include <getopt.h>         // getopt(), optarg, opterr, optind

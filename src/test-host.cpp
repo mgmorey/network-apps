@@ -16,8 +16,8 @@
 #include "network/network.h"            // Address, Bytes, Context,
                                         // Endpoint, EndpointResult,
                                         // ErrorResult, Hints, Host,
-                                        // Hostname, Overloaded,
-                                        // get_endpoint(),
+                                        // HostVector, Hostname,
+                                        // Overloaded, get_endpoint(),
                                         // get_hostname(),
                                         // get_hosts(), skip_first(),
                                         // uniquify()
