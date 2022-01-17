@@ -13,29 +13,15 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-CLANG_TIDY_VERSION := $(shell bin/get-llvm-version clang-tidy$(LLVM_SUFFIX))
-COMPILER_VERSION := $(shell bin/get-compiler-version $(CXX))
-IS_CLANG := $(shell bin/is-clang $(CXX))
-IS_GCC := $(shell bin/is-gcc $(CXX))
-SYSTEM := $(shell uname -s | cut -d- -f 1)
+clang_tidy_version := $(shell bin/get-llvm-version clang-tidy$(LLVM_SUFFIX))
+is_clang := $(shell bin/is-clang $(CXX))
+is_gcc := $(shell bin/is-gcc $(CXX))
 
 ifdef SDKROOT
-ifeq "$(IS_CLANG)" "true"
+ifeq "$(is_clang)" "true"
 ifeq "$(shell bin/get-clang-flavor $(CXX))" "Apple"
 CPPFLAGS := $(shell bin/remove-option -I$(SDKROOT)/usr/include "$(CPPFLAGS)")
 LDFLAGS := $(shell bin/remove-option -L$(SDKROOT)/usr/lib "$(LDFLAGS)")
-endif
-endif
-endif
-
-ifdef USING_LIBASAN
-ifeq "$(IS_CLANG)" "true"
-ifeq "$(shell bin/get-clang-flavor $(CXX))" "FreeBSD"
-	USING_LIBASAN := false
-endif
-else ifeq "$(IS_GCC)" "true"
-ifeq "$(shell bin/get-gcc-flavor $(CXX))" "FreeBSD Ports Collection"
-	USING_LIBASAN := false
 endif
 endif
 endif
@@ -46,31 +32,31 @@ ifdef LANGUAGE
 	CPPCHECK_FLAGS += --std=$(STANDARD)
 endif
 
-ifeq "$(SYSTEM)" "MINGW64_NT"
+ifeq "$(kernel_id)" "MINGW64_NT"
 	CPPCHECK_FLAGS += -D_WIN32
 endif
 
-ifeq "$(SYSTEM)" "FreeBSD"
+ifeq "$(kernel_id)" "FreeBSD"
 	CPPFLAGS += -I/usr/local/include
 endif
 
 CPPFLAGS += -Iinclude
 
-ifeq "$(SYSTEM)" "Darwin"
+ifeq "$(kernel_id)" "Darwin"
 	CPPFLAGS += -D_DARWIN_C_SOURCE
-else ifeq "$(SYSTEM)" "CYGWIN_NT"
+else ifeq "$(kernel_id)" "CYGWIN_NT"
 	CPPFLAGS += -D_POSIX_C_SOURCE=200809L
 endif
 
 ifdef NDEBUG
 	CPPFLAGS += -D_FORTIFY_SOURCE=2
-else ifeq "$(IS_GCC)" "true"
+else ifeq "$(is_gcc)" "true"
 	CPPFLAGS += -D_GLIBCXX_DEBUG
 endif
 
-ifeq "$(SYSTEM)" "Darwin"
+ifeq "$(kernel_id)" "Darwin"
 	CPPFLAGS += -DHAVE_SOCKADDR_SA_LEN
-else ifeq "$(SYSTEM)" "FreeBSD"
+else ifeq "$(kernel_id)" "FreeBSD"
 	CPPFLAGS += -DHAVE_SOCKADDR_SA_LEN
 endif
 
@@ -79,7 +65,7 @@ ifndef NDEBUG
 ifeq "$(USING_LIBASAN)" "true"
 	CXXFLAGS += -fsanitize=address -fsanitize-address-use-after-scope
 endif
-ifeq "$(IS_GCC)" "true"
+ifeq "$(is_gcc)" "true"
 	CXXFLAGS += -ggdb
 else
 	CXXFLAGS += -g3
@@ -95,7 +81,7 @@ endif
 
 CXXFLAGS += -Wall -Werror -Wextra -Wpedantic -Wshadow
 
-ifeq "$(IS_GCC)" "true"
+ifeq "$(is_gcc)" "true"
 	CXXFLAGS += -Wa,-adghln=$(subst .o,.lst,$@)
 endif
 
@@ -105,23 +91,24 @@ ifeq "$(USING_LIBASAN)" "true"
 endif
 endif
 
-ifeq "$(SYSTEM)" "Darwin"
+ifeq "$(kernel_id)" "Darwin"
 	LDFLAGS += -Wl,-map,$@.map
-else ifneq "$(SYSTEM)" "FreeBSD"
+else ifneq "$(kernel_id)" "FreeBSD"
 	LDFLAGS += -Wl,-Map=$@.map
 endif
 
-ifeq "$(SYSTEM)" "FreeBSD"
+ifeq "$(kernel_id)" "FreeBSD"
 	LDLIBS += -L/usr/local/lib
-else ifeq "$(SYSTEM)" "MINGW64_NT"
+else ifeq "$(kernel_id)" "MINGW64_NT"
 	LDLIBS += -lws2_32
 endif
 
-ifeq "$(shell bin/compare-versions $(CLANG_TIDY_VERSION) 13)" "less"
+ifeq "$(shell bin/compare-versions $(clang_tidy_version) 13)" "less"
 	TIDY_FLAGS = -config=
 else
 	TIDY_FLAGS = -config-file='.clang-tidy'
 endif
+
 TIDY_FLAGS += -header-filter='.*' -- -std=$(STANDARD) $(CPPFLAGS)
 
 # Local Variables:

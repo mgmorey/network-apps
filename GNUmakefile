@@ -16,6 +16,10 @@
 LANGUAGE := c++
 STANDARD := $(LANGUAGE)20
 
+distro_id := $(shell . bin/get-os-release && echo $$ID)
+kernel_id := $(shell . bin/get-os-release && echo $$kernel_name)
+os_family := $(shell . bin/get-os-release && echo $$os_family)
+
 include flags.gmk
 
 LINK.o = $(CXX) $(LDFLAGS)
@@ -48,16 +52,20 @@ test-context.cpp test-host.cpp test-hostname.cpp
 posix_sources = test-socket.cpp
 unix_sources = unix-client.cpp unix-server.cpp
 
-ifeq "$(SYSTEM)" "MINGW64_NT"
+ifeq "$(os_family)" "gnu-linux"
+	exec_sources = $(common_sources) $(posix_sources) $(unix_sources)
+else ifeq "$(os_family)" "unix"
+
+ifneq "$(distro_id)" "macos"
+	exec_sources = $(common_sources) $(posix_sources) $(unix_sources)
+else
+	exec_sources = $(common_sources) $(posix_sources)
+endif
+
+else ifeq "$(kernel_id)" "CYGWIN_NT"
+	exec_sources = $(common_sources) $(posix_sources)
+else
 	exec_sources = $(common_sources)
-else ifeq "$(SYSTEM)" "CYGWIN_NT"
-	exec_sources = $(common_sources) $(posix_sources)
-else ifeq "$(SYSTEM)" "Darwin"
-	exec_sources = $(common_sources) $(posix_sources)
-else ifeq "$(SYSTEM)" "FreeBSD"
-	exec_sources = $(common_sources) $(posix_sources) $(unix_sources)
-else ifeq "$(SYSTEM)" "Linux"
-	exec_sources = $(common_sources) $(posix_sources) $(unix_sources)
 endif
 
 sources = $(lib_sources) $(exec_sources)
