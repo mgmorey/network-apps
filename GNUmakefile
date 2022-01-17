@@ -13,8 +13,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-LANGUAGE = c++
-STANDARD = $(LANGUAGE)20
+language = c++
+standard = $(language)20
 
 os_data = $(shell bin/get-os-release -iko)
 os_distro = $(word 1, $(os_data))
@@ -126,7 +126,7 @@ unix: $(filter unix-%, $(executables))
 .SECONDARY: $(objects)
 
 TAGS:
-	printf '%s\n' $^ | etags --declarations --language=$(LANGUAGE) -
+	printf '%s\n' $^ | etags --declarations --language=$(language) -
 
 $(tmp_dir)/%.dep: %.cpp
 	$(CXX) $(CPPFLAGS) -MM $< | bin/make-makefile -f TAGS -o $@

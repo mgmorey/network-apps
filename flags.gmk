@@ -19,8 +19,8 @@ is_gcc = $(shell bin/is-gcc $(CXX))
 
 CPPCHECK_FLAGS = --cppcheck-build-dir=tmp --enable=all --inline-suppr --quiet
 
-ifdef LANGUAGE
-	CPPCHECK_FLAGS += --std=$(STANDARD)
+ifdef standard
+	CPPCHECK_FLAGS += --std=$(standard)
 endif
 
 ifeq "$(os_kernel)" "MINGW64_NT"
@@ -66,8 +66,8 @@ else
 	CXXFLAGS += -O2
 endif
 
-ifdef LANGUAGE
-	CXXFLAGS += -std=$(STANDARD)
+ifdef standard
+	CXXFLAGS += -std=$(standard)
 endif
 
 CXXFLAGS += -Wall -Werror -Wextra -Wpedantic -Wshadow
@@ -95,12 +95,19 @@ else ifeq "$(os_kernel)" "MINGW64_NT"
 endif
 
 ifeq "$(shell bin/compare-versions $(clang_tidy_version) 13)" "less"
-	TIDY_FLAGS = -config=
+	TIDY_CONFIG_FLAGS = -config=
 else
-	TIDY_FLAGS = -config-file='.clang-tidy'
+	TIDY_CONFIG_FLAGS = -config-file='.clang-tidy'
 endif
 
-TIDY_FLAGS += -header-filter='.*' -- -std=$(STANDARD) $(CPPFLAGS)
+TIDY_CONFIG_FLAGS += -header-filter='.*'
+
+ifdef standard
+	TIDY_CPPFLAGS += -std=$(standard)
+endif
+
+TIDY_CPPFLAGS += $(CPPFLAGS)
+TIDY_FLAGS = $(TIDY_CONFIG_FLAGS) -- $(TIDY_CPPFLAGS)
 
 # Local Variables:
 # mode: makefile
