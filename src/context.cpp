@@ -69,16 +69,15 @@ Network::Context::Context(const OptionalVersion& t_version)
         // NOLINTNEXTLINE
         throw error;
     }
-
-    m_data_dirty = true;
 #else
     static_cast<void>(t_version);
 #endif
+    m_data_dirty = true;
 }
 
 Network::Context::~Context()
 {
-    if (m_error_code == 0) {
+    if (m_data_dirty) {
         static_cast<void>(destroy());
     }
 }
@@ -112,13 +111,10 @@ auto Network::Context::version() const -> Network::Version
 
 auto Network::Context::cleanup(bool verbose) -> Network::os_error_type
 {
-    reset_last_os_error();
-    error_type result {0};
 #ifdef _WIN32
-    result = ::WSACleanup();
-#endif
+    reset_last_os_error();
 
-    if (result == socket_error) {
+    if (::WSACleanup() == socket_error) {
         const auto error_code {get_last_os_error()};
 
         if (verbose) {
@@ -132,6 +128,9 @@ auto Network::Context::cleanup(bool verbose) -> Network::os_error_type
         return error_code;
     }
 
+#else
+    static_cast<void>(verbose);
+#endif
     return 0;
 }
 
