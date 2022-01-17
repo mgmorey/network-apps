@@ -50,8 +50,8 @@ namespace Network
 
     private:
         ContextData m_data {};
-        bool m_data_dirty {false};
         os_error_type m_error_code {0};
+        bool m_is_initialized {false};
     };
 
     extern auto operator<<(std::ostream& os,

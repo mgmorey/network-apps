@@ -36,8 +36,8 @@
 
 Network::Context::Context(const OptionalVersion& t_version)
 {
-#ifdef _WIN32
     try {
+#ifdef _WIN32
         const auto version {t_version ? *t_version : Version {2, 2}};
         m_error_code = ::WSAStartup(version, &m_data);
 
@@ -58,29 +58,41 @@ Network::Context::Context(const OptionalVersion& t_version)
             }
         }
         else {
-            m_data_dirty = true;
+            m_is_initialized = true;
+        }
+#else
+        static_cast<void>(t_version);
+        m_is_initialized = true;
+#endif
+        // Test for class invariant conditions and possibly throw
+        // exceptions here if one or more conditions are not met.
+
+        // The following is an example of a test for a trivial
+        // invariant, that the API should be initialized (or
+        // "Running"):
+
+        if (status() != "Running") {
+            throw RuntimeError {"The networking runtime is not initialized."};
         }
     }
-    catch (const Network::Error& error) {
-        if (m_data_dirty) {
+    catch (const Error& error) {
+        if (m_is_initialized) {
             m_error_code = cleanup(false);
-            m_data_dirty = false;
+            m_is_initialized = false;
         }
 
-        // Warning from clang-tidy: thrown exception type is not
-        // nothrow copy constructible [cert-err60-cpp]
+        // TODO: Remediate the condition resulting in the following
+        // warning from clang-tidy: "thrown exception type is not
+        // nothrow copy constructible [cert-err60-cpp]."
 
         // NOLINTNEXTLINE
         throw error;
     }
-#else
-    static_cast<void>(t_version);
-#endif
 }
 
 Network::Context::~Context()
 {
-    if (m_data_dirty) {
+    if (m_is_initialized) {
         static_cast<void>(destroy());
     }
 }
@@ -140,7 +152,7 @@ auto Network::Context::cleanup(bool verbose) -> Network::os_error_type
 auto Network::Context::destroy(bool verbose) -> Network::os_error_type
 {
     m_error_code = cleanup(verbose);
-    m_data_dirty = false;
+    m_is_initialized = false;
     return m_error_code;
 }
 
