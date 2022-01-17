@@ -13,9 +13,13 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/network.h"            // Address, FdPair, Hints,
-                                        // Overloaded, Socket,
-                                        // close(), get_socketpair(),
+#include "network/network.h"            // Address, Context, FdPair,
+                                        // Hints, OptionalPathname,
+                                        // Overloaded, OsErrorResult,
+                                        // Socket, close(),
+                                        // get_socketpair(),
+                                        // get_sun_path(), is_valid(),
+                                        // string_null,
                                         // to_byte_string()
 
 #include <sys/socket.h>     // AF_UNIX, AF_UNSPEC, SOCK_STREAM
@@ -131,6 +135,12 @@ auto main(int argc, char* argv[]) -> int
 
     try {
         TestSocket::parse_arguments(argc, argv);
+        const Network::Context context;
+
+        if (TestSocket::verbose) {
+            std::cerr << context;
+        }
+
         TestSocket::test_socketpair(hints);
 
         for (const auto& path : paths) {
