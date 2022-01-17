@@ -16,11 +16,9 @@
 #ifndef NETWORK_CONTEXT_H
 #define NETWORK_CONTEXT_H
 
-#include "network/contextdata.h"        // ContextData
 #include "network/os-error-type.h"      // os_error_type
 #include "network/version.h"            // Version
 
-#include <optional>     // std::optional
 #include <ostream>      // std::ostream
 
 namespace Network
@@ -31,14 +29,13 @@ namespace Network
                                const Context& context) -> std::ostream&;
 
     public:
-        using OptionalVersion = std::optional<Version>;
-
-        explicit Context(const OptionalVersion& t_version = {});
+        explicit Context(const Version& t_version = ~0);
         Context(const Context&) = delete;
         Context(const Context&&) = delete;
         ~Context();
         auto operator=(const Context&) -> Context& = delete;
         auto operator=(const Context&&) -> Context& = delete;
+        [[nodiscard]] auto error() const -> os_error_type;
         [[nodiscard]] auto status() const -> std::string;
         [[nodiscard]] auto system() const -> std::string;
         [[nodiscard]] auto version() const -> Version;
@@ -46,12 +43,13 @@ namespace Network
     protected:
         static auto cleanup(bool verbose = false) -> os_error_type;
         auto destroy(bool verbose = false) -> os_error_type;
-        [[nodiscard]] auto error() const -> os_error_type;
 
     private:
-        ContextData m_data {};
         os_error_type m_error_code {0};
         bool m_is_initialized {false};
+        std::string m_status {""};
+        std::string m_system {""};
+        Version m_version {0};
     };
 
     extern auto operator<<(std::ostream& os,

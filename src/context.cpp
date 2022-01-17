@@ -25,21 +25,25 @@
 #include "network/socket-error.h"       // socket_error
 
 #ifdef _WIN32
-#include <winsock2.h>       // WSACleanup(), WSAStartup(), WSAEFAULT,
-                            // WSAEPROCLIM, WSANOTINITIALISED,
-                            // WSASYSNOTREADY, WSAVERNOTSUPPORTED
+#include <winsock2.h>       // WSADATA, WSAEFAULT, WSAEPROCLIM,
+                            // WSANOTINITIALISED, WSASYSNOTREADY,
+                            // WSAVERNOTSUPPORTED, WSACleanup(),
+                            // WSAStartup(),
 #include <windows.h>        // HIBYTE(), LOBYTE(), MAKEWORD()
 #endif
 
 #include <iostream>     // std::cerr, std::endl
 #include <sstream>      // std::ostringstream
 
-Network::Context::Context(const OptionalVersion& t_version)
+static const auto default_version {Network::Version {2, 2}};
+
+Network::Context::Context(const Version& t_version)
 {
     try {
 #ifdef _WIN32
-        const auto version {t_version ? *t_version : Version {2, 2}};
-        m_error_code = ::WSAStartup(version, &m_data);
+        WSADATA data {};
+        const auto version {t_version == ~0 ? default_version : t_version};
+        m_error_code = ::WSAStartup(version, &data);
 
         if (m_error_code != 0) {
             const auto error_str {format_os_error(m_error_code)};
@@ -58,10 +62,16 @@ Network::Context::Context(const OptionalVersion& t_version)
             }
         }
         else {
+            m_status = data.szSystemStatus;
+            m_system = data.szDescription;
+            m_version = data.wVersion;
             m_is_initialized = true;
         }
 #else
         static_cast<void>(t_version);
+        m_status = "Running";
+        m_system = "Berkeley Software Distribution Sockets";
+        m_version = Version {0, 0};
         m_is_initialized = true;
 #endif
         // Test for class invariant conditions and possibly throw
@@ -97,31 +107,24 @@ Network::Context::~Context()
     }
 }
 
+auto Network::Context::error() const -> Network::os_error_type
+{
+    return m_error_code;
+}
+
 auto Network::Context::status() const -> std::string
 {
-#ifdef _WIN32
-    return m_data.szSystemStatus;
-#else
-    return m_data.m_status;
-#endif
+    return m_status;
 }
 
 auto Network::Context::system() const -> std::string
 {
-#ifdef _WIN32
-    return m_data.szDescription;
-#else
-    return m_data.m_system;
-#endif
+    return m_system;
 }
 
 auto Network::Context::version() const -> Network::Version
 {
-#ifdef _WIN32
-    return m_data.wVersion;
-#else
-    return m_data.m_version;
-#endif
+    return m_version;
 }
 
 auto Network::Context::cleanup(bool verbose) -> Network::os_error_type
@@ -153,11 +156,6 @@ auto Network::Context::destroy(bool verbose) -> Network::os_error_type
 {
     m_error_code = cleanup(verbose);
     m_is_initialized = false;
-    return m_error_code;
-}
-
-auto Network::Context::error() const -> Network::os_error_type
-{
     return m_error_code;
 }
 

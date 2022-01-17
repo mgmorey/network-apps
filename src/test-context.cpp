@@ -62,7 +62,7 @@ namespace TestContext
         public Network::Context
     {
     public:
-        explicit Context(const OptionalVersion& t_version = {}) :
+        explicit Context(const Network::Version& t_version = ~0) :
             Network::Context(t_version)
         {
         }
