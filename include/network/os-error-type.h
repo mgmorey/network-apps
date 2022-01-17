@@ -24,7 +24,7 @@
 namespace Network
 {
 #ifdef _WIN32
-    using os_error_type = DWORD;
+    using os_error_type = int;
 #else
     using os_error_type = int;
 #endif
