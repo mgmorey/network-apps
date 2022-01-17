@@ -15,7 +15,8 @@
 
 #include "network/network.h"            // Context, ErrorResult,
                                         // OsErrorResult, Overloaded,
-                                        // Version, get_hostname()
+                                        // Version, get_hostname(),
+                                        // version_null
 
 #ifdef _WIN32
 #include <getopt.h>         // getopt(), optarg, opterr, optind
@@ -62,7 +63,8 @@ namespace TestContext
         public Network::Context
     {
     public:
-        explicit Context(const Network::Version& t_version = ~0) :
+        explicit Context(const Network::Version& t_version =
+                         Network::version_null) :
             Network::Context(t_version)
         {
         }

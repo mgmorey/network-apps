@@ -16,6 +16,7 @@
 #ifndef NETWORK_VERSION_H
 #define NETWORK_VERSION_H
 
+#include "network/version-null.h"       // version_null
 #include "network/version-type.h"       // version_type
 
 #include <ostream>     // std::ostream
@@ -40,8 +41,8 @@ namespace Network
         operator std::string() const noexcept;  // NOLINT
 
     private:
-        static constexpr auto m_radix {0x100U};
-        version_type m_value {0x0U};
+        static constexpr auto m_radix {0x100};
+        version_type m_value {version_null};
     };
 
     extern auto operator<<(std::ostream& os,

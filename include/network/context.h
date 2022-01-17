@@ -17,7 +17,7 @@
 #define NETWORK_CONTEXT_H
 
 #include "network/os-error-type.h"      // os_error_type
-#include "network/version.h"            // Version
+#include "network/version.h"            // Version, version_null
 
 #include <ostream>      // std::ostream
 
@@ -29,7 +29,7 @@ namespace Network
                                const Context& context) -> std::ostream&;
 
     public:
-        explicit Context(const Version& t_version = ~0);
+        explicit Context(const Version& t_version = version_null);
         Context(const Context&) = delete;
         Context(const Context&&) = delete;
         ~Context();
