@@ -15,6 +15,9 @@
 
 #include "network/version.h"            // Version, version_type, operator<<(),
                                         // std::ostream
+#include "network/string-null.h"        // string_null
+
+#include <string>       // std::to_string
 
 Network::Version::Version(version_type t_version) noexcept :
     m_value(t_version)
@@ -31,14 +34,23 @@ Network::Version::operator version_type() const noexcept
     return m_value;
 }
 
+Network::Version::operator bool() const noexcept
+{
+    return m_value != version_null;
+}
+
 Network::Version::operator std::string() const noexcept
 {
+    if (m_value == version_null) {
+        return string_null;
+    }
+
     return (std::to_string(m_value % m_radix) + "." +
             std::to_string(m_value / m_radix));
 }
 
 auto Network::operator<<(std::ostream& os,
-                         const Version& version) -> std::ostream&
+                         Version version) -> std::ostream&
 {
     return os << static_cast<std::string>(version);
 }

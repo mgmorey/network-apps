@@ -20,15 +20,14 @@
 #include "network/version-type.h"       // version_type
 
 #include <ostream>     // std::ostream
+#include <string>      // std::string
 
 namespace Network
 {
     class Version
     {
-        friend auto operator<<(std::ostream& os,
-                               const Version& version) -> std::ostream&;
-
     public:
+        Version() noexcept = default;
         // cppcheck-suppress noExplicitConstructor
         Version(version_type t_version) noexcept;  // NOLINT
         Version(version_type t_major, version_type t_minor) noexcept;
@@ -38,7 +37,8 @@ namespace Network
         auto operator=(const Version&) noexcept -> Version& = default;
         auto operator=(Version&&) noexcept -> Version& = default;
         operator version_type() const noexcept;  // NOLINT
-        operator std::string() const noexcept;  // NOLINT
+        explicit operator bool() const noexcept;
+        explicit operator std::string() const noexcept;
 
     private:
         static constexpr auto m_radix {0x100};
@@ -46,7 +46,7 @@ namespace Network
     };
 
     extern auto operator<<(std::ostream& os,
-                           const Version& version) -> std::ostream&;
+                           Version version) -> std::ostream&;
 }
 
 #endif
