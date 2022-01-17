@@ -171,11 +171,8 @@ namespace TestContext
 
     static auto test_context_cleanup() -> void
     {
-#ifdef _WIN32
-        assert(TestContext::Context::cleanup() != 0);		// NOLINT
-#else
-        assert(TestContext::Context::cleanup() == 0);		// NOLINT
-#endif
+        const auto code {TestContext::Context::cleanup()};
+        assert(code == expected_code_uninitialized);		// NOLINT
     }
 
     static auto test_context_invalid_version() -> void
@@ -230,7 +227,7 @@ namespace TestContext
         TestContext::test_context_cleanup();
     }
 
-    static auto test_hostname_with_context() -> void
+    static auto test_hostname_initialized() -> void
     {
         TestContext::Context context;
         static_cast<void>(context);
@@ -239,7 +236,7 @@ namespace TestContext
         assert(result.number() == expected_code_initialized);	// NOLINT
     }
 
-    static auto test_hostname_without_context() -> void
+    static auto test_hostname_uninitialized() -> void
     {
         const auto result {get_hostname()};
         print_result(result);
@@ -255,8 +252,8 @@ auto main(int argc, char* argv[]) -> int
         TestContext::test_context_invalid_version();
         TestContext::test_context_valid_with_destroy();
         TestContext::test_context_valid_without_destroy();
-        TestContext::test_hostname_with_context();
-        TestContext::test_hostname_without_context();
+        TestContext::test_hostname_initialized();
+        TestContext::test_hostname_uninitialized();
     }
     catch (const std::exception& error) {
         std::cerr << error.what()
