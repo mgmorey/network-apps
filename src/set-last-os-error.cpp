@@ -16,7 +16,9 @@
 #include "network/set-last-os-error.h"          // os_error_type,
                                                 // set_last_os_error()
 
-#ifndef _WIN32
+#ifdef _WIN32
+#include <winsock2.h>       // WSASetLastError()
+#else
 #include <cerrno>           // errno
 #endif
 
