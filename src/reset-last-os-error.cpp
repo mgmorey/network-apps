@@ -15,18 +15,11 @@
 
 #include "network/reset-last-os-error.h"        // os_error_type,
                                                 // reset_last_os_error()
-
-#ifndef _WIN32
-#include <cerrno>           // errno
-#endif
+#include "network/set-last-os-error.h"          // set_last_os_error()
 
 auto Network::reset_last_os_error() -> Network::os_error_type
 {
     os_error_type error {0};
-#ifdef _WIN32
-    ::WSASetLastError(error);
-#else
-    errno = error;
-#endif
+    set_last_os_error(error);
     return error;
 }
