@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/reset-last-os-error.h"// os_error_type,
-                                        // reset_last_os_error()
+#include "network/reset-last-os-error.h"        // os_error_type,
+                                                // reset_last_os_error()
 
 #ifndef _WIN32
 #include <cerrno>           // errno
@@ -23,7 +23,9 @@
 auto Network::reset_last_os_error() -> Network::os_error_type
 {
     os_error_type error {0};
-#ifndef _WIN32
+#ifdef _WIN32
+    ::WSASetLastError(error);
+#else
     errno = error;
 #endif
     return error;
