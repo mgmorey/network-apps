@@ -15,23 +15,35 @@
 
 #include "network/fd.h"                 // Fd, fd_type, operator<<(),
                                         // std::ostream
+#include "network/string-null.h"        // string_null
 
-Network::Fd::Fd(fd_type t_fd) :
+#include <string>       // std::to_string
+
+Network::Fd::Fd(fd_type t_fd) noexcept :
     m_value(t_fd)
 {
 }
 
-Network::Fd::operator fd_type() const
+Network::Fd::operator fd_type() const noexcept
 {
     return m_value;
 }
 
-Network::Fd::operator bool() const
+Network::Fd::operator bool() const noexcept
 {
     return m_value != fd_null;
 }
 
+Network::Fd::operator std::string() const noexcept
+{
+    if (m_value == fd_null) {
+        return string_null;
+    }
+
+    return std::to_string(m_value);
+}
+
 auto Network::operator<<(std::ostream& os, Fd fd) -> std::ostream&
 {
-    return os << fd.m_value;
+    return os << static_cast<std::string>(fd);
 }

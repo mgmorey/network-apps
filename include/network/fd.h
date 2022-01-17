@@ -20,23 +20,24 @@
 #include "network/fd-type.h"            // fd_type
 
 #include <ostream>     // std::ostream
+#include <string>      // std::string
 
 namespace Network
 {
     class Fd
     {
-        friend auto operator<<(std::ostream& os, Fd fd) -> std::ostream&;
-
     public:
+        Fd() noexcept = default;
         // cppcheck-suppress noExplicitConstructor
-        Fd(fd_type t_fd = fd_null);  // NOLINT
-        Fd(const Fd&) = default;
+        Fd(fd_type t_fd) noexcept;  // NOLINT
+        Fd(const Fd&) noexcept = default;
         Fd(Fd&&) noexcept = default;
-        ~Fd() = default;
-        auto operator=(const Fd&) -> Fd& = default;
+        ~Fd() noexcept = default;
+        auto operator=(const Fd&) noexcept -> Fd& = default;
         auto operator=(Fd&&) noexcept -> Fd& = default;
-        operator fd_type() const;  // NOLINT
-        explicit operator bool() const;
+        operator fd_type() const noexcept;  // NOLINT
+        explicit operator bool() const noexcept;
+        explicit operator std::string() const noexcept;
 
     private:
         fd_type m_value {fd_null};
