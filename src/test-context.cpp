@@ -53,7 +53,7 @@ namespace TestContext
     static const auto expected_system {
         "Berkeley Software Distribution Sockets"
     };
-    static const auto expected_version {Network::Version {0, 0}};
+    static const auto expected_version {Network::Version {}};
     static const auto invalid_version {Network::Version {0, 0}};
 #endif
 

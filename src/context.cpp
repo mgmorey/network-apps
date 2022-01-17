@@ -71,7 +71,6 @@ Network::Context::Context(const Version& t_version)
         static_cast<void>(t_version);
         m_status = "Running";
         m_system = "Berkeley Software Distribution Sockets";
-        m_version = Version {0, 0};
         m_is_initialized = true;
 #endif
         // Test for class invariant conditions and possibly throw
