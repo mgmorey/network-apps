@@ -199,7 +199,7 @@ parse_arguments() {
     is_shell_format=false
     vars=
 
-    while getopts iknprvxXh opt; do
+    while getopts iknoprvxXh opt; do
 	case $opt in
 	    (i)
 		queue_vars ID
@@ -209,6 +209,9 @@ parse_arguments() {
 		;;
 	    (n)
 		queue_vars NAME
+		;;
+	    (o)
+		queue_vars os_family
 		;;
 	    (p)
 		queue_vars PRETTY_NAME

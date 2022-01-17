@@ -13,18 +13,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-clang_tidy_version := $(shell bin/get-llvm-version clang-tidy$(LLVM_SUFFIX))
-is_clang := $(shell bin/is-clang $(CXX))
-is_gcc := $(shell bin/is-gcc $(CXX))
-
-ifdef SDKROOT
-ifeq "$(is_clang)" "true"
-ifeq "$(shell bin/get-clang-flavor $(CXX))" "Apple"
-CPPFLAGS := $(shell bin/remove-option -I$(SDKROOT)/usr/include "$(CPPFLAGS)")
-LDFLAGS := $(shell bin/remove-option -L$(SDKROOT)/usr/lib "$(LDFLAGS)")
-endif
-endif
-endif
+clang_tidy_version = $(shell bin/get-llvm-version clang-tidy$(LLVM_SUFFIX))
+is_clang = $(shell bin/is-clang $(CXX))
+is_gcc = $(shell bin/is-gcc $(CXX))
 
 CPPCHECK_FLAGS = --cppcheck-build-dir=tmp --enable=all --inline-suppr --quiet
 
@@ -32,19 +23,19 @@ ifdef LANGUAGE
 	CPPCHECK_FLAGS += --std=$(STANDARD)
 endif
 
-ifeq "$(kernel_id)" "MINGW64_NT"
+ifeq "$(os_kernel)" "MINGW64_NT"
 	CPPCHECK_FLAGS += -D_WIN32
 endif
 
-ifeq "$(kernel_id)" "FreeBSD"
+ifeq "$(os_kernel)" "FreeBSD"
 	CPPFLAGS += -I/usr/local/include
 endif
 
 CPPFLAGS += -Iinclude
 
-ifeq "$(kernel_id)" "Darwin"
+ifeq "$(os_kernel)" "Darwin"
 	CPPFLAGS += -D_DARWIN_C_SOURCE
-else ifeq "$(kernel_id)" "CYGWIN_NT"
+else ifeq "$(os_kernel)" "CYGWIN_NT"
 	CPPFLAGS += -D_POSIX_C_SOURCE=200809L
 endif
 
@@ -54,9 +45,9 @@ else ifeq "$(is_gcc)" "true"
 	CPPFLAGS += -D_GLIBCXX_DEBUG
 endif
 
-ifeq "$(kernel_id)" "Darwin"
+ifeq "$(os_kernel)" "Darwin"
 	CPPFLAGS += -DHAVE_SOCKADDR_SA_LEN
-else ifeq "$(kernel_id)" "FreeBSD"
+else ifeq "$(os_kernel)" "FreeBSD"
 	CPPFLAGS += -DHAVE_SOCKADDR_SA_LEN
 endif
 
@@ -91,15 +82,15 @@ ifeq "$(USING_LIBASAN)" "true"
 endif
 endif
 
-ifeq "$(kernel_id)" "Darwin"
+ifeq "$(os_kernel)" "Darwin"
 	LDFLAGS += -Wl,-map,$@.map
-else ifneq "$(kernel_id)" "FreeBSD"
+else ifneq "$(os_kernel)" "FreeBSD"
 	LDFLAGS += -Wl,-Map=$@.map
 endif
 
-ifeq "$(kernel_id)" "FreeBSD"
+ifeq "$(os_kernel)" "FreeBSD"
 	LDLIBS += -L/usr/local/lib
-else ifeq "$(kernel_id)" "MINGW64_NT"
+else ifeq "$(os_kernel)" "MINGW64_NT"
 	LDLIBS += -lws2_32
 endif
 
