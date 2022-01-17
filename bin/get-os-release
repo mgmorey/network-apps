@@ -1,0 +1,301 @@
+#!/bin/sh -eu
+
+# get-os-release: print OS distro/release information
+# Copyright (C) 2018  "Michael G. Morey" <mgmorey@gmail.com>
+
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+FILE_DEBIAN_VERSION=/etc/debian_version
+FILE_OS_RELEASE=/etc/os-release
+FILE_REDHAT_RELEASE=/etc/redhat-release
+FILE_RELEASE=/etc/release
+
+SET_1="ID ID_LIKE NAME PRETTY_NAME VERSION VERSION_ID \
+kernel_name os_family"
+SET_2="kernel_release os_version_id system_data \
+system_name system_release"
+
+abort() {
+    printf "$@" >&2
+    exit 1
+}
+
+assert() {
+    "$@" || abort '%s: Assertion failed: %s\n' "$script" "$*"
+}
+
+abort_conflicting_option() {
+    usage_error '%s: conflicting option -- %s\n' "$script" "$1"
+}
+
+collect_data() {
+    system_data=$(uname -sr)
+    system_name=${system_data% *}
+    system_release=${system_data#* }
+
+    case "$system_name" in
+	(CYGWIN_NT-*|MINGW64_NT-*)
+	    collect_data_for_windows
+	    ;;
+	(GNU|Linux)
+	    collect_data_for_gnu
+	    ;;
+	(Darwin)
+	    collect_data_for_darwin
+	    ;;
+	(SunOS)
+	    collect_data_for_sunos
+	    ;;
+	(*)
+	    collect_data_for_unix
+	    ;;
+
+    esac
+
+    collect_defaults
+}
+
+collect_data_for_darwin() {
+    ID=macos
+    NAME=$(sw_vers -productName)
+    VERSION=$(sw_vers -productVersion)
+    os_family=unix
+}
+
+collect_data_for_gnu() {
+    . $FILE_OS_RELEASE
+
+    case "$system_name" in
+	(GNU)
+	    os_family=gnu-hurd
+	    ;;
+	(Linux)
+	    os_family=gnu-linux
+	    ;;
+    esac
+
+    if [ "$is_extended_set" = true ]; then
+	os_version_id=$(get_os_version_id)
+    fi
+}
+
+collect_data_for_sunos() {
+    os_data=$(awk 'NR == 1 {printf("%s %s:%s\n", $1, $2, $3)}' $FILE_RELEASE)
+    ID="$(uname -o | to_lower)"
+
+    case "$ID" in
+	(illumos)
+	    ID_LIKE="solaris sunos"
+	    ;;
+	(solaris)
+	    ID_LIKE="sunos"
+	    ;;
+	(*)
+	    ID_LIKE="sunos"
+	    ;;
+    esac
+
+    NAME=${os_data%:*}
+    VERSION=${os_data#*:}
+    os_family=unix
+}
+
+collect_data_for_unix() {
+    ID=$(printf '%s\n' "$system_name" | to_lower)
+    NAME=$system_name
+    VERSION=$system_release
+    PRETTY_NAME=$system_data
+    os_family=unix
+}
+
+collect_data_for_windows() {
+    ID=windows
+    NAME="Microsoft Windows"
+    VERSION=$(printf '%s\n' "$system_name" | cut -d- -f2)
+    kernel_name=$(printf '%s\n' "$system_name" | cut -d- -f1)
+    kernel_release=$(printf '%s\n' "$system_release" | cut -d- -f1)
+    os_family=ms-windows
+}
+
+collect_defaults() {
+    if [ -z "${VERSION-}" ]; then
+	VERSION=
+    fi
+
+    if [ -z "${VERSION_ID-}" ]; then
+	VERSION_ID="$VERSION"
+    fi
+
+    if [ -z "${PRETTY_NAME-}" ]; then
+	PRETTY_NAME="$NAME $VERSION"
+    fi
+
+    if [ -z "${kernel_name-}" ]; then
+        kernel_name=$system_name
+    fi
+
+    if [ "$is_extended_set" = false ]; then
+	return
+    fi
+
+    if [ -z "${kernel_release-}" ]; then
+	kernel_release=$system_release
+    fi
+
+    if [ -z "${os_version_id-}" ]; then
+	os_version_id=$VERSION_ID
+    fi
+}
+
+get_os_version_id() {
+    case "$system_name" in
+	(Linux|GNU)
+	    case "$ID" in
+		(debian|raspbian)
+		    cat $FILE_DEBIAN_VERSION
+		    ;;
+		(ubuntu)
+		    printf '%s\n' "$VERSION" | awk '{print $1}'
+		    ;;
+		(rhel|ol|centos|fedora)
+		    "${script_prefix}get-redhat-version" $FILE_REDHAT_RELEASE
+		    ;;
+	    esac
+	    ;;
+    esac
+}
+
+output_data() {
+    if [ -z "${vars-}" ]; then
+	vars=PRETTY_NAME
+    fi
+
+    if [ "$is_shell_format" = true ]; then
+	for var in $vars; do
+	    eval value="\${$var-}"
+	    printf '%s="%s"\n' "$var" "$value"
+	done
+    else
+	for var in $vars; do
+	    eval value="\${$var-}"
+	    printf '%s\n' "$value"
+	done
+    fi
+}
+
+parse_arguments() {
+    is_extended_set=false
+    is_shell_format=false
+    vars=
+
+    while getopts iknprvxXh opt; do
+	case $opt in
+	    (i)
+		queue_vars ID
+		;;
+	    (k)
+		queue_vars kernel_name
+		;;
+	    (n)
+		queue_vars NAME
+		;;
+	    (p)
+		queue_vars PRETTY_NAME
+		;;
+	    (r)
+		queue_vars kernel_release
+		;;
+	    (v)
+		queue_vars VERSION_ID
+		;;
+	    (x)
+		queue_vars $SET_1
+		;;
+	    (X)
+		is_extended_set=true
+		queue_vars $SET_1 $SET_2
+		;;
+	    (h)
+		usage
+		exit 0
+		;;
+	    (\?)
+		exit 2
+		;;
+	esac
+    done
+
+    shift $(($OPTIND - 1))
+
+    if [ $# -gt 0 ]; then
+	usage_error '%s: Too many arguments\n' "$script"
+    fi
+}
+
+queue_vars() {
+    if [ $# -gt 1 ]; then
+	if [ $is_shell_format = false -a -z "$vars" ]; then
+	    is_shell_format=true
+	    vars="$*"
+	else
+	    abort_conflicting_option $opt
+	fi
+    elif [ $# -eq 1 ]; then
+	if [ $is_shell_format = false ]; then
+	    vars="${vars}${vars:+ }$1"
+	else
+	    abort_conflicting_option $opt
+	fi
+    fi
+}
+
+to_lower() {
+    tr '[:upper:]' '[:lower:]'
+}
+
+usage() {
+    cat <<-EOF >&2
+Usage: $script: [-i] [-k] [-n] [-p] [-r] [-v]
+       $script: -x
+       $script: -X
+       $script: -h
+EOF
+}
+
+usage_error() {
+    if [ $# -gt 0 ]; then
+	printf "$@" >&2
+    fi
+
+    printf '%s\n' '' >&2
+    usage
+    exit 2
+}
+
+script=$(basename "$0")
+
+case "$0" in
+    (*/*)
+	script_dir=$(cd "$(dirname "$0")" && pwd)
+	;;
+    (*)
+	script_dir=
+	;;
+esac
+
+script_prefix=${script_dir:+$script_dir/}
+
+parse_arguments "$@"
+collect_data
+output_data
