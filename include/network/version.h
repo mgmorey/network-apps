@@ -56,12 +56,12 @@ namespace Network
             return m_value != version_null;
         }
 
-        [[nodiscard]] constexpr auto major() const -> version_type
+        [[nodiscard]] constexpr auto major() const noexcept -> version_type
         {
             return m_value != version_null ? m_value % m_radix : version_null;
         }
 
-        [[nodiscard]] constexpr auto minor() const -> version_type
+        [[nodiscard]] constexpr auto minor() const noexcept -> version_type
         {
             return m_value != version_null ? m_value / m_radix : version_null;
         }
@@ -74,7 +74,7 @@ namespace Network
     };
 
     extern auto operator<<(std::ostream& os,
-                           Version version) -> std::ostream&;
+                           Version version) noexcept -> std::ostream&;
 }
 
 #endif

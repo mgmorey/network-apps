@@ -31,7 +31,7 @@ Network::Version::operator std::string() const noexcept
 }
 
 auto Network::operator<<(std::ostream& os,
-                         Version version) -> std::ostream&
+                         Version version) noexcept -> std::ostream&
 {
     return os << static_cast<std::string>(version);
 }
