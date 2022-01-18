@@ -21,7 +21,7 @@
 
 Network::Version::operator std::string() const noexcept
 {
-    if (m_value == version_null) {
+    if (!m_value) {
         return string_null;
     }
 
