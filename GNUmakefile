@@ -137,7 +137,13 @@ $(tmp_dir)/%.o: %.cpp
 %: $(tmp_dir)/%.o
 	$(LINK.o) -o $@ $^ $(LDLIBS)
 
+ifeq "$(REBUILD_ARCHIVE)" "true"
+libnetwork.a: $(lib_objs)
+	rm -f $@
+	ar rv $@ $^
+else
 libnetwork.a: $(patsubst %.o,libnetwork.a(%.o),$(lib_objs))
+endif
 
 $(executables): libnetwork.a
 
@@ -150,5 +156,6 @@ ifneq "$(MAKECMDGOALS)" "realclean"
 include $(dependencies)
 endif
 
-vpath %.cpp src
 vpath %.h include/network
+vpath %.cpp src
+vpath %.o tmp
