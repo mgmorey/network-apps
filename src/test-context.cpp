@@ -65,10 +65,12 @@ namespace TestContext
         public Network::Context
     {
     public:
+        static const auto mode {Network::Context::failure_mode::throw_error};
+
         static auto instance() -> Context&
         {
-            static Context g_context;
-            return g_context;
+            static Context context;
+            return context;
         }
 
         explicit Context(const Network::Version& t_version = {}) :
@@ -79,12 +81,12 @@ namespace TestContext
 
         static auto cleanup() -> Network::os_error_type
         {
-            return Network::Context::cleanup();
+            return Network::Context::cleanup(mode);
         }
 
         auto shutdown() -> void
         {
-            Network::Context::shutdown();
+            Network::Context::shutdown(mode);
         }
     };
 
