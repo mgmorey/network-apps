@@ -17,7 +17,7 @@
                                         // OsErrorResult, Overloaded,
                                         // Version, get_hostname(),
                                         // version_null
-#include "network/assert.h"
+#include "network/assert.h"             // assert()
 
 #ifdef _WIN32
 #include <getopt.h>         // getopt(), optarg, opterr, optind
