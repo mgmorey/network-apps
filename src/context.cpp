@@ -97,7 +97,7 @@ Network::Context::Context(const Version& t_version)
         }
     }
     catch (const Error& error) {
-        if (m_is_started && cleanup(failure_mode::none) == 0) {
+        if (m_is_started && cleanup(failure_mode::return_zero) == 0) {
             m_is_started = false;
         }
 
@@ -113,7 +113,7 @@ Network::Context::Context(const Version& t_version)
 Network::Context::~Context()
 {
     if (m_is_started) {
-        cleanup(failure_mode::none);
+        cleanup(failure_mode::return_zero);
     }
 }
 
@@ -164,10 +164,10 @@ auto Network::Context::cleanup(failure_mode t_mode) -> Network::os_error_type
                 throw Error {error_str};
             }
         }
-        else if (t_mode == failure_mode::none) {
+        else if (t_mode == failure_mode::return_zero) {
             switch (error_code) {  // NOLINT
             case WSANOTINITIALISED:
-                error_code = 0;
+                return 0;
                 break;
             }
         }

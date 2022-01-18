@@ -40,7 +40,7 @@ namespace Network
         [[nodiscard]] auto version() const -> Version;
 
     protected:
-        enum class failure_mode {none, return_error, throw_error};
+        enum class failure_mode {return_error, return_zero, throw_error};
         static auto cleanup(failure_mode t_mode =
                             failure_mode::throw_error) -> os_error_type;
         auto shutdown(failure_mode t_mode =
