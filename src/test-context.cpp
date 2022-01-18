@@ -35,8 +35,8 @@
 
 namespace TestContext
 {
-#ifdef _WIN32
     static const auto expected_code_initialized {0};
+#ifdef _WIN32
     static const auto expected_code_uninitialized {WSANOTINITIALISED};
     static const auto expected_error_invalid_version {
         "The Windows Sockets version requested is not supported."
@@ -45,22 +45,18 @@ namespace TestContext
         "Either the application has not called WSAStartup, "
         "or WSAStartup failed."
     };
-    static const auto expected_status {"Running"};
     static const auto expected_system {"WinSock 2.0 (Test)"};
     static const auto expected_version {Network::Version {2, 2}};
-    static const auto invalid_version {Network::Version {0, 0}};
 #else
-    static const auto expected_code_initialized {0};
     static const auto expected_code_uninitialized {0};
     static const auto expected_error_invalid_version {""};
     static const auto expected_error_uninitialized {""};
-    static const auto expected_status {"Running"};
     static const auto expected_system {
         "Berkeley Software Distribution Sockets (Test)"
     };
     static const auto expected_version {Network::Version {}};
-    static const auto invalid_version {Network::Version {0, 0}};
 #endif
+    static const auto invalid_version {Network::Version {0, 0}};
 
     static bool verbose {false};  // NOLINT
 
@@ -189,10 +185,10 @@ namespace TestContext
     {
         print_context(context, (description.empty() ? "" :
                                 description + " (test)"));
-        assert(context.status() == expected_status);		// NOLINT
+        assert(context.status() == "Running");			// NOLINT
         assert(context.system() == expected_system);		// NOLINT
-        assert(context.version() == (version ? version :
-                                     expected_version));	// NOLINT
+        assert(context.version() == (version ? version :	// NOLINT
+                                     expected_version));
     }
 
     static auto test_context_cleaned_up() -> void
