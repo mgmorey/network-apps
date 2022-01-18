@@ -181,7 +181,7 @@ auto Network::Context::cleanup(failure_mode t_mode) -> Network::os_error_type
 
 auto Network::Context::shutdown(failure_mode t_mode) -> void
 {
-    if (m_is_started && !cleanup(t_mode)) {
+    if (m_is_started && cleanup(t_mode) == 0) {
         m_is_started = false;
     }
 }
