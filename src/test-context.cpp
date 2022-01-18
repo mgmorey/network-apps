@@ -15,8 +15,7 @@
 
 #include "network/network.h"            // Context, ErrorResult,
                                         // OsErrorResult, Overloaded,
-                                        // Version, get_hostname(),
-                                        // version_null
+                                        // Version, get_hostname()
 #include "network/assert.h"             // assert()
 
 #ifdef _WIN32
@@ -45,18 +44,20 @@ namespace TestContext
         "Either the application has not called WSAStartup, "
         "or WSAStartup failed."
     };
+    constexpr auto expected_status {"Running"};
     constexpr auto expected_system {"WinSock 2.0 (Test)"};
     constexpr auto expected_version {Network::Version {2, 2}};
 #else
     constexpr auto expected_code_uninitialized {0};
     constexpr auto expected_error_invalid_version {""};
     constexpr auto expected_error_uninitialized {""};
+    constexpr auto expected_status {"Running"};
     constexpr auto expected_system {
         "Berkeley Software Distribution Sockets (Test)"
     };
     constexpr auto expected_version {Network::Version {}};
 #endif
-    constexpr auto invalid_version {Network::Version {0, 0}};
+    constexpr auto invalid_version {Network::Version {0}};
 
     static bool verbose {false};  // NOLINT
 
@@ -159,7 +160,7 @@ namespace TestContext
         }
     }
 
-    static auto print_context(const Network::Context& context,
+    static auto print_context(const Context& context,
                               const std::string& description = "") -> void
     {
         if (verbose) {
@@ -181,14 +182,16 @@ namespace TestContext
 
     static auto test_context(const Context& context,
                              const std::string& description = "",
-                             const Network::Version& version = {}) -> void
+                             Network::Version version = {}) -> void
     {
-        print_context(context, (description.empty() ? "" :
-                                description + " (test)"));
-        assert(context.status() == "Running");			// NOLINT
+        if (!static_cast<bool>(version)) {
+            version = expected_version;
+        }
+
+        print_context(context, description);
+        assert(context.status() == expected_status);		// NOLINT
         assert(context.system() == expected_system);		// NOLINT
-        assert(context.version() == (version ? version :	// NOLINT
-                                     expected_version));
+        assert(context.version() == version);			// NOLINT
     }
 
     static auto test_context_cleaned_up() -> void
