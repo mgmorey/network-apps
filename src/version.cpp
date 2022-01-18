@@ -13,21 +13,21 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/version.h"            // Version, version_type,
-                                        // operator<<(), std::ostream
+#include "network/version.h"            // Version, operator<<(),
+                                        // std::ostream, std::string,
+                                        // std::to_string,
+                                        // version_null
 #include "network/string-null.h"        // string_null
-
-#include <string>       // std::to_string
 
 Network::Version::operator std::string() const noexcept
 {
-    if (!static_cast<bool>(m_value)) {
+    if (m_value == version_null) {
         return string_null;
     }
 
-    const auto major_version {std::to_string(major())};
-    const auto minor_version {std::to_string(minor())};
-    return major_version + "." + minor_version;
+    const auto major_str {std::to_string(major())};
+    const auto minor_str {std::to_string(minor())};
+    return major_str + "." + minor_str;
 }
 
 auto Network::operator<<(std::ostream& os,
