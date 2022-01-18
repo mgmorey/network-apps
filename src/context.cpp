@@ -174,7 +174,7 @@ auto Network::Context::cleanup(failure_mode t_mode) -> Network::os_error_type
     }
 
 #else
-    static_cast<void>(enable_throw);
+    static_cast<void>(t_mode);
 #endif
     return error_code;
 }
