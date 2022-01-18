@@ -40,8 +40,11 @@ namespace Network
         [[nodiscard]] auto version() const -> Version;
 
     protected:
-        static auto cleanup(bool enable_throw = true) -> os_error_type;
-        auto shutdown() -> void;
+        enum class failure_mode {none, return_error, throw_error};
+        static auto cleanup(failure_mode t_mode =
+                            failure_mode::throw_error) -> os_error_type;
+        auto shutdown(failure_mode t_mode =
+                      failure_mode::throw_error) -> void;
         auto started(bool t_is_started) -> void;
         auto status(const std::string& t_status) -> void;
         auto system(const std::string& t_system) -> void;

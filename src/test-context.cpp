@@ -76,9 +76,9 @@ namespace TestContext
             system(system() + " (Test)");
         }
 
-        static auto cleanup(bool enable_throw = true) -> Network::os_error_type
+        static auto cleanup() -> Network::os_error_type
         {
-            return Network::Context::cleanup(enable_throw);
+            return Network::Context::cleanup();
         }
 
         auto shutdown() -> void
@@ -196,7 +196,7 @@ namespace TestContext
         std::string what;
 
         try {
-            TestContext::Context::cleanup(true);
+            TestContext::Context::cleanup();
         }
         catch (const Network::Error& error) {
             what = error.what();

@@ -36,9 +36,9 @@
 #include <sstream>      // std::ostringstream
 
 #ifdef _WIN32
-static const auto default_version {Network::Version {2, 2}};
+constexpr auto api_default {Network::Version {2, 2}};
 #else
-static const auto default_version {Network::version_null};
+constexpr auto api_default {Network::Version {}};
 #endif
 
 auto Network::Context::instance() -> Context&
@@ -49,7 +49,7 @@ auto Network::Context::instance() -> Context&
 
 Network::Context::Context(const Version& t_version)
 {
-    const auto version {t_version ? t_version : default_version};
+    const auto version {t_version ? t_version : api_default};
 
     try {
 #ifdef _WIN32
@@ -97,7 +97,7 @@ Network::Context::Context(const Version& t_version)
         }
     }
     catch (const Error& error) {
-        if (m_is_started && cleanup(false) == 0) {
+        if (m_is_started && cleanup(failure_mode::none) == 0) {
             m_is_started = false;
         }
 
@@ -113,7 +113,7 @@ Network::Context::Context(const Version& t_version)
 Network::Context::~Context()
 {
     if (m_is_started) {
-        cleanup(false);
+        cleanup(failure_mode::none);
     }
 }
 
@@ -142,13 +142,13 @@ auto Network::Context::version() const -> Network::Version
     return m_version;
 }
 
-auto Network::Context::cleanup(bool enable_throw) -> Network::os_error_type
+auto Network::Context::cleanup(failure_mode t_mode) -> Network::os_error_type
 {
     auto error_code {reset_last_os_error()};
 #ifdef _WIN32
 
     if (::WSACleanup() == socket_error) {
-        if (enable_throw) {
+        if (t_mode == failure_mode::throw_error) {
             error_code = get_last_os_error();
             const auto error_str {format_os_error(error_code)};
 
@@ -164,7 +164,7 @@ auto Network::Context::cleanup(bool enable_throw) -> Network::os_error_type
                 throw Error {error_str};
             }
         }
-        else {
+        else if (t_mode == failure_mode::none) {
             switch (error_code) {  // NOLINT
             case WSANOTINITIALISED:
                 error_code = 0;
@@ -179,9 +179,9 @@ auto Network::Context::cleanup(bool enable_throw) -> Network::os_error_type
     return error_code;
 }
 
-auto Network::Context::shutdown() -> void
+auto Network::Context::shutdown(failure_mode t_mode) -> void
 {
-    if (m_is_started && cleanup(true) == 0) {
+    if (m_is_started && !cleanup(t_mode)) {
         m_is_started = false;
     }
 }
