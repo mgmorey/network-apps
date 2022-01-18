@@ -48,7 +48,7 @@ endif
 ifeq "$(os_kernel)" "Darwin"
 	CPPFLAGS += -DHAVE_SOCKADDR_SA_LEN
 else ifeq "$(os_kernel)" "FreeBSD"
-	CPPFLAGS += -DHAVE_SOCKADDR_SA_LEN
+	CPPFLAGS += -DHAVE_SOCKADDR_SA_LEN -DUSING_CUSTOM_ASSERT
 endif
 
 ifndef NDEBUG
