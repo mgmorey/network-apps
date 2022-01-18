@@ -19,26 +19,6 @@
 
 #include <string>       // std::to_string
 
-Network::Version::Version(version_type t_version) noexcept :
-    m_value(t_version)
-{
-}
-
-Network::Version::Version(version_type t_major, version_type t_minor) noexcept :
-    m_value(t_minor * m_radix + t_major)
-{
-}
-
-Network::Version::operator version_type() const noexcept
-{
-    return m_value;
-}
-
-Network::Version::operator bool() const noexcept
-{
-    return m_value != version_null;
-}
-
 Network::Version::operator std::string() const noexcept
 {
     if (m_value == version_null) {

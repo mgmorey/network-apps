@@ -27,17 +27,35 @@ namespace Network
     class Version
     {
     public:
-        Version() noexcept = default;
+        constexpr Version() noexcept = default;
+
         // cppcheck-suppress noExplicitConstructor
-        Version(version_type t_version) noexcept;  // NOLINT
-        Version(version_type t_major, version_type t_minor) noexcept;
-        Version(const Version&) noexcept = default;
-        Version(Version&&) noexcept = default;
-        ~Version() noexcept = default;
-        auto operator=(const Version&) noexcept -> Version& = default;
-        auto operator=(Version&&) noexcept -> Version& = default;
-        operator version_type() const noexcept;  // NOLINT
-        explicit operator bool() const noexcept;
+        constexpr Version(version_type t_version) noexcept :  // NOLINT
+            m_value(t_version)
+        {
+        }
+
+        constexpr Version(version_type t_major, version_type t_minor) noexcept :
+            m_value(t_minor * m_radix + t_major)
+        {
+        }
+
+        constexpr Version(const Version&) noexcept = default;
+        constexpr Version(Version&&) noexcept = default;
+        constexpr ~Version() noexcept = default;
+        constexpr auto operator=(const Version&) noexcept -> Version& = default;
+        constexpr auto operator=(Version&&) noexcept -> Version& = default;
+
+        constexpr operator version_type() const noexcept  // NOLINT
+        {
+            return m_value;
+        }
+
+        constexpr explicit operator bool() const noexcept
+        {
+            return m_value != version_null;
+        }
+
         explicit operator std::string() const noexcept;
 
     private:
