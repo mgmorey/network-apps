@@ -51,6 +51,10 @@ else ifeq "$(os_kernel)" "FreeBSD"
 	CPPFLAGS += -DHAVE_SOCKADDR_SA_LEN -DUSING_CUSTOM_ASSERT
 endif
 
+ifeq "$(USING_DMALLOC)" "true"
+	CPPFLAGS += -DDMALLOC -DMALLOC_FUNC_CHECK
+endif
+
 ifndef NDEBUG
 	CXXFLAGS += -fno-omit-frame-pointer
 ifeq "$(USING_LIBASAN)" "true"
@@ -90,7 +94,13 @@ endif
 
 ifeq "$(os_kernel)" "FreeBSD"
 	LDLIBS += -L/usr/local/lib
-else ifeq "$(os_kernel)" "MINGW64_NT"
+endif
+
+ifeq "$(USING_DMALLOC)" "true"
+	LDLIBS += -ldmalloc
+endif
+
+ifeq "$(os_kernel)" "MINGW64_NT"
 	LDLIBS += -lws2_32
 endif
 

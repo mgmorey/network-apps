@@ -17,9 +17,9 @@ language = c++
 standard = $(language)20
 
 os_data = $(shell bin/get-os-release -iko)
-os_distro = $(word 1, $(os_data))
-os_kernel = $(word 2, $(os_data))
-os_family = $(word 3, $(os_data))
+os_distro = $(word 1,$(os_data))
+os_kernel = $(word 2,$(os_data))
+os_family = $(word 3,$(os_data))
 
 include flags.gmk
 
@@ -27,7 +27,7 @@ LINK.o = $(CXX) $(LDFLAGS)
 prefix = /usr/local
 tmp_dir = tmp
 
-lib_sources = address.cpp address-sa.cpp address-sin.cpp		\
+libnetwork_sources = address.cpp address-sa.cpp address-sin.cpp		\
 address-sin6.cpp address-sun.cpp addrinfo.cpp bind-endpoint.cpp		\
 bind-fd.cpp buffer.cpp close.cpp connect-endpoint.cpp connect-fd.cpp	\
 context.cpp family.cpp fd.cpp flags.cpp format.cpp			\
@@ -69,12 +69,13 @@ else
 	exec_sources = $(common_sources)
 endif
 
-sources = $(lib_sources) $(exec_sources)
+sources = $(libnetwork_sources) $(exec_sources)
 executables = $(subst .cpp,,$(exec_sources))
 
 exec_objs = $(addprefix $(tmp_dir)/,$(subst .cpp,.o,$(exec_sources)))
-lib_objs = $(addprefix $(tmp_dir)/,$(subst .cpp,.o,$(lib_sources)))
-objects = $(exec_objs) $(lib_objs)
+libnetwork_objs = $(addprefix $(tmp_dir)/,$(subst	\
+.cpp,.o,$(libnetwork_sources)))
+objects = $(exec_objs) $(libnetwork_objs)
 
 libraries = libnetwork.a
 
@@ -84,6 +85,8 @@ maps = $(subst .cpp,.map,$(exec_sources))
 artifacts = $(executables) $(objects) $(libraries) $(listings) $(maps)
 
 dependencies = $(addprefix $(tmp_dir)/,$(subst .cpp,.dep,$(sources)))
+
+sizes = $(addprefix $(tmp_dir)/,$(subst .a,-size.txt,$(libraries)))
 
 corefiles = *.core *.stackdump
 
@@ -104,15 +107,19 @@ dos2unix:
 
 .PHONY:	install
 install: $(libraries)
-	install libnetwork.a $(prefix)/lib
+	install $(libraries) $(prefix)/lib
 	install include/network/*.h $(prefix)/include
 
 .PHONY:	realclean
 realclean:
 	rm -rf TAGS $(artifacts) $(corefiles) $(tmp_dir)
 
+.PHONY:	report
+report: $(sizes)
+	for f in $^; do if [ -e $$f -a -e $$f~ ]; then diff $$f~ $$f; fi; done
+
 .PHONY:	test
-test: $(filter test-%, $(executables))
+test: $(filter test-%,$(executables))
 	for f in $^; do ./$$f >$$f.log; done
 
 .PHONY:	tidy
@@ -120,7 +127,7 @@ tidy:	$(sources)
 	clang-tidy$(LLVM_SUFFIX) $^ $(TIDY_FLAGS)
 
 .PHONY:	unix
-unix: $(filter unix-%, $(executables))
+unix: $(filter unix-%,$(executables))
 	./unix-server & (sleep 1; ./unix-client 2 2; ./unix-client DOWN)
 
 .SECONDARY: $(objects)
@@ -128,8 +135,15 @@ unix: $(filter unix-%, $(executables))
 TAGS:
 	printf '%s\n' $^ | etags --declarations --language=$(language) -
 
-$(tmp_dir)/%.dep: %.cpp
-	$(CXX) $(CPPFLAGS) -MM $< | bin/make-makefile -f TAGS -o $@
+$(executables): $(libraries)
+
+ifeq "$(BATCH_UPDATE_ARCHIVE)" "true"
+libnetwork.a: $(libnetwork_objs)
+	rm -f $@
+	ar rv $@ $^
+else
+libnetwork.a: $(patsubst %.o,libnetwork.a(%.o),$(libnetwork_objs))
+endif
 
 $(tmp_dir)/%.o: %.cpp
 	$(COMPILE.cpp) $(OUTPUT_OPTION) $<
@@ -137,17 +151,14 @@ $(tmp_dir)/%.o: %.cpp
 %: $(tmp_dir)/%.o
 	$(LINK.o) -o $@ $^ $(LDLIBS)
 
-ifeq "$(REBUILD_ARCHIVE)" "true"
-libnetwork.a: $(lib_objs)
-	rm -f $@
-	ar rv $@ $^
-else
-libnetwork.a: $(patsubst %.o,libnetwork.a(%.o),$(lib_objs))
-endif
+$(tmp_dir)/%.dep: %.cpp
+	$(CXX) $(CPPFLAGS) -MM $< | bin/make-makefile -f TAGS -o $@
 
-$(executables): libnetwork.a
+$(tmp_dir)/%-size.txt: %.a
+	if [ -e $@ ]; then mv -f $@ $@~; fi
+	size $^ >$@
 
-$(objects) $(dependencies): | $(tmp_dir)
+$(objects) $(dependencies) $(sizes): | $(tmp_dir)
 
 $(tmp_dir):
 	mkdir -p $(tmp_dir)
@@ -158,4 +169,3 @@ endif
 
 vpath %.h include/network
 vpath %.cpp src
-vpath %.o tmp
