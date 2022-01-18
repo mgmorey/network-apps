@@ -17,6 +17,7 @@
                                         // OsErrorResult, Overloaded,
                                         // Version, get_hostname(),
                                         // version_null
+#include "network/assert.h"
 
 #ifdef _WIN32
 #include <getopt.h>         // getopt(), optarg, opterr, optind
@@ -27,7 +28,6 @@
 #include <unistd.h>         // getopt(), optarg, opterr, optind
 #endif
 
-#include <cassert>      // assert()
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <span>         // std::span
