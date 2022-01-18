@@ -148,8 +148,9 @@ auto Network::Context::cleanup(failure_mode t_mode) -> Network::os_error_type
 #ifdef _WIN32
 
     if (::WSACleanup() == socket_error) {
+        error_code = get_last_os_error();
+
         if (t_mode == failure_mode::throw_error) {
-            error_code = get_last_os_error();
             const auto error_str {format_os_error(error_code)};
 
             switch (error_code) {  // NOLINT
