@@ -65,7 +65,7 @@ namespace TestContext
         public Network::Context
     {
     public:
-        static const auto mode {Network::Context::failure_mode::throw_error};
+        static const auto mode {Network::Context::failure_mode::return_error};
 
         static auto instance() -> Context&
         {
@@ -198,16 +198,18 @@ namespace TestContext
 
     static auto test_context_cleaned_up() -> void
     {
+        Network::os_error_type error_code {0};
         std::string what;
 
         try {
-            TestContext::Context::cleanup();
+            error_code = TestContext::Context::cleanup();
         }
         catch (const Network::Error& error) {
             what = error.what();
         }
 
-        assert(what == expected_error_uninitialized);		// NOLINT
+        assert(error_code == expected_code_uninitialized);	// NOLINT
+        assert(what == "");					// NOLINT
     }
 
     static auto test_context_global_instance() -> void
