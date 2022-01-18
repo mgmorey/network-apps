@@ -35,28 +35,28 @@
 
 namespace TestContext
 {
-    static const auto expected_code_initialized {0};
+    constexpr auto expected_code_initialized {0};
 #ifdef _WIN32
-    static const auto expected_code_uninitialized {WSANOTINITIALISED};
-    static const auto expected_error_invalid_version {
+    constexpr auto expected_code_uninitialized {WSANOTINITIALISED};
+    constexpr auto expected_error_invalid_version {
         "The Windows Sockets version requested is not supported."
     };
-    static const auto expected_error_uninitialized {
+    constexpr auto expected_error_uninitialized {
         "Either the application has not called WSAStartup, "
         "or WSAStartup failed."
     };
-    static const auto expected_system {"WinSock 2.0 (Test)"};
-    static const auto expected_version {Network::Version {2, 2}};
+    constexpr auto expected_system {"WinSock 2.0 (Test)"};
+    constexpr auto expected_version {Network::Version {2, 2}};
 #else
-    static const auto expected_code_uninitialized {0};
-    static const auto expected_error_invalid_version {""};
-    static const auto expected_error_uninitialized {""};
-    static const auto expected_system {
+    constexpr auto expected_code_uninitialized {0};
+    constexpr auto expected_error_invalid_version {""};
+    constexpr auto expected_error_uninitialized {""};
+    constexpr auto expected_system {
         "Berkeley Software Distribution Sockets (Test)"
     };
-    static const auto expected_version {Network::Version {}};
+    constexpr auto expected_version {Network::Version {}};
 #endif
-    static const auto invalid_version {Network::Version {0, 0}};
+    constexpr auto invalid_version {Network::Version {0, 0}};
 
     static bool verbose {false};  // NOLINT
 
