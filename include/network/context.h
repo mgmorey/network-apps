@@ -34,13 +34,15 @@ namespace Network
         auto operator=(const Context&) -> Context& = delete;
         auto operator=(const Context&&) -> Context& = delete;
         [[nodiscard]] auto error() const -> os_error_type;
+        [[nodiscard]] auto started() const -> bool;
         [[nodiscard]] auto status() const -> std::string;
         [[nodiscard]] auto system() const -> std::string;
         [[nodiscard]] auto version() const -> Version;
 
     protected:
         static auto cleanup(bool verbose = false) -> os_error_type;
-        auto destroy(bool verbose = false) -> os_error_type;
+        auto destroy(bool t_verbose = false) -> os_error_type;
+        auto started(bool t_is_started) -> void;
         auto status(const std::string& t_status) -> void;
         auto system(const std::string& t_system) -> void;
         auto version(const Version& t_version) -> void;

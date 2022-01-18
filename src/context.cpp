@@ -84,6 +84,7 @@ Network::Context::Context(const Version& t_version)
         m_version = version;
         m_is_started = true;
 #endif
+
         // Test for class invariant conditions and possibly throw
         // exceptions here if one or more conditions are not met.
 
@@ -120,6 +121,11 @@ Network::Context::~Context()
 auto Network::Context::error() const -> Network::os_error_type
 {
     return m_error_code;
+}
+
+auto Network::Context::started() const -> bool
+{
+    return m_is_started;
 }
 
 auto Network::Context::status() const -> std::string
@@ -162,11 +168,21 @@ auto Network::Context::cleanup(bool verbose) -> Network::os_error_type
     return 0;
 }
 
-auto Network::Context::destroy(bool verbose) -> Network::os_error_type
+auto Network::Context::destroy(bool t_verbose) -> Network::os_error_type
 {
-    m_error_code = cleanup(verbose);
-    m_is_started = false;
+    m_error_code = cleanup(t_verbose);
+
+    if (m_error_code == 0) {
+        m_is_started = false;
+        m_status = "Stopped";
+    }
+
     return m_error_code;
+}
+
+auto Network::Context::started(bool t_is_started) -> void
+{
+    m_is_started = t_is_started;
 }
 
 auto Network::Context::status(const std::string& t_status) -> void

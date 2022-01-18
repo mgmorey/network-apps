@@ -42,9 +42,7 @@ namespace TestContext
         "The Windows Sockets version requested is not supported."
     };
     static const auto expected_status {"Running"};
-    static const auto expected_system {"WinSock 2.0"};
-    static const auto expected_test_status {"Running"};
-    static const auto expected_test_system {"WinSock 2.0 (Test)"};
+    static const auto expected_system {"WinSock 2.0 (Test)"};
     static const auto expected_version {Network::Version {2, 2}};
     static const auto invalid_version {Network::Version {0, 0}};
 #else
@@ -53,10 +51,6 @@ namespace TestContext
     static const auto expected_error_invalid_version {""};
     static const auto expected_status {"Running"};
     static const auto expected_system {
-        "Berkeley Software Distribution Sockets"
-    };
-    static const auto expected_test_status {"Running"};
-    static const auto expected_test_system {
         "Berkeley Software Distribution Sockets (Test)"
     };
     static const auto expected_version {Network::Version {}};
@@ -69,6 +63,12 @@ namespace TestContext
         public Network::Context
     {
     public:
+        static auto instance() -> Context&
+        {
+            static Context g_context;
+            return g_context;
+        }
+
         explicit Context(const Network::Version& t_version = {}) :
             Network::Context(t_version)
         {
@@ -133,13 +133,17 @@ namespace TestContext
         return result;
     }
 
-    static auto print_result(const Network::OsErrorResult& result) -> void
+    static auto print_result(const Network::OsErrorResult& result,
+                             const std::string& description = "") -> void
     {
         if (verbose) {
-            std::cerr << "Number: "
+            std::cerr << "Error result"
+                      << (description.empty() ? "" : ": " + description)
+                      << std::endl
+                      << "    Number: "
                       << result.number()
                       << std::endl
-                      << "String: "
+                      << "    String: "
                       << result.string()
                       << std::endl;
         }
@@ -174,32 +178,21 @@ namespace TestContext
         }
     }
 
-    static auto test_context(const Network::Context& context,
+    static auto test_context(const Context& context,
                              const std::string& description = "",
                              const Network::Version& version = {}) -> void
     {
-        print_context(context, description);
+        print_context(context, (description.empty() ? "" :
+                                description + " (test)"));
         assert(context.status() == expected_status);		// NOLINT
         assert(context.system() == expected_system);		// NOLINT
         assert(context.version() == (version ? version :
                                      expected_version));	// NOLINT
     }
 
-    static auto test_context(const TestContext::Context& context,
-                             const std::string& description = "",
-                             const Network::Version& version = {}) -> void
-    {
-        print_context(context, (description.empty() ? "" :
-                                description + " (test)"));
-        assert(context.status() == expected_test_status);	// NOLINT
-        assert(context.system() == expected_test_system);	// NOLINT
-        assert(context.version() == (version ? version :
-                                     expected_version));	// NOLINT
-    }
-
     static auto test_context_cleanup() -> void
     {
-        const auto code {TestContext::Context::cleanup()};
+        const auto code {Context::cleanup()};
         assert(code == expected_code_uninitialized);		// NOLINT
     }
 
@@ -210,11 +203,17 @@ namespace TestContext
         std::string what;
 
         try {
-            auto& context1 {Network::Context::instance()};
-            auto& context2 {Network::Context::instance()};
+            Context& context1 {Context::instance()};
+            Context& context2 {Context::instance()};
             test_context(context1, "global");
             test_context(context2, "global");
             assert(&context1 == &context2);			// NOLINT
+            assert(context1.started());				// NOLINT
+            assert(context2.started());				// NOLINT
+            context1.destroy();
+            assert(!context1.started());			// NOLINT
+            assert(!context2.started());			// NOLINT
+            context2.destroy();
         }
         catch (const Network::Error& error) {
             print_exception(error);
@@ -222,7 +221,6 @@ namespace TestContext
         }
 
         assert(what == "");					// NOLINT
-        TestContext::Context::cleanup();
     }
 
     static auto test_context_invalid_version() -> void
@@ -230,7 +228,7 @@ namespace TestContext
         std::string what;
 
         try {
-            const TestContext::Context context {invalid_version};
+            const Context context {invalid_version};
             static_cast<void>(context);
         }
         catch (const Network::Error& error) {
@@ -244,13 +242,13 @@ namespace TestContext
 
     static auto test_context_local_instances() -> void
     {
-        Network::Version version1 {1, 0};
-        Network::Version version2 {2, 0};
+        static const Network::Version version1 {1, 0};
+        static const Network::Version version2 {2, 0};
         std::string what;
 
         try {
-            Network::Context context1 {version1};
-            Network::Context context2 {version2};
+            Context context1 {version1};
+            Context context2 {version2};
             test_context(context1, "local 1", version1);
             test_context(context2, "local 2", version2);
             assert(&context1 != &context2);			// NOLINT
@@ -268,7 +266,7 @@ namespace TestContext
         std::string what;
 
         try {
-            TestContext::Context context;
+            Context context;
             test_context(context, "local 3");
             assert(context.destroy() == 0);			// NOLINT
         }
@@ -286,7 +284,7 @@ namespace TestContext
         std::string what;
 
         try {
-            const TestContext::Context context;
+            const Context context;
             test_context(context, "local 4");
         }
         catch (const Network::Error& error) {
@@ -300,18 +298,31 @@ namespace TestContext
 
     static auto test_hostname_initialized() -> void
     {
-        TestContext::Context context;
-        static_cast<void>(context);
-        const auto result {get_hostname()};
-        print_result(result);
-        assert(result.number() == expected_code_initialized);	// NOLINT
+        std::string what;
+
+        try {
+            const Context context;
+            test_context(context, "local 5");
+            const auto result {get_hostname()};
+            const auto error_code {result.number()};
+            print_result(result, "get_hostname() with context");
+            assert(error_code == expected_code_initialized);	// NOLINT
+        }
+        catch (const Network::Error& error) {
+            print_exception(error);
+            what = error.what();
+        }
+
+        assert(what == "");					// NOLINT
+        TestContext::test_context_cleanup();
     }
 
     static auto test_hostname_uninitialized() -> void
     {
         const auto result {get_hostname()};
-        print_result(result);
-        assert(result.number() == expected_code_uninitialized);	// NOLINT
+        const auto error_code {result.number()};
+        print_result(result, "get_hostname() w/o context");
+        assert(error_code == expected_code_uninitialized);	// NOLINT
     }
 }
 
