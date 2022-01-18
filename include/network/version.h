@@ -56,6 +56,16 @@ namespace Network
             return m_value != version_null;
         }
 
+        [[nodiscard]] constexpr auto major() const -> version_type
+        {
+            return m_value ? m_value % m_radix : version_null;
+        }
+
+        [[nodiscard]] constexpr auto minor() const -> version_type
+        {
+            return m_value ? m_value / m_radix : version_null;
+        }
+
         explicit operator std::string() const noexcept;
 
     private:

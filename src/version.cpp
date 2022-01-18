@@ -25,8 +25,9 @@ Network::Version::operator std::string() const noexcept
         return string_null;
     }
 
-    return (std::to_string(m_value % m_radix) + "." +
-            std::to_string(m_value / m_radix));
+    const auto major_version {std::to_string(major())};
+    const auto minor_version {std::to_string(minor())};
+    return major_version + "." + minor_version;
 }
 
 auto Network::operator<<(std::ostream& os,
