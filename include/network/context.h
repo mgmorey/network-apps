@@ -40,8 +40,8 @@ namespace Network
         [[nodiscard]] auto version() const -> Version;
 
     protected:
-        static auto cleanup(bool verbose = false) -> os_error_type;
-        auto destroy(bool t_verbose = false) -> os_error_type;
+        static auto cleanup(bool enable_throw = true) -> os_error_type;
+        auto shutdown() -> void;
         auto started(bool t_is_started) -> void;
         auto status(const std::string& t_status) -> void;
         auto system(const std::string& t_system) -> void;

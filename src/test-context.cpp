@@ -41,6 +41,10 @@ namespace TestContext
     static const auto expected_error_invalid_version {
         "The Windows Sockets version requested is not supported."
     };
+    static const auto expected_error_uninitialized {
+        "Either the application has not called WSAStartup, "
+        "or WSAStartup failed."
+    };
     static const auto expected_status {"Running"};
     static const auto expected_system {"WinSock 2.0 (Test)"};
     static const auto expected_version {Network::Version {2, 2}};
@@ -49,6 +53,7 @@ namespace TestContext
     static const auto expected_code_initialized {0};
     static const auto expected_code_uninitialized {0};
     static const auto expected_error_invalid_version {""};
+    static const auto expected_error_uninitialized {""};
     static const auto expected_status {"Running"};
     static const auto expected_system {
         "Berkeley Software Distribution Sockets (Test)"
@@ -75,14 +80,14 @@ namespace TestContext
             system(system() + " (Test)");
         }
 
-        static auto cleanup() -> Network::error_type
+        static auto cleanup(bool enable_throw = true) -> Network::os_error_type
         {
-            return Network::Context::cleanup(verbose);
+            return Network::Context::cleanup(enable_throw);
         }
 
-        auto destroy() -> Network::error_type
+        auto shutdown() -> void
         {
-            return Network::Context::destroy(verbose);
+            Network::Context::shutdown();
         }
     };
 
@@ -190,10 +195,18 @@ namespace TestContext
                                      expected_version));	// NOLINT
     }
 
-    static auto test_context_cleanup() -> void
+    static auto test_context_cleaned_up() -> void
     {
-        const auto code {Context::cleanup()};
-        assert(code == expected_code_uninitialized);		// NOLINT
+        std::string what;
+
+        try {
+            TestContext::Context::cleanup(true);
+        }
+        catch (const Network::Error& error) {
+            what = error.what();
+        }
+
+        assert(what == expected_error_uninitialized);		// NOLINT
     }
 
     static auto test_context_global_instance() -> void
@@ -210,10 +223,10 @@ namespace TestContext
             assert(&context1 == &context2);			// NOLINT
             assert(context1.started());				// NOLINT
             assert(context2.started());				// NOLINT
-            context1.destroy();
+            context1.shutdown();
             assert(!context1.started());			// NOLINT
             assert(!context2.started());			// NOLINT
-            context2.destroy();
+            context2.shutdown();
         }
         catch (const Network::Error& error) {
             print_exception(error);
@@ -221,6 +234,7 @@ namespace TestContext
         }
 
         assert(what == "");					// NOLINT
+        test_context_cleaned_up();
     }
 
     static auto test_context_invalid_version() -> void
@@ -237,7 +251,7 @@ namespace TestContext
         }
 
         assert(what == expected_error_invalid_version);		// NOLINT
-        TestContext::test_context_cleanup();
+        test_context_cleaned_up();
     }
 
     static auto test_context_local_instances() -> void
@@ -259,16 +273,17 @@ namespace TestContext
         }
 
         assert(what == "");					// NOLINT
+        test_context_cleaned_up();
     }
 
-    static auto test_context_valid_with_destroy() -> void
+    static auto test_context_valid_with_shutdown() -> void
     {
         std::string what;
 
         try {
             Context context;
             test_context(context, "local 3");
-            assert(context.destroy() == 0);			// NOLINT
+            context.shutdown();
         }
         catch (const Network::Error& error) {
             print_exception(error);
@@ -276,10 +291,10 @@ namespace TestContext
         }
 
         assert(what == "");					// NOLINT
-        TestContext::test_context_cleanup();
+        test_context_cleaned_up();
     }
 
-    static auto test_context_valid_without_destroy() -> void
+    static auto test_context_valid_without_shutdown() -> void
     {
         std::string what;
 
@@ -293,7 +308,7 @@ namespace TestContext
         }
 
         assert(what == "");					// NOLINT
-        TestContext::test_context_cleanup();
+        test_context_cleaned_up();
     }
 
     static auto test_hostname_initialized() -> void
@@ -314,7 +329,7 @@ namespace TestContext
         }
 
         assert(what == "");					// NOLINT
-        TestContext::test_context_cleanup();
+        test_context_cleaned_up();
     }
 
     static auto test_hostname_uninitialized() -> void
@@ -323,6 +338,7 @@ namespace TestContext
         const auto error_code {result.number()};
         print_result(result, "get_hostname() w/o context");
         assert(error_code == expected_code_uninitialized);	// NOLINT
+        test_context_cleaned_up();
     }
 }
 
@@ -330,15 +346,13 @@ auto main(int argc, char* argv[]) -> int
 {
     try {
         const auto args {TestContext::parse_arguments(argc, argv)};
-        TestContext::test_context_cleanup();
         TestContext::test_context_global_instance();
         TestContext::test_context_invalid_version();
         TestContext::test_context_local_instances();
-        TestContext::test_context_valid_with_destroy();
-        TestContext::test_context_valid_without_destroy();
+        TestContext::test_context_valid_with_shutdown();
+        TestContext::test_context_valid_without_shutdown();
         TestContext::test_hostname_initialized();
         TestContext::test_hostname_uninitialized();
-        TestContext::test_context_cleanup();
     }
     catch (const std::exception& error) {
         std::cerr << error.what()

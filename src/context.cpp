@@ -25,11 +25,11 @@
 #include "network/socket-error.h"       // socket_error
 
 #ifdef _WIN32
-#include <winsock2.h>       // WSADATA, WSAEFAULT, WSAEPROCLIM,
+#include <winsock2.h>       // WSADATA, WSAEFAULT, WSAEINPROGRESS,
+                            // WSAENETDOWN, WSAEPROCLIM,
                             // WSANOTINITIALISED, WSASYSNOTREADY,
                             // WSAVERNOTSUPPORTED, WSACleanup(),
-                            // WSAStartup(),
-#include <windows.h>        // HIBYTE(), LOBYTE(), MAKEWORD()
+                            // WSAStartup()
 #endif
 
 #include <iostream>     // std::cerr, std::endl
@@ -43,8 +43,8 @@ static const auto default_version {Network::version_null};
 
 auto Network::Context::instance() -> Context&
 {
-    static Context g_context;
-    return g_context;
+    static Context context;
+    return context;
 }
 
 Network::Context::Context(const Version& t_version)
@@ -97,8 +97,7 @@ Network::Context::Context(const Version& t_version)
         }
     }
     catch (const Error& error) {
-        if (m_is_started) {
-            m_error_code = cleanup(false);
+        if (m_is_started && cleanup(false) == 0) {
             m_is_started = false;
         }
 
@@ -114,7 +113,7 @@ Network::Context::Context(const Version& t_version)
 Network::Context::~Context()
 {
     if (m_is_started) {
-        static_cast<void>(destroy());
+        cleanup(false);
     }
 }
 
@@ -143,41 +142,48 @@ auto Network::Context::version() const -> Network::Version
     return m_version;
 }
 
-auto Network::Context::cleanup(bool verbose) -> Network::os_error_type
+auto Network::Context::cleanup(bool enable_throw) -> Network::os_error_type
 {
+    auto error_code {reset_last_os_error()};
 #ifdef _WIN32
-    reset_last_os_error();
 
     if (::WSACleanup() == socket_error) {
-        const auto error_code {get_last_os_error()};
-
-        if (verbose) {
+        if (enable_throw) {
+            error_code = get_last_os_error();
             const auto error_str {format_os_error(error_code)};
-            std::cerr << "Call to WSACleanup() failed with error "
-                      << error_code
-                      << (error_str.empty() ? "" : ": " + error_str)
-                      << std::endl;
-        }
 
-        return error_code;
+            switch (error_code) {  // NOLINT
+            case WSANOTINITIALISED:
+                throw LogicError {error_str};
+                break;
+            case WSAEINPROGRESS:
+            case WSAENETDOWN:
+                throw RuntimeError {error_str};
+                break;
+            default:
+                throw Error {error_str};
+            }
+        }
+        else {
+            switch (error_code) {  // NOLINT
+            case WSANOTINITIALISED:
+                error_code = 0;
+                break;
+            }
+        }
     }
 
 #else
-    static_cast<void>(verbose);
+    static_cast<void>(enable_throw);
 #endif
-    return 0;
+    return error_code;
 }
 
-auto Network::Context::destroy(bool t_verbose) -> Network::os_error_type
+auto Network::Context::shutdown() -> void
 {
-    m_error_code = cleanup(t_verbose);
-
-    if (m_error_code == 0) {
+    if (m_is_started && cleanup(true) == 0) {
         m_is_started = false;
-        m_status = "Stopped";
     }
-
-    return m_error_code;
 }
 
 auto Network::Context::started(bool t_is_started) -> void
