@@ -54,7 +54,7 @@ Network::Context::Context(const Version& t_version)
     try {
 #ifdef _WIN32
         WSADATA data {};
-        m_error_code = ::WSAStartup(version, &data);
+        m_error_code = ::WSAStartup(static_cast<version_type>(version), &data);
 
         if (m_error_code != 0) {
             const auto error_str {format_os_error(m_error_code)};
@@ -75,7 +75,7 @@ Network::Context::Context(const Version& t_version)
         else {
             m_status = data.szSystemStatus;
             m_system = data.szDescription;
-            m_version = data.wVersion;
+            m_version = Version {data.wVersion};
             m_is_started = true;
         }
 #else
