@@ -85,6 +85,9 @@ logfile
 # Temporary files
 *.tmp
 
+# Size file
+sizes.txt
+
 # POSIX executables
 test-address
 test-bind
