@@ -35,7 +35,7 @@
 namespace TestContext
 {
 #ifdef _WIN32
-    constexpr auto expected_description {"WinSock 2.0 (Test)"};
+    constexpr auto expected_description {"WinSock 2.0"};
     constexpr auto expected_error_code_running {0};
     constexpr auto expected_error_code_stopped {WSANOTINITIALISED};
     constexpr auto expected_error_invalid_version {
@@ -45,7 +45,7 @@ namespace TestContext
     constexpr auto expected_version {Network::Version {2, 2}};
 #else
     constexpr auto expected_description {
-        "Berkeley Software Distribution Sockets (Test)"
+        "Berkeley Software Distribution Sockets"
     };
     constexpr auto expected_error_code_running {0};
     constexpr auto expected_error_code_stopped {0};
