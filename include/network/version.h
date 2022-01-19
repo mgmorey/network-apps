@@ -46,16 +46,16 @@ namespace Network
         constexpr auto operator=(const Version&) noexcept -> Version& = default;
         constexpr auto operator=(Version&&) noexcept -> Version& = default;
 
-        constexpr auto operator<(const Version& t_version) noexcept -> bool
+        constexpr auto operator<(const Version& t_other) const noexcept -> bool
         {
-            return (major() < t_version.major() ||
-                    minor() < t_version.minor());
+            return (major() < t_other.major() ||
+                    minor() < t_other.minor());
         }
 
-        constexpr auto operator>(const Version& t_version) noexcept -> bool
+        constexpr auto operator>(const Version& t_other) const noexcept -> bool
         {
-            return (major() > t_version.major() ||
-                    minor() > t_version.minor());
+            return (major() > t_other.major() ||
+                    minor() > t_other.minor());
         }
 
         constexpr operator version_type() const noexcept  // NOLINT

@@ -254,8 +254,10 @@ namespace TestContext
 
     static auto test_context_local_instances() -> void
     {
-        static const Network::Version version1 {1, 0};
-        static const Network::Version version2 {2, 0};
+        constexpr Network::Version version1 {1, 0};
+        constexpr Network::Version version2 {2, 0};
+        static_assert(version1 < version2);
+        static_assert(version2 > version1);
         std::string what;
 
         try {
