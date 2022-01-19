@@ -29,8 +29,7 @@ namespace Network
     public:
         constexpr Version() noexcept = default;
 
-        // cppcheck-suppress noExplicitConstructor
-        constexpr Version(version_type t_version) noexcept :  // NOLINT
+        constexpr explicit Version(version_type t_version) noexcept :
             m_value(t_version)
         {
         }
@@ -58,7 +57,17 @@ namespace Network
                     minor() > t_other.minor());
         }
 
-        constexpr operator version_type() const noexcept  // NOLINT
+        constexpr auto operator==(const Version& t_other) const noexcept -> bool
+        {
+            return m_value == t_other.m_value;
+        }
+
+        constexpr auto operator!=(const Version& t_other) const noexcept -> bool
+        {
+            return m_value != t_other.m_value;
+        }
+
+        constexpr explicit operator version_type() const noexcept
         {
             return m_value;
         }
