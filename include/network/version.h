@@ -46,6 +46,28 @@ namespace Network
         constexpr auto operator=(const Version&) noexcept -> Version& = default;
         constexpr auto operator=(Version&&) noexcept -> Version& = default;
 
+        constexpr auto operator<(const Version& t_version) noexcept -> bool
+        {
+            return (major() < t_version.major() ||
+                    minor() < t_version.minor());
+        }
+
+        constexpr auto operator>(const Version& t_version) noexcept -> bool
+        {
+            return (major() > t_version.major() ||
+                    minor() > t_version.minor());
+        }
+
+        constexpr auto operator==(const Version& t_version) noexcept -> bool
+        {
+            return value() == t_version.value();
+        }
+
+        constexpr auto operator!=(const Version& t_version) noexcept -> bool
+        {
+            return value() != t_version.value();
+        }
+
         constexpr operator version_type() const noexcept  // NOLINT
         {
             return m_value;
@@ -66,6 +88,11 @@ namespace Network
             return m_value != version_null ? m_value / m_radix : version_null;
         }
 
+        [[nodiscard]] constexpr auto value() const noexcept -> version_type
+        {
+            return m_value;
+        }
+
         explicit operator std::string() const noexcept;
 
     private:
@@ -73,6 +100,14 @@ namespace Network
         version_type m_value {version_null};
     };
 
+    extern auto operator<(const Version& left,
+                          const Version& right) noexcept -> bool;
+    extern auto operator>(const Version& left,
+                          const Version& right) noexcept -> bool;
+    extern auto operator==(const Version& left,
+                           const Version& right) noexcept -> bool;
+    extern auto operator!=(const Version& left,
+                           const Version& right) noexcept -> bool;
     extern auto operator<<(std::ostream& os,
                            Version version) noexcept -> std::ostream&;
 }
