@@ -116,7 +116,7 @@ realclean:
 
 .PHONY:	report
 report: $(sizes)
-	for f in $^; do test -e $$f -a -e $$f~ && diff $$f~ $$f || true; done
+	for f in $^; do test -e $$f~ && diff -Z $$f~ $$f || true; done
 
 .PHONY:	test
 test: $(filter test-%,$(executables))
@@ -135,21 +135,24 @@ unix: $(filter unix-%,$(executables))
 TAGS:
 	printf '%s\n' $^ | etags --declarations --language=$(language) -
 
-$(executables): $(libraries)
-
-ifeq "$(TRACK_ARCHIVE_MEMBERS)" "true"
+ifeq "$(USING_ARCHIVE_MEMBER_RULE)" "true"
 libnetwork.a: $(patsubst %.o,libnetwork.a(%.o),$(libnetwork_objs))
 else
 libnetwork.a: $(libnetwork_objs)
 	rm -f $@
-	ar rv $@ $^
+	$(AR) q $@ $^
 endif
 
-$(tmp_dir)/%.o: %.cpp
-	$(COMPILE.cpp) $(OUTPUT_OPTION) $<
+$(executables): $(libraries)
+
+(%): %
+	$(AR) $(ARFLAGS) $@ $<
 
 %: $(tmp_dir)/%.o
 	$(LINK.o) -o $@ $^ $(LDLIBS)
+
+$(tmp_dir)/%.o: %.cpp
+	$(COMPILE.cpp) $(OUTPUT_OPTION) $<
 
 $(tmp_dir)/%.dep: %.cpp
 	$(CXX) $(CPPFLAGS) -MM $< | bin/make-makefile -f TAGS -o $@
