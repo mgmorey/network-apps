@@ -73,14 +73,14 @@ Network::Context::Context(const Version& t_version)
             }
         }
         else {
-            m_status = data.szSystemStatus;
-            m_system = data.szDescription;
+            m_description = data.szDescription;
+            m_system_status = data.szSystemStatus;
             m_version = Version {data.wVersion};
             m_is_started = true;
         }
 #else
-        m_status = "Running";
-        m_system = "Berkeley Software Distribution Sockets";
+        m_system_status = "Running";
+        m_description = "Berkeley Software Distribution Sockets";
         m_version = version;
         m_is_started = true;
 #endif
@@ -92,7 +92,7 @@ Network::Context::Context(const Version& t_version)
         // invariant, that the API should be initialized (or
         // "Running"):
 
-        if (status() != "Running") {
+        if (system_status() != "Running") {
             throw RuntimeError {"The networking runtime is not initialized."};
         }
     }
@@ -112,9 +112,12 @@ Network::Context::Context(const Version& t_version)
 
 Network::Context::~Context()
 {
-    if (m_is_started) {
-        cleanup(failure_mode::return_zero);
-    }
+    shutdown(failure_mode::return_zero);
+}
+
+auto Network::Context::description() const -> std::string
+{
+    return m_description;
 }
 
 auto Network::Context::error() const -> Network::os_error_type
@@ -122,19 +125,14 @@ auto Network::Context::error() const -> Network::os_error_type
     return m_error_code;
 }
 
-auto Network::Context::started() const -> bool
+auto Network::Context::is_started() const -> bool
 {
     return m_is_started;
 }
 
-auto Network::Context::status() const -> std::string
+auto Network::Context::system_status() const -> std::string
 {
-    return m_status;
-}
-
-auto Network::Context::system() const -> std::string
-{
-    return m_system;
+    return m_system_status;
 }
 
 auto Network::Context::version() const -> Network::Version
@@ -182,6 +180,11 @@ auto Network::Context::cleanup(failure_mode t_mode) -> Network::os_error_type
     return 0;
 }
 
+auto Network::Context::is_started(bool t_is_started) -> void
+{
+    m_is_started = t_is_started;
+}
+
 auto Network::Context::shutdown(failure_mode t_mode) -> void
 {
     if (m_is_started && cleanup(t_mode) == 0) {
@@ -189,33 +192,13 @@ auto Network::Context::shutdown(failure_mode t_mode) -> void
     }
 }
 
-auto Network::Context::started(bool t_is_started) -> void
-{
-    m_is_started = t_is_started;
-}
-
-auto Network::Context::status(const std::string& t_status) -> void
-{
-    m_status = t_status;
-}
-
-auto Network::Context::system(const std::string& t_system) -> void
-{
-    m_system = t_system;
-}
-
-auto Network::Context::version(const Version& t_version) -> void
-{
-    m_version = t_version;
-}
-
 auto Network::operator<<(std::ostream& os,
                          const Context& context) -> std::ostream&
 {
-    const auto status {context.status()};
-    const auto system {context.system()};
+    const auto description {context.description()};
+    const auto status {context.system_status()};
     const auto version {context.version()};
-    os << system;
+    os << description;
 
     if (version) {
         os << " Version "

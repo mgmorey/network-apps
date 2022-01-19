@@ -34,22 +34,23 @@
 
 namespace TestContext
 {
-    constexpr auto expected_code_initialized {0};
 #ifdef _WIN32
-    constexpr auto expected_code_uninitialized {WSANOTINITIALISED};
+    constexpr auto expected_description {"WinSock 2.0 (Test)"};
+    constexpr auto expected_error_code_running {0};
+    constexpr auto expected_error_code_stopped {WSANOTINITIALISED};
     constexpr auto expected_error_invalid_version {
         "The Windows Sockets version requested is not supported."
     };
     constexpr auto expected_status {"Running"};
-    constexpr auto expected_system {"WinSock 2.0 (Test)"};
     constexpr auto expected_version {Network::Version {2, 2}};
 #else
-    constexpr auto expected_code_uninitialized {0};
-    constexpr auto expected_error_invalid_version {""};
-    constexpr auto expected_status {"Running"};
-    constexpr auto expected_system {
+    constexpr auto expected_description {
         "Berkeley Software Distribution Sockets (Test)"
     };
+    constexpr auto expected_error_code_running {0};
+    constexpr auto expected_error_code_stopped {0};
+    constexpr auto expected_error_invalid_version {""};
+    constexpr auto expected_status {"Running"};
     constexpr auto expected_version {Network::Version {}};
 #endif
     constexpr auto invalid_version {Network::Version {0}};
@@ -71,7 +72,6 @@ namespace TestContext
         explicit Context(const Network::Version& t_version = {}) :
             Network::Context(t_version)
         {
-            system(system() + " (Test)");
         }
 
         static auto cleanup() -> Network::os_error_type
@@ -84,6 +84,22 @@ namespace TestContext
             Network::Context::shutdown(mode);
         }
     };
+
+    static auto get_hostname() -> Network::OsErrorResult
+    {
+        Network::OsErrorResult result;
+        const auto hostname_result {Network::get_hostname()};
+        std::visit(Network::Overloaded {
+                [&](const std::string& hostname) {
+                    static_cast<void>(hostname);
+                    result = {0, ""};
+                },
+                [&](const Network::OsErrorResult& error_result) {
+                    result = error_result;
+                }
+            }, hostname_result);
+        return result;
+    }
 
     static auto parse_arguments(int argc, char** argv) ->
         std::vector<std::string>
@@ -116,40 +132,28 @@ namespace TestContext
         return result;
     }
 
-    static auto get_hostname() -> Network::OsErrorResult
-    {
-        Network::OsErrorResult result;
-        const auto hostname_result {Network::get_hostname()};
-        std::visit(Network::Overloaded {
-                [&](const std::string& hostname) {
-                    static_cast<void>(hostname);
-                    result = {0, ""};
-                },
-                [&](const Network::OsErrorResult& error_result) {
-                    result = error_result;
-                }
-            }, hostname_result);
-        return result;
-    }
-
     static auto print(const Context& context,
-                      const std::string& description = "") -> void
+                      const std::string& description) -> void
     {
+        std::cout << "Context";
+
         if (verbose) {
-            std::cout << "Context "
-                      << &context
-                      << (description.empty() ? "" : ": " + description)
-                      << std::endl
-                      << "    Status: "
-                      << context.status()
-                      << std::endl
-                      << "    System: "
-                      << context.system()
-                      << std::endl
-                      << "    Version: "
-                      << context.version()
-                      << std::endl;
+            std::cout << ' '
+                      << &context;
         }
+
+        std::cout << ": "
+                  << description
+                  << std::endl
+                  << "    Description: "
+                  << context.description()
+                  << std::endl
+                  << "    Status: "
+                  << context.system_status()
+                  << std::endl
+                  << "    Version: "
+                  << context.version()
+                  << std::endl;
     }
 
     static auto print(const Network::Error& error) -> void
@@ -186,8 +190,8 @@ namespace TestContext
         }
 
         print(context, description);
-        assert(context.status() == expected_status);		// NOLINT
-        assert(context.system() == expected_system);		// NOLINT
+        assert(context.description() == expected_description);	// NOLINT
+        assert(context.system_status() == expected_status);	// NOLINT
         assert(context.version() == version);			// NOLINT
     }
 
@@ -204,7 +208,7 @@ namespace TestContext
             what = error.what();
         }
 
-        assert(error_code == expected_code_uninitialized);	// NOLINT
+        assert(error_code == expected_error_code_stopped);	// NOLINT
         assert(what == "");					// NOLINT
     }
 
@@ -220,11 +224,11 @@ namespace TestContext
             test_context(context1, "global");
             test_context(context2, "global");
             assert(&context1 == &context2);			// NOLINT
-            assert(context1.started());				// NOLINT
-            assert(context2.started());				// NOLINT
+            assert(context1.is_started());			// NOLINT
+            assert(context2.is_started());			// NOLINT
             context1.shutdown();
-            assert(!context1.started());			// NOLINT
-            assert(!context2.started());			// NOLINT
+            assert(!context1.is_started());			// NOLINT
+            assert(!context2.is_started());			// NOLINT
             context2.shutdown();
         }
         catch (const Network::Error& error) {
@@ -312,7 +316,7 @@ namespace TestContext
         test_context_cleaned_up();
     }
 
-    static auto test_hostname_initialized() -> void
+    static auto test_hostname_running() -> void
     {
         std::string what;
 
@@ -322,7 +326,7 @@ namespace TestContext
             const auto result {get_hostname()};
             const auto error_code {result.number()};
             print(result, "get_hostname() with context");
-            assert(error_code == expected_code_initialized);	// NOLINT
+            assert(error_code == expected_error_code_running);	// NOLINT
         }
         catch (const Network::Error& error) {
             print(error);
@@ -333,12 +337,12 @@ namespace TestContext
         test_context_cleaned_up();
     }
 
-    static auto test_hostname_uninitialized() -> void
+    static auto test_hostname_stopped() -> void
     {
         const auto result {get_hostname()};
         const auto error_code {result.number()};
         print(result, "get_hostname() w/o context");
-        assert(error_code == expected_code_uninitialized);	// NOLINT
+        assert(error_code == expected_error_code_stopped);	// NOLINT
         test_context_cleaned_up();
     }
 }
@@ -352,8 +356,8 @@ auto main(int argc, char* argv[]) -> int
         TestContext::test_context_local_instances();
         TestContext::test_context_valid_with_shutdown();
         TestContext::test_context_valid_without_shutdown();
-        TestContext::test_hostname_initialized();
-        TestContext::test_hostname_uninitialized();
+        TestContext::test_hostname_running();
+        TestContext::test_hostname_stopped();
     }
     catch (const std::exception& error) {
         std::cerr << error.what()

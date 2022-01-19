@@ -33,28 +33,24 @@ namespace Network
         ~Context();
         auto operator=(const Context&) -> Context& = delete;
         auto operator=(const Context&&) -> Context& = delete;
+        [[nodiscard]] auto description() const -> std::string;
         [[nodiscard]] auto error() const -> os_error_type;
-        [[nodiscard]] auto started() const -> bool;
-        [[nodiscard]] auto status() const -> std::string;
-        [[nodiscard]] auto system() const -> std::string;
+        [[nodiscard]] auto is_started() const -> bool;
+        [[nodiscard]] auto system_status() const -> std::string;
         [[nodiscard]] auto version() const -> Version;
 
     protected:
         enum class failure_mode {return_error, return_zero, throw_error};
         static auto cleanup(failure_mode t_mode =
                             failure_mode::throw_error) -> os_error_type;
-        auto shutdown(failure_mode t_mode =
-                      failure_mode::throw_error) -> void;
-        auto started(bool t_is_started) -> void;
-        auto status(const std::string& t_status) -> void;
-        auto system(const std::string& t_system) -> void;
-        auto version(const Version& t_version) -> void;
+        auto is_started(bool t_is_started) -> void;
+        auto shutdown(failure_mode t_mode = failure_mode::throw_error) -> void;
 
     private:
         os_error_type m_error_code {0};
         bool m_is_started {false};
-        std::string m_status;
-        std::string m_system;
+        std::string m_description;
+        std::string m_system_status;
         Version m_version;
     };
 
