@@ -95,9 +95,9 @@ ifeq "$(os_kernel)" "FreeBSD"
 endif
 
 ifeq "$(os_kernel)" "Darwin"
-	LDFLAGS += -Wl,-map,$@.map
+	LDFLAGS += -Wl,-map,$(subst .so,,$@).map
 else ifneq "$(os_kernel)" "FreeBSD"
-	LDFLAGS += -Wl,-Map=$@.map
+	LDFLAGS += -Wl,-Map=$(subst .so,,$@).map
 endif
 
 LDFLAGS += -Wl,-rpath,'$$ORIGIN'
