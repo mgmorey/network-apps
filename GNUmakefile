@@ -75,21 +75,17 @@ executables = $(subst .cpp,,$(exec_sources))
 test_execs = $(filter test-%,$(executables))
 unix_execs = $(filter unix-%,$(executables))
 
+libraries = libnetwork.so libnetwork.a
+
 libnetwork_objs = $(addprefix $(tmp_dir)/,$(subst	\
 .cpp,.o,$(libnetwork_sources)))
 exec_objs = $(addprefix $(tmp_dir)/,$(subst .cpp,.o,$(exec_sources)))
 objects = $(exec_objs) $(libnetwork_objs)
 
-libraries = libnetwork.a libnetwork.so
-
 listings = $(addprefix $(tmp_dir)/,$(subst .cpp,.lst,$(sources)))
-maps = $(subst .cpp,.map,$(exec_sources))
-
-artifacts = $(executables) $(objects) $(libraries) $(listings) $(maps)
-
 dependencies = $(addprefix $(tmp_dir)/,$(subst .cpp,.dep,$(sources)))
 
-corefiles = *.core *.stackdump
+artifacts = $(libraries) $(executables) $(objects) $(listings) *.map
 
 .PHONY:	all
 all: $(libraries) $(executables) sizes.txt TAGS
@@ -113,7 +109,7 @@ install: $(libraries)
 
 .PHONY:	realclean
 realclean:
-	rm -rf TAGS $(artifacts) $(corefiles) $(tmp_dir)
+	rm -rf $(tmp_dir) $(libraries) *.core *.map *.stackdump
 
 .PHONY:	report
 report: sizes.txt
