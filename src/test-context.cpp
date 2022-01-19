@@ -137,36 +137,11 @@ namespace TestContext
         return result;
     }
 
-    static auto print_result(const Network::OsErrorResult& result,
-                             const std::string& description = "") -> void
+    static auto print(const Context& context,
+                      const std::string& description = "") -> void
     {
         if (verbose) {
-            std::cerr << "Error result"
-                      << (description.empty() ? "" : ": " + description)
-                      << std::endl
-                      << "    Number: "
-                      << result.number()
-                      << std::endl
-                      << "    String: "
-                      << result.string()
-                      << std::endl;
-        }
-    }
-
-    static auto print_exception(const Network::Error& error) -> void
-    {
-        if (verbose) {
-            std::cerr << "Exception: "
-                      << error.what()
-                      << std::endl;
-        }
-    }
-
-    static auto print_context(const Context& context,
-                              const std::string& description = "") -> void
-    {
-        if (verbose) {
-            std::cerr << "Context "
+            std::cout << "Context "
                       << &context
                       << (description.empty() ? "" : ": " + description)
                       << std::endl
@@ -182,6 +157,31 @@ namespace TestContext
         }
     }
 
+    static auto print(const Network::Error& error) -> void
+    {
+        if (verbose) {
+            std::cout << "Exception: "
+                      << error.what()
+                      << std::endl;
+        }
+    }
+
+    static auto print(const Network::OsErrorResult& result,
+                      const std::string& description = "") -> void
+    {
+        if (verbose) {
+            std::cout << "Error result"
+                      << (description.empty() ? "" : ": " + description)
+                      << std::endl
+                      << "    Number: "
+                      << result.number()
+                      << std::endl
+                      << "    String: "
+                      << result.string()
+                      << std::endl;
+        }
+    }
+
     static auto test_context(const Context& context,
                              const std::string& description = "",
                              Network::Version version = {}) -> void
@@ -190,7 +190,7 @@ namespace TestContext
             version = expected_version;
         }
 
-        print_context(context, description);
+        print(context, description);
         assert(context.status() == expected_status);		// NOLINT
         assert(context.system() == expected_system);		// NOLINT
         assert(context.version() == version);			// NOLINT
@@ -205,6 +205,7 @@ namespace TestContext
             error_code = TestContext::Context::cleanup();
         }
         catch (const Network::Error& error) {
+            print(error);
             what = error.what();
         }
 
@@ -232,7 +233,7 @@ namespace TestContext
             context2.shutdown();
         }
         catch (const Network::Error& error) {
-            print_exception(error);
+            print(error);
             what = error.what();
         }
 
@@ -249,7 +250,7 @@ namespace TestContext
             static_cast<void>(context);
         }
         catch (const Network::Error& error) {
-            print_exception(error);
+            print(error);
             what = error.what();
         }
 
@@ -271,7 +272,7 @@ namespace TestContext
             assert(&context1 != &context2);			// NOLINT
         }
         catch (const Network::Error& error) {
-            print_exception(error);
+            print(error);
             what = error.what();
         }
 
@@ -289,7 +290,7 @@ namespace TestContext
             context.shutdown();
         }
         catch (const Network::Error& error) {
-            print_exception(error);
+            print(error);
             what = error.what();
         }
 
@@ -306,7 +307,7 @@ namespace TestContext
             test_context(context, "local 4");
         }
         catch (const Network::Error& error) {
-            print_exception(error);
+            print(error);
             what = error.what();
         }
 
@@ -323,11 +324,11 @@ namespace TestContext
             test_context(context, "local 5");
             const auto result {get_hostname()};
             const auto error_code {result.number()};
-            print_result(result, "get_hostname() with context");
+            print(result, "get_hostname() with context");
             assert(error_code == expected_code_initialized);	// NOLINT
         }
         catch (const Network::Error& error) {
-            print_exception(error);
+            print(error);
             what = error.what();
         }
 
@@ -339,7 +340,7 @@ namespace TestContext
     {
         const auto result {get_hostname()};
         const auto error_code {result.number()};
-        print_result(result, "get_hostname() w/o context");
+        print(result, "get_hostname() w/o context");
         assert(error_code == expected_code_uninitialized);	// NOLINT
         test_context_cleaned_up();
     }
