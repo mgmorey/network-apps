@@ -29,8 +29,7 @@ namespace Network
     public:
         constexpr Version() noexcept = default;
 
-        // cppcheck-suppress noExplicitConstructor
-        constexpr Version(version_type t_version) noexcept :  // NOLINT
+        constexpr explicit Version(version_type t_version) noexcept :
             m_value(t_version)
         {
         }
@@ -46,29 +45,29 @@ namespace Network
         constexpr auto operator=(const Version&) noexcept -> Version& = default;
         constexpr auto operator=(Version&&) noexcept -> Version& = default;
 
-        constexpr auto operator<(const Version& t_version) noexcept -> bool
+        constexpr auto operator<(const Version& t_other) const noexcept -> bool
         {
-            return (major() < t_version.major() ||
-                    minor() < t_version.minor());
+            return (major() < t_other.major() ||
+                    minor() < t_other.minor());
         }
 
-        constexpr auto operator>(const Version& t_version) noexcept -> bool
+        constexpr auto operator>(const Version& t_other) const noexcept -> bool
         {
-            return (major() > t_version.major() ||
-                    minor() > t_version.minor());
+            return (major() > t_other.major() ||
+                    minor() > t_other.minor());
         }
 
-        constexpr auto operator==(const Version& t_version) noexcept -> bool
+        constexpr auto operator==(const Version& t_other) const noexcept -> bool
         {
-            return value() == t_version.value();
+            return m_value == t_other.m_value;
         }
 
-        constexpr auto operator!=(const Version& t_version) noexcept -> bool
+        constexpr auto operator!=(const Version& t_other) const noexcept -> bool
         {
-            return value() != t_version.value();
+            return m_value != t_other.m_value;
         }
 
-        constexpr operator version_type() const noexcept  // NOLINT
+        constexpr explicit operator version_type() const noexcept
         {
             return m_value;
         }

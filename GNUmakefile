@@ -116,7 +116,7 @@ realclean:
 
 .PHONY:	report
 report: $(sizes)
-	for f in $^; do if [ -e $$f -a -e $$f~ ]; then diff $$f~ $$f; fi; done
+	for f in $^; do test -e $$f -a -e $$f~ && diff $$f~ $$f || true; done
 
 .PHONY:	test
 test: $(filter test-%,$(executables))

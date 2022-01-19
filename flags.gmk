@@ -46,10 +46,12 @@ else ifeq "$(is_gcc)" "true"
 endif
 
 ifeq "$(os_kernel)" "Darwin"
-	CPPFLAGS += -DHAVE_SOCKADDR_SA_LEN
+	CPPFLAGS += -DHAVE_SOCKADDR_SA_LEN -DUSING_CUSTOM_ASSERT
 else ifeq "$(os_kernel)" "FreeBSD"
 	CPPFLAGS += -DHAVE_SOCKADDR_SA_LEN -DUSING_CUSTOM_ASSERT
 endif
+
+CPPFLAGS += -DOS_$(shell echo $(os_kernel) | tr '[:lower:]' '[:upper:]')
 
 ifeq "$(USING_DMALLOC)" "true"
 	CPPFLAGS += -DDMALLOC -DMALLOC_FUNC_CHECK

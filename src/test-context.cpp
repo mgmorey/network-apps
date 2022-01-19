@@ -40,17 +40,12 @@ namespace TestContext
     constexpr auto expected_error_invalid_version {
         "The Windows Sockets version requested is not supported."
     };
-    constexpr auto expected_error_uninitialized {
-        "Either the application has not called WSAStartup, "
-        "or WSAStartup failed."
-    };
     constexpr auto expected_status {"Running"};
     constexpr auto expected_system {"WinSock 2.0 (Test)"};
     constexpr auto expected_version {Network::Version {2, 2}};
 #else
     constexpr auto expected_code_uninitialized {0};
     constexpr auto expected_error_invalid_version {""};
-    constexpr auto expected_error_uninitialized {""};
     constexpr auto expected_status {"Running"};
     constexpr auto expected_system {
         "Berkeley Software Distribution Sockets (Test)"
@@ -260,8 +255,10 @@ namespace TestContext
 
     static auto test_context_local_instances() -> void
     {
-        static const Network::Version version1 {1, 0};
-        static const Network::Version version2 {2, 0};
+        constexpr Network::Version version1 {1, 0};
+        constexpr Network::Version version2 {2, 0};
+        static_assert(version1 < version2);
+        static_assert(version2 > version1);
         std::string what;
 
         try {
