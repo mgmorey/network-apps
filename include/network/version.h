@@ -100,14 +100,6 @@ namespace Network
         version_type m_value {version_null};
     };
 
-    extern auto operator<(const Version& left,
-                          const Version& right) noexcept -> bool;
-    extern auto operator>(const Version& left,
-                          const Version& right) noexcept -> bool;
-    extern auto operator==(const Version& left,
-                           const Version& right) noexcept -> bool;
-    extern auto operator!=(const Version& left,
-                           const Version& right) noexcept -> bool;
     extern auto operator<<(std::ostream& os,
                            Version version) noexcept -> std::ostream&;
 }
