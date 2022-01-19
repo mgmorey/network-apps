@@ -44,9 +44,9 @@ auto Network::get_sun_path(const Bytes& addr,
     const auto *const sun {get_sun_pointer(addr)};
     assert(sun->sun_family == AF_UNIX);				// NOLINT
     auto path_len_max {addr.size() - sun_path_offset};
-    auto sun_path {static_cast<const char*>(sun->sun_path)};
-    auto path_len {strnlen(sun_path, path_len_max)};
-    const std::string result {sun_path, path_len};
+    const auto *path {static_cast<const char*>(sun->sun_path)};
+    auto path_len {strnlen(path, path_len_max)};
+    const std::string result {path, path_len};
     return static_cast<OptionalPathname>(result);
 }
 
