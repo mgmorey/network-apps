@@ -35,13 +35,13 @@ auto Network::get_sun_path_length(const sockaddr_un* sun,
     std::size_t len {sun->sun_len};
     assert(sun_path_offset <= len && len <= size);		// NOLINT
     len = std::min(size, std::max(sun_path_offset, len));
-    const auto max_path_len {std::min(size, len) - sun_path_offset};
+    const auto path_len {std::min(size, len) - sun_path_offset};
 #else
-    const auto max_path_len {std::min(size - sun_path_offset,
-                                      sizeof sun->sun_path)};
+    const auto path_len {std::min(size - sun_path_offset,
+                                 sizeof sun->sun_path)};
 #endif
-    auto sun_path {static_cast<const char*>(sun->sun_path)};
-    return strnlen(sun_path, max_path_len);
+    const auto* path {static_cast<const char*>(sun->sun_path)};
+    return strnlen(path, path_len);
 }
 
 #endif
