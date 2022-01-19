@@ -49,17 +49,17 @@ auto Network::Context::instance() -> Context&
 
 Network::Context::Context(const Version& t_version)
 {
-    const auto version {t_version ? t_version : api_default};
+    const version_type version {t_version ? t_version : api_default};
 
     try {
 #ifdef _WIN32
         WSADATA data {};
-        m_error_code = ::WSAStartup(static_cast<version_type>(version), &data);
+        const auto error_code {::WSAStartup(version, &data)};
 
-        if (m_error_code != 0) {
-            const auto error_str {format_os_error(m_error_code)};
+        if (error_code != 0) {
+            const auto error_str {format_os_error(error_code)};
 
-            switch (m_error_code) {  // NOLINT
+            switch (error_code) {  // NOLINT
             case WSAEFAULT:
             case WSAVERNOTSUPPORTED:
                 throw LogicError {error_str};
@@ -81,7 +81,7 @@ Network::Context::Context(const Version& t_version)
 #else
         m_system_status = "Running";
         m_description = "Berkeley Software Distribution Sockets";
-        m_version = version;
+        m_version = Version {version};
         m_is_started = true;
 #endif
 
@@ -118,11 +118,6 @@ Network::Context::~Context()
 auto Network::Context::description() const -> std::string
 {
     return m_description;
-}
-
-auto Network::Context::error() const -> Network::os_error_type
-{
-    return m_error_code;
 }
 
 auto Network::Context::is_started() const -> bool

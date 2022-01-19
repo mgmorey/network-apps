@@ -34,7 +34,6 @@ namespace Network
         auto operator=(const Context&) -> Context& = delete;
         auto operator=(const Context&&) -> Context& = delete;
         [[nodiscard]] auto description() const -> std::string;
-        [[nodiscard]] auto error() const -> os_error_type;
         [[nodiscard]] auto is_started() const -> bool;
         [[nodiscard]] auto system_status() const -> std::string;
         [[nodiscard]] auto version() const -> Version;
@@ -47,7 +46,6 @@ namespace Network
         auto shutdown(failure_mode t_mode = failure_mode::throw_error) -> void;
 
     private:
-        os_error_type m_error_code {0};
         bool m_is_started {false};
         std::string m_description;
         std::string m_system_status;
