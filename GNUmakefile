@@ -137,12 +137,12 @@ TAGS:
 
 $(executables): $(libraries)
 
-ifeq "$(BATCH_UPDATE_ARCHIVE)" "true"
+ifeq "$(TRACK_ARCHIVE_MEMBERS)" "true"
+libnetwork.a: $(patsubst %.o,libnetwork.a(%.o),$(libnetwork_objs))
+else
 libnetwork.a: $(libnetwork_objs)
 	rm -f $@
 	ar rv $@ $^
-else
-libnetwork.a: $(patsubst %.o,libnetwork.a(%.o),$(libnetwork_objs))
 endif
 
 $(tmp_dir)/%.o: %.cpp
