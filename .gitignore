@@ -35,15 +35,13 @@
 
 # Core files
 *.core
+*.stackdump
 
 # Debug files
 *.dSYM/
 *.su
 *.idb
 *.pdb
-
-# Stackdump files
-*.stackdump
 
 # Kernel Module Compile Results
 *.mod*
@@ -75,18 +73,14 @@ TAGS
 *.log
 logfile
 
-# Ouptut files
-*.html
-*.json
+# Size file
+sizes.txt
 
 # Temporary directories
 **/tmp/
 
 # Temporary files
 *.tmp
-
-# Size file
-sizes.txt
 
 # POSIX executables
 test-address
