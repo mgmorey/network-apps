@@ -72,12 +72,13 @@ endif
 sources = $(libnetwork_sources) $(exec_sources)
 executables = $(subst .cpp,,$(exec_sources))
 
-exec_objs = $(addprefix $(tmp_dir)/,$(subst .cpp,.o,$(exec_sources)))
 libnetwork_objs = $(addprefix $(tmp_dir)/,$(subst	\
 .cpp,.o,$(libnetwork_sources)))
+exec_objs = $(addprefix $(tmp_dir)/,$(subst .cpp,.o,$(exec_sources)))
 objects = $(exec_objs) $(libnetwork_objs)
 
-libraries = libnetwork.a
+libnetwork = libnetwork.so
+libraries = $(libnetwork)
 
 listings = $(addprefix $(tmp_dir)/,$(subst .cpp,.lst,$(sources)))
 maps = $(subst .cpp,.map,$(exec_sources))
@@ -142,6 +143,9 @@ libnetwork.a: $(libnetwork_objs)
 	rm -f $@
 	$(AR) q $@ $^
 endif
+
+libnetwork.so: $(libnetwork_objs)
+	$(LINK.o) -shared -o $@ $^ $(LDLIBS)
 
 $(executables): $(libraries)
 

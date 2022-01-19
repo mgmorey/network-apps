@@ -57,6 +57,8 @@ ifeq "$(USING_DMALLOC)" "true"
 	CPPFLAGS += -DDMALLOC -DMALLOC_FUNC_CHECK
 endif
 
+CXXFLAGS += -fPIC
+
 ifndef NDEBUG
 	CXXFLAGS += -fno-omit-frame-pointer
 ifeq "$(USING_LIBASAN)" "true"
