@@ -72,6 +72,9 @@ endif
 sources = $(libnetwork_sources) $(exec_sources)
 executables = $(subst .cpp,,$(exec_sources))
 
+test_execs = $(filter test-%,$(executables))
+unix_execs = $(filter unix-%,$(executables))
+
 libnetwork_objs = $(addprefix $(tmp_dir)/,$(subst	\
 .cpp,.o,$(libnetwork_sources)))
 exec_objs = $(addprefix $(tmp_dir)/,$(subst .cpp,.o,$(exec_sources)))
@@ -117,7 +120,7 @@ report: sizes.txt
 	for f in $^; do test -e $$f~ && diff -Z $$f~ $$f || true; done
 
 .PHONY:	test
-test: $(filter test-%,$(executables))
+test: $(test_execs)
 	for f in $^; do ./$$f >$$f.log; done
 
 .PHONY:	tidy
@@ -125,7 +128,7 @@ tidy:	$(sources)
 	clang-tidy$(LLVM_SUFFIX) $^ $(TIDY_FLAGS)
 
 .PHONY:	unix
-unix: $(filter unix-%,$(executables))
+unix: $(unix_execs)
 	./unix-server & (sleep 1; ./unix-client 2 2; ./unix-client DOWN)
 
 .SECONDARY: $(objects)
@@ -144,7 +147,7 @@ endif
 libnetwork.so: $(libnetwork_objs)
 	$(LINK.o) -shared -o $@ $^ $(LDLIBS)
 
-$(executables): -lnetwork
+$(executables): $(libraries)
 
 (%): %
 	$(AR) $(ARFLAGS) $@ $<
