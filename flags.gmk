@@ -39,10 +39,10 @@ else ifeq "$(os_kernel)" "CYGWIN_NT"
 	CPPFLAGS += -D_POSIX_C_SOURCE=200809L
 endif
 
-ifdef NDEBUG
-	CPPFLAGS += -D_FORTIFY_SOURCE=2
-else ifeq "$(is_gcc)" "true"
-	CPPFLAGS += -D_GLIBCXX_DEBUG
+CPPFLAGS += -DOS_$(shell echo $(os_kernel) | tr '[:lower:]' '[:upper:]')
+
+ifeq "$(USING_DMALLOC)" "true"
+	CPPFLAGS += -DDMALLOC -DMALLOC_FUNC_CHECK
 endif
 
 ifeq "$(os_kernel)" "Darwin"
@@ -51,10 +51,10 @@ else ifeq "$(os_kernel)" "FreeBSD"
 	CPPFLAGS += -DHAVE_SOCKADDR_SA_LEN -DUSING_CUSTOM_ASSERT
 endif
 
-CPPFLAGS += -DOS_$(shell echo $(os_kernel) | tr '[:lower:]' '[:upper:]')
-
-ifeq "$(USING_DMALLOC)" "true"
-	CPPFLAGS += -DDMALLOC -DMALLOC_FUNC_CHECK
+ifdef NDEBUG
+	CPPFLAGS += -D_FORTIFY_SOURCE=2
+else ifeq "$(is_gcc)" "true"
+	CPPFLAGS += -D_GLIBCXX_DEBUG
 endif
 
 CXXFLAGS += -fPIC
@@ -90,15 +90,17 @@ ifeq "$(USING_LIBASAN)" "true"
 endif
 endif
 
+ifeq "$(os_kernel)" "FreeBSD"
+	LDFLAGS += -Wl,-L/usr/local/lib
+endif
+
 ifeq "$(os_kernel)" "Darwin"
 	LDFLAGS += -Wl,-map,$@.map
 else ifneq "$(os_kernel)" "FreeBSD"
 	LDFLAGS += -Wl,-Map=$@.map
 endif
 
-ifeq "$(os_kernel)" "FreeBSD"
-	LDLIBS += -L/usr/local/lib
-endif
+LDFLAGS += -Wl,-rpath,'$$ORIGIN'
 
 ifeq "$(USING_DMALLOC)" "true"
 	LDLIBS += -ldmalloc

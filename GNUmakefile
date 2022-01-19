@@ -77,8 +77,7 @@ libnetwork_objs = $(addprefix $(tmp_dir)/,$(subst	\
 exec_objs = $(addprefix $(tmp_dir)/,$(subst .cpp,.o,$(exec_sources)))
 objects = $(exec_objs) $(libnetwork_objs)
 
-libnetwork = libnetwork.so
-libraries = $(libnetwork)
+libraries = libnetwork.a libnetwork.so
 
 listings = $(addprefix $(tmp_dir)/,$(subst .cpp,.lst,$(sources)))
 maps = $(subst .cpp,.map,$(exec_sources))
@@ -87,12 +86,10 @@ artifacts = $(executables) $(objects) $(libraries) $(listings) $(maps)
 
 dependencies = $(addprefix $(tmp_dir)/,$(subst .cpp,.dep,$(sources)))
 
-sizes = $(addprefix $(tmp_dir)/,$(subst .a,-size.txt,$(libraries)))
-
 corefiles = *.core *.stackdump
 
 .PHONY:	all
-all: $(libraries) $(executables) $(sizes) TAGS
+all: $(libraries) $(executables) sizes.txt TAGS
 
 .PHONY:	clean
 clean:
@@ -116,7 +113,7 @@ realclean:
 	rm -rf TAGS $(artifacts) $(corefiles) $(tmp_dir)
 
 .PHONY:	report
-report: $(sizes)
+report: sizes.txt
 	for f in $^; do test -e $$f~ && diff -Z $$f~ $$f || true; done
 
 .PHONY:	test
@@ -147,7 +144,7 @@ endif
 libnetwork.so: $(libnetwork_objs)
 	$(LINK.o) -shared -o $@ $^ $(LDLIBS)
 
-$(executables): $(libraries)
+$(executables): -lnetwork
 
 (%): %
 	$(AR) $(ARFLAGS) $@ $<
@@ -161,11 +158,11 @@ $(tmp_dir)/%.o: %.cpp
 $(tmp_dir)/%.dep: %.cpp
 	$(CXX) $(CPPFLAGS) -MM $< | bin/make-makefile -f TAGS -o $@
 
-$(tmp_dir)/%-size.txt: %.a
+sizes.txt: $(objects)
 	if [ -e $@ ]; then mv -f $@ $@~; fi
 	size $^ >$@
 
-$(objects) $(dependencies) $(sizes): | $(tmp_dir)
+$(objects) $(dependencies) sizes.txt: | $(tmp_dir)
 
 $(tmp_dir):
 	mkdir -p $(tmp_dir)
