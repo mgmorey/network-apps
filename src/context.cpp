@@ -144,11 +144,11 @@ auto Network::Context::version() const -> Network::Version
 
 auto Network::Context::cleanup(failure_mode t_mode) -> Network::os_error_type
 {
-    auto error_code {reset_last_os_error()};
 #ifdef _WIN32
+    reset_last_os_error();
 
     if (::WSACleanup() == socket_error) {
-        error_code = get_last_os_error();
+        const auto error_code {get_last_os_error()};
 
         if (t_mode == failure_mode::throw_error) {
             const auto error_str {format_os_error(error_code)};
@@ -172,12 +172,14 @@ auto Network::Context::cleanup(failure_mode t_mode) -> Network::os_error_type
                 break;
             }
         }
+
+        return error_code;
     }
 
 #else
     static_cast<void>(t_mode);
 #endif
-    return error_code;
+    return 0;
 }
 
 auto Network::Context::shutdown(failure_mode t_mode) -> void
