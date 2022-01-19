@@ -58,16 +58,6 @@ namespace Network
                     minor() > t_version.minor());
         }
 
-        constexpr auto operator==(const Version& t_version) noexcept -> bool
-        {
-            return value() == t_version.value();
-        }
-
-        constexpr auto operator!=(const Version& t_version) noexcept -> bool
-        {
-            return value() != t_version.value();
-        }
-
         constexpr operator version_type() const noexcept  // NOLINT
         {
             return m_value;
