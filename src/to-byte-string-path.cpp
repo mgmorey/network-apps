@@ -44,7 +44,7 @@ auto Network::to_byte_string(const OptionalPathname& pathname) ->
     sun.sun_family = AF_LOCAL;
 
     if (pathname) {
-        pathname->copy(sun.sun_path, path_len_max);  // NOLINT
+        pathname->copy(static_cast<char*>(sun.sun_path), path_len_max);
         sun_len_min += sizeof(char);
     }
 
