@@ -91,7 +91,7 @@ sizes = $(addprefix $(tmp_dir)/,$(subst .a,-size.txt,$(libraries)))
 corefiles = *.core *.stackdump
 
 .PHONY:	all
-all: $(executables) TAGS
+all: $(libraries) $(executables) $(sizes) TAGS
 
 .PHONY:	clean
 clean:
