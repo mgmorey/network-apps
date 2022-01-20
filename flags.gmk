@@ -80,14 +80,14 @@ endif
 
 CXXFLAGS += -Wall -Werror -Wextra -Wpedantic -Wshadow
 
-ifeq "$(is_gcc)" "true"
-	CXXFLAGS += -Wa,-adghln=$(subst .o,.lst,$@)
-endif
-
 ifndef NDEBUG
 ifeq "$(USING_LIBASAN)" "true"
 	LDFLAGS += -fsanitize=address
 endif
+endif
+
+ifeq "$(is_gcc)" "true"
+	CXXFLAGS += -Wa,-adghln=$(subst .o,.lst,$@)
 endif
 
 ifeq "$(os_name)" "FreeBSD"
@@ -123,6 +123,7 @@ ifdef standard
 endif
 
 TIDY_CPPFLAGS += $(CPPFLAGS)
+
 TIDY_FLAGS = $(TIDY_CONFIG_FLAGS) -- $(TIDY_CPPFLAGS)
 
 # Local Variables:
