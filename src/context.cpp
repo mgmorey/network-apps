@@ -41,7 +41,7 @@ constexpr auto api_default {Network::Version {2, 2}};
 constexpr auto api_default {Network::Version {}};
 #endif
 
-auto Network::Context::instance() -> Context&
+auto Network::Context::instance() -> const Context&
 {
     static Context context;
     return context;
