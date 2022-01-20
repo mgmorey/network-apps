@@ -120,7 +120,7 @@ realclean:
 
 .PHONY: sizes
 sizes: sizes.txt
-	test -e $^~ && diff -Z $^~ $^ || true
+	test -e $^~ && diff -a $^~ $^ || true
 
 .PHONY: tags
 tags: TAGS
