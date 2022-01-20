@@ -79,6 +79,10 @@ program_object_files = $(sort $(subst		\
 $(source_suffix),.o,$(program_sources)))
 
 libnetwork_objects = $(addprefix $(tmpdir)/,$(libnetwork_object_files))
+
+libnetwork_members = $(patsubst %.o,libnetwork.a(%.o),	\
+$(libnetwork_objects))
+
 program_objects = $(addprefix $(tmpdir)/,$(program_object_files))
 
 objects = $(sort $(libnetwork_objects) $(program_objects))
@@ -143,7 +147,7 @@ libnetwork.so: $(libnetwork_objects)
 	$(LINK.so) -o $@ $^ $(LDLIBS)
 
 ifeq "$(USING_ARCHIVE_MEMBER_RULE)" "true"
-libnetwork.a: $(patsubst %.o,libnetwork.a(%.o),$(libnetwork_objects))
+libnetwork.a: $(libnetwork_members)
 else
 libnetwork.a: $(libnetwork_objs)
 	rm -f $@
