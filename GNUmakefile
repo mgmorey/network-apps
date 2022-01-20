@@ -60,7 +60,7 @@ unix_sources = unix-client.cpp unix-server.cpp
 
 program_sources = $(common_sources)
 
-ifneq "$(os_type)" "ms-windows"
+ifneq "$(os_name)" "MINGW64_NT"
 	program_sources += $(posix_sources)
 endif
 
