@@ -55,9 +55,11 @@ endif
 
 # CXX_ASFLAGS
 
+ifeq "$(is_gcc)" "true"
 ifeq "$(is_gnu_as)" "true"
 	ASFLAGS += -adghln=$(subst .o,.lst,$@)
         CXX_ASFLAGS += $(shell echo -Wa $(ASFLAGS) | sed 's/ /,/g')
+endif
 endif
 
 # CXX_LDFLAGS
