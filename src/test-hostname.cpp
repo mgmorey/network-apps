@@ -85,13 +85,14 @@ auto main(int argc, char* argv[]) -> int
 {
     try {
         const auto args {TestHostname::parse_arguments(argc, argv)};
-        const Network::Context context;
+        const auto& context {Network::Context::instance()};
 
         if (TestHostname::verbose) {
             std::cerr << context;
         }
 
         TestHostname::test_hostname();
+        static_cast<void>(args);
     }
     catch (const std::exception& error) {
         std::cerr << error.what()

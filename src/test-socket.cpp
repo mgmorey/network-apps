@@ -134,8 +134,8 @@ auto main(int argc, char* argv[]) -> int
     };
 
     try {
-        TestSocket::parse_arguments(argc, argv);
-        const Network::Context context;
+        const auto args {TestSocket::parse_arguments(argc, argv)};
+        const auto& context {Network::Context::instance()};
 
         if (TestSocket::verbose) {
             std::cerr << context;
@@ -146,6 +146,8 @@ auto main(int argc, char* argv[]) -> int
         for (const auto& path : paths) {
             TestSocket::test_path(path);
         }
+
+        static_cast<void>(args);
     }
     catch (const std::exception& error) {
         std::cerr << error.what()

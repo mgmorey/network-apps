@@ -243,7 +243,7 @@ auto main(int argc, char* argv[]) -> int
 {
     try {
         const auto args {TestHost::parse_arguments(argc, argv)};
-        const Network::Context context;
+        const auto& context {Network::Context::instance()};
 
         if (TestHost::verbose) {
             std::cerr << context;
