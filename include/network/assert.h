@@ -18,8 +18,6 @@
 
 #include <cassert>
 
-#ifdef USING_CUSTOM_ASSERT
-
 #ifdef NDEBUG
 
 // NOLINTNEXTLINE
@@ -83,7 +81,5 @@
 #endif
 
 #endif // NDEBUG
-
-#endif // USING_CUSTOM_ASSERT
 
 #endif
