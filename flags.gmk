@@ -93,10 +93,10 @@ endif
 ifeq "$(os_name)" "Darwin"
 	LDFLAGS += -Wl,-map,$(subst .so,,$@).map
 else ifneq "$(os_name)" "FreeBSD"
-	LDFLAGS += -Wl,-Map=$(subst .so,,$@).map
+	LDFLAGS += -Wl,-Map,$(subst .so,,$@).map
 endif
 
-LDFLAGS += -Wl,-rpath='$$ORIGIN'
+LDFLAGS += -Wl,-rpath,'$$ORIGIN'
 
 # LDLIBS
 
