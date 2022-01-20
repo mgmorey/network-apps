@@ -85,7 +85,7 @@ objects = $(sort $(libnetwork_objects) $(program_objects))
 
 programs = $(patsubst tmp/%.o,%,$(program_objects))
 
-mapfiles = $(patsubst tmp/%.map,%,$(program_objects))
+mapfiles = $(patsubst tmp/%.o,%.map,$(program_objects))
 depfiles = $(subst .o,.dep,$(objects))
 listings = $(subst .o,.lst,$(objects))
 
