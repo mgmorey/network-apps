@@ -26,7 +26,7 @@ namespace Network
     class Context
     {
     public:
-        static auto instance() -> Context&;
+        static auto instance() -> const Context&;
         explicit Context(const Version& t_version = {});
         Context(const Context&) = delete;
         Context(const Context&&) = delete;
