@@ -16,10 +16,10 @@
 language = c++
 standard = $(language)20
 
-os_data = $(shell bin/get-os-release -iko)
-os_distro = $(word 1,$(os_data))
-os_kernel = $(word 2,$(os_data))
-os_family = $(word 3,$(os_data))
+os_release = $(shell bin/get-os-release -iko)
+os_distro = $(word 1,$(os_release))
+os_name = $(word 2,$(os_release))
+os_type = $(word 3,$(os_release))
 
 include flags.gmk
 
@@ -53,9 +53,9 @@ test-context.cpp test-host.cpp test-hostname.cpp
 posix_sources = test-socket.cpp
 unix_sources = unix-client.cpp unix-server.cpp
 
-ifeq "$(os_family)" "gnu-linux"
+ifeq "$(os_type)" "gnu-linux"
 	exec_sources = $(common_sources) $(posix_sources) $(unix_sources)
-else ifeq "$(os_family)" "unix"
+else ifeq "$(os_type)" "unix"
 
 ifneq "$(os_distro)" "macos"
 	exec_sources = $(common_sources) $(posix_sources) $(unix_sources)
@@ -63,7 +63,7 @@ else
 	exec_sources = $(common_sources) $(posix_sources)
 endif
 
-else ifeq "$(os_kernel)" "CYGWIN_NT"
+else ifeq "$(os_name)" "CYGWIN_NT"
 	exec_sources = $(common_sources) $(posix_sources)
 else
 	exec_sources = $(common_sources)

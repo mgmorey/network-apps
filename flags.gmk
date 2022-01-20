@@ -23,31 +23,31 @@ ifdef standard
 	CPPCHECK_FLAGS += --std=$(standard)
 endif
 
-ifeq "$(os_kernel)" "MINGW64_NT"
+ifeq "$(os_name)" "MINGW64_NT"
 	CPPCHECK_FLAGS += -D_WIN32
 endif
 
-ifeq "$(os_kernel)" "FreeBSD"
+ifeq "$(os_name)" "FreeBSD"
 	CPPFLAGS += -I/usr/local/include
 endif
 
 CPPFLAGS += -Iinclude
 
-ifeq "$(os_kernel)" "Darwin"
+ifeq "$(os_name)" "Darwin"
 	CPPFLAGS += -D_DARWIN_C_SOURCE
-else ifeq "$(os_kernel)" "CYGWIN_NT"
+else ifeq "$(os_name)" "CYGWIN_NT"
 	CPPFLAGS += -D_POSIX_C_SOURCE=200809L
 endif
 
-CPPFLAGS += -DOS_$(shell echo $(os_kernel) | tr '[:lower:]' '[:upper:]')
+CPPFLAGS += -DOS_$(shell echo $(os_name) | tr '[:lower:]' '[:upper:]')
 
 ifeq "$(USING_DMALLOC)" "true"
 	CPPFLAGS += -DDMALLOC -DMALLOC_FUNC_CHECK
 endif
 
-ifeq "$(os_kernel)" "Darwin"
+ifeq "$(os_name)" "Darwin"
 	CPPFLAGS += -DHAVE_SOCKADDR_SA_LEN -DUSING_CUSTOM_ASSERT
-else ifeq "$(os_kernel)" "FreeBSD"
+else ifeq "$(os_name)" "FreeBSD"
 	CPPFLAGS += -DHAVE_SOCKADDR_SA_LEN -DUSING_CUSTOM_ASSERT
 endif
 
@@ -90,13 +90,13 @@ ifeq "$(USING_LIBASAN)" "true"
 endif
 endif
 
-ifeq "$(os_kernel)" "FreeBSD"
+ifeq "$(os_name)" "FreeBSD"
 	LDFLAGS += -Wl,-L/usr/local/lib
 endif
 
-ifeq "$(os_kernel)" "Darwin"
+ifeq "$(os_name)" "Darwin"
 	LDFLAGS += -Wl,-map,$(subst .so,,$@).map
-else ifneq "$(os_kernel)" "FreeBSD"
+else ifneq "$(os_name)" "FreeBSD"
 	LDFLAGS += -Wl,-Map=$(subst .so,,$@).map
 endif
 
@@ -106,7 +106,7 @@ ifeq "$(USING_DMALLOC)" "true"
 	LDLIBS += -ldmalloc
 endif
 
-ifeq "$(os_kernel)" "MINGW64_NT"
+ifeq "$(os_name)" "MINGW64_NT"
 	LDLIBS += -lws2_32
 endif
 
