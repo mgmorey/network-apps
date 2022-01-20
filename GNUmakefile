@@ -21,13 +21,13 @@ os_distro = $(word 1,$(os_release))
 os_name = $(word 2,$(os_release))
 os_type = $(word 3,$(os_release))
 
-include flags.gmk
-
 include_suffix = .h
 source_suffix = .cpp
 
 prefix = /usr/local
 tmpdir = tmp
+
+include flags.gmk
 
 libraries = libnetwork.so libnetwork.a
 

@@ -61,12 +61,18 @@ endif
 # CXX_LDFLAGS
 
 ifeq "$(os_name)" "Darwin"
-	LDFLAGS += -map $(subst .so,,$@).map
+	LDFLAGS += -map $(patsubst .%,,$@).map
 else ifneq "$(os_name)" "FreeBSD"
-	LDFLAGS += -Map $(subst .so,,$@).map
+	LDFLAGS += -Map=$(patsubst .%,,$@).map
 endif
 
-LDFLAGS += -rpath '\$$ORIGIN'
+ifeq "$(os_name)" "Darwin"
+	LDFLAGS += -rpath '\$$ORIGIN'
+else ifeq "$(os_name)" "FreeBSD"
+	LDFLAGS += -rpath '\$$ORIGIN'
+else
+	LDFLAGS += -rpath='\$$ORIGIN'
+endif
 
 ifndef NDEBUG
 ifeq "$(USING_LIBASAN)" "true"
