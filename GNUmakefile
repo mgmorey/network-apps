@@ -97,7 +97,7 @@ LINK.o = $(CXX) $(CXX_LDFLAGS)
 LINK.so = $(CXX) $(CXX_LDFLAGS) -shared
 
 .PHONY: all
-all: $(libraries) $(programs) sizes tags
+all: $(libraries) $(programs) sizes
 
 .PHONY: clean
 clean:
