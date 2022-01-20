@@ -17,15 +17,7 @@ clang_tidy_version = $(shell bin/get-llvm-version clang-tidy$(LLVM_SUFFIX))
 is_clang = $(shell bin/is-clang $(CXX))
 is_gcc = $(shell bin/is-gcc $(CXX))
 
-CPPCHECK_FLAGS = --cppcheck-build-dir=tmp --enable=all --inline-suppr --quiet
-
-ifdef standard
-	CPPCHECK_FLAGS += --std=$(standard)
-endif
-
-ifeq "$(os_name)" "MINGW64_NT"
-	CPPCHECK_FLAGS += -D_WIN32
-endif
+# CPPFLAGS
 
 ifeq "$(os_name)" "FreeBSD"
 	CPPFLAGS += -I/usr/local/include
@@ -57,6 +49,8 @@ else ifeq "$(os_name)" "FreeBSD"
 	CPPFLAGS += -DHAVE_SOCKADDR_SA_LEN -DUSING_CUSTOM_ASSERT
 endif
 
+# CXXFLAGS
+
 CXXFLAGS += -fPIC
 
 ifndef NDEBUG
@@ -80,14 +74,16 @@ endif
 
 CXXFLAGS += -Wall -Werror -Wextra -Wpedantic -Wshadow
 
+ifeq "$(is_gcc)" "true"
+	CXXFLAGS += -Wa,-adghln=$(subst .o,.lst,$@)
+endif
+
+# LDFLAGS
+
 ifndef NDEBUG
 ifeq "$(USING_LIBASAN)" "true"
 	LDFLAGS += -fsanitize=address
 endif
-endif
-
-ifeq "$(is_gcc)" "true"
-	CXXFLAGS += -Wa,-adghln=$(subst .o,.lst,$@)
 endif
 
 ifeq "$(os_name)" "FreeBSD"
@@ -100,7 +96,9 @@ else ifneq "$(os_name)" "FreeBSD"
 	LDFLAGS += -Wl,-Map=$(subst .so,,$@).map
 endif
 
-LDFLAGS += -Wl,-rpath,'$$ORIGIN'
+LDFLAGS += -Wl,-rpath='$$ORIGIN'
+
+# LDLIBS
 
 ifeq "$(USING_DMALLOC)" "true"
 	LDLIBS += -ldmalloc
@@ -110,11 +108,25 @@ ifeq "$(os_name)" "MINGW64_NT"
 	LDLIBS += -lws2_32
 endif
 
+# CPPCHECK_FLAGS
+
+CPPCHECK_FLAGS = --cppcheck-build-dir=tmp --enable=all --inline-suppr --quiet
+
+ifdef standard
+	CPPCHECK_FLAGS += --std=$(standard)
+endif
+
+ifeq "$(os_name)" "MINGW64_NT"
+	CPPCHECK_FLAGS += -D_WIN32
+endif
+
 ifeq "$(shell bin/compare-versions $(clang_tidy_version) 13)" "less"
 	TIDY_CONFIG_FLAGS = -config=
 else
 	TIDY_CONFIG_FLAGS = -config-file='.clang-tidy'
 endif
+
+# TIDY_FLAGS
 
 TIDY_CONFIG_FLAGS += -header-filter='.*'
 
