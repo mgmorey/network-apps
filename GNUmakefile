@@ -21,15 +21,18 @@ os_distro = $(word 1,$(os_release))
 os_name = $(word 2,$(os_release))
 os_type = $(word 3,$(os_release))
 
-include_suffix = .h
-source_suffix = .cpp
-
 prefix = /usr/local
 tmpdir = tmp
 
+include_suffix = .h
+source_suffix = .cpp
+
+soname = libnetwork.so.0
+version = 0.0.1
+
 include flags.gmk
 
-libraries = libnetwork.so libnetwork.a
+libraries = libnetwork.so.$(version) libnetwork.a
 
 libnetwork_sources = address.cpp address-sa.cpp address-sin.cpp		\
 address-sin6.cpp address-sun.cpp addrinfo.cpp bind-endpoint.cpp		\
@@ -97,7 +100,7 @@ listings = $(subst .o,.lst,$(objects))
 artifacts = $(libraries) $(objects) $(programs) $(mapfiles) $(listings) TAGS
 
 LINK.o = $(CXX) $(CXX_LDFLAGS)
-LINK.so = $(CXX) $(CXX_LDFLAGS) -shared
+LINK.so = $(CXX) $(CXX_LDFLAGS_SO)
 
 .PHONY: all
 all: $(libraries) $(programs) sizes
@@ -135,7 +138,7 @@ test: $(sort $(filter test-%,$(programs)))
 	for f in $^; do ./$$f >$$f.log; done
 
 .PHONY: tidy
-tidy: $(sources)
+tidy: $(sort $(sources))
 	clang-tidy$(LLVM_SUFFIX) $^ $(TIDY_FLAGS)
 
 .PHONY: unix
@@ -147,7 +150,7 @@ unix: $(sort $(filter unix-%,$(programs)))
 TAGS:
 	printf '%s\n' $^ | etags --declarations --language=$(language) -
 
-libnetwork.so: $(sort $(libnetwork_objects))
+libnetwork.so.$(version): $(sort $(libnetwork_objects))
 	$(LINK.so) -o $@ $^ $(LDLIBS)
 
 ifeq "$(USING_ARCHIVE_MEMBER_RULE)" "true"
