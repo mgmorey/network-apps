@@ -22,8 +22,6 @@ os_name = $(word 2,$(os_release))
 os_type = $(word 3,$(os_release))
 
 include flags.gmk
-LINK.o = $(CXX) $(LDFLAGS)
-LINK.so = $(CXX) $(LDFLAGS) -shared
 
 include_suffix = .h
 source_suffix = .cpp
@@ -94,6 +92,9 @@ depfiles = $(subst .o,.dep,$(objects))
 listings = $(subst .o,.lst,$(objects))
 
 artifacts = $(libraries) $(objects) $(programs) $(mapfiles) $(listings)
+
+LINK.o = $(CXX) $(LDFLAGS)
+LINK.so = $(CXX) $(LDFLAGS) -shared
 
 .PHONY: all
 all: $(libraries) $(programs) sizes tags
