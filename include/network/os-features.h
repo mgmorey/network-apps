@@ -17,7 +17,7 @@
 #define NETWORK_OS_FEATURES_H
 
 #if defined(OS_DARWIN) || defined(OS_FREEBSD)
-#define HAVE_SOCKADDR_SA_LEN	(1)
+#define HAVE_SOCKADDR_SA_LEN
 #endif
 
 #endif
