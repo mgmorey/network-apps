@@ -59,6 +59,9 @@ unix_sources = unix-client.cpp unix-server.cpp
 
 program_sources = $(common_sources)
 
+sources = $(libnetwork_sources) $(common_sources) $(posix_sources)	\
+$(unix_sources)
+
 ifneq "$(os_name)" "MINGW64_NT"
 	program_sources += $(posix_sources)
 endif
