@@ -16,7 +16,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 grep_version() {
-    grep -Eq '^(g?cc|[cg]\+\+)(\.exe)? \(.+\) .+$'
+    grep -Eq '^(g?cc|[cg]\+\+)(-[0-9]+)?(\.exe)? \(.+\) .+$'
 }
 
 is_gcc() {
