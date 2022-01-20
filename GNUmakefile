@@ -27,8 +27,9 @@ LINK.so = $(CXX) $(LDFLAGS) -shared
 
 include_suffix = .h
 source_suffix = .cpp
+
 prefix = /usr/local
-tmp_dir = tmp
+tmpdir = tmp
 
 libraries = libnetwork.so libnetwork.a
 
@@ -72,19 +73,23 @@ ifneq "$(os_distro)" "macos"
 endif
 endif
 
-libnetwork_object_files = $(subst $(source_suffix),.o,$(libnetwork_sources))
-program_object_files = $(subst $(source_suffix),.o,$(program_sources))
+libnetwork_object_files = $(sort $(subst	\
+$(source_suffix),.o,$(libnetwork_sources)))
+program_object_files = $(sort $(subst		\
+$(source_suffix),.o,$(program_sources)))
 
-libnetwork_objects = $(addprefix $(tmp_dir)/,$(libnetwork_object_files))
-program_objects = $(addprefix $(tmp_dir)/,$(program_object_files))
+libnetwork_objects = $(addprefix $(tmpdir)/,$(libnetwork_object_files))
+program_objects = $(addprefix $(tmpdir)/,$(program_object_files))
 
-objects = $(libnetwork_objects) $(program_objects)
+objects = $(sort $(libnetwork_objects) $(program_objects))
 
 programs = $(patsubst tmp/%.o,%,$(program_objects))
-listings = $(subst .o,.lst,$(objects))
-depfiles = $(subst .o,.dep,$(objects))
 
-artifacts = $(libraries) $(objects) $(programs) $(listings) *.map
+mapfiles = $(patsubst tmp/%.map,%,$(program_objects))
+depfiles = $(subst .o,.dep,$(objects))
+listings = $(subst .o,.lst,$(objects))
+
+artifacts = $(libraries) $(objects) $(programs) $(mapfiles) $(listings)
 
 .PHONY: all
 all: $(libraries) $(programs) sizes tags
@@ -98,7 +103,7 @@ cppcheck:
 	cppcheck $(CPPCHECK_FLAGS) $(CPPFLAGS) .
 
 .PHONY: dos2unix
-dos2unix: $(tmp_dir)/*.lst *.log *.map *.txt
+dos2unix: $(tmpdir)/*.lst *.log *.map *.txt
 	dos2unix $^
 
 .PHONY: install
@@ -108,7 +113,7 @@ install: $(libraries)
 
 .PHONY: realclean
 realclean:
-	rm -rf $(tmp_dir) $(artifacts) *.core *.map *.stackdump
+	rm -rf $(tmpdir) $(artifacts) sizes.txt* *.core *.stackdump
 
 .PHONY: sizes
 sizes: sizes.txt
@@ -150,23 +155,23 @@ $(programs): $(libraries)
 (%): %
 	$(AR) $(ARFLAGS) $@ $<
 
-%: $(tmp_dir)/%.o
+%: $(tmpdir)/%.o
 	$(LINK.o) -o $@ $^ $(LDLIBS)
 
-$(tmp_dir)/%.o: %$(source_suffix)
+$(tmpdir)/%.o: %$(source_suffix)
 	$(COMPILE$(source_suffix)) $(OUTPUT_OPTION) $<
 
-$(tmp_dir)/%.dep: %$(source_suffix)
+$(tmpdir)/%.dep: %$(source_suffix)
 	$(CXX) $(CPPFLAGS) -MM $< | bin/make-makefile -f TAGS -o $@
 
 sizes.txt: $(objects)
 	if [ -e $@ ]; then mv -f $@ $@~; fi
 	size $^ >$@
 
-$(objects) $(depfiles) sizes.txt: | $(tmp_dir)
+$(objects) $(depfiles) sizes.txt: | $(tmpdir)
 
-$(tmp_dir):
-	mkdir -p $(tmp_dir)
+$(tmpdir):
+	mkdir -p $(tmpdir)
 
 ifneq "$(MAKECMDGOALS)" "realclean"
 include $(depfiles)
