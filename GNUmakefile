@@ -150,7 +150,7 @@ libnetwork.so: $(libnetwork_objects)
 ifeq "$(USING_ARCHIVE_MEMBER_RULE)" "true"
 libnetwork.a: $(libnetwork_members)
 else
-libnetwork.a: $(libnetwork_objs)
+libnetwork.a: $(libnetwork_objects)
 	rm -f $@
 	$(AR) q $@ $^
 endif
