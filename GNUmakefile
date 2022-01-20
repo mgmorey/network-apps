@@ -22,10 +22,13 @@ os_name = $(word 2,$(os_release))
 os_type = $(word 3,$(os_release))
 
 include flags.gmk
-
 LINK.o = $(CXX) $(LDFLAGS)
+LINK.so = $(CXX) $(LDFLAGS) -shared
+
 prefix = /usr/local
 tmp_dir = tmp
+
+libraries = libnetwork.so libnetwork.a
 
 libnetwork_sources = address.cpp address-sa.cpp address-sin.cpp		\
 address-sin6.cpp address-sun.cpp addrinfo.cpp bind-endpoint.cpp		\
@@ -54,77 +57,77 @@ posix_sources = test-socket.cpp
 unix_sources = unix-client.cpp unix-server.cpp
 
 ifeq "$(os_type)" "gnu-linux"
-	exec_sources = $(common_sources) $(posix_sources) $(unix_sources)
+	program_sources = $(common_sources) $(posix_sources) $(unix_sources)
 else ifeq "$(os_type)" "unix"
 
 ifneq "$(os_distro)" "macos"
-	exec_sources = $(common_sources) $(posix_sources) $(unix_sources)
+	program_sources = $(common_sources) $(posix_sources) $(unix_sources)
 else
-	exec_sources = $(common_sources) $(posix_sources)
+	program_sources = $(common_sources) $(posix_sources)
 endif
 
 else ifeq "$(os_name)" "CYGWIN_NT"
-	exec_sources = $(common_sources) $(posix_sources)
+	program_sources = $(common_sources) $(posix_sources)
 else
-	exec_sources = $(common_sources)
+	program_sources = $(common_sources)
 endif
 
-sources = $(libnetwork_sources) $(exec_sources)
-executables = $(subst .cpp,,$(exec_sources))
+sources = $(libnetwork_sources) $(program_sources)
 
-test_execs = $(filter test-%,$(executables))
-unix_execs = $(filter unix-%,$(executables))
-
-libraries = libnetwork.so libnetwork.a
+programs = $(subst .cpp,,$(program_sources))
+test_programs = $(filter test-%,$(programs))
+unix_programs = $(filter unix-%,$(programs))
 
 libnetwork_objs = $(addprefix $(tmp_dir)/,$(subst	\
 .cpp,.o,$(libnetwork_sources)))
-exec_objs = $(addprefix $(tmp_dir)/,$(subst .cpp,.o,$(exec_sources)))
-objects = $(exec_objs) $(libnetwork_objs)
+program_objs = $(addprefix $(tmp_dir)/,$(subst		\
+.cpp,.o,$(program_sources)))
 
-listings = $(addprefix $(tmp_dir)/,$(subst .cpp,.lst,$(sources)))
-dependencies = $(addprefix $(tmp_dir)/,$(subst .cpp,.dep,$(sources)))
+objects = $(program_objs) $(libnetwork_objs)
 
-artifacts = $(libraries) $(executables) $(objects) $(listings) *.map
+listings = $(addprefix $(tmp_dir)/,$(subst .o,.lst,$(objects)))
+dependencies = $(addprefix $(tmp_dir)/,$(subst .o,.dep,$(objects)))
 
-.PHONY:	all
-all: $(libraries) $(executables) sizes.txt TAGS
+artifacts = $(programs) $(objects) $(libraries) $(listings) *.map
 
-.PHONY:	clean
+.PHONY: all
+all: $(libraries) $(programs) sizes.txt TAGS
+
+.PHONY: clean
 clean:
 	rm -f $(artifacts)
 
-.PHONY:	cppcheck
+.PHONY: cppcheck
 cppcheck:
 	cppcheck $(CPPCHECK_FLAGS) $(CPPFLAGS) .
 
-.PHONY:	dos2unix
+.PHONY: dos2unix
 dos2unix:
 	dos2unix *.log *.map $(tmp_dir)/*.lst $(tmp_dir)/*.txt
 
-.PHONY:	install
+.PHONY: install
 install: $(libraries)
 	install $(libraries) $(prefix)/lib
 	install include/network/*.h $(prefix)/include
 
-.PHONY:	realclean
+.PHONY: realclean
 realclean:
-	rm -rf $(tmp_dir) $(libraries) *.core *.map *.stackdump
+	rm -rf $(tmp_dir) $(artifacts) *.core *.map *.stackdump
 
-.PHONY:	report
+.PHONY: report
 report: sizes.txt
 	for f in $^; do test -e $$f~ && diff -Z $$f~ $$f || true; done
 
-.PHONY:	test
-test: $(test_execs)
+.PHONY: test
+test: $(test_programs)
 	for f in $^; do ./$$f >$$f.log; done
 
-.PHONY:	tidy
-tidy:	$(sources)
+.PHONY: tidy
+tidy: $(sources)
 	clang-tidy$(LLVM_SUFFIX) $^ $(TIDY_FLAGS)
 
-.PHONY:	unix
-unix: $(unix_execs)
+.PHONY: unix
+unix: $(unix_programs)
 	./unix-server & (sleep 1; ./unix-client 2 2; ./unix-client DOWN)
 
 .SECONDARY: $(objects)
@@ -133,7 +136,7 @@ TAGS:
 	printf '%s\n' $^ | etags --declarations --language=$(language) -
 
 libnetwork.so: $(libnetwork_objs)
-	$(LINK.o) -shared -o $@ $^ $(LDLIBS)
+	$(LINK.so) -o $@ $^ $(LDLIBS)
 
 ifeq "$(USING_ARCHIVE_MEMBER_RULE)" "true"
 libnetwork.a: $(patsubst %.o,libnetwork.a(%.o),$(libnetwork_objs))
@@ -143,7 +146,7 @@ libnetwork.a: $(libnetwork_objs)
 	$(AR) q $@ $^
 endif
 
-$(executables): $(libraries)
+$(programs): $(libraries)
 
 (%): %
 	$(AR) $(ARFLAGS) $@ $<
