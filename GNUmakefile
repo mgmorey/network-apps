@@ -25,6 +25,8 @@ include flags.gmk
 LINK.o = $(CXX) $(LDFLAGS)
 LINK.so = $(CXX) $(LDFLAGS) -shared
 
+include_suffix = .h
+source_suffix = .cpp
 prefix = /usr/local
 tmp_dir = tmp
 
@@ -74,24 +76,26 @@ endif
 
 sources = $(libnetwork_sources) $(program_sources)
 
-programs = $(subst .cpp,,$(program_sources))
+programs = $(subst $(source_suffix),,$(program_sources))
 test_programs = $(filter test-%,$(programs))
 unix_programs = $(filter unix-%,$(programs))
 
 libnetwork_objs = $(addprefix $(tmp_dir)/,$(subst	\
-.cpp,.o,$(libnetwork_sources)))
-program_objs = $(addprefix $(tmp_dir)/,$(subst		\
-.cpp,.o,$(program_sources)))
+$(source_suffix),.o,$(libnetwork_sources)))
+program_objs = $(addprefix $(tmp_dir)/,$(subst	\
+$(source_suffix),.o,$(program_sources)))
 
 objects = $(program_objs) $(libnetwork_objs)
 
-listings = $(addprefix $(tmp_dir)/,$(subst .o,.lst,$(objects)))
-dependencies = $(addprefix $(tmp_dir)/,$(subst .o,.dep,$(objects)))
+listings = $(addprefix $(tmp_dir)/,$(subst	\
+$(source_suffix),.lst,$(sources)))
+dependencies = $(addprefix $(tmp_dir)/,$(subst	\
+$(source_suffix),.dep,$(sources)))
 
-artifacts = $(programs) $(objects) $(libraries) $(listings) *.map
+artifacts = $(programs) $(libraries) $(objects) $(listings) *.map
 
 .PHONY: all
-all: $(libraries) $(programs) sizes.txt TAGS
+all: $(libraries) $(programs) sizes tags
 
 .PHONY: clean
 clean:
@@ -102,21 +106,24 @@ cppcheck:
 	cppcheck $(CPPCHECK_FLAGS) $(CPPFLAGS) .
 
 .PHONY: dos2unix
-dos2unix:
-	dos2unix *.log *.map $(tmp_dir)/*.lst $(tmp_dir)/*.txt
+dos2unix: $(tmp_dir)/*.lst *.log *.map *.txt
+	dos2unix $^
 
 .PHONY: install
 install: $(libraries)
 	install $(libraries) $(prefix)/lib
-	install include/network/*.h $(prefix)/include
+	install include/network/*$(include_suffix) $(prefix)/include
 
 .PHONY: realclean
 realclean:
 	rm -rf $(tmp_dir) $(artifacts) *.core *.map *.stackdump
 
-.PHONY: report
-report: sizes.txt
+.PHONY: sizes
+sizes: sizes.txt
 	test -e $^~ && diff -Z $^~ $^ || true
+
+.PHONY: tags
+tags: TAGS
 
 .PHONY: test
 test: $(test_programs)
@@ -154,10 +161,10 @@ $(programs): $(libraries)
 %: $(tmp_dir)/%.o
 	$(LINK.o) -o $@ $^ $(LDLIBS)
 
-$(tmp_dir)/%.o: %.cpp
-	$(COMPILE.cpp) $(OUTPUT_OPTION) $<
+$(tmp_dir)/%.o: %$(source_suffix)
+	$(COMPILE$(source_suffix)) $(OUTPUT_OPTION) $<
 
-$(tmp_dir)/%.dep: %.cpp
+$(tmp_dir)/%.dep: %$(source_suffix)
 	$(CXX) $(CPPFLAGS) -MM $< | bin/make-makefile -f TAGS -o $@
 
 sizes.txt: $(objects)
@@ -173,5 +180,5 @@ ifneq "$(MAKECMDGOALS)" "realclean"
 include $(dependencies)
 endif
 
-vpath %.h include/network
-vpath %.cpp src
+vpath %$(include_suffix) include/network
+vpath %$(source_suffix) src
