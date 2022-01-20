@@ -16,6 +16,8 @@
 #ifndef NETWORK_GET_SUN_LENGTH_H
 #define NETWORK_GET_SUN_LENGTH_H
 
+#include "network/os-features.h"                // HAVE_SOCKADDR_SA_LEN
+
 #ifndef _WIN32
 #include <sys/un.h>         // sockaddr_un
 #endif
