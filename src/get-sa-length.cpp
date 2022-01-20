@@ -16,6 +16,7 @@
 #include "network/get-sa-length.h"      // Bytes, get_sa_length(),
                                         // sock_len_type
 #include "network/get-sa-pointer.h"     // get_sa_pointer()
+#include "network/os-features.h"        // HAVE_SOCKADDR_SA_LEN
 #include "network/sa-offsets.h"         // sa_len_offset
 
 auto Network::get_sa_length(const Bytes& addr,

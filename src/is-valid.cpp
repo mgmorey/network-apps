@@ -21,6 +21,7 @@
 #include "network/get-sun-length.h"     // get_sun_length()
 #include "network/get-sun-pointer.h"    // get_sun_pointer()
 #include "network/offsets.h"            // sun_path_offset
+#include "network/os-features.h"        // HAVE_SOCKADDR_SA_LEN
 #include "network/sizes.h"              // sin_size, sin6_size,
                                         // sockaddr_size_max, sun_size
 
