@@ -58,41 +58,33 @@ test-context.cpp test-host.cpp test-hostname.cpp
 posix_sources = test-socket.cpp
 unix_sources = unix-client.cpp unix-server.cpp
 
+program_sources = $(common_sources)
+
+ifneq "$(os_type)" "ms-windows"
+	program_sources += $(posix_sources)
+endif
+
 ifeq "$(os_type)" "gnu-linux"
-	program_sources = $(common_sources) $(posix_sources) $(unix_sources)
+	program_sources += $(unix_sources)
 else ifeq "$(os_type)" "unix"
-
 ifneq "$(os_distro)" "macos"
-	program_sources = $(common_sources) $(posix_sources) $(unix_sources)
-else
-	program_sources = $(common_sources) $(posix_sources)
+	program_sources += $(unix_sources)
+endif
 endif
 
-else ifeq "$(os_name)" "CYGWIN_NT"
-	program_sources = $(common_sources) $(posix_sources)
-else
-	program_sources = $(common_sources)
-endif
+libnetwork_object_files = $(subst $(source_suffix),.o,$(libnetwork_sources))
+program_object_files = $(subst $(source_suffix),.o,$(program_sources))
 
-sources = $(libnetwork_sources) $(program_sources)
+libnetwork_objects = $(addprefix $(tmp_dir)/,$(libnetwork_object_files))
+program_objects = $(addprefix $(tmp_dir)/,$(program_object_files))
 
-programs = $(subst $(source_suffix),,$(program_sources))
-test_programs = $(filter test-%,$(programs))
-unix_programs = $(filter unix-%,$(programs))
+objects = $(libnetwork_objects) $(program_objects)
 
-libnetwork_objs = $(addprefix $(tmp_dir)/,$(subst	\
-$(source_suffix),.o,$(libnetwork_sources)))
-program_objs = $(addprefix $(tmp_dir)/,$(subst	\
-$(source_suffix),.o,$(program_sources)))
+programs = $(patsubst tmp/%.o,%,$(program_objects))
+listings = $(subst .o,.lst,$(objects))
+depfiles = $(subst .o,.dep,$(objects))
 
-objects = $(program_objs) $(libnetwork_objs)
-
-listings = $(addprefix $(tmp_dir)/,$(subst	\
-$(source_suffix),.lst,$(sources)))
-dependencies = $(addprefix $(tmp_dir)/,$(subst	\
-$(source_suffix),.dep,$(sources)))
-
-artifacts = $(programs) $(libraries) $(objects) $(listings) *.map
+artifacts = $(libraries) $(objects) $(programs) $(listings) *.map
 
 .PHONY: all
 all: $(libraries) $(programs) sizes tags
@@ -126,7 +118,7 @@ sizes: sizes.txt
 tags: TAGS
 
 .PHONY: test
-test: $(test_programs)
+test: $(filter test-%,$(programs))
 	for f in $^; do ./$$f >$$f.log; done
 
 .PHONY: tidy
@@ -134,7 +126,7 @@ tidy: $(sources)
 	clang-tidy$(LLVM_SUFFIX) $^ $(TIDY_FLAGS)
 
 .PHONY: unix
-unix: $(unix_programs)
+unix: $(filter unix-%,$(programs))
 	./unix-server & (sleep 1; ./unix-client 2 2; ./unix-client DOWN)
 
 .SECONDARY: $(objects)
@@ -142,11 +134,11 @@ unix: $(unix_programs)
 TAGS:
 	printf '%s\n' $^ | etags --declarations --language=$(language) -
 
-libnetwork.so: $(libnetwork_objs)
+libnetwork.so: $(libnetwork_objects)
 	$(LINK.so) -o $@ $^ $(LDLIBS)
 
 ifeq "$(USING_ARCHIVE_MEMBER_RULE)" "true"
-libnetwork.a: $(patsubst %.o,libnetwork.a(%.o),$(libnetwork_objs))
+libnetwork.a: $(patsubst %.o,libnetwork.a(%.o),$(libnetwork_objects))
 else
 libnetwork.a: $(libnetwork_objs)
 	rm -f $@
@@ -171,13 +163,13 @@ sizes.txt: $(objects)
 	if [ -e $@ ]; then mv -f $@ $@~; fi
 	size $^ >$@
 
-$(objects) $(dependencies) sizes.txt: | $(tmp_dir)
+$(objects) $(depfiles) sizes.txt: | $(tmp_dir)
 
 $(tmp_dir):
 	mkdir -p $(tmp_dir)
 
 ifneq "$(MAKECMDGOALS)" "realclean"
-include $(dependencies)
+include $(depfiles)
 endif
 
 vpath %$(include_suffix) include/network
