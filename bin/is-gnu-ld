@@ -16,7 +16,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 grep_version() {
-    grep -Eq '^GNU ld(\.exe)? \(.+\) .+$'
+    grep -Eq '^GNU ld \(.+\) .+$'
 }
 
 is_gnu_ld() {
