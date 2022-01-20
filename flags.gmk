@@ -33,13 +33,19 @@ endif
 
 CPPFLAGS += -Iinclude
 
+CPPFLAGS += -DOS_$(shell echo $(os_name) | tr '[:lower:]' '[:upper:]')
+
+ifdef NDEBUG
+	CPPFLAGS += -D_FORTIFY_SOURCE=2
+else ifeq "$(is_gcc)" "true"
+	CPPFLAGS += -D_GLIBCXX_DEBUG
+endif
+
 ifeq "$(os_name)" "Darwin"
 	CPPFLAGS += -D_DARWIN_C_SOURCE
 else ifeq "$(os_name)" "CYGWIN_NT"
 	CPPFLAGS += -D_POSIX_C_SOURCE=200809L
 endif
-
-CPPFLAGS += -DOS_$(shell echo $(os_name) | tr '[:lower:]' '[:upper:]')
 
 ifeq "$(USING_DMALLOC)" "true"
 	CPPFLAGS += -DDMALLOC -DMALLOC_FUNC_CHECK
@@ -49,12 +55,6 @@ ifeq "$(os_name)" "Darwin"
 	CPPFLAGS += -DHAVE_SOCKADDR_SA_LEN -DUSING_CUSTOM_ASSERT
 else ifeq "$(os_name)" "FreeBSD"
 	CPPFLAGS += -DHAVE_SOCKADDR_SA_LEN -DUSING_CUSTOM_ASSERT
-endif
-
-ifdef NDEBUG
-	CPPFLAGS += -D_FORTIFY_SOURCE=2
-else ifeq "$(is_gcc)" "true"
-	CPPFLAGS += -D_GLIBCXX_DEBUG
 endif
 
 CXXFLAGS += -fPIC
