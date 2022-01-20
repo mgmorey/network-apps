@@ -132,6 +132,9 @@ unix: $(unix_execs)
 TAGS:
 	printf '%s\n' $^ | etags --declarations --language=$(language) -
 
+libnetwork.so: $(libnetwork_objs)
+	$(LINK.o) -shared -o $@ $^ $(LDLIBS)
+
 ifeq "$(USING_ARCHIVE_MEMBER_RULE)" "true"
 libnetwork.a: $(patsubst %.o,libnetwork.a(%.o),$(libnetwork_objs))
 else
@@ -139,9 +142,6 @@ libnetwork.a: $(libnetwork_objs)
 	rm -f $@
 	$(AR) q $@ $^
 endif
-
-libnetwork.so: $(libnetwork_objs)
-	$(LINK.o) -shared -o $@ $^ $(LDLIBS)
 
 $(executables): $(libraries)
 
