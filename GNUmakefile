@@ -93,8 +93,8 @@ listings = $(subst .o,.lst,$(objects))
 
 artifacts = $(libraries) $(objects) $(programs) $(mapfiles) $(listings)
 
-LINK.o = $(CXX) $(LDFLAGS)
-LINK.so = $(CXX) $(LDFLAGS) -shared
+LINK.o = $(CXX) $(CXX_LDFLAGS)
+LINK.so = $(CXX) $(CXX_LDFLAGS) -shared
 
 .PHONY: all
 all: $(libraries) $(programs) sizes tags

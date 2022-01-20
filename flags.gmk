@@ -13,6 +13,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+# Compiler variables
+
 clang_tidy_version = $(shell bin/get-llvm-version clang-tidy$(LLVM_SUFFIX))
 is_clang = $(shell bin/is-clang $(CXX))
 is_gcc = $(shell bin/is-gcc $(CXX))
@@ -49,6 +51,31 @@ else ifeq "$(os_name)" "FreeBSD"
 	CPPFLAGS += -DHAVE_SOCKADDR_SA_LEN -DUSING_CUSTOM_ASSERT
 endif
 
+# CXX_ASFLAGS
+
+ifeq "$(is_gcc)" "true"
+	ASFLAGS += -adghln=$(subst .o,.lst,$@)
+        CXX_ASFLAGS += $(shell echo -Wa $(ASFLAGS) | sed 's/ /,/g')
+endif
+
+# CXX_LDFLAGS
+
+ifeq "$(os_name)" "Darwin"
+	LDFLAGS += -map $(subst .so,,$@).map
+else ifneq "$(os_name)" "FreeBSD"
+	LDFLAGS += -Map $(subst .so,,$@).map
+endif
+
+LDFLAGS += -rpath '\$$ORIGIN'
+
+ifndef NDEBUG
+ifeq "$(USING_LIBASAN)" "true"
+	CXX_LDFLAGS += -fsanitize=address
+endif
+endif
+
+CXX_LDFLAGS += $(shell echo -Wl $(LDFLAGS) | sed 's/ /,/g')
+
 # CXXFLAGS
 
 CXXFLAGS += -fPIC
@@ -72,33 +99,13 @@ ifdef standard
 	CXXFLAGS += -std=$(standard)
 endif
 
-CXXFLAGS += -Wall -Werror -Wextra -Wpedantic -Wshadow
-
-ifeq "$(is_gcc)" "true"
-	CXXFLAGS += -Wa,-adghln=$(subst .o,.lst,$@)
-endif
-
-# LDFLAGS
-
-ifndef NDEBUG
-ifeq "$(USING_LIBASAN)" "true"
-	LDFLAGS += -fsanitize=address
-endif
-endif
-
-ifeq "$(os_name)" "FreeBSD"
-	LDFLAGS += -Wl,-L/usr/local/lib
-endif
-
-ifeq "$(os_name)" "Darwin"
-	LDFLAGS += -Wl,-map,$(subst .so,,$@).map
-else ifneq "$(os_name)" "FreeBSD"
-	LDFLAGS += -Wl,-Map,$(subst .so,,$@).map
-endif
-
-LDFLAGS += -Wl,-rpath,'$$ORIGIN'
+CXXFLAGS += -Wall -Werror -Wextra -Wpedantic -Wshadow $(CXX_ASFLAGS)
 
 # LDLIBS
+
+ifeq "$(os_name)" "FreeBSD"
+	LDLIBS += -L/usr/local/lib
+endif
 
 ifeq "$(USING_DMALLOC)" "true"
 	LDLIBS += -ldmalloc
