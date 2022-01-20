@@ -71,10 +71,10 @@ ifneq "$(os_distro)" "macos"
 endif
 endif
 
-libnetwork_object_files = $(sort $(subst	\
-$(source_suffix),.o,$(libnetwork_sources)))
-program_object_files = $(sort $(subst		\
-$(source_suffix),.o,$(program_sources)))
+libnetwork_object_files = $(subst		\
+$(source_suffix),.o,$(libnetwork_sources))
+program_object_files = $(subst			\
+$(source_suffix),.o,$(program_sources))
 
 libnetwork_objects = $(addprefix $(tmpdir)/,$(libnetwork_object_files))
 
@@ -83,7 +83,7 @@ $(libnetwork_objects))
 
 program_objects = $(addprefix $(tmpdir)/,$(program_object_files))
 
-objects = $(sort $(libnetwork_objects) $(program_objects))
+objects = $(libnetwork_objects) $(program_objects)
 
 programs = $(patsubst tmp/%.o,%,$(program_objects))
 
@@ -118,7 +118,7 @@ install: $(libraries)
 
 .PHONY: realclean
 realclean:
-	rm -rf $(tmpdir) $(artifacts) sizes.txt* *.core *.stackdump
+	rm -rf $(sort $(tmpdir) $(filter-out tmp/%,$(artifacts)) sizes.txt)
 
 .PHONY: sizes
 sizes: sizes.txt
@@ -128,7 +128,7 @@ sizes: sizes.txt
 tags: TAGS
 
 .PHONY: test
-test: $(filter test-%,$(programs))
+test: $(sort $(filter test-%,$(programs)))
 	for f in $^; do ./$$f >$$f.log; done
 
 .PHONY: tidy
@@ -136,7 +136,7 @@ tidy: $(sources)
 	clang-tidy$(LLVM_SUFFIX) $^ $(TIDY_FLAGS)
 
 .PHONY: unix
-unix: $(filter unix-%,$(programs))
+unix: $(sort $(filter unix-%,$(programs)))
 	./unix-server & (sleep 1; ./unix-client 2 2; ./unix-client DOWN)
 
 .SECONDARY: $(objects)
@@ -144,13 +144,13 @@ unix: $(filter unix-%,$(programs))
 TAGS:
 	printf '%s\n' $^ | etags --declarations --language=$(language) -
 
-libnetwork.so: $(libnetwork_objects)
+libnetwork.so: $(sort $(libnetwork_objects))
 	$(LINK.so) -o $@ $^ $(LDLIBS)
 
 ifeq "$(USING_ARCHIVE_MEMBER_RULE)" "true"
-libnetwork.a: $(libnetwork_members)
+libnetwork.a: $(sort $(libnetwork_members))
 else
-libnetwork.a: $(libnetwork_objects)
+libnetwork.a: $(sort $(libnetwork_objects))
 	rm -f $@
 	$(AR) q $@ $^
 endif
@@ -169,7 +169,7 @@ $(tmpdir)/%.o: %$(source_suffix)
 $(tmpdir)/%.dep: %$(source_suffix)
 	$(CXX) $(CPPFLAGS) -MM $< | bin/make-makefile -f TAGS -o $@
 
-sizes.txt: $(objects)
+sizes.txt: $(sort $(objects))
 	if [ -e $@ ]; then mv -f $@ $@~; fi
 	size $^ >$@
 
