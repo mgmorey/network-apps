@@ -18,6 +18,8 @@
 clang_tidy_version = $(shell bin/get-llvm-version clang-tidy$(LLVM_SUFFIX))
 is_clang = $(shell bin/is-clang $(CXX))
 is_gcc = $(shell bin/is-gcc $(CXX))
+is_gnu_as = $(shell bin/is-gnu-as $(AS))
+is_gnu_ld = $(shell bin/is-gnu-ld $(LD))
 
 # CPPFLAGS
 
@@ -53,22 +55,26 @@ endif
 
 # CXX_ASFLAGS
 
-ifeq "$(is_gcc)" "true"
+ifeq "$(is_gnu_as)" "true"
 	ASFLAGS += -adghln=$(subst .o,.lst,$@)
         CXX_ASFLAGS += $(shell echo -Wa $(ASFLAGS) | sed 's/ /,/g')
 endif
 
 # CXX_LDFLAGS
 
-ifeq "$(os_name)" "Darwin"
-	LDFLAGS += -map $(patsubst .%,,$@).map
-else ifneq "$(os_name)" "FreeBSD"
-	LDFLAGS += -Map=$(patsubst .%,,$@).map
+ifneq "$(os_name)" "FreeBSD"
+ifneq "$(is_gcc)" "true"
+	LDFLAGS += -map $(subst .so,,$@).map
+else ifneq "$(is_gnu_ld)" "true"
+	LDFLAGS += -map $(subst .so,,$@).map
+else
+	LDFLAGS += -Map=$(subst .so,,$@).map
+endif
 endif
 
-ifeq "$(os_name)" "Darwin"
+ifneq "$(is_gcc)" "true"
 	LDFLAGS += -rpath '\$$ORIGIN'
-else ifeq "$(os_name)" "FreeBSD"
+else ifneq "$(is_gnu_ld)" "true"
 	LDFLAGS += -rpath '\$$ORIGIN'
 else
 	LDFLAGS += -rpath='\$$ORIGIN'

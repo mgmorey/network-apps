@@ -91,7 +91,7 @@ mapfiles = $(patsubst tmp/%.o,%.map,$(program_objects)) libnetwork.map
 depfiles = $(subst .o,.dep,$(objects))
 listings = $(subst .o,.lst,$(objects))
 
-artifacts = $(libraries) $(objects) $(programs) $(mapfiles) $(listings)
+artifacts = $(libraries) $(objects) $(programs) $(mapfiles) $(listings) TAGS
 
 LINK.o = $(CXX) $(CXX_LDFLAGS)
 LINK.so = $(CXX) $(CXX_LDFLAGS) -shared
