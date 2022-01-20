@@ -116,7 +116,7 @@ realclean:
 
 .PHONY: report
 report: sizes.txt
-	for f in $^; do test -e $$f~ && diff -Z $$f~ $$f || true; done
+	test -e $^~ && diff -Z $^~ $^ || true
 
 .PHONY: test
 test: $(test_programs)
