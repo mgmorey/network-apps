@@ -133,17 +133,10 @@ namespace TestAddress
 
     static auto test_address_invalid() -> void
     {
-        const Network::Bytes addr {addr_size, addr_data};
-        const auto size {addr.size()};
-        const auto length {Network::get_sa_length(addr)};
-        const auto family {Network::get_sa_family(addr)};
         std::string what;
-        assert(size == addr_size);
-        assert(length == 0 || length == 0xFFU);
-        assert(family == 0xFFU);
-        assert(Network::is_valid(addr) == false);
 
         try {
+            const Network::Bytes addr {addr_size, addr_data};
             const Network::Address address {addr};
             static_cast<void>(address);
         }
