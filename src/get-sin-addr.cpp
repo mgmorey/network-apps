@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#include "network/assert.h"             // assert()
 #include "network/get-sin-addr.h"       // Bytes, get_sin_addr(),
                                         // in_addr
 #include "network/get-sa-family.h"      // get_sa_family()
@@ -24,8 +25,6 @@
 #else
 #include <sys/socket.h>     // AF_INET
 #endif
-
-#include <cassert>      // assert()
 
 auto Network::get_sin_addr(const Bytes& addr, const in_addr& ip) -> in_addr
 {

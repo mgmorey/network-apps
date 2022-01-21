@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#include "network/assert.h"             // assert()
 #include "network/get-endpoint.h"       // Endpoint, EndpointResult,
                                         // ErrorResult, get_endpoint()
 #include "network/buffer.h"             // Buffer
@@ -29,7 +30,6 @@
 #endif
 
 #include <algorithm>    // std::max()
-#include <cassert>      // assert()
 #include <iostream>     // std::cerr, std::endl
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string

@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#include "network/assert.h"             // assert()
 #include "network/get-name.h"           // Bytes, Fd, GetNameHandler,
                                         // OsErrorResult, get_name()
 #include "network/get-length.h"         // get_length()
@@ -23,7 +24,6 @@
                                         // reset_os_last_error()
 #include "network/ss-sizes.h"           // ss_size
 
-#include <cassert>      // assert()
 #include <iostream>     // std::cerr, std::endl
 #include <sstream>      // std::ostringstream
 

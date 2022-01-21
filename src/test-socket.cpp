@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#include "network/assert.h"             // assert()
 #include "network/network.h"            // Address, Context, FdPair,
                                         // Hints, OptionalPathname,
                                         // Overloaded, OsErrorResult,
@@ -26,7 +27,6 @@
 #include <sys/un.h>         // sockaddr_un
 #include <unistd.h>         // getopt(), optarg, opterr, optind
 
-#include <cassert>      // assert()
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl

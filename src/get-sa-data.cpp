@@ -13,11 +13,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#include "network/assert.h"             // assert()
 #include "network/get-sa-data.h"        // Bytes, get_sa_data()
 #include "network/get-sa-family.h"      // get_sa_family()
 #include "network/sa-offsets.h"         // sa_data_offset
-
-#include <cassert>      // assert()
 
 auto Network::get_sa_data(const Bytes& addr) -> Network::Bytes
 {

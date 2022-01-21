@@ -38,7 +38,7 @@ auto main(int argc, char *argv[]) -> int
     bool shutdown {false};
 
     // Create local socket.
-    Network::Fd sock {::socket(AF_UNIX, SOCK_SEQPACKET, 0)};
+    Network::fd_type sock {::socket(AF_UNIX, SOCK_SEQPACKET, 0)};
 
     if (sock == -1) {
         std::perror("socket");
@@ -48,7 +48,7 @@ auto main(int argc, char *argv[]) -> int
     // Connect socket to socket address.
     const Network::OptionalPathname pathname {SOCKET_NAME};
     const auto sock_addr {Network::to_byte_string(pathname)};
-    const auto sock_result {Network::connect(sock, sock_addr)};
+    const auto sock_result {Network::connect(Network::Fd {sock}, sock_addr)};
     auto connect_result {sock_result.number()};
 
     if (connect_result == Network::socket_error) {

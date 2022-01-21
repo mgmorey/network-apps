@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#include "network/assert.h"             // assert()
 #include "network/get-sun-path.h"       // Bytes, OptionalPathname
                                         // get_sun_path()
 #include "network/get-sa-family.h"      // get_sa_family()
@@ -26,7 +27,6 @@
 #endif
 
 #include <algorithm>    // std::max(), std::min()
-#include <cassert>      // assert()
 #include <cstddef>      // std::size_t
 #include <cstring>      // strnlen()
 

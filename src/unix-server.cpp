@@ -39,7 +39,7 @@
 static constexpr auto backlog_size {20};
 static constexpr auto radix {10};
 
-static Network::Fd sock;  // NOLINT
+static Network::fd_type sock;  // NOLINT
 
 static auto clean_up() -> void
 {
@@ -74,7 +74,7 @@ auto main() -> int
     // Bind socket to socket name.
     const Network::OptionalPathname pathname {SOCKET_NAME};
     const auto sock_addr {Network::to_byte_string(pathname)};
-    const auto sock_result {Network::bind(sock, sock_addr)};
+    const auto sock_result {Network::bind(Network::Fd {sock}, sock_addr)};
     auto result {sock_result.number()};
 
     if (result == Network::socket_error) {

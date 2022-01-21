@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#include "network/assert.h"             // assert()
 #include "network/network.h"            // Address, Bytes, Context,
                                         // ErrorResult, Family,
                                         // Hostname, HostVector,
@@ -35,7 +36,6 @@
 #include <unistd.h>         // getopt(), optarg, opterr, optind
 #endif
 
-#include <cassert>      // assert()
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
 #include <exception>    // std::exception
 #include <iomanip>      // std::right, std::setw()
@@ -47,6 +47,8 @@
 
 namespace TestAddress
 {
+    constexpr auto addr_data {Network::Byte {0xFFU}};
+    constexpr auto addr_size {8};
     constexpr auto key_width {20};
     constexpr auto value_width {10};
 
@@ -83,7 +85,7 @@ namespace TestAddress
         return result;
     }
 
-    static auto print_address(const Network::Address& address) -> void
+    static auto print(const Network::Address& address) -> void
     {
         const auto length {address.length()};
         const auto family {address.family()};
@@ -108,16 +110,49 @@ namespace TestAddress
                   << std::endl;
     }
 
+    static auto print(const Network::Error& error) -> void
+    {
+        if (verbose) {
+            std::cout << "Exception: "
+                      << error.what()
+                      << std::endl;
+        }
+    }
+
     static auto test_address() -> void
     {
         const Network::Bytes addr;
         const auto size {addr.size()};
         const auto length {Network::get_sa_length(addr)};
         const auto family {Network::get_sa_family(addr)};
-        assert(size == 0);					// NOLINT
-        assert(length == 0);					// NOLINT
-        assert(family == AF_UNSPEC);				// NOLINT
-        assert(Network::is_valid(addr) == false);		// NOLINT
+        assert(size == 0);
+        assert(length == 0);
+        assert(family == AF_UNSPEC);
+        assert(Network::is_valid(addr) == false);
+    }
+
+    static auto test_address_invalid() -> void
+    {
+        const Network::Bytes addr {addr_size, addr_data};
+        const auto size {addr.size()};
+        const auto length {Network::get_sa_length(addr)};
+        const auto family {Network::get_sa_family(addr)};
+        std::string what;
+        assert(size == addr_size);
+        assert(length == 0 || length == 0xFFU);
+        assert(family == 0xFFU);
+        assert(Network::is_valid(addr) == false);
+
+        try {
+            const Network::Address address {addr};
+            static_cast<void>(address);
+        }
+        catch (const Network::LogicError& error) {
+            print(error);
+            what = error.what();
+        }
+
+        assert(what == "Invalid socket address: 0xFFFFFFFFFFFFFFFF");
     }
 
     static auto test_address_localhost(const Network::Bytes& addr) -> void
@@ -129,27 +164,27 @@ namespace TestAddress
 
         switch (family) {
         case AF_INET:
-            assert(size == Network::sin_size);			// NOLINT
+            assert(size == Network::sin_size);
             break;
         case AF_INET6:
-            assert(size == Network::sin6_size);			// NOLINT
+            assert(size == Network::sin6_size);
             break;
         default:
-            assert(false);					// NOLINT
+            assert(false);
         }
 
-        assert(Network::is_valid(addr, verbose));		// NOLINT
-        print_address(address);
+        assert(Network::is_valid(addr, verbose));
+        print(address);
 
         switch (family) {
         case AF_INET:
-            assert(text == "127.0.0.1");			// NOLINT
+            assert(text == "127.0.0.1");
             break;
         case AF_INET6:
-            assert(text == "::1");				// NOLINT
+            assert(text == "::1");
             break;
         default:
-            assert(false);					// NOLINT
+            assert(false);
         }
     }
 
@@ -191,6 +226,7 @@ auto main(int argc, char* argv[]) -> int
         }
 
         TestAddress::test_address();
+        TestAddress::test_address_invalid();
         TestAddress::test_address_localhost();
     }
     catch (const std::exception& error) {

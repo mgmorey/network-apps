@@ -17,40 +17,18 @@
 #define NETWORK_ASSERT_H
 
 #include <cassert>
-
-#ifdef NDEBUG
-
-// NOLINTNEXTLINE
-#define assert(e)   (static_cast<void>(0))
-
-#else // !NDEBUG
-
-#if defined(OS_DARWIN)
-
 #undef assert
-#undef __assert
 
+#if defined(NDEBUG)
+#define assert(e) (static_cast<void>(0))  // NOLINT
+#elif defined(OS_DARWIN)
 #ifndef __GNUC__
-
 #define assert(e)                                                       \
-    ((void) ((e) ? ((void)0) : __assert (#e, __ASSERT_FILE_NAME, __LINE__)))
-#define __assert(e, file, line) \
-    ((void)printf ("%s:%d: failed assertion `%s'\n", file, line, e), abort())
-
+    (static_cast<void>(((e) ?                                           \
+                        (static_cast<void>(0)) :                        \
+                        __assert (#e, __ASSERT_FILE_NAME, __LINE__))))
 #else // __GNUC__
-
-#if defined(__ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__) && ((__ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__-0) < 1070)
-// NOLINTNEXTLINE
-#define __assert(e, file, line)                                 \
-    __eprintf ("%s:%d: failed assertion `%s'\n", file, line, e)
-#else
-/* 8462256: modified __assert_rtn() replaces deprecated __eprintf() */
-// NOLINTNEXTLINE
-#define __assert(e, file, line)                         \
-    __assert_rtn ((const char *)-1L, file, line, e)
-#endif
-
-#if __DARWIN_UNIX03
+#ifdef __DARWIN_UNIX03
 // NOLINTNEXTLINE
 #define	assert(e) \
     (__builtin_expect(!(e), 0) ?                      \
@@ -59,27 +37,19 @@
      static_cast<void>(0))
 #else // !__DARWIN_UNIX03
 // NOLINTNEXTLINE
-#define assert(e)  \
+#define assert(e) \
     (__builtin_expect(!(e), 0) ?                   \
      __assert (#e, __ASSERT_FILE_NAME, __LINE__) : \
-     (void)0)
+     static_cast<void>(0))
 #endif // __DARWIN_UNIX03
-
 #endif // __GNUC__
-
 #elif defined(OS_FREEBSD)
-
-#undef assert
-
 // NOLINTNEXTLINE
-#define assert(e)   ((e) ? static_cast<void>(0) :                       \
-                         __assert(static_cast<const char*>(__func__),   \
-                                  __FILE__,                             \
-                                  __LINE__,                             \
-                                  #e))
-
+#define assert(e) ((e) ? static_cast<void>(0) :                         \
+                   __assert(static_cast<const char*>(__func__),         \
+                            __FILE__,                                   \
+                            __LINE__,                                   \
+                            #e))
 #endif
-
-#endif // NDEBUG
 
 #endif

@@ -13,10 +13,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#include "network/assert.h"             // assert()
 #include "network/network.h"            // Context, ErrorResult,
                                         // OsErrorResult, Overloaded,
                                         // Version, get_hostname()
-#include "network/assert.h"             // assert()
 
 #ifdef _WIN32
 #include <getopt.h>         // getopt(), optarg, opterr, optind

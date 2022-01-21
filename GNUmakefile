@@ -66,15 +66,7 @@ sources = $(libnetwork_sources) $(common_sources) $(posix_sources)	\
 $(unix_sources)
 
 ifneq "$(os_name)" "MINGW64_NT"
-	program_sources += $(posix_sources)
-endif
-
-ifeq "$(os_type)" "gnu-linux"
-	program_sources += $(unix_sources)
-else ifeq "$(os_type)" "unix"
-ifneq "$(os_distro)" "macos"
-	program_sources += $(unix_sources)
-endif
+	program_sources += $(posix_sources) $(unix_sources)
 endif
 
 libnetwork_object_files = $(subst		\

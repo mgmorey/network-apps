@@ -16,6 +16,9 @@
 #include "network/address.h"            // AF_INET, AF_INET6, AF_UNIX,
                                         // Address, length_type,
                                         // port_type, value_type
+#include "network/is-valid.h"           // is_valid()
+#include "network/logicerror.h"         // LogicError
+#include "network/to-string.h"          // to_string()
 
 #ifdef _WIN32
 #include <winsock2.h>       // AF_INET, AF_INET6, AF_UNIX
@@ -29,6 +32,10 @@
 Network::Address::Address(value_type t_value) :
     m_value(std::move(t_value))
 {
+    if (!m_value.empty() && !is_valid(m_value)) {
+        throw LogicError("Invalid socket address: " +
+                         to_string(m_value));
+    }
 }
 
 auto Network::Address::operator=(const value_type& t_value) -> Network::Address&

@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#include "network/assert.h"             // assert()
 #include "network/network.h"            // Address, Bytes,
                                         // BytesResult, Context,
                                         // Endpoint, FdResult,
@@ -36,7 +37,6 @@
 #endif
 
 #include <algorithm>    // std::for_each()
-#include <cassert>      // assert()
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
 #include <exception>    // std::exception
 #include <iomanip>      // std::right, std::setw()

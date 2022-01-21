@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#include "network/assert.h"             // assert()
 #include "network/open-fd.h"            // Fd, OpenHandler,
                                         // OsErrorResult, open(),
                                         // operator<<()
@@ -25,7 +26,6 @@
                                         // reset_last_os_error()
 #include "network/socket-error.h"       // socket_error
 
-#include <cassert>      // assert()
 #include <iostream>     // std::cerr, std::endl
 #include <sstream>      // std::ostringstream
 
