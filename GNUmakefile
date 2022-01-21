@@ -32,8 +32,6 @@ version = 0.0.1
 
 include flags.gmk
 
-libraries = libnetwork.so.$(version) libnetwork.a
-
 libnetwork_sources = address.cpp address-sa.cpp address-sin.cpp		\
 address-sin6.cpp address-sun.cpp addrinfo.cpp bind-endpoint.cpp		\
 bind-fd.cpp buffer.cpp close.cpp connect-endpoint.cpp connect-fd.cpp	\
@@ -82,6 +80,8 @@ $(libnetwork_objects))
 program_objects = $(addprefix $(tmpdir)/,$(program_object_files))
 
 objects = $(libnetwork_objects) $(program_objects)
+
+libraries = libnetwork.so.$(version) libnetwork.a
 
 programs = $(patsubst tmp/%.o,%,$(program_objects))
 
