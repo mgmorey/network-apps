@@ -63,12 +63,12 @@ namespace TestHost
 
         auto operator()(const Network::Host& t_host) -> void
         {
-            const Network::Address address {t_host.address()};
-            const auto endpoint_result {get_endpoint(address)};
+            const Network::Bytes addr {t_host.address()};
+            const auto endpoint_result {get_endpoint(addr)};
             std::visit(Network::Overloaded {
                     [&](const Network::Endpoint& endpoint) {
                         Values values = {
-                            address.text(),
+                            static_cast<Network::Address>(addr).text(),
                             endpoint.first.value_or(""),
                             t_host.canonical_name().value_or("")
                         };

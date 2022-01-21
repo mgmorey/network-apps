@@ -39,8 +39,7 @@ namespace Network
         using value_type = ByteString;
 
         Address() = default;
-        // cppcheck-suppress noExplicitConstructor
-        Address(value_type t_value);  // NOLINT
+        explicit Address(value_type t_value);
         Address(const Address&) = default;
         Address(Address&&) noexcept = default;
         ~Address() = default;
@@ -50,7 +49,7 @@ namespace Network
         auto operator<(const Address& t_address) const -> bool;
         auto operator>(const Address& t_address) const -> bool;
         auto operator==(const Address& t_address) const -> bool;
-        operator value_type() const;  // NOLINT
+        explicit operator value_type() const;
         [[nodiscard]] auto data() const -> value_type;
         [[nodiscard]] auto empty() const -> bool;
         [[nodiscard]] auto family() const -> family_type;
