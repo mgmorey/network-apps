@@ -82,14 +82,18 @@ objects = $(libnetwork_objects) $(program_objects)
 
 libraries = libnetwork.so.$(version) libnetwork.a
 
-programs = $(basename $(notdir $(program_objects)))
+programs = $(basename $(program_sources))
 
 depends = $(subst .o,.dep,$(objects))
 listings = $(subst .o,.lst,$(objects))
 loadmaps = $(addsuffix .map,$(programs) libnetwork)
+logfiles = $(wildcard *.log)
+sizes = sizes.txt sizes.txt~
+tags = TAGS
 
 binary_artifacts = $(libraries) $(programs) $(objects) $(soname)
-artifacts = $(binary_artifacts) $(loadmaps) $(listings) sizes.txt TAGS
+text_artifacts = $(listings) $(loadmaps) $(logfiles) $(sizes) $(tags)
+artifacts = $(binary_artifacts) $(text_artifacts)
 
 LINK.o = $(strip $(CXX) $(LDFLAGS.o))
 LINK.so = $(strip $(CXX) $(LDFLAGS.so))
@@ -113,8 +117,9 @@ distclean:
 	rm -rf $(sort $(tmpdir) $(filter-out $(tmpdir)/%,$(artifacts)))
 
 .PHONY: dos2unix
-dos2unix: $(sort $(wildcard $(listings) $(loadmaps) *.log *.txt *.txt~))
-	dos2unix $^
+
+dos2unix:
+	dos2unix $(sort $(wildcard $(text_artifacts)))
 
 .PHONY: install
 install: $(libraries)
@@ -125,8 +130,8 @@ install: $(libraries)
 realclean: distclean
 
 .PHONY: sizes
-sizes: sizes.txt
-	test -e $^~ && diff -a $^~ $^ || true
+sizes: $(sizes)
+	diff -a $^ || true
 
 .PHONY: test
 test: $(sort $(filter test-%,$(programs)))
@@ -171,7 +176,7 @@ $(tmpdir)/%.dep: %$(source_suffix)
 TAGS:
 	printf '%s\n' $(sort $^) | etags --declarations --language=$(language) -
 
-sizes.txt: $(sort $(objects))
+$(sizes): $(sort $(objects))
 	if [ -e $@ ]; then mv -f $@ $@~; fi
 	size $^ >$@
 
