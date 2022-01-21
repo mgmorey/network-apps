@@ -83,9 +83,9 @@ objects = $(libnetwork_objects) $(program_objects)
 
 libraries = libnetwork.so.$(version) libnetwork.a
 
-programs = $(patsubst tmp/%.o,%,$(program_objects))
+programs = $(basename $(notdir $(program_objects)))
 
-mapfiles = $(patsubst tmp/%.o,%.map,$(program_objects)) libnetwork.map
+mapfiles = $(addsuffix .map,$(programs)) libnetwork.map
 depfiles = $(subst .o,.dep,$(objects))
 listings = $(subst .o,.lst,$(objects))
 
@@ -106,7 +106,7 @@ cppcheck:
 	cppcheck $(CPPCHECK_FLAGS) $(CPPFLAGS) .
 
 .PHONY: dos2unix
-dos2unix: $(tmpdir)/*.lst *.log *.map *.txt
+dos2unix: $(wildcard $(tmpdir)/*.lst *.log *.map *.txt)
 	dos2unix $^
 
 .PHONY: install
