@@ -61,10 +61,12 @@ endif
 
 # CXX_ASFLAGS
 
+ifeq "$(WITH_LISTINGS)" "true"
 ifeq "$(is_gcc)" "true"
 ifeq "$(is_gnu_as)" "true"
 	ASFLAGS += -adghln=$(subst .o,.lst,$@)
         CXX_ASFLAGS += $(shell echo -Wa $(ASFLAGS) | sed 's/ /,/g')
+endif
 endif
 endif
 
@@ -101,6 +103,7 @@ ifeq "$(USING_LIBASAN)" "true"
 endif
 endif
 
+ifeq "$(WITH_LOADMAPS)" "true"
 ifneq "$(os_name)" "FreeBSD"
 ifneq "$(is_gcc)" "true"
 	ldflags.o += -map $(subst .so.$(version),,$@).map
@@ -108,6 +111,7 @@ else ifneq "$(is_gnu_ld)" "true"
 	ldflags.o += -map $(subst .so.$(version),,$@).map
 else
 	ldflags.o += -Map=$(subst .so.$(version),,$@).map
+endif
 endif
 endif
 
