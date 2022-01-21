@@ -17,11 +17,12 @@
 #define NETWORK_ASSERT_H
 
 #include <cassert>
-#undef assert
 
 #if defined(NDEBUG)
+#undef assert
 #define assert(e) (static_cast<void>(0))  // NOLINT
 #elif defined(OS_DARWIN)
+#undef assert
 #ifndef __GNUC__
 #define assert(e)                                                       \
     (static_cast<void>(((e) ?                                           \
@@ -44,6 +45,7 @@
 #endif // __DARWIN_UNIX03
 #endif // __GNUC__
 #elif defined(OS_FREEBSD)
+#undef assert
 // NOLINTNEXTLINE
 #define assert(e) ((e) ? static_cast<void>(0) :                         \
                    __assert(static_cast<const char*>(__func__),         \
