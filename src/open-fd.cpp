@@ -53,7 +53,9 @@ auto Network::open(const OpenHandler& handler,
 
     reset_last_os_error();
 
-    if (handler.first(fd, addr_ptr, addr_len) == socket_error) {
+    if (handler.first(static_cast<fd_type>(fd),
+                      addr_ptr,
+                      addr_len) == socket_error) {
         const auto error = get_last_os_error();
         std::ostringstream oss;
         oss << "Call to "

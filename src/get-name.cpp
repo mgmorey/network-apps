@@ -49,7 +49,7 @@ auto Network::get_name(const GetNameHandler& handler, Fd fd,
 
     reset_last_os_error();
 
-    if (handler.first(fd, addr_ptr, &addr_len) == -1) {
+    if (handler.first(static_cast<fd_type>(fd), addr_ptr, &addr_len) == -1) {
         const auto error = get_last_os_error();
         std::ostringstream oss;
         oss << "Call to "

@@ -34,7 +34,7 @@ auto Network::close(fd_type fd) -> Network::fd_type
     return fd_null;
 }
 
-auto Network::close(Fd fd) -> Network::Fd
+auto Network::close(Fd fd) -> fd_type
 {
-    return {close(static_cast<fd_type>(fd))};
+    return Network::close(static_cast<fd_type>(fd));
 }

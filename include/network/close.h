@@ -21,7 +21,7 @@
 namespace Network
 {
     extern auto close(fd_type fd) -> fd_type;
-    extern auto close(Fd fd) -> Fd;
+    extern auto close(Fd fd) -> fd_type;
 }
 
 #endif

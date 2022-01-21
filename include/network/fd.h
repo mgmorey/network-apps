@@ -28,14 +28,13 @@ namespace Network
     {
     public:
         Fd() noexcept = default;
-        // cppcheck-suppress noExplicitConstructor
-        Fd(fd_type t_fd) noexcept;  // NOLINT
+        explicit Fd(fd_type t_fd) noexcept;
         Fd(const Fd&) noexcept = default;
         Fd(Fd&&) noexcept = default;
         ~Fd() noexcept = default;
         auto operator=(const Fd&) noexcept -> Fd& = default;
         auto operator=(Fd&&) noexcept -> Fd& = default;
-        operator fd_type() const noexcept;  // NOLINT
+        explicit operator fd_type() const noexcept;
         explicit operator bool() const noexcept;
         explicit operator std::string() const noexcept;
 
