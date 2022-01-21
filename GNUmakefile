@@ -144,6 +144,7 @@ unix: $(sort $(filter unix-%,$(programs)))
 
 libnetwork.so.$(version): $(sort $(libnetwork_objects))
 	$(LINK.so) -o $@ $^ $(LDLIBS)
+	ln -sf $@ $soname
 
 ifeq "$(USING_ARCHIVE_MEMBER_RULE)" "true"
 libnetwork.a: $(sort $(libnetwork_members))
