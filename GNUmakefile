@@ -85,11 +85,12 @@ libraries = libnetwork.so.$(version) libnetwork.a
 
 programs = $(basename $(notdir $(program_objects)))
 
-mapfiles = $(addsuffix .map,$(programs)) libnetwork.map
+mapfiles = $(addsuffix .map,$(programs) libnetwork)
 depfiles = $(subst .o,.dep,$(objects))
 listings = $(subst .o,.lst,$(objects))
 
-artifacts = $(libraries) $(objects) $(programs) $(mapfiles) $(listings) TAGS
+binary_artifacts = $(libraries) $(programs) $(objects)
+artifacts = $(binary_artifacts) $(mapfiles) $(listings) TAGS sizes.txt
 
 LINK.o = $(CXX) $(LDFLAGS.o)
 LINK.so = $(CXX) $(LDFLAGS.so)
@@ -97,13 +98,20 @@ LINK.so = $(CXX) $(LDFLAGS.so)
 .PHONY: all
 all: $(libraries) $(programs) sizes
 
+.PHONY: cppcheck
+analyze:
+	cppcheck $(CPPCHECK_FLAGS) $(CPPFLAGS) .
+
+.PHONY: check
+check: test
+
 .PHONY: clean
 clean:
 	rm -f $(artifacts)
 
-.PHONY: cppcheck
-cppcheck:
-	cppcheck $(CPPCHECK_FLAGS) $(CPPFLAGS) .
+.PHONY: distclean
+distclean:
+	rm -rf $(sort $(tmpdir) $(filter-out $(tmpdir)/%,$(artifacts)))
 
 .PHONY: dos2unix
 dos2unix: $(wildcard $(tmpdir)/*.lst *.log *.map *.txt)
@@ -114,10 +122,6 @@ install: $(libraries)
 	install $(libraries) $(prefix)/lib
 	install include/network/*$(include_suffix) $(prefix)/include
 
-.PHONY: realclean
-realclean:
-	rm -rf $(sort $(tmpdir) $(filter-out tmp/%,$(artifacts)) sizes.txt)
-
 .PHONY: sizes
 sizes: sizes.txt
 	test -e $^~ && diff -a $^~ $^ || true
@@ -125,7 +129,7 @@ sizes: sizes.txt
 .PHONY: tags
 tags: TAGS
 
-.PHONY: test
+.PHONY: tests
 test: $(sort $(filter test-%,$(programs)))
 	for f in $^; do ./$$f >$$f.log; done
 
@@ -176,7 +180,7 @@ $(objects) $(depfiles) sizes.txt: | $(tmpdir)
 $(tmpdir):
 	mkdir -p $(tmpdir)
 
-ifneq "$(MAKECMDGOALS)" "realclean"
+ifneq "$(MAKECMDGOALS)" "distclean"
 include $(depfiles)
 endif
 
