@@ -139,9 +139,6 @@ unix: $(sort $(filter unix-%,$(programs)))
 
 .SECONDARY: $(objects)
 
-TAGS:
-	printf '%s\n' $^ | etags --declarations --language=$(language) -
-
 libnetwork.so.$(version): $(sort $(libnetwork_objects))
 	$(LINK.so) -o $@ $^ $(LDLIBS)
 
@@ -166,6 +163,9 @@ $(tmpdir)/%.o: %$(source_suffix)
 
 $(tmpdir)/%.dep: %$(source_suffix)
 	$(CXX) $(CPPFLAGS) -MM $< | bin/make-makefile -f TAGS -o $@
+
+TAGS:
+	printf '%s\n' $^ | etags --declarations --language=$(language) -
 
 sizes.txt: $(sort $(objects))
 	if [ -e $@ ]; then mv -f $@ $@~; fi
