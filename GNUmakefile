@@ -90,7 +90,7 @@ depfiles = $(subst .o,.dep,$(objects))
 listings = $(subst .o,.lst,$(objects))
 
 binary_artifacts = $(libraries) $(programs) $(objects)
-artifacts = $(binary_artifacts) $(mapfiles) $(listings) TAGS sizes.txt
+artifacts = $(binary_artifacts) $(mapfiles) $(listings) sizes.txt TAGS
 
 LINK.o = $(CXX) $(LDFLAGS.o)
 LINK.so = $(CXX) $(LDFLAGS.so)
@@ -130,7 +130,7 @@ sizes: sizes.txt
 tags: TAGS
 
 .PHONY: tests
-test: $(sort $(filter test-%,$(programs)))
+tests: $(sort $(filter test-%,$(programs)))
 	for f in $^; do ./$$f >$$f.log; done
 
 .PHONY: tidy
@@ -169,7 +169,7 @@ $(tmpdir)/%.dep: %$(source_suffix)
 	$(CXX) $(CPPFLAGS) -MM $< | bin/make-makefile -f TAGS -o $@
 
 TAGS:
-	printf '%s\n' $^ | etags --declarations --language=$(language) -
+	printf '%s\n' $(sort $^) | etags --declarations --language=$(language) -
 
 sizes.txt: $(sort $(objects))
 	if [ -e $@ ]; then mv -f $@ $@~; fi
