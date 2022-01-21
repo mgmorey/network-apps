@@ -84,12 +84,12 @@ libraries = libnetwork.so.$(version) libnetwork.a
 
 programs = $(basename $(notdir $(program_objects)))
 
-mapfiles = $(addsuffix .map,$(programs) libnetwork)
-depfiles = $(subst .o,.dep,$(objects))
+depends = $(subst .o,.dep,$(objects))
 listings = $(subst .o,.lst,$(objects))
+loadmaps = $(addsuffix .map,$(programs) libnetwork)
 
 binary_artifacts = $(libraries) $(programs) $(objects) $(soname)
-artifacts = $(binary_artifacts) $(mapfiles) $(listings) sizes.txt TAGS
+artifacts = $(binary_artifacts) $(loadmaps) $(listings) sizes.txt TAGS
 
 LINK.o = $(strip $(CXX) $(LDFLAGS.o))
 LINK.so = $(strip $(CXX) $(LDFLAGS.so))
@@ -175,13 +175,13 @@ sizes.txt: $(sort $(objects))
 	if [ -e $@ ]; then mv -f $@ $@~; fi
 	size $^ >$@
 
-$(objects) $(depfiles) sizes.txt: | $(tmpdir)
+$(objects) $(depends) sizes.txt: | $(tmpdir)
 
 $(tmpdir):
 	mkdir -p $(tmpdir)
 
 ifneq "$(MAKECMDGOALS)" "distclean"
-include $(depfiles)
+include $(depends)
 endif
 
 vpath %$(include_suffix) include/network
