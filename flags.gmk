@@ -21,6 +21,18 @@ is_gcc = $(shell bin/is-gcc $(CXX))
 is_gnu_as = $(shell bin/is-gnu-as $(AS))
 is_gnu_ld = $(shell bin/is-gnu-ld $(LD))
 
+# CPPCHECK_FLAGS
+
+CPPCHECK_FLAGS = --cppcheck-build-dir=tmp --enable=all --inline-suppr --quiet
+
+ifdef standard
+	CPPCHECK_FLAGS += --std=$(standard)
+endif
+
+ifeq "$(os_name)" "MINGW64_NT"
+	CPPCHECK_FLAGS += -D_WIN32
+endif
+
 # CPPFLAGS
 
 ifeq "$(os_name)" "FreeBSD"
@@ -55,6 +67,31 @@ ifeq "$(is_gnu_as)" "true"
         CXX_ASFLAGS += $(shell echo -Wa $(ASFLAGS) | sed 's/ /,/g')
 endif
 endif
+
+# CXXFLAGS
+
+CXXFLAGS += -fPIC
+
+ifndef NDEBUG
+	CXXFLAGS += -fno-omit-frame-pointer
+ifeq "$(USING_LIBASAN)" "true"
+	CXXFLAGS += -fsanitize=address -fsanitize-address-use-after-scope
+endif
+ifeq "$(is_gcc)" "true"
+	CXXFLAGS += -ggdb
+else
+	CXXFLAGS += -g3
+endif
+	CXXFLAGS += -O0
+else
+	CXXFLAGS += -O2
+endif
+
+ifdef standard
+	CXXFLAGS += -std=$(standard)
+endif
+
+CXXFLAGS += -Wall -Werror -Wextra -Wpedantic -Wshadow $(CXX_ASFLAGS)
 
 # LDFLAGS.o and LDFLAGS_SO
 
@@ -93,31 +130,6 @@ endif
 LDFLAGS.o = $(LDFLAGS) $(shell echo -Wl $(ldflags.o) | sed 's/ /,/g')
 LDFLAGS.so = $(LDFLAGS) $(shell echo -Wl $(ldflags.so) | sed 's/ /,/g') -shared
 
-# CXXFLAGS
-
-CXXFLAGS += -fPIC
-
-ifndef NDEBUG
-	CXXFLAGS += -fno-omit-frame-pointer
-ifeq "$(USING_LIBASAN)" "true"
-	CXXFLAGS += -fsanitize=address -fsanitize-address-use-after-scope
-endif
-ifeq "$(is_gcc)" "true"
-	CXXFLAGS += -ggdb
-else
-	CXXFLAGS += -g3
-endif
-	CXXFLAGS += -O0
-else
-	CXXFLAGS += -O2
-endif
-
-ifdef standard
-	CXXFLAGS += -std=$(standard)
-endif
-
-CXXFLAGS += -Wall -Werror -Wextra -Wpedantic -Wshadow $(CXX_ASFLAGS)
-
 # LDLIBS
 
 ifeq "$(os_name)" "FreeBSD"
@@ -132,25 +144,13 @@ ifeq "$(os_name)" "MINGW64_NT"
 	LDLIBS += -lws2_32
 endif
 
-# CPPCHECK_FLAGS
-
-CPPCHECK_FLAGS = --cppcheck-build-dir=tmp --enable=all --inline-suppr --quiet
-
-ifdef standard
-	CPPCHECK_FLAGS += --std=$(standard)
-endif
-
-ifeq "$(os_name)" "MINGW64_NT"
-	CPPCHECK_FLAGS += -D_WIN32
-endif
+# TIDY_FLAGS
 
 ifeq "$(shell bin/compare-versions $(clang_tidy_version) 13)" "less"
 	TIDY_CONFIG_FLAGS = -config=
 else
 	TIDY_CONFIG_FLAGS = -config-file='.clang-tidy'
 endif
-
-# TIDY_FLAGS
 
 TIDY_CONFIG_FLAGS += -header-filter='.*'
 
