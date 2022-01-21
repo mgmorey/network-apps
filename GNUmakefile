@@ -88,7 +88,7 @@ mapfiles = $(addsuffix .map,$(programs) libnetwork)
 depfiles = $(subst .o,.dep,$(objects))
 listings = $(subst .o,.lst,$(objects))
 
-binary_artifacts = $(libraries) $(programs) $(objects)
+binary_artifacts = $(libraries) $(programs) $(objects) $(soname)
 artifacts = $(binary_artifacts) $(mapfiles) $(listings) sizes.txt TAGS
 
 LINK.o = $(CXX) $(LDFLAGS.o)
@@ -144,7 +144,7 @@ unix: $(sort $(filter unix-%,$(programs)))
 
 libnetwork.so.$(version): $(sort $(libnetwork_objects))
 	$(LINK.so) -o $@ $^ $(LDLIBS)
-	ln -sf $@ $soname
+	ln -sf $@ $(soname)
 
 ifeq "$(USING_ARCHIVE_MEMBER_RULE)" "true"
 libnetwork.a: $(sort $(libnetwork_members))
