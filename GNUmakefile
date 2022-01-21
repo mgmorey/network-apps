@@ -113,7 +113,7 @@ distclean:
 	rm -rf $(sort $(tmpdir) $(filter-out $(tmpdir)/%,$(artifacts)))
 
 .PHONY: dos2unix
-dos2unix: $(wildcard $(tmpdir)/*.lst *.log *.map *.txt)
+dos2unix: $(sort $(wildcard $(listings) $(loadmaps) *.log *.txt *.txt~))
 	dos2unix $^
 
 .PHONY: install
