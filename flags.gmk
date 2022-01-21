@@ -56,43 +56,42 @@ ifeq "$(is_gnu_as)" "true"
 endif
 endif
 
-# CXX_LDFLAGS and CXX_LDFLAGS_SO
+# LDFLAGS.o and LDFLAGS_SO
 
 ifndef NDEBUG
 ifeq "$(USING_LIBASAN)" "true"
-	CXX_LDFLAGS += -fsanitize=address
-	CXX_LDFLAGS_SO += -fsanitize=address
+	LDFLAGS += -fsanitize=address
 endif
 endif
 
 ifneq "$(os_name)" "FreeBSD"
 ifneq "$(is_gcc)" "true"
-	LDFLAGS += -map $(subst .so.$(version),,$@).map
+	ldflags.o += -map $(subst .so.$(version),,$@).map
 else ifneq "$(is_gnu_ld)" "true"
-	LDFLAGS += -map $(subst .so.$(version),,$@).map
+	ldflags.o += -map $(subst .so.$(version),,$@).map
 else
-	LDFLAGS += -Map=$(subst .so.$(version),,$@).map
+	ldflags.o += -Map=$(subst .so.$(version),,$@).map
 endif
 endif
 
 ifneq "$(is_gcc)" "true"
-	LDFLAGS += -rpath '\$$ORIGIN'
+	ldflags.o += -rpath '\$$ORIGIN'
 else ifneq "$(is_gnu_ld)" "true"
-	LDFLAGS += -rpath '\$$ORIGIN'
+	ldflags.o += -rpath '\$$ORIGIN'
 else
-	LDFLAGS += -rpath='\$$ORIGIN'
+	ldflags.o += -rpath='\$$ORIGIN'
 endif
 
 ifneq "$(is_gcc)" "true"
-	LDFLAGS_SO = $(LDFLAGS)
+	ldflags.so = $(ldflags.o)
 else ifneq "$(is_gnu_ld)" "true"
-	LDFLAGS_SO = $(LDFLAGS)
+	ldflags.so = $(ldflags.o)
 else
-	LDFLAGS_SO = $(LDFLAGS) -soname=$(soname)
+	ldflags.so = $(ldflags.o) -soname=$(soname)
 endif
 
-CXX_LDFLAGS += $(shell echo -Wl $(LDFLAGS) | sed 's/ /,/g')
-CXX_LDFLAGS_SO += $(shell echo -Wl $(LDFLAGS_SO) | sed 's/ /,/g') -shared
+LDFLAGS.o = $(LDFLAGS) $(shell echo -Wl $(ldflags.o) | sed 's/ /,/g')
+LDFLAGS.so = $(LDFLAGS) $(shell echo -Wl $(ldflags.so) | sed 's/ /,/g') -shared
 
 # CXXFLAGS
 
