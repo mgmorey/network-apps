@@ -55,24 +55,23 @@ to-string-sin.cpp to-string-sin6.cpp version.cpp
 
 common_sources = test-address.cpp test-bind.cpp test-connect.cpp	\
 test-context.cpp test-host.cpp test-hostname.cpp
-posix_sources = test-socket.cpp
-unix_sources = unix-client.cpp unix-server.cpp
+posix_sources = test-socket.cpp unix-client.cpp unix-server.cpp
 
 program_sources = $(common_sources)
 
-sources = $(libnetwork_sources) $(common_sources) $(posix_sources)	\
-$(unix_sources)
+sources = $(libnetwork_sources) $(common_sources) $(posix_sources)
 
 ifneq "$(os_name)" "MINGW64_NT"
-	program_sources += $(posix_sources) $(unix_sources)
+	program_sources += $(posix_sources)
 endif
 
-libnetwork_object_files = $(subst		\
-$(source_suffix),.o,$(libnetwork_sources))
-program_object_files = $(subst			\
-$(source_suffix),.o,$(program_sources))
+libnetwork_object_files = $(addsuffix .o,$(basename	\
+$(libnetwork_sources)))
+program_object_files = $(addsuffix .o,$(basename	\
+$(program_sources)))
 
-libnetwork_objects = $(addprefix $(tmpdir)/,$(libnetwork_object_files))
+libnetwork_objects = $(addprefix $(tmpdir)/,	\
+$(libnetwork_object_files))
 
 libnetwork_members = $(patsubst %.o,libnetwork.a(%.o),	\
 $(libnetwork_objects))
@@ -103,7 +102,7 @@ analyze:
 	cppcheck $(CPPCHECK_FLAGS) $(CPPFLAGS) .
 
 .PHONY: check
-check: test
+check: tests
 
 .PHONY: clean
 clean:
