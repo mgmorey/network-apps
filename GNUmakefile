@@ -91,8 +91,8 @@ listings = $(subst .o,.lst,$(objects))
 binary_artifacts = $(libraries) $(programs) $(objects) $(soname)
 artifacts = $(binary_artifacts) $(mapfiles) $(listings) sizes.txt TAGS
 
-LINK.o = $(CXX) $(LDFLAGS.o)
-LINK.so = $(CXX) $(LDFLAGS.so)
+LINK.o = $(strip $(CXX) $(LDFLAGS.o))
+LINK.so = $(strip $(CXX) $(LDFLAGS.so))
 
 .PHONY: all
 all: $(libraries) $(programs) sizes
