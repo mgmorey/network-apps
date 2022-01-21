@@ -97,12 +97,12 @@ LINK.so = $(strip $(CXX) $(LDFLAGS.so))
 .PHONY: all
 all: $(libraries) $(programs) sizes
 
-.PHONY: cppcheck
+.PHONY: analyze
 analyze:
 	cppcheck $(CPPCHECK_FLAGS) $(CPPFLAGS) .
 
 .PHONY: check
-check: tests
+check: test
 
 .PHONY: clean
 clean:
@@ -121,15 +121,15 @@ install: $(libraries)
 	install $(libraries) $(prefix)/lib
 	install include/network/*$(include_suffix) $(prefix)/include
 
+.PHONY: realclean
+realclean: distclean
+
 .PHONY: sizes
 sizes: sizes.txt
 	test -e $^~ && diff -a $^~ $^ || true
 
-.PHONY: tags
-tags: TAGS
-
-.PHONY: tests
-tests: $(sort $(filter test-%,$(programs)))
+.PHONY: test
+test: $(sort $(filter test-%,$(programs)))
 	for f in $^; do ./$$f >$$f.log; done
 
 .PHONY: tidy
