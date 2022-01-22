@@ -20,6 +20,7 @@ os_release = $(shell bin/get-os-release -iko)
 os_distro = $(word 1,$(os_release))
 os_name = $(word 2,$(os_release))
 os_type = $(word 3,$(os_release))
+soname_filter = cut -d. -f 1-3
 
 lib_version = 0.0.1
 prefix = /usr/local
@@ -147,7 +148,7 @@ unix: $(sort $(filter unix-%,$(programs)))
 
 libnetwork.so.$(lib_version): $(sort $(libnetwork_objects))
 	$(LINK.so) -o $@ $^ $(LDLIBS)
-	ln -sf $@ $(soname)
+	ln -sf $@ $(shell echo $@ | $(soname_filter))
 
 ifeq "$(USING_ARCHIVE_MEMBER_RULE)" "true"
 libnetwork.a: $(sort $(libnetwork_members))

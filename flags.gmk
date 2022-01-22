@@ -128,7 +128,7 @@ ifneq "$(is_gcc)" "true"
 else ifneq "$(is_gnu_ld)" "true"
 	ldflags.so = $(ldflags.o)
 else
-	ldflags.so = $(ldflags.o) -soname=$(shell echo $@ | cut -d. -f 1-3)
+	ldflags.so = $(ldflags.o) -soname=$(shell echo $@ | $(soname_filter))
 endif
 
 LDFLAGS.o = $(LDFLAGS) $(shell echo -Wl $(ldflags.o) | sed 's/ /,/g')
