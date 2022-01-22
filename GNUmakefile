@@ -20,9 +20,10 @@ os_release = $(shell bin/get-os-release -iko)
 os_distro = $(word 1,$(os_release))
 os_name = $(word 2,$(os_release))
 os_type = $(word 3,$(os_release))
-so_name_filter = cut -d. -f 1-3
 
-lib_version = 0.0.1
+so_name_filter = cut -d. -f 1-3
+so_version = 0.0.1
+
 prefix = /usr/local
 tmpdir = tmp
 
@@ -56,46 +57,45 @@ common_sources = test-address.cpp test-bind.cpp test-connect.cpp	\
 test-context.cpp test-host.cpp test-hostname.cpp
 posix_sources = test-socket.cpp unix-client.cpp unix-server.cpp
 
-program_sources = $(common_sources)
-
 sources = $(libnetwork_sources) $(common_sources) $(posix_sources)
 
-ifneq "$(os_name)" "MINGW64_NT"
-	program_sources += $(posix_sources)
-endif
+objects = $(addprefix $(tmpdir)/,$(addsuffix .o,$(basename	\
+$(sources))))
 
-libnetwork_object_files = $(addsuffix .o,$(basename	\
-$(libnetwork_sources)))
-program_object_files = $(addsuffix .o,$(basename	\
-$(program_sources)))
-
-libnetwork_objects = $(addprefix $(tmpdir)/,	\
-$(libnetwork_object_files))
-
-program_objects = $(addprefix $(tmpdir)/,$(program_object_files))
-
-objects = $(libnetwork_objects) $(program_objects)
+libnetwork_objects = $(addprefix $(tmpdir)/,$(addsuffix .o,$(basename	\
+$(libnetwork_sources))))
 
 libnetwork_members = $(patsubst %.o,$(libnetwork_archive)(%.o),	\
 $(libnetwork_objects))
 
-libnetwork = libnetwork.so.$(lib_version)
+libnetwork = libnetwork.so.$(so_version)
 libnetwork_alias = $(shell echo $(libnetwork) | $(so_name_filter))
 libnetwork_archive = libnetwork.a
 
 libraries = $(libnetwork_alias) $(libnetwork) $(libnetwork_archive)
 
+ifeq "$(os_name)" "MINGW64_NT"
+	program_sources = $(common_sources)
+else
+	program_sources = $(common_sources) $(posix_sources)
+endif
+
+program_objects = $(addprefix $(tmpdir)/,$(addsuffix .o,$(basename	\
+$(program_sources))))
+
 programs = $(basename $(program_sources))
 
 depends = $(subst .o,.dep,$(objects))
 listings = $(subst .o,.lst,$(objects))
-loadmaps = $(addsuffix .map,$(programs) libnetwork)
 logfiles = $(addsuffix .log,$(programs))
+mapfiles = $(addsuffix .map,$(programs) libnetwork)
 sizes = sizes.txt
 tags = TAGS
 
-binary_artifacts = $(libraries) $(programs) $(objects)
-text_artifacts = $(listings) $(loadmaps) $(logfiles) $(sizes) $(tags)
+binary_artifacts = $(libraries) $(objects) $(programs)
+text_artifacts = $(depends) $(listings) $(logfiles) $(mapfiles)	\
+$(sizes) $(tags)
+
 artifacts = $(binary_artifacts) $(text_artifacts)
 
 COMPILE.cc = $(strip $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c)
