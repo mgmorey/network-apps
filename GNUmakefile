@@ -98,7 +98,8 @@ binary_artifacts = $(libraries) $(programs) $(objects)
 text_artifacts = $(listings) $(loadmaps) $(logfiles) $(sizes) $(tags)
 artifacts = $(binary_artifacts) $(text_artifacts)
 
-LINK.o = $(strip $(CXX) $(LDFLAGS.o))
+COMPILE.cc = $(strip $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c)
+LINK.o = $(strip $(CXX) $(LDFLAGS))
 
 .PHONY: all
 all: $(libraries) $(programs) sizes
