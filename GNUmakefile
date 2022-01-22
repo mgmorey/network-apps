@@ -83,7 +83,7 @@ libnetwork = libnetwork.so.$(lib_version)
 libnetwork_alias = $(shell echo $(libnetwork) | $(soname_filter))
 libnetwork_archive = libnetwork.a
 
-libraries = $(libnetwork_alias) $(libnetwork_archive)
+libraries = $(libnetwork_alias) $(libnetwork) $(libnetwork_archive)
 
 programs = $(basename $(program_sources))
 
