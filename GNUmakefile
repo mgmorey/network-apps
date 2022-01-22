@@ -88,7 +88,7 @@ depends = $(subst .o,.dep,$(objects))
 listings = $(subst .o,.lst,$(objects))
 loadmaps = $(addsuffix .map,$(programs) libnetwork)
 logfiles = $(wildcard *.log)
-sizes = sizes.txt sizes.txt~
+sizes = sizes.txt
 tags = TAGS
 
 binary_artifacts = $(libraries) $(programs) $(objects) $(soname)
@@ -131,7 +131,7 @@ realclean: distclean
 
 .PHONY: sizes
 sizes: $(sizes)
-	diff -a $^ || true
+	if [ -e $^~ ]; then diff -b $^~ $^; fi
 
 .PHONY: test
 test: $(sort $(filter test-%,$(programs)))
@@ -176,11 +176,11 @@ $(tmpdir)/%.dep: %$(source_suffix)
 TAGS:
 	printf '%s\n' $(sort $^) | etags --declarations --language=$(language) -
 
-$(sizes): $(sort $(objects))
+sizes.txt: $(sort $(objects))
 	if [ -e $@ ]; then mv -f $@ $@~; fi
 	size $^ >$@
 
-$(objects) $(depends) sizes.txt: | $(tmpdir)
+$(objects) $(depends): | $(tmpdir)
 
 $(tmpdir):
 	mkdir -p $(tmpdir)
