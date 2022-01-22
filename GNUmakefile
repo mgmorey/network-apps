@@ -87,7 +87,7 @@ programs = $(basename $(program_sources))
 depends = $(subst .o,.dep,$(objects))
 listings = $(subst .o,.lst,$(objects))
 loadmaps = $(addsuffix .map,$(programs) libnetwork)
-logfiles = $(wildcard *.log)
+logfiles = $(addsuffix .log,$(programs))
 sizes = sizes.txt
 tags = TAGS
 
