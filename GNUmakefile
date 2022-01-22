@@ -56,7 +56,10 @@ to-string-sin.cpp to-string-sin6.cpp version.cpp
 
 common_sources = test-address.cpp test-bind.cpp test-connect.cpp	\
 test-context.cpp test-host.cpp test-hostname.cpp
-posix_sources = test-socket.cpp unix-client.cpp unix-server.cpp
+
+ifneq "$(os_name)" "MINGW64_NT"
+	posix_sources = test-socket.cpp unix-client.cpp unix-server.cpp
+endif
 
 sources = $(libnetwork_sources) $(common_sources) $(posix_sources)
 
@@ -75,11 +78,7 @@ libnetwork_archive = libnetwork.a
 
 libraries = $(libnetwork_alias) $(libnetwork) $(libnetwork_archive)
 
-ifeq "$(os_name)" "MINGW64_NT"
-	program_sources = $(common_sources)
-else
-	program_sources = $(common_sources) $(posix_sources)
-endif
+program_sources = $(common_sources) $(posix_sources)
 
 program_objects = $(addprefix $(tmpdir)/,$(addsuffix .o,$(basename	\
 $(program_sources))))

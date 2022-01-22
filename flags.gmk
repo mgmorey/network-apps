@@ -15,13 +15,8 @@
 
 # Define functions
 
-define get-ld-flags
-	$(shell echo $1 $2 | tr ' ' ',')
-endef
-
-define get-map-filename
-	$(shell echo $1 | awk -F. '{printf "%s.map\n", $$1}')
-endef
+get-ld-flags = $(shell echo $1 $2 | tr ' ' ',')
+get-map-filename = $(shell echo $1 | awk -F. '{printf "%s.map\n", $$1}')
 
 # Define platform-specific variables
 
@@ -139,7 +134,7 @@ ldflags_so = $(ldflags)
 
 ifeq "$(is_gcc)" "true"
 ifeq "$(is_gnu_ld)" "true"
-	ldflags_so += -soname=$(call get-library-alias $@)
+	ldflags_so += -soname=$(call get-library-alias,$@)
 endif
 endif
 
