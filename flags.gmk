@@ -138,9 +138,9 @@ endif
 lib_target = $(filter lib%,$@)
 
 ldflags_native = $(if $(lib_target),$(ldflags.so),$(ldflags.o))
-ldflags_shared = $(if $(lib_target),-shared,)
+ldflags_target = $(if $(lib_target),-shared,)
 
-LDFLAGS += $(shell echo -Wl $(ldflags_native) | tr ' ' ',') $(ldflags_shared)
+LDFLAGS += $(shell echo -Wl $(ldflags_native) | tr ' ' ',') $(ldflags_target)
 
 # LDLIBS
 
