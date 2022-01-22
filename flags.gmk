@@ -106,11 +106,11 @@ endif
 ifeq "$(WITH_LOADMAPS)" "true"
 ifneq "$(os_name)" "FreeBSD"
 ifneq "$(is_gcc)" "true"
-	ldflags.o += -map $(subst .so.$(version),,$@).map
+	ldflags.o += -map $(shell echo $@ | cut -d. -f 1).map
 else ifneq "$(is_gnu_ld)" "true"
-	ldflags.o += -map $(subst .so.$(version),,$@).map
+	ldflags.o += -map $(shell echo $@ | cut -d. -f 1).map
 else
-	ldflags.o += -Map=$(subst .so.$(version),,$@).map
+	ldflags.o += -Map=$(shell echo $@ | cut -d. -f 1).map
 endif
 endif
 endif
@@ -128,7 +128,7 @@ ifneq "$(is_gcc)" "true"
 else ifneq "$(is_gnu_ld)" "true"
 	ldflags.so = $(ldflags.o)
 else
-	ldflags.so = $(ldflags.o) -soname=$(soname)
+	ldflags.so = $(ldflags.o) -soname=$(shell echo $@ | cut -d. -f 1-3)
 endif
 
 LDFLAGS.o = $(LDFLAGS) $(shell echo -Wl $(ldflags.o) | sed 's/ /,/g')

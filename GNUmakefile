@@ -21,14 +21,12 @@ os_distro = $(word 1,$(os_release))
 os_name = $(word 2,$(os_release))
 os_type = $(word 3,$(os_release))
 
+lib_version = 0.0.1
 prefix = /usr/local
 tmpdir = tmp
 
 include_suffix = .h
 source_suffix = .cpp
-
-soname = libnetwork.so.0
-version = 0.0.1
 
 include flags.gmk
 
@@ -80,7 +78,7 @@ program_objects = $(addprefix $(tmpdir)/,$(program_object_files))
 
 objects = $(libnetwork_objects) $(program_objects)
 
-libraries = libnetwork.so.$(version) libnetwork.a
+libraries = libnetwork.so.$(lib_version) libnetwork.a
 
 programs = $(basename $(program_sources))
 
@@ -147,7 +145,7 @@ unix: $(sort $(filter unix-%,$(programs)))
 
 .SECONDARY: $(objects)
 
-libnetwork.so.$(version): $(sort $(libnetwork_objects))
+libnetwork.so.$(lib_version): $(sort $(libnetwork_objects))
 	$(LINK.so) -o $@ $^ $(LDLIBS)
 	ln -sf $@ $(soname)
 
