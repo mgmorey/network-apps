@@ -132,7 +132,7 @@ ifneq "$(is_gcc)" "true"
 else ifneq "$(is_gnu_ld)" "true"
 	ldflags.so = $(ldflags.o)
 else
-	ldflags.so = $(ldflags.o) -soname=$(shell echo $@ | $(soname_filter))
+	ldflags.so = $(ldflags.o) -soname=$(shell echo $@ | $(so_name_filter))
 endif
 
 lib_target = $(filter lib%,$@)

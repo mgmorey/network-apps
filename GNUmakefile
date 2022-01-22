@@ -20,7 +20,7 @@ os_release = $(shell bin/get-os-release -iko)
 os_distro = $(word 1,$(os_release))
 os_name = $(word 2,$(os_release))
 os_type = $(word 3,$(os_release))
-soname_filter = cut -d. -f 1-3
+so_name_filter = cut -d. -f 1-3
 
 lib_version = 0.0.1
 prefix = /usr/local
@@ -80,7 +80,7 @@ libnetwork_members = $(patsubst %.o,$(libnetwork_archive)(%.o),	\
 $(libnetwork_objects))
 
 libnetwork = libnetwork.so.$(lib_version)
-libnetwork_alias = $(shell echo $(libnetwork) | $(soname_filter))
+libnetwork_alias = $(shell echo $(libnetwork) | $(so_name_filter))
 libnetwork_archive = libnetwork.a
 
 libraries = $(libnetwork_alias) $(libnetwork) $(libnetwork_archive)
