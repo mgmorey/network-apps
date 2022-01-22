@@ -131,7 +131,7 @@ realclean: distclean
 
 .PHONY: sizes
 sizes: $(sizes)
-	if [ -e $^~ ]; then diff -b $^~ $^; fi
+	test -e $^~ && diff -b $^~ $^ || true
 
 .PHONY: test
 test: $(sort $(filter test-%,$(programs)))
