@@ -83,7 +83,7 @@ libnetwork = libnetwork.so.$(lib_version)
 libnetwork_alias = $(shell echo $(libnetwork) | $(soname_filter))
 libnetwork_archive = libnetwork.a
 
-libraries = $(libnetwork) $(libnetwork_alias) $(libnetwork_archive)
+libraries = $(libnetwork_alias) $(libnetwork_archive)
 
 programs = $(basename $(program_sources))
 
@@ -133,7 +133,7 @@ realclean: distclean
 
 .PHONY: sizes
 sizes: $(sizes)
-	test -e $^~ && diff -b $^~ $^ || true
+	test -e $<~ && diff -b $<~ $< || true
 
 .PHONY: test
 test: $(sort $(filter test-%,$(programs)))
@@ -151,14 +151,15 @@ unix: $(sort $(filter unix-%,$(programs)))
 
 $(libnetwork): $(sort $(libnetwork_objects))
 	$(LINK.o) -o $@ $^ $(LDLIBS)
-	ln -sf $@ $(shell echo $@ | $(soname_filter))
+
+$(libnetwork_alias): $(libnetwork)
+	ln -sf $@ $<
 
 ifeq "$(USING_ARCHIVE_MEMBER_RULE)" "true"
 $(libnetwork_archive): $(sort $(libnetwork_members))
 else
 $(libnetwork_archive): $(sort $(libnetwork_objects))
-	rm -f $@
-	$(AR) q $@ $^
+	rm -f $@ && $(AR) $(ARFLAGS) $@ $^
 endif
 
 $(programs): $(libraries)
