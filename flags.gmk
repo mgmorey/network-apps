@@ -21,6 +21,10 @@ is_gcc = $(shell bin/is-gcc $(CXX))
 is_gnu_as = $(shell bin/is-gnu-as $(AS))
 is_gnu_ld = $(shell bin/is-gnu-ld $(LD))
 
+# ARFLAGS
+
+ARFLAGS = r
+
 # CPPCHECK_FLAGS
 
 CPPCHECK_FLAGS = --cppcheck-build-dir=tmp --enable=all --inline-suppr --quiet
