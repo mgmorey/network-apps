@@ -23,7 +23,7 @@ define get-map-filename
 	$(shell echo $1 | awk -F. '{printf "%s.map\n", $$1}')
 endef
 
-# Define platform-dependent variables
+# Define platform-specific variables
 
 clang_tidy_version = $(shell bin/get-llvm-version clang-tidy$(LLVM_SUFFIX))
 is_clang = $(shell bin/is-clang $(CXX))

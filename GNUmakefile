@@ -13,23 +13,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-# Define functions
-
-define get-library-alias
-	$(shell echo $1 | cut -d. -f 1-3)
-endef
-
 # Define project-specific variables
+
+version = 0.0.1
 
 language = c++
 standard = $(language)20
-
-os_release = $(shell bin/get-os-release -iko)
-os_distro = $(word 1,$(os_release))
-os_name = $(word 2,$(os_release))
-os_type = $(word 3,$(os_release))
-
-so_version = 0.0.1
 
 prefix = /usr/local
 tmpdir = tmp
@@ -37,6 +26,9 @@ tmpdir = tmp
 include_suffix = .h
 source_suffix = .cpp
 
+# Include common functions and flag variables
+
+include common.gmk
 include flags.gmk
 
 # Define file list variables
@@ -77,7 +69,7 @@ $(libnetwork_sources))))
 libnetwork_members = $(patsubst %.o,$(libnetwork_archive)(%.o),	\
 $(libnetwork_objects))
 
-libnetwork = libnetwork.so.$(so_version)
+libnetwork = libnetwork.so.$(version)
 libnetwork_alias = $(call get-library-alias,$(libnetwork))
 libnetwork_archive = libnetwork.a
 
