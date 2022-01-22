@@ -153,7 +153,7 @@ $(libnetwork): $(sort $(libnetwork_objects))
 	$(LINK.o) -o $@ $^ $(LDLIBS)
 
 $(libnetwork_alias): $(libnetwork)
-	ln -sf $@ $<
+	ln -sf $< $@
 
 ifeq "$(USING_ARCHIVE_MEMBER_RULE)" "true"
 $(libnetwork_archive): $(sort $(libnetwork_members))
@@ -162,7 +162,7 @@ $(libnetwork_archive): $(sort $(libnetwork_objects))
 	rm -f $@ && $(AR) $(ARFLAGS) $@ $^
 endif
 
-$(programs): $(libraries)
+$(programs): $(libnetwork_alias) $(libnetwork_archive)
 
 (%): %
 	$(AR) $(ARFLAGS) $@ $<
