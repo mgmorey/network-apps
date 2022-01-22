@@ -13,6 +13,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+# Define functions
+
+define get-library-alias
+	$(shell echo $1 | cut -d. -f 1-3)
+endef
+
+# Define project-specific variables
+
 language = c++
 standard = $(language)20
 
@@ -21,7 +29,6 @@ os_distro = $(word 1,$(os_release))
 os_name = $(word 2,$(os_release))
 os_type = $(word 3,$(os_release))
 
-so_name_filter = cut -d. -f 1-3
 so_version = 0.0.1
 
 prefix = /usr/local
@@ -31,6 +38,8 @@ include_suffix = .h
 source_suffix = .cpp
 
 include flags.gmk
+
+# Define file list variables
 
 libnetwork_sources = address.cpp address-sa.cpp address-sin.cpp		\
 address-sin6.cpp address-sun.cpp addrinfo.cpp bind-endpoint.cpp		\
@@ -69,7 +78,7 @@ libnetwork_members = $(patsubst %.o,$(libnetwork_archive)(%.o),	\
 $(libnetwork_objects))
 
 libnetwork = libnetwork.so.$(so_version)
-libnetwork_alias = $(shell echo $(libnetwork) | $(so_name_filter))
+libnetwork_alias = $(call get-library-alias,$(libnetwork))
 libnetwork_archive = libnetwork.a
 
 libraries = $(libnetwork_alias) $(libnetwork) $(libnetwork_archive)
@@ -100,6 +109,8 @@ artifacts = $(binary_artifacts) $(text_artifacts)
 
 COMPILE.cc = $(strip $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c)
 LINK.o = $(strip $(CXX) $(LDFLAGS))
+
+# Define pseudotargets
 
 .PHONY: all
 all: $(libraries) $(programs) sizes
@@ -150,6 +161,8 @@ unix: $(sort $(filter unix-%,$(programs)))
 
 .SECONDARY: $(objects)
 
+# Define targets
+
 $(libnetwork): $(sort $(libnetwork_objects))
 	$(LINK.o) -o $@ $^ $(LDLIBS)
 
@@ -189,9 +202,13 @@ $(objects) $(depends): | $(tmpdir)
 $(tmpdir):
 	mkdir -p $(tmpdir)
 
+# Define include dependency files
+
 ifneq "$(MAKECMDGOALS)" "distclean"
 include $(depends)
 endif
+
+# Set virtual paths
 
 vpath %$(include_suffix) include/network
 vpath %$(source_suffix) src

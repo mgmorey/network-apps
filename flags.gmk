@@ -13,7 +13,17 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-# Compiler variables
+# Define functions
+
+define get-ld-flags
+	$(shell echo $1 $2 | tr ' ' ',')
+endef
+
+define get-map-filename
+	$(shell echo $1 | awk -F. '{printf "%s.map\n", $$1}')
+endef
+
+# Define platform-dependent variables
 
 clang_tidy_version = $(shell bin/get-llvm-version clang-tidy$(LLVM_SUFFIX))
 is_clang = $(shell bin/is-clang $(CXX))
@@ -69,7 +79,7 @@ ifeq "$(WITH_LISTINGS)" "true"
 ifeq "$(is_gcc)" "true"
 ifeq "$(is_gnu_as)" "true"
 	ASFLAGS += -adghln=$(subst .o,.lst,$@)
-        CXX_ASFLAGS += $(shell echo -Wa $(ASFLAGS) | sed 's/ /,/g')
+        CXX_ASFLAGS += $(call get-ld-flags -Wa,$(ASFLAGS))
 endif
 endif
 endif
@@ -108,39 +118,37 @@ endif
 endif
 
 ifeq "$(WITH_LOADMAPS)" "true"
-ifneq "$(os_name)" "FreeBSD"
 ifneq "$(is_gcc)" "true"
-	ldflags.o += -map $(shell echo $@ | cut -d. -f 1).map
+	ldflags += -map $(call get-map-filename,$@)
 else ifneq "$(is_gnu_ld)" "true"
-	ldflags.o += -map $(shell echo $@ | cut -d. -f 1).map
+	ldflags += -map $(call get-map-filename,$@)
 else
-	ldflags.o += -Map=$(shell echo $@ | cut -d. -f 1).map
-endif
+	ldflags += -Map=$(call get-map-filename,$@)
 endif
 endif
 
 ifneq "$(is_gcc)" "true"
-	ldflags.o += -rpath '\$$ORIGIN'
+	ldflags += -rpath '\$$ORIGIN'
 else ifneq "$(is_gnu_ld)" "true"
-	ldflags.o += -rpath '\$$ORIGIN'
+	ldflags += -rpath '\$$ORIGIN'
 else
-	ldflags.o += -rpath='\$$ORIGIN'
+	ldflags += -rpath='\$$ORIGIN'
 endif
 
-ifneq "$(is_gcc)" "true"
-	ldflags.so = $(ldflags.o)
-else ifneq "$(is_gnu_ld)" "true"
-	ldflags.so = $(ldflags.o)
-else
-	ldflags.so = $(ldflags.o) -soname=$(shell echo $@ | $(so_name_filter))
+ldflags_so = $(ldflags)
+
+ifeq "$(is_gcc)" "true"
+ifeq "$(is_gnu_ld)" "true"
+	ldflags_so += -soname=$(call get-library-alias $@)
+endif
 endif
 
 lib_target = $(filter lib%,$@)
 
-ldflags_native = $(if $(lib_target),$(ldflags.so),$(ldflags.o))
+ldflags_native = $(if $(lib_target),$(ldflags_so),$(ldflags))
 ldflags_target = $(if $(lib_target),-shared,)
 
-LDFLAGS += $(shell echo -Wl $(ldflags_native) | tr ' ' ',') $(ldflags_target)
+LDFLAGS += $(call get-ld-flags,-Wl,$(ldflags_native)) $(ldflags_target)
 
 # LDLIBS
 
