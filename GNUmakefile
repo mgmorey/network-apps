@@ -76,7 +76,7 @@ program_objects = $(addprefix $(tmpdir)/,$(program_object_files))
 
 objects = $(libnetwork_objects) $(program_objects)
 
-libnetwork_members = $(patsubst %.o,libnetwork.a(%.o),	\
+libnetwork_members = $(patsubst %.o,$(libnetwork_archive)(%.o),	\
 $(libnetwork_objects))
 
 libnetwork = libnetwork.so.$(lib_version)
@@ -149,14 +149,14 @@ unix: $(sort $(filter unix-%,$(programs)))
 
 .SECONDARY: $(objects)
 
-libnetwork.so.$(lib_version): $(sort $(libnetwork_objects))
+$(libnetwork): $(sort $(libnetwork_objects))
 	$(LINK.o) -o $@ $^ $(LDLIBS)
 	ln -sf $@ $(shell echo $@ | $(soname_filter))
 
 ifeq "$(USING_ARCHIVE_MEMBER_RULE)" "true"
-libnetwork.a: $(sort $(libnetwork_members))
+$(libnetwork_archive): $(sort $(libnetwork_members))
 else
-libnetwork.a: $(sort $(libnetwork_objects))
+$(libnetwork_archive): $(sort $(libnetwork_objects))
 	rm -f $@
 	$(AR) q $@ $^
 endif
