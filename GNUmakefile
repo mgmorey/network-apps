@@ -34,10 +34,10 @@ include flags.gmk
 libnetwork_sources = address.cpp address-sa.cpp address-sin.cpp		\
 address-sin6.cpp address-sun.cpp addrinfo.cpp bind-endpoint.cpp		\
 bind-fd.cpp buffer.cpp close.cpp connect-endpoint.cpp connect-fd.cpp	\
-context.cpp family.cpp fd.cpp flags.cpp format.cpp			\
-format-os-error.cpp get-endpoint.cpp get-hostname.cpp get-hosts.cpp	\
-get-last-os-error.cpp get-length.cpp get-name.cpp get-peername.cpp	\
-get-sa-data.cpp get-sa-family.cpp get-sa-length.cpp			\
+context.cpp dispatch-os-error.cpp family.cpp fd.cpp flags.cpp		\
+format.cpp format-os-error.cpp get-endpoint.cpp get-hostname.cpp	\
+get-hosts.cpp get-last-os-error.cpp get-length.cpp get-name.cpp		\
+get-peername.cpp get-sa-data.cpp get-sa-family.cpp get-sa-length.cpp	\
 get-sa-pointer.cpp get-sin-addr.cpp get-sin-pointer.cpp			\
 get-sin-port.cpp get-sin6-addr.cpp get-sin6-pointer.cpp			\
 get-sin6-port.cpp get-size.cpp get-socket.cpp get-socketpair.cpp	\

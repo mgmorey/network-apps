@@ -37,7 +37,7 @@ auto Network::get_hostname() -> Network::HostnameResult
     reset_last_os_error();
 
     if ((::gethostname(host_buffer.data(), host_buffer.size() - 1)) == -1) {
-        const auto error = get_last_os_error();
+        const auto error = dispatch_os_error(get_last_os_error());
         std::ostringstream oss;
         oss << "Call to gethostname(...) failed with error "
             << error

@@ -13,13 +13,26 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_OS_ERROR_H
-#define NETWORK_OS_ERROR_H
-
-#include "network/dispatch-os-error.h"          // dispatch_os_error()
+#include "network/dispatch-os-error.h"          // get_last_os_error(),
+                                                // os_error_type
 #include "network/format-os-error.h"            // format_os_error()
-#include "network/get-last-os-error.h"          // get_last_os_error()
-#include "network/reset-last-os-error.h"        // reset_last_os_error()
-#include "network/set-last-os-error.h"          // set_last_os_error()
+#include "network/logicerror.h"                 // LogicError
 
+#ifdef _WIN32
+#include <winsock2.h>       // WSANOTINITIALISED
 #endif
+
+auto Network::dispatch_os_error(os_error_type error) -> Network::os_error_type
+{
+#ifdef _WIN32
+    switch (error) {
+    case WSANOTINITIALISED:
+        throw LogicError(format_os_error(error));
+        break;
+    default:
+        return error;
+    }
+#else
+    return error;
+#endif
+}

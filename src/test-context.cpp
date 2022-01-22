@@ -38,6 +38,10 @@ namespace TestContext
     constexpr auto expected_description {"WinSock 2.0"};
     constexpr auto expected_error_code_running {0};
     constexpr auto expected_error_code_stopped {WSANOTINITIALISED};
+    constexpr auto expected_error_stopped {
+        "Either the application has not called WSAStartup, "
+        "or WSAStartup failed."
+    };
     constexpr auto expected_error_invalid_version {
         "The Windows Sockets version requested is not supported."
     };
@@ -49,6 +53,7 @@ namespace TestContext
     };
     constexpr auto expected_error_code_running {0};
     constexpr auto expected_error_code_stopped {0};
+    constexpr auto expected_error_stopped {""};
     constexpr auto expected_error_invalid_version {""};
     constexpr auto expected_status {"Running"};
     constexpr auto expected_version {Network::Version {}};
@@ -338,10 +343,17 @@ namespace TestContext
 
     static auto test_hostname_stopped() -> void
     {
-        const auto result {get_hostname()};
-        const auto error_code {result.number()};
-        print(result, "get_hostname() w/o context");
-        assert(error_code == expected_error_code_stopped);
+        std::string what;
+
+        try {
+            static_cast<void>(get_hostname());
+        }
+        catch (const Network::Error& error) {
+            print(error);
+            what = error.what();
+        }
+
+        assert(what == expected_error_stopped);
         test_context_cleaned_up();
     }
 }

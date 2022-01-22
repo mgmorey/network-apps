@@ -13,13 +13,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_OS_ERROR_H
-#define NETWORK_OS_ERROR_H
+#ifndef NETWORK_DISPATCH_OS_ERROR_H
+#define NETWORK_DISPATCH_OS_ERROR_H
 
-#include "network/dispatch-os-error.h"          // dispatch_os_error()
-#include "network/format-os-error.h"            // format_os_error()
-#include "network/get-last-os-error.h"          // get_last_os_error()
-#include "network/reset-last-os-error.h"        // reset_last_os_error()
-#include "network/set-last-os-error.h"          // set_last_os_error()
+#include "network/os-error-type.h"      // os_error_type
+
+namespace Network
+{
+    extern auto dispatch_os_error(os_error_type error) -> os_error_type;
+}
 
 #endif
