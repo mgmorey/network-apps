@@ -30,7 +30,7 @@
 auto Network::get_sin6_port(const Bytes& addr,
                             port_type port) -> Network::port_type
 {
-    assert(get_sa_family(addr) == AF_INET6);  // NOLINT
+    assert(get_sa_family(addr) == AF_INET6);
     const auto *const sin6 {get_sin6_pointer(addr)};
 
     if (addr.size() < sin6_port_offset + sizeof sin6->sin6_port) {

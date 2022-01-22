@@ -125,7 +125,7 @@ auto Network::is_valid(const ByteString& addr, bool verbose) -> bool
                       << std::endl;
         }
 
-        assert(sa_len == sun_len);  // NOLINT
+        assert(sa_len == sun_len);
 
 #endif
 

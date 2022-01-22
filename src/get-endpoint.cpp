@@ -39,7 +39,7 @@ auto Network::get_endpoint(const Bytes& addr, int flags, bool verbose) ->
 {
     Buffer host {NI_MAXHOST};
     Buffer service {NI_MAXSERV};
-    assert(is_valid(addr, verbose));  // NOLINT
+    assert(is_valid(addr, verbose));
     const auto addr_len {get_length(addr)};
     const auto *const addr_ptr {get_sa_pointer(addr)};
 

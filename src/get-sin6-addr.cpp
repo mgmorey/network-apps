@@ -28,7 +28,7 @@
 
 auto Network::get_sin6_addr(const Bytes& addr, const in6_addr& ip) -> in6_addr
 {
-    assert(get_sa_family(addr) == AF_INET6);  // NOLINT
+    assert(get_sa_family(addr) == AF_INET6);
     const auto *const sin6 {get_sin6_pointer(addr)};
 
     if (addr.size() < sin6_addr_offset + sizeof sin6->sin6_addr) {

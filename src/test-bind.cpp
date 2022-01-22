@@ -165,7 +165,6 @@ namespace TestBind
         const auto open_result {Network::bind(endpoint, hints, verbose)};
         std::visit(Network::Overloaded {
                 [&](const Network::FdResultVector& fd_results) {
-                    assert(!fd_results.empty());  // NOLINT
                     std::for_each(fd_results.begin(), fd_results.end(),
                                   Test(endpoint, std::cout));
                 },

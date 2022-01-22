@@ -201,7 +201,6 @@ namespace TestConnect
                     };
                     std::visit(Network::Overloaded {
                             [&](const Network::FdResultVector& fd_results) {
-                                assert(!fd_results.empty());  // NOLINT
                                 std::for_each(fd_results.begin(),
                                               fd_results.end(),
                                               Test(endpoint,
