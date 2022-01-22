@@ -131,8 +131,11 @@ else
 	ldflags.so = $(ldflags.o) -soname=$(shell echo $@ | $(soname_filter))
 endif
 
-LDFLAGS.o = $(LDFLAGS) $(shell echo -Wl $(ldflags.o) | sed 's/ /,/g')
-LDFLAGS.so = $(LDFLAGS) $(shell echo -Wl $(ldflags.so) | sed 's/ /,/g') -shared
+so_name = $(filter lib%,$@)
+so_shared = $(if $(so_name),-shared,)
+
+ldflags = $(if $(so_name),$(ldflags.so),$(ldflags.o))
+LDFLAGS.o = $(LDFLAGS) $(shell echo -Wl $(ldflags) | sed 's/ /,/g') $(so_shared)
 
 # LDLIBS
 

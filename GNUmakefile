@@ -72,14 +72,18 @@ $(program_sources)))
 libnetwork_objects = $(addprefix $(tmpdir)/,	\
 $(libnetwork_object_files))
 
-libnetwork_members = $(patsubst %.o,libnetwork.a(%.o),	\
-$(libnetwork_objects))
-
 program_objects = $(addprefix $(tmpdir)/,$(program_object_files))
 
 objects = $(libnetwork_objects) $(program_objects)
 
-libraries = libnetwork.so.$(lib_version) libnetwork.a
+libnetwork_members = $(patsubst %.o,libnetwork.a(%.o),	\
+$(libnetwork_objects))
+
+libnetwork = libnetwork.so.$(lib_version)
+libnetwork_alias = $(shell echo $(libnetwork) | $(soname_filter))
+libnetwork_archive = libnetwork.a
+
+libraries = $(libnetwork) $(libnetwork_alias) $(libnetwork_archive)
 
 programs = $(basename $(program_sources))
 
@@ -90,12 +94,11 @@ logfiles = $(addsuffix .log,$(programs))
 sizes = sizes.txt
 tags = TAGS
 
-binary_artifacts = $(libraries) $(programs) $(objects) $(soname)
+binary_artifacts = $(libraries) $(programs) $(objects)
 text_artifacts = $(listings) $(loadmaps) $(logfiles) $(sizes) $(tags)
 artifacts = $(binary_artifacts) $(text_artifacts)
 
 LINK.o = $(strip $(CXX) $(LDFLAGS.o))
-LINK.so = $(strip $(CXX) $(LDFLAGS.so))
 
 .PHONY: all
 all: $(libraries) $(programs) sizes
@@ -147,7 +150,7 @@ unix: $(sort $(filter unix-%,$(programs)))
 .SECONDARY: $(objects)
 
 libnetwork.so.$(lib_version): $(sort $(libnetwork_objects))
-	$(LINK.so) -o $@ $^ $(LDLIBS)
+	$(LINK.o) -o $@ $^ $(LDLIBS)
 	ln -sf $@ $(shell echo $@ | $(soname_filter))
 
 ifeq "$(USING_ARCHIVE_MEMBER_RULE)" "true"
