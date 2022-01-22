@@ -80,13 +80,13 @@ namespace TestSocket
             std::cout << "Unix domain path: "
                       << sun_path.value_or(Network::string_null)
                       << std::endl;
-            assert(sun_path == pathname);			// NOLINT
+            assert(sun_path == pathname);
         }
         else {
-            assert(static_cast<bool>(sun_path) == false);	// NOLINT
+            assert(static_cast<bool>(sun_path) == false);
         }
 
-        assert(Network::is_valid(addr, verbose));		// NOLINT
+        assert(Network::is_valid(addr, verbose));
         Network::Address address {addr};
         std::cout << "Unix domain address: "
                   << address

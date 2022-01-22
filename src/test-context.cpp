@@ -190,9 +190,9 @@ namespace TestContext
         }
 
         print(context, description);
-        assert(context.description() == expected_description);	// NOLINT
-        assert(context.system_status() == expected_status);	// NOLINT
-        assert(context.version() == version);			// NOLINT
+        assert(context.description() == expected_description);
+        assert(context.system_status() == expected_status);
+        assert(context.version() == version);
     }
 
     static auto test_context_cleaned_up() -> void
@@ -208,8 +208,8 @@ namespace TestContext
             what = error.what();
         }
 
-        assert(error_code == expected_error_code_stopped);	// NOLINT
-        assert(what == "");					// NOLINT
+        assert(error_code == expected_error_code_stopped);
+        assert(what.empty());
     }
 
     static auto test_context_global_instance() -> void
@@ -223,12 +223,12 @@ namespace TestContext
             Context& context2 {Context::instance()};
             test_context(context1, "global");
             test_context(context2, "global");
-            assert(&context1 == &context2);			// NOLINT
-            assert(context1.is_started());			// NOLINT
-            assert(context2.is_started());			// NOLINT
+            assert(&context1 == &context2);
+            assert(context1.is_started());
+            assert(context2.is_started());
             context1.shutdown();
-            assert(!context1.is_started());			// NOLINT
-            assert(!context2.is_started());			// NOLINT
+            assert(!context1.is_started());
+            assert(!context2.is_started());
             context2.shutdown();
         }
         catch (const Network::Error& error) {
@@ -236,7 +236,7 @@ namespace TestContext
             what = error.what();
         }
 
-        assert(what == "");					// NOLINT
+        assert(what.empty());
         test_context_cleaned_up();
     }
 
@@ -253,7 +253,7 @@ namespace TestContext
             what = error.what();
         }
 
-        assert(what == expected_error_invalid_version);		// NOLINT
+        assert(what == expected_error_invalid_version);
         test_context_cleaned_up();
     }
 
@@ -270,14 +270,13 @@ namespace TestContext
             Context context2 {version2};
             test_context(context1, "local 1", version1);
             test_context(context2, "local 2", version2);
-            assert(&context1 != &context2);			// NOLINT
         }
         catch (const Network::Error& error) {
             print(error);
             what = error.what();
         }
 
-        assert(what == "");					// NOLINT
+        assert(what.empty());
         test_context_cleaned_up();
     }
 
@@ -295,7 +294,7 @@ namespace TestContext
             what = error.what();
         }
 
-        assert(what == "");					// NOLINT
+        assert(what.empty());
         test_context_cleaned_up();
     }
 
@@ -312,7 +311,7 @@ namespace TestContext
             what = error.what();
         }
 
-        assert(what == "");					// NOLINT
+        assert(what.empty());
         test_context_cleaned_up();
     }
 
@@ -326,14 +325,14 @@ namespace TestContext
             const auto result {get_hostname()};
             const auto error_code {result.number()};
             print(result, "get_hostname() with context");
-            assert(error_code == expected_error_code_running);	// NOLINT
+            assert(error_code == expected_error_code_running);
         }
         catch (const Network::Error& error) {
             print(error);
             what = error.what();
         }
 
-        assert(what == "");					// NOLINT
+        assert(what.empty());
         test_context_cleaned_up();
     }
 
@@ -342,7 +341,7 @@ namespace TestContext
         const auto result {get_hostname()};
         const auto error_code {result.number()};
         print(result, "get_hostname() w/o context");
-        assert(error_code == expected_error_code_stopped);	// NOLINT
+        assert(error_code == expected_error_code_stopped);
         test_context_cleaned_up();
     }
 }
