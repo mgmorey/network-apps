@@ -26,6 +26,11 @@ tmpdir = tmp
 include_suffix = .h
 source_suffix = .cpp
 
+# Set virtual paths
+
+vpath %$(include_suffix) include/network
+vpath %$(source_suffix) src
+
 # Include common functions and flag variables
 
 include common.gmk
@@ -207,8 +212,3 @@ $(tmpdir):
 ifeq "$(filter %clean,$(MAKECMDGOALS))" "$(filter-out %clean,$(MAKECMDGOALS))"
 include $(depends)
 endif
-
-# Set virtual paths
-
-vpath %$(include_suffix) include/network
-vpath %$(source_suffix) src
