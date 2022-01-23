@@ -14,6 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/get-peername.h"       // BytesResult, Fd,
+                                        // GetNameParams,
                                         // get_peername()
 
 #ifdef _WIN32
@@ -24,6 +25,7 @@
 
 auto Network::get_peername(Fd fd, bool verbose) -> Network::BytesResult
 {
-    const Network::GetNameHandler handler {::getpeername, "getpeername"};
-    return get_name(handler, fd, verbose);
+    const GetNameHandler handler {::getpeername, "getpeername"};
+    const GetNameParams args {fd, verbose};
+    return get_name(handler, args);
 }

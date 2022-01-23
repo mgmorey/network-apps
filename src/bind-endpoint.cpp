@@ -15,6 +15,8 @@
 
 #include "network/bind-endpoint.h"      // Endpoint, Hints,
                                         // OpenResult, bind(), open()
+#include "network/openendpointparams.h" // OpenEndpointParams
+#include "network/openhandler.h"        // OpenHandler
 
 #ifdef _WIN32
 #include <winsock2.h>       // bind()
@@ -26,6 +28,7 @@ auto Network::bind(const Endpoint& endpoint,
                    const Hints& hints,
                    bool verbose) -> Network::OpenResult
 {
-    const Network::OpenHandler handler {::bind, "bind"};
-    return open(handler, endpoint, hints, verbose);
+    const OpenHandler handler {::bind, "bind"};
+    const OpenEndpointParams args {endpoint, hints, verbose};
+    return open(handler, args);
 }

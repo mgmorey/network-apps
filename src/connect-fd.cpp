@@ -16,6 +16,8 @@
 #include "network/connect-fd.h"         // ByteString, Fd,
                                         // OsErrorResult, connect(),
                                         // open()
+#include "network/openfdparams.h"       // OpenFdParams
+#include "network/openhandler.h"        // OpenHandler
 
 #ifdef _WIN32
 #include <winsock2.h>       // connect()
@@ -27,6 +29,7 @@ auto Network::connect(Fd fd,
                       const ByteString& str,
                       bool verbose) -> Network::OsErrorResult
 {
-    const Network::OpenHandler handler {::connect, "connect"};
-    return open(handler, fd, str, verbose);
+    const OpenHandler handler {::connect, "connect"};
+    const OpenFdParams args {fd, str, verbose};
+    return open(handler, args);
 }

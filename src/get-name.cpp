@@ -28,19 +28,19 @@
 #include <iostream>     // std::cerr, std::endl
 #include <sstream>      // std::ostringstream
 
-auto Network::get_name(const GetNameHandler& handler, Fd fd,
-                       bool verbose) -> Network::BytesResult
+auto Network::get_name(const GetNameHandler& handler,
+                       const GetNameParams& args) -> Network::BytesResult
 {
     ByteString str {ss_size, Byte {}};
     auto length {get_length(str)};
     auto* pointer {get_sa_pointer(str)};
     reset_last_os_error();
 
-    if (verbose) {
+    if (args.verbose) {
         std::cerr << "Calling "
                   << handler.second
                   << '('
-                  << fd
+                  << args.fd
                   << ", "
                   << str
                   << ", "
@@ -49,13 +49,13 @@ auto Network::get_name(const GetNameHandler& handler, Fd fd,
                   << std::endl;
     }
 
-    if (handler.first(static_cast<fd_type>(fd), pointer, &length) == -1) {
+    if (handler.first(static_cast<fd_type>(args.fd), pointer, &length) == -1) {
         const auto error = get_last_os_error();
         std::ostringstream oss;
         oss << "Call to "
             << handler.second
             << '('
-            << fd
+            << args.fd
             << ", "
             << str
             << ", "

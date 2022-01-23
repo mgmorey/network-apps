@@ -31,25 +31,23 @@
 #include <sstream>      // std::ostringstream
 
 auto Network::open(const OpenHandler& handler,
-                   Fd fd,
-                   const ByteString& str,
-                   bool verbose) -> Network::OsErrorResult
+                   const OpenFdParams& args) -> Network::OsErrorResult
 {
-    if (!is_valid(str)) {
-        throw AddressError(str);
+    if (!is_valid(args.str)) {
+        throw AddressError(args.str);
     }
 
-    const auto length {get_length(str)};
-    const auto *const pointer {get_sa_pointer(str)};
+    const auto length {get_length(args.str)};
+    const auto *const pointer {get_sa_pointer(args.str)};
     reset_last_os_error();
 
-    if (verbose) {
+    if (args.verbose) {
         std::cerr << "Calling "
                   << handler.second
                   << '('
-                  << fd
+                  << args.fd
                   << ", "
-                  << Address {str}
+                  << Address {args.str}
                   << ", "
                   << static_cast<int>(length)
                   << ')'
@@ -57,7 +55,7 @@ auto Network::open(const OpenHandler& handler,
     }
 
     const auto code {
-        handler.first(static_cast<fd_type>(fd), pointer, length)
+        handler.first(static_cast<fd_type>(args.fd), pointer, length)
     };
 
     if (code == socket_error) {
@@ -66,9 +64,9 @@ auto Network::open(const OpenHandler& handler,
         oss << "Call to "
             << handler.second
             << '('
-            << fd
+            << args.fd
             << ", "
-            << Address {str}
+            << Address {args.str}
             << ") failed with error "
             << error
             << ": "

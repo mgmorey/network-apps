@@ -14,7 +14,10 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/connect-endpoint.h"   // Endpoint, Hints,
-                                        // OpenResult, bind(), open()
+                                        // OpenResult, connect(),
+                                        // open()
+#include "network/openendpointparams.h" // OpenEndpointParams
+#include "network/openhandler.h"        // OpenHandler
 
 #ifdef _WIN32
 #include <winsock2.h>       // connect()
@@ -26,6 +29,7 @@ auto Network::connect(const Endpoint& endpoint,
                       const Hints& hints,
                       bool verbose) -> Network::OpenResult
 {
-    const Network::OpenHandler handler {::connect, "connect"};
-    return open(handler, endpoint, hints, verbose);
+    const OpenHandler handler {::connect, "connect"};
+    const OpenEndpointParams args {endpoint, hints, verbose};
+    return open(handler, args);
 }

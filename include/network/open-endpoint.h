@@ -16,17 +16,14 @@
 #ifndef NETWORK_OPEN_ENDPOINT_H
 #define NETWORK_OPEN_ENDPOINT_H
 
-#include "network/endpoint.h"           // Endpoint
-#include "network/hints.h"              // Hints
+#include "network/openendpointparams.h" // OpenEndpointParams
 #include "network/openhandler.h"        // OpenHandler
 #include "network/openresult.h"         // OpenResult
 
 namespace Network
 {
     extern auto open(const OpenHandler& handler,
-                     const Endpoint& endpoint,
-                     const Hints& hints,
-                     bool verbose) -> OpenResult;
+                     const OpenEndpointParams& args) -> OpenResult;
 }
 
 #endif

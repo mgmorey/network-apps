@@ -17,13 +17,13 @@
 #define NETWORK_GET_NAME_H
 
 #include "network/bytesresult.h"        // BytesResult
-#include "network/fd.h"                 // Fd
 #include "network/getnamehandler.h"     // GetNameHandler
+#include "network/getnameparams.h"      // GetNameParams
 
 namespace Network
 {
-    extern auto get_name(const GetNameHandler& handler, Fd fd,
-                         bool verbose) -> BytesResult;
+    extern auto get_name(const GetNameHandler& handler,
+                         const GetNameParams& args) -> BytesResult;
 }
 
 #endif

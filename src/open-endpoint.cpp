@@ -14,8 +14,9 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/open-endpoint.h"      // Endpoint, FdResultVector,
-                                        // Hints, OpenHandler,
-                                        // OpenResult, open()
+                                        // Hints, OpenEndpointParams,
+                                        // OpenHandler, OpenResult,
+                                        // open()
 #include "network/open-fd.h"            // Bytes, Fd, OpenHandler,
                                         // OsErrorResult, open()
 #include "network/get-socket.h"         // ErrorResult, get_socket()
@@ -27,18 +28,17 @@
 #include <variant>      // std::visit()
 
 auto Network::open(const OpenHandler& handler,
-                   const Endpoint& endpoint,
-                   const Hints& hints,
-                   bool verbose) -> Network::OpenResult
+                   const OpenEndpointParams& args) -> Network::OpenResult
 {
     OpenResult open_result;
     FdResultVector fd_results;
     const auto lambda = [&](const Socket& sock) {
-        auto socket_result {get_socket(sock, verbose)};
+        auto socket_result {get_socket(sock, args.verbose)};
         std::visit(Overloaded {
                 [&](Fd fd) {
                     const auto addr {sock.address()};
-                    const auto result {open(handler, fd, addr, verbose)};
+                    const auto params {OpenFdParams {fd, addr, args.verbose}};
+                    const auto result {open(handler, params)};
 
                     if (result) {
                         socket_result = result;
@@ -53,7 +53,9 @@ auto Network::open(const OpenHandler& handler,
             }, socket_result);
         return socket_result;
     };
-    const auto sockets_result {get_sockets(endpoint, hints, verbose)};
+    const auto sockets_result {get_sockets(args.endpoint,
+                                           args.hints,
+                                           args.verbose)};
     std::visit(Overloaded {
             [&](const SocketVector& sockets) {
                 std::transform(sockets.begin(), sockets.end(),

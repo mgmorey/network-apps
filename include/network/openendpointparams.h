@@ -13,23 +13,20 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/bind-fd.h"            // ByteString, Fd
-                                        // OsErrorResult, bind(),
-                                        // open()
-#include "network/openfdparams.h"       // OpenFdParams
-#include "network/openhandler.h"        // OpenHandler
+#ifndef NETWORK_OPENENDPOINTPARAMS_H
+#define NETWORK_OPENENDPOINTPARAMS_H
 
-#ifdef _WIN32
-#include <winsock2.h>       // bind()
-#else
-#include <sys/socket.h>     // bind()
-#endif
+#include "network/endpoint.h"           // Endpoint
+#include "network/hints.h"              // Hints
 
-auto Network::bind(Fd fd,
-                   const ByteString& str,
-                   bool verbose) -> Network::OsErrorResult
+namespace Network
 {
-    const OpenHandler handler {::bind, "bind"};
-    const OpenFdParams args {fd, str, verbose};
-    return open(handler, args);
+    struct OpenEndpointParams
+    {
+        Endpoint endpoint;
+        Hints hints;
+        bool verbose;
+    };
 }
+
+#endif
