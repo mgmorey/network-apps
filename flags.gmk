@@ -15,8 +15,8 @@
 
 # Define functions
 
-get-ld-flags = $(shell echo $1 $2 | tr ' ' ',')
-get-map-filename = $(shell echo $1 | awk -F. '{printf "%s.map\n", $$1}')
+format-native-flags = $(shell echo -W$1 $2 | tr ' ' ',')
+get-map-file = $(shell echo $1 | awk -F. '{printf "%s.map\n", $$1}')
 
 # Define platform-specific variables
 
@@ -74,7 +74,7 @@ ifeq "$(WITH_LISTINGS)" "true"
 ifeq "$(is_gcc)" "true"
 ifeq "$(is_gnu_as)" "true"
 	ASFLAGS += -adghln=$(subst .o,.lst,$@)
-        CXX_ASFLAGS += $(call get-ld-flags -Wa,$(ASFLAGS))
+        CXX_ASFLAGS += $(call format-native-flags,a,$(ASFLAGS))
 endif
 endif
 endif
@@ -114,11 +114,11 @@ endif
 
 ifeq "$(WITH_LOADMAPS)" "true"
 ifneq "$(is_gcc)" "true"
-	ldflags += -map $(call get-map-filename,$@)
+	ldflags += -map $(call get-map-file,$@)
 else ifneq "$(is_gnu_ld)" "true"
-	ldflags += -map $(call get-map-filename,$@)
+	ldflags += -map $(call get-map-file,$@)
 else
-	ldflags += -Map=$(call get-map-filename,$@)
+	ldflags += -Map=$(call get-map-file,$@)
 endif
 endif
 
@@ -143,7 +143,7 @@ lib_target = $(filter lib%,$@)
 ldflags_native = $(if $(lib_target),$(ldflags_so),$(ldflags))
 ldflags_target = $(if $(lib_target),-shared,)
 
-LDFLAGS += $(call get-ld-flags,-Wl,$(ldflags_native)) $(ldflags_target)
+LDFLAGS += $(call format-native-flags,l,$(ldflags_native)) $(ldflags_target)
 
 # LDLIBS
 
