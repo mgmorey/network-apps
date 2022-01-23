@@ -23,6 +23,7 @@
 #include "network/os-error.h"           // format_os_error(),
                                         // get_os_last_error(),
                                         // reset_os_last_error()
+#include "network/socket-error.h"       // socket_error
 #include "network/ss-sizes.h"           // ss_size
 
 #include <iostream>     // std::cerr, std::endl
@@ -49,7 +50,9 @@ auto Network::get_name(const GetNameHandler& handler,
                   << std::endl;
     }
 
-    if (handler.first(static_cast<fd_type>(args.fd), pointer, &length) == -1) {
+    const fd_type fd {static_cast<fd_type>(args.fd)};
+
+    if (handler.first(fd, pointer, &length) == socket_error) {
         const auto error = get_last_os_error();
         std::ostringstream oss;
         oss << "Call to "

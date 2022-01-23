@@ -54,11 +54,9 @@ auto Network::open(const OpenHandler& handler,
                   << std::endl;
     }
 
-    const auto code {
-        handler.first(static_cast<fd_type>(args.fd), pointer, length)
-    };
+    const fd_type fd {static_cast<fd_type>(args.fd)};
 
-    if (code == socket_error) {
+    if (handler.first(fd, pointer, length) == socket_error) {
         const auto error = get_last_os_error();
         std::ostringstream oss;
         oss << "Call to "
