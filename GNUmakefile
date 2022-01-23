@@ -154,7 +154,7 @@ tidy: $(sort $(sources))
 	clang-tidy$(LLVM_SUFFIX) $^ $(TIDY_FLAGS)
 
 .PHONY: unix
-unix: $(sort $(filter unix-%,$(programs)))
+unix:
 	./unix-server & (sleep 1; ./unix-client 2 2; ./unix-client DOWN)
 
 .SECONDARY: $(objects)
@@ -176,10 +176,12 @@ endif
 
 $(programs): $(libnetwork_alias) $(libnetwork_archive)
 
+# Define suffix rules
+
 (%): %
 	$(AR) $(ARFLAGS) $@ $<
 
-%: $(tmpdir)/%.o
+%$(program_suffix): $(tmpdir)/%.o
 	$(LINK.o) -o $@ $^ $(LDLIBS)
 
 $(tmpdir)/%.o: %$(source_suffix)
@@ -200,11 +202,9 @@ $(objects) $(depends): | $(tmpdir)
 $(tmpdir):
 	mkdir -p $(tmpdir)
 
-# Define include dependency files
+# Include dependency files
 
-ifeq "$(MAKECMDGOALS)" ""
-include $(depends)
-else ifneq "$(filter-out %clean,$(MAKECMDGOALS))" ""
+ifeq "$(filter %clean,$(MAKECMDGOALS))" "$(filter-out %clean,$(MAKECMDGOALS))"
 include $(depends)
 endif
 
