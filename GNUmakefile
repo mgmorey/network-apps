@@ -98,6 +98,8 @@ $(sizes) $(tags)
 
 artifacts = $(binary_artifacts) $(text_artifacts)
 
+# Define compiler and linker variables
+
 COMPILE.cc = $(strip $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c)
 LINK.o = $(strip $(CXX) $(LDFLAGS))
 
