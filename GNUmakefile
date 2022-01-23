@@ -151,7 +151,7 @@ sizes: $(sizes)
 	test -e $<~ && diff -b $<~ $< || true
 
 .PHONY: test
-test: $(sort $(filter test-%,$(programs)))
+test: $(sort $(filter test-%,$(basename $(programs))))
 	for f in $^; do ./$$f >$$f.log; done
 
 .PHONY: tidy
