@@ -124,7 +124,7 @@ distclean:
 .PHONY: dos2unix
 
 dos2unix:
-	dos2unix $(sort $(wildcard $(text_artifacts)))
+	dos2unix $(sort $(wildcard $(filter-out %.dep,$(text_artifacts))))
 
 .PHONY: install
 install: $(libraries)
