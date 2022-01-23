@@ -16,12 +16,13 @@
 #ifndef NETWORK_CONNECT_FD_H
 #define NETWORK_CONNECT_FD_H
 
-#include "network/open-fd.h"            // Bytes, Fd, OsErrorResult
+#include "network/open-fd.h"            // ByteString, Fd,
+                                        // OsErrorResult
 
 namespace Network
 {
     extern auto connect(Fd fd,
-                        const Bytes& addr,
+                        const ByteString& str,
                         bool verbose = false) -> OsErrorResult;
 }
 

@@ -21,7 +21,7 @@
 
 namespace Network
 {
-    extern auto get_endpoint(const Bytes& addr, int flags,
+    extern auto get_endpoint(const Bytes& str, int flags,
                              bool verbose = false) -> EndpointResult;
 }
 

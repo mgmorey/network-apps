@@ -16,7 +16,7 @@
 #ifndef NETWORK_OPEN_FD_H
 #define NETWORK_OPEN_FD_H
 
-#include "network/bytes.h"              // Bytes
+#include "network/bytestring.h"         // ByteString
 #include "network/fdresultvector.h"     // Fd
 #include "network/openhandler.h"        // OpenHandler
 #include "network/oserrorresult.h"      // OsErrorResult
@@ -25,7 +25,7 @@ namespace Network
 {
     extern auto open(const OpenHandler& handler,
                      Fd fd,
-                     const Bytes& addr,
+                     const ByteString& str,
                      bool verbose) -> OsErrorResult;
 }
 

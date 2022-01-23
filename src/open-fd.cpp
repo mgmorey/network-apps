@@ -13,12 +13,12 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/open-fd.h"            // Fd, OpenHandler,
-                                        // OsErrorResult, fd_type,
-                                        // open(), operator<<()
+#include "network/open-fd.h"            // ByteString, Fd,
+                                        // OpenHandler, OsErrorResult,
+                                        // fd_type, open(),
+                                        // operator<<()
 #include "network/address.h"            // Address, operator<<()
 #include "network/addresserror.h"       // AddressError
-#include "network/bytestring.h"         // ByteString
 #include "network/get-length.h"         // get_length()
 #include "network/get-sa-pointer.h"     // get_sa_pointer()
 #include "network/is-valid.h"           // is_valid()
