@@ -84,12 +84,16 @@ program_sources = $(common_sources) $(posix_sources)
 program_objects = $(addprefix $(tmpdir)/,$(addsuffix .o,$(basename	\
 $(program_sources))))
 
-programs = $(basename $(program_sources))
+ifeq "$(os_name)" "MINGW64_NT"
+	program_suffix = .exe
+endif
+
+programs = $(addsuffix $(program_suffix),$(basename $(program_sources)))
 
 depends = $(subst .o,.dep,$(objects))
 listings = $(subst .o,.lst,$(objects))
-logfiles = $(addsuffix .log,$(programs))
-mapfiles = $(addsuffix .map,$(programs) libnetwork)
+logfiles = $(addsuffix .log,$(basename $(programs)))
+mapfiles = $(addsuffix .map,$(basename $(programs)) libnetwork)
 sizes = sizes.txt
 tags = TAGS
 
