@@ -13,14 +13,13 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/assert.h"             // assert()
+#include "network/is-valid.h"           // ByteString, is_valid()
 #include "network/get-sa-family.h"      // get_sa_family()
 #include "network/get-sa-length.h"      // get_sa_length()
 #include "network/get-size.h"           // get_size_max(),
                                         // get_size_min()
 #include "network/get-sun-length.h"     // get_sun_length()
 #include "network/get-sun-pointer.h"    // get_sun_pointer()
-#include "network/is-valid.h"           // ByteString, is_valid()
 #include "network/offsets.h"            // sun_path_offset
 #include "network/os-features.h"        // HAVE_SOCKADDR_SA_LEN
 #include "network/sizes.h"              // sin_size, sin6_size,
@@ -115,7 +114,6 @@ auto Network::is_valid(const ByteString& addr, bool verbose) -> bool
         }
 
 #ifndef _WIN32
-
         const auto *const sun {get_sun_pointer(addr)};
         const auto sun_len {get_sun_length(sun, addr_size)};
 
@@ -124,9 +122,6 @@ auto Network::is_valid(const ByteString& addr, bool verbose) -> bool
                       << std::right << std::setw(value_width) << sun_len
                       << std::endl;
         }
-
-        assert(sa_len == sun_len);
-
 #endif
 
     }

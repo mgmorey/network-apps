@@ -13,9 +13,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/assert.h"             // assert()
-#include "network/get-name.h"           // Bytes, Fd, GetNameHandler,
+#include "network/get-name.h"           // Fd, GetNameHandler,
                                         // OsErrorResult, get_name()
+#include "network/addresserror.h"       // AddressError
+#include "network/bytestring.h"         // ByteString
 #include "network/get-length.h"         // get_length()
 #include "network/get-sa-pointer.h"     // get_sa_pointer()
 #include "network/is-valid.h"           // is_valid()
@@ -30,9 +31,10 @@
 auto Network::get_name(const GetNameHandler& handler, Fd fd,
                        bool verbose) -> Network::BytesResult
 {
-    Bytes addr {ss_size, Byte {}};
-    auto addr_len {get_length(addr)};
-    auto* addr_ptr {get_sa_pointer(addr)};
+    ByteString str {ss_size, Byte {}};
+    auto length {get_length(str)};
+    auto* pointer {get_sa_pointer(str)};
+    reset_last_os_error();
 
     if (verbose) {
         std::cerr << "Calling "
@@ -40,16 +42,14 @@ auto Network::get_name(const GetNameHandler& handler, Fd fd,
                   << '('
                   << fd
                   << ", "
-                  << addr
+                  << str
                   << ", "
-                  << static_cast<int>(addr_len)
+                  << static_cast<int>(length)
                   << ", ...)"
                   << std::endl;
     }
 
-    reset_last_os_error();
-
-    if (handler.first(static_cast<fd_type>(fd), addr_ptr, &addr_len) == -1) {
+    if (handler.first(static_cast<fd_type>(fd), pointer, &length) == -1) {
         const auto error = get_last_os_error();
         std::ostringstream oss;
         oss << "Call to "
@@ -57,9 +57,9 @@ auto Network::get_name(const GetNameHandler& handler, Fd fd,
             << '('
             << fd
             << ", "
-            << addr
+            << str
             << ", "
-            << static_cast<int>(addr_len)
+            << static_cast<int>(length)
             << ", ...) failed with error "
             << error
             << ": "
@@ -67,7 +67,11 @@ auto Network::get_name(const GetNameHandler& handler, Fd fd,
         return OsErrorResult {error, oss.str()};
     }
 
-    addr.resize(addr_len);
-    assert(is_valid(addr, verbose));
-    return addr;
+    str.resize(length);
+
+    if (!is_valid(str)) {
+        throw AddressError(str);
+    }
+
+    return str;
 }

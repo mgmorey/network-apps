@@ -13,13 +13,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/assert.h"             // assert()
 #include "network/get-endpoint.h"       // Endpoint, EndpointResult,
                                         // ErrorResult, get_endpoint()
+#include "network/addresserror.h"       // AddressError
 #include "network/buffer.h"             // Buffer
-#include "network/get-length.h"         // Bytes, get_length()
-#include "network/get-sa-pointer.h"     // Bytes, get_sa_pointer()
-#include "network/is-valid.h"           // Bytes, is_valid()
+#include "network/bytestring.h"         // ByteString
+#include "network/get-length.h"         // get_length()
+#include "network/get-sa-pointer.h"     // get_sa_pointer()
+#include "network/is-valid.h"           // is_valid()
 
 #ifdef _WIN32
 #include <ws2tcpip.h>   // NI_MAXHOST, NI_MAXSERV, gai_strerror(),
@@ -34,27 +35,30 @@
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
 
-auto Network::get_endpoint(const Bytes& addr, int flags, bool verbose) ->
+auto Network::get_endpoint(const ByteString& str, int flags, bool verbose) ->
     Network::EndpointResult
 {
+    if (!is_valid(str)) {
+        throw AddressError(str);
+    }
+
     Buffer host {NI_MAXHOST};
     Buffer service {NI_MAXSERV};
-    assert(is_valid(addr, verbose));
-    const auto addr_len {get_length(addr)};
-    const auto *const addr_ptr {get_sa_pointer(addr)};
+    const auto length {get_length(str)};
+    const auto *const pointer {get_sa_pointer(str)};
 
     if (verbose) {
         std::cerr << "Calling getnameinfo("
-                  << addr
+                  << str
                   << ", "
-                  << addr_len
+                  << length
                   << ", ..., "
                   << flags
                   << ')'
                   << std::endl;
     }
 
-    const auto error {::getnameinfo(addr_ptr, addr_len,
+    const auto error {::getnameinfo(pointer, length,
                                     host.data(), host.size(),
                                     service.data(), service.size(),
                                     flags)};
@@ -62,9 +66,9 @@ auto Network::get_endpoint(const Bytes& addr, int flags, bool verbose) ->
     if (error != 0) {
         std::ostringstream oss;
         oss << "Call to getnameinfo("
-            << addr
+            << str
             << ", "
-            << addr_len
+            << length
             << ", ..., "
             << flags
             << ") returned "

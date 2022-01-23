@@ -13,30 +13,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_ERROR_H
-#define NETWORK_ERROR_H
+#include "network/error.h"              // Error
 
-#include <exception>   // std::exception
-#include <string>      // std::string
-#include <utility>     // std::move
-
-namespace Network
+Network::Error::Error(std::string t_str) :
+    m_str(std::move(t_str))
 {
-    class Error :
-        public std::exception
-    {
-    public:
-        explicit Error(std::string t_str);
-        Error(const Error&) = default;
-        Error(Error&&) noexcept = default;
-        ~Error() override = default;
-        auto operator=(const Error&) -> Error& = default;
-        auto operator=(Error&&) noexcept -> Error& = default;
-        [[nodiscard]] const char* what() const noexcept override; // NOLINT
-
-    private:
-        std::string m_str;
-    };
 }
 
-#endif
+const char* Network::Error::what() const noexcept // NOLINT
+{
+    return m_str.c_str();
+}

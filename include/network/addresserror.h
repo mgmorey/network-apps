@@ -13,29 +13,24 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_ERROR_H
-#define NETWORK_ERROR_H
+#ifndef NETWORK_ADDRESSERROR_H
+#define NETWORK_ADDRESSERROR_H
 
-#include <exception>   // std::exception
-#include <string>      // std::string
-#include <utility>     // std::move
+#include "network/bytestring.h"         // ByteString
+#include "network/logicerror.h"         // LogicError
 
 namespace Network
 {
-    class Error :
-        public std::exception
+    class AddressError :
+        public LogicError
     {
     public:
-        explicit Error(std::string t_str);
-        Error(const Error&) = default;
-        Error(Error&&) noexcept = default;
-        ~Error() override = default;
-        auto operator=(const Error&) -> Error& = default;
-        auto operator=(Error&&) noexcept -> Error& = default;
-        [[nodiscard]] const char* what() const noexcept override; // NOLINT
-
-    private:
-        std::string m_str;
+        explicit AddressError(const ByteString& t_str);
+        AddressError(const AddressError&) = default;
+        AddressError(AddressError&&) noexcept = default;
+        ~AddressError() override = default;
+        auto operator=(const AddressError&) -> AddressError& = default;
+        auto operator=(AddressError&&) noexcept -> AddressError& = default;
     };
 }
 

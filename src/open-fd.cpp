@@ -13,14 +13,15 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/assert.h"             // assert()
 #include "network/open-fd.h"            // Fd, OpenHandler,
-                                        // OsErrorResult, open(),
-                                        // operator<<()
+                                        // OsErrorResult, fd_type,
+                                        // open(), operator<<()
 #include "network/address.h"            // Address, operator<<()
-#include "network/get-length.h"         // Bytes, get_length()
-#include "network/get-sa-pointer.h"     // Bytes, get_sa_pointer()
-#include "network/is-valid.h"           // Bytes, is_valid()
+#include "network/addresserror.h"       // AddressError
+#include "network/bytestring.h"         // ByteString
+#include "network/get-length.h"         // get_length()
+#include "network/get-sa-pointer.h"     // get_sa_pointer()
+#include "network/is-valid.h"           // is_valid()
 #include "network/os-error.h"           // format_os_error(),
                                         // get_last_os_error(),
                                         // reset_last_os_error()
@@ -31,12 +32,16 @@
 
 auto Network::open(const OpenHandler& handler,
                    Fd fd,
-                   const Bytes& addr,
+                   const ByteString& str,
                    bool verbose) -> Network::OsErrorResult
 {
-    assert(is_valid(addr, verbose));
-    const auto addr_len {get_length(addr)};
-    const auto *const addr_ptr {get_sa_pointer(addr)};
+    if (!is_valid(str)) {
+        throw AddressError(str);
+    }
+
+    const auto length {get_length(str)};
+    const auto *const pointer {get_sa_pointer(str)};
+    reset_last_os_error();
 
     if (verbose) {
         std::cerr << "Calling "
@@ -44,18 +49,18 @@ auto Network::open(const OpenHandler& handler,
                   << '('
                   << fd
                   << ", "
-                  << Address(addr)
+                  << Address {str}
                   << ", "
-                  << static_cast<int>(addr_len)
+                  << static_cast<int>(length)
                   << ')'
                   << std::endl;
     }
 
-    reset_last_os_error();
+    const auto code {
+        handler.first(static_cast<fd_type>(fd), pointer, length)
+    };
 
-    if (handler.first(static_cast<fd_type>(fd),
-                      addr_ptr,
-                      addr_len) == socket_error) {
+    if (code == socket_error) {
         const auto error = get_last_os_error();
         std::ostringstream oss;
         oss << "Call to "
@@ -63,7 +68,7 @@ auto Network::open(const OpenHandler& handler,
             << '('
             << fd
             << ", "
-            << Address(addr)
+            << Address {str}
             << ") failed with error "
             << error
             << ": "
