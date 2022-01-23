@@ -187,7 +187,7 @@ $(tmpdir)/%.dep: %$(source_suffix)
 TAGS:
 	printf '%s\n' $(sort $^) | etags --declarations --language=$(language) -
 
-sizes.txt: $(sort $(objects))
+sizes.txt: $(sort $(libnetwork) $(objects) $(programs))
 	if [ -e $@ ]; then mv -f $@ $@~; fi
 	size $^ >$@
 
