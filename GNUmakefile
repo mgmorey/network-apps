@@ -202,7 +202,9 @@ $(tmpdir):
 
 # Define include dependency files
 
-ifeq "$(filter %clean,$(MAKECMDGOALS))" ""
+ifeq "$(MAKECMDGOALS)" ""
+include $(depends)
+else ifneq "$(filter-out %clean,$(MAKECMDGOALS))" ""
 include $(depends)
 endif
 
