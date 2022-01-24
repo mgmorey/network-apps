@@ -33,9 +33,6 @@
 
 namespace Network
 {
-    extern auto operator<<(std::ostream& os,
-                           const addrinfo& ai) -> std::ostream&;
-
     class AddrInfo
     {
     public:
@@ -89,6 +86,8 @@ namespace Network
                            const AddrInfo::InputIterator& right) -> bool;
     extern auto operator!=(const AddrInfo::InputIterator& left,
                            const AddrInfo::InputIterator& right) ->  bool;
+    extern auto operator<<(std::ostream& os,
+                           const addrinfo& ai) -> std::ostream&;
 }
 
 #endif
