@@ -28,7 +28,6 @@
 #endif
 
 #include <cstddef>      // std::ptrdiff_t
-#include <iostream>     // std::cerr, std::endl
 #include <iterator>     // std::input_iterator_tag
 #include <ostream>      // std::ostream
 
@@ -37,8 +36,9 @@ namespace Network
     extern auto operator<<(std::ostream& os,
                            const addrinfo& ai) -> std::ostream&;
 
-    namespace AddrInfo
+    class AddrInfo
     {
+    public:
         struct InputIterator
         {
             using difference_type = std::ptrdiff_t;
@@ -62,59 +62,33 @@ namespace Network
             pointer m_list {nullptr};
         };
 
-        class List
-        {
-        public:
-            static auto end() -> InputIterator;
-            List() = delete;
-            List(const List&) = delete;
-            List(const List&&) = delete;
-            List(const OptionalHostname& t_hostname,
-                 const OptionalService& t_service,
-                 const OptionalHints& t_hints,
-                 bool t_verbose);
-            ~List();
-            auto operator=(const List&) -> List& = delete;
-            auto operator=(const List&&) -> List& = delete;
-            [[nodiscard]] auto begin() const -> InputIterator;
-            [[nodiscard]] auto result() const -> ErrorResult;
+        static auto end() -> InputIterator;
 
-        protected:
-            static auto to_c_string(const OptionalString& str) -> const char*;
+        AddrInfo() = delete;
+        AddrInfo(const AddrInfo&) = delete;
+        AddrInfo(const AddrInfo&&) = delete;
+        AddrInfo(const OptionalHostname& t_hostname,
+             const OptionalService& t_service,
+             const OptionalHints& t_hints,
+             bool t_verbose);
+        ~AddrInfo();
+        auto operator=(const AddrInfo&) -> AddrInfo& = delete;
+        auto operator=(const AddrInfo&&) -> AddrInfo& = delete;
+        [[nodiscard]] auto begin() const -> InputIterator;
+        [[nodiscard]] auto result() const -> ErrorResult;
 
-        private:
-            addrinfo* m_list {nullptr};
-            ErrorResult m_result;
-        };
+    protected:
+        static auto to_c_string(const OptionalString& str) -> const char*;
 
-        extern auto operator==(const InputIterator& left,
-                               const InputIterator& right) -> bool;
-        extern auto operator!=(const InputIterator& left,
-                               const InputIterator& right) ->  bool;
+    private:
+        addrinfo* m_list {nullptr};
+        ErrorResult m_result;
+    };
 
-        template<typename OutputIterator>
-        auto insert(const OptionalHostname& hostname,
-                    const OptionalService& service,
-                    const OptionalHints& hints,
-                    OutputIterator it,
-                    bool verbose) -> ErrorResult
-        {
-            const auto list {List(hostname, service, hints, verbose)};
-
-            for (const auto& item : list) {
-                if (verbose) {
-                    std::cerr << "Fetched addrinfo:"
-                              << std::endl
-                              << item
-                              << std::endl;
-                }
-
-                *it++ = item;
-            }
-
-            return list.result();
-        }
-    }
+    extern auto operator==(const AddrInfo::InputIterator& left,
+                           const AddrInfo::InputIterator& right) -> bool;
+    extern auto operator!=(const AddrInfo::InputIterator& left,
+                           const AddrInfo::InputIterator& right) ->  bool;
 }
 
 #endif

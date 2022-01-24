@@ -20,7 +20,7 @@
                                                 // SocketVectorResult,
                                                 // get_sockets()
 
-#include "network/addrinfo.h"           // AddrInfo
+#include "network/insert-addrinfo.h"    // insert_addrinfo()
 
 #include <iterator>     // std::back_inserter()
 
@@ -30,13 +30,11 @@ auto Network::get_sockets(const OptionalHostname& hostname,
                           bool verbose) -> Network::SocketVectorResult
 {
     SocketVector sockets;
-    const auto result {
-        AddrInfo::insert(hostname,
-                         service,
-                         hints,
-                         std::back_inserter(sockets),
-                         verbose)
-    };
+    const auto result {insert_addrinfo(hostname,
+                                       service,
+                                       hints,
+                                       std::back_inserter(sockets),
+                                       verbose)};
 
     if (result) {
         return result;

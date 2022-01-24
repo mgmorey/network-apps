@@ -17,7 +17,7 @@
                                         // HostVector,
                                         // HostVectorResult,
                                         // OptionalHints, get_hosts()
-#include "network/addrinfo.h"           // AddrInfo
+#include "network/insert-addrinfo.h"    // insert_addrinfo()
 #include "network/overloaded.h"         // Overloaded
 #include "network/uniquify.h"           // uniquify()
 
@@ -30,13 +30,11 @@ auto Network::get_hosts(const Network::Hostname& hostname,
                         bool verbose) -> Network::HostVectorResult
 {
     HostVector hosts;
-    const auto result {
-        AddrInfo::insert(hostname,
-                         std::nullopt,
-                         hints,
-                         std::back_inserter(hosts),
-                         verbose)
-    };
+    const auto result {insert_addrinfo(hostname,
+                                       std::nullopt,
+                                       hints,
+                                       std::back_inserter(hosts),
+                                       verbose)};
 
     if (result) {
         return result;
