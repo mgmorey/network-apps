@@ -104,7 +104,7 @@ tags = TAGS
 
 binary_artifacts = $(libraries) $(objects) $(programs)
 text_artifacts = $(depends) $(listings) $(logfiles) $(mapfiles)	\
-$(sizes) $(tags)
+$(sizes) $(sizes)~ $(tags)
 
 artifacts = $(binary_artifacts) $(text_artifacts)
 
