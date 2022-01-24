@@ -65,6 +65,7 @@ namespace Network
         class List
         {
         public:
+            static auto end() -> InputIterator;
             List() = delete;
             List(const List&) = delete;
             List(const List&&) = delete;
@@ -76,7 +77,6 @@ namespace Network
             auto operator=(const List&) -> List& = delete;
             auto operator=(const List&&) -> List& = delete;
             [[nodiscard]] auto begin() const -> InputIterator;
-            static auto end() -> InputIterator;
             [[nodiscard]] auto result() const -> ErrorResult;
 
         protected:
@@ -92,24 +92,24 @@ namespace Network
         extern auto operator!=(const InputIterator& left,
                                const InputIterator& right) ->  bool;
 
-        template<typename OutputIt>
+        template<typename OutputIterator>
         auto insert(const OptionalHostname& hostname,
                     const OptionalService& service,
                     const OptionalHints& hints,
-                    bool verbose,
-                    OutputIt out) -> ErrorResult
+                    OutputIterator it,
+                    bool verbose) -> ErrorResult
         {
             const auto list {List(hostname, service, hints, verbose)};
 
-            for (const auto& in : list) {
+            for (const auto& item : list) {
                 if (verbose) {
                     std::cerr << "Fetched addrinfo:"
                               << std::endl
-                              << in
+                              << item
                               << std::endl;
                 }
 
-                *out++ = in;
+                *it++ = item;
             }
 
             return list.result();

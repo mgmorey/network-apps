@@ -31,11 +31,11 @@ auto Network::get_hosts(const Network::Hostname& hostname,
 {
     HostVector hosts;
     const auto result {
-        AddrInfo::insert(static_cast<OptionalHostname>(hostname),
-                         static_cast<OptionalService>(std::nullopt),
+        AddrInfo::insert(hostname,
+                         std::nullopt,
                          hints,
-                         verbose,
-                         std::back_inserter(hosts))
+                         std::back_inserter(hosts),
+                         verbose)
     };
 
     if (result) {

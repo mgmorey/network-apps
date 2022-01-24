@@ -34,8 +34,8 @@ auto Network::get_sockets(const OptionalHostname& hostname,
         AddrInfo::insert(hostname,
                          service,
                          hints,
-                         verbose,
-                         std::back_inserter(sockets))
+                         std::back_inserter(sockets),
+                         verbose)
     };
 
     if (result) {
