@@ -16,7 +16,9 @@
 #ifndef NETWORK_GET_SUN_PATH_LENGTH_H
 #define NETWORK_GET_SUN_PATH_LENGTH_H
 
-#ifndef _WIN32
+#include "network/os-features.h"        // WIN32
+
+#ifndef WIN32
 #include <sys/un.h>         // sockaddr_un
 #endif
 
@@ -24,7 +26,7 @@
 
 namespace Network
 {
-#ifndef _WIN32
+#ifndef WIN32
     extern auto get_sun_path_length(const sockaddr_un* sun,
                                     std::size_t size) -> std::size_t;
 #endif

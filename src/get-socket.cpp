@@ -21,8 +21,9 @@
 #include "network/os-error.h"           // format_os_error(),
                                         // get_last_os_error(),
                                         // reset_last_os_error()
+#include "network/os-features.h"        // WIN32
 
-#ifdef _WIN32
+#ifdef WIN32
 #include <winsock2.h>       // socket()
 #else
 #include <sys/socket.h>     // socket()

@@ -15,8 +15,9 @@
 
 #include "network/get-sun-pointer.h"    // Bytes, get_sun_pointer(),
                                         // sockaddr_un
+#include "network/os-features.h"        // WIN32
 
-#ifndef _WIN32
+#ifndef WIN32
 
 auto Network::get_sun_pointer(const Bytes& addr) -> const sockaddr_un*
 {

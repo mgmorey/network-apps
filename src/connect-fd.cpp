@@ -18,8 +18,9 @@
                                         // open()
 #include "network/openfdparams.h"       // OpenFdParams
 #include "network/openhandler.h"        // OpenHandler
+#include "network/os-features.h"        // WIN32
 
-#ifdef _WIN32
+#ifdef WIN32
 #include <winsock2.h>       // connect()
 #else
 #include <sys/socket.h>     // connect()

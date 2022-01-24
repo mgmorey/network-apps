@@ -16,7 +16,9 @@
 #ifndef NETWORK_SOCKET_ERROR_H
 #define NETWORK_SOCKET_ERROR_H
 
-#ifdef _WIN32
+#include "network/os-features.h"        // WIN32
+
+#ifdef WIN32
 #include <winsock2.h>       // SOCKET_ERROR
 #endif
 

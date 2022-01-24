@@ -16,8 +16,9 @@
 #include "network/to-string-sin6.h"     // in6_addr, std::string(),
                                         // to_string()
 #include "network/buffer.h"             // Buffer
+#include "network/os-features.h"        // WIN32
 
-#ifdef _WIN32
+#ifdef WIN32
 #include <winsock2.h>       // AF_INET6
 #include <ws2tcpip.h>       // INET6_ADDRSTRLEN, inet_ntop()
 #else

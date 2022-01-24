@@ -16,7 +16,9 @@
 #ifndef NETWORK_SUN_SIZES_H
 #define NETWORK_SUN_SIZES_H
 
-#ifndef _WIN32
+#include "network/os-features.h"        // WIN32
+
+#ifndef WIN32
 #include <sys/un.h>         // sockaddr_un
 #endif
 
@@ -24,7 +26,7 @@
 
 namespace Network
 {
-#ifndef _WIN32
+#ifndef WIN32
     constexpr auto sun_size {sizeof(sockaddr_un)};
 #endif
 }

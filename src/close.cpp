@@ -14,8 +14,9 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/close.h"              // Fd, fd_null, fd_type
+#include "network/os-features.h"        // WIN32
 
-#ifdef _WIN32
+#ifdef WIN32
 #include <winsock2.h>   // closesocket()
 #else
 #include <unistd.h>     // close()
@@ -24,7 +25,7 @@
 auto Network::close(fd_type fd) -> Network::fd_type
 {
     if (fd != fd_null) {
-#ifdef _WIN32
+#ifdef WIN32
         ::closesocket(fd);
 #else
         ::close(fd);

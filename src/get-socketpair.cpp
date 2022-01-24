@@ -22,9 +22,10 @@
 #include "network/os-error.h"           // format_os_error(),
                                         // get_last_os_error(),
                                         // reset_last_os_error()
+#include "network/os-features.h"        // WIN32
 #include "network/socket-error.h"       // socket_error
 
-#ifndef _WIN32
+#ifndef WIN32
 
 #include <sys/socket.h>     // socketpair()
 

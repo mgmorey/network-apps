@@ -18,8 +18,9 @@
                                         // port_type, value_type
 #include "network/addresserror.h"       // LogicError, to_string()
 #include "network/is-valid.h"           // is_valid()
+#include "network/os-features.h"        // WIN32
 
-#ifdef _WIN32
+#ifdef WIN32
 #include <winsock2.h>       // AF_INET, AF_INET6, AF_UNIX
 #else
 #include <sys/socket.h>     // AF_INET, AF_INET6, AF_UNIX
@@ -108,7 +109,7 @@ auto Network::Address::size() const -> std::size_t
 auto Network::Address::text() const -> std::string
 {
     switch (sa_family()) {
-#ifndef _WIN32
+#ifndef WIN32
     case AF_UNIX:
         return sun_text();
 #endif

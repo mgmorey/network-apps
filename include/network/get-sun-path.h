@@ -18,10 +18,11 @@
 
 #include "network/bytes.h"              // Bytes
 #include "network/optionalpathname.h"   // OptionalPathname
+#include "network/os-features.h"        // WIN32
 
 namespace Network
 {
-#ifndef _WIN32
+#ifndef WIN32
     extern auto get_sun_path(const Bytes& addr,
                              const OptionalPathname& pathname = {}) ->
         OptionalPathname;

@@ -16,9 +16,9 @@
 #ifndef NETWORK_SIN_OFFSETS_H
 #define NETWORK_SIN_OFFSETS_H
 
-#include "network/os-features.h"                // HAVE_SOCKADDR_SA_LEN
+#include "network/os-features.h"        // HAVE_SOCKADDR_SA_LEN, WIN32
 
-#ifdef _WIN32
+#ifdef WIN32
 #include <winsock2.h>       // sockaddr_in
 #else
 #include <netinet/in.h>     // sockaddr_in

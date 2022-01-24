@@ -18,9 +18,10 @@
                                         // in_addr
 #include "network/get-sa-family.h"      // get_sa_family()
 #include "network/get-sin-pointer.h"    // get_sin_pointer()
+#include "network/os-features.h"        // WIN32
 #include "network/sin-offsets.h"        // sin_addr_offset
 
-#ifdef _WIN32
+#ifdef WIN32
 #include <winsock2.h>       // AF_INET
 #else
 #include <sys/socket.h>     // AF_INET

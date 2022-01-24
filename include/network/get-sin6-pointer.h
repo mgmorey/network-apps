@@ -17,8 +17,9 @@
 #define NETWORK_GET_SIN6_POINTER_H
 
 #include "network/bytes.h"              // Bytes
+#include "network/os-features.h"        // WIN32
 
-#ifdef _WIN32
+#ifdef WIN32
 #include <ws2tcpip.h>       // sockaddr_in6
 #else
 #include <netinet/in.h>     // sockaddr_in6

@@ -21,8 +21,9 @@
                                         // get_hostname(),
                                         // get_hosts(), skip_first(),
                                         // uniquify()
+#include "network/os-features.h"        // WIN32
 
-#ifdef _WIN32
+#ifdef WIN32
 #include <getopt.h>         // getopt(), optarg, opterr, optind
 #include <winsock2.h>       // AF_INET, AF_INET6, AF_UNSPEC,
                             // IPPROTO_TCP, SOCK_STREAM

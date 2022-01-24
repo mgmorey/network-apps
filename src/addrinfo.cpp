@@ -18,9 +18,10 @@
                                         // OptionalHostname,
                                         // OptionalService, addrinfo,
                                         // operator<<()
+#include "network/os-features.h"        // WIN32
 #include "network/string-null.h"        // string_null
 
-#ifdef _WIN32
+#ifdef WIN32
 #include <ws2tcpip.h>   // freeaddrinfo(), getaddrinfo()
 #else
 #include <netdb.h>      // freeaddrinfo(), getaddrinfo()

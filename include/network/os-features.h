@@ -18,6 +18,10 @@
 
 #if defined(OS_DARWIN) || defined(OS_FREEBSD)
 #define HAVE_SOCKADDR_SA_LEN
+#elif defined(OS_MINGW64_NT)
+#ifndef WIN32
+#define WIN32
+#endif
 #endif
 
 #endif

@@ -17,8 +17,9 @@
 #include "network/network.h"            // Context, ErrorResult,
                                         // OsErrorResult, Overloaded,
                                         // Version, get_hostname()
+#include "network/os-features.h"        // WIN32
 
-#ifdef _WIN32
+#ifdef WIN32
 #include <getopt.h>         // getopt(), optarg, opterr, optind
 #include <winsock2.h>       // WSAEFAULT, WSAEPROCLIM,
                             // WSANOTINITIALISED, WSASYSNOTREADY,
@@ -34,7 +35,7 @@
 
 namespace TestContext
 {
-#ifdef _WIN32
+#ifdef WIN32
     constexpr auto expected_description {"WinSock 2.0"};
     constexpr auto expected_error_code_running {0};
     constexpr auto expected_error_code_stopped {WSANOTINITIALISED};

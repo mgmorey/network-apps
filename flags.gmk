@@ -38,10 +38,6 @@ ifdef standard
 	CPPCHECK_FLAGS += --std=$(standard)
 endif
 
-ifeq "$(os_name)" "MINGW64_NT"
-	CPPCHECK_FLAGS += -D_WIN32
-endif
-
 # CPPFLAGS
 
 ifeq "$(os_name)" "FreeBSD"

@@ -17,8 +17,9 @@
                                         // std::ostream, std::string
 #include "network/family.h"             // Family, operator<<()
 #include "network/format.h"             // Format, operator<<()
+#include "network/os-features.h"        // WIN32
 
-#ifdef _WIN32
+#ifdef WIN32
 #include <winsock2.h>   // AF_INET, AF_INET6, AF_UNIX
 #else
 #include <sys/socket.h> // AF_INET, AF_INET6, AF_UNIX
@@ -27,7 +28,7 @@
 static auto get_prefix(Network::family_type family) -> std::string
 {
     switch (family) {
-#ifndef _WIN32
+#ifndef WIN32
     case AF_UNIX:
         return "sun";
         break;
@@ -46,7 +47,7 @@ static auto get_prefix(Network::family_type family) -> std::string
 static auto get_suffix(Network::family_type family) -> std::string
 {
     switch (family) {
-#ifndef _WIN32
+#ifndef WIN32
     case AF_UNIX:
         return "un";
         break;
@@ -93,7 +94,7 @@ auto Network::operator<<(std::ostream& os,
     os << family;
 
     switch (family) {
-#ifndef _WIN32
+#ifndef WIN32
     case AF_UNIX:
         os << Format(delim, tab, prefix + "_path");
         break;

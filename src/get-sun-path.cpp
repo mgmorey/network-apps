@@ -18,9 +18,10 @@
                                         // get_sun_path()
 #include "network/get-sa-family.h"      // get_sa_family()
 #include "network/get-sun-pointer.h"    // get_sun_pointer()
+#include "network/os-features.h"        // WIN32
 #include "network/sun-offsets.h"        // sun_path_offset
 
-#ifdef _WIN32
+#ifdef WIN32
 #include <winsock2.h>       // AF_UNIX
 #else
 #include <sys/socket.h>     // AF_UNIX
@@ -30,7 +31,7 @@
 #include <cstddef>      // std::size_t
 #include <cstring>      // strnlen()
 
-#ifndef _WIN32
+#ifndef WIN32
 
 auto Network::get_sun_path(const Bytes& addr,
                            const OptionalPathname& pathname) -> OptionalPathname

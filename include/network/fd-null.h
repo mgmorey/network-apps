@@ -17,13 +17,14 @@
 #define NETWORK_FD_NULL_H
 
 #include "network/fd-type.h"            // fd_type
+#include "network/os-features.h"        // WIN32
 
-#ifdef _WIN32
+#ifdef WIN32
 #include <winsock2.h>       // INVALID_SOCKET
 #endif
 
 #ifndef INVALID_SOCKET
-#ifdef _WIN32
+#ifdef WIN32
 #define INVALID_SOCKET	(~0)	// NOLINT
 #else
 #define INVALID_SOCKET	(-1)	// NOLINT

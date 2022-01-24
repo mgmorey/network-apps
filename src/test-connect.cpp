@@ -23,8 +23,9 @@
                                         // get_hostname(),
                                         // get_peername(),
                                         // get_sockname(), string_null
+#include "network/os-features.h"        // WIN32
 
-#ifdef _WIN32
+#ifdef WIN32
 #include <getopt.h>         // getopt(), optarg, opterr, optind
 #include <winsock2.h>       // AF_INET, AF_INET6, PF_INET, PF_INET6,
                             // IPPROTO_IP, IPPROTO_TCP, IPPROTO_UDP,

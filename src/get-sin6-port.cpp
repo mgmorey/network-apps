@@ -18,9 +18,10 @@
                                         // get_sin6_port()
 #include "network/get-sa-family.h"      // get_sa_family()
 #include "network/get-sin6-pointer.h"   // get_sin6_pointer()
+#include "network/os-features.h"        // WIN32
 #include "network/sin6-offsets.h"       // sin6_port_offset
 
-#ifdef _WIN32
+#ifdef WIN32
 #include <winsock2.h>       // AF_INET6, ntohs()
 #else
 #include <netinet/in.h>     // ntohs()

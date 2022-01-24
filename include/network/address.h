@@ -19,9 +19,10 @@
 #include "network/bytestring.h"         // ByteString, operator<<()
 #include "network/family-type.h"        // family_type
 #include "network/length-type.h"        // length_type
+#include "network/os-features.h"        // WIN32
 #include "network/port-type.h"          // port_type
 
-#ifdef _WIN32
+#ifdef WIN32
 #include <winsock2.h>       // in_addr
 #include <ws2tcpip.h>       // in6_addr
 #else
@@ -69,7 +70,7 @@ namespace Network
         [[nodiscard]] auto sin6_addr() const -> in6_addr;
         [[nodiscard]] auto sin6_port() const -> port_type;
         [[nodiscard]] auto sin6_text() const -> std::string;
-#ifndef _WIN32
+#ifndef WIN32
         [[nodiscard]] auto sun_text() const -> std::string;
 #endif
 

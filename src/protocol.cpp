@@ -15,8 +15,9 @@
 
 #include "network/protocol.h"           // Protocol, operator<<(),
                                         // std::ostream
+#include "network/os-features.h"        // WIN32
 
-#ifdef _WIN32
+#ifdef WIN32
 #include <winsock2.h>   // AF_INET, AF_INET6, AF_UNIX, AF_UNSPEC,
                         // IPPROTO_ICMP, IPPROTO_IGMP, IPPROTO_IP,
                         // IPPROTO_RAW, IPPROTO_TCP, IPPROTO_UDP

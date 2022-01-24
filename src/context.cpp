@@ -22,9 +22,10 @@
 #include "network/os-error.h"           // format_os_error(),
                                         // get_last_os_error(),
                                         // reset_last_os_error()
+#include "network/os-features.h"        // WIN32
 #include "network/socket-error.h"       // socket_error
 
-#ifdef _WIN32
+#ifdef WIN32
 #include <winsock2.h>       // WSADATA, WSAEFAULT, WSAEINPROGRESS,
                             // WSAENETDOWN, WSAEPROCLIM,
                             // WSANOTINITIALISED, WSASYSNOTREADY,
@@ -35,7 +36,7 @@
 #include <iostream>     // std::cerr, std::endl
 #include <sstream>      // std::ostringstream
 
-#ifdef _WIN32
+#ifdef WIN32
 constexpr auto api_default {Network::Version {2, 2}};
 #else
 constexpr auto api_default {Network::Version {}};
@@ -52,7 +53,7 @@ Network::Context::Context(const Version& t_version)
     const version_type version {t_version ? t_version : api_default};
 
     try {
-#ifdef _WIN32
+#ifdef WIN32
         WSADATA data {};
         const auto error_code {::WSAStartup(version, &data)};
 
@@ -137,7 +138,7 @@ auto Network::Context::version() const -> Network::Version
 
 auto Network::Context::cleanup(failure_mode t_mode) -> Network::os_error_type
 {
-#ifdef _WIN32
+#ifdef WIN32
     reset_last_os_error();
 
     if (::WSACleanup() == socket_error) {

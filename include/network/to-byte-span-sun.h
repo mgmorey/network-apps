@@ -17,9 +17,10 @@
 #define NETWORK_TO_BYTE_SPAN_SUN_H
 
 #include "network/bytespan.h"           // ByteSpan
+#include "network/os-features.h"        // WIN32
 #include "network/sun-sizes.h"          // sun_size
 
-#ifndef _WIN32
+#ifndef WIN32
 #include <sys/un.h>         // sockaddr_un
 #endif
 
@@ -27,7 +28,7 @@
 
 namespace Network
 {
-#ifndef _WIN32
+#ifndef WIN32
     extern auto to_byte_span(const sockaddr_un* sun,
                              std::size_t size = sun_size) -> ByteSpan;
 #endif

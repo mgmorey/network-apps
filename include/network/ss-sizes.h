@@ -16,7 +16,9 @@
 #ifndef NETWORK_SS_SIZES_H
 #define NETWORK_SS_SIZES_H
 
-#ifdef _WIN32
+#include "network/os-features.h"        // WIN32
+
+#ifdef WIN32
 #include <winsock2.h>       // sockaddr_storage
 #else
 #include <sys/socket.h>     // sockaddr_storage

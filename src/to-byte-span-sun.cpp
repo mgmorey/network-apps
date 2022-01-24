@@ -15,9 +15,10 @@
 
 #include "network/to-byte-span-sun.h"   // ByteSpan, sockaddr_un,
                                         // std::size_t, to_byte_span()
+#include "network/os-features.h"        // WIN32
 #include "network/to-byte-span-void.h"  // to_byte_span()
 
-#ifndef _WIN32
+#ifndef WIN32
 
 auto Network::to_byte_span(const sockaddr_un* sun,
                            std::size_t size) -> Network::ByteSpan

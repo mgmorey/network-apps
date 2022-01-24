@@ -21,11 +21,11 @@
 #include "network/get-sun-length.h"     // get_sun_length()
 #include "network/get-sun-pointer.h"    // get_sun_pointer()
 #include "network/offsets.h"            // sun_path_offset
-#include "network/os-features.h"        // HAVE_SOCKADDR_SA_LEN
+#include "network/os-features.h"        // HAVE_SOCKADDR_SA_LEN, WIN32
 #include "network/sizes.h"              // sin_size, sin6_size,
                                         // sockaddr_size_max, sun_size
 
-#ifdef _WIN32
+#ifdef WIN32
 #include <winsock2.h>       // AF_INET, AF_INET6, AF_LOCAL, AF_UNIX,
                             // sockaddr, sockaddr_in, sockaddr_storage
 #include <ws2tcpip.h>       // sockaddr_in6
@@ -68,7 +68,7 @@ auto Network::is_valid(const ByteString& addr, bool verbose) -> bool
 
     switch (family) {
     case AF_UNSPEC:
-#ifndef _WIN32
+#ifndef WIN32
     case AF_UNIX:
 #endif
     case AF_INET:
@@ -113,7 +113,7 @@ auto Network::is_valid(const ByteString& addr, bool verbose) -> bool
             return false;
         }
 
-#ifndef _WIN32
+#ifndef WIN32
         const auto *const sun {get_sun_pointer(addr)};
         const auto sun_len {get_sun_length(sun, addr_size)};
 

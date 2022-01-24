@@ -16,13 +16,15 @@
 #ifndef NETWORK_FD_TYPE_H
 #define NETWORK_FD_TYPE_H
 
-#ifdef _WIN32
+#include "network/os-features.h"        // WIN32
+
+#ifdef WIN32
 #include <winsock2.h>       // SOCKET
 #endif
 
 namespace Network
 {
-#ifdef _WIN32
+#ifdef WIN32
     using fd_type = SOCKET;
 #else
     using fd_type = int;

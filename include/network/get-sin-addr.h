@@ -17,8 +17,9 @@
 #define NETWORK_GET_SIN_ADDR_H
 
 #include "network/bytes.h"              // Bytes
+#include "network/os-features.h"        // WIN32
 
-#ifdef _WIN32
+#ifdef WIN32
 #include <winsock2.h>       // in_addr
 #else
 #include <netinet/in.h>     // in_addr

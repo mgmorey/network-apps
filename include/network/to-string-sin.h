@@ -16,7 +16,9 @@
 #ifndef NETWORK_TO_STRING_SIN_H
 #define NETWORK_TO_STRING_SIN_H
 
-#ifdef _WIN32
+#include "network/os-features.h"        // WIN32
+
+#ifdef WIN32
 #include <winsock2.h>       // in_addr
 #else
 #include <netinet/in.h>     // in_addr

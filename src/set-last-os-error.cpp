@@ -13,10 +13,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/set-last-os-error.h"          // os_error_type,
-                                                // set_last_os_error()
+#include "network/set-last-os-error.h"  // os_error_type,
+                                        // set_last_os_error()
+#include "network/os-features.h"        // WIN32
 
-#ifdef _WIN32
+#ifdef WIN32
 #include <winsock2.h>       // WSASetLastError()
 #else
 #include <cerrno>           // errno
@@ -24,7 +25,7 @@
 
 auto Network::set_last_os_error(os_error_type error) -> Network::os_error_type
 {
-#ifdef _WIN32
+#ifdef WIN32
     ::WSASetLastError(error);
 #else
     errno = error;

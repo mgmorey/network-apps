@@ -16,8 +16,9 @@
 #include "network/get-peername.h"       // BytesResult, Fd,
                                         // GetNameParams,
                                         // get_peername()
+#include "network/os-features.h"        // WIN32
 
-#ifdef _WIN32
+#ifdef WIN32
 #include <winsock2.h>   // getpeername()
 #else
 #include <sys/socket.h> // getpeername()

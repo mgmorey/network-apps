@@ -17,10 +17,11 @@
                                         // get_size_min()
 #include "network/get-sa-family.h"      // get_sa_family()
 #include "network/offsets.h"            // sun_path_offset
+#include "network/os-features.h"        // WIN32
 #include "network/sizes.h"              // sin_size, sin6_size,
                                         // sockaddr_size_max, sun_size
 
-#ifdef _WIN32
+#ifdef WIN32
 #include <winsock2.h>       // AF_INET, AF_INET6, AF_LOCAL, AF_UNIX,
                             // sockaddr, sockaddr_in, sockaddr_storage
 #include <ws2tcpip.h>       // sockaddr_in6
@@ -38,7 +39,7 @@ auto Network::get_size_max(const Network::Bytes& addr) -> std::size_t
     switch (family) {
     case AF_UNSPEC:
         return sockaddr_size_max;
-#ifndef _WIN32
+#ifndef WIN32
     case AF_UNIX:
         return sun_size;
 #endif
@@ -56,7 +57,7 @@ auto Network::get_size_min(const Network::Bytes& addr) -> std::size_t
     const auto family {get_sa_family(addr)};
 
     switch (family) {
-#ifndef _WIN32
+#ifndef WIN32
     case AF_UNIX:
         return sun_path_offset;
 #endif

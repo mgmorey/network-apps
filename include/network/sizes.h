@@ -16,11 +16,12 @@
 #ifndef NETWORK_SIZES_H
 #define NETWORK_SIZES_H
 
+#include "network/os-features.h"        // WIN32
 #include "network/sa-sizes.h"           // sa_size
 #include "network/sin-sizes.h"          // sin_size
 #include "network/sin6-sizes.h"         // sin6_size
 #include "network/ss-sizes.h"           // ss_size
-#ifndef _WIN32
+#ifndef WIN32
 #include "network/sun-sizes.h"          // sun_size
 #endif
 
@@ -28,7 +29,7 @@
 
 namespace Network
 {
-#ifdef _WIN32
+#ifdef WIN32
     constexpr auto sockaddr_size_max {ss_size};
 #else
     constexpr auto sockaddr_size_max {std::max(ss_size, sun_size)};

@@ -15,8 +15,9 @@
 
 #include "network/family.h"             // Family, operator<<(),
                                         // std::ostream
+#include "network/os-features.h"        // WIN32
 
-#ifdef _WIN32
+#ifdef WIN32
 #include <winsock2.h>   // AF_INET, AF_INET6, AF_UNIX, AF_UNSPEC,
                         // PF_INET, PF_INET6, PF_UNIX, PF_UNSPEC
 #else

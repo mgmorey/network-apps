@@ -17,13 +17,14 @@
 #include "network/get-sun-path-length.h"        // get_sun_path_length(),
                                                 // sockaddr_un,
                                                 // std::size_t
-#include "network/os-features.h"                // HAVE_SOCKADDR_SA_LEN
+#include "network/os-features.h"                // HAVE_SOCKADDR_SA_LEN,
+                                                // WIN32
 #include "network/sun-offsets.h"                // sun_path_offset
 
 #include <algorithm>    // std::max(), std::min()
 #include <cstring>      // strnlen()
 
-#ifndef _WIN32
+#ifndef WIN32
 
 auto Network::get_sun_path_length(const sockaddr_un* sun,
                                   std::size_t size) -> std::size_t

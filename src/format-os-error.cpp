@@ -15,8 +15,9 @@
 
 #include "network/format-os-error.h"    // format_os_error(),
                                         // std::string
+#include "network/os-features.h"        // WIN32
 
-#ifdef _WIN32
+#ifdef WIN32
 #include <winsock2.h>       // Always include winsock2 before windows.h on Windows
 #include <windows.h>        // FORMAT_MESSAGE*, LANG_NEUTRAL,
                             // MAKELANGID(), SUBLANG_DEFAULT,
@@ -28,7 +29,7 @@
 auto Network::format_os_error(os_error_type error) -> std::string
 {
     std::string message;
-#ifdef _WIN32
+#ifdef WIN32
     LPVOID buffer {nullptr};
     const DWORD flags {
         FORMAT_MESSAGE_ALLOCATE_BUFFER |

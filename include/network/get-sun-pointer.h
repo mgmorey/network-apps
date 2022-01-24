@@ -17,14 +17,15 @@
 #define NETWORK_GET_SUN_POINTER_H
 
 #include "network/bytes.h"              // Bytes
+#include "network/os-features.h"        // WIN32
 
-#ifndef _WIN32
+#ifndef WIN32
 #include <sys/un.h>         // sockaddr_un
 #endif
 
 namespace Network
 {
-#ifndef _WIN32
+#ifndef WIN32
     extern auto get_sun_pointer(const Bytes& addr) -> const sockaddr_un*;
     extern auto get_sun_pointer(Bytes& addr) -> sockaddr_un*;
 #endif

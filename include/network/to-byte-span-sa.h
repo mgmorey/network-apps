@@ -17,8 +17,9 @@
 #define NETWORK_TO_BYTE_SPAN_SA_H
 
 #include "network/bytespan.h"           // ByteSpan
+#include "network/os-features.h"        // WIN32
 
-#ifdef _WIN32
+#ifdef WIN32
 #include <winsock2.h>       // sockaddr
 #else
 #include <sys/socket.h>     // sockaddr

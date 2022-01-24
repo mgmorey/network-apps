@@ -15,8 +15,9 @@
 
 #include "network/get-last-os-error.h"          // get_last_os_error(),
                                                 // os_error_type
+#include "network/os-features.h"        // WIN32
 
-#ifdef _WIN32
+#ifdef WIN32
 #include <winsock2.h>       // WSAGetLastError()
 #else
 #include <cerrno>           // errno
@@ -25,7 +26,7 @@
 auto Network::get_last_os_error() -> Network::os_error_type
 {
     os_error_type error {0};
-#ifdef _WIN32
+#ifdef WIN32
     error = ::WSAGetLastError();
 #else
     error = errno;
