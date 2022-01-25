@@ -16,7 +16,7 @@
 # Define functions
 
 format-native-flags = $(shell echo -W$1 $2 | tr ' ' ',')
-replace-suffix = $(shell echo $2 | sed 's/\([^.]*\).*/\1$1/')
+set-suffix = $(shell echo $2 | sed 's/\([^.]*\).*/\1$1/')
 to-upper = $(shell echo $1 | tr '[:lower:]' '[:upper:]')
 
 # Define platform-specific variables
@@ -113,11 +113,11 @@ endif
 
 ifeq "$(WITH_LOADMAPS)" "true"
 ifneq "$(is_gcc)" "true"
-	ldflags += -map $(call replace-suffix,.map,$@)
+	ldflags += -map $(call set-suffix,.map,$@)
 else ifneq "$(is_gnu_ld)" "true"
-	ldflags += -map $(call replace-suffix,.map,$@)
+	ldflags += -map $(call set-suffix,.map,$@)
 else
-	ldflags += -Map=$(call replace-suffix,.map,$@)
+	ldflags += -Map=$(call set-suffix,.map,$@)
 endif
 endif
 
