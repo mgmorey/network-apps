@@ -14,7 +14,10 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/get-endpoint.h"       // Endpoint, EndpointResult,
-                                        // ErrorResult, get_endpoint()
+                                        // ErrorResult,
+                                        // get_endpoint(),
+                                        // hostname_size_max,
+                                        // service_size_max
 #include "network/addresserror.h"       // AddressError
 #include "network/buffer.h"             // Buffer
 #include "network/bytestring.h"         // ByteString
@@ -41,8 +44,8 @@ auto Network::get_endpoint(const ByteString& str, int flags, bool verbose) ->
         throw AddressError(str);
     }
 
-    Buffer host {NI_MAXHOST};
-    Buffer service {NI_MAXSERV};
+    Buffer host {hostname_size_max};
+    Buffer service {service_size_max};
     const auto length {get_length(str)};
     const auto *const pointer {get_sa_pointer(str)};
 

@@ -31,6 +31,7 @@
 namespace Network
 {
     using Service = std::string;
+    constexpr auto service_size_max {NI_MAXSERV};
 }
 
 #endif

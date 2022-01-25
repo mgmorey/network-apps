@@ -15,7 +15,8 @@
 
 #include "network/get-hostname.h"       // Hostname, HostnameResult,
                                         // OsErrorResult,
-                                        // get_hostname()
+                                        // get_hostname(),
+                                        // hostname_size_max
 #include "network/buffer.h"             // Buffer
 #include "network/os-error.h"           // format_os_error(),
                                         // get_last_os_error(),
@@ -24,9 +25,7 @@
 
 #ifdef WIN32
 #include <winsock2.h>   // gethostname()
-#include <ws2tcpip.h>   // NI_MAXHOST
 #else
-#include <netdb.h>      // NI_MAXHOST
 #include <unistd.h>     // gethostname()
 #endif
 
@@ -34,7 +33,7 @@
 
 auto Network::get_hostname() -> Network::HostnameResult
 {
-    Buffer host_buffer {NI_MAXHOST};
+    Buffer host_buffer {hostname_size_max};
     reset_last_os_error();
 
     if ((::gethostname(host_buffer.data(), host_buffer.size() - 1)) == -1) {

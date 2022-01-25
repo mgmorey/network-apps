@@ -31,6 +31,7 @@
 namespace Network
 {
     using Hostname = std::string;
+    constexpr auto hostname_size_max {NI_MAXHOST};
 }
 
 #endif
