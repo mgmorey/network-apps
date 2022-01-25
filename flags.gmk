@@ -52,6 +52,10 @@ endif
 
 CPPFLAGS += -DOS_$(shell echo $(os_name) | tr '[:lower:]' '[:upper:]')
 
+ifeq "$(os_name)" "MINGW64_NT"
+	CPPFLAGS += -DWIN32
+endif
+
 ifdef NDEBUG
 	CPPFLAGS += -D_FORTIFY_SOURCE=2
 else ifeq "$(is_gcc)" "true"
@@ -59,7 +63,9 @@ else ifeq "$(is_gcc)" "true"
 endif
 
 ifneq "$(os_name)" "FreeBSD"
+ifneq "$(os_name)" "MINGW64_NT"
 	CPPFLAGS += -D_POSIX_C_SOURCE=200809L
+endif
 endif
 
 # CXX_ASFLAGS
