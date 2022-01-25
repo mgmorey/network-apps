@@ -42,30 +42,33 @@ endif
 # CPPFLAGS
 
 ifeq "$(os_name)" "FreeBSD"
-	CPPFLAGS += -I/usr/local/include
+	include_dirs += /usr/local/include
 endif
 
-CPPFLAGS += -Iinclude
+include_dirs += include
 
 ifeq "$(USING_DMALLOC)" "true"
-	CPPFLAGS += -DDMALLOC -DMALLOC_FUNC_CHECK
+	cpp_symbols += DMALLOC DMALLOC_FUNC_CHECK
 endif
 
-CPPFLAGS += -DOS_$(call to-upper,$(os_name))
+cpp_symbols += OS_$(call to-upper,$(os_name))
 
-ifeq "$(os_name)" "MINGW64_NT"
-	CPPFLAGS += -DWIN32
+ifeq "$(os_name)" "CYGWIN_NT"
+	cpp_symbols += _POSIX_C_SOURCE=200809L
+else ifeq "$(os_name)" "Darwin"
+	cpp_symbols += _DARWIN_C_SOURCE
+else ifeq "$(os_name)" "MINGW64_NT"
+	cpp_symbols += WIN32
 endif
 
 ifdef NDEBUG
-	CPPFLAGS += -D_FORTIFY_SOURCE=2
+	cpp_symbols += _FORTIFY_SOURCE=2
 else ifeq "$(is_gcc)" "true"
-	CPPFLAGS += -D_GLIBCXX_DEBUG
+	cpp_symbols += _GLIBCXX_DEBUG
 endif
 
-ifeq "$(os_name)" "CYGWIN_NT"
-	CPPFLAGS += -D_POSIX_C_SOURCE=200809L
-endif
+CPPFLAGS += $(addprefix -I,$(include_dirs))
+CPPFLAGS += $(addprefix -D,$(sort $(cpp_symbols)))
 
 # CXX_ASFLAGS
 
