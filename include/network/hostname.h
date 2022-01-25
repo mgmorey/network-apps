@@ -16,6 +16,16 @@
 #ifndef NETWORK_HOSTNAME_H
 #define NETWORK_HOSTNAME_H
 
+#ifdef WIN32
+#include <ws2tcpip.h>   // NI_MAXHOST
+#else
+#include <netdb.h>      // NI_MAXHOST
+#endif
+
+#ifndef NI_MAXHOST
+#define	NI_MAXHOST	(1025)	// NOLINT
+#endif
+
 #include <string>       // std::string
 
 namespace Network

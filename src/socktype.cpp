@@ -62,9 +62,6 @@ auto Network::operator<<(std::ostream& os,
         case SOCK_RAW:
             oss << "SOCK_RAW";
             break;
-        case SOCK_RDM:
-            oss << "SOCK_RDM";
-            break;
         case SOCK_SEQPACKET:
             oss << "SOCK_SEQPACKET";
             break;

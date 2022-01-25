@@ -41,7 +41,7 @@ auto Network::to_byte_string(const OptionalPathname& pathname) ->
 #ifdef HAVE_SOCKADDR_SA_LEN
     sun.sun_len = std::max(sun_path_offset, sun_len_min);
 #endif
-    sun.sun_family = AF_LOCAL;
+    sun.sun_family = AF_UNIX;
 
     if (pathname) {
         pathname->copy(static_cast<char*>(sun.sun_path), path_len_max);

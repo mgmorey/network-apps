@@ -54,9 +54,6 @@ auto Network::operator<<(std::ostream& os,
         case IPPROTO_ICMP:
             os << "IPPROTO_ICMP";
             break;
-        case IPPROTO_IGMP:
-            os << "IPPROTO_IGMP";
-            break;
         case IPPROTO_TCP:
             os << "IPPROTO_TCP";
             break;

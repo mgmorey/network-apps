@@ -24,11 +24,9 @@
 #include "network/os-features.h"        // WIN32
 
 #ifdef WIN32
-#include <ws2tcpip.h>   // NI_MAXHOST, NI_MAXSERV, gai_strerror(),
-                        // getnameinfo()
+#include <ws2tcpip.h>   // gai_strerror(), getnameinfo()
 #else
-#include <netdb.h>      // NI_MAXHOST, NI_MAXSERV, gai_strerror(),
-                        // getnameinfo()
+#include <netdb.h>      // gai_strerror(), getnameinfo()
 #endif
 
 #include <algorithm>    // std::max()

@@ -16,11 +16,13 @@
 #ifndef NETWORK_OPTIONALHOSTNAME_H
 #define NETWORK_OPTIONALHOSTNAME_H
 
-#include "network/optionalstring.h"     // OptionalString
+#include "network/hostname.h"           // Hostname
+
+#include <optional>     // std::optional
 
 namespace Network
 {
-    using OptionalHostname = OptionalString;
+    using OptionalHostname = std::optional<Hostname>;
 }
 
 #endif

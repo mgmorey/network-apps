@@ -16,6 +16,16 @@
 #ifndef NETWORK_SERVICE_H
 #define NETWORK_SERVICE_H
 
+#ifdef WIN32
+#include <ws2tcpip.h>   // NI_MAXSERV
+#else
+#include <netdb.h>      // NI_MAXSERV
+#endif
+
+#ifndef NI_MAXSERV
+#define	NI_MAXSERV	(32)	// NOLINT
+#endif
+
 #include <string>       // std::string
 
 namespace Network

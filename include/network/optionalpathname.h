@@ -16,11 +16,13 @@
 #ifndef NETWORK_OPTIONALPATHNAME_H
 #define NETWORK_OPTIONALPATHNAME_H
 
-#include "network/optionalstring.h"     // OptionalString
+#include "network/pathname.h"           // Pathname
+
+#include <optional>     // std::optional
 
 namespace Network
 {
-    using OptionalPathname = OptionalString;
+    using OptionalPathname = std::optional<Pathname>;
 }
 
 #endif
