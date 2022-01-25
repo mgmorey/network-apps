@@ -19,6 +19,7 @@
 #include "network/addrinfo.h"           // ErrorResult, OptionalHints,
                                         // OptionalHostname,
                                         // OptionalService
+#include "network/endpoint.h"           // Endpoint
 
 #include <iostream>     // std::cerr, std::endl
 
@@ -45,6 +46,19 @@ namespace Network
         }
 
         return list.result();
+    }
+
+    template<typename OutputIterator>
+    auto insert_addrinfo(const Endpoint& endpoint,
+                         const OptionalHints& hints,
+                         OutputIterator it,
+                         bool verbose) -> ErrorResult
+    {
+        return insert_addrinfo(endpoint.first,
+                               endpoint.second,
+                               hints,
+                               it,
+                               verbose);
     }
 }
 

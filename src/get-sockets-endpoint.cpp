@@ -15,17 +15,27 @@
 
 #include "network/get-sockets-endpoint.h"       // Endpoint,
                                                 // OptionalHints,
+                                                // SocketVector,
                                                 // SocketVectorResult,
                                                 // get_sockets()
-#include "network/get-sockets-hostname.h"       // OptionalHostname,
-                                                // OptionalService,
-                                                // get_sockets()
+#include "network/insert-addrinfo.h"            // insert_addrinfo()
+
+#include <iterator>     // std::back_inserter()
 
 auto Network::get_sockets(const Endpoint& endpoint,
                           const OptionalHints& hints,
                           bool verbose) -> Network::SocketVectorResult
 {
-    const auto& hostname {endpoint.first};
-    const auto& service {endpoint.second};
-    return get_sockets(hostname, service, hints, verbose);
+    SocketVector sockets;
+    const auto result {insert_addrinfo(endpoint.first,
+                                       endpoint.second,
+                                       hints,
+                                       std::back_inserter(sockets),
+                                       verbose)};
+
+    if (result) {
+        return result;
+    }
+
+    return sockets;
 }

@@ -19,8 +19,7 @@
                                                 // SocketVector,
                                                 // SocketVectorResult,
                                                 // get_sockets()
-
-#include "network/insert-addrinfo.h"    // insert_addrinfo()
+#include "network/insert-addrinfo.h"            // insert_addrinfo()
 
 #include <iterator>     // std::back_inserter()
 
