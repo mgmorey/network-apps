@@ -16,7 +16,8 @@
 # Define functions
 
 format-native-flags = $(shell echo -W$1 $2 | tr ' ' ',')
-get-map-file = $(shell echo $1 | awk -F. '{printf "%s.map\n", $$1}')
+replace-suffix = $(shell echo $2 | sed 's/\([^.]*\).*/\1$1/')
+to-upper = $(shell echo $1 | tr '[:lower:]' '[:upper:]')
 
 # Define platform-specific variables
 
@@ -50,7 +51,7 @@ ifeq "$(USING_DMALLOC)" "true"
 	CPPFLAGS += -DDMALLOC -DMALLOC_FUNC_CHECK
 endif
 
-CPPFLAGS += -DOS_$(shell echo $(os_name) | tr '[:lower:]' '[:upper:]')
+CPPFLAGS += -DOS_$(call to-upper,$(os_name))
 
 ifeq "$(os_name)" "MINGW64_NT"
 	CPPFLAGS += -DWIN32
@@ -112,11 +113,11 @@ endif
 
 ifeq "$(WITH_LOADMAPS)" "true"
 ifneq "$(is_gcc)" "true"
-	ldflags += -map $(call get-map-file,$@)
+	ldflags += -map $(call replace-suffix,.map,$@)
 else ifneq "$(is_gnu_ld)" "true"
-	ldflags += -map $(call get-map-file,$@)
+	ldflags += -map $(call replace-suffix,.map,$@)
 else
-	ldflags += -Map=$(call get-map-file,$@)
+	ldflags += -Map=$(call replace-suffix,.map,$@)
 endif
 endif
 
