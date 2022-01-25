@@ -62,10 +62,8 @@ else ifeq "$(is_gcc)" "true"
 	CPPFLAGS += -D_GLIBCXX_DEBUG
 endif
 
-ifneq "$(os_name)" "FreeBSD"
-ifneq "$(os_name)" "MINGW64_NT"
+ifeq "$(os_name)" "CYGWIN_NT"
 	CPPFLAGS += -D_POSIX_C_SOURCE=200809L
-endif
 endif
 
 # CXX_ASFLAGS
