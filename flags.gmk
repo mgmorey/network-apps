@@ -58,9 +58,7 @@ else ifeq "$(is_gcc)" "true"
 	CPPFLAGS += -D_GLIBCXX_DEBUG
 endif
 
-ifeq "$(os_name)" "CYGWIN_NT"
-	CPPFLAGS += -D_POSIX_C_SOURCE=200809L
-endif
+CPPFLAGS += -D_POSIX_C_SOURCE=200809L
 
 # CXX_ASFLAGS
 
