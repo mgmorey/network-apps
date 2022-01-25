@@ -46,6 +46,10 @@ endif
 
 CPPFLAGS += -Iinclude
 
+ifeq "$(USING_DMALLOC)" "true"
+	CPPFLAGS += -DDMALLOC -DMALLOC_FUNC_CHECK
+endif
+
 CPPFLAGS += -DOS_$(shell echo $(os_name) | tr '[:lower:]' '[:upper:]')
 
 ifdef NDEBUG
@@ -54,14 +58,8 @@ else ifeq "$(is_gcc)" "true"
 	CPPFLAGS += -D_GLIBCXX_DEBUG
 endif
 
-ifeq "$(os_name)" "Darwin"
-	CPPFLAGS += -D_DARWIN_C_SOURCE
-else ifeq "$(os_name)" "CYGWIN_NT"
+ifeq "$(os_name)" "CYGWIN_NT"
 	CPPFLAGS += -D_POSIX_C_SOURCE=200809L
-endif
-
-ifeq "$(USING_DMALLOC)" "true"
-	CPPFLAGS += -DDMALLOC -DMALLOC_FUNC_CHECK
 endif
 
 # CXX_ASFLAGS
