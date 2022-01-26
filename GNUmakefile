@@ -82,7 +82,11 @@ libnetwork_so = libnetwork.so.$(version)
 libnetwork_so_alias = $(call get-library-alias,$(libnetwork_so))
 libnetwork_archive = libnetwork.a
 
-libraries = $(libnetwork_so_alias) $(libnetwork_so) $(libnetwork_archive)
+ifeq "$(os_name)" "CYGWIN_NT"
+	libraries = $(libnetwork_archive)
+else
+	libraries = $(libnetwork_so_alias) $(libnetwork_so) $(libnetwork_archive)
+endif
 
 program_sources = $(common_sources) $(posix_sources)
 
@@ -179,7 +183,11 @@ $(libnetwork_archive): $(sort $(libnetwork_objects))
 	rm -f $@ && $(AR) $(ARFLAGS) $@ $^
 endif
 
-$(programs): $(libnetwork_so_alias)
+ifeq "$(os_name)" "CYGWIN_NT"
+	$(programs): $(libnetwork_archive)
+else
+	$(programs): $(libnetwork_so)
+endif
 
 # Define suffix rules
 
