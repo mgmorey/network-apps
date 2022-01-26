@@ -78,8 +78,11 @@ $(libnetwork_sources))))
 libnetwork_members = $(patsubst %.o,$(libnetwork_archive)(%.o),	\
 $(libnetwork_objects))
 
-libnetwork_so = libnetwork.so.$(version)
-libnetwork_so_alias = $(call get-library-alias,$(libnetwork_so))
+ifneq "$(os_name)" "CYGWIN_NT"
+	libnetwork_so = libnetwork.so.$(version)
+	libnetwork_so_alias = $(call get-library-alias,$(libnetwork_so))
+endif
+
 libnetwork_archive = libnetwork.a
 
 ifeq "$(os_name)" "CYGWIN_NT"
