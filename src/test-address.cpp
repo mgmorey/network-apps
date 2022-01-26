@@ -48,10 +48,13 @@
 
 namespace TestAddress
 {
-    constexpr auto addr_data {Network::Byte {0xFFU}};
-    constexpr auto addr_size {8};
-    constexpr auto key_width {20};
-    constexpr auto value_width {10};
+    constexpr auto expected_error_invalid_address {
+        "Invalid socket address: 0xFFFFFFFFFFFFFFFF"
+    };
+    constexpr auto invalid_addr_data {Network::Byte {0xFFU}};
+    constexpr auto invalid_addr_size {8};
+    constexpr auto print_key_width {20};
+    constexpr auto print_value_width {10};
 
     static bool verbose {false};  // NOLINT
 
@@ -97,17 +100,17 @@ namespace TestAddress
         std::cout << "    "
                   << Network::Family(family)
                   << std::endl;
-        std::cout << std::setw(key_width) << "        Size: "
-                  << std::right << std::setw(value_width) << size
+        std::cout << std::setw(print_key_width) << "        Size: "
+                  << std::right << std::setw(print_value_width) << size
                   << std::endl;
-        std::cout << std::setw(key_width) << "        Length: "
-                  << std::right << std::setw(value_width) << length
+        std::cout << std::setw(print_key_width) << "        Length: "
+                  << std::right << std::setw(print_value_width) << length
                   << std::endl;
-        std::cout << std::setw(key_width) << "        Port: "
-                  << std::right << std::setw(value_width) << port
+        std::cout << std::setw(print_key_width) << "        Port: "
+                  << std::right << std::setw(print_value_width) << port
                   << std::endl;
-        std::cout << std::setw(key_width) << "        Address: "
-                  << std::right << std::setw(value_width) << text
+        std::cout << std::setw(print_key_width) << "        Address: "
+                  << std::right << std::setw(print_value_width) << text
                   << std::endl;
     }
 
@@ -134,19 +137,19 @@ namespace TestAddress
 
     static auto test_address_invalid() -> void
     {
-        std::string what;
+        std::string actual_error;
 
         try {
-            const Network::Bytes addr {addr_size, addr_data};
+            const Network::Bytes addr {invalid_addr_size, invalid_addr_data};
             const Network::Address address {addr};
             static_cast<void>(address);
         }
         catch (const Network::LogicError& error) {
             print(error);
-            what = error.what();
+            actual_error = error.what();
         }
 
-        assert(what == "Invalid socket address: 0xFFFFFFFFFFFFFFFF");
+        assert(actual_error == expected_error_invalid_address);
     }
 
     static auto test_address_localhost(const Network::Bytes& addr) -> void
