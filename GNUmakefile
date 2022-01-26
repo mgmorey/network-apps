@@ -183,11 +183,7 @@ $(libnetwork_archive): $(sort $(libnetwork_objects))
 	rm -f $@ && $(AR) $(ARFLAGS) $@ $^
 endif
 
-ifeq "$(os_name)" "CYGWIN_NT"
-$(programs): $(libnetwork_archive)
-else
-$(programs): $(libnetwork_so)
-endif
+$(programs): $(word 1,$(libraries))
 
 # Define suffix rules
 
