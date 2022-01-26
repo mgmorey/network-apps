@@ -184,9 +184,9 @@ $(libnetwork_archive): $(sort $(libnetwork_objects))
 endif
 
 ifeq "$(os_name)" "CYGWIN_NT"
-	$(programs): $(libnetwork_archive)
+$(programs): $(libnetwork_archive)
 else
-	$(programs): $(libnetwork_so)
+$(programs): $(libnetwork_so)
 endif
 
 # Define suffix rules
