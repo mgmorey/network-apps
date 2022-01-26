@@ -85,7 +85,8 @@ libnetwork_archive = libnetwork.a
 ifeq "$(os_name)" "CYGWIN_NT"
 	libraries = $(libnetwork_archive)
 else
-	libraries = $(libnetwork_so_alias) $(libnetwork_so) $(libnetwork_archive)
+	libraries = $(libnetwork_so_alias) $(libnetwork_so)	\
+	$(libnetwork_archive)
 endif
 
 program_sources = $(common_sources) $(posix_sources)
