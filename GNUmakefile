@@ -78,11 +78,11 @@ $(libnetwork_sources))))
 libnetwork_members = $(patsubst %.o,$(libnetwork_archive)(%.o),	\
 $(libnetwork_objects))
 
-libnetwork = libnetwork.so.$(version)
-libnetwork_alias = $(call get-library-alias,$(libnetwork))
+libnetwork_so = libnetwork.so.$(version)
+libnetwork_so_alias = $(call get-library-alias,$(libnetwork_so))
 libnetwork_archive = libnetwork.a
 
-libraries = $(libnetwork_alias) $(libnetwork) $(libnetwork_archive)
+libraries = $(libnetwork_so_alias) $(libnetwork_so) $(libnetwork_archive)
 
 program_sources = $(common_sources) $(posix_sources)
 
@@ -166,10 +166,10 @@ unix:
 
 # Define targets
 
-$(libnetwork): $(sort $(libnetwork_objects))
+$(libnetwork_so): $(sort $(libnetwork_objects))
 	$(LINK.o) -o $@ $^ $(LDLIBS)
 
-$(libnetwork_alias): $(libnetwork)
+$(libnetwork_so_alias): $(libnetwork_so)
 	ln -sf $< $@
 
 ifeq "$(USING_ARCHIVE_MEMBER_RULE)" "true"
@@ -179,7 +179,7 @@ $(libnetwork_archive): $(sort $(libnetwork_objects))
 	rm -f $@ && $(AR) $(ARFLAGS) $@ $^
 endif
 
-$(programs): $(libnetwork_alias) $(libnetwork_archive)
+$(programs): $(libnetwork_so_alias)
 
 # Define suffix rules
 
@@ -198,7 +198,7 @@ $(tmpdir)/%.dep: %$(source_suffix)
 TAGS:
 	printf '%s\n' $(sort $^) | etags --declarations --language=$(language) -
 
-sizes.txt: $(sort $(libnetwork) $(objects) $(programs))
+sizes.txt: $(sort $(libnetwork_so) $(objects) $(programs))
 	if [ -e $@ ]; then mv -f $@ $@~; fi
 	size $^ >$@
 
