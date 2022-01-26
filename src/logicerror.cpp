@@ -13,25 +13,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_LOGICERROR_H
-#define NETWORK_LOGICERROR_H
+#include "network/logicerror.h"         // Error, LogicError
 
-#include "network/error.h"              // Error, std::move,
-                                        // std::string
-
-namespace Network
+Network::LogicError::LogicError(std::string t_str) :
+    Error(t_str)
 {
-    class LogicError :
-        public Error
-    {
-    public:
-        explicit LogicError(std::string t_str);
-        LogicError(const LogicError&) = default;
-        LogicError(LogicError&&) noexcept = default;
-        ~LogicError() override = default;
-        auto operator=(const LogicError&) -> LogicError& = default;
-        auto operator=(LogicError&&) noexcept -> LogicError& = default;
-    };
 }
-
-#endif
