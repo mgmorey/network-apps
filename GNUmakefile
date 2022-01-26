@@ -78,19 +78,14 @@ $(libnetwork_sources))))
 libnetwork_members = $(patsubst %.o,$(libnetwork_archive)(%.o),	\
 $(libnetwork_objects))
 
-ifneq "$(os_name)" "CYGWIN_NT"
+ifeq "$(WITH_SHARED_OBJS)" "true"
 	libnetwork_so = libnetwork.so.$(version)
 	libnetwork_so_alias = $(call get-library-alias,$(libnetwork_so))
 endif
 
 libnetwork_archive = libnetwork.a
 
-ifeq "$(os_name)" "CYGWIN_NT"
-	libraries = $(libnetwork_archive)
-else
-	libraries = $(libnetwork_so_alias) $(libnetwork_so)	\
-	$(libnetwork_archive)
-endif
+libraries = $(libnetwork_so_alias) $(libnetwork_so) $(libnetwork_archive)
 
 program_sources = $(common_sources) $(posix_sources)
 
