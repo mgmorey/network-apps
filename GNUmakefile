@@ -92,7 +92,7 @@ program_sources = $(common_sources) $(posix_sources)
 program_objects = $(addprefix $(tmpdir)/,$(addsuffix .o,$(basename	\
 $(program_sources))))
 
-ifeq "$(os_name)" "MINGW64_NT"
+ifeq "$(os_type)" "ms-windows"
 	program_suffix = .exe
 endif
 
@@ -102,12 +102,14 @@ depends = $(subst .o,.dep,$(objects))
 listings = $(subst .o,.lst,$(objects))
 logfiles = $(addsuffix .log,$(basename $(programs)))
 mapfiles = $(addsuffix .map,$(basename $(programs)) libnetwork)
+
+dumps = $(addsuffix .stackdump,$(programs))
 sizes = sizes.txt
 tags = TAGS
 
 binary_artifacts = $(libraries) $(objects) $(programs)
 text_artifacts = $(depends) $(listings) $(logfiles) $(mapfiles)	\
-$(sizes) $(sizes)~ $(tags)
+$(dumps) $(sizes) $(sizes)~ $(tags)
 
 artifacts = $(binary_artifacts) $(text_artifacts)
 
