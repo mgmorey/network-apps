@@ -25,11 +25,11 @@ namespace Network
         public LogicError
     {
     public:
-        explicit AddressError(const ByteString& t_str);
-        AddressError(const AddressError&) = default;
+        explicit AddressError(const ByteString& t_str) noexcept;
+        AddressError(const AddressError&) noexcept = default;
         AddressError(AddressError&&) noexcept = default;
-        ~AddressError() override = default;
-        auto operator=(const AddressError&) -> AddressError& = default;
+        ~AddressError() noexcept override;
+        auto operator=(const AddressError&) noexcept -> AddressError& = default;
         auto operator=(AddressError&&) noexcept -> AddressError& = default;
     };
 }

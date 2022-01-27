@@ -17,8 +17,12 @@
                                         // LogicError
 #include "network/to-string.h"          // to_string()
 
-Network::AddressError::AddressError(const ByteString& t_str) :
+Network::AddressError::AddressError(const ByteString& t_str) noexcept :
     LogicError("Invalid socket address: " +
                to_string(t_str))
+{
+}
+
+Network::AddressError::~AddressError() noexcept
 {
 }

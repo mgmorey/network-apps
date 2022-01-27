@@ -17,12 +17,16 @@
 
 #include <utility>     // std::move
 
-Network::Error::Error(std::string t_str) :
+Network::Error::Error(std::string t_str) noexcept :
     m_str(std::move(t_str))
 {
 }
 
-const char* Network::Error::what() const noexcept // NOLINT
+Network::Error::~Error() noexcept
 {
-    return m_str.c_str();
+}
+
+auto Network::Error::what() const noexcept -> std::string
+{
+    return m_str;
 }

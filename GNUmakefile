@@ -52,7 +52,7 @@ get-socket.cpp get-socketpair.cpp get-sockets-endpoint.cpp		\
 get-sockets-hostname.cpp get-sockname.cpp get-sun-length.cpp		\
 get-sun-path.cpp get-sun-path-length.cpp get-sun-pointer.cpp		\
 hints.cpp host.cpp is-valid.cpp logicerror.cpp open-endpoint.cpp	\
-open-fd.cpp protocol.cpp reset-last-os-error.cpp			\
+open-fd.cpp protocol.cpp reset-last-os-error.cpp runtimeerror.cpp	\
 set-last-os-error.cpp socket.cpp socktype.cpp stream-address.cpp	\
 stream-addrinfo.cpp stream-bytestring.cpp stream-hints.cpp		\
 stream-socket.cpp to-byte-span-sa.cpp to-byte-span-sun.cpp		\
@@ -157,7 +157,7 @@ sizes: $(sizes)
 
 .PHONY: test
 test: $(sort $(filter test-%,$(basename $(programs))))
-	for f in $^; do ./$$f >$$f.log; done
+	set -x; for f in $^; do ./$$f >$$f.log; done
 
 .PHONY: tidy
 tidy: $(sort $(sources))

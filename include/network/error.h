@@ -16,22 +16,20 @@
 #ifndef NETWORK_ERROR_H
 #define NETWORK_ERROR_H
 
-#include <exception>   // std::exception
 #include <string>      // std::string
 
 namespace Network
 {
-    class Error :
-        public std::exception
+    class Error
     {
     public:
-        explicit Error(std::string t_str);
-        Error(const Error&) = default;
+        explicit Error(std::string t_str) noexcept;
+        Error(const Error&) noexcept = default;
         Error(Error&&) noexcept = default;
-        ~Error() override = default;
+        virtual ~Error() noexcept;
         auto operator=(const Error&) -> Error& = default;
         auto operator=(Error&&) noexcept -> Error& = default;
-        [[nodiscard]] const char* what() const noexcept override; // NOLINT
+        [[nodiscard]] virtual auto what() const noexcept -> std::string;
 
     private:
         std::string m_str;

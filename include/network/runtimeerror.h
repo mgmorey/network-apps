@@ -25,15 +25,11 @@ namespace Network
         public Error
     {
     public:
-        explicit RuntimeError(std::string t_what) :
-            Error(std::move(t_what))
-        {
-        }
-
-        RuntimeError(const RuntimeError&) = default;
+        explicit RuntimeError(std::string t_what) noexcept;
+        RuntimeError(const RuntimeError&) noexcept = default;
         RuntimeError(RuntimeError&&) noexcept = default;
-        ~RuntimeError() override = default;
-        auto operator=(const RuntimeError&) -> RuntimeError& = default;
+        ~RuntimeError() noexcept override;
+        auto operator=(const RuntimeError&) noexcept -> RuntimeError& = default;
         auto operator=(RuntimeError&&) noexcept -> RuntimeError& = default;
     };
 }
