@@ -18,7 +18,6 @@
 
 #include <exception>   // std::exception
 #include <string>      // std::string
-#include <utility>     // std::move
 
 namespace Network
 {

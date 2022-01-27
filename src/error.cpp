@@ -15,6 +15,8 @@
 
 #include "network/error.h"              // Error
 
+#include <utility>     // std::move
+
 Network::Error::Error(std::string t_str) :
     m_str(std::move(t_str))
 {

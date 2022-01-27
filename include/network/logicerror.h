@@ -16,8 +16,7 @@
 #ifndef NETWORK_LOGICERROR_H
 #define NETWORK_LOGICERROR_H
 
-#include "network/error.h"              // Error, std::move,
-                                        // std::string
+#include "network/error.h"              // Error, std::string
 
 namespace Network
 {
