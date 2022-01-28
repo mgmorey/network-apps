@@ -123,7 +123,7 @@ namespace TestSocket
 
 auto main(int argc, char* argv[]) -> int
 {
-    static const Network::Hints hints {AF_UNIX, SOCK_STREAM};
+    constexpr Network::Hints hints {AF_UNIX, SOCK_STREAM};
 
     const std::vector<Network::OptionalPathname> paths = {
         std::nullopt,

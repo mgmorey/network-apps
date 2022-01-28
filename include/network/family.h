@@ -30,7 +30,10 @@ namespace Network
                                const Family& family) -> std::ostream&;
 
     public:
-        explicit Family(family_type t_value);
+        constexpr explicit Family(family_type t_value) noexcept :
+            Integer(t_value)
+        {
+        }
     };
 
     extern auto operator<<(std::ostream& os,

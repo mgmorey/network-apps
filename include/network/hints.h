@@ -32,27 +32,93 @@ namespace Network
 {
     struct Hints
     {
-        Hints() noexcept = default;
-        explicit Hints(family_type t_family,
-                       socktype_type t_socktype = 0,
-                       protocol_type t_protocol = 0,
-                       flags_type t_flags = 0) noexcept;
+        constexpr Hints() noexcept = default;
+
+        constexpr explicit Hints(family_type t_family,
+                                 socktype_type t_socktype = 0,
+                                 protocol_type t_protocol = 0,
+                                 flags_type t_flags = 0) noexcept :
+            m_flags(t_flags),
+            m_family(t_family),
+            m_socktype(t_socktype),
+            m_protocol(t_protocol)
+        {
+        }
+
         // cppcheck-suppress noExplicitConstructor
-        Hints(const addrinfo& t_addrinfo) noexcept;  // NOLINT
-        Hints(const Hints&) noexcept = default;
-        Hints(Hints&&) noexcept = default;
-        ~Hints() noexcept = default;
-        auto operator=(const Hints&) noexcept -> Hints& = default;
-        auto operator=(Hints&&) noexcept -> Hints& = default;
-        auto operator=(const addrinfo& t_addrinfo) noexcept -> Hints&;
-        auto operator<(const Hints& t_hints) const noexcept -> bool;
-        auto operator>(const Hints& t_hints) const noexcept -> bool;
-        auto operator==(const Hints& t_hints) const noexcept -> bool;
-        operator addrinfo() const noexcept;  // NOLINT
-        [[nodiscard]] auto flags() const noexcept -> Flags;
-        [[nodiscard]] auto family() const noexcept -> Family;
-        [[nodiscard]] auto socktype() const noexcept -> SockType;
-        [[nodiscard]] auto protocol() const noexcept -> Protocol;
+        constexpr Hints(const addrinfo& t_addrinfo) noexcept :  // NOLINT
+            m_flags(t_addrinfo.ai_flags),
+            m_family(t_addrinfo.ai_family),
+            m_socktype(t_addrinfo.ai_socktype),
+            m_protocol(t_addrinfo.ai_protocol)
+        {
+        }
+
+        constexpr Hints(const Hints&) noexcept = default;
+        constexpr Hints(Hints&&) noexcept = default;
+        constexpr ~Hints() noexcept = default;
+        constexpr auto operator=(const Hints&) noexcept -> Hints& = default;
+        constexpr auto operator=(Hints&&) noexcept -> Hints& = default;
+
+        constexpr auto operator=(const addrinfo& t_addrinfo) noexcept -> Hints&
+        {
+            m_flags = t_addrinfo.ai_flags;
+            m_family = t_addrinfo.ai_family;
+            m_socktype = t_addrinfo.ai_socktype;
+            m_protocol = t_addrinfo.ai_protocol;
+            return *this;
+        }
+
+        constexpr auto operator<(const Hints& t_hints) const noexcept -> bool
+        {
+            return (m_protocol < t_hints.m_protocol ||
+                    m_socktype < t_hints.m_socktype ||
+                    m_family < t_hints.m_family);
+        }
+
+        constexpr auto operator>(const Hints& t_hints) const noexcept -> bool
+        {
+            return (m_protocol > t_hints.m_protocol ||
+                    m_socktype > t_hints.m_socktype ||
+                    m_family > t_hints.m_family);
+        }
+
+        constexpr auto operator==(const Hints& t_hints) const noexcept -> bool
+        {
+            return (m_protocol == t_hints.m_protocol &&
+                    m_socktype == t_hints.m_socktype &&
+                    m_family == t_hints.m_family);
+        }
+
+        constexpr operator addrinfo() const noexcept  // NOLINT
+        {
+            addrinfo ai {};
+            ai.ai_flags = static_cast<int>(m_flags);
+            ai.ai_family = static_cast<int>(m_family);
+            ai.ai_socktype = static_cast<int>(m_socktype);
+            ai.ai_protocol = static_cast<int>(m_protocol);
+            return ai;
+        }
+
+        [[nodiscard]] constexpr auto flags() const noexcept -> Flags
+        {
+            return Flags(m_flags);
+        }
+
+        [[nodiscard]] constexpr auto family() const noexcept -> Family
+        {
+            return Family(m_family);
+        }
+
+        [[nodiscard]] constexpr auto socktype() const noexcept -> SockType
+        {
+            return SockType(m_socktype);
+        }
+
+        [[nodiscard]] constexpr auto protocol() const noexcept -> Protocol
+        {
+            return {m_family, m_protocol};
+        }
 
     private:
         flags_type m_flags {};

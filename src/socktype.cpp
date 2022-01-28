@@ -29,11 +29,6 @@
 #include <sstream>      // std::ostringstream
 #include <vector>       // std::vector
 
-Network::SockType::SockType(socktype_type t_value) :
-    Integer(t_value)
-{
-}
-
 auto Network::operator<<(std::ostream& os,
                          const SockType& socktype) -> std::ostream&
 {

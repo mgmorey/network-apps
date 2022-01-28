@@ -225,7 +225,7 @@ namespace TestConnect
 
 auto main(int argc, char* argv[]) -> int
 {
-    static const Network::Hints hints
+    constexpr Network::Hints hints
         {AF_UNSPEC, SOCK_STREAM, IPPROTO_TCP, AI_CANONNAME};
 
     try {

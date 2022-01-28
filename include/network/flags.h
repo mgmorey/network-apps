@@ -30,7 +30,10 @@ namespace Network
                                const Flags& flags) -> std::ostream&;
 
     public:
-        explicit Flags(flags_type t_value);
+        constexpr explicit Flags(flags_type t_value) noexcept :
+            Integer(t_value)
+        {
+        }
     };
 
     extern auto operator<<(std::ostream& os,

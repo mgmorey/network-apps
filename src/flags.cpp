@@ -31,11 +31,6 @@
 #include <utility>      // std::pair
 #include <vector>       // std::vector
 
-Network::Flags::Flags(flags_type t_value) :
-    Integer(t_value)
-{
-}
-
 auto Network::operator<<(std::ostream& os,
                          const Flags& flags) -> std::ostream&
 {

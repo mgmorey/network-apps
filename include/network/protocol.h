@@ -31,8 +31,16 @@ namespace Network
                                const Protocol& protocol) -> std::ostream&;
 
     public:
-        Protocol(family_type t_family, protocol_type t_value);
-        [[nodiscard]] auto family() const -> Family;
+        constexpr Protocol(family_type t_family, protocol_type t_value) noexcept :
+            Integer(t_value),
+            m_family(t_family)
+        {
+        }
+
+        [[nodiscard]] constexpr auto family() const noexcept -> Family
+        {
+            return m_family;
+        }
 
     private:
         Family m_family;

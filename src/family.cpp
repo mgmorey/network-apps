@@ -25,11 +25,6 @@
                         // PF_INET, PF_INET6, PF_UNIX, PF_UNSPEC
 #endif
 
-Network::Family::Family(family_type t_value) :
-    Integer(t_value)
-{
-}
-
 auto Network::operator<<(std::ostream& os,
                          const Family& family) -> std::ostream&
 {

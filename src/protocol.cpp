@@ -27,17 +27,6 @@
 #include <sys/socket.h> // AF_INET, AF_INET6, AF_UNIX, AF_UNSPEC,
 #endif
 
-Network::Protocol::Protocol(family_type t_family, protocol_type t_value) :
-    Integer(t_value),
-    m_family(t_family)
-{
-}
-
-auto Network::Protocol::family() const -> Network::Family
-{
-    return m_family;
-}
-
 auto Network::operator<<(std::ostream& os,
                          const Protocol& protocol) -> std::ostream&
 {

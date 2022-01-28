@@ -30,7 +30,10 @@ namespace Network
                                const SockType& socktype) -> std::ostream&;
 
     public:
-        explicit SockType(socktype_type t_value);
+        constexpr explicit SockType(socktype_type t_value) noexcept :
+            Integer(t_value)
+        {
+        }
     };
 
     extern auto operator<<(std::ostream& os,

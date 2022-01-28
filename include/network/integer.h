@@ -24,24 +24,24 @@ namespace Network
     public:
         // cppcheck-suppress noExplicitConstructor
         // NOLINTNEXTLINE
-        Integer(T t_value = 0) :
+        constexpr Integer(T t_value = 0) noexcept :
             m_value(t_value)
         {
         }
 
-        Integer(const Integer&) = default;
-        Integer(Integer&&) noexcept = default;
-        ~Integer() = default;
-        auto operator=(const Integer&) -> Integer& = default;
-        auto operator=(Integer&&) noexcept -> Integer& = default;
+        constexpr Integer(const Integer&) noexcept = default;
+        constexpr Integer(Integer&&) noexcept = default;
+        constexpr ~Integer() noexcept = default;
+        constexpr auto operator=(const Integer&) noexcept -> Integer& = default;
+        constexpr auto operator=(Integer&&) noexcept -> Integer& = default;
 
-        auto operator=(T t_value) -> Integer&
+        constexpr auto operator=(T t_value) noexcept -> Integer&
         {
             m_value = t_value;
             return *this;
         }
 
-        operator T() const  // NOLINT
+        constexpr operator T() const noexcept  // NOLINT
         {
             return m_value;
         }
