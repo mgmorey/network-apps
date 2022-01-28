@@ -32,27 +32,27 @@ namespace Network
 {
     struct Hints
     {
-        Hints() = default;
+        Hints() noexcept = default;
         explicit Hints(family_type t_family,
                        socktype_type t_socktype = 0,
                        protocol_type t_protocol = 0,
-                       flags_type t_flags = 0);
+                       flags_type t_flags = 0) noexcept;
         // cppcheck-suppress noExplicitConstructor
-        Hints(const addrinfo& t_addrinfo);  // NOLINT
-        Hints(const Hints&) = default;
+        Hints(const addrinfo& t_addrinfo) noexcept;  // NOLINT
+        Hints(const Hints&) noexcept = default;
         Hints(Hints&&) noexcept = default;
-        ~Hints() = default;
-        auto operator=(const Hints&) -> Hints& = default;
+        ~Hints() noexcept = default;
+        auto operator=(const Hints&) noexcept -> Hints& = default;
         auto operator=(Hints&&) noexcept -> Hints& = default;
-        auto operator=(const addrinfo& t_addrinfo) -> Hints&;
-        auto operator<(const Hints& t_hints) const -> bool;
-        auto operator>(const Hints& t_hints) const -> bool;
-        auto operator==(const Hints& t_hints) const -> bool;
-        operator addrinfo() const;  // NOLINT
-        [[nodiscard]] auto flags() const -> Flags;
-        [[nodiscard]] auto family() const -> Family;
-        [[nodiscard]] auto socktype() const -> SockType;
-        [[nodiscard]] auto protocol() const -> Protocol;
+        auto operator=(const addrinfo& t_addrinfo) noexcept -> Hints&;
+        auto operator<(const Hints& t_hints) const noexcept -> bool;
+        auto operator>(const Hints& t_hints) const noexcept -> bool;
+        auto operator==(const Hints& t_hints) const noexcept -> bool;
+        operator addrinfo() const noexcept;  // NOLINT
+        [[nodiscard]] auto flags() const noexcept -> Flags;
+        [[nodiscard]] auto family() const noexcept -> Family;
+        [[nodiscard]] auto socktype() const noexcept -> SockType;
+        [[nodiscard]] auto protocol() const noexcept -> Protocol;
 
     private:
         flags_type m_flags {};
@@ -62,7 +62,7 @@ namespace Network
     };
 
     extern auto operator<<(std::ostream& os,
-                           const Hints& hints) ->  std::ostream&;
+                           const Hints& hints) -> std::ostream&;
 }
 
 #endif

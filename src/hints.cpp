@@ -18,7 +18,7 @@
 Network::Hints::Hints(family_type t_family,
                       socktype_type t_socktype,
                       protocol_type t_protocol,
-                      flags_type t_flags) :
+                      flags_type t_flags) noexcept :
     m_flags(t_flags),
     m_family(t_family),
     m_socktype(t_socktype),
@@ -26,7 +26,7 @@ Network::Hints::Hints(family_type t_family,
 {
 }
 
-Network::Hints::Hints(const addrinfo& t_addrinfo) :
+Network::Hints::Hints(const addrinfo& t_addrinfo) noexcept :
     m_flags(t_addrinfo.ai_flags),
     m_family(t_addrinfo.ai_family),
     m_socktype(t_addrinfo.ai_socktype),
@@ -34,7 +34,7 @@ Network::Hints::Hints(const addrinfo& t_addrinfo) :
 {
 }
 
-auto Network::Hints::operator=(const addrinfo& t_addrinfo) -> Network::Hints&
+auto Network::Hints::operator=(const addrinfo& t_addrinfo) noexcept -> Network::Hints&
 {
     m_flags = t_addrinfo.ai_flags;
     m_family = t_addrinfo.ai_family;
@@ -43,28 +43,28 @@ auto Network::Hints::operator=(const addrinfo& t_addrinfo) -> Network::Hints&
     return *this;
 }
 
-auto Network::Hints::operator<(const Hints& t_hints) const -> bool
+auto Network::Hints::operator<(const Hints& t_hints) const noexcept -> bool
 {
     return (m_protocol < t_hints.m_protocol ||
             m_socktype < t_hints.m_socktype ||
             m_family < t_hints.m_family);
 }
 
-auto Network::Hints::operator>(const Hints& t_hints) const -> bool
+auto Network::Hints::operator>(const Hints& t_hints) const noexcept -> bool
 {
     return (m_protocol > t_hints.m_protocol ||
             m_socktype > t_hints.m_socktype ||
             m_family > t_hints.m_family);
 }
 
-auto Network::Hints::operator==(const Hints& t_hints) const -> bool
+auto Network::Hints::operator==(const Hints& t_hints) const noexcept -> bool
 {
     return (m_protocol == t_hints.m_protocol &&
             m_socktype == t_hints.m_socktype &&
             m_family == t_hints.m_family);
 }
 
-Network::Hints::operator addrinfo() const
+Network::Hints::operator addrinfo() const noexcept
 {
     addrinfo ai {};
     ai.ai_flags = static_cast<int>(m_flags);
@@ -74,22 +74,22 @@ Network::Hints::operator addrinfo() const
     return ai;
 }
 
-auto Network::Hints::flags() const -> Network::Flags
+auto Network::Hints::flags() const noexcept -> Network::Flags
 {
     return Flags(m_flags);
 }
 
-auto Network::Hints::family() const -> Network::Family
+auto Network::Hints::family() const noexcept -> Network::Family
 {
     return Family(m_family);
 }
 
-auto Network::Hints::socktype() const -> Network::SockType
+auto Network::Hints::socktype() const noexcept -> Network::SockType
 {
     return SockType(m_socktype);
 }
 
-auto Network::Hints::protocol() const -> Network::Protocol
+auto Network::Hints::protocol() const noexcept -> Network::Protocol
 {
     return {m_family, m_protocol};
 }
