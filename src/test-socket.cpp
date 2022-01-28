@@ -95,8 +95,7 @@ namespace TestSocket
 
     static auto test_socketpair(const Network::Hints& hints) -> void
     {
-        const Network::Socket sock {hints};
-        const auto socketpair_result {get_socketpair(sock, verbose)};
+        const auto socketpair_result {get_socketpair(hints, verbose)};
         std::visit(Network::Overloaded {
                 [&](const Network::FdPair& fds) {
                     std::cout << "Socket "
@@ -124,7 +123,7 @@ namespace TestSocket
 
 auto main(int argc, char* argv[]) -> int
 {
-    static const Network::Socket hints {AF_UNIX, SOCK_STREAM};
+    static const Network::Hints hints {AF_UNIX, SOCK_STREAM};
 
     const std::vector<Network::OptionalPathname> paths = {
         std::nullopt,
@@ -141,12 +140,11 @@ auto main(int argc, char* argv[]) -> int
             std::cerr << context;
         }
 
-        TestSocket::test_socketpair(hints);
-
         for (const auto& path : paths) {
             TestSocket::test_path(path);
         }
 
+        TestSocket::test_socketpair(hints);
         static_cast<void>(args);
     }
     catch (const std::exception& error) {

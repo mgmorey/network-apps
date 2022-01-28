@@ -34,7 +34,7 @@
 #include <iostream>     // std::cerr, std::endl
 #include <sstream>      // std::ostringstream
 
-auto Network::get_socketpair(const Socket& sock,
+auto Network::get_socketpair(const Hints& hints,
                              bool verbose) -> Network::FdPairResult
 {
     constexpr auto delim {", "};
@@ -45,30 +45,30 @@ auto Network::get_socketpair(const Socket& sock,
     if (verbose) {
         std::cerr << "Calling socketpair("
                   << Format("domain")
-                  << sock.family()
+                  << hints.family()
                   << Format(delim, tab, "type")
-                  << sock.socktype()
+                  << hints.socktype()
                   << Format(delim, tab, "protocol")
-                  << sock.protocol()
+                  << hints.protocol()
                   << ", ...)"
                   << std::endl;
     }
 
     reset_last_os_error();
 
-    if ((::socketpair(sock.family(),
-                      sock.socktype(),
-                      sock.protocol(),
-                      fds.data())) == socket_error) {
+    if (::socketpair(hints.family(),
+                     hints.socktype(),
+                     hints.protocol(),
+                     fds.data()) == socket_error) {
         const auto error = get_last_os_error();
         std::ostringstream oss;
         oss << "Call to socketpair("
             << Format("domain")
-            << sock.family()
+            << hints.family()
             << Format(delim, tab, "type")
-            << sock.socktype()
+            << hints.socktype()
             << Format(delim, tab, "protocol")
-            << sock.protocol()
+            << hints.protocol()
             << ", ...) failed with error "
             << error
             << ": "

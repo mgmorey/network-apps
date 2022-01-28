@@ -17,13 +17,13 @@
 #define NETWORK_GET_SOCKETPAIR_H
 
 #include "network/fdpairresult.h"       // FdPairResult
+#include "network/hints.h"              // Hints
 #include "network/os-features.h"        // WIN32
-#include "network/socket.h"             // Socket
 
 namespace Network
 {
 #ifndef WIN32
-    extern auto get_socketpair(const Socket& sock,
+    extern auto get_socketpair(const Hints& hints,
                                bool verbose = false) -> FdPairResult;
 #endif
 }
