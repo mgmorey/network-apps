@@ -24,12 +24,6 @@ os_distro = $(word 1,$(os_release))
 os_name = $(word 2,$(os_release))
 os_type = $(word 3,$(os_release))
 
-ifeq "$(os_name)" "CYGWIN_NT"
-	WITH_SHARED_OBJS ?= false
-else
-	WITH_SHARED_OBJS ?= true
-endif
-
 # Local Variables:
 # mode: makefile
 # End:
