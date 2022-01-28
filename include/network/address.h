@@ -40,7 +40,8 @@ namespace Network
         using value_type = ByteString;
 
         Address() = default;
-        explicit Address(value_type t_value);
+        explicit Address(const value_type& t_value);
+        explicit Address(value_type&& t_value);
         Address(const Address&) = default;
         Address(Address&&) noexcept = default;
         ~Address() = default;
