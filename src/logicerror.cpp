@@ -21,7 +21,3 @@ Network::LogicError::LogicError(std::string t_str) noexcept :
     Error(std::move(t_str))
 {
 }
-
-Network::LogicError::~LogicError() noexcept
-{
-}

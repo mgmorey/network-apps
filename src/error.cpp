@@ -22,11 +22,7 @@ Network::Error::Error(std::string t_str) noexcept :
 {
 }
 
-Network::Error::~Error() noexcept
+const char* Network::Error::what() const noexcept  // NOLINT
 {
-}
-
-auto Network::Error::what() const noexcept -> std::string
-{
-    return m_str;
+    return m_str.c_str();
 }

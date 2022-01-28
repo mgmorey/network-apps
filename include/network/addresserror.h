@@ -28,7 +28,7 @@ namespace Network
         explicit AddressError(const ByteString& t_str) noexcept;
         AddressError(const AddressError&) noexcept = default;
         AddressError(AddressError&&) noexcept = default;
-        ~AddressError() noexcept override;
+        ~AddressError() noexcept override = default;
         auto operator=(const AddressError&) noexcept -> AddressError& = default;
         auto operator=(AddressError&&) noexcept -> AddressError& = default;
     };

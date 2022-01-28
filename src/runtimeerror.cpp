@@ -21,7 +21,3 @@ Network::RuntimeError::RuntimeError(std::string t_str) noexcept :
     Error(std::move(t_str))
 {
 }
-
-Network::RuntimeError::~RuntimeError() noexcept
-{
-}

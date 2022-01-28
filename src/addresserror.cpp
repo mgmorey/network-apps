@@ -22,7 +22,3 @@ Network::AddressError::AddressError(const ByteString& t_str) noexcept :
                to_string(t_str))
 {
 }
-
-Network::AddressError::~AddressError() noexcept
-{
-}

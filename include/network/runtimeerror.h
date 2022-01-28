@@ -25,10 +25,10 @@ namespace Network
         public Error
     {
     public:
-        explicit RuntimeError(std::string t_what) noexcept;
+        explicit RuntimeError(std::string t_str) noexcept;
         RuntimeError(const RuntimeError&) noexcept = default;
         RuntimeError(RuntimeError&&) noexcept = default;
-        ~RuntimeError() noexcept override;
+        ~RuntimeError() noexcept override = default;
         auto operator=(const RuntimeError&) noexcept -> RuntimeError& = default;
         auto operator=(RuntimeError&&) noexcept -> RuntimeError& = default;
     };

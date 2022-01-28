@@ -27,7 +27,7 @@ namespace Network
         explicit LogicError(std::string t_str) noexcept;
         LogicError(const LogicError&) noexcept = default;
         LogicError(LogicError&&) noexcept = default;
-        ~LogicError() noexcept override;
+        ~LogicError() noexcept override = default;
         auto operator=(const LogicError&) noexcept -> LogicError& = default;
         auto operator=(LogicError&&) noexcept -> LogicError& = default;
     };
