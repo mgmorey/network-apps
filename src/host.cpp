@@ -23,7 +23,8 @@ Network::Host::Host(const addrinfo& t_addrinfo) noexcept :
 {
 }
 
-auto Network::Host::operator=(const addrinfo& t_addrinfo) noexcept -> Network::Host&
+auto Network::Host::operator=(const addrinfo& t_addrinfo) noexcept ->
+    Network::Host&
 {
     m_addr = to_byte_string(t_addrinfo.ai_addr, t_addrinfo.ai_addrlen);
     m_name = to_canonical_name(t_addrinfo.ai_canonname);
@@ -55,7 +56,8 @@ auto Network::Host::canonical_name() const noexcept -> Network::OptionalHostname
     return m_name;
 }
 
-auto Network::Host::to_canonical_name(const char* t_str) noexcept -> Network::OptionalHostname
+auto Network::Host::to_canonical_name(const char* t_str) noexcept ->
+    Network::OptionalHostname
 {
     if (t_str == nullptr) {
         return {};

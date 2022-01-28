@@ -34,7 +34,8 @@ Network::Hints::Hints(const addrinfo& t_addrinfo) noexcept :
 {
 }
 
-auto Network::Hints::operator=(const addrinfo& t_addrinfo) noexcept -> Network::Hints&
+auto Network::Hints::operator=(const addrinfo& t_addrinfo) noexcept ->
+    Network::Hints&
 {
     m_flags = t_addrinfo.ai_flags;
     m_family = t_addrinfo.ai_family;
