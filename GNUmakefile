@@ -78,7 +78,7 @@ $(libnetwork_sources))))
 libnetwork_members = $(patsubst %.o,$(libnetwork_archive)(%.o),	\
 $(libnetwork_objects))
 
-ifeq "$(WITH_SHARED_OBJS)" "true"
+ifneq "$(WITH_SHARED_OBJS)" "false"
 	libnetwork_so = libnetwork.so.$(version)
 	libnetwork_so_alias = $(call get-library-alias,$(libnetwork_so))
 endif
