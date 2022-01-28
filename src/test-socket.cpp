@@ -71,28 +71,6 @@ namespace TestSocket
         return result;
     }
 
-    static auto test_path(const Network::OptionalPathname& pathname) -> void
-    {
-        const auto addr {Network::to_byte_string(pathname)};
-        Network::OptionalPathname sun_path {Network::get_sun_path(addr)};
-
-        if (pathname) {
-            std::cout << "Unix domain path: "
-                      << sun_path.value_or(Network::string_null)
-                      << std::endl;
-            assert(sun_path == pathname);
-        }
-        else {
-            assert(static_cast<bool>(sun_path) == false);
-        }
-
-        assert(Network::is_valid(addr, verbose));
-        Network::Address address {addr};
-        std::cout << "Unix domain address: "
-                  << address
-                  << std::endl;
-    }
-
     static auto test_socketpair(const Network::Hints& hints) -> void
     {
         const auto socketpair_result {get_socketpair(hints, verbose)};
@@ -119,6 +97,28 @@ namespace TestSocket
                 }
             }, socketpair_result);
     }
+
+    static auto test_unix_path(const Network::OptionalPathname& pathname) -> void
+    {
+        const auto addr {Network::to_byte_string(pathname)};
+        const auto unix_path {Network::get_sun_path(addr)};
+
+        if (pathname) {
+            std::cout << "Unix domain path: "
+                      << unix_path.value_or(Network::string_null)
+                      << std::endl;
+            assert(unix_path == pathname);
+        }
+        else {
+            assert(static_cast<bool>(unix_path) == false);
+        }
+
+        assert(Network::is_valid(addr, verbose));
+        Network::Address address {addr};
+        std::cout << "Unix domain address: "
+                  << address
+                  << std::endl;
+    }
 }
 
 auto main(int argc, char* argv[]) -> int
@@ -141,7 +141,7 @@ auto main(int argc, char* argv[]) -> int
         }
 
         for (const auto& path : paths) {
-            TestSocket::test_path(path);
+            TestSocket::test_unix_path(path);
         }
 
         TestSocket::test_socketpair(hints);
