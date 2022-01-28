@@ -25,38 +25,39 @@
 Network::Socket::Socket(int t_family,
                         int t_socktype,
                         int t_protocol,
-                        int t_flags) :
+                        int t_flags) noexcept :
     Hints(t_family, t_socktype, t_protocol, t_flags)
 {
 }
 
-Network::Socket::Socket(const addrinfo& t_addrinfo) :
+Network::Socket::Socket(const addrinfo& t_addrinfo) noexcept :
     Hints(t_addrinfo),
     Host(t_addrinfo)
 {
 }
 
-auto Network::Socket::operator=(const addrinfo& t_addrinfo) -> Network::Socket&
+auto Network::Socket::operator=(const addrinfo& t_addrinfo) noexcept ->
+    Network::Socket&
 {
-    static_cast<Hints>(*this) = t_addrinfo;  // NOLINT
-    static_cast<Host>(*this) = t_addrinfo;  // NOLINT
+    static_cast<Hints>(*this) = t_addrinfo;		// NOLINT
+    static_cast<Host>(*this) = t_addrinfo;		// NOLINT
     return *this;
 }
 
-auto Network::Socket::operator<(const Socket& t_sock) const -> bool
+auto Network::Socket::operator<(const Socket& t_sock) const noexcept -> bool
 {
-    return (static_cast<Hints>(*this) < t_sock ||  // NOLINT
-            static_cast<Host>(*this) < t_sock);  // NOLINT
+    return (static_cast<Hints>(*this) < t_sock ||	// NOLINT
+            static_cast<Host>(*this) < t_sock);		// NOLINT
 }
 
-auto Network::Socket::operator>(const Socket& t_sock) const -> bool
+auto Network::Socket::operator>(const Socket& t_sock) const noexcept -> bool
 {
-    return (static_cast<Hints>(*this) > t_sock ||  // NOLINT
-            static_cast<Host>(*this) > t_sock);  // NOLINT
+    return (static_cast<Hints>(*this) > t_sock ||	// NOLINT
+            static_cast<Host>(*this) > t_sock);		// NOLINT
 }
 
-auto Network::Socket::operator==(const Socket& t_sock) const -> bool
+auto Network::Socket::operator==(const Socket& t_sock) const noexcept -> bool
 {
-    return (static_cast<Hints>(*this) == t_sock &&  // NOLINT
-            static_cast<Host>(*this) == t_sock);  // NOLINT
+    return (static_cast<Hints>(*this) == t_sock &&	// NOLINT
+            static_cast<Host>(*this) == t_sock);	// NOLINT
 }
