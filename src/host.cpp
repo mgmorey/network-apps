@@ -17,45 +17,45 @@
                                         // OptionalHostname, addrinfo
 #include "network/to-byte-string-sa.h"  // to_byte_string()
 
-Network::Host::Host(const addrinfo& t_addrinfo) :
+Network::Host::Host(const addrinfo& t_addrinfo) noexcept :
     m_addr(to_byte_string(t_addrinfo.ai_addr, t_addrinfo.ai_addrlen)),
     m_name(to_canonical_name(t_addrinfo.ai_canonname))
 {
 }
 
-auto Network::Host::operator=(const addrinfo& t_addrinfo) -> Network::Host&
+auto Network::Host::operator=(const addrinfo& t_addrinfo) noexcept -> Network::Host&
 {
     m_addr = to_byte_string(t_addrinfo.ai_addr, t_addrinfo.ai_addrlen);
     m_name = to_canonical_name(t_addrinfo.ai_canonname);
     return *this;
 }
 
-auto Network::Host::operator<(const Host& t_host) const -> bool
+auto Network::Host::operator<(const Host& t_host) const noexcept -> bool
 {
     return m_addr < t_host.m_addr;	// NOLINT
 }
 
-auto Network::Host::operator>(const Host& t_host) const -> bool
+auto Network::Host::operator>(const Host& t_host) const noexcept -> bool
 {
     return m_addr > t_host.m_addr;	// NOLINT
 }
 
-auto Network::Host::operator==(const Host& t_host) const -> bool
+auto Network::Host::operator==(const Host& t_host) const noexcept -> bool
 {
     return m_addr == t_host.m_addr;	// NOLINT
 }
 
-auto Network::Host::address() const -> Network::ByteString
+auto Network::Host::address() const noexcept -> Network::ByteString
 {
     return m_addr;
 }
 
-auto Network::Host::canonical_name() const -> Network::OptionalHostname
+auto Network::Host::canonical_name() const noexcept -> Network::OptionalHostname
 {
     return m_name;
 }
 
-auto Network::Host::to_canonical_name(const char* t_str) -> Network::OptionalHostname
+auto Network::Host::to_canonical_name(const char* t_str) noexcept -> Network::OptionalHostname
 {
     if (t_str == nullptr) {
         return {};

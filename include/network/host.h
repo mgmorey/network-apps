@@ -30,23 +30,23 @@ namespace Network
 {
     struct Host
     {
-        Host() = default;
+        Host() noexcept = default;
         // cppcheck-suppress noExplicitConstructor
-        Host(const addrinfo& t_addrinfo);  // NOLINT
-        Host(const Host&) = default;
+        Host(const addrinfo& t_addrinfo) noexcept;  // NOLINT
+        Host(const Host&) noexcept = default;
         Host(Host&&) noexcept = default;
-        ~Host() = default;
-        auto operator=(const addrinfo& t_addrinfo) -> Host&;
-        auto operator=(const Host&) -> Host& = default;
+        ~Host() noexcept = default;
+        auto operator=(const addrinfo& t_addrinfo) noexcept -> Host&;
+        auto operator=(const Host&) noexcept -> Host& = default;
         auto operator=(Host&&) noexcept -> Host& = default;
-        auto operator<(const Host& t_host) const -> bool;
-        auto operator>(const Host& t_host) const -> bool;
-        auto operator==(const Host& t_host) const -> bool;
-        [[nodiscard]] auto address() const -> ByteString;
-        [[nodiscard]] auto canonical_name() const -> OptionalHostname;
+        auto operator<(const Host& t_host) const noexcept -> bool;
+        auto operator>(const Host& t_host) const noexcept -> bool;
+        auto operator==(const Host& t_host) const noexcept -> bool;
+        [[nodiscard]] auto address() const noexcept -> ByteString;
+        [[nodiscard]] auto canonical_name() const noexcept -> OptionalHostname;
 
     protected:
-        static auto to_canonical_name(const char* t_str) -> OptionalHostname;
+        static auto to_canonical_name(const char* t_str) noexcept -> OptionalHostname;
 
     private:
         ByteString m_addr;
