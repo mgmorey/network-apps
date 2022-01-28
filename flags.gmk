@@ -125,11 +125,11 @@ endif
 endif
 
 ifneq "$(is_gcc)" "true"
-	ldflags += -rpath '\$$ORIGIN'
+	ldflags_so += -rpath '\$$ORIGIN'
 else ifneq "$(is_gnu_ld)" "true"
-	ldflags += -rpath '\$$ORIGIN'
+	ldflags_so += -rpath '\$$ORIGIN'
 else
-	ldflags += -rpath='\$$ORIGIN'
+	ldflags_so += -rpath='\$$ORIGIN'
 endif
 
 ldflags_so = $(ldflags)
