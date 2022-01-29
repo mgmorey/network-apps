@@ -80,7 +80,7 @@ namespace Network
     };
 
     extern auto operator<<(std::ostream& os,
-                           const Address& address) -> std::ostream&;
+                           const Address& address) noexcept -> std::ostream&;
 }
 
 #endif
