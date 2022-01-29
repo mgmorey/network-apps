@@ -30,7 +30,7 @@
 #include <vector>       // std::vector
 
 auto Network::operator<<(std::ostream& os,
-                         const SockType& socktype) -> std::ostream&
+                         const SockType& socktype) noexcept -> std::ostream&
 {
     static const std::vector<std::pair<int, const char*>> values {
 #ifdef SOCK_CLOEXEC
@@ -46,7 +46,7 @@ auto Network::operator<<(std::ostream& os,
     std::ostringstream oss;
     std::size_t i {0};
 
-    if ((socktype & mask) != 0) {
+    if ((static_cast<socktype_type>(socktype) & mask) != 0) {
         switch (socktype & mask) {
         case SOCK_STREAM:
             oss << "SOCK_STREAM";

@@ -26,9 +26,6 @@ namespace Network
     class SockType :
         public Integer<socktype_type>
     {
-        friend auto operator<<(std::ostream& os,
-                               const SockType& socktype) -> std::ostream&;
-
     public:
         constexpr explicit SockType(socktype_type t_value) noexcept :
             Integer(t_value)
@@ -37,7 +34,7 @@ namespace Network
     };
 
     extern auto operator<<(std::ostream& os,
-                           const SockType& socktype) -> std::ostream&;
+                           const SockType& socktype) noexcept -> std::ostream&;
 }
 
 #endif
