@@ -26,9 +26,6 @@ namespace Network
     class Family :
         public Integer<family_type>
     {
-        friend auto operator<<(std::ostream& os,
-                               const Family& family) -> std::ostream&;
-
     public:
         constexpr explicit Family(family_type t_value) noexcept :
             Integer(t_value)
@@ -37,7 +34,7 @@ namespace Network
     };
 
     extern auto operator<<(std::ostream& os,
-                           const Family& family) -> std::ostream&;
+                           const Family& family) noexcept -> std::ostream&;
 }
 
 #endif

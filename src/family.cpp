@@ -26,9 +26,9 @@
 #endif
 
 auto Network::operator<<(std::ostream& os,
-                         const Family& family) -> std::ostream&
+                         const Family& family) noexcept -> std::ostream&
 {
-    switch (family) {
+    switch (static_cast<family_type>(family)) {
     case AF_UNSPEC:
         os << "AF_UNSPEC";
         break;
