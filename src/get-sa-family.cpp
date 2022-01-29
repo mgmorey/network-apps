@@ -13,13 +13,13 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-sa-family.h"      // Bytes, family_type,
+#include "network/get-sa-family.h"      // ByteString, family_type,
                                         // get_sa_family()
 #include "network/get-sa-pointer.h"     // get_sa_pointer(), sockaddr
 #include "network/sa-offsets.h"         // sa_family_offset
 
-auto Network::get_sa_family(const Bytes& addr,
-                            family_type family) -> Network::family_type
+auto Network::get_sa_family(const ByteString& addr,
+                            family_type family) noexcept -> Network::family_type
 {
     if (addr.empty()) {
         return family;

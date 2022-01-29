@@ -13,17 +13,17 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-sa-pointer.h"     // Bytes, get_sa_pointer(),
+#include "network/get-sa-pointer.h"     // ByteString, get_sa_pointer(),
                                         // sockaddr, sockaddr_in,
                                         // sockaddr_in6
 
-auto Network::get_sa_pointer(const Bytes& addr) -> const sockaddr*
+auto Network::get_sa_pointer(const ByteString& addr) noexcept -> const sockaddr*
 {
     const void* pointer = addr.data();
     return static_cast<const sockaddr*>(pointer);
 }
 
-auto Network::get_sa_pointer(Bytes& addr) -> sockaddr*
+auto Network::get_sa_pointer(ByteString& addr) noexcept -> sockaddr*
 {
     void* pointer = addr.data();
     return static_cast<sockaddr*>(pointer);

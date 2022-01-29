@@ -16,14 +16,14 @@
 #ifndef NETWORK_GET_SIZE_H
 #define NETWORK_GET_SIZE_H
 
-#include "network/bytes.h"              // Bytes
+#include "network/bytestring.h"         // ByteString
 
 #include <cstddef>      // std::size_t
 
 namespace Network
 {
-    extern auto get_size_max(const Bytes& addr) -> std::size_t;
-    extern auto get_size_min(const Bytes& addr) -> std::size_t;
+    extern auto get_size_max(const ByteString& addr) noexcept -> std::size_t;
+    extern auto get_size_min(const ByteString& addr) noexcept -> std::size_t;
 }
 
 #endif

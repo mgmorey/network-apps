@@ -14,7 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/assert.h"             // assert()
-#include "network/get-sin-port.h"       // Bytes, port_type,
+#include "network/get-sin-port.h"       // ByteString, port_type,
                                         // get_sin_port()
 #include "network/get-sa-family.h"      // get_sa_family()
 #include "network/get-sin-pointer.h"    // get_sin_pointer()
@@ -28,8 +28,8 @@
 #include <sys/socket.h>     // AF_INET
 #endif
 
-auto Network::get_sin_port(const Bytes& addr,
-                           port_type port) -> Network::port_type
+auto Network::get_sin_port(const ByteString& addr,
+                           port_type port) noexcept -> Network::port_type
 {
     assert(get_sa_family(addr) == AF_INET);
     const auto *const sin {get_sin_pointer(addr)};

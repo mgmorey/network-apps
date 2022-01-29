@@ -21,7 +21,7 @@
 
 namespace Network
 {
-    extern auto get_length(const Bytes& addr) -> sock_len_type;
+    extern auto get_length(const Bytes& addr) noexcept -> sock_len_type;
 }
 
 #endif

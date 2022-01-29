@@ -16,13 +16,13 @@
 #ifndef NETWORK_GET_SIN6_PORT_H
 #define NETWORK_GET_SIN6_PORT_H
 
-#include "network/bytes.h"              // Bytes
+#include "network/bytestring.h"         // ByteString
 #include "network/port-type.h"          // port_type
 
 namespace Network
 {
-    extern auto get_sin6_port(const Bytes& addr,
-                              port_type port = 0) -> port_type;
+    extern auto get_sin6_port(const ByteString& addr,
+                              port_type port = 0) noexcept -> port_type;
 }
 
 #endif

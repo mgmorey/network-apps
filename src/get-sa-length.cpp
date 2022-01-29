@@ -13,14 +13,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-sa-length.h"      // Bytes, get_sa_length(),
+#include "network/get-sa-length.h"      // ByteString,
+                                        // get_sa_length(),
                                         // sock_len_type
 #include "network/get-sa-pointer.h"     // get_sa_pointer()
 #include "network/os-features.h"        // HAVE_SOCKADDR_SA_LEN
 #include "network/sa-offsets.h"         // sa_len_offset
 
-auto Network::get_sa_length(const Bytes& addr,
-                            sock_len_type length) -> Network::sock_len_type
+auto Network::get_sa_length(const ByteString& addr,
+                            sock_len_type length) noexcept ->
+    Network::sock_len_type
 {
     if (addr.empty()) {
         return length;

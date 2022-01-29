@@ -16,7 +16,7 @@
 #ifndef NETWORK_GET_SA_POINTER_H
 #define NETWORK_GET_SA_POINTER_H
 
-#include "network/bytes.h"              // Bytes
+#include "network/bytestring.h"         // ByteString
 #include "network/os-features.h"        // WIN32
 
 #ifdef WIN32
@@ -27,8 +27,8 @@
 
 namespace Network
 {
-    extern auto get_sa_pointer(const Bytes& addr) -> const sockaddr*;
-    extern auto get_sa_pointer(Bytes& addr) -> sockaddr*;
+    extern auto get_sa_pointer(const ByteString& addr) noexcept -> const sockaddr*;
+    extern auto get_sa_pointer(ByteString& addr) noexcept -> sockaddr*;
 }
 
 #endif

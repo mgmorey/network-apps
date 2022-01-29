@@ -16,11 +16,11 @@
 #ifndef NETWORK_GET_SA_DATA_H
 #define NETWORK_GET_SA_DATA_H
 
-#include "network/bytes.h"              // Bytes
+#include "network/bytestring.h"         // ByteString
 
 namespace Network
 {
-    extern auto get_sa_data(const Bytes& addr) -> Bytes;
+    extern auto get_sa_data(const ByteString& addr) noexcept -> ByteString;
 }
 
 #endif

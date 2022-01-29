@@ -13,17 +13,18 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-sin-pointer.h"    // Bytes,
+#include "network/get-sin-pointer.h"    // ByteString,
                                         // get_sin_pointer(),
                                         // sockaddr_in
 
-auto Network::get_sin_pointer(const Bytes& addr) -> const sockaddr_in*
+auto Network::get_sin_pointer(const ByteString& addr) noexcept ->
+    const sockaddr_in*
 {
     const void* pointer = addr.data();
     return static_cast<const sockaddr_in*>(pointer);
 }
 
-auto Network::get_sin_pointer(Bytes& addr) -> sockaddr_in*
+auto Network::get_sin_pointer(ByteString& addr) noexcept -> sockaddr_in*
 {
     void* pointer = addr.data();
     return static_cast<sockaddr_in*>(pointer);

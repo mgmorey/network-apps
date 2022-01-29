@@ -32,7 +32,8 @@
 #include <sys/un.h>         // sockaddr_un
 #endif
 
-auto Network::get_size_max(const Network::Bytes& addr) -> std::size_t
+auto Network::get_size_max(const Network::ByteString& addr) noexcept ->
+    std::size_t
 {
     const auto family {get_sa_family(addr)};
 
@@ -52,7 +53,8 @@ auto Network::get_size_max(const Network::Bytes& addr) -> std::size_t
     }
 }
 
-auto Network::get_size_min(const Network::Bytes& addr) -> std::size_t
+auto Network::get_size_min(const Network::ByteString& addr) noexcept ->
+    std::size_t
 {
     const auto family {get_sa_family(addr)};
 

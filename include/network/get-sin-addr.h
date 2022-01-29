@@ -16,7 +16,7 @@
 #ifndef NETWORK_GET_SIN_ADDR_H
 #define NETWORK_GET_SIN_ADDR_H
 
-#include "network/bytes.h"              // Bytes
+#include "network/bytestring.h"         // ByteString
 #include "network/os-features.h"        // WIN32
 
 #ifdef WIN32
@@ -27,8 +27,8 @@
 
 namespace Network
 {
-    extern auto get_sin_addr(const Bytes& addr,
-                             const in_addr& ip = {}) -> in_addr;
+    extern auto get_sin_addr(const ByteString& addr,
+                             const in_addr& ip = {}) noexcept -> in_addr;
 }
 
 #endif

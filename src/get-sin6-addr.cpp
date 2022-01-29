@@ -14,7 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/assert.h"             // assert()
-#include "network/get-sin6-addr.h"      // Bytes, get_sin6_addr(),
+#include "network/get-sin6-addr.h"      // ByteString, get_sin6_addr(),
                                         // in6_addr
 #include "network/get-sa-family.h"      // get_sa_family()
 #include "network/get-sin6-pointer.h"   // get_sin6_pointer()
@@ -27,7 +27,8 @@
 #include <sys/socket.h>     // AF_INET6
 #endif
 
-auto Network::get_sin6_addr(const Bytes& addr, const in6_addr& ip) -> in6_addr
+auto Network::get_sin6_addr(const ByteString& addr,
+                            const in6_addr& ip) noexcept -> in6_addr
 {
     assert(get_sa_family(addr) == AF_INET6);
     const auto *const sin6 {get_sin6_pointer(addr)};

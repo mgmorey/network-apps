@@ -16,7 +16,7 @@
 #ifndef NETWORK_GET_SIN_POINTER_H
 #define NETWORK_GET_SIN_POINTER_H
 
-#include "network/bytes.h"              // Bytes
+#include "network/bytestring.h"         // ByteString
 #include "network/os-features.h"        // WIN32
 
 #ifdef WIN32
@@ -27,8 +27,9 @@
 
 namespace Network
 {
-    extern auto get_sin_pointer(const Bytes& addr) -> const sockaddr_in*;
-    extern auto get_sin_pointer(Bytes& addr) -> sockaddr_in*;
+    extern auto get_sin_pointer(const ByteString& addr) noexcept ->
+        const sockaddr_in*;
+    extern auto get_sin_pointer(ByteString& addr) noexcept -> sockaddr_in*;
 }
 
 #endif
