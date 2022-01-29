@@ -26,38 +26,78 @@ Network::Socket::Socket(int t_family,
                         int t_socktype,
                         int t_protocol,
                         int t_flags) noexcept :
-    Hints(t_family, t_socktype, t_protocol, t_flags)
+    m_hints(t_family, t_socktype, t_protocol, t_flags)
 {
 }
 
 Network::Socket::Socket(const addrinfo& t_addrinfo) noexcept :
-    Hints(t_addrinfo),
-    Host(t_addrinfo)
+    m_hints(t_addrinfo),
+    m_host(t_addrinfo)
 {
 }
 
 auto Network::Socket::operator=(const addrinfo& t_addrinfo) noexcept ->
     Network::Socket&
 {
-    static_cast<Hints>(*this) = t_addrinfo;		// NOLINT
-    static_cast<Host>(*this) = t_addrinfo;		// NOLINT
+    m_hints = t_addrinfo;
+    m_host = t_addrinfo;
     return *this;
 }
 
 auto Network::Socket::operator<(const Socket& t_sock) const noexcept -> bool
 {
-    return (static_cast<Hints>(*this) < t_sock ||	// NOLINT
-            static_cast<Host>(*this) < t_sock);		// NOLINT
+    return (hints() < t_sock.hints() ||
+            hints() < t_sock.hints());
 }
 
 auto Network::Socket::operator>(const Socket& t_sock) const noexcept -> bool
 {
-    return (static_cast<Hints>(*this) > t_sock ||	// NOLINT
-            static_cast<Host>(*this) > t_sock);		// NOLINT
+    return (hints() > t_sock.hints() ||
+            host() > t_sock.host());
 }
 
 auto Network::Socket::operator==(const Socket& t_sock) const noexcept -> bool
 {
-    return (static_cast<Hints>(*this) == t_sock &&	// NOLINT
-            static_cast<Host>(*this) == t_sock);	// NOLINT
+    return (hints() == t_sock.hints() &&
+            host() == t_sock.host());
+}
+
+auto Network::Socket::hints() const noexcept -> const Hints&
+{
+    return m_hints;
+}
+
+auto Network::Socket::host() const noexcept -> const Host&
+{
+    return m_host;
+}
+
+auto Network::Socket::flags() const noexcept -> Flags
+{
+    return m_hints.flags();
+}
+
+auto Network::Socket::family() const noexcept -> Family
+{
+    return m_hints.family();
+}
+
+auto Network::Socket::socktype() const noexcept -> SockType
+{
+    return m_hints.socktype();
+}
+
+auto Network::Socket::protocol() const noexcept -> Protocol
+{
+    return m_hints.protocol();
+}
+
+auto Network::Socket::address() const noexcept -> ByteString
+{
+    return m_host.address();
+}
+
+auto Network::Socket::canonical_name() const noexcept -> OptionalHostname
+{
+    return m_host.canonical_name();
 }

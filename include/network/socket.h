@@ -28,9 +28,7 @@
 
 namespace Network
 {
-    struct Socket :
-        public Hints,
-        public Host
+    struct Socket
     {
         Socket() noexcept = default;
         explicit Socket(int t_family,
@@ -48,6 +46,18 @@ namespace Network
         auto operator<(const Socket& t_sock) const noexcept -> bool;
         auto operator>(const Socket& t_sock) const noexcept -> bool;
         auto operator==(const Socket& t_sock) const noexcept -> bool;
+        [[nodiscard]] auto hints() const noexcept -> const Hints&;
+        [[nodiscard]] auto host() const noexcept -> const Host&;
+        [[nodiscard]] auto flags() const noexcept -> Flags;
+        [[nodiscard]] auto family() const noexcept -> Family;
+        [[nodiscard]] auto socktype() const noexcept -> SockType;
+        [[nodiscard]] auto protocol() const noexcept -> Protocol;
+        [[nodiscard]] auto address() const noexcept -> ByteString;
+        [[nodiscard]] auto canonical_name() const noexcept -> OptionalHostname;
+
+    private:
+        Hints m_hints;
+        Host m_host;
     };
 
     extern auto operator<<(std::ostream& os,
