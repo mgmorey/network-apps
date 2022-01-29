@@ -43,7 +43,7 @@
 #include <iomanip>      // std::right, std::setw()
 #include <iostream>     // std::cerr, std::endl
 
-auto Network::is_valid(const ByteString& addr, bool verbose) -> bool
+auto Network::is_valid(const ByteString& addr, bool verbose) noexcept -> bool
 {
     constexpr auto key_width {20};
     constexpr auto value_width {10};

@@ -21,7 +21,7 @@
 namespace Network
 {
     extern auto is_valid(const ByteString& addr,
-                         bool verbose = false) -> bool;
+                         bool verbose = false) noexcept -> bool;
 }
 
 #endif
