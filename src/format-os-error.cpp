@@ -26,7 +26,7 @@
 #include <cstring>      // std::strerror()
 #endif
 
-auto Network::format_os_error(os_error_type error) -> std::string
+auto Network::format_os_error(os_error_type error) noexcept -> std::string
 {
     std::string message;
 #ifdef WIN32
