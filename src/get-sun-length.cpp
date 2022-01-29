@@ -24,7 +24,7 @@
 #ifdef HAVE_SOCKADDR_SA_LEN
 
 auto Network::get_sun_length(const sockaddr_un* sun,
-                             std::size_t size) -> std::size_t
+                             std::size_t size) noexcept -> std::size_t
 {
     const auto path_len {get_sun_path_length(sun, size)};
     return sizeof *sun - sizeof sun->sun_path + path_len;

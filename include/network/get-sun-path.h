@@ -16,15 +16,15 @@
 #ifndef NETWORK_GET_SUN_PATH_H
 #define NETWORK_GET_SUN_PATH_H
 
-#include "network/bytes.h"              // Bytes
+#include "network/bytestring.h"         // ByteString
 #include "network/optionalpathname.h"   // OptionalPathname
 #include "network/os-features.h"        // WIN32
 
 namespace Network
 {
 #ifndef WIN32
-    extern auto get_sun_path(const Bytes& addr,
-                             const OptionalPathname& pathname = {}) ->
+    extern auto get_sun_path(const ByteString& addr,
+                             const OptionalPathname& pathname = {}) noexcept ->
         OptionalPathname;
 #endif
 }

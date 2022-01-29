@@ -28,7 +28,7 @@ namespace Network
 {
 #ifndef WIN32
     extern auto get_sun_path_length(const sockaddr_un* sun,
-                                    std::size_t size) -> std::size_t;
+                                    std::size_t size) noexcept -> std::size_t;
 #endif
 }
 

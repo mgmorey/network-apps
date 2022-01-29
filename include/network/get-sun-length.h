@@ -29,7 +29,7 @@ namespace Network
 #ifndef WIN32
 #ifdef HAVE_SOCKADDR_SA_LEN
     extern auto get_sun_length(const sockaddr_un* sun,
-                               std::size_t size) -> std::size_t;
+                               std::size_t size) noexcept -> std::size_t;
 #endif
 #endif
 }

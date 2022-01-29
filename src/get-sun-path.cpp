@@ -14,7 +14,8 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/assert.h"             // assert()
-#include "network/get-sun-path.h"       // Bytes, OptionalPathname
+#include "network/get-sun-path.h"       // ByteString,
+                                        // OptionalPathname
                                         // get_sun_path()
 #include "network/get-sa-family.h"      // get_sa_family()
 #include "network/get-sun-pointer.h"    // get_sun_pointer()
@@ -33,8 +34,8 @@
 
 #ifndef WIN32
 
-auto Network::get_sun_path(const Bytes& addr,
-                           const OptionalPathname& pathname) -> OptionalPathname
+auto Network::get_sun_path(const ByteString& addr,
+                           const OptionalPathname& pathname) noexcept -> OptionalPathname
 {
     assert(get_sa_family(addr) == AF_UNIX);
 

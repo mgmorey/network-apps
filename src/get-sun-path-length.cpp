@@ -27,7 +27,7 @@
 #ifndef WIN32
 
 auto Network::get_sun_path_length(const sockaddr_un* sun,
-                                  std::size_t size) -> std::size_t
+                                  std::size_t size) noexcept -> std::size_t
 {
     assert(sun_path_offset <= size &&
            size <= sun_path_offset + sizeof sun->sun_path);
