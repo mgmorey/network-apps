@@ -26,9 +26,6 @@ namespace Network
     class Flags :
         public Integer<flags_type>
     {
-        friend auto operator<<(std::ostream& os,
-                               const Flags& flags) -> std::ostream&;
-
     public:
         constexpr explicit Flags(flags_type t_value) noexcept :
             Integer(t_value)
@@ -37,7 +34,7 @@ namespace Network
     };
 
     extern auto operator<<(std::ostream& os,
-                           const Flags& flags) -> std::ostream&;
+                           const Flags& flags) noexcept -> std::ostream&;
 }
 
 #endif

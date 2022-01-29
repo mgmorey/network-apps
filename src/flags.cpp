@@ -32,7 +32,7 @@
 #include <vector>       // std::vector
 
 auto Network::operator<<(std::ostream& os,
-                         const Flags& flags) -> std::ostream&
+                         const Flags& flags) noexcept -> std::ostream&
 {
     static const std::vector<std::pair<int, const char*>> values {
         {AI_PASSIVE,        "AI_PASSIVE"},
@@ -48,7 +48,7 @@ auto Network::operator<<(std::ostream& os,
     std::size_t i {0};
 
     for(const auto& value : values) {
-        if ((flags & value.first) != 0) {
+        if ((static_cast<flags_type>(flags) & value.first) != 0) {
             if (i++ > 0) {
                 oss << " | ";
             }
