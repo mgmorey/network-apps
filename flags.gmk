@@ -54,7 +54,7 @@ endif
 cpp_symbols += OS_$(call to-upper,$(os_name))
 
 ifeq "$(os_name)" "CYGWIN_NT"
-	cpp_symbols += _POSIX_C_SOURCE=200809L
+	cpp_symbols += _GNU_SOURCE
 else ifeq "$(os_name)" "Darwin"
 	cpp_symbols += _DARWIN_C_SOURCE
 else ifeq "$(os_name)" "MINGW64_NT"
