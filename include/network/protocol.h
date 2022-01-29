@@ -27,11 +27,9 @@ namespace Network
     class Protocol :
         public Integer<protocol_type>
     {
-        friend auto operator<<(std::ostream& os,
-                               const Protocol& protocol) -> std::ostream&;
-
     public:
-        constexpr Protocol(family_type t_family, protocol_type t_value) noexcept :
+        constexpr Protocol(family_type t_family,
+                           protocol_type t_value) noexcept :
             Integer(t_value),
             m_family(t_family)
         {
@@ -47,7 +45,7 @@ namespace Network
     };
 
     extern auto operator<<(std::ostream& os,
-                           const Protocol& protocol) -> std::ostream&;
+                           const Protocol& protocol) noexcept -> std::ostream&;
 }
 
 #endif

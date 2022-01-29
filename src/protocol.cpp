@@ -28,11 +28,9 @@
 #endif
 
 auto Network::operator<<(std::ostream& os,
-                         const Protocol& protocol) -> std::ostream&
+                         const Protocol& protocol) noexcept -> std::ostream&
 {
-    const auto family {static_cast<int>(protocol.family())};
-
-    switch (family) {
+    switch (static_cast<family_type>(protocol.family())) {
     case AF_INET:
     case AF_INET6:
     case AF_UNSPEC:
