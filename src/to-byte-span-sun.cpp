@@ -21,7 +21,7 @@
 #ifndef WIN32
 
 auto Network::to_byte_span(const sockaddr_un* sun,
-                           std::size_t size) -> Network::ByteSpan
+                           std::size_t size) noexcept -> Network::ByteSpan
 {
     const void* pointer = sun;
     return to_byte_span(pointer, size);

@@ -18,7 +18,7 @@
 #include "network/to-byte-span-void.h"  // to_byte_span()
 
 auto Network::to_byte_span(const sockaddr* sa,
-                           std::size_t size) -> Network::ByteSpan
+                           std::size_t size) noexcept -> Network::ByteSpan
 {
     const void* pointer = sa;
     return to_byte_span(pointer, size);

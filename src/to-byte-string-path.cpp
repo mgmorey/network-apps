@@ -31,7 +31,7 @@
 
 #ifndef WIN32
 
-auto Network::to_byte_string(const OptionalPathname& pathname) ->
+auto Network::to_byte_string(const OptionalPathname& pathname) noexcept ->
     Network::ByteString
 {
     sockaddr_un sun {};

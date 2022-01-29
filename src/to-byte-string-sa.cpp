@@ -20,7 +20,7 @@
 #include "network/to-byte-string.h"     // to_byte_string()
 
 auto Network::to_byte_string(const sockaddr* sa,
-                             std::size_t size) -> Network::ByteString
+                             std::size_t size) noexcept -> Network::ByteString
 {
     if (sa == nullptr) {
         return {};

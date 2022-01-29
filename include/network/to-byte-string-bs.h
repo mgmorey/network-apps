@@ -21,7 +21,7 @@
 
 namespace Network
 {
-    extern auto to_byte_string(const ByteSpan& span) -> ByteString;
+    extern auto to_byte_string(const ByteSpan& span) noexcept -> ByteString;
 }
 
 #endif

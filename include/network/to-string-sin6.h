@@ -28,7 +28,7 @@
 
 namespace Network
 {
-    extern auto to_string(const in6_addr& addr) -> std::string;
+    extern auto to_string(const in6_addr& addr) noexcept -> std::string;
 }
 
 #endif

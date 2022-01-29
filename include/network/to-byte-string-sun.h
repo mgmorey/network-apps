@@ -32,7 +32,8 @@ namespace Network
 {
 #ifndef WIN32
     extern auto to_byte_string(const sockaddr_un* sun,
-                               std::size_t size = sun_size) -> ByteString;
+                               std::size_t size = sun_size) noexcept ->
+        ByteString;
 #endif
 }
 

@@ -17,7 +17,7 @@
                                         // to_byte_span()
 
 auto Network::to_byte_span(const void* pointer,
-                           std::size_t size) -> Network::ByteSpan
+                           std::size_t size) noexcept -> Network::ByteSpan
 {
     const auto* const data {static_cast<const Byte*>(pointer)};
     return {data, size};

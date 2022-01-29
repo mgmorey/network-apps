@@ -18,7 +18,7 @@
 
 #include <sstream>      // std::ostringstream
 
-auto Network::to_string(const ByteString& bytes) -> std::string
+auto Network::to_string(const ByteString& bytes) noexcept -> std::string
 {
     std::ostringstream oss;
     oss << bytes;

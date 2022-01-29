@@ -16,7 +16,8 @@
 #include "network/to-byte-string-bs.h"  // ByteString, ByteSpan,
                                         // to_byte_string()
 
-auto Network::to_byte_string(const ByteSpan& span) -> Network::ByteString
+auto Network::to_byte_string(const ByteSpan& span) noexcept ->
+    Network::ByteString
 {
     return {span.data(), span.size()};
 }

@@ -30,7 +30,7 @@
 namespace Network
 {
     extern auto to_byte_span(const sockaddr* sa,
-                             std::size_t size) -> ByteSpan;
+                             std::size_t size) noexcept -> ByteSpan;
 }
 
 #endif

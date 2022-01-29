@@ -23,7 +23,7 @@
 namespace Network
 {
     extern auto to_byte_span(const void* pointer,
-                             std::size_t size) -> ByteSpan;
+                             std::size_t size) noexcept -> ByteSpan;
 }
 
 #endif

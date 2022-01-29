@@ -22,7 +22,7 @@
 #ifndef WIN32
 
 auto Network::to_byte_string(const sockaddr_un* sun,
-                             std::size_t size) -> Network::ByteString
+                             std::size_t size) noexcept -> Network::ByteString
 {
     return to_byte_string(to_byte_span(sun, size));
 }

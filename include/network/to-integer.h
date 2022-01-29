@@ -21,7 +21,7 @@
 namespace Network
 {
     template<typename T>
-    constexpr auto to_integer(Byte byte) -> T
+    constexpr auto to_integer(Byte byte) noexcept -> T
     {
         return std::to_integer<T>(byte);
     }
