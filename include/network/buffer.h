@@ -24,22 +24,22 @@ namespace Network
     class Buffer
     {
     public:
-        explicit Buffer(std::string::size_type t_size = 0);
-        Buffer(const Buffer&) = default;
+        explicit Buffer(std::string::size_type t_size = 0) noexcept;
+        Buffer(const Buffer&) noexcept = default;
         Buffer(Buffer&&) noexcept = default;
-        ~Buffer() = default;
-        auto operator=(const Buffer&) -> Buffer& = default;
+        ~Buffer() noexcept = default;
+        auto operator=(const Buffer&) noexcept -> Buffer& = default;
         auto operator=(Buffer&&) noexcept -> Buffer& = default;
-        operator std::string() const;  // NOLINT
-        [[nodiscard]] auto data() -> char*;
-        [[nodiscard]] auto size() const -> std::string::size_type;
+        operator std::string() const noexcept;  // NOLINT
+        [[nodiscard]] auto data() noexcept -> char*;
+        [[nodiscard]] auto size() const noexcept -> std::string::size_type;
 
     private:
         std::string m_value;
     };
 
     extern auto operator<<(std::ostream& os,
-                           const Buffer& buffer) -> std::ostream&;
+                           const Buffer& buffer) noexcept -> std::ostream&;
 }
 
 #endif

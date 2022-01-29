@@ -16,28 +16,28 @@
 #include "network/buffer.h"             // Buffer, operator<<(),
                                         // std::ostream, std::string
 
-Network::Buffer::Buffer(std::string::size_type t_size) :
+Network::Buffer::Buffer(std::string::size_type t_size) noexcept :
     m_value(t_size, '\0')
 {
 }
 
-Network::Buffer::operator std::string() const
+Network::Buffer::operator std::string() const noexcept
 {
     return m_value.substr(0, m_value.find('\0'));
 }
 
-auto Network::Buffer::data() -> char*
+auto Network::Buffer::data() noexcept -> char*
 {
     return m_value.data();
 }
 
-auto Network::Buffer::size() const -> std::string::size_type
+auto Network::Buffer::size() const noexcept -> std::string::size_type
 {
     return m_value.size();
 }
 
 auto Network::operator<<(std::ostream& os,
-                         const Buffer& buffer) -> std::ostream&
+                         const Buffer& buffer) noexcept -> std::ostream&
 {
     return os << std::string {buffer};
 }
