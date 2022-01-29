@@ -20,8 +20,8 @@
 
 namespace Network
 {
-    extern auto close(fd_type fd) -> fd_type;
-    extern auto close(Fd fd) -> fd_type;
+    extern auto close(fd_type fd) noexcept -> fd_type;
+    extern auto close(Fd fd) noexcept -> fd_type;
 }
 
 #endif

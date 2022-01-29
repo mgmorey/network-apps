@@ -22,7 +22,7 @@
 #include <unistd.h>     // close()
 #endif
 
-auto Network::close(fd_type fd) -> Network::fd_type
+auto Network::close(fd_type fd) noexcept -> Network::fd_type
 {
     if (fd != fd_null) {
 #ifdef WIN32
@@ -35,7 +35,7 @@ auto Network::close(fd_type fd) -> Network::fd_type
     return fd_null;
 }
 
-auto Network::close(Fd fd) -> fd_type
+auto Network::close(Fd fd) noexcept -> fd_type
 {
     return Network::close(static_cast<fd_type>(fd));
 }
