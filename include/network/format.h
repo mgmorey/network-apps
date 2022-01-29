@@ -24,19 +24,13 @@ namespace Network
     class Format
     {
         friend auto operator<<(std::ostream& os,
-                               const Format& format) -> std::ostream&;
+                               const Format& format) noexcept -> std::ostream&;
 
     public:
-        explicit Format(std::string t_key) :
-            Format(m_delimiter_default,
-                   m_indent_default,
-                   std::move(t_key)) {}
-        explicit Format(int t_indent, std::string t_key = "") :
-            Format(m_delimiter_default,
-                   t_indent,
-                   std::move(t_key)) {}
+        explicit Format(std::string t_key) noexcept;
+        explicit Format(int t_indent, std::string t_key = "") noexcept;
         Format(std::string t_delimiter, int indent,
-               std::string key = "");
+               std::string key = "") noexcept;
 
     private:
         static constexpr auto m_delimiter_default {","};
@@ -48,7 +42,7 @@ namespace Network
     };
 
     extern auto operator<<(std::ostream& os,
-                           const Format& format) -> std::ostream&;
+                           const Format& format) noexcept -> std::ostream&;
 }
 
 #endif
