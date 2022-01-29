@@ -44,59 +44,63 @@ Network::Address::Address(value_type&& t_value) :
     }
 }
 
-auto Network::Address::operator=(const value_type& t_value) -> Network::Address&
+auto Network::Address::operator=(const value_type& t_value) noexcept ->
+    Network::Address&
 {
     m_value = t_value;
     return *this;
 }
 
-auto Network::Address::operator<(const Address& t_address) const -> bool
+auto Network::Address::operator<(const Address& t_address) const noexcept ->
+    bool
 {
     return (family() < t_address.family() ||
             port() < t_address.port() ||
             text() < t_address.text());  // NOLINT
 }
 
-auto Network::Address::operator>(const Address& t_address) const -> bool
+auto Network::Address::operator>(const Address& t_address) const noexcept ->
+    bool
 {
     return (family() > t_address.family() ||
             port() > t_address.port() ||
             text() > t_address.text());  // NOLINT
 }
 
-auto Network::Address::operator==(const Address& t_address) const -> bool
+auto Network::Address::operator==(const Address& t_address) const noexcept ->
+    bool
 {
     return (family() == t_address.family() &&
             port() == t_address.port() &&
             text() == t_address.text());  // NOLINT
 }
 
-Network::Address::operator value_type() const
+Network::Address::operator value_type() const noexcept
 {
     return m_value;
 }
 
-auto Network::Address::data() const -> Network::Address::value_type
+auto Network::Address::data() const noexcept -> Network::Address::value_type
 {
     return sa_data();
 }
 
-auto Network::Address::empty() const -> bool
+auto Network::Address::empty() const noexcept -> bool
 {
     return m_value.empty();
 }
 
-auto Network::Address::family() const -> Network::family_type
+auto Network::Address::family() const noexcept -> Network::family_type
 {
     return sa_family();
 }
 
-auto Network::Address::length() const -> Network::length_type
+auto Network::Address::length() const noexcept -> Network::length_type
 {
     return sa_length();
 }
 
-auto Network::Address::port() const -> Network::port_type
+auto Network::Address::port() const noexcept -> Network::port_type
 {
     switch (sa_family()) {
     case AF_INET:
@@ -108,12 +112,12 @@ auto Network::Address::port() const -> Network::port_type
     }
 }
 
-auto Network::Address::size() const -> std::size_t
+auto Network::Address::size() const noexcept -> std::size_t
 {
     return m_value.size();
 }
 
-auto Network::Address::text() const -> std::string
+auto Network::Address::text() const noexcept -> std::string
 {
     switch (sa_family()) {
 #ifndef WIN32

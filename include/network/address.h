@@ -39,40 +39,40 @@ namespace Network
     public:
         using value_type = ByteString;
 
-        Address() = default;
+        Address() noexcept = default;
         explicit Address(const value_type& t_value);
         explicit Address(value_type&& t_value);
-        Address(const Address&) = default;
+        Address(const Address&) noexcept = default;
         Address(Address&&) noexcept = default;
-        ~Address() = default;
-        auto operator=(const Address&) -> Address& = default;
+        ~Address() noexcept = default;
+        auto operator=(const Address&) noexcept -> Address& = default;
         auto operator=(Address&&) noexcept -> Address& = default;
-        auto operator=(const value_type& t_value) -> Address&;
-        auto operator<(const Address& t_address) const -> bool;
-        auto operator>(const Address& t_address) const -> bool;
-        auto operator==(const Address& t_address) const -> bool;
-        explicit operator value_type() const;
-        [[nodiscard]] auto data() const -> value_type;
-        [[nodiscard]] auto empty() const -> bool;
-        [[nodiscard]] auto family() const -> family_type;
-        [[nodiscard]] auto length() const -> length_type;
-        [[nodiscard]] auto port() const -> port_type;
-        [[nodiscard]] auto size() const -> std::size_t;
-        [[nodiscard]] auto text() const -> std::string;
+        auto operator=(const value_type& t_value) noexcept -> Address&;
+        auto operator<(const Address& t_address) const noexcept -> bool;
+        auto operator>(const Address& t_address) const noexcept -> bool;
+        auto operator==(const Address& t_address) const noexcept -> bool;
+        explicit operator value_type() const noexcept;
+        [[nodiscard]] auto data() const noexcept -> value_type;
+        [[nodiscard]] auto empty() const noexcept -> bool;
+        [[nodiscard]] auto family() const noexcept -> family_type;
+        [[nodiscard]] auto length() const noexcept -> length_type;
+        [[nodiscard]] auto port() const noexcept -> port_type;
+        [[nodiscard]] auto size() const noexcept -> std::size_t;
+        [[nodiscard]] auto text() const noexcept -> std::string;
 
     protected:
-        [[nodiscard]] auto sa_data() const -> value_type;
-        [[nodiscard]] auto sa_family() const -> family_type;
-        [[nodiscard]] auto sa_length() const -> length_type;
-        [[nodiscard]] auto sa_text() const -> std::string;
-        [[nodiscard]] auto sin_addr() const -> in_addr;
-        [[nodiscard]] auto sin_port() const -> port_type;
-        [[nodiscard]] auto sin_text() const -> std::string;
-        [[nodiscard]] auto sin6_addr() const -> in6_addr;
-        [[nodiscard]] auto sin6_port() const -> port_type;
-        [[nodiscard]] auto sin6_text() const -> std::string;
+        [[nodiscard]] auto sa_data() const noexcept -> value_type;
+        [[nodiscard]] auto sa_family() const noexcept -> family_type;
+        [[nodiscard]] auto sa_length() const noexcept -> length_type;
+        [[nodiscard]] auto sa_text() const noexcept -> std::string;
+        [[nodiscard]] auto sin_addr() const noexcept -> in_addr;
+        [[nodiscard]] auto sin_port() const noexcept -> port_type;
+        [[nodiscard]] auto sin_text() const noexcept -> std::string;
+        [[nodiscard]] auto sin6_addr() const noexcept -> in6_addr;
+        [[nodiscard]] auto sin6_port() const noexcept -> port_type;
+        [[nodiscard]] auto sin6_text() const noexcept -> std::string;
 #ifndef WIN32
-        [[nodiscard]] auto sun_text() const -> std::string;
+        [[nodiscard]] auto sun_text() const noexcept -> std::string;
 #endif
 
     private:

@@ -22,22 +22,22 @@
 #include "network/get-sa-pointer.h"     // get_sa_pointer()
 #include "network/to-string.h"          // to_string()
 
-auto Network::Address::sa_data() const -> Network::Address::value_type
+auto Network::Address::sa_data() const noexcept -> Network::Address::value_type
 {
     return get_sa_data(m_value);
 }
 
-auto Network::Address::sa_family() const -> Network::family_type
+auto Network::Address::sa_family() const noexcept -> Network::family_type
 {
     return get_sa_family(m_value);
 }
 
-auto Network::Address::sa_length() const -> Network::length_type
+auto Network::Address::sa_length() const noexcept -> Network::length_type
 {
     return get_sa_length(m_value);
 }
 
-auto Network::Address::sa_text() const -> std::string
+auto Network::Address::sa_text() const noexcept -> std::string
 {
     return to_string(m_value);
 }
