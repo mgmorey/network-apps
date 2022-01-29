@@ -19,7 +19,7 @@
 #include "network/string-null.h"        // string_null
 
 auto Network::operator<<(std::ostream& os,
-                         const Socket& sock) -> std::ostream&
+                         const Socket& sock) noexcept -> std::ostream&
 {
     static const int tab {7};
 
