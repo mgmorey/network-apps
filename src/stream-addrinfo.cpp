@@ -30,7 +30,7 @@
 #endif
 
 auto Network::operator<<(std::ostream& os,
-                         const addrinfo& ai) -> std::ostream&
+                         const addrinfo& ai) noexcept -> std::ostream&
 {
     constexpr auto tab {9};
 

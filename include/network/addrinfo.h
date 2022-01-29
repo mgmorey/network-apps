@@ -48,20 +48,20 @@ namespace Network
 
             // cppcheck-suppress noExplicitConstructor
             InputIterator(pointer t_pointer);  // NOLINT
-            auto operator*() const -> reference;
-            auto operator->() const -> pointer;
-            auto operator++() -> InputIterator&;
+            auto operator*() const noexcept -> reference;
+            auto operator->() const noexcept -> pointer;
+            auto operator++() noexcept -> InputIterator&;
 
             friend auto operator==(const InputIterator& left,
-                                   const InputIterator& right) -> bool;
+                                   const InputIterator& right) noexcept -> bool;
             friend auto operator!=(const InputIterator& left,
-                                   const InputIterator& right) -> bool;
+                                   const InputIterator& right) noexcept -> bool;
 
         private:
             pointer m_list {nullptr};
         };
 
-        static auto end() -> InputIterator;
+        static auto end() noexcept -> InputIterator;
 
         AddrInfo() = delete;
         AddrInfo(const AddrInfo&) = delete;
@@ -69,15 +69,16 @@ namespace Network
         AddrInfo(const OptionalHostname& t_hostname,
              const OptionalService& t_service,
              const OptionalHints& t_hints,
-             bool t_verbose);
-        ~AddrInfo();
-        auto operator=(const AddrInfo&) -> AddrInfo& = delete;
-        auto operator=(const AddrInfo&&) -> AddrInfo& = delete;
-        [[nodiscard]] auto begin() const -> InputIterator;
-        [[nodiscard]] auto result() const -> ErrorResult;
+             bool t_verbose) noexcept;
+        ~AddrInfo() noexcept;
+        auto operator=(const AddrInfo&) noexcept -> AddrInfo& = delete;
+        auto operator=(const AddrInfo&&) noexcept -> AddrInfo& = delete;
+        [[nodiscard]] auto begin() const noexcept -> InputIterator;
+        [[nodiscard]] auto result() const noexcept -> ErrorResult;
 
     protected:
-        static auto to_c_string(const OptionalString& str) -> const char*;
+        static auto to_c_string(const OptionalString& str) noexcept ->
+            const char*;
 
     private:
         addrinfo* m_list {nullptr};
@@ -85,11 +86,13 @@ namespace Network
     };
 
     extern auto operator==(const AddrInfo::InputIterator& left,
-                           const AddrInfo::InputIterator& right) -> bool;
+                           const AddrInfo::InputIterator& right) noexcept ->
+        bool;
     extern auto operator!=(const AddrInfo::InputIterator& left,
-                           const AddrInfo::InputIterator& right) ->  bool;
+                           const AddrInfo::InputIterator& right) noexcept ->
+        bool;
     extern auto operator<<(std::ostream& os,
-                           const addrinfo& ai) -> std::ostream&;
+                           const addrinfo& ai) noexcept -> std::ostream&;
 }
 
 #endif

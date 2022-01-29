@@ -37,19 +37,19 @@ Network::AddrInfo::InputIterator::InputIterator(pointer t_pointer) :
 {
 }
 
-auto Network::AddrInfo::InputIterator::operator*() const ->
+auto Network::AddrInfo::InputIterator::operator*() const noexcept ->
     Network::AddrInfo::InputIterator::reference
 {
     return *m_list;
 }
 
-auto Network::AddrInfo::InputIterator::operator->() const ->
+auto Network::AddrInfo::InputIterator::operator->() const noexcept ->
     Network::AddrInfo::InputIterator::pointer
 {
     return m_list;
 }
 
-auto Network::AddrInfo::InputIterator::operator++() ->
+auto Network::AddrInfo::InputIterator::operator++() noexcept ->
     Network::AddrInfo::InputIterator&
 {
     m_list = m_list->ai_next;
@@ -59,7 +59,7 @@ auto Network::AddrInfo::InputIterator::operator++() ->
 Network::AddrInfo::AddrInfo(const OptionalHostname& t_hostname,
                             const OptionalService& t_service,
                             const OptionalHints& t_hints,
-                            bool t_verbose)
+                            bool t_verbose) noexcept
 {
     std::unique_ptr<addrinfo> hints = t_hints ?
         std::make_unique<addrinfo>(*t_hints) :
@@ -100,42 +100,43 @@ Network::AddrInfo::AddrInfo(const OptionalHostname& t_hostname,
     }
 }
 
-Network::AddrInfo::~AddrInfo()
+Network::AddrInfo::~AddrInfo() noexcept
 {
     if (m_list != nullptr) {
         ::freeaddrinfo(m_list);
     }
 }
 
-auto Network::AddrInfo::begin() const -> Network::AddrInfo::InputIterator
+auto Network::AddrInfo::begin() const noexcept ->
+    Network::AddrInfo::InputIterator
 {
     return m_list;
 }
 
-auto Network::AddrInfo::end() -> Network::AddrInfo::InputIterator
+auto Network::AddrInfo::end() noexcept -> Network::AddrInfo::InputIterator
 {
     return nullptr;
 }
 
-auto Network::AddrInfo::result() const -> Network::ErrorResult
+auto Network::AddrInfo::result() const noexcept -> Network::ErrorResult
 {
     return m_result;
 }
 
-auto Network::AddrInfo::to_c_string(const OptionalString& str) ->
+auto Network::AddrInfo::to_c_string(const OptionalString& str) noexcept ->
     const char*
 {
-    return str ? str->c_str() : nullptr;
+    return str ? str ->c_str() : nullptr;
 }
 
 auto Network::operator==(const AddrInfo::InputIterator& left,
-                         const AddrInfo::InputIterator& right) -> bool
+                         const AddrInfo::InputIterator& right) noexcept -> bool
 {
     return left.m_list == right.m_list;
 }
 
 auto Network::operator!=(const AddrInfo::InputIterator& left,
-                         const AddrInfo::InputIterator& right) -> bool
+                         const AddrInfo::InputIterator& right) noexcept -> bool
 {
     return left.m_list != right.m_list;
 }
