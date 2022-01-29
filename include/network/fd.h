@@ -42,7 +42,7 @@ namespace Network
         fd_type m_value {fd_null};
     };
 
-    extern auto operator<<(std::ostream& os, Fd fd) -> std::ostream&;
+    extern auto operator<<(std::ostream& os, Fd fd) noexcept -> std::ostream&;
 }
 
 #endif

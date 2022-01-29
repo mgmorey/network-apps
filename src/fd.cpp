@@ -43,7 +43,7 @@ Network::Fd::operator std::string() const noexcept
     return std::to_string(m_value);
 }
 
-auto Network::operator<<(std::ostream& os, Fd fd) -> std::ostream&
+auto Network::operator<<(std::ostream& os, Fd fd) noexcept -> std::ostream&
 {
     return os << static_cast<std::string>(fd);
 }
