@@ -30,19 +30,19 @@ namespace Network
         explicit Context(const Version& t_version = {});
         Context(const Context&) = delete;
         Context(const Context&&) = delete;
-        ~Context();
+        ~Context() noexcept;
         auto operator=(const Context&) -> Context& = delete;
         auto operator=(const Context&&) -> Context& = delete;
-        [[nodiscard]] auto description() const -> std::string;
-        [[nodiscard]] auto is_started() const -> bool;
-        [[nodiscard]] auto system_status() const -> std::string;
-        [[nodiscard]] auto version() const -> Version;
+        [[nodiscard]] auto description() const noexcept -> std::string;
+        [[nodiscard]] auto is_started() const noexcept -> bool;
+        [[nodiscard]] auto system_status() const noexcept -> std::string;
+        [[nodiscard]] auto version() const noexcept -> Version;
 
     protected:
         enum class failure_mode {return_error, return_zero, throw_error};
         static auto cleanup(failure_mode t_mode =
                             failure_mode::throw_error) -> os_error_type;
-        auto is_started(bool t_is_started) -> void;
+        auto is_started(bool t_is_started) noexcept -> void;
         auto shutdown(failure_mode t_mode = failure_mode::throw_error) -> void;
 
     private:
@@ -53,7 +53,7 @@ namespace Network
     };
 
     extern auto operator<<(std::ostream& os,
-                           const Context& context) -> std::ostream&;
+                           const Context& context) noexcept -> std::ostream&;
 }
 
 #endif
