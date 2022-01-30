@@ -38,7 +38,7 @@
 #endif
 
 #include <algorithm>    // std::for_each(), std::remove()
-#include <cstdlib>      // EXIT_FAILURE, std::exit()
+#include <cstdlib>      // EXIT_FAILURE, std::exit(), std::getenv()
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <iterator>     // std::next()
@@ -308,7 +308,14 @@ auto main(int argc, char* argv[]) -> int
             }
         }
         else {
-            TestHost::test_host(std::nullopt, false);
+            const char* hostname_c {std::getenv("HOSTNAME")};
+            Network::OptionalHostname hostname;
+
+            if (hostname_c != nullptr) {
+                hostname = hostname_c;
+            }
+
+            TestHost::test_host(hostname, false);
         }
     }
     catch (const std::exception& error) {
