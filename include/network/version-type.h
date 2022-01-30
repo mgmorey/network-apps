@@ -19,7 +19,8 @@
 #include "network/os-features.h"        // WIN32
 
 #ifdef WIN32
-#include <winsock2.h>       // Always include winsock2 before windows.h on Windows
+#include <winsock2.h>       // Always include winsock2 before
+                            // windows.h on Windows
 #include <windows.h>        // WORD
 #endif
 
