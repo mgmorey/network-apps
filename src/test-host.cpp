@@ -15,18 +15,20 @@
 
 #include "network/network.h"            // Address, Bytes, Context,
                                         // Endpoint, EndpointResult,
-                                        // ErrorResult, Hints, Host,
-                                        // HostVector, Hostname,
+                                        // Hints, Host, HostVector,
+                                        // Hostname, OsErrorResult,
                                         // Overloaded, get_endpoint(),
                                         // get_hostname(),
                                         // get_hosts(), skip_first(),
                                         // uniquify()
+#include "network/assert.h"             // assert()
 #include "network/os-features.h"        // WIN32
 
 #ifdef WIN32
 #include <getopt.h>         // getopt(), optarg, opterr, optind
 #include <winsock2.h>       // AF_INET, AF_INET6, AF_UNSPEC,
-                            // IPPROTO_TCP, SOCK_STREAM
+                            // IPPROTO_TCP, SOCK_STREAM,
+                            // WSAHOST_NOT_FOUND
 #include <ws2tcpip.h>       // AI_ADDRCONFIG, AI_CANONNAME
 #else
 #include <netdb.h>          // AI_ADDRCONFIG, AI_CANONNAME
@@ -50,6 +52,19 @@
 
 namespace TestHost
 {
+#if defined(OS_MINGW64_NT)
+    static const Network::OsErrorResult expected_result_invalid_hostname {
+        WSAHOST_NOT_FOUND,
+        "Call to getaddrinfo(., <NULL>, ...) returned 11001: "
+        "No such host is known."
+    };
+#else
+    static const Network::OsErrorResult expected_result_invalid_hostname {
+        0,
+        ""
+    };
+#endif
+
     static bool verbose {false};  // NOLINT
 
     class Test
@@ -80,7 +95,7 @@ namespace TestHost
                         Network::uniquify(values);
                         print(values);
                     },
-                    [&](const Network::ErrorResult& result) {
+                    [&](const Network::OsErrorResult& result) {
                         std::cerr << result.string()
                                   << std::endl;
                     }
@@ -184,6 +199,22 @@ namespace TestHost
         return result;
     }
 
+    static auto print(const Network::OsErrorResult& result,
+                      const std::string& description = "") -> void
+    {
+        if (verbose) {
+            std::cout << "Error result"
+                      << (description.empty() ? "" : ": " + description)
+                      << std::endl
+                      << "    Number: "
+                      << result.number()
+                      << std::endl
+                      << "    String: "
+                      << result.string()
+                      << std::endl;
+        }
+    }
+
     static auto test_host(const Network::Hostname& hostname,
                           const Network::Hints& hints) -> void
     {
@@ -207,7 +238,7 @@ namespace TestHost
                     std::for_each(hosts.begin(), hosts.end(),
                                   Test(std::cout));
                 },
-                [&](const Network::ErrorResult& result) {
+                [&](const Network::OsErrorResult& result) {
                     if (description.empty()) {
                         std::cout << "No";
                     }
@@ -238,6 +269,23 @@ namespace TestHost
             test_host(hostname, hints);
         }
     }
+
+    static auto test_host_invalid_hostname() -> void
+    {
+        Network::OsErrorResult actual_result;
+        constexpr Network::Hints hints {AF_UNSPEC};
+        const auto hosts_result {Network::get_hosts(".", hints)};
+        std::visit(Network::Overloaded {
+                [&](const Network::HostVector& hosts) {
+                    static_cast<void>(hosts);
+                },
+                [&](const Network::OsErrorResult& result) {
+                    actual_result = result;
+                }
+            }, hosts_result);
+        print(actual_result, "get_hosts() with invalid hostname");
+        assert(actual_result == expected_result_invalid_hostname);
+    }
 }
 
 auto main(int argc, char* argv[]) -> int
@@ -249,6 +297,8 @@ auto main(int argc, char* argv[]) -> int
         if (TestHost::verbose) {
             std::cerr << context;
         }
+
+        TestHost::test_host_invalid_hostname();
 
         if (args.size() > 1) {
             for (const auto& hostname : Network::skip_first(args)) {
