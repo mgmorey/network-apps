@@ -43,7 +43,6 @@
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <iterator>     // std::next()
-#include <optional>     // std::nullopt
 #include <ostream>      // std::ostream
 #include <span>         // std::span
 #include <string>       // std::string
