@@ -13,8 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-hosts.h"          // ErrorResult, Hostname,
-                                        // HostVector,
+#include "network/get-hosts.h"          // Hostname, HostVector,
                                         // HostVectorResult,
                                         // OptionalHints, get_hosts()
 #include "network/insert-addrinfo.h"    // insert_addrinfo()
