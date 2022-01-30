@@ -14,7 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/format-os-error.h"    // format_os_error(),
-                                        // std::string
+                                        // os_error_type, std::string
 #include "network/os-features.h"        // WIN32
 
 #ifdef WIN32
