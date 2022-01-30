@@ -32,7 +32,7 @@
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
 
-Network::AddrInfo::InputIterator::InputIterator(pointer t_pointer) :
+Network::AddrInfo::InputIterator::InputIterator(pointer t_pointer) noexcept :
     m_list(t_pointer)
 {
 }

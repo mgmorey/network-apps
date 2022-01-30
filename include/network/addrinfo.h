@@ -47,7 +47,7 @@ namespace Network
             using value_type = addrinfo;
 
             // cppcheck-suppress noExplicitConstructor
-            InputIterator(pointer t_pointer);  // NOLINT
+            InputIterator(pointer t_pointer) noexcept;  // NOLINT
             auto operator*() const noexcept -> reference;
             auto operator->() const noexcept -> pointer;
             auto operator++() noexcept -> InputIterator&;
