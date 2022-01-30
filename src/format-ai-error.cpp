@@ -13,19 +13,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/format-ai-error.h"    // error_type,
-                                        // format_ai_error(),
-                                        // std::string
+#include "network/format-ai-error.h"    // format_ai_error(),
+                                        // os_error_type, std::string
 #include "network/format-os-error.h"    // format_os_error()
 #include "network/os-features.h"        // WIN32
 
-#ifdef WIN32
-#include <ws2tcpip.h>       // gai_strerror()
-#else
+#ifndef WIN32
 #include <netdb.h>          // gai_strerror()
 #endif
 
-auto Network::format_ai_error(error_type error) noexcept -> std::string
+auto Network::format_ai_error(os_error_type error) noexcept -> std::string
 {
 #ifdef WIN32
     return format_os_error(error);
