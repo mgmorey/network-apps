@@ -30,7 +30,7 @@
 #include <sstream>      // std::ostringstream
 
 auto Network::get_name(const GetNameHandler& handler,
-                       const GetNameParams& args) -> Network::BytesResult
+                       const GetNameParams& args) -> Network::ByteStringResult
 {
     ByteString str {ss_size, Byte {}};
     auto length {get_length(str)};

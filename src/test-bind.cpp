@@ -15,7 +15,7 @@
 
 #include "network/assert.h"             // assert()
 #include "network/network.h"            // Address, Bytes,
-                                        // BytesResult, Context,
+                                        // ByteStringResult, Context,
                                         // Endpoint, FdResult,
                                         // FdResultVector, Hints,
                                         // OsErrorResult, Overloaded,
@@ -80,7 +80,7 @@ namespace TestBind
         }
 
         static auto get_sockaddr(const Network::Fd& t_fd) ->
-            Network::BytesResult
+            Network::ByteStringResult
         {
             auto sockname_result {Network::get_sockname(t_fd, verbose)};
             std::visit(Network::Overloaded {

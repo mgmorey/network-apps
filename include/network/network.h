@@ -43,7 +43,7 @@
 #include "network/get-hostname.h"       // get_hostname()
 #include "network/get-hosts.h"          // get_hosts()
 #include "network/get-length.h"         // get_length()
-#include "network/get-peername.h"       // BytesResult,
+#include "network/get-peername.h"       // ByteStringResult,
                                         // get_peername()
 #include "network/get-sa-family.h"      // get_sa_family()
 #include "network/get-sa-length.h"      // get_sa_length()

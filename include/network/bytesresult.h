@@ -16,14 +16,11 @@
 #ifndef NETWORK_BYTESRESULT_H
 #define NETWORK_BYTESRESULT_H
 
-#include "network/bytes.h"              // Bytes
-#include "network/oserrorresult.h"      // OsErrorResult
-
-#include <variant>      // std::variant
+#include "network/bytestringresult.h"   // ByteStringResult
 
 namespace Network
 {
-    using BytesResult = std::variant<Bytes, OsErrorResult>;
+    using BytesResult = ByteStringResult;
 }
 
 #endif

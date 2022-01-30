@@ -13,20 +13,17 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-peername.h"       // ByteStringResult, Fd,
-                                        // GetNameParams,
-                                        // get_peername()
-#include "network/os-features.h"        // WIN32
+#ifndef NETWORK_BYTESTRINGRESULT_H
+#define NETWORK_BYTESTRINGRESULT_H
 
-#ifdef WIN32
-#include <winsock2.h>   // getpeername()
-#else
-#include <sys/socket.h> // getpeername()
-#endif
+#include "network/bytestring.h"         // ByteString
+#include "network/oserrorresult.h"      // OsErrorResult
 
-auto Network::get_peername(Fd fd, bool verbose) -> Network::ByteStringResult
+#include <variant>      // std::variant
+
+namespace Network
 {
-    const GetNameHandler handler {::getpeername, "getpeername"};
-    const GetNameParams args {fd, verbose};
-    return get_name(handler, args);
+    using ByteStringResult = std::variant<ByteString, OsErrorResult>;
 }
+
+#endif

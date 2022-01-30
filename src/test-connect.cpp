@@ -15,7 +15,7 @@
 
 #include "network/assert.h"             // assert()
 #include "network/network.h"            // Address, Bytes,
-                                        // BytesResult, Context,
+                                        // ByteStringResult, Context,
                                         // Endpoint, FdResult, Hints,
                                         // OptionalHostname,
                                         // OsErrorResult, Overloaded,
@@ -86,7 +86,7 @@ namespace TestConnect
         }
 
         static auto get_peeraddr(const Network::Fd& t_fd) ->
-            Network::BytesResult
+            Network::ByteStringResult
         {
             auto peername_result {Network::get_peername(t_fd, verbose)};
             std::visit(Network::Overloaded {
@@ -102,7 +102,7 @@ namespace TestConnect
         }
 
         static auto get_sockaddr(const Network::Fd& t_fd) ->
-            Network::BytesResult
+            Network::ByteStringResult
         {
             auto sockname_result {Network::get_sockname(t_fd, verbose)};
             std::visit(Network::Overloaded {
