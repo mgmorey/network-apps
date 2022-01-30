@@ -16,9 +16,10 @@
 #ifndef NETWORK_INSERT_ADDRINFO_H
 #define NETWORK_INSERT_ADDRINFO_H
 
-#include "network/addrinfo.h"           // ErrorResult, OptionalHints,
+#include "network/addrinfo.h"           // OptionalHints,
                                         // OptionalHostname,
-                                        // OptionalService
+                                        // OptionalService,
+                                        // OsErrorResult,
 #include "network/endpoint.h"           // Endpoint
 
 #include <iostream>     // std::cerr, std::endl
@@ -30,7 +31,7 @@ namespace Network
                          const OptionalService& service,
                          const OptionalHints& hints,
                          OutputIterator it,
-                         bool verbose) noexcept -> ErrorResult
+                         bool verbose) noexcept -> OsErrorResult
     {
         const auto list {AddrInfo(hostname, service, hints, verbose)};
 
@@ -52,7 +53,7 @@ namespace Network
     auto insert_addrinfo(const Endpoint& endpoint,
                          const OptionalHints& hints,
                          OutputIterator it,
-                         bool verbose) noexcept -> ErrorResult
+                         bool verbose) noexcept -> OsErrorResult
     {
         return insert_addrinfo(endpoint.first,
                                endpoint.second,
