@@ -59,6 +59,12 @@ namespace TestHost
         "Call to getaddrinfo(., <NULL>, ...) returned 8: "
         "Name or service not known"
     };
+#elif defined(OS_DARWIN)
+    static const Network::OsErrorResult expected_result_invalid_hostname {
+        EAI_NONAME,
+        "Call to getaddrinfo(., <NULL>, ...) returned 8: "
+        "nodename nor servname provided, or not known"
+    };
 #elif defined(OS_FREEBSD)
     static const Network::OsErrorResult expected_result_invalid_hostname {
         EAI_NONAME,
