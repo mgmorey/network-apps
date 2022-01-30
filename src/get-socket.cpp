@@ -33,7 +33,7 @@
 #include <sstream>      // std::ostringstream
 
 auto Network::get_socket(const Socket& sock,
-                         bool verbose) -> Network::FdResult
+                         bool verbose) noexcept -> Network::FdResult
 {
     constexpr auto delim {", "};
     constexpr auto tab {0};

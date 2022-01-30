@@ -24,7 +24,7 @@ namespace Network
 {
 #ifndef WIN32
     extern auto get_socketpair(const Hints& hints,
-                               bool verbose = false) -> FdPairResult;
+                               bool verbose = false) noexcept -> FdPairResult;
 #endif
 }
 
