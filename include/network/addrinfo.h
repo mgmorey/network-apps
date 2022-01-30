@@ -20,8 +20,8 @@
 #include "network/optionalhostname.h"   // OptionalHostname
 #include "network/optionalservice.h"    // OptionalService
 #include "network/optionalstring.h"     // OptionalString
-#include "network/oserrorresult.h"      // OsErrorResult
 #include "network/os-features.h"        // WIN32
+#include "network/oserrorresult.h"      // OsErrorResult
 
 #ifdef WIN32
 #include <ws2tcpip.h>   // addrinfo
