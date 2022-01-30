@@ -60,12 +60,10 @@ auto Network::get_endpoint(const ByteString& str, int flags, bool verbose) ->
                   << std::endl;
     }
 
-    const auto error {::getnameinfo(pointer, length,
-                                    host.data(), host.size(),
-                                    service.data(), service.size(),
-                                    flags)};
-
-    if (error != 0) {
+    if (const auto error {::getnameinfo(pointer, length,
+                                        host.data(), host.size(),
+                                        service.data(), service.size(),
+                                        flags)}) {
         std::ostringstream oss;
         oss << "Call to getnameinfo("
             << str

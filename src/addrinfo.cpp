@@ -83,10 +83,10 @@ Network::AddrInfo::AddrInfo(const OptionalHostname& t_hostname,
                   << std::endl;
     }
 
-    if (const auto error = ::getaddrinfo(to_c_string(t_hostname),
-                                         to_c_string(t_service),
-                                         hints.get(),
-                                         &m_list)) {
+    if (const auto error {::getaddrinfo(to_c_string(t_hostname),
+                                        to_c_string(t_service),
+                                        hints.get(),
+                                        &m_list)}) {
         std::ostringstream oss;
         oss << "Call to getaddrinfo("
             << t_hostname.value_or(string_null)
