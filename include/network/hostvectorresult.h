@@ -16,14 +16,14 @@
 #ifndef NETWORK_HOSTVECTORRESULT_H
 #define NETWORK_HOSTVECTORRESULT_H
 
-#include "network/errorresult.h"        // ErrorResult
 #include "network/hostvector.h"         // HostVector
+#include "network/oserrorresult.h"      // OsErrorResult
 
 #include <variant>      // std::variant
 
 namespace Network
 {
-    using HostVectorResult = std::variant<HostVector, ErrorResult>;
+    using HostVectorResult = std::variant<HostVector, OsErrorResult>;
 }
 
 #endif
