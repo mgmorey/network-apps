@@ -30,7 +30,8 @@
                             // WSAHOST_NOT_FOUND
 #include <ws2tcpip.h>       // AI_ADDRCONFIG, AI_CANONNAME
 #else
-#include <netdb.h>          // AI_ADDRCONFIG, AI_CANONNAME, EAI_NONAME
+#include <netdb.h>          // AI_ADDRCONFIG, AI_CANONNAME,
+                            // EAI_NODATA, EAI_NONAME
 #include <netinet/in.h>     // IPPROTO_TCP
 #include <sys/socket.h>     // AF_INET, AF_INET6, AF_UNSPEC,
                             // SOCK_STREAM
@@ -52,17 +53,23 @@
 
 namespace TestHost
 {
-#if defined(OS_MINGW64_NT)
-    static const Network::OsErrorResult expected_result_invalid_hostname {
-        WSAHOST_NOT_FOUND,
-        "Call to getaddrinfo(., <NULL>, ...) returned 11001: "
-        "No such host is known."
-    };
-#elif defined(OS_CYGWIN_NT)
+#if defined(OS_CYGWIN_NT)
     static const Network::OsErrorResult expected_result_invalid_hostname {
         EAI_NONAME,
         "Call to getaddrinfo(., <NULL>, ...) returned 8: "
         "Name or service not known"
+    };
+#elif defined(OS_LINUX)
+    static const Network::OsErrorResult expected_result_invalid_hostname {
+        EAI_NODATA,
+        "Call to getaddrinfo(., <NULL>, ...) returned -5: "
+        "No address associated with hostname"
+    };
+#elif defined(OS_MINGW64_NT)
+    static const Network::OsErrorResult expected_result_invalid_hostname {
+        WSAHOST_NOT_FOUND,
+        "Call to getaddrinfo(., <NULL>, ...) returned 11001: "
+        "No such host is known."
     };
 #else
     static const Network::OsErrorResult expected_result_invalid_hostname {
