@@ -16,14 +16,14 @@
 #ifndef NETWORK_SOCKETVECTORRESULT_H
 #define NETWORK_SOCKETVECTORRESULT_H
 
-#include "network/errorresult.h"        // ErrorResult
+#include "network/oserrorresult.h"      // OsErrorResult
 #include "network/socketvector.h"       // SocketVector
 
 #include <variant>      // std::variant
 
 namespace Network
 {
-    using SocketVectorResult = std::variant<SocketVector, ErrorResult>;
+    using SocketVectorResult = std::variant<SocketVector, OsErrorResult>;
 }
 
 #endif
