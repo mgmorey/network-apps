@@ -14,7 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/get-endpoint.h"       // Endpoint, EndpointResult,
-                                        // ErrorResult,
+                                        // OsErrorResult,
                                         // get_endpoint(),
                                         // hostname_size_max,
                                         // service_size_max
@@ -77,7 +77,7 @@ auto Network::get_endpoint(const ByteString& str, int flags, bool verbose) ->
             << " ("
             << format_ai_error(error)
             << ')';
-        return ErrorResult {error, oss.str()};
+        return OsErrorResult {error, oss.str()};
     }
 
     return Endpoint {host, service};

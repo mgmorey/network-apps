@@ -16,11 +16,11 @@
 #ifndef NETWORK_ADDRINFO_H
 #define NETWORK_ADDRINFO_H
 
-#include "network/errorresult.h"        // ErrorResult
 #include "network/optionalhints.h"      // OptionalHints
 #include "network/optionalhostname.h"   // OptionalHostname
 #include "network/optionalservice.h"    // OptionalService
 #include "network/optionalstring.h"     // OptionalString
+#include "network/oserrorresult.h"      // OsErrorResult
 #include "network/os-features.h"        // WIN32
 
 #ifdef WIN32
@@ -74,7 +74,7 @@ namespace Network
         auto operator=(const AddrInfo&) noexcept -> AddrInfo& = delete;
         auto operator=(const AddrInfo&&) noexcept -> AddrInfo& = delete;
         [[nodiscard]] auto begin() const noexcept -> InputIterator;
-        [[nodiscard]] auto result() const noexcept -> ErrorResult;
+        [[nodiscard]] auto result() const noexcept -> OsErrorResult;
 
     protected:
         static auto to_c_string(const OptionalString& str) noexcept ->
@@ -82,7 +82,7 @@ namespace Network
 
     private:
         addrinfo* m_list {nullptr};
-        ErrorResult m_result;
+        OsErrorResult m_result;
     };
 
     extern auto operator==(const AddrInfo::InputIterator& left,

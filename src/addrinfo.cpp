@@ -119,7 +119,7 @@ auto Network::AddrInfo::end() noexcept -> Network::AddrInfo::InputIterator
     return nullptr;
 }
 
-auto Network::AddrInfo::result() const noexcept -> Network::ErrorResult
+auto Network::AddrInfo::result() const noexcept -> Network::OsErrorResult
 {
     return m_result;
 }
