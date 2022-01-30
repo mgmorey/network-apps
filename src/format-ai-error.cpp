@@ -16,6 +16,7 @@
 #include "network/format-ai-error.h"    // error_type,
                                         // format_ai_error(),
                                         // std::string
+#include "network/format-os-error.h"    // format_os_error()
 #include "network/os-features.h"        // WIN32
 
 #ifdef WIN32
@@ -26,5 +27,9 @@
 
 auto Network::format_ai_error(error_type error) noexcept -> std::string
 {
+#ifdef WIN32
+    return format_os_error(error);
+#else
     return ::gai_strerror(error);
+#endif
 }
