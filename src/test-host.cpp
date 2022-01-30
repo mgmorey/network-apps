@@ -30,7 +30,7 @@
                             // WSAHOST_NOT_FOUND
 #include <ws2tcpip.h>       // AI_ADDRCONFIG, AI_CANONNAME
 #else
-#include <netdb.h>          // AI_ADDRCONFIG, AI_CANONNAME
+#include <netdb.h>          // AI_ADDRCONFIG, AI_CANONNAME, EAI_NONAME
 #include <netinet/in.h>     // IPPROTO_TCP
 #include <sys/socket.h>     // AF_INET, AF_INET6, AF_UNSPEC,
                             // SOCK_STREAM
@@ -60,8 +60,9 @@ namespace TestHost
     };
 #else
     static const Network::OsErrorResult expected_result_invalid_hostname {
-        0,
-        ""
+        EAI_NONAME,
+        "Call to getaddrinfo(., <NULL>, ...) returned 8: "
+        "Name or service not known"
     };
 #endif
 
