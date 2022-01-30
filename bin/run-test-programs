@@ -1,8 +1,17 @@
 #!/bin/sh -eu
 
-export HOSTNAME=$(hostname)
+run_test_program() (
+    basename="$(basename "$filename" .exe)"
+    dirname="$(dirname "$filename")"
+    logname="$basename.log"
+    cd "$dirname"
+    "./$basename" >"$logname"
+)
+
+if [ -z "${HOSTNAME-}" ]; then
+    export HOSTNAME=$(hostname)
+fi
 
 for filename in "$@"; do
-    basename="$(basename "$filename" .exe)"
-    "./$basename" >"$basename.log"
+    run_test_program "$filename"
 done
