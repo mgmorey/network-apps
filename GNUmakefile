@@ -157,7 +157,7 @@ sizes: $(sizes)
 
 .PHONY: test
 test: $(sort $(filter test-%,$(basename $(programs))))
-	set -x; for f in $^; do ./$$f >$$f.log; done
+	export HOSTNAME=`hostname`; set -x; for f in $^; do ./$$f >$$f.log; done
 
 .PHONY: tidy
 tidy: $(sort $(sources))
