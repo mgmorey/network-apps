@@ -58,11 +58,16 @@ namespace TestHost
         "Call to getaddrinfo(., <NULL>, ...) returned 11001: "
         "No such host is known."
     };
-#else
+#elif defined(OS_CYGWIN_NT)
     static const Network::OsErrorResult expected_result_invalid_hostname {
         EAI_NONAME,
         "Call to getaddrinfo(., <NULL>, ...) returned 8: "
         "Name or service not known"
+    };
+#else
+    static const Network::OsErrorResult expected_result_invalid_hostname {
+        0,
+        ""
     };
 #endif
 
