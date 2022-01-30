@@ -18,6 +18,7 @@
                                         // OptionalHostname,
                                         // OptionalService, addrinfo,
                                         // operator<<()
+#include "network/format-ai-error.h"    // format_ai_error()
 #include "network/os-features.h"        // WIN32
 #include "network/string-null.h"        // string_null
 
@@ -95,7 +96,7 @@ Network::AddrInfo::AddrInfo(const OptionalHostname& t_hostname,
             << ", ...) returned "
             << error
             << ": "
-            << ::gai_strerror(error);
+            << format_ai_error(error);
         m_result = {error, oss.str()};
     }
 }

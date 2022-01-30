@@ -21,15 +21,16 @@
 #include "network/addresserror.h"       // AddressError
 #include "network/buffer.h"             // Buffer
 #include "network/bytestring.h"         // ByteString
+#include "network/format-ai-error.h"    // format_ai_error()
 #include "network/get-length.h"         // get_length()
 #include "network/get-sa-pointer.h"     // get_sa_pointer()
 #include "network/is-valid.h"           // is_valid()
 #include "network/os-features.h"        // WIN32
 
 #ifdef WIN32
-#include <ws2tcpip.h>   // gai_strerror(), getnameinfo()
+#include <ws2tcpip.h>   // getnameinfo()
 #else
-#include <netdb.h>      // gai_strerror(), getnameinfo()
+#include <netdb.h>      // getnameinfo()
 #endif
 
 #include <algorithm>    // std::max()
@@ -74,7 +75,7 @@ auto Network::get_endpoint(const ByteString& str, int flags, bool verbose) ->
             << ") returned "
             << error
             << " ("
-            << ::gai_strerror(error)
+            << format_ai_error(error)
             << ')';
         return ErrorResult {error, oss.str()};
     }
