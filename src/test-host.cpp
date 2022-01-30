@@ -18,7 +18,6 @@
                                         // Hints, Host, HostVector,
                                         // Hostname, OsErrorResult,
                                         // Overloaded, get_endpoint(),
-                                        // get_hostname(),
                                         // get_hosts(), skip_first(),
                                         // uniquify()
 #include "network/assert.h"             // assert()
@@ -43,6 +42,7 @@
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <iterator>     // std::next()
+#include <optional>     // std::nullopt
 #include <ostream>      // std::ostream
 #include <span>         // std::span
 #include <string>       // std::string
@@ -215,7 +215,7 @@ namespace TestHost
         }
     }
 
-    static auto test_host(const Network::Hostname& hostname,
+    static auto test_host(const Network::OptionalHostname& hostname,
                           const Network::Hints& hints) -> void
     {
         const auto description {get_description(hints)};
@@ -255,11 +255,12 @@ namespace TestHost
             }, hosts_result);
     }
 
-    static auto test_host(const Network::Hostname& hostname, bool named) -> void
+    static auto test_host(const Network::OptionalHostname& hostname,
+                          bool named) -> void
     {
-        if (named) {
+        if (hostname && named) {
             std::cout << "Host: "
-                      << hostname
+                      << *hostname
                       << std::endl;
         }
 
@@ -306,17 +307,7 @@ auto main(int argc, char* argv[]) -> int
             }
         }
         else {
-            const auto hostname_result {Network::get_hostname()};
-            std::visit(Network::Overloaded {
-                    [&](const std::string& hostname) {
-                        TestHost::test_host(hostname, false);
-                    },
-                    [&](const Network::OsErrorResult& result) {
-                        std::cerr << "No hostname available: "
-                                  << result.string()
-                                  << std::endl;
-                    }
-                }, hostname_result);
+            TestHost::test_host(std::nullopt, false);
         }
     }
     catch (const std::exception& error) {

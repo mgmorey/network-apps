@@ -13,9 +13,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-hosts.h"          // Hostname, HostVector,
+#include "network/get-hosts.h"          // HostVector,
                                         // HostVectorResult,
-                                        // OptionalHints, get_hosts()
+                                        // OptionalHints,
+                                        // OptionalHostname,
+                                        // get_hosts()
 #include "network/insert-addrinfo.h"    // insert_addrinfo()
 #include "network/overloaded.h"         // Overloaded
 #include "network/uniquify.h"           // uniquify()
@@ -24,7 +26,7 @@
 #include <iterator>     // std::back_inserter()
 #include <optional>     // std::nullopt
 
-auto Network::get_hosts(const Network::Hostname& hostname,
+auto Network::get_hosts(const Network::OptionalHostname& hostname,
                         const Network::OptionalHints& hints,
                         bool verbose) -> Network::HostVectorResult
 {

@@ -16,13 +16,13 @@
 #ifndef NETWORK_GET_HOSTS_H
 #define NETWORK_GET_HOSTS_H
 
-#include "network/hostname.h"           // Hostname
 #include "network/hostvectorresult.h"   // HostVectorResult
 #include "network/optionalhints.h"      // OptionalHints
+#include "network/optionalhostname.h"   // OptionalHostname
 
 namespace Network
 {
-    extern auto get_hosts(const Hostname& hostname,
+    extern auto get_hosts(const OptionalHostname& hostname,
                           const OptionalHints& hints = {},
                           bool verbose = false) ->  HostVectorResult;
 }
