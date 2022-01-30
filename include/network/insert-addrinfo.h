@@ -30,7 +30,7 @@ namespace Network
                          const OptionalService& service,
                          const OptionalHints& hints,
                          OutputIterator it,
-                         bool verbose) -> ErrorResult
+                         bool verbose) noexcept -> ErrorResult
     {
         const auto list {AddrInfo(hostname, service, hints, verbose)};
 
@@ -52,7 +52,7 @@ namespace Network
     auto insert_addrinfo(const Endpoint& endpoint,
                          const OptionalHints& hints,
                          OutputIterator it,
-                         bool verbose) -> ErrorResult
+                         bool verbose) noexcept -> ErrorResult
     {
         return insert_addrinfo(endpoint.first,
                                endpoint.second,
