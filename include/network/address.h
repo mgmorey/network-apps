@@ -47,7 +47,7 @@ namespace Network
         ~Address() noexcept = default;
         auto operator=(const Address&) noexcept -> Address& = default;
         auto operator=(Address&&) noexcept -> Address& = default;
-        auto operator=(const value_type& t_value) noexcept -> Address&;
+        auto operator=(const value_type& t_value) -> Address&;
         auto operator<(const Address& t_address) const noexcept -> bool;
         auto operator>(const Address& t_address) const noexcept -> bool;
         auto operator==(const Address& t_address) const noexcept -> bool;

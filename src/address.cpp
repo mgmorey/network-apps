@@ -44,9 +44,13 @@ Network::Address::Address(value_type&& t_value) :
     }
 }
 
-auto Network::Address::operator=(const value_type& t_value) noexcept ->
+auto Network::Address::operator=(const value_type& t_value) ->
     Network::Address&
 {
+    if (!is_valid(t_value)) {
+        throw AddressError(t_value);
+    }
+
     m_value = t_value;
     return *this;
 }
