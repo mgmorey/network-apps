@@ -13,10 +13,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/addrinfo.h"           // AddrInfo, ErrorResult,
-                                        // List, OptionalHints,
+#include "network/addrinfo.h"           // AddrInfo, OptionalHints,
                                         // OptionalHostname,
-                                        // OptionalService, addrinfo,
+                                        // OptionalService,
+                                        // OsErrorResult, addrinfo,
                                         // operator<<()
 #include "network/format-ai-error.h"    // format_ai_error()
 #include "network/os-features.h"        // WIN32
