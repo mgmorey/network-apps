@@ -60,14 +60,15 @@ to-byte-string-bs.cpp to-byte-string-path.cpp to-byte-string-sa.cpp	\
 to-byte-string-sun.cpp to-string-bs.cpp to-string-sin.cpp		\
 to-string-sin6.cpp version.cpp
 
-common_sources = test-address.cpp test-bind.cpp test-connect.cpp	\
+test_sources = test-address.cpp test-bind.cpp test-connect.cpp	\
 test-context.cpp test-host.cpp test-hostname.cpp
 
 ifneq "$(os_name)" "MINGW64_NT"
-	posix_sources = test-socket.cpp unix-client.cpp unix-server.cpp
+	test_sources += test-socket.cpp
+	unix_sources = unix-client.cpp unix-server.cpp
 endif
 
-sources = $(libnetwork_sources) $(common_sources) $(posix_sources)
+sources = $(libnetwork_sources) $(test_sources) $(unix_sources)
 
 objects = $(addprefix $(tmpdir)/,$(addsuffix .o,$(basename	\
 $(sources))))
@@ -87,7 +88,7 @@ libnetwork_archive = libnetwork.a
 
 libraries = $(libnetwork_so_alias) $(libnetwork_so) $(libnetwork_archive)
 
-program_sources = $(common_sources) $(posix_sources)
+program_sources = $(test_sources) $(unix_sources)
 
 program_objects = $(addprefix $(tmpdir)/,$(addsuffix .o,$(basename	\
 $(program_sources))))
@@ -96,6 +97,8 @@ ifeq "$(os_type)" "ms-windows"
 	program_suffix = .exe
 endif
 
+test_programs = $(addsuffix $(program_suffix),$(basename $(test_sources)))
+unix_programs = $(addsuffix $(program_suffix),$(basename $(unix_sources)))
 programs = $(addsuffix $(program_suffix),$(basename $(program_sources)))
 
 depends = $(subst .o,.dep,$(objects))
@@ -156,8 +159,8 @@ sizes: $(sizes)
 	test -e $<~ && diff -b $<~ $< || true
 
 .PHONY: test
-test: $(sort $(filter test-%,$(basename $(programs))))
-	export HOSTNAME=`hostname`; set -x; for f in $^; do ./$$f >$$f.log; done
+test: $(test_programs)
+	bin/run-test-programs $^
 
 .PHONY: tidy
 tidy: $(sort $(sources))

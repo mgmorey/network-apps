@@ -16,8 +16,6 @@
 # Define functions
 
 format-native-flags = $(shell echo $(if $2,-W$1,) $2 | tr ' ' ',')
-set-suffix = $(shell echo $2 | sed 's/\([^.]*\).*/\1$1/')
-to-upper = $(shell echo $1 | tr '[:lower:]' '[:upper:]')
 
 # Define platform-specific variables
 

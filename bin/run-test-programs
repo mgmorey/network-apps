@@ -1,0 +1,8 @@
+#!/bin/sh -eu
+
+export HOSTNAME=$(hostname)
+
+for filename in "$@"; do
+    basename="$(basename "$filename" .exe)"
+    "./$basename" >"$basename.log"
+done
