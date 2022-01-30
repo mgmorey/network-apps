@@ -24,7 +24,7 @@
 
 auto Network::get_sockets(const Endpoint& endpoint,
                           const OptionalHints& hints,
-                          bool verbose) -> Network::SocketVectorResult
+                          bool verbose) noexcept -> Network::SocketVectorResult
 {
     SocketVector sockets;
     const auto result {insert_addrinfo(endpoint.first,

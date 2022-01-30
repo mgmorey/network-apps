@@ -26,7 +26,7 @@ namespace Network
     extern auto get_sockets(const OptionalHostname& hostname,
                             const OptionalService& service,
                             const OptionalHints& hints,
-                            bool verbose) -> SocketVectorResult;
+                            bool verbose) noexcept -> SocketVectorResult;
 }
 
 #endif

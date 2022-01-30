@@ -26,7 +26,7 @@
 auto Network::get_sockets(const OptionalHostname& hostname,
                           const OptionalService& service,
                           const OptionalHints& hints,
-                          bool verbose) -> Network::SocketVectorResult
+                          bool verbose) noexcept -> Network::SocketVectorResult
 {
     SocketVector sockets;
     const auto result {insert_addrinfo(hostname,
