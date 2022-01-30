@@ -23,7 +23,8 @@
 #include <cerrno>           // errno
 #endif
 
-auto Network::set_last_os_error(os_error_type error) -> Network::os_error_type
+auto Network::set_last_os_error(os_error_type error) noexcept ->
+    Network::os_error_type
 {
 #ifdef WIN32
     ::WSASetLastError(error);
