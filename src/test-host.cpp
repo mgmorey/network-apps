@@ -54,6 +54,7 @@
 namespace TestHost
 {
     using CodeSet = std::set<Network::os_error_type>;
+    using HintsVector = std::vector<Network::Hints>;
 
 #if defined(WIN32)
     static const CodeSet expected_code_nodata = {
@@ -143,7 +144,7 @@ namespace TestHost
         std::ostream& m_os;
     };
 
-    static auto get_description(const Network::OptionalHints& hints) -> std::string
+    static auto get_family(const Network::OptionalHints& hints) -> std::string
     {
 
         switch (hints ? hints->family() : 0) {
@@ -156,22 +157,15 @@ namespace TestHost
         }
     }
 
-    static auto get_hints_vector(bool named) -> std::vector<Network::Hints>
+    static auto get_hints_vector(bool is_local) ->
+        const std::vector<Network::Hints>&
     {
-        static constexpr Network::Hints inet {AI_CANONNAME, AF_INET};
-        static constexpr Network::Hints inet6 {AI_CANONNAME, AF_INET6};
-        static constexpr Network::Hints unspec {AI_CANONNAME};
-
-        std::vector<Network::Hints> result;
-
-        if (named) {
-            result = {inet, inet6};
-        }
-        else {
-            result = {unspec};
-        }
-
-        return result;
+        static constexpr Network::Hints inetHints {AI_CANONNAME, AF_INET};
+        static constexpr Network::Hints inet6Hints {AI_CANONNAME, AF_INET6};
+        static constexpr Network::Hints unspecHints {AI_CANONNAME};
+        static const HintsVector inetHintsVector {inetHints, inet6Hints};
+        static const HintsVector unspecHintsVector {unspecHints};
+        return is_local ? unspecHintsVector : inetHintsVector;
     }
 
     static auto get_hostname() -> Network::OptionalHostname
@@ -233,22 +227,22 @@ namespace TestHost
         }
     }
 
-    static auto test_host(const Network::OptionalHostname& hostname,
+    static auto test_host(const Network::OptionalHostname& host,
                           const Network::OptionalHints& hints = {}) -> void
     {
-        const auto description {get_description(hints)};
-        auto hosts_result {Network::get_hosts(hostname, hints)};
+        auto hosts_result {Network::get_hosts(host, hints)};
+        const auto family {get_family(hints)};
         std::visit(Network::Overloaded {
                 [&](Network::HostVector& hosts) {
                     if (hosts.empty()) {
                         return;
                     }
 
-                    if (description.empty()) {
+                    if (family.empty()) {
                         std::cout << "All";
                     }
                     else {
-                        std::cout << description;
+                        std::cout << family;
                     }
 
                     std::cout << " hosts:"
@@ -257,12 +251,12 @@ namespace TestHost
                                   Test(std::cout));
                 },
                 [&](const Network::OsErrorResult& result) {
-                    if (description.empty()) {
+                    if (family.empty()) {
                         std::cout << "No";
                     }
                     else {
                         std::cout << "No "
-                                  << description;
+                                  << family;
                     }
 
                     std::cout << " hosts:"
@@ -289,20 +283,20 @@ namespace TestHost
         assert(expected_code_nodata.count(actual_code) != 0);
     }
 
-    static auto test_host_valid(const Network::OptionalHostname& hostname) -> void
+    static auto test_host_valid(const Network::OptionalHostname& host) -> void
     {
-        bool is_local = !hostname || *hostname == get_hostname();
+        bool is_local = !host || *host == get_hostname();
 
-        if (hostname && !is_local) {
+        if (host && !is_local) {
             std::cout << "Host: "
-                      << *hostname
+                      << *host
                       << std::endl;
         }
 
-        const auto hints_vector {get_hints_vector(!is_local)};
+        const auto& hints_vector {get_hints_vector(is_local)};
 
         for (const auto& hints : hints_vector) {
-            test_host(hostname, hints);
+            test_host(host, hints);
         }
     }
 }
@@ -320,8 +314,8 @@ auto main(int argc, char* argv[]) -> int
         TestHost::test_host_invalid();
 
         if (args.size() > 1) {
-            for (const auto& hostname : Network::skip_first(args)) {
-                TestHost::test_host_valid(hostname);
+            for (const auto& host : Network::skip_first(args)) {
+                TestHost::test_host_valid(host);
             }
         }
         else {
