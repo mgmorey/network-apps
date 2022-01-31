@@ -232,6 +232,28 @@ namespace TestConnect
         }
     }
 
+    static auto test_connect(const Network::Endpoint& endpoint,
+                             const Network::Hostname& hostname,
+                             const Network::Hints& hints) -> void
+    {
+        const auto open_result {
+            Network::connect(endpoint, hints, verbose)
+        };
+        std::visit(Network::Overloaded {
+                [&](const Network::FdResultVector& fd_results) {
+                    std::for_each(fd_results.begin(),
+                                  fd_results.end(),
+                                  Test(endpoint,
+                                       hostname,
+                                       std::cout));
+                },
+                [&](const Network::ErrorResult& result) {
+                    std::cerr << result.string()
+                              << std::endl;
+                }
+            }, open_result);
+    }
+
     static auto test_connect_invalid(const Network::Endpoint& endpoint,
                                      const Network::Hints& hints) -> void
     {
@@ -258,22 +280,7 @@ namespace TestConnect
         const auto hostname_result {Network::get_hostname()};
         std::visit(Network::Overloaded {
                 [&](const std::string& hostname) {
-                    const auto open_result {
-                        Network::connect(endpoint, hints, verbose)
-                    };
-                    std::visit(Network::Overloaded {
-                            [&](const Network::FdResultVector& fd_results) {
-                                std::for_each(fd_results.begin(),
-                                              fd_results.end(),
-                                              Test(endpoint,
-                                                   hostname,
-                                                   std::cout));
-                            },
-                            [&](const Network::ErrorResult& result) {
-                                std::cerr << result.string()
-                                          << std::endl;
-                            }
-                        }, open_result);
+                    test_connect(endpoint, hostname, hints);
                 },
                 [&](const Network::OsErrorResult& result) {
                     std::cerr << "No hostname available: "
