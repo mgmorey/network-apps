@@ -44,6 +44,7 @@
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <iterator>     // std::next()
 #include <ostream>      // std::ostream
+#include <set>          // std::set
 #include <span>         // std::span
 #include <string>       // std::string
 #include <utility>      // std::pair
@@ -260,7 +261,15 @@ namespace TestHost
 
     static auto test_host_invalid_hostname() -> void
     {
-        Network::os_error_type code {0};
+        using CodeSet = std::set<int>;
+#if defined(WIN32)
+        static const CodeSet expected = {WSAHOST_NOT_FOUND};
+#elif defined(OS_FREEBSD)
+        static const CodeSet expected = {EAI_AGAIN, EAI_NONAME};
+#else
+        static const CodeSet expected = {EAI_AGAIN, EAI_NODATA, EAI_NONAME};
+#endif
+        Network::os_error_type actual {0};
         constexpr Network::Hints hints {AF_UNSPEC};
         const auto hosts_result {Network::get_hosts(".", hints)};
         std::visit(Network::Overloaded {
@@ -269,14 +278,10 @@ namespace TestHost
                 },
                 [&](const Network::OsErrorResult& result) {
                     print(result, "get_hosts() with invalid hostname");
-                    code = result.number();
+                    actual = result.number();
                 }
             }, hosts_result);
-#ifdef WIN32
-        assert(code == WSAHOST_NOT_FOUND);
-#else
-        assert(code == EAI_AGAIN || code == EAI_NODATA || code == EAI_NONAME);
-#endif
+        assert(expected.find(actual) != expected.end());
     }
 }
 
