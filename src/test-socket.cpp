@@ -38,7 +38,20 @@
 
 namespace TestSocket
 {
+    using OptionalPathnameVector = std::vector<Network::OptionalPathname>;
+
     static bool verbose {false};  // NOLINT
+
+    auto get_pathname_vector() -> const OptionalPathnameVector&
+    {
+        static const OptionalPathnameVector pathname_vector {
+            std::nullopt,
+            "/tmp/678",
+            "/tmp/67890123456",
+            "/tmp/6789012345678901234"
+        };
+        return pathname_vector;
+    }
 
     static auto parse_arguments(int argc, char** argv) ->
         std::vector<std::string>
@@ -125,13 +138,6 @@ auto main(int argc, char* argv[]) -> int
 {
     static constexpr Network::Hints hints {0, AF_UNIX, SOCK_STREAM};
 
-    const std::vector<Network::OptionalPathname> paths = {
-        std::nullopt,
-        "/tmp/678",
-        "/tmp/67890123456",
-        "/tmp/6789012345678901234"
-    };
-
     try {
         const auto args {TestSocket::parse_arguments(argc, argv)};
         const auto& context {Network::Context::instance()};
@@ -140,7 +146,9 @@ auto main(int argc, char* argv[]) -> int
             std::cerr << context;
         }
 
-        for (const auto& path : paths) {
+        const auto& path_vector {TestSocket::get_pathname_vector()};
+
+        for (const auto& path : path_vector) {
             TestSocket::test_unix_path(path);
         }
 
