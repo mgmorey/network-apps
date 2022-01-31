@@ -16,7 +16,8 @@
 #include "network/assert.h"             // assert()
 #include "network/network.h"            // Address, Bytes,
                                         // ByteStringResult, Context,
-                                        // Endpoint, FdResult, Hints,
+                                        // Endpoint, FdResult,
+                                        // FdResultVector, Hints,
                                         // OptionalHostname,
                                         // OsErrorResult, Overloaded,
                                         // close(), connect(),
@@ -44,6 +45,7 @@
 #include <exception>    // std::exception
 #include <iomanip>      // std::right, std::setw()
 #include <iostream>     // std::cerr, std::cout, std::endl
+#include <set>          // std::set
 #include <span>         // std::span
 #include <string>       // std::string
 #include <utility>      // std::move()
@@ -53,6 +55,8 @@
 
 namespace TestConnect
 {
+    using ErrorCodeSet = std::set<Network::os_error_type>;
+
     constexpr auto fd_width {6};
     constexpr auto indent_width {fd_width + 18};
     constexpr auto localhost {"example.com"};
@@ -160,6 +164,27 @@ namespace TestConnect
         std::ostream& m_os;
     };
 
+    static auto get_code_nodata() -> const ErrorCodeSet&
+    {
+#if defined(WIN32)
+        static const ErrorCodeSet expected_code_nodata = {
+            WSAHOST_NOT_FOUND
+        };
+#elif defined(OS_FREEBSD)
+        static const ErrorCodeSet expected_code_nodata = {
+            EAI_AGAIN,
+            EAI_NONAME
+        };
+#else
+        static const ErrorCodeSet expected_code_nodata = {
+            EAI_AGAIN,
+            EAI_NODATA,
+            EAI_NONAME
+        };
+#endif
+        return expected_code_nodata;
+    }
+
     static auto parse_arguments(int argc, char** argv) ->
         std::vector<std::string>
     {
@@ -191,8 +216,44 @@ namespace TestConnect
         return result;
     }
 
-    static auto test_connect(const Network::Endpoint& endpoint,
-                             const Network::Hints& hints) -> void
+    static auto print(const Network::OsErrorResult& result,
+                      const std::string& description = "") -> void
+    {
+        if (verbose) {
+            std::cout << "Error result"
+                      << (description.empty() ? "" : ": " + description)
+                      << std::endl
+                      << "    Number: "
+                      << result.number()
+                      << std::endl
+                      << "    String: "
+                      << result.string()
+                      << std::endl;
+        }
+    }
+
+    static auto test_connect_invalid(const Network::Endpoint& endpoint,
+                                     const Network::Hints& hints) -> void
+    {
+        Network::os_error_type actual_code {0};
+        const auto& expected_code {get_code_nodata()};
+        const auto open_result {
+            Network::connect(endpoint, hints, verbose)
+        };
+        std::visit(Network::Overloaded {
+                [&](const Network::FdResultVector& fd_results) {
+                    static_cast<void>(fd_results);
+                },
+                [&](const Network::ErrorResult& result) {
+                    print(result, "connect() with invalid endpoint");
+                    actual_code = result.number();
+                }
+            }, open_result);
+        assert(expected_code.count(actual_code) != 0);
+    }
+
+    static auto test_connect_valid(const Network::Endpoint& endpoint,
+                                   const Network::Hints& hints) -> void
     {
         const auto hostname_result {Network::get_hostname()};
         std::visit(Network::Overloaded {
@@ -236,11 +297,16 @@ auto main(int argc, char* argv[]) -> int
             std::cerr << context;
         }
 
-        const Network::Endpoint endpoint {
+        const Network::Endpoint invalid_endpoint {
+            ".",
+            TestConnect::localservice
+        };
+        TestConnect::test_connect_invalid(invalid_endpoint, hints);
+        const Network::Endpoint valid_endpoint {
             args.size() > 1 ? args[1] : TestConnect::localhost,
             args.size() > 2 ? args[2] : TestConnect::localservice
         };
-        TestConnect::test_connect(endpoint, hints);
+        TestConnect::test_connect_valid(valid_endpoint, hints);
     }
     catch (const std::exception& error) {
         std::cerr << error.what()
