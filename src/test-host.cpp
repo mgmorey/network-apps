@@ -30,7 +30,7 @@
                             // WSAHOST_NOT_FOUND
 #include <ws2tcpip.h>       // AI_ADDRCONFIG, AI_CANONNAME
 #else
-#include <netdb.h>          // AI_ADDRCONFIG, AI_CANONNAME,
+#include <netdb.h>          // AI_ADDRCONFIG, AI_CANONNAME, EAI_AGAIN,
                             // EAI_NODATA, EAI_NONAME
 #include <netinet/in.h>     // IPPROTO_TCP
 #include <sys/socket.h>     // AF_INET, AF_INET6, AF_UNSPEC,
@@ -275,7 +275,7 @@ namespace TestHost
 #if defined(OS_MINGW64_NT)
         assert(code == WSAHOST_NOT_FOUND);
 #else
-        assert(code == EAI_NODATA || code == EAI_NONAME);
+        assert(code == EAI_AGAIN || code == EAI_NODATA || code == EAI_NONAME);
 #endif
     }
 }
