@@ -8,9 +8,7 @@ run_test_program() (
     "./$basename" >"$logname"
 )
 
-if [ -z "${HOSTNAME-}" ]; then
-    export HOSTNAME=$(hostname)
-fi
+export HOSTNAME=${HOSTNAME-$(hostname)}
 
 for filename in "$@"; do
     run_test_program "$filename"
