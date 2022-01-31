@@ -53,6 +53,25 @@
 
 namespace TestHost
 {
+    using CodeSet = std::set<Network::os_error_type>;
+
+#if defined(WIN32)
+    static const CodeSet expected_code_nodata = {
+        WSAHOST_NOT_FOUND
+    };
+#elif defined(OS_FREEBSD)
+    static const CodeSet expected_code_nodata = {
+        EAI_AGAIN,
+        EAI_NONAME
+    };
+#else
+    static const CodeSet expected_code_nodata = {
+        EAI_AGAIN,
+        EAI_NODATA,
+        EAI_NONAME
+    };
+#endif
+
     static bool verbose {false};  // NOLINT
 
     class Test
@@ -261,15 +280,7 @@ namespace TestHost
 
     static auto test_host_invalid_hostname() -> void
     {
-        using CodeSet = std::set<int>;
-#if defined(WIN32)
-        static const CodeSet expected = {WSAHOST_NOT_FOUND};
-#elif defined(OS_FREEBSD)
-        static const CodeSet expected = {EAI_AGAIN, EAI_NONAME};
-#else
-        static const CodeSet expected = {EAI_AGAIN, EAI_NODATA, EAI_NONAME};
-#endif
-        Network::os_error_type actual {0};
+        Network::os_error_type actual_code {0};
         constexpr Network::Hints hints {AF_UNSPEC};
         const auto hosts_result {Network::get_hosts(".", hints)};
         std::visit(Network::Overloaded {
@@ -278,10 +289,10 @@ namespace TestHost
                 },
                 [&](const Network::OsErrorResult& result) {
                     print(result, "get_hosts() with invalid hostname");
-                    actual = result.number();
+                    actual_code = result.number();
                 }
             }, hosts_result);
-        assert(expected.find(actual) != expected.end());
+        assert(expected_code_nodata.count(actual_code) != 0);
     }
 }
 
