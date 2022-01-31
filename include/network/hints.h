@@ -23,9 +23,10 @@
 #include "network/socktype.h"           // SockType, operator<<()
 
 #ifdef WIN32
-#include <ws2tcpip.h>   // addrinfo
+#include <ws2tcpip.h>       // AF_UNSPEC, addrinfo
 #else
-#include <netdb.h>      // addrinfo
+#include <netdb.h>          // addrinfo
+#include <sys/socket.h>     // AF_UNSPEC
 #endif
 
 namespace Network
@@ -34,10 +35,10 @@ namespace Network
     {
         constexpr Hints() noexcept = default;
 
-        constexpr explicit Hints(family_type t_family,
+        constexpr explicit Hints(flags_type t_flags,
+                                 family_type t_family = AF_UNSPEC,
                                  socktype_type t_socktype = 0,
-                                 protocol_type t_protocol = 0,
-                                 flags_type t_flags = 0) noexcept :
+                                 protocol_type t_protocol = 0) noexcept :
             m_flags(t_flags),
             m_family(t_family),
             m_socktype(t_socktype),
