@@ -143,9 +143,10 @@ namespace TestHost
         std::ostream& m_os;
     };
 
-    static auto get_description(const Network::Hints& hints) -> std::string
+    static auto get_description(const Network::OptionalHints& hints) -> std::string
     {
-        switch (hints.family()) {
+
+        switch (hints ? hints->family() : 0) {
         case AF_INET:
             return "IPv4";
         case AF_INET6:
@@ -157,22 +158,32 @@ namespace TestHost
 
     static auto get_hints_vector(bool named) -> std::vector<Network::Hints>
     {
-        constexpr auto flags {AI_CANONNAME};
-        constexpr auto protocol {IPPROTO_TCP};
-        constexpr auto socktype {SOCK_STREAM};
+        static const Network::Hints inet {AI_CANONNAME, AF_INET};
+        static const Network::Hints inet6 {AI_CANONNAME, AF_INET6};
+        static const Network::Hints unspec {AI_CANONNAME};
+
         std::vector<Network::Hints> result;
 
         if (named) {
-            const Network::Hints inet {AF_INET, socktype, protocol, flags};
-            const Network::Hints inet6 {AF_INET6, socktype, protocol, flags};
             result = {inet, inet6};
         }
         else {
-            const Network::Hints unspec {AF_UNSPEC, socktype, protocol, flags};
             result = {unspec};
         }
 
         return result;
+    }
+
+    static auto get_hostname() -> Network::OptionalHostname
+    {
+        const char* hostname_c {std::getenv("HOSTNAME")};
+        Network::OptionalHostname hostname;
+
+        if (hostname_c != nullptr) {
+            hostname = hostname_c;
+        }
+
+        return hostname;
     }
 
     static auto parse_arguments(int argc, char** argv) ->
@@ -223,7 +234,7 @@ namespace TestHost
     }
 
     static auto test_host(const Network::OptionalHostname& hostname,
-                          const Network::Hints& hints) -> void
+                          const Network::OptionalHints& hints = {}) -> void
     {
         const auto description {get_description(hints)};
         auto hosts_result {Network::get_hosts(hostname, hints)};
@@ -262,27 +273,10 @@ namespace TestHost
             }, hosts_result);
     }
 
-    static auto test_host(const Network::OptionalHostname& hostname,
-                          bool named) -> void
-    {
-        if (hostname && named) {
-            std::cout << "Host: "
-                      << *hostname
-                      << std::endl;
-        }
-
-        const auto vhints {get_hints_vector(named)};
-
-        for (const auto& hints : vhints) {
-            test_host(hostname, hints);
-        }
-    }
-
-    static auto test_host_invalid_hostname() -> void
+    static auto test_host_invalid() -> void
     {
         Network::os_error_type actual_code {0};
-        constexpr Network::Hints hints {AF_UNSPEC};
-        const auto hosts_result {Network::get_hosts(".", hints)};
+        const auto hosts_result {Network::get_hosts(".")};
         std::visit(Network::Overloaded {
                 [&](const Network::HostVector& hosts) {
                     static_cast<void>(hosts);
@@ -293,6 +287,23 @@ namespace TestHost
                 }
             }, hosts_result);
         assert(expected_code_nodata.count(actual_code) != 0);
+    }
+
+    static auto test_host_valid(const Network::OptionalHostname& hostname) -> void
+    {
+        bool is_local = !hostname || *hostname == get_hostname();
+
+        if (hostname && !is_local) {
+            std::cout << "Host: "
+                      << *hostname
+                      << std::endl;
+        }
+
+        const auto hints_vector {get_hints_vector(!is_local)};
+
+        for (const auto& hints : hints_vector) {
+            test_host(hostname, hints);
+        }
     }
 }
 
@@ -306,22 +317,15 @@ auto main(int argc, char* argv[]) -> int
             std::cerr << context;
         }
 
-        TestHost::test_host_invalid_hostname();
+        TestHost::test_host_invalid();
 
         if (args.size() > 1) {
             for (const auto& hostname : Network::skip_first(args)) {
-                TestHost::test_host(hostname, true);
+                TestHost::test_host_valid(hostname);
             }
         }
         else {
-            const char* hostname_c {std::getenv("HOSTNAME")};
-            Network::OptionalHostname hostname;
-
-            if (hostname_c != nullptr) {
-                hostname = hostname_c;
-            }
-
-            TestHost::test_host(hostname, false);
+            TestHost::test_host_valid(TestHost::get_hostname());
         }
     }
     catch (const std::exception& error) {
