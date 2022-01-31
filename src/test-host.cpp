@@ -52,43 +52,6 @@
 
 namespace TestHost
 {
-#if defined(OS_CYGWIN_NT)
-    static const Network::OsErrorResult expected_result_invalid_hostname {
-        EAI_NONAME,
-        "Call to getaddrinfo(., <NULL>, ...) returned 8: "
-        "Name or service not known"
-    };
-#elif defined(OS_DARWIN)
-    static const Network::OsErrorResult expected_result_invalid_hostname {
-        EAI_NONAME,
-        "Call to getaddrinfo(., <NULL>, ...) returned 8: "
-        "nodename nor servname provided, or not known"
-    };
-#elif defined(OS_FREEBSD)
-    static const Network::OsErrorResult expected_result_invalid_hostname {
-        EAI_NONAME,
-        "Call to getaddrinfo(., <NULL>, ...) returned 8: "
-        "Name does not resolve"
-    };
-#elif defined(OS_LINUX)
-    static const Network::OsErrorResult expected_result_invalid_hostname {
-        EAI_NODATA,
-        "Call to getaddrinfo(., <NULL>, ...) returned -5: "
-        "No address associated with hostname"
-    };
-#elif defined(OS_MINGW64_NT)
-    static const Network::OsErrorResult expected_result_invalid_hostname {
-        WSAHOST_NOT_FOUND,
-        "Call to getaddrinfo(., <NULL>, ...) returned 11001: "
-        "No such host is known."
-    };
-#else
-    static const Network::OsErrorResult expected_result_invalid_hostname {
-        0,
-        ""
-    };
-#endif
-
     static bool verbose {false};  // NOLINT
 
     class Test
@@ -297,7 +260,7 @@ namespace TestHost
 
     static auto test_host_invalid_hostname() -> void
     {
-        Network::OsErrorResult actual_result;
+        Network::os_error_type code {0};
         constexpr Network::Hints hints {AF_UNSPEC};
         const auto hosts_result {Network::get_hosts(".", hints)};
         std::visit(Network::Overloaded {
@@ -305,11 +268,15 @@ namespace TestHost
                     static_cast<void>(hosts);
                 },
                 [&](const Network::OsErrorResult& result) {
-                    actual_result = result;
+                    print(result, "get_hosts() with invalid hostname");
+                    code = result.number();
                 }
             }, hosts_result);
-        print(actual_result, "get_hosts() with invalid hostname");
-        assert(actual_result == expected_result_invalid_hostname);
+#if defined(OS_MINGW64_NT)
+        assert(code == WSAHOST_NOT_FOUND);
+#else
+        assert(code == EAI_NODATA || code == EAI_NONAME);
+#endif
     }
 }
 
