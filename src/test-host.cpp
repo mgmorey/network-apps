@@ -53,25 +53,8 @@
 
 namespace TestHost
 {
-    using CodeSet = std::set<Network::os_error_type>;
+    using ErrorCodeSet = std::set<Network::os_error_type>;
     using HintsVector = std::vector<Network::Hints>;
-
-#if defined(WIN32)
-    static const CodeSet expected_code_nodata = {
-        WSAHOST_NOT_FOUND
-    };
-#elif defined(OS_FREEBSD)
-    static const CodeSet expected_code_nodata = {
-        EAI_AGAIN,
-        EAI_NONAME
-    };
-#else
-    static const CodeSet expected_code_nodata = {
-        EAI_AGAIN,
-        EAI_NODATA,
-        EAI_NONAME
-    };
-#endif
 
     static bool verbose {false};  // NOLINT
 
@@ -143,6 +126,27 @@ namespace TestHost
     private:
         std::ostream& m_os;
     };
+
+    static auto get_code_nodata() -> const ErrorCodeSet&
+    {
+#if defined(WIN32)
+        static const ErrorCodeSet expected_code_nodata = {
+            WSAHOST_NOT_FOUND
+        };
+#elif defined(OS_FREEBSD)
+        static const ErrorCodeSet expected_code_nodata = {
+            EAI_AGAIN,
+            EAI_NONAME
+        };
+#else
+        static const ErrorCodeSet expected_code_nodata = {
+            EAI_AGAIN,
+            EAI_NODATA,
+            EAI_NONAME
+        };
+#endif
+        return expected_code_nodata;
+    }
 
     static auto get_family(const Network::OptionalHints& hints) -> std::string
     {
@@ -270,6 +274,7 @@ namespace TestHost
     static auto test_host_invalid() -> void
     {
         Network::os_error_type actual_code {0};
+        const auto& expected_code {get_code_nodata()};
         const auto hosts_result {Network::get_hosts(".")};
         std::visit(Network::Overloaded {
                 [&](const Network::HostVector& hosts) {
@@ -280,7 +285,7 @@ namespace TestHost
                     actual_code = result.number();
                 }
             }, hosts_result);
-        assert(expected_code_nodata.count(actual_code) != 0);
+        assert(expected_code.count(actual_code) != 0);
     }
 
     static auto test_host_valid(const Network::OptionalHostname& host) -> void
