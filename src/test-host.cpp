@@ -16,8 +16,9 @@
 #include "network/network.h"            // Address, Bytes, Context,
                                         // Endpoint, EndpointResult,
                                         // Hints, Host, HostVector,
-                                        // Hostname, OsErrorResult,
-                                        // Overloaded, get_endpoint(),
+                                        // Hostname, OptionalHints,
+                                        // OsErrorResult, Overloaded,
+                                        // get_endpoint(),
                                         // get_hosts(), skip_first(),
                                         // uniquify()
 #include "network/assert.h"             // assert()
