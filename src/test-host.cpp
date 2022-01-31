@@ -158,9 +158,9 @@ namespace TestHost
 
     static auto get_hints_vector(bool named) -> std::vector<Network::Hints>
     {
-        static const Network::Hints inet {AI_CANONNAME, AF_INET};
-        static const Network::Hints inet6 {AI_CANONNAME, AF_INET6};
-        static const Network::Hints unspec {AI_CANONNAME};
+        static constexpr Network::Hints inet {AI_CANONNAME, AF_INET};
+        static constexpr Network::Hints inet6 {AI_CANONNAME, AF_INET6};
+        static constexpr Network::Hints unspec {AI_CANONNAME};
 
         std::vector<Network::Hints> result;
 
