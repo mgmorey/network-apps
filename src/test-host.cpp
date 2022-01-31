@@ -272,7 +272,7 @@ namespace TestHost
                     code = result.number();
                 }
             }, hosts_result);
-#if defined(OS_MINGW64_NT)
+#ifdef WIN32
         assert(code == WSAHOST_NOT_FOUND);
 #else
         assert(code == EAI_AGAIN || code == EAI_NODATA || code == EAI_NONAME);
