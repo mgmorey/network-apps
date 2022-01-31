@@ -42,6 +42,7 @@
 #include <exception>    // std::exception
 #include <iomanip>      // std::right, std::setw()
 #include <iostream>     // std::cerr, std::cout, std::endl
+#include <set>          // std::set
 #include <span>         // std::span
 #include <string>       // std::string
 #include <variant>      // std::get(), std::holds_alternative(),
@@ -51,6 +52,8 @@
 
 namespace TestBind
 {
+    using ErrorCodeSet = std::set<Network::os_error_type>;
+
     constexpr auto fd_width {6};
     constexpr auto localhost {"localhost"};
     constexpr auto localservice {"8085"};
@@ -129,6 +132,27 @@ namespace TestBind
         std::ostream& m_os;
     };
 
+    static auto get_code_nodata() -> const ErrorCodeSet&
+    {
+#if defined(WIN32)
+        static const ErrorCodeSet expected_code_nodata = {
+            WSAHOST_NOT_FOUND
+        };
+#elif defined(OS_FREEBSD)
+        static const ErrorCodeSet expected_code_nodata = {
+            EAI_AGAIN,
+            EAI_NONAME
+        };
+#else
+        static const ErrorCodeSet expected_code_nodata = {
+            EAI_AGAIN,
+            EAI_NODATA,
+            EAI_NONAME
+        };
+#endif
+        return expected_code_nodata;
+    }
+
     static auto parse_arguments(int argc, char** argv) ->
         std::vector<std::string>
     {
@@ -160,8 +184,44 @@ namespace TestBind
         return result;
     }
 
-    static auto test_bind(const Network::Endpoint& endpoint,
-                          const Network::Hints& hints) -> void
+    static auto print(const Network::OsErrorResult& result,
+                      const std::string& description = "") -> void
+    {
+        if (verbose) {
+            std::cout << "Error result"
+                      << (description.empty() ? "" : ": " + description)
+                      << std::endl
+                      << "    Number: "
+                      << result.number()
+                      << std::endl
+                      << "    String: "
+                      << result.string()
+                      << std::endl;
+        }
+    }
+
+    static auto test_bind_invalid(const Network::Endpoint& endpoint,
+                                  const Network::Hints& hints) -> void
+    {
+        Network::os_error_type actual_code {0};
+        const auto& expected_code {get_code_nodata()};
+        const auto open_result {
+            Network::bind(endpoint, hints, verbose)
+        };
+        std::visit(Network::Overloaded {
+                [&](const Network::FdResultVector& fd_results) {
+                    static_cast<void>(fd_results);
+                },
+                [&](const Network::ErrorResult& result) {
+                    print(result, "bind() with invalid endpoint");
+                    actual_code = result.number();
+                }
+            }, open_result);
+        assert(expected_code.count(actual_code) != 0);
+    }
+
+    static auto test_bind_valid(const Network::Endpoint& endpoint,
+                                const Network::Hints& hints) -> void
     {
         const auto open_result {Network::bind(endpoint, hints, verbose)};
         std::visit(Network::Overloaded {
@@ -190,11 +250,16 @@ auto main(int argc, char* argv[]) -> int
             std::cerr << context;
         }
 
-        const Network::Endpoint endpoint {
+        const Network::Endpoint invalid_endpoint {
+            ".",
+            TestBind::localservice
+        };
+        TestBind::test_bind_invalid(invalid_endpoint, hints);
+        const Network::Endpoint valid_endpoint {
             args.size() > 1 ? args[1] : TestBind::localhost,
             args.size() > 2 ? args[2] : TestBind::localservice
         };
-        TestBind::test_bind(endpoint, hints);
+        TestBind::test_bind_valid(valid_endpoint, hints);
     }
     catch (const std::exception& error) {
         std::cerr << error.what()
