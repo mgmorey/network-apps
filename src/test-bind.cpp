@@ -179,8 +179,8 @@ namespace TestBind
 
 auto main(int argc, char* argv[]) -> int
 {
-    constexpr Network::Hints hints
-        {AF_UNSPEC, SOCK_STREAM, IPPROTO_TCP, AI_CANONNAME};
+    static constexpr Network::Hints hints
+        {AI_CANONNAME, AF_UNSPEC, SOCK_STREAM, IPPROTO_TCP};
 
     try {
         const auto args {TestBind::parse_arguments(argc, argv)};

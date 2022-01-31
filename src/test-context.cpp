@@ -36,30 +36,30 @@
 namespace TestContext
 {
 #ifdef WIN32
-    constexpr auto expected_description {"WinSock 2.0"};
-    constexpr auto expected_error_code_running {0};
-    constexpr auto expected_error_code_stopped {WSANOTINITIALISED};
-    constexpr auto expected_error_stopped {
+    static constexpr auto expected_description {"WinSock 2.0"};
+    static constexpr auto expected_error_code_running {0};
+    static constexpr auto expected_error_code_stopped {WSANOTINITIALISED};
+    static constexpr auto expected_error_stopped {
         "Either the application has not called WSAStartup, "
         "or WSAStartup failed."
     };
-    constexpr auto expected_error_invalid_version {
+    static constexpr auto expected_error_invalid_version {
         "The Windows Sockets version requested is not supported."
     };
-    constexpr auto expected_status {"Running"};
-    constexpr auto expected_version {Network::Version {2, 2}};
+    static constexpr auto expected_status {"Running"};
+    static constexpr auto expected_version {Network::Version {2, 2}};
 #else
-    constexpr auto expected_description {
+    static constexpr auto expected_description {
         "Berkeley Software Distribution Sockets"
     };
-    constexpr auto expected_error_code_running {0};
-    constexpr auto expected_error_code_stopped {0};
-    constexpr auto expected_error_stopped {""};
-    constexpr auto expected_error_invalid_version {""};
-    constexpr auto expected_status {"Running"};
-    constexpr auto expected_version {Network::Version {}};
+    static constexpr auto expected_error_code_running {0};
+    static constexpr auto expected_error_code_stopped {0};
+    static constexpr auto expected_error_stopped {""};
+    static constexpr auto expected_error_invalid_version {""};
+    static constexpr auto expected_status {"Running"};
+    static constexpr auto expected_version {Network::Version {}};
 #endif
-    constexpr auto invalid_version {Network::Version {0}};
+    static constexpr auto invalid_version {Network::Version {0}};
 
     static bool verbose {false};  // NOLINT
 
