@@ -233,8 +233,8 @@ namespace TestConnect
     }
 
     static auto test_connect(const Network::Endpoint& endpoint,
-                             const Network::Hostname& hostname,
-                             const Network::Hints& hints) -> void
+                             const Network::Hints& hints,
+                             const Network::Hostname& hostname) -> void
     {
         const auto open_result {
             Network::connect(endpoint, hints, verbose)
@@ -280,7 +280,7 @@ namespace TestConnect
         const auto hostname_result {Network::get_hostname()};
         std::visit(Network::Overloaded {
                 [&](const std::string& hostname) {
-                    test_connect(endpoint, hostname, hints);
+                    test_connect(endpoint, hints, hostname);
                 },
                 [&](const Network::OsErrorResult& result) {
                     std::cerr << "No hostname available: "
