@@ -112,12 +112,8 @@ ifeq "$(USING_LIBASAN)" "true"
 endif
 endif
 
-ifeq "$(WITH_LOADMAPS)" "true"
-ifeq "$(is_clang)" "true"
-	ldflags += -Map=$(call set-suffix,.map,$@)
-else
-	ldflags += -map=$(call set-suffix,.map,$@)
-endif
+ifdef WITH_LOAD_MAP_OPT
+	ldflags += $(WITH_LOAD_MAP_OPT)=$(call set-suffix,.map,$@)
 endif
 
 ldflags_o = $(ldflags)
