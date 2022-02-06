@@ -104,7 +104,7 @@ endif
 
 CXXFLAGS += -Wall -Werror -Wextra -Wpedantic -Wshadow $(CXX_ASFLAGS)
 
-# LDFLAGS.o and LDFLAGS_SO
+# LDFLAGS
 
 ifndef NDEBUG
 ifeq "$(USING_LIBASAN)" "true"
@@ -113,12 +113,10 @@ endif
 endif
 
 ifeq "$(WITH_LOADMAPS)" "true"
-ifneq "$(is_gcc)" "true"
-	ldflags += -map $(call set-suffix,.map,$@)
-else ifneq "$(is_gnu_ld)" "true"
-	ldflags += -map $(call set-suffix,.map,$@)
-else
+ifeq "$(is_clang)" "true"
 	ldflags += -Map=$(call set-suffix,.map,$@)
+else
+	ldflags += -map=$(call set-suffix,.map,$@)
 endif
 endif
 
