@@ -113,7 +113,12 @@ endif
 endif
 
 ifdef WITH_LOAD_MAP_OPT
-	ldflags += $(WITH_LOAD_MAP_OPT)=$(call set-suffix,.map,$@)
+	load_map = $(call set-suffix,.map,$@)
+ifeq "$(is_gnu_id)" "true"
+	ldflags += $(WITH_LOAD_MAP_OPT)=$(load_map)
+else
+	ldflags += $(WITH_LOAD_MAP_OPT) $(load_map)
+endif
 endif
 
 ldflags_o = $(ldflags)
