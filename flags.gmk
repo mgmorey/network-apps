@@ -16,6 +16,9 @@
 # Define functions
 
 format-native-flags = $(shell echo $(if $2,-W$1,) $2 | tr ' ' ',')
+format-as-option = $(call format-option,$(is_gnu_as),$1,$2)
+format-ld-option = $(call format-option,$(is_gnu_ld),$1,$2)
+format-option = $(if $(filter true,$1),$2=$3,$2 $3)
 
 # Define platform-specific variables
 
@@ -73,8 +76,9 @@ CPPFLAGS += $(addprefix -D,$(sort $(cpp_symbols)))
 ifeq "$(WITH_LISTINGS)" "true"
 ifeq "$(is_gcc)" "true"
 ifeq "$(is_gnu_as)" "true"
-	ASFLAGS += -adghln=$(subst .o,.lst,$@)
-        CXX_ASFLAGS += $(call format-native-flags,a,$(ASFLAGS))
+	listing = $(subst .o,.lst,$@)
+	ASFLAGS += $(call format-as-option,-adghln,$(listing))
+	CXX_ASFLAGS += $(call format-native-flags,a,$(ASFLAGS))
 endif
 endif
 endif
@@ -114,27 +118,18 @@ endif
 
 ifdef WITH_LOAD_MAP_OPT
 	load_map = $(call set-suffix,.map,$@)
-ifeq "$(is_gnu_id)" "true"
-	ldflags += $(WITH_LOAD_MAP_OPT)=$(load_map)
-else
-	ldflags += $(WITH_LOAD_MAP_OPT) $(load_map)
-endif
+	ldflags += $(call format-ld-option,$(WITH_LOAD_MAP_OPT),$(load_map))
 endif
 
 ldflags_o = $(ldflags)
 ldflags_so = $(ldflags)
 
-ifneq "$(is_gcc)" "true"
-	ldflags_o += -rpath '\$$ORIGIN'
-else ifneq "$(is_gnu_ld)" "true"
-	ldflags_o += -rpath '\$$ORIGIN'
-else
-	ldflags_o += -rpath='\$$ORIGIN'
-endif
+ldflags_o += $(call format-ld-option,-rpath,'\$$ORIGIN')
 
 ifeq "$(is_gcc)" "true"
 ifeq "$(is_gnu_ld)" "true"
-	ldflags_so += -soname=$(call get-library-alias,$@)
+	soname = $(call get-library-alias,$@)
+	ldflags_so += $(call format-ld-option,-soname,$(soname))
 endif
 endif
 
