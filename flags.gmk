@@ -13,20 +13,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-# Define functions
+# Define functions for formatting compiler and linker options
 
-format-native-flags = $(shell echo $(if $2,-W$1,) $2 | tr ' ' ',')
-format-as-option = $(call format-option,$(is_gnu_as),$1,$2)
-format-ld-option = $(call format-option,$(is_gnu_ld),$1,$2)
 format-option = $(if $(filter true,$1),$2=$3,$2 $3)
-
-# Define platform-specific variables
-
-clang_tidy_version = $(shell bin/get-llvm-version clang-tidy$(LLVM_SUFFIX))
-is_clang = $(shell bin/is-clang $(CXX))
-is_gcc = $(shell bin/is-gcc $(CXX))
-is_gnu_as = $(shell bin/is-gnu-as $(AS))
-is_gnu_ld = $(shell bin/is-gnu-ld $(LD))
+format-option-as = $(call format-option,$(is_gnu_as),$1,$2)
+format-option-ld = $(call format-option,$(is_gnu_ld),$1,$2)
+format-option-native = $(shell echo $(if $2,-W$1,) $2 | tr ' ' ',')
 
 # ARFLAGS
 
@@ -77,8 +69,8 @@ ifeq "$(WITH_LISTINGS)" "true"
 ifeq "$(is_gcc)" "true"
 ifeq "$(is_gnu_as)" "true"
 	listing = $(subst .o,.lst,$@)
-	ASFLAGS += $(call format-as-option,-adghln,$(listing))
-	CXX_ASFLAGS += $(call format-native-flags,a,$(ASFLAGS))
+	ASFLAGS += $(call format-option-as,-adghln,$(listing))
+	CXX_ASFLAGS += $(call format-option-native,a,$(ASFLAGS))
 endif
 endif
 endif
@@ -118,18 +110,18 @@ endif
 
 ifdef WITH_LOAD_MAP_OPT
 	load_map = $(call set-suffix,.map,$@)
-	ldflags += $(call format-ld-option,$(WITH_LOAD_MAP_OPT),$(load_map))
+	ldflags += $(call format-option-ld,$(WITH_LOAD_MAP_OPT),$(load_map))
 endif
 
 ldflags_o = $(ldflags)
 ldflags_so = $(ldflags)
 
-ldflags_o += $(call format-ld-option,-rpath,'\$$ORIGIN')
+ldflags_o += $(call format-option-ld,-rpath,'\$$ORIGIN')
 
 ifeq "$(is_gcc)" "true"
 ifeq "$(is_gnu_ld)" "true"
 	soname = $(call get-library-alias,$@)
-	ldflags_so += $(call format-ld-option,-soname,$(soname))
+	ldflags_so += $(call format-option-ld,-soname,$(soname))
 endif
 endif
 
@@ -138,7 +130,7 @@ lib_target = $(filter lib%,$@)
 ldflags_native = $(if $(lib_target),$(ldflags_so),$(ldflags_o))
 ldflags_target = $(if $(lib_target),-shared,)
 
-LDFLAGS += $(call format-native-flags,l,$(ldflags_native)) $(ldflags_target)
+LDFLAGS += $(call format-option-native,l,$(ldflags_native)) $(ldflags_target)
 
 # LDLIBS
 
