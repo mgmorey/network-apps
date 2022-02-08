@@ -93,7 +93,6 @@ namespace TestAddress
     {
         const auto length {address.length()};
         const auto family {address.family()};
-        const auto data {address.data()};
         const auto port {address.port()};
         const auto size {address.size()};
         const auto text {address.text()};
