@@ -47,7 +47,7 @@ auto Network::Socket::operator=(const addrinfo& t_addrinfo) noexcept ->
 auto Network::Socket::operator<(const Socket& t_sock) const noexcept -> bool
 {
     return (hints() < t_sock.hints() ||
-            hints() < t_sock.hints());
+            host() < t_sock.host());
 }
 
 auto Network::Socket::operator>(const Socket& t_sock) const noexcept -> bool
