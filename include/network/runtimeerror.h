@@ -25,7 +25,7 @@ namespace Network
         public Error
     {
     public:
-        explicit RuntimeError(std::string t_str) noexcept;
+        explicit RuntimeError(const std::string& t_str) noexcept;
         RuntimeError(const RuntimeError&) noexcept = default;
         RuntimeError(RuntimeError&&) noexcept = default;
         ~RuntimeError() noexcept override = default;

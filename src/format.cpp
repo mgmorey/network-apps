@@ -17,27 +17,25 @@
                                         // std::endl, std::ostream,
                                         // std::string
 
-#include <utility>      // std::move()
-
-Network::Format::Format(std::string t_key) noexcept :
+Network::Format::Format(const std::string& t_key) noexcept :
     Format(m_delimiter_default,
            m_indent_default,
-           std::move(t_key))
+           t_key)
 {
 }
 
-Network::Format::Format(int t_indent, std::string t_key) noexcept :
+Network::Format::Format(int t_indent, const std::string& t_key) noexcept :
     Format(m_delimiter_default,
            t_indent,
-           std::move(t_key))
+           t_key)
 {
 }
 
-Network::Format::Format(std::string t_delimiter, int t_indent,
-                        std::string t_key) noexcept :
-    m_delimiter(std::move(t_delimiter)),
+Network::Format::Format(const std::string& t_delimiter, int t_indent,
+                        const std::string& t_key) noexcept :
+    m_delimiter(t_delimiter),
     m_indent(t_indent),
-    m_key(std::move(t_key))
+    m_key(t_key)
 {
 }
 

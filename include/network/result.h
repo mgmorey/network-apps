@@ -25,8 +25,8 @@ namespace Network
     {
         Result() noexcept = default;
 
-        Result(T t_number, std::string t_string) noexcept :
-            m_string(std::move(t_string)),
+        Result(T t_number, const std::string& t_string) noexcept :
+            m_string(t_string),
             m_number(t_number)
         {
         }

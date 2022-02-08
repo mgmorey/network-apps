@@ -15,9 +15,7 @@
 
 #include "network/runtimeerror.h"       // Error, RuntimeError
 
-#include <utility>     // std::move
-
-Network::RuntimeError::RuntimeError(std::string t_str) noexcept :
-    Error(std::move(t_str))
+Network::RuntimeError::RuntimeError(const std::string& t_str) noexcept :
+    Error(t_str)
 {
 }

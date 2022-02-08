@@ -15,10 +15,8 @@
 
 #include "network/error.h"              // Error
 
-#include <utility>     // std::move
-
-Network::Error::Error(std::string t_str) noexcept :
-    m_str(std::move(t_str))
+Network::Error::Error(const std::string& t_str) noexcept :
+    m_str(t_str)
 {
 }
 
