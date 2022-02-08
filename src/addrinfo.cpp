@@ -68,14 +68,12 @@ Network::AddrInfo::AddrInfo(const OptionalHostname& t_hostname,
 
     if (t_verbose) {
         if (t_hints) {
-        std::cerr << "Trying socket hints:"
-                  << std::endl
-                  << *t_hints
-                  << std::endl;
+            std::cerr << "Trying socket hints:"
+                      << std::endl
+                      << *t_hints
+                      << std::endl;
         }
-    }
 
-    if (t_verbose) {
         std::cerr << "Calling getaddrinfo("
                   << t_hostname.value_or(string_null)
                   << ", "
