@@ -17,6 +17,7 @@
 #define NETWORK_RESULT_H
 
 #include <string>       // std::string
+#include <utility>      // std::move()
 
 namespace Network
 {
@@ -27,6 +28,12 @@ namespace Network
 
         Result(T t_number, const std::string& t_string) noexcept :
             m_string(t_string),
+            m_number(t_number)
+        {
+        }
+
+        Result(T t_number, std::string&& t_string) noexcept :
+            m_string(std::move(t_string)),
             m_number(t_number)
         {
         }

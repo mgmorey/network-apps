@@ -19,3 +19,8 @@ Network::RuntimeError::RuntimeError(const std::string& t_str) noexcept :
     Error(t_str)
 {
 }
+
+Network::RuntimeError::RuntimeError(std::string&& t_str) noexcept :
+    Error(t_str)
+{
+}
