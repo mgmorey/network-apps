@@ -220,8 +220,6 @@ namespace TestContext
 
     static auto test_context_global_instance() -> void
     {
-        std::string status1;
-        std::string status2;
         std::string what;
 
         try {
