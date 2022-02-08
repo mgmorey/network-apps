@@ -44,7 +44,7 @@ static Network::fd_type sock;  // NOLINT
 static auto clean_up() -> void
 {
     // Close the socket.
-    if (sock >= 0) {
+    if (sock != Network::fd_null) {
         std::cerr << "Closing socket "
                   << sock
                   << std::endl;
