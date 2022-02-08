@@ -31,8 +31,8 @@ Network::Format::Format(int t_indent, const std::string& t_key) noexcept :
 {
 }
 
-Network::Format::Format(const std::string& t_delimiter, int t_indent,
-                        const std::string& t_key) noexcept :
+Network::Format::Format(const std::string& t_delimiter, int t_indent,  // NOLINT
+                        const std::string& t_key) noexcept :  // NOLINT
     m_delimiter(t_delimiter),
     m_indent(t_indent),
     m_key(t_key)

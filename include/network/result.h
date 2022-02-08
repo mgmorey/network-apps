@@ -26,6 +26,7 @@ namespace Network
     {
         Result() noexcept = default;
 
+        // NOLINTNEXTLINE
         Result(T t_number, const std::string& t_string) noexcept :
             m_string(t_string),
             m_number(t_number)
