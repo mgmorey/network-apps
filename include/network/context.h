@@ -30,7 +30,7 @@ namespace Network
         explicit Context(const Version& t_version = {});
         Context(const Context&) = delete;
         Context(const Context&&) = delete;
-        ~Context() noexcept;
+        ~Context();
         auto operator=(const Context&) -> Context& = delete;
         auto operator=(const Context&&) -> Context& = delete;
         [[nodiscard]] auto description() const noexcept -> std::string;

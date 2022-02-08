@@ -106,12 +106,12 @@ Network::Context::Context(const Version& t_version)
         // warning from clang-tidy: "thrown exception type is not
         // nothrow copy constructible [cert-err60-cpp]."
 
-        // NOLINTNEXTLINE
-        throw error;
+        // cppcheck-suppress exceptRethrowCopy
+        throw error;  // NOLINT
     }
 }
 
-Network::Context::~Context() noexcept
+Network::Context::~Context()
 {
     shutdown(failure_mode::return_zero);
 }
