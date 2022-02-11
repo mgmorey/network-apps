@@ -34,11 +34,7 @@ endif
 
 # CPPFLAGS
 
-ifeq "$(os_name)" "FreeBSD"
-	include_dirs += /usr/local/include
-endif
-
-include_dirs += include
+include_dirs = include
 
 ifeq "$(USING_DMALLOC)" "true"
 	cpp_symbols += DMALLOC DMALLOC_FUNC_CHECK
@@ -133,10 +129,6 @@ ldflags_target = $(if $(lib_target),-shared,)
 LDFLAGS += $(call format-option-native,l,$(ldflags_native)) $(ldflags_target)
 
 # LDLIBS
-
-ifeq "$(os_name)" "FreeBSD"
-	LDLIBS += -L/usr/local/lib
-endif
 
 ifeq "$(USING_DMALLOC)" "true"
 	LDLIBS += -ldmalloc
