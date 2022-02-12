@@ -166,6 +166,9 @@ sizes: $(sizes)
 test: $(test_programs)
 	bin/run-test-programs $^
 
+.PHONY: tags
+tags: $(tags)
+
 .PHONY: tidy
 tidy: $(sort $(sources))
 	clang-tidy$(LLVM_SUFFIX) $^ $(TIDY_FLAGS)
@@ -205,13 +208,13 @@ $(tmpdir)/%.o: %$(source_suffix)
 	$(COMPILE$(source_suffix)) $(OUTPUT_OPTION) $<
 
 $(tmpdir)/%.dep: %$(source_suffix)
-	$(CXX) $(CPPFLAGS) -MM $< | bin/make-makefile -f TAGS -o $@
+	$(CXX) $(CPPFLAGS) -MM $< | bin/make-makefile -f $(tags) -o $@
 
 $(commands):
 	bear -- $(MAKE_COMMAND)
 
-TAGS:
-	printf '%s\n' $(sort $^) | etags --declarations --language=$(language) -
+$(tags):
+	ctags -eR include src
 
 sizes.txt: $(sort $(libnetwork_so) $(objects) $(programs))
 	if [ -e $@ ]; then mv -f $@ $@~; fi
