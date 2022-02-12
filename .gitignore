@@ -58,6 +58,12 @@ dkms.conf
 # Backup files
 *~
 
+# Cache directory
+.cache
+
+# Compile commands
+compile_commands.json
+
 # CppCheck files
 *.a1
 *.s2
