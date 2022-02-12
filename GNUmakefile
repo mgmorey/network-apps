@@ -101,6 +101,7 @@ test_programs = $(addsuffix $(program_suffix),$(basename $(test_sources)))
 unix_programs = $(addsuffix $(program_suffix),$(basename $(unix_sources)))
 programs = $(addsuffix $(program_suffix),$(basename $(program_sources)))
 
+commands = compile_commands.json
 depends = $(subst .o,.dep,$(objects))
 listings = $(subst .o,.lst,$(objects))
 logfiles = $(addsuffix .log,$(basename $(programs)))
@@ -111,8 +112,8 @@ sizes = sizes.txt
 tags = TAGS
 
 binary_artifacts = $(libraries) $(objects) $(programs)
-text_artifacts = $(depends) $(listings) $(logfiles) $(mapfiles)	\
-$(dumps) $(sizes) $(sizes)~ $(tags)
+text_artifacts = $(commands) $(depends) $(listings) $(logfiles)	\
+$(mapfiles) $(dumps) $(sizes) $(sizes)~ $(tags)
 
 artifacts = $(binary_artifacts) $(text_artifacts)
 
@@ -124,7 +125,7 @@ LINK.o = $(strip $(CXX) $(LDFLAGS))
 # Define pseudotargets
 
 .PHONY: all
-all: $(libraries) $(programs) sizes
+all: $(libraries) $(programs)
 
 .PHONY: analyze
 analyze:
@@ -136,6 +137,9 @@ check: test
 .PHONY: clean
 clean:
 	rm -f $(artifacts)
+
+.PHONY: commands
+commands: $(commands)
 
 .PHONY: distclean
 distclean:
@@ -202,6 +206,9 @@ $(tmpdir)/%.o: %$(source_suffix)
 
 $(tmpdir)/%.dep: %$(source_suffix)
 	$(CXX) $(CPPFLAGS) -MM $< | bin/make-makefile -f TAGS -o $@
+
+$(commands):
+	bear -- $(MAKE_COMMAND)
 
 TAGS:
 	printf '%s\n' $(sort $^) | etags --declarations --language=$(language) -
