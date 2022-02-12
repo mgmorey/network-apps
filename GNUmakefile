@@ -214,7 +214,7 @@ $(commands):
 	bear -- $(MAKE_COMMAND)
 
 $(tags):
-	ctags -eR include src
+	ctags -e $(filter -D%,$(CPPFLAGS)) -R include src
 
 sizes.txt: $(sort $(libnetwork_so) $(objects) $(programs))
 	if [ -e $@ ]; then mv -f $@ $@~; fi
