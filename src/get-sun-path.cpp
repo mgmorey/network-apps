@@ -35,7 +35,8 @@
 #ifndef WIN32
 
 auto Network::get_sun_path(const ByteString& addr,
-                           const OptionalPathname& pathname) noexcept -> OptionalPathname
+                           const OptionalPathname& pathname) noexcept ->
+    OptionalPathname
 {
     assert(get_sa_family(addr) == AF_UNIX);
 
