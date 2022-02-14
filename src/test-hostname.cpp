@@ -30,6 +30,7 @@
 #include <vector>       // std::vector
 
 using Network::Context;
+using Network::Hostname;
 using Network::OsErrorResult;
 using Network::Overloaded;
 using Network::get_hostname;
@@ -73,7 +74,7 @@ namespace TestHostname
     {
         const auto hostname_result {get_hostname()};
         std::visit(Overloaded {
-                [&](const std::string& hostname) {
+                [&](const Hostname& hostname) {
                     std::cout << "Hostname: "
                               << hostname
                               << std::endl;
