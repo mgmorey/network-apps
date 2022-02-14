@@ -40,10 +40,10 @@ ifeq "$(USING_DMALLOC)" "true"
 	cpp_symbols += DMALLOC DMALLOC_FUNC_CHECK
 endif
 
-cpp_symbols += OS_$(call to-upper,$(os_name))
+cpp_symbols += OS_$(call to-macro,$(os_name))
 
 ifeq "$(os_name)" "Linux"
-	cpp_symbols += OS_LINUX_$(call to-upper,$(os_distro))
+	cpp_symbols += OS_LINUX_$(call to-macro,$(os_distro))
 endif
 
 ifeq "$(os_name)" "CYGWIN_NT"
