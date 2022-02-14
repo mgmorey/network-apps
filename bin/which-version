@@ -16,11 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-ALL=false
-CHECKSUM=false
-DELIMITER=$(printf '\t\n')
-RESOLVE=false
-
 abort() {
     printf "$@" >&2
     exit 1
@@ -31,10 +26,7 @@ assert() {
 }
 
 configure_platform() {
-    md5sum=$(get_md5sum_command)
-    realpath=$(get_realpath_command)
     sed=$(get_sed_command)
-    which=$(get_which_command)
 
     if ! /usr/bin/which $sed >/dev/null 2>&1; then
 	abort '%s: %s: Command not found\n' \
@@ -57,31 +49,7 @@ get_command_version() {
 
 get_filenames() {
     assert [ $# -ge 1 ]
-    $which "$@" | resolve_filenames | remove_duplicate_filenames
-}
-
-get_md5sum() {
-    assert [ $# -ge 1 ]
-    $md5sum "$@" | awk '{print $1}'
-}
-
-get_md5sum_command() {
-    case "$ID" in
-	(freebsd)
-	    printf '%s\n' gmd5sum
-	    ;;
-	(*)
-	    printf '%s\n' md5sum
-	    ;;
-    esac
-}
-
-get_realpath_command() {
-    if [ -x "${script_prefix}get-realpath" ]; then
-	printf '%s\n' "${script_prefix}get-realpath"
-    elif [ -x /bin/realpath ]; then
-	printf '%s\n' /bin/realpath
-    fi
+    which "$@"
 }
 
 get_sed_command() {
@@ -113,14 +81,6 @@ get_version_regex() {
 	"$script_prefix$script.txt"
 }
 
-get_which_command() {
-    printf '%s\n' /usr/bin/which
-
-    if [ "$all" = true ]; then
-	printf '%s\n' -a
-    fi
-}
-
 quote_lines() {
     awk -v quote="${1-\047}" '{print quote $0 quote}'
 }
@@ -139,17 +99,10 @@ remove_duplicate_lines() {
     awk '!_['"${1-}"'($0)]++'
 }
 
-resolve_filenames() {
-    if [ "$resolve" = true ]; then
-	quote_lines | xargs $realpath
-    else
-	cat
-    fi
-}
-
 usage() {
     cat <<EOF >&2
-Usage: $script [-1] [-a] [-c] [-d delimiter] [-n] [-r] COMMAND [COMMAND [...]]
+Usage: $script COMMAND
+       $script -h
 
 Print command paths and versions.
 EOF
@@ -166,31 +119,8 @@ usage_error() {
 }
 
 which_version() {
-    all=$ALL
-    checksum=$CHECKSUM
-    delimiter=$DELIMITER
-    resolve=$RESOLVE
-
-    while getopts 1acd:nrh opt; do
+    while getopts h opt; do
 	case $opt in
-	    (1)
-		all=false
-		;;
-	    (a)
-		all=true
-		;;
-	    (c)
-		checksum=true
-		;;
-	    (d)
-		delimiter="$OPTARG"
-		;;
-	    (n)
-		resolve=false
-		;;
-	    (r)
-		resolve=true
-		;;
 	    (h)
 		usage
 		exit 0
@@ -205,37 +135,33 @@ which_version() {
 
     if [ $# -lt 1 ]; then
 	usage_error '%s: Not enough arguments\n' "$script"
+    elif [ $# -gt 1 ]; then
+	usage_error '%s: Too many arguments\n' "$script"
     fi
 
     configure_platform
 
-    for command; do
-	root_command=$(get_command_rootname "$1")
+    command="$1"
+    root_command=$(get_command_rootname "$command")
 
-	if ! options=$(get_version_options $command) || [ -z "$options" ]; then
-	    abort '%s: %s: Not supported\n' "$script" $command
-	fi
+    if ! options=$(get_version_options $command) || [ -z "$options" ]; then
+	abort '%s: %s: Not supported\n' "$script" $command
+    fi
 
-	if ! regex=$(get_version_regex $command) || [ -z "$regex" ]; then
-	    abort '%s: %s: Not supported\n' "$script" $command
-	fi
+    if ! regex=$(get_version_regex $command) || [ -z "$regex" ]; then
+	abort '%s: %s: Not supported\n' "$script" $command
+    fi
 
-	get_filenames $command | while read filename; do
-	    for option in $(printf '%s\n' "$options" | tr ',' ' '); do
-		version=$(get_command_version "$filename" "$option" "$regex")
+    get_filenames $command | while read filename; do
+	for option in $(printf '%s\n' "$options" | tr ',' ' '); do
+	    version=$(get_command_version "$filename" "$option" "$regex")
 
-		if [ -n "$version" ]; then
-		    if [ "$checksum" = true ]; then
-			md5sum=$(get_md5sum "$filename")
-			printf '%s%s' "$md5sum" "$delimiter"
-		    fi
-
-		    printf '%s%s%s\n' "$version" "$delimiter" "$filename"
-		    break
-		fi
-	    done
+	    if [ -n "$version" ]; then
+		printf '%s\n' "$version"
+		break
+	    fi
 	done
-    done | remove_duplicate_lines
+    done
 }
 
 script=$(basename "$0")
