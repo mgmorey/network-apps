@@ -179,8 +179,7 @@ namespace TestHost
         }
     }
 
-    static auto get_hints_vector(bool is_local) ->
-        const std::vector<Hints>&
+    static auto get_hints_vector(bool is_local) -> const std::vector<Hints>&
     {
         static constexpr Hints inetHints {AI_CANONNAME, AF_INET};
         static constexpr Hints inet6Hints {AI_CANONNAME, AF_INET6};
