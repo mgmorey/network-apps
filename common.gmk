@@ -22,6 +22,7 @@ to-upper = $(shell echo $1 | tr '[:lower:]' '[:upper:]')
 # Define platform-specific variables
 
 clang_tidy_version = $(shell bin/get-llvm-version clang-tidy$(LLVM_SUFFIX))
+ctags_version = $(shell bin/which-version ctags)
 is_clang = $(shell bin/is-clang $(CXX))
 is_gcc = $(shell bin/is-gcc $(CXX))
 is_gnu_as = $(shell bin/is-gnu-as $(AS))

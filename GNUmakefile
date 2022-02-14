@@ -117,6 +117,12 @@ $(mapfiles) $(dumps) $(sizes) $(sizes)~
 
 artifacts = $(binary_artifacts) $(text_artifacts)
 
+all = $(libraries) $(programs)
+
+ifeq "$(shell bin/compare-versions $(ctags_version) 5)" "greater"
+	all += $(tags)
+endif
+
 # Define compiler and linker variables
 
 COMPILE.cc = $(strip $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c)
@@ -125,7 +131,7 @@ LINK.o = $(strip $(CXX) $(LDFLAGS))
 # Define pseudotargets
 
 .PHONY: all
-all: $(libraries) $(programs)
+all: $(all)
 
 .PHONY: analyze
 analyze:
