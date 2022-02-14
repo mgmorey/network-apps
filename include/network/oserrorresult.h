@@ -17,11 +17,30 @@
 #define NETWORK_OSERRORRESULT_H
 
 #include "network/os-error-type.h"      // os_error_type
-#include "network/result.h"             // Result
+
+#include <string>       // std::string
+#include <utility>      // std::move()
 
 namespace Network
 {
-    using OsErrorResult = Result<os_error_type>;
+    struct OsErrorResult
+    {
+        OsErrorResult() noexcept = default;
+
+        OsErrorResult(os_error_type t_number,
+                      const std::string& t_string) noexcept;
+        OsErrorResult(os_error_type t_number,
+                      std::string&& t_string) noexcept;
+        auto operator==(const OsErrorResult& t_result) const noexcept -> bool;
+        auto operator!=(const OsErrorResult& t_result) const noexcept -> bool;
+        operator bool() const noexcept;  // NOLINT
+        [[nodiscard]] auto number() const noexcept -> os_error_type;
+        [[nodiscard]] auto string() const noexcept -> std::string;
+
+    private:
+        os_error_type m_number {0};
+        std::string m_string {};
+    };
 }
 
 #endif

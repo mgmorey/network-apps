@@ -24,6 +24,13 @@ Network::Format::Format(const std::string& t_key) noexcept :
 {
 }
 
+Network::Format::Format(std::string&& t_key) noexcept :
+    Format(m_delimiter_default,
+           m_indent_default,
+           t_key)
+{
+}
+
 Network::Format::Format(int t_indent, const std::string& t_key) noexcept :
     Format(m_delimiter_default,
            t_indent,
@@ -31,11 +38,42 @@ Network::Format::Format(int t_indent, const std::string& t_key) noexcept :
 {
 }
 
-Network::Format::Format(const std::string& t_delimiter, int t_indent,  // NOLINT
-                        const std::string& t_key) noexcept :  // NOLINT
+Network::Format::Format(int t_indent, std::string&& t_key) noexcept :
+    Format(m_delimiter_default,
+           t_indent,
+           t_key)
+{
+}
+
+Network::Format::Format(const std::string& t_delimiter, int t_indent,
+                        const std::string& t_key) noexcept :
     m_delimiter(t_delimiter),
     m_indent(t_indent),
     m_key(t_key)
+{
+}
+
+Network::Format::Format(const std::string& t_delimiter, int t_indent,
+                        std::string&& t_key) noexcept :
+    m_delimiter(t_delimiter),
+    m_indent(t_indent),
+    m_key(std::move(t_key))
+{
+}
+
+Network::Format::Format(std::string&& t_delimiter, int t_indent,
+                        const std::string& t_key) noexcept :
+    m_delimiter(std::move(t_delimiter)),
+    m_indent(t_indent),
+    m_key(t_key)
+{
+}
+
+Network::Format::Format(std::string&& t_delimiter, int t_indent,
+                        std::string&& t_key) noexcept :
+    m_delimiter(std::move(t_delimiter)),
+    m_indent(t_indent),
+    m_key(std::move(t_key))
 {
 }
 

@@ -28,9 +28,17 @@ namespace Network
 
     public:
         explicit Format(const std::string& t_key) noexcept;
+        explicit Format(std::string&& t_key) noexcept;
         explicit Format(int t_indent, const std::string& t_key = "") noexcept;
+        explicit Format(int t_indent, std::string&& t_key) noexcept;
         Format(const std::string& t_delimiter, int indent,
                const std::string& key = "") noexcept;
+        Format(const std::string& t_delimiter, int indent,
+               std::string&& key) noexcept;
+        Format(std::string&& t_delimiter, int indent,
+               const std::string& key = "") noexcept;
+        Format(std::string&& t_delimiter, int indent,
+               std::string&& key) noexcept;
 
     private:
         static constexpr auto m_delimiter_default {","};
