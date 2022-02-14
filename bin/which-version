@@ -67,7 +67,7 @@ get_version_options() {
     assert [ $# -eq 1 ]
     assert [ -n "$1" ]
     "$script_prefix$script.awk" \
-	command="$root_command" \
+	command="$1" \
 	column=2 \
 	"$script_prefix$script.txt"
 }
@@ -76,7 +76,7 @@ get_version_regex() {
     assert [ $# -eq 1 ]
     assert [ -n "$1" ]
     "$script_prefix$script.awk" \
-	command="$root_command" \
+	command="$1" \
 	column=3 \
 	"$script_prefix$script.txt"
 }
@@ -144,11 +144,11 @@ which_version() {
     command="$1"
     root_command=$(get_command_rootname "$command")
 
-    if ! options=$(get_version_options $command) || [ -z "$options" ]; then
+    if ! options=$(get_version_options $root_command) || [ -z "$options" ]; then
 	abort '%s: %s: Not supported\n' "$script" $command
     fi
 
-    if ! regex=$(get_version_regex $command) || [ -z "$regex" ]; then
+    if ! regex=$(get_version_regex $root_command) || [ -z "$regex" ]; then
 	abort '%s: %s: Not supported\n' "$script" $command
     fi
 
