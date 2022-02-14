@@ -53,9 +53,30 @@
                         // std::visit()
 #include <vector>       // std::vector
 
+using Network::Address;
+using Network::ByteString;
+using Network::ByteStringResult;
+using Network::Context;
+using Network::Endpoint;
+using Network::ErrorResult;
+using Network::Fd;
+using Network::FdResult;
+using Network::FdResultVector;
+using Network::Hints;
+using Network::Hostname;
+using Network::OptionalHostname;
+using Network::OsErrorResult;
+using Network::Overloaded;
+using Network::connect;
+using Network::get_hostname;
+using Network::get_peername;
+using Network::get_sockname;
+using Network::os_error_type;
+using Network::string_null;
+
 namespace TestConnect
 {
-    using ErrorCodeSet = std::set<Network::os_error_type>;
+    using ErrorCodeSet = std::set<os_error_type>;
 
     constexpr auto fd_width {6};
     constexpr auto indent_width {fd_width + 18};
@@ -67,8 +88,8 @@ namespace TestConnect
     class Test
     {
     public:
-        Test(Network::Endpoint t_endpoint,
-             Network::OptionalHostname t_hostname,
+        Test(Endpoint t_endpoint,
+             OptionalHostname t_hostname,
              std::ostream& t_os) :
             m_endpoint(std::move(t_endpoint)),
             m_hostname(std::move(t_hostname)),
@@ -76,28 +97,27 @@ namespace TestConnect
         {
         }
 
-        auto operator()(const Network::FdResult& t_fd_result) -> void
+        auto operator()(const FdResult& t_fd_result) -> void
         {
-            std::visit(Network::Overloaded {
-                    [&](Network::Fd fd) {
+            std::visit(Overloaded {
+                    [&](Fd fd) {
                         test_socket(fd);
                     },
-                    [&](const Network::OsErrorResult& result) {
+                    [&](const OsErrorResult& result) {
                         std::cerr << result.string()
                                   << std::endl;
                     }
                 }, t_fd_result);
         }
 
-        static auto get_peeraddr(const Network::Fd& t_fd) ->
-            Network::ByteStringResult
+        static auto get_peeraddr(const Fd& t_fd) -> ByteStringResult
         {
-            auto peername_result {Network::get_peername(t_fd, verbose)};
-            std::visit(Network::Overloaded {
-                    [&](const Network::Bytes& addr) {
+            auto peername_result {get_peername(t_fd, verbose)};
+            std::visit(Overloaded {
+                    [&](const ByteString& addr) {
                         static_cast<void>(addr);
                     },
-                    [&](const Network::OsErrorResult& result) {
+                    [&](const OsErrorResult& result) {
                         std::cerr << result.string()
                                   << std::endl;
                     }
@@ -105,15 +125,14 @@ namespace TestConnect
             return peername_result;
         }
 
-        static auto get_sockaddr(const Network::Fd& t_fd) ->
-            Network::ByteStringResult
+        static auto get_sockaddr(const Fd& t_fd) -> ByteStringResult
         {
-            auto sockname_result {Network::get_sockname(t_fd, verbose)};
-            std::visit(Network::Overloaded {
-                    [&](const Network::Bytes& addr) {
+            auto sockname_result {get_sockname(t_fd, verbose)};
+            std::visit(Overloaded {
+                    [&](const ByteString& addr) {
                         static_cast<void>(addr);
                     },
-                    [&](const Network::OsErrorResult& result) {
+                    [&](const OsErrorResult& result) {
                         std::cerr << result.string()
                                   << std::endl;
                     }
@@ -121,7 +140,7 @@ namespace TestConnect
             return sockname_result;
         }
 
-        auto test_socket(const Network::Fd& t_fd) -> void
+        auto test_socket(const Fd& t_fd) -> void
         {
             const auto hostname {m_endpoint.first};
             const auto service {m_endpoint.second};
@@ -130,24 +149,24 @@ namespace TestConnect
             m_os << "Socket "
                  << std::right << std::setw(fd_width) << t_fd
                  << " connected "
-                 << m_hostname.value_or(Network::string_null)
+                 << m_hostname.value_or(string_null)
                  << " to "
-                 << service.value_or(Network::string_null)
+                 << service.value_or(string_null)
                  << " on "
-                 << hostname.value_or(Network::string_null)
+                 << hostname.value_or(string_null)
                  << std::endl;
 
-            if (std::holds_alternative<Network::Bytes>(peer_result) &&
-                std::holds_alternative<Network::Bytes>(sock_result)) {
-                const auto& peer {std::get<Network::Bytes>(peer_result)};
-                const auto& self {std::get<Network::Bytes>(sock_result)};
+            if (std::holds_alternative<ByteString>(peer_result) &&
+                std::holds_alternative<ByteString>(sock_result)) {
+                const auto& peer {std::get<ByteString>(peer_result)};
+                const auto& self {std::get<ByteString>(sock_result)};
                 m_os << "Socket "
                      << std::right << std::setw(fd_width) << t_fd
                      << " connected "
-                     << Network::Address(self)
+                     << Address(self)
                      << std::endl
                      << std::right << std::setw(indent_width) << "to "
-                     << Network::Address(peer)
+                     << Address(peer)
                      << std::endl;
             }
 
@@ -159,8 +178,8 @@ namespace TestConnect
         }
 
     private:
-        Network::Endpoint m_endpoint;
-        Network::OptionalHostname m_hostname;
+        Endpoint m_endpoint;
+        OptionalHostname m_hostname;
         std::ostream& m_os;
     };
 
@@ -216,7 +235,7 @@ namespace TestConnect
         return result;
     }
 
-    static auto print(const Network::OsErrorResult& result,
+    static auto print(const OsErrorResult& result,
                       const std::string& description = "") -> void
     {
         if (verbose) {
@@ -232,41 +251,37 @@ namespace TestConnect
         }
     }
 
-    static auto test_connect(const Network::Endpoint& endpoint,
-                             const Network::Hints& hints,
-                             const Network::Hostname& hostname) -> void
+    static auto test_connect(const Endpoint& endpoint,
+                             const Hints& hints,
+                             const Hostname& hostname) -> void
     {
-        const auto open_result {
-            Network::connect(endpoint, hints, verbose)
-        };
-        std::visit(Network::Overloaded {
-                [&](const Network::FdResultVector& fd_results) {
+        const auto open_result {connect(endpoint, hints, verbose)};
+        std::visit(Overloaded {
+                [&](const FdResultVector& fd_results) {
                     std::for_each(fd_results.begin(),
                                   fd_results.end(),
                                   Test(endpoint,
                                        hostname,
                                        std::cout));
                 },
-                [&](const Network::ErrorResult& result) {
+                [&](const ErrorResult& result) {
                     std::cerr << result.string()
                               << std::endl;
                 }
             }, open_result);
     }
 
-    static auto test_connect_invalid(const Network::Endpoint& endpoint,
-                                     const Network::Hints& hints) -> void
+    static auto test_connect_invalid(const Endpoint& endpoint,
+                                     const Hints& hints) -> void
     {
-        Network::os_error_type actual_code {0};
+        os_error_type actual_code {0};
         const auto& expected_code {get_code_nodata()};
-        const auto open_result {
-            Network::connect(endpoint, hints, verbose)
-        };
-        std::visit(Network::Overloaded {
-                [&](const Network::FdResultVector& fd_results) {
+        const auto open_result {connect(endpoint, hints, verbose)};
+        std::visit(Overloaded {
+                [&](const FdResultVector& fd_results) {
                     static_cast<void>(fd_results);
                 },
-                [&](const Network::ErrorResult& result) {
+                [&](const ErrorResult& result) {
                     print(result, "connect() with invalid endpoint");
                     actual_code = result.number();
                 }
@@ -274,15 +289,15 @@ namespace TestConnect
         assert(expected_code.count(actual_code) != 0);
     }
 
-    static auto test_connect_valid(const Network::Endpoint& endpoint,
-                                   const Network::Hints& hints) -> void
+    static auto test_connect_valid(const Endpoint& endpoint,
+                                   const Hints& hints) -> void
     {
-        const auto hostname_result {Network::get_hostname()};
-        std::visit(Network::Overloaded {
-                [&](const std::string& hostname) {
+        const auto hostname_result {get_hostname()};
+        std::visit(Overloaded {
+                [&](const Hostname& hostname) {
                     test_connect(endpoint, hints, hostname);
                 },
-                [&](const Network::OsErrorResult& result) {
+                [&](const OsErrorResult& result) {
                     std::cerr << "No hostname available: "
                               << result.string()
                               << std::endl;
@@ -293,23 +308,20 @@ namespace TestConnect
 
 auto main(int argc, char* argv[]) -> int
 {
-    static constexpr Network::Hints hints
+    static constexpr Hints hints
         {AI_CANONNAME, AF_UNSPEC, SOCK_STREAM, IPPROTO_TCP};
 
     try {
         const auto args {TestConnect::parse_arguments(argc, argv)};
-        const auto& context {Network::Context::instance()};
+        const auto& context {Context::instance()};
 
         if (TestConnect::verbose) {
             std::cerr << context;
         }
 
-        const Network::Endpoint invalid_endpoint {
-            ".",
-            TestConnect::localservice
-        };
+        const Endpoint invalid_endpoint {".", TestConnect::localservice};
         TestConnect::test_connect_invalid(invalid_endpoint, hints);
-        const Network::Endpoint valid_endpoint {
+        const Endpoint valid_endpoint {
             args.size() > 1 ? args[1] : TestConnect::localhost,
             args.size() > 2 ? args[2] : TestConnect::localservice
         };

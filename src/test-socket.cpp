@@ -36,9 +36,21 @@
 #include <variant>      // std::visit()
 #include <vector>       // std::vector
 
+using Network::Address;
+using Network::Context;
+using Network::FdPair;
+using Network::Hints;
+using Network::OptionalPathname;
+using Network::OsErrorResult;
+using Network::Overloaded;
+using Network::get_sun_path;
+using Network::is_valid;
+using Network::string_null;
+using Network::to_byte_string;
+
 namespace TestSocket
 {
-    using OptionalPathnameVector = std::vector<Network::OptionalPathname>;
+    using OptionalPathnameVector = std::vector<OptionalPathname>;
 
     static bool verbose {false};  // NOLINT
 
@@ -84,11 +96,11 @@ namespace TestSocket
         return result;
     }
 
-    static auto test_socketpair(const Network::Hints& hints) -> void
+    static auto test_socketpair(const Hints& hints) -> void
     {
         const auto socketpair_result {get_socketpair(hints, verbose)};
-        std::visit(Network::Overloaded {
-                [&](const Network::FdPair& fds) {
+        std::visit(Overloaded {
+                [&](const FdPair& fds) {
                     std::cout << "Socket "
                               << fds[0]
                               << " connected to socket "
@@ -104,21 +116,21 @@ namespace TestSocket
                               << " closed"
                               << std::endl;
                 },
-                [&](const Network::OsErrorResult& result) {
+                [&](const OsErrorResult& result) {
                     std::cerr << result.string()
                               << std::endl;
                 }
             }, socketpair_result);
     }
 
-    static auto test_unix_path(const Network::OptionalPathname& pathname) -> void
+    static auto test_unix_path(const OptionalPathname& pathname) -> void
     {
-        const auto addr {Network::to_byte_string(pathname)};
-        const auto unix_path {Network::get_sun_path(addr)};
+        const auto addr {to_byte_string(pathname)};
+        const auto unix_path {get_sun_path(addr)};
 
         if (pathname) {
             std::cout << "Unix domain path: "
-                      << unix_path.value_or(Network::string_null)
+                      << unix_path.value_or(string_null)
                       << std::endl;
             assert(unix_path == pathname);
         }
@@ -126,8 +138,8 @@ namespace TestSocket
             assert(static_cast<bool>(unix_path) == false);
         }
 
-        assert(Network::is_valid(addr, verbose));
-        Network::Address address {addr};
+        assert(is_valid(addr, verbose));
+        Address address {addr};
         std::cout << "Unix domain address: "
                   << address
                   << std::endl;
@@ -136,11 +148,11 @@ namespace TestSocket
 
 auto main(int argc, char* argv[]) -> int
 {
-    static constexpr Network::Hints hints {0, AF_UNIX, SOCK_STREAM};
+    static constexpr Hints hints {0, AF_UNIX, SOCK_STREAM};
 
     try {
         const auto args {TestSocket::parse_arguments(argc, argv)};
-        const auto& context {Network::Context::instance()};
+        const auto& context {Context::instance()};
 
         if (TestSocket::verbose) {
             std::cerr << context;

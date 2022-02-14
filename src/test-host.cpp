@@ -52,10 +52,28 @@
 #include <variant>      // std::visit()
 #include <vector>       // std::vector
 
+using Network::Address;
+using Network::ByteString;
+using Network::Context;
+using Network::Endpoint;
+using Network::EndpointResult;
+using Network::Hints;
+using Network::Host;
+using Network::HostVector;
+using Network::OptionalHints;
+using Network::OptionalHostname;
+using Network::OsErrorResult;
+using Network::Overloaded;
+using Network::get_endpoint;
+using Network::get_hosts;
+using Network::os_error_type;
+using Network::skip_first;
+using Network::uniquify;
+
 namespace TestHost
 {
-    using ErrorCodeSet = std::set<Network::os_error_type>;
-    using HintsVector = std::vector<Network::Hints>;
+    using ErrorCodeSet = std::set<os_error_type>;
+    using HintsVector = std::vector<Hints>;
 
     static bool verbose {false};  // NOLINT
 
@@ -69,14 +87,14 @@ namespace TestHost
         {
         }
 
-        auto operator()(const Network::Host& t_host) -> void
+        auto operator()(const Host& t_host) -> void
         {
-            const Network::Bytes addr {t_host.address()};
+            const ByteString addr {t_host.address()};
             const auto endpoint_result {get_endpoint(addr)};
-            std::visit(Network::Overloaded {
-                    [&](const Network::Endpoint& endpoint) {
+            std::visit(Overloaded {
+                    [&](const Endpoint& endpoint) {
                         Values values = {
-                            static_cast<Network::Address>(addr).text(),
+                            static_cast<Address>(addr).text(),
                             endpoint.first.value_or(""),
                             t_host.canonical_name().value_or("")
                         };
@@ -84,18 +102,17 @@ namespace TestHost
                                                  values.end(),
                                                  ""),
                                      values.end());
-                        Network::uniquify(values);
+                        uniquify(values);
                         print(values);
                     },
-                    [&](const Network::OsErrorResult& result) {
+                    [&](const OsErrorResult& result) {
                         std::cerr << result.string()
                                   << std::endl;
                     }
                 }, endpoint_result);
         }
 
-        static auto get_endpoint(const Network::Bytes& addr) ->
-            Network::EndpointResult
+        static auto get_endpoint(const ByteString& addr) -> EndpointResult
         {
             return Network::get_endpoint(addr, 0, verbose);
         }
@@ -149,7 +166,7 @@ namespace TestHost
         return expected_code_nodata;
     }
 
-    static auto get_family(const Network::OptionalHints& hints) -> std::string
+    static auto get_family(const OptionalHints& hints) -> std::string
     {
 
         switch (hints ? hints->family() : 0) {
@@ -163,20 +180,20 @@ namespace TestHost
     }
 
     static auto get_hints_vector(bool is_local) ->
-        const std::vector<Network::Hints>&
+        const std::vector<Hints>&
     {
-        static constexpr Network::Hints inetHints {AI_CANONNAME, AF_INET};
-        static constexpr Network::Hints inet6Hints {AI_CANONNAME, AF_INET6};
-        static constexpr Network::Hints unspecHints {AI_CANONNAME};
+        static constexpr Hints inetHints {AI_CANONNAME, AF_INET};
+        static constexpr Hints inet6Hints {AI_CANONNAME, AF_INET6};
+        static constexpr Hints unspecHints {AI_CANONNAME};
         static const HintsVector inetHintsVector {inetHints, inet6Hints};
         static const HintsVector unspecHintsVector {unspecHints};
         return is_local ? unspecHintsVector : inetHintsVector;
     }
 
-    static auto get_hostname() -> Network::OptionalHostname
+    static auto get_hostname() -> OptionalHostname
     {
         const char* hostname_c {std::getenv("HOSTNAME")};
-        Network::OptionalHostname hostname;
+        OptionalHostname hostname;
 
         if (hostname_c != nullptr) {
             hostname = hostname_c;
@@ -216,7 +233,7 @@ namespace TestHost
         return result;
     }
 
-    static auto print(const Network::OsErrorResult& result,
+    static auto print(const OsErrorResult& result,
                       const std::string& description = "") -> void
     {
         if (verbose) {
@@ -232,13 +249,13 @@ namespace TestHost
         }
     }
 
-    static auto test_host(const Network::OptionalHostname& host,
-                          const Network::OptionalHints& hints = {}) -> void
+    static auto test_host(const OptionalHostname& host,
+                          const OptionalHints& hints = {}) -> void
     {
-        auto hosts_result {Network::get_hosts(host, hints)};
+        auto hosts_result {get_hosts(host, hints)};
         const auto family {get_family(hints)};
-        std::visit(Network::Overloaded {
-                [&](Network::HostVector& hosts) {
+        std::visit(Overloaded {
+                [&](HostVector& hosts) {
                     if (hosts.empty()) {
                         return;
                     }
@@ -255,7 +272,7 @@ namespace TestHost
                     std::for_each(hosts.begin(), hosts.end(),
                                   Test(std::cout));
                 },
-                [&](const Network::OsErrorResult& result) {
+                [&](const OsErrorResult& result) {
                     if (family.empty()) {
                         std::cout << "No";
                     }
@@ -274,14 +291,14 @@ namespace TestHost
 
     static auto test_host_invalid() -> void
     {
-        Network::os_error_type actual_code {0};
+        os_error_type actual_code {0};
         const auto& expected_code {get_code_nodata()};
-        const auto hosts_result {Network::get_hosts(".")};
-        std::visit(Network::Overloaded {
-                [&](const Network::HostVector& hosts) {
+        const auto hosts_result {get_hosts(".")};
+        std::visit(Overloaded {
+                [&](const HostVector& hosts) {
                     static_cast<void>(hosts);
                 },
-                [&](const Network::OsErrorResult& result) {
+                [&](const OsErrorResult& result) {
                     print(result, "get_hosts() with invalid hostname");
                     actual_code = result.number();
                 }
@@ -289,7 +306,7 @@ namespace TestHost
         assert(expected_code.count(actual_code) != 0);
     }
 
-    static auto test_host_valid(const Network::OptionalHostname& host) -> void
+    static auto test_host_valid(const OptionalHostname& host) -> void
     {
         bool is_local = !host || *host == get_hostname();
 
@@ -311,7 +328,7 @@ auto main(int argc, char* argv[]) -> int
 {
     try {
         const auto args {TestHost::parse_arguments(argc, argv)};
-        const auto& context {Network::Context::instance()};
+        const auto& context {Context::instance()};
 
         if (TestHost::verbose) {
             std::cerr << context;
@@ -320,7 +337,7 @@ auto main(int argc, char* argv[]) -> int
         TestHost::test_host_invalid();
 
         if (args.size() > 1) {
-            for (const auto& host : Network::skip_first(args)) {
+            for (const auto& host : skip_first(args)) {
                 TestHost::test_host_valid(host);
             }
         }

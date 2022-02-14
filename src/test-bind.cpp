@@ -50,9 +50,26 @@
 #include <utility>      // std::move()
 #include <vector>       // std::vector
 
+using Network::Address;
+using Network::ByteString;
+using Network::ByteStringResult;
+using Network::Context;
+using Network::Endpoint;
+using Network::ErrorResult;
+using Network::Fd;
+using Network::FdResult;
+using Network::FdResultVector;
+using Network::Hints;
+using Network::OsErrorResult;
+using Network::Overloaded;
+using Network::bind;
+using Network::get_sockname;
+using Network::os_error_type;
+using Network::string_null;
+
 namespace TestBind
 {
-    using ErrorCodeSet = std::set<Network::os_error_type>;
+    using ErrorCodeSet = std::set<os_error_type>;
 
     constexpr auto fd_width {6};
     constexpr auto localhost {"localhost"};
@@ -63,34 +80,33 @@ namespace TestBind
     class Test
     {
     public:
-        Test(Network::Endpoint t_endpoint, std::ostream& t_os) :
+        Test(Endpoint t_endpoint, std::ostream& t_os) :
             m_endpoint(std::move(t_endpoint)),
             m_os(t_os)
         {
         }
 
-        auto operator()(const Network::FdResult& t_fd_result) -> void
+        auto operator()(const FdResult& t_fd_result) -> void
         {
-            std::visit(Network::Overloaded {
-                    [&](Network::Fd fd) {
+            std::visit(Overloaded {
+                    [&](Fd fd) {
                         test_socket(fd);
                     },
-                    [&](const Network::OsErrorResult& result) {
+                    [&](const OsErrorResult& result) {
                         std::cerr << result.string()
                                   << std::endl;
                     }
                 }, t_fd_result);
         }
 
-        static auto get_sockaddr(const Network::Fd& t_fd) ->
-            Network::ByteStringResult
+        static auto get_sockaddr(const Fd& t_fd) -> ByteStringResult
         {
-            auto sockname_result {Network::get_sockname(t_fd, verbose)};
-            std::visit(Network::Overloaded {
-                    [&](const Network::Bytes& addr) {
+            auto sockname_result {get_sockname(t_fd, verbose)};
+            std::visit(Overloaded {
+                    [&](const ByteString& addr) {
                         static_cast<void>(addr);
                     },
-                    [&](const Network::OsErrorResult& result) {
+                    [&](const OsErrorResult& result) {
                         std::cerr << result.string()
                                   << std::endl;
                     }
@@ -98,7 +114,7 @@ namespace TestBind
             return sockname_result;
         }
 
-        auto test_socket(const Network::Fd& t_fd) -> void
+        auto test_socket(const Fd& t_fd) -> void
         {
             const auto hostname {m_endpoint.first};
             const auto service {m_endpoint.second};
@@ -106,17 +122,17 @@ namespace TestBind
             m_os << "Socket "
                  << std::right << std::setw(fd_width) << t_fd
                  << " bound to "
-                 << service.value_or(Network::string_null)
+                 << service.value_or(string_null)
                  << " on "
-                 << hostname.value_or(Network::string_null)
+                 << hostname.value_or(string_null)
                  << std::endl;
 
-            if (std::holds_alternative<Network::Bytes>(sock_result)) {
-                const auto& self {std::get<Network::Bytes>(sock_result)};
+            if (std::holds_alternative<ByteString>(sock_result)) {
+                const auto& self {std::get<ByteString>(sock_result)};
                 m_os << "Socket "
                      << std::right << std::setw(fd_width) << t_fd
                      << " bound to "
-                     << Network::Address(self)
+                     << Address(self)
                      << std::endl;
             }
 
@@ -128,7 +144,7 @@ namespace TestBind
         }
 
     private:
-        Network::Endpoint m_endpoint;
+        Endpoint m_endpoint;
         std::ostream& m_os;
     };
 
@@ -184,7 +200,7 @@ namespace TestBind
         return result;
     }
 
-    static auto print(const Network::OsErrorResult& result,
+    static auto print(const OsErrorResult& result,
                       const std::string& description = "") -> void
     {
         if (verbose) {
@@ -200,19 +216,17 @@ namespace TestBind
         }
     }
 
-    static auto test_bind_invalid(const Network::Endpoint& endpoint,
-                                  const Network::Hints& hints) -> void
+    static auto test_bind_invalid(const Endpoint& endpoint,
+                                  const Hints& hints) -> void
     {
-        Network::os_error_type actual_code {0};
+        os_error_type actual_code {0};
         const auto& expected_code {get_code_nodata()};
-        const auto open_result {
-            Network::bind(endpoint, hints, verbose)
-        };
-        std::visit(Network::Overloaded {
-                [&](const Network::FdResultVector& fd_results) {
+        const auto open_result {bind(endpoint, hints, verbose)};
+        std::visit(Overloaded {
+                [&](const FdResultVector& fd_results) {
                     static_cast<void>(fd_results);
                 },
-                [&](const Network::ErrorResult& result) {
+                [&](const ErrorResult& result) {
                     print(result, "bind() with invalid endpoint");
                     actual_code = result.number();
                 }
@@ -220,16 +234,16 @@ namespace TestBind
         assert(expected_code.count(actual_code) != 0);
     }
 
-    static auto test_bind_valid(const Network::Endpoint& endpoint,
-                                const Network::Hints& hints) -> void
+    static auto test_bind_valid(const Endpoint& endpoint,
+                                const Hints& hints) -> void
     {
-        const auto open_result {Network::bind(endpoint, hints, verbose)};
-        std::visit(Network::Overloaded {
-                [&](const Network::FdResultVector& fd_results) {
+        const auto open_result {bind(endpoint, hints, verbose)};
+        std::visit(Overloaded {
+                [&](const FdResultVector& fd_results) {
                     std::for_each(fd_results.begin(), fd_results.end(),
                                   Test(endpoint, std::cout));
                 },
-                [&](const Network::ErrorResult& result) {
+                [&](const ErrorResult& result) {
                     std::cerr << result.string()
                               << std::endl;
                 }
@@ -239,23 +253,20 @@ namespace TestBind
 
 auto main(int argc, char* argv[]) -> int
 {
-    static constexpr Network::Hints hints
+    static constexpr Hints hints
         {AI_CANONNAME, AF_UNSPEC, SOCK_STREAM, IPPROTO_TCP};
 
     try {
         const auto args {TestBind::parse_arguments(argc, argv)};
-        const auto& context {Network::Context::instance()};
+        const auto& context {Context::instance()};
 
         if (TestBind::verbose) {
             std::cerr << context;
         }
 
-        const Network::Endpoint invalid_endpoint {
-            ".",
-            TestBind::localservice
-        };
+        const Endpoint invalid_endpoint {".", TestBind::localservice};
         TestBind::test_bind_invalid(invalid_endpoint, hints);
-        const Network::Endpoint valid_endpoint {
+        const Endpoint valid_endpoint {
             args.size() > 1 ? args[1] : TestBind::localhost,
             args.size() > 2 ? args[2] : TestBind::localservice
         };

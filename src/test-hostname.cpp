@@ -29,6 +29,11 @@
 #include <variant>      // std::visit()
 #include <vector>       // std::vector
 
+using Network::Context;
+using Network::OsErrorResult;
+using Network::Overloaded;
+using Network::get_hostname;
+
 namespace TestHostname
 {
     static bool verbose {false};  // NOLINT
@@ -66,14 +71,14 @@ namespace TestHostname
 
     static auto test_hostname() -> void
     {
-        const auto hostname_result {Network::get_hostname()};
-        std::visit(Network::Overloaded {
+        const auto hostname_result {get_hostname()};
+        std::visit(Overloaded {
                 [&](const std::string& hostname) {
                     std::cout << "Hostname: "
                               << hostname
                               << std::endl;
                 },
-                [&](const Network::OsErrorResult& result) {
+                [&](const OsErrorResult& result) {
                     std::cerr << "No hostname available: "
                               << result.string()
                               << std::endl;
@@ -86,7 +91,7 @@ auto main(int argc, char* argv[]) -> int
 {
     try {
         const auto args {TestHostname::parse_arguments(argc, argv)};
-        const auto& context {Network::Context::instance()};
+        const auto& context {Context::instance()};
 
         if (TestHostname::verbose) {
             std::cerr << context;

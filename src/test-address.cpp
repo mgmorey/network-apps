@@ -46,12 +46,28 @@
 #include <variant>      // std::visit()
 #include <vector>       // std::vector
 
+using Network::Address;
+using Network::Byte;
+using Network::ByteString;
+using Network::Context;
+using Network::Error;
+using Network::ErrorResult;
+using Network::Family;
+using Network::HostVector;
+using Network::Hostname;
+using Network::LogicError;
+using Network::Overloaded;
+using Network::get_hosts;
+using Network::get_sa_family;
+using Network::get_sa_length;
+using Network::is_valid;
+
 namespace TestAddress
 {
     constexpr auto expected_error_invalid_address {
         "Invalid socket address: 0xFFFFFFFFFFFFFFFF"
     };
-    constexpr auto invalid_addr_data {Network::Byte {0xFFU}};
+    constexpr auto invalid_addr_data {Byte {0xFFU}};
     constexpr auto invalid_addr_size {8};
     constexpr auto print_key_width {20};
     constexpr auto print_value_width {10};
@@ -89,7 +105,7 @@ namespace TestAddress
         return result;
     }
 
-    static auto print(const Network::Address& address) -> void
+    static auto print(const Address& address) -> void
     {
         const auto length {address.length()};
         const auto family {address.family()};
@@ -97,7 +113,7 @@ namespace TestAddress
         const auto size {address.size()};
         const auto text {address.text()};
         std::cout << "    "
-                  << Network::Family(family)
+                  << Family(family)
                   << std::endl;
         std::cout << std::setw(print_key_width) << "        Size: "
                   << std::right << std::setw(print_value_width) << size
@@ -113,7 +129,7 @@ namespace TestAddress
                   << std::endl;
     }
 
-    static auto print(const Network::Error& error) -> void
+    static auto print(const Error& error) -> void
     {
         if (verbose) {
             std::cout << "Exception: "
@@ -124,14 +140,14 @@ namespace TestAddress
 
     static auto test_address() -> void
     {
-        const Network::Bytes addr;
+        const ByteString addr;
         const auto size {addr.size()};
-        const auto length {Network::get_sa_length(addr)};
-        const auto family {Network::get_sa_family(addr)};
+        const auto length {get_sa_length(addr)};
+        const auto family {get_sa_family(addr)};
         assert(size == 0);
         assert(length == 0);
         assert(family == AF_UNSPEC);
-        assert(Network::is_valid(addr) == false);
+        assert(is_valid(addr) == false);
     }
 
     static auto test_address_invalid() -> void
@@ -139,11 +155,11 @@ namespace TestAddress
         std::string actual_error;
 
         try {
-            const Network::Bytes addr {invalid_addr_size, invalid_addr_data};
-            const Network::Address address {addr};
+            const ByteString addr {invalid_addr_size, invalid_addr_data};
+            const Address address {addr};
             static_cast<void>(address);
         }
-        catch (const Network::LogicError& error) {
+        catch (const LogicError& error) {
             print(error);
             actual_error = error.what();
         }
@@ -151,9 +167,9 @@ namespace TestAddress
         assert(actual_error == expected_error_invalid_address);
     }
 
-    static auto test_address_localhost(const Network::Bytes& addr) -> void
+    static auto test_address_localhost(const ByteString& addr) -> void
     {
-        const Network::Address address {addr};
+        const Address address {addr};
         const auto family {address.family()};
         const auto size {address.size()};
         const auto text {address.text()};
@@ -169,7 +185,7 @@ namespace TestAddress
             assert(false);
         }
 
-        assert(Network::is_valid(addr, verbose));
+        assert(is_valid(addr, verbose));
         print(address);
 
         switch (family) {
@@ -186,11 +202,11 @@ namespace TestAddress
 
     static auto test_address_localhost() -> void
     {
-        static const Network::Hostname localhost {"localhost"};
+        static const Hostname localhost {"localhost"};
 
-        const auto hosts_result {Network::get_hosts(localhost)};
-        std::visit(Network::Overloaded {
-                [&](const Network::HostVector& hosts) {
+        const auto hosts_result {get_hosts(localhost)};
+        std::visit(Overloaded {
+                [&](const HostVector& hosts) {
                     std::cout << "Socket addresses for "
                               << localhost
                               << ": "
@@ -200,7 +216,7 @@ namespace TestAddress
                         test_address_localhost(host.address());
                     }
                 },
-                [&](const Network::ErrorResult& result) {
+                [&](const ErrorResult& result) {
                     std::cout << "No "
                               << localhost
                               << " addresses: "
@@ -215,7 +231,7 @@ auto main(int argc, char* argv[]) -> int
 {
     try {
         const auto args {TestAddress::parse_arguments(argc, argv)};
-        const auto& context {Network::Context::instance()};
+        const auto& context {Context::instance()};
 
         if (TestAddress::verbose) {
             std::cerr << context;

@@ -31,7 +31,16 @@
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <span>         // std::span
+#include <variant>      // std::visit()
 #include <vector>       // std::vector
+
+using Network::Error;
+using Network::Hostname;
+using Network::OsErrorResult;
+using Network::Overloaded;
+using Network::Version;
+using Network::get_hostname;
+using Network::os_error_type;
 
 namespace TestContext
 {
@@ -47,7 +56,7 @@ namespace TestContext
         "The Windows Sockets version requested is not supported."
     };
     static constexpr auto expected_status {"Running"};
-    static constexpr auto expected_version {Network::Version {2, 2}};
+    static constexpr auto expected_version {Version {2, 2}};
 #else
     static constexpr auto expected_description {
         "Berkeley Software Distribution Sockets"
@@ -57,9 +66,9 @@ namespace TestContext
     static constexpr auto expected_error_stopped {""};
     static constexpr auto expected_error_invalid_version {""};
     static constexpr auto expected_status {"Running"};
-    static constexpr auto expected_version {Network::Version {}};
+    static constexpr auto expected_version {Version {}};
 #endif
-    static constexpr auto invalid_version {Network::Version {0}};
+    static constexpr auto invalid_version {Version {0}};
 
     static bool verbose {false};  // NOLINT
 
@@ -75,7 +84,7 @@ namespace TestContext
             return context;
         }
 
-        explicit Context(const Network::Version& t_version = {}) :
+        explicit Context(const Version& t_version = {}) :
             Network::Context(t_version)
         {
         }
@@ -91,16 +100,16 @@ namespace TestContext
         }
     };
 
-    static auto get_hostname() -> Network::OsErrorResult
+    static auto get_hostname() -> OsErrorResult
     {
-        Network::OsErrorResult result;
+        OsErrorResult result;
         const auto hostname_result {Network::get_hostname()};
-        std::visit(Network::Overloaded {
-                [&](const std::string& hostname) {
+        std::visit(Overloaded {
+                [&](const Hostname& hostname) {
                     static_cast<void>(hostname);
                     result = {0, ""};
                 },
-                [&](const Network::OsErrorResult& error_result) {
+                [&](const OsErrorResult& error_result) {
                     result = error_result;
                 }
             }, hostname_result);
@@ -162,7 +171,7 @@ namespace TestContext
                   << std::endl;
     }
 
-    static auto print(const Network::Error& error) -> void
+    static auto print(const Error& error) -> void
     {
         if (verbose) {
             std::cout << "Exception: "
@@ -171,7 +180,7 @@ namespace TestContext
         }
     }
 
-    static auto print(const Network::OsErrorResult& result,
+    static auto print(const OsErrorResult& result,
                       const std::string& description = "") -> void
     {
         if (verbose) {
@@ -189,7 +198,7 @@ namespace TestContext
 
     static auto test_context(const Context& context,
                              const std::string& description = "",
-                             Network::Version version = {}) -> void
+                             Version version = {}) -> void
     {
         if (!static_cast<bool>(version)) {
             version = expected_version;
@@ -203,24 +212,24 @@ namespace TestContext
 
     static auto test_context_cleaned_up() -> void
     {
-        Network::os_error_type error_code {0};
-        std::string what;
+        os_error_type error_code {0};
+        std::string actual_error;
 
         try {
             error_code = TestContext::Context::cleanup();
         }
-        catch (const Network::Error& error) {
+        catch (const Error& error) {
             print(error);
-            what = error.what();
+            actual_error = error.what();
         }
 
         assert(error_code == expected_error_code_stopped);
-        assert(what.empty());
+        assert(actual_error.empty());
     }
 
     static auto test_context_global_instance() -> void
     {
-        std::string what;
+        std::string actual_error;
 
         try {
             Context& context1 {Context::instance()};
@@ -235,39 +244,39 @@ namespace TestContext
             assert(!context2.is_started());
             context2.shutdown();
         }
-        catch (const Network::Error& error) {
+        catch (const Error& error) {
             print(error);
-            what = error.what();
+            actual_error = error.what();
         }
 
-        assert(what.empty());
+        assert(actual_error.empty());
         test_context_cleaned_up();
     }
 
     static auto test_context_invalid_version() -> void
     {
-        std::string what;
+        std::string actual_error;
 
         try {
             const Context context {invalid_version};
             static_cast<void>(context);
         }
-        catch (const Network::Error& error) {
+        catch (const Error& error) {
             print(error);
-            what = error.what();
+            actual_error = error.what();
         }
 
-        assert(what == expected_error_invalid_version);
+        assert(actual_error == expected_error_invalid_version);
         test_context_cleaned_up();
     }
 
     static auto test_context_local_instances() -> void
     {
-        constexpr Network::Version version1 {1, 0};
-        constexpr Network::Version version2 {2, 0};
+        constexpr Version version1 {1, 0};
+        constexpr Version version2 {2, 0};
         static_assert(version1 < version2);
         static_assert(version2 > version1);
-        std::string what;
+        std::string actual_error;
 
         try {
             Context context1 {version1};
@@ -275,53 +284,53 @@ namespace TestContext
             test_context(context1, "local 1", version1);
             test_context(context2, "local 2", version2);
         }
-        catch (const Network::Error& error) {
+        catch (const Error& error) {
             print(error);
-            what = error.what();
+            actual_error = error.what();
         }
 
-        assert(what.empty());
+        assert(actual_error.empty());
         test_context_cleaned_up();
     }
 
     static auto test_context_valid_with_shutdown() -> void
     {
-        std::string what;
+        std::string actual_error;
 
         try {
             Context context;
             test_context(context, "local 3");
             context.shutdown();
         }
-        catch (const Network::Error& error) {
+        catch (const Error& error) {
             print(error);
-            what = error.what();
+            actual_error = error.what();
         }
 
-        assert(what.empty());
+        assert(actual_error.empty());
         test_context_cleaned_up();
     }
 
     static auto test_context_valid_without_shutdown() -> void
     {
-        std::string what;
+        std::string actual_error;
 
         try {
             const Context context;
             test_context(context, "local 4");
         }
-        catch (const Network::Error& error) {
+        catch (const Error& error) {
             print(error);
-            what = error.what();
+            actual_error = error.what();
         }
 
-        assert(what.empty());
+        assert(actual_error.empty());
         test_context_cleaned_up();
     }
 
     static auto test_hostname_running() -> void
     {
-        std::string what;
+        std::string actual_error;
 
         try {
             const Context context;
@@ -331,28 +340,28 @@ namespace TestContext
             print(result, "get_hostname() with context");
             assert(error_code == expected_error_code_running);
         }
-        catch (const Network::Error& error) {
+        catch (const Error& error) {
             print(error);
-            what = error.what();
+            actual_error = error.what();
         }
 
-        assert(what.empty());
+        assert(actual_error.empty());
         test_context_cleaned_up();
     }
 
     static auto test_hostname_stopped() -> void
     {
-        std::string what;
+        std::string actual_error;
 
         try {
             static_cast<void>(get_hostname());
         }
-        catch (const Network::Error& error) {
+        catch (const Error& error) {
             print(error);
-            what = error.what();
+            actual_error = error.what();
         }
 
-        assert(what == expected_error_stopped);
+        assert(actual_error == expected_error_stopped);
         test_context_cleaned_up();
     }
 }
