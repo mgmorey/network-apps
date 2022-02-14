@@ -35,21 +35,21 @@
 #ifndef WIN32
 
 auto Network::get_sun_path(const ByteString& addr,
-                           const OptionalPathname& pathname) noexcept ->
+                           const OptionalPathname& path) noexcept ->
     OptionalPathname
 {
     assert(get_sa_family(addr) == AF_UNIX);
 
     if (addr.size() <= sun_path_offset) {
-        return pathname;
+        return path;
     }
 
     const auto *const sun {get_sun_pointer(addr)};
     assert(sun->sun_family == AF_UNIX);
     auto path_len_max {addr.size() - sun_path_offset};
-    const auto *path {static_cast<const char*>(sun->sun_path)};
-    auto path_len {strnlen(path, path_len_max)};
-    const std::string result {path, path_len};
+    const auto *c_path {static_cast<const char*>(sun->sun_path)};
+    auto path_len {strnlen(c_path, path_len_max)};
+    const std::string result {c_path, path_len};
     return result;
 }
 
