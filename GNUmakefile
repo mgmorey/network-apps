@@ -111,9 +111,9 @@ dumps = $(addsuffix .stackdump,$(programs))
 sizes = sizes.txt
 tags = TAGS
 
-binary_artifacts = $(libraries) $(objects) $(programs)
+binary_artifacts = $(libraries) $(objects) $(programs) $(tags)
 text_artifacts = $(commands) $(depends) $(listings) $(logfiles)	\
-$(mapfiles) $(dumps) $(sizes) $(sizes)~ $(tags)
+$(mapfiles) $(dumps) $(sizes) $(sizes)~
 
 artifacts = $(binary_artifacts) $(text_artifacts)
 
