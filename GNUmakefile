@@ -119,8 +119,10 @@ artifacts = $(binary_artifacts) $(text_artifacts)
 
 all = $(libraries) $(programs)
 
+ifeq "$(is_ctags_universal)" "true"
 ifeq "$(shell bin/compare-versions $(ctags_version) 5)" "greater"
 	all += $(tags)
+endif
 endif
 
 # Define compiler and linker variables
