@@ -307,24 +307,26 @@ namespace TestConnect
 
 auto main(int argc, char* argv[]) -> int
 {
+    using namespace TestConnect;
+
     static constexpr Hints hints
         {AI_CANONNAME, AF_UNSPEC, SOCK_STREAM, IPPROTO_TCP};
 
     try {
-        const auto args {TestConnect::parse_arguments(argc, argv)};
+        const auto args {parse_arguments(argc, argv)};
         const auto& context {Context::instance()};
 
-        if (TestConnect::verbose) {
+        if (verbose) {
             std::cerr << context;
         }
 
-        const Endpoint invalid_endpoint {".", TestConnect::localservice};
-        TestConnect::test_connect_invalid(invalid_endpoint, hints);
+        const Endpoint invalid_endpoint {".", localservice};
+        test_connect_invalid(invalid_endpoint, hints);
         const Endpoint valid_endpoint {
-            args.size() > 1 ? args[1] : TestConnect::localhost,
-            args.size() > 2 ? args[2] : TestConnect::localservice
+            args.size() > 1 ? args[1] : localhost,
+            args.size() > 2 ? args[2] : localservice
         };
-        TestConnect::test_connect_valid(valid_endpoint, hints);
+        test_connect_valid(valid_endpoint, hints);
     }
     catch (const std::exception& error) {
         std::cerr << error.what()

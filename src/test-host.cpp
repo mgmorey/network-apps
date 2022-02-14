@@ -325,23 +325,25 @@ namespace TestHost
 
 auto main(int argc, char* argv[]) -> int
 {
+    using namespace TestHost;
+
     try {
-        const auto args {TestHost::parse_arguments(argc, argv)};
+        const auto args {parse_arguments(argc, argv)};
         const auto& context {Context::instance()};
 
-        if (TestHost::verbose) {
+        if (verbose) {
             std::cerr << context;
         }
 
-        TestHost::test_host_invalid();
+        test_host_invalid();
 
         if (args.size() > 1) {
             for (const auto& host : skip_first(args)) {
-                TestHost::test_host_valid(host);
+                test_host_valid(host);
             }
         }
         else {
-            TestHost::test_host_valid(TestHost::get_hostname());
+            test_host_valid(get_hostname());
         }
     }
     catch (const std::exception& error) {

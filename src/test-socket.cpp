@@ -148,23 +148,25 @@ namespace TestSocket
 
 auto main(int argc, char* argv[]) -> int
 {
+    using namespace TestSocket;
+
     static constexpr Hints hints {0, AF_UNIX, SOCK_STREAM};
 
     try {
-        const auto args {TestSocket::parse_arguments(argc, argv)};
+        const auto args {parse_arguments(argc, argv)};
         const auto& context {Context::instance()};
 
-        if (TestSocket::verbose) {
+        if (verbose) {
             std::cerr << context;
         }
 
-        const auto& path_vector {TestSocket::get_pathname_vector()};
+        const auto& path_vector {get_pathname_vector()};
 
         for (const auto& path : path_vector) {
-            TestSocket::test_unix_path(path);
+            test_unix_path(path);
         }
 
-        TestSocket::test_socketpair(hints);
+        test_socketpair(hints);
         static_cast<void>(args);
     }
     catch (const std::exception& error) {

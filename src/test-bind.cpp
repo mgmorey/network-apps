@@ -252,22 +252,24 @@ namespace TestBind
 
 auto main(int argc, char* argv[]) -> int
 {
+    using namespace TestBind;
+
     static constexpr Hints hints
         {AI_CANONNAME, AF_UNSPEC, SOCK_STREAM, IPPROTO_TCP};
 
     try {
-        const auto args {TestBind::parse_arguments(argc, argv)};
+        const auto args {parse_arguments(argc, argv)};
         const auto& context {Context::instance()};
 
-        if (TestBind::verbose) {
+        if (verbose) {
             std::cerr << context;
         }
 
-        const Endpoint invalid_endpoint {".", TestBind::localservice};
-        TestBind::test_bind_invalid(invalid_endpoint, hints);
+        const Endpoint invalid_endpoint {".", localservice};
+        test_bind_invalid(invalid_endpoint, hints);
         const Endpoint valid_endpoint {
-            args.size() > 1 ? args[1] : TestBind::localhost,
-            args.size() > 2 ? args[2] : TestBind::localservice
+            args.size() > 1 ? args[1] : localhost,
+            args.size() > 2 ? args[2] : localservice
         };
         TestBind::test_bind_valid(valid_endpoint, hints);
     }

@@ -90,15 +90,17 @@ namespace TestHostname
 
 auto main(int argc, char* argv[]) -> int
 {
+    using namespace TestHostname;
+
     try {
-        const auto args {TestHostname::parse_arguments(argc, argv)};
+        const auto args {parse_arguments(argc, argv)};
         const auto& context {Context::instance()};
 
-        if (TestHostname::verbose) {
+        if (verbose) {
             std::cerr << context;
         }
 
-        TestHostname::test_hostname();
+        test_hostname();
         static_cast<void>(args);
     }
     catch (const std::exception& error) {

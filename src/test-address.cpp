@@ -229,17 +229,19 @@ namespace TestAddress
 
 auto main(int argc, char* argv[]) -> int
 {
+    using namespace TestAddress;
+
     try {
-        const auto args {TestAddress::parse_arguments(argc, argv)};
+        const auto args {parse_arguments(argc, argv)};
         const auto& context {Context::instance()};
 
-        if (TestAddress::verbose) {
+        if (verbose) {
             std::cerr << context;
         }
 
-        TestAddress::test_address();
-        TestAddress::test_address_invalid();
-        TestAddress::test_address_localhost();
+        test_address();
+        test_address_invalid();
+        test_address_localhost();
     }
     catch (const std::exception& error) {
         std::cerr << error.what()
