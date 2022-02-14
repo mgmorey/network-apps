@@ -140,19 +140,17 @@ which_version() {
     fi
 
     configure_platform
-
-    command="$1"
-    root_command=$(get_command_rootname "$command")
+    root_command=$(get_command_rootname "$1")
 
     if ! options=$(get_version_options $root_command) || [ -z "$options" ]; then
-	abort '%s: %s: Not supported\n' "$script" $command
+	abort '%s: %s: Not supported\n' "$script" "$1"
     fi
 
     if ! regex=$(get_version_regex $root_command) || [ -z "$regex" ]; then
-	abort '%s: %s: Not supported\n' "$script" $command
+	abort '%s: %s: Not supported\n' "$script" "$1"
     fi
 
-    get_filenames $command | while read filename; do
+    get_filenames "$1" | while read filename; do
 	for option in $(printf '%s\n' "$options" | tr ',' ' '); do
 	    version=$(get_command_version "$filename" "$option" "$regex")
 
