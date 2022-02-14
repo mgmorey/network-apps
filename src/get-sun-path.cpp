@@ -50,7 +50,7 @@ auto Network::get_sun_path(const ByteString& addr,
     const auto *path {static_cast<const char*>(sun->sun_path)};
     auto path_len {strnlen(path, path_len_max)};
     const std::string result {path, path_len};
-    return static_cast<OptionalPathname>(result);
+    return result;
 }
 
 #endif
