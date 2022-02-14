@@ -15,8 +15,8 @@
 
 #include "network/assert.h"             // assert()
 #include "network/network.h"            // Address, Bytes, Context,
-                                        // ErrorResult, Family,
-                                        // Hostname, HostVector,
+                                        // Family, Hostname,
+                                        // HostVector, OsErrorResult,
                                         // Overloaded, get_hosts(),
                                         // get_sa_family(),
                                         // get_sa_length(),
@@ -51,11 +51,11 @@ using Network::Byte;
 using Network::ByteString;
 using Network::Context;
 using Network::Error;
-using Network::ErrorResult;
 using Network::Family;
 using Network::HostVector;
 using Network::Hostname;
 using Network::LogicError;
+using Network::OsErrorResult;
 using Network::Overloaded;
 using Network::get_hosts;
 using Network::get_sa_family;
@@ -216,7 +216,7 @@ namespace TestAddress
                         test_address_localhost(host.address());
                     }
                 },
-                [&](const ErrorResult& result) {
+                [&](const OsErrorResult& result) {
                     std::cout << "No "
                               << localhost
                               << " addresses: "

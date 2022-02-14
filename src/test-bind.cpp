@@ -55,7 +55,6 @@ using Network::ByteString;
 using Network::ByteStringResult;
 using Network::Context;
 using Network::Endpoint;
-using Network::ErrorResult;
 using Network::Fd;
 using Network::FdResult;
 using Network::FdResultVector;
@@ -226,7 +225,7 @@ namespace TestBind
                 [&](const FdResultVector& fd_results) {
                     static_cast<void>(fd_results);
                 },
-                [&](const ErrorResult& result) {
+                [&](const OsErrorResult& result) {
                     print(result, "bind() with invalid endpoint");
                     actual_code = result.number();
                 }
@@ -243,7 +242,7 @@ namespace TestBind
                     std::for_each(fd_results.begin(), fd_results.end(),
                                   Test(endpoint, std::cout));
                 },
-                [&](const ErrorResult& result) {
+                [&](const OsErrorResult& result) {
                     std::cerr << result.string()
                               << std::endl;
                 }

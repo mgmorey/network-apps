@@ -58,7 +58,6 @@ using Network::ByteString;
 using Network::ByteStringResult;
 using Network::Context;
 using Network::Endpoint;
-using Network::ErrorResult;
 using Network::Fd;
 using Network::FdResult;
 using Network::FdResultVector;
@@ -264,7 +263,7 @@ namespace TestConnect
                                        hostname,
                                        std::cout));
                 },
-                [&](const ErrorResult& result) {
+                [&](const OsErrorResult& result) {
                     std::cerr << result.string()
                               << std::endl;
                 }
@@ -281,7 +280,7 @@ namespace TestConnect
                 [&](const FdResultVector& fd_results) {
                     static_cast<void>(fd_results);
                 },
-                [&](const ErrorResult& result) {
+                [&](const OsErrorResult& result) {
                     print(result, "connect() with invalid endpoint");
                     actual_code = result.number();
                 }

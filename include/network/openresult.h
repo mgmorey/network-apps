@@ -16,14 +16,14 @@
 #ifndef NETWORK_OPENRESULT_H
 #define NETWORK_OPENRESULT_H
 
-#include "network/errorresult.h"        // ErrorResult
 #include "network/fdresultvector.h"     // FdResultVector
+#include "network/oserrorresult.h"      // ErrorResult
 
 #include <variant>      // std::variant
 
 namespace Network
 {
-    using OpenResult = std::variant<FdResultVector, ErrorResult>;
+    using OpenResult = std::variant<FdResultVector, OsErrorResult>;
 }
 
 #endif
