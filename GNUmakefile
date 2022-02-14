@@ -117,7 +117,7 @@ $(mapfiles) $(dumps) $(sizes) $(sizes)~
 
 artifacts = $(binary_artifacts) $(text_artifacts)
 
-all = $(libraries) $(programs)
+all = $(libraries) $(programs) $(sizes)
 
 ifeq "$(is_ctags_universal)" "true"
 ifeq "$(shell bin/compare-versions $(ctags_version) 5)" "greater"
