@@ -42,6 +42,10 @@ endif
 
 cpp_symbols += OS_$(call to-upper,$(os_name))
 
+ifeq "$(os_name)" "Linux"
+	cpp_symbols += OS_LINUX_$(call to-upper,$(os_distro))
+endif
+
 ifeq "$(os_name)" "CYGWIN_NT"
 	cpp_symbols += _GNU_SOURCE
 else ifeq "$(os_name)" "Darwin"

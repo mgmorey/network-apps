@@ -52,6 +52,40 @@
                             __FILE__,                                   \
                             __LINE__,                                   \
                             #e))
+#elif defined(OS_LINUX_FEDORA)
+#undef assert
+/* When possible, define assert so that it does not add extra
+   parentheses around EXPR.  Otherwise, those added parentheses would
+   suppress warnings we'd expect to be detected by gcc's
+   -Wparentheses.  */
+# if defined __cplusplus
+// NOLINTNEXTLINE
+#  define assert(expr)							\
+     (static_cast <bool> (expr)						\
+      ? void (0)							\
+      : __assert_fail (#expr,                                           \
+                       __FILE__,                                        \
+                       __LINE__,                                        \
+                       static_cast<const char*>(__ASSERT_FUNCTION)))
+# elif !defined __GNUC__ || defined __STRICT_ANSI__
+#  define assert(expr)							\
+    ((expr)								\
+     ? __ASSERT_VOID_CAST (0)						\
+     : __assert_fail (#expr, __FILE__, __LINE__, __ASSERT_FUNCTION))
+# else
+/* The first occurrence of EXPR is not evaluated due to the sizeof,
+   but will trigger any pedantic warnings masked by the __extension__
+   for the second occurrence.  The ternary operator is required to
+   support function pointers and bit fields in this context, and to
+   suppress the evaluation of variable length arrays.  */
+#  define assert(expr)							\
+  ((void) sizeof ((expr) ? 1 : 0), __extension__ ({			\
+      if (expr)								\
+        ; /* empty */							\
+      else								\
+        __assert_fail (#expr, __FILE__, __LINE__, __ASSERT_FUNCTION);	\
+    }))
+# endif
 #endif
 
 #endif
