@@ -22,12 +22,16 @@ standard = $(language)20
 
 install_prefix = /usr/local
 
-cppbuild_dir = .cache/cppcheck
+cache_dir = .cache
+cppbuild_dir = $(cache_dir)/cppcheck
+dependency_dir = $(cache_dir)/dependency
 include_dir = include
+object_dir = object
 src_dir = src
-tmp_dir = tmp
 
+dependency_suffix = .dep
 include_suffix = .h
+object_suffix = .o
 source_suffix = .cpp
 
 # Set virtual paths
@@ -75,13 +79,14 @@ endif
 sources = $(libnetwork_sources) $(test_sources) $(unix_sources)
 sources_with_dir = $(addprefix $(src_dir)/,$(sources))
 
-objects = $(addprefix $(tmp_dir)/,$(addsuffix .o,$(basename	\
-$(sources))))
+objects = $(addprefix $(object_dir)/,$(addsuffix		\
+$(object_suffix),$(basename $(sources))))
 
-libnetwork_objects = $(addprefix $(tmp_dir)/,$(addsuffix .o,$(basename	\
-$(libnetwork_sources))))
+libnetwork_objects = $(addprefix $(object_dir)/,$(addsuffix	\
+$(object_suffix),$(basename $(libnetwork_sources))))
 
-libnetwork_members = $(patsubst %.o,$(libnetwork_archive)(%.o),	\
+libnetwork_members = $(patsubst					\
+%$(object_suffix),$(libnetwork_archive)(%$(object_suffix)),	\
 $(libnetwork_objects))
 
 ifneq "$(WITH_SHARED_OBJS)" "false"
@@ -95,8 +100,8 @@ libraries = $(libnetwork_so_alias) $(libnetwork_so) $(libnetwork_archive)
 
 program_sources = $(test_sources) $(unix_sources)
 
-program_objects = $(addprefix $(tmp_dir)/,$(addsuffix .o,$(basename	\
-$(program_sources))))
+program_objects = $(addprefix $(object_dir)/,$(addsuffix	\
+$(object_suffix),$(basename $(program_sources))))
 
 ifeq "$(os_type)" "ms-windows"
 	program_suffix = .exe
@@ -107,8 +112,9 @@ unix_programs = $(addsuffix $(program_suffix),$(basename $(unix_sources)))
 programs = $(addsuffix $(program_suffix),$(basename $(program_sources)))
 
 commands = compile_commands.json
-depends = $(subst .o,.dep,$(objects))
-listings = $(subst .o,.lst,$(objects))
+dependencies = $(addprefix $(dependency_dir)/,$(subst	\
+$(source_suffix),$(dependency_suffix),$(sources)))
+listings = $(subst $(object_suffix),.lst,$(objects))
 logfiles = $(addsuffix .log,$(basename $(programs)))
 mapfiles = $(addsuffix .map,$(basename $(programs)) libnetwork)
 
@@ -117,7 +123,7 @@ sizes = sizes.txt
 tags = TAGS
 
 binary_artifacts = $(libraries) $(objects) $(programs) $(tags)
-text_artifacts = $(commands) $(depends) $(listings) $(logfiles)	\
+text_artifacts = $(commands) $(dependencies) $(listings) $(logfiles)	\
 $(mapfiles) $(dumps) $(sizes) $(sizes)~
 
 artifacts = $(binary_artifacts) $(text_artifacts)
@@ -135,7 +141,7 @@ all += test
 # Define compiler and linker variables
 
 COMPILE.cc = $(strip $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c)
-LINK.o = $(strip $(CXX) $(LDFLAGS))
+LINK$(object_suffix) = $(strip $(CXX) $(LDFLAGS))
 
 # Define pseudotargets
 
@@ -163,12 +169,13 @@ commands: $(commands)
 
 .PHONY: distclean
 distclean:
-	rm -rf $(sort .cache $(tmp_dir) $(filter-out $(tmp_dir)/%,$(artifacts)))
+	rm -rf $(sort $(cache_dir) $(object_dir) $(filter-out	\
+$(cache_dir)/%,$(filter-out $(object_dir)/%,$(artifacts))))
 
 .PHONY: dos2unix
 
 dos2unix:
-	dos2unix $(sort $(wildcard $(filter-out %.dep,$(text_artifacts))))
+	dos2unix $(sort $(filter-out %$(dependency_suffix),$(text_artifacts)))
 
 .PHONY: install
 install: $(libraries)
@@ -201,7 +208,7 @@ unix:
 # Define targets
 
 $(libnetwork_so): $(sort $(libnetwork_objects))
-	$(LINK.o) -o $@ $^ $(LDLIBS)
+	$(LINK$(object_suffix)) -o $@ $^ $(LDLIBS)
 
 $(libnetwork_so_alias): $(libnetwork_so)
 	ln -sf $< $@
@@ -220,14 +227,14 @@ $(programs): $(word 1,$(libraries))
 (%): %
 	$(AR) $(ARFLAGS) $@ $<
 
-%$(program_suffix): $(tmp_dir)/%.o
-	$(LINK.o) -o $@ $^ $(LDLIBS)
+%$(program_suffix): $(object_dir)/%$(object_suffix)
+	$(LINK$(object_suffix)) -o $@ $^ $(LDLIBS)
 
-$(tmp_dir)/%.o: %$(source_suffix)
-	$(COMPILE$(source_suffix)) $(OUTPUT_OPTION) $<
-
-$(tmp_dir)/%.dep: %$(source_suffix)
+$(dependency_dir)/%$(dependency_suffix): %$(source_suffix)
 	$(CXX) $(CPPFLAGS) -MM $< | bin/make-makefile -f $(tags) -o $@
+
+$(object_dir)/%$(object_suffix): %$(source_suffix)
+	$(COMPILE$(source_suffix)) $(OUTPUT_OPTION) $<
 
 $(commands):
 	bear -- $(MAKE_COMMAND)
@@ -239,16 +246,21 @@ sizes.txt: $(sort $(libnetwork_so) $(objects) $(programs))
 	if [ -e $@ ]; then mv -f $@ $@~; fi
 	size $^ >$@
 
-$(objects) $(depends): | $(tmp_dir)
+$(dependencies): | $(dependency_dir)
+
+$(objects): | $(object_dir)
 
 $(cppbuild_dir):
 	mkdir -p $(cppbuild_dir)
 
-$(tmp_dir):
-	mkdir -p $(tmp_dir)
+$(dependency_dir):
+	mkdir -p $(dependency_dir)
+
+$(object_dir):
+	mkdir -p $(object_dir)
 
 # Include dependency files
 
 ifeq "$(filter %clean,$(MAKECMDGOALS))" "$(filter-out %clean,$(MAKECMDGOALS))"
-include $(depends)
+include $(dependencies)
 endif
