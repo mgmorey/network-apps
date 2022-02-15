@@ -124,8 +124,10 @@ sizes = sizes.txt
 tags = TAGS
 
 binary_artifacts = $(libraries) $(objects) $(programs) $(tags)
-text_artifacts = $(commands) $(dependencies) $(listings) $(logfiles)	\
-$(mapfiles) $(dumps) $(sizes) $(sizes)~
+build_artifacts = $(libraries) $(listings) $(mapfiles) $(objects)	\
+$(programs) $(sizes) $(sizes)~
+text_artifacts = $(commands) $(dependencies) $(dumps) $(listings)	\
+$(logfiles) $(mapfiles) $(sizes) $(sizes)~
 
 artifacts = $(binary_artifacts) $(text_artifacts)
 
@@ -167,7 +169,7 @@ check-syntax:
 
 .PHONY: clean
 clean:
-	rm -f $(sort $(wildcard $(artifacts)))
+	rm -f $(sort $(wildcard $(build_artifacts)))
 
 .PHONY: commands
 commands: $(commands)
