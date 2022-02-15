@@ -175,7 +175,8 @@ $(cache_dir)/%,$(filter-out $(object_dir)/%,$(artifacts))))
 .PHONY: dos2unix
 
 dos2unix:
-	dos2unix $(sort $(filter-out %$(dependency_suffix),$(text_artifacts)))
+	dos2unix $(sort $(wildcard $(filter-out			\
+%$(dependency_suffix),$(text_artifacts))))
 
 .PHONY: install
 install: $(libraries)
