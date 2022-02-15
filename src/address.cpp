@@ -21,9 +21,9 @@
 #include "network/os-features.h"        // WIN32
 
 #ifdef WIN32
-#include <winsock2.h>       // AF_INET, AF_INET6, AF_UNIX
+#include <winsock2.h>       // AF_INET, AF_INET6
 #else
-#include <sys/socket.h>     // AF_INET, AF_INET6, AF_UNIX
+#include <sys/socket.h>     // AF_INET, AF_INET6
 #endif
 
 #include <string>       // std::string
