@@ -78,7 +78,6 @@ ifneq "$(os_name)" "MINGW64_NT"
 endif
 
 sources = $(libnetwork_sources) $(test_sources) $(unix_sources)
-sources_with_dir = $(addprefix $(src_dir)/,$(sources))
 
 objects = $(addprefix $(object_dir)/,$(addsuffix	\
 $(object_suffix),$(basename $(sources))))
@@ -156,8 +155,8 @@ LINK$(object_suffix) = $(strip $(CXX) $(LDFLAGS))
 all: $(all)
 
 .PHONY: analyze
-analyze: $(cppbuild_dir)
-	cppcheck $(CPPCHECK_FLAGS) $(CPPFLAGS) $(sources_with_dir)
+analyze: $(cppbuild_dir) $(sources)
+	cppcheck $(CPPCHECK_FLAGS) $(CPPFLAGS) $(filter-out $(cppbuild_dir),$^)
 
 .PHONY: check
 check: $(test_programs)
