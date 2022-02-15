@@ -130,6 +130,8 @@ ifeq "$(shell bin/compare-versions $(ctags_version) 5)" "greater"
 endif
 endif
 
+all += test
+
 # Define compiler and linker variables
 
 COMPILE.cc = $(strip $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c)
