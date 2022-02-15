@@ -142,6 +142,10 @@ analyze:
 .PHONY: check
 check: test
 
+.PHONY: check-syntax
+check-syntax:
+	$(CXX) -fsyntax-only $(CXXFLAGS) $(CPPFLAGS) $(CHK_SOURCES)
+
 .PHONY: clean
 clean:
 	rm -f $(artifacts)
