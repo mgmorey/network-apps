@@ -26,7 +26,10 @@ ARFLAGS = r
 
 # CPPCHECK_FLAGS
 
-CPPCHECK_FLAGS = --cppcheck-build-dir=tmp --enable=all --inline-suppr --quiet
+CPPCHECK_FLAGS = --cppcheck-build-dir=$(cppbuild_dir)
+CPPCHECK_FLAGS += --enable=all --inline-suppr --quiet
+CPPCHECK_FLAGS += --suppress=preprocessorErrorDirective
+CPPCHECK_FLAGS += --suppress=unusedFunction
 
 ifdef standard
 	CPPCHECK_FLAGS += --std=$(standard)
@@ -35,6 +38,10 @@ endif
 # CPPFLAGS
 
 include_dirs = include
+
+ifeq "$(os_name)" "Darwin"
+	cpp_symbols += __$(shell uname -m)__
+endif
 
 ifeq "$(USING_DMALLOC)" "true"
 	cpp_symbols += DMALLOC DMALLOC_FUNC_CHECK

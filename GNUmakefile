@@ -20,16 +20,20 @@ version = 0.0.1
 language = c++
 standard = $(language)20
 
-prefix = /usr/local
-tmpdir = tmp
+install_prefix = /usr/local
+
+cppbuild_dir = .cache/cppcheck
+include_dir = include
+src_dir = src
+tmp_dir = tmp
 
 include_suffix = .h
 source_suffix = .cpp
 
 # Set virtual paths
 
-vpath %$(include_suffix) include/network
-vpath %$(source_suffix) src
+vpath %$(include_suffix) $(include_dir)/network
+vpath %$(source_suffix) $(src_dir)
 
 # Include common functions and flag variables
 
@@ -69,11 +73,12 @@ ifneq "$(os_name)" "MINGW64_NT"
 endif
 
 sources = $(libnetwork_sources) $(test_sources) $(unix_sources)
+sources_with_dir = $(addprefix $(src_dir)/,$(sources))
 
-objects = $(addprefix $(tmpdir)/,$(addsuffix .o,$(basename	\
+objects = $(addprefix $(tmp_dir)/,$(addsuffix .o,$(basename	\
 $(sources))))
 
-libnetwork_objects = $(addprefix $(tmpdir)/,$(addsuffix .o,$(basename	\
+libnetwork_objects = $(addprefix $(tmp_dir)/,$(addsuffix .o,$(basename	\
 $(libnetwork_sources))))
 
 libnetwork_members = $(patsubst %.o,$(libnetwork_archive)(%.o),	\
@@ -90,7 +95,7 @@ libraries = $(libnetwork_so_alias) $(libnetwork_so) $(libnetwork_archive)
 
 program_sources = $(test_sources) $(unix_sources)
 
-program_objects = $(addprefix $(tmpdir)/,$(addsuffix .o,$(basename	\
+program_objects = $(addprefix $(tmp_dir)/,$(addsuffix .o,$(basename	\
 $(program_sources))))
 
 ifeq "$(os_type)" "ms-windows"
@@ -136,8 +141,8 @@ LINK.o = $(strip $(CXX) $(LDFLAGS))
 all: $(all)
 
 .PHONY: analyze
-analyze:
-	cppcheck $(CPPCHECK_FLAGS) $(CPPFLAGS) .
+analyze: $(cppbuild_dir)
+	cppcheck $(CPPCHECK_FLAGS) $(CPPFLAGS) $(sources_with_dir)
 
 .PHONY: check
 check: $(test_programs)
@@ -156,7 +161,7 @@ commands: $(commands)
 
 .PHONY: distclean
 distclean:
-	rm -rf $(sort $(tmpdir) $(filter-out $(tmpdir)/%,$(artifacts)))
+	rm -rf $(sort .cache $(tmp_dir) $(filter-out $(tmp_dir)/%,$(artifacts)))
 
 .PHONY: dos2unix
 
@@ -165,8 +170,8 @@ dos2unix:
 
 .PHONY: install
 install: $(libraries)
-	install $(libraries) $(prefix)/lib
-	install include/network/*$(include_suffix) $(prefix)/include
+	install $(libraries) $(intsall_prefix)/lib
+	install $(include_dir)/network/* $(install_prefix)/include
 
 .PHONY: realclean
 realclean: distclean
@@ -213,29 +218,32 @@ $(programs): $(word 1,$(libraries))
 (%): %
 	$(AR) $(ARFLAGS) $@ $<
 
-%$(program_suffix): $(tmpdir)/%.o
+%$(program_suffix): $(tmp_dir)/%.o
 	$(LINK.o) -o $@ $^ $(LDLIBS)
 
-$(tmpdir)/%.o: %$(source_suffix)
+$(tmp_dir)/%.o: %$(source_suffix)
 	$(COMPILE$(source_suffix)) $(OUTPUT_OPTION) $<
 
-$(tmpdir)/%.dep: %$(source_suffix)
+$(tmp_dir)/%.dep: %$(source_suffix)
 	$(CXX) $(CPPFLAGS) -MM $< | bin/make-makefile -f $(tags) -o $@
 
 $(commands):
 	bear -- $(MAKE_COMMAND)
 
 $(tags):
-	ctags -e $(filter -D%,$(CPPFLAGS)) -R include src
+	ctags -e $(filter -D%,$(CPPFLAGS)) -R include $(src_dir)
 
 sizes.txt: $(sort $(libnetwork_so) $(objects) $(programs))
 	if [ -e $@ ]; then mv -f $@ $@~; fi
 	size $^ >$@
 
-$(objects) $(depends): | $(tmpdir)
+$(objects) $(depends): | $(tmp_dir)
 
-$(tmpdir):
-	mkdir -p $(tmpdir)
+$(cppbuild_dir):
+	mkdir -p $(cppbuild_dir)
+
+$(tmp_dir):
+	mkdir -p $(tmp_dir)
 
 # Include dependency files
 
