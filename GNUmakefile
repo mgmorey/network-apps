@@ -169,7 +169,8 @@ clean:
 	rm -f $(artifacts)
 
 .PHONY: commands
-commands: $(commands)
+commands:
+	$(MAKE_COMMAND) $(MFLAGS) clean $(commands)
 
 .PHONY: distclean
 distclean:
