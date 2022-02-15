@@ -170,8 +170,7 @@ clean:
 	rm -f $(sort $(wildcard $(artifacts)))
 
 .PHONY: commands
-commands:
-	$(MAKE_COMMAND) $(MFLAGS) clean $(commands)
+commands: $(commands)
 
 .PHONY: distclean
 distclean:
@@ -250,8 +249,8 @@ $(dependency_dir)/%$(dependency_suffix): %$(source_suffix)
 $(object_dir)/%$(object_suffix): %$(source_suffix)
 	$(COMPILE$(source_suffix)) $(OUTPUT_OPTION) $<
 
-$(commands):
-	bear -- $(MAKE_COMMAND)
+$(commands): $(MAKEFILE_LIST)
+	bear -- $(MAKE_COMMAND) $(MFLAGS) clean programs
 
 $(tags):
 	ctags -e $(filter -D%,$(CPPFLAGS)) -R include $(src_dir)
