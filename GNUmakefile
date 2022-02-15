@@ -140,7 +140,8 @@ analyze:
 	cppcheck $(CPPCHECK_FLAGS) $(CPPFLAGS) .
 
 .PHONY: check
-check: test
+check: $(test_programs)
+	bin/run-test-programs $^
 
 .PHONY: check-syntax
 check-syntax:
@@ -175,8 +176,7 @@ sizes: $(sizes)
 	test -e $<~ && diff -b $<~ $< || true
 
 .PHONY: test
-test: $(test_programs)
-	bin/run-test-programs $^
+test: check
 
 .PHONY: tags
 tags: $(tags)
