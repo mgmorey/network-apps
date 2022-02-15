@@ -13,10 +13,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/address.h"            // AF_INET, AF_INET6, AF_UNIX,
-                                        // Address, length_type,
+#include "network/address.h"            // Address, length_type,
                                         // port_type, value_type
-#include "network/addresserror.h"       // LogicError, to_string()
+#include "network/addresserror.h"       // AddressError, LogicError,
+                                        // to_string()
 #include "network/is-valid.h"           // is_valid()
 #include "network/os-features.h"        // WIN32
 
