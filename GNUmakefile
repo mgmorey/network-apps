@@ -138,6 +138,10 @@ endif
 
 all += test
 
+ifeq "$(os_name)" "MINGW64_NT"
+	all += dos2unix
+endif
+
 # Define compiler and linker variables
 
 COMPILE.cc = $(strip $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c)
