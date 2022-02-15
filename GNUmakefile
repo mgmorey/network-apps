@@ -187,6 +187,12 @@ install: $(libraries)
 	install $(libraries) $(intsall_prefix)/lib
 	install $(include_dir)/network/* $(install_prefix)/include
 
+.PHONY: libraries
+libraries: $(libraries)
+
+.PHONY: programs
+programs: $(programs)
+
 .PHONY: realclean
 realclean: distclean
 
