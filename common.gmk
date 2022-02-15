@@ -23,18 +23,22 @@ to-upper = $(shell echo $1 | tr '[:lower:]' '[:upper:]')
 
 # Define platform-specific variables
 
-clang_tidy_version = $(shell bin/get-llvm-version clang-tidy$(LLVM_SUFFIX))
-ctags_version = $(shell bin/which-version ctags)
-is_clang = $(shell bin/is-clang $(CXX))
-is_ctags_universal = $(shell bin/is-ctags-universal ctags)
-is_gcc = $(shell bin/is-gcc $(CXX))
-is_gnu_as = $(shell bin/is-gnu-as $(AS))
-is_gnu_ld = $(shell bin/is-gnu-ld $(LD))
-
-os_release = $(shell bin/get-os-release -iko)
+# Operating system name and release
+os_release = $(shell $(script_dir)/get-os-release -iko)
 os_distro = $(word 1,$(os_release))
 os_name = $(word 2,$(os_release))
 os_type = $(word 3,$(os_release))
+
+# Program presence flags
+is_clang = $(shell $(script_dir)/is-clang $(CXX))
+is_ctags_universal = $(shell $(script_dir)/is-ctags-universal ctags)
+is_gcc = $(shell $(script_dir)/is-gcc $(CXX))
+is_gnu_as = $(shell $(script_dir)/is-gnu-as $(AS))
+is_gnu_ld = $(shell $(script_dir)/is-gnu-ld $(LD))
+
+# Program versions
+ctags_version = $(shell $(script_dir)/which-version ctags)
+tidy_version = $(shell $(script_dir)/get-llvm-version clang-tidy$(LLVM_SUFFIX))
 
 # Local Variables:
 # mode: makefile

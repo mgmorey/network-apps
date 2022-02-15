@@ -27,6 +27,7 @@ cppbuild_dir = $(cache_dir)/cppcheck
 dependency_dir = $(cache_dir)/dependency
 include_dir = include
 object_dir = object
+script_dir = script
 src_dir = src
 
 dependency_suffix = .dep
@@ -79,7 +80,7 @@ endif
 sources = $(libnetwork_sources) $(test_sources) $(unix_sources)
 sources_with_dir = $(addprefix $(src_dir)/,$(sources))
 
-objects = $(addprefix $(object_dir)/,$(addsuffix		\
+objects = $(addprefix $(object_dir)/,$(addsuffix	\
 $(object_suffix),$(basename $(sources))))
 
 libnetwork_objects = $(addprefix $(object_dir)/,$(addsuffix	\
@@ -131,7 +132,7 @@ artifacts = $(binary_artifacts) $(text_artifacts)
 all = $(libraries) $(programs) $(sizes)
 
 ifeq "$(is_ctags_universal)" "true"
-ifeq "$(shell bin/compare-versions $(ctags_version) 5)" "greater"
+ifeq "$(shell $(script_dir)/compare-versions $(ctags_version) 5)" "greater"
 	all += $(tags)
 endif
 endif
@@ -158,7 +159,7 @@ analyze: $(cppbuild_dir)
 
 .PHONY: check
 check: $(test_programs)
-	bin/run-test-programs $^
+	$(script_dir)/run-test-programs $^
 
 .PHONY: check-syntax
 check-syntax:
@@ -166,7 +167,7 @@ check-syntax:
 
 .PHONY: clean
 clean:
-	rm -f $(artifacts)
+	rm -f $(sort $(wildcard $(artifacts)))
 
 .PHONY: commands
 commands:
@@ -175,13 +176,14 @@ commands:
 .PHONY: distclean
 distclean:
 	rm -rf $(sort $(cache_dir) $(object_dir) $(filter-out	\
-$(cache_dir)/%,$(filter-out $(object_dir)/%,$(artifacts))))
+$(cache_dir)/%,$(filter-out $(object_dir)/%,$(wildcard		\
+$(artifacts)))))
 
 .PHONY: dos2unix
 
 dos2unix:
-	dos2unix $(sort $(wildcard $(filter-out			\
-%$(dependency_suffix),$(text_artifacts))))
+	dos2unix $(sort $(filter-out %$(dependency_suffix),$(wildcard	\
+$(text_artifacts))))
 
 .PHONY: install
 install: $(libraries)
@@ -243,7 +245,7 @@ $(programs): $(word 1,$(libraries))
 	$(LINK$(object_suffix)) -o $@ $^ $(LDLIBS)
 
 $(dependency_dir)/%$(dependency_suffix): %$(source_suffix)
-	$(CXX) $(CPPFLAGS) -MM $< | bin/make-makefile -f $(tags) -o $@
+	$(CXX) $(CPPFLAGS) -MM $< | $(script_dir)/make-makefile -f $(tags) -o $@
 
 $(object_dir)/%$(object_suffix): %$(source_suffix)
 	$(COMPILE$(source_suffix)) $(OUTPUT_OPTION) $<

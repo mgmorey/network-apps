@@ -151,7 +151,7 @@ endif
 
 # TIDY_FLAGS
 
-ifeq "$(shell bin/compare-versions $(clang_tidy_version) 13)" "less"
+ifeq "$(shell $(script_dir)/compare-versions $(tidy_version) 13)" "less"
 	TIDY_CONFIG_FLAGS = -config=
 else
 	TIDY_CONFIG_FLAGS = -config-file='.clang-tidy'
