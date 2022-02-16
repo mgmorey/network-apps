@@ -193,6 +193,9 @@ install: $(libraries)
 .PHONY: libraries
 libraries: $(libraries)
 
+.PHONY: objects
+objects: $(objects)
+
 .PHONY: programs
 programs: $(programs)
 
@@ -251,7 +254,7 @@ $(object_dir)/%$(object_suffix): %$(source_suffix)
 	$(COMPILE$(source_suffix)) $(OUTPUT_OPTION) $<
 
 $(commands): $(MAKEFILE_LIST)
-	bear -- $(MAKE_COMMAND) $(MFLAGS) clean libraries programs
+	bear -- $(MAKE_COMMAND) $(MFLAGS) objects
 
 $(tags):
 	ctags -e $(filter -D%,$(CPPFLAGS)) -R include $(src_dir)
