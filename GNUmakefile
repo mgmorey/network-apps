@@ -130,7 +130,7 @@ $(logfiles) $(mapfiles) $(sizes) $(sizes)~
 
 artifacts = $(binary_artifacts) $(text_artifacts)
 
-all = validate $(libraries) $(programs) $(sizes)
+all = assert $(libraries) $(programs) $(sizes)
 
 ifeq "$(is_ctags_universal)" "true"
 ifeq "$(shell $(script_dir)/compare-versions $(ctags_version) 5)" "greater"
@@ -157,6 +157,18 @@ all: $(all)
 .PHONY: analyze
 analyze: $(cppbuild_dir) $(sources)
 	cppcheck $(CPPCHECK_FLAGS) $(CPPFLAGS) $(filter-out $(cppbuild_dir),$^)
+
+.PHONY: assert
+assert:
+ifneq "$(sort $(libnetwork_sources))" "$(libnetwork_sources)"
+	$(error File names in variable libnetwork_sources are not sorted)
+endif
+ifneq "$(sort $(test_sources))" "$(test_sources)"
+	$(error File names in variable test_sources are not sorted)
+endif
+ifneq "$(sort $(unix_sources))" "$(unix_sources)"
+	$(error File names in variable unix_sources are not sorted)
+endif
 
 .PHONY: check
 check: $(test_programs)
@@ -219,18 +231,6 @@ tidy: $(sort $(sources))
 .PHONY: unix
 unix:
 	./unix-server & (sleep 1; ./unix-client 2 2; ./unix-client DOWN)
-
-.PHONY: validate
-validate:
-ifneq "$(sort $(libnetwork_sources))" "$(libnetwork_sources)"
-	$(error File names in variable libnetwork_sources are not sorted)
-endif
-ifneq "$(sort $(test_sources))" "$(test_sources)"
-	$(error File names in variable test_sources are not sorted)
-endif
-ifneq "$(sort $(unix_sources))" "$(unix_sources)"
-	$(error File names in variable unix_sources are not sorted)
-endif
 
 .SECONDARY: $(objects)
 
