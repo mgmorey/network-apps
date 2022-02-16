@@ -254,7 +254,7 @@ $(object_dir)/%$(object_suffix): %$(source_suffix)
 	$(COMPILE$(source_suffix)) $(OUTPUT_OPTION) $<
 
 $(commands): $(MAKEFILE_LIST)
-	bear -- $(MAKE_COMMAND) $(MFLAGS) objects
+	bear -- $(MAKE_COMMAND) $(MFLAGS) clean objects
 
 $(tags):
 	ctags -e $(filter -D%,$(CPPFLAGS)) -R include $(src_dir)
