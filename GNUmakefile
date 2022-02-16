@@ -59,7 +59,7 @@ get-sa-pointer.cpp get-sin-addr.cpp get-sin-pointer.cpp			\
 get-sin-port.cpp get-sin6-addr.cpp get-sin6-pointer.cpp			\
 get-sin6-port.cpp get-size.cpp get-socket.cpp get-socketpair.cpp	\
 get-sockets-endpoint.cpp get-sockets-hostname.cpp get-sockname.cpp	\
-get-sun-length.cpp get-sun-path.cpp get-sun-path-length.cpp		\
+get-sun-length.cpp get-sun-path-length.cpp get-sun-path.cpp		\
 get-sun-pointer.cpp hints.cpp host.cpp is-valid.cpp logicerror.cpp	\
 open-endpoint.cpp open-fd.cpp oserrorresult.cpp protocol.cpp		\
 reset-last-os-error.cpp runtimeerror.cpp set-last-os-error.cpp		\
