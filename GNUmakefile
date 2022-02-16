@@ -130,7 +130,7 @@ $(logfiles) $(mapfiles) $(sizes) $(sizes)~
 
 artifacts = $(binary_artifacts) $(text_artifacts)
 
-all = $(libraries) $(programs) $(sizes)
+all = validate $(libraries) $(programs) $(sizes)
 
 ifeq "$(is_ctags_universal)" "true"
 ifeq "$(shell $(script_dir)/compare-versions $(ctags_version) 5)" "greater"
@@ -220,20 +220,32 @@ tidy: $(sort $(sources))
 unix:
 	./unix-server & (sleep 1; ./unix-client 2 2; ./unix-client DOWN)
 
+.PHONY: validate
+validate:
+ifneq "$(sort $(libnetwork_sources))" "$(libnetwork_sources)"
+	$(error File names in variable libnetwork_sources are not sorted)
+endif
+ifneq "$(sort $(test_sources))" "$(test_sources)"
+	$(error File names in variable test_sources are not sorted)
+endif
+ifneq "$(sort $(unix_sources))" "$(unix_sources)"
+	$(error File names in variable unix_sources are not sorted)
+endif
+
 .SECONDARY: $(objects)
 
 # Define targets
 
-$(libnetwork_so): $(sort $(libnetwork_objects))
+$(libnetwork_so): $(libnetwork_objects)
 	$(LINK$(object_suffix)) -o $@ $^ $(LDLIBS)
 
 $(libnetwork_so_alias): $(libnetwork_so)
 	ln -sf $< $@
 
 ifeq "$(USING_ARCHIVE_MEMBER_RULE)" "true"
-$(libnetwork_archive): $(sort $(libnetwork_members))
+$(libnetwork_archive): $(libnetwork_members)
 else
-$(libnetwork_archive): $(sort $(libnetwork_objects))
+$(libnetwork_archive): $(libnetwork_objects)
 	rm -f $@ && $(AR) $(ARFLAGS) $@ $^
 endif
 
@@ -275,6 +287,8 @@ $(dependency_dir):
 
 $(object_dir):
 	mkdir -p $(object_dir)
+
+# Test source file list variables
 
 # Include dependency files
 
