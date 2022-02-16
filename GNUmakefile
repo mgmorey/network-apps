@@ -175,8 +175,8 @@ commands: $(commands)
 
 .PHONY: distclean
 distclean:
-	rm -rf $(sort $(cache_dir) $(object_dir) $(filter-out	\
-$(cache_dir)/%,$(filter-out $(object_dir)/%,$(wildcard		\
+	rm -rf $(sort $(filter-out $(cache_dir)/%,$(filter-out	\
+$(object_dir)/%,$(wildcard $(cache_dir) $(object_dir)		\
 $(artifacts)))))
 
 .PHONY: dos2unix
@@ -279,5 +279,5 @@ $(object_dir):
 # Include dependency files
 
 ifeq "$(filter %clean,$(MAKECMDGOALS))" "$(filter-out %clean,$(MAKECMDGOALS))"
-include $(dependencies)
+include $(sort $(dependencies))
 endif
