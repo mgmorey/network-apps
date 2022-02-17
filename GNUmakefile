@@ -151,6 +151,13 @@ endif
 COMPILE.cc = $(strip $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c)
 LINK$(object_suffix) = $(strip $(CXX) $(LDFLAGS))
 
+# Define install program variable
+ifeq "$(os_name)" "Darwin"
+	install = ginstall
+else
+	install = install
+endif
+
 # Define pseudotargets
 
 .PHONY: all
@@ -201,8 +208,9 @@ $(text_artifacts))))
 
 .PHONY: install
 install: $(libraries)
-	install $(libraries) $(intsall_prefix)/lib
-	install $(include_dir)/network/* $(install_prefix)/include
+	$(install) -d $(install_prefix)/include/network $(install_prefix)/lib
+	$(install) $(include_dir)/network/* $(install_prefix)/include/network
+	$(install) $(libraries) $(install_prefix)/lib
 
 .PHONY: libraries
 libraries: $(libraries)
