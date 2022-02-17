@@ -122,7 +122,7 @@ endif
 ldflags_o = $(ldflags)
 ldflags_so = $(ldflags)
 
-ldflags_o += $(call format-option-ld,-rpath,'\$$ORIGIN')
+ldflags_o += $(call format-option-ld,-rpath,'\$$ORIGIN/$(library_dir)')
 
 ifeq "$(is_gcc)" "true"
 ifeq "$(is_gnu_ld)" "true"

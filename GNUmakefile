@@ -26,6 +26,7 @@ cache_dir = .cache
 cppbuild_dir = $(cache_dir)/cppcheck
 dependency_dir = $(cache_dir)/dependency
 include_dir = include
+library_dir = lib
 object_dir = object
 script_dir = script
 src_dir = src
@@ -90,11 +91,11 @@ libnetwork_members = $(patsubst					\
 $(libnetwork_objects))
 
 ifneq "$(WITH_SHARED_OBJS)" "false"
-	libnetwork_so = libnetwork.so.$(version)
+	libnetwork_so = $(library_dir)/libnetwork.so.$(version)
 	libnetwork_so_alias = $(call get-library-alias,$(libnetwork_so))
 endif
 
-libnetwork_archive = libnetwork.a
+libnetwork_archive = $(library_dir)/libnetwork.a
 
 libraries = $(libnetwork_so_alias) $(libnetwork_so) $(libnetwork_archive)
 
@@ -116,7 +117,8 @@ dependencies = $(addprefix $(dependency_dir)/,$(subst	\
 $(source_suffix),$(dependency_suffix),$(sources)))
 listings = $(subst $(object_suffix),.lst,$(objects))
 logfiles = $(addsuffix .log,$(basename $(programs)))
-mapfiles = $(addsuffix .map,$(basename $(programs)) libnetwork)
+mapfiles = $(addsuffix .map,$(basename $(programs)) $(basename	\
+$(libraries)))
 
 dumps = $(addsuffix .stackdump,$(programs))
 sizes = sizes.txt
@@ -187,9 +189,9 @@ commands: $(commands)
 
 .PHONY: distclean
 distclean:
-	rm -rf $(sort $(filter-out $(cache_dir)/%,$(filter-out	\
-$(object_dir)/%,$(wildcard $(cache_dir) $(object_dir)		\
-$(artifacts)))))
+	rm -rf $(sort $(filter-out $(cache_dir)/%,$(filter-out		\
+$(library_dir)/%,$(filter-out $(object_dir)/%,$(wildcard $(cache_dir)	\
+$(library_dir) $(object_dir) $(artifacts))))))
 
 .PHONY: dos2unix
 
@@ -240,7 +242,7 @@ $(libnetwork_so): $(libnetwork_objects)
 	$(LINK$(object_suffix)) -o $@ $^ $(LDLIBS)
 
 $(libnetwork_so_alias): $(libnetwork_so)
-	ln -sf $< $@
+	cd $(dir $@) && ln -sf $(notdir $<) $(notdir $@)
 
 ifeq "$(USING_ARCHIVE_MEMBER_RULE)" "true"
 $(libnetwork_archive): $(libnetwork_members)
@@ -277,6 +279,8 @@ sizes.txt: $(sort $(libnetwork_so) $(objects) $(programs))
 
 $(dependencies): | $(dependency_dir)
 
+$(libraries): | $(library_dir)
+
 $(objects): | $(object_dir)
 
 $(cppbuild_dir):
@@ -284,6 +288,9 @@ $(cppbuild_dir):
 
 $(dependency_dir):
 	mkdir -p $(dependency_dir)
+
+$(library_dir):
+	mkdir -p $(library_dir)
 
 $(object_dir):
 	mkdir -p $(object_dir)
