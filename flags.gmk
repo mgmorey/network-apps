@@ -115,7 +115,7 @@ endif
 endif
 
 ifdef WITH_LOAD_MAP_OPT
-	load_map = $(call set-suffix,.map,$@)
+	load_map = $(call subst-suffix,.map,$@)
 	ldflags += $(call format-option-ld,$(WITH_LOAD_MAP_OPT),$(load_map))
 endif
 
@@ -126,8 +126,7 @@ ldflags_o += $(call format-option-ld,-rpath,'\$$ORIGIN')
 
 ifeq "$(is_gcc)" "true"
 ifeq "$(is_gnu_ld)" "true"
-	soname = $(call get-library-alias,$@)
-	ldflags_so += $(call format-option-ld,-soname,$(soname))
+	ldflags_so += $(call format-option-ld,-soname,$(call get-alias,$@))
 endif
 endif
 

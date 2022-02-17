@@ -87,17 +87,17 @@ libnetwork_objects = $(addprefix $(object_dir)/,$(addsuffix	\
 $(object_suffix),$(basename $(libnetwork_sources))))
 
 libnetwork_members = $(patsubst					\
-%$(object_suffix),$(libnetwork_archive)(%$(object_suffix)),	\
+%$(object_suffix),$(libnetwork_static)(%$(object_suffix)),	\
 $(libnetwork_objects))
 
 ifneq "$(WITH_SHARED_OBJS)" "false"
-	libnetwork_so = libnetwork.so.$(VERSION)
-	libnetwork_so_alias = $(call get-library-alias,$(libnetwork_so))
+	libnetwork_shared = libnetwork.so.$(VERSION)
+	libnetwork = $(call get-alias,$(libnetwork_shared))
 endif
 
-libnetwork_archive = $(library_dir)/libnetwork.a
+libnetwork_static = $(library_dir)/libnetwork.a
 
-libraries = $(libnetwork_so_alias) $(libnetwork_so) $(libnetwork_archive)
+libraries = $(libnetwork) $(libnetwork_shared) $(libnetwork_static)
 
 program_sources = $(test_sources) $(unix_sources)
 
@@ -118,7 +118,8 @@ dependencies = $(addprefix $(dependency_dir)/,$(subst	\
 $(source_suffix),$(dependency_suffix),$(sources)))
 listings = $(subst $(object_suffix),.lst,$(objects))
 logfiles = $(addsuffix .log,$(basename $(programs)))
-mapfiles = $(addsuffix .map,$(basename $(programs)) libnetwork)
+mapfiles = $(addsuffix .map,$(basename $(programs))) $(call	\
+subst-suffix,.map,$(libnetwork))
 
 dumps = $(addsuffix .stackdump,$(programs))
 
@@ -211,8 +212,8 @@ $(text_artifacts))))
 install: $(libraries)
 	$(install) -d $(PREFIX)/include/network $(PREFIX)/lib
 	$(install) $(include_dir)/network/* $(PREFIX)/include/network
-	$(install) $(libnetwork_archive) $(libnetwork_so) $(PREFIX)/lib
-	cd $(PREFIX)/lib && ln -sf $(libnetwork_so) $(libnetwork_so_alias)
+	$(install) $(libnetwork_static) $(libnetwork_shared) $(PREFIX)/lib
+	cd $(PREFIX)/lib && ln -sf $(libnetwork_shared) $(libnetwork)
 
 .PHONY: libraries
 libraries: $(libraries)
@@ -248,20 +249,20 @@ unix:
 
 # Define targets
 
-$(libnetwork_so): $(libnetwork_objects)
+$(libnetwork_shared): $(libnetwork_objects)
 	$(LINK$(object_suffix)) -o $@ $^ $(LDLIBS)
 
-$(libnetwork_so_alias): $(libnetwork_so)
+$(libnetwork): $(libnetwork_shared)
 	ln -sf $< $@
 
 ifeq "$(USING_ARCHIVE_MEMBER_RULE)" "true"
-$(libnetwork_archive): $(libnetwork_members)
+$(libnetwork_static): $(libnetwork_members)
 else
-$(libnetwork_archive): $(libnetwork_objects)
+$(libnetwork_static): $(libnetwork_objects)
 	rm -f $@ && $(AR) $(ARFLAGS) $@ $^
 endif
 
-$(programs): $(word 1,$(libraries))
+$(programs): $(libnetwork)
 
 # Define suffix rules
 
@@ -283,7 +284,7 @@ $(commands): $(MAKEFILE_LIST)
 $(tags):
 	ctags -e $(filter -D%,$(CPPFLAGS)) -R include $(source_dir)
 
-sizes.txt: $(sort $(libnetwork_so) $(objects) $(programs))
+sizes.txt: $(sort $(libnetwork_shared) $(objects) $(programs))
 	if [ -e $@ ]; then mv -f $@ $@~; fi
 	size $^ >$@
 
