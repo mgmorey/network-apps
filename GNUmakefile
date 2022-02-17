@@ -91,7 +91,7 @@ libnetwork_members = $(patsubst					\
 $(libnetwork_objects))
 
 ifneq "$(WITH_SHARED_OBJS)" "false"
-	libnetwork_so = $(library_dir)/libnetwork.so.$(version)
+	libnetwork_so = libnetwork.so.$(version)
 	libnetwork_so_alias = $(call get-library-alias,$(libnetwork_so))
 endif
 
@@ -211,8 +211,7 @@ install: $(libraries)
 	$(install) -d $(install_prefix)/include/network $(install_prefix)/lib
 	$(install) $(include_dir)/network/* $(install_prefix)/include/network
 	$(install) $(libnetwork_archive) $(libnetwork_so) $(install_prefix)/lib
-	cd $(install_prefix)/lib && ln -sf $(notdir $(libnetwork_so) \
-$(libnetwork_so_alias))
+	cd $(install_prefix)/lib && ln -sf $(libnetwork_so) $(libnetwork_so_alias)
 
 .PHONY: libraries
 libraries: $(libraries)
@@ -252,7 +251,7 @@ $(libnetwork_so): $(libnetwork_objects)
 	$(LINK$(object_suffix)) -o $@ $^ $(LDLIBS)
 
 $(libnetwork_so_alias): $(libnetwork_so)
-	cd $(dir $@) && ln -sf $(notdir $<) $(notdir $@)
+	ln -sf $< $@
 
 ifeq "$(USING_ARCHIVE_MEMBER_RULE)" "true"
 $(libnetwork_archive): $(libnetwork_members)
