@@ -29,7 +29,7 @@ include_dir = include
 library_dir = lib
 object_dir = object
 script_dir = script
-src_dir = src
+source_dir = src
 
 dependency_suffix = .dep
 include_suffix = .h
@@ -39,7 +39,7 @@ source_suffix = .cpp
 # Set virtual paths
 
 vpath %$(include_suffix) $(include_dir)/network
-vpath %$(source_suffix) $(src_dir)
+vpath %$(source_suffix) $(source_dir)
 
 # Include common functions and flag variables
 
@@ -271,7 +271,7 @@ $(commands): $(MAKEFILE_LIST)
 	bear -- $(MAKE_COMMAND) $(MFLAGS) clean objects
 
 $(tags):
-	ctags -e $(filter -D%,$(CPPFLAGS)) -R include $(src_dir)
+	ctags -e $(filter -D%,$(CPPFLAGS)) -R include $(source_dir)
 
 sizes.txt: $(sort $(libnetwork_so) $(objects) $(programs))
 	if [ -e $@ ]; then mv -f $@ $@~; fi
