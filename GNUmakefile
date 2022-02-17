@@ -210,7 +210,9 @@ $(text_artifacts))))
 install: $(libraries)
 	$(install) -d $(install_prefix)/include/network $(install_prefix)/lib
 	$(install) $(include_dir)/network/* $(install_prefix)/include/network
-	$(install) $(libraries) $(install_prefix)/lib
+	$(install) $(libnetwork_archive) $(libnetwork_so) $(install_prefix)/lib
+	cd $(install_prefix)/lib && ln -sf $(notdir $(libnetwork_so) \
+$(libnetwork_so_alias))
 
 .PHONY: libraries
 libraries: $(libraries)
