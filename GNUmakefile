@@ -118,8 +118,7 @@ dependencies = $(addprefix $(dependency_dir)/,$(subst	\
 $(source_suffix),$(dependency_suffix),$(sources)))
 listings = $(subst $(object_suffix),.lst,$(objects))
 logfiles = $(addsuffix .log,$(basename $(programs)))
-mapfiles = $(addsuffix .map,$(basename $(programs)) $(basename	\
-$(libnetwork_so)))
+mapfiles = $(addsuffix .map,$(basename $(programs)) libnetwork)
 
 dumps = $(addsuffix .stackdump,$(programs))
 
