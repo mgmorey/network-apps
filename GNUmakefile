@@ -15,13 +15,20 @@
 
 # Define project-specific variables
 
-version = 0.0.1
+PREFIX ?= /usr/local
+VERSION ?= 0.0.1
 
+# Language
 language = c++
 standard = $(language)20
 
-install_prefix = /usr/local
+# File suffixes
+dependency_suffix = .dep
+include_suffix = .h
+object_suffix = .o
+source_suffix = .cpp
 
+# Directories
 cache_dir = .cache
 cppbuild_dir = $(cache_dir)/cppcheck
 dependency_dir = $(cache_dir)/dependency
@@ -31,18 +38,11 @@ object_dir = object
 script_dir = script
 source_dir = src
 
-dependency_suffix = .dep
-include_suffix = .h
-object_suffix = .o
-source_suffix = .cpp
-
 # Set virtual paths
-
 vpath %$(include_suffix) $(include_dir)/network
 vpath %$(source_suffix) $(source_dir)
 
 # Include common functions and flag variables
-
 include common.gmk
 include flags.gmk
 
@@ -91,7 +91,7 @@ libnetwork_members = $(patsubst					\
 $(libnetwork_objects))
 
 ifneq "$(WITH_SHARED_OBJS)" "false"
-	libnetwork_so = libnetwork.so.$(version)
+	libnetwork_so = libnetwork.so.$(VERSION)
 	libnetwork_so_alias = $(call get-library-alias,$(libnetwork_so))
 endif
 
@@ -113,6 +113,7 @@ unix_programs = $(addsuffix $(program_suffix),$(basename $(unix_sources)))
 programs = $(addsuffix $(program_suffix),$(basename $(program_sources)))
 
 commands = compile_commands.json
+
 dependencies = $(addprefix $(dependency_dir)/,$(subst	\
 $(source_suffix),$(dependency_suffix),$(sources)))
 listings = $(subst $(object_suffix),.lst,$(objects))
@@ -121,6 +122,7 @@ mapfiles = $(addsuffix .map,$(basename $(programs)) $(basename	\
 $(libraries)))
 
 dumps = $(addsuffix .stackdump,$(programs))
+
 sizes = sizes.txt
 tags = TAGS
 
@@ -208,10 +210,10 @@ $(text_artifacts))))
 
 .PHONY: install
 install: $(libraries)
-	$(install) -d $(install_prefix)/include/network $(install_prefix)/lib
-	$(install) $(include_dir)/network/* $(install_prefix)/include/network
-	$(install) $(libnetwork_archive) $(libnetwork_so) $(install_prefix)/lib
-	cd $(install_prefix)/lib && ln -sf $(libnetwork_so) $(libnetwork_so_alias)
+	$(install) -d $(PREFIX)/include/network $(PREFIX)/lib
+	$(install) $(include_dir)/network/* $(PREFIX)/include/network
+	$(install) $(libnetwork_archive) $(libnetwork_so) $(PREFIX)/lib
+	cd $(PREFIX)/lib && ln -sf $(libnetwork_so) $(libnetwork_so_alias)
 
 .PHONY: libraries
 libraries: $(libraries)
