@@ -50,12 +50,12 @@ using Network::Byte;
 using Network::ByteString;
 using Network::Context;
 using Network::Error;
-using Network::Family;
 using Network::HostVector;
 using Network::Hostname;
 using Network::LogicError;
 using Network::OsErrorResult;
 using Network::Overloaded;
+using Network::SocketFamily;
 using Network::get_hosts;
 using Network::get_sa_family;
 using Network::get_sa_length;
@@ -112,7 +112,7 @@ namespace TestAddress
         const auto size {address.size()};
         const auto text {address.text()};
         std::cout << "    "
-                  << Family(family)
+                  << SocketFamily(family)
                   << std::endl;
         std::cout << std::setw(print_key_width) << "        Size: "
                   << std::right << std::setw(print_value_width) << size

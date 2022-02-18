@@ -14,11 +14,11 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/addrinfo.h"           // operator<<(), std::ostream
-#include "network/family.h"             // Family, operator<<()
-#include "network/flags.h"              // Flags, operator<<()
 #include "network/format.h"             // Format, operator<<()
-#include "network/protocol.h"           // Protocol, operator<<()
-#include "network/socktype.h"           // SockType, operator<<()
+#include "network/socketfamily.h"       // SocketFamily, operator<<()
+#include "network/socketflags.h"        // SocketFlags, operator<<()
+#include "network/socketprotocol.h"     // SocketProtocol, operator<<()
+#include "network/sockettype.h"         // SocketType, operator<<()
 #include "network/string-null.h"        // string_null
 #include "network/to-byte-string-sa.h"  // Bytes, to_byte_string()
 
@@ -33,10 +33,10 @@ auto Network::operator<<(std::ostream& os,
 {
     constexpr auto tab {9};
 
-    const Flags flags(ai.ai_flags);
-    const Family family(ai.ai_family);
-    const SockType socktype(ai.ai_socktype);
-    const Protocol protocol(family, ai.ai_protocol);
+    const SocketFlags flags(ai.ai_flags);
+    const SocketFamily family(ai.ai_family);
+    const SocketType socktype(ai.ai_socktype);
+    const SocketProtocol protocol(family, ai.ai_protocol);
 
     os << "addrinfo("
        << Format("ai_flags")

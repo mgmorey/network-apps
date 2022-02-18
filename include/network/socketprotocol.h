@@ -13,28 +13,41 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_FAMILY_H
-#define NETWORK_FAMILY_H
+#ifndef NETWORK_PROTOCOL_H
+#define NETWORK_PROTOCOL_H
 
-#include "network/family-type.h"        // family_type
-#include "network/integer.h"            // Integer
+#include "network/integer.h"                    // Integer
+#include "network/socketfamily.h"               // SocketFamily,
+                                                // socket_family_type
+#include "network/socket-protocol-type.h"       // socket_protocol_type
 
 #include <ostream>      // std::ostream
 
 namespace Network
 {
-    class Family :
-        public Integer<family_type>
+    class SocketProtocol :
+        public Integer<socket_protocol_type>
     {
     public:
-        constexpr explicit Family(family_type t_value) noexcept :
-            Integer(t_value)
+        constexpr SocketProtocol(socket_family_type t_family,
+                           socket_protocol_type t_value) noexcept :
+            Integer(t_value),
+            m_family(t_family)
         {
         }
+
+        [[nodiscard]] constexpr auto family() const noexcept -> SocketFamily
+        {
+            return m_family;
+        }
+
+    private:
+        SocketFamily m_family;
     };
 
     extern auto operator<<(std::ostream& os,
-                           const Family& family) noexcept -> std::ostream&;
+                           const SocketProtocol& protocol) noexcept ->
+        std::ostream&;
 }
 
 #endif

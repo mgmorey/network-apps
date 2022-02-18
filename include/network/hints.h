@@ -16,10 +16,10 @@
 #ifndef NETWORK_HINTS_H
 #define NETWORK_HINTS_H
 
-#include "network/family.h"             // Family, operator<<()
-#include "network/flags.h"              // Flags, operator<<()
-#include "network/protocol.h"           // Protocol, operator<<()
-#include "network/socktype.h"           // SockType, operator<<()
+#include "network/socketfamily.h"       // SocketFamily, operator<<()
+#include "network/socketflags.h"        // SocketFlags, operator<<()
+#include "network/socketprotocol.h"     // SocketProtocol, operator<<()
+#include "network/sockettype.h"         // SocketType, operator<<()
 
 #ifdef WIN32
 #include <ws2tcpip.h>       // AF_UNSPEC, addrinfo
@@ -34,10 +34,10 @@ namespace Network
     {
         constexpr Hints() noexcept = default;
 
-        constexpr explicit Hints(flags_type t_flags,
-                                 family_type t_family = AF_UNSPEC,
-                                 socktype_type t_socktype = 0,
-                                 protocol_type t_protocol = 0) noexcept :
+        constexpr explicit Hints(socket_flags_type t_flags,
+                                 socket_family_type t_family = AF_UNSPEC,
+                                 socket_type_type t_socktype = 0,
+                                 socket_protocol_type t_protocol = 0) noexcept :
             m_flags(t_flags),
             m_family(t_family),
             m_socktype(t_socktype),
@@ -100,31 +100,31 @@ namespace Network
             return ai;
         }
 
-        [[nodiscard]] constexpr auto flags() const noexcept -> Flags
+        [[nodiscard]] constexpr auto flags() const noexcept -> SocketFlags
         {
-            return Flags(m_flags);
+            return SocketFlags(m_flags);
         }
 
-        [[nodiscard]] constexpr auto family() const noexcept -> Family
+        [[nodiscard]] constexpr auto family() const noexcept -> SocketFamily
         {
-            return Family(m_family);
+            return SocketFamily(m_family);
         }
 
-        [[nodiscard]] constexpr auto socktype() const noexcept -> SockType
+        [[nodiscard]] constexpr auto socktype() const noexcept -> SocketType
         {
-            return SockType(m_socktype);
+            return SocketType(m_socktype);
         }
 
-        [[nodiscard]] constexpr auto protocol() const noexcept -> Protocol
+        [[nodiscard]] constexpr auto protocol() const noexcept -> SocketProtocol
         {
             return {m_family, m_protocol};
         }
 
     private:
-        flags_type m_flags {};
-        family_type m_family {};
-        socktype_type m_socktype {};
-        protocol_type m_protocol {};
+        socket_flags_type m_flags {};
+        socket_family_type m_family {};
+        socket_type_type m_socktype {};
+        socket_protocol_type m_protocol {};
     };
 
     extern auto operator<<(std::ostream& os,

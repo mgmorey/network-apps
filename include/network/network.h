@@ -38,8 +38,6 @@
 #include "network/context.h"            // Context
 #include "network/exceptions.h"         // Error, LogicError,
                                         // RuntimeError
-#include "network/family.h"             // Family
-#include "network/flags.h"              // Flags
 #include "network/get-endpoint.h"       // get_endpoint()
 #include "network/get-hostname.h"       // get_hostname()
 #include "network/get-hosts.h"          // get_hosts()
@@ -63,12 +61,14 @@
                                         // get_last_os_error(),
                                         // reset_last_os_error()
 #include "network/overloaded.h"         // Overloaded
-#include "network/protocol.h"           // Protocol
 #include "network/skip-first.h"         // skip_first()
 #include "network/skip-last.h"          // skip_last()
 #include "network/socket-error.h"       // socket_error
 #include "network/socket.h"             // Hints, Host, Socket
-#include "network/socktype.h"           // SockType
+#include "network/socketfamily.h"       // SocketFamily
+#include "network/socketflags.h"        // SocketFlags
+#include "network/socketprotocol.h"     // SocketProtocol
+#include "network/sockettype.h"         // SocketType
 #include "network/string-null.h"        // string_null
 #include "network/to-byte-span.h"       // to_byte_span()
 #include "network/to-byte-string.h"     // to_byte_string()
@@ -78,12 +78,14 @@
                                         // OptionalPathname,
                                         // OptionalService, Pathname,
                                         // Service, byte_type,
-                                        // family_type, fd_type,
-                                        // flags_type, length_type,
+                                        // fd_type, length_type,
                                         // os_error_type, port_type,
-                                        // protocol_type, result_type,
-                                        // sock_len_type,
-                                        // socktype_type
+                                        // result_type,
+                                        // socket_family_type,
+                                        // socket_flags_type,
+                                        // socket_protocol_type,
+                                        // socket_type_type,
+                                        // sock_len_type
 #include "network/uniquify.h"           // uniquify()
 #include "network/version.h"            // Version
 

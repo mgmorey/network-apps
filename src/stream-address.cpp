@@ -15,8 +15,8 @@
 
 #include "network/address.h"            // Address, operator<<(),
                                         // std::ostream, std::string
-#include "network/family.h"             // Family, operator<<()
 #include "network/format.h"             // Format, operator<<()
+#include "network/socketfamily.h"       // SocketFamily, operator<<()
 
 #ifdef WIN32
 #include <winsock2.h>   // AF_INET, AF_INET6, AF_UNIX
@@ -24,7 +24,8 @@
 #include <sys/socket.h> // AF_INET, AF_INET6, AF_UNIX
 #endif
 
-static auto get_prefix(Network::family_type family) noexcept -> std::string
+static auto get_prefix(Network::socket_family_type family) noexcept ->
+    std::string
 {
     switch (family) {
 #ifndef WIN32
@@ -43,7 +44,8 @@ static auto get_prefix(Network::family_type family) noexcept -> std::string
     }
 }
 
-static auto get_suffix(Network::family_type family) noexcept -> std::string
+static auto get_suffix(Network::socket_family_type family) noexcept ->
+    std::string
 {
     switch (family) {
 #ifndef WIN32
@@ -73,7 +75,7 @@ auto Network::operator<<(std::ostream& os,
         return os;
     }
 
-    const Family family {address.family()};
+    const SocketFamily family {address.family()};
     const auto length {address.length()};
     const auto prefix {::get_prefix(family)};
     const auto suffix {::get_suffix(family)};

@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/family.h"             // Family, operator<<(),
+#include "network/socketfamily.h"       // SocketFamily, operator<<(),
                                         // std::ostream
 
 #ifdef WIN32
@@ -25,9 +25,9 @@
 #endif
 
 auto Network::operator<<(std::ostream& os,
-                         const Family& family) noexcept -> std::ostream&
+                         const SocketFamily& family) noexcept -> std::ostream&
 {
-    switch (static_cast<family_type>(family)) {
+    switch (static_cast<socket_family_type>(family)) {
     case AF_UNSPEC:
         os << "AF_UNSPEC";
         break;
@@ -41,7 +41,7 @@ auto Network::operator<<(std::ostream& os,
         os << "AF_INET6";
         break;
     default:
-        os << static_cast<family_type>(family);
+        os << static_cast<socket_family_type>(family);
     }
 
     return os;

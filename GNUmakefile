@@ -52,23 +52,23 @@ libnetwork_sources = address-sa.cpp address-sin.cpp address-sin6.cpp	\
 address-sun.cpp address.cpp addresserror.cpp addrinfo.cpp		\
 bind-endpoint.cpp bind-fd.cpp buffer.cpp bytestring.cpp close.cpp	\
 connect-endpoint.cpp connect-fd.cpp context.cpp dispatch-os-error.cpp	\
-error.cpp family.cpp fd.cpp flags.cpp format-ai-error.cpp		\
-format-os-error.cpp format.cpp get-endpoint.cpp get-hostname.cpp	\
-get-hosts.cpp get-last-os-error.cpp get-length.cpp get-name.cpp		\
-get-peername.cpp get-sa-data.cpp get-sa-family.cpp get-sa-length.cpp	\
-get-sa-pointer.cpp get-sin-addr.cpp get-sin-pointer.cpp			\
-get-sin-port.cpp get-sin6-addr.cpp get-sin6-pointer.cpp			\
-get-sin6-port.cpp get-size.cpp get-socket.cpp get-socketpair.cpp	\
-get-sockets-endpoint.cpp get-sockets-hostname.cpp get-sockname.cpp	\
-get-sun-length.cpp get-sun-path-length.cpp get-sun-path.cpp		\
-get-sun-pointer.cpp hints.cpp host.cpp is-valid.cpp logicerror.cpp	\
-open-endpoint.cpp open-fd.cpp oserrorresult.cpp protocol.cpp		\
-reset-last-os-error.cpp runtimeerror.cpp set-last-os-error.cpp		\
-socket.cpp socktype.cpp stream-address.cpp stream-addrinfo.cpp		\
-stream-socket.cpp to-byte-span-sa.cpp to-byte-span-sun.cpp		\
-to-byte-span-void.cpp to-byte-string-bs.cpp to-byte-string-path.cpp	\
-to-byte-string-sa.cpp to-byte-string-sun.cpp to-string-bs.cpp		\
-to-string-sin.cpp to-string-sin6.cpp version.cpp
+error.cpp fd.cpp format-ai-error.cpp format-os-error.cpp format.cpp	\
+get-endpoint.cpp get-hostname.cpp get-hosts.cpp get-last-os-error.cpp	\
+get-length.cpp get-name.cpp get-peername.cpp get-sa-data.cpp		\
+get-sa-family.cpp get-sa-length.cpp get-sa-pointer.cpp			\
+get-sin-addr.cpp get-sin-pointer.cpp get-sin-port.cpp			\
+get-sin6-addr.cpp get-sin6-pointer.cpp get-sin6-port.cpp get-size.cpp	\
+get-socket.cpp get-socketpair.cpp get-sockets-endpoint.cpp		\
+get-sockets-hostname.cpp get-sockname.cpp get-sun-length.cpp		\
+get-sun-path-length.cpp get-sun-path.cpp get-sun-pointer.cpp		\
+hints.cpp host.cpp is-valid.cpp logicerror.cpp open-endpoint.cpp	\
+open-fd.cpp oserrorresult.cpp reset-last-os-error.cpp			\
+runtimeerror.cpp set-last-os-error.cpp socket.cpp socketfamily.cpp	\
+socketflags.cpp socketprotocol.cpp sockettype.cpp stream-address.cpp	\
+stream-addrinfo.cpp stream-socket.cpp to-byte-span-sa.cpp		\
+to-byte-span-sun.cpp to-byte-span-void.cpp to-byte-string-bs.cpp	\
+to-byte-string-path.cpp to-byte-string-sa.cpp to-byte-string-sun.cpp	\
+to-string-bs.cpp to-string-sin.cpp to-string-sin6.cpp version.cpp
 
 test_sources = test-address.cpp test-bind.cpp test-connect.cpp	\
 test-context.cpp test-host.cpp test-hostname.cpp

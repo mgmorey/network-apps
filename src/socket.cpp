@@ -71,22 +71,22 @@ auto Network::Socket::host() const noexcept -> const Host&
     return m_host;
 }
 
-auto Network::Socket::flags() const noexcept -> Flags
+auto Network::Socket::flags() const noexcept -> SocketFlags
 {
     return m_hints.flags();
 }
 
-auto Network::Socket::family() const noexcept -> Family
+auto Network::Socket::family() const noexcept -> SocketFamily
 {
     return m_hints.family();
 }
 
-auto Network::Socket::socktype() const noexcept -> SockType
+auto Network::Socket::socktype() const noexcept -> SocketType
 {
     return m_hints.socktype();
 }
 
-auto Network::Socket::protocol() const noexcept -> Protocol
+auto Network::Socket::protocol() const noexcept -> SocketProtocol
 {
     return m_hints.protocol();
 }

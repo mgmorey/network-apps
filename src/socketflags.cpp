@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/flags.h"              // Flags, operator<<(),
+#include "network/socketflags.h"        // SocketFlags, operator<<(),
                                         // std::ostream
 
 #ifdef WIN32
@@ -31,7 +31,7 @@
 #include <vector>       // std::vector
 
 auto Network::operator<<(std::ostream& os,
-                         const Flags& flags) noexcept -> std::ostream&
+                         const SocketFlags& flags) noexcept -> std::ostream&
 {
     static const std::vector<std::pair<int, const char*>> values {
         {AI_PASSIVE,        "AI_PASSIVE"},
@@ -47,7 +47,7 @@ auto Network::operator<<(std::ostream& os,
     std::size_t i {0};
 
     for(const auto& value : values) {
-        if ((static_cast<flags_type>(flags) & value.first) != 0) {
+        if ((static_cast<socket_flags_type>(flags) & value.first) != 0) {
             if (i++ > 0) {
                 oss << " | ";
             }

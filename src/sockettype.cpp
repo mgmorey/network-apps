@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/socktype.h"           // SockType, operator<<(),
+#include "network/sockettype.h"         // SocketType, operator<<(),
                                         // std::ostream
 
 #ifdef WIN32
@@ -29,7 +29,7 @@
 #include <vector>       // std::vector
 
 auto Network::operator<<(std::ostream& os,
-                         const SockType& socktype) noexcept -> std::ostream&
+                         const SocketType& socktype) noexcept -> std::ostream&
 {
     static const std::vector<std::pair<int, const char*>> values {
 #ifdef SOCK_CLOEXEC
@@ -45,7 +45,7 @@ auto Network::operator<<(std::ostream& os,
     std::ostringstream oss;
     std::size_t i {0};
 
-    if ((static_cast<socktype_type>(socktype) & mask) != 0) {
+    if ((static_cast<socket_type_type>(socktype) & mask) != 0) {
         switch (socktype & mask) {
         case SOCK_STREAM:
             oss << "SOCK_STREAM";
@@ -60,7 +60,7 @@ auto Network::operator<<(std::ostream& os,
             oss << "SOCK_SEQPACKET";
             break;
         default:
-            oss << static_cast<socktype_type>(socktype);
+            oss << static_cast<socket_type_type>(socktype);
         }
         ++i;
     }

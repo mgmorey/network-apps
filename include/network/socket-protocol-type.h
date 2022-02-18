@@ -13,28 +13,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_SOCKTYPE_H
-#define NETWORK_SOCKTYPE_H
+#ifndef NETWORK_SOCKET_PROTOCOL_TYPE_H
+#define NETWORK_SOCKET_PROTOCOL_TYPE_H
 
-#include "network/integer.h"            // Integer
-#include "network/socktype-type.h"      // socktype_type
-
-#include <ostream>      // std::ostream
+#include "network/socket-hint-type.h"   // socket_hint_type
 
 namespace Network
 {
-    class SockType :
-        public Integer<socktype_type>
-    {
-    public:
-        constexpr explicit SockType(socktype_type t_value) noexcept :
-            Integer(t_value)
-        {
-        }
-    };
-
-    extern auto operator<<(std::ostream& os,
-                           const SockType& socktype) noexcept -> std::ostream&;
+    using socket_protocol_type = socket_hint_type;
 }
 
 #endif

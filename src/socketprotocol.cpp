@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/protocol.h"           // Protocol, operator<<(),
+#include "network/socketprotocol.h"     // SocketProtocol, operator<<(),
                                         // std::ostream
 
 #ifdef WIN32
@@ -27,9 +27,9 @@
 #endif
 
 auto Network::operator<<(std::ostream& os,
-                         const Protocol& protocol) noexcept -> std::ostream&
+                         const SocketProtocol& protocol) noexcept -> std::ostream&
 {
-    switch (static_cast<family_type>(protocol.family())) {
+    switch (static_cast<socket_family_type>(protocol.family())) {
     case AF_INET:
     case AF_INET6:
     case AF_UNSPEC:
@@ -50,11 +50,11 @@ auto Network::operator<<(std::ostream& os,
             os << "IPPROTO_RAW";
             break;
         default:
-            os << static_cast<protocol_type>(protocol);
+            os << static_cast<socket_protocol_type>(protocol);
         }
         break;
     default:
-        os << static_cast<protocol_type>(protocol);
+        os << static_cast<socket_protocol_type>(protocol);
     }
 
     return os;

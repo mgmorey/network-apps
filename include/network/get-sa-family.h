@@ -17,12 +17,12 @@
 #define NETWORK_GET_SA_FAMILY_H
 
 #include "network/bytestring.h"         // ByteString
-#include "network/family-type.h"        // family_type
+#include "network/socket-family-type.h" // socket_family_type
 
 namespace Network
 {
     extern auto get_sa_family(const ByteString& addr,
-                              family_type family = 0) noexcept -> family_type;
+                              socket_family_type family = 0) noexcept -> socket_family_type;
 }
 
 #endif

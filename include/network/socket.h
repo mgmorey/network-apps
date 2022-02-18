@@ -47,10 +47,10 @@ namespace Network
         auto operator==(const Socket& t_sock) const noexcept -> bool;
         [[nodiscard]] auto hints() const noexcept -> const Hints&;
         [[nodiscard]] auto host() const noexcept -> const Host&;
-        [[nodiscard]] auto flags() const noexcept -> Flags;
-        [[nodiscard]] auto family() const noexcept -> Family;
-        [[nodiscard]] auto socktype() const noexcept -> SockType;
-        [[nodiscard]] auto protocol() const noexcept -> Protocol;
+        [[nodiscard]] auto flags() const noexcept -> SocketFlags;
+        [[nodiscard]] auto family() const noexcept -> SocketFamily;
+        [[nodiscard]] auto socktype() const noexcept -> SocketType;
+        [[nodiscard]] auto protocol() const noexcept -> SocketProtocol;
         [[nodiscard]] auto address() const noexcept -> ByteString;
         [[nodiscard]] auto canonical_name() const noexcept -> OptionalHostname;
 

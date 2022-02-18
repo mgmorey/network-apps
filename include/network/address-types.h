@@ -17,8 +17,8 @@
 #define NETWORK_ADDRESS_TYPES_H
 
 #include "network/bytestring.h"         // ByteString
-#include "network/family-type.h"        // family_type
 #include "network/length-type.h"        // length_type
 #include "network/port-type.h"          // port_type
+#include "network/socket-family-type.h" // socket_family_type
 
 #endif

@@ -93,7 +93,7 @@ auto Network::Address::empty() const noexcept -> bool
     return m_value.empty();
 }
 
-auto Network::Address::family() const noexcept -> Network::family_type
+auto Network::Address::family() const noexcept -> Network::socket_family_type
 {
     return sa_family();
 }

@@ -13,28 +13,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_FLAGS_H
-#define NETWORK_FLAGS_H
+#ifndef NETWORK_SOCKTYPE_TYPE_H
+#define NETWORK_SOCKTYPE_TYPE_H
 
-#include "network/flags-type.h"         // flags_type
-#include "network/integer.h"            // Integer
-
-#include <ostream>      // std::ostream
+#include "network/socket-hint-type.h"   // socket_hint_type
 
 namespace Network
 {
-    class Flags :
-        public Integer<flags_type>
-    {
-    public:
-        constexpr explicit Flags(flags_type t_value) noexcept :
-            Integer(t_value)
-        {
-        }
-    };
-
-    extern auto operator<<(std::ostream& os,
-                           const Flags& flags) noexcept -> std::ostream&;
+    using socket_type_type = socket_hint_type;
 }
 
 #endif

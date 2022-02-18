@@ -13,9 +13,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/address.h"            // Address, family_type,
-                                        // length_type, std::string,
-                                        // value_type
+#include "network/address.h"            // Address, length_type,
+                                        // socket_family_type,
+                                        // std::string, value_type
 #include "network/get-sa-data.h"        // get_sa_data()
 #include "network/get-sa-family.h"      // get_sa_family()
 #include "network/get-sa-length.h"      // get_sa_length()
@@ -27,7 +27,7 @@ auto Network::Address::sa_data() const noexcept -> Network::Address::value_type
     return get_sa_data(m_value);
 }
 
-auto Network::Address::sa_family() const noexcept -> Network::family_type
+auto Network::Address::sa_family() const noexcept -> Network::socket_family_type
 {
     return get_sa_family(m_value);
 }
