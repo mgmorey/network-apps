@@ -16,6 +16,6 @@
 #ifndef NETWORK_AI_ERROR_H
 #define NETWORK_AI_ERROR_H
 
-#include "network/format-os-error.h"            // format_ai_error()
+#include "network/format-ai-error.h"            // format_ai_error()
 
 #endif
