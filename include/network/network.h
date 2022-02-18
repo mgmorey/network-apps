@@ -17,6 +17,7 @@
 #define NETWORK_NETWORK_H
 
 #include "network/address.h"            // Address
+#include "network/ai-error.h"           // format_ai_error()
 #include "network/bind.h"               // bind()
 #include "network/close.h"              // close()
 #include "network/connect.h"            // connect()
