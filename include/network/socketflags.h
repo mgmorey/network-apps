@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_FLAGS_H
-#define NETWORK_FLAGS_H
+#ifndef NETWORK_SOCKETFLAGS_H
+#define NETWORK_SOCKETFLAGS_H
 
 #include "network/integer.h"            // Integer
 #include "network/socket-flags-type.h"  // socket_flags_type
