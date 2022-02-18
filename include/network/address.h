@@ -16,11 +16,9 @@
 #ifndef NETWORK_ADDRESS_H
 #define NETWORK_ADDRESS_H
 
-#include "network/bytestring.h"         // ByteString, operator<<()
-#include "network/family-type.h"        // family_type
-#include "network/length-type.h"        // length_type
+#include "network/address-types.h"      // ByteString, family_type,
+                                        // length_type, port_type
 #include "network/os-features.h"        // WIN32
-#include "network/port-type.h"          // port_type
 
 #ifdef WIN32
 #include <winsock2.h>       // in_addr
