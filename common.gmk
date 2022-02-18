@@ -17,7 +17,7 @@
 
 get-alias = $(shell echo $1 | sed 's/\(\.[0-9][0-9]*\)\(\.[0-9][0-9]*\)*$$/\1/')
 not-version = $(shell echo $1 | sed 's/\.[0-9][0-9]*\(\.[0-9][0-9]*\)*$$//')
-subst-suffix = $(shell echo $2 | sed 's/\.[^.]*\(\.[^.]*\)*$$/$1/')
+subst-suffix = $(shell set -x; echo $2 | sed 's/\(\.[^.]*\)*$$/$1/')
 to-macro = $(call to-upper,$(call to-under,$1))
 to-under = $(shell echo $1 | tr '-' '_')
 to-upper = $(shell echo $1 | tr '[:lower:]' '[:upper:]')
