@@ -15,7 +15,6 @@
 
 #include "network/get-last-os-error.h"          // get_last_os_error(),
                                                 // os_error_type
-#include "network/os-features.h"        // WIN32
 
 #ifdef WIN32
 #include <winsock2.h>       // WSAGetLastError()

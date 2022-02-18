@@ -15,7 +15,6 @@
 
 #include "network/to-byte-span-sun.h"   // ByteSpan, sockaddr_un,
                                         // std::size_t, to_byte_span()
-#include "network/os-features.h"        // WIN32
 #include "network/to-byte-span-void.h"  // to_byte_span()
 
 #ifndef WIN32

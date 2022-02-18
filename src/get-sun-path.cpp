@@ -19,7 +19,6 @@
                                         // get_sun_path()
 #include "network/get-sa-family.h"      // get_sa_family()
 #include "network/get-sun-pointer.h"    // get_sun_pointer()
-#include "network/os-features.h"        // WIN32
 #include "network/sun-offsets.h"        // sun_path_offset
 
 #ifdef WIN32

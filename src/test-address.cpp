@@ -22,7 +22,6 @@
                                         // get_sa_length(),
                                         // is_valid(), sin_size,
                                         // sin6_size
-#include "network/os-features.h"        // WIN32
 
 #ifdef WIN32
 #include <getopt.h>         // getopt(), optarg, opterr, optind

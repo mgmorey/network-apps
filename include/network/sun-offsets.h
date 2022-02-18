@@ -16,7 +16,7 @@
 #ifndef NETWORK_SUN_OFFSETS_H
 #define NETWORK_SUN_OFFSETS_H
 
-#include "network/os-features.h"        // HAVE_SOCKADDR_SA_LEN, WIN32
+#include "network/os-features.h"        // HAVE_SOCKADDR_SA_LEN
 
 #ifndef WIN32
 #include <sys/un.h>         // sockaddr_un

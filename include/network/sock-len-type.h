@@ -16,8 +16,6 @@
 #ifndef NETWORK_SOCK_LEN_TYPE_H
 #define NETWORK_SOCK_LEN_TYPE_H
 
-#include "network/os-features.h"        // WIN32
-
 #ifndef WIN32
 #include <sys/socket.h>     // socklen_t
 #endif

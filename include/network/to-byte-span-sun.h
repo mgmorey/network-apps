@@ -17,7 +17,6 @@
 #define NETWORK_TO_BYTE_SPAN_SUN_H
 
 #include "network/bytespan.h"           // ByteSpan
-#include "network/os-features.h"        // WIN32
 #include "network/sun-sizes.h"          // sun_size
 
 #ifndef WIN32

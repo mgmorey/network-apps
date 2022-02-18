@@ -18,7 +18,6 @@
 
 #include "network/fdpairresult.h"       // FdPairResult
 #include "network/hints.h"              // Hints
-#include "network/os-features.h"        // WIN32
 
 namespace Network
 {

@@ -14,7 +14,6 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/socket.h"             // Hints, Host, Socket
-#include "network/os-features.h"        // WIN32
 
 #ifdef WIN32
 #include <ws2tcpip.h>   // addrinfo

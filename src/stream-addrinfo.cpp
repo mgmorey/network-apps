@@ -17,7 +17,6 @@
 #include "network/family.h"             // Family, operator<<()
 #include "network/flags.h"              // Flags, operator<<()
 #include "network/format.h"             // Format, operator<<()
-#include "network/os-features.h"        // WIN32
 #include "network/protocol.h"           // Protocol, operator<<()
 #include "network/socktype.h"           // SockType, operator<<()
 #include "network/string-null.h"        // string_null

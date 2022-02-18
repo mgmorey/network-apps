@@ -16,7 +16,6 @@
 #include "network/get-sockname.h"       // ByteStringResult, Fd,
                                         // GetNameParams,
                                         // get_sockname()
-#include "network/os-features.h"        // WIN32
 
 #ifdef WIN32
 #include <winsock2.h>       // getsockname()

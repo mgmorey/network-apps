@@ -17,7 +17,6 @@
                                         // os_error_type
 #include "network/format-os-error.h"    // format_os_error()
 #include "network/logicerror.h"         // LogicError
-#include "network/os-features.h"        // WIN32
 
 #ifdef WIN32
 #include <winsock2.h>       // WSANOTINITIALISED

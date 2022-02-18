@@ -15,7 +15,6 @@
 
 #include "network/network.h"            // Context, OsErrorResult,
                                         // Overloaded, get_hostname()
-#include "network/os-features.h"        // WIN32
 
 #ifdef WIN32
 #include <getopt.h>         // getopt(), optarg, opterr, optind

@@ -15,7 +15,6 @@
 
 #include "network/protocol.h"           // Protocol, operator<<(),
                                         // std::ostream
-#include "network/os-features.h"        // WIN32
 
 #ifdef WIN32
 #include <winsock2.h>   // AF_INET, AF_INET6, AF_UNIX, AF_UNSPEC,

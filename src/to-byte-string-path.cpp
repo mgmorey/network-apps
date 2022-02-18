@@ -18,7 +18,7 @@
                                                 // to_byte_string()
 #include "network/to-byte-string-sun.h"         // sockaddr_un,
                                                 // to_byte_string()
-#include "network/os-features.h"                // HAVE_SOCKADDR_SA_LEN, WIN32
+#include "network/os-features.h"                // HAVE_SOCKADDR_SA_LEN
 #ifndef WIN32
 #include "network/sun-offsets.h"                // sun_path_offset
 #endif

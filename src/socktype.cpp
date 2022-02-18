@@ -15,7 +15,6 @@
 
 #include "network/socktype.h"           // SockType, operator<<(),
                                         // std::ostream
-#include "network/os-features.h"        // WIN32
 
 #ifdef WIN32
 #include <winsock2.h>   // SOCK_DGRAM, SOCK_RAW, SOCK_RDM,

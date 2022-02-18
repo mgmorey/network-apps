@@ -17,7 +17,6 @@
 #define NETWORK_TO_BYTE_STRING_SUN_H
 
 #include "network/bytestring.h"         // ByteString
-#include "network/os-features.h"        // WIN32
 #ifndef WIN32
 #include "network/sun-sizes.h"          // sun_size
 #endif

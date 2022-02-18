@@ -16,7 +16,6 @@
 #include "network/format-ai-error.h"    // format_ai_error(),
                                         // os_error_type, std::string
 #include "network/format-os-error.h"    // format_os_error()
-#include "network/os-features.h"        // WIN32
 
 #ifndef WIN32
 #include <netdb.h>          // gai_strerror()

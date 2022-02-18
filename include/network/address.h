@@ -18,7 +18,6 @@
 
 #include "network/address-types.h"      // ByteString, family_type,
                                         // length_type, port_type
-#include "network/os-features.h"        // WIN32
 
 #ifdef WIN32
 #include <winsock2.h>       // in_addr

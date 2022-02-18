@@ -14,7 +14,6 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/close.h"              // Fd, fd_null, fd_type
-#include "network/os-features.h"        // WIN32
 
 #ifdef WIN32
 #include <winsock2.h>   // closesocket()

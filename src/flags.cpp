@@ -15,7 +15,6 @@
 
 #include "network/flags.h"              // Flags, operator<<(),
                                         // std::ostream
-#include "network/os-features.h"        // WIN32
 
 #ifdef WIN32
 #include <ws2tcpip.h>   // AI_ADDRCONFIG, AI_ALL, AI_CANONNAME,

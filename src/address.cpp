@@ -18,7 +18,6 @@
 #include "network/addresserror.h"       // AddressError, LogicError,
                                         // to_string()
 #include "network/is-valid.h"           // is_valid()
-#include "network/os-features.h"        // WIN32
 
 #ifdef WIN32
 #include <winsock2.h>       // AF_INET, AF_INET6

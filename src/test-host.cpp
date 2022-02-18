@@ -22,7 +22,6 @@
                                         // get_hosts(), skip_first(),
                                         // uniquify()
 #include "network/assert.h"             // assert()
-#include "network/os-features.h"        // WIN32
 
 #ifdef WIN32
 #include <getopt.h>         // getopt(), optarg, opterr, optind

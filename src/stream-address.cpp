@@ -17,7 +17,6 @@
                                         // std::ostream, std::string
 #include "network/family.h"             // Family, operator<<()
 #include "network/format.h"             // Format, operator<<()
-#include "network/os-features.h"        // WIN32
 
 #ifdef WIN32
 #include <winsock2.h>   // AF_INET, AF_INET6, AF_UNIX

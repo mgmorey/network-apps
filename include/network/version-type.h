@@ -16,8 +16,6 @@
 #ifndef NETWORK_VERSION_TYPE_H
 #define NETWORK_VERSION_TYPE_H
 
-#include "network/os-features.h"        // WIN32
-
 #ifdef WIN32
 #include <winsock2.h>       // Always include winsock2 before
                             // windows.h on Windows

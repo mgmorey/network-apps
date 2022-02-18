@@ -17,8 +17,7 @@
                                                 // sockaddr_un,
                                                 // std::size_t
 #include "network/get-sun-path-length.h"        // get_sun_path_length(),
-#include "network/os-features.h"                // HAVE_SOCKADDR_SA_LEN,
-                                                // WIN32
+#include "network/os-features.h"                // HAVE_SOCKADDR_SA_LEN
 
 #ifndef WIN32
 #ifdef HAVE_SOCKADDR_SA_LEN

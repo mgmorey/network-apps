@@ -18,7 +18,6 @@
 
 #include "network/bytestring.h"         // ByteString
 #include "network/optionalpathname.h"   // OptionalPathname
-#include "network/os-features.h"        // WIN32
 
 namespace Network
 {

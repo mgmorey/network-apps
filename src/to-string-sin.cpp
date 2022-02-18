@@ -16,7 +16,6 @@
 #include "network/to-string-sin.h"      // in_addr, std::string(),
                                         // to_string()
 #include "network/buffer.h"             // Buffer
-#include "network/os-features.h"        // WIN32
 
 #ifdef WIN32
 #include <winsock2.h>       // AF_INET

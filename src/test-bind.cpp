@@ -21,7 +21,6 @@
                                         // OsErrorResult, Overloaded,
                                         // bind(), close(),
                                         // get_sockname(), string_null
-#include "network/os-features.h"        // WIN32
 
 #ifdef WIN32
 #include <getopt.h>         // getopt(), optarg, opterr, optind

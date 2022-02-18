@@ -18,7 +18,6 @@
                                         // get_sin6_port()
 #include "network/get-sa-family.h"      // get_sa_family()
 #include "network/get-sin6-pointer.h"   // get_sin6_pointer()
-#include "network/os-features.h"        // WIN32
 #include "network/sin6-offsets.h"       // sin6_port_offset
 
 #ifdef WIN32

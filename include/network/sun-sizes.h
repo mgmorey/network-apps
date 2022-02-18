@@ -16,8 +16,6 @@
 #ifndef NETWORK_SUN_SIZES_H
 #define NETWORK_SUN_SIZES_H
 
-#include "network/os-features.h"        // WIN32
-
 #ifndef WIN32
 #include <sys/un.h>         // sockaddr_un
 #endif

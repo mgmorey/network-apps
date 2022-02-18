@@ -15,7 +15,6 @@
 
 #include "network/format-os-error.h"    // format_os_error(),
                                         // os_error_type, std::string
-#include "network/os-features.h"        // WIN32
 
 #ifdef WIN32
 #include <winsock2.h>       // Always include winsock2 before

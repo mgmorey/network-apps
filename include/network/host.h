@@ -18,7 +18,6 @@
 
 #include "network/bytestring.h"         // ByteString
 #include "network/optionalhostname.h"   // OptionalHostname
-#include "network/os-features.h"        // WIN32
 
 #ifdef WIN32
 #include <ws2tcpip.h>   // addrinfo

@@ -17,7 +17,6 @@
                                         // get_size_min()
 #include "network/get-sa-family.h"      // get_sa_family()
 #include "network/offsets.h"            // sun_path_offset
-#include "network/os-features.h"        // WIN32
 #include "network/sizes.h"              // sin_size, sin6_size,
                                         // sockaddr_size_max, sun_size
 

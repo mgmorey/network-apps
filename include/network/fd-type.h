@@ -16,8 +16,6 @@
 #ifndef NETWORK_FD_TYPE_H
 #define NETWORK_FD_TYPE_H
 
-#include "network/os-features.h"        // WIN32
-
 #ifdef WIN32
 #include <winsock2.h>       // SOCKET
 #endif

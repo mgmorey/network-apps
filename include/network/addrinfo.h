@@ -20,7 +20,6 @@
 #include "network/optionalhostname.h"   // OptionalHostname
 #include "network/optionalservice.h"    // OptionalService
 #include "network/optionalstring.h"     // OptionalString
-#include "network/os-features.h"        // WIN32
 #include "network/oserrorresult.h"      // OsErrorResult
 
 #ifdef WIN32

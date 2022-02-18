@@ -17,7 +17,6 @@
                                         // OpenResult, bind(), open()
 #include "network/openendpointparams.h" // OpenEndpointParams
 #include "network/openhandler.h"        // OpenHandler
-#include "network/os-features.h"        // WIN32
 
 #ifdef WIN32
 #include <winsock2.h>       // bind()

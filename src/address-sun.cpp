@@ -15,7 +15,6 @@
 
 #include "network/address.h"            // Address, std::string
 #include "network/get-sun-path.h"       // get_sun_path()
-#include "network/os-features.h"        // WIN32
 #include "network/string-null.h"        // string_null
 
 #ifndef WIN32
