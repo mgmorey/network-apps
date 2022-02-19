@@ -38,13 +38,14 @@
 
 using Network::Address;
 using Network::Context;
+using Network::Error;
 using Network::FdPair;
+using Network::LogicError;
 using Network::OptionalPathname;
 using Network::OsErrorResult;
 using Network::Overloaded;
 using Network::SocketHints;
 using Network::get_sun_path;
-using Network::is_valid;
 using Network::string_null;
 using Network::to_byte_string;
 
@@ -96,6 +97,15 @@ namespace TestSocket
         return result;
     }
 
+    static auto print(const Error& error) -> void
+    {
+        if (verbose) {
+            std::cout << "Exception: "
+                      << error.what()
+                      << std::endl;
+        }
+    }
+
     static auto test_socketpair(const SocketHints& hints) -> void
     {
         const auto socketpair_result {get_socketpair(hints, verbose)};
@@ -125,24 +135,33 @@ namespace TestSocket
 
     static auto test_unix_path(const OptionalPathname& pathname) -> void
     {
-        const auto addr {to_byte_string(pathname)};
-        const auto unix_path {get_sun_path(addr)};
+        std::string actual_error;
 
-        if (pathname) {
-            std::cout << "Unix domain path: "
-                      << unix_path.value_or(string_null)
+        try {
+            const auto addr {to_byte_string(pathname)};
+            const auto unix_path {get_sun_path(addr)};
+
+            if (pathname) {
+                std::cout << "Unix domain path: "
+                          << unix_path.value_or(string_null)
+                          << std::endl;
+                assert(unix_path == pathname);
+            }
+            else {
+                assert(static_cast<bool>(unix_path) == false);
+            }
+
+            Address address {addr};
+            std::cout << "Unix domain address: "
+                      << address
                       << std::endl;
-            assert(unix_path == pathname);
         }
-        else {
-            assert(static_cast<bool>(unix_path) == false);
+        catch (const LogicError& error) {
+            print(error);
+            actual_error = error.what();
         }
 
-        assert(is_valid(addr, verbose));
-        Address address {addr};
-        std::cout << "Unix domain address: "
-                  << address
-                  << std::endl;
+        assert(actual_error.empty());
     }
 }
 
