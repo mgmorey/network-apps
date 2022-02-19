@@ -16,8 +16,8 @@
 #ifndef NETWORK_BIND_H
 #define NETWORK_BIND_H
 
-#include "network/bind-endpoint.h"      // Endpoint, Hints,
-                                        // OpenResult, bind()
+#include "network/bind-endpoint.h"      // Endpoint, OpenResult,
+                                        // SocketHints, bind()
 #include "network/bind-fd.h"            // Bytes, Fd, OsErrorResult,
                                         // bind()
 

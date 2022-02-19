@@ -16,8 +16,8 @@
 #ifndef NETWORK_SOCKET_H
 #define NETWORK_SOCKET_H
 
-#include "network/hints.h"              // Hints
-#include "network/host.h"               // Host
+#include "network/sockethints.h"        // SocketHints
+#include "network/sockethost.h"         // SocketHost
 
 #ifdef WIN32
 #include <ws2tcpip.h>   // addrinfo
@@ -45,8 +45,8 @@ namespace Network
         auto operator<(const Socket& t_sock) const noexcept -> bool;
         auto operator>(const Socket& t_sock) const noexcept -> bool;
         auto operator==(const Socket& t_sock) const noexcept -> bool;
-        [[nodiscard]] auto hints() const noexcept -> const Hints&;
-        [[nodiscard]] auto host() const noexcept -> const Host&;
+        [[nodiscard]] auto hints() const noexcept -> const SocketHints&;
+        [[nodiscard]] auto host() const noexcept -> const SocketHost&;
         [[nodiscard]] auto flags() const noexcept -> SocketFlags;
         [[nodiscard]] auto family() const noexcept -> SocketFamily;
         [[nodiscard]] auto socktype() const noexcept -> SocketType;
@@ -55,8 +55,8 @@ namespace Network
         [[nodiscard]] auto canonical_name() const noexcept -> OptionalHostname;
 
     private:
-        Hints m_hints;
-        Host m_host;
+        SocketHints m_hints;
+        SocketHost m_host;
     };
 
     extern auto operator<<(std::ostream& os,

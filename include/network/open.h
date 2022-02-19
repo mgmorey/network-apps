@@ -16,8 +16,8 @@
 #ifndef NETWORK_OPEN_H
 #define NETWORK_OPEN_H
 
-#include "network/open-endpoint.h"      // Endpoint, Hints,
-                                        // OpenHandler, OpenResult,
+#include "network/open-endpoint.h"      // Endpoint, OpenHandler,
+                                        // OpenResult, SocketHints,
                                         // open()
 #include "network/open-fd.h"            // Bytes, Fd, OsErrorResult,
                                         // open()

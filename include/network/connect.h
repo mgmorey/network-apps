@@ -16,8 +16,8 @@
 #ifndef NETWORK_CONNECT_H
 #define NETWORK_CONNECT_H
 
-#include "network/connect-endpoint.h"   // Endpoint, Hints,
-                                        // OpenResult, connect()
+#include "network/connect-endpoint.h"   // Endpoint, OpenResult,
+                                        // SocketHints, connect()
 #include "network/connect-fd.h"         // Bytes, Fd, OsErrorResult,
                                         // connect()
 

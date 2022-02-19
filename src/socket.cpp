@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/socket.h"             // Hints, Host, Socket
+#include "network/socket.h"             // Host, Socket, SocketHints
 
 #ifdef WIN32
 #include <ws2tcpip.h>   // addrinfo
@@ -61,12 +61,12 @@ auto Network::Socket::operator==(const Socket& t_sock) const noexcept -> bool
             host() == t_sock.host());
 }
 
-auto Network::Socket::hints() const noexcept -> const Hints&
+auto Network::Socket::hints() const noexcept -> const SocketHints&
 {
     return m_hints;
 }
 
-auto Network::Socket::host() const noexcept -> const Host&
+auto Network::Socket::host() const noexcept -> const SocketHost&
 {
     return m_host;
 }

@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/connect-endpoint.h"   // Endpoint, Hints,
-                                        // OpenResult, connect(),
+#include "network/connect-endpoint.h"   // Endpoint, OpenResult,
+                                        // SocketHints, connect(),
                                         // open()
 #include "network/openendpointparams.h" // OpenEndpointParams
 #include "network/openhandler.h"        // OpenHandler
@@ -26,7 +26,7 @@
 #endif
 
 auto Network::connect(const Endpoint& endpoint,
-                      const Hints& hints,
+                      const SocketHints& hints,
                       bool verbose) -> Network::OpenResult
 {
     const OpenHandler handler {::connect, "connect"};

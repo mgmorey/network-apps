@@ -33,7 +33,7 @@
 #include <iostream>     // std::cerr, std::endl
 #include <sstream>      // std::ostringstream
 
-auto Network::get_socketpair(const Hints& hints,
+auto Network::get_socketpair(const SocketHints& hints,
                              bool verbose) noexcept -> Network::FdPairResult
 {
     constexpr auto delim {", "};

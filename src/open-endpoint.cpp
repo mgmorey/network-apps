@@ -14,9 +14,9 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/open-endpoint.h"      // Endpoint, FdResultVector,
-                                        // Hints, OpenEndpointParams,
+                                        // OpenEndpointParams,
                                         // OpenHandler, OpenResult,
-                                        // open()
+                                        // SocketHints, open()
 #include "network/open-fd.h"            // Bytes, Fd, OpenHandler,
                                         // OsErrorResult, open()
 #include "network/get-socket.h"         // ErrorResult, get_socket()

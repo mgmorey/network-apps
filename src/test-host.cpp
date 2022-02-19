@@ -15,9 +15,10 @@
 
 #include "network/network.h"            // Address, Bytes, Context,
                                         // Endpoint, EndpointResult,
-                                        // Hints, Host, HostVector,
-                                        // Hostname, OptionalHints,
+                                        // Host, HostVector, Hostname,
+                                        // OptionalHints,
                                         // OsErrorResult, Overloaded,
+                                        // SocketHints,
                                         // get_endpoint(),
                                         // get_hosts(), skip_first(),
                                         // uniquify()
@@ -56,13 +57,13 @@ using Network::ByteString;
 using Network::Context;
 using Network::Endpoint;
 using Network::EndpointResult;
-using Network::Hints;
-using Network::Host;
 using Network::HostVector;
 using Network::OptionalHints;
 using Network::OptionalHostname;
 using Network::OsErrorResult;
 using Network::Overloaded;
+using Network::SocketHints;
+using Network::SocketHost;
 using Network::get_endpoint;
 using Network::get_hosts;
 using Network::os_error_type;
@@ -72,7 +73,7 @@ using Network::uniquify;
 namespace TestHost
 {
     using ErrorCodeSet = std::set<os_error_type>;
-    using HintsVector = std::vector<Hints>;
+    using HintsVector = std::vector<SocketHints>;
 
     static bool verbose {false};  // NOLINT
 
@@ -86,7 +87,7 @@ namespace TestHost
         {
         }
 
-        auto operator()(const Host& t_host) -> void
+        auto operator()(const SocketHost& t_host) -> void
         {
             const ByteString addr {t_host.address()};
             const auto endpoint_result {get_endpoint(addr)};
@@ -178,11 +179,11 @@ namespace TestHost
         }
     }
 
-    static auto get_hints_vector(bool is_local) -> const std::vector<Hints>&
+    static auto get_hints_vector(bool is_local) -> const HintsVector&
     {
-        static constexpr Hints inetHints {AI_CANONNAME, AF_INET};
-        static constexpr Hints inet6Hints {AI_CANONNAME, AF_INET6};
-        static constexpr Hints unspecHints {AI_CANONNAME};
+        static constexpr SocketHints inetHints {AI_CANONNAME, AF_INET};
+        static constexpr SocketHints inet6Hints {AI_CANONNAME, AF_INET6};
+        static constexpr SocketHints unspecHints {AI_CANONNAME};
         static const HintsVector inetHintsVector {inetHints, inet6Hints};
         static const HintsVector unspecHintsVector {unspecHints};
         return is_local ? unspecHintsVector : inetHintsVector;

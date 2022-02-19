@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_HOST_H
-#define NETWORK_HOST_H
+#ifndef NETWORK_SOCKETHOST_H
+#define NETWORK_SOCKETHOST_H
 
 #include "network/bytestring.h"         // ByteString
 #include "network/optionalhostname.h"   // OptionalHostname
@@ -27,25 +27,26 @@
 
 namespace Network
 {
-    struct Host
+    struct SocketHost
     {
-        Host() noexcept = default;
+        SocketHost() noexcept = default;
         // cppcheck-suppress noExplicitConstructor
-        Host(const addrinfo& t_addrinfo) noexcept;  // NOLINT
-        Host(const Host&) noexcept = default;
-        Host(Host&&) noexcept = default;
-        ~Host() noexcept = default;
-        auto operator=(const addrinfo& t_addrinfo) noexcept -> Host&;
-        auto operator=(const Host&) noexcept -> Host& = default;
-        auto operator=(Host&&) noexcept -> Host& = default;
-        auto operator<(const Host& t_host) const noexcept -> bool;
-        auto operator>(const Host& t_host) const noexcept -> bool;
-        auto operator==(const Host& t_host) const noexcept -> bool;
+        SocketHost(const addrinfo& t_addrinfo) noexcept;  // NOLINT
+        SocketHost(const SocketHost&) noexcept = default;
+        SocketHost(SocketHost&&) noexcept = default;
+        ~SocketHost() noexcept = default;
+        auto operator=(const addrinfo& t_addrinfo) noexcept -> SocketHost&;
+        auto operator=(const SocketHost&) noexcept -> SocketHost& = default;
+        auto operator=(SocketHost&&) noexcept -> SocketHost& = default;
+        auto operator<(const SocketHost& t_host) const noexcept -> bool;
+        auto operator>(const SocketHost& t_host) const noexcept -> bool;
+        auto operator==(const SocketHost& t_host) const noexcept -> bool;
         [[nodiscard]] auto address() const noexcept -> ByteString;
         [[nodiscard]] auto canonical_name() const noexcept -> OptionalHostname;
 
     protected:
-        static auto to_canonical_name(const char* t_str) noexcept -> OptionalHostname;
+        static auto to_canonical_name(const char* t_str) noexcept ->
+            OptionalHostname;
 
     private:
         ByteString m_addr;

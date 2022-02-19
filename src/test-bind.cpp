@@ -17,7 +17,7 @@
 #include "network/network.h"            // Address, Bytes,
                                         // ByteStringResult, Context,
                                         // Endpoint, FdResult,
-                                        // FdResultVector, Hints,
+                                        // FdResultVector, SocketHints,
                                         // OsErrorResult, Overloaded,
                                         // bind(), close(),
                                         // get_sockname(), string_null
@@ -57,9 +57,9 @@ using Network::Endpoint;
 using Network::Fd;
 using Network::FdResult;
 using Network::FdResultVector;
-using Network::Hints;
 using Network::OsErrorResult;
 using Network::Overloaded;
+using Network::SocketHints;
 using Network::bind;
 using Network::get_sockname;
 using Network::os_error_type;
@@ -215,7 +215,7 @@ namespace TestBind
     }
 
     static auto test_bind_invalid(const Endpoint& endpoint,
-                                  const Hints& hints) -> void
+                                  const SocketHints& hints) -> void
     {
         os_error_type actual_code {0};
         const auto& expected_code {get_code_nodata()};
@@ -233,7 +233,7 @@ namespace TestBind
     }
 
     static auto test_bind_valid(const Endpoint& endpoint,
-                                const Hints& hints) -> void
+                                const SocketHints& hints) -> void
     {
         const auto open_result {bind(endpoint, hints, verbose)};
         std::visit(Overloaded {
@@ -253,7 +253,7 @@ auto main(int argc, char* argv[]) -> int
 {
     using namespace TestBind;
 
-    static constexpr Hints hints
+    static constexpr SocketHints hints
         {AI_CANONNAME, AF_UNSPEC, SOCK_STREAM, IPPROTO_TCP};
 
     try {

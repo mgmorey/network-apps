@@ -13,17 +13,17 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/hints.h"              // Hints, operator<<(),
-                                        // std::ostream
 #include "network/format.h"             // Format, operator<<()
+#include "network/sockethints.h"        // SocketHints, operator<<(),
+                                        // std::ostream
 
 auto Network::operator<<(std::ostream& os,
-                         const Hints& hints) -> std::ostream&
+                         const SocketHints& hints) -> std::ostream&
 {
     constexpr auto delim {", "};
     constexpr auto tab {6};
 
-    os << "Hints("
+    os << "SocketHints("
        << Format("flags")
        << hints.flags()
        << Format(delim, tab, "family")

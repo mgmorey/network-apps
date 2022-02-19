@@ -15,10 +15,10 @@
 
 #include "network/assert.h"             // assert()
 #include "network/network.h"            // Address, Context, FdPair,
-                                        // Hints, OptionalPathname,
+                                        // OptionalPathname,
                                         // Overloaded, OsErrorResult,
-                                        // Socket, close(),
-                                        // get_socketpair(),
+                                        // Socket, SocketHints,
+                                        // close(), get_socketpair(),
                                         // get_sun_path(), is_valid(),
                                         // string_null,
                                         // to_byte_string()
@@ -39,10 +39,10 @@
 using Network::Address;
 using Network::Context;
 using Network::FdPair;
-using Network::Hints;
 using Network::OptionalPathname;
 using Network::OsErrorResult;
 using Network::Overloaded;
+using Network::SocketHints;
 using Network::get_sun_path;
 using Network::is_valid;
 using Network::string_null;
@@ -96,7 +96,7 @@ namespace TestSocket
         return result;
     }
 
-    static auto test_socketpair(const Hints& hints) -> void
+    static auto test_socketpair(const SocketHints& hints) -> void
     {
         const auto socketpair_result {get_socketpair(hints, verbose)};
         std::visit(Overloaded {
@@ -150,7 +150,7 @@ auto main(int argc, char* argv[]) -> int
 {
     using namespace TestSocket;
 
-    static constexpr Hints hints {0, AF_UNIX, SOCK_STREAM};
+    static constexpr SocketHints hints {0, AF_UNIX, SOCK_STREAM};
 
     try {
         const auto args {parse_arguments(argc, argv)};

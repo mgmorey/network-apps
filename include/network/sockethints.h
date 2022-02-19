@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_HINTS_H
-#define NETWORK_HINTS_H
+#ifndef NETWORK_SOCKETHINTS_H
+#define NETWORK_SOCKETHINTS_H
 
 #include "network/socketfamily.h"       // SocketFamily, operator<<()
 #include "network/socketflags.h"        // SocketFlags, operator<<()
@@ -30,11 +30,11 @@
 
 namespace Network
 {
-    struct Hints
+    struct SocketHints
     {
-        constexpr Hints() noexcept = default;
+        constexpr SocketHints() noexcept = default;
 
-        constexpr explicit Hints(socket_flags_type t_flags,
+        constexpr explicit SocketHints(socket_flags_type t_flags,
                                  socket_family_type t_family = AF_UNSPEC,
                                  socket_type_type t_socktype = 0,
                                  socket_protocol_type t_protocol = 0) noexcept :
@@ -46,7 +46,7 @@ namespace Network
         }
 
         // cppcheck-suppress noExplicitConstructor
-        constexpr Hints(const addrinfo& t_addrinfo) noexcept :  // NOLINT
+        constexpr SocketHints(const addrinfo& t_addrinfo) noexcept :  // NOLINT
             m_flags(t_addrinfo.ai_flags),
             m_family(t_addrinfo.ai_family),
             m_socktype(t_addrinfo.ai_socktype),
@@ -54,13 +54,16 @@ namespace Network
         {
         }
 
-        constexpr Hints(const Hints&) noexcept = default;
-        constexpr Hints(Hints&&) noexcept = default;
-        constexpr ~Hints() noexcept = default;
-        constexpr auto operator=(const Hints&) noexcept -> Hints& = default;
-        constexpr auto operator=(Hints&&) noexcept -> Hints& = default;
+        constexpr SocketHints(const SocketHints&) noexcept = default;
+        constexpr SocketHints(SocketHints&&) noexcept = default;
+        constexpr ~SocketHints() noexcept = default;
+        constexpr auto operator=(const SocketHints&) noexcept ->
+            SocketHints& = default;
+        constexpr auto operator=(SocketHints&&) noexcept ->
+            SocketHints& = default;
 
-        constexpr auto operator=(const addrinfo& t_addrinfo) noexcept -> Hints&
+        constexpr auto operator=(const addrinfo& t_addrinfo) noexcept ->
+            SocketHints&
         {
             m_flags = t_addrinfo.ai_flags;
             m_family = t_addrinfo.ai_family;
@@ -69,21 +72,24 @@ namespace Network
             return *this;
         }
 
-        constexpr auto operator<(const Hints& t_hints) const noexcept -> bool
+        constexpr auto operator<(const SocketHints& t_hints) const noexcept ->
+            bool
         {
             return (m_protocol < t_hints.m_protocol ||
                     m_socktype < t_hints.m_socktype ||
                     m_family < t_hints.m_family);
         }
 
-        constexpr auto operator>(const Hints& t_hints) const noexcept -> bool
+        constexpr auto operator>(const SocketHints& t_hints) const noexcept ->
+            bool
         {
             return (m_protocol > t_hints.m_protocol ||
                     m_socktype > t_hints.m_socktype ||
                     m_family > t_hints.m_family);
         }
 
-        constexpr auto operator==(const Hints& t_hints) const noexcept -> bool
+        constexpr auto operator==(const SocketHints& t_hints) const noexcept ->
+            bool
         {
             return (m_protocol == t_hints.m_protocol &&
                     m_socktype == t_hints.m_socktype &&
@@ -128,7 +134,7 @@ namespace Network
     };
 
     extern auto operator<<(std::ostream& os,
-                           const Hints& hints) -> std::ostream&;
+                           const SocketHints& hints) -> std::ostream&;
 }
 
 #endif

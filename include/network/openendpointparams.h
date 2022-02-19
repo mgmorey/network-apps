@@ -17,14 +17,14 @@
 #define NETWORK_OPENENDPOINTPARAMS_H
 
 #include "network/endpoint.h"           // Endpoint
-#include "network/hints.h"              // Hints
+#include "network/sockethints.h"        // SocketHints
 
 namespace Network
 {
     struct OpenEndpointParams
     {
         Endpoint endpoint;
-        Hints hints;
+        SocketHints hints;
         bool verbose;
     };
 }

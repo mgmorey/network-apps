@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/bind-endpoint.h"      // Endpoint, Hints,
-                                        // OpenResult, bind(), open()
+#include "network/bind-endpoint.h"      // Endpoint, OpenResult,
+                                        // SocketHints, bind(), open()
 #include "network/openendpointparams.h" // OpenEndpointParams
 #include "network/openhandler.h"        // OpenHandler
 
@@ -25,7 +25,7 @@
 #endif
 
 auto Network::bind(const Endpoint& endpoint,
-                   const Hints& hints,
+                   const SocketHints& hints,
                    bool verbose) -> Network::OpenResult
 {
     const OpenHandler handler {::bind, "bind"};

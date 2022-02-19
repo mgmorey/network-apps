@@ -17,11 +17,11 @@
 #include "network/network.h"            // Address, Bytes,
                                         // ByteStringResult, Context,
                                         // Endpoint, FdResult,
-                                        // FdResultVector, Hints,
+                                        // FdResultVector,
                                         // OptionalHostname,
                                         // OsErrorResult, Overloaded,
-                                        // close(), connect(),
-                                        // get_hostname(),
+                                        // SocketHints, close(),
+                                        // connect(), get_hostname(),
                                         // get_peername(),
                                         // get_sockname(), string_null
 
@@ -60,11 +60,11 @@ using Network::Endpoint;
 using Network::Fd;
 using Network::FdResult;
 using Network::FdResultVector;
-using Network::Hints;
 using Network::Hostname;
 using Network::OptionalHostname;
 using Network::OsErrorResult;
 using Network::Overloaded;
+using Network::SocketHints;
 using Network::connect;
 using Network::get_hostname;
 using Network::get_peername;
@@ -250,7 +250,7 @@ namespace TestConnect
     }
 
     static auto test_connect(const Endpoint& endpoint,
-                             const Hints& hints,
+                             const SocketHints& hints,
                              const Hostname& hostname) -> void
     {
         const auto open_result {connect(endpoint, hints, verbose)};
@@ -270,7 +270,7 @@ namespace TestConnect
     }
 
     static auto test_connect_invalid(const Endpoint& endpoint,
-                                     const Hints& hints) -> void
+                                     const SocketHints& hints) -> void
     {
         os_error_type actual_code {0};
         const auto& expected_code {get_code_nodata()};
@@ -288,7 +288,7 @@ namespace TestConnect
     }
 
     static auto test_connect_valid(const Endpoint& endpoint,
-                                   const Hints& hints) -> void
+                                   const SocketHints& hints) -> void
     {
         const auto hostname_result {get_hostname()};
         std::visit(Overloaded {
@@ -308,7 +308,7 @@ auto main(int argc, char* argv[]) -> int
 {
     using namespace TestConnect;
 
-    static constexpr Hints hints
+    static constexpr SocketHints hints
         {AI_CANONNAME, AF_UNSPEC, SOCK_STREAM, IPPROTO_TCP};
 
     try {

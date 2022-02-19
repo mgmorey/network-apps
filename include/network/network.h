@@ -64,7 +64,8 @@
 #include "network/skip-first.h"         // skip_first()
 #include "network/skip-last.h"          // skip_last()
 #include "network/socket-error.h"       // socket_error
-#include "network/socket.h"             // Hints, Host, Socket
+#include "network/socket.h"             // Socket, SocketHints,
+                                        // SocketHost
 #include "network/socketfamily.h"       // SocketFamily
 #include "network/socketflags.h"        // SocketFlags
 #include "network/socketprotocol.h"     // SocketProtocol

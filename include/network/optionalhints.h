@@ -16,13 +16,13 @@
 #ifndef NETWORK_OPTIONALHINTS_H
 #define NETWORK_OPTIONALHINTS_H
 
-#include "network/hints.h"              // Hints
+#include "network/sockethints.h"        // SocketHints
 
 #include <optional>     // std::optional
 
 namespace Network
 {
-    using OptionalHints = std::optional<Hints>;
+    using OptionalHints = std::optional<SocketHints>;
 }
 
 #endif
