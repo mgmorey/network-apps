@@ -197,6 +197,10 @@ clean:
 .PHONY: commands
 commands: $(commands)
 
+.PHONY: counts
+counts:
+	find include src -type f | sort | xargs wc
+
 .PHONY: distclean
 distclean:
 	rm -rf $(sort $(filter-out $(cache_dir)/%,$(filter-out		\
