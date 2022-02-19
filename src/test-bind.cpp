@@ -17,10 +17,11 @@
 #include "network/network.h"            // Address, Bytes,
                                         // ByteStringResult, Context,
                                         // Endpoint, FdResult,
-                                        // FdResultVector, SocketHints,
-                                        // OsErrorResult, Overloaded,
-                                        // bind(), close(),
-                                        // get_sockname(), string_null
+                                        // FdResultVector,
+                                        // SocketHints, OsErrorResult,
+                                        // Overloaded, bind(),
+                                        // close(), get_sockname(),
+                                        // string_null
 
 #ifdef WIN32
 #include <getopt.h>         // getopt(), optarg, opterr, optind
