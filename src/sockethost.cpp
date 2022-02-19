@@ -13,8 +13,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/sockethost.h"         // ByteString, Host,
-                                        // OptionalHostname, addrinfo
+#include "network/sockethost.h"         // ByteString,
+                                        // OptionalHostname,
+                                        // SocketHost, addrinfo
 #include "network/to-byte-string-sa.h"  // to_byte_string()
 
 Network::SocketHost::SocketHost(const addrinfo& t_addrinfo) noexcept :
