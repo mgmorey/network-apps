@@ -46,7 +46,7 @@ vpath %$(source_suffix) $(source_dir)
 include common.gmk
 include flags.gmk
 
-# Define file list variables
+# Define enumerated file list variables
 
 libnetwork_sources = address-sa.cpp address-sin.cpp address-sin6.cpp	\
 address-sun.cpp address.cpp addresserror.cpp addrinfo.cpp		\
@@ -78,6 +78,12 @@ ifneq "$(os_name)" "MINGW64_NT"
 	test_sources += test-socket.cpp
 	unix_sources = unix-client.cpp unix-server.cpp
 endif
+
+commands = compile_commands.json
+sizes = sizes.txt
+tags = TAGS
+
+# Define computed file list variables
 
 sources = $(libnetwork_sources) $(test_sources) $(unix_sources)
 
@@ -113,8 +119,6 @@ test_programs = $(addsuffix $(program_suffix),$(basename $(test_sources)))
 unix_programs = $(addsuffix $(program_suffix),$(basename $(unix_sources)))
 programs = $(addsuffix $(program_suffix),$(basename $(program_sources)))
 
-commands = compile_commands.json
-
 dependencies = $(addprefix $(dependency_dir)/,$(subst	\
 $(source_suffix),$(dependency_suffix),$(sources)))
 listings = $(subst $(object_suffix),.lst,$(objects))
@@ -123,9 +127,6 @@ mapfiles = $(addsuffix .map,$(basename $(programs))) $(call	\
 subst-suffix,.map,$(libnetwork))
 
 dumps = $(addsuffix .stackdump,$(programs))
-
-sizes = sizes.txt
-tags = TAGS
 
 binary_artifacts = $(libraries) $(objects) $(programs) $(tags)
 build_artifacts = $(libraries) $(listings) $(mapfiles) $(objects)	\
