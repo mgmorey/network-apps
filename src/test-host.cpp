@@ -15,12 +15,12 @@
 
 #include "network/network.h"            // Address, Bytes, Context,
                                         // Endpoint, EndpointResult,
-                                        // Host, HostVector, Hostname,
+                                        // HostVector, Hostname,
                                         // OptionalHints,
                                         // OsErrorResult, Overloaded,
-                                        // SocketHints,
+                                        // SocketHints, SocketHost,
                                         // get_endpoint(),
-                                        // get_hosts(), skip_first(),
+                                        // get_hosts(), skip_first()
                                         // uniquify()
 #include "network/assert.h"             // assert()
 
