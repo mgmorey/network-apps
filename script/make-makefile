@@ -92,7 +92,7 @@ sed_makefile() {
 
 usage() {
     cat <<EOF >&2
-Usage: $script [-c COMMAND] [-f FILE [FILE [...]]] [-o OUTPUT] [-p PREFIX]
+Usage: $script [-c COMMAND] [-d DIR] [-f "FILES" ] [-o OUTPUT]
        $script -h
 EOF
 }
