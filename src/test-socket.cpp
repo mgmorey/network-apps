@@ -44,6 +44,7 @@ using Network::LogicError;
 using Network::OptionalPathname;
 using Network::OsErrorResult;
 using Network::Overloaded;
+using Network::Pathname;
 using Network::SocketHints;
 using Network::get_sun_path;
 using Network::string_null;
@@ -55,7 +56,15 @@ namespace TestSocket
 
     static bool verbose {false};  // NOLINT
 
-    auto get_pathname_vector() -> const OptionalPathnameVector&
+    auto get_pathname_invalid() -> Pathname
+    {
+        constexpr auto size {110};
+        Pathname pathname {"/tmp/"};
+        pathname += Pathname(size, 'X');
+        return pathname;
+    }
+
+    auto get_pathnames_valid() -> const OptionalPathnameVector&
     {
         static const OptionalPathnameVector pathname_vector {
             std::nullopt,
@@ -106,6 +115,61 @@ namespace TestSocket
         }
     }
 
+    static auto test_pathname(const OptionalPathname& pathname) -> void
+    {
+        const auto addr {to_byte_string(pathname)};
+        const auto unix_path {get_sun_path(addr)};
+
+        if (pathname) {
+            std::cout << "Unix domain path: "
+                      << unix_path.value_or(string_null)
+                      << std::endl;
+            assert(unix_path == pathname);
+        }
+        else {
+            assert(static_cast<bool>(unix_path) == false);
+        }
+
+        Address address {addr};
+        std::cout << "Unix domain address: "
+                  << address
+                  << std::endl;
+    }
+
+    static auto test_path_invalid(const OptionalPathname& pathname) -> void
+    {
+        std::string actual_error;
+        std::string expected_error {
+            pathname ? *pathname + ": pathname exceeds size of sun_path" :
+            ""
+        };
+
+        try {
+            test_pathname(pathname);
+        }
+        catch (const LogicError& error) {
+            print(error);
+            actual_error = error.what();
+        }
+
+        assert(actual_error == expected_error);
+    }
+
+    static auto test_path_valid(const OptionalPathname& pathname) -> void
+    {
+        std::string actual_error;
+
+        try {
+            test_pathname(pathname);
+        }
+        catch (const LogicError& error) {
+            print(error);
+            actual_error = error.what();
+        }
+
+        assert(actual_error.empty());
+    }
+
     static auto test_socketpair(const SocketHints& hints) -> void
     {
         const auto socketpair_result {get_socketpair(hints, verbose)};
@@ -132,37 +196,6 @@ namespace TestSocket
                 }
             }, socketpair_result);
     }
-
-    static auto test_unix_path(const OptionalPathname& pathname) -> void
-    {
-        std::string actual_error;
-
-        try {
-            const auto addr {to_byte_string(pathname)};
-            const auto unix_path {get_sun_path(addr)};
-
-            if (pathname) {
-                std::cout << "Unix domain path: "
-                          << unix_path.value_or(string_null)
-                          << std::endl;
-                assert(unix_path == pathname);
-            }
-            else {
-                assert(static_cast<bool>(unix_path) == false);
-            }
-
-            Address address {addr};
-            std::cout << "Unix domain address: "
-                      << address
-                      << std::endl;
-        }
-        catch (const LogicError& error) {
-            print(error);
-            actual_error = error.what();
-        }
-
-        assert(actual_error.empty());
-    }
 }
 
 auto main(int argc, char* argv[]) -> int
@@ -179,10 +212,12 @@ auto main(int argc, char* argv[]) -> int
             std::cerr << context;
         }
 
-        const auto& path_vector {get_pathname_vector()};
+        test_path_invalid(get_pathname_invalid());
+
+        const auto& path_vector {get_pathnames_valid()};
 
         for (const auto& path : path_vector) {
-            test_unix_path(path);
+            test_path_valid(path);
         }
 
         test_socketpair(hints);

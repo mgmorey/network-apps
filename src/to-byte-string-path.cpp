@@ -16,6 +16,7 @@
 #include "network/to-byte-string-path.h"        // ByteString,
                                                 // OptionalPathname,
                                                 // to_byte_string()
+#include "network/logicerror.h"                 // LogicError
 #include "network/to-byte-string-sun.h"         // sockaddr_un,
                                                 // to_byte_string()
 #include "network/os-features.h"                // HAVE_SOCKADDR_SA_LEN
@@ -31,11 +32,16 @@
 
 #ifndef WIN32
 
-auto Network::to_byte_string(const OptionalPathname& pathname) noexcept ->
+auto Network::to_byte_string(const OptionalPathname& pathname) ->
     Network::ByteString
 {
     sockaddr_un sun {};
     const auto path_len {pathname ? pathname->length() : 0};
+
+    if (pathname && path_len > sizeof sun.sun_path - 1) {
+        throw LogicError(*pathname + ": pathname exceeds size of sun_path");
+    }
+
     const auto path_len_max {std::min(path_len, sizeof sun.sun_path - 1)};
     auto sun_len_min {sizeof sun - sizeof sun.sun_path + path_len_max};
 #ifdef HAVE_SOCKADDR_SA_LEN

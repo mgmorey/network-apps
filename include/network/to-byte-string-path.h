@@ -21,8 +21,7 @@
 
 namespace Network
 {
-    extern auto to_byte_string(const OptionalPathname& pathname) noexcept ->
-        ByteString;
+    extern auto to_byte_string(const OptionalPathname& pathname) -> ByteString;
 }
 
 #endif
