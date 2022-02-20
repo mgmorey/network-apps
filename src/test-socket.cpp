@@ -64,7 +64,7 @@ namespace TestSocket
 
     static bool verbose {false};  // NOLINT
 
-    static auto get_pathname_invalid(std::size_t size) -> Pathname
+    static auto get_pathname(std::size_t size) -> Pathname
     {
         const Pathname prefix {"/tmp/"};
 
@@ -75,13 +75,14 @@ namespace TestSocket
         return prefix + Pathname(size, 'X');
     }
 
-    static auto get_pathnames_valid() -> const OptionalPathnameVector&
+    static auto get_pathnames() -> const OptionalPathnameVector&
     {
         static const OptionalPathnameVector pathname_vector {
-            std::nullopt,
-            "/tmp/678",
-            "/tmp/67890123456",
-            "/tmp/6789012345678901234"
+            get_pathname(64),
+            get_pathname(32),
+            get_pathname(16),
+            get_pathname(8),
+            std::nullopt
         };
         return pathname_vector;
     }
@@ -225,10 +226,10 @@ auto main(int argc, char* argv[]) -> int
             std::cerr << context;
         }
 
-        test_path_invalid(get_pathname_invalid(path_size_max));
-        test_path_valid(get_pathname_invalid(path_size_max - 1));
+        test_path_invalid(get_pathname(path_size_max));
+        test_path_valid(get_pathname(path_size_max - 1));
 
-        const auto& path_vector {get_pathnames_valid()};
+        const auto& path_vector {get_pathnames()};
 
         for (const auto& path : path_vector) {
             test_path_valid(path);
