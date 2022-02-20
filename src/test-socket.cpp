@@ -75,16 +75,17 @@ namespace TestSocket
         return prefix + Pathname(size, 'X');
     }
 
-    static auto get_pathnames() -> const OptionalPathnameVector&
+    static auto get_pathnames() -> OptionalPathnameVector
     {
-        static const OptionalPathnameVector pathname_vector {
-            get_pathname(64),
-            get_pathname(32),
-            get_pathname(16),
-            get_pathname(8),
-            std::nullopt
+        static constexpr auto size_max {64};
+        OptionalPathnameVector pathnames;
+
+        for (std::size_t size = size_max; size != 0; size /= 2) {
+            pathnames.push_back(get_pathname(size));
         };
-        return pathname_vector;
+
+        pathnames.push_back(std::nullopt);
+        return pathnames;
     }
 
     static auto parse_arguments(int argc, char** argv) ->
@@ -229,10 +230,10 @@ auto main(int argc, char* argv[]) -> int
         test_path_invalid(get_pathname(path_size_max));
         test_path_valid(get_pathname(path_size_max - 1));
 
-        const auto& path_vector {get_pathnames()};
+        const auto& pathnames {get_pathnames()};
 
-        for (const auto& path : path_vector) {
-            test_path_valid(path);
+        for (const auto& pathname : pathnames) {
+            test_path_valid(pathname);
         }
 
         test_socketpair(hints);
