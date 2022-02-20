@@ -145,25 +145,25 @@ namespace TestHost
         std::ostream& m_os;
     };
 
-    static auto get_code_nodata() -> const ErrorCodeSet&
+    static auto get_codes_nodata() -> const ErrorCodeSet&
     {
 #if defined(WIN32)
-        static const ErrorCodeSet expected_code_nodata = {
+        static const ErrorCodeSet codes = {
             WSAHOST_NOT_FOUND
         };
 #elif defined(OS_FREEBSD)
-        static const ErrorCodeSet expected_code_nodata = {
+        static const ErrorCodeSet codes = {
             EAI_AGAIN,
             EAI_NONAME
         };
 #else
-        static const ErrorCodeSet expected_code_nodata = {
+        static const ErrorCodeSet codes = {
             EAI_AGAIN,
             EAI_NODATA,
             EAI_NONAME
         };
 #endif
-        return expected_code_nodata;
+        return codes;
     }
 
     static auto get_family(const OptionalHints& hints) -> std::string
@@ -291,7 +291,7 @@ namespace TestHost
     static auto test_host_invalid() -> void
     {
         os_error_type actual_code {0};
-        const auto& expected_code {get_code_nodata()};
+        const auto& expected_codes {get_codes_nodata()};
         const auto hosts_result {get_hosts(".")};
         std::visit(Overloaded {
                 [&](const HostVector& hosts) {
@@ -302,7 +302,7 @@ namespace TestHost
                     actual_code = result.number();
                 }
             }, hosts_result);
-        assert(expected_code.count(actual_code) != 0);
+        assert(expected_codes.count(actual_code) != 0);
     }
 
     static auto test_host_valid(const OptionalHostname& host) -> void
