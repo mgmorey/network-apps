@@ -165,11 +165,12 @@ namespace TestSocket
                         const auto result {Network::bind(fd, addr, verbose)};
                         actual_code = result.number();
 
-                        if (verbose && result) {
+                        if (result) {
                             print(result);
                         }
-
-                        std::remove(unix_path->c_str());
+                        else if (unix_path) {
+                            std::remove(unix_path->c_str());
+                        }
                     },
                     [&](const OsErrorResult& result) {
                         print(result);
@@ -180,7 +181,7 @@ namespace TestSocket
             assert(static_cast<bool>(unix_path) == false);
         }
 
-        assert(actual_code == expected_code);
+        assert(actual_code == 0 || actual_code == expected_code);
     }
 
     static auto test_path_invalid(const SocketHints& hints,
