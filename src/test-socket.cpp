@@ -73,6 +73,11 @@ namespace TestSocket
         static const ErrorCodeSet codes = {
             0
         };
+#elif defined(OS_CYGWIN_NT)
+        static const ErrorCodeSet codes = {
+            ENOENT,
+            0
+        };
 #elif defined(OS_DARWIN)
         static const ErrorCodeSet codes = {
             ENOENT
@@ -95,6 +100,11 @@ namespace TestSocket
         static const ErrorCodeSet codes = {
             EACCES,
             EROFS
+        };
+#elif defined(OS_CYGWIN_NT)
+        static const ErrorCodeSet codes = {
+            EACCES,
+            0
         };
 #else
         static const ErrorCodeSet codes = {
