@@ -16,6 +16,7 @@
 #include "network/to-byte-string-path.h"        // ByteString,
                                                 // OptionalPathname,
                                                 // to_byte_string()
+#include "network/get-sun-path-size.h"          // get_sun_path_size()
 #include "network/logicerror.h"                 // LogicError
 #include "network/to-byte-string-sun.h"         // sockaddr_un,
                                                 // to_byte_string()
@@ -36,18 +37,19 @@
 auto Network::to_byte_string(const OptionalPathname& pathname) ->
     Network::ByteString
 {
-    sockaddr_un sun {};
     const auto path_len {pathname ? pathname->length() : 0};
 
-    if (pathname && path_len > sizeof sun.sun_path - 1) {
+    if (pathname && path_len > get_sun_path_size() - 1) {
         std::ostringstream oss;
         oss << *pathname
-            << ": pathname exceeds size of sun_path - 1 ("
-            << sizeof sun.sun_path - 1
-            << ')';
+            << ": pathname length of "
+            << pathname->length()
+            << " exceeds maximum of "
+            << get_sun_path_size() - 1;
         throw LogicError(oss.str());
     }
 
+    sockaddr_un sun {};
     auto sun_len_min {sizeof sun - sizeof sun.sun_path + path_len};
 #ifdef HAVE_SOCKADDR_SA_LEN
     sun.sun_len = std::max(sun_path_offset, sun_len_min);

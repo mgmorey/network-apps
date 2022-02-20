@@ -32,6 +32,7 @@
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <optional>     // std::nullopt
 #include <span>         // std::span
+#include <sstream>      // std::ostringstream
 #include <string>       // std::string
 #include <variant>      // std::visit()
 #include <vector>       // std::vector
@@ -47,18 +48,13 @@ using Network::Overloaded;
 using Network::Pathname;
 using Network::SocketHints;
 using Network::get_sun_path;
+using Network::get_sun_path_size;
 using Network::string_null;
 using Network::to_byte_string;
 
 namespace TestSocket
 {
     using OptionalPathnameVector = std::vector<OptionalPathname>;
-
-    static constexpr auto get_sun_path_size() -> std::size_t
-    {
-        constexpr sockaddr_un sun {};
-        return sizeof sun.sun_path;
-    }
 
     static constexpr auto path_size_max {get_sun_path_size()};
 
@@ -155,8 +151,13 @@ namespace TestSocket
         std::string expected_error;
 
         if (pathname) {
-            expected_error = *pathname + (": pathname exceeds size of "
-                                          "sun_path - 1 (103)");
+            std::ostringstream oss;
+            oss << *pathname
+                << ": pathname length of "
+                << pathname->length()
+                << " exceeds maximum of "
+                << get_sun_path_size() - 1;
+            expected_error = oss.str();
         }
 
         try {
