@@ -54,9 +54,9 @@ namespace TestSocket
 {
     using OptionalPathnameVector = std::vector<OptionalPathname>;
 
-    constexpr auto get_sun_path_size() -> std::size_t
+    static constexpr auto get_sun_path_size() -> std::size_t
     {
-        sockaddr_un sun {};
+        constexpr sockaddr_un sun {};
         return sizeof sun.sun_path;
     }
 
@@ -64,7 +64,7 @@ namespace TestSocket
 
     static bool verbose {false};  // NOLINT
 
-    auto get_pathname_invalid(std::size_t size = path_size_max) -> Pathname
+    static auto get_pathname_invalid(std::size_t size) -> Pathname
     {
         const Pathname prefix {"/tmp/"};
 
@@ -75,7 +75,7 @@ namespace TestSocket
         return prefix + Pathname(size, 'X');
     }
 
-    auto get_pathnames_valid() -> const OptionalPathnameVector&
+    static auto get_pathnames_valid() -> const OptionalPathnameVector&
     {
         static const OptionalPathnameVector pathname_vector {
             std::nullopt,
