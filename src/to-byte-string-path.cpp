@@ -29,6 +29,7 @@
 #endif
 
 #include <algorithm>    // std::max(), std::min()
+#include <sstream>      // std::ostringstream
 
 #ifndef WIN32
 
@@ -39,7 +40,12 @@ auto Network::to_byte_string(const OptionalPathname& pathname) ->
     const auto path_len {pathname ? pathname->length() : 0};
 
     if (pathname && path_len > sizeof sun.sun_path - 1) {
-        throw LogicError(*pathname + ": pathname exceeds size of sun_path");
+        std::ostringstream oss;
+        oss << *pathname
+            << ": pathname exceeds size of sun_path - 1 ("
+            << sizeof sun.sun_path - 1
+            << ')';
+        throw LogicError(oss.str());
     }
 
     auto sun_len_min {sizeof sun - sizeof sun.sun_path + path_len};

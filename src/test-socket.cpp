@@ -54,14 +54,19 @@ namespace TestSocket
 {
     using OptionalPathnameVector = std::vector<OptionalPathname>;
 
+    static constexpr auto path_size_max {104};
+
     static bool verbose {false};  // NOLINT
 
-    auto get_pathname_invalid() -> Pathname
+    auto get_pathname_invalid(std::size_t size = path_size_max) -> Pathname
     {
-        constexpr auto size {110};
-        Pathname pathname {"/tmp/"};
-        pathname += Pathname(size, 'X');
-        return pathname;
+        const Pathname prefix {"/tmp/"};
+
+        if (size > prefix.size()) {
+            size -= prefix.size();
+        }
+
+        return prefix + Pathname(size, 'X');
     }
 
     auto get_pathnames_valid() -> const OptionalPathnameVector&
@@ -139,10 +144,12 @@ namespace TestSocket
     static auto test_path_invalid(const OptionalPathname& pathname) -> void
     {
         std::string actual_error;
-        std::string expected_error {
-            pathname ? *pathname + ": pathname exceeds size of sun_path" :
-            ""
-        };
+        std::string expected_error;
+
+        if (pathname) {
+            expected_error = *pathname + (": pathname exceeds size of "
+                                          "sun_path - 1 (103)");
+        }
 
         try {
             test_pathname(pathname);
@@ -212,7 +219,8 @@ auto main(int argc, char* argv[]) -> int
             std::cerr << context;
         }
 
-        test_path_invalid(get_pathname_invalid());
+        test_path_invalid(get_pathname_invalid(path_size_max));
+        test_path_valid(get_pathname_invalid(path_size_max - 1));
 
         const auto& path_vector {get_pathnames_valid()};
 
