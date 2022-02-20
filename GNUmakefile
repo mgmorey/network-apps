@@ -163,7 +163,7 @@ else
 endif
 
 # Define script variables
-make_depfile = $(script_dir)/make-makefile -d $(object_dir) -f $(tags) -o
+make_depfile = $(script_dir)/make-makefile -d $(object_dir)
 run_tests = $(script_dir)/run-test-programs
 
 # Define pseudotargets
@@ -283,7 +283,7 @@ $(programs): $(libnetwork)
 	$(LINK$(object_suffix)) -o $@ $^ $(LDLIBS)
 
 $(dependency_dir)/%$(dependency_suffix): %$(source_suffix)
-	$(CXX) $(CPPFLAGS) -MM $< | $(make_depfile) $@
+	$(CXX) $(CPPFLAGS) -MM $< | $(make_depfile) -o $@ $(tags)
 
 $(object_dir)/%$(object_suffix): %$(source_suffix)
 	$(COMPILE$(source_suffix)) $(OUTPUT_OPTION) $<
