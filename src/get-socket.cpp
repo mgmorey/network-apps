@@ -31,7 +31,7 @@
 #include <iostream>     // std::cerr, std::endl
 #include <sstream>      // std::ostringstream
 
-auto Network::get_socket(const Socket& sock,
+auto Network::get_socket(const SocketHints& hints,
                          bool verbose) noexcept -> Network::FdResult
 {
     constexpr auto delim {", "};
@@ -40,28 +40,28 @@ auto Network::get_socket(const Socket& sock,
     if (verbose) {
         std::cerr << "Calling socket("
                   << Format("domain")
-                  << sock.family()
+                  << hints.family()
                   << Format(delim, tab, "type")
-                  << sock.socktype()
+                  << hints.socktype()
                   << Format(delim, tab, "protocol")
-                  << sock.protocol()
+                  << hints.protocol()
                   << ')'
                   << std::endl;
     }
 
     reset_last_os_error();
-    const auto fd {::socket(sock.family(), sock.socktype(), sock.protocol())};
+    const auto fd {::socket(hints.family(), hints.socktype(), hints.protocol())};
 
     if (fd == fd_null) {
         const auto error = get_last_os_error();
         std::ostringstream oss;
         oss << "Call to socket("
             << Format("domain")
-            << sock.family()
+            << hints.family()
             << Format(delim, tab, "type")
-            << sock.socktype()
+            << hints.socktype()
             << Format(delim, tab, "protocol")
-            << sock.protocol()
+            << hints.protocol()
             << ") failed with error "
             << error
             << ": "

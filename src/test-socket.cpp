@@ -18,8 +18,8 @@
                                         // OptionalPathname,
                                         // Overloaded, OsErrorResult,
                                         // Socket, SocketHints,
-                                        // close(), get_socketpair(),
-                                        // get_sun_path(), is_valid(),
+                                        // get_socketpair(),
+                                        // get_sun_path(),
                                         // string_null,
                                         // to_byte_string()
 
@@ -28,6 +28,7 @@
 #include <unistd.h>         // getopt(), optarg, opterr, optind
 
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
+#include <cstdio>       // std::remove()
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <optional>     // std::nullopt
@@ -40,15 +41,19 @@
 using Network::Address;
 using Network::Context;
 using Network::Error;
+using Network::Fd;
 using Network::FdPair;
+using Network::FdResult;
 using Network::LogicError;
 using Network::OptionalPathname;
 using Network::OsErrorResult;
 using Network::Overloaded;
 using Network::Pathname;
 using Network::SocketHints;
+using Network::get_socket;
 using Network::get_sun_path;
 using Network::get_sun_path_size;
+using Network::os_error_type;
 using Network::string_null;
 using Network::to_byte_string;
 
@@ -62,7 +67,13 @@ namespace TestSocket
 
     static auto get_pathname(std::string::size_type size) -> Pathname
     {
+        const Pathname prefix("/tmp/");
         Pathname pathname(size, 'X');
+
+        if (pathname.length() > prefix.length()) {
+            pathname.replace(0, prefix.length(), prefix);
+        }
+
         return pathname;
     }
 
@@ -120,28 +131,61 @@ namespace TestSocket
         }
     }
 
-    static auto test_pathname(const OptionalPathname& pathname) -> void
+    static auto print(const OsErrorResult& result) -> void
     {
+        if (verbose) {
+            std::cout << "Number: "
+                      << result.number()
+                      << std::endl
+                      << "String: "
+                      << result.string()
+                      << std::endl;
+        }
+    }
+
+    static auto test_pathname(const SocketHints& hints,
+                              const OptionalPathname& pathname,
+                              os_error_type expected_code) -> void
+    {
+        os_error_type actual_code {0};
         const auto addr {to_byte_string(pathname)};
+        std::cout << "Unix domain address: "
+                  << Address(addr)
+                  << std::endl;
         const auto unix_path {get_sun_path(addr)};
+        std::cout << "Unix domain path: "
+                  << unix_path.value_or(string_null)
+                  << std::endl;
 
         if (pathname) {
-            std::cout << "Unix domain path: "
-                      << unix_path.value_or(string_null)
-                      << std::endl;
             assert(unix_path == pathname);
+            const auto socket_result {get_socket(hints, verbose)};
+            std::visit(Overloaded {
+                    [&](const Fd& fd) {
+                        const auto result {Network::bind(fd, addr, verbose)};
+                        actual_code = result.number();
+
+                        if (verbose && result) {
+                            print(result);
+                        }
+
+                        std::remove(unix_path->c_str());
+                    },
+                    [&](const OsErrorResult& result) {
+                        print(result);
+                    }
+                }, socket_result);
         }
         else {
             assert(static_cast<bool>(unix_path) == false);
         }
 
-        Address address {addr};
-        std::cout << "Unix domain address: "
-                  << address
-                  << std::endl;
+        assert(actual_code == expected_code);
     }
 
-    static auto test_path_invalid(const OptionalPathname& pathname) -> void
+    static auto test_path_invalid(const SocketHints& hints,
+                                  const OptionalPathname& pathname,
+                                  os_error_type expected_code) -> void
     {
         std::string actual_error;
         std::string expected_error;
@@ -157,22 +201,58 @@ namespace TestSocket
         }
 
         try {
-            test_pathname(pathname);
+            test_pathname(hints, pathname, expected_code);
+        }
+        catch (const LogicError& error) {
+            actual_error = error.what();
+            print(error);
+        }
+
+        assert(actual_error == expected_error);
+    }
+
+    static auto test_path_no_directory(const SocketHints& hints,
+                                       const Pathname& pathname,
+                                       os_error_type expected_code) -> void
+    {
+        std::string actual_error;
+
+        try {
+            test_pathname(hints, pathname, expected_code);
         }
         catch (const LogicError& error) {
             print(error);
             actual_error = error.what();
         }
 
-        assert(actual_error == expected_error);
+        assert(actual_error.empty());
     }
 
-    static auto test_path_valid(const OptionalPathname& pathname) -> void
+    static auto test_path_no_permission(const SocketHints& hints,
+                                        const Pathname& pathname,
+                                        os_error_type expected_code) -> void
     {
         std::string actual_error;
 
         try {
-            test_pathname(pathname);
+            test_pathname(hints, pathname, expected_code);
+        }
+        catch (const LogicError& error) {
+            print(error);
+            actual_error = error.what();
+        }
+
+        assert(actual_error.empty());
+    }
+
+    static auto test_path_valid(const SocketHints& hints,
+                                const OptionalPathname& pathname,
+                                os_error_type expected_code) -> void
+    {
+        std::string actual_error;
+
+        try {
+            test_pathname(hints, pathname, expected_code);
         }
         catch (const LogicError& error) {
             print(error);
@@ -215,26 +295,30 @@ auto main(int argc, char* argv[]) -> int
     using namespace TestSocket;
 
     static constexpr SocketHints hints {0, AF_UNIX, SOCK_STREAM};
+    static const os_error_type code_invalid = {0};
+    static const os_error_type code_no_directory = {ENOENT};
+    static const os_error_type code_no_permission = {EROFS};
+    static const os_error_type code_valid = {0};
 
     try {
-        const auto args {parse_arguments(argc, argv)};
+        parse_arguments(argc, argv);
         const auto& context {Context::instance()};
 
         if (verbose) {
             std::cerr << context;
         }
 
-        test_path_invalid(get_pathname(path_size_max));
-        test_path_valid(get_pathname(path_size_max - 1));
-
+        test_path_no_permission(hints, "/foo", code_no_permission);
+        test_path_no_directory(hints, "/foo/bar", code_no_directory);
+        test_path_invalid(hints, get_pathname(path_size_max), code_invalid);
+        test_path_valid(hints, get_pathname(path_size_max - 1), code_valid);
         const auto& pathnames {get_pathnames()};
 
         for (const auto& pathname : pathnames) {
-            test_path_valid(pathname);
+            test_path_valid(hints, pathname, code_valid);
         }
 
         test_socketpair(hints);
-        static_cast<void>(args);
     }
     catch (const std::exception& error) {
         std::cerr << error.what()

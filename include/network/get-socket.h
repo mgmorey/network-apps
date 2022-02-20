@@ -21,7 +21,7 @@
 
 namespace Network
 {
-    extern auto get_socket(const Socket& sock,
+    extern auto get_socket(const SocketHints& sock,
                            bool verbose = false) noexcept -> FdResult;
 }
 

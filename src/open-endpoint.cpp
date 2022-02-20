@@ -33,7 +33,7 @@ auto Network::open(const OpenHandler& handler,
     OpenResult open_result;
     FdResultVector fd_results;
     const auto lambda = [&](const Socket& sock) {
-        auto socket_result {get_socket(sock, args.verbose)};
+        auto socket_result {get_socket(sock.hints(), args.verbose)};
         std::visit(Overloaded {
                 [&](Fd fd) {
                     const auto addr {sock.address()};

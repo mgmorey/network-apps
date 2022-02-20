@@ -21,9 +21,24 @@
 #include <unistd.h>     // close()
 #endif
 
-auto Network::close(fd_type fd) noexcept -> Network::fd_type
+#include <iostream>     // std::cerr, std::endl
+
+auto Network::close(fd_type fd, bool verbose) noexcept -> Network::fd_type
 {
     if (fd != fd_null) {
+        if (verbose) {
+            std::cerr << "Calling "
+#ifdef WIN32
+                      << "::closesocket"
+#else
+                      << "::close"
+#endif
+                      << '('
+                      << fd
+                      << ')'
+                      << std::endl;
+        }
+
 #ifdef WIN32
         ::closesocket(fd);
 #else
@@ -34,7 +49,7 @@ auto Network::close(fd_type fd) noexcept -> Network::fd_type
     return fd_null;
 }
 
-auto Network::close(Fd fd) noexcept -> fd_type
+auto Network::close(Fd fd, bool verbose) noexcept -> fd_type
 {
-    return Network::close(static_cast<fd_type>(fd));
+    return Network::close(static_cast<fd_type>(fd), verbose);
 }

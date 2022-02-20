@@ -135,7 +135,7 @@ namespace TestBind
                      << std::endl;
             }
 
-            Network::close(t_fd);
+            Network::close(t_fd, verbose);
             m_os << "Socket "
                  << std::right << std::setw(fd_width) << t_fd
                  << " closed"
