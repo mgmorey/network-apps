@@ -60,23 +60,19 @@ namespace TestSocket
 
     static bool verbose {false};  // NOLINT
 
-    static auto get_pathname(std::size_t size) -> Pathname
+    static auto get_pathname(std::string::size_type size) -> Pathname
     {
-        const Pathname prefix {"/tmp/"};
-
-        if (size > prefix.size()) {
-            size -= prefix.size();
-        }
-
-        return prefix + Pathname(size, 'X');
+        Pathname pathname(size, 'X');
+        return pathname;
     }
 
     static auto get_pathnames() -> OptionalPathnameVector
     {
         static constexpr auto size_max {64};
+        static constexpr auto size_min {8};
         OptionalPathnameVector pathnames;
 
-        for (std::size_t size = size_max; size != 0; size /= 2) {
+        for (std::size_t size = size_max; size >= size_min; size /= 2) {
             pathnames.push_back(get_pathname(size));
         };
 
