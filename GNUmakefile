@@ -136,7 +136,7 @@ $(logfiles) $(mapfiles) $(sizes) $(sizes)~
 
 artifacts = $(binary_artifacts) $(text_artifacts)
 
-all = assert $(libraries) $(programs) $(sizes)
+all = assert libraries programs sizes
 
 ifeq "$(is_ctags_universal)" "true"
 ifeq "$(shell $(script_dir)/compare-versions $(ctags_version) 5)" "greater"
