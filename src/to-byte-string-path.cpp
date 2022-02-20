@@ -42,15 +42,14 @@ auto Network::to_byte_string(const OptionalPathname& pathname) ->
         throw LogicError(*pathname + ": pathname exceeds size of sun_path");
     }
 
-    const auto path_len_max {std::min(path_len, sizeof sun.sun_path - 1)};
-    auto sun_len_min {sizeof sun - sizeof sun.sun_path + path_len_max};
+    auto sun_len_min {sizeof sun - sizeof sun.sun_path + path_len};
 #ifdef HAVE_SOCKADDR_SA_LEN
     sun.sun_len = std::max(sun_path_offset, sun_len_min);
 #endif
     sun.sun_family = AF_UNIX;
 
     if (pathname) {
-        pathname->copy(static_cast<char*>(sun.sun_path), path_len_max);
+        pathname->copy(static_cast<char*>(sun.sun_path), path_len);
         sun_len_min += sizeof(char);
     }
 
