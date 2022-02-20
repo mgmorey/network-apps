@@ -162,6 +162,10 @@ else
 	install = install
 endif
 
+# Define script variables
+make_depfile = $(script_dir)/make-makefile -d $(object_dir) -f $(tags) -o
+run_tests = $(script_dir)/run-test-programs
+
 # Define pseudotargets
 
 .PHONY: all
@@ -185,7 +189,7 @@ endif
 
 .PHONY: check
 check: $(test_programs)
-	$(script_dir)/run-test-programs $^
+	$(run_tests) $^
 
 .PHONY: check-syntax
 check-syntax:
@@ -279,7 +283,7 @@ $(programs): $(libnetwork)
 	$(LINK$(object_suffix)) -o $@ $^ $(LDLIBS)
 
 $(dependency_dir)/%$(dependency_suffix): %$(source_suffix)
-	$(CXX) $(CPPFLAGS) -MM $< | $(script_dir)/make-makefile -f $(tags) -o $@
+	$(CXX) $(CPPFLAGS) -MM $< | $(make_depfile) $@
 
 $(object_dir)/%$(object_suffix): %$(source_suffix)
 	$(COMPILE$(source_suffix)) $(OUTPUT_OPTION) $<

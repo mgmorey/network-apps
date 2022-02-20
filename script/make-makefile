@@ -15,33 +15,29 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-SED='s|\\(%s\\)\\.o[ :]*|%s\\1.o %s: \\\\\\
+SED='s|\\(%s\\)\\.o[ :]*|%s/\\1.o %s%s: \\\\\\
 |
 s/^[ ]*//'
 
 parse_arguments() {
     command=
-    dir=
     files=
+    prefix=
     output=
-    suffix=
 
-    while getopts c:d:f:o:s:h opt; do
+    while getopts c:d:f:o:h opt; do
 	case $opt in
 	    (c)
 		command="$OPTARG"
 		;;
 	    (d)
-		parse_dir
+		parse_prefix
 		;;
 	    (f)
 		files="$OPTARG"
 		;;
 	    (o)
 		parse_output
-		;;
-	    (s)
-		parse_suffix
 		;;
 	    (h)
 		usage
@@ -62,6 +58,9 @@ parse_arguments() {
 	if [ -z "$output" ]; then
 	    usage_error '%s: Not enough arguments\n' "$script"
 	    exit 2
+	elif [ -z "$prefix" ]; then
+	    usage_error '%s: Not enough arguments\n' "$script"
+	    exit 2
 	else
 	    dir="$(dirname "$output" | sed 's|^\./||')"
 	    stem="$(basename "$output" | cut -d. -f 1)"
@@ -70,60 +69,30 @@ parse_arguments() {
 	stem="$1"
     fi
 
-    output="${output:-${dir:+$dir/}$stem${suffix:-.d}}"
     files="$output${files:+ $files}"
 }
 
-parse_dir() {
-    if [ ! -d "$OPTARG" ]; then
-	usage_error '%s: "%s": No such directory\n' \
-		    "$script" "$OPTARG"
-	exit 2
-    elif [ -n "$output" ]; then
-	usage_error '%s: Argument "-d %s" conflicts with argument "-o %s"\n' \
-		    "$script" "$OPTARG" "$output"
-	exit 2
-    else
-	dir="$OPTARG"
-    fi
-}
-
 parse_output() {
-    if [ ! -d "$(dirname "$OPTARG")" ]; then
-	usage_error '%s: "%s": No such directory\n' \
-		    "$script" "$(dirname $OPTARG)"
-	exit 2
-    elif [ -n "$dir" ]; then
-	usage_error '%s: Argument "-o %s" conflicts with argument "-d %s"\n' \
-		    "$script" "$OPTARG" "$dir"
-	exit 2
-    elif [ -n "$suffix" ]; then
-	usage_error '%s: Argument "-o %s" conflicts with argument "-s %s"\n' \
-		    "$script" "$OPTARG" "$suffix"
+    output_dir=$(dirname "$OPTARG")
+    if [ ! -d "$output_dir" ]; then
+	usage_error '%s: "%s": No such directory\n' "$script" "$output_dir"
 	exit 2
     else
 	output="$OPTARG"
     fi
 }
 
-parse_suffix() {
-    if [ -n "$output" ]; then
-	usage_error '%s: Argument "-s %s" conflicts with argument "-o %s"\n' \
-		    "$script" "$OPTARG" "$output"
-	exit 2
-    else
-	suffix="$OPTARG"
-    fi
+parse_prefix() {
+    prefix="$OPTARG"
 }
 
 sed_makefile() {
-    sed "$(printf "$SED\n" "$stem" "${dir:+$dir/}" "$files")"
+    sed "$(printf "$SED\n" "$stem" "$prefix" "$files")"
 }
 
 usage() {
     cat <<EOF >&2
-Usage: $script [-c COMMAND] [-d DIR] [-f FILE [FILE [...]]] [-s SUFFIX] STEM
-       $script [-c COMMAND] [-f FILE [FILE [...]]] [-o OUTPUT]
+Usage: $script [-c COMMAND] [-f FILE [FILE [...]]] [-o OUTPUT] [-p PREFIX]
        $script -h
 EOF
 }
