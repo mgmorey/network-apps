@@ -54,7 +54,13 @@ namespace TestSocket
 {
     using OptionalPathnameVector = std::vector<OptionalPathname>;
 
-    static constexpr auto path_size_max {104};
+    constexpr auto get_sun_path_size() -> std::size_t
+    {
+        sockaddr_un sun {};
+        return sizeof sun.sun_path;
+    }
+
+    static constexpr auto path_size_max {get_sun_path_size()};
 
     static bool verbose {false};  // NOLINT
 
