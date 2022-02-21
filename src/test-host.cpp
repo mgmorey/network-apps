@@ -14,9 +14,8 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/network.h"            // Address, Bytes, Context,
-                                        // Endpoint, EndpointResult,
-                                        // HostVector, Hostname,
-                                        // OptionalHints,
+                                        // Endpoint, HostVector,
+                                        // Hostname, OptionalHints,
                                         // OsErrorResult, Overloaded,
                                         // SocketHints, SocketHost,
                                         // get_endpoint(),
@@ -90,29 +89,21 @@ namespace TestHost
         auto operator()(const SocketHost& t_host) -> void
         {
             const ByteString addr {t_host.address()};
-            const auto endpoint_result {get_endpoint(addr)};
-            std::visit(Overloaded {
-                    [&](const Endpoint& endpoint) {
-                        Values values = {
-                            static_cast<Address>(addr).text(),
-                            endpoint.first.value_or(""),
-                            t_host.canonical_name().value_or("")
-                        };
-                        values.erase(std::remove(values.begin(),
-                                                 values.end(),
-                                                 ""),
-                                     values.end());
-                        uniquify(values);
-                        print(values);
-                    },
-                    [&](const OsErrorResult& result) {
-                        std::cerr << result.string()
-                                  << std::endl;
-                    }
-                }, endpoint_result);
+            const auto endpoint {get_endpoint(addr)};
+            Values values = {
+                static_cast<Address>(addr).text(),
+                endpoint.first.value_or(""),
+                t_host.canonical_name().value_or("")
+            };
+            values.erase(std::remove(values.begin(),
+                                     values.end(),
+                                     ""),
+                         values.end());
+            uniquify(values);
+            print(values);
         }
 
-        static auto get_endpoint(const ByteString& addr) -> EndpointResult
+        static auto get_endpoint(const ByteString& addr) -> Endpoint
         {
             return Network::get_endpoint(addr, 0, verbose);
         }

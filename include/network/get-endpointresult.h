@@ -13,16 +13,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_GET_ENDPOINT_H
-#define NETWORK_GET_ENDPOINT_H
+#ifndef NETWORK_GET_ENDPOINTRESULT_H
+#define NETWORK_GET_ENDPOINTRESULT_H
 
 #include "network/bytestring.h"         // ByteString
-#include "network/endpoint.h"           // Endpoint
+#include "network/endpointresult.h"     // EndpointResult
 
 namespace Network
 {
-    extern auto get_endpoint(const ByteString& addr, int flags,
-                             bool verbose = false) -> Endpoint;
+    extern auto get_endpointresult(const ByteString& addr, int flags,
+                                   bool verbose = false) -> EndpointResult;
 }
 
 #endif

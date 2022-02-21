@@ -44,6 +44,7 @@
 #include "network/exceptions.h"                 // Error, LogicError,
                                                 // RuntimeError
 #include "network/get-endpoint.h"               // get_endpoint()
+#include "network/get-endpointresult.h"         // get_endpointresult()
 #include "network/get-hostname.h"               // get_hostname()
 #include "network/get-hosts.h"                  // get_hosts()
 #include "network/get-length.h"                 // get_length()

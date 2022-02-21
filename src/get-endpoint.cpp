@@ -13,71 +13,26 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-endpoint.h"       // Endpoint, EndpointResult,
-                                        // OsErrorResult,
-                                        // get_endpoint(),
-                                        // hostname_size_max,
-                                        // service_size_max
-#include "network/addresserror.h"       // AddressError
-#include "network/buffer.h"             // Buffer
-#include "network/bytestring.h"         // ByteString
-#include "network/format-ai-error.h"    // format_ai_error()
-#include "network/get-length.h"         // get_length()
-#include "network/get-sa-pointer.h"     // get_sa_pointer()
-#include "network/is-valid.h"           // is_valid()
+#include "network/get-endpoint.h"       // Endpoint, OsErrorResult,
+                                        // get_endpoint()
+#include "network/error.h"              // Error
+#include "network/get-endpointresult.h" // EndpointResult,
+                                        // get_endpointresult()
+#include "network/overloaded.h"         // Overloaded
 
-#ifdef WIN32
-#include <ws2tcpip.h>   // getnameinfo()
-#else
-#include <netdb.h>      // getnameinfo()
-#endif
 
-#include <algorithm>    // std::max()
-#include <iostream>     // std::cerr, std::endl
-#include <sstream>      // std::ostringstream
-#include <string>       // std::string
-
-auto Network::get_endpoint(const ByteString& str, int flags, bool verbose) ->
-    Network::EndpointResult
+auto Network::get_endpoint(const ByteString& addr, int flags, bool verbose) ->
+    Network::Endpoint
 {
-    if (!is_valid(str)) {
-        throw AddressError(str);
-    }
-
-    Buffer host {hostname_size_max};
-    Buffer service {service_size_max};
-    const auto length {get_length(str)};
-    const auto *const pointer {get_sa_pointer(str)};
-
-    if (verbose) {
-        std::cerr << "Calling getnameinfo("
-                  << str
-                  << ", "
-                  << length
-                  << ", ..., "
-                  << flags
-                  << ')'
-                  << std::endl;
-    }
-
-    if (const auto error {::getnameinfo(pointer, length,
-                                        host.data(), host.size(),
-                                        service.data(), service.size(),
-                                        flags)}) {
-        std::ostringstream oss;
-        oss << "Call to getnameinfo("
-            << str
-            << ", "
-            << length
-            << ", ..., "
-            << flags
-            << ") returned "
-            << error
-            << " ("
-            << format_ai_error(error)
-            << ')';
-        return OsErrorResult {error, oss.str()};
-    }
-
-    return Endpoint {host, service};
+    Endpoint result;
+    const auto endpoint_result {get_endpointresult(addr, flags, verbose)};
+    std::visit(Overloaded {
+            [&](const Endpoint& endpoint) {
+                result = endpoint;
+            },
+            [&](const OsErrorResult& error) {
+                throw Error(error.string());
+            }
+        }, endpoint_result);
+    return result;
 }
