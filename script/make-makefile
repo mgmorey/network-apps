@@ -20,8 +20,8 @@ SED='1s|\\(%s\\)\\(\\.[a-z][a-z]*\\)[ :]*|%s\\1\\2 %s%s: \\\\\\
 s|^[ ]*||'
 
 make_makefile() {
-    exec >"$output"
-    files="${files:+$files }$output"
+    exec >"$output_path"
+    files="${files:+$files }$output_path"
 
     if [ -n "$command" ]; then
 	$command | sed_makefile
@@ -34,7 +34,7 @@ parse_arguments() {
     command=
     files=
     object_dir=
-    output=
+    output_path=
 
     while getopts c:d:f:o:h opt; do
 	case $opt in
@@ -62,31 +62,29 @@ parse_arguments() {
 
     shift $(($OPTIND - 1))
 
-    if [ -z "$output" ]; then
-	output="$1"
+    if [ -z "$output_path" ]; then
+	output_path="$1"
 	shift
     fi
 
     files="$@"
 }
 
-parse_object_dir() {
-    object_dir="$OPTARG"
-}
-
 parse_output() {
     output_dir=$(dirname "$OPTARG")
+
     if [ ! -d "$output_dir" ]; then
 	usage_error '%s: "%s": No such directory\n' "$script" "$output_dir"
 	exit 2
-    else
-	output="$OPTARG"
-	stem="$(basename "$output" .dep)"
     fi
+
+    output_file=$(basename "$OPTARG")
+    output_path="$OPTARG"
+    object_stem="${output_file%.*}"
 }
 
 sed_makefile() {
-    sed "$(printf "$SED\n" "$stem" "${object_dir:+$object_dir/}" "$files")"
+    sed "$(printf "$SED\n" "$object_stem" "${object_dir:+$object_dir/}" "$files")"
 }
 
 usage() {
