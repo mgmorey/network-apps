@@ -27,6 +27,7 @@
 #include <sys/un.h>         // sockaddr_un
 #include <unistd.h>         // getopt(), optarg, opterr, optind
 
+#include <cerrno>       // EACCES, ENOENT, EROFS
 #include <cstdio>       // std::remove()
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
 #include <exception>    // std::exception
@@ -69,47 +70,22 @@ namespace TestSocket
 
     static auto get_codes_no_directory() -> const ErrorCodeSet&
     {
-#if defined(WIN32)
-        static const ErrorCodeSet codes = {
-            0
-        };
-#elif defined(OS_CYGWIN_NT)
-        static const ErrorCodeSet codes = {
-            ENOENT,
-            0
-        };
-#elif defined(OS_DARWIN)
-        static const ErrorCodeSet codes = {
-            ENOENT
-        };
+#if defined(OS_CYGWIN_NT)
+        static const ErrorCodeSet codes = {ENOENT, 0};
 #else
-        static const ErrorCodeSet codes = {
-            ENOENT
-        };
+        static const ErrorCodeSet codes = {ENOENT};
 #endif
         return codes;
     }
 
     static auto get_codes_no_permission() -> const ErrorCodeSet&
     {
-#if defined(WIN32)
-        static const ErrorCodeSet codes = {
-            0
-        };
+#if defined(OS_CYGWIN_NT)
+        static const ErrorCodeSet codes = {EACCES, 0};
 #elif defined(OS_DARWIN)
-        static const ErrorCodeSet codes = {
-            EACCES,
-            EROFS
-        };
-#elif defined(OS_CYGWIN_NT)
-        static const ErrorCodeSet codes = {
-            EACCES,
-            0
-        };
+        static const ErrorCodeSet codes = {EACCES, EROFS};
 #else
-        static const ErrorCodeSet codes = {
-            EACCES
-        };
+        static const ErrorCodeSet codes = {EACCES};
 #endif
         return codes;
     }
