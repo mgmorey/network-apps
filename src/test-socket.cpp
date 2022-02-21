@@ -68,27 +68,25 @@ namespace TestSocket
 
     static bool verbose {false};  // NOLINT
 
+#ifndef OS_CYGWIN_NT
+
     static auto get_codes_no_directory() -> const ErrorCodeSet&
     {
-#if defined(OS_CYGWIN_NT)
-        static const ErrorCodeSet codes = {ENOENT, 0};
-#else
         static const ErrorCodeSet codes = {ENOENT};
-#endif
         return codes;
     }
 
     static auto get_codes_no_permission() -> const ErrorCodeSet&
     {
-#if defined(OS_CYGWIN_NT)
-        static const ErrorCodeSet codes = {EACCES, 0};
-#elif defined(OS_DARWIN)
+#ifdef OS_DARWIN
         static const ErrorCodeSet codes = {EACCES, EROFS};
 #else
         static const ErrorCodeSet codes = {EACCES};
 #endif
         return codes;
     }
+
+#endif
 
     static auto get_pathname(std::string::size_type size) -> Pathname
     {
@@ -237,6 +235,8 @@ namespace TestSocket
         assert(actual_error == expected_error);
     }
 
+#ifndef OS_CYGWIN_NT
+
     static auto test_path_no_directory(const SocketHints& hints,
                                        const Pathname& pathname,
                                        const ErrorCodeSet& expected_codes) -> void
@@ -270,6 +270,8 @@ namespace TestSocket
 
         assert(actual_error.empty());
     }
+
+#endif
 
     static auto test_path_valid(const SocketHints& hints,
                                 const OptionalPathname& pathname,
@@ -321,8 +323,10 @@ auto main(int argc, char* argv[]) -> int
     using namespace TestSocket;
 
     static constexpr SocketHints hints {0, AF_UNIX, SOCK_STREAM};
+#ifndef OS_CYGWIN_NT
     static const ErrorCodeSet codes_no_directory {get_codes_no_directory()};
     static const ErrorCodeSet codes_no_permission {get_codes_no_permission()};
+#endif
     static const ErrorCodeSet codes_valid = {0};
 
     try {
@@ -333,8 +337,10 @@ auto main(int argc, char* argv[]) -> int
             std::cerr << context;
         }
 
+#ifndef OS_CYGWIN_NT
         test_path_no_permission(hints, "/foo", codes_no_permission);
         test_path_no_directory(hints, "/foo/bar", codes_no_directory);
+#endif
         test_path_invalid(hints, get_pathname(path_size_max), codes_valid);
         test_path_valid(hints, get_pathname(path_size_max - 1), codes_valid);
         const auto& pathnames {get_pathnames()};
