@@ -22,7 +22,8 @@
 namespace Network
 {
     extern auto get_endpointresult(const ByteString& addr, int flags,
-                                   bool verbose = false) -> EndpointResult;
+                                   bool verbose = false) noexcept ->
+        EndpointResult;
 }
 
 #endif
