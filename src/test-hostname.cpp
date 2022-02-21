@@ -25,14 +25,11 @@
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <span>         // std::span
-#include <variant>      // std::visit()
 #include <vector>       // std::vector
 
 using Network::Context;
 using Network::Hostname;
-using Network::OsErrorResult;
-using Network::Overloaded;
-using Network::get_hostnameresult;
+using Network::get_hostname;
 
 namespace TestHostname
 {
@@ -71,19 +68,10 @@ namespace TestHostname
 
     static auto test_hostname() -> void
     {
-        const auto hostname_result {get_hostnameresult()};
-        std::visit(Overloaded {
-                [&](const Hostname& hostname) {
-                    std::cout << "Hostname: "
-                              << hostname
-                              << std::endl;
-                },
-                [&](const OsErrorResult& result) {
-                    std::cerr << "No hostname available: "
-                              << result.string()
-                              << std::endl;
-                }
-            }, hostname_result);
+        const auto hostname {get_hostname()};
+        std::cout << "Hostname: "
+                  << hostname
+                  << std::endl;
     }
 }
 
