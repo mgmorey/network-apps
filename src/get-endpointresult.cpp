@@ -29,9 +29,9 @@
 #include "network/to-string.h"          // to_string()
 
 #ifdef WIN32
-#include <ws2tcpip.h>   // getnameinfo()
+#include <ws2tcpip.h>   // ::getnameinfo()
 #else
-#include <netdb.h>      // getnameinfo()
+#include <netdb.h>      // ::getnameinfo()
 #endif
 
 #include <algorithm>    // std::max()
