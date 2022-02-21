@@ -215,7 +215,7 @@ $(library_dir) $(object_dir) $(artifacts))))))
 .PHONY: dos2unix
 
 dos2unix:
-	dos2unix $(sort $(filter-out %$(dependency_suffix),$(wildcard	\
+	dos2unix -q $(sort $(filter-out %$(dependency_suffix),$(wildcard	\
 $(text_artifacts))))
 
 .PHONY: install
