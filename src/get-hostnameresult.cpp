@@ -18,8 +18,8 @@
                                         // get_hostname(),
                                         // hostname_size_max
 #include "network/buffer.h"             // Buffer
-#include "network/os-error.h"           // dispatch_os_error(),
-                                        // format_os_error(),
+#include "network/os-error.h"           // format_os_error(),
+                                        // get_os_error(),
                                         // reset_last_os_error()
 
 #ifdef WIN32
@@ -36,7 +36,7 @@ auto Network::get_hostnameresult() noexcept -> Network::HostnameResult
     reset_last_os_error();
 
     if ((::gethostname(host_buffer.data(), host_buffer.size() - 1)) == -1) {
-        const auto error {dispatch_os_error(get_last_os_error())};
+        const auto error {get_last_os_error()};
         std::ostringstream oss;
         oss << "Call to gethostname(...) failed with error "
             << error
