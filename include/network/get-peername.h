@@ -16,11 +16,12 @@
 #ifndef NETWORK_GET_PEERNAME_H
 #define NETWORK_GET_PEERNAME_H
 
-#include "network/get-name.h"           // ByteStringResult, Fd
+#include "network/get-name.h"           // Fd
+#include "network/peernameresult.h"     // PeerNameResult
 
 namespace Network
 {
-    extern auto get_peername(Fd fd, bool verbose = false) -> ByteStringResult;
+    extern auto get_peername(Fd fd, bool verbose = false) -> PeerNameResult;
 }
 
 #endif

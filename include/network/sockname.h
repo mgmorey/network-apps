@@ -13,19 +13,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-sockname.h"       // Fd, GetNameParams,
-                                        // SockNameResult,
-                                        // get_sockname()
+#ifndef NETWORK_SOCKNAME_H
+#define NETWORK_SOCKNAME_H
 
-#ifdef WIN32
-#include <winsock2.h>       // ::getsockname()
-#else
-#include <sys/socket.h>     // ::getsockname()
-#endif
+#include "network/bytestring.h"         // ByteString
 
-auto Network::get_sockname(Fd fd, bool verbose) -> Network::SockNameResult
+namespace Network
 {
-    const GetNameHandler handler {::getsockname, "getsockname"};
-    const GetNameParams args {fd, verbose};
-    return get_name(handler, args);
+    using SockName = ByteString;
 }
+
+#endif
