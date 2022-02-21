@@ -13,37 +13,26 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-hostname.h"       // Hostname, HostnameResult,
-                                        // OsErrorResult,
-                                        // get_hostname(),
-                                        // hostname_size_max
-#include "network/buffer.h"             // Buffer
-#include "network/os-error.h"           // format_os_error(),
-                                        // get_last_os_error(),
-                                        // reset_last_os_error()
+#include "network/get-hostname.h"       // Hostname,
+                                        // get_hostname()
+#include "network/error.h"              // Error
+#include "network/get-hostnameresult.h" // OsErrorResult,
+                                        // get_hostname()
+#include "network/overloaded.h"         // Overloaded
 
-#ifdef WIN32
-#include <winsock2.h>   // gethostname()
-#else
-#include <unistd.h>     // gethostname()
-#endif
+#include <variant>      // std::visit()
 
-#include <sstream>      // std::ostringstream
-
-auto Network::get_hostname() -> Network::HostnameResult
+auto Network::get_hostname() -> Network::Hostname
 {
-    Buffer host_buffer {hostname_size_max};
-    reset_last_os_error();
-
-    if ((::gethostname(host_buffer.data(), host_buffer.size() - 1)) == -1) {
-        const auto error = dispatch_os_error(get_last_os_error());
-        std::ostringstream oss;
-        oss << "Call to gethostname(...) failed with error "
-            << error
-            << ": "
-            << format_os_error(error);
-        return OsErrorResult {error, oss.str()};
-    }
-
-    return Hostname {host_buffer};
+    Hostname result;
+    const auto hostname_result {get_hostnameresult()};
+    std::visit(Overloaded {
+            [&](const Hostname& hostname) {
+                result = hostname;
+            },
+            [&](const OsErrorResult& error) {
+                throw Error(error.string());
+            }
+        }, hostname_result);
+    return result;
 }

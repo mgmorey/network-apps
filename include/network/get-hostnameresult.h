@@ -13,14 +13,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_GET_HOSTNAME_H
-#define NETWORK_GET_HOSTNAME_H
+#ifndef NETWORK_GET_HOSTNAMERESULT_H
+#define NETWORK_GET_HOSTNAMERESULT_H
 
-#include "network/hostname.h"           // Hostname
+#include "network/hostnameresult.h"     // HostnameResult
 
 namespace Network
 {
-    extern auto get_hostname() -> Hostname;
+    extern auto get_hostnameresult() noexcept -> HostnameResult;
 }
 
 #endif

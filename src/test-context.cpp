@@ -102,7 +102,7 @@ namespace TestContext
     static auto get_hostname() -> OsErrorResult
     {
         OsErrorResult result;
-        const auto hostname_result {Network::get_hostname()};
+        const auto hostname_result {Network::get_hostnameresult()};
         std::visit(Overloaded {
                 [&](const Hostname& hostname) {
                     static_cast<void>(hostname);

@@ -66,6 +66,7 @@ using Network::OsErrorResult;
 using Network::Overloaded;
 using Network::SocketHints;
 using Network::connect;
+using Network::get_hostnameresult;
 using Network::get_hostname;
 using Network::get_peername;
 using Network::get_sockname;
@@ -290,7 +291,7 @@ namespace TestConnect
     static auto test_connect_valid(const Endpoint& endpoint,
                                    const SocketHints& hints) -> void
     {
-        const auto hostname_result {get_hostname()};
+        const auto hostname_result {get_hostnameresult()};
         std::visit(Overloaded {
                 [&](const Hostname& hostname) {
                     test_connect(endpoint, hints, hostname);

@@ -32,7 +32,7 @@ using Network::Context;
 using Network::Hostname;
 using Network::OsErrorResult;
 using Network::Overloaded;
-using Network::get_hostname;
+using Network::get_hostnameresult;
 
 namespace TestHostname
 {
@@ -71,7 +71,7 @@ namespace TestHostname
 
     static auto test_hostname() -> void
     {
-        const auto hostname_result {get_hostname()};
+        const auto hostname_result {get_hostnameresult()};
         std::visit(Overloaded {
                 [&](const Hostname& hostname) {
                     std::cout << "Hostname: "
