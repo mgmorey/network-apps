@@ -39,15 +39,16 @@ using Network::OsErrorResult;
 using Network::Overloaded;
 using Network::Version;
 using Network::get_hostname;
+using Network::get_hostnameresult;
 using Network::os_error_type;
 
 namespace TestContext
 {
 #ifdef WIN32
+    static constexpr auto expected_code_stopped {WSANOTINITIALISED};
     static constexpr auto expected_description {"WinSock 2.0"};
-    static constexpr auto expected_error_code_running {0};
-    static constexpr auto expected_error_code_stopped {WSANOTINITIALISED};
     static constexpr auto expected_error_stopped {
+        "Call to gethostname(...) failed with error 10093: "
         "Either the application has not called WSAStartup, "
         "or WSAStartup failed."
     };
@@ -57,11 +58,10 @@ namespace TestContext
     static constexpr auto expected_status {"Running"};
     static constexpr auto expected_version {Version {2, 2}};
 #else
+    static constexpr auto expected_code_stopped {0};
     static constexpr auto expected_description {
         "Berkeley Software Distribution Sockets"
     };
-    static constexpr auto expected_error_code_running {0};
-    static constexpr auto expected_error_code_stopped {0};
     static constexpr auto expected_error_stopped {""};
     static constexpr auto expected_error_invalid_version {""};
     static constexpr auto expected_status {"Running"};
@@ -98,22 +98,6 @@ namespace TestContext
             Network::Context::shutdown(mode);
         }
     };
-
-    static auto get_hostname() -> OsErrorResult
-    {
-        OsErrorResult result;
-        const auto hostname_result {Network::get_hostnameresult()};
-        std::visit(Overloaded {
-                [&](const Hostname& hostname) {
-                    static_cast<void>(hostname);
-                    result = {0, ""};
-                },
-                [&](const OsErrorResult& error_result) {
-                    result = error_result;
-                }
-            }, hostname_result);
-        return result;
-    }
 
     static auto parse_arguments(int argc, char** argv) ->
         std::vector<std::string>
@@ -179,22 +163,6 @@ namespace TestContext
         }
     }
 
-    static auto print(const OsErrorResult& result,
-                      const std::string& description = "") -> void
-    {
-        if (verbose) {
-            std::cout << "Error result"
-                      << (description.empty() ? "" : ": " + description)
-                      << std::endl
-                      << "    Number: "
-                      << result.number()
-                      << std::endl
-                      << "    String: "
-                      << result.string()
-                      << std::endl;
-        }
-    }
-
     static auto test_context(const Context& context,
                              const std::string& description = "",
                              Version version = {}) -> void
@@ -222,7 +190,7 @@ namespace TestContext
             actual_error = error.what();
         }
 
-        assert(error_code == expected_error_code_stopped);
+        assert(error_code == expected_code_stopped);
         assert(actual_error.empty());
     }
 
@@ -334,10 +302,7 @@ namespace TestContext
         try {
             const Context context;
             test_context(context, "local 5");
-            const auto result {get_hostname()};
-            const auto error_code {result.number()};
-            print(result, "get_hostname() with context");
-            assert(error_code == expected_error_code_running);
+            static_cast<void>(get_hostname());
         }
         catch (const Error& error) {
             print(error);
