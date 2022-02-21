@@ -27,8 +27,8 @@
 #include <sys/un.h>         // sockaddr_un
 #include <unistd.h>         // getopt(), optarg, opterr, optind
 
-#include <cstdlib>      // EXIT_FAILURE, std::exit()
 #include <cstdio>       // std::remove()
+#include <cstdlib>      // EXIT_FAILURE, std::exit()
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <optional>     // std::nullopt
