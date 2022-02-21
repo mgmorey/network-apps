@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-SED='1s|\\(%s\\)\\.o[ :]*|%s\\1.o %s%s: \\\\\\
+SED='1s|\\(%s\\)\\(\\.[a-z][a-z]*\\)[ :]*|%s\\1\\2 %s%s: \\\\\\
 |
 s|^[ ]*||'
 
