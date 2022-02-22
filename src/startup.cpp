@@ -52,12 +52,11 @@ auto Network::startup(Context& context, const Version& version) -> void
             throw Error {error_str};
         }
     }
-    else {
-        context.description(data.szDescription);
-        context.system_status(data.szSystemStatus);
-        context.version(Version {data.wVersion});
-        context.is_started(true);
-    }
+
+    context.description(data.szDescription);
+    context.system_status(data.szSystemStatus);
+    context.version(Version {data.wVersion});
+    context.is_started(true);
 #else
     context.description("Berkeley Software Distribution Sockets");
     context.system_status("Running");
