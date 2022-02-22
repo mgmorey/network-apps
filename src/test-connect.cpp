@@ -184,10 +184,8 @@ namespace TestConnect
     {
 #if defined(WIN32)
         static const ErrorCodeSet codes {WSAEFAULT};
-#elif defined(OS_FREEBSD)
-        static const ErrorCodeSet codes {0};
 #else
-        static const ErrorCodeSet codes {0};
+        static const ErrorCodeSet codes {EAFNOSUPPORT};
 #endif
         return codes;
     }
@@ -208,10 +206,8 @@ namespace TestConnect
     {
 #if defined(WIN32)
         static const ErrorCodeSet codes {WSATYPE_NOT_FOUND};
-#elif defined(OS_FREEBSD)
-        static const ErrorCodeSet codes {EAI_AGAIN, EAI_NONAME};
 #else
-        static const ErrorCodeSet codes {EAI_AGAIN, EAI_NODATA, EAI_NONAME};
+        static const ErrorCodeSet codes {EAI_SERVICE};
 #endif
         return codes;
     }
