@@ -61,7 +61,7 @@ using Network::FdResultVector;
 using Network::OsErrorResult;
 using Network::Overloaded;
 using Network::SocketHints;
-using Network::bind;
+using Network::get_socket;
 using Network::get_sockname;
 using Network::os_error_type;
 using Network::string_null;
@@ -147,25 +147,40 @@ namespace TestBind
         std::ostream& m_os;
     };
 
-    static auto get_code_nodata() -> const ErrorCodeSet&
+    static auto get_codes_invalid_addr() -> const ErrorCodeSet&
     {
 #if defined(WIN32)
-        static const ErrorCodeSet expected_code_nodata = {
-            WSAHOST_NOT_FOUND
-        };
+        static const ErrorCodeSet codes {WSAEFAULT};
 #elif defined(OS_FREEBSD)
-        static const ErrorCodeSet expected_code_nodata = {
-            EAI_AGAIN,
-            EAI_NONAME
-        };
+        static const ErrorCodeSet codes {0};
 #else
-        static const ErrorCodeSet expected_code_nodata = {
-            EAI_AGAIN,
-            EAI_NODATA,
-            EAI_NONAME
-        };
+        static const ErrorCodeSet codes {0};
 #endif
-        return expected_code_nodata;
+        return codes;
+    }
+
+    static auto get_codes_invalid_host() -> const ErrorCodeSet&
+    {
+#if defined(WIN32)
+        static const ErrorCodeSet codes {WSAHOST_NOT_FOUND};
+#elif defined(OS_FREEBSD)
+        static const ErrorCodeSet codes {EAI_AGAIN, EAI_NONAME};
+#else
+        static const ErrorCodeSet codes {EAI_AGAIN, EAI_NODATA, EAI_NONAME};
+#endif
+        return codes;
+    }
+
+    static auto get_codes_invalid_service() -> const ErrorCodeSet&
+    {
+#if defined(WIN32)
+        static const ErrorCodeSet codes {WSATYPE_NOT_FOUND};
+#elif defined(OS_FREEBSD)
+        static const ErrorCodeSet codes {EAI_AGAIN, EAI_NONAME};
+#else
+        static const ErrorCodeSet codes {EAI_AGAIN, EAI_NODATA, EAI_NONAME};
+#endif
+        return codes;
     }
 
     static auto parse_arguments(int argc, char** argv) ->
@@ -215,38 +230,80 @@ namespace TestBind
         }
     }
 
-    static auto test_bind_invalid(const Endpoint& endpoint,
-                                  const SocketHints& hints) -> void
+    static auto test_bind_invalid_addr(const ByteString& addr,
+                                       const SocketHints& hints) -> void
     {
         os_error_type actual_code {0};
-        const auto& expected_code {get_code_nodata()};
-        const auto open_result {bind(endpoint, hints, verbose)};
+        const auto& expected_codes {get_codes_invalid_addr()};
+        const auto fd_result {get_socket(hints, verbose)};
+        std::visit(Overloaded {
+                [&](const Fd& fd) {
+                    const auto error {Network::bind(fd, addr, verbose)};
+                    actual_code = error.number();
+
+                    if (error) {
+                        print(error, "bind() with invalid address");
+                    }
+
+                    Network::close(fd);
+                },
+                [&](const OsErrorResult& error) {
+                    actual_code = error.number();
+                    print(error, "bind() with invalid address");
+                }
+            }, fd_result);
+        assert(expected_codes.count(actual_code) != 0);
+    }
+
+    static auto test_bind_invalid_host(const Endpoint& endpoint,
+                                       const SocketHints& hints) -> void
+    {
+        os_error_type actual_code {0};
+        const auto& expected_codes {get_codes_invalid_host()};
+        const auto bind_result {Network::bind(endpoint, hints, verbose)};
         std::visit(Overloaded {
                 [&](const FdResultVector& fd_results) {
                     static_cast<void>(fd_results);
                 },
-                [&](const OsErrorResult& result) {
-                    print(result, "bind() with invalid endpoint");
-                    actual_code = result.number();
+                [&](const OsErrorResult& error) {
+                    actual_code = error.number();
+                    print(error, "bind() with invalid host");
                 }
-            }, open_result);
-        assert(expected_code.count(actual_code) != 0);
+            }, bind_result);
+        assert(expected_codes.count(actual_code) != 0);
+    }
+
+    static auto test_bind_invalid_service(const Endpoint& endpoint,
+                                          const SocketHints& hints) -> void
+    {
+        os_error_type actual_code {0};
+        const auto& expected_codes {get_codes_invalid_service()};
+        const auto bind_result {Network::bind(endpoint, hints, verbose)};
+        std::visit(Overloaded {
+                [&](const FdResultVector& fd_results) {
+                    static_cast<void>(fd_results);
+                },
+                [&](const OsErrorResult& error) {
+                    actual_code = error.number();
+                    print(error, "bind() with invalid service");
+                }
+            }, bind_result);
+        assert(expected_codes.count(actual_code) != 0);
     }
 
     static auto test_bind_valid(const Endpoint& endpoint,
                                 const SocketHints& hints) -> void
     {
-        const auto open_result {bind(endpoint, hints, verbose)};
+        const auto bind_result {Network::bind(endpoint, hints, verbose)};
         std::visit(Overloaded {
                 [&](const FdResultVector& fd_results) {
                     std::for_each(fd_results.begin(), fd_results.end(),
                                   Test(endpoint, std::cout));
                 },
-                [&](const OsErrorResult& result) {
-                    std::cerr << result.string()
-                              << std::endl;
+                [&](const OsErrorResult& error) {
+                    print(error, "bind() with valid endpoint");
                 }
-            }, open_result);
+            }, bind_result);
     }
 }
 
@@ -265,13 +322,17 @@ auto main(int argc, char* argv[]) -> int
             std::cerr << context;
         }
 
-        const Endpoint invalid_endpoint {".", localservice};
-        test_bind_invalid(invalid_endpoint, hints);
+        const ByteString invalid_addr {};
+        test_bind_invalid_addr(invalid_addr, hints);
+        const Endpoint invalid_host {".", localservice};
+        test_bind_invalid_host(invalid_host, hints);
+        const Endpoint invalid_service {localhost, "."};
+        test_bind_invalid_service(invalid_service, hints);
         const Endpoint valid_endpoint {
             args.size() > 1 ? args[1] : localhost,
             args.size() > 2 ? args[2] : localservice
         };
-        TestBind::test_bind_valid(valid_endpoint, hints);
+        test_bind_valid(valid_endpoint, hints);
     }
     catch (const std::exception& error) {
         std::cerr << error.what()
