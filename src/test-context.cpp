@@ -328,15 +328,17 @@ namespace TestContext
 
 auto main(int argc, char* argv[]) -> int
 {
+    using namespace TestContext;
+
     try {
-        const auto args {TestContext::parse_arguments(argc, argv)};
-        TestContext::test_context_global_instance();
-        TestContext::test_context_invalid_version();
-        TestContext::test_context_local_instances();
-        TestContext::test_context_valid_with_shutdown();
-        TestContext::test_context_valid_without_shutdown();
-        TestContext::test_hostname_running();
-        TestContext::test_hostname_stopped();
+        parse_arguments(argc, argv);
+        test_context_global_instance();
+        test_context_invalid_version();
+        test_context_local_instances();
+        test_context_valid_with_shutdown();
+        test_context_valid_without_shutdown();
+        test_hostname_running();
+        test_hostname_stopped();
     }
     catch (const std::exception& error) {
         std::cerr << error.what()

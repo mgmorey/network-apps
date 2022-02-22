@@ -28,17 +28,17 @@
 #include <winsock2.h>       // WSADATA, WSAEFAULT, WSAEINPROGRESS,
                             // WSAENETDOWN, WSAEPROCLIM,
                             // WSANOTINITIALISED, WSASYSNOTREADY,
-                            // WSAVERNOTSUPPORTED, WSACleanup(),
-                            // WSAStartup()
+                            // WSAVERNOTSUPPORTED, ::WSACleanup(),
+                            // ::WSAStartup()
 #endif
 
 #include <iostream>     // std::cerr, std::endl
 #include <sstream>      // std::ostringstream
 
 #ifdef WIN32
-constexpr auto api_default {Network::Version {2, 2}};
+static constexpr auto api_default {Network::Version {2, 2}};
 #else
-constexpr auto api_default {Network::Version {}};
+static constexpr auto api_default {Network::Version {}};
 #endif
 
 auto Network::Context::instance() -> const Context&
