@@ -33,6 +33,10 @@ namespace Network
         ~Context();
         auto operator=(const Context&) -> Context& = delete;
         auto operator=(const Context&&) -> Context& = delete;
+        auto description(const std::string& t_description) noexcept -> Context&;
+        auto is_started(bool t_is_started) noexcept -> Context&;
+        auto system_status(const std::string& t_status) noexcept -> Context&;
+        auto version(const Version& t_version) noexcept -> Context&;
         [[nodiscard]] auto description() const noexcept -> std::string;
         [[nodiscard]] auto is_started() const noexcept -> bool;
         [[nodiscard]] auto system_status() const noexcept -> std::string;
@@ -42,7 +46,6 @@ namespace Network
         enum class failure_mode {return_error, return_zero, throw_error};
         static auto cleanup(failure_mode t_mode =
                             failure_mode::throw_error) -> os_error_type;
-        auto is_started(bool t_is_started) noexcept -> void;
         auto shutdown(failure_mode t_mode = failure_mode::throw_error) -> void;
 
     private:

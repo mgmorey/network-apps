@@ -115,6 +115,32 @@ Network::Context::~Context()
     shutdown(failure_mode::return_zero);
 }
 
+auto Network::Context::description(const std::string& t_description) noexcept ->
+    Context&
+{
+    m_description = t_description;
+    return *this;
+}
+
+auto Network::Context::is_started(bool t_is_started) noexcept -> Context&
+{
+    m_is_started = t_is_started;
+    return *this;
+}
+
+auto Network::Context::system_status(const std::string& t_status) noexcept ->
+    Context&
+{
+    m_system_status = t_status;
+    return *this;
+}
+
+auto Network::Context::version(const Version& t_version) noexcept -> Context&
+{
+    m_version = t_version;
+    return *this;
+}
+
 auto Network::Context::description() const noexcept -> std::string
 {
     return m_description;
@@ -173,11 +199,6 @@ auto Network::Context::cleanup(failure_mode t_mode) -> Network::os_error_type
     static_cast<void>(t_mode);
 #endif
     return 0;
-}
-
-auto Network::Context::is_started(bool t_is_started) noexcept -> void
-{
-    m_is_started = t_is_started;
 }
 
 auto Network::Context::shutdown(failure_mode t_mode) -> void
