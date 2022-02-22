@@ -29,7 +29,7 @@ auto Network::connect(const Endpoint& endpoint,
                       const SocketHints& hints,
                       bool verbose) -> Network::OpenResult
 {
-    const OpenHandler handler {::connect, "connect"};
+    const OpenHandler handler {::connect, "::connect"};
     const OpenEndpointParams args {endpoint, hints, verbose};
     return open(handler, args);
 }
