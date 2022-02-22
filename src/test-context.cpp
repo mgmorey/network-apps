@@ -14,9 +14,8 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/assert.h"             // assert()
-#include "network/network.h"            // Context, ErrorResult,
-                                        // OsErrorResult, Overloaded,
-                                        // Version, get_hostname()
+#include "network/network.h"            // Context, Error, Version,
+                                        // get_hostname()
 
 #ifdef WIN32
 #include <getopt.h>         // getopt(), optarg, opterr, optind
@@ -35,11 +34,8 @@
 
 using Network::Error;
 using Network::Hostname;
-using Network::OsErrorResult;
-using Network::Overloaded;
 using Network::Version;
 using Network::get_hostname;
-using Network::get_hostnameresult;
 using Network::os_error_type;
 
 namespace TestContext
@@ -47,13 +43,13 @@ namespace TestContext
 #ifdef WIN32
     static constexpr auto expected_code_stopped {WSANOTINITIALISED};
     static constexpr auto expected_description {"WinSock 2.0"};
+    static constexpr auto expected_error_invalid_version {
+        "The Windows Sockets version requested is not supported."
+    };
     static constexpr auto expected_error_stopped {
         "Call to gethostname(...) failed with error 10093: "
         "Either the application has not called WSAStartup, "
         "or WSAStartup failed."
-    };
-    static constexpr auto expected_error_invalid_version {
-        "The Windows Sockets version requested is not supported."
     };
     static constexpr auto expected_status {"Running"};
     static constexpr auto expected_version {Version {2, 2}};
@@ -62,8 +58,8 @@ namespace TestContext
     static constexpr auto expected_description {
         "Berkeley Software Distribution Sockets"
     };
-    static constexpr auto expected_error_stopped {""};
     static constexpr auto expected_error_invalid_version {""};
+    static constexpr auto expected_error_stopped {""};
     static constexpr auto expected_status {"Running"};
     static constexpr auto expected_version {Version {}};
 #endif
