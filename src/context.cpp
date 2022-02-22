@@ -14,15 +14,9 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/context.h"            // Context, Version, operator<<(),
-                                        // os_error_type, std::endl,
-                                        // std::ostream
+                                        // std::endl, std::ostream
 #include "network/cleanup.h"            // cleanup()
-#include "network/exceptions.h"         // Error, LogicError,
-                                        // RunTimeError
-#include "network/os-error.h"           // format_os_error(),
-                                        // get_last_os_error(),
-                                        // reset_last_os_error()
-#include "network/socket-error.h"       // socket_error
+#include "network/exceptions.h"         // Error, RunTimeError
 #include "network/startup.h"            // startup()
 
 auto Network::Context::instance() -> const Context&
