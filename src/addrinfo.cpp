@@ -73,7 +73,7 @@ Network::AddrInfo::AddrInfo(const OptionalHostname& t_hostname,
                       << std::endl;
         }
 
-        std::cerr << "Calling getaddrinfo("
+        std::cerr << "Calling ::getaddrinfo("
                   << t_hostname.value_or(string_null)
                   << ", "
                   << t_service.value_or(string_null)
@@ -86,7 +86,7 @@ Network::AddrInfo::AddrInfo(const OptionalHostname& t_hostname,
                                         hints.get(),
                                         &m_list)}) {
         std::ostringstream oss;
-        oss << "Call to getaddrinfo("
+        oss << "Call to ::getaddrinfo("
             << t_hostname.value_or(string_null)
             << ", "
             << t_service.value_or(string_null)
