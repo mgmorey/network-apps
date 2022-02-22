@@ -42,7 +42,7 @@ auto Network::get_socketpair(const SocketHints& hints,
     std::array<fd_type, 2> fds {fd_null, fd_null};
 
     if (verbose) {
-        std::cerr << "Calling socketpair("
+        std::cerr << "Calling ::socketpair("
                   << Format("domain")
                   << hints.family()
                   << Format(delim, tab, "type")
@@ -61,7 +61,7 @@ auto Network::get_socketpair(const SocketHints& hints,
                      fds.data()) == socket_error) {
         const auto error = get_last_os_error();
         std::ostringstream oss;
-        oss << "Call to socketpair("
+        oss << "Call to ::socketpair("
             << Format("domain")
             << hints.family()
             << Format(delim, tab, "type")
