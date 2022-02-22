@@ -14,6 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/assert.h"             // assert()
+#include "network/cleanup.h"            // cleanup()
 #include "network/network.h"            // Context, Error, Version,
                                         // get_hostname()
 
@@ -65,14 +66,13 @@ namespace TestContext
 #endif
     static constexpr auto invalid_version {Version {0}};
 
+    static const auto mode {Network::Context::failure_mode::return_error};
     static bool verbose {false};  // NOLINT
 
     class Context :
         public Network::Context
     {
     public:
-        static const auto mode {Network::Context::failure_mode::return_error};
-
         static auto instance() -> Context&
         {
             static Context context;
@@ -82,11 +82,6 @@ namespace TestContext
         explicit Context(const Version& t_version = {}) :
             Network::Context(t_version)
         {
-        }
-
-        static auto cleanup() -> Network::os_error_type
-        {
-            return Network::Context::cleanup(mode);
         }
 
         auto shutdown() -> void
@@ -179,7 +174,7 @@ namespace TestContext
         std::string actual_error;
 
         try {
-            error_code = TestContext::Context::cleanup();
+            error_code = cleanup(mode);
         }
         catch (const Error& error) {
             print(error);

@@ -16,6 +16,7 @@
 #include "network/context.h"            // Context, Version,
                                         // operator<<(),
                                         // os_error_type, std::ostream
+#include "network/cleanup.h"            // cleanup()
 #include "network/error-type.h"         // error_type
 #include "network/exceptions.h"         // Error, LogicError,
                                         // RunTimeError
@@ -23,6 +24,7 @@
                                         // get_last_os_error(),
                                         // reset_last_os_error()
 #include "network/socket-error.h"       // socket_error
+#include "network/startup.h"            // startup()
 
 #ifdef WIN32
 #include <winsock2.h>       // WSADATA, WSAEFAULT, WSAEINPROGRESS,
@@ -52,38 +54,7 @@ Network::Context::Context(const Version& t_version)
     const version_type version {t_version ? t_version : api_default};
 
     try {
-#ifdef WIN32
-        WSADATA data {};
-        const auto error_code {::WSAStartup(version, &data)};
-
-        if (error_code != 0) {
-            const auto error_str {format_os_error(error_code)};
-
-            switch (error_code) {  // NOLINT
-            case WSAEFAULT:
-            case WSAVERNOTSUPPORTED:
-                throw LogicError {error_str};
-                break;
-            case WSAEPROCLIM:
-            case WSASYSNOTREADY:
-                throw RuntimeError {error_str};
-                break;
-            default:
-                throw Error {error_str};
-            }
-        }
-        else {
-            m_description = data.szDescription;
-            m_system_status = data.szSystemStatus;
-            m_version = Version {data.wVersion};
-            m_is_started = true;
-        }
-#else
-        m_system_status = "Running";
-        m_description = "Berkeley Software Distribution Sockets";
-        m_version = Version {version};
-        m_is_started = true;
-#endif
+        startup(*this, version);
 
         // Test for class invariant conditions and possibly throw
         // exceptions here if one or more conditions are not met.
@@ -159,46 +130,6 @@ auto Network::Context::system_status() const noexcept -> std::string
 auto Network::Context::version() const noexcept -> Network::Version
 {
     return m_version;
-}
-
-auto Network::Context::cleanup(failure_mode t_mode) -> Network::os_error_type
-{
-#ifdef WIN32
-    reset_last_os_error();
-
-    if (::WSACleanup() == socket_error) {
-        const auto error_code {get_last_os_error()};
-
-        if (t_mode == failure_mode::throw_error) {
-            const auto error_str {format_os_error(error_code)};
-
-            switch (error_code) {  // NOLINT
-            case WSANOTINITIALISED:
-                throw LogicError {error_str};
-                break;
-            case WSAEINPROGRESS:
-            case WSAENETDOWN:
-                throw RuntimeError {error_str};
-                break;
-            default:
-                throw Error {error_str};
-            }
-        }
-        else if (t_mode == failure_mode::return_zero) {
-            switch (error_code) {  // NOLINT
-            case WSANOTINITIALISED:
-                return 0;
-                break;
-            }
-        }
-
-        return error_code;
-    }
-
-#else
-    static_cast<void>(t_mode);
-#endif
-    return 0;
 }
 
 auto Network::Context::shutdown(failure_mode t_mode) -> void
