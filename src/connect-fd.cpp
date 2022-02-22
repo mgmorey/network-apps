@@ -29,7 +29,7 @@ auto Network::connect(Fd fd,
                       const ByteString& str,
                       bool verbose) -> Network::OsErrorResult
 {
-    const OpenHandler handler {::connect, "connect"};
+    const OpenHandler handler {::connect, "::connect"};
     const OpenFdParams args {fd, str, verbose};
     return open(handler, args);
 }
