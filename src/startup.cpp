@@ -27,8 +27,6 @@
 
 #ifdef WIN32
 static constexpr auto api_default {Network::Version {2, 2}};
-#else
-static constexpr auto api_default {Network::Version {}};
 #endif
 
 auto Network::startup(Context& context, const Version& version) -> void
