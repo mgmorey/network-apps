@@ -53,13 +53,13 @@ auto Network::startup(Context& context, const Version& version) -> void
         }
     }
 
-    context.description(data.szDescription);
-    context.system_status(data.szSystemStatus);
-    context.version(Version {data.wVersion});
+    context.description(data.szDescription)
+        .system_status(data.szSystemStatus)
+        .version(Version {data.wVersion});
 #else
-    context.description("Berkeley Software Distribution Sockets");
-    context.system_status("Running");
-    context.version(version);
+    context.description("Berkeley Software Distribution Sockets")
+        .system_status("Running")
+        .version(version);
 #endif
     context.is_started(true);
 }
