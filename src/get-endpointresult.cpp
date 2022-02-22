@@ -56,7 +56,7 @@ auto Network::get_endpointresult(const ByteString& addr, int flags,
     const auto *const pointer {get_sa_pointer(addr)};
 
     if (verbose) {
-        std::cerr << "Calling getnameinfo("
+        std::cerr << "Calling ::getnameinfo("
                   << addr
                   << ", "
                   << length
@@ -71,7 +71,7 @@ auto Network::get_endpointresult(const ByteString& addr, int flags,
                                         service.data(), service.size(),
                                         flags)}) {
         std::ostringstream oss;
-        oss << "Call to getnameinfo("
+        oss << "Call to ::getnameinfo("
             << addr
             << ", "
             << length
