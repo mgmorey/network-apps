@@ -25,7 +25,7 @@
 
 auto Network::get_peername(Fd fd, bool verbose) -> Network::PeerNameResult
 {
-    const GetNameHandler handler {::getpeername, "getpeername"};
+    const GetNameHandler handler {::getpeername, "::getpeername"};
     const GetNameParams args {fd, verbose};
     return get_name(handler, args);
 }
