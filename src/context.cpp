@@ -37,12 +37,6 @@
 #include <iostream>     // std::cerr, std::endl
 #include <sstream>      // std::ostringstream
 
-#ifdef WIN32
-static constexpr auto api_default {Network::Version {2, 2}};
-#else
-static constexpr auto api_default {Network::Version {}};
-#endif
-
 auto Network::Context::instance() -> const Context&
 {
     static Context context;
@@ -51,10 +45,8 @@ auto Network::Context::instance() -> const Context&
 
 Network::Context::Context(const Version& t_version)
 {
-    const version_type version {t_version ? t_version : api_default};
-
     try {
-        startup(*this, version);
+        startup(*this, t_version);
 
         // Test for class invariant conditions and possibly throw
         // exceptions here if one or more conditions are not met.

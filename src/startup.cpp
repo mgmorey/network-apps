@@ -22,18 +22,24 @@
                                         // reset_last_os_error()
 
 #ifdef WIN32
-#include <winsock2.h>       // WSADATA, WSAEFAULT, WSAEINPROGRESS,
-                            // WSAENETDOWN, WSAEPROCLIM,
-                            // WSANOTINITIALISED, WSASYSNOTREADY,
-                            // WSAVERNOTSUPPORTED, ::WSACleanup(),
+#include <winsock2.h>       // WSADATA, WSAEFAULT, WSAEPROCLIM,
+                            // WSASYSNOTREADY, WSAVERNOTSUPPORTED,
                             // ::WSAStartup()
 #endif
 
-auto Network::startup(Context& context, version_type version) -> void
+#ifdef WIN32
+static constexpr auto api_default {Network::Version {2, 2}};
+#else
+static constexpr auto api_default {Network::Version {}};
+#endif
+
+auto Network::startup(Context& context, const Version& version) -> void
 {
+    const version_type api_version {version ? version : api_default};
+
 #ifdef WIN32
     WSADATA data {};
-    const auto error_code {::WSAStartup(version, &data)};
+    const auto error_code {::WSAStartup(api_version, &data)};
 
     if (error_code != 0) {
         const auto error_str {format_os_error(error_code)};
@@ -60,7 +66,7 @@ auto Network::startup(Context& context, version_type version) -> void
 #else
     context.description("Berkeley Software Distribution Sockets");
     context.system_status("Running");
-    context.version(Version {version});
+    context.version(version);
     context.is_started(true);
 #endif
 }

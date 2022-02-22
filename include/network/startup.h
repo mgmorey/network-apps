@@ -21,7 +21,7 @@
 
 namespace Network
 {
-    auto startup(Context& context, version_type version) -> void;
+    auto startup(Context& context, const Version& version) -> void;
 }
 
 #endif
