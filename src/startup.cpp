@@ -35,10 +35,9 @@ static constexpr auto api_default {Network::Version {}};
 
 auto Network::startup(Context& context, const Version& version) -> void
 {
-    const version_type api_version {version ? version : api_default};
-
 #ifdef WIN32
     WSADATA data {};
+    const version_type api_version {version ? version : api_default};
     const auto error_code {::WSAStartup(api_version, &data)};
 
     if (error_code != 0) {
