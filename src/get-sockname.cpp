@@ -25,7 +25,7 @@
 
 auto Network::get_sockname(Fd fd, bool verbose) -> Network::SockNameResult
 {
-    const GetNameHandler handler {::getsockname, "getsockname"};
+    const GetNameHandler handler {::getsockname, "::getsockname"};
     const GetNameParams args {fd, verbose};
     return get_name(handler, args);
 }
