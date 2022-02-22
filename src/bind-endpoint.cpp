@@ -28,7 +28,7 @@ auto Network::bind(const Endpoint& endpoint,
                    const SocketHints& hints,
                    bool verbose) -> Network::OpenResult
 {
-    const OpenHandler handler {::bind, "bind"};
+    const OpenHandler handler {::bind, "::bind"};
     const OpenEndpointParams args {endpoint, hints, verbose};
     return open(handler, args);
 }
