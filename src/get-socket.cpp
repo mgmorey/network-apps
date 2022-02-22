@@ -38,7 +38,7 @@ auto Network::get_socket(const SocketHints& hints,
     constexpr auto tab {0};
 
     if (verbose) {
-        std::cerr << "Calling socket("
+        std::cerr << "Calling ::socket("
                   << Format("domain")
                   << hints.family()
                   << Format(delim, tab, "type")
@@ -55,7 +55,7 @@ auto Network::get_socket(const SocketHints& hints,
     if (fd == fd_null) {
         const auto error = get_last_os_error();
         std::ostringstream oss;
-        oss << "Call to socket("
+        oss << "Call to ::socket("
             << Format("domain")
             << hints.family()
             << Format(delim, tab, "type")
