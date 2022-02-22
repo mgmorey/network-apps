@@ -17,11 +17,8 @@
                                         // OpenHandler, OsErrorResult,
                                         // fd_type, open(),
                                         // operator<<()
-#include "network/address.h"            // Address, operator<<()
-#include "network/addresserror.h"       // AddressError
 #include "network/get-length.h"         // get_length()
 #include "network/get-sa-pointer.h"     // get_sa_pointer()
-#include "network/is-valid.h"           // is_valid()
 #include "network/os-error.h"           // format_os_error(),
                                         // get_last_os_error(),
                                         // reset_last_os_error()
@@ -33,12 +30,8 @@
 auto Network::open(const OpenHandler& handler,
                    const OpenFdParams& args) -> Network::OsErrorResult
 {
-    if (!is_valid(args.str)) {
-        throw AddressError(args.str);
-    }
-
+    const auto* const pointer {get_sa_pointer(args.str)};
     const auto length {get_length(args.str)};
-    const auto *const pointer {get_sa_pointer(args.str)};
     reset_last_os_error();
 
     if (args.verbose) {
@@ -47,7 +40,7 @@ auto Network::open(const OpenHandler& handler,
                   << '('
                   << args.fd
                   << ", "
-                  << Address {args.str}
+                  << args.str
                   << ", "
                   << static_cast<int>(length)
                   << ')'
@@ -64,7 +57,9 @@ auto Network::open(const OpenHandler& handler,
             << '('
             << args.fd
             << ", "
-            << Address {args.str}
+            << args.str
+            << ", "
+            << static_cast<int>(length)
             << ") failed with error "
             << error
             << ": "
