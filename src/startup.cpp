@@ -56,11 +56,10 @@ auto Network::startup(Context& context, const Version& version) -> void
     context.description(data.szDescription);
     context.system_status(data.szSystemStatus);
     context.version(Version {data.wVersion});
-    context.is_started(true);
 #else
     context.description("Berkeley Software Distribution Sockets");
     context.system_status("Running");
     context.version(version);
-    context.is_started(true);
 #endif
+    context.is_started(true);
 }
