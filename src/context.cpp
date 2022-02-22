@@ -13,11 +13,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/context.h"            // Context, Version,
-                                        // operator<<(),
-                                        // os_error_type, std::ostream
+#include "network/context.h"            // Context, Version, operator<<(),
+                                        // os_error_type, std::endl,
+                                        // std::ostream
 #include "network/cleanup.h"            // cleanup()
-#include "network/error-type.h"         // error_type
 #include "network/exceptions.h"         // Error, LogicError,
                                         // RunTimeError
 #include "network/os-error.h"           // format_os_error(),
@@ -25,17 +24,6 @@
                                         // reset_last_os_error()
 #include "network/socket-error.h"       // socket_error
 #include "network/startup.h"            // startup()
-
-#ifdef WIN32
-#include <winsock2.h>       // WSADATA, WSAEFAULT, WSAEINPROGRESS,
-                            // WSAENETDOWN, WSAEPROCLIM,
-                            // WSANOTINITIALISED, WSASYSNOTREADY,
-                            // WSAVERNOTSUPPORTED, ::WSACleanup(),
-                            // ::WSAStartup()
-#endif
-
-#include <iostream>     // std::cerr, std::endl
-#include <sstream>      // std::ostringstream
 
 auto Network::Context::instance() -> const Context&
 {

@@ -17,9 +17,7 @@
 #include "network/context.h"            // Context, Version
 #include "network/exceptions.h"         // Error, LogicError,
                                         // RunTimeError
-#include "network/os-error.h"           // format_os_error(),
-                                        // get_last_os_error(),
-                                        // reset_last_os_error()
+#include "network/os-error.h"           // format_os_error()
 
 #ifdef WIN32
 #include <winsock2.h>       // WSADATA, WSAEFAULT, WSAEPROCLIM,
