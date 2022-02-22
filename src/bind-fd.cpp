@@ -29,7 +29,7 @@ auto Network::bind(Fd fd,
                    const ByteString& str,
                    bool verbose) -> Network::OsErrorResult
 {
-    const OpenHandler handler {::bind, "bind"};
+    const OpenHandler handler {::bind, "::bind"};
     const OpenFdParams args {fd, str, verbose};
     return open(handler, args);
 }
