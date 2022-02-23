@@ -174,7 +174,7 @@ namespace TestBind
 #if defined(WIN32)
         static const ErrorCodeSet codes {WSATYPE_NOT_FOUND};
 #else
-        static const ErrorCodeSet codes {EAI_SERVICE};
+        static const ErrorCodeSet codes {EAI_NONAME, EAI_SERVICE};
 #endif
         return codes;
     }
