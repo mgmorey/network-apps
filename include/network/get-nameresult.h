@@ -13,17 +13,18 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_GET_NAME_H
-#define NETWORK_GET_NAME_H
+#ifndef NETWORK_GET_NAMERESULT_H
+#define NETWORK_GET_NAMERESULT_H
 
-#include "network/bytestring.h"         // ByteString
+#include "network/bytestringresult.h"   // ByteStringResult
 #include "network/getnamehandler.h"     // GetNameHandler
 #include "network/getnameparams.h"      // GetNameParams
 
 namespace Network
 {
-    extern auto get_name(const GetNameHandler& handler,
-                         const GetNameParams& args) -> ByteString;
+    extern auto get_nameresult(const GetNameHandler& handler,
+                               const GetNameParams& args) noexcept ->
+        ByteStringResult;
 }
 
 #endif

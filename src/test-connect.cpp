@@ -54,7 +54,6 @@
 
 using Network::Address;
 using Network::ByteString;
-using Network::ByteStringResult;
 using Network::Context;
 using Network::Endpoint;
 using Network::Fd;
@@ -64,7 +63,9 @@ using Network::Hostname;
 using Network::OptionalHostname;
 using Network::OsErrorResult;
 using Network::Overloaded;
+using Network::PeerName;
 using Network::SocketHints;
+using Network::SockName;
 using Network::get_hostname;
 using Network::get_peername;
 using Network::get_sockname;
@@ -107,42 +108,12 @@ namespace TestConnect
                 }, t_fd_result);
         }
 
-        static auto get_peeraddr(const Fd& t_fd) -> ByteStringResult
-        {
-            auto peername_result {get_peername(t_fd, verbose)};
-            std::visit(Overloaded {
-                    [&](const ByteString& addr) {
-                        static_cast<void>(addr);
-                    },
-                    [&](const OsErrorResult& result) {
-                        std::cerr << result.string()
-                                  << std::endl;
-                    }
-                }, peername_result);
-            return peername_result;
-        }
-
-        static auto get_sockaddr(const Fd& t_fd) -> ByteStringResult
-        {
-            auto sockname_result {get_sockname(t_fd, verbose)};
-            std::visit(Overloaded {
-                    [&](const ByteString& addr) {
-                        static_cast<void>(addr);
-                    },
-                    [&](const OsErrorResult& result) {
-                        std::cerr << result.string()
-                                  << std::endl;
-                    }
-                }, sockname_result);
-            return sockname_result;
-        }
-
         auto test_socket(const Fd& t_fd) -> void
         {
             const auto hostname {m_endpoint.first};
             const auto service {m_endpoint.second};
-            const auto peer_result {get_peeraddr(t_fd)};
-            const auto sock_result {get_sockaddr(t_fd)};
+            const auto peer {get_peername(t_fd, verbose)};
+            const auto self {get_sockname(t_fd, verbose)};
             m_os << "Socket "
                  << std::right << std::setw(fd_width) << t_fd
                  << " connected "
@@ -151,22 +122,15 @@ namespace TestConnect
                  << service.value_or(string_null)
                  << " on "
                  << hostname.value_or(string_null)
+                 << std::endl
+                 << "Socket "
+                 << std::right << std::setw(fd_width) << t_fd
+                 << " connected "
+                 << Address(self)
+                 << std::endl
+                 << std::right << std::setw(indent_width) << "to "
+                 << Address(peer)
                  << std::endl;
-
-            if (std::holds_alternative<ByteString>(peer_result) &&
-                std::holds_alternative<ByteString>(sock_result)) {
-                const auto& peer {std::get<ByteString>(peer_result)};
-                const auto& self {std::get<ByteString>(sock_result)};
-                m_os << "Socket "
-                     << std::right << std::setw(fd_width) << t_fd
-                     << " connected "
-                     << Address(self)
-                     << std::endl
-                     << std::right << std::setw(indent_width) << "to "
-                     << Address(peer)
-                     << std::endl;
-            }
-
             Network::close(t_fd, verbose);
             m_os << "Socket "
                  << std::right << std::setw(fd_width) << t_fd

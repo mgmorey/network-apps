@@ -16,12 +16,12 @@
 #ifndef NETWORK_GET_SOCKNAME_H
 #define NETWORK_GET_SOCKNAME_H
 
-#include "network/get-name.h"           // Fd
-#include "network/socknameresult.h"     // SockNameResult
+#include "network/fd.h"                 // Fd
+#include "network/sockname.h"           // SockName
 
 namespace Network
 {
-    extern auto get_sockname(Fd fd, bool verbose = false) -> SockNameResult;
+    extern auto get_sockname(Fd fd, bool verbose = false) -> SockName;
 }
 
 #endif

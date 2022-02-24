@@ -52,7 +52,6 @@
 
 using Network::Address;
 using Network::ByteString;
-using Network::ByteStringResult;
 using Network::Context;
 using Network::Endpoint;
 using Network::Fd;
@@ -61,6 +60,7 @@ using Network::FdResultVector;
 using Network::OsErrorResult;
 using Network::Overloaded;
 using Network::SocketHints;
+using Network::SockName;
 using Network::get_socket;
 using Network::get_sockname;
 using Network::os_error_type;
@@ -98,43 +98,23 @@ namespace TestBind
                 }, t_fd_result);
         }
 
-        static auto get_sockaddr(const Fd& t_fd) -> ByteStringResult
-        {
-            auto sockname_result {get_sockname(t_fd, verbose)};
-            std::visit(Overloaded {
-                    [&](const ByteString& addr) {
-                        static_cast<void>(addr);
-                    },
-                    [&](const OsErrorResult& result) {
-                        std::cerr << result.string()
-                                  << std::endl;
-                    }
-                }, sockname_result);
-            return sockname_result;
-        }
-
         auto test_socket(const Fd& t_fd) -> void
         {
             const auto hostname {m_endpoint.first};
             const auto service {m_endpoint.second};
-            const auto sock_result {get_sockaddr(t_fd)};
+            const auto self {get_sockname(t_fd, verbose)};
             m_os << "Socket "
                  << std::right << std::setw(fd_width) << t_fd
                  << " bound to "
                  << service.value_or(string_null)
                  << " on "
                  << hostname.value_or(string_null)
+                 << std::endl
+                 << "Socket "
+                 << std::right << std::setw(fd_width) << t_fd
+                 << " bound to "
+                 << Address(self)
                  << std::endl;
-
-            if (std::holds_alternative<ByteString>(sock_result)) {
-                const auto& self {std::get<ByteString>(sock_result)};
-                m_os << "Socket "
-                     << std::right << std::setw(fd_width) << t_fd
-                     << " bound to "
-                     << Address(self)
-                     << std::endl;
-            }
-
             Network::close(t_fd, verbose);
             m_os << "Socket "
                  << std::right << std::setw(fd_width) << t_fd

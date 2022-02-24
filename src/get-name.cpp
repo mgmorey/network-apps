@@ -13,68 +13,28 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-name.h"           // Fd, GetNameHandler,
-                                        // OsErrorResult, get_name()
-#include "network/addresserror.h"       // AddressError
-#include "network/bytestring.h"         // ByteString
-#include "network/get-length.h"         // get_length()
-#include "network/get-sa-pointer.h"     // get_sa_pointer()
-#include "network/is-valid.h"           // is_valid()
-#include "network/os-error.h"           // format_os_error(),
-                                        // get_os_last_error(),
-                                        // reset_os_last_error()
-#include "network/socket-error.h"       // socket_error
-#include "network/ss-sizes.h"           // ss_size
+#include "network/get-name.h"           // ByteString, GetNameHandler,
+                                        // GetNameParams, get_name()
+#include "network/error.h"              // Error
+#include "network/get-nameresult.h"     // ByteStringResult,
+                                        // get_nameresult()
+#include "network/oserrorresult.h"      // OsErrorResult
+#include "network/overloaded.h"         // Overloaded
 
-#include <iostream>     // std::cerr, std::endl
-#include <sstream>      // std::ostringstream
+#include <variant>      // std::visit()
 
 auto Network::get_name(const GetNameHandler& handler,
-                       const GetNameParams& args) -> Network::ByteStringResult
+                       const GetNameParams& args) -> Network::ByteString
 {
-    ByteString str {ss_size, Byte {}};
-    auto length {get_length(str)};
-    auto* pointer {get_sa_pointer(str)};
-    reset_last_os_error();
-
-    if (args.verbose) {
-        std::cerr << "Calling "
-                  << handler.second
-                  << '('
-                  << args.fd
-                  << ", "
-                  << str
-                  << ", "
-                  << static_cast<int>(length)
-                  << ", ...)"
-                  << std::endl;
-    }
-
-    const fd_type fd {static_cast<fd_type>(args.fd)};
-
-    if (handler.first(fd, pointer, &length) == socket_error) {
-        const auto error = get_last_os_error();
-        std::ostringstream oss;
-        oss << "Call to "
-            << handler.second
-            << '('
-            << args.fd
-            << ", "
-            << str
-            << ", "
-            << static_cast<int>(length)
-            << ", ...) failed with error "
-            << error
-            << ": "
-            << format_os_error(error);
-        return OsErrorResult {error, oss.str()};
-    }
-
-    str.resize(length);
-
-    if (!is_valid(str)) {
-        throw AddressError(str);
-    }
-
-    return str;
+    ByteString result;
+    auto name_result {get_nameresult(handler, args)};
+    std::visit(Overloaded {
+            [&](const ByteString& addr) {
+                result = addr;
+            },
+            [&](const OsErrorResult& error) {
+                throw Error(error.string());
+            }
+        }, name_result);
+    return result;
 }

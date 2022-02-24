@@ -13,17 +13,22 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_GET_NAME_H
-#define NETWORK_GET_NAME_H
+#include "network/get-socknameresult.h" // Fd, GetNameHandler,
+                                        // GetNameParams,
+                                        // SockNameResult,
+                                        // get_socknameresult()
+#include "network/get-nameresult.h"     // get_nameresult()
 
-#include "network/bytestring.h"         // ByteString
-#include "network/getnamehandler.h"     // GetNameHandler
-#include "network/getnameparams.h"      // GetNameParams
-
-namespace Network
-{
-    extern auto get_name(const GetNameHandler& handler,
-                         const GetNameParams& args) -> ByteString;
-}
-
+#ifdef WIN32
+#include <winsock2.h>       // ::getsockname()
+#else
+#include <sys/socket.h>     // ::getsockname()
 #endif
+
+auto Network::get_socknameresult(Fd fd, bool verbose) noexcept ->
+    Network::SockNameResult
+{
+    const GetNameHandler handler {::getsockname, "::getsockname"};
+    const GetNameParams args {fd, verbose};
+    return get_nameresult(handler, args);
+}

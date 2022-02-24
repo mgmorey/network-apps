@@ -13,9 +13,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-peername.h"       // Fd, GetNameParams,
+#include "network/get-peername.h"       // Fd, GetNameHandler,
+                                        // GetNameParams,
                                         // PeerNameResult,
                                         // get_peername()
+#include "network/get-name.h"           // get_name()
 
 #ifdef WIN32
 #include <winsock2.h>   // ::getpeername()
@@ -23,7 +25,7 @@
 #include <sys/socket.h> // ::getpeername()
 #endif
 
-auto Network::get_peername(Fd fd, bool verbose) -> Network::PeerNameResult
+auto Network::get_peername(Fd fd, bool verbose) -> Network::PeerName
 {
     const GetNameHandler handler {::getpeername, "::getpeername"};
     const GetNameParams args {fd, verbose};
