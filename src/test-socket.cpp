@@ -192,8 +192,16 @@ namespace TestSocket
                             print(result);
                         }
                         else if (unix_path) {
+                            if (verbose) {
+                                std::cout << "Removing Unix domain path "
+                                          << *unix_path
+                                          << std::endl;
+                            }
+
                             std::remove(unix_path->c_str());
                         }
+
+                        Network::close(fd, verbose);
                     },
                     [&](const OsErrorResult& result) {
                         print(result);
@@ -300,9 +308,8 @@ namespace TestSocket
                               << " connected to socket "
                               << fds[1]
                               << std::endl;
-
-                    Network::close(fds[0]);
-                    Network::close(fds[1]);
+                    Network::close(fds[0], verbose);
+                    Network::close(fds[1], verbose);
                     std::cout << "Sockets "
                               << fds[0]
                               << " and "
