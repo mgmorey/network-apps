@@ -22,6 +22,7 @@
 #include <unistd.h>         // getopt(), optarg, opterr, optind
 #endif
 
+#include <cstdlib>      // EXIT_FAILURE, std::exit(), std::size_t
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <span>         // std::span
@@ -57,7 +58,7 @@ namespace TestHostname
             }
         }
 
-        const auto args = std::span(argv, size_t(argc));
+        const auto args = std::span(argv, std::size_t(argc));
 
         for (auto index = optind; index < argc; ++index) {
             result.emplace_back(args[index]);

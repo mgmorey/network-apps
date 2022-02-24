@@ -29,7 +29,7 @@
 
 #include <cerrno>       // EACCES, ENOENT, EROFS
 #include <cstdio>       // std::remove()
-#include <cstdlib>      // EXIT_FAILURE, std::exit()
+#include <cstdlib>      // EXIT_FAILURE, std::exit(), std::size_t
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <optional>     // std::nullopt
@@ -136,7 +136,7 @@ namespace TestSocket
             }
         }
 
-        const auto args = std::span(argv, size_t(argc));
+        const auto args = std::span(argv, std::size_t(argc));
 
         for (auto index = optind; index < argc; ++index) {
             result.emplace_back(args[index]);
