@@ -182,31 +182,24 @@ namespace TestSocket
 
         if (pathname) {
             assert(unix_path == pathname);
-            const auto socket_result {get_socket(hints, verbose)};
-            std::visit(Overloaded {
-                    [&](const Fd& fd) {
-                        const auto result {Network::bind(fd, addr, verbose)};
-                        actual_code = result.number();
+            const auto fd {get_socket(hints, verbose)};
+            const auto result {Network::bind(fd, addr, verbose)};
+            actual_code = result.number();
 
-                        if (result) {
-                            print(result);
-                        }
-                        else if (unix_path) {
-                            if (verbose) {
-                                std::cout << "Removing Unix domain path "
-                                          << *unix_path
-                                          << std::endl;
-                            }
+            if (result) {
+                print(result);
+            }
+            else if (unix_path) {
+                if (verbose) {
+                    std::cout << "Removing Unix domain path "
+                              << *unix_path
+                              << std::endl;
+                }
 
-                            std::remove(unix_path->c_str());
-                        }
+                std::remove(unix_path->c_str());
+            }
 
-                        Network::close(fd, verbose);
-                    },
-                    [&](const OsErrorResult& result) {
-                        print(result);
-                    }
-                }, socket_result);
+            Network::close(fd, verbose);
         }
         else {
             assert(static_cast<bool>(unix_path) == false);

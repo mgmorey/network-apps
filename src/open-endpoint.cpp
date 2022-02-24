@@ -19,7 +19,7 @@
                                         // SocketHints, open()
 #include "network/open-fd.h"            // Bytes, Fd, OpenHandler,
                                         // OsErrorResult, open()
-#include "network/get-socket.h"         // ErrorResult, get_socket()
+#include "network/get-socketresult.h"   // ErrorResult, get_socketresult()
 #include "network/get-sockets.h"        // SocketVector, get_sockets()
 #include "network/overloaded.h"         // Overloaded
 
@@ -33,7 +33,7 @@ auto Network::open(const OpenHandler& handler,
     OpenResult open_result;
     FdResultVector fd_results;
     const auto lambda = [&](const Socket& sock) {
-        auto socket_result {get_socket(sock.hints(), args.verbose)};
+        auto socket_result {get_socketresult(sock.hints(), args.verbose)};
         std::visit(Overloaded {
                 [&](Fd fd) {
                     const auto addr {sock.address()};

@@ -13,61 +13,26 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-socket.h"         // Fd, FdResult,
-                                        // OsErrorResult, Socket,
-                                        // fd_null, get_socket(),
-                                        // operator<<()
-#include "network/format.h"             // Format
-#include "network/os-error.h"           // format_os_error(),
-                                        // get_last_os_error(),
-                                        // reset_last_os_error()
+#include "network/get-socket.h"         // Fd, OsErrorResult,
+                                        // SocketHints, get_socket()
+#include "network/error.h"              // Error
+#include "network/get-socketresult.h"   // FdResult,
+                                        // get_socketresult()
+#include "network/overloaded.h"         // Overloaded
 
-#ifdef WIN32
-#include <winsock2.h>       // socket()
-#else
-#include <sys/socket.h>     // socket()
-#endif
+#include <variant>      // std::visit()
 
-#include <iostream>     // std::cerr, std::endl
-#include <sstream>      // std::ostringstream
-
-auto Network::get_socket(const SocketHints& hints,
-                         bool verbose) noexcept -> Network::FdResult
+auto Network::get_socket(const SocketHints& hints, bool verbose) -> Network::Fd
 {
-    static constexpr auto delim {", "};
-    static constexpr auto tab {0};
-
-    if (verbose) {
-        std::cerr << "Calling ::socket("
-                  << Format("domain")
-                  << hints.family()
-                  << Format(delim, tab, "type")
-                  << hints.socktype()
-                  << Format(delim, tab, "protocol")
-                  << hints.protocol()
-                  << ')'
-                  << std::endl;
-    }
-
-    reset_last_os_error();
-    const auto fd {::socket(hints.family(), hints.socktype(), hints.protocol())};
-
-    if (fd == fd_null) {
-        const auto error = get_last_os_error();
-        std::ostringstream oss;
-        oss << "Call to ::socket("
-            << Format("domain")
-            << hints.family()
-            << Format(delim, tab, "type")
-            << hints.socktype()
-            << Format(delim, tab, "protocol")
-            << hints.protocol()
-            << ") failed with error "
-            << error
-            << ": "
-            << format_os_error(error);
-        return OsErrorResult {error, oss.str()};
-    }
-
-    return Fd {fd};
+    Fd result;
+    const auto fd_result {get_socketresult(hints, verbose)};
+    std::visit(Overloaded {
+            [&](Fd fd) {
+                result = fd;
+            },
+            [&](const OsErrorResult& error) {
+                throw Error(error.string());
+            }
+        }, fd_result);
+    return result;
 }

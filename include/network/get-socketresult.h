@@ -13,16 +13,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_GET_SOCKET_H
-#define NETWORK_GET_SOCKET_H
+#ifndef NETWORK_GET_SOCKETRESULT_H
+#define NETWORK_GET_SOCKETRESULT_H
 
-#include "network/fd.h"                 // Fd
+#include "network/fdresult.h"           // FdResult
 #include "network/sockethints.h"        // SocketHints
 
 namespace Network
 {
-    extern auto get_socket(const SocketHints& hints,
-                           bool verbose = false) -> Fd;
+    extern auto get_socketresult(const SocketHints& hints,
+                                 bool verbose = false) noexcept -> FdResult;
 }
 
 #endif

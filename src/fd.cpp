@@ -15,9 +15,15 @@
 
 #include "network/fd.h"                 // Fd, fd_type, operator<<(),
                                         // std::ostream
+#include "network/get-socket.h"         // get_socket()
 #include "network/string-null.h"        // string_null
 
 #include <string>       // std::to_string
+
+Network::Fd::Fd(const SocketHints& t_hints, bool t_verbose) noexcept :
+    m_value(get_socket(t_hints, t_verbose))
+{
+}
 
 Network::Fd::Fd(fd_type t_fd) noexcept :
     m_value(t_fd)

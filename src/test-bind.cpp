@@ -210,23 +210,15 @@ namespace TestBind
     {
         os_error_type actual_code {0};
         const auto& expected_codes {get_codes_invalid_addr()};
-        const auto fd_result {get_socket(hints, verbose)};
-        std::visit(Overloaded {
-                [&](const Fd& fd) {
-                    const auto error {Network::bind(fd, addr, verbose)};
-                    actual_code = error.number();
+        const auto fd {get_socket(hints, verbose)};
+        const auto error {Network::bind(fd, addr, verbose)};
+        actual_code = error.number();
 
-                    if (error) {
-                        print(error, "bind() with invalid address");
-                    }
+        if (error) {
+            print(error, "bind() with invalid address");
+        }
 
-                    Network::close(fd);
-                },
-                [&](const OsErrorResult& error) {
-                    actual_code = error.number();
-                    print(error, "bind() with invalid address");
-                }
-            }, fd_result);
+        Network::close(fd);
         assert(expected_codes.count(actual_code) != 0);
     }
 

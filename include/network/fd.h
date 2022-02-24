@@ -18,6 +18,7 @@
 
 #include "network/fd-null.h"            // fd_null
 #include "network/fd-type.h"            // fd_type
+#include "network/sockethints.h"        // SocketHints
 
 #include <ostream>     // std::ostream
 #include <string>      // std::string
@@ -27,10 +28,12 @@ namespace Network
     class Fd
     {
     public:
-        Fd() noexcept = default;
+        explicit Fd(const SocketHints& t_hints,
+                    bool t_verbose = false) noexcept;
         explicit Fd(fd_type t_fd) noexcept;
         Fd(const Fd&) noexcept = default;
         Fd(Fd&&) noexcept = default;
+        Fd() noexcept = default;
         ~Fd() noexcept = default;
         auto operator=(const Fd&) noexcept -> Fd& = default;
         auto operator=(Fd&&) noexcept -> Fd& = default;

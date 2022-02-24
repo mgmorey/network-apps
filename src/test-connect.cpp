@@ -67,6 +67,7 @@ using Network::SocketHints;
 using Network::SockName;
 using Network::get_hostname;
 using Network::get_peername;
+using Network::get_socket;
 using Network::get_sockname;
 using Network::os_error_type;
 using Network::string_null;
@@ -227,23 +228,15 @@ namespace TestConnect
     {
         os_error_type actual_code {0};
         const auto& expected_codes {get_codes_invalid_addr()};
-        const auto fd_result {get_socket(hints, verbose)};
-        std::visit(Overloaded {
-                [&](const Fd& fd) {
-                    const auto error {Network::connect(fd, addr, verbose)};
-                    actual_code = error.number();
+        const auto fd {get_socket(hints, verbose)};
+        const auto error {Network::connect(fd, addr, verbose)};
+        actual_code = error.number();
 
-                    if (error) {
-                        print(error, "connect() with invalid address");
-                    }
+        if (error) {
+            print(error, "connect() with invalid address");
+        }
 
-                    Network::close(fd);
-                },
-                [&](const OsErrorResult& error) {
-                    actual_code = error.number();
-                    print(error, "connect() with invalid address");
-                }
-            }, fd_result);
+        Network::close(fd);
         assert(expected_codes.count(actual_code) != 0);
     }
 
