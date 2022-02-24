@@ -139,7 +139,8 @@ $(logfiles) $(mapfiles) $(sizes) $(sizes)~
 
 artifacts = $(binary_artifacts) $(text_artifacts)
 
-all = assert libraries programs sizes
+all_non_test = assert libraries programs sizes
+all = $(all_non_test)
 
 ifeq "$(is_ctags_universal)" "true"
 ifeq "$(shell $(script_dir)/compare-versions $(ctags_version) 5)" "greater"
@@ -173,6 +174,9 @@ run_tests = $(script_dir)/run-test-programs
 
 .PHONY: all
 all: $(all)
+
+.PHONY: all
+all-non-test: $(all_non_test)
 
 .PHONY: analyze
 analyze: $(cppbuild_dir) $(sources)
@@ -292,7 +296,7 @@ $(object_dir)/%$(object_suffix): %$(source_suffix)
 	$(COMPILE$(source_suffix)) $(OUTPUT_OPTION) $<
 
 $(commands): $(MAKEFILE_LIST)
-	bear -- $(MAKE_COMMAND) $(MFLAGS) CXX=$(CXX) clean libraries programs
+	bear -- $(MAKE_COMMAND) $(MFLAGS) CXX=$(CXX) clean all-non-test
 
 $(tags):
 	ctags -e $(filter -D%,$(CPPFLAGS)) -R include $(source_dir)
