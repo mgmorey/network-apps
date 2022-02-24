@@ -132,7 +132,7 @@ namespace TestBind
 #if defined(WIN32)
         static const ErrorCodeSet codes {WSAEFAULT};
 #else
-        static const ErrorCodeSet codes {EAFNOSUPPORT};
+        static const ErrorCodeSet codes {EFAULT};
 #endif
         return codes;
     }
