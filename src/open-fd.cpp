@@ -19,13 +19,25 @@
                                         // operator<<()
 #include "network/get-length.h"         // get_length()
 #include "network/get-sa-pointer.h"     // get_sa_pointer()
+#include "network/optionalstring.h"     // OptionalString
 #include "network/os-error.h"           // format_os_error(),
                                         // get_last_os_error(),
                                         // reset_last_os_error()
 #include "network/socket-error.h"       // socket_error
+#include "network/to-string.h"          // to_string()
 
 #include <iostream>     // std::cerr, std::endl
 #include <sstream>      // std::ostringstream
+
+static auto format(const Network::ByteString& addr,
+                   Network::OptionalString& str) -> std::string
+{
+    if (!str) {
+        str = Network::to_string(addr);
+    }
+
+    return *str;
+}
 
 auto Network::open(const OpenHandler& handler,
                    const OpenFdParams& args) -> Network::OsErrorResult
@@ -33,6 +45,7 @@ auto Network::open(const OpenHandler& handler,
     const auto* const pointer {get_sa_pointer(args.str)};
     const auto length {get_length(args.str)};
     reset_last_os_error();
+    OptionalString str;
 
     if (args.verbose) {
         std::cerr << "Calling "
@@ -40,7 +53,7 @@ auto Network::open(const OpenHandler& handler,
                   << '('
                   << args.fd
                   << ", "
-                  << args.str
+                  << format(args.str, str)
                   << ", "
                   << static_cast<int>(length)
                   << ')'
@@ -57,7 +70,7 @@ auto Network::open(const OpenHandler& handler,
             << '('
             << args.fd
             << ", "
-            << args.str
+            << format(args.str, str)
             << ", "
             << static_cast<int>(length)
             << ") failed with error "
