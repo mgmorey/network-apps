@@ -40,6 +40,7 @@
 #endif
 
 #include <algorithm>    // std::for_each()
+#include <cerrno>       // EFAULT, EINVAL
 #include <cstdlib>      // EXIT_FAILURE, std::exit(), std::size_t
 #include <exception>    // std::exception
 #include <iomanip>      // std::right, std::setw()
@@ -149,7 +150,7 @@ namespace TestConnect
 #if defined(WIN32)
         static const ErrorCodeSet codes {WSAEFAULT};
 #else
-        static const ErrorCodeSet codes {EAFNOSUPPORT};
+        static const ErrorCodeSet codes {EFAULT, EINVAL};
 #endif
         return codes;
     }
