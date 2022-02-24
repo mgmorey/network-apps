@@ -173,12 +173,12 @@ namespace TestHost
 
     static auto get_hints_vector(bool is_local) -> const HintsVector&
     {
-        static constexpr SocketHints inetHints {AI_CANONNAME, AF_INET};
-        static constexpr SocketHints inet6Hints {AI_CANONNAME, AF_INET6};
-        static constexpr SocketHints unspecHints {AI_CANONNAME};
-        static const HintsVector inetHintsVector {inetHints, inet6Hints};
-        static const HintsVector unspecHintsVector {unspecHints};
-        return is_local ? unspecHintsVector : inetHintsVector;
+        static constexpr SocketHints inet_hints {AI_CANONNAME, AF_INET};
+        static constexpr SocketHints inet6_hints {AI_CANONNAME, AF_INET6};
+        static constexpr SocketHints unspec_hints {AI_CANONNAME};
+        static const HintsVector inet_hints_vector {inet_hints, inet6_hints};
+        static const HintsVector unspec_hints_vector {unspec_hints};
+        return is_local ? unspec_hints_vector : inet_hints_vector;
     }
 
     static auto get_hostname() -> OptionalHostname

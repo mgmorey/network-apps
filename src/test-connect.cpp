@@ -314,7 +314,10 @@ auto main(int argc, char* argv[]) -> int
 {
     using namespace TestConnect;
 
-    static constexpr SocketHints hints
+    static constexpr SocketHints inet_hints
+        {AI_CANONNAME, AF_INET, SOCK_STREAM, IPPROTO_TCP};
+
+    static constexpr SocketHints unspec_hints
         {AI_CANONNAME, AF_UNSPEC, SOCK_STREAM, IPPROTO_TCP};
 
     try {
@@ -326,16 +329,16 @@ auto main(int argc, char* argv[]) -> int
         }
 
         const ByteString invalid_addr {};
-        test_connect_invalid_addr(invalid_addr, hints);
+        test_connect_invalid_addr(invalid_addr, inet_hints);
         const Endpoint invalid_host {".", localservice};
-        test_connect_invalid_host(invalid_host, hints);
+        test_connect_invalid_host(invalid_host, unspec_hints);
         const Endpoint invalid_service {localhost, "."};
-        test_connect_invalid_service(invalid_service, hints);
+        test_connect_invalid_service(invalid_service, unspec_hints);
         const Endpoint valid_endpoint {
             args.size() > 1 ? args[1] : localhost,
             args.size() > 2 ? args[2] : localservice
         };
-        test_connect_valid(valid_endpoint, hints);
+        test_connect_valid(valid_endpoint, unspec_hints);
     }
     catch (const std::exception& error) {
         std::cerr << error.what()

@@ -34,8 +34,8 @@
 auto Network::get_socket(const SocketHints& hints,
                          bool verbose) noexcept -> Network::FdResult
 {
-    constexpr auto delim {", "};
-    constexpr auto tab {0};
+    static constexpr auto delim {", "};
+    static constexpr auto tab {0};
 
     if (verbose) {
         std::cerr << "Calling ::socket("

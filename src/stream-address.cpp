@@ -67,8 +67,8 @@ static auto get_suffix(Network::socket_family_type family) noexcept ->
 auto Network::operator<<(std::ostream& os,
                          const Address& address) noexcept -> std::ostream&
 {
-    constexpr auto delim {", "};
-    constexpr auto tab {0};
+    static constexpr auto delim {", "};
+    static constexpr auto tab {0};
 
     if (address.empty()) {
         os << "0x0";

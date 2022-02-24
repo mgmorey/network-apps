@@ -30,6 +30,7 @@
 
 #include <cstddef>      // std::ptrdiff_t
 #include <iterator>     // std::input_iterator_tag
+#include <memory>       // std::unique_ptr
 #include <ostream>      // std::ostream
 
 namespace Network
@@ -61,6 +62,8 @@ namespace Network
         };
 
         static auto end() noexcept -> InputIterator;
+        static auto format(const std::unique_ptr<addrinfo>& hints) ->
+            std::string;
 
         AddrInfo() = delete;
         AddrInfo(const AddrInfo&) = delete;

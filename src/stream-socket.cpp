@@ -21,7 +21,7 @@
 auto Network::operator<<(std::ostream& os,
                          const Socket& sock) noexcept -> std::ostream&
 {
-    static const int tab {7};
+    static constexpr auto tab {7};
 
     os << "Socket("
        << Format("flags")

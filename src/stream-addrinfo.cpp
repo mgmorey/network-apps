@@ -17,10 +17,13 @@
 #include "network/format.h"             // Format, operator<<()
 #include "network/socketfamily.h"       // SocketFamily, operator<<()
 #include "network/socketflags.h"        // SocketFlags, operator<<()
-#include "network/socketprotocol.h"     // SocketProtocol, operator<<()
+#include "network/socketprotocol.h"     // SocketProtocol,
+                                        // operator<<()
 #include "network/sockettype.h"         // SocketType, operator<<()
 #include "network/string-null.h"        // string_null
-#include "network/to-byte-string-sa.h"  // Bytes, to_byte_string()
+#include "network/to-byte-string-sa.h"  // ByteString,
+                                        // to_byte_string()
+#include "network/to-string-bs.h"       // to_string()
 
 #ifdef WIN32
 #include <ws2tcpip.h>   // addrinfo
@@ -31,29 +34,48 @@
 auto Network::operator<<(std::ostream& os,
                          const addrinfo& ai) noexcept -> std::ostream&
 {
-    constexpr auto tab {9};
+    static constexpr auto delim {", "};
+    static constexpr auto notab {0};
+    static constexpr auto tab {9};
 
     const SocketFlags flags(ai.ai_flags);
     const SocketFamily family(ai.ai_family);
     const SocketType socktype(ai.ai_socktype);
     const SocketProtocol protocol(family, ai.ai_protocol);
 
-    os << "addrinfo("
-       << Format("ai_flags")
-       << flags
-       << Format(tab, "ai_family")
-       << family
-       << Format(tab, "ai_socktype")
-       << socktype
-       << Format(tab, "ai_protocol")
-       << protocol
-       << Format(tab, "ai_addrlen")
-       << ai.ai_addrlen
-       << Format(tab, "ai_addr")
-       << to_byte_string(ai.ai_addr, ai.ai_addrlen)
-       << Format(tab, "ai_canonname")
-       << (ai.ai_canonname == nullptr ? string_null : ai.ai_canonname)
-       << Format(tab)
-       << "...)";
+    if (ai.ai_addr == nullptr) {
+        os << "addrinfo("
+           << Format("ai_flags")
+           << flags
+           << Format(delim, notab, "ai_family")
+           << family
+           << Format(delim, notab, "ai_socktype")
+           << socktype
+           << Format(delim, notab, "ai_protocol")
+           << protocol
+           << Format(notab)
+           << "...)";
+    }
+    else {
+        const auto addr {to_byte_string(ai.ai_addr, ai.ai_addrlen)};
+        os << "addrinfo("
+           << Format("ai_flags")
+           << flags
+           << Format(tab, "ai_family")
+           << family
+           << Format(tab, "ai_socktype")
+           << socktype
+           << Format(tab, "ai_protocol")
+           << protocol
+           << Format(tab, "ai_addrlen")
+           << ai.ai_addrlen
+           << Format(tab, "ai_addr")
+           << to_string(addr)
+           << Format(tab, "ai_canonname")
+           << (ai.ai_canonname == nullptr ? string_null : ai.ai_canonname)
+           << Format(tab)
+           << "...)";
+    }
+
     return os;
 }

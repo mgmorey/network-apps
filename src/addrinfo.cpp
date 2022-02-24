@@ -28,7 +28,6 @@
 #endif
 
 #include <iostream>     // std::cerr, std::endl
-#include <memory>       // std::unique_ptr
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
 
@@ -56,6 +55,26 @@ auto Network::AddrInfo::InputIterator::operator++() noexcept ->
     return *this;
 }
 
+auto Network::AddrInfo::end() noexcept -> Network::AddrInfo::InputIterator
+{
+    return nullptr;
+}
+
+auto Network::AddrInfo::format(const std::unique_ptr<addrinfo>& hints) ->
+    std::string
+{
+    std::ostringstream oss;
+
+    if (hints) {
+        oss << *hints;
+    }
+    else {
+        oss << string_null;
+    }
+
+    return oss.str();
+}
+
 Network::AddrInfo::AddrInfo(const OptionalHostname& t_hostname,
                             const OptionalService& t_service,
                             const OptionalHints& t_hints,
@@ -66,17 +85,12 @@ Network::AddrInfo::AddrInfo(const OptionalHostname& t_hostname,
         nullptr;
 
     if (t_verbose) {
-        if (t_hints) {
-            std::cerr << "Trying socket hints:"
-                      << std::endl
-                      << *t_hints
-                      << std::endl;
-        }
-
         std::cerr << "Calling ::getaddrinfo("
                   << t_hostname.value_or(string_null)
                   << ", "
                   << t_service.value_or(string_null)
+                  << ", "
+                  << format(hints)
                   << ", ...)"
                   << std::endl;
     }
@@ -90,6 +104,8 @@ Network::AddrInfo::AddrInfo(const OptionalHostname& t_hostname,
             << t_hostname.value_or(string_null)
             << ", "
             << t_service.value_or(string_null)
+            << ", "
+            << format(hints)
             << ", ...) returned "
             << error
             << ": "
@@ -111,11 +127,6 @@ auto Network::AddrInfo::begin() const noexcept ->
     return m_list;
 }
 
-auto Network::AddrInfo::end() noexcept -> Network::AddrInfo::InputIterator
-{
-    return nullptr;
-}
-
 auto Network::AddrInfo::result() const noexcept -> Network::OsErrorResult
 {
     return m_result;
@@ -124,7 +135,7 @@ auto Network::AddrInfo::result() const noexcept -> Network::OsErrorResult
 auto Network::AddrInfo::to_c_string(const OptionalString& str) noexcept ->
     const char*
 {
-    return str ? str ->c_str() : nullptr;
+    return str ? str->c_str() : nullptr;
 }
 
 auto Network::operator==(const AddrInfo::InputIterator& left,

@@ -36,8 +36,8 @@
 auto Network::get_socketpair(const SocketHints& hints,
                              bool verbose) noexcept -> Network::FdPairResult
 {
-    constexpr auto delim {", "};
-    constexpr auto tab {0};
+    static constexpr auto delim {", "};
+    static constexpr auto tab {0};
 
     std::array<fd_type, 2> fds {fd_null, fd_null};
 
