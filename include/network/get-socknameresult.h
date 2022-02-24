@@ -21,8 +21,7 @@
 
 namespace Network
 {
-    extern auto get_socknameresult(Fd fd,
-                                   bool verbose = false) noexcept ->
+    extern auto get_socknameresult(Fd fd, bool verbose = false) ->
         SockNameResult;
 }
 

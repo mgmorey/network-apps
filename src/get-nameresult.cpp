@@ -28,7 +28,7 @@
 #include <sstream>      // std::ostringstream
 
 auto Network::get_nameresult(const GetNameHandler& handler,
-                             const GetNameParams& args) noexcept ->
+                             const GetNameParams& args) ->
     Network::ByteStringResult
 {
     ByteString str {ss_size, Byte {}};

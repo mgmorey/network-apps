@@ -25,7 +25,7 @@
 #include <sys/socket.h> // ::getpeername()
 #endif
 
-auto Network::get_peernameresult(Fd fd, bool verbose) noexcept ->
+auto Network::get_peernameresult(Fd fd, bool verbose) ->
     Network::PeerNameResult
 {
     const GetNameHandler handler {::getpeername, "::getpeername"};
