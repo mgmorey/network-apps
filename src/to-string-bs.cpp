@@ -15,12 +15,21 @@
 
 #include "network/to-string-bs.h"       // ByteString, operator<<(),
                                         // std::string(), to_string()
+#include "network/address.h"            // Address
+#include "network/is-valid.h"           // is_valid()
 
 #include <sstream>      // std::ostringstream
 
-auto Network::to_string(const ByteString& bytes) noexcept -> std::string
+auto Network::to_string(const ByteString& str) noexcept -> std::string
 {
     std::ostringstream oss;
-    oss << bytes;
+
+    if (is_valid(str)) {
+        oss << Address(str);
+    }
+    else {
+        oss << str;
+    }
+
     return oss.str();
 }
