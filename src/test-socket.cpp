@@ -18,7 +18,7 @@
                                         // OptionalPathname,
                                         // Overloaded, OsErrorResult,
                                         // Socket, SocketHints,
-                                        // get_socketpair(),
+                                        // get_socketpairresult(),
                                         // get_sun_path(),
                                         // string_null,
                                         // to_byte_string()
@@ -53,6 +53,7 @@ using Network::Overloaded;
 using Network::Pathname;
 using Network::SocketHints;
 using Network::get_socket;
+using Network::get_socketpairresult;
 using Network::get_sun_path;
 using Network::get_sun_path_size;
 using Network::os_error_type;
@@ -293,7 +294,7 @@ namespace TestSocket
 
     static auto test_socketpair(const SocketHints& hints) -> void
     {
-        const auto socketpair_result {get_socketpair(hints, verbose)};
+        const auto socketpair_result {get_socketpairresult(hints, verbose)};
         std::visit(Overloaded {
                 [&](const FdPair& fds) {
                     std::cout << "Socket "
@@ -310,8 +311,8 @@ namespace TestSocket
                               << " closed"
                               << std::endl;
                 },
-                [&](const OsErrorResult& result) {
-                    std::cerr << result.string()
+                [&](const OsErrorResult& error) {
+                    std::cerr << error.string()
                               << std::endl;
                 }
             }, socketpair_result);

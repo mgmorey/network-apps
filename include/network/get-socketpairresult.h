@@ -13,17 +13,18 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_GET_SOCKETPAIR_H
-#define NETWORK_GET_SOCKETPAIR_H
+#ifndef NETWORK_GET_SOCKETPAIRRESULT_H
+#define NETWORK_GET_SOCKETPAIRRESULT_H
 
-#include "network/fdpair.h"             // FdPair
+#include "network/fdpairresult.h"       // FdPairResult
 #include "network/sockethints.h"        // SocketHints
 
 namespace Network
 {
 #ifndef WIN32
-    extern auto get_socketpair(const SocketHints& hints,
-                               bool verbose = false) -> FdPair;
+    extern auto get_socketpairresult(const SocketHints& hints,
+                                     bool verbose = false) noexcept ->
+        FdPairResult;
 #endif
 }
 

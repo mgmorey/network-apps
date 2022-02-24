@@ -60,6 +60,7 @@
 #include "network/get-sin6-pointer.h"           // get_sin6_pointer()
 #include "network/get-socket.h"                 // get_socket()
 #include "network/get-socketpair.h"             // get_socketpair()
+#include "network/get-socketpairresult.h"       // get_socketpairresult()
 #include "network/get-socketresult.h"           // get_socketresult()
 #include "network/get-sockets.h"                // get_sockets()
 #include "network/get-sockname.h"               // get_sockname()
