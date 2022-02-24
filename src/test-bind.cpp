@@ -45,8 +45,7 @@
 #include <set>          // std::set
 #include <span>         // std::span
 #include <string>       // std::string
-#include <variant>      // std::get(), std::holds_alternative(),
-                        // std::visit()
+#include <variant>      // std::visit()
 #include <utility>      // std::move()
 #include <vector>       // std::vector
 

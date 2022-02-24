@@ -48,8 +48,7 @@
 #include <span>         // std::span
 #include <string>       // std::string
 #include <utility>      // std::move()
-#include <variant>      // std::get(), std::holds_alternative,
-                        // std::visit()
+#include <variant>      // std::visit()
 #include <vector>       // std::vector
 
 using Network::Address;
