@@ -37,9 +37,7 @@ namespace Network
 
         for (const auto& item : list) {
             if (verbose) {
-                std::cerr << "Fetched addrinfo:"
-                          << std::endl
-                          << item
+                std::cerr << item
                           << std::endl;
             }
 
