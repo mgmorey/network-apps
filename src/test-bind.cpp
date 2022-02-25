@@ -61,7 +61,6 @@ using Network::OsErrorResult;
 using Network::Overloaded;
 using Network::SocketHints;
 using Network::SockName;
-using Network::get_socket;
 using Network::get_sockname;
 using Network::os_error_type;
 using Network::string_null;
@@ -211,7 +210,7 @@ namespace TestBind
     {
         os_error_type actual_code {0};
         const auto& expected_codes {get_codes_invalid_addr()};
-        const auto fd {get_socket(hints, verbose)};
+        const Fd fd {hints, verbose};
         const auto error {Network::bind(fd, addr, verbose)};
         actual_code = error.number();
 
