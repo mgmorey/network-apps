@@ -28,6 +28,7 @@ ARFLAGS = r
 
 CPPCHECK_FLAGS = --cppcheck-build-dir=$(cppbuild_dir)
 CPPCHECK_FLAGS += --enable=all --inline-suppr --quiet
+CPPCHECK_FLAGS += --suppress=missingIncludeSystem
 CPPCHECK_FLAGS += --suppress=unusedFunction
 
 ifdef standard
