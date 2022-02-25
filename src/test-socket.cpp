@@ -37,22 +37,18 @@
 #include <span>         // std::span
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
-#include <variant>      // std::visit()
 #include <vector>       // std::vector
 
 using Network::Address;
 using Network::Context;
 using Network::Error;
-using Network::FdPair;
-using Network::FdResult;
+using Network::Fd;
 using Network::LogicError;
 using Network::OptionalPathname;
 using Network::OsErrorResult;
-using Network::Overloaded;
 using Network::Pathname;
 using Network::SocketHints;
-using Network::get_socket;
-using Network::get_socketpairresult;
+using Network::get_socketpair;
 using Network::get_sun_path;
 using Network::get_sun_path_size;
 using Network::os_error_type;
@@ -182,7 +178,7 @@ namespace TestSocket
 
         if (pathname) {
             assert(unix_path == pathname);
-            const auto fd {get_socket(hints, verbose)};
+            const Fd fd {hints, verbose};
             const auto result {Network::bind(fd, addr, verbose)};
             actual_code = result.number();
 
@@ -293,28 +289,20 @@ namespace TestSocket
 
     static auto test_socketpair(const SocketHints& hints) -> void
     {
-        const auto socketpair_result {get_socketpairresult(hints, verbose)};
-        std::visit(Overloaded {
-                [&](const FdPair& fds) {
-                    std::cout << "Socket "
-                              << fds[0]
-                              << " connected to socket "
-                              << fds[1]
-                              << std::endl;
-                    Network::close(fds[0], verbose);
-                    Network::close(fds[1], verbose);
-                    std::cout << "Sockets "
-                              << fds[0]
-                              << " and "
-                              << fds[1]
-                              << " closed"
-                              << std::endl;
-                },
-                [&](const OsErrorResult& error) {
-                    std::cerr << error.string()
-                              << std::endl;
-                }
-            }, socketpair_result);
+        const auto fds {get_socketpair(hints, verbose)};
+        std::cout << "Socket "
+                  << fds[0]
+                  << " connected to socket "
+                  << fds[1]
+                  << std::endl;
+        Network::close(fds[0], verbose);
+        Network::close(fds[1], verbose);
+        std::cout << "Sockets "
+                  << fds[0]
+                  << " and "
+                  << fds[1]
+                  << " closed"
+                  << std::endl;
     }
 }
 
