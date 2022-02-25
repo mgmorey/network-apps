@@ -16,9 +16,7 @@
 #include "network/assert.h"             // assert()
 #include "network/network.h"            // Address, Context, FdPair,
                                         // OptionalPathname,
-                                        // Overloaded, OsErrorResult,
-                                        // Socket, SocketHints,
-                                        // get_socketpairresult(),
+                                        // OsErrorResult, Pathname,
                                         // get_sun_path(),
                                         // string_null,
                                         // to_byte_string()
@@ -48,7 +46,6 @@ using Network::LogicError;
 using Network::OptionalPathname;
 using Network::OsErrorResult;
 using Network::Pathname;
-using Network::SocketHints;
 using Network::get_sun_path;
 using Network::get_sun_path_size;
 using Network::os_error_type;
@@ -162,8 +159,7 @@ namespace TestSocket
         }
     }
 
-    static auto test_pathname(const SocketHints& hints,
-                              const OptionalPathname& pathname,
+    static auto test_pathname(const OptionalPathname& pathname,
                               const ErrorCodeSet& expected_codes) -> void
     {
         os_error_type actual_code {0};
@@ -178,7 +174,7 @@ namespace TestSocket
 
         if (pathname) {
             assert(unix_path == pathname);
-            const Fd fd {hints, verbose};
+            const Fd fd {AF_UNIX, SOCK_STREAM, 0, verbose};
             const auto result {Network::bind(fd, addr, verbose)};
             actual_code = result.number();
 
@@ -204,8 +200,7 @@ namespace TestSocket
         assert(expected_codes.count(actual_code) != 0);
     }
 
-    static auto test_path_invalid(const SocketHints& hints,
-                                  const OptionalPathname& pathname,
+    static auto test_path_invalid(const OptionalPathname& pathname,
                                   const ErrorCodeSet& expected_codes) -> void
     {
         std::string actual_error;
@@ -222,7 +217,7 @@ namespace TestSocket
         }
 
         try {
-            test_pathname(hints, pathname, expected_codes);
+            test_pathname(pathname, expected_codes);
         }
         catch (const LogicError& error) {
             actual_error = error.what();
@@ -234,14 +229,13 @@ namespace TestSocket
 
 #ifndef OS_CYGWIN_NT
 
-    static auto test_path_no_directory(const SocketHints& hints,
-                                       const Pathname& pathname,
+    static auto test_path_no_directory(const Pathname& pathname,
                                        const ErrorCodeSet& expected_codes) -> void
     {
         std::string actual_error;
 
         try {
-            test_pathname(hints, pathname, expected_codes);
+            test_pathname(pathname, expected_codes);
         }
         catch (const LogicError& error) {
             print(error);
@@ -251,14 +245,13 @@ namespace TestSocket
         assert(actual_error.empty());
     }
 
-    static auto test_path_no_permission(const SocketHints& hints,
-                                        const Pathname& pathname,
+    static auto test_path_no_permission(const Pathname& pathname,
                                         const ErrorCodeSet& expected_codes) -> void
     {
         std::string actual_error;
 
         try {
-            test_pathname(hints, pathname, expected_codes);
+            test_pathname(pathname, expected_codes);
         }
         catch (const LogicError& error) {
             print(error);
@@ -270,14 +263,13 @@ namespace TestSocket
 
 #endif
 
-    static auto test_path_valid(const SocketHints& hints,
-                                const OptionalPathname& pathname,
+    static auto test_path_valid(const OptionalPathname& pathname,
                                 const ErrorCodeSet& expected_codes) -> void
     {
         std::string actual_error;
 
         try {
-            test_pathname(hints, pathname, expected_codes);
+            test_pathname(pathname, expected_codes);
         }
         catch (const LogicError& error) {
             print(error);
@@ -287,9 +279,9 @@ namespace TestSocket
         assert(actual_error.empty());
     }
 
-    static auto test_socketpair(const SocketHints& hints) -> void
+    static auto test_socketpair() -> void
     {
-        const FdPair fds {hints, verbose};
+        const FdPair fds {AF_UNIX, SOCK_STREAM, 0, verbose};
         std::cout << "Socket "
                   << fds[0]
                   << " connected to socket "
@@ -310,7 +302,6 @@ auto main(int argc, char* argv[]) -> int
 {
     using namespace TestSocket;
 
-    static constexpr SocketHints hints {0, AF_UNIX, SOCK_STREAM};
 #ifndef OS_CYGWIN_NT
     static const ErrorCodeSet codes_no_directory {get_codes_no_directory()};
     static const ErrorCodeSet codes_no_permission {get_codes_no_permission()};
@@ -326,18 +317,18 @@ auto main(int argc, char* argv[]) -> int
         }
 
 #ifndef OS_CYGWIN_NT
-        test_path_no_permission(hints, "/foo", codes_no_permission);
-        test_path_no_directory(hints, "/foo/bar", codes_no_directory);
+        test_path_no_permission("/foo", codes_no_permission);
+        test_path_no_directory("/foo/bar", codes_no_directory);
 #endif
-        test_path_invalid(hints, get_pathname(path_size_max), codes_valid);
-        test_path_valid(hints, get_pathname(path_size_max - 1), codes_valid);
+        test_path_invalid(get_pathname(path_size_max), codes_valid);
+        test_path_valid(get_pathname(path_size_max - 1), codes_valid);
         const auto& pathnames {get_pathnames()};
 
         for (const auto& pathname : pathnames) {
-            test_path_valid(hints, pathname, codes_valid);
+            test_path_valid(pathname, codes_valid);
         }
 
-        test_socketpair(hints);
+        test_socketpair();
     }
     catch (const std::exception& error) {
         std::cerr << error.what()
