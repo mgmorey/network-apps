@@ -34,26 +34,16 @@ Network::FdPair::FdPair(const SocketHints& t_hints, bool t_verbose) :
 }
 
 Network::FdPair::FdPair(Fd t_fd1, Fd t_fd2) noexcept :
-    m_value({t_fd1, t_fd2})
-{
-}
-
-Network::FdPair::FdPair(const value_type& t_value) noexcept :
-    m_value(t_value)
-{
-}
-
-Network::FdPair::FdPair(value_type&& t_value) noexcept :
-    m_value(std::move(t_value))
+    m_fd({t_fd1, t_fd2})
 {
 }
 
 auto Network::FdPair::operator[](std::size_t i) -> Network::Fd&
 {
-    return m_value[i];
+    return m_fd[i];
 }
 
 auto Network::FdPair::operator[](std::size_t i) const -> const Network::Fd&
 {
-    return m_value[i];
+    return m_fd[i];
 }

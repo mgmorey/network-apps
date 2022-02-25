@@ -34,14 +34,9 @@ Network::Fd::Fd(const SocketHints& t_hints, bool t_verbose) :
 {
 }
 
-Network::Fd::Fd(fd_type t_fd) noexcept :
+Network::Fd::Fd(value_type t_fd) noexcept :
     m_value(t_fd)
 {
-}
-
-Network::Fd::operator fd_type() const noexcept
-{
-    return m_value;
 }
 
 Network::Fd::operator bool() const noexcept
@@ -49,7 +44,12 @@ Network::Fd::operator bool() const noexcept
     return m_value != fd_null;
 }
 
-Network::Fd::operator std::string() const noexcept
+Network::Fd::operator value_type() const noexcept
+{
+    return m_value;
+}
+
+Network::Fd::operator std::string() const
 {
     if (m_value == fd_null) {
         return string_null;

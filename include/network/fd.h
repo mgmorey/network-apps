@@ -32,6 +32,8 @@ namespace Network
     class Fd
     {
     public:
+        using value_type = fd_type;
+
         Fd(socket_family_type t_family,
            socket_type_type t_socktype,
            socket_protocol_type t_protocol = 0,
@@ -39,19 +41,19 @@ namespace Network
            bool t_verbose = false);
         explicit Fd(const SocketHints& t_hints,
                     bool t_verbose = false);
-        explicit Fd(fd_type t_fd) noexcept;
+        explicit Fd(value_type t_fd) noexcept;
         Fd(const Fd&) noexcept = default;
         Fd(Fd&&) noexcept = default;
         Fd() noexcept = default;
         ~Fd() noexcept = default;
         auto operator=(const Fd&) noexcept -> Fd& = default;
         auto operator=(Fd&&) noexcept -> Fd& = default;
-        explicit operator fd_type() const noexcept;
         explicit operator bool() const noexcept;
-        explicit operator std::string() const noexcept;
+        explicit operator value_type() const noexcept;
+        explicit operator std::string() const;
 
     private:
-        fd_type m_value {fd_null};
+        value_type m_value {fd_null};
     };
 
     extern auto operator<<(std::ostream& os, Fd fd) noexcept -> std::ostream&;

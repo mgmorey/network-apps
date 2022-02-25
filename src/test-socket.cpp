@@ -43,12 +43,12 @@ using Network::Address;
 using Network::Context;
 using Network::Error;
 using Network::Fd;
+using Network::FdPair;
 using Network::LogicError;
 using Network::OptionalPathname;
 using Network::OsErrorResult;
 using Network::Pathname;
 using Network::SocketHints;
-using Network::get_socketpair;
 using Network::get_sun_path;
 using Network::get_sun_path_size;
 using Network::os_error_type;
@@ -289,7 +289,7 @@ namespace TestSocket
 
     static auto test_socketpair(const SocketHints& hints) -> void
     {
-        const auto fds {get_socketpair(hints, verbose)};
+        const FdPair fds {hints, verbose};
         std::cout << "Socket "
                   << fds[0]
                   << " connected to socket "
