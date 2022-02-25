@@ -43,7 +43,6 @@
 using Network::Address;
 using Network::Context;
 using Network::Error;
-using Network::Fd;
 using Network::FdPair;
 using Network::FdResult;
 using Network::LogicError;
