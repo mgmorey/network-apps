@@ -35,9 +35,9 @@ namespace Network
         constexpr SocketHints() noexcept = default;
 
         constexpr explicit SocketHints(socket_flags_type t_flags,
-                                 socket_family_type t_family = AF_UNSPEC,
-                                 socket_type_type t_socktype = 0,
-                                 socket_protocol_type t_protocol = 0) noexcept :
+                                       socket_family_type t_family = AF_UNSPEC,
+                                       socket_type_type t_socktype = 0,
+                                       socket_protocol_type t_protocol = 0) noexcept :
             m_flags(t_flags),
             m_family(t_family),
             m_socktype(t_socktype),

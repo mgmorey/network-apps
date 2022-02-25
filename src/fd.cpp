@@ -20,8 +20,17 @@
 
 #include <string>       // std::to_string
 
-Network::Fd::Fd(const SocketHints& t_hints, bool t_verbose) noexcept :
-    m_value(get_socket(t_hints, t_verbose))
+Network::Fd::Fd(socket_family_type t_family,
+                socket_type_type t_socktype,
+                socket_protocol_type t_protocol,
+                socket_flags_type t_flags,
+                bool t_verbose) :
+    Fd(SocketHints {t_flags, t_family, t_socktype, t_protocol}, t_verbose)
+{
+}
+
+Network::Fd::Fd(const SocketHints& t_hints, bool t_verbose) :
+    Fd(get_socket(t_hints, t_verbose))
 {
 }
 

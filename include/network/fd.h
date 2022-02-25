@@ -16,9 +16,13 @@
 #ifndef NETWORK_FD_H
 #define NETWORK_FD_H
 
-#include "network/fd-null.h"            // fd_null
-#include "network/fd-type.h"            // fd_type
-#include "network/sockethints.h"        // SocketHints
+#include "network/fd-null.h"                    // fd_null
+#include "network/fd-type.h"                    // fd_type
+#include "network/socket-hint-types.h"          // socket_family_type,
+                                                // socket_flags_type,
+                                                // socket_protocol_type,
+                                                // socket_type_type
+#include "network/sockethints.h"                // SocketHints
 
 #include <ostream>     // std::ostream
 #include <string>      // std::string
@@ -28,8 +32,13 @@ namespace Network
     class Fd
     {
     public:
+        Fd(socket_family_type t_family,
+           socket_type_type t_socktype,
+           socket_protocol_type t_protocol = 0,
+           socket_flags_type t_flags = 0,
+           bool t_verbose = false);
         explicit Fd(const SocketHints& t_hints,
-           bool t_verbose = false) noexcept;
+                    bool t_verbose = false);
         explicit Fd(fd_type t_fd) noexcept;
         Fd(const Fd&) noexcept = default;
         Fd(Fd&&) noexcept = default;

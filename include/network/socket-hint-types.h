@@ -13,13 +13,12 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_SOCKET_INT_TYPES_H
-#define NETWORK_SOCKET_INT_TYPES_H
+#ifndef NETWORK_SOCKET_HINT_TYPES_H
+#define NETWORK_SOCKET_HINT_TYPES_H
 
-#include "network/socket-hint-types.h"          // socket_family_type,
-                                                // socket_flags_type,
-                                                // socket_protocol_type,
-                                                // socket_type_type
-#include "network/sock-len-type.h"              // sock_len_type
+#include "network/socket-family-type.h"         // socket_family_type
+#include "network/socket-flags-type.h"          // socket_flags_type
+#include "network/socket-protocol-type.h"       // socket_protocol_type
+#include "network/socket-type-type.h"           // socket_type_type
 
 #endif

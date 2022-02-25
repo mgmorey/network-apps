@@ -223,12 +223,11 @@ namespace TestConnect
         }
     }
 
-    static auto test_connect_invalid_addr(const ByteString& addr,
-                                          const SocketHints& hints) -> void
+    static auto test_connect_invalid_addr(const ByteString& addr) -> void
     {
         os_error_type actual_code {0};
         const auto& expected_codes {get_codes_invalid_addr()};
-        const Fd fd {hints, verbose};
+        const Fd fd {AF_INET, SOCK_STREAM, IPPROTO_TCP, 0, verbose};
         const auto error {Network::connect(fd, addr, verbose)};
         actual_code = error.number();
 
@@ -306,10 +305,7 @@ auto main(int argc, char* argv[]) -> int
 {
     using namespace TestConnect;
 
-    static constexpr SocketHints inet_hints
-        {AI_CANONNAME, AF_INET, SOCK_STREAM, IPPROTO_TCP};
-
-    static constexpr SocketHints unspec_hints
+    static constexpr SocketHints hints
         {AI_CANONNAME, AF_UNSPEC, SOCK_STREAM, IPPROTO_TCP};
 
     try {
@@ -321,16 +317,16 @@ auto main(int argc, char* argv[]) -> int
         }
 
         const ByteString invalid_addr {};
-        test_connect_invalid_addr(invalid_addr, inet_hints);
+        test_connect_invalid_addr(invalid_addr);
         const Endpoint invalid_host {".", localservice};
-        test_connect_invalid_host(invalid_host, unspec_hints);
+        test_connect_invalid_host(invalid_host, hints);
         const Endpoint invalid_service {localhost, "."};
-        test_connect_invalid_service(invalid_service, unspec_hints);
+        test_connect_invalid_service(invalid_service, hints);
         const Endpoint valid_endpoint {
             args.size() > 1 ? args[1] : localhost,
             args.size() > 2 ? args[2] : localservice
         };
-        test_connect_valid(valid_endpoint, unspec_hints);
+        test_connect_valid(valid_endpoint, hints);
     }
     catch (const std::exception& error) {
         std::cerr << error.what()
