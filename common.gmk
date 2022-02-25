@@ -37,9 +37,13 @@ is_gcc = $(shell $(script_dir)/is-gcc $(CXX))
 is_gnu_as = $(shell $(script_dir)/is-gnu-as $(AS))
 is_gnu_ld = $(shell $(script_dir)/is-gnu-ld $(LD))
 
+# Program aliases
+clang_tidy = clang-tidy$(LLVM_SUFFIX)
+
 # Program versions
+clang_tidy_version = $(shell $(script_dir)/get-llvm-version $(clang_tidy))
+cppcheck_version = $(shell $(script_dir)/which-version cppcheck)
 ctags_version = $(shell $(script_dir)/which-version ctags)
-tidy_version = $(shell $(script_dir)/get-llvm-version clang-tidy$(LLVM_SUFFIX))
 
 # Local Variables:
 # mode: makefile

@@ -24,6 +24,24 @@ format-option-native = $(shell echo $(if $2,-W$1,) $2 | tr ' ' ',')
 
 ARFLAGS = r
 
+# CLANG_TIDY_FLAGS
+
+ifeq "$(shell $(script_dir)/compare-versions $(clang_tidy_version) 13)" "less"
+	CLANG_TIDY_CONFIG_FLAGS = -config=
+else
+	CLANG_TIDY_CONFIG_FLAGS = -config-file='.clang-tidy'
+endif
+
+CLANG_TIDY_CONFIG_FLAGS += -header-filter='.*'
+
+ifdef standard
+	CLANG_TIDY_CPPFLAGS += -std=$(standard)
+endif
+
+CLANG_TIDY_CPPFLAGS += $(CPPFLAGS)
+
+CLANG_TIDY_FLAGS = $(CLANG_TIDY_CONFIG_FLAGS) -- $(CLANG_TIDY_CPPFLAGS)
+
 # CPPCHECK_FLAGS
 
 CPPCHECK_FLAGS = --cppcheck-build-dir=$(cppbuild_dir)
@@ -146,24 +164,6 @@ endif
 ifeq "$(os_name)" "MINGW64_NT"
 	LDLIBS += -lws2_32
 endif
-
-# TIDY_FLAGS
-
-ifeq "$(shell $(script_dir)/compare-versions $(tidy_version) 13)" "less"
-	TIDY_CONFIG_FLAGS = -config=
-else
-	TIDY_CONFIG_FLAGS = -config-file='.clang-tidy'
-endif
-
-TIDY_CONFIG_FLAGS += -header-filter='.*'
-
-ifdef standard
-	TIDY_CPPFLAGS += -std=$(standard)
-endif
-
-TIDY_CPPFLAGS += $(CPPFLAGS)
-
-TIDY_FLAGS = $(TIDY_CONFIG_FLAGS) -- $(TIDY_CPPFLAGS)
 
 # Local Variables:
 # mode: makefile

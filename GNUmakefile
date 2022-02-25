@@ -140,7 +140,7 @@ $(logfiles) $(mapfiles) $(sizes) $(sizes)~
 
 artifacts = $(binary_artifacts) $(text_artifacts)
 
-all_non_test = assert libraries programs sizes
+all_non_test = assert objects libraries programs analyze sizes
 all = $(all_non_test)
 
 ifeq "$(is_ctags_universal)" "true"
@@ -180,8 +180,10 @@ all: $(all)
 all-non-test: $(all_non_test)
 
 .PHONY: analyze
-analyze: $(cppbuild_dir) $(sources)
-	cppcheck $(CPPCHECK_FLAGS) $(CPPFLAGS) $(filter-out $(cppbuild_dir),$^)
+analyze: $(sources) | $(cppbuild_dir)
+ifeq "$(shell $(script_dir)/compare-versions $(cppcheck_version) 2.6)" "greater"
+	cppcheck $(CPPCHECK_FLAGS) $(CPPFLAGS) $^
+endif
 
 .PHONY: assert
 assert:
@@ -256,7 +258,7 @@ tags: $(tags)
 
 .PHONY: tidy
 tidy: $(sort $(sources))
-	clang-tidy$(LLVM_SUFFIX) $^ $(TIDY_FLAGS)
+	$(clang_tidy) $^ $(CLANG_TIDY_FLAGS)
 
 .PHONY: unix
 unix:
