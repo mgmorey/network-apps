@@ -36,8 +36,6 @@ endif
 
 # CPPFLAGS
 
-include_dirs = include
-
 ifeq "$(os_name)" "Darwin"
 	cpp_symbols += __$(shell uname -m)__
 endif
@@ -66,6 +64,7 @@ else ifeq "$(is_gcc)" "true"
 	cpp_symbols += _GLIBCXX_DEBUG
 endif
 
+include_dirs = include
 CPPFLAGS += $(addprefix -I,$(include_dirs))
 CPPFLAGS += $(addprefix -D,$(sort $(cpp_symbols)))
 
