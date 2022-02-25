@@ -28,7 +28,7 @@ namespace Network
     class Fd
     {
     public:
-        Fd(const SocketHints& t_hints,
+        explicit Fd(const SocketHints& t_hints,
            bool t_verbose = false) noexcept;
         explicit Fd(fd_type t_fd) noexcept;
         Fd(const Fd&) noexcept = default;
