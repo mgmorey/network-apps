@@ -140,16 +140,8 @@ $(logfiles) $(mapfiles) $(sizes) $(sizes)~
 
 artifacts = $(binary_artifacts) $(text_artifacts)
 
-all_non_test = assert objects libraries programs analyze sizes
-all = $(all_non_test)
-
-ifeq "$(is_ctags_universal)" "true"
-ifeq "$(shell $(script_dir)/compare-versions $(ctags_version) 5)" "greater"
-	all += $(tags)
-endif
-endif
-
-all += test
+all_non_test = assert objects libraries programs analyze sizes tags
+all = $(all_non_test) test
 
 ifeq "$(os_name)" "MINGW64_NT"
 	all += dos2unix
@@ -176,7 +168,7 @@ run_tests = $(script_dir)/run-test-programs
 .PHONY: all
 all: $(all)
 
-.PHONY: all
+.PHONY: all-non-test
 all-non-test: $(all_non_test)
 
 .PHONY: analyze
@@ -250,11 +242,11 @@ realclean: distclean
 sizes: $(sizes)
 	test -e $<~ && diff -b $<~ $< || true
 
-.PHONY: test
-test: check
-
 .PHONY: tags
 tags: $(tags)
+
+.PHONY: test
+test: check
 
 .PHONY: tidy
 tidy: $(sort $(sources))
@@ -301,7 +293,11 @@ $(commands): $(MAKEFILE_LIST)
 	bear -- $(MAKE_COMMAND) $(MFLAGS) CXX=$(CXX) clean all-non-test
 
 $(tags):
+ifeq "$(is_ctags_universal)" "true"
+ifeq "$(shell $(script_dir)/compare-versions $(ctags_version) 5)" "greater"
 	ctags -e $(filter -D%,$(CPPFLAGS)) -R include $(source_dir)
+endif
+endif
 
 sizes.txt: $(sort $(libnetwork_shared) $(objects) $(programs))
 	if [ -e $@ ]; then mv -f $@ $@~; fi
