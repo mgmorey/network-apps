@@ -46,8 +46,8 @@
 #include <set>          // std::set
 #include <span>         // std::span
 #include <string>       // std::string
-#include <variant>      // std::visit()
 #include <utility>      // std::move()
+#include <variant>      // std::visit()
 #include <vector>       // std::vector
 
 using Network::Address;
