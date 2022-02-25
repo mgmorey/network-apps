@@ -31,6 +31,7 @@ namespace Network
     public:
         static constexpr auto m_size {2};
 
+#ifndef WIN32
         FdPair(socket_family_type t_family,
                socket_type_type t_socktype,
                socket_protocol_type t_protocol = 0,
@@ -38,6 +39,7 @@ namespace Network
                bool t_verbose = false);
         explicit FdPair(const SocketHints& t_hints,
                         bool t_verbose = false);
+#endif
         FdPair(Fd t_fd1, Fd t_fd2) noexcept;
         FdPair(const FdPair&) noexcept = default;
         FdPair(FdPair&&) noexcept = default;
@@ -45,8 +47,8 @@ namespace Network
         ~FdPair() noexcept = default;
         auto operator=(const FdPair&) noexcept -> FdPair& = default;
         auto operator=(FdPair&&) noexcept -> FdPair& = default;
-        auto operator[](std::size_t i) const -> const Fd&;
         auto operator[](std::size_t i) -> Fd&;
+        auto operator[](std::size_t i) const -> const Fd&;
 
     private:
         std::array<Fd, m_size> m_fd;

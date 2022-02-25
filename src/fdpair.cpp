@@ -17,7 +17,8 @@
 #include "network/get-socketpair.h"     // get_socketpair()
 
 #include <cstddef>      // std::size_t
-#include <utility>      // std::move()
+
+#ifndef WIN32
 
 Network::FdPair::FdPair(socket_family_type t_family,
                         socket_type_type t_socktype,
@@ -32,6 +33,8 @@ Network::FdPair::FdPair(const SocketHints& t_hints, bool t_verbose) :
     FdPair(get_socketpair(t_hints, t_verbose))
 {
 }
+
+#endif
 
 Network::FdPair::FdPair(Fd t_fd1, Fd t_fd2) noexcept :
     m_fd({t_fd1, t_fd2})
