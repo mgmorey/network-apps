@@ -222,9 +222,8 @@ $(library_dir) $(object_dir) $(artifacts))))))
 
 .PHONY: dos2unix
 
-dos2unix:
-	dos2unix -q $(sort $(filter-out %$(dependency_suffix),$(wildcard	\
-$(text_artifacts))))
+dos2unix: $(filter-out %$(dependency_suffix),$(wildcard $(text_artifacts)))
+	printf '%s\n' $(sort $^) | xargs dos2unix -q
 
 .PHONY: install
 install: $(libraries)
