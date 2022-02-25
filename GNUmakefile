@@ -138,6 +138,9 @@ $(programs) $(sizes) $(sizes)~
 text_artifacts = $(commands) $(dependencies) $(dumps) $(listings)	\
 $(logfiles) $(mapfiles) $(sizes) $(sizes)~
 
+dos2unix_files = $(sort $(filter-out %$(dependency_suffix),$(wildcard	\
+$(text_artifacts))))
+
 artifacts = $(binary_artifacts) $(text_artifacts)
 
 all_non_test = assert objects libraries programs analyze sizes tags
@@ -216,8 +219,8 @@ $(library_dir) $(object_dir) $(artifacts))))))
 
 .PHONY: dos2unix
 
-dos2unix: $(filter-out %$(dependency_suffix),$(wildcard $(text_artifacts)))
-	printf '%s\n' $(sort $^) | xargs dos2unix -q
+dos2unix:
+	printf '%s\n' $(dos2unix_files) | xargs dos2unix -q
 
 .PHONY: install
 install: $(libraries)
