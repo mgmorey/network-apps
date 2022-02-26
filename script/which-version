@@ -49,7 +49,7 @@ get_command_version() {
 
 get_filenames() {
     assert [ $# -ge 1 ]
-    which "$@"
+    which "$@" 2>/dev/null
 }
 
 get_sed_command() {
