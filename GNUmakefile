@@ -138,16 +138,31 @@ $(programs) $(sizes) $(sizes)~
 text_artifacts = $(commands) $(dependencies) $(dumps) $(listings)	\
 $(logfiles) $(mapfiles) $(sizes) $(sizes)~
 
-dos2unix_files = $(sort $(filter-out %$(dependency_suffix),$(wildcard	\
+rm_args = $(sort $(filter-out $(cache_dir)/%,$(filter-out	\
+$(library_dir)/%,$(filter-out $(object_dir)/%,$(wildcard $(cache_dir)	\
+$(library_dir) $(object_dir) $(artifacts))))))
+
+dos2unix_args = $(sort $(filter-out %$(dependency_suffix),$(wildcard	\
 $(text_artifacts))))
 
 artifacts = $(binary_artifacts) $(text_artifacts)
 
-all_non_test = assert objects libraries programs analyze sizes tags
-all = $(all_non_test) test
+build_targets = assert objects libraries programs sizes
+
+ifeq "$(shell $(script_dir)/compare-versions $(cppcheck_version) 2.6)" "greater"
+	build_targets += analyze
+endif
+
+ifeq "$(is_ctags_universal)" "true"
+ifeq "$(shell $(script_dir)/compare-versions $(ctags_version) 5)" "greater"
+	build_targets += tags
+endif
+endif
+
+all_targets = $(build_targets) test
 
 ifeq "$(os_name)" "MINGW64_NT"
-	all += dos2unix
+	all_targets += dos2unix
 endif
 
 # Define compiler and linker variables
@@ -169,16 +184,11 @@ run_tests = $(script_dir)/run-test-programs
 # Define pseudotargets
 
 .PHONY: all
-all: $(all)
-
-.PHONY: all-non-test
-all-non-test: $(all_non_test)
+all: $(all_targets)
 
 .PHONY: analyze
 analyze: $(sources) | $(cppbuild_dir)
-ifeq "$(shell $(script_dir)/compare-versions $(cppcheck_version) 2.6)" "greater"
-	cppcheck $(CPPCHECK_FLAGS) $(CPPFLAGS) $^
-endif
+	printf '%s\n' $^ | xargs cppcheck $(CPPCHECK_FLAGS) $(CPPFLAGS)
 
 .PHONY: assert
 assert:
@@ -191,6 +201,9 @@ endif
 ifneq "$(sort $(unix_sources))" "$(unix_sources)"
 	$(error File names in variable unix_sources are not sorted)
 endif
+
+.PHONY: build
+build: $(build_targets)
 
 .PHONY: check
 check: $(test_programs)
@@ -213,14 +226,11 @@ counts:
 
 .PHONY: distclean
 distclean:
-	rm -rf $(sort $(filter-out $(cache_dir)/%,$(filter-out		\
-$(library_dir)/%,$(filter-out $(object_dir)/%,$(wildcard $(cache_dir)	\
-$(library_dir) $(object_dir) $(artifacts))))))
+	printf '%s\n' $(rm_args) | xargs rm -rf
 
 .PHONY: dos2unix
-
 dos2unix:
-	printf '%s\n' $(dos2unix_files) | xargs dos2unix -q
+	printf '%s\n' $(dos2unix_args) | xargs dos2unix -q
 
 .PHONY: install
 install: $(libraries)
@@ -293,14 +303,10 @@ $(object_dir)/%$(object_suffix): %$(source_suffix)
 	$(COMPILE$(source_suffix)) $(OUTPUT_OPTION) $<
 
 $(commands): $(MAKEFILE_LIST)
-	bear -- $(MAKE_COMMAND) $(MFLAGS) CXX=$(CXX) clean all-non-test
+	bear -- $(MAKE_COMMAND) $(MFLAGS) CXX=$(CXX) clean build
 
 $(tags):
-ifeq "$(is_ctags_universal)" "true"
-ifeq "$(shell $(script_dir)/compare-versions $(ctags_version) 5)" "greater"
-	ctags -e $(filter -D%,$(CPPFLAGS)) -R include $(source_dir)
-endif
-endif
+	ctags -e $(filter -D%,$(CPPFLAGS)) -R $(include_dir) $(source_dir)
 
 sizes.txt: $(sort $(libnetwork_shared) $(objects) $(programs))
 	if [ -e $@ ]; then mv -f $@ $@~; fi
@@ -324,10 +330,7 @@ $(library_dir):
 $(object_dir):
 	mkdir -p $(object_dir)
 
-# Test source file list variables
-
 # Include dependency files
-
 ifeq "$(filter %clean,$(MAKECMDGOALS))" "$(filter-out %clean,$(MAKECMDGOALS))"
 include $(sort $(dependencies))
 endif
