@@ -15,7 +15,7 @@
 
 # Define common functions
 
-compare-versions = $(shell $(script_dir)/compare-versions $1 $2)
+compare-versions = $(shell $(script_dir)/compare-versions "$1" "$2")
 get-alias = $(shell echo $1 | sed 's/\(\.[0-9][0-9]*\)\(\.[0-9][0-9]*\)*$$/\1/')
 not-version = $(shell echo $1 | sed 's/\.[0-9][0-9]*\(\.[0-9][0-9]*\)*$$//')
 subst-suffix = $(shell echo $2 | sed 's/\(\.[^.]*\)*$$/$1/')
