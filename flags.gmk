@@ -21,26 +21,24 @@ format-option-ld = $(call format-option,$(is_gnu_ld),$1,$2)
 format-option-native = $(shell echo $(if $2,-W$1,) $2 | tr ' ' ',')
 
 # ARFLAGS
-
 ARFLAGS = r
 
 # CLANG_TIDY_FLAGS
 
-ifeq "$(shell $(script_dir)/compare-versions $(clang_tidy_version) 13)" "less"
-	CLANG_TIDY_CONFIG_FLAGS = -config=
+ifeq "$(call compare-versions,$(clang_tidy_version),12)" "greater"
+	CLANG_TIDY_FLAGS = -config-file='.clang-tidy'
 else
-	CLANG_TIDY_CONFIG_FLAGS = -config-file='.clang-tidy'
+	CLANG_TIDY_FLAGS = -config=
 endif
 
-CLANG_TIDY_CONFIG_FLAGS += -header-filter='.*'
+CLANG_TIDY_FLAGS += -header-filter='.*'
+CLANG_TIDY_FLAGS += --
 
 ifdef standard
-	CLANG_TIDY_CPPFLAGS += -std=$(standard)
+	CLANG_TIDY_FLAGS += -std=$(standard)
 endif
 
-CLANG_TIDY_CPPFLAGS += $(CPPFLAGS)
-
-CLANG_TIDY_FLAGS = $(CLANG_TIDY_CONFIG_FLAGS) -- $(CLANG_TIDY_CPPFLAGS)
+CLANG_TIDY_FLAGS += $(CPPFLAGS)
 
 # CPPCHECK_FLAGS
 

@@ -149,12 +149,12 @@ artifacts = $(binary_artifacts) $(text_artifacts)
 
 build_targets = assert objects libraries programs sizes
 
-ifeq "$(shell $(script_dir)/compare-versions $(cppcheck_version) 2.6)" "greater"
+ifeq "$(call compare-versions,$(cppcheck_version),2.6)" "greater"
 	build_targets += analyze
 endif
 
 ifeq "$(is_ctags_universal)" "true"
-ifeq "$(shell $(script_dir)/compare-versions $(ctags_version) 5)" "greater"
+ifeq "$(call compare-versions,$(ctags_version),5.8)" "greater"
 	build_targets += tags
 endif
 endif
