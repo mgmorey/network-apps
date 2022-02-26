@@ -188,7 +188,7 @@ all: $(all_targets)
 
 .PHONY: analyze
 analyze: $(sources) | $(cppbuild_dir)
-	printf '%s\n' $^ | xargs cppcheck $(CPPCHECK_FLAGS) $(CPPFLAGS)
+	printf '%s\n' $^ | xargs cppcheck $(CPPCHECK_FLAGS)
 
 .PHONY: assert
 assert:

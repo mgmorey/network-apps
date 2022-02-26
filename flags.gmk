@@ -51,11 +51,9 @@ ifdef standard
 	CPPCHECK_FLAGS += --std=$(standard)
 endif
 
-# CPPFLAGS
+CPPCHECK_FLAGS += $(filter-out -I$(SDKROOT)/usr/include,$(CPPFLAGS))
 
-ifeq "$(os_name)" "Darwin"
-	cpp_symbols += __$(shell uname -m)__
-endif
+# CPPFLAGS
 
 ifeq "$(USING_DMALLOC)" "true"
 	cpp_symbols += DMALLOC DMALLOC_FUNC_CHECK
