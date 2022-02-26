@@ -174,7 +174,7 @@ namespace TestSocket
 
         if (pathname) {
             assert(unix_path == pathname);
-            const Fd fd {AF_UNIX, SOCK_STREAM, 0, verbose};
+            const Fd fd {AF_UNIX, SOCK_STREAM, 0, 0, verbose};
             const auto result {Network::bind(fd, addr, verbose)};
             actual_code = result.number();
 
@@ -281,7 +281,7 @@ namespace TestSocket
 
     static auto test_socketpair() -> void
     {
-        const FdPair fds {AF_UNIX, SOCK_STREAM, 0, verbose};
+        const FdPair fds {AF_UNIX, SOCK_STREAM, 0, 0, verbose};
         std::cout << "Socket "
                   << fds[0]
                   << " connected to socket "
