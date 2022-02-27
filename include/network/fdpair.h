@@ -40,7 +40,7 @@ namespace Network
         explicit FdPair(const SocketHints& t_hints,
                         bool t_verbose = false);
 #endif
-        FdPair(Fd t_fd1, Fd t_fd2) noexcept;
+        FdPair(const Fd& t_fd1, const Fd& t_fd2) noexcept;
         FdPair(const FdPair&) noexcept = default;
         FdPair(FdPair&&) noexcept = default;
         FdPair() noexcept = default;

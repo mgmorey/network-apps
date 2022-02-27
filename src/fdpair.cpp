@@ -36,7 +36,7 @@ Network::FdPair::FdPair(const SocketHints& t_hints, bool t_verbose) :
 
 #endif
 
-Network::FdPair::FdPair(Fd t_fd1, Fd t_fd2) noexcept :
+Network::FdPair::FdPair(const Fd& t_fd1, const Fd& t_fd2) noexcept :
     m_fd({t_fd1, t_fd2})
 {
 }
