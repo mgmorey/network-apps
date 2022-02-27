@@ -95,7 +95,7 @@ static auto read(Fd fd) -> IoResult
 
 static auto write(const std::string& str, Fd fd) -> ssize_t
 {
-    return ::write(static_cast<fd_type>(fd), str.c_str(), str.size() + 1);
+    return ::write(static_cast<fd_type>(fd), str.data(), str.size());
 }
 
 auto main(int argc, char* argv[]) -> int
