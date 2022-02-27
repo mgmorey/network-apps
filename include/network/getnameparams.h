@@ -22,7 +22,7 @@ namespace Network
 {
     struct GetNameParams
     {
-        Fd fd;
+        const Fd& fd;
         bool verbose;
     };
 }

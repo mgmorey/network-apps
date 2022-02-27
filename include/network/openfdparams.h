@@ -23,7 +23,7 @@ namespace Network
 {
     struct OpenFdParams
     {
-        Fd fd;
+        const Fd& fd;
         ByteString str;
         bool verbose;
     };
