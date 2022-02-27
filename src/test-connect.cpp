@@ -95,10 +95,10 @@ namespace TestConnect
         {
         }
 
-        auto operator()(FdResult& t_fd_result) -> void
+        auto operator()(const FdResult& t_fd_result) -> void
         {
             std::visit(Overloaded {
-                    [&](Fd& fd) {
+                    [&](const Fd& fd) {
                         test_socket(fd);
                     },
                     [&](const OsErrorResult& error) {
@@ -108,7 +108,7 @@ namespace TestConnect
                 }, t_fd_result);
         }
 
-        auto test_socket(Fd& t_fd) -> void
+        auto test_socket(const Fd& t_fd) -> void
         {
             const auto hostname {m_endpoint.first};
             const auto service {m_endpoint.second};
@@ -222,7 +222,7 @@ namespace TestConnect
     {
         os_error_type actual_code {0};
         const auto& expected_codes {get_codes_invalid_addr()};
-        Fd fd {AF_INET, SOCK_STREAM, IPPROTO_TCP, 0, verbose};
+        const Fd fd {AF_INET, SOCK_STREAM, IPPROTO_TCP, 0, verbose};
         const auto error {Network::connect(fd, addr, verbose)};
         actual_code = error.number();
 
@@ -238,9 +238,9 @@ namespace TestConnect
     {
         os_error_type actual_code {0};
         const auto& expected_codes {get_codes_invalid_host()};
-        auto connect_result {Network::connect(endpoint, hints, verbose)};
+        const auto connect_result {Network::connect(endpoint, hints, verbose)};
         std::visit(Overloaded {
-                [&](FdResultVector& fd_results) {
+                [&](const FdResultVector& fd_results) {
                     static_cast<void>(fd_results);
                 },
                 [&](const OsErrorResult& error) {
@@ -273,9 +273,9 @@ namespace TestConnect
                                    const SocketHints& hints,
                                    const Hostname& hostname) -> void
     {
-        auto connect_result {Network::connect(endpoint, hints, verbose)};
+        const auto connect_result {Network::connect(endpoint, hints, verbose)};
         std::visit(Overloaded {
-                [&](FdResultVector& fd_results) {
+                [&](const FdResultVector& fd_results) {
                     std::for_each(fd_results.begin(),
                                   fd_results.end(),
                                   Test(endpoint,
@@ -312,11 +312,11 @@ auto main(int argc, char* argv[]) -> int
 
         const ByteString invalid_addr {};
         test_connect_invalid_addr(invalid_addr);
-        Endpoint invalid_host {".", localservice};
+        const Endpoint invalid_host {".", localservice};
         test_connect_invalid_host(invalid_host, hints);
-        Endpoint invalid_service {localhost, "."};
+        const Endpoint invalid_service {localhost, "."};
         test_connect_invalid_service(invalid_service, hints);
-        Endpoint valid_endpoint {
+        const Endpoint valid_endpoint {
             args.size() > 1 ? args[1] : localhost,
             args.size() > 2 ? args[2] : localservice
         };

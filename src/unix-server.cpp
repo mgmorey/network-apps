@@ -42,7 +42,6 @@ using IoResult = std::pair<std::string, ssize_t>;
 static constexpr auto backlog_size {20};
 static constexpr auto radix {10};
 
-static Network::Fd bind_fd;	// NOLINT
 static bool verbose {false};	// NOLINT
 
 static auto clean_up() -> void
@@ -81,6 +80,12 @@ static auto parse_arguments(int argc, char** argv) ->
     return result;
 }
 
+static auto get_bind_socket(const SocketHints& hints) -> Fd
+{
+    static Network::Fd fd {hints, verbose};
+    return fd;
+}
+
 static auto read(const Fd& fd) -> IoResult
 {
     Buffer buffer {BUFFER_SIZE};
@@ -102,10 +107,9 @@ auto main(int argc, char* argv[]) -> int
 
     try {
         parse_arguments(argc, argv);
-        bind_fd.verbose(verbose);
 
         // Bind Unix domain socket to pathname.
-        bind_fd = hints;
+        const Fd bind_fd {get_bind_socket(hints)};
         const auto addr {to_byte_string(SOCKET_NAME)};
         const auto error {Network::bind(bind_fd, addr, verbose)};
         const auto error_code {error.number()};
