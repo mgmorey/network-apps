@@ -26,7 +26,7 @@
 #include "network/socket-error.h"       // socket_error
 #include "network/to-string.h"          // to_string()
 
-#include <iostream>     // std::cerr, std::endl
+#include <iostream>     // std::cout, std::endl
 #include <sstream>      // std::ostringstream
 
 static auto format(const Network::ByteString& addr,
@@ -48,7 +48,7 @@ auto Network::open(const OpenHandler& handler,
     OptionalString str;
 
     if (args.verbose) {
-        std::cerr << "Calling "
+        std::cout << "Calling "
                   << handler.second
                   << '('
                   << args.fd

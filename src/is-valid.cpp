@@ -41,7 +41,7 @@
 #include <cstring>      // std::memcpy(), std::memset()
 #include <cstring>      // strnlen()
 #include <iomanip>      // std::right, std::setw()
-#include <iostream>     // std::cerr, std::endl
+#include <iostream>     // std::cout, std::endl
 
 auto Network::is_valid(const ByteString& addr, bool verbose) noexcept -> bool
 {
@@ -49,7 +49,7 @@ auto Network::is_valid(const ByteString& addr, bool verbose) noexcept -> bool
     constexpr auto value_width {10};
 
     if (verbose) {
-        std::cerr << "Validating socket address: "
+        std::cout << "Validating socket address: "
                   << addr
                   << std::endl;
     }
@@ -61,7 +61,7 @@ auto Network::is_valid(const ByteString& addr, bool verbose) noexcept -> bool
     const auto family {get_sa_family(addr)};
 
     if (verbose) {
-        std::cerr << std::setw(key_width) << "    Family: "
+        std::cout << std::setw(key_width) << "    Family: "
                   << std::right << std::setw(value_width) << family
                   << std::endl;
     }
@@ -83,7 +83,7 @@ auto Network::is_valid(const ByteString& addr, bool verbose) noexcept -> bool
     const auto addr_size_min {get_size_min(addr)};
 
     if (verbose) {
-        std::cerr << std::setw(key_width) << "    Actual size: "
+        std::cout << std::setw(key_width) << "    Actual size: "
                   << std::right << std::setw(value_width) << addr_size
                   << std::endl
                   << std::setw(key_width) << "    Minimum size: "
@@ -103,7 +103,7 @@ auto Network::is_valid(const ByteString& addr, bool verbose) noexcept -> bool
     const auto sa_len {static_cast<std::size_t>(get_sa_length(addr))};
 
     if (verbose) {
-        std::cerr << std::setw(key_width) << "    Stored length: "
+        std::cout << std::setw(key_width) << "    Stored length: "
                   << std::right << std::setw(value_width) << sa_len
                   << std::endl;
     }
@@ -118,7 +118,7 @@ auto Network::is_valid(const ByteString& addr, bool verbose) noexcept -> bool
         const auto sun_len {get_sun_length(sun, addr_size)};
 
         if (verbose) {
-            std::cerr << std::setw(key_width) << "    Computed length: "
+            std::cout << std::setw(key_width) << "    Computed length: "
                       << std::right << std::setw(value_width) << sun_len
                       << std::endl;
         }

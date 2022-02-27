@@ -24,7 +24,7 @@
 #include "network/socket-error.h"       // socket_error
 #include "network/ss-sizes.h"           // ss_size
 
-#include <iostream>     // std::cerr, std::endl
+#include <iostream>     // std::cout, std::endl
 #include <sstream>      // std::ostringstream
 
 auto Network::get_nameresult(const GetNameHandler& handler,
@@ -37,7 +37,7 @@ auto Network::get_nameresult(const GetNameHandler& handler,
     reset_last_os_error();
 
     if (args.verbose) {
-        std::cerr << "Calling "
+        std::cout << "Calling "
                   << handler.second
                   << '('
                   << args.fd

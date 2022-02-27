@@ -21,13 +21,13 @@
 #include <unistd.h>     // close()
 #endif
 
-#include <iostream>     // std::cerr, std::endl
+#include <iostream>     // std::cout, std::endl
 
 auto Network::close(fd_type fd, bool verbose) noexcept -> Network::fd_type
 {
     if (fd != fd_null) {
         if (verbose) {
-            std::cerr << "Calling "
+            std::cout << "Calling "
 #ifdef WIN32
                       << "::closesocket"
 #else

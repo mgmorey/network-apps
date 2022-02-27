@@ -27,7 +27,7 @@
 #include <netdb.h>      // freeaddrinfo(), getaddrinfo()
 #endif
 
-#include <iostream>     // std::cerr, std::endl
+#include <iostream>     // std::cout, std::endl
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
 
@@ -85,7 +85,7 @@ Network::AddrInfo::AddrInfo(const OptionalHostname& t_hostname,
         nullptr;
 
     if (t_verbose) {
-        std::cerr << "Calling ::getaddrinfo("
+        std::cout << "Calling ::getaddrinfo("
                   << t_hostname.value_or(string_null)
                   << ", "
                   << t_service.value_or(string_null)

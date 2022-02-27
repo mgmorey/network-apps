@@ -28,7 +28,7 @@
 #include <sys/socket.h>     // socket()
 #endif
 
-#include <iostream>     // std::cerr, std::endl
+#include <iostream>     // std::cout, std::endl
 #include <sstream>      // std::ostringstream
 
 auto Network::get_socketresult(const SocketHints& hints,
@@ -38,7 +38,7 @@ auto Network::get_socketresult(const SocketHints& hints,
     static constexpr auto tab {0};
 
     if (verbose) {
-        std::cerr << "Calling ::socket("
+        std::cout << "Calling ::socket("
                   << Format("domain")
                   << hints.family()
                   << Format(delim, tab, "type")

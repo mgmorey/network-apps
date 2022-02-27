@@ -25,7 +25,7 @@
 
 #include <cstdio>       // std::perror()
 #include <cstdlib>      // std::atexit(), std::exit(), std::strtol()
-#include <iostream>     // std::cerr, std::endl
+#include <iostream>     // std::cerr, std::cout, std::endl
 #include <string>       // std::string, std::to_string()
 
 using Network::Buffer;
@@ -50,11 +50,6 @@ static auto clean_up() -> void
 {
     // Close the socket.
     Network::close(bind_fd);
-
-    // Unlink the socket.
-    std::cerr << "Removing file "
-              << SOCKET_NAME
-              << std::endl;
     ::unlink(SOCKET_NAME);
 }
 

@@ -32,7 +32,7 @@
 
 
 #include <array>        // std::array
-#include <iostream>     // std::cerr, std::endl
+#include <iostream>     // std::cout, std::endl
 #include <sstream>      // std::ostringstream
 
 auto Network::get_socketpairresult(const SocketHints& hints,
@@ -45,7 +45,7 @@ auto Network::get_socketpairresult(const SocketHints& hints,
     std::array<fd_type, 2> fds {fd_null, fd_null};
 
     if (verbose) {
-        std::cerr << "Calling ::socketpair("
+        std::cout << "Calling ::socketpair("
                   << Format("domain")
                   << hints.family()
                   << Format(delim, tab, "type")

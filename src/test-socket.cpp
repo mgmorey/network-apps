@@ -313,7 +313,7 @@ auto main(int argc, char* argv[]) -> int
         const auto& context {Context::instance()};
 
         if (verbose) {
-            std::cerr << context;
+            std::cout << context;
         }
 
 #ifndef OS_CYGWIN_NT

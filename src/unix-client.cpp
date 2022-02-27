@@ -24,7 +24,7 @@
 
 #include <cstdio>       // std::perror()
 #include <cstdlib>      // std::exit(), std::size_t
-#include <iostream>     // std::cerr, std::endl
+#include <iostream>     // std::cerr, std::cout, std::endl
 #include <span>         // std::span
 #include <vector>       // std::vector
 

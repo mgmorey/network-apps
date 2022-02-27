@@ -101,8 +101,8 @@ namespace TestConnect
                     [&](Fd fd) {
                         test_socket(fd);
                     },
-                    [&](const OsErrorResult& result) {
-                        std::cerr << result.string()
+                    [&](const OsErrorResult& error) {
+                        std::cerr << error.string()
                                   << std::endl;
                     }
                 }, t_fd_result);
@@ -313,7 +313,7 @@ auto main(int argc, char* argv[]) -> int
         const auto& context {Context::instance()};
 
         if (verbose) {
-            std::cerr << context;
+            std::cout << context;
         }
 
         const ByteString invalid_addr {};

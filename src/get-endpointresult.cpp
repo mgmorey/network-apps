@@ -35,7 +35,7 @@
 #endif
 
 #include <algorithm>    // std::max()
-#include <iostream>     // std::cerr, std::endl
+#include <iostream>     // std::cout, std::endl
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
 
@@ -56,7 +56,7 @@ auto Network::get_endpointresult(const ByteString& addr, int flags,
     const auto *const pointer {get_sa_pointer(addr)};
 
     if (verbose) {
-        std::cerr << "Calling ::getnameinfo("
+        std::cout << "Calling ::getnameinfo("
                   << addr
                   << ", "
                   << length
