@@ -40,15 +40,6 @@ Network::Fd::Fd(fd_type t_fd, bool t_verbose) :
 {
 }
 
-auto Network::Fd::operator=(const SocketHints& t_hints) -> Network::Fd&
-{
-    if (m_fd) {
-        m_fd->close();
-    }
-
-    return *this = get_socket(t_hints, m_fd ? m_fd->verbose() : false);
-}
-
 Network::Fd::operator bool() const noexcept
 {
     return static_cast<bool>(m_fd);
@@ -76,23 +67,6 @@ auto Network::Fd::close() -> Fd&
 auto Network::Fd::value() const noexcept -> fd_type
 {
     return m_fd ? m_fd->value() : fd_null;
-}
-
-auto Network::Fd::verbose() const noexcept -> bool
-{
-    return m_fd ? m_fd->verbose() : false;
-}
-
-auto Network::Fd::verbose(bool value) -> Fd&
-{
-    if (!m_fd) {
-        m_fd.reset(new FdData {fd_null, value});
-    }
-    else {
-        m_fd->verbose(value);
-    }
-
-    return *this;
 }
 
 auto Network::operator<<(std::ostream& os,

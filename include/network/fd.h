@@ -45,7 +45,6 @@ namespace Network
         Fd(Fd&&) noexcept = default;
         Fd() noexcept = default;
         ~Fd() noexcept = default;
-        auto operator=(const SocketHints& t_hints) -> Fd&;
         auto operator=(const Fd&) noexcept -> Fd& = default;
         auto operator=(Fd&&) noexcept -> Fd& = default;
         explicit operator bool() const noexcept;
@@ -53,8 +52,6 @@ namespace Network
         explicit operator std::string() const;
         auto close() -> Fd&;
         [[nodiscard]] auto value() const noexcept -> fd_type;
-        [[nodiscard]] auto verbose() const noexcept -> bool;
-        auto verbose(bool value) -> Fd&;
 
     private:
         std::shared_ptr<FdData> m_fd;
