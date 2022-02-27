@@ -25,27 +25,30 @@
 
 auto Network::close(fd_type fd, bool verbose) noexcept -> Network::fd_type
 {
-    if (fd != fd_null) {
-        if (verbose) {
-            std::cout << "Calling "
 #ifdef WIN32
-                      << "::closesocket"
+    static constexpr const char* name {"::closesocket"};
 #else
-                      << "::close"
+    static constexpr const char* name {"::close"};
 #endif
-                      << '('
-                      << fd
-                      << ')'
-                      << std::endl;
-        }
 
-#ifdef WIN32
-        ::closesocket(fd);
-#else
-        ::close(fd);
-#endif
+    if (fd == fd_null) {
+        return fd;
     }
 
+    if (verbose) {
+        std::cout << "Calling "
+                  << name
+                  << '('
+                  << fd
+                  << ')'
+                  << std::endl;
+    }
+
+#ifdef WIN32
+    ::closesocket(fd);
+#else
+    ::close(fd);
+#endif
     return fd_null;
 }
 
