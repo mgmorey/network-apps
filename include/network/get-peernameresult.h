@@ -21,7 +21,7 @@
 
 namespace Network
 {
-    extern auto get_peernameresult(Fd fd, bool verbose = false) ->
+    extern auto get_peernameresult(const Fd& fd, bool verbose = false) ->
         PeerNameResult;
 }
 

@@ -52,7 +52,7 @@ auto Network::close(fd_type fd, bool verbose) noexcept -> Network::fd_type
     return fd_null;
 }
 
-auto Network::close(Fd fd, bool verbose) noexcept -> fd_type
+auto Network::close(const Fd& fd, bool verbose) noexcept -> fd_type
 {
     return Network::close(static_cast<fd_type>(fd), verbose);
 }

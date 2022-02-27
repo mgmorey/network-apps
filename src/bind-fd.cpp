@@ -25,7 +25,7 @@
 #include <sys/socket.h>     // bind()
 #endif
 
-auto Network::bind(Fd fd,
+auto Network::bind(const Fd& fd,
                    const ByteString& str,
                    bool verbose) -> Network::OsErrorResult
 {

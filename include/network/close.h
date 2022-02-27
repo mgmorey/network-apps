@@ -21,7 +21,7 @@
 namespace Network
 {
     extern auto close(fd_type fd, bool verbose = false) noexcept -> fd_type;
-    extern auto close(Fd fd, bool verbose = false) noexcept -> fd_type;
+    extern auto close(const Fd& fd, bool verbose = false) noexcept -> fd_type;
 }
 
 #endif

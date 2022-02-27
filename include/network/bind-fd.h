@@ -21,7 +21,7 @@
 
 namespace Network
 {
-    extern auto bind(Fd fd,
+    extern auto bind(const Fd& fd,
                      const ByteString& str,
                      bool verbose = false) -> OsErrorResult;
 }

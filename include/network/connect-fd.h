@@ -21,7 +21,7 @@
 
 namespace Network
 {
-    extern auto connect(Fd fd,
+    extern auto connect(const Fd& fd,
                         const ByteString& str,
                         bool verbose = false) -> OsErrorResult;
 }

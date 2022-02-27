@@ -21,7 +21,7 @@
 
 namespace Network
 {
-    extern auto get_sockname(Fd fd, bool verbose = false) -> SockName;
+    extern auto get_sockname(const Fd& fd, bool verbose = false) -> SockName;
 }
 
 #endif

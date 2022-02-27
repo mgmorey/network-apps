@@ -72,7 +72,7 @@ static auto parse_arguments(int argc, char** argv) ->
     return result;
 }
 
-static auto read(Fd fd) -> IoResult
+static auto read(const Fd& fd) -> IoResult
 {
     Buffer buffer {BUFFER_SIZE};
     return {buffer, ::read(static_cast<fd_type>(fd),
@@ -80,7 +80,7 @@ static auto read(Fd fd) -> IoResult
                            buffer.size())};
 }
 
-static auto write(const std::string& str, Fd fd) -> ssize_t
+static auto write(const std::string& str, const Fd& fd) -> ssize_t
 {
     return ::write(static_cast<fd_type>(fd), str.data(), str.size());
 }

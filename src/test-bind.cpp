@@ -87,7 +87,7 @@ namespace TestBind
         auto operator()(const FdResult& t_fd_result) -> void
         {
             std::visit(Overloaded {
-                    [&](Fd fd) {
+                    [&](const Fd& fd) {
                         test_socket(fd);
                     },
                     [&](const OsErrorResult& error) {

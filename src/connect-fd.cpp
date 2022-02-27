@@ -25,7 +25,7 @@
 #include <sys/socket.h>     // connect()
 #endif
 
-auto Network::connect(Fd fd,
+auto Network::connect(const Fd& fd,
                       const ByteString& str,
                       bool verbose) -> Network::OsErrorResult
 {

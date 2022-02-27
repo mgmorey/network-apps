@@ -35,7 +35,7 @@ auto Network::open(const OpenHandler& handler,
     const auto lambda = [&](const Socket& sock) {
         auto socket_result {get_socketresult(sock.hints(), args.verbose)};
         std::visit(Overloaded {
-                [&](Fd fd) {
+                [&](const Fd& fd) {
                     const auto addr {sock.address()};
                     const auto params {OpenFdParams {fd, addr, args.verbose}};
                     const auto result {open(handler, params)};

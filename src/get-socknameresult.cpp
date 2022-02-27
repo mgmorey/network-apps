@@ -25,7 +25,7 @@
 #include <sys/socket.h>     // ::getsockname()
 #endif
 
-auto Network::get_socknameresult(Fd fd, bool verbose) ->
+auto Network::get_socknameresult(const Fd& fd, bool verbose) ->
     Network::SockNameResult
 {
     const GetNameHandler handler {::getsockname, "::getsockname"};
