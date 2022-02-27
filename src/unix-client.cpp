@@ -89,6 +89,9 @@ auto main(int argc, char* argv[]) -> int
     bool shutdown {false};
 
     try {
+        // Fetch arguments from command line;
+        const auto args = parse_arguments(argc, argv);
+
         // Connect socket to socket address.
         const Fd fd {AF_UNIX, SOCK_SEQPACKET, 0, 0, verbose};
         const auto addr {to_byte_string(SOCKET_NAME)};
@@ -100,9 +103,6 @@ auto main(int argc, char* argv[]) -> int
                       << std::endl;
             std::exit(EXIT_FAILURE);
         }
-
-        // Fetch arguments from command line;
-        const auto args = parse_arguments(argc, argv);
 
         // Send arguments to server.
         for (const auto& arg : args) {
