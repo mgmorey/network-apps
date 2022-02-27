@@ -91,7 +91,7 @@ auto main(int argc, char* argv[]) -> int
 
     try {
         // Fetch arguments from command line;
-        const auto args = parse_arguments(argc, argv);
+        const auto args {parse_arguments(argc, argv)};
 
         // Connect socket to socket address.
         const Fd fd {AF_UNIX, SOCK_SEQPACKET, 0, 0, verbose};
