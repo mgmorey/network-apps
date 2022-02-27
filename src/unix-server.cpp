@@ -108,7 +108,7 @@ auto main(int argc, char* argv[]) -> int
         parse_arguments(argc, argv);
 
         // Bind Unix domain socket to pathname.
-        bind_fd = get_socket(hints, verbose);
+        bind_fd = hints;
         const auto addr {to_byte_string(SOCKET_NAME)};
         const auto error {Network::bind(bind_fd, addr, verbose)};
         const auto error_code {error.number()};

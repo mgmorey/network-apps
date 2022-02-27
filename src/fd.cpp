@@ -15,6 +15,7 @@
 
 #include "network/fd.h"                 // Fd, fd_type, operator<<(),
                                         // std::ostream
+#include "network/close.h"              // close()
 #include "network/get-socket.h"         // get_socket()
 #include "network/string-null.h"        // string_null
 
@@ -34,31 +35,40 @@ Network::Fd::Fd(const SocketHints& t_hints, bool t_verbose) :
 {
 }
 
-Network::Fd::Fd(value_type t_fd) noexcept :
-    m_value(t_fd)
+Network::Fd::Fd(fd_type t_fd, bool t_verbose) noexcept :
+    m_fd(t_fd),
+    m_verbose(t_verbose)
 {
+}
+
+auto Network::Fd::operator=(const SocketHints& t_hints) noexcept -> Network::Fd&
+{
+    m_fd = Network::close(m_fd);
+    m_fd = static_cast<fd_type>(get_socket(t_hints, m_verbose));
+    return *this;
 }
 
 Network::Fd::operator bool() const noexcept
 {
-    return m_value != fd_null;
+    return m_fd != fd_null;
 }
 
-Network::Fd::operator value_type() const noexcept
+Network::Fd::operator fd_type() const noexcept
 {
-    return m_value;
+    return m_fd;
 }
 
 Network::Fd::operator std::string() const
 {
-    if (m_value == fd_null) {
+    if (m_fd == fd_null) {
         return string_null;
     }
 
-    return std::to_string(m_value);
+    return std::to_string(m_fd);
 }
 
-auto Network::operator<<(std::ostream& os, Fd fd) noexcept -> std::ostream&
+auto Network::operator<<(std::ostream& os,
+                         const Fd& fd) noexcept -> std::ostream&
 {
     return os << static_cast<std::string>(fd);
 }
