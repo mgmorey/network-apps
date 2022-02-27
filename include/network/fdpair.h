@@ -47,8 +47,8 @@ namespace Network
         ~FdPair() noexcept = default;
         auto operator=(const FdPair&) noexcept -> FdPair& = default;
         auto operator=(FdPair&&) noexcept -> FdPair& = default;
-        auto operator[](std::size_t i) -> Fd&;
-        auto operator[](std::size_t i) const -> const Fd&;
+        [[nodiscard]] auto at(std::size_t i) const -> const Fd&;
+        [[nodiscard]] auto at(std::size_t i) -> Fd&;
 
     private:
         std::array<Fd, m_size> m_fd;

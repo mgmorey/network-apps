@@ -41,12 +41,12 @@ Network::FdPair::FdPair(const Fd& t_fd1, const Fd& t_fd2) noexcept :
 {
 }
 
-auto Network::FdPair::operator[](std::size_t i) -> Network::Fd&
+auto Network::FdPair::at(std::size_t i) const -> const Network::Fd&
 {
-    return m_fd[i];
+    return m_fd.at(i);
 }
 
-auto Network::FdPair::operator[](std::size_t i) const -> const Network::Fd&
+auto Network::FdPair::at(std::size_t i) -> Network::Fd&
 {
-    return m_fd[i];
+    return m_fd.at(i);
 }

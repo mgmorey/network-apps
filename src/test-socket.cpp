@@ -283,16 +283,16 @@ namespace TestSocket
     {
         const FdPair fds {AF_UNIX, SOCK_STREAM, 0, 0, verbose};
         std::cout << "Socket "
-                  << fds[0]
+                  << fds.at(0)
                   << " connected to socket "
-                  << fds[1]
+                  << fds.at(1)
                   << std::endl;
-        Network::close(fds[0], verbose);
-        Network::close(fds[1], verbose);
+        Network::close(fds.at(0), verbose);
+        Network::close(fds.at(1), verbose);
         std::cout << "Sockets "
-                  << fds[0]
+                  << fds.at(0)
                   << " and "
-                  << fds[1]
+                  << fds.at(1)
                   << " closed"
                   << std::endl;
     }
