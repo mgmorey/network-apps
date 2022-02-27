@@ -190,8 +190,6 @@ namespace TestSocket
 
                 std::remove(unix_path->c_str());
             }
-
-            fd.close();
         }
         else {
             assert(static_cast<bool>(unix_path) == false);
@@ -287,8 +285,6 @@ namespace TestSocket
                   << " connected to socket "
                   << fds.at(1)
                   << std::endl;
-        fds.at(0).close();
-        fds.at(1).close();
     }
 }
 

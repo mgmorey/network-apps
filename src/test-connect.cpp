@@ -20,8 +20,8 @@
                                         // FdResultVector,
                                         // OptionalHostname,
                                         // OsErrorResult, Overloaded,
-                                        // SocketHints, close(),
-                                        // connect(), get_hostname(),
+                                        // SocketHints, connect(),
+                                        // get_hostname(),
                                         // get_peername(),
                                         // get_sockname(), string_null
 
@@ -131,7 +131,6 @@ namespace TestConnect
                  << std::right << std::setw(indent_width) << "to "
                  << Address(peer)
                  << std::endl;
-            t_fd.close();
         }
 
     private:
@@ -231,7 +230,6 @@ namespace TestConnect
             print(error, "connect() with invalid address");
         }
 
-        fd.close();
         assert(expected_codes.count(actual_code) != 0);
     }
 

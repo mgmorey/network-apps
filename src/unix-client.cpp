@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/network.h"            // Buffer, Fd, close(),
-                                        // connect(), socket_error,
+#include "network/network.h"            // Buffer, Fd, connect(),
+                                        // socket_error,
                                         // to_byte_string()
 #include "unix-common.h"                // BUFFER_SIZE, SOCKET_NAME
 
@@ -141,9 +141,6 @@ auto main(int argc, char* argv[]) -> int
                       << read_str
                       << std::endl;
         }
-
-        // Close socket.
-        fd.close();
     }
     catch (const std::exception& error) {
         std::cerr << error.what()

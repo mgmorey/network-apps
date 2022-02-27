@@ -20,7 +20,7 @@
                                         // FdResultVector,
                                         // SocketHints, OsErrorResult,
                                         // Overloaded, bind(),
-                                        // close(), get_sockname(),
+                                        // get_sockname(),
                                         // string_null
 
 #ifdef WIN32
@@ -114,7 +114,6 @@ namespace TestBind
                  << " bound to "
                  << Address(self)
                  << std::endl;
-            t_fd.close();
         }
 
     private:
@@ -213,7 +212,6 @@ namespace TestBind
             print(error, "bind() with invalid address");
         }
 
-        fd.close();
         assert(expected_codes.count(actual_code) != 0);
     }
 
