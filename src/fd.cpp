@@ -36,7 +36,7 @@ Network::Fd::Fd(const SocketHints& t_hints, bool t_verbose) :
 }
 
 Network::Fd::Fd(fd_type t_fd, bool t_verbose) :
-    m_fd(new FdData(t_fd, t_verbose))
+    m_fd(new FdData {t_fd, t_verbose})
 {
 }
 
@@ -83,9 +83,12 @@ auto Network::Fd::verbose() const noexcept -> bool
     return m_fd ? m_fd->verbose() : false;
 }
 
-auto Network::Fd::verbose(bool value) noexcept -> Fd&
+auto Network::Fd::verbose(bool value) -> Fd&
 {
-    if (m_fd) {
+    if (!m_fd) {
+        m_fd.reset(new FdData {fd_null, value});
+    }
+    else {
         m_fd->verbose(value);
     }
 

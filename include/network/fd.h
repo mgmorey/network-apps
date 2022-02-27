@@ -54,7 +54,7 @@ namespace Network
         auto close() -> Fd&;
         [[nodiscard]] auto value() const noexcept -> fd_type;
         [[nodiscard]] auto verbose() const noexcept -> bool;
-        auto verbose(bool value) noexcept -> Fd&;
+        auto verbose(bool value) -> Fd&;
 
     private:
         std::shared_ptr<FdData> m_fd;
