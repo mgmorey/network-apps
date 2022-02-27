@@ -45,7 +45,7 @@ namespace Network
         Fd(Fd&&) noexcept = default;
         Fd() noexcept = default;
         ~Fd() noexcept = default;
-        auto operator=(const SocketHints& t_hints) noexcept -> Fd&;
+        auto operator=(const SocketHints& t_hints) -> Fd&;
         auto operator=(const Fd&) noexcept -> Fd& = default;
         auto operator=(Fd&&) noexcept -> Fd& = default;
         explicit operator bool() const noexcept;

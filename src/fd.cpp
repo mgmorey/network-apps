@@ -41,7 +41,7 @@ Network::Fd::Fd(fd_type t_fd, bool t_verbose) noexcept :
 {
 }
 
-auto Network::Fd::operator=(const SocketHints& t_hints) noexcept -> Network::Fd&
+auto Network::Fd::operator=(const SocketHints& t_hints) -> Network::Fd&
 {
     m_fd = Network::close(m_fd);
     m_fd = static_cast<fd_type>(get_socket(t_hints, m_verbose));
