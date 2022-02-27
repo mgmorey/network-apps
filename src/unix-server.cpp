@@ -159,6 +159,7 @@ auto main(int argc, char* argv[]) -> int
                 // Handle commands.
 
                 if (read_str == "DOWN") {
+                    // Quit on DOWN command.
                     shutdown = true;
                     break;
                 }
@@ -183,11 +184,6 @@ auto main(int argc, char* argv[]) -> int
 
             // Close socket.
             Network::close(fd, verbose);
-
-            // Quit on DOWN command.
-            if (shutdown) {
-                break;
-            }
         }
     }
     catch (const std::exception& error) {
