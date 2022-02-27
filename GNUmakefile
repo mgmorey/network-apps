@@ -149,10 +149,6 @@ artifacts = $(binary_artifacts) $(text_artifacts)
 
 build_targets = assert objects libraries programs sizes
 
-ifneq "$(call compare-versions,$(cppcheck_version),2.7)" "less"
-	build_targets += analyze
-endif
-
 ifeq "$(is_ctags_universal)" "true"
 ifeq "$(call compare-versions,$(ctags_version),5.8)" "greater"
 	build_targets += tags
@@ -160,6 +156,10 @@ endif
 endif
 
 all_targets = $(build_targets) test
+
+ifneq "$(os_name)" "MINGW64_NT"
+	all_targets += unix
+endif
 
 ifeq "$(os_name)" "MINGW64_NT"
 	all_targets += dos2unix
