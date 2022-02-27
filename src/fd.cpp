@@ -35,19 +35,18 @@ Network::Fd::Fd(const SocketHints& t_hints, bool t_verbose) :
 {
 }
 
-Network::Fd::Fd(fd_type t_fd, bool t_verbose) noexcept :
-    m_fd(t_fd, t_verbose)
-{
-}
-
-Network::Fd::~Fd() noexcept
+Network::Fd::Fd(fd_type t_fd, bool t_verbose) :
+    m_fd(new FdData(t_fd, t_verbose))
 {
 }
 
 auto Network::Fd::operator=(const SocketHints& t_hints) -> Network::Fd&
 {
-    m_fd.close();
-    return *this = get_socket(t_hints, m_fd.verbose());
+    if (m_fd) {
+        m_fd->close();
+    }
+
+    return *this = get_socket(t_hints, m_fd ? m_fd->verbose() : false);
 }
 
 Network::Fd::operator bool() const noexcept
@@ -57,33 +56,40 @@ Network::Fd::operator bool() const noexcept
 
 Network::Fd::operator fd_type() const noexcept
 {
-    return static_cast<fd_type>(m_fd);
+    return m_fd ? static_cast<fd_type>(*m_fd) : fd_null;
 }
 
 Network::Fd::operator std::string() const
 {
-    return static_cast<std::string>(m_fd);
+    return m_fd ? static_cast<std::string>(*m_fd) : string_null;
 }
 
 auto Network::Fd::close() -> Fd&
 {
-    m_fd.close();
+    if (m_fd) {
+        m_fd->close();
+    }
+
     return *this;
 }
 
 auto Network::Fd::value() const noexcept -> fd_type
 {
-    return m_fd.value();;
+    return m_fd ? m_fd->value() : fd_null;
 }
 
 auto Network::Fd::verbose() const noexcept -> bool
 {
-    return m_fd.verbose();
+    return m_fd ? m_fd->verbose() : false;
 }
 
-auto Network::Fd::verbose(bool value) noexcept -> FdData&
+auto Network::Fd::verbose(bool value) noexcept -> Fd&
 {
-    return m_fd.verbose(value);
+    if (m_fd) {
+        m_fd->verbose(value);
+    }
+
+    return *this;
 }
 
 auto Network::operator<<(std::ostream& os,

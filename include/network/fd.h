@@ -23,6 +23,7 @@
                                                 // socket_type_type
 #include "network/sockethints.h"                // SocketHints
 
+#include <memory>      // std::shared_ptr
 #include <ostream>     // std::ostream
 #include <string>      // std::string
 
@@ -39,11 +40,11 @@ namespace Network
         explicit Fd(const SocketHints& t_hints,
                     bool t_verbose = false);
         explicit Fd(fd_type t_fd,
-                    bool t_verbose = false) noexcept;
+                    bool t_verbose = false);
         Fd(const Fd&) noexcept = default;
         Fd(Fd&&) noexcept = default;
         Fd() noexcept = default;
-        ~Fd() noexcept;
+        ~Fd() noexcept = default;
         auto operator=(const SocketHints& t_hints) -> Fd&;
         auto operator=(const Fd&) noexcept -> Fd& = default;
         auto operator=(Fd&&) noexcept -> Fd& = default;
@@ -53,10 +54,10 @@ namespace Network
         auto close() -> Fd&;
         [[nodiscard]] auto value() const noexcept -> fd_type;
         [[nodiscard]] auto verbose() const noexcept -> bool;
-        auto verbose(bool value) noexcept -> FdData&;
+        auto verbose(bool value) noexcept -> Fd&;
 
     private:
-        FdData m_fd;
+        std::shared_ptr<FdData> m_fd;
     };
 
     extern auto operator<<(std::ostream& os,

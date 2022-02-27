@@ -27,7 +27,7 @@ Network::FdData::FdData(fd_type t_fd_data, bool t_verbose) noexcept :
 
 Network::FdData::~FdData()
 {
-    // static_cast<void>(this->close());
+    static_cast<void>(this->close());
 }
 
 auto Network::FdData::operator=(fd_type value) noexcept -> FdData&
