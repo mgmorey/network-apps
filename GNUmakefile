@@ -149,7 +149,7 @@ artifacts = $(binary_artifacts) $(text_artifacts)
 
 build_targets = assert objects libraries programs sizes
 
-ifeq "$(call compare-versions,$(cppcheck_version),2.6)" "greater"
+ifneq "$(call compare-versions,$(cppcheck_version),2.7)" "less"
 	build_targets += analyze
 endif
 
