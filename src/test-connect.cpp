@@ -95,10 +95,10 @@ namespace TestConnect
         {
         }
 
-        auto operator()(const FdResult& t_fd_result) -> void
+        auto operator()(FdResult& t_fd_result) -> void
         {
             std::visit(Overloaded {
-                    [&](const Fd& fd) {
+                    [&](Fd& fd) {
                         test_socket(fd);
                     },
                     [&](const OsErrorResult& error) {
@@ -108,7 +108,7 @@ namespace TestConnect
                 }, t_fd_result);
         }
 
-        auto test_socket(const Fd& t_fd) -> void
+        auto test_socket(Fd& t_fd) -> void
         {
             const auto hostname {m_endpoint.first};
             const auto service {m_endpoint.second};
@@ -131,11 +131,7 @@ namespace TestConnect
                  << std::right << std::setw(indent_width) << "to "
                  << Address(peer)
                  << std::endl;
-            Network::close(t_fd, verbose);
-            m_os << "Socket "
-                 << std::right << std::setw(fd_width) << t_fd
-                 << " closed"
-                 << std::endl;
+            t_fd.close();
         }
 
     private:
@@ -227,7 +223,7 @@ namespace TestConnect
     {
         os_error_type actual_code {0};
         const auto& expected_codes {get_codes_invalid_addr()};
-        const Fd fd {AF_INET, SOCK_STREAM, IPPROTO_TCP, 0, verbose};
+        Fd fd {AF_INET, SOCK_STREAM, IPPROTO_TCP, 0, verbose};
         const auto error {Network::connect(fd, addr, verbose)};
         actual_code = error.number();
 
@@ -235,7 +231,7 @@ namespace TestConnect
             print(error, "connect() with invalid address");
         }
 
-        Network::close(fd);
+        fd.close();
         assert(expected_codes.count(actual_code) != 0);
     }
 
@@ -244,9 +240,9 @@ namespace TestConnect
     {
         os_error_type actual_code {0};
         const auto& expected_codes {get_codes_invalid_host()};
-        const auto connect_result {Network::connect(endpoint, hints, verbose)};
+        auto connect_result {Network::connect(endpoint, hints, verbose)};
         std::visit(Overloaded {
-                [&](const FdResultVector& fd_results) {
+                [&](FdResultVector& fd_results) {
                     static_cast<void>(fd_results);
                 },
                 [&](const OsErrorResult& error) {
@@ -279,9 +275,9 @@ namespace TestConnect
                                    const SocketHints& hints,
                                    const Hostname& hostname) -> void
     {
-        const auto connect_result {Network::connect(endpoint, hints, verbose)};
+        auto connect_result {Network::connect(endpoint, hints, verbose)};
         std::visit(Overloaded {
-                [&](const FdResultVector& fd_results) {
+                [&](FdResultVector& fd_results) {
                     std::for_each(fd_results.begin(),
                                   fd_results.end(),
                                   Test(endpoint,
@@ -318,11 +314,11 @@ auto main(int argc, char* argv[]) -> int
 
         const ByteString invalid_addr {};
         test_connect_invalid_addr(invalid_addr);
-        const Endpoint invalid_host {".", localservice};
+        Endpoint invalid_host {".", localservice};
         test_connect_invalid_host(invalid_host, hints);
-        const Endpoint invalid_service {localhost, "."};
+        Endpoint invalid_service {localhost, "."};
         test_connect_invalid_service(invalid_service, hints);
-        const Endpoint valid_endpoint {
+        Endpoint valid_endpoint {
             args.size() > 1 ? args[1] : localhost,
             args.size() > 2 ? args[2] : localservice
         };

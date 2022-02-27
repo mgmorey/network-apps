@@ -50,9 +50,9 @@ auto Network::get_socketresult(const SocketHints& hints,
     }
 
     reset_last_os_error();
-    const auto fd {::socket(hints.family(), hints.socktype(), hints.protocol())};
+    const auto handle {::socket(hints.family(), hints.socktype(), hints.protocol())};
 
-    if (fd == fd_null) {
+    if (handle == fd_null) {
         const auto error = get_last_os_error();
         std::ostringstream oss;
         oss << "Call to ::socket("
@@ -69,5 +69,5 @@ auto Network::get_socketresult(const SocketHints& hints,
         return OsErrorResult {error, oss.str()};
     }
 
-    return Fd {fd};
+    return Fd {handle, verbose};
 }

@@ -16,12 +16,11 @@
 #ifndef NETWORK_CLOSE_H
 #define NETWORK_CLOSE_H
 
-#include "network/fd.h"                 // Fd, fd_type
+#include "network/fd-type.h"            // fd_type
 
 namespace Network
 {
     extern auto close(fd_type handle, bool verbose = false) noexcept -> fd_type;
-    extern auto close(const Fd& fd, bool verbose = false) noexcept -> fd_type;
 }
 
 #endif

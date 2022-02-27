@@ -84,10 +84,10 @@ namespace TestBind
         {
         }
 
-        auto operator()(const FdResult& t_fd_result) -> void
+        auto operator()(FdResult& t_fd_result) -> void
         {
             std::visit(Overloaded {
-                    [&](const Fd& fd) {
+                    [&](Fd& fd) {
                         test_socket(fd);
                     },
                     [&](const OsErrorResult& error) {
@@ -97,7 +97,7 @@ namespace TestBind
                 }, t_fd_result);
         }
 
-        auto test_socket(const Fd& t_fd) -> void
+        auto test_socket(Fd& t_fd) -> void
         {
             const auto hostname {m_endpoint.first};
             const auto service {m_endpoint.second};
@@ -114,11 +114,7 @@ namespace TestBind
                  << " bound to "
                  << Address(self)
                  << std::endl;
-            Network::close(t_fd, verbose);
-            m_os << "Socket "
-                 << std::right << std::setw(fd_width) << t_fd
-                 << " closed"
-                 << std::endl;
+            t_fd.close();
         }
 
     private:
@@ -209,7 +205,7 @@ namespace TestBind
     {
         os_error_type actual_code {0};
         const auto& expected_codes {get_codes_invalid_addr()};
-        const Fd fd {AF_INET, SOCK_STREAM, IPPROTO_TCP, 0, verbose};
+        Fd fd {AF_INET, SOCK_STREAM, IPPROTO_TCP, 0, verbose};
         const auto error {Network::bind(fd, addr, verbose)};
         actual_code = error.number();
 
@@ -217,7 +213,7 @@ namespace TestBind
             print(error, "bind() with invalid address");
         }
 
-        Network::close(fd);
+        fd.close();
         assert(expected_codes.count(actual_code) != 0);
     }
 
@@ -257,12 +253,12 @@ namespace TestBind
         assert(expected_codes.count(actual_code) != 0);
     }
 
-    static auto test_bind_valid(const Endpoint& endpoint,
+    static auto test_bind_valid(Endpoint& endpoint,
                                 const SocketHints& hints) -> void
     {
-        const auto bind_result {Network::bind(endpoint, hints, verbose)};
+        auto bind_result {Network::bind(endpoint, hints, verbose)};
         std::visit(Overloaded {
-                [&](const FdResultVector& fd_results) {
+                [&](FdResultVector& fd_results) {
                     std::for_each(fd_results.begin(), fd_results.end(),
                                   Test(endpoint, std::cout));
                 },
@@ -290,11 +286,11 @@ auto main(int argc, char* argv[]) -> int
 
         const ByteString invalid_addr {};
         test_bind_invalid_addr(invalid_addr);
-        const Endpoint invalid_host {".", localservice};
+        Endpoint invalid_host {".", localservice};
         test_bind_invalid_host(invalid_host, hints);
-        const Endpoint invalid_service {localhost, "."};
+        Endpoint invalid_service {localhost, "."};
         test_bind_invalid_service(invalid_service, hints);
-        const Endpoint valid_endpoint {
+        Endpoint valid_endpoint {
             args.size() > 1 ? args[1] : localhost,
             args.size() > 2 ? args[2] : localservice
         };

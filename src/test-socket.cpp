@@ -174,7 +174,7 @@ namespace TestSocket
 
         if (pathname) {
             assert(unix_path == pathname);
-            const Fd fd {AF_UNIX, SOCK_STREAM, 0, 0, verbose};
+            Fd fd {AF_UNIX, SOCK_STREAM, 0, 0, verbose};
             const auto result {Network::bind(fd, addr, verbose)};
             actual_code = result.number();
 
@@ -191,7 +191,7 @@ namespace TestSocket
                 std::remove(unix_path->c_str());
             }
 
-            Network::close(fd, verbose);
+            fd.close();
         }
         else {
             assert(static_cast<bool>(unix_path) == false);
@@ -281,20 +281,14 @@ namespace TestSocket
 
     static auto test_socketpair() -> void
     {
-        const FdPair fds {AF_UNIX, SOCK_STREAM, 0, 0, verbose};
+        FdPair fds {AF_UNIX, SOCK_STREAM, 0, 0, verbose};
         std::cout << "Socket "
                   << fds.at(0)
                   << " connected to socket "
                   << fds.at(1)
                   << std::endl;
-        Network::close(fds.at(0), verbose);
-        Network::close(fds.at(1), verbose);
-        std::cout << "Sockets "
-                  << fds.at(0)
-                  << " and "
-                  << fds.at(1)
-                  << " closed"
-                  << std::endl;
+        fds.at(0).close();
+        fds.at(1).close();
     }
 }
 

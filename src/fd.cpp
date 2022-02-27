@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/fd.h"                 // Fd, fd_type, operator<<(),
-                                        // std::ostream
+#include "network/fd.h"                 // Fd, FdData, fd_type,
+                                        // operator<<(), std::ostream
 #include "network/close.h"              // close()
 #include "network/get-socket.h"         // get_socket()
 #include "network/string-null.h"        // string_null
@@ -36,35 +36,54 @@ Network::Fd::Fd(const SocketHints& t_hints, bool t_verbose) :
 }
 
 Network::Fd::Fd(fd_type t_fd, bool t_verbose) noexcept :
-    m_fd(t_fd),
-    m_verbose(t_verbose)
+    m_fd(t_fd, t_verbose)
+{
+}
+
+Network::Fd::~Fd() noexcept
 {
 }
 
 auto Network::Fd::operator=(const SocketHints& t_hints) -> Network::Fd&
 {
-    m_fd = Network::close(m_fd);
-    m_fd = static_cast<fd_type>(get_socket(t_hints, m_verbose));
-    return *this;
+    m_fd.close();
+    return *this = get_socket(t_hints, m_fd.verbose());
 }
 
 Network::Fd::operator bool() const noexcept
 {
-    return m_fd != fd_null;
+    return static_cast<bool>(m_fd);
 }
 
 Network::Fd::operator fd_type() const noexcept
 {
-    return m_fd;
+    return static_cast<fd_type>(m_fd);
 }
 
 Network::Fd::operator std::string() const
 {
-    if (m_fd == fd_null) {
-        return string_null;
-    }
+    return static_cast<std::string>(m_fd);
+}
 
-    return std::to_string(m_fd);
+auto Network::Fd::close() -> Fd&
+{
+    m_fd.close();
+    return *this;
+}
+
+auto Network::Fd::value() const noexcept -> fd_type
+{
+    return m_fd.value();;
+}
+
+auto Network::Fd::verbose() const noexcept -> bool
+{
+    return m_fd.verbose();
+}
+
+auto Network::Fd::verbose(bool value) noexcept -> FdData&
+{
+    return m_fd.verbose(value);
 }
 
 auto Network::operator<<(std::ostream& os,

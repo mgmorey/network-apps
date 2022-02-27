@@ -94,7 +94,7 @@ auto main(int argc, char* argv[]) -> int
         const auto args {parse_arguments(argc, argv)};
 
         // Connect socket to socket address.
-        const Fd fd {AF_UNIX, SOCK_SEQPACKET, 0, 0, verbose};
+        Fd fd {AF_UNIX, SOCK_SEQPACKET, 0, 0, verbose};
         const auto addr {to_byte_string(SOCKET_NAME)};
         const auto error {Network::connect(fd, addr, verbose)};
         const auto error_code {error.number()};
@@ -143,7 +143,7 @@ auto main(int argc, char* argv[]) -> int
         }
 
         // Close socket.
-        Network::close(fd, verbose);
+        fd.close();
     }
     catch (const std::exception& error) {
         std::cerr << error.what()

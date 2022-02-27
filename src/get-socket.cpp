@@ -24,7 +24,7 @@
 
 auto Network::get_socket(const SocketHints& hints, bool verbose) -> Network::Fd
 {
-    Fd result;
+    Fd result {fd_null, verbose};
     const auto fd_result {get_socketresult(hints, verbose)};
     std::visit(Overloaded {
             [&](const Fd& fd) {

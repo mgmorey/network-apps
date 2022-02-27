@@ -78,7 +78,7 @@ auto Network::get_socketpairresult(const SocketHints& hints,
         return OsErrorResult {error, oss.str()};
     }
 
-    return FdPair {Fd {fds[0]}, Fd {fds[1]}};
+    return FdPair {Fd {fds[0], verbose}, Fd {fds[1], verbose}};
 }
 
 #endif

@@ -13,7 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/close.h"              // Fd, fd_null, fd_type
+#include "network/close.h"              // fd_null, fd_type
+#include "network/fd-null.h"            // fd_null
 
 #ifdef WIN32
 #include <winsock2.h>   // closesocket()
@@ -50,9 +51,4 @@ auto Network::close(fd_type handle, bool verbose) noexcept -> Network::fd_type
     ::close(handle);
 #endif
     return fd_null;
-}
-
-auto Network::close(const Fd& fd, bool verbose) noexcept -> fd_type
-{
-    return Network::close(static_cast<fd_type>(fd), verbose);
 }

@@ -48,7 +48,7 @@ static bool verbose {false};	// NOLINT
 static auto clean_up() -> void
 {
     // Close the socket.
-    Network::close(bind_fd);
+    bind_fd.close();
     ::unlink(SOCKET_NAME);
 }
 
@@ -104,6 +104,7 @@ auto main(int argc, char* argv[]) -> int
 
     try {
         parse_arguments(argc, argv);
+        bind_fd.verbose(verbose);
 
         // Bind Unix domain socket to pathname.
         bind_fd = hints;
@@ -183,7 +184,7 @@ auto main(int argc, char* argv[]) -> int
             }
 
             // Close socket.
-            Network::close(fd, verbose);
+            fd.close();
         }
     }
     catch (const std::exception& error) {

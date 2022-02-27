@@ -16,8 +16,7 @@
 #ifndef NETWORK_FD_H
 #define NETWORK_FD_H
 
-#include "network/fd-null.h"                    // fd_null
-#include "network/fd-type.h"                    // fd_type
+#include "network/fddata.h"                     // FdData, fd_null, fd_type
 #include "network/socket-hint-types.h"          // socket_family_type,
                                                 // socket_flags_type,
                                                 // socket_protocol_type,
@@ -44,17 +43,20 @@ namespace Network
         Fd(const Fd&) noexcept = default;
         Fd(Fd&&) noexcept = default;
         Fd() noexcept = default;
-        ~Fd() noexcept = default;
+        ~Fd() noexcept;
         auto operator=(const SocketHints& t_hints) -> Fd&;
         auto operator=(const Fd&) noexcept -> Fd& = default;
         auto operator=(Fd&&) noexcept -> Fd& = default;
         explicit operator bool() const noexcept;
         explicit operator fd_type() const noexcept;
         explicit operator std::string() const;
+        auto close() -> Fd&;
+        [[nodiscard]] auto value() const noexcept -> fd_type;
+        [[nodiscard]] auto verbose() const noexcept -> bool;
+        auto verbose(bool value) noexcept -> FdData&;
 
     private:
-        fd_type m_fd {fd_null};
-        bool m_verbose {false};
+        FdData m_fd;
     };
 
     extern auto operator<<(std::ostream& os,
