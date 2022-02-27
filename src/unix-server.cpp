@@ -34,8 +34,6 @@ using Network::Fd;
 using Network::Pathname;
 using Network::SocketHints;
 using Network::fd_type;
-using Network::get_socket;
-using Network::os_error_type;
 using Network::socket_error;
 using Network::to_byte_string;
 
