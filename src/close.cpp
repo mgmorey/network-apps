@@ -23,31 +23,31 @@
 
 #include <iostream>     // std::cout, std::endl
 
-auto Network::close(fd_type fd, bool verbose) noexcept -> Network::fd_type
+auto Network::close(fd_type handle, bool verbose) noexcept -> Network::fd_type
 {
 #ifdef WIN32
-    static constexpr const char* name {"::closesocket"};
+    static constexpr const char* method {"::closesocket"};
 #else
-    static constexpr const char* name {"::close"};
+    static constexpr const char* method {"::close"};
 #endif
 
-    if (fd == fd_null) {
-        return fd;
+    if (handle == fd_null) {
+        return handle;
     }
 
     if (verbose) {
         std::cout << "Calling "
-                  << name
+                  << method
                   << '('
-                  << fd
+                  << handle
                   << ')'
                   << std::endl;
     }
 
 #ifdef WIN32
-    ::closesocket(fd);
+    ::closesocket(handle);
 #else
-    ::close(fd);
+    ::close(handle);
 #endif
     return fd_null;
 }
