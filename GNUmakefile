@@ -266,8 +266,8 @@ tidy: $(sort $(sources))
 	$(clang_tidy) $^ $(CLANG_TIDY_FLAGS)
 
 .PHONY: unix
-unix:
-	./unix-server & (sleep 1; ./unix-client 2 2; ./unix-client DOWN)
+unix: $(sort $(unix_programs))
+	./unix-server -v & (sleep 1; ./unix-client -v 2 2; ./unix-client DOWN)
 
 .SECONDARY: $(objects)
 
