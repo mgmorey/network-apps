@@ -13,97 +13,139 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/network.h"            // Buffer, Fd,
-                                        // OptionalPathname, close(),
+#include "network/network.h"            // Buffer, Fd, close(),
                                         // connect(), socket_error,
                                         // to_byte_string()
 #include "unix-common.h"                // BUFFER_SIZE, SOCKET_NAME
 
-#include <sys/socket.h>         // SOCK_SEQPACKET, ::connect(),
-                                // ::socket()
+#include <sys/socket.h>         // SOCK_SEQPACKET
 #include <sys/un.h>             // AF_UNIX
-#include <unistd.h>             // ::close(), ::read(), ::write()
+#include <unistd.h>             // ::read(), ::write()
 
-#include <cerrno>       // errno
-#include <cstdio>       // std::fprintf(), std::perror(),
-                        // std::printf()
-#include <cstdlib>      // std::exit()
-#include <cstring>      // std::memset(), std::strcmp(),
-                        // std::strcpy(), std::strncpy()
+#include <cstdio>       // std::perror()
+#include <cstdlib>      // std::exit(), std::size_t
 #include <iostream>     // std::cerr, std::endl
 #include <span>         // std::span
+#include <vector>       // std::vector
 
-auto main(int argc, char *argv[]) -> int
+using Network::Buffer;
+using Network::Fd;
+using Network::Pathname;
+using Network::fd_type;
+using Network::os_error_type;
+using Network::socket_error;
+using Network::to_byte_string;
+
+using ReadResult = std::pair<std::string, os_error_type>;
+
+static bool verbose {false};  // NOLINT
+
+static auto parse_arguments(int argc, char** argv) ->
+    std::vector<std::string>
+{
+    std::vector<std::string> result {*argv};
+    int ch {};
+
+    while ((ch = ::getopt(argc, argv, "v")) != -1) {
+        switch (ch) {
+        case 'v':
+            verbose = true;
+            break;
+        case '?':
+            std::cerr << "Usage: "
+                      << *argv
+                      << " [-v]"
+                      << std::endl;
+            std::exit(EXIT_FAILURE);
+        default:
+            abort();
+        }
+    }
+
+    const auto args = std::span(argv, std::size_t(argc));
+
+    for (auto index = optind; index < argc; ++index) {
+        result.emplace_back(args[index]);
+    }
+
+    return result;
+}
+
+static auto read(Fd fd) -> ReadResult
+{
+    Buffer buffer {BUFFER_SIZE};
+    return {buffer, ::read(static_cast<fd_type>(fd),
+                           buffer.data(),
+                           buffer.size())};
+}
+
+static auto write(const std::string& str, Fd fd) -> os_error_type
+{
+    return ::write(static_cast<fd_type>(fd), str.c_str(), str.size() + 1);
+}
+
+auto main(int argc, char* argv[]) -> int
 {
     bool shutdown {false};
 
-    // Create local socket.
-    Network::fd_type sock {::socket(AF_UNIX, SOCK_SEQPACKET, 0)};
+    try {
+        // Connect socket to socket address.
+        const Fd fd {AF_UNIX, SOCK_SEQPACKET, 0, 0, verbose};
+        const auto addr {to_byte_string(SOCKET_NAME)};
+        const auto error {Network::connect(fd, addr, verbose)};
+        const auto error_code {error.number()};
 
-    if (sock == -1) {
-        std::perror("socket");
-        std::exit(EXIT_FAILURE);
-    }
-
-    // Connect socket to socket address.
-    const Network::OptionalPathname pathname {SOCKET_NAME};
-    const auto sock_addr {Network::to_byte_string(pathname)};
-    const auto sock_result {Network::connect(Network::Fd {sock}, sock_addr)};
-    auto connect_result {sock_result.number()};
-
-    if (connect_result == Network::socket_error) {
-        std::cerr << "Service is unavailable"
-                  << std::endl;
-        std::exit(EXIT_FAILURE);
-    }
-
-    // Send arguments.
-
-    const auto args = std::span(argv, size_t(argc));
-
-    for (int i = 1; i < argc; ++i) {
-        const auto result {::write(sock,
-                                   args[i],
-                                   std::strlen(args[i]) + 1)};
-
-        if (result == -1) {
-            std::perror("write");
-            break;
-        }
-
-        if (std::strcmp(args[1], "DOWN") == 0) {
-            shutdown = true;
-            break;
-        }
-    }
-
-    if (!shutdown) {
-        Network::Buffer buffer(BUFFER_SIZE);
-
-        // Request result.
-        std::strncpy(buffer.data(), "END", buffer.size());
-        auto result {::write(sock,
-                             buffer.data(),
-                             std::strlen(buffer.data()) + 1)};
-
-        if (result == -1) {
-            std::perror("write");
+        if (error_code == socket_error) {
+            std::cerr << error.string()
+                      << std::endl;
             std::exit(EXIT_FAILURE);
         }
 
-        // Receive result.
-        result = ::read(sock, buffer.data(), buffer.size());
+        // Fetch arguments from command line;
+        const auto args = parse_arguments(argc, argv);
 
-        if (result == -1) {
-            std::perror("read");
-            std::exit(EXIT_FAILURE);
+        // Send arguments to server.
+        for (const auto& arg : args) {
+            const auto code {write(arg, fd)};
+
+            if (code == -1) {
+                std::perror("write");
+                break;
+            }
+
+            if (arg == "DOWN") {
+                shutdown = true;
+                break;
+            }
         }
 
-        std::cerr << "Result: "
-                  << buffer
+        if (!shutdown) {
+            // Request result.
+            const auto write_code {write("END", fd)};
+
+            if (write_code == -1) {
+                std::perror("write");
+                std::exit(EXIT_FAILURE);
+            }
+
+            // Receive result.
+            const auto [read_str, read_code] {read(fd)};
+
+            if (read_code == -1) {
+                std::perror("read");
+                std::exit(EXIT_FAILURE);
+            }
+
+            std::cerr << "Result: "
+                      << read_str
+                      << std::endl;
+        }
+
+        // Close socket.
+        Network::close(fd, verbose);
+    }
+    catch (const std::exception& error) {
+        std::cerr << error.what()
                   << std::endl;
     }
-
-    // Close socket.
-    ::close(sock);
 }

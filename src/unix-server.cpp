@@ -13,43 +13,43 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/network.h"            // Buffer, Fd,
-                                        // OptionalPathname, bind(),
-                                        // close(), fd_null,
-                                        // socket_error,
+#include "network/network.h"            // Buffer, Fd, close(),
+                                        // connect(), socket_error,
                                         // to_byte_string()
 #include "unix-common.h"                // BUFFER_SIZE, SOCKET_NAME
 
 #include <sys/socket.h>         // SOCK_SEQPACKET, ::accept(),
                                 // ::listen(), ::socket()
 #include <sys/un.h>             // AF_UNIX
-#include <unistd.h>             // ::close(), ::read(), ::unlink(),
-                                // ::write()
+#include <unistd.h>             // ::read(), ::unlink(), ::write()
 
-#include <cstdio>       // std::fprintf(), std::perror(),
-                        // std::printf()
+#include <cstdio>       // std::perror()
 #include <cstdlib>      // std::atexit(), std::exit(), std::strtol()
-#include <cstring>      // std::memset(), std::strcmp(),
-                        // std::strcpy(), std::strncpy()
 #include <iostream>     // std::cerr, std::endl
-#include <sstream>      // std::ostringstream
-#include <string>       // std::string
-#include <variant>      // std::get(), std::holds_alternative()
+#include <string>       // std::string, std::to_string()
+
+using Network::Buffer;
+using Network::Fd;
+using Network::Pathname;
+using Network::SocketHints;
+using Network::fd_type;
+using Network::get_socket;
+using Network::os_error_type;
+using Network::socket_error;
+using Network::to_byte_string;
+
+using ReadResult = std::pair<std::string, os_error_type>;
 
 static constexpr auto backlog_size {20};
 static constexpr auto radix {10};
 
-static Network::fd_type sock;  // NOLINT
+static Network::Fd bind_fd;	// NOLINT
+static bool verbose {false};	// NOLINT
 
 static auto clean_up() -> void
 {
     // Close the socket.
-    if (sock != Network::fd_null) {
-        std::cerr << "Closing socket "
-                  << sock
-                  << std::endl;
-        sock = Network::close(sock);
-    }
+    Network::close(bind_fd);
 
     // Unlink the socket.
     std::cerr << "Removing file "
@@ -58,109 +58,146 @@ static auto clean_up() -> void
     ::unlink(SOCKET_NAME);
 }
 
-auto main() -> int
+static auto parse_arguments(int argc, char** argv) ->
+    std::vector<std::string>
 {
+    std::vector<std::string> result {*argv};
+    int ch {};
+
+    while ((ch = ::getopt(argc, argv, "v")) != -1) {
+        switch (ch) {
+        case 'v':
+            verbose = true;
+            break;
+        case '?':
+            std::cerr << "Usage: "
+                      << *argv
+                      << " [-v]"
+                      << std::endl;
+            std::exit(EXIT_FAILURE);
+        default:
+            abort();
+        }
+    }
+
+    const auto args = std::span(argv, std::size_t(argc));
+
+    for (auto index = optind; index < argc; ++index) {
+        result.emplace_back(args[index]);
+    }
+
+    return result;
+}
+
+static auto read(Fd fd) -> ReadResult
+{
+    Buffer buffer {BUFFER_SIZE};
+    return {buffer, ::read(static_cast<fd_type>(fd),
+                           buffer.data(),
+                           buffer.size())};
+}
+
+static auto write(const std::string& str, Fd fd) -> os_error_type
+{
+    return ::write(static_cast<fd_type>(fd), str.c_str(), str.size() + 1);
+}
+
+auto main(int argc, char* argv[]) -> int
+{
+    static constexpr SocketHints hints {0, AF_UNIX, SOCK_SEQPACKET, 0};
     Network::Buffer buffer(BUFFER_SIZE);
     bool shutdown {false};
 
-    // Create local socket.
-    sock = ::socket(AF_UNIX, SOCK_SEQPACKET, 0);
+    try {
+        parse_arguments(argc, argv);
 
-    if (sock == Network::fd_null) {
-        std::perror("socket");
-        std::exit(EXIT_FAILURE);
-    }
+        // Bind Unix domain socket to pathname.
+        bind_fd = get_socket(hints, verbose);
+        const auto addr {to_byte_string(SOCKET_NAME)};
+        const auto error {Network::bind(bind_fd, addr, verbose)};
+        const auto error_code {error.number()};
 
-    // Bind socket to socket name.
-    const Network::OptionalPathname pathname {SOCKET_NAME};
-    const auto sock_addr {Network::to_byte_string(pathname)};
-    const auto sock_result {Network::bind(Network::Fd {sock}, sock_addr)};
-    auto result {sock_result.number()};
-
-    if (result == Network::socket_error) {
-        std::perror("bind");
-        std::exit(EXIT_FAILURE);
-    }
-
-    result = std::atexit(clean_up);
-
-    if (result == -1) {
-        std::perror("atexit");
-        std::exit(EXIT_FAILURE);
-    }
-
-    // Prepare for accepting connections. The backlog size is set to
-    // 20. So while one request is being processed other requests can
-    // be waiting.
-    result = ::listen(sock, backlog_size);
-
-    if (result == -1) {
-        std::perror("listen");
-        std::exit(EXIT_FAILURE);
-    }
-
-    // This is the main loop for handling connections.
-    for (;;) {
-        int data_socket = 0;
-
-        // Wait for incoming connection.
-        data_socket = ::accept(sock, nullptr, nullptr);
-
-        if (data_socket == -1) {
-            std::perror("accept");
+        if (error_code == socket_error) {
+            std::cerr << error.string()
+                      << std::endl;
             std::exit(EXIT_FAILURE);
         }
 
-        long sum {0};
+        auto result = std::atexit(clean_up);
 
+        if (result == -1) {
+            std::perror("atexit");
+            std::exit(EXIT_FAILURE);
+        }
+
+        // Prepare for accepting connections. The backlog size is set to
+        // 20. So while one request is being processed other requests can
+        // be waiting.
+        result = ::listen(static_cast<fd_type>(bind_fd), backlog_size);
+
+        if (result == -1) {
+            std::perror("listen");
+            std::exit(EXIT_FAILURE);
+        }
+
+        // This is the main loop for handling connections.
         for (;;) {
+            // Wait for incoming connection.
+            Fd fd {::accept(static_cast<fd_type>(bind_fd), nullptr, nullptr)};
 
-            // Wait for next data packet.
-            const auto size = ::read(data_socket, buffer.data(), buffer.size());
-
-            if (size == -1) {
-                std::perror("read");
+            if (!fd) {
+                std::perror("accept");
                 std::exit(EXIT_FAILURE);
             }
 
-            // Handle commands.
+            long sum {0};
 
-            if (std::strncmp(buffer.data(), "DOWN", buffer.size()) == 0) {
-                shutdown = true;
+            for (;;) {
+
+                // Receive inputs.
+                const auto [read_str, read_code] {read(fd)};
+
+                if (read_code == socket_error) {
+                    perror("read");
+                    exit(EXIT_FAILURE);
+                }
+
+                // Handle commands.
+
+                if (read_str == "DOWN") {
+                    shutdown = true;
+                    break;
+                }
+
+                if (read_str == "END") {
+                    break;
+                }
+
+                // Add received inputs.
+                sum += std::strtol(read_str.c_str(), nullptr, radix);
+            }
+
+            if (!shutdown) {
+                // Send output sum.
+                const auto write_error {write(std::to_string(sum), fd)};
+
+                if (write_error == -1) {
+                    std::perror("write");
+                    std::exit(EXIT_FAILURE);
+                }
+            }
+
+            // Close socket.
+            Network::close(fd, verbose);
+
+            // Quit on DOWN command.
+            if (shutdown) {
                 break;
             }
-
-            if (std::strncmp(buffer.data(), "END", buffer.size()) == 0) {
-                break;
-            }
-
-            // Add received summand.
-            const auto term {std::strtol(buffer.data(), nullptr, radix)};
-            sum += term;
         }
-
-        if (!shutdown) {
-            // Send sum.
-            std::ostringstream oss;
-            oss << sum
-                << '\0';
-            std::string str {oss.str()};
-            const auto size = ::write(data_socket, str.data(), str.size());
-
-            if (size == -1) {
-                std::perror("write");
-                std::exit(EXIT_FAILURE);
-            }
-        }
-
-        // Close socket.
-
-        ::close(data_socket);
-
-        // Quit on DOWN command.
-
-        if (shutdown) {
-            break;
-        }
+    }
+    catch (const std::exception& error) {
+        std::cerr << error.what()
+                  << std::endl;
     }
 }
