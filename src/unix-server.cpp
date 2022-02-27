@@ -135,7 +135,7 @@ auto main(int argc, char* argv[]) -> int
         }
 
         // This is the main loop for handling connections.
-        for (;;) {
+        while (!shutdown) {
             // Wait for incoming connection.
             Fd fd {::accept(static_cast<fd_type>(bind_fd), nullptr, nullptr)};
 
@@ -146,7 +146,7 @@ auto main(int argc, char* argv[]) -> int
 
             long sum {0};
 
-            for (;;) {
+            while (true) {
 
                 // Receive inputs.
                 const auto [read_str, read_code] {read(fd)};
