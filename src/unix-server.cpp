@@ -20,6 +20,7 @@
 
 #include <sys/socket.h>         // SOCK_SEQPACKET, ::accept(),
                                 // ::listen(), ::socket()
+#include <sys/types.h>          // ssize_t
 #include <sys/un.h>             // AF_UNIX
 #include <unistd.h>             // ::read(), ::unlink(), ::write()
 
@@ -38,7 +39,7 @@ using Network::os_error_type;
 using Network::socket_error;
 using Network::to_byte_string;
 
-using ReadResult = std::pair<std::string, os_error_type>;
+using IoResult = std::pair<std::string, ssize_t>;
 
 static constexpr auto backlog_size {20};
 static constexpr auto radix {10};
@@ -84,7 +85,7 @@ static auto parse_arguments(int argc, char** argv) ->
     return result;
 }
 
-static auto read(Fd fd) -> ReadResult
+static auto read(Fd fd) -> IoResult
 {
     Buffer buffer {BUFFER_SIZE};
     return {buffer, ::read(static_cast<fd_type>(fd),
@@ -92,7 +93,7 @@ static auto read(Fd fd) -> ReadResult
                            buffer.size())};
 }
 
-static auto write(const std::string& str, Fd fd) -> os_error_type
+static auto write(const std::string& str, Fd fd) -> ssize_t
 {
     return ::write(static_cast<fd_type>(fd), str.c_str(), str.size() + 1);
 }
