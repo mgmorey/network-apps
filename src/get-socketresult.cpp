@@ -32,7 +32,7 @@
 #include <sstream>      // std::ostringstream
 
 auto Network::get_socketresult(const SocketHints& hints,
-                               bool removal,
+                               bool pending,
                                bool verbose) noexcept -> Network::FdResult
 {
     static constexpr auto delim {", "};
@@ -70,5 +70,5 @@ auto Network::get_socketresult(const SocketHints& hints,
         return OsErrorResult {error, oss.str()};
     }
 
-    return Fd {handle, removal, verbose};
+    return Fd {handle, pending, verbose};
 }

@@ -16,8 +16,9 @@
 #ifndef NETWORK_FDDATA_H
 #define NETWORK_FDDATA_H
 
-#include "network/fd-null.h"                    // fd_null
-#include "network/fd-type.h"                    // fd_type
+#include "network/bytestring.h"         // ByteString
+#include "network/fd-null.h"            // fd_null
+#include "network/fd-type.h"            // fd_type
 
 #include <string>      // std::string
 
@@ -27,7 +28,7 @@ namespace Network
     {
     public:
         explicit FdData(fd_type t_fd_data,
-                        bool t_removal,
+                        bool t_pending,
                         bool t_verbose = false) noexcept;
         FdData(const FdData&) noexcept = default;
         FdData(FdData&&) noexcept = default;
@@ -41,14 +42,13 @@ namespace Network
         explicit operator std::string() const;
         auto close() -> FdData&;
         [[nodiscard]] auto handle() const noexcept -> fd_type;
-        [[nodiscard]] auto removal() const noexcept -> bool;
+        [[nodiscard]] auto peername() const -> ByteString;
+        [[nodiscard]] auto sockname() const -> ByteString;
         [[nodiscard]] auto verbose() const noexcept -> bool;
-        auto removal(bool value) noexcept -> FdData&;
-        auto verbose(bool value) noexcept -> FdData&;
 
     private:
-        fd_type m_fd_data {fd_null};
-        bool m_removal {false};
+        fd_type m_handle {fd_null};
+        bool m_pending {false};
         bool m_verbose {false};
     };
 }

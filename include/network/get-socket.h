@@ -22,7 +22,7 @@
 namespace Network
 {
     extern auto get_socket(const SocketHints& hints,
-                           bool removal = false,
+                           bool pending = false,
                            bool verbose = false) -> Fd;
 }
 

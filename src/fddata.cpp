@@ -17,13 +17,15 @@
                                         // operator<<(), std::ostream,
                                         // std::to_string()
 #include "network/close.h"              // close()
+#include "network/get-peername.h"       // get_peername()
+#include "network/get-sockname.h"       // get_sockname()
 #include "network/string-null.h"        // string_null
 
 Network::FdData::FdData(fd_type t_fd_data,
-                        bool t_removal,
+                        bool t_pending,
                         bool t_verbose) noexcept :
-    m_fd_data(t_fd_data),
-    m_removal(t_removal),
+    m_handle(t_fd_data),
+    m_pending(t_pending),
     m_verbose(t_verbose)
 {
 }
@@ -35,58 +37,51 @@ Network::FdData::~FdData()
 
 auto Network::FdData::operator=(fd_type value) noexcept -> FdData&
 {
-    m_fd_data = value;
+    m_handle = value;
     return *this;
 }
 
 Network::FdData::operator bool() const noexcept
 {
-    return m_fd_data != fd_null;
+    return m_handle != fd_null;
 }
 
 Network::FdData::operator fd_type() const noexcept
 {
-    return m_fd_data;
+    return m_handle;
 }
 
 Network::FdData::operator std::string() const
 {
-    if (m_fd_data == fd_null) {
+    if (m_handle == fd_null) {
         return string_null;
     }
 
-    return std::to_string(m_fd_data);
+    return std::to_string(m_handle);
 }
 
 auto Network::FdData::close() -> FdData&
 {
-    m_fd_data = Network::close(m_fd_data, m_verbose);
+    m_handle = Network::close(m_handle, m_verbose);
     return *this;
 }
 
 auto Network::FdData::handle() const noexcept -> fd_type
 {
-    return m_fd_data;
+    return m_handle;
 }
 
-auto Network::FdData::removal() const noexcept -> bool
+auto Network::FdData::peername() const -> ByteString
 {
-    return m_removal;
+    return get_peername(m_handle, m_verbose);
+}
+
+auto Network::FdData::sockname() const -> ByteString
+{
+    return get_sockname(m_handle, m_verbose);
 }
 
 auto Network::FdData::verbose() const noexcept -> bool
 {
     return m_verbose;
-}
-
-auto Network::FdData::removal(bool value) noexcept -> FdData&
-{
-    m_removal = value;
-    return *this;
-}
-
-auto Network::FdData::verbose(bool value) noexcept -> FdData&
-{
-    m_verbose = value;
-    return *this;
 }

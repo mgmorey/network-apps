@@ -23,11 +23,11 @@
 #include <variant>      // std::visit()
 
 auto Network::get_socket(const SocketHints& hints,
-                         bool removal,
+                         bool pending,
                          bool verbose) -> Network::Fd
 {
-    Fd result {fd_null, removal, verbose};
-    const auto fd_result {get_socketresult(hints, removal, verbose)};
+    Fd result {fd_null, pending, verbose};
+    const auto fd_result {get_socketresult(hints, pending, verbose)};
     std::visit(Overloaded {
             [&](const Fd& fd) {
                 result = fd;

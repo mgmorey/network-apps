@@ -36,13 +36,13 @@ namespace Network
            socket_type_type t_socktype,
            socket_protocol_type t_protocol = 0,
            socket_flags_type t_flags = 0,
-           bool t_removal = false,
+           bool t_pending = false,
            bool t_verbose = false);
         explicit Fd(const SocketHints& t_hints,
-                    bool t_removal = false,
+                    bool t_pending = false,
                     bool t_verbose = false);
         explicit Fd(fd_type t_fd,
-                    bool t_removal = false,
+                    bool t_pending = false,
                     bool t_verbose = false);
         Fd(const Fd&) noexcept = default;
         Fd(Fd&&) noexcept = default;

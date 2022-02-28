@@ -25,21 +25,21 @@ Network::Fd::Fd(socket_family_type t_family,
                 socket_type_type t_socktype,
                 socket_protocol_type t_protocol,
                 socket_flags_type t_flags,
-                bool t_removal,
+                bool t_pending,
                 bool t_verbose) :
     Fd(SocketHints {t_flags, t_family, t_socktype, t_protocol},
-       t_removal,
+       t_pending,
        t_verbose)
 {
 }
 
-Network::Fd::Fd(const SocketHints& t_hints, bool t_removal, bool t_verbose) :
-    Fd(get_socket(t_hints, t_removal, t_verbose))
+Network::Fd::Fd(const SocketHints& t_hints, bool t_pending, bool t_verbose) :
+    Fd(get_socket(t_hints, t_pending, t_verbose))
 {
 }
 
-Network::Fd::Fd(fd_type t_fd, bool t_removal, bool t_verbose) :
-    m_fd(new FdData {t_fd, t_removal, t_verbose})
+Network::Fd::Fd(fd_type t_fd, bool t_pending, bool t_verbose) :
+    m_fd(new FdData {t_fd, t_pending, t_verbose})
 {
 }
 
