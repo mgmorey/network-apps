@@ -29,6 +29,7 @@
 #include <cstdio>       // std::remove()
 #include <cstdlib>      // EXIT_FAILURE, std::exit(), std::size_t
 #include <exception>    // std::exception
+#include <iomanip>      // std::right, std::setw()
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <optional>     // std::nullopt
 #include <set>          // std::set
@@ -46,6 +47,7 @@ using Network::LogicError;
 using Network::OptionalPathname;
 using Network::OsErrorResult;
 using Network::Pathname;
+using Network::get_sockname;
 using Network::get_sun_path;
 using Network::get_sun_path_size;
 using Network::os_error_type;
@@ -57,6 +59,7 @@ namespace TestSocket
     using ErrorCodeSet = std::set<os_error_type>;
     using OptionalPathnameVector = std::vector<OptionalPathname>;
 
+    static constexpr auto fd_width {6};
     static constexpr auto path_size_max {get_sun_path_size()};
 
     static bool verbose {false};  // NOLINT
@@ -182,6 +185,13 @@ namespace TestSocket
                 print(result);
             }
             else if (unix_path) {
+                const auto self {get_sockname(fd, verbose)};
+                std::cout << "Socket "
+                          << std::right << std::setw(fd_width) << fd
+                          << " bound to "
+                          << Address(self)
+                          << std::endl;
+
                 if (verbose) {
                     std::cout << "Removing Unix domain path "
                               << *unix_path
@@ -281,9 +291,11 @@ namespace TestSocket
     {
         FdPair fds {AF_UNIX, SOCK_STREAM, 0, 0, verbose};
         std::cout << "Socket "
-                  << fds.at(0)
-                  << " connected to socket "
-                  << fds.at(1)
+                  << std::right << std::setw(fd_width) << fds.at(0)
+                  << " connected to "
+                  << std::endl
+                  << "Socket "
+                  << std::right << std::setw(fd_width) << fds.at(1)
                   << std::endl;
     }
 }
