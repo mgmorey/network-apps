@@ -26,7 +26,6 @@
 #include <unistd.h>         // getopt(), optarg, opterr, optind
 
 #include <cerrno>       // EACCES, ENOENT, EROFS
-#include <cstdio>       // std::remove()
 #include <cstdlib>      // EXIT_FAILURE, std::exit(), std::size_t
 #include <exception>    // std::exception
 #include <iomanip>      // std::right, std::setw()
@@ -188,10 +187,6 @@ namespace TestSocket
         }
         else {
             assert(static_cast<bool>(pathname) == false);
-        }
-
-        if (pathname) {
-            std::remove(pathname->c_str());
         }
 
         assert(expected_codes.count(actual_code) != 0);

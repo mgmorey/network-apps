@@ -18,8 +18,15 @@
                                         // std::to_string()
 #include "network/close.h"              // close()
 #include "network/get-peername.h"       // get_peername()
+#include "network/get-sa-family.h"      // get_sa_family()
 #include "network/get-sockname.h"       // get_sockname()
+#include "network/get-sun-path.h"       // get_sun_path()
 #include "network/string-null.h"        // string_null
+
+#ifndef WIN32
+#include <sys/socket.h>     // AF_UNIX
+#include <unistd.h>         // ::unlink()
+#endif
 
 Network::FdData::FdData(fd_type t_fd_data,
                         bool t_pending,
@@ -32,7 +39,25 @@ Network::FdData::FdData(fd_type t_fd_data,
 
 Network::FdData::~FdData()
 {
-    static_cast<void>(this->close());
+#ifndef WIN32
+    OptionalPathname pathname;
+
+    if (m_handle != fd_null && m_pending) {
+        const auto addr {get_sockname(m_handle, m_verbose)};
+
+        if (get_sa_family(addr) == AF_UNIX) {
+            pathname = get_sun_path(addr);
+        }
+    }
+#endif
+
+    static_cast<void>(Network::close(m_handle, m_verbose));
+
+#ifndef WIN32
+    if (pathname) {
+        static_cast<void>(::unlink(pathname->c_str()));
+    }
+#endif
 }
 
 auto Network::FdData::operator=(fd_type value) noexcept -> FdData&
