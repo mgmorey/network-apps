@@ -167,16 +167,9 @@ namespace TestSocket
     {
         os_error_type actual_code {0};
         const auto addr {to_byte_string(pathname)};
-        std::cout << "Unix domain address: "
-                  << Address(addr)
-                  << std::endl;
-        const auto unix_path {get_sun_path(addr)};
-        std::cout << "Unix domain path: "
-                  << unix_path.value_or(string_null)
-                  << std::endl;
+        assert(get_sun_path(addr) == pathname);
 
         if (pathname) {
-            assert(unix_path == pathname);
             Fd fd {AF_UNIX, SOCK_STREAM, 0, 0, verbose};
             const auto result {Network::bind(fd, addr, verbose)};
             actual_code = result.number();
@@ -184,25 +177,21 @@ namespace TestSocket
             if (result) {
                 print(result);
             }
-            else if (unix_path) {
+            else {
                 const auto self {get_sockname(fd, verbose)};
                 std::cout << "Socket "
                           << std::right << std::setw(fd_width) << fd
                           << " bound to "
                           << Address(self)
                           << std::endl;
-
-                if (verbose) {
-                    std::cout << "Removing Unix domain path "
-                              << *unix_path
-                              << std::endl;
-                }
-
-                std::remove(unix_path->c_str());
             }
         }
         else {
-            assert(static_cast<bool>(unix_path) == false);
+            assert(static_cast<bool>(pathname) == false);
+        }
+
+        if (pathname) {
+            std::remove(pathname->c_str());
         }
 
         assert(expected_codes.count(actual_code) != 0);
