@@ -76,9 +76,3 @@ auto Network::FdData::verbose(bool value) noexcept -> FdData&
     m_verbose = value;
     return *this;
 }
-
-auto Network::operator<<(std::ostream& os,
-                         const FdData& fd_data) -> std::ostream&
-{
-    return os << static_cast<std::string>(fd_data);
-}

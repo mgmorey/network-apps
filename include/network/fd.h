@@ -16,7 +16,8 @@
 #ifndef NETWORK_FD_H
 #define NETWORK_FD_H
 
-#include "network/fddata.h"                     // FdData, fd_null, fd_type
+#include "network/fddata.h"                     // FdData, fd_type,
+                                                // std::string
 #include "network/socket-hint-types.h"          // socket_family_type,
                                                 // socket_flags_type,
                                                 // socket_protocol_type,
@@ -25,7 +26,6 @@
 
 #include <memory>      // std::shared_ptr
 #include <ostream>     // std::ostream
-#include <string>      // std::string
 
 namespace Network
 {

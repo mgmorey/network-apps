@@ -19,7 +19,6 @@
 #include "network/fd-null.h"                    // fd_null
 #include "network/fd-type.h"                    // fd_type
 
-#include <ostream>     // std::ostream
 #include <string>      // std::string
 
 namespace Network
@@ -48,9 +47,6 @@ namespace Network
         fd_type m_fd_data {fd_null};
         bool m_verbose {false};
     };
-
-    extern auto operator<<(std::ostream& os,
-                           const FdData& fd_data) -> std::ostream&;
 }
 
 #endif
