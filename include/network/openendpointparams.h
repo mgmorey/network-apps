@@ -23,8 +23,8 @@ namespace Network
 {
     struct OpenEndpointParams
     {
-        Endpoint endpoint;
-        SocketHints hints;
+        const Endpoint& endpoint;
+        const SocketHints& hints;
         bool verbose;
     };
 }
