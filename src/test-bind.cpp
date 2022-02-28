@@ -69,9 +69,9 @@ namespace TestBind
 {
     using ErrorCodeSet = std::set<os_error_type>;
 
-    constexpr auto fd_width {6};
-    constexpr auto localhost {"localhost"};
-    constexpr auto localservice {"8085"};
+    static constexpr auto fd_width {6};
+    static constexpr auto localhost {"localhost"};
+    static constexpr auto localservice {"8085"};
 
     static bool verbose {false};  // NOLINT
 

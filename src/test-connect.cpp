@@ -76,10 +76,10 @@ namespace TestConnect
 {
     using ErrorCodeSet = std::set<os_error_type>;
 
-    constexpr auto fd_width {6};
-    constexpr auto indent_width {fd_width + 18};
-    constexpr auto localhost {"example.com"};
-    constexpr auto localservice {"http"};
+    static constexpr auto fd_width {6};
+    static constexpr auto indent_width {fd_width + 18};
+    static constexpr auto localhost {"example.com"};
+    static constexpr auto localservice {"http"};
 
     static bool verbose {false};  // NOLINT
 
