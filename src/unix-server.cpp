@@ -82,7 +82,7 @@ static auto parse_arguments(int argc, char** argv) ->
 
 static auto get_bind_socket(const SocketHints& hints) -> Fd
 {
-    static Network::Fd fd {hints, verbose};
+    static Network::Fd fd {hints, true, verbose};
     return fd;
 }
 
@@ -140,7 +140,13 @@ auto main(int argc, char* argv[]) -> int
         // This is the main loop for handling connections.
         while (!shutdown) {
             // Wait for incoming connection.
-            Fd fd {::accept(static_cast<fd_type>(bind_fd), nullptr, nullptr)};
+            Fd fd {
+                ::accept(static_cast<fd_type>(bind_fd),
+                         nullptr,
+                         nullptr),
+                false,
+                verbose
+            };
 
             if (!fd) {
                 std::perror("accept");
