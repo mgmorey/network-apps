@@ -16,12 +16,12 @@
 #ifndef NETWORK_GET_SOCKNAME_H
 #define NETWORK_GET_SOCKNAME_H
 
-#include "network/fd.h"                 // Fd
+#include "network/fd-type.h"            // Fd
 #include "network/sockname.h"           // SockName
 
 namespace Network
 {
-    extern auto get_sockname(const Fd& fd, bool verbose = false) -> SockName;
+    extern auto get_sockname(fd_type handle, bool verbose = false) -> SockName;
 }
 
 #endif

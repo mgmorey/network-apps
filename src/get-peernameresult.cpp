@@ -15,7 +15,7 @@
 
 #include "network/get-peernameresult.h" // Fd, GetNameHandler,
                                         // GetNameParams,
-                                        // PeerNameResult,
+                                        // PeerNameResult, fd_type,
                                         // get_peernameresult()
 #include "network/get-nameresult.h"     // get_nameresult()
 
@@ -25,10 +25,10 @@
 #include <sys/socket.h> // ::getpeername()
 #endif
 
-auto Network::get_peernameresult(const Fd& fd, bool verbose) ->
+auto Network::get_peernameresult(fd_type handle, bool verbose) ->
     Network::PeerNameResult
 {
     const GetNameHandler handler {::getpeername, "::getpeername"};
-    const GetNameParams args {fd, verbose};
+    const GetNameParams args {handle, verbose};
     return get_nameresult(handler, args);
 }

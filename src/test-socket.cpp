@@ -178,7 +178,7 @@ namespace TestSocket
                 print(result);
             }
             else {
-                const auto self {get_sockname(fd, verbose)};
+                const auto self {get_sockname(fd.handle(), verbose)};
                 std::cout << "Socket "
                           << std::right << std::setw(fd_width) << fd
                           << " bound to "

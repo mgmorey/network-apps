@@ -101,7 +101,7 @@ namespace TestBind
         {
             const auto hostname {m_endpoint.first};
             const auto service {m_endpoint.second};
-            const auto self {get_sockname(t_fd, verbose)};
+            const auto self {get_sockname(t_fd.handle(), verbose)};
             m_os << "Socket "
                  << std::right << std::setw(fd_width) << t_fd
                  << " bound to "

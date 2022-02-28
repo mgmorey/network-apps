@@ -112,8 +112,8 @@ namespace TestConnect
         {
             const auto hostname {m_endpoint.first};
             const auto service {m_endpoint.second};
-            const auto peer {get_peername(t_fd, verbose)};
-            const auto self {get_sockname(t_fd, verbose)};
+            const auto peer {get_peername(t_fd.handle(), verbose)};
+            const auto self {get_sockname(t_fd.handle(), verbose)};
             m_os << "Socket "
                  << std::right << std::setw(fd_width) << t_fd
                  << " connected "

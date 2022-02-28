@@ -13,9 +13,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-sockname.h"       // Fd, GetNameHandler,
+#include "network/get-sockname.h"       // GetNameHandler,
                                         // GetNameParams,
-                                        // SockNameResult,
+                                        // SockNameResult, fd_type,
                                         // get_sockname()
 #include "network/get-name.h"           // get_name()
 
@@ -25,9 +25,9 @@
 #include <sys/socket.h>     // ::getsockname()
 #endif
 
-auto Network::get_sockname(const Fd& fd, bool verbose) -> Network::SockName
+auto Network::get_sockname(fd_type handle, bool verbose) -> Network::SockName
 {
     const GetNameHandler handler {::getsockname, "::getsockname"};
-    const GetNameParams args {fd, verbose};
+    const GetNameParams args {handle, verbose};
     return get_name(handler, args);
 }

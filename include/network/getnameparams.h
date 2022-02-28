@@ -16,13 +16,13 @@
 #ifndef NETWORK_GETNAMEPARAMS_H
 #define NETWORK_GETNAMEPARAMS_H
 
-#include "network/fd.h"                 // Fd
+#include "network/fd-type.h"            // fd_type
 
 namespace Network
 {
     struct GetNameParams
     {
-        const Fd& fd;
+        fd_type handle;
         bool verbose;
     };
 }

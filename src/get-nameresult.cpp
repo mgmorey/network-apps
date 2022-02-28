@@ -31,35 +31,33 @@ auto Network::get_nameresult(const GetNameHandler& handler,
                              const GetNameParams& args) ->
     Network::ByteStringResult
 {
-    ByteString str {ss_size, Byte {}};
-    auto length {get_length(str)};
-    auto* pointer {get_sa_pointer(str)};
+    ByteString addr {ss_size, Byte {}};
+    auto length {get_length(addr)};
+    auto* pointer {get_sa_pointer(addr)};
     reset_last_os_error();
 
     if (args.verbose) {
         std::cout << "Calling "
                   << handler.second
                   << '('
-                  << args.fd
+                  << args.handle
                   << ", "
-                  << str
+                  << addr
                   << ", "
                   << static_cast<int>(length)
                   << ", ...)"
                   << std::endl;
     }
 
-    const fd_type fd {static_cast<fd_type>(args.fd)};
-
-    if (handler.first(fd, pointer, &length) == socket_error) {
+    if (handler.first(args.handle, pointer, &length) == socket_error) {
         const auto error = get_last_os_error();
         std::ostringstream oss;
         oss << "Call to "
             << handler.second
             << '('
-            << args.fd
+            << args.handle
             << ", "
-            << str
+            << addr
             << ", "
             << static_cast<int>(length)
             << ", ...) failed with error "
@@ -69,6 +67,6 @@ auto Network::get_nameresult(const GetNameHandler& handler,
         return OsErrorResult {error, oss.str()};
     }
 
-    str.resize(length);
-    return str;
+    addr.resize(length);
+    return addr;
 }
