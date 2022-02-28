@@ -40,24 +40,22 @@ Network::FdData::FdData(fd_type t_fd_data,
 Network::FdData::~FdData()
 {
 #ifndef WIN32
-    OptionalPathname pathname;
-
-    if (m_handle != fd_null && m_pending) {
+    if (m_pending && m_handle != fd_null) {
         const auto addr {get_sockname(m_handle, m_verbose)};
 
         if (get_sa_family(addr) == AF_UNIX) {
-            pathname = get_sun_path(addr);
+            const auto pathname {get_sun_path(addr)};
+
+            if (pathname) {
+                static_cast<void>(::unlink(pathname->c_str()));
+            }
         }
     }
-#endif
 
+#else
+    static_cast<void>(m_pending);
+#endif
     static_cast<void>(Network::close(m_handle, m_verbose));
-
-#ifndef WIN32
-    if (pathname) {
-        static_cast<void>(::unlink(pathname->c_str()));
-    }
-#endif
 }
 
 auto Network::FdData::operator=(fd_type value) noexcept -> FdData&
