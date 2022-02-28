@@ -22,6 +22,7 @@
 namespace Network
 {
     extern auto get_socketresult(const SocketHints& hints,
+                                 bool removal = false,
                                  bool verbose = false) noexcept -> FdResult;
 }
 

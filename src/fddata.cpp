@@ -19,8 +19,11 @@
 #include "network/close.h"              // close()
 #include "network/string-null.h"        // string_null
 
-Network::FdData::FdData(fd_type t_fd_data, bool t_verbose) noexcept :
+Network::FdData::FdData(fd_type t_fd_data,
+                        bool t_removal,
+                        bool t_verbose) noexcept :
     m_fd_data(t_fd_data),
+    m_removal(t_removal),
     m_verbose(t_verbose)
 {
 }
@@ -61,14 +64,25 @@ auto Network::FdData::close() -> FdData&
     return *this;
 }
 
-auto Network::FdData::value() const noexcept -> fd_type
+auto Network::FdData::handle() const noexcept -> fd_type
 {
     return m_fd_data;
+}
+
+auto Network::FdData::removal() const noexcept -> bool
+{
+    return m_removal;
 }
 
 auto Network::FdData::verbose() const noexcept -> bool
 {
     return m_verbose;
+}
+
+auto Network::FdData::removal(bool value) noexcept -> FdData&
+{
+    m_removal = value;
+    return *this;
 }
 
 auto Network::FdData::verbose(bool value) noexcept -> FdData&

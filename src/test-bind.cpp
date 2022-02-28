@@ -204,7 +204,7 @@ namespace TestBind
     {
         os_error_type actual_code {0};
         const auto& expected_codes {get_codes_invalid_addr()};
-        const Fd fd {AF_INET, SOCK_STREAM, IPPROTO_TCP, 0, verbose};
+        const Fd fd {AF_INET, SOCK_STREAM, IPPROTO_TCP, 0, true, verbose};
         const auto error {Network::bind(fd, addr, verbose)};
         actual_code = error.number();
 

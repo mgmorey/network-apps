@@ -222,7 +222,7 @@ namespace TestConnect
     {
         os_error_type actual_code {0};
         const auto& expected_codes {get_codes_invalid_addr()};
-        const Fd fd {AF_INET, SOCK_STREAM, IPPROTO_TCP, 0, verbose};
+        const Fd fd {AF_INET, SOCK_STREAM, IPPROTO_TCP, 0, false, verbose};
         const auto error {Network::connect(fd, addr, verbose)};
         actual_code = error.number();
 

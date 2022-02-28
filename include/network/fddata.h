@@ -27,6 +27,7 @@ namespace Network
     {
     public:
         explicit FdData(fd_type t_fd_data,
+                        bool t_removal,
                         bool t_verbose = false) noexcept;
         FdData(const FdData&) noexcept = default;
         FdData(FdData&&) noexcept = default;
@@ -39,12 +40,15 @@ namespace Network
         explicit operator fd_type() const noexcept;
         explicit operator std::string() const;
         auto close() -> FdData&;
-        [[nodiscard]] auto value() const noexcept -> fd_type;
+        [[nodiscard]] auto handle() const noexcept -> fd_type;
+        [[nodiscard]] auto removal() const noexcept -> bool;
         [[nodiscard]] auto verbose() const noexcept -> bool;
+        auto removal(bool value) noexcept -> FdData&;
         auto verbose(bool value) noexcept -> FdData&;
 
     private:
         fd_type m_fd_data {fd_null};
+        bool m_removal {false};
         bool m_verbose {false};
     };
 }
