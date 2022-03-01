@@ -16,20 +16,16 @@
 #include "network/fddata.h"             // Fd, FdData, fd_type,
                                         // operator<<(), std::ostream,
                                         // std::to_string()
+#include "network/cleanup-fd.h"         // cleanup()
 #include "network/close.h"              // close()
 #include "network/get-peername.h"       // get_peername()
-#include "network/get-sa-family.h"      // get_sa_family()
 #include "network/get-sockname.h"       // get_sockname()
-#include "network/get-sun-path.h"       // get_sun_path()
 #include "network/string-null.h"        // string_null
-#include "network/unlink.h"             // unlink()
 
 #ifndef WIN32
 #include <sys/socket.h>     // AF_UNIX
 #include <unistd.h>         // ::unlink()
 #endif
-
-#include <iostream>     // std::cerr, std::endl
 
 Network::FdData::FdData(fd_type t_fd_data,
                         bool t_pending,
@@ -43,21 +39,8 @@ Network::FdData::FdData(fd_type t_fd_data,
 Network::FdData::~FdData()
 {
 #ifndef WIN32
-    if (m_pending && m_handle != fd_null) {
-        const auto addr {get_sockname(m_handle, m_verbose)};
-
-        if (get_sa_family(addr) == AF_UNIX) {
-            const auto pathname {get_sun_path(addr)};
-
-            if (pathname) {
-                const auto error {Network::unlink(*pathname, m_verbose)};
-
-                if (error) {
-                    std::cerr << error.string()
-                              << std::endl;
-                }
-            }
-        }
+    if (m_pending) {
+        cleanup(m_handle, m_verbose);
     }
 
 #else
