@@ -22,11 +22,14 @@
 #include "network/get-sockname.h"       // get_sockname()
 #include "network/get-sun-path.h"       // get_sun_path()
 #include "network/string-null.h"        // string_null
+#include "network/unlink.h"             // unlink()
 
 #ifndef WIN32
 #include <sys/socket.h>     // AF_UNIX
 #include <unistd.h>         // ::unlink()
 #endif
+
+#include <iostream>     // std::cerr, std::endl
 
 Network::FdData::FdData(fd_type t_fd_data,
                         bool t_pending,
@@ -47,7 +50,12 @@ Network::FdData::~FdData()
             const auto pathname {get_sun_path(addr)};
 
             if (pathname) {
-                static_cast<void>(::unlink(pathname->c_str()));
+                const auto error {Network::unlink(*pathname, m_verbose)};
+
+                if (error) {
+                    std::cerr << error.string()
+                              << std::endl;
+                }
             }
         }
     }
