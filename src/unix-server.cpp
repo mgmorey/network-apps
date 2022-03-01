@@ -24,7 +24,7 @@
 #include <sys/un.h>             // AF_UNIX
 #include <unistd.h>             // ::read(), ::write()
 
-#include <cerrno>       // EINVAL
+#include <cerrno>       // EINVAL, EPROTONOSUPPORT
 #include <cstdio>       // std::perror()
 #include <cstdlib>      // std::exit(), std::strtol()
 #include <iostream>     // std::cerr, std::cout, std::endl
@@ -196,7 +196,8 @@ auto main(int argc, char* argv[]) -> int
         }
     }
     catch (const std::exception& error) {
-        if (error.what() != format_message(EINVAL)) {
+        if (error.what() != format_message(EINVAL) &&
+            error.what() != format_message(EPROTONOSUPPORT)) {
             std::cerr << error.what()
                       << std::endl;
         }
