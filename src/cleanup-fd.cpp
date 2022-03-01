@@ -25,6 +25,7 @@
 #include <sys/socket.h>     // AF_UNIX
 #endif
 
+#include <cerrno>       // ENOENT
 #include <iostream>     // std::cerr, std::endl
 
 auto Network::cleanup(fd_type handle, bool verbose) -> void
@@ -41,8 +42,9 @@ auto Network::cleanup(fd_type handle, bool verbose) -> void
 
             if (pathname) {
                 const auto error {unlink(*pathname, verbose)};
+                const auto code {error.number()};
 
-                if (error) {
+                if (code != 0 && code != ENOENT) {
                     std::cerr << error.string()
                               << std::endl;
                 }
