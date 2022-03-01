@@ -28,17 +28,27 @@
 #include <unistd.h>     // ::gethostname()
 #endif
 
+#include <iostream>     // std::cout, std::endl
 #include <sstream>      // std::ostringstream
 
-auto Network::get_hostnameresult() noexcept -> Network::HostnameResult
+auto Network::get_hostnameresult(bool verbose) noexcept -> Network::HostnameResult
 {
     Buffer host_buffer {hostname_size_max};
     reset_last_os_error();
 
-    if ((::gethostname(host_buffer.data(), host_buffer.size() - 1)) == -1) {
+    if (verbose) {
+        std::cout << "Calling ::gethostname("
+                  << host_buffer
+                  << ", "
+                  << host_buffer.size() - 1
+                  << ')'
+                  << std::endl;
+    }
+
+    if (::gethostname(host_buffer.data(), host_buffer.size() - 1) == -1) {
         const auto error {get_last_os_error()};
         std::ostringstream oss;
-        oss << "Call to gethostname(...) failed with error "
+        oss << "Call to ::gethostname(...) failed with error "
             << error
             << ": "
             << format_os_error(error);

@@ -69,7 +69,7 @@ namespace TestHostname
 
     static auto test_hostname() -> void
     {
-        const auto hostname {get_hostname()};
+        const auto hostname {get_hostname(verbose)};
         std::cout << "Hostname: "
                   << hostname
                   << std::endl;
@@ -81,7 +81,7 @@ auto main(int argc, char* argv[]) -> int
     using namespace TestHostname;
 
     try {
-        const auto args {parse_arguments(argc, argv)};
+        parse_arguments(argc, argv);
         const auto& context {Context::instance()};
 
         if (verbose) {
@@ -89,7 +89,6 @@ auto main(int argc, char* argv[]) -> int
         }
 
         test_hostname();
-        static_cast<void>(args);
     }
     catch (const std::exception& error) {
         std::cerr << error.what()

@@ -13,19 +13,19 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-hostname.h"       // Hostname,
-                                        // get_hostname()
-#include "network/error.h"              // Error
-#include "network/get-hostnameresult.h" // OsErrorResult,
-                                        // get_hostname()
-#include "network/overloaded.h"         // Overloaded
+#include "network/get-hostname.h"               // Hostname,
+                                                // get_hostname()
+#include "network/error.h"                      // Error
+#include "network/get-hostnameresult.h"         // OsErrorResult,
+                                                // get_hostname()
+#include "network/overloaded.h"                 // Overloaded
 
 #include <variant>      // std::visit()
 
-auto Network::get_hostname() -> Network::Hostname
+auto Network::get_hostname(bool verbose) -> Network::Hostname
 {
     Hostname result;
-    const auto hostname_result {get_hostnameresult()};
+    const auto hostname_result {get_hostnameresult(verbose)};
     std::visit(Overloaded {
             [&](const Hostname& hostname) {
                 result = hostname;

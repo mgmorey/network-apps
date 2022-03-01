@@ -20,7 +20,8 @@
 
 namespace Network
 {
-    extern auto get_hostnameresult() noexcept -> HostnameResult;
+    extern auto get_hostnameresult(bool verbose = false) noexcept ->
+        HostnameResult;
 }
 
 #endif
