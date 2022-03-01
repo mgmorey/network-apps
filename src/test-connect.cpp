@@ -91,7 +91,7 @@ namespace TestConnect
 #if defined(WIN32)
             static const ErrorCodeSet codes {0};
 #else
-            static const ErrorCodeSet codes {ENETUNREACH};
+            static const ErrorCodeSet codes {EACCES, ENETUNREACH};
 #endif
             return codes;
         }

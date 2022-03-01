@@ -23,16 +23,19 @@
 #include <sys/un.h>             // AF_UNIX
 #include <unistd.h>             // ::read(), ::write()
 
+#include <cerrno>       // EINVAL
 #include <cstdio>       // std::perror()
 #include <cstdlib>      // std::exit(), std::size_t
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <span>         // std::span
+#include <sstream>      // std::ostringstream
 #include <vector>       // std::vector
 
 using Network::Buffer;
 using Network::Fd;
 using Network::Pathname;
 using Network::fd_type;
+using Network::format_os_error;
 using Network::os_error_type;
 using Network::socket_error;
 using Network::to_byte_string;
@@ -40,6 +43,17 @@ using Network::to_byte_string;
 using IoResult = std::pair<std::string, ssize_t>;
 
 static bool verbose {false};  // NOLINT
+
+static auto format_message(int error) -> std::string
+{
+    std::ostringstream oss;
+    oss << ("Call to ::socket(domain=AF_UNIX, type=SOCK_SEQPACKET, protocol=0) "
+            "failed with error ")
+        << error
+        << ": "
+        << format_os_error(error);
+    return oss.str();
+}
 
 static auto parse_arguments(int argc, char** argv) ->
     std::vector<std::string>
@@ -94,7 +108,7 @@ auto main(int argc, char* argv[]) -> int
         const auto args {parse_arguments(argc, argv)};
 
         // Connect socket to socket address.
-        Fd fd {AF_UNIX, SOCK_SEQPACKET, 0, 0, false, verbose};
+        const Fd fd {AF_UNIX, SOCK_SEQPACKET, 0, 0, false, verbose};
         const auto addr {to_byte_string(SOCKET_NAME)};
         const auto error {Network::connect(fd, addr, verbose)};
         const auto error_code {error.number()};
@@ -143,7 +157,9 @@ auto main(int argc, char* argv[]) -> int
         }
     }
     catch (const std::exception& error) {
-        std::cerr << error.what()
-                  << std::endl;
+        if (error.what() != format_message(EINVAL)) {
+            std::cerr << error.what()
+                      << std::endl;
+        }
     }
 }

@@ -22,11 +22,14 @@
                                 // ::listen(), ::socket()
 #include <sys/types.h>          // ssize_t
 #include <sys/un.h>             // AF_UNIX
-#include <unistd.h>             // ::read(), ::unlink(), ::write()
+#include <unistd.h>             // ::read(), ::write()
 
+#include <cerrno>       // EINVAL
 #include <cstdio>       // std::perror()
 #include <cstdlib>      // std::exit(), std::strtol()
 #include <iostream>     // std::cerr, std::cout, std::endl
+#include <span>         // std::span
+#include <sstream>      // std::ostringstream
 #include <string>       // std::string, std::to_string()
 
 using Network::Buffer;
@@ -34,6 +37,7 @@ using Network::Fd;
 using Network::Pathname;
 using Network::SocketHints;
 using Network::fd_type;
+using Network::format_os_error;
 using Network::socket_error;
 using Network::to_byte_string;
 
@@ -42,7 +46,18 @@ using IoResult = std::pair<std::string, ssize_t>;
 static constexpr auto backlog_size {20};
 static constexpr auto radix {10};
 
-static bool verbose {false};	// NOLINT
+static bool verbose {false};  // NOLINT
+
+static auto format_message(int error) -> std::string
+{
+    std::ostringstream oss;
+    oss << ("Call to ::socket(domain=AF_UNIX, type=SOCK_SEQPACKET, protocol=0) "
+            "failed with error ")
+        << error
+        << ": "
+        << format_os_error(error);
+    return oss.str();
+}
 
 static auto parse_arguments(int argc, char** argv) ->
     std::vector<std::string>
@@ -104,7 +119,7 @@ auto main(int argc, char* argv[]) -> int
         parse_arguments(argc, argv);
 
         // Bind Unix domain socket to pathname.
-        const Fd bind_fd {get_bind_socket(hints)};
+        const auto bind_fd {get_bind_socket(hints)};
         const auto addr {to_byte_string(SOCKET_NAME)};
         const auto error {Network::bind(bind_fd, addr, verbose)};
         const auto error_code {error.number()};
@@ -181,7 +196,9 @@ auto main(int argc, char* argv[]) -> int
         }
     }
     catch (const std::exception& error) {
-        std::cerr << error.what()
-                  << std::endl;
+        if (error.what() != format_message(EINVAL)) {
+            std::cerr << error.what()
+                      << std::endl;
+        }
     }
 }
