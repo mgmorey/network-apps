@@ -50,7 +50,6 @@ using Network::get_sockname;
 using Network::get_sun_path;
 using Network::get_sun_path_size;
 using Network::os_error_type;
-using Network::string_null;
 using Network::to_byte_string;
 
 namespace TestSocket
