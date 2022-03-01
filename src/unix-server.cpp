@@ -25,7 +25,7 @@
 #include <unistd.h>             // ::read(), ::unlink(), ::write()
 
 #include <cstdio>       // std::perror()
-#include <cstdlib>      // std::atexit(), std::exit(), std::strtol()
+#include <cstdlib>      // std::exit(), std::strtol()
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <string>       // std::string, std::to_string()
 
@@ -43,11 +43,6 @@ static constexpr auto backlog_size {20};
 static constexpr auto radix {10};
 
 static bool verbose {false};	// NOLINT
-
-static auto clean_up() -> void
-{
-    ::unlink(SOCKET_NAME);
-}
 
 static auto parse_arguments(int argc, char** argv) ->
     std::vector<std::string>
@@ -120,17 +115,10 @@ auto main(int argc, char* argv[]) -> int
             std::exit(EXIT_FAILURE);
         }
 
-        auto result = std::atexit(clean_up);
-
-        if (result == -1) {
-            std::perror("atexit");
-            std::exit(EXIT_FAILURE);
-        }
-
         // Prepare for accepting connections. The backlog size is set to
         // 20. So while one request is being processed other requests can
         // be waiting.
-        result = ::listen(static_cast<fd_type>(bind_fd), backlog_size);
+        auto result = ::listen(static_cast<fd_type>(bind_fd), backlog_size);
 
         if (result == -1) {
             std::perror("listen");
