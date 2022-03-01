@@ -48,7 +48,11 @@ auto Network::get_hostnameresult(bool verbose) noexcept -> Network::HostnameResu
     if (::gethostname(host_buffer.data(), host_buffer.size() - 1) == -1) {
         const auto error {get_last_os_error()};
         std::ostringstream oss;
-        oss << "Call to ::gethostname(...) failed with error "
+        oss << "Call to ::gethostname("
+            << host_buffer
+            << ", "
+            << host_buffer.size() - 1
+            << ") failed with error "
             << error
             << ": "
             << format_os_error(error);

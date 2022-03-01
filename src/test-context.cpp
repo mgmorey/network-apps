@@ -49,7 +49,7 @@ namespace TestContext
         "The Windows Sockets version requested is not supported."
     };
     static constexpr auto expected_error_stopped {
-        "Call to gethostname(...) failed with error 10093: "
+        "Call to ::gethostname(, 1024) failed with error 10093: "
         "Either the application has not called WSAStartup, "
         "or WSAStartup failed."
     };
@@ -294,7 +294,7 @@ namespace TestContext
         try {
             const Context context;
             test_context(context, "local 5");
-            static_cast<void>(get_hostname());
+            static_cast<void>(get_hostname(verbose));
         }
         catch (const Error& error) {
             print(error);
@@ -310,7 +310,7 @@ namespace TestContext
         std::string actual_error;
 
         try {
-            static_cast<void>(get_hostname());
+            static_cast<void>(get_hostname(verbose));
         }
         catch (const Error& error) {
             print(error);
