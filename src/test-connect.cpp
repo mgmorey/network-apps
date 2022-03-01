@@ -86,6 +86,16 @@ namespace TestConnect
     class Test
     {
     public:
+        static auto get_codes_unreachable() -> const ErrorCodeSet&
+        {
+#if defined(WIN32)
+            static const ErrorCodeSet codes {0};
+#else
+            static const ErrorCodeSet codes {ENETUNREACH};
+#endif
+            return codes;
+        }
+
         Test(Endpoint t_endpoint,
              OptionalHostname t_hostname,
              std::ostream& t_os) :
@@ -97,13 +107,18 @@ namespace TestConnect
 
         auto operator()(const FdResult& t_fd_result) -> void
         {
+            const auto& expected_codes {get_codes_unreachable()};
             std::visit(Overloaded {
                     [&](const Fd& fd) {
                         test_socket(fd);
                     },
                     [&](const OsErrorResult& error) {
-                        std::cerr << error.string()
-                                  << std::endl;
+                        auto actual_code {error.number()};
+
+                        if (expected_codes.count(actual_code) == 0) {
+                            std::cerr << error.string()
+                                      << std::endl;
+                        }
                     }
                 }, t_fd_result);
         }
