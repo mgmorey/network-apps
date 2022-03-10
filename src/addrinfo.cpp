@@ -55,6 +55,12 @@ auto Network::AddrInfo::InputIterator::operator++() noexcept ->
     return *this;
 }
 
+auto Network::AddrInfo::InputIterator::operator==(const InputIterator& rhs)
+    const noexcept -> bool
+{
+    return m_list == rhs.m_list;
+}
+
 auto Network::AddrInfo::end() noexcept -> Network::AddrInfo::InputIterator
 {
     return nullptr;
@@ -136,16 +142,4 @@ auto Network::AddrInfo::to_c_string(const OptionalString& str) noexcept ->
     const char*
 {
     return str ? str->c_str() : nullptr;
-}
-
-auto Network::operator==(const AddrInfo::InputIterator& left,
-                         const AddrInfo::InputIterator& right) noexcept -> bool
-{
-    return left.m_list == right.m_list;
-}
-
-auto Network::operator!=(const AddrInfo::InputIterator& left,
-                         const AddrInfo::InputIterator& right) noexcept -> bool
-{
-    return left.m_list != right.m_list;
 }

@@ -48,14 +48,11 @@ namespace Network
 
             // cppcheck-suppress noExplicitConstructor
             InputIterator(pointer t_pointer) noexcept;  // NOLINT
-            auto operator*() const noexcept -> reference;
-            auto operator->() const noexcept -> pointer;
+            [[nodiscard]] auto operator*() const noexcept -> reference;
+            [[nodiscard]] auto operator->() const noexcept -> pointer;
             auto operator++() noexcept -> InputIterator&;
-
-            friend auto operator==(const InputIterator& left,
-                                   const InputIterator& right) noexcept -> bool;
-            friend auto operator!=(const InputIterator& left,
-                                   const InputIterator& right) noexcept -> bool;
+            [[nodiscard]] auto operator==(const InputIterator& rhs)
+                const noexcept -> bool;
 
         private:
             pointer m_list {nullptr};
@@ -87,12 +84,6 @@ namespace Network
         OsErrorResult m_result;
     };
 
-    extern auto operator==(const AddrInfo::InputIterator& left,
-                           const AddrInfo::InputIterator& right) noexcept ->
-        bool;
-    extern auto operator!=(const AddrInfo::InputIterator& left,
-                           const AddrInfo::InputIterator& right) noexcept ->
-        bool;
     extern auto operator<<(std::ostream& os,
                            const addrinfo& ai) noexcept -> std::ostream&;
 }
