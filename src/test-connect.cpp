@@ -29,7 +29,8 @@
 #include <getopt.h>         // getopt(), optarg, opterr, optind
 #include <winsock2.h>       // AF_INET, AF_INET6, PF_INET, PF_INET6,
                             // IPPROTO_IP, IPPROTO_TCP, IPPROTO_UDP,
-                            // SOCK_DGRAM, SOCK_STREAM
+                            // SOCK_DGRAM, SOCK_STREAM, WSAEFAULT,
+                            // WSAENETUNREACH
 #include <ws2tcpip.h>       // AI_ADDRCONFIG, AI_ALL, AI_CANONNAME
 #else
 #include <netdb.h>          // AI_ADDRCONFIG, AI_ALL, AI_CANONNAME
@@ -89,7 +90,9 @@ namespace TestConnect
         static auto get_codes_unreachable() -> const ErrorCodeSet&
         {
 #if defined(WIN32)
-            static const ErrorCodeSet codes {0};
+            static const ErrorCodeSet codes {
+                WSAENETUNREACH
+            };
 #else
             static const ErrorCodeSet codes {
                 EACCES,
