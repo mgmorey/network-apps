@@ -136,11 +136,9 @@ endif
 ldflags_o = $(ldflags)
 ldflags_so = $(ldflags)
 
-ifeq "$(is_gcc)" "true"
 ifeq "$(is_gnu_ld)" "true"
 	ldflags_o += $(call format-option-ld,-rpath,'\$$ORIGIN')
 	ldflags_so += $(call format-option-ld,-soname,$(call get-alias,$@))
-endif
 endif
 
 lib_target = $(filter lib%,$@)
