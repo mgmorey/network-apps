@@ -51,7 +51,7 @@ auto Network::operator<<(std::ostream& os,
            << socktype
            << Format(delim, notab, "ai_protocol")
            << protocol
-           << Format(notab)
+           << Format(delim, notab)
            << "...)";
     }
     else {
