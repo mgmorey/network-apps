@@ -212,7 +212,7 @@ namespace TestBind
             print(error, "bind() with invalid address");
         }
 
-        assert(expected_codes.count(actual_code) != 0);
+        assert(expected_codes.contains(actual_code));
     }
 
     static auto test_bind_invalid_host(const Endpoint& endpoint,
@@ -230,7 +230,7 @@ namespace TestBind
                     print(error, "bind() with invalid host");
                 }
             }, bind_result);
-        assert(expected_codes.count(actual_code) != 0);
+        assert(expected_codes.contains(actual_code));
     }
 
     static auto test_bind_invalid_service(const Endpoint& endpoint,
@@ -248,7 +248,7 @@ namespace TestBind
                     print(error, "bind() with invalid service");
                 }
             }, bind_result);
-        assert(expected_codes.count(actual_code) != 0);
+        assert(expected_codes.contains(actual_code));
     }
 
     static auto test_bind_valid(const Endpoint& endpoint,

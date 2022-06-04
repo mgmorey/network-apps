@@ -188,7 +188,7 @@ namespace TestSocket
             assert(static_cast<bool>(pathname) == false);
         }
 
-        assert(expected_codes.count(actual_code) != 0);
+        assert(expected_codes.contains(actual_code));
     }
 
     static auto test_path_invalid(const OptionalPathname& pathname,

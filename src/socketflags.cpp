@@ -44,11 +44,11 @@ auto Network::operator<<(std::ostream& os,
     };
 
     std::ostringstream oss;
-    std::size_t i {0};
+    std::size_t index {0};
 
     for(const auto& value : values) {
         if ((static_cast<socket_flags_type>(flags) & value.first) != 0) {
-            if (i++ > 0) {
+            if (index++ > 0) {
                 oss << " | ";
             }
 
@@ -56,7 +56,7 @@ auto Network::operator<<(std::ostream& os,
         }
     }
 
-    switch (i) {
+    switch (index) {
     case 0:
         os << 0;
         break;

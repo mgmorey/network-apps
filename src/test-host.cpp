@@ -64,7 +64,6 @@ using Network::OsErrorResult;
 using Network::Overloaded;
 using Network::SocketHints;
 using Network::SocketHost;
-using Network::get_endpoint;
 using Network::get_hosts;
 using Network::os_error_type;
 using Network::skip_first;
@@ -294,7 +293,7 @@ namespace TestHost
                     actual_code = result.number();
                 }
             }, hosts_result);
-        assert(expected_codes.count(actual_code) != 0);
+        assert(expected_codes.contains(actual_code));
     }
 
     static auto test_host_valid(const OptionalHostname& host) -> void

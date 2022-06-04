@@ -123,7 +123,7 @@ namespace TestConnect
                     [&](const OsErrorResult& error) {
                         auto actual_code {error.number()};
 
-                        if (expected_codes.count(actual_code) == 0) {
+                        if (!expected_codes.contains(actual_code)) {
                             std::cerr << error.string()
                                       << std::endl;
                         }
@@ -253,7 +253,7 @@ namespace TestConnect
             print(error, "connect() with invalid address");
         }
 
-        assert(expected_codes.count(actual_code) != 0);
+        assert(expected_codes.contains(actual_code));
     }
 
     static auto test_connect_invalid_host(const Endpoint& endpoint,
@@ -271,7 +271,7 @@ namespace TestConnect
                     print(error, "connect() with invalid host");
                 }
             }, connect_result);
-        assert(expected_codes.count(actual_code) != 0);
+        assert(expected_codes.contains(actual_code));
     }
 
     static auto test_connect_invalid_service(const Endpoint& endpoint,
@@ -289,7 +289,7 @@ namespace TestConnect
                     print(error, "connect() with invalid service");
                 }
             }, connect_result);
-        assert(expected_codes.count(actual_code) != 0);
+        assert(expected_codes.contains(actual_code));
     }
 
     static auto test_connect_valid(const Endpoint& endpoint,

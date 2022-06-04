@@ -27,13 +27,13 @@
 #endif
 
 auto Network::get_sin6_addr(const ByteString& addr,
-                            const in6_addr& ip) noexcept -> in6_addr
+                            const in6_addr& sin6_addr) noexcept -> in6_addr
 {
     assert(get_sa_family(addr) == AF_INET6);
     const auto *const sin6 {get_sin6_pointer(addr)};
 
     if (addr.size() < sin6_addr_offset + sizeof sin6->sin6_addr) {
-        return ip;
+        return sin6_addr;
     }
 
     return sin6->sin6_addr;

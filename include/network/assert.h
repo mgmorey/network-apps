@@ -52,7 +52,7 @@
                             __FILE__,                                   \
                             __LINE__,                                   \
                             #e))
-#elif defined(OS_LINUX_FEDORA)
+#elif defined(OS_LINUX)
 #undef assert
 /* When possible, define assert so that it does not add extra
    parentheses around EXPR.  Otherwise, those added parentheses would

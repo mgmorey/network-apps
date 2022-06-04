@@ -43,7 +43,7 @@ auto Network::operator<<(std::ostream& os,
 
     constexpr auto mask {0000017};
     std::ostringstream oss;
-    std::size_t i {0};
+    std::size_t index {0};
 
     if ((static_cast<socket_type_type>(socktype) & mask) != 0) {
         switch (socktype & mask) {
@@ -62,12 +62,13 @@ auto Network::operator<<(std::ostream& os,
         default:
             oss << static_cast<socket_type_type>(socktype);
         }
-        ++i;
+
+        ++index;
     }
 
     for (const auto& value : values) {
         if ((socktype & value.first) != 0) {
-            if (i++ > 0) {
+            if (index++ > 0) {
                 oss << " | ";
             }
 
@@ -75,7 +76,7 @@ auto Network::operator<<(std::ostream& os,
         }
     }
 
-    switch (i) {
+    switch (index) {
     case 0:
         os << 0;
         break;
