@@ -40,10 +40,10 @@ namespace TestHostname
         std::vector<std::string>
     {
         std::vector<std::string> result {*argv};
-        int ch {};
+        int opt {};
 
-        while ((ch = ::getopt(argc, argv, "v")) != -1) {
-            switch (ch) {
+        while ((opt = ::getopt(argc, argv, "v")) != -1) {
+            switch (opt) {
             case 'v':
                 verbose = true;
                 break;
