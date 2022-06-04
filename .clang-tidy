@@ -1,4 +1,4 @@
-Checks:          'clang-diagnostic-*,clang-analyzer-*,*,-altera-*,-android-*,-bugprone-easily-swappable-parameters,-clang-analyzer-alpha.*,-concurrency-mt-unsafe,-fuchsia-*,-google-*,-hicpp-signed-bitwise,-linuxkernel-*,-llvm-namespace-comment,-llvmlibc-*,-modernize-pass-by-value,-objc-*,-openmp-*,-readability-simplify-boolean-expr,-zircon-*'
+Checks:          'clang-diagnostic-*,clang-analyzer-*,*,-altera-*,-android-*,-bugprone-easily-swappable-parameters,-clang-analyzer-alpha.*,-concurrency-mt-unsafe,-fuchsia-*,-google-*,-hicpp-signed-bitwise,-readability-identifier-length,-linuxkernel-*,-llvm-namespace-comment,-llvmlibc-*,-modernize-pass-by-value,-objc-*,-openmp-*,-readability-simplify-boolean-expr,-zircon-*'
 WarningsAsErrors: ''
 HeaderFilterRegex: ''
 AnalyzeTemporaryDtors: false
