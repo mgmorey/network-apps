@@ -27,7 +27,7 @@
 namespace Network
 {
     extern auto get_sin_addr(const ByteString& addr,
-                             const in_addr& ip = {}) noexcept -> in_addr;
+                             const in_addr& sin_addr = {}) noexcept -> in_addr;
 }
 
 #endif
