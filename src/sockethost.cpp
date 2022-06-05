@@ -35,19 +35,19 @@ auto Network::SocketHost::operator=(const addrinfo& t_addrinfo) noexcept ->
 auto Network::SocketHost::operator<(const SocketHost& t_host) const noexcept ->
     bool
 {
-    return m_addr < t_host.m_addr;	// NOLINT
+    return m_addr < t_host.m_addr;
 }
 
 auto Network::SocketHost::operator>(const SocketHost& t_host) const noexcept ->
     bool
 {
-    return m_addr > t_host.m_addr;	// NOLINT
+    return m_addr > t_host.m_addr;
 }
 
 auto Network::SocketHost::operator==(const SocketHost& t_host) const noexcept ->
     bool
 {
-    return m_addr == t_host.m_addr;	// NOLINT
+    return m_addr == t_host.m_addr;
 }
 
 auto Network::SocketHost::address() const noexcept -> Network::ByteString
