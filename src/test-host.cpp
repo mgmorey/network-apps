@@ -91,7 +91,7 @@ namespace TestHost
             const ByteString addr {t_host.address()};
             const auto endpoint {get_endpoint(addr)};
             Values values = {
-                static_cast<Address>(addr).text(),
+                Address(addr).text(),
                 endpoint.first.value_or(""),
                 t_host.canonical_name().value_or("")
             };
