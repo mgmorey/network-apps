@@ -98,7 +98,7 @@ namespace TestAddress
         const auto args = std::span(argv, std::size_t(argc));
 
         for (auto index = optind; index < argc; ++index) {
-            result.emplace_back(args[index]);
+            result.emplace_back(args[static_cast<std::size_t>(index)]);
         }
 
         return result;

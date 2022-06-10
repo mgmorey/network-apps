@@ -29,23 +29,29 @@ namespace Network
     public:
         explicit Format(const std::string& t_key) noexcept;
         explicit Format(std::string&& t_key) noexcept;
-        explicit Format(int t_indent, const std::string& t_key = "") noexcept;
-        explicit Format(int t_indent, std::string&& t_key) noexcept;
-        Format(const std::string& t_delimiter, int indent,
+        explicit Format(std::string::size_type t_indent,
+                        const std::string& t_key = "") noexcept;
+        Format(std::string::size_type t_indent,
+               std::string&& t_key) noexcept;
+        Format(const std::string& t_delimiter,
+               std::string::size_type t_indent,
                const std::string& key = "") noexcept;
-        Format(const std::string& t_delimiter, int indent,
+        Format(const std::string& t_delimiter,
+               std::string::size_type t_indent,
                std::string&& key) noexcept;
-        Format(std::string&& t_delimiter, int indent,
+        Format(std::string&& t_delimiter,
+               std::string::size_type indent,
                const std::string& key = "") noexcept;
-        Format(std::string&& t_delimiter, int indent,
+        Format(std::string&& t_delimiter,
+               std::string::size_type t_indent,
                std::string&& key) noexcept;
 
     private:
-        static constexpr auto m_delimiter_default {","};
-        static constexpr auto m_indent_default {-1};
+        static constexpr const char* m_delimiter_default {","};
+        static constexpr std::size_t m_indent_default {std::string::npos};
 
         std::string m_delimiter {m_delimiter_default};
-        int m_indent {m_indent_default};
+        std::string::size_type m_indent {m_indent_default};
         std::string m_key;
     };
 
