@@ -31,6 +31,8 @@
 #include <netdb.h>      // addrinfo
 #endif
 
+#include <cstddef>      // std::size_t
+
 auto Network::operator<<(std::ostream& os,
                          const addrinfo& ai) noexcept -> std::ostream&
 {
@@ -56,7 +58,8 @@ auto Network::operator<<(std::ostream& os,
     }
     else {
         static constexpr auto tab {9};
-        const auto addr {to_byte_string(ai.ai_addr, ai.ai_addrlen)};
+        const auto addr {to_byte_string(ai.ai_addr,
+                                        static_cast<std::size_t>(ai.ai_addrlen))};
         os << "addrinfo("
            << Format("ai_flags")
            << flags

@@ -28,8 +28,15 @@
 #include <unistd.h>     // ::gethostname()
 #endif
 
+#include <cstddef>      // std::size_t
 #include <iostream>     // std::cout, std::endl
 #include <sstream>      // std::ostringstream
+
+#ifdef WIN32
+using NameLen = int;
+#else
+using NameLen = std::size_t;
+#endif
 
 auto Network::get_hostnameresult(bool verbose) noexcept -> Network::HostnameResult
 {
@@ -45,7 +52,7 @@ auto Network::get_hostnameresult(bool verbose) noexcept -> Network::HostnameResu
                   << std::endl;
     }
 
-    const auto size {static_cast<int>(host_buffer.size() - 1)};
+    const auto size {static_cast<NameLen>(host_buffer.size() - 1)};
 
     if (::gethostname(host_buffer.data(), size) == -1) {
         const auto error {get_last_os_error()};
