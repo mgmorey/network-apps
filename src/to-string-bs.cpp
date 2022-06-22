@@ -20,7 +20,7 @@
 
 #include <sstream>      // std::ostringstream
 
-auto Network::to_string(const ByteString& str) noexcept -> std::string
+auto Network::to_string(const ByteString& str) -> std::string
 {
     std::ostringstream oss;
 

@@ -50,7 +50,7 @@ auto Network::SocketHost::operator==(const SocketHost& t_host) const noexcept ->
     return m_addr == t_host.m_addr;
 }
 
-auto Network::SocketHost::address() const noexcept -> Network::ByteString
+auto Network::SocketHost::address() const -> Network::ByteString
 {
     return m_addr;
 }

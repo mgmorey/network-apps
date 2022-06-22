@@ -92,7 +92,7 @@ namespace Network
             return m_value;
         }
 
-        explicit operator std::string() const noexcept;
+        explicit operator std::string() const;
 
     private:
         static constexpr auto m_radix {0x100};
@@ -100,7 +100,7 @@ namespace Network
     };
 
     extern auto operator<<(std::ostream& os,
-                           Version version) noexcept -> std::ostream&;
+                           Version version) -> std::ostream&;
 }
 
 #endif

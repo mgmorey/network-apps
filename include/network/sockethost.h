@@ -41,7 +41,7 @@ namespace Network
         auto operator<(const SocketHost& t_host) const noexcept -> bool;
         auto operator>(const SocketHost& t_host) const noexcept -> bool;
         auto operator==(const SocketHost& t_host) const noexcept -> bool;
-        [[nodiscard]] auto address() const noexcept -> ByteString;
+        [[nodiscard]] auto address() const -> ByteString;
         [[nodiscard]] auto canonical_name() const noexcept -> OptionalHostname;
 
     protected:

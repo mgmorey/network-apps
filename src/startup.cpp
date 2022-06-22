@@ -53,8 +53,8 @@ auto Network::startup(Context& context, const Version& version) -> void
         }
     }
 
-    context.description(data.szDescription)
-        .system_status(data.szSystemStatus)
+    context.description(static_cast<const char*>(data.szDescription))
+        .system_status(static_cast<const char*>(data.szSystemStatus))
         .version(Version {data.wVersion});
 #else
     context.description("Berkeley Software Distribution Sockets")

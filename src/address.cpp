@@ -78,7 +78,7 @@ auto Network::Address::operator==(const Address& t_address) const noexcept ->
             text() == t_address.text());
 }
 
-Network::Address::operator value_type() const noexcept
+Network::Address::operator value_type() const
 {
     return m_value;
 }

@@ -49,7 +49,7 @@ namespace Network
         auto operator<(const Address& t_address) const noexcept -> bool;
         auto operator>(const Address& t_address) const noexcept -> bool;
         auto operator==(const Address& t_address) const noexcept -> bool;
-        explicit operator value_type() const noexcept;
+        explicit operator value_type() const;
         [[nodiscard]] auto data() const noexcept -> value_type;
         [[nodiscard]] auto empty() const noexcept -> bool;
         [[nodiscard]] auto family() const noexcept -> socket_family_type;
@@ -78,7 +78,7 @@ namespace Network
     };
 
     extern auto operator<<(std::ostream& os,
-                           const Address& address) noexcept -> std::ostream&;
+                           const Address& address) -> std::ostream&;
 }
 
 #endif

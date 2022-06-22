@@ -31,7 +31,7 @@
 #include <vector>       // std::vector
 
 auto Network::operator<<(std::ostream& os,
-                         const SocketFlags& flags) noexcept -> std::ostream&
+                         const SocketFlags& flags) -> std::ostream&
 {
     static const std::vector<std::pair<int, const char*>> values {
         {AI_PASSIVE,        "AI_PASSIVE"},

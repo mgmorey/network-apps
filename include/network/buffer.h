@@ -24,7 +24,7 @@ namespace Network
     class Buffer
     {
     public:
-        explicit Buffer(std::string::size_type t_size = 0) noexcept;
+        explicit Buffer(std::string::size_type t_size = 0);
         Buffer(const Buffer&) noexcept = default;
         Buffer(Buffer&&) noexcept = default;
         ~Buffer() noexcept = default;

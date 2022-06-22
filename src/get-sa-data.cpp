@@ -18,8 +18,7 @@
 #include "network/get-sa-family.h"      // get_sa_family()
 #include "network/sa-offsets.h"         // sa_data_offset
 
-auto Network::get_sa_data(const ByteString& addr) noexcept ->
-    Network::ByteString
+auto Network::get_sa_data(const ByteString& addr) -> Network::ByteString
 {
     assert(get_sa_family(addr) != 0);
     assert(sa_data_offset <= addr.size());

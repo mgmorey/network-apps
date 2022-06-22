@@ -16,7 +16,7 @@
 #include "network/buffer.h"             // Buffer, operator<<(),
                                         // std::ostream, std::string
 
-Network::Buffer::Buffer(std::string::size_type t_size) noexcept :
+Network::Buffer::Buffer(std::string::size_type t_size) :
     m_value(t_size, '\0')
 {
 }

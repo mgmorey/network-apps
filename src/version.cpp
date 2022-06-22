@@ -19,7 +19,7 @@
                                         // version_null
 #include "network/string-null.h"        // string_null
 
-Network::Version::operator std::string() const noexcept
+Network::Version::operator std::string() const
 {
     if (m_value == version_null) {
         return string_null;
@@ -31,7 +31,7 @@ Network::Version::operator std::string() const noexcept
 }
 
 auto Network::operator<<(std::ostream& os,
-                         Version version) noexcept -> std::ostream&
+                         Version version) -> std::ostream&
 {
     return os << static_cast<std::string>(version);
 }

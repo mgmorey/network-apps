@@ -20,7 +20,7 @@
 
 namespace Network
 {
-    extern auto get_sa_data(const ByteString& addr) noexcept -> ByteString;
+    extern auto get_sa_data(const ByteString& addr) -> ByteString;
 }
 
 #endif

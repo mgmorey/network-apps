@@ -34,7 +34,7 @@ namespace Network
     };
 
     extern auto operator<<(std::ostream& os,
-                           const SocketFlags& flags) noexcept -> std::ostream&;
+                           const SocketFlags& flags) -> std::ostream&;
 }
 
 #endif

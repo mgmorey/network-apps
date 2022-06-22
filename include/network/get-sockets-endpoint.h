@@ -24,7 +24,7 @@ namespace Network
 {
     extern auto get_sockets(const Endpoint& endpoint,
                             const OptionalHints& hints,
-                            bool verbose) noexcept -> SocketVectorResult;
+                            bool verbose) -> SocketVectorResult;
 }
 
 #endif

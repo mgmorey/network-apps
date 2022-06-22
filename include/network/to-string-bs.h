@@ -22,7 +22,7 @@
 
 namespace Network
 {
-    extern auto to_string(const ByteString& str) noexcept -> std::string;
+    extern auto to_string(const ByteString& str) -> std::string;
 }
 
 #endif

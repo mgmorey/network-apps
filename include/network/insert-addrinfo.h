@@ -31,7 +31,7 @@ namespace Network
                          const OptionalService& service,
                          const OptionalHints& hints,
                          OutputIterator it,
-                         bool verbose) noexcept -> OsErrorResult
+                         bool verbose) -> OsErrorResult
     {
         const auto list {AddrInfo(hostname, service, hints, verbose)};
 

@@ -45,7 +45,9 @@ auto Network::get_hostnameresult(bool verbose) noexcept -> Network::HostnameResu
                   << std::endl;
     }
 
-    if (::gethostname(host_buffer.data(), host_buffer.size() - 1) == -1) {
+    const auto size {static_cast<int>(host_buffer.size() - 1)};
+
+    if (::gethostname(host_buffer.data(), size) == -1) {
         const auto error {get_last_os_error()};
         std::ostringstream oss;
         oss << "Call to ::gethostname("

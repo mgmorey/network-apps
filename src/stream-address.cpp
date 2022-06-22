@@ -24,8 +24,7 @@
 #include <sys/socket.h> // AF_INET, AF_INET6, AF_UNIX
 #endif
 
-static auto get_prefix(Network::socket_family_type family) noexcept ->
-    std::string
+static auto get_prefix(Network::socket_family_type family) -> std::string
 {
     switch (family) {
 #ifndef WIN32
@@ -44,8 +43,7 @@ static auto get_prefix(Network::socket_family_type family) noexcept ->
     }
 }
 
-static auto get_suffix(Network::socket_family_type family) noexcept ->
-    std::string
+static auto get_suffix(Network::socket_family_type family) -> std::string
 {
     switch (family) {
 #ifndef WIN32
@@ -65,7 +63,7 @@ static auto get_suffix(Network::socket_family_type family) noexcept ->
 }
 
 auto Network::operator<<(std::ostream& os,
-                         const Address& address) noexcept -> std::ostream&
+                         const Address& address) -> std::ostream&
 {
     static constexpr auto delim {", "};
     static constexpr auto tab {0};
