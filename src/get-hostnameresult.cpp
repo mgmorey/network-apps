@@ -18,6 +18,7 @@
                                         // get_hostname(),
                                         // hostname_size_max
 #include "network/buffer.h"             // Buffer
+#include "network/name-len-type.h"      // name_len_type
 #include "network/os-error.h"           // format_os_error(),
                                         // get_os_error(),
                                         // reset_last_os_error()
@@ -31,12 +32,6 @@
 #include <cstddef>      // std::size_t
 #include <iostream>     // std::cout, std::endl
 #include <sstream>      // std::ostringstream
-
-#ifdef WIN32
-using NameLen = int;
-#else
-using NameLen = std::size_t;
-#endif
 
 auto Network::get_hostnameresult(bool verbose) noexcept -> Network::HostnameResult
 {
@@ -52,7 +47,7 @@ auto Network::get_hostnameresult(bool verbose) noexcept -> Network::HostnameResu
                   << std::endl;
     }
 
-    const auto size {static_cast<NameLen>(host_buffer.size() - 1)};
+    const auto size {static_cast<name_len_type>(host_buffer.size() - 1)};
 
     if (::gethostname(host_buffer.data(), size) == -1) {
         const auto error {get_last_os_error()};
