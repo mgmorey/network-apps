@@ -33,7 +33,8 @@
 #include <iostream>     // std::cout, std::endl
 #include <sstream>      // std::ostringstream
 
-auto Network::get_hostnameresult(bool verbose) noexcept -> Network::HostnameResult
+auto Network::get_hostnameresult(bool verbose) noexcept ->
+    Network::HostnameResult
 {
     Buffer host_buffer {hostname_size_max};
     reset_last_os_error();
