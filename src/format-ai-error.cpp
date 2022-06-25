@@ -21,7 +21,7 @@
 #include <netdb.h>          // gai_strerror()
 #endif
 
-auto Network::format_ai_error(os_error_type error) noexcept -> std::string
+auto Network::format_ai_error(os_error_type error) -> std::string
 {
 #ifdef WIN32
     return format_os_error(error);

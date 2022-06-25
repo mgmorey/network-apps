@@ -19,7 +19,7 @@
 
 #ifndef WIN32
 
-auto Network::Address::sun_text() const noexcept -> std::string
+auto Network::Address::sun_text() const -> std::string
 {
     return get_sun_path(m_value).value_or(string_null);
 }

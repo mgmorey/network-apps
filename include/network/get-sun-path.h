@@ -23,7 +23,7 @@ namespace Network
 {
 #ifndef WIN32
     extern auto get_sun_path(const ByteString& addr,
-                             const OptionalPathname& pathname = {}) noexcept ->
+                             const OptionalPathname& pathname = {}) ->
         OptionalPathname;
 #endif
 }
