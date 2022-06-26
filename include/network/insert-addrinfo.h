@@ -19,7 +19,7 @@
 #include "network/addrinfo.h"           // OptionalHints,
                                         // OptionalHostname,
                                         // OptionalService,
-                                        // OsErrorResult,
+                                        // OsErrorResult
 #include "network/endpoint.h"           // Endpoint
 
 #include <iostream>     // std::cerr, std::endl
