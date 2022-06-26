@@ -14,7 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/network.h"            // Context, OsErrorResult,
-                                        // Overloaded, get_hostname()
+                                        // get_hostname()
 
 #ifdef WIN32
 #include <getopt.h>         // getopt(), optarg, opterr, optind
