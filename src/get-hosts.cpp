@@ -19,7 +19,6 @@
                                         // OptionalHostname,
                                         // get_hosts()
 #include "network/insert-addrinfo.h"    // insert_addrinfo()
-#include "network/overloaded.h"         // Overloaded
 #include "network/uniquify.h"           // uniquify()
 
 #include <algorithm>    // std::sort()
