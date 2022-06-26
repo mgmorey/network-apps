@@ -39,14 +39,18 @@ auto Network::to_byte_string(const OptionalPathname& pathname) ->
 {
     const auto path_len {pathname ? pathname->length() : 0};
 
-    if (pathname && path_len > get_sun_path_size() - 1) {
-        std::ostringstream oss;
-        oss << *pathname
-            << ": pathname length of "
-            << pathname->length()
-            << " exceeds maximum of "
-            << get_sun_path_size() - 1;
-        throw LogicError(oss.str());
+    if (pathname) {
+        const auto path_len_max {get_sun_path_size() - 1};
+
+        if (path_len > path_len_max) {
+            std::ostringstream oss;
+            oss << *pathname
+                << ": pathname length of "
+                << pathname->length()
+                << " exceeds maximum of "
+                << path_len_max;
+            throw LogicError(oss.str());
+        }
     }
 
     sockaddr_un sun {};
