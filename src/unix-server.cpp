@@ -113,10 +113,12 @@ static auto write(const std::string& str, const Fd& fd) -> ssize_t
 auto main(int argc, char* argv[]) -> int
 {
     static constexpr SocketHints hints {0, AF_UNIX, SOCK_SEQPACKET, 0};
-    Network::Buffer buffer(BUFFER_SIZE);
-    bool shutdown {false};
 
     try {
+        Network::Buffer buffer(BUFFER_SIZE);
+        bool shutdown {false};
+
+        // Fetch arguments from command line;
         parse_arguments(argc, argv);
 
         // Bind Unix domain socket to pathname.

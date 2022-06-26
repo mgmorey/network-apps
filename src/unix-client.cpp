@@ -102,9 +102,9 @@ static auto write(const std::string& str, const Fd& fd) -> ssize_t
 
 auto main(int argc, char* argv[]) -> int
 {
-    bool shutdown {false};
-
     try {
+        bool shutdown {false};
+
         // Fetch arguments from command line;
         const auto args {parse_arguments(argc, argv)};
 
