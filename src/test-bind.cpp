@@ -61,6 +61,7 @@ using Network::OsErrorResult;
 using Network::Overloaded;
 using Network::SocketHints;
 using Network::SockName;
+using Network::bind;
 using Network::get_sockname;
 using Network::os_error_type;
 using Network::string_null;
@@ -205,7 +206,7 @@ namespace TestBind
         os_error_type actual_code {0};
         const auto& expected_codes {get_codes_invalid_addr()};
         const Fd fd {AF_INET, SOCK_STREAM, IPPROTO_TCP, 0, true, verbose};
-        const auto error {Network::bind(fd, addr, verbose)};
+        const auto error {bind(fd, addr, verbose)};
         actual_code = error.number();
 
         if (error) {
@@ -220,7 +221,7 @@ namespace TestBind
     {
         os_error_type actual_code {0};
         const auto& expected_codes {get_codes_invalid_host()};
-        const auto bind_result {Network::bind(endpoint, hints, verbose)};
+        const auto bind_result {bind(endpoint, hints, verbose)};
         std::visit(Overloaded {
                 [&](const FdResultVector& fd_results) {
                     static_cast<void>(fd_results);
@@ -238,7 +239,7 @@ namespace TestBind
     {
         os_error_type actual_code {0};
         const auto& expected_codes {get_codes_invalid_service()};
-        const auto bind_result {Network::bind(endpoint, hints, verbose)};
+        const auto bind_result {bind(endpoint, hints, verbose)};
         std::visit(Overloaded {
                 [&](const FdResultVector& fd_results) {
                     static_cast<void>(fd_results);
@@ -254,7 +255,7 @@ namespace TestBind
     static auto test_bind_valid(const Endpoint& endpoint,
                                 const SocketHints& hints) -> void
     {
-        const auto bind_result {Network::bind(endpoint, hints, verbose)};
+        const auto bind_result {bind(endpoint, hints, verbose)};
         std::visit(Overloaded {
                 [&](const FdResultVector& fd_results) {
                     std::for_each(fd_results.begin(), fd_results.end(),

@@ -67,6 +67,7 @@ using Network::Overloaded;
 using Network::PeerName;
 using Network::SocketHints;
 using Network::SockName;
+using Network::connect;
 using Network::get_hostname;
 using Network::get_peername;
 using Network::get_sockname;
@@ -246,7 +247,7 @@ namespace TestConnect
         os_error_type actual_code {0};
         const auto& expected_codes {get_codes_invalid_addr()};
         const Fd fd {AF_INET, SOCK_STREAM, IPPROTO_TCP, 0, false, verbose};
-        const auto error {Network::connect(fd, addr, verbose)};
+        const auto error {connect(fd, addr, verbose)};
         actual_code = error.number();
 
         if (error) {
@@ -261,7 +262,7 @@ namespace TestConnect
     {
         os_error_type actual_code {0};
         const auto& expected_codes {get_codes_invalid_host()};
-        const auto connect_result {Network::connect(endpoint, hints, verbose)};
+        const auto connect_result {connect(endpoint, hints, verbose)};
         std::visit(Overloaded {
                 [&](const FdResultVector& fd_results) {
                     static_cast<void>(fd_results);
@@ -279,7 +280,7 @@ namespace TestConnect
     {
         os_error_type actual_code {0};
         const auto& expected_codes {get_codes_invalid_service()};
-        const auto connect_result {Network::connect(endpoint, hints, verbose)};
+        const auto connect_result {connect(endpoint, hints, verbose)};
         std::visit(Overloaded {
                 [&](const FdResultVector& fd_results) {
                     static_cast<void>(fd_results);
@@ -296,7 +297,7 @@ namespace TestConnect
                                    const SocketHints& hints,
                                    const Hostname& hostname) -> void
     {
-        const auto connect_result {Network::connect(endpoint, hints, verbose)};
+        const auto connect_result {connect(endpoint, hints, verbose)};
         std::visit(Overloaded {
                 [&](const FdResultVector& fd_results) {
                     std::for_each(fd_results.begin(),

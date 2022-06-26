@@ -36,6 +36,7 @@ using Network::Buffer;
 using Network::Fd;
 using Network::Pathname;
 using Network::SocketHints;
+using Network::bind;
 using Network::fd_type;
 using Network::format_os_error;
 using Network::socket_error;
@@ -121,7 +122,7 @@ auto main(int argc, char* argv[]) -> int
         // Bind Unix domain socket to pathname.
         const auto bind_fd {get_bind_socket(hints)};
         const auto addr {to_byte_string(SOCKET_NAME)};
-        const auto error {Network::bind(bind_fd, addr, verbose)};
+        const auto error {bind(bind_fd, addr, verbose)};
         const auto error_code {error.number()};
 
         if (error_code == socket_error) {

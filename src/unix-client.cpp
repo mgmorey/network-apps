@@ -34,6 +34,7 @@
 using Network::Buffer;
 using Network::Fd;
 using Network::Pathname;
+using Network::connect;
 using Network::fd_type;
 using Network::format_os_error;
 using Network::os_error_type;
@@ -110,7 +111,7 @@ auto main(int argc, char* argv[]) -> int
         // Connect socket to socket address.
         const Fd fd {AF_UNIX, SOCK_SEQPACKET, 0, 0, false, verbose};
         const auto addr {to_byte_string(SOCKET_NAME)};
-        const auto error {Network::connect(fd, addr, verbose)};
+        const auto error {connect(fd, addr, verbose)};
         const auto error_code {error.number()};
 
         if (error_code == socket_error) {
