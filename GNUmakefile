@@ -286,7 +286,11 @@ $(libnetwork_static): $(libnetwork_objects)
 	rm -f $@ && $(AR) $(ARFLAGS) $@ $^
 endif
 
+ifeq "$(WITH_SHARED_OBJS)" "false"
+$(programs): $(libnetwork_static)
+else
 $(programs): $(libnetwork)
+endif
 
 # Define suffix rules
 
