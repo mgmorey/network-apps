@@ -30,7 +30,7 @@ namespace Network
     {
     public:
         constexpr SocketProtocol(socket_family_type t_family,
-                           socket_protocol_type t_value) noexcept :
+                                 socket_protocol_type t_value) noexcept :
             Integer(t_value),
             m_family(t_family)
         {
