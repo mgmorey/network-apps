@@ -246,7 +246,7 @@ namespace TestConnect
     {
         os_error_type actual_code {0};
         const auto& expected_codes {get_codes_invalid_addr()};
-        const Fd fd {AF_INET, SOCK_STREAM, IPPROTO_TCP, 0, false, verbose};
+        const Fd fd {AF_INET, SOCK_STREAM, 0, 0, false, verbose};
         const auto error {connect(fd, addr, verbose)};
         actual_code = error.number();
 
@@ -324,7 +324,7 @@ auto main(int argc, char* argv[]) -> int
     using namespace TestConnect;
 
     static constexpr SocketHints hints
-        {AI_CANONNAME, AF_UNSPEC, SOCK_STREAM, IPPROTO_TCP};
+        {AI_CANONNAME, AF_UNSPEC, SOCK_STREAM, 0};
 
     try {
         const auto args {parse_arguments(argc, argv)};
