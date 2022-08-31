@@ -49,10 +49,14 @@ auto Network::format_os_error(os_error_type error) noexcept -> std::string
                                   0,
                                   nullptr)};
 
-    if(result != 0U) {
+    if (result != 0U) {
         message = static_cast<LPTSTR>(buffer);
-        const auto cr {message.rfind('\r')};
-        message = message.substr(0, cr);
+        const auto pos {message.rfind('\r')};
+
+        if (pos != std::string::npos) {
+            message.resize(pos);
+        }
+
         ::LocalFree(buffer);
     }
 #else
