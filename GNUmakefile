@@ -64,8 +64,8 @@ get-sin6-port.cpp get-size.cpp get-socket.cpp get-socketpair.cpp	\
 get-socketpairresult.cpp get-socketresult.cpp				\
 get-sockets-endpoint.cpp get-sockets-hostname.cpp get-sockname.cpp	\
 get-socknameresult.cpp get-sun-length.cpp get-sun-path-length.cpp	\
-get-sun-path.cpp get-sun-pointer.cpp is-valid.cpp logicerror.cpp	\
-open-endpoint.cpp open-fd.cpp oserrorresult.cpp				\
+get-sun-path.cpp get-sun-pointer.cpp is-running.cpp is-valid.cpp	\
+logicerror.cpp open-endpoint.cpp open-fd.cpp oserrorresult.cpp		\
 reset-last-os-error.cpp runtimeerror.cpp set-last-os-error.cpp		\
 socket.cpp socketfamily.cpp socketflags.cpp sockethints.cpp		\
 sockethost.cpp socketprotocol.cpp sockettype.cpp startup.cpp		\

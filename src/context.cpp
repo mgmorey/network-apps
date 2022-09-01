@@ -17,6 +17,7 @@
                                         // std::endl, std::ostream
 #include "network/cleanup.h"            // cleanup()
 #include "network/exceptions.h"         // Error, RunTimeError
+#include "network/is-running.h"         // is_running()
 #include "network/startup.h"            // startup()
 
 auto Network::Context::instance() -> const Context&
@@ -37,11 +38,7 @@ Network::Context::Context(const Version& t_version)
         // invariant, that the API should be initialized (or
         // "Running"):
 
-        if (m_system_status.empty()) {
-            return;
-        }
-
-        if (m_system_status == "Running") {
+        if (is_running(*this)) {
             return;
         }
 

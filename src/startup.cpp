@@ -13,8 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/startup.h"            // startup()
-#include "network/context.h"            // Context, Version
+#include "network/startup.h"            // Context, Version, startup()
 #include "network/exceptions.h"         // Error, LogicError,
                                         // RunTimeError
 #include "network/os-error.h"           // format_os_error()
