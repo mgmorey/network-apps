@@ -16,7 +16,7 @@
 #include "network/is-running.h"         // Context, Version,
                                         // is_running()
 
-auto Network::is_running(Context& context) -> bool
+auto Network::is_running(const Context& context) -> bool
 {
     const auto status {context.system_status()};
 

@@ -20,7 +20,7 @@
 
 namespace Network
 {
-    auto is_running(Context& context) -> bool;
+    auto is_running(const Context& context) -> bool;
 }
 
 #endif
