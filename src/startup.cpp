@@ -58,7 +58,7 @@ auto Network::startup(Context& context, const Version& version) -> void
         .version(Version {data.wVersion});
 #else
     context.description("Berkeley Software Distribution Sockets")
-        .system_status("Running")
+        .system_status("")
         .version(version);
 #endif
     context.is_started(true);

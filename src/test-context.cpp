@@ -62,7 +62,7 @@ namespace TestContext
     };
     static constexpr auto expected_error_invalid_version {""};
     static constexpr auto expected_error_stopped {""};
-    static constexpr auto expected_status {"Running"};
+    static constexpr auto expected_status {""};
     static constexpr auto expected_version {Version {}};
 #endif
     static constexpr auto invalid_version {Version {0}};
