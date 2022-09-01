@@ -126,8 +126,11 @@ auto Network::operator<<(std::ostream& os,
            << version;
     }
 
-    os << ' '
-       << status
-       << std::endl;
+    if (!status.empty()) {
+        os << ' '
+           << status;
+    }
+
+    os << std::endl;
     return os;
 }
