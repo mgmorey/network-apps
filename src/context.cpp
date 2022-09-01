@@ -37,9 +37,15 @@ Network::Context::Context(const Version& t_version)
         // invariant, that the API should be initialized (or
         // "Running"):
 
-        if (m_system_status != "Running") {
-            throw RuntimeError {"The sockets runtime is not initialized."};
+        if (m_system_status.empty()) {
+            return;
         }
+
+        if (m_system_status == "Running") {
+            return;
+        }
+
+        throw RuntimeError {"The sockets runtime is not initialized."};
     }
     catch (const Error& error) {
         if (m_is_started && cleanup(failure_mode::return_zero) == 0) {
