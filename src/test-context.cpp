@@ -123,7 +123,7 @@ namespace TestContext
     }
 
     static auto print(const Context& context,
-                      const std::string& description) -> void
+                      const std::string& scope) -> void
     {
         std::cout << "Context";
 
@@ -133,15 +133,20 @@ namespace TestContext
         }
 
         std::cout << ": "
-                  << description
+                  << scope
                   << std::endl
                   << "    Description: "
                   << context.description()
-                  << std::endl
-                  << "    Status: "
-                  << context.system_status()
-                  << std::endl
-                  << "    Version: "
+                  << std::endl;
+        const auto status {context.system_status()};
+
+        if (!status.empty()) {
+            std::cout << "    Status: "
+                      << status
+                      << std::endl;
+        }
+
+        std::cout << "    Version: "
                   << context.version()
                   << std::endl;
     }
@@ -156,14 +161,14 @@ namespace TestContext
     }
 
     static auto test_context(const Context& context,
-                             const std::string& description = "",
+                             const std::string& scope = "",
                              Version version = {}) -> void
     {
         if (!static_cast<bool>(version)) {
             version = expected_version;
         }
 
-        print(context, description);
+        print(context, scope);
         assert(context.description() == expected_description);
         assert(context.system_status() == expected_status);
         assert(context.version() == version);
