@@ -31,7 +31,6 @@
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <span>         // std::span
-#include <variant>      // std::visit()
 #include <vector>       // std::vector
 
 using Network::Error;
