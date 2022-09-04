@@ -16,7 +16,7 @@
 #ifndef NETWORK_CONTEXT_H
 #define NETWORK_CONTEXT_H
 
-#include "network/version.h"            // Version
+#include "network/optionalversion.h"    // OptionalVersion, Version
 
 #include <ostream>      // std::ostream
 
@@ -27,7 +27,7 @@ namespace Network
     public:
         enum class failure_mode {return_error, return_zero, throw_error};
         static auto instance() -> const Context&;
-        explicit Context(const Version& t_version = {});
+        explicit Context(const OptionalVersion& t_version = {});
         Context(const Context&) = delete;
         Context(const Context&&) = delete;
         ~Context();

@@ -26,7 +26,7 @@ auto Network::Context::instance() -> const Context&
     return context;
 }
 
-Network::Context::Context(const Version& t_version)
+Network::Context::Context(const OptionalVersion& t_version)
 {
     try {
         startup(*this, t_version);

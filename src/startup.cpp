@@ -26,14 +26,16 @@
 
 #ifdef WIN32
 static constexpr auto api_default {Network::Version {2, 2}};
+#else
+static constexpr auto api_default {Network::Version {}};
 #endif
 
-auto Network::startup(Context& context, const Version& version) -> void
+auto Network::startup(Context& context, const OptionalVersion& version) -> void
 {
+    const auto api_version {version.value_or(api_default)};
 #ifdef WIN32
     WSADATA data {};
-    const version_type api_version {version ? version : api_default};
-    const auto error_code {::WSAStartup(api_version, &data)};
+    const auto error_code {::WSAStartup(api_version.value(), &data)};
 
     if (error_code != 0) {
         const auto error_str {format_os_error(error_code)};
@@ -58,7 +60,7 @@ auto Network::startup(Context& context, const Version& version) -> void
 #else
     context.description("Berkeley Software Distribution Sockets")
         .system_status("")
-        .version(version);
+        .version(api_version);
 #endif
     context.is_started(true);
 }
