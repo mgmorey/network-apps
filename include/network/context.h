@@ -16,8 +16,7 @@
 #ifndef NETWORK_CONTEXT_H
 #define NETWORK_CONTEXT_H
 
-#include "network/os-error-type.h"      // os_error_type
-#include "network/version.h"            // Version, version_null
+#include "network/version.h"            // Version
 
 #include <ostream>      // std::ostream
 
