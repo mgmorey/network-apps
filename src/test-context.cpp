@@ -15,7 +15,8 @@
 
 #include "network/assert.h"             // assert()
 #include "network/cleanup.h"            // cleanup()
-#include "network/network.h"            // Context, Error, Version,
+#include "network/network.h"            // Context, Error,
+                                        // OptionalVersion, Version,
                                         // get_hostname()
 
 #ifdef WIN32
@@ -79,7 +80,7 @@ namespace TestContext
             return context;
         }
 
-        explicit Context(const Version& t_version = {}) :
+        explicit Context(const Network::OptionalVersion& t_version = {}) :
             Network::Context(t_version)
         {
         }
