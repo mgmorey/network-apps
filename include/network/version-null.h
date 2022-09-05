@@ -18,11 +18,9 @@
 
 #include "network/version-type.h"       // version_type
 
-#include <climits>      // USHRT_MAX
-
 namespace Network
 {
-    enum : version_type { version_null = USHRT_MAX };
+    enum : version_type { version_null = 0U };
 }
 
 #endif
