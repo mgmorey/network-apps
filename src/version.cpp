@@ -15,9 +15,7 @@
 
 #include "network/version.h"            // Version, operator<<(),
                                         // std::ostream, std::string,
-                                        // std::to_string,
-                                        // version_null
-#include "network/string-null.h"        // string_null
+                                        // std::to_string
 
 Network::Version::operator std::string() const
 {
