@@ -21,10 +21,6 @@
 
 Network::Version::operator std::string() const
 {
-    if (m_value == version_null) {
-        return string_null;
-    }
-
     const auto major_str {std::to_string(major())};
     const auto minor_str {std::to_string(minor())};
     return major_str + "." + minor_str;

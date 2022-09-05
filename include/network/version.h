@@ -72,19 +72,14 @@ namespace Network
             return m_value;
         }
 
-        constexpr explicit operator bool() const noexcept
-        {
-            return m_value != version_null;
-        }
-
         [[nodiscard]] constexpr auto major() const noexcept -> version_type
         {
-            return m_value != version_null ? m_value % m_radix : version_null;
+            return m_value % m_radix;
         }
 
         [[nodiscard]] constexpr auto minor() const noexcept -> version_type
         {
-            return m_value != version_null ? m_value / m_radix : version_null;
+            return m_value / m_radix;
         }
 
         [[nodiscard]] constexpr auto value() const noexcept -> version_type

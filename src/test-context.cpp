@@ -36,6 +36,7 @@
 
 using Network::Error;
 using Network::Hostname;
+using Network::OptionalVersion;
 using Network::Version;
 using Network::get_hostname;
 using Network::os_error_type;
@@ -80,7 +81,7 @@ namespace TestContext
             return context;
         }
 
-        explicit Context(const Network::OptionalVersion& t_version = {}) :
+        explicit Context(const OptionalVersion& t_version = {}) :
             Network::Context(t_version)
         {
         }
@@ -162,16 +163,12 @@ namespace TestContext
 
     static auto test_context(const Context& context,
                              const std::string& scope = "",
-                             Version version = {}) -> void
+                             OptionalVersion version = {}) -> void
     {
-        if (!static_cast<bool>(version)) {
-            version = expected_version;
-        }
-
         print(context, scope);
         assert(context.description() == expected_description);
         assert(context.system_status() == expected_status);
-        assert(context.version() == version);
+        assert(context.version() == version.value_or(expected_version));
     }
 
     static auto test_context_cleaned_up() -> void
