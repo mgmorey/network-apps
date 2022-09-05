@@ -16,7 +16,6 @@
 #ifndef NETWORK_VERSION_H
 #define NETWORK_VERSION_H
 
-#include "network/version-null.h"       // version_null
 #include "network/version-type.h"       // version_type
 
 #include <ostream>     // std::ostream
@@ -27,6 +26,9 @@ namespace Network
     class Version
     {
     public:
+        static constexpr auto t_radix_default {0x100U};
+        static constexpr auto t_value_default {0U};
+
         constexpr Version() noexcept = default;
 
         constexpr explicit Version(version_type t_version) noexcept :
@@ -90,8 +92,8 @@ namespace Network
         explicit operator std::string() const;
 
     private:
-        static constexpr auto m_radix {0x100};
-        version_type m_value {version_null};
+        static constexpr auto m_radix {t_radix_default};
+        version_type m_value {t_value_default};
     };
 
     extern auto operator<<(std::ostream& os,
