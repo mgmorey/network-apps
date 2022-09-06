@@ -63,6 +63,17 @@ namespace Network
 
         explicit operator std::string() const;
 
+        [[nodiscard]] constexpr auto major() const noexcept -> int
+        {
+            return m_major;
+        }
+
+        [[nodiscard]] constexpr auto minor() const noexcept -> int
+        {
+            return m_minor;
+        }
+
+private:
         int m_major {0};
         int m_minor {0};
     };
