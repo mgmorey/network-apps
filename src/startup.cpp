@@ -25,17 +25,17 @@
 #endif
 
 #ifdef WIN32
-static constexpr auto api_default {Network::Version {2, 2}};
+static constexpr auto version_default {Network::Version {2, 2}};
 #else
-static constexpr auto api_default {Network::Version {}};
+static constexpr auto version_default {Network::Version {}};
 #endif
 
 auto Network::startup(Context& context, const OptionalVersion& version) -> void
 {
-    const auto api_version {version.value_or(api_default)};
+    const auto version_required {version.value_or(version_default)};
 #ifdef WIN32
-    WSADATA data {};
-    const auto error_code {::WSAStartup(api_version.value(), &data)};
+    WSADATA wsa_data {};
+    const auto error_code {::WSAStartup(version_required.value(), &wsa_data)};
 
     if (error_code != 0) {
         const auto error_str {format_os_error(error_code)};
@@ -54,13 +54,12 @@ auto Network::startup(Context& context, const OptionalVersion& version) -> void
         }
     }
 
-    context.description(static_cast<const char*>(data.szDescription))
-        .system_status(static_cast<const char*>(data.szSystemStatus))
-        .version(Version {data.wVersion});
+    context.description(static_cast<const char*>(wsa_data.szDescription))
+        .system_status(static_cast<const char*>(wsa_data.szSystemStatus))
+        .version(Version {wsa_data.wVersion});
 #else
     context.description("Berkeley Software Distribution Sockets")
-        .system_status("")
-        .version(api_version);
+        .version(version_required);
 #endif
     context.is_started(true);
 }
