@@ -51,26 +51,26 @@ namespace Network
 
         constexpr auto operator<(const Version& t_other) const noexcept -> bool
         {
-            return (major() < t_other.major() ||
-                    minor() < t_other.minor());
+            return (m_major < t_other.m_major ||
+                    m_minor < t_other.m_minor);
         }
 
         constexpr auto operator>(const Version& t_other) const noexcept -> bool
         {
-            return (major() > t_other.major() ||
-                    minor() > t_other.minor());
+            return (m_major > t_other.m_major ||
+                    m_minor > t_other.m_minor);
         }
 
         constexpr auto operator==(const Version& t_other) const noexcept -> bool
         {
-            return (major() == t_other.major() &&
-                    minor() == t_other.minor());
+            return (m_major == t_other.m_major &&
+                    m_minor == t_other.m_minor);
         }
 
         constexpr auto operator!=(const Version& t_other) const noexcept -> bool
         {
-            return (major() != t_other.major() ||
-                    minor() != t_other.minor());
+            return (m_major != t_other.m_major ||
+                    m_minor != t_other.m_minor);
         }
 
         constexpr explicit operator version_type() const noexcept
