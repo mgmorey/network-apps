@@ -16,28 +16,16 @@
 #ifndef NETWORK_VERSION_H
 #define NETWORK_VERSION_H
 
-#include "network/version-type.h"       // version_type
-
 #include <ostream>     // std::ostream
 #include <string>      // std::string
 
 namespace Network
 {
-    class Version
+    struct Version
     {
-    public:
-        static constexpr auto t_radix_default {0x100U};
-        static constexpr auto t_value_default {0U};
-
         constexpr Version() noexcept = default;
 
-        constexpr explicit Version(version_type t_version) noexcept :
-            m_major(t_version % m_radix),
-            m_minor(t_version / m_radix)
-        {
-        }
-
-        constexpr Version(version_type t_major, version_type t_minor) noexcept :
+        constexpr Version(int t_major, int t_minor) noexcept :
             m_major(t_major),
             m_minor(t_minor)
         {
@@ -73,27 +61,10 @@ namespace Network
                     m_minor != t_other.m_minor);
         }
 
-        constexpr explicit operator version_type() const noexcept
-        {
-            return m_minor * m_radix + m_major;
-        }
-
-        [[nodiscard]] constexpr auto major() const noexcept -> version_type
-        {
-            return m_major;
-        }
-
-        [[nodiscard]] constexpr auto minor() const noexcept -> version_type
-        {
-            return m_minor;
-        }
-
         explicit operator std::string() const;
 
-    private:
-        static constexpr auto m_radix {t_radix_default};
-        version_type m_major {t_value_default};
-        version_type m_minor {t_value_default};
+        int m_major {0};
+        int m_minor {0};
     };
 
     extern auto operator<<(std::ostream& os,

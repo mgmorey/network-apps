@@ -17,6 +17,7 @@
 #include "network/exceptions.h"         // Error, LogicError,
                                         // RunTimeError
 #include "network/os-error.h"           // format_os_error()
+#include "network/version-type.h"       // version_type
 
 #ifdef WIN32
 #include <winsock2.h>       // WSADATA, WSAEFAULT, WSAEPROCLIM,
@@ -27,14 +28,34 @@
 #ifdef WIN32
 static constexpr auto version_default {Network::Version {2, 2}};
 #else
-static constexpr auto version_default {Network::Version {}};
+static constexpr auto version_default {Network::Version {0, 0}};
+#endif
+
+#ifdef WIN32
+
+static constexpr auto radix {0x100};
+
+static constexpr auto to_integer(const Network::Version& version) ->
+    Network::version_type
+{
+    const int value {version.m_minor * radix + version.m_major};
+    return static_cast<Network::version_type>(value);
+}
+
+static constexpr auto to_version(Network::version_type version) ->
+    Network::Version
+{
+    const int value {version};
+    return Network::Version {value % radix, value / radix};
+}
+
 #endif
 
 auto Network::startup(Context& context, const OptionalVersion& version) -> void
 {
 #ifdef WIN32
     WSADATA wsa_data {};
-    const version_type version_required {version.value_or(version_default)};
+    const auto version_required {to_integer(version.value_or(version_default))};
     const auto error_code {::WSAStartup(version_required, &wsa_data)};
 
     if (error_code != 0) {
@@ -56,7 +77,7 @@ auto Network::startup(Context& context, const OptionalVersion& version) -> void
 
     context.description(static_cast<const char*>(wsa_data.szDescription))
         .system_status(static_cast<const char*>(wsa_data.szSystemStatus))
-        .version(Version {wsa_data.wVersion});
+        .version(Version {to_version(wsa_data.wVersion)});
 #else
     context.description("Berkeley Software Distribution Sockets")
         .version(version.value_or(version_default));

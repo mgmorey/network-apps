@@ -19,8 +19,8 @@
 
 Network::Version::operator std::string() const
 {
-    const auto major_str {std::to_string(major())};
-    const auto minor_str {std::to_string(minor())};
+    const auto major_str {std::to_string(m_major)};
+    const auto minor_str {std::to_string(m_minor)};
     return major_str + "." + minor_str;
 }
 

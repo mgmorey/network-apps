@@ -66,7 +66,7 @@ namespace TestContext
     static constexpr auto expected_status {""};
     static constexpr auto expected_version {Version {}};
 #endif
-    static constexpr auto invalid_version {Version {0}};
+    static constexpr auto invalid_version {Version {0, 0}};
 
     static const auto mode {Network::Context::failure_mode::return_error};
     static bool verbose {false};  // NOLINT
