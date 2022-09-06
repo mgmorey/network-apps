@@ -32,9 +32,7 @@ static constexpr auto version_default {Network::Version {}};
 
 auto Network::startup(Context& context, const OptionalVersion& version) -> void
 {
-    const auto version_required {
-        static_cast<version_type>(version.value_or(version_default))
-    };
+    const version_type version_required {version.value_or(version_default)};
 #ifdef WIN32
     WSADATA wsa_data {};
     const auto error_code {::WSAStartup(version_required, &wsa_data)};
