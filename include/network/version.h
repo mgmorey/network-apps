@@ -61,12 +61,14 @@ namespace Network
 
         constexpr auto operator==(const Version& t_other) const noexcept -> bool
         {
-            return m_value == t_other.m_value;
+            return (major() == t_other.major() &&
+                    minor() == t_other.minor());
         }
 
         constexpr auto operator!=(const Version& t_other) const noexcept -> bool
         {
-            return m_value != t_other.m_value;
+            return (major() != t_other.major() ||
+                    minor() != t_other.minor());
         }
 
         constexpr explicit operator version_type() const noexcept
