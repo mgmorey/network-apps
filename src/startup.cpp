@@ -32,9 +32,9 @@ static constexpr auto version_default {Network::Version {}};
 
 auto Network::startup(Context& context, const OptionalVersion& version) -> void
 {
-    const version_type version_required {version.value_or(version_default)};
 #ifdef WIN32
     WSADATA wsa_data {};
+    const version_type version_required {version.value_or(version_default)};
     const auto error_code {::WSAStartup(version_required, &wsa_data)};
 
     if (error_code != 0) {
@@ -59,7 +59,7 @@ auto Network::startup(Context& context, const OptionalVersion& version) -> void
         .version(Version {wsa_data.wVersion});
 #else
     context.description("Berkeley Software Distribution Sockets")
-        .version(Version {version_required});
+        .version(version.value_or(version_default));
 #endif
     context.is_started(true);
 }
