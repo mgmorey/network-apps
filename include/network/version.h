@@ -84,11 +84,6 @@ namespace Network
             return m_value / m_radix;
         }
 
-        [[nodiscard]] constexpr auto value() const noexcept -> version_type
-        {
-            return m_value;
-        }
-
         explicit operator std::string() const;
 
     private:
