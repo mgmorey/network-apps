@@ -85,7 +85,8 @@ static auto parse_arguments(int argc, char** argv) ->
     const auto args = std::span(argv, std::size_t(argc));
 
     for (auto index = optind; index < argc; ++index) {
-        result.emplace_back(args[static_cast<std::size_t>(index)]);
+        const auto i {static_cast<std::size_t>(index)};
+        result.emplace_back(args[i]);
     }
 
     return result;
@@ -100,14 +101,14 @@ static auto get_bind_socket(const SocketHints& hints) -> Fd
 static auto read(const Fd& fd) -> IoResult
 {
     Buffer buffer {BUFFER_SIZE};
-    return {buffer, ::read(static_cast<fd_type>(fd),
+    return {buffer, ::read(fd_type {fd},
                            buffer.data(),
                            buffer.size())};
 }
 
 static auto write(const std::string& str, const Fd& fd) -> ssize_t
 {
-    return ::write(static_cast<fd_type>(fd), str.data(), str.size());
+    return ::write(fd_type {fd}, str.data(), str.size());
 }
 
 auto main(int argc, char* argv[]) -> int
@@ -136,7 +137,7 @@ auto main(int argc, char* argv[]) -> int
         // Prepare for accepting connections. The backlog size is set to
         // 20. So while one request is being processed other requests can
         // be waiting.
-        auto result = ::listen(static_cast<fd_type>(bind_fd), backlog_size);
+        auto result = ::listen(fd_type {bind_fd}, backlog_size);
 
         if (result == -1) {
             std::perror("listen");
@@ -147,7 +148,7 @@ auto main(int argc, char* argv[]) -> int
         while (!shutdown) {
             // Wait for incoming connection.
             Fd fd {
-                ::accept(static_cast<fd_type>(bind_fd),
+                ::accept(fd_type {bind_fd},
                          nullptr,
                          nullptr),
                 false,

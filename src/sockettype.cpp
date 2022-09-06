@@ -45,7 +45,7 @@ auto Network::operator<<(std::ostream& os,
     std::ostringstream oss;
     std::size_t index {0};
 
-    if ((static_cast<socket_type_type>(socktype) & mask) != 0) {
+    if ((socket_type_type {socktype} & mask) != 0) {
         switch (socktype & mask) {
         case SOCK_STREAM:
             oss << "SOCK_STREAM";
@@ -60,7 +60,7 @@ auto Network::operator<<(std::ostream& os,
             oss << "SOCK_SEQPACKET";
             break;
         default:
-            oss << static_cast<socket_type_type>(socktype);
+            oss << socket_type_type {socktype};
         }
 
         ++index;

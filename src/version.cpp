@@ -27,5 +27,5 @@ Network::Version::operator std::string() const
 auto Network::operator<<(std::ostream& os,
                          Version version) -> std::ostream&
 {
-    return os << static_cast<std::string>(version);
+    return os << std::string {version};
 }

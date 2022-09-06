@@ -39,7 +39,7 @@ static constexpr auto to_integer(const Network::Version& version) ->
     Network::version_type
 {
     const int value {version.minor() * radix + version.major()};
-    return static_cast<Network::version_type>(value);
+    return Network::version_type {value};
 }
 
 static constexpr auto to_version(Network::version_type version) ->

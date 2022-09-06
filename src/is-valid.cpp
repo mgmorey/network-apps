@@ -99,7 +99,7 @@ auto Network::is_valid(const ByteString& addr, bool verbose) noexcept -> bool
 
 #ifdef HAVE_SOCKADDR_SA_LEN
 
-    const auto sa_len {static_cast<std::size_t>(get_sa_length(addr))};
+    const std::size_t sa_len {get_sa_length(addr)};
 
     if (verbose) {
         std::cout << std::setw(key_width) << "    Stored length: "

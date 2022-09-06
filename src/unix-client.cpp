@@ -81,7 +81,8 @@ static auto parse_arguments(int argc, char** argv) ->
     const auto args = std::span(argv, std::size_t(argc));
 
     for (auto index = optind; index < argc; ++index) {
-        result.emplace_back(args[static_cast<std::size_t>(index)]);
+        const auto i {static_cast<std::size_t>(index)};
+        result.emplace_back(args[i]);
     }
 
     return result;
@@ -90,14 +91,14 @@ static auto parse_arguments(int argc, char** argv) ->
 static auto read(const Fd& fd) -> IoResult
 {
     Buffer buffer {BUFFER_SIZE};
-    return {buffer, ::read(static_cast<fd_type>(fd),
+    return {buffer, ::read(fd_type {fd},
                            buffer.data(),
                            buffer.size())};
 }
 
 static auto write(const std::string& str, const Fd& fd) -> ssize_t
 {
-    return ::write(static_cast<fd_type>(fd), str.data(), str.size());
+    return ::write(fd_type {fd}, str.data(), str.size());
 }
 
 auto main(int argc, char* argv[]) -> int

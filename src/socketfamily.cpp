@@ -27,7 +27,7 @@
 auto Network::operator<<(std::ostream& os,
                          const SocketFamily& family) noexcept -> std::ostream&
 {
-    switch (static_cast<socket_family_type>(family)) {
+    switch (socket_family_type {family}) {
     case AF_UNSPEC:
         os << "AF_UNSPEC";
         break;
@@ -41,7 +41,7 @@ auto Network::operator<<(std::ostream& os,
         os << "AF_INET6";
         break;
     default:
-        os << static_cast<socket_family_type>(family);
+        os << socket_family_type {family};
     }
 
     return os;

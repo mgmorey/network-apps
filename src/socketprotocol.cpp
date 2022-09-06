@@ -29,7 +29,7 @@
 auto Network::operator<<(std::ostream& os,
                          const SocketProtocol& protocol) noexcept -> std::ostream&
 {
-    switch (static_cast<socket_family_type>(protocol.family())) {
+    switch (socket_family_type {protocol.family()}) {
     case AF_INET:
     case AF_INET6:
     case AF_UNSPEC:
@@ -50,11 +50,11 @@ auto Network::operator<<(std::ostream& os,
             os << "IPPROTO_RAW";
             break;
         default:
-            os << static_cast<socket_protocol_type>(protocol);
+            os << socket_protocol_type {protocol};
         }
         break;
     default:
-        os << static_cast<socket_protocol_type>(protocol);
+        os << socket_protocol_type {protocol};
     }
 
     return os;

@@ -47,7 +47,7 @@ auto Network::operator<<(std::ostream& os,
     std::size_t index {0};
 
     for(const auto& value : values) {
-        if ((static_cast<socket_flags_type>(flags) & value.first) != 0) {
+        if ((socket_flags_type {flags} & value.first) != 0) {
             if (index++ > 0) {
                 oss << " | ";
             }

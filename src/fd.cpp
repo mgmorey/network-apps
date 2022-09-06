@@ -50,12 +50,12 @@ Network::Fd::operator bool() const noexcept
 
 Network::Fd::operator fd_type() const noexcept
 {
-    return m_fd ? static_cast<fd_type>(*m_fd) : fd_null;
+    return m_fd ? fd_type {*m_fd} : fd_null;
 }
 
 Network::Fd::operator std::string() const
 {
-    return m_fd ? static_cast<std::string>(*m_fd) : string_null;
+    return m_fd ? std::string {*m_fd} : string_null;
 }
 
 auto Network::Fd::close() -> Fd&
@@ -75,5 +75,5 @@ auto Network::Fd::handle() const noexcept -> fd_type
 auto Network::operator<<(std::ostream& os,
                          const Fd& fd) noexcept -> std::ostream&
 {
-    return os << static_cast<std::string>(fd);
+    return os << std::string {fd};
 }

@@ -67,6 +67,7 @@ auto Network::get_nameresult(const GetNameHandler& handler,
         return OsErrorResult {error, oss.str()};
     }
 
-    addr.resize(static_cast<std::string::size_type>(length));
+    const std::string::size_type len = length;
+    addr.resize(len);
     return addr;
 }

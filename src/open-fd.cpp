@@ -60,7 +60,7 @@ auto Network::open(const OpenHandler& handler,
                   << std::endl;
     }
 
-    const fd_type handle {static_cast<fd_type>(args.fd)};
+    const fd_type handle {args.fd};
 
     if (handler.first(handle, pointer, length) == socket_error) {
         const auto error = get_last_os_error();
