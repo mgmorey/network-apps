@@ -82,8 +82,8 @@ logfile
 # Size file
 sizes.txt
 
-# Temporary directories
-**/tmp/
+# Object directory
+**/object/
 
 # Temporary files
 *.tmp
