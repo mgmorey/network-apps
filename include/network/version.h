@@ -32,12 +32,14 @@ namespace Network
         constexpr Version() noexcept = default;
 
         constexpr explicit Version(version_type t_version) noexcept :
-            m_value(t_version)
+            m_major(t_version % m_radix),
+            m_minor(t_version / m_radix)
         {
         }
 
         constexpr Version(version_type t_major, version_type t_minor) noexcept :
-            m_value(t_minor * m_radix + t_major)
+            m_major(t_major),
+            m_minor(t_minor)
         {
         }
 
@@ -73,24 +75,25 @@ namespace Network
 
         constexpr explicit operator version_type() const noexcept
         {
-            return m_value;
+            return m_minor * m_radix + m_major;
         }
 
         [[nodiscard]] constexpr auto major() const noexcept -> version_type
         {
-            return m_value % m_radix;
+            return m_major;
         }
 
         [[nodiscard]] constexpr auto minor() const noexcept -> version_type
         {
-            return m_value / m_radix;
+            return m_minor;
         }
 
         explicit operator std::string() const;
 
     private:
         static constexpr auto m_radix {t_radix_default};
-        version_type m_value {t_value_default};
+        version_type m_major {t_value_default};
+        version_type m_minor {t_value_default};
     };
 
     extern auto operator<<(std::ostream& os,
