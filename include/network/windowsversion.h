@@ -24,45 +24,35 @@
                             // WSAStartup()
 #include <windows.h>        // WORD
 
+#include <utility>      // std::move()
+
 namespace Network
 {
-    struct WindowsVersion
+    struct WindowsVersion :
+        public Version
     {
-        constexpr WindowsVersion() noexcept = default;
-
-        explicit constexpr WindowsVersion(WORD version) noexcept :
-            m_version(version % m_radix, version / m_radix)
+        explicit constexpr WindowsVersion(WORD t_version) noexcept :
+            Version(t_version % m_radix, t_version / m_radix)
         {
         }
 
         explicit constexpr WindowsVersion(const Version& t_version) noexcept :
-            m_version(t_version)
+            Version(t_version)
         {
         }
 
-        constexpr WindowsVersion(const WindowsVersion&) noexcept = default;
-        constexpr WindowsVersion(WindowsVersion&&) noexcept = default;
-        constexpr ~WindowsVersion() noexcept = default;
-        constexpr auto operator=(const WindowsVersion&) noexcept ->
-            WindowsVersion& = default;
-        constexpr auto operator=(WindowsVersion&&) noexcept ->
-            WindowsVersion& = default;
-
-        explicit constexpr operator Version() const noexcept
+        explicit constexpr WindowsVersion(Version&& t_version) noexcept :
+            Version(std::move(t_version))
         {
-            return m_version;
         }
 
         explicit constexpr operator WORD() const noexcept
         {
-            const int value {m_version.minor() * m_radix + m_version.major()};
-            return value;
+            return minor() * m_radix + major();
         }
 
     private:
         static constexpr auto m_radix {0x100};
-
-        Version m_version;
     };
 }
 
