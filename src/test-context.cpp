@@ -58,6 +58,8 @@ namespace TestContext
     static_assert(version_0_1 != version_1_0);
     static_assert(version_0_0 < version_0_1 && version_0_1 < version_1_0);
     static_assert(version_1_0 > version_0_1 && version_1_0 > version_0_0);
+
+#ifdef WIN32
     static_assert(Network::to_integer(version_0_0) == 0x0U);
     static_assert(Network::to_version(0x0U) == version_0_0);
     static_assert(Network::to_integer(version_0_1) == 0x100U);
@@ -66,7 +68,7 @@ namespace TestContext
     static_assert(Network::to_version(0x001U) == version_1_0);
     static_assert(Network::to_integer(version_2_0) == 0x002U);
     static_assert(Network::to_version(0x002U) == version_2_0);
-
+#endif
 #ifdef WIN32
     static constexpr auto expected_code_stopped {WSANOTINITIALISED};
     static constexpr auto expected_description {"WinSock 2.0"};
