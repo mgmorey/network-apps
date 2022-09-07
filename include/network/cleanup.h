@@ -21,7 +21,7 @@
 
 namespace Network
 {
-    auto cleanup(Context::failure_mode t_mode) -> os_error_type;
+    extern auto cleanup(Context::failure_mode t_mode) -> os_error_type;
 }
 
 #endif
