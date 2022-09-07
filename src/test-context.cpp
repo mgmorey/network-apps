@@ -18,6 +18,7 @@
 #include "network/network.h"            // Context, Error,
                                         // OptionalVersion, Version,
                                         // get_hostname()
+#include "network/startup.h"            // to_integer(), to_version()
 
 #ifdef WIN32
 #include <getopt.h>         // getopt(), optarg, opterr, optind
@@ -40,9 +41,32 @@ using Network::OptionalVersion;
 using Network::Version;
 using Network::get_hostname;
 using Network::os_error_type;
+#ifdef WIN32
+using Network::to_integer;
+#endif
 
 namespace TestContext
 {
+    static constexpr Network::Version version_0_0 {0, 0};
+    static constexpr Network::Version version_0_1 {0, 1};
+    static constexpr Network::Version version_1_0 {1, 0};
+    static constexpr Network::Version version_2_0 {2, 0};
+
+    static_assert(version_0_0 == version_0_0);
+    static_assert(version_0_0 != version_0_1);
+    static_assert(version_0_0 != version_1_0);
+    static_assert(version_0_1 != version_1_0);
+    static_assert(version_0_0 < version_0_1 && version_0_1 < version_1_0);
+    static_assert(version_1_0 > version_0_1 && version_1_0 > version_0_0);
+    static_assert(Network::to_integer(version_0_0) == 0x0U);
+    static_assert(Network::to_version(0x0U) == version_0_0);
+    static_assert(Network::to_integer(version_0_1) == 0x100U);
+    static_assert(Network::to_version(0x100U) == version_0_1);
+    static_assert(Network::to_integer(version_1_0) == 0x001U);
+    static_assert(Network::to_version(0x001U) == version_1_0);
+    static_assert(Network::to_integer(version_2_0) == 0x002U);
+    static_assert(Network::to_version(0x002U) == version_2_0);
+
 #ifdef WIN32
     static constexpr auto expected_code_stopped {WSANOTINITIALISED};
     static constexpr auto expected_description {"WinSock 2.0"};
@@ -234,17 +258,17 @@ namespace TestContext
 
     static auto test_context_local_instances() -> void
     {
-        constexpr Version version1 {1, 0};
-        constexpr Version version2 {2, 0};
-        static_assert(version1 < version2);
-        static_assert(version2 > version1);
         std::string actual_error;
 
         try {
-            Context context1 {version1};
-            Context context2 {version2};
-            test_context(context1, "local 1", version1);
-            test_context(context2, "local 2", version2);
+            Context context_1 {version_1_0};
+            test_context(context_1, "local 1", version_1_0);
+            assert(context_1.version() == version_1_0);
+            assert(std::string {context_1.version()} == "1.0");
+            Context context_2 {version_2_0};
+            test_context(context_2, "local 2", version_2_0);
+            assert(context_2.version() == version_2_0);
+            assert(std::string {context_2.version()} == "2.0");
         }
         catch (const Error& error) {
             print(error);

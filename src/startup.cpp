@@ -13,39 +13,19 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/startup.h"            // Context, Version, startup()
+#include "network/startup.h"            // Context, Version, WSADATA,
+                                        // WSAEFAULT, WSAEPROCLIM,
+                                        // WSASYSNOTREADY,
+                                        // WSAVERNOTSUPPORTED,
+                                        // WSAStartup(), startup()
 #include "network/exceptions.h"         // Error, LogicError,
                                         // RunTimeError
 #include "network/os-error.h"           // format_os_error()
 
 #ifdef WIN32
-#include <winsock2.h>       // WSADATA, WSAEFAULT, WSAEPROCLIM,
-                            // WSASYSNOTREADY, WSAVERNOTSUPPORTED,
-                            // ::WSAStartup()
-#endif
-
-#ifdef WIN32
 static constexpr auto version_default {Network::Version {2, 2}};
 #else
 static constexpr auto version_default {Network::Version {0, 0}};
-#endif
-
-#ifdef WIN32
-
-static constexpr auto radix {0x100};
-
-static constexpr auto to_integer(const Network::Version& version) -> WORD
-{
-    const int value {version.minor() * radix + version.major()};
-    return static_cast<WORD>(value);
-}
-
-static constexpr auto to_version(WORD version) -> Network::Version
-{
-    const int value {version};
-    return Network::Version {value % radix, value / radix};
-}
-
 #endif
 
 auto Network::startup(Context& context, const OptionalVersion& version) -> void
