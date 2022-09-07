@@ -17,7 +17,7 @@
 #define NETWORK_STARTUP_H
 
 #include "network/context.h"            // Context
-#include "network/optionalversion.h"    // Version
+#include "network/optionalversion.h"    // OptionalVersion, Version
 
 #ifdef WIN32
 #include <winsock2.h>       // WSADATA, WSAEFAULT, WSAEPROCLIM,
