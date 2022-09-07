@@ -19,33 +19,8 @@
 #include "network/context.h"            // Context
 #include "network/optionalversion.h"    // OptionalVersion, Version
 
-#ifdef WIN32
-#include <winsock2.h>       // WSADATA, WSAEFAULT, WSAEPROCLIM,
-                            // WSASYSNOTREADY, WSAVERNOTSUPPORTED,
-                            // WSAStartup()
-#include <windows.h>        // WORD
-#endif
-
 namespace Network
 {
-#ifdef WIN32
-
-    static constexpr auto radix {0x100};
-
-    constexpr auto to_integer(const Version& version) -> WORD
-    {
-        const int value {version.minor() * radix + version.major()};
-        return static_cast<WORD>(value);
-    }
-
-    constexpr auto to_version(WORD version) -> Version
-    {
-        const int value {version};
-        return Version {value % radix, value / radix};
-    }
-
-#endif
-
     extern auto startup(Context& context, const OptionalVersion& version) -> void;
 }
 

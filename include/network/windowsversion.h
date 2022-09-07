@@ -18,11 +18,22 @@
 
 #include "network/version.h"            // Version
 
+#ifdef WIN32
+#include <winsock2.h>       // WSADATA, WSAEFAULT, WSAEPROCLIM,
+                            // WSASYSNOTREADY, WSAVERNOTSUPPORTED,
+                            // WSAStartup()
+#include <windows.h>        // WORD
+
 namespace Network
 {
     struct WindowsVersion
     {
         constexpr WindowsVersion() noexcept = default;
+
+        explicit constexpr WindowsVersion(WORD version) noexcept :
+            m_version(version % m_radix, version / m_radix)
+        {
+        }
 
         explicit constexpr WindowsVersion(const Version& t_version) noexcept :
             m_version(t_version)
@@ -37,9 +48,23 @@ namespace Network
         constexpr auto operator=(WindowsVersion&&) noexcept ->
             WindowsVersion& = default;
 
+        explicit constexpr operator Version() const noexcept
+        {
+            return m_version;
+        }
+
+        explicit constexpr operator WORD() const noexcept
+        {
+            const int value {m_version.minor() * m_radix + m_version.major()};
+            return value;
+        }
+
     private:
+        static constexpr auto m_radix {0x100};
+
         Version m_version;
     };
 }
 
+#endif
 #endif

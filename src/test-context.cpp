@@ -18,7 +18,7 @@
 #include "network/network.h"            // Context, Error,
                                         // OptionalVersion, Version,
                                         // get_hostname()
-#include "network/startup.h"            // to_integer(), to_version()
+#include "network/windowsversion.h"     // WindowsVersion
 
 #ifdef WIN32
 #include <getopt.h>         // getopt(), optarg, opterr, optind
@@ -42,15 +42,15 @@ using Network::Version;
 using Network::get_hostname;
 using Network::os_error_type;
 #ifdef WIN32
-using Network::to_integer;
+using Network::WindowsVersion;
 #endif
 
 namespace TestContext
 {
-    static constexpr Network::Version version_0_0 {0, 0};
-    static constexpr Network::Version version_0_1 {0, 1};
-    static constexpr Network::Version version_1_0 {1, 0};
-    static constexpr Network::Version version_2_0 {2, 0};
+    static constexpr Version version_0_0 {0, 0};
+    static constexpr Version version_0_1 {0, 1};
+    static constexpr Version version_1_0 {1, 0};
+    static constexpr Version version_2_0 {2, 0};
 
     static_assert(version_0_0 == version_0_0);
     static_assert(version_0_0 != version_0_1);
@@ -60,15 +60,16 @@ namespace TestContext
     static_assert(version_1_0 > version_0_1 && version_1_0 > version_0_0);
 
 #ifdef WIN32
-    static_assert(Network::to_integer(version_0_0) == 0x0U);
-    static_assert(Network::to_version(0x0U) == version_0_0);
-    static_assert(Network::to_integer(version_0_1) == 0x100U);
-    static_assert(Network::to_version(0x100U) == version_0_1);
-    static_assert(Network::to_integer(version_1_0) == 0x001U);
-    static_assert(Network::to_version(0x001U) == version_1_0);
-    static_assert(Network::to_integer(version_2_0) == 0x002U);
-    static_assert(Network::to_version(0x002U) == version_2_0);
+    static_assert(WORD {WindowsVersion(version_0_0)} == 0x0U);
+    static_assert(Version {WindowsVersion(0x0U)} == version_0_0);
+    static_assert(WORD {WindowsVersion(version_0_1)} == 0x100U);
+    static_assert(Version {WindowsVersion(0x100U)} == version_0_1);
+    static_assert(WORD {WindowsVersion(version_1_0)} == 0x1U);
+    static_assert(Version {WindowsVersion(0x1U)} == version_1_0);
+    static_assert(WORD {WindowsVersion(version_2_0)} == 0x2U);
+    static_assert(Version {WindowsVersion(0x2U)} == version_2_0);
 #endif
+
 #ifdef WIN32
     static constexpr auto expected_code_stopped {WSANOTINITIALISED};
     static constexpr auto expected_description {"WinSock 2.0"};

@@ -13,14 +13,17 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/startup.h"            // Context, Version, WSADATA,
+#include "network/startup.h"            // Context, OptionalVersion,
+                                        // Version, startup()
+#include "network/exceptions.h"         // Error, LogicError,
+                                        // RunTimeError
+#include "network/format-os-error.h"    // format_os_error()
+#include "network/windowsversion.h"     // Version, WORD, WSADATA,
                                         // WSAEFAULT, WSAEPROCLIM,
                                         // WSASYSNOTREADY,
                                         // WSAVERNOTSUPPORTED,
-                                        // WSAStartup(), startup()
-#include "network/exceptions.h"         // Error, LogicError,
-                                        // RunTimeError
-#include "network/os-error.h"           // format_os_error()
+                                        // WSAStartup(),
+                                        // WindowsVersion
 
 #ifdef WIN32
 static constexpr auto version_default {Network::Version {2, 2}};
@@ -32,8 +35,8 @@ auto Network::startup(Context& context, const OptionalVersion& version) -> void
 {
 #ifdef WIN32
     WSADATA wsa_data {};
-    const auto version_required {to_integer(version.value_or(version_default))};
-    const auto error_code {::WSAStartup(version_required, &wsa_data)};
+    const WindowsVersion required_version {version.value_or(version_default)};
+    const auto error_code {::WSAStartup(WORD {required_version}, &wsa_data)};
 
     if (error_code != 0) {
         const auto error_str {format_os_error(error_code)};
@@ -54,7 +57,7 @@ auto Network::startup(Context& context, const OptionalVersion& version) -> void
 
     context.description(static_cast<const char*>(wsa_data.szDescription))
         .system_status(static_cast<const char*>(wsa_data.szSystemStatus))
-        .version(Version {to_version(wsa_data.wVersion)});
+        .version(Version {WindowsVersion {wsa_data.wVersion}});
 #else
     context.description("Berkeley Software Distribution Sockets")
         .version(version.value_or(version_default));
