@@ -52,10 +52,7 @@ namespace TestContext
     static constexpr Version version_1_0 {1, 0};
     static constexpr Version version_2_0 {2, 0};
 
-    static_assert(version_0_0 == version_0_0);
-    static_assert(version_0_0 != version_0_1);
-    static_assert(version_0_0 != version_1_0);
-    static_assert(version_0_1 != version_1_0);
+    static_assert(version_0_0 != version_0_1 && version_0_1 != version_1_0);
     static_assert(version_0_0 < version_0_1 && version_0_1 < version_1_0);
     static_assert(version_1_0 > version_0_1 && version_1_0 > version_0_0);
 
