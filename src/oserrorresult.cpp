@@ -15,6 +15,8 @@
 
 #include "network/oserrorresult.h"      // OsErrorResult
 
+#include <utility>      // std::move()
+
 Network::OsErrorResult::OsErrorResult(os_error_type t_number,
                                       const std::string& t_string) noexcept :
     m_number(t_number),

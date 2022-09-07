@@ -17,6 +17,8 @@
                                         // std::endl, std::ostream,
                                         // std::string
 
+#include <utility>      // std::move()
+
 Network::Format::Format(const std::string& t_key) noexcept :
     Format(m_delimiter_default,
            m_indent_default,
