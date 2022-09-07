@@ -17,7 +17,7 @@
                                         // os_error_type, std::string
 
 #ifdef WIN32
-#include <winsock2.h>       // Always include winsock2 before
+#include <winsock2.h>       // Always include winsock2.h before
                             // windows.h on Windows
 #include <windows.h>        // FORMAT_MESSAGE*, LANG_NEUTRAL,
                             // MAKELANGID(), SUBLANG_DEFAULT,
