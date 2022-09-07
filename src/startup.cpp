@@ -17,7 +17,6 @@
 #include "network/exceptions.h"         // Error, LogicError,
                                         // RunTimeError
 #include "network/os-error.h"           // format_os_error()
-#include "network/version-type.h"       // version_type
 
 #ifdef WIN32
 #include <winsock2.h>       // WSADATA, WSAEFAULT, WSAEPROCLIM,
@@ -35,15 +34,13 @@ static constexpr auto version_default {Network::Version {0, 0}};
 
 static constexpr auto radix {0x100};
 
-static constexpr auto to_integer(const Network::Version& version) ->
-    Network::version_type
+static constexpr auto to_integer(const Network::Version& version) -> WORD
 {
     const int value {version.minor() * radix + version.major()};
-    return static_cast<Network::version_type>(value);
+    return static_cast<WORD>(value);
 }
 
-static constexpr auto to_version(Network::version_type version) ->
-    Network::Version
+static constexpr auto to_version(WORD version) -> Network::Version
 {
     const int value {version};
     return Network::Version {value % radix, value / radix};
