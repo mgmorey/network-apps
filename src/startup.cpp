@@ -59,8 +59,9 @@ auto Network::startup(Context& context, const OptionalVersion& version) -> void
         .system_status(static_cast<const char*>(wsa_data.szSystemStatus))
         .version(Version {WindowsVersion {wsa_data.wVersion}});
 #else
+    const auto required_version {version.value_or(version_default)};
     context.description("Berkeley Software Distribution Sockets")
-        .version(version.value_or(version_default));
+        .version(required_version);
 #endif
     context.is_started(true);
 }
