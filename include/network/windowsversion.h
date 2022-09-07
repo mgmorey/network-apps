@@ -19,6 +19,7 @@
 #include "network/version.h"            // Version
 
 #ifdef WIN32
+
 #include <winsock2.h>       // WSADATA, WSAEFAULT, WSAEPROCLIM,
                             // WSASYSNOTREADY, WSAVERNOTSUPPORTED,
                             // WSAStartup()
