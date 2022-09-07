@@ -73,7 +73,7 @@ namespace Network
             return m_minor;
         }
 
-private:
+    private:
         int m_major {0};
         int m_minor {0};
     };
