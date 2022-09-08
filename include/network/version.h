@@ -21,8 +21,9 @@
 
 namespace Network
 {
-    struct Version
+    class Version
     {
+    public:
         constexpr Version() noexcept = default;
 
         constexpr Version(int t_major, int t_minor) noexcept :
