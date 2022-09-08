@@ -48,8 +48,8 @@ namespace Network
 
     private:
         fd_type m_handle {fd_null};
-        bool m_pending {false};
-        bool m_verbose {false};
+        bool m_pending:1 {false};
+        bool m_verbose:1 {false};
     };
 }
 
