@@ -20,7 +20,7 @@
 
 namespace Network
 {
-    auto cleanup(fd_type handle, bool verbose = false) -> void;
+    extern auto cleanup(fd_type handle, bool verbose = false) -> void;
 }
 
 #endif
