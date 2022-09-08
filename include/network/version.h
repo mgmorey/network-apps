@@ -24,9 +24,11 @@ namespace Network
     class Version
     {
     public:
+        using field_type = short;
+
         constexpr Version() noexcept = default;
 
-        constexpr Version(int t_major, int t_minor) noexcept :
+        constexpr Version(field_type t_major, field_type t_minor) noexcept :
             m_major(t_major),
             m_minor(t_minor)
         {
@@ -75,8 +77,8 @@ namespace Network
         }
 
     private:
-        short m_major {0};
-        short m_minor {0};
+        field_type m_major {0};
+        field_type m_minor {0};
     };
 
     extern auto operator<<(std::ostream& os,
