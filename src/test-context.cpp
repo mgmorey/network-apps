@@ -41,7 +41,9 @@ using Network::OptionalVersion;
 using Network::Version;
 using Network::get_hostname;
 using Network::os_error_type;
+#ifdef WIN32
 using Network::WindowsVersion;
+#endif
 
 namespace TestContext
 {
