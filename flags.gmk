@@ -99,7 +99,9 @@ endif
 
 CXXFLAGS += -fPIC
 
-ifndef NDEBUG
+ifdef NDEBUG
+	CXXFLAGS += -O2
+else
 	CXXFLAGS += -fno-omit-frame-pointer
 ifeq "$(USING_LIBASAN)" "true"
 	CXXFLAGS += -fsanitize=address -fsanitize-address-use-after-scope
@@ -110,8 +112,6 @@ else
 	CXXFLAGS += -g3
 endif
 	CXXFLAGS += -O0
-else
-	CXXFLAGS += -O2
 endif
 
 ifdef standard
@@ -136,6 +136,12 @@ endif
 
 ldflags_o = $(ldflags)
 ldflags_so = $(ldflags)
+
+ifdef NDEBUG
+ifeq "$(is_clang)" "true"
+	ldflags_o += -flto
+endif
+endif
 
 ifneq "$(WITH_SHARED_OBJS)" "false"
 ifeq "$(is_gnu_ld)" "true"
