@@ -195,7 +195,7 @@ namespace TestSocket
     static auto test_path_invalid(const OptionalPathname& pathname,
                                   const ErrorCodeSet& expected_codes) -> void
     {
-        std::string actual_error;
+        std::string actual_error_str;
         std::string expected_error;
 
         if (pathname) {
@@ -212,11 +212,11 @@ namespace TestSocket
             test_pathname(pathname, expected_codes);
         }
         catch (const LogicError& error) {
-            actual_error = error.what();
+            actual_error_str = error.what();
             print(error);
         }
 
-        assert(actual_error == expected_error);
+        assert(actual_error_str == expected_error);
     }
 
 #ifndef OS_CYGWIN_NT
@@ -224,33 +224,33 @@ namespace TestSocket
     static auto test_path_no_directory(const Pathname& pathname,
                                        const ErrorCodeSet& expected_codes) -> void
     {
-        std::string actual_error;
+        std::string actual_error_str;
 
         try {
             test_pathname(pathname, expected_codes);
         }
         catch (const LogicError& error) {
             print(error);
-            actual_error = error.what();
+            actual_error_str = error.what();
         }
 
-        assert(actual_error.empty());
+        assert(actual_error_str.empty());
     }
 
     static auto test_path_no_permission(const Pathname& pathname,
                                         const ErrorCodeSet& expected_codes) -> void
     {
-        std::string actual_error;
+        std::string actual_error_str;
 
         try {
             test_pathname(pathname, expected_codes);
         }
         catch (const LogicError& error) {
             print(error);
-            actual_error = error.what();
+            actual_error_str = error.what();
         }
 
-        assert(actual_error.empty());
+        assert(actual_error_str.empty());
     }
 
 #endif
@@ -258,17 +258,17 @@ namespace TestSocket
     static auto test_path_valid(const OptionalPathname& pathname,
                                 const ErrorCodeSet& expected_codes) -> void
     {
-        std::string actual_error;
+        std::string actual_error_str;
 
         try {
             test_pathname(pathname, expected_codes);
         }
         catch (const LogicError& error) {
             print(error);
-            actual_error = error.what();
+            actual_error_str = error.what();
         }
 
-        assert(actual_error.empty());
+        assert(actual_error_str.empty());
     }
 
     static auto test_socketpair() -> void

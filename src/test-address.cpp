@@ -152,7 +152,7 @@ namespace TestAddress
 
     static auto test_address_invalid() -> void
     {
-        std::string actual_error;
+        std::string actual_error_str;
 
         try {
             const ByteString addr {invalid_addr_size, invalid_addr_data};
@@ -161,10 +161,10 @@ namespace TestAddress
         }
         catch (const LogicError& error) {
             print(error);
-            actual_error = error.what();
+            actual_error_str = error.what();
         }
 
-        assert(actual_error == expected_error_invalid_address);
+        assert(actual_error_str == expected_error_invalid_address);
     }
 
     static auto test_address_localhost(const ByteString& addr) -> void

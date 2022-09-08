@@ -41,9 +41,7 @@ using Network::OptionalVersion;
 using Network::Version;
 using Network::get_hostname;
 using Network::os_error_type;
-#ifdef WIN32
 using Network::WindowsVersion;
-#endif
 
 namespace TestContext
 {
@@ -52,6 +50,7 @@ namespace TestContext
     static constexpr Version version_1_0 {1, 0};
     static constexpr Version version_2_0 {2, 0};
 
+    static_assert(version_0_0 == Version {} && Version {} == Version {0, 0});
     static_assert(version_0_0 != version_0_1 && version_0_1 != version_1_0);
     static_assert(version_0_0 < version_0_1 && version_0_1 < version_1_0);
     static_assert(version_1_0 > version_0_1 && version_1_0 > version_0_0);
@@ -199,23 +198,23 @@ namespace TestContext
     static auto test_context_cleaned_up() -> void
     {
         os_error_type error_code {0};
-        std::string actual_error;
+        std::string actual_error_str;
 
         try {
             error_code = cleanup(mode);
         }
         catch (const Error& error) {
             print(error);
-            actual_error = error.what();
+            actual_error_str = error.what();
         }
 
         assert(error_code == expected_code_stopped);
-        assert(actual_error.empty());
+        assert(actual_error_str.empty());
     }
 
     static auto test_context_global_instance() -> void
     {
-        std::string actual_error;
+        std::string actual_error_str;
 
         try {
             Context& context1 {Context::instance()};
@@ -232,16 +231,16 @@ namespace TestContext
         }
         catch (const Error& error) {
             print(error);
-            actual_error = error.what();
+            actual_error_str = error.what();
         }
 
-        assert(actual_error.empty());
+        assert(actual_error_str.empty());
         test_context_cleaned_up();
     }
 
     static auto test_context_invalid_version() -> void
     {
-        std::string actual_error;
+        std::string actual_error_str;
 
         try {
             const Context context {invalid_version};
@@ -249,16 +248,16 @@ namespace TestContext
         }
         catch (const Error& error) {
             print(error);
-            actual_error = error.what();
+            actual_error_str = error.what();
         }
 
-        assert(actual_error == expected_error_invalid_version);
+        assert(actual_error_str == expected_error_invalid_version);
         test_context_cleaned_up();
     }
 
     static auto test_context_local_instances() -> void
     {
-        std::string actual_error;
+        std::string actual_error_str;
 
         try {
             Context context_1 {version_1_0};
@@ -272,16 +271,16 @@ namespace TestContext
         }
         catch (const Error& error) {
             print(error);
-            actual_error = error.what();
+            actual_error_str = error.what();
         }
 
-        assert(actual_error.empty());
+        assert(actual_error_str.empty());
         test_context_cleaned_up();
     }
 
     static auto test_context_valid_with_shutdown() -> void
     {
-        std::string actual_error;
+        std::string actual_error_str;
 
         try {
             Context context;
@@ -290,16 +289,16 @@ namespace TestContext
         }
         catch (const Error& error) {
             print(error);
-            actual_error = error.what();
+            actual_error_str = error.what();
         }
 
-        assert(actual_error.empty());
+        assert(actual_error_str.empty());
         test_context_cleaned_up();
     }
 
     static auto test_context_valid_without_shutdown() -> void
     {
-        std::string actual_error;
+        std::string actual_error_str;
 
         try {
             const Context context;
@@ -307,16 +306,16 @@ namespace TestContext
         }
         catch (const Error& error) {
             print(error);
-            actual_error = error.what();
+            actual_error_str = error.what();
         }
 
-        assert(actual_error.empty());
+        assert(actual_error_str.empty());
         test_context_cleaned_up();
     }
 
     static auto test_hostname_running() -> void
     {
-        std::string actual_error;
+        std::string actual_error_str;
 
         try {
             const Context context;
@@ -325,26 +324,26 @@ namespace TestContext
         }
         catch (const Error& error) {
             print(error);
-            actual_error = error.what();
+            actual_error_str = error.what();
         }
 
-        assert(actual_error.empty());
+        assert(actual_error_str.empty());
         test_context_cleaned_up();
     }
 
     static auto test_hostname_stopped() -> void
     {
-        std::string actual_error;
+        std::string actual_error_str;
 
         try {
             static_cast<void>(get_hostname(verbose));
         }
         catch (const Error& error) {
             print(error);
-            actual_error = error.what();
+            actual_error_str = error.what();
         }
 
-        assert(actual_error == expected_error_stopped);
+        assert(actual_error_str == expected_error_stopped);
         test_context_cleaned_up();
     }
 }
