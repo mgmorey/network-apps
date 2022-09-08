@@ -75,8 +75,8 @@ namespace Network
         }
 
     private:
-        int m_major {0};
-        int m_minor {0};
+        short m_major {0};
+        short m_minor {0};
     };
 
     extern auto operator<<(std::ostream& os,
