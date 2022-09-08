@@ -274,7 +274,7 @@ unix: $(sort $(unix_programs))
 # Define targets
 
 $(libnetwork_shared): $(libnetwork_objects)
-	$(LINK$(object_suffix)) -o $@ $^ $(LDLIBS)
+	$(filter-out -flto,$(LINK$(object_suffix))) -o $@ $^ $(LDLIBS)
 
 $(libnetwork): $(libnetwork_shared)
 	ln -sf $< $@
@@ -304,7 +304,7 @@ $(dependency_dir)/%$(dependency_suffix): %$(source_suffix)
 	$(CXX) $(CPPFLAGS) -MM $< | $(make_depfile) -o $@ $(tags)
 
 $(object_dir)/%$(object_suffix): %$(source_suffix)
-	$(COMPILE$(source_suffix)) $(OUTPUT_OPTION) $<
+	$(filter-out -flto,$(COMPILE$(source_suffix))) $(OUTPUT_OPTION) $<
 
 $(commands): $(MAKEFILE_LIST)
 	bear -- $(MAKE_COMMAND) $(MFLAGS) CXX=$(CXX) clean build

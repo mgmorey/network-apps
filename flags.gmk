@@ -100,6 +100,9 @@ endif
 CXXFLAGS += -fPIC
 
 ifdef NDEBUG
+ifeq "$(is_clang)" "true"
+	CXXFLAGS += -flto
+endif
 	CXXFLAGS += -O2
 else
 	CXXFLAGS += -fno-omit-frame-pointer
@@ -123,7 +126,11 @@ CXXFLAGS += $(CXX_ASFLAGS)
 
 # LDFLAGS
 
-ifndef NDEBUG
+ifdef NDEBUG
+ifeq "$(is_clang)" "true"
+	LDFLAGS += -flto
+endif
+else
 ifeq "$(USING_LIBASAN)" "true"
 	LDFLAGS += -fsanitize=address
 endif
@@ -136,12 +143,6 @@ endif
 
 ldflags_o = $(ldflags)
 ldflags_so = $(ldflags)
-
-ifdef NDEBUG
-ifeq "$(is_clang)" "true"
-	ldflags_o += -flto
-endif
-endif
 
 ifneq "$(WITH_SHARED_OBJS)" "false"
 ifeq "$(is_gnu_ld)" "true"
