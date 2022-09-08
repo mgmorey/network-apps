@@ -40,17 +40,17 @@ auto Network::format_os_error(os_error_type error) noexcept -> std::string
 #ifdef WIN32
     LPVOID buffer {nullptr};
     LPVOID pbuffer {&buffer};
-    LPTSTR pstring {LPTSTR {pbuffer}};
+    LPTSTR pstring {static_cast<LPTSTR>(pbuffer)};
     DWORD result {::FormatMessage(flags,
                                   nullptr,
-                                  DWORD {error},
+                                  static_cast<DWORD>(error),
                                   lang,
                                   pstring,
                                   0,
                                   nullptr)};
 
     if (result != 0U) {
-        message = LPTSTR {buffer};
+        message = static_cast<LPTSTR>(buffer);
         const auto pos {message.rfind('\r')};
 
         if (pos != std::string::npos) {
