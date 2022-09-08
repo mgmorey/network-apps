@@ -128,7 +128,7 @@ auto main(int argc, char* argv[]) -> int
         const auto error {bind(bind_fd, addr, verbose)};
         const auto error_code {error.number()};
 
-        if (error_code == socket_error) {
+        if (error_code != 0) {
             std::cerr << error.string()
                       << std::endl;
             std::exit(EXIT_FAILURE);
