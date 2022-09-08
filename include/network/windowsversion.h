@@ -27,9 +27,10 @@
 
 namespace Network
 {
-    struct WindowsVersion :
+    class WindowsVersion :
         public Version
     {
+    public:
         explicit constexpr WindowsVersion(const Version& t_version) noexcept :
             Version(t_version)
         {
