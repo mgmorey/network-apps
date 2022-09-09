@@ -51,11 +51,13 @@ namespace TestContext
     static constexpr Version version_0_1 {0, 1};
     static constexpr Version version_1_0 {1, 0};
     static constexpr Version version_2_0 {2, 0};
+    static constexpr Version version_max {255, 255};
 
     static_assert(version_0_0 == Version {} && Version {} == Version {0, 0});
     static_assert(version_0_0 != version_0_1 && version_0_1 != version_1_0);
     static_assert(version_0_0 < version_0_1 && version_0_1 < version_1_0);
     static_assert(version_1_0 > version_0_1 && version_1_0 > version_0_0);
+    static_assert(version_0_0 < version_max);
 
 #ifdef WIN32
     static_assert(WORD {WindowsVersion(version_0_0)} == 0x0U);		// NOLINT
@@ -66,6 +68,8 @@ namespace TestContext
     static_assert(Version {WindowsVersion(0x1U)} == version_1_0);	// NOLINT
     static_assert(WORD {WindowsVersion(version_2_0)} == 0x2U);		// NOLINT
     static_assert(Version {WindowsVersion(0x2U)} == version_2_0);	// NOLINT
+    static_assert(WORD {WindowsVersion(version_max)} == 0xFFFFU);	// NOLINT
+    static_assert(Version {WindowsVersion(0xFFFFU)} == version_max);	// NOLINT
 #endif
 
 #ifdef WIN32

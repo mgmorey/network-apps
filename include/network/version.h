@@ -24,7 +24,7 @@ namespace Network
     class Version
     {
     public:
-        using field_type = short;
+        using field_type = unsigned char;
 
         constexpr Version() noexcept = default;
 
