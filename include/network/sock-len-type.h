@@ -20,12 +20,15 @@
 #include <sys/socket.h>     // socklen_t
 #endif
 
+#include <climits>      // INT_MAX
+
 namespace Network
 {
+    static constexpr auto sock_len_max {INT_MAX};
 #ifdef WIN32
-        using sock_len_type = int;
+    using sock_len_type = int;
 #else
-        using sock_len_type = socklen_t;
+    using sock_len_type = socklen_t;
 #endif
 }
 

@@ -16,13 +16,16 @@
 #ifndef NETWORK_NAME_LEN_TYPE_H
 #define NETWORK_NAME_LEN_TYPE_H
 
+#include <climits>      // INT_MAX, SIZE_MAX
 #include <cstddef>      // std::size_t
 
 namespace Network
 {
 #ifdef WIN32
+    static constexpr auto name_len_max {INT_MAX};
     using name_len_type = int;
 #else
+    static constexpr auto name_len_max {SIZE_T_MAX};
     using name_len_type = std::size_t;
 #endif
 }

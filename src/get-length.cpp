@@ -14,12 +14,13 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/get-length.h"         // ByteString, get_length(),
-                                        // sock_len_type
+                                        // sock_len_type,
+                                        // to_sock_len()
 #include "network/get-sa-length.h"      // get_sa_length()
+#include "network/to-sock-len.h"        // to_sock_len()
 
-auto Network::get_length(const ByteString& addr) noexcept ->
-    Network::sock_len_type
+auto Network::get_length(const ByteString& addr) -> Network::sock_len_type
 {
-    const auto len {static_cast<sock_len_type>(addr.length())};
+    const auto len {to_sock_len(addr.length())};
     return get_sa_length(addr, len);
 }

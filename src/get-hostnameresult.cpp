@@ -18,10 +18,10 @@
                                         // get_hostname(),
                                         // hostname_size_max
 #include "network/buffer.h"             // Buffer
-#include "network/name-len-type.h"      // name_len_type
 #include "network/os-error.h"           // format_os_error(),
                                         // get_os_error(),
                                         // reset_last_os_error()
+#include "network/to-name-len.h"        // to_name_len()
 
 #ifdef WIN32
 #include <winsock2.h>   // ::gethostname()
@@ -33,8 +33,7 @@
 #include <iostream>     // std::cout, std::endl
 #include <sstream>      // std::ostringstream
 
-auto Network::get_hostnameresult(bool verbose) noexcept ->
-    Network::HostnameResult
+auto Network::get_hostnameresult(bool verbose) -> Network::HostnameResult
 {
     Buffer host_buffer {hostname_size_max};
     reset_last_os_error();
@@ -48,7 +47,7 @@ auto Network::get_hostnameresult(bool verbose) noexcept ->
                   << std::endl;
     }
 
-    const auto size {static_cast<name_len_type>(host_buffer.size() - 1)};
+    const auto size {to_name_len(host_buffer.size() - 1)};
 
     if (::gethostname(host_buffer.data(), size) == -1) {
         const auto error {get_last_os_error()};
