@@ -48,7 +48,7 @@ auto Network::get_hostnameresult(bool verbose) noexcept ->
                   << std::endl;
     }
 
-    const name_len_type size = host_buffer.size() - 1;
+    const auto size {static_cast<name_len_type>(host_buffer.size() - 1)};
 
     if (::gethostname(host_buffer.data(), size) == -1) {
         const auto error {get_last_os_error()};
