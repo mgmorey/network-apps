@@ -44,7 +44,8 @@ namespace Network
 #ifdef WIN32
 
         explicit constexpr WindowsVersion(WORD t_version) noexcept :
-            Version(t_version % m_radix, t_version / m_radix)
+            Version(static_cast<field_type>(t_version % m_radix),
+                    static_cast<field_type>(t_version / m_radix))
         {
         }
 
