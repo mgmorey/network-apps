@@ -20,6 +20,6 @@
 auto Network::get_length(const ByteString& addr) noexcept ->
     Network::sock_len_type
 {
-    const Network::sock_len_type len = addr.length();
+    const auto len {static_cast<sock_len_type>(addr.length())};
     return get_sa_length(addr, len);
 }
