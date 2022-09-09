@@ -58,14 +58,14 @@ namespace TestContext
     static_assert(version_1_0 > version_0_1 && version_1_0 > version_0_0);
 
 #ifdef WIN32
-    static_assert(WORD {WindowsVersion(version_0_0)} == 0x0U);
-    static_assert(Version {WindowsVersion(0x0U)} == version_0_0);
-    static_assert(WORD {WindowsVersion(version_0_1)} == 0x100U);
-    static_assert(Version {WindowsVersion(0x100U)} == version_0_1);
-    static_assert(WORD {WindowsVersion(version_1_0)} == 0x1U);
-    static_assert(Version {WindowsVersion(0x1U)} == version_1_0);
-    static_assert(WORD {WindowsVersion(version_2_0)} == 0x2U);
-    static_assert(Version {WindowsVersion(0x2U)} == version_2_0);
+    static_assert(WORD {WindowsVersion(version_0_0)} == 0x0U);		// NOLINT
+    static_assert(Version {WindowsVersion(0x0U)} == version_0_0);	// NOLINT
+    static_assert(WORD {WindowsVersion(version_0_1)} == 0x100U);	// NOLINT
+    static_assert(Version {WindowsVersion(0x100U)} == version_0_1);	// NOLINT
+    static_assert(WORD {WindowsVersion(version_1_0)} == 0x1U);		// NOLINT
+    static_assert(Version {WindowsVersion(0x1U)} == version_1_0);	// NOLINT
+    static_assert(WORD {WindowsVersion(version_2_0)} == 0x2U);		// NOLINT
+    static_assert(Version {WindowsVersion(0x2U)} == version_2_0);	// NOLINT
 #endif
 
 #ifdef WIN32
