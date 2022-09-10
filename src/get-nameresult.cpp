@@ -23,6 +23,7 @@
                                         // reset_os_last_error()
 #include "network/socket-error.h"       // socket_error
 #include "network/ss-sizes.h"           // ss_size
+#include "network/to-size.h"            // to_size()
 
 #include <iostream>     // std::cout, std::endl
 #include <sstream>      // std::ostringstream
@@ -67,6 +68,6 @@ auto Network::get_nameresult(const GetNameHandler& handler,
         return OsErrorResult {error, oss.str()};
     }
 
-    addr.resize(static_cast<std::string::size_type>(length));
+    addr.resize(to_size(length));
     return addr;
 }
