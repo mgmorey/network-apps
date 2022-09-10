@@ -85,7 +85,7 @@ namespace Network
     };
 
     extern auto operator<<(std::ostream& os,
-                           const addrinfo& ai) noexcept -> std::ostream&;
+                           const addrinfo& ai) -> std::ostream&;
 }
 
 #endif

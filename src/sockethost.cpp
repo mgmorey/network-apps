@@ -21,13 +21,13 @@
 
 #include <cstddef>      // std::size_t
 
-Network::SocketHost::SocketHost(const addrinfo& t_addrinfo) noexcept :
+Network::SocketHost::SocketHost(const addrinfo& t_addrinfo) :
     m_addr(to_byte_string(t_addrinfo.ai_addr, to_size(t_addrinfo.ai_addrlen))),
     m_name(to_canonical_name(t_addrinfo.ai_canonname))
 {
 }
 
-auto Network::SocketHost::operator=(const addrinfo& t_addrinfo) noexcept ->
+auto Network::SocketHost::operator=(const addrinfo& t_addrinfo) ->
     Network::SocketHost&
 {
     m_addr = to_byte_string(t_addrinfo.ai_addr, to_size(t_addrinfo.ai_addrlen));

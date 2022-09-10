@@ -35,7 +35,7 @@
 #include <cstddef>      // std::size_t
 
 auto Network::operator<<(std::ostream& os,
-                         const addrinfo& ai) noexcept -> std::ostream&
+                         const addrinfo& ai) -> std::ostream&
 {
     const SocketFlags flags(ai.ai_flags);
     const SocketFamily family(ai.ai_family);

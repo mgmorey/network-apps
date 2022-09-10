@@ -31,11 +31,11 @@ namespace Network
     {
         SocketHost() noexcept = default;
         // cppcheck-suppress noExplicitConstructor
-        SocketHost(const addrinfo& t_addrinfo) noexcept;  // NOLINT
+        SocketHost(const addrinfo& t_addrinfo);  // NOLINT
         SocketHost(const SocketHost&) noexcept = default;
         SocketHost(SocketHost&&) noexcept = default;
         ~SocketHost() noexcept = default;
-        auto operator=(const addrinfo& t_addrinfo) noexcept -> SocketHost&;
+        auto operator=(const addrinfo& t_addrinfo) -> SocketHost&;
         auto operator=(const SocketHost&) noexcept -> SocketHost& = default;
         auto operator=(SocketHost&&) noexcept -> SocketHost& = default;
         auto operator<(const SocketHost& t_host) const noexcept -> bool;
