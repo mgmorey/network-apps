@@ -144,7 +144,7 @@ namespace TestContext
             }
         }
 
-        return command_line.arguments(argc, argv);
+        return command_line.arguments();
     }
 
     static auto print(const Context& context,

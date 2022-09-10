@@ -80,7 +80,7 @@ static auto parse_arguments(int argc, char** argv) ->
         }
     }
 
-    return command_line.arguments(argc, argv);
+    return command_line.arguments();
 }
 
 static auto read(const Fd& fd) -> IoResult

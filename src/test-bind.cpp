@@ -56,7 +56,6 @@ using Network::ByteString;
 using Network::CommandLine;
 using Network::Context;
 using Network::Endpoint;
-using Network::Error;
 using Network::Fd;
 using Network::FdResult;
 using Network::FdResultVector;
@@ -179,7 +178,7 @@ namespace TestBind
             }
         }
 
-        return command_line.arguments(argc, argv);
+        return command_line.arguments();
     }
 
     static auto print(const OsErrorResult& result,

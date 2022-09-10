@@ -146,7 +146,7 @@ namespace TestSocket
             }
         }
 
-        return command_line.arguments(argc, argv);
+        return command_line.arguments();
     }
 
     static auto print(const Error& error) -> void

@@ -25,22 +25,26 @@
 #include <cstddef>      // std::size_t
 #include <span>         // std::span
 
-Network::CommandLine::CommandLine(int argc, char** argv)
+Network::CommandLine::CommandLine(int argc, char** argv) :
+    m_argc(argc),
+    m_argv(argv)
 {
-    if (argc > 0) {
-        m_arguments.emplace_back(*argv);
-    }
 }
 
-auto Network::CommandLine::arguments(int argc, char** argv) ->
+auto Network::CommandLine::arguments() ->
     Network::CommandLine::Arguments
 {
-    const auto args = std::span(argv, to_size(argc));
+    Arguments args;
+    const auto arg_span = std::span(m_argv, to_size(m_argc));
 
-    for (auto index = optind; index < argc; ++index) {
-        const auto i {static_cast<std::size_t>(index)};
-        m_arguments.emplace_back(args[i]);
+    if (m_argc > 0) {
+        args.emplace_back(arg_span[0]);
+
+        for (auto index = optind; index < m_argc; ++index) {
+            const auto i {static_cast<std::size_t>(index)};
+            args.emplace_back(arg_span[i]);
+        }
     }
 
-    return m_arguments;
+    return args;
 }

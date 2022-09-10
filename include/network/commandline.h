@@ -33,10 +33,11 @@ namespace Network
         ~CommandLine() noexcept = default;
         auto operator=(const CommandLine&) noexcept -> CommandLine& = default;
         auto operator=(CommandLine&&) noexcept -> CommandLine& = default;
-        auto arguments(int argc, char** argv) -> Arguments;
+        auto arguments() -> Arguments;
 
     private:
-        Arguments m_arguments;
+        int m_argc;
+        char** m_argv;
     };
 }
 

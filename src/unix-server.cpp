@@ -84,7 +84,7 @@ static auto parse_arguments(int argc, char** argv) ->
         }
     }
 
-    return command_line.arguments(argc, argv);
+    return command_line.arguments();
 }
 
 static auto get_bind_socket(const SocketHints& hints) -> Fd

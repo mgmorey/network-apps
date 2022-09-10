@@ -216,7 +216,7 @@ namespace TestHost
             }
         }
 
-        return command_line.arguments(argc, argv);
+        return command_line.arguments();
     }
 
     static auto print(const OsErrorResult& result,
