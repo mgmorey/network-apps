@@ -54,6 +54,7 @@ using Network::get_sockname;
 using Network::get_sun_path;
 using Network::get_sun_path_size;
 using Network::os_error_type;
+using Network::sock_len_max;
 using Network::to_byte_string;
 using Network::to_sock_len;
 
@@ -65,7 +66,10 @@ namespace TestSocket
     static constexpr auto fd_width {6};
     static constexpr auto path_size_max {get_sun_path_size()};
 
-    constexpr auto expected_error_sock_len_begin {
+    constexpr auto expected_error_sock_len_begin_max {
+        "Value 129 is out of range ["
+    };
+    constexpr auto expected_error_sock_len_begin_min {
         "Value -1 is out of range ["
     };
     constexpr auto expected_error_sock_len_end {
@@ -178,7 +182,18 @@ namespace TestSocket
             actual_error_str = error.what();
         }
 
-        assert(actual_error_str.starts_with(expected_error_sock_len_begin));
+        assert(actual_error_str.starts_with(expected_error_sock_len_begin_min));
+        assert(actual_error_str.ends_with(expected_error_sock_len_end));
+
+        try {
+            to_sock_len(sock_len_max + 1);
+        }
+        catch (const RangeError& error) {
+            print(error);
+            actual_error_str = error.what();
+        }
+
+        assert(actual_error_str.starts_with(expected_error_sock_len_begin_max));
         assert(actual_error_str.ends_with(expected_error_sock_len_end));
     }
 
