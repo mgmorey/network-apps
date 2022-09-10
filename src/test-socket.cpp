@@ -21,6 +21,7 @@
                                         // get_sun_path(),
                                         // string_null,
                                         // to_byte_string()
+#include "network/to-sock-len.h"        // to_sock_len()
 
 #include <sys/socket.h>     // AF_UNIX, AF_UNSPEC, SOCK_STREAM
 #include <sys/un.h>         // sockaddr_un
@@ -48,11 +49,13 @@ using Network::LogicError;
 using Network::OptionalPathname;
 using Network::OsErrorResult;
 using Network::Pathname;
+using Network::RangeError;
 using Network::get_sockname;
 using Network::get_sun_path;
 using Network::get_sun_path_size;
 using Network::os_error_type;
 using Network::to_byte_string;
+using Network::to_sock_len;
 
 namespace TestSocket
 {
@@ -61,6 +64,13 @@ namespace TestSocket
 
     static constexpr auto fd_width {6};
     static constexpr auto path_size_max {get_sun_path_size()};
+
+    constexpr auto expected_error_sock_len_begin {
+        "Value -1 is out of range ["
+    };
+    constexpr auto expected_error_sock_len_end {
+        "] of sock_len_type"
+    };
 
     static bool verbose {false};  // NOLINT
 
@@ -154,6 +164,22 @@ namespace TestSocket
                       << result.string()
                       << std::endl;
         }
+    }
+
+    static auto test_invalid_sock_len() -> void
+    {
+        std::string actual_error_str;
+
+        try {
+            to_sock_len(-1);
+        }
+        catch (const RangeError& error) {
+            print(error);
+            actual_error_str = error.what();
+        }
+
+        assert(actual_error_str.starts_with(expected_error_sock_len_begin));
+        assert(actual_error_str.ends_with(expected_error_sock_len_end));
     }
 
     static auto test_pathname(const OptionalPathname& pathname,
@@ -297,6 +323,7 @@ auto main(int argc, char* argv[]) -> int
             std::cout << context;
         }
 
+        test_invalid_sock_len();
 #ifndef OS_CYGWIN_NT
         test_path_no_permission("/foo", codes_no_permission);
         test_path_no_directory("/foo/bar", codes_no_directory);
