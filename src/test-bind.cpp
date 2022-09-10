@@ -23,6 +23,7 @@
                                         // Overloaded, bind(),
                                         // get_sockname(),
                                         // string_null
+#include "network/to-sock-len.h"        // to_sock_len()
 
 #ifdef WIN32
 #include <getopt.h>         // getopt(), optarg, opterr, optind
@@ -56,21 +57,31 @@ using Network::ByteString;
 using Network::CommandLine;
 using Network::Context;
 using Network::Endpoint;
+using Network::Error;
 using Network::Fd;
 using Network::FdResult;
 using Network::FdResultVector;
 using Network::OsErrorResult;
 using Network::Overloaded;
+using Network::RangeError;
 using Network::SocketHints;
 using Network::SockName;
 using Network::bind;
 using Network::get_sockname;
 using Network::os_error_type;
 using Network::string_null;
+using Network::to_sock_len;
 
 namespace TestBind
 {
     using ErrorCodeSet = std::set<os_error_type>;
+
+    constexpr auto expected_error_sock_len_begin {
+        "Value -1 is out of range ["
+    };
+    constexpr auto expected_error_sock_len_end {
+        "] of sock_len_type"
+    };
 
     static constexpr auto fd_width {6};
     static constexpr auto localhost {"localhost"};
@@ -181,6 +192,15 @@ namespace TestBind
         return command_line.arguments(argc, argv);
     }
 
+    static auto print(const Error& error) -> void
+    {
+        if (verbose) {
+            std::cout << "Exception: "
+                      << error.what()
+                      << std::endl;
+        }
+    }
+
     static auto print(const OsErrorResult& result,
                       const std::string& description = "") -> void
     {
@@ -262,6 +282,22 @@ namespace TestBind
                 }
             }, bind_result);
     }
+
+    static auto test_invalid_sock_len() -> void
+    {
+        std::string actual_error_str;
+
+        try {
+            to_sock_len(-1);
+        }
+        catch (const RangeError& error) {
+            print(error);
+            actual_error_str = error.what();
+        }
+
+        assert(actual_error_str.starts_with(expected_error_sock_len_begin));
+        assert(actual_error_str.ends_with(expected_error_sock_len_end));
+    }
 }
 
 auto main(int argc, char* argv[]) -> int
@@ -290,6 +326,7 @@ auto main(int argc, char* argv[]) -> int
             args.size() > 2 ? args[2] : localservice
         };
         test_bind_valid(valid_endpoint, hints);
+        test_invalid_sock_len();
     }
     catch (const std::exception& error) {
         std::cerr << error.what()

@@ -16,7 +16,7 @@
 #ifndef NETWORK_TO_SOCK_LEN_H
 #define NETWORK_TO_SOCK_LEN_H
 
-#include "network/logicerror.h"         // LogicError
+#include "network/rangeerror.h"         // RangeError
 #include "network/sock-len-type.h"      // sock_len_type
 
 #include <string>       // std::string
@@ -26,8 +26,9 @@ namespace Network
     template<typename T>
     auto to_sock_len(T value) -> sock_len_type
     {
-        if (sock_len_min > value || value > sock_len_max) {
-            throw LogicError("Value " + std::to_string(value) +
+        if (value < sock_len_min ||
+            value > sock_len_max) {
+            throw RangeError("Value " + std::to_string(value) +
                              " is out of range [" +
                              std::to_string(sock_len_min) +
                              ", " +

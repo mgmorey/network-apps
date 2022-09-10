@@ -27,15 +27,12 @@ namespace Network
     template<typename T>
     auto to_size(T value) -> std::size_t
     {
-        static constexpr auto size_max {SSIZE_MAX};
-        static constexpr auto size_min {0};
-
-        if (size_min > value || value > size_max) {
+        if (value < 0) {
             throw RangeError("Value " + std::to_string(value) +
                              " is out of range [" +
-                             std::to_string(size_min) +
+                             std::to_string(0) +
                              ", " +
-                             std::to_string(size_max) +
+                             std::to_string(SIZE_MAX) +
                              "] of std::size_t");
         }
 

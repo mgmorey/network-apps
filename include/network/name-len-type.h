@@ -16,20 +16,27 @@
 #ifndef NETWORK_NAME_LEN_TYPE_H
 #define NETWORK_NAME_LEN_TYPE_H
 
-#include <climits>      // INT_MAX, SIZE_MAX
+#ifdef WIN32
+#include <ws2tcpip.h>   // NI_MAXHOST
+#else
+#include <netdb.h>      // NI_MAXHOST
+#endif
+
+#ifndef NI_MAXHOST
+#define	NI_MAXHOST	(1025)	// NOLINT
+#endif
+
 #include <cstddef>      // std::size_t
 
 namespace Network
 {
 #ifdef WIN32
-    static constexpr auto name_len_max {INT_MAX};
-    static constexpr auto name_len_min {INT_MIN};
     using name_len_type = int;
 #else
-    static constexpr auto name_len_max {SIZE_T_MAX};
-    static constexpr auto name_len_min {0};
     using name_len_type = std::size_t;
 #endif
+    static constexpr auto name_len_max {NI_MAXHOST};
+    static constexpr auto name_len_min {0};
 }
 
 #endif

@@ -16,21 +16,21 @@
 #ifndef NETWORK_SOCK_LEN_TYPE_H
 #define NETWORK_SOCK_LEN_TYPE_H
 
+#include "network/sizes.h"              // sockaddr_size_max
+
 #ifndef WIN32
 #include <sys/socket.h>     // socklen_t
 #endif
 
-#include <climits>      // INT_MAX
-
 namespace Network
 {
-    static constexpr auto sock_len_max {INT_MAX};
-    static constexpr auto sock_len_min {0};
 #ifdef WIN32
     using sock_len_type = int;
 #else
     using sock_len_type = socklen_t;
 #endif
+    static constexpr int sock_len_max {sockaddr_size_max};
+    static constexpr int sock_len_min {0};
 }
 
 #endif

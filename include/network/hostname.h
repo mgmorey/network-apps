@@ -16,22 +16,14 @@
 #ifndef NETWORK_HOSTNAME_H
 #define NETWORK_HOSTNAME_H
 
-#ifdef WIN32
-#include <ws2tcpip.h>   // NI_MAXHOST
-#else
-#include <netdb.h>      // NI_MAXHOST
-#endif
-
-#ifndef NI_MAXHOST
-#define	NI_MAXHOST	(1025)	// NOLINT
-#endif
+#include "network/name-len-type.h"      // name_len_max, name_len_min
 
 #include <string>       // std::string
 
 namespace Network
 {
     using Hostname = std::string;
-    constexpr auto hostname_size_max {NI_MAXHOST};
+    constexpr auto hostname_size_max {name_len_max};
 }
 
 #endif

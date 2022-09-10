@@ -13,9 +13,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#include "network/assert.h"             // assert()
 #include "network/commandline.h"        // CommandLine
 #include "network/network.h"            // Context, OsErrorResult,
                                         // get_hostname()
+#include "network/to-name-len.h"        // to_name_len()
 
 #ifdef WIN32
 #include <getopt.h>         // getopt(), optarg, opterr, optind
@@ -31,11 +33,21 @@
 
 using Network::CommandLine;
 using Network::Context;
+using Network::Error;
 using Network::Hostname;
+using Network::RangeError;
 using Network::get_hostname;
+using Network::to_name_len;
 
 namespace TestHostname
 {
+    constexpr auto expected_error_name_len_begin {
+        "Value -1 is out of range ["
+    };
+    constexpr auto expected_error_name_len_end {
+        "] of name_len_type"
+    };
+
     static bool verbose {false};  // NOLINT
 
     static auto parse_arguments(int argc, char** argv) ->
@@ -63,12 +75,37 @@ namespace TestHostname
         return command_line.arguments(argc, argv);
     }
 
+    static auto print(const Error& error) -> void
+    {
+        if (verbose) {
+            std::cout << "Exception: "
+                      << error.what()
+                      << std::endl;
+        }
+    }
+
     static auto test_hostname() -> void
     {
         const auto hostname {get_hostname(verbose)};
         std::cout << "Hostname: "
                   << hostname
                   << std::endl;
+    }
+
+    static auto test_invalid_name_len() -> void
+    {
+        std::string actual_error_str;
+
+        try {
+            to_name_len(-1);
+        }
+        catch (const RangeError& error) {
+            print(error);
+            actual_error_str = error.what();
+        }
+
+        assert(actual_error_str.starts_with(expected_error_name_len_begin));
+        assert(actual_error_str.ends_with(expected_error_name_len_end));
     }
 }
 
@@ -85,6 +122,7 @@ auto main(int argc, char* argv[]) -> int
         }
 
         test_hostname();
+        test_invalid_name_len();
     }
     catch (const std::exception& error) {
         std::cerr << error.what()

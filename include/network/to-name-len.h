@@ -16,8 +16,8 @@
 #ifndef NETWORK_TO_NAME_LEN_H
 #define NETWORK_TO_NAME_LEN_H
 
-#include "network/logicerror.h"         // LogicError
 #include "network/name-len-type.h"      // name_len_type
+#include "network/rangeerror.h"         // RangeError
 
 #include <string>       // std::string
 
@@ -26,8 +26,9 @@ namespace Network
     template<typename T>
     auto to_name_len(T value) -> name_len_type
     {
-        if (name_len_min > value || value > name_len_max) {
-            throw LogicError("Value " + std::to_string(value) +
+        if (value < name_len_min ||
+            value > name_len_max) {
+            throw RangeError("Value " + std::to_string(value) +
                              " is out of range [" +
                              std::to_string(name_len_min) +
                              ", " +

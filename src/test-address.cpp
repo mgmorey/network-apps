@@ -69,8 +69,11 @@ namespace TestAddress
     constexpr auto expected_error_invalid_address {
         "Invalid socket address: 0xFFFFFFFFFFFFFFFF"
     };
-    constexpr auto expected_error_invalid_size {
-        "Value -1 is out of range [0, 9223372036854775807] of std::size_t"
+    constexpr auto expected_error_invalid_size_begin {
+        "Value -1 is out of range ["
+    };
+    constexpr auto expected_error_invalid_size_end {
+        "] of std::size_t"
     };
     constexpr auto invalid_addr_data {Byte {0xFFU}};
     constexpr auto invalid_addr_size {8};
@@ -237,7 +240,8 @@ namespace TestAddress
             actual_error_str = error.what();
         }
 
-        assert(actual_error_str == expected_error_invalid_size);
+        assert(actual_error_str.starts_with(expected_error_invalid_size_begin));
+        assert(actual_error_str.ends_with(expected_error_invalid_size_end));
     }
 }
 
