@@ -46,6 +46,7 @@
 #include <vector>       // std::vector
 
 using Network::Address;
+using Network::AddressError;
 using Network::Byte;
 using Network::ByteString;
 using Network::CommandLine;
@@ -53,19 +54,23 @@ using Network::Context;
 using Network::Error;
 using Network::HostVector;
 using Network::Hostname;
-using Network::LogicError;
 using Network::OsErrorResult;
 using Network::Overloaded;
+using Network::RangeError;
 using Network::SocketFamily;
 using Network::get_hosts;
 using Network::get_sa_family;
 using Network::get_sa_length;
 using Network::is_valid;
+using Network::to_size;
 
 namespace TestAddress
 {
     constexpr auto expected_error_invalid_address {
         "Invalid socket address: 0xFFFFFFFFFFFFFFFF"
+    };
+    constexpr auto expected_error_invalid_size {
+        "Value -1 is out of range [0, 9223372036854775807] of std::size_t"
     };
     constexpr auto invalid_addr_data {Byte {0xFFU}};
     constexpr auto invalid_addr_size {8};
@@ -153,7 +158,7 @@ namespace TestAddress
             const Address address {addr};
             static_cast<void>(address);
         }
-        catch (const LogicError& error) {
+        catch (const AddressError& error) {
             print(error);
             actual_error_str = error.what();
         }
@@ -219,6 +224,21 @@ namespace TestAddress
                 }
             }, hosts_result);
     }
+
+    static auto test_size_invalid() -> void
+    {
+        std::string actual_error_str;
+
+        try {
+            to_size(-1);
+        }
+        catch (const RangeError& error) {
+            print(error);
+            actual_error_str = error.what();
+        }
+
+        assert(actual_error_str == expected_error_invalid_size);
+    }
 }
 
 auto main(int argc, char* argv[]) -> int
@@ -236,6 +256,7 @@ auto main(int argc, char* argv[]) -> int
         test_address();
         test_address_invalid();
         test_address_localhost();
+        test_size_invalid();
     }
     catch (const std::exception& error) {
         std::cerr << error.what()

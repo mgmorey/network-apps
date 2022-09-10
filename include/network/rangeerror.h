@@ -13,13 +13,25 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_EXCEPTIONS_H
-#define NETWORK_EXCEPTIONS_H
+#ifndef NETWORK_RANGEERROR_H
+#define NETWORK_RANGEERROR_H
 
-#include "network/addresserror.h"       // AddressError
-#include "network/error.h"              // Error
-#include "network/logicerror.h"         // LogicError
-#include "network/rangeerror.h"         // RangeError
-#include "network/runtimeerror.h"       // RuntimeError
+#include "network/error.h"              // Error, std::string
+
+namespace Network
+{
+    class RangeError :
+        public Error
+    {
+    public:
+        explicit RangeError(const std::string& t_str) noexcept;
+        explicit RangeError(std::string&& t_str) noexcept;
+        RangeError(const RangeError&) noexcept = default;
+        RangeError(RangeError&&) noexcept = default;
+        ~RangeError() noexcept override = default;
+        auto operator=(const RangeError&) noexcept -> RangeError& = default;
+        auto operator=(RangeError&&) noexcept -> RangeError& = default;
+    };
+}
 
 #endif

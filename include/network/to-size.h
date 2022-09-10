@@ -16,7 +16,7 @@
 #ifndef NETWORK_TO_SIZE_H
 #define NETWORK_TO_SIZE_H
 
-#include "network/logicerror.h"         // LogicError
+#include "network/rangeerror.h"         // RangeError
 
 #include <climits>      // SIZE_MAX
 #include <cstddef>      // std::size_t
@@ -31,7 +31,7 @@ namespace Network
         static constexpr auto size_min {0};
 
         if (size_min > value || value > size_max) {
-            throw LogicError("Value " + std::to_string(value) +
+            throw RangeError("Value " + std::to_string(value) +
                              " is out of range [" +
                              std::to_string(size_min) +
                              ", " +

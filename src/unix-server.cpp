@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#include "network/commandline.h"        // CommandLine
 #include "network/network.h"            // Buffer, Fd, connect(),
                                         // socket_error,
                                         // to_byte_string()
@@ -33,6 +34,7 @@
 #include <string>       // std::string, std::to_string()
 
 using Network::Buffer;
+using Network::CommandLine;
 using Network::Fd;
 using Network::Pathname;
 using Network::SocketHints;
@@ -41,7 +43,6 @@ using Network::fd_type;
 using Network::format_os_error;
 using Network::socket_error;
 using Network::to_byte_string;
-using Network::to_size;
 
 using IoResult = std::pair<std::string, ssize_t>;
 
@@ -64,7 +65,7 @@ static auto format_message(int error) -> std::string
 static auto parse_arguments(int argc, char** argv) ->
     std::vector<std::string>
 {
-    std::vector<std::string> result {*argv};
+    CommandLine command_line(argc, argv);
     int opt {};
 
     while ((opt = ::getopt(argc, argv, "v")) != -1) {
@@ -83,14 +84,7 @@ static auto parse_arguments(int argc, char** argv) ->
         }
     }
 
-    const auto args = std::span(argv, std::size_t(argc));
-
-    for (auto index = optind; index < argc; ++index) {
-        const auto i {to_size(index)};
-        result.emplace_back(args[i]);
-    }
-
-    return result;
+    return command_line.arguments(argc, argv);
 }
 
 static auto get_bind_socket(const SocketHints& hints) -> Fd
