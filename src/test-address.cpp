@@ -23,7 +23,7 @@
                                         // get_sa_length(),
                                         // is_valid(), sin_size,
                                         // sin6_size
-#include "network/to-name-len.h"        // to_name_len()
+#include "network/to-name-len.h"        // to_size()
 
 #ifdef WIN32
 #include <getopt.h>         // getopt(), optarg, opterr, optind
@@ -63,22 +63,18 @@ using Network::get_hosts;
 using Network::get_sa_family;
 using Network::get_sa_length;
 using Network::is_valid;
-using Network::name_len_max;
-using Network::to_name_len;
+using Network::to_size;
 
 namespace TestAddress
 {
     constexpr auto expected_error_invalid_address {
         "Invalid socket address: 0xFFFFFFFFFFFFFFFF"
     };
-    constexpr auto expected_error_name_len_begin_max {
-        "Value 1026 is out of range ["
-    };
-    constexpr auto expected_error_name_len_begin_min {
+    constexpr auto expected_error_size_begin {
         "Value -1 is out of range ["
     };
-    constexpr auto expected_error_name_len_end {
-        "] of name_len_type"
+    constexpr auto expected_error_size_end {
+        "] of std::size_t"
     };
     constexpr auto invalid_addr_data {Byte {0xFFU}};
     constexpr auto invalid_addr_size {8};
@@ -233,31 +229,20 @@ namespace TestAddress
             }, hosts_result);
     }
 
-    static auto test_size_invalid() -> void
+    static auto test_invalid_size() -> void
     {
         std::string actual_error_str;
 
         try {
-            to_name_len(-1);
+            to_size(-1);
         }
         catch (const RangeError& error) {
             print(error);
             actual_error_str = error.what();
         }
 
-        assert(actual_error_str.starts_with(expected_error_name_len_begin_min));
-        assert(actual_error_str.ends_with(expected_error_name_len_end));
-
-        try {
-            to_name_len(name_len_max + 1);
-        }
-        catch (const RangeError& error) {
-            print(error);
-            actual_error_str = error.what();
-        }
-
-        assert(actual_error_str.starts_with(expected_error_name_len_begin_max));
-        assert(actual_error_str.ends_with(expected_error_name_len_end));
+        assert(actual_error_str.starts_with(expected_error_size_begin));
+        assert(actual_error_str.ends_with(expected_error_size_end));
     }
 }
 
@@ -276,7 +261,7 @@ auto main(int argc, char* argv[]) -> int
         test_address();
         test_address_invalid();
         test_address_localhost();
-        test_size_invalid();
+        test_invalid_size();
     }
     catch (const std::exception& error) {
         std::cerr << error.what()
