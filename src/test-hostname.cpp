@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#include "network/commandline.h"        // CommandLine
 #include "network/network.h"            // Context, OsErrorResult,
                                         // get_hostname()
 
@@ -28,10 +29,10 @@
 #include <span>         // std::span
 #include <vector>       // std::vector
 
+using Network::CommandLine;
 using Network::Context;
 using Network::Hostname;
 using Network::get_hostname;
-using Network::to_size;
 
 namespace TestHostname
 {
@@ -40,7 +41,7 @@ namespace TestHostname
     static auto parse_arguments(int argc, char** argv) ->
         std::vector<std::string>
     {
-        std::vector<std::string> result {*argv};
+        CommandLine command_line(argc, argv);
         int opt {};
 
         while ((opt = ::getopt(argc, argv, "v")) != -1) {
@@ -59,14 +60,7 @@ namespace TestHostname
             }
         }
 
-        const auto args = std::span(argv, std::size_t(argc));
-
-        for (auto index = optind; index < argc; ++index) {
-            const auto i {to_size(index)};
-            result.emplace_back(args[i]);
-        }
-
-        return result;
+        return command_line.arguments(argc, argv);
     }
 
     static auto test_hostname() -> void

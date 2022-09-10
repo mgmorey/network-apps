@@ -14,6 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/assert.h"             // assert()
+#include "network/commandline.h"        // CommandLine
 #include "network/network.h"            // Address, Bytes, Context,
                                         // Family, Hostname,
                                         // HostVector, OsErrorResult,
@@ -40,7 +41,6 @@
 #include <exception>    // std::exception
 #include <iomanip>      // std::right, std::setw()
 #include <iostream>     // std::cerr, std::cout, std::endl
-#include <span>         // std::span
 #include <string>       // std::string
 #include <variant>      // std::visit()
 #include <vector>       // std::vector
@@ -48,6 +48,7 @@
 using Network::Address;
 using Network::Byte;
 using Network::ByteString;
+using Network::CommandLine;
 using Network::Context;
 using Network::Error;
 using Network::HostVector;
@@ -60,7 +61,6 @@ using Network::get_hosts;
 using Network::get_sa_family;
 using Network::get_sa_length;
 using Network::is_valid;
-using Network::to_size;
 
 namespace TestAddress
 {
@@ -77,7 +77,7 @@ namespace TestAddress
     static auto parse_arguments(int argc, char** argv) ->
         std::vector<std::string>
     {
-        std::vector<std::string> result {*argv};
+        CommandLine command_line(argc, argv);
         int opt {};
 
         while ((opt = ::getopt(argc, argv, "v")) != -1) {
@@ -96,14 +96,7 @@ namespace TestAddress
             }
         }
 
-        const auto args = std::span(argv, std::size_t(argc));
-
-        for (auto index = optind; index < argc; ++index) {
-            const auto i {to_size(index)};
-            result.emplace_back(args[i]);
-        }
-
-        return result;
+        return command_line.arguments(argc, argv);
     }
 
     static auto print(const Address& address) -> void

@@ -15,10 +15,10 @@
 
 #include "network/assert.h"             // assert()
 #include "network/cleanup.h"            // cleanup()
+#include "network/commandline.h"        // CommandLine
 #include "network/network.h"            // Context, Error,
                                         // OptionalVersion, Version,
                                         // get_hostname()
-#include "network/windowsversion.h"     // WindowsVersion
 
 #ifdef WIN32
 #include <getopt.h>         // getopt(), optarg, opterr, optind
@@ -35,6 +35,7 @@
 #include <span>         // std::span
 #include <vector>       // std::vector
 
+using Network::CommandLine;
 using Network::Error;
 using Network::Hostname;
 using Network::OptionalVersion;
@@ -44,7 +45,6 @@ using Network::WindowsVersion;
 #endif
 using Network::get_hostname;
 using Network::os_error_type;
-using Network::to_size;
 
 namespace TestContext
 {
@@ -125,7 +125,7 @@ namespace TestContext
     static auto parse_arguments(int argc, char** argv) ->
         std::vector<std::string>
     {
-        std::vector<std::string> result {*argv};
+        CommandLine command_line(argc, argv);
         int opt {};
 
         while ((opt = ::getopt(argc, argv, "v")) != -1) {
@@ -144,14 +144,7 @@ namespace TestContext
             }
         }
 
-        const auto args = std::span(argv, std::size_t(argc));
-
-        for (auto index = optind; index < argc; ++index) {
-            const auto i {to_size(index)};
-            result.emplace_back(args[i]);
-        }
-
-        return result;
+        return command_line.arguments(argc, argv);
     }
 
     static auto print(const Context& context,

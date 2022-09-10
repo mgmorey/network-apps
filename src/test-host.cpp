@@ -13,6 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#include "network/assert.h"             // assert()
+#include "network/commandline.h"        // CommandLine
 #include "network/network.h"            // Address, Bytes, Context,
                                         // Endpoint, HostVector,
                                         // Hostname, OptionalHints,
@@ -21,7 +23,6 @@
                                         // get_endpoint(),
                                         // get_hosts(), skip_first(),
                                         // uniquify()
-#include "network/assert.h"             // assert()
 
 #ifdef WIN32
 #include <getopt.h>         // getopt(), optarg, opterr, optind
@@ -54,6 +55,7 @@
 
 using Network::Address;
 using Network::ByteString;
+using Network::CommandLine;
 using Network::Context;
 using Network::Endpoint;
 using Network::EndpointResult;
@@ -67,7 +69,6 @@ using Network::SocketHost;
 using Network::get_hosts;
 using Network::os_error_type;
 using Network::skip_first;
-using Network::to_size;
 using Network::uniquify;
 
 namespace TestHost
@@ -196,7 +197,7 @@ namespace TestHost
     static auto parse_arguments(int argc, char** argv) ->
         std::vector<std::string>
     {
-        std::vector<std::string> result {*argv};
+        CommandLine command_line(argc, argv);
         int opt {};
 
         while ((opt = ::getopt(argc, argv, "v")) != -1) {
@@ -215,14 +216,7 @@ namespace TestHost
             }
         }
 
-        const auto args = std::span(argv, std::size_t(argc));
-
-        for (auto index = optind; index < argc; ++index) {
-            const auto i {to_size(index)};
-            result.emplace_back(args[i]);
-        }
-
-        return result;
+        return command_line.arguments(argc, argv);
     }
 
     static auto print(const OsErrorResult& result,

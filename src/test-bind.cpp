@@ -14,6 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/assert.h"             // assert()
+#include "network/commandline.h"        // CommandLine
 #include "network/network.h"            // Address, Bytes,
                                         // ByteStringResult, Context,
                                         // Endpoint, FdResult,
@@ -52,6 +53,7 @@
 
 using Network::Address;
 using Network::ByteString;
+using Network::CommandLine;
 using Network::Context;
 using Network::Endpoint;
 using Network::Fd;
@@ -65,7 +67,6 @@ using Network::bind;
 using Network::get_sockname;
 using Network::os_error_type;
 using Network::string_null;
-using Network::to_size;
 
 namespace TestBind
 {
@@ -158,7 +159,7 @@ namespace TestBind
     static auto parse_arguments(int argc, char** argv) ->
         std::vector<std::string>
     {
-        std::vector<std::string> result {*argv};
+        CommandLine command_line(argc, argv);
         int opt {};
 
         while ((opt = ::getopt(argc, argv, "v")) != -1) {
@@ -177,14 +178,7 @@ namespace TestBind
             }
         }
 
-        const auto args = std::span(argv, std::size_t(argc));
-
-        for (auto index = optind; index < argc; ++index) {
-            const auto i {to_size(index)};
-            result.emplace_back(args[i]);
-        }
-
-        return result;
+        return command_line.arguments(argc, argv);
     }
 
     static auto print(const OsErrorResult& result,

@@ -107,5 +107,6 @@
                                                 // sock_len_type
 #include "network/uniquify.h"                   // uniquify()
 #include "network/version.h"                    // Version
+#include "network/windowsversion.h"             // WindowsVersion
 
 #endif

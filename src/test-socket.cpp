@@ -14,6 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/assert.h"             // assert()
+#include "network/commandline.h"        // CommandLine
 #include "network/network.h"            // Address, Context, FdPair,
                                         // OptionalPathname,
                                         // OsErrorResult, Pathname,
@@ -38,6 +39,7 @@
 #include <vector>       // std::vector
 
 using Network::Address;
+using Network::CommandLine;
 using Network::Context;
 using Network::Error;
 using Network::Fd;
@@ -51,7 +53,6 @@ using Network::get_sun_path;
 using Network::get_sun_path_size;
 using Network::os_error_type;
 using Network::to_byte_string;
-using Network::to_size;
 
 namespace TestSocket
 {
@@ -112,7 +113,7 @@ namespace TestSocket
     static auto parse_arguments(int argc, char** argv) ->
         std::vector<std::string>
     {
-        std::vector<std::string> result {*argv};
+        CommandLine command_line(argc, argv);
         int opt {};
 
         while ((opt = ::getopt(argc, argv, "v")) != -1) {
@@ -131,14 +132,7 @@ namespace TestSocket
             }
         }
 
-        const auto args = std::span(argv, std::size_t(argc));
-
-        for (auto index = optind; index < argc; ++index) {
-            const auto i {to_size(index)};
-            result.emplace_back(args[i]);
-        }
-
-        return result;
+        return command_line.arguments(argc, argv);
     }
 
     static auto print(const Error& error) -> void
