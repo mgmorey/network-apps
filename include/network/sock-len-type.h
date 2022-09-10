@@ -25,6 +25,7 @@
 namespace Network
 {
     static constexpr auto sock_len_max {INT_MAX};
+    static constexpr auto sock_len_min {0};
 #ifdef WIN32
     using sock_len_type = int;
 #else

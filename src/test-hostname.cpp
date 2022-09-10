@@ -31,6 +31,7 @@
 using Network::Context;
 using Network::Hostname;
 using Network::get_hostname;
+using Network::to_size;
 
 namespace TestHostname
 {
@@ -61,7 +62,7 @@ namespace TestHostname
         const auto args = std::span(argv, std::size_t(argc));
 
         for (auto index = optind; index < argc; ++index) {
-            const auto i {static_cast<std::size_t>(index)};
+            const auto i {to_size(index)};
             result.emplace_back(args[i]);
         }
 

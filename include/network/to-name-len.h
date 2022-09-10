@@ -26,10 +26,13 @@ namespace Network
     template<typename T>
     auto to_name_len(T value) -> name_len_type
     {
-        if (value > name_len_max) {
+        if (name_len_min > value || value > name_len_max) {
             throw LogicError("Value " + std::to_string(value) +
-                             " is too large to represent "
-                             "as name_len_type");
+                             " is out of range [" +
+                             std::to_string(name_len_min) +
+                             ", " +
+                             std::to_string(name_len_max) +
+                             "] of name_len_type");
         }
 
         return static_cast<name_len_type>(value);

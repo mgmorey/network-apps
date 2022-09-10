@@ -23,9 +23,11 @@ namespace Network
 {
 #ifdef WIN32
     static constexpr auto name_len_max {INT_MAX};
+    static constexpr auto name_len_min {INT_MIN};
     using name_len_type = int;
 #else
     static constexpr auto name_len_max {SIZE_T_MAX};
+    static constexpr auto name_len_min {0};
     using name_len_type = std::size_t;
 #endif
 }

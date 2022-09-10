@@ -26,10 +26,13 @@ namespace Network
     template<typename T>
     auto to_sock_len(T value) -> sock_len_type
     {
-        if (value > sock_len_max) {
+        if (sock_len_min > value || value > sock_len_max) {
             throw LogicError("Value " + std::to_string(value) +
-                             " is too large to represent "
-                             "as sock_len_type");
+                             " is out of range [" +
+                             std::to_string(sock_len_min) +
+                             ", " +
+                             std::to_string(sock_len_max) +
+                             "] of sock_len_type");
         }
 
         return static_cast<sock_len_type>(value);

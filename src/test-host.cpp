@@ -67,6 +67,7 @@ using Network::SocketHost;
 using Network::get_hosts;
 using Network::os_error_type;
 using Network::skip_first;
+using Network::to_size;
 using Network::uniquify;
 
 namespace TestHost
@@ -217,7 +218,7 @@ namespace TestHost
         const auto args = std::span(argv, std::size_t(argc));
 
         for (auto index = optind; index < argc; ++index) {
-            const auto i {static_cast<std::size_t>(index)};
+            const auto i {to_size(index)};
             result.emplace_back(args[i]);
         }
 

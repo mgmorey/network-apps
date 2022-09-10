@@ -39,11 +39,12 @@ using Network::Error;
 using Network::Hostname;
 using Network::OptionalVersion;
 using Network::Version;
-using Network::get_hostname;
-using Network::os_error_type;
 #ifdef WIN32
 using Network::WindowsVersion;
 #endif
+using Network::get_hostname;
+using Network::os_error_type;
+using Network::to_size;
 
 namespace TestContext
 {
@@ -146,7 +147,7 @@ namespace TestContext
         const auto args = std::span(argv, std::size_t(argc));
 
         for (auto index = optind; index < argc; ++index) {
-            const auto i {static_cast<std::size_t>(index)};
+            const auto i {to_size(index)};
             result.emplace_back(args[i]);
         }
 

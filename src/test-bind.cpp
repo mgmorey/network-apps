@@ -65,6 +65,7 @@ using Network::bind;
 using Network::get_sockname;
 using Network::os_error_type;
 using Network::string_null;
+using Network::to_size;
 
 namespace TestBind
 {
@@ -179,7 +180,7 @@ namespace TestBind
         const auto args = std::span(argv, std::size_t(argc));
 
         for (auto index = optind; index < argc; ++index) {
-            const auto i {static_cast<std::size_t>(index)};
+            const auto i {to_size(index)};
             result.emplace_back(args[i]);
         }
 

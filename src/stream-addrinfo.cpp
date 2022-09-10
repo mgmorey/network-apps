@@ -23,6 +23,7 @@
 #include "network/string-null.h"        // string_null
 #include "network/to-byte-string-sa.h"  // ByteString,
                                         // to_byte_string()
+#include "network/to-size.h"            // to_size()
 #include "network/to-string-bs.h"       // to_string()
 
 #ifdef WIN32
@@ -58,8 +59,7 @@ auto Network::operator<<(std::ostream& os,
     }
     else {
         static constexpr auto tab {9};
-        const auto addr {to_byte_string(ai.ai_addr,
-                                        static_cast<std::size_t>(ai.ai_addrlen))};
+        const auto addr {to_byte_string(ai.ai_addr, to_size(ai.ai_addrlen))};
         os << "addrinfo("
            << Format("ai_flags")
            << flags

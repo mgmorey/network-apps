@@ -41,6 +41,7 @@ using Network::fd_type;
 using Network::format_os_error;
 using Network::socket_error;
 using Network::to_byte_string;
+using Network::to_size;
 
 using IoResult = std::pair<std::string, ssize_t>;
 
@@ -85,7 +86,7 @@ static auto parse_arguments(int argc, char** argv) ->
     const auto args = std::span(argv, std::size_t(argc));
 
     for (auto index = optind; index < argc; ++index) {
-        const auto i {static_cast<std::size_t>(index)};
+        const auto i {to_size(index)};
         result.emplace_back(args[i]);
     }
 

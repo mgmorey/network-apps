@@ -87,6 +87,7 @@
 #include "network/string-null.h"                // string_null
 #include "network/to-byte-span.h"               // to_byte_span()
 #include "network/to-byte-string.h"             // to_byte_string()
+#include "network/to-size.h"                    // to_size()
 #include "network/to-string.h"                  // to_string()
 #include "network/types.h"                      // Buffer, ByteString,
                                                 // Hostname,
