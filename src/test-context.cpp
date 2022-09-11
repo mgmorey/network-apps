@@ -76,7 +76,7 @@ namespace TestContext
 #ifdef WIN32
     static constexpr auto expected_code_stopped {WSANOTINITIALISED};
     static constexpr auto expected_description {"WinSock 2.0"};
-    static constexpr auto expected_error_invalid_version {
+    static constexpr auto expected_error_version_invalid {
         "The Windows Sockets version requested is not supported."
     };
     static constexpr auto expected_error_stopped {
@@ -91,12 +91,12 @@ namespace TestContext
     static constexpr auto expected_description {
         "Berkeley Software Distribution Sockets"
     };
-    static constexpr auto expected_error_invalid_version {""};
+    static constexpr auto expected_error_version_invalid {""};
     static constexpr auto expected_error_stopped {""};
     static constexpr auto expected_status {""};
     static constexpr auto expected_version {Version {}};
 #endif
-    static constexpr auto invalid_version {Version {0, 0}};
+    static constexpr auto version_invalid {Version {0, 0}};
 
     static const auto mode {Network::Context::failure_mode::return_error};
     static bool verbose {false};  // NOLINT
@@ -238,23 +238,6 @@ namespace TestContext
         test_context_cleaned_up();
     }
 
-    static auto test_context_invalid_version() -> void
-    {
-        std::string actual_error_str;
-
-        try {
-            const Context context {invalid_version};
-            static_cast<void>(context);
-        }
-        catch (const Error& error) {
-            print(error);
-            actual_error_str = error.what();
-        }
-
-        assert(actual_error_str == expected_error_invalid_version);
-        test_context_cleaned_up();
-    }
-
     static auto test_context_local_instances() -> void
     {
         std::string actual_error_str;
@@ -313,6 +296,23 @@ namespace TestContext
         test_context_cleaned_up();
     }
 
+    static auto test_context_version_invalid() -> void
+    {
+        std::string actual_error_str;
+
+        try {
+            const Context context {version_invalid};
+            static_cast<void>(context);
+        }
+        catch (const Error& error) {
+            print(error);
+            actual_error_str = error.what();
+        }
+
+        assert(actual_error_str == expected_error_version_invalid);
+        test_context_cleaned_up();
+    }
+
     static auto test_hostname_running() -> void
     {
         std::string actual_error_str;
@@ -355,10 +355,10 @@ auto main(int argc, char* argv[]) -> int
     try {
         parse_arguments(argc, argv);
         test_context_global_instance();
-        test_context_invalid_version();
         test_context_local_instances();
         test_context_valid_with_shutdown();
         test_context_valid_without_shutdown();
+        test_context_version_invalid();
         test_hostname_running();
         test_hostname_stopped();
     }
