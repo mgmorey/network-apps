@@ -76,13 +76,13 @@ namespace TestContext
 #ifdef WIN32
     static constexpr auto expected_code_stopped {WSANOTINITIALISED};
     static constexpr auto expected_description {"WinSock 2.0"};
-    static constexpr auto expected_error_version_invalid {
-        "The Windows Sockets version requested is not supported."
-    };
     static constexpr auto expected_error_stopped {
         "Call to ::gethostname(, 1024) failed with error 10093: "
         "Either the application has not called WSAStartup, "
         "or WSAStartup failed."
+    };
+    static constexpr auto expected_error_version {
+        "The Windows Sockets version requested is not supported."
     };
     static constexpr auto expected_status {"Running"};
     static constexpr auto expected_version {Version {2, 2}};
@@ -91,8 +91,8 @@ namespace TestContext
     static constexpr auto expected_description {
         "Berkeley Software Distribution Sockets"
     };
-    static constexpr auto expected_error_version_invalid {""};
     static constexpr auto expected_error_stopped {""};
+    static constexpr auto expected_error_version {""};
     static constexpr auto expected_status {""};
     static constexpr auto expected_version {Version {}};
 #endif
@@ -309,7 +309,7 @@ namespace TestContext
             actual_error_str = error.what();
         }
 
-        assert(actual_error_str == expected_error_version_invalid);
+        assert(actual_error_str == expected_error_version);
         test_context_cleaned_up();
     }
 
