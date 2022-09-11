@@ -1,6 +1,7 @@
 #!/bin/sh -eu
 
 run_test_program() (
+    export LD_LIBRARY_PATH=".${LD_LIBRARY_PATH+:$LD_LIBRARY_PATH}"
     basename="$(basename "$filename" .exe)"
     dirname="$(dirname "$filename")"
     logname="$basename.log"

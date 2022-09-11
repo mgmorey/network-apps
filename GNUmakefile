@@ -179,7 +179,8 @@ endif
 
 # Define script variables
 make_depfile = $(script_dir)/make-makefile -d $(object_dir)
-run_tests = $(script_dir)/run-test-programs
+run_test_programs = $(script_dir)/run-test-programs
+run_unix_programs = $(script_dir)/run-unix-programs
 
 # Define pseudotargets
 
@@ -207,7 +208,7 @@ build: $(build_targets)
 
 .PHONY: check
 check: $(test_programs)
-	$(run_tests) $^
+	$(run_test_progams) $^
 
 .PHONY: check-syntax
 check-syntax:
@@ -267,7 +268,7 @@ tidy: $(sort $(sources))
 
 .PHONY: unix
 unix: $(sort $(unix_programs))
-	./unix-server & (sleep 1; ./unix-client 2 2; ./unix-client DOWN)
+	$(run_unix_programs)
 
 .SECONDARY: $(objects)
 
