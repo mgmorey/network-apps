@@ -23,7 +23,7 @@
                                         // get_sa_length(),
                                         // is_valid(), sin_size,
                                         // sin6_size
-#include "network/to-name-len.h"        // to_size()
+#include "network/to-size.h"            // to_size()
 
 #ifdef WIN32
 #include <getopt.h>         // getopt(), optarg, opterr, optind
@@ -42,6 +42,8 @@
 #include <exception>    // std::exception
 #include <iomanip>      // std::right, std::setw()
 #include <iostream>     // std::cerr, std::cout, std::endl
+#include <iterator>     // std::distance()
+#include <regex>        // std::regex, std::regex_iterator
 #include <string>       // std::string
 #include <variant>      // std::visit()
 #include <vector>       // std::vector
@@ -69,12 +71,6 @@ namespace TestAddress
 {
     constexpr auto expected_error_invalid_address {
         "Invalid socket address: 0xFFFFFFFFFFFFFFFF"
-    };
-    constexpr auto expected_error_size_begin {
-        "Value -1 is out of range ["
-    };
-    constexpr auto expected_error_size_end {
-        "] of std::size_t"
     };
     constexpr auto invalid_addr_data {Byte {0xFFU}};
     constexpr auto invalid_addr_size {8};
@@ -229,20 +225,27 @@ namespace TestAddress
             }, hosts_result);
     }
 
-    static auto test_invalid_size() -> void
+    static auto test_size_invalid(long value) -> void
     {
         std::string actual_error_str;
 
         try {
-            to_size(-1);
+            to_size(value);
         }
         catch (const RangeError& error) {
             print(error);
             actual_error_str = error.what();
         }
 
-        assert(actual_error_str.starts_with(expected_error_size_begin));
-        assert(actual_error_str.ends_with(expected_error_size_end));
+        const std::regex expected_error_regex {
+            R"(Value [-]?\d+ is out of range \[\d+, \d+\] of std::size_t)"
+        };
+        assert(std::regex_match(actual_error_str, expected_error_regex));
+    }
+
+    static auto test_size_invalid() -> void
+    {
+        test_size_invalid(-1);
     }
 }
 
@@ -261,7 +264,7 @@ auto main(int argc, char* argv[]) -> int
         test_address();
         test_address_invalid();
         test_address_localhost();
-        test_invalid_size();
+        test_size_invalid();
     }
     catch (const std::exception& error) {
         std::cerr << error.what()

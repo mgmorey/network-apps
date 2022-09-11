@@ -28,6 +28,8 @@
 #include <cstdlib>      // EXIT_FAILURE, std::exit(), std::size_t
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
+#include <iterator>     // std::distance()
+#include <regex>        // std::regex, std::regex_iterator
 #include <span>         // std::span
 #include <vector>       // std::vector
 
@@ -42,16 +44,6 @@ using Network::to_name_len;
 
 namespace TestHostname
 {
-    constexpr auto expected_error_name_len_begin_max {
-        "Value 1026 is out of range ["
-    };
-    constexpr auto expected_error_name_len_begin_min {
-        "Value -1 is out of range ["
-    };
-    constexpr auto expected_error_name_len_end {
-        "] of name_len_type"
-    };
-
     static bool verbose {false};  // NOLINT
 
     static auto parse_arguments(int argc, char** argv) ->
@@ -96,31 +88,28 @@ namespace TestHostname
                   << std::endl;
     }
 
-    static auto test_invalid_name_len() -> void
+    static auto test_name_len_invalid(long value) -> void
     {
         std::string actual_error_str;
 
         try {
-            to_name_len(-1);
+            to_name_len(value);
         }
         catch (const RangeError& error) {
             print(error);
             actual_error_str = error.what();
         }
 
-        assert(actual_error_str.starts_with(expected_error_name_len_begin_min));
-        assert(actual_error_str.ends_with(expected_error_name_len_end));
+        const std::regex expected_error_regex {
+            R"(Value [-]?\d+ is out of range \[\d+, \d+\] of name_len_type)"
+        };
+        assert(std::regex_match(actual_error_str, expected_error_regex));
+    }
 
-        try {
-            to_name_len(name_len_max + 1);
-        }
-        catch (const RangeError& error) {
-            print(error);
-            actual_error_str = error.what();
-        }
-
-        assert(actual_error_str.starts_with(expected_error_name_len_begin_max));
-        assert(actual_error_str.ends_with(expected_error_name_len_end));
+    static auto test_name_len_invalid() -> void
+    {
+        test_name_len_invalid(-1);
+        test_name_len_invalid(name_len_max + 1);
     }
 }
 
@@ -137,7 +126,7 @@ auto main(int argc, char* argv[]) -> int
         }
 
         test_hostname();
-        test_invalid_name_len();
+        test_name_len_invalid();
     }
     catch (const std::exception& error) {
         std::cerr << error.what()

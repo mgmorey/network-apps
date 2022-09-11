@@ -32,7 +32,9 @@
 #include <exception>    // std::exception
 #include <iomanip>      // std::right, std::setw()
 #include <iostream>     // std::cerr, std::cout, std::endl
+#include <iterator>     // std::distance()
 #include <optional>     // std::nullopt
+#include <regex>        // std::regex, std::regex_iterator
 #include <set>          // std::set
 #include <span>         // std::span
 #include <sstream>      // std::ostringstream
@@ -65,16 +67,6 @@ namespace TestSocket
 
     static constexpr auto fd_width {6};
     static constexpr auto path_size_max {get_sun_path_size()};
-
-    constexpr auto expected_error_sock_len_begin_max {
-        "Value 129 is out of range ["
-    };
-    constexpr auto expected_error_sock_len_begin_min {
-        "Value -1 is out of range ["
-    };
-    constexpr auto expected_error_sock_len_end {
-        "] of sock_len_type"
-    };
 
     static bool verbose {false};  // NOLINT
 
@@ -168,33 +160,6 @@ namespace TestSocket
                       << result.string()
                       << std::endl;
         }
-    }
-
-    static auto test_invalid_sock_len() -> void
-    {
-        std::string actual_error_str;
-
-        try {
-            to_sock_len(-1);
-        }
-        catch (const RangeError& error) {
-            print(error);
-            actual_error_str = error.what();
-        }
-
-        assert(actual_error_str.starts_with(expected_error_sock_len_begin_min));
-        assert(actual_error_str.ends_with(expected_error_sock_len_end));
-
-        try {
-            to_sock_len(sock_len_max + 1);
-        }
-        catch (const RangeError& error) {
-            print(error);
-            actual_error_str = error.what();
-        }
-
-        assert(actual_error_str.starts_with(expected_error_sock_len_begin_max));
-        assert(actual_error_str.ends_with(expected_error_sock_len_end));
     }
 
     static auto test_pathname(const OptionalPathname& pathname,
@@ -318,6 +283,30 @@ namespace TestSocket
                   << std::right << std::setw(fd_width) << fds.at(1)
                   << std::endl;
     }
+
+    static auto test_sock_len_invalid(long value) -> void
+    {
+        std::string actual_error_str;
+
+        try {
+            to_sock_len(value);
+        }
+        catch (const RangeError& error) {
+            print(error);
+            actual_error_str = error.what();
+        }
+
+        const std::regex expected_error_regex {
+            R"(Value [-]?\d+ is out of range \[\d+, \d+\] of sock_len_type)"
+        };
+        assert(std::regex_match(actual_error_str, expected_error_regex));
+    }
+
+    static auto test_sock_len_invalid() -> void
+    {
+        test_sock_len_invalid(-1);
+        test_sock_len_invalid(sock_len_max + 1);
+    }
 }
 
 auto main(int argc, char* argv[]) -> int
@@ -338,7 +327,6 @@ auto main(int argc, char* argv[]) -> int
             std::cout << context;
         }
 
-        test_invalid_sock_len();
 #ifndef OS_CYGWIN_NT
         test_path_no_permission("/foo", codes_no_permission);
         test_path_no_directory("/foo/bar", codes_no_directory);
@@ -352,6 +340,7 @@ auto main(int argc, char* argv[]) -> int
         }
 
         test_socketpair();
+        test_sock_len_invalid();
     }
     catch (const std::exception& error) {
         std::cerr << error.what()
