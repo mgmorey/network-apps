@@ -65,10 +65,10 @@ static auto format_message(int error) -> std::string
 static auto parse_arguments(int argc, char** argv) ->
     std::vector<std::string>
 {
-    CommandLine command_line(argc, argv);
+    CommandLine command_line(argc, argv, "v");
     int opt {};
 
-    while ((opt = command_line.option("v")) != -1) {
+    while ((opt = command_line.option()) != -1) {
         switch (opt) {
         case 'v':
             verbose = true;

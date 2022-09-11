@@ -16,6 +16,8 @@
 #ifndef NETWORK_COMMANDLINE_H
 #define NETWORK_COMMANDLINE_H
 
+#include "network/optionalstring.h"     // OptionalString
+
 #include <string>       // std::string
 #include <vector>       // std::vector
 
@@ -27,18 +29,21 @@ namespace Network
         using Argument = std::string;
         using Arguments = std::vector<Argument>;
 
-        explicit CommandLine(int t_argc, char* const* t_argv);
+        CommandLine(int t_argc,
+                    char* const* t_argv,
+                    const OptionalString& t_options = {});
         CommandLine(const CommandLine&) noexcept = default;
         CommandLine(CommandLine&&) noexcept = default;
         ~CommandLine() noexcept = default;
         auto operator=(const CommandLine&) noexcept -> CommandLine& = default;
         auto operator=(CommandLine&&) noexcept -> CommandLine& = default;
         [[nodiscard]] auto arguments() const -> Arguments;
-        auto option(const char* options) const noexcept -> int;
+        [[nodiscard]] auto option() const -> int;
 
     private:
         int m_argc {0};
         char* const* m_argv {nullptr};
+        OptionalString m_options {};
     };
 }
 

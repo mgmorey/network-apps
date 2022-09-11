@@ -14,6 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/commandline.h"        // CommandLine
+#include "network/logicerror.h"         // LogicError
 #include "network/to-size.h"            // to_size()
 
 #ifdef WIN32
@@ -25,10 +26,16 @@
 #include <cstddef>      // std::size_t
 #include <span>         // std::span
 
-Network::CommandLine::CommandLine(int t_argc, char* const* t_argv) :
+Network::CommandLine::CommandLine(int t_argc,
+                                  char* const* t_argv,
+                                  const OptionalString& t_options) :
     m_argc(t_argc),
-    m_argv(t_argv)
+    m_argv(t_argv),
+    m_options(t_options)
 {
+    if (m_argc < 0 || m_argv == nullptr) {
+        throw LogicError("No command-line arguments available to parse");
+    }
 }
 
 auto Network::CommandLine::arguments() const ->
@@ -36,20 +43,21 @@ auto Network::CommandLine::arguments() const ->
 {
     Arguments args;
     const auto arg_span = std::span(m_argv, to_size(m_argc));
+    args.emplace_back(arg_span[0]);
 
-    if (m_argc > 0) {
-        args.emplace_back(arg_span[0]);
-
-        for (auto index = optind; index < m_argc; ++index) {
-            const auto i {static_cast<std::size_t>(index)};
-            args.emplace_back(arg_span[i]);
-        }
+    for (auto index = optind; index < m_argc; ++index) {
+        const auto i {static_cast<std::size_t>(index)};
+        args.emplace_back(arg_span[i]);
     }
 
     return args;
 }
 
-auto Network::CommandLine::option(const char* t_options) const noexcept -> int
+auto Network::CommandLine::option() const -> int
 {
-    return ::getopt(m_argc, m_argv, t_options);
+    if (!m_options) {
+        throw LogicError("No command-line options available to parse");
+    }
+
+    return ::getopt(m_argc, m_argv, m_options->c_str());
 }
