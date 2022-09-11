@@ -89,7 +89,7 @@ namespace TestAddress
         CommandLine command_line(argc, argv);
         int opt {};
 
-        while ((opt = ::getopt(argc, argv, "v")) != -1) {
+        while ((opt = command_line.option("v")) != -1) {
             switch (opt) {
             case 'v':
                 verbose = true;

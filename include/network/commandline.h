@@ -27,17 +27,18 @@ namespace Network
         using Argument = std::string;
         using Arguments = std::vector<Argument>;
 
-        explicit CommandLine(int argc, char** argv);
+        explicit CommandLine(int t_argc, char* const* t_argv);
         CommandLine(const CommandLine&) noexcept = default;
         CommandLine(CommandLine&&) noexcept = default;
         ~CommandLine() noexcept = default;
         auto operator=(const CommandLine&) noexcept -> CommandLine& = default;
         auto operator=(CommandLine&&) noexcept -> CommandLine& = default;
-        auto arguments() -> Arguments;
+        [[nodiscard]] auto arguments() const -> Arguments;
+        auto option(const char* options) const noexcept -> int;
 
     private:
-        int m_argc;
-        char** m_argv;
+        int m_argc {0};
+        char* const* m_argv {nullptr};
     };
 }
 

@@ -25,13 +25,13 @@
 #include <cstddef>      // std::size_t
 #include <span>         // std::span
 
-Network::CommandLine::CommandLine(int argc, char** argv) :
-    m_argc(argc),
-    m_argv(argv)
+Network::CommandLine::CommandLine(int t_argc, char* const* t_argv) :
+    m_argc(t_argc),
+    m_argv(t_argv)
 {
 }
 
-auto Network::CommandLine::arguments() ->
+auto Network::CommandLine::arguments() const ->
     Network::CommandLine::Arguments
 {
     Arguments args;
@@ -47,4 +47,9 @@ auto Network::CommandLine::arguments() ->
     }
 
     return args;
+}
+
+auto Network::CommandLine::option(const char* t_options) const noexcept -> int
+{
+    return ::getopt(m_argc, m_argv, t_options);
 }
