@@ -24,6 +24,7 @@
 #endif
 
 #include <cstddef>      // std::size_t
+#include <optional>     // std::nullopt
 #include <span>         // std::span
 
 Network::CommandLine::CommandLine(int t_argc,
@@ -35,6 +36,10 @@ Network::CommandLine::CommandLine(int t_argc,
 {
     if (m_argc < 0 || m_argv == nullptr) {
         throw LogicError("No command-line arguments available to parse");
+    }
+
+    if (m_options && m_options->empty()) {
+        m_options = std::nullopt;
     }
 }
 
