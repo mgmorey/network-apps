@@ -32,9 +32,8 @@
 #include <exception>    // std::exception
 #include <iomanip>      // std::right, std::setw()
 #include <iostream>     // std::cerr, std::cout, std::endl
-#include <iterator>     // std::distance()
 #include <optional>     // std::nullopt
-#include <regex>        // std::regex, std::regex_iterator
+#include <regex>        // std::regex, std::regex_match
 #include <set>          // std::set
 #include <span>         // std::span
 #include <sstream>      // std::ostringstream
@@ -65,6 +64,9 @@ namespace TestSocket
     using ErrorCodeSet = std::set<os_error_type>;
     using OptionalPathnameVector = std::vector<OptionalPathname>;
 
+    static constexpr auto expected_error_re {
+        R"(Value [-]?\d+ is out of range \[\d+, \d+\] of sock_len_type)"
+    };
     static constexpr auto fd_width {6};
     static constexpr auto path_size_max {get_sun_path_size()};
 
@@ -296,9 +298,7 @@ namespace TestSocket
             actual_error_str = error.what();
         }
 
-        const std::regex expected_error_regex {
-            R"(Value [-]?\d+ is out of range \[\d+, \d+\] of sock_len_type)"
-        };
+        const std::regex expected_error_regex {expected_error_re};
         assert(std::regex_match(actual_error_str, expected_error_regex));
     }
 

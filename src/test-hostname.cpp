@@ -28,8 +28,7 @@
 #include <cstdlib>      // EXIT_FAILURE, std::exit(), std::size_t
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
-#include <iterator>     // std::distance()
-#include <regex>        // std::regex, std::regex_iterator
+#include <regex>        // std::regex, std::regex_match
 #include <span>         // std::span
 #include <vector>       // std::vector
 
@@ -44,6 +43,10 @@ using Network::to_name_len;
 
 namespace TestHostname
 {
+    static constexpr auto expected_error_re {
+        R"(Value [-]?\d+ is out of range \[\d+, \d+\] of name_len_type)"
+    };
+
     static bool verbose {false};  // NOLINT
 
     static auto parse_arguments(int argc, char** argv) ->
@@ -100,9 +103,7 @@ namespace TestHostname
             actual_error_str = error.what();
         }
 
-        const std::regex expected_error_regex {
-            R"(Value [-]?\d+ is out of range \[\d+, \d+\] of name_len_type)"
-        };
+        const std::regex expected_error_regex {expected_error_re};
         assert(std::regex_match(actual_error_str, expected_error_regex));
     }
 

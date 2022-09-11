@@ -42,8 +42,7 @@
 #include <exception>    // std::exception
 #include <iomanip>      // std::right, std::setw()
 #include <iostream>     // std::cerr, std::cout, std::endl
-#include <iterator>     // std::distance()
-#include <regex>        // std::regex, std::regex_iterator
+#include <regex>        // std::regex, std::regex_match
 #include <string>       // std::string
 #include <variant>      // std::visit()
 #include <vector>       // std::vector
@@ -69,13 +68,16 @@ using Network::to_size;
 
 namespace TestAddress
 {
-    constexpr auto expected_error_invalid_address {
-        "Invalid socket address: 0xFFFFFFFFFFFFFFFF"
+    static constexpr auto expected_error_addr_re {
+        R"(Invalid socket address: 0x[0-9A-F]{1,16})"
     };
-    constexpr auto invalid_addr_data {Byte {0xFFU}};
-    constexpr auto invalid_addr_size {8};
-    constexpr auto print_key_width {20};
-    constexpr auto print_value_width {10};
+    static constexpr auto expected_error_size_re {
+        R"(Value [-]?\d+ is out of range \[\d+, \d+\] of std::size_t)"
+    };
+    static constexpr auto invalid_addr_data {Byte {0xFFU}};
+    static constexpr auto invalid_addr_size {8};
+    static constexpr auto print_key_width {20};
+    static constexpr auto print_value_width {10};
 
     static bool verbose {false};  // NOLINT
 
@@ -163,7 +165,8 @@ namespace TestAddress
             actual_error_str = error.what();
         }
 
-        assert(actual_error_str == expected_error_invalid_address);
+        const std::regex expected_error_addr_regex {expected_error_addr_re};
+        assert(std::regex_match(actual_error_str, expected_error_addr_regex));
     }
 
     static auto test_address_localhost(const ByteString& addr) -> void
@@ -237,10 +240,8 @@ namespace TestAddress
             actual_error_str = error.what();
         }
 
-        const std::regex expected_error_regex {
-            R"(Value [-]?\d+ is out of range \[\d+, \d+\] of std::size_t)"
-        };
-        assert(std::regex_match(actual_error_str, expected_error_regex));
+        const std::regex expected_error_size_regex {expected_error_size_re};
+        assert(std::regex_match(actual_error_str, expected_error_size_regex));
     }
 
     static auto test_size_invalid() -> void

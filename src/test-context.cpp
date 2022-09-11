@@ -61,16 +61,16 @@ namespace TestContext
     static_assert(version_0_0 < version_max);
 
 #ifdef WIN32
-    static_assert(WORD {WindowsVersion(version_0_0)} == 0x0U);		// NOLINT
-    static_assert(Version {WindowsVersion(0x0U)} == version_0_0);	// NOLINT
-    static_assert(WORD {WindowsVersion(version_0_1)} == 0x100U);	// NOLINT
-    static_assert(Version {WindowsVersion(0x100U)} == version_0_1);	// NOLINT
-    static_assert(WORD {WindowsVersion(version_1_0)} == 0x1U);		// NOLINT
-    static_assert(Version {WindowsVersion(0x1U)} == version_1_0);	// NOLINT
-    static_assert(WORD {WindowsVersion(version_2_0)} == 0x2U);		// NOLINT
-    static_assert(Version {WindowsVersion(0x2U)} == version_2_0);	// NOLINT
-    static_assert(WORD {WindowsVersion(version_max)} == 0xFFFFU);	// NOLINT
-    static_assert(Version {WindowsVersion(0xFFFFU)} == version_max);	// NOLINT
+    static_assert(WORD {WindowsVersion(version_0_0)} == 0x0U);        // NOLINT
+    static_assert(Version {WindowsVersion(0x0U)} == version_0_0);     // NOLINT
+    static_assert(WORD {WindowsVersion(version_0_1)} == 0x100U);      // NOLINT
+    static_assert(Version {WindowsVersion(0x100U)} == version_0_1);   // NOLINT
+    static_assert(WORD {WindowsVersion(version_1_0)} == 0x1U);	      // NOLINT
+    static_assert(Version {WindowsVersion(0x1U)} == version_1_0);     // NOLINT
+    static_assert(WORD {WindowsVersion(version_2_0)} == 0x2U);	      // NOLINT
+    static_assert(Version {WindowsVersion(0x2U)} == version_2_0);     // NOLINT
+    static_assert(WORD {WindowsVersion(version_max)} == 0xFFFFU);     // NOLINT
+    static_assert(Version {WindowsVersion(0xFFFFU)} == version_max);  // NOLINT
 #endif
 
 #ifdef WIN32
