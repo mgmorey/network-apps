@@ -208,7 +208,7 @@ build: $(build_targets)
 
 .PHONY: check
 check: $(test_programs)
-	$(run_test_progams) $^
+	$(run_test_programs) $^
 
 .PHONY: check-syntax
 check-syntax:
