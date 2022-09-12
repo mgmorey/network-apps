@@ -65,7 +65,7 @@ namespace TestSocket
     using OptionalPathnameVector = std::vector<OptionalPathname>;
 
     static constexpr auto expected_error_re {
-        R"(Value [-]?\d+ is out of range \[\d+, \d+\] of sock_len_type)"
+        R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of sock_len_type)"
     };
     static constexpr auto fd_width {6};
     static constexpr auto path_size_max {get_sun_path_size()};

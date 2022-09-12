@@ -72,7 +72,7 @@ namespace TestAddress
         R"(Invalid socket address: 0x[0-9A-F]{1,16})"
     };
     static constexpr auto expected_error_size_re {
-        R"(Value [-]?\d+ is out of range \[\d+, \d+\] of std::size_t)"
+        R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of std::size_t)"
     };
     static constexpr auto invalid_addr_data {Byte {0xFFU}};
     static constexpr auto invalid_addr_size {8};

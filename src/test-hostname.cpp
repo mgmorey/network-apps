@@ -44,7 +44,7 @@ using Network::to_name_len;
 namespace TestHostname
 {
     static constexpr auto expected_error_re {
-        R"(Value [-]?\d+ is out of range \[\d+, \d+\] of name_len_type)"
+        R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of name_len_type)"
     };
 
     static bool verbose {false};  // NOLINT
