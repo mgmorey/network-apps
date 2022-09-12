@@ -16,9 +16,8 @@
 #ifndef NETWORK_TO_SIZE_H
 #define NETWORK_TO_SIZE_H
 
-#include "network/rangeerror.h"         // RangeError
+#include "network/sizeerror.h"          // RangeError
 
-#include <climits>      // SIZE_MAX
 #include <cstddef>      // std::size_t
 #include <string>       // std::string
 
@@ -28,12 +27,7 @@ namespace Network
     auto to_size(T value) -> std::size_t
     {
         if (value < 0) {
-            throw RangeError("Value " + std::to_string(value) +
-                             " is out of range [" +
-                             std::to_string(0) +
-                             ", " +
-                             std::to_string(SIZE_MAX) +
-                             "] of std::size_t");
+            throw SizeError(std::to_string(value));
         }
 
         return static_cast<std::size_t>(value);

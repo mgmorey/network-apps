@@ -13,24 +13,25 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_RANGEERROR_H
-#define NETWORK_RANGEERROR_H
+#ifndef NETWORK_SIZEERROR_H
+#define NETWORK_SIZEERROR_H
 
-#include "network/logicerror.h"         // LogicError, std::string
+#include "network/rangeerror.h"         // RangeError, std::string
 
 namespace Network
 {
-    class RangeError :
-        public LogicError
+    class SizeError :
+        public RangeError
     {
     public:
-        explicit RangeError(const std::string& t_str) noexcept;
-        explicit RangeError(std::string&& t_str) noexcept;
-        RangeError(const RangeError&) noexcept = default;
-        RangeError(RangeError&&) noexcept = default;
-        ~RangeError() noexcept override = default;
-        auto operator=(const RangeError&) noexcept -> RangeError& = default;
-        auto operator=(RangeError&&) noexcept -> RangeError& = default;
+        static auto format(const std::string& t_value) -> std::string;
+        explicit SizeError(const std::string& t_str) noexcept;
+        explicit SizeError(std::string&& t_str) noexcept;
+        SizeError(const SizeError&) noexcept = default;
+        SizeError(SizeError&&) noexcept = default;
+        ~SizeError() noexcept override = default;
+        auto operator=(const SizeError&) noexcept -> SizeError& = default;
+        auto operator=(SizeError&&) noexcept -> SizeError& = default;
     };
 }
 

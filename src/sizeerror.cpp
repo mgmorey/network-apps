@@ -13,16 +13,22 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/rangeerror.h"         // Error, RangeError
+#include "network/sizeerror.h"          // Error, SizeError
 
-#include <climits>      // SIZE_MAX
+auto Network::SizeError::format(const std::string& t_value) -> std::string
+{
+    return ("Value " + t_value + " is out of range [" +
+            std::to_string(0) + ", " +
+            std::to_string(SIZE_MAX) +
+            "] of std::size_t");
+}
 
-Network::RangeError::RangeError(const std::string& t_str) noexcept :
-    LogicError(t_str)
+Network::SizeError::SizeError(const std::string& t_value) noexcept :
+    RangeError(format(t_value))
 {
 }
 
-Network::RangeError::RangeError(std::string&& t_str) noexcept :
-    LogicError(t_str)
+Network::SizeError::SizeError(std::string&& t_value) noexcept :
+    RangeError(format(t_value))
 {
 }
