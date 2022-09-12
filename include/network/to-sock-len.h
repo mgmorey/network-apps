@@ -16,8 +16,8 @@
 #ifndef NETWORK_TO_SOCK_LEN_H
 #define NETWORK_TO_SOCK_LEN_H
 
-#include "network/socketlengtherror.h"  // SocketLengthError
 #include "network/sock-len-type.h"      // sock_len_type
+#include "network/socketlengtherror.h"  // SocketLengthError
 
 #include <string>       // std::to_string()
 

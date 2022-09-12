@@ -16,8 +16,8 @@
 #ifndef NETWORK_TO_NAME_LEN_H
 #define NETWORK_TO_NAME_LEN_H
 
-#include "network/namelengtherror.h"    // NameLengthError
 #include "network/name-len-type.h"      // name_len_type
+#include "network/namelengtherror.h"    // NameLengthError
 
 #include <string>       // std::to_string()
 
