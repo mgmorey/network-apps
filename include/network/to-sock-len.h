@@ -16,10 +16,10 @@
 #ifndef NETWORK_TO_SOCK_LEN_H
 #define NETWORK_TO_SOCK_LEN_H
 
-#include "network/rangeerror.h"         // RangeError
+#include "network/socketlengtherror.h"  // SocketLengthError
 #include "network/sock-len-type.h"      // sock_len_type
 
-#include <string>       // std::string
+#include <string>       // std::to_string()
 
 namespace Network
 {
@@ -28,12 +28,7 @@ namespace Network
     {
         if (value < sock_len_min ||
             value > sock_len_max) {
-            throw RangeError("Value " + std::to_string(value) +
-                             " is out of range [" +
-                             std::to_string(sock_len_min) +
-                             ", " +
-                             std::to_string(sock_len_max) +
-                             "] of sock_len_type");
+            throw SocketLengthError(std::to_string(value));
         }
 
         return static_cast<sock_len_type>(value);

@@ -16,10 +16,10 @@
 #ifndef NETWORK_TO_NAME_LEN_H
 #define NETWORK_TO_NAME_LEN_H
 
+#include "network/namelengtherror.h"    // NameLengthError
 #include "network/name-len-type.h"      // name_len_type
-#include "network/rangeerror.h"         // RangeError
 
-#include <string>       // std::string
+#include <string>       // std::to_string()
 
 namespace Network
 {
@@ -28,12 +28,7 @@ namespace Network
     {
         if (value < name_len_min ||
             value > name_len_max) {
-            throw RangeError("Value " + std::to_string(value) +
-                             " is out of range [" +
-                             std::to_string(name_len_min) +
-                             ", " +
-                             std::to_string(name_len_max) +
-                             "] of name_len_type");
+            throw NameLengthError(std::to_string(value));
         }
 
         return static_cast<name_len_type>(value);

@@ -13,25 +13,23 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_TO_SIZE_H
-#define NETWORK_TO_SIZE_H
+#include "network/namelengtherror.h"    // NameLengthError, RangeError
+#include "network/name-len-type.h"      // name_len_max, name_len_min
 
-#include "network/sizeerror.h"          // RangeError
-
-#include <cstddef>      // std::size_t
-#include <string>       // std::to_string()
-
-namespace Network
+auto Network::NameLengthError::format(const std::string& t_value) -> std::string
 {
-    template<typename T>
-    auto to_size(T value) -> std::size_t
-    {
-        if (value < 0) {
-            throw SizeError(std::to_string(value));
-        }
-
-        return static_cast<std::size_t>(value);
-    }
+    return ("Value " + t_value + " is out of range [" +
+            std::to_string(name_len_min) + ", " +
+            std::to_string(name_len_max) +
+            "] of name_len_type");
 }
 
-#endif
+Network::NameLengthError::NameLengthError(const std::string& t_value) noexcept :
+    RangeError(format(t_value))
+{
+}
+
+Network::NameLengthError::NameLengthError(std::string&& t_value) noexcept :
+    RangeError(format(t_value))
+{
+}
