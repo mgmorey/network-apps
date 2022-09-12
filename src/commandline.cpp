@@ -54,5 +54,8 @@ auto Network::CommandLine::option() const -> int
         throw LogicError("No command-line options available to parse");
     }
 
-    return ::getopt(static_cast<int>(m_args.size()), m_args.data(), m_opts->c_str());
+    const auto argc {static_cast<int>(m_args.size())};
+    auto* argv {m_args.data()};
+    const auto* options {m_opts->c_str()};
+    return ::getopt(argc, argv, options);
 }
