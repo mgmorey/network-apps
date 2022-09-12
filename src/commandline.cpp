@@ -25,21 +25,15 @@
 
 #include <cstddef>      // std::size_t
 #include <optional>     // std::nullopt
-#include <span>         // std::span
 
 Network::CommandLine::CommandLine(int t_argc,
-                                  char* const* t_argv,
+                                  char** t_argv,
                                   const OptionalString& t_options) :
-    m_argc(t_argc),
-    m_argv(t_argv),
-    m_options(t_options)
+    m_args(std::span(t_argv, to_size(t_argc))),
+    m_opts(t_options)
 {
-    if (m_argc < 0 || m_argv == nullptr) {
-        throw LogicError("No command-line arguments available to parse");
-    }
-
-    if (m_options && m_options->empty()) {
-        m_options = std::nullopt;
+    if (m_opts && m_opts->empty()) {
+        m_opts = std::nullopt;
     }
 }
 
@@ -47,12 +41,10 @@ auto Network::CommandLine::arguments() const ->
     Network::CommandLine::Arguments
 {
     Arguments args;
-    const auto arg_span = std::span(m_argv, to_size(m_argc));
-    args.emplace_back(arg_span[0]);
+    args.emplace_back(m_args[0]);
 
-    for (auto index = optind; index < m_argc; ++index) {
-        const auto i {static_cast<std::size_t>(index)};
-        args.emplace_back(arg_span[i]);
+    for (auto arg : m_args.subspan(to_size(optind))) {
+        args.emplace_back(arg);
     }
 
     return args;
@@ -60,9 +52,9 @@ auto Network::CommandLine::arguments() const ->
 
 auto Network::CommandLine::option() const -> int
 {
-    if (!m_options) {
+    if (!m_opts) {
         throw LogicError("No command-line options available to parse");
     }
 
-    return ::getopt(m_argc, m_argv, m_options->c_str());
+    return ::getopt(static_cast<int>(m_args.size()), m_args.data(), m_opts->c_str());
 }
