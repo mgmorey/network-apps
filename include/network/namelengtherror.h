@@ -25,8 +25,8 @@ namespace Network
     {
     public:
         static auto format(const std::string& t_value) -> std::string;
-        explicit NameLengthError(const std::string& t_str) noexcept;
-        explicit NameLengthError(std::string&& t_str) noexcept;
+        explicit NameLengthError(const std::string& t_value) noexcept;
+        explicit NameLengthError(std::string&& t_value) noexcept;
         NameLengthError(const NameLengthError&) noexcept = default;
         NameLengthError(NameLengthError&&) noexcept = default;
         ~NameLengthError() noexcept override = default;
