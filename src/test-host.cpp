@@ -323,8 +323,9 @@ auto main(int argc, char* argv[]) -> int
         test_host_invalid();
 
         if (args.size() > 1) {
-            const auto hosts {std::span(args.begin(), args.end()).subspan(1)};
-            std::for_each(hosts.begin(), hosts.end(), test_host_valid);
+            const auto hosts {std::span(args).subspan(1)};
+            std::for_each(hosts.begin(), hosts.end(),
+                          test_host_valid);
         }
         else {
             test_host_valid(get_hostname());
