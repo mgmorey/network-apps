@@ -75,6 +75,7 @@ using Network::get_peername;
 using Network::get_sockname;
 using Network::os_error_type;
 using Network::string_null;
+using Network::to_size;
 
 namespace TestConnect
 {
@@ -336,9 +337,10 @@ auto main(int argc, char* argv[]) -> int
         test_connect_invalid_host(invalid_host, hints);
         const Endpoint invalid_service {localhost, "."};
         test_connect_invalid_service(invalid_service, hints);
+        const auto offset {to_size(optind)};
         const Endpoint valid_endpoint {
-            args.size() > 1 ? args[1] : localhost,
-            args.size() > 2 ? args[2] : localservice
+            args.size() > offset + 0 ? args[offset + 0] : localhost,
+            args.size() > offset + 1 ? args[offset + 1] : localservice
         };
         test_connect_valid(valid_endpoint, hints);
     }

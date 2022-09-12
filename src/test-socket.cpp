@@ -320,7 +320,7 @@ auto main(int argc, char* argv[]) -> int
     static const ErrorCodeSet codes_valid = {0};
 
     try {
-        parse_arguments(argc, argv);
+        static_cast<void>(parse_arguments(argc, argv));
         const auto& context {Context::instance()};
 
         if (verbose) {

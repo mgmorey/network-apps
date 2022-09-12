@@ -353,7 +353,7 @@ auto main(int argc, char* argv[]) -> int
     using namespace TestContext;
 
     try {
-        parse_arguments(argc, argv);
+        static_cast<void>(parse_arguments(argc, argv));
         test_context_global_instance();
         test_context_local_instances();
         test_context_valid_with_shutdown();

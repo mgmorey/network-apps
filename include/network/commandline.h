@@ -32,7 +32,7 @@ namespace Network
 
         CommandLine(int t_argc,
                     char** t_argv,
-                    const OptionalString& t_options = {});
+                    const OptionalString& t_opts = {});
         CommandLine(const CommandLine&) noexcept = default;
         CommandLine(CommandLine&&) noexcept = default;
         ~CommandLine() noexcept = default;
@@ -42,7 +42,9 @@ namespace Network
         [[nodiscard]] auto option() const -> int;
 
     private:
-        std::span<char*> m_args;
+        int m_argc;
+        char** m_argv;
+        Arguments m_data;
         OptionalString m_opts;
     };
 }

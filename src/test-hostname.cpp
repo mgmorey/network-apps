@@ -119,7 +119,7 @@ auto main(int argc, char* argv[]) -> int
     using namespace TestHostname;
 
     try {
-        parse_arguments(argc, argv);
+        static_cast<void>(parse_arguments(argc, argv));
         const auto& context {Context::instance()};
 
         if (verbose) {

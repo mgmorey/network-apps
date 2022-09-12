@@ -67,6 +67,7 @@ using Network::SocketHints;
 using Network::SocketHost;
 using Network::get_hosts;
 using Network::os_error_type;
+using Network::to_size;
 using Network::uniquify;
 
 namespace TestHost
@@ -323,7 +324,8 @@ auto main(int argc, char* argv[]) -> int
         test_host_invalid();
 
         if (args.size() > 1) {
-            const auto hosts {std::span(args).subspan(1)};
+            const auto offset {to_size(optind)};
+            const auto hosts {std::span(args).subspan(offset)};
             std::for_each(hosts.begin(), hosts.end(),
                           test_host_valid);
         }

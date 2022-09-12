@@ -29,10 +29,14 @@
 
 Network::CommandLine::CommandLine(int t_argc,
                                   char** t_argv,
-                                  const OptionalString& t_options) :
-    m_args(std::span(t_argv, to_size(t_argc))),
-    m_opts(t_options)
+                                  const OptionalString& t_opts) :
+    m_argc(t_argc),
+    m_argv(t_argv),
+    m_opts(t_opts)
 {
+    const auto span {std::span(t_argv, to_size(t_argc))};
+    std::copy(span.begin(), span.end(), std::back_inserter(m_data));
+
     if (m_opts && m_opts->empty()) {
         m_opts = std::nullopt;
     }
@@ -41,11 +45,7 @@ Network::CommandLine::CommandLine(int t_argc,
 auto Network::CommandLine::arguments() const ->
     Network::CommandLine::Arguments
 {
-    Arguments args;
-    args.emplace_back(m_args[0]);
-    const auto tail(m_args.subspan(to_size(optind)));
-    std::copy(tail.begin(), tail.end(), std::back_inserter(args));
-    return args;
+    return m_data;
 }
 
 auto Network::CommandLine::option() const -> int
@@ -54,8 +54,5 @@ auto Network::CommandLine::option() const -> int
         throw LogicError("No command-line options available to parse");
     }
 
-    const auto argc {static_cast<int>(m_args.size())};
-    const auto* argv {m_args.data()};
-    const auto* options {m_opts->c_str()};
-    return ::getopt(argc, argv, options);
+    return ::getopt(m_argc, m_argv, m_opts->c_str());
 }
