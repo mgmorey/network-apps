@@ -43,7 +43,7 @@ namespace Network
 
     private:
         std::span<char*> m_args;
-        OptionalString m_opts {};
+        OptionalString m_opts;
     };
 }
 
