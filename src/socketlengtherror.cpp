@@ -16,12 +16,19 @@
 #include "network/socketlengtherror.h"  // RangeError, SocketLengthError
 #include "network/sock-len-type.h"      // sock_len_max, sock_len_min
 
+#include <sstream>      // std::ostringstream
+
 auto Network::SocketLengthError::format(const std::string& t_value) -> std::string
 {
-    return ("Value " + t_value + " is out of range [" +
-            std::to_string(sock_len_min) + ", " +
-            std::to_string(sock_len_max) +
-            "] of sock_len_type");
+    std::ostringstream oss;
+    oss << "Value "
+        << t_value
+        << " is out of range ["
+        << sock_len_min
+        << ", "
+        << sock_len_max
+        << "] of sock_len_type";
+    return oss.str();
 }
 
 Network::SocketLengthError::SocketLengthError(const std::string& t_value) noexcept :

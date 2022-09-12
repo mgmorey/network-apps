@@ -16,12 +16,19 @@
 #include "network/namelengtherror.h"    // NameLengthError, RangeError
 #include "network/name-len-type.h"      // name_len_max, name_len_min
 
+#include <sstream>      // std::ostringstream
+
 auto Network::NameLengthError::format(const std::string& t_value) -> std::string
 {
-    return ("Value " + t_value + " is out of range [" +
-            std::to_string(name_len_min) + ", " +
-            std::to_string(name_len_max) +
-            "] of name_len_type");
+    std::ostringstream oss;
+    oss << "Value "
+        << t_value
+        << " is out of range ["
+        << name_len_min
+        << ", "
+        << name_len_max
+        << "] of name_len_type";
+    return oss.str();
 }
 
 Network::NameLengthError::NameLengthError(const std::string& t_value) noexcept :

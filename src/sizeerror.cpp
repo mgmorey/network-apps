@@ -15,12 +15,19 @@
 
 #include "network/sizeerror.h"          // Error, SizeError
 
+#include <sstream>      // std::ostringstream
+
 auto Network::SizeError::format(const std::string& t_value) -> std::string
 {
-    return ("Value " + t_value + " is out of range [" +
-            std::to_string(0) + ", " +
-            std::to_string(SIZE_MAX) +
-            "] of std::size_t");
+    std::ostringstream oss;
+    oss << "Value "
+        << t_value
+        << " is out of range ["
+        << 0
+        << ", "
+        << SIZE_MAX
+        << "] of std::size_t";
+    return oss.str();
 }
 
 Network::SizeError::SizeError(const std::string& t_value) noexcept :
