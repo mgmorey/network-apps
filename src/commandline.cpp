@@ -55,7 +55,7 @@ auto Network::CommandLine::option() const -> int
     }
 
     const auto argc {static_cast<int>(m_args.size())};
-    auto* argv {m_args.data()};
+    const auto* argv {m_args.data()};
     const auto* options {m_opts->c_str()};
     return ::getopt(argc, argv, options);
 }
