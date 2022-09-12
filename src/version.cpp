@@ -14,18 +14,22 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/version.h"            // Version, operator<<(),
-                                        // std::ostream, std::string,
-                                        // std::to_string
+                                        // std::ostream
+
+#include <sstream>      // std::ostringstream
 
 Network::Version::operator std::string() const
 {
-    const auto major_str {std::to_string(major())};
-    const auto minor_str {std::to_string(minor())};
-    return major_str + "." + minor_str;
+    std::ostringstream oss;
+    oss << *this;
+    return oss.str();
 }
 
 auto Network::operator<<(std::ostream& os,
                          Version version) -> std::ostream&
 {
-    return os << std::string {version};
+    os << version.major()
+       << '.'
+       << version.minor();
+    return os;
 }
