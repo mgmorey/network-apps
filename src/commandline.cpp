@@ -23,7 +23,8 @@
 #include <unistd.h>         // getopt(), optarg, opterr, optind
 #endif
 
-#include <cstddef>      // std::size_t
+#include <algorithm>    // std::copy()
+#include <iterator>     // std::back_inserter()
 #include <optional>     // std::nullopt
 
 Network::CommandLine::CommandLine(int t_argc,
@@ -42,11 +43,8 @@ auto Network::CommandLine::arguments() const ->
 {
     Arguments args;
     args.emplace_back(m_args[0]);
-
-    for (auto arg : m_args.subspan(to_size(optind))) {
-        args.emplace_back(arg);
-    }
-
+    const auto tail(m_args.subspan(to_size(optind)));
+    std::copy(tail.begin(), tail.end(), std::back_inserter(args));
     return args;
 }
 

@@ -27,7 +27,6 @@ namespace Network
     class CommandLine
     {
     public:
-        using ArgSpan = std::span<char*>;
         using Argument = std::string;
         using Arguments = std::vector<Argument>;
 
@@ -43,7 +42,7 @@ namespace Network
         [[nodiscard]] auto option() const -> int;
 
     private:
-        ArgSpan m_args;
+        std::span<char*> m_args;
         OptionalString m_opts {};
     };
 }
