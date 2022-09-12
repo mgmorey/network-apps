@@ -19,7 +19,7 @@
 #include "network/get-socket.h"         // get_socket()
 #include "network/string-null.h"        // string_null
 
-#include <string>       // std::to_string
+#include <string>       // std::string
 
 Network::Fd::Fd(socket_family_type t_family,
                 socket_type_type t_socktype,
