@@ -25,7 +25,9 @@ namespace Network
     template <typename Range>
     auto skip_first(Range& r) -> IteratorPair<decltype(r.begin())>
     {
-        return {r.begin() == r.end() ? r.begin() : std::next(r.begin()), r.end()};
+        return {r.begin() == r.end() ? r.begin() :
+                std::next(r.begin()),
+                r.end()};
     }
 }
 
