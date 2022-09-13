@@ -39,7 +39,7 @@ namespace Network
         ~CommandLine() noexcept = default;
         auto operator=(const CommandLine&) noexcept -> CommandLine& = default;
         auto operator=(CommandLine&&) noexcept -> CommandLine& = default;
-        [[nodiscard]] auto arguments(std::size_t offset = 0) -> ArgumentSpan;
+        [[nodiscard]] auto arguments(std::size_t offset) -> ArgumentSpan;
         [[nodiscard]] auto arguments(int offset = 0) -> ArgumentSpan;
         [[nodiscard]] auto option() const -> int;
 
