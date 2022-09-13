@@ -98,11 +98,11 @@ static auto write(const std::string& str, const Fd& fd) -> ssize_t
 
 auto main(int argc, char* argv[]) -> int
 {
+    // Fetch arguments from command line;
+    const auto args {parse_arguments(argc, argv)};
+
     try {
         bool shutdown {false};
-
-        // Fetch arguments from command line;
-        const auto args {parse_arguments(argc, argv)};
 
         // Connect socket to socket address.
         const Fd fd {AF_UNIX, SOCK_SEQPACKET, 0, 0, false, verbose};
@@ -110,7 +110,7 @@ auto main(int argc, char* argv[]) -> int
         const auto error {connect(fd, addr, verbose)};
         const auto error_code {error.number()};
 
-        if (error_code == socket_error) {
+        if (error_code != 0) {
             std::cerr << error.string()
                       << std::endl;
             std::exit(EXIT_FAILURE);
