@@ -324,7 +324,7 @@ auto main(int argc, char* argv[]) -> int
 
         test_host_invalid();
 
-        if (hosts.size() > 1) {
+        if (!hosts.empty()) {
             std::for_each(hosts.begin(), hosts.end(),
                           test_host_valid);
         }
