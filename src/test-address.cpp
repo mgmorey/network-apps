@@ -103,8 +103,7 @@ namespace TestAddress
             }
         }
 
-        const auto offset {to_size(optind)};
-        return command_line.arguments(offset);
+        return command_line.arguments(optind);
     }
 
     static auto print(const Address& address) -> void

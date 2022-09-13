@@ -48,6 +48,12 @@ auto Network::CommandLine::arguments(std::size_t offset) ->
     return std::span(m_data).subspan(offset);
 }
 
+auto Network::CommandLine::arguments(int offset) ->
+    Network::CommandLine::ArgumentSpan
+{
+    return arguments(to_size(offset));
+}
+
 auto Network::CommandLine::option() const -> int
 {
     if (!m_opts) {

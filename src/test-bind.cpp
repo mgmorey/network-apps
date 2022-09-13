@@ -67,7 +67,6 @@ using Network::bind;
 using Network::get_sockname;
 using Network::os_error_type;
 using Network::string_null;
-using Network::to_size;
 
 namespace TestBind
 {
@@ -179,8 +178,7 @@ namespace TestBind
             }
         }
 
-        const auto offset {to_size(optind)};
-        return command_line.arguments(offset);
+        return command_line.arguments(optind);
     }
 
     static auto print(const OsErrorResult& result,

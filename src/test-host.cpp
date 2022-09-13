@@ -67,7 +67,6 @@ using Network::SocketHints;
 using Network::SocketHost;
 using Network::get_hosts;
 using Network::os_error_type;
-using Network::to_size;
 using Network::uniquify;
 
 namespace TestHost
@@ -215,8 +214,7 @@ namespace TestHost
             }
         }
 
-        const auto offset {to_size(optind)};
-        return command_line.arguments(offset);
+        return command_line.arguments(optind);
     }
 
     static auto print(const OsErrorResult& result,
