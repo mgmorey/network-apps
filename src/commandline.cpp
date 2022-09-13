@@ -51,6 +51,10 @@ auto Network::CommandLine::arguments(std::size_t offset) ->
 auto Network::CommandLine::arguments(int offset) ->
     Network::CommandLine::ArgumentSpan
 {
+    if (offset == -1) {
+        offset = optind;
+    }
+
     return arguments(to_size(offset));
 }
 
