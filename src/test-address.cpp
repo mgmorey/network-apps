@@ -82,7 +82,7 @@ namespace TestAddress
     static bool verbose {false};  // NOLINT
 
     static auto parse_arguments(int argc, char** argv) ->
-        std::vector<std::string>
+        CommandLine::ArgumentSpan
     {
         CommandLine command_line(argc, argv, "v");
         int opt {};
@@ -103,7 +103,8 @@ namespace TestAddress
             }
         }
 
-        return command_line.arguments();
+        const auto offset {to_size(optind)};
+        return command_line.arguments(offset);
     }
 
     static auto print(const Address& address) -> void

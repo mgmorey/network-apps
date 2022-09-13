@@ -199,7 +199,7 @@ namespace TestConnect
     }
 
     static auto parse_arguments(int argc, char** argv) ->
-        std::vector<std::string>
+        CommandLine::ArgumentSpan
     {
         CommandLine command_line(argc, argv, "v");
         int opt {};
@@ -220,7 +220,8 @@ namespace TestConnect
             }
         }
 
-        return command_line.arguments();
+        const auto offset {to_size(optind)};
+        return command_line.arguments(offset);
     }
 
     static auto print(const OsErrorResult& result,
@@ -339,8 +340,8 @@ auto main(int argc, char* argv[]) -> int
         test_connect_invalid_service(invalid_service, hints);
         const auto offset {to_size(optind)};
         const Endpoint valid_endpoint {
-            args.size() > offset + 0 ? args[offset + 0] : localhost,
-            args.size() > offset + 1 ? args[offset + 1] : localservice
+            args.size() > offset + 0 ? args[0] : localhost,
+            args.size() > offset + 1 ? args[1] : localservice
         };
         test_connect_valid(valid_endpoint, hints);
     }

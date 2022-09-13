@@ -118,8 +118,7 @@ namespace TestSocket
         return pathnames;
     }
 
-    static auto parse_arguments(int argc, char** argv) ->
-        std::vector<std::string>
+    static auto parse_arguments(int argc, char** argv) -> void
     {
         CommandLine command_line(argc, argv, "v");
         int opt {};
@@ -139,8 +138,6 @@ namespace TestSocket
                 abort();
             }
         }
-
-        return command_line.arguments();
     }
 
     static auto print(const Error& error) -> void
@@ -320,7 +317,7 @@ auto main(int argc, char* argv[]) -> int
     static const ErrorCodeSet codes_valid = {0};
 
     try {
-        static_cast<void>(parse_arguments(argc, argv));
+        parse_arguments(argc, argv);
         const auto& context {Context::instance()};
 
         if (verbose) {

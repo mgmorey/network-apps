@@ -42,10 +42,10 @@ Network::CommandLine::CommandLine(int t_argc,
     }
 }
 
-auto Network::CommandLine::arguments() const ->
-    Network::CommandLine::Arguments
+auto Network::CommandLine::arguments(std::size_t offset) ->
+    Network::CommandLine::ArgumentSpan
 {
-    return m_data;
+    return std::span(m_data).subspan(offset);
 }
 
 auto Network::CommandLine::option() const -> int

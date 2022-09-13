@@ -158,7 +158,7 @@ namespace TestBind
     }
 
     static auto parse_arguments(int argc, char** argv) ->
-        std::vector<std::string>
+        CommandLine::ArgumentSpan
     {
         CommandLine command_line(argc, argv, "v");
         int opt {};
@@ -179,7 +179,8 @@ namespace TestBind
             }
         }
 
-        return command_line.arguments();
+        const auto offset {to_size(optind)};
+        return command_line.arguments(offset);
     }
 
     static auto print(const OsErrorResult& result,
@@ -286,10 +287,9 @@ auto main(int argc, char* argv[]) -> int
         test_bind_invalid_host(invalid_host, hints);
         const Endpoint invalid_service {localhost, "."};
         test_bind_invalid_service(invalid_service, hints);
-        const auto offset {to_size(optind)};
         const Endpoint valid_endpoint {
-            args.size() > 1 ? args[offset + 0] : localhost,
-            args.size() > 2 ? args[offset + 1] : localservice
+            args.size() > 1 ? args[0] : localhost,
+            args.size() > 2 ? args[1] : localservice
         };
         test_bind_valid(valid_endpoint, hints);
     }

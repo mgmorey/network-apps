@@ -122,8 +122,7 @@ namespace TestContext
         }
     };
 
-    static auto parse_arguments(int argc, char** argv) ->
-        std::vector<std::string>
+    static auto parse_arguments(int argc, char** argv) -> void
     {
         CommandLine command_line(argc, argv, "v");
         int opt {};
@@ -143,8 +142,6 @@ namespace TestContext
                 abort();
             }
         }
-
-        return command_line.arguments();
     }
 
     static auto print(const Context& context,
@@ -353,7 +350,7 @@ auto main(int argc, char* argv[]) -> int
     using namespace TestContext;
 
     try {
-        static_cast<void>(parse_arguments(argc, argv));
+        parse_arguments(argc, argv);
         test_context_global_instance();
         test_context_local_instances();
         test_context_valid_with_shutdown();

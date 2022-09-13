@@ -194,7 +194,7 @@ namespace TestHost
     }
 
     static auto parse_arguments(int argc, char** argv) ->
-        std::vector<std::string>
+        CommandLine::ArgumentSpan
     {
         CommandLine command_line(argc, argv, "v");
         int opt {};
@@ -215,7 +215,8 @@ namespace TestHost
             }
         }
 
-        return command_line.arguments();
+        const auto offset {to_size(optind)};
+        return command_line.arguments(offset);
     }
 
     static auto print(const OsErrorResult& result,
@@ -314,7 +315,7 @@ auto main(int argc, char* argv[]) -> int
     using namespace TestHost;
 
     try {
-        const auto args {parse_arguments(argc, argv)};
+        const auto hosts {parse_arguments(argc, argv)};
         const auto& context {Context::instance()};
 
         if (verbose) {
@@ -323,9 +324,7 @@ auto main(int argc, char* argv[]) -> int
 
         test_host_invalid();
 
-        if (args.size() > 1) {
-            const auto offset {to_size(optind)};
-            const auto hosts {std::span(args).subspan(offset)};
+        if (hosts.size() > 1) {
             std::for_each(hosts.begin(), hosts.end(),
                           test_host_valid);
         }

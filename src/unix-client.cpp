@@ -17,6 +17,7 @@
 #include "network/network.h"            // Buffer, Fd, connect(),
                                         // socket_error,
                                         // to_byte_string()
+#include "network/to-size.h"            // to_size()
 #include "unix-common.h"                // BUFFER_SIZE, SOCKET_NAME
 
 #include <sys/socket.h>         // SOCK_SEQPACKET
@@ -42,6 +43,7 @@ using Network::format_os_error;
 using Network::os_error_type;
 using Network::socket_error;
 using Network::to_byte_string;
+using Network::to_size;
 
 using IoResult = std::pair<std::string, ssize_t>;
 
@@ -59,7 +61,7 @@ static auto format_message(int error) -> std::string
 }
 
 static auto parse_arguments(int argc, char** argv) ->
-    std::vector<std::string>
+    CommandLine::ArgumentSpan
 {
     CommandLine command_line(argc, argv, "v");
     int opt {};
@@ -80,7 +82,8 @@ static auto parse_arguments(int argc, char** argv) ->
         }
     }
 
-    return command_line.arguments();
+    const auto offset {to_size(optind)};
+    return command_line.arguments(offset);
 }
 
 static auto read(const Fd& fd) -> IoResult
