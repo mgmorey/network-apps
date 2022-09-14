@@ -197,8 +197,7 @@ namespace TestConnect
         return codes;
     }
 
-    static auto parse_arguments(int argc, char** argv) ->
-        CommandLine::ArgumentSpan
+    static auto parse_arguments(int argc, char** argv) -> Endpoint
     {
         CommandLine command_line(argc, argv, "v");
         int opt {};
@@ -219,7 +218,8 @@ namespace TestConnect
             }
         }
 
-        return command_line.arguments(optind);
+        return {command_line.argument(optind + 0).value_or(localhost),
+                command_line.argument(optind + 1).value_or(localservice)};
     }
 
     static auto print(const OsErrorResult& result,
@@ -323,24 +323,20 @@ auto main(int argc, char* argv[]) -> int
         {AI_CANONNAME, AF_UNSPEC, SOCK_STREAM, 0};
 
     try {
-        const auto args {parse_arguments(argc, argv)};
+        const auto valid_endpoint {parse_arguments(argc, argv)};
         const auto& context {Context::instance()};
 
         if (verbose) {
             std::cout << context;
         }
 
+        test_connect_valid(valid_endpoint, hints);
         const ByteString invalid_addr {};
         test_connect_invalid_addr(invalid_addr);
         const Endpoint invalid_host {".", localservice};
         test_connect_invalid_host(invalid_host, hints);
         const Endpoint invalid_service {localhost, "."};
         test_connect_invalid_service(invalid_service, hints);
-        const Endpoint valid_endpoint {
-            !args.empty() ? args[0] : localhost,
-            args.size() > 1 ? args[1] : localservice
-        };
-        test_connect_valid(valid_endpoint, hints);
     }
     catch (const std::exception& error) {
         std::cerr << error.what()

@@ -18,6 +18,7 @@
 
 #include "network/optionalstring.h"     // OptionalString
 
+#include <optional>     // std::optional
 #include <span>         // std::span
 #include <string>       // std::string
 #include <vector>       // std::vector
@@ -28,6 +29,7 @@ namespace Network
     {
     public:
         using Argument = std::string;
+        using OptionalArgument = std::optional<Argument>;
         using ArgumentSpan = std::span<Argument>;
         using ArgumentVector = std::vector<Argument>;
 
@@ -39,6 +41,8 @@ namespace Network
         ~CommandLine() noexcept = default;
         auto operator=(const CommandLine&) noexcept -> CommandLine& = default;
         auto operator=(CommandLine&&) noexcept -> CommandLine& = default;
+        [[nodiscard]] auto argument(std::size_t offset) const -> OptionalArgument;
+        [[nodiscard]] auto argument(int offset) const -> OptionalArgument;
         [[nodiscard]] auto arguments(std::size_t offset) -> ArgumentSpan;
         [[nodiscard]] auto arguments(int offset = -1) -> ArgumentSpan;
         [[nodiscard]] auto option() const -> int;

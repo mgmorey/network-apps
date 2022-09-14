@@ -42,6 +42,22 @@ Network::CommandLine::CommandLine(int t_argc,
     }
 }
 
+auto Network::CommandLine::argument(std::size_t offset) const ->
+    Network::CommandLine::OptionalArgument
+{
+    if (offset < m_data.size()) {
+        return m_data[offset];
+    }
+
+    return std::nullopt;
+}
+
+auto Network::CommandLine::argument(int offset) const ->
+    Network::CommandLine::OptionalArgument
+{
+    return argument(to_size(offset));
+}
+
 auto Network::CommandLine::arguments(std::size_t offset) ->
     Network::CommandLine::ArgumentSpan
 {
