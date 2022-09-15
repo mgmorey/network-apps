@@ -82,19 +82,6 @@ static auto parse_arguments(int argc, char** argv) ->
     return command_line.arguments(optind);
 }
 
-static auto read(const Fd& fd) -> IoResult
-{
-    Buffer buffer {BUFFER_SIZE};
-    return {buffer, ::read(fd_type {fd},
-                           buffer.data(),
-                           buffer.size())};
-}
-
-static auto write(const std::string& str, const Fd& fd) -> ssize_t
-{
-    return ::write(fd_type {fd}, str.data(), str.size());
-}
-
 auto main(int argc, char* argv[]) -> int
 {
     // Fetch arguments from command line;
@@ -117,7 +104,7 @@ auto main(int argc, char* argv[]) -> int
 
         // Send arguments to server.
         for (const auto& arg : args) {
-            const auto code {write(arg, fd)};
+            const auto code {::write(fd_type {fd}, arg.data(), arg.size())};
 
             if (code == -1) {
                 std::perror("write");
@@ -132,7 +119,7 @@ auto main(int argc, char* argv[]) -> int
 
         if (!shutdown) {
             // Request result.
-            const auto write_code {write("END", fd)};
+            const auto write_code {::write(fd_type {fd}, "END", strlen("END"))};
 
             if (write_code == -1) {
                 std::perror("write");
@@ -140,7 +127,10 @@ auto main(int argc, char* argv[]) -> int
             }
 
             // Receive result.
-            const auto [read_str, read_code] {read(fd)};
+            Buffer read_str {BUFFER_SIZE};
+            const auto read_code {::read(fd_type {fd},
+                                         read_str.data(),
+                                         read_str.size())};
 
             if (read_code == -1) {
                 std::perror("read");
