@@ -118,9 +118,8 @@ namespace TestSocket
         return pathnames;
     }
 
-    static auto parse_arguments(int argc, char** argv) -> void
+    static auto parse_arguments(CommandLine& command_line) -> void
     {
-        CommandLine command_line(argc, argv, "v");
         int opt {};
 
         while ((opt = command_line.option()) != -1) {
@@ -130,7 +129,7 @@ namespace TestSocket
                 break;
             case '?':
                 std::cerr << "Usage: "
-                          << *argv
+                          << *command_line.argument(0)
                           << " [-v]"
                           << std::endl;
                 std::exit(EXIT_FAILURE);
@@ -317,7 +316,8 @@ auto main(int argc, char* argv[]) -> int
     static const ErrorCodeSet codes_valid = {0};
 
     try {
-        parse_arguments(argc, argv);
+        CommandLine command_line(argc, argv, "v");
+        parse_arguments(command_line);
         const auto& context {Context::instance()};
 
         if (verbose) {
