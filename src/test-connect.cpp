@@ -197,9 +197,8 @@ namespace TestConnect
         return codes;
     }
 
-    static auto parse_arguments(int argc, char** argv) -> Endpoint
+    static auto parse_arguments(CommandLine& command_line) -> Endpoint
     {
-        const CommandLine command_line(argc, argv, "v");
         int opt {};
 
         while ((opt = command_line.option()) != -1) {
@@ -209,7 +208,7 @@ namespace TestConnect
                 break;
             case '?':
                 std::cerr << "Usage: "
-                          << *argv
+                          << *command_line.argument(0)
                           << " [-v]"
                           << std::endl;
                 std::exit(EXIT_FAILURE);
@@ -323,7 +322,8 @@ auto main(int argc, char* argv[]) -> int
         {AI_CANONNAME, AF_UNSPEC, SOCK_STREAM, 0};
 
     try {
-        const auto valid_endpoint {parse_arguments(argc, argv)};
+        CommandLine command_line(argc, argv, "v");
+        const auto valid_endpoint {parse_arguments(command_line)};
         const auto& context {Context::instance()};
 
         if (verbose) {
