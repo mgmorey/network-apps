@@ -57,10 +57,9 @@ static auto format_message(int error) -> std::string
     return oss.str();
 }
 
-static auto parse_arguments(int argc, char** argv) ->
+static auto parse_arguments(CommandLine& command_line) ->
     CommandLine::ArgumentSpan
 {
-    CommandLine command_line(argc, argv, "v");
     int opt {};
 
     while ((opt = command_line.option()) != -1) {
@@ -70,7 +69,7 @@ static auto parse_arguments(int argc, char** argv) ->
             break;
         case '?':
             std::cerr << "Usage: "
-                      << *argv
+                      << *command_line.argument(0)
                       << " [-v]"
                       << std::endl;
             std::exit(EXIT_FAILURE);
@@ -85,7 +84,8 @@ static auto parse_arguments(int argc, char** argv) ->
 auto main(int argc, char* argv[]) -> int
 {
     // Fetch arguments from command line;
-    const auto args {parse_arguments(argc, argv)};
+    CommandLine command_line(argc, argv, "v");
+    const auto args {parse_arguments(command_line)};
 
     try {
         bool shutdown {false};
