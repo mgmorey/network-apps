@@ -64,10 +64,9 @@ static auto format_message(int error) -> std::string
     return oss.str();
 }
 
-static auto parse_arguments(int argc, char** argv) ->
+static auto parse_arguments(CommandLine& command_line) ->
     CommandLine::ArgumentSpan
 {
-    CommandLine command_line(argc, argv, "v");
     int opt {};
 
     while ((opt = command_line.option()) != -1) {
@@ -77,7 +76,7 @@ static auto parse_arguments(int argc, char** argv) ->
             break;
         case '?':
             std::cerr << "Usage: "
-                      << *argv
+                      << *command_line.argument(0)
                       << " [-v]"
                       << std::endl;
             std::exit(EXIT_FAILURE);
@@ -86,8 +85,7 @@ static auto parse_arguments(int argc, char** argv) ->
         }
     }
 
-    const auto offset {to_size(optind)};
-    return command_line.arguments(offset);
+    return command_line.arguments(optind);
 }
 
 static auto get_bind_socket(const SocketHints& hints) -> Fd
@@ -118,7 +116,8 @@ auto main(int argc, char* argv[]) -> int
         bool shutdown {false};
 
         // Fetch arguments from command line;
-        parse_arguments(argc, argv);
+        CommandLine command_line(argc, argv, "v");
+        parse_arguments(command_line);
 
         // Bind Unix domain socket to pathname.
         const auto bind_fd {get_bind_socket(hints)};
