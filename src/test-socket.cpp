@@ -316,9 +316,9 @@ auto main(int argc, char* argv[]) -> int
     static const ErrorCodeSet codes_valid = {0};
 
     try {
+        const auto& context {Context::instance()};
         CommandLine command_line(argc, argv, "v");
         parse_arguments(command_line);
-        const auto& context {Context::instance()};
 
         if (verbose) {
             std::cout << context;

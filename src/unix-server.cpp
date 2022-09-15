@@ -64,8 +64,7 @@ static auto format_message(int error) -> std::string
     return oss.str();
 }
 
-static auto parse_arguments(CommandLine& command_line) ->
-    CommandLine::ArgumentSpan
+static auto parse_arguments(CommandLine& command_line) -> void
 {
     int opt {};
 
@@ -84,8 +83,6 @@ static auto parse_arguments(CommandLine& command_line) ->
             abort();
         }
     }
-
-    return command_line.arguments(optind);
 }
 
 static auto get_bind_socket(const SocketHints& hints) -> Fd
@@ -112,9 +109,6 @@ auto main(int argc, char* argv[]) -> int
     static constexpr SocketHints hints {0, AF_UNIX, SOCK_SEQPACKET, 0};
 
     try {
-        Network::Buffer buffer(BUFFER_SIZE);
-        bool shutdown {false};
-
         // Fetch arguments from command line;
         CommandLine command_line(argc, argv, "v");
         parse_arguments(command_line);
@@ -140,6 +134,8 @@ auto main(int argc, char* argv[]) -> int
             std::perror("listen");
             std::exit(EXIT_FAILURE);
         }
+
+        bool shutdown {false};
 
         // This is the main loop for handling connections.
         while (!shutdown) {

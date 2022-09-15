@@ -81,8 +81,7 @@ namespace TestAddress
 
     static bool verbose {false};  // NOLINT
 
-    static auto parse_arguments(CommandLine& command_line) ->
-        CommandLine::ArgumentSpan
+    static auto parse_arguments(CommandLine& command_line) -> void
     {
         int opt {};
 
@@ -101,8 +100,6 @@ namespace TestAddress
                 abort();
             }
         }
-
-        return command_line.arguments(optind);
     }
 
     static auto print(const Address& address) -> void
@@ -254,9 +251,9 @@ auto main(int argc, char* argv[]) -> int
     using namespace TestAddress;
 
     try {
-        CommandLine command_line(argc, argv, "v");
-        static_cast<void>(parse_arguments(command_line));
         const auto& context {Context::instance()};
+        CommandLine command_line(argc, argv, "v");
+        parse_arguments(command_line);
 
         if (verbose) {
             std::cout << context;

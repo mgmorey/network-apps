@@ -271,9 +271,9 @@ auto main(int argc, char* argv[]) -> int
         {AI_CANONNAME, AF_UNSPEC, SOCK_STREAM, 0};
 
     try {
+        const auto& context {Context::instance()};
         CommandLine command_line(argc, argv, "v");
         const auto valid_endpoint {parse_arguments(command_line)};
-        const auto& context {Context::instance()};
 
         if (verbose) {
             std::cout << context;
