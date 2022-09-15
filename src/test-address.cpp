@@ -81,7 +81,7 @@ namespace TestAddress
 
     static bool verbose {false};  // NOLINT
 
-    static auto parse_arguments(CommandLine& command_line) -> void
+    static auto parse_arguments(const CommandLine& command_line) -> void
     {
         int opt {};
 

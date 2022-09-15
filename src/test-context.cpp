@@ -122,7 +122,7 @@ namespace TestContext
         }
     };
 
-    static auto parse_arguments(CommandLine& command_line) -> void
+    static auto parse_arguments(const CommandLine& command_line) -> void
     {
         int opt {};
 
