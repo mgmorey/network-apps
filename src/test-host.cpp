@@ -192,10 +192,9 @@ namespace TestHost
         return hostname;
     }
 
-    static auto parse_arguments(int argc, char** argv) ->
+    static auto parse_arguments(CommandLine& command_line) ->
         CommandLine::ArgumentSpan
     {
-        CommandLine command_line(argc, argv, "v");
         int opt {};
 
         while ((opt = command_line.option()) != -1) {
@@ -205,7 +204,7 @@ namespace TestHost
                 break;
             case '?':
                 std::cerr << "Usage: "
-                          << *argv
+                          << *command_line.argument(0)
                           << " [-v]"
                           << std::endl;
                 std::exit(EXIT_FAILURE);
@@ -313,7 +312,8 @@ auto main(int argc, char* argv[]) -> int
     using namespace TestHost;
 
     try {
-        const auto hosts {parse_arguments(argc, argv)};
+        CommandLine command_line(argc, argv, "v");
+        const auto hosts {parse_arguments(command_line)};
         const auto& context {Context::instance()};
 
         if (verbose) {
