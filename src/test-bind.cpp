@@ -158,7 +158,7 @@ namespace TestBind
 
     static auto parse_arguments(int argc, char** argv) -> Endpoint
     {
-        CommandLine command_line(argc, argv, "v");
+        const CommandLine command_line(argc, argv, "v");
         int opt {};
 
         while ((opt = command_line.option()) != -1) {

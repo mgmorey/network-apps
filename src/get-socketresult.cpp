@@ -33,7 +33,7 @@
 
 auto Network::get_socketresult(const SocketHints& hints,
                                bool pending,
-                               bool verbose) noexcept -> Network::FdResult
+                               bool verbose) -> Network::FdResult
 {
     static constexpr auto delim {", "};
     static constexpr auto tab {0};

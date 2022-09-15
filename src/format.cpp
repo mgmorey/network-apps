@@ -51,7 +51,7 @@ Network::Format::Format(std::string::size_type t_indent,
 
 Network::Format::Format(const std::string& t_delimiter,
                         std::string::size_type t_indent,
-                        const std::string& t_key) noexcept :
+                        const std::string& t_key) :
     m_delimiter(t_delimiter),
     m_indent(t_indent),
     m_key(t_key)
@@ -60,7 +60,7 @@ Network::Format::Format(const std::string& t_delimiter,
 
 Network::Format::Format(const std::string& t_delimiter,
                         std::string::size_type t_indent,
-                        std::string&& t_key) noexcept :
+                        std::string&& t_key) :
     m_delimiter(t_delimiter),
     m_indent(t_indent),
     m_key(std::move(t_key))
@@ -69,7 +69,7 @@ Network::Format::Format(const std::string& t_delimiter,
 
 Network::Format::Format(std::string&& t_delimiter,
                         std::string::size_type t_indent,
-                        const std::string& t_key) noexcept :
+                        const std::string& t_key) :
     m_delimiter(std::move(t_delimiter)),
     m_indent(t_indent),
     m_key(t_key)
@@ -78,7 +78,7 @@ Network::Format::Format(std::string&& t_delimiter,
 
 Network::Format::Format(std::string&& t_delimiter,
                         std::string::size_type t_indent,
-                        std::string&& t_key) noexcept :
+                        std::string&& t_key) :
     m_delimiter(std::move(t_delimiter)),
     m_indent(t_indent),
     m_key(std::move(t_key))
@@ -86,7 +86,7 @@ Network::Format::Format(std::string&& t_delimiter,
 }
 
 auto Network::operator<<(std::ostream& os,
-                         const Format& format) noexcept -> std::ostream&
+                         const Format& format) -> std::ostream&
 {
     if (format.m_indent != std::string::npos) {
         os << format.m_delimiter;

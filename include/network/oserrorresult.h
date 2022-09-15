@@ -25,17 +25,17 @@ namespace Network
 {
     struct OsErrorResult
     {
-        OsErrorResult() noexcept = default;
+        OsErrorResult() = default;
 
         OsErrorResult(os_error_type t_number,
-                      const std::string& t_string) noexcept;
+                      const std::string& t_string);
         OsErrorResult(os_error_type t_number,
-                      std::string&& t_string) noexcept;
+                      std::string&& t_string);
         auto operator==(const OsErrorResult& t_result) const noexcept -> bool;
         auto operator!=(const OsErrorResult& t_result) const noexcept -> bool;
         operator bool() const noexcept;  // NOLINT
         [[nodiscard]] auto number() const noexcept -> os_error_type;
-        [[nodiscard]] auto string() const noexcept -> std::string;
+        [[nodiscard]] auto string() const -> std::string;
 
     private:
         os_error_type m_number {0};

@@ -18,12 +18,12 @@
 #include <utility>      // std::move()
 
 // NOLINTNEXTLINE
-Network::Error::Error(const std::string& t_str) noexcept :
+Network::Error::Error(const std::string& t_str) :
     m_str(t_str)
 {
 }
 
-Network::Error::Error(std::string&& t_str) noexcept :
+Network::Error::Error(std::string&& t_str) :
     m_str(std::move(t_str))
 {
 }

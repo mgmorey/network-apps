@@ -25,9 +25,9 @@ namespace Network
         public std::exception
     {
     public:
-        explicit Error(const std::string& t_str) noexcept;
-        explicit Error(std::string&& t_str) noexcept;
-        Error(const Error&) noexcept = default;
+        explicit Error(const std::string& t_str);
+        explicit Error(std::string&& t_str);
+        Error(const Error&) = default;
         Error(Error&&) noexcept = default;
         ~Error() noexcept override = default;
         auto operator=(const Error&) -> Error& = default;

@@ -68,12 +68,12 @@ namespace Network
         AddrInfo(const OptionalHostname& t_hostname,
              const OptionalService& t_service,
              const OptionalHints& t_hints,
-             bool t_verbose) noexcept;
+             bool t_verbose);
         ~AddrInfo() noexcept;
         auto operator=(const AddrInfo&) noexcept -> AddrInfo& = delete;
         auto operator=(const AddrInfo&&) noexcept -> AddrInfo& = delete;
         [[nodiscard]] auto begin() const noexcept -> InputIterator;
-        [[nodiscard]] auto result() const noexcept -> OsErrorResult;
+        [[nodiscard]] auto result() const -> OsErrorResult;
 
     protected:
         static auto to_c_string(const OptionalString& str) noexcept ->

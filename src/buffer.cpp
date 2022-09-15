@@ -21,7 +21,7 @@ Network::Buffer::Buffer(std::string::size_type t_size) :
 {
 }
 
-Network::Buffer::operator std::string() const noexcept
+Network::Buffer::operator std::string() const
 {
     return m_value.substr(0, m_value.find('\0'));
 }

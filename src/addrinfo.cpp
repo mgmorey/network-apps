@@ -84,9 +84,9 @@ auto Network::AddrInfo::format(const std::unique_ptr<addrinfo>& hints) ->
 Network::AddrInfo::AddrInfo(const OptionalHostname& t_hostname,
                             const OptionalService& t_service,
                             const OptionalHints& t_hints,
-                            bool t_verbose) noexcept
+                            bool t_verbose)
 {
-    std::unique_ptr<addrinfo> hints = t_hints ?
+    const std::unique_ptr<addrinfo> hints = t_hints ?
         std::make_unique<addrinfo>(*t_hints) :
         nullptr;
 
@@ -133,7 +133,7 @@ auto Network::AddrInfo::begin() const noexcept ->
     return m_list;
 }
 
-auto Network::AddrInfo::result() const noexcept -> Network::OsErrorResult
+auto Network::AddrInfo::result() const -> Network::OsErrorResult
 {
     return m_result;
 }

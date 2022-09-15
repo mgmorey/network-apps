@@ -22,7 +22,7 @@
 
 namespace Network
 {
-    extern auto format_os_error(os_error_type error) noexcept -> std::string;
+    extern auto format_os_error(os_error_type error) -> std::string;
 }
 
 #endif

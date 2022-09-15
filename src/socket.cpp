@@ -25,7 +25,7 @@
 Network::Socket::Socket(int t_family,
                         int t_socktype,
                         int t_protocol,
-                        int t_flags) noexcept :
+                        int t_flags) :
     m_hints(t_family, t_socktype, t_protocol, t_flags)
 {
 }

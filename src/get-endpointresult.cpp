@@ -40,7 +40,7 @@
 #include <string>       // std::string
 
 auto Network::get_endpointresult(const ByteString& addr, int flags,
-                                 bool verbose) noexcept ->
+                                 bool verbose) ->
     Network::EndpointResult
 {
     if (!is_valid(addr)) {

@@ -30,7 +30,7 @@ namespace Network
         ~Buffer() noexcept = default;
         auto operator=(const Buffer&) noexcept -> Buffer& = default;
         auto operator=(Buffer&&) noexcept -> Buffer& = default;
-        operator std::string() const noexcept;  // NOLINT
+        operator std::string() const;  // NOLINT
         [[nodiscard]] auto data() noexcept -> char*;
         [[nodiscard]] auto size() const noexcept -> std::string::size_type;
 

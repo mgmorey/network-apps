@@ -22,7 +22,7 @@
 namespace Network
 {
     extern auto unlink(const Pathname& pathname,
-                       bool verbose = false) noexcept -> OsErrorResult;
+                       bool verbose = false) -> OsErrorResult;
 }
 
 #endif

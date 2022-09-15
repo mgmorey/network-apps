@@ -292,7 +292,7 @@ namespace TestHost
 
     static auto test_host_valid(const OptionalHostname& host) -> void
     {
-        bool is_local = !host || *host == get_hostname();
+        const bool is_local = !host || *host == get_hostname();
 
         if (host && !is_local) {
             std::cout << "Host: "

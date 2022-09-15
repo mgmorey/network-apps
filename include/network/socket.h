@@ -33,11 +33,11 @@ namespace Network
         explicit Socket(int t_family,
                         int t_socktype = 0,
                         int t_protocol = 0,
-                        int t_flags = 0) noexcept;
+                        int t_flags = 0);
         // cppcheck-suppress noExplicitConstructor
         Socket(const addrinfo& t_addrinfo) noexcept;  // NOLINT
         Socket(const Socket&) noexcept = default;
-        Socket(Socket&&) noexcept = default;
+        Socket(Socket&&) = default;
         ~Socket() noexcept = default;
         auto operator=(const Socket&) noexcept -> Socket& = default;
         auto operator=(Socket&&) noexcept -> Socket& = default;

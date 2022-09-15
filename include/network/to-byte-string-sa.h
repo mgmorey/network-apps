@@ -29,7 +29,7 @@
 namespace Network
 {
     extern auto to_byte_string(const sockaddr* sa,
-                               std::size_t size) noexcept -> ByteString;
+                               std::size_t size) -> ByteString;
 }
 
 #endif

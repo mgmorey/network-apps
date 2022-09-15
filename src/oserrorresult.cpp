@@ -18,14 +18,14 @@
 #include <utility>      // std::move()
 
 Network::OsErrorResult::OsErrorResult(os_error_type t_number,
-                                      const std::string& t_string) noexcept :
+                                      const std::string& t_string) :
     m_number(t_number),
     m_string(t_string)
 {
 }
 
 Network::OsErrorResult::OsErrorResult(os_error_type t_number,
-                                      std::string&& t_string) noexcept :
+                                      std::string&& t_string) :
     m_number(t_number),
     m_string(std::move(t_string))
 {
@@ -57,7 +57,7 @@ auto Network::OsErrorResult::number() const noexcept -> Network::os_error_type
     return m_number;
 }
 
-auto Network::OsErrorResult::string() const noexcept -> std::string
+auto Network::OsErrorResult::string() const -> std::string
 {
     return m_string;
 }

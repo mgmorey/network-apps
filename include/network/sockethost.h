@@ -29,20 +29,20 @@ namespace Network
 {
     struct SocketHost
     {
-        SocketHost() noexcept = default;
+        SocketHost() = default;
         // cppcheck-suppress noExplicitConstructor
         SocketHost(const addrinfo& t_addrinfo);  // NOLINT
-        SocketHost(const SocketHost&) noexcept = default;
-        SocketHost(SocketHost&&) noexcept = default;
+        SocketHost(const SocketHost&) = default;
+        SocketHost(SocketHost&&) = default;
         ~SocketHost() noexcept = default;
         auto operator=(const addrinfo& t_addrinfo) -> SocketHost&;
-        auto operator=(const SocketHost&) noexcept -> SocketHost& = default;
-        auto operator=(SocketHost&&) noexcept -> SocketHost& = default;
+        auto operator=(const SocketHost&) -> SocketHost& = default;
+        auto operator=(SocketHost&&) -> SocketHost& = default;
         auto operator<(const SocketHost& t_host) const noexcept -> bool;
         auto operator>(const SocketHost& t_host) const noexcept -> bool;
         auto operator==(const SocketHost& t_host) const noexcept -> bool;
         [[nodiscard]] auto address() const -> ByteString;
-        [[nodiscard]] auto canonical_name() const noexcept -> OptionalHostname;
+        [[nodiscard]] auto canonical_name() const -> OptionalHostname;
 
     protected:
         static auto to_canonical_name(const char* t_str) noexcept ->

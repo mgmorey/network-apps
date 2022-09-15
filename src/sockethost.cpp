@@ -58,7 +58,7 @@ auto Network::SocketHost::address() const -> Network::ByteString
     return m_addr;
 }
 
-auto Network::SocketHost::canonical_name() const noexcept ->
+auto Network::SocketHost::canonical_name() const ->
     Network::OptionalHostname
 {
     return m_name;

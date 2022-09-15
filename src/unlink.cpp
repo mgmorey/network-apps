@@ -27,7 +27,7 @@
 #include <sstream>      // std::ostringstream
 
 auto Network::unlink(const Pathname& pathname,
-                     bool verbose) noexcept -> Network::OsErrorResult
+                     bool verbose) -> Network::OsErrorResult
 {
 #ifndef WIN32
     reset_last_os_error();

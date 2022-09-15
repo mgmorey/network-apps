@@ -26,7 +26,7 @@
 #include <cstring>      // std::strerror()
 #endif
 
-auto Network::format_os_error(os_error_type error) noexcept -> std::string
+auto Network::format_os_error(os_error_type error) -> std::string
 {
 #ifdef WIN32
     static constexpr DWORD flags {
@@ -41,13 +41,13 @@ auto Network::format_os_error(os_error_type error) noexcept -> std::string
     LPVOID buffer {nullptr};
     LPVOID pbuffer {&buffer};
     LPTSTR pstring {static_cast<LPTSTR>(pbuffer)};
-    DWORD result {::FormatMessage(flags,
-                                  nullptr,
-                                  static_cast<DWORD>(error),
-                                  lang,
-                                  pstring,
-                                  0,
-                                  nullptr)};
+    const DWORD result {::FormatMessage(flags,
+                                        nullptr,
+                                        static_cast<DWORD>(error),
+                                        lang,
+                                        pstring,
+                                        0,
+                                        nullptr)};
 
     if (result != 0U) {
         message = static_cast<LPTSTR>(buffer);
