@@ -70,12 +70,18 @@ auto Network::CommandLine::arguments(int t_offset) ->
     return arguments(to_size(t_offset));
 }
 
-auto Network::CommandLine::option() const -> int
+auto Network::CommandLine::option(const char* t_options) const -> int
 {
-    if (!m_opts) {
+    auto options {m_opts};
+
+    if (t_options != nullptr && !m_opts) {
+        options = t_options;
+    }
+
+    if (!options) {
         throw LogicError("No command-line options available to parse");
     }
 
     const int argc {static_cast<int>(m_args.size())};
-    return ::getopt(argc, m_args.data(), m_opts->c_str());
+    return ::getopt(argc, m_args.data(), options->c_str());
 }

@@ -42,7 +42,7 @@ namespace Network
         [[nodiscard]] auto argument(int t_offset) const -> OptionalString;
         [[nodiscard]] auto arguments(std::size_t t_offset) -> ArgumentSpan;
         [[nodiscard]] auto arguments(int t_offset = -1) -> ArgumentSpan;
-        [[nodiscard]] auto option() const -> int;
+        [[nodiscard]] auto option(const char* t_options = nullptr) const -> int;
 
     private:
         ArgumentSpan m_args;
