@@ -33,17 +33,17 @@ Network::CommandLine::CommandLine(int t_argc, char** t_argv) :
 }
 
 auto Network::CommandLine::argument(std::size_t t_offset) const ->
-    Network::OptionalString
+    Network::CommandLine::Argument
 {
     if (t_offset < m_args.size()) {
         return m_args[t_offset];
     }
 
-    return std::nullopt;
+    return nullptr;
 }
 
 auto Network::CommandLine::argument(int t_offset) const ->
-    Network::OptionalString
+    Network::CommandLine::Argument
 {
     return argument(to_size(t_offset));
 }

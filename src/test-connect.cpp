@@ -208,7 +208,7 @@ namespace TestConnect
                 break;
             case '?':
                 std::cerr << "Usage: "
-                          << *command_line.argument(0)
+                          << command_line.argument(0)
                           << " [-v]"
                           << std::endl;
                 std::exit(EXIT_FAILURE);
@@ -217,8 +217,12 @@ namespace TestConnect
             }
         }
 
-        return {command_line.argument(optind + 0).value_or(localhost),
-                command_line.argument(optind + 1).value_or(localservice)};
+        const char* host {command_line.argument(optind + 0)};
+        const char* service {command_line.argument(optind + 1)};
+        return {
+            host != nullptr ? host : localhost,
+            service != nullptr ? service : localservice
+        };
     }
 
     static auto print(const OsErrorResult& result,

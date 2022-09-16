@@ -69,7 +69,7 @@ static auto parse_arguments(CommandLine& command_line) ->
             break;
         case '?':
             std::cerr << "Usage: "
-                      << *command_line.argument(0)
+                      << command_line.argument(0)
                       << " [-v]"
                       << std::endl;
             std::exit(EXIT_FAILURE);
