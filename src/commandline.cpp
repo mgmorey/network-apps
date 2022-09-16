@@ -30,48 +30,44 @@
 Network::CommandLine::CommandLine(int t_argc,
                                   char** t_argv,
                                   const OptionalString& t_opts) :
-    m_argc(t_argc),
-    m_argv(t_argv),
+    m_args(std::span(t_argv, to_size(t_argc))),
     m_opts(t_opts)
 {
-    const auto span {std::span(t_argv, to_size(t_argc))};
-    std::copy(span.begin(), span.end(), std::back_inserter(m_data));
-
     if (m_opts && m_opts->empty()) {
         m_opts = std::nullopt;
     }
 }
 
-auto Network::CommandLine::argument(std::size_t offset) const ->
-    Network::CommandLine::OptionalArgument
+auto Network::CommandLine::argument(std::size_t t_offset) const ->
+    Network::OptionalString
 {
-    if (offset < m_data.size()) {
-        return m_data[offset];
+    if (t_offset < m_args.size()) {
+        return m_args[t_offset];
     }
 
     return std::nullopt;
 }
 
-auto Network::CommandLine::argument(int offset) const ->
-    Network::CommandLine::OptionalArgument
+auto Network::CommandLine::argument(int t_offset) const ->
+    Network::OptionalString
 {
-    return argument(to_size(offset));
+    return argument(to_size(t_offset));
 }
 
-auto Network::CommandLine::arguments(std::size_t offset) ->
+auto Network::CommandLine::arguments(std::size_t t_offset) ->
     Network::CommandLine::ArgumentSpan
 {
-    return std::span(m_data).subspan(offset);
+    return m_args.subspan(t_offset);
 }
 
-auto Network::CommandLine::arguments(int offset) ->
+auto Network::CommandLine::arguments(int t_offset) ->
     Network::CommandLine::ArgumentSpan
 {
-    if (offset == -1) {
-        offset = optind;
+    if (t_offset == -1) {
+        t_offset = optind;
     }
 
-    return arguments(to_size(offset));
+    return arguments(to_size(t_offset));
 }
 
 auto Network::CommandLine::option() const -> int
@@ -80,5 +76,6 @@ auto Network::CommandLine::option() const -> int
         throw LogicError("No command-line options available to parse");
     }
 
-    return ::getopt(m_argc, m_argv, m_opts->c_str());
+    const int argc {static_cast<int>(m_args.size())};
+    return ::getopt(argc, m_args.data(), m_opts->c_str());
 }

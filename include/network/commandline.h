@@ -28,10 +28,7 @@ namespace Network
     class CommandLine
     {
     public:
-        using Argument = std::string;
-        using OptionalArgument = std::optional<Argument>;
-        using ArgumentSpan = std::span<Argument>;
-        using ArgumentVector = std::vector<Argument>;
+        using ArgumentSpan = std::span<char*>;
 
         CommandLine(int t_argc,
                     char** t_argv,
@@ -41,16 +38,14 @@ namespace Network
         ~CommandLine() noexcept = default;
         auto operator=(const CommandLine&) noexcept -> CommandLine& = default;
         auto operator=(CommandLine&&) noexcept -> CommandLine& = default;
-        [[nodiscard]] auto argument(std::size_t offset) const -> OptionalArgument;
-        [[nodiscard]] auto argument(int offset) const -> OptionalArgument;
-        [[nodiscard]] auto arguments(std::size_t offset) -> ArgumentSpan;
-        [[nodiscard]] auto arguments(int offset = -1) -> ArgumentSpan;
+        [[nodiscard]] auto argument(std::size_t t_offset) const -> OptionalString;
+        [[nodiscard]] auto argument(int t_offset) const -> OptionalString;
+        [[nodiscard]] auto arguments(std::size_t t_offset) -> ArgumentSpan;
+        [[nodiscard]] auto arguments(int t_offset = -1) -> ArgumentSpan;
         [[nodiscard]] auto option() const -> int;
 
     private:
-        int m_argc;
-        char** m_argv;
-        ArgumentVector m_data;
+        ArgumentSpan m_args;
         OptionalString m_opts;
     };
 }

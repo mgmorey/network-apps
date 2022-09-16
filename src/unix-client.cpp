@@ -117,14 +117,15 @@ auto main(int argc, char* argv[]) -> int
 
         // Send arguments to server.
         for (const auto& arg : args) {
-            const auto write_code = write(arg, fd);
+            std::string str {arg};
+            const auto write_code = write(str, fd);
 
             if (write_code == -1) {
                 std::perror("read");
                 break;
             }
 
-            if (arg == "DOWN") {
+            if (str == "DOWN") {
                 shutdown = true;
                 break;
             }
