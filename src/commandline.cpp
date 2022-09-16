@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#include "network/assert.h"             // assert()
 #include "network/commandline.h"        // CommandLine
 #include "network/logicerror.h"         // LogicError
 #include "network/to-size.h"            // to_size()
@@ -62,11 +63,15 @@ auto Network::CommandLine::arguments(int t_offset) ->
     return arguments(to_size(t_offset));
 }
 
-auto Network::CommandLine::option(const char* t_options) const -> int
+auto Network::CommandLine::option(const char* t_optstring) const -> int
 {
-    if (t_options == nullptr || *t_options == '\0') {
+    if (t_optstring == nullptr || *t_optstring == '\0') {
         throw LogicError("No command-line options available to parse");
     }
 
-    return ::getopt(static_cast<int>(m_size), m_data, t_options);
+    const auto optind_begin {optind};
+    const auto opt {::getopt(static_cast<int>(m_size), m_data, t_optstring)};
+    const auto optind_end {optind};
+    assert(opt == -1 || opt == '?' || optind_begin < optind_end);
+    return opt;
 }
