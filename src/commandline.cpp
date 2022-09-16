@@ -27,15 +27,9 @@
 #include <iterator>     // std::back_inserter()
 #include <optional>     // std::nullopt
 
-Network::CommandLine::CommandLine(int t_argc,
-                                  char** t_argv,
-                                  const OptionalString& t_opts) :
-    m_args(std::span(t_argv, to_size(t_argc))),
-    m_opts(t_opts)
+Network::CommandLine::CommandLine(int t_argc, char** t_argv) :
+    m_args(std::span(t_argv, to_size(t_argc)))
 {
-    if (m_opts && m_opts->empty()) {
-        m_opts = std::nullopt;
-    }
 }
 
 auto Network::CommandLine::argument(std::size_t t_offset) const ->
@@ -72,16 +66,10 @@ auto Network::CommandLine::arguments(int t_offset) ->
 
 auto Network::CommandLine::option(const char* t_options) const -> int
 {
-    auto options {m_opts};
-
-    if (t_options != nullptr && !m_opts) {
-        options = t_options;
-    }
-
-    if (!options) {
+    if (t_options == nullptr) {
         throw LogicError("No command-line options available to parse");
     }
 
-    const int argc {static_cast<int>(m_args.size())};
-    return ::getopt(argc, m_args.data(), options->c_str());
+    const auto argc {static_cast<int>(m_args.size())};
+    return ::getopt(argc, m_args.data(), t_options);
 }

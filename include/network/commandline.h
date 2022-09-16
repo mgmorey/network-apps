@@ -18,21 +18,17 @@
 
 #include "network/optionalstring.h"     // OptionalString
 
-#include <optional>     // std::optional
 #include <span>         // std::span
-#include <string>       // std::string
-#include <vector>       // std::vector
 
 namespace Network
 {
     class CommandLine
     {
     public:
-        using ArgumentSpan = std::span<char*>;
+        using Argument = char*;
+        using ArgumentSpan = std::span<Argument>;
 
-        CommandLine(int t_argc,
-                    char** t_argv,
-                    const OptionalString& t_opts = {});
+        CommandLine(int t_argc, char** t_argv);
         CommandLine(const CommandLine&) noexcept = default;
         CommandLine(CommandLine&&) noexcept = default;
         ~CommandLine() noexcept = default;
@@ -42,11 +38,10 @@ namespace Network
         [[nodiscard]] auto argument(int t_offset) const -> OptionalString;
         [[nodiscard]] auto arguments(std::size_t t_offset) -> ArgumentSpan;
         [[nodiscard]] auto arguments(int t_offset = -1) -> ArgumentSpan;
-        [[nodiscard]] auto option(const char* t_options = nullptr) const -> int;
+        [[nodiscard]] auto option(const char* t_options) const -> int;
 
     private:
         ArgumentSpan m_args;
-        OptionalString m_opts;
     };
 }
 
