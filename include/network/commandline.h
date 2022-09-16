@@ -16,6 +16,7 @@
 #ifndef NETWORK_COMMANDLINE_H
 #define NETWORK_COMMANDLINE_H
 
+#include <cstddef>      // std::size_t
 #include <span>         // std::span
 
 namespace Network
@@ -39,7 +40,9 @@ namespace Network
         [[nodiscard]] auto option(const char* t_options) const -> int;
 
     private:
-        ArgumentSpan m_args;
+        char** m_data {nullptr};
+        std::size_t m_size {};
+        ArgumentSpan m_span;
     };
 }
 

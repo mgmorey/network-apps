@@ -23,23 +23,21 @@
 #include <unistd.h>         // getopt(), optarg, opterr, optind
 #endif
 
-#include <algorithm>    // std::copy()
-#include <iterator>     // std::back_inserter()
-#include <optional>     // std::nullopt
-
 Network::CommandLine::CommandLine(int t_argc, char** t_argv) :
-    m_args(std::span(t_argv, to_size(t_argc)))
+    m_data(t_argv),
+    m_size(to_size(t_argc)),
+    m_span(std::span(m_data, m_size))
 {
 }
 
 auto Network::CommandLine::argument(std::size_t t_offset) const ->
     Network::CommandLine::Argument
 {
-    if (t_offset < m_args.size()) {
-        return m_args[t_offset];
+    if (t_offset >= m_span.size()) {
+        return nullptr;
     }
 
-    return nullptr;
+    return m_span[t_offset];
 }
 
 auto Network::CommandLine::argument(int t_offset) const ->
@@ -51,7 +49,7 @@ auto Network::CommandLine::argument(int t_offset) const ->
 auto Network::CommandLine::arguments(std::size_t t_offset) ->
     Network::CommandLine::ArgumentSpan
 {
-    return m_args.subspan(t_offset);
+    return m_span.subspan(t_offset);
 }
 
 auto Network::CommandLine::arguments(int t_offset) ->
@@ -66,10 +64,9 @@ auto Network::CommandLine::arguments(int t_offset) ->
 
 auto Network::CommandLine::option(const char* t_options) const -> int
 {
-    if (t_options == nullptr) {
+    if (t_options == nullptr || *t_options == '\0') {
         throw LogicError("No command-line options available to parse");
     }
 
-    const auto argc {static_cast<int>(m_args.size())};
-    return ::getopt(argc, m_args.data(), t_options);
+    return ::getopt(static_cast<int>(m_size), m_data, t_options);
 }
