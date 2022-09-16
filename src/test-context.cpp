@@ -126,7 +126,7 @@ namespace TestContext
     {
         int opt {};
 
-        while ((opt = command_line.option()) != -1) {
+        while ((opt = command_line.option("v")) != -1) {
             switch (opt) {
             case 'v':
                 verbose = true;
@@ -349,7 +349,7 @@ auto main(int argc, char* argv[]) -> int
     using namespace TestContext;
 
     try {
-        CommandLine command_line(argc, argv, "v");
+        CommandLine command_line {argc, argv};
         parse_arguments(command_line);
         test_context_global_instance();
         test_context_local_instances();

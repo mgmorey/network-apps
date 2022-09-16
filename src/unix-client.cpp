@@ -62,7 +62,7 @@ static auto parse_arguments(CommandLine& command_line) ->
 {
     int opt {};
 
-    while ((opt = command_line.option()) != -1) {
+    while ((opt = command_line.option("v")) != -1) {
         switch (opt) {
         case 'v':
             verbose = true;
@@ -97,7 +97,7 @@ static auto write(const std::string& str, const Fd& fd) -> ssize_t
 auto main(int argc, char* argv[]) -> int
 {
     // Fetch arguments from command line;
-    CommandLine command_line(argc, argv, "v");
+    CommandLine command_line {argc, argv};
     const auto args {parse_arguments(command_line)};
 
     try {

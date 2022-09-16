@@ -201,7 +201,7 @@ namespace TestConnect
     {
         int opt {};
 
-        while ((opt = command_line.option()) != -1) {
+        while ((opt = command_line.option("v")) != -1) {
             switch (opt) {
             case 'v':
                 verbose = true;
@@ -323,7 +323,7 @@ auto main(int argc, char* argv[]) -> int
 
     try {
         const auto& context {Context::instance()};
-        CommandLine command_line(argc, argv, "v");
+        CommandLine command_line {argc, argv};
         const auto valid_endpoint {parse_arguments(command_line)};
 
         if (verbose) {
