@@ -208,7 +208,7 @@ namespace TestConnect
                 break;
             case '?':
                 std::cerr << "Usage: "
-                          << command_line.argument(0)
+                          << command_line[0]
                           << " [-v]"
                           << std::endl;
                 std::exit(EXIT_FAILURE);
@@ -217,8 +217,8 @@ namespace TestConnect
             }
         }
 
-        const char* host {command_line.argument(optind + 0)};
-        const char* service {command_line.argument(optind + 1)};
+        const char* host {command_line[optind + 0]};
+        const char* service {command_line[optind + 1]};
         return {
             host != nullptr ? host : localhost,
             service != nullptr ? service : localservice

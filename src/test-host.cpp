@@ -204,7 +204,7 @@ namespace TestHost
                 break;
             case '?':
                 std::cerr << "Usage: "
-                          << command_line.argument(0)
+                          << command_line[0]
                           << " [-v]"
                           << std::endl;
                 std::exit(EXIT_FAILURE);
@@ -213,7 +213,7 @@ namespace TestHost
             }
         }
 
-        return command_line.arguments(optind);
+        return command_line.span(optind);
     }
 
     static auto print(const OsErrorResult& result,

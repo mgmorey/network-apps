@@ -69,7 +69,7 @@ static auto parse_arguments(CommandLine& command_line) ->
             break;
         case '?':
             std::cerr << "Usage: "
-                      << command_line.argument(0)
+                      << command_line[0]
                       << " [-v]"
                       << std::endl;
             std::exit(EXIT_FAILURE);
@@ -78,7 +78,7 @@ static auto parse_arguments(CommandLine& command_line) ->
         }
     }
 
-    return command_line.arguments(optind);
+    return command_line.span(optind);
 }
 
 static auto read(const Fd& fd) -> IoResult

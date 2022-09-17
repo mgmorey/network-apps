@@ -31,7 +31,7 @@ Network::CommandLine::CommandLine(int t_argc, char** t_argv) :
 {
 }
 
-auto Network::CommandLine::argument(std::size_t t_offset) const ->
+auto Network::CommandLine::operator[](std::size_t t_offset) const ->
     Network::CommandLine::Argument
 {
     if (t_offset >= m_span.size()) {
@@ -41,26 +41,10 @@ auto Network::CommandLine::argument(std::size_t t_offset) const ->
     return m_span[t_offset];
 }
 
-auto Network::CommandLine::argument(int t_offset) const ->
+auto Network::CommandLine::operator[](int t_offset) const ->
     Network::CommandLine::Argument
 {
-    return argument(to_size(t_offset));
-}
-
-auto Network::CommandLine::arguments(std::size_t t_offset) ->
-    Network::CommandLine::ArgumentSpan
-{
-    return m_span.subspan(t_offset);
-}
-
-auto Network::CommandLine::arguments(int t_offset) ->
-    Network::CommandLine::ArgumentSpan
-{
-    if (t_offset == -1) {
-        t_offset = optind;
-    }
-
-    return arguments(to_size(t_offset));
+    return (*this)[to_size(t_offset)];
 }
 
 auto Network::CommandLine::option(const char* t_optstring) const -> int
@@ -74,4 +58,22 @@ auto Network::CommandLine::option(const char* t_optstring) const -> int
     const auto optind_end {optind};
     assert(opt == -1 || opt == '?' || optind_begin < optind_end);
     return opt;
+}
+
+auto Network::CommandLine::span(std::size_t t_offset,
+                                std::size_t t_count) ->
+    Network::CommandLine::ArgumentSpan
+{
+    return m_span.subspan(t_offset, t_count);
+}
+
+auto Network::CommandLine::span(int t_offset,
+                                std::size_t t_count) ->
+    Network::CommandLine::ArgumentSpan
+{
+    if (t_offset == -1) {
+        t_offset = optind;
+    }
+
+    return span(to_size(t_offset), t_count);
 }

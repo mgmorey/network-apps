@@ -33,11 +33,15 @@ namespace Network
         ~CommandLine() noexcept = default;
         auto operator=(const CommandLine&) noexcept -> CommandLine& = default;
         auto operator=(CommandLine&&) noexcept -> CommandLine& = default;
-        [[nodiscard]] auto argument(std::size_t t_offset) const -> Argument;
-        [[nodiscard]] auto argument(int t_offset) const -> Argument;
-        [[nodiscard]] auto arguments(std::size_t t_offset) -> ArgumentSpan;
-        [[nodiscard]] auto arguments(int t_offset = -1) -> ArgumentSpan;
+        [[nodiscard]] auto operator[](std::size_t t_offset) const -> Argument;
+        [[nodiscard]] auto operator[](int t_offset) const -> Argument;
         [[nodiscard]] auto option(const char* t_optstring) const -> int;
+        [[nodiscard]] auto span(std::size_t t_offset,
+                                std::size_t t_count = std::dynamic_extent) ->
+            ArgumentSpan;
+        [[nodiscard]] auto span(int t_offset = -1,
+                                std::size_t t_count = std::dynamic_extent) ->
+            ArgumentSpan;
 
     private:
         char** m_data {nullptr};
