@@ -14,7 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/assert.h"             // assert()
-#include "network/commandline.h"        // CommandLine
+#include "network/arguments.h"          // Arguments
 #include "network/network.h"            // Address, Bytes,
                                         // ByteStringResult, Context,
                                         // Endpoint, FdResult,
@@ -55,8 +55,8 @@
 #include <vector>       // std::vector
 
 using Network::Address;
+using Network::Arguments;
 using Network::ByteString;
-using Network::CommandLine;
 using Network::Context;
 using Network::Endpoint;
 using Network::Fd;
@@ -197,7 +197,7 @@ namespace TestConnect
         return codes;
     }
 
-    static auto parse_arguments(CommandLine& command_line) -> Endpoint
+    static auto parse_arguments(Arguments& command_line) -> Endpoint
     {
         int opt {};
 
@@ -327,7 +327,7 @@ auto main(int argc, char* argv[]) -> int
 
     try {
         const auto& context {Context::instance()};
-        CommandLine command_line {argc, argv};
+        Arguments command_line {argc, argv};
         const auto valid_endpoint {parse_arguments(command_line)};
 
         if (verbose) {

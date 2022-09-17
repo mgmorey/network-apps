@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/commandline.h"        // CommandLine
+#include "network/arguments.h"          // Arguments
 #include "network/network.h"            // Buffer, Fd, connect(),
                                         // socket_error,
                                         // to_byte_string()
@@ -33,8 +33,8 @@
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string, std::to_string()
 
+using Network::Arguments;
 using Network::Buffer;
-using Network::CommandLine;
 using Network::Fd;
 using Network::Pathname;
 using Network::SocketHints;
@@ -62,7 +62,7 @@ static auto format_message(int error) -> std::string
     return oss.str();
 }
 
-static auto parse_arguments(const CommandLine& command_line) -> void
+static auto parse_arguments(const Arguments& command_line) -> void
 {
     int opt {};
 
@@ -108,7 +108,7 @@ auto main(int argc, char* argv[]) -> int
 
     try {
         // Fetch arguments from command line;
-        CommandLine command_line {argc, argv};
+        Arguments command_line {argc, argv};
         parse_arguments(command_line);
 
         // Bind Unix domain socket to pathname.

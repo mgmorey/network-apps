@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/commandline.h"        // CommandLine
+#include "network/arguments.h"          // Arguments
 #include "network/network.h"            // Buffer, Fd, connect(),
                                         // socket_error,
                                         // to_byte_string()
@@ -33,7 +33,7 @@
 #include <vector>       // std::vector
 
 using Network::Buffer;
-using Network::CommandLine;
+using Network::Arguments;
 using Network::Fd;
 using Network::Pathname;
 using Network::connect;
@@ -57,8 +57,8 @@ static auto format_message(int error) -> std::string
     return oss.str();
 }
 
-static auto parse_arguments(CommandLine& command_line) ->
-    CommandLine::ArgumentSpan
+static auto parse_arguments(Arguments& command_line) ->
+    Arguments::ArgumentSpan
 {
     int opt {};
 
@@ -97,7 +97,7 @@ static auto write(const std::string& str, const Fd& fd) -> ssize_t
 auto main(int argc, char* argv[]) -> int
 {
     // Fetch arguments from command line;
-    CommandLine command_line {argc, argv};
+    Arguments command_line {argc, argv};
     const auto args {parse_arguments(command_line)};
 
     try {

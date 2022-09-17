@@ -13,26 +13,26 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_COMMANDLINE_H
-#define NETWORK_COMMANDLINE_H
+#ifndef NETWORK_ARGUMENTS_H
+#define NETWORK_ARGUMENTS_H
 
 #include <cstddef>      // std::size_t
 #include <span>         // std::span
 
 namespace Network
 {
-    class CommandLine
+    class Arguments
     {
     public:
         using Argument = char*;
         using ArgumentSpan = std::span<Argument>;
 
-        CommandLine(int t_argc, char** t_argv);
-        CommandLine(const CommandLine&) noexcept = default;
-        CommandLine(CommandLine&&) noexcept = default;
-        ~CommandLine() noexcept = default;
-        auto operator=(const CommandLine&) noexcept -> CommandLine& = default;
-        auto operator=(CommandLine&&) noexcept -> CommandLine& = default;
+        Arguments(int t_argc, char** t_argv);
+        Arguments(const Arguments&) noexcept = default;
+        Arguments(Arguments&&) noexcept = default;
+        ~Arguments() noexcept = default;
+        auto operator=(const Arguments&) noexcept -> Arguments& = default;
+        auto operator=(Arguments&&) noexcept -> Arguments& = default;
         [[nodiscard]] auto operator[](std::size_t t_offset) const -> Argument;
         [[nodiscard]] auto operator[](int t_offset) const -> Argument;
         [[nodiscard]] auto option(const char* t_optstring) const -> int;

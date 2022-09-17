@@ -50,18 +50,18 @@ include flags.gmk
 
 libnetwork_sources = address-sa.cpp address-sin.cpp address-sin6.cpp	\
 address-sun.cpp address.cpp addresserror.cpp addrinfo.cpp		\
-bind-endpoint.cpp bind-fd.cpp buffer.cpp bytestring.cpp			\
-cleanup-fd.cpp cleanup.cpp close.cpp commandline.cpp			\
-connect-endpoint.cpp connect-fd.cpp context.cpp error.cpp fd.cpp	\
-fddata.cpp fdpair.cpp format-ai-error.cpp format-os-error.cpp		\
-format.cpp get-endpoint.cpp get-endpointresult.cpp get-hostname.cpp	\
-get-hostnameresult.cpp get-hosts.cpp get-last-os-error.cpp		\
-get-length.cpp get-name.cpp get-nameresult.cpp get-peername.cpp		\
-get-peernameresult.cpp get-sa-data.cpp get-sa-family.cpp		\
-get-sa-length.cpp get-sa-pointer.cpp get-sin-addr.cpp			\
-get-sin-pointer.cpp get-sin-port.cpp get-sin6-addr.cpp			\
-get-sin6-pointer.cpp get-sin6-port.cpp get-size.cpp get-socket.cpp	\
-get-socketpair.cpp get-socketpairresult.cpp get-socketresult.cpp	\
+arguments.cpp bind-endpoint.cpp bind-fd.cpp buffer.cpp bytestring.cpp	\
+cleanup-fd.cpp cleanup.cpp close.cpp connect-endpoint.cpp		\
+connect-fd.cpp context.cpp error.cpp fd.cpp fddata.cpp fdpair.cpp	\
+format-ai-error.cpp format-os-error.cpp format.cpp get-endpoint.cpp	\
+get-endpointresult.cpp get-hostname.cpp get-hostnameresult.cpp		\
+get-hosts.cpp get-last-os-error.cpp get-length.cpp get-name.cpp		\
+get-nameresult.cpp get-peername.cpp get-peernameresult.cpp		\
+get-sa-data.cpp get-sa-family.cpp get-sa-length.cpp			\
+get-sa-pointer.cpp get-sin-addr.cpp get-sin-pointer.cpp			\
+get-sin-port.cpp get-sin6-addr.cpp get-sin6-pointer.cpp			\
+get-sin6-port.cpp get-size.cpp get-socket.cpp get-socketpair.cpp	\
+get-socketpairresult.cpp get-socketresult.cpp				\
 get-sockets-endpoint.cpp get-sockets-hostname.cpp get-sockname.cpp	\
 get-socknameresult.cpp get-sun-length.cpp get-sun-path-length.cpp	\
 get-sun-path.cpp get-sun-pointer.cpp is-running.cpp is-valid.cpp	\

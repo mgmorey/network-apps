@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#include "network/arguments.h"          // Arguments
 #include "network/assert.h"             // assert()
-#include "network/commandline.h"        // CommandLine
 #include "network/network.h"            // Address, Bytes, Context,
                                         // Endpoint, HostVector,
                                         // Hostname, OptionalHints,
@@ -53,8 +53,8 @@
 #include <vector>       // std::vector
 
 using Network::Address;
+using Network::Arguments;
 using Network::ByteString;
-using Network::CommandLine;
 using Network::Context;
 using Network::Endpoint;
 using Network::EndpointResult;
@@ -192,8 +192,8 @@ namespace TestHost
         return hostname;
     }
 
-    static auto parse_arguments(CommandLine& command_line) ->
-        CommandLine::ArgumentSpan
+    static auto parse_arguments(Arguments& command_line) ->
+        Arguments::ArgumentSpan
     {
         int opt {};
 
@@ -312,7 +312,7 @@ auto main(int argc, char* argv[]) -> int
     using namespace TestHost;
 
     try {
-        CommandLine command_line {argc, argv};
+        Arguments command_line {argc, argv};
         const auto hosts {parse_arguments(command_line)};
         const auto& context {Context::instance()};
 

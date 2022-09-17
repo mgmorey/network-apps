@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#include "network/arguments.h"          // Arguments
 #include "network/assert.h"             // assert()
-#include "network/commandline.h"        // CommandLine
 #include "network/network.h"            // Context, OsErrorResult,
                                         // get_hostname()
 #include "network/to-name-len.h"        // to_name_len()
@@ -32,7 +32,7 @@
 #include <span>         // std::span
 #include <vector>       // std::vector
 
-using Network::CommandLine;
+using Network::Arguments;
 using Network::Context;
 using Network::Error;
 using Network::Hostname;
@@ -49,7 +49,7 @@ namespace TestHostname
 
     static bool verbose {false};  // NOLINT
 
-    static auto parse_arguments(const CommandLine& command_line) -> void
+    static auto parse_arguments(const Arguments& command_line) -> void
     {
         int opt {};
 
@@ -116,7 +116,7 @@ auto main(int argc, char* argv[]) -> int
 
     try {
         const auto& context {Context::instance()};
-        CommandLine command_line {argc, argv};
+        Arguments command_line {argc, argv};
         parse_arguments(command_line);
 
         if (verbose) {

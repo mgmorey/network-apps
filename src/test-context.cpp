@@ -13,9 +13,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#include "network/arguments.h"          // Arguments
 #include "network/assert.h"             // assert()
 #include "network/cleanup.h"            // cleanup()
-#include "network/commandline.h"        // CommandLine
 #include "network/network.h"            // Context, Error,
                                         // OptionalVersion, Version,
                                         // get_hostname()
@@ -35,7 +35,7 @@
 #include <span>         // std::span
 #include <vector>       // std::vector
 
-using Network::CommandLine;
+using Network::Arguments;
 using Network::Error;
 using Network::Hostname;
 using Network::OptionalVersion;
@@ -122,7 +122,7 @@ namespace TestContext
         }
     };
 
-    static auto parse_arguments(const CommandLine& command_line) -> void
+    static auto parse_arguments(const Arguments& command_line) -> void
     {
         int opt {};
 
@@ -349,7 +349,7 @@ auto main(int argc, char* argv[]) -> int
     using namespace TestContext;
 
     try {
-        CommandLine command_line {argc, argv};
+        Arguments command_line {argc, argv};
         parse_arguments(command_line);
         test_context_global_instance();
         test_context_local_instances();

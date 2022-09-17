@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#include "network/arguments.h"          // Arguments
 #include "network/assert.h"             // assert()
-#include "network/commandline.h"        // CommandLine
 #include "network/logicerror.h"         // LogicError
 #include "network/to-size.h"            // to_size()
 
@@ -24,15 +24,15 @@
 #include <unistd.h>         // getopt(), optarg, opterr, optind
 #endif
 
-Network::CommandLine::CommandLine(int t_argc, char** t_argv) :
+Network::Arguments::Arguments(int t_argc, char** t_argv) :
     m_data(t_argv),
     m_size(to_size(t_argc)),
     m_span(std::span(m_data, m_size))
 {
 }
 
-auto Network::CommandLine::operator[](std::size_t t_offset) const ->
-    Network::CommandLine::Argument
+auto Network::Arguments::operator[](std::size_t t_offset) const ->
+    Network::Arguments::Argument
 {
     if (t_offset >= m_span.size()) {
         return nullptr;
@@ -41,13 +41,13 @@ auto Network::CommandLine::operator[](std::size_t t_offset) const ->
     return m_span[t_offset];
 }
 
-auto Network::CommandLine::operator[](int t_offset) const ->
-    Network::CommandLine::Argument
+auto Network::Arguments::operator[](int t_offset) const ->
+    Network::Arguments::Argument
 {
     return (*this)[to_size(t_offset)];
 }
 
-auto Network::CommandLine::option(const char* t_optstring) const -> int
+auto Network::Arguments::option(const char* t_optstring) const -> int
 {
     if (t_optstring == nullptr || *t_optstring == '\0') {
         throw LogicError("No command-line options available to parse");
@@ -60,16 +60,16 @@ auto Network::CommandLine::option(const char* t_optstring) const -> int
     return opt;
 }
 
-auto Network::CommandLine::span(std::size_t t_offset,
+auto Network::Arguments::span(std::size_t t_offset,
                                 std::size_t t_count) ->
-    Network::CommandLine::ArgumentSpan
+    Network::Arguments::ArgumentSpan
 {
     return m_span.subspan(t_offset, t_count);
 }
 
-auto Network::CommandLine::span(int t_offset,
+auto Network::Arguments::span(int t_offset,
                                 std::size_t t_count) ->
-    Network::CommandLine::ArgumentSpan
+    Network::Arguments::ArgumentSpan
 {
     if (t_offset == -1) {
         t_offset = optind;
