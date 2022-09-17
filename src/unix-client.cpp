@@ -57,19 +57,19 @@ static auto format_message(int error) -> std::string
     return oss.str();
 }
 
-static auto parse_arguments(Arguments& command_line) ->
+static auto parse_arguments(Arguments& arguments) ->
     Arguments::ArgumentSpan
 {
     int opt {};
 
-    while ((opt = command_line.option("v")) != -1) {
+    while ((opt = arguments.option("v")) != -1) {
         switch (opt) {
         case 'v':
             verbose = true;
             break;
         case '?':
             std::cerr << "Usage: "
-                      << command_line[0]
+                      << arguments[0]
                       << " [-v]"
                       << std::endl;
             std::exit(EXIT_FAILURE);
@@ -78,7 +78,7 @@ static auto parse_arguments(Arguments& command_line) ->
         }
     }
 
-    return command_line.span(optind);
+    return arguments.span(optind);
 }
 
 static auto read(const Fd& fd) -> IoResult
@@ -97,8 +97,8 @@ static auto write(const std::string& str, const Fd& fd) -> ssize_t
 auto main(int argc, char* argv[]) -> int
 {
     // Fetch arguments from command line;
-    Arguments command_line {argc, argv};
-    const auto args {parse_arguments(command_line)};
+    Arguments arguments {argc, argv};
+    const auto args {parse_arguments(arguments)};
 
     try {
         bool shutdown {false};

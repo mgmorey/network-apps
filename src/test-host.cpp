@@ -192,19 +192,19 @@ namespace TestHost
         return hostname;
     }
 
-    static auto parse_arguments(Arguments& command_line) ->
+    static auto parse_arguments(Arguments& arguments) ->
         Arguments::ArgumentSpan
     {
         int opt {};
 
-        while ((opt = command_line.option("v")) != -1) {
+        while ((opt = arguments.option("v")) != -1) {
             switch (opt) {
             case 'v':
                 verbose = true;
                 break;
             case '?':
                 std::cerr << "Usage: "
-                          << command_line[0]
+                          << arguments[0]
                           << " [-v]"
                           << std::endl;
                 std::exit(EXIT_FAILURE);
@@ -213,7 +213,7 @@ namespace TestHost
             }
         }
 
-        return command_line.span(optind);
+        return arguments.span(optind);
     }
 
     static auto print(const OsErrorResult& result,
@@ -312,9 +312,9 @@ auto main(int argc, char* argv[]) -> int
     using namespace TestHost;
 
     try {
-        Arguments command_line {argc, argv};
-        const auto hosts {parse_arguments(command_line)};
         const auto& context {Context::instance()};
+        Arguments arguments {argc, argv};
+        const auto hosts {parse_arguments(arguments)};
 
         if (verbose) {
             std::cout << context;

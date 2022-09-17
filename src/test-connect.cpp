@@ -197,18 +197,18 @@ namespace TestConnect
         return codes;
     }
 
-    static auto parse_arguments(Arguments& command_line) -> Endpoint
+    static auto parse_arguments(Arguments& arguments) -> Endpoint
     {
         int opt {};
 
-        while ((opt = command_line.option("v")) != -1) {
+        while ((opt = arguments.option("v")) != -1) {
             switch (opt) {
             case 'v':
                 verbose = true;
                 break;
             case '?':
                 std::cerr << "Usage: "
-                          << command_line[0]
+                          << arguments[0]
                           << " [-v]"
                           << std::endl;
                 std::exit(EXIT_FAILURE);
@@ -217,8 +217,8 @@ namespace TestConnect
             }
         }
 
-        const char* host {command_line[optind + 0]};
-        const char* service {command_line[optind + 1]};
+        const char* host {arguments[optind + 0]};
+        const char* service {arguments[optind + 1]};
         return {
             host != nullptr ? host : localhost,
             service != nullptr ? service : localservice
@@ -327,8 +327,8 @@ auto main(int argc, char* argv[]) -> int
 
     try {
         const auto& context {Context::instance()};
-        Arguments command_line {argc, argv};
-        const auto valid_endpoint {parse_arguments(command_line)};
+        Arguments arguments {argc, argv};
+        const auto valid_endpoint {parse_arguments(arguments)};
 
         if (verbose) {
             std::cout << context;

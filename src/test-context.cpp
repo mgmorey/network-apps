@@ -122,18 +122,18 @@ namespace TestContext
         }
     };
 
-    static auto parse_arguments(const Arguments& command_line) -> void
+    static auto parse_arguments(const Arguments& arguments) -> void
     {
         int opt {};
 
-        while ((opt = command_line.option("v")) != -1) {
+        while ((opt = arguments.option("v")) != -1) {
             switch (opt) {
             case 'v':
                 verbose = true;
                 break;
             case '?':
                 std::cerr << "Usage: "
-                          << command_line[0]
+                          << arguments[0]
                           << " [-v]"
                           << std::endl;
                 std::exit(EXIT_FAILURE);
@@ -349,8 +349,8 @@ auto main(int argc, char* argv[]) -> int
     using namespace TestContext;
 
     try {
-        Arguments command_line {argc, argv};
-        parse_arguments(command_line);
+        Arguments arguments {argc, argv};
+        parse_arguments(arguments);
         test_context_global_instance();
         test_context_local_instances();
         test_context_valid_with_shutdown();
