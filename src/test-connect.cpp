@@ -27,7 +27,6 @@
                                         // get_sockname(), string_null
 
 #ifdef WIN32
-#include <getopt.h>         // getopt(), optarg, opterr, optind
 #include <winsock2.h>       // AF_INET, AF_INET6, PF_INET, PF_INET6,
                             // IPPROTO_IP, IPPROTO_TCP, IPPROTO_UDP,
                             // SOCK_DGRAM, SOCK_STREAM, WSAEFAULT,
@@ -38,7 +37,6 @@
 #include <netinet/in.h>     // IPPROTO_IP, IPPROTO_TCP, IPPROTO_UDP
 #include <sys/socket.h>     // AF_INET, AF_INET6, PF_INET, PF_INET6,
                             // SOCK_DGRAM, SOCK_STREAM
-#include <unistd.h>         // getopt(), optarg, opterr, optind
 #endif
 
 #include <algorithm>    // std::for_each()
@@ -217,8 +215,13 @@ namespace TestConnect
             }
         }
 
-        const char* host {arguments[optind + 0]};
-        const char* service {arguments[optind + 1]};
+#ifdef USING_GETOPT
+        const char* host {arguments[Arguments::option_index() + 0]};
+        const char* service {arguments[Arguments::option_index() + 1]};
+#else
+        const char* host {nullptr};
+        const char* service {nullptr};
+#endif
         return {
             host != nullptr ? host : localhost,
             service != nullptr ? service : localservice

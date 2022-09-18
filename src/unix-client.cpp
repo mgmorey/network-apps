@@ -78,7 +78,7 @@ static auto parse_arguments(Arguments& arguments) ->
         }
     }
 
-    return arguments.span(optind);
+    return arguments.span();
 }
 
 static auto read(const Fd& fd) -> IoResult

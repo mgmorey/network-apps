@@ -25,7 +25,6 @@
 
 #include <sys/socket.h>     // AF_UNIX, AF_UNSPEC, SOCK_STREAM
 #include <sys/un.h>         // sockaddr_un
-#include <unistd.h>         // getopt(), optarg, opterr, optind
 
 #include <cerrno>       // EACCES, ENOENT, EROFS
 #include <cstdlib>      // EXIT_FAILURE, std::exit(), std::size_t

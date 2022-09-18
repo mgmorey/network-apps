@@ -73,6 +73,11 @@ else ifeq "$(os_name)" "MINGW64_NT"
 	cpp_symbols += WIN32
 endif
 
+ifneq "$(os_name)" "MINGW64_NT"
+	cpp_symbols += USING_GETOPT
+endif
+
+
 ifdef NDEBUG
 	cpp_symbols += _FORTIFY_SOURCE=2
 else ifeq "$(is_gcc)" "true"

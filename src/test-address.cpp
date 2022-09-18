@@ -26,7 +26,6 @@
 #include "network/to-size.h"            // to_size()
 
 #ifdef WIN32
-#include <getopt.h>         // getopt(), optarg, opterr, optind
 #include <winsock2.h>       // AF_INET, AF_INET6, AF_UNSPEC,
                             // IPPROTO_TCP, SOCK_STREAM, sockaddr_in
 #include <ws2tcpip.h>       // AI_ADDRCONFIG, AI_CANONNAME
@@ -35,7 +34,6 @@
 #include <netinet/in.h>     // IPPROTO_TCP, sockaddr_in
 #include <sys/socket.h>     // AF_INET, AF_INET6, AF_UNSPEC,
                             // SOCK_STREAM
-#include <unistd.h>         // getopt(), optarg, opterr, optind
 #endif
 
 #include <cstdlib>      // EXIT_FAILURE, std::exit(), std::size_t

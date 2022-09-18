@@ -18,11 +18,22 @@
 #include "network/logicerror.h"         // LogicError
 #include "network/to-size.h"            // to_size()
 
+#ifdef USING_GETOPT
 #ifdef WIN32
 #include <getopt.h>         // getopt(), optarg, opterr, optind
 #else
 #include <unistd.h>         // getopt(), optarg, opterr, optind
 #endif
+#endif
+
+auto Network::Arguments::option_index() -> int
+{
+#ifdef USING_GETOPT
+    return ::optind;
+#else
+    return 1;
+#endif
+}
 
 Network::Arguments::Arguments(int t_argc, char** t_argv) :
     m_data(t_argv),
@@ -47,32 +58,36 @@ auto Network::Arguments::operator[](int t_offset) const ->
     return (*this)[to_size(t_offset)];
 }
 
-auto Network::Arguments::option(const char* t_optstring) const -> int
+auto Network::Arguments::option(const char* optstring) const -> int
 {
-    if (t_optstring == nullptr || *t_optstring == '\0') {
+    if (optstring == nullptr || *optstring == '\0') {
         throw LogicError("No command-line options available to parse");
     }
 
-    const auto optind_begin {optind};
-    const auto opt {::getopt(static_cast<int>(m_size), m_data, t_optstring)};
-    const auto optind_end {optind};
-    assert(opt == -1 || opt == '?' || optind_begin < optind_end);
+#ifdef USING_GETOPT
+    const auto optind_begin {::optind};
+    const auto opt {::getopt(static_cast<int>(m_size), m_data, optstring)};
+    assert(opt == -1 || opt == '?' || optind_begin < ::optind);
     return opt;
+#else
+    static_cast<void>(m_data);
+    static_cast<void>(m_size);
+    static_cast<void>(optstring);
+    return -1;
+#endif
 }
 
-auto Network::Arguments::span(std::size_t t_offset,
-                                std::size_t t_count) ->
+auto Network::Arguments::span(std::size_t t_offset, std::size_t t_count) ->
     Network::Arguments::ArgumentSpan
 {
     return m_span.subspan(t_offset, t_count);
 }
 
-auto Network::Arguments::span(int t_offset,
-                                std::size_t t_count) ->
+auto Network::Arguments::span(int t_offset, std::size_t t_count) ->
     Network::Arguments::ArgumentSpan
 {
     if (t_offset == -1) {
-        t_offset = optind;
+        t_offset = option_index();
     }
 
     return span(to_size(t_offset), t_count);

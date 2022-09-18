@@ -24,7 +24,6 @@
                                         // get_hosts(), uniquify()
 
 #ifdef WIN32
-#include <getopt.h>         // getopt(), optarg, opterr, optind
 #include <winsock2.h>       // AF_INET, AF_INET6, AF_UNSPEC,
                             // IPPROTO_TCP, SOCK_STREAM,
                             // WSAHOST_NOT_FOUND
@@ -35,7 +34,6 @@
 #include <netinet/in.h>     // IPPROTO_TCP
 #include <sys/socket.h>     // AF_INET, AF_INET6, AF_UNSPEC,
                             // SOCK_STREAM
-#include <unistd.h>         // getopt(), optarg, opterr, optind
 #endif
 
 #include <algorithm>    // std::for_each(), std::remove()
@@ -213,7 +211,7 @@ namespace TestHost
             }
         }
 
-        return arguments.span(optind);
+        return arguments.span();
     }
 
     static auto print(const OsErrorResult& result,

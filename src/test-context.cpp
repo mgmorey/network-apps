@@ -21,12 +21,9 @@
                                         // get_hostname()
 
 #ifdef WIN32
-#include <getopt.h>         // getopt(), optarg, opterr, optind
 #include <winsock2.h>       // WSAEFAULT, WSAEPROCLIM,
                             // WSANOTINITIALISED, WSASYSNOTREADY,
                             // WSAVERNOTSUPPORTED
-#else
-#include <unistd.h>         // getopt(), optarg, opterr, optind
 #endif
 
 #include <cstdlib>      // EXIT_FAILURE, std::exit(), std::size_t

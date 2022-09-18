@@ -19,12 +19,6 @@
                                         // get_hostname()
 #include "network/to-name-len.h"        // to_name_len()
 
-#ifdef WIN32
-#include <getopt.h>         // getopt(), optarg, opterr, optind
-#else
-#include <unistd.h>         // getopt(), optarg, opterr, optind
-#endif
-
 #include <cstdlib>      // EXIT_FAILURE, std::exit(), std::size_t
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
