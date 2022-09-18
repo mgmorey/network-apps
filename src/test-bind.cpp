@@ -154,7 +154,7 @@ namespace TestBind
         return codes;
     }
 
-    static auto parse_arguments(Arguments& arguments) -> Endpoint
+    static auto parse_arguments(const Arguments& arguments) -> Endpoint
     {
         int opt {};
 
