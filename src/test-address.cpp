@@ -250,7 +250,7 @@ auto main(int argc, char* argv[]) -> int
 
     try {
         const auto& context {Context::instance()};
-        Arguments arguments {argc, argv};
+        const Arguments arguments {argc, argv};
         parse_arguments(arguments);
 
         if (verbose) {

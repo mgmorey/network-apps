@@ -346,7 +346,7 @@ auto main(int argc, char* argv[]) -> int
     using namespace TestContext;
 
     try {
-        Arguments arguments {argc, argv};
+        const Arguments arguments {argc, argv};
         parse_arguments(arguments);
         test_context_global_instance();
         test_context_local_instances();
