@@ -52,7 +52,7 @@ namespace TestArguments
 
     static auto test_arguments(Arguments& arguments) -> void
     {
-        auto args {parse_arguments(arguments)};
+        const auto args {parse_arguments(arguments)};
         auto index {0};
 
         for (const auto& arg : args) {
