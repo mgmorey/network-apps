@@ -46,8 +46,6 @@ namespace Network
             ArgumentSpan;
 
     private:
-        char** m_data {nullptr};
-        std::size_t m_size {};
         ArgumentSpan m_span;
     };
 }

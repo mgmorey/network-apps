@@ -36,9 +36,7 @@ auto Network::Arguments::option_index() -> int
 }
 
 Network::Arguments::Arguments(int t_argc, char** t_argv) :
-    m_data(t_argv),
-    m_size(to_size(t_argc)),
-    m_span(std::span(m_data, m_size))
+    m_span(std::span(t_argv, to_size(t_argc)))
 {
 }
 
@@ -66,7 +64,9 @@ auto Network::Arguments::option(const char* optstring) const -> int
 
 #ifdef USING_GETOPT
     const auto optind_begin {::optind};
-    const auto opt {::getopt(static_cast<int>(m_size), m_data, optstring)};
+    const auto opt {::getopt(static_cast<int>(m_span.size()),
+                             m_span.data(),
+                             optstring)};
     assert(opt == -1 || opt == '?' || optind_begin < ::optind);
     return opt;
 #else
