@@ -29,6 +29,7 @@ namespace Network
 
         static auto option_index() -> int;
 
+        Arguments(std::size_t t_argc, char** t_argv);
         Arguments(int t_argc, char** t_argv);
         Arguments(const Arguments&) noexcept = default;
         Arguments(Arguments&&) noexcept = default;

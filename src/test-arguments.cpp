@@ -42,7 +42,7 @@ namespace TestArguments
     static auto free_arguments(const ArgumentVector& data) -> void
     {
         for (auto* datum : data) {
-            ::free(datum); // NOLINT
+            ::free(datum);  // NOLINT
         }
     }
 
@@ -73,7 +73,7 @@ namespace TestArguments
     static auto test_arguments(char* argv0) -> void
     {
         auto data {allocate_arguments(argv0)};
-        Arguments arguments {static_cast<int>(data.size()), data.data()};
+        Arguments arguments {data.size(), data.data()};
         const auto args {parse_arguments(arguments)};
         auto index {0};
 

@@ -35,8 +35,13 @@ auto Network::Arguments::option_index() -> int
 #endif
 }
 
+Network::Arguments::Arguments(std::size_t t_argc, char** t_argv) :
+    m_span(std::span(t_argv, t_argc))
+{
+}
+
 Network::Arguments::Arguments(int t_argc, char** t_argv) :
-    m_span(std::span(t_argv, to_size(t_argc)))
+    Arguments(to_size(t_argc), t_argv)
 {
 }
 
