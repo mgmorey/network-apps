@@ -70,8 +70,6 @@ auto Network::Arguments::option(const char* optstring) const -> int
     assert(opt == -1 || opt == '?' || optind_begin < ::optind);
     return opt;
 #else
-    static_cast<void>(m_data);
-    static_cast<void>(m_size);
     static_cast<void>(optstring);
     return -1;
 #endif
