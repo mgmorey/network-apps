@@ -85,7 +85,7 @@ static auto parse_arguments(const Arguments& arguments) -> void
 
 static auto get_bind_socket(const SocketHints& hints) -> Fd
 {
-    static Network::Fd fd {hints, true, verbose};
+    static const Network::Fd fd {hints, true, verbose};
     return fd;
 }
 
@@ -108,7 +108,7 @@ auto main(int argc, char* argv[]) -> int
 
     try {
         // Fetch arguments from command line;
-        Arguments arguments {argc, argv};
+        const Arguments arguments {argc, argv};
         parse_arguments(arguments);
 
         // Bind Unix domain socket to pathname.
@@ -138,7 +138,7 @@ auto main(int argc, char* argv[]) -> int
         // This is the main loop for handling connections.
         while (!shutdown) {
             // Wait for incoming connection.
-            Fd fd {
+            const Fd fd {
                 ::accept(fd_type {bind_fd},
                          nullptr,
                          nullptr),

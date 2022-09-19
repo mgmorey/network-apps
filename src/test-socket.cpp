@@ -167,7 +167,7 @@ namespace TestSocket
         assert(get_sun_path(addr) == pathname);
 
         if (pathname) {
-            Fd fd {AF_UNIX, SOCK_STREAM, 0, 0, true, verbose};
+            const Fd fd {AF_UNIX, SOCK_STREAM, 0, 0, true, verbose};
             const auto result {Network::bind(fd, addr, verbose)};
             actual_code = result.number();
 
@@ -316,7 +316,7 @@ auto main(int argc, char* argv[]) -> int
 
     try {
         const auto& context {Context::instance()};
-        Arguments arguments {argc, argv};
+        const Arguments arguments {argc, argv};
         parse_arguments(arguments);
 
         if (verbose) {

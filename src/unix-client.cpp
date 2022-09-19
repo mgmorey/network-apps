@@ -117,7 +117,7 @@ auto main(int argc, char* argv[]) -> int
 
         // Send arguments to server.
         for (const auto& arg : args) {
-            std::string str {arg};
+            const std::string str {arg};
             const auto write_code = write(str, fd);
 
             if (write_code == -1) {
