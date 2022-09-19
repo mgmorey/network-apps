@@ -154,7 +154,8 @@ namespace TestBind
         return codes;
     }
 
-    static auto parse_arguments(const Arguments& arguments) -> Endpoint
+    static auto parse_arguments(Arguments& arguments) ->
+        Arguments::ArgumentSpan
     {
         int opt {};
 
@@ -174,17 +175,7 @@ namespace TestBind
             }
         }
 
-#ifdef USING_GETOPT
-        const char* host {arguments[Arguments::option_index() + 0]};
-        const char* service {arguments[Arguments::option_index() + 1]};
-#else
-        const char* host {nullptr};
-        const char* service {nullptr};
-#endif
-        return {
-            host != nullptr ? host : localhost,
-            service != nullptr ? service : localservice
-        };
+        return arguments.span();
     }
 
     static auto print(const OsErrorResult& result,
@@ -280,7 +271,10 @@ auto main(int argc, char* argv[]) -> int
     try {
         const auto& context {Context::instance()};
         Arguments arguments {argc, argv};
-        const auto valid_endpoint {parse_arguments(arguments)};
+        const auto args {parse_arguments(arguments)};
+        const auto* host {!args.empty() ? args[0] : localhost};
+        const auto* service {args.size() > 1 ? args[1] : localservice};
+        const Endpoint valid_endpoint {host, service};
 
         if (verbose) {
             std::cout << context;
