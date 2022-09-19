@@ -16,15 +16,35 @@
 #include "network/arguments.h"          // Arguments
 #include "network/assert.h"             // assert()
 
-#include <cstdlib>      // EXIT_FAILURE, std::exit(), std::size_t
+#include <cstdlib>      // EXIT_FAILURE, std::exit(), std::free()
+#include <cstring>      // strdup()
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
+#include <vector>       // std::vector
 
 using Network::Arguments;
 
 namespace TestArguments
 {
+    using ArgumentVector = std::vector<char*>;
+
     static bool verbose {false};  // NOLINT
+
+    static auto allocate_arguments(char* argv0) -> ArgumentVector
+    {
+        ArgumentVector data;
+        data.push_back(::strdup(argv0));
+        data.push_back(::strdup("-v"));
+        data.push_back(::strdup("foo"));
+        return data;
+    }
+
+    static auto free_arguments(ArgumentVector& data) -> void
+    {
+        for (auto* datum : data) {
+            ::free(datum); // NOLINT
+        }
+    }
 
     static auto parse_arguments(Arguments& arguments) ->
         Arguments::ArgumentSpan
@@ -50,8 +70,10 @@ namespace TestArguments
         return arguments.span();
     }
 
-    static auto test_arguments(Arguments& arguments) -> void
+    static auto test_arguments(char* argv0) -> void
     {
+        auto data {allocate_arguments(argv0)};
+        Arguments arguments {static_cast<int>(data.size()), data.data()};
         const auto args {parse_arguments(arguments)};
         auto index {0};
 
@@ -62,6 +84,11 @@ namespace TestArguments
                       << arg
                       << std::endl;
         }
+
+        assert(verbose);
+        assert(args.size() == 1);
+        assert(std::string {args[0]} == "foo");
+        free_arguments(data);
     }
 }
 
@@ -69,9 +96,9 @@ auto main(int argc, char* argv[]) -> int
 {
     using namespace TestArguments;
 
+    static_cast<void>(argc);
     try {
-        Arguments arguments {argc, argv};
-        test_arguments(arguments);
+        test_arguments(*argv);
     }
     catch (const std::exception& error) {
         std::cerr << error.what()
