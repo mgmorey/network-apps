@@ -90,6 +90,7 @@ sizes.txt
 
 # POSIX executables
 test-address
+test-arguments
 test-bind
 test-connect
 test-context
