@@ -39,7 +39,7 @@ namespace TestArguments
         return data;
     }
 
-    static auto free_arguments(ArgumentVector& data) -> void
+    static auto free_arguments(const ArgumentVector& data) -> void
     {
         for (auto* datum : data) {
             ::free(datum); // NOLINT
