@@ -76,8 +76,8 @@ to-byte-string-bs.cpp to-byte-string-path.cpp to-byte-string-sa.cpp	\
 to-byte-string-sun.cpp to-string-bs.cpp to-string-sin.cpp		\
 to-string-sin6.cpp unlink.cpp version.cpp
 
-test_sources = test-address.cpp test-bind.cpp test-connect.cpp	\
-test-context.cpp test-host.cpp test-hostname.cpp
+test_sources = test-address.cpp test-arguments.cpp test-bind.cpp	\
+test-connect.cpp test-context.cpp test-host.cpp test-hostname.cpp
 
 ifneq "$(os_name)" "MINGW64_NT"
 	test_sources += test-socket.cpp
