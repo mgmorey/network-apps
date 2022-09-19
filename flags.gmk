@@ -73,7 +73,9 @@ else ifeq "$(os_name)" "MINGW64_NT"
 	cpp_symbols += WIN32
 endif
 
-ifneq "$(os_name)" "MINGW64_NT"
+ifeq "$(USING_GETOPT)" "true"
+	cpp_symbols += USING_GETOPT
+else ifneq "$(os_name)" "MINGW64_NT"
 	cpp_symbols += USING_GETOPT
 endif
 
