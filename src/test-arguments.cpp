@@ -92,7 +92,7 @@ namespace TestArguments
 
     static auto test_arguments(Arguments& args, char* argv0) -> void
     {
-        for (std::size_t index = 0; args[index] != nullptr; ++index) {
+        for (std::size_t index = 0; index < args.size(); ++index) {
             std::cout << "Command argument "
                       << index
                       << ": "

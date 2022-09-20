@@ -80,6 +80,11 @@ auto Network::Arguments::option(const char* optstring) const -> int
 #endif
 }
 
+auto Network::Arguments::size() const -> std::size_t
+{
+    return m_span.size();
+}
+
 auto Network::Arguments::span(std::size_t t_offset, std::size_t t_count) ->
     Network::Arguments::ArgumentSpan
 {

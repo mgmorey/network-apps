@@ -39,6 +39,7 @@ namespace Network
         [[nodiscard]] auto operator[](std::size_t t_offset) const -> Argument;
         [[nodiscard]] auto operator[](int t_offset) const -> Argument;
         [[nodiscard]] auto option(const char* optstring) const -> int;
+        [[nodiscard]] auto size() const -> std::size_t;
         [[nodiscard]] auto span(std::size_t t_offset,
                                 std::size_t t_count = std::dynamic_extent) ->
             ArgumentSpan;
