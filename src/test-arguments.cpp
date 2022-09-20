@@ -15,15 +15,7 @@
 
 #include "network/arguments.h"          // Arguments
 #include "network/assert.h"             // assert()
-#include "network/get-option.h"         // get_option()
-
-#ifdef USING_GETOPT
-#ifdef WIN32
-#include <getopt.h>         // getopt(), optarg, opterr, optind
-#else
-#include <unistd.h>         // getopt(), optarg, opterr, optind
-#endif
-#endif
+#include "network/get-option.h"         // get_optind(), get_option()
 
 #include <cstdlib>      // EXIT_FAILURE, std::exit(), std::free()
 #include <cstring>      // strdup()
@@ -32,6 +24,7 @@
 #include <vector>       // std::vector
 
 using Network::Arguments;
+using Network::get_optind;
 using Network::get_option;
 
 namespace TestArguments
@@ -62,7 +55,7 @@ namespace TestArguments
         Arguments::ArgumentSpan
     {
 #ifdef USING_GETOPT
-        auto optind_begin {::optind};
+        auto optind_begin {get_optind()};
 #endif
         int opt {};
 
@@ -83,8 +76,9 @@ namespace TestArguments
 
 #ifdef USING_GETOPT
             if (opt != -1 && opt != '?') {
-                assert(optind_begin < ::optind && ::optind <= optind_begin + 2);
-                optind_begin = ::optind;
+                assert(get_optind() > optind_begin);
+                assert(get_optind() <= optind_begin + 2);
+                optind_begin = get_optind();
             }
 #endif
         }

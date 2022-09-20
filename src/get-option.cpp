@@ -13,8 +13,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-option.h"         // Arguments, get_option()
-#include "network/assert.h"             // assert()
+#include "network/get-option.h"         // Arguments, get_optarg(),
+                                        // get_opterr, get_optind(),
+                                        // get_option(), get_optopt()
 #include "network/logicerror.h"         // LogicError
 
 #ifdef USING_GETOPT
@@ -24,6 +25,21 @@
 #include <unistd.h>         // getopt(), optarg, opterr, optind
 #endif
 #endif
+
+auto Network::get_optarg() -> char*
+{
+    return ::optarg;
+}
+
+auto Network::get_opterr() -> int
+{
+    return ::opterr;
+}
+
+auto Network::get_optind() -> int
+{
+    return ::optind;
+}
 
 auto Network::get_option(const Network::Arguments& args,
                          const char* optstring) -> int
@@ -38,4 +54,9 @@ auto Network::get_option(const Network::Arguments& args,
     static_cast<void>(optstring);
     return -1;
 #endif
+}
+
+auto Network::get_optopt() -> int
+{
+    return ::optopt;
 }
