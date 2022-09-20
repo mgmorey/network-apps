@@ -33,12 +33,7 @@ auto Network::get_option(const Network::Arguments& args,
     }
 
 #ifdef USING_GETOPT
-    const auto optind_begin {::optind};
-    const auto opt {::getopt(static_cast<int>(args.size()),
-                             args.data(),
-                             optstring)};
-    assert(opt == -1 || opt == '?' || optind_begin < ::optind);
-    return opt;
+    return ::getopt(static_cast<int>(args.size()), args.data(), optstring);
 #else
     static_cast<void>(optstring);
     return -1;

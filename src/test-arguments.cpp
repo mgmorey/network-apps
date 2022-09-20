@@ -17,6 +17,14 @@
 #include "network/assert.h"             // assert()
 #include "network/get-option.h"         // get_option()
 
+#ifdef USING_GETOPT
+#ifdef WIN32
+#include <getopt.h>         // getopt(), optarg, opterr, optind
+#else
+#include <unistd.h>         // getopt(), optarg, opterr, optind
+#endif
+#endif
+
 #include <cstdlib>      // EXIT_FAILURE, std::exit(), std::free()
 #include <cstring>      // strdup()
 #include <exception>    // std::exception
@@ -53,6 +61,9 @@ namespace TestArguments
     static auto parse_arguments(Arguments& arguments) ->
         Arguments::ArgumentSpan
     {
+#ifdef USING_GETOPT
+        auto optind_begin {::optind};
+#endif
         int opt {};
 
         while ((opt = get_option(arguments, "v")) != -1) {
@@ -69,6 +80,13 @@ namespace TestArguments
             default:
                 abort();
             }
+
+#ifdef USING_GETOPT
+            if (opt != -1 && opt != '?') {
+                assert(optind_begin < ::optind && ::optind <= optind_begin + 2);
+                optind_begin = ::optind;
+            }
+#endif
         }
 
         return arguments.span();
