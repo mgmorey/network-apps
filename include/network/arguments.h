@@ -27,8 +27,6 @@ namespace Network
         using Argument = char*;
         using ArgumentSpan = std::span<Argument>;
 
-        static auto option_index() -> int;
-
         Arguments(std::size_t t_argc, char** t_argv);
         Arguments(int t_argc, char** t_argv);
         Arguments(const Arguments&) noexcept = default;
@@ -39,7 +37,6 @@ namespace Network
         [[nodiscard]] auto operator[](std::size_t t_offset) const -> Argument;
         [[nodiscard]] auto operator[](int t_offset) const -> Argument;
         [[nodiscard]] auto data() const -> Argument const*;
-        [[nodiscard]] auto option(const char* optstring) const -> int;
         [[nodiscard]] auto size() const -> std::size_t;
         [[nodiscard]] auto span(std::size_t t_offset,
                                 std::size_t t_count = std::dynamic_extent) ->
