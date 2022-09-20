@@ -35,7 +35,9 @@ namespace TestArguments
         ArgumentVector data;
         data.push_back(::strdup(argv0));
         data.push_back(::strdup("-v"));
-        data.push_back(::strdup("foo"));
+        data.push_back(::strdup("one"));
+        data.push_back(::strdup("two"));
+        data.push_back(::strdup("three"));
         return data;
     }
 
@@ -86,8 +88,16 @@ namespace TestArguments
         }
 
         assert(verbose);
-        assert(args.size() == 1);
-        assert(std::string {args[0]} == "foo");
+        assert(arguments.option_index() == 2);
+        assert(std::string {arguments[0]} == argv0);
+        assert(std::string {arguments[1]} == "-v");
+        assert(std::string {arguments[2]} == "one");
+        assert(std::string {arguments[3]} == "two");
+        assert(std::string {arguments[4]} == "three");
+        assert(std::string {args[0]} == "one");
+        assert(std::string {args[1]} == "two");
+        assert(std::string {args[2]} == "three");
+        assert(args.size() == 3);
         free_arguments(data);
     }
 }
