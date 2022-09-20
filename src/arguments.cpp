@@ -14,15 +14,8 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/arguments.h"          // Arguments
+#include "network/get-option.h"         // get_optind()
 #include "network/to-size.h"            // to_size()
-
-#ifdef USING_GETOPT
-#ifdef WIN32
-#include <getopt.h>         // getopt(), optarg, opterr, optind
-#else
-#include <unistd.h>         // getopt(), optarg, opterr, optind
-#endif
-#endif
 
 Network::Arguments::Arguments(std::size_t t_argc, char** t_argv) :
     m_span(std::span(t_argv, t_argc))
@@ -69,11 +62,9 @@ auto Network::Arguments::span(std::size_t t_offset, std::size_t t_count) ->
 auto Network::Arguments::span(int t_offset, std::size_t t_count) ->
     Network::Arguments::ArgumentSpan
 {
-#ifdef USING_GETOPT
     if (t_offset == -1) {
-        t_offset = ::optind;
+        t_offset = get_optind();
     }
-#endif
 
     return span(to_size(t_offset), t_count);
 }

@@ -28,17 +28,29 @@
 
 auto Network::get_optarg() -> char*
 {
+#ifdef USING_GETOPT
     return ::optarg;
+#else
+    return nullptr;
+#endif
 }
 
 auto Network::get_opterr() -> int
 {
+#ifdef USING_GETOPT
     return ::opterr;
+#else
+    return 0;
+#endif
 }
 
 auto Network::get_optind() -> int
 {
+#ifdef USING_GETOPT
     return ::optind;
+#else
+    return 1;
+#endif
 }
 
 auto Network::get_option(const Network::Arguments& args,
@@ -51,12 +63,15 @@ auto Network::get_option(const Network::Arguments& args,
 #ifdef USING_GETOPT
     return ::getopt(static_cast<int>(args.size()), args.data(), optstring);
 #else
-    static_cast<void>(optstring);
     return -1;
 #endif
 }
 
 auto Network::get_optopt() -> int
 {
+#ifdef USING_GETOPT
     return ::optopt;
+#else
+    return 0;
+#endif
 }
