@@ -15,6 +15,7 @@
 
 #include "network/arguments.h"          // Arguments
 #include "network/assert.h"             // assert()
+#include "network/get-option.h"         // get_option()
 #include "network/network.h"            // Context, OsErrorResult,
                                         // get_hostname()
 #include "network/to-name-len.h"        // to_name_len()
@@ -32,6 +33,7 @@ using Network::Error;
 using Network::Hostname;
 using Network::RangeError;
 using Network::get_hostname;
+using Network::get_option;
 using Network::name_len_max;
 using Network::to_name_len;
 
@@ -47,7 +49,7 @@ namespace TestHostname
     {
         int opt {};
 
-        while ((opt = arguments.option("v")) != -1) {
+        while ((opt = get_option(arguments, "v")) != -1) {
             switch (opt) {
             case 'v':
                 verbose = true;

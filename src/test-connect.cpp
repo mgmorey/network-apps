@@ -15,6 +15,7 @@
 
 #include "network/assert.h"             // assert()
 #include "network/arguments.h"          // Arguments
+#include "network/get-option.h"         // get_option()
 #include "network/network.h"            // Address, Bytes,
                                         // ByteStringResult, Context,
                                         // Endpoint, FdResult,
@@ -69,6 +70,7 @@ using Network::SocketHints;
 using Network::SockName;
 using Network::connect;
 using Network::get_hostname;
+using Network::get_option;
 using Network::get_peername;
 using Network::get_sockname;
 using Network::os_error_type;
@@ -200,7 +202,7 @@ namespace TestConnect
     {
         int opt {};
 
-        while ((opt = arguments.option("v")) != -1) {
+        while ((opt = get_option(arguments, "v")) != -1) {
             switch (opt) {
             case 'v':
                 verbose = true;

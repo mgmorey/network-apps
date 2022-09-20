@@ -15,6 +15,7 @@
 
 #include "network/arguments.h"          // Arguments
 #include "network/assert.h"             // assert()
+#include "network/get-option.h"         // get_option()
 #include "network/network.h"            // Address, Bytes, Context,
                                         // Endpoint, HostVector,
                                         // Hostname, OptionalHints,
@@ -64,6 +65,7 @@ using Network::Overloaded;
 using Network::SocketHints;
 using Network::SocketHost;
 using Network::get_hosts;
+using Network::get_option;
 using Network::os_error_type;
 using Network::uniquify;
 
@@ -195,7 +197,7 @@ namespace TestHost
     {
         int opt {};
 
-        while ((opt = arguments.option("v")) != -1) {
+        while ((opt = get_option(arguments, "v")) != -1) {
             switch (opt) {
             case 'v':
                 verbose = true;

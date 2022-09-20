@@ -14,6 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/arguments.h"          // Arguments
+#include "network/get-option.h"         // get_option()
 #include "network/network.h"            // Buffer, Fd, connect(),
                                         // socket_error,
                                         // to_byte_string()
@@ -41,6 +42,7 @@ using Network::SocketHints;
 using Network::bind;
 using Network::fd_type;
 using Network::format_os_error;
+using Network::get_option;
 using Network::socket_error;
 using Network::to_byte_string;
 
@@ -66,7 +68,7 @@ static auto parse_arguments(const Arguments& arguments) -> void
 {
     int opt {};
 
-    while ((opt = arguments.option("v")) != -1) {
+    while ((opt = get_option(arguments, "v")) != -1) {
         switch (opt) {
         case 'v':
             verbose = true;

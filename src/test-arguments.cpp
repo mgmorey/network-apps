@@ -15,6 +15,7 @@
 
 #include "network/arguments.h"          // Arguments
 #include "network/assert.h"             // assert()
+#include "network/get-option.h"         // get_option()
 
 #include <cstdlib>      // EXIT_FAILURE, std::exit(), std::free()
 #include <cstring>      // strdup()
@@ -23,6 +24,7 @@
 #include <vector>       // std::vector
 
 using Network::Arguments;
+using Network::get_option;
 
 namespace TestArguments
 {
@@ -53,7 +55,7 @@ namespace TestArguments
     {
         int opt {};
 
-        while ((opt = arguments.option("v")) != -1) {
+        while ((opt = get_option(arguments, "v")) != -1) {
             switch (opt) {
             case 'v':
                 verbose = true;
@@ -90,7 +92,7 @@ namespace TestArguments
         assert(std::string {args[2]} == "three");
     }
 
-    static auto test_arguments(Arguments& args, char* argv0) -> void
+    static auto test_arguments(Arguments& args, const char* argv0) -> void
     {
         for (std::size_t index = 0; index < args.size(); ++index) {
             std::cout << "Command argument "
@@ -106,7 +108,6 @@ namespace TestArguments
         assert(std::string {args[3]} == "two");
         assert(std::string {args[4]} == "three");
         test_arguments(parse_arguments(args));
-        assert(args.option_index() == 2);
         assert(verbose);
     }
 

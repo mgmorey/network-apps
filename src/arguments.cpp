@@ -14,8 +14,6 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/arguments.h"          // Arguments
-#include "network/assert.h"             // assert()
-#include "network/logicerror.h"         // LogicError
 #include "network/to-size.h"            // to_size()
 
 #ifdef USING_GETOPT
@@ -25,15 +23,6 @@
 #include <unistd.h>         // getopt(), optarg, opterr, optind
 #endif
 #endif
-
-auto Network::Arguments::option_index() -> int
-{
-#ifdef USING_GETOPT
-    return ::optind;
-#else
-    return 1;
-#endif
-}
 
 Network::Arguments::Arguments(std::size_t t_argc, char** t_argv) :
     m_span(std::span(t_argv, t_argc))
@@ -61,23 +50,9 @@ auto Network::Arguments::operator[](int t_offset) const ->
     return (*this)[to_size(t_offset)];
 }
 
-auto Network::Arguments::option(const char* optstring) const -> int
+auto Network::Arguments::data() const -> Argument const*
 {
-    if (optstring == nullptr || *optstring == '\0') {
-        throw LogicError("No command-line options available to parse");
-    }
-
-#ifdef USING_GETOPT
-    const auto optind_begin {::optind};
-    const auto opt {::getopt(static_cast<int>(m_span.size()),
-                             m_span.data(),
-                             optstring)};
-    assert(opt == -1 || opt == '?' || optind_begin < ::optind);
-    return opt;
-#else
-    static_cast<void>(optstring);
-    return -1;
-#endif
+    return m_span.data();
 }
 
 auto Network::Arguments::size() const -> std::size_t
@@ -94,9 +69,11 @@ auto Network::Arguments::span(std::size_t t_offset, std::size_t t_count) ->
 auto Network::Arguments::span(int t_offset, std::size_t t_count) ->
     Network::Arguments::ArgumentSpan
 {
+#ifdef USING_GETOPT
     if (t_offset == -1) {
-        t_offset = option_index();
+        t_offset = ::optind;
     }
+#endif
 
     return span(to_size(t_offset), t_count);
 }

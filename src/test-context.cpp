@@ -16,6 +16,7 @@
 #include "network/arguments.h"          // Arguments
 #include "network/assert.h"             // assert()
 #include "network/cleanup.h"            // cleanup()
+#include "network/get-option.h"         // get_option()
 #include "network/network.h"            // Context, Error,
                                         // OptionalVersion, Version,
                                         // get_hostname()
@@ -41,6 +42,7 @@ using Network::Version;
 using Network::WindowsVersion;
 #endif
 using Network::get_hostname;
+using Network::get_option;
 using Network::os_error_type;
 
 namespace TestContext
@@ -123,7 +125,7 @@ namespace TestContext
     {
         int opt {};
 
-        while ((opt = arguments.option("v")) != -1) {
+        while ((opt = get_option(arguments, "v")) != -1) {
             switch (opt) {
             case 'v':
                 verbose = true;

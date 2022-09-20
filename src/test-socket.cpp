@@ -15,6 +15,7 @@
 
 #include "network/arguments.h"          // Arguments
 #include "network/assert.h"             // assert()
+#include "network/get-option.h"         // get_option()
 #include "network/network.h"            // Address, Context, FdPair,
                                         // OptionalPathname,
                                         // OsErrorResult, Pathname,
@@ -50,6 +51,7 @@ using Network::OptionalPathname;
 using Network::OsErrorResult;
 using Network::Pathname;
 using Network::RangeError;
+using Network::get_option;
 using Network::get_sockname;
 using Network::get_sun_path;
 using Network::get_sun_path_size;
@@ -121,7 +123,7 @@ namespace TestSocket
     {
         int opt {};
 
-        while ((opt = arguments.option("v")) != -1) {
+        while ((opt = get_option(arguments, "v")) != -1) {
             switch (opt) {
             case 'v':
                 verbose = true;

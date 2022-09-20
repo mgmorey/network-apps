@@ -15,6 +15,7 @@
 
 #include "network/arguments.h"          // Arguments
 #include "network/assert.h"             // assert()
+#include "network/get-option.h"         // get_option()
 #include "network/network.h"            // Address, Bytes, Context,
                                         // Family, Hostname,
                                         // HostVector, OsErrorResult,
@@ -61,6 +62,7 @@ using Network::SocketFamily;
 using Network::get_hosts;
 using Network::get_sa_family;
 using Network::get_sa_length;
+using Network::get_option;
 using Network::is_valid;
 using Network::to_size;
 
@@ -83,7 +85,7 @@ namespace TestAddress
     {
         int opt {};
 
-        while ((opt = arguments.option("v")) != -1) {
+        while ((opt = get_option(arguments, "v")) != -1) {
             switch (opt) {
             case 'v':
                 verbose = true;

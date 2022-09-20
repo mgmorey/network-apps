@@ -15,6 +15,7 @@
 
 #include "network/arguments.h"          // Arguments
 #include "network/assert.h"             // assert()
+#include "network/get-option.h"         // get_option()
 #include "network/network.h"            // Address, Bytes,
                                         // ByteStringResult, Context,
                                         // Endpoint, FdResult,
@@ -62,6 +63,7 @@ using Network::Overloaded;
 using Network::SocketHints;
 using Network::SockName;
 using Network::bind;
+using Network::get_option;
 using Network::get_sockname;
 using Network::os_error_type;
 using Network::string_null;
@@ -159,7 +161,7 @@ namespace TestBind
     {
         int opt {};
 
-        while ((opt = arguments.option("v")) != -1) {
+        while ((opt = get_option(arguments, "v")) != -1) {
             switch (opt) {
             case 'v':
                 verbose = true;
