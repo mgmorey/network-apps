@@ -72,32 +72,51 @@ namespace TestArguments
         return arguments.span();
     }
 
-    static auto test_arguments(char* argv0) -> void
+    static auto test_arguments(Arguments::ArgumentSpan args) -> void
     {
-        auto data {allocate_arguments(argv0)};
-        Arguments arguments {data.size(), data.data()};
-        const auto args {parse_arguments(arguments)};
         auto index {0};
 
         for (const auto& arg : args) {
-            std::cout << "Argument "
-                      << ++index
+            std::cout << "View argument "
+                      << index++
                       << ": "
                       << arg
                       << std::endl;
         }
 
-        assert(verbose);
-        assert(arguments.option_index() == 2);
-        assert(std::string {arguments[0]} == argv0);
-        assert(std::string {arguments[1]} == "-v");
-        assert(std::string {arguments[2]} == "one");
-        assert(std::string {arguments[3]} == "two");
-        assert(std::string {arguments[4]} == "three");
+        assert(args.size() == 3);
         assert(std::string {args[0]} == "one");
         assert(std::string {args[1]} == "two");
         assert(std::string {args[2]} == "three");
-        assert(args.size() == 3);
+    }
+
+    static auto test_arguments(Arguments& args, char* argv0) -> void
+    {
+        for (std::size_t index = 0; args[index] != nullptr; ++index) {
+            std::cout << "Command argument "
+                      << index
+                      << ": "
+                      << args[index]
+                      << std::endl;
+        }
+
+        assert(std::string {args[0]} == argv0);
+        assert(std::string {args[1]} == "-v");
+        assert(std::string {args[2]} == "one");
+        assert(std::string {args[3]} == "two");
+        assert(std::string {args[4]} == "three");
+        test_arguments(parse_arguments(args));
+        assert(args.option_index() == 2);
+        assert(verbose);
+    }
+
+    static auto test_arguments(int argc, char** argv) -> void
+    {
+        assert(argc > 0);
+        assert(*argv != nullptr);
+        auto data {allocate_arguments(*argv)};
+        Arguments args {data.size(), data.data()};
+        test_arguments(args, *argv);
         free_arguments(data);
     }
 }
@@ -106,9 +125,8 @@ auto main(int argc, char* argv[]) -> int
 {
     using namespace TestArguments;
 
-    static_cast<void>(argc);
     try {
-        test_arguments(*argv);
+        test_arguments(argc, argv);
     }
     catch (const std::exception& error) {
         std::cerr << error.what()
