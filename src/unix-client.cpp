@@ -80,7 +80,7 @@ static auto parse_arguments(Arguments& arguments) ->
         }
     }
 
-    return arguments.span();
+    return arguments.required();
 }
 
 static auto read(const Fd& fd) -> IoResult

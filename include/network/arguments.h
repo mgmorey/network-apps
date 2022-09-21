@@ -23,6 +23,9 @@ namespace Network
 {
     class Arguments
     {
+        friend auto get_option(const Arguments& args,
+                               const char* optstring) -> int;
+
     public:
         using Argument = char*;
         using ArgumentSpan = std::span<Argument>;
@@ -36,14 +39,12 @@ namespace Network
         auto operator=(Arguments&&) noexcept -> Arguments& = default;
         [[nodiscard]] auto operator[](std::size_t t_offset) const -> Argument;
         [[nodiscard]] auto operator[](int t_offset) const -> Argument;
+        [[nodiscard]] auto optional() -> ArgumentSpan;
+        [[nodiscard]] auto required() -> ArgumentSpan;
+
+    protected:
         [[nodiscard]] auto data() const -> Argument const*;
         [[nodiscard]] auto size() const -> std::size_t;
-        [[nodiscard]] auto span(std::size_t t_offset,
-                                std::size_t t_count = std::dynamic_extent) ->
-            ArgumentSpan;
-        [[nodiscard]] auto span(int t_offset = -1,
-                                std::size_t t_count = std::dynamic_extent) ->
-            ArgumentSpan;
 
     private:
         ArgumentSpan m_span;

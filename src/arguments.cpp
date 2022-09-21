@@ -43,6 +43,16 @@ auto Network::Arguments::operator[](int t_offset) const ->
     return (*this)[to_size(t_offset)];
 }
 
+auto Network::Arguments::optional() -> Network::Arguments::ArgumentSpan
+{
+    return m_span.subspan(1, to_size(get_optind()) - 1);
+}
+
+auto Network::Arguments::required() -> Network::Arguments::ArgumentSpan
+{
+    return m_span.subspan(to_size(get_optind()));
+}
+
 auto Network::Arguments::data() const -> Argument const*
 {
     return m_span.data();
@@ -51,20 +61,4 @@ auto Network::Arguments::data() const -> Argument const*
 auto Network::Arguments::size() const -> std::size_t
 {
     return m_span.size();
-}
-
-auto Network::Arguments::span(std::size_t t_offset, std::size_t t_count) ->
-    Network::Arguments::ArgumentSpan
-{
-    return m_span.subspan(t_offset, t_count);
-}
-
-auto Network::Arguments::span(int t_offset, std::size_t t_count) ->
-    Network::Arguments::ArgumentSpan
-{
-    if (t_offset == -1) {
-        t_offset = get_optind();
-    }
-
-    return span(to_size(t_offset), t_count);
 }

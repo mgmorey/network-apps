@@ -213,7 +213,7 @@ namespace TestHost
             }
         }
 
-        return arguments.span();
+        return arguments.required();
     }
 
     static auto print(const OsErrorResult& result,

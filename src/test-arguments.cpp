@@ -51,8 +51,7 @@ namespace TestArguments
         }
     }
 
-    static auto parse_arguments(Arguments& arguments) ->
-        Arguments::ArgumentSpan
+    static auto parse_arguments(Arguments& arguments) -> void
     {
 #ifdef USING_GETOPT
         auto optind_begin {get_optind()};
@@ -82,31 +81,11 @@ namespace TestArguments
             }
 #endif
         }
-
-        return arguments.span();
     }
 
-    static auto test_arguments(Arguments::ArgumentSpan args) -> void
+    static auto test_all_arguments(Arguments& args, const char* argv0) -> void
     {
-        auto index {0};
-
-        for (const auto& arg : args) {
-            std::cout << "View argument "
-                      << index++
-                      << ": "
-                      << arg
-                      << std::endl;
-        }
-
-        assert(args.size() == 3);
-        assert(std::string {args[0]} == "one");
-        assert(std::string {args[1]} == "two");
-        assert(std::string {args[2]} == "three");
-    }
-
-    static auto test_arguments(Arguments& args, const char* argv0) -> void
-    {
-        for (std::size_t index = 0; index < args.size(); ++index) {
+        for (std::size_t index = 0; args[index] != nullptr; ++index) {
             std::cout << "Command argument "
                       << index
                       << ": "
@@ -119,8 +98,40 @@ namespace TestArguments
         assert(std::string {args[2]} == "one");
         assert(std::string {args[3]} == "two");
         assert(std::string {args[4]} == "three");
-        test_arguments(parse_arguments(args));
-        assert(verbose);
+    }
+
+    static auto test_optional_arguments(Arguments::ArgumentSpan args) -> void
+    {
+        auto index {0};
+
+        for (const auto& arg : args) {
+            std::cout << "Optional argument "
+                      << index++
+                      << ": "
+                      << arg
+                      << std::endl;
+        }
+
+        assert(args.size() == 1);
+        assert(std::string {args[0]} == "-v");
+    }
+
+    static auto test_required_arguments(Arguments::ArgumentSpan args) -> void
+    {
+        auto index {0};
+
+        for (const auto& arg : args) {
+            std::cout << "Required argument "
+                      << index++
+                      << ": "
+                      << arg
+                      << std::endl;
+        }
+
+        assert(args.size() == 3);
+        assert(std::string {args[0]} == "one");
+        assert(std::string {args[1]} == "two");
+        assert(std::string {args[2]} == "three");
     }
 
     static auto test_arguments(int argc, char** argv) -> void
@@ -129,7 +140,11 @@ namespace TestArguments
         assert(*argv != nullptr);
         auto data {allocate_arguments(*argv)};
         Arguments args {data.size(), data.data()};
-        test_arguments(args, *argv);
+        test_all_arguments(args, *argv);
+        parse_arguments(args);
+        test_optional_arguments(args.optional());
+        test_required_arguments(args.required());
+        assert(verbose);
         free_arguments(data);
     }
 }
