@@ -106,20 +106,6 @@ namespace TestArguments
         }
     }
 
-    static auto test_all_arguments(Arguments& args, const char* argv0) -> void
-    {
-        std::cout << "Command: "
-                  << args[0]
-                  << std::endl;
-        assert(std::string {args[0]} == argv0);
-        assert(std::string {args[1]} == "-f");
-        assert(std::string {args[2]} == argv0);
-        assert(std::string {args[3]} == "-v");
-        assert(std::string {args[4]} == "one");
-        assert(std::string {args[5]} == "two");
-        assert(std::string {args[6]} == "three");
-    }
-
     static auto test_optional_arguments(Arguments::ArgumentSpan args,
                                         const char* argv0) -> void
     {
@@ -139,18 +125,31 @@ namespace TestArguments
         assert(args.size() == 3);
     }
 
+    static auto test_view_arguments(Arguments::ArgumentSpan args,
+                                    const char* argv0) -> void
+    {
+        print_arguments(args, "View");
+        assert(std::string {args[0]} == argv0);
+        assert(std::string {args[1]} == "-f");
+        assert(std::string {args[2]} == argv0);
+        assert(std::string {args[3]} == "-v");
+        assert(std::string {args[4]} == "one");
+        assert(std::string {args[5]} == "two");
+        assert(std::string {args[6]} == "three");
+    }
+
     static auto test_arguments(int argc, char** argv) -> void
     {
         assert(argc > 0);
         assert(*argv != nullptr);
         auto data {allocate_arguments(*argv)};
         Arguments args {data.size(), data.data()};
-        test_all_arguments(args, *argv);
         std::string filename;
         bool verbose {false};
         parse_arguments(filename, verbose, args);
         test_optional_arguments(args.optional(), *argv);
         test_required_arguments(args.required());
+        test_view_arguments(args.view(), *argv);
         assert(filename == *argv);
         assert(verbose);
         free_arguments(data);

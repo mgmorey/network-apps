@@ -53,6 +53,11 @@ auto Network::Arguments::required() -> Network::Arguments::ArgumentSpan
     return m_span.subspan(to_size(get_optind()));
 }
 
+auto Network::Arguments::view() -> Network::Arguments::ArgumentSpan
+{
+    return m_span;
+}
+
 auto Network::Arguments::data() const -> Argument const*
 {
     return m_span.data();

@@ -41,6 +41,7 @@ namespace Network
         [[nodiscard]] auto operator[](int t_offset) const -> Argument;
         [[nodiscard]] auto optional() -> ArgumentSpan;
         [[nodiscard]] auto required() -> ArgumentSpan;
+        [[nodiscard]] auto view() -> ArgumentSpan;
 
     protected:
         [[nodiscard]] auto data() const -> Argument const*;
