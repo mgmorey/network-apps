@@ -15,15 +15,18 @@
 
 #include "network/arguments.h"          // Arguments
 #include "network/assert.h"             // assert()
-#include "network/get-option.h"         // get_optind(), get_option()
+#include "network/get-option.h"         // get_optarg(), get_optind(),
+                                        // get_option()
 
 #include <cstdlib>      // EXIT_FAILURE, std::exit(), std::free()
 #include <cstring>      // strdup()
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
+#include <string>       // std::string
 #include <vector>       // std::vector
 
 using Network::Arguments;
+using Network::get_optarg;
 using Network::get_optind;
 using Network::get_option;
 
@@ -31,11 +34,11 @@ namespace TestArguments
 {
     using ArgumentVector = std::vector<char*>;
 
-    static bool verbose {false};  // NOLINT
-
     static auto allocate_arguments(char* argv0) -> ArgumentVector
     {
         ArgumentVector data;
+        data.push_back(::strdup(argv0));
+        data.push_back(::strdup("-f"));
         data.push_back(::strdup(argv0));
         data.push_back(::strdup("-v"));
         data.push_back(::strdup("one"));
@@ -51,15 +54,20 @@ namespace TestArguments
         }
     }
 
-    static auto parse_arguments(Arguments& arguments) -> void
+    static auto parse_arguments(std::string& filename,
+                                bool& verbose,
+                                Arguments& arguments) -> void
     {
 #ifdef USING_GETOPT
         auto optind_begin {get_optind()};
 #endif
         int opt {};
 
-        while ((opt = get_option(arguments, "v")) != -1) {
+        while ((opt = get_option(arguments, "f:v")) != -1) {
             switch (opt) {
+            case 'f':
+                filename = get_optarg();
+                break;
             case 'v':
                 verbose = true;
                 break;
@@ -85,35 +93,35 @@ namespace TestArguments
 
     static auto test_all_arguments(Arguments& args, const char* argv0) -> void
     {
-        for (std::size_t index = 0; args[index] != nullptr; ++index) {
-            std::cout << "Command argument "
-                      << index
-                      << ": "
-                      << args[index]
-                      << std::endl;
-        }
-
+        std::cout << "Command: "
+                  << args[0]
+                  << std::endl;
         assert(std::string {args[0]} == argv0);
-        assert(std::string {args[1]} == "-v");
-        assert(std::string {args[2]} == "one");
-        assert(std::string {args[3]} == "two");
-        assert(std::string {args[4]} == "three");
+        assert(std::string {args[1]} == "-f");
+        assert(std::string {args[2]} == argv0);
+        assert(std::string {args[3]} == "-v");
+        assert(std::string {args[4]} == "one");
+        assert(std::string {args[5]} == "two");
+        assert(std::string {args[6]} == "three");
     }
 
-    static auto test_optional_arguments(Arguments::ArgumentSpan args) -> void
+    static auto test_optional_arguments(Arguments::ArgumentSpan args,
+                                        const char* argv0) -> void
     {
         auto index {0};
 
         for (const auto& arg : args) {
             std::cout << "Optional argument "
-                      << index++
+                      << ++index
                       << ": "
                       << arg
                       << std::endl;
         }
 
-        assert(args.size() == 1);
-        assert(std::string {args[0]} == "-v");
+        assert(args.size() == 3);
+        assert(std::string {args[0]} == "-f");
+        assert(std::string {args[1]} == argv0);
+        assert(std::string {args[2]} == "-v");
     }
 
     static auto test_required_arguments(Arguments::ArgumentSpan args) -> void
@@ -122,7 +130,7 @@ namespace TestArguments
 
         for (const auto& arg : args) {
             std::cout << "Required argument "
-                      << index++
+                      << ++index
                       << ": "
                       << arg
                       << std::endl;
@@ -141,8 +149,10 @@ namespace TestArguments
         auto data {allocate_arguments(*argv)};
         Arguments args {data.size(), data.data()};
         test_all_arguments(args, *argv);
-        parse_arguments(args);
-        test_optional_arguments(args.optional());
+        std::string filename;
+        bool verbose {false};
+        parse_arguments(filename, verbose, args);
+        test_optional_arguments(args.optional(), *argv);
         test_required_arguments(args.required());
         assert(verbose);
         free_arguments(data);
