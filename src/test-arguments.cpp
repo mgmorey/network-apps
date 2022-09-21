@@ -91,6 +91,21 @@ namespace TestArguments
         }
     }
 
+    static auto print_arguments(Arguments::ArgumentSpan args,
+                                const std::string& scope = "All") -> void
+    {
+        auto index {0};
+
+        for (const auto& arg : args) {
+            std::cout << scope
+                      << " argument "
+                      << ++index
+                      << ": "
+                      << arg
+                      << std::endl;
+        }
+    }
+
     static auto test_all_arguments(Arguments& args, const char* argv0) -> void
     {
         std::cout << "Command: "
@@ -108,38 +123,20 @@ namespace TestArguments
     static auto test_optional_arguments(Arguments::ArgumentSpan args,
                                         const char* argv0) -> void
     {
-        auto index {0};
-
-        for (const auto& arg : args) {
-            std::cout << "Optional argument "
-                      << ++index
-                      << ": "
-                      << arg
-                      << std::endl;
-        }
-
-        assert(args.size() == 3);
+        print_arguments(args, "Optional");
         assert(std::string {args[0]} == "-f");
         assert(std::string {args[1]} == argv0);
         assert(std::string {args[2]} == "-v");
+        assert(args.size() == 3);
     }
 
     static auto test_required_arguments(Arguments::ArgumentSpan args) -> void
     {
-        auto index {0};
-
-        for (const auto& arg : args) {
-            std::cout << "Required argument "
-                      << ++index
-                      << ": "
-                      << arg
-                      << std::endl;
-        }
-
-        assert(args.size() == 3);
+        print_arguments(args, "Required");
         assert(std::string {args[0]} == "one");
         assert(std::string {args[1]} == "two");
         assert(std::string {args[2]} == "three");
+        assert(args.size() == 3);
     }
 
     static auto test_arguments(int argc, char** argv) -> void
@@ -154,6 +151,7 @@ namespace TestArguments
         parse_arguments(filename, verbose, args);
         test_optional_arguments(args.optional(), *argv);
         test_required_arguments(args.required());
+        assert(filename == *argv);
         assert(verbose);
         free_arguments(data);
     }
