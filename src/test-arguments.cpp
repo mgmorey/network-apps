@@ -35,18 +35,11 @@ using Network::get_option;
 namespace TestArguments
 {
     using ArgumentVector = std::vector<Arguments::Argument>;
+    using StringVector = std::vector<std::string>;
 
-    static auto allocate_arguments(const char* argv0) -> ArgumentVector
+    static auto allocate_arguments(const StringVector& data) ->
+        ArgumentVector
     {
-        std::vector<std::string> data {
-            argv0,
-            "-f",
-            argv0,
-            "-v",
-            "one",
-            "two",
-            "three"
-        };
         ArgumentVector args;
         std::transform(data.begin(), data.end(),
                        std::back_inserter(args),
@@ -61,6 +54,19 @@ namespace TestArguments
         for (auto* datum : data) {
             ::free(datum);  // NOLINT
         }
+    }
+
+    static auto get_data(const char* argv0) -> StringVector
+    {
+        return {
+            argv0,
+            "-f",
+            argv0,
+            "-v",
+            "one",
+            "two",
+            "three"
+        };
     }
 
     static auto parse_arguments(std::string& filename,
@@ -151,7 +157,7 @@ namespace TestArguments
     {
         assert(argc > 0);
         assert(*argv != nullptr);
-        auto data {allocate_arguments(*argv)};
+        auto data {allocate_arguments(get_data(*argv))};
         Arguments args {data.size(), data.data()};
         std::string filename;
         bool verbose {false};
