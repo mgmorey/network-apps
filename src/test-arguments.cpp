@@ -18,10 +18,12 @@
 #include "network/get-option.h"         // get_optarg(), get_optind(),
                                         // get_option()
 
+#include <algorithm>    // std::transform()
 #include <cstdlib>      // EXIT_FAILURE, std::exit(), std::free()
 #include <cstring>      // strdup()
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
+#include <iterator>     // std::back_inserter()
 #include <string>       // std::string
 #include <vector>       // std::vector
 
@@ -32,19 +34,26 @@ using Network::get_option;
 
 namespace TestArguments
 {
-    using ArgumentVector = std::vector<char*>;
+    using ArgumentVector = std::vector<Arguments::Argument>;
 
-    static auto allocate_arguments(char* argv0) -> ArgumentVector
+    static auto allocate_arguments(const char* argv0) -> ArgumentVector
     {
-        ArgumentVector data;
-        data.push_back(::strdup(argv0));
-        data.push_back(::strdup("-f"));
-        data.push_back(::strdup(argv0));
-        data.push_back(::strdup("-v"));
-        data.push_back(::strdup("one"));
-        data.push_back(::strdup("two"));
-        data.push_back(::strdup("three"));
-        return data;
+        std::vector<std::string> data {
+            argv0,
+            "-f",
+            argv0,
+            "-v",
+            "one",
+            "two",
+            "three"
+        };
+        ArgumentVector args;
+        std::transform(data.begin(), data.end(),
+                       std::back_inserter(args),
+                       [&](const std::string& datum) {
+                           return ::strdup(datum.c_str());
+                       });
+        return args;
     }
 
     static auto free_arguments(const ArgumentVector& data) -> void
