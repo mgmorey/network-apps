@@ -37,7 +37,7 @@ namespace TestArguments
     using ArgumentVector = std::vector<Arguments::Argument>;
     using StringVector = std::vector<std::string>;
 
-    static auto allocate_arguments(const StringVector& data) -> ArgumentVector
+    static auto allocate(const StringVector& data) -> ArgumentVector
     {
         ArgumentVector args;
         std::transform(data.begin(), data.end(),
@@ -48,7 +48,7 @@ namespace TestArguments
         return args;
     }
 
-    static auto free_arguments(const ArgumentVector& data) -> void
+    static auto free(const ArgumentVector& data) -> void
     {
         for (auto* datum : data) {
             ::free(datum);  // NOLINT
@@ -68,8 +68,8 @@ namespace TestArguments
         };
     }
 
-    static auto parse_arguments(std::string& filename, bool& verbose,
-                                const Arguments& arguments) -> void
+    static auto parse(std::string& filename, bool& verbose,
+                      const Arguments& arguments) -> void
     {
 #ifdef USING_GETOPT
         auto optind_begin {get_optind()};
@@ -104,8 +104,8 @@ namespace TestArguments
         }
     }
 
-    static auto print_arguments(Arguments::ArgumentSpan args,
-                                const std::string& scope = "All") -> void
+    static auto print(const Arguments::ArgumentSpan& args,
+                      const std::string& scope = "All") -> void
     {
         auto index {0};
 
@@ -119,29 +119,29 @@ namespace TestArguments
         }
     }
 
-    static auto test_optional_arguments(Arguments::ArgumentSpan args,
-                                        const char* argv0) -> void
+    static auto test_optional(const Arguments::ArgumentSpan& args,
+                              const char* argv0) -> void
     {
-        print_arguments(args, "Optional");
+        print(args, "Optional");
         assert(std::string {args[0]} == "-f");
         assert(std::string {args[1]} == argv0);
         assert(std::string {args[2]} == "-v");
         assert(args.size() == 3);
     }
 
-    static auto test_required_arguments(Arguments::ArgumentSpan args) -> void
+    static auto test_required(const Arguments::ArgumentSpan& args) -> void
     {
-        print_arguments(args, "Required");
+        print(args, "Required");
         assert(std::string {args[0]} == "one");
         assert(std::string {args[1]} == "two");
         assert(std::string {args[2]} == "three");
         assert(args.size() == 3);
     }
 
-    static auto test_view_arguments(Arguments::ArgumentSpan args,
-                                    const char* argv0) -> void
+    static auto test_view(const Arguments::ArgumentSpan& args,
+                          const char* argv0) -> void
     {
-        print_arguments(args, "View");
+        print(args, "View");
         assert(std::string {args[0]} == argv0);
         assert(std::string {args[1]} == "-f");
         assert(std::string {args[2]} == argv0);
@@ -155,17 +155,17 @@ namespace TestArguments
     {
         assert(argc > 0);
         assert(*argv != nullptr);
-        auto data {allocate_arguments(get_data(*argv))};
+        auto data {allocate(get_data(*argv))};
         Arguments args {data.size(), data.data()};
         std::string filename;
         bool verbose {false};
-        parse_arguments(filename, verbose, args);
-        test_optional_arguments(args.optional(), *argv);
-        test_required_arguments(args.required());
-        test_view_arguments(args.view(), *argv);
+        parse(filename, verbose, args);
+        test_optional(args.optional(), *argv);
+        test_required(args.required());
+        test_view(args.view(), *argv);
         assert(filename == *argv);
         assert(verbose);
-        free_arguments(data);
+        free(data);
     }
 }
 
