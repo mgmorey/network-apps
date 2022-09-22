@@ -39,25 +39,40 @@ namespace TestArguments
     using ArgumentVector = std::vector<Arguments::Argument>;
     using StringVector = std::vector<std::string>;
 
-    static auto allocate(const StringVector& data) -> ArgumentVector
+    class ArgumentData
     {
-        ArgumentVector args;
-        std::transform(data.begin(), data.end(),
-                       std::back_inserter(args),
-                       [&](const std::string& datum) {
-                           return ::strdup(datum.c_str());
-                       });
-        return args;
-    }
-
-    static auto free(const ArgumentVector& data) -> void
-    {
-        for (auto* datum : data) {
-            ::free(datum);  // NOLINT
+    public:
+        explicit ArgumentData(const StringVector& strings)
+        {
+            std::transform(strings.begin(), strings.end(),
+                           std::back_inserter(m_data),
+                           [&](const std::string& datum) {
+                               return ::strdup(datum.c_str());
+                           });
         }
-    }
 
-    static auto get_data(const char* argv0) -> StringVector
+        ~ArgumentData()
+        {
+            for (auto* arg : m_data) {
+                ::free(arg);  // NOLINT
+            }
+        }
+
+        auto data() -> Arguments::Argument*
+        {
+            return m_data.data();
+        }
+
+        [[nodiscard]] auto size() const -> std::size_t
+        {
+            return m_data.size();
+        }
+
+    private:
+        ArgumentVector m_data;
+    };
+
+    static auto get_strings(const char* argv0) -> StringVector
     {
         return {
             argv0,
@@ -151,7 +166,7 @@ auto main(int argc, char* argv[]) -> int
     try {
         assert(argc > 0);
         assert(*argv != nullptr);
-        auto data {allocate(get_data(*argv))};
+        ArgumentData data {get_strings(*argv)};
         Arguments args {data.size(), data.data()};
         std::string filename;
         bool verbose {false};
@@ -161,7 +176,6 @@ auto main(int argc, char* argv[]) -> int
         test_view(args.view(), *argv);
         assert(filename == *argv);
         assert(verbose);
-        free(data);
     }
     catch (const std::exception& error) {
         std::cerr << error.what()
