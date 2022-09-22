@@ -20,7 +20,7 @@
 
 #include <algorithm>    // std::transform()
 #include <cstdlib>      // EXIT_FAILURE, std::exit(), std::free()
-#include <cstring>      // strdup()
+#include <cstring>      // strdup(), std::strlen()
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <iterator>     // std::back_inserter()
@@ -69,14 +69,15 @@ namespace TestArguments
     }
 
     static auto parse(std::string& filename, bool& verbose,
-                      const Arguments& arguments) -> void
+                      const Arguments& args) -> void
     {
+        static const char* opts {"f:v"};
 #ifdef USING_GETOPT
         auto optind_begin {get_optind()};
 #endif
         int opt {};
 
-        while ((opt = get_option(arguments, "f:v")) != -1) {
+        while ((opt = get_option(args, opts)) != -1) {
             switch (opt) {
             case 'f':
                 filename = get_optarg();
@@ -84,24 +85,15 @@ namespace TestArguments
             case 'v':
                 verbose = true;
                 break;
-            case '?':
-                std::cerr << "Usage: "
-                          << arguments[0]
-                          << " [-v]"
-                          << std::endl;
-                std::exit(EXIT_FAILURE);
             default:
                 abort();
             }
 
-#ifdef USING_GETOPT
-            if (opt != -1 && opt != '?') {
-                assert(get_optind() > optind_begin);
-                assert(get_optind() <= optind_begin + 2);
-                optind_begin = get_optind();
-            }
-#endif
         }
+#ifdef USING_GETOPT
+        const auto length {static_cast<int>(std::strlen(opts))};
+        assert(get_optind() == optind_begin + length);
+#endif
     }
 
     static auto print(const Arguments::ArgumentSpan& args,
