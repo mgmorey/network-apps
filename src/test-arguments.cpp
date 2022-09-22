@@ -107,7 +107,7 @@ namespace TestArguments
 
         }
 
-        const auto length {to_integer(std::strlen(opts))};
+        const int length = to_integer(std::strlen(opts));
         assert(get_optind() == optind_begin + length);
     }
 

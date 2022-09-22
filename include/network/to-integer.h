@@ -17,6 +17,10 @@
 #define NETWORK_TO_INTEGER_H
 
 #include "network/byte.h"               // Byte, std::to_integer()
+#include "network/integererror.h"       // IntegerError
+
+#include <climits>      // INT_MAX, INT_MIN
+#include <string>       // std::to_string()
 
 namespace Network
 {
@@ -26,7 +30,15 @@ namespace Network
         return std::to_integer<T>(byte);
     }
 
-    extern auto to_integer(std::size_t size) -> int;
+    template<typename T>
+    auto to_integer(T value) -> T
+    {
+        if (value > INT_MAX) {
+            throw IntegerError(std::to_string(value));
+        }
+
+        return static_cast<T>(value);
+    }
 }
 
 #endif
