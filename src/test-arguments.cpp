@@ -51,6 +51,11 @@ namespace TestArguments
                            });
         }
 
+        ArgumentData(const ArgumentData&) = default;
+        ArgumentData(ArgumentData&&) = default;
+        auto operator=(const ArgumentData&) -> ArgumentData& = default;
+        auto operator=(ArgumentData&&) -> ArgumentData& = default;
+
         ~ArgumentData()
         {
             for (auto* arg : m_data) {
