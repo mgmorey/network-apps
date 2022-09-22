@@ -31,13 +31,13 @@ namespace Network
     }
 
     template<typename T>
-    auto to_integer(T value) -> T
+    auto to_integer(T value) -> int
     {
         if (value > INT_MAX) {
             throw IntegerError(std::to_string(value));
         }
 
-        return static_cast<T>(value);
+        return static_cast<int>(value);
     }
 }
 
