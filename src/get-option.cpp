@@ -17,11 +17,14 @@
                                         // get_opterr, get_optind(),
                                         // get_option(), get_optopt()
 #include "network/logicerror.h"         // LogicError
+#include "network/to-integer.h"         // to_integer()
 
 #ifdef WIN32
-#include <getopt.h>         // getopt(), optarg, opterr, optind
+#include <getopt.h>         // getopt(), optarg, opterr, optind,
+                            // optopt
 #else
-#include <unistd.h>         // getopt(), optarg, opterr, optind
+#include <unistd.h>         // getopt(), optarg, opterr, optind,
+                            // optopt
 #endif
 
 auto Network::get_optarg() -> char*
@@ -46,7 +49,7 @@ auto Network::get_option(const Network::Arguments& args,
         throw Network::LogicError("No command-line options to parse");
     }
 
-    return ::getopt(static_cast<int>(args.size()), args.data(), optstring);
+    return ::getopt(to_integer(args.size()), args.data(), optstring);
 }
 
 auto Network::get_optopt() -> int

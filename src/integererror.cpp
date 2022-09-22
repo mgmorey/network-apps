@@ -13,20 +13,30 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_TO_INTEGER_H
-#define NETWORK_TO_INTEGER_H
+#include "network/integererror.h"       // Error, IntegerError
 
-#include "network/byte.h"               // Byte, std::to_integer()
+#include <climits>      // INT_MAX, INT_MIN
+#include <sstream>      // std::ostringstream
 
-namespace Network
+auto Network::IntegerError::format(const std::string& t_value) -> std::string
 {
-    template<typename T>
-    constexpr auto to_integer(Byte byte) noexcept -> T
-    {
-        return std::to_integer<T>(byte);
-    }
-
-    extern auto to_integer(std::size_t size) -> int;
+    std::ostringstream oss;
+    oss << "Value "
+        << t_value
+        << " is out of range ["
+        << INT_MIN
+        << ", "
+        << INT_MAX
+        << "] of int";
+    return oss.str();
 }
 
-#endif
+Network::IntegerError::IntegerError(const std::string& t_value) noexcept :
+    RangeError(format(t_value))
+{
+}
+
+Network::IntegerError::IntegerError(std::string&& t_value) noexcept :
+    RangeError(format(t_value))
+{
+}

@@ -13,20 +13,26 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_TO_INTEGER_H
-#define NETWORK_TO_INTEGER_H
+#ifndef NETWORK_INTEGERERROR_H
+#define NETWORK_INTEGERERROR_H
 
-#include "network/byte.h"               // Byte, std::to_integer()
+#include "network/rangeerror.h"         // RangeError, std::string
 
 namespace Network
 {
-    template<typename T>
-    constexpr auto to_integer(Byte byte) noexcept -> T
+    class IntegerError :
+        public RangeError
     {
-        return std::to_integer<T>(byte);
-    }
-
-    extern auto to_integer(std::size_t size) -> int;
+    public:
+        static auto format(const std::string& t_value) -> std::string;
+        explicit IntegerError(const std::string& t_value) noexcept;
+        explicit IntegerError(std::string&& t_value) noexcept;
+        IntegerError(const IntegerError&) noexcept = default;
+        IntegerError(IntegerError&&) noexcept = default;
+        ~IntegerError() noexcept override = default;
+        auto operator=(const IntegerError&) noexcept -> IntegerError& = default;
+        auto operator=(IntegerError&&) noexcept -> IntegerError& = default;
+    };
 }
 
 #endif

@@ -17,6 +17,7 @@
 #include "network/assert.h"             // assert()
 #include "network/get-option.h"         // get_optarg(), get_optind(),
                                         // get_option()
+#include "network/to-integer.h"         // to_integer()
 
 #include <algorithm>    // std::transform()
 #include <cstdlib>      // EXIT_FAILURE, std::exit(), std::free()
@@ -31,6 +32,7 @@ using Network::Arguments;
 using Network::get_optarg;
 using Network::get_optind;
 using Network::get_option;
+using Network::to_integer;
 
 namespace TestArguments
 {
@@ -90,7 +92,7 @@ namespace TestArguments
 
         }
 
-        const auto length {static_cast<int>(std::strlen(opts))};
+        const auto length {to_integer(std::strlen(opts))};
         assert(get_optind() == optind_begin + length);
     }
 

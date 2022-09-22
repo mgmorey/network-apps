@@ -13,20 +13,17 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_TO_INTEGER_H
-#define NETWORK_TO_INTEGER_H
+#include "network/to-integer.h"         // to_integer()
+#include "network/integererror.h"       // IntegerError
 
-#include "network/byte.h"               // Byte, std::to_integer()
+#include <climits>      // INT_MAX, INT_MIN
+#include <string>       // std::to_string()
 
-namespace Network
+auto Network::to_integer(std::size_t size) -> int
 {
-    template<typename T>
-    constexpr auto to_integer(Byte byte) noexcept -> T
-    {
-        return std::to_integer<T>(byte);
+    if (size > INT_MAX) {
+        throw IntegerError(std::to_string(size));
     }
 
-    extern auto to_integer(std::size_t size) -> int;
+    return static_cast<int>(size);
 }
-
-#endif

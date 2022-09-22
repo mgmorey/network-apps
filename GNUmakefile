@@ -64,17 +64,17 @@ get-sin6-pointer.cpp get-sin6-port.cpp get-size.cpp get-socket.cpp	\
 get-socketpair.cpp get-socketpairresult.cpp get-socketresult.cpp	\
 get-sockets-endpoint.cpp get-sockets-hostname.cpp get-sockname.cpp	\
 get-socknameresult.cpp get-sun-length.cpp get-sun-path-length.cpp	\
-get-sun-path.cpp get-sun-pointer.cpp is-running.cpp is-valid.cpp	\
-logicerror.cpp namelengtherror.cpp open-endpoint.cpp open-fd.cpp	\
-oserrorresult.cpp rangeerror.cpp reset-last-os-error.cpp		\
+get-sun-path.cpp get-sun-pointer.cpp integererror.cpp is-running.cpp	\
+is-valid.cpp logicerror.cpp namelengtherror.cpp open-endpoint.cpp	\
+open-fd.cpp oserrorresult.cpp rangeerror.cpp reset-last-os-error.cpp	\
 runtimeerror.cpp set-last-os-error.cpp sizeerror.cpp socket.cpp		\
 socketfamily.cpp socketflags.cpp sockethints.cpp sockethost.cpp		\
 socketlengtherror.cpp socketprotocol.cpp sockettype.cpp startup.cpp	\
 stream-address.cpp stream-addrinfo.cpp stream-socket.cpp		\
 to-byte-span-sa.cpp to-byte-span-sun.cpp to-byte-span-void.cpp		\
 to-byte-string-bs.cpp to-byte-string-path.cpp to-byte-string-sa.cpp	\
-to-byte-string-sun.cpp to-string-bs.cpp to-string-sin.cpp		\
-to-string-sin6.cpp unlink.cpp version.cpp
+to-byte-string-sun.cpp to-integer.cpp to-string-bs.cpp			\
+to-string-sin.cpp to-string-sin6.cpp unlink.cpp version.cpp
 
 test_sources = test-address.cpp test-arguments.cpp test-bind.cpp	\
 test-connect.cpp test-context.cpp test-host.cpp test-hostname.cpp
