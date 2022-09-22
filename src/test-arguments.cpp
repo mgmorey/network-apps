@@ -37,8 +37,7 @@ namespace TestArguments
     using ArgumentVector = std::vector<Arguments::Argument>;
     using StringVector = std::vector<std::string>;
 
-    static auto allocate_arguments(const StringVector& data) ->
-        ArgumentVector
+    static auto allocate_arguments(const StringVector& data) -> ArgumentVector
     {
         ArgumentVector args;
         std::transform(data.begin(), data.end(),
@@ -69,9 +68,8 @@ namespace TestArguments
         };
     }
 
-    static auto parse_arguments(std::string& filename,
-                                bool& verbose,
-                                Arguments& arguments) -> void
+    static auto parse_arguments(std::string& filename, bool& verbose,
+                                const Arguments& arguments) -> void
     {
 #ifdef USING_GETOPT
         auto optind_begin {get_optind()};
