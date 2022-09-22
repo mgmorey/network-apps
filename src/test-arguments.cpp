@@ -73,9 +73,7 @@ namespace TestArguments
     {
         static const char* opts {"f:v"};
 
-#ifdef USING_GETOPT
         auto optind_begin {get_optind()};
-#endif
         int opt {};
 
         while ((opt = get_option(args, opts)) != -1) {
@@ -91,10 +89,9 @@ namespace TestArguments
             }
 
         }
-#ifdef USING_GETOPT
+
         const auto length {static_cast<int>(std::strlen(opts))};
         assert(get_optind() == optind_begin + length);
-#endif
     }
 
     static auto print(const Arguments::ArgumentSpan& args,
