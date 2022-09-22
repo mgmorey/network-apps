@@ -150,9 +150,13 @@ namespace TestArguments
         assert(std::string {args[5]} == "two");
         assert(std::string {args[6]} == "three");
     }
+}
 
-    static auto test_arguments(int argc, char** argv) -> void
-    {
+auto main(int argc, char* argv[]) -> int
+{
+    using namespace TestArguments;
+
+    try {
         assert(argc > 0);
         assert(*argv != nullptr);
         auto data {allocate(get_data(*argv))};
@@ -166,15 +170,6 @@ namespace TestArguments
         assert(filename == *argv);
         assert(verbose);
         free(data);
-    }
-}
-
-auto main(int argc, char* argv[]) -> int
-{
-    using namespace TestArguments;
-
-    try {
-        test_arguments(argc, argv);
     }
     catch (const std::exception& error) {
         std::cerr << error.what()
