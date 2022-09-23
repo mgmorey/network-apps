@@ -57,7 +57,7 @@ using Network::HostVector;
 using Network::Hostname;
 using Network::OsErrorResult;
 using Network::Overloaded;
-using Network::RangeError;
+using Network::SizeError;
 using Network::SocketFamily;
 using Network::get_hosts;
 using Network::get_sa_family;
@@ -231,7 +231,7 @@ namespace TestAddress
         try {
             to_size(value);
         }
-        catch (const RangeError& error) {
+        catch (const SizeError& error) {
             print(error);
             actual_error_str = error.what();
         }
