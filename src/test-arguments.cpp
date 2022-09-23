@@ -40,12 +40,12 @@ using Network::to_integer;
 
 namespace TestArguments
 {
-    using ArgumentVector = std::vector<Arguments::Argument>;
-    using StringVector = std::vector<std::string>;
-
     static constexpr auto expected_error_int_re {
         R"(Value (\d+|-\d+) is out of range \[-\d+, \d+\] of int)"
     };
+
+    using ArgumentVector = std::vector<Arguments::Argument>;
+    using StringVector = std::vector<std::string>;
 
     class ArgumentData
     {
@@ -99,12 +99,12 @@ namespace TestArguments
     static auto parse(std::string& filename, bool& verbose,
                       const Arguments& args) -> void
     {
-        static const char* opts {"f:v"};
+        static const char* options {"f:v"};
 
         auto optind_begin {get_optind()};
         int opt {};
 
-        while ((opt = get_option(args, opts)) != -1) {
+        while ((opt = get_option(args, options)) != -1) {
             switch (opt) {
             case 'f':
                 filename = get_optarg();
@@ -118,7 +118,7 @@ namespace TestArguments
 
         }
 
-        const auto length {to_integer(std::strlen(opts))};
+        const auto length {to_integer(std::strlen(options))};
         assert(get_optind() == optind_begin + length);
     }
 
