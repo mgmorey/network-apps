@@ -58,12 +58,12 @@ namespace TestArguments
 
         ~ArgumentData()
         {
-            for (auto* arg : m_data) {
-                ::free(arg);  // NOLINT
+            for (auto* datum : m_data) {
+                ::free(datum);  // NOLINT
             }
         }
 
-        auto data() -> Arguments::Argument*
+        [[nodiscard]] auto data() -> Arguments::Argument*
         {
             return m_data.data();
         }
