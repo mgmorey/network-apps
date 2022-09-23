@@ -19,9 +19,9 @@
                                         // get_option()
 #include "network/to-integer.h"         // to_integer()
 
-#include <algorithm>    // std::transform()
+#include <algorithm>    // std::for_each, std::transform()
 #include <cstdlib>      // EXIT_FAILURE, std::exit(), std::free()
-#include <cstring>      // strdup(), std::strlen()
+#include <cstring>      // std::strlen(), strdup()
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <iterator>     // std::back_inserter()
@@ -42,12 +42,12 @@ namespace TestArguments
     class ArgumentData
     {
     public:
-        explicit ArgumentData(const StringVector& strings)
+        explicit ArgumentData(const StringVector& data)
         {
-            std::transform(strings.begin(), strings.end(),
-                           std::back_inserter(m_data),
-                           [&](const std::string& datum) {
-                               return ::strdup(datum.c_str());
+            std::transform(data.begin(), data.end(),
+                           std::back_inserter(m_args),
+                           [&](const std::string& arg) {
+                               return ::strdup(arg.c_str());
                            });
         }
 
@@ -58,23 +58,21 @@ namespace TestArguments
 
         ~ArgumentData()
         {
-            for (auto* datum : m_data) {
-                ::free(datum);  // NOLINT
-            }
+            std::for_each(m_args.begin(), m_args.end(), std::free);
         }
 
         [[nodiscard]] auto data() -> Arguments::Argument*
         {
-            return m_data.data();
+            return m_args.data();
         }
 
         [[nodiscard]] auto size() const -> std::size_t
         {
-            return m_data.size();
+            return m_args.size();
         }
 
     private:
-        ArgumentVector m_data;
+        ArgumentVector m_args;
     };
 
     static auto get_strings(const char* argv0) -> StringVector
