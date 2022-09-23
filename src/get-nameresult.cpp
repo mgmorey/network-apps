@@ -23,6 +23,7 @@
                                         // reset_os_last_error()
 #include "network/socket-error.h"       // socket_error
 #include "network/ss-sizes.h"           // ss_size
+#include "network/to-integer.h"         // to_integer()
 #include "network/to-size.h"            // to_size()
 
 #include <iostream>     // std::cout, std::endl
@@ -45,7 +46,7 @@ auto Network::get_nameresult(const GetNameHandler& handler,
                   << ", "
                   << addr
                   << ", "
-                  << static_cast<int>(length)
+                  << to_integer(length)
                   << ", ...)"
                   << std::endl;
     }
@@ -60,7 +61,7 @@ auto Network::get_nameresult(const GetNameHandler& handler,
             << ", "
             << addr
             << ", "
-            << static_cast<int>(length)
+            << to_integer(length)
             << ", ...) failed with error "
             << error
             << ": "

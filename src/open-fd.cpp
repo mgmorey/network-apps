@@ -24,6 +24,7 @@
                                         // get_last_os_error(),
                                         // reset_last_os_error()
 #include "network/socket-error.h"       // socket_error
+#include "network/to-integer.h"         // to_integer()
 #include "network/to-string.h"          // to_string()
 
 #include <iostream>     // std::cout, std::endl
@@ -55,7 +56,7 @@ auto Network::open(const OpenHandler& handler,
                   << ", "
                   << format(args.str, str)
                   << ", "
-                  << static_cast<int>(length)
+                  << to_integer(length)
                   << ')'
                   << std::endl;
     }
@@ -72,7 +73,7 @@ auto Network::open(const OpenHandler& handler,
             << ", "
             << format(args.str, str)
             << ", "
-            << static_cast<int>(length)
+            << to_integer(length)
             << ") failed with error "
             << error
             << ": "

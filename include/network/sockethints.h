@@ -99,10 +99,10 @@ namespace Network
         constexpr operator addrinfo() const noexcept  // NOLINT
         {
             addrinfo ai {};
-            ai.ai_flags = static_cast<int>(m_flags);
-            ai.ai_family = static_cast<int>(m_family);
-            ai.ai_socktype = static_cast<int>(m_socktype);
-            ai.ai_protocol = static_cast<int>(m_protocol);
+            ai.ai_flags = m_flags;
+            ai.ai_family = m_family;
+            ai.ai_socktype = m_socktype;
+            ai.ai_protocol = m_protocol;
             return ai;
         }
 
