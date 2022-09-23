@@ -20,15 +20,19 @@
 #include "network/to-integer.h"         // to_integer()
 
 #include <algorithm>    // std::for_each, std::transform()
+#include <climits>      // SIZE_MAX
 #include <cstdlib>      // EXIT_FAILURE, std::exit(), std::free()
 #include <cstring>      // std::strlen(), strdup()
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <iterator>     // std::back_inserter()
+#include <regex>        // std::regex, std::regex_match
 #include <string>       // std::string
 #include <vector>       // std::vector
 
 using Network::Arguments;
+using Network::Error;
+using Network::IntegerError;
 using Network::get_optarg;
 using Network::get_optind;
 using Network::get_option;
@@ -38,6 +42,10 @@ namespace TestArguments
 {
     using ArgumentVector = std::vector<Arguments::Argument>;
     using StringVector = std::vector<std::string>;
+
+    static constexpr auto expected_error_int_re {
+        R"(Value (\d+|-\d+) is out of range \[-\d+, \d+\] of int)"
+    };
 
     class ArgumentData
     {
@@ -129,8 +137,17 @@ namespace TestArguments
         }
     }
 
-    static auto test_optional(const Arguments::ArgumentSpan& args,
-                              const char* argv0) -> void
+    static auto print(const Error& error, bool verbose) -> void
+    {
+        if (verbose) {
+            std::cout << "Exception: "
+                      << error.what()
+                      << std::endl;
+        }
+    }
+
+    static auto test_arguments_optional(const Arguments::ArgumentSpan& args,
+                                        const char* argv0) -> void
     {
         print(args, "Optional");
         assert(std::string {args[0]} == "-f");
@@ -139,7 +156,8 @@ namespace TestArguments
         assert(args.size() == 3);
     }
 
-    static auto test_required(const Arguments::ArgumentSpan& args) -> void
+    static auto test_arguments_required(const Arguments::ArgumentSpan& args) ->
+        void
     {
         print(args, "Required");
         assert(std::string {args[0]} == "one");
@@ -148,7 +166,7 @@ namespace TestArguments
         assert(args.size() == 3);
     }
 
-    static auto test_view(const Arguments::ArgumentSpan& args,
+    static auto test_arguments_view(const Arguments::ArgumentSpan& args,
                           const char* argv0) -> void
     {
         print(args, "View");
@@ -160,13 +178,9 @@ namespace TestArguments
         assert(std::string {args[5]} == "two");
         assert(std::string {args[6]} == "three");
     }
-}
 
-auto main(int argc, char* argv[]) -> int
-{
-    using namespace TestArguments;
-
-    try {
+    static auto test_arguments(int argc, char** argv) -> void
+    {
         assert(argc > 0);
         assert(*argv != nullptr);
         ArgumentData data {get_strings(*argv)};
@@ -174,11 +188,42 @@ auto main(int argc, char* argv[]) -> int
         std::string filename;
         bool verbose {false};
         parse(filename, verbose, args);
-        test_optional(args.optional(), *argv);
-        test_required(args.required());
-        test_view(args.view(), *argv);
+        test_arguments_optional(args.optional(), *argv);
+        test_arguments_required(args.required());
+        test_arguments_view(args.view(), *argv);
         assert(filename == *argv);
         assert(verbose);
+    }
+
+    static auto test_integer_invalid(std::size_t value, bool verbose) -> void
+    {
+        std::string actual_error_str;
+
+        try {
+            to_integer(value);
+        }
+        catch (const IntegerError& error) {
+            print(error, verbose);
+            actual_error_str = error.what();
+        }
+
+        const std::regex expected_error_int_regex {expected_error_int_re};
+        assert(std::regex_match(actual_error_str, expected_error_int_regex));
+    }
+
+    static auto test_integer_invalid(bool verbose) -> void
+    {
+        test_integer_invalid(SIZE_MAX, verbose);
+    }
+}
+
+auto main(int argc, char* argv[]) -> int
+{
+    using namespace TestArguments;
+
+    try {
+        test_arguments(argc, argv);
+        test_integer_invalid(false);
     }
     catch (const std::exception& error) {
         std::cerr << error.what()
