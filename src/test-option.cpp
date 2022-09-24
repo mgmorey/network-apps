@@ -90,12 +90,12 @@ namespace TestArguments
     static auto parse(std::string& filename, bool& verbose,
                       const Arguments& args) -> void
     {
-        static const char* options {"f:v"};
+        static const char* optstring {"f:v"};
 
         auto optind_begin {get_optind()};
         int opt {};
 
-        while ((opt = get_option(args, options)) != -1) {
+        while ((opt = get_option(args, optstring)) != -1) {
             switch (opt) {
             case 'f':
                 filename = get_optarg();
@@ -109,7 +109,7 @@ namespace TestArguments
 
         }
 
-        const auto length {to_integer(std::strlen(options))};
+        const auto length {to_integer(std::strlen(optstring))};
         assert(get_optind() == optind_begin + length);
     }
 

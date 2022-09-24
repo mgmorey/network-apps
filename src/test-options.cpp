@@ -14,6 +14,8 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/assert.h"             // assert()
+#include "network/get-option.h"         // Arguments, get_optarg(),
+                                        // get_optind(), get_option()
 #include "network/get-options.h"        // Arguments, get_options()
 #include "network/to-integer.h"         // to_integer()
 
@@ -32,6 +34,7 @@
 using Network::Arguments;
 using Network::Error;
 using Network::IntegerError;
+using Network::get_optind;
 using Network::get_options;
 using Network::to_integer;
 
@@ -88,6 +91,8 @@ namespace TestArguments
                       const Arguments& args) -> void
     {
         static const char* optstring {"f:v"};
+
+        auto optind_begin {get_optind()};
         auto options {get_options(args, optstring)};
 
         filename = options['f'];
@@ -95,6 +100,9 @@ namespace TestArguments
         if (options.find('v') != options.end()) {
             verbose = true;
         }
+
+        const auto length {to_integer(std::strlen(optstring))};
+        assert(get_optind() == optind_begin + length);
     }
 
     static auto print(const Arguments::ArgumentSpan& args,
