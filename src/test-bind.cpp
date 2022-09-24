@@ -156,7 +156,7 @@ namespace TestBind
         return codes;
     }
 
-    static auto parse_arguments(Arguments& arguments) ->
+    static auto parse(Arguments& arguments) ->
         Arguments::ArgumentSpan
     {
         int opt {};
@@ -273,7 +273,7 @@ auto main(int argc, char* argv[]) -> int
     try {
         const auto& context {Context::instance()};
         Arguments arguments {argc, argv};
-        const auto args {parse_arguments(arguments)};
+        const auto args {parse(arguments)};
         const auto* host {!args.empty() ? args[0] : localhost};
         const auto* service {args.size() > 1 ? args[1] : localservice};
         const Endpoint valid_endpoint {host, service};

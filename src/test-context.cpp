@@ -121,7 +121,7 @@ namespace TestContext
         }
     };
 
-    static auto parse_arguments(const Arguments& arguments) -> void
+    static auto parse(const Arguments& arguments) -> void
     {
         int opt {};
 
@@ -349,7 +349,7 @@ auto main(int argc, char* argv[]) -> int
 
     try {
         const Arguments arguments {argc, argv};
-        parse_arguments(arguments);
+        parse(arguments);
         test_context_global_instance();
         test_context_local_instances();
         test_context_valid_with_shutdown();

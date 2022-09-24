@@ -59,7 +59,7 @@ static auto format_message(int error) -> std::string
     return oss.str();
 }
 
-static auto parse_arguments(Arguments& arguments) ->
+static auto parse(Arguments& arguments) ->
     Arguments::ArgumentSpan
 {
     int opt {};
@@ -100,7 +100,7 @@ auto main(int argc, char* argv[]) -> int
 {
     // Fetch arguments from command line;
     Arguments arguments {argc, argv};
-    const auto args {parse_arguments(arguments)};
+    const auto args {parse(arguments)};
 
     try {
         bool shutdown {false};
