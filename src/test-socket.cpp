@@ -28,7 +28,8 @@
 #include <sys/un.h>         // sockaddr_un
 
 #include <cerrno>       // EACCES, ENOENT, EROFS
-#include <cstdlib>      // EXIT_FAILURE, std::exit(), std::size_t
+#include <cstdlib>      // EXIT_FAILURE, std::abort(), std::exit(),
+                        // std::size_t
 #include <exception>    // std::exception
 #include <iomanip>      // std::right, std::setw()
 #include <iostream>     // std::cerr, std::cout, std::endl
@@ -135,7 +136,7 @@ namespace TestSocket
                           << std::endl;
                 std::exit(EXIT_FAILURE);
             default:
-                abort();
+                std::abort();
             }
         }
     }

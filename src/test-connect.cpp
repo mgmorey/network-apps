@@ -42,7 +42,7 @@
 
 #include <algorithm>    // std::for_each()
 #include <cerrno>       // EFAULT, EINVAL, EAFNOSUPPORT
-#include <cstdlib>      // EXIT_FAILURE, std::exit(), std::size_t
+#include <cstdlib>      // EXIT_FAILURE, std::abort(), std::exit()
 #include <exception>    // std::exception
 #include <iomanip>      // std::right, std::setw()
 #include <iostream>     // std::cerr, std::cout, std::endl
@@ -214,7 +214,7 @@ namespace TestConnect
                           << std::endl;
                 std::exit(EXIT_FAILURE);
             default:
-                abort();
+                std::abort();
             }
         }
 

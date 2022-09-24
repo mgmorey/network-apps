@@ -20,7 +20,7 @@
                                         // get_hostname()
 #include "network/to-name-len.h"        // to_name_len()
 
-#include <cstdlib>      // EXIT_FAILURE, std::exit(), std::size_t
+#include <cstdlib>      // EXIT_FAILURE, std::abort(), std::exit()
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <regex>        // std::regex, std::regex_match
@@ -61,7 +61,7 @@ namespace TestHostname
                           << std::endl;
                 std::exit(EXIT_FAILURE);
             default:
-                abort();
+                std::abort();
             }
         }
     }
