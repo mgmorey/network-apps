@@ -56,7 +56,7 @@ connect-fd.cpp context.cpp error.cpp fd.cpp fddata.cpp fdpair.cpp	\
 format-ai-error.cpp format-os-error.cpp format.cpp get-endpoint.cpp	\
 get-endpointresult.cpp get-hostname.cpp get-hostnameresult.cpp		\
 get-hosts.cpp get-last-os-error.cpp get-length.cpp get-name.cpp		\
-get-nameresult.cpp get-option.cpp get-peername.cpp			\
+get-nameresult.cpp get-option.cpp get-options.cpp get-peername.cpp	\
 get-peernameresult.cpp get-sa-data.cpp get-sa-family.cpp		\
 get-sa-length.cpp get-sa-pointer.cpp get-sin-addr.cpp			\
 get-sin-pointer.cpp get-sin-port.cpp get-sin6-addr.cpp			\
@@ -76,8 +76,9 @@ to-byte-string-bs.cpp to-byte-string-path.cpp to-byte-string-sa.cpp	\
 to-byte-string-sun.cpp to-string-bs.cpp to-string-sin.cpp		\
 to-string-sin6.cpp unlink.cpp version.cpp
 
-test_sources = test-address.cpp test-arguments.cpp test-bind.cpp	\
-test-connect.cpp test-context.cpp test-host.cpp test-hostname.cpp
+test_sources = test-address.cpp test-bind.cpp test-connect.cpp		\
+test-context.cpp test-host.cpp test-hostname.cpp test-option.cpp	\
+test-options.cpp
 
 ifneq "$(os_name)" "MINGW64_NT"
 	test_sources += test-socket.cpp

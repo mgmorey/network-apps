@@ -13,10 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/arguments.h"          // Arguments
 #include "network/assert.h"             // assert()
-#include "network/get-option.h"         // get_optarg(), get_optind(),
-                                        // get_option()
+#include "network/get-options.h"        // Arguments, get_options()
 #include "network/to-integer.h"         // to_integer()
 
 #include <algorithm>    // std::for_each, std::transform()
@@ -34,9 +32,7 @@
 using Network::Arguments;
 using Network::Error;
 using Network::IntegerError;
-using Network::get_optarg;
-using Network::get_optind;
-using Network::get_option;
+using Network::get_options;
 using Network::to_integer;
 
 namespace TestArguments
@@ -91,27 +87,14 @@ namespace TestArguments
     static auto parse(std::string& filename, bool& verbose,
                       const Arguments& args) -> void
     {
-        static const char* options {"f:v"};
+        static const char* optstring {"f:v"};
+        auto options {get_options(args, optstring)};
 
-        auto optind_begin {get_optind()};
-        int opt {};
+        filename = options['f'];
 
-        while ((opt = get_option(args, options)) != -1) {
-            switch (opt) {
-            case 'f':
-                filename = get_optarg();
-                break;
-            case 'v':
-                verbose = true;
-                break;
-            default:
-                std::abort();
-            }
-
+        if (options.find('v') != options.end()) {
+            verbose = true;
         }
-
-        const auto length {to_integer(std::strlen(options))};
-        assert(get_optind() == optind_begin + length);
     }
 
     static auto print(const Arguments::ArgumentSpan& args,
