@@ -44,7 +44,6 @@ namespace TestArguments
         R"(Value (\d+|-\d+) is out of range \[-\d+, \d+\] of int)"
     };
 
-    using ArgumentVector = std::vector<Arguments::Argument>;
     using StringVector = std::vector<std::string>;
 
     class ArgumentData
@@ -80,20 +79,12 @@ namespace TestArguments
         }
 
     private:
-        ArgumentVector m_args;
+        std::vector<Arguments::Argument> m_args;
     };
 
     static auto get_strings(const char* argv0) -> StringVector
     {
-        return {
-            argv0,
-            "-f",
-            argv0,
-            "-v",
-            "one",
-            "two",
-            "three"
-        };
+        return {argv0, "-f", argv0, "-v", "one", "two", "three"};
     }
 
     static auto parse(std::string& filename, bool& verbose,
