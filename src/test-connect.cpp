@@ -14,8 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/assert.h"             // assert()
-#include "network/arguments.h"          // Arguments
-#include "network/get-option.h"         // get_option()
+#include "network/get-option.h"         // Arguments, get_option()
 #include "network/network.h"            // Address, Bytes,
                                         // ByteStringResult, Context,
                                         // Endpoint, FdResult,

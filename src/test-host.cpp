@@ -13,9 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/arguments.h"          // Arguments
 #include "network/assert.h"             // assert()
-#include "network/get-option.h"         // get_option()
+#include "network/get-option.h"         // Arguments, get_option()
 #include "network/network.h"            // Address, Bytes, Context,
                                         // Endpoint, HostVector,
                                         // Hostname, OptionalHints,

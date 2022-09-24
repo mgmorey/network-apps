@@ -13,8 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/arguments.h"          // Arguments
-#include "network/get-option.h"         // get_option()
+#include "network/get-option.h"         // Arguments, get_option()
 #include "network/network.h"            // Buffer, Fd, connect(),
                                         // socket_error,
                                         // to_byte_string()
