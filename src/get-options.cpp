@@ -16,10 +16,6 @@
 #include "network/get-options.h"        // Arguments, get_optarg(),
                                         // get_opterr, get_optind(),
                                         // get_option(), get_optopt()
-#include "network/assert.h"             // assert()
-#include "network/to-integer.h"         // to_integer()
-
-#include <cctype>       // std::isalpha()
 
 auto Network::get_options(const Network::Arguments& args,
                           const char* optstring) -> Network::Options
@@ -28,13 +24,8 @@ auto Network::get_options(const Network::Arguments& args,
     int opt {};
 
     while ((opt = get_option(args, optstring)) != -1) {
-        if (std::isalpha(opt) != 0) {
-            const auto optch {static_cast<char>(opt)};
-            options[optch] = get_optarg();
-        }
-        else {
-            std::abort();
-        }
+        const auto optch {static_cast<char>(opt)};
+        options[optch] = get_optarg();
     }
 
     return options;
