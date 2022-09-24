@@ -92,9 +92,8 @@ namespace TestArguments
     {
         static const char* optstring {"f:v"};
 
-        auto optind_begin {get_optind()};
+        const auto optind_begin {get_optind()};
         auto options {get_options(args, optstring)};
-
         filename = options['f'];
 
         if (options.find('v') != options.end()) {
