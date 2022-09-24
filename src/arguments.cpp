@@ -18,7 +18,7 @@
 #include "network/to-size.h"            // to_size()
 
 Network::Arguments::Arguments(std::size_t t_argc, char** t_argv) :
-    m_span(std::span(t_argv, t_argc))
+    m_args(std::span(t_argv, t_argc))
 {
 }
 
@@ -30,11 +30,11 @@ Network::Arguments::Arguments(int t_argc, char** t_argv) :
 auto Network::Arguments::operator[](std::size_t t_offset) const ->
     Network::Arguments::Argument
 {
-    if (t_offset >= m_span.size()) {
+    if (t_offset >= m_args.size()) {
         return nullptr;
     }
 
-    return m_span[t_offset];
+    return m_args[t_offset];
 }
 
 auto Network::Arguments::operator[](int t_offset) const ->
@@ -45,25 +45,25 @@ auto Network::Arguments::operator[](int t_offset) const ->
 
 auto Network::Arguments::optional() -> Network::Arguments::ArgumentSpan
 {
-    return m_span.subspan(1, to_size(get_optind()) - 1);
+    return m_args.subspan(1, to_size(get_optind()) - 1);
 }
 
 auto Network::Arguments::required() -> Network::Arguments::ArgumentSpan
 {
-    return m_span.subspan(to_size(get_optind()));
+    return m_args.subspan(to_size(get_optind()));
 }
 
 auto Network::Arguments::view() -> Network::Arguments::ArgumentSpan
 {
-    return m_span;
+    return m_args;
 }
 
 auto Network::Arguments::data() const -> Argument const*
 {
-    return m_span.data();
+    return m_args.data();
 }
 
 auto Network::Arguments::size() const -> std::size_t
 {
-    return m_span.size();
+    return m_args.size();
 }

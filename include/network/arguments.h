@@ -48,7 +48,7 @@ namespace Network
         [[nodiscard]] auto size() const -> std::size_t;
 
     private:
-        ArgumentSpan m_span;
+        ArgumentSpan m_args;
     };
 }
 
