@@ -92,7 +92,7 @@ namespace TestArguments
     {
         static const char* optstring {"f:v"};
 
-        auto optind_begin {get_optind()};
+        const auto optind_begin {get_optind()};
         int opt {};
 
         while ((opt = get_option(args, optstring)) != -1) {
