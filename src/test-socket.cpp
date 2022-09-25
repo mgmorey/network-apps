@@ -14,7 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/assert.h"             // assert()
-#include "network/get-option.h"         // Arguments, get_option()
+#include "network/get-options.h"        // Arguments, get_options()
 #include "network/network.h"            // Address, Context, FdPair,
                                         // OptionalPathname,
                                         // OsErrorResult, Pathname,
@@ -51,7 +51,7 @@ using Network::OptionalPathname;
 using Network::OsErrorResult;
 using Network::Pathname;
 using Network::RangeError;
-using Network::get_option;
+using Network::get_options;
 using Network::get_sockname;
 using Network::get_sun_path;
 using Network::get_sun_path_size;
@@ -119,24 +119,20 @@ namespace TestSocket
         return pathnames;
     }
 
-    static auto parse(const Arguments& arguments) -> void
+    static auto parse(const Arguments& args) -> void
     {
-        int opt {};
+        auto options {get_options(args, "v")};
 
-        while ((opt = get_option(arguments, "v")) != -1) {
-            switch (opt) {
-            case 'v':
-                verbose = true;
-                break;
-            case '?':
-                std::cerr << "Usage: "
-                          << arguments[0]
-                          << " [-v]"
-                          << std::endl;
-                std::exit(EXIT_FAILURE);
-            default:
-                std::abort();
-            }
+        if (options.find('?') != options.end()) {
+            std::cerr << "Usage: "
+                      << args[0]
+                      << " [-v]"
+                      << std::endl;
+            std::exit(EXIT_FAILURE);
+        }
+
+        if (options.find('v') != options.end()) {
+            verbose = true;
         }
     }
 
@@ -318,8 +314,8 @@ auto main(int argc, char* argv[]) -> int
 
     try {
         const auto& context {Context::instance()};
-        const Arguments arguments {argc, argv};
-        parse(arguments);
+        const Arguments args {argc, argv};
+        parse(args);
 
         if (verbose) {
             std::cout << context;
