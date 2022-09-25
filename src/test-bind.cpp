@@ -14,7 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/assert.h"             // assert()
-#include "network/get-option.h"         // Arguments, get_option()
+#include "network/get-options.h"        // Arguments, get_options()
 #include "network/network.h"            // Address, Bytes,
                                         // ByteStringResult, Context,
                                         // Endpoint, FdResult,
@@ -62,7 +62,7 @@ using Network::Overloaded;
 using Network::SocketHints;
 using Network::SockName;
 using Network::bind;
-using Network::get_option;
+using Network::get_options;
 using Network::get_sockname;
 using Network::os_error_type;
 using Network::string_null;
@@ -155,28 +155,27 @@ namespace TestBind
         return codes;
     }
 
-    static auto parse(Arguments& arguments) ->
-        Arguments::ArgumentSpan
+    static auto parse(Arguments& args) -> Network::Endpoint
     {
-        int opt {};
+        auto options {get_options(args, "v")};
 
-        while ((opt = get_option(arguments, "v")) != -1) {
-            switch (opt) {
-            case 'v':
-                verbose = true;
-                break;
-            case '?':
-                std::cerr << "Usage: "
-                          << arguments[0]
-                          << " [-v]"
-                          << std::endl;
-                std::exit(EXIT_FAILURE);
-            default:
-                std::abort();
-            }
+        if (options.find('?') != options.end()) {
+            std::cerr << "Usage: "
+                      << args[0]
+                      << " [-v]"
+                      << std::endl;
+            std::exit(EXIT_FAILURE);
         }
 
-        return arguments.required();
+        if (options.find('v') != options.end()) {
+            verbose = true;
+        }
+
+        auto required {args.required()};
+        return {
+            !required.empty() ? required[0] : localhost,
+            required.size() > 1 ? required[1] : localservice
+        };
     }
 
     static auto print(const OsErrorResult& result,
@@ -271,17 +270,14 @@ auto main(int argc, char* argv[]) -> int
 
     try {
         const auto& context {Context::instance()};
-        Arguments arguments {argc, argv};
-        const auto args {parse(arguments)};
-        const auto* host {!args.empty() ? args[0] : localhost};
-        const auto* service {args.size() > 1 ? args[1] : localservice};
-        const Endpoint valid_endpoint {host, service};
+        Arguments args {argc, argv};
+        const auto endpoint {parse(args)};
 
         if (verbose) {
             std::cout << context;
         }
 
-        test_bind_valid(valid_endpoint, hints);
+        test_bind_valid(endpoint, hints);
         const ByteString invalid_addr {};
         test_bind_invalid_addr(invalid_addr);
         const Endpoint invalid_host {".", localservice};
