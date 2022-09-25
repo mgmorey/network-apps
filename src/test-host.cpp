@@ -14,7 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/assert.h"             // assert()
-#include "network/get-option.h"         // Arguments, get_option()
+#include "network/get-options.h"        // Arguments, get_options()
 #include "network/network.h"            // Address, Bytes, Context,
                                         // Endpoint, HostVector,
                                         // Hostname, OptionalHints,
@@ -64,7 +64,7 @@ using Network::Overloaded;
 using Network::SocketHints;
 using Network::SocketHost;
 using Network::get_hosts;
-using Network::get_option;
+using Network::get_options;
 using Network::os_error_type;
 using Network::uniquify;
 
@@ -191,28 +191,23 @@ namespace TestHost
         return hostname;
     }
 
-    static auto parse(Arguments& arguments) ->
-        Arguments::ArgumentSpan
+    static auto parse(Arguments& args) -> Arguments::ArgumentSpan
     {
-        int opt {};
+        auto options {get_options(args, "v")};
 
-        while ((opt = get_option(arguments, "v")) != -1) {
-            switch (opt) {
-            case 'v':
-                verbose = true;
-                break;
-            case '?':
-                std::cerr << "Usage: "
-                          << arguments[0]
-                          << " [-v]"
-                          << std::endl;
-                std::exit(EXIT_FAILURE);
-            default:
-                std::abort();
-            }
+        if (options.find('?') != options.end()) {
+            std::cerr << "Usage: "
+                      << args[0]
+                      << " [-v]"
+                      << std::endl;
+            std::exit(EXIT_FAILURE);
         }
 
-        return arguments.required();
+        if (options.find('v') != options.end()) {
+            verbose = true;
+        }
+
+        return args.required();
     }
 
     static auto print(const OsErrorResult& result,
@@ -312,8 +307,8 @@ auto main(int argc, char* argv[]) -> int
 
     try {
         const auto& context {Context::instance()};
-        Arguments arguments {argc, argv};
-        const auto hosts {parse(arguments)};
+        Arguments args {argc, argv};
+        const auto hosts {parse(args)};
 
         if (verbose) {
             std::cout << context;
