@@ -15,7 +15,7 @@
 
 #include "network/assert.h"             // assert()
 #include "network/cleanup.h"            // cleanup()
-#include "network/get-option.h"         // Arguments, get_option()
+#include "network/get-options.h"        // Arguments, get_options()
 #include "network/network.h"            // Context, Error,
                                         // OptionalVersion, Version,
                                         // get_hostname()
@@ -41,7 +41,7 @@ using Network::Version;
 using Network::WindowsVersion;
 #endif
 using Network::get_hostname;
-using Network::get_option;
+using Network::get_options;
 using Network::os_error_type;
 
 namespace TestContext
@@ -120,24 +120,20 @@ namespace TestContext
         }
     };
 
-    static auto parse(const Arguments& arguments) -> void
+    static auto parse(const Arguments& args) -> void
     {
-        int opt {};
+        auto options {get_options(args, "v")};
 
-        while ((opt = get_option(arguments, "v")) != -1) {
-            switch (opt) {
-            case 'v':
-                verbose = true;
-                break;
-            case '?':
-                std::cerr << "Usage: "
-                          << arguments[0]
-                          << " [-v]"
-                          << std::endl;
-                std::exit(EXIT_FAILURE);
-            default:
-                std::abort();
-            }
+        if (options.find('?') != options.end()) {
+            std::cerr << "Usage: "
+                      << args[0]
+                      << " [-v]"
+                      << std::endl;
+            std::exit(EXIT_FAILURE);
+        }
+
+        if (options.find('v') != options.end()) {
+            verbose = true;
         }
     }
 
@@ -347,8 +343,8 @@ auto main(int argc, char* argv[]) -> int
     using namespace TestContext;
 
     try {
-        const Arguments arguments {argc, argv};
-        parse(arguments);
+        const Arguments args {argc, argv};
+        parse(args);
         test_context_global_instance();
         test_context_local_instances();
         test_context_valid_with_shutdown();
