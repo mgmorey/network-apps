@@ -59,13 +59,14 @@ namespace TestArguments
 
         ArgumentData(const ArgumentData&) = default;
         ArgumentData(ArgumentData&&) = default;
-        auto operator=(const ArgumentData&) -> ArgumentData& = default;
-        auto operator=(ArgumentData&&) -> ArgumentData& = default;
 
         ~ArgumentData()
         {
             std::for_each(m_args.begin(), m_args.end(), std::free);
         }
+
+        auto operator=(const ArgumentData&) -> ArgumentData& = default;
+        auto operator=(ArgumentData&&) -> ArgumentData& = default;
 
         [[nodiscard]] auto data() -> Arguments::Argument*
         {
