@@ -37,8 +37,8 @@
 #endif
 
 #include <algorithm>    // std::for_each(), std::remove()
-#include <cstdlib>      // EXIT_FAILURE, std::abort(), std::exit(),
-                        // std::getenv(), std::size_t
+#include <cstdlib>      // EXIT_FAILURE, std::exit(), std::getenv(),
+                        // std::size_t
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <iterator>     // std::next()

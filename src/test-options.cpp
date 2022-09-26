@@ -21,8 +21,7 @@
 
 #include <algorithm>    // std::for_each, std::transform()
 #include <climits>      // SIZE_MAX
-#include <cstdlib>      // EXIT_FAILURE, std::abort(), std::exit(),
-                        // std::free()
+#include <cstdlib>      // EXIT_FAILURE, std::free()
 #include <cstring>      // std::strlen(), strdup()
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl

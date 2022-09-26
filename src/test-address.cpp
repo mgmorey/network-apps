@@ -36,7 +36,7 @@
                             // SOCK_STREAM
 #endif
 
-#include <cstdlib>      // EXIT_FAILURE, std::abort(), std::exit()
+#include <cstdlib>      // EXIT_FAILURE, std::exit()
 #include <exception>    // std::exception
 #include <iomanip>      // std::right, std::setw()
 #include <iostream>     // std::cerr, std::cout, std::endl
