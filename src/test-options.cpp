@@ -148,7 +148,7 @@ namespace TestArguments
     }
 
     static auto test_arguments_view(const Arguments::ArgumentSpan& args,
-                          const char* argv0) -> void
+                                    const char* argv0) -> void
     {
         print(args, "View");
         assert(std::string {args[0]} == argv0);
