@@ -39,9 +39,9 @@ namespace Network
         auto operator=(Arguments&&) noexcept -> Arguments& = default;
         [[nodiscard]] auto operator[](std::size_t t_offset) const -> Argument;
         [[nodiscard]] auto operator[](int t_offset) const -> Argument;
+        [[nodiscard]] auto arguments() -> ArgumentSpan;
         [[nodiscard]] auto optional() -> ArgumentSpan;
         [[nodiscard]] auto required() -> ArgumentSpan;
-        [[nodiscard]] auto view() -> ArgumentSpan;
 
     protected:
         [[nodiscard]] auto data() const -> Argument const*;

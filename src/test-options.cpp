@@ -127,6 +127,19 @@ namespace TestArguments
         }
     }
 
+    static auto test_arguments_all(const Arguments::ArgumentSpan& args,
+                                   const char* argv0) -> void
+    {
+        print(args, "All");
+        assert(std::string {args[0]} == argv0);
+        assert(std::string {args[1]} == "-f");
+        assert(std::string {args[2]} == argv0);
+        assert(std::string {args[3]} == "-v");
+        assert(std::string {args[4]} == "one");
+        assert(std::string {args[5]} == "two");
+        assert(std::string {args[6]} == "three");
+    }
+
     static auto test_arguments_optional(const Arguments::ArgumentSpan& args,
                                         const char* argv0) -> void
     {
@@ -147,19 +160,6 @@ namespace TestArguments
         assert(args.size() == 3);
     }
 
-    static auto test_arguments_view(const Arguments::ArgumentSpan& args,
-                                    const char* argv0) -> void
-    {
-        print(args, "View");
-        assert(std::string {args[0]} == argv0);
-        assert(std::string {args[1]} == "-f");
-        assert(std::string {args[2]} == argv0);
-        assert(std::string {args[3]} == "-v");
-        assert(std::string {args[4]} == "one");
-        assert(std::string {args[5]} == "two");
-        assert(std::string {args[6]} == "three");
-    }
-
     static auto test_arguments(int argc, char** argv) -> void
     {
         assert(argc > 0);
@@ -169,9 +169,9 @@ namespace TestArguments
         std::string filename;
         bool verbose {false};
         parse(filename, verbose, args);
+        test_arguments_all(args.arguments(), *argv);
         test_arguments_optional(args.optional(), *argv);
         test_arguments_required(args.required());
-        test_arguments_view(args.view(), *argv);
         assert(filename == *argv);
         assert(verbose);
     }
