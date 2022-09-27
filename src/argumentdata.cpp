@@ -14,6 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/argumentdata.h"       // Argument, ArgumentData,
+                                        // std::string, std::vector,
                                         // size_t
 
 #include <algorithm>    // std::for_each, std::transform()
