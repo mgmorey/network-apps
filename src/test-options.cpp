@@ -18,7 +18,8 @@
 #include "network/arguments.h"          // Arguments
 #include "network/argumentspan.h"       // ArgumentSpan
 #include "network/assert.h"             // assert()
-#include "network/get-options.h"        // get_optind(), get_options()
+#include "network/get-option.h"         // get_optind()
+#include "network/get-options.h"        // get_options()
 #include "network/to-integer.h"         // to_integer()
 
 #include <climits>      // SIZE_MAX
@@ -51,7 +52,7 @@ namespace TestArguments
     }
 
     static auto parse(std::string& filename, bool& verbose,
-                      const Arguments& args) -> void
+                      Arguments& args) -> void
     {
         static const char* optstring {"f:v"};
 

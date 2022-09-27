@@ -57,13 +57,3 @@ auto Network::Arguments::required() -> Network::ArgumentSpan
 {
     return m_args.subspan(to_size(get_optind()));
 }
-
-auto Network::Arguments::data() const -> Argument const*
-{
-    return m_args.data();
-}
-
-auto Network::Arguments::size() const -> std::size_t
-{
-    return m_args.size();
-}

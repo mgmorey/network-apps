@@ -119,7 +119,7 @@ namespace TestSocket
         return pathnames;
     }
 
-    static auto parse(const Arguments& args) -> void
+    static auto parse(Arguments& args) -> void
     {
         auto options {get_options(args, "v")};
 
@@ -314,7 +314,7 @@ auto main(int argc, char* argv[]) -> int
 
     try {
         const auto& context {Context::instance()};
-        const Arguments args {argc, argv};
+        Arguments args {argc, argv};
         parse(args);
 
         if (verbose) {

@@ -20,11 +20,11 @@
 
 namespace Network
 {
-    auto get_optarg() -> char*;
-    auto get_opterr() -> int;
-    auto get_optind() -> int;
-    auto get_option(const Arguments& args, const char* optstring) -> int;
-    auto get_optopt() -> int;
+    extern auto get_optarg() -> char*;
+    extern auto get_opterr() -> int;
+    extern auto get_optind() -> int;
+    extern auto get_option(Arguments& args, const char* optstring) -> int;
+    extern auto get_optopt() -> int;
 }
 
 #endif

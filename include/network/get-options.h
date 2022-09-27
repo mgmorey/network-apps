@@ -16,7 +16,7 @@
 #ifndef NETWORK_GET_OPTIONS_H
 #define NETWORK_GET_OPTIONS_H
 
-#include "network/get-option.h"         // Arguments, get_option()
+#include "network/arguments.h"          // Argument, Arguments
 
 #include <map>          // std::map
 
@@ -24,8 +24,7 @@ namespace Network
 {
     using Options = std::map<char, Argument>;
 
-    auto get_options(const Arguments& args,
-                     const char* optstring) -> Options;
+    auto get_options(Arguments& args, const char* optstring) -> Options;
 }
 
 #endif

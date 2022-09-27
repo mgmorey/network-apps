@@ -63,7 +63,7 @@ static auto format_message(int error) -> std::string
     return oss.str();
 }
 
-static auto parse(const Arguments& arguments) -> void
+static auto parse(Arguments& arguments) -> void
 {
     int opt {};
 
@@ -109,7 +109,7 @@ auto main(int argc, char* argv[]) -> int
 
     try {
         // Fetch arguments from command line;
-        const Arguments arguments {argc, argv};
+        Arguments arguments {argc, argv};
         parse(arguments);
 
         // Bind Unix domain socket to pathname.

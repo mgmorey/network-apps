@@ -13,9 +13,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-option.h"         // Arguments, get_optarg(),
-                                        // get_opterr, get_optind(),
-                                        // get_option(), get_optopt()
+#include "network/arguments.h"          // Arguments
+#include "network/get-option.h"         // get_optarg(), get_opterr(),
+                                        // get_optind(), get_optopt()
 #include "network/logicerror.h"         // LogicError
 #include "network/to-integer.h"         // to_integer()
 
@@ -42,14 +42,16 @@ auto Network::get_optind() -> int
     return ::optind;
 }
 
-auto Network::get_option(const Network::Arguments& args,
+auto Network::get_option(Arguments& args,
                          const char* optstring) -> int
 {
     if (optstring == nullptr || *optstring == '\0') {
         throw Network::LogicError("No command-line options to parse");
     }
 
-    return ::getopt(to_integer(args.size()), args.data(), optstring);
+    return ::getopt(to_integer(args.arguments().size()),
+                    args.arguments().data(),
+                    optstring);
 }
 
 auto Network::get_optopt() -> int

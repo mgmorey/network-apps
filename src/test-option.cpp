@@ -54,7 +54,7 @@ namespace TestArguments
     }
 
     static auto parse(std::string& filename, bool& verbose,
-                      const Arguments& args) -> void
+                      Arguments& args) -> void
     {
         static const char* optstring {"f:v"};
 

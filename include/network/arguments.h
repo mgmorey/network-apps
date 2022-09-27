@@ -26,9 +26,6 @@ namespace Network
 {
     class Arguments
     {
-        friend auto get_option(const Arguments& args,
-                               const char* optstring) -> int;
-
     public:
         Arguments(std::size_t t_argc, char** t_argv);
         Arguments(int t_argc, char** t_argv);
@@ -42,10 +39,6 @@ namespace Network
         [[nodiscard]] auto arguments() -> ArgumentSpan;
         [[nodiscard]] auto optional() -> ArgumentSpan;
         [[nodiscard]] auto required() -> ArgumentSpan;
-
-    protected:
-        [[nodiscard]] auto data() const -> Argument const*;
-        [[nodiscard]] auto size() const -> std::size_t;
 
     private:
         ArgumentSpan m_args;

@@ -120,7 +120,7 @@ namespace TestContext
         }
     };
 
-    static auto parse(const Arguments& args) -> void
+    static auto parse(Arguments& args) -> void
     {
         auto options {get_options(args, "v")};
 
@@ -343,7 +343,7 @@ auto main(int argc, char* argv[]) -> int
     using namespace TestContext;
 
     try {
-        const Arguments args {argc, argv};
+        Arguments args {argc, argv};
         parse(args);
         test_context_global_instance();
         test_context_local_instances();
