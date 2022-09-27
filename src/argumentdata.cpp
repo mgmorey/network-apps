@@ -13,7 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/argumentdata.h"       // ArgumentData
+#include "network/argumentdata.h"       // Argument, ArgumentData,
+                                        // size_t
 
 #include <algorithm>    // std::for_each, std::transform()
 #include <cstdlib>      // std::free()
