@@ -13,6 +13,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#include "network/argument.h"           // Argument
+#include "network/argumentdata.h"       // ArgumentData
+#include "network/arguments.h"          // Arguments
+#include "network/argumentspan.h"       // ArgumentSpan
 #include "network/assert.h"             // assert()
 #include "network/get-option.h"         // Arguments, get_optarg(),
                                         // get_optind(), get_option()
@@ -30,6 +34,7 @@
 #include <vector>       // std::vector
 
 using Network::Argument;
+using Network::ArgumentData;
 using Network::ArgumentSpan;
 using Network::Arguments;
 using Network::Error;
@@ -45,46 +50,7 @@ namespace TestArguments
         R"(Value (\d+|-\d+) is out of range \[-\d+, \d+\] of int)"
     };
 
-    using StringVector = std::vector<std::string>;
-
-    class ArgumentData
-    {
-    public:
-        explicit ArgumentData(const StringVector& data)
-        {
-            std::transform(data.begin(), data.end(),
-                           std::back_inserter(m_args),
-                           [&](const std::string& arg) {
-                               return ::strdup(arg.c_str());
-                           });
-        }
-
-        ArgumentData(const ArgumentData&) = default;
-        ArgumentData(ArgumentData&&) = default;
-
-        ~ArgumentData()
-        {
-            std::for_each(m_args.begin(), m_args.end(), std::free);
-        }
-
-        auto operator=(const ArgumentData&) -> ArgumentData& = default;
-        auto operator=(ArgumentData&&) -> ArgumentData& = default;
-
-        [[nodiscard]] auto data() -> Argument*
-        {
-            return m_args.data();
-        }
-
-        [[nodiscard]] auto size() const -> std::size_t
-        {
-            return m_args.size();
-        }
-
-    private:
-        std::vector<Argument> m_args;
-    };
-
-    static auto get_strings(const char* argv0) -> StringVector
+    static auto get_strings(const char* argv0) -> std::vector<std::string>
     {
         return {argv0, "-f", argv0, "-v", "one", "two", "three"};
     }
