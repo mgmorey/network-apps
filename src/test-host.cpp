@@ -51,6 +51,7 @@
 #include <vector>       // std::vector
 
 using Network::Address;
+using Network::ArgumentSpan;
 using Network::Arguments;
 using Network::ByteString;
 using Network::Context;
@@ -191,7 +192,7 @@ namespace TestHost
         return hostname;
     }
 
-    static auto parse(Arguments& args) -> Arguments::ArgumentSpan
+    static auto parse(Arguments& args) -> ArgumentSpan
     {
         auto options {get_options(args, "v")};
 

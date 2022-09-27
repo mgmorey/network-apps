@@ -28,7 +28,7 @@ Network::Arguments::Arguments(int t_argc, char** t_argv) :
 }
 
 auto Network::Arguments::operator[](std::size_t t_offset) const ->
-    Network::Arguments::Argument
+    Network::Argument
 {
     if (t_offset >= m_args.size()) {
         return nullptr;
@@ -38,22 +38,22 @@ auto Network::Arguments::operator[](std::size_t t_offset) const ->
 }
 
 auto Network::Arguments::operator[](int t_offset) const ->
-    Network::Arguments::Argument
+    Network::Argument
 {
     return (*this)[to_size(t_offset)];
 }
 
-auto Network::Arguments::arguments() -> Network::Arguments::ArgumentSpan
+auto Network::Arguments::arguments() -> Network::ArgumentSpan
 {
     return m_args;
 }
 
-auto Network::Arguments::optional() -> Network::Arguments::ArgumentSpan
+auto Network::Arguments::optional() -> Network::ArgumentSpan
 {
     return m_args.subspan(1, to_size(get_optind()) - 1);
 }
 
-auto Network::Arguments::required() -> Network::Arguments::ArgumentSpan
+auto Network::Arguments::required() -> Network::ArgumentSpan
 {
     return m_args.subspan(to_size(get_optind()));
 }

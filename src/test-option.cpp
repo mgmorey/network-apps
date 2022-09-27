@@ -29,6 +29,8 @@
 #include <string>       // std::string
 #include <vector>       // std::vector
 
+using Network::Argument;
+using Network::ArgumentSpan;
 using Network::Arguments;
 using Network::Error;
 using Network::IntegerError;
@@ -68,7 +70,7 @@ namespace TestArguments
         auto operator=(const ArgumentData&) -> ArgumentData& = default;
         auto operator=(ArgumentData&&) -> ArgumentData& = default;
 
-        [[nodiscard]] auto data() -> Arguments::Argument*
+        [[nodiscard]] auto data() -> Argument*
         {
             return m_args.data();
         }
@@ -79,7 +81,7 @@ namespace TestArguments
         }
 
     private:
-        std::vector<Arguments::Argument> m_args;
+        std::vector<Argument> m_args;
     };
 
     static auto get_strings(const char* argv0) -> StringVector
@@ -113,7 +115,7 @@ namespace TestArguments
         assert(get_optind() == optind_begin + length);
     }
 
-    static auto print(const Arguments::ArgumentSpan& args,
+    static auto print(const ArgumentSpan& args,
                       const std::string& scope = "All") -> void
     {
         auto index {0};
@@ -137,7 +139,7 @@ namespace TestArguments
         }
     }
 
-    static auto test_arguments_all(const Arguments::ArgumentSpan& args,
+    static auto test_arguments_all(const ArgumentSpan& args,
                                    const char* argv0) -> void
     {
         print(args, "All");
@@ -150,7 +152,7 @@ namespace TestArguments
         assert(std::string {args[6]} == "three");
     }
 
-    static auto test_arguments_optional(const Arguments::ArgumentSpan& args,
+    static auto test_arguments_optional(const ArgumentSpan& args,
                                         const char* argv0) -> void
     {
         print(args, "Optional");
@@ -160,7 +162,7 @@ namespace TestArguments
         assert(args.size() == 3);
     }
 
-    static auto test_arguments_required(const Arguments::ArgumentSpan& args) ->
+    static auto test_arguments_required(const ArgumentSpan& args) ->
         void
     {
         print(args, "Required");

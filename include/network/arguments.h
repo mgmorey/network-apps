@@ -16,6 +16,9 @@
 #ifndef NETWORK_ARGUMENTS_H
 #define NETWORK_ARGUMENTS_H
 
+#include "network/argument.h"           // Argument
+#include "network/argumentspan.h"       // ArgumentSpan
+
 #include <cstddef>      // std::size_t
 #include <span>         // std::span
 
@@ -27,9 +30,6 @@ namespace Network
                                const char* optstring) -> int;
 
     public:
-        using Argument = char*;
-        using ArgumentSpan = std::span<Argument>;
-
         Arguments(std::size_t t_argc, char** t_argv);
         Arguments(int t_argc, char** t_argv);
         Arguments(const Arguments&) noexcept = default;

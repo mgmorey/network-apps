@@ -33,6 +33,7 @@
 #include <vector>       // std::vector
 
 using Network::Buffer;
+using Network::ArgumentSpan;
 using Network::Arguments;
 using Network::Fd;
 using Network::Pathname;
@@ -58,8 +59,7 @@ static auto format_message(int error) -> std::string
     return oss.str();
 }
 
-static auto parse(Arguments& arguments) ->
-    Arguments::ArgumentSpan
+static auto parse(Arguments& arguments) -> ArgumentSpan
 {
     int opt {};
 

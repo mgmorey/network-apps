@@ -13,19 +13,12 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_GET_OPTIONS_H
-#define NETWORK_GET_OPTIONS_H
-
-#include "network/get-option.h"         // Arguments, get_option()
-
-#include <map>          // std::map
+#ifndef NETWORK_ARGUMENT_H
+#define NETWORK_ARGUMENT_H
 
 namespace Network
 {
-    using Options = std::map<char, Argument>;
-
-    auto get_options(const Arguments& args,
-                     const char* optstring) -> Options;
+    using Argument = char*;
 }
 
 #endif
