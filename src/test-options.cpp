@@ -18,9 +18,7 @@
 #include "network/arguments.h"          // Arguments
 #include "network/argumentspan.h"       // ArgumentSpan
 #include "network/assert.h"             // assert()
-#include "network/get-option.h"         // get_optarg(), get_optind(),
-                                        // get_option()
-#include "network/get-options.h"        // get_options()
+#include "network/get-options.h"        // get_optind(), get_options()
 #include "network/to-integer.h"         // to_integer()
 
 #include <climits>      // SIZE_MAX
