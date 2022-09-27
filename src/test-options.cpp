@@ -23,13 +23,10 @@
 #include "network/get-options.h"        // get_options()
 #include "network/to-integer.h"         // to_integer()
 
-#include <algorithm>    // std::for_each, std::transform()
 #include <climits>      // SIZE_MAX
-#include <cstdlib>      // EXIT_FAILURE, std::free()
-#include <cstring>      // std::strlen(), strdup()
+#include <cstring>      // std::strlen()
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
-#include <iterator>     // std::back_inserter()
 #include <regex>        // std::regex, std::regex_match
 #include <string>       // std::string
 #include <vector>       // std::vector
