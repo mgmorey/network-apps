@@ -19,7 +19,7 @@
 auto Network::get_arguments(std::size_t t_argc, char** t_argv) ->
     Network::ArgumentSpan
 {
-    return std::span(t_argv, t_argc);
+    return {t_argv, t_argc};
 }
 
 auto Network::get_arguments(int t_argc, char** t_argv) ->
