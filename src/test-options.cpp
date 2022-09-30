@@ -17,7 +17,6 @@
 #include "network/argumentdata.h"       // ArgumentData
 #include "network/argumentspan.h"       // ArgumentSpan
 #include "network/assert.h"             // assert()
-#include "network/get-arguments.h"      // get_arguments()
 #include "network/get-option.h"         // get_optind()
 #include "network/get-options.h"        // get_options()
 #include "network/to-integer.h"         // to_integer()
@@ -36,7 +35,6 @@ using Network::ArgumentData;
 using Network::ArgumentSpan;
 using Network::Error;
 using Network::IntegerError;
-using Network::get_arguments;
 using Network::get_optind;
 using Network::get_options;
 using Network::to_integer;
