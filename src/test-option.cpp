@@ -143,7 +143,7 @@ namespace TestArguments
         assert(argc > 0);
         assert(*argv != nullptr);
         ArgumentData data {get_strings(*argv)};
-        auto args {get_arguments(data.size(), data.data())};
+        ArgumentSpan args {data.data(), data.size()};
         std::string filename;
         bool verbose {false};
         parse(filename, verbose, args);
