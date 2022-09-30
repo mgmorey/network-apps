@@ -17,6 +17,7 @@
 #define NETWORK_GET_OPTIONS_H
 
 #include "network/arguments.h"          // Argument, Arguments
+#include "network/argumentspan.h"       // Argument, ArgumentSpan
 
 #include <map>          // std::map
 
@@ -24,6 +25,7 @@ namespace Network
 {
     using Options = std::map<char, Argument>;
 
+    auto get_options(ArgumentSpan args, const char* optstring) -> Options;
     auto get_options(Arguments& args, const char* optstring) -> Options;
 }
 

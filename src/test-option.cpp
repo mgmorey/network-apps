@@ -15,12 +15,13 @@
 
 #include "network/argument.h"           // Argument
 #include "network/argumentdata.h"       // ArgumentData
-#include "network/arguments.h"          // Arguments
 #include "network/argumentspan.h"       // ArgumentSpan
 #include "network/assert.h"             // assert()
-#include "network/get-option.h"         // Arguments, get_optarg(),
-                                        // get_optind(), get_option()
+#include "network/get-arguments.h"      // get_arguments()
+#include "network/get-option.h"         // get_optarg(), get_optind(),
+                                        // get_option()
 #include "network/to-integer.h"         // to_integer()
+#include "network/to-size.h"            // to_size()
 
 #include <climits>      // SIZE_MAX
 #include <cstdlib>      // std::abort()
@@ -34,13 +35,14 @@
 using Network::Argument;
 using Network::ArgumentData;
 using Network::ArgumentSpan;
-using Network::Arguments;
 using Network::Error;
 using Network::IntegerError;
+using Network::get_arguments;
 using Network::get_optarg;
 using Network::get_optind;
 using Network::get_option;
 using Network::to_integer;
+using Network::to_size;
 
 namespace TestArguments
 {
@@ -54,7 +56,7 @@ namespace TestArguments
     }
 
     static auto parse(std::string& filename, bool& verbose,
-                      Arguments& args) -> void
+                      ArgumentSpan args) -> void
     {
         static const char* optstring {"f:v"};
 
@@ -79,7 +81,7 @@ namespace TestArguments
         assert(get_optind() == optind_begin + length);
     }
 
-    static auto print(const ArgumentSpan& args,
+    static auto print(const ArgumentSpan args,
                       const std::string& scope = "All") -> void
     {
         auto index {0};
@@ -103,8 +105,28 @@ namespace TestArguments
         }
     }
 
-    static auto test_arguments_all(const ArgumentSpan& args,
-                                   const char* argv0) -> void
+    static auto test_arguments_optional(const ArgumentSpan args,
+                                        const char* argv0) -> void
+    {
+        print(args, "Optional");
+        assert(std::string {args[0]} == "-f");
+        assert(std::string {args[1]} == argv0);
+        assert(std::string {args[2]} == "-v");
+        assert(args.size() == 3);
+    }
+
+    static auto test_arguments_required(const ArgumentSpan args) ->
+        void
+    {
+        print(args, "Required");
+        assert(std::string {args[0]} == "one");
+        assert(std::string {args[1]} == "two");
+        assert(std::string {args[2]} == "three");
+        assert(args.size() == 3);
+    }
+
+    static auto test_arguments(const ArgumentSpan args,
+                               const char* argv0) -> void
     {
         print(args, "All");
         assert(std::string {args[0]} == argv0);
@@ -116,38 +138,20 @@ namespace TestArguments
         assert(std::string {args[6]} == "three");
     }
 
-    static auto test_arguments_optional(const ArgumentSpan& args,
-                                        const char* argv0) -> void
-    {
-        print(args, "Optional");
-        assert(std::string {args[0]} == "-f");
-        assert(std::string {args[1]} == argv0);
-        assert(std::string {args[2]} == "-v");
-        assert(args.size() == 3);
-    }
-
-    static auto test_arguments_required(const ArgumentSpan& args) ->
-        void
-    {
-        print(args, "Required");
-        assert(std::string {args[0]} == "one");
-        assert(std::string {args[1]} == "two");
-        assert(std::string {args[2]} == "three");
-        assert(args.size() == 3);
-    }
-
     static auto test_arguments(int argc, char** argv) -> void
     {
         assert(argc > 0);
         assert(*argv != nullptr);
         ArgumentData data {get_strings(*argv)};
-        Arguments args {data.size(), data.data()};
+        auto args {get_arguments(data.size(), data.data())};
         std::string filename;
         bool verbose {false};
         parse(filename, verbose, args);
-        test_arguments_all(args.arguments(), *argv);
-        test_arguments_optional(args.optional(), *argv);
-        test_arguments_required(args.required());
+        test_arguments(args, *argv);
+        auto optional {args.subspan(1, to_size(get_optind()) - 1)};
+        test_arguments_optional(optional, *argv);
+        auto required {args.subspan(to_size(get_optind()))};
+        test_arguments_required(required);
         assert(filename == *argv);
         assert(verbose);
     }

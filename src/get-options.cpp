@@ -13,12 +13,13 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#include "network/get-options.h"        // ArgumentSpan, Arguments,
+                                        // get_options()
 #include "network/get-option.h"         // get_optarg(), get_opterr(),
                                         // get_optind(), get_option(),
                                         // get_optopt()
-#include "network/get-options.h"        // Arguments, get_options()
 
-auto Network::get_options(Network::Arguments& args,
+auto Network::get_options(Network::ArgumentSpan args,
                           const char* optstring) -> Network::Options
 {
     Options options;
@@ -30,4 +31,10 @@ auto Network::get_options(Network::Arguments& args,
     }
 
     return options;
+}
+
+auto Network::get_options(Network::Arguments& args,
+                          const char* optstring) -> Network::Options
+{
+    return get_options(args.arguments(), optstring);
 }

@@ -42,16 +42,20 @@ auto Network::get_optind() -> int
     return ::optind;
 }
 
-auto Network::get_option(Arguments& args,
+auto Network::get_option(ArgumentSpan args,
                          const char* optstring) -> int
 {
     if (optstring == nullptr || *optstring == '\0') {
         throw Network::LogicError("No command-line options to parse");
     }
 
-    return ::getopt(to_integer(args.arguments().size()),
-                    args.arguments().data(),
-                    optstring);
+    return ::getopt(to_integer(args.size()), args.data(), optstring);
+}
+
+auto Network::get_option(Arguments& args,
+                         const char* optstring) -> int
+{
+    return get_option(args.arguments(), optstring);
 }
 
 auto Network::get_optopt() -> int
