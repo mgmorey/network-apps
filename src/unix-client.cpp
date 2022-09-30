@@ -98,7 +98,7 @@ static auto write(const std::string& str, const Fd& fd) -> ssize_t
 auto main(int argc, char* argv[]) -> int
 {
     // Fetch arguments from command line;
-    ArgumentSpan args {argv, to_size(argc)};
+    const ArgumentSpan args {argv, to_size(argc)};
     const auto words {parse(args)};
 
     try {
