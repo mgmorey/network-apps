@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/argumentspan.h"       // ArgumentSpan
+#include "network/argumentspan.h"       // ArgumentSpan, std::span
 #include "network/assert.h"             // assert()
 #include "network/get-option.h"         // get_optind()
 #include "network/get-options.h"        // get_options()
@@ -311,7 +311,7 @@ auto main(int argc, char* argv[]) -> int
 
     try {
         const auto& context {Context::instance()};
-        const auto hosts {parse(ArgumentSpan {argv, to_size(argc)})};
+        const auto hosts {parse(std::span {argv, to_size(argc)})};
 
         if (verbose) {
             std::cout << context;

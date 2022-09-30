@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/argumentspan.h"       // ArgumentSpan
+#include "network/argumentspan.h"       // ArgumentSpan, std::span
 #include "network/get-option.h"         // get_option()
 #include "network/get-options.h"        // get_options()
 #include "network/network.h"            // Buffer, Fd, connect(),
@@ -109,7 +109,7 @@ auto main(int argc, char* argv[]) -> int
 
     try {
         // Fetch arguments from command line;
-        parse(ArgumentSpan {argv, to_size(argc)});
+        parse(std::span {argv, to_size(argc)});
 
         // Bind Unix domain socket to pathname.
         const auto bind_fd {get_bind_socket(hints)};

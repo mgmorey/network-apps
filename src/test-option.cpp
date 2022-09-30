@@ -15,7 +15,7 @@
 
 #include "network/argument.h"           // Argument
 #include "network/argumentdata.h"       // ArgumentData
-#include "network/argumentspan.h"       // ArgumentSpan
+#include "network/argumentspan.h"       // ArgumentSpan, std::span
 #include "network/assert.h"             // assert()
 #include "network/get-option.h"         // get_optarg(), get_optind(),
                                         // get_option()

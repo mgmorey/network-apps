@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/argumentspan.h"       // ArgumentSpan
+#include "network/argumentspan.h"       // ArgumentSpan, std::span
 #include "network/get-option.h"         // get_optind()
 #include "network/get-options.h"        // get_options()
 #include "network/network.h"            // Buffer, Fd, connect(),
@@ -97,7 +97,7 @@ static auto write(const std::string& str, const Fd& fd) -> ssize_t
 
 auto main(int argc, char* argv[]) -> int
 {
-    const auto args {parse(ArgumentSpan {argv, to_size(argc)})};
+    const auto args {parse(std::span {argv, to_size(argc)})};
 
     try {
         bool shutdown {false};
