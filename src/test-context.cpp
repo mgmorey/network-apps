@@ -345,8 +345,7 @@ auto main(int argc, char* argv[]) -> int
     using namespace TestContext;
 
     try {
-        const ArgumentSpan args {argv, to_size(argc)};
-        parse(args);
+        parse(ArgumentSpan {argv, to_size(argc)});
         test_context_global_instance();
         test_context_local_instances();
         test_context_valid_with_shutdown();

@@ -311,8 +311,7 @@ auto main(int argc, char* argv[]) -> int
 
     try {
         const auto& context {Context::instance()};
-        const ArgumentSpan args {argv, to_size(argc)};
-        const auto hosts {parse(args)};
+        const auto hosts {parse(ArgumentSpan {argv, to_size(argc)})};
 
         if (verbose) {
             std::cout << context;

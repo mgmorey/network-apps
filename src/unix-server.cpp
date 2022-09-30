@@ -109,8 +109,7 @@ auto main(int argc, char* argv[]) -> int
 
     try {
         // Fetch arguments from command line;
-        const ArgumentSpan args {argv, to_size(argc)};
-        parse(args);
+        parse(ArgumentSpan {argv, to_size(argc)});
 
         // Bind Unix domain socket to pathname.
         const auto bind_fd {get_bind_socket(hints)};

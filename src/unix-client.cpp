@@ -97,9 +97,7 @@ static auto write(const std::string& str, const Fd& fd) -> ssize_t
 
 auto main(int argc, char* argv[]) -> int
 {
-    // Fetch arguments from command line;
-    const ArgumentSpan args {argv, to_size(argc)};
-    const auto words {parse(args)};
+    const auto args {parse(ArgumentSpan {argv, to_size(argc)})};
 
     try {
         bool shutdown {false};
@@ -117,8 +115,8 @@ auto main(int argc, char* argv[]) -> int
         }
 
         // Send arguments to server.
-        for (const auto& word : words) {
-            const std::string str {word};
+        for (const auto& arg : args) {
+            const std::string str {arg};
             const auto write_code = write(str, fd);
 
             if (write_code == -1) {

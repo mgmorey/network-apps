@@ -316,8 +316,7 @@ auto main(int argc, char* argv[]) -> int
 
     try {
         const auto& context {Context::instance()};
-        const ArgumentSpan args {argv, to_size(argc)};
-        parse(args);
+        parse(ArgumentSpan {argv, to_size(argc)});
 
         if (verbose) {
             std::cout << context;
