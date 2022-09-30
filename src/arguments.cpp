@@ -14,16 +14,17 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/arguments.h"          // Arguments
+#include "network/get-arguments.h"      // get_arguments()
 #include "network/get-option.h"         // get_optind()
 #include "network/to-size.h"            // to_size()
 
 Network::Arguments::Arguments(std::size_t t_argc, char** t_argv) :
-    m_args(std::span(t_argv, t_argc))
+    m_args(get_arguments(t_argc, t_argv))
 {
 }
 
 Network::Arguments::Arguments(int t_argc, char** t_argv) :
-    Arguments(to_size(t_argc), t_argv)
+    m_args(get_arguments(t_argc, t_argv))
 {
 }
 
