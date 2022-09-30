@@ -13,10 +13,13 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-option.h"         // Arguments, get_option()
+#include "network/argumentspan.h"       // ArgumentSpan
+#include "network/get-option.h"         // get_optind()
+#include "network/get-options.h"        // get_options()
 #include "network/network.h"            // Buffer, Fd, connect(),
                                         // socket_error,
                                         // to_byte_string()
+#include "network/to-size.h"            // to_size()
 #include "unix-common.h"                // BUFFER_SIZE, SOCKET_NAME
 
 #include <sys/socket.h>         // SOCK_SEQPACKET
@@ -32,17 +35,18 @@
 #include <sstream>      // std::ostringstream
 #include <vector>       // std::vector
 
-using Network::Buffer;
 using Network::ArgumentSpan;
-using Network::Arguments;
+using Network::Buffer;
 using Network::Fd;
 using Network::Pathname;
 using Network::connect;
 using Network::fd_type;
 using Network::format_os_error;
-using Network::get_option;
+using Network::get_optind;
+using Network::get_options;
 using Network::os_error_type;
 using Network::to_byte_string;
+using Network::to_size;
 
 using IoResult = std::pair<std::string, ssize_t>;
 
@@ -59,27 +63,23 @@ static auto format_message(int error) -> std::string
     return oss.str();
 }
 
-static auto parse(Arguments& arguments) -> ArgumentSpan
+static auto parse(ArgumentSpan args) -> ArgumentSpan
 {
-    int opt {};
+    auto options {get_options(args, "v")};
 
-    while ((opt = get_option(arguments, "v")) != -1) {
-        switch (opt) {
-        case 'v':
-            verbose = true;
-            break;
-        case '?':
-            std::cerr << "Usage: "
-                      << arguments[0]
-                      << " [-v]"
-                      << std::endl;
-            std::exit(EXIT_FAILURE);
-        default:
-            abort();
-        }
+    if (options.find('?') != options.end()) {
+        std::cerr << "Usage: "
+                  << args[0]
+                  << " [-v]"
+                  << std::endl;
+        std::exit(EXIT_FAILURE);
     }
 
-    return arguments.required();
+    if (options.find('v') != options.end()) {
+        verbose = true;
+    }
+
+    return args.subspan(to_size(get_optind()));
 }
 
 static auto read(const Fd& fd) -> IoResult
@@ -98,8 +98,8 @@ static auto write(const std::string& str, const Fd& fd) -> ssize_t
 auto main(int argc, char* argv[]) -> int
 {
     // Fetch arguments from command line;
-    Arguments arguments {argc, argv};
-    const auto args {parse(arguments)};
+    ArgumentSpan args {argv, to_size(argc)};
+    const auto words {parse(args)};
 
     try {
         bool shutdown {false};
@@ -117,8 +117,8 @@ auto main(int argc, char* argv[]) -> int
         }
 
         // Send arguments to server.
-        for (const auto& arg : args) {
-            const std::string str {arg};
+        for (const auto& word : words) {
+            const std::string str {word};
             const auto write_code = write(str, fd);
 
             if (write_code == -1) {

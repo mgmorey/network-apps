@@ -16,7 +16,6 @@
 #ifndef NETWORK_GET_OPTION_H
 #define NETWORK_GET_OPTION_H
 
-#include "network/arguments.h"          // Arguments
 #include "network/argumentspan.h"       // ArgumentSpan
 
 namespace Network
@@ -25,7 +24,6 @@ namespace Network
     extern auto get_opterr() -> int;
     extern auto get_optind() -> int;
     extern auto get_option(ArgumentSpan args, const char* optstring) -> int;
-    extern auto get_option(Arguments& args, const char* optstring) -> int;
     extern auto get_optopt() -> int;
 }
 

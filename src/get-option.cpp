@@ -13,7 +13,6 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/arguments.h"          // Arguments
 #include "network/get-option.h"         // get_optarg(), get_opterr(),
                                         // get_optind(), get_optopt()
 #include "network/logicerror.h"         // LogicError
@@ -50,12 +49,6 @@ auto Network::get_option(ArgumentSpan args,
     }
 
     return ::getopt(to_integer(args.size()), args.data(), optstring);
-}
-
-auto Network::get_option(Arguments& args,
-                         const char* optstring) -> int
-{
-    return get_option(args.arguments(), optstring);
 }
 
 auto Network::get_optopt() -> int

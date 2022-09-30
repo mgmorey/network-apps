@@ -13,8 +13,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#include "network/argumentspan.h"       // ArgumentSpan
 #include "network/assert.h"             // assert()
-#include "network/get-options.h"        // Arguments, get_options()
+#include "network/get-options.h"        // get_options()
 #include "network/network.h"            // Address, Bytes, Context,
                                         // Family, Hostname,
                                         // HostVector, OsErrorResult,
@@ -47,7 +48,7 @@
 
 using Network::Address;
 using Network::AddressError;
-using Network::Arguments;
+using Network::ArgumentSpan;
 using Network::Byte;
 using Network::ByteString;
 using Network::Context;
@@ -80,7 +81,7 @@ namespace TestAddress
 
     static bool verbose {false};  // NOLINT
 
-    static auto parse(Arguments& args) -> void
+    static auto parse(ArgumentSpan args) -> void
     {
         auto options {get_options(args, "v")};
 
@@ -247,7 +248,7 @@ auto main(int argc, char* argv[]) -> int
 
     try {
         const auto& context {Context::instance()};
-        Arguments args {argc, argv};
+        ArgumentSpan args {argv, to_size(argc)};
         parse(args);
 
         if (verbose) {

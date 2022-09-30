@@ -13,8 +13,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#include "network/argumentspan.h"       // ArgumentSpan
 #include "network/assert.h"             // assert()
-#include "network/get-options.h"        // Arguments, get_options()
+#include "network/get-option.h"         // get_optind()
+#include "network/get-options.h"        // get_options()
 #include "network/network.h"            // Address, Bytes, Context,
                                         // Endpoint, HostVector,
                                         // Hostname, OptionalHints,
@@ -22,6 +24,7 @@
                                         // SocketHints, SocketHost,
                                         // get_endpoint(),
                                         // get_hosts(), uniquify()
+#include "network/to-size.h"            // to_size()
 
 #ifdef WIN32
 #include <winsock2.h>       // AF_INET, AF_INET6, AF_UNSPEC,
@@ -44,7 +47,6 @@
 #include <iterator>     // std::next()
 #include <ostream>      // std::ostream
 #include <set>          // std::set
-#include <span>         // std::span
 #include <string>       // std::string
 #include <utility>      // std::pair
 #include <variant>      // std::visit()
@@ -52,7 +54,6 @@
 
 using Network::Address;
 using Network::ArgumentSpan;
-using Network::Arguments;
 using Network::ByteString;
 using Network::Context;
 using Network::Endpoint;
@@ -65,8 +66,10 @@ using Network::Overloaded;
 using Network::SocketHints;
 using Network::SocketHost;
 using Network::get_hosts;
+using Network::get_optind;
 using Network::get_options;
 using Network::os_error_type;
+using Network::to_size;
 using Network::uniquify;
 
 namespace TestHost
@@ -192,7 +195,7 @@ namespace TestHost
         return hostname;
     }
 
-    static auto parse(Arguments& args) -> ArgumentSpan
+    static auto parse(ArgumentSpan args) -> ArgumentSpan
     {
         auto options {get_options(args, "v")};
 
@@ -208,7 +211,7 @@ namespace TestHost
             verbose = true;
         }
 
-        return args.required();
+        return args.subspan(to_size(get_optind()));
     }
 
     static auto print(const OsErrorResult& result,
@@ -308,7 +311,7 @@ auto main(int argc, char* argv[]) -> int
 
     try {
         const auto& context {Context::instance()};
-        Arguments args {argc, argv};
+        ArgumentSpan args {argv, to_size(argc)};
         const auto hosts {parse(args)};
 
         if (verbose) {

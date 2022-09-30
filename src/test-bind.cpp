@@ -13,8 +13,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#include "network/argumentspan.h"       // ArgumentSpan
 #include "network/assert.h"             // assert()
-#include "network/get-options.h"        // Arguments, get_options()
+#include "network/get-option.h"         // get_optind()
+#include "network/get-options.h"        // get_options()
 #include "network/network.h"            // Address, Bytes,
                                         // ByteStringResult, Context,
                                         // Endpoint, FdResult,
@@ -23,6 +25,7 @@
                                         // Overloaded, bind(),
                                         // get_sockname(),
                                         // string_null
+#include "network/to-size.h"            // to_size()
 
 #ifdef WIN32
 #include <winsock2.h>       // AF_INET, AF_INET6, PF_INET, PF_INET6,
@@ -43,14 +46,13 @@
 #include <iomanip>      // std::right, std::setw()
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <set>          // std::set
-#include <span>         // std::span
 #include <string>       // std::string
 #include <utility>      // std::move()
 #include <variant>      // std::visit()
 #include <vector>       // std::vector
 
 using Network::Address;
-using Network::Arguments;
+using Network::ArgumentSpan;
 using Network::ByteString;
 using Network::Context;
 using Network::Endpoint;
@@ -62,10 +64,12 @@ using Network::Overloaded;
 using Network::SocketHints;
 using Network::SockName;
 using Network::bind;
+using Network::get_optind;
 using Network::get_options;
 using Network::get_sockname;
 using Network::os_error_type;
 using Network::string_null;
+using Network::to_size;
 
 namespace TestBind
 {
@@ -155,7 +159,7 @@ namespace TestBind
         return codes;
     }
 
-    static auto parse(Arguments& args) -> Network::Endpoint
+    static auto parse(ArgumentSpan args) -> Network::Endpoint
     {
         auto options {get_options(args, "v")};
 
@@ -171,7 +175,7 @@ namespace TestBind
             verbose = true;
         }
 
-        auto required {args.required()};
+        auto required {args.subspan(to_size(get_optind()))};
         return {
             !required.empty() ? required[0] : localhost,
             required.size() > 1 ? required[1] : localservice
@@ -270,7 +274,7 @@ auto main(int argc, char* argv[]) -> int
 
     try {
         const auto& context {Context::instance()};
-        Arguments args {argc, argv};
+        ArgumentSpan args {argv, to_size(argc)};
         const auto endpoint {parse(args)};
 
         if (verbose) {

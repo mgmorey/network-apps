@@ -32,9 +32,3 @@ auto Network::get_options(Network::ArgumentSpan args,
 
     return options;
 }
-
-auto Network::get_options(Network::Arguments& args,
-                          const char* optstring) -> Network::Options
-{
-    return get_options(args.arguments(), optstring);
-}

@@ -13,12 +13,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#include "network/argumentspan.h"       // ArgumentSpan
 #include "network/assert.h"             // assert()
 #include "network/cleanup.h"            // cleanup()
-#include "network/get-options.h"        // Arguments, get_options()
+#include "network/get-options.h"        // get_options()
 #include "network/network.h"            // Context, Error,
                                         // OptionalVersion, Version,
                                         // get_hostname()
+#include "network/to-size.h"            // to_size()
 
 #ifdef WIN32
 #include <winsock2.h>       // WSAEFAULT, WSAEPROCLIM,
@@ -29,10 +31,9 @@
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
-#include <span>         // std::span
 #include <vector>       // std::vector
 
-using Network::Arguments;
+using Network::ArgumentSpan;
 using Network::Error;
 using Network::Hostname;
 using Network::OptionalVersion;
@@ -43,6 +44,7 @@ using Network::WindowsVersion;
 using Network::get_hostname;
 using Network::get_options;
 using Network::os_error_type;
+using Network::to_size;
 
 namespace TestContext
 {
@@ -120,7 +122,7 @@ namespace TestContext
         }
     };
 
-    static auto parse(Arguments& args) -> void
+    static auto parse(ArgumentSpan args) -> void
     {
         auto options {get_options(args, "v")};
 
@@ -343,7 +345,7 @@ auto main(int argc, char* argv[]) -> int
     using namespace TestContext;
 
     try {
-        Arguments args {argc, argv};
+        ArgumentSpan args {argv, to_size(argc)};
         parse(args);
         test_context_global_instance();
         test_context_local_instances();

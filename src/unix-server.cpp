@@ -13,10 +13,13 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-option.h"         // Arguments, get_option()
+#include "network/argumentspan.h"       // ArgumentSpan
+#include "network/get-option.h"         // get_option()
+#include "network/get-options.h"        // get_options()
 #include "network/network.h"            // Buffer, Fd, connect(),
                                         // socket_error,
                                         // to_byte_string()
+#include "network/to-size.h"            // to_size()
 #include "unix-common.h"                // BUFFER_SIZE, SOCKET_NAME
 
 #include <sys/socket.h>         // SOCK_SEQPACKET, ::accept(),
@@ -33,7 +36,7 @@
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string, std::to_string()
 
-using Network::Arguments;
+using Network::ArgumentSpan;
 using Network::Buffer;
 using Network::Fd;
 using Network::Pathname;
@@ -41,9 +44,10 @@ using Network::SocketHints;
 using Network::bind;
 using Network::fd_type;
 using Network::format_os_error;
-using Network::get_option;
+using Network::get_options;
 using Network::socket_error;
 using Network::to_byte_string;
+using Network::to_size;
 
 using IoResult = std::pair<std::string, ssize_t>;
 
@@ -63,24 +67,20 @@ static auto format_message(int error) -> std::string
     return oss.str();
 }
 
-static auto parse(Arguments& arguments) -> void
+static auto parse(ArgumentSpan args) -> void
 {
-    int opt {};
+    auto options {get_options(args, "v")};
 
-    while ((opt = get_option(arguments, "v")) != -1) {
-        switch (opt) {
-        case 'v':
-            verbose = true;
-            break;
-        case '?':
-            std::cerr << "Usage: "
-                      << arguments[0]
-                      << " [-v]"
-                      << std::endl;
-            std::exit(EXIT_FAILURE);
-        default:
-            abort();
-        }
+    if (options.find('?') != options.end()) {
+        std::cerr << "Usage: "
+                  << args[0]
+                  << " [-v]"
+                  << std::endl;
+        std::exit(EXIT_FAILURE);
+    }
+
+    if (options.find('v') != options.end()) {
+        verbose = true;
     }
 }
 
@@ -109,8 +109,8 @@ auto main(int argc, char* argv[]) -> int
 
     try {
         // Fetch arguments from command line;
-        Arguments arguments {argc, argv};
-        parse(arguments);
+        ArgumentSpan args {argv, to_size(argc)};
+        parse(args);
 
         // Bind Unix domain socket to pathname.
         const auto bind_fd {get_bind_socket(hints)};

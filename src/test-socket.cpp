@@ -13,14 +13,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#include "network/argumentspan.h"       // ArgumentSpan
 #include "network/assert.h"             // assert()
-#include "network/get-options.h"        // Arguments, get_options()
+#include "network/get-options.h"        // get_options()
 #include "network/network.h"            // Address, Context, FdPair,
                                         // OptionalPathname,
                                         // OsErrorResult, Pathname,
                                         // get_sun_path(),
                                         // string_null,
                                         // to_byte_string()
+#include "network/to-size.h"            // to_size()
 #include "network/to-sock-len.h"        // to_sock_len()
 
 #include <sys/socket.h>     // AF_UNIX, AF_UNSPEC, SOCK_STREAM
@@ -35,13 +37,12 @@
 #include <optional>     // std::nullopt
 #include <regex>        // std::regex, std::regex_match
 #include <set>          // std::set
-#include <span>         // std::span
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
 #include <vector>       // std::vector
 
 using Network::Address;
-using Network::Arguments;
+using Network::ArgumentSpan;
 using Network::Context;
 using Network::Error;
 using Network::Fd;
@@ -59,6 +60,7 @@ using Network::os_error_type;
 using Network::sock_len_max;
 using Network::to_byte_string;
 using Network::to_sock_len;
+using Network::to_size;
 
 namespace TestSocket
 {
@@ -119,7 +121,7 @@ namespace TestSocket
         return pathnames;
     }
 
-    static auto parse(Arguments& args) -> void
+    static auto parse(ArgumentSpan args) -> void
     {
         auto options {get_options(args, "v")};
 
@@ -314,7 +316,7 @@ auto main(int argc, char* argv[]) -> int
 
     try {
         const auto& context {Context::instance()};
-        Arguments args {argc, argv};
+        ArgumentSpan args {argv, to_size(argc)};
         parse(args);
 
         if (verbose) {
