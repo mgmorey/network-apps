@@ -16,16 +16,11 @@
 #ifndef NETWORK_GET_ARGUMENTS_H
 #define NETWORK_GET_ARGUMENTS_H
 
-#include "network/argumentspan.h"       // ArgumentSpan, std::span
-
-#include <cstddef>      // std::size_t
+#include "network/argumentspan.h"       // ArgumentSpan
 
 namespace Network
 {
-    extern auto get_arguments(std::size_t t_argc, char** t_argv) ->
-        ArgumentSpan;
-    extern auto get_arguments(int t_argc, char** t_argv) ->
-        ArgumentSpan;
+    extern auto get_arguments(int t_argc, char** t_argv) -> ArgumentSpan;
 }
 
 #endif

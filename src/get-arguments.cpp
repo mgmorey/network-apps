@@ -13,17 +13,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-arguments.h"      // ArgumentSpan, std::span
+#include "network/get-arguments.h"      // ArgumentSpan
 #include "network/to-size.h"            // to_size()
 
-auto Network::get_arguments(std::size_t t_argc, char** t_argv) ->
-    Network::ArgumentSpan
+auto Network::get_arguments(int t_argc, char** t_argv) -> Network::ArgumentSpan
 {
-    return {t_argv, t_argc};
-}
-
-auto Network::get_arguments(int t_argc, char** t_argv) ->
-    Network::ArgumentSpan
-{
-    return get_arguments(to_size(t_argc), t_argv);
+    return {t_argv, to_size(t_argc)};
 }
