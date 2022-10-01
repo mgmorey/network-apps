@@ -216,10 +216,10 @@ namespace TestConnect
             verbose = true;
         }
 
-        auto required {args.subspan(to_size(get_optind()))};
+        auto positional {args.subspan(to_size(get_optind()))};
         return {
-            !required.empty() ? required[0] : localhost,
-            required.size() > 1 ? required[1] : localservice
+            !positional.empty() ? positional[0] : localhost,
+            positional.size() > 1 ? positional[1] : localservice
         };
     }
 
