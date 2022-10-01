@@ -80,13 +80,13 @@ namespace TestArguments
     }
 
     static auto print(const ArgumentSpan args,
-                      const std::string& scope = "All") -> void
+                      const std::string& scope = "") -> void
     {
         auto index {0};
 
         for (const auto& arg : args) {
-            std::cout << scope
-                      << " argument "
+            std::cout << (scope.empty() ? "Argument" : scope + " argument")
+                      << ' '
                       << ++index
                       << ": "
                       << arg
@@ -126,14 +126,8 @@ namespace TestArguments
     static auto test_arguments(const ArgumentSpan args,
                                const char* argv0) -> void
     {
-        print(args, "All");
+        print(args);
         assert(std::string {args[0]} == argv0);
-        assert(std::string {args[1]} == "-f");
-        assert(std::string {args[2]} == argv0);
-        assert(std::string {args[3]} == "-v");
-        assert(std::string {args[4]} == "one");
-        assert(std::string {args[5]} == "two");
-        assert(std::string {args[6]} == "three");
     }
 
     static auto test_arguments(int argc, char** argv) -> void
