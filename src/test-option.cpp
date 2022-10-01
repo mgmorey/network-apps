@@ -79,7 +79,7 @@ namespace TestArguments
         assert(get_optind() == optind_begin + length);
     }
 
-    static auto print(const ArgumentSpan args,
+    static auto print(ArgumentSpan args,
                       const std::string& scope = "") -> void
     {
         auto index {0};
@@ -103,7 +103,14 @@ namespace TestArguments
         }
     }
 
-    static auto test_arguments_optional(const ArgumentSpan args,
+    static auto test_arguments(ArgumentSpan args,
+                               const char* argv0) -> void
+    {
+        print(args);
+        assert(std::string {args[0]} == argv0);
+    }
+
+    static auto test_arguments_optional(ArgumentSpan args,
                                         const char* argv0) -> void
     {
         print(args, "Optional");
@@ -113,21 +120,13 @@ namespace TestArguments
         assert(args.size() == 3);
     }
 
-    static auto test_arguments_positional(const ArgumentSpan args) ->
-        void
+    static auto test_arguments_positional(ArgumentSpan args) -> void
     {
         print(args, "Positional");
         assert(std::string {args[0]} == "one");
         assert(std::string {args[1]} == "two");
         assert(std::string {args[2]} == "three");
         assert(args.size() == 3);
-    }
-
-    static auto test_arguments(const ArgumentSpan args,
-                               const char* argv0) -> void
-    {
-        print(args);
-        assert(std::string {args[0]} == argv0);
     }
 
     static auto test_arguments(int argc, char** argv) -> void
