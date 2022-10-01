@@ -113,10 +113,10 @@ namespace TestArguments
         assert(args.size() == 3);
     }
 
-    static auto test_arguments_required(const ArgumentSpan args) ->
+    static auto test_arguments_positional(const ArgumentSpan args) ->
         void
     {
-        print(args, "Required");
+        print(args, "Positional");
         assert(std::string {args[0]} == "one");
         assert(std::string {args[1]} == "two");
         assert(std::string {args[2]} == "three");
@@ -148,8 +148,8 @@ namespace TestArguments
         test_arguments(args, *argv);
         auto optional {args.subspan(1, to_size(get_optind()) - 1)};
         test_arguments_optional(optional, *argv);
-        auto required {args.subspan(to_size(get_optind()))};
-        test_arguments_required(required);
+        auto positional {args.subspan(to_size(get_optind()))};
+        test_arguments_positional(positional);
         assert(filename == *argv);
         assert(verbose);
     }
