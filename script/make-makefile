@@ -19,14 +19,23 @@ SED='1s|\\(%s\\)\\(\\.[a-z][a-z]*\\)[ :]*|%s\\1\\2 %s%s: \\\\\\
 |
 s|^[ ]*||'
 
-make_makefile() {
-    exec >"$output_path"
+cat_makefile() {
     files="${files:+$files }$output_path"
 
     if [ -n "$command" ]; then
 	$command | sed_makefile
     else
 	sed_makefile
+    fi
+}
+
+make_makefile() {
+    tmpfile=$(mktemp)
+    trap "rm -f $tmpfile" EXIT INT QUIT TERM
+    cat_makefile >$tmpfile
+
+    if [ -s $tmpfile ]; then
+	mv -f $tmpfile "$output_path"
     fi
 }
 
