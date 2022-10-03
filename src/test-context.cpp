@@ -42,7 +42,6 @@ using Network::Version;
 using Network::WindowsVersion;
 #endif
 using Network::get_hostname;
-using Network::get_options;
 using Network::os_error_type;
 using Network::to_size;
 
