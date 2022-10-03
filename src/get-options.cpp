@@ -19,7 +19,7 @@
                                         // get_optind(), get_option(),
                                         // get_optopt()
 
-auto Network::get_options(Network::ArgumentSpan args,
+auto Network::get_options(const ArgumentSpan& args,
                           const char* optstring) -> Network::Options
 {
     Options options;

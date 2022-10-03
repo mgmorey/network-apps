@@ -24,7 +24,8 @@ namespace Network
 {
     using Options = std::map<char, Argument>;
 
-    auto get_options(ArgumentSpan args, const char* optstring) -> Options;
+    auto get_options(const ArgumentSpan& args,
+                     const char* optstring) -> Options;
 }
 
 #endif
