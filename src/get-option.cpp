@@ -14,7 +14,8 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/get-option.h"         // get_optarg(), get_opterr(),
-                                        // get_optind(), get_optopt()
+                                        // get_optind(), get_option(),
+                                        // get_optopt()
 #include "network/logicerror.h"         // LogicError
 #include "network/to-integer.h"         // to_integer()
 
@@ -45,7 +46,7 @@ auto Network::get_option(ArgumentSpan args,
                          const char* optstring) -> int
 {
     if (optstring == nullptr || *optstring == '\0') {
-        throw Network::LogicError("No command-line options to parse");
+        throw LogicError("No command-line options to parse");
     }
 
     return ::getopt(to_integer(args.size()), args.data(), optstring);
