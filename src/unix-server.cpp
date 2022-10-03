@@ -15,10 +15,10 @@
 
 #include "network/argumentspan.h"       // ArgumentSpan, std::span
 #include "network/get-option.h"         // get_option()
-#include "network/get-options.h"        // get_options()
 #include "network/network.h"            // Buffer, Fd, connect(),
                                         // socket_error,
                                         // to_byte_string()
+#include "network/parse.h"              // parse()
 #include "network/to-size.h"            // to_size()
 #include "unix-common.h"                // BUFFER_SIZE, SOCKET_NAME
 
@@ -44,7 +44,6 @@ using Network::SocketHints;
 using Network::bind;
 using Network::fd_type;
 using Network::format_os_error;
-using Network::get_options;
 using Network::socket_error;
 using Network::to_byte_string;
 using Network::to_size;
@@ -69,7 +68,7 @@ static auto format_message(int error) -> std::string
 
 static auto parse(ArgumentSpan args) -> void
 {
-    auto options {get_options(args, "v")};
+    auto [_, options] {Network::parse(args, "v")};
 
     if (options.find('?') != options.end()) {
         std::cerr << "Usage: "
@@ -82,6 +81,8 @@ static auto parse(ArgumentSpan args) -> void
     if (options.find('v') != options.end()) {
         verbose = true;
     }
+
+    static_cast<void>(_);
 }
 
 static auto get_bind_socket(const SocketHints& hints) -> Fd

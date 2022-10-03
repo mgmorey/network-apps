@@ -15,9 +15,9 @@
 
 #include "network/argumentspan.h"       // ArgumentSpan, std::span
 #include "network/assert.h"             // assert()
-#include "network/get-options.h"        // get_options()
 #include "network/network.h"            // Context, OsErrorResult,
                                         // get_hostname()
+#include "network/parse.h"              // parse()
 #include "network/to-name-len.h"        // to_name_len()
 #include "network/to-size.h"            // to_size()
 
@@ -33,7 +33,6 @@ using Network::Error;
 using Network::Hostname;
 using Network::RangeError;
 using Network::get_hostname;
-using Network::get_options;
 using Network::name_len_max;
 using Network::to_name_len;
 using Network::to_size;
@@ -48,7 +47,7 @@ namespace TestHostname
 
     static auto parse(ArgumentSpan args) -> void
     {
-        auto options {get_options(args, "v")};
+        auto [_, options] {Network::parse(args, "v")};
 
         if (options.find('?') != options.end()) {
             std::cerr << "Usage: "
@@ -61,6 +60,8 @@ namespace TestHostname
         if (options.find('v') != options.end()) {
             verbose = true;
         }
+
+        static_cast<void>(_);
     }
 
     static auto print(const Error& error) -> void

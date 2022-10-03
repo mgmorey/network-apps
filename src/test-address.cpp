@@ -15,7 +15,6 @@
 
 #include "network/argumentspan.h"       // ArgumentSpan, std::span
 #include "network/assert.h"             // assert()
-#include "network/get-options.h"        // get_options()
 #include "network/network.h"            // Address, Bytes, Context,
                                         // Family, Hostname,
                                         // HostVector, OsErrorResult,
@@ -24,6 +23,7 @@
                                         // get_sa_length(),
                                         // is_valid(), sin_size,
                                         // sin6_size
+#include "network/parse.h"              // parse()
 #include "network/to-size.h"            // to_size()
 
 #ifdef WIN32
@@ -62,7 +62,6 @@ using Network::SocketFamily;
 using Network::get_hosts;
 using Network::get_sa_family;
 using Network::get_sa_length;
-using Network::get_options;
 using Network::is_valid;
 using Network::to_size;
 
@@ -83,7 +82,7 @@ namespace TestAddress
 
     static auto parse(ArgumentSpan args) -> void
     {
-        auto options {get_options(args, "v")};
+        auto [_, options] {Network::parse(args, "v")};
 
         if (options.find('?') != options.end()) {
             std::cerr << "Usage: "
@@ -96,6 +95,8 @@ namespace TestAddress
         if (options.find('v') != options.end()) {
             verbose = true;
         }
+
+        static_cast<void>(_);
     }
 
     static auto print(const Address& address) -> void

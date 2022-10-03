@@ -16,10 +16,10 @@
 #include "network/argumentspan.h"       // ArgumentSpan, std::span
 #include "network/assert.h"             // assert()
 #include "network/cleanup.h"            // cleanup()
-#include "network/get-options.h"        // get_options()
 #include "network/network.h"            // Context, Error,
                                         // OptionalVersion, Version,
                                         // get_hostname()
+#include "network/parse.h"              // parse()
 #include "network/to-size.h"            // to_size()
 
 #ifdef WIN32
@@ -124,7 +124,7 @@ namespace TestContext
 
     static auto parse(ArgumentSpan args) -> void
     {
-        auto options {get_options(args, "v")};
+        auto [_, options] {Network::parse(args, "v")};
 
         if (options.find('?') != options.end()) {
             std::cerr << "Usage: "
@@ -137,6 +137,8 @@ namespace TestContext
         if (options.find('v') != options.end()) {
             verbose = true;
         }
+
+        static_cast<void>(_);
     }
 
     static auto print(const Context& context,

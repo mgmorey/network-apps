@@ -15,13 +15,13 @@
 
 #include "network/argumentspan.h"       // ArgumentSpan, std::span
 #include "network/assert.h"             // assert()
-#include "network/get-options.h"        // get_options()
 #include "network/network.h"            // Address, Context, FdPair,
                                         // OptionalPathname,
                                         // OsErrorResult, Pathname,
                                         // get_sun_path(),
                                         // string_null,
                                         // to_byte_string()
+#include "network/parse.h"              // parse()
 #include "network/to-size.h"            // to_size()
 #include "network/to-sock-len.h"        // to_sock_len()
 
@@ -52,7 +52,6 @@ using Network::OptionalPathname;
 using Network::OsErrorResult;
 using Network::Pathname;
 using Network::RangeError;
-using Network::get_options;
 using Network::get_sockname;
 using Network::get_sun_path;
 using Network::get_sun_path_size;
@@ -123,7 +122,7 @@ namespace TestSocket
 
     static auto parse(ArgumentSpan args) -> void
     {
-        auto options {get_options(args, "v")};
+        auto [_, options] {Network::parse(args, "v")};
 
         if (options.find('?') != options.end()) {
             std::cerr << "Usage: "
@@ -136,6 +135,8 @@ namespace TestSocket
         if (options.find('v') != options.end()) {
             verbose = true;
         }
+
+        static_cast<void>(_);
     }
 
     static auto print(const Error& error) -> void
