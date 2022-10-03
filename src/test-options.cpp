@@ -60,7 +60,7 @@ namespace TestArguments
         auto options {get_options(args, optstring)};
         filename = options['f'];
 
-        if (options.find('v') != options.end()) {
+        if (options.contains('v')) {
             verbose = true;
         }
 

@@ -160,7 +160,7 @@ namespace TestBind
     {
         auto [positional, options] {Network::parse(args, "v")};
 
-        if (options.find('?') != options.end()) {
+        if (options.contains('?')) {
             std::cerr << "Usage: "
                       << args[0]
                       << " [-v]"
@@ -168,7 +168,7 @@ namespace TestBind
             std::exit(EXIT_FAILURE);
         }
 
-        if (options.find('v') != options.end()) {
+        if (options.contains('v')) {
             verbose = true;
         }
 

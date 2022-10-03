@@ -84,7 +84,7 @@ namespace TestAddress
     {
         auto [_, options] {Network::parse(args, "v")};
 
-        if (options.find('?') != options.end()) {
+        if (options.contains('?')) {
             std::cerr << "Usage: "
                       << args[0]
                       << " [-v]"
@@ -92,7 +92,7 @@ namespace TestAddress
             std::exit(EXIT_FAILURE);
         }
 
-        if (options.find('v') != options.end()) {
+        if (options.contains('v')) {
             verbose = true;
         }
 
