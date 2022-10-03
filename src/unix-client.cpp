@@ -14,11 +14,10 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/argumentspan.h"       // ArgumentSpan, std::span
-#include "network/get-option.h"         // get_optind()
-#include "network/get-options.h"        // get_options()
 #include "network/network.h"            // Buffer, Fd, connect(),
                                         // socket_error,
                                         // to_byte_string()
+#include "network/parse.h"              // parse()
 #include "network/to-size.h"            // to_size()
 #include "unix-common.h"                // BUFFER_SIZE, SOCKET_NAME
 
@@ -42,8 +41,6 @@ using Network::Pathname;
 using Network::connect;
 using Network::fd_type;
 using Network::format_os_error;
-using Network::get_optind;
-using Network::get_options;
 using Network::os_error_type;
 using Network::to_byte_string;
 using Network::to_size;
@@ -65,7 +62,7 @@ static auto format_message(int error) -> std::string
 
 static auto parse(ArgumentSpan args) -> ArgumentSpan
 {
-    auto options {get_options(args, "v")};
+    auto [positional, options] {Network::parse(args, "v")};
 
     if (options.find('?') != options.end()) {
         std::cerr << "Usage: "
@@ -79,7 +76,7 @@ static auto parse(ArgumentSpan args) -> ArgumentSpan
         verbose = true;
     }
 
-    return args.subspan(to_size(get_optind()));
+    return positional;
 }
 
 static auto read(const Fd& fd) -> IoResult

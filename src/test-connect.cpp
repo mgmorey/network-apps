@@ -15,8 +15,6 @@
 
 #include "network/argumentspan.h"       // ArgumentSpan, std::span
 #include "network/assert.h"             // assert()
-#include "network/get-option.h"         // get_optind()
-#include "network/get-options.h"        // get_options()
 #include "network/network.h"            // Address, Bytes,
                                         // ByteStringResult, Context,
                                         // Endpoint, FdResult,
@@ -27,6 +25,7 @@
                                         // get_hostname(),
                                         // get_peername(),
                                         // get_sockname(), string_null
+#include "network/parse.h"              // parse()
 #include "network/to-size.h"            // to_size()
 
 #ifdef WIN32
@@ -71,8 +70,6 @@ using Network::SocketHints;
 using Network::SockName;
 using Network::connect;
 using Network::get_hostname;
-using Network::get_optind;
-using Network::get_options;
 using Network::get_peername;
 using Network::get_sockname;
 using Network::os_error_type;
@@ -202,7 +199,7 @@ namespace TestConnect
 
     static auto parse(ArgumentSpan args) -> Network::Endpoint
     {
-        auto options {get_options(args, "v")};
+        auto [positional, options] {Network::parse(args, "v")};
 
         if (options.find('?') != options.end()) {
             std::cerr << "Usage: "
@@ -216,7 +213,6 @@ namespace TestConnect
             verbose = true;
         }
 
-        auto positional {args.subspan(to_size(get_optind()))};
         return {
             !positional.empty() ? positional[0] : localhost,
             positional.size() > 1 ? positional[1] : localservice

@@ -15,8 +15,6 @@
 
 #include "network/argumentspan.h"       // ArgumentSpan, std::span
 #include "network/assert.h"             // assert()
-#include "network/get-option.h"         // get_optind()
-#include "network/get-options.h"        // get_options()
 #include "network/network.h"            // Address, Bytes, Context,
                                         // Endpoint, HostVector,
                                         // Hostname, OptionalHints,
@@ -24,6 +22,7 @@
                                         // SocketHints, SocketHost,
                                         // get_endpoint(),
                                         // get_hosts(), uniquify()
+#include "network/parse.h"              // parse()
 #include "network/to-size.h"            // to_size()
 
 #ifdef WIN32
@@ -66,8 +65,6 @@ using Network::Overloaded;
 using Network::SocketHints;
 using Network::SocketHost;
 using Network::get_hosts;
-using Network::get_optind;
-using Network::get_options;
 using Network::os_error_type;
 using Network::to_size;
 using Network::uniquify;
@@ -197,7 +194,7 @@ namespace TestHost
 
     static auto parse(ArgumentSpan args) -> ArgumentSpan
     {
-        auto options {get_options(args, "v")};
+        auto [positional, options] {Network::parse(args, "v")};
 
         if (options.find('?') != options.end()) {
             std::cerr << "Usage: "
@@ -211,7 +208,7 @@ namespace TestHost
             verbose = true;
         }
 
-        return args.subspan(to_size(get_optind()));
+        return positional;
     }
 
     static auto print(const OsErrorResult& result,
