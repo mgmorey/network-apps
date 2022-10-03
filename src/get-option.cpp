@@ -42,7 +42,7 @@ auto Network::get_optind() -> int
     return ::optind;
 }
 
-auto Network::get_option(ArgumentSpan args,
+auto Network::get_option(const ArgumentSpan& args,
                          const char* optstring) -> int
 {
     if (optstring == nullptr || *optstring == '\0') {
