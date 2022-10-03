@@ -21,7 +21,7 @@
 auto Network::parse(const ArgumentSpan& args,
                     const char* optstring) -> Network::ParseResult
 {
-    auto options {get_options(args, optstring)};
-    auto positional {args.subspan(to_size(get_optind()))};
+    const auto options {get_options(args, optstring)};
+    const auto positional {args.subspan(to_size(get_optind()))};
     return {positional, options};
 }
