@@ -123,7 +123,7 @@ namespace TestContext
 
     static auto parse(ArgumentSpan args) -> void
     {
-        auto [_, options] {Network::parse(args, "v")};
+        const auto [_, options] {Network::parse(args, "v")};
 
         if (options.contains('?')) {
             std::cerr << "Usage: "

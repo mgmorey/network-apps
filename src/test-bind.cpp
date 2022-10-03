@@ -158,7 +158,7 @@ namespace TestBind
 
     static auto parse(ArgumentSpan args) -> Network::Endpoint
     {
-        auto [positional, options] {Network::parse(args, "v")};
+        const auto [positional, options] {Network::parse(args, "v")};
 
         if (options.contains('?')) {
             std::cerr << "Usage: "
