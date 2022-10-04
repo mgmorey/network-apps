@@ -62,7 +62,7 @@ static auto format_message(int error) -> std::string
 
 static auto parse(ArgumentSpan args) -> ArgumentSpan
 {
-    const auto [positional, options] {parse(args, "v")};
+    const auto [operands, options] {parse(args, "v")};
 
     if (options.contains('?')) {
         std::cerr << "Usage: "
@@ -76,7 +76,7 @@ static auto parse(ArgumentSpan args) -> ArgumentSpan
         verbose = true;
     }
 
-    return positional;
+    return operands;
 }
 
 static auto read(const Fd& fd) -> IoResult

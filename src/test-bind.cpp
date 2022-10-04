@@ -159,7 +159,7 @@ namespace TestBind
 
     static auto parse(ArgumentSpan args) -> Network::Endpoint
     {
-        const auto [positional, options] {parse(args, "v")};
+        const auto [operands, options] {parse(args, "v")};
 
         if (options.contains('?')) {
             std::cerr << "Usage: "
@@ -174,8 +174,8 @@ namespace TestBind
         }
 
         return {
-            !positional.empty() ? positional[0] : localhost,
-            positional.size() > 1 ? positional[1] : localservice
+            !operands.empty() ? operands[0] : localhost,
+            operands.size() > 1 ? operands[1] : localservice
         };
     }
 

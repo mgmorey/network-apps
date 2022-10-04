@@ -195,7 +195,7 @@ namespace TestHost
 
     static auto parse(ArgumentSpan args) -> ArgumentSpan
     {
-        const auto [positional, options] {parse(args, "v")};
+        const auto [operands, options] {parse(args, "v")};
 
         if (options.contains('?')) {
             std::cerr << "Usage: "
@@ -209,7 +209,7 @@ namespace TestHost
             verbose = true;
         }
 
-        return positional;
+        return operands;
     }
 
     static auto print(const OsErrorResult& result,
