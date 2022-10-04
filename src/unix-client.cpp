@@ -42,6 +42,7 @@ using Network::connect;
 using Network::fd_type;
 using Network::format_os_error;
 using Network::os_error_type;
+using Network::parse;
 using Network::to_byte_string;
 using Network::to_size;
 
@@ -62,7 +63,7 @@ static auto format_message(int error) -> std::string
 
 static auto parse(ArgumentSpan args) -> ArgumentSpan
 {
-    const auto [positional, options] {Network::parse(args, "v")};
+    const auto [positional, options] {parse(args, "v")};
 
     if (options.contains('?')) {
         std::cerr << "Usage: "

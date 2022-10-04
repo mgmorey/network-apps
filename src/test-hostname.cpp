@@ -36,6 +36,7 @@ namespace TestHostname
     using Network::RangeError;
     using Network::get_hostname;
     using Network::name_len_max;
+    using Network::parse;
     using Network::to_name_len;
     using Network::to_size;
 
@@ -47,7 +48,7 @@ namespace TestHostname
 
     static auto parse(ArgumentSpan args) -> void
     {
-        const auto [_, options] {Network::parse(args, "v")};
+        const auto [_, options] {parse(args, "v")};
 
         if (options.contains('?')) {
             std::cerr << "Usage: "

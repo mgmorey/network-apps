@@ -68,6 +68,7 @@ namespace TestHost
     using Network::SocketHost;
     using Network::get_hosts;
     using Network::os_error_type;
+    using Network::parse;
     using Network::to_size;
     using Network::uniquify;
 
@@ -194,7 +195,7 @@ namespace TestHost
 
     static auto parse(ArgumentSpan args) -> ArgumentSpan
     {
-        const auto [positional, options] {Network::parse(args, "v")};
+        const auto [positional, options] {parse(args, "v")};
 
         if (options.contains('?')) {
             std::cerr << "Usage: "

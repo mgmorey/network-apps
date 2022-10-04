@@ -64,6 +64,7 @@ namespace TestAddress
     using Network::get_hosts;
     using Network::get_sa_family;
     using Network::get_sa_length;
+    using Network::parse;
     using Network::is_valid;
     using Network::to_size;
 
@@ -82,7 +83,7 @@ namespace TestAddress
 
     static auto parse(ArgumentSpan args) -> void
     {
-        const auto [_, options] {Network::parse(args, "v")};
+        const auto [_, options] {parse(args, "v")};
 
         if (options.contains('?')) {
             std::cerr << "Usage: "

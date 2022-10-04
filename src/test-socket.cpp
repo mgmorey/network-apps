@@ -58,6 +58,7 @@ namespace TestSocket
     using Network::get_sun_path;
     using Network::get_sun_path_size;
     using Network::os_error_type;
+    using Network::parse;
     using Network::sock_len_max;
     using Network::to_byte_string;
     using Network::to_sock_len;
@@ -122,7 +123,7 @@ namespace TestSocket
 
     static auto parse(ArgumentSpan args) -> void
     {
-        const auto [_, options] {Network::parse(args, "v")};
+        const auto [_, options] {parse(args, "v")};
 
         if (options.contains('?')) {
             std::cerr << "Usage: "

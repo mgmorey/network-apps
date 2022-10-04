@@ -45,6 +45,7 @@ namespace TestContext
 #endif
     using Network::get_hostname;
     using Network::os_error_type;
+    using Network::parse;
     using Network::to_size;
 
     static constexpr Version version_0_0 {0, 0};
@@ -123,7 +124,7 @@ namespace TestContext
 
     static auto parse(ArgumentSpan args) -> void
     {
-        const auto [_, options] {Network::parse(args, "v")};
+        const auto [_, options] {parse(args, "v")};
 
         if (options.contains('?')) {
             std::cerr << "Usage: "

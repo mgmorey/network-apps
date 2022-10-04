@@ -75,6 +75,7 @@ namespace TestConnect
     using Network::get_peername;
     using Network::get_sockname;
     using Network::os_error_type;
+    using Network::parse;
     using Network::string_null;
     using Network::to_size;
 
@@ -199,7 +200,7 @@ namespace TestConnect
 
     static auto parse(ArgumentSpan args) -> Network::Endpoint
     {
-        const auto [positional, options] {Network::parse(args, "v")};
+        const auto [positional, options] {parse(args, "v")};
 
         if (options.contains('?')) {
             std::cerr << "Usage: "
