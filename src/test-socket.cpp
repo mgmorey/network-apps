@@ -33,7 +33,6 @@
 #include <iomanip>      // std::right, std::setw()
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <optional>     // std::nullopt
-#include <regex>        // std::regex, std::regex_match
 #include <set>          // std::set
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
