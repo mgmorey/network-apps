@@ -23,7 +23,6 @@
                                         // get_endpoint(),
                                         // get_hosts(), uniquify()
 #include "network/parse.h"              // parse()
-#include "network/to-size.h"            // to_size()
 
 #ifdef WIN32
 #include <winsock2.h>       // AF_INET, AF_INET6, AF_UNSPEC,
@@ -69,7 +68,6 @@ namespace TestHost
     using Network::get_hosts;
     using Network::os_error_type;
     using Network::parse;
-    using Network::to_size;
     using Network::uniquify;
 
     using ErrorCodeSet = std::set<os_error_type>;
@@ -193,13 +191,13 @@ namespace TestHost
         return hostname;
     }
 
-    static auto parse(ArgumentSpan args) -> ArgumentSpan
+    static auto parse(int argc, char** argv) -> ArgumentSpan
     {
-        const auto [operands, options] {parse(args, "v")};
+        const auto [operands, options] {parse(argc, argv, "v")};
 
         if (options.contains('?')) {
             std::cerr << "Usage: "
-                      << args[0]
+                      << *argv
                       << " [-v]"
                       << std::endl;
             std::exit(EXIT_FAILURE);
@@ -309,7 +307,7 @@ auto main(int argc, char* argv[]) -> int
 
     try {
         const auto& context {Context::instance()};
-        const auto hosts {parse(std::span {argv, to_size(argc)})};
+        const auto hosts {parse(argc, argv)};
 
         if (verbose) {
             std::cout << context;

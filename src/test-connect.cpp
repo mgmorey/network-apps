@@ -13,7 +13,6 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/argumentspan.h"       // ArgumentSpan, std::span
 #include "network/assert.h"             // assert()
 #include "network/network.h"            // Address, Bytes,
                                         // ByteStringResult, Context,
@@ -26,7 +25,6 @@
                                         // get_peername(),
                                         // get_sockname(), string_null
 #include "network/parse.h"              // parse()
-#include "network/to-size.h"            // to_size()
 
 #ifdef WIN32
 #include <winsock2.h>       // AF_INET, AF_INET6, PF_INET, PF_INET6,
@@ -56,7 +54,6 @@
 namespace TestConnect
 {
     using Network::Address;
-    using Network::ArgumentSpan;
     using Network::ByteString;
     using Network::Context;
     using Network::Endpoint;
@@ -77,7 +74,6 @@ namespace TestConnect
     using Network::os_error_type;
     using Network::parse;
     using Network::string_null;
-    using Network::to_size;
 
     using ErrorCodeSet = std::set<os_error_type>;
 
@@ -198,13 +194,13 @@ namespace TestConnect
         return codes;
     }
 
-    static auto parse(ArgumentSpan args) -> Network::Endpoint
+    static auto parse(int argc, char** argv) -> Network::Endpoint
     {
-        const auto [operands, options] {parse(args, "v")};
+        const auto [operands, options] {parse(argc, argv, "v")};
 
         if (options.contains('?')) {
             std::cerr << "Usage: "
-                      << args[0]
+                      << *argv
                       << " [-v]"
                       << std::endl;
             std::exit(EXIT_FAILURE);
@@ -322,7 +318,7 @@ auto main(int argc, char* argv[]) -> int
 
     try {
         const auto& context {Context::instance()};
-        const auto endpoint {parse(std::span {argv, to_size(argc)})};
+        const auto endpoint {parse(argc, argv)};
 
         if (verbose) {
             std::cout << context;

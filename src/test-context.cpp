@@ -13,14 +13,12 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/argumentspan.h"       // ArgumentSpan, std::span
 #include "network/assert.h"             // assert()
 #include "network/cleanup.h"            // cleanup()
 #include "network/network.h"            // Context, Error,
                                         // OptionalVersion, Version,
                                         // get_hostname()
 #include "network/parse.h"              // parse()
-#include "network/to-size.h"            // to_size()
 
 #ifdef WIN32
 #include <winsock2.h>       // WSAEFAULT, WSAEPROCLIM,
@@ -35,7 +33,6 @@
 
 namespace TestContext
 {
-    using Network::ArgumentSpan;
     using Network::Error;
     using Network::Hostname;
     using Network::OptionalVersion;
@@ -46,7 +43,6 @@ namespace TestContext
     using Network::get_hostname;
     using Network::os_error_type;
     using Network::parse;
-    using Network::to_size;
 
     static constexpr Version version_0_0 {0, 0};
     static constexpr Version version_0_1 {0, 1};
@@ -122,13 +118,13 @@ namespace TestContext
         }
     };
 
-    static auto parse(ArgumentSpan args) -> void
+    static auto parse(int argc, char** argv) -> void
     {
-        const auto [_, options] {parse(args, "v")};
+        const auto [_, options] {parse(argc, argv, "v")};
 
         if (options.contains('?')) {
             std::cerr << "Usage: "
-                      << args[0]
+                      << *argv
                       << " [-v]"
                       << std::endl;
             std::exit(EXIT_FAILURE);
@@ -347,7 +343,7 @@ auto main(int argc, char* argv[]) -> int
     using namespace TestContext;
 
     try {
-        parse(std::span {argv, to_size(argc)});
+        parse(argc, argv);
         test_context_global_instance();
         test_context_local_instances();
         test_context_valid_with_shutdown();

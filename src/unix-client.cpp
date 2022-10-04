@@ -18,7 +18,6 @@
                                         // socket_error,
                                         // to_byte_string()
 #include "network/parse.h"              // parse()
-#include "network/to-size.h"            // to_size()
 #include "unix-common.h"                // BUFFER_SIZE, SOCKET_NAME
 
 #include <sys/socket.h>         // SOCK_SEQPACKET
@@ -43,7 +42,6 @@ using Network::fd_type;
 using Network::format_os_error;
 using Network::parse;
 using Network::to_byte_string;
-using Network::to_size;
 
 using IoResult = std::pair<std::string, ssize_t>;
 
@@ -60,13 +58,13 @@ static auto format_message(int error) -> std::string
     return oss.str();
 }
 
-static auto parse(ArgumentSpan args) -> ArgumentSpan
+static auto parse(int argc, char** argv) -> ArgumentSpan
 {
-    const auto [operands, options] {parse(args, "v")};
+    const auto [operands, options] {parse(argc, argv, "v")};
 
     if (options.contains('?')) {
         std::cerr << "Usage: "
-                  << args[0]
+                  << *argv
                   << " [-v]"
                   << std::endl;
         std::exit(EXIT_FAILURE);
@@ -94,7 +92,7 @@ static auto write(const std::string& str, const Fd& fd) -> ssize_t
 
 auto main(int argc, char* argv[]) -> int
 {
-    const auto args {parse(std::span {argv, to_size(argc)})};
+    const auto args {parse(argc, argv)};
 
     try {
         bool shutdown {false};

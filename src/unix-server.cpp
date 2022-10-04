@@ -13,13 +13,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/argumentspan.h"       // ArgumentSpan, std::span
 #include "network/get-option.h"         // get_option()
 #include "network/network.h"            // Buffer, Fd, connect(),
                                         // socket_error,
                                         // to_byte_string()
 #include "network/parse.h"              // parse()
-#include "network/to-size.h"            // to_size()
 #include "unix-common.h"                // BUFFER_SIZE, SOCKET_NAME
 
 #include <sys/socket.h>         // SOCK_SEQPACKET, ::accept(),
@@ -36,7 +34,6 @@
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string, std::to_string()
 
-using Network::ArgumentSpan;
 using Network::Buffer;
 using Network::Fd;
 using Network::Pathname;
@@ -46,7 +43,6 @@ using Network::fd_type;
 using Network::format_os_error;
 using Network::socket_error;
 using Network::to_byte_string;
-using Network::to_size;
 
 using IoResult = std::pair<std::string, ssize_t>;
 
@@ -66,13 +62,13 @@ static auto format_message(int error) -> std::string
     return oss.str();
 }
 
-static auto parse(ArgumentSpan args) -> void
+static auto parse(int argc, char** argv) -> void
 {
-    const auto [_, options] {Network::parse(args, "v")};
+    const auto [_, options] {Network::parse(argc, argv, "v")};
 
     if (options.contains('?')) {
         std::cerr << "Usage: "
-                  << args[0]
+                  << *argv
                   << " [-v]"
                   << std::endl;
         std::exit(EXIT_FAILURE);
@@ -110,7 +106,7 @@ auto main(int argc, char* argv[]) -> int
 
     try {
         // Fetch arguments from command line;
-        parse(std::span {argv, to_size(argc)});
+        parse(argc, argv);
 
         // Bind Unix domain socket to pathname.
         const auto bind_fd {get_bind_socket(hints)};

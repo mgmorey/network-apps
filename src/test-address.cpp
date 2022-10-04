@@ -13,7 +13,6 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/argumentspan.h"       // ArgumentSpan, std::span
 #include "network/assert.h"             // assert()
 #include "network/network.h"            // Address, Bytes, Context,
                                         // Family, Hostname,
@@ -50,7 +49,6 @@ namespace TestAddress
 {
     using Network::Address;
     using Network::AddressError;
-    using Network::ArgumentSpan;
     using Network::Byte;
     using Network::ByteString;
     using Network::Context;
@@ -81,13 +79,13 @@ namespace TestAddress
 
     static bool verbose {false};  // NOLINT
 
-    static auto parse(ArgumentSpan args) -> void
+    static auto parse(int argc, char** argv) -> void
     {
-        const auto [_, options] {parse(args, "v")};
+        const auto [_, options] {parse(argc, argv, "v")};
 
         if (options.contains('?')) {
             std::cerr << "Usage: "
-                      << args[0]
+                      << *argv
                       << " [-v]"
                       << std::endl;
             std::exit(EXIT_FAILURE);
@@ -250,7 +248,7 @@ auto main(int argc, char* argv[]) -> int
 
     try {
         const auto& context {Context::instance()};
-        parse(std::span {argv, to_size(argc)});
+        parse(argc, argv);
 
         if (verbose) {
             std::cout << context;

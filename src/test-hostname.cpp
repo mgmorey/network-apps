@@ -13,13 +13,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/argumentspan.h"       // ArgumentSpan, std::span
 #include "network/assert.h"             // assert()
 #include "network/network.h"            // Context, OsErrorResult,
                                         // get_hostname()
 #include "network/parse.h"              // parse()
 #include "network/to-name-len.h"        // to_name_len()
-#include "network/to-size.h"            // to_size()
 
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
 #include <exception>    // std::exception
@@ -29,7 +27,6 @@
 
 namespace TestHostname
 {
-    using Network::ArgumentSpan;
     using Network::Context;
     using Network::Error;
     using Network::Hostname;
@@ -38,7 +35,6 @@ namespace TestHostname
     using Network::name_len_max;
     using Network::parse;
     using Network::to_name_len;
-    using Network::to_size;
 
     static constexpr auto expected_error_re {
         R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of name_len_type)"
@@ -46,13 +42,13 @@ namespace TestHostname
 
     static bool verbose {false};  // NOLINT
 
-    static auto parse(ArgumentSpan args) -> void
+    static auto parse(int argc, char** argv) -> void
     {
-        const auto [_, options] {parse(args, "v")};
+        const auto [_, options] {parse(argc, argv, "v")};
 
         if (options.contains('?')) {
             std::cerr << "Usage: "
-                      << args[0]
+                      << *argv
                       << " [-v]"
                       << std::endl;
             std::exit(EXIT_FAILURE);
@@ -111,7 +107,7 @@ auto main(int argc, char* argv[]) -> int
 
     try {
         const auto& context {Context::instance()};
-        parse(std::span {argv, to_size(argc)});
+        parse(argc, argv);
 
         if (verbose) {
             std::cout << context;
