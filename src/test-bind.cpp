@@ -17,9 +17,8 @@
 #include "network/network.h"            // Address, ByteString,
                                         // Context, Endpoint, Fd,
                                         // FdResult, FdResultVector,
-                                        // SocketHints, OsErrorResult,
-                                        // Overloaded, SocketHints,
-                                        // SockName, bind(),
+                                        // OsErrorResult, Overloaded,
+                                        // SocketHints, bind(),
                                         // get_sockname(),
                                         // os_error_type, string_null
 #include "network/parse.h"              // parse()
@@ -59,7 +58,6 @@ namespace TestBind
     using Network::OsErrorResult;
     using Network::Overloaded;
     using Network::SocketHints;
-    using Network::SockName;
     using Network::bind;
     using Network::get_sockname;
     using Network::os_error_type;
