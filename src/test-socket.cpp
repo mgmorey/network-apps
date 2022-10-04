@@ -21,7 +21,6 @@
                                         // string_null,
                                         // to_byte_string()
 #include "network/parse.h"              // parse()
-#include "network/to-sock-len.h"        // to_sock_len()
 
 #include <sys/socket.h>     // AF_UNIX, AF_UNSPEC, SOCK_STREAM
 #include <sys/un.h>         // sockaddr_un
