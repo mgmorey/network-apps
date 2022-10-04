@@ -14,7 +14,6 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/assert.h"             // assert()
-#include "network/parse.h"              // parse()
 #include "network/to-integer.h"         // to_integer()
 #include "network/to-name-len.h"        // to_name_len()
 #include "network/to-size.h"            // to_size()
@@ -33,7 +32,6 @@ namespace TestRanges
     using Network::RangeError;
     using Network::SizeError;
     using Network::name_len_max;
-    using Network::parse;
     using Network::sock_len_max;
     using Network::to_integer;
     using Network::to_name_len;
@@ -53,34 +51,11 @@ namespace TestRanges
         R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of std::size_t)"
     };
 
-    static bool verbose {false};  // NOLINT
-
-    static auto parse(int argc, char** argv) -> void
-    {
-        const auto [_, options] {parse(argc, argv, "v")};
-
-        if (options.contains('?')) {
-            std::cerr << "Usage: "
-                      << *argv
-                      << " [-v]"
-                      << std::endl;
-            std::exit(EXIT_FAILURE);
-        }
-
-        if (options.contains('v')) {
-            verbose = true;
-        }
-
-        static_cast<void>(_);
-    }
-
     static auto print(const RangeError& error) -> void
     {
-        if (verbose) {
-            std::cout << "Exception: "
-                      << error.what()
-                      << std::endl;
-        }
+        std::cout << "Exception: "
+                  << error.what()
+                  << std::endl;
     }
 
     static auto test_integer_invalid(std::size_t value) -> void
@@ -170,12 +145,11 @@ namespace TestRanges
     }
 }
 
-auto main(int argc, char* argv[]) -> int
+auto main() -> int
 {
     using namespace TestRanges;
 
     try {
-        parse(argc, argv);
         test_integer_invalid();
         test_name_len_invalid();
         test_sock_len_invalid();
