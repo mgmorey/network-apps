@@ -27,18 +27,18 @@
 #include <regex>        // std::regex, std::regex_match
 #include <vector>       // std::vector
 
-using Network::ArgumentSpan;
-using Network::Context;
-using Network::Error;
-using Network::Hostname;
-using Network::RangeError;
-using Network::get_hostname;
-using Network::name_len_max;
-using Network::to_name_len;
-using Network::to_size;
-
 namespace TestHostname
 {
+    using Network::ArgumentSpan;
+    using Network::Context;
+    using Network::Error;
+    using Network::Hostname;
+    using Network::RangeError;
+    using Network::get_hostname;
+    using Network::name_len_max;
+    using Network::to_name_len;
+    using Network::to_size;
+
     static constexpr auto expected_error_re {
         R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of name_len_type)"
     };

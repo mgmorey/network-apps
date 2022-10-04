@@ -50,26 +50,26 @@
 #include <variant>      // std::visit()
 #include <vector>       // std::vector
 
-using Network::Address;
-using Network::ArgumentSpan;
-using Network::ByteString;
-using Network::Context;
-using Network::Endpoint;
-using Network::Fd;
-using Network::FdResult;
-using Network::FdResultVector;
-using Network::OsErrorResult;
-using Network::Overloaded;
-using Network::SocketHints;
-using Network::SockName;
-using Network::bind;
-using Network::get_sockname;
-using Network::os_error_type;
-using Network::string_null;
-using Network::to_size;
-
 namespace TestBind
 {
+    using Network::Address;
+    using Network::ArgumentSpan;
+    using Network::ByteString;
+    using Network::Context;
+    using Network::Endpoint;
+    using Network::Fd;
+    using Network::FdResult;
+    using Network::FdResultVector;
+    using Network::OsErrorResult;
+    using Network::Overloaded;
+    using Network::SocketHints;
+    using Network::SockName;
+    using Network::bind;
+    using Network::get_sockname;
+    using Network::os_error_type;
+    using Network::string_null;
+    using Network::to_size;
+
     using ErrorCodeSet = std::set<os_error_type>;
 
     static constexpr auto fd_width {6};

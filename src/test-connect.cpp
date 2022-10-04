@@ -53,31 +53,31 @@
 #include <variant>      // std::visit()
 #include <vector>       // std::vector
 
-using Network::Address;
-using Network::ArgumentSpan;
-using Network::ByteString;
-using Network::Context;
-using Network::Endpoint;
-using Network::Fd;
-using Network::FdResult;
-using Network::FdResultVector;
-using Network::Hostname;
-using Network::OptionalHostname;
-using Network::OsErrorResult;
-using Network::Overloaded;
-using Network::PeerName;
-using Network::SocketHints;
-using Network::SockName;
-using Network::connect;
-using Network::get_hostname;
-using Network::get_peername;
-using Network::get_sockname;
-using Network::os_error_type;
-using Network::string_null;
-using Network::to_size;
-
 namespace TestConnect
 {
+    using Network::Address;
+    using Network::ArgumentSpan;
+    using Network::ByteString;
+    using Network::Context;
+    using Network::Endpoint;
+    using Network::Fd;
+    using Network::FdResult;
+    using Network::FdResultVector;
+    using Network::Hostname;
+    using Network::OptionalHostname;
+    using Network::OsErrorResult;
+    using Network::Overloaded;
+    using Network::PeerName;
+    using Network::SocketHints;
+    using Network::SockName;
+    using Network::connect;
+    using Network::get_hostname;
+    using Network::get_peername;
+    using Network::get_sockname;
+    using Network::os_error_type;
+    using Network::string_null;
+    using Network::to_size;
+
     using ErrorCodeSet = std::set<os_error_type>;
 
     static constexpr auto fd_width {6};

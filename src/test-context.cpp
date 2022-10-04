@@ -33,20 +33,20 @@
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <vector>       // std::vector
 
-using Network::ArgumentSpan;
-using Network::Error;
-using Network::Hostname;
-using Network::OptionalVersion;
-using Network::Version;
-#ifdef WIN32
-using Network::WindowsVersion;
-#endif
-using Network::get_hostname;
-using Network::os_error_type;
-using Network::to_size;
-
 namespace TestContext
 {
+    using Network::ArgumentSpan;
+    using Network::Error;
+    using Network::Hostname;
+    using Network::OptionalVersion;
+    using Network::Version;
+#ifdef WIN32
+    using Network::WindowsVersion;
+#endif
+    using Network::get_hostname;
+    using Network::os_error_type;
+    using Network::to_size;
+
     static constexpr Version version_0_0 {0, 0};
     static constexpr Version version_0_1 {0, 1};
     static constexpr Version version_1_0 {1, 0};

@@ -46,27 +46,27 @@
 #include <variant>      // std::visit()
 #include <vector>       // std::vector
 
-using Network::Address;
-using Network::AddressError;
-using Network::ArgumentSpan;
-using Network::Byte;
-using Network::ByteString;
-using Network::Context;
-using Network::Error;
-using Network::HostVector;
-using Network::Hostname;
-using Network::OsErrorResult;
-using Network::Overloaded;
-using Network::SizeError;
-using Network::SocketFamily;
-using Network::get_hosts;
-using Network::get_sa_family;
-using Network::get_sa_length;
-using Network::is_valid;
-using Network::to_size;
-
 namespace TestAddress
 {
+    using Network::Address;
+    using Network::AddressError;
+    using Network::ArgumentSpan;
+    using Network::Byte;
+    using Network::ByteString;
+    using Network::Context;
+    using Network::Error;
+    using Network::HostVector;
+    using Network::Hostname;
+    using Network::OsErrorResult;
+    using Network::Overloaded;
+    using Network::SizeError;
+    using Network::SocketFamily;
+    using Network::get_hosts;
+    using Network::get_sa_family;
+    using Network::get_sa_length;
+    using Network::is_valid;
+    using Network::to_size;
+
     static constexpr auto expected_error_addr_re {
         R"(Invalid socket address: 0x[0-9A-F]{1,16})"
     };

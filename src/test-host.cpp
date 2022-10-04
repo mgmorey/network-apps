@@ -51,26 +51,26 @@
 #include <variant>      // std::visit()
 #include <vector>       // std::vector
 
-using Network::Address;
-using Network::ArgumentSpan;
-using Network::ByteString;
-using Network::Context;
-using Network::Endpoint;
-using Network::EndpointResult;
-using Network::HostVector;
-using Network::OptionalHints;
-using Network::OptionalHostname;
-using Network::OsErrorResult;
-using Network::Overloaded;
-using Network::SocketHints;
-using Network::SocketHost;
-using Network::get_hosts;
-using Network::os_error_type;
-using Network::to_size;
-using Network::uniquify;
-
 namespace TestHost
 {
+    using Network::Address;
+    using Network::ArgumentSpan;
+    using Network::ByteString;
+    using Network::Context;
+    using Network::Endpoint;
+    using Network::EndpointResult;
+    using Network::HostVector;
+    using Network::OptionalHints;
+    using Network::OptionalHostname;
+    using Network::OsErrorResult;
+    using Network::Overloaded;
+    using Network::SocketHints;
+    using Network::SocketHost;
+    using Network::get_hosts;
+    using Network::os_error_type;
+    using Network::to_size;
+    using Network::uniquify;
+
     using ErrorCodeSet = std::set<os_error_type>;
     using HintsVector = std::vector<SocketHints>;
 

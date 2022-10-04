@@ -41,28 +41,28 @@
 #include <string>       // std::string
 #include <vector>       // std::vector
 
-using Network::Address;
-using Network::ArgumentSpan;
-using Network::Context;
-using Network::Error;
-using Network::Fd;
-using Network::FdPair;
-using Network::LogicError;
-using Network::OptionalPathname;
-using Network::OsErrorResult;
-using Network::Pathname;
-using Network::RangeError;
-using Network::get_sockname;
-using Network::get_sun_path;
-using Network::get_sun_path_size;
-using Network::os_error_type;
-using Network::sock_len_max;
-using Network::to_byte_string;
-using Network::to_sock_len;
-using Network::to_size;
-
 namespace TestSocket
 {
+    using Network::Address;
+    using Network::ArgumentSpan;
+    using Network::Context;
+    using Network::Error;
+    using Network::Fd;
+    using Network::FdPair;
+    using Network::LogicError;
+    using Network::OptionalPathname;
+    using Network::OsErrorResult;
+    using Network::Pathname;
+    using Network::RangeError;
+    using Network::get_sockname;
+    using Network::get_sun_path;
+    using Network::get_sun_path_size;
+    using Network::os_error_type;
+    using Network::sock_len_max;
+    using Network::to_byte_string;
+    using Network::to_sock_len;
+    using Network::to_size;
+
     using ErrorCodeSet = std::set<os_error_type>;
     using OptionalPathnameVector = std::vector<OptionalPathname>;
 

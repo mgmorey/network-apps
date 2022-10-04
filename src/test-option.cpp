@@ -31,19 +31,19 @@
 #include <string>       // std::string
 #include <vector>       // std::vector
 
-using Network::Argument;
-using Network::ArgumentData;
-using Network::ArgumentSpan;
-using Network::Error;
-using Network::IntegerError;
-using Network::get_optarg;
-using Network::get_optind;
-using Network::get_option;
-using Network::to_integer;
-using Network::to_size;
-
 namespace TestArguments
 {
+    using Network::Argument;
+    using Network::ArgumentData;
+    using Network::ArgumentSpan;
+    using Network::Error;
+    using Network::IntegerError;
+    using Network::get_optarg;
+    using Network::get_optind;
+    using Network::get_option;
+    using Network::to_integer;
+    using Network::to_size;
+
     static constexpr auto expected_error_int_re {
         R"(Value (\d+|-\d+) is out of range \[-\d+, \d+\] of int)"
     };
