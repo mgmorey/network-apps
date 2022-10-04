@@ -80,7 +80,7 @@ version.cpp
 
 test_sources = test-address.cpp test-bind.cpp test-connect.cpp		\
 test-context.cpp test-host.cpp test-hostname.cpp test-option.cpp	\
-test-options.cpp
+test-options.cpp test-parse.cpp
 
 ifneq "$(os_name)" "MINGW64_NT"
 	test_sources += test-socket.cpp
