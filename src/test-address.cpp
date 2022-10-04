@@ -23,7 +23,6 @@
                                         // is_valid(), sin_size,
                                         // sin6_size
 #include "network/parse.h"              // parse()
-#include "network/to-size.h"            // to_size()
 
 #ifdef WIN32
 #include <winsock2.h>       // AF_INET, AF_INET6, AF_UNSPEC,
@@ -63,13 +62,9 @@ namespace TestAddress
     using Network::get_sa_length;
     using Network::parse;
     using Network::is_valid;
-    using Network::to_size;
 
     static constexpr auto expected_error_addr_re {
         R"(Invalid socket address: 0x[0-9A-F]{1,16})"
-    };
-    static constexpr auto expected_error_size_re {
-        R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of std::size_t)"
     };
     static constexpr auto invalid_addr_data {Byte {0xFFU}};
     static constexpr auto invalid_addr_size {8};
@@ -218,27 +213,6 @@ namespace TestAddress
                 }
             }, hosts_result);
     }
-
-    static auto test_size_invalid(long value) -> void
-    {
-        std::string actual_error_str;
-
-        try {
-            to_size(value);
-        }
-        catch (const SizeError& error) {
-            print(error);
-            actual_error_str = error.what();
-        }
-
-        const std::regex expected_error_size_regex {expected_error_size_re};
-        assert(std::regex_match(actual_error_str, expected_error_size_regex));
-    }
-
-    static auto test_size_invalid() -> void
-    {
-        test_size_invalid(-1);
-    }
 }
 
 auto main(int argc, char* argv[]) -> int
@@ -256,7 +230,6 @@ auto main(int argc, char* argv[]) -> int
         test_address();
         test_address_invalid();
         test_address_localhost();
-        test_size_invalid();
     }
     catch (const std::exception& error) {
         std::cerr << error.what()
