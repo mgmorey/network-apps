@@ -35,8 +35,6 @@ namespace TestOptions
     using Network::Argument;
     using Network::ArgumentData;
     using Network::ArgumentSpan;
-    using Network::Error;
-    using Network::IntegerError;
     using Network::get_optind;
     using Network::get_options;
     using Network::to_integer;
