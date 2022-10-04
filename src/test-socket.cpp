@@ -56,7 +56,6 @@ namespace TestSocket
     using Network::os_error_type;
     using Network::parse;
     using Network::to_byte_string;
-    using Network::to_sock_len;
 
     using ErrorCodeSet = std::set<os_error_type>;
     using OptionalPathnameVector = std::vector<OptionalPathname>;
