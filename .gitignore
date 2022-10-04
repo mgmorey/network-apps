@@ -97,6 +97,7 @@ test-host
 test-hostname
 test-option
 test-options
+test-parse
 test-socket
 unix-client
 unix-server
