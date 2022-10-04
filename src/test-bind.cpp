@@ -14,14 +14,14 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/assert.h"             // assert()
-#include "network/network.h"            // Address, Bytes,
-                                        // ByteStringResult, Context,
-                                        // Endpoint, FdResult,
-                                        // FdResultVector,
+#include "network/network.h"            // Address, ByteString,
+                                        // Context, Endpoint, Fd,
+                                        // FdResult, FdResultVector,
                                         // SocketHints, OsErrorResult,
-                                        // Overloaded, bind(),
+                                        // Overloaded, SocketHints,
+                                        // SockName, bind(),
                                         // get_sockname(),
-                                        // string_null
+                                        // os_error_type, string_null
 #include "network/parse.h"              // parse()
 
 #ifdef WIN32
