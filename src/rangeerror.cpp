@@ -15,8 +15,6 @@
 
 #include "network/rangeerror.h"         // Error, RangeError
 
-#include <climits>      // SIZE_MAX
-
 Network::RangeError::RangeError(const std::string& t_str) noexcept :
     LogicError(t_str)
 {
