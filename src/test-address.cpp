@@ -55,7 +55,6 @@ namespace TestAddress
     using Network::Hostname;
     using Network::OsErrorResult;
     using Network::Overloaded;
-    using Network::SizeError;
     using Network::SocketFamily;
     using Network::get_hosts;
     using Network::get_sa_family;
