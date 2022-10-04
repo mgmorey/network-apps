@@ -17,7 +17,6 @@
 #include "network/network.h"            // Context, OsErrorResult,
                                         // get_hostname()
 #include "network/parse.h"              // parse()
-#include "network/to-name-len.h"        // to_name_len()
 
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
 #include <exception>    // std::exception
@@ -27,17 +26,9 @@
 namespace TestHostname
 {
     using Network::Context;
-    using Network::Error;
     using Network::Hostname;
-    using Network::RangeError;
     using Network::get_hostname;
-    using Network::name_len_max;
     using Network::parse;
-    using Network::to_name_len;
-
-    static constexpr auto expected_error_re {
-        R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of name_len_type)"
-    };
 
     static bool verbose {false};  // NOLINT
 
@@ -60,43 +51,12 @@ namespace TestHostname
         static_cast<void>(_);
     }
 
-    static auto print(const Error& error) -> void
-    {
-        if (verbose) {
-            std::cout << "Exception: "
-                      << error.what()
-                      << std::endl;
-        }
-    }
-
     static auto test_hostname() -> void
     {
         const auto hostname {get_hostname(verbose)};
         std::cout << "Hostname: "
                   << hostname
                   << std::endl;
-    }
-
-    static auto test_name_len_invalid(long value) -> void
-    {
-        std::string actual_error_str;
-
-        try {
-            to_name_len(value);
-        }
-        catch (const RangeError& error) {
-            print(error);
-            actual_error_str = error.what();
-        }
-
-        const std::regex expected_error_regex {expected_error_re};
-        assert(std::regex_match(actual_error_str, expected_error_regex));
-    }
-
-    static auto test_name_len_invalid() -> void
-    {
-        test_name_len_invalid(-1);
-        test_name_len_invalid(name_len_max + 1);
     }
 }
 
@@ -113,7 +73,6 @@ auto main(int argc, char* argv[]) -> int
         }
 
         test_hostname();
-        test_name_len_invalid();
     }
     catch (const std::exception& error) {
         std::cerr << error.what()
