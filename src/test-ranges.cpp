@@ -28,7 +28,6 @@
 
 namespace TestRanges
 {
-    using Network::Error;
     using Network::IntegerError;
     using Network::RangeError;
     using Network::SizeError;
@@ -74,7 +73,7 @@ namespace TestRanges
         static_cast<void>(_);
     }
 
-    static auto print(const Error& error) -> void
+    static auto print(const RangeError& error) -> void
     {
         if (verbose) {
             std::cout << "Exception: "
