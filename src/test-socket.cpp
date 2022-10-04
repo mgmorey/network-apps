@@ -14,11 +14,14 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/assert.h"             // assert()
-#include "network/network.h"            // Address, Context, FdPair,
+#include "network/network.h"            // Address, Context, Error,
+                                        // Fd, FdPair, LogicError
                                         // OptionalPathname,
                                         // OsErrorResult, Pathname,
+                                        // get_sockname()
                                         // get_sun_path(),
-                                        // string_null,
+                                        // get_sun_path_size(),
+                                        // os_error_type,
                                         // to_byte_string()
 #include "network/parse.h"              // parse()
 
@@ -192,7 +195,7 @@ namespace TestSocket
                 << ": pathname length of "
                 << pathname->length()
                 << " exceeds maximum of "
-                << get_sun_path_size() - 1;
+                << path_size_max - 1;
             expected_error = oss.str();
         }
 
