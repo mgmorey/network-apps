@@ -14,7 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/assert.h"             // assert()
-#include "network/network.h"            // Context, OsErrorResult,
+#include "network/network.h"            // Context, Hostname,
                                         // get_hostname()
 #include "network/parse.h"              // parse()
 
