@@ -57,15 +57,11 @@ namespace TestOptions
         static const char* optstring {"f:v"};
 
         const auto optind_begin {get_optind()};
-        auto options {get_options(args, optstring)};
-        filename = options['f'];
-
-        if (options.contains('v')) {
-            verbose = true;
-        }
-
+        const auto options {get_options(args, optstring)};
         const auto length {to_integer(std::strlen(optstring))};
         assert(get_optind() == optind_begin + length);
+        filename = options.at('f');
+        verbose = options.contains('v');
     }
 
     static auto print(ArgumentSpan args,
