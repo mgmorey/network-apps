@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/argumentspan.h"       // ArgumentSpan, std::span
+#include "network/argumentspan.h"       // ArgumentSpan
 #include "network/network.h"            // Buffer, Fd, connect(),
                                         // socket_error,
                                         // to_byte_string()
@@ -29,7 +29,6 @@
 #include <cstdio>       // std::perror()
 #include <cstdlib>      // std::exit(), std::size_t
 #include <iostream>     // std::cerr, std::cout, std::endl
-#include <span>         // std::span
 #include <sstream>      // std::ostringstream
 #include <vector>       // std::vector
 

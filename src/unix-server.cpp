@@ -30,7 +30,6 @@
 #include <cstdio>       // std::perror()
 #include <cstdlib>      // std::exit(), std::strtol()
 #include <iostream>     // std::cerr, std::cout, std::endl
-#include <span>         // std::span
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string, std::to_string()
 
