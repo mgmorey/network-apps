@@ -22,7 +22,6 @@
 #include "network/to-integer.h"         // to_integer()
 #include "network/to-size.h"            // to_size()
 
-#include <climits>      // SIZE_MAX
 #include <cstdlib>      // std::abort()
 #include <cstring>      // std::strlen()
 #include <exception>    // std::exception
