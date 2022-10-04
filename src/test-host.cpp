@@ -15,13 +15,15 @@
 
 #include "network/argumentspan.h"       // ArgumentSpan
 #include "network/assert.h"             // assert()
-#include "network/network.h"            // Address, Bytes, Context,
-                                        // Endpoint, HostVector,
-                                        // Hostname, OptionalHints,
+#include "network/network.h"            // Address, ByteString,
+                                        // Context, Endpoint,
+                                        // HostVector, OptionalHints,
+                                        // OptionalHostname,
                                         // OsErrorResult, Overloaded,
                                         // SocketHints, SocketHost,
                                         // get_endpoint(),
-                                        // get_hosts(), uniquify()
+                                        // get_hosts(), os_error_type,
+                                        // uniquify()
 #include "network/parse.h"              // parse()
 
 #ifdef WIN32
@@ -57,7 +59,6 @@ namespace TestHost
     using Network::ByteString;
     using Network::Context;
     using Network::Endpoint;
-    using Network::EndpointResult;
     using Network::HostVector;
     using Network::OptionalHints;
     using Network::OptionalHostname;
