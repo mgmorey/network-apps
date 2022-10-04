@@ -43,7 +43,6 @@
 #include <regex>        // std::regex, std::regex_match
 #include <string>       // std::string
 #include <variant>      // std::visit()
-#include <vector>       // std::vector
 
 namespace TestAddress
 {

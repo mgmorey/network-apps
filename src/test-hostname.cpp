@@ -23,7 +23,6 @@
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <regex>        // std::regex, std::regex_match
-#include <vector>       // std::vector
 
 namespace TestHostname
 {

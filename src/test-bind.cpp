@@ -46,7 +46,6 @@
 #include <string>       // std::string
 #include <utility>      // std::move()
 #include <variant>      // std::visit()
-#include <vector>       // std::vector
 
 namespace TestBind
 {
