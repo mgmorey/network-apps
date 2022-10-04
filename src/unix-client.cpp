@@ -41,7 +41,6 @@ using Network::Pathname;
 using Network::connect;
 using Network::fd_type;
 using Network::format_os_error;
-using Network::os_error_type;
 using Network::parse;
 using Network::to_byte_string;
 using Network::to_size;
