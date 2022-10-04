@@ -16,8 +16,7 @@
 #ifndef NETWORK_PARSE_H
 #define NETWORK_PARSE_H
 
-#include "network/get-options.h"        // ArgumentSpan, Options,
-                                        // get_options()
+#include "network/get-options.h"        // ArgumentSpan, Options
 
 #include <utility>      // std::pair
 
@@ -26,6 +25,8 @@ namespace Network
     using ParseResult = std::pair<ArgumentSpan, Options>;
 
     auto parse(const ArgumentSpan& args,
+               const char* optstring) -> ParseResult;
+    auto parse(int argc, char** argv,
                const char* optstring) -> ParseResult;
 }
 
