@@ -31,7 +31,7 @@
 #include <string>       // std::string
 #include <vector>       // std::vector
 
-namespace TestArguments
+namespace TestOption
 {
     using Network::Argument;
     using Network::ArgumentData;
@@ -171,7 +171,7 @@ namespace TestArguments
 
 auto main(int argc, char* argv[]) -> int
 {
-    using namespace TestArguments;
+    using namespace TestOption;
 
     try {
         test_arguments(argc, argv);
