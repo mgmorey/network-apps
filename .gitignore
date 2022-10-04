@@ -98,6 +98,7 @@ test-hostname
 test-option
 test-options
 test-parse
+test-ranges
 test-socket
 unix-client
 unix-server
