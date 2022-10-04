@@ -50,22 +50,17 @@ namespace TestSocket
     using Network::OptionalPathname;
     using Network::OsErrorResult;
     using Network::Pathname;
-    using Network::RangeError;
     using Network::get_sockname;
     using Network::get_sun_path;
     using Network::get_sun_path_size;
     using Network::os_error_type;
     using Network::parse;
-    using Network::sock_len_max;
     using Network::to_byte_string;
     using Network::to_sock_len;
 
     using ErrorCodeSet = std::set<os_error_type>;
     using OptionalPathnameVector = std::vector<OptionalPathname>;
 
-    static constexpr auto expected_error_re {
-        R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of sock_len_type)"
-    };
     static constexpr auto fd_width {6};
     static constexpr auto path_size_max {get_sun_path_size()};
 
@@ -278,28 +273,6 @@ namespace TestSocket
                   << std::right << std::setw(fd_width) << fds.at(1)
                   << std::endl;
     }
-
-    static auto test_sock_len_invalid(long value) -> void
-    {
-        std::string actual_error_str;
-
-        try {
-            to_sock_len(value);
-        }
-        catch (const RangeError& error) {
-            print(error);
-            actual_error_str = error.what();
-        }
-
-        const std::regex expected_error_regex {expected_error_re};
-        assert(std::regex_match(actual_error_str, expected_error_regex));
-    }
-
-    static auto test_sock_len_invalid() -> void
-    {
-        test_sock_len_invalid(-1);
-        test_sock_len_invalid(sock_len_max + 1);
-    }
 }
 
 auto main(int argc, char* argv[]) -> int
@@ -333,7 +306,6 @@ auto main(int argc, char* argv[]) -> int
         }
 
         test_socketpair();
-        test_sock_len_invalid();
     }
     catch (const std::exception& error) {
         std::cerr << error.what()
