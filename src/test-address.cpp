@@ -14,10 +14,11 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/assert.h"             // assert()
-#include "network/network.h"            // Address, Bytes, Context,
-                                        // Family, Hostname,
-                                        // HostVector, OsErrorResult,
-                                        // Overloaded, get_hosts(),
+#include "network/network.h"            // Address, AddressError,
+                                        // Context, HostVector,
+                                        // Hostname, OsErrorResult,
+                                        // Overloaded, SocketFamily,
+                                        // get_hosts(),
                                         // get_sa_family(),
                                         // get_sa_length(),
                                         // is_valid(), sin_size,
