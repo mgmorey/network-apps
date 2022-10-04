@@ -14,16 +14,16 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/assert.h"             // assert()
-#include "network/network.h"            // Address, Bytes,
-                                        // ByteStringResult, Context,
-                                        // Endpoint, FdResult,
-                                        // FdResultVector,
+#include "network/network.h"            // Address, ByteString,
+                                        // Context, Endpoint, Fd,
+                                        // FdResult, FdResultVector,
                                         // OptionalHostname,
                                         // OsErrorResult, Overloaded,
                                         // SocketHints, connect(),
                                         // get_hostname(),
                                         // get_peername(),
-                                        // get_sockname(), string_null
+                                        // get_sockname(),
+                                        // os_error_type, string_null
 #include "network/parse.h"              // parse()
 
 #ifdef WIN32
@@ -65,7 +65,6 @@ namespace TestConnect
     using Network::Overloaded;
     using Network::PeerName;
     using Network::SocketHints;
-    using Network::SockName;
     using Network::connect;
     using Network::get_hostname;
     using Network::get_peername;
