@@ -37,16 +37,11 @@ namespace TestOption
     using Network::ArgumentData;
     using Network::ArgumentSpan;
     using Network::Error;
-    using Network::IntegerError;
     using Network::get_optarg;
     using Network::get_optind;
     using Network::get_option;
     using Network::to_integer;
     using Network::to_size;
-
-    static constexpr auto expected_error_int_re {
-        R"(Value (\d+|-\d+) is out of range \[-\d+, \d+\] of int)"
-    };
 
     static auto get_strings(const char* argv0) -> std::vector<std::string>
     {
@@ -94,15 +89,6 @@ namespace TestOption
         }
     }
 
-    static auto print(const Error& error, bool verbose) -> void
-    {
-        if (verbose) {
-            std::cout << "Exception: "
-                      << error.what()
-                      << std::endl;
-        }
-    }
-
     static auto test_arguments(ArgumentSpan args,
                                const char* argv0) -> void
     {
@@ -146,27 +132,6 @@ namespace TestOption
         assert(filename == *argv);
         assert(verbose);
     }
-
-    static auto test_integer_invalid(std::size_t value, bool verbose) -> void
-    {
-        std::string actual_error_str;
-
-        try {
-            to_integer(value);
-        }
-        catch (const IntegerError& error) {
-            print(error, verbose);
-            actual_error_str = error.what();
-        }
-
-        const std::regex expected_error_int_regex {expected_error_int_re};
-        assert(std::regex_match(actual_error_str, expected_error_int_regex));
-    }
-
-    static auto test_integer_invalid(bool verbose) -> void
-    {
-        test_integer_invalid(SIZE_MAX, verbose);
-    }
 }
 
 auto main(int argc, char* argv[]) -> int
@@ -175,7 +140,6 @@ auto main(int argc, char* argv[]) -> int
 
     try {
         test_arguments(argc, argv);
-        test_integer_invalid(false);
     }
     catch (const std::exception& error) {
         std::cerr << error.what()
