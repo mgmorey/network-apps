@@ -13,7 +13,6 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/argument.h"           // Argument
 #include "network/argumentdata.h"       // ArgumentData
 #include "network/argumentspan.h"       // ArgumentSpan, std::span
 #include "network/assert.h"             // assert()
@@ -30,7 +29,6 @@
 
 namespace TestParse
 {
-    using Network::Argument;
     using Network::ArgumentData;
     using Network::ArgumentSpan;
     using Network::get_optind;
