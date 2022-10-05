@@ -96,7 +96,6 @@ test-context
 test-host
 test-hostname
 test-option
-test-options
 test-parse
 test-ranges
 test-socket
