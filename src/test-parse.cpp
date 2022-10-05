@@ -47,7 +47,6 @@ namespace TestParse
                       ArgumentSpan args) -> void
     {
         static const char* optstring {"f:v"};
-
         const auto optind_begin {get_optind()};
         const auto [_, options] {parse(args, optstring)};
         const auto length {to_integer(std::strlen(optstring))};
