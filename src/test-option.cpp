@@ -49,7 +49,6 @@ namespace TestOption
                       ArgumentSpan args) -> void
     {
         static const char* optstring {"f:v"};
-
         const auto optind_begin {get_optind()};
         int opt {};
 
