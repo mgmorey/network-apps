@@ -14,10 +14,10 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/argumentdata.h"       // ArgumentData
-#include "network/argumentspan.h"       // ArgumentSpan, std::span
 #include "network/assert.h"             // assert()
 #include "network/get-option.h"         // get_optind()
-#include "network/parse-argumentspan.h" // parse()
+#include "network/parse-argumentspan.h" // ArgumentSpan, parse(),
+                                        // std::span
 #include "network/to-integer.h"         // to_integer()
 #include "network/to-size.h"            // to_size()
 
