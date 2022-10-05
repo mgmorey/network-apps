@@ -67,10 +67,10 @@ get-sockets-endpoint.cpp get-sockets-hostname.cpp get-sockname.cpp	\
 get-socknameresult.cpp get-sun-length.cpp get-sun-path-length.cpp	\
 get-sun-path.cpp get-sun-pointer.cpp integererror.cpp is-running.cpp	\
 is-valid.cpp logicerror.cpp namelengtherror.cpp open-endpoint.cpp	\
-open-fd.cpp oserrorresult.cpp parse.cpp rangeerror.cpp			\
-reset-last-os-error.cpp runtimeerror.cpp set-last-os-error.cpp		\
-sizeerror.cpp socket.cpp socketfamily.cpp socketflags.cpp		\
-sockethints.cpp sockethost.cpp socketlengtherror.cpp			\
+open-fd.cpp oserrorresult.cpp parse-argumentspan.cpp parse.cpp		\
+rangeerror.cpp reset-last-os-error.cpp runtimeerror.cpp			\
+set-last-os-error.cpp sizeerror.cpp socket.cpp socketfamily.cpp		\
+socketflags.cpp sockethints.cpp sockethost.cpp socketlengtherror.cpp	\
 socketprotocol.cpp sockettype.cpp startup.cpp stream-address.cpp	\
 stream-addrinfo.cpp stream-socket.cpp to-byte-span-sa.cpp		\
 to-byte-span-sun.cpp to-byte-span-void.cpp to-byte-string-bs.cpp	\

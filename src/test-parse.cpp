@@ -18,7 +18,7 @@
 #include "network/argumentspan.h"       // ArgumentSpan, std::span
 #include "network/assert.h"             // assert()
 #include "network/get-option.h"         // get_optind()
-#include "network/parse.h"              // parse()
+#include "network/parse-argumentspan.h" // parse()
 #include "network/to-integer.h"         // to_integer()
 #include "network/to-size.h"            // to_size()
 

@@ -13,15 +13,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/parse.h"                  // ParseResult, parse()
-#include "network/parse-argumentspan.h"     // parse()
-#include "network/to-size.h"                // to_size()
+#ifndef NETWORK_PARSERESULT_H
+#define NETWORK_PARSERESULT_H
 
-#include <span>         // std::span
+#include "network/get-options.h"        // ArgumentSpan, Options
 
-auto Network::parse(int argc, char** argv,
-                    const char* optstring) -> Network::ParseResult
+#include <utility>      // std::pair
+
+namespace Network
 {
-    const auto args {std::span {argv, to_size(argc)}};
-    return parse(args, optstring);
+    using ParseResult = std::pair<ArgumentSpan, Options>;
 }
+
+#endif
