@@ -55,9 +55,9 @@ bytestring.cpp cleanup-fd.cpp cleanup.cpp close.cpp			\
 connect-endpoint.cpp connect-fd.cpp context.cpp error.cpp fd.cpp	\
 fddata.cpp fdpair.cpp format-ai-error.cpp format-os-error.cpp		\
 format.cpp get-endpoint.cpp get-endpointresult.cpp get-hostname.cpp	\
-get-hostnameresult.cpp get-hosts.cpp get-last-os-error.cpp		\
-get-length.cpp get-name.cpp get-nameresult.cpp get-operands.cpp		\
-get-option.cpp get-options.cpp get-peername.cpp				\
+get-hostnameresult.cpp get-hosts.cpp get-last-context-error.cpp		\
+get-last-os-error.cpp get-length.cpp get-name.cpp get-nameresult.cpp	\
+get-operands.cpp get-option.cpp get-options.cpp get-peername.cpp	\
 get-peernameresult.cpp get-sa-data.cpp get-sa-family.cpp		\
 get-sa-length.cpp get-sa-pointer.cpp get-sin-addr.cpp			\
 get-sin-pointer.cpp get-sin-port.cpp get-sin6-addr.cpp			\
@@ -68,9 +68,10 @@ get-socknameresult.cpp get-sun-length.cpp get-sun-path-length.cpp	\
 get-sun-path.cpp get-sun-pointer.cpp integererror.cpp is-running.cpp	\
 is-valid.cpp logicerror.cpp namelengtherror.cpp open-endpoint.cpp	\
 open-fd.cpp oserrorresult.cpp parse-argumentspan.cpp parse.cpp		\
-rangeerror.cpp reset-last-os-error.cpp runtimeerror.cpp			\
-set-last-os-error.cpp sizeerror.cpp socket.cpp socketfamily.cpp		\
-socketflags.cpp sockethints.cpp sockethost.cpp socketlengtherror.cpp	\
+rangeerror.cpp reset-last-context-error.cpp reset-last-os-error.cpp	\
+runtimeerror.cpp set-last-context-error.cpp set-last-os-error.cpp	\
+sizeerror.cpp socket.cpp socketfamily.cpp socketflags.cpp		\
+sockethints.cpp sockethost.cpp socketlengtherror.cpp			\
 socketprotocol.cpp sockettype.cpp startup.cpp stream-address.cpp	\
 stream-addrinfo.cpp stream-socket.cpp to-byte-span-sa.cpp		\
 to-byte-span-sun.cpp to-byte-span-void.cpp to-byte-string-bs.cpp	\
