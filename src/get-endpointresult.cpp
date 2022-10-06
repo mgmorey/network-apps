@@ -70,8 +70,8 @@ auto Network::get_endpointresult(const ByteString& addr, int flags,
                                         host.data(), host.size(),
                                         service.data(), service.size(),
                                         flags)}) {
+        const auto os_error {static_cast<os_error_type>(error)};
         std::ostringstream oss;
-        os_error_type os_error {static_cast<os_error_type>(error)};
         oss << "Call to ::getnameinfo("
             << addr
             << ", "

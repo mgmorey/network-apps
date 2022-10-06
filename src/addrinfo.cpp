@@ -105,8 +105,8 @@ Network::AddrInfo::AddrInfo(const OptionalHostname& t_hostname,
                                         to_c_string(t_service),
                                         hints.get(),
                                         &m_list)}) {
+        const auto os_error {static_cast<os_error_type>(error)};
         std::ostringstream oss;
-        os_error_type os_error {static_cast<os_error_type>(error)};
         oss << "Call to ::getaddrinfo("
             << t_hostname.value_or(string_null)
             << ", "
