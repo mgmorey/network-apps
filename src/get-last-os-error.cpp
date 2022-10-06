@@ -18,7 +18,9 @@
 #include "network/rangeerror.h"             // RangeError
 
 #ifdef WIN32
-#include <winsock2.h>       // WSAGetLastError()
+#include <winsock2.h>       // Always include winsock2.h before
+                            // windows.h on Windows
+#include <windows.h>        // GetLastError()
 #else
 #include <cerrno>           // errno
 #endif
@@ -30,7 +32,7 @@ auto Network::get_last_os_error() -> Network::os_error_type
 {
     os_error_type os_error {0};
 #ifdef WIN32
-    const auto error {::WSAGetLastError()};
+    const auto error {::GetLastError()};
 
     if (error < 0 || error > INT_MAX) {
         std::ostringstream oss;
