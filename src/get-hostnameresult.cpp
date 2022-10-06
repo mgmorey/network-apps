@@ -19,7 +19,7 @@
                                         // hostname_size_max
 #include "network/buffer.h"             // Buffer
 #include "network/os-error.h"           // format_os_error(),
-                                        // get_os_error(),
+                                        // get_last_os_error(),
                                         // reset_last_os_error()
 #include "network/to-name-len.h"        // to_name_len()
 
