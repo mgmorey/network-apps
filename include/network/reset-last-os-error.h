@@ -20,7 +20,7 @@
 
 namespace Network
 {
-    extern auto reset_last_os_error() noexcept -> os_error_type;
+    extern auto reset_last_os_error() -> os_error_type;
 }
 
 #endif

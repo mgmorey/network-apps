@@ -20,8 +20,7 @@
 
 namespace Network
 {
-    extern auto reset_last_context_error() noexcept ->
-        context_error_type;
+    extern auto reset_last_context_error() -> context_error_type;
 }
 
 #endif
