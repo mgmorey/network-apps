@@ -18,7 +18,9 @@
 #include "network/to-integer.h"         // to_integer()
 
 #ifdef WIN32
-#include <winsock2.h>       // WSASetLastError()
+#include <winsock2.h>       // Always include winsock2.h before
+                            // windows.h on Windows
+#include <windows.h>        // SetLastError()
 #else
 #include <cerrno>           // errno
 #endif
@@ -27,7 +29,7 @@ auto Network::set_last_os_error(os_error_type os_error) ->
     Network::os_error_type
 {
 #ifdef WIN32
-    ::WSASetLastError(to_integer(os_error));
+    ::SetLastError(to_integer(os_error));
 #else
     errno = os_error;
 #endif
