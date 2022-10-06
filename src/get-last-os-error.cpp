@@ -13,8 +13,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-last-os-error.h"          // get_last_os_error(),
-                                                // os_error_type
+#include "network/get-last-os-error.h"      // get_last_os_error(),
+                                            // os_error_type
+#include "network/rangeerror.h"             // RangeError
 
 #ifdef WIN32
 #include <winsock2.h>       // WSAGetLastError()
@@ -22,13 +23,30 @@
 #include <cerrno>           // errno
 #endif
 
-auto Network::get_last_os_error() noexcept -> Network::os_error_type
+#include <climits>      // INT_MAX, INT_MIN
+#include <sstream>      // std::ostringstream
+
+auto Network::get_last_os_error() -> Network::os_error_type
 {
-    os_error_type error {0};
+    os_error_type os_error {0};
 #ifdef WIN32
-    error = ::WSAGetLastError();
+    const auto error {::WSAGetLastError()};
+
+    if (error < 0 || error > INT_MAX) {
+        std::ostringstream oss;
+        oss << "Value "
+            << error
+            << " is out of range ["
+            << 0
+            << ", "
+            << INT_MAX
+            << "] of os_error_type";
+        throw RangeError(oss.str());
+    }
+
+    os_error = static_cast<os_error_type>(error);
 #else
-    error = errno;
+    os_error = errno;
 #endif
-    return error;
+    return os_error;
 }

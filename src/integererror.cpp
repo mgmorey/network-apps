@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/integererror.h"       // Error, IntegerError
+#include "network/integererror.h"       // IntegerError, RangeError
 
 #include <climits>      // INT_MAX, INT_MIN
 #include <sstream>      // std::ostringstream

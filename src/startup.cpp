@@ -18,12 +18,16 @@
 #include "network/exceptions.h"         // Error, LogicError,
                                         // RunTimeError
 #include "network/format-os-error.h"    // format_os_error()
+#include "network/rangeerror.h"         // RangeError
 #include "network/windowsversion.h"     // Version, WORD, WSADATA,
                                         // WSAEFAULT, WSAEPROCLIM,
                                         // WSASYSNOTREADY,
                                         // WSAVERNOTSUPPORTED,
                                         // WSAStartup(),
                                         // WindowsVersion
+
+#include <climits>      // INT_MAX, INT_MIN
+#include <sstream>      // std::ostringstream
 
 #ifdef WIN32
 static constexpr auto version_default {Network::Version {2, 2}};
@@ -36,22 +40,34 @@ auto Network::startup(Context& context, const OptionalVersion& version) -> void
 #ifdef WIN32
     WSADATA wsa_data {};
     const WindowsVersion required_version {version.value_or(version_default)};
-    const auto error_code {::WSAStartup(WORD {required_version}, &wsa_data)};
+    const auto error {::WSAStartup(WORD {required_version}, &wsa_data)};
 
-    if (error_code != 0) {
-        const auto error_str {format_os_error(error_code)};
+    if (error < 0 || error > INT_MAX) {
+        std::ostringstream oss;
+        oss << "Value "
+            << error
+            << " is out of range ["
+            << 0
+            << ", "
+            << INT_MAX
+            << "] of os_error_type";
+        throw RangeError(oss.str());
+    }
+    else if (error != 0) {
+        const auto os_error {static_cast<os_error_type>(error)};
+        const auto message {format_os_error(os_error)};
 
-        switch (error_code) {  // NOLINT
+        switch (error) {  // NOLINT
         case WSAEFAULT:
         case WSAVERNOTSUPPORTED:
-            throw LogicError {error_str};
+            throw LogicError {message};
             break;
         case WSAEPROCLIM:
         case WSASYSNOTREADY:
-            throw RuntimeError {error_str};
+            throw RuntimeError {message};
             break;
         default:
-            throw Error {error_str};
+            throw Error {message};
         }
     }
 

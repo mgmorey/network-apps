@@ -71,6 +71,7 @@ auto Network::get_endpointresult(const ByteString& addr, int flags,
                                         service.data(), service.size(),
                                         flags)}) {
         std::ostringstream oss;
+        os_error_type os_error {static_cast<os_error_type>(error)};
         oss << "Call to ::getnameinfo("
             << addr
             << ", "
@@ -80,9 +81,9 @@ auto Network::get_endpointresult(const ByteString& addr, int flags,
             << ") returned "
             << error
             << " ("
-            << format_ai_error(error)
+            << format_ai_error(os_error)
             << ')';
-        return OsErrorResult {error, oss.str()};
+        return OsErrorResult {os_error, oss.str()};
     }
 
     return Endpoint {host, service};

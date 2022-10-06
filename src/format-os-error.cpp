@@ -19,7 +19,10 @@
 #ifdef WIN32
 #include <winsock2.h>       // Always include winsock2.h before
                             // windows.h on Windows
-#include <windows.h>        // FORMAT_MESSAGE*, LANG_NEUTRAL,
+#include <windows.h>        // DWORD, FORMAT_MESSAGE_ALLOCATE_BUFFER,
+                            // FORMAT_MESSAGE_FROM_SYSTEM,
+                            // FORMAT_MESSAGE_IGNORE_INSERTS,
+                            // LANG_NEUTRAL, LPTSTR, LPVOID,
                             // MAKELANGID(), SUBLANG_DEFAULT,
                             // FormatMessage(), LocalFree()
 #else
@@ -34,7 +37,9 @@ auto Network::format_os_error(os_error_type error) -> std::string
         FORMAT_MESSAGE_FROM_SYSTEM |
         FORMAT_MESSAGE_IGNORE_INSERTS
     };
-    static constexpr DWORD lang {MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT)};
+    static constexpr DWORD lang {
+        MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT)
+    };
 #endif
     std::string message;
 #ifdef WIN32
@@ -43,7 +48,7 @@ auto Network::format_os_error(os_error_type error) -> std::string
     LPTSTR pstring {static_cast<LPTSTR>(pbuffer)};
     const DWORD result {::FormatMessage(flags,
                                         nullptr,
-                                        static_cast<DWORD>(error),
+                                        error,
                                         lang,
                                         pstring,
                                         0,

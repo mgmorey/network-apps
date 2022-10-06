@@ -16,9 +16,19 @@
 #ifndef NETWORK_OS_ERROR_TYPE_H
 #define NETWORK_OS_ERROR_TYPE_H
 
+#ifdef WIN32
+#include <winsock2.h>       // Always include winsock2.h before
+                            // windows.h on Windows
+#include <windows.h>        // DWORD
+#endif
+
 namespace Network
 {
+#ifdef WIN32
+    using os_error_type = DWORD;
+#else
     using os_error_type = int;
+#endif
 }
 
 #endif

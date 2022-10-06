@@ -106,6 +106,7 @@ Network::AddrInfo::AddrInfo(const OptionalHostname& t_hostname,
                                         hints.get(),
                                         &m_list)}) {
         std::ostringstream oss;
+        os_error_type os_error {static_cast<os_error_type>(error)};
         oss << "Call to ::getaddrinfo("
             << t_hostname.value_or(string_null)
             << ", "
@@ -115,8 +116,8 @@ Network::AddrInfo::AddrInfo(const OptionalHostname& t_hostname,
             << ", ...) returned "
             << error
             << ": "
-            << format_ai_error(error);
-        m_result = {error, oss.str()};
+            << format_ai_error(os_error);
+        m_result = {os_error, oss.str()};
     }
 }
 

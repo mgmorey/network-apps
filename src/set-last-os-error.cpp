@@ -15,6 +15,7 @@
 
 #include "network/set-last-os-error.h"  // os_error_type,
                                         // set_last_os_error()
+#include "network/to-integer.h"         // to_integer()
 
 #ifdef WIN32
 #include <winsock2.h>       // WSASetLastError()
@@ -22,13 +23,13 @@
 #include <cerrno>           // errno
 #endif
 
-auto Network::set_last_os_error(os_error_type error) noexcept ->
+auto Network::set_last_os_error(os_error_type os_error) ->
     Network::os_error_type
 {
 #ifdef WIN32
-    ::WSASetLastError(error);
+    ::WSASetLastError(to_integer(os_error));
 #else
-    errno = error;
+    errno = os_error;
 #endif
-    return error;
+    return os_error;
 }
