@@ -14,12 +14,12 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/cleanup.h"            // cleanup()
+#include "network/context-error.h"      // get_last_context_error(),
+                                        // reset_last_context_error()
 #include "network/context.h"            // Context
 #include "network/exceptions.h"         // Error, LogicError,
                                         // RunTimeError
-#include "network/os-error.h"           // format_os_error(),
-                                        // get_last_os_error(),
-                                        // reset_last_os_error()
+#include "network/format-os-error.h"    // format_os_error()
 #include "network/socket-error.h"       // socket_error
 
 #ifdef WIN32
@@ -27,38 +27,40 @@
                             // ::WSACleanup()
 #endif
 
-auto Network::cleanup(Context::failure_mode t_mode) -> Network::os_error_type
+auto Network::cleanup(Context::failure_mode t_mode) ->
+    Network::context_error_type
 {
 #ifdef WIN32
-    reset_last_os_error();
+    reset_last_context_error();
 
     if (::WSACleanup() == socket_error) {
-        const auto error_code {get_last_os_error()};
+        const auto error {get_last_context_error()};
 
         if (t_mode == Context::failure_mode::throw_error) {
-            const auto error_str {format_os_error(error_code)};
+            const auto os_error {static_cast<os_error_type>(error)};
+            const auto message {format_os_error(os_error)};
 
-            switch (error_code) {  // NOLINT
+            switch (error) {  // NOLINT
             case WSANOTINITIALISED:
-                throw LogicError {error_str};
+                throw LogicError {message};
                 break;
             case WSAEINPROGRESS:
             case WSAENETDOWN:
-                throw RuntimeError {error_str};
+                throw RuntimeError {message};
                 break;
             default:
-                throw Error {error_str};
+                throw Error {message};
             }
         }
         else if (t_mode == Context::failure_mode::return_zero) {
-            switch (error_code) {  // NOLINT
+            switch (error) {  // NOLINT
             case WSANOTINITIALISED:
                 return 0;
                 break;
             }
         }
 
-        return error_code;
+        return error;
     }
 
 #else

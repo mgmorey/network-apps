@@ -16,12 +16,12 @@
 #ifndef NETWORK_CLEANUP_H
 #define NETWORK_CLEANUP_H
 
-#include "network/context.h"            // Context
-#include "network/os-error-type.h"      // os_error_type
+#include "network/context-error-type.h"     // context_error_type
+#include "network/context.h"                // Context
 
 namespace Network
 {
-    extern auto cleanup(Context::failure_mode t_mode) -> os_error_type;
+    extern auto cleanup(Context::failure_mode t_mode) -> context_error_type;
 }
 
 #endif
