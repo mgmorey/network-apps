@@ -18,7 +18,7 @@
                                         // Fd, FdPair, LogicError
                                         // OptionalPathname,
                                         // OsErrorResult, Pathname,
-                                        // get_sockname()
+                                        // bind(), get_sockname()
                                         // get_sun_path(),
                                         // get_sun_path_size(),
                                         // os_error_type,
@@ -51,6 +51,7 @@ namespace TestSocket
     using Network::OptionalPathname;
     using Network::OsErrorResult;
     using Network::Pathname;
+    using Network::bind;
     using Network::get_sockname;
     using Network::get_sun_path;
     using Network::get_sun_path_size;
@@ -161,7 +162,7 @@ namespace TestSocket
 
         if (pathname) {
             const Fd fd {AF_UNIX, SOCK_STREAM, 0, 0, true, verbose};
-            const auto result {Network::bind(fd, addr, verbose)};
+            const auto result {bind(fd, addr, verbose)};
             actual_code = result.number();
 
             if (result) {
