@@ -17,7 +17,7 @@
 #include "network/network.h"            // Address, ByteString,
                                         // Context, Endpoint, Fd,
                                         // FdResult, FdResultVector,
-                                        // OptionalHostname,
+                                        // Hostname, OptionalHostname,
                                         // OsErrorResult, Overloaded,
                                         // SocketHints, connect(),
                                         // get_hostname(),
