@@ -23,7 +23,7 @@
                             // MAKELANGID(), SUBLANG_DEFAULT,
                             // FormatMessage(), LocalFree()
 #else
-#include <cstring>      // std::strerror()
+#include <cstring>          // std::strerror()
 #endif
 
 auto Network::format_os_error(os_error_type error) -> std::string
