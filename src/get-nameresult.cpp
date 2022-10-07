@@ -25,6 +25,7 @@
 #include "network/socket-error.h"       // socket_error
 #include "network/ss-sizes.h"           // ss_size
 #include "network/to-integer.h"         // to_integer()
+#include "network/to-os-error.h"        // to_os_error()
 #include "network/to-size.h"            // to_size()
 
 #include <iostream>     // std::cout, std::endl
@@ -54,7 +55,7 @@ auto Network::get_nameresult(const GetNameHandler& handler,
 
     if (handler.first(args.handle, pointer, &length) == socket_error) {
         const auto error = get_last_context_error();
-        const auto os_error {static_cast<os_error_type>(error)};
+        const auto os_error {to_os_error(error)};
         std::ostringstream oss;
         oss << "Call to "
             << handler.second

@@ -20,6 +20,7 @@
                                         // operator<<()
 #include "network/format-ai-error.h"    // format_ai_error()
 #include "network/string-null.h"        // string_null
+#include "network/to-os-error.h"        // to_os_error()
 
 #ifdef WIN32
 #include <ws2tcpip.h>   // freeaddrinfo(), getaddrinfo()
@@ -105,7 +106,7 @@ Network::AddrInfo::AddrInfo(const OptionalHostname& t_hostname,
                                         to_c_string(t_service),
                                         hints.get(),
                                         &m_list)}) {
-        const auto os_error {static_cast<os_error_type>(error)};
+        const auto os_error {to_os_error(error)};
         std::ostringstream oss;
         oss << "Call to ::getaddrinfo("
             << t_hostname.value_or(string_null)

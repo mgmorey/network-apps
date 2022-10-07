@@ -17,6 +17,7 @@
                                         // format_ai_error(),
                                         // std::string
 #include "network/format-os-error.h"    // format_os_error()
+#include "network/to-os-error.h"        // to_os_error()
 
 #ifndef WIN32
 #include <netdb.h>          // gai_strerror()
@@ -25,7 +26,7 @@
 auto Network::format_ai_error(context_error_type error) -> std::string
 {
 #ifdef WIN32
-    const auto os_error {static_cast<os_error_type>(error)};
+    const auto os_error {to_os_error(error)};
     return format_os_error(os_error);
 #else
     return ::gai_strerror(error);

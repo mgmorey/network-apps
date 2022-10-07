@@ -23,6 +23,7 @@
 #include "network/format-os-error.h"        // format_os_error()
 #include "network/format.h"                 // Format
 #include "network/socket-error.h"           // socket_error
+#include "network/to-os-error.h"            // to_os_error()
 
 #ifndef WIN32
 
@@ -61,7 +62,7 @@ auto Network::get_socketpairresult(const SocketHints& hints,
                      hints.protocol(),
                      fds.data()) == socket_error) {
         const auto error = get_last_context_error();
-        const auto os_error {static_cast<os_error_type>(error)};
+        const auto os_error {to_os_error(error)};
         std::ostringstream oss;
         oss << "Call to ::socketpair("
             << Format("domain")

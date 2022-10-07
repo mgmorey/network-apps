@@ -18,6 +18,7 @@
                                         // socket_error,
                                         // to_byte_string()
 #include "network/parse.h"              // parse()
+#include "network/to-os-error.h"        // to_os_error()
 #include "unix-common.h"                // BUFFER_SIZE, SOCKET_NAME
 
 #include <sys/socket.h>         // SOCK_SEQPACKET
@@ -42,6 +43,7 @@ using Network::format_os_error;
 using Network::os_error_type;
 using Network::parse;
 using Network::to_byte_string;
+using Network::to_os_error;
 
 using IoResult = std::pair<std::string, ssize_t>;
 
@@ -49,7 +51,7 @@ static bool verbose {false};  // NOLINT
 
 static auto format_message(int error) -> std::string
 {
-    const auto os_error {static_cast<os_error_type>(error)};
+    const auto os_error {to_os_error(error)};
     std::ostringstream oss;
     oss << ("Call to ::socket(domain=AF_UNIX, "
             "type=SOCK_SEQPACKET, protocol=0) "

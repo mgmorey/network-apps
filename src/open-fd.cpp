@@ -25,6 +25,7 @@
 #include "network/optionalstring.h"     // OptionalString
 #include "network/socket-error.h"       // socket_error
 #include "network/to-integer.h"         // to_integer()
+#include "network/to-os-error.h"        // to_os_error()
 #include "network/to-string.h"          // to_string()
 
 #include <iostream>     // std::cout, std::endl
@@ -65,7 +66,7 @@ auto Network::open(const OpenHandler& handler,
 
     if (handler.first(handle, pointer, length) == socket_error) {
         const auto error = get_last_context_error();
-        const auto os_error {static_cast<os_error_type>(error)};
+        const auto os_error {to_os_error(error)};
         std::ostringstream oss;
         oss << "Call to "
             << handler.second

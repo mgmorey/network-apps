@@ -22,6 +22,7 @@
                                         // reset_last_context_error()
 #include "network/format-os-error.h"    // format_os_error()
 #include "network/to-name-len.h"        // to_name_len()
+#include "network/to-os-error.h"        // to_os_error()
 
 #ifdef WIN32
 #include <winsock2.h>   // ::gethostname()
@@ -51,7 +52,7 @@ auto Network::get_hostnameresult(bool verbose) -> Network::HostnameResult
 
     if (::gethostname(host_buffer.data(), size) == -1) {
         const auto error {get_last_context_error()};
-        const auto os_error {static_cast<os_error_type>(error)};
+        const auto os_error {to_os_error(error)};
         std::ostringstream oss;
         oss << "Call to ::gethostname("
             << host_buffer

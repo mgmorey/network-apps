@@ -21,6 +21,7 @@
                                         // RunTimeError
 #include "network/format-os-error.h"    // format_os_error()
 #include "network/socket-error.h"       // socket_error
+#include "network/to-os-error.h"        // to_os_error()
 
 #ifdef WIN32
 #include <winsock2.h>       // WSAEINPROGRESS, WSAENETDOWN, WSANOTINITIALISED,
@@ -37,7 +38,7 @@ auto Network::cleanup(Context::failure_mode t_mode) ->
         const auto error {get_last_context_error()};
 
         if (t_mode == Context::failure_mode::throw_error) {
-            const auto os_error {static_cast<os_error_type>(error)};
+            const auto os_error {to_os_error(error)};
             const auto message {format_os_error(os_error)};
 
             switch (error) {  // NOLINT

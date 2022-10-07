@@ -21,6 +21,7 @@
                                         // reset_last_context_error()
 #include "network/format-os-error.h"    // format_os_error()
 #include "network/format.h"             // Format
+#include "network/to-os-error.h"        // to_os_error()
 
 #ifdef WIN32
 #include <winsock2.h>       // socket()
@@ -57,7 +58,7 @@ auto Network::get_socketresult(const SocketHints& hints,
 
     if (handle == fd_null) {
         const auto error = get_last_context_error();
-        const auto os_error {static_cast<os_error_type>(error)};
+        const auto os_error {to_os_error(error)};
         std::ostringstream oss;
         oss << "Call to ::socket("
             << Format("domain")

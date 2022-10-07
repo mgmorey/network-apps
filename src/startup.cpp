@@ -18,6 +18,7 @@
 #include "network/exceptions.h"         // Error, LogicError,
                                         // RunTimeError
 #include "network/format-os-error.h"    // format_os_error()
+#include "network/to-os-error.h"        // to_os_error()
 #include "network/windowsversion.h"     // Version, WORD, WSADATA,
                                         // WSAEFAULT, WSAEPROCLIM,
                                         // WSASYSNOTREADY,
@@ -42,7 +43,7 @@ auto Network::startup(Context& context, const OptionalVersion& version) -> void
     const auto error {::WSAStartup(WORD {required_version}, &wsa_data)};
 
     if (error != 0) {
-        const auto os_error {static_cast<os_error_type>(error)};
+        const auto os_error {to_os_error(error)};
         const auto message {format_os_error(os_error)};
 
         switch (error) {  // NOLINT

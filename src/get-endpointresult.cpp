@@ -26,6 +26,7 @@
 #include "network/get-length.h"         // get_length()
 #include "network/get-sa-pointer.h"     // get_sa_pointer()
 #include "network/is-valid.h"           // is_valid()
+#include "network/to-os-error.h"        // to_os_error()
 #include "network/to-string.h"          // to_string()
 
 #ifdef WIN32
@@ -70,7 +71,7 @@ auto Network::get_endpointresult(const ByteString& addr, int flags,
                                         host.data(), host.size(),
                                         service.data(), service.size(),
                                         flags)}) {
-        const auto os_error {static_cast<os_error_type>(error)};
+        const auto os_error {to_os_error(error)};
         std::ostringstream oss;
         oss << "Call to ::getnameinfo("
             << addr
