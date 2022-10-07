@@ -17,10 +17,10 @@
                                         // OsErrorResult, Socket,
                                         // fd_null, get_socketresult(),
                                         // operator<<()
+#include "network/context-error.h"      // get_last_context_error(),
+                                        // reset_last_context_error()
+#include "network/format-os-error.h"    // format_os_error()
 #include "network/format.h"             // Format
-#include "network/os-error.h"           // format_os_error(),
-                                        // get_last_os_error(),
-                                        // reset_last_os_error()
 
 #ifdef WIN32
 #include <winsock2.h>       // socket()
@@ -50,11 +50,14 @@ auto Network::get_socketresult(const SocketHints& hints,
                   << std::endl;
     }
 
-    reset_last_os_error();
-    const auto handle {::socket(hints.family(), hints.socktype(), hints.protocol())};
+    reset_last_context_error();
+    const auto handle {::socket(hints.family(),
+                                hints.socktype(),
+                                hints.protocol())};
 
     if (handle == fd_null) {
-        const auto error = get_last_os_error();
+        const auto error = get_last_context_error();
+        const auto os_error {static_cast<os_error_type>(error)};
         std::ostringstream oss;
         oss << "Call to ::socket("
             << Format("domain")
@@ -66,8 +69,8 @@ auto Network::get_socketresult(const SocketHints& hints,
             << ") failed with error "
             << error
             << ": "
-            << format_os_error(error);
-        return OsErrorResult {error, oss.str()};
+            << format_os_error(os_error);
+        return OsErrorResult {os_error, oss.str()};
     }
 
     return Fd {handle, pending, verbose};

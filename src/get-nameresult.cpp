@@ -13,14 +13,15 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-nameresult.h"     // Fd, GetNameHandler,
-                                        // OsErrorResult, get_nameresult()
+#include "network/get-nameresult.h"     // GetNameHandler,
+                                        // OsErrorResult,
+                                        // get_nameresult()
 #include "network/bytestring.h"         // ByteString
+#include "network/context-error.h"      // get_context_last_error(),
+                                        // reset_context_last_error()
+#include "network/format-os-error.h"    // format_os_error()
 #include "network/get-length.h"         // get_length()
 #include "network/get-sa-pointer.h"     // get_sa_pointer()
-#include "network/os-error.h"           // format_os_error(),
-                                        // get_os_last_error(),
-                                        // reset_os_last_error()
 #include "network/socket-error.h"       // socket_error
 #include "network/ss-sizes.h"           // ss_size
 #include "network/to-integer.h"         // to_integer()
@@ -36,7 +37,7 @@ auto Network::get_nameresult(const GetNameHandler& handler,
     ByteString addr {ss_size, Byte {}};
     auto length {get_length(addr)};
     auto* pointer {get_sa_pointer(addr)};
-    reset_last_os_error();
+    reset_last_context_error();
 
     if (args.verbose) {
         std::cout << "Calling "
@@ -52,7 +53,8 @@ auto Network::get_nameresult(const GetNameHandler& handler,
     }
 
     if (handler.first(args.handle, pointer, &length) == socket_error) {
-        const auto error = get_last_os_error();
+        const auto error = get_last_context_error();
+        const auto os_error {static_cast<os_error_type>(error)};
         std::ostringstream oss;
         oss << "Call to "
             << handler.second
@@ -65,8 +67,8 @@ auto Network::get_nameresult(const GetNameHandler& handler,
             << ", ...) failed with error "
             << error
             << ": "
-            << format_os_error(error);
-        return OsErrorResult {error, oss.str()};
+            << format_os_error(os_error);
+        return OsErrorResult {os_error, oss.str()};
     }
 
     addr.resize(to_size(length));

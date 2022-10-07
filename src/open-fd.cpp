@@ -17,12 +17,12 @@
                                         // OpenHandler, OsErrorResult,
                                         // fd_type, open(),
                                         // operator<<()
+#include "network/context-error.h"      // get_last_context_error(),
+                                        // reset_last_context_error()
+#include "network/format-os-error.h"    // format_os_error()
 #include "network/get-length.h"         // get_length()
 #include "network/get-sa-pointer.h"     // get_sa_pointer()
 #include "network/optionalstring.h"     // OptionalString
-#include "network/os-error.h"           // format_os_error(),
-                                        // get_last_os_error(),
-                                        // reset_last_os_error()
 #include "network/socket-error.h"       // socket_error
 #include "network/to-integer.h"         // to_integer()
 #include "network/to-string.h"          // to_string()
@@ -45,7 +45,7 @@ auto Network::open(const OpenHandler& handler,
 {
     const auto* const pointer {get_sa_pointer(args.str)};
     const auto length {get_length(args.str)};
-    reset_last_os_error();
+    reset_last_context_error();
     OptionalString str;
 
     if (args.verbose) {
@@ -64,7 +64,8 @@ auto Network::open(const OpenHandler& handler,
     const fd_type handle {args.fd};
 
     if (handler.first(handle, pointer, length) == socket_error) {
-        const auto error = get_last_os_error();
+        const auto error = get_last_context_error();
+        const auto os_error {static_cast<os_error_type>(error)};
         std::ostringstream oss;
         oss << "Call to "
             << handler.second
@@ -77,8 +78,8 @@ auto Network::open(const OpenHandler& handler,
             << ") failed with error "
             << error
             << ": "
-            << format_os_error(error);
-        return OsErrorResult {error, oss.str()};
+            << format_os_error(os_error);
+        return OsErrorResult {os_error, oss.str()};
     }
 
     return OsErrorResult {};

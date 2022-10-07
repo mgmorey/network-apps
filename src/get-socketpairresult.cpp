@@ -13,18 +13,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-socketpairresult.h"       // FdPair,
-                                                // FdPairResult,
-                                                // OsErrorResult,
-                                                // Socket, fd_null,
-                                                // fd_type,
-                                                // get_socketpair(),
-                                                // operator<<()
-#include "network/format.h"                     // Format
-#include "network/os-error.h"                   // format_os_error(),
-                                                // get_last_os_error(),
-                                                // reset_last_os_error()
-#include "network/socket-error.h"               // socket_error
+#include "network/get-socketpairresult.h"   // FdPair, FdPairResult,
+                                            // OsErrorResult, Socket,
+                                            // fd_null, fd_type,
+                                            // get_socketpair(),
+                                            // operator<<()
+#include "network/context-error.h"          // get_last_context_error(),
+                                            // reset_last_context_error()
+#include "network/format-os-error.h"        // format_os_error()
+#include "network/format.h"                 // Format
+#include "network/socket-error.h"           // socket_error
 
 #ifndef WIN32
 
@@ -56,13 +54,14 @@ auto Network::get_socketpairresult(const SocketHints& hints,
                   << std::endl;
     }
 
-    reset_last_os_error();
+    reset_last_context_error();
 
     if (::socketpair(hints.family(),
                      hints.socktype(),
                      hints.protocol(),
                      fds.data()) == socket_error) {
-        const auto error = get_last_os_error();
+        const auto error = get_last_context_error();
+        const auto os_error {static_cast<os_error_type>(error)};
         std::ostringstream oss;
         oss << "Call to ::socketpair("
             << Format("domain")
@@ -74,8 +73,8 @@ auto Network::get_socketpairresult(const SocketHints& hints,
             << ", ...) failed with error "
             << error
             << ": "
-            << format_os_error(error);
-        return OsErrorResult {error, oss.str()};
+            << format_os_error(os_error);
+        return OsErrorResult {os_error, oss.str()};
     }
 
     return FdPair {Fd {fds[0], false, verbose}, Fd {fds[1], false, verbose}};
