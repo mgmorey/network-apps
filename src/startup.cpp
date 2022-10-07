@@ -18,7 +18,6 @@
 #include "network/exceptions.h"         // Error, LogicError,
                                         // RunTimeError
 #include "network/format-os-error.h"    // format_os_error()
-#include "network/rangeerror.h"         // RangeError
 #include "network/windowsversion.h"     // Version, WORD, WSADATA,
                                         // WSAEFAULT, WSAEPROCLIM,
                                         // WSASYSNOTREADY,
@@ -43,18 +42,6 @@ auto Network::startup(Context& context, const OptionalVersion& version) -> void
     const auto error {::WSAStartup(WORD {required_version}, &wsa_data)};
 
     if (error != 0) {
-        if (error < 0 || error > INT_MAX) {
-            std::ostringstream oss;
-            oss << "Value "
-                << error
-                << " is out of range ["
-                << 0
-                << ", "
-                << INT_MAX
-                << "] of os_error_type";
-            throw RangeError(oss.str());
-        }
-
         const auto os_error {static_cast<os_error_type>(error)};
         const auto message {format_os_error(os_error)};
 
