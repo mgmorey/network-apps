@@ -40,6 +40,7 @@ using Network::SocketHints;
 using Network::bind;
 using Network::fd_type;
 using Network::format_os_error;
+using Network::os_error_type;
 using Network::socket_error;
 using Network::to_byte_string;
 
