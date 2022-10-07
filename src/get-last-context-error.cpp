@@ -24,11 +24,11 @@
 
 auto Network::get_last_context_error() -> Network::context_error_type
 {
-    context_error_type context_error {0};
+    context_error_type error {0};
 #ifdef WIN32
-    context_error = ::WSAGetLastError();
+    error = ::WSAGetLastError();
 #else
-    context_error = errno;
+    error = errno;
 #endif
-    return context_error;
+    return error;
 }
