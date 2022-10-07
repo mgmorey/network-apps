@@ -116,7 +116,7 @@ Network::AddrInfo::AddrInfo(const OptionalHostname& t_hostname,
             << ", ...) returned "
             << error
             << ": "
-            << format_ai_error(os_error);
+            << format_ai_error(error);
         m_result = {os_error, oss.str()};
     }
 }
