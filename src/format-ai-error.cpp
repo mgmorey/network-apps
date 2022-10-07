@@ -13,18 +13,20 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/format-ai-error.h"    // format_ai_error(),
-                                        // os_error_type, std::string
+#include "network/format-ai-error.h"    // context_error_type,
+                                        // format_ai_error(),
+                                        // std::string
 #include "network/format-os-error.h"    // format_os_error()
 
 #ifndef WIN32
 #include <netdb.h>          // gai_strerror()
 #endif
 
-auto Network::format_ai_error(os_error_type error) -> std::string
+auto Network::format_ai_error(context_error_type error) -> std::string
 {
 #ifdef WIN32
-    return format_os_error(error);
+    const auto os_error {static_cast<os_error_type>(error)};
+    return format_os_error(os_error);
 #else
     return ::gai_strerror(error);
 #endif

@@ -16,13 +16,13 @@
 #ifndef NETWORK_FORMAT_AI_ERROR_H
 #define NETWORK_FORMAT_AI_ERROR_H
 
-#include "network/os-error-type.h"      // os_error_type
+#include "network/context-error-type.h"     // context_error_type
 
 #include <string>       // std::string
 
 namespace Network
 {
-    extern auto format_ai_error(os_error_type error) -> std::string;
+    extern auto format_ai_error(context_error_type error) -> std::string;
 }
 
 #endif
