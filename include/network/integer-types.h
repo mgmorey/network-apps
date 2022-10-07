@@ -17,6 +17,7 @@
 #define NETWORK_INTEGER_TYPES_H
 
 #include "network/byte-type.h"              // byte_type
+#include "network/context-error-type.h"     // context_error_type
 #include "network/error-type.h"             // error_type
 #include "network/fd-type.h"                // fd_type
 #include "network/length-type.h"            // length_type

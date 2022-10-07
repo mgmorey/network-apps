@@ -16,14 +16,15 @@
 #ifndef NETWORK_TYPES_H
 #define NETWORK_TYPES_H
 
-#include "network/integer-types.h"      // byte_type, fd_type,
+#include "network/integer-types.h"      // byte_type,
+                                        // context_error_type,
+                                        // error_type, fd_type,
                                         // length_type, os_error_type,
-                                        // port_type, result_type,
+                                        // port_type, sock_len_type,
                                         // socket_family_type,
                                         // socket_flags_type,
                                         // socket_protocol_type,
-                                        // socket_type_type,
-                                        // sock_len_type
+                                        // socket_type_type
 #include "network/string-types.h"       // Buffer, ByteString,
                                         // Hostname, OptionalHostname,
                                         // OptionalPathname,
