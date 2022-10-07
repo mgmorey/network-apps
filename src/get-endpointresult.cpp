@@ -81,7 +81,7 @@ auto Network::get_endpointresult(const ByteString& addr, int flags,
             << ") returned "
             << error
             << " ("
-            << format_ai_error(os_error)
+            << format_ai_error(error)
             << ')';
         return OsErrorResult {os_error, oss.str()};
     }
