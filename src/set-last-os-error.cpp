@@ -15,7 +15,6 @@
 
 #include "network/set-last-os-error.h"  // os_error_type,
                                         // set_last_os_error()
-#include "network/to-integer.h"         // to_integer()
 
 #ifdef WIN32
 #include <winsock2.h>       // Always include winsock2.h before
@@ -29,7 +28,7 @@ auto Network::set_last_os_error(os_error_type os_error) ->
     Network::os_error_type
 {
 #ifdef WIN32
-    ::SetLastError(to_integer(os_error));
+    ::SetLastError(os_error);
 #else
     errno = os_error;
 #endif

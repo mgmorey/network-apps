@@ -15,7 +15,6 @@
 
 #include "network/get-last-context-error.h" // context_error_type,
                                             // get_last_context_error()
-#include "network/rangeerror.h"             // RangeError
 
 #ifdef WIN32
 #include <winsock2.h>       // WSAGetLastError()
@@ -23,28 +22,11 @@
 #include <cerrno>           // errno
 #endif
 
-#include <climits>      // INT_MAX, INT_MIN
-#include <sstream>      // std::ostringstream
-
 auto Network::get_last_context_error() -> Network::context_error_type
 {
     context_error_type context_error {0};
 #ifdef WIN32
-    const auto error {::WSAGetLastError()};
-
-    if (error < 0 || error > INT_MAX) {
-        std::ostringstream oss;
-        oss << "Value "
-            << error
-            << " is out of range ["
-            << 0
-            << ", "
-            << INT_MAX
-            << "] of context_error_type";
-        throw RangeError(oss.str());
-    }
-
-    context_error = static_cast<context_error_type>(error);
+    context_error = ::WSAGetLastError();
 #else
     context_error = errno;
 #endif

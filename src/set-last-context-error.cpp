@@ -15,7 +15,6 @@
 
 #include "network/set-last-context-error.h"    // context_error_type,
                                                // set_last_context_error()
-#include "network/to-integer.h"                // to_integer()
 
 #ifdef WIN32
 #include <winsock2.h>       // WSASetLastError()
@@ -27,7 +26,7 @@ auto Network::set_last_context_error(context_error_type context_error) ->
     Network::context_error_type
 {
 #ifdef WIN32
-    ::WSASetLastError(to_integer(context_error));
+    ::WSASetLastError(context_error);
 #else
     errno = context_error;
 #endif

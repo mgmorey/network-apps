@@ -15,7 +15,6 @@
 
 #include "network/get-last-os-error.h"      // get_last_os_error(),
                                             // os_error_type
-#include "network/rangeerror.h"             // RangeError
 
 #ifdef WIN32
 #include <winsock2.h>       // Always include winsock2.h before
@@ -25,28 +24,11 @@
 #include <cerrno>           // errno
 #endif
 
-#include <climits>      // INT_MAX, INT_MIN
-#include <sstream>      // std::ostringstream
-
 auto Network::get_last_os_error() -> Network::os_error_type
 {
     os_error_type os_error {0};
 #ifdef WIN32
-    const auto error {::GetLastError()};
-
-    if (error < 0 || error > INT_MAX) {
-        std::ostringstream oss;
-        oss << "Value "
-            << error
-            << " is out of range ["
-            << 0
-            << ", "
-            << INT_MAX
-            << "] of os_error_type";
-        throw RangeError(oss.str());
-    }
-
-    os_error = static_cast<os_error_type>(error);
+    os_error = ::GetLastError();
 #else
     os_error = errno;
 #endif
