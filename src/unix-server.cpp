@@ -52,12 +52,14 @@ static bool verbose {false};  // NOLINT
 
 static auto format_message(int error) -> std::string
 {
+    const auto os_error {static_cast<os_error_type>(error)};
     std::ostringstream oss;
-    oss << ("Call to ::socket(domain=AF_UNIX, type=SOCK_SEQPACKET, protocol=0) "
+    oss << ("Call to ::socket(domain=AF_UNIX, "
+            "type=SOCK_SEQPACKET, protocol=0) "
             "failed with error ")
         << error
         << ": "
-        << format_os_error(error);
+        << format_os_error(os_error);
     return oss.str();
 }
 
