@@ -43,7 +43,7 @@ auto Network::unlink(const Pathname& pathname,
         const auto os_error {get_last_os_error()};
         std::ostringstream oss;
         oss << "Call to ::unlink(...) failed with error "
-            << error
+            << os_error
             << ": "
             << format_os_error(os_error);
         return {os_error, oss.str()};
