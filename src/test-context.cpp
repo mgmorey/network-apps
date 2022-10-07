@@ -39,8 +39,8 @@ namespace TestContext
 #ifdef WIN32
     using Network::WindowsVersion;
 #endif
+    using Network::context_error_type;
     using Network::get_hostname;
-    using Network::os_error_type;
     using Network::parse;
 
     static constexpr Version version_0_0 {0, 0};
@@ -186,7 +186,7 @@ namespace TestContext
 
     static auto test_context_cleaned_up() -> void
     {
-        os_error_type error_code {0};
+        context_error_type error_code {0};
         std::string actual_error_str;
 
         try {
