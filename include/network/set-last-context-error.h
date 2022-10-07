@@ -20,7 +20,7 @@
 
 namespace Network
 {
-    extern auto set_last_context_error(context_error_type context_error) ->
+    extern auto set_last_context_error(context_error_type error) ->
         context_error_type;
 }
 

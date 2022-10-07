@@ -22,13 +22,13 @@
 #include <cerrno>           // errno
 #endif
 
-auto Network::set_last_context_error(context_error_type context_error) ->
+auto Network::set_last_context_error(context_error_type error) ->
     Network::context_error_type
 {
 #ifdef WIN32
-    ::WSASetLastError(context_error);
+    ::WSASetLastError(error);
 #else
-    errno = context_error;
+    errno = error;
 #endif
-    return context_error;
+    return error;
 }
