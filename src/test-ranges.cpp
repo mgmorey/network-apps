@@ -16,6 +16,7 @@
 #include "network/assert.h"             // assert()
 #include "network/to-integer.h"         // to_integer()
 #include "network/to-name-len.h"        // to_name_len()
+#include "network/to-path-len.h"        // to_path_len()
 #include "network/to-size.h"            // to_size()
 #include "network/to-sock-len.h"        // to_sock_len()
 
@@ -32,9 +33,11 @@ namespace TestRanges
     using Network::RangeError;
     using Network::SizeError;
     using Network::name_len_max;
+    using Network::path_len_max;
     using Network::sock_len_max;
     using Network::to_integer;
     using Network::to_name_len;
+    using Network::to_path_len;
     using Network::to_size;
     using Network::to_sock_len;
 
@@ -43,6 +46,9 @@ namespace TestRanges
     };
     static constexpr auto expected_error_name_len_re {
         R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of name_len_type)"
+    };
+    static constexpr auto expected_error_path_len_re {
+        R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of path_len_type)"
     };
     static constexpr auto expected_error_sock_len_re {
         R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of sock_len_type)"
@@ -101,6 +107,31 @@ namespace TestRanges
         test_name_len_invalid(name_len_max + 1);
     }
 
+#ifndef WIN32
+
+    static auto test_path_len_invalid(std::size_t value) -> void
+    {
+        std::string actual_error_str;
+
+        try {
+            to_path_len(value);
+        }
+        catch (const RangeError& error) {
+            print(error);
+            actual_error_str = error.what();
+        }
+
+        const std::regex expected_error_regex {expected_error_path_len_re};
+        assert(std::regex_match(actual_error_str, expected_error_regex));
+    }
+
+    static auto test_path_len_invalid() -> void
+    {
+        test_path_len_invalid(path_len_max + 1);
+    }
+
+#endif
+
     static auto test_sock_len_invalid(long value) -> void
     {
         std::string actual_error_str;
@@ -152,6 +183,9 @@ auto main() -> int
     try {
         test_integer_invalid();
         test_name_len_invalid();
+#ifndef WIN32
+        test_path_len_invalid();
+#endif
         test_sock_len_invalid();
         test_std_size_invalid();
     }
