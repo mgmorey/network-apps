@@ -39,7 +39,7 @@ auto Network::get_sun_path_length(const sockaddr_un* sun,
     const auto path_len {std::min(size, len) - sun_path_offset};
 #else
     const auto path_len {std::min(size - sun_path_offset,
-                                 sizeof sun->sun_path)};
+                                  sizeof sun->sun_path)};
 #endif
     const auto* path {static_cast<const char*>(sun->sun_path)};
     return strnlen(path, path_len);
