@@ -13,9 +13,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/assert.h"             // assert()
 #include "network/get-sin6-addr.h"      // ByteString, get_sin6_addr(),
                                         // in6_addr
+#include "network/assert.h"             // assert()
 #include "network/get-sa-family.h"      // get_sa_family()
 #include "network/get-sin6-pointer.h"   // get_sin6_pointer()
 #include "network/sin6-offsets.h"       // sin6_addr_offset
