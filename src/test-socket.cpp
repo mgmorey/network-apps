@@ -35,6 +35,7 @@
 #include <iomanip>      // std::right, std::setw()
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <optional>     // std::nullopt
+#include <regex>        // std::regex, std::regex_match
 #include <set>          // std::set
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
@@ -51,6 +52,7 @@ namespace TestSocket
     using Network::OptionalPathname;
     using Network::OsErrorResult;
     using Network::Pathname;
+    using Network::RangeError;
     using Network::bind;
     using Network::get_sockname;
     using Network::get_sun_path;
@@ -62,6 +64,9 @@ namespace TestSocket
     using ErrorCodeSet = std::set<os_error_type>;
     using OptionalPathnameVector = std::vector<OptionalPathname>;
 
+    static constexpr auto expected_error_path_len_re {
+        R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of path_len_type)"
+    };
     static constexpr auto fd_width {6};
     static constexpr auto path_size_max {get_sun_path_size()};
 
@@ -188,27 +193,17 @@ namespace TestSocket
                                   const ErrorCodeSet& expected_codes) -> void
     {
         std::string actual_error_str;
-        std::string expected_error;
-
-        if (pathname) {
-            std::ostringstream oss;
-            oss << *pathname
-                << ": pathname length of "
-                << pathname->length()
-                << " exceeds maximum of "
-                << path_size_max - 1;
-            expected_error = oss.str();
-        }
 
         try {
             test_pathname(pathname, expected_codes);
         }
-        catch (const LogicError& error) {
+        catch (const RangeError& error) {
             actual_error_str = error.what();
             print(error);
         }
 
-        assert(actual_error_str == expected_error);
+        const std::regex expected_error_regex {expected_error_path_len_re};
+        assert(std::regex_match(actual_error_str, expected_error_regex));
     }
 
 #ifndef OS_CYGWIN_NT
