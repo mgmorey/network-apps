@@ -23,6 +23,7 @@
 #include "network/length-type.h"            // length_type
 #include "network/name-len-type.h"          // name_len_type
 #include "network/os-error-type.h"          // os_error_type
+#include "network/path-len-type.h"          // path_len_type
 #include "network/port-type.h"              // port_type
 #include "network/sock-len-type.h"          // sock_len_type
 #include "network/socket-family-type.h"     // socket_family_type
