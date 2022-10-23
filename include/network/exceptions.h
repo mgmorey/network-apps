@@ -18,8 +18,13 @@
 
 #include "network/addresserror.h"       // AddressError
 #include "network/error.h"              // Error
+#include "network/integererror.h"       // IntegerError
 #include "network/logicerror.h"         // LogicError
+#include "network/namelengtherror.h"    // NameLengthError
+#include "network/pathlengtherror.h"    // PathLengthError
 #include "network/rangeerror.h"         // RangeError
 #include "network/runtimeerror.h"       // RuntimeError
+#include "network/sizeerror.h"          // SizeError
+#include "network/socketlengtherror.h"  // SocketLengthError
 
 #endif
