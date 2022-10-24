@@ -56,9 +56,11 @@ namespace TestRanges
     static constexpr auto expected_error_name_len_re {
         R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of name_len_type)"
     };
+#ifndef WIN32
     static constexpr auto expected_error_path_len_re {
         R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of path_len_type)"
     };
+#endif
     static constexpr auto expected_error_sock_len_re {
         R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of sock_len_type)"
     };
