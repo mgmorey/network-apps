@@ -33,11 +33,15 @@ namespace TestRanges
     using Network::RangeError;
     using Network::SizeError;
     using Network::name_len_max;
+#ifndef WIN32
     using Network::path_len_max;
+#endif
     using Network::sock_len_max;
     using Network::to_integer;
     using Network::to_name_len;
+#ifndef WIN32
     using Network::to_path_len;
+#endif
     using Network::to_size;
     using Network::to_sock_len;
 
