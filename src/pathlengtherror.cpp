@@ -18,6 +18,8 @@
 
 #include <sstream>      // std::ostringstream
 
+#ifndef WIN32
+
 auto Network::PathLengthError::format(const std::string& t_value) -> std::string
 {
     std::ostringstream oss;
@@ -40,3 +42,5 @@ Network::PathLengthError::PathLengthError(std::string&& t_value) noexcept :
     RangeError(format(t_value))
 {
 }
+
+#endif

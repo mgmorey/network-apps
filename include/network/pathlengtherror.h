@@ -20,6 +20,7 @@
 
 namespace Network
 {
+#ifndef WIN32
     class PathLengthError :
         public RangeError
     {
@@ -35,6 +36,7 @@ namespace Network
         auto operator=(PathLengthError&&) noexcept ->
             PathLengthError& = default;
     };
+#endif
 }
 
 #endif
