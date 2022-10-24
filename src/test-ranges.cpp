@@ -30,6 +30,7 @@
 namespace TestRanges
 {
     using Network::IntegerError;
+    using Network::NameLengthError;
     using Network::RangeError;
     using Network::SizeError;
     using Network::SocketLengthError;
@@ -97,7 +98,7 @@ namespace TestRanges
         try {
             to_name_len(value);
         }
-        catch (const RangeError& error) {
+        catch (const NameLengthError& error) {
             print(error);
             actual_error_str = error.what();
         }
