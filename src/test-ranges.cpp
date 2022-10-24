@@ -32,6 +32,7 @@ namespace TestRanges
     using Network::IntegerError;
     using Network::RangeError;
     using Network::SizeError;
+    using Network::SocketLengthError;
     using Network::name_len_max;
 #ifndef WIN32
     using Network::path_len_max;
@@ -143,7 +144,7 @@ namespace TestRanges
         try {
             to_sock_len(value);
         }
-        catch (const RangeError& error) {
+        catch (const SocketLengthError& error) {
             print(error);
             actual_error_str = error.what();
         }
