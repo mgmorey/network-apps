@@ -56,11 +56,9 @@ namespace TestSocket
     using Network::bind;
     using Network::get_sockname;
     using Network::get_sun_path;
-    using Network::get_sun_path_size;
     using Network::os_error_type;
     using Network::parse;
     using Network::path_len_max;
-    using Network::path_len_min;
     using Network::to_byte_string;
 
     using ErrorCodeSet = std::set<os_error_type>;
