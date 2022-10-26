@@ -24,7 +24,7 @@ namespace Network
 {
 #ifndef WIN32
     using path_len_type = std::size_t;
-    static constexpr auto path_len_max {get_sun_path_size() - 1};
+    static constexpr auto path_len_max {get_sun_path_size()};
     static constexpr auto path_len_min {0};
 #endif
 }
