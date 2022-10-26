@@ -109,6 +109,9 @@ else
 ifeq "$(USING_LIBASAN)" "true"
 	CXXFLAGS += -fsanitize=address -fsanitize-address-use-after-scope
 endif
+ifeq "$(USING_VALGRIND)" "true"
+	CXXFLAGS += -gdwarf-4
+endif
 ifeq "$(is_gcc)" "true"
 	CXXFLAGS += -ggdb
 else
