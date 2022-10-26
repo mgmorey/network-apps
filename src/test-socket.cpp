@@ -59,6 +59,8 @@ namespace TestSocket
     using Network::get_sun_path_size;
     using Network::os_error_type;
     using Network::parse;
+    using Network::path_len_max;
+    using Network::path_len_min;
     using Network::to_byte_string;
 
     using ErrorCodeSet = std::set<os_error_type>;
@@ -68,7 +70,6 @@ namespace TestSocket
         R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of path_len_type)"
     };
     static constexpr auto fd_width {6};
-    static constexpr auto path_size_max {get_sun_path_size()};
 
     static bool verbose {false};  // NOLINT
 
@@ -106,8 +107,8 @@ namespace TestSocket
 
     static auto get_pathnames() -> OptionalPathnameVector
     {
-        static constexpr auto size_max {64};
-        static constexpr auto size_min {8};
+        static constexpr auto size_max {64};	// NOLINT
+        static constexpr auto size_min {8};	// NOLINT
         OptionalPathnameVector pathnames;
 
         for (std::size_t size = size_max; size >= size_min; size /= 2) {
@@ -293,8 +294,8 @@ auto main(int argc, char* argv[]) -> int
         test_path_no_permission("/foo", codes_no_permission);
         test_path_no_directory("/foo/bar", codes_no_directory);
 #endif
-        test_path_invalid(get_pathname(path_size_max), codes_valid);
-        test_path_valid(get_pathname(path_size_max - 1), codes_valid);
+        test_path_invalid(get_pathname(path_len_max), codes_valid);
+        test_path_valid(get_pathname(path_len_max - 1), codes_valid);
         const auto& pathnames {get_pathnames()};
 
         for (const auto& pathname : pathnames) {
