@@ -5,11 +5,17 @@ run_test_program() (
     dirname="$(dirname "$filename")"
     logname="$basename.log"
     cd "$dirname"
-    "./$basename" >"$logname"
+    ${valgrind:+$valgrind }"./$basename" >"$logname"
 )
 
 export HOSTNAME=${HOSTNAME-$(hostname)}
 export LD_LIBRARY_PATH=".${LD_LIBRARY_PATH+:$LD_LIBRARY_PATH}"
+
+if [ "$USING_VALGRIND" = true ]; then
+   valgrind=valgrind
+else
+   valgrind=
+fi
 
 for filename in "$@"; do
     run_test_program "$filename"
