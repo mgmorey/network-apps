@@ -11,7 +11,7 @@ run_test_program() (
 export HOSTNAME=${HOSTNAME-$(hostname)}
 export LD_LIBRARY_PATH=".${LD_LIBRARY_PATH+:$LD_LIBRARY_PATH}"
 
-if [ "$USING_VALGRIND" = true ]; then
+if [ "${USING_VALGRIND-}" = true ]; then
    valgrind=valgrind
 else
    valgrind=
