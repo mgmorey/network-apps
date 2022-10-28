@@ -21,7 +21,7 @@ This project has been tested on the following platforms:
 +-----------+---------------------+--------------------------+--------+--------+
 | Windows   | Cygwin              | 10.0 (amd64)             | 11.3.0 | N/A    |
 +-----------+---------------------+--------------------------+--------+--------+
-| Windows   | MinGW               | 10.0 (amd64)             | 12.2.0 | 15.0.2 |
+| Windows   | MinGW               | 10.0 (amd64)             | 12.2.0 | 15.0.3 |
 +-----------+---------------------+--------------------------+--------+--------+
 
 The various OS ports have been tested on the following processors:
