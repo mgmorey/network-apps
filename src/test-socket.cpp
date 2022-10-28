@@ -20,7 +20,6 @@
                                         // OsErrorResult, Pathname,
                                         // bind(), get_sockname()
                                         // get_sun_path(),
-                                        // get_sun_path_size(),
                                         // os_error_type,
                                         // to_byte_string()
 #include "network/parse.h"              // parse()
