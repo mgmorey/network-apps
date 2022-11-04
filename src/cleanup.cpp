@@ -18,7 +18,7 @@
                                         // reset_last_context_error()
 #include "network/context.h"            // Context
 #include "network/exceptions.h"         // Error, LogicError,
-                                        // RunTimeError
+                                        // RuntimeError
 #include "network/format-os-error.h"    // format_os_error()
 #include "network/socket-error.h"       // socket_error
 #include "network/to-os-error.h"        // to_os_error()
