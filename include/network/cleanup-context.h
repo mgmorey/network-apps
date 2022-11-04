@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_CLEANUP_H
-#define NETWORK_CLEANUP_H
+#ifndef NETWORK_CLEANUP_CONTEXT_H
+#define NETWORK_CLEANUP_CONTEXT_H
 
 #include "network/context-error-type.h"     // context_error_type
 #include "network/context.h"                // Context
