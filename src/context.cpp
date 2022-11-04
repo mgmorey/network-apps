@@ -16,7 +16,7 @@
 #include "network/context.h"            // Context, Version,
                                         // operator<<(), std::endl,
                                         // std::ostream, std::string
-#include "network/cleanup.h"            // cleanup()
+#include "network/cleanup-context.h"    // cleanup()
 #include "network/exceptions.h"         // Error, RuntimeError
 #include "network/is-running.h"         // is_running()
 #include "network/startup.h"            // startup()

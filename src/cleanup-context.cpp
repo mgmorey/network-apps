@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/cleanup.h"            // cleanup()
+#include "network/cleanup-context.h"    // cleanup()
 #include "network/context-error.h"      // get_last_context_error(),
                                         // reset_last_context_error()
 #include "network/context.h"            // Context
