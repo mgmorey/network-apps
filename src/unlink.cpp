@@ -20,7 +20,7 @@
                                         // reset_last_os_error()
 
 #ifndef WIN32
-#include <unistd.h>     // unlink()
+#include <unistd.h>     // ::unlink()
 #endif
 
 #include <iostream>     // std::cout, std::endl
