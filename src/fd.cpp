@@ -15,7 +15,6 @@
 
 #include "network/fd.h"                 // Fd, FdData, fd_type,
                                         // operator<<(), std::ostream
-#include "network/close.h"              // close()
 #include "network/get-socket.h"         // get_socket()
 #include "network/string-null.h"        // string_null
 
