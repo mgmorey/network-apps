@@ -22,11 +22,6 @@
 #include "network/get-sockname.h"       // get_sockname()
 #include "network/string-null.h"        // string_null
 
-#ifndef WIN32
-#include <sys/socket.h>     // AF_UNIX
-#include <unistd.h>         // ::unlink()
-#endif
-
 Network::FdData::FdData(fd_type t_fd_data,
                         bool t_pending,
                         bool t_verbose) noexcept :
@@ -38,14 +33,10 @@ Network::FdData::FdData(fd_type t_fd_data,
 
 Network::FdData::~FdData()
 {
-#ifndef WIN32
     if (m_pending) {
         cleanup(m_handle, m_verbose);
     }
 
-#else
-    static_cast<void>(m_pending);
-#endif
     static_cast<void>(Network::close(m_handle, m_verbose));
 }
 
