@@ -13,10 +13,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/context.h"            // Context, Version, operator<<(),
-                                        // std::endl, std::ostream
+#include "network/context.h"            // Context, Version,
+                                        // operator<<(), std::endl,
+                                        // std::ostream, std::string
 #include "network/cleanup.h"            // cleanup()
-#include "network/exceptions.h"         // Error, RunTimeError
+#include "network/exceptions.h"         // Error, RuntimeError
 #include "network/is-running.h"         // is_running()
 #include "network/startup.h"            // startup()
 
