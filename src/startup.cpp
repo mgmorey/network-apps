@@ -16,7 +16,7 @@
 #include "network/startup.h"            // Context, OptionalVersion,
                                         // Version, startup()
 #include "network/exceptions.h"         // Error, LogicError,
-                                        // RunTimeError
+                                        // RuntimeError
 #include "network/format-os-error.h"    // format_os_error()
 #include "network/to-os-error.h"        // to_os_error()
 #include "network/windowsversion.h"     // Version, WORD, WSADATA,
@@ -25,9 +25,6 @@
                                         // WSAVERNOTSUPPORTED,
                                         // WSAStartup(),
                                         // WindowsVersion
-
-#include <climits>      // INT_MAX, INT_MIN
-#include <sstream>      // std::ostringstream
 
 #ifdef WIN32
 static constexpr auto version_default {Network::Version {2, 2}};
