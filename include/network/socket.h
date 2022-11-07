@@ -51,8 +51,8 @@ namespace Network
         [[nodiscard]] auto family() const noexcept -> SocketFamily;
         [[nodiscard]] auto socktype() const noexcept -> SocketType;
         [[nodiscard]] auto protocol() const noexcept -> SocketProtocol;
-        [[nodiscard]] auto address() const noexcept -> ByteString;
-        [[nodiscard]] auto canonical_name() const noexcept -> OptionalHostname;
+        [[nodiscard]] auto address() const noexcept -> const ByteString&;
+        [[nodiscard]] auto canonical_name() const noexcept -> const OptionalHostname&;
 
     private:
         SocketHints m_hints;

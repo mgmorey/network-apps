@@ -92,12 +92,12 @@ auto Network::Socket::protocol() const noexcept -> SocketProtocol
     return m_hints.protocol();
 }
 
-auto Network::Socket::address() const noexcept -> ByteString
+auto Network::Socket::address() const noexcept -> const ByteString&
 {
     return m_host.address();
 }
 
-auto Network::Socket::canonical_name() const noexcept -> OptionalHostname
+auto Network::Socket::canonical_name() const noexcept -> const OptionalHostname&
 {
     return m_host.canonical_name();
 }
