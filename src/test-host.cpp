@@ -88,7 +88,7 @@ namespace TestHost
 
         auto operator()(const SocketHost& t_host) -> void
         {
-            const ByteString addr {t_host.address()};
+            const ByteString& addr {t_host.address()};
             const auto endpoint {get_endpoint(addr)};
             Values values = {
                 Address(addr).text(),
