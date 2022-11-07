@@ -13,13 +13,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/open-endpoint.h"      // Endpoint, FdResultVector,
+#include "network/open-endpoint.h"      // FdResultVector,
                                         // OpenEndpointParams,
                                         // OpenHandler, OpenResult,
-                                        // SocketHints, open()
-#include "network/open-fd.h"            // Bytes, Fd, OpenHandler,
-                                        // OsErrorResult, open()
-#include "network/get-socketresult.h"   // ErrorResult, get_socketresult()
+                                        // open()
+#include "network/open-fd.h"            // Fd, OpenFdParams,
+                                        // OpenHandler, OsErrorResult,
+                                        // open()
+#include "network/get-socketresult.h"   // get_socketresult()
 #include "network/get-sockets.h"        // SocketVector, get_sockets()
 #include "network/overloaded.h"         // Overloaded
 
