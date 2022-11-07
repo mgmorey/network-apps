@@ -37,9 +37,9 @@ auto Network::open(const OpenHandler& handler,
         auto socket_result {get_socketresult(sock.hints(), args.verbose)};
         std::visit(Overloaded {
                 [&](const Fd& fd) {
-                    const auto addr {sock.address()};
-                    const auto params {OpenFdParams {fd, addr, args.verbose}};
-                    const auto result {open(handler, params)};
+                    const auto result {open(handler, {fd,
+                                                      sock.address(),
+                                                      args.verbose})};
 
                     if (result) {
                         socket_result = result;
