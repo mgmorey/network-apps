@@ -90,7 +90,7 @@ auto Network::Context::version(const Version& t_version) noexcept -> Context&
     return *this;
 }
 
-auto Network::Context::description() const -> std::string
+auto Network::Context::description() const -> const std::string&
 {
     return m_description;
 }
@@ -100,7 +100,7 @@ auto Network::Context::is_started() const noexcept -> bool
     return m_is_started;
 }
 
-auto Network::Context::system_status() const -> std::string
+auto Network::Context::system_status() const -> const std::string&
 {
     return m_system_status;
 }
@@ -120,8 +120,8 @@ auto Network::Context::shutdown(failure_mode t_mode) -> void
 auto Network::operator<<(std::ostream& os,
                          const Context& context) -> std::ostream&
 {
-    const auto description {context.description()};
-    const auto status {context.system_status()};
+    const auto& description {context.description()};
+    const auto& status {context.system_status()};
     const auto version {context.version()};
     os << description;
 
