@@ -34,7 +34,7 @@ Network::FdData::FdData(fd_type t_fd_data,
 Network::FdData::~FdData()
 {
     if (m_pending) {
-        cleanup(m_handle, m_verbose);
+        static_cast<void>(cleanup(m_handle, m_verbose));
     }
 
     static_cast<void>(Network::close(m_handle, m_verbose));
