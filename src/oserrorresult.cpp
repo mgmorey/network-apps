@@ -57,7 +57,7 @@ auto Network::OsErrorResult::number() const noexcept -> Network::os_error_type
     return m_number;
 }
 
-auto Network::OsErrorResult::string() const -> std::string
+auto Network::OsErrorResult::string() const -> const std::string&
 {
     return m_string;
 }

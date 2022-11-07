@@ -35,7 +35,7 @@ namespace Network
         auto operator!=(const OsErrorResult& t_result) const noexcept -> bool;
         operator bool() const noexcept;  // NOLINT
         [[nodiscard]] auto number() const noexcept -> os_error_type;
-        [[nodiscard]] auto string() const -> std::string;
+        [[nodiscard]] auto string() const -> const std::string&;
 
     private:
         os_error_type m_number {0};
