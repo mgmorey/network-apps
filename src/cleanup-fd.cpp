@@ -15,7 +15,6 @@
 
 #include "network/cleanup-fd.h"         // cleanup()
 #include "network/fd-null.h"            // fd_null
-#include "network/get-peername.h"       // get_peername()
 #include "network/get-sa-family.h"      // get_sa_family()
 #include "network/get-sockname.h"       // get_sockname()
 #include "network/get-sun-path.h"       // get_sun_path()
