@@ -14,7 +14,6 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/cleanup-fd.h"         // FdData, cleanup(), fd_type
-#include "network/close.h"              // close()
 #include "network/fd-null.h"            // fd_null
 #include "network/get-sa-family.h"      // get_sa_family()
 #include "network/get-sockname.h"       // get_sockname()
@@ -28,8 +27,9 @@
 #include <cerrno>       // ENOENT
 #include <iostream>     // std::cerr, std::endl
 
-auto Network::cleanup(const FdData& fd_data) -> void
+auto Network::cleanup(FdData& fd_data) -> void
 {
+#ifndef WIN32
     const auto handle {fd_data.handle()};
 
     if (handle == fd_null) {
@@ -37,7 +37,6 @@ auto Network::cleanup(const FdData& fd_data) -> void
     }
 
     const auto verbose {fd_data.verbose()};
-#ifndef WIN32
 
     if (fd_data.pending()) {
         const auto addr {get_sockname(handle, verbose)};
@@ -57,5 +56,5 @@ auto Network::cleanup(const FdData& fd_data) -> void
     }
 
 #endif
-    static_cast<void>(Network::close(handle, verbose));
+    static_cast<void>(fd_data.close());
 }

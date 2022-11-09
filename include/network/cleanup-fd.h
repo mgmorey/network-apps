@@ -20,7 +20,7 @@
 
 namespace Network
 {
-    extern auto cleanup(const FdData& fd_data) -> void;
+    extern auto cleanup(FdData& fd_data) -> void;
 }
 
 #endif
