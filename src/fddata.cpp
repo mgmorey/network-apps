@@ -33,11 +33,7 @@ Network::FdData::FdData(fd_type t_fd_data,
 
 Network::FdData::~FdData()
 {
-    if (m_pending) {
-        static_cast<void>(cleanup(m_handle, m_verbose));
-    }
-
-    static_cast<void>(Network::close(m_handle, m_verbose));
+    static_cast<void>(cleanup(*this));
 }
 
 auto Network::FdData::operator=(fd_type value) noexcept -> FdData&
@@ -79,6 +75,11 @@ auto Network::FdData::handle() const noexcept -> fd_type
 auto Network::FdData::peername() const -> ByteString
 {
     return get_peername(m_handle, m_verbose);
+}
+
+auto Network::FdData::pending() const noexcept -> bool
+{
+    return m_pending;
 }
 
 auto Network::FdData::sockname() const -> ByteString

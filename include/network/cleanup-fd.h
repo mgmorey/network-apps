@@ -16,11 +16,11 @@
 #ifndef NETWORK_CLEANUP_FD_H
 #define NETWORK_CLEANUP_FD_H
 
-#include "network/fd-type.h"            // fd_type
+#include "network/fddata.h"             // FdData, fd_type
 
 namespace Network
 {
-    extern auto cleanup(fd_type handle, bool verbose = false) -> void;
+    extern auto cleanup(const FdData& fd_data) -> void;
 }
 
 #endif

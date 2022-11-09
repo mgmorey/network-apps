@@ -13,7 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/cleanup-fd.h"         // cleanup()
+#include "network/cleanup-fd.h"         // FdData, cleanup(), fd_type
+#include "network/close.h"              // close()
 #include "network/fd-null.h"            // fd_null
 #include "network/get-sa-family.h"      // get_sa_family()
 #include "network/get-sockname.h"       // get_sockname()
@@ -27,29 +28,34 @@
 #include <cerrno>       // ENOENT
 #include <iostream>     // std::cerr, std::endl
 
-auto Network::cleanup(fd_type handle, bool verbose) -> void
+auto Network::cleanup(const FdData& fd_data) -> void
 {
-#ifdef WIN32
-    static_cast<void>(handle);
-    static_cast<void>(verbose);
-#else
+    const auto handle {fd_data.handle()};
+
     if (handle == fd_null) {
         return;
     }
 
-    const auto addr {get_sockname(handle, verbose)};
+    const auto verbose {fd_data.verbose()};
+#ifndef WIN32
 
-    if (get_sa_family(addr) == AF_UNIX) {
-        if (const auto pathname {get_sun_path(addr)}) {
-            if (const auto error {unlink(*pathname, verbose)}) {
-                if (error.number() != ENOENT) {
-                    std::cerr << *pathname
-                              << ": "
-                              << error.string()
-                              << std::endl;
+    if (fd_data.pending()) {
+        const auto addr {get_sockname(handle, verbose)};
+
+        if (get_sa_family(addr) == AF_UNIX) {
+            if (const auto pathname {get_sun_path(addr)}) {
+                if (const auto error {unlink(*pathname, verbose)}) {
+                    if (error.number() != ENOENT) {
+                        std::cerr << *pathname
+                                  << ": "
+                                  << error.string()
+                                  << std::endl;
+                    }
                 }
             }
         }
     }
+
 #endif
+    static_cast<void>(Network::close(handle, verbose));
 }

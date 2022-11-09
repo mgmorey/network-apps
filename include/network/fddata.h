@@ -43,6 +43,7 @@ namespace Network
         auto close() -> FdData&;
         [[nodiscard]] auto handle() const noexcept -> fd_type;
         [[nodiscard]] auto peername() const -> ByteString;
+        [[nodiscard]] auto pending() const noexcept -> bool;
         [[nodiscard]] auto sockname() const -> ByteString;
         [[nodiscard]] auto verbose() const noexcept -> bool;
 
