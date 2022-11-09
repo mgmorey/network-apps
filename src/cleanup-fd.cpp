@@ -33,16 +33,19 @@ auto Network::cleanup(fd_type handle, bool verbose) -> void
     static_cast<void>(handle);
     static_cast<void>(verbose);
 #else
-    if (handle != fd_null) {
-        const auto addr {get_sockname(handle, verbose)};
+    if (handle == fd_null) {
+        return;
+    }
 
-        if (get_sa_family(addr) == AF_UNIX) {
-            if (const auto pathname {get_sun_path(addr)}) {
-                const auto error {unlink(*pathname, verbose)};
-                const auto code {error.number()};
+    const auto addr {get_sockname(handle, verbose)};
 
-                if (code != 0 && code != ENOENT) {
-                    std::cerr << error.string()
+    if (get_sa_family(addr) == AF_UNIX) {
+        if (const auto pathname {get_sun_path(addr)}) {
+            if (const auto error {unlink(*pathname, verbose)}) {
+                if (error.number() != ENOENT) {
+                    std::cerr << *pathname
+                              << ": "
+                              << error.string()
                               << std::endl;
                 }
             }
