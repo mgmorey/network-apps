@@ -37,9 +37,7 @@ auto Network::cleanup(fd_type handle, bool verbose) -> void
         const auto addr {get_sockname(handle, verbose)};
 
         if (get_sa_family(addr) == AF_UNIX) {
-            const auto pathname {get_sun_path(addr)};
-
-            if (pathname) {
+            if (const auto pathname {get_sun_path(addr)}) {
                 const auto error {unlink(*pathname, verbose)};
                 const auto code {error.number()};
 
