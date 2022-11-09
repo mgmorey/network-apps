@@ -36,9 +36,8 @@ auto Network::cleanup(FdData& fd_data) -> void
         return;
     }
 
-    const auto verbose {fd_data.verbose()};
-
     if (fd_data.pending()) {
+        const auto verbose {fd_data.verbose()};
         const auto addr {get_sockname(handle, verbose)};
 
         if (get_sa_family(addr) == AF_UNIX) {
