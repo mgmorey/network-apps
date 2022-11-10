@@ -18,7 +18,6 @@
                                                 // get_sun_path()
 #include "network/get-sun-path-bytestring.h"    // get_sun_path()
 #include "network/get-sa-family.h"              // get_sa_family()
-#include "network/get-sockname.h"               // get_sockname()
 
 #ifdef WIN32
 #include <winsock2.h>       // AF_UNIX
@@ -32,21 +31,13 @@ auto Network::get_sun_path(const FdData& fd_data,
                            const OptionalPathname& path) ->
     OptionalPathname
 {
-    OptionalPathname pathname {path};
-    const auto handle {fd_data.handle()};
+    const auto addr {fd_data.sockname()};
 
-    if (handle == fd_null) {
-        return pathname;
+    if (get_sa_family(addr) != AF_UNIX) {
+        return path;
     }
 
-    const auto verbose {fd_data.verbose()};
-    const auto addr {get_sockname(handle, verbose)};
-
-    if (get_sa_family(addr) == AF_UNIX) {
-        pathname = get_sun_path(addr);
-    }
-
-    return pathname;
+    return get_sun_path(addr);
 }
 
 #endif
