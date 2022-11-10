@@ -47,7 +47,7 @@ namespace Network
         Fd(const Fd&) noexcept = default;
         Fd(Fd&&) noexcept = default;
         Fd() noexcept = default;
-        ~Fd() noexcept = default;
+        ~Fd() = default;
         auto operator=(const Fd&) noexcept -> Fd& = default;
         auto operator=(Fd&&) noexcept -> Fd& = default;
         explicit operator bool() const noexcept;
