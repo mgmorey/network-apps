@@ -16,7 +16,7 @@
 #include "network/get-option.h"         // get_option()
 #include "network/network.h"            // Buffer, Fd, connect(),
                                         // socket_error,
-                                        // to_byte_string()
+                                        // to_bytestring()
 #include "network/parse.h"              // parse()
 #include "network/to-os-error.h"        // to_os_error()
 #include "unix-common.h"                // BUFFER_SIZE, SOCKET_NAME
@@ -43,7 +43,7 @@ using Network::fd_type;
 using Network::format_os_error;
 using Network::os_error_type;
 using Network::socket_error;
-using Network::to_byte_string;
+using Network::to_bytestring;
 using Network::to_os_error;
 
 using IoResult = std::pair<std::string, ssize_t>;
@@ -114,7 +114,7 @@ auto main(int argc, char* argv[]) -> int
 
         // Bind Unix domain socket to pathname.
         const auto bind_fd {get_bind_socket(hints)};
-        const auto addr {to_byte_string(SOCKET_NAME)};
+        const auto addr {to_bytestring(SOCKET_NAME)};
         const auto error {bind(bind_fd, addr, verbose)};
         const auto error_code {error.number()};
 

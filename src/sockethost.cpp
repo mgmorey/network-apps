@@ -16,13 +16,13 @@
 #include "network/sockethost.h"         // ByteString,
                                         // OptionalHostname,
                                         // SocketHost, addrinfo
-#include "network/to-byte-string-sa.h"  // to_byte_string()
+#include "network/to-bytestring-sa.h"   // to_bytestring()
 #include "network/to-size.h"            // to_size()
 
 #include <cstddef>      // std::size_t
 
 Network::SocketHost::SocketHost(const addrinfo& t_addrinfo) :
-    m_addr(to_byte_string(t_addrinfo.ai_addr, to_size(t_addrinfo.ai_addrlen))),
+    m_addr(to_bytestring(t_addrinfo.ai_addr, to_size(t_addrinfo.ai_addrlen))),
     m_name(to_canonical_name(t_addrinfo.ai_canonname))
 {
 }
@@ -30,7 +30,7 @@ Network::SocketHost::SocketHost(const addrinfo& t_addrinfo) :
 auto Network::SocketHost::operator=(const addrinfo& t_addrinfo) ->
     Network::SocketHost&
 {
-    m_addr = to_byte_string(t_addrinfo.ai_addr, to_size(t_addrinfo.ai_addrlen));
+    m_addr = to_bytestring(t_addrinfo.ai_addr, to_size(t_addrinfo.ai_addrlen));
     m_name = to_canonical_name(t_addrinfo.ai_canonname);
     return *this;
 }

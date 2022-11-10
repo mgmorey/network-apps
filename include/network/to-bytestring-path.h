@@ -13,15 +13,15 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_TO_BYTE_STRING_PATH_H
-#define NETWORK_TO_BYTE_STRING_PATH_H
+#ifndef NETWORK_TO_BYTESTRING_PATH_H
+#define NETWORK_TO_BYTESTRING_PATH_H
 
 #include "network/bytestring.h"         // ByteString
 #include "network/optionalpathname.h"   // OptionalPathname
 
 namespace Network
 {
-    extern auto to_byte_string(const OptionalPathname& pathname) -> ByteString;
+    extern auto to_bytestring(const OptionalPathname& pathname) -> ByteString;
 }
 
 #endif

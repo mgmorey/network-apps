@@ -21,7 +21,7 @@
                                         // bind(), get_sockname()
                                         // get_sun_path(),
                                         // os_error_type,
-                                        // to_byte_string()
+                                        // to_bytestring()
 #include "network/parse.h"              // parse()
 
 #include <sys/socket.h>     // AF_UNIX, AF_UNSPEC, SOCK_STREAM
@@ -58,7 +58,7 @@ namespace TestSocket
     using Network::os_error_type;
     using Network::parse;
     using Network::path_len_max;
-    using Network::to_byte_string;
+    using Network::to_bytestring;
 
     using ErrorCodeSet = std::set<os_error_type>;
     using OptionalPathnameVector = std::vector<OptionalPathname>;
@@ -160,7 +160,7 @@ namespace TestSocket
                               const ErrorCodeSet& expected_codes) -> void
     {
         os_error_type actual_code {0};
-        const auto addr {to_byte_string(pathname)};
+        const auto addr {to_bytestring(pathname)};
         assert(get_sun_path(addr) == pathname);
 
         if (pathname) {

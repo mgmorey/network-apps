@@ -13,10 +13,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/to-byte-string-bs.h"  // ByteString, ByteSpan,
-                                        // to_byte_string()
+#include "network/to-bytestring-bs.h"   // ByteString, ByteSpan,
+                                        // to_bytestring()
 
-auto Network::to_byte_string(const ByteSpan& span) -> Network::ByteString
+auto Network::to_bytestring(const ByteSpan& span) -> Network::ByteString
 {
     return {span.data(), span.size()};
 }

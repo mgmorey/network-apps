@@ -13,16 +13,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/to-byte-string-path.h"        // ByteString,
+#include "network/to-bytestring-path.h"         // ByteString,
                                                 // OptionalPathname,
-                                                // to_byte_string()
+                                                // to_bytestring()
 #include "network/get-sun-path-size.h"          // get_sun_path_size()
 #include "network/os-features.h"                // HAVE_SOCKADDR_SA_LEN
 #ifndef WIN32
 #include "network/sun-offsets.h"                // sun_path_offset
 #endif
-#include "network/to-byte-string-sun.h"         // sockaddr_un,
-                                                // to_byte_string()
+#include "network/to-bytestring-sun.h"          // sockaddr_un,
+                                                // to_bytestring()
 #include "network/to-path-len.h"                // to_path_len()
 
 #ifndef WIN32
@@ -34,7 +34,7 @@
 
 #ifndef WIN32
 
-auto Network::to_byte_string(const OptionalPathname& pathname) ->
+auto Network::to_bytestring(const OptionalPathname& pathname) ->
     Network::ByteString
 {
     const auto path_len {pathname ? to_path_len(pathname->length() + 1) : 0};
@@ -51,7 +51,7 @@ auto Network::to_byte_string(const OptionalPathname& pathname) ->
     }
 
     const auto size {std::max(sun_path_offset, sun_len_min)};
-    return to_byte_string(&sun, size);
+    return to_bytestring(&sun, size);
 }
 
 #endif

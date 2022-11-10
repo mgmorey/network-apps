@@ -13,27 +13,23 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_TO_BYTE_STRING_SUN_H
-#define NETWORK_TO_BYTE_STRING_SUN_H
+#ifndef NETWORK_TO_BYTESTRING_SA_H
+#define NETWORK_TO_BYTESTRING_SA_H
 
 #include "network/bytestring.h"         // ByteString
-#ifndef WIN32
-#include "network/sun-sizes.h"          // sun_size
-#endif
 
-#ifndef WIN32
-#include <sys/un.h>         // sockaddr_un
+#ifdef WIN32
+#include <winsock2.h>       // sockaddr
+#else
+#include <sys/socket.h>     // sockaddr
 #endif
 
 #include <cstddef>      // std::size_t
 
 namespace Network
 {
-#ifndef WIN32
-    extern auto to_byte_string(const sockaddr_un* sun,
-                               std::size_t size = sun_size) noexcept ->
-        ByteString;
-#endif
+    extern auto to_bytestring(const sockaddr* sa,
+                              std::size_t size) -> ByteString;
 }
 
 #endif

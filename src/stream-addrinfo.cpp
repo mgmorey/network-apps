@@ -21,8 +21,8 @@
                                         // operator<<()
 #include "network/sockettype.h"         // SocketType, operator<<()
 #include "network/string-null.h"        // string_null
-#include "network/to-byte-string-sa.h"  // ByteString,
-                                        // to_byte_string()
+#include "network/to-bytestring-sa.h"   // ByteString,
+                                        // to_bytestring()
 #include "network/to-size.h"            // to_size()
 #include "network/to-string-bs.h"       // to_string()
 
@@ -59,7 +59,7 @@ auto Network::operator<<(std::ostream& os,
     }
     else {
         static constexpr auto tab {9};
-        const auto addr {to_byte_string(ai.ai_addr, to_size(ai.ai_addrlen))};
+        const auto addr {to_bytestring(ai.ai_addr, to_size(ai.ai_addrlen))};
         os << "addrinfo("
            << Format("ai_flags")
            << flags

@@ -73,9 +73,9 @@ reset-last-os-error.cpp runtimeerror.cpp set-last-context-error.cpp	\
 set-last-os-error.cpp sizeerror.cpp socket.cpp socketfamily.cpp		\
 socketflags.cpp sockethints.cpp sockethost.cpp socketlengtherror.cpp	\
 socketprotocol.cpp sockettype.cpp startup.cpp stream-address.cpp	\
-stream-addrinfo.cpp stream-socket.cpp to-byte-string-bs.cpp		\
-to-byte-string-path.cpp to-byte-string-sa.cpp to-byte-string-sun.cpp	\
-to-bytespan-sa.cpp to-bytespan-sun.cpp to-bytespan-void.cpp		\
+stream-addrinfo.cpp stream-socket.cpp to-bytespan-sa.cpp		\
+to-bytespan-sun.cpp to-bytespan-void.cpp to-bytestring-bs.cpp		\
+to-bytestring-path.cpp to-bytestring-sa.cpp to-bytestring-sun.cpp	\
 to-string-bs.cpp to-string-sin.cpp to-string-sin6.cpp unlink.cpp	\
 version.cpp
 

@@ -13,17 +13,15 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/to-byte-string-sun.h" // ByteString, sockaddr_un,
-                                        // to_byte_string()
-#include "network/to-bytespan-void.h"   // to_bytespan()
-#include "network/to-byte-string.h"     // to_byte_string()
+#ifndef NETWORK_TO_BYTESTRING_BS_H
+#define NETWORK_TO_BYTESTRING_BS_H
 
-#ifndef WIN32
+#include "network/bytespan.h"           // ByteSpan
+#include "network/bytestring.h"         // ByteString
 
-auto Network::to_byte_string(const sockaddr_un* sun,
-                             std::size_t size) noexcept -> Network::ByteString
+namespace Network
 {
-    return to_byte_string(to_bytespan(sun, size));
+    extern auto to_bytestring(const ByteSpan& span) -> ByteString;
 }
 
 #endif
