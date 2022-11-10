@@ -16,14 +16,7 @@
 #include "network/get-sun-path-fddata.h"        // FdData,
                                                 // OptionalPathname,
                                                 // get_sun_path()
-#include "network/get-sa-family.h"              // get_sa_family()
 #include "network/get-sun-path-bytestring.h"    // get_sun_path()
-
-#ifdef WIN32
-#include <winsock2.h>       // AF_UNIX
-#else
-#include <sys/socket.h>     // AF_UNIX
-#endif
 
 auto Network::get_sun_path(const FdData& fd_data,
                            const OptionalPathname& path) ->
