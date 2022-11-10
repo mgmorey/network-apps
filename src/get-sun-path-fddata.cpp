@@ -25,19 +25,9 @@
 #include <sys/socket.h>     // AF_UNIX
 #endif
 
-#ifndef WIN32
-
 auto Network::get_sun_path(const FdData& fd_data,
                            const OptionalPathname& path) ->
     OptionalPathname
 {
-    const auto addr {fd_data.sockname()};
-
-    if (get_sa_family(addr) != AF_UNIX) {
-        return path;
-    }
-
-    return get_sun_path(addr);
+    return get_sun_path(fd_data.sockname(), path);
 }
-
-#endif

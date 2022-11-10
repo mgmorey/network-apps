@@ -21,11 +21,9 @@
 
 namespace Network
 {
-#ifndef WIN32
     extern auto get_sun_path(const FdData& fd_data,
                              const OptionalPathname& pathname = {}) ->
         OptionalPathname;
-#endif
 }
 
 #endif

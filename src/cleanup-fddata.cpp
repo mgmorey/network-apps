@@ -22,7 +22,6 @@
 
 auto Network::cleanup(FdData& fd_data) -> void
 {
-#ifndef WIN32
     if (fd_data.handle() == fd_null) {
         return;
     }
@@ -40,6 +39,5 @@ auto Network::cleanup(FdData& fd_data) -> void
         }
     }
 
-#endif
     static_cast<void>(fd_data.close());
 }

@@ -16,7 +16,6 @@
 #include "network/get-sun-path-bytestring.h"    // ByteString,
                                                 // OptionalPathname
                                                 // get_sun_path()
-#include "network/assert.h"                     // assert()
 #include "network/get-sa-family.h"              // get_sa_family()
 #include "network/get-sun-pointer.h"            // get_sun_pointer()
 #include "network/sun-offsets.h"                // sun_path_offset
@@ -31,25 +30,26 @@
 #include <cstddef>      // std::size_t
 #include <cstring>      // strnlen()
 
-#ifndef WIN32
-
 auto Network::get_sun_path(const ByteString& addr,
                            const OptionalPathname& path) ->
     OptionalPathname
 {
-    assert(get_sa_family(addr) == AF_UNIX);
+#ifndef WIN32
+    if (get_sa_family(addr) != AF_UNIX) {
+        return path;
+    }
 
     if (addr.size() <= sun_path_offset) {
         return path;
     }
 
     const auto *const sun {get_sun_pointer(addr)};
-    assert(sun->sun_family == AF_UNIX);
     auto path_len_max {addr.size() - sun_path_offset};
     const auto *c_path {static_cast<const char*>(sun->sun_path)};
     auto path_len {strnlen(c_path, path_len_max)};
-    const std::string result {c_path, path_len};
-    return result;
-}
-
+    return std::string {c_path, path_len};
+#else
+    static_cast<void>(addr);
+    return path;
 #endif
+}
