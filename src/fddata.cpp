@@ -18,9 +18,12 @@
                                         // std::to_string()
 #include "network/cleanup-fddata.h"     // cleanup()
 #include "network/close.h"              // close()
+#include "network/error.h"              // Error
 #include "network/get-peername.h"       // get_peername()
 #include "network/get-sockname.h"       // get_sockname()
 #include "network/string-null.h"        // string_null
+
+#include <iostream>     // std::cerr, std::endl
 
 Network::FdData::FdData(fd_type t_fd_data,
                         bool t_pending,
@@ -33,7 +36,7 @@ Network::FdData::FdData(fd_type t_fd_data,
 
 Network::FdData::~FdData()
 {
-    static_cast<void>(cleanup(*this));
+    static_cast<void>(close());
 }
 
 auto Network::FdData::operator=(fd_type value) noexcept -> FdData&
@@ -63,6 +66,20 @@ Network::FdData::operator std::string() const
 
 auto Network::FdData::close() -> FdData&
 {
+    if (m_handle == fd_null) {
+        return *this;
+    }
+
+    try {
+        if (m_pending) {
+            static_cast<void>(cleanup(*this));
+        }
+    }
+    catch (const Error& error) {
+        std::cerr << error.what()
+                  << std::endl;
+    }
+
     m_handle = Network::close(m_handle, m_verbose);
     return *this;
 }

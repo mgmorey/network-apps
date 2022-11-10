@@ -14,7 +14,6 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/cleanup-fddata.h"             // FdData, cleanup()
-#include "network/error.h"                      // Error
 #include "network/get-sun-path-fddata.h"        // get_sun_path()
 #include "network/unlink.h"                     // unlink()
 
@@ -23,28 +22,14 @@
 
 auto Network::cleanup(FdData& fd_data) -> void
 {
-    if (fd_data.handle() == fd_null) {
-        return;
-    }
-
-    try {
-        if (fd_data.pending()) {
-            if (const auto pathname {get_sun_path(fd_data)}) {
-                if (const auto error {unlink(*pathname, fd_data.verbose())}) {
-                    if (error.number() != ENOENT) {
-                        std::cerr << *pathname
-                                  << ": "
-                                  << error.string()
-                                  << std::endl;
-                    }
-                }
+    if (const auto pathname {get_sun_path(fd_data)}) {
+        if (const auto error {unlink(*pathname, fd_data.verbose())}) {
+            if (error.number() != ENOENT) {
+                std::cerr << *pathname
+                          << ": "
+                          << error.string()
+                          << std::endl;
             }
         }
     }
-    catch (const Error& error) {
-        std::cerr << error.what()
-                  << std::endl;
-    }
-
-    static_cast<void>(fd_data.close());
 }
