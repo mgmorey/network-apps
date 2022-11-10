@@ -20,7 +20,7 @@
 #include <cerrno>       // ENOENT
 #include <iostream>     // std::cerr, std::endl
 
-auto Network::cleanup(FdData& fd_data) -> void
+auto Network::cleanup(const FdData& fd_data) -> void
 {
     if (const auto pathname {get_sun_path(fd_data)}) {
         if (const auto error {unlink(*pathname, fd_data.verbose())}) {
