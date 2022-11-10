@@ -26,7 +26,6 @@
 #include <sys/socket.h>     // AF_UNIX
 #endif
 
-#include <algorithm>    // std::max(), std::min()
 #include <cstddef>      // std::size_t
 #include <cstring>      // strnlen()
 
