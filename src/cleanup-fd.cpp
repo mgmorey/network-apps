@@ -13,12 +13,12 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/cleanup-fd.h"         // FdData, cleanup(), fd_type
-#include "network/fd-null.h"            // fd_null
-#include "network/get-sa-family.h"      // get_sa_family()
-#include "network/get-sockname.h"       // get_sockname()
-#include "network/get-sun-path.h"       // get_sun_path()
-#include "network/unlink.h"             // unlink()
+#include "network/cleanup-fd.h"                 // FdData, cleanup()
+#include "network/fd-null.h"                    // fd_null
+#include "network/get-sa-family.h"              // get_sa_family()
+#include "network/get-sockname.h"               // get_sockname()
+#include "network/get-sun-path-bytestring.h"    // get_sun_path()
+#include "network/unlink.h"                     // unlink()
 
 #ifndef WIN32
 #include <sys/socket.h>     // AF_UNIX

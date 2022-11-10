@@ -13,9 +13,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/address.h"            // Address, std::string
-#include "network/get-sun-path.h"       // get_sun_path()
-#include "network/string-null.h"        // string_null
+#include "network/address.h"                    // Address, std::string
+#include "network/get-sun-path-bytestring.h"    // get_sun_path()
+#include "network/string-null.h"                // string_null
 
 #ifndef WIN32
 

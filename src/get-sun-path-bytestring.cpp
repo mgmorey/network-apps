@@ -13,13 +13,13 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-sun-path.h"       // ByteString,
-                                        // OptionalPathname
-                                        // get_sun_path()
-#include "network/assert.h"             // assert()
-#include "network/get-sa-family.h"      // get_sa_family()
-#include "network/get-sun-pointer.h"    // get_sun_pointer()
-#include "network/sun-offsets.h"        // sun_path_offset
+#include "network/get-sun-path-bytestring.h"    // ByteString,
+                                                // OptionalPathname
+                                                // get_sun_path()
+#include "network/assert.h"                     // assert()
+#include "network/get-sa-family.h"              // get_sa_family()
+#include "network/get-sun-pointer.h"            // get_sun_pointer()
+#include "network/sun-offsets.h"                // sun_path_offset
 
 #ifdef WIN32
 #include <winsock2.h>       // AF_UNIX
