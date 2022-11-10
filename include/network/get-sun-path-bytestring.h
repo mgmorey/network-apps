@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_GET_SUN_PATH_H
-#define NETWORK_GET_SUN_PATH_H
+#ifndef NETWORK_GET_SUN_PATH_BYTESTRING_H
+#define NETWORK_GET_SUN_PATH_BYTESTRING_H
 
 #include "network/bytestring.h"         // ByteString
 #include "network/optionalpathname.h"   // OptionalPathname
