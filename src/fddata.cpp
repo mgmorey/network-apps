@@ -16,7 +16,7 @@
 #include "network/fddata.h"             // Fd, FdData, fd_type,
                                         // operator<<(), std::ostream,
                                         // std::to_string()
-#include "network/cleanup-fd.h"         // cleanup()
+#include "network/cleanup-fddata.h"     // cleanup()
 #include "network/close.h"              // close()
 #include "network/get-peername.h"       // get_peername()
 #include "network/get-sockname.h"       // get_sockname()

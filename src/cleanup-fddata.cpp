@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/cleanup-fd.h"                 // FdData, cleanup()
+#include "network/cleanup-fddata.h"             // FdData, cleanup()
 #include "network/get-sun-path-fddata.h"        // get_sun_path()
 #include "network/unlink.h"                     // unlink()
 

@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_CLEANUP_FD_H
-#define NETWORK_CLEANUP_FD_H
+#ifndef NETWORK_CLEANUP_FDDATA_H
+#define NETWORK_CLEANUP_FDDATA_H
 
 #include "network/fddata.h"             // FdData, fd_type
 
