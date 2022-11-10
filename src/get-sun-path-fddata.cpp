@@ -29,5 +29,10 @@ auto Network::get_sun_path(const FdData& fd_data,
                            const OptionalPathname& path) ->
     OptionalPathname
 {
+#ifndef WIN32
     return get_sun_path(fd_data.sockname(), path);
+#else
+    static_cast<void>(fd_data);
+    return path;
+#endif
 }
