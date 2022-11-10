@@ -15,7 +15,7 @@
 
 #include "network/to-byte-string-sun.h" // ByteString, sockaddr_un,
                                         // to_byte_string()
-#include "network/to-byte-span-void.h"  // to_byte_span()
+#include "network/to-bytespan-void.h"   // to_bytespan()
 #include "network/to-byte-string.h"     // to_byte_string()
 
 #ifndef WIN32
@@ -23,7 +23,7 @@
 auto Network::to_byte_string(const sockaddr_un* sun,
                              std::size_t size) noexcept -> Network::ByteString
 {
-    return to_byte_string(to_byte_span(sun, size));
+    return to_byte_string(to_bytespan(sun, size));
 }
 
 #endif

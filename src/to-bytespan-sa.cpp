@@ -13,17 +13,13 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/to-byte-span-sun.h"   // ByteSpan, sockaddr_un,
-                                        // std::size_t, to_byte_span()
-#include "network/to-byte-span-void.h"  // to_byte_span()
+#include "network/to-bytespan-sa.h"     // ByteSpan, sockaddr,
+                                        // std::size_t, to_bytespan()
+#include "network/to-bytespan-void.h"   // to_bytespan()
 
-#ifndef WIN32
-
-auto Network::to_byte_span(const sockaddr_un* sun,
-                           std::size_t size) noexcept -> Network::ByteSpan
+auto Network::to_bytespan(const sockaddr* sa,
+                          std::size_t size) noexcept -> Network::ByteSpan
 {
-    const void* pointer = sun;
-    return to_byte_span(pointer, size);
+    const void* pointer = sa;
+    return to_bytespan(pointer, size);
 }
-
-#endif

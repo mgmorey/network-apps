@@ -16,7 +16,7 @@
 #include "network/to-byte-string-sa.h"  // ByteString, sockaddr,
                                         // std::size_t,
                                         // to_byte_string()
-#include "network/to-byte-span-void.h"  // to_byte_span()
+#include "network/to-bytespan-void.h"   // to_bytespan()
 #include "network/to-byte-string.h"     // to_byte_string()
 
 auto Network::to_byte_string(const sockaddr* sa,
@@ -26,5 +26,5 @@ auto Network::to_byte_string(const sockaddr* sa,
         return {};
     }
 
-    return to_byte_string(to_byte_span(sa, size));
+    return to_byte_string(to_bytespan(sa, size));
 }

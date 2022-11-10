@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_TO_BYTE_SPAN_SUN_H
-#define NETWORK_TO_BYTE_SPAN_SUN_H
+#ifndef NETWORK_TO_BYTESPAN_SUN_H
+#define NETWORK_TO_BYTESPAN_SUN_H
 
 #include "network/bytespan.h"           // ByteSpan
 #include "network/sun-sizes.h"          // sun_size
@@ -28,8 +28,8 @@
 namespace Network
 {
 #ifndef WIN32
-    extern auto to_byte_span(const sockaddr_un* sun,
-                             std::size_t size = sun_size) noexcept -> ByteSpan;
+    extern auto to_bytespan(const sockaddr_un* sun,
+                            std::size_t size = sun_size) noexcept -> ByteSpan;
 #endif
 }
 
