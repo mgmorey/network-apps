@@ -67,6 +67,7 @@
 #include "network/get-socknameresult.h"         // get_socknameresult()
 #include "network/get-sun-length.h"             // get_sun_length()
 #include "network/get-sun-path-bytestring.h"    // get_sun_path()
+#include "network/get-sun-path-fddata.h"        // get_sun_path()
 #include "network/get-sun-path-length.h"        // get_sun_path_length()
 #include "network/get-sun-path-size.h"          // get_sun_path_size()
 #include "network/get-sun-pointer.h"            // get_sun_pointer()
