@@ -13,14 +13,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/cleanup-fddata.h"             // FdData, cleanup()
+#include "network/unlink-fddata.h"              // FdData, unlink()
 #include "network/get-sun-path-fddata.h"        // get_sun_path()
 #include "network/unlink-path.h"                // unlink()
 
 #include <cerrno>       // ENOENT
 #include <iostream>     // std::cerr, std::endl
 
-auto Network::cleanup(const FdData& fd_data) -> void
+auto Network::unlink(const FdData& fd_data) -> void
 {
     if (const auto pathname {get_sun_path(fd_data)}) {
         if (const auto error {unlink(*pathname, fd_data.verbose())}) {

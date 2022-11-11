@@ -13,14 +13,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_CLEANUP_FDDATA_H
-#define NETWORK_CLEANUP_FDDATA_H
+#ifndef NETWORK_UNLINK_FDDATA_H
+#define NETWORK_UNLINK_FDDATA_H
 
 #include "network/fddata.h"             // FdData, fd_type
 
 namespace Network
 {
-    extern auto cleanup(const FdData& fd_data) -> void;
+    extern auto unlink(const FdData& fd_data) -> void;
 }
 
 #endif

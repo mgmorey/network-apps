@@ -51,13 +51,13 @@ include flags.gmk
 libnetwork_sources = address-sa.cpp address-sin.cpp address-sin6.cpp	\
 address-sun.cpp address.cpp addresserror.cpp addrinfo.cpp		\
 argumentdata.cpp bind-endpoint.cpp bind-fd.cpp buffer.cpp		\
-bytestring.cpp cleanup-context.cpp cleanup-fddata.cpp close.cpp		\
-connect-endpoint.cpp connect-fd.cpp context.cpp error.cpp fd.cpp	\
-fddata.cpp fdpair.cpp format-ai-error.cpp format-os-error.cpp		\
-format.cpp get-endpoint.cpp get-endpointresult.cpp get-hostname.cpp	\
-get-hostnameresult.cpp get-hosts.cpp get-last-context-error.cpp		\
-get-last-os-error.cpp get-length.cpp get-name.cpp get-nameresult.cpp	\
-get-operands.cpp get-option.cpp get-options.cpp get-peername.cpp	\
+bytestring.cpp cleanup-context.cpp close.cpp connect-endpoint.cpp	\
+connect-fd.cpp context.cpp error.cpp fd.cpp fddata.cpp fdpair.cpp	\
+format-ai-error.cpp format-os-error.cpp format.cpp get-endpoint.cpp	\
+get-endpointresult.cpp get-hostname.cpp get-hostnameresult.cpp		\
+get-hosts.cpp get-last-context-error.cpp get-last-os-error.cpp		\
+get-length.cpp get-name.cpp get-nameresult.cpp get-operands.cpp		\
+get-option.cpp get-options.cpp get-peername.cpp				\
 get-peernameresult.cpp get-sa-data.cpp get-sa-family.cpp		\
 get-sa-length.cpp get-sa-pointer.cpp get-sin-addr.cpp			\
 get-sin-pointer.cpp get-sin-port.cpp get-sin6-addr.cpp			\
@@ -77,8 +77,8 @@ socketprotocol.cpp sockettype.cpp startup.cpp stream-address.cpp	\
 stream-addrinfo.cpp stream-socket.cpp to-bytespan-sa.cpp		\
 to-bytespan-sun.cpp to-bytespan-void.cpp to-bytestring-bs.cpp		\
 to-bytestring-path.cpp to-bytestring-sa.cpp to-bytestring-sun.cpp	\
-to-string-bs.cpp to-string-sin.cpp to-string-sin6.cpp unlink-path.cpp	\
-version.cpp
+to-string-bs.cpp to-string-sin.cpp to-string-sin6.cpp unlink-fd.cpp	\
+unlink-fddata.cpp unlink-path.cpp version.cpp
 
 test_sources = test-address.cpp test-bind.cpp test-connect.cpp		\
 test-context.cpp test-host.cpp test-hostname.cpp test-option.cpp	\
