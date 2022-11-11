@@ -54,7 +54,7 @@ namespace Network
         explicit operator fd_type() const noexcept;
         explicit operator std::string() const;
         auto close() -> Fd&;
-        auto is_open() const noexcept -> bool;
+        [[nodiscard]] auto is_open() const noexcept -> bool;
         [[nodiscard]] auto peername() const -> ByteString;
         [[nodiscard]] auto sockname() const -> ByteString;
 
