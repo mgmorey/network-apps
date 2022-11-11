@@ -18,6 +18,5 @@
 
 #include "network/get-sun-path-bytestring.h"    // get_sun_path()
 #include "network/get-sun-path-fd.h"            // get_sun_path()
-#include "network/get-sun-path-fddata.h"        // get_sun_path()
 
 #endif
