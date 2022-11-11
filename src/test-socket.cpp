@@ -106,7 +106,7 @@ namespace TestSocket
         static constexpr auto size_min {8};	// NOLINT
         OptionalPathnameVector pathnames;
 
-        for (std::size_t size = size_max; size >= size_min; size /= 2) {
+        for (std::size_t size = size_min; size <= size_max; size *= 2) {
             pathnames.push_back(get_pathname(size));
         };
 
@@ -285,19 +285,19 @@ auto main(int argc, char* argv[]) -> int
             std::cout << context;
         }
 
-#ifndef OS_CYGWIN_NT
-        test_path_no_permission("/foo", codes_no_permission);
-        test_path_no_directory("/foo/bar", codes_no_directory);
-#endif
-        test_path_invalid(get_pathname(path_len_max), codes_valid);
-        test_path_valid(get_pathname(path_len_max - 1), codes_valid);
+        test_socketpair();
         const auto& pathnames {get_pathnames()};
 
         for (const auto& pathname : pathnames) {
             test_path_valid(pathname, codes_valid);
         }
 
-        test_socketpair();
+        test_path_valid(get_pathname(path_len_max - 1), codes_valid);
+        test_path_invalid(get_pathname(path_len_max), codes_valid);
+#ifndef OS_CYGWIN_NT
+        test_path_no_directory("/foo/bar", codes_no_directory);
+        test_path_no_permission("/foo", codes_no_permission);
+#endif
     }
     catch (const std::exception& error) {
         std::cerr << error.what()
