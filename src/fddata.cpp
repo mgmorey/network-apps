@@ -17,13 +17,12 @@
                                         // operator<<(), std::ostream,
                                         // std::to_string()
 #include "network/close.h"              // close()
-#include "network/error.h"              // Error
 #include "network/get-peername.h"       // get_peername()
 #include "network/get-sockname.h"       // get_sockname()
+#include "network/get-sun-path-fd.h"    // get_sun_path()
 #include "network/string-null.h"        // string_null
-#include "network/unlink-fd.h"          // unlink()
 
-#include <cerrno>       // ENOENT
+#include <filesystem>   // std::filesystem
 #include <iostream>     // std::cerr, std::endl
 
 Network::FdData::FdData(fd_type t_fd_data,
@@ -68,14 +67,11 @@ auto Network::FdData::close() noexcept -> FdData&
 
     if (m_pending) {
         try {
-            const auto os_error {unlink(m_handle, m_verbose)};
-
-            if (os_error && os_error.number() != ENOENT) {
-                std::cerr << os_error
-                          << std::endl;
+            if (const auto path {get_sun_path(m_handle, m_verbose)}) {
+                std::filesystem::remove(*path);
             }
         }
-        catch (const Error& error) {
+        catch (const std::exception& error) {
             std::cerr << error.what()
                       << std::endl;
         }
