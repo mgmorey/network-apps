@@ -19,10 +19,9 @@
 #include "network/close.h"              // close()
 #include "network/get-peername.h"       // get_peername()
 #include "network/get-sockname.h"       // get_sockname()
-#include "network/get-sun-path-fd.h"    // get_sun_path()
+#include "network/remove-socket.h"      // remove_socket()
 #include "network/string-null.h"        // string_null
 
-#include <filesystem>   // std::filesystem
 #include <iostream>     // std::cerr, std::endl
 
 Network::FdData::FdData(fd_type t_fd_data,
@@ -67,9 +66,7 @@ auto Network::FdData::close() noexcept -> FdData&
 
     if (m_pending) {
         try {
-            if (const auto path {get_sun_path(m_handle, m_verbose)}) {
-                std::filesystem::remove(*path);
-            }
+            remove_socket(m_handle, m_verbose);
         }
         catch (const std::exception& error) {
             std::cerr << error.what()
