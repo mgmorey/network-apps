@@ -17,10 +17,12 @@
 #define NETWORK_UNLINK_FD_H
 
 #include "network/fd-type.h"            // fd_type
+#include "network/oserrorresult.h"      // OsErrorResult
 
 namespace Network
 {
-    extern auto unlink(fd_type handle, bool verbose) -> void;
+    extern auto unlink(fd_type handle,
+                       bool verbose) -> OsErrorResult;
 }
 
 #endif

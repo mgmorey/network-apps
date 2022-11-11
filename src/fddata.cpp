@@ -23,6 +23,7 @@
 #include "network/string-null.h"        // string_null
 #include "network/unlink-fd.h"          // unlink()
 
+#include <cerrno>       // ENOENT
 #include <iostream>     // std::cerr, std::endl
 
 Network::FdData::FdData(fd_type t_fd_data,
@@ -70,14 +71,19 @@ auto Network::FdData::close() -> FdData&
         return *this;
     }
 
-    try {
-        if (m_pending) {
-            Network::unlink(m_handle, m_verbose);
+    if (m_pending) {
+        try {
+            const auto os_error {unlink(m_handle, m_verbose)};
+
+            if (os_error && os_error.number() != ENOENT) {
+                std::cerr << os_error
+                          << std::endl;
+            }
         }
-    }
-    catch (const Error& error) {
-        std::cerr << error.what()
-                  << std::endl;
+        catch (const Error& error) {
+            std::cerr << error.what()
+                      << std::endl;
+        }
     }
 
     m_handle = Network::close(m_handle, m_verbose);

@@ -13,23 +13,19 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/unlink-fd.h"                  // fd_type, unlink()
-#include "network/get-sun-path-fd.h"            // get_sun_path()
-#include "network/unlink-path.h"                // unlink()
+#include "network/unlink-fd.h"          // OsErrorResult, fd_type,
+                                        // unlink()
+#include "network/get-sun-path-fd.h"    // get_sun_path()
+#include "network/unlink-path.h"        // unlink()
 
-#include <cerrno>       // ENOENT
-#include <iostream>     // std::cerr, std::endl
-
-auto Network::unlink(fd_type handle, bool verbose) -> void
+auto Network::unlink(fd_type handle,
+                     bool verbose) -> Network::OsErrorResult
 {
     if (const auto pathname {get_sun_path(handle)}) {
-        if (const auto error {unlink(*pathname, verbose)}) {
-            if (error.number() != ENOENT) {
-                std::cerr << *pathname
-                          << ": "
-                          << error.string()
-                          << std::endl;
-            }
+        if (const auto os_error {unlink(*pathname, verbose)}) {
+            return os_error;
         }
     }
+
+    return {};
 }
