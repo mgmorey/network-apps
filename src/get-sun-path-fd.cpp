@@ -13,11 +13,19 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_GET_SUN_PATH_H
-#define NETWORK_GET_SUN_PATH_H
-
+#include "network/get-sun-path-fd.h"            // OptionalPathname,
+                                                // fd_type,
+                                                // get_sun_path()
+#include "network/get-sockname.h"               // get_sockname()
 #include "network/get-sun-path-bytestring.h"    // get_sun_path()
-#include "network/get-sun-path-fd.h"            // get_sun_path()
-#include "network/get-sun-path-fddata.h"        // get_sun_path()
 
+auto Network::get_sun_path(fd_type handle, const OptionalPathname& path) ->
+    OptionalPathname
+{
+#ifndef WIN32
+    return get_sun_path(get_sockname(handle), path);
+#else
+    static_cast<void>(fd_data);
+    return path;
 #endif
+}

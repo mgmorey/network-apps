@@ -13,11 +13,23 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_GET_SUN_PATH_H
-#define NETWORK_GET_SUN_PATH_H
-
-#include "network/get-sun-path-bytestring.h"    // get_sun_path()
-#include "network/get-sun-path-fd.h"            // get_sun_path()
+#include "network/unlink-fd.h"                  // fd_type, unlink()
 #include "network/get-sun-path-fddata.h"        // get_sun_path()
+#include "network/unlink-path.h"                // unlink()
 
-#endif
+#include <cerrno>       // ENOENT
+#include <iostream>     // std::cerr, std::endl
+
+auto Network::cleanup(fd_type handle, bool verbose) -> void
+{
+    if (const auto pathname {get_sun_path(handle)}) {
+        if (const auto error {unlink(*pathname, verbose)}) {
+            if (error.number() != ENOENT) {
+                std::cerr << *pathname
+                          << ": "
+                          << error.string()
+                          << std::endl;
+            }
+        }
+    }
+}
