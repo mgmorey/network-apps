@@ -18,8 +18,7 @@
                                         // Fd, FdPair, LogicError
                                         // OptionalPathname,
                                         // OsErrorResult, Pathname,
-                                        // bind(), get_sockname()
-                                        // get_sun_path(),
+                                        // bind(), get_sun_path(),
                                         // os_error_type,
                                         // to_bytestring()
 #include "network/parse.h"              // parse()
@@ -53,7 +52,6 @@ namespace TestSocket
     using Network::Pathname;
     using Network::RangeError;
     using Network::bind;
-    using Network::get_sockname;
     using Network::get_sun_path;
     using Network::os_error_type;
     using Network::parse;
@@ -172,7 +170,7 @@ namespace TestSocket
                 print(result);
             }
             else {
-                const auto self {get_sockname(fd.handle(), verbose)};
+                const auto self {fd.sockname()};
                 std::cout << "Socket "
                           << std::right << std::setw(fd_width) << fd
                           << " bound to "

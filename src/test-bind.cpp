@@ -19,7 +19,6 @@
                                         // FdResult, FdResultVector,
                                         // OsErrorResult, Overloaded,
                                         // SocketHints, bind(),
-                                        // get_sockname(),
                                         // os_error_type, string_null
 #include "network/parse.h"              // parse()
 
@@ -59,7 +58,6 @@ namespace TestBind
     using Network::Overloaded;
     using Network::SocketHints;
     using Network::bind;
-    using Network::get_sockname;
     using Network::os_error_type;
     using Network::parse;
     using Network::string_null;
@@ -98,7 +96,7 @@ namespace TestBind
         {
             const auto hostname {m_endpoint.first};
             const auto service {m_endpoint.second};
-            const auto self {get_sockname(t_fd.handle(), verbose)};
+            const auto self {t_fd.sockname()};
             m_os << "Socket "
                  << std::right << std::setw(fd_width) << t_fd
                  << " bound to "

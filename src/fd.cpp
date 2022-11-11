@@ -66,11 +66,15 @@ auto Network::Fd::close() -> Fd&
     return *this;
 }
 
-auto Network::Fd::handle() const noexcept -> fd_type
+auto Network::Fd::peername() const -> ByteString
 {
-    return m_fd ? m_fd->handle() : fd_null;
+    return m_fd->peername();
 }
 
+auto Network::Fd::sockname() const -> ByteString
+{
+    return m_fd->sockname();
+}
 auto Network::operator<<(std::ostream& os,
                          const Fd& fd) noexcept -> std::ostream&
 {

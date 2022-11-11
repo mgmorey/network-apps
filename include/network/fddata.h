@@ -16,9 +16,9 @@
 #ifndef NETWORK_FDDATA_H
 #define NETWORK_FDDATA_H
 
-#include "network/bytestring.h"         // ByteString
-#include "network/fd-null.h"            // fd_null
-#include "network/fd-type.h"            // fd_type
+#include "network/bytestring.h"                 // ByteString
+#include "network/fd-null.h"                    // fd_null
+#include "network/fd-type.h"                    // fd_type
 
 #include <string>      // std::string
 
@@ -33,19 +33,16 @@ namespace Network
         FdData(const FdData&) noexcept = default;
         FdData(FdData&&) noexcept = default;
         FdData() noexcept = default;
-        ~FdData();
+        ~FdData() noexcept;
         auto operator=(const FdData&) noexcept -> FdData& = default;
         auto operator=(FdData&&) noexcept -> FdData& = default;
         auto operator=(fd_type value) noexcept -> FdData&;
         explicit operator bool() const noexcept;
         explicit operator fd_type() const noexcept;
         explicit operator std::string() const;
-        auto close() -> FdData&;
-        [[nodiscard]] auto handle() const noexcept -> fd_type;
+        auto close() noexcept -> FdData&;
         [[nodiscard]] auto peername() const -> ByteString;
-        [[nodiscard]] auto pending() const noexcept -> bool;
         [[nodiscard]] auto sockname() const -> ByteString;
-        [[nodiscard]] auto verbose() const noexcept -> bool;
 
     private:
         fd_type m_handle {fd_null};

@@ -16,7 +16,8 @@
 #ifndef NETWORK_FD_H
 #define NETWORK_FD_H
 
-#include "network/fddata.h"                     // FdData, fd_type,
+#include "network/fddata.h"                     // ByteString, FdData,
+                                                // fd_type,
                                                 // std::string
 #include "network/socket-hint-types.h"          // socket_family_type,
                                                 // socket_flags_type,
@@ -54,7 +55,8 @@ namespace Network
         explicit operator fd_type() const noexcept;
         explicit operator std::string() const;
         auto close() -> Fd&;
-        [[nodiscard]] auto handle() const noexcept -> fd_type;
+        [[nodiscard]] auto peername() const -> ByteString;
+        [[nodiscard]] auto sockname() const -> ByteString;
 
     private:
         std::shared_ptr<FdData> m_fd;

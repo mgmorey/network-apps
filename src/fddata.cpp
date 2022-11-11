@@ -35,7 +35,7 @@ Network::FdData::FdData(fd_type t_fd_data,
 {
 }
 
-Network::FdData::~FdData()
+Network::FdData::~FdData() noexcept
 {
     static_cast<void>(close());
 }
@@ -65,7 +65,7 @@ Network::FdData::operator std::string() const
     return std::to_string(m_handle);
 }
 
-auto Network::FdData::close() -> FdData&
+auto Network::FdData::close() noexcept -> FdData&
 {
     if (m_handle == fd_null) {
         return *this;
@@ -90,27 +90,12 @@ auto Network::FdData::close() -> FdData&
     return *this;
 }
 
-auto Network::FdData::handle() const noexcept -> fd_type
-{
-    return m_handle;
-}
-
 auto Network::FdData::peername() const -> ByteString
 {
     return get_peername(m_handle, m_verbose);
 }
 
-auto Network::FdData::pending() const noexcept -> bool
-{
-    return m_pending;
-}
-
 auto Network::FdData::sockname() const -> ByteString
 {
     return get_sockname(m_handle, m_verbose);
-}
-
-auto Network::FdData::verbose() const noexcept -> bool
-{
-    return m_verbose;
 }

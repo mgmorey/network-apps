@@ -21,8 +21,6 @@
                                         // OsErrorResult, Overloaded,
                                         // SocketHints, connect(),
                                         // get_hostname(),
-                                        // get_peername(),
-                                        // get_sockname(),
                                         // os_error_type, string_null
 #include "network/parse.h"              // parse()
 
@@ -67,8 +65,6 @@ namespace TestConnect
     using Network::SocketHints;
     using Network::connect;
     using Network::get_hostname;
-    using Network::get_peername;
-    using Network::get_sockname;
     using Network::os_error_type;
     using Network::parse;
     using Network::string_null;
@@ -133,8 +129,8 @@ namespace TestConnect
         {
             const auto hostname {m_endpoint.first};
             const auto service {m_endpoint.second};
-            const auto peer {get_peername(t_fd.handle(), verbose)};
-            const auto self {get_sockname(t_fd.handle(), verbose)};
+            const auto peer {t_fd.peername()};
+            const auto self {t_fd.sockname()};
             m_os << "Socket "
                  << std::right << std::setw(fd_width) << t_fd
                  << " connected "
