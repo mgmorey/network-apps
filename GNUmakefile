@@ -51,7 +51,7 @@ include flags.gmk
 libnetwork_sources = address-sa.cpp address-sin.cpp address-sin6.cpp	\
 address-sun.cpp address.cpp addresserror.cpp addrinfo.cpp		\
 argumentdata.cpp bind-endpoint.cpp bind-fd.cpp buffer.cpp		\
-bytestring.cpp cleanup-context.cpp close.cpp connect-endpoint.cpp	\
+bytestring.cpp cleanup.cpp close.cpp connect-endpoint.cpp		\
 connect-fd.cpp context.cpp error.cpp fd.cpp fddata.cpp fdpair.cpp	\
 format-ai-error.cpp format-os-error.cpp format.cpp get-endpoint.cpp	\
 get-endpointresult.cpp get-hostname.cpp get-hostnameresult.cpp		\
