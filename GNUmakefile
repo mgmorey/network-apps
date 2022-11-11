@@ -77,7 +77,7 @@ sockettype.cpp startup.cpp stream-address.cpp stream-addrinfo.cpp	\
 stream-socket.cpp to-bytespan-sa.cpp to-bytespan-sun.cpp		\
 to-bytespan-void.cpp to-bytestring-bs.cpp to-bytestring-path.cpp	\
 to-bytestring-sa.cpp to-bytestring-sun.cpp to-string-bs.cpp		\
-to-string-sin.cpp to-string-sin6.cpp unlink.cpp version.cpp
+to-string-sin.cpp to-string-sin6.cpp unlink-path.cpp version.cpp
 
 test_sources = test-address.cpp test-bind.cpp test-connect.cpp		\
 test-context.cpp test-host.cpp test-hostname.cpp test-option.cpp	\

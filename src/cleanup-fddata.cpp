@@ -15,7 +15,7 @@
 
 #include "network/cleanup-fddata.h"             // FdData, cleanup()
 #include "network/get-sun-path-fddata.h"        // get_sun_path()
-#include "network/unlink.h"                     // unlink()
+#include "network/unlink-path.h"                // unlink()
 
 #include <cerrno>       // ENOENT
 #include <iostream>     // std::cerr, std::endl
