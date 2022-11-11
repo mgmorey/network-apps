@@ -37,11 +37,9 @@ namespace Network
         auto operator=(const FdData&) noexcept -> FdData& = default;
         auto operator=(FdData&&) noexcept -> FdData& = default;
         auto operator=(fd_type value) noexcept -> FdData&;
-        explicit operator fd_type() const noexcept;
-        explicit operator std::string() const;
         auto close() noexcept -> FdData&;
-        [[nodiscard]] auto peername() const -> ByteString;
-        [[nodiscard]] auto sockname() const -> ByteString;
+        [[nodiscard]] auto handle() const noexcept -> fd_type;
+        [[nodiscard]] auto verbose() const noexcept -> bool;
 
     private:
         fd_type m_handle {fd_null};

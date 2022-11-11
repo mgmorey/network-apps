@@ -15,7 +15,9 @@
 
 #include "network/fd.h"                 // Fd, FdData, fd_type,
                                         // operator<<(), std::ostream
+#include "network/get-peername.h"       // get_peername()
 #include "network/get-socket.h"         // get_socket()
+#include "network/get-sockname.h"       // get_sockname()
 #include "network/string-null.h"        // string_null
 
 #include <string>       // std::string
@@ -44,37 +46,39 @@ Network::Fd::Fd(fd_type t_fd, bool t_pending, bool t_verbose) :
 
 Network::Fd::operator fd_type() const noexcept
 {
-    return m_fd ? fd_type {*m_fd} : fd_null;
+    return m_fd->handle();
 }
 
 Network::Fd::operator std::string() const
 {
-    return m_fd ? std::string {*m_fd} : string_null;
+    if (m_fd->handle() == fd_null) {
+        return string_null;
+    }
+
+    return std::to_string(m_fd->handle());
 }
 
 auto Network::Fd::close() -> Fd&
 {
-    if (m_fd) {
-        m_fd->close();
-    }
-
+    m_fd->close();
     return *this;
 }
 
 auto Network::Fd::is_open() const noexcept -> bool
 {
-    return fd_type {*m_fd} != fd_null;
+    return m_fd->handle() != fd_null;
 }
 
 auto Network::Fd::peername() const -> ByteString
 {
-    return m_fd->peername();
+    return get_peername(m_fd->handle(), m_fd->verbose());
 }
 
 auto Network::Fd::sockname() const -> ByteString
 {
-    return m_fd->sockname();
+    return get_sockname(m_fd->handle(), m_fd->verbose());
 }
+
 auto Network::operator<<(std::ostream& os,
                          const Fd& fd) noexcept -> std::ostream&
 {

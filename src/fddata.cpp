@@ -17,8 +17,6 @@
                                         // operator<<(), std::ostream,
                                         // std::to_string()
 #include "network/close.h"              // close()
-#include "network/get-peername.h"       // get_peername()
-#include "network/get-sockname.h"       // get_sockname()
 #include "network/remove-socket.h"      // remove_socket()
 #include "network/string-null.h"        // string_null
 
@@ -44,20 +42,6 @@ auto Network::FdData::operator=(fd_type value) noexcept -> FdData&
     return *this;
 }
 
-Network::FdData::operator fd_type() const noexcept
-{
-    return m_handle;
-}
-
-Network::FdData::operator std::string() const
-{
-    if (m_handle == fd_null) {
-        return string_null;
-    }
-
-    return std::to_string(m_handle);
-}
-
 auto Network::FdData::close() noexcept -> FdData&
 {
     if (m_handle == fd_null) {
@@ -78,12 +62,12 @@ auto Network::FdData::close() noexcept -> FdData&
     return *this;
 }
 
-auto Network::FdData::peername() const -> ByteString
+auto Network::FdData::handle() const noexcept -> fd_type
 {
-    return get_peername(m_handle, m_verbose);
+    return m_handle;
 }
 
-auto Network::FdData::sockname() const -> ByteString
+auto Network::FdData::verbose() const noexcept -> bool
 {
-    return get_sockname(m_handle, m_verbose);
+    return m_verbose;
 }
