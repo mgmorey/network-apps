@@ -25,7 +25,7 @@ auto Network::get_sun_path(fd_type handle, const OptionalPathname& path) ->
 #ifndef WIN32
     return get_sun_path(get_sockname(handle), path);
 #else
-    static_cast<void>(fd_data);
+    static_cast<void>(handle);
     return path;
 #endif
 }
