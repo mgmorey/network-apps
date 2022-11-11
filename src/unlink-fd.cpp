@@ -21,7 +21,7 @@
 auto Network::unlink(fd_type handle,
                      bool verbose) -> Network::OsErrorResult
 {
-    if (const auto pathname {get_sun_path(handle)}) {
+    if (const auto pathname {get_sun_path(handle, verbose)}) {
         if (auto os_error {unlink(*pathname, verbose)}) {
             return os_error;
         }

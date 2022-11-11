@@ -22,6 +22,7 @@
 namespace Network
 {
     extern auto get_sun_path(fd_type handle,
+                             bool verbose = false,
                              const OptionalPathname& path = {}) ->
         OptionalPathname;
 }

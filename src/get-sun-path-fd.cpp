@@ -19,13 +19,16 @@
 #include "network/get-sockname.h"               // get_sockname()
 #include "network/get-sun-path-bytestring.h"    // get_sun_path()
 
-auto Network::get_sun_path(fd_type handle, const OptionalPathname& path) ->
+auto Network::get_sun_path(fd_type handle,
+                           bool verbose,
+                           const OptionalPathname& path) ->
     OptionalPathname
 {
 #ifndef WIN32
-    return get_sun_path(get_sockname(handle), path);
+    return get_sun_path(get_sockname(handle, verbose), path);
 #else
     static_cast<void>(handle);
+    static_cast<void>(verbose);
     return path;
 #endif
 }
