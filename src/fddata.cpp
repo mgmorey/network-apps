@@ -21,7 +21,7 @@
 #include "network/get-peername.h"       // get_peername()
 #include "network/get-sockname.h"       // get_sockname()
 #include "network/string-null.h"        // string_null
-#include "network/unlink-fddata.h"      // unlink()
+#include "network/unlink-fd.h"          // unlink()
 
 #include <iostream>     // std::cerr, std::endl
 
@@ -72,7 +72,7 @@ auto Network::FdData::close() -> FdData&
 
     try {
         if (m_pending) {
-            static_cast<void>(unlink(*this));
+            Network::unlink(m_handle, m_verbose);
         }
     }
     catch (const Error& error) {
