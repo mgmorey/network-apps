@@ -147,7 +147,7 @@ auto main(int argc, char* argv[]) -> int
                 verbose
             };
 
-            if (!fd) {
+            if (!fd.is_open()) {
                 std::perror("accept");
                 std::exit(EXIT_FAILURE);
             }

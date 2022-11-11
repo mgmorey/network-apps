@@ -37,7 +37,6 @@ namespace Network
         auto operator=(const FdData&) noexcept -> FdData& = default;
         auto operator=(FdData&&) noexcept -> FdData& = default;
         auto operator=(fd_type value) noexcept -> FdData&;
-        explicit operator bool() const noexcept;
         explicit operator fd_type() const noexcept;
         explicit operator std::string() const;
         auto close() noexcept -> FdData&;

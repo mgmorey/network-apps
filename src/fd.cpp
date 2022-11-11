@@ -42,11 +42,6 @@ Network::Fd::Fd(fd_type t_fd, bool t_pending, bool t_verbose) :
 {
 }
 
-Network::Fd::operator bool() const noexcept
-{
-    return static_cast<bool>(m_fd);
-}
-
 Network::Fd::operator fd_type() const noexcept
 {
     return m_fd ? fd_type {*m_fd} : fd_null;
@@ -64,6 +59,11 @@ auto Network::Fd::close() -> Fd&
     }
 
     return *this;
+}
+
+auto Network::Fd::is_open() const noexcept -> bool
+{
+    return fd_type {*m_fd} != fd_null;
 }
 
 auto Network::Fd::peername() const -> ByteString

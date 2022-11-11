@@ -46,11 +46,6 @@ auto Network::FdData::operator=(fd_type value) noexcept -> FdData&
     return *this;
 }
 
-Network::FdData::operator bool() const noexcept
-{
-    return m_handle != fd_null;
-}
-
 Network::FdData::operator fd_type() const noexcept
 {
     return m_handle;

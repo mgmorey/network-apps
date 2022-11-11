@@ -51,10 +51,10 @@ namespace Network
         ~Fd() = default;
         auto operator=(const Fd&) noexcept -> Fd& = default;
         auto operator=(Fd&&) noexcept -> Fd& = default;
-        explicit operator bool() const noexcept;
         explicit operator fd_type() const noexcept;
         explicit operator std::string() const;
         auto close() -> Fd&;
+        auto is_open() const noexcept -> bool;
         [[nodiscard]] auto peername() const -> ByteString;
         [[nodiscard]] auto sockname() const -> ByteString;
 
