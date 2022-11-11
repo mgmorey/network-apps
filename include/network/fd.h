@@ -47,7 +47,6 @@ namespace Network
                     bool t_verbose = false);
         Fd(const Fd&) noexcept = default;
         Fd(Fd&&) noexcept = default;
-        Fd() noexcept = default;
         ~Fd() = default;
         auto operator=(const Fd&) noexcept -> Fd& = default;
         auto operator=(Fd&&) noexcept -> Fd& = default;

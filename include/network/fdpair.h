@@ -43,7 +43,6 @@ namespace Network
         FdPair(const Fd& t_fd1, const Fd& t_fd2) noexcept;
         FdPair(const FdPair&) noexcept = default;
         FdPair(FdPair&&) noexcept = default;
-        FdPair() noexcept = default;
         ~FdPair() noexcept = default;
         auto operator=(const FdPair&) noexcept -> FdPair& = default;
         auto operator=(FdPair&&) noexcept -> FdPair& = default;

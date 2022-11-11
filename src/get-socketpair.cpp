@@ -22,6 +22,7 @@
 
 #include "network/overloaded.h"         // Overloaded
 
+#include <optional>     // std::optional
 #include <variant>      // std::visit()
 
 #ifndef WIN32
@@ -29,7 +30,7 @@
 auto Network::get_socketpair(const SocketHints& hints,
                              bool verbose) -> Network::FdPair
 {
-    FdPair result;
+    std::optional<FdPair> result;
     const auto socketpair_result {get_socketpairresult(hints, verbose)};
     std::visit(Overloaded {
             [&](const FdPair& fds) {
@@ -39,7 +40,7 @@ auto Network::get_socketpair(const SocketHints& hints,
                 throw Error(error.string());
             }
         }, socketpair_result);
-    return result;
+    return *result;
 }
 
 #endif

@@ -32,7 +32,6 @@ namespace Network
                         bool t_verbose = false) noexcept;
         FdData(const FdData&) noexcept = default;
         FdData(FdData&&) noexcept = default;
-        FdData() noexcept = default;
         ~FdData() noexcept;
         auto operator=(const FdData&) noexcept -> FdData& = default;
         auto operator=(FdData&&) noexcept -> FdData& = default;
