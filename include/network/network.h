@@ -65,11 +65,11 @@
 #include "network/get-socketpair.h"             // get_socketpair()
 #include "network/get-socketpairresult.h"       // get_socketpairresult()
 #include "network/get-socketresult.h"           // get_socketresult()
-#include "network/get-sockets.h"                // get_sockets()
 #include "network/get-sockname.h"               // get_sockname()
 #include "network/get-socknameresult.h"         // get_socknameresult()
 #include "network/get-sun-length.h"             // get_sun_length()
 #include "network/get-sun-pointer.h"            // get_sun_pointer()
+#include "network/get-templates.h"              // get_templates()
 #include "network/is-valid.h"                   // is_valid()
 #include "network/os-error.h"                   // format_os_error(),
                                                 // get_last_os_error(),
@@ -78,13 +78,14 @@
 #include "network/skip-first.h"                 // skip_first()
 #include "network/skip-last.h"                  // skip_last()
 #include "network/socket-error.h"               // socket_error
-#include "network/socket.h"                     // Socket, SocketHints,
-                                                // SocketHost
 #include "network/socketfamily.h"               // SocketFamily
 #include "network/socketflags.h"                // SocketFlags
 #include "network/socketprotocol.h"             // SocketProtocol
 #include "network/sockettype.h"                 // SocketType
 #include "network/string-null.h"                // string_null
+#include "network/template.h"                   // SocketHints,
+                                                // SocketHost,
+                                                // Template
 #include "network/to-bytespan.h"                // to_bytespan()
 #include "network/to-bytestring.h"              // to_bytestring()
 #include "network/to-integer.h"                 // to_integer()

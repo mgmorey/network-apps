@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_SOCKET_H
-#define NETWORK_SOCKET_H
+#ifndef NETWORK_TEMPLATE_H
+#define NETWORK_TEMPLATE_H
 
 #include "network/sockethints.h"        // SocketHints
 #include "network/sockethost.h"         // SocketHost
@@ -27,24 +27,24 @@
 
 namespace Network
 {
-    struct Socket
+    struct Template
     {
-        Socket() noexcept = default;
-        explicit Socket(int t_family,
-                        int t_socktype = 0,
-                        int t_protocol = 0,
-                        int t_flags = 0);
+        Template() noexcept = default;
+        explicit Template(int t_family,
+                          int t_socktype = 0,
+                          int t_protocol = 0,
+                          int t_flags = 0);
         // cppcheck-suppress noExplicitConstructor
-        Socket(const addrinfo& t_addrinfo) noexcept;  // NOLINT
-        Socket(const Socket&) noexcept = default;
-        Socket(Socket&&) = default;
-        ~Socket() noexcept = default;
-        auto operator=(const Socket&) noexcept -> Socket& = default;
-        auto operator=(Socket&&) noexcept -> Socket& = default;
-        auto operator=(const addrinfo& t_addrinfo) noexcept -> Socket&;
-        auto operator<(const Socket& t_sock) const noexcept -> bool;
-        auto operator>(const Socket& t_sock) const noexcept -> bool;
-        auto operator==(const Socket& t_sock) const noexcept -> bool;
+        Template(const addrinfo& t_addrinfo) noexcept;  // NOLINT
+        Template(const Template&) noexcept = default;
+        Template(Template&&) = default;
+        ~Template() noexcept = default;
+        auto operator=(const Template&) noexcept -> Template& = default;
+        auto operator=(Template&&) noexcept -> Template& = default;
+        auto operator=(const addrinfo& t_addrinfo) noexcept -> Template&;
+        auto operator<(const Template& t_sock) const noexcept -> bool;
+        auto operator>(const Template& t_sock) const noexcept -> bool;
+        auto operator==(const Template& t_sock) const noexcept -> bool;
         [[nodiscard]] auto hints() const noexcept -> const SocketHints&;
         [[nodiscard]] auto host() const noexcept -> const SocketHost&;
         [[nodiscard]] auto flags() const noexcept -> SocketFlags;
@@ -52,7 +52,8 @@ namespace Network
         [[nodiscard]] auto socktype() const noexcept -> SocketType;
         [[nodiscard]] auto protocol() const noexcept -> SocketProtocol;
         [[nodiscard]] auto address() const noexcept -> const ByteString&;
-        [[nodiscard]] auto canonical_name() const noexcept -> const OptionalHostname&;
+        [[nodiscard]] auto canonical_name() const noexcept ->
+            const OptionalHostname&;
 
     private:
         SocketHints m_hints;
@@ -60,7 +61,7 @@ namespace Network
     };
 
     extern auto operator<<(std::ostream& os,
-                           const Socket& sock) noexcept -> std::ostream&;
+                           const Template& sock) noexcept -> std::ostream&;
 }
 
 #endif

@@ -13,20 +13,17 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_GET_SOCKETS_HOSTNAME_H
-#define NETWORK_GET_SOCKETS_HOSTNAME_H
+#ifndef NETWORK_TEMPLATEVECTORRESULT_H
+#define NETWORK_TEMPLATEVECTORRESULT_H
 
-#include "network/optionalhints.h"              // OptionalHints
-#include "network/optionalhostname.h"           // OptionalHostname
-#include "network/optionalservice.h"            // OptionalService
-#include "network/socketvectorresult.h"         // SocketVectorResult
+#include "network/oserrorresult.h"              // OsErrorResult
+#include "network/templatevector.h"             // TemplateVector
+
+#include <variant>      // std::variant
 
 namespace Network
 {
-    extern auto get_sockets(const OptionalHostname& hostname,
-                            const OptionalService& service,
-                            const OptionalHints& hints,
-                            bool verbose) -> SocketVectorResult;
+    using TemplateVectorResult = std::variant<TemplateVector, OsErrorResult>;
 }
 
 #endif

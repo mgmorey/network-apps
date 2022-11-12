@@ -13,17 +13,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_SOCKETVECTORRESULT_H
-#define NETWORK_SOCKETVECTORRESULT_H
+#ifndef NETWORK_GET_TEMPLATES_H
+#define NETWORK_GET_TEMPLATES_H
 
-#include "network/oserrorresult.h"      // OsErrorResult
-#include "network/socketvector.h"       // SocketVector
-
-#include <variant>      // std::variant
-
-namespace Network
-{
-    using SocketVectorResult = std::variant<SocketVector, OsErrorResult>;
-}
+#include "network/get-templates-endpoint.h"     // get_templates()
+#include "network/get-templates-hostname.h"     // get_templates()
 
 #endif

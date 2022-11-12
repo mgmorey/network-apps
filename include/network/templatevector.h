@@ -13,16 +13,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_SOCKETVECTOR_H
-#define NETWORK_SOCKETVECTOR_H
+#ifndef NETWORK_TEMPLATEVECTOR_H
+#define NETWORK_TEMPLATEVECTOR_H
 
-#include "network/socket.h"             // Socket
+#include "network/template.h"                   // Template
 
 #include <vector>       // std::vector
 
 namespace Network
 {
-    using SocketVector = std::vector<Socket>;
+    using TemplateVector = std::vector<Template>;
 }
 
 #endif

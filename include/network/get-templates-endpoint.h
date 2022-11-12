@@ -13,18 +13,18 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_GET_SOCKETS_ENDPOINT_H
-#define NETWORK_GET_SOCKETS_ENDPOINT_H
+#ifndef NETWORK_GET_TEMPLATES_ENDPOINT_H
+#define NETWORK_GET_TEMPLATES_ENDPOINT_H
 
 #include "network/endpoint.h"                   // Endpoint
 #include "network/optionalhints.h"              // OptionalHints
-#include "network/socketvectorresult.h"         // SocketVectorResult
+#include "network/templatevectorresult.h"       // TemplateVectorResult
 
 namespace Network
 {
-    extern auto get_sockets(const Endpoint& endpoint,
-                            const OptionalHints& hints,
-                            bool verbose) -> SocketVectorResult;
+    extern auto get_templates(const Endpoint& endpoint,
+                              const OptionalHints& hints,
+                              bool verbose) -> TemplateVectorResult;
 }
 
 #endif

@@ -21,7 +21,7 @@
                                         // OpenHandler, OsErrorResult,
                                         // open()
 #include "network/get-socketresult.h"   // get_socketresult()
-#include "network/get-sockets.h"        // SocketVector, get_sockets()
+#include "network/get-templates.h"      // TemplateVector, get_templates()
 #include "network/overloaded.h"         // Overloaded
 
 #include <algorithm>    // std::transform()
@@ -33,33 +33,33 @@ auto Network::open(const OpenHandler& handler,
 {
     OpenResult open_result;
     FdResultVector fd_results;
-    const auto lambda = [&](const Socket& sock) {
-        auto socket_result {get_socketresult(sock.hints(), args.verbose)};
+    const auto lambda = [&](const Template& temp) {
+        auto template_result {get_socketresult(temp.hints(), args.verbose)};
         std::visit(Overloaded {
                 [&](const Fd& fd) {
                     const auto result {open(handler, {fd,
-                                                      sock.address(),
+                                                      temp.address(),
                                                       args.verbose})};
 
                     if (result) {
-                        socket_result = result;
+                        template_result = result;
                     }
                     else {
-                        socket_result = fd;
+                        template_result = fd;
                     }
                 },
                 [&](const OsErrorResult& result) {
                     static_cast<void>(result);
                 }
-            }, socket_result);
-        return socket_result;
+            }, template_result);
+        return template_result;
     };
-    const auto sockets_result {get_sockets(args.endpoint,
-                                           args.hints,
-                                           args.verbose)};
+    const auto templates_result {get_templates(args.endpoint,
+                                               args.hints,
+                                               args.verbose)};
     std::visit(Overloaded {
-            [&](const SocketVector& sockets) {
-                std::transform(sockets.begin(), sockets.end(),
+            [&](const TemplateVector& templates) {
+                std::transform(templates.begin(), templates.end(),
                                std::back_inserter(fd_results),
                                lambda);
                 open_result = OpenResult {fd_results};
@@ -67,6 +67,6 @@ auto Network::open(const OpenHandler& handler,
             [&](const OsErrorResult& result) {
                 open_result = OpenResult {result};
             }
-        }, sockets_result);
+        }, templates_result);
     return open_result;
 }

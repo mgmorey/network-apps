@@ -13,29 +13,31 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-sockets-endpoint.h"       // Endpoint,
-                                                // OptionalHints,
-                                                // SocketVector,
-                                                // SocketVectorResult,
-                                                // get_sockets()
+#include "network/get-templates-hostname.h"     // OptionalHints,
+                                                // OptionalHostname,
+                                                // OptionalService,
+                                                // TemplateVector,
+                                                // TemplateVectorResult,
+                                                // get_templates()
 #include "network/insert-addrinfo.h"            // insert_addrinfo()
 
 #include <iterator>     // std::back_inserter()
 
-auto Network::get_sockets(const Endpoint& endpoint,
-                          const OptionalHints& hints,
-                          bool verbose) -> Network::SocketVectorResult
+auto Network::get_templates(const OptionalHostname& hostname,
+                            const OptionalService& service,
+                            const OptionalHints& hints,
+                            bool verbose) -> Network::TemplateVectorResult
 {
-    SocketVector sockets;
-    const auto result {insert_addrinfo(endpoint.first,
-                                       endpoint.second,
+    TemplateVector templates;
+    const auto result {insert_addrinfo(hostname,
+                                       service,
                                        hints,
-                                       std::back_inserter(sockets),
+                                       std::back_inserter(templates),
                                        verbose)};
 
     if (result) {
         return result;
     }
 
-    return sockets;
+    return templates;
 }

@@ -13,17 +13,17 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/socket.h"             // Socket, operator<<(),
+#include "network/template.h"           // Template, operator<<(),
                                         // std::ostream
 #include "network/format.h"             // Format, operator<<()
 #include "network/string-null.h"        // string_null
 
 auto Network::operator<<(std::ostream& os,
-                         const Socket& sock) noexcept -> std::ostream&
+                         const Template& sock) noexcept -> std::ostream&
 {
     static constexpr auto tab {7};
 
-    os << "Socket("
+    os << "Template("
        << Format("flags")
        << sock.flags()
        << Format(tab, "family")
