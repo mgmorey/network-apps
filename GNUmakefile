@@ -57,15 +57,15 @@ format-ai-error.cpp format-os-error.cpp format.cpp get-endpoint.cpp	\
 get-endpointresult.cpp get-hostname.cpp get-hostnameresult.cpp		\
 get-hosts.cpp get-last-context-error.cpp get-last-os-error.cpp		\
 get-length.cpp get-name.cpp get-nameresult.cpp get-operands.cpp		\
-get-option.cpp get-options.cpp get-peername.cpp				\
+get-option.cpp get-options.cpp get-path-bytestring.cpp			\
+get-path-fd.cpp get-path-length.cpp get-peername.cpp			\
 get-peernameresult.cpp get-sa-data.cpp get-sa-family.cpp		\
 get-sa-length.cpp get-sa-pointer.cpp get-sin-addr.cpp			\
 get-sin-pointer.cpp get-sin-port.cpp get-sin6-addr.cpp			\
 get-sin6-pointer.cpp get-sin6-port.cpp get-size.cpp get-socket.cpp	\
 get-socketpair.cpp get-socketpairresult.cpp get-socketresult.cpp	\
 get-sockets-endpoint.cpp get-sockets-hostname.cpp get-sockname.cpp	\
-get-socknameresult.cpp get-sun-length.cpp get-sun-path-bytestring.cpp	\
-get-sun-path-fd.cpp get-sun-path-length.cpp get-sun-pointer.cpp		\
+get-socknameresult.cpp get-sun-length.cpp get-sun-pointer.cpp		\
 integererror.cpp is-running.cpp is-valid.cpp logicerror.cpp		\
 namelengtherror.cpp open-endpoint.cpp open-fd.cpp oserrorresult.cpp	\
 parse-argumentspan.cpp parse.cpp pathlengtherror.cpp rangeerror.cpp	\

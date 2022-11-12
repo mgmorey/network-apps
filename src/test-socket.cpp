@@ -52,7 +52,7 @@ namespace TestSocket
     using Network::Pathname;
     using Network::RangeError;
     using Network::bind;
-    using Network::get_sun_path;
+    using Network::get_path;
     using Network::os_error_type;
     using Network::parse;
     using Network::path_len_max;
@@ -159,7 +159,7 @@ namespace TestSocket
     {
         os_error_type actual_code {0};
         const auto addr {to_bytestring(pathname)};
-        assert(get_sun_path(addr) == pathname);
+        assert(get_path(addr) == pathname);
 
         if (pathname) {
             const Fd fd {AF_UNIX, SOCK_STREAM, 0, 0, true, verbose};

@@ -14,14 +14,14 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/address.h"                    // Address, std::string
-#include "network/get-sun-path-bytestring.h"    // get_sun_path()
+#include "network/get-path-bytestring.h"        // get_path()
 #include "network/string-null.h"                // string_null
 
 #ifndef WIN32
 
 auto Network::Address::sun_text() const -> std::string
 {
-    return get_sun_path(m_value).value_or(string_null);
+    return get_path(m_value).value_or(string_null);
 }
 
 #endif

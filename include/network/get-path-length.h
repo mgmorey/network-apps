@@ -13,22 +13,21 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-sun-path-fd.h"            // OptionalPathname,
-                                                // fd_type,
-                                                // get_sun_path()
-#include "network/get-sockname.h"               // get_sockname()
-#include "network/get-sun-path-bytestring.h"    // get_sun_path()
+#ifndef NETWORK_GET_PATH_LENGTH_H
+#define NETWORK_GET_PATH_LENGTH_H
 
-auto Network::get_sun_path(fd_type handle,
-                           bool verbose,
-                           const OptionalPathname& path) ->
-    OptionalPathname
+#ifndef WIN32
+#include <sys/un.h>         // sockaddr_un
+#endif
+
+#include <cstddef>      // std::size_t
+
+namespace Network
 {
 #ifndef WIN32
-    return get_sun_path(get_sockname(handle, verbose), path);
-#else
-    static_cast<void>(handle);
-    static_cast<void>(verbose);
-    return path;
+    extern auto get_path_length(const sockaddr_un* sun,
+                                std::size_t size) noexcept -> std::size_t;
 #endif
 }
+
+#endif

@@ -16,7 +16,7 @@
 #ifndef NETWORK_PATH_LEN_TYPE_H
 #define NETWORK_PATH_LEN_TYPE_H
 
-#include "network/get-sun-path-size.h"  // get_sun_path_size()
+#include "network/get-path-size.h"              // get_path_size()
 
 #include <cstddef>      // std::size_t
 
@@ -24,7 +24,7 @@ namespace Network
 {
 #ifndef WIN32
     using path_len_type = std::size_t;
-    static constexpr auto path_len_max {get_sun_path_size()};
+    static constexpr auto path_len_max {get_path_size()};
     static constexpr auto path_len_min {0};
 #endif
 }

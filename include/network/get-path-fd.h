@@ -13,16 +13,17 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_GET_SUN_PATH_BYTESTRING_H
-#define NETWORK_GET_SUN_PATH_BYTESTRING_H
+#ifndef NETWORK_GET_PATH_FD_H
+#define NETWORK_GET_PATH_FD_H
 
-#include "network/bytestring.h"         // ByteString
+#include "network/fd-type.h"            // fd_type
 #include "network/optionalpathname.h"   // OptionalPathname
 
 namespace Network
 {
-    extern auto get_sun_path(const ByteString& addr,
-                             const OptionalPathname& pathname = {}) ->
+    extern auto get_path(fd_type handle,
+                         bool verbose = false,
+                         const OptionalPathname& path = {}) ->
         OptionalPathname;
 }
 

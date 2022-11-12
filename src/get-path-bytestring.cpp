@@ -13,9 +13,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-sun-path-bytestring.h"    // ByteString,
+#include "network/get-path-bytestring.h"        // ByteString,
                                                 // OptionalPathname
-                                                // get_sun_path()
+                                                // get_path()
 #include "network/get-sa-family.h"              // get_sa_family()
 #include "network/get-sun-pointer.h"            // get_sun_pointer()
 #include "network/sun-offsets.h"                // sun_path_offset
@@ -29,8 +29,8 @@
 #include <cstddef>      // std::size_t
 #include <cstring>      // strnlen()
 
-auto Network::get_sun_path(const ByteString& addr,
-                           const OptionalPathname& path) ->
+auto Network::get_path(const ByteString& addr,
+                       const OptionalPathname& path) ->
     OptionalPathname
 {
 #ifndef WIN32

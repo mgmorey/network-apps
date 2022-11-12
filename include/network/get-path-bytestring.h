@@ -13,24 +13,17 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_GET_SUN_PATH_SIZE_H
-#define NETWORK_GET_SUN_PATH_SIZE_H
+#ifndef NETWORK_GET_PATH_BYTESTRING_H
+#define NETWORK_GET_PATH_BYTESTRING_H
 
-#ifndef WIN32
-#include <sys/un.h>         // sockaddr_un
-#endif
-
-#include <cstddef>      // std::size_t
+#include "network/bytestring.h"         // ByteString
+#include "network/optionalpathname.h"   // OptionalPathname
 
 namespace Network
 {
-#ifndef WIN32
-    constexpr auto get_sun_path_size() -> std::size_t
-    {
-        constexpr sockaddr_un sun {};
-        return sizeof sun.sun_path;
-    }
-#endif
+    extern auto get_path(const ByteString& addr,
+                         const OptionalPathname& pathname = {}) ->
+        OptionalPathname;
 }
 
 #endif

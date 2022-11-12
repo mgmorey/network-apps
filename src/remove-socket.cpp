@@ -14,13 +14,13 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/remove-socket.h"      // remove_socket()
-#include "network/get-sun-path-fd.h"    // get_sun_path()
+#include "network/get-path-fd.h"        // get_path()
 
 #include <filesystem>   // std::filesystem
 
 auto Network::remove_socket(fd_type handle, bool verbose) -> bool
 {
-    if (const auto path {get_sun_path(handle, verbose)}) {
+    if (const auto path {get_path(handle, verbose)}) {
         return std::filesystem::remove(*path);
     }
 
