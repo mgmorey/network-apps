@@ -30,17 +30,23 @@
 auto Network::get_socketpair(const SocketHints& hints,
                              bool verbose) -> Network::FdPair
 {
-    std::optional<FdPair> result;
+    std::string result_string;
+    std::optional<FdPair> result_fds;
     const auto socketpair_result {get_socketpairresult(hints, verbose)};
     std::visit(Overloaded {
             [&](const FdPair& fds) {
-                result = fds;
+                result_fds = fds;
             },
-            [&](const OsErrorResult& error) {
-                throw Error(error.string());
+            [&](const OsErrorResult& result) {
+                result_string = result.string();
             }
         }, socketpair_result);
-    return *result;
+
+    if (result_fds) {
+        return *result_fds;
+    }
+
+    throw Error(result_string);
 }
 
 #endif
