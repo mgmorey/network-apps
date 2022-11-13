@@ -33,8 +33,8 @@ namespace Network
         FdData(const FdData&) noexcept = default;
         FdData(FdData&&) noexcept = default;
         ~FdData() noexcept;
-        auto operator=(const FdData&) noexcept -> FdData& = default;
-        auto operator=(FdData&&) noexcept -> FdData& = default;
+        auto operator=(const FdData&) noexcept -> FdData& = delete;
+        auto operator=(FdData&&) noexcept -> FdData& = delete;
         auto operator=(fd_type value) noexcept -> FdData&;
         auto close() noexcept -> FdData&;
         [[nodiscard]] auto handle() const noexcept -> fd_type;
