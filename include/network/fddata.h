@@ -30,8 +30,8 @@ namespace Network
         explicit FdData(fd_type t_fd_data,
                         bool t_pending,
                         bool t_verbose = false) noexcept;
-        FdData(const FdData&) noexcept = default;
-        FdData(FdData&&) noexcept = default;
+        FdData(const FdData&) noexcept = delete;
+        FdData(FdData&&) noexcept = delete;
         ~FdData() noexcept;
         auto operator=(const FdData&) noexcept -> FdData& = delete;
         auto operator=(FdData&&) noexcept -> FdData& = delete;
