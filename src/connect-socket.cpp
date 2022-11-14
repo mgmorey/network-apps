@@ -15,8 +15,8 @@
 
 #include "network/connect-socket.h"     // ByteString, OsErrorResult,
                                         // Socket, connect(), open()
-#include "network/opensocketparams.h"   // OpenSocketParams
 #include "network/openhandler.h"        // OpenHandler
+#include "network/opensocketparams.h"   // OpenSocketParams
 
 #ifdef WIN32
 #include <winsock2.h>       // connect()

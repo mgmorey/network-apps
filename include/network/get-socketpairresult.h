@@ -16,8 +16,8 @@
 #ifndef NETWORK_GET_SOCKETPAIRRESULT_H
 #define NETWORK_GET_SOCKETPAIRRESULT_H
 
-#include "network/socketpairresult.h"   // SocketPairResult
 #include "network/sockethints.h"        // SocketHints
+#include "network/socketpairresult.h"   // SocketPairResult
 
 namespace Network
 {
