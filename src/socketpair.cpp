@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/socketpair.h"         // Fd, SocketPair
+#include "network/socketpair.h"         // Socket, SocketPair
 #include "network/get-socketpair.h"     // get_socketpair()
 
 #include <cstddef>      // std::size_t
