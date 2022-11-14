@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/fddata.h"             // Fd, FdData, fd_type,
+#include "network/fddata.h"             // FdData, fd_type,
                                         // operator<<(), std::ostream,
                                         // std::to_string()
 #include "network/close.h"              // close()
