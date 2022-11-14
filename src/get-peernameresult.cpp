@@ -13,9 +13,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-peernameresult.h" // Fd, GetNameHandler,
+#include "network/get-peernameresult.h" // GetNameHandler,
                                         // GetNameParams,
-                                        // PeerNameResult, fd_type,
+                                        // PeerNameResult, Socket,
+                                        // fd_type,
                                         // get_peernameresult()
 #include "network/get-nameresult.h"     // get_nameresult()
 
