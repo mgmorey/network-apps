@@ -16,7 +16,7 @@
 #ifndef NETWORK_GET_PEERNAME_H
 #define NETWORK_GET_PEERNAME_H
 
-#include "network/fd-type.h"            // Fd
+#include "network/fd-type.h"            // fd_type
 #include "network/peername.h"           // PeerName
 
 namespace Network
