@@ -51,6 +51,8 @@
 #include "network/get-hostnameresult.h"         // get_hostnameresult()
 #include "network/get-hosts.h"                  // get_hosts()
 #include "network/get-length.h"                 // get_length()
+#include "network/get-name.h"                   // get_name()
+#include "network/get-nameresult.h"             // get_nameresult()
 #include "network/get-path-length.h"            // get_path_length()
 #include "network/get-path-size.h"              // get_path_size()
 #include "network/get-path.h"                   // get_path()
@@ -71,6 +73,7 @@
 #include "network/get-sun-pointer.h"            // get_sun_pointer()
 #include "network/get-templates.h"              // get_templates()
 #include "network/is-valid.h"                   // is_valid()
+#include "network/open.h"                       // open()
 #include "network/os-error.h"                   // format_os_error(),
                                                 // get_last_os_error(),
                                                 // reset_last_os_error()
