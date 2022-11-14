@@ -13,36 +13,38 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/fddata.h"             // FdData, fd_type,
-                                        // operator<<(), std::ostream,
-                                        // std::to_string()
-#include "network/close.h"              // close()
-#include "network/remove-socket.h"      // remove_socket()
-#include "network/string-null.h"        // string_null
+#include "network/descriptor.h"                 // Descriptor,
+                                                // fd_type,
+                                                // operator<<(),
+                                                // std::ostream,
+                                                // std::to_string()
+#include "network/close.h"                      // close()
+#include "network/remove-socket.h"              // remove_socket()
+#include "network/string-null.h"                // string_null
 
 #include <iostream>     // std::cerr, std::endl
 
-Network::FdData::FdData(fd_type t_fd_data,
-                        bool t_pending,
-                        bool t_verbose) noexcept :
+Network::Descriptor::Descriptor(fd_type t_fd_data,
+                                bool t_pending,
+                                bool t_verbose) noexcept :
     m_handle(t_fd_data),
     m_pending(t_pending),
     m_verbose(t_verbose)
 {
 }
 
-Network::FdData::~FdData() noexcept
+Network::Descriptor::~Descriptor() noexcept
 {
     static_cast<void>(close());
 }
 
-auto Network::FdData::operator=(fd_type value) noexcept -> FdData&
+auto Network::Descriptor::operator=(fd_type value) noexcept -> Descriptor&
 {
     m_handle = value;
     return *this;
 }
 
-auto Network::FdData::close() noexcept -> FdData&
+auto Network::Descriptor::close() noexcept -> Descriptor&
 {
     if (m_handle == fd_null) {
         return *this;
@@ -62,12 +64,12 @@ auto Network::FdData::close() noexcept -> FdData&
     return *this;
 }
 
-auto Network::FdData::handle() const noexcept -> fd_type
+auto Network::Descriptor::handle() const noexcept -> fd_type
 {
     return m_handle;
 }
 
-auto Network::FdData::verbose() const noexcept -> bool
+auto Network::Descriptor::verbose() const noexcept -> bool
 {
     return m_verbose;
 }

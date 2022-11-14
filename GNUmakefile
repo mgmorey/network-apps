@@ -52,7 +52,7 @@ libnetwork_sources = address-sa.cpp address-sin.cpp address-sin6.cpp	\
 address-sun.cpp address.cpp addresserror.cpp addrinfo.cpp		\
 argumentdata.cpp bind-endpoint.cpp bind-socket.cpp buffer.cpp		\
 bytestring.cpp cleanup.cpp close.cpp connect-endpoint.cpp		\
-connect-socket.cpp context.cpp error.cpp fddata.cpp			\
+connect-socket.cpp context.cpp descriptor.cpp error.cpp			\
 format-ai-error.cpp format-os-error.cpp format.cpp get-endpoint.cpp	\
 get-endpointresult.cpp get-hostname.cpp get-hostnameresult.cpp		\
 get-hosts.cpp get-last-context-error.cpp get-last-os-error.cpp		\

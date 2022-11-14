@@ -16,7 +16,8 @@
 #ifndef NETWORK_SOCKET_H
 #define NETWORK_SOCKET_H
 
-#include "network/fddata.h"                     // ByteString, FdData,
+#include "network/descriptor.h"                 // ByteString,
+                                                // Descriptor,
                                                 // fd_type,
                                                 // std::string
 #include "network/socket-hint-types.h"          // socket_family_type,
@@ -58,7 +59,7 @@ namespace Network
         [[nodiscard]] auto sockname() const -> ByteString;
 
     private:
-        std::shared_ptr<FdData> m_fd;
+        std::shared_ptr<Descriptor> m_descriptor;
     };
 
     extern auto operator<<(std::ostream& os,

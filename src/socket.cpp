@@ -13,8 +13,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/socket.h"             // FdData, Socket, fd_type,
-                                        // operator<<(), std::ostream
+#include "network/socket.h"             // Descriptor, Socket,
+                                        // fd_type, operator<<(),
+                                        // std::ostream
 #include "network/get-peername.h"       // get_peername()
 #include "network/get-socket.h"         // get_socket()
 #include "network/get-sockname.h"       // get_sockname()
@@ -34,49 +35,51 @@ Network::Socket::Socket(socket_family_type t_family,
 {
 }
 
-Network::Socket::Socket(const SocketHints& t_hints, bool t_pending, bool t_verbose) :
+Network::Socket::Socket(const SocketHints& t_hints,
+                        bool t_pending,
+                        bool t_verbose) :
     Socket(get_socket(t_hints, t_pending, t_verbose))
 {
 }
 
 Network::Socket::Socket(fd_type t_fd, bool t_pending, bool t_verbose) :
-    m_fd(new FdData {t_fd, t_pending, t_verbose})
+    m_descriptor(new Descriptor {t_fd, t_pending, t_verbose})
 {
 }
 
 Network::Socket::operator fd_type() const noexcept
 {
-    return m_fd->handle();
+    return m_descriptor->handle();
 }
 
 Network::Socket::operator std::string() const
 {
-    if (m_fd->handle() == fd_null) {
+    if (m_descriptor->handle() == fd_null) {
         return string_null;
     }
 
-    return std::to_string(m_fd->handle());
+    return std::to_string(m_descriptor->handle());
 }
 
 auto Network::Socket::close() -> Socket&
 {
-    m_fd->close();
+    m_descriptor->close();
     return *this;
 }
 
 auto Network::Socket::is_open() const noexcept -> bool
 {
-    return m_fd->handle() != fd_null;
+    return m_descriptor->handle() != fd_null;
 }
 
 auto Network::Socket::peername() const -> ByteString
 {
-    return get_peername(m_fd->handle(), m_fd->verbose());
+    return get_peername(m_descriptor->handle(), m_descriptor->verbose());
 }
 
 auto Network::Socket::sockname() const -> ByteString
 {
-    return get_sockname(m_fd->handle(), m_fd->verbose());
+    return get_sockname(m_descriptor->handle(), m_descriptor->verbose());
 }
 
 auto Network::operator<<(std::ostream& os,

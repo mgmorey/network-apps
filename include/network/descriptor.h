@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_FDDATA_H
-#define NETWORK_FDDATA_H
+#ifndef NETWORK_DESCRIPTOR_H
+#define NETWORK_DESCRIPTOR_H
 
 #include "network/bytestring.h"                 // ByteString
 #include "network/fd-null.h"                    // fd_null
@@ -24,19 +24,19 @@
 
 namespace Network
 {
-    class FdData
+    class Descriptor
     {
     public:
-        explicit FdData(fd_type t_fd_data,
-                        bool t_pending,
-                        bool t_verbose = false) noexcept;
-        FdData(const FdData&) noexcept = delete;
-        FdData(FdData&&) noexcept = delete;
-        ~FdData() noexcept;
-        auto operator=(const FdData&) noexcept -> FdData& = delete;
-        auto operator=(FdData&&) noexcept -> FdData& = delete;
-        auto operator=(fd_type value) noexcept -> FdData&;
-        auto close() noexcept -> FdData&;
+        explicit Descriptor(fd_type t_fd_data,
+                            bool t_pending,
+                            bool t_verbose = false) noexcept;
+        Descriptor(const Descriptor&) noexcept = delete;
+        Descriptor(Descriptor&&) noexcept = delete;
+        ~Descriptor() noexcept;
+        auto operator=(const Descriptor&) noexcept -> Descriptor& = delete;
+        auto operator=(Descriptor&&) noexcept -> Descriptor& = delete;
+        auto operator=(fd_type value) noexcept -> Descriptor&;
+        auto close() noexcept -> Descriptor&;
         [[nodiscard]] auto handle() const noexcept -> fd_type;
         [[nodiscard]] auto verbose() const noexcept -> bool;
 
