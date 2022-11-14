@@ -30,7 +30,6 @@
 
 #include <iostream>     // std::cout, std::endl
 #include <sstream>      // std::ostringstream
-#include <sys/socket.h>
 
 static auto format(const Network::ByteString& addr,
                    Network::OptionalString& str) -> std::string
