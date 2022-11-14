@@ -13,17 +13,22 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_FDRESULTVECTOR_H
-#define NETWORK_FDRESULTVECTOR_H
+#include "network/connect-socket.h"     // ByteString, OsErrorResult,
+                                        // Socket, connect(), open()
+#include "network/opensocketparams.h"   // OpenSocketParams
+#include "network/openhandler.h"        // OpenHandler
 
-#include "network/fdresult.h"           // FdResult
-
-#include <vector>       // std::vector
-
-namespace Network
-{
-    using FdResultVector = std::vector<FdResult>;
-}
-
-
+#ifdef WIN32
+#include <winsock2.h>       // connect()
+#else
+#include <sys/socket.h>     // connect()
 #endif
+
+auto Network::connect(const Socket& socket,
+                      const ByteString& str,
+                      bool verbose) -> Network::OsErrorResult
+{
+    const OpenHandler handler {::connect, "::connect"};
+    const OpenSocketParams args {socket, str, verbose};
+    return open(handler, args);
+}

@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/fd.h"                 // Fd, FdData, fd_type,
+#include "network/socket.h"             // FdData, Socket, fd_type,
                                         // operator<<(), std::ostream
 #include "network/get-peername.h"       // get_peername()
 #include "network/get-socket.h"         // get_socket()
@@ -22,34 +22,34 @@
 
 #include <string>       // std::string
 
-Network::Fd::Fd(socket_family_type t_family,
-                socket_type_type t_socktype,
-                socket_protocol_type t_protocol,
-                socket_flags_type t_flags,
-                bool t_pending,
-                bool t_verbose) :
-    Fd(SocketHints {t_flags, t_family, t_socktype, t_protocol},
-       t_pending,
-       t_verbose)
+Network::Socket::Socket(socket_family_type t_family,
+                        socket_type_type t_socktype,
+                        socket_protocol_type t_protocol,
+                        socket_flags_type t_flags,
+                        bool t_pending,
+                        bool t_verbose) :
+    Socket(SocketHints {t_flags, t_family, t_socktype, t_protocol},
+           t_pending,
+           t_verbose)
 {
 }
 
-Network::Fd::Fd(const SocketHints& t_hints, bool t_pending, bool t_verbose) :
-    Fd(get_socket(t_hints, t_pending, t_verbose))
+Network::Socket::Socket(const SocketHints& t_hints, bool t_pending, bool t_verbose) :
+    Socket(get_socket(t_hints, t_pending, t_verbose))
 {
 }
 
-Network::Fd::Fd(fd_type t_fd, bool t_pending, bool t_verbose) :
+Network::Socket::Socket(fd_type t_fd, bool t_pending, bool t_verbose) :
     m_fd(new FdData {t_fd, t_pending, t_verbose})
 {
 }
 
-Network::Fd::operator fd_type() const noexcept
+Network::Socket::operator fd_type() const noexcept
 {
     return m_fd->handle();
 }
 
-Network::Fd::operator std::string() const
+Network::Socket::operator std::string() const
 {
     if (m_fd->handle() == fd_null) {
         return string_null;
@@ -58,29 +58,29 @@ Network::Fd::operator std::string() const
     return std::to_string(m_fd->handle());
 }
 
-auto Network::Fd::close() -> Fd&
+auto Network::Socket::close() -> Socket&
 {
     m_fd->close();
     return *this;
 }
 
-auto Network::Fd::is_open() const noexcept -> bool
+auto Network::Socket::is_open() const noexcept -> bool
 {
     return m_fd->handle() != fd_null;
 }
 
-auto Network::Fd::peername() const -> ByteString
+auto Network::Socket::peername() const -> ByteString
 {
     return get_peername(m_fd->handle(), m_fd->verbose());
 }
 
-auto Network::Fd::sockname() const -> ByteString
+auto Network::Socket::sockname() const -> ByteString
 {
     return get_sockname(m_fd->handle(), m_fd->verbose());
 }
 
 auto Network::operator<<(std::ostream& os,
-                         const Fd& fd) noexcept -> std::ostream&
+                         const Socket& fd) noexcept -> std::ostream&
 {
     return os << std::string {fd};
 }

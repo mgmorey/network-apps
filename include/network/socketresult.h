@@ -13,23 +13,17 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/bind-fd.h"            // ByteString, Fd
-                                        // OsErrorResult, bind(),
-                                        // open()
-#include "network/openfdparams.h"       // OpenFdParams
-#include "network/openhandler.h"        // OpenHandler
+#ifndef NETWORK_SOCKETRESULT_H
+#define NETWORK_SOCKETRESULT_H
 
-#ifdef WIN32
-#include <winsock2.h>       // bind()
-#else
-#include <sys/socket.h>     // bind()
-#endif
+#include "network/oserrorresult.h"      // OsErrorResult
+#include "network/socket.h"             // Socket
 
-auto Network::bind(const Fd& fd,
-                   const ByteString& str,
-                   bool verbose) -> Network::OsErrorResult
+#include <variant>      // std::variant
+
+namespace Network
 {
-    const OpenHandler handler {::bind, "::bind"};
-    const OpenFdParams args {fd, str, verbose};
-    return open(handler, args);
+    using SocketResult = std::variant<Socket, OsErrorResult>;
 }
+
+#endif

@@ -13,17 +13,17 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_FDPAIRRESULT_H
-#define NETWORK_FDPAIRRESULT_H
+#ifndef NETWORK_OPEN_SOCKET_H
+#define NETWORK_OPEN_SOCKET_H
 
-#include "network/fdpair.h"             // FdPair
+#include "network/openhandler.h"        // OpenHandler
+#include "network/opensocketparams.h"   // OpenSocketParams
 #include "network/oserrorresult.h"      // OsErrorResult
-
-#include <variant>      // std::variant
 
 namespace Network
 {
-    using FdPairResult = std::variant<FdPair, OsErrorResult>;
+    extern auto open(const OpenHandler& handler,
+                     const OpenSocketParams& args) -> OsErrorResult;
 }
 
 #endif

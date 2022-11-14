@@ -16,14 +16,14 @@
 #ifndef NETWORK_GET_SOCKETRESULT_H
 #define NETWORK_GET_SOCKETRESULT_H
 
-#include "network/fdresult.h"           // FdResult
-#include "network/sockethints.h"        // SocketHints
+#include "network/sockethints.h"                // SocketHints
+#include "network/socketresult.h"               // SocketResult
 
 namespace Network
 {
     extern auto get_socketresult(const SocketHints& hints,
                                  bool pending = false,
-                                 bool verbose = false) -> FdResult;
+                                 bool verbose = false) -> SocketResult;
 }
 
 #endif

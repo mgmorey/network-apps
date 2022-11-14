@@ -13,11 +13,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-socketpair.h"             // FdPair,
-                                                // SocketHints,
+#include "network/get-socketpair.h"             // SocketHints,
+                                                // SocketPair,
                                                 // get_socketpair()
 #include "network/error.h"                      // Error
-#include "network/get-socketpairresult.h"       // FdPairResult,
+#include "network/get-socketpairresult.h"       // SocketPairResult,
                                                 // get_socketpairresult()
 
 #include "network/overloaded.h"         // Overloaded
@@ -28,22 +28,22 @@
 #ifndef WIN32
 
 auto Network::get_socketpair(const SocketHints& hints,
-                             bool verbose) -> Network::FdPair
+                             bool verbose) -> Network::SocketPair
 {
     std::string result_string;
-    std::optional<FdPair> result_fds;
+    std::optional<SocketPair> result_socketpair;
     const auto socketpair_result {get_socketpairresult(hints, verbose)};
     std::visit(Overloaded {
-            [&](const FdPair& fds) {
-                result_fds = fds;
+            [&](const SocketPair& pair) {
+                result_socketpair = pair;
             },
             [&](const OsErrorResult& result) {
                 result_string = result.string();
             }
         }, socketpair_result);
 
-    if (result_fds) {
-        return *result_fds;
+    if (result_socketpair) {
+        return *result_socketpair;
     }
 
     throw Error(result_string);

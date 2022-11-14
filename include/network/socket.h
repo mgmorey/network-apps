@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_FD_H
-#define NETWORK_FD_H
+#ifndef NETWORK_SOCKET_H
+#define NETWORK_SOCKET_H
 
 #include "network/fddata.h"                     // ByteString, FdData,
                                                 // fd_type,
@@ -30,29 +30,29 @@
 
 namespace Network
 {
-    class Fd
+    class Socket
     {
     public:
-        Fd(socket_family_type t_family,
-           socket_type_type t_socktype,
-           socket_protocol_type t_protocol = 0,
-           socket_flags_type t_flags = 0,
-           bool t_pending = false,
-           bool t_verbose = false);
-        explicit Fd(const SocketHints& t_hints,
-                    bool t_pending = false,
-                    bool t_verbose = false);
-        explicit Fd(fd_type t_fd,
-                    bool t_pending = false,
-                    bool t_verbose = false);
-        Fd(const Fd&) noexcept = default;
-        Fd(Fd&&) noexcept = default;
-        ~Fd() = default;
-        auto operator=(const Fd&) noexcept -> Fd& = default;
-        auto operator=(Fd&&) noexcept -> Fd& = default;
+        Socket(socket_family_type t_family,
+               socket_type_type t_socktype,
+               socket_protocol_type t_protocol = 0,
+               socket_flags_type t_flags = 0,
+               bool t_pending = false,
+               bool t_verbose = false);
+        explicit Socket(const SocketHints& t_hints,
+                        bool t_pending = false,
+                        bool t_verbose = false);
+        explicit Socket(fd_type t_fd,
+                        bool t_pending = false,
+                        bool t_verbose = false);
+        Socket(const Socket&) noexcept = default;
+        Socket(Socket&&) noexcept = default;
+        ~Socket() = default;
+        auto operator=(const Socket&) noexcept -> Socket& = default;
+        auto operator=(Socket&&) noexcept -> Socket& = default;
         explicit operator fd_type() const noexcept;
         explicit operator std::string() const;
-        auto close() -> Fd&;
+        auto close() -> Socket&;
         [[nodiscard]] auto is_open() const noexcept -> bool;
         [[nodiscard]] auto peername() const -> ByteString;
         [[nodiscard]] auto sockname() const -> ByteString;
@@ -62,7 +62,7 @@ namespace Network
     };
 
     extern auto operator<<(std::ostream& os,
-                           const Fd& fd) noexcept -> std::ostream&;
+                           const Socket& fd) noexcept -> std::ostream&;
 }
 
 #endif

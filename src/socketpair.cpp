@@ -13,40 +13,41 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/fdpair.h"             // Fd, FdPair
+#include "network/socketpair.h"         // Fd, SocketPair
 #include "network/get-socketpair.h"     // get_socketpair()
 
 #include <cstddef>      // std::size_t
 
 #ifndef WIN32
 
-Network::FdPair::FdPair(socket_family_type t_family,
+Network::SocketPair::SocketPair(socket_family_type t_family,
                         socket_type_type t_socktype,
                         socket_protocol_type t_protocol,
                         socket_flags_type t_flags,
                         bool t_verbose) :
-    FdPair(SocketHints {t_flags, t_family, t_socktype, t_protocol}, t_verbose)
+    SocketPair(SocketHints {t_flags, t_family, t_socktype, t_protocol}, t_verbose)
 {
 }
 
-Network::FdPair::FdPair(const SocketHints& t_hints, bool t_verbose) :
-    FdPair(get_socketpair(t_hints, t_verbose))
+Network::SocketPair::SocketPair(const SocketHints& t_hints, bool t_verbose) :
+    SocketPair(get_socketpair(t_hints, t_verbose))
 {
 }
 
 #endif
 
-Network::FdPair::FdPair(const Fd& t_fd1, const Fd& t_fd2) noexcept :
-    m_fd({t_fd1, t_fd2})
+Network::SocketPair::SocketPair(const Socket& t_socket1,
+                                const Socket& t_socket2) noexcept :
+    m_socket({t_socket1, t_socket2})
 {
 }
 
-auto Network::FdPair::at(std::size_t index) const -> const Network::Fd&
+auto Network::SocketPair::at(std::size_t index) const -> const Network::Socket&
 {
-    return m_fd.at(index);
+    return m_socket.at(index);
 }
 
-auto Network::FdPair::at(std::size_t index) -> Network::Fd&
+auto Network::SocketPair::at(std::size_t index) -> Network::Socket&
 {
-    return m_fd.at(index);
+    return m_socket.at(index);
 }

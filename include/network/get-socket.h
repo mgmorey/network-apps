@@ -16,14 +16,14 @@
 #ifndef NETWORK_GET_SOCKET_H
 #define NETWORK_GET_SOCKET_H
 
-#include "network/fd.h"                 // Fd
+#include "network/socket.h"             // Socket
 #include "network/sockethints.h"        // SocketHints
 
 namespace Network
 {
     extern auto get_socket(const SocketHints& hints,
                            bool pending = false,
-                           bool verbose = false) -> Fd;
+                           bool verbose = false) -> Socket;
 }
 
 #endif

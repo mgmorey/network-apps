@@ -13,17 +13,17 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_BIND_FD_H
-#define NETWORK_BIND_FD_H
+#ifndef NETWORK_SOCKETPAIRRESULT_H
+#define NETWORK_SOCKETPAIRRESULT_H
 
-#include "network/open-fd.h"            // ByteString, Fd,
-                                        // OsErrorResult
+#include "network/oserrorresult.h"      // OsErrorResult
+#include "network/socketpair.h"         // SocketPair
+
+#include <variant>      // std::variant
 
 namespace Network
 {
-    extern auto bind(const Fd& fd,
-                     const ByteString& str,
-                     bool verbose = false) -> OsErrorResult;
+    using SocketPairResult = std::variant<SocketPair, OsErrorResult>;
 }
 
 #endif

@@ -18,7 +18,7 @@
 
 #include "network/connect-endpoint.h"   // Endpoint, OpenResult,
                                         // SocketHints, connect()
-#include "network/connect-fd.h"         // Bytes, Fd, OsErrorResult,
-                                        // connect()
+#include "network/connect-socket.h"     // Bytes, OsErrorResult,
+                                        // Socket, connect()
 
 #endif

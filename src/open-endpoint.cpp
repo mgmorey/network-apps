@@ -13,15 +13,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/open-endpoint.h"      // FdResultVector,
-                                        // OpenEndpointParams,
+#include "network/open-endpoint.h"      // OpenEndpointParams,
                                         // OpenHandler, OpenResult,
-                                        // open()
-#include "network/open-fd.h"            // Fd, OpenFdParams,
-                                        // OpenHandler, OsErrorResult,
-                                        // open()
+                                        // SocketResultVector, open()
 #include "network/get-socketresult.h"   // get_socketresult()
-#include "network/get-templates.h"      // TemplateVector, get_templates()
+#include "network/get-templates.h"      // TemplateVector,
+                                        // get_templates()
+#include "network/open-socket.h"        // OpenHandler,
+                                        // OpenSocketParams,
+                                        // OsErrorResult, Socket,
+                                        // open()
 #include "network/overloaded.h"         // Overloaded
 
 #include <algorithm>    // std::transform()
@@ -32,12 +33,12 @@ auto Network::open(const OpenHandler& handler,
                    const OpenEndpointParams& args) -> Network::OpenResult
 {
     OpenResult open_result;
-    FdResultVector fd_results;
+    SocketResultVector socket_results;
     const auto lambda = [&](const Template& temp) {
         auto template_result {get_socketresult(temp.hints(), args.verbose)};
         std::visit(Overloaded {
-                [&](const Fd& fd) {
-                    const auto result {open(handler, {fd,
+                [&](const Socket& sock) {
+                    const auto result {open(handler, {sock,
                                                       temp.address(),
                                                       args.verbose})};
 
@@ -45,7 +46,7 @@ auto Network::open(const OpenHandler& handler,
                         template_result = result;
                     }
                     else {
-                        template_result = fd;
+                        template_result = sock;
                     }
                 },
                 [&](const OsErrorResult& result) {
@@ -60,9 +61,9 @@ auto Network::open(const OpenHandler& handler,
     std::visit(Overloaded {
             [&](const TemplateVector& templates) {
                 std::transform(templates.begin(), templates.end(),
-                               std::back_inserter(fd_results),
+                               std::back_inserter(socket_results),
                                lambda);
-                open_result = OpenResult {fd_results};
+                open_result = OpenResult {socket_results};
             },
             [&](const OsErrorResult& result) {
                 open_result = OpenResult {result};

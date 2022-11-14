@@ -35,8 +35,8 @@
 
 using Network::ArgumentSpan;
 using Network::Buffer;
-using Network::Fd;
 using Network::Pathname;
+using Network::Socket;
 using Network::connect;
 using Network::fd_type;
 using Network::format_os_error;
@@ -81,7 +81,7 @@ static auto parse(int argc, char** argv) -> ArgumentSpan
     return operands;
 }
 
-static auto read(const Fd& fd) -> IoResult
+static auto read(const Socket& fd) -> IoResult
 {
     Buffer buffer {BUFFER_SIZE};
     return {buffer, ::read(fd_type {fd},
@@ -89,7 +89,7 @@ static auto read(const Fd& fd) -> IoResult
                            buffer.size())};
 }
 
-static auto write(const std::string& str, const Fd& fd) -> ssize_t
+static auto write(const std::string& str, const Socket& fd) -> ssize_t
 {
     return ::write(fd_type {fd}, str.data(), str.size());
 }
@@ -102,7 +102,7 @@ auto main(int argc, char* argv[]) -> int
         bool shutdown {false};
 
         // Connect socket to socket address.
-        const Fd fd {AF_UNIX, SOCK_SEQPACKET, 0, 0, false, verbose};
+        const Socket fd {AF_UNIX, SOCK_SEQPACKET, 0, 0, false, verbose};
         const auto addr {to_bytestring(SOCKET_NAME)};
         const auto error {connect(fd, addr, verbose)};
         const auto error_code {error.number()};

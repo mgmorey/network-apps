@@ -13,23 +13,20 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/connect-fd.h"         // ByteString, Fd,
-                                        // OsErrorResult, connect(),
-                                        // open()
-#include "network/openfdparams.h"       // OpenFdParams
-#include "network/openhandler.h"        // OpenHandler
+#ifndef NETWORK_OPENSOCKETPARAMS_H
+#define NETWORK_OPENSOCKETPARAMS_H
 
-#ifdef WIN32
-#include <winsock2.h>       // connect()
-#else
-#include <sys/socket.h>     // connect()
-#endif
+#include "network/bytestring.h"         // ByteString
+#include "network/socket.h"             // Socket
 
-auto Network::connect(const Fd& fd,
-                      const ByteString& str,
-                      bool verbose) -> Network::OsErrorResult
+namespace Network
 {
-    const OpenHandler handler {::connect, "::connect"};
-    const OpenFdParams args {fd, str, verbose};
-    return open(handler, args);
+    struct OpenSocketParams
+    {
+        const Socket& socket;
+        const ByteString& str;
+        bool verbose;
+    };
 }
+
+#endif

@@ -13,20 +13,17 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_OPENFDPARAMS_H
-#define NETWORK_OPENFDPARAMS_H
+#ifndef NETWORK_SOCKETRESULTVECTOR_H
+#define NETWORK_SOCKETRESULTVECTOR_H
 
-#include "network/bytestring.h"         // ByteString
-#include "network/fd.h"                 // Fd
+#include "network/socketresult.h"       // SocketResult
+
+#include <vector>       // std::vector
 
 namespace Network
 {
-    struct OpenFdParams
-    {
-        const Fd& fd;
-        const ByteString& str;
-        bool verbose;
-    };
+    using SocketResultVector = std::vector<SocketResult>;
 }
+
 
 #endif

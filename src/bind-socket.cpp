@@ -13,17 +13,22 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_OPEN_FD_H
-#define NETWORK_OPEN_FD_H
-
-#include "network/openfdparams.h"       // OpenFdParams
+#include "network/bind-socket.h"        // ByteString, OsErrorResult,
+                                        // Socket, bind(), open()
 #include "network/openhandler.h"        // OpenHandler
-#include "network/oserrorresult.h"      // OsErrorResult
+#include "network/opensocketparams.h"   // OpenSocketParams
 
-namespace Network
-{
-    extern auto open(const OpenHandler& handler,
-                     const OpenFdParams& args) -> OsErrorResult;
-}
-
+#ifdef WIN32
+#include <winsock2.h>       // bind()
+#else
+#include <sys/socket.h>     // bind()
 #endif
+
+auto Network::bind(const Socket& socket,
+                   const ByteString& str,
+                   bool verbose) -> Network::OsErrorResult
+{
+    const OpenHandler handler {::bind, "::bind"};
+    const OpenSocketParams args {socket, str, verbose};
+    return open(handler, args);
+}

@@ -15,10 +15,11 @@
 
 #include "network/assert.h"             // assert()
 #include "network/network.h"            // Address, Context, Error,
-                                        // Fd, FdPair, LogicError
+                                        // LogicError
                                         // OptionalPathname,
                                         // OsErrorResult, Pathname,
-                                        // bind(), get_sun_path(),
+                                        // Socket, SocketPair, bind(),
+                                        // get_sun_path(),
                                         // os_error_type,
                                         // to_bytestring()
 #include "network/parse.h"              // parse()
@@ -44,13 +45,13 @@ namespace TestSocket
     using Network::Address;
     using Network::Context;
     using Network::Error;
-    using Network::Fd;
-    using Network::FdPair;
     using Network::LogicError;
     using Network::OptionalPathname;
     using Network::OsErrorResult;
     using Network::Pathname;
     using Network::RangeError;
+    using Network::Socket;
+    using Network::SocketPair;
     using Network::bind;
     using Network::get_path;
     using Network::os_error_type;
@@ -162,7 +163,7 @@ namespace TestSocket
         assert(get_path(addr) == pathname);
 
         if (pathname) {
-            const Fd fd {AF_UNIX, SOCK_STREAM, 0, 0, true, verbose};
+            const Socket fd {AF_UNIX, SOCK_STREAM, 0, 0, true, verbose};
             const auto result {bind(fd, addr, verbose)};
             actual_code = result.number();
 
@@ -256,13 +257,13 @@ namespace TestSocket
 
     static auto test_socketpair() -> void
     {
-        FdPair fds {AF_UNIX, SOCK_STREAM, 0, 0, verbose};
+        SocketPair pair {AF_UNIX, SOCK_STREAM, 0, 0, verbose};
         std::cout << "Socket "
-                  << std::right << std::setw(fd_width) << fds.at(0)
+                  << std::right << std::setw(fd_width) << pair.at(0)
                   << " connected to "
                   << std::endl
                   << "Socket "
-                  << std::right << std::setw(fd_width) << fds.at(1)
+                  << std::right << std::setw(fd_width) << pair.at(1)
                   << std::endl;
     }
 }

@@ -13,17 +13,17 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_CONNECT_FD_H
-#define NETWORK_CONNECT_FD_H
+#ifndef NETWORK_BIND_FD_H
+#define NETWORK_BIND_FD_H
 
-#include "network/open-fd.h"            // ByteString, Fd,
-                                        // OsErrorResult
+#include "network/open-socket.h"        // ByteString, OsErrorResult,
+                                        // Socket
 
 namespace Network
 {
-    extern auto connect(const Fd& fd,
-                        const ByteString& str,
-                        bool verbose = false) -> OsErrorResult;
+    extern auto bind(const Socket& socket,
+                     const ByteString& str,
+                     bool verbose = false) -> OsErrorResult;
 }
 
 #endif

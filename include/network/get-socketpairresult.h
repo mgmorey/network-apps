@@ -16,7 +16,7 @@
 #ifndef NETWORK_GET_SOCKETPAIRRESULT_H
 #define NETWORK_GET_SOCKETPAIRRESULT_H
 
-#include "network/fdpairresult.h"       // FdPairResult
+#include "network/socketpairresult.h"   // SocketPairResult
 #include "network/sockethints.h"        // SocketHints
 
 namespace Network
@@ -24,7 +24,7 @@ namespace Network
 #ifndef WIN32
     extern auto get_socketpairresult(const SocketHints& hints,
                                      bool verbose = false) noexcept ->
-        FdPairResult;
+        SocketPairResult;
 #endif
 }
 

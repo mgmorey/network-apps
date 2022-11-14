@@ -35,8 +35,8 @@
 #include <string>       // std::string, std::to_string()
 
 using Network::Buffer;
-using Network::Fd;
 using Network::Pathname;
+using Network::Socket;
 using Network::SocketHints;
 using Network::bind;
 using Network::fd_type;
@@ -85,13 +85,13 @@ static auto parse(int argc, char** argv) -> void
     static_cast<void>(_);
 }
 
-static auto get_bind_socket(const SocketHints& hints) -> Fd
+static auto get_bind_socket(const SocketHints& hints) -> Socket
 {
-    static const Network::Fd fd {hints, true, verbose};
+    static const Network::Socket fd {hints, true, verbose};
     return fd;
 }
 
-static auto read(const Fd& fd) -> IoResult
+static auto read(const Socket& fd) -> IoResult
 {
     Buffer buffer {BUFFER_SIZE};
     return {buffer, ::read(fd_type {fd},
@@ -99,7 +99,7 @@ static auto read(const Fd& fd) -> IoResult
                            buffer.size())};
 }
 
-static auto write(const std::string& str, const Fd& fd) -> ssize_t
+static auto write(const std::string& str, const Socket& fd) -> ssize_t
 {
     return ::write(fd_type {fd}, str.data(), str.size());
 }
@@ -139,7 +139,7 @@ auto main(int argc, char* argv[]) -> int
         // This is the main loop for handling connections.
         while (!shutdown) {
             // Wait for incoming connection.
-            const Fd fd {
+            const Socket fd {
                 ::accept(fd_type {bind_fd},
                          nullptr,
                          nullptr),

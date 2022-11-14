@@ -18,7 +18,7 @@
 
 #include "network/bind-endpoint.h"      // Endpoint, OpenResult,
                                         // SocketHints, bind()
-#include "network/bind-fd.h"            // Bytes, Fd, OsErrorResult,
-                                        // bind()
+#include "network/bind-socket.h"        // Bytes, OsErrorResult,
+                                        // Socket, bind()
 
 #endif

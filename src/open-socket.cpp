@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/open-fd.h"            // ByteString, Fd,
-                                        // OpenHandler, OsErrorResult,
+#include "network/open-socket.h"        // ByteString, OpenHandler,
+                                        // OsErrorResult, Socket,
                                         // fd_type, open(),
                                         // operator<<()
 #include "network/context-error.h"      // get_last_context_error(),
@@ -30,6 +30,7 @@
 
 #include <iostream>     // std::cout, std::endl
 #include <sstream>      // std::ostringstream
+#include <sys/socket.h>
 
 static auto format(const Network::ByteString& addr,
                    Network::OptionalString& str) -> std::string
@@ -42,7 +43,7 @@ static auto format(const Network::ByteString& addr,
 }
 
 auto Network::open(const OpenHandler& handler,
-                   const OpenFdParams& args) -> Network::OsErrorResult
+                   const OpenSocketParams& args) -> Network::OsErrorResult
 {
     const auto* const pointer {get_sa_pointer(args.str)};
     const auto length {get_length(args.str)};
@@ -53,7 +54,7 @@ auto Network::open(const OpenHandler& handler,
         std::cout << "Calling "
                   << handler.second
                   << '('
-                  << args.fd
+                  << args.socket
                   << ", "
                   << format(args.str, str)
                   << ", "
@@ -62,7 +63,7 @@ auto Network::open(const OpenHandler& handler,
                   << std::endl;
     }
 
-    const fd_type handle {args.fd};
+    const fd_type handle {args.socket};
 
     if (handler.first(handle, pointer, length) == socket_error) {
         const auto error = get_last_context_error();
@@ -71,7 +72,7 @@ auto Network::open(const OpenHandler& handler,
         oss << "Call to "
             << handler.second
             << '('
-            << args.fd
+            << args.socket
             << ", "
             << format(args.str, str)
             << ", "

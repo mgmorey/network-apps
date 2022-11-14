@@ -16,14 +16,14 @@
 #ifndef NETWORK_GET_SOCKETPAIR_H
 #define NETWORK_GET_SOCKETPAIR_H
 
-#include "network/fdpair.h"             // FdPair
 #include "network/sockethints.h"        // SocketHints
+#include "network/socketpair.h"         // SocketPair
 
 namespace Network
 {
 #ifndef WIN32
     extern auto get_socketpair(const SocketHints& hints,
-                               bool verbose = false) -> FdPair;
+                               bool verbose = false) -> SocketPair;
 #endif
 }
 

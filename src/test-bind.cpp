@@ -15,10 +15,11 @@
 
 #include "network/assert.h"             // assert()
 #include "network/network.h"            // Address, ByteString,
-                                        // Context, Endpoint, Fd,
-                                        // FdResult, FdResultVector,
+                                        // Context, Endpoint,
                                         // OsErrorResult, Overloaded,
-                                        // SocketHints, bind(),
+                                        // Socket, SocketHints,
+                                        // SocketResult,
+                                        // SocketResultVector, bind(),
                                         // os_error_type, string_null
 #include "network/parse.h"              // parse()
 
@@ -51,12 +52,12 @@ namespace TestBind
     using Network::ByteString;
     using Network::Context;
     using Network::Endpoint;
-    using Network::Fd;
-    using Network::FdResult;
-    using Network::FdResultVector;
     using Network::OsErrorResult;
     using Network::Overloaded;
+    using Network::Socket;
     using Network::SocketHints;
+    using Network::SocketResult;
+    using Network::SocketResultVector;
     using Network::bind;
     using Network::os_error_type;
     using Network::parse;
@@ -79,20 +80,20 @@ namespace TestBind
         {
         }
 
-        auto operator()(const FdResult& t_fd_result) -> void
+        auto operator()(const SocketResult& t_socket_result) -> void
         {
             std::visit(Overloaded {
-                    [&](const Fd& fd) {
+                    [&](const Socket& fd) {
                         test_socket(fd);
                     },
                     [&](const OsErrorResult& error) {
                         std::cerr << error.string()
                                   << std::endl;
                     }
-                }, t_fd_result);
+                }, t_socket_result);
         }
 
-        auto test_socket(const Fd& t_fd) -> void
+        auto test_socket(const Socket& t_fd) -> void
         {
             const auto hostname {m_endpoint.first};
             const auto service {m_endpoint.second};
@@ -190,7 +191,7 @@ namespace TestBind
     {
         os_error_type actual_code {0};
         const auto& expected_codes {get_codes_invalid_addr()};
-        const Fd fd {AF_INET, SOCK_STREAM, 0, 0, true, verbose};
+        const Socket fd {AF_INET, SOCK_STREAM, 0, 0, true, verbose};
         const auto error {bind(fd, addr, verbose)};
         actual_code = error.number();
 
@@ -208,8 +209,8 @@ namespace TestBind
         const auto& expected_codes {get_codes_invalid_host()};
         const auto bind_result {bind(endpoint, hints, verbose)};
         std::visit(Overloaded {
-                [&](const FdResultVector& fd_results) {
-                    static_cast<void>(fd_results);
+                [&](const SocketResultVector& socket_results) {
+                    static_cast<void>(socket_results);
                 },
                 [&](const OsErrorResult& error) {
                     actual_code = error.number();
@@ -226,8 +227,8 @@ namespace TestBind
         const auto& expected_codes {get_codes_invalid_service()};
         const auto bind_result {bind(endpoint, hints, verbose)};
         std::visit(Overloaded {
-                [&](const FdResultVector& fd_results) {
-                    static_cast<void>(fd_results);
+                [&](const SocketResultVector& socket_results) {
+                    static_cast<void>(socket_results);
                 },
                 [&](const OsErrorResult& error) {
                     actual_code = error.number();
@@ -242,8 +243,8 @@ namespace TestBind
     {
         const auto bind_result {bind(endpoint, hints, verbose)};
         std::visit(Overloaded {
-                [&](const FdResultVector& fd_results) {
-                    std::for_each(fd_results.begin(), fd_results.end(),
+                [&](const SocketResultVector& socket_results) {
+                    std::for_each(socket_results.begin(), socket_results.end(),
                                   Test(endpoint, std::cout));
                 },
                 [&](const OsErrorResult& error) {

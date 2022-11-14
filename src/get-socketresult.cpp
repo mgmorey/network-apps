@@ -13,9 +13,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-socketresult.h"   // Fd, FdResult,
-                                        // OsErrorResult, Socket,
-                                        // fd_null, get_socketresult(),
+#include "network/get-socketresult.h"   // OsErrorResult, Socket,
+                                        // Socket, SocketResult,
+                                        // fd_null,
+                                        // get_socketresult(),
                                         // operator<<()
 #include "network/context-error.h"      // get_last_context_error(),
                                         // reset_last_context_error()
@@ -34,7 +35,7 @@
 
 auto Network::get_socketresult(const SocketHints& hints,
                                bool pending,
-                               bool verbose) -> Network::FdResult
+                               bool verbose) -> Network::SocketResult
 {
     static constexpr auto delim {", "};
     static constexpr auto tab {0};
@@ -74,5 +75,5 @@ auto Network::get_socketresult(const SocketHints& hints,
         return OsErrorResult {os_error, oss.str()};
     }
 
-    return Fd {handle, pending, verbose};
+    return Socket {handle, pending, verbose};
 }

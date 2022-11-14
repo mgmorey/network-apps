@@ -13,17 +13,17 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_FDRESULT_H
-#define NETWORK_FDRESULT_H
+#ifndef NETWORK_CONNECT_SOCKET_H
+#define NETWORK_CONNECT_SOCKET_H
 
-#include "network/fd.h"                 // Fd
-#include "network/oserrorresult.h"      // OsErrorResult
-
-#include <variant>      // std::variant
+#include "network/open-socket.h"            // ByteString, OsErrorResult,
+                                        // Socket
 
 namespace Network
 {
-    using FdResult = std::variant<Fd, OsErrorResult>;
+    extern auto connect(const Socket& socket,
+                        const ByteString& str,
+                        bool verbose = false) -> OsErrorResult;
 }
 
 #endif

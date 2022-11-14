@@ -50,9 +50,9 @@ include flags.gmk
 
 libnetwork_sources = address-sa.cpp address-sin.cpp address-sin6.cpp	\
 address-sun.cpp address.cpp addresserror.cpp addrinfo.cpp		\
-argumentdata.cpp bind-endpoint.cpp bind-fd.cpp buffer.cpp		\
+argumentdata.cpp bind-endpoint.cpp bind-socket.cpp buffer.cpp		\
 bytestring.cpp cleanup.cpp close.cpp connect-endpoint.cpp		\
-connect-fd.cpp context.cpp error.cpp fd.cpp fddata.cpp fdpair.cpp	\
+connect-socket.cpp context.cpp error.cpp fddata.cpp			\
 format-ai-error.cpp format-os-error.cpp format.cpp get-endpoint.cpp	\
 get-endpointresult.cpp get-hostname.cpp get-hostnameresult.cpp		\
 get-hosts.cpp get-last-context-error.cpp get-last-os-error.cpp		\
@@ -68,17 +68,18 @@ get-sockname.cpp get-socknameresult.cpp get-sun-length.cpp		\
 get-sun-pointer.cpp get-templates-endpoint.cpp				\
 get-templates-hostname.cpp integererror.cpp is-running.cpp		\
 is-valid.cpp logicerror.cpp namelengtherror.cpp open-endpoint.cpp	\
-open-fd.cpp oserrorresult.cpp parse-argumentspan.cpp parse.cpp		\
+open-socket.cpp oserrorresult.cpp parse-argumentspan.cpp parse.cpp	\
 pathlengtherror.cpp rangeerror.cpp remove-socket.cpp			\
 reset-last-context-error.cpp reset-last-os-error.cpp runtimeerror.cpp	\
 set-last-context-error.cpp set-last-os-error.cpp sizeerror.cpp		\
-socketfamily.cpp socketflags.cpp sockethints.cpp sockethost.cpp		\
-socketlengtherror.cpp socketprotocol.cpp sockettype.cpp startup.cpp	\
-stream-address.cpp stream-addrinfo.cpp stream-template.cpp		\
-template.cpp to-bytespan-sa.cpp to-bytespan-sun.cpp			\
-to-bytespan-void.cpp to-bytestring-bs.cpp to-bytestring-path.cpp	\
-to-bytestring-sa.cpp to-bytestring-sun.cpp to-string-bs.cpp		\
-to-string-sin.cpp to-string-sin6.cpp version.cpp
+socket.cpp socketfamily.cpp socketflags.cpp sockethints.cpp		\
+sockethost.cpp socketlengtherror.cpp socketpair.cpp			\
+socketprotocol.cpp sockettype.cpp startup.cpp stream-address.cpp	\
+stream-addrinfo.cpp stream-template.cpp template.cpp			\
+to-bytespan-sa.cpp to-bytespan-sun.cpp to-bytespan-void.cpp		\
+to-bytestring-bs.cpp to-bytestring-path.cpp to-bytestring-sa.cpp	\
+to-bytestring-sun.cpp to-string-bs.cpp to-string-sin.cpp		\
+to-string-sin6.cpp version.cpp
 
 test_sources = test-address.cpp test-bind.cpp test-connect.cpp		\
 test-context.cpp test-host.cpp test-hostname.cpp test-option.cpp	\

@@ -13,8 +13,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-socketpairresult.h"   // FdPair, FdPairResult,
-                                            // OsErrorResult, Socket,
+#include "network/get-socketpairresult.h"   // OsErrorResult, Socket,
+                                            // SocketPair,
+                                            // SocketPairResult,
                                             // fd_null, fd_type,
                                             // get_socketpair(),
                                             // operator<<()
@@ -36,7 +37,7 @@
 
 auto Network::get_socketpairresult(const SocketHints& hints,
                                    bool verbose) noexcept ->
-    Network::FdPairResult
+    Network::SocketPairResult
 {
     static constexpr auto delim {", "};
     static constexpr auto tab {0};
@@ -78,7 +79,10 @@ auto Network::get_socketpairresult(const SocketHints& hints,
         return OsErrorResult {os_error, oss.str()};
     }
 
-    return FdPair {Fd {fds[0], false, verbose}, Fd {fds[1], false, verbose}};
+    return SocketPair {
+        Socket {fds[0], false, verbose},
+        Socket {fds[1], false, verbose}
+    };
 }
 
 #endif

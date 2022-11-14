@@ -15,12 +15,13 @@
 
 #include "network/assert.h"             // assert()
 #include "network/network.h"            // Address, ByteString,
-                                        // Context, Endpoint, Fd,
-                                        // FdResult, FdResultVector,
+                                        // Context, Endpoint,
                                         // Hostname, OptionalHostname,
                                         // OsErrorResult, Overloaded,
-                                        // SocketHints, connect(),
-                                        // get_hostname(),
+                                        // Socket, SocketHints,
+                                        // SocketResult,
+                                        // SocketResultVector,
+                                        // connect(), get_hostname(),
                                         // os_error_type, string_null
 #include "network/parse.h"              // parse()
 
@@ -54,15 +55,15 @@ namespace TestConnect
     using Network::ByteString;
     using Network::Context;
     using Network::Endpoint;
-    using Network::Fd;
-    using Network::FdResult;
-    using Network::FdResultVector;
     using Network::Hostname;
     using Network::OptionalHostname;
     using Network::OsErrorResult;
     using Network::Overloaded;
     using Network::PeerName;
+    using Network::Socket;
     using Network::SocketHints;
+    using Network::SocketResult;
+    using Network::SocketResultVector;
     using Network::connect;
     using Network::get_hostname;
     using Network::os_error_type;
@@ -107,11 +108,11 @@ namespace TestConnect
         {
         }
 
-        auto operator()(const FdResult& t_fd_result) -> void
+        auto operator()(const SocketResult& t_socket_result) -> void
         {
             const auto& expected_codes {get_codes_unreachable()};
             std::visit(Overloaded {
-                    [&](const Fd& fd) {
+                    [&](const Socket& fd) {
                         test_socket(fd);
                     },
                     [&](const OsErrorResult& error) {
@@ -122,10 +123,10 @@ namespace TestConnect
                                       << std::endl;
                         }
                     }
-                }, t_fd_result);
+                }, t_socket_result);
         }
 
-        auto test_socket(const Fd& t_fd) -> void
+        auto test_socket(const Socket& t_fd) -> void
         {
             const auto hostname {m_endpoint.first};
             const auto service {m_endpoint.second};
@@ -230,7 +231,7 @@ namespace TestConnect
     {
         os_error_type actual_code {0};
         const auto& expected_codes {get_codes_invalid_addr()};
-        const Fd fd {AF_INET, SOCK_STREAM, 0, 0, false, verbose};
+        const Socket fd {AF_INET, SOCK_STREAM, 0, 0, false, verbose};
         const auto error {connect(fd, addr, verbose)};
         actual_code = error.number();
 
@@ -248,8 +249,8 @@ namespace TestConnect
         const auto& expected_codes {get_codes_invalid_host()};
         const auto connect_result {connect(endpoint, hints, verbose)};
         std::visit(Overloaded {
-                [&](const FdResultVector& fd_results) {
-                    static_cast<void>(fd_results);
+                [&](const SocketResultVector& socket_results) {
+                    static_cast<void>(socket_results);
                 },
                 [&](const OsErrorResult& error) {
                     actual_code = error.number();
@@ -266,8 +267,8 @@ namespace TestConnect
         const auto& expected_codes {get_codes_invalid_service()};
         const auto connect_result {connect(endpoint, hints, verbose)};
         std::visit(Overloaded {
-                [&](const FdResultVector& fd_results) {
-                    static_cast<void>(fd_results);
+                [&](const SocketResultVector& socket_results) {
+                    static_cast<void>(socket_results);
                 },
                 [&](const OsErrorResult& error) {
                     actual_code = error.number();
@@ -283,9 +284,8 @@ namespace TestConnect
     {
         const auto connect_result {connect(endpoint, hints, verbose)};
         std::visit(Overloaded {
-                [&](const FdResultVector& fd_results) {
-                    std::for_each(fd_results.begin(),
-                                  fd_results.end(),
+                [&](const SocketResultVector& socket_results) {
+                    std::for_each(socket_results.begin(), socket_results.end(),
                                   Test(endpoint,
                                        hostname,
                                        std::cout));
