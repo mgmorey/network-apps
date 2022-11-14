@@ -83,7 +83,7 @@ auto Network::Socket::sockname() const -> ByteString
 }
 
 auto Network::operator<<(std::ostream& os,
-                         const Socket& fd) noexcept -> std::ostream&
+                         const Socket& sock) noexcept -> std::ostream&
 {
-    return os << std::string {fd};
+    return os << std::string {sock};
 }
