@@ -41,7 +41,7 @@ namespace Network
         [[nodiscard]] auto verbose() const noexcept -> bool;
 
     private:
-        fd_type m_handle {fd_null};
+        fd_type m_fd {fd_null};
         bool m_pending:1 {false};
         bool m_verbose:1 {false};
     };

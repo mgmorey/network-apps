@@ -24,10 +24,10 @@
 
 #include <iostream>     // std::cerr, std::endl
 
-Network::Descriptor::Descriptor(fd_type t_fd_data,
+Network::Descriptor::Descriptor(fd_type t_fd,
                                 bool t_pending,
                                 bool t_verbose) noexcept :
-    m_handle(t_fd_data),
+    m_fd(t_fd),
     m_pending(t_pending),
     m_verbose(t_verbose)
 {
@@ -40,19 +40,19 @@ Network::Descriptor::~Descriptor() noexcept
 
 auto Network::Descriptor::operator=(fd_type value) noexcept -> Descriptor&
 {
-    m_handle = value;
+    m_fd = value;
     return *this;
 }
 
 auto Network::Descriptor::close() noexcept -> Descriptor&
 {
-    if (m_handle == fd_null) {
+    if (m_fd == fd_null) {
         return *this;
     }
 
     if (m_pending) {
         try {
-            remove_socket(m_handle, m_verbose);
+            remove_socket(m_fd, m_verbose);
         }
         catch (const std::exception& error) {
             std::cerr << error.what()
@@ -60,13 +60,13 @@ auto Network::Descriptor::close() noexcept -> Descriptor&
         }
     }
 
-    m_handle = Network::close(m_handle, m_verbose);
+    m_fd = Network::close(m_fd, m_verbose);
     return *this;
 }
 
 auto Network::Descriptor::handle() const noexcept -> fd_type
 {
-    return m_handle;
+    return m_fd;
 }
 
 auto Network::Descriptor::verbose() const noexcept -> bool
