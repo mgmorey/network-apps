@@ -14,7 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/get-option.h"         // get_option()
-#include "network/network.h"            // Buffer, Fd, connect(),
+#include "network/network.h"            // Buffer, Socket, connect(),
                                         // socket_error,
                                         // to_bytestring()
 #include "network/parse.h"              // parse()
