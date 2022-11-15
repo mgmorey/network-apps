@@ -14,7 +14,8 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/descriptor.h"                 // Descriptor,
-                                                // fd_type,
+                                                // descriptor_null,
+                                                // descriptor_type,
                                                 // operator<<(),
                                                 // std::ostream,
                                                 // std::to_string()
@@ -24,10 +25,10 @@
 
 #include <iostream>     // std::cerr, std::endl
 
-Network::Descriptor::Descriptor(fd_type t_fd,
+Network::Descriptor::Descriptor(descriptor_type t_handle,
                                 bool t_pending,
                                 bool t_verbose) noexcept :
-    m_fd(t_fd),
+    m_handle(t_handle),
     m_pending(t_pending),
     m_verbose(t_verbose)
 {
@@ -38,21 +39,22 @@ Network::Descriptor::~Descriptor() noexcept
     static_cast<void>(close());
 }
 
-auto Network::Descriptor::operator=(fd_type value) noexcept -> Descriptor&
+auto Network::Descriptor::operator=(descriptor_type value) noexcept ->
+    Descriptor&
 {
-    m_fd = value;
+    m_handle = value;
     return *this;
 }
 
 auto Network::Descriptor::close() noexcept -> Descriptor&
 {
-    if (m_fd == fd_null) {
+    if (m_handle == descriptor_null) {
         return *this;
     }
 
     if (m_pending) {
         try {
-            remove_socket(m_fd, m_verbose);
+            remove_socket(m_handle, m_verbose);
         }
         catch (const std::exception& error) {
             std::cerr << error.what()
@@ -60,13 +62,13 @@ auto Network::Descriptor::close() noexcept -> Descriptor&
         }
     }
 
-    m_fd = Network::close(m_fd, m_verbose);
+    m_handle = Network::close(m_handle, m_verbose);
     return *this;
 }
 
-auto Network::Descriptor::handle() const noexcept -> fd_type
+auto Network::Descriptor::handle() const noexcept -> descriptor_type
 {
-    return m_fd;
+    return m_handle;
 }
 
 auto Network::Descriptor::verbose() const noexcept -> bool

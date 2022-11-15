@@ -16,13 +16,13 @@
 #ifndef NETWORK_GET_PEERNAMERESULT_H
 #define NETWORK_GET_PEERNAMERESULT_H
 
-#include "network/fd-type.h"            // fd_type
-#include "network/peernameresult.h"     // PeerNameResult
+#include "network/descriptor-type.h"            // descriptor_type
+#include "network/peernameresult.h"             // PeerNameResult
 
 namespace Network
 {
-    extern auto get_peernameresult(fd_type handle, bool verbose = false) ->
-        PeerNameResult;
+    extern auto get_peernameresult(descriptor_type handle,
+                                   bool verbose = false) -> PeerNameResult;
 }
 
 #endif

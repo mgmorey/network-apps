@@ -18,8 +18,8 @@
 
 #include "network/byte-type.h"              // byte_type
 #include "network/context-error-type.h"     // context_error_type
+#include "network/descriptor-type.h"        // descriptor_type
 #include "network/error-type.h"             // error_type
-#include "network/fd-type.h"                // fd_type
 #include "network/length-type.h"            // length_type
 #include "network/name-len-type.h"          // name_len_type
 #include "network/os-error-type.h"          // os_error_type

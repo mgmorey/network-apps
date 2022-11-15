@@ -16,12 +16,12 @@
 #ifndef NETWORK_GET_PATH_FD_H
 #define NETWORK_GET_PATH_FD_H
 
-#include "network/fd-type.h"            // fd_type
-#include "network/optionalpathname.h"   // OptionalPathname
+#include "network/descriptor-type.h"            // descriptor_type
+#include "network/optionalpathname.h"           // OptionalPathname
 
 namespace Network
 {
-    extern auto get_path(fd_type handle,
+    extern auto get_path(descriptor_type handle,
                          bool verbose = false,
                          const OptionalPathname& path = {}) ->
         OptionalPathname;

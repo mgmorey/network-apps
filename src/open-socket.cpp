@@ -15,7 +15,7 @@
 
 #include "network/open-socket.h"        // ByteString, OpenHandler,
                                         // OsErrorResult, Socket,
-                                        // fd_type, open(),
+                                        // descriptor_type, open(),
                                         // operator<<()
 #include "network/context-error.h"      // get_last_context_error(),
                                         // reset_last_context_error()
@@ -62,7 +62,7 @@ auto Network::open(const OpenHandler& handler,
                   << std::endl;
     }
 
-    const fd_type handle {args.socket};
+    const descriptor_type handle {args.socket};
 
     if (handler.first(handle, pointer, length) == socket_error) {
         const auto error = get_last_context_error();

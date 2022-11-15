@@ -14,12 +14,12 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/get-path-fd.h"                // OptionalPathname,
-                                                // fd_type,
+                                                // descriptor_type,
                                                 // get_path()
 #include "network/get-path-bytestring.h"        // get_path()
 #include "network/get-sockname.h"               // get_sockname()
 
-auto Network::get_path(fd_type handle,
+auto Network::get_path(descriptor_type handle,
                        bool verbose,
                        const OptionalPathname& path) ->
     OptionalPathname

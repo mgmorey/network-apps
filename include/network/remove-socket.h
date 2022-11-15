@@ -16,11 +16,11 @@
 #ifndef NETWORK_REMOVE_SOCKET_H
 #define NETWORK_REMOVE_SOCKET_H
 
-#include "network/fd-type.h"                    // fd_type
+#include "network/descriptor-type.h"            // descriptor_type
 
 namespace Network
 {
-    extern auto remove_socket(fd_type handle, bool verbose) -> bool;
+    extern auto remove_socket(descriptor_type handle, bool verbose) -> bool;
 }
 
 #endif

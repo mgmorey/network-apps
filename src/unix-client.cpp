@@ -38,7 +38,7 @@ using Network::Buffer;
 using Network::Pathname;
 using Network::Socket;
 using Network::connect;
-using Network::fd_type;
+using Network::descriptor_type;
 using Network::format_os_error;
 using Network::os_error_type;
 using Network::parse;
@@ -84,14 +84,14 @@ static auto parse(int argc, char** argv) -> ArgumentSpan
 static auto read(const Socket& fd) -> IoResult
 {
     Buffer buffer {BUFFER_SIZE};
-    return {buffer, ::read(fd_type {fd},
+    return {buffer, ::read(descriptor_type {fd},
                            buffer.data(),
                            buffer.size())};
 }
 
 static auto write(const std::string& str, const Socket& fd) -> ssize_t
 {
-    return ::write(fd_type {fd}, str.data(), str.size());
+    return ::write(descriptor_type {fd}, str.data(), str.size());
 }
 
 auto main(int argc, char* argv[]) -> int

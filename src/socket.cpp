@@ -14,8 +14,9 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/socket.h"             // Descriptor, Socket,
-                                        // fd_type, operator<<(),
-                                        // std::ostream
+                                        // descriptor_null,
+                                        // descriptor_type,
+                                        // operator<<(), std::ostream
 #include "network/get-peername.h"       // get_peername()
 #include "network/get-socket.h"         // get_socket()
 #include "network/get-sockname.h"       // get_sockname()
@@ -42,19 +43,19 @@ Network::Socket::Socket(const SocketHints& t_hints,
 {
 }
 
-Network::Socket::Socket(fd_type t_fd, bool t_pending, bool t_verbose) :
+Network::Socket::Socket(descriptor_type t_fd, bool t_pending, bool t_verbose) :
     m_descriptor(new Descriptor {t_fd, t_pending, t_verbose})
 {
 }
 
-Network::Socket::operator fd_type() const noexcept
+Network::Socket::operator descriptor_type() const noexcept
 {
     return m_descriptor->handle();
 }
 
 Network::Socket::operator std::string() const
 {
-    if (m_descriptor->handle() == fd_null) {
+    if (m_descriptor->handle() == descriptor_null) {
         return string_null;
     }
 
@@ -69,7 +70,7 @@ auto Network::Socket::close() -> Socket&
 
 auto Network::Socket::is_open() const noexcept -> bool
 {
-    return m_descriptor->handle() != fd_null;
+    return m_descriptor->handle() != descriptor_null;
 }
 
 auto Network::Socket::peername() const -> ByteString

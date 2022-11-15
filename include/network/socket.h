@@ -18,7 +18,7 @@
 
 #include "network/descriptor.h"                 // ByteString,
                                                 // Descriptor,
-                                                // fd_type,
+                                                // descriptor_type,
                                                 // std::string
 #include "network/socket-hint-types.h"          // socket_family_type,
                                                 // socket_flags_type,
@@ -43,7 +43,7 @@ namespace Network
         explicit Socket(const SocketHints& t_hints,
                         bool t_pending = false,
                         bool t_verbose = false);
-        explicit Socket(fd_type t_fd,
+        explicit Socket(descriptor_type t_fd,
                         bool t_pending = false,
                         bool t_verbose = false);
         Socket(const Socket&) noexcept = default;
@@ -51,7 +51,7 @@ namespace Network
         ~Socket() = default;
         auto operator=(const Socket&) noexcept -> Socket& = default;
         auto operator=(Socket&&) noexcept -> Socket& = default;
-        explicit operator fd_type() const noexcept;
+        explicit operator descriptor_type() const noexcept;
         explicit operator std::string() const;
         auto close() -> Socket&;
         [[nodiscard]] auto is_open() const noexcept -> bool;

@@ -18,8 +18,9 @@
 
 #include "network/integer-types.h"      // byte_type,
                                         // context_error_type,
-                                        // error_type, fd_type,
-                                        // length_type, name_len_type,
+                                        // descriptor_type,
+                                        // error_type, length_type,
+                                        // name_len_type,
                                         // os_error_type,
                                         // path_len_type, port_type,
                                         // sock_len_type,

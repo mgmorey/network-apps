@@ -13,8 +13,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/close.h"              // fd_null, fd_type
-#include "network/fd-null.h"            // fd_null
+#include "network/close.h"                      // close(),
+                                                // descriptor_type
+#include "network/descriptor-null.h"            // descriptor_null
 
 #ifdef WIN32
 #include <winsock2.h>   // closesocket()
@@ -24,7 +25,8 @@
 
 #include <iostream>     // std::cout, std::endl
 
-auto Network::close(fd_type handle, bool verbose) noexcept -> Network::fd_type
+auto Network::close(descriptor_type handle,
+                    bool verbose) noexcept -> Network::descriptor_type
 {
 #ifdef WIN32
     static constexpr const char* method {"::closesocket"};
@@ -32,7 +34,7 @@ auto Network::close(fd_type handle, bool verbose) noexcept -> Network::fd_type
     static constexpr const char* method {"::close"};
 #endif
 
-    if (handle == fd_null) {
+    if (handle == descriptor_null) {
         return handle;
     }
 
@@ -50,5 +52,5 @@ auto Network::close(fd_type handle, bool verbose) noexcept -> Network::fd_type
 #else
     ::close(handle);
 #endif
-    return fd_null;
+    return descriptor_null;
 }

@@ -13,20 +13,26 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_FD_TYPE_H
-#define NETWORK_FD_TYPE_H
+#ifndef NETWORK_DESCRIPTOR_NULL_H
+#define NETWORK_DESCRIPTOR_NULL_H
+
+#include "network/descriptor-type.h"            // descriptor_type
 
 #ifdef WIN32
-#include <winsock2.h>       // SOCKET
+#include <winsock2.h>       // INVALID_SOCKET
+#endif
+
+#ifndef INVALID_SOCKET
+#ifdef WIN32
+#define INVALID_SOCKET	(~0)	// NOLINT
+#else
+#define INVALID_SOCKET	(-1)	// NOLINT
+#endif
 #endif
 
 namespace Network
 {
-#ifdef WIN32
-    using fd_type = SOCKET;
-#else
-    using fd_type = int;
-#endif
+    enum : descriptor_type { descriptor_null = INVALID_SOCKET };
 }
 
 #endif

@@ -17,8 +17,8 @@
 #define NETWORK_DESCRIPTOR_H
 
 #include "network/bytestring.h"                 // ByteString
-#include "network/fd-null.h"                    // fd_null
-#include "network/fd-type.h"                    // fd_type
+#include "network/descriptor-null.h"            // descriptor_null
+#include "network/descriptor-type.h"            // descriptor_type
 
 #include <string>      // std::string
 
@@ -27,7 +27,7 @@ namespace Network
     class Descriptor
     {
     public:
-        explicit Descriptor(fd_type t_fd_data,
+        explicit Descriptor(descriptor_type t_handle,
                             bool t_pending,
                             bool t_verbose = false) noexcept;
         Descriptor(const Descriptor&) noexcept = delete;
@@ -35,13 +35,13 @@ namespace Network
         ~Descriptor() noexcept;
         auto operator=(const Descriptor&) noexcept -> Descriptor& = delete;
         auto operator=(Descriptor&&) noexcept -> Descriptor& = delete;
-        auto operator=(fd_type value) noexcept -> Descriptor&;
+        auto operator=(descriptor_type value) noexcept -> Descriptor&;
         auto close() noexcept -> Descriptor&;
-        [[nodiscard]] auto handle() const noexcept -> fd_type;
+        [[nodiscard]] auto handle() const noexcept -> descriptor_type;
         [[nodiscard]] auto verbose() const noexcept -> bool;
 
     private:
-        fd_type m_fd {fd_null};
+        descriptor_type m_handle {descriptor_null};
         bool m_pending:1 {false};
         bool m_verbose:1 {false};
     };

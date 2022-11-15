@@ -15,7 +15,7 @@
 
 #include "network/get-sockname.h"       // GetNameHandler,
                                         // GetNameParams,
-                                        // SockNameResult, fd_type,
+                                        // SockNameResult, descriptor_type,
                                         // get_sockname()
 #include "network/get-name.h"           // get_name()
 
@@ -25,7 +25,8 @@
 #include <sys/socket.h>     // ::getsockname()
 #endif
 
-auto Network::get_sockname(fd_type handle, bool verbose) -> Network::SockName
+auto Network::get_sockname(descriptor_type handle,
+                           bool verbose) -> Network::SockName
 {
     const GetNameHandler handler {::getsockname, "::getsockname"};
     const GetNameParams args {handle, verbose};

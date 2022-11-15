@@ -16,13 +16,13 @@
 #ifndef NETWORK_GETNAMEPARAMS_H
 #define NETWORK_GETNAMEPARAMS_H
 
-#include "network/fd-type.h"            // fd_type
+#include "network/descriptor-type.h"            // descriptor_type
 
 namespace Network
 {
     struct GetNameParams
     {
-        fd_type handle;
+        descriptor_type handle;
         bool verbose;
     };
 }

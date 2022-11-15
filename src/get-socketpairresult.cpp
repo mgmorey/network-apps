@@ -13,18 +13,19 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-socketpairresult.h"   // OsErrorResult, Socket,
-                                            // SocketPair,
-                                            // SocketPairResult,
-                                            // fd_null, fd_type,
-                                            // get_socketpair(),
-                                            // operator<<()
-#include "network/context-error.h"          // get_last_context_error(),
-                                            // reset_last_context_error()
-#include "network/format-os-error.h"        // format_os_error()
-#include "network/format.h"                 // Format
-#include "network/socket-error.h"           // socket_error
-#include "network/to-os-error.h"            // to_os_error()
+#include "network/get-socketpairresult.h"       // OsErrorResult,
+                                                // Socket, SocketPair,
+                                                // SocketPairResult,
+                                                // descriptor_null,
+                                                // descriptor_type,
+                                                // get_socketpair(),
+                                                // operator<<()
+#include "network/context-error.h"              // get_last_context_error(),
+                                                // reset_last_context_error()
+#include "network/format-os-error.h"            // format_os_error()
+#include "network/format.h"                     // Format
+#include "network/socket-error.h"               // socket_error
+#include "network/to-os-error.h"                // to_os_error()
 
 #ifndef WIN32
 
@@ -42,7 +43,7 @@ auto Network::get_socketpairresult(const SocketHints& hints,
     static constexpr auto delim {", "};
     static constexpr auto tab {0};
 
-    std::array<fd_type, 2> fds {fd_null, fd_null};
+    std::array<descriptor_type, 2> fds {descriptor_null, descriptor_null};
 
     if (verbose) {
         std::cout << "Calling ::socketpair("

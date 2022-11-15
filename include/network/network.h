@@ -23,7 +23,7 @@
 #include "network/bytestringresult.h"           // ByteStringResult
 #include "network/close.h"                      // close()
 #include "network/connect.h"                    // connect()
-#include "network/constants.h"                  // fd_null,
+#include "network/constants.h"                  // descriptor_null,
                                                 // sa_data_offset,
                                                 // sa_size,
                                                 // sin_addr_offset,
@@ -103,7 +103,8 @@
                                                 // OptionalPathname,
                                                 // OptionalService,
                                                 // Pathname, Service,
-                                                // byte_type, fd_type,
+                                                // byte_type,
+                                                // descriptor_type,
                                                 // length_type,
                                                 // os_error_type,
                                                 // port_type,

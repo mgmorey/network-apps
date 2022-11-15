@@ -13,12 +13,15 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-socket.h"         // OsErrorResult, Socket,
-                                        // SocketHints, get_socket()
-#include "network/error.h"              // Error
-#include "network/get-socketresult.h"   // SocketResult,
-                                        // get_socketresult()
-#include "network/overloaded.h"         // Overloaded
+#include "network/get-socket.h"                 // OsErrorResult,
+                                                // Socket,
+                                                // SocketHints,
+                                                // descriptor_null,
+                                                // get_socket()
+#include "network/error.h"                      // Error
+#include "network/get-socketresult.h"           // SocketResult,
+                                                // get_socketresult()
+#include "network/overloaded.h"                 // Overloaded
 
 #include <variant>      // std::visit()
 
@@ -26,7 +29,7 @@ auto Network::get_socket(const SocketHints& hints,
                          bool pending,
                          bool verbose) -> Network::Socket
 {
-    Socket result {fd_null, pending, verbose};
+    Socket result {descriptor_null, pending, verbose};
     const auto socket_result {get_socketresult(hints, pending, verbose)};
     std::visit(Overloaded {
             [&](const Socket& sock) {

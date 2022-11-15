@@ -16,7 +16,7 @@
 #ifndef NETWORK_GETNAMEHANDLER_H
 #define NETWORK_GETNAMEHANDLER_H
 
-#include "network/fd-type.h"            // fd_type
+#include "network/descriptor-type.h"            // descriptor_type
 
 #ifdef WIN32
 #include <winsock2.h>       // sockaddr
@@ -29,7 +29,7 @@
 
 namespace Network
 {
-    using GetNameFunction = int (*)(fd_type, sockaddr*, socklen_t*);
+    using GetNameFunction = int (*)(descriptor_type, sockaddr*, socklen_t*);
     using GetNameHandler = std::pair<GetNameFunction, const char*>;
 }
 

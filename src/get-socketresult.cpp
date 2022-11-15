@@ -13,16 +13,17 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-socketresult.h"   // OsErrorResult, Socket,
-                                        // Socket, SocketResult,
-                                        // fd_null,
-                                        // get_socketresult(),
-                                        // operator<<()
-#include "network/context-error.h"      // get_last_context_error(),
-                                        // reset_last_context_error()
-#include "network/format-os-error.h"    // format_os_error()
-#include "network/format.h"             // Format
-#include "network/to-os-error.h"        // to_os_error()
+#include "network/get-socketresult.h"           // OsErrorResult,
+                                                // Socket, Socket,
+                                                // SocketResult,
+                                                // descriptor_null,
+                                                // get_socketresult(),
+                                                // operator<<()
+#include "network/context-error.h"              // get_last_context_error(),
+                                                // reset_last_context_error()
+#include "network/format-os-error.h"            // format_os_error()
+#include "network/format.h"                     // Format
+#include "network/to-os-error.h"                // to_os_error()
 
 #ifdef WIN32
 #include <winsock2.h>       // socket()
@@ -57,7 +58,7 @@ auto Network::get_socketresult(const SocketHints& hints,
                                 hints.socktype(),
                                 hints.protocol())};
 
-    if (handle == fd_null) {
+    if (handle == descriptor_null) {
         const auto error = get_last_context_error();
         const auto os_error {to_os_error(error)};
         std::ostringstream oss;

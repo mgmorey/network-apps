@@ -18,7 +18,7 @@
 
 #include <filesystem>   // std::filesystem
 
-auto Network::remove_socket(fd_type handle, bool verbose) -> bool
+auto Network::remove_socket(descriptor_type handle, bool verbose) -> bool
 {
     if (const auto path {get_path(handle, verbose)}) {
         return std::filesystem::remove(*path);
