@@ -81,17 +81,17 @@ static auto parse(int argc, char** argv) -> ArgumentSpan
     return operands;
 }
 
-static auto read(const Socket& fd) -> IoResult
+static auto read(const Socket& sock) -> IoResult
 {
     Buffer buffer {BUFFER_SIZE};
-    return {buffer, ::read(descriptor_type {fd},
+    return {buffer, ::read(descriptor_type {sock},
                            buffer.data(),
                            buffer.size())};
 }
 
-static auto write(const std::string& str, const Socket& fd) -> ssize_t
+static auto write(const std::string& str, const Socket& sock) -> ssize_t
 {
-    return ::write(descriptor_type {fd}, str.data(), str.size());
+    return ::write(descriptor_type {sock}, str.data(), str.size());
 }
 
 auto main(int argc, char* argv[]) -> int
@@ -102,9 +102,9 @@ auto main(int argc, char* argv[]) -> int
         bool shutdown {false};
 
         // Connect socket to socket address.
-        const Socket fd {AF_UNIX, SOCK_SEQPACKET, 0, 0, false, verbose};
+        const Socket sock {AF_UNIX, SOCK_SEQPACKET, 0, 0, false, verbose};
         const auto addr {to_bytestring(SOCKET_NAME)};
-        const auto error {connect(fd, addr, verbose)};
+        const auto error {connect(sock, addr, verbose)};
         const auto error_code {error.number()};
 
         if (error_code != 0) {
@@ -116,7 +116,7 @@ auto main(int argc, char* argv[]) -> int
         // Send arguments to server.
         for (const auto& arg : args) {
             const std::string str {arg};
-            const auto write_code = write(str, fd);
+            const auto write_code = write(str, sock);
 
             if (write_code == -1) {
                 std::perror("read");
@@ -131,7 +131,7 @@ auto main(int argc, char* argv[]) -> int
 
         if (!shutdown) {
             // Request result.
-            const auto write_code {write("END", fd)};
+            const auto write_code {write("END", sock)};
 
             if (write_code == -1) {
                 std::perror("write");
@@ -139,7 +139,7 @@ auto main(int argc, char* argv[]) -> int
             }
 
             // Receive result.
-            const auto [read_str, read_code] {read(fd)};
+            const auto [read_str, read_code] {read(sock)};
 
             if (read_code == -1) {
                 std::perror("read");

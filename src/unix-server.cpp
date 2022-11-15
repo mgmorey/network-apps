@@ -113,9 +113,9 @@ auto main(int argc, char* argv[]) -> int
         parse(argc, argv);
 
         // Bind Unix domain socket to pathname.
-        const auto bind_fd {get_bind_socket(hints)};
+        const auto bind_sock {get_bind_socket(hints)};
         const auto addr {to_bytestring(SOCKET_NAME)};
-        const auto error {bind(bind_fd, addr, verbose)};
+        const auto error {bind(bind_sock, addr, verbose)};
         const auto error_code {error.number()};
 
         if (error_code != 0) {
@@ -127,7 +127,7 @@ auto main(int argc, char* argv[]) -> int
         // Prepare for accepting connections. The backlog size is set to
         // 20. So while one request is being processed other requests can
         // be waiting.
-        auto result = ::listen(descriptor_type {bind_fd}, backlog_size);
+        auto result = ::listen(descriptor_type {bind_sock}, backlog_size);
 
         if (result == -1) {
             std::perror("listen");
@@ -139,15 +139,15 @@ auto main(int argc, char* argv[]) -> int
         // This is the main loop for handling connections.
         while (!shutdown) {
             // Wait for incoming connection.
-            const Socket fd {
-                ::accept(descriptor_type {bind_fd},
+            const Socket sock {
+                ::accept(descriptor_type {bind_sock},
                          nullptr,
                          nullptr),
                 false,
                 verbose
             };
 
-            if (!fd.is_open()) {
+            if (!sock.is_open()) {
                 std::perror("accept");
                 std::exit(EXIT_FAILURE);
             }
@@ -157,7 +157,7 @@ auto main(int argc, char* argv[]) -> int
             while (true) {
 
                 // Receive inputs.
-                const auto [read_str, read_code] {read(fd)};
+                const auto [read_str, read_code] {read(sock)};
 
                 if (read_code == socket_error) {
                     perror("read");
@@ -182,7 +182,7 @@ auto main(int argc, char* argv[]) -> int
 
             if (!shutdown) {
                 // Send output sum.
-                const auto write_error {write(std::to_string(sum), fd)};
+                const auto write_error {write(std::to_string(sum), sock)};
 
                 if (write_error == -1) {
                     std::perror("write");
