@@ -15,8 +15,9 @@
 
 #include "network/get-peername.h"       // GetNameHandler,
                                         // GetNameParams,
-                                        // PeerNameResult, Socket,
-                                        // descriptor_type, get_peername()
+                                        // PeerNameResult,
+                                        // descriptor_type,
+                                        // get_peername()
 #include "network/get-name.h"           // get_name()
 
 #ifdef WIN32
