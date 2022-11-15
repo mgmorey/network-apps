@@ -43,8 +43,8 @@ Network::Socket::Socket(const SocketHints& t_hints,
 {
 }
 
-Network::Socket::Socket(descriptor_type t_fd, bool t_pending, bool t_verbose) :
-    m_descriptor(new Descriptor {t_fd, t_pending, t_verbose})
+Network::Socket::Socket(descriptor_type t_handle, bool t_pending, bool t_verbose) :
+    m_descriptor(new Descriptor {t_handle, t_pending, t_verbose})
 {
 }
 

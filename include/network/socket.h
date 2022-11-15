@@ -43,7 +43,7 @@ namespace Network
         explicit Socket(const SocketHints& t_hints,
                         bool t_pending = false,
                         bool t_verbose = false);
-        explicit Socket(descriptor_type t_fd,
+        explicit Socket(descriptor_type t_handle,
                         bool t_pending = false,
                         bool t_verbose = false);
         Socket(const Socket&) noexcept = default;
