@@ -65,7 +65,7 @@ namespace TestSocket
     static constexpr auto expected_error_path_len_re {
         R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of path_len_type)"
     };
-    static constexpr auto fd_width {6};
+    static constexpr auto handle_width {6};
 
     static bool verbose {false};  // NOLINT
 
@@ -163,17 +163,17 @@ namespace TestSocket
         assert(get_path(addr) == pathname);
 
         if (pathname) {
-            const Socket fd {AF_UNIX, SOCK_STREAM, 0, 0, true, verbose};
-            const auto result {bind(fd, addr, verbose)};
+            const Socket sock {AF_UNIX, SOCK_STREAM, 0, 0, true, verbose};
+            const auto result {bind(sock, addr, verbose)};
             actual_code = result.number();
 
             if (result) {
                 print(result);
             }
             else {
-                const auto self {fd.sockname()};
+                const auto self {sock.sockname()};
                 std::cout << "Socket "
-                          << std::right << std::setw(fd_width) << fd
+                          << std::right << std::setw(handle_width) << sock
                           << " bound to "
                           << Address(self)
                           << std::endl;
@@ -259,11 +259,11 @@ namespace TestSocket
     {
         SocketPair pair {AF_UNIX, SOCK_STREAM, 0, 0, verbose};
         std::cout << "Socket "
-                  << std::right << std::setw(fd_width) << pair.at(0)
+                  << std::right << std::setw(handle_width) << pair.at(0)
                   << " connected to "
                   << std::endl
                   << "Socket "
-                  << std::right << std::setw(fd_width) << pair.at(1)
+                  << std::right << std::setw(handle_width) << pair.at(1)
                   << std::endl;
     }
 }

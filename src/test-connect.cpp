@@ -72,8 +72,8 @@ namespace TestConnect
 
     using ErrorCodeSet = std::set<os_error_type>;
 
-    static constexpr auto fd_width {6};
-    static constexpr auto indent_width {fd_width + 18};
+    static constexpr auto handle_width {6};
+    static constexpr auto indent_width {handle_width + 18};
     static constexpr auto localhost {"example.com"};
     static constexpr auto localservice {"http"};
 
@@ -112,8 +112,8 @@ namespace TestConnect
         {
             const auto& expected_codes {get_codes_unreachable()};
             std::visit(Overloaded {
-                    [&](const Socket& fd) {
-                        test_socket(fd);
+                    [&](const Socket& sock) {
+                        test_socket(sock);
                     },
                     [&](const OsErrorResult& error) {
                         auto actual_code {error.number()};
@@ -126,14 +126,14 @@ namespace TestConnect
                 }, t_socket_result);
         }
 
-        auto test_socket(const Socket& t_fd) -> void
+        auto test_socket(const Socket& t_sock) -> void
         {
             const auto hostname {m_endpoint.first};
             const auto service {m_endpoint.second};
-            const auto peer {t_fd.peername()};
-            const auto self {t_fd.sockname()};
+            const auto peer {t_sock.peername()};
+            const auto self {t_sock.sockname()};
             m_os << "Socket "
-                 << std::right << std::setw(fd_width) << t_fd
+                 << std::right << std::setw(handle_width) << t_sock
                  << " connected "
                  << m_hostname.value_or(string_null)
                  << " to "
@@ -142,7 +142,7 @@ namespace TestConnect
                  << hostname.value_or(string_null)
                  << std::endl
                  << "Socket "
-                 << std::right << std::setw(fd_width) << t_fd
+                 << std::right << std::setw(handle_width) << t_sock
                  << " connected "
                  << Address(self)
                  << std::endl
@@ -231,8 +231,8 @@ namespace TestConnect
     {
         os_error_type actual_code {0};
         const auto& expected_codes {get_codes_invalid_addr()};
-        const Socket fd {AF_INET, SOCK_STREAM, 0, 0, false, verbose};
-        const auto error {connect(fd, addr, verbose)};
+        const Socket sock {AF_INET, SOCK_STREAM, 0, 0, false, verbose};
+        const auto error {connect(sock, addr, verbose)};
         actual_code = error.number();
 
         if (error) {

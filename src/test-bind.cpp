@@ -65,7 +65,7 @@ namespace TestBind
 
     using ErrorCodeSet = std::set<os_error_type>;
 
-    static constexpr auto fd_width {6};
+    static constexpr auto handle_width {6};
     static constexpr auto localhost {"localhost"};
     static constexpr auto localservice {"8085"};
 
@@ -83,8 +83,8 @@ namespace TestBind
         auto operator()(const SocketResult& t_socket_result) -> void
         {
             std::visit(Overloaded {
-                    [&](const Socket& fd) {
-                        test_socket(fd);
+                    [&](const Socket& sock) {
+                        test_socket(sock);
                     },
                     [&](const OsErrorResult& error) {
                         std::cerr << error.string()
@@ -93,20 +93,20 @@ namespace TestBind
                 }, t_socket_result);
         }
 
-        auto test_socket(const Socket& t_fd) -> void
+        auto test_socket(const Socket& t_sock) -> void
         {
             const auto hostname {m_endpoint.first};
             const auto service {m_endpoint.second};
-            const auto self {t_fd.sockname()};
+            const auto self {t_sock.sockname()};
             m_os << "Socket "
-                 << std::right << std::setw(fd_width) << t_fd
+                 << std::right << std::setw(handle_width) << t_sock
                  << " bound to "
                  << service.value_or(string_null)
                  << " on "
                  << hostname.value_or(string_null)
                  << std::endl
                  << "Socket "
-                 << std::right << std::setw(fd_width) << t_fd
+                 << std::right << std::setw(handle_width) << t_sock
                  << " bound to "
                  << Address(self)
                  << std::endl;
@@ -191,8 +191,8 @@ namespace TestBind
     {
         os_error_type actual_code {0};
         const auto& expected_codes {get_codes_invalid_addr()};
-        const Socket fd {AF_INET, SOCK_STREAM, 0, 0, true, verbose};
-        const auto error {bind(fd, addr, verbose)};
+        const Socket sock {AF_INET, SOCK_STREAM, 0, 0, true, verbose};
+        const auto error {bind(sock, addr, verbose)};
         actual_code = error.number();
 
         if (error) {
