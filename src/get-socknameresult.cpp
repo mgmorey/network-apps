@@ -15,7 +15,8 @@
 
 #include "network/get-socknameresult.h" // GetNameHandler,
                                         // GetNameParams,
-                                        // SockNameResult, descriptor_type,
+                                        // SockNameResult,
+                                        // descriptor_type,
                                         // get_socknameresult()
 #include "network/get-nameresult.h"     // get_nameresult()
 

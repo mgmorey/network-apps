@@ -15,7 +15,7 @@
 
 #include "network/get-peernameresult.h" // GetNameHandler,
                                         // GetNameParams,
-                                        // PeerNameResult, Socket,
+                                        // PeerNameResult,
                                         // descriptor_type,
                                         // get_peernameresult()
 #include "network/get-nameresult.h"     // get_nameresult()
