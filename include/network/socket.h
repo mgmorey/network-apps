@@ -18,13 +18,14 @@
 
 #include "network/descriptor.h"                 // ByteString,
                                                 // Descriptor,
+                                                // descriptor_null,
                                                 // descriptor_type,
                                                 // std::string
-#include "network/socket-hint-types.h"          // socket_family_type,
+#include "network/sockethints.h"                // SocketHints,
+                                                // socket_family_type,
                                                 // socket_flags_type,
                                                 // socket_protocol_type,
                                                 // socket_type_type
-#include "network/sockethints.h"                // SocketHints
 
 #include <memory>      // std::shared_ptr
 #include <ostream>     // std::ostream
