@@ -43,7 +43,7 @@ auto Network::get_socketpairresult(const SocketHints& hints,
     static constexpr auto delim {", "};
     static constexpr auto tab {0};
 
-    std::array<descriptor_type, 2> fds {descriptor_null, descriptor_null};
+    std::array<descriptor_type, 2> handles {descriptor_null, descriptor_null};
 
     if (verbose) {
         std::cout << "Calling ::socketpair("
@@ -62,7 +62,7 @@ auto Network::get_socketpairresult(const SocketHints& hints,
     if (::socketpair(hints.family(),
                      hints.socktype(),
                      hints.protocol(),
-                     fds.data()) == socket_error) {
+                     handles.data()) == socket_error) {
         const auto error = get_last_context_error();
         const auto os_error {to_os_error(error)};
         std::ostringstream oss;
@@ -81,8 +81,8 @@ auto Network::get_socketpairresult(const SocketHints& hints,
     }
 
     return SocketPair {
-        Socket {fds[0], false, verbose},
-        Socket {fds[1], false, verbose}
+        Socket {handles[0], false, verbose},
+        Socket {handles[1], false, verbose}
     };
 }
 
