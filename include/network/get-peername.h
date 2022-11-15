@@ -17,7 +17,7 @@
 #define NETWORK_GET_PEERNAME_H
 
 #include "network/descriptor-type.h"            // descriptor_type
-#include "network/peername.h"           // PeerName
+#include "network/peername.h"                   // PeerName
 
 namespace Network
 {
