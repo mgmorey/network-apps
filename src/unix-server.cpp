@@ -87,21 +87,21 @@ static auto parse(int argc, char** argv) -> void
 
 static auto get_bind_socket(const SocketHints& hints) -> Socket
 {
-    static const Network::Socket fd {hints, true, verbose};
-    return fd;
+    static const Network::Socket sock {hints, true, verbose};
+    return sock;
 }
 
-static auto read(const Socket& fd) -> IoResult
+static auto read(const Socket& sock) -> IoResult
 {
     Buffer buffer {BUFFER_SIZE};
-    return {buffer, ::read(descriptor_type {fd},
+    return {buffer, ::read(descriptor_type {sock},
                            buffer.data(),
                            buffer.size())};
 }
 
-static auto write(const std::string& str, const Socket& fd) -> ssize_t
+static auto write(const std::string& str, const Socket& sock) -> ssize_t
 {
-    return ::write(descriptor_type {fd}, str.data(), str.size());
+    return ::write(descriptor_type {sock}, str.data(), str.size());
 }
 
 auto main(int argc, char* argv[]) -> int
