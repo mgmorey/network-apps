@@ -13,18 +13,22 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_GET_PATH_FD_H
-#define NETWORK_GET_PATH_FD_H
+#include "network/get-path-descriptor.h"        // OptionalPathname,
+                                                // descriptor_type,
+                                                // get_path()
+#include "network/get-path-bytestring.h"        // get_path()
+#include "network/get-sockname.h"               // get_sockname()
 
-#include "network/descriptor-type.h"            // descriptor_type
-#include "network/optionalpathname.h"           // OptionalPathname
-
-namespace Network
+auto Network::get_path(descriptor_type handle,
+                       bool verbose,
+                       const OptionalPathname& path) ->
+    OptionalPathname
 {
-    extern auto get_path(descriptor_type handle,
-                         bool verbose = false,
-                         const OptionalPathname& path = {}) ->
-        OptionalPathname;
-}
-
+#ifndef WIN32
+    return get_path(get_sockname(handle, verbose), path);
+#else
+    static_cast<void>(handle);
+    static_cast<void>(verbose);
+    return path;
 #endif
+}

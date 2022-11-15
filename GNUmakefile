@@ -58,7 +58,7 @@ get-endpointresult.cpp get-hostname.cpp get-hostnameresult.cpp		\
 get-hosts.cpp get-last-context-error.cpp get-last-os-error.cpp		\
 get-length.cpp get-name.cpp get-nameresult.cpp get-operands.cpp		\
 get-option.cpp get-options.cpp get-path-bytestring.cpp			\
-get-path-fd.cpp get-path-length.cpp get-peername.cpp			\
+get-path-descriptor.cpp get-path-length.cpp get-peername.cpp		\
 get-peernameresult.cpp get-sa-data.cpp get-sa-family.cpp		\
 get-sa-length.cpp get-sa-pointer.cpp get-sin-addr.cpp			\
 get-sin-pointer.cpp get-sin-port.cpp get-sin6-addr.cpp			\

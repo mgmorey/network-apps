@@ -17,6 +17,6 @@
 #define NETWORK_GET_PATH_H
 
 #include "network/get-path-bytestring.h"        // get_path()
-#include "network/get-path-fd.h"                // get_path()
+#include "network/get-path-descriptor.h"        // get_path()
 
 #endif

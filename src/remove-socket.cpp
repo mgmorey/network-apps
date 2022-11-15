@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/remove-socket.h"      // remove_socket()
-#include "network/get-path-fd.h"        // get_path()
+#include "network/remove-socket.h"              // remove_socket()
+#include "network/get-path-descriptor.h"        // get_path()
 
 #include <filesystem>   // std::filesystem
 
