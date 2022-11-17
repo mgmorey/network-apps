@@ -13,18 +13,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_GET_PATH_DESCRIPTOR_H
-#define NETWORK_GET_PATH_DESCRIPTOR_H
+#ifndef NETWORK_TO_PATH_H
+#define NETWORK_TO_PATH_H
 
-#include "network/descriptor-type.h"            // descriptor_type
-#include "network/optionalpathname.h"           // OptionalPathname
-
-namespace Network
-{
-    extern auto get_path(descriptor_type handle,
-                         bool verbose = false,
-                         const OptionalPathname& path = {}) ->
-        OptionalPathname;
-}
+#include "network/to-path-bytestring.h"         // to_path()
+#include "network/to-path-descriptor.h"         // to_path()
 
 #endif

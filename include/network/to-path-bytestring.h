@@ -13,10 +13,17 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_GET_PATH_H
-#define NETWORK_GET_PATH_H
+#ifndef NETWORK_TO_PATH_BYTESTRING_H
+#define NETWORK_TO_PATH_BYTESTRING_H
 
-#include "network/get-path-bytestring.h"        // get_path()
-#include "network/get-path-descriptor.h"        // get_path()
+#include "network/bytestring.h"         // ByteString
+#include "network/optionalpathname.h"   // OptionalPathname
+
+namespace Network
+{
+    extern auto to_path(const ByteString& addr,
+                        const OptionalPathname& pathname = {}) ->
+        OptionalPathname;
+}
 
 #endif

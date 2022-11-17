@@ -13,17 +13,22 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_GET_PATH_BYTESTRING_H
-#define NETWORK_GET_PATH_BYTESTRING_H
+#include "network/to-path-descriptor.h"         // OptionalPathname,
+                                                // descriptor_type,
+                                                // to_path()
+#include "network/get-sockname.h"               // get_sockname()
+#include "network/to-path-bytestring.h"         // to_path()
 
-#include "network/bytestring.h"         // ByteString
-#include "network/optionalpathname.h"   // OptionalPathname
-
-namespace Network
+auto Network::to_path(descriptor_type handle,
+                      bool verbose,
+                      const OptionalPathname& path) ->
+    OptionalPathname
 {
-    extern auto get_path(const ByteString& addr,
-                         const OptionalPathname& pathname = {}) ->
-        OptionalPathname;
-}
-
+#ifndef WIN32
+    return to_path(get_sockname(handle, verbose), path);
+#else
+    static_cast<void>(handle);
+    static_cast<void>(verbose);
+    return path;
 #endif
+}

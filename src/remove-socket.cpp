@@ -14,13 +14,13 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/remove-socket.h"              // remove_socket()
-#include "network/get-path-descriptor.h"        // get_path()
+#include "network/to-path-descriptor.h"         // to_path()
 
 #include <filesystem>   // std::filesystem
 
 auto Network::remove_socket(descriptor_type handle, bool verbose) -> bool
 {
-    if (const auto path {get_path(handle, verbose)}) {
+    if (const auto path {to_path(handle, verbose)}) {
         return std::filesystem::remove(*path);
     }
 

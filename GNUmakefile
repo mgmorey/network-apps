@@ -59,8 +59,7 @@ format-os-error.cpp format.cpp get-endpoint.cpp				\
 get-endpointresult.cpp get-hostname.cpp get-hostnameresult.cpp		\
 get-hosts.cpp get-last-context-error.cpp get-last-os-error.cpp		\
 get-length.cpp get-name.cpp get-nameresult.cpp get-operands.cpp		\
-get-option.cpp get-options.cpp get-path-bytestring.cpp			\
-get-path-descriptor.cpp get-path-length.cpp get-peername.cpp		\
+get-option.cpp get-options.cpp get-path-length.cpp get-peername.cpp	\
 get-peernameresult.cpp get-sa-data.cpp get-sa-family.cpp		\
 get-sa-length.cpp get-sa-pointer.cpp get-sin-addr.cpp			\
 get-sin-pointer.cpp get-sin-port.cpp get-sin6-addr.cpp			\
@@ -79,8 +78,8 @@ socketprotocol.cpp sockettype.cpp startup.cpp stream-address.cpp	\
 stream-addrinfo.cpp stream-template.cpp template.cpp			\
 to-bytespan-sa.cpp to-bytespan-sun.cpp to-bytespan-void.cpp		\
 to-bytestring-bs.cpp to-bytestring-path.cpp to-bytestring-sa.cpp	\
-to-bytestring-sun.cpp to-string-bs.cpp to-string-sin.cpp		\
-to-string-sin6.cpp version.cpp
+to-bytestring-sun.cpp to-path-bytestring.cpp to-path-descriptor.cpp	\
+to-string-bs.cpp to-string-sin.cpp to-string-sin6.cpp version.cpp
 
 test_sources = test-address.cpp test-bind.cpp test-connect.cpp		\
 test-context.cpp test-host.cpp test-hostname.cpp test-option.cpp	\
