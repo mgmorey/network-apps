@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/socketpair.h"         // Socket, SocketPair
-#include "network/get-socketpair.h"     // get_socketpair()
+#include "network/socketpair.h"                 // Socket, SocketPair
+#include "network/create-socketpair.h"          // create_socketpair()
 
 #include <cstddef>      // std::size_t
 
@@ -30,7 +30,7 @@ Network::SocketPair::SocketPair(socket_family_type t_family,
 }
 
 Network::SocketPair::SocketPair(const SocketHints& t_hints, bool t_verbose) :
-    SocketPair(get_socketpair(t_hints, t_verbose))
+    SocketPair(create_socketpair(t_hints, t_verbose))
 {
 }
 

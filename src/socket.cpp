@@ -17,8 +17,8 @@
                                         // descriptor_null,
                                         // descriptor_type,
                                         // operator<<(), std::ostream
+#include "network/create-socket.h"      // create_socket()
 #include "network/get-peername.h"       // get_peername()
-#include "network/get-socket.h"         // get_socket()
 #include "network/get-sockname.h"       // get_sockname()
 #include "network/string-null.h"        // string_null
 
@@ -39,7 +39,7 @@ Network::Socket::Socket(socket_family_type t_family,
 Network::Socket::Socket(const SocketHints& t_hints,
                         bool t_pending,
                         bool t_verbose) :
-    Socket(get_socket(t_hints, t_pending, t_verbose))
+    Socket(create_socket(t_hints, t_pending, t_verbose))
 {
 }
 

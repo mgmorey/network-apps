@@ -13,11 +13,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-socketresult.h"           // OsErrorResult,
+#include "network/create-socketresult.h"        // OsErrorResult,
                                                 // Socket, Socket,
                                                 // SocketResult,
+                                                // create_socketresult(),
                                                 // descriptor_null,
-                                                // get_socketresult(),
                                                 // operator<<()
 #include "network/context-error.h"              // get_last_context_error(),
                                                 // reset_last_context_error()
@@ -34,9 +34,9 @@
 #include <iostream>     // std::cout, std::endl
 #include <sstream>      // std::ostringstream
 
-auto Network::get_socketresult(const SocketHints& hints,
-                               bool pending,
-                               bool verbose) -> Network::SocketResult
+auto Network::create_socketresult(const SocketHints& hints,
+                                  bool pending,
+                                  bool verbose) -> Network::SocketResult
 {
     static constexpr auto delim {", "};
     static constexpr auto tab {0};

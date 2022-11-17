@@ -52,8 +52,10 @@ libnetwork_sources = address-sa.cpp address-sin.cpp address-sin6.cpp	\
 address-sun.cpp address.cpp addresserror.cpp addrinfo.cpp		\
 argumentdata.cpp bind-endpoint.cpp bind-socket.cpp buffer.cpp		\
 bytestring.cpp cleanup.cpp close.cpp connect-endpoint.cpp		\
-connect-socket.cpp context.cpp descriptor.cpp error.cpp			\
-format-ai-error.cpp format-os-error.cpp format.cpp get-endpoint.cpp	\
+connect-socket.cpp context.cpp create-socket.cpp			\
+create-socketpair.cpp create-socketpairresult.cpp			\
+create-socketresult.cpp descriptor.cpp error.cpp format-ai-error.cpp	\
+format-os-error.cpp format.cpp get-endpoint.cpp				\
 get-endpointresult.cpp get-hostname.cpp get-hostnameresult.cpp		\
 get-hosts.cpp get-last-context-error.cpp get-last-os-error.cpp		\
 get-length.cpp get-name.cpp get-nameresult.cpp get-operands.cpp		\
@@ -62,13 +64,12 @@ get-path-descriptor.cpp get-path-length.cpp get-peername.cpp		\
 get-peernameresult.cpp get-sa-data.cpp get-sa-family.cpp		\
 get-sa-length.cpp get-sa-pointer.cpp get-sin-addr.cpp			\
 get-sin-pointer.cpp get-sin-port.cpp get-sin6-addr.cpp			\
-get-sin6-pointer.cpp get-sin6-port.cpp get-size.cpp get-socket.cpp	\
-get-socketpair.cpp get-socketpairresult.cpp get-socketresult.cpp	\
-get-sockname.cpp get-socknameresult.cpp get-sun-length.cpp		\
-get-sun-pointer.cpp get-templates-endpoint.cpp				\
-get-templates-hostname.cpp integererror.cpp is-running.cpp		\
-is-valid.cpp logicerror.cpp namelengtherror.cpp open-endpoint.cpp	\
-open-socket.cpp oserrorresult.cpp parse-argumentspan.cpp parse.cpp	\
+get-sin6-pointer.cpp get-sin6-port.cpp get-size.cpp get-sockname.cpp	\
+get-socknameresult.cpp get-sun-length.cpp get-sun-pointer.cpp		\
+get-templates-endpoint.cpp get-templates-hostname.cpp			\
+integererror.cpp is-running.cpp is-valid.cpp logicerror.cpp		\
+namelengtherror.cpp open-endpoint.cpp open-socket.cpp			\
+oserrorresult.cpp parse-argumentspan.cpp parse.cpp			\
 pathlengtherror.cpp rangeerror.cpp remove-socket.cpp			\
 reset-last-context-error.cpp reset-last-os-error.cpp runtimeerror.cpp	\
 set-last-context-error.cpp set-last-os-error.cpp sizeerror.cpp		\

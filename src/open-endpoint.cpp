@@ -13,17 +13,17 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/open-endpoint.h"      // OpenEndpointParams,
-                                        // OpenHandler, OpenResult,
-                                        // SocketResultVector, open()
-#include "network/get-socketresult.h"   // get_socketresult()
-#include "network/get-templates.h"      // TemplateVector,
-                                        // get_templates()
-#include "network/open-socket.h"        // OpenHandler,
-                                        // OpenSocketParams,
-                                        // OsErrorResult, Socket,
-                                        // open()
-#include "network/overloaded.h"         // Overloaded
+#include "network/open-endpoint.h"              // OpenEndpointParams,
+                                                // OpenHandler, OpenResult,
+                                                // SocketResultVector, open()
+#include "network/create-socketresult.h"        // create_socketresult()
+#include "network/get-templates.h"              // TemplateVector,
+                                                // get_templates()
+#include "network/open-socket.h"                // OpenHandler,
+                                                // OpenSocketParams,
+                                                // OsErrorResult, Socket,
+                                                // open()
+#include "network/overloaded.h"                 // Overloaded
 
 #include <algorithm>    // std::transform()
 #include <iterator>     // std::back_inserter()
@@ -35,7 +35,7 @@ auto Network::open(const OpenHandler& handler,
     OpenResult open_result;
     SocketResultVector socket_results;
     const auto lambda = [&](const Template& temp) {
-        auto template_result {get_socketresult(temp.hints(), args.verbose)};
+        auto template_result {create_socketresult(temp.hints(), args.verbose)};
         std::visit(Overloaded {
                 [&](const Socket& sock) {
                     const auto result {open(handler, {sock,

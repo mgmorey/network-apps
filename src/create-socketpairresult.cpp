@@ -13,12 +13,12 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-socketpairresult.h"       // OsErrorResult,
+#include "network/create-socketpairresult.h"    // OsErrorResult,
                                                 // Socket, SocketPair,
                                                 // SocketPairResult,
+                                                // create_socketpair(),
                                                 // descriptor_null,
                                                 // descriptor_type,
-                                                // get_socketpair(),
                                                 // operator<<()
 #include "network/context-error.h"              // get_last_context_error(),
                                                 // reset_last_context_error()
@@ -36,8 +36,8 @@
 #include <iostream>     // std::cout, std::endl
 #include <sstream>      // std::ostringstream
 
-auto Network::get_socketpairresult(const SocketHints& hints,
-                                   bool verbose) noexcept ->
+auto Network::create_socketpairresult(const SocketHints& hints,
+                                      bool verbose) noexcept ->
     Network::SocketPairResult
 {
     static constexpr auto delim {", "};

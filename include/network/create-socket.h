@@ -13,18 +13,17 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_GET_SOCKETPAIR_H
-#define NETWORK_GET_SOCKETPAIR_H
+#ifndef NETWORK_CREATE_SOCKET_H
+#define NETWORK_CREATE_SOCKET_H
 
-#include "network/sockethints.h"        // SocketHints
-#include "network/socketpair.h"         // SocketPair
+#include "network/socket.h"                     // Socket
+#include "network/sockethints.h"                // SocketHints
 
 namespace Network
 {
-#ifndef WIN32
-    extern auto get_socketpair(const SocketHints& hints,
-                               bool verbose = false) -> SocketPair;
-#endif
+    extern auto create_socket(const SocketHints& hints,
+                              bool pending = false,
+                              bool verbose = false) -> Socket;
 }
 
 #endif

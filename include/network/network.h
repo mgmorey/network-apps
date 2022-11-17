@@ -43,6 +43,10 @@
                                                 // sun_path_offset,
                                                 // sun_size
 #include "network/context.h"                    // Context
+#include "network/create-socket.h"              // create_socket()
+#include "network/create-socketpair.h"          // create_socketpair()
+#include "network/create-socketpairresult.h"    // create_socketpairresult()
+#include "network/create-socketresult.h"        // create_socketresult()
 #include "network/exceptions.h"                 // Error, LogicError,
                                                 // RuntimeError
 #include "network/get-endpoint.h"               // get_endpoint()
@@ -63,10 +67,6 @@
 #include "network/get-sa-pointer.h"             // get_sa_pointer()
 #include "network/get-sin-pointer.h"            // get_sin_pointer()
 #include "network/get-sin6-pointer.h"           // get_sin6_pointer()
-#include "network/get-socket.h"                 // get_socket()
-#include "network/get-socketpair.h"             // get_socketpair()
-#include "network/get-socketpairresult.h"       // get_socketpairresult()
-#include "network/get-socketresult.h"           // get_socketresult()
 #include "network/get-sockname.h"               // get_sockname()
 #include "network/get-socknameresult.h"         // get_socknameresult()
 #include "network/get-sun-length.h"             // get_sun_length()
