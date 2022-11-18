@@ -16,7 +16,9 @@
 #include "network/sizeerror.h"          // Error, SizeError
 
 #include <climits>      // SIZE_MAX
-#if __has_include(<format>)
+#include <version>
+
+#ifdef __cpp_lib_format
 #include <format>       // std::format()
 #endif
 #include <sstream>      // std::ostringstream
