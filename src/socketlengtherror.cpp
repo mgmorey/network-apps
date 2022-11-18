@@ -16,12 +16,12 @@
 #include "network/socketlengtherror.h"  // RangeError, SocketLengthError
 #include "network/sock-len-type.h"      // sock_len_max, sock_len_min
 
+#include <sstream>      // std::ostringstream
 #include <version>
 
 #ifdef __cpp_lib_format
 #include <format>       // std::format()
 #endif
-#include <sstream>      // std::ostringstream
 
 auto Network::SocketLengthError::format(const std::string& t_value) -> std::string
 {

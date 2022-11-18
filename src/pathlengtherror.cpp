@@ -16,12 +16,12 @@
 #include "network/pathlengtherror.h"    // PathLengthError, RangeError
 #include "network/path-len-type.h"      // path_len_max, path_len_min
 
+#include <sstream>      // std::ostringstream
 #include <version>
 
 #ifdef __cpp_lib_format
 #include <format>       // std::format()
 #endif
-#include <sstream>      // std::ostringstream
 
 #ifndef WIN32
 

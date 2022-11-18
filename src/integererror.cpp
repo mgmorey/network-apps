@@ -16,12 +16,12 @@
 #include "network/integererror.h"       // IntegerError, RangeError
 
 #include <climits>      // INT_MAX, INT_MIN
+#include <sstream>      // std::ostringstream
 #include <version>
 
 #ifdef __cpp_lib_format
 #include <format>       // std::format()
 #endif
-#include <sstream>      // std::ostringstream
 
 auto Network::IntegerError::format(const std::string& t_value) -> std::string
 {

@@ -16,12 +16,12 @@
 #include "network/sizeerror.h"          // Error, SizeError
 
 #include <climits>      // SIZE_MAX
+#include <sstream>      // std::ostringstream
 #include <version>
 
 #ifdef __cpp_lib_format
 #include <format>       // std::format()
 #endif
-#include <sstream>      // std::ostringstream
 
 auto Network::SizeError::format(const std::string& t_value) -> std::string
 {

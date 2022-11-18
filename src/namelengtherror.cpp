@@ -16,12 +16,12 @@
 #include "network/namelengtherror.h"    // NameLengthError, RangeError
 #include "network/name-len-type.h"      // name_len_max, name_len_min
 
+#include <sstream>      // std::ostringstream
 #include <version>
 
 #ifdef __cpp_lib_format
 #include <format>       // std::format()
 #endif
-#include <sstream>      // std::ostringstream
 
 auto Network::NameLengthError::format(const std::string& t_value) -> std::string
 {
