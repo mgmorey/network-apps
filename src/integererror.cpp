@@ -18,9 +18,8 @@
 #include <climits>      // INT_MAX, INT_MIN
 #if __has_include(<format>)
 #include <format>       // std::format()
-#else
-#include <sstream>      // std::ostringstream
 #endif
+#include <sstream>      // std::ostringstream
 
 auto Network::IntegerError::format(const std::string& t_value) -> std::string
 {

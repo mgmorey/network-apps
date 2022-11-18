@@ -18,9 +18,8 @@
 
 #if __has_include(<format>)
 #include <format>       // std::format()
-#else
-#include <sstream>      // std::ostringstream
 #endif
+#include <sstream>      // std::ostringstream
 
 auto Network::SocketLengthError::format(const std::string& t_value) -> std::string
 {
