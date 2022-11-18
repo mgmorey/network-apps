@@ -77,8 +77,6 @@
                                                 // get_last_os_error(),
                                                 // reset_last_os_error()
 #include "network/overloaded.h"                 // Overloaded
-#include "network/skip-first.h"                 // skip_first()
-#include "network/skip-last.h"                  // skip_last()
 #include "network/socket-error.h"               // socket_error
 #include "network/socketfamily.h"               // SocketFamily
 #include "network/socketflags.h"                // SocketFlags
