@@ -16,10 +16,18 @@
 #include "network/socketlengtherror.h"  // RangeError, SocketLengthError
 #include "network/sock-len-type.h"      // sock_len_max, sock_len_min
 
+#if __has_include(<format>)
+#include <format>       // std::format()
+#else
 #include <sstream>      // std::ostringstream
+#endif
 
 auto Network::SocketLengthError::format(const std::string& t_value) -> std::string
 {
+#ifdef __cpp_lib_format
+    return std::format("Value {} is out of range [{}, {}] of sock_len_type",
+                       t_value, sock_len_min, sock_len_max);
+#else
     std::ostringstream oss;
     oss << "Value "
         << t_value
@@ -29,6 +37,7 @@ auto Network::SocketLengthError::format(const std::string& t_value) -> std::stri
         << sock_len_max
         << "] of sock_len_type";
     return oss.str();
+#endif
 }
 
 Network::SocketLengthError::SocketLengthError(const std::string& t_value) noexcept :

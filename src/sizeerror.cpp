@@ -16,10 +16,18 @@
 #include "network/sizeerror.h"          // Error, SizeError
 
 #include <climits>      // SIZE_MAX
+#if __has_include(<format>)
+#include <format>       // std::format()
+#else
 #include <sstream>      // std::ostringstream
+#endif
 
 auto Network::SizeError::format(const std::string& t_value) -> std::string
 {
+#ifdef __cpp_lib_format
+    return std::format("Value {} is out of range [{}, {}] of std::size_t",
+                       t_value, 0, SIZE_MAX);
+#else
     std::ostringstream oss;
     oss << "Value "
         << t_value
@@ -29,6 +37,7 @@ auto Network::SizeError::format(const std::string& t_value) -> std::string
         << SIZE_MAX
         << "] of std::size_t";
     return oss.str();
+#endif
 }
 
 Network::SizeError::SizeError(const std::string& t_value) noexcept :

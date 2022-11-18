@@ -16,12 +16,20 @@
 #include "network/pathlengtherror.h"    // PathLengthError, RangeError
 #include "network/path-len-type.h"      // path_len_max, path_len_min
 
+#if __has_include(<format>)
+#include <format>       // std::format()
+#else
 #include <sstream>      // std::ostringstream
+#endif
 
 #ifndef WIN32
 
 auto Network::PathLengthError::format(const std::string& t_value) -> std::string
 {
+#ifdef __cpp_lib_format
+    return std::format("Value {} is out of range [{}, {}] of path_len_type",
+                       t_value, path_len_min, path_len_max);
+#else
     std::ostringstream oss;
     oss << "Value "
         << t_value
@@ -31,6 +39,7 @@ auto Network::PathLengthError::format(const std::string& t_value) -> std::string
         << path_len_max
         << "] of path_len_type";
     return oss.str();
+#endif
 }
 
 Network::PathLengthError::PathLengthError(const std::string& t_value) noexcept :

@@ -16,10 +16,18 @@
 #include "network/integererror.h"       // IntegerError, RangeError
 
 #include <climits>      // INT_MAX, INT_MIN
+#if __has_include(<format>)
+#include <format>       // std::format()
+#else
 #include <sstream>      // std::ostringstream
+#endif
 
 auto Network::IntegerError::format(const std::string& t_value) -> std::string
 {
+#ifdef __cpp_lib_format
+    return std::format("Value {} is out of range [{}, {}] of int",
+                       t_value, INT_MIN, INT_MAX);
+#else
     std::ostringstream oss;
     oss << "Value "
         << t_value
@@ -29,6 +37,7 @@ auto Network::IntegerError::format(const std::string& t_value) -> std::string
         << INT_MAX
         << "] of int";
     return oss.str();
+#endif
 }
 
 Network::IntegerError::IntegerError(const std::string& t_value) noexcept :
