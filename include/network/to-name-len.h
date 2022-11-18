@@ -20,14 +20,15 @@
 #include "network/namelengtherror.h"    // NameLengthError
 
 #include <string>       // std::to_string()
+#include <utility>      // cmp_greater(), cmp_less()
 
 namespace Network
 {
     template<typename T>
     auto to_name_len(T value) -> name_len_type
     {
-        if (value < name_len_min ||
-            value > name_len_max) {
+        if (std::cmp_less(value, name_len_min) ||
+            std::cmp_greater(value, name_len_max)) {
             throw NameLengthError(std::to_string(value));
         }
 

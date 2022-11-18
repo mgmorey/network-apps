@@ -20,14 +20,15 @@
 #include "network/socketlengtherror.h"  // SocketLengthError
 
 #include <string>       // std::to_string()
+#include <utility>      // cmp_greater(), cmp_less()
 
 namespace Network
 {
     template<typename T>
     auto to_sock_len(T value) -> sock_len_type
     {
-        if (value < sock_len_min ||
-            value > sock_len_max) {
+        if (std::cmp_less(value, sock_len_min) ||
+            std::cmp_greater(value, sock_len_max)) {
             throw SocketLengthError(std::to_string(value));
         }
 

@@ -18,15 +18,18 @@
 
 #include "network/sizeerror.h"          // RangeError
 
+#include <climits>      // SIZE_MAX
 #include <cstddef>      // std::size_t
 #include <string>       // std::to_string()
+#include <utility>      // cmp_greater(), cmp_less()
 
 namespace Network
 {
     template<typename T>
     auto to_size(T value) -> std::size_t
     {
-        if (value < 0) {
+        if (std::cmp_less(value, 0) ||
+            std::cmp_greater(value, SIZE_MAX)) {
             throw SizeError(std::to_string(value));
         }
 

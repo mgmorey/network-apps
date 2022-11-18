@@ -21,6 +21,7 @@
 
 #include <climits>      // INT_MAX, INT_MIN
 #include <string>       // std::to_string()
+#include <utility>      // cmp_greater(), cmp_less()
 
 namespace Network
 {
@@ -33,7 +34,8 @@ namespace Network
     template<typename T>
     auto to_integer(T value) -> int
     {
-        if (value > INT_MAX) {
+        if (std::cmp_less(value, INT_MIN) ||
+            std::cmp_greater(value, INT_MAX)) {
             throw IntegerError(std::to_string(value));
         }
 

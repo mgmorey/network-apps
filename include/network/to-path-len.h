@@ -20,6 +20,7 @@
 #include "network/pathlengtherror.h"    // PathLengthError
 
 #include <string>       // std::to_string()
+#include <utility>      // cmp_greater(), cmp_less()
 
 namespace Network
 {
@@ -27,8 +28,8 @@ namespace Network
     template<typename T>
     auto to_path_len(T value) -> path_len_type
     {
-        if (value < path_len_min ||
-            value > path_len_max) {
+        if (std::cmp_less(value, path_len_min) ||
+            std::cmp_greater(value, path_len_max)) {
             throw PathLengthError(std::to_string(value));
         }
 
