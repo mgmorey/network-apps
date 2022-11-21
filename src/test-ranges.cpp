@@ -20,7 +20,7 @@
 #include "network/to-size.h"            // to_size()
 #include "network/to-sock-len.h"        // to_sock_len()
 
-#include <climits>      // SIZE_MAX
+#include <climits>      // INT_MAX, INT_MIN, SIZE_MAX
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
@@ -38,10 +38,13 @@ namespace TestRanges
     using Network::SizeError;
     using Network::SocketLengthError;
     using Network::name_len_max;
+    using Network::name_len_min;
 #ifndef WIN32
     using Network::path_len_max;
+    using Network::path_len_min;
 #endif
     using Network::sock_len_max;
+    using Network::sock_len_min;
     using Network::to_integer;
     using Network::to_name_len;
 #ifndef WIN32
@@ -75,7 +78,7 @@ namespace TestRanges
                   << std::endl;
     }
 
-    static auto test_integer_invalid(std::size_t value) -> void
+    static auto test_integer_invalid(auto value) -> void
     {
         std::string actual_error_str;
 
@@ -93,10 +96,11 @@ namespace TestRanges
 
     static auto test_integer_invalid() -> void
     {
-        test_integer_invalid(SIZE_MAX);
+        test_integer_invalid(static_cast<long long>(INT_MIN) - 1);
+        test_integer_invalid(static_cast<long long>(INT_MAX) + 1);
     }
 
-    static auto test_name_len_invalid(long value) -> void
+    static auto test_name_len_invalid(auto value) -> void
     {
         std::string actual_error_str;
 
@@ -114,13 +118,13 @@ namespace TestRanges
 
     static auto test_name_len_invalid() -> void
     {
-        test_name_len_invalid(-1);
+        test_name_len_invalid(name_len_min - 1);
         test_name_len_invalid(name_len_max + 1);
     }
 
 #ifndef WIN32
 
-    static auto test_path_len_invalid(std::size_t value) -> void
+    static auto test_path_len_invalid(auto value) -> void
     {
         std::string actual_error_str;
 
@@ -138,12 +142,13 @@ namespace TestRanges
 
     static auto test_path_len_invalid() -> void
     {
+        test_path_len_invalid(path_len_min - 1);
         test_path_len_invalid(path_len_max + 1);
     }
 
 #endif
 
-    static auto test_sock_len_invalid(long value) -> void
+    static auto test_sock_len_invalid(auto value) -> void
     {
         std::string actual_error_str;
 
@@ -161,11 +166,11 @@ namespace TestRanges
 
     static auto test_sock_len_invalid() -> void
     {
-        test_sock_len_invalid(-1);
+        test_sock_len_invalid(sock_len_min - 1);
         test_sock_len_invalid(sock_len_max + 1);
     }
 
-    static auto test_std_size_invalid(long value) -> void
+    static auto test_std_size_invalid(auto value) -> void
     {
         std::string actual_error_str;
 
