@@ -31,7 +31,7 @@ namespace Network
         return std::to_integer<T>(byte);
     }
 
-    auto to_integer(auto value) -> int
+    constexpr auto to_integer(auto value) -> int
     {
         if (std::cmp_less(value, INT_MIN) ||
             std::cmp_greater(value, INT_MAX)) {
