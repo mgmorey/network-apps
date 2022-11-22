@@ -31,8 +31,7 @@ namespace Network
         return std::to_integer<T>(byte);
     }
 
-    template<typename T>
-    auto to_integer(T value) -> int
+    auto to_integer(auto value) -> int
     {
         if (std::cmp_less(value, INT_MIN) ||
             std::cmp_greater(value, INT_MAX)) {

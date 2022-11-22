@@ -25,8 +25,7 @@
 namespace Network
 {
 #ifndef WIN32
-    template<typename T>
-    auto to_path_len(T value) -> path_len_type
+    auto to_path_len(auto value) -> path_len_type
     {
         if (std::cmp_less(value, path_len_min) ||
             std::cmp_greater(value, path_len_max)) {
