@@ -83,7 +83,7 @@ namespace TestRanges
         std::string actual_error_str;
 
         try {
-            to_integer(value);
+            static_cast<void>(to_integer(value));
         }
         catch (const IntegerError& error) {
             print(error);
@@ -105,7 +105,7 @@ namespace TestRanges
         std::string actual_error_str;
 
         try {
-            to_name_len(value);
+            static_cast<void>(to_name_len(value));
         }
         catch (const NameLengthError& error) {
             print(error);
@@ -129,7 +129,7 @@ namespace TestRanges
         std::string actual_error_str;
 
         try {
-            to_path_len(value);
+            static_cast<void>(to_path_len(value));
         }
         catch (const PathLengthError& error) {
             print(error);
@@ -153,7 +153,7 @@ namespace TestRanges
         std::string actual_error_str;
 
         try {
-            to_sock_len(value);
+            static_cast<void>(to_sock_len(value));
         }
         catch (const SocketLengthError& error) {
             print(error);
@@ -175,7 +175,7 @@ namespace TestRanges
         std::string actual_error_str;
 
         try {
-            to_size(value);
+            static_cast<void>(to_size(value));
         }
         catch (const SizeError& error) {
             print(error);
