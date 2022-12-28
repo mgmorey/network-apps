@@ -26,12 +26,12 @@
 namespace Network
 {
     template<typename T>
-    constexpr auto to_integer(Byte byte) noexcept -> T
+    auto to_integer(Byte byte) noexcept -> T
     {
         return std::to_integer<T>(byte);
     }
 
-    constexpr auto to_integer(auto value) -> int
+    auto to_integer(auto value) -> int
     {
         if (std::cmp_less(value, INT_MIN) ||
             std::cmp_greater(value, INT_MAX)) {

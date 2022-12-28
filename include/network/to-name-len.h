@@ -24,7 +24,7 @@
 
 namespace Network
 {
-    constexpr auto to_name_len(auto value) -> name_len_type
+    auto to_name_len(auto value) -> name_len_type
     {
         if (std::cmp_less(value, name_len_min) ||
             std::cmp_greater(value, name_len_max)) {

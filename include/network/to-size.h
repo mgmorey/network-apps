@@ -25,7 +25,7 @@
 
 namespace Network
 {
-    constexpr auto to_size(auto value) -> std::size_t
+    auto to_size(auto value) -> std::size_t
     {
         if (std::cmp_less(value, 0) ||
             std::cmp_greater(value, SIZE_MAX)) {

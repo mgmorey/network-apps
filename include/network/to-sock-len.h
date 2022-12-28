@@ -24,7 +24,7 @@
 
 namespace Network
 {
-    constexpr auto to_sock_len(auto value) -> sock_len_type
+    auto to_sock_len(auto value) -> sock_len_type
     {
         if (std::cmp_less(value, sock_len_min) ||
             std::cmp_greater(value, sock_len_max)) {
