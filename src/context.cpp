@@ -48,12 +48,7 @@ Network::Context::Context(const OptionalVersion& t_version)
             m_is_started = false;
         }
 
-        // TODO: Remediate the condition resulting in the following
-        // warning from clang-tidy: "thrown exception type is not
-        // nothrow copy constructible [cert-err60-cpp]."
-
-        // cppcheck-suppress exceptRethrowCopy
-        throw error;  // NOLINT
+        throw;
     }
 }
 
