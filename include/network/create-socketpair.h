@@ -21,10 +21,8 @@
 
 namespace Network
 {
-#ifndef WIN32
     extern auto create_socketpair(const SocketHints& hints,
                                   bool verbose = false) -> SocketPair;
-#endif
 }
 
 #endif

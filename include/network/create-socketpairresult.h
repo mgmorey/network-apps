@@ -21,11 +21,9 @@
 
 namespace Network
 {
-#ifndef WIN32
     extern auto create_socketpairresult(const SocketHints& hints,
                                         bool verbose = false) noexcept ->
         SocketPairResult;
-#endif
 }
 
 #endif

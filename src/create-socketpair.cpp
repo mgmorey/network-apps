@@ -24,8 +24,6 @@
 #include <optional>     // std::optional
 #include <variant>      // std::visit()
 
-#ifndef WIN32
-
 auto Network::create_socketpair(const SocketHints& hints,
                                 bool verbose) -> Network::SocketPair
 {
@@ -47,5 +45,3 @@ auto Network::create_socketpair(const SocketHints& hints,
 
     throw Error(result_string);
 }
-
-#endif

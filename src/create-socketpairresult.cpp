@@ -28,8 +28,8 @@
 #include "network/to-os-error.h"                // to_os_error()
 
 #ifndef WIN32
-
 #include <sys/socket.h>     // socketpair()
+#endif
 
 
 #include <array>        // std::array
@@ -40,10 +40,14 @@ auto Network::create_socketpairresult(const SocketHints& hints,
                                       bool verbose) noexcept ->
     Network::SocketPairResult
 {
+#ifndef WIN32
     static constexpr auto delim {", "};
     static constexpr auto tab {0};
+#endif
 
     std::array<descriptor_type, 2> handles {descriptor_null, descriptor_null};
+
+#ifndef WIN32
 
     if (verbose) {
         std::cout << "Calling ::socketpair("
@@ -80,10 +84,12 @@ auto Network::create_socketpairresult(const SocketHints& hints,
         return OsErrorResult {os_error, oss.str()};
     }
 
+#else
+    static_cast<void>(hints);
+#endif
+
     return SocketPair {
         Socket {handles[0], false, verbose},
         Socket {handles[1], false, verbose}
     };
 }
-
-#endif
