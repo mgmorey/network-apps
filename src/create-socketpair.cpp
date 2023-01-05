@@ -39,9 +39,9 @@ auto Network::create_socketpair(const SocketHints& hints,
             }
         }, socketpair_result);
 
-    if (result_socketpair) {
-        return *result_socketpair;
+    if (!result_socketpair) {
+        throw Error(result_string);
     }
 
-    throw Error(result_string);
+    return *result_socketpair;
 }
