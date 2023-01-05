@@ -17,7 +17,6 @@
 
 #include <utility>      // std::move()
 
-// NOLINTNEXTLINE
 Network::Error::Error(const std::string& t_str) noexcept :
     m_str(t_str)
 {
