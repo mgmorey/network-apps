@@ -15,8 +15,7 @@
 
 #include "network/address.h"            // Address, length_type,
                                         // port_type, value_type
-#include "network/addresserror.h"       // AddressError, LogicError,
-                                        // to_string()
+#include "network/addresserror.h"       // AddressError, LogicError
 #include "network/is-valid.h"           // is_valid()
 
 #ifdef WIN32
@@ -124,10 +123,8 @@ auto Network::Address::size() const noexcept -> std::size_t
 auto Network::Address::text() const noexcept -> std::string
 {
     switch (sa_family()) {
-#ifndef WIN32
     case AF_UNIX:
         return sun_text();
-#endif
     case AF_INET:
         return sin_text();
     case AF_INET6:

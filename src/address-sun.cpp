@@ -17,11 +17,7 @@
 #include "network/string-null.h"                // string_null
 #include "network/to-path-bytestring.h"         // to_path()
 
-#ifndef WIN32
-
 auto Network::Address::sun_text() const -> std::string
 {
     return to_path(m_value).value_or(string_null);
 }
-
-#endif
