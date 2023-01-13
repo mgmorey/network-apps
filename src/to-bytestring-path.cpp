@@ -26,11 +26,10 @@
 #include "network/to-path-len.h"                // to_path_len()
 
 #ifndef WIN32
-#include <sys/socket.h>     // AF_LOCAL
+#include <sys/socket.h>     // AF_UNIX
 #endif
 
 #include <algorithm>    // std::max(), std::min()
-#include <sstream>      // std::ostringstream
 
 #ifndef WIN32
 
