@@ -26,6 +26,7 @@
 #endif
 
 #include <sstream>      // std::ostringstream
+#include <utility>      // std::pair
 #include <vector>       // std::vector
 
 auto Network::operator<<(std::ostream& os,
@@ -38,7 +39,7 @@ auto Network::operator<<(std::ostream& os,
 #ifdef SOCK_NONBLOCK
         {SOCK_NONBLOCK,     "SOCK_NONBLOCK"},
 #endif
-        {0,             nullptr}
+        {0,                 nullptr}
     };
 
     constexpr auto mask {0000017};
