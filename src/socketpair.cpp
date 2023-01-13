@@ -25,7 +25,10 @@ Network::SocketPair::SocketPair(socket_family_type t_family,
                                 socket_protocol_type t_protocol,
                                 socket_flags_type t_flags,
                                 bool t_verbose) :
-    SocketPair(SocketHints {t_flags, t_family, t_socktype, t_protocol}, t_verbose)
+    SocketPair(SocketHints {t_flags,
+                            t_family,
+                            t_socktype,
+                            t_protocol}, t_verbose)
 {
 }
 
