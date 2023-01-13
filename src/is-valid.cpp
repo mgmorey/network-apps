@@ -36,9 +36,7 @@
 #include <sys/un.h>         // sockaddr_un
 #endif
 
-#include <algorithm>    // std::max(), std::min()
 #include <cstddef>      // std::size_t
-#include <cstring>      // std::memcpy(), std::memset(), strnlen()
 #include <iomanip>      // std::right, std::setw()
 #include <iostream>     // std::cout, std::endl
 
