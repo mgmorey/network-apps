@@ -19,16 +19,13 @@
 #include "network/get-sockname.h"               // get_sockname()
 #include "network/to-path-bytestring.h"         // to_path()
 
-auto Network::to_path(descriptor_type handle,
-                      bool verbose,
-                      const OptionalPathname& path) ->
-    OptionalPathname
+auto Network::to_path(descriptor_type handle, bool verbose) -> OptionalPathname
 {
 #ifndef WIN32
-    return to_path(get_sockname(handle, verbose), path);
+    return to_path(get_sockname(handle, verbose));
 #else
     static_cast<void>(handle);
     static_cast<void>(verbose);
-    return path;
+    return {};
 #endif
 }

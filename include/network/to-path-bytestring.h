@@ -21,9 +21,7 @@
 
 namespace Network
 {
-    extern auto to_path(const ByteString& addr,
-                        const OptionalPathname& pathname = {}) ->
-        OptionalPathname;
+    extern auto to_path(const ByteString& addr) -> OptionalPathname;
 }
 
 #endif

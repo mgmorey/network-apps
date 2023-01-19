@@ -22,9 +22,7 @@
 namespace Network
 {
     extern auto to_path(descriptor_type handle,
-                        bool verbose = false,
-                        const OptionalPathname& path = {}) ->
-        OptionalPathname;
+                        bool verbose = false) -> OptionalPathname;
 }
 
 #endif

@@ -29,13 +29,11 @@
 #include <cstddef>      // std::size_t
 #include <cstring>      // strnlen()
 
-auto Network::to_path(const ByteString& addr,
-                      const OptionalPathname& path) ->
-    OptionalPathname
+auto Network::to_path(const ByteString& addr) -> OptionalPathname
 {
 #ifndef WIN32
     if (get_sa_family(addr) != AF_UNIX || addr.size() <= sun_path_offset) {
-        return path;
+        return {};
     }
 
     const auto *const sun {get_sun_pointer(addr)};
@@ -45,6 +43,6 @@ auto Network::to_path(const ByteString& addr,
     return std::string {c_path, path_len};
 #else
     static_cast<void>(addr);
-    return path;
+    return {};
 #endif
 }
