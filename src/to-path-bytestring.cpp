@@ -34,17 +34,13 @@ auto Network::to_path(const ByteString& addr,
     OptionalPathname
 {
 #ifndef WIN32
-    if (get_sa_family(addr) != AF_UNIX) {
-        return path;
-    }
-
-    if (addr.size() <= sun_path_offset) {
+    if (get_sa_family(addr) != AF_UNIX || addr.size() <= sun_path_offset) {
         return path;
     }
 
     const auto *const sun {get_sun_pointer(addr)};
-    auto path_len_max {addr.size() - sun_path_offset};
     const auto *c_path {static_cast<const char*>(sun->sun_path)};
+    auto path_len_max {addr.size() - sun_path_offset};
     auto path_len {strnlen(c_path, path_len_max)};
     return std::string {c_path, path_len};
 #else
