@@ -36,8 +36,8 @@
 auto Network::to_bytestring(const OptionalPathname& pathname) ->
     Network::ByteString
 {
-    const auto path_len {pathname ? to_path_len(pathname->length() + 1) : 0};
     sockaddr_un sun {};
+    const auto path_len {pathname ? to_path_len(pathname->length() + 1) : 0};
     auto sun_len_min {sizeof sun - sizeof sun.sun_path + path_len - 1};
 #ifdef HAVE_SOCKADDR_SA_LEN
     sun.sun_len = std::max(sun_path_offset, sun_len_min);
@@ -49,8 +49,7 @@ auto Network::to_bytestring(const OptionalPathname& pathname) ->
         sun_len_min += sizeof(char);
     }
 
-    const auto size {std::max(sun_path_offset, sun_len_min)};
-    return to_bytestring(&sun, size);
+    return to_bytestring(&sun, std::max(sun_path_offset, sun_len_min));
 }
 
 #endif
