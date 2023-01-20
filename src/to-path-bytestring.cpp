@@ -16,17 +16,14 @@
 #include "network/to-path-bytestring.h"         // ByteString,
                                                 // OptionalPathname
                                                 // to_path()
+#include "network/get-path-pointer.h"           // get_path_pointer()
 #include "network/get-sa-family.h"              // get_sa_family()
-#include "network/get-sun-pointer.h"            // get_sun_pointer()
 #include "network/sun-offsets.h"                // sun_path_offset
 
-#ifdef WIN32
-#include <winsock2.h>       // AF_UNIX
-#else
+#ifndef WIN32
 #include <sys/socket.h>     // AF_UNIX
 #endif
 
-#include <cstddef>      // std::size_t
 #include <cstring>      // strnlen()
 
 auto Network::to_path(const ByteString& addr) -> OptionalPathname
@@ -36,11 +33,10 @@ auto Network::to_path(const ByteString& addr) -> OptionalPathname
         return {};
     }
 
-    const auto *const sun {get_sun_pointer(addr)};
-    const auto *c_path {static_cast<const char*>(sun->sun_path)};
-    auto path_len_max {addr.size() - sun_path_offset};
-    auto path_len {strnlen(c_path, path_len_max)};
-    return std::string {c_path, path_len};
+    const auto* data {get_path_pointer(addr)};
+    auto size_max {addr.size() - sun_path_offset};
+    auto size {strnlen(data, size_max)};
+    return std::string {data, size};
 #else
     static_cast<void>(addr);
     return {};

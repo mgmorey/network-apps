@@ -13,23 +13,22 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-sun-pointer.h"    // ByteString,
-                                        // get_sun_pointer(),
-                                        // sockaddr_un
+#include "network/get-path-pointer.h"   // ByteString,
+                                        // get_path_pointer()
+#include "network/get-sun-pointer.h"    // get_sun_pointer()
 
 #ifndef WIN32
 
-auto Network::get_sun_pointer(const ByteString& addr) noexcept ->
-    const sockaddr_un*
+auto Network::get_path_pointer(const ByteString& addr) noexcept -> const char*
 {
-    const void* pointer = addr.data();
-    return static_cast<const sockaddr_un*>(pointer);
+    const auto *sun {get_sun_pointer(addr)};
+    return static_cast<const char*>(sun->sun_path);
 }
 
-auto Network::get_sun_pointer(ByteString& addr) noexcept -> sockaddr_un*
+auto Network::get_path_pointer(ByteString& addr) noexcept -> char*
 {
-    void* pointer = addr.data();
-    return static_cast<sockaddr_un*>(pointer);
+    auto *sun {get_sun_pointer(addr)};
+    return static_cast<char*>(sun->sun_path);
 }
 
 #endif
