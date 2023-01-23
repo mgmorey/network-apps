@@ -38,18 +38,18 @@ auto Network::to_bytestring(const OptionalPathname& pathname) ->
 {
     sockaddr_un sun {};
     const auto path_len {pathname ? to_path_len(pathname->length() + 1) : 0};
-    auto sun_len_min {sizeof sun - sizeof sun.sun_path + path_len - 1};
+    auto sun_len {sizeof sun - sizeof sun.sun_path + path_len - 1};
 #ifdef HAVE_SOCKADDR_SA_LEN
-    sun.sun_len = std::max(sun_path_offset, sun_len_min);
+    sun.sun_len = std::max(sun_path_offset, sun_len);
 #endif
     sun.sun_family = AF_UNIX;
 
     if (pathname) {
         pathname->copy(get_path_pointer(&sun), path_len - 1);
-        sun_len_min += sizeof(char);
+        sun_len += sizeof(char);
     }
 
-    return to_bytestring(&sun, std::max(sun_path_offset, sun_len_min));
+    return to_bytestring(&sun, std::max(sun_path_offset, sun_len));
 }
 
 #endif
