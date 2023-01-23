@@ -50,7 +50,7 @@ auto Network::to_bytestring(const OptionalPathname& pathname) ->
         sun_len += sizeof(char);
     }
 
-    return to_bytestring(&sun, std::max(sun_path_offset, sun_len));
+    return to_bytestring(&sun, sun_len);
 }
 
 #endif
