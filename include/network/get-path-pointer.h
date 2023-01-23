@@ -18,9 +18,15 @@
 
 #include "network/bytestring.h"         // ByteString
 
+#ifndef WIN32
+#include <sys/un.h>         // sockaddr_un
+#endif
+
 namespace Network
 {
 #ifndef WIN32
+    extern auto get_path_pointer(const sockaddr_un* sun) noexcept -> const char*;
+    extern auto get_path_pointer(sockaddr_un* sun) noexcept -> char*;
     extern auto get_path_pointer(const ByteString& addr) noexcept ->
         const char*;
     extern auto get_path_pointer(ByteString& addr) noexcept -> char*;

@@ -16,13 +16,13 @@
 #include "network/to-bytestring-path.h"         // ByteString,
                                                 // OptionalPathname,
                                                 // to_bytestring()
-#include "network/get-path-size.h"              // get_path_size()
+#include "network/get-path-pointer.h"           // get_path_pointer(),
+                                                // sockaddr_un
 #include "network/os-features.h"                // HAVE_SOCKADDR_SA_LEN
 #ifndef WIN32
 #include "network/sun-offsets.h"                // sun_path_offset
 #endif
-#include "network/to-bytestring-sun.h"          // sockaddr_un,
-                                                // to_bytestring()
+#include "network/to-bytestring-sun.h"          // to_bytestring()
 #include "network/to-path-len.h"                // to_path_len()
 
 #ifndef WIN32
@@ -45,7 +45,7 @@ auto Network::to_bytestring(const OptionalPathname& pathname) ->
     sun.sun_family = AF_UNIX;
 
     if (pathname) {
-        pathname->copy(static_cast<char*>(sun.sun_path), path_len - 1);
+        pathname->copy(get_path_pointer(&sun), path_len - 1);
         sun_len_min += sizeof(char);
     }
 
