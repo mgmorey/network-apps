@@ -19,9 +19,6 @@
 #include "network/get-path-pointer.h"           // get_path_pointer(),
                                                 // sockaddr_un
 #include "network/os-features.h"                // HAVE_SOCKADDR_SA_LEN
-#ifndef WIN32
-#include "network/sun-offsets.h"                // sun_path_offset
-#endif
 #include "network/to-bytestring-sun.h"          // to_bytestring()
 #include "network/to-path-len.h"                // to_path_len()
 
@@ -38,8 +35,7 @@ auto Network::to_bytestring(const OptionalPathname& pathname) ->
 {
     sockaddr_un sun {};
     const auto path_len {pathname ? to_path_len(pathname->length() + 1) : 0};
-    auto sun_len {sizeof sun - sizeof sun.sun_path + path_len - 1};
-    sun_len = std::max(sun_path_offset, sun_len);
+    auto sun_len = sizeof sun - sizeof sun.sun_path;;
 #ifdef HAVE_SOCKADDR_SA_LEN
     sun.sun_len = sun_len;
 #endif
@@ -47,7 +43,7 @@ auto Network::to_bytestring(const OptionalPathname& pathname) ->
 
     if (pathname) {
         pathname->copy(get_path_pointer(&sun), path_len - 1);
-        sun_len += sizeof(char);
+        sun_len += path_len;
     }
 
     return to_bytestring(&sun, sun_len);
