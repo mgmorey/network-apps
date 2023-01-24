@@ -24,20 +24,14 @@
 #include "network/to-path-len.h"                // to_path_len()
 
 #ifndef WIN32
-#include <sys/socket.h>     // AF_UNIX
-#endif
 
-#ifndef WIN32
+#include <sys/socket.h>     // AF_UNIX
 
 auto Network::to_bytestring(const OptionalPathname& pathname) ->
     Network::ByteString
 {
     sockaddr_un sun {};
     auto sun_len {sun_path_offset};
-#ifdef HAVE_SOCKADDR_SA_LEN
-    sun.sun_len = sun_len;
-#endif
-    sun.sun_family = AF_UNIX;
 
     if (pathname) {
         const auto path_len {to_path_len(pathname->length() + 1)};
@@ -45,6 +39,10 @@ auto Network::to_bytestring(const OptionalPathname& pathname) ->
         sun_len += path_len;
     }
 
+#ifdef HAVE_SOCKADDR_SA_LEN
+    sun.sun_len = sun_len;
+#endif
+    sun.sun_family = AF_UNIX;
     return to_bytestring(&sun, sun_len);
 }
 
