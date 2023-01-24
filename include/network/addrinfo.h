@@ -66,9 +66,9 @@ namespace Network
         AddrInfo(const AddrInfo&) = delete;
         AddrInfo(const AddrInfo&&) = delete;
         AddrInfo(const OptionalHostname& t_hostname,
-             const OptionalService& t_service,
-             const OptionalHints& t_hints,
-             bool t_verbose);
+                 const OptionalService& t_service,
+                 const OptionalHints& t_hints,
+                 bool t_verbose);
         ~AddrInfo() noexcept;
         auto operator=(const AddrInfo&) noexcept -> AddrInfo& = delete;
         auto operator=(const AddrInfo&&) noexcept -> AddrInfo& = delete;
@@ -85,7 +85,7 @@ namespace Network
     };
 
     extern auto operator<<(std::ostream& os,
-                           const addrinfo& ai) -> std::ostream&;
+                           const addrinfo& addrinfo) -> std::ostream&;
 }
 
 #endif
