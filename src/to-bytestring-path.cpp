@@ -23,6 +23,10 @@
 #include "network/to-path-len.h"                // to_path_len()
 
 #ifndef WIN32
+#include "network/sun-offsets.h"                // sun_path_offset
+#endif
+
+#ifndef WIN32
 #include <sys/socket.h>     // AF_UNIX
 #endif
 
@@ -34,7 +38,7 @@ auto Network::to_bytestring(const OptionalPathname& pathname) ->
     Network::ByteString
 {
     sockaddr_un sun {};
-    std::size_t sun_len = sizeof sun - sizeof sun.sun_path;
+    auto sun_len {sun_path_offset};
 #ifdef HAVE_SOCKADDR_SA_LEN
     sun.sun_len = sun_len;
 #endif
