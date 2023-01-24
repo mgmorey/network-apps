@@ -30,8 +30,6 @@
 #include <sys/socket.h>     // AF_UNIX
 #endif
 
-#include <algorithm>    // std::max(), std::min()
-
 #ifndef WIN32
 
 auto Network::to_bytestring(const OptionalPathname& pathname) ->
