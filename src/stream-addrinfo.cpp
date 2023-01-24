@@ -23,7 +23,6 @@
 #include "network/string-null.h"        // string_null
 #include "network/to-bytestring-ai.h"   // ByteString,
                                         // to_bytestring()
-#include "network/to-size.h"            // to_size()
 #include "network/to-string-bs.h"       // to_string()
 
 #ifdef WIN32

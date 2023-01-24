@@ -17,7 +17,6 @@
                                         // OptionalHostname,
                                         // SocketHost, addrinfo
 #include "network/to-bytestring-ai.h"   // to_bytestring()
-#include "network/to-size.h"            // to_size()
 
 Network::SocketHost::SocketHost(const addrinfo& t_addrinfo) :
     m_addr(to_bytestring(t_addrinfo)),
