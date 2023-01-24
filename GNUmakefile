@@ -78,9 +78,10 @@ sockethost.cpp socketlengtherror.cpp socketpair.cpp			\
 socketprotocol.cpp sockettype.cpp startup.cpp stream-address.cpp	\
 stream-addrinfo.cpp stream-template.cpp template.cpp			\
 to-bytespan-sa.cpp to-bytespan-sun.cpp to-bytespan-void.cpp		\
-to-bytestring-bs.cpp to-bytestring-path.cpp to-bytestring-sa.cpp	\
-to-bytestring-sun.cpp to-path-bytestring.cpp to-path-descriptor.cpp	\
-to-string-bs.cpp to-string-sin.cpp to-string-sin6.cpp version.cpp
+to-bytestring-ai.cpp to-bytestring-bs.cpp to-bytestring-path.cpp	\
+to-bytestring-sa.cpp to-bytestring-sun.cpp to-path-bytestring.cpp	\
+to-path-descriptor.cpp to-string-bs.cpp to-string-sin.cpp		\
+to-string-sin6.cpp version.cpp
 
 test_sources = test-address.cpp test-bind.cpp test-connect.cpp		\
 test-context.cpp test-host.cpp test-hostname.cpp test-option.cpp	\

@@ -21,7 +21,7 @@
                                         // operator<<()
 #include "network/sockettype.h"         // SocketType, operator<<()
 #include "network/string-null.h"        // string_null
-#include "network/to-bytestring-sa.h"   // ByteString,
+#include "network/to-bytestring-ai.h"   // ByteString,
                                         // to_bytestring()
 #include "network/to-size.h"            // to_size()
 #include "network/to-string-bs.h"       // to_string()
@@ -35,14 +35,14 @@
 #include <cstddef>      // std::size_t
 
 auto Network::operator<<(std::ostream& os,
-                         const addrinfo& ai) -> std::ostream&
+                         const addrinfo& addrinfo) -> std::ostream&
 {
-    const SocketFlags flags(ai.ai_flags);
-    const SocketFamily family(ai.ai_family);
-    const SocketType socktype(ai.ai_socktype);
-    const SocketProtocol protocol(family, ai.ai_protocol);
+    const SocketFlags flags(addrinfo.ai_flags);
+    const SocketFamily family(addrinfo.ai_family);
+    const SocketType socktype(addrinfo.ai_socktype);
+    const SocketProtocol protocol(family, addrinfo.ai_protocol);
 
-    if (ai.ai_addr == nullptr) {
+    if (addrinfo.ai_addr == nullptr) {
         static constexpr auto delim {", "};
         static constexpr auto notab {0};
         os << "addrinfo("
@@ -59,7 +59,7 @@ auto Network::operator<<(std::ostream& os,
     }
     else {
         static constexpr auto tab {9};
-        const auto addr {to_bytestring(ai.ai_addr, to_size(ai.ai_addrlen))};
+        const auto addr {to_bytestring(addrinfo)};
         os << "addrinfo("
            << Format("ai_flags")
            << flags
@@ -70,11 +70,12 @@ auto Network::operator<<(std::ostream& os,
            << Format(tab, "ai_protocol")
            << protocol
            << Format(tab, "ai_addrlen")
-           << ai.ai_addrlen
+           << addrinfo.ai_addrlen
            << Format(tab, "ai_addr")
            << to_string(addr)
            << Format(tab, "ai_canonname")
-           << (ai.ai_canonname == nullptr ? string_null : ai.ai_canonname)
+           << (addrinfo.ai_canonname == nullptr ? string_null :
+               addrinfo.ai_canonname)
            << Format(tab)
            << "...)";
     }
