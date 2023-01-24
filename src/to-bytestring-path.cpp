@@ -34,14 +34,14 @@ auto Network::to_bytestring(const OptionalPathname& pathname) ->
     Network::ByteString
 {
     sockaddr_un sun {};
-    const auto path_len {pathname ? to_path_len(pathname->length() + 1) : 0};
-    auto sun_len = sizeof sun - sizeof sun.sun_path;;
+    std::size_t sun_len = sizeof sun - sizeof sun.sun_path;
 #ifdef HAVE_SOCKADDR_SA_LEN
     sun.sun_len = sun_len;
 #endif
     sun.sun_family = AF_UNIX;
 
     if (pathname) {
+        const auto path_len {to_path_len(pathname->length() + 1)};
         pathname->copy(get_path_pointer(&sun), path_len - 1);
         sun_len += path_len;
     }
