@@ -13,17 +13,15 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_HOSTNAME_H
-#define NETWORK_HOSTNAME_H
+#ifndef NETWORK_SOCK_LEN_LIMITS_H
+#define NETWORK_SOCK_LEN_LIMITS_H
 
-#include "network/name-len-limits.h"    // name_len_max
-
-#include <string>       // std::string
+#include "network/sizes.h"              // sockaddr_size_max
 
 namespace Network
 {
-    using Hostname = std::string;
-    constexpr auto hostname_size_max {name_len_max};
+    static constexpr int sock_len_max {sockaddr_size_max};
+    static constexpr int sock_len_min {0};
 }
 
 #endif

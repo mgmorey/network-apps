@@ -13,17 +13,17 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_HOSTNAME_H
-#define NETWORK_HOSTNAME_H
+#ifndef NETWORK_PATH_LEN_LIMITS_H
+#define NETWORK_PATH_LEN_LIMITS_H
 
-#include "network/name-len-limits.h"    // name_len_max
-
-#include <string>       // std::string
+#include "network/get-path-size.h"              // get_path_size()
 
 namespace Network
 {
-    using Hostname = std::string;
-    constexpr auto hostname_size_max {name_len_max};
+#ifndef WIN32
+    static constexpr auto path_len_max {get_path_size()};
+    static constexpr auto path_len_min {0};
+#endif
 }
 
 #endif

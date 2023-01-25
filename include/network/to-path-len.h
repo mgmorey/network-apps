@@ -16,6 +16,7 @@
 #ifndef NETWORK_TO_PATH_LEN_H
 #define NETWORK_TO_PATH_LEN_H
 
+#include "network/path-len-limits.h"    // path_len_max, path_len_min
 #include "network/path-len-type.h"      // path_len_type
 #include "network/pathlengtherror.h"    // PathLengthError
 

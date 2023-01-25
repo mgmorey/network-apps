@@ -14,7 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/pathlengtherror.h"    // PathLengthError, RangeError
-#include "network/path-len-type.h"      // path_len_max, path_len_min
+#include "network/path-len-limits.h"    // path_len_max, path_len_min
 
 #include <sstream>      // std::ostringstream
 #include <version>

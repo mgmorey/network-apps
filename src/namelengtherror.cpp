@@ -14,7 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/namelengtherror.h"    // NameLengthError, RangeError
-#include "network/name-len-type.h"      // name_len_max, name_len_min
+#include "network/name-len-limits.h"    // name_len_max, name_len_min
 
 #include <sstream>      // std::ostringstream
 #include <version>

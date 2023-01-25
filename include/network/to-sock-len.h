@@ -16,6 +16,7 @@
 #ifndef NETWORK_TO_SOCK_LEN_H
 #define NETWORK_TO_SOCK_LEN_H
 
+#include "network/sock-len-limits.h"    // sock_len_max, sock_len_min
 #include "network/sock-len-type.h"      // sock_len_type
 #include "network/socketlengtherror.h"  // SocketLengthError
 

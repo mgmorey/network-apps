@@ -16,6 +16,7 @@
 #ifndef NETWORK_TO_NAME_LEN_H
 #define NETWORK_TO_NAME_LEN_H
 
+#include "network/name-len-limits.h"    // name_len_max, name_len_min
 #include "network/name-len-type.h"      // name_len_type
 #include "network/namelengtherror.h"    // NameLengthError
 

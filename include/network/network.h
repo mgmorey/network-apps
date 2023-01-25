@@ -72,6 +72,12 @@
 #include "network/get-sun-pointer.h"            // get_sun_pointer()
 #include "network/get-templates.h"              // get_templates()
 #include "network/is-valid.h"                   // is_valid()
+#include "network/limits.h"                     // name_len_max,
+                                                // name_len_min,
+                                                // path_len_max,
+                                                // path_len_min,
+                                                // sock_len_max,
+                                                // sock_len_min
 #include "network/open.h"                       // open()
 #include "network/os-error.h"                   // format_os_error(),
                                                 // get_last_os_error(),

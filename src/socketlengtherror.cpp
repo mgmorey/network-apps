@@ -14,7 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/socketlengtherror.h"  // RangeError, SocketLengthError
-#include "network/sock-len-type.h"      // sock_len_max, sock_len_min
+#include "network/sock-len-limits.h"    // sock_len_max, sock_len_min
 
 #include <sstream>      // std::ostringstream
 #include <version>
