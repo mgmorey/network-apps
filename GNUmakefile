@@ -227,9 +227,6 @@ check-syntax:
 clean:
 	rm -f $(sort $(wildcard $(build_artifacts)))
 
-.PHONY: commands
-commands: $(commands)
-
 .PHONY: counts
 counts:
 	find include src -type f | sort | xargs wc
@@ -315,9 +312,6 @@ $(dependency_dir)/%$(dependency_suffix): %$(source_suffix)
 
 $(object_dir)/%$(object_suffix): %$(source_suffix)
 	$(filter-out -flto,$(COMPILE$(source_suffix))) $(OUTPUT_OPTION) $<
-
-$(commands): $(MAKEFILE_LIST)
-	bear -- $(MAKE_COMMAND) $(MFLAGS) CXX=$(CXX) clean build
 
 $(tags):
 	ctags -e $(filter -D%,$(CPPFLAGS)) -R $(include_dir) $(source_dir)
