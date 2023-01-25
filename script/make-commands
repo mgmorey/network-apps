@@ -1,0 +1,12 @@
+#!/bin/sh -eux
+
+case "$(uname)" in
+    (Darwin)
+	make=gmake
+	;;
+    (*)
+	make=make
+	;;
+esac
+
+bear -- $make clean build
