@@ -9,4 +9,4 @@ case "$(uname)" in
 	;;
 esac
 
-bear -- $make clean build
+bear -- $make ${@-clean build}
