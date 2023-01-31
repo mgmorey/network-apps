@@ -13,13 +13,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/to-bytestring-sun.h"  // ByteString, sockaddr_un,
-                                        // to_bytestring()
-#include "network/assert.h"             // assert()
-#include "network/get-path-pointer.h"   // get_path_pointer()
-#include "network/sun-offsets.h"        // sun_path_offset
-#include "network/to-bytespan-void.h"   // to_bytespan()
-#include "network/to-bytestring.h"      // to_bytestring()
+#include "network/to-bytestring-sun.h"          // ByteString,
+                                                // sockaddr_un,
+                                                // to_bytestring()
+#include "network/assert.h"                     // assert()
+#include "network/get-path-pointer-sun.h"       // get_path_pointer()
+#include "network/sun-offsets.h"                // sun_path_offset
+#include "network/to-bytespan-void.h"           // to_bytespan()
+#include "network/to-bytestring.h"              // to_bytestring()
 
 #ifndef WIN32
 #include <sys/socket.h>     // AF_UNIX
@@ -39,8 +40,8 @@ auto Network::to_bytestring(const sockaddr_un* sun,
 #endif
     assert(sun->sun_family == AF_UNIX);
     const auto* path = get_path_pointer(sun);
-    const auto path_len = size - sun_path_offset;
-    assert(path_len == 0 || strnlen(path, path_len) < path_len);
+    const auto path_size = size - sun_path_offset;
+    assert(path_size == 0 || strnlen(path, path_size) < path_size);
     return to_bytestring(to_bytespan(sun, size));
 }
 
