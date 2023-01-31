@@ -14,21 +14,10 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/get-path-pointer.h"   // ByteString,
-                                        // get_path_pointer(),
-                                        // sockaddr_un
+                                        // get_path_pointer()
 #include "network/get-sun-pointer.h"    // get_sun_pointer()
 
 #ifndef WIN32
-
-auto Network::get_path_pointer(const sockaddr_un* sun) noexcept -> const char*
-{
-    return static_cast<const char*>(sun->sun_path);
-}
-
-auto Network::get_path_pointer(sockaddr_un* sun) noexcept -> char*
-{
-    return static_cast<char*>(sun->sun_path);
-}
 
 auto Network::get_path_pointer(const ByteString& addr) noexcept -> const char*
 {

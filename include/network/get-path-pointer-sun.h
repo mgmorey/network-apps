@@ -13,10 +13,19 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_GET_PATH_POINTER_H
-#define NETWORK_GET_PATH_POINTER_H
+#ifndef NETWORK_GET_PATH_POINTER_SUN_H
+#define NETWORK_GET_PATH_POINTER_SUN_H
 
-#include "network/get-path-pointer-bs.h"        // get_path_pointer()
-#include "network/get-path-pointer-sun.h"       // get_path_pointer()
+#ifndef WIN32
+#include <sys/un.h>         // sockaddr_un
+#endif
+
+namespace Network
+{
+#ifndef WIN32
+    extern auto get_path_pointer(const sockaddr_un* sun) noexcept -> const char*;
+    extern auto get_path_pointer(sockaddr_un* sun) noexcept -> char*;
+#endif
+}
 
 #endif
