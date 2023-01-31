@@ -1,4 +1,4 @@
-#!/bin/sh -eux
+#!/bin/sh -eu
 
 case "$(uname)" in
     (Darwin)
@@ -9,4 +9,5 @@ case "$(uname)" in
 	;;
 esac
 
-bear -- $make ${@-clean build}
+target="$@"
+bear -- $make ${CXX+CXX=$CXX} ${target:-clean build}
