@@ -24,7 +24,7 @@
 #include <sys/socket.h>     // AF_UNIX
 #endif
 
-#include <cstring>      // strnlen()
+#include <cstring>      // ::strnlen()
 
 auto Network::to_path(const ByteString& addr) -> OptionalPathname
 {
@@ -35,7 +35,7 @@ auto Network::to_path(const ByteString& addr) -> OptionalPathname
 
     const auto* data {get_path_pointer(addr)};
     auto size_max {addr.size() - sun_path_offset};
-    auto size {strnlen(data, size_max)};
+    auto size {::strnlen(data, size_max)};
     return std::string {data, size};
 #else
     static_cast<void>(addr);

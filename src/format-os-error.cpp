@@ -24,7 +24,7 @@
                             // FORMAT_MESSAGE_IGNORE_INSERTS,
                             // LANG_NEUTRAL, LPTSTR, LPVOID,
                             // MAKELANGID(), SUBLANG_DEFAULT,
-                            // FormatMessage(), LocalFree()
+                            // ::FormatMessage(), ::LocalFree()
 #else
 #include <cstring>          // std::strerror()
 #endif

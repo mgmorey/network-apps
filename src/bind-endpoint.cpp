@@ -19,9 +19,9 @@
 #include "network/openhandler.h"        // OpenHandler
 
 #ifdef WIN32
-#include <winsock2.h>       // bind()
+#include <winsock2.h>       // ::bind()
 #else
-#include <sys/socket.h>     // bind()
+#include <sys/socket.h>     // ::bind()
 #endif
 
 auto Network::bind(const Endpoint& endpoint,

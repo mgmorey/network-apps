@@ -28,7 +28,7 @@
 #include "network/to-os-error.h"                // to_os_error()
 
 #ifndef WIN32
-#include <sys/socket.h>     // socketpair()
+#include <sys/socket.h>     // ::socketpair()
 #endif
 
 

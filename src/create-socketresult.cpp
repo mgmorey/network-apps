@@ -26,9 +26,9 @@
 #include "network/to-os-error.h"                // to_os_error()
 
 #ifdef WIN32
-#include <winsock2.h>       // socket()
+#include <winsock2.h>       // ::socket()
 #else
-#include <sys/socket.h>     // socket()
+#include <sys/socket.h>     // ::socket()
 #endif
 
 #include <iostream>     // std::cout, std::endl

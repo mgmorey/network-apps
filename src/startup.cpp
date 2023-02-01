@@ -23,7 +23,7 @@
                                         // WSAEFAULT, WSAEPROCLIM,
                                         // WSASYSNOTREADY,
                                         // WSAVERNOTSUPPORTED,
-                                        // WSAStartup(),
+                                        // ::WSAStartup(),
                                         // WindowsVersion
 
 #ifdef WIN32

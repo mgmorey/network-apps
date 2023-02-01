@@ -16,7 +16,7 @@
 #ifndef NETWORK_CONNECT_SOCKET_H
 #define NETWORK_CONNECT_SOCKET_H
 
-#include "network/open-socket.h"            // ByteString, OsErrorResult,
+#include "network/open-socket.h"        // ByteString, OsErrorResult,
                                         // Socket
 
 namespace Network

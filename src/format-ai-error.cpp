@@ -20,7 +20,7 @@
 #include "network/to-os-error.h"        // to_os_error()
 
 #ifndef WIN32
-#include <netdb.h>          // gai_strerror()
+#include <netdb.h>          // ::gai_strerror()
 #endif
 
 auto Network::format_ai_error(context_error_type error) -> std::string

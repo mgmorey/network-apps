@@ -18,9 +18,9 @@
 #include "network/descriptor-null.h"            // descriptor_null
 
 #ifdef WIN32
-#include <winsock2.h>   // closesocket()
+#include <winsock2.h>   // ::closesocket()
 #else
-#include <unistd.h>     // close()
+#include <unistd.h>     // ::close()
 #endif
 
 #include <iostream>     // std::cout, std::endl

@@ -19,9 +19,9 @@
 #include "network/opensocketparams.h"   // OpenSocketParams
 
 #ifdef WIN32
-#include <winsock2.h>       // connect()
+#include <winsock2.h>       // ::connect()
 #else
-#include <sys/socket.h>     // connect()
+#include <sys/socket.h>     // ::connect()
 #endif
 
 auto Network::connect(const Socket& socket,

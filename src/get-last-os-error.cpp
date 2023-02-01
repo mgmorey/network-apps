@@ -19,7 +19,7 @@
 #ifdef WIN32
 #include <winsock2.h>       // Always include winsock2.h before
                             // windows.h on Windows
-#include <windows.h>        // GetLastError()
+#include <windows.h>        // ::GetLastError()
 #else
 #include <cerrno>           // errno
 #endif

@@ -26,7 +26,7 @@
 #include <sys/socket.h>     // AF_UNIX
 #endif
 
-#include <cstring>      // strnlen()
+#include <cstring>      // ::strnlen()
 
 #ifndef WIN32
 
@@ -41,7 +41,7 @@ auto Network::to_bytestring(const sockaddr_un* sun,
     assert(sun->sun_family == AF_UNIX);
     const auto* path = get_path_pointer(sun);
     const auto path_size = size - sun_path_offset;
-    assert(path_size == 0 || strnlen(path, path_size) < path_size);
+    assert(path_size == 0 || ::strnlen(path, path_size) < path_size);
     return to_bytestring(to_bytespan(sun, size));
 }
 

@@ -20,9 +20,9 @@
 #include "network/openhandler.h"        // OpenHandler
 
 #ifdef WIN32
-#include <winsock2.h>       // connect()
+#include <winsock2.h>       // ::connect()
 #else
-#include <sys/socket.h>     // connect()
+#include <sys/socket.h>     // ::connect()
 #endif
 
 auto Network::connect(const Endpoint& endpoint,

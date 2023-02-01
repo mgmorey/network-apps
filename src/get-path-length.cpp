@@ -22,7 +22,7 @@
 #include "network/sun-offsets.h"                // sun_path_offset
 
 #include <algorithm>    // std::max(), std::min()
-#include <cstring>      // strnlen()
+#include <cstring>      // ::strnlen()
 
 #ifndef WIN32
 
@@ -45,7 +45,7 @@ auto Network::get_path_length(const sockaddr_un* sun,
                                   sizeof sun->sun_path)};
 #endif
     const auto* path {get_path_pointer(sun)};
-    return strnlen(path, path_len);
+    return ::strnlen(path, path_len);
 }
 
 #endif
