@@ -17,7 +17,7 @@
                                                 // sockaddr_un,
                                                 // std::size_t
 #include "network/assert.h"                     // assert()
-#include "network/get-path-pointer-sun.h"       // get_path_pointer(),
+#include "network/get-path-pointer-sun.h"       // get_path_pointer()
 #include "network/os-features.h"                // HAVE_SOCKADDR_SA_LEN
 #include "network/sun-offsets.h"                // sun_path_offset
 
