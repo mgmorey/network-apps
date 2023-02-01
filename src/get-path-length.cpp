@@ -35,7 +35,8 @@ auto Network::get_path_length(const sockaddr_un* sun,
     size = std::min(sizeof *sun, size);
 #ifdef HAVE_SOCKADDR_SA_LEN
     std::size_t sun_len {sun->sun_len};
-    assert(sun_path_offset <= sun_len && sun_len <= size);
+    assert(sun_path_offset <= sun_len);
+    assert(sun_len <= size);
     sun_len = std::max(sun_path_offset, sun_len);
     sun_len = std::min(size, sun_len);
     const auto path_len {sun_len - sun_path_offset};
