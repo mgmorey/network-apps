@@ -19,6 +19,7 @@
 #include "network/to-path-len.h"        // to_path_len()
 #include "network/to-size.h"            // to_size()
 #include "network/to-sock-len.h"        // to_sock_len()
+#include "network/to-sun-len.h"         // to_sun_len()
 
 #include <climits>      // INT_MAX, INT_MIN
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
@@ -37,6 +38,9 @@ namespace TestRanges
     using Network::RangeError;
     using Network::SizeError;
     using Network::SocketLengthError;
+#ifndef WIN32
+    using Network::SunLengthError;
+#endif
     using Network::name_len_max;
     using Network::name_len_min;
 #ifndef WIN32
@@ -45,6 +49,10 @@ namespace TestRanges
 #endif
     using Network::sock_len_max;
     using Network::sock_len_min;
+#ifndef WIN32
+    using Network::sun_len_max;
+    using Network::sun_len_min;
+#endif
     using Network::to_integer;
     using Network::to_name_len;
 #ifndef WIN32
@@ -52,6 +60,9 @@ namespace TestRanges
 #endif
     using Network::to_size;
     using Network::to_sock_len;
+#ifndef WIN32
+    using Network::to_sun_len;
+#endif
 
     static constexpr auto expected_error_integer_re {
         R"(Value (\d+|-\d+) is out of range \[-\d+, \d+\] of int)"
@@ -70,6 +81,11 @@ namespace TestRanges
     static constexpr auto expected_error_std_size_re {
         R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of std::size_t)"
     };
+#ifndef WIN32
+    static constexpr auto expected_error_sun_len_re {
+        R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of sun_len_type)"
+    };
+#endif
 
     static auto print(const RangeError& error) -> void
     {
@@ -190,6 +206,32 @@ namespace TestRanges
     {
         test_std_size_invalid(-1);
     }
+
+#ifndef WIN32
+
+    static auto test_sun_len_invalid(auto value) -> void
+    {
+        std::string actual_error_str;
+
+        try {
+            static_cast<void>(to_sun_len(value));
+        }
+        catch (const SunLengthError& error) {
+            print(error);
+            actual_error_str = error.what();
+        }
+
+        const std::regex expected_error_regex {expected_error_sun_len_re};
+        assert(std::regex_match(actual_error_str, expected_error_regex));
+    }
+
+    static auto test_sun_len_invalid() -> void
+    {
+        test_sun_len_invalid(sun_len_min - 1);
+        test_sun_len_invalid(sun_len_max + 1);
+    }
+
+#endif
 }
 
 auto main() -> int
@@ -204,6 +246,9 @@ auto main() -> int
 #endif
         test_sock_len_invalid();
         test_std_size_invalid();
+#ifndef WIN32
+        test_sun_len_invalid();
+#endif
     }
     catch (const std::exception& error) {
         std::cerr << error.what()
