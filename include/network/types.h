@@ -23,11 +23,12 @@
                                         // name_len_type,
                                         // os_error_type,
                                         // path_len_type, port_type,
-                                        // sock_len_type,
+                                        // sa_len_type, sock_len_type,
                                         // socket_family_type,
                                         // socket_flags_type,
                                         // socket_protocol_type,
-                                        // socket_type_type
+                                        // socket_type_type,
+                                        // sun_len_type
 #include "network/string-types.h"       // Buffer, ByteString,
                                         // Hostname, OptionalHostname,
                                         // OptionalPathname,
