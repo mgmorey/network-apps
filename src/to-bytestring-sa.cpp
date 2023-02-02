@@ -17,7 +17,7 @@
                                         // std::size_t,
                                         // to_bytestring()
 #include "network/to-bytespan-void.h"   // to_bytespan()
-#include "network/to-bytestring.h"      // to_bytestring()
+#include "network/to-bytestring-bs.h"   // to_bytestring()
 
 auto Network::to_bytestring(const sockaddr* sa,
                              std::size_t size) -> Network::ByteString

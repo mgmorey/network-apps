@@ -19,7 +19,7 @@
 #include "network/assert.h"                     // assert()
 #include "network/get-path-pointer-sun.h"       // get_path_pointer()
 #include "network/to-bytespan-void.h"           // to_bytespan()
-#include "network/to-bytestring.h"              // to_bytestring()
+#include "network/to-bytestring-bs.h"           // to_bytestring()
 #include "network/to-sun-len.h"                 // sun_len_min,
                                                 // to_sun_len()
 
