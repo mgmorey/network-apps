@@ -21,7 +21,6 @@
 #include "network/to-sun-len.h"                 // sun_len_min,
                                                 // to_sun_len()
 
-#include <algorithm>    // std::min()
 #include <cstring>      // ::strnlen()
 
 #ifndef WIN32
@@ -29,14 +28,12 @@
 auto Network::get_path_length(const sockaddr_un* sun,
                               std::size_t size) noexcept -> std::size_t
 {
-    size = to_sun_len(size);
 #ifdef HAVE_SOCKADDR_SA_LEN
-    std::size_t sun_len {to_sun_len(sun->sun_len, size)};
-    const auto path_len {sun_len - sun_len_min};
+    const std::size_t sun_len {to_sun_len(sun->sun_len, size)};
 #else
-    const auto path_len {std::min(size - sun_len_min,
-                                  sizeof sun->sun_path)};
+    const std::size_t sun_len {to_sun_len(size)};
 #endif
+    const auto path_len {sun_len - sun_len_min};
     const auto* path {get_path_pointer(sun)};
     return ::strnlen(path, path_len);
 }
