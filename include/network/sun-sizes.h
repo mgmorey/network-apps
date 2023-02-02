@@ -20,8 +20,6 @@
 #include <sys/un.h>         // sockaddr_un
 #endif
 
-#include <cstddef>      // std::size_t
-
 namespace Network
 {
 #ifndef WIN32
