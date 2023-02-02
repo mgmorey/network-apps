@@ -32,7 +32,7 @@
 #ifndef WIN32
 
 auto Network::to_bytestring(const sockaddr_un* sun,
-                            std::size_t size) noexcept -> Network::ByteString
+                            std::size_t size) -> Network::ByteString
 {
     size = to_sun_len(size);
 #ifdef HAVE_SOCKADDR_SA_LEN
