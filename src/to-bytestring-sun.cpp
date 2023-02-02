@@ -18,9 +18,10 @@
                                                 // to_bytestring()
 #include "network/assert.h"                     // assert()
 #include "network/get-path-pointer-sun.h"       // get_path_pointer()
-#include "network/sun-offsets.h"                // sun_path_offset
 #include "network/to-bytespan-void.h"           // to_bytespan()
 #include "network/to-bytestring.h"              // to_bytestring()
+#include "network/to-sun-len.h"                 // sun_len_min,
+                                                // to_sun_len()
 
 #ifndef WIN32
 #include <sys/socket.h>     // AF_UNIX
@@ -33,14 +34,13 @@
 auto Network::to_bytestring(const sockaddr_un* sun,
                             std::size_t size) noexcept -> Network::ByteString
 {
-    assert(sun_path_offset <= size);
-    assert(size <= sizeof *sun);
+    size = to_sun_len(size);
 #ifdef HAVE_SOCKADDR_SA_LEN
     assert(sun->sun_len <= size);
 #endif
     assert(sun->sun_family == AF_UNIX);
     const auto* path = get_path_pointer(sun);
-    const auto path_size = size - sun_path_offset;
+    const auto path_size = size - sun_len_min;
     assert(path_size == 0 || ::strnlen(path, path_size) < path_size);
     return to_bytestring(to_bytespan(sun, size));
 }

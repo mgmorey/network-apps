@@ -35,6 +35,16 @@ namespace Network
 
         return static_cast<sun_len_type>(value);
     }
+
+    auto to_sun_len(auto value, auto value_max) -> sun_len_type
+    {
+        if (std::cmp_less(value, sun_len_min) ||
+            std::cmp_greater(value, value_max)) {
+            throw SunLengthError(std::to_string(value));
+        }
+
+        return static_cast<sun_len_type>(value);
+    }
 #endif
 }
 

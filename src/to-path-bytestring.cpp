@@ -18,7 +18,7 @@
                                                 // to_path()
 #include "network/get-path-pointer.h"           // get_path_pointer()
 #include "network/get-sa-family.h"              // get_sa_family()
-#include "network/sun-offsets.h"                // sun_path_offset
+#include "network/sun-len-limits.h"             // sun_len_min
 
 #ifndef WIN32
 #include <sys/socket.h>     // AF_UNIX
@@ -34,7 +34,7 @@ auto Network::to_path(const ByteString& addr) -> OptionalPathname
     }
 
     const auto* data {get_path_pointer(addr)};
-    auto size_max {addr.size() - sun_path_offset};
+    auto size_max {addr.size() - sun_len_min};
     auto size {::strnlen(data, size_max)};
     return std::string {data, size};
 #else
