@@ -97,7 +97,7 @@ auto Network::is_valid(const ByteString& addr, bool verbose) noexcept -> bool
 
 #ifdef HAVE_SOCKADDR_SA_LEN
 
-    const std::size_t sa_len {get_sa_length(addr)};
+    const auto sa_len {get_sa_length(addr)};
 
     if (verbose) {
         std::cout << std::setw(key_width) << "    Stored length: "
@@ -111,7 +111,7 @@ auto Network::is_valid(const ByteString& addr, bool verbose) noexcept -> bool
         }
 
 #ifndef WIN32
-        const auto *const sun {get_sun_pointer(addr)};
+        const auto* const sun {get_sun_pointer(addr)};
         const auto sun_len {get_sun_length(sun, addr_size)};
 
         if (verbose) {
