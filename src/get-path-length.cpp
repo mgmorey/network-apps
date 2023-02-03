@@ -33,8 +33,8 @@ auto Network::get_path_length(const sockaddr_un* sun,
 #else
     const auto sun_len {to_sun_len(size)};
 #endif
+    const auto* const path {get_path_pointer(sun)};
     const auto path_len {sun_len - sun_len_min};
-    const auto* path {get_path_pointer(sun)};
     return ::strnlen(path, path_len);
 }
 

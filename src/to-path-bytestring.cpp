@@ -33,7 +33,7 @@ auto Network::to_path(const ByteString& addr) -> OptionalPathname
         return {};
     }
 
-    const auto* data {get_path_pointer(addr)};
+    const auto* const data {get_path_pointer(addr)};
     auto size_max {addr.size() - sun_len_min};
     auto size {::strnlen(data, size_max)};
     return std::string {data, size};
