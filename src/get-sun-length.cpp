@@ -15,7 +15,7 @@
 
 #include "network/get-sun-length.h"             // get_sun_length(),
                                                 // sockaddr_un,
-                                                // std::size_t
+                                                // sun_len_type
 #include "network/get-path-length.h"            // get_path_length(),
 #include "network/os-features.h"                // HAVE_SOCKADDR_SA_LEN
 
@@ -23,7 +23,7 @@
 #ifdef HAVE_SOCKADDR_SA_LEN
 
 auto Network::get_sun_length(const sockaddr_un* sun,
-                             std::size_t size) noexcept -> std::size_t
+                             sun_len_type size) noexcept -> sun_len_type
 {
     const auto path_len {get_path_length(sun, size)};
     return sizeof *sun - sizeof sun->sun_path + path_len;
