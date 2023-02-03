@@ -14,8 +14,8 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/get-path-length.h"            // get_path_length(),
-                                                // sockaddr_un,
-                                                // std::size_t
+                                                // path_len_type,
+                                                // sockaddr_un
 #include "network/get-path-pointer-sun.h"       // get_path_pointer()
 #include "network/os-features.h"                // HAVE_SOCKADDR_SA_LEN
 #include "network/to-sun-len.h"                 // sun_len_min,
@@ -26,12 +26,12 @@
 #ifndef WIN32
 
 auto Network::get_path_length(const sockaddr_un* sun,
-                              std::size_t size) -> std::size_t
+                              path_len_type size) -> path_len_type
 {
 #ifdef HAVE_SOCKADDR_SA_LEN
-    const std::size_t sun_len {to_sun_len(sun->sun_len, size)};
+    const auto sun_len {to_sun_len(sun->sun_len, size)};
 #else
-    const std::size_t sun_len {to_sun_len(size)};
+    const auto sun_len {to_sun_len(size)};
 #endif
     const auto path_len {sun_len - sun_len_min};
     const auto* path {get_path_pointer(sun)};
