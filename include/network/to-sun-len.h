@@ -18,7 +18,7 @@
 
 #include "network/sun-len-limits.h"     // sun_len_max, sun_len_min
 #include "network/sun-len-type.h"       // sun_len_type
-#include "network/sunlengtherror.h"    // SunLengthError
+#include "network/sunlengtherror.h"     // SunLengthError
 
 #include <string>       // std::to_string()
 #include <utility>      // cmp_greater(), cmp_less()
