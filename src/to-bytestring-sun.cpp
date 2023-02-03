@@ -15,13 +15,16 @@
 
 #include "network/to-bytestring-sun.h"          // ByteString,
                                                 // sockaddr_un,
+                                                // sun_len_max,
+                                                // sun_len_min,
                                                 // to_bytestring()
-#include "network/assert.h"                     // assert()
 #include "network/get-path-pointer-sun.h"       // get_path_pointer()
+#include "network/logicerror.h"                 // LogicError
+#include "network/pathlengtherror.h"            // PathLengthError
+#include "network/sunlengtherror.h"             // SunLengthError
 #include "network/to-bytespan-void.h"           // to_bytespan()
 #include "network/to-bytestring-bs.h"           // to_bytestring()
-#include "network/to-sun-len.h"                 // sun_len_min,
-                                                // to_sun_len()
+#include "network/to-sun-len.h"                 // to_sun_len()
 
 #ifndef WIN32
 #include <sys/socket.h>     // AF_UNIX
@@ -32,16 +35,27 @@
 #ifndef WIN32
 
 auto Network::to_bytestring(const sockaddr_un* sun,
-                            std::size_t size) -> Network::ByteString
+                            sun_len_type size) -> Network::ByteString
 {
     size = to_sun_len(size);
+
 #ifdef HAVE_SOCKADDR_SA_LEN
-    assert(sun->sun_len <= size);
+    if (sun->sun_len > size) {
+        throw SunLengthError(std::to_string(sun->sun_len));
+    }
 #endif
-    assert(sun->sun_family == AF_UNIX);
-    const auto* path = get_path_pointer(sun);
-    const auto path_size = size - sun_len_min;
-    assert(path_size == 0 || ::strnlen(path, path_size) < path_size);
+
+    if (sun->sun_family != AF_UNIX) {
+        throw LogicError("Invalid UNIX domain socket address");
+    }
+
+    const auto* const path = get_path_pointer(sun);
+    const auto path_len = size - sun_len_min;
+
+    if (path_len > 0 && ::strnlen(path, path_len) >= path_len) {
+        throw PathLengthError(std::to_string(path_len));
+    }
+
     return to_bytestring(to_bytespan(sun, size));
 }
 
