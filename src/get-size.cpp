@@ -16,9 +16,9 @@
 #include "network/get-size.h"           // get_size_max(),
                                         // get_size_min()
 #include "network/get-sa-family.h"      // get_sa_family()
-#include "network/offsets.h"            // sun_path_offset
 #include "network/sizes.h"              // sin_size, sin6_size,
                                         // sockaddr_size_max, sun_size
+#include "network/sun-len-limits.h"     // sun_len_min
 
 #ifdef WIN32
 #include <winsock2.h>       // AF_INET, AF_INET6, AF_LOCAL, AF_UNIX,
@@ -60,7 +60,7 @@ auto Network::get_size_min(const Network::ByteString& addr) noexcept ->
     switch (family) {
 #ifndef WIN32
     case AF_UNIX:
-        return sun_path_offset;
+        return sun_len_min;
 #endif
     case AF_INET:
         return sin_size;
