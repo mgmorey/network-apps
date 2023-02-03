@@ -18,20 +18,19 @@
 
 #include "network/bytestring.h"         // ByteString
 #ifndef WIN32
-#include "network/sun-sizes.h"          // sun_size
+#include "network/sun-len-limits.h"     // sun_size
+#include "network/sun-len-type.h"       // sun_len_max
 #endif
 
 #ifndef WIN32
 #include <sys/un.h>         // sockaddr_un
 #endif
 
-#include <cstddef>      // std::size_t
-
 namespace Network
 {
 #ifndef WIN32
     extern auto to_bytestring(const sockaddr_un* sun,
-                              std::size_t size = sun_size) -> ByteString;
+                              sun_len_type size = sun_len_max) -> ByteString;
 #endif
 }
 
