@@ -16,17 +16,17 @@
 #ifndef NETWORK_GET_PATH_LENGTH_H
 #define NETWORK_GET_PATH_LENGTH_H
 
+#include "network/path-len-type.h"      // path_len_type
+
 #ifndef WIN32
 #include <sys/un.h>         // sockaddr_un
 #endif
-
-#include <cstddef>      // std::size_t
 
 namespace Network
 {
 #ifndef WIN32
     extern auto get_path_length(const sockaddr_un* sun,
-                                std::size_t size) -> std::size_t;
+                                path_len_type size) -> path_len_type;
 #endif
 }
 
