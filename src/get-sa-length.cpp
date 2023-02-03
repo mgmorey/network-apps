@@ -29,7 +29,7 @@ auto Network::get_sa_length(const ByteString& addr,
     }
 
 #ifdef HAVE_SOCKADDR_SA_LEN
-    const auto *const sa {get_sa_pointer(addr)};
+    const auto* const sa {get_sa_pointer(addr)};
 
     if (addr.size() < sa_len_offset + sizeof sa->sa_len) {
         return length;

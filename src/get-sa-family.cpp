@@ -27,7 +27,7 @@ auto Network::get_sa_family(const ByteString& addr,
         return family;
     }
 
-    const auto *const sa {get_sa_pointer(addr)};
+    const auto* const sa {get_sa_pointer(addr)};
 
     if (addr.size() < sa_family_offset + sizeof sa->sa_family) {
         return family;

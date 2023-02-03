@@ -31,7 +31,7 @@ auto Network::get_sin_port(const ByteString& addr,
                            port_type port) noexcept -> Network::port_type
 {
     assert(get_sa_family(addr) == AF_INET);
-    const auto *const sin {get_sin_pointer(addr)};
+    const auto* const sin {get_sin_pointer(addr)};
 
     if (addr.size() < sin_port_offset + sizeof sin->sin_port) {
         return port;

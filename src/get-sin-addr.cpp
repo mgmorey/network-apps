@@ -30,7 +30,7 @@ auto Network::get_sin_addr(const ByteString& addr,
                            const in_addr& sin_addr) noexcept -> in_addr
 {
     assert(get_sa_family(addr) == AF_INET);
-    const auto *const sin {get_sin_pointer(addr)};
+    const auto* const sin {get_sin_pointer(addr)};
 
     if (addr.size() < sin_addr_offset + sizeof sin->sin_addr) {
         return sin_addr;

@@ -54,7 +54,7 @@ auto Network::get_endpointresult(const ByteString& addr, int flags,
     Buffer host {hostname_size_max};
     Buffer service {service_size_max};
     const auto length {get_length(addr)};
-    const auto *const pointer {get_sa_pointer(addr)};
+    const auto* const pointer {get_sa_pointer(addr)};
 
     if (verbose) {
         std::cout << "Calling ::getnameinfo("

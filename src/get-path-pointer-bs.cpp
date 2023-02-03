@@ -21,7 +21,7 @@
 
 auto Network::get_path_pointer(const ByteString& addr) noexcept -> const char*
 {
-    const auto *sun {get_sun_pointer(addr)};
+    const auto* sun {get_sun_pointer(addr)};
     return get_path_pointer(sun);
 }
 
