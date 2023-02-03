@@ -40,10 +40,10 @@ auto Network::to_bytestring(const OptionalPathname& pathname) ->
         sun_len += path_len;
     }
 
+    sun.sun_family = AF_UNIX;
 #ifdef HAVE_SOCKADDR_SA_LEN
     sun.sun_len = sun_len;
 #endif
-    sun.sun_family = AF_UNIX;
     return to_bytestring(&sun, sun_len);
 }
 
