@@ -21,9 +21,5 @@
 auto Network::to_bytestring(const sockaddr* sa,
                             sa_len_type size) -> Network::ByteString
 {
-    if (sa == nullptr) {
-        return {};
-    }
-
     return to_bytestring(to_bytespan(sa, size));
 }
