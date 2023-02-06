@@ -13,14 +13,13 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/to-bytestring-sa.h"   // ByteString, sockaddr,
-                                        // std::size_t,
-                                        // to_bytestring()
+#include "network/to-bytestring-sa.h"   // ByteString, sa_len_type,
+                                        // sockaddr, to_bytestring()
 #include "network/to-bytespan-void.h"   // to_bytespan()
 #include "network/to-bytestring-bs.h"   // to_bytestring()
 
 auto Network::to_bytestring(const sockaddr* sa,
-                             std::size_t size) -> Network::ByteString
+                            sa_len_type size) -> Network::ByteString
 {
     if (sa == nullptr) {
         return {};

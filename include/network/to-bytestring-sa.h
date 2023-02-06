@@ -17,6 +17,7 @@
 #define NETWORK_TO_BYTESTRING_SA_H
 
 #include "network/bytestring.h"         // ByteString
+#include "network/sa-len-type.h"        // sa_len_max
 
 #ifdef WIN32
 #include <winsock2.h>       // sockaddr
@@ -24,12 +25,10 @@
 #include <sys/socket.h>     // sockaddr
 #endif
 
-#include <cstddef>      // std::size_t
-
 namespace Network
 {
     extern auto to_bytestring(const sockaddr* sa,
-                              std::size_t size) -> ByteString;
+                              sa_len_type size) -> ByteString;
 }
 
 #endif
