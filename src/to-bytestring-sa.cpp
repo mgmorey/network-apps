@@ -17,9 +17,11 @@
                                         // sockaddr, to_bytestring()
 #include "network/to-bytespan-void.h"   // to_bytespan()
 #include "network/to-bytestring-bs.h"   // to_bytestring()
+#include "network/to-sa-len.h"          // to_sa_len()
 
 auto Network::to_bytestring(const sockaddr* sa,
                             sa_len_type size) -> Network::ByteString
 {
+    size = to_sa_len(size);
     return to_bytestring(to_bytespan(sa, size));
 }
