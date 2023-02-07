@@ -15,7 +15,6 @@
 
 #include "network/to-bytestring-sun.h"          // ByteString,
                                                 // sockaddr_un,
-                                                // sun_len_max,
                                                 // sun_len_min,
                                                 // to_bytestring()
 #include "network/get-path-pointer-sun.h"       // get_path_pointer()
