@@ -72,9 +72,9 @@ namelengtherror.cpp open-endpoint.cpp open-socket.cpp			\
 oserrorresult.cpp parse-argumentspan.cpp parse.cpp			\
 pathlengtherror.cpp rangeerror.cpp remove-socket.cpp			\
 reset-last-context-error.cpp reset-last-os-error.cpp runtimeerror.cpp	\
-set-last-context-error.cpp set-last-os-error.cpp sizeerror.cpp		\
-socket.cpp socketfamily.cpp socketflags.cpp sockethints.cpp		\
-sockethost.cpp socketlengtherror.cpp socketpair.cpp			\
+salengtherror.cpp set-last-context-error.cpp set-last-os-error.cpp	\
+sizeerror.cpp socket.cpp socketfamily.cpp socketflags.cpp		\
+sockethints.cpp sockethost.cpp socketlengtherror.cpp socketpair.cpp	\
 socketprotocol.cpp sockettype.cpp startup.cpp stream-address.cpp	\
 stream-addrinfo.cpp stream-template.cpp sunlengtherror.cpp		\
 template.cpp to-bytespan-sa.cpp to-bytespan-sun.cpp			\
