@@ -18,6 +18,8 @@
 
 #include "network/name-len-limits.h"    // name_len_max, name_len_min
 #include "network/path-len-limits.h"    // path_len_max, path_len_min
+#include "network/sa-len-limits.h"      // sa_len_max, sa_len_min
 #include "network/sock-len-limits.h"    // sock_len_max, sock_len_min
+#include "network/sun-len-limits.h"     // sun_len_max, sun_len_min
 
 #endif
