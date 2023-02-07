@@ -22,6 +22,5 @@
 auto Network::to_bytestring(const sockaddr* sa,
                             sa_len_type size) -> Network::ByteString
 {
-    size = to_sa_len(size);
-    return to_bytestring(to_bytespan(sa, size));
+    return to_bytestring(to_bytespan(sa, to_sa_len(size)));
 }
