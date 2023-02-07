@@ -1,4 +1,4 @@
-// Copyright (C) 2022  "Michael G. Morey" <mgmorey@gmail.com>
+// Copyright (C) 2023  "Michael G. Morey" <mgmorey@gmail.com>
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,15 +13,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_SOCK_LEN_LIMITS_H
-#define NETWORK_SOCK_LEN_LIMITS_H
+#ifndef NETWORK_SA_LEN_LIMITS_H
+#define NETWORK_SA_LEN_LIMITS_H
 
-#include "network/sa-len-limits.h"      // sa_data_offset
+#include "network/sa-offsets.h"         // sa_data_offset
+#include "network/sizes.h"              // sa_size_max
 
 namespace Network
 {
-    static constexpr int sock_len_max {sa_len_max};
-    static constexpr int sock_len_min {sa_len_min};
+    static constexpr int sa_len_max {sa_size_max};
+    static constexpr int sa_len_min {sa_data_offset};
 }
 
 #endif
