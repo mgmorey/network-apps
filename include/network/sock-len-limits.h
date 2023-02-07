@@ -16,11 +16,11 @@
 #ifndef NETWORK_SOCK_LEN_LIMITS_H
 #define NETWORK_SOCK_LEN_LIMITS_H
 
-#include "network/sizes.h"              // sockaddr_size_max
+#include "network/sizes.h"              // sa_size_max
 
 namespace Network
 {
-    static constexpr int sock_len_max {sockaddr_size_max};
+    static constexpr int sock_len_max {sa_size_max};
     static constexpr int sock_len_min {0};
 }
 

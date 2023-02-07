@@ -29,9 +29,9 @@
 namespace Network
 {
 #ifdef WIN32
-    constexpr auto sockaddr_size_max {ss_size};
+    constexpr auto sa_size_max {ss_size};
 #else
-    constexpr auto sockaddr_size_max {std::max(ss_size, sun_size)};
+    constexpr auto sa_size_max {std::max(ss_size, sun_size)};
 #endif
 }
 

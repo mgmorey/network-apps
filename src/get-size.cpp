@@ -38,7 +38,7 @@ auto Network::get_size_max(const Network::ByteString& addr) noexcept ->
 
     switch (family) {
     case AF_UNSPEC:
-        return sockaddr_size_max;
+        return sa_size_max;
 #ifndef WIN32
     case AF_UNIX:
         return sun_size;
