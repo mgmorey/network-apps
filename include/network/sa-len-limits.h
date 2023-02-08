@@ -17,11 +17,11 @@
 #define NETWORK_SA_LEN_LIMITS_H
 
 #include "network/sa-offsets.h"         // sa_data_offset
-#include "network/sizes.h"              // sa_size_max
+#include "network/ss-sizes.h"           // ss_size
 
 namespace Network
 {
-    static constexpr int sa_len_max {sa_size_max};
+    static constexpr int sa_len_max {ss_size};
     static constexpr int sa_len_min {sa_data_offset};
 }
 
