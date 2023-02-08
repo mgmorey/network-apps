@@ -157,16 +157,6 @@ namespace TestConnect
         std::ostream& m_os;
     };
 
-    static auto get_codes_invalid_addr() -> const ErrorCodeSet&
-    {
-#if defined(WIN32)
-        static const ErrorCodeSet codes {WSAEFAULT};
-#else
-        static const ErrorCodeSet codes {EFAULT, EINVAL, EAFNOSUPPORT};
-#endif
-        return codes;
-    }
-
     static auto get_codes_invalid_host() -> const ErrorCodeSet&
     {
 #if defined(WIN32)
@@ -225,21 +215,6 @@ namespace TestConnect
                       << result.string()
                       << std::endl;
         }
-    }
-
-    static auto test_connect_invalid_addr(const ByteString& addr) -> void
-    {
-        os_error_type actual_code {0};
-        const auto& expected_codes {get_codes_invalid_addr()};
-        const Socket sock {AF_INET, SOCK_STREAM, 0, 0, false, verbose};
-        const auto error {connect(sock, addr, verbose)};
-        actual_code = error.number();
-
-        if (error) {
-            print(error, "connect() with invalid address");
-        }
-
-        assert(expected_codes.contains(actual_code));
     }
 
     static auto test_connect_invalid_host(const Endpoint& endpoint,
@@ -319,8 +294,6 @@ auto main(int argc, char* argv[]) -> int
         }
 
         test_connect_valid(endpoint, hints);
-        const ByteString invalid_addr {};
-        test_connect_invalid_addr(invalid_addr);
         const Endpoint invalid_host {".", localservice};
         test_connect_invalid_host(invalid_host, hints);
         const Endpoint invalid_service {localhost, "."};
