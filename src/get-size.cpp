@@ -17,18 +17,13 @@
                                         // get_size_min()
 #include "network/get-sa-family.h"      // get_sa_family()
 #include "network/sizes.h"              // sin_size, sin6_size,
-                                        // sockaddr_size_max, sun_size
-#include "network/sun-len-limits.h"     // sun_len_min
+                                        // ss_size
+#include "network/sun-len-limits.h"     // sun_len_max, sun_len_min
 
 #ifdef WIN32
-#include <winsock2.h>       // AF_INET, AF_INET6, AF_LOCAL, AF_UNIX,
-                            // sockaddr, sockaddr_in, sockaddr_storage
-#include <ws2tcpip.h>       // sockaddr_in6
+#include <winsock2.h>       // AF_INET, AF_INET6, AF_LOCAL, AF_UNIX
 #else
-#include <netinet/in.h>     // sockaddr_in, sockaddr_in6
-#include <sys/socket.h>     // AF_INET, AF_INET6, AF_LOCAL, AF_UNIX,
-                            // sockaddr, sockaddr_storage
-#include <sys/un.h>         // sockaddr_un
+#include <sys/socket.h>     // AF_INET, AF_INET6, AF_LOCAL, AF_UNIX
 #endif
 
 auto Network::get_size_max(const Network::ByteString& addr) noexcept ->
@@ -38,10 +33,10 @@ auto Network::get_size_max(const Network::ByteString& addr) noexcept ->
 
     switch (family) {
     case AF_UNSPEC:
-        return sa_size_max;
+        return ss_size;
 #ifndef WIN32
     case AF_UNIX:
-        return sun_size;
+        return sun_len_max;
 #endif
     case AF_INET:
         return sin_size;
@@ -58,6 +53,8 @@ auto Network::get_size_min(const Network::ByteString& addr) noexcept ->
     const auto family {get_sa_family(addr)};
 
     switch (family) {
+    case AF_UNSPEC:
+        return ss_size;
 #ifndef WIN32
     case AF_UNIX:
         return sun_len_min;
