@@ -24,15 +24,4 @@
 #include "network/sun-sizes.h"          // sun_size
 #endif
 
-#include <algorithm>    // std::max()
-
-namespace Network
-{
-#ifdef WIN32
-    constexpr auto sa_size_max {ss_size};
-#else
-    constexpr auto sa_size_max {std::max(ss_size, sun_size)};
-#endif
-}
-
 #endif
