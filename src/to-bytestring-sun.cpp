@@ -19,6 +19,7 @@
                                                 // to_bytestring()
 #include "network/get-path-length.h"            // get_path_length()
 #include "network/logicerror.h"                 // LogicError
+#include "network/os-features.h"                // HAVE_SOCKADDR_SA_LEN
 #include "network/sunlengtherror.h"             // SunLengthError
 #include "network/to-bytespan-void.h"           // to_bytespan()
 #include "network/to-bytestring-bs.h"           // to_bytestring()
@@ -44,6 +45,12 @@ auto Network::to_bytestring(const sockaddr_un* sun,
     if (sun_len_min + path_len > size) {
         throw SunLengthError(std::to_string(size));
     }
+
+#ifdef HAVE_SOCKADDR_SA_LEN
+    if (sun->sun_len != size) {
+        throw SunLengthError(std::to_string(sun->sun_len));
+    }
+#endif
 
     return to_bytestring(to_bytespan(sun, size));
 }
