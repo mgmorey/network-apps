@@ -17,10 +17,8 @@
                                                 // sockaddr_un,
                                                 // sun_len_min,
                                                 // to_bytestring()
-#include "network/get-path-pointer-sun.h"       // get_path_pointer()
+#include "network/get-path-length.h"            // get_path_length()
 #include "network/logicerror.h"                 // LogicError
-#include "network/os-features.h"                // HAVE_SOCKADDR_SA_LEN
-#include "network/pathlengtherror.h"            // PathLengthError
 #include "network/sunlengtherror.h"             // SunLengthError
 #include "network/to-bytespan-void.h"           // to_bytespan()
 #include "network/to-bytestring-bs.h"           // to_bytestring()
@@ -30,8 +28,6 @@
 #include <sys/socket.h>     // AF_UNIX
 #endif
 
-#include <cstring>      // ::strnlen()
-
 #ifndef WIN32
 
 auto Network::to_bytestring(const sockaddr_un* sun,
@@ -39,21 +35,14 @@ auto Network::to_bytestring(const sockaddr_un* sun,
 {
     static_cast<void>(to_sun_len(size));
 
-#ifdef HAVE_SOCKADDR_SA_LEN
-    if (sun->sun_len > size) {
-        throw SunLengthError(std::to_string(sun->sun_len));
-    }
-#endif
-
     if (sun->sun_family != AF_UNIX) {
         throw LogicError("Invalid UNIX domain socket address");
     }
 
-    const auto* const path = get_path_pointer(sun);
-    const auto path_len = size - sun_len_min;
+    const auto path_len = get_path_length(sun, size);
 
-    if (path_len > 0 && ::strnlen(path, path_len) >= path_len) {
-        throw PathLengthError(std::to_string(path_len));
+    if (sun_len_min + path_len > size) {
+        throw SunLengthError(std::to_string(size));
     }
 
     return to_bytestring(to_bytespan(sun, size));

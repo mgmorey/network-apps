@@ -18,6 +18,8 @@
 #include "network/logicerror.h"         // LogicError
 #include "network/os-features.h"        // HAVE_SOCKADDR_SA_LEN
 #include "network/salengtherror.h"      // SaLengthError
+#include "network/sin-sizes.h"          // sin_size
+#include "network/sin6-sizes.h"         // sin6_size
 #include "network/to-bytespan-void.h"   // to_bytespan()
 #include "network/to-bytestring-bs.h"   // to_bytestring()
 #include "network/to-sa-len.h"          // to_sa_len()
@@ -33,16 +35,28 @@ auto Network::to_bytestring(const sockaddr* sa,
 {
     static_cast<void>(to_sa_len(size));
 
+    switch (sa->sa_family) {
+    case AF_INET:
+        if (size != sin_size) {
+            throw SaLengthError(std::to_string(size));
+        }
+
+        break;
+    case AF_INET6:
+        if (size != sin6_size) {
+            throw SaLengthError(std::to_string(size));
+        }
+
+        break;
+    default:
+        throw LogicError("Invalid IP domain socket address");
+    }
+
 #ifdef HAVE_SOCKADDR_SA_LEN
-    if (sa->sa_len > size) {
+    if (sa->sa_len != size) {
         throw SaLengthError(std::to_string(sa->sa_len));
     }
 #endif
-
-    if (sa->sa_family != AF_INET &&
-        sa->sa_family != AF_INET6) {
-        throw LogicError("Invalid IP domain socket address");
-    }
 
     return to_bytestring(to_bytespan(sa, size));
 }
