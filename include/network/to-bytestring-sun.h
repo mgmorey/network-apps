@@ -18,8 +18,8 @@
 
 #include "network/bytestring.h"         // ByteString
 #ifndef WIN32
-#include "network/sun-len-limits.h"     // sun_size
-#include "network/sun-len-type.h"       // sun_len_max
+#include "network/sun-len-limits.h"     // sun_len_max, sun_len_min
+#include "network/sun-len-type.h"       // sun_len_type
 #endif
 
 #ifndef WIN32
