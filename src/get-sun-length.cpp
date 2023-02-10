@@ -17,6 +17,7 @@
                                                 // sockaddr_un,
                                                 // sun_len_type
 #include "network/get-path-length.h"            // get_path_length()
+#include "network/sun-offsets.h"                // sun_path_offset
 
 #ifndef WIN32
 
@@ -24,7 +25,7 @@ auto Network::get_sun_length(const sockaddr_un* sun,
                              sun_len_type size) noexcept -> sun_len_type
 {
     const auto path_len {get_path_length(sun, size)};
-    return sizeof *sun - sizeof sun->sun_path + path_len;
+    return sun_path_offset + path_len;
 }
 
 #endif
