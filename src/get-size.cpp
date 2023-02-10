@@ -21,9 +21,9 @@
 #include "network/sun-len-limits.h"     // sun_len_max, sun_len_min
 
 #ifdef WIN32
-#include <winsock2.h>       // AF_INET, AF_INET6, AF_LOCAL, AF_UNIX
+#include <winsock2.h>       // AF_INET, AF_INET6, AF_UNIX, AF_UNSPEC
 #else
-#include <sys/socket.h>     // AF_INET, AF_INET6, AF_LOCAL, AF_UNIX
+#include <sys/socket.h>     // AF_INET, AF_INET6, AF_UNIX, AF_UNSPEC
 #endif
 
 auto Network::get_size_max(const Network::ByteString& addr) noexcept ->
