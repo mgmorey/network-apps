@@ -16,22 +16,17 @@
 #ifndef NETWORK_GET_SUN_LENGTH_H
 #define NETWORK_GET_SUN_LENGTH_H
 
-#include "network/os-features.h"        // HAVE_SOCKADDR_SA_LEN
 #include "network/sun-len-type.h"       // sun_len_type
 
 #ifndef WIN32
 #include <sys/un.h>         // sockaddr_un
 #endif
 
-#include <cstddef>      // std::size_t
-
 namespace Network
 {
 #ifndef WIN32
-#ifdef HAVE_SOCKADDR_SA_LEN
     extern auto get_sun_length(const sockaddr_un* sun,
                                sun_len_type size) noexcept -> sun_len_type;
-#endif
 #endif
 }
 
