@@ -52,7 +52,7 @@ auto Network::to_bytestring(const sockaddr_un* sun,
 #ifdef HAVE_SOCKADDR_SA_LEN
     if (sun->sun_len != size) {
         throw LogicError("Stored UNIX domain socket length " +
-                         std::to_string(sun_len) +
+                         std::to_string(sun->sun_len) +
                          " differs from actual length " +
                          std::to_string(size));
     }
