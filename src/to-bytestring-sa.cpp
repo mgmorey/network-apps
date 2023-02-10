@@ -17,12 +17,12 @@
                                         // sockaddr, to_bytestring()
 #include "network/logicerror.h"         // LogicError
 #include "network/os-features.h"        // HAVE_SOCKADDR_SA_LEN
-#include "network/salengtherror.h"      // SaLengthError
 #include "network/sin-sizes.h"          // sin_size
 #include "network/sin6-sizes.h"         // sin6_size
 #include "network/to-bytespan-void.h"   // to_bytespan()
 #include "network/to-bytestring-bs.h"   // to_bytestring()
 #include "network/to-sa-len.h"          // to_sa_len()
+#include <cstddef>
 
 #ifdef WIN32
 #include <winsock2.h>       // AF_INET, AF_INET6, AF_LOCAL, AF_UNIX
@@ -38,13 +38,19 @@ auto Network::to_bytestring(const sockaddr* sa,
     switch (sa->sa_family) {
     case AF_INET:
         if (size != sin_size) {
-            throw SaLengthError(std::to_string(size));
+            throw LogicError("IP domain socket length " +
+                             std::to_string(size) +
+                             " differs from expected length " +
+                             std::to_string(sin_size));
         }
 
         break;
     case AF_INET6:
         if (size != sin6_size) {
-            throw SaLengthError(std::to_string(size));
+            throw LogicError("IP domain socket length " +
+                             std::to_string(size) +
+                             " differs from expected length " +
+                             std::to_string(sin6_size));
         }
 
         break;
@@ -54,7 +60,10 @@ auto Network::to_bytestring(const sockaddr* sa,
 
 #ifdef HAVE_SOCKADDR_SA_LEN
     if (sa->sa_len != size) {
-        throw SaLengthError(std::to_string(sa->sa_len));
+        throw LogicError("Stored IP domain socket length " +
+                         std::to_string(sun_len) +
+                         " differs from actual length " +
+                         std::to_string(size));
     }
 #endif
 
