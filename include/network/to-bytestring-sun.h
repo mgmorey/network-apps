@@ -17,9 +17,8 @@
 #define NETWORK_TO_BYTESTRING_SUN_H
 
 #include "network/bytestring.h"         // ByteString
-#ifndef WIN32
 #include "network/sun-len-type.h"       // sun_len_type
-#endif
+#include "network/sun-sizes.h"          // sun_size
 
 #ifndef WIN32
 #include <sys/un.h>         // sockaddr_un
@@ -29,7 +28,7 @@ namespace Network
 {
 #ifndef WIN32
     extern auto to_bytestring(const sockaddr_un* sun,
-                              sun_len_type size = sizeof *sun) -> ByteString;
+                              sun_len_type size = sun_size) -> ByteString;
 #endif
 }
 
