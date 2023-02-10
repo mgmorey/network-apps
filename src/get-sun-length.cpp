@@ -16,7 +16,7 @@
 #include "network/get-sun-length.h"             // get_sun_length(),
                                                 // sockaddr_un,
                                                 // sun_len_type
-#include "network/get-path-length.h"            // get_path_length(),
+#include "network/get-path-length.h"            // get_path_length()
 
 #ifndef WIN32
 
