@@ -40,7 +40,7 @@ auto Network::to_bytestring(const sockaddr_un* sun,
         throw LogicError("Invalid UNIX domain socket address");
     }
 
-    const auto path_len = get_path_length(sun, size);
+    const auto path_len {get_path_length(sun, size)};
 
     if (sun_len_min + (path_len == 0 ? 0 : path_len + 1) != size) {
         throw SunLengthError(std::to_string(size));
