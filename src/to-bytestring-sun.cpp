@@ -16,7 +16,7 @@
 #include "network/to-bytestring-sun.h"          // ByteString,
                                                 // sockaddr_un,
                                                 // to_bytestring()
-#include "network/get-path-length.h"            // get_path_length()
+#include "network/get-sun-length.h"             // get_sun_length()
 #include "network/logicerror.h"                 // LogicError
 #include "network/os-features.h"                // HAVE_SOCKADDR_SA_LEN
 #include "network/sunlengtherror.h"             // SunLengthError
@@ -39,10 +39,10 @@ auto Network::to_bytestring(const sockaddr_un* sun,
         throw LogicError("Invalid UNIX domain socket address");
     }
 
-    const auto path_len {get_path_length(sun, size)};
+    const auto sun_len {get_sun_length(sun, size)};
 
-    if (sun_len_min + (path_len == 0 ? 0 : path_len + 1) != size) {
-        throw SunLengthError(std::to_string(size));
+    if (sun_len != size) {
+        throw SunLengthError(std::to_string(sun_len));
     }
 
 #ifdef HAVE_SOCKADDR_SA_LEN
