@@ -27,6 +27,8 @@
 #include <sys/socket.h>     // AF_UNIX
 #endif
 
+#include <string>       // std::to_string()
+
 #ifndef WIN32
 
 auto Network::to_bytestring(const sockaddr_un* sun,

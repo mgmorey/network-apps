@@ -22,12 +22,13 @@
 #include "network/to-bytespan-void.h"   // to_bytespan()
 #include "network/to-bytestring-bs.h"   // to_bytestring()
 #include "network/to-sa-len.h"          // to_sa_len()
-#include <cstddef>
+
+#include <string>       // std::to_string()
 
 #ifdef WIN32
-#include <winsock2.h>       // AF_INET, AF_INET6, AF_LOCAL, AF_UNIX
+#include <winsock2.h>       // AF_INET, AF_INET6
 #else
-#include <sys/socket.h>     // AF_INET, AF_INET6, AF_LOCAL, AF_UNIX
+#include <sys/socket.h>     // AF_INET, AF_INET6
 #endif
 
 auto Network::to_bytestring(const sockaddr* sa,
