@@ -62,7 +62,7 @@ auto Network::to_bytestring(const sockaddr* sa,
 #ifdef HAVE_SOCKADDR_SA_LEN
     if (sa->sa_len != size) {
         throw LogicError("Stored IP domain socket length " +
-                         std::to_string(sun_len) +
+                         std::to_string(sa->sa_len) +
                          " differs from actual length " +
                          std::to_string(size));
     }
