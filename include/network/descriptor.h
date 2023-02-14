@@ -20,8 +20,6 @@
 #include "network/descriptor-null.h"            // descriptor_null
 #include "network/descriptor-type.h"            // descriptor_type
 
-#include <string>      // std::string
-
 namespace Network
 {
     class Descriptor
