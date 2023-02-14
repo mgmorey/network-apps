@@ -25,7 +25,8 @@ auto Network::get_sun_length(const sockaddr_un* sun,
                              sun_len_type size) noexcept -> sun_len_type
 {
     const auto path_len {get_path_length(sun, size)};
-    return sun_path_offset + path_len + (path_len == 0 ? 0 : 1);
+    const auto nul_len {path_len == 0U ? 0U : 1U};
+    return sun_path_offset + path_len + nul_len;
 }
 
 #endif
