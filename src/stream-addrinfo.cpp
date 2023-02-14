@@ -13,17 +13,22 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/addrinfo.h"           // operator<<(), std::ostream
-#include "network/format.h"             // Format, operator<<()
-#include "network/socketfamily.h"       // SocketFamily, operator<<()
-#include "network/socketflags.h"        // SocketFlags, operator<<()
-#include "network/socketprotocol.h"     // SocketProtocol,
-                                        // operator<<()
-#include "network/sockettype.h"         // SocketType, operator<<()
-#include "network/string-null.h"        // string_null
-#include "network/to-bytestring-ai.h"   // ByteString,
-                                        // to_bytestring()
-#include "network/to-string-bs.h"       // to_string()
+#include "network/addrinfo.h"                   // operator<<(),
+                                                // std::ostream
+#include "network/format.h"                     // Format,
+                                                // operator<<()
+#include "network/socketfamily.h"               // SocketFamily,
+                                                // operator<<()
+#include "network/socketflags.h"                // SocketFlags,
+                                                // operator<<()
+#include "network/socketprotocol.h"             // SocketProtocol,
+                                                // operator<<()
+#include "network/sockettype.h"                 // SocketType,
+                                                // operator<<()
+#include "network/string-null.h"                // string_null
+#include "network/to-bytestring-ai.h"           // ByteString,
+                                                // to_bytestring()
+#include "network/to-string-bytestring.h"       // to_string()
 
 #ifdef WIN32
 #include <ws2tcpip.h>   // addrinfo

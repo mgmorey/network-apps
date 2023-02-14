@@ -13,11 +13,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_TO_STRING_H
-#define NETWORK_TO_STRING_H
+#include "network/to-string-address.h"              // Address,
+                                                    // operator<<(),
+                                                    // std::string(),
+                                                    // to_string()
 
-#include "network/to-string-bytestring.h"       // to_string()
-#include "network/to-string-sin.h"              // to_string()
-#include "network/to-string-sin6.h"             // to_string()
+#include <sstream>      // std::ostringstream
 
-#endif
+auto Network::to_string(const Address& str) -> std::string
+{
+    std::ostringstream oss;
+    oss << str;
+    return oss.str();
+}

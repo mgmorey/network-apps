@@ -13,16 +13,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_TO_STRING_BS_H
-#define NETWORK_TO_STRING_BS_H
+#ifndef NETWORK_TO_STRING_ADDRESS_H
+#define NETWORK_TO_STRING_ADDRESS_H
 
-#include "network/bytestring.h"         // ByteString
+#include "network/address.h"            // Address
 
 #include <string>       // std::string
 
 namespace Network
 {
-    extern auto to_string(const ByteString& str) -> std::string;
+    extern auto to_string(const Address& str) -> std::string;
 }
 
 #endif

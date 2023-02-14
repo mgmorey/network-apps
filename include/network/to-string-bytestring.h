@@ -13,23 +13,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/to-string-bs.h"       // ByteString, operator<<(),
-                                        // std::string(), to_string()
-#include "network/address.h"            // Address
-#include "network/is-valid.h"           // is_valid()
+#ifndef NETWORK_TO_STRING_BYTESTRING_H
+#define NETWORK_TO_STRING_BYTESTRING_H
 
-#include <sstream>      // std::ostringstream
+#include "network/bytestring.h"         // ByteString
 
-auto Network::to_string(const ByteString& str) -> std::string
+#include <string>       // std::string
+
+namespace Network
 {
-    std::ostringstream oss;
-
-    if (is_valid(str)) {
-        oss << Address(str);
-    }
-    else {
-        oss << str;
-    }
-
-    return oss.str();
+    extern auto to_string(const ByteString& str) -> std::string;
 }
+
+#endif
