@@ -32,22 +32,22 @@
 #include <sstream>      // std::ostringstream
 
 static auto format(const Network::ByteString& addr,
-                   Network::OptionalString& str) -> std::string
+                   Network::OptionalString& addr_str) -> std::string
 {
-    if (!str) {
-        str = Network::to_string(addr);
+    if (!addr_str) {
+        addr_str = Network::to_string(addr);
     }
 
-    return *str;
+    return *addr_str;
 }
 
 auto Network::open(const OpenHandler& handler,
                    const OpenSocketParams& args) -> Network::OsErrorResult
 {
-    const auto* const pointer {get_sa_pointer(args.str)};
-    const auto length {get_length(args.str)};
+    const auto* const pointer {get_sa_pointer(args.addr)};
+    const auto length {get_length(args.addr)};
     reset_last_context_error();
-    OptionalString str;
+    OptionalString addr_str;
 
     if (args.verbose) {
         std::cout << "Calling "
@@ -55,7 +55,7 @@ auto Network::open(const OpenHandler& handler,
                   << '('
                   << args.socket
                   << ", "
-                  << format(args.str, str)
+                  << format(args.addr, addr_str)
                   << ", "
                   << to_integer(length)
                   << ')'
@@ -73,7 +73,7 @@ auto Network::open(const OpenHandler& handler,
             << '('
             << args.socket
             << ", "
-            << format(args.str, str)
+            << format(args.addr, addr_str)
             << ", "
             << to_integer(length)
             << ") failed with error "

@@ -24,7 +24,7 @@ namespace Network
     struct OpenSocketParams
     {
         const Socket& socket;
-        const ByteString& str;
+        const ByteString& addr;
         bool verbose;
     };
 }
