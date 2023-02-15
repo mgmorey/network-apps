@@ -13,10 +13,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/to-string-address.h"              // Address,
-                                                    // operator<<(),
-                                                    // std::string(),
-                                                    // to_string()
+#include "network/to-string-address.h"          // Address,
+                                                // operator<<(),
+                                                // std::string(),
+                                                // to_string()
 
 #include <sstream>      // std::ostringstream
 
