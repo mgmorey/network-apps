@@ -17,11 +17,13 @@
                                         // OsErrorResult, Socket,
                                         // descriptor_type, open(),
                                         // operator<<()
+#include "network/address.h"            // Address
 #include "network/context-error.h"      // get_last_context_error(),
                                         // reset_last_context_error()
 #include "network/format-os-error.h"    // format_os_error()
 #include "network/get-length.h"         // get_length()
 #include "network/get-sa-pointer.h"     // get_sa_pointer()
+#include "network/is-valid.h"           // is_valid()
 #include "network/optionalstring.h"     // OptionalString
 #include "network/socket-error.h"       // socket_error
 #include "network/to-integer.h"         // to_integer()
@@ -35,7 +37,12 @@ static auto format(const Network::ByteString& addr,
                    Network::OptionalString& addr_str) -> std::string
 {
     if (!addr_str) {
-        addr_str = Network::to_string(addr);
+        if (Network::is_valid(addr)) {
+            addr_str = Network::to_string(Network::Address {addr});
+        }
+        else {
+            addr_str = Network::to_string(addr);
+        }
     }
 
     return *addr_str;
