@@ -19,6 +19,7 @@
                                         // get_endpoint(),
                                         // hostname_size_max,
                                         // service_size_max
+#include "network/address.h"            // Address
 #include "network/addresserror.h"       // AddressError
 #include "network/buffer.h"             // Buffer
 #include "network/bytestring.h"         // ByteString
@@ -26,6 +27,7 @@
 #include "network/get-length.h"         // get_length()
 #include "network/get-sa-pointer.h"     // get_sa_pointer()
 #include "network/is-valid.h"           // is_valid()
+#include "network/optionalstring.h"     // OptionalString
 #include "network/to-os-error.h"        // to_os_error()
 #include "network/to-string.h"          // to_string()
 
@@ -39,6 +41,21 @@
 #include <iostream>     // std::cout, std::endl
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
+
+static auto format(const Network::ByteString& addr,
+                   Network::OptionalString& addr_str) -> std::string
+{
+    if (!addr_str) {
+        try {
+            addr_str = Network::to_string(Network::Address {addr});
+        }
+        catch (const Network::AddressError& error) {
+            addr_str = Network::to_string(addr);
+        }
+    }
+
+    return *addr_str;
+}
 
 auto Network::get_endpointresult(const ByteString& addr, int flags,
                                  bool verbose) ->
@@ -55,10 +72,11 @@ auto Network::get_endpointresult(const ByteString& addr, int flags,
     Buffer service {service_size_max};
     const auto length {get_length(addr)};
     const auto* const pointer {get_sa_pointer(addr)};
+    OptionalString addr_str;
 
     if (verbose) {
         std::cout << "Calling ::getnameinfo("
-                  << addr
+                  << format(addr, addr_str)
                   << ", "
                   << length
                   << ", ..., "
@@ -74,7 +92,7 @@ auto Network::get_endpointresult(const ByteString& addr, int flags,
         const auto os_error {to_os_error(error)};
         std::ostringstream oss;
         oss << "Call to ::getnameinfo("
-            << addr
+            << format(addr, addr_str)
             << ", "
             << length
             << ", ..., "

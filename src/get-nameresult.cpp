@@ -16,20 +16,38 @@
 #include "network/get-nameresult.h"     // GetNameHandler,
                                         // OsErrorResult,
                                         // get_nameresult()
-#include "network/bytestring.h"         // ByteString
+#include "network/address.h"            // Address, ByteString
+#include "network/addresserror.h"       // AddressError
 #include "network/context-error.h"      // get_context_last_error(),
                                         // reset_context_last_error()
 #include "network/format-os-error.h"    // format_os_error()
 #include "network/get-length.h"         // get_length()
 #include "network/get-sa-pointer.h"     // get_sa_pointer()
+#include "network/optionalstring.h"     // OptionalString
 #include "network/socket-error.h"       // socket_error
 #include "network/ss-sizes.h"           // ss_size
 #include "network/to-integer.h"         // to_integer()
 #include "network/to-os-error.h"        // to_os_error()
 #include "network/to-size.h"            // to_size()
+#include "network/to-string.h"          // to_string()
 
 #include <iostream>     // std::cout, std::endl
 #include <sstream>      // std::ostringstream
+
+static auto format(const Network::ByteString& addr,
+                   Network::OptionalString& addr_str) -> std::string
+{
+    if (!addr_str) {
+        try {
+            addr_str = Network::to_string(Network::Address {addr});
+        }
+        catch (const Network::AddressError& error) {
+            addr_str = Network::to_string(addr);
+        }
+    }
+
+    return *addr_str;
+}
 
 auto Network::get_nameresult(const GetNameHandler& handler,
                              const GetNameParams& args) ->
@@ -39,6 +57,7 @@ auto Network::get_nameresult(const GetNameHandler& handler,
     auto length {get_length(addr)};
     auto* pointer {get_sa_pointer(addr)};
     reset_last_context_error();
+    OptionalString addr_str;
 
     if (args.verbose) {
         std::cout << "Calling "
@@ -46,7 +65,7 @@ auto Network::get_nameresult(const GetNameHandler& handler,
                   << '('
                   << args.handle
                   << ", "
-                  << addr
+                  << format(addr, addr_str)
                   << ", "
                   << to_integer(length)
                   << ", ...)"
@@ -62,7 +81,7 @@ auto Network::get_nameresult(const GetNameHandler& handler,
             << '('
             << args.handle
             << ", "
-            << addr
+            << format(addr, addr_str)
             << ", "
             << to_integer(length)
             << ", ...) failed with error "
