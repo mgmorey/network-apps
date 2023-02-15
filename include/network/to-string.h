@@ -16,6 +16,7 @@
 #ifndef NETWORK_TO_STRING_H
 #define NETWORK_TO_STRING_H
 
+#include "network/to-string-address.h"          // to_string()
 #include "network/to-string-bytestring.h"       // to_string()
 #include "network/to-string-sin.h"              // to_string()
 #include "network/to-string-sin6.h"             // to_string()
