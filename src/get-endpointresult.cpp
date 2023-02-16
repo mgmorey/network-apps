@@ -13,22 +13,22 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-endpointresult.h" // ByteString, Endpoint,
-                                        // EndpointResult,
-                                        // OsErrorResult,
-                                        // get_endpoint(),
-                                        // hostname_size_max,
-                                        // service_size_max
-#include "network/buffer.h"             // Buffer
-#include "network/bytestring.h"         // ByteString
-#include "network/format-ai-error.h"    // format_ai_error()
-#include "network/format-bytestring.h"  // format()
-#include "network/get-length.h"         // get_length()
-#include "network/get-sa-pointer.h"     // get_sa_pointer()
-#include "network/is-valid.h"           // is_valid()
-#include "network/optionalstring.h"     // OptionalString
-#include "network/to-os-error.h"        // to_os_error()
-#include "network/to-string.h"          // to_string()
+#include "network/get-endpointresult.h"         // ByteString,
+                                                // Endpoint,
+                                                // EndpointResult,
+                                                // OsErrorResult,
+                                                // get_endpoint(),
+                                                // hostname_size_max,
+                                                // service_size_max
+#include "network/buffer.h"                     // Buffer
+#include "network/format-ai-error.h"            // format_ai_error()
+#include "network/format-bytestring.h"          // format(),
+                                                // OptionalString
+#include "network/get-length.h"                 // get_length()
+#include "network/get-sa-pointer.h"             // get_sa_pointer()
+#include "network/is-valid.h"                   // is_valid()
+#include "network/to-os-error.h"                // to_os_error()
+#include "network/to-string.h"                  // to_string()
 
 #ifdef WIN32
 #include <ws2tcpip.h>   // ::getnameinfo()
@@ -36,7 +36,6 @@
 #include <netdb.h>      // ::getnameinfo()
 #endif
 
-#include <algorithm>    // std::max()
 #include <iostream>     // std::cout, std::endl
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
