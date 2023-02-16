@@ -19,11 +19,10 @@
                                         // get_endpoint(),
                                         // hostname_size_max,
                                         // service_size_max
-#include "network/address.h"            // Address
-#include "network/addresserror.h"       // AddressError
 #include "network/buffer.h"             // Buffer
 #include "network/bytestring.h"         // ByteString
 #include "network/format-ai-error.h"    // format_ai_error()
+#include "network/format-bytestring.h"  // format()
 #include "network/get-length.h"         // get_length()
 #include "network/get-sa-pointer.h"     // get_sa_pointer()
 #include "network/is-valid.h"           // is_valid()
@@ -41,21 +40,6 @@
 #include <iostream>     // std::cout, std::endl
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
-
-static auto format(const Network::ByteString& addr,
-                   Network::OptionalString& addr_str) -> std::string
-{
-    if (!addr_str) {
-        try {
-            addr_str = Network::to_string(Network::Address {addr});
-        }
-        catch (const Network::AddressError& error) {
-            addr_str = Network::to_string(addr);
-        }
-    }
-
-    return *addr_str;
-}
 
 auto Network::get_endpointresult(const ByteString& addr, int flags,
                                  bool verbose) ->
