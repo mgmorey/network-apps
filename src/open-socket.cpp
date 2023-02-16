@@ -19,11 +19,10 @@
                                         // operator<<()
 #include "network/context-error.h"      // get_last_context_error(),
                                         // reset_last_context_error()
-#include "network/format-bytestring.h"  // format()
+#include "network/format-bytestring.h"  // format(), OptionalString
 #include "network/format-os-error.h"    // format_os_error()
 #include "network/get-length.h"         // get_length()
 #include "network/get-sa-pointer.h"     // get_sa_pointer()
-#include "network/optionalstring.h"     // OptionalString
 #include "network/socket-error.h"       // socket_error
 #include "network/to-integer.h"         // to_integer()
 #include "network/to-os-error.h"        // to_os_error()
