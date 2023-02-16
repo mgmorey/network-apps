@@ -51,10 +51,10 @@ auto Network::get_endpointresult(const ByteString& addr, int flags,
         return OsErrorResult {0, oss.str()};
     }
 
+    const auto* const pointer {get_sa_pointer(addr)};
+    const auto length {get_length(addr)};
     Buffer host {hostname_size_max};
     Buffer service {service_size_max};
-    const auto length {get_length(addr)};
-    const auto* const pointer {get_sa_pointer(addr)};
     OptionalString addr_str;
 
     if (verbose) {
