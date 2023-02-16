@@ -18,11 +18,10 @@
                                         // get_nameresult()
 #include "network/context-error.h"      // get_context_last_error(),
                                         // reset_context_last_error()
-#include "network/format-bytestring.h"  // format()
+#include "network/format-bytestring.h"  // format(), OptionalString
 #include "network/format-os-error.h"    // format_os_error()
 #include "network/get-length.h"         // get_length()
 #include "network/get-sa-pointer.h"     // get_sa_pointer()
-#include "network/optionalstring.h"     // OptionalString
 #include "network/socket-error.h"       // socket_error
 #include "network/ss-sizes.h"           // ss_size
 #include "network/to-integer.h"         // to_integer()
