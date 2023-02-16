@@ -22,16 +22,21 @@
 #include "network/to-string-address.h"          // to_string()
 #include "network/to-string-bytestring.h"       // to_string()
 
+auto Network::format(const ByteString& addr) -> std::string
+{
+    try {
+        return to_string(Address {addr});
+    }
+    catch (const AddressError& error) {
+        return to_string(addr);
+    }
+}
+
 auto Network::format(const ByteString& addr,
                      OptionalString& addr_str) -> std::string
 {
     if (!addr_str) {
-        try {
-            addr_str = to_string(Address {addr});
-        }
-        catch (const AddressError& error) {
-            addr_str = to_string(addr);
-        }
+        addr_str = format(addr);
     }
 
     return *addr_str;

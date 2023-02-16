@@ -23,6 +23,7 @@
 
 namespace Network
 {
+    extern auto format(const Network::ByteString& addr) -> std::string;
     extern auto format(const Network::ByteString& addr,
                        Network::OptionalString& addr_str) -> std::string;
 }
