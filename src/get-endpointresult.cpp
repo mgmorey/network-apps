@@ -26,7 +26,6 @@
                                                 // OptionalString
 #include "network/get-length.h"                 // get_length()
 #include "network/get-sa-pointer.h"             // get_sa_pointer()
-#include "network/is-valid.h"                   // is_valid()
 #include "network/to-os-error.h"                // to_os_error()
 #include "network/to-string.h"                  // to_string()
 
@@ -44,13 +43,6 @@ auto Network::get_endpointresult(const ByteString& addr, int flags,
                                  bool verbose) ->
     Network::EndpointResult
 {
-    if (!is_valid(addr)) {
-        std::ostringstream oss;
-        oss << "Invalid socket address: "
-            << to_string(addr);
-        return OsErrorResult {0, oss.str()};
-    }
-
     const auto* const pointer {get_sa_pointer(addr)};
     const auto length {get_length(addr)};
     Buffer host {hostname_size_max};
