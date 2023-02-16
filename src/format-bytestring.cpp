@@ -22,9 +22,6 @@
 #include "network/to-string-address.h"          // to_string()
 #include "network/to-string-bytestring.h"       // to_string()
 
-#include <iostream>     // std::cout, std::endl
-#include <sstream>      // std::ostringstream
-
 auto Network::format(const ByteString& addr,
                      OptionalString& addr_str) -> std::string
 {
