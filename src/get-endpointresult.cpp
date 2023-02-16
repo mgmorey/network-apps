@@ -27,7 +27,6 @@
 #include "network/get-length.h"                 // get_length()
 #include "network/get-sa-pointer.h"             // get_sa_pointer()
 #include "network/to-os-error.h"                // to_os_error()
-#include "network/to-string.h"                  // to_string()
 
 #ifdef WIN32
 #include <ws2tcpip.h>   // ::getnameinfo()
