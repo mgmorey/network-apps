@@ -38,7 +38,6 @@ auto Network::get_nameresult(const GetNameHandler& handler,
     ByteString addr {ss_size, Byte {}};
     auto* const pointer {get_sa_pointer(addr)};
     auto length {get_length(addr)};
-    reset_last_context_error();
     OptionalString addr_str;
 
     if (args.verbose) {
@@ -53,6 +52,8 @@ auto Network::get_nameresult(const GetNameHandler& handler,
                   << ", ...)"
                   << std::endl;
     }
+
+    reset_last_context_error();
 
     if (handler.first(args.handle, pointer, &length) == socket_error) {
         const auto error = get_last_context_error();

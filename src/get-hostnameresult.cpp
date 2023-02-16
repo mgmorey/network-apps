@@ -37,7 +37,6 @@
 auto Network::get_hostnameresult(bool verbose) -> Network::HostnameResult
 {
     Buffer host_buffer {hostname_size_max};
-    reset_last_context_error();
 
     if (verbose) {
         std::cout << "Calling ::gethostname("
@@ -49,6 +48,7 @@ auto Network::get_hostnameresult(bool verbose) -> Network::HostnameResult
     }
 
     const auto size {to_name_len(host_buffer.size() - 1)};
+    reset_last_context_error();
 
     if (::gethostname(host_buffer.data(), size) == -1) {
         const auto error {get_last_context_error()};

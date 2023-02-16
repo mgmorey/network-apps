@@ -53,10 +53,10 @@ auto Network::create_socketresult(const SocketHints& hints,
                   << std::endl;
     }
 
-    reset_last_context_error();
     const auto handle {::socket(hints.family(),
                                 hints.socktype(),
                                 hints.protocol())};
+    reset_last_context_error();
 
     if (handle == descriptor_null) {
         const auto error = get_last_context_error();

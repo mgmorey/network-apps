@@ -35,7 +35,6 @@ auto Network::open(const OpenHandler& handler,
 {
     const auto* const pointer {get_sa_pointer(args.addr)};
     const auto length {get_length(args.addr)};
-    reset_last_context_error();
     OptionalString addr_str;
 
     if (args.verbose) {
@@ -52,6 +51,7 @@ auto Network::open(const OpenHandler& handler,
     }
 
     const descriptor_type handle {args.socket};
+    reset_last_context_error();
 
     if (handler.first(handle, pointer, length) == socket_error) {
         const auto error = get_last_context_error();
