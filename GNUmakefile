@@ -55,7 +55,7 @@ bytestring.cpp cleanup.cpp close.cpp connect-endpoint.cpp		\
 connect-socket.cpp context.cpp create-socket.cpp			\
 create-socketpair.cpp create-socketpairresult.cpp			\
 create-socketresult.cpp descriptor.cpp error.cpp format-ai-error.cpp	\
-format-os-error.cpp format.cpp get-endpoint.cpp				\
+format-bytestring.cpp format-os-error.cpp format.cpp get-endpoint.cpp	\
 get-endpointresult.cpp get-hostname.cpp get-hostnameresult.cpp		\
 get-hosts.cpp get-last-context-error.cpp get-last-os-error.cpp		\
 get-length.cpp get-name.cpp get-nameresult.cpp get-operands.cpp		\
