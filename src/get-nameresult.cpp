@@ -36,8 +36,8 @@ auto Network::get_nameresult(const GetNameHandler& handler,
     Network::ByteStringResult
 {
     ByteString addr {ss_size, Byte {}};
+    auto* const pointer {get_sa_pointer(addr)};
     auto length {get_length(addr)};
-    auto* pointer {get_sa_pointer(addr)};
     reset_last_context_error();
     OptionalString addr_str;
 
