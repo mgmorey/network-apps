@@ -17,16 +17,21 @@
                                         // OptionalString, std::string
 #include "network/format-bytestring.h"  // format()
 
+#include <ostream>
+
 Network::AddressString::AddressString(const ByteString& t_addr) noexcept :
     m_addr(t_addr)
 {
 }
 
-auto Network::AddressString::value() const -> std::string
+Network::AddressString::operator std::string() const
 {
-    if (!m_addr_str) {
-        m_addr_str = format(m_addr);
-    }
+    return format(m_addr, m_addr_str);
+}
 
-    return *m_addr_str;
+auto Network::operator<<(std::ostream& os,
+                         const AddressString& as) -> std::ostream&
+{
+    os << std::string(as);
+    return os;
 }

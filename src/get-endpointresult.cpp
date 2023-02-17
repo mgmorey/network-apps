@@ -48,7 +48,7 @@ auto Network::get_endpointresult(const ByteString& addr, int flags,
 
     if (verbose) {
         std::cout << "Calling ::getnameinfo("
-                  << addr_str.value()
+                  << addr_str
                   << ", "
                   << length
                   << ", ..., "
@@ -64,7 +64,7 @@ auto Network::get_endpointresult(const ByteString& addr, int flags,
         const auto os_error {to_os_error(error)};
         std::ostringstream oss;
         oss << "Call to ::getnameinfo("
-            << addr_str.value()
+            << addr_str
             << ", "
             << length
             << ", ..., "

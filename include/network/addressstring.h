@@ -30,12 +30,15 @@ namespace Network
         ~AddressString() noexcept = default;
         auto operator=(const AddressString&) noexcept -> AddressString& = default;
         auto operator=(AddressString&&) noexcept -> AddressString& = default;
-        [[nodiscard]] auto value() const -> std::string;
+        explicit operator std::string() const;
 
     private:
         ByteString m_addr;
         mutable OptionalString m_addr_str;
     };
+
+    extern auto operator<<(std::ostream& os,
+                           const AddressString& as) -> std::ostream&;
 }
 
 #endif

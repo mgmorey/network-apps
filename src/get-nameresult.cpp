@@ -46,7 +46,7 @@ auto Network::get_nameresult(const GetNameHandler& handler,
                   << '('
                   << args.handle
                   << ", "
-                  << addr_str.value()
+                  << addr_str
                   << ", "
                   << to_integer(length)
                   << ", ...)"
@@ -64,7 +64,7 @@ auto Network::get_nameresult(const GetNameHandler& handler,
             << '('
             << args.handle
             << ", "
-            << addr_str.value()
+            << addr_str
             << ", "
             << to_integer(length)
             << ", ...) failed with error "

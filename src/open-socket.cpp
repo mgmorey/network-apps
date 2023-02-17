@@ -43,7 +43,7 @@ auto Network::open(const OpenHandler& handler,
                   << '('
                   << args.socket
                   << ", "
-                  << addr_str.value()
+                  << addr_str
                   << ", "
                   << to_integer(length)
                   << ')'
@@ -62,7 +62,7 @@ auto Network::open(const OpenHandler& handler,
             << '('
             << args.socket
             << ", "
-            << addr_str.value()
+            << addr_str
             << ", "
             << to_integer(length)
             << ") failed with error "
