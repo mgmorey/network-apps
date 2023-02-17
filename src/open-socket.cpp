@@ -17,9 +17,9 @@
                                         // OsErrorResult, Socket,
                                         // descriptor_type, open(),
                                         // operator<<()
+#include "network/addressstring.h"      // AddressString
 #include "network/context-error.h"      // get_last_context_error(),
                                         // reset_last_context_error()
-#include "network/format-bytestring.h"  // format(), OptionalString
 #include "network/format-os-error.h"    // format_os_error()
 #include "network/get-length.h"         // get_length()
 #include "network/get-sa-pointer.h"     // get_sa_pointer()
@@ -35,7 +35,7 @@ auto Network::open(const OpenHandler& handler,
 {
     const auto* const pointer {get_sa_pointer(args.addr)};
     const auto length {get_length(args.addr)};
-    OptionalString addr_str;
+    const AddressString addr_str {args.addr};
 
     if (args.verbose) {
         std::cout << "Calling "
@@ -43,7 +43,7 @@ auto Network::open(const OpenHandler& handler,
                   << '('
                   << args.socket
                   << ", "
-                  << format(args.addr, addr_str)
+                  << addr_str.value()
                   << ", "
                   << to_integer(length)
                   << ')'
@@ -62,7 +62,7 @@ auto Network::open(const OpenHandler& handler,
             << '('
             << args.socket
             << ", "
-            << format(args.addr, addr_str)
+            << addr_str.value()
             << ", "
             << to_integer(length)
             << ") failed with error "

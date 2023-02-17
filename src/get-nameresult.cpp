@@ -16,9 +16,9 @@
 #include "network/get-nameresult.h"     // GetNameHandler,
                                         // OsErrorResult,
                                         // get_nameresult()
+#include "network/addressstring.h"      // AddressString
 #include "network/context-error.h"      // get_context_last_error(),
                                         // reset_context_last_error()
-#include "network/format-bytestring.h"  // format(), OptionalString
 #include "network/format-os-error.h"    // format_os_error()
 #include "network/get-length.h"         // get_length()
 #include "network/get-sa-pointer.h"     // get_sa_pointer()
@@ -38,7 +38,7 @@ auto Network::get_nameresult(const GetNameHandler& handler,
     ByteString addr {ss_size, Byte {}};
     auto* const pointer {get_sa_pointer(addr)};
     auto length {get_length(addr)};
-    OptionalString addr_str;
+    const AddressString addr_str {addr};
 
     if (args.verbose) {
         std::cout << "Calling "
@@ -46,7 +46,7 @@ auto Network::get_nameresult(const GetNameHandler& handler,
                   << '('
                   << args.handle
                   << ", "
-                  << format(addr, addr_str)
+                  << addr_str.value()
                   << ", "
                   << to_integer(length)
                   << ", ...)"
@@ -64,7 +64,7 @@ auto Network::get_nameresult(const GetNameHandler& handler,
             << '('
             << args.handle
             << ", "
-            << format(addr, addr_str)
+            << addr_str.value()
             << ", "
             << to_integer(length)
             << ", ...) failed with error "

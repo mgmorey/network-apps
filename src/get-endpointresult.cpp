@@ -20,10 +20,9 @@
                                                 // get_endpoint(),
                                                 // hostname_size_max,
                                                 // service_size_max
+#include "network/addressstring.h"              // AddressString
 #include "network/buffer.h"                     // Buffer
 #include "network/format-ai-error.h"            // format_ai_error()
-#include "network/format-bytestring.h"          // format(),
-                                                // OptionalString
 #include "network/get-length.h"                 // get_length()
 #include "network/get-sa-pointer.h"             // get_sa_pointer()
 #include "network/to-os-error.h"                // to_os_error()
@@ -43,13 +42,13 @@ auto Network::get_endpointresult(const ByteString& addr, int flags,
 {
     const auto* const pointer {get_sa_pointer(addr)};
     const auto length {get_length(addr)};
+    const AddressString addr_str {addr};
     Buffer host {hostname_size_max};
     Buffer service {service_size_max};
-    OptionalString addr_str;
 
     if (verbose) {
         std::cout << "Calling ::getnameinfo("
-                  << format(addr, addr_str)
+                  << addr_str.value()
                   << ", "
                   << length
                   << ", ..., "
@@ -65,7 +64,7 @@ auto Network::get_endpointresult(const ByteString& addr, int flags,
         const auto os_error {to_os_error(error)};
         std::ostringstream oss;
         oss << "Call to ::getnameinfo("
-            << format(addr, addr_str)
+            << addr_str.value()
             << ", "
             << length
             << ", ..., "
