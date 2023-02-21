@@ -16,7 +16,8 @@
 #ifndef NETWORK_CONTEXT_H
 #define NETWORK_CONTEXT_H
 
-#include "network/optionalversion.h"    // OptionalVersion, Version
+#include "network/optionalversion.h"    // OptionalVersion, Version,
+                                        // std::string
 
 #include <ostream>      // std::ostream
 
