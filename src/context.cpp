@@ -15,7 +15,7 @@
 
 #include "network/context.h"            // Context, Version,
                                         // operator<<(), std::endl,
-                                        // std::ostream, std::string
+                                        // std::string
 #include "network/cleanup.h"            // cleanup()
 #include "network/exceptions.h"         // Error, RuntimeError
 #include "network/is-running.h"         // is_running()
@@ -108,24 +108,4 @@ auto Network::Context::shutdown(failure_mode t_mode) -> void
     if (m_is_started && cleanup(t_mode) == 0) {
         m_is_started = false;
     }
-}
-
-auto Network::operator<<(std::ostream& os,
-                         const Context& context) -> std::ostream&
-{
-    const auto& description {context.description()};
-    const auto& status {context.system_status()};
-    const auto version {context.version()};
-    os << description;
-
-    os << " Version "
-       << version;
-
-    if (!status.empty()) {
-        os << ' '
-           << status;
-    }
-
-    os << std::endl;
-    return os;
 }
