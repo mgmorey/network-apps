@@ -18,7 +18,7 @@
 
 #include <sstream>      // std::ostringstream
 
-auto Network::to_string(const Version& version) -> std::string
+auto Network::to_string(Version version) -> std::string
 {
     std::ostringstream oss;
     oss << version;

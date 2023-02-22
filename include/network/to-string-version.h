@@ -22,7 +22,7 @@
 
 namespace Network
 {
-    extern auto to_string(const Version& version) -> std::string;
+    extern auto to_string(Version version) -> std::string;
 }
 
 #endif
