@@ -19,8 +19,8 @@
 auto Network::operator<<(std::ostream& os,
                          Version version) -> std::ostream&
 {
-    os << version.major()
+    os << version.m_major
        << '.'
-       << version.minor();
+       << version.m_minor;
     return os;
 }

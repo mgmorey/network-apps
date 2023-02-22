@@ -27,7 +27,7 @@ namespace Network
                                Version version) -> std::ostream&;
 
     public:
-        using field_type = unsigned char;
+        using field_type = unsigned short;
 
         constexpr Version() noexcept = default;
 
