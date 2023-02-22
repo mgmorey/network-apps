@@ -67,16 +67,6 @@ namespace Network
                     m_minor != t_other.m_minor);
         }
 
-        [[nodiscard]] constexpr auto major() const noexcept -> int
-        {
-            return m_major;
-        }
-
-        [[nodiscard]] constexpr auto minor() const noexcept -> int
-        {
-            return m_minor;
-        }
-
     private:
         field_type m_major {0};
         field_type m_minor {0};
