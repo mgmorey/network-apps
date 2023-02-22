@@ -15,13 +15,9 @@
 
 #include "network/descriptor.h"                 // Descriptor,
                                                 // descriptor_null,
-                                                // descriptor_type,
-                                                // operator<<(),
-                                                // std::ostream,
-                                                // std::to_string()
+                                                // descriptor_type
 #include "network/close.h"                      // close()
 #include "network/remove-socket.h"              // remove_socket()
-#include "network/string-null.h"                // string_null
 
 #include <iostream>     // std::cerr, std::endl
 
