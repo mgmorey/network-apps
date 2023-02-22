@@ -25,7 +25,7 @@
 #endif
 
 auto Network::operator<<(std::ostream& os,
-                         const SocketFamily& family) noexcept -> std::ostream&
+                         const SocketFamily& family) -> std::ostream&
 {
     switch (socket_family_type {family}) {
     case AF_UNSPEC:

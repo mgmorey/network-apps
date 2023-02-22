@@ -29,6 +29,9 @@ namespace Network
 {
     struct Template
     {
+        friend auto operator<<(std::ostream& os,
+                               const Template& sock) -> std::ostream&;
+
         Template() noexcept = default;
         explicit Template(int t_family,
                           int t_socktype = 0,
@@ -61,7 +64,7 @@ namespace Network
     };
 
     extern auto operator<<(std::ostream& os,
-                           const Template& sock) noexcept -> std::ostream&;
+                           const Template& sock) -> std::ostream&;
 }
 
 #endif

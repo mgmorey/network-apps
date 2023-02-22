@@ -26,6 +26,9 @@ namespace Network
     class SocketFlags :
         public Integer<socket_flags_type>
     {
+        friend auto operator<<(std::ostream& os,
+                               const SocketFlags& flags) -> std::ostream&;
+
     public:
         constexpr explicit SocketFlags(socket_flags_type t_value) noexcept :
             Integer(t_value)

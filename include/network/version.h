@@ -23,6 +23,9 @@ namespace Network
 {
     class Version
     {
+        friend auto operator<<(std::ostream& os,
+                               Version version) -> std::ostream&;
+
     public:
         using field_type = unsigned char;
 

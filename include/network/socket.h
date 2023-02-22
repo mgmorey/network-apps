@@ -34,6 +34,9 @@ namespace Network
 {
     class Socket
     {
+        friend auto operator<<(std::ostream& os,
+                               const Socket& sock) -> std::ostream&;
+
     public:
         Socket(socket_family_type t_family,
                socket_type_type t_socktype,
@@ -64,7 +67,7 @@ namespace Network
     };
 
     extern auto operator<<(std::ostream& os,
-                           const Socket& sock) noexcept -> std::ostream&;
+                           const Socket& sock) -> std::ostream&;
 }
 
 #endif

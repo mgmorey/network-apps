@@ -23,6 +23,9 @@ namespace Network
 {
     class AddressString
     {
+        friend auto operator<<(std::ostream& os,
+                               const AddressString& as) -> std::ostream&;
+
     public:
         explicit AddressString(const ByteString& t_addr) noexcept;
         AddressString(const AddressString&) noexcept = default;

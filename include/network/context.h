@@ -25,6 +25,9 @@ namespace Network
 {
     class Context
     {
+        friend auto operator<<(std::ostream& os,
+                               const Context& context) -> std::ostream&;
+
     public:
         enum class failure_mode {return_error, return_zero, throw_error};
         static auto instance() -> const Context&;

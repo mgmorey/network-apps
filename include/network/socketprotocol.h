@@ -28,6 +28,9 @@ namespace Network
     class SocketProtocol :
         public Integer<socket_protocol_type>
     {
+        friend auto operator<<(std::ostream& os,
+                               const SocketProtocol& protocol) -> std::ostream&;
+
     public:
         constexpr SocketProtocol(socket_family_type t_family,
                                  socket_protocol_type t_value) noexcept :
@@ -46,8 +49,7 @@ namespace Network
     };
 
     extern auto operator<<(std::ostream& os,
-                           const SocketProtocol& protocol) noexcept ->
-        std::ostream&;
+                           const SocketProtocol& protocol) -> std::ostream&;
 }
 
 #endif

@@ -34,6 +34,9 @@ namespace Network
 {
     class Address
     {
+        friend auto operator<<(std::ostream& os,
+                               const Address& address) -> std::ostream&;
+
     public:
         using value_type = ByteString;
 

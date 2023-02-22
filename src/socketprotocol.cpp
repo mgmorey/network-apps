@@ -27,7 +27,7 @@
 #endif
 
 auto Network::operator<<(std::ostream& os,
-                         const SocketProtocol& protocol) noexcept -> std::ostream&
+                         const SocketProtocol& protocol) -> std::ostream&
 {
     switch (socket_family_type {protocol.family()}) {
     case AF_INET:

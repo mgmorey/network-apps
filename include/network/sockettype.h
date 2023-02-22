@@ -26,6 +26,9 @@ namespace Network
     class SocketType :
         public Integer<socket_type_type>
     {
+        friend auto operator<<(std::ostream& os,
+                               const SocketType& socktype) -> std::ostream&;
+
     public:
         constexpr explicit SocketType(socket_type_type t_value) noexcept :
             Integer(t_value)

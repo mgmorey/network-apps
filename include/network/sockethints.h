@@ -32,6 +32,9 @@ namespace Network
 {
     struct SocketHints
     {
+        friend auto operator<<(std::ostream& os,
+                               const SocketHints& hints) -> std::ostream&;
+
         constexpr SocketHints() noexcept = default;
 
         constexpr explicit SocketHints(socket_flags_type t_flags,
