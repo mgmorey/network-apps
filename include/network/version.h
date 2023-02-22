@@ -21,12 +21,11 @@
 
 namespace Network
 {
-    class Version
+    struct Version
     {
         friend auto operator<<(std::ostream& os,
                                Version version) -> std::ostream&;
 
-    public:
         using field_type = unsigned short;
 
         constexpr Version() noexcept = default;
@@ -68,8 +67,8 @@ namespace Network
         }
 
     private:
-        field_type m_major {0};
-        field_type m_minor {0};
+        field_type m_major {0U};
+        field_type m_minor {0U};
     };
 
     extern auto operator<<(std::ostream& os,
