@@ -14,7 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/to-string-version.h"  // Version, std::string,
-                                        // to_string()
+                                        // operator<<(), to_string()
 
 #include <sstream>      // std::ostringstream
 
