@@ -16,15 +16,6 @@
 #include "network/version.h"            // Version, operator<<(),
                                         // std::ostream
 
-#include <sstream>      // std::ostringstream
-
-// Network::Version::operator std::string() const
-// {
-//     std::ostringstream oss;
-//     oss << *this;
-//     return oss.str();
-// }
-
 auto Network::operator<<(std::ostream& os,
                          Version version) -> std::ostream&
 {
