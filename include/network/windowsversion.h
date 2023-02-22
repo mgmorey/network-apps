@@ -19,18 +19,22 @@
 #include "network/version.h"            // Version
 
 #ifdef WIN32
-#include <winsock2.h>       // WSADATA, WSAEFAULT, WSAEPROCLIM,
-                            // WSASYSNOTREADY, WSAVERNOTSUPPORTED,
-                            // WSAStartup()
+#include <winsock2.h>       // Always include winsock2.h before
+                            // windows.h on Windows
 #include <windows.h>        // WORD
 #endif
 
 namespace Network
 {
-    class WindowsVersion :
+    struct WindowsVersion :
         public Version
     {
-    public:
+#ifdef WIN32
+        using value_type = WORD;
+#else
+        using value_type = unsigned;
+#endif
+
         explicit constexpr WindowsVersion(const Version& t_version) noexcept :
             Version(t_version)
         {
@@ -41,23 +45,19 @@ namespace Network
         {
         }
 
-#ifdef WIN32
-
-        explicit constexpr WindowsVersion(WORD t_version) noexcept :
+        explicit constexpr WindowsVersion(value_type t_version) noexcept :
             Version(static_cast<field_type>(t_version % m_radix),
                     static_cast<field_type>(t_version / m_radix))
         {
         }
 
-        explicit constexpr operator WORD() const noexcept
+        explicit constexpr operator value_type() const noexcept
         {
             return minor() * m_radix + major();
         }
 
     private:
-        static constexpr auto m_radix {0x100};
-
-#endif
+        static constexpr value_type m_radix {0x100U};
     };
 }
 
