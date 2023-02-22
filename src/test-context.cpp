@@ -17,7 +17,7 @@
 #include "network/cleanup.h"            // cleanup()
 #include "network/network.h"            // Context, Error,
                                         // OptionalVersion, Version,
-                                        // get_hostname()
+                                        // get_hostname(), to_string()
 #include "network/parse.h"              // parse()
 
 #ifdef WIN32
@@ -235,11 +235,11 @@ namespace TestContext
             const Context context_1 {version_1_0};
             test_context(context_1, "local 1", version_1_0);
             assert(context_1.version() == version_1_0);
-            assert(std::string {context_1.version()} == "1.0");
+            assert(to_string(context_1.version()) == "1.0");
             const Context context_2 {version_2_0};
             test_context(context_2, "local 2", version_2_0);
             assert(context_2.version() == version_2_0);
-            assert(std::string {context_2.version()} == "2.0");
+            assert(to_string(context_2.version()) == "2.0");
         }
         catch (const Error& error) {
             print(error);

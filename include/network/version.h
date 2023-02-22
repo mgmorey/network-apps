@@ -67,8 +67,6 @@ namespace Network
                     m_minor != t_other.m_minor);
         }
 
-        explicit operator std::string() const;
-
         [[nodiscard]] constexpr auto major() const noexcept -> int
         {
             return m_major;

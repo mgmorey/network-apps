@@ -1,4 +1,4 @@
-// Copyright (C) 2022  "Michael G. Morey" <mgmorey@gmail.com>
+// Copyright (C) 2023  "Michael G. Morey" <mgmorey@gmail.com>
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,23 +13,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/version.h"            // Version, operator<<(),
-                                        // std::ostream
+#include "network/to-string-version.h"  // Version, std::string,
+                                        // to_string()
 
 #include <sstream>      // std::ostringstream
 
-// Network::Version::operator std::string() const
-// {
-//     std::ostringstream oss;
-//     oss << *this;
-//     return oss.str();
-// }
-
-auto Network::operator<<(std::ostream& os,
-                         Version version) -> std::ostream&
+auto Network::to_string(const Version& version) -> std::string
 {
-    os << version.major()
-       << '.'
-       << version.minor();
-    return os;
+    std::ostringstream oss;
+    oss << version;
+    return oss.str();
 }

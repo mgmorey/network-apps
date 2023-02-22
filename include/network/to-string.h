@@ -20,5 +20,6 @@
 #include "network/to-string-bytestring.h"       // to_string()
 #include "network/to-string-sin.h"              // to_string()
 #include "network/to-string-sin6.h"             // to_string()
+#include "network/to-string-version.h"          // to_string()
 
 #endif
