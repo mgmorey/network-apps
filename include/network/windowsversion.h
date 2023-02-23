@@ -32,7 +32,7 @@ namespace Network
 #ifdef WIN32
         using value_type = WORD;
 #else
-        using value_type = unsigned;
+        using value_type = unsigned short;
 #endif
 
         explicit constexpr WindowsVersion(const Version& t_version) noexcept :
