@@ -32,6 +32,7 @@
 
 namespace TestContext
 {
+    using Network::Context;
     using Network::Error;
     using Network::Hostname;
     using Network::OptionalVersion;
@@ -93,27 +94,27 @@ namespace TestContext
 #endif
     static constexpr auto version_invalid {Version {0, 0}};
 
-    static const auto mode {Network::Context::failure_mode::return_error};
+    static const auto mode {Context::failure_mode::return_error};
     static bool verbose {false};  // NOLINT
 
-    class Context :
-        public Network::Context
+    class TestContext :
+        public Context
     {
     public:
-        static auto instance() -> Context&
+        static auto instance() -> TestContext&
         {
-            static Context context;
+            static TestContext context;
             return context;
         }
 
-        explicit Context(const OptionalVersion& t_version = {}) :
-            Network::Context(t_version)
+        explicit TestContext(const OptionalVersion& t_version = {}) :
+            Context(t_version)
         {
         }
 
         auto shutdown() -> void
         {
-            Network::Context::shutdown(mode);
+            Context::shutdown(mode);
         }
     };
 
@@ -136,7 +137,7 @@ namespace TestContext
         static_cast<void>(_);
     }
 
-    static auto print(const Context& context,
+    static auto print(const TestContext& context,
                       const std::string& scope) -> void
     {
         std::cout << "Context";
@@ -174,7 +175,7 @@ namespace TestContext
         }
     }
 
-    static auto test_context(const Context& context,
+    static auto test_context(const TestContext& context,
                              const std::string& scope = "",
                              OptionalVersion version = {}) -> void
     {
@@ -206,8 +207,8 @@ namespace TestContext
         std::string actual_error_str;
 
         try {
-            Context& context1 {Context::instance()};
-            Context& context2 {Context::instance()};
+            TestContext& context1 {TestContext::instance()};
+            TestContext& context2 {TestContext::instance()};
             test_context(context1, "global");
             test_context(context2, "global");
             assert(&context1 == &context2);
@@ -232,11 +233,11 @@ namespace TestContext
         std::string actual_error_str;
 
         try {
-            const Context context_1 {version_1_0};
+            const TestContext context_1 {version_1_0};
             test_context(context_1, "local 1", version_1_0);
             assert(context_1.version() == version_1_0);
             assert(to_string(context_1.version()) == "1.0");
-            const Context context_2 {version_2_0};
+            const TestContext context_2 {version_2_0};
             test_context(context_2, "local 2", version_2_0);
             assert(context_2.version() == version_2_0);
             assert(to_string(context_2.version()) == "2.0");
@@ -255,7 +256,7 @@ namespace TestContext
         std::string actual_error_str;
 
         try {
-            Context context;
+            TestContext context;
             test_context(context, "local 3");
             context.shutdown();
         }
@@ -273,7 +274,7 @@ namespace TestContext
         std::string actual_error_str;
 
         try {
-            const Context context;
+            const TestContext context;
             test_context(context, "local 4");
         }
         catch (const Error& error) {
@@ -290,7 +291,7 @@ namespace TestContext
         std::string actual_error_str;
 
         try {
-            const Context context {version_invalid};
+            const TestContext context {version_invalid};
             static_cast<void>(context);
         }
         catch (const Error& error) {
@@ -307,7 +308,7 @@ namespace TestContext
         std::string actual_error_str;
 
         try {
-            const Context context;
+            const TestContext context;
             test_context(context, "local 5");
             static_cast<void>(get_hostname(verbose));
         }
