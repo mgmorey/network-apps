@@ -18,7 +18,7 @@
 
 #include "network/socket.h"             // Socket
 
-#include <string>      // std::string
+#include <string>       // std::string
 
 namespace Network
 {

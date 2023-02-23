@@ -18,7 +18,7 @@
 
 #include "network/version.h"            // Version
 
-#include <string>      // std::string
+#include <string>       // std::string
 
 namespace Network
 {
