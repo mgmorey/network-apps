@@ -15,12 +15,10 @@
 
 #include "network/socket.h"             // Descriptor, Socket,
                                         // descriptor_null,
-                                        // descriptor_type,
-                                        // operator<<(), std::ostream
+                                        // descriptor_type
 #include "network/create-socket.h"      // create_socket()
 #include "network/get-peername.h"       // get_peername()
 #include "network/get-sockname.h"       // get_sockname()
-#include "network/string-null.h"        // string_null
 
 #include <string>       // std::string
 
@@ -55,15 +53,6 @@ Network::Socket::operator descriptor_type() const noexcept
     return m_descriptor->handle();
 }
 
-Network::Socket::operator std::string() const
-{
-    if (m_descriptor->handle() == descriptor_null) {
-        return string_null;
-    }
-
-    return std::to_string(m_descriptor->handle());
-}
-
 auto Network::Socket::close() -> Socket&
 {
     m_descriptor->close();
@@ -83,10 +72,4 @@ auto Network::Socket::peername() const -> ByteString
 auto Network::Socket::sockname() const -> ByteString
 {
     return get_sockname(m_descriptor->handle(), m_descriptor->verbose());
-}
-
-auto Network::operator<<(std::ostream& os,
-                         const Socket& sock) -> std::ostream&
-{
-    return os << std::string {sock};
 }

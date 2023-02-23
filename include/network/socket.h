@@ -56,7 +56,6 @@ namespace Network
         auto operator=(const Socket&) noexcept -> Socket& = default;
         auto operator=(Socket&&) noexcept -> Socket& = default;
         explicit operator descriptor_type() const noexcept;
-        explicit operator std::string() const;
         auto close() -> Socket&;
         [[nodiscard]] auto is_open() const noexcept -> bool;
         [[nodiscard]] auto peername() const -> ByteString;
