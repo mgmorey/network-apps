@@ -37,7 +37,9 @@ auto Network::cleanup(Context::failure_mode t_mode) ->
     if (::WSACleanup() == socket_error) {
         const auto error {get_last_context_error()};
 
-        if (t_mode == Context::failure_mode::throw_error) {
+        switch (t_mode) {
+        case Context::failure_mode::throw_error:
+        {
             const auto os_error {to_os_error(error)};
             const auto message {format_os_error(os_error)};
 
@@ -52,16 +54,18 @@ auto Network::cleanup(Context::failure_mode t_mode) ->
             default:
                 throw Error {message};
             }
+            break;
         }
-        else if (t_mode == Context::failure_mode::return_zero) {
+        case Context::failure_mode::return_zero:
             switch (error) {  // NOLINT
             case WSANOTINITIALISED:
                 return 0;
                 break;
             }
+            break;
+        default:
+            return error;
         }
-
-        return error;
     }
 
 #else
