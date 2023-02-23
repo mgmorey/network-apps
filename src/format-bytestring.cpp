@@ -19,8 +19,7 @@
                                                 // std::string
 #include "network/address.h"                    // Address
 #include "network/addresserror.h"               // AddressError
-#include "network/to-string-address.h"          // to_string()
-#include "network/to-string-bytestring.h"       // to_string()
+#include "network/to-string.h"                  // to_string()
 
 auto Network::format(const ByteString& addr) -> std::string
 {

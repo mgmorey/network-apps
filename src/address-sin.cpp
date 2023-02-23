@@ -13,15 +13,18 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/address.h"            // AF_INET, INET_ADDRSTRLEN,
-                                        // Address, in_addr
-                                        // inet_ntop(), port_type,
-                                        // sockaddr_in
-#include "network/buffer.h"             // Buffer
-#include "network/get-sin-addr.h"       // get_sin_addr()
-#include "network/get-sin-pointer.h"    // get_sin_pointer()
-#include "network/get-sin-port.h"       // get_sin_port()
-#include "network/to-string-sin.h"      // std::string, to_string()
+#include "network/address.h"                    // AF_INET,
+                                                // INET_ADDRSTRLEN,
+                                                // Address, in_addr
+                                                // inet_ntop(),
+                                                // port_type,
+                                                // sockaddr_in
+#include "network/buffer.h"                     // Buffer
+#include "network/get-sin-addr.h"               // get_sin_addr()
+#include "network/get-sin-pointer.h"            // get_sin_pointer()
+#include "network/get-sin-port.h"               // get_sin_port()
+#include "network/to-string-in-addr.h"          // std::string,
+                                                // to_string()
 
 auto Network::Address::sin_addr() const noexcept -> in_addr
 {

@@ -21,7 +21,7 @@
 #include "network/get-sa-family.h"              // get_sa_family()
 #include "network/get-sa-length.h"              // get_sa_length()
 #include "network/get-sa-pointer.h"             // get_sa_pointer()
-#include "network/to-string-bytestring.h"       // to_string()
+#include "network/to-string.h"                  // to_string()
 
 auto Network::Address::sa_data() const noexcept -> Network::Address::value_type
 {

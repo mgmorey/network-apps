@@ -16,10 +16,17 @@
 #ifndef NETWORK_TO_STRING_H
 #define NETWORK_TO_STRING_H
 
-#include "network/to-string-address.h"          // to_string()
-#include "network/to-string-bytestring.h"       // to_string()
-#include "network/to-string-sin.h"              // to_string()
-#include "network/to-string-sin6.h"             // to_string()
-#include "network/to-string-version.h"          // to_string()
+#include <sstream>      // std::ostringstream
+#include <string>       // std::string
+
+namespace Network
+{
+    auto to_string(const auto& value) -> std::string
+    {
+        std::ostringstream oss;
+        oss << value;
+        return oss.str();
+    }
+}
 
 #endif

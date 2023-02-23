@@ -28,7 +28,7 @@
 #include "network/string-null.h"                // string_null
 #include "network/to-bytestring-ai.h"           // ByteString,
                                                 // to_bytestring()
-#include "network/to-string-bytestring.h"       // to_string()
+#include "network/to-string.h"                  // to_string()
 
 #ifdef WIN32
 #include <ws2tcpip.h>   // addrinfo

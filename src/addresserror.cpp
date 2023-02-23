@@ -16,7 +16,7 @@
 #include "network/addresserror.h"               // AddressError,
                                                 // ByteString,
                                                 // LogicError
-#include "network/to-string-bytestring.h"       // to_string()
+#include "network/to-string.h"                  // to_string()
 
 Network::AddressError::AddressError(const ByteString& t_str) noexcept :
     LogicError("Invalid socket address: " +

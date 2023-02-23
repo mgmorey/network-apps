@@ -1,4 +1,4 @@
-// Copyright (C) 2023  "Michael G. Morey" <mgmorey@gmail.com>
+// Copyright (C) 2022  "Michael G. Morey" <mgmorey@gmail.com>
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,16 +13,20 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/to-string-socket.h"           // Socket,
-                                                // operator<<(),
-                                                // std::string,
-                                                // to_string()
+#ifndef NETWORK_TO_STRING_IN6_ADDR_H
+#define NETWORK_TO_STRING_IN6_ADDR_H
 
-#include <sstream>      // std::ostringstream
+#ifdef WIN32
+#include <ws2tcpip.h>       // in6_addr
+#else
+#include <netinet/in.h>     // in6_addr
+#endif
 
-auto Network::to_string(const Socket& socket) -> std::string
+#include <string>       // std::string
+
+namespace Network
 {
-    std::ostringstream oss;
-    oss << socket;
-    return oss.str();
+    extern auto to_string(const in6_addr& addr) noexcept -> std::string;
 }
+
+#endif
