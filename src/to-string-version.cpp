@@ -13,8 +13,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/to-string-version.h"  // Version, std::string,
-                                        // operator<<(), to_string()
+#include "network/to-string-version.h"          // Version,
+                                                // operator<<(),
+                                                // std::string,
+                                                // to_string()
 
 #include <sstream>      // std::ostringstream
 
