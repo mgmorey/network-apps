@@ -20,8 +20,6 @@
 #include "network/sin-sizes.h"          // sin_size
 #include "network/sin6-sizes.h"         // sin6_size
 #include "network/ss-sizes.h"           // ss_size
-#ifndef WIN32
 #include "network/sun-sizes.h"          // sun_size
-#endif
 
 #endif
