@@ -16,7 +16,6 @@
 #include "network/bytestring.h"         // Byte, ByteString,
                                         // operator<<(), std::ios,
                                         // std::ostream
-#include "network/to-integer.h"         // to_integer()
 
 #include <iomanip>      // std::hex, std::setfill(), std::setw(),
                         // std::uppercase
@@ -38,7 +37,7 @@ auto Network::operator<<(std::ostream& os,
             os << std::setfill('0')
                << std::setw(2)
                << std::uppercase
-               << Network::to_integer<unsigned>(byte);
+               << static_cast<unsigned>(byte);
         }
     }
 
