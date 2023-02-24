@@ -46,11 +46,9 @@ auto Network::cleanup(Context::failure_mode t_mode) ->
             switch (error) {  // NOLINT
             case WSANOTINITIALISED:
                 throw LogicError {message};
-                break;
             case WSAEINPROGRESS:
             case WSAENETDOWN:
                 throw RuntimeError {message};
-                break;
             default:
                 throw Error {message};
             }
@@ -60,7 +58,8 @@ auto Network::cleanup(Context::failure_mode t_mode) ->
             switch (error) {  // NOLINT
             case WSANOTINITIALISED:
                 return 0;
-                break;
+            default:
+                return error;
             }
             break;
         case Context::failure_mode::return_error:
