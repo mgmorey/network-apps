@@ -63,7 +63,7 @@ auto Network::cleanup(Context::failure_mode t_mode) ->
                 break;
             }
             break;
-        default:
+        case Context::failure_mode::return_error:
             return error;
         }
     }
