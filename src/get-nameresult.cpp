@@ -24,7 +24,6 @@
 #include "network/get-sa-pointer.h"     // get_sa_pointer()
 #include "network/socket-error.h"       // socket_error
 #include "network/ss-sizes.h"           // ss_size
-#include "network/to-integer.h"         // to_integer()
 #include "network/to-os-error.h"        // to_os_error()
 #include "network/to-size.h"            // to_size()
 
@@ -48,7 +47,7 @@ auto Network::get_nameresult(const GetNameHandler& handler,
                   << ", "
                   << addr_str
                   << ", "
-                  << to_integer(length)
+                  << length
                   << ", ...)"
                   << std::endl;
     }
@@ -66,7 +65,7 @@ auto Network::get_nameresult(const GetNameHandler& handler,
             << ", "
             << addr_str
             << ", "
-            << to_integer(length)
+            << length
             << ", ...) failed with error "
             << error
             << ": "
