@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/sizeerror.h"          // Error, SizeError
+#include "network/sizeerror.h"          // RangeError, SizeError
 
 #include <climits>      // SIZE_MAX
 #include <sstream>      // std::ostringstream
