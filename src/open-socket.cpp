@@ -24,7 +24,6 @@
 #include "network/get-length.h"         // get_length()
 #include "network/get-sa-pointer.h"     // get_sa_pointer()
 #include "network/socket-error.h"       // socket_error
-#include "network/to-integer.h"         // to_integer()
 #include "network/to-os-error.h"        // to_os_error()
 
 #include <iostream>     // std::cout, std::endl
@@ -45,7 +44,7 @@ auto Network::open(const OpenHandler& handler,
                   << ", "
                   << addr_str
                   << ", "
-                  << to_integer(length)
+                  << length
                   << ')'
                   << std::endl;
     }
@@ -64,7 +63,7 @@ auto Network::open(const OpenHandler& handler,
             << ", "
             << addr_str
             << ", "
-            << to_integer(length)
+            << length
             << ") failed with error "
             << error
             << ": "
