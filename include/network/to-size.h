@@ -16,7 +16,7 @@
 #ifndef NETWORK_TO_SIZE_H
 #define NETWORK_TO_SIZE_H
 
-#include "network/sizeerror.h"          // RangeError
+#include "network/sizeerror.h"          // SizeError
 
 #include <climits>      // SIZE_MAX
 #include <cstddef>      // std::size_t
