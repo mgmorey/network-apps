@@ -62,6 +62,7 @@ dkms.conf
 .cache
 
 # Compile commands
+compile_commands.events.json
 compile_commands.json
 
 # CppCheck files
