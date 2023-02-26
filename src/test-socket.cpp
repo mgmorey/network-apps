@@ -91,7 +91,7 @@ namespace TestSocket
 
     static auto get_pathname(std::string::size_type size) -> Pathname
     {
-        const Pathname prefix("/tmp/");
+        const Pathname prefix {"/tmp/"};
         Pathname pathname(size, 'X');
 
         if (pathname.length() > prefix.length()) {
