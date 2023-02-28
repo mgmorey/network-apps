@@ -20,23 +20,14 @@
                                         // get_size_min()
 #include "network/get-sun-length.h"     // get_sun_length()
 #include "network/get-sun-pointer.h"    // get_sun_pointer()
-#include "network/offsets.h"            // sun_path_offset
 #include "network/os-features.h"        // HAVE_SOCKADDR_SA_LEN
-#include "network/sizes.h"              // sin_size, sin6_size,
-                                        // sockaddr_size_max, sun_size
 
 #ifdef WIN32
-#include <winsock2.h>       // AF_INET, AF_INET6, AF_LOCAL, AF_UNIX,
-                            // sockaddr, sockaddr_in, sockaddr_storage
-#include <ws2tcpip.h>       // sockaddr_in6
+#include <winsock2.h>       // AF_INET, AF_INET6, AF_UNIX, AF_UNSPEC
 #else
-#include <netinet/in.h>     // sockaddr_in, sockaddr_in6
-#include <sys/socket.h>     // AF_INET, AF_INET6, AF_LOCAL, AF_UNIX,
-                            // sockaddr, sockaddr_storage
-#include <sys/un.h>         // sockaddr_un
+#include <sys/socket.h>     // AF_INET, AF_INET6, AF_UNIX, AF_UNSPEC
 #endif
 
-#include <cstddef>      // std::size_t
 #include <iomanip>      // std::right, std::setw()
 #include <iostream>     // std::cout, std::endl
 
