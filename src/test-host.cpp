@@ -230,10 +230,10 @@ namespace TestHost
     static auto test_host(const OptionalHostname& host,
                           const OptionalHints& hints = {}) -> void
     {
-        auto hosts_result {get_hosts(host, hints)};
+        const auto hosts_result {get_hosts(host, hints)};
         const auto family {get_family(hints)};
         std::visit(Overloaded {
-                [&](HostVector& hosts) {
+                [&](const HostVector& hosts) {
                     if (hosts.empty()) {
                         return;
                     }
