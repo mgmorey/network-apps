@@ -19,9 +19,7 @@
                                         // OptionalHostname,
                                         // get_hosts()
 #include "network/insert-addrinfo.h"    // insert_addrinfo()
-#include "network/uniquify.h"           // uniquify()
 
-#include <algorithm>    // std::sort()
 #include <iterator>     // std::back_inserter()
 #include <optional>     // std::nullopt
 
@@ -40,7 +38,5 @@ auto Network::get_hosts(const Network::OptionalHostname& hostname,
         return result;
     }
 
-    std::sort(hosts.begin(), hosts.end());
-    uniquify(hosts);
     return hosts;
 }
