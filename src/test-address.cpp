@@ -56,6 +56,7 @@ namespace TestAddress
     using Network::Hostname;
     using Network::OsErrorResult;
     using Network::Overloaded;
+    using Network::SocketHints;
     using Network::SocketFamily;
     using Network::get_hosts;
     using Network::get_sa_family;
@@ -70,6 +71,10 @@ namespace TestAddress
     static constexpr auto invalid_addr_size {8};
     static constexpr auto print_key_width {20};
     static constexpr auto print_value_width {10};
+
+    static constexpr SocketHints unspec {
+        AI_CANONNAME, AF_UNSPEC, SOCK_STREAM
+    };
 
     static bool verbose {false};  // NOLINT
 
@@ -192,7 +197,7 @@ namespace TestAddress
     {
         static const Hostname localhost {"localhost"};
 
-        const auto hosts_result {get_hosts(localhost)};
+        const auto hosts_result {get_hosts(localhost, unspec)};
         std::visit(Overloaded {
                 [&](const HostVector& hosts) {
                     std::cout << "Socket addresses for "
