@@ -76,6 +76,16 @@ namespace TestHost
 
     static bool verbose {false};  // NOLINT
 
+    static constexpr SocketHints inet {
+        AI_CANONNAME, AF_INET, SOCK_STREAM
+    };
+    static constexpr SocketHints inet6 {
+        AI_CANONNAME, AF_INET6, SOCK_STREAM
+    };
+    static constexpr SocketHints unspec {
+        AI_CANONNAME, AF_UNSPEC, SOCK_STREAM
+    };
+
     class Test
     {
     public:
@@ -172,12 +182,9 @@ namespace TestHost
 
     static auto get_hints_vector(bool is_local) -> const HintsVector&
     {
-        static constexpr SocketHints inet_hints {AI_CANONNAME, AF_INET};
-        static constexpr SocketHints inet6_hints {AI_CANONNAME, AF_INET6};
-        static constexpr SocketHints unspec_hints {AI_CANONNAME};
-        static const HintsVector inet_hints_vector {inet_hints, inet6_hints};
-        static const HintsVector unspec_hints_vector {unspec_hints};
-        return is_local ? unspec_hints_vector : inet_hints_vector;
+        static const HintsVector inet_hints {inet, inet6};
+        static const HintsVector unspec_hints {unspec};
+        return is_local ? unspec_hints : inet_hints;
     }
 
     static auto get_hostname() -> OptionalHostname
@@ -228,7 +235,7 @@ namespace TestHost
     }
 
     static auto test_host(const OptionalHostname& host,
-                          const OptionalHints& hints = {}) -> void
+                          const OptionalHints& hints) -> void
     {
         const auto hosts_result {get_hosts(host, hints)};
         const auto family {get_family(hints)};
