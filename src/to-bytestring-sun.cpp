@@ -27,6 +27,7 @@
 #include <sys/socket.h>     // AF_UNIX
 #endif
 
+#include <sstream>      // std::ostringstream
 #include <string>       // std::to_string()
 
 #ifndef WIN32
@@ -43,18 +44,22 @@ auto Network::to_bytestring(const sockaddr_un* sun,
     const auto sun_len {get_sun_length(sun, size)};
 
     if (sun_len != size) {
-        throw LogicError("Computed UNIX domain socket length " +
-                         std::to_string(sun_len) +
-                         " differs from actual length " +
-                         std::to_string(size));
+        std::ostringstream oss;
+        oss << "Computed UNIX domain socket length "
+            << sun_len
+            << " differs from actual length "
+            << size;
+        throw LogicError(oss.str());
     }
 
 #ifdef HAVE_SOCKADDR_SA_LEN
     if (sun->sun_len != size) {
-        throw LogicError("Stored UNIX domain socket length " +
-                         std::to_string(sun->sun_len) +
-                         " differs from actual length " +
-                         std::to_string(size));
+        std::ostringstream oss;
+        oss << "Stored UNIX domain socket length "
+            << static_cast<unsigned>(sun->sun_len)
+            << " differs from actual length "
+            << size;
+        throw LogicError(oss.str());
     }
 #endif
 

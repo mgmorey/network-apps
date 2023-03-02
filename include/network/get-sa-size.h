@@ -13,17 +13,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_GET_SA_FAMILY_H
-#define NETWORK_GET_SA_FAMILY_H
+#ifndef NETWORK_GET_SA_SIZE_H
+#define NETWORK_GET_SA_SIZE_H
 
-#include "network/bytestring.h"         // ByteString
-#include "network/socket-family-type.h" // socket_family_type
-
-namespace Network
-{
-    extern auto get_sa_family(const ByteString& addr,
-                              socket_family_type family = 0) noexcept ->
-        socket_family_type;
-}
+#include "network/get-sa-size-maximum.h"        // get_sa_size_maximum()
+#include "network/get-sa-size-minimum.h"        // get_sa_size_minimum()
 
 #endif

@@ -15,14 +15,15 @@
 
 #include "network/to-bytestring-sa.h"   // ByteString, sa_len_type,
                                         // sockaddr, to_bytestring()
+#include "network/get-sa-size.h"        // get_sa_size_maximum(),
+                                        // get_sa_size_minimum()
 #include "network/logicerror.h"         // LogicError
 #include "network/os-features.h"        // HAVE_SOCKADDR_SA_LEN
-#include "network/sin-sizes.h"          // sin_size
-#include "network/sin6-sizes.h"         // sin6_size
 #include "network/to-bytespan-void.h"   // to_bytespan()
 #include "network/to-bytestring-bs.h"   // to_bytestring()
 #include "network/to-sa-len.h"          // to_sa_len()
 
+#include <sstream>      // std::ostringstream
 #include <string>       // std::to_string()
 
 #ifdef WIN32
@@ -38,23 +39,25 @@ auto Network::to_bytestring(const sockaddr* sa,
 
     switch (sa->sa_family) {
     case AF_INET:
-        if (size != sin_size) {
-            throw LogicError("IP domain socket length " +
-                             std::to_string(size) +
-                             " differs from expected length " +
-                             std::to_string(sin_size));
-        }
-
-        break;
     case AF_INET6:
-        if (size != sin6_size) {
-            throw LogicError("IP domain socket length " +
-                             std::to_string(size) +
-                             " differs from expected length " +
-                             std::to_string(sin6_size));
+    {
+        const auto sa_size_max {get_sa_size_maximum(sa->sa_family)};
+        const auto sa_size_min {get_sa_size_minimum(sa->sa_family)};
+
+        if (size < sa_size_min || size > sa_size_max) {
+            std::ostringstream oss;
+            oss << "IP domain socket length "
+                << size
+                << " is out of range ["
+                << sa_size_min
+                << ", "
+                << sa_size_max
+                << "]";
+            throw LogicError(oss.str());
         }
 
         break;
+    }
     default:
         throw LogicError("Invalid IP domain socket address");
     }
@@ -65,6 +68,12 @@ auto Network::to_bytestring(const sockaddr* sa,
                          std::to_string(sa->sa_len) +
                          " differs from actual length " +
                          std::to_string(size));
+        std::ostringstream oss;
+        oss << "Stored IP domain socket length "
+            << static_cast<unsigned>(sa->sa_len)
+            << " differs from actual length "
+            << size;
+        throw LogicError(oss.str());
     }
 #endif
 

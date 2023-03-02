@@ -1,4 +1,4 @@
-// Copyright (C) 2022  "Michael G. Morey" <mgmorey@gmail.com>
+// Copyright (C) 2023  "Michael G. Morey" <mgmorey@gmail.com>
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,12 +13,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-size.h"           // get_size_max(),
-                                        // get_size_min()
-#include "network/get-sa-family.h"      // get_sa_family()
-#include "network/sizes.h"              // sin_size, sin6_size,
-                                        // ss_size
-#include "network/sun-len-limits.h"     // sun_len_max, sun_len_min
+#include "network/get-sa-size-minimum.h"        // get_sa_size_minimum()
+#include "network/sizes.h"                      // sin_size,
+                                                // sin6_size, ss_size
+#include "network/sun-len-limits.h"             // sun_len_min
 
 #ifdef WIN32
 #include <winsock2.h>       // AF_INET, AF_INET6, AF_UNIX, AF_UNSPEC
@@ -26,32 +24,8 @@
 #include <sys/socket.h>     // AF_INET, AF_INET6, AF_UNIX, AF_UNSPEC
 #endif
 
-auto Network::get_size_max(const Network::ByteString& addr) noexcept ->
-    std::size_t
+auto Network::get_sa_size_minimum(socket_family_type family) -> std::size_t
 {
-    const auto family {get_sa_family(addr)};
-
-    switch (family) {
-    case AF_UNSPEC:
-        return ss_size;
-#ifndef WIN32
-    case AF_UNIX:
-        return sun_len_max;
-#endif
-    case AF_INET:
-        return sin_size;
-    case AF_INET6:
-        return sin6_size;
-    default:
-        return 0;
-    }
-}
-
-auto Network::get_size_min(const Network::ByteString& addr) noexcept ->
-    std::size_t
-{
-    const auto family {get_sa_family(addr)};
-
     switch (family) {
     case AF_UNSPEC:
         return ss_size;

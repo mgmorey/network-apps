@@ -1,4 +1,4 @@
-// Copyright (C) 2022  "Michael G. Morey" <mgmorey@gmail.com>
+// Copyright (C) 2023  "Michael G. Morey" <mgmorey@gmail.com>
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,17 +13,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_GET_SIZE_H
-#define NETWORK_GET_SIZE_H
+#ifndef NETWORK_GET_SA_SIZE_MINIMUM_H
+#define NETWORK_GET_SA_SIZE_MINIMUM_H
 
-#include "network/bytestring.h"         // ByteString
+#include "network/socket-family-type.h" // socket_family_type
 
 #include <cstddef>      // std::size_t
 
 namespace Network
 {
-    extern auto get_size_max(const ByteString& addr) noexcept -> std::size_t;
-    extern auto get_size_min(const ByteString& addr) noexcept -> std::size_t;
+    extern auto get_sa_size_minimum(socket_family_type family) -> std::size_t;
 }
 
 #endif

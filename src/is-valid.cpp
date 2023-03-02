@@ -16,8 +16,8 @@
 #include "network/is-valid.h"           // ByteString, is_valid()
 #include "network/get-sa-family.h"      // get_sa_family()
 #include "network/get-sa-length.h"      // get_sa_length()
-#include "network/get-size.h"           // get_size_max(),
-                                        // get_size_min()
+#include "network/get-sa-size.h"        // get_sa_size_maximum(),
+                                        // get_sa_size_minimum()
 #include "network/get-sun-length.h"     // get_sun_length()
 #include "network/get-sun-pointer.h"    // get_sun_pointer()
 #include "network/os-features.h"        // HAVE_SOCKADDR_SA_LEN
@@ -67,8 +67,8 @@ auto Network::is_valid(const ByteString& addr, bool verbose) noexcept -> bool
     }
 
     const auto addr_size {addr.size()};
-    const auto addr_size_max {get_size_max(addr)};
-    const auto addr_size_min {get_size_min(addr)};
+    const auto addr_size_max {get_sa_size_maximum(family)};
+    const auto addr_size_min {get_sa_size_minimum(family)};
 
     if (verbose) {
         std::cout << std::setw(key_width) << "    Actual size: "
