@@ -28,7 +28,6 @@
 #endif
 
 #include <sstream>      // std::ostringstream
-#include <string>       // std::to_string()
 
 #ifndef WIN32
 

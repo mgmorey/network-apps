@@ -24,7 +24,6 @@
 #include "network/to-sa-len.h"          // to_sa_len()
 
 #include <sstream>      // std::ostringstream
-#include <string>       // std::to_string()
 
 #ifdef WIN32
 #include <winsock2.h>       // AF_INET, AF_INET6
