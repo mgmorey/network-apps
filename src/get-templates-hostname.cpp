@@ -29,11 +29,13 @@ auto Network::get_templates(const OptionalHostname& hostname,
                             bool verbose) -> Network::TemplateVectorResult
 {
     TemplateVector templates;
-    const auto result {insert_addrinfo(hostname,
-                                       service,
-                                       hints,
-                                       std::back_inserter(templates),
-                                       verbose)};
+    const auto result {
+        insert_addrinfo(hostname,
+                        service,
+                        hints,
+                        std::back_inserter(templates),
+                        verbose)
+    };
 
     if (result) {
         return result;
