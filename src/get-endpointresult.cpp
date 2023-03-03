@@ -43,7 +43,7 @@ auto Network::get_endpointresult(const ByteString& addr, int flags,
     const auto* const pointer {get_sa_pointer(addr)};
     const auto length {get_length(addr)};
     const AddressString addr_str {addr};
-    Buffer host {hostname_size_max};
+    Buffer hostname {hostname_size_max};
     Buffer service {service_size_max};
 
     if (verbose) {
@@ -58,7 +58,7 @@ auto Network::get_endpointresult(const ByteString& addr, int flags,
     }
 
     if (const auto error {::getnameinfo(pointer, length,
-                                        host.data(), host.size(),
+                                        hostname.data(), hostname.size(),
                                         service.data(), service.size(),
                                         flags)}) {
         const auto os_error {to_os_error(error)};
