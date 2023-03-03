@@ -23,16 +23,18 @@
 #include <iterator>     // std::back_inserter()
 #include <optional>     // std::nullopt
 
-auto Network::get_hosts(const Network::OptionalHostname& hostname,
-                        const Network::OptionalHints& hints,
+auto Network::get_hosts(const OptionalHostname& hostname,
+                        const OptionalHints& hints,
                         bool verbose) -> Network::HostVectorResult
 {
     HostVector hosts;
-    const auto result {insert_addrinfo(hostname,
-                                       std::nullopt,
-                                       hints,
-                                       std::back_inserter(hosts),
-                                       verbose)};
+    const auto result {
+        insert_addrinfo(hostname,
+                        std::nullopt,
+                        hints,
+                        std::back_inserter(hosts),
+                        verbose)
+    };
 
     if (result) {
         return result;
