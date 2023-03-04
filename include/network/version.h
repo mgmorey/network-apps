@@ -67,19 +67,9 @@ namespace Network
                     m_minor != t_other.m_minor);
         }
 
-        [[nodiscard]] constexpr auto major() const noexcept -> field_type
-        {
-            return m_major;
-        }
-
-        [[nodiscard]] constexpr auto minor() const noexcept -> field_type
-        {
-            return m_minor;
-        }
-
-    private:
-        field_type m_major {0U};
-        field_type m_minor {0U};
+    protected:
+        field_type m_major {0U};  // NOLINT
+        field_type m_minor {0U};  // NOLINT
     };
 
     extern auto operator<<(std::ostream& os,
