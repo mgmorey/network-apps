@@ -19,9 +19,9 @@
 auto Network::operator<<(std::ostream& os,
                          const Context& context) -> std::ostream&
 {
-    const auto& description {context.description()};
-    const auto& status {context.system_status()};
-    const auto version {context.version()};
+    const auto& description {context.m_description};
+    const auto& status {context.m_system_status};
+    const auto version {context.m_version};
     os << description;
 
     os << " Version "
