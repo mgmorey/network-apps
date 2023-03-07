@@ -24,8 +24,10 @@ auto Network::operator<<(std::ostream& os,
     const auto version {context.m_version};
     os << description;
 
-    os << " Version "
-       << version;
+    if (version != Version {0, 0}) {
+        os << " Version "
+           << version;
+    }
 
     if (!status.empty()) {
         os << ' '

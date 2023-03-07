@@ -75,7 +75,7 @@ namespace TestContext
 #ifdef WIN32
     static constexpr auto expected_code_stopped {WSANOTINITIALISED};
     static constexpr auto expected_context_re {
-        R"(WinSock 2.0 Version [0-9]{1,3}\.[0-9]{1,3} Running)"
+        R"(WinSock 2.0 Version \d{1,3}\.\d{1,3} Running)"
     };
     static constexpr auto expected_error_stopped {
         "Call to ::gethostname(, 1024) failed with error 10093: "
@@ -88,7 +88,7 @@ namespace TestContext
 #else
     static constexpr auto expected_code_stopped {0};
     static constexpr auto expected_context_re {
-        R"(Berkeley Software Distribution Sockets Running)"
+        R"(Berkeley Software Distribution Sockets( Version \d{1,3}\.\d{1,3})?)"
     };
     static constexpr auto expected_error_stopped {""};
     static constexpr auto expected_error_version {""};
