@@ -32,6 +32,5 @@ auto Network::operator<<(std::ostream& os,
            << status;
     }
 
-    os << std::endl;
     return os;
 }
