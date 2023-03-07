@@ -27,6 +27,9 @@ namespace Network
     {
         friend auto operator<<(std::ostream& os,
                                const Context& context) -> std::ostream&;
+        friend auto is_running(const Context& context) -> bool;
+        friend auto startup(Context& context,
+                            const OptionalVersion& version) -> void;
 
     public:
         enum class failure_mode {return_error, return_zero, throw_error};

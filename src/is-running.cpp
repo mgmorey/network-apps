@@ -17,7 +17,7 @@
 
 auto Network::is_running(const Context& context) -> bool
 {
-    const auto& status {context.system_status()};
+    const auto& status {context.m_system_status};
 
 #ifdef WIN32
     if (status == "Running") {

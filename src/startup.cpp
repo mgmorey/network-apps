@@ -57,13 +57,13 @@ auto Network::startup(Context& context, const OptionalVersion& version) -> void
         }
     }
 
-    context.description(static_cast<const char*>(wsa_data.szDescription))
-        .system_status(static_cast<const char*>(wsa_data.szSystemStatus))
-        .version(Version {WindowsVersion {wsa_data.wVersion}});
+    context.m_description = static_cast<const char*>(wsa_data.szDescription);
+    context.m_system_status = static_cast<const char*>(wsa_data.szSystemStatus);
+    context.m_version = Version {WindowsVersion {wsa_data.wVersion}};
 #else
     const auto required_version {version.value_or(version_default)};
-    context.description("Berkeley Software Distribution Sockets")
-        .version(required_version);
+    context.m_description = "Berkeley Software Distribution Sockets";
+    context.m_version = required_version;
 #endif
-    context.is_started(true);
+    context.m_is_started = true;
 }
