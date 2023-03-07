@@ -46,6 +46,7 @@ namespace TestContext
     using Network::get_hostname;
     using Network::parse;
     using Network::to_string;
+    using Network::version_null;
 
     static constexpr Version version_0_0 {0, 0};
     static constexpr Version version_0_1 {0, 1};
@@ -93,7 +94,6 @@ namespace TestContext
     static constexpr auto expected_error_stopped {""};
     static constexpr auto expected_error_version {""};
 #endif
-    static constexpr auto version_invalid {Version {0, 0}};
 
     static const auto mode {Context::failure_mode::return_error};
     static bool verbose {false};  // NOLINT
@@ -266,12 +266,12 @@ namespace TestContext
         test_context_cleaned_up();
     }
 
-    static auto test_context_version_invalid() -> void
+    static auto test_context_version_null() -> void
     {
         std::string actual_error_str;
 
         try {
-            const TestContext context {version_invalid};
+            const TestContext context {version_null};
             static_cast<void>(context);
         }
         catch (const Error& error) {
@@ -328,7 +328,7 @@ auto main(int argc, char* argv[]) -> int
         test_context_local_instances();
         test_context_valid_with_shutdown();
         test_context_valid_without_shutdown();
-        test_context_version_invalid();
+        test_context_version_null();
         test_hostname_running();
         test_hostname_stopped();
     }

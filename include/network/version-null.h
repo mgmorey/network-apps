@@ -13,27 +13,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/context.h"            // Context, operator<<(),
-                                        // std::endl, std::ostream
-#include "network/version-null.h"       // version_null
+#ifndef NETWORK_VERSION_NULL_H
+#define NETWORK_VERSION_NULL_H
 
-auto Network::operator<<(std::ostream& os,
-                         const Context& context) -> std::ostream&
+#include "network/version.h"            // Version
+
+namespace Network
 {
-    const auto& description {context.m_description};
-    const auto& status {context.m_system_status};
-    const auto version {context.m_version};
-    os << description;
-
-    if (version != version_null) {
-        os << " Version "
-           << version;
-    }
-
-    if (!status.empty()) {
-        os << ' '
-           << status;
-    }
-
-    return os;
+    constexpr Version version_null {0, 0};
 }
+
+#endif
