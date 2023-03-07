@@ -40,14 +40,6 @@ namespace Network
         ~Context();
         auto operator=(const Context&) -> Context& = delete;
         auto operator=(const Context&&) -> Context& = delete;
-        auto description(const std::string& t_description) -> Context&;
-        auto is_started(bool t_is_started) noexcept -> Context&;
-        auto system_status(const std::string& t_status) -> Context&;
-        auto version(const Version& t_version) noexcept -> Context&;
-        [[nodiscard]] auto description() const -> const std::string&;
-        [[nodiscard]] auto is_started() const noexcept -> bool;
-        [[nodiscard]] auto system_status() const -> const std::string&;
-        [[nodiscard]] auto version() const noexcept -> Version;
 
     protected:
         auto shutdown(failure_mode t_mode = failure_mode::throw_error) -> void;

@@ -84,13 +84,8 @@ namespace TestContext
     static constexpr auto expected_version {Version {2, 2}};
 #else
     static constexpr auto expected_code_stopped {0};
-    static constexpr auto expected_description {
-        "Berkeley Software Distribution Sockets"
-    };
     static constexpr auto expected_error_stopped {""};
     static constexpr auto expected_error_version {""};
-    static constexpr auto expected_status {""};
-    static constexpr auto expected_version {Version {}};
 #endif
     static constexpr auto version_invalid {Version {0, 0}};
 
@@ -137,35 +132,6 @@ namespace TestContext
         static_cast<void>(_);
     }
 
-    static auto print(const TestContext& context,
-                      const std::string& scope) -> void
-    {
-        std::cout << "Context";
-
-        if (verbose) {
-            std::cout << ' '
-                      << &context;
-        }
-
-        std::cout << ": "
-                  << scope
-                  << std::endl
-                  << "    Description: "
-                  << context.description()
-                  << std::endl;
-        const auto status {context.system_status()};
-
-        if (!status.empty()) {
-            std::cout << "    Status: "
-                      << status
-                      << std::endl;
-        }
-
-        std::cout << "    Version: "
-                  << context.version()
-                  << std::endl;
-    }
-
     static auto print(const Error& error) -> void
     {
         if (verbose) {
@@ -173,16 +139,6 @@ namespace TestContext
                       << error.what()
                       << std::endl;
         }
-    }
-
-    static auto test_context(const TestContext& context,
-                             const std::string& scope = "",
-                             OptionalVersion version = {}) -> void
-    {
-        print(context, scope);
-        assert(context.description() == expected_description);
-        assert(context.system_status() == expected_status);
-        assert(context.version() == version.value_or(expected_version));
     }
 
     static auto test_context_cleaned_up() -> void
@@ -209,14 +165,8 @@ namespace TestContext
         try {
             TestContext& context1 {TestContext::instance()};
             TestContext& context2 {TestContext::instance()};
-            test_context(context1, "global");
-            test_context(context2, "global");
             assert(&context1 == &context2);
-            assert(context1.is_started());
-            assert(context2.is_started());
             context1.shutdown();
-            assert(!context1.is_started());
-            assert(!context2.is_started());
             context2.shutdown();
         }
         catch (const Error& error) {
@@ -234,13 +184,7 @@ namespace TestContext
 
         try {
             const TestContext context_1 {version_1_0};
-            test_context(context_1, "local 1", version_1_0);
-            assert(context_1.version() == version_1_0);
-            assert(to_string(context_1.version()) == "1.0");
             const TestContext context_2 {version_2_0};
-            test_context(context_2, "local 2", version_2_0);
-            assert(context_2.version() == version_2_0);
-            assert(to_string(context_2.version()) == "2.0");
         }
         catch (const Error& error) {
             print(error);
@@ -257,7 +201,6 @@ namespace TestContext
 
         try {
             TestContext context;
-            test_context(context, "local 3");
             context.shutdown();
         }
         catch (const Error& error) {
@@ -275,7 +218,6 @@ namespace TestContext
 
         try {
             const TestContext context;
-            test_context(context, "local 4");
         }
         catch (const Error& error) {
             print(error);
@@ -309,7 +251,6 @@ namespace TestContext
 
         try {
             const TestContext context;
-            test_context(context, "local 5");
             static_cast<void>(get_hostname(verbose));
         }
         catch (const Error& error) {

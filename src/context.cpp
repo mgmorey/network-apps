@@ -57,52 +57,6 @@ Network::Context::~Context()
     shutdown(failure_mode::return_zero);
 }
 
-auto Network::Context::description(const std::string& t_description) ->
-    Context&
-{
-    m_description = t_description;
-    return *this;
-}
-
-auto Network::Context::is_started(bool t_is_started) noexcept -> Context&
-{
-    m_is_started = t_is_started;
-    return *this;
-}
-
-auto Network::Context::system_status(const std::string& t_status) ->
-    Context&
-{
-    m_system_status = t_status;
-    return *this;
-}
-
-auto Network::Context::version(const Version& t_version) noexcept -> Context&
-{
-    m_version = t_version;
-    return *this;
-}
-
-auto Network::Context::description() const -> const std::string&
-{
-    return m_description;
-}
-
-auto Network::Context::is_started() const noexcept -> bool
-{
-    return m_is_started;
-}
-
-auto Network::Context::system_status() const -> const std::string&
-{
-    return m_system_status;
-}
-
-auto Network::Context::version() const noexcept -> Network::Version
-{
-    return m_version;
-}
-
 auto Network::Context::shutdown(failure_mode t_mode) -> void
 {
     if (m_is_started && cleanup(t_mode) == 0) {
