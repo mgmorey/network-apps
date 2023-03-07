@@ -220,7 +220,7 @@ namespace TestContext
             const TestContext context_1 {version_1_0};
             test_context(context_1, "local 1");
             const TestContext context_2 {version_2_0};
-            test_context(context_1, "local 2");
+            test_context(context_2, "local 2");
         }
         catch (const Error& error) {
             print(error);
