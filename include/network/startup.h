@@ -17,11 +17,12 @@
 #define NETWORK_STARTUP_H
 
 #include "network/context.h"            // Context
-#include "network/optionalversion.h"    // OptionalVersion, Version
+#include "network/optionalversion.h"    // OptionalVersion
 
 namespace Network
 {
-    extern auto startup(Context& context, const OptionalVersion& version) -> void;
+    extern auto startup(Context& context,
+                        const OptionalVersion& version) -> void;
 }
 
 #endif

@@ -19,6 +19,7 @@
                                         // RuntimeError
 #include "network/format-os-error.h"    // format_os_error()
 #include "network/to-os-error.h"        // to_os_error()
+#include "network/version-null.h"       // version_null
 #include "network/windowsversion.h"     // Version, WORD, WSADATA,
                                         // WSAEFAULT, WSAEPROCLIM,
                                         // WSASYSNOTREADY,
@@ -29,7 +30,7 @@
 #ifdef WIN32
 static constexpr auto version_default {Network::Version {2, 2}};
 #else
-static constexpr auto version_default {Network::Version {0, 0}};
+static constexpr auto version_default {Network::version_null};
 #endif
 
 auto Network::startup(Context& context, const OptionalVersion& version) -> void
@@ -47,23 +48,20 @@ auto Network::startup(Context& context, const OptionalVersion& version) -> void
         case WSAEFAULT:
         case WSAVERNOTSUPPORTED:
             throw LogicError {message};
-            break;
         case WSAEPROCLIM:
         case WSASYSNOTREADY:
             throw RuntimeError {message};
-            break;
         default:
             throw Error {message};
         }
     }
 
-    context.m_description = static_cast<const char*>(wsa_data.szDescription);
-    context.m_system_status = static_cast<const char*>(wsa_data.szSystemStatus);
-    context.m_version = Version {WindowsVersion {wsa_data.wVersion}};
+    context.m_description = wsa_data.szDescription;
+    context.m_system_status = wsa_data.szSystemStatus;
+    context.m_version = WindowsVersion {wsa_data.wVersion};
 #else
-    const auto required_version {version.value_or(version_default)};
     context.m_description = "Berkeley Software Distribution Sockets";
-    context.m_version = required_version;
+    context.m_version = version.value_or(version_default);
 #endif
     context.m_is_started = true;
 }
