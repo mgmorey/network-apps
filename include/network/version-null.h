@@ -20,7 +20,7 @@
 
 namespace Network
 {
-    constexpr Version version_null {0, 0};
+    constexpr Version version_null;
 }
 
 #endif
