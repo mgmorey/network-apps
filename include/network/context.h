@@ -47,7 +47,7 @@ namespace Network
     private:
         std::string m_description;
         std::string m_system_status;
-        Version m_version;
+        OptionalVersion m_version;
         bool m_is_started {false};
     };
 

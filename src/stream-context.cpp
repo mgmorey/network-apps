@@ -15,7 +15,6 @@
 
 #include "network/context.h"            // Context, operator<<(),
                                         // std::endl, std::ostream
-#include "network/version-null.h"       // version_null
 
 auto Network::operator<<(std::ostream& os,
                          const Context& context) -> std::ostream&
@@ -25,9 +24,9 @@ auto Network::operator<<(std::ostream& os,
     const auto version {context.m_version};
     os << description;
 
-    if (version != version_null) {
+    if (version) {
         os << " Version "
-           << version;
+           << *version;
     }
 
     if (!status.empty()) {
