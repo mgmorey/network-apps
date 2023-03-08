@@ -45,10 +45,10 @@ namespace Network
         auto shutdown(failure_mode t_mode = failure_mode::throw_error) -> void;
 
     private:
-        bool m_is_started {false};
         std::string m_description;
         std::string m_system_status;
         Version m_version;
+        bool m_is_started {false};
     };
 
     extern auto operator<<(std::ostream& os,
