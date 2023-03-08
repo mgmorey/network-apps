@@ -28,9 +28,7 @@
                                         // WindowsVersion
 
 #ifdef WIN32
-static constexpr auto version_default {Network::Version {2, 2}};
-#else
-static constexpr auto version_default {Network::version_null};
+static constexpr Network::Version version_default {2, 2};
 #endif
 
 auto Network::startup(Context& context, const OptionalVersion& version) -> void
@@ -56,12 +54,12 @@ auto Network::startup(Context& context, const OptionalVersion& version) -> void
         }
     }
 
-    context.m_description = wsa_data.szDescription;	// NOLINT
-    context.m_system_status = wsa_data.szSystemStatus;	// NOLINT
+    context.m_description = wsa_data.szDescription;		// NOLINT
+    context.m_system_status = wsa_data.szSystemStatus;		// NOLINT
     context.m_version = WindowsVersion {wsa_data.wVersion};
 #else
     context.m_description = "Berkeley Software Distribution Sockets";
-    context.m_version = version.value_or(version_default);
+    context.m_version = version;
 #endif
     context.m_is_started = true;
 }
