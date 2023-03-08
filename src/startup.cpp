@@ -56,8 +56,8 @@ auto Network::startup(Context& context, const OptionalVersion& version) -> void
         }
     }
 
-    context.m_description = wsa_data.szDescription;
-    context.m_system_status = wsa_data.szSystemStatus;
+    context.m_description = wsa_data.szDescription;	// NOLINT
+    context.m_system_status = wsa_data.szSystemStatus;	// NOLINT
     context.m_version = WindowsVersion {wsa_data.wVersion};
 #else
     context.m_description = "Berkeley Software Distribution Sockets";
