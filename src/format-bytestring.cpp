@@ -21,7 +21,7 @@
 #include "network/addresserror.h"               // AddressError
 #include "network/to-string.h"                  // to_string()
 
-auto Network::format(const ByteString& addr) -> std::string
+auto Network::format(const ByteString& addr) noexcept -> std::string
 {
     try {
         return to_string(Address {addr});
@@ -32,7 +32,7 @@ auto Network::format(const ByteString& addr) -> std::string
 }
 
 auto Network::format(const ByteString& addr,
-                     OptionalString& addr_str) -> std::string
+                     OptionalString& addr_str) noexcept -> std::string
 {
     if (!addr_str) {
         addr_str = format(addr);
