@@ -18,7 +18,7 @@
 #include "network/string-null.h"        // string_null
 
 auto Network::operator<<(std::ostream& os,
-                         const Socket& sock) -> std::ostream&
+                         const Socket& sock) noexcept -> std::ostream&
 {
     if (sock.m_descriptor->handle() == descriptor_null) {
         return os << string_null;
