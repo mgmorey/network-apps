@@ -24,7 +24,8 @@
 #include <sys/socket.h>     // AF_INET, AF_INET6, AF_UNIX, AF_UNSPEC
 #endif
 
-auto Network::get_sa_size_minimum(socket_family_type family) -> std::size_t
+auto Network::get_sa_size_minimum(socket_family_type family) noexcept ->
+    std::size_t
 {
     switch (family) {
     case AF_UNSPEC:

@@ -22,7 +22,8 @@
 
 namespace Network
 {
-    extern auto get_sa_size_minimum(socket_family_type family) -> std::size_t;
+    extern auto get_sa_size_minimum(socket_family_type family) noexcept ->
+        std::size_t;
 }
 
 #endif
