@@ -35,7 +35,8 @@ namespace Network
     class Address
     {
         friend auto operator<<(std::ostream& os,
-                               const Address& address) -> std::ostream&;
+                               const Address& address) noexcept ->
+            std::ostream&;
 
     public:
         using value_type = ByteString;
@@ -79,7 +80,7 @@ namespace Network
     };
 
     extern auto operator<<(std::ostream& os,
-                           const Address& address) -> std::ostream&;
+                           const Address& address) noexcept -> std::ostream&;
 }
 
 #endif
