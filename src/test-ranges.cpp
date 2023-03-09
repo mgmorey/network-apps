@@ -14,6 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/assert.h"             // assert()
+#include "network/to-character.h"       // to_character()
 #include "network/to-integer.h"         // to_integer()
 #include "network/to-name-len.h"        // to_name_len()
 #include "network/to-path-len.h"        // to_path_len()
@@ -31,6 +32,7 @@
 
 namespace TestRanges
 {
+    using Network::CharacterError;
     using Network::IntegerError;
     using Network::NameLengthError;
 #ifndef WIN32
@@ -57,6 +59,7 @@ namespace TestRanges
     using Network::sun_len_max;
     using Network::sun_len_min;
 #endif
+    using Network::to_character;
     using Network::to_integer;
     using Network::to_name_len;
 #ifndef WIN32
@@ -69,6 +72,9 @@ namespace TestRanges
     using Network::to_sun_len;
 #endif
 
+    static constexpr auto expected_error_character_re {
+        R"(Value (\d+|-\d+) is out of range \[-\d+, \d+\] of char)"
+    };
     static constexpr auto expected_error_integer_re {
         R"(Value (\d+|-\d+) is out of range \[-\d+, \d+\] of int)"
     };
@@ -100,6 +106,28 @@ namespace TestRanges
         std::cout << "Exception: "
                   << error.what()
                   << std::endl;
+    }
+
+    static auto test_character_invalid(auto value) -> void
+    {
+        std::string actual_error_str;
+
+        try {
+            static_cast<void>(to_character(value));
+        }
+        catch (const CharacterError& error) {
+            print(error);
+            actual_error_str = error.what();
+        }
+
+        const std::regex expected_error_regex {expected_error_character_re};
+        assert(std::regex_match(actual_error_str, expected_error_regex));
+    }
+
+    static auto test_character_invalid() -> void
+    {
+        test_character_invalid(static_cast<long long>(CHAR_MIN) - 1);
+        test_character_invalid(static_cast<long long>(CHAR_MAX) + 1);
     }
 
     static auto test_integer_invalid(auto value) -> void
@@ -269,6 +297,7 @@ auto main() -> int
     using namespace TestRanges;
 
     try {
+        test_character_invalid();
         test_integer_invalid();
         test_name_len_invalid();
 #ifndef WIN32
