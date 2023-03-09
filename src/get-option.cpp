@@ -27,17 +27,17 @@
                             // optopt
 #endif
 
-auto Network::get_optarg() -> char*
+auto Network::get_optarg() noexcept -> char*
 {
     return ::optarg;
 }
 
-auto Network::get_opterr() -> int
+auto Network::get_opterr() noexcept -> int
 {
     return ::opterr;
 }
 
-auto Network::get_optind() -> int
+auto Network::get_optind() noexcept -> int
 {
     return ::optind;
 }
@@ -52,7 +52,7 @@ auto Network::get_option(const ArgumentSpan& args,
     return ::getopt(to_integer(args.size()), args.data(), optstring);
 }
 
-auto Network::get_optopt() -> int
+auto Network::get_optopt() noexcept -> int
 {
     return ::optopt;
 }
