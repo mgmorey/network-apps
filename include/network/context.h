@@ -26,7 +26,8 @@ namespace Network
     class Context
     {
         friend auto operator<<(std::ostream& os,
-                               const Context& context) -> std::ostream&;
+                               const Context& context) noexcept ->
+            std::ostream&;
         friend auto is_running(const Context& context) -> bool;
         friend auto startup(Context& context,
                             const OptionalVersion& version) -> void;
@@ -52,7 +53,7 @@ namespace Network
     };
 
     extern auto operator<<(std::ostream& os,
-                           const Context& context) -> std::ostream&;
+                           const Context& context) noexcept -> std::ostream&;
 }
 
 #endif
