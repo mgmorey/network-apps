@@ -27,8 +27,8 @@ auto Network::get_options(const ArgumentSpan& args,
     int opt {};
 
     while ((opt = get_option(args, optstring)) != -1) {
-        const auto optch {to_character(opt)};
-        options[optch] = get_optarg();
+        const auto optchar {to_character(opt)};
+        options[optchar] = get_optarg();
     }
 
     return options;
