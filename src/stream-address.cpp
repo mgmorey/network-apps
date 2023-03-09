@@ -28,11 +28,9 @@ static auto get_prefix(Network::socket_family_type family) noexcept ->
     std::string
 {
     switch (family) {
-#ifndef WIN32
     case AF_UNIX:
         return "sun";
         break;
-#endif
     case AF_INET:
         return "sin";
         break;
@@ -48,11 +46,9 @@ static auto get_suffix(Network::socket_family_type family) noexcept ->
     std::string
 {
     switch (family) {
-#ifndef WIN32
     case AF_UNIX:
         return "un";
         break;
-#endif
     case AF_INET:
         return "in";
         break;
