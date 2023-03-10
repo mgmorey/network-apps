@@ -35,7 +35,6 @@
 #include <optional>     // std::nullopt
 #include <regex>        // std::regex, std::regex_match
 #include <set>          // std::set
-#include <sstream>      // std::ostringstream
 #include <string>       // std::string
 #include <vector>       // std::vector
 
