@@ -37,7 +37,7 @@ auto Network::Buffer::size() const noexcept -> std::string::size_type
 }
 
 auto Network::operator<<(std::ostream& os,
-                         const Buffer& buffer) -> std::ostream&
+                         const Buffer& buffer) noexcept -> std::ostream&
 {
     return os << std::string {buffer};
 }

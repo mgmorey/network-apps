@@ -24,7 +24,7 @@ namespace Network
     class Buffer
     {
         friend auto operator<<(std::ostream& os,
-                               const Buffer& buffer) -> std::ostream&;
+                               const Buffer& buffer) noexcept -> std::ostream&;
 
     public:
         explicit Buffer(std::string::size_type t_size = 0);
@@ -42,7 +42,7 @@ namespace Network
     };
 
     extern auto operator<<(std::ostream& os,
-                           const Buffer& buffer) -> std::ostream&;
+                           const Buffer& buffer) noexcept -> std::ostream&;
 }
 
 #endif
