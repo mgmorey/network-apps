@@ -86,7 +86,7 @@ Network::Format::Format(std::string&& t_delimiter,
 }
 
 auto Network::operator<<(std::ostream& os,
-                         const Format& format) -> std::ostream&
+                         const Format& format) noexcept -> std::ostream&
 {
     if (format.m_indent != std::string::npos) {
         os << format.m_delimiter;
