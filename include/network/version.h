@@ -27,7 +27,7 @@ namespace Network
         using input_type = unsigned char;
 
         friend auto operator<<(std::ostream& os,
-                               Version version) -> std::ostream&;
+                               Version version) noexcept -> std::ostream&;
 
         constexpr Version() noexcept = default;
 
@@ -73,7 +73,7 @@ namespace Network
     };
 
     extern auto operator<<(std::ostream& os,
-                           Version version) -> std::ostream&;
+                           Version version) noexcept -> std::ostream&;
 }
 
 #endif
