@@ -27,7 +27,8 @@ namespace Network
         public Integer<socket_family_type>
     {
         friend auto operator<<(std::ostream& os,
-                               const SocketFamily& family) -> std::ostream&;
+                               const SocketFamily& family) noexcept ->
+            std::ostream&;
 
     public:
         constexpr explicit SocketFamily(socket_family_type t_value) noexcept :
@@ -37,7 +38,8 @@ namespace Network
     };
 
     extern auto operator<<(std::ostream& os,
-                           const SocketFamily& family) -> std::ostream&;
+                           const SocketFamily& family) noexcept ->
+        std::ostream&;
 }
 
 #endif
