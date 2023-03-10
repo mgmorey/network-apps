@@ -33,7 +33,7 @@ namespace Network
     struct SocketHints
     {
         friend auto operator<<(std::ostream& os,
-                               const SocketHints& hints) -> std::ostream&;
+                               const SocketHints& hints) noexcept -> std::ostream&;
 
         constexpr SocketHints() noexcept = default;
 
@@ -137,7 +137,7 @@ namespace Network
     };
 
     extern auto operator<<(std::ostream& os,
-                           const SocketHints& hints) -> std::ostream&;
+                           const SocketHints& hints) noexcept -> std::ostream&;
 }
 
 #endif
