@@ -24,7 +24,6 @@
 #include "network/parse.h"              // parse()
 
 #include <sys/socket.h>     // AF_UNIX, AF_UNSPEC, SOCK_STREAM
-#include <sys/un.h>         // sockaddr_un
 
 #include <cerrno>       // EACCES, ENOENT, EROFS
 #include <cstdlib>      // EXIT_FAILURE, std::exit(),
