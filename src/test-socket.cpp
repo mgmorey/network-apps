@@ -15,11 +15,10 @@
 
 #include "network/assert.h"             // assert()
 #include "network/network.h"            // Address, Context, Error,
-                                        // LogicError
+                                        // LogicError,
                                         // OptionalPathname,
                                         // OsErrorResult, Pathname,
                                         // Socket, SocketPair, bind(),
-                                        // get_sun_path(),
                                         // os_error_type,
                                         // to_bytestring()
 #include "network/parse.h"              // parse()
