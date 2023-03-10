@@ -161,7 +161,6 @@ namespace TestSocket
     {
         os_error_type actual_code {0};
         const auto addr {to_bytestring(pathname)};
-        assert(to_path(addr) == pathname);
 
         if (pathname) {
             const Socket sock {AF_UNIX, SOCK_STREAM, 0, 0, true, verbose};
@@ -182,6 +181,7 @@ namespace TestSocket
         }
 
         assert(expected_codes.contains(actual_code));
+        assert(to_path(addr) == pathname);
     }
 
     static auto test_path_invalid(const OptionalPathname& pathname,
