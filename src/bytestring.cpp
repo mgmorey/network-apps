@@ -21,7 +21,7 @@
                         // std::uppercase
 
 auto Network::operator<<(std::ostream& os,
-                         const ByteString& bytes) -> std::ostream&
+                         const ByteString& bytes) noexcept -> std::ostream&
 {
     std::ios format {nullptr};
     format.copyfmt(os);

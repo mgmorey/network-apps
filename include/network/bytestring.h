@@ -26,7 +26,7 @@ namespace Network
     using ByteString = std::basic_string<Byte>;
 
     extern auto operator<<(std::ostream& os,
-                           const ByteString& bytes) -> std::ostream&;
+                           const ByteString& bytes) noexcept -> std::ostream&;
 }
 
 #endif
