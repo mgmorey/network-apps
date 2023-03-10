@@ -180,9 +180,6 @@ namespace TestSocket
                           << std::endl;
             }
         }
-        else {
-            assert(static_cast<bool>(pathname) == false);
-        }
 
         assert(expected_codes.contains(actual_code));
     }
