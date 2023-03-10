@@ -30,7 +30,7 @@
 #include <vector>       // std::vector
 
 auto Network::operator<<(std::ostream& os,
-                         const SocketType& socktype) -> std::ostream&
+                         const SocketType& socktype) noexcept -> std::ostream&
 {
     static const std::vector<std::pair<int, const char*>> values {
 #ifdef SOCK_CLOEXEC
