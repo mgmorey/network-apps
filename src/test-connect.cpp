@@ -290,7 +290,7 @@ auto main(int argc, char* argv[]) -> int
         const auto endpoint {parse(argc, argv)};
 
         if (verbose) {
-            std::cout << context;
+            std::cout << context << std::endl;
         }
 
         test_connect_valid(endpoint, hints);

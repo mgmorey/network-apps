@@ -318,7 +318,7 @@ auto main(int argc, char* argv[]) -> int
         const auto hosts {parse(argc, argv)};
 
         if (verbose) {
-            std::cout << context;
+            std::cout << context << std::endl;
         }
 
         test_host_invalid();
