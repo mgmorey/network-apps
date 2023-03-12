@@ -126,8 +126,8 @@ namespace TestRanges
 
     static auto test_character_invalid() -> void
     {
-        test_character_invalid(static_cast<long long>(CHAR_MIN) - 1);
-        test_character_invalid(static_cast<long long>(CHAR_MAX) + 1);
+        test_character_invalid(CHAR_MIN - 1);
+        test_character_invalid(CHAR_MAX + 1);
     }
 
     static auto test_integer_invalid(auto value) -> void
