@@ -73,7 +73,7 @@ namespace TestRanges
 #endif
 
     static constexpr auto expected_error_character_re {
-        R"(Value (\d+|-\d+) is out of range \[-\d+, \d+\] of char)"
+        R"(Value (\d+|-\d+) is out of range \[-?\d+, \d+\] of char)"
     };
     static constexpr auto expected_error_integer_re {
         R"(Value (\d+|-\d+) is out of range \[-\d+, \d+\] of int)"
