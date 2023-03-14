@@ -88,17 +88,15 @@ auto main(int argc, char* argv[]) -> int
     const auto args {parse(argc, argv)};
 
     try {
-        bool shutdown {false};
-
         // Connect socket to socket address.
         const Socket sock {AF_UNIX, SOCK_SEQPACKET, 0, 0, false, verbose};
         const auto addr {to_bytestring(SOCKET_NAME)};
         const auto error {connect(sock, addr, verbose)};
         const auto error_code {error.number()};
+        bool shutdown_pending {false};
 
         if (error_code != 0) {
-            std::cerr << error.string()
-                      << std::endl;
+            std::cerr << error.string() << std::endl;
             std::exit(EXIT_FAILURE);
         }
 
@@ -113,12 +111,12 @@ auto main(int argc, char* argv[]) -> int
             }
 
             if (str == "DOWN") {
-                shutdown = true;
+                shutdown_pending = true;
                 break;
             }
         }
 
-        if (!shutdown) {
+        if (!shutdown_pending) {
             // Request result.
             const auto write_code {write("END", sock)};
 
@@ -135,17 +133,14 @@ auto main(int argc, char* argv[]) -> int
                 std::exit(EXIT_FAILURE);
             }
 
-            std::cerr << "Result: "
-                      << read_str
-                      << std::endl;
+            std::cerr << "Result: " << read_str << std::endl;
         }
     }
     catch (const std::exception& error) {
         const std::regex expected_error_regex {expected_error_socket_re};
 
         if (!std::regex_match(error.what(), expected_error_regex)) {
-            std::cerr << error.what()
-                      << std::endl;
+            std::cerr << error.what() << std::endl;
         }
     }
 }

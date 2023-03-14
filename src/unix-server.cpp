@@ -105,10 +105,10 @@ auto main(int argc, char* argv[]) -> int
         const auto addr {to_bytestring(SOCKET_NAME)};
         const auto error {bind(bind_sock, addr, verbose)};
         const auto error_code {error.number()};
+        bool shutdown_pending {false};
 
         if (error_code != 0) {
-            std::cerr << error.string()
-                      << std::endl;
+            std::cerr << error.string() << std::endl;
             std::exit(EXIT_FAILURE);
         }
 
@@ -122,15 +122,11 @@ auto main(int argc, char* argv[]) -> int
             std::exit(EXIT_FAILURE);
         }
 
-        bool shutdown {false};
-
         // This is the main loop for handling connections.
-        while (!shutdown) {
+        while (!shutdown_pending) {
             // Wait for incoming connection.
             const Socket sock {
-                ::accept(descriptor_type {bind_sock},
-                         nullptr,
-                         nullptr),
+                ::accept(descriptor_type {bind_sock}, nullptr, nullptr),
                 false,
                 verbose
             };
@@ -156,7 +152,7 @@ auto main(int argc, char* argv[]) -> int
 
                 if (read_str == "DOWN") {
                     // Quit on DOWN command.
-                    shutdown = true;
+                    shutdown_pending = true;
                     break;
                 }
 
@@ -168,7 +164,7 @@ auto main(int argc, char* argv[]) -> int
                 sum += std::strtol(read_str.c_str(), nullptr, radix);
             }
 
-            if (!shutdown) {
+            if (!shutdown_pending) {
                 // Send output sum.
                 const auto write_error {write(std::to_string(sum), sock)};
 
@@ -183,8 +179,7 @@ auto main(int argc, char* argv[]) -> int
         const std::regex expected_error_regex {expected_error_socket_re};
 
         if (!std::regex_match(error.what(), expected_error_regex)) {
-            std::cerr << error.what()
-                      << std::endl;
+            std::cerr << error.what() << std::endl;
         }
     }
 }
