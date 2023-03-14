@@ -47,7 +47,7 @@ using IoResult = std::pair<std::string, ssize_t>;
 static bool verbose {false};  // NOLINT
 
 static constexpr auto expected_error_socket_re {
-    R"("Call to ::socket(domain=AF_UNIX, type=SOCK_SEQPACKET, protocol=0) failed with error -?\d+: .+")"
+    R"(Call to ::socket[(][^)]+[)] failed with error \d+: .+)"
 };
 
 static auto parse(int argc, char** argv) -> ArgumentSpan
@@ -72,9 +72,10 @@ static auto parse(int argc, char** argv) -> ArgumentSpan
 static auto read(const Socket& sock) -> IoResult
 {
     Buffer buffer {BUFFER_SIZE};
-    return {buffer, ::read(descriptor_type {sock},
-                           buffer.data(),
-                           buffer.size())};
+    return {
+        buffer,
+        ::read(descriptor_type {sock}, buffer.data(), buffer.size())
+    };
 }
 
 static auto write(const std::string& str, const Socket& sock) -> ssize_t
