@@ -74,7 +74,7 @@ namespace TestOption
         auto index {0};
 
         for (const auto& arg : args) {
-            std::cout << (scope.empty() ? "Argument" : scope + " argument")
+            std::cout << (scope.empty() ? "Argument" : scope)
                       << ' '
                       << ++index
                       << ": "
@@ -90,22 +90,22 @@ namespace TestOption
         assert(std::string {args[0]} == argv0);
     }
 
-    static auto test_arguments_optional(ArgumentSpan args,
-                                        const char* argv0) -> void
+    static auto test_operands(ArgumentSpan args) -> void
     {
-        print(args, "Optional");
-        assert(std::string {args[0]} == "-f");
-        assert(std::string {args[1]} == argv0);
-        assert(std::string {args[2]} == "-v");
-        assert(args.size() == 3);
-    }
-
-    static auto test_arguments_positional(ArgumentSpan args) -> void
-    {
-        print(args, "Positional");
+        print(args, "Operand");
         assert(std::string {args[0]} == "one");
         assert(std::string {args[1]} == "two");
         assert(std::string {args[2]} == "three");
+        assert(args.size() == 3);
+    }
+
+    static auto test_options(ArgumentSpan args,
+                             const char* argv0) -> void
+    {
+        print(args, "Option");
+        assert(std::string {args[0]} == "-f");
+        assert(std::string {args[1]} == argv0);
+        assert(std::string {args[2]} == "-v");
         assert(args.size() == 3);
     }
 
@@ -119,10 +119,10 @@ namespace TestOption
         bool verbose {false};
         parse(filename, verbose, args);
         test_arguments(args, *argv);
-        auto optional {args.subspan(1, to_size(get_optind()) - 1)};
-        test_arguments_optional(optional, *argv);
-        auto positional {args.subspan(to_size(get_optind()))};
-        test_arguments_positional(positional);
+        auto options {args.subspan(1, to_size(get_optind()) - 1)};
+        test_options(options, *argv);
+        auto operands {args.subspan(to_size(get_optind()))};
+        test_operands(operands);
         assert(filename == *argv);
         assert(verbose);
     }

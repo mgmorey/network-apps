@@ -59,7 +59,7 @@ namespace TestParse
         auto index {0};
 
         for (const auto& arg : args) {
-            std::cout << (scope.empty() ? "Argument" : scope + " argument")
+            std::cout << (scope.empty() ? "Argument" : scope)
                       << ' '
                       << ++index
                       << ": "
@@ -77,7 +77,7 @@ namespace TestParse
 
     static auto test_operands(ArgumentSpan args) -> void
     {
-        print(args, "Positional");
+        print(args, "Operand");
         assert(std::string {args[0]} == "one");
         assert(std::string {args[1]} == "two");
         assert(std::string {args[2]} == "three");
@@ -87,7 +87,7 @@ namespace TestParse
     static auto test_options(ArgumentSpan args,
                              const char* argv0) -> void
     {
-        print(args, "Optional");
+        print(args, "Option");
         assert(std::string {args[0]} == "-f");
         assert(std::string {args[1]} == argv0);
         assert(std::string {args[2]} == "-v");
