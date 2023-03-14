@@ -18,7 +18,6 @@
                                         // socket_error,
                                         // to_bytestring()
 #include "network/parse.h"              // parse()
-#include "network/to-os-error.h"        // to_os_error()
 #include "unix-common.h"                // BUFFER_SIZE, SOCKET_NAME
 
 #include <sys/socket.h>         // SOCK_SEQPACKET
@@ -30,6 +29,7 @@
 #include <cstdio>       // std::perror()
 #include <cstdlib>      // std::exit(), std::size_t
 #include <iostream>     // std::cerr, std::cout, std::endl
+#include <regex>        // std::regex, std::regex_match
 #include <sstream>      // std::ostringstream
 #include <vector>       // std::vector
 
@@ -39,28 +39,16 @@ using Network::Pathname;
 using Network::Socket;
 using Network::connect;
 using Network::descriptor_type;
-using Network::format_os_error;
-using Network::os_error_type;
 using Network::parse;
 using Network::to_bytestring;
-using Network::to_os_error;
 
 using IoResult = std::pair<std::string, ssize_t>;
 
 static bool verbose {false};  // NOLINT
 
-static auto format_message(int error) -> std::string
-{
-    const auto os_error {to_os_error(error)};
-    std::ostringstream oss;
-    oss << ("Call to ::socket(domain=AF_UNIX, "
-            "type=SOCK_SEQPACKET, protocol=0) "
-            "failed with error ")
-        << error
-        << ": "
-        << format_os_error(os_error);
-    return oss.str();
-}
+static constexpr auto expected_error_socket_re {
+    R"("Call to ::socket(domain=AF_UNIX, type=SOCK_SEQPACKET, protocol=0) failed with error -?\d+: .+")"
+};
 
 static auto parse(int argc, char** argv) -> ArgumentSpan
 {
@@ -152,8 +140,9 @@ auto main(int argc, char* argv[]) -> int
         }
     }
     catch (const std::exception& error) {
-        if (error.what() != format_message(EINVAL) &&
-            error.what() != format_message(EPROTONOSUPPORT)) {
+        const std::regex expected_error_regex {expected_error_socket_re};
+
+        if (!std::regex_match(error.what(), expected_error_regex)) {
             std::cerr << error.what()
                       << std::endl;
         }
