@@ -27,7 +27,7 @@
 
 #include <cerrno>       // EINVAL, EPROTONOSUPPORT
 #include <cstdio>       // std::perror()
-#include <cstdlib>      // std::exit(), std::size_t
+#include <cstdlib>      // EXIT_FAILURE, std::exit()
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <regex>        // std::regex, std::regex_match
 #include <sstream>      // std::ostringstream
