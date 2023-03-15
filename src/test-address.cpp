@@ -157,7 +157,7 @@ namespace TestAddress
         assert(std::regex_match(actual_error_str, expected_error_addr_regex));
     }
 
-    static auto test_address_localhost(const ByteString& addr) -> void
+    static auto test_address_valid(const ByteString& addr) -> void
     {
         const Address address {addr};
         const auto family {address.family()};
@@ -190,7 +190,7 @@ namespace TestAddress
         }
     }
 
-    static auto test_address_localhost() -> void
+    static auto test_address_valid() -> void
     {
         static const Hostname localhost {"localhost"};
 
@@ -203,7 +203,7 @@ namespace TestAddress
                               << std::endl;
 
                     for (const auto& host : hosts) {
-                        test_address_localhost(host.address());
+                        test_address_valid(host.address());
                     }
                 },
                 [&](const OsErrorResult& result) {
@@ -229,9 +229,9 @@ auto main(int argc, char* argv[]) -> int
             std::cout << context << std::endl;
         }
 
-        test_address_localhost();
-        test_address_invalid();
+        test_address_valid();
         test_address_empty();
+        test_address_invalid();
     }
     catch (const std::exception& error) {
         std::cerr << error.what()
