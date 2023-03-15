@@ -106,17 +106,17 @@ namespace TestAddress
         const auto text {address.text()};
         std::cout << "    "
                   << SocketFamily(family)
-                  << std::endl;
-        std::cout << std::setw(print_key_width) << "        Size: "
+                  << std::endl
+                  << std::setw(print_key_width) << "        Size: "
                   << std::right << std::setw(print_value_width) << size
-                  << std::endl;
-        std::cout << std::setw(print_key_width) << "        Length: "
+                  << std::endl
+                  << std::setw(print_key_width) << "        Length: "
                   << std::right << std::setw(print_value_width) << length
-                  << std::endl;
-        std::cout << std::setw(print_key_width) << "        Port: "
+                  << std::endl
+                  << std::setw(print_key_width) << "        Port: "
                   << std::right << std::setw(print_value_width) << port
-                  << std::endl;
-        std::cout << std::setw(print_key_width) << "        Address: "
+                  << std::endl
+                  << std::setw(print_key_width) << "        Address: "
                   << std::right << std::setw(print_value_width) << text
                   << std::endl;
     }
