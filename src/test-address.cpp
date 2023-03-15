@@ -130,15 +130,12 @@ namespace TestAddress
         }
     }
 
-    static auto test_address() -> void
+    static auto test_address_empty() -> void
     {
         const ByteString addr;
-        const auto size {addr.size()};
-        const auto length {get_sa_length(addr)};
-        const auto family {get_sa_family(addr)};
-        assert(size == 0);
-        assert(length == 0);
-        assert(family == AF_UNSPEC);
+        assert(addr.empty());
+        assert(get_sa_family(addr) == AF_UNSPEC);
+        assert(get_sa_length(addr) == 0U);
         assert(is_valid(addr) == false);
     }
 
@@ -232,9 +229,9 @@ auto main(int argc, char* argv[]) -> int
             std::cout << context << std::endl;
         }
 
-        test_address();
-        test_address_invalid();
         test_address_localhost();
+        test_address_invalid();
+        test_address_empty();
     }
     catch (const std::exception& error) {
         std::cerr << error.what()
