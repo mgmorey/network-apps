@@ -19,8 +19,5 @@
 auto Network::operator<<(std::ostream& os,
                          Version version) noexcept -> std::ostream&
 {
-    os << version.m_major
-       << '.'
-       << version.m_minor;
-    return os;
+    return os << version.m_major << '.' << version.m_minor;
 }
