@@ -169,8 +169,11 @@ namespace TestHost
 
     static auto get_family(const OptionalHints& hints) -> std::string
     {
+        if (!hints) {
+            return "";
+        }
 
-        switch (hints ? hints->family() : 0) {
+        switch (hints->family()) {
         case AF_INET:
             return "IPv4";
         case AF_INET6:
@@ -180,23 +183,20 @@ namespace TestHost
         }
     }
 
-    static auto get_hints_vector(bool is_local) -> const HintsVector&
+    static auto get_hints_vector(bool is_local) -> HintsVector
     {
-        static const HintsVector inet_hints {inet, inet6};
-        static const HintsVector unspec_hints {unspec};
-        return is_local ? unspec_hints : inet_hints;
+        return is_local ? HintsVector {unspec} : HintsVector {inet, inet6};
     }
 
     static auto get_hostname() -> OptionalHostname
     {
-        const char* hostname_c {std::getenv("HOSTNAME")};
-        OptionalHostname hostname;
+        const auto* const hostname_c {std::getenv("HOSTNAME")};
 
-        if (hostname_c != nullptr) {
-            hostname = hostname_c;
+        if (hostname_c == nullptr) {
+            return std::nullopt;
         }
 
-        return hostname;
+        return hostname_c;
     }
 
     static auto parse(int argc, char** argv) -> ArgumentSpan
