@@ -67,8 +67,8 @@ namespace TestAddress
     static constexpr auto expected_error_addr_re {
         R"(Invalid socket address: 0x[0-9A-F]{1,16})"
     };
-    static constexpr auto invalid_addr_data {Byte {0xFFU}};
-    static constexpr auto invalid_addr_size {8};
+    static constexpr auto invalid_data {Byte {0xFFU}};
+    static constexpr auto invalid_size {8};
     static constexpr auto print_key_width {20};
     static constexpr auto print_value_width {10};
 
@@ -144,7 +144,7 @@ namespace TestAddress
         std::string actual_error_str;
 
         try {
-            const ByteString addr {invalid_addr_size, invalid_addr_data};
+            const ByteString addr {invalid_size, invalid_data};
             const Address address {addr};
             static_cast<void>(address);
         }
