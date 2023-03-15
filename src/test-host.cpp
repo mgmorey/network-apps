@@ -321,14 +321,14 @@ auto main(int argc, char* argv[]) -> int
             std::cout << context << std::endl;
         }
 
-        test_host_invalid();
-
         if (!hosts.empty()) {
             std::for_each(hosts.begin(), hosts.end(), test_host_valid);
         }
         else if (const auto hostname {get_hostname()}) {
             test_host_valid(hostname);
         }
+
+        test_host_invalid();
     }
     catch (const std::exception& error) {
         std::cerr << error.what()
