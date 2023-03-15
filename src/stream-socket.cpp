@@ -20,9 +20,11 @@
 auto Network::operator<<(std::ostream& os,
                          const Socket& sock) noexcept -> std::ostream&
 {
-    if (sock.m_descriptor->handle() == descriptor_null) {
+    const auto handle {sock.m_descriptor->handle()};
+
+    if (handle == descriptor_null) {
         return os << string_null;
     }
 
-    return os << sock.m_descriptor->handle();
+    return os << handle;
 }
