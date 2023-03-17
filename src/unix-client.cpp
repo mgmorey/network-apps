@@ -32,7 +32,6 @@
 #include <vector>       // std::vector
 
 using Network::ArgumentSpan;
-using Network::Buffer;
 using Network::Pathname;
 using Network::Socket;
 using Network::connect;

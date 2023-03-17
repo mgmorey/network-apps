@@ -31,7 +31,6 @@
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string, std::to_string()
 
-using Network::Buffer;
 using Network::Pathname;
 using Network::Socket;
 using Network::SocketHints;
