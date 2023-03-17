@@ -70,7 +70,7 @@ get-sun-length.cpp get-sun-pointer.cpp get-templates-endpoint.cpp	\
 get-templates-hostname.cpp integererror.cpp is-running.cpp		\
 is-valid.cpp logicerror.cpp namelengtherror.cpp open-endpoint.cpp	\
 open-socket.cpp oserrorresult.cpp parse-argumentspan.cpp parse.cpp	\
-pathlengtherror.cpp rangeerror.cpp remove-socket.cpp			\
+pathlengtherror.cpp rangeerror.cpp read-string.cpp remove-socket.cpp	\
 reset-last-context-error.cpp reset-last-os-error.cpp runtimeerror.cpp	\
 salengtherror.cpp set-last-context-error.cpp set-last-os-error.cpp	\
 sizeerror.cpp socket.cpp socketfamily.cpp socketflags.cpp		\
@@ -82,7 +82,7 @@ to-bytespan-sa.cpp to-bytespan-sun.cpp to-bytespan-void.cpp		\
 to-bytestring-ai.cpp to-bytestring-bs.cpp to-bytestring-path.cpp	\
 to-bytestring-sa.cpp to-bytestring-sun.cpp to-path-bytestring.cpp	\
 to-path-descriptor.cpp to-string-in-addr.cpp to-string-in6-addr.cpp	\
-version.cpp
+version.cpp write-string.cpp
 
 test_sources = test-address.cpp test-bind.cpp test-connect.cpp		\
 test-context.cpp test-host.cpp test-hostname.cpp test-option.cpp	\

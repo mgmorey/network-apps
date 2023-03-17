@@ -83,6 +83,7 @@
                                                 // get_last_os_error(),
                                                 // reset_last_os_error()
 #include "network/overloaded.h"                 // Overloaded
+#include "network/read-string.h"                // read_string()
 #include "network/socket-error.h"               // socket_error
 #include "network/socket.h"                     // Socket
 #include "network/socketfamily.h"               // SocketFamily
@@ -123,5 +124,6 @@
 #include "network/version-null.h"               // version_null
 #include "network/version.h"                    // Version
 #include "network/windowsversion.h"             // WindowsVersion
+#include "network/write-string.h"               // write_string()
 
 #endif

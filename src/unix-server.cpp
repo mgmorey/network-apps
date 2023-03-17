@@ -14,16 +14,14 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/network.h"            // Buffer, Socket, connect(),
-                                        // socket_error,
-                                        // to_bytestring()
+                                        // read_string() socket_error,
+                                        // to_bytestring(), write()
 #include "network/parse.h"              // parse()
 #include "unix-common.h"                // BUFFER_SIZE, SOCKET_NAME
 
 #include <sys/socket.h>         // SOCK_SEQPACKET, ::accept(),
                                 // ::listen()
-#include <sys/types.h>          // ssize_t
 #include <sys/un.h>             // AF_UNIX
-#include <unistd.h>             // ::read(), ::write()
 
 #include <cerrno>       // EINVAL, EPROTONOSUPPORT
 #include <cstdio>       // std::perror()
@@ -39,10 +37,10 @@ using Network::Socket;
 using Network::SocketHints;
 using Network::bind;
 using Network::descriptor_type;
+using Network::read_string;
 using Network::socket_error;
 using Network::to_bytestring;
-
-using IoResult = std::pair<std::string, ssize_t>;
+using Network::write;
 
 static constexpr auto backlog_size {20};
 static constexpr auto radix {10};
@@ -76,20 +74,6 @@ static auto get_bind_socket(const SocketHints& hints) -> Socket
 {
     static const Network::Socket sock {hints, true, verbose};
     return sock;
-}
-
-static auto read(const Socket& sock) -> IoResult
-{
-    Buffer buffer {BUFFER_SIZE};
-    return {
-        buffer,
-        ::read(descriptor_type {sock}, buffer.data(), buffer.size())
-    };
-}
-
-static auto write(const std::string& str, const Socket& sock) -> ssize_t
-{
-    return ::write(descriptor_type {sock}, str.data(), str.size());
 }
 
 auto main(int argc, char* argv[]) -> int
@@ -141,7 +125,7 @@ auto main(int argc, char* argv[]) -> int
             while (true) {
 
                 // Receive inputs.
-                const auto [read_str, read_code] {read(sock)};
+                const auto [read_str, read_code] {read_string(BUFFER_SIZE, sock)};
 
                 if (read_code == socket_error) {
                     perror("read");
