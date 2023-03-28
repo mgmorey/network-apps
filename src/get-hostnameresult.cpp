@@ -30,7 +30,6 @@
 #include <unistd.h>     // ::gethostname()
 #endif
 
-#include <cstddef>      // std::size_t
 #include <iostream>     // std::cout, std::endl
 #include <sstream>      // std::ostringstream
 
