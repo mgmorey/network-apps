@@ -29,7 +29,6 @@
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <regex>        // std::regex, std::regex_match
 #include <sstream>      // std::ostringstream
-#include <vector>       // std::vector
 
 using Network::ArgumentSpan;
 using Network::Pathname;
