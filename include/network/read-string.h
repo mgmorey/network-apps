@@ -22,6 +22,7 @@
 
 #include <cstddef>      // std::size_t
 #include <string>       // std::string
+#include <utility>      // std::pair
 
 namespace Network
 {
