@@ -13,21 +13,31 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/read-string.h"        // Socket, desciptor_type,
+#include "network/read-string.h"        // Socket, descriptor_type,
                                         // read_string(), ssize_t,
                                         // std::size_t
 #include "network/buffer.h"             // Buffer
+#include "network/to-integer.h"         // to_integer()
 
-#include <unistd.h>             // ::read()
+#ifdef WIN32
+#include <winsock2.h>       // ::recv()
+#else
+#include <unistd.h>         // ::read()
+#endif
 
 auto Network::read_string(std::size_t size, const Socket& sock) ->
     std::pair<std::string, ssize_t>
 {
     Buffer buffer {size};
+    const descriptor_type handle {sock};
+#ifdef WIN32
     const auto code {
-        ::read(descriptor_type {sock},
-               buffer.data(),
-               buffer.size())
+        ::recv(handle, buffer.data(), to_integer(buffer.size()), 0)}
+    ;
+#else
+    const auto code {
+        ::read(handle, buffer.data(), buffer.size())
     };
+#endif
     return {buffer, code};
 }
