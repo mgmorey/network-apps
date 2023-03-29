@@ -83,7 +83,7 @@ to-bytespan-sa.cpp to-bytespan-sun.cpp to-bytespan-void.cpp		\
 to-bytestring-ai.cpp to-bytestring-bs.cpp to-bytestring-path.cpp	\
 to-bytestring-sa.cpp to-bytestring-sun.cpp to-path-bytestring.cpp	\
 to-path-descriptor.cpp to-string-in-addr.cpp to-string-in6-addr.cpp	\
-version.cpp write-string.cpp
+version.cpp write-string.cpp write.cpp
 
 test_sources = test-address.cpp test-bind.cpp test-connect.cpp		\
 test-context.cpp test-host.cpp test-hostname.cpp test-option.cpp	\

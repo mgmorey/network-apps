@@ -13,12 +13,23 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/write-string.h"       // Socket, descriptor_type,
-                                        // ssize_t, write_string()
+#include "network/write.h"              // Socket, descriptor_type,
+                                        // ssize_t, write()
 #include "network/to-integer.h"         // to_integer()
-#include "network/write.h"              // write()
 
-auto Network::write(const std::string& str, const Socket& sock) -> ssize_t
+#ifdef WIN32
+#include <winsock2.h>       // ::send()
+#else
+#include <unistd.h>         // ::write()
+#endif
+
+auto Network::write(const char* data, std::size_t size,
+                    const Socket& sock) -> ssize_t
 {
-    return write(str.data(), str.size(), sock);
+    const descriptor_type handle {sock};
+#ifdef WIN32
+    return ::send(handle, data, to_integer(size), 0);
+#else
+    return ::write(handle, data, size);
+#endif
 }
