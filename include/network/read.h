@@ -20,6 +20,8 @@
 
 #include <sys/types.h>          // ssize_t
 
+#include <cstddef>      // std::size_t
+
 namespace Network
 {
     extern auto read(char* data, std::size_t size,

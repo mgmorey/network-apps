@@ -20,6 +20,8 @@
 
 #include <sys/types.h>          // ssize_t
 
+#include <cstddef>      // std::size_t
+
 namespace Network
 {
     extern auto write(const char* data, std::size_t size,
