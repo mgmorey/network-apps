@@ -68,13 +68,13 @@ namespace TestSocket
 
 #ifndef OS_CYGWIN_NT
 
-    static auto get_codes_no_directory() -> const ErrorCodeSet&
+    auto get_codes_no_directory() -> const ErrorCodeSet&
     {
         static const ErrorCodeSet codes = {ENOENT};
         return codes;
     }
 
-    static auto get_codes_no_permission() -> const ErrorCodeSet&
+    auto get_codes_no_permission() -> const ErrorCodeSet&
     {
 #ifdef OS_DARWIN
         static const ErrorCodeSet codes = {EACCES, EROFS};
@@ -86,7 +86,7 @@ namespace TestSocket
 
 #endif
 
-    static auto get_pathname(std::string::size_type size) -> Pathname
+    auto get_pathname(std::string::size_type size) -> Pathname
     {
         const Pathname prefix {"/tmp/"};
         Pathname pathname(size, 'X');
@@ -98,7 +98,7 @@ namespace TestSocket
         return pathname;
     }
 
-    static auto get_pathnames() -> OptionalPathnameVector
+    auto get_pathnames() -> OptionalPathnameVector
     {
         static constexpr auto size_max {64};	// NOLINT
         static constexpr auto size_min {8};	// NOLINT
@@ -113,7 +113,7 @@ namespace TestSocket
         return pathnames;
     }
 
-    static auto parse(int argc, char** argv) -> void
+    auto parse(int argc, char** argv) -> void
     {
         const auto [_, options] {parse(argc, argv, "v")};
 
@@ -132,7 +132,7 @@ namespace TestSocket
         static_cast<void>(_);
     }
 
-    static auto print(const Error& error) -> void
+    auto print(const Error& error) -> void
     {
         if (verbose) {
             std::cout << "Exception: "
@@ -141,7 +141,7 @@ namespace TestSocket
         }
     }
 
-    static auto print(const OsErrorResult& result) -> void
+    auto print(const OsErrorResult& result) -> void
     {
         if (verbose) {
             std::cout << "Number: "
@@ -153,8 +153,8 @@ namespace TestSocket
         }
     }
 
-    static auto test_pathname(const OptionalPathname& pathname,
-                              const ErrorCodeSet& expected_codes) -> void
+    auto test_pathname(const OptionalPathname& pathname,
+                       const ErrorCodeSet& expected_codes) -> void
     {
         os_error_type actual_code {0};
         const auto addr {to_bytestring(pathname)};
@@ -181,8 +181,8 @@ namespace TestSocket
         assert(to_path(addr) == pathname);
     }
 
-    static auto test_path_invalid(const OptionalPathname& pathname,
-                                  const ErrorCodeSet& expected_codes) -> void
+    auto test_path_invalid(const OptionalPathname& pathname,
+                           const ErrorCodeSet& expected_codes) -> void
     {
         std::string actual_error_str;
 
@@ -200,8 +200,8 @@ namespace TestSocket
 
 #ifndef OS_CYGWIN_NT
 
-    static auto test_path_no_directory(const Pathname& pathname,
-                                       const ErrorCodeSet& expected_codes) -> void
+    auto test_path_no_directory(const Pathname& pathname,
+                                const ErrorCodeSet& expected_codes) -> void
     {
         std::string actual_error_str;
 
@@ -216,8 +216,8 @@ namespace TestSocket
         assert(actual_error_str.empty());
     }
 
-    static auto test_path_no_permission(const Pathname& pathname,
-                                        const ErrorCodeSet& expected_codes) -> void
+    auto test_path_no_permission(const Pathname& pathname,
+                                 const ErrorCodeSet& expected_codes) -> void
     {
         std::string actual_error_str;
 
@@ -234,8 +234,8 @@ namespace TestSocket
 
 #endif
 
-    static auto test_path_valid(const OptionalPathname& pathname,
-                                const ErrorCodeSet& expected_codes) -> void
+    auto test_path_valid(const OptionalPathname& pathname,
+                         const ErrorCodeSet& expected_codes) -> void
     {
         std::string actual_error_str;
 
@@ -250,7 +250,7 @@ namespace TestSocket
         assert(actual_error_str.empty());
     }
 
-    static auto test_paths() -> void
+    auto test_paths() -> void
     {
 #ifndef OS_CYGWIN_NT
         static const ErrorCodeSet codes_no_directory {get_codes_no_directory()};
@@ -272,7 +272,7 @@ namespace TestSocket
 #endif
     }
 
-    static auto test_socketpair() -> void
+    auto test_socketpair() -> void
     {
         SocketPair pair {AF_UNIX, SOCK_STREAM, 0, 0, verbose};
         std::cout << "Socket "

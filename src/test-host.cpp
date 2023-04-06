@@ -113,7 +113,7 @@ namespace TestHost
             print(values);
         }
 
-        static auto get_endpoint(const ByteString& addr) -> Endpoint
+        auto get_endpoint(const ByteString& addr) -> Endpoint
         {
             return Network::get_endpoint(addr, 0, verbose);
         }
@@ -146,7 +146,7 @@ namespace TestHost
         std::ostream& m_os;
     };
 
-    static auto get_codes_nodata() -> const ErrorCodeSet&
+    auto get_codes_nodata() -> const ErrorCodeSet&
     {
 #if defined(WIN32)
         static const ErrorCodeSet codes = {
@@ -167,7 +167,7 @@ namespace TestHost
         return codes;
     }
 
-    static auto get_family(const OptionalHints& hints) -> std::string
+    auto get_family(const OptionalHints& hints) -> std::string
     {
         if (!hints) {
             return "";
@@ -183,12 +183,12 @@ namespace TestHost
         }
     }
 
-    static auto get_hints_vector(bool is_local) -> HintsVector
+    auto get_hints_vector(bool is_local) -> HintsVector
     {
         return is_local ? HintsVector {unspec} : HintsVector {inet, inet6};
     }
 
-    static auto get_hostname() -> OptionalHostname
+    auto get_hostname() -> OptionalHostname
     {
         const auto* const hostname_c {std::getenv("HOSTNAME")};
 
@@ -199,7 +199,7 @@ namespace TestHost
         return hostname_c;
     }
 
-    static auto parse(int argc, char** argv) -> ArgumentSpan
+    auto parse(int argc, char** argv) -> ArgumentSpan
     {
         const auto [operands, options] {parse(argc, argv, "v")};
 
@@ -218,8 +218,8 @@ namespace TestHost
         return operands;
     }
 
-    static auto print(const OsErrorResult& result,
-                      const std::string& description = "") -> void
+    auto print(const OsErrorResult& result,
+               const std::string& description = "") -> void
     {
         if (verbose) {
             std::cout << "Error result"
@@ -234,8 +234,8 @@ namespace TestHost
         }
     }
 
-    static auto test_host(const OptionalHostname& host,
-                          const OptionalHints& hints) -> void
+    auto test_host(const OptionalHostname& host,
+                   const OptionalHints& hints) -> void
     {
         const auto hosts_result {get_hosts(host, hints)};
         const auto family {get_family(hints)};
@@ -257,24 +257,24 @@ namespace TestHost
                     std::for_each(hosts.begin(), hosts.end(),
                                   Test(std::cout));
                 },
-                [&](const OsErrorResult& result) {
-                    if (family.empty()) {
-                        std::cout << "No";
-                    }
-                    else {
-                        std::cout << "No "
-                                  << family;
-                    }
+                    [&](const OsErrorResult& result) {
+                        if (family.empty()) {
+                            std::cout << "No";
+                        }
+                        else {
+                            std::cout << "No "
+                                      << family;
+                        }
 
-                    std::cout << " hosts:"
-                              << std::endl
-                              << result.string()
-                              << std::endl;
-                }
-            }, hosts_result);
+                        std::cout << " hosts:"
+                                  << std::endl
+                                  << result.string()
+                                  << std::endl;
+                    }
+                    }, hosts_result);
     }
 
-    static auto test_host_invalid() -> void
+    auto test_host_invalid() -> void
     {
         os_error_type actual_code {0};
         const auto& expected_codes {get_codes_nodata()};
@@ -283,15 +283,15 @@ namespace TestHost
                 [&](const HostVector& hosts) {
                     static_cast<void>(hosts);
                 },
-                [&](const OsErrorResult& result) {
-                    print(result, "get_hosts() with invalid hostname");
-                    actual_code = result.number();
-                }
-            }, hosts_result);
+                    [&](const OsErrorResult& result) {
+                        print(result, "get_hosts() with invalid hostname");
+                        actual_code = result.number();
+                    }
+                    }, hosts_result);
         assert(expected_codes.contains(actual_code));
     }
 
-    static auto test_host_valid(const OptionalHostname& host) -> void
+    auto test_host_valid(const OptionalHostname& host) -> void
     {
         const bool is_local = !host || *host == get_hostname();
 

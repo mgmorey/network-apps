@@ -101,14 +101,14 @@ namespace TestRanges
     };
 #endif
 
-    static auto print(const RangeError& error) -> void
+    auto print(const RangeError& error) -> void
     {
         std::cout << "Exception: "
                   << error.what()
                   << std::endl;
     }
 
-    static auto test_character_invalid(auto value) -> void
+    auto test_character_invalid(auto value) -> void
     {
         std::string actual_error_str;
 
@@ -124,13 +124,13 @@ namespace TestRanges
         assert(std::regex_match(actual_error_str, expected_error_regex));
     }
 
-    static auto test_character_invalid() -> void
+    auto test_character_invalid() -> void
     {
         test_character_invalid(CHAR_MIN - 1);
         test_character_invalid(CHAR_MAX + 1);
     }
 
-    static auto test_integer_invalid(auto value) -> void
+    auto test_integer_invalid(auto value) -> void
     {
         std::string actual_error_str;
 
@@ -146,13 +146,13 @@ namespace TestRanges
         assert(std::regex_match(actual_error_str, expected_error_regex));
     }
 
-    static auto test_integer_invalid() -> void
+    auto test_integer_invalid() -> void
     {
         test_integer_invalid(static_cast<long long>(INT_MIN) - 1);
         test_integer_invalid(static_cast<long long>(INT_MAX) + 1);
     }
 
-    static auto test_name_len_invalid(auto value) -> void
+    auto test_name_len_invalid(auto value) -> void
     {
         std::string actual_error_str;
 
@@ -168,7 +168,7 @@ namespace TestRanges
         assert(std::regex_match(actual_error_str, expected_error_regex));
     }
 
-    static auto test_name_len_invalid() -> void
+    auto test_name_len_invalid() -> void
     {
         test_name_len_invalid(name_len_min - 1);
         test_name_len_invalid(name_len_max + 1);
@@ -176,7 +176,7 @@ namespace TestRanges
 
 #ifndef WIN32
 
-    static auto test_path_len_invalid(auto value) -> void
+    auto test_path_len_invalid(auto value) -> void
     {
         std::string actual_error_str;
 
@@ -192,7 +192,7 @@ namespace TestRanges
         assert(std::regex_match(actual_error_str, expected_error_regex));
     }
 
-    static auto test_path_len_invalid() -> void
+    auto test_path_len_invalid() -> void
     {
         test_path_len_invalid(path_len_min - 1);
         test_path_len_invalid(path_len_max + 1);
@@ -200,7 +200,7 @@ namespace TestRanges
 
 #endif
 
-    static auto test_sa_len_invalid(auto value) -> void
+    auto test_sa_len_invalid(auto value) -> void
     {
         std::string actual_error_str;
 
@@ -216,13 +216,13 @@ namespace TestRanges
         assert(std::regex_match(actual_error_str, expected_error_regex));
     }
 
-    static auto test_sa_len_invalid() -> void
+    auto test_sa_len_invalid() -> void
     {
         test_sa_len_invalid(sa_len_min - 1);
         test_sa_len_invalid(sa_len_max + 1);
     }
 
-    static auto test_sock_len_invalid(auto value) -> void
+    auto test_sock_len_invalid(auto value) -> void
     {
         std::string actual_error_str;
 
@@ -238,13 +238,13 @@ namespace TestRanges
         assert(std::regex_match(actual_error_str, expected_error_regex));
     }
 
-    static auto test_sock_len_invalid() -> void
+    auto test_sock_len_invalid() -> void
     {
         test_sock_len_invalid(sock_len_min - 1);
         test_sock_len_invalid(sock_len_max + 1);
     }
 
-    static auto test_std_size_invalid(auto value) -> void
+    auto test_std_size_invalid(auto value) -> void
     {
         std::string actual_error_str;
 
@@ -260,14 +260,14 @@ namespace TestRanges
         assert(std::regex_match(actual_error_str, expected_error_regex));
     }
 
-    static auto test_std_size_invalid() -> void
+    auto test_std_size_invalid() -> void
     {
         test_std_size_invalid(-1);
     }
 
 #ifndef WIN32
 
-    static auto test_sun_len_invalid(auto value) -> void
+    auto test_sun_len_invalid(auto value) -> void
     {
         std::string actual_error_str;
 
@@ -283,7 +283,7 @@ namespace TestRanges
         assert(std::regex_match(actual_error_str, expected_error_regex));
     }
 
-    static auto test_sun_len_invalid() -> void
+    auto test_sun_len_invalid() -> void
     {
         test_sun_len_invalid(sun_len_min - 1);
         test_sun_len_invalid(sun_len_max + 1);

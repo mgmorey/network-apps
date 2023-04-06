@@ -82,7 +82,7 @@ namespace TestConnect
     class Test
     {
     public:
-        static auto get_codes_unreachable() -> const ErrorCodeSet&
+        auto get_codes_unreachable() -> const ErrorCodeSet&
         {
 #if defined(WIN32)
             static const ErrorCodeSet codes {
@@ -115,15 +115,15 @@ namespace TestConnect
                     [&](const Socket& sock) {
                         test_socket(sock);
                     },
-                    [&](const OsErrorResult& error) {
-                        auto actual_code {error.number()};
+                        [&](const OsErrorResult& error) {
+                            auto actual_code {error.number()};
 
-                        if (!expected_codes.contains(actual_code)) {
-                            std::cerr << error.string()
-                                      << std::endl;
+                            if (!expected_codes.contains(actual_code)) {
+                                std::cerr << error.string()
+                                          << std::endl;
+                            }
                         }
-                    }
-                }, t_socket_result);
+                        }, t_socket_result);
         }
 
         auto test_socket(const Socket& t_sock) -> void
@@ -157,7 +157,7 @@ namespace TestConnect
         std::ostream& m_os;
     };
 
-    static auto get_codes_invalid_host() -> const ErrorCodeSet&
+    auto get_codes_invalid_host() -> const ErrorCodeSet&
     {
 #if defined(WIN32)
         static const ErrorCodeSet codes {WSAHOST_NOT_FOUND};
@@ -169,7 +169,7 @@ namespace TestConnect
         return codes;
     }
 
-    static auto get_codes_invalid_service() -> const ErrorCodeSet&
+    auto get_codes_invalid_service() -> const ErrorCodeSet&
     {
 #if defined(WIN32)
         static const ErrorCodeSet codes {WSATYPE_NOT_FOUND};
@@ -179,7 +179,7 @@ namespace TestConnect
         return codes;
     }
 
-    static auto parse(int argc, char** argv) -> Network::Endpoint
+    auto parse(int argc, char** argv) -> Network::Endpoint
     {
         const auto [operands, options] {parse(argc, argv, "v")};
 
@@ -201,8 +201,8 @@ namespace TestConnect
         };
     }
 
-    static auto print(const OsErrorResult& result,
-                      const std::string& description = "") -> void
+    auto print(const OsErrorResult& result,
+               const std::string& description = "") -> void
     {
         if (verbose) {
             std::cout << "Error result"
@@ -217,8 +217,8 @@ namespace TestConnect
         }
     }
 
-    static auto test_connect_invalid_host(const Endpoint& endpoint,
-                                          const SocketHints& hints) -> void
+    auto test_connect_invalid_host(const Endpoint& endpoint,
+                                   const SocketHints& hints) -> void
     {
         os_error_type actual_code {0};
         const auto& expected_codes {get_codes_invalid_host()};
@@ -227,16 +227,16 @@ namespace TestConnect
                 [&](const SocketResultVector& socket_results) {
                     static_cast<void>(socket_results);
                 },
-                [&](const OsErrorResult& error) {
-                    actual_code = error.number();
-                    print(error, "connect() with invalid host");
-                }
-            }, connect_result);
+                    [&](const OsErrorResult& error) {
+                        actual_code = error.number();
+                        print(error, "connect() with invalid host");
+                    }
+                    }, connect_result);
         assert(expected_codes.contains(actual_code));
     }
 
-    static auto test_connect_invalid_service(const Endpoint& endpoint,
-                                             const SocketHints& hints) -> void
+    auto test_connect_invalid_service(const Endpoint& endpoint,
+                                      const SocketHints& hints) -> void
     {
         os_error_type actual_code {0};
         const auto& expected_codes {get_codes_invalid_service()};
@@ -245,17 +245,17 @@ namespace TestConnect
                 [&](const SocketResultVector& socket_results) {
                     static_cast<void>(socket_results);
                 },
-                [&](const OsErrorResult& error) {
-                    actual_code = error.number();
-                    print(error, "connect() with invalid service");
-                }
-            }, connect_result);
+                    [&](const OsErrorResult& error) {
+                        actual_code = error.number();
+                        print(error, "connect() with invalid service");
+                    }
+                    }, connect_result);
         assert(expected_codes.contains(actual_code));
     }
 
-    static auto test_connect_valid(const Endpoint& endpoint,
-                                   const SocketHints& hints,
-                                   const Hostname& hostname) -> void
+    auto test_connect_valid(const Endpoint& endpoint,
+                            const SocketHints& hints,
+                            const Hostname& hostname) -> void
     {
         const auto connect_result {connect(endpoint, hints, verbose)};
         std::visit(Overloaded {
@@ -265,14 +265,14 @@ namespace TestConnect
                                        hostname,
                                        std::cout));
                 },
-                [&](const OsErrorResult& error) {
-                    print(error, "connect() with valid endpoint");
-                }
-            }, connect_result);
+                    [&](const OsErrorResult& error) {
+                        print(error, "connect() with valid endpoint");
+                    }
+                    }, connect_result);
     }
 
-    static auto test_connect_valid(const Endpoint& endpoint,
-                                   const SocketHints& hints) -> void
+    auto test_connect_valid(const Endpoint& endpoint,
+                            const SocketHints& hints) -> void
     {
         test_connect_valid(endpoint, hints, get_hostname());
     }

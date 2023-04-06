@@ -86,11 +86,11 @@ namespace TestBind
                     [&](const Socket& sock) {
                         test_socket(sock);
                     },
-                    [&](const OsErrorResult& error) {
-                        std::cerr << error.string()
-                                  << std::endl;
-                    }
-                }, t_socket_result);
+                        [&](const OsErrorResult& error) {
+                            std::cerr << error.string()
+                                      << std::endl;
+                        }
+                        }, t_socket_result);
         }
 
         auto test_socket(const Socket& t_sock) -> void
@@ -117,7 +117,7 @@ namespace TestBind
         std::ostream& m_os;
     };
 
-    static auto get_codes_invalid_host() -> const ErrorCodeSet&
+    auto get_codes_invalid_host() -> const ErrorCodeSet&
     {
 #if defined(WIN32)
         static const ErrorCodeSet codes {WSAHOST_NOT_FOUND};
@@ -129,7 +129,7 @@ namespace TestBind
         return codes;
     }
 
-    static auto get_codes_invalid_service() -> const ErrorCodeSet&
+    auto get_codes_invalid_service() -> const ErrorCodeSet&
     {
 #if defined(WIN32)
         static const ErrorCodeSet codes {WSATYPE_NOT_FOUND};
@@ -139,7 +139,7 @@ namespace TestBind
         return codes;
     }
 
-    static auto parse(int argc, char** argv) -> Network::Endpoint
+    auto parse(int argc, char** argv) -> Network::Endpoint
     {
         const auto [operands, options] {parse(argc, argv, "v")};
 
@@ -161,8 +161,8 @@ namespace TestBind
         };
     }
 
-    static auto print(const OsErrorResult& result,
-                      const std::string& description = "") -> void
+    auto print(const OsErrorResult& result,
+               const std::string& description = "") -> void
     {
         if (verbose) {
             std::cout << "Error result"
@@ -177,8 +177,8 @@ namespace TestBind
         }
     }
 
-    static auto test_bind_invalid_host(const Endpoint& endpoint,
-                                       const SocketHints& hints) -> void
+    auto test_bind_invalid_host(const Endpoint& endpoint,
+                                const SocketHints& hints) -> void
     {
         os_error_type actual_code {0};
         const auto& expected_codes {get_codes_invalid_host()};
@@ -187,16 +187,16 @@ namespace TestBind
                 [&](const SocketResultVector& socket_results) {
                     static_cast<void>(socket_results);
                 },
-                [&](const OsErrorResult& error) {
-                    actual_code = error.number();
-                    print(error, "bind() with invalid host");
-                }
-            }, bind_result);
+                    [&](const OsErrorResult& error) {
+                        actual_code = error.number();
+                        print(error, "bind() with invalid host");
+                    }
+                    }, bind_result);
         assert(expected_codes.contains(actual_code));
     }
 
-    static auto test_bind_invalid_service(const Endpoint& endpoint,
-                                          const SocketHints& hints) -> void
+    auto test_bind_invalid_service(const Endpoint& endpoint,
+                                   const SocketHints& hints) -> void
     {
         os_error_type actual_code {0};
         const auto& expected_codes {get_codes_invalid_service()};
@@ -205,16 +205,16 @@ namespace TestBind
                 [&](const SocketResultVector& socket_results) {
                     static_cast<void>(socket_results);
                 },
-                [&](const OsErrorResult& error) {
-                    actual_code = error.number();
-                    print(error, "bind() with invalid service");
-                }
-            }, bind_result);
+                    [&](const OsErrorResult& error) {
+                        actual_code = error.number();
+                        print(error, "bind() with invalid service");
+                    }
+                    }, bind_result);
         assert(expected_codes.contains(actual_code));
     }
 
-    static auto test_bind_valid(const Endpoint& endpoint,
-                                const SocketHints& hints) -> void
+    auto test_bind_valid(const Endpoint& endpoint,
+                         const SocketHints& hints) -> void
     {
         const auto bind_result {bind(endpoint, hints, verbose)};
         std::visit(Overloaded {
@@ -222,10 +222,10 @@ namespace TestBind
                     std::for_each(socket_results.begin(), socket_results.end(),
                                   Test(endpoint, std::cout));
                 },
-                [&](const OsErrorResult& error) {
-                    print(error, "bind() with valid endpoint");
-                }
-            }, bind_result);
+                    [&](const OsErrorResult& error) {
+                        print(error, "bind() with valid endpoint");
+                    }
+                    }, bind_result);
     }
 }
 

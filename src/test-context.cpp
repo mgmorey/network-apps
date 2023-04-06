@@ -77,7 +77,7 @@ namespace TestContext
     static constexpr auto expected_code_stopped {WSANOTINITIALISED};
     static constexpr auto expected_context_re {
         R"(WinSock 2.0 Version \d{1,3}\.\d{1,3} Running)"
-    };
+            };
     static constexpr auto expected_error_stopped {
         "Call to ::gethostname(, 1024) failed with error 10093: "
         "Either the application has not called WSAStartup, "
@@ -119,7 +119,7 @@ namespace TestContext
         }
     };
 
-    static auto parse(int argc, char** argv) -> void
+    auto parse(int argc, char** argv) -> void
     {
         const auto [_, options] {parse(argc, argv, "v")};
 
@@ -138,8 +138,8 @@ namespace TestContext
         static_cast<void>(_);
     }
 
-    static auto print(const TestContext& context,
-                      const std::string& scope) -> void
+    auto print(const TestContext& context,
+               const std::string& scope) -> void
     {
         std::cout << "Context";
 
@@ -156,7 +156,7 @@ namespace TestContext
                   << std::endl;
     }
 
-    static auto print(const Error& error) -> void
+    auto print(const Error& error) -> void
     {
         if (verbose) {
             std::cout << "Exception: "
@@ -165,15 +165,15 @@ namespace TestContext
         }
     }
 
-    static auto test_context(const TestContext& context,
-                             const std::string& scope = "") -> void
+    auto test_context(const TestContext& context,
+                      const std::string& scope = "") -> void
     {
         print(context, scope);
         const std::regex expected_context_regex {expected_context_re};
         assert(std::regex_match(to_string(context), expected_context_regex));
     }
 
-    static auto test_context_cleaned_up() -> void
+    auto test_context_cleaned_up() -> void
     {
         context_error_type error_code {0};
         std::string actual_error_str;
@@ -190,7 +190,7 @@ namespace TestContext
         assert(actual_error_str.empty());
     }
 
-    static auto test_context_global_instance() -> void
+    auto test_context_global_instance() -> void
     {
         std::string actual_error_str;
 
@@ -212,7 +212,7 @@ namespace TestContext
         test_context_cleaned_up();
     }
 
-    static auto test_context_local_instances() -> void
+    auto test_context_local_instances() -> void
     {
         std::string actual_error_str;
 
@@ -231,7 +231,7 @@ namespace TestContext
         test_context_cleaned_up();
     }
 
-    static auto test_context_valid_with_shutdown() -> void
+    auto test_context_valid_with_shutdown() -> void
     {
         std::string actual_error_str;
 
@@ -249,7 +249,7 @@ namespace TestContext
         test_context_cleaned_up();
     }
 
-    static auto test_context_valid_without_shutdown() -> void
+    auto test_context_valid_without_shutdown() -> void
     {
         std::string actual_error_str;
 
@@ -266,7 +266,7 @@ namespace TestContext
         test_context_cleaned_up();
     }
 
-    static auto test_context_version_null() -> void
+    auto test_context_version_null() -> void
     {
         std::string actual_error_str;
 
@@ -283,7 +283,7 @@ namespace TestContext
         test_context_cleaned_up();
     }
 
-    static auto test_hostname_running() -> void
+    auto test_hostname_running() -> void
     {
         std::string actual_error_str;
 
@@ -301,7 +301,7 @@ namespace TestContext
         test_context_cleaned_up();
     }
 
-    static auto test_hostname_stopped() -> void
+    auto test_hostname_stopped() -> void
     {
         std::string actual_error_str;
 

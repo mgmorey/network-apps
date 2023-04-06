@@ -31,7 +31,7 @@ namespace TestHostname
 
     static bool verbose {false};  // NOLINT
 
-    static auto parse(int argc, char** argv) -> void
+    auto parse(int argc, char** argv) -> void
     {
         const auto [_, options] {parse(argc, argv, "v")};
 
@@ -50,7 +50,7 @@ namespace TestHostname
         static_cast<void>(_);
     }
 
-    static auto test_hostname() -> void
+    auto test_hostname() -> void
     {
         const auto hostname {get_hostname(verbose)};
         std::cout << "Hostname: "

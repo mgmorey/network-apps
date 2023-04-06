@@ -78,7 +78,7 @@ namespace TestAddress
 
     static bool verbose {false};  // NOLINT
 
-    static auto parse(int argc, char** argv) -> void
+    auto parse(int argc, char** argv) -> void
     {
         const auto [_, options] {parse(argc, argv, "v")};
 
@@ -97,7 +97,7 @@ namespace TestAddress
         static_cast<void>(_);
     }
 
-    static auto print(const Address& address) -> void
+    auto print(const Address& address) -> void
     {
         const auto length {address.length()};
         const auto family {address.family()};
@@ -121,7 +121,7 @@ namespace TestAddress
                   << std::endl;
     }
 
-    static auto print(const Error& error) -> void
+    auto print(const Error& error) -> void
     {
         if (verbose) {
             std::cout << "Exception: "
@@ -130,7 +130,7 @@ namespace TestAddress
         }
     }
 
-    static auto test_address_empty() -> void
+    auto test_address_empty() -> void
     {
         const ByteString addr;
         assert(addr.empty());
@@ -139,7 +139,7 @@ namespace TestAddress
         assert(is_valid(addr) == false);
     }
 
-    static auto test_address_invalid() -> void
+    auto test_address_invalid() -> void
     {
         std::string actual_error_str;
 
@@ -157,7 +157,7 @@ namespace TestAddress
         assert(std::regex_match(actual_error_str, expected_error_addr_regex));
     }
 
-    static auto test_address_valid(const ByteString& addr) -> void
+    auto test_address_valid(const ByteString& addr) -> void
     {
         const Address address {addr};
         const auto family {address.family()};
@@ -190,7 +190,7 @@ namespace TestAddress
         }
     }
 
-    static auto test_address_valid() -> void
+    auto test_address_valid() -> void
     {
         static const Hostname localhost {"localhost"};
 
@@ -206,14 +206,14 @@ namespace TestAddress
                         test_address_valid(host.address());
                     }
                 },
-                [&](const OsErrorResult& result) {
-                    std::cout << "No "
-                              << localhost
-                              << " addresses: "
-                              << result.string()
-                              << std::endl;
-                }
-            }, hosts_result);
+                    [&](const OsErrorResult& result) {
+                        std::cout << "No "
+                                  << localhost
+                                  << " addresses: "
+                                  << result.string()
+                                  << std::endl;
+                    }
+                    }, hosts_result);
     }
 }
 

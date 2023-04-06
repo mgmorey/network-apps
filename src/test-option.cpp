@@ -38,13 +38,13 @@ namespace TestOption
     using Network::to_integer;
     using Network::to_size;
 
-    static auto get_strings(const char* argv0) -> std::vector<std::string>
+    auto get_strings(const char* argv0) -> std::vector<std::string>
     {
         return {argv0, "-f", argv0, "-v", "one", "two", "three"};
     }
 
-    static auto parse(std::string& filename, bool& verbose,
-                      ArgumentSpan args) -> void
+    auto parse(std::string& filename, bool& verbose,
+               ArgumentSpan args) -> void
     {
         static const char* optstring {"f:v"};
         const auto optind_begin {get_optind()};
@@ -68,8 +68,8 @@ namespace TestOption
         assert(get_optind() == optind_begin + length);
     }
 
-    static auto print(ArgumentSpan args,
-                      const std::string& scope = "") -> void
+    auto print(ArgumentSpan args,
+               const std::string& scope = "") -> void
     {
         auto index {0};
 
@@ -83,14 +83,14 @@ namespace TestOption
         }
     }
 
-    static auto test_arguments(ArgumentSpan args,
-                               const char* argv0) -> void
+    auto test_arguments(ArgumentSpan args,
+                        const char* argv0) -> void
     {
         print(args);
         assert(std::string {args[0]} == argv0);
     }
 
-    static auto test_operands(ArgumentSpan args) -> void
+    auto test_operands(ArgumentSpan args) -> void
     {
         print(args, "Operand");
         assert(std::string {args[0]} == "one");
@@ -99,8 +99,8 @@ namespace TestOption
         assert(args.size() == 3);
     }
 
-    static auto test_options(ArgumentSpan args,
-                             const char* argv0) -> void
+    auto test_options(ArgumentSpan args,
+                      const char* argv0) -> void
     {
         print(args, "Option");
         assert(std::string {args[0]} == "-f");
@@ -109,7 +109,7 @@ namespace TestOption
         assert(args.size() == 3);
     }
 
-    static auto test_arguments(int argc, char** argv) -> void
+    auto test_arguments(int argc, char** argv) -> void
     {
         assert(argc > 0);
         assert(*argv != nullptr);
