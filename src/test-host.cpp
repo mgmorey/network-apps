@@ -91,6 +91,11 @@ namespace TestHost
     public:
         using Values = std::vector<std::string>;
 
+        static auto get_endpoint(const ByteString& addr) -> Endpoint
+        {
+            return Network::get_endpoint(addr, 0, verbose);
+        }
+
         explicit Test(std::ostream& t_os) :
             m_os(t_os)
         {
@@ -111,11 +116,6 @@ namespace TestHost
                          values.end());
             uniquify(values);
             print(values);
-        }
-
-        auto get_endpoint(const ByteString& addr) -> Endpoint
-        {
-            return Network::get_endpoint(addr, 0, verbose);
         }
 
         auto print(const Values& values) -> void
