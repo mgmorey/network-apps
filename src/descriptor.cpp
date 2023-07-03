@@ -51,6 +51,7 @@ auto Network::Descriptor::close() noexcept -> Descriptor&
     if (m_pending) {
         try {
             remove_socket(m_handle, m_verbose);
+            m_pending = false;
         }
         catch (const std::exception& error) {
             std::cerr << error.what()

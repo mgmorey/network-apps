@@ -17,11 +17,22 @@
 #include "network/to-path-descriptor.h"         // to_path()
 
 #include <filesystem>   // std::filesystem
+#include <iostream>     // std::cout, std::endl
 
 auto Network::remove_socket(descriptor_type handle, bool verbose) -> bool
 {
     if (const auto path {to_path(handle, verbose)}) {
-        return std::filesystem::remove(*path);
+        const bool result {std::filesystem::remove(*path)};
+
+        if (result) {
+            if (verbose) {
+                std::cout << "Removed "
+                          << *path
+                          << std::endl;
+            }
+        }
+
+        return result;
     }
 
     return false;
