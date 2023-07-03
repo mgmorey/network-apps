@@ -82,7 +82,7 @@ namespace TestConnect
     class Test
     {
     public:
-        auto get_codes_unreachable() -> const ErrorCodeSet&
+        static auto get_codes_unreachable() -> const ErrorCodeSet&
         {
 #if defined(WIN32)
             static const ErrorCodeSet codes {
