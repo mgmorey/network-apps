@@ -106,10 +106,10 @@ namespace TestSocket
         OptionalPathnameVector pathnames {{}};
 
         for (std::size_t size = size_min; size <= size_max; size *= 2) {
-            pathnames.push_back(get_pathname(size));
+            pathnames.emplace_back(get_pathname(size));
         };
 
-        pathnames.push_back(std::nullopt);
+        pathnames.emplace_back(std::nullopt);
         return pathnames;
     }
 
