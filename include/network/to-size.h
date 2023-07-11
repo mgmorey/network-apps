@@ -18,8 +18,8 @@
 
 #include "network/sizeerror.h"          // SizeError
 
-#include <climits>      // SIZE_MAX
 #include <cstddef>      // std::size_t
+#include <cstdint>      // SIZE_MAX
 #include <string>       // std::to_string()
 #include <utility>      // cmp_greater(), cmp_less()
 

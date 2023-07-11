@@ -15,7 +15,7 @@
 
 #include "network/sizeerror.h"          // RangeError, SizeError
 
-#include <climits>      // SIZE_MAX
+#include <cstdint>      // SIZE_MAX
 #include <sstream>      // std::ostringstream
 #include <version>
 
