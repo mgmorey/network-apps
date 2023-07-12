@@ -36,6 +36,7 @@ using Network::Socket;
 using Network::SocketHints;
 using Network::bind;
 using Network::descriptor_type;
+using Network::parse;
 using Network::read_string;
 using Network::socket_error;
 using Network::to_bytestring;
@@ -50,29 +51,31 @@ static constexpr auto expected_error_socket_re {
     R"(Call to ::socket[(][^)]+[)] failed with error \d+: .+)"
 };
 
-static auto parse(int argc, char** argv) -> void
-{
-    const auto [_, options] {Network::parse(argc, argv, "v")};
-
-    if (options.contains('?')) {
-        std::cerr << "Usage: "
-                  << *argv
-                  << " [-v]"
-                  << std::endl;
-        std::exit(EXIT_FAILURE);
+namespace {
+    auto get_bind_socket(const SocketHints& hints) -> Socket
+    {
+        static const Network::Socket sock {hints, true, verbose};
+        return sock;
     }
 
-    if (options.contains('v')) {
-        verbose = true;
+    auto parse_arguments(int argc, char** argv) -> void
+    {
+        const auto [_, options] {parse(argc, argv, "v")};
+
+        if (options.contains('?')) {
+            std::cerr << "Usage: "
+                      << *argv
+                      << " [-v]"
+                      << std::endl;
+            std::exit(EXIT_FAILURE);
+        }
+
+        if (options.contains('v')) {
+            verbose = true;
+        }
+
+        static_cast<void>(_);
     }
-
-    static_cast<void>(_);
-}
-
-static auto get_bind_socket(const SocketHints& hints) -> Socket
-{
-    static const Network::Socket sock {hints, true, verbose};
-    return sock;
 }
 
 auto main(int argc, char* argv[]) -> int
@@ -81,7 +84,7 @@ auto main(int argc, char* argv[]) -> int
 
     try {
         // Fetch arguments from command line;
-        parse(argc, argv);
+        parse_arguments(argc, argv);
 
         // Bind Unix domain socket to pathname.
         const auto bind_sock {get_bind_socket(hints)};

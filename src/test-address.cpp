@@ -78,7 +78,7 @@ namespace TestAddress
 
     static bool verbose {false};  // NOLINT
 
-    auto parse(int argc, char** argv) -> void
+    auto parse_arguments(int argc, char** argv) -> void
     {
         const auto [_, options] {parse(argc, argv, "v")};
 
@@ -223,7 +223,7 @@ auto main(int argc, char* argv[]) -> int
 
     try {
         const auto& context {Context::instance()};
-        parse(argc, argv);
+        parse_arguments(argc, argv);
 
         if (verbose) {
             std::cout << context << std::endl;

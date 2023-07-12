@@ -139,7 +139,7 @@ namespace TestBind
         return codes;
     }
 
-    auto parse(int argc, char** argv) -> Network::Endpoint
+    auto parse_arguments(int argc, char** argv) -> Network::Endpoint
     {
         const auto [operands, options] {parse(argc, argv, "v")};
 
@@ -238,7 +238,7 @@ auto main(int argc, char* argv[]) -> int
 
     try {
         const auto& context {Context::instance()};
-        const auto endpoint {parse(argc, argv)};
+        const auto endpoint {parse_arguments(argc, argv)};
 
         if (verbose) {
             std::cout << context << std::endl;

@@ -199,7 +199,7 @@ namespace TestHost
         return hostname_c;
     }
 
-    auto parse(int argc, char** argv) -> ArgumentSpan
+    auto parse_arguments(int argc, char** argv) -> ArgumentSpan
     {
         const auto [operands, options] {parse(argc, argv, "v")};
 
@@ -315,7 +315,7 @@ auto main(int argc, char* argv[]) -> int
 
     try {
         const auto& context {Context::instance()};
-        const auto hosts {parse(argc, argv)};
+        const auto hosts {parse_arguments(argc, argv)};
 
         if (verbose) {
             std::cout << context << std::endl;

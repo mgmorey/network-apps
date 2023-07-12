@@ -46,28 +46,30 @@ static constexpr auto expected_error_socket_re {
     R"(Call to ::socket[(][^)]+[)] failed with error \d+: .+)"
 };
 
-static auto parse(int argc, char** argv) -> ArgumentSpan
-{
-    const auto [operands, options] {parse(argc, argv, "v")};
+namespace {
+    auto parse_arguments(int argc, char** argv) -> ArgumentSpan
+    {
+        const auto [operands, options] {parse(argc, argv, "v")};
 
-    if (options.contains('?')) {
-        std::cerr << "Usage: "
-                  << *argv
-                  << " [-v]"
-                  << std::endl;
-        std::exit(EXIT_FAILURE);
+        if (options.contains('?')) {
+            std::cerr << "Usage: "
+                      << *argv
+                      << " [-v]"
+                      << std::endl;
+            std::exit(EXIT_FAILURE);
+        }
+
+        if (options.contains('v')) {
+            verbose = true;
+        }
+
+        return operands;
     }
-
-    if (options.contains('v')) {
-        verbose = true;
-    }
-
-    return operands;
 }
 
 auto main(int argc, char* argv[]) -> int
 {
-    const auto args {parse(argc, argv)};
+    const auto args {parse_arguments(argc, argv)};
 
     try {
         // Connect socket to socket address.

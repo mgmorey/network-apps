@@ -119,7 +119,7 @@ namespace TestContext
         }
     };
 
-    auto parse(int argc, char** argv) -> void
+    auto parse_arguments(int argc, char** argv) -> void
     {
         const auto [_, options] {parse(argc, argv, "v")};
 
@@ -323,7 +323,7 @@ auto main(int argc, char* argv[]) -> int
     using namespace TestContext;
 
     try {
-        parse(argc, argv);
+        parse_arguments(argc, argv);
         test_context_global_instance();
         test_context_local_instances();
         test_context_valid_with_shutdown();
