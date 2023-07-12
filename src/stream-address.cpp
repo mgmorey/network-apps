@@ -24,40 +24,44 @@
 #include <sys/socket.h> // AF_INET, AF_INET6, AF_UNIX
 #endif
 
-static auto get_prefix(Network::socket_family_type family) noexcept ->
-    std::string
-{
-    switch (family) {
-    case AF_UNIX:
-        return "sun";
-        break;
-    case AF_INET:
-        return "sin";
-        break;
-    case AF_INET6:
-        return "sin6";
-        break;
-    default:
-        return "sa";
-    }
-}
+namespace {
 
-static auto get_suffix(Network::socket_family_type family) noexcept ->
-    std::string
-{
-    switch (family) {
-    case AF_UNIX:
-        return "un";
-        break;
-    case AF_INET:
-        return "in";
-        break;
-    case AF_INET6:
-        return "in6";
-        break;
-    default:
-        return "";
+    auto get_prefix(Network::socket_family_type family) noexcept ->
+        std::string
+    {
+        switch (family) {
+        case AF_UNIX:
+            return "sun";
+            break;
+        case AF_INET:
+            return "sin";
+            break;
+        case AF_INET6:
+            return "sin6";
+            break;
+        default:
+            return "sa";
+        }
     }
+
+    auto get_suffix(Network::socket_family_type family) noexcept ->
+        std::string
+    {
+        switch (family) {
+        case AF_UNIX:
+            return "un";
+            break;
+        case AF_INET:
+            return "in";
+            break;
+        case AF_INET6:
+            return "in6";
+            break;
+        default:
+            return "";
+        }
+    }
+
 }
 
 auto Network::operator<<(std::ostream& os,
