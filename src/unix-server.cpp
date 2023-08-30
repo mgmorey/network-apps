@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/network.h"            // Buffer, Socket, connect(),
+#include "network/network.h"            // Buffer, Socket, bind(),
                                         // read_string() socket_error,
                                         // to_bytestring(), write()
 #include "network/parse.h"              // parse()
@@ -52,9 +52,10 @@ static constexpr auto expected_error_socket_re {
 };
 
 namespace {
-    auto get_bind_socket(const SocketHints& hints) -> Socket
+    auto get_bind_socket() -> Socket
     {
-        static const Network::Socket sock {hints, true, verbose};
+        static constexpr SocketHints hints {0, AF_UNIX, SOCK_SEQPACKET, 0};
+        static const Socket sock {hints, true, verbose};
         return sock;
     }
 
@@ -76,18 +77,29 @@ namespace {
 
         static_cast<void>(_);
     }
+
+    auto read(const Socket& sock) -> std::string
+    {
+        static constexpr auto size {BUFFER_SIZE};
+        const auto [read_str, read_error] {read_string(size, sock)};
+
+        if (read_error == socket_error) {
+            perror("read");
+            exit(EXIT_FAILURE);
+        }
+
+        return read_str;
+    }
 }
 
 auto main(int argc, char* argv[]) -> int
 {
-    static constexpr SocketHints hints {0, AF_UNIX, SOCK_SEQPACKET, 0};
-
     try {
         // Fetch arguments from command line;
         parse_arguments(argc, argv);
 
         // Bind Unix domain socket to pathname.
-        const auto bind_sock {get_bind_socket(hints)};
+        const auto bind_sock {get_bind_socket()};
         const auto addr {to_bytestring(SOCKET_NAME)};
         const auto error {bind(bind_sock, addr, verbose)};
         const auto error_code {error.number()};
@@ -111,13 +123,13 @@ auto main(int argc, char* argv[]) -> int
         // This is the main loop for handling connections.
         while (!shutdown_pending) {
             // Wait for incoming connection.
-            const Socket sock {
+            const Socket accept_sock {
                 ::accept(descriptor_type {bind_sock}, nullptr, nullptr),
                 false,
                 verbose
             };
 
-            if (!sock.is_open()) {
+            if (!accept_sock.is_open()) {
                 std::perror("accept");
                 std::exit(EXIT_FAILURE);
             }
@@ -127,12 +139,7 @@ auto main(int argc, char* argv[]) -> int
             while (true) {
 
                 // Receive inputs.
-                const auto [read_str, read_code] {read_string(BUFFER_SIZE, sock)};
-
-                if (read_code == socket_error) {
-                    perror("read");
-                    exit(EXIT_FAILURE);
-                }
+                const auto read_str {read(accept_sock)};
 
                 // Handle commands.
 
@@ -152,7 +159,8 @@ auto main(int argc, char* argv[]) -> int
 
             if (!shutdown_pending) {
                 // Send output sum.
-                const auto write_error {write(std::to_string(sum), sock)};
+                const auto write_str {std::to_string(sum)};
+                const auto write_error {write(write_str, accept_sock)};
 
                 if (write_error == -1) {
                     std::perror("write");
