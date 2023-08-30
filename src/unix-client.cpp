@@ -50,7 +50,7 @@ static constexpr auto expected_error_socket_re {
 namespace {
     auto get_connect_socket() -> Socket
     {
-        const Socket sock {AF_UNIX, SOCK_SEQPACKET, 0, 0, false, verbose};
+        Socket sock {AF_UNIX, SOCK_SEQPACKET, 0, 0, false, verbose};
         return sock;
     }
 
