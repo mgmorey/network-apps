@@ -37,6 +37,7 @@ using Network::connect;
 using Network::descriptor_type;
 using Network::parse;
 using Network::read_string;
+using Network::socket_error;
 using Network::to_bytestring;
 using Network::write;
 
@@ -47,6 +48,12 @@ static constexpr auto expected_error_socket_re {
 };
 
 namespace {
+    auto get_connect_socket() -> Socket
+    {
+        const Socket sock {AF_UNIX, SOCK_SEQPACKET, 0, 0, false, verbose};
+        return sock;
+    }
+
     auto parse_arguments(int argc, char** argv) -> ArgumentSpan
     {
         const auto [operands, options] {parse(argc, argv, "v")};
@@ -65,6 +72,19 @@ namespace {
 
         return operands;
     }
+
+    auto read(const Socket& sock) -> std::string
+    {
+        static constexpr auto size {BUFFER_SIZE};
+        const auto [read_str, read_error] {read_string(size, sock)};
+
+        if (read_error == socket_error) {
+            perror("read");
+            exit(EXIT_FAILURE);
+        }
+
+        return read_str;
+    }
 }
 
 auto main(int argc, char* argv[]) -> int
@@ -73,9 +93,9 @@ auto main(int argc, char* argv[]) -> int
 
     try {
         // Connect socket to socket address.
-        const Socket sock {AF_UNIX, SOCK_SEQPACKET, 0, 0, false, verbose};
+        const Socket connect_sock {get_connect_socket()};
         const auto addr {to_bytestring(SOCKET_NAME)};
-        const auto error {connect(sock, addr, verbose)};
+        const auto error {connect(connect_sock, addr, verbose)};
         const auto error_code {error.number()};
         bool shutdown_pending {false};
 
@@ -87,7 +107,7 @@ auto main(int argc, char* argv[]) -> int
         // Send arguments to server.
         for (const auto& arg : args) {
             const std::string str {arg};
-            const auto write_code = write(str, sock);
+            const auto write_code = write(str, connect_sock);
 
             if (write_code == -1) {
                 std::perror("read");
@@ -102,7 +122,7 @@ auto main(int argc, char* argv[]) -> int
 
         if (!shutdown_pending) {
             // Request result.
-            const auto write_code {write("END", sock)};
+            const auto write_code {write("END", connect_sock)};
 
             if (write_code == -1) {
                 std::perror("write");
@@ -110,13 +130,7 @@ auto main(int argc, char* argv[]) -> int
             }
 
             // Receive result.
-            const auto [read_str, read_code] {read_string(BUFFER_SIZE, sock)};
-
-            if (read_code == -1) {
-                std::perror("read");
-                std::exit(EXIT_FAILURE);
-            }
-
+            const auto read_str {read(connect_sock)};
             std::cerr << "Result: " << read_str << std::endl;
         }
     }
