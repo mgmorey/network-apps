@@ -33,6 +33,7 @@
 using Network::ArgumentSpan;
 using Network::Pathname;
 using Network::Socket;
+using Network::SocketHints;
 using Network::connect;
 using Network::descriptor_type;
 using Network::parse;
@@ -50,7 +51,8 @@ static constexpr auto expected_error_socket_re {
 namespace {
     auto get_connect_socket() -> Socket
     {
-        Socket sock {AF_UNIX, SOCK_SEQPACKET, 0, 0, false, verbose};
+        static constexpr SocketHints hints {0, AF_UNIX, SOCK_SEQPACKET, 0};
+        Socket sock {hints, false, verbose};
         return sock;
     }
 

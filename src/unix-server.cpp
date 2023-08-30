@@ -55,7 +55,7 @@ namespace {
     auto get_bind_socket() -> Socket
     {
         static constexpr SocketHints hints {0, AF_UNIX, SOCK_SEQPACKET, 0};
-        static const Socket sock {hints, true, verbose};
+        Socket sock {hints, true, verbose};
         return sock;
     }
 
