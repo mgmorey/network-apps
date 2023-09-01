@@ -28,7 +28,6 @@
 #include <cstdlib>      // EXIT_FAILURE, std::exit(), std::strtol()
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <regex>        // std::regex, std::regex_match
-#include <sstream>      // std::ostringstream
 #include <string>       // std::string, std::to_string()
 
 using Network::Pathname;
