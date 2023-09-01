@@ -95,7 +95,7 @@ auto main(int argc, char* argv[]) -> int
 
     try {
         // Connect socket to socket address.
-        const Socket connect_sock {get_connect_socket()};
+        const auto connect_sock {get_connect_socket()};
         const auto addr {to_bytestring(SOCKET_NAME)};
         const auto error {connect(connect_sock, addr, verbose)};
         const auto error_code {error.number()};
