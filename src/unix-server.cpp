@@ -94,25 +94,24 @@ namespace {
 
 auto main(int argc, char* argv[]) -> int
 {
-    try {
-        // Fetch arguments from command line;
-        parse_arguments(argc, argv);
+    // Fetch arguments from command line.
+    parse_arguments(argc, argv);
 
+    try {
         // Bind Unix domain socket to pathname.
         const auto bind_sock {get_bind_socket()};
         const auto addr {to_bytestring(SOCKET_NAME)};
         const auto error {bind(bind_sock, addr, verbose)};
-        const auto error_code {error.number()};
-        bool shutdown_pending {false};
 
-        if (error_code != 0) {
+        if (error) {
             std::cerr << error.string() << std::endl;
             std::exit(EXIT_FAILURE);
         }
 
-        // Prepare for accepting connections. The backlog size is set to
-        // 20. So while one request is being processed other requests can
-        // be waiting.
+        bool shutdown_pending {false};
+
+        // Prepare for accepting connections. While one request is
+        // being processed other requests can be waiting.
         auto result = ::listen(descriptor_type {bind_sock}, backlog_size);
 
         if (result == -1) {

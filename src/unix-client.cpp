@@ -91,20 +91,21 @@ namespace {
 
 auto main(int argc, char* argv[]) -> int
 {
+    // Fetch arguments from command line.
     const auto args {parse_arguments(argc, argv)};
 
     try {
-        // Connect socket to socket address.
+        // Connect Unix domain socket to pathname.
         const auto connect_sock {get_connect_socket()};
         const auto addr {to_bytestring(SOCKET_NAME)};
         const auto error {connect(connect_sock, addr, verbose)};
-        const auto error_code {error.number()};
-        bool shutdown_pending {false};
 
-        if (error_code != 0) {
+        if (error) {
             std::cerr << error.string() << std::endl;
             std::exit(EXIT_FAILURE);
         }
+
+        bool shutdown_pending {false};
 
         // Send arguments to server.
         for (const auto& arg : args) {
