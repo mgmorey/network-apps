@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_CONNECT_SOCKET_H
-#define NETWORK_CONNECT_SOCKET_H
+#ifndef NETWORK_CONNECT_SOCKET_ADDR_H
+#define NETWORK_CONNECT_SOCKET_ADDR_H
 
 #include "network/open-socket.h"        // ByteString, OsErrorResult,
                                         // Socket
