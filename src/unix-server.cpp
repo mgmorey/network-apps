@@ -15,7 +15,7 @@
 
 #include "network/network.h"            // Buffer, Socket, bind(),
                                         // read_string() socket_error,
-                                        // to_bytestring(), write()
+                                        // write()
 #include "network/parse.h"              // parse()
 #include "unix-common.h"                // BUFFER_SIZE, SOCKET_NAME
 
@@ -38,7 +38,6 @@ using Network::descriptor_type;
 using Network::parse;
 using Network::read_string;
 using Network::socket_error;
-using Network::to_bytestring;
 using Network::write;
 
 static constexpr auto backlog_size {20};
@@ -99,8 +98,7 @@ auto main(int argc, char* argv[]) -> int
     try {
         // Bind Unix domain socket to pathname.
         const auto bind_sock {get_bind_socket()};
-        const auto addr {to_bytestring(SOCKET_NAME)};
-        const auto error {bind(bind_sock, addr, verbose)};
+        const auto error {bind(bind_sock, SOCKET_NAME, verbose)};
 
         if (error) {
             std::cerr << error.string() << std::endl;

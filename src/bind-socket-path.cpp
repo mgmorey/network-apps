@@ -13,22 +13,15 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/bind-socket.h"        // ByteString, OsErrorResult,
-                                        // Socket, bind(), open()
-#include "network/openhandler.h"        // OpenHandler
-#include "network/opensocketparams.h"   // OpenSocketParams
+#include "network/bind-socket-path.h"   // OsErrorResult, Pathname,
+                                        // bind()
+#include "network/bind-socket-addr.h"   // ByteString, Socket, bind()
+#include "network/to-bytestring.h"      // to_bytestring()
 
-#ifdef WIN32
-#include <winsock2.h>       // ::bind()
-#else
-#include <sys/socket.h>     // ::bind()
-#endif
-
-auto Network::bind(const Socket& socket,
-                   const ByteString& str,
+auto Network::bind(const Socket& sock,
+                   const Pathname& path,
                    bool verbose) -> Network::OsErrorResult
 {
-    const OpenHandler handler {::bind, "::bind"};
-    const OpenSocketParams args {socket, str, verbose};
-    return open(handler, args);
+    const auto addr {to_bytestring(path)};
+    return bind(sock, addr, verbose);
 }

@@ -1,4 +1,4 @@
-// Copyright (C) 2022  "Michael G. Morey" <mgmorey@gmail.com>
+// Copyright (C) 2023  "Michael G. Morey" <mgmorey@gmail.com>
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,14 +13,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_CONNECT_H
-#define NETWORK_CONNECT_H
-
-#include "network/connect-endpoint.h"       // Endpoint, OpenResult,
-                                            // SocketHints, connect()
-#include "network/connect-socket-addr.h"    // ByteString,
-                                            // OsErrorResult, Socket,
+#include "network/connect-socket-path.h"    // OsErrorResult, Pathname,
                                             // connect()
-#include "network/connect-socket-path.h"    // Pathname, connect()
+#include "network/connect-socket-addr.h"    // ByteString, Socket,
+                                            // connect()
+#include "network/to-bytestring.h"          // to_bytestring()
 
-#endif
+auto Network::connect(const Socket& sock,
+                      const Pathname& path,
+                      bool verbose) -> Network::OsErrorResult
+{
+    const auto addr {to_bytestring(path)};
+    return connect(sock, addr, verbose);
+}

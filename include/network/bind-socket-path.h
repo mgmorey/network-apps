@@ -13,14 +13,17 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_CONNECT_H
-#define NETWORK_CONNECT_H
+#ifndef NETWORK_BIND_SOCKET_PATH_H
+#define NETWORK_BIND_SOCKET_PATH_H
 
-#include "network/connect-endpoint.h"       // Endpoint, OpenResult,
-                                            // SocketHints, connect()
-#include "network/connect-socket-addr.h"    // ByteString,
-                                            // OsErrorResult, Socket,
-                                            // connect()
-#include "network/connect-socket-path.h"    // Pathname, connect()
+#include "network/bind-socket-addr.h"   // OsErrorResult, Socket
+#include "network/pathname.h"           // Pathname
+
+namespace Network
+{
+    extern auto bind(const Socket& sock,
+                     const Pathname& path,
+                     bool verbose = false) -> OsErrorResult;
+}
 
 #endif

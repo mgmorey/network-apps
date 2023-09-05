@@ -16,7 +16,7 @@
 #include "network/argumentspan.h"       // ArgumentSpan
 #include "network/network.h"            // Buffer, Socket, connect(),
                                         // read_string() socket_error,
-                                        // to_bytestring(), write()
+                                        // write()
 #include "network/parse.h"              // parse()
 #include "unix-common.h"                // BUFFER_SIZE, SOCKET_NAME
 
@@ -39,7 +39,6 @@ using Network::descriptor_type;
 using Network::parse;
 using Network::read_string;
 using Network::socket_error;
-using Network::to_bytestring;
 using Network::write;
 
 static bool verbose {false};  // NOLINT
@@ -97,8 +96,7 @@ auto main(int argc, char* argv[]) -> int
     try {
         // Connect Unix domain socket to pathname.
         const auto connect_sock {get_connect_socket()};
-        const auto addr {to_bytestring(SOCKET_NAME)};
-        const auto error {connect(connect_sock, addr, verbose)};
+        const auto error {connect(connect_sock, SOCKET_NAME, verbose)};
 
         if (error) {
             std::cerr << error.string() << std::endl;

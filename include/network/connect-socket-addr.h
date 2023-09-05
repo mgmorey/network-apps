@@ -21,8 +21,8 @@
 
 namespace Network
 {
-    extern auto connect(const Socket& socket,
-                        const ByteString& str,
+    extern auto connect(const Socket& sock,
+                        const ByteString& addr,
                         bool verbose = false) -> OsErrorResult;
 }
 
