@@ -19,6 +19,8 @@
                                             // connect()
 #include "network/to-bytestring.h"          // to_bytestring()
 
+#ifndef WIN32
+
 auto Network::connect(const Socket& sock,
                       const Pathname& path,
                       bool verbose) -> Network::OsErrorResult
@@ -26,3 +28,5 @@ auto Network::connect(const Socket& sock,
     const auto addr {to_bytestring(path)};
     return connect(sock, addr, verbose);
 }
+
+#endif
