@@ -33,9 +33,6 @@
 using Network::ArgumentSpan;
 using Network::Socket;
 using Network::SocketHints;
-using Network::connect;
-using Network::parse;
-using Network::read_string;
 using Network::socket_error;
 using Network::write;
 
@@ -45,12 +42,12 @@ static constexpr auto expected_error_socket_re {
     R"(Call to ::socket[(][^)]+[)] failed with error \d+: .+)"
 };
 
-namespace {
+namespace Client {
     auto connect() -> Socket
     {
         static constexpr SocketHints hints {0, AF_UNIX, SOCK_SEQPACKET, 0};
         Socket sock {hints, false, verbose};
-        const auto error {connect(sock, SOCKET_NAME, verbose)};
+        const auto error {Network::connect(sock, SOCKET_NAME, verbose)};
 
         if (error) {
             std::cerr << error.string() << std::endl;
@@ -60,9 +57,9 @@ namespace {
         return sock;
     }
 
-    auto parse_arguments(int argc, char** argv) -> ArgumentSpan
+    auto parse(int argc, char** argv) -> ArgumentSpan
     {
-        const auto [operands, options] {parse(argc, argv, "v")};
+        const auto [operands, options] {Network::parse(argc, argv, "v")};
 
         if (options.contains('?')) {
             std::cerr << "Usage: "
@@ -82,7 +79,7 @@ namespace {
     auto read(const Socket& sock) -> std::string
     {
         static constexpr auto size {BUFFER_SIZE};
-        const auto [read_str, read_error] {read_string(size, sock)};
+        const auto [read_str, read_error] {Network::read_string(size, sock)};
 
         if (read_error == socket_error) {
             perror("read");
@@ -96,11 +93,11 @@ namespace {
 auto main(int argc, char* argv[]) -> int
 {
     // Fetch arguments from command line.
-    const auto args {parse_arguments(argc, argv)};
+    const auto args {Client::parse(argc, argv)};
 
     try {
         // Connect Unix domain socket to pathname.
-        const auto connect_sock {connect()};
+        const auto connect_sock {Client::connect()};
         bool shutdown_pending {false};
 
         // Send arguments to server.
@@ -126,7 +123,7 @@ auto main(int argc, char* argv[]) -> int
             }
 
             // Receive result.
-            const auto read_str {read(connect_sock)};
+            const auto read_str {Client::read(connect_sock)};
             std::cerr << "Result: " << read_str << std::endl;
         }
     }

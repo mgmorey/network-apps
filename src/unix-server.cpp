@@ -32,10 +32,7 @@
 
 using Network::Socket;
 using Network::SocketHints;
-using Network::bind;
 using Network::descriptor_type;
-using Network::parse;
-using Network::read_string;
 using Network::socket_error;
 using Network::write;
 
@@ -48,12 +45,12 @@ static constexpr auto expected_error_socket_re {
     R"(Call to ::socket[(][^)]+[)] failed with error \d+: .+)"
 };
 
-namespace {
-    auto connect() -> Socket
+namespace Server {
+    auto bind() -> Socket
     {
         static constexpr SocketHints hints {0, AF_UNIX, SOCK_SEQPACKET, 0};
         Socket sock {hints, true, verbose};
-        const auto error {bind(sock, SOCKET_NAME, verbose)};
+        const auto error {Network::bind(sock, SOCKET_NAME, verbose)};
 
         if (error) {
             std::cerr << error.string() << std::endl;
@@ -63,9 +60,9 @@ namespace {
         return sock;
     }
 
-    auto parse_arguments(int argc, char** argv) -> void
+    auto parse(int argc, char** argv) -> void
     {
-        const auto [_, options] {parse(argc, argv, "v")};
+        const auto [_, options] {Network::parse(argc, argv, "v")};
 
         if (options.contains('?')) {
             std::cerr << "Usage: "
@@ -85,7 +82,7 @@ namespace {
     auto read(const Socket& sock) -> std::string
     {
         static constexpr auto size {BUFFER_SIZE};
-        const auto [read_str, read_error] {read_string(size, sock)};
+        const auto [read_str, read_error] {Network::read_string(size, sock)};
 
         if (read_error == socket_error) {
             perror("read");
@@ -99,11 +96,11 @@ namespace {
 auto main(int argc, char* argv[]) -> int
 {
     // Fetch arguments from command line.
-    parse_arguments(argc, argv);
+    Server::parse(argc, argv);
 
     try {
         // Bind Unix domain socket to pathname.
-        const auto bind_sock {connect()};
+        const auto bind_sock {Server::bind()};
         bool shutdown_pending {false};
 
         // Prepare for accepting connections. While one request is
@@ -134,7 +131,7 @@ auto main(int argc, char* argv[]) -> int
             while (true) {
 
                 // Receive inputs.
-                const auto read_str {read(accept_sock)};
+                const auto read_str {Server::read(accept_sock)};
 
                 // Handle commands.
 
