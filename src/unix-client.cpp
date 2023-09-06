@@ -108,9 +108,8 @@ auto main(int argc, char* argv[]) -> int
         // Send arguments to server.
         for (const auto& arg : args) {
             const std::string write_str {arg};
-            const auto write_code = write(write_str, connect_sock);
 
-            if (write_code == -1) {
+            if (write(write_str, connect_sock) == -1) {
                 std::perror("read");
                 break;
             }
