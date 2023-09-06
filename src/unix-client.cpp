@@ -31,11 +31,9 @@
 #include <string>       // std::string, std::to_string()
 
 using Network::ArgumentSpan;
-using Network::Pathname;
 using Network::Socket;
 using Network::SocketHints;
 using Network::connect;
-using Network::descriptor_type;
 using Network::parse;
 using Network::read_string;
 using Network::socket_error;

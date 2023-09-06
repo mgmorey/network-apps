@@ -30,7 +30,6 @@
 #include <regex>        // std::regex, std::regex_match
 #include <string>       // std::string, std::to_string()
 
-using Network::Pathname;
 using Network::Socket;
 using Network::SocketHints;
 using Network::bind;
@@ -156,9 +155,8 @@ auto main(int argc, char* argv[]) -> int
             if (!shutdown_pending) {
                 // Send output sum.
                 const auto write_str {std::to_string(sum)};
-                const auto write_error {write(write_str, accept_sock)};
 
-                if (write_error == -1) {
+                if (write(write_str, accept_sock) == -1) {
                     std::perror("write");
                     std::exit(EXIT_FAILURE);
                 }
