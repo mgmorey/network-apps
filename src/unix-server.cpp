@@ -49,10 +49,17 @@ static constexpr auto expected_error_socket_re {
 };
 
 namespace {
-    auto get_bind_socket() -> Socket
+    auto connect() -> Socket
     {
         static constexpr SocketHints hints {0, AF_UNIX, SOCK_SEQPACKET, 0};
         Socket sock {hints, true, verbose};
+        const auto error {bind(sock, SOCKET_NAME, verbose)};
+
+        if (error) {
+            std::cerr << error.string() << std::endl;
+            std::exit(EXIT_FAILURE);
+        }
+
         return sock;
     }
 
@@ -96,14 +103,7 @@ auto main(int argc, char* argv[]) -> int
 
     try {
         // Bind Unix domain socket to pathname.
-        const auto bind_sock {get_bind_socket()};
-        const auto error {bind(bind_sock, SOCKET_NAME, verbose)};
-
-        if (error) {
-            std::cerr << error.string() << std::endl;
-            std::exit(EXIT_FAILURE);
-        }
-
+        const auto bind_sock {connect()};
         bool shutdown_pending {false};
 
         // Prepare for accepting connections. While one request is
