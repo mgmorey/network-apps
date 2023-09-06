@@ -105,7 +105,7 @@ auto main(int argc, char* argv[]) -> int
             const std::string write_str {arg};
 
             if (write(write_str, connect_sock) == -1) {
-                std::perror("read");
+                std::perror("write");
                 break;
             }
 
