@@ -122,9 +122,7 @@ auto main(int argc, char* argv[]) -> int
 
         if (!shutdown_pending) {
             // Request result.
-            const auto write_code {write("END", connect_sock)};
-
-            if (write_code == -1) {
+            if (write("END", connect_sock) == -1) {
                 std::perror("write");
                 std::exit(EXIT_FAILURE);
             }
