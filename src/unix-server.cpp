@@ -48,8 +48,7 @@ static constexpr auto expected_error_socket_re {
 namespace Server {
     auto bind() -> Socket
     {
-        static constexpr SocketHints hints {0, AF_UNIX, SOCK_SEQPACKET, 0};
-        Socket sock {hints, true, verbose};
+        Socket sock {AF_UNIX, SOCK_SEQPACKET, 0, 0, true, verbose};
         const auto error {Network::bind(sock, SOCKET_NAME, verbose)};
 
         if (error) {

@@ -45,8 +45,7 @@ static constexpr auto expected_error_socket_re {
 namespace Client {
     auto connect() -> Socket
     {
-        static constexpr SocketHints hints {0, AF_UNIX, SOCK_SEQPACKET, 0};
-        Socket sock {hints, false, verbose};
+        Socket sock {AF_UNIX, SOCK_SEQPACKET, 0, 0, false, verbose};
         const auto error {Network::connect(sock, SOCKET_NAME, verbose)};
 
         if (error) {
