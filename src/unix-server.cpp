@@ -31,7 +31,6 @@
 #include <string>       // std::string, std::to_string()
 
 using Network::Socket;
-using Network::SocketHints;
 using Network::descriptor_type;
 using Network::socket_error;
 using Network::write;

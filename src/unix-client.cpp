@@ -32,7 +32,6 @@
 
 using Network::ArgumentSpan;
 using Network::Socket;
-using Network::SocketHints;
 using Network::socket_error;
 using Network::write;
 
