@@ -92,6 +92,9 @@ test-parse.cpp test-ranges.cpp
 
 ifneq "$(os_name)" "MINGW64_NT"
 	test_sources += test-socket.cpp
+endif
+
+ifneq "$(os_type)" "ms-windows"
 	unix_sources = unix-client.cpp unix-server.cpp
 endif
 
