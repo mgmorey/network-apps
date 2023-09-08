@@ -114,7 +114,7 @@ auto main(int argc, char* argv[]) -> int
 
         // Prepare for accepting connections. While one request is
         // being processed other requests can be waiting.
-        auto result = ::listen(descriptor_type {bind_sock}, backlog_size);
+        const auto result = ::listen(descriptor_type {bind_sock}, backlog_size);
 
         if (result == -1) {
             std::perror("listen");
@@ -124,7 +124,7 @@ auto main(int argc, char* argv[]) -> int
         // This is the main loop for handling connections.
         while (!shutdown_pending) {
             // Wait for incoming connection.
-            const Socket accept_sock {Server::accept(bind_sock)};
+            const auto accept_sock {Server::accept(bind_sock)};
             long sum {0};
 
             while (true) {
