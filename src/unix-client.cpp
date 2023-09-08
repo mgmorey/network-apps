@@ -121,6 +121,6 @@ auto main(int argc, char* argv[]) -> int
         }
     }
     catch (const std::exception& error) {
-            std::cerr << error.what() << std::endl;
+        std::cerr << error.what() << std::endl;
     }
 }
