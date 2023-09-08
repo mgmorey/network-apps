@@ -172,7 +172,7 @@ endif
 
 all_targets = $(build_targets) test
 
-ifneq "$(os_name)" "MINGW64_NT"
+ifneq "$(os_type)" "ms-windows"
 	all_targets += unix
 endif
 
