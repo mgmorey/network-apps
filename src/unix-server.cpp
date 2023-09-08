@@ -27,7 +27,6 @@
 #include <cstdio>       // std::perror()
 #include <cstdlib>      // EXIT_FAILURE, std::exit(), std::strtol()
 #include <iostream>     // std::cerr, std::cout, std::endl
-#include <regex>        // std::regex, std::regex_match
 #include <string>       // std::string, std::to_string()
 
 using Network::Socket;
@@ -39,10 +38,6 @@ static constexpr auto backlog_size {20};
 static constexpr auto radix {10};
 
 static bool verbose {false};  // NOLINT
-
-static constexpr auto expected_error_socket_re {
-    R"(Call to ::socket[(][^)]+[)] failed with error \d+: .+)"
-};
 
 namespace Server {
     auto bind() -> Socket
@@ -159,10 +154,6 @@ auto main(int argc, char* argv[]) -> int
         }
     }
     catch (const std::exception& error) {
-        const std::regex expected_error_regex {expected_error_socket_re};
-
-        if (!std::regex_match(error.what(), expected_error_regex)) {
-            std::cerr << error.what() << std::endl;
-        }
+        std::cerr << error.what() << std::endl;
     }
 }
