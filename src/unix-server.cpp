@@ -40,6 +40,22 @@ static constexpr auto radix {10};
 static bool verbose {false};  // NOLINT
 
 namespace Server {
+    auto accept(const Socket& sock) -> Socket
+    {
+        Socket accept_sock {
+            ::accept(descriptor_type {sock}, nullptr, nullptr),
+            false,
+            verbose
+        };
+
+        if (!accept_sock.is_open()) {
+            std::perror("accept");
+            std::exit(EXIT_FAILURE);
+        }
+
+        return accept_sock;
+    }
+
     auto bind() -> Socket
     {
         Socket sock {AF_UNIX, SOCK_SEQPACKET, 0, 0, true, verbose};
@@ -108,17 +124,7 @@ auto main(int argc, char* argv[]) -> int
         // This is the main loop for handling connections.
         while (!shutdown_pending) {
             // Wait for incoming connection.
-            const Socket accept_sock {
-                ::accept(descriptor_type {bind_sock}, nullptr, nullptr),
-                false,
-                verbose
-            };
-
-            if (!accept_sock.is_open()) {
-                std::perror("accept");
-                std::exit(EXIT_FAILURE);
-            }
-
+            const Socket accept_sock {Server::accept(bind_sock)};
             long sum {0};
 
             while (true) {
