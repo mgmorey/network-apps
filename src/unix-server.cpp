@@ -69,6 +69,18 @@ namespace Server {
         return sock;
     }
 
+    auto listen(const Socket& sock) -> int
+    {
+        const auto result {::listen(descriptor_type {sock}, backlog_size)};
+
+        if (result == -1) {
+            std::perror("listen");
+            std::exit(EXIT_FAILURE);
+        }
+
+        return result;
+    }
+
     auto parse(int argc, char** argv) -> void
     {
         const auto [_, options] {Network::parse(argc, argv, "v")};
@@ -114,12 +126,7 @@ auto main(int argc, char* argv[]) -> int
 
         // Prepare for accepting connections. While one request is
         // being processed other requests can be waiting.
-        const auto result = ::listen(descriptor_type {bind_sock}, backlog_size);
-
-        if (result == -1) {
-            std::perror("listen");
-            std::exit(EXIT_FAILURE);
-        }
+        static_cast<void>(Server::listen(bind_sock));
 
         // This is the main loop for handling connections.
         while (!shutdown_pending) {
