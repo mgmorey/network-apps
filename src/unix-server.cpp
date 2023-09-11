@@ -25,9 +25,9 @@
 
 #include <cerrno>       // EINVAL, EPROTONOSUPPORT
 #include <cstdio>       // std::perror()
-#include <cstdlib>      // EXIT_FAILURE, std::exit(), std::strtol()
+#include <cstdlib>      // EXIT_FAILURE, std::exit()
 #include <iostream>     // std::cerr, std::cout, std::endl
-#include <string>       // std::string, std::to_string()
+#include <string>       // std::stoll(), std::string, std::to_string()
 
 using Network::Socket;
 using Network::descriptor_type;
@@ -35,7 +35,6 @@ using Network::socket_error;
 using Network::write;
 
 static constexpr auto backlog_size {20};
-static constexpr auto radix {10};
 
 static bool verbose {false};  // NOLINT
 
@@ -132,7 +131,7 @@ auto main(int argc, char* argv[]) -> int
         while (!shutdown_pending) {
             // Wait for incoming connection.
             const auto accept_sock {Server::accept(bind_sock)};
-            long sum {0};
+            long long sum {0LL};
 
             while (true) {
 
@@ -152,7 +151,7 @@ auto main(int argc, char* argv[]) -> int
                 }
 
                 // Add received inputs.
-                sum += std::strtol(read_str.c_str(), nullptr, radix);
+                sum += std::stoll(read_str);
             }
 
             if (!shutdown_pending) {
