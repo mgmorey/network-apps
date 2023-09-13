@@ -139,13 +139,13 @@ auto main(int argc, char* argv[]) -> int
         while (!shutdown_pending) {
             // Wait for incoming connection.
             const auto accept_sock {Server::accept(bind_sock)};
-            auto read_str {Server::read(accept_sock)};
+            std::string read_str;
             long long sum {0LL};
 
-            while(read_str != "DOWN" && read_str != "END") {
+            while((read_str = Server::read(accept_sock)) != "DOWN" &&
+                  read_str != "END") {
                 // Add received inputs.
                 sum += std::stoll(read_str);
-                read_str = Server::read(accept_sock);
             }
 
             // Handle commands.
