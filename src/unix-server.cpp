@@ -31,8 +31,6 @@
 
 using Network::Socket;
 using Network::descriptor_type;
-using Network::socket_error;
-using Network::write;
 
 static constexpr auto backlog_size {20};
 
@@ -104,12 +102,22 @@ namespace Server {
         static constexpr auto size {BUFFER_SIZE};
         const auto [read_str, read_error] {Network::read_string(size, sock)};
 
-        if (read_error == socket_error) {
+        if (read_error == Network::socket_error) {
             perror("read");
             exit(EXIT_FAILURE);
         }
 
         return read_str;
+    }
+
+    auto write(const Socket& sock, long long val) -> void
+    {
+        const auto write_str {std::to_string(val)};
+
+        if (Network::write(write_str, sock) == -1) {
+            std::perror("write");
+            std::exit(EXIT_FAILURE);
+        }
     }
 }
 
@@ -131,37 +139,23 @@ auto main(int argc, char* argv[]) -> int
         while (!shutdown_pending) {
             // Wait for incoming connection.
             const auto accept_sock {Server::accept(bind_sock)};
+            auto read_str {Server::read(accept_sock)};
             long long sum {0LL};
 
-            while (true) {
-
-                // Receive inputs.
-                const auto read_str {Server::read(accept_sock)};
-
-                // Handle commands.
-
-                if (read_str == "DOWN") {
-                    // Quit on DOWN command.
-                    shutdown_pending = true;
-                    break;
-                }
-
-                if (read_str == "END") {
-                    break;
-                }
-
+            while(read_str != "DOWN" && read_str != "END") {
                 // Add received inputs.
                 sum += std::stoll(read_str);
+                read_str = Server::read(accept_sock);
             }
 
-            if (!shutdown_pending) {
+            // Handle commands.
+            if (read_str == "DOWN") {
+                // Quit on DOWN command.
+                shutdown_pending = true;
+            }
+            else if (!shutdown_pending) {
                 // Send output sum.
-                const auto write_str {std::to_string(sum)};
-
-                if (write(write_str, accept_sock) == -1) {
-                    std::perror("write");
-                    std::exit(EXIT_FAILURE);
-                }
+                Server::write(accept_sock, sum);
             }
         }
     }
