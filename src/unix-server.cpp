@@ -153,7 +153,8 @@ auto main(int argc, char* argv[]) -> int
                 // Quit on DOWN command.
                 shutdown_pending = true;
             }
-            else if (!shutdown_pending) {
+
+            if (!shutdown_pending) {
                 // Send output sum.
                 Server::write(accept_sock, sum);
             }
