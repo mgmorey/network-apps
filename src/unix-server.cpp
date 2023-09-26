@@ -39,11 +39,8 @@ static bool verbose {false};  // NOLINT
 namespace Server {
     auto accept(const Socket& sock) -> Socket
     {
-        Socket accept_sock {
-            ::accept(descriptor_type {sock}, nullptr, nullptr),
-            false,
-            verbose
-        };
+        const auto handle {::accept(descriptor_type {sock}, nullptr, nullptr)};
+        Socket accept_sock {handle, false, verbose};
 
         if (!accept_sock.is_open()) {
             std::perror("accept");
@@ -55,15 +52,15 @@ namespace Server {
 
     auto bind() -> Socket
     {
-        Socket sock {AF_UNIX, SOCK_SEQPACKET, 0, 0, true, verbose};
-        const auto error {Network::bind(sock, SOCKET_NAME, verbose)};
+        Socket bind_sock {AF_UNIX, SOCK_SEQPACKET, 0, 0, true, verbose};
+        const auto error {Network::bind(bind_sock, SOCKET_NAME, verbose)};
 
         if (error) {
             std::cerr << error.string() << std::endl;
             std::exit(EXIT_FAILURE);
         }
 
-        return sock;
+        return bind_sock;
     }
 
     auto listen(const Socket& sock) -> int
