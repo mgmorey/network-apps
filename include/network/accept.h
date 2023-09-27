@@ -20,7 +20,7 @@
 
 namespace Network
 {
-    extern auto accept(const Socket& sock, bool verbose) -> Socket;
+    extern auto accept(const Socket& sock, bool verbose = false) -> Socket;
 }
 
 #endif
