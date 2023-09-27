@@ -19,8 +19,7 @@
 #include "network/parse.h"              // parse()
 #include "unix-common.h"                // BUFFER_SIZE, SOCKET_NAME
 
-#include <sys/socket.h>         // SOCK_SEQPACKET, ::accept(),
-                                // ::listen()
+#include <sys/socket.h>         // SOCK_SEQPACKET, ::listen()
 #include <sys/un.h>             // AF_UNIX
 
 #include <cerrno>       // EINVAL, EPROTONOSUPPORT
@@ -39,8 +38,7 @@ static bool verbose {false};  // NOLINT
 namespace Server {
     auto accept(const Socket& sock) -> Socket
     {
-        const auto handle {::accept(descriptor_type {sock}, nullptr, nullptr)};
-        Socket accept_sock {handle, false, verbose};
+        Socket accept_sock {Network::accept(sock, verbose)};
 
         if (!accept_sock.is_open()) {
             std::perror("accept");

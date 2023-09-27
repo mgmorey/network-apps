@@ -16,6 +16,7 @@
 #ifndef NETWORK_NETWORK_H
 #define NETWORK_NETWORK_H
 
+#include "network/accept.h"                     // accept()
 #include "network/address.h"                    // Address
 #include "network/ai-error.h"                   // format_ai_error()
 #include "network/bind.h"                       // bind()
