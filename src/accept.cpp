@@ -21,6 +21,5 @@
 auto Network::accept(const Socket& sock, bool verbose) -> Socket
 {
     const auto handle {::accept(descriptor_type {sock}, nullptr, nullptr)};
-    Socket accept_sock {handle, false, verbose};
-    return accept_sock;
+    return Socket {handle, false, verbose};
 }
