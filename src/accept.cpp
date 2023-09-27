@@ -16,7 +16,11 @@
 #include "network/accept.h"             // accept()
 #include "network/descriptor-type.h"    // descriptor_type
 
-#include <sys/socket.h>         // ::accept()
+#ifdef WIN32
+#include <winsock2.h>       // ::accept()
+#else
+#include <sys/socket.h>     // ::accept()
+#endif
 
 auto Network::accept(const Socket& sock, bool verbose) -> Socket
 {
