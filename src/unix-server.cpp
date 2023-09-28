@@ -13,9 +13,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/network.h"            // Buffer, Socket, bind(),
-                                        // read_string() socket_error,
-                                        // write()
+#include "network/network.h"            // Buffer, Socket, accept(),
+                                        // bind(), read_string()
+                                        // socket_error, write()
 #include "network/parse.h"              // parse()
 #include "unix-common.h"                // BUFFER_SIZE, SOCKET_NAME
 
