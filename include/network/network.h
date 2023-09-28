@@ -79,6 +79,7 @@
                                                 // path_len_min,
                                                 // sock_len_max,
                                                 // sock_len_min
+#include "network/listen.h"                     // listen()
 #include "network/open.h"                       // open()
 #include "network/os-error.h"                   // format_os_error(),
                                                 // get_last_os_error(),
