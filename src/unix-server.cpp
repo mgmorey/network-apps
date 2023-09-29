@@ -42,9 +42,11 @@ namespace Server {
         auto [accept_sock, addr] {Network::accept(sock, verbose)};
 
         if (accept_sock.is_open()) {
-            std::cout << "Accepted connection from "
-                      << Network::Address(addr)
-                      << std::endl;
+            if (verbose) {
+                std::cout << "Accepted connection from "
+                          << Network::Address(addr)
+                          << std::endl;
+            }
         }
         else {
             std::perror("accept");
