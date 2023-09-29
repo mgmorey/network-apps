@@ -59,7 +59,7 @@ auto Network::create_socketresult(const SocketHints& hints,
                                 hints.protocol())};
 
     if (handle == descriptor_null) {
-        const auto error = get_last_context_error();
+        const auto error {get_last_context_error()};
         const auto os_error {to_os_error(error)};
         std::ostringstream oss;
         oss << "Call to ::socket("

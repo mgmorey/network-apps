@@ -67,7 +67,7 @@ auto Network::create_socketpairresult(const SocketHints& hints,
                      hints.socktype(),
                      hints.protocol(),
                      handles.data()) == socket_error) {
-        const auto error = get_last_context_error();
+        const auto error {get_last_context_error()};
         const auto os_error {to_os_error(error)};
         std::ostringstream oss;
         oss << "Call to ::socketpair("

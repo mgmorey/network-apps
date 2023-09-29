@@ -55,7 +55,7 @@ auto Network::get_nameresult(const GetNameHandler& handler,
     reset_last_context_error();
 
     if (handler.first(args.handle, pointer, &length) == socket_error) {
-        const auto error = get_last_context_error();
+        const auto error {get_last_context_error()};
         const auto os_error {to_os_error(error)};
         std::ostringstream oss;
         oss << "Call to "

@@ -53,7 +53,7 @@ auto Network::open(const OpenHandler& handler,
     reset_last_context_error();
 
     if (handler.first(handle, pointer, length) == socket_error) {
-        const auto error = get_last_context_error();
+        const auto error {get_last_context_error()};
         const auto os_error {to_os_error(error)};
         std::ostringstream oss;
         oss << "Call to "

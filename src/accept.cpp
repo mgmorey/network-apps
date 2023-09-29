@@ -45,7 +45,7 @@ auto Network::accept(const Socket& sock, bool verbose) -> Socket
     const auto handle_2 {::accept(handle_1, nullptr, nullptr)};
 
     if (handle_2 == descriptor_null) {
-        const auto error = get_last_context_error();
+        const auto error {get_last_context_error()};
         const auto os_error {to_os_error(error)};
         std::ostringstream oss;
         oss << "Call to ::accept("
