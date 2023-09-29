@@ -1,4 +1,73 @@
 #!/bin/sh -eu
 
-export LD_LIBRARY_PATH=".${LD_LIBRARY_PATH+:$LD_LIBRARY_PATH}"
-./unix-server & (sleep 1; ./unix-client 2 2; ./unix-client DOWN)
+parse_arguments() {
+    args=
+
+    while getopts vh opt; do
+	case $opt in
+	    (v)
+		args=-v
+		;;
+	    (h)
+		usage
+		exit 0
+		;;
+	    (\?)
+		exit 2
+		;;
+	esac
+    done
+
+    shift $(($OPTIND - 1))
+
+    if [ $# -gt 0 ]; then
+	usage_error '%s: Too many arguments\n' "$script"
+    fi
+}
+
+run_client() {
+    ${script_prefix}unix-client${args:+ $args} 2 2
+    ${script_prefix}unix-client${args:+ $args} DOWN
+}
+
+run_server() {
+    ${script_prefix}unix-server${args:+ $args}
+}
+
+run_unix_programs() {
+    export LD_LIBRARY_PATH=".${LD_LIBRARY_PATH+:$LD_LIBRARY_PATH}"
+    run_server & (sleep 1; run_client)
+}
+
+usage() {
+    cat <<EOF >&2
+Usage: $script [-v]
+       $script -h
+EOF
+}
+
+usage_error() {
+    if [ $# -gt 0 ]; then
+	printf "$@" >&2
+    fi
+
+    printf '%s\n' '' >&2
+    usage
+    exit 2
+}
+
+script=$(basename "$0")
+
+case "$0" in
+    (*/*)
+	script_dir=$(cd "$(dirname "$0")" && pwd)
+	;;
+    (*)
+	script_dir=
+	;;
+esac
+
+script_prefix=${script_dir:+$script_dir/../}
+
+parse_arguments "$@"
+run_unix_programs
