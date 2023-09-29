@@ -19,7 +19,7 @@
 #include "network/parse.h"              // parse()
 #include "unix-common.h"                // BUFFER_SIZE, SOCKET_NAME
 
-#include <sys/socket.h>         // SOCK_SEQPACKET, ::listen()
+#include <sys/socket.h>         // SOCK_SEQPACKET
 #include <sys/un.h>             // AF_UNIX
 
 #include <cerrno>       // EINVAL, EPROTONOSUPPORT
