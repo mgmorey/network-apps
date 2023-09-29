@@ -13,8 +13,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/network.h"            // Socket, accept(), bind(),
-                                        // listen(), read_string(),
+#include "network/network.h"            // Address, Socket, accept(),
+                                        // bind(), listen(),
+                                        // read_string(),
                                         // socket_error, write()
 #include "network/parse.h"              // parse()
 #include "unix-common.h"                // BUFFER_SIZE, SOCKET_NAME
@@ -38,9 +39,14 @@ static bool verbose {false};  // NOLINT
 namespace Server {
     auto accept(const Socket& sock) -> Socket
     {
-        Socket accept_sock {Network::accept(sock, verbose)};
+        auto [accept_sock, addr] {Network::accept(sock, verbose)};
 
-        if (!accept_sock.is_open()) {
+        if (accept_sock.is_open()) {
+            std::cout << "Accepted connection from "
+                      << Network::Address(addr)
+                      << std::endl;
+        }
+        else {
             std::perror("accept");
             std::exit(EXIT_FAILURE);
         }

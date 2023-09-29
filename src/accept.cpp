@@ -14,12 +14,20 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/accept.h"             // accept()
+#include "network/addressstring.h"      // AddressString
+#include "network/buffer.h"             // Buffer
+#include "network/bytestring.h"         // ByteString
 #include "network/context-error.h"      // get_last_context_error(),
                                         // reset_last_context_error()
 #include "network/descriptor-type.h"    // descriptor_type
 #include "network/error.h"              // Error
 #include "network/format-os-error.h"    // format_os_error()
+#include "network/get-length.h"         // get_length()
+#include "network/get-sa-pointer.h"     // get_sa_pointer()
+#include "network/socket-error.h"       // socket_error
+#include "network/ss-sizes.h"           // ss_size
 #include "network/to-os-error.h"        // to_os_error()
+#include "network/to-size.h"            // to_size()
 
 #ifdef WIN32
 #include <winsock2.h>       // ::accept()
@@ -29,20 +37,28 @@
 
 #include <iostream>     // std::cout, std::endl
 #include <sstream>      // std::ostringstream
+#include <utility>      // std::pair
 
-auto Network::accept(const Socket& sock, bool verbose) -> Socket
+auto Network::accept(const Socket& sock, bool verbose) ->
+    std::pair<Socket, ByteString>
 {
     const auto handle_1 {descriptor_type {sock}};
+    ByteString addr {ss_size, Byte {}};
+    auto* const pointer {get_sa_pointer(addr)};
+    auto length {get_length(addr)};
+    const AddressString addr_str {addr};
 
     if (verbose) {
         std::cout << "Calling ::accept("
-                  << handle_1
+                  << addr_str
+                  << ", "
+                  << length
                   << ", ...)"
                   << std::endl;
     }
 
     reset_last_context_error();
-    const auto handle_2 {::accept(handle_1, nullptr, nullptr)};
+    const auto handle_2 {::accept(handle_1, pointer, &length)};
 
     if (handle_2 == descriptor_null) {
         const auto error {get_last_context_error()};
@@ -50,6 +66,10 @@ auto Network::accept(const Socket& sock, bool verbose) -> Socket
         std::ostringstream oss;
         oss << "Call to ::accept("
             << handle_1
+            << ", "
+            << addr_str
+            << ", "
+            << length
             << ", ...) failed with error "
             << error
             << ": "
@@ -57,5 +77,6 @@ auto Network::accept(const Socket& sock, bool verbose) -> Socket
         throw Error(oss.str());
     }
 
-    return Socket {handle_2, false, verbose};
+    addr.resize(to_size(length));
+    return {Socket {handle_2, false, verbose}, addr};
 }

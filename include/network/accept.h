@@ -16,11 +16,15 @@
 #ifndef NETWORK_ACCEPT_H
 #define NETWORK_ACCEPT_H
 
+#include "network/bytestring.h"         // ByteString
 #include "network/socket.h"             // Socket
+
+#include <utility>      // std::pair
 
 namespace Network
 {
-    extern auto accept(const Socket& sock, bool verbose = false) -> Socket;
+    extern auto accept(const Socket& sock, bool verbose = false) ->
+        std::pair<Socket, ByteString>;
 }
 
 #endif
