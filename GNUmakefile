@@ -173,7 +173,9 @@ endif
 all_targets = $(build_targets) test
 
 ifneq "$(os_type)" "ms-windows"
+ifneq "$(os_distro)" "macos"
 	all_targets += unix
+endif
 endif
 
 ifeq "$(os_name)" "MINGW64_NT"
