@@ -23,7 +23,6 @@
 #include <sys/socket.h>         // SOCK_SEQPACKET
 #include <sys/un.h>             // AF_UNIX
 
-#include <cerrno>       // EINVAL, EPROTONOSUPPORT
 #include <cstdio>       // std::perror()
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
 #include <iostream>     // std::cerr, std::cout, std::endl
@@ -39,18 +38,12 @@ static bool verbose {false};  // NOLINT
 namespace Server {
     auto accept(const Socket& sock) -> Socket
     {
-        auto [accept_sock, addr] {Network::accept(sock, verbose)};
+        auto [accept_sock, accept_addr] {Network::accept(sock, verbose)};
 
-        if (accept_sock.is_open()) {
-            if (verbose) {
-                std::cout << "Accepted connection from "
-                          << Network::Address(addr)
-                          << std::endl;
-            }
-        }
-        else {
-            std::perror("accept");
-            std::exit(EXIT_FAILURE);
+        if (verbose) {
+            std::cout << "Accepted connection from "
+                      << Network::Address(accept_addr)
+                      << std::endl;
         }
 
         return accept_sock;
