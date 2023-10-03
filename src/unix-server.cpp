@@ -29,7 +29,6 @@
 #include <string>       // std::stoll(), std::string, std::to_string()
 
 using Network::Socket;
-using Network::descriptor_type;
 
 static constexpr auto backlog_size {20};
 
