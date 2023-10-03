@@ -24,7 +24,6 @@
 #include "network/format-os-error.h"    // format_os_error()
 #include "network/get-length.h"         // get_length()
 #include "network/get-sa-pointer.h"     // get_sa_pointer()
-#include "network/socket-error.h"       // socket_error
 #include "network/ss-sizes.h"           // ss_size
 #include "network/to-os-error.h"        // to_os_error()
 #include "network/to-size.h"            // to_size()
