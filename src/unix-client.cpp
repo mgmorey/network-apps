@@ -26,6 +26,7 @@
 #include <cerrno>       // EINVAL, EPROTONOSUPPORT
 #include <cstdio>       // std::perror()
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
+#include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <string>       // std::string, std::to_string()
 

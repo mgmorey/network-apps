@@ -19,6 +19,7 @@
 #include "network/close.h"                      // close()
 #include "network/remove-socket.h"              // remove_socket()
 
+#include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::endl
 
 Network::Descriptor::Descriptor(descriptor_type t_handle,
