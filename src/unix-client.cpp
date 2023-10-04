@@ -14,7 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/argumentspan.h"       // ArgumentSpan
-#include "network/network.h"            // Buffer, Socket, connect(),
+#include "network/network.h"            // Socket, connect(),
                                         // read_string() socket_error,
                                         // write()
 #include "network/parse.h"              // parse()
