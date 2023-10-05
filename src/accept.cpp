@@ -15,7 +15,6 @@
 
 #include "network/accept.h"             // accept()
 #include "network/addressstring.h"      // AddressString
-#include "network/buffer.h"             // Buffer
 #include "network/bytestring.h"         // ByteString
 #include "network/context-error.h"      // get_last_context_error(),
                                         // reset_last_context_error()
