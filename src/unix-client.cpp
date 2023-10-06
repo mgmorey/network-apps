@@ -40,9 +40,8 @@ namespace Client {
     auto connect() -> Socket
     {
         Socket sock {AF_UNIX, SOCK_SEQPACKET, 0, 0, false, verbose};
-        const auto error {Network::connect(sock, SOCKET_NAME, verbose)};
 
-        if (error) {
+        if (const auto error {Network::connect(sock, SOCKET_NAME, verbose)}) {
             std::cerr << error.string() << std::endl;
             std::exit(EXIT_FAILURE);
         }
