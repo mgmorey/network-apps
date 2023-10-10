@@ -73,7 +73,8 @@ namespace Server {
 
     auto parse(int argc, char** argv) -> void
     {
-        const auto [_, options] {Network::parse(argc, argv, "v")};
+        const auto arguments {Network::parse(argc, argv, "v")};
+        const auto options {arguments.second};
 
         if (options.contains('?')) {
             std::cerr << "Usage: "
@@ -86,8 +87,6 @@ namespace Server {
         if (options.contains('v')) {
             verbose = true;
         }
-
-        static_cast<void>(_);
     }
 
     auto read(const Socket& sock) -> std::string
