@@ -74,7 +74,7 @@ namespace Server {
     auto parse(int argc, char** argv) -> void
     {
         const auto arguments {Network::parse(argc, argv, "v")};
-        const auto options {arguments.second};
+        const auto& options {arguments.second};
 
         if (options.contains('?')) {
             std::cerr << "Usage: "
