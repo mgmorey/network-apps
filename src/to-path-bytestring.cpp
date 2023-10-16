@@ -13,9 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/to-path-bytestring.h"         // ByteString,
-                                                // OptionalPathname
-                                                // to_path()
+#include "network/to-path-bytestring.h"         // to_path()
 #include "network/bytestring.h"                 // ByteString
 #include "network/get-path-pointer-bs.h"        // get_path_pointer()
 #include "network/get-sa-family.h"              // get_sa_family()
