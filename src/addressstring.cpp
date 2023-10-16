@@ -13,11 +13,13 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/addressstring.h"      // AddressString, ByteString,
-                                        // OptionalString, std::string
+#include "network/addressstring.h"      // AddressString,
+                                        // OptionalString
+#include "network/bytestring.h"         // ByteString
 #include "network/format-bytestring.h"  // format()
 
-#include <ostream>
+#include <ostream>      // std::ostream
+#include <string>       // std::string
 
 Network::AddressString::AddressString(const ByteString& t_addr) noexcept :
     m_addr(t_addr)

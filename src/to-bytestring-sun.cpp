@@ -13,12 +13,12 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/to-bytestring-sun.h"          // ByteString,
-                                                // sockaddr_un,
-                                                // to_bytestring()
+#include "network/to-bytestring-sun.h"          // to_bytestring()
+#include "network/bytestring.h"                 // ByteString
 #include "network/get-sun-length.h"             // get_sun_length()
 #include "network/logicerror.h"                 // LogicError
 #include "network/os-features.h"                // HAVE_SOCKADDR_SA_LEN
+#include "network/sun-len-type.h"               // sun_len_type
 #include "network/to-bytespan-void.h"           // to_bytespan()
 #include "network/to-bytestring-bs.h"           // to_bytestring()
 #include "network/to-sun-len.h"                 // to_sun_len()

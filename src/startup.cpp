@@ -15,13 +15,16 @@
 
 #include "network/startup.h"            // Context, OptionalVersion,
                                         // Version, startup()
-#include "network/exceptions.h"         // Error, LogicError,
-                                        // RuntimeError
+#include "network/error.h"              // Error
 #include "network/format-os-error.h"    // format_os_error()
+#include "network/logicerror.h"         // LogicError
+#include "network/optionalversion.h"    // OptionalVersion
+#include "network/runtimeerror.h"       // RuntimeError
 #include "network/to-os-error.h"        // to_os_error()
 #include "network/version-null.h"       // version_null
-#include "network/windowsversion.h"     // Version, WORD, WSADATA,
-                                        // WSAEFAULT, WSAEPROCLIM,
+#include "network/version.h"            // Version
+#include "network/windowsversion.h"     // WORD, WSADATA, WSAEFAULT,
+                                        // WSAEPROCLIM,
                                         // WSASYSNOTREADY,
                                         // WSAVERNOTSUPPORTED,
                                         // ::WSAStartup(),

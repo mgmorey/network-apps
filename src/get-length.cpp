@@ -13,10 +13,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-length.h"         // ByteString, get_length(),
-                                        // sock_len_type,
-                                        // to_sock_len()
+#include "network/get-length.h"         // get_length()
+#include "network/bytestring.h"         // ByteString
 #include "network/get-sa-length.h"      // get_sa_length()
+#include "network/sock-len-type.h"      // sock_len_type,
 #include "network/to-sock-len.h"        // to_sock_len()
 
 auto Network::get_length(const ByteString& addr) -> Network::sock_len_type

@@ -13,14 +13,15 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/argumentdata.h"       // Argument, ArgumentData,
-                                        // std::string, std::vector,
-                                        // size_t
+#include "network/argument.h"           // Argument
+#include "network/argumentdata.h"       // ArgumentData
 
 #include <algorithm>    // std::for_each, std::transform()
-#include <cstdlib>      // std::free()
-#include <cstring>      // strdup()
+#include <cstdlib>      // std::free(), std::size_t
+#include <cstring>      // ::strdup()
 #include <iterator>     // std::back_inserter()
+#include <string>       // std::string
+#include <vector>       // std::vector
 
 Network::ArgumentData::ArgumentData(const std::vector<std::string>& data)
 {

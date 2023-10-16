@@ -13,15 +13,15 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/create-socket.h"              // OsErrorResult,
-                                                // Socket,
-                                                // SocketHints,
-                                                // descriptor_null,
-                                                // create_socket()
+#include "network/create-socket.h"              // create_socket()
 #include "network/create-socketresult.h"        // SocketResult,
                                                 // create_socketresult()
+#include "network/descriptor-null.h"            // descriptor_null
 #include "network/error.h"                      // Error
+#include "network/oserrorresult.h"              // OsErrorResult
 #include "network/overloaded.h"                 // Overloaded
+#include "network/socket.h"                     // Socket
+#include "network/sockethints.h"                // SocketHints
 
 #include <variant>      // std::visit()
 

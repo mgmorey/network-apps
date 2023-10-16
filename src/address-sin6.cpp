@@ -13,18 +13,19 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/address.h"                    // AF_INET6,
-                                                // INET6_ADDRSTRLEN,
-                                                // Address, in6_addr
-                                                // inet_ntop(),
-                                                // port_type,
-                                                // sockaddr_in6
-#include "network/buffer.h"                     // Buffer
+#include "network/address.h"                    // Address
 #include "network/get-sin6-addr.h"              // get_sin6_addr()
-#include "network/get-sin6-pointer.h"           // get_sin6_pointer()
 #include "network/get-sin6-port.h"              // get_sin6_port()
-#include "network/to-string-in6-addr.h"         // std::string,
-                                                // to_string()
+#include "network/port-type.h"                  // port_type
+#include "network/to-string-in6-addr.h"         // to_string()
+
+#ifdef WIN32
+#include <winsock2.h>       // in6_addr
+#else
+#include <netinet/in.h>     // in6_addr
+#endif
+
+#include <string>       // std::string
 
 auto Network::Address::sin6_addr() const noexcept -> in6_addr
 {

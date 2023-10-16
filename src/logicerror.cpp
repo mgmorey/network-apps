@@ -13,7 +13,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/logicerror.h"         // Error, LogicError
+#include "network/logicerror.h"         // LogicError
+#include "network/error.h"              // Error
+
+#include <string>       // std::string
 
 Network::LogicError::LogicError(const std::string& t_str) noexcept :
     Error(t_str)

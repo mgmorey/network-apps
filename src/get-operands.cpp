@@ -13,7 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-operands.h"       // ArgumentSpan, get_operands()
+#include "network/get-operands.h"       // get_operands()
+#include "network/argumentspan.h"       // ArgumentSpan
 #include "network/get-option.h"         // get_optind()
 #include "network/to-size.h"            // to_size()
 

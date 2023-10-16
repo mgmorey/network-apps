@@ -13,7 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/integererror.h"       // IntegerError, RangeError
+#include "network/integererror.h"       // IntegerError
+#include "network/rangeerror.h"         // RangeError
 
 #include <climits>      // INT_MAX, INT_MIN
 #include <sstream>      // std::ostringstream
@@ -22,6 +23,8 @@
 #ifdef __cpp_lib_format
 #include <format>       // std::format()
 #endif
+
+#include <string>       // std::string
 
 auto Network::IntegerError::format(const std::string& t_value) -> std::string
 {

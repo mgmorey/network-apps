@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/sockettype.h"         // SocketType, operator<<(),
-                                        // std::ostream
+#include "network/sockettype.h"                 // SocketType
+#include "network/socket-type-type.h"           // socket_type_type
 
 #ifdef WIN32
 #include <winsock2.h>   // SOCK_DGRAM, SOCK_RAW, SOCK_RDM,
@@ -25,6 +25,8 @@
                         // SOCK_STREAM
 #endif
 
+#include <cstddef>      // std::size_t
+#include <ostream>      // operator<<(), std::ostream
 #include <sstream>      // std::ostringstream
 #include <utility>      // std::pair
 #include <vector>       // std::vector

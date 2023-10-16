@@ -13,12 +13,12 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-templates-endpoint.h"     // Endpoint,
-                                                // OptionalHints,
-                                                // TemplateVector,
-                                                // TemplateVectorResult,
-                                                // get_templates()
+#include "network/get-templates-endpoint.h"     // get_templates()
+#include "network/endpoint.h"                   // Endpoint
 #include "network/insert-addrinfo.h"            // insert_addrinfo()
+#include "network/optionalhints.h"              // OptionalHints
+#include "network/templatevector.h"             // TemplateVector
+#include "network/templatevectorresult.h"       // TemplateVectorResult
 
 #include <iterator>     // std::back_inserter()
 

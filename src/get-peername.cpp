@@ -14,11 +14,12 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/get-peername.h"       // GetNameHandler,
-                                        // GetNameParams,
-                                        // PeerNameResult,
-                                        // descriptor_type,
                                         // get_peername()
+#include "network/descriptor-type.h"    // descriptor_type
 #include "network/get-name.h"           // get_name()
+#include "network/getnamehandler.h"     // GetNameHandler
+#include "network/getnameparams.h"      // GetNameParams
+#include "network/peername.h"           // PeerName
 
 #ifdef WIN32
 #include <winsock2.h>   // ::getpeername()

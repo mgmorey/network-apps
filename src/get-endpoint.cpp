@@ -13,12 +13,13 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-endpoint.h"       // Endpoint,
-                                        // get_endpoint()
-#include "network/error.h"              // Error
-#include "network/get-endpointresult.h" // OsErrorResult,
-                                        // get_endpointresult()
-#include "network/overloaded.h"         // Overloaded
+#include "network/get-endpoint.h"               // get_endpoint()
+#include "network/bytestring.h"                 // ByteString
+#include "network/endpoint.h"                   // Endpoint
+#include "network/error.h"                      // Error
+#include "network/get-endpointresult.h"         // get_endpointresult()
+#include "network/oserrorresult.h"              // OsErrorResult,
+#include "network/overloaded.h"                 // Overloaded
 
 #include <variant>      // std::visit()
 

@@ -18,7 +18,11 @@
                                         // PeerNameResult,
                                         // descriptor_type,
                                         // get_peernameresult()
+#include "network/descriptor-type.h"    // descriptor_type
 #include "network/get-nameresult.h"     // get_nameresult()
+#include "network/getnamehandler.h"     // GetNameHandler
+#include "network/getnameparams.h"      // GetNameParams
+#include "network/peernameresult.h"     // PeerNameResult
 
 #ifdef WIN32
 #include <winsock2.h>   // ::getpeername()

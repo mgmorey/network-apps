@@ -17,6 +17,8 @@
 #include "network/sockethints.h"        // SocketHints, operator<<(),
                                         // std::ostream
 
+#include <ostream>      // operator<<(), std::ostream
+
 auto Network::operator<<(std::ostream& os,
                          const SocketHints& hints ) noexcept -> std::ostream&
 {

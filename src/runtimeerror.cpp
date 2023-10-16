@@ -13,7 +13,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/runtimeerror.h"       // Error, RuntimeError
+#include "network/runtimeerror.h"       // RuntimeError
+#include "network/error.h"              // Error
+
+#include <string>       // std::string
 
 Network::RuntimeError::RuntimeError(const std::string& t_str) noexcept :
     Error(t_str)

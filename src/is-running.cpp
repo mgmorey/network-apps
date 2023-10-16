@@ -13,7 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/is-running.h"         // Context, is_running()
+#include "network/is-running.h"         // is_running()
+#include "network/context.h"            // Context
 
 auto Network::is_running(const Context& context) -> bool
 {

@@ -16,16 +16,14 @@
 #ifndef NETWORK_SOCKET_H
 #define NETWORK_SOCKET_H
 
-#include "network/descriptor.h"                 // ByteString,
-                                                // Descriptor,
-                                                // descriptor_null,
-                                                // descriptor_type,
-                                                // std::string
-#include "network/sockethints.h"                // SocketHints,
-                                                // socket_family_type,
-                                                // socket_flags_type,
-                                                // socket_protocol_type,
-                                                // socket_type_type
+#include "network/bytestring.h"                 // ByteString
+#include "network/descriptor-type.h"            // descriptor_type
+#include "network/descriptor.h"                 // Descriptor
+#include "network/socket-family-type.h"         // socket_family_type
+#include "network/socket-flags-type.h"          // socket_flags_type
+#include "network/socket-protocol-type.h"       // socket_protocol_type
+#include "network/socket-type-type.h"           // socket_type_type
+#include "network/sockethints.h"                // SocketHints
 
 #include <memory>      // std::shared_ptr
 #include <ostream>     // std::ostream

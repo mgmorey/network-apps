@@ -13,14 +13,19 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/socket.h"             // Descriptor, Socket,
-                                        // descriptor_null,
-                                        // descriptor_type
-#include "network/create-socket.h"      // create_socket()
-#include "network/get-peername.h"       // get_peername()
-#include "network/get-sockname.h"       // get_sockname()
-
-#include <string>       // std::string
+#include "network/socket.h"                     // Socket
+#include "network/bytestring.h"                 // ByteString
+#include "network/create-socket.h"              // create_socket()
+#include "network/descriptor-null.h"            // descriptor_null
+#include "network/descriptor-type.h"            // descriptor_type
+#include "network/descriptor.h"                 // Descriptor
+#include "network/get-peername.h"               // get_peername()
+#include "network/get-sockname.h"               // get_sockname()
+#include "network/socket-family-type.h"         // socket_family_type
+#include "network/socket-flags-type.h"          // socket_flags_type
+#include "network/socket-protocol-type.h"       // socket_protocol_type
+#include "network/socket-type-type.h"           // socket_type_type
+#include "network/sockethints.h"                // SocketHints
 
 Network::Socket::Socket(socket_family_type t_family,
                         socket_type_type t_socktype,

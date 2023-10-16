@@ -13,18 +13,21 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/create-socketpairresult.h"    // OsErrorResult,
-                                                // Socket, SocketPair,
-                                                // SocketPairResult,
+#include "network/create-socketpairresult.h"    // SocketPairResult,
                                                 // create_socketpair(),
-                                                // descriptor_null,
-                                                // descriptor_type,
                                                 // operator<<()
-#include "network/context-error.h"              // get_last_context_error(),
-                                                // reset_last_context_error()
+#include "network/descriptor-null.h"            // descriptor_null
+#include "network/descriptor-type.h"            // descriptor_type
 #include "network/format-os-error.h"            // format_os_error()
 #include "network/format.h"                     // Format
+#include "network/get-last-context-error.h"     // get_last_context_error()
+#include "network/oserrorresult.h"              // OsErrorResult
+#include "network/reset-last-context-error.h"   // reset_last_context_error()
 #include "network/socket-error.h"               // socket_error
+#include "network/socket.h"                     // Socket
+#include "network/sockethints.h"                // SocketHints
+#include "network/socketpair.h"                 // SocketPair
+#include "network/socketpairresult.h"           // SocketPairResult
 #include "network/to-os-error.h"                // to_os_error()
 
 #ifndef WIN32

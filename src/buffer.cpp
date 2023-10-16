@@ -13,8 +13,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/buffer.h"             // Buffer, operator<<(),
-                                        // std::ostream, std::string
+#include "network/buffer.h"             // Buffer
+
+#include <ostream>      // operator<<(), std::ostream
+#include <string>       // std::string
 
 Network::Buffer::Buffer(std::string::size_type t_size) :
     m_value(t_size, '\0')

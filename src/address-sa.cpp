@@ -20,8 +20,11 @@
 #include "network/get-sa-data.h"                // get_sa_data()
 #include "network/get-sa-family.h"              // get_sa_family()
 #include "network/get-sa-length.h"              // get_sa_length()
-#include "network/get-sa-pointer.h"             // get_sa_pointer()
+#include "network/length-type.h"                // length_type
+#include "network/socket-family-type.h"         // socket_family_type
 #include "network/to-string.h"                  // to_string()
+
+#include <string>       // std::string
 
 auto Network::Address::sa_data() const noexcept -> Network::Address::value_type
 {

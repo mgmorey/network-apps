@@ -13,15 +13,17 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/create-socketpair.h"          // SocketHints,
-                                                // SocketPair,
-                                                // create_socketpair()
+#include "network/create-socketpair.h"          // create_socketpair()
 #include "network/create-socketpairresult.h"    // SocketPairResult,
                                                 // create_socketpairresult()
 #include "network/error.h"                      // Error
+#include "network/oserrorresult.h"              // OsErrorResult
 #include "network/overloaded.h"                 // Overloaded
+#include "network/sockethints.h"                // SocketHints
+#include "network/socketpair.h"                 // SocketPair
 
 #include <optional>     // std::optional
+#include <string>       // std::string
 #include <variant>      // std::visit()
 
 auto Network::create_socketpair(const SocketHints& hints,

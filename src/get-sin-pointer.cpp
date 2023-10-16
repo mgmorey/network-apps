@@ -13,9 +13,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-sin-pointer.h"    // ByteString,
-                                        // get_sin_pointer(),
-                                        // sockaddr_in
+#include "network/get-sin-pointer.h"    // get_sin_pointer()
+#include "network/bytestring.h"         // ByteString
+
+#ifdef WIN32
+#include <winsock2.h>       // sockaddr_in
+#else
+#include <netinet/in.h>     // sockaddr_in
+#endif
 
 auto Network::get_sin_pointer(const ByteString& addr) noexcept ->
     const sockaddr_in*

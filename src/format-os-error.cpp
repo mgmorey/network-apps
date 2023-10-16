@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/format-os-error.h"    // format_os_error(),
-                                        // os_error_type, std::string
+#include "network/format-os-error.h"    // format_os_error()
+#include "network/os-error-type.h"      // os_error_type
 
 #ifdef WIN32
 #include <winsock2.h>       // Always include winsock2.h before
@@ -28,6 +28,8 @@
 #else
 #include <cstring>          // std::strerror()
 #endif
+
+#include <string>       // std::string
 
 auto Network::format_os_error(os_error_type error) -> std::string
 {

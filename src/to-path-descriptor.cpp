@@ -13,10 +13,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/to-path-descriptor.h"         // OptionalPathname,
-                                                // descriptor_type,
-                                                // to_path()
+#include "network/to-path-descriptor.h"         // to_path()
+#include "network/descriptor-type.h"            // descriptor_type
 #include "network/get-sockname.h"               // get_sockname()
+#include "network/optionalpathname.h"           // OptionalPathname
 #include "network/to-path-bytestring.h"         // to_path()
 
 auto Network::to_path(descriptor_type handle, bool verbose) -> OptionalPathname

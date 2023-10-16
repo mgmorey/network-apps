@@ -13,11 +13,12 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-name.h"           // ByteString, GetNameHandler,
-                                        // GetNameParams, get_name()
+#include "network/get-name.h"           // get_name()
+#include "network/bytestring.h"         // ByteString
 #include "network/error.h"              // Error
-#include "network/get-nameresult.h"     // ByteStringResult,
-                                        // get_nameresult()
+#include "network/get-nameresult.h"     // get_nameresult()
+#include "network/getnamehandler.h"     // GetNameHandler
+#include "network/getnameparams.h"      // GetNameParams
 #include "network/oserrorresult.h"      // OsErrorResult
 #include "network/overloaded.h"         // Overloaded
 

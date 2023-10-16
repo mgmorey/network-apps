@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/socketfamily.h"       // SocketFamily, operator<<(),
-                                        // std::ostream
+#include "network/socketfamily.h"               // SocketFamily
+#include "network/socket-family-type.h"         // socket_family_type
 
 #ifdef WIN32
 #include <winsock2.h>   // AF_INET, AF_INET6, AF_UNIX, AF_UNSPEC,
@@ -23,6 +23,8 @@
 #include <sys/socket.h> // AF_INET, AF_INET6, AF_UNIX, AF_UNSPEC,
                         // PF_INET, PF_INET6, PF_UNIX, PF_UNSPEC
 #endif
+
+#include <ostream>      // operator<<(), std::ostream
 
 auto Network::operator<<(std::ostream& os,
                          const SocketFamily& family) noexcept -> std::ostream&

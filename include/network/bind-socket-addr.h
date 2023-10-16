@@ -16,8 +16,9 @@
 #ifndef NETWORK_BIND_SOCKET_ADDR_H
 #define NETWORK_BIND_SOCKET_ADDR_H
 
-#include "network/open-socket.h"        // ByteString, OsErrorResult,
-                                        // Socket
+#include "network/bytestring.h"         // ByteString
+#include "network/oserrorresult.h"      // OsErrorResult
+#include "network/socket.h"             // Socket
 
 namespace Network
 {

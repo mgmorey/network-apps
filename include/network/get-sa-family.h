@@ -16,8 +16,8 @@
 #ifndef NETWORK_GET_SA_FAMILY_H
 #define NETWORK_GET_SA_FAMILY_H
 
-#include "network/bytestring.h"         // ByteString
-#include "network/socket-family-type.h" // socket_family_type
+#include "network/bytestring.h"                 // ByteString
+#include "network/socket-family-type.h"         // socket_family_type
 
 namespace Network
 {

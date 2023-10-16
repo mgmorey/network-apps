@@ -13,18 +13,22 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/open-socket.h"        // ByteString, OpenHandler,
-                                        // OsErrorResult, Socket,
-                                        // descriptor_type, open(),
-                                        // operator<<()
-#include "network/addressstring.h"      // AddressString
-#include "network/context-error.h"      // get_last_context_error(),
-                                        // reset_last_context_error()
-#include "network/format-os-error.h"    // format_os_error()
-#include "network/get-length.h"         // get_length()
-#include "network/get-sa-pointer.h"     // get_sa_pointer()
-#include "network/socket-error.h"       // socket_error
-#include "network/to-os-error.h"        // to_os_error()
+#include "network/open-socket.h"                // ByteString, OpenHandler,
+                                                // OsErrorResult, Socket,
+                                                // descriptor_type, open(),
+                                                // operator<<()
+#include "network/addressstring.h"              // AddressString
+#include "network/descriptor-type.h"            // descriptor_type
+#include "network/format-os-error.h"            // format_os_error()
+#include "network/get-last-context-error.h"     // get_last_context_error()
+#include "network/get-length.h"                 // get_length()
+#include "network/get-sa-pointer.h"             // get_sa_pointer()
+#include "network/openhandler.h"                // OpenHandler
+#include "network/opensocketparams.h"           // OpenSocketParams
+#include "network/oserrorresult.h"              // OsErrorResult
+#include "network/reset-last-context-error.h"   // reset_last_context_error()
+#include "network/socket-error.h"               // socket_error
+#include "network/to-os-error.h"                // to_os_error()
 
 #include <iostream>     // std::cout, std::endl
 #include <sstream>      // std::ostringstream

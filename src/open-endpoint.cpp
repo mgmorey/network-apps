@@ -13,17 +13,19 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/open-endpoint.h"              // OpenEndpointParams,
-                                                // OpenHandler, OpenResult,
-                                                // SocketResultVector, open()
+#include "network/open-endpoint.h"              // open()
 #include "network/create-socketresult.h"        // create_socketresult()
-#include "network/get-templates.h"              // TemplateVector,
-                                                // get_templates()
-#include "network/open-socket.h"                // OpenHandler,
-                                                // OpenSocketParams,
-                                                // OsErrorResult, Socket,
-                                                // open()
+#include "network/get-templates-endpoint.h"     // get_templates()
+#include "network/open-socket.h"                // open()
+#include "network/openendpointparams.h"         // OpenEndpointParams
+#include "network/openhandler.h"                // OpenHandler
+#include "network/openresult.h"                 // OpenResult
+#include "network/oserrorresult.h"              // OsErrorResult
 #include "network/overloaded.h"                 // Overloaded
+#include "network/socket.h"                     // Socket
+#include "network/socketresultvector.h"         // SocketResultVector
+#include "network/template.h"                   // Template
+#include "network/templatevector.h"             // TemplateVector
 
 #include <algorithm>    // std::transform()
 #include <iterator>     // std::back_inserter()

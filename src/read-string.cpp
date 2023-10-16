@@ -13,11 +13,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/read-string.h"        // Socket, descriptor_type,
-                                        // read_string(), ssize_t,
-                                        // std::size_t
+#include "network/read-string.h"        // read_string()
 #include "network/buffer.h"             // Buffer
 #include "network/read.h"               // read()
+#include "network/socket.h"             // Socket
+
+#include <sys/types.h>          // ssize_t
+
+#include <cstddef>      // std::size_t
+#include <string>       // std::string
+#include <utility>      // std::pair
 
 auto Network::read_string(std::size_t size, const Socket& sock) ->
     std::pair<std::string, ssize_t>

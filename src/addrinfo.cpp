@@ -19,6 +19,11 @@
                                         // OsErrorResult, addrinfo,
                                         // operator<<()
 #include "network/format-ai-error.h"    // format_ai_error()
+#include "network/optionalhints.h"      // OptionalHints
+#include "network/optionalhostname.h"   // OptionalHostname
+#include "network/optionalservice.h"    // OptionalService
+#include "network/optionalstring.h"     // OptionalString
+#include "network/oserrorresult.h"      // OsErrorResult
 #include "network/string-null.h"        // string_null
 #include "network/to-os-error.h"        // to_os_error()
 
@@ -29,6 +34,7 @@
 #endif
 
 #include <iostream>     // std::cout, std::endl
+#include <memory>       // std::make_unique, std::unique_ptr
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
 

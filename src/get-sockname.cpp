@@ -13,12 +13,12 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-sockname.h"       // GetNameHandler,
-                                        // GetNameParams,
-                                        // SockNameResult,
-                                        // descriptor_type,
-                                        // get_sockname()
+#include "network/get-sockname.h"       // get_sockname()
+#include "network/descriptor-type.h"    // descriptor_type,
 #include "network/get-name.h"           // get_name()
+#include "network/getnamehandler.h"     // GetNameHandler
+#include "network/getnameparams.h"      // GetNameParams
+#include "network/sockname.h"           // SockName
 
 #ifdef WIN32
 #include <winsock2.h>       // ::getsockname()

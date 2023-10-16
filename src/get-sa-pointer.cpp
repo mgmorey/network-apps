@@ -13,9 +13,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-sa-pointer.h"     // ByteString, get_sa_pointer(),
-                                        // sockaddr, sockaddr_in,
-                                        // sockaddr_in6
+#include "network/get-sa-pointer.h"     // get_sa_pointer()
+#include "network/bytestring.h"         // ByteString
+
+#ifdef WIN32
+#include <winsock2.h>       // sockaddr
+#else
+#include <sys/socket.h>     // sockaddr
+#endif
 
 auto Network::get_sa_pointer(const ByteString& addr) noexcept -> const sockaddr*
 {

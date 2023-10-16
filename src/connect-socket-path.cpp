@@ -13,11 +13,12 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/connect-socket-path.h"    // OsErrorResult, Pathname,
-                                            // connect()
-#include "network/connect-socket-addr.h"    // ByteString, Socket,
-                                            // connect()
-#include "network/to-bytestring.h"          // to_bytestring()
+#include "network/connect-socket-path.h"    // connect()
+#include "network/connect-socket-addr.h"    // connect()
+#include "network/oserrorresult.h"          // OsErrorResult
+#include "network/pathname.h"               // Pathname
+#include "network/socket.h"                 // Socket
+#include "network/to-bytestring-path.h"     // to_bytestring()
 
 #ifndef WIN32
 

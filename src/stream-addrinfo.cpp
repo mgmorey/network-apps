@@ -26,8 +26,7 @@
 #include "network/sockettype.h"                 // SocketType,
                                                 // operator<<()
 #include "network/string-null.h"                // string_null
-#include "network/to-bytestring-ai.h"           // ByteString,
-                                                // to_bytestring()
+#include "network/to-bytestring-ai.h"           // to_bytestring()
 #include "network/to-string.h"                  // to_string()
 
 #ifdef WIN32
@@ -36,7 +35,8 @@
 #include <netdb.h>      // addrinfo
 #endif
 
-#include <cstddef>      // std::size_t
+#include <ostream>      // operator<<(), std::ostream
+#include <string>       // std::string
 
 auto Network::operator<<(std::ostream& os,
                          const addrinfo& addrinfo) noexcept -> std::ostream&

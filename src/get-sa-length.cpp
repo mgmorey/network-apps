@@ -16,9 +16,11 @@
 #include "network/get-sa-length.h"      // ByteString,
                                         // get_sa_length(),
                                         // sock_len_type
+#include "network/bytestring.h"         // ByteString
 #include "network/get-sa-pointer.h"     // get_sa_pointer()
 #include "network/os-features.h"        // HAVE_SOCKADDR_SA_LEN
 #include "network/sa-offsets.h"         // sa_len_offset
+#include "network/sock-len-type.h"      // sock_len_type
 
 auto Network::get_sa_length(const ByteString& addr,
                             sock_len_type length) noexcept ->

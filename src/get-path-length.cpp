@@ -13,13 +13,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-path-length.h"            // get_path_length(),
-                                                // path_len_type,
-                                                // sockaddr_un
+#include "network/get-path-length.h"            // get_path_length()
 #include "network/get-path-pointer-sun.h"       // get_path_pointer()
 #include "network/os-features.h"                // HAVE_SOCKADDR_SA_LEN
-#include "network/to-sun-len.h"                 // sun_len_min,
-                                                // to_sun_len()
+#include "network/path-len-type.h"              // path_len_type,
+#include "network/sun-len-limits.h"             // sun_len_min
+#include "network/to-sun-len.h"                 // to_sun_len()
+
+#ifndef WIN32
+#include <sys/un.h>         // sockaddr_un
+#endif
 
 #include <cstring>      // ::strnlen()
 

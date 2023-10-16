@@ -17,6 +17,8 @@
                                         // std::endl, std::ostream,
                                         // std::string
 
+#include <ostream>      // operator<<(), std::ostream
+#include <string>       // std::string
 #include <utility>      // std::move()
 
 Network::Format::Format(const std::string& t_key) noexcept :

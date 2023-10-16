@@ -13,13 +13,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/format-bytestring.h"          // ByteString,
-                                                // OptionalString,
-                                                // format(),
-                                                // std::string
+#include "network/format-bytestring.h"          // format()
 #include "network/address.h"                    // Address
 #include "network/addresserror.h"               // AddressError
+#include "network/bytestring.h"                 // ByteString
+#include "network/optionalstring.h"             // OptionalString
 #include "network/to-string.h"                  // to_string()
+
+#include <string>       // std::string
 
 auto Network::format(const ByteString& addr) noexcept -> std::string
 {

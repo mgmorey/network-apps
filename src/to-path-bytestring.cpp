@@ -16,15 +16,19 @@
 #include "network/to-path-bytestring.h"         // ByteString,
                                                 // OptionalPathname
                                                 // to_path()
-#include "network/get-path-pointer.h"           // get_path_pointer()
+#include "network/bytestring.h"                 // ByteString
+#include "network/get-path-pointer-bs.h"        // get_path_pointer()
 #include "network/get-sa-family.h"              // get_sa_family()
+#include "network/optionalpathname.h"           // OptionalPathname
 #include "network/sun-len-limits.h"             // sun_len_min
+#include "network/sun-offsets.h"                // sun_path_offset
 
 #ifndef WIN32
 #include <sys/socket.h>     // AF_UNIX
 #endif
 
 #include <cstring>      // ::strnlen()
+#include <string>       // std::string
 
 auto Network::to_path(const ByteString& addr) -> OptionalPathname
 {

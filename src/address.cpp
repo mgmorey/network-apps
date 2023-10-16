@@ -13,10 +13,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/address.h"            // Address, length_type,
-                                        // port_type, value_type
-#include "network/addresserror.h"       // AddressError, LogicError
-#include "network/is-valid.h"           // is_valid()
+#include "network/address.h"                    // Address,
+                                                // value_type
+#include "network/addresserror.h"               // AddressError,
+                                                // LogicError
+#include "network/is-valid.h"                   // is_valid()
+#include "network/length-type.h"                // length_type
+#include "network/port-type.h"                  // port_type
+#include "network/socket-family-type.h"         // socket_family_type
+
+#include <cstddef>                              // std::size_t
 
 #ifdef WIN32
 #include <winsock2.h>       // AF_INET, AF_INET6

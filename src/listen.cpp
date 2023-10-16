@@ -13,9 +13,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/descriptor-type.h"    // descriptor_type
-#include "network/listen.h"             // Socket, context_error_type,
-                                        // listen()
+#include "network/listen.h"                     // listen()
+#include "network/context-error-type.h"         // context_error_type
+#include "network/descriptor-type.h"            // descriptor_type
+#include "network/socket.h"                     // Socket
 
 #ifdef WIN32
 #include <winsock2.h>       // ::listen()

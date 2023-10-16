@@ -13,9 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/to-string-in6-addr.h"         // in6_addr,
-                                                // std::string(),
-                                                // to_string()
+#include "network/to-string-in6-addr.h"         // to_string()
 #include "network/buffer.h"                     // Buffer
 
 #ifdef WIN32
@@ -23,8 +21,11 @@
 #include <ws2tcpip.h>       // INET6_ADDRSTRLEN, inet_ntop()
 #else
 #include <arpa/inet.h>      // inet_ntop()
+#include <netinet/in.h>     // in6_addr
 #include <sys/socket.h>     // AF_INET6, INET6_ADDRSTRLEN
 #endif
+
+#include <string>       // std::string
 
 auto Network::to_string(const in6_addr& addr) noexcept -> std::string
 {

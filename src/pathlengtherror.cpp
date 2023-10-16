@@ -13,10 +13,12 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/pathlengtherror.h"    // PathLengthError, RangeError
+#include "network/pathlengtherror.h"    // PathLengthError
 #include "network/path-len-limits.h"    // path_len_max, path_len_min
+#include "network/rangeerror.h"         // RangeError
 
 #include <sstream>      // std::ostringstream
+#include <string>       // std::string
 #include <version>
 
 #ifdef __cpp_lib_format

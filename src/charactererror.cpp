@@ -13,7 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/charactererror.h"     // CharacterError, RangeError
+#include "network/charactererror.h"     // CharacterError
+#include "network/rangeerror.h"         // RangeError
 
 #include <climits>      // CHAR_MAX, CHAR_MIN
 #include <sstream>      // std::ostringstream
@@ -22,6 +23,8 @@
 #ifdef __cpp_lib_format
 #include <format>       // std::format()
 #endif
+
+#include <string>       // std::string
 
 auto Network::CharacterError::format(const std::string& t_value) -> std::string
 {

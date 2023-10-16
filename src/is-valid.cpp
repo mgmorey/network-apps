@@ -13,14 +13,15 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/is-valid.h"           // ByteString, is_valid()
-#include "network/get-sa-family.h"      // get_sa_family()
-#include "network/get-sa-length.h"      // get_sa_length()
-#include "network/get-sa-size.h"        // get_sa_size_maximum(),
-                                        // get_sa_size_minimum()
-#include "network/get-sun-length.h"     // get_sun_length()
-#include "network/get-sun-pointer.h"    // get_sun_pointer()
-#include "network/os-features.h"        // HAVE_SOCKADDR_SA_LEN
+#include "network/is-valid.h"                   // is_valid()
+#include "network/bytestring.h"                 // ByteString
+#include "network/get-sa-family.h"              // get_sa_family()
+#include "network/get-sa-length.h"              // get_sa_length()
+#include "network/get-sa-size-maximum.h"        // get_sa_size_maximum(),
+#include "network/get-sa-size-minimum.h"        // get_sa_size_maximum(),
+#include "network/get-sun-length.h"             // get_sun_length()
+#include "network/get-sun-pointer.h"            // get_sun_pointer()
+#include "network/os-features.h"                // HAVE_SOCKADDR_SA_LEN
 
 #ifdef WIN32
 #include <winsock2.h>       // AF_INET, AF_INET6, AF_UNIX, AF_UNSPEC

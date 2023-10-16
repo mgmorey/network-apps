@@ -13,13 +13,13 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-templates-hostname.h"     // OptionalHints,
-                                                // OptionalHostname,
-                                                // OptionalService,
-                                                // TemplateVector,
-                                                // TemplateVectorResult,
-                                                // get_templates()
+#include "network/get-templates-hostname.h"     // get_templates()
 #include "network/insert-addrinfo.h"            // insert_addrinfo()
+#include "network/optionalhints.h"              // OptionalHints
+#include "network/optionalhostname.h"           // OptionalHostname
+#include "network/optionalservice.h"            // OptionalService
+#include "network/templatevector.h"             // TemplateVector
+#include "network/templatevectorresult.h"       // TemplateVectorResult
 
 #include <iterator>     // std::back_inserter()
 

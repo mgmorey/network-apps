@@ -14,11 +14,11 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/bytestring.h"         // Byte, ByteString,
-                                        // operator<<(), std::ios,
-                                        // std::ostream
+                                        // operator<<(), std::ios
 
-#include <iomanip>      // std::hex, std::setfill(), std::setw(),
-                        // std::uppercase
+#include <iomanip>      // std::setfill(), std::setw()
+#include <ios>          // std::hex, std::ios, std::uppercase
+#include <ostream>      // std::ostream
 
 auto Network::operator<<(std::ostream& os,
                          const ByteString& bytes) noexcept -> std::ostream&

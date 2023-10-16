@@ -15,6 +15,7 @@
 
 #include "network/parse.h"                  // ParseResult, parse()
 #include "network/parse-argumentspan.h"     // parse()
+#include "network/parseresult.h"            // ParseResult
 #include "network/to-size.h"                // to_size()
 
 #include <span>         // std::span

@@ -16,10 +16,18 @@
 #ifndef NETWORK_SOCKETHINTS_H
 #define NETWORK_SOCKETHINTS_H
 
-#include "network/socketfamily.h"       // SocketFamily, operator<<()
-#include "network/socketflags.h"        // SocketFlags, operator<<()
-#include "network/socketprotocol.h"     // SocketProtocol, operator<<()
-#include "network/sockettype.h"         // SocketType, operator<<()
+#include "network/socket-family-type.h"         // socket_family_type
+#include "network/socket-flags-type.h"          // socket_flags_type
+#include "network/socket-protocol-type.h"       // socket_protocol_type
+#include "network/socket-type-type.h"           // socket_type_type
+#include "network/socketfamily.h"               // SocketFamily,
+                                                // operator<<()
+#include "network/socketflags.h"                // SocketFlags,
+                                                // operator<<()
+#include "network/socketprotocol.h"             // SocketProtocol,
+                                                // operator<<()
+#include "network/sockettype.h"                 // SocketType,
+                                                // operator<<()
 
 #ifdef WIN32
 #include <ws2tcpip.h>       // AF_UNSPEC, addrinfo

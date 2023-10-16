@@ -13,11 +13,13 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/connect-socket-addr.h"    // ByteString,
-                                            // OsErrorResult, Socket,
-                                            // connect(), open()
+#include "network/connect-socket-addr.h"    // connect(), open()
+#include "network/bytestring.h"             // ByteString
+#include "network/open-socket.h"            // open()
 #include "network/openhandler.h"            // OpenHandler
 #include "network/opensocketparams.h"       // OpenSocketParams
+#include "network/oserrorresult.h"          // OsErrorResult
+#include "network/socket.h"                 // Socket
 
 #ifdef WIN32
 #include <winsock2.h>       // ::connect()

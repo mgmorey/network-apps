@@ -13,9 +13,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/addresserror.h"               // AddressError,
-                                                // ByteString,
-                                                // LogicError
+#include "network/addresserror.h"               // AddressError
+#include "network/bytestring.h"                 // ByteString
+#include "network/logicerror.h"                 // LogicError
 #include "network/to-string.h"                  // to_string()
 
 Network::AddressError::AddressError(const ByteString& t_str) noexcept :

@@ -13,10 +13,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/parse-argumentspan.h"     // ArgumentSpan,
-                                            // ParseResult, parse()
+#include "network/parse-argumentspan.h"     // parse()
+#include "network/argumentspan.h"           // ArgumentSpan
 #include "network/get-operands.h"           // get_operands()
 #include "network/get-options.h"            // get_options()
+#include "network/parseresult.h"            // ParseResult
 
 auto Network::parse(const ArgumentSpan& args,
                     const char* optstring) -> Network::ParseResult

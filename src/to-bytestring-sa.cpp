@@ -13,22 +13,23 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/to-bytestring-sa.h"   // ByteString, sa_len_type,
-                                        // sockaddr, to_bytestring()
-#include "network/get-sa-size.h"        // get_sa_size_maximum(),
-                                        // get_sa_size_minimum()
-#include "network/logicerror.h"         // LogicError
-#include "network/os-features.h"        // HAVE_SOCKADDR_SA_LEN
-#include "network/to-bytespan-void.h"   // to_bytespan()
-#include "network/to-bytestring-bs.h"   // to_bytestring()
-#include "network/to-sa-len.h"          // to_sa_len()
+#include "network/to-bytestring-sa.h"           // to_bytestring()
+#include "network/bytestring.h"                 // ByteString
+#include "network/get-sa-size-maximum.h"        // get_sa_size_maximum()
+#include "network/get-sa-size-minimum.h"        // get_sa_size_minimum()
+#include "network/logicerror.h"                 // LogicError
+#include "network/os-features.h"                // HAVE_SOCKADDR_SA_LEN
+#include "network/sa-len-type.h"                // sa_len_type
+#include "network/to-bytespan-void.h"           // to_bytespan()
+#include "network/to-bytestring-bs.h"           // to_bytestring()
+#include "network/to-sa-len.h"                  // to_sa_len()
 
 #include <sstream>      // std::ostringstream
 
 #ifdef WIN32
-#include <winsock2.h>       // AF_INET, AF_INET6
+#include <winsock2.h>       // AF_INET, AF_INET6, sockaddr
 #else
-#include <sys/socket.h>     // AF_INET, AF_INET6
+#include <sys/socket.h>     // AF_INET, AF_INET6, sockaddr
 #endif
 
 auto Network::to_bytestring(const sockaddr* sa,

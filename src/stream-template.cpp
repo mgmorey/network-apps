@@ -18,6 +18,8 @@
 #include "network/format.h"             // Format, operator<<()
 #include "network/string-null.h"        // string_null
 
+#include <ostream>      // operator<<(), std::ostream
+
 auto Network::operator<<(std::ostream& os,
                          const Template& sock) noexcept -> std::ostream&
 {

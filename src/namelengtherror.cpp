@@ -13,10 +13,12 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/namelengtherror.h"    // NameLengthError, RangeError
+#include "network/namelengtherror.h"    // NameLengthError
 #include "network/name-len-limits.h"    // name_len_max, name_len_min
+#include "network/rangeerror.h"         // RangeError
 
 #include <sstream>      // std::ostringstream
+#include <string>       // std::string
 #include <version>
 
 #ifdef __cpp_lib_format

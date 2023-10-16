@@ -13,9 +13,15 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/template.h"                   // SocketHints,
-                                                // SocketHost,
-                                                // Template
+#include "network/template.h"                   // Template
+#include "network/bytestring.h"                 // ByteString
+#include "network/optionalhostname.h"           // OptionalHostname
+#include "network/socketfamily.h"               // SocketFamily
+#include "network/socketflags.h"                // SocketFlags
+#include "network/sockethints.h"                // SocketHints
+#include "network/sockethost.h"                 // SocketHost
+#include "network/socketprotocol.h"             // SocketProtocol
+#include "network/sockettype.h"                 // SocketType
 
 #ifdef WIN32
 #include <ws2tcpip.h>   // addrinfo

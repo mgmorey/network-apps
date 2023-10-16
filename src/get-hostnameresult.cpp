@@ -13,16 +13,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-hostnameresult.h" // Hostname, HostnameResult,
-                                        // OsErrorResult,
-                                        // get_hostname(),
-                                        // hostname_size_max
-#include "network/buffer.h"             // Buffer
-#include "network/context-error.h"      // get_last_context_error(),
-                                        // reset_last_context_error()
-#include "network/format-os-error.h"    // format_os_error()
-#include "network/to-name-len.h"        // to_name_len()
-#include "network/to-os-error.h"        // to_os_error()
+#include "network/get-hostnameresult.h"         // get_hostname(),
+#include "network/buffer.h"                     // Buffer
+#include "network/format-os-error.h"            // format_os_error()
+#include "network/get-last-context-error.h"     // get_last_context_error()
+#include "network/hostname.h"                   // Hostname
+#include "network/hostnameresult.h"             // HostnameResult
+#include "network/oserrorresult.h"              // OsErrorResult
+#include "network/reset-last-context-error.h"   // reset_last_context_error()
+#include "network/to-name-len.h"                // to_name_len()
+#include "network/to-os-error.h"                // to_os_error()
 
 #ifdef WIN32
 #include <winsock2.h>   // ::gethostname()

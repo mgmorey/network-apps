@@ -13,7 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/socketlengtherror.h"  // RangeError, SocketLengthError
+#include "network/socketlengtherror.h"  // SocketLengthError
+#include "network/rangeerror.h"         // RangeError
 #include "network/sock-len-limits.h"    // sock_len_max, sock_len_min
 
 #include <sstream>      // std::ostringstream
@@ -22,6 +23,8 @@
 #ifdef __cpp_lib_format
 #include <format>       // std::format()
 #endif
+
+#include <string>       // std::string
 
 auto Network::SocketLengthError::format(const std::string& t_value) -> std::string
 {

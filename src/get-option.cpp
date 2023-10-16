@@ -16,6 +16,7 @@
 #include "network/get-option.h"         // get_optarg(), get_opterr(),
                                         // get_optind(), get_option(),
                                         // get_optopt()
+#include "network/argumentspan.h"       // ArgumentSpan
 #include "network/logicerror.h"         // LogicError
 #include "network/to-integer.h"         // to_integer()
 

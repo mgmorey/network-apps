@@ -13,11 +13,12 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-sin-port.h"       // ByteString, port_type,
-                                        // get_sin_port()
+#include "network/get-sin-port.h"       // get_sin_port()
 #include "network/assert.h"             // assert()
+#include "network/bytestring.h"         // ByteString
 #include "network/get-sa-family.h"      // get_sa_family()
 #include "network/get-sin-pointer.h"    // get_sin_pointer()
+#include "network/port-type.h"          // port_type,
 #include "network/sin-offsets.h"        // sin_port_offset
 
 #ifdef WIN32

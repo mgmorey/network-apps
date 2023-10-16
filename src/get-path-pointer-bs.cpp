@@ -13,9 +13,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-path-pointer.h"   // ByteString,
-                                        // get_path_pointer()
-#include "network/get-sun-pointer.h"    // get_sun_pointer()
+#include "network/get-path-pointer-bs.h"        // get_path_pointer()
+#include "network/bytestring.h"                 // ByteString
+#include "network/get-path-pointer-sun.h"       // get_path_pointer()
+#include "network/get-sun-pointer.h"            // get_sun_pointer()
 
 #ifndef WIN32
 

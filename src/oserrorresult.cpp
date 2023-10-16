@@ -14,7 +14,9 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/oserrorresult.h"      // OsErrorResult
+#include "network/os-error-type.h"      // os_error_type
 
+#include <string>       // std::string
 #include <utility>      // std::move()
 
 Network::OsErrorResult::OsErrorResult(os_error_type t_number,

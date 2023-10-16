@@ -13,10 +13,13 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/bind-endpoint.h"      // Endpoint, OpenResult,
-                                        // SocketHints, bind(), open()
+#include "network/bind-endpoint.h"      // bind()
+#include "network/endpoint.h"           // Endpoint
+#include "network/open-endpoint.h"      // open()
 #include "network/openendpointparams.h" // OpenEndpointParams
 #include "network/openhandler.h"        // OpenHandler
+#include "network/openresult.h"         // OpenResult
+#include "network/sockethints.h"        // SocketHints
 
 #ifdef WIN32
 #include <winsock2.h>       // ::bind()

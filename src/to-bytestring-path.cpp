@@ -13,16 +13,19 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/to-bytestring-path.h"         // ByteString,
-                                                // OptionalPathname,
-                                                // to_bytestring()
-#include "network/get-path-pointer-sun.h"       // get_path_pointer(),
-                                                // sockaddr_un
+#include "network/to-bytestring-path.h"         // to_bytestring()
+#include "network/bytestring.h"                 // ByteString
+#include "network/get-path-pointer-sun.h"       // get_path_pointer()
+#include "network/optionalpathname.h"           // OptionalPathname
 #include "network/os-features.h"                // HAVE_SOCKADDR_SA_LEN
 #include "network/sa-len-type.h"                // sa_len_type
 #include "network/sun-offsets.h"                // sun_path_offset
 #include "network/to-bytestring-sun.h"          // to_bytestring()
 #include "network/to-path-len.h"                // to_path_len()
+
+#ifndef WIN32
+#include <sys/un.h>         // sockaddr_un
+#endif
 
 #ifndef WIN32
 

@@ -13,10 +13,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/sockethost.h"         // ByteString,
-                                        // OptionalHostname,
-                                        // SocketHost, addrinfo
+#include "network/sockethost.h"         // SocketHost
+#include "network/bytestring.h"         // ByteString
+#include "network/optionalhostname.h"   // OptionalHostname
 #include "network/to-bytestring-ai.h"   // to_bytestring()
+
+#ifdef WIN32
+#include <ws2tcpip.h>   // addrinfo
+#else
+#include <netdb.h>      // addrinfo
+#endif
 
 Network::SocketHost::SocketHost(const addrinfo& t_addrinfo) :
     m_addr(to_bytestring(t_addrinfo)),

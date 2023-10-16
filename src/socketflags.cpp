@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/socketflags.h"        // SocketFlags, operator<<(),
-                                        // std::ostream
+#include "network/socketflags.h"                // SocketFlags
+#include "network/socket-flags-type.h"          // socket_flags_type
 
 #ifdef WIN32
 #include <ws2tcpip.h>   // AI_ADDRCONFIG, AI_ALL, AI_CANONNAME,
@@ -26,6 +26,8 @@
                         // AI_V4MAPPED
 #endif
 
+#include <cstddef>      // std::size_t
+#include <ostream>      // operator<<(), std::ostream
 #include <sstream>      // std::ostringstream
 #include <utility>      // std::pair
 #include <vector>       // std::vector

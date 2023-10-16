@@ -13,9 +13,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/close.h"                      // close(),
-                                                // descriptor_type
+#include "network/close.h"                      // close()
 #include "network/descriptor-null.h"            // descriptor_null
+#include "network/descriptor-type.h"            // descriptor_type
 
 #ifdef WIN32
 #include <winsock2.h>   // ::closesocket()

@@ -13,18 +13,19 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/to-string-in-addr.h"          // in_addr,
-                                                // std::string(),
-                                                // to_string()
+#include "network/to-string-in-addr.h"          // to_string()
 #include "network/buffer.h"                     // Buffer
 
 #ifdef WIN32
-#include <winsock2.h>       // AF_INET
+#include <winsock2.h>       // AF_INET, in_addr
 #include <ws2tcpip.h>       // INET_ADDRSTRLEN, inet_ntop()
 #else
 #include <arpa/inet.h>      // inet_ntop()
+#include <netinet/in.h>     // in_addr
 #include <sys/socket.h>     // AF_INET, INET_ADDRSTRLEN
 #endif
+
+#include <string>       // std::string
 
 auto Network::to_string(const in_addr& addr) noexcept -> std::string
 {

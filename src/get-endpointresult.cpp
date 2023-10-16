@@ -13,18 +13,18 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-endpointresult.h"         // ByteString,
-                                                // Endpoint,
-                                                // EndpointResult,
-                                                // OsErrorResult,
-                                                // get_endpoint(),
-                                                // hostname_size_max,
-                                                // service_size_max
+#include "network/get-endpointresult.h"         // get_endpoint()
 #include "network/addressstring.h"              // AddressString
 #include "network/buffer.h"                     // Buffer
+#include "network/bytestring.h"                 // ByteString
+#include "network/endpoint.h"                   // Endpoint
+#include "network/endpointresult.h"             // EndpointResult
 #include "network/format-ai-error.h"            // format_ai_error()
 #include "network/get-length.h"                 // get_length()
 #include "network/get-sa-pointer.h"             // get_sa_pointer()
+#include "network/hostname.h"                   // hostname_size_max
+#include "network/oserrorresult.h"              // OsErrorResult
+#include "network/service.h"                    // service_size_max
 #include "network/to-os-error.h"                // to_os_error()
 
 #ifdef WIN32

@@ -13,7 +13,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/rangeerror.h"         // Error, RangeError
+#include "network/rangeerror.h"         // RangeError
+#include "network/logicerror.h"         // LogicError
+
+#include <string>       // std::string
 
 Network::RangeError::RangeError(const std::string& t_str) noexcept :
     LogicError(t_str)

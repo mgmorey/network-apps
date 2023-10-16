@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/set-last-context-error.h"    // context_error_type,
-                                               // set_last_context_error()
+#include "network/set-last-context-error.h"     // set_last_context_error()
+#include "network/context-error-type.h"         // context_error_type,
 
 #ifdef WIN32
 #include <winsock2.h>       // WSASetLastError()

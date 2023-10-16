@@ -15,6 +15,7 @@
 
 #include "network/get-sa-data.h"        // ByteString, get_sa_data()
 #include "network/assert.h"             // assert()
+#include "network/bytestring.h"         // ByteString
 #include "network/get-sa-family.h"      // get_sa_family()
 #include "network/sa-offsets.h"         // sa_data_offset
 

@@ -14,6 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/remove-socket.h"              // remove_socket()
+#include "network/descriptor-type.h"            // descriptor_type
 #include "network/to-path-descriptor.h"         // to_path()
 
 #include <filesystem>   // std::filesystem

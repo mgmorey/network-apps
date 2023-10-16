@@ -13,10 +13,12 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/salengtherror.h"      // RangeError, SaLengthError
+#include "network/salengtherror.h"      // SaLengthError
+#include "network/rangeerror.h"         // RangeError
 #include "network/sa-len-limits.h"      // sa_len_max, sa_len_min
 
 #include <sstream>      // std::ostringstream
+#include <string>       // std::string
 #include <version>
 
 #ifdef __cpp_lib_format

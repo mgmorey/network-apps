@@ -13,10 +13,13 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/write-string.h"       // Socket, descriptor_type,
-                                        // ssize_t, write_string()
-#include "network/to-integer.h"         // to_integer()
+#include "network/write-string.h"       // write_string()
+#include "network/socket.h"             // Socket
 #include "network/write.h"              // write()
+
+#include <sys/types.h>          // ssize_t
+
+#include <string>       // std::string
 
 auto Network::write(const std::string& str, const Socket& sock) -> ssize_t
 {

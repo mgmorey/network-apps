@@ -13,9 +13,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/address.h"                    // Address, std::string
+#include "network/address.h"                    // Address
 #include "network/string-null.h"                // string_null
 #include "network/to-path-bytestring.h"         // to_path()
+
+#include <string>       // std::string
 
 auto Network::Address::sun_text() const -> std::string
 {

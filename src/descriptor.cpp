@@ -13,10 +13,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/descriptor.h"                 // Descriptor,
-                                                // descriptor_null,
-                                                // descriptor_type
+#include "network/descriptor.h"                 // Descriptor
 #include "network/close.h"                      // close()
+#include "network/descriptor-null.h"            // descriptor_null
+#include "network/descriptor-type.h"            // descriptor_type
 #include "network/remove-socket.h"              // remove_socket()
 
 #include <exception>    // std::exception

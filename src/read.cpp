@@ -13,15 +13,20 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/read.h"               // Socket, descriptor_type,
-                                        // read(), ssize_t
+#include "network/read.h"               // read()
+#include "network/descriptor-type.h"    // descriptor_type
+#include "network/socket.h"             // Socket
 #include "network/to-integer.h"         // to_integer()
+
+#include <sys/types.h>          // ssize_t
 
 #ifdef WIN32
 #include <winsock2.h>       // ::recv()
 #else
 #include <unistd.h>         // ::read()
 #endif
+
+#include <cstddef>      // std::size_t
 
 auto Network::read(char* data, std::size_t size,
                    const Socket& sock) -> ssize_t

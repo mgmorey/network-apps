@@ -13,11 +13,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-hostname.h"               // Hostname,
-                                                // get_hostname()
+#include "network/get-hostname.h"               // get_hostname()
 #include "network/error.h"                      // Error
-#include "network/get-hostnameresult.h"         // OsErrorResult,
-                                                // get_hostname()
+#include "network/get-hostnameresult.h"         // get_hostname()
+#include "network/hostname.h"                   // Hostname
+#include "network/oserrorresult.h"              // OsErrorResult
 #include "network/overloaded.h"                 // Overloaded
 
 #include <variant>      // std::visit()

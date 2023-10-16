@@ -13,8 +13,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/socketprotocol.h"     // SocketProtocol, operator<<(),
-                                        // std::ostream
+#include "network/socketprotocol.h"             // SocketProtocol
+#include "network/socket-family-type.h"         // socket_family_type
+#include "network/socket-protocol-type.h"       // socket_protocol_type
 
 #ifdef WIN32
 #include <winsock2.h>   // AF_INET, AF_INET6, AF_UNIX, AF_UNSPEC,
@@ -25,6 +26,8 @@
                         // IPPROTO_RAW, IPPROTO_TCP, IPPROTO_UDP
 #include <sys/socket.h> // AF_INET, AF_INET6, AF_UNIX, AF_UNSPEC,
 #endif
+
+#include <ostream>      // operator<<(), std::ostream
 
 auto Network::operator<<(std::ostream& os,
                          const SocketProtocol& protocol ) noexcept ->

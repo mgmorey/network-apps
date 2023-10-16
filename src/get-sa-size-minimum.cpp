@@ -14,15 +14,19 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/get-sa-size-minimum.h"        // get_sa_size_minimum()
-#include "network/sizes.h"                      // sin_size,
-                                                // sin6_size, ss_size
-#include "network/sun-len-limits.h"             // sun_len_min
+#include "network/sin-sizes.h"                  // sin_size
+#include "network/sin6-sizes.h"                 // sin6_size
+#include "network/socket-family-type.h"         // socket_family_type
+#include "network/ss-sizes.h"                   // ss_size
+#include "network/sun-len-limits.h"             // sun_len_max
 
 #ifdef WIN32
 #include <winsock2.h>       // AF_INET, AF_INET6, AF_UNIX, AF_UNSPEC
 #else
 #include <sys/socket.h>     // AF_INET, AF_INET6, AF_UNIX, AF_UNSPEC
 #endif
+
+#include <cstddef>      // std::size_t
 
 auto Network::get_sa_size_minimum(socket_family_type family) noexcept ->
     std::size_t

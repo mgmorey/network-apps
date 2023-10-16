@@ -13,8 +13,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/socketpair.h"                 // Socket, SocketPair
+#include "network/socketpair.h"                 // SocketPair
 #include "network/create-socketpair.h"          // create_socketpair()
+#include "network/socket-family-type.h"         // socket_family_type
+#include "network/socket-flags-type.h"          // socket_flags_type
+#include "network/socket-protocol-type.h"       // socket_protocol_type
+#include "network/socket-type-type.h"           // socket_type_type
+#include "network/socket.h"                     // Socket
+#include "network/sockethints.h"                // SocketHints
 
 #include <cstddef>      // std::size_t
 
