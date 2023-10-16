@@ -13,10 +13,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/context.h"            // Context, operator<<(),
-                                        // std::endl, std::ostream
+#include "network/context.h"            // Context, operator<<()
 
-#include <ostream>      // operator<<(), std::ostream
+#include <ostream>      // operator<<(), std::endl, std::ostream
 
 auto Network::operator<<(std::ostream& os,
                          const Context& context) noexcept -> std::ostream&

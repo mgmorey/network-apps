@@ -14,8 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/create-socket.h"              // create_socket()
-#include "network/create-socketresult.h"        // SocketResult,
-                                                // create_socketresult()
+#include "network/create-socketresult.h"        // create_socketresult()
 #include "network/descriptor-null.h"            // descriptor_null
 #include "network/error.h"                      // Error
 #include "network/oserrorresult.h"              // OsErrorResult

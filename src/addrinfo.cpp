@@ -13,11 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/addrinfo.h"           // AddrInfo, OptionalHints,
-                                        // OptionalHostname,
-                                        // OptionalService,
-                                        // OsErrorResult, addrinfo,
-                                        // operator<<()
+#include "network/addrinfo.h"           // AddrInfo, operator<<()
 #include "network/format-ai-error.h"    // format_ai_error()
 #include "network/optionalhints.h"      // OptionalHints
 #include "network/optionalhostname.h"   // OptionalHostname
@@ -28,9 +24,9 @@
 #include "network/to-os-error.h"        // to_os_error()
 
 #ifdef WIN32
-#include <ws2tcpip.h>   // ::freeaddrinfo(), ::getaddrinfo()
+#include <ws2tcpip.h>   // addrinfo, ::freeaddrinfo(), ::getaddrinfo()
 #else
-#include <netdb.h>      // ::freeaddrinfo(), ::getaddrinfo()
+#include <netdb.h>      // addrinfo, ::freeaddrinfo(), ::getaddrinfo()
 #endif
 
 #include <iostream>     // std::cout, std::endl

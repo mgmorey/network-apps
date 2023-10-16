@@ -13,9 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/create-socketresult.h"        // SocketResult,
-                                                // create_socketresult(),
-                                                // operator<<()
+#include "network/create-socketresult.h"        // create_socketresult()
 #include "network/descriptor-null.h"            // descriptor_null
 #include "network/format-os-error.h"            // format_os_error()
 #include "network/format.h"                     // Format

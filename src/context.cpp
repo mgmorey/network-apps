@@ -14,8 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/context.h"            // Context,
-                                        // operator<<(), std::endl,
-                                        // std::string
+                                        // operator<<()
 #include "network/cleanup.h"            // cleanup()
 #include "network/error.h"              // Error
 #include "network/is-running.h"         // is_running()

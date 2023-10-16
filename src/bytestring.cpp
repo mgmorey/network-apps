@@ -13,8 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/bytestring.h"         // Byte, ByteString,
-                                        // operator<<(), std::ios
+#include "network/bytestring.h"         // ByteString, operator<<()
 
 #include <iomanip>      // std::setfill(), std::setw()
 #include <ios>          // std::hex, std::ios, std::uppercase

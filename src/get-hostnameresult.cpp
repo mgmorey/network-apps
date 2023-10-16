@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-hostnameresult.h"         // get_hostname(),
+#include "network/get-hostnameresult.h"         // get_hostname()
 #include "network/buffer.h"                     // Buffer
 #include "network/format-os-error.h"            // format_os_error()
 #include "network/get-last-context-error.h"     // get_last_context_error()

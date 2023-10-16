@@ -15,8 +15,7 @@
 
 #include "network/address.h"                    // Address,
                                                 // value_type
-#include "network/addresserror.h"               // AddressError,
-                                                // LogicError
+#include "network/addresserror.h"               // AddressError
 #include "network/is-valid.h"                   // is_valid()
 #include "network/length-type.h"                // length_type
 #include "network/port-type.h"                  // port_type

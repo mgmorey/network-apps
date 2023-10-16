@@ -14,8 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/create-socketpair.h"          // create_socketpair()
-#include "network/create-socketpairresult.h"    // SocketPairResult,
-                                                // create_socketpairresult()
+#include "network/create-socketpairresult.h"    // create_socketpairresult()
 #include "network/error.h"                      // Error
 #include "network/oserrorresult.h"              // OsErrorResult
 #include "network/overloaded.h"                 // Overloaded

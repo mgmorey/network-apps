@@ -13,10 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/address.h"                    // Address,
-                                                // length_type,
-                                                // socket_family_type,
-                                                // std::string
+#include "network/address.h"                    // Address
 #include "network/get-sa-data.h"                // get_sa_data()
 #include "network/get-sa-family.h"              // get_sa_family()
 #include "network/get-sa-length.h"              // get_sa_length()

@@ -13,11 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-peernameresult.h" // GetNameHandler,
-                                        // GetNameParams,
-                                        // PeerNameResult,
-                                        // descriptor_type,
-                                        // get_peernameresult()
+#include "network/get-peernameresult.h" // get_peernameresult()
 #include "network/descriptor-type.h"    // descriptor_type
 #include "network/get-nameresult.h"     // get_nameresult()
 #include "network/getnamehandler.h"     // GetNameHandler
