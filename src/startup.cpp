@@ -14,7 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/startup.h"            // startup()
-#include "network/context."             // Context
+#include "network/context.h"            // Context
 #include "network/error.h"              // Error
 #include "network/format-os-error.h"    // format_os_error()
 #include "network/logicerror.h"         // LogicError
