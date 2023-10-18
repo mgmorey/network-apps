@@ -27,11 +27,13 @@ auto Network::get_templates(const Endpoint& endpoint,
                             bool verbose) -> Network::TemplateVectorResult
 {
     TemplateVector templates;
-    const auto result {insert_addrinfo(endpoint.first,
-                                       endpoint.second,
-                                       hints,
-                                       std::back_inserter(templates),
-                                       verbose)};
+    auto result {
+        insert_addrinfo(endpoint.first,
+                        endpoint.second,
+                        hints,
+                        std::back_inserter(templates),
+                        verbose)
+    };
 
     if (result) {
         return result;

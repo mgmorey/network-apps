@@ -28,7 +28,7 @@ auto Network::get_hosts(const OptionalHostname& hostname,
                         bool verbose) -> Network::HostVectorResult
 {
     HostVector hosts;
-    const auto result {
+    auto result {
         insert_addrinfo(hostname,
                         std::nullopt,
                         hints,

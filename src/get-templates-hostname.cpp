@@ -29,7 +29,7 @@ auto Network::get_templates(const OptionalHostname& hostname,
                             bool verbose) -> Network::TemplateVectorResult
 {
     TemplateVector templates;
-    const auto result {
+    auto result {
         insert_addrinfo(hostname,
                         service,
                         hints,
