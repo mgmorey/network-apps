@@ -79,10 +79,10 @@ auto Network::is_valid(const ByteString& addr, bool verbose) noexcept -> bool
     if (verbose) {
         std::cout << std::setw(key_width) << "    Actual size: "
                   << std::right << std::setw(value_width) << addr_size
-                  << std::endl
+                  << '\n'
                   << std::setw(key_width) << "    Minimum size: "
                   << std::right << std::setw(value_width) << addr_size_min
-                  << std::endl
+                  << '\n'
                   << std::setw(key_width) << "    Maximum size: "
                   << std::right << std::setw(value_width) << addr_size_max
                   << std::endl;
