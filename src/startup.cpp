@@ -15,10 +15,12 @@
 
 #include "network/startup.h"            // startup()
 #include "network/context.h"            // Context
+#include "network/optionalversion.h"    // OptionalVersion
+
+#ifdef WIN32
 #include "network/error.h"              // Error
 #include "network/format-os-error.h"    // format_os_error()
 #include "network/logicerror.h"         // LogicError
-#include "network/optionalversion.h"    // OptionalVersion
 #include "network/runtimeerror.h"       // RuntimeError
 #include "network/to-os-error.h"        // to_os_error()
 #include "network/version-null.h"       // version_null
@@ -29,6 +31,7 @@
                                         // WSAVERNOTSUPPORTED,
                                         // ::WSAStartup(),
                                         // WindowsVersion
+#endif
 
 #ifdef WIN32
 static constexpr Network::Version version_default {2, 2};

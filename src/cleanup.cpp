@@ -16,6 +16,8 @@
 #include "network/cleanup.h"                    // cleanup()
 #include "network/context-error-type.h"         // context_error_type
 #include "network/context.h"                    // Context
+
+#ifdef WIN32
 #include "network/error.h"                      // Error
 #include "network/format-os-error.h"            // format_os_error()
 #include "network/get-last-context-error.h"     // get_last_context_error()
@@ -24,6 +26,7 @@
 #include "network/runtimeerror.h"               // RuntimeError
 #include "network/socket-error.h"               // socket_error
 #include "network/to-os-error.h"                // to_os_error()
+#endif
 
 #ifdef WIN32
 #include <winsock2.h>       // WSAEINPROGRESS, WSAENETDOWN, WSANOTINITIALISED,

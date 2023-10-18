@@ -15,8 +15,11 @@
 
 #include "network/format-ai-error.h"            // format_ai_error()
 #include "network/context-error-type.h"         // context_error_type
+
+#ifdef WIN32
 #include "network/format-os-error.h"            // format_os_error()
 #include "network/to-os-error.h"                // to_os_error()
+#endif
 
 #ifndef WIN32
 #include <netdb.h>          // ::gai_strerror()
