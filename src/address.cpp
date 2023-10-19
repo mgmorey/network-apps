@@ -32,7 +32,7 @@
 #include <string>       // std::string
 #include <utility>      // std::move()
 
-Network::Address::Address(const value_type& t_value) :  // NOLINT
+Network::Address::Address(const value_type& t_value) :
     m_value(t_value)
 {
     if (!is_valid(m_value)) {
