@@ -98,7 +98,11 @@ tags = TAGS
 
 # Define computed file list variables
 
-sources = $(libnetwork_sources) $(test_sources) $(unix_sources)
+sources = $(libnetwork_sources) $(test_sources)
+
+ifneq "$(os_type)" "ms-windows"
+	sources += $(unix_sources)
+endif
 
 objects = $(addprefix $(object_dir)/,$(addsuffix	\
 $(object_suffix),$(basename $(sources))))
