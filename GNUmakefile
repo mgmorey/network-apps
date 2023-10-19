@@ -119,7 +119,11 @@ libnetwork_static = $(library_dir)/libnetwork.a
 
 libraries = $(libnetwork) $(libnetwork_shared) $(libnetwork_static)
 
-program_sources = $(test_sources) $(unix_sources)
+program_sources = $(test_sources)
+
+ifneq "$(os_type)" "ms-windows"
+	program_sources += $(unix_sources)
+endif
 
 program_objects = $(addprefix $(object_dir)/,$(addsuffix	\
 $(object_suffix),$(basename $(program_sources))))
