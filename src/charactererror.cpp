@@ -17,12 +17,13 @@
 #include "network/rangeerror.h"         // RangeError
 
 #include <climits>      // CHAR_MAX, CHAR_MIN
-#include <sstream>      // std::ostringstream
 #include <utility>      // std::move()
 #include <version>
 
 #ifdef __cpp_lib_format
 #include <format>       // std::format()
+#else
+#include <sstream>      // std::ostringstream
 #endif
 
 #include <string>       // std::string

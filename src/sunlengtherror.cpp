@@ -17,13 +17,14 @@
 #include "network/rangeerror.h"         // RangeError
 #include "network/sun-len-limits.h"     // sun_len_max, sun_len_min
 
-#include <sstream>      // std::ostringstream
 #include <string>       // std::string
 #include <utility>      // std::move()
 #include <version>
 
 #ifdef __cpp_lib_format
 #include <format>       // std::format()
+#else
+#include <sstream>      // std::ostringstream
 #endif
 
 #ifndef WIN32

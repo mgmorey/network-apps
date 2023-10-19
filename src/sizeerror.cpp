@@ -17,13 +17,14 @@
 #include "network/rangeerror.h"         // RangeError
 
 #include <cstdint>      // SIZE_MAX
-#include <sstream>      // std::ostringstream
 #include <string>       // std::string
 #include <utility>      // std::move()
 #include <version>
 
 #ifdef __cpp_lib_format
 #include <format>       // std::format()
+#else
+#include <sstream>      // std::ostringstream
 #endif
 
 auto Network::SizeError::format(const std::string& t_str) -> std::string

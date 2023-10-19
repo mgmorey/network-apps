@@ -17,13 +17,14 @@
 #include "network/rangeerror.h"         // RangeError
 #include "network/sa-len-limits.h"      // sa_len_max, sa_len_min
 
-#include <sstream>      // std::ostringstream
 #include <string>       // std::string
 #include <utility>      // std::move()
 #include <version>
 
 #ifdef __cpp_lib_format
 #include <format>       // std::format()
+#else
+#include <sstream>      // std::ostringstream
 #endif
 
 auto Network::SaLengthError::format(const std::string& t_str) -> std::string

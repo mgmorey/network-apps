@@ -17,13 +17,14 @@
 #include "network/path-len-limits.h"    // path_len_max, path_len_min
 #include "network/rangeerror.h"         // RangeError
 
-#include <sstream>      // std::ostringstream
 #include <string>       // std::string
 #include <utility>      // std::move()
 #include <version>
 
 #ifdef __cpp_lib_format
 #include <format>       // std::format()
+#else
+#include <sstream>      // std::ostringstream
 #endif
 
 #ifndef WIN32
