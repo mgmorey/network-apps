@@ -17,7 +17,6 @@
 #define NETWORK_VERSION_H
 
 #include <ostream>     // std::ostream
-#include <string>      // std::string
 
 namespace Network
 {
