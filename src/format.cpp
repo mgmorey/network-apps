@@ -29,7 +29,7 @@ Network::Format::Format(const std::string& t_key) noexcept :
 Network::Format::Format(std::string&& t_key) noexcept :
     Format(m_delimiter_default,
            m_indent_default,
-           t_key)
+           std::move(t_key))
 {
 }
 
@@ -45,7 +45,7 @@ Network::Format::Format(std::string::size_type t_indent,
                         std::string&& t_key) noexcept :
     Format(m_delimiter_default,
            t_indent,
-           t_key)
+           std::move(t_key))
 {
 }
 
