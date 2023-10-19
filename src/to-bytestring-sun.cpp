@@ -25,6 +25,7 @@
 
 #ifndef WIN32
 #include <sys/socket.h>     // AF_UNIX
+#include <sys/un.h>         // sockaddr_un
 #endif
 
 #include <sstream>      // std::ostringstream
