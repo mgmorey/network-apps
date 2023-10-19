@@ -2,10 +2,15 @@
 
 run_test_program() (
     basename="$(basename "$filename" .exe)"
-    dirname="$(dirname "$filename")"
-    logname="$basename.log"
-    cd "$dirname"
-    ${valgrind:+$valgrind }"./$basename" >"$logname"
+
+    case "$basename" in
+	(test-*)
+	    cd "$(dirname "$filename")"
+	    ${valgrind:+$valgrind }"./$basename" >"$basename.log"
+	    ;;
+	(*)
+	    ;;
+    esac
 )
 
 export HOSTNAME=${HOSTNAME-$(hostname)}
