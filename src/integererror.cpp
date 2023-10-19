@@ -50,6 +50,7 @@ Network::IntegerError::IntegerError(const std::string& t_str) noexcept :
 }
 
 Network::IntegerError::IntegerError(std::string&& t_str) noexcept :
-    RangeError(format(std::move(t_str)))
+    RangeError(format(t_str))
 {
+    static_cast<void>(std::move(t_str));
 }

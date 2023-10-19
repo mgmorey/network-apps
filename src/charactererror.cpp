@@ -50,6 +50,7 @@ Network::CharacterError::CharacterError(const std::string& t_str) noexcept :
 }
 
 Network::CharacterError::CharacterError(std::string&& t_str) noexcept :
-    RangeError(format(std::move(t_str)))
+    RangeError(format(t_str))
 {
+    static_cast<void>(std::move(t_str));
 }

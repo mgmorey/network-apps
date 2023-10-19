@@ -50,6 +50,7 @@ Network::SocketLengthError::SocketLengthError(const std::string& t_str) noexcept
 }
 
 Network::SocketLengthError::SocketLengthError(std::string&& t_str) noexcept :
-    RangeError(format(std::move(t_str)))
+    RangeError(format(t_str))
 {
+    static_cast<void>(std::move(t_str));
 }
