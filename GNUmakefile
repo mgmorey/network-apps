@@ -125,8 +125,10 @@ libraries = $(libnetwork) $(libnetwork_shared) $(libnetwork_static)
 
 program_sources = $(test_sources)
 
+ifneq "$(os_name)" "Darwin"
 ifneq "$(os_name)" "MINGW64_NT"
 	program_sources += $(unix_sources)
+endif
 endif
 
 program_objects = $(addprefix $(object_dir)/,$(addsuffix	\
