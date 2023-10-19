@@ -100,7 +100,7 @@ tags = TAGS
 
 sources = $(libnetwork_sources) $(test_sources)
 
-ifneq "$(os_type)" "ms-windows"
+ifneq "$(os_name)" "MINGW64_NT"
 	sources += $(unix_sources)
 endif
 
@@ -125,7 +125,7 @@ libraries = $(libnetwork) $(libnetwork_shared) $(libnetwork_static)
 
 program_sources = $(test_sources)
 
-ifneq "$(os_type)" "ms-windows"
+ifneq "$(os_name)" "MINGW64_NT"
 	program_sources += $(unix_sources)
 endif
 
