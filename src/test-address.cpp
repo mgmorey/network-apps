@@ -14,11 +14,10 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/assert.h"             // assert()
-#include "network/network.h"            // Address, AddressError,
-                                        // Context, HostVector,
-                                        // Hostname, OsErrorResult,
-                                        // Overloaded, SocketFamily,
-                                        // get_hosts(),
+#include "network/network.h"            // Address, Context,
+                                        // HostVector, Hostname,
+                                        // OsErrorResult, Overloaded,
+                                        // SocketFamily, get_hosts(),
                                         // get_sa_family(),
                                         // get_sa_length(),
                                         // is_valid(), sin_size,
@@ -46,7 +45,6 @@
 namespace TestAddress
 {
     using Network::Address;
-    using Network::AddressError;
     using Network::Byte;
     using Network::ByteString;
     using Network::Context;
