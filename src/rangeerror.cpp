@@ -17,6 +17,7 @@
 #include "network/logicerror.h"         // LogicError
 
 #include <string>       // std::string
+#include <utility>      // std::move()
 
 Network::RangeError::RangeError(const std::string& t_str) noexcept :
     LogicError(t_str)

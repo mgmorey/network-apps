@@ -21,14 +21,13 @@
 #include "network/port-type.h"                  // port_type
 #include "network/socket-family-type.h"         // socket_family_type
 
-#include <cstddef>                              // std::size_t
-
 #ifdef WIN32
 #include <winsock2.h>       // AF_INET, AF_INET6
 #else
 #include <sys/socket.h>     // AF_INET, AF_INET6
 #endif
 
+#include <cstddef>      // std::size_t
 #include <string>       // std::string
 #include <utility>      // std::move()
 

@@ -18,6 +18,7 @@
 #include "network/sock-len-limits.h"    // sock_len_max, sock_len_min
 
 #include <sstream>      // std::ostringstream
+#include <utility>      // std::move()
 #include <version>
 
 #ifdef __cpp_lib_format

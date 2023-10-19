@@ -18,13 +18,13 @@
 
 #include <climits>      // INT_MAX, INT_MIN
 #include <sstream>      // std::ostringstream
+#include <string>       // std::string
+#include <utility>      // std::move()
 #include <version>
 
 #ifdef __cpp_lib_format
 #include <format>       // std::format()
 #endif
-
-#include <string>       // std::string
 
 auto Network::IntegerError::format(const std::string& t_str) -> std::string
 {

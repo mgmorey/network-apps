@@ -17,6 +17,7 @@
 #include "network/error.h"              // Error
 
 #include <string>       // std::string
+#include <utility>      // std::move()
 
 Network::LogicError::LogicError(const std::string& t_str) noexcept :
     Error(t_str)

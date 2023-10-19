@@ -18,6 +18,7 @@
 
 #include <climits>      // CHAR_MAX, CHAR_MIN
 #include <sstream>      // std::ostringstream
+#include <utility>      // std::move()
 #include <version>
 
 #ifdef __cpp_lib_format

@@ -19,6 +19,7 @@
 
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
+#include <utility>      // std::move()
 #include <version>
 
 #ifdef __cpp_lib_format
