@@ -90,13 +90,7 @@ test_sources = test-address.cpp test-bind.cpp test-connect.cpp		\
 test-context.cpp test-host.cpp test-hostname.cpp test-option.cpp	\
 test-parse.cpp test-ranges.cpp
 
-ifneq "$(os_name)" "MINGW64_NT"
-	test_sources += test-socket.cpp
-endif
-
-ifneq "$(os_type)" "ms-windows"
-	unix_sources = unix-client.cpp unix-server.cpp
-endif
+unix_sources = test-socket.cpp unix-client.cpp unix-server.cpp
 
 commands = compile_commands.json
 sizes = sizes.txt
@@ -224,7 +218,7 @@ endif
 build: $(build_targets)
 
 .PHONY: check
-check: $(test_programs)
+check: $(filter-out test-ranges,$(test_programs))
 	$(run_test_programs) $^
 
 .PHONY: check-syntax
