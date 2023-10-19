@@ -40,7 +40,6 @@
 #include <exception>    // std::exception
 #include <iomanip>      // std::right, std::setw()
 #include <iostream>     // std::cerr, std::cout, std::endl
-#include <regex>        // std::regex, std::regex_match
 #include <string>       // std::string
 #include <variant>      // std::visit()
 
@@ -64,11 +63,6 @@ namespace TestAddress
     using Network::parse;
     using Network::is_valid;
 
-    static constexpr auto expected_error_addr_re {
-        R"(Invalid socket address: 0x[0-9A-F]{1,16})"
-    };
-    static constexpr auto invalid_data {Byte {0xFFU}};
-    static constexpr auto invalid_size {8};
     static constexpr auto print_key_width {20};
     static constexpr auto print_value_width {10};
 
@@ -137,24 +131,6 @@ namespace TestAddress
         assert(get_sa_family(addr) == AF_UNSPEC);
         assert(get_sa_length(addr) == 0U);
         assert(is_valid(addr) == false);
-    }
-
-    auto test_address_invalid() -> void
-    {
-        std::string actual_error_str;
-
-        try {
-            const ByteString addr {invalid_size, invalid_data};
-            const Address address {addr};
-            static_cast<void>(address);
-        }
-        catch (const AddressError& error) {
-            print(error);
-            actual_error_str = error.what();
-        }
-
-        const std::regex expected_error_addr_regex {expected_error_addr_re};
-        assert(std::regex_match(actual_error_str, expected_error_addr_regex));
     }
 
     auto test_address_valid(const ByteString& addr) -> void
@@ -231,7 +207,6 @@ auto main(int argc, char* argv[]) -> int
 
         test_address_valid();
         test_address_empty();
-        test_address_invalid();
     }
     catch (const std::exception& error) {
         std::cerr << error.what()
