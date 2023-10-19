@@ -24,6 +24,6 @@ Network::LogicError::LogicError(const std::string& t_str) noexcept :
 }
 
 Network::LogicError::LogicError(std::string&& t_str) noexcept :
-    Error(t_str)
+    Error(std::move(t_str))
 {
 }

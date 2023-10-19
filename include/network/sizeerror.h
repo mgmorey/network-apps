@@ -24,9 +24,9 @@ namespace Network
         public RangeError
     {
     public:
-        static auto format(const std::string& t_value) -> std::string;
-        explicit SizeError(const std::string& t_value) noexcept;
-        explicit SizeError(std::string&& t_value) noexcept;
+        static auto format(const std::string& t_str) -> std::string;
+        explicit SizeError(const std::string& t_str) noexcept;
+        explicit SizeError(std::string&& t_str) noexcept;
         SizeError(const SizeError&) noexcept = default;
         SizeError(SizeError&&) noexcept = default;
         ~SizeError() noexcept override = default;

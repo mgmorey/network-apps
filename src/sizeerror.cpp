@@ -44,12 +44,12 @@ auto Network::SizeError::format(const std::string& t_value) -> std::string
 #endif
 }
 
-Network::SizeError::SizeError(const std::string& t_value) noexcept :
-    RangeError(format(t_value))
+Network::SizeError::SizeError(const std::string& t_str) noexcept :
+    RangeError(format(t_str))
 {
 }
 
-Network::SizeError::SizeError(std::string&& t_value) noexcept :
-    RangeError(format(t_value))
+Network::SizeError::SizeError(std::string&& t_str) noexcept :
+    RangeError(format(std::move(t_str)))
 {
 }

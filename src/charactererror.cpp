@@ -44,12 +44,12 @@ auto Network::CharacterError::format(const std::string& t_value) -> std::string
 #endif
 }
 
-Network::CharacterError::CharacterError(const std::string& t_value) noexcept :
-    RangeError(format(t_value))
+Network::CharacterError::CharacterError(const std::string& t_str) noexcept :
+    RangeError(format(t_str))
 {
 }
 
-Network::CharacterError::CharacterError(std::string&& t_value) noexcept :
-    RangeError(format(t_value))
+Network::CharacterError::CharacterError(std::string&& t_str) noexcept :
+    RangeError(format(std::move(t_str)))
 {
 }

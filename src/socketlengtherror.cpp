@@ -44,12 +44,12 @@ auto Network::SocketLengthError::format(const std::string& t_value) -> std::stri
 #endif
 }
 
-Network::SocketLengthError::SocketLengthError(const std::string& t_value) noexcept :
-    RangeError(format(t_value))
+Network::SocketLengthError::SocketLengthError(const std::string& t_str) noexcept :
+    RangeError(format(t_str))
 {
 }
 
-Network::SocketLengthError::SocketLengthError(std::string&& t_value) noexcept :
-    RangeError(format(t_value))
+Network::SocketLengthError::SocketLengthError(std::string&& t_str) noexcept :
+    RangeError(format(std::move(t_str)))
 {
 }

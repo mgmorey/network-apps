@@ -45,13 +45,13 @@ auto Network::PathLengthError::format(const std::string& t_value) -> std::string
 #endif
 }
 
-Network::PathLengthError::PathLengthError(const std::string& t_value) noexcept :
-    RangeError(format(t_value))
+Network::PathLengthError::PathLengthError(const std::string& t_str) noexcept :
+    RangeError(format(t_str))
 {
 }
 
-Network::PathLengthError::PathLengthError(std::string&& t_value) noexcept :
-    RangeError(format(t_value))
+Network::PathLengthError::PathLengthError(std::string&& t_str) noexcept :
+    RangeError(format(std::move(t_str)))
 {
 }
 

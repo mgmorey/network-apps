@@ -24,6 +24,6 @@ Network::RangeError::RangeError(const std::string& t_str) noexcept :
 }
 
 Network::RangeError::RangeError(std::string&& t_str) noexcept :
-    LogicError(t_str)
+    LogicError(std::move(t_str))
 {
 }

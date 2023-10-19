@@ -24,6 +24,6 @@ Network::RuntimeError::RuntimeError(const std::string& t_str) noexcept :
 }
 
 Network::RuntimeError::RuntimeError(std::string&& t_str) noexcept :
-    Error(t_str)
+    Error(std::move(t_str))
 {
 }
