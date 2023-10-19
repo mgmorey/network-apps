@@ -26,15 +26,15 @@
 #include <format>       // std::format()
 #endif
 
-auto Network::SizeError::format(const std::string& t_value) -> std::string
+auto Network::SizeError::format(const std::string& t_str) -> std::string
 {
 #ifdef __cpp_lib_format
     return std::format("Value {} is out of range [{}, {}] of std::size_t",
-                       t_value, 0, SIZE_MAX);
+                       t_str, 0, SIZE_MAX);
 #else
     std::ostringstream oss;
     oss << "Value "
-        << t_value
+        << t_str
         << " is out of range ["
         << 0
         << ", "

@@ -25,15 +25,15 @@
 #include <format>       // std::format()
 #endif
 
-auto Network::NameLengthError::format(const std::string& t_value) -> std::string
+auto Network::NameLengthError::format(const std::string& t_str) -> std::string
 {
 #ifdef __cpp_lib_format
     return std::format("Value {} is out of range [{}, {}] of name_len_type",
-                       t_value, name_len_min, name_len_max);
+                       t_str, name_len_min, name_len_max);
 #else
     std::ostringstream oss;
     oss << "Value "
-        << t_value
+        << t_str
         << " is out of range ["
         << name_len_min
         << ", "
