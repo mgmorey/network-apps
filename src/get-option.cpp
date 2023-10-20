@@ -24,23 +24,23 @@
 #include <getopt.h>         // getopt(), optarg, opterr, optind,
                             // optopt
 #else
-#include <unistd.h>         // getopt(), optarg, opterr, optind,
-                            // optopt
+#include <unistd.h>         // NOLINT getopt(), optarg, opterr,
+                            // optind, optopt
 #endif
 
 auto Network::get_optarg() noexcept -> char*
 {
-    return ::optarg;
+    return ::optarg;  // NOLINT
 }
 
 auto Network::get_opterr() noexcept -> int
 {
-    return ::opterr;
+    return ::opterr;  // NOLINT
 }
 
 auto Network::get_optind() noexcept -> int
 {
-    return ::optind;
+    return ::optind;  // NOLINT
 }
 
 auto Network::get_option(const ArgumentSpan& args,
@@ -50,10 +50,11 @@ auto Network::get_option(const ArgumentSpan& args,
         throw LogicError("No command-line options to parse");
     }
 
+    // NOLINTNEXTLINE
     return ::getopt(to_integer(args.size()), args.data(), optstring);
 }
 
 auto Network::get_optopt() noexcept -> int
 {
-    return ::optopt;
+    return ::optopt;  // NOLINT
 }

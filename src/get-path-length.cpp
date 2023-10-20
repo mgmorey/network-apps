@@ -38,7 +38,7 @@ auto Network::get_path_length(const sockaddr_un* sun,
 #endif
     const auto* const path {get_path_pointer(sun)};
     const auto path_len {sun_len - sun_len_min};
-    return ::strnlen(path, path_len);
+    return ::strnlen(path, path_len);  // NOLINT
 }
 
 #endif
