@@ -16,10 +16,10 @@
 #ifndef NETWORK_CONTEXT_H
 #define NETWORK_CONTEXT_H
 
-#include "network/optionalversion.h"    // OptionalVersion, Version,
-                                        // std::string
+#include "network/optionalversion.h"    // OptionalVersion
 
 #include <ostream>      // std::ostream
+#include <string>       // std::string
 
 namespace Network
 {
