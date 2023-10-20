@@ -24,6 +24,8 @@
 #include <windows.h>        // WORD
 #endif
 
+#include <utility>      // std::move()
+
 namespace Network
 {
     struct WindowsVersion :
@@ -41,7 +43,7 @@ namespace Network
         }
 
         explicit constexpr WindowsVersion(Version&& t_version) noexcept :
-            Version(t_version)
+            Version(std::move(t_version))  // NOLINT
         {
         }
 
