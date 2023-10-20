@@ -16,7 +16,10 @@
 #include "network/write.h"              // write()
 #include "network/descriptor-type.h"    // descriptor_type
 #include "network/socket.h"             // Socket
+
+#ifdef WIN32
 #include "network/to-integer.h"         // to_integer()
+#endif
 
 #include <sys/types.h>          // ssize_t
 
