@@ -102,7 +102,7 @@ namespace TestContext
         public Context
     {
     public:
-        static auto instance() -> TestContext&
+        static auto test_instance() -> TestContext&
         {
             static TestContext context;
             return context;
@@ -195,8 +195,8 @@ namespace TestContext
         std::string actual_error_str;
 
         try {
-            TestContext& context1 {TestContext::instance()};
-            TestContext& context2 {TestContext::instance()};
+            TestContext& context1 {TestContext::test_instance()};
+            TestContext& context2 {TestContext::test_instance()};
             test_context(context1, "global");
             test_context(context2, "global");
             assert(&context1 == &context2);
