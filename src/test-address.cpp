@@ -39,7 +39,6 @@
 #include <exception>    // std::exception
 #include <iomanip>      // std::right, std::setw()
 #include <iostream>     // std::cerr, std::cout, std::endl
-#include <string>       // std::string
 #include <variant>      // std::visit()
 
 namespace TestAddress
