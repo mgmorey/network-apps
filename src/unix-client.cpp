@@ -23,7 +23,6 @@
 #include <sys/socket.h>         // SOCK_SEQPACKET
 #include <sys/un.h>             // AF_UNIX
 
-#include <cerrno>       // EINVAL, EPROTONOSUPPORT
 #include <cstdio>       // std::perror()
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
 #include <exception>    // std::exception
@@ -32,7 +31,6 @@
 
 using Network::ArgumentSpan;
 using Network::Socket;
-using Network::write;
 
 static bool verbose {false};  // NOLINT
 
@@ -80,6 +78,14 @@ namespace Client {
 
         return read_str;
     }
+
+    auto write(const std::string& str, const Socket& sock) -> void
+    {
+        if (Network::write(str, sock) == -1) {
+            std::perror("write");
+            std::exit(EXIT_FAILURE);
+        }
+    }
 }
 
 auto main(int argc, char* argv[]) -> int
@@ -89,17 +95,13 @@ auto main(int argc, char* argv[]) -> int
 
     try {
         // Connect Unix domain socket to pathname.
-        const auto connect_sock {Client::connect()};
+        const auto sock {Client::connect()};
         bool shutdown_pending {false};
 
         // Send arguments to server.
         for (const auto& arg : args) {
             const std::string write_str {arg};
-
-            if (write(write_str, connect_sock) == -1) {
-                std::perror("write");
-                break;
-            }
+            Client::write(write_str, sock);
 
             if (write_str == "DOWN") {
                 shutdown_pending = true;
@@ -109,13 +111,10 @@ auto main(int argc, char* argv[]) -> int
 
         if (!shutdown_pending) {
             // Request result.
-            if (write("END", connect_sock) == -1) {
-                std::perror("write");
-                std::exit(EXIT_FAILURE);
-            }
+            Client::write("END", sock);
 
             // Receive result.
-            const auto read_str {Client::read(connect_sock)};
+            const auto read_str {Client::read(sock)};
             std::cerr << "Result: " << read_str << std::endl;
         }
     }
