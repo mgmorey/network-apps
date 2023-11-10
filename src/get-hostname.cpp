@@ -25,7 +25,7 @@
 auto Network::get_hostname(bool verbose) -> Network::Hostname
 {
     Hostname result;
-    const auto hostname_result {get_hostnameresult(verbose)};
+    auto hostname_result {get_hostnameresult(verbose)};
     std::visit(Overloaded {
             [&](const Hostname& hostname) {
                 result = hostname;

@@ -27,7 +27,7 @@ auto Network::get_endpoint(const ByteString& addr, int flags, bool verbose) ->
     Network::Endpoint
 {
     Endpoint result;
-    const auto endpoint_result {get_endpointresult(addr, flags, verbose)};
+    auto endpoint_result {get_endpointresult(addr, flags, verbose)};
     std::visit(Overloaded {
             [&](const Endpoint& endpoint) {
                 result = endpoint;
