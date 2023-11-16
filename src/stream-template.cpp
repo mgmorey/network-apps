@@ -13,8 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/template.h"           // Template, operator<<(),
-                                        // std::ostream
+#include "network/template.h"           // Template, operator<<()
 #include "network/format.h"             // Format, operator<<()
 #include "network/string-null.h"        // string_null
 
