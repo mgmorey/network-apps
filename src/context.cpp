@@ -13,16 +13,13 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/context.h"            // Context,
-                                        // operator<<()
+#include "network/context.h"            // Context
 #include "network/cleanup.h"            // cleanup()
 #include "network/error.h"              // Error
 #include "network/is-running.h"         // is_running()
 #include "network/optionalversion.h"    // OptionalVersion
 #include "network/runtimeerror.h"       // RuntimeError
 #include "network/startup.h"            // startup()
-
-#include <string>       // std::string
 
 auto Network::Context::instance() -> const Context&
 {
