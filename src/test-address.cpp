@@ -131,13 +131,10 @@ namespace TestAddress
         test_address_empty({});
     }
 
-    auto test_address_valid(const ByteString& addr) -> void
+    auto test_address_valid(const Address& address) -> void
     {
-        const Address address {addr};
         const auto family {address.family()};
         const auto size {address.size()};
-        const auto text {address.text()};
-        print(address);
 
         switch (family) {
         case AF_INET:
@@ -149,6 +146,8 @@ namespace TestAddress
         default:
             assert(false);
         }
+
+        const auto text {address.text()};
 
         switch (family) {
         case AF_INET:
@@ -175,7 +174,9 @@ namespace TestAddress
                               << std::endl;
 
                     for (const auto& host : hosts) {
-                        test_address_valid(host.address());
+                        const Address address {host.address()};
+                        print(address);
+                        test_address_valid(address);
                     }
                 },
                     [&](const OsErrorResult& result) {
