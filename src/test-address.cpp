@@ -137,6 +137,7 @@ namespace TestAddress
         const auto family {address.family()};
         const auto size {address.size()};
         const auto text {address.text()};
+        print(address);
 
         switch (family) {
         case AF_INET:
