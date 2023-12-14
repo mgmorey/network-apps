@@ -19,8 +19,7 @@
                                         // OsErrorResult, Overloaded,
                                         // SocketFamily, get_hosts(),
                                         // get_sa_family(),
-                                        // get_sa_length(),
-                                        // is_valid(), sin_size,
+                                        // get_sa_length(), sin_size,
                                         // sin6_size
 #include "network/parse.h"              // parse()
 
@@ -58,7 +57,6 @@ namespace TestAddress
     using Network::get_sa_family;
     using Network::get_sa_length;
     using Network::parse;
-    using Network::is_valid;
 
     static constexpr auto print_key_width {20};
     static constexpr auto print_value_width {10};
@@ -127,7 +125,6 @@ namespace TestAddress
         assert(addr.empty());
         assert(get_sa_family(addr) == AF_UNSPEC);
         assert(get_sa_length(addr) == 0U);
-        assert(is_valid(addr) == false);
     }
 
     auto test_address_valid(const ByteString& addr) -> void
@@ -147,9 +144,6 @@ namespace TestAddress
         default:
             assert(false);
         }
-
-        assert(is_valid(addr, verbose));
-        print(address);
 
         switch (family) {
         case AF_INET:
