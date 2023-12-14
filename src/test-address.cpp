@@ -119,12 +119,16 @@ namespace TestAddress
         }
     }
 
-    auto test_address_empty() -> void
+    auto test_address_empty(const ByteString& addr) -> void
     {
-        const ByteString addr;
         assert(addr.empty());
         assert(get_sa_family(addr) == AF_UNSPEC);
         assert(get_sa_length(addr) == 0U);
+    }
+
+    auto test_address_empty() -> void
+    {
+        test_address_empty({});
     }
 
     auto test_address_valid(const ByteString& addr) -> void
