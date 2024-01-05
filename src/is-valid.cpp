@@ -72,23 +72,23 @@ auto Network::is_valid(const ByteString& addr, bool verbose) noexcept -> bool
         return false;
     }
 
-    const auto addr_size {addr.size()};
-    const auto addr_size_max {get_sa_size_maximum(family)};
-    const auto addr_size_min {get_sa_size_minimum(family)};
+    const auto size {addr.size()};
+    const auto size_max {get_sa_size_maximum(family)};
+    const auto size_min {get_sa_size_minimum(family)};
 
     if (verbose) {
         std::cout << std::setw(key_width) << "    Actual size: "
-                  << std::right << std::setw(value_width) << addr_size
+                  << std::right << std::setw(value_width) << size
                   << '\n'
                   << std::setw(key_width) << "    Minimum size: "
-                  << std::right << std::setw(value_width) << addr_size_min
+                  << std::right << std::setw(value_width) << size_min
                   << '\n'
                   << std::setw(key_width) << "    Maximum size: "
-                  << std::right << std::setw(value_width) << addr_size_max
+                  << std::right << std::setw(value_width) << size_max
                   << std::endl;
     }
 
-    if (!(addr_size_min <= addr_size && addr_size <= addr_size_max)) {
+    if (!(size_min <= size && size <= size_max)) {
         return false;
     }
 
@@ -103,13 +103,13 @@ auto Network::is_valid(const ByteString& addr, bool verbose) noexcept -> bool
     }
 
     if (family == AF_UNIX) {
-        if (!(addr_size_min <= sa_len && sa_len <= addr_size)) {
+        if (!(size_min <= sa_len && sa_len <= size)) {
             return false;
         }
 
 #ifndef WIN32
         const auto* const sun {get_sun_pointer(addr)};
-        const auto sun_len {get_sun_length(sun, addr_size)};
+        const auto sun_len {get_sun_length(sun, size)};
 
         if (verbose) {
             std::cout << std::setw(key_width) << "    Computed length: "
@@ -120,7 +120,7 @@ auto Network::is_valid(const ByteString& addr, bool verbose) noexcept -> bool
 
     }
     else if (family == AF_INET || family == AF_INET6) {
-        if (!(sa_len == addr_size)) {
+        if (!(sa_len == size)) {
             return false;
         }
     }
