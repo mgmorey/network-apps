@@ -20,8 +20,9 @@
                                         // Overloaded, SocketFamily,
                                         // SocketHints, get_hosts(),
                                         // get_sa_family(),
-                                        // get_sa_length(), sin_size,
-                                        // sin6_size
+                                        // get_sa_length(),
+                                        // get_sa_size_maximum(),
+                                        // get_sa_size_minimum()
 #include "network/parse.h"              // parse()
 
 #ifdef WIN32
@@ -56,6 +57,8 @@ namespace TestAddress
     using Network::get_hosts;
     using Network::get_sa_family;
     using Network::get_sa_length;
+    using Network::get_sa_size_maximum;
+    using Network::get_sa_size_minimum;
     using Network::parse;
 
     static constexpr auto print_key_width {20};
@@ -134,16 +137,24 @@ namespace TestAddress
     auto test_address_valid(const Address& address) -> void
     {
         const auto family {address.family()};
-        const auto size {address.size()};
 
         switch (family) {
+        case AF_UNSPEC:
+#ifndef WIN32
+        case AF_UNIX:
+#endif
         case AF_INET:
-            assert(size == Network::sin_size);
-            break;
         case AF_INET6:
-            assert(size == Network::sin6_size);
             break;
         default:
+            assert(false);
+        }
+
+        const auto size {address.size()};
+        const auto size_max {get_sa_size_maximum(family)};
+        const auto size_min {get_sa_size_minimum(family)};
+
+        if (!(size_min <= size && size <= size_max)) {
             assert(false);
         }
 
