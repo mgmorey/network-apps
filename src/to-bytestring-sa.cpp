@@ -15,8 +15,6 @@
 
 #include "network/to-bytestring-sa.h"           // to_bytestring()
 #include "network/bytestring.h"                 // ByteString
-#include "network/get-sa-size-maximum.h"        // get_sa_size_maximum()
-#include "network/get-sa-size-minimum.h"        // get_sa_size_minimum()
 #include "network/logicerror.h"                 // LogicError
 #include "network/os-features.h"                // HAVE_SOCKADDR_SA_LEN
 #include "network/sa-len-type.h"                // sa_len_type
