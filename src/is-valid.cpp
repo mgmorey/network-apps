@@ -16,8 +16,8 @@
 #include "network/is-valid.h"                   // is_valid()
 #include "network/bytestring.h"                 // ByteString
 #include "network/get-sa-family.h"              // get_sa_family()
-#include "network/get-sa-size-maximum.h"        // get_sa_size_maximum(),
-#include "network/get-sa-size-minimum.h"        // get_sa_size_maximum(),
+#include "network/get-sa-size-maximum.h"        // get_sa_size_maximum()
+#include "network/get-sa-size-minimum.h"        // get_sa_size_minimum()
 #include "network/os-features.h"                // HAVE_SOCKADDR_SA_LEN
 
 #ifdef HAVE_SOCKADDR_SA_LEN
