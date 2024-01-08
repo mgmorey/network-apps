@@ -14,6 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/get-sa-size-minimum.h"        // get_sa_size_minimum()
+#include "network/sa-len-limits.h"              // sa_len_min
 #include "network/sin-sizes.h"                  // sin_size
 #include "network/sin6-sizes.h"                 // sin6_size
 #include "network/socket-family-type.h"         // socket_family_type
@@ -43,6 +44,6 @@ auto Network::get_sa_size_minimum(socket_family_type family) noexcept ->
     case AF_INET6:
         return sin6_size;
     default:
-        return 0;
+        return sa_len_min;
     }
 }
