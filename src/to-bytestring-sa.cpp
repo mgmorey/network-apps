@@ -35,43 +35,18 @@
 auto Network::to_bytestring(const sockaddr* sa,
                             sa_len_type size) -> Network::ByteString
 {
-    static_cast<void>(to_sa_len(size));
-
-    switch (sa->sa_family) {
-    case AF_INET:
-    case AF_INET6:
-    {
-        const auto sa_size_max {get_sa_size_maximum(sa->sa_family)};
-        const auto sa_size_min {get_sa_size_minimum(sa->sa_family)};
-
-        if (size < sa_size_min || size > sa_size_max) {
-            std::ostringstream oss;
-            oss << "IP domain socket length "
-                << size
-                << " is out of range ["
-                << sa_size_min
-                << ", "
-                << sa_size_max
-                << "]";
-            throw LogicError(oss.str());
-        }
-
-        break;
-    }
-    default:
-        throw LogicError("Invalid IP domain socket address");
-    }
+    const auto len {to_sa_len(size, sa->sa_family)};
 
 #ifdef HAVE_SOCKADDR_SA_LEN
-    if (sa->sa_len != size) {
+    if (sa->sa_len != len) {
         std::ostringstream oss;
         oss << "Stored IP domain socket length "
             << static_cast<unsigned>(sa->sa_len)
             << " differs from actual length "
-            << size;
+            << len;
         throw LogicError(oss.str());
     }
 #endif
 
-    return to_bytestring(to_bytespan(sa, size));
+    return to_bytestring(to_bytespan(sa, len));
 }
