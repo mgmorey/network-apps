@@ -122,19 +122,19 @@ namespace TestAddress
         }
     }
 
-    auto test_address_empty(const ByteString& addr) -> void
+    auto test_empty(const ByteString& addr) -> void
     {
         assert(addr.empty());
         assert(get_sa_family(addr) == AF_UNSPEC);
         assert(get_sa_length(addr) == 0U);
     }
 
-    auto test_address_empty() -> void
+    auto test_empty() -> void
     {
-        test_address_empty({});
+        test_empty({});
     }
 
-    auto test_address_valid(const Address& address) -> void
+    auto test_valid(const Address& address) -> void
     {
         const auto family {address.family()};
 
@@ -172,7 +172,7 @@ namespace TestAddress
         }
     }
 
-    auto test_address_valid() -> void
+    auto test_valid() -> void
     {
         static const Hostname localhost {"localhost"};
 
@@ -187,7 +187,7 @@ namespace TestAddress
                     for (const auto& host : hosts) {
                         const Address address {host.address()};
                         print(address);
-                        test_address_valid(address);
+                        test_valid(address);
                     }
                 },
                     [&](const OsErrorResult& result) {
@@ -213,8 +213,8 @@ auto main(int argc, char* argv[]) -> int
             std::cout << context << std::endl;
         }
 
-        test_address_valid();
-        test_address_empty();
+        test_valid();
+        test_empty();
     }
     catch (const std::exception& error) {
         std::cerr << error.what()
