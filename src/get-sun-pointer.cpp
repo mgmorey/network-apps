@@ -29,6 +29,7 @@ auto Network::get_sun_pointer(const ByteString& addr) noexcept ->
     return static_cast<const sockaddr_un*>(pointer);
 }
 
+// cppcheck-suppress constParameterReference
 auto Network::get_sun_pointer(ByteString& addr) noexcept -> sockaddr_un*
 {
     void* pointer = addr.data();

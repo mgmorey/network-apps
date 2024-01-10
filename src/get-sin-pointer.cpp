@@ -29,6 +29,7 @@ auto Network::get_sin_pointer(const ByteString& addr) noexcept ->
     return static_cast<const sockaddr_in*>(pointer);
 }
 
+// cppcheck-suppress constParameterReference
 auto Network::get_sin_pointer(ByteString& addr) noexcept -> sockaddr_in*
 {
     void* pointer = addr.data();
