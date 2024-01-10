@@ -58,7 +58,7 @@ namespace TestParse
     {
         auto index {0};
 
-        for (const auto& arg : args) {
+        for (const auto* arg : args) {
             std::cout << (scope.empty() ? "Argument" : scope)
                       << ' '
                       << ++index
