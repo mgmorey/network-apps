@@ -26,7 +26,7 @@ namespace Network
 {
 #ifndef WIN32
     extern auto get_sun_length(const sockaddr_un* sun,
-                               sun_len_type size) noexcept -> sun_len_type;
+                               sun_len_type size) -> sun_len_type;
 #endif
 }
 
