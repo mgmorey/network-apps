@@ -28,6 +28,6 @@
 auto Network::to_bytespan(const sockaddr* sa,
                           std::size_t size) noexcept -> Network::ByteSpan
 {
-    const void* pointer = sa;
+    const void* pointer {sa};
     return to_bytespan(pointer, size);
 }
