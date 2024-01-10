@@ -17,7 +17,7 @@
 #define NETWORK_TO_BYTESTRING_SA_H
 
 #include "network/bytestring.h"         // ByteString
-#include "network/sa-len-type.h"        // sa_len_max
+#include "network/sa-len-type.h"        // sa_len_type
 
 #ifdef WIN32
 #include <winsock2.h>       // sockaddr
