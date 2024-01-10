@@ -29,15 +29,11 @@ auto Network::get_sa_family(const ByteString& addr,
                             socket_family_type family) noexcept ->
     Network::socket_family_type
 {
-    if (addr.empty()) {
+    if (addr.size() < sa_data_offset) {
         return family;
     }
 
     const auto* const sa {get_sa_pointer(addr)};
-
-    if (addr.size() < sa_family_offset + sizeof sa->sa_family) {
-        return family;
-    }
 
     if (sa->sa_family == 0) {
         return family;
