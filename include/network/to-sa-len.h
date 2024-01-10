@@ -22,6 +22,12 @@
 #include "network/salengtherror.h"              // SaLengthError
 #include "network/socket-family-type.h"         // socket_family_type
 
+#ifdef WIN32
+#include <winsock2.h>       // sockaddr
+#else
+#include <sys/socket.h>     // sockaddr
+#endif
+
 #include <string>       // std::to_string()
 #include <utility>      // cmp_greater(), cmp_less()
 
@@ -38,6 +44,11 @@ namespace Network
         }
 
         return static_cast<sa_len_type>(value);
+    }
+
+    auto to_sa_len(const sockaddr *sa, auto value) -> sa_len_type
+    {
+        return to_sa_len(value, sa->sa_family);
     }
 }
 
