@@ -39,9 +39,9 @@ auto Network::to_bytestring(const sockaddr* sa,
     if (sa->sa_len != sa_len) {
         std::ostringstream oss;
         oss << "Stored IP domain socket length "
-            << static_cast<unsigned>(sa->sa_len)
+            << static_cast<size_t>(sa->sa_len)
             << " differs from actual length "
-            << sa_len;
+            << static_cast<size_t>(sa_len);
         throw LogicError(oss.str());
     }
 #endif
