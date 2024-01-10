@@ -24,13 +24,13 @@
 
 auto Network::get_sa_pointer(const ByteString& addr) noexcept -> const sockaddr*
 {
-    const void* pointer = addr.data();
+    const void* pointer {addr.data()};
     return static_cast<const sockaddr*>(pointer);
 }
 
 // cppcheck-suppress constParameterReference
 auto Network::get_sa_pointer(ByteString& addr) noexcept -> sockaddr*
 {
-    void* pointer = addr.data();
+    void* pointer {addr.data()};
     return static_cast<sockaddr*>(pointer);
 }
