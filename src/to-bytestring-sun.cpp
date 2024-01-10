@@ -48,7 +48,7 @@ auto Network::to_bytestring(const sockaddr_un* sun,
         oss << "Stored UNIX domain socket length "
             << static_cast<size_t>(sun->sun_len)
             << " differs from actual length "
-            << static_cast<size_t>(size);
+            << static_cast<size_t>(sun_len);
         throw LogicError(oss.str());
     }
 #endif
