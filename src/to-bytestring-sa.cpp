@@ -36,6 +36,5 @@ auto Network::to_bytestring(const sockaddr* sa,
         throw LogicError("Invalid IP domain socket address");
     }
 
-    sa_len = to_sa_len(sa, sa_len);
-    return to_bytestring(to_bytespan(sa, sa_len));
+    return to_bytestring(to_bytespan(sa, to_sa_len(sa, sa_len)));
 }

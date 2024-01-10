@@ -37,8 +37,7 @@ auto Network::to_bytestring(const sockaddr_un* sun,
         throw LogicError("Invalid UNIX domain socket address");
     }
 
-    sun_len = get_sun_length(sun, to_sun_len(sun_len));
-    return to_bytestring(to_bytespan(sun, sun_len));
+    return to_bytestring(to_bytespan(sun, get_sun_length(sun, sun_len)));
 }
 
 #endif
