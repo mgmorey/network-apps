@@ -22,6 +22,7 @@
 #include "network/sun-offsets.h"                // sun_path_offset
 #include "network/to-bytespan-void.h"           // to_bytespan()
 #include "network/to-bytestring-bs.h"           // to_bytestring()
+#include "network/to-sun-len.h"                 // to_sun_len()
 
 #ifndef WIN32
 #include <sys/socket.h>     // AF_UNIX
@@ -39,7 +40,7 @@ auto Network::to_bytestring(const sockaddr_un* sun,
         throw LogicError("Invalid UNIX domain socket address");
     }
 
-    const auto sun_len {get_sun_length(sun, size)};
+    const auto sun_len {get_sun_length(sun, to_sun_len(size))};
 
     if (sun_len != size) {
         std::ostringstream oss;
