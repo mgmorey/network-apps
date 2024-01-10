@@ -15,8 +15,6 @@
 
 #include "network/to-bytestring-sa.h"           // to_bytestring()
 #include "network/bytestring.h"                 // ByteString
-#include "network/logicerror.h"                 // LogicError
-#include "network/os-features.h"                // HAVE_SOCKADDR_SA_LEN
 #include "network/sa-len-type.h"                // sa_len_type
 #include "network/sa-offsets.h"                 // sa_data_offset
 #include "network/to-bytespan-void.h"           // to_bytespan()
@@ -29,8 +27,6 @@
 #include <sys/socket.h>     // AF_INET, AF_INET6, sockaddr
 #endif
 
-#include <sstream>      // std::ostringstream
-
 auto Network::to_bytestring(const sockaddr* sa,
                             sa_len_type sa_len) -> Network::ByteString
 {
@@ -41,17 +37,5 @@ auto Network::to_bytestring(const sockaddr* sa,
     }
 
     sa_len = to_sa_len(sa, sa_len);
-
-#ifdef HAVE_SOCKADDR_SA_LEN
-    if (sa->sa_len != sa_len) {
-        std::ostringstream oss;
-        oss << "Stored IP domain socket length "
-            << static_cast<size_t>(sa->sa_len)
-            << " differs from actual length "
-            << static_cast<size_t>(sa_len);
-        throw LogicError(oss.str());
-    }
-#endif
-
     return to_bytestring(to_bytespan(sa, sa_len));
 }

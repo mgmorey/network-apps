@@ -16,8 +16,29 @@
 #include "network/to-bytestring-bs.h"   // to_bytestring()
 #include "network/bytespan.h"           // ByteSpan
 #include "network/bytestring.h"         // ByteString
+#include "network/get-sa-length.h"      // get_sa_length()
+#include "network/logicerror.h"         // LogicError
+#include "network/os-features.h"        // HAVE_SOCKADDR_SA_LEN
+
+#include <sstream>      // std::ostringstream
 
 auto Network::to_bytestring(const ByteSpan& span) -> Network::ByteString
 {
-    return {span.data(), span.size()};
+    const ByteString addr {span.data(), span.size()};
+
+#ifdef HAVE_SOCKADDR_SA_LEN
+    const auto length {addr.length()};
+    const auto sa_len {get_sa_length(addr)};
+
+    if (sa_len != length) {
+        std::ostringstream oss;
+        oss << "Stored socket length "
+            << static_cast<size_t>(sa_len)
+            << " differs from actual length "
+            << static_cast<size_t>(length);
+        throw LogicError(oss.str());
+    }
+#endif
+
+    return addr;
 }

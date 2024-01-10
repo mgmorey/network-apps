@@ -17,7 +17,6 @@
 #include "network/bytestring.h"                 // ByteString
 #include "network/get-sun-length.h"             // get_sun_length()
 #include "network/logicerror.h"                 // LogicError
-#include "network/os-features.h"                // HAVE_SOCKADDR_SA_LEN
 #include "network/sun-len-type.h"               // sun_len_type
 #include "network/sun-offsets.h"                // sun_path_offset
 #include "network/to-bytespan-void.h"           // to_bytespan()
@@ -29,8 +28,6 @@
 #include <sys/un.h>         // sockaddr_un
 #endif
 
-#include <sstream>      // std::ostringstream
-
 #ifndef WIN32
 
 auto Network::to_bytestring(const sockaddr_un* sun,
@@ -41,18 +38,6 @@ auto Network::to_bytestring(const sockaddr_un* sun,
     }
 
     sun_len = get_sun_length(sun, to_sun_len(sun_len));
-
-#ifdef HAVE_SOCKADDR_SA_LEN
-    if (sun->sun_len != sun_len) {
-        std::ostringstream oss;
-        oss << "Stored UNIX domain socket length "
-            << static_cast<size_t>(sun->sun_len)
-            << " differs from actual length "
-            << static_cast<size_t>(sun_len);
-        throw LogicError(oss.str());
-    }
-#endif
-
     return to_bytestring(to_bytespan(sun, sun_len));
 }
 
