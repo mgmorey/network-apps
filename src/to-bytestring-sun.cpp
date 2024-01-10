@@ -53,7 +53,7 @@ auto Network::to_bytestring(const sockaddr_un* sun,
     }
 #endif
 
-    return to_bytestring(to_bytespan(sun, size));
+    return to_bytestring(to_bytespan(sun, sun_len));
 }
 
 #endif
