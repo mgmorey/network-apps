@@ -54,9 +54,9 @@ auto Network::to_bytestring(const sockaddr_un* sun,
     if (sun->sun_len != sun_len) {
         std::ostringstream oss;
         oss << "Stored UNIX domain socket length "
-            << static_cast<unsigned>(sun->sun_len)
+            << static_cast<size_t>(sun->sun_len)
             << " differs from actual length "
-            << size;
+            << static_cast<size_t>(size);
         throw LogicError(oss.str());
     }
 #endif
