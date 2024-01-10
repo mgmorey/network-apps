@@ -33,18 +33,18 @@
 auto Network::to_bytestring(const sockaddr* sa,
                             sa_len_type size) -> Network::ByteString
 {
-    const auto len {to_sa_len(size, sa->sa_family)};
+    const auto sa_len {to_sa_len(size, sa->sa_family)};
 
 #ifdef HAVE_SOCKADDR_SA_LEN
-    if (sa->sa_len != len) {
+    if (sa->sa_len != sa_len) {
         std::ostringstream oss;
         oss << "Stored IP domain socket length "
             << static_cast<unsigned>(sa->sa_len)
             << " differs from actual length "
-            << len;
+            << sa_len;
         throw LogicError(oss.str());
     }
 #endif
 
-    return to_bytestring(to_bytespan(sa, len));
+    return to_bytestring(to_bytespan(sa, sa_len));
 }
