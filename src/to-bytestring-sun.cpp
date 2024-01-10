@@ -34,13 +34,13 @@
 #ifndef WIN32
 
 auto Network::to_bytestring(const sockaddr_un* sun,
-                            sun_len_type size) -> Network::ByteString
+                            sun_len_type sun_len) -> Network::ByteString
 {
-    if (size < sun_path_offset || sun->sun_family != AF_UNIX) {
+    if (sun_len < sun_path_offset || sun->sun_family != AF_UNIX) {
         throw LogicError("Invalid UNIX domain socket address");
     }
 
-    const auto sun_len {get_sun_length(sun, to_sun_len(size))};
+    sun_len = get_sun_length(sun, to_sun_len(sun_len));
 
 #ifdef HAVE_SOCKADDR_SA_LEN
     if (sun->sun_len != sun_len) {
