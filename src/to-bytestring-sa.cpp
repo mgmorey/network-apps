@@ -18,11 +18,10 @@
 #include "network/logicerror.h"                 // LogicError
 #include "network/os-features.h"                // HAVE_SOCKADDR_SA_LEN
 #include "network/sa-len-type.h"                // sa_len_type
+#include "network/sa-offsets.h"                 // sa_data_offset
 #include "network/to-bytespan-void.h"           // to_bytespan()
 #include "network/to-bytestring-bs.h"           // to_bytestring()
 #include "network/to-sa-len.h"                  // to_sa_len()
-
-#include <sstream>      // std::ostringstream
 
 #ifdef WIN32
 #include <winsock2.h>       // AF_INET, AF_INET6, sockaddr
@@ -30,10 +29,18 @@
 #include <sys/socket.h>     // AF_INET, AF_INET6, sockaddr
 #endif
 
+#include <sstream>      // std::ostringstream
+
 auto Network::to_bytestring(const sockaddr* sa,
                             sa_len_type size) -> Network::ByteString
 {
-    const auto sa_len {to_sa_len(size, sa->sa_family)};
+    if (size < sa_data_offset ||
+        (sa->sa_family != AF_INET &&
+         sa->sa_family != AF_INET6)) {
+        throw LogicError("Invalid IP domain socket address");
+    }
+
+    const auto sa_len {to_sa_len(sa, size)};
 
 #ifdef HAVE_SOCKADDR_SA_LEN
     if (sa->sa_len != sa_len) {

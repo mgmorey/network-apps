@@ -19,9 +19,9 @@
 #include "network/logicerror.h"                 // LogicError
 #include "network/os-features.h"                // HAVE_SOCKADDR_SA_LEN
 #include "network/sun-len-type.h"               // sun_len_type
+#include "network/sun-offsets.h"                // sun_path_offset
 #include "network/to-bytespan-void.h"           // to_bytespan()
 #include "network/to-bytestring-bs.h"           // to_bytestring()
-#include "network/to-sun-len.h"                 // to_sun_len()
 
 #ifndef WIN32
 #include <sys/socket.h>     // AF_UNIX
@@ -35,9 +35,7 @@
 auto Network::to_bytestring(const sockaddr_un* sun,
                             sun_len_type size) -> Network::ByteString
 {
-    static_cast<void>(to_sun_len(size));
-
-    if (sun->sun_family != AF_UNIX) {
+    if (size < sun_path_offset || sun->sun_family != AF_UNIX) {
         throw LogicError("Invalid UNIX domain socket address");
     }
 
@@ -53,7 +51,7 @@ auto Network::to_bytestring(const sockaddr_un* sun,
     }
 
 #ifdef HAVE_SOCKADDR_SA_LEN
-    if (sun->sun_len != size) {
+    if (sun->sun_len != sun_len) {
         std::ostringstream oss;
         oss << "Stored UNIX domain socket length "
             << static_cast<unsigned>(sun->sun_len)
