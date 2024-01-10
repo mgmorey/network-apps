@@ -27,16 +27,12 @@ auto Network::get_sa_length(const ByteString& addr,
                             sock_len_type length) noexcept ->
     Network::sock_len_type
 {
-    if (addr.empty()) {
-        return length;
-    }
-
 #ifdef HAVE_SOCKADDR_SA_LEN
-    const auto* const sa {get_sa_pointer(addr)};
-
-    if (addr.size() < sa_len_offset + sizeof sa->sa_len) {
+    if (addr.size() < sa_len_offset) {
         return length;
     }
+
+    const auto* const sa {get_sa_pointer(addr)};
 
     if (sa->sa_len == 0) {
         return length;
@@ -44,6 +40,7 @@ auto Network::get_sa_length(const ByteString& addr,
 
     return sa->sa_len;
 #else
+    static_cast<void>(addr);
     return length;
 #endif
 }
