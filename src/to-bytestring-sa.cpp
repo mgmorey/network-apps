@@ -32,15 +32,15 @@
 #include <sstream>      // std::ostringstream
 
 auto Network::to_bytestring(const sockaddr* sa,
-                            sa_len_type size) -> Network::ByteString
+                            sa_len_type sa_len) -> Network::ByteString
 {
-    if (size < sa_data_offset ||
+    if (sa_len < sa_data_offset ||
         (sa->sa_family != AF_INET &&
          sa->sa_family != AF_INET6)) {
         throw LogicError("Invalid IP domain socket address");
     }
 
-    const auto sa_len {to_sa_len(sa, size)};
+    sa_len = to_sa_len(sa, sa_len);
 
 #ifdef HAVE_SOCKADDR_SA_LEN
     if (sa->sa_len != sa_len) {

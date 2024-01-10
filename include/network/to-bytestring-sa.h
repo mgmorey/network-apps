@@ -28,7 +28,7 @@
 namespace Network
 {
     extern auto to_bytestring(const sockaddr* sa,
-                              sa_len_type size) -> ByteString;
+                              sa_len_type sa_len) -> ByteString;
 }
 
 #endif
