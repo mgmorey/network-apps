@@ -17,7 +17,6 @@
 #include "network/bytestring.h"                 // ByteString
 #include "network/get-sun-length.h"             // get_sun_length()
 #include "network/sun-len-type.h"               // sun_len_type
-#include "network/sun-offsets.h"                // sun_path_offset
 #include "network/to-bytespan-void.h"           // to_bytespan()
 #include "network/to-bytestring-bs.h"           // to_bytestring()
 #include "network/validate-sun.h"               // validate()

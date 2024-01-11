@@ -16,7 +16,6 @@
 #include "network/to-bytestring-sa.h"   // to_bytestring()
 #include "network/bytestring.h"         // ByteString
 #include "network/sa-len-type.h"        // sa_len_type
-#include "network/sa-offsets.h"         // sa_data_offset
 #include "network/to-bytespan-void.h"   // to_bytespan()
 #include "network/to-bytestring-bs.h"   // to_bytestring()
 #include "network/to-sa-len.h"          // to_sa_len()
