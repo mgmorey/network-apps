@@ -21,6 +21,7 @@
 #ifdef HAVE_SOCKADDR_SA_LEN
 #include "network/get-sa-pointer.h"     // get_sa_pointer()
 #include "network/sa-offsets.h"         // sa_len_offset
+#include "network/to-sa-len.h"          // to_sa_len()
 #endif
 
 auto Network::get_sa_length(const ByteString& addr,
@@ -38,7 +39,7 @@ auto Network::get_sa_length(const ByteString& addr,
         return length;
     }
 
-    return sa->sa_len;
+    return to_sa_len(sa->sa_len);
 #else
     static_cast<void>(addr);
     return length;
