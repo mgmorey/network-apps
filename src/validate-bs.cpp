@@ -15,11 +15,14 @@
 
 #include "network/validate-bs.h"        // validate
 #include "network/bytestring.h"         // ByteString
+
+#ifdef HAVE_SOCKADDR_SA_LEN
 #include "network/get-sa-length.h"      // get_sa_length()
 #include "network/logicerror.h"         // LogicError
 #include "network/os-features.h"        // HAVE_SOCKADDR_SA_LEN
 
 #include <sstream>      // std::ostringstream
+#endif
 
 auto Network::validate(const ByteString& addr) -> void
 {
