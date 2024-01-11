@@ -20,11 +20,31 @@
 
 #include "network/sun-len-limits.h"     // sun_len_max, sun_len_min
 #include "network/sun-len-type.h"       // sun_len_type
+#include "network/sunlengtherror.h"     // SunLengthError
+
+#include <string>       // std::to_string()
+#include <utility>      // cmp_greater(), cmp_less()
 
 namespace Network
 {
-    extern auto to_sun_len(sun_len_type size,
-                           sun_len_type size_max = sun_len_max) -> sun_len_type;
+    auto to_sun_len(auto value,
+                    sun_len_type size_max) -> sun_len_type
+    {
+        const sun_len_type size_min {sun_len_min};
+
+        if (std::cmp_less(value, size_min) ||
+            std::cmp_greater(value, size_max)) {
+            throw SunLengthError(std::to_string(value), size_max);
+        }
+
+        return static_cast<sun_len_type>(value);
+    }
+
+    auto to_sun_len(auto value) -> sun_len_type
+    {
+        return to_sun_len(value, sun_len_max);
+
+    }
 }
 
 #endif

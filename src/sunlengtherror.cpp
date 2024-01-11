@@ -29,11 +29,12 @@
 
 #ifndef WIN32
 
-auto Network::SunLengthError::format(const std::string& t_str) -> std::string
+auto Network::SunLengthError::format(const std::string& t_str,
+                                     sun_len_type size_max) -> std::string
 {
 #ifdef __cpp_lib_format
     return std::format("Value {} is out of range [{}, {}] of sun_len_type",
-                       t_str, sun_len_min, sun_len_max);
+                       t_str, sun_len_min, size__max);
 #else
     std::ostringstream oss;
     oss << "Value "
@@ -41,19 +42,21 @@ auto Network::SunLengthError::format(const std::string& t_str) -> std::string
         << " is out of range ["
         << sun_len_min
         << ", "
-        << sun_len_max
+        << size_max
         << "] of sun_len_type";
     return oss.str();
 #endif
 }
 
-Network::SunLengthError::SunLengthError(const std::string& t_str) noexcept :
-    RangeError(format(t_str))
+Network::SunLengthError::SunLengthError(const std::string& t_str,
+                                        sun_len_type size_max) noexcept :
+    RangeError(format(t_str, size_max))
 {
 }
 
-Network::SunLengthError::SunLengthError(std::string&& t_str) noexcept :
-    RangeError(format(t_str))
+Network::SunLengthError::SunLengthError(std::string&& t_str,
+                                        sun_len_type size_max) noexcept :
+    RangeError(format(t_str, size_max))
 {
     static_cast<void>(std::move(t_str));
 }

@@ -16,18 +16,25 @@
 #ifndef NETWORK_SUNLENGTHERROR_H
 #define NETWORK_SUNLENGTHERROR_H
 
-#include "network/rangeerror.h"         // RangeError, std::string
+#ifndef WIN32
+
+#include "network/rangeerror.h"         // RangeError
+#include "network/sun-len-type.h"       // sun_len_type
+
+#include <string>       // std::string
 
 namespace Network
 {
-#ifndef WIN32
     class SunLengthError :
         public RangeError
     {
     public:
-        static auto format(const std::string& t_str) -> std::string;
-        explicit SunLengthError(const std::string& t_str) noexcept;
-        explicit SunLengthError(std::string&& t_str) noexcept;
+        static auto format(const std::string &t_str,
+                           sun_len_type size_max) -> std::string;
+        explicit SunLengthError(const std::string& t_str,
+                                sun_len_type size_max) noexcept;
+        explicit SunLengthError(std::string&& t_str,
+                                sun_len_type size_max) noexcept;
         SunLengthError(const SunLengthError&) noexcept = default;
         SunLengthError(SunLengthError&&) noexcept = default;
         ~SunLengthError() noexcept override = default;
@@ -36,7 +43,7 @@ namespace Network
         auto operator=(SunLengthError&&) noexcept ->
             SunLengthError& = default;
     };
-#endif
 }
 
+#endif
 #endif

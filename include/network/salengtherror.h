@@ -17,6 +17,9 @@
 #define NETWORK_SALENGTHERROR_H
 
 #include "network/rangeerror.h"         // RangeError, std::string
+#include "network/sa-len-type.h"        // sa_len_type
+
+#include <string>       // std::string
 
 namespace Network
 {
@@ -25,14 +28,14 @@ namespace Network
     {
     public:
         static auto format(const std::string& t_str,
-                           size_t size_min,
-                           size_t size_max) -> std::string;
+                           sa_len_type size_min,
+                           sa_len_type size_max) -> std::string;
         explicit SaLengthError(const std::string& t_str,
-                               size_t size_min,
-                               size_t size_max) noexcept;
+                               sa_len_type size_min,
+                               sa_len_type size_max) noexcept;
         explicit SaLengthError(std::string&& t_str,
-                               size_t size_min,
-                               size_t size_max) noexcept;
+                               sa_len_type size_min,
+                               sa_len_type size_max) noexcept;
         SaLengthError(const SaLengthError&) noexcept = default;
         SaLengthError(SaLengthError&&) noexcept = default;
         ~SaLengthError() noexcept override = default;

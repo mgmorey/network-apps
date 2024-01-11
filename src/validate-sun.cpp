@@ -34,7 +34,7 @@ auto Network::validate(const sockaddr_un* sun,
     const auto size_min {sun_len_min};
 
     if (sun_len < size_min || sun_len > size_max) {
-        throw SunLengthError(std::to_string(sun_len));
+        throw SunLengthError(std::to_string(sun_len), size_max);
     }
 
     if (sun->sun_family != AF_UNIX) {
