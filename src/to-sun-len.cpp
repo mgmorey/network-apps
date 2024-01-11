@@ -13,19 +13,25 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_TO_SUN_LEN_H
-#define NETWORK_TO_SUN_LEN_H
-
 #ifndef WIN32
 
+#include "network/to-sun-len.h"         // to_sun_len()
 #include "network/sun-len-limits.h"     // sun_len_max, sun_len_min
 #include "network/sun-len-type.h"       // sun_len_type
+#include "network/sunlengtherror.h"     // SunLengthError
 
-namespace Network
+#include <string>       // std::to_string()
+
+auto Network::to_sun_len(sun_len_type size,
+                         sun_len_type size_max) -> sun_len_type
 {
-    extern auto to_sun_len(sun_len_type size,
-                           sun_len_type size_max = sun_len_max) -> sun_len_type;
+    const sun_len_type size_min {sun_len_min};
+
+    if (size < size_min || size > size_max) {
+        throw SunLengthError(std::to_string(size));
+    }
+
+    return static_cast<sun_len_type>(size);
 }
 
-#endif
 #endif

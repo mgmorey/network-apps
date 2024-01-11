@@ -14,6 +14,10 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/assert.h"             // assert()
+#ifndef WIN32
+#include "network/pathlengtherror.h"    // PathLengthError
+#include "network/sunlengtherror.h"     // SunLengtthError
+#endif
 #include "network/to-character.h"       // to_character()
 #include "network/to-integer.h"         // to_integer()
 #include "network/to-name-len.h"        // to_name_len()
