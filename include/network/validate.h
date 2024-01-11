@@ -1,4 +1,4 @@
-// Copyright (C) 2022  "Michael G. Morey" <mgmorey@gmail.com>
+// Copyright (C) 2024  "Michael G. Morey" <mgmorey@gmail.com>
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,14 +13,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/to-bytestring-bs.h"   // to_bytestring()
-#include "network/bytespan.h"           // ByteSpan
-#include "network/bytestring.h"         // ByteString
-#include "network/validate-bs.h"        // validate()
+#ifndef NETWORK_VALIDATE_H
+#define NETWORK_VALIDATE_H
 
-auto Network::to_bytestring(const ByteSpan& span) -> Network::ByteString
-{
-    ByteString addr{span.data(), span.size()};
-    validate(addr);
-    return addr;
-}
+#include "network/validate-bs.h"        // validate()
+#include "network/validate-sa.h"        // validate()
+#include "network/validate-sun.h"       // validate()
+
+#endif

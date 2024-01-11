@@ -1,4 +1,4 @@
-// Copyright (C) 2022  "Michael G. Morey" <mgmorey@gmail.com>
+// Copyright (C) 2024  "Michael G. Morey" <mgmorey@gmail.com>
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,14 +13,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/to-bytestring-sa.h"   // to_bytestring()
-#include "network/bytestring.h"         // ByteString
+#include "network/validate-sa.h"        // validate()
+#include "network/logicerror.h"         // LogicError
 #include "network/sa-len-type.h"        // sa_len_type
 #include "network/sa-offsets.h"         // sa_data_offset
-#include "network/to-bytespan-void.h"   // to_bytespan()
-#include "network/to-bytestring-bs.h"   // to_bytestring()
-#include "network/to-sa-len.h"          // to_sa_len()
-#include "network/validate-sa.h"        // validate()
 
 #ifdef WIN32
 #include <winsock2.h>       // AF_INET, AF_INET6, sockaddr
@@ -28,9 +24,12 @@
 #include <sys/socket.h>     // AF_INET, AF_INET6, sockaddr
 #endif
 
-auto Network::to_bytestring(const sockaddr* sa,
-                            sa_len_type sa_len) -> Network::ByteString
+auto Network::validate(const sockaddr* sa,
+                       sa_len_type sa_len) -> void
 {
-    validate(sa, sa_len);
-    return to_bytestring(to_bytespan(sa, to_sa_len(sa, sa_len)));
+    if (sa_len < sa_data_offset ||
+        (sa->sa_family != AF_INET &&
+         sa->sa_family != AF_INET6)) {
+        throw LogicError("Invalid IP domain socket address");
+    }
 }

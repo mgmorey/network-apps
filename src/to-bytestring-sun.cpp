@@ -16,12 +16,11 @@
 #include "network/to-bytestring-sun.h"          // to_bytestring()
 #include "network/bytestring.h"                 // ByteString
 #include "network/get-sun-length.h"             // get_sun_length()
-#include "network/logicerror.h"                 // LogicError
 #include "network/sun-len-type.h"               // sun_len_type
 #include "network/sun-offsets.h"                // sun_path_offset
 #include "network/to-bytespan-void.h"           // to_bytespan()
 #include "network/to-bytestring-bs.h"           // to_bytestring()
-#include "network/to-sun-len.h"                 // to_sun_len()
+#include "network/validate-sun.h"               // validate()
 
 #ifndef WIN32
 #include <sys/socket.h>     // AF_UNIX
@@ -30,13 +29,10 @@
 
 #ifndef WIN32
 
-auto Network::to_bytestring(const sockaddr_un* sun,
+auto Network::to_bytestring(const sockaddr_un *sun,
                             sun_len_type sun_len) -> Network::ByteString
 {
-    if (sun_len < sun_path_offset || sun->sun_family != AF_UNIX) {
-        throw LogicError("Invalid UNIX domain socket address");
-    }
-
+    validate(sun, sun_len);
     return to_bytestring(to_bytespan(sun, get_sun_length(sun, sun_len)));
 }
 

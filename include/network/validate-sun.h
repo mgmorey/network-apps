@@ -1,4 +1,4 @@
-// Copyright (C) 2022  "Michael G. Morey" <mgmorey@gmail.com>
+// Copyright (C) 2024  "Michael G. Morey" <mgmorey@gmail.com>
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,14 +13,22 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/to-bytestring-bs.h"   // to_bytestring()
-#include "network/bytespan.h"           // ByteSpan
-#include "network/bytestring.h"         // ByteString
-#include "network/validate-bs.h"        // validate()
+#ifndef NETWORK_VALIDATE_SUN_H
+#define NETWORK_VALIDATE_SUN_H
 
-auto Network::to_bytestring(const ByteSpan& span) -> Network::ByteString
+#include "network/sun-len-type.h"       // sun_len_type
+#include "network/sun-sizes.h"          // sun_size
+
+#ifndef WIN32
+#include <sys/un.h>         // sockaddr_un
+#endif
+
+namespace Network
 {
-    ByteString addr{span.data(), span.size()};
-    validate(addr);
-    return addr;
+#ifndef WIN32
+    extern auto validate(const sockaddr_un* sun,
+                         sun_len_type sun_len = sun_size) -> void;
+#endif
 }
+
+#endif
