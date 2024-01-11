@@ -26,25 +26,22 @@
 namespace Network
 {
 #ifndef WIN32
-    auto to_sun_len(auto value) -> sun_len_type
-    {
-        if (std::cmp_less(value, sun_len_min) ||
-            std::cmp_greater(value, sun_len_max)) {
-            throw SunLengthError(std::to_string(value));
-        }
+auto to_sun_len(auto value, auto value_max) -> sun_len_type
+{
+    const auto value_min {sun_len_min};
 
-        return static_cast<sun_len_type>(value);
+    if (std::cmp_less(value, value_min) ||
+        std::cmp_greater(value, value_max)) {
+        throw SunLengthError(std::to_string(value));
     }
 
-    auto to_sun_len(auto value, auto value_max) -> sun_len_type
-    {
-        if (std::cmp_less(value, sun_len_min) ||
-            std::cmp_greater(value, value_max)) {
-            throw SunLengthError(std::to_string(value));
-        }
+    return static_cast<sun_len_type>(value);
+}
 
-        return static_cast<sun_len_type>(value);
-    }
+auto to_sun_len(auto value) -> sun_len_type
+{
+    return to_sun_len(value, sun_len_max);
+}
 #endif
 }
 

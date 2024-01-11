@@ -33,7 +33,7 @@ auto Network::get_path_length(const sockaddr_un* sun,
 #ifdef HAVE_SOCKADDR_SA_LEN
     const auto sun_len {to_sun_len(sun->sun_len, size)};
 #else
-    const auto sun_len {to_sun_len(size)};
+    const auto sun_len {size};
 #endif
     const auto* const path {get_path_pointer(sun)};
     const auto path_len {sun_len - sun_len_min};
