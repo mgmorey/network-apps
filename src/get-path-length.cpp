@@ -18,7 +18,6 @@
 #include "network/os-features.h"                // HAVE_SOCKADDR_SA_LEN
 #include "network/path-len-type.h"              // path_len_type,
 #include "network/sun-len-limits.h"             // sun_len_min
-#include "network/to-sun-len.h"                 // to_sun_len()
 
 #ifndef WIN32
 #include <sys/un.h>         // sockaddr_un

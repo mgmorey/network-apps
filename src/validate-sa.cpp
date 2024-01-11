@@ -13,10 +13,13 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/validate-sa.h"        // validate()
-#include "network/logicerror.h"         // LogicError
-#include "network/sa-len-type.h"        // sa_len_type
-#include "network/sa-offsets.h"         // sa_data_offset
+#include "network/validate-sa.h"                // validate()
+#include "network/get-sa-size-maximum.h"        // get_sa_size_maximum()
+#include "network/get-sa-size-minimum.h"        // get_sa_size_minimum()
+#include "network/logicerror.h"                 // LogicError
+#include "network/sa-len-type.h"                // sa_len_type
+#include "network/salengtherror.h"              // SaLengthError
+#include "network/socket-family-type.h"         // socket_family_type
 
 #ifdef WIN32
 #include <winsock2.h>       // AF_INET, AF_INET6, sockaddr
@@ -24,12 +27,24 @@
 #include <sys/socket.h>     // AF_INET, AF_INET6, sockaddr
 #endif
 
-auto Network::validate(const sockaddr* sa,
-                       sa_len_type sa_len) -> void
+auto Network::validate(const sockaddr *sa,
+                       sa_len_type sa_len,
+                       socket_family_type family) -> void
 {
-    if (sa_len < sa_data_offset ||
-        (sa->sa_family != AF_INET &&
-         sa->sa_family != AF_INET6)) {
-        throw LogicError("Invalid IP domain socket address");
+    const auto size_max {get_sa_size_maximum(family)};
+    const auto size_min {get_sa_size_minimum(family)};
+
+    if (sa_len < size_min || sa_len > size_max) {
+        throw SaLengthError(std::to_string(sa_len), size_min, size_max);
+    }
+
+    if (family == 0) {
+        family = sa->sa_family;
+
+        if (family != AF_INET && family != AF_INET6) {
+            throw LogicError("Invalid IP domain socket address");
+        }
+
+        validate(sa, sa_len, family);
     }
 }

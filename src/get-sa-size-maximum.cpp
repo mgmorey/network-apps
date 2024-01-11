@@ -34,7 +34,7 @@ auto Network::get_sa_size_maximum(socket_family_type family) noexcept ->
 {
     switch (family) {
     case AF_UNSPEC:
-        return ss_size;
+        return sa_len_max;
 #ifndef WIN32
     case AF_UNIX:
         return sun_len_max;

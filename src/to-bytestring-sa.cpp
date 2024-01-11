@@ -18,7 +18,6 @@
 #include "network/sa-len-type.h"        // sa_len_type
 #include "network/to-bytespan-void.h"   // to_bytespan()
 #include "network/to-bytestring-bs.h"   // to_bytestring()
-#include "network/to-sa-len.h"          // to_sa_len()
 #include "network/validate-sa.h"        // validate()
 
 #ifdef WIN32
@@ -31,5 +30,5 @@ auto Network::to_bytestring(const sockaddr* sa,
                             sa_len_type sa_len) -> Network::ByteString
 {
     validate(sa, sa_len);
-    return to_bytestring(to_bytespan(sa, to_sa_len(sa, sa_len)));
+    return to_bytestring(to_bytespan(sa, sa_len));
 }

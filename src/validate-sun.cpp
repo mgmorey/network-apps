@@ -13,10 +13,12 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/validate-sun.h"       // validate()
-#include "network/logicerror.h"         // LogicError
-#include "network/sun-len-type.h"       // sun_len_type
-#include "network/sun-offsets.h"        // sun_path_offset
+#include "network/validate-sun.h"               // validate()
+#include "network/logicerror.h"                 // LogicError
+#include "network/sun-len-limits.h"             // sun_len_max,
+                                                // sun_len_min
+#include "network/sun-len-type.h"               // sun_len_type
+#include "network/sunlengtherror.h"             // SunLengthError
 
 #ifndef WIN32
 #include <sys/socket.h>     // AF_UNIX
@@ -28,7 +30,14 @@
 auto Network::validate(const sockaddr_un* sun,
                        sun_len_type sun_len) -> void
 {
-    if (sun_len < sun_path_offset || sun->sun_family != AF_UNIX) {
+    const auto size_max {sun_len_max};
+    const auto size_min {sun_len_min};
+
+    if (sun_len < size_min || sun_len > size_max) {
+        throw SunLengthError(std::to_string(sun_len));
+    }
+
+    if (sun->sun_family != AF_UNIX) {
         throw LogicError("Invalid UNIX domain socket address");
     }
 }
