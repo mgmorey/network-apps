@@ -24,7 +24,7 @@
 
 auto Network::to_bytestring(const ByteSpan& span) -> Network::ByteString
 {
-    const ByteString addr {span.data(), span.size()};
+    ByteString addr {span.data(), span.size()};
 
 #ifdef HAVE_SOCKADDR_SA_LEN
     const auto length {addr.length()};
