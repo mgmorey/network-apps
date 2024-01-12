@@ -23,17 +23,17 @@
                                         // get_sa_length(),
                                         // get_sa_size_maximum(),
                                         // get_sa_size_minimum(),
-                                        // to_bytestring()
+                                        // sa_len_max, to_bytestring()
 #include "network/parse.h"              // parse()
 
 #ifdef WIN32
-#include <winsock2.h>       // AF_INET, AF_INET6, AF_UNSPEC,
+#include <winsock2.h>       // AF_INET, AF_INET6, AF_UNIX, AF_UNSPEC,
                             // IPPROTO_TCP, SOCK_STREAM
 #include <ws2tcpip.h>       // AI_ADDRCONFIG, AI_CANONNAME
 #else
 #include <netdb.h>          // AI_ADDRCONFIG, AI_CANONNAME
 #include <netinet/in.h>     // IPPROTO_TCP
-#include <sys/socket.h>     // AF_INET, AF_INET6, AF_UNSPEC,
+#include <sys/socket.h>     // AF_INET, AF_INET6, AF_UNIX, AF_UNSPEC,
                             // SOCK_STREAM
 #endif
 
@@ -61,6 +61,7 @@ namespace TestAddress
     using Network::get_sa_size_maximum;
     using Network::get_sa_size_minimum;
     using Network::parse;
+    using Network::sa_len_max;
     using Network::to_bytestring;
 
     static constexpr auto expected_error_invalid_sa_family {
@@ -69,12 +70,18 @@ namespace TestAddress
     static constexpr auto expected_error_invalid_sa_length {
         "Value 0 is out of range [2, 128] of sa_len_type"
     };
+    static constexpr auto expected_error_invalid_sin_length {
+        "Value 128 is out of range [16, 16] of sa_len_type"
+    };
+    static constexpr auto expected_error_invalid_sin6_length {
+        "Value 128 is out of range [28, 28] of sa_len_type"
+    };
 #ifndef WIN32
     static constexpr auto expected_error_invalid_sun_family {
         "Invalid UNIX domain socket address"
     };
     static constexpr auto expected_error_invalid_sun_length {
-        "Value 0 is out of range [2, 110] of sun_len_type"
+        "Value 128 is out of range [2, 110] of sun_len_type"
     };
 #endif
     static constexpr auto print_key_width {20};
@@ -182,6 +189,38 @@ namespace TestAddress
         assert(actual_error_str == expected_error_invalid_sa_length);
     }
 
+    auto test_invalid_sin_length() -> void
+    {
+        std::string actual_error_str;
+
+        try {
+            sockaddr sa {.sa_family = AF_INET};
+            static_cast<void>(to_bytestring(&sa, sa_len_max));
+        }
+        catch (const Error& error) {
+            print(error);
+            actual_error_str = error.what();
+        }
+
+        assert(actual_error_str == expected_error_invalid_sin_length);
+    }
+
+    auto test_invalid_sin6_length() -> void
+    {
+        std::string actual_error_str;
+
+        try {
+            sockaddr sa {.sa_family = AF_INET6};
+            static_cast<void>(to_bytestring(&sa, sa_len_max));
+        }
+        catch (const Error& error) {
+            print(error);
+            actual_error_str = error.what();
+        }
+
+        assert(actual_error_str == expected_error_invalid_sin6_length);
+    }
+
 #ifndef WIN32
 
     auto test_invalid_sun_family() -> void
@@ -205,8 +244,8 @@ namespace TestAddress
         std::string actual_error_str;
 
         try {
-            sockaddr_un sun {};
-            static_cast<void>(to_bytestring(&sun, 0U));
+            sockaddr_un sun {.sun_family = AF_UNIX};
+            static_cast<void>(to_bytestring(&sun, sa_len_max));
         }
         catch (const Error& error) {
             print(error);
@@ -301,6 +340,8 @@ auto main(int argc, char* argv[]) -> int
         test_empty();
         test_invalid_sa_family();
         test_invalid_sa_length();
+        test_invalid_sin_length();
+        test_invalid_sin6_length();
 #ifndef WIN32
         test_invalid_sun_family();
         test_invalid_sun_length();
