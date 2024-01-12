@@ -15,30 +15,17 @@
 
 #include "network/validate-bs.h"        // validate
 #include "network/bytestring.h"         // ByteString
-
-#ifdef HAVE_SOCKADDR_SA_LEN
 #include "network/get-sa-length.h"      // get_sa_length()
-#include "network/logicerror.h"         // LogicError
-#include "network/os-features.h"        // HAVE_SOCKADDR_SA_LEN
+#include "network/salengtherror.h"      // SaLengthError
 
 #include <sstream>      // std::ostringstream
-#endif
 
 auto Network::validate(const ByteString& addr) -> void
 {
-#ifdef HAVE_SOCKADDR_SA_LEN
     const auto length {addr.length()};
-    const auto sa_len {get_sa_length(addr)};
+    const auto sa_len {get_sa_length(addr, length)};
 
     if (sa_len != length) {
-        std::ostringstream oss;
-        oss << "Stored socket length "
-            << static_cast<size_t>(sa_len)
-            << " differs from actual length "
-            << static_cast<size_t>(length);
-        throw LogicError(oss.str());
+        throw SaLengthError(std::to_string(sa_len), length, length);
     }
-#else
-    static_cast<void>(addr);
-#endif
 }
