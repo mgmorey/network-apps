@@ -63,6 +63,20 @@ namespace TestAddress
     using Network::parse;
     using Network::to_bytestring;
 
+    static constexpr auto expected_error_invalid_sa_family {
+        "Invalid IP domain socket address"
+    };
+    static constexpr auto expected_error_invalid_sa_length {
+        "Value 0 is out of range [2, 128] of sa_len_type"
+    };
+#ifndef WIN32
+    static constexpr auto expected_error_invalid_sun_family {
+        "Invalid UNIX domain socket address"
+    };
+    static constexpr auto expected_error_invalid_sun_length {
+        "Value 0 is out of range [2, 128] of sun_len_type"
+    };
+#endif
     static constexpr auto print_key_width {20};
     static constexpr auto print_value_width {10};
 
@@ -149,7 +163,23 @@ namespace TestAddress
             actual_error_str = error.what();
         }
 
-        assert(actual_error_str == "Invalid IP domain socket address");
+        assert(actual_error_str == expected_error_invalid_sa_family);
+    }
+
+    auto test_invalid_sa_length() -> void
+    {
+        std::string actual_error_str;
+
+        try {
+            sockaddr sa {};
+            static_cast<void>(to_bytestring(&sa, 0U));
+        }
+        catch (const Error& error) {
+            print(error);
+            actual_error_str = error.what();
+        }
+
+        assert(actual_error_str == expected_error_invalid_sa_length);
     }
 
 #ifndef WIN32
@@ -167,7 +197,23 @@ namespace TestAddress
             actual_error_str = error.what();
         }
 
-        assert(actual_error_str == "Invalid UNIX domain socket address");
+        assert(actual_error_str == expected_error_invalid_sun_family);
+    }
+
+    auto test_invalid_sun_length() -> void
+    {
+        std::string actual_error_str;
+
+        try {
+            sockaddr_un sun {};
+            static_cast<void>(to_bytestring(&sun, 0U));
+        }
+        catch (const Error& error) {
+            print(error);
+            actual_error_str = error.what();
+        }
+
+        assert(actual_error_str == expected_error_invalid_sun_length);
     }
 
 #endif
@@ -254,6 +300,7 @@ auto main(int argc, char* argv[]) -> int
         test_valid();
         test_empty();
         test_invalid_sa_family();
+        test_invalid_sa_length();
 #ifndef WIN32
         test_invalid_sun_family();
 #endif
