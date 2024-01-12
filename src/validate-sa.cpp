@@ -27,13 +27,17 @@
 #include <sys/socket.h>     // AF_INET, AF_INET6, sockaddr
 #endif
 
+#include <string>       // std::to_string()
+#include <utility>      // cmp_greater(), cmp_less()
+
 auto Network::validate(sa_len_type sa_len,
                        socket_family_type family) -> void
 {
     const auto size_max {get_sa_size_maximum(family)};
     const auto size_min {get_sa_size_minimum(family)};
 
-    if (sa_len < size_min || sa_len > size_max) {
+    if (std::cmp_less(sa_len, size_min) ||
+        std::cmp_greater(sa_len, size_max)) {
         throw SaLengthError(std::to_string(sa_len), size_min, size_max);
     }
 }
