@@ -74,7 +74,7 @@ namespace TestAddress
         "Invalid UNIX domain socket address"
     };
     static constexpr auto expected_error_invalid_sun_length {
-        "Value 0 is out of range [2, 128] of sun_len_type"
+        "Value 0 is out of range [2, 110] of sun_len_type"
     };
 #endif
     static constexpr auto print_key_width {20};
@@ -303,6 +303,7 @@ auto main(int argc, char* argv[]) -> int
         test_invalid_sa_length();
 #ifndef WIN32
         test_invalid_sun_family();
+        test_invalid_sun_length();
 #endif
     }
     catch (const std::exception& error) {
