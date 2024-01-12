@@ -28,7 +28,7 @@
 namespace Network
 {
     extern auto validate(sa_len_type sa_len,
-                         socket_family_type family) -> void;
+                         socket_family_type family = 0) -> void;
     extern auto validate(const sockaddr* sa,
                          sa_len_type sa_len) -> void;
 }

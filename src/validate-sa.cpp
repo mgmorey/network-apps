@@ -40,7 +40,7 @@ auto Network::validate(sa_len_type sa_len,
 
 auto Network::validate(const sockaddr *sa,
                        sa_len_type sa_len) -> void {
-    validate(sa_len, 0);
+    validate(sa_len);
     const socket_family_type family {sa->sa_family};
 
     if (family != AF_INET && family != AF_INET6) {
