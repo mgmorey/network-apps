@@ -25,6 +25,9 @@
 #include <sys/un.h>         // sockaddr_un
 #endif
 
+#include <string>       // std::to_string()
+#include <utility>      // cmp_greater(), cmp_less()
+
 #ifndef WIN32
 
 auto Network::validate(const sockaddr_un* sun,
@@ -33,7 +36,8 @@ auto Network::validate(const sockaddr_un* sun,
     const auto size_max {sun_len_max};
     const auto size_min {sun_len_min};
 
-    if (sun_len < size_min || sun_len > size_max) {
+    if (std::cmp_less(sun_len, size_min) ||
+        std::cmp_greater(sun_len, size_max)) {
         throw SunLengthError(std::to_string(sun_len), size_max);
     }
 
