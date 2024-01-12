@@ -22,7 +22,7 @@
 namespace Network
 {
     extern auto get_sa_length(const ByteString& addr,
-                              sock_len_type length = 0) noexcept ->
+                              sock_len_type length) noexcept ->
         sock_len_type;
 }
 

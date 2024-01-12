@@ -35,7 +35,7 @@ auto Network::Address::sa_family() const noexcept -> Network::socket_family_type
 
 auto Network::Address::sa_length() const noexcept -> Network::length_type
 {
-    return get_sa_length(m_value);
+    return get_sa_length(m_value, m_value.length());
 }
 
 auto Network::Address::sa_text() const noexcept -> std::string
