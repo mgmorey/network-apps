@@ -22,7 +22,8 @@
                                         // get_sa_family(),
                                         // get_sa_length(),
                                         // get_sa_size_maximum(),
-                                        // get_sa_size_minimum()
+                                        // get_sa_size_minimum(),
+                                        // to_bytestring()
 #include "network/parse.h"              // parse()
 
 #ifdef WIN32
@@ -60,6 +61,7 @@ namespace TestAddress
     using Network::get_sa_size_maximum;
     using Network::get_sa_size_minimum;
     using Network::parse;
+    using Network::to_bytestring;
 
     static constexpr auto print_key_width {20};
     static constexpr auto print_value_width {10};
@@ -133,6 +135,42 @@ namespace TestAddress
     {
         test_empty({});
     }
+
+    auto test_invalid_sa_family() -> void
+    {
+        std::string actual_error_str;
+
+        try {
+            sockaddr sa {};
+            static_cast<void>(to_bytestring(&sa, sizeof sa));
+        }
+        catch (const Error& error) {
+            print(error);
+            actual_error_str = error.what();
+        }
+
+        assert(actual_error_str == "Invalid IP domain socket address");
+    }
+
+#ifndef WIN32
+
+    auto test_invalid_sun_family() -> void
+    {
+        std::string actual_error_str;
+
+        try {
+            sockaddr_un sun {};
+            static_cast<void>(to_bytestring(&sun, sizeof sun));
+        }
+        catch (const Error& error) {
+            print(error);
+            actual_error_str = error.what();
+        }
+
+        assert(actual_error_str == "Invalid UNIX domain socket address");
+    }
+
+#endif
 
     auto test_valid(const Address& address) -> void
     {
@@ -215,6 +253,10 @@ auto main(int argc, char* argv[]) -> int
 
         test_valid();
         test_empty();
+        test_invalid_sa_family();
+#ifndef WIN32
+        test_invalid_sun_family();
+#endif
     }
     catch (const std::exception& error) {
         std::cerr << error.what()
