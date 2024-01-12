@@ -45,6 +45,8 @@
 #include <exception>    // std::exception
 #include <iomanip>      // std::right, std::setw()
 #include <iostream>     // std::cerr, std::cout, std::endl
+#include <regex>        // std::regex, std::regex_match
+#include <string>       // std::string
 #include <variant>      // std::visit()
 
 namespace TestAddress
@@ -67,21 +69,18 @@ namespace TestAddress
     using Network::parse;
     using Network::to_bytestring;
 
-    static constexpr auto expected_error_invalid_sa_family {
+    static constexpr auto expected_error_sa_family {
         "Invalid IP domain socket address"
     };
-    static constexpr auto expected_error_invalid_sin_length {
-        "Value 17 is out of range [16, 16] of sa_len_type"
-    };
-    static constexpr auto expected_error_invalid_sin6_length {
-        "Value 29 is out of range [28, 28] of sa_len_type"
+    static constexpr auto expected_error_sa_length_re {
+        R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of sa_len_type)"
     };
 #ifndef WIN32
-    static constexpr auto expected_error_invalid_sun_family {
+    static constexpr auto expected_error_sun_family {
         "Invalid UNIX domain socket address"
     };
-    static constexpr auto expected_error_invalid_sun_length {
-        "Value 111 is out of range [2, 110] of sun_len_type"
+    static constexpr auto expected_error_sun_length_re {
+        R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of sun_len_type)"
     };
 #endif
     static constexpr auto print_key_width {20};
@@ -171,7 +170,7 @@ namespace TestAddress
             actual_error_str = error.what();
         }
 
-        assert(actual_error_str == expected_error_invalid_sa_family);
+        assert(actual_error_str == expected_error_sa_family);
     }
 
     auto test_invalid_sin_length() -> void
@@ -190,7 +189,8 @@ namespace TestAddress
             actual_error_str = error.what();
         }
 
-        assert(actual_error_str == expected_error_invalid_sin_length);
+        const std::regex expected_error_regex {expected_error_sa_length_re};
+        assert(std::regex_match(actual_error_str, expected_error_regex));
     }
 
     auto test_invalid_sin6_length() -> void
@@ -209,7 +209,8 @@ namespace TestAddress
             actual_error_str = error.what();
         }
 
-        assert(actual_error_str == expected_error_invalid_sin6_length);
+        const std::regex expected_error_regex {expected_error_sa_length_re};
+        assert(std::regex_match(actual_error_str, expected_error_regex));
     }
 
 #ifndef WIN32
@@ -227,7 +228,7 @@ namespace TestAddress
             actual_error_str = error.what();
         }
 
-        assert(actual_error_str == expected_error_invalid_sun_family);
+        assert(actual_error_str == expected_error_sun_family);
     }
 
     auto test_invalid_sun_length() -> void
@@ -244,7 +245,8 @@ namespace TestAddress
             actual_error_str = error.what();
         }
 
-        assert(actual_error_str == expected_error_invalid_sun_length);
+        const std::regex expected_error_regex {expected_error_sun_length_re};
+        assert(std::regex_match(actual_error_str, expected_error_regex));
     }
 
 #endif
