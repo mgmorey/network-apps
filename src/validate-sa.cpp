@@ -27,8 +27,7 @@
 #include <sys/socket.h>     // AF_INET, AF_INET6, sockaddr
 #endif
 
-auto Network::validate(const sockaddr *sa,
-                       sa_len_type sa_len,
+auto Network::validate(sa_len_type sa_len,
                        socket_family_type family) -> void
 {
     const auto size_max {get_sa_size_maximum(family)};
@@ -37,14 +36,16 @@ auto Network::validate(const sockaddr *sa,
     if (sa_len < size_min || sa_len > size_max) {
         throw SaLengthError(std::to_string(sa_len), size_min, size_max);
     }
+}
 
-    if (family == 0) {
-        family = sa->sa_family;
+auto Network::validate(const sockaddr *sa,
+                       sa_len_type sa_len) -> void {
+    validate(sa_len, 0);
+    const socket_family_type family {sa->sa_family};
 
-        if (family != AF_INET && family != AF_INET6) {
-            throw LogicError("Invalid IP domain socket address");
-        }
-
-        validate(sa, sa_len, family);
+    if (family != AF_INET && family != AF_INET6) {
+        throw LogicError("Invalid IP domain socket address");
     }
+
+    validate(sa_len, family);
 }
