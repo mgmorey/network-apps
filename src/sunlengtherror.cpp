@@ -34,7 +34,7 @@ auto Network::SunLengthError::format(const std::string& t_str,
 {
 #ifdef __cpp_lib_format
     return std::format("Value {} is out of range [{}, {}] of sun_len_type",
-                       t_str, sun_len_min, size__max);
+                       t_str, sun_len_min, size_max);
 #else
     std::ostringstream oss;
     oss << "Value "
