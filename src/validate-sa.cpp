@@ -30,26 +30,29 @@
 #include <string>       // std::to_string()
 #include <utility>      // cmp_greater(), cmp_less()
 
-auto Network::validate(sa_len_type sa_len,
-                       socket_family_type family) -> void
-{
-    const auto size_max {get_sa_size_maximum(family)};
-    const auto size_min {get_sa_size_minimum(family)};
+namespace {
+    auto validate_length(Network::sa_len_type sa_len,
+                         Network::socket_family_type family) -> void
+    {
+        const auto size_max {Network::get_sa_size_maximum(family)};
+        const auto size_min {Network::get_sa_size_minimum(family)};
 
-    if (std::cmp_less(sa_len, size_min) ||
-        std::cmp_greater(sa_len, size_max)) {
-        throw SaLengthError(std::to_string(sa_len), size_min, size_max);
+        if (std::cmp_less(sa_len, size_min) ||
+            std::cmp_greater(sa_len, size_max)) {
+            const auto str {std::to_string(sa_len)};
+            throw Network::SaLengthError(str, size_min, size_max);
+        }
     }
 }
 
-auto Network::validate(const sockaddr *sa,
-                       sa_len_type sa_len) -> void {
-    validate(sa_len);
+auto Network::validate(const sockaddr *sa, sa_len_type sa_len) -> void
+{
+    validate_length(sa_len, 0);
     const socket_family_type family {sa->sa_family};
 
     if (family != AF_INET && family != AF_INET6) {
         throw LogicError("Invalid IP domain socket address");
     }
 
-    validate(sa_len, family);
+    validate_length(sa_len, family);
 }
