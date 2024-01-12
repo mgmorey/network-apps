@@ -1,4 +1,4 @@
-// Copyright (C) 2022  "Michael G. Morey" <mgmorey@gmail.com>
+// Copyright (C) 2024  "Michael G. Morey" <mgmorey@gmail.com>
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,22 +13,20 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/to-bytestring-sa.h"   // to_bytestring()
+#include "network/to-bytestring-sin.h"  // to_bytestring()
 #include "network/bytestring.h"         // ByteString
-#include "network/sa-len-type.h"        // sa_len_type
 #include "network/to-bytespan-void.h"   // to_bytespan()
 #include "network/to-bytestring-bs.h"   // to_bytestring()
-#include "network/validate-sa.h"        // validate()
+#include "network/validate-sin.h"       // validate()
 
 #ifdef WIN32
-#include <winsock2.h>       // sockaddr
+#include <winsock2.h>       // sockaddr_in
 #else
-#include <sys/socket.h>     // sockaddr
+#include <netinet/in.h>     // sockaddr_in
 #endif
 
-auto Network::to_bytestring(const sockaddr* sa,
-                            sa_len_type sa_len) -> Network::ByteString
+auto Network::to_bytestring(const sockaddr_in *sin) -> Network::ByteString
 {
-    validate(sa, sa_len);
-    return to_bytestring(to_bytespan(sa, sa_len));
+    validate(sin);
+    return to_bytestring(to_bytespan(sin, sizeof *sin));
 }
