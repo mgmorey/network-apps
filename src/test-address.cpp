@@ -162,7 +162,8 @@ namespace TestAddress
         std::string actual_error_str;
 
         try {
-            sockaddr sa {.sa_family = AF_UNSPEC};
+            sockaddr sa {};
+            sa.sa_family = AF_UNSPEC;
             static_cast<void>(to_bytestring(&sa, sizeof sa));
         }
         catch (const Error& error) {
@@ -178,8 +179,11 @@ namespace TestAddress
         std::string actual_error_str;
 
         try {
-            sockaddr sa {.sa_family = AF_INET};
-            static_cast<void>(to_bytestring(&sa, sizeof(sockaddr_in) + 1));
+            sockaddr_in sin {};
+            sin.sin_family = AF_INET;
+            const void* ptr = &sin;
+            const sockaddr* sa = static_cast<const sockaddr*>(ptr);
+            static_cast<void>(to_bytestring(sa, sizeof sin + 1));
         }
         catch (const Error& error) {
             print(error);
@@ -194,8 +198,11 @@ namespace TestAddress
         std::string actual_error_str;
 
         try {
-            sockaddr sa {.sa_family = AF_INET6};
-            static_cast<void>(to_bytestring(&sa, sizeof(sockaddr_in6) + 1));
+            sockaddr_in6 sin6 {};
+            sin6.sin6_family = AF_INET6;
+            const void* ptr = &sin6;
+            const sockaddr* sa = static_cast<const sockaddr*>(ptr);
+            static_cast<void>(to_bytestring(sa, sizeof sin6 + 1));
         }
         catch (const Error& error) {
             print(error);
@@ -228,7 +235,8 @@ namespace TestAddress
         std::string actual_error_str;
 
         try {
-            sockaddr_un sun {.sun_family = AF_UNIX};
+            sockaddr_un sun {};
+            sun.sun_family = AF_UNIX;
             static_cast<void>(to_bytestring(&sun, sizeof sun + 1));
         }
         catch (const Error& error) {
