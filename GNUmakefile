@@ -230,7 +230,7 @@ endif
 build: $(build_targets)
 
 .PHONY: check
-check: $(filter-out test-ranges,$(programs))
+check: $(programs)
 	$(run_test_programs) $^
 
 .PHONY: check-syntax
