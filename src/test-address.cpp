@@ -181,7 +181,7 @@ namespace TestAddress
             sockaddr_in sin {};
             sin.sin_family = AF_INET;
             const void* ptr = &sin;
-            const sockaddr* sa = static_cast<const sockaddr*>(ptr);
+            const auto* sa = static_cast<const sockaddr*>(ptr);
             static_cast<void>(to_bytestring(sa, sizeof sin + 1));
         }
         catch (const Error& error) {
@@ -201,7 +201,7 @@ namespace TestAddress
             sockaddr_in6 sin6 {};
             sin6.sin6_family = AF_INET6;
             const void* ptr = &sin6;
-            const sockaddr* sa = static_cast<const sockaddr*>(ptr);
+            const auto* sa = static_cast<const sockaddr*>(ptr);
             static_cast<void>(to_bytestring(sa, sizeof sin6 + 1));
         }
         catch (const Error& error) {
@@ -220,7 +220,7 @@ namespace TestAddress
         std::string actual_error_str;
 
         try {
-            sockaddr_un sun {};
+            const sockaddr_un sun {};
             static_cast<void>(to_bytestring(&sun, sizeof sun));
         }
         catch (const Error& error) {
