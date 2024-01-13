@@ -19,6 +19,8 @@
 #include "network/to-bytestring-bs.h"           // to_bytestring()
 #include "network/to-bytestring-path.h"         // to_bytestring()
 #include "network/to-bytestring-sa.h"           // to_bytestring()
+#include "network/to-bytestring-sin.h"          // to_bytestring()
+#include "network/to-bytestring-sin6.h"         // to_bytestring()
 #include "network/to-bytestring-sun.h"          // to_bytestring()
 
 #endif
