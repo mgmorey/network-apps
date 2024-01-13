@@ -173,6 +173,22 @@ namespace TestAddress
         assert(actual_error_str == expected_error_sa_family);
     }
 
+    auto test_invalid_sin_family() -> void
+    {
+        std::string actual_error_str;
+
+        try {
+            const sockaddr_in sin {};
+            static_cast<void>(to_bytestring(&sin));
+        }
+        catch (const Error& error) {
+            print(error);
+            actual_error_str = error.what();
+        }
+
+        assert(actual_error_str == expected_error_sa_family);
+    }
+
     auto test_invalid_sin_length() -> void
     {
         std::string actual_error_str;
@@ -191,6 +207,22 @@ namespace TestAddress
 
         const std::regex expected_error_regex {expected_error_sa_length_re};
         assert(std::regex_match(actual_error_str, expected_error_regex));
+    }
+
+    auto test_invalid_sin6_family() -> void
+    {
+        std::string actual_error_str;
+
+        try {
+            const sockaddr_in6 sin6 {};
+            static_cast<void>(to_bytestring(&sin6));
+        }
+        catch (const Error& error) {
+            print(error);
+            actual_error_str = error.what();
+        }
+
+        assert(actual_error_str == expected_error_sa_family);
     }
 
     auto test_invalid_sin6_length() -> void
@@ -333,7 +365,9 @@ auto main(int argc, char* argv[]) -> int
         test_valid();
         test_empty();
         test_invalid_sa_family();
+        test_invalid_sin_family();
         test_invalid_sin_length();
+        test_invalid_sin6_family();
         test_invalid_sin6_length();
 #ifndef WIN32
         test_invalid_sun_family();
