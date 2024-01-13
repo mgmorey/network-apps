@@ -17,9 +17,9 @@
 #define NETWORK_VALIDATE_SIN6_H
 
 #ifdef WIN32
-#include <winsock2.h>       // AF_INET, sockaddr_in6
+#include <ws2tcpip.h>       // sockaddr_in6
 #else
-#include <netinet/in.h>     // AF_INET, sockaddr_in6
+#include <netinet/in.h>     // sockaddr_in6
 #endif
 
 namespace Network

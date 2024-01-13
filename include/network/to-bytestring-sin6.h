@@ -19,7 +19,7 @@
 #include "network/bytestring.h"         // ByteString
 
 #ifdef WIN32
-#include <winsock2.h>       // sockaddr_in6
+#include <ws2tcpip.h>       // sockaddr_in6
 #else
 #include <netinet/in.h>     // sockaddr_in6
 #endif

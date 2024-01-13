@@ -20,6 +20,7 @@
 #include "network/validate-sin6.h"      // validate()
 
 #ifdef WIN32
+#include <ws2tcpip.h>       // sockaddr_in6
 #include <winsock2.h>       // sockaddr_in6
 #else
 #include <netinet/in.h>     // sockaddr_in6

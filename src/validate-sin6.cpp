@@ -17,9 +17,9 @@
 #include "network/logicerror.h"                 // LogicError
 
 #ifdef WIN32
-#include <winsock2.h>       // AF_INET, sockaddr_in6
+#include <ws2tcpip.h>       // AF_INET6, sockaddr_in6
 #else
-#include <sys/socket.h>     // AF_INET, sockaddr_in6
+#include <sys/socket.h>     // AF_INET6, sockaddr_in6
 #endif
 
 auto Network::validate(const sockaddr_in6 *sin6) -> void
