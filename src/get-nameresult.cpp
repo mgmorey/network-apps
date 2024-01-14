@@ -28,8 +28,8 @@
 #include "network/socket-error.h"               // socket_error
 #include "network/ss-sizes.h"                   // ss_size
 #include "network/to-os-error.h"                // to_os_error()
-#include "network/to-sock-len.h"                // to_sa_len()
 #include "network/to-size.h"                    // to_size()
+#include "network/to-sock-len.h"                // to_sock_len()
 
 #include <iostream>     // std::cout, std::endl
 #include <sstream>      // std::ostringstream
