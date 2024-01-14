@@ -148,7 +148,7 @@ namespace TestAddress
     {
         assert(addr.empty());
         assert(get_sa_family(addr) == AF_UNSPEC);
-        assert(get_sa_length(addr, 0U) == 0U);
+        assert(get_sa_length(addr, 0) == 0);
     }
 
     auto test_empty() -> void
