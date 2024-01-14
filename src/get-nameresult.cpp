@@ -20,7 +20,6 @@
 #include "network/bytestringresult.h"           // ByteStringResult
 #include "network/format-os-error.h"            // format_os_error()
 #include "network/get-last-context-error.h"     // get_last_context_error()
-#include "network/get-length.h"                 // get_length()
 #include "network/get-sa-pointer.h"             // get_sa_pointer()
 #include "network/getnamehandler.h"             // GetNameHandler
 #include "network/getnameparams.h"              // GetNameParams
