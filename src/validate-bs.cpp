@@ -15,19 +15,27 @@
 
 #include "network/validate-bs.h"        // validate
 #include "network/bytestring.h"         // ByteString
+#include "network/os-features.h"        // HAVE_SOCKADDR_SA_LEN
+
+#ifdef HAVE_SOCKADDR_SA_LEN
 #include "network/get-sa-length.h"      // get_sa_length()
 #include "network/salengtherror.h"      // SaLengthError
 #include "network/to-sock-len.h"        // to_sock_len()
 
 #include <string>       // std::to_string()
 #include <utility>      // std::cmp_not_equal()
+#endif
 
 auto Network::validate(const ByteString& addr) -> void
 {
+#ifdef HAVE_SOCKADDR_SA_LEN
     const auto length {addr.length()};
     const auto sa_len {get_sa_length(addr, to_sock_len(length))};
 
     if (std::cmp_not_equal(sa_len, length)) {
         throw SaLengthError(std::to_string(sa_len), length, length);
     }
+#else
+    static_cast<void>(addr);
+#endif
 }
