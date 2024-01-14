@@ -29,8 +29,7 @@
 auto Network::validate(const ByteString& addr) -> void
 {
 #ifdef HAVE_SOCKADDR_SA_LEN
-    const auto length {addr.length()};
-    const auto sa_len {get_sa_length(addr, to_sock_len(length))};
+    const auto sa_len {get_sa_length(addr)};
 
     if (std::cmp_not_equal(sa_len, length)) {
         throw SaLengthError(std::to_string(sa_len), length, length);

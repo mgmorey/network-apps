@@ -24,24 +24,18 @@
 #include "network/to-sa-len.h"          // to_sa_len()
 #endif
 
-auto Network::get_sa_length(const ByteString& addr,
-                            sock_len_type length) noexcept ->
+auto Network::get_sa_length(const ByteString& addr) noexcept ->
     Network::sock_len_type
 {
 #ifdef HAVE_SOCKADDR_SA_LEN
     if (addr.size() < sa_len_offset) {
-        return length;
+        return 0;
     }
 
     const auto* const sa {get_sa_pointer(addr)};
-
-    if (sa->sa_len == 0) {
-        return length;
-    }
-
     return to_sa_len(sa->sa_len);
 #else
     static_cast<void>(addr);
-    return length;
+    return 0;
 #endif
 }

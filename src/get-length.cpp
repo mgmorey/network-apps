@@ -26,7 +26,7 @@
 auto Network::get_length(const ByteString& addr) -> Network::sock_len_type
 {
 #ifdef HAVE_SOCKADDR_SA_LEN
-    return get_sa_length(addr, 0);
+    return get_sa_length(addr);
 #else
     return to_sock_len(addr.length());
 #endif
