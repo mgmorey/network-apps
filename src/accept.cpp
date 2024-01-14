@@ -15,8 +15,8 @@
 
 #include "network/accept.h"                     // accept()
 #include "network/addressstring.h"              // AddressString
-#include "network/byte.h"                       // Byte
 #include "network/bytestring.h"                 // ByteString
+#include "network/create-bytestring.h"          // create_bytestring()
 #include "network/descriptor-null.h"            // descriptor_null
 #include "network/descriptor-type.h"            // descriptor_type
 #include "network/error.h"                      // Error
@@ -25,7 +25,6 @@
 #include "network/get-sa-pointer.h"             // get_sa_pointer()
 #include "network/reset-last-context-error.h"   // reset_last_context_error()
 #include "network/socket.h"                     // Socket
-#include "network/ss-sizes.h"                   // ss_size
 #include "network/to-os-error.h"                // to_os_error()
 #include "network/to-size.h"                    // to_size()
 #include "network/to-sock-len.h"                // to_sock_len()
@@ -44,7 +43,7 @@ auto Network::accept(const Socket& sock, bool verbose) ->
     std::pair<Socket, ByteString>
 {
     const auto handle_1 {descriptor_type {sock}};
-    ByteString addr {ss_size, Byte {}};
+    auto addr {create_bytestring()};
     auto* const pointer {get_sa_pointer(addr)};
     auto length {to_sock_len(addr.size())};
     const AddressString addr_str {addr};
