@@ -15,12 +15,20 @@
 
 #include "network/get-length.h"         // get_length()
 #include "network/bytestring.h"         // ByteString
-#include "network/get-sa-length.h"      // get_sa_length()
 #include "network/sock-len-type.h"      // sock_len_type,
+
+#ifdef HAVE_SOCKADDR_SA_LEN
+#include "network/get-sa-length.h"      // get_sa_length()
+#else
 #include "network/to-sock-len.h"        // to_sock_len()
+#endif
 
 auto Network::get_length(const ByteString& addr) -> Network::sock_len_type
 {
-    const auto len {to_sock_len(addr.length())};
-    return get_sa_length(addr, len);
+#ifdef HAVE_SOCKADDR_SA_LEN
+    return get_sa_length(addr, 0);
+#else
+    return to_sock_len(addr.length());
+#endif
+
 }
