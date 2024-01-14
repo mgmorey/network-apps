@@ -15,6 +15,7 @@
 
 #include "network/get-length.h"         // get_length()
 #include "network/bytestring.h"         // ByteString
+#include "network/os-features.h"        // HAVE_SOCKADDR_SA_LEN
 #include "network/sock-len-type.h"      // sock_len_type,
 
 #ifdef HAVE_SOCKADDR_SA_LEN
