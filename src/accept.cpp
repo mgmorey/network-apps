@@ -22,13 +22,13 @@
 #include "network/error.h"                      // Error
 #include "network/format-os-error.h"            // format_os_error()
 #include "network/get-last-context-error.h"     // get_last_context_error()
-#include "network/get-length.h"                 // get_length()
 #include "network/get-sa-pointer.h"             // get_sa_pointer()
 #include "network/reset-last-context-error.h"   // reset_last_context_error()
 #include "network/socket.h"                     // Socket
 #include "network/ss-sizes.h"                   // ss_size
 #include "network/to-os-error.h"                // to_os_error()
 #include "network/to-size.h"                    // to_size()
+#include "network/to-sock-len.h"                // to_sock_len()
 
 #ifdef WIN32
 #include <winsock2.h>       // ::accept()
@@ -46,7 +46,7 @@ auto Network::accept(const Socket& sock, bool verbose) ->
     const auto handle_1 {descriptor_type {sock}};
     ByteString addr {ss_size, Byte {}};
     auto* const pointer {get_sa_pointer(addr)};
-    auto length {get_length(addr)};
+    auto length {to_sock_len(addr.size())};
     const AddressString addr_str {addr};
 
     if (verbose) {
