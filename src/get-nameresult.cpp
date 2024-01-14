@@ -29,6 +29,7 @@
 #include "network/socket-error.h"               // socket_error
 #include "network/ss-sizes.h"                   // ss_size
 #include "network/to-os-error.h"                // to_os_error()
+#include "network/to-sock-len.h"                // to_sa_len()
 #include "network/to-size.h"                    // to_size()
 
 #include <iostream>     // std::cout, std::endl
@@ -40,7 +41,7 @@ auto Network::get_nameresult(const GetNameHandler& handler,
 {
     ByteString addr {ss_size, Byte {}};
     auto* const pointer {get_sa_pointer(addr)};
-    auto length {get_length(addr)};
+    auto length {to_sock_len(addr.size())};
     const AddressString addr_str {addr};
 
     if (args.verbose) {
