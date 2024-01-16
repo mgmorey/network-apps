@@ -19,11 +19,9 @@
                                         // Hostname, OsErrorResult,
                                         // Overloaded, SocketFamily,
                                         // SocketHints, get_hosts(),
-                                        // get_sa_family(),
-                                        // get_sa_length(),
                                         // get_sa_size_maximum(),
                                         // get_sa_size_minimum(),
-                                        // sa_len_max, to_bytestring()
+                                        // to_bytestring()
 #include "network/parse.h"              // parse()
 
 #ifdef WIN32
@@ -62,8 +60,6 @@ namespace TestAddress
     using Network::SocketFamily;
     using Network::SocketHints;
     using Network::get_hosts;
-    using Network::get_sa_family;
-    using Network::get_sa_length;
     using Network::get_sa_size_maximum;
     using Network::get_sa_size_minimum;
     using Network::parse;
