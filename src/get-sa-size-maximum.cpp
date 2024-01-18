@@ -18,7 +18,6 @@
 #include "network/sin-sizes.h"                  // sin_size
 #include "network/sin6-sizes.h"                 // sin6_size
 #include "network/socket-family-type.h"         // socket_family_type
-#include "network/ss-sizes.h"                   // ss_size
 #include "network/sun-len-limits.h"             // sun_len_max
 
 #ifdef WIN32
