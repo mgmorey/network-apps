@@ -14,11 +14,10 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/create-bytestring.h"  // create_bytestring()
-#include "network/byte.h"               // Byte
 #include "network/bytestring.h"         // ByteString
 #include "network/ss-sizes.h"           // ss_size
 
 auto Network::create_bytestring() -> ByteString
 {
-    return ByteString {ss_size, Byte {}};
+    return ByteString {ss_size, {}};
 }
