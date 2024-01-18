@@ -16,7 +16,7 @@
 #ifndef NETWORK_SOCK_LEN_LIMITS_H
 #define NETWORK_SOCK_LEN_LIMITS_H
 
-#include "network/sa-len-limits.h"      // sa_data_offset
+#include "network/sa-len-limits.h"      // sa_len_max, sa_len_min
 
 namespace Network
 {
