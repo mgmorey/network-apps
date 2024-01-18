@@ -15,9 +15,9 @@
 
 #include "network/create-bytestring.h"  // create_bytestring()
 #include "network/bytestring.h"         // ByteString
-#include "network/ss-sizes.h"           // ss_size
+#include "network/sa-len-limits.h"      // sa_len_max
 
 auto Network::create_bytestring() -> ByteString
 {
-    return ByteString {ss_size, {}};
+    return ByteString {sa_len_max, {}};
 }
