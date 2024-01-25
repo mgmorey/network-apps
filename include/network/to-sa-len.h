@@ -29,7 +29,7 @@
 #endif
 
 #include <string>       // std::to_string()
-#include <utility>      // cmp_greater(), cmp_less()
+#include <utility>      // std::cmp_greater(), std::cmp_less()
 
 namespace Network
 {
