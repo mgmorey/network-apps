@@ -29,9 +29,9 @@ auto Network::close(descriptor_type handle,
                     bool verbose) noexcept -> Network::descriptor_type
 {
 #ifdef WIN32
-    static constexpr const char* method {"::closesocket"};
+    static constexpr const auto* method {"::closesocket"};
 #else
-    static constexpr const char* method {"::close"};
+    static constexpr const auto* method {"::close"};
 #endif
 
     if (handle == descriptor_null) {
