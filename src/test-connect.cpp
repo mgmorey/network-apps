@@ -202,7 +202,7 @@ namespace TestConnect
     }
 
     auto print(const OsErrorResult& result,
-               const std::string& description = "") -> void
+               const std::string& description = {}) -> void
     {
         if (verbose) {
             std::cout << "Error result"

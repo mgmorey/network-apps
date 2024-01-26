@@ -69,7 +69,7 @@ namespace TestOption
     }
 
     auto print(ArgumentSpan args,
-               const std::string& scope = "") -> void
+               const std::string& scope = {}) -> void
     {
         auto index {0};
 

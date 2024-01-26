@@ -30,18 +30,18 @@ namespace Network
         explicit Format(const std::string& t_key) noexcept;
         explicit Format(std::string&& t_key) noexcept;
         explicit Format(std::string::size_type t_indent,
-                        const std::string& t_key = "") noexcept;
+                        const std::string& t_key = {}) noexcept;
         Format(std::string::size_type t_indent,
                std::string&& t_key) noexcept;
         Format(const std::string& t_delimiter,
                std::string::size_type t_indent,
-               const std::string& key = "");
+               const std::string& key = {});
         Format(const std::string& t_delimiter,
                std::string::size_type t_indent,
                std::string&& key);
         Format(std::string&& t_delimiter,
                std::string::size_type indent,
-               const std::string& key = "");
+               const std::string& key = {});
         Format(std::string&& t_delimiter,
                std::string::size_type t_indent,
                std::string&& key);
