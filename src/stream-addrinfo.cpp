@@ -36,7 +36,6 @@
 #endif
 
 #include <ostream>      // operator<<(), std::ostream
-#include <string>       // std::string
 
 auto Network::operator<<(std::ostream& os,
                          const addrinfo& addrinfo) noexcept -> std::ostream&
