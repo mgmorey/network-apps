@@ -166,7 +166,7 @@ namespace TestContext
     }
 
     auto test_context(const TestContext& context,
-                      const std::string& scope = "") -> void
+                      const std::string& scope) -> void
     {
         print(context, scope);
         const std::regex expected_context_regex {expected_context_re};
