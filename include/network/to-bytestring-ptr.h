@@ -13,20 +13,27 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/to-bytestring-sin6.h" // to_bytestring()
+#ifndef NETWORK_TO_BYTESTRING_SIN_H
+#define NETWORK_TO_BYTESTRING_SIN_H
+
 #include "network/bytestring.h"         // ByteString
 #include "network/to-bytespan-void.h"   // to_bytespan()
 #include "network/to-bytestring-bs.h"   // to_bytestring()
-#include "network/validate-sin6.h"      // validate()
+#include "network/validate.h"           // validate()
 
 #ifdef WIN32
-#include <ws2tcpip.h>       // sockaddr_in6
+#include <winsock2.h>       // sockaddr_in
 #else
-#include <netinet/in.h>     // sockaddr_in6
+#include <netinet/in.h>     // sockaddr_in
 #endif
 
-auto Network::to_bytestring(const sockaddr_in6* sin6) -> Network::ByteString
+namespace Network
 {
-    validate(sin6);
-    return to_bytestring(to_bytespan(sin6, sizeof *sin6));
+    auto to_bytestring(const auto* pointer) -> Network::ByteString
+    {
+        validate(pointer);
+        return to_bytestring(to_bytespan(pointer, sizeof *pointer));
+    }
 }
+
+#endif

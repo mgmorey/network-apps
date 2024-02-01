@@ -1,4 +1,4 @@
-// Copyright (C) 2024  "Michael G. Morey" <mgmorey@gmail.com>
+// Copyright (C) 2022  "Michael G. Morey" <mgmorey@gmail.com>
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,20 +13,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_TO_BYTESTRING_SIN_H
-#define NETWORK_TO_BYTESTRING_SIN_H
+#ifndef NETWORK_TO_BYTESTRING_STR_H
+#define NETWORK_TO_BYTESTRING_STR_H
 
 #include "network/bytestring.h"         // ByteString
 
-#ifdef WIN32
-#include <winsock2.h>       // sockaddr_in
-#else
-#include <netinet/in.h>     // sockaddr_in
-#endif
-
 namespace Network
 {
-    extern auto to_bytestring(const sockaddr_in* sin) -> ByteString;
+    extern auto to_bytestring(const char* str) -> ByteString;
 }
 
 #endif
