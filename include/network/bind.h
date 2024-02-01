@@ -20,6 +20,6 @@
                                         // SocketHints, bind()
 #include "network/bind-socket-addr.h"   // ByteString, OsErrorResult,
                                         // Socket, bind()
-#include "network/bind-socket-path.h"   // Pathname, bind()
+#include "network/bind-socket.h"        // bind()
 
 #endif

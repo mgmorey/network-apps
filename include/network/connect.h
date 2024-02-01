@@ -21,6 +21,6 @@
 #include "network/connect-socket-addr.h"    // ByteString,
                                             // OsErrorResult, Socket,
                                             // connect()
-#include "network/connect-socket-path.h"    // Pathname, connect()
+#include "network/connect-socket.h"         // connect()
 
 #endif
