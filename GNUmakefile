@@ -51,8 +51,8 @@ include flags.gmk
 libnetwork_sources = accept.cpp address-sa.cpp address-sin.cpp		\
 address-sin6.cpp address-sun.cpp address.cpp addresserror.cpp		\
 addressstring.cpp addrinfo.cpp argumentdata.cpp bind-endpoint.cpp	\
-bind-socket-addr.cpp buffer.cpp bytestring.cpp charactererror.cpp	\
-cleanup.cpp close.cpp connect-endpoint.cpp connect-socket-addr.cpp	\
+bind-socket.cpp buffer.cpp bytestring.cpp charactererror.cpp		\
+cleanup.cpp close.cpp connect-endpoint.cpp connect-socket.cpp		\
 context.cpp create-bytestring.cpp create-socket.cpp			\
 create-socketpair.cpp create-socketpairresult.cpp			\
 create-socketresult.cpp descriptor.cpp error.cpp format-ai-error.cpp	\

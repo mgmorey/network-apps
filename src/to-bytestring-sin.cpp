@@ -25,7 +25,7 @@
 #include <netinet/in.h>     // sockaddr_in
 #endif
 
-auto Network::to_bytestring(const sockaddr_in *sin) -> Network::ByteString
+auto Network::to_bytestring(const sockaddr_in* sin) -> Network::ByteString
 {
     validate(sin);
     return to_bytestring(to_bytespan(sin, sizeof *sin));

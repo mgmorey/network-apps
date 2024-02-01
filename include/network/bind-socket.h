@@ -16,14 +16,17 @@
 #ifndef NETWORK_BIND_SOCKET_H
 #define NETWORK_BIND_SOCKET_H
 
-#include "network/bind-socket-addr.h"           // bind()
+#include "network/bind-socket.h"                // bind()
 #include "network/bytestring.h"                 // ByteString
 #include "network/oserrorresult.h"              // OsErrorResult
 #include "network/socket.h"                     // Socket
-#include "network/to-bytestring-path.h"         // to_bytestring()
+#include "network/to-bytestring.h"              // to_bytestring()
 
 namespace Network
 {
+    extern auto bind(const Socket& sock,
+                     const ByteString& addr,
+                     bool verbose = false) -> OsErrorResult;
     auto bind(const Socket &sock,
               const auto &value,
               bool verbose = false) -> OsErrorResult

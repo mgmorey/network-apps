@@ -18,8 +18,7 @@
 
 #include "network/bind-endpoint.h"      // Endpoint, OpenResult,
                                         // SocketHints, bind()
-#include "network/bind-socket-addr.h"   // ByteString, OsErrorResult,
+#include "network/bind-socket.h"        // ByteString, OsErrorResult,
                                         // Socket, bind()
-#include "network/bind-socket.h"        // bind()
 
 #endif

@@ -18,9 +18,9 @@
 
 #include "network/connect-endpoint.h"       // Endpoint, OpenResult,
                                             // SocketHints, connect()
-#include "network/connect-socket-addr.h"    // ByteString,
+#include "network/connect-socket.h"         // ByteString,
                                             // OsErrorResult, Socket,
                                             // connect()
-#include "network/connect-socket.h"         // connect()
+
 
 #endif
