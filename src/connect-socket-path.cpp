@@ -26,8 +26,7 @@ auto Network::connect(const Socket& sock,
                       const Pathname& path,
                       bool verbose) -> Network::OsErrorResult
 {
-    const auto addr {to_bytestring(path)};
-    return connect(sock, addr, verbose);
+    return connect(sock, to_bytestring(path), verbose);
 }
 
 #endif
