@@ -15,7 +15,7 @@
 
 #include "network/to-bytestring-ai.h"   // to_bytestring()
 #include "network/bytestring.h"         // ByteString
-#include "network/to-bytestring-sa.h"   // to_bytestring()
+#include "network/to-bytestring.h"      // to_bytestring()
 #include "network/to-size.h"            // to_size()
 
 #ifdef WIN32

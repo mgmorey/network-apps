@@ -19,7 +19,6 @@
 #include "network/to-bytestring-bs.h"           // to_bytestring()
 #include "network/to-bytestring-path.h"         // to_bytestring()
 #include "network/to-bytestring-ptr.h"          // to_bytestring()
-#include "network/to-bytestring-sa.h"           // to_bytestring()
 #include "network/to-bytestring-str.h"          // to_bytestring()
 #include "network/to-bytestring-sun.h"          // to_bytestring()
 
