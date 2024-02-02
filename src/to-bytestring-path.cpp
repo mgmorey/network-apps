@@ -31,15 +31,15 @@
 
 #include <sys/socket.h>     // AF_UNIX
 
-auto Network::to_bytestring(const OptionalPathname& pathname) ->
+auto Network::to_bytestring(const OptionalPathname& path) ->
     Network::ByteString
 {
     sockaddr_un sun {};
     sa_len_type sun_len {sun_path_offset};
 
-    if (pathname) {
-        const auto path_len {to_path_len(pathname->length() + 1)};
-        pathname->copy(get_path_pointer(&sun), path_len - 1);
+    if (path) {
+        const auto path_len {to_path_len(path->length() + 1)};
+        path->copy(get_path_pointer(&sun), path_len - 1);
         sun_len += path_len;
     }
 

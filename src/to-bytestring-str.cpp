@@ -33,14 +33,18 @@
 
 #include <cstring>      // ::strlen(), ::strncpy()
 
-auto Network::to_bytestring(const char* str) ->
+auto Network::to_bytestring(const char* path) ->
     Network::ByteString
 {
     sockaddr_un sun {};
     sa_len_type sun_len {sun_path_offset};
-    const auto path_len {to_path_len(::strlen(str) + 1)};
-    ::strncpy(get_path_pointer(&sun), str, path_len - 1);
-    sun_len += path_len;
+
+    if (path != nullptr) {
+        const auto path_len{to_path_len(::strlen(path) + 1)};
+        ::strncpy(get_path_pointer(&sun), path, path_len - 1);
+        sun_len += path_len;
+    }
+
     sun.sun_family = AF_UNIX;
 #ifdef HAVE_SOCKADDR_SA_LEN
     sun.sun_len = sun_len;

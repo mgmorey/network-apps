@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_TO_BYTESTRING_SIN_H
-#define NETWORK_TO_BYTESTRING_SIN_H
+#ifndef NETWORK_TO_BYTESTRING_PTR_H
+#define NETWORK_TO_BYTESTRING_PTR_H
 
 #include "network/bytestring.h"         // ByteString
 #include "network/to-bytespan-void.h"   // to_bytespan()
