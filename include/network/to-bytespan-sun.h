@@ -16,20 +16,19 @@
 #ifndef NETWORK_TO_BYTESPAN_SUN_H
 #define NETWORK_TO_BYTESPAN_SUN_H
 
-#include "network/bytespan.h"           // ByteSpan
-#include "network/sun-sizes.h"          // sun_size
+#include "network/bytespan.h"                   // ByteSpan
+#include "network/sun-len-limits.h"             // sun_len_max
+#include "network/sun-len-type.h"               // sun_len_type
 
 #ifndef WIN32
 #include <sys/un.h>         // sockaddr_un
 #endif
 
-#include <cstddef>      // std::size_t
-
 namespace Network
 {
 #ifndef WIN32
     extern auto to_bytespan(const sockaddr_un* sun,
-                            std::size_t size = sun_size) noexcept -> ByteSpan;
+                            sun_len_type sun_len = sun_len_max) noexcept -> ByteSpan;
 #endif
 }
 

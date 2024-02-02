@@ -16,7 +16,7 @@
 #ifndef NETWORK_VALIDATE_SUN_H
 #define NETWORK_VALIDATE_SUN_H
 
-#include "network/sun-len-limits.h"             // sun_size
+#include "network/sun-len-limits.h"             // sun_len_max
 #include "network/sun-len-type.h"               // sun_len_type
 
 #ifndef WIN32

@@ -15,6 +15,7 @@
 
 #include "network/to-bytespan-sa.h"     // to_bytespan()
 #include "network/bytespan.h"           // ByteSpan
+#include "network/sa-len-type.h"        // sa_len_type
 #include "network/to-bytespan-void.h"   // to_bytespan()
 
 #ifdef WIN32
@@ -23,11 +24,9 @@
 #include <sys/socket.h>     // sockaddr
 #endif
 
-#include <cstddef>      // std::size_t
-
 auto Network::to_bytespan(const sockaddr* sa,
-                          std::size_t size) noexcept -> Network::ByteSpan
+                          sa_len_type sa_len) noexcept -> Network::ByteSpan
 {
     const void* pointer {sa};
-    return to_bytespan(pointer, size);
+    return to_bytespan(pointer, sa_len);
 }

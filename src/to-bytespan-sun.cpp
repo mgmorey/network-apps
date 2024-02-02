@@ -15,21 +15,20 @@
 
 #include "network/to-bytespan-sun.h"    // to_bytespan()
 #include "network/bytespan.h"           // ByteSpan
+#include "network/sun-len-type.h"       // sun_len_type
 #include "network/to-bytespan-void.h"   // to_bytespan()
 
 #ifndef WIN32
 #include <sys/un.h>         // sockaddr_un
 #endif
 
-#include <cstddef>      // std::size_t
-
 #ifndef WIN32
 
 auto Network::to_bytespan(const sockaddr_un* sun,
-                          std::size_t size) noexcept -> Network::ByteSpan
+                          sun_len_type sun_len) noexcept -> Network::ByteSpan
 {
-    const void* pointer = sun;
-    return to_bytespan(pointer, size);
+    const void* pointer {sun};
+    return to_bytespan(pointer, sun_len);
 }
 
 #endif

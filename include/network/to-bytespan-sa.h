@@ -17,6 +17,8 @@
 #define NETWORK_TO_BYTESPAN_SA_H
 
 #include "network/bytespan.h"           // ByteSpan
+#include "network/sa-len-limits.h"      // sa_len_max
+#include "network/sa-len-type.h"        // sa_len_type
 
 #ifdef WIN32
 #include <winsock2.h>       // sockaddr
@@ -24,12 +26,10 @@
 #include <sys/socket.h>     // sockaddr
 #endif
 
-#include <cstddef>      // std::size_t
-
 namespace Network
 {
     extern auto to_bytespan(const sockaddr* sa,
-                            std::size_t size) noexcept -> ByteSpan;
+                            sa_len_type sa_len = sa_len_max) noexcept -> ByteSpan;
 }
 
 #endif
