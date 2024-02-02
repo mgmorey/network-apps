@@ -20,7 +20,7 @@
 
 namespace Network
 {
-    extern auto to_bytestring(const char* str) -> ByteString;
+    extern auto to_bytestring(const char* path) -> ByteString;
 }
 
 #endif
