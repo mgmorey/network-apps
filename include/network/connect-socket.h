@@ -16,7 +16,6 @@
 #ifndef NETWORK_CONNECT_SOCKET_H
 #define NETWORK_CONNECT_SOCKET_H
 
-#include "network/connect-socket.h"             // connect()
 #include "network/bytestring.h"                 // ByteString
 #include "network/oserrorresult.h"              // OsErrorResult
 #include "network/socket.h"                     // Socket
