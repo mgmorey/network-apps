@@ -30,7 +30,7 @@ namespace Network
                  const auto &value,
                  bool verbose = false) -> OsErrorResult
     {
-        return connect(sock, to_bytestring(value), verbose);
+        return Network::connect(sock, to_bytestring(value), verbose);
     }
 }
 
