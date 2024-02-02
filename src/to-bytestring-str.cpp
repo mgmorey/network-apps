@@ -16,7 +16,6 @@
 #include "network/to-bytestring-str.h"          // to_bytestring()
 #include "network/bytestring.h"                 // ByteString
 #include "network/get-path-pointer-sun.h"       // get_path_pointer()
-#include "network/optionalpathname.h"           // OptionalPathname
 #include "network/os-features.h"                // HAVE_SOCKADDR_SA_LEN
 #include "network/sa-len-type.h"                // sa_len_type
 #include "network/sun-offsets.h"                // sun_path_offset
