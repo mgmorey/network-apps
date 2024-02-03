@@ -17,8 +17,8 @@
 #include "network/bytestring.h"                 // ByteString
 #include "network/get-path-pointer-sun.h"       // get_path_pointer()
 #include "network/os-features.h"                // HAVE_SOCKADDR_SA_LEN
-#include "network/sa-len-type.h"                // sa_len_type
 #include "network/sun-len-limits.h"             // sun_len_min
+#include "network/sun-len-type.h"               // sun_len_type
 #include "network/to-bytestring.h"              // to_bytestring()
 #include "network/to-path-len.h"                // to_path_len()
 
@@ -36,7 +36,7 @@ auto Network::to_bytestring(const char* path) ->
     Network::ByteString
 {
     sockaddr_un sun {};
-    sa_len_type sun_len {sun_len_min};
+    sun_len_type sun_len {sun_len_min};
 
     if (path != nullptr) {
         const auto path_len{to_path_len(::strlen(path) + 1)};
