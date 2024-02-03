@@ -13,14 +13,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/validate-bs.h"        // validate
-#include "network/bytestring.h"         // ByteString
-#include "network/os-features.h"        // HAVE_SOCKADDR_SA_LEN
+#include "network/validate-bs.h"                // validate
+#include "network/bytestring.h"                 // ByteString
+#include "network/os-features.h"                // HAVE_SOCKADDR_SA_LEN
 
 #ifdef HAVE_SOCKADDR_SA_LEN
-#include "network/get-sa-length.h"      // get_sa_length()
-#include "network/salengtherror.h"      // SaLengthError
-#include "network/to-sock-len.h"        // to_sock_len()
+#include "network/get-sa-length.h"              // get_sa_length()
+#include "network/salengtherror.h"              // SaLengthError
+#include "network/to-sock-len.h"                // to_sock_len()
 
 #include <string>       // std::to_string()
 #include <utility>      // std::cmp_not_equal()
