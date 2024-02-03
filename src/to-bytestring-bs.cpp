@@ -20,7 +20,7 @@
 
 auto Network::to_bytestring(const ByteSpan& span) -> Network::ByteString
 {
-    ByteString addr{span.data(), span.size()};
+    ByteString addr {span.data(), span.size()};
     validate(addr);
     return addr;
 }
