@@ -17,7 +17,7 @@
 #define NETWORK_TO_BYTESTRING_PTR_H
 
 #include "network/bytestring.h"         // ByteString
-#include "network/to-bytespan-void.h"   // to_bytespan()
+#include "network/to-bytespan.h"        // to_bytespan()
 #include "network/to-bytestring-bs.h"   // to_bytestring()
 #include "network/validate.h"           // validate()
 
