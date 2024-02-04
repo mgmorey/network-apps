@@ -16,8 +16,6 @@
 #ifndef NETWORK_TO_BYTESPAN_H
 #define NETWORK_TO_BYTESPAN_H
 
-#include "network/to-bytespan-sa.h"     // to_bytespan()
-#include "network/to-bytespan-sun.h"    // to_bytespan()
 #include "network/to-bytespan-void.h"   // to_bytespan()
 
 #endif
