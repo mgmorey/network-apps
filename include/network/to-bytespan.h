@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_TO_BYTESPAN_VOID_H
-#define NETWORK_TO_BYTESPAN_VOID_H
+#ifndef NETWORK_TO_BYTESPAN_H
+#define NETWORK_TO_BYTESPAN_H
 
 #include "network/bytespan.h"           // ByteSpan
 
