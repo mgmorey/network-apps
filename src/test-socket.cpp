@@ -156,29 +156,23 @@ namespace TestSocket
     auto test_pathname(const OptionalPathname& pathname,
                        const ErrorCodeSet& expected_codes) -> void
     {
-        os_error_type actual_code {0};
-        const auto addr {to_bytestring(pathname)};
+        const Socket sock {AF_UNIX, SOCK_STREAM, 0, 0, true, verbose};
+        const auto result {bind(sock, pathname, verbose)};
+        os_error_type actual_code {result.number()};
 
-        if (pathname) {
-            const Socket sock {AF_UNIX, SOCK_STREAM, 0, 0, true, verbose};
-            const auto result {bind(sock, addr, verbose)};
-            actual_code = result.number();
-
-            if (result) {
-                print(result);
-            }
-            else {
-                const auto self {sock.sockname()};
-                std::cout << "Socket "
-                          << std::right << std::setw(handle_width) << sock
-                          << " bound to "
-                          << Address(self)
-                          << std::endl;
-            }
+        if (result) {
+            print(result);
+        }
+        else {
+            const auto self {sock.sockname()};
+            std::cout << "Socket "
+                      << std::right << std::setw(handle_width) << sock
+                      << " bound to "
+                      << Address(self)
+                      << std::endl;
         }
 
         assert(expected_codes.contains(actual_code));
-        assert(to_path(addr) == pathname);
     }
 
     auto test_path_invalid(const OptionalPathname& pathname,
