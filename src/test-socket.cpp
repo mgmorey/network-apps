@@ -50,11 +50,9 @@ namespace TestSocket
     using Network::Socket;
     using Network::SocketPair;
     using Network::bind;
-    using Network::to_path;
     using Network::os_error_type;
     using Network::parse;
     using Network::path_len_max;
-    using Network::to_bytestring;
 
     using ErrorCodeSet = std::set<os_error_type>;
     using OptionalPathnameVector = std::vector<OptionalPathname>;
