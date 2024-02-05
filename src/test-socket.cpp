@@ -98,21 +98,6 @@ namespace TestSocket
         return pathname;
     }
 
-    auto get_pathnames() -> OptionalPathnameVector
-    {
-        static constexpr auto size_max {64};	// NOLINT
-        static constexpr auto size_min {8};	// NOLINT
-
-        OptionalPathnameVector pathnames {{}};
-
-        for (std::size_t size = size_min; size <= size_max; size *= 2) {
-            pathnames.emplace_back(get_pathname(size));
-        };
-
-        pathnames.emplace_back(std::nullopt);
-        return pathnames;
-    }
-
     auto parse_arguments(int argc, char** argv) -> void
     {
         const auto [_, options] {parse(argc, argv, "v")};
@@ -156,6 +141,12 @@ namespace TestSocket
     auto test_pathname(const OptionalPathname& pathname,
                        const ErrorCodeSet& expected_codes) -> void
     {
+        if (verbose) {
+            std::cout << "Testing pathname: "
+                      << pathname.value_or("<NULL>")
+                      << std::endl;
+        }
+
         const Socket sock {AF_UNIX, SOCK_STREAM, 0, 0, true, verbose};
         const auto result {bind(sock, pathname, verbose)};
         os_error_type actual_code {result.number()};
@@ -178,6 +169,12 @@ namespace TestSocket
     auto test_pathname(const char* pathname,
                        const ErrorCodeSet& expected_codes) -> void
     {
+        if (verbose) {
+            std::cout << "Testing pathname: "
+                      << (pathname ? pathname : "<NULL>")
+                      << std::endl;
+        }
+
         const Socket sock {AF_UNIX, SOCK_STREAM, 0, 0, true, verbose};
         const auto result {bind(sock, pathname, verbose)};
         os_error_type actual_code {result.number()};
@@ -290,12 +287,25 @@ namespace TestSocket
 #endif
         static const ErrorCodeSet codes_valid = {0};
 
-        const auto& pathnames {get_pathnames()};
+        static constexpr auto size_max {64};	// NOLINT
+        static constexpr auto size_min {8};	// NOLINT
 
-        for (const auto& pathname : pathnames) {
+        for (std::size_t size = size_min; size <= size_max; size *= 2) {
+            const auto pathname {get_pathname(size)};
+
+            if (verbose) {
+                std::cout << "Generated pathname: "
+                          << pathname
+                          << std::endl;
+            }
+
             test_path_valid(pathname, codes_valid);
-            test_path_valid(pathname ? pathname->c_str() : nullptr, codes_valid);
-        }
+            test_path_valid(pathname.c_str(), codes_valid);
+#ifndef OS_CYGWIN_NT
+            test_path_valid(std::nullopt, codes_valid);
+            test_path_valid(nullptr, codes_valid);
+#endif
+        };
 
         test_path_valid(get_pathname(path_len_max - 1), codes_valid);
         test_path_invalid(get_pathname(path_len_max), codes_valid);
