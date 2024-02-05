@@ -175,6 +175,28 @@ namespace TestSocket
         assert(expected_codes.contains(actual_code));
     }
 
+    auto test_pathname(const char* pathname,
+                       const ErrorCodeSet& expected_codes) -> void
+    {
+        const Socket sock {AF_UNIX, SOCK_STREAM, 0, 0, true, verbose};
+        const auto result {bind(sock, pathname, verbose)};
+        os_error_type actual_code {result.number()};
+
+        if (result) {
+            print(result);
+        }
+        else {
+            const auto self {sock.sockname()};
+            std::cout << "Socket "
+                      << std::right << std::setw(handle_width) << sock
+                      << " bound to "
+                      << Address(self)
+                      << std::endl;
+        }
+
+        assert(expected_codes.contains(actual_code));
+    }
+
     auto test_path_invalid(const OptionalPathname& pathname,
                            const ErrorCodeSet& expected_codes) -> void
     {
@@ -244,6 +266,22 @@ namespace TestSocket
         assert(actual_error_str.empty());
     }
 
+    auto test_path_valid(const char* pathname,
+                         const ErrorCodeSet& expected_codes) -> void
+    {
+        std::string actual_error_str;
+
+        try {
+            test_pathname(pathname, expected_codes);
+        }
+        catch (const LogicError& error) {
+            print(error);
+            actual_error_str = error.what();
+        }
+
+        assert(actual_error_str.empty());
+    }
+
     auto test_paths() -> void
     {
 #ifndef OS_CYGWIN_NT
@@ -256,6 +294,7 @@ namespace TestSocket
 
         for (const auto& pathname : pathnames) {
             test_path_valid(pathname, codes_valid);
+            test_path_valid(pathname ? pathname->c_str() : nullptr, codes_valid);
         }
 
         test_path_valid(get_pathname(path_len_max - 1), codes_valid);
