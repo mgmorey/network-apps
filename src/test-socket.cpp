@@ -167,7 +167,7 @@ namespace TestSocket
     {
         if (verbose) {
             std::cout << "Testing pathname: "
-                      << (path ? path : "<NULL>")
+                      << (path != nullptr ? path : "<NULL>")
                       << std::endl;
         }
 
