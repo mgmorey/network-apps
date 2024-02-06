@@ -52,6 +52,7 @@ namespace TestSocket
     using Network::os_error_type;
     using Network::parse;
     using Network::path_len_max;
+    using Network::string_null;
 
     using ErrorCodeSet = std::set<os_error_type>;
 
@@ -137,12 +138,6 @@ namespace TestSocket
     auto test_pathname(const OptionalPathname& path,
                        const ErrorCodeSet& expected_codes) -> void
     {
-        if (verbose) {
-            std::cout << "Testing pathname: "
-                      << path.value_or("<NULL>")
-                      << std::endl;
-        }
-
         const Socket sock {AF_UNIX, SOCK_STREAM, 0, 0, true, verbose};
         const auto result {bind(sock, path, verbose)};
         const auto actual_code {result.number()};
@@ -165,12 +160,6 @@ namespace TestSocket
     auto test_pathname(const char* path,
                        const ErrorCodeSet& expected_codes) -> void
     {
-        if (verbose) {
-            std::cout << "Testing pathname: "
-                      << (path != nullptr ? path : "<NULL>")
-                      << std::endl;
-        }
-
         const Socket sock {AF_UNIX, SOCK_STREAM, 0, 0, true, verbose};
         const auto result {bind(sock, path, verbose)};
         const auto actual_code {result.number()};
