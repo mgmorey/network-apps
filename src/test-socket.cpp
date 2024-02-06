@@ -35,7 +35,6 @@
 #include <regex>        // std::regex, std::regex_match
 #include <set>          // std::set
 #include <string>       // std::string
-#include <vector>       // std::vector
 
 namespace TestSocket
 {
@@ -55,7 +54,6 @@ namespace TestSocket
     using Network::path_len_max;
 
     using ErrorCodeSet = std::set<os_error_type>;
-    using OptionalPathnameVector = std::vector<OptionalPathname>;
 
     static constexpr auto expected_error_path_len_re {
         R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of path_len_type)"
@@ -87,13 +85,13 @@ namespace TestSocket
     auto get_pathname(std::string::size_type size) -> Pathname
     {
         const Pathname prefix {"/tmp/"};
-        Pathname pathname(size, 'X');
+        Pathname path(size, 'X');
 
-        if (pathname.length() > prefix.length()) {
-            pathname.replace(0, prefix.length(), prefix);
+        if (path.length() > prefix.length()) {
+            path.replace(0, prefix.length(), prefix);
         }
 
-        return pathname;
+        return path;
     }
 
     auto parse_arguments(int argc, char** argv) -> void
@@ -136,17 +134,17 @@ namespace TestSocket
         }
     }
 
-    auto test_pathname(const OptionalPathname& pathname,
+    auto test_pathname(const OptionalPathname& path,
                        const ErrorCodeSet& expected_codes) -> void
     {
         if (verbose) {
             std::cout << "Testing pathname: "
-                      << pathname.value_or("<NULL>")
+                      << path.value_or("<NULL>")
                       << std::endl;
         }
 
         const Socket sock {AF_UNIX, SOCK_STREAM, 0, 0, true, verbose};
-        const auto result {bind(sock, pathname, verbose)};
+        const auto result {bind(sock, path, verbose)};
         const auto actual_code {result.number()};
 
         if (result) {
@@ -164,17 +162,17 @@ namespace TestSocket
         assert(expected_codes.contains(actual_code));
     }
 
-    auto test_pathname(const char* pathname,
+    auto test_pathname(const char* path,
                        const ErrorCodeSet& expected_codes) -> void
     {
         if (verbose) {
             std::cout << "Testing pathname: "
-                      << (pathname ? pathname : "<NULL>")
+                      << (path ? path : "<NULL>")
                       << std::endl;
         }
 
         const Socket sock {AF_UNIX, SOCK_STREAM, 0, 0, true, verbose};
-        const auto result {bind(sock, pathname, verbose)};
+        const auto result {bind(sock, path, verbose)};
         const auto actual_code {result.number()};
 
         if (result) {
@@ -192,13 +190,13 @@ namespace TestSocket
         assert(expected_codes.contains(actual_code));
     }
 
-    auto test_path_invalid(const OptionalPathname& pathname,
+    auto test_path_invalid(const OptionalPathname& path,
                            const ErrorCodeSet& expected_codes) -> void
     {
         std::string actual_error_str;
 
         try {
-            test_pathname(pathname, expected_codes);
+            test_pathname(path, expected_codes);
         }
         catch (const RangeError& error) {
             actual_error_str = error.what();
@@ -211,13 +209,13 @@ namespace TestSocket
 
 #ifndef OS_CYGWIN_NT
 
-    auto test_path_no_directory(const Pathname& pathname,
+    auto test_path_no_directory(const Pathname& path,
                                 const ErrorCodeSet& expected_codes) -> void
     {
         std::string actual_error_str;
 
         try {
-            test_pathname(pathname, expected_codes);
+            test_pathname(path, expected_codes);
         }
         catch (const LogicError& error) {
             print(error);
@@ -227,13 +225,13 @@ namespace TestSocket
         assert(actual_error_str.empty());
     }
 
-    auto test_path_no_permission(const Pathname& pathname,
+    auto test_path_no_permission(const Pathname& path,
                                  const ErrorCodeSet& expected_codes) -> void
     {
         std::string actual_error_str;
 
         try {
-            test_pathname(pathname, expected_codes);
+            test_pathname(path, expected_codes);
         }
         catch (const LogicError& error) {
             print(error);
@@ -245,13 +243,13 @@ namespace TestSocket
 
 #endif
 
-    auto test_path_valid(const OptionalPathname& pathname,
+    auto test_path_valid(const OptionalPathname& path,
                          const ErrorCodeSet& expected_codes) -> void
     {
         std::string actual_error_str;
 
         try {
-            test_pathname(pathname, expected_codes);
+            test_pathname(path, expected_codes);
         }
         catch (const LogicError& error) {
             print(error);
@@ -261,13 +259,13 @@ namespace TestSocket
         assert(actual_error_str.empty());
     }
 
-    auto test_path_valid(const char* pathname,
+    auto test_path_valid(const char* path,
                          const ErrorCodeSet& expected_codes) -> void
     {
         std::string actual_error_str;
 
         try {
-            test_pathname(pathname, expected_codes);
+            test_pathname(path, expected_codes);
         }
         catch (const LogicError& error) {
             print(error);
@@ -289,16 +287,16 @@ namespace TestSocket
         static constexpr auto size_min {8};	// NOLINT
 
         for (std::size_t size = size_min; size <= size_max; size *= 2) {
-            const auto pathname {get_pathname(size)};
+            const auto path {get_pathname(size)};
 
             if (verbose) {
                 std::cout << "Generated pathname: "
-                          << pathname
+                          << path
                           << std::endl;
             }
 
-            test_path_valid(pathname, codes_valid);
-            test_path_valid(pathname.c_str(), codes_valid);
+            test_path_valid(path, codes_valid);
+            test_path_valid(path.c_str(), codes_valid);
 #ifndef OS_CYGWIN_NT
             test_path_valid(std::nullopt, codes_valid);
             test_path_valid(nullptr, codes_valid);
