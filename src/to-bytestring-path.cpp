@@ -20,7 +20,7 @@
 #include "network/os-features.h"                // HAVE_SOCKADDR_SA_LEN
 #include "network/sun-len-limits.h"             // sun_len_min
 #include "network/sun-len-type.h"               // sun_len_type
-#include "network/to-bytestring.h"              // to_bytestring()
+#include "network/to-bytestring-auto.h"         // to_bytestring()
 #include "network/to-path-len.h"                // to_path_len()
 
 #ifndef WIN32

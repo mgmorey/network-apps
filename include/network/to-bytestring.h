@@ -16,9 +16,9 @@
 #ifndef NETWORK_TO_BYTESTRING_H
 #define NETWORK_TO_BYTESTRING_H
 
-#include "network/to-bytestring-bs.h"           // to_bytestring()
+#include "network/to-bytestring-auto.h"         // to_bytestring()
+#include "network/to-bytestring-char.h"         // to_bytestring()
 #include "network/to-bytestring-path.h"         // to_bytestring()
-#include "network/to-bytestring-ptr.h"          // to_bytestring()
-#include "network/to-bytestring-str.h"          // to_bytestring()
+#include "network/to-bytestring-span.h"         // to_bytestring()
 
 #endif
