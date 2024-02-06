@@ -147,7 +147,7 @@ namespace TestSocket
 
         const Socket sock {AF_UNIX, SOCK_STREAM, 0, 0, true, verbose};
         const auto result {bind(sock, pathname, verbose)};
-        os_error_type actual_code {result.number()};
+        const auto actual_code {result.number()};
 
         if (result) {
             print(result);
@@ -175,7 +175,7 @@ namespace TestSocket
 
         const Socket sock {AF_UNIX, SOCK_STREAM, 0, 0, true, verbose};
         const auto result {bind(sock, pathname, verbose)};
-        os_error_type actual_code {result.number()};
+        const auto actual_code {result.number()};
 
         if (result) {
             print(result);
