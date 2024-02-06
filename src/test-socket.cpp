@@ -52,26 +52,27 @@ namespace TestSocket
     using Network::os_error_type;
     using Network::parse;
     using Network::path_len_max;
-    using Network::string_null;
 
     using ErrorCodeSet = std::set<os_error_type>;
 
+    static const ErrorCodeSet codes_valid = {0};
+
     static constexpr auto expected_error_path_len_re {
         R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of path_len_type)"
-    };
+            };
     static constexpr auto handle_width {6};
 
     static bool verbose {false};  // NOLINT
 
 #ifndef OS_CYGWIN_NT
 
-    auto get_codes_no_directory() -> const ErrorCodeSet&
+    auto get_codes_invalid_directory() -> const ErrorCodeSet&
     {
         static const ErrorCodeSet codes = {ENOENT};
         return codes;
     }
 
-    auto get_codes_no_permission() -> const ErrorCodeSet&
+    auto get_codes_invalid_permission() -> const ErrorCodeSet&
     {
 #ifdef OS_DARWIN
         static const ErrorCodeSet codes = {EACCES, EROFS};
@@ -198,8 +199,8 @@ namespace TestSocket
 
 #ifndef OS_CYGWIN_NT
 
-    auto test_path_no_directory(const Pathname& path,
-                                const ErrorCodeSet& expected_codes) -> void
+    auto test_path_invalid_directory(const Pathname& path,
+                                     const ErrorCodeSet& expected_codes) -> void
     {
         std::string actual_error_str;
 
@@ -214,8 +215,8 @@ namespace TestSocket
         assert(actual_error_str.empty());
     }
 
-    auto test_path_no_permission(const Pathname& path,
-                                 const ErrorCodeSet& expected_codes) -> void
+    auto test_path_invalid_permission(const Pathname& path,
+                                      const ErrorCodeSet& expected_codes) -> void
     {
         std::string actual_error_str;
 
@@ -267,13 +268,21 @@ namespace TestSocket
     auto test_paths() -> void
     {
 #ifndef OS_CYGWIN_NT
-        static const ErrorCodeSet codes_no_directory {get_codes_no_directory()};
-        static const ErrorCodeSet codes_no_permission {get_codes_no_permission()};
+        static const ErrorCodeSet codes_invalid_directory {
+            get_codes_invalid_directory()
+        };
+        static const ErrorCodeSet codes_invalid_permission {
+            get_codes_invalid_permission()
+        };
 #endif
-        static const ErrorCodeSet codes_valid = {0};
 
         static constexpr auto size_max {64};	// NOLINT
         static constexpr auto size_min {8};	// NOLINT
+
+#ifndef OS_CYGWIN_NT
+        test_path_valid(std::nullopt, codes_valid);
+        test_path_valid(nullptr, codes_valid);
+#endif
 
         for (std::size_t size = size_min; size <= size_max; size *= 2) {
             const auto path {get_pathname(size)};
@@ -284,19 +293,19 @@ namespace TestSocket
                           << std::endl;
             }
 
-            test_path_valid(path, codes_valid);
             test_path_valid(path.c_str(), codes_valid);
-#ifndef OS_CYGWIN_NT
-            test_path_valid(std::nullopt, codes_valid);
-            test_path_valid(nullptr, codes_valid);
-#endif
+            test_path_valid(path, codes_valid);
         };
 
-        test_path_valid(get_pathname(path_len_max - 1), codes_valid);
-        test_path_invalid(get_pathname(path_len_max), codes_valid);
+        const auto path_max {get_pathname(path_len_max)};
+        const auto path_max_less_one {get_pathname(path_len_max - 1)};
+        test_path_valid(path_max_less_one.c_str(), codes_valid);
+        test_path_valid(path_max_less_one, codes_valid);
+        test_path_invalid(path_max.c_str(), codes_valid);
+        test_path_invalid(path_max, codes_valid);
 #ifndef OS_CYGWIN_NT
-        test_path_no_directory("/foo/bar", codes_no_directory);
-        test_path_no_permission("/foo", codes_no_permission);
+        test_path_invalid_directory("/foo/bar", codes_invalid_directory);
+        test_path_invalid_permission("/foo", codes_invalid_permission);
 #endif
     }
 
