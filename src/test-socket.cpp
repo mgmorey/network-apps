@@ -55,6 +55,14 @@ namespace TestSocket
 
     using ErrorCodeSet = std::set<os_error_type>;
 
+#ifndef OS_CYGWIN_NT
+    static const ErrorCodeSet codes_invalid_directory {ENOENT};
+#ifdef OS_DARWIN
+    static const ErrorCodeSet codes_invalid_permission {EACCES, EROFS};
+#else
+    static const ErrorCodeSet codes_invalid_permission {EACCES};
+#endif
+#endif
     static const ErrorCodeSet codes_valid = {0};
 
     static constexpr auto expected_error_path_len_re {
@@ -247,21 +255,6 @@ namespace TestSocket
 
     auto test_paths() -> void
     {
-#ifndef OS_CYGWIN_NT
-        static const ErrorCodeSet codes_invalid_directory {
-            ENOENT
-        };
-#ifdef OS_DARWIN
-        static const ErrorCodeSet codes_invalid_permission {
-            EACCES, EROFS
-        };
-#else
-        static const ErrorCodeSet codes_invalid_permission {
-            EACCES
-        };
-#endif
-#endif
-
         static constexpr auto size_max {64};	// NOLINT
         static constexpr auto size_min {8};	// NOLINT
 
