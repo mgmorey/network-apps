@@ -64,26 +64,6 @@ namespace TestSocket
 
     static bool verbose {false};  // NOLINT
 
-#ifndef OS_CYGWIN_NT
-
-    auto get_codes_invalid_directory() -> const ErrorCodeSet&
-    {
-        static const ErrorCodeSet codes = {ENOENT};
-        return codes;
-    }
-
-    auto get_codes_invalid_permission() -> const ErrorCodeSet&
-    {
-#ifdef OS_DARWIN
-        static const ErrorCodeSet codes = {EACCES, EROFS};
-#else
-        static const ErrorCodeSet codes = {EACCES};
-#endif
-        return codes;
-    }
-
-#endif
-
     auto get_pathname(std::string::size_type size) -> Pathname
     {
         const Pathname prefix {"/tmp/"};
@@ -269,11 +249,17 @@ namespace TestSocket
     {
 #ifndef OS_CYGWIN_NT
         static const ErrorCodeSet codes_invalid_directory {
-            get_codes_invalid_directory()
+            ENOENT
         };
+#ifdef OS_DARWIN
         static const ErrorCodeSet codes_invalid_permission {
-            get_codes_invalid_permission()
+            EACCES, EROFS
         };
+#else
+        static const ErrorCodeSet codes_invalid_permission {
+            EACCES
+        };
+#endif
 #endif
 
         static constexpr auto size_max {64};	// NOLINT
