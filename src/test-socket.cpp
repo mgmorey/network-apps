@@ -261,12 +261,9 @@ namespace TestSocket
 #endif
 #endif
 
-	const ErrorCodeSet codes_valid = {0};
-
         const auto path_max {get_pathname(path_len_max)};
-        const auto path_max_less_one {get_pathname(path_len_max - 1)};
-        test_pathname_invalid(path_max.c_str(), codes_valid);
-        test_pathname_invalid(path_max, codes_valid);
+        test_pathname_invalid(path_max.c_str(), {});
+        test_pathname_invalid(path_max, {});
 #ifndef OS_CYGWIN_NT
         test_pathname_invalid_directory("/foo/bar", codes_invalid_directory);
         test_pathname_invalid_permission("/foo", codes_invalid_permission);
@@ -298,7 +295,6 @@ namespace TestSocket
             test_pathname_valid(path, codes_valid);
         };
 
-        const auto path_max {get_pathname(path_len_max)};
         const auto path_max_less_one {get_pathname(path_len_max - 1)};
         test_pathname_valid(path_max_less_one.c_str(), codes_valid);
         test_pathname_valid(path_max_less_one, codes_valid);
