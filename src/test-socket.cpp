@@ -303,13 +303,6 @@ namespace TestSocket
 
         for (std::size_t size = size_min; size <= size_max; size *= 2) {
             const auto path {get_pathname(size)};
-
-            if (verbose) {
-                std::cout << "Generated pathname: "
-                          << path
-                          << std::endl;
-            }
-
             test_pathname_valid(path.c_str(), codes_valid);
             test_pathname_valid(path, codes_valid);
         };
