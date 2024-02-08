@@ -20,6 +20,7 @@
 #include "network/sun-len-limits.h"             // sun_len_min
 #include "network/sun-len-type.h"               // sun_len_type
 #include "network/to-bytestring-auto.h"         // to_bytestring()
+#include "network/to-path-len.h"                // to_path_len()
 
 #ifndef WIN32
 #include <sys/un.h>         // sockaddr_un
@@ -29,7 +30,7 @@
 
 #include <sys/socket.h>     // AF_UNIX
 
-#include <cstring>      // ::strlen(), ::strncpy()
+#include <cstring>      // ::strncpy(), ::strnlen()
 
 auto Network::to_bytestring(const char* path) ->
     Network::ByteString
@@ -38,7 +39,8 @@ auto Network::to_bytestring(const char* path) ->
     sun_len_type sun_len {sun_len_min};
 
     if (path != nullptr) {
-        const auto path_len {::strnlen(path, sizeof sun.sun_path - 1)};
+        const auto str_len {::strnlen(path, sizeof sun.sun_path)};
+        const auto path_len {to_path_len(str_len + 1)};
         auto* sun_path {get_path_pointer(&sun)};
         ::strncpy(sun_path, path, path_len);
         sun_len += path_len;
