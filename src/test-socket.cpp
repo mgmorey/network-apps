@@ -115,31 +115,6 @@ namespace TestSocket
         }
     }
 
-    auto test_pathname(const OptionalPathname& path,
-                       const ErrorCodeSet& expected_codes) -> void
-    {
-        const Socket sock {AF_UNIX, SOCK_STREAM, 0, 0, true, verbose};
-        const auto result {bind(sock, path, verbose)};
-        const auto actual_code {result.number()};
-
-        if (result) {
-            print(result);
-        }
-        else {
-            const auto self {sock.sockname()};
-            std::cout << "Socket "
-                      << std::right << std::setw(handle_width) << sock
-                      << " bound to "
-                      << Address(self)
-                      << std::endl;
-            if (path) {
-                assert(to_path(self) == *path);
-            }
-        }
-
-        assert(expected_codes.contains(actual_code));
-    }
-
     auto test_pathname(const char* path,
                        const ErrorCodeSet& expected_codes) -> void
     {
@@ -152,17 +127,81 @@ namespace TestSocket
         }
         else {
             const auto self {sock.sockname()};
+            const auto self_path{to_path(self)};
             std::cout << "Socket "
                       << std::right << std::setw(handle_width) << sock
                       << " bound to "
                       << Address(self)
                       << std::endl;
-            if (path != nullptr) {
-                assert(to_path(self) == path);
+
+            if (path != nullptr && self_path) {
+
+                if (verbose) {
+                  std::cout << "Comparing "
+                            << *self_path
+                            << std::endl
+                            << "      and "
+                            << path
+                            << std::endl;
+                }
+
+                assert(self_path == std::string {path});
             }
         }
 
         assert(expected_codes.contains(actual_code));
+    }
+
+    auto test_pathname(const OptionalPathname& path,
+                       const ErrorCodeSet& expected_codes) -> void
+    {
+        const Socket sock {AF_UNIX, SOCK_STREAM, 0, 0, true, verbose};
+        const auto result {bind(sock, path, verbose)};
+        const auto actual_code {result.number()};
+
+        if (result) {
+            print(result);
+        }
+        else {
+            const auto self {sock.sockname()};
+            const auto self_path{to_path(self)};
+            std::cout << "Socket "
+                      << std::right << std::setw(handle_width) << sock
+                      << " bound to "
+                      << Address(self)
+                      << std::endl;
+
+            if (path && self_path) {
+                if (verbose) {
+                    std::cout << "Comparing "
+                              << *self_path
+                              << std::endl
+                              << "      and " << *path
+                              << std::endl;
+                }
+
+                assert(*self_path == *path);
+            }
+        }
+
+        assert(expected_codes.contains(actual_code));
+    }
+
+    auto test_pathname_invalid(const char*  path,
+                               const ErrorCodeSet& expected_codes) -> void
+    {
+        std::string actual_error_str;
+
+        try {
+            test_pathname(path, expected_codes);
+        }
+        catch (const RangeError& error) {
+            actual_error_str = error.what();
+            print(error);
+        }
+
+        const std::regex expected_error_regex {expected_error_path_len_re};
+        assert(std::regex_match(actual_error_str, expected_error_regex));
     }
 
     auto test_pathname_invalid(const OptionalPathname& path,
@@ -218,7 +257,7 @@ namespace TestSocket
 
 #endif
 
-    auto test_pathname_valid(const OptionalPathname& path,
+    auto test_pathname_valid(const char* path,
                              const ErrorCodeSet& expected_codes) -> void
     {
         std::string actual_error_str;
@@ -234,7 +273,7 @@ namespace TestSocket
         assert(actual_error_str.empty());
     }
 
-    auto test_pathname_valid(const char* path,
+    auto test_pathname_valid(const OptionalPathname& path,
                              const ErrorCodeSet& expected_codes) -> void
     {
         std::string actual_error_str;
