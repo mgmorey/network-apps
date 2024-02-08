@@ -127,7 +127,7 @@ namespace TestSocket
         }
         else {
             const auto self {sock.sockname()};
-            const auto self_path{to_path(self)};
+            const auto self_path {to_path(self)};
             std::cout << "Socket "
                       << std::right << std::setw(handle_width) << sock
                       << " bound to "
@@ -164,7 +164,7 @@ namespace TestSocket
         }
         else {
             const auto self {sock.sockname()};
-            const auto self_path{to_path(self)};
+            const auto self_path {to_path(self)};
             std::cout << "Socket "
                       << std::right << std::setw(handle_width) << sock
                       << " bound to "
