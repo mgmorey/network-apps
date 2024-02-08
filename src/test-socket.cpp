@@ -52,6 +52,7 @@ namespace TestSocket
     using Network::os_error_type;
     using Network::parse;
     using Network::path_len_max;
+    using Network::to_path;
 
     using ErrorCodeSet = std::set<os_error_type>;
 
@@ -131,6 +132,9 @@ namespace TestSocket
                       << " bound to "
                       << Address(self)
                       << std::endl;
+            if (path) {
+                assert(to_path(self) == *path);
+            }
         }
 
         assert(expected_codes.contains(actual_code));
@@ -153,6 +157,9 @@ namespace TestSocket
                       << " bound to "
                       << Address(self)
                       << std::endl;
+            if (path != nullptr) {
+                assert(to_path(self) == path);
+            }
         }
 
         assert(expected_codes.contains(actual_code));
