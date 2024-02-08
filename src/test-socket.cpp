@@ -135,16 +135,6 @@ namespace TestSocket
                       << std::endl;
 
             if (path != nullptr && self_path) {
-
-                if (verbose) {
-                  std::cout << "Comparing "
-                            << *self_path
-                            << std::endl
-                            << "      and "
-                            << path
-                            << std::endl;
-                }
-
                 assert(self_path == std::string {path});
             }
         }
@@ -172,14 +162,6 @@ namespace TestSocket
                       << std::endl;
 
             if (path && self_path) {
-                if (verbose) {
-                    std::cout << "Comparing "
-                              << *self_path
-                              << std::endl
-                              << "      and " << *path
-                              << std::endl;
-                }
-
                 assert(*self_path == *path);
             }
         }
