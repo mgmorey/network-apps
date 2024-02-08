@@ -63,6 +63,24 @@ namespace TestSocket
 
     static bool verbose {false};  // NOLINT
 
+    auto equal_to_sockname(const std::string& path, Socket sock) -> bool
+    {
+        const auto self {sock.sockname()};
+        std::cout << "Socket "
+                  << std::right << std::setw(handle_width) << sock
+                  << " bound to "
+                  << Address(self)
+                  << std::endl;
+
+        const auto self_path {to_path(self)};
+
+        if (self_path && path == *self_path) {
+            return true;
+        }
+
+        return false;
+    }
+
     auto get_pathname(std::string::size_type size) -> Pathname
     {
         const Pathname prefix {"/tmp/"};
@@ -125,18 +143,8 @@ namespace TestSocket
         if (result) {
             print(result);
         }
-        else {
-            const auto self {sock.sockname()};
-            const auto self_path {to_path(self)};
-            std::cout << "Socket "
-                      << std::right << std::setw(handle_width) << sock
-                      << " bound to "
-                      << Address(self)
-                      << std::endl;
-
-            if (path != nullptr && self_path) {
-                assert(self_path == std::string {path});
-            }
+        else if (path != nullptr) {
+            assert(equal_to_sockname(path, sock));
         }
 
         assert(expected_codes.contains(actual_code));
@@ -152,18 +160,8 @@ namespace TestSocket
         if (result) {
             print(result);
         }
-        else {
-            const auto self {sock.sockname()};
-            const auto self_path {to_path(self)};
-            std::cout << "Socket "
-                      << std::right << std::setw(handle_width) << sock
-                      << " bound to "
-                      << Address(self)
-                      << std::endl;
-
-            if (path && self_path) {
-                assert(*self_path == *path);
-            }
+        else if (path) {
+            assert(equal_to_sockname(*path, sock));
         }
 
         assert(expected_codes.contains(actual_code));
