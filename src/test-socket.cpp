@@ -158,8 +158,8 @@ namespace TestSocket
         assert(expected_codes.contains(actual_code));
     }
 
-    auto test_path_invalid(const OptionalPathname& path,
-                           const ErrorCodeSet& expected_codes) -> void
+    auto test_pathname_invalid(const OptionalPathname& path,
+                               const ErrorCodeSet& expected_codes) -> void
     {
         std::string actual_error_str;
 
@@ -177,8 +177,8 @@ namespace TestSocket
 
 #ifndef OS_CYGWIN_NT
 
-    auto test_path_invalid_directory(const Pathname& path,
-                                     const ErrorCodeSet& expected_codes) -> void
+    auto test_pathname_invalid_directory(const Pathname& path,
+                                         const ErrorCodeSet& expected_codes) -> void
     {
         std::string actual_error_str;
 
@@ -193,8 +193,8 @@ namespace TestSocket
         assert(actual_error_str.empty());
     }
 
-    auto test_path_invalid_permission(const Pathname& path,
-                                      const ErrorCodeSet& expected_codes) -> void
+    auto test_pathname_invalid_permission(const Pathname& path,
+                                          const ErrorCodeSet& expected_codes) -> void
     {
         std::string actual_error_str;
 
@@ -211,8 +211,8 @@ namespace TestSocket
 
 #endif
 
-    auto test_path_valid(const OptionalPathname& path,
-                         const ErrorCodeSet& expected_codes) -> void
+    auto test_pathname_valid(const OptionalPathname& path,
+                             const ErrorCodeSet& expected_codes) -> void
     {
         std::string actual_error_str;
 
@@ -227,8 +227,8 @@ namespace TestSocket
         assert(actual_error_str.empty());
     }
 
-    auto test_path_valid(const char* path,
-                         const ErrorCodeSet& expected_codes) -> void
+    auto test_pathname_valid(const char* path,
+                             const ErrorCodeSet& expected_codes) -> void
     {
         std::string actual_error_str;
 
@@ -243,11 +243,8 @@ namespace TestSocket
         assert(actual_error_str.empty());
     }
 
-    auto test_paths() -> void
+    auto test_paths_invalid() -> void
     {
-        static constexpr auto size_max {64};	// NOLINT
-        static constexpr auto size_min {8};	// NOLINT
-
 #ifndef OS_CYGWIN_NT
 	const ErrorCodeSet codes_invalid_directory {ENOENT};
 #ifdef OS_DARWIN
@@ -256,11 +253,29 @@ namespace TestSocket
 	const ErrorCodeSet codes_invalid_permission {EACCES};
 #endif
 #endif
+
+	const ErrorCodeSet codes_valid = {0};
+
+        const auto path_max {get_pathname(path_len_max)};
+        const auto path_max_less_one {get_pathname(path_len_max - 1)};
+        test_pathname_invalid(path_max.c_str(), codes_valid);
+        test_pathname_invalid(path_max, codes_valid);
+#ifndef OS_CYGWIN_NT
+        test_pathname_invalid_directory("/foo/bar", codes_invalid_directory);
+        test_pathname_invalid_permission("/foo", codes_invalid_permission);
+#endif
+    }
+
+    auto test_paths_valid() -> void
+    {
+        static constexpr auto size_max {64};	// NOLINT
+        static constexpr auto size_min {8};	// NOLINT
+
 	const ErrorCodeSet codes_valid = {0};
 
 #ifndef OS_CYGWIN_NT
-        test_path_valid(std::nullopt, codes_valid);
-        test_path_valid(nullptr, codes_valid);
+        test_pathname_valid(std::nullopt, codes_valid);
+        test_pathname_valid(nullptr, codes_valid);
 #endif
 
         for (std::size_t size = size_min; size <= size_max; size *= 2) {
@@ -272,20 +287,14 @@ namespace TestSocket
                           << std::endl;
             }
 
-            test_path_valid(path.c_str(), codes_valid);
-            test_path_valid(path, codes_valid);
+            test_pathname_valid(path.c_str(), codes_valid);
+            test_pathname_valid(path, codes_valid);
         };
 
         const auto path_max {get_pathname(path_len_max)};
         const auto path_max_less_one {get_pathname(path_len_max - 1)};
-        test_path_valid(path_max_less_one.c_str(), codes_valid);
-        test_path_valid(path_max_less_one, codes_valid);
-        test_path_invalid(path_max.c_str(), codes_valid);
-        test_path_invalid(path_max, codes_valid);
-#ifndef OS_CYGWIN_NT
-        test_path_invalid_directory("/foo/bar", codes_invalid_directory);
-        test_path_invalid_permission("/foo", codes_invalid_permission);
-#endif
+        test_pathname_valid(path_max_less_one.c_str(), codes_valid);
+        test_pathname_valid(path_max_less_one, codes_valid);
     }
 
     auto test_socketpair() -> void
@@ -314,7 +323,8 @@ auto main(int argc, char* argv[]) -> int
         }
 
         test_socketpair();
-        test_paths();
+        test_paths_valid();
+        test_paths_invalid();
     }
     catch (const std::exception& error) {
         std::cerr << error.what()
