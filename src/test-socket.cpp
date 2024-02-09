@@ -18,9 +18,10 @@
                                         // LogicError,
                                         // OptionalPathname,
                                         // OsErrorResult, Pathname,
-                                        // Socket, SocketPair, bind(),
+                                        // RangeError, Socket,
+                                        // SocketPair, bind(),
                                         // os_error_type,
-                                        // to_bytestring()
+                                        // path_len_max, to_path()
 #include "network/parse.h"              // parse()
 
 #include <sys/socket.h>     // AF_UNIX, AF_UNSPEC, SOCK_STREAM
