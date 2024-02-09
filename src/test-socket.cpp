@@ -63,7 +63,7 @@ namespace TestSocket
 
     static bool verbose {false};  // NOLINT
 
-    auto equal_to_sockname(const std::string& path, Socket sock) -> bool
+    auto equal_to_sockname(const std::string& path, const Socket& sock) -> bool
     {
         const auto self {sock.sockname()};
         std::cout << "Socket "
