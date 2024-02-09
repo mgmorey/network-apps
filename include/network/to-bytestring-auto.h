@@ -30,12 +30,6 @@ namespace Network
         validate(pointer, length);
         return to_bytestring(to_bytespan(pointer, length));
     }
-
-    auto to_bytestring(const auto* pointer) -> Network::ByteString
-    {
-        validate(pointer);
-        return to_bytestring(to_bytespan(pointer, sizeof *pointer));
-    }
 }
 
 #endif

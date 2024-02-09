@@ -16,6 +16,8 @@
 #ifndef NETWORK_VALIDATE_SIN6_H
 #define NETWORK_VALIDATE_SIN6_H
 
+#include "network/sa-len-type.h"                // sa_len_type
+
 #ifdef WIN32
 #include <ws2tcpip.h>       // sockaddr_in6
 #else
@@ -24,7 +26,8 @@
 
 namespace Network
 {
-    extern auto validate(const sockaddr_in6 *sin6) -> void;
+    extern auto validate(const sockaddr_in6 *sin6,
+                         sa_len_type sin6_len) -> void;
 }
 
 #endif

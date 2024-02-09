@@ -22,9 +22,10 @@
 #include <sys/socket.h>     // AF_INET6, sockaddr_in6
 #endif
 
-auto Network::validate(const sockaddr_in6 *sin6) -> void
+auto Network::validate(const sockaddr_in6 *sin6,
+                       sa_len_type sin6_len) -> void
 {
-    if (sin6->sin6_family != AF_INET6) {
+    if (sin6->sin6_family != AF_INET6 || sin6_len != sizeof *sin6) {
         throw LogicError("Invalid IP domain socket address");
     }
 }

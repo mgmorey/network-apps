@@ -22,9 +22,10 @@
 #include <netinet/in.h>     // AF_INET, sockaddr_in
 #endif
 
-auto Network::validate(const sockaddr_in *sin) -> void
+auto Network::validate(const sockaddr_in *sin,
+                       sa_len_type sin_len) -> void
 {
-    if (sin->sin_family != AF_INET) {
+    if (sin->sin_family != AF_INET || sin_len != sizeof *sin) {
         throw LogicError("Invalid IP domain socket address");
     }
 }
