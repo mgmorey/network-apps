@@ -163,7 +163,7 @@ namespace TestAddress
 
         try {
             const sockaddr_in sin {};
-            static_cast<void>(to_bytestring(&sin, sizeof sin));
+            static_cast<void>(to_bytestring(&sin));
         }
         catch (const Error& error) {
             print(error);
@@ -199,7 +199,7 @@ namespace TestAddress
 
         try {
             const sockaddr_in6 sin6 {};
-            static_cast<void>(to_bytestring(&sin6, sizeof sin6));
+            static_cast<void>(to_bytestring(&sin6));
         }
         catch (const Error& error) {
             print(error);
