@@ -15,6 +15,8 @@
 
 #include "network/validate-sin.h"               // validate()
 #include "network/logicerror.h"                 // LogicError
+#include "network/sa-len-type.h"                // sa_len_type
+#include "network/salengtherror.h"              // SaLengthError
 
 #ifdef WIN32
 #include <winsock2.h>       // AF_INET, sockaddr_in
@@ -22,10 +24,19 @@
 #include <netinet/in.h>     // AF_INET, sockaddr_in
 #endif
 
+#include <string>       // std::to_string()
+#include <utility>      // std::cmp_not_equal()
+
 auto Network::validate(const sockaddr_in *sin,
                        sa_len_type sin_len) -> void
 {
-    if (sin->sin_family != AF_INET || sin_len != sizeof *sin) {
+    if (std::cmp_not_equal(sin_len, sizeof *sin)) {
+        throw SaLengthError(std::to_string(sin_len),
+                            sizeof *sin,
+                            sizeof *sin);
+    }
+
+    if (sin->sin_family != AF_INET) {
         throw LogicError("Invalid IP domain socket address");
     }
 }

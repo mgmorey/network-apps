@@ -15,6 +15,8 @@
 
 #include "network/validate-sin6.h"              // validate()
 #include "network/logicerror.h"                 // LogicError
+#include "network/sa-len-type.h"                // sa_len_type
+#include "network/salengtherror.h"              // SaLengthError
 
 #ifdef WIN32
 #include <ws2tcpip.h>       // AF_INET6, sockaddr_in6
@@ -22,10 +24,19 @@
 #include <sys/socket.h>     // AF_INET6, sockaddr_in6
 #endif
 
+#include <string>       // std::to_string()
+#include <utility>      // std::cmp_not_equal()
+
 auto Network::validate(const sockaddr_in6 *sin6,
                        sa_len_type sin6_len) -> void
 {
-    if (sin6->sin6_family != AF_INET6 || sin6_len != sizeof *sin6) {
+    if (std::cmp_not_equal(sin6_len, sizeof *sin6)) {
+        throw SaLengthError(std::to_string(sin6_len),
+                            sizeof *sin6,
+                            sizeof *sin6);
+    }
+
+    if (sin6->sin6_family != AF_INET6) {
         throw LogicError("Invalid IP domain socket address");
     }
 }
