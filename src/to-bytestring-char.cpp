@@ -30,7 +30,7 @@
 
 #include <sys/socket.h>     // AF_UNIX
 
-#include <cstring>      // ::strncpy(), ::strnlen()
+#include <cstring>      // ::memcpy(), ::strnlen()
 
 auto Network::to_bytestring(const char* path) ->
     Network::ByteString
@@ -42,7 +42,7 @@ auto Network::to_bytestring(const char* path) ->
         const auto str_len {::strnlen(path, sizeof sun.sun_path)};
         const auto path_len {to_path_len(str_len + 1)};
         auto* sun_path {get_path_pointer(&sun)};
-        ::strncpy(sun_path, path, path_len);
+        ::memcpy(sun_path, path, path_len);
         sun_len += path_len;
     }
 
