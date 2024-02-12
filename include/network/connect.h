@@ -16,11 +16,16 @@
 #ifndef NETWORK_CONNECT_H
 #define NETWORK_CONNECT_H
 
-#include "network/connect-endpoint.h"       // Endpoint, OpenResult,
-                                            // SocketHints, connect()
-#include "network/connect-socket.h"         // ByteString,
-                                            // OsErrorResult, Socket,
-                                            // connect()
+#include "network/connect-endpoint.h"           // Endpoint,
+                                                // OpenResult,
+                                                // SocketHints,
+                                                // connect()
+#include "network/connect-socket-auto.h"        // OsErrorResult,
+                                                // Socket, connect(),
+                                                // to_bytestring()
+#include "network/connect-socket-bs.h"          // ByteString,
+                                                // OsErrorResult,
+                                                // Socket, connect()
 
 
 #endif

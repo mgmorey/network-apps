@@ -16,9 +16,14 @@
 #ifndef NETWORK_BIND_H
 #define NETWORK_BIND_H
 
-#include "network/bind-endpoint.h"      // Endpoint, OpenResult,
-                                        // SocketHints, bind()
-#include "network/bind-socket.h"        // ByteString, OsErrorResult,
-                                        // Socket, bind()
+#include "network/bind-endpoint.h"              // Endpoint,
+                                                // OpenResult,
+                                                // SocketHints, bind()
+#include "network/bind-socket-auto.h"           // OsErrorResult,
+                                                // Socket, bind(),
+                                                // to_bytestring()
+#include "network/bind-socket-bs.h"             // ByteString,
+                                                // OsErrorResult,
+                                                // Socket, bind()
 
 #endif

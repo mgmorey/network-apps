@@ -13,25 +13,18 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_BIND_SOCKET_H
-#define NETWORK_BIND_SOCKET_H
+#ifndef NETWORK_BIND_SOCKET_BS_H
+#define NETWORK_BIND_SOCKET_BS_H
 
 #include "network/bytestring.h"                 // ByteString
 #include "network/oserrorresult.h"              // OsErrorResult
 #include "network/socket.h"                     // Socket
-#include "network/to-bytestring-auto.h"         // to_bytestring()
 
 namespace Network
 {
     extern auto bind(const Socket& sock,
                      const ByteString& addr,
                      bool verbose = false) -> OsErrorResult;
-    auto bind(const Socket &sock,
-              const auto &value,
-              bool verbose = false) -> OsErrorResult
-    {
-        return Network::bind(sock, to_bytestring(value), verbose);
-    }
 }
 
 #endif
