@@ -15,8 +15,7 @@
 
 #include "network/to-bytestring-ai.h"           // to_bytestring()
 #include "network/bytestring.h"                 // ByteString
-#include "network/sa-len-type.h"                // sa_len_type
-#include "network/to-bytestring.h"              // to_bytestring()
+#include "network/to-bytestring-auto.h"         // to_bytestring()
 #include "network/to-sa-len.h"                  // to_sa_len()
 
 #ifdef WIN32

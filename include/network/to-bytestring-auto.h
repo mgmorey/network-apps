@@ -19,8 +19,14 @@
 #include "network/bytestring.h"                 // ByteString
 #include "network/sa-len-type.h"                // sa_len_type
 #include "network/to-bytespan.h"                // to_bytespan()
+#include "network/to-bytestring-ai.h"           // to_bytestring()
+#include "network/to-bytestring-char.h"         // to_bytestring()
+#include "network/to-bytestring-path.h"         // to_bytestring()
 #include "network/to-bytestring-span.h"         // to_bytestring()
-#include "network/validate.h"                   // validate()
+#include "network/validate-sa.h"                // validate()
+#include "network/validate-sin.h"               // validate()
+#include "network/validate-sin6.h"              // validate()
+#include "network/validate-sun.h"               // validate()
 
 namespace Network
 {
