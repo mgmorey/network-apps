@@ -13,10 +13,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/to-bytestring-ai.h"   // to_bytestring()
-#include "network/bytestring.h"         // ByteString
-#include "network/to-bytestring.h"      // to_bytestring()
-#include "network/to-size.h"            // to_size()
+#include "network/to-bytestring-ai.h"           // to_bytestring()
+#include "network/bytestring.h"                 // ByteString
+#include "network/sa-len-type.h"                // sa_len_type
+#include "network/to-bytestring.h"              // to_bytestring()
+#include "network/to-sa-len.h"                  // to_sa_len()
 
 #ifdef WIN32
 #include <ws2tcpip.h>   // addrinfo
@@ -26,5 +27,5 @@
 
 auto Network::to_bytestring(const addrinfo& addrinfo) -> Network::ByteString
 {
-    return to_bytestring(addrinfo.ai_addr, to_size(addrinfo.ai_addrlen));
+    return to_bytestring(addrinfo.ai_addr, to_sa_len(addrinfo.ai_addrlen));
 }
