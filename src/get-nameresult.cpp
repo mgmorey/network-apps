@@ -37,7 +37,7 @@ auto Network::get_nameresult(const GetNameHandler& handler,
     Network::ByteStringResult
 {
     auto addr {create_bytestring()};
-    auto* const pointer {get_sa_pointer(addr)};
+    auto* const addr_ptr {get_sa_pointer(addr)};
     auto addr_len {to_socket_length(addr.size())};
     const AddressString addr_str {addr};
 
@@ -56,7 +56,7 @@ auto Network::get_nameresult(const GetNameHandler& handler,
 
     reset_last_context_error();
 
-    if (handler.first(args.handle, pointer, &addr_len) == socket_error) {
+    if (handler.first(args.handle, addr_ptr, &addr_len) == socket_error) {
         const auto error {get_last_context_error()};
         const auto os_error {to_os_error(error)};
         std::ostringstream oss;
