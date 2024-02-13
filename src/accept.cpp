@@ -45,11 +45,6 @@ auto Network::accept(const Socket& sock, bool verbose) ->
     const auto handle_1 {descriptor_type {sock}};
     auto addr {create_bytestring()};
     auto* const pointer {get_sa_pointer(addr)};
-
-
-
-
-
     auto length {to_socket_length(addr.size())};
     const AddressString addr_str {addr};
 
