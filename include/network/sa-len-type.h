@@ -18,7 +18,7 @@
 
 namespace Network
 {
-    using sa_len_type = unsigned short;
+    using sa_len_type = unsigned int;
 }
 
 #endif
