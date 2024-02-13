@@ -16,11 +16,9 @@
 #ifndef NETWORK_SA_LEN_TYPE_H
 #define NETWORK_SA_LEN_TYPE_H
 
-#include "network/socket-length-type.h" // sa_len_type
-
 namespace Network
 {
-    using sa_len_type = socket_length_type;
+    using sa_len_type = unsigned short;
 }
 
 #endif
