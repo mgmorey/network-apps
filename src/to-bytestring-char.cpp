@@ -19,7 +19,8 @@
 #include "network/os-features.h"                // HAVE_SOCKADDR_SA_LEN
 #include "network/sun-len-limits.h"             // sun_len_min
 #include "network/sun-len-type.h"               // sun_len_type
-#include "network/to-bytestring-auto.h"         // to_bytestring()
+#include "network/to-bytespan.h"                // to_bytespan()
+#include "network/to-bytestring-span.h"         // to_bytestring()
 #include "network/to-path-length.h"             // to_path_length()
 
 #ifndef WIN32
@@ -50,7 +51,7 @@ auto Network::to_bytestring(const char* path) ->
     sun.sun_len = sun_len;
 #endif
     sun.sun_family = AF_UNIX;
-    return to_bytestring(&sun, sun_len);
+    return to_bytestring(to_bytespan(&sun, sun_len));
 }
 
 #endif
