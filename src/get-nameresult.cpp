@@ -38,7 +38,7 @@ auto Network::get_nameresult(const GetNameHandler& handler,
 {
     auto addr {create_bytestring()};
     auto* const pointer {get_sa_pointer(addr)};
-    auto length {to_socket_length(addr.size())};
+    auto addr_len {to_socket_length(addr.size())};
     const AddressString addr_str {addr};
 
     if (args.verbose) {
@@ -49,14 +49,14 @@ auto Network::get_nameresult(const GetNameHandler& handler,
                   << ", "
                   << addr_str
                   << ", "
-                  << length
+                  << addr_len
                   << ", ...)"
                   << std::endl;
     }
 
     reset_last_context_error();
 
-    if (handler.first(args.handle, pointer, &length) == socket_error) {
+    if (handler.first(args.handle, pointer, &addr_len) == socket_error) {
         const auto error {get_last_context_error()};
         const auto os_error {to_os_error(error)};
         std::ostringstream oss;
@@ -67,7 +67,7 @@ auto Network::get_nameresult(const GetNameHandler& handler,
             << ", "
             << addr_str
             << ", "
-            << length
+            << addr_len
             << ", ...) failed with error "
             << error
             << ": "
@@ -75,6 +75,6 @@ auto Network::get_nameresult(const GetNameHandler& handler,
         return OsErrorResult {os_error, oss.str()};
     }
 
-    addr.resize(to_size(length));
+    addr.resize(to_size(addr_len));
     return addr;
 }
