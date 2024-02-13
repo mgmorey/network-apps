@@ -24,7 +24,7 @@
 #include "network/to-path-len.h"        // to_path_len()
 #include "network/to-sa-len.h"          // to_sa_len()
 #include "network/to-size.h"            // to_size()
-#include "network/to-sock-len.h"        // to_sock_len()
+#include "network/to-socket-length.h"   // to_socket_length()
 #include "network/to-sun-len.h"         // to_sun_len()
 
 #include <climits>      // INT_MAX, INT_MIN
@@ -57,8 +57,8 @@ namespace TestRanges
 #endif
     using Network::sa_len_max;
     using Network::sa_len_min;
-    using Network::sock_len_max;
-    using Network::sock_len_min;
+    using Network::socket_length_max;
+    using Network::socket_length_min;
 #ifndef WIN32
     using Network::sun_len_max;
     using Network::sun_len_min;
@@ -71,7 +71,7 @@ namespace TestRanges
 #endif
     using Network::to_sa_len;
     using Network::to_size;
-    using Network::to_sock_len;
+    using Network::to_socket_length;
 #ifndef WIN32
     using Network::to_sun_len;
 #endif
@@ -93,8 +93,8 @@ namespace TestRanges
     static constexpr auto expected_error_sa_len_re {
         R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of sa_len_type)"
     };
-    static constexpr auto expected_error_sock_len_re {
-        R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of sock_len_type)"
+    static constexpr auto expected_error_socket_length_re {
+        R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of socket_length_type)"
     };
     static constexpr auto expected_error_std_size_re {
         R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of std::size_t)"
@@ -226,26 +226,26 @@ namespace TestRanges
         test_sa_len_invalid(sa_len_max + 1);
     }
 
-    auto test_sock_len_invalid(auto value) -> void
+    auto test_socket_length_invalid(auto value) -> void
     {
         std::string actual_error_str;
 
         try {
-            static_cast<void>(to_sock_len(value));
+            static_cast<void>(to_socket_length(value));
         }
         catch (const SocketLengthError& error) {
             print(error);
             actual_error_str = error.what();
         }
 
-        const std::regex expected_error_regex {expected_error_sock_len_re};
+        const std::regex expected_error_regex {expected_error_socket_length_re};
         assert(std::regex_match(actual_error_str, expected_error_regex));
     }
 
-    auto test_sock_len_invalid() -> void
+    auto test_socket_length_invalid() -> void
     {
-        test_sock_len_invalid(sock_len_min - 1);
-        test_sock_len_invalid(sock_len_max + 1);
+        test_socket_length_invalid(socket_length_min - 1);
+        test_socket_length_invalid(socket_length_max + 1);
     }
 
     auto test_std_size_invalid(auto value) -> void
@@ -308,7 +308,7 @@ auto main() -> int
         test_path_len_invalid();
 #endif
         test_sa_len_invalid();
-        test_sock_len_invalid();
+        test_socket_length_invalid();
         test_std_size_invalid();
 #ifndef WIN32
         test_sun_len_invalid();

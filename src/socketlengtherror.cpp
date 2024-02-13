@@ -13,9 +13,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/socketlengtherror.h"  // SocketLengthError
-#include "network/rangeerror.h"         // RangeError
-#include "network/sock-len-limits.h"    // sock_len_max, sock_len_min
+#include "network/socketlengtherror.h"          // SocketLengthError
+#include "network/rangeerror.h"                 // RangeError
+#include "network/socket-length-limits.h"       // socket_length_max,
+                                                // socket_length_min
 
 #include <utility>      // std::move()
 #include <version>
@@ -31,17 +32,17 @@
 auto Network::SocketLengthError::format(const std::string& t_str) -> std::string
 {
 #ifdef __cpp_lib_format
-    return std::format("Value {} is out of range [{}, {}] of sock_len_type",
-                       t_str, sock_len_min, sock_len_max);
+    return std::format("Value {} is out of range [{}, {}] of socket_length_type",
+                       t_str, socket_length_min, socket_length_max);
 #else
     std::ostringstream oss;
     oss << "Value "
         << t_str
         << " is out of range ["
-        << sock_len_min
+        << socket_length_min
         << ", "
-        << sock_len_max
-        << "] of sock_len_type";
+        << socket_length_max
+        << "] of socket_length_type";
     return oss.str();
 #endif
 }

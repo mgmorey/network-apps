@@ -16,12 +16,13 @@
 #ifndef NETWORK_GET_SA_LENGTH_H
 #define NETWORK_GET_SA_LENGTH_H
 
-#include "network/bytestring.h"         // ByteString
-#include "network/sock-len-type.h"      // sock_len_type
+#include "network/bytestring.h"                 // ByteString
+#include "network/socket-length-type.h"         // sock_len_type
 
 namespace Network
 {
-    extern auto get_sa_length(const ByteString& addr) noexcept -> sock_len_type;
+    extern auto get_sa_length(const ByteString &addr) noexcept ->
+        socket_length_type;
 }
 
 #endif

@@ -16,12 +16,12 @@
 #ifndef NETWORK_SUN_LEN_TYPE_H
 #define NETWORK_SUN_LEN_TYPE_H
 
-#include <cstddef>      // std::size_t
+#include "network/sa-len-type.h"       // sa_len_type
 
 namespace Network
 {
 #ifndef WIN32
-    using sun_len_type = std::size_t;
+    using sun_len_type = sa_len_type;
 #endif
 }
 

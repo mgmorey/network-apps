@@ -13,23 +13,23 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-length.h"         // get_length()
-#include "network/bytestring.h"         // ByteString
-#include "network/os-features.h"        // HAVE_SOCKADDR_SA_LEN
-#include "network/sock-len-type.h"      // sock_len_type,
+#include "network/get-length.h"                 // get_length()
+#include "network/bytestring.h"                 // ByteString
+#include "network/os-features.h"                // HAVE_SOCKADDR_SA_LEN
+#include "network/socket-length-type.h"         // socket_length_type
 
 #ifdef HAVE_SOCKADDR_SA_LEN
-#include "network/get-sa-length.h"      // get_sa_length()
+#include "network/get-sa-length.h"              // get_sa_length()
 #else
-#include "network/to-sock-len.h"        // to_sock_len()
+#include "network/to-socket-length.h"           // to_socket_length()
 #endif
 
-auto Network::get_length(const ByteString& addr) -> Network::sock_len_type
+auto Network::get_length(const ByteString& addr) -> Network::socket_length_type
 {
 #ifdef HAVE_SOCKADDR_SA_LEN
     return get_sa_length(addr);
 #else
-    return to_sock_len(addr.length());
+    return to_socket_length(addr.length());
 #endif
 
 }

@@ -13,15 +13,20 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_SOCK_LEN_LIMITS_H
-#define NETWORK_SOCK_LEN_LIMITS_H
+#ifndef NETWORK_SOCKET_LENGTH_TYPE_H
+#define NETWORK_SOCKET_LENGTH_TYPE_H
 
-#include "network/sa-len-limits.h"      // sa_len_max, sa_len_min
+#ifndef WIN32
+#include <sys/socket.h>     // socklen_t
+#endif
 
 namespace Network
 {
-    static constexpr int sock_len_max {sa_len_max};
-    static constexpr int sock_len_min {sa_len_min};
+#ifdef WIN32
+    using socket_length_type = int;
+#else
+    using socket_length_type = socklen_t;
+#endif
 }
 
 #endif

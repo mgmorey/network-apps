@@ -20,7 +20,7 @@
 #ifdef HAVE_SOCKADDR_SA_LEN
 #include "network/get-sa-length.h"              // get_sa_length()
 #include "network/salengtherror.h"              // SaLengthError
-#include "network/to-sock-len.h"                // to_sock_len()
+#include "network/to-socket-length.h"           // to_socket_length()
 
 #include <string>       // std::to_string()
 #include <utility>      // std::cmp_not_equal()

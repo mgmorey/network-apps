@@ -80,8 +80,8 @@
                                                 // name_len_min,
                                                 // path_len_max,
                                                 // path_len_min,
-                                                // sock_len_max,
-                                                // sock_len_min
+                                                // socket_length_max,
+                                                // socket_length_min
 #include "network/listen.h"                     // listen()
 #include "network/open.h"                       // open()
 #include "network/os-error.h"                   // format_os_error(),
@@ -106,7 +106,7 @@
 #include "network/to-os-error.h"                // to_os_error()
 #include "network/to-path.h"                    // to_path()
 #include "network/to-size.h"                    // to_size()
-#include "network/to-sock-len.h"                // to_sock_len()
+#include "network/to-socket-length.h"           // to_socket_lengtho()
 #include "network/to-string.h"                  // to_string()
 #include "network/types.h"                      // Buffer, ByteString,
                                                 // Hostname,
@@ -122,9 +122,9 @@
                                                 // result_type,
                                                 // socket_family_type,
                                                 // socket_flags_type,
+                                                // socket_length_type,
                                                 // socket_protocol_type,
-                                                // socket_type_type,
-                                                // sock_len_type
+                                                // socket_type_type
 #include "network/uniquify.h"                   // uniquify()
 #include "network/version-null.h"               // version_null
 #include "network/version.h"                    // Version

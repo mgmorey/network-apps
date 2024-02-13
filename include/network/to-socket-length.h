@@ -13,26 +13,27 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_TO_SOCK_LEN_H
-#define NETWORK_TO_SOCK_LEN_H
+#ifndef NETWORK_TO_SOCKET_LENGTH_H
+#define NETWORK_TO_SOCKET_LENGTH_H
 
-#include "network/sock-len-limits.h"    // sock_len_max, sock_len_min
-#include "network/sock-len-type.h"      // sock_len_type
-#include "network/socketlengtherror.h"  // SocketLengthError
+#include "network/socket-length-limits.h"       // socket_length_max,
+                                                // socket_length_min
+#include "network/socket-length-type.h"         // socket_length_type
+#include "network/socketlengtherror.h"          // SocketLengthError
 
 #include <string>       // std::to_string()
 #include <utility>      // std::cmp_greater(), std::cmp_less()
 
 namespace Network
 {
-    auto to_sock_len(auto value) -> sock_len_type
+    auto to_socket_length(auto value) -> socket_length_type
     {
-        if (std::cmp_less(value, sock_len_min) ||
-            std::cmp_greater(value, sock_len_max)) {
+        if (std::cmp_less(value, socket_length_min) ||
+            std::cmp_greater(value, socket_length_max)) {
             throw SocketLengthError(std::to_string(value));
         }
 
-        return static_cast<sock_len_type>(value);
+        return static_cast<socket_length_type>(value);
     }
 }
 
