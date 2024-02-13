@@ -20,7 +20,7 @@
 #include "network/sun-len-limits.h"             // sun_len_min
 #include "network/sun-len-type.h"               // sun_len_type
 #include "network/to-bytestring-auto.h"         // to_bytestring()
-#include "network/to-path-len.h"                // to_path_len()
+#include "network/to-path-length.h"             // to_path_length()
 
 #ifndef WIN32
 #include <sys/un.h>         // sockaddr_un

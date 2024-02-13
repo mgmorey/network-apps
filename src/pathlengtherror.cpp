@@ -13,9 +13,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/pathlengtherror.h"    // PathLengthError
-#include "network/path-len-limits.h"    // path_len_max, path_len_min
-#include "network/rangeerror.h"         // RangeError
+#include "network/pathlengtherror.h"            // PathLengthError
+#include "network/path-length-limits.h"         // path_length_max,
+                                                // path_length_min
+#include "network/rangeerror.h"                 // RangeError
 
 #include <string>       // std::string
 #include <utility>      // std::move()
@@ -32,17 +33,17 @@
 auto Network::PathLengthError::format(const std::string& t_str) -> std::string
 {
 #ifdef __cpp_lib_format
-    return std::format("Value {} is out of range [{}, {}] of path_len_type",
-                       t_str, path_len_min, path_len_max);
+    return std::format("Value {} is out of range [{}, {}] of path_length_type",
+                       t_str, path_length_min, path_length_max);
 #else
     std::ostringstream oss;
     oss << "Value "
         << t_str
         << " is out of range ["
-        << path_len_min
+        << path_length_min
         << ", "
-        << path_len_max
-        << "] of path_len_type";
+        << path_length_max
+        << "] of path_length_type";
     return oss.str();
 #endif
 }

@@ -20,8 +20,8 @@
 #endif
 #include "network/to-character.h"       // to_character()
 #include "network/to-integer.h"         // to_integer()
-#include "network/to-name-len.h"        // to_name_len()
-#include "network/to-path-len.h"        // to_path_len()
+#include "network/to-name-length.h"     // to_name_length()
+#include "network/to-path-length.h"     // to_path_length()
 #include "network/to-sa-len.h"          // to_sa_len()
 #include "network/to-size.h"            // to_size()
 #include "network/to-socket-length.h"   // to_socket_length()
@@ -49,11 +49,11 @@ namespace TestRanges
 #ifndef WIN32
     using Network::SunLengthError;
 #endif
-    using Network::name_len_max;
-    using Network::name_len_min;
+    using Network::name_length_max;
+    using Network::name_length_min;
 #ifndef WIN32
-    using Network::path_len_max;
-    using Network::path_len_min;
+    using Network::path_length_max;
+    using Network::path_length_min;
 #endif
     using Network::sa_len_max;
     using Network::sa_len_min;
@@ -65,7 +65,7 @@ namespace TestRanges
 #endif
     using Network::to_character;
     using Network::to_integer;
-    using Network::to_name_len;
+    using Network::to_name_length;
 #ifndef WIN32
     using Network::to_path_len;
 #endif
@@ -82,12 +82,12 @@ namespace TestRanges
     static constexpr auto expected_error_integer_re {
         R"(Value (\d+|-\d+) is out of range \[-\d+, \d+\] of int)"
     };
-    static constexpr auto expected_error_name_len_re {
-        R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of name_len_type)"
+    static constexpr auto expected_error_name_length_re {
+        R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of name_length_type)"
     };
 #ifndef WIN32
-    static constexpr auto expected_error_path_len_re {
-        R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of path_len_type)"
+    static constexpr auto expected_error_path_length_re {
+        R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of path_length_type)"
     };
 #endif
     static constexpr auto expected_error_sa_len_re {
@@ -156,31 +156,31 @@ namespace TestRanges
         test_integer_invalid(static_cast<long long>(INT_MAX) + 1);
     }
 
-    auto test_name_len_invalid(auto value) -> void
+    auto test_name_length_invalid(auto value) -> void
     {
         std::string actual_error_str;
 
         try {
-            static_cast<void>(to_name_len(value));
+            static_cast<void>(to_name_length(value));
         }
         catch (const NameLengthError& error) {
             print(error);
             actual_error_str = error.what();
         }
 
-        const std::regex expected_error_regex {expected_error_name_len_re};
+        const std::regex expected_error_regex {expected_error_name_length_re};
         assert(std::regex_match(actual_error_str, expected_error_regex));
     }
 
-    auto test_name_len_invalid() -> void
+    auto test_name_length_invalid() -> void
     {
-        test_name_len_invalid(name_len_min - 1);
-        test_name_len_invalid(name_len_max + 1);
+        test_name_length_invalid(name_length_min - 1);
+        test_name_length_invalid(name_length_max + 1);
     }
 
 #ifndef WIN32
 
-    auto test_path_len_invalid(auto value) -> void
+    auto test_path_length_invalid(auto value) -> void
     {
         std::string actual_error_str;
 
@@ -192,14 +192,14 @@ namespace TestRanges
             actual_error_str = error.what();
         }
 
-        const std::regex expected_error_regex {expected_error_path_len_re};
+        const std::regex expected_error_regex {expected_error_path_length_re};
         assert(std::regex_match(actual_error_str, expected_error_regex));
     }
 
-    auto test_path_len_invalid() -> void
+    auto test_path_length_invalid() -> void
     {
-        test_path_len_invalid(path_len_min - 1);
-        test_path_len_invalid(path_len_max + 1);
+        test_path_length_invalid(path_length_min - 1);
+        test_path_length_invalid(path_length_max + 1);
     }
 
 #endif
@@ -303,9 +303,9 @@ auto main() -> int
     try {
         test_character_invalid();
         test_integer_invalid();
-        test_name_len_invalid();
+        test_name_length_invalid();
 #ifndef WIN32
-        test_path_len_invalid();
+        test_path_length_invalid();
 #endif
         test_sa_len_invalid();
         test_socket_length_invalid();

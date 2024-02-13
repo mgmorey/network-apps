@@ -16,14 +16,14 @@
 #ifndef NETWORK_HOSTNAME_H
 #define NETWORK_HOSTNAME_H
 
-#include "network/name-len-limits.h"    // name_len_max
+#include "network/name-length-limits.h"         // name_length_max
 
 #include <string>       // std::string
 
 namespace Network
 {
     using Hostname = std::string;
-    constexpr auto hostname_size_max {name_len_max};
+    constexpr auto hostname_size_max {name_length_max};
 }
 
 #endif

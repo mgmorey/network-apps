@@ -13,26 +13,27 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_TO_NAME_LEN_H
-#define NETWORK_TO_NAME_LEN_H
+#ifndef NETWORK_TO_NAME_LENGTH_H
+#define NETWORK_TO_NAME_LENGTH_H
 
-#include "network/name-len-limits.h"    // name_len_max, name_len_min
-#include "network/name-len-type.h"      // name_len_type
-#include "network/namelengtherror.h"    // NameLengthError
+#include "network/name-length-limits.h"         // name_length_max,
+                                                // name_length_min
+#include "network/name-length-type.h"           // name_length_type
+#include "network/namelengtherror.h"            // NameLengthError
 
 #include <string>       // std::to_string()
 #include <utility>      // std::cmp_greater(), std::cmp_less()
 
 namespace Network
 {
-    auto to_name_len(auto value) -> name_len_type
+    auto to_name_length(auto value) -> name_length_type
     {
-        if (std::cmp_less(value, name_len_min) ||
-            std::cmp_greater(value, name_len_max)) {
+        if (std::cmp_less(value, name_length_min) ||
+            std::cmp_greater(value, name_length_max)) {
             throw NameLengthError(std::to_string(value));
         }
 
-        return static_cast<name_len_type>(value);
+        return static_cast<name_length_type>(value);
     }
 }
 

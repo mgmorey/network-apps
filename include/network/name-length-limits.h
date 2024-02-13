@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_NAME_LEN_LIMITS_H
-#define NETWORK_NAME_LEN_LIMITS_H
+#ifndef NETWORK_NAME_LENGTH_LIMITS_H
+#define NETWORK_NAME_LENGTH_LIMITS_H
 
 #ifdef WIN32
 #include <ws2tcpip.h>   // NI_MAXHOST
@@ -28,8 +28,8 @@
 
 namespace Network
 {
-    static constexpr auto name_len_max {NI_MAXHOST};
-    static constexpr auto name_len_min {0};
+    static constexpr auto name_length_max {NI_MAXHOST};
+    static constexpr auto name_length_min {0};
 }
 
 #endif

@@ -16,10 +16,10 @@
 #ifndef NETWORK_LIMITS_H
 #define NETWORK_LIMITS_H
 
-#include "network/name-len-limits.h"            // name_len_max,
-                                                // name_len_min
-#include "network/path-len-limits.h"            // path_len_max,
-                                                // path_len_min
+#include "network/name-length-limits.h"         // name_length_max,
+                                                // name_length_min
+#include "network/path-length-limits.h"         // path_length_max,
+                                                // path_length_min
 #include "network/sa-len-limits.h"              // sa_len_max,
                                                 // sa_len_min
 #include "network/socket-length-limits.h"       // socket_length_max,

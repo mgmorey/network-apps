@@ -13,28 +13,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_TO_PATH_LEN_H
-#define NETWORK_TO_PATH_LEN_H
+#ifndef NETWORK_PATH_LENGTH_LIMITS_H
+#define NETWORK_PATH_LENGTH_LIMITS_H
 
-#include "network/path-len-limits.h"    // path_len_max, path_len_min
-#include "network/path-len-type.h"      // path_len_type
-#include "network/pathlengtherror.h"    // PathLengthError
-
-#include <string>       // std::to_string()
-#include <utility>      // std::cmp_greater(), std::cmp_less()
+#include "network/get-path-size.h"              // get_path_size()
 
 namespace Network
 {
 #ifndef WIN32
-    auto to_path_len(auto value) -> path_len_type
-    {
-        if (std::cmp_less(value, path_len_min) ||
-            std::cmp_greater(value, path_len_max)) {
-            throw PathLengthError(std::to_string(value));
-        }
-
-        return static_cast<path_len_type>(value);
-    }
+    static constexpr auto path_length_max {get_path_size()};
+    static constexpr auto path_length_min {0};
 #endif
 }
 

@@ -21,7 +21,7 @@
 #include "network/hostnameresult.h"             // HostnameResult
 #include "network/oserrorresult.h"              // OsErrorResult
 #include "network/reset-last-context-error.h"   // reset_last_context_error()
-#include "network/to-name-len.h"                // to_name_len()
+#include "network/to-name-length.h"             // to_name_length()
 #include "network/to-os-error.h"                // to_os_error()
 
 #ifdef WIN32
@@ -46,7 +46,7 @@ auto Network::get_hostnameresult(bool verbose) -> Network::HostnameResult
                   << std::endl;
     }
 
-    const auto size {to_name_len(buffer.size() - 1)};
+    const auto size {to_name_length(buffer.size() - 1)};
     reset_last_context_error();
 
     if (::gethostname(buffer.data(), size) == -1) {

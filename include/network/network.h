@@ -76,10 +76,10 @@
 #include "network/get-sun-pointer.h"            // get_sun_pointer()
 #include "network/get-templates.h"              // get_templates()
 #include "network/is-valid.h"                   // is_valid()
-#include "network/limits.h"                     // name_len_max,
-                                                // name_len_min,
-                                                // path_len_max,
-                                                // path_len_min,
+#include "network/limits.h"                     // name_length_max,
+                                                // name_length_min,
+                                                // path_length_max,
+                                                // path_length_min,
                                                 // socket_length_max,
                                                 // socket_length_min
 #include "network/listen.h"                     // listen()
@@ -102,7 +102,7 @@
 #include "network/to-bytespan.h"                // to_bytespan()
 #include "network/to-bytestring.h"              // to_bytestring()
 #include "network/to-integer.h"                 // to_integer()
-#include "network/to-name-len.h"                // to_name_len()
+#include "network/to-name-length.h"             // to_name_length()
 #include "network/to-os-error.h"                // to_os_error()
 #include "network/to-path.h"                    // to_path()
 #include "network/to-size.h"                    // to_size()

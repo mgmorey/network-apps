@@ -13,17 +13,17 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_NAME_LEN_TYPE_H
-#define NETWORK_NAME_LEN_TYPE_H
+#ifndef NETWORK_NAME_LENGTH_TYPE_H
+#define NETWORK_NAME_LENGTH_TYPE_H
 
 #include <cstddef>      // std::size_t
 
 namespace Network
 {
 #ifdef WIN32
-    using name_len_type = int;
+    using name_length_type = int;
 #else
-    using name_len_type = std::size_t;
+    using name_length_type = std::size_t;
 #endif
 }
 

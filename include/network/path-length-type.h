@@ -13,16 +13,15 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_PATH_LEN_LIMITS_H
-#define NETWORK_PATH_LEN_LIMITS_H
+#ifndef NETWORK_PATH_LENGTH_TYPE_H
+#define NETWORK_PATH_LENGTH_TYPE_H
 
-#include "network/get-path-size.h"              // get_path_size()
+#include <cstddef>      // std::size_t
 
 namespace Network
 {
 #ifndef WIN32
-    static constexpr auto path_len_max {get_path_size()};
-    static constexpr auto path_len_min {0};
+    using path_length_type = std::size_t;
 #endif
 }
 

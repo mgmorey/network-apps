@@ -21,7 +21,7 @@
                                         // RangeError, Socket,
                                         // SocketPair, bind(),
                                         // os_error_type,
-                                        // path_len_max, to_path()
+                                        // path_length_max, to_path()
 #include "network/parse.h"              // parse()
 
 #include <sys/socket.h>     // AF_UNIX, AF_UNSPEC, SOCK_STREAM
@@ -52,13 +52,13 @@ namespace TestSocket
     using Network::bind;
     using Network::os_error_type;
     using Network::parse;
-    using Network::path_len_max;
+    using Network::path_length_max;
     using Network::to_path;
 
     using ErrorCodeSet = std::set<os_error_type>;
 
-    static constexpr auto expected_error_path_len_re {
-        R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of path_len_type)"
+    static constexpr auto expected_error_path_length_re {
+        R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of path_length_type)"
             };
     static constexpr auto handle_width {6};
 
@@ -181,7 +181,7 @@ namespace TestSocket
             print(error);
         }
 
-        const std::regex expected_error_regex {expected_error_path_len_re};
+        const std::regex expected_error_regex {expected_error_path_length_re};
         assert(std::regex_match(actual_error_str, expected_error_regex));
     }
 
@@ -198,7 +198,7 @@ namespace TestSocket
             print(error);
         }
 
-        const std::regex expected_error_regex {expected_error_path_len_re};
+        const std::regex expected_error_regex {expected_error_path_length_re};
         assert(std::regex_match(actual_error_str, expected_error_regex));
     }
 
@@ -281,7 +281,7 @@ namespace TestSocket
 #endif
 #endif
 
-        const auto path_max {get_pathname(path_len_max)};
+        const auto path_max {get_pathname(path_length_max)};
         test_pathname_invalid(path_max.c_str(), {});
         test_pathname_invalid(path_max, {});
 #ifndef OS_CYGWIN_NT
@@ -308,7 +308,7 @@ namespace TestSocket
             test_pathname_valid(path, codes_valid);
         };
 
-        const auto path_max_less_one {get_pathname(path_len_max - 1)};
+        const auto path_max_less_one {get_pathname(path_length_max - 1)};
         test_pathname_valid(path_max_less_one.c_str(), codes_valid);
         test_pathname_valid(path_max_less_one, codes_valid);
     }
