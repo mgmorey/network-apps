@@ -16,7 +16,7 @@
 #ifndef NETWORK_SUN_LEN_TYPE_H
 #define NETWORK_SUN_LEN_TYPE_H
 
-#include "network/sa-len-type.h"       // sa_len_type
+#include "network/sa-len-type.h"        // sa_len_type
 
 namespace Network
 {

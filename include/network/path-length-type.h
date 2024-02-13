@@ -16,12 +16,12 @@
 #ifndef NETWORK_PATH_LENGTH_TYPE_H
 #define NETWORK_PATH_LENGTH_TYPE_H
 
-#include <cstddef>      // std::size_t
+#include "network/sun-len-type.h"       // sun_len_type
 
 namespace Network
 {
 #ifndef WIN32
-    using path_length_type = std::size_t;
+    using path_length_type = sun_len_type;
 #endif
 }
 
