@@ -38,7 +38,7 @@ auto Network::to_bytestring(const OptionalPathname& path) ->
     sun_len_type sun_len {sun_len_min};
 
     if (path) {
-        const auto path_len {to_path_len(path->length() + 1)};
+        const auto path_len {to_path_length(path->length() + 1)};
         auto* sun_path {get_path_pointer(&sun)};
         path->copy(sun_path, path_len - 1);
         sun_len += path_len;

@@ -40,7 +40,7 @@ auto Network::to_bytestring(const char* path) ->
 
     if (path != nullptr) {
         const auto str_len {::strnlen(path, sizeof sun.sun_path)};
-        const auto path_len {to_path_len(str_len + 1)};
+        const auto path_len {to_path_length(str_len + 1)};
         auto* sun_path {get_path_pointer(&sun)};
         ::memcpy(sun_path, path, path_len);
         sun_len += path_len;

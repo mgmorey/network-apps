@@ -67,7 +67,7 @@ namespace TestRanges
     using Network::to_integer;
     using Network::to_name_length;
 #ifndef WIN32
-    using Network::to_path_len;
+    using Network::to_path_length;
 #endif
     using Network::to_sa_len;
     using Network::to_size;
@@ -185,7 +185,7 @@ namespace TestRanges
         std::string actual_error_str;
 
         try {
-            static_cast<void>(to_path_len(value));
+            static_cast<void>(to_path_length(value));
         }
         catch (const PathLengthError& error) {
             print(error);
