@@ -45,20 +45,20 @@ auto Network::accept(const Socket& sock, bool verbose) ->
     const auto handle_1 {descriptor_type {sock}};
     auto addr {create_bytestring()};
     auto* const pointer {get_sa_pointer(addr)};
-    auto length {to_socket_length(addr.size())};
+    auto addr_len {to_socket_length(addr.size())};
     const AddressString addr_str {addr};
 
     if (verbose) {
         std::cout << "Calling ::accept("
                   << addr_str
                   << ", "
-                  << length
+                  << addr_len
                   << ", ...)"
                   << std::endl;
     }
 
     reset_last_context_error();
-    const auto handle_2 {::accept(handle_1, pointer, &length)};
+    const auto handle_2 {::accept(handle_1, pointer, &addr_len)};
 
     if (handle_2 == descriptor_null) {
         const auto error {get_last_context_error()};
@@ -69,7 +69,7 @@ auto Network::accept(const Socket& sock, bool verbose) ->
             << ", "
             << addr_str
             << ", "
-            << length
+            << addr_len
             << ", ...) failed with error "
             << error
             << ": "
@@ -77,6 +77,6 @@ auto Network::accept(const Socket& sock, bool verbose) ->
         throw Error(oss.str());
     }
 
-    addr.resize(to_size(length));
+    addr.resize(to_size(addr_len));
     return {Socket {handle_2, false, verbose}, addr};
 }
