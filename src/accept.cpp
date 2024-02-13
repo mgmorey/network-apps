@@ -44,7 +44,7 @@ auto Network::accept(const Socket& sock, bool verbose) ->
 {
     const auto handle_1 {descriptor_type {sock}};
     auto addr {create_bytestring()};
-    auto* const pointer {get_sa_pointer(addr)};
+    auto* const addr_ptr {get_sa_pointer(addr)};
     auto addr_len {to_socket_length(addr.size())};
     const AddressString addr_str {addr};
 
@@ -58,7 +58,7 @@ auto Network::accept(const Socket& sock, bool verbose) ->
     }
 
     reset_last_context_error();
-    const auto handle_2 {::accept(handle_1, pointer, &addr_len)};
+    const auto handle_2 {::accept(handle_1, addr_ptr, &addr_len)};
 
     if (handle_2 == descriptor_null) {
         const auto error {get_last_context_error()};
