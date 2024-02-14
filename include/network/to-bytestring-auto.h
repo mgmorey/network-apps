@@ -23,17 +23,12 @@
 #include "network/to-bytestring-char.h"         // to_bytestring()
 #include "network/to-bytestring-path.h"         // to_bytestring()
 #include "network/to-bytestring-span.h"         // to_bytestring()
-#include "network/validate-sa.h"                // validate()
-#include "network/validate-sin.h"               // validate()
-#include "network/validate-sin6.h"              // validate()
-#include "network/validate-sun.h"               // validate()
 
 namespace Network
 {
     auto to_bytestring(const auto* pointer,
                        sa_len_type length) -> Network::ByteString
     {
-        validate(pointer, length);
         return to_bytestring(to_bytespan(pointer, length));
     }
 

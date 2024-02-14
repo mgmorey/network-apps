@@ -13,23 +13,27 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_CONNECT_SOCKET_AUTO_H
-#define NETWORK_CONNECT_SOCKET_AUTO_H
+#include "network/validate-char.h"              // validate()
+#include "network/path-length-limits.h"         // path_length_max,
+                                                // path_length_min
+#include "network/pathlengtherror.h"            // PathLengthError
 
-#include "network/connect-socket-bs.h"          // connect()
-#include "network/oserrorresult.h"              // OsErrorResult
-#include "network/socket.h"                     // Socket
-#include "network/to-bytestring-auto.h"         // to_bytestring()
-#include "network/validate.h"                   // validate()
+#include <string>       // std::to_string()
+#include <utility>      // std::cmp_greater(), std::cmp_less()
 
-namespace Network
+#ifndef WIN32
+
+auto Network::validate(const char* path) -> void
 {
-    auto connect(const Socket &sock,
-                 const auto &value,
-                 bool verbose = false) -> OsErrorResult
-    {
-        validate(value);
-        return Network::connect(sock, to_bytestring(value), verbose);
+    if (path == nullptr) {
+        return;
+    }
+
+    const auto path_length {::strnlen(path, path_length_max)};
+
+    if (std::cmp_less(path_length, path_length_min) ||
+        std::cmp_greater(path_length, path_length_max)) {
+        throw PathLengthError(std::to_string(path_length));
     }
 }
 

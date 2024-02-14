@@ -13,24 +13,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_CONNECT_SOCKET_AUTO_H
-#define NETWORK_CONNECT_SOCKET_AUTO_H
+#ifndef NETWORK_VALIDATE_PATH_H
+#define NETWORK_VALIDATE_PATH_H
 
-#include "network/connect-socket-bs.h"          // connect()
-#include "network/oserrorresult.h"              // OsErrorResult
-#include "network/socket.h"                     // Socket
-#include "network/to-bytestring-auto.h"         // to_bytestring()
-#include "network/validate.h"                   // validate()
+#include "network/optionalpathname.h"   // OptionalPathname
 
 namespace Network
 {
-    auto connect(const Socket &sock,
-                 const auto &value,
-                 bool verbose = false) -> OsErrorResult
-    {
-        validate(value);
-        return Network::connect(sock, to_bytestring(value), verbose);
-    }
+#ifndef WIN32
+    extern auto validate(const OptionalPathname& path) -> void;
+#endif
 }
 
 #endif

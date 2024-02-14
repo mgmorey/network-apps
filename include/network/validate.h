@@ -17,6 +17,8 @@
 #define NETWORK_VALIDATE_H
 
 #include "network/validate-bs.h"        // validate()
+#include "network/validate-char.h"      // validate()
+#include "network/validate-path.h"      // validate()
 #include "network/validate-sa.h"        // validate()
 #include "network/validate-sin.h"       // validate()
 #include "network/validate-sin6.h"      // validate()

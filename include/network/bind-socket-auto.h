@@ -20,6 +20,7 @@
 #include "network/oserrorresult.h"              // OsErrorResult
 #include "network/socket.h"                     // Socket
 #include "network/to-bytestring-auto.h"         // to_bytestring()
+#include "network/validate.h"                   // validate()
 
 namespace Network
 {
@@ -27,6 +28,7 @@ namespace Network
               const auto &value,
               bool verbose = false) -> OsErrorResult
     {
+        validate(value);
         return Network::bind(sock, to_bytestring(value), verbose);
     }
 }
