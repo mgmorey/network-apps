@@ -16,11 +16,8 @@
 #include "network/to-bytestring-span.h"         // to_bytestring()
 #include "network/bytespan.h"                   // ByteSpan
 #include "network/bytestring.h"                 // ByteString
-#include "network/validate-bs.h"                // validate()
 
 auto Network::to_bytestring(const ByteSpan& span) -> Network::ByteString
 {
-    ByteString addr {span.data(), span.size()};
-    validate(addr);
-    return addr;
+    return {span.data(), span.size()};
 }
