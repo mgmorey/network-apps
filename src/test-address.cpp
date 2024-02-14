@@ -21,7 +21,7 @@
                                         // SocketHints, get_hosts(),
                                         // get_sa_size_maximum(),
                                         // get_sa_size_minimum(),
-                                        // to_bytestring()
+                                        // validate()
 #include "network/parse.h"              // parse()
 
 #ifdef WIN32
@@ -63,7 +63,7 @@ namespace TestAddress
     using Network::get_sa_size_maximum;
     using Network::get_sa_size_minimum;
     using Network::parse;
-    using Network::to_bytestring;
+    using Network::validate;
 
     static constexpr auto expected_error_sa_family {
         "Invalid IP domain socket address"
@@ -147,7 +147,7 @@ namespace TestAddress
         try {
             sockaddr sa {};
             sa.sa_family = AF_UNSPEC;
-            static_cast<void>(to_bytestring(&sa, sizeof sa));
+            validate(&sa, sizeof sa);
         }
         catch (const Error& error) {
             print(error);
@@ -163,7 +163,7 @@ namespace TestAddress
 
         try {
             const sockaddr_in sin {};
-            static_cast<void>(to_bytestring(&sin));
+            validate(&sin, sizeof sin);
         }
         catch (const Error& error) {
             print(error);
@@ -182,7 +182,7 @@ namespace TestAddress
             sin.sin_family = AF_INET;
             const void* ptr = &sin;
             const auto* sa = static_cast<const sockaddr*>(ptr);
-            static_cast<void>(to_bytestring(sa, sizeof sin + 1));
+            validate(sa, sizeof sin + 1);
         }
         catch (const Error& error) {
             print(error);
@@ -199,7 +199,7 @@ namespace TestAddress
 
         try {
             const sockaddr_in6 sin6 {};
-            static_cast<void>(to_bytestring(&sin6));
+            validate(&sin6, sizeof sin6);
         }
         catch (const Error& error) {
             print(error);
@@ -218,7 +218,7 @@ namespace TestAddress
             sin6.sin6_family = AF_INET6;
             const void* ptr = &sin6;
             const auto* sa = static_cast<const sockaddr*>(ptr);
-            static_cast<void>(to_bytestring(sa, sizeof sin6 + 1));
+            validate(sa, sizeof sin6 + 1);
         }
         catch (const Error& error) {
             print(error);
@@ -237,7 +237,7 @@ namespace TestAddress
 
         try {
             const sockaddr_un sun {};
-            static_cast<void>(to_bytestring(&sun, sizeof sun));
+            validate(&sun, sizeof sun);
         }
         catch (const Error& error) {
             print(error);
@@ -254,7 +254,7 @@ namespace TestAddress
         try {
             sockaddr_un sun {};
             sun.sun_family = AF_UNIX;
-            static_cast<void>(to_bytestring(&sun, sizeof sun + 1));
+            validate(&sun, sizeof sun + 1);
         }
         catch (const Error& error) {
             print(error);
