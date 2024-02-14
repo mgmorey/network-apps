@@ -26,7 +26,7 @@ namespace Network
 {
 #ifndef WIN32
     extern auto validate(const sockaddr_un* sun,
-                         sun_len_type sun_len = sizeof *sun) -> void;
+                         sun_len_type sun_len = sizeof(sockaddr_un)) -> void;
 #endif
 }
 
