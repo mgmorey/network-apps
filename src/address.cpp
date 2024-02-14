@@ -20,6 +20,7 @@
 #include "network/length-type.h"                // length_type
 #include "network/port-type.h"                  // port_type
 #include "network/socket-family-type.h"         // socket_family_type
+#include "network/validate-bs.h"                // validate()
 
 #ifdef WIN32
 #include <winsock2.h>       // AF_INET, AF_INET6
@@ -34,6 +35,8 @@
 Network::Address::Address(const value_type& t_value) :
     m_value(t_value)
 {
+    validate(m_value);
+
     if (!is_valid(m_value)) {
         throw AddressError(m_value);
     }
@@ -42,6 +45,8 @@ Network::Address::Address(const value_type& t_value) :
 Network::Address::Address(value_type&& t_value) :
     m_value(std::move(t_value))
 {
+    validate(m_value);
+
     if (!is_valid(m_value)) {
         throw AddressError(m_value);
     }

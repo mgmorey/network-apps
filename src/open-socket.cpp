@@ -26,7 +26,6 @@
 #include "network/reset-last-context-error.h"   // reset_last_context_error()
 #include "network/socket-error.h"               // socket_error
 #include "network/to-os-error.h"                // to_os_error()
-#include "network/validate-bs.h"                // validate()
 
 #include <iostream>     // std::cout, std::endl
 #include <sstream>      // std::ostringstream
@@ -34,7 +33,6 @@
 auto Network::open(const OpenHandler& handler,
                    const OpenSocketParams& args) -> Network::OsErrorResult
 {
-    validate(args.addr);
     const auto* const pointer {get_sa_pointer(args.addr)};
     const auto length {get_length(args.addr)};
     const AddressString addr_str {args.addr};
