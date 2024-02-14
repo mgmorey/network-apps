@@ -35,21 +35,13 @@
 Network::Address::Address(const value_type& t_value) :
     m_value(t_value)
 {
-    validate(m_value);
-
-    if (!is_valid(m_value)) {
-        throw AddressError(m_value);
-    }
+    initialize();
 }
 
 Network::Address::Address(value_type&& t_value) :
     m_value(std::move(t_value))
 {
-    validate(m_value);
-
-    if (!is_valid(m_value)) {
-        throw AddressError(m_value);
-    }
+    initialize();
 }
 
 auto Network::Address::operator=(const value_type& t_value) ->
@@ -140,5 +132,14 @@ auto Network::Address::text() const noexcept -> std::string
         return sin6_text();
     default:
         return sa_text();
+    }
+}
+
+auto Network::Address::initialize() -> void
+{
+    validate(m_value);
+
+    if (!is_valid(m_value)) {
+        throw AddressError(m_value);
     }
 }
