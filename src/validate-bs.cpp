@@ -29,6 +29,7 @@
 #ifndef WIN32
 #include "network/get-sun-length.h"             // get_sun_length()
 #include "network/get-sun-pointer.h"            // get_sun_pointer()
+#include "network/sun-len-limits.h"             // sun_len_max
 #include "network/sunlengtherror.h"             // SunLengthError
 #endif
 
@@ -38,7 +39,6 @@
 #include <sys/socket.h>     // AF_INET, AF_INET6, AF_UNIX, AF_UNSPEC
 #endif
 
-#include <cstdint>      // SIZE_MAX
 #include <string>       // std::to_string()
 #include <utility>      // std::cmp_greater(), std::cmp_less(),
                         // std::cmp_not_equal()
@@ -79,7 +79,7 @@ auto Network::validate(const ByteString& addr) -> void
 
     if (family == AF_UNIX) {
         const auto* const sun {get_sun_pointer(addr)};
-        const auto sun_len {get_sun_length(sun, SIZE_MAX)};
+        const auto sun_len {get_sun_length(sun, sun_len_max)};
 
         if (std::cmp_less(sun_len, size_min) ||
             std::cmp_greater(sun_len, size_max)) {
