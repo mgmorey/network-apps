@@ -16,7 +16,6 @@
 #include "network/address.h"                    // Address,
                                                 // value_type
 #include "network/addresserror.h"               // AddressError
-#include "network/is-valid.h"                   // is_valid()
 #include "network/length-type.h"                // length_type
 #include "network/port-type.h"                  // port_type
 #include "network/socket-family-type.h"         // socket_family_type
@@ -35,22 +34,19 @@
 Network::Address::Address(const value_type& t_value) :
     m_value(t_value)
 {
-    initialize();
+    validate(m_value);
 }
 
 Network::Address::Address(value_type&& t_value) :
     m_value(std::move(t_value))
 {
-    initialize();
+    validate(m_value);
 }
 
 auto Network::Address::operator=(const value_type& t_value) ->
     Network::Address&
 {
-    if (!is_valid(t_value)) {
-        throw AddressError(t_value);
-    }
-
+    validate(t_value);
     m_value = t_value;
     return *this;
 }
@@ -132,14 +128,5 @@ auto Network::Address::text() const noexcept -> std::string
         return sin6_text();
     default:
         return sa_text();
-    }
-}
-
-auto Network::Address::initialize() -> void
-{
-    validate(m_value);
-
-    if (!is_valid(m_value)) {
-        throw AddressError(m_value);
     }
 }

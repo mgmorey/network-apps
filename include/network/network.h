@@ -75,7 +75,6 @@
 #include "network/get-sun-length.h"             // get_sun_length()
 #include "network/get-sun-pointer.h"            // get_sun_pointer()
 #include "network/get-templates.h"              // get_templates()
-#include "network/is-valid.h"                   // is_valid()
 #include "network/limits.h"                     // name_length_max,
                                                 // name_length_min,
                                                 // path_length_max,

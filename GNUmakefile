@@ -68,15 +68,15 @@ get-sa-size-minimum.cpp get-sin-addr.cpp get-sin-pointer.cpp		\
 get-sin-port.cpp get-sin6-addr.cpp get-sin6-pointer.cpp			\
 get-sin6-port.cpp get-sockname.cpp get-socknameresult.cpp		\
 get-sun-length.cpp get-sun-pointer.cpp get-templates-endpoint.cpp	\
-get-templates-hostname.cpp integererror.cpp is-running.cpp		\
-is-valid.cpp listen.cpp logicerror.cpp namelengtherror.cpp		\
-open-endpoint.cpp open-socket.cpp oserrorresult.cpp			\
-parse-argumentspan.cpp parse.cpp pathlengtherror.cpp rangeerror.cpp	\
-read-string.cpp read.cpp remove-socket.cpp				\
-reset-last-context-error.cpp reset-last-os-error.cpp runtimeerror.cpp	\
-salengtherror.cpp set-last-context-error.cpp set-last-os-error.cpp	\
-sizeerror.cpp socket.cpp socketfamily.cpp socketflags.cpp		\
-sockethints.cpp sockethost.cpp socketlengtherror.cpp socketpair.cpp	\
+get-templates-hostname.cpp integererror.cpp is-running.cpp listen.cpp	\
+logicerror.cpp namelengtherror.cpp open-endpoint.cpp open-socket.cpp	\
+oserrorresult.cpp parse-argumentspan.cpp parse.cpp			\
+pathlengtherror.cpp rangeerror.cpp read-string.cpp read.cpp		\
+remove-socket.cpp reset-last-context-error.cpp				\
+reset-last-os-error.cpp runtimeerror.cpp salengtherror.cpp		\
+set-last-context-error.cpp set-last-os-error.cpp sizeerror.cpp		\
+socket.cpp socketfamily.cpp socketflags.cpp sockethints.cpp		\
+sockethost.cpp socketlengtherror.cpp socketpair.cpp			\
 socketprotocol.cpp sockettype.cpp startup.cpp stream-address.cpp	\
 stream-addrinfo.cpp stream-context.cpp stream-socket.cpp		\
 stream-template.cpp sunlengtherror.cpp template.cpp to-bytespan.cpp	\

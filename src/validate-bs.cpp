@@ -15,27 +15,81 @@
 
 #include "network/validate-bs.h"                // validate
 #include "network/bytestring.h"                 // ByteString
+#include "network/get-sa-family.h"              // get_sa_family()
+#include "network/get-sa-size-maximum.h"        // get_sa_size_maximum()
+#include "network/get-sa-size-minimum.h"        // get_sa_size_minimum()
+#include "network/logicerror.h"                 // LogicError
 #include "network/os-features.h"                // HAVE_SOCKADDR_SA_LEN
+#include "network/salengtherror.h"              // SaLengthError
 
 #ifdef HAVE_SOCKADDR_SA_LEN
 #include "network/get-sa-length.h"              // get_sa_length()
-#include "network/salengtherror.h"              // SaLengthError
-
-#include <string>       // std::to_string()
-#include <utility>      // std::cmp_not_equal()
 #endif
+
+#ifndef WIN32
+#include "network/get-sun-length.h"             // get_sun_length()
+#include "network/get-sun-pointer.h"            // get_sun_pointer()
+#endif
+
+#ifdef WIN32
+#include <winsock2.h>       // AF_INET, AF_INET6, AF_UNIX, AF_UNSPEC
+#else
+#include <sys/socket.h>     // AF_INET, AF_INET6, AF_UNIX, AF_UNSPEC
+#endif
+
+#include <cstdint>      // SIZE_MAX
+#include <string>       // std::to_string()
+#include <utility>      // std::cmp_greater(), std::cmp_less(),
+                        // std::cmp_not_equal()
 
 auto Network::validate(const ByteString& addr) -> void
 {
+    const auto family {get_sa_family(addr)};
+
+    switch (family) {
+    case AF_UNSPEC:
+#ifndef WIN32
+    case AF_UNIX:
+#endif
+    case AF_INET:
+    case AF_INET6:
+        break;
+    default:
+        throw LogicError("Invalid IP domain socket address");
+    }
+
+    const auto size {addr.size()};
+    const auto size_max {get_sa_size_maximum(family)};
+    const auto size_min {get_sa_size_minimum(family)};
+
+    if (size < size_min || size > size_max) {
+        throw SaLengthError(std::to_string(size), size_min, size_max);
+    }
+
 #ifdef HAVE_SOCKADDR_SA_LEN
-    const auto length {addr.length()};
+
     const auto sa_len {get_sa_length(addr)};
 
-    if (std::cmp_not_equal(sa_len, length)) {
-        const auto str {std::to_string(sa_len)};
-        throw SaLengthError(str, length, length);
+    if (std::cmp_not_equal(sa_len, size)) {
+        throw SaLengthError(std::to_string(sa_len), size, size);
     }
-#else
-    static_cast<void>(addr);
+
+#endif
+#ifndef WIN32
+
+    if (family == AF_UNIX) {
+        const auto* const sun {get_sun_pointer(addr)};
+        const auto sun_len {get_sun_length(sun, SIZE_MAX)};
+
+        if (std::cmp_less(sun_len, size_min) ||
+            std::cmp_greater(sun_len, size_max)) {
+            throw SaLengthError(std::to_string(sun_len), size_min, size_max);
+        }
+
+        if (std::cmp_not_equal(sun_len, size)) {
+            throw SaLengthError(std::to_string(sun_len), size, size);
+        }
+    }
+
 #endif
 }

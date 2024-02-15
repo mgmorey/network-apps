@@ -16,9 +16,11 @@
 #ifndef NETWORK_SA_LEN_TYPE_H
 #define NETWORK_SA_LEN_TYPE_H
 
+#include <cstddef>      // std::size_t
+
 namespace Network
 {
-    using sa_len_type = unsigned int;
+    using sa_len_type = std::size_t;
 }
 
 #endif

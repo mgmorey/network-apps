@@ -63,7 +63,6 @@ namespace Network
         [[nodiscard]] auto text() const noexcept -> std::string;
 
     protected:
-        auto initialize() -> void;
         [[nodiscard]] auto sa_data() const noexcept -> value_type;
         [[nodiscard]] auto sa_family() const noexcept -> socket_family_type;
         [[nodiscard]] auto sa_length() const noexcept -> length_type;
