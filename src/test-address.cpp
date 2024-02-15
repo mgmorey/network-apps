@@ -40,6 +40,7 @@
 #endif
 
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
+#include <cstring>      // std::memset()
 #include <exception>    // std::exception
 #include <iomanip>      // std::right, std::setw()
 #include <iostream>     // std::cerr, std::cout, std::endl
@@ -246,7 +247,7 @@ namespace TestAddress
         assert(actual_error_str == expected_error_sun_family);
     }
 
-    auto test_invalid_sun_length() -> void
+    auto test_invalid_sun_length_large() -> void
     {
         std::string actual_error_str;
 
@@ -264,9 +265,27 @@ namespace TestAddress
         assert(std::regex_match(actual_error_str, expected_error_regex));
     }
 
+    auto test_invalid_sun_length_small() -> void
+    {
+        std::string actual_error_str;
+
+        try {
+            sockaddr_un sun {};
+            sun.sun_family = AF_UNIX;
+            validate(&sun, 0);
+        }
+        catch (const Error& error) {
+            print(error);
+            actual_error_str = error.what();
+        }
+
+        const std::regex expected_error_regex {expected_error_sun_length_re};
+        assert(std::regex_match(actual_error_str, expected_error_regex));
+    }
+
 #endif
 
-    auto test_valid(const Address& address) -> void
+    auto test_valid_sin(const Address& address) -> void
     {
         const auto family {address.family()};
 
@@ -304,7 +323,7 @@ namespace TestAddress
         }
     }
 
-    auto test_valid() -> void
+    auto test_valid_sin() -> void
     {
         static const Hostname localhost {"localhost"};
 
@@ -319,7 +338,7 @@ namespace TestAddress
                     for (const auto& host : hosts) {
                         const Address address {host.address()};
                         print(address);
-                        test_valid(address);
+                        test_valid_sin(address);
                     }
                 },
                     [&](const OsErrorResult& result) {
@@ -331,6 +350,46 @@ namespace TestAddress
                     }
                     }, hosts_result);
     }
+
+#ifndef WIN32
+
+    auto test_valid_sun_path_large() -> void
+    {
+        std::string actual_error_str;
+
+        try {
+            sockaddr_un sun {};
+            sun.sun_family = AF_UNIX;
+            std::memset(&sun.sun_path, 'X', sizeof sun.sun_path);
+            validate(&sun, sizeof sun);
+        }
+        catch (const Error& error) {
+            print(error);
+            actual_error_str = error.what();
+        }
+
+        assert(actual_error_str.empty());
+    }
+
+    auto test_valid_sun_path_small() -> void
+    {
+        std::string actual_error_str;
+
+        try {
+            sockaddr_un sun {};
+            sun.sun_family = AF_UNIX;
+            validate(&sun, sizeof sun - sizeof sun.sun_path);
+        }
+        catch (const Error& error) {
+            print(error);
+            actual_error_str = error.what();
+        }
+
+        assert(actual_error_str.empty());
+    }
+
+#endif
+
 }
 
 auto main(int argc, char* argv[]) -> int
@@ -345,7 +404,11 @@ auto main(int argc, char* argv[]) -> int
             std::cout << context << std::endl;
         }
 
-        test_valid();
+        test_valid_sin();
+#ifndef WIN32
+        test_valid_sun_path_large();
+        test_valid_sun_path_small();
+#endif
         test_invalid_sa_family();
         test_invalid_sin_family();
         test_invalid_sin_length();
@@ -353,7 +416,8 @@ auto main(int argc, char* argv[]) -> int
         test_invalid_sin6_length();
 #ifndef WIN32
         test_invalid_sun_family();
-        test_invalid_sun_length();
+        test_invalid_sun_length_large();
+        test_invalid_sun_length_small();
 #endif
     }
     catch (const std::exception& error) {
