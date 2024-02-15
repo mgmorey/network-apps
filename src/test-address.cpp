@@ -63,6 +63,7 @@ namespace TestAddress
     using Network::get_sa_size_maximum;
     using Network::get_sa_size_minimum;
     using Network::parse;
+    using Network::to_bytestring;
     using Network::validate;
 
     static constexpr auto expected_error_sa_family {
@@ -283,6 +284,26 @@ namespace TestAddress
         assert(std::regex_match(actual_error_str, expected_error_regex));
     }
 
+    auto test_invalid_sun_path_large() -> void
+    {
+        std::string actual_error_str;
+
+        try {
+            sockaddr_un sun {};
+            sun.sun_family = AF_UNIX;
+            std::memset(&sun.sun_path, 'X', sizeof sun.sun_path);
+            validate(&sun, sizeof sun);
+            validate(to_bytestring(&sun, sizeof sun));
+        }
+        catch (const Error& error) {
+            print(error);
+            actual_error_str = error.what();
+        }
+
+        const std::regex expected_error_regex {expected_error_sun_length_re};
+        assert(std::regex_match(actual_error_str, expected_error_regex));
+    }
+
 #endif
 
     auto test_valid_sin(const Address& address) -> void
@@ -360,8 +381,9 @@ namespace TestAddress
         try {
             sockaddr_un sun {};
             sun.sun_family = AF_UNIX;
-            std::memset(&sun.sun_path, 'X', sizeof sun.sun_path);
+            std::memset(&sun.sun_path, 'X', sizeof sun.sun_path - 1);
             validate(&sun, sizeof sun);
+            validate(to_bytestring(&sun, sizeof sun));
         }
         catch (const Error& error) {
             print(error);
@@ -379,6 +401,7 @@ namespace TestAddress
             sockaddr_un sun {};
             sun.sun_family = AF_UNIX;
             validate(&sun, sizeof sun - sizeof sun.sun_path);
+            validate(to_bytestring(&sun, sizeof sun - sizeof sun.sun_path));
         }
         catch (const Error& error) {
             print(error);
@@ -418,6 +441,7 @@ auto main(int argc, char* argv[]) -> int
         test_invalid_sun_family();
         test_invalid_sun_length_large();
         test_invalid_sun_length_small();
+        test_invalid_sun_path_large();
 #endif
     }
     catch (const std::exception& error) {
