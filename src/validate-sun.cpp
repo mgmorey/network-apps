@@ -14,6 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/validate-sun.h"               // validate()
+#include "network/get-sun-length.h"             // get_sun_length()
 #include "network/logicerror.h"                 // LogicError
 #include "network/sun-len-limits.h"             // sun_len_max,
                                                 // sun_len_min
@@ -31,14 +32,18 @@
 #ifndef WIN32
 
 auto Network::validate(const sockaddr_un* sun,
-                       sun_len_type sun_len) -> void
+                       sun_len_type size) -> void
 {
-    const auto size_max {sun_len_max};
-    const auto size_min {sun_len_min};
+    if (std::cmp_less(size, sun_len_min) ||
+        std::cmp_greater(size, sun_len_max)) {
+        throw SunLengthError(std::to_string(size), sun_len_max);
+    }
 
-    if (std::cmp_less(sun_len, size_min) ||
-        std::cmp_greater(sun_len, size_max)) {
-        throw SunLengthError(std::to_string(sun_len), size_max);
+    const auto sun_len {get_sun_length(sun, sun_len_max)};
+
+    if (std::cmp_less(sun_len, sun_len_min) ||
+        std::cmp_greater(sun_len, sun_len_max)) {
+        throw SunLengthError(std::to_string(sun_len), sun_len_max);
     }
 
     if (sun->sun_family != AF_UNIX) {
