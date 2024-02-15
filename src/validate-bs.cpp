@@ -47,7 +47,6 @@ auto Network::validate(const ByteString& addr) -> void
     const auto family {get_sa_family(addr)};
 
     switch (family) {
-    case AF_UNSPEC:
 #ifndef WIN32
     case AF_UNIX:
 #endif
@@ -55,7 +54,7 @@ auto Network::validate(const ByteString& addr) -> void
     case AF_INET6:
         break;
     default:
-        throw LogicError("Invalid IP domain socket address");
+        throw LogicError("Invalid socket address family");
     }
 
     const auto size {addr.size()};
