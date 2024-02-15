@@ -29,6 +29,7 @@
 #ifndef WIN32
 #include "network/get-sun-length.h"             // get_sun_length()
 #include "network/get-sun-pointer.h"            // get_sun_pointer()
+#include "network/sunlengtherror.h"             // SunLengthError
 #endif
 
 #ifdef WIN32
@@ -82,11 +83,7 @@ auto Network::validate(const ByteString& addr) -> void
 
         if (std::cmp_less(sun_len, size_min) ||
             std::cmp_greater(sun_len, size_max)) {
-            throw SaLengthError(std::to_string(sun_len), size_min, size_max);
-        }
-
-        if (std::cmp_not_equal(sun_len, size)) {
-            throw SaLengthError(std::to_string(sun_len), size, size);
+            throw SunLengthError(std::to_string(sun_len), size_max);
         }
     }
 
