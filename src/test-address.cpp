@@ -65,8 +65,10 @@ namespace TestAddress
     using Network::get_sa_size_maximum;
     using Network::get_sa_size_minimum;
     using Network::parse;
+#ifndef WIN32
     using Network::sun_len_max;
     using Network::sun_len_min;
+#endif
     using Network::to_bytestring;
     using Network::validate;
 
