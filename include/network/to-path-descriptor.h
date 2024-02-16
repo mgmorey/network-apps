@@ -21,8 +21,10 @@
 
 namespace Network
 {
+#ifndef WIN32
     extern auto to_path(descriptor_type handle,
                         bool verbose = false) -> OptionalPathname;
+#endif
 }
 
 #endif

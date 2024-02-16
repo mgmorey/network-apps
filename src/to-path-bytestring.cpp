@@ -28,9 +28,10 @@
 #include <cstring>      // ::strnlen()
 #include <string>       // std::string
 
+#ifndef WIN32
+
 auto Network::to_path(const ByteString& addr) -> OptionalPathname
 {
-#ifndef WIN32
     if (get_sa_family(addr) != AF_UNIX || addr.size() <= sun_path_offset) {
         return {};
     }
@@ -39,8 +40,6 @@ auto Network::to_path(const ByteString& addr) -> OptionalPathname
     const auto size_max {addr.size() - sun_len_min};
     const auto size {::strnlen(data, size_max)};
     return std::string {data, size};
-#else
-    static_cast<void>(addr);
-    return {};
-#endif
 }
+
+#endif

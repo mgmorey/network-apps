@@ -19,7 +19,11 @@
 #include "network/optionalpathname.h"           // OptionalPathname
 #include "network/to-path-bytestring.h"         // to_path()
 
+#ifndef WIN32
+
 auto Network::to_path(descriptor_type handle, bool verbose) -> OptionalPathname
 {
     return to_path(get_sockname(handle, verbose));
 }
+
+#endif

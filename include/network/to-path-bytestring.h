@@ -21,7 +21,9 @@
 
 namespace Network
 {
+#ifndef WIN32
     extern auto to_path(const ByteString& addr) -> OptionalPathname;
+#endif
 }
 
 #endif
