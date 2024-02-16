@@ -28,16 +28,16 @@
 #include "network/constants.h"                  // descriptor_null,
                                                 // sa_data_offset,
                                                 // sa_size,
-                                                // sin_addr_offset,
                                                 // sin6_addr_offset,
-                                                // sin_family_offset,
                                                 // sin6_family_offset,
-                                                // sin_len_offset,
                                                 // sin6_len_offset,
-                                                // sin_port_offset,
                                                 // sin6_port_offset,
-                                                // sin_size,
                                                 // sin6_size,
+                                                // sin_addr_offset,
+                                                // sin_family_offset,
+                                                // sin_len_offset,
+                                                // sin_port_offset,
+                                                // sin_size,
                                                 // sockaddr_size_max,
                                                 // socket_error,
                                                 // ss_size,
@@ -46,8 +46,10 @@
                                                 // sun_size
 #include "network/context.h"                    // Context
 #include "network/create-socket.h"              // create_socket()
+#ifndef WIN32
 #include "network/create-socketpair.h"          // create_socketpair()
 #include "network/create-socketpairresult.h"    // create_socketpairresult()
+#endif
 #include "network/create-socketresult.h"        // create_socketresult()
 #include "network/exceptions.h"                 // Error, LogicError,
                                                 // RuntimeError
@@ -59,8 +61,10 @@
 #include "network/get-length.h"                 // get_length()
 #include "network/get-name.h"                   // get_name()
 #include "network/get-nameresult.h"             // get_nameresult()
+#ifndef WIN32
 #include "network/get-path-length.h"            // get_path_length()
 #include "network/get-path-size.h"              // get_path_size()
+#endif
 #include "network/get-peername.h"               // get_peername()
 #include "network/get-peernameresult.h"         // get_peernameresult()
 #include "network/get-sa-family.h"              // get_sa_family()
@@ -72,8 +76,10 @@
 #include "network/get-sin6-pointer.h"           // get_sin6_pointer()
 #include "network/get-sockname.h"               // get_sockname()
 #include "network/get-socknameresult.h"         // get_socknameresult()
+#ifndef WIN32
 #include "network/get-sun-length.h"             // get_sun_length()
 #include "network/get-sun-pointer.h"            // get_sun_pointer()
+#endif
 #include "network/get-templates.h"              // get_templates()
 #include "network/limits.h"                     // name_length_max,
                                                 // name_length_min,
