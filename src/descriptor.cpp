@@ -17,10 +17,14 @@
 #include "network/close.h"                      // close()
 #include "network/descriptor-null.h"            // descriptor_null
 #include "network/descriptor-type.h"            // descriptor_type
+#ifndef WIN32
 #include "network/remove-socket.h"              // remove_socket()
+#endif
 
+#ifndef WIN32
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::endl
+#endif
 
 Network::Descriptor::Descriptor(descriptor_type t_handle,
                                 bool t_pending,
@@ -50,14 +54,17 @@ auto Network::Descriptor::close() noexcept -> Descriptor&
     }
 
     if (m_pending) {
+#ifndef WIN32
         try {
             remove_socket(m_handle, m_verbose);
-            m_pending = false;
         }
         catch (const std::exception& error) {
             std::cerr << error.what()
                       << std::endl;
         }
+#endif
+
+        m_pending = false;
     }
 
     m_handle = Network::close(m_handle, m_verbose);

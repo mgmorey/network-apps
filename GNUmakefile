@@ -48,50 +48,54 @@ include flags.gmk
 
 # Define enumerated file list variables
 
-libnetwork_sources = accept.cpp address-sa.cpp address-sin.cpp		\
-address-sin6.cpp address-sun.cpp address.cpp addresserror.cpp		\
-addressstring.cpp addrinfo.cpp argumentdata.cpp bind-endpoint.cpp	\
-bind-socket-bs.cpp buffer.cpp bytestring.cpp charactererror.cpp		\
-cleanup.cpp close.cpp connect-endpoint.cpp connect-socket-bs.cpp	\
-context.cpp create-bytestring.cpp create-socket.cpp			\
-create-socketpair.cpp create-socketpairresult.cpp			\
-create-socketresult.cpp descriptor.cpp error.cpp format-ai-error.cpp	\
-format-bytestring.cpp format-os-error.cpp format.cpp get-endpoint.cpp	\
+libnetwork_common_sources = accept.cpp address-sa.cpp address-sin.cpp	\
+address-sin6.cpp address.cpp addresserror.cpp addressstring.cpp		\
+addrinfo.cpp argumentdata.cpp bind-endpoint.cpp bind-socket-bs.cpp	\
+buffer.cpp bytestring.cpp charactererror.cpp cleanup.cpp close.cpp	\
+connect-endpoint.cpp connect-socket-bs.cpp context.cpp			\
+create-bytestring.cpp create-socket.cpp create-socketresult.cpp		\
+descriptor.cpp error.cpp format-ai-error.cpp format-bytestring.cpp	\
+format-os-error.cpp format.cpp get-endpoint.cpp				\
 get-endpointresult.cpp get-hostname.cpp get-hostnameresult.cpp		\
 get-hosts.cpp get-last-context-error.cpp get-last-os-error.cpp		\
 get-length.cpp get-name.cpp get-nameresult.cpp get-operands.cpp		\
-get-option.cpp get-options.cpp get-path-length.cpp			\
-get-path-pointer-bs.cpp get-path-pointer-sun.cpp get-peername.cpp	\
+get-option.cpp get-options.cpp get-peername.cpp				\
 get-peernameresult.cpp get-sa-data.cpp get-sa-family.cpp		\
 get-sa-length.cpp get-sa-pointer.cpp get-sa-size-maximum.cpp		\
 get-sa-size-minimum.cpp get-sin-addr.cpp get-sin-pointer.cpp		\
 get-sin-port.cpp get-sin6-addr.cpp get-sin6-pointer.cpp			\
 get-sin6-port.cpp get-sockname.cpp get-socknameresult.cpp		\
-get-sun-length.cpp get-sun-pointer.cpp get-templates-endpoint.cpp	\
-get-templates-hostname.cpp integererror.cpp is-running.cpp listen.cpp	\
-logicerror.cpp namelengtherror.cpp open-endpoint.cpp open-socket.cpp	\
+get-templates-endpoint.cpp get-templates-hostname.cpp			\
+integererror.cpp is-running.cpp listen.cpp logicerror.cpp		\
+namelengtherror.cpp open-endpoint.cpp open-socket.cpp			\
 oserrorresult.cpp parse-argumentspan.cpp parse.cpp			\
 pathlengtherror.cpp rangeerror.cpp read-string.cpp read.cpp		\
-remove-socket.cpp reset-last-context-error.cpp				\
-reset-last-os-error.cpp runtimeerror.cpp salengtherror.cpp		\
-set-last-context-error.cpp set-last-os-error.cpp sizeerror.cpp		\
-socket.cpp socketfamily.cpp socketflags.cpp sockethints.cpp		\
-sockethost.cpp socketlengtherror.cpp socketpair.cpp			\
+reset-last-context-error.cpp reset-last-os-error.cpp runtimeerror.cpp	\
+salengtherror.cpp set-last-context-error.cpp set-last-os-error.cpp	\
+sizeerror.cpp socket.cpp socketfamily.cpp socketflags.cpp		\
+sockethints.cpp sockethost.cpp socketlengtherror.cpp			\
 socketprotocol.cpp sockettype.cpp startup.cpp stream-address.cpp	\
 stream-addrinfo.cpp stream-context.cpp stream-socket.cpp		\
-stream-template.cpp sunlengtherror.cpp template.cpp to-bytespan.cpp	\
-to-bytestring-ai.cpp to-bytestring-char.cpp to-bytestring-path.cpp	\
-to-bytestring-span.cpp to-path-bytestring.cpp to-path-descriptor.cpp	\
-to-string-in-addr.cpp to-string-in6-addr.cpp validate-bs.cpp		\
-validate-char.cpp validate-path.cpp validate-sa.cpp validate-sin.cpp	\
-validate-sin6.cpp validate-sun.cpp version.cpp write-string.cpp		\
-write.cpp
+stream-template.cpp template.cpp to-bytespan.cpp to-bytestring-ai.cpp	\
+to-bytestring-span.cpp to-string-in-addr.cpp to-string-in6-addr.cpp	\
+validate-bs.cpp validate-sa.cpp validate-sin.cpp validate-sin6.cpp	\
+version.cpp write-string.cpp write.cpp
 
-test_sources = test-address.cpp test-bind.cpp test-connect.cpp		\
+libnetwork_unix_sources = address-sun.cpp create-socketpair.cpp		\
+create-socketpairresult.cpp get-path-length.cpp				\
+get-path-pointer-bs.cpp get-path-pointer-sun.cpp get-sun-length.cpp	\
+get-sun-pointer.cpp remove-socket.cpp socketpair.cpp			\
+sunlengtherror.cpp to-bytestring-char.cpp to-bytestring-path.cpp	\
+to-path-bytestring.cpp to-path-descriptor.cpp validate-char.cpp		\
+validate-path.cpp validate-sun.cpp
+
+test_common_sources = test-address.cpp test-bind.cpp test-connect.cpp	\
 test-context.cpp test-host.cpp test-hostname.cpp test-option.cpp	\
 test-parse.cpp test-ranges.cpp
 
-unix_sources = test-socket.cpp unix-client.cpp unix-server.cpp
+test_unix_sources = test-socket.cpp
+
+unix_sources = unix-client.cpp unix-server.cpp
 
 commands = compile_commands.json
 sizes = sizes.txt
@@ -99,10 +103,22 @@ tags = TAGS
 
 # Define computed file list variables
 
+libnetwork_sources = $(libnetwork_common_sources)
+
+ifneq "$(os_name)" "MINGW64_NT"
+	libnetwork_sources += $(libnetwork_unix_sources)
+endif
+
 sources = $(libnetwork_sources) $(test_sources)
 
 ifneq "$(os_name)" "MINGW64_NT"
 	sources += $(unix_sources)
+endif
+
+test_sources = $(test_common_sources)
+
+ifneq "$(os_name)" "MINGW64_NT"
+	test_sources += $(test_unix_sources)
 endif
 
 objects = $(addprefix $(object_dir)/,$(addsuffix	\
@@ -215,11 +231,17 @@ analyze: $(sources) | $(cppbuild_dir)
 
 .PHONY: assert
 assert:
-ifneq "$(sort $(libnetwork_sources))" "$(libnetwork_sources)"
-	$(error File names in variable libnetwork_sources are not sorted)
+ifneq "$(sort $(libnetwork_common_sources))" "$(libnetwork_common_sources)"
+	$(error File names in variable libnetwork_common_sources are not sorted)
 endif
-ifneq "$(sort $(test_sources))" "$(test_sources)"
-	$(error File names in variable test_sources are not sorted)
+ifneq "$(sort $(libnetwork_unix_sources))" "$(libnetwork_unix_sources)"
+	$(error File names in variable libnetwork_unix_sources are not sorted)
+endif
+ifneq "$(sort $(test_common_sources))" "$(test_common_sources)"
+	$(error File names in variable test_common_sources are not sorted)
+endif
+ifneq "$(sort $(test_unix_sources))" "$(test_unix_sources)"
+	$(error File names in variable test_unix_sources are not sorted)
 endif
 ifneq "$(sort $(unix_sources))" "$(unix_sources)"
 	$(error File names in variable unix_sources are not sorted)

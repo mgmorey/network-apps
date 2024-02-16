@@ -21,11 +21,5 @@
 
 auto Network::to_path(descriptor_type handle, bool verbose) -> OptionalPathname
 {
-#ifndef WIN32
     return to_path(get_sockname(handle, verbose));
-#else
-    static_cast<void>(handle);
-    static_cast<void>(verbose);
-    return {};
-#endif
 }
