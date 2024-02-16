@@ -208,7 +208,7 @@ namespace TestAddress
         }
     }
 
-    auto test_invalid_sa_family() -> void
+    auto test_sa_invalid_family() -> void
     {
         std::string actual_error_str;
 
@@ -224,7 +224,7 @@ namespace TestAddress
         assert(actual_error_str == expected_error_sa_family);
     }
 
-    auto test_invalid_sin_family() -> void
+    auto test_sin_invalid_family() -> void
     {
         std::string actual_error_str;
 
@@ -240,7 +240,7 @@ namespace TestAddress
         assert(actual_error_str == expected_error_sa_family);
     }
 
-    auto test_invalid_sin_length() -> void
+    auto test_sin_invalid_length() -> void
     {
         std::string actual_error_str;
 
@@ -258,7 +258,7 @@ namespace TestAddress
         assert(std::regex_match(actual_error_str, expected_error_regex));
     }
 
-    auto test_invalid_sin6_family() -> void
+    auto test_sin6_invalid_family() -> void
     {
         std::string actual_error_str;
 
@@ -274,7 +274,7 @@ namespace TestAddress
         assert(actual_error_str == expected_error_sa_family);
     }
 
-    auto test_invalid_sin6_length() -> void
+    auto test_sin6_invalid_length() -> void
     {
         std::string actual_error_str;
 
@@ -294,7 +294,7 @@ namespace TestAddress
 
 #ifndef WIN32
 
-    auto test_invalid_sun_family() -> void
+    auto test_sun_invalid_family() -> void
     {
         std::string actual_error_str;
 
@@ -310,7 +310,7 @@ namespace TestAddress
         assert(actual_error_str == expected_error_sun_family);
     }
 
-    auto test_invalid_sun_length_large() -> void
+    auto test_sun_invalid_length_large() -> void
     {
         std::string actual_error_str;
 
@@ -328,7 +328,7 @@ namespace TestAddress
         assert(std::regex_match(actual_error_str, expected_error_regex));
     }
 
-    auto test_invalid_sun_length_small() -> void
+    auto test_sun_invalid_length_small() -> void
     {
         std::string actual_error_str;
 
@@ -346,7 +346,7 @@ namespace TestAddress
         assert(std::regex_match(actual_error_str, expected_error_regex));
     }
 
-    auto test_invalid_sun_path_large() -> void
+    auto test_sun_invalid_path_large() -> void
     {
         std::string actual_error_str;
 
@@ -365,9 +365,44 @@ namespace TestAddress
         assert(std::regex_match(actual_error_str, expected_error_regex));
     }
 
+    auto test_sun_valid_path_large() -> void
+    {
+        std::string actual_error_str;
+
+        try {
+            const auto path_length {sun_size - sun_path_offset - 1};
+            const auto sun {create_sun(AF_UNIX, sun_len_max, path_length)};
+            validate(&sun, sun_len_max);
+            validate(to_bytestring(&sun, sun_len_max));
+        }
+        catch (const Error& error) {
+            print(error);
+            actual_error_str = error.what();
+        }
+
+        assert(actual_error_str.empty());
+    }
+
+    auto test_sun_valid_path_small() -> void
+    {
+        std::string actual_error_str;
+
+        try {
+            const auto sun {create_sun(AF_UNIX, sun_len_min)};
+            validate(&sun, sun_len_min);
+            validate(to_bytestring(&sun, sun_len_min));
+        }
+        catch (const Error& error) {
+            print(error);
+            actual_error_str = error.what();
+        }
+
+        assert(actual_error_str.empty());
+    }
+
 #endif
 
-    auto test_valid_sin(const Address& address) -> void
+    auto test_valid(const Address& address) -> void
     {
         const auto family {address.family()};
 
@@ -405,7 +440,7 @@ namespace TestAddress
         }
     }
 
-    auto test_valid_sin() -> void
+    auto test_valid() -> void
     {
         static const Hostname localhost {"localhost"};
 
@@ -420,7 +455,7 @@ namespace TestAddress
                     for (const auto& host : hosts) {
                         const Address address {host.address()};
                         print(address);
-                        test_valid_sin(address);
+                        test_valid(address);
                     }
                 },
                     [&](const OsErrorResult& result) {
@@ -432,46 +467,6 @@ namespace TestAddress
                     }
                     }, hosts_result);
     }
-
-#ifndef WIN32
-
-    auto test_valid_sun_path_large() -> void
-    {
-        std::string actual_error_str;
-
-        try {
-            const auto path_length {sun_size - sun_path_offset - 1};
-            const auto sun {create_sun(AF_UNIX, sun_len_max, path_length)};
-            validate(&sun, sun_len_max);
-            validate(to_bytestring(&sun, sun_len_max));
-        }
-        catch (const Error& error) {
-            print(error);
-            actual_error_str = error.what();
-        }
-
-        assert(actual_error_str.empty());
-    }
-
-    auto test_valid_sun_path_small() -> void
-    {
-        std::string actual_error_str;
-
-        try {
-            const auto sun {create_sun(AF_UNIX, sun_len_min)};
-            validate(&sun, sun_len_min);
-            validate(to_bytestring(&sun, sun_len_min));
-        }
-        catch (const Error& error) {
-            print(error);
-            actual_error_str = error.what();
-        }
-
-        assert(actual_error_str.empty());
-    }
-
-#endif
-
 }
 
 auto main(int argc, char* argv[]) -> int
@@ -486,22 +481,20 @@ auto main(int argc, char* argv[]) -> int
             std::cout << context << std::endl;
         }
 
-        test_valid_sin();
+        test_sa_invalid_family();
+        test_sin6_invalid_family();
+        test_sin6_invalid_length();
+        test_sin_invalid_family();
+        test_sin_invalid_length();
 #ifndef WIN32
-        test_valid_sun_path_large();
-        test_valid_sun_path_small();
+        test_sun_invalid_family();
+        test_sun_invalid_length_large();
+        test_sun_invalid_length_small();
+        test_sun_invalid_path_large();
+        test_sun_valid_path_large();
+        test_sun_valid_path_small();
 #endif
-        test_invalid_sa_family();
-        test_invalid_sin_family();
-        test_invalid_sin_length();
-        test_invalid_sin6_family();
-        test_invalid_sin6_length();
-#ifndef WIN32
-        test_invalid_sun_family();
-        test_invalid_sun_length_large();
-        test_invalid_sun_length_small();
-        test_invalid_sun_path_large();
-#endif
+        test_valid();
     }
     catch (const std::exception& error) {
         std::cerr << error.what()
