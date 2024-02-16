@@ -76,15 +76,15 @@ namespace TestAddress
     using Network::to_bytestring;
     using Network::validate;
 
-    static constexpr auto expected_error_sa_family {
-        "Invalid IP domain socket address"
+    static constexpr auto expected_error_sa_family_re {
+        R"(Invalid IP domain socket address)"
     };
     static constexpr auto expected_error_sa_length_re {
         R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of sa_len_type)"
     };
 #ifndef WIN32
-    static constexpr auto expected_error_sun_family {
-        "Invalid UNIX domain socket address"
+    static constexpr auto expected_error_sun_family_re {
+        R"(Invalid UNIX domain socket address)"
     };
     static constexpr auto expected_error_sun_length_re {
         R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of sun_len_type)"
@@ -208,196 +208,147 @@ namespace TestAddress
         }
     }
 
-    auto test_sa_invalid_family() -> void
+    auto test_sa(const sockaddr& sa, std::size_t sa_len,
+                 const std::string& expected_error_re) -> void
     {
         std::string actual_error_str;
 
         try {
-            const auto sa {create_sa(AF_UNSPEC)};
-            validate(&sa, sizeof sa);
+            validate(&sa, sa_len);
         }
         catch (const Error& error) {
             print(error);
             actual_error_str = error.what();
         }
 
-        assert(actual_error_str == expected_error_sa_family);
+        const std::regex expected_error_regex {expected_error_re};
+        assert(std::regex_match(actual_error_str, expected_error_regex));
+    }
+
+    auto test_sa_invalid_family() -> void
+    {
+        const auto sa{create_sa(AF_UNSPEC)};
+        return test_sa(sa, sizeof sa, expected_error_sa_family_re);
+    }
+
+    auto test_sin(const sockaddr_in& sin, std::size_t sin_len,
+                  const std::string& expected_error_re) -> void
+    {
+        std::string actual_error_str;
+
+        try {
+            validate(&sin, sin_len);
+        }
+        catch (const Error& error) {
+            print(error);
+            actual_error_str = error.what();
+        }
+
+        const std::regex expected_error_regex {expected_error_re};
+        assert(std::regex_match(actual_error_str, expected_error_regex));
     }
 
     auto test_sin_invalid_family() -> void
     {
-        std::string actual_error_str;
-
-        try {
-            const auto sin {create_sin(AF_UNSPEC)};
-            validate(&sin, sizeof sin);
-        }
-        catch (const Error& error) {
-            print(error);
-            actual_error_str = error.what();
-        }
-
-        assert(actual_error_str == expected_error_sa_family);
+        const auto sin{create_sin(AF_UNSPEC)};
+        return test_sin(sin, sizeof sin, expected_error_sa_family_re);
     }
 
     auto test_sin_invalid_length() -> void
     {
+        const auto length {sin_size + 1};
+        const auto sin{create_sin(AF_INET, length)};
+        return test_sin(sin, length, expected_error_sa_length_re);
+    }
+
+    auto test_sin6(const sockaddr_in6 &sin6, std::size_t sin6_len,
+                   const std::string& expected_error_re) -> void
+    {
         std::string actual_error_str;
 
         try {
-            const auto length {sin_size + 1};
-            const auto sin {create_sin(AF_INET, length)};
-            validate(&sin, length);
+            validate(&sin6, sin6_len);
         }
         catch (const Error& error) {
             print(error);
             actual_error_str = error.what();
         }
 
-        const std::regex expected_error_regex {expected_error_sa_length_re};
+        const std::regex expected_error_regex {expected_error_re};
         assert(std::regex_match(actual_error_str, expected_error_regex));
     }
 
     auto test_sin6_invalid_family() -> void
     {
-        std::string actual_error_str;
-
-        try {
-            const auto sin6 {create_sin6(AF_UNSPEC)};
-            validate(&sin6, sizeof sin6);
-        }
-        catch (const Error& error) {
-            print(error);
-            actual_error_str = error.what();
-        }
-
-        assert(actual_error_str == expected_error_sa_family);
+        const auto sin6{create_sin6(AF_UNSPEC)};
+        return test_sin6(sin6, sizeof sin6, expected_error_sa_family_re);
     }
 
     auto test_sin6_invalid_length() -> void
     {
-        std::string actual_error_str;
-
-        try {
-            const auto length {sin6_size + 1};
-            const auto sin6 {create_sin6(AF_INET6, length)};
-            validate(&sin6, length);
-        }
-        catch (const Error& error) {
-            print(error);
-            actual_error_str = error.what();
-        }
-
-        const std::regex expected_error_regex {expected_error_sa_length_re};
-        assert(std::regex_match(actual_error_str, expected_error_regex));
+        const auto length {sin6_size + 1};
+        const auto sin6{create_sin6(AF_INET6, length)};
+        return test_sin6(sin6, length, expected_error_sa_length_re);
     }
 
 #ifndef WIN32
 
-    auto test_sun_invalid_family() -> void
+    auto test_sun(const sockaddr_un& sun, std::size_t sun_len,
+                  const std::string& expected_error_re) -> void
     {
         std::string actual_error_str;
 
         try {
-            const auto sun {create_sun(AF_UNSPEC)};
-            validate(&sun, sizeof sun);
+            validate(&sun, sun_len);
+            validate(to_bytestring(&sun, sun_len));
         }
         catch (const Error& error) {
             print(error);
             actual_error_str = error.what();
         }
 
-        assert(actual_error_str == expected_error_sun_family);
+        const std::regex expected_error_regex {expected_error_re};
+        assert(std::regex_match(actual_error_str, expected_error_regex));
+    }
+
+    auto test_sun_invalid_family() -> void
+    {
+        const auto sun{create_sun(AF_UNSPEC)};
+        return test_sun(sun, sizeof sun, expected_error_sun_family_re);
     }
 
     auto test_sun_invalid_length_large() -> void
     {
-        std::string actual_error_str;
-
-        try {
-            const auto length {sun_len_max + 1};
-            sockaddr_un sun {create_sun(AF_UNIX, length)};
-            validate(&sun, length);
-        }
-        catch (const Error& error) {
-            print(error);
-            actual_error_str = error.what();
-        }
-
-        const std::regex expected_error_regex {expected_error_sun_length_re};
-        assert(std::regex_match(actual_error_str, expected_error_regex));
+        const auto length {sun_len_max + 1};
+        sockaddr_un sun{create_sun(AF_UNIX, length)};
+        return test_sun(sun, length, expected_error_sun_length_re);
     }
 
     auto test_sun_invalid_length_small() -> void
     {
-        std::string actual_error_str;
-
-        try {
-            const auto length {0UL};
-            sockaddr_un sun {create_sun(AF_UNIX, length)};
-            validate(&sun, length);
-        }
-        catch (const Error& error) {
-            print(error);
-            actual_error_str = error.what();
-        }
-
-        const std::regex expected_error_regex {expected_error_sun_length_re};
-        assert(std::regex_match(actual_error_str, expected_error_regex));
+        const auto length {sun_len_min - 1};
+        sockaddr_un sun{create_sun(AF_UNIX, length)};
+        return test_sun(sun, length, expected_error_sun_length_re);
     }
 
     auto test_sun_invalid_path_large() -> void
     {
-        std::string actual_error_str;
-
-        try {
-            const auto path_length {sun_size - sun_path_offset};
-            const auto sun {create_sun(AF_UNIX, sun_len_max, path_length)};
-            validate(&sun, sun_len_max);
-            validate(to_bytestring(&sun, sun_len_max));
-        }
-        catch (const Error& error) {
-            print(error);
-            actual_error_str = error.what();
-        }
-
-        const std::regex expected_error_regex {expected_error_sun_length_re};
-        assert(std::regex_match(actual_error_str, expected_error_regex));
+        const auto path_length {sun_size - sun_path_offset};
+        const auto sun {create_sun(AF_UNIX, sun_len_max, path_length)};
+        return test_sun(sun, sun_len_max, expected_error_sun_length_re);
     }
 
     auto test_sun_valid_path_large() -> void
     {
-        std::string actual_error_str;
-
-        try {
-            const auto path_length {sun_size - sun_path_offset - 1};
-            const auto sun {create_sun(AF_UNIX, sun_len_max, path_length)};
-            validate(&sun, sun_len_max);
-            validate(to_bytestring(&sun, sun_len_max));
-        }
-        catch (const Error& error) {
-            print(error);
-            actual_error_str = error.what();
-        }
-
-        assert(actual_error_str.empty());
+        const auto path_length {sun_size - sun_path_offset - 1};
+        const auto sun {create_sun(AF_UNIX, sun_len_max, path_length)};
+        return test_sun(sun, sun_len_max, {});
     }
 
     auto test_sun_valid_path_small() -> void
     {
-        std::string actual_error_str;
-
-        try {
-            const auto sun {create_sun(AF_UNIX, sun_len_min)};
-            validate(&sun, sun_len_min);
-            validate(to_bytestring(&sun, sun_len_min));
-        }
-        catch (const Error& error) {
-            print(error);
-            actual_error_str = error.what();
-        }
-
-        assert(actual_error_str.empty());
+        const auto sun {create_sun(AF_UNIX, sun_len_min)};
+        return test_sun(sun, sun_len_min, {});
     }
 
 #endif
