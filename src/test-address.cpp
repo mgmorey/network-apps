@@ -65,9 +65,14 @@ namespace TestAddress
     using Network::get_sa_size_maximum;
     using Network::get_sa_size_minimum;
     using Network::parse;
+    using Network::sa_size;
+    using Network::sin6_size;
+    using Network::sin_size;
 #ifndef WIN32
     using Network::sun_len_max;
     using Network::sun_len_min;
+    using Network::sun_path_offset;
+    using Network::sun_size;
 #endif
     using Network::to_bytestring;
     using Network::validate;
@@ -94,6 +99,63 @@ namespace TestAddress
     };
 
     static bool verbose {false};  // NOLINT
+
+    auto create_sa(int family, std::size_t length = sa_size) -> sockaddr
+    {
+        sockaddr sa {};
+#ifdef HAVE_SOCKADDR_SA_LEN
+        sa.sa_len = length;
+#else
+        static_cast<void>(length);
+#endif
+        sa.sa_family = family;
+        return sa;
+    }
+
+    auto create_sin(int family = AF_INET,
+                    std::size_t length = sin_size) -> sockaddr_in
+    {
+        sockaddr_in sin {};
+#ifdef HAVE_SOCKADDR_SA_LEN
+        sin.sin_len = length;
+#else
+        static_cast<void>(length);
+#endif
+        sin.sin_family = family;
+        return sin;
+    }
+
+    auto create_sin6(int family = AF_INET6,
+                     std::size_t length = sin6_size) -> sockaddr_in6
+    {
+        sockaddr_in6 sin6 {};
+#ifdef HAVE_SOCKADDR_SA_LEN
+        sin6.sin6_len = length;
+#else
+        static_cast<void>(length);
+#endif
+        sin6.sin6_family = family;
+        return sin6;
+    }
+
+    auto create_sun(int family = AF_UNIX,
+                    std::size_t sun_length = sun_len_max,
+                    std::size_t path_length = 0UL) -> sockaddr_un
+    {
+        sockaddr_un sun {};
+#ifdef HAVE_SOCKADDR_SA_LEN
+        sun.sun_len = sun_length;
+#else
+        static_cast<void>(sun_length);
+#endif
+        sun.sun_family = family;
+
+        if (path_length != 0UL) {
+            std::memset(&sun.sun_path, 'X', path_length);
+        }
+
+        return sun;
+    }
 
     auto parse_arguments(int argc, char** argv) -> void
     {
@@ -152,11 +214,7 @@ namespace TestAddress
         std::string actual_error_str;
 
         try {
-            sockaddr sa {};
-#ifdef HAVE_SOCKADDR_SA_LEN
-            sa.sa_len = sizeof sa;
-#endif
-            sa.sa_family = AF_UNSPEC;
+            const auto sa {create_sa(AF_UNSPEC)};
             validate(&sa, sizeof sa);
         }
         catch (const Error& error) {
@@ -172,10 +230,7 @@ namespace TestAddress
         std::string actual_error_str;
 
         try {
-            sockaddr_in sin {};
-#ifdef HAVE_SOCKADDR_SA_LEN
-            sin.sin_len = sizeof sin;
-#endif
+            const auto sin {create_sin(AF_UNSPEC)};
             validate(&sin, sizeof sin);
         }
         catch (const Error& error) {
@@ -191,14 +246,9 @@ namespace TestAddress
         std::string actual_error_str;
 
         try {
-            sockaddr_in sin {};
-#ifdef HAVE_SOCKADDR_SA_LEN
-            sin.sin_len = sizeof sin + 1;
-#endif
-            sin.sin_family = AF_INET;
-            const void* ptr = &sin;
-            const auto* sa = static_cast<const sockaddr*>(ptr);
-            validate(sa, sizeof sin + 1);
+            const auto length {sin_size + 1};
+            const auto sin {create_sin(AF_INET, length)};
+            validate(&sin, length);
         }
         catch (const Error& error) {
             print(error);
@@ -214,10 +264,7 @@ namespace TestAddress
         std::string actual_error_str;
 
         try {
-            sockaddr_in6 sin6 {};
-#ifdef HAVE_SOCKADDR_SA_LEN
-            sin6.sin6_len = sizeof sin6;
-#endif
+            const auto sin6 {create_sin6(AF_UNSPEC)};
             validate(&sin6, sizeof sin6);
         }
         catch (const Error& error) {
@@ -233,14 +280,9 @@ namespace TestAddress
         std::string actual_error_str;
 
         try {
-            sockaddr_in6 sin6 {};
-#ifdef HAVE_SOCKADDR_SA_LEN
-            sin6.sin6_len = sizeof sin6 + 1;
-#endif
-            sin6.sin6_family = AF_INET6;
-            const void* ptr = &sin6;
-            const auto* sa = static_cast<const sockaddr*>(ptr);
-            validate(sa, sizeof sin6 + 1);
+            const auto length {sin6_size + 1};
+            const auto sin6 {create_sin6(AF_INET6, length)};
+            validate(&sin6, length);
         }
         catch (const Error& error) {
             print(error);
@@ -258,10 +300,7 @@ namespace TestAddress
         std::string actual_error_str;
 
         try {
-            sockaddr_un sun {};
-#ifdef HAVE_SOCKADDR_SA_LEN
-            sun.sun_len = sizeof sun;
-#endif
+            const auto sun {create_sun(AF_UNSPEC)};
             validate(&sun, sizeof sun);
         }
         catch (const Error& error) {
@@ -277,12 +316,9 @@ namespace TestAddress
         std::string actual_error_str;
 
         try {
-            sockaddr_un sun {};
-#ifdef HAVE_SOCKADDR_SA_LEN
-            sun.sun_len = sizeof sun + 1;
-#endif
-            sun.sun_family = AF_UNIX;
-            validate(&sun, sizeof sun + 1);
+            const auto length {sun_len_max + 1};
+            sockaddr_un sun {create_sun(AF_UNIX, length)};
+            validate(&sun, length);
         }
         catch (const Error& error) {
             print(error);
@@ -298,12 +334,9 @@ namespace TestAddress
         std::string actual_error_str;
 
         try {
-            sockaddr_un sun {};
-#ifdef HAVE_SOCKADDR_SA_LEN
-            sun.sun_len = 0;
-#endif
-            sun.sun_family = AF_UNIX;
-            validate(&sun, 0);
+            const auto length {0UL};
+            sockaddr_un sun {create_sun(AF_UNIX, length)};
+            validate(&sun, length);
         }
         catch (const Error& error) {
             print(error);
@@ -319,14 +352,10 @@ namespace TestAddress
         std::string actual_error_str;
 
         try {
-            sockaddr_un sun {};
-#ifdef HAVE_SOCKADDR_SA_LEN
-            sun.sun_len = sizeof sun;
-#endif
-            sun.sun_family = AF_UNIX;
-            std::memset(&sun.sun_path, 'X', sizeof sun.sun_path);
-            validate(&sun, sizeof sun);
-            validate(to_bytestring(&sun, sizeof sun));
+            const auto path_length {sun_size - sun_path_offset};
+            const auto sun {create_sun(AF_UNIX, sun_len_max, path_length)};
+            validate(&sun, sun_len_max);
+            validate(to_bytestring(&sun, sun_len_max));
         }
         catch (const Error& error) {
             print(error);
@@ -412,14 +441,10 @@ namespace TestAddress
         std::string actual_error_str;
 
         try {
-            sockaddr_un sun {};
-#ifdef HAVE_SOCKADDR_SA_LEN
-            sun.sun_len = sun_len_max;
-#endif
-            sun.sun_family = AF_UNIX;
-            std::memset(&sun.sun_path, 'X', sizeof sun.sun_path - 1);
-            validate(&sun, sizeof sun);
-            validate(to_bytestring(&sun, sizeof sun));
+            const auto path_length {sun_size - sun_path_offset - 1};
+            const auto sun {create_sun(AF_UNIX, sun_len_max, path_length)};
+            validate(&sun, sun_len_max);
+            validate(to_bytestring(&sun, sun_len_max));
         }
         catch (const Error& error) {
             print(error);
@@ -434,11 +459,7 @@ namespace TestAddress
         std::string actual_error_str;
 
         try {
-            sockaddr_un sun {};
-#ifdef HAVE_SOCKADDR_SA_LEN
-            sun.sun_len = sun_len_min;
-#endif
-            sun.sun_family = AF_UNIX;
+            const auto sun {create_sun(AF_UNIX, sun_len_min)};
             validate(&sun, sun_len_min);
             validate(to_bytestring(&sun, sun_len_min));
         }
