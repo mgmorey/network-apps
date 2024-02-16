@@ -21,7 +21,11 @@
                                         // get_hosts(),
                                         // get_sa_size_maximum(),
                                         // get_sa_size_minimum(),
-                                        // sun_len_max, sun_len_min,
+                                        // sa_family_type, sa_size,
+                                        // sin_family_type, sin6_size,
+                                        // sin_size, sun_len_max,
+                                        // sun_len_min,
+                                        // sun_path_offset, sun_size,
                                         // to_bytestring(), validate()
 #include "network/os-features.h"        // HAVE_SOCKADDR_SA_LEN
 #include "network/parse.h"              // parse()
@@ -36,8 +40,8 @@
 #include <netdb.h>          // AI_ADDRCONFIG, AI_CANONNAME
 #include <netinet/in.h>     // IPPROTO_TCP
 #include <sys/socket.h>     // AF_INET, AF_INET6, AF_UNIX, AF_UNSPEC,
-                            // sa_family_t, sockaddr, sockaddr_in,
-                            // sockaddr_in6, sockaddr_un
+                            // sockaddr, sockaddr_in6, sockaddr_in,
+                            // sockaddr_un
 #endif
 
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
@@ -64,8 +68,10 @@ namespace TestAddress
     using Network::get_sa_size_maximum;
     using Network::get_sa_size_minimum;
     using Network::parse;
+    using Network::sa_family_type;
     using Network::sa_size;
     using Network::sin6_size;
+    using Network::sin_family_type;
     using Network::sin_size;
 #ifndef WIN32
     using Network::sun_len_max;
@@ -99,7 +105,7 @@ namespace TestAddress
 
     static bool verbose {false};  // NOLINT
 
-    auto create_sa(sa_family_t family, std::size_t length = sa_size) -> sockaddr
+    auto create_sa(sa_family_type family, std::size_t length = sa_size) -> sockaddr
     {
         sockaddr sa{};
 #ifdef HAVE_SOCKADDR_SA_LEN
@@ -111,7 +117,7 @@ namespace TestAddress
         return sa;
     }
 
-    auto create_sin(sa_family_t family = AF_INET,
+    auto create_sin(sin_family_type family = AF_INET,
                     std::size_t length = sin_size) -> sockaddr_in
     {
         sockaddr_in sin {};
@@ -124,7 +130,7 @@ namespace TestAddress
         return sin;
     }
 
-    auto create_sin6(sa_family_t family = AF_INET6,
+    auto create_sin6(sin_family_type family = AF_INET6,
                      std::size_t length = sin6_size) -> sockaddr_in6
     {
         sockaddr_in6 sin6 {};
@@ -137,7 +143,9 @@ namespace TestAddress
         return sin6;
     }
 
-    auto create_sun(sa_family_t family = AF_UNIX,
+#ifndef WIN32
+
+    auto create_sun(sa_family_type family = AF_UNIX,
                     std::size_t sun_length = sun_len_max,
                     std::size_t path_length = 0UL) -> sockaddr_un
     {
@@ -155,6 +163,8 @@ namespace TestAddress
 
         return sun;
     }
+
+#endif
 
     auto parse_arguments(int argc, char** argv) -> void
     {
