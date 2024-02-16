@@ -36,9 +36,8 @@
 #include <netdb.h>          // AI_ADDRCONFIG, AI_CANONNAME
 #include <netinet/in.h>     // IPPROTO_TCP
 #include <sys/socket.h>     // AF_INET, AF_INET6, AF_UNIX, AF_UNSPEC,
-                            // SOCK_STREAM, sockaddr, sockaddr_in,
-                            // sockaddr_in6, sockaddr_storage,
-                            // sockaddr_un
+                            // sa_family_t, sockaddr, sockaddr_in,
+                            // sockaddr_in6, sockaddr_un
 #endif
 
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
@@ -100,9 +99,9 @@ namespace TestAddress
 
     static bool verbose {false};  // NOLINT
 
-    auto create_sa(int family, std::size_t length = sa_size) -> sockaddr
+    auto create_sa(sa_family_t family, std::size_t length = sa_size) -> sockaddr
     {
-        sockaddr sa {};
+        sockaddr sa{};
 #ifdef HAVE_SOCKADDR_SA_LEN
         sa.sa_len = length;
 #else
@@ -112,7 +111,7 @@ namespace TestAddress
         return sa;
     }
 
-    auto create_sin(int family = AF_INET,
+    auto create_sin(sa_family_t family = AF_INET,
                     std::size_t length = sin_size) -> sockaddr_in
     {
         sockaddr_in sin {};
@@ -125,7 +124,7 @@ namespace TestAddress
         return sin;
     }
 
-    auto create_sin6(int family = AF_INET6,
+    auto create_sin6(sa_family_t family = AF_INET6,
                      std::size_t length = sin6_size) -> sockaddr_in6
     {
         sockaddr_in6 sin6 {};
@@ -138,7 +137,7 @@ namespace TestAddress
         return sin6;
     }
 
-    auto create_sun(int family = AF_UNIX,
+    auto create_sun(sa_family_t family = AF_UNIX,
                     std::size_t sun_length = sun_len_max,
                     std::size_t path_length = 0UL) -> sockaddr_un
     {
