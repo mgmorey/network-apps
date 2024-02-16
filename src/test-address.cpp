@@ -320,14 +320,14 @@ namespace TestAddress
     auto test_sun_invalid_length_large() -> void
     {
         const auto length {sun_len_max + 1};
-        sockaddr_un sun{create_sun(AF_UNIX, length)};
+        const auto sun {create_sun(AF_UNIX, length)};
         return test_sun(sun, length, expected_error_sun_length_re);
     }
 
     auto test_sun_invalid_length_small() -> void
     {
         const auto length {sun_len_min - 1};
-        sockaddr_un sun{create_sun(AF_UNIX, length)};
+        const auto sun {create_sun(AF_UNIX, length)};
         return test_sun(sun, length, expected_error_sun_length_re);
     }
 
