@@ -117,8 +117,10 @@ endif
 
 test_sources = $(test_common_sources)
 
+ifneq "$(os_name)" "Darwin"
 ifneq "$(os_name)" "MINGW64_NT"
 	test_sources += $(test_unix_sources)
+endif
 endif
 
 objects = $(addprefix $(object_dir)/,$(addsuffix	\
