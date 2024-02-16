@@ -25,12 +25,11 @@
 #include "network/to-path-length.h"             // to_path_length()
 
 #ifndef WIN32
+#include <sys/socket.h>     // AF_UNIX
 #include <sys/un.h>         // sockaddr_un
 #endif
 
 #ifndef WIN32
-
-#include <sys/socket.h>     // AF_UNIX
 
 auto Network::to_bytestring(const OptionalPathname& path) ->
     Network::ByteString
