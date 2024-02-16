@@ -21,10 +21,16 @@
 #include "network/integererror.h"       // IntegerError
 #include "network/logicerror.h"         // LogicError
 #include "network/namelengtherror.h"    // NameLengthError
+#ifndef WIN32
 #include "network/pathlengtherror.h"    // PathLengthError
+#endif
 #include "network/rangeerror.h"         // RangeError
 #include "network/runtimeerror.h"       // RuntimeError
+#include "network/salengtherror.h"      // SaLengthError
 #include "network/sizeerror.h"          // SizeError
 #include "network/socketlengtherror.h"  // SocketLengthError
+#ifndef WIN32
+#include "network/sunlengtherror.h"     // SunLengthError
+#endif
 
 #endif

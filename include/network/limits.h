@@ -18,13 +18,17 @@
 
 #include "network/name-length-limits.h"         // name_length_max,
                                                 // name_length_min
+#ifndef WIN32
 #include "network/path-length-limits.h"         // path_length_max,
                                                 // path_length_min
+#endif
 #include "network/sa-len-limits.h"              // sa_len_max,
                                                 // sa_len_min
 #include "network/socket-length-limits.h"       // socket_length_max,
                                                 // socket_length_min
+#ifndef WIN32
 #include "network/sun-len-limits.h"             // sun_len_max,
                                                 // sun_len_min
+#endif
 
 #endif

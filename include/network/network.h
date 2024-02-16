@@ -109,7 +109,9 @@
 #include "network/to-integer.h"                 // to_integer()
 #include "network/to-name-length.h"             // to_name_length()
 #include "network/to-os-error.h"                // to_os_error()
+#ifndef WIN32
 #include "network/to-path.h"                    // to_path()
+#endif
 #include "network/to-size.h"                    // to_size()
 #include "network/to-socket-length.h"           // to_socket_lengtho()
 #include "network/to-string.h"                  // to_string()
