@@ -14,12 +14,13 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/validate-bs.h"                // validate
+#include "network/addresserror.h"               // AddressError
 #include "network/bytestring.h"                 // ByteString
 #include "network/get-sa-family.h"              // get_sa_family()
 #include "network/get-sa-size-maximum.h"        // get_sa_size_maximum()
 #include "network/get-sa-size-minimum.h"        // get_sa_size_minimum()
-#include "network/logicerror.h"                 // LogicError
 #include "network/os-features.h"                // HAVE_SOCKADDR_SA_LEN
+#include "network/sa-len-limits.h"              // sa_len_min
 #include "network/salengtherror.h"              // SaLengthError
 
 #ifdef HAVE_SOCKADDR_SA_LEN
@@ -45,6 +46,12 @@
 
 auto Network::validate(const ByteString& addr) -> void
 {
+    const auto size {addr.size()};
+
+    if (std::cmp_less(size, sa_len_min)) {
+        throw SaLengthError(std::to_string(size), sa_len_min, sa_len_max);
+    }
+
     const auto family {get_sa_family(addr)};
 
     switch (family) {
@@ -55,15 +62,26 @@ auto Network::validate(const ByteString& addr) -> void
     case AF_INET6:
         break;
     default:
-        throw LogicError("Invalid socket address family");
+        throw AddressError("Invalid socket address family");
     }
 
-    const auto size {addr.size()};
     const auto size_max {get_sa_size_maximum(family)};
     const auto size_min {get_sa_size_minimum(family)};
 
     if (size < size_min || size > size_max) {
-        throw SaLengthError(std::to_string(size), size_min, size_max);
+        switch (family) {
+#ifndef WIN32
+        case AF_UNIX:
+            throw SunLengthError(std::to_string(size), size_max);
+            break;
+#endif
+        case AF_INET:
+        case AF_INET6:
+            throw SaLengthError(std::to_string(size), size_min, size_max);
+            break;
+        default:
+            throw AddressError("Invalid socket address family");
+        }
     }
 
 #ifdef HAVE_SOCKADDR_SA_LEN

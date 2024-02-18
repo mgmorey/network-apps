@@ -82,20 +82,12 @@ namespace TestAddress
 #endif
     using Network::validate;
 
-    static constexpr auto expected_error_sa_family_re {
-        R"(Invalid IP domain socket address)"
+    static constexpr auto expected_error_family_re {
+        R"(Invalid socket address family)"
     };
-    static constexpr auto expected_error_sa_length_re {
-        R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of sa_len_type)"
+    static constexpr auto expected_error_length_re {
+        R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of (sa|sun)_len_type)"
     };
-#ifndef WIN32
-    static constexpr auto expected_error_sun_family_re {
-        R"(Invalid UNIX domain socket address)"
-    };
-    static constexpr auto expected_error_sun_length_re {
-        R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of sun_len_type)"
-    };
-#endif
     static constexpr auto print_key_width {20};
     static constexpr auto print_value_width {10};
 
@@ -238,7 +230,7 @@ namespace TestAddress
     auto test_sa_invalid_family() -> void
     {
         const auto sa{create_sa(AF_UNSPEC)};
-        return test_sa(sa, sizeof sa, expected_error_sa_family_re);
+        return test_sa(sa, sizeof sa, expected_error_family_re);
     }
 
     auto test_sin(const sockaddr_in& sin, std::size_t sin_len,
@@ -261,14 +253,14 @@ namespace TestAddress
     auto test_sin_invalid_family() -> void
     {
         const auto sin{create_sin(AF_UNSPEC)};
-        return test_sin(sin, sizeof sin, expected_error_sa_family_re);
+        return test_sin(sin, sizeof sin, expected_error_family_re);
     }
 
     auto test_sin_invalid_length() -> void
     {
         const auto length {sin_size + 1};
         const auto sin{create_sin(AF_INET, length)};
-        return test_sin(sin, length, expected_error_sa_length_re);
+        return test_sin(sin, length, expected_error_length_re);
     }
 
     auto test_sin6(const sockaddr_in6 &sin6, std::size_t sin6_len,
@@ -291,14 +283,14 @@ namespace TestAddress
     auto test_sin6_invalid_family() -> void
     {
         const auto sin6{create_sin6(AF_UNSPEC)};
-        return test_sin6(sin6, sizeof sin6, expected_error_sa_family_re);
+        return test_sin6(sin6, sizeof sin6, expected_error_family_re);
     }
 
     auto test_sin6_invalid_length() -> void
     {
         const auto length {sin6_size + 1};
         const auto sin6{create_sin6(AF_INET6, length)};
-        return test_sin6(sin6, length, expected_error_sa_length_re);
+        return test_sin6(sin6, length, expected_error_length_re);
     }
 
 #ifndef WIN32
@@ -318,6 +310,7 @@ namespace TestAddress
         }
 
         assert(std::regex_match(actual_error_str, expected_error_regex));
+        actual_error_str.clear();
 
         try {
             validate(to_bytestring(&sun, sun_len));
@@ -333,28 +326,28 @@ namespace TestAddress
     auto test_sun_invalid_family() -> void
     {
         const auto sun{create_sun(AF_UNSPEC)};
-        return test_sun(sun, sizeof sun, expected_error_sun_family_re);
+        return test_sun(sun, sizeof sun, expected_error_family_re);
     }
 
     auto test_sun_invalid_length_large() -> void
     {
         const auto length {sun_len_max + 1};
         const auto sun {create_sun(AF_UNIX, length)};
-        return test_sun(sun, length, expected_error_sun_length_re);
+        return test_sun(sun, length, expected_error_length_re);
     }
 
     auto test_sun_invalid_length_small() -> void
     {
         const auto length {sun_len_min - 1};
         const auto sun {create_sun(AF_UNIX, length)};
-        return test_sun(sun, length, expected_error_sun_length_re);
+        return test_sun(sun, length, expected_error_length_re);
     }
 
     auto test_sun_invalid_path_large() -> void
     {
         const auto path_length {sun_size - sun_path_offset};
         const auto sun {create_sun(AF_UNIX, sun_len_max, path_length)};
-        return test_sun(sun, sun_len_max, expected_error_sun_length_re);
+        return test_sun(sun, sun_len_max, expected_error_length_re);
     }
 
     auto test_sun_valid_path_large() -> void

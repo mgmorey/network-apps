@@ -14,7 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/validate-sin.h"               // validate()
-#include "network/logicerror.h"                 // LogicError
+#include "network/addresserror.h"               // AddressError
 #include "network/sa-len-type.h"                // sa_len_type
 #include "network/salengtherror.h"              // SaLengthError
 
@@ -37,6 +37,6 @@ auto Network::validate(const sockaddr_in *sin,
     }
 
     if (sin->sin_family != AF_INET) {
-        throw LogicError("Invalid IP domain socket address");
+        throw AddressError("Invalid socket address family");
     }
 }

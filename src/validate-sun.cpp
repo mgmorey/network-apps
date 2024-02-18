@@ -14,8 +14,8 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/validate-sun.h"               // validate()
+#include "network/addresserror.h"               // AddressError
 #include "network/get-sun-length.h"             // get_sun_length()
-#include "network/logicerror.h"                 // LogicError
 #include "network/sun-len-limits.h"             // sun_len_max,
                                                 // sun_len_min
 #include "network/sun-len-type.h"               // sun_len_type
@@ -47,7 +47,7 @@ auto Network::validate(const sockaddr_un* sun,
     }
 
     if (sun->sun_family != AF_UNIX) {
-        throw LogicError("Invalid UNIX domain socket address");
+        throw AddressError("Invalid socket address family");
     }
 }
 

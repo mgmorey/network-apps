@@ -14,9 +14,10 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/validate-sa.h"                // validate()
+#include "network/addresserror.h"               // AddressError
 #include "network/get-sa-size-maximum.h"        // get_sa_size_maximum()
 #include "network/get-sa-size-minimum.h"        // get_sa_size_minimum()
-#include "network/logicerror.h"                 // LogicError
+#include "network/sa-len-limits.h"              // sa_len_min
 #include "network/sa-len-type.h"                // sa_len_type
 #include "network/salengtherror.h"              // SaLengthError
 #include "network/socket-family-type.h"         // socket_family_type
@@ -34,6 +35,12 @@ namespace {
     auto validate_length(Network::sa_len_type sa_len,
                          Network::socket_family_type family) -> void
     {
+        if (std::cmp_less(sa_len, Network::sa_len_min)) {
+            throw Network::SaLengthError(std::to_string(sa_len),
+                                         Network::sa_len_min,
+                                         Network::sa_len_max);
+        }
+
         const auto size_max {Network::get_sa_size_maximum(family)};
         const auto size_min {Network::get_sa_size_minimum(family)};
 
@@ -51,7 +58,7 @@ auto Network::validate(const sockaddr *sa, sa_len_type sa_len) -> void
     const socket_family_type family {sa->sa_family};
 
     if (family != AF_INET && family != AF_INET6) {
-        throw LogicError("Invalid IP domain socket address");
+        throw AddressError("Invalid socket address family");
     }
 
     validate_length(sa_len, family);
