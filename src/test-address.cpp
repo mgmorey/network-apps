@@ -78,8 +78,8 @@ namespace TestAddress
     using Network::sun_len_min;
     using Network::sun_path_offset;
     using Network::sun_size;
-#endif
     using Network::to_bytestring;
+#endif
     using Network::validate;
 
     static constexpr auto expected_error_sa_family_re {
@@ -221,6 +221,7 @@ namespace TestAddress
     auto test_sa(const sockaddr& sa, std::size_t sa_len,
                  const std::string& expected_error_re) -> void
     {
+        const std::regex expected_error_regex {expected_error_re};
         std::string actual_error_str;
 
         try {
@@ -231,7 +232,6 @@ namespace TestAddress
             actual_error_str = error.what();
         }
 
-        const std::regex expected_error_regex {expected_error_re};
         assert(std::regex_match(actual_error_str, expected_error_regex));
     }
 
@@ -244,6 +244,7 @@ namespace TestAddress
     auto test_sin(const sockaddr_in& sin, std::size_t sin_len,
                   const std::string& expected_error_re) -> void
     {
+        const std::regex expected_error_regex {expected_error_re};
         std::string actual_error_str;
 
         try {
@@ -254,7 +255,6 @@ namespace TestAddress
             actual_error_str = error.what();
         }
 
-        const std::regex expected_error_regex {expected_error_re};
         assert(std::regex_match(actual_error_str, expected_error_regex));
     }
 
@@ -274,6 +274,7 @@ namespace TestAddress
     auto test_sin6(const sockaddr_in6 &sin6, std::size_t sin6_len,
                    const std::string& expected_error_re) -> void
     {
+        const std::regex expected_error_regex {expected_error_re};
         std::string actual_error_str;
 
         try {
@@ -284,7 +285,6 @@ namespace TestAddress
             actual_error_str = error.what();
         }
 
-        const std::regex expected_error_regex {expected_error_re};
         assert(std::regex_match(actual_error_str, expected_error_regex));
     }
 
@@ -306,10 +306,20 @@ namespace TestAddress
     auto test_sun(const sockaddr_un& sun, std::size_t sun_len,
                   const std::string& expected_error_re) -> void
     {
+        const std::regex expected_error_regex {expected_error_re};
         std::string actual_error_str;
 
         try {
             validate(&sun, sun_len);
+        }
+        catch (const Error& error) {
+            print(error);
+            actual_error_str = error.what();
+        }
+
+        assert(std::regex_match(actual_error_str, expected_error_regex));
+
+        try {
             validate(to_bytestring(&sun, sun_len));
         }
         catch (const Error& error) {
@@ -317,7 +327,6 @@ namespace TestAddress
             actual_error_str = error.what();
         }
 
-        const std::regex expected_error_regex {expected_error_re};
         assert(std::regex_match(actual_error_str, expected_error_regex));
     }
 
