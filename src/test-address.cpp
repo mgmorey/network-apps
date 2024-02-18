@@ -78,8 +78,8 @@ namespace TestAddress
     using Network::sun_len_min;
     using Network::sun_path_offset;
     using Network::sun_size;
-    using Network::to_bytestring;
 #endif
+    using Network::to_bytestring;
     using Network::validate;
 
     static constexpr auto expected_error_family_re {
@@ -225,11 +225,22 @@ namespace TestAddress
         }
 
         assert(std::regex_match(actual_error_str, expected_error_regex));
+        actual_error_str.clear();
+
+        try {
+            validate(to_bytestring(&sa, sa_len));
+        }
+        catch (const Error& error) {
+            print(error);
+            actual_error_str = error.what();
+        }
+
+        assert(std::regex_match(actual_error_str, expected_error_regex));
     }
 
     auto test_sa_invalid_family() -> void
     {
-        const auto sa{create_sa(AF_UNSPEC)};
+        const auto sa {create_sa(AF_UNSPEC)};
         return test_sa(sa, sizeof sa, expected_error_family_re);
     }
 
@@ -248,18 +259,29 @@ namespace TestAddress
         }
 
         assert(std::regex_match(actual_error_str, expected_error_regex));
+        actual_error_str.clear();
+
+        try {
+            validate(to_bytestring(&sin, sin_len));
+        }
+        catch (const Error& error) {
+            print(error);
+            actual_error_str = error.what();
+        }
+
+        assert(std::regex_match(actual_error_str, expected_error_regex));
     }
 
     auto test_sin_invalid_family() -> void
     {
-        const auto sin{create_sin(AF_UNSPEC)};
+        const auto sin {create_sin(AF_UNSPEC)};
         return test_sin(sin, sizeof sin, expected_error_family_re);
     }
 
     auto test_sin_invalid_length() -> void
     {
         const auto length {sin_size + 1};
-        const auto sin{create_sin(AF_INET, length)};
+        const auto sin {create_sin(AF_INET, length)};
         return test_sin(sin, length, expected_error_length_re);
     }
 
@@ -282,14 +304,14 @@ namespace TestAddress
 
     auto test_sin6_invalid_family() -> void
     {
-        const auto sin6{create_sin6(AF_UNSPEC)};
+        const auto sin6 {create_sin6(AF_UNSPEC)};
         return test_sin6(sin6, sizeof sin6, expected_error_family_re);
     }
 
     auto test_sin6_invalid_length() -> void
     {
         const auto length {sin6_size + 1};
-        const auto sin6{create_sin6(AF_INET6, length)};
+        const auto sin6 {create_sin6(AF_INET6, length)};
         return test_sin6(sin6, length, expected_error_length_re);
     }
 
@@ -325,7 +347,7 @@ namespace TestAddress
 
     auto test_sun_invalid_family() -> void
     {
-        const auto sun{create_sun(AF_UNSPEC)};
+        const auto sun {create_sun(AF_UNSPEC)};
         return test_sun(sun, sizeof sun, expected_error_family_re);
     }
 
