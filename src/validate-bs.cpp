@@ -46,12 +46,6 @@
 
 auto Network::validate(const ByteString& addr) -> void
 {
-    const auto size {addr.size()};
-
-    if (std::cmp_less(size, sa_len_min)) {
-        throw SaLengthError(std::to_string(size), sa_len_min, sa_len_max);
-    }
-
     const auto family {get_sa_family(addr)};
 
     switch (family) {
@@ -65,6 +59,7 @@ auto Network::validate(const ByteString& addr) -> void
         throw FamilyError();
     }
 
+    const auto size {addr.size()};
     const auto size_max {get_sa_size_maximum(family)};
     const auto size_min {get_sa_size_minimum(family)};
 

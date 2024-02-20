@@ -21,8 +21,7 @@
 
 namespace Network
 {
-    extern auto get_sa_family(const ByteString& addr,
-                              socket_family_type family = 0) noexcept ->
+    extern auto get_sa_family(const ByteString& addr) ->
         socket_family_type;
 }
 

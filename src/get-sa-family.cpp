@@ -16,29 +16,29 @@
 #include "network/get-sa-family.h"              // get_sa_family()
 #include "network/bytestring.h"                 // ByteString
 #include "network/get-sa-pointer.h"             // get_sa_pointer()
-#include "network/sa-offsets.h"                 // sa_family_offset
+#include "network/sa-len-limits.h"              // sa_len_min,
+                                                // sa_len_max
+#include "network/salengtherror.h"              // SaLengthError
 #include "network/socket-family-type.h"         // socket_family_type
 
 #ifdef WIN32
-#include <winsock2.h>       // sockaddr
+#include <winsock2.h>       // AF_UNSPEC, sockaddr
 #else
-#include <sys/socket.h>     // sockaddr
+#include <sys/socket.h>     // AF_UNSPEC, sockaddr
 #endif
 
-auto Network::get_sa_family(const ByteString& addr,
-                            socket_family_type family) noexcept ->
+#include <string>   // std::to_string()
+
+auto Network::get_sa_family(const ByteString &addr) ->
     Network::socket_family_type
 {
-    if (addr.size() < sa_data_offset) {
-        return family;
+    if (addr.size() < sa_len_min ||
+        addr.size() > sa_len_max) {
+        throw SaLengthError(std::to_string(addr.size()),
+                            sa_len_min,
+                            sa_len_max);
     }
 
     const auto* const sa {get_sa_pointer(addr)};
-
-    if (sa->sa_family == 0) {
-        return family;
-    }
-
-    family = sa->sa_family;
-    return family;
+    return sa->sa_family;
 }
