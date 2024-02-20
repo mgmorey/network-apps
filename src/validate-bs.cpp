@@ -14,8 +14,8 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/validate-bs.h"                // validate
-#include "network/addresserror.h"               // AddressError
 #include "network/bytestring.h"                 // ByteString
+#include "network/familyerror.h"                // FamilyError
 #include "network/get-sa-family.h"              // get_sa_family()
 #include "network/get-sa-size-maximum.h"        // get_sa_size_maximum()
 #include "network/get-sa-size-minimum.h"        // get_sa_size_minimum()
@@ -62,7 +62,7 @@ auto Network::validate(const ByteString& addr) -> void
     case AF_INET6:
         break;
     default:
-        throw AddressError("Invalid socket address family");
+        throw FamilyError();
     }
 
     const auto size_max {get_sa_size_maximum(family)};
@@ -80,7 +80,7 @@ auto Network::validate(const ByteString& addr) -> void
             throw SaLengthError(std::to_string(size), size_min, size_max);
             break;
         default:
-            throw AddressError("Invalid socket address family");
+            throw FamilyError();
         }
     }
 

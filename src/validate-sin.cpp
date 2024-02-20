@@ -14,7 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/validate-sin.h"               // validate()
-#include "network/addresserror.h"               // AddressError
+#include "network/familyerror.h"                // FamilyError
 #include "network/sa-len-type.h"                // sa_len_type
 #include "network/salengtherror.h"              // SaLengthError
 
@@ -37,6 +37,6 @@ auto Network::validate(const sockaddr_in *sin,
     }
 
     if (sin->sin_family != AF_INET) {
-        throw AddressError("Invalid socket address family");
+        throw FamilyError();
     }
 }
