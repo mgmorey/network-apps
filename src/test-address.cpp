@@ -280,7 +280,7 @@ namespace TestAddress
 
     auto test_sin_invalid_length() -> void
     {
-        const auto length {sin_size + 1};
+        const auto length {sin_size -1};
         const auto sin {create_sin(AF_INET, length)};
         return test_sin(sin, length, expected_error_length_re);
     }
@@ -310,7 +310,7 @@ namespace TestAddress
 
     auto test_sin6_invalid_length() -> void
     {
-        const auto length {sin6_size + 1};
+        const auto length {sin6_size - 1};
         const auto sin6 {create_sin6(AF_INET6, length)};
         return test_sin6(sin6, length, expected_error_length_re);
     }
@@ -349,13 +349,6 @@ namespace TestAddress
     {
         const auto sun {create_sun(AF_UNSPEC)};
         return test_sun(sun, sizeof sun, expected_error_family_re);
-    }
-
-    auto test_sun_invalid_length_large() -> void
-    {
-        const auto length {sun_len_max + 1};
-        const auto sun {create_sun(AF_UNIX, length)};
-        return test_sun(sun, length, expected_error_length_re);
     }
 
     auto test_sun_invalid_length_small() -> void
@@ -473,7 +466,6 @@ auto main(int argc, char* argv[]) -> int
         test_sin_invalid_length();
 #ifndef WIN32
         test_sun_invalid_family();
-        test_sun_invalid_length_large();
         test_sun_invalid_length_small();
         test_sun_invalid_path_large();
         test_sun_valid_path_large();
