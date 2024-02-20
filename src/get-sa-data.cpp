@@ -14,14 +14,29 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/get-sa-data.h"        // get_sa_data()
-#include "network/assert.h"             // assert()
 #include "network/bytestring.h"         // ByteString
+#include "network/familyerror.h"        // FamilyError
 #include "network/get-sa-family.h"      // get_sa_family()
 #include "network/sa-offsets.h"         // sa_data_offset
 
+#ifdef WIN32
+#include <winsock2.h>       // AF_UNSPEC
+#else
+#include <sys/socket.h>     // AF_UNSPEC
+#endif
+
 auto Network::get_sa_data(const ByteString& addr) -> Network::ByteString
 {
-    assert(get_sa_family(addr) != 0);
-    assert(sa_data_offset <= addr.size());
+    switch (get_sa_family(addr)) {
+#ifndef WIN32
+    case AF_UNIX:
+#endif
+    case AF_INET:
+    case AF_INET6:
+        break;
+    default:
+        throw FamilyError();
+    }
+
     return addr.substr(sa_data_offset);
 }
