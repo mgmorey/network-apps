@@ -18,42 +18,12 @@
 #include "network/socket-length-limits.h"       // socket_length_max,
                                                 // socket_length_min
 
-#include <utility>      // std::move()
-#include <version>
+#include <string>       // std::string, std::to_string()
 
-#ifdef __cpp_lib_format
-#include <format>       // std::format()
-#else
-#include <sstream>      // std::ostringstream
-#endif
-
-#include <string>       // std::string
-
-auto Network::SocketLengthError::format(const std::string& t_str) -> std::string
+Network::SocketLengthError::SocketLengthError(const std::string& t_value) noexcept :
+    RangeError(t_value,
+               std::to_string(socket_length_min),
+               std::to_string(socket_length_max),
+               "socket_length_type")
 {
-#ifdef __cpp_lib_format
-    return std::format("Value {} is out of range [{}, {}] of socket_length_type",
-                       t_str, socket_length_min, socket_length_max);
-#else
-    std::ostringstream oss;
-    oss << "Value "
-        << t_str
-        << " is out of range ["
-        << socket_length_min
-        << ", "
-        << socket_length_max
-        << "] of socket_length_type";
-    return oss.str();
-#endif
-}
-
-Network::SocketLengthError::SocketLengthError(const std::string& t_str) noexcept :
-    RangeError(format(t_str))
-{
-}
-
-Network::SocketLengthError::SocketLengthError(std::string&& t_str) noexcept :
-    RangeError(format(t_str))
-{
-    static_cast<void>(std::move(t_str));
 }

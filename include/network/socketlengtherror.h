@@ -24,9 +24,7 @@ namespace Network
         public RangeError
     {
     public:
-        static auto format(const std::string& t_str) -> std::string;
-        explicit SocketLengthError(const std::string& t_str) noexcept;
-        explicit SocketLengthError(std::string&& t_str) noexcept;
+        explicit SocketLengthError(const std::string& t_value) noexcept;
         SocketLengthError(const SocketLengthError&) noexcept = default;
         SocketLengthError(SocketLengthError&&) noexcept = default;
         ~SocketLengthError() noexcept override = default;
