@@ -26,8 +26,8 @@
 
 namespace Network
 {
-    extern auto get_sa_pointer(const ByteString& addr) noexcept -> const sockaddr*;
-    extern auto get_sa_pointer(ByteString& addr) noexcept -> sockaddr*;
+    extern auto get_sa_pointer(const ByteString& addr) -> const sockaddr*;
+    extern auto get_sa_pointer(ByteString& addr) -> sockaddr*;
 }
 
 #endif

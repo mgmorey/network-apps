@@ -26,8 +26,7 @@
 
 namespace Network
 {
-    extern auto get_sin6_addr(const ByteString& addr,
-                              const in6_addr& sin6_addr = {}) noexcept -> in6_addr;
+    extern auto get_sin6_addr(const ByteString& addr) -> in6_addr;
 }
 
 #endif

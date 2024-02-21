@@ -26,9 +26,8 @@
 
 namespace Network
 {
-    extern auto get_sin6_pointer(const ByteString& addr) noexcept ->
-        const sockaddr_in6*;
-    extern auto get_sin6_pointer(ByteString& addr) noexcept -> sockaddr_in6*;
+    extern auto get_sin6_pointer(const ByteString& addr) -> const sockaddr_in6*;
+    extern auto get_sin6_pointer(ByteString& addr) -> sockaddr_in6*;
 }
 
 #endif

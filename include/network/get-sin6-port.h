@@ -21,8 +21,7 @@
 
 namespace Network
 {
-    extern auto get_sin6_port(const ByteString& addr,
-                              port_type port = 0) noexcept -> port_type;
+    extern auto get_sin6_port(const ByteString& addr) -> port_type;
 }
 
 #endif

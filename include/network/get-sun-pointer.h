@@ -25,9 +25,8 @@
 namespace Network
 {
 #ifndef WIN32
-    extern auto get_sun_pointer(const ByteString& addr) noexcept ->
-        const sockaddr_un*;
-    extern auto get_sun_pointer(ByteString& addr) noexcept -> sockaddr_un*;
+    extern auto get_sun_pointer(const ByteString& addr) -> const sockaddr_un*;
+    extern auto get_sun_pointer(ByteString& addr) -> sockaddr_un*;
 #endif
 }
 

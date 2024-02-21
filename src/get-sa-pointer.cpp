@@ -13,8 +13,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-sa-pointer.h"     // get_sa_pointer()
-#include "network/bytestring.h"         // ByteString
+#include "network/get-sa-pointer.h"             // get_sa_pointer()
+#include "network/bytestring.h"                 // ByteString
+#include "network/sa-len-limits.h"              // sa_len_min,
+                                                // sa_len_max
+#include "network/salengtherror.h"              // SaLengthError
 
 #ifdef WIN32
 #include <winsock2.h>       // sockaddr
@@ -22,15 +25,31 @@
 #include <sys/socket.h>     // sockaddr
 #endif
 
-auto Network::get_sa_pointer(const ByteString& addr) noexcept -> const sockaddr*
+#include <string>   // std::to_string()
+
+namespace {
+    auto validate_sa(const Network::ByteString& addr) -> void
+    {
+        if (addr.size() < Network::sa_len_min ||
+            addr.size() > Network::sa_len_max) {
+            throw Network::SaLengthError(std::to_string(addr.size()),
+                                         Network::sa_len_min,
+                                         Network::sa_len_max);
+        }
+    }
+}
+
+auto Network::get_sa_pointer(const ByteString &addr) -> const sockaddr *
 {
+    validate_sa(addr);
     const void* pointer {addr.data()};
     return static_cast<const sockaddr*>(pointer);
 }
 
 // cppcheck-suppress constParameterReference
-auto Network::get_sa_pointer(ByteString& addr) noexcept -> sockaddr*
+auto Network::get_sa_pointer(ByteString& addr) -> sockaddr*
 {
+    validate_sa(addr);
     void* pointer {addr.data()};
     return static_cast<sockaddr*>(pointer);
 }
