@@ -68,7 +68,7 @@ get-sin6-port.cpp get-sockname.cpp get-socknameresult.cpp		\
 get-templates-endpoint.cpp get-templates-hostname.cpp			\
 integererror.cpp is-running.cpp listen.cpp logicerror.cpp		\
 namelengtherror.cpp open-endpoint.cpp open-socket.cpp			\
-oserrorresult.cpp parse-argumentspan.cpp parse.cpp			\
+oserrorerror.cpp oserrorresult.cpp parse-argumentspan.cpp parse.cpp	\
 pathlengtherror.cpp rangeerror.cpp read-string.cpp read.cpp		\
 reset-last-context-error.cpp reset-last-os-error.cpp runtimeerror.cpp	\
 salengtherror.cpp set-last-context-error.cpp set-last-os-error.cpp	\

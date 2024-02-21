@@ -1,4 +1,4 @@
-// Copyright (C) 2022  "Michael G. Morey" <mgmorey@gmail.com>
+// Copyright (C) 2024  "Michael G. Morey" <mgmorey@gmail.com>
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,28 +13,17 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_TO_OS_ERROR_H
-#define NETWORK_TO_OS_ERROR_H
-
+#include "network/oserrorerror.h"               // OsErrorError
 #include "network/os-error-limits.h"            // os_error_max,
                                                 // os_error_min
-#include "network/os-error-type.h"              // os_error_type
-#include "network/oserrorerror.h"               // OsErrorError
+#include "network/rangeerror.h"                 // RangeError
 
-#include <string>       // std::to_string()
-#include <utility>      // std::cmp_greater(), std::cmp_less()
+#include <string>       // std::string, std::to_string()
 
-namespace Network
+Network::OsErrorError::OsErrorError(const std::string& t_value) noexcept :
+    RangeError(t_value,
+               std::to_string(os_error_min),
+               std::to_string(os_error_max),
+               "os_error_type")
 {
-    auto to_os_error(auto value) -> os_error_type
-    {
-        if (std::cmp_less(value, os_error_min) ||
-            std::cmp_greater(value, os_error_max)) {
-            throw OsErrorError(std::to_string(value));
-        }
-
-        return static_cast<os_error_type>(value);
-    }
 }
-
-#endif

@@ -13,28 +13,21 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_TO_OS_ERROR_H
-#define NETWORK_TO_OS_ERROR_H
+#ifndef NETWORK_OS_ERROR_LIMITS_H
+#define NETWORK_OS_ERROR_LIMITS_H
 
-#include "network/os-error-limits.h"            // os_error_max,
-                                                // os_error_min
-#include "network/os-error-type.h"              // os_error_type
-#include "network/oserrorerror.h"               // OsErrorError
-
-#include <string>       // std::to_string()
-#include <utility>      // std::cmp_greater(), std::cmp_less()
+#include <climits>      // INT_MAX, INT_MIN
+#include <cstdint>      // UINT32_MAX
 
 namespace Network
 {
-    auto to_os_error(auto value) -> os_error_type
-    {
-        if (std::cmp_less(value, os_error_min) ||
-            std::cmp_greater(value, os_error_max)) {
-            throw OsErrorError(std::to_string(value));
-        }
-
-        return static_cast<os_error_type>(value);
-    }
+#ifdef WIN32
+    static constexpr auto os_error_max {UINT32_MAX};
+    static constexpr auto os_error_min {0};
+#else
+    static constexpr auto os_error_max {INT_MAX};
+    static constexpr auto os_error_min {INT_MIN};
+#endif
 }
 
 #endif
