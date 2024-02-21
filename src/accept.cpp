@@ -42,7 +42,6 @@
 auto Network::accept(const Socket& sock, bool verbose) ->
     std::pair<Socket, ByteString>
 {
-    const auto handle_1 {descriptor_type {sock}};
     auto addr {create_bytestring()};
     auto* const addr_ptr {get_sa_pointer(addr)};
     auto addr_len {to_socket_length(addr.size())};
@@ -58,6 +57,7 @@ auto Network::accept(const Socket& sock, bool verbose) ->
     }
 
     reset_last_context_error();
+    const auto handle_1 {descriptor_type {sock}};
     const auto handle_2 {::accept(handle_1, addr_ptr, &addr_len)};
 
     if (handle_2 == descriptor_null) {
