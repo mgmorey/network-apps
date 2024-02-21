@@ -20,7 +20,6 @@
 
 #ifdef HAVE_SOCKADDR_SA_LEN
 #include "network/get-sa-pointer.h"             // get_sa_pointer()
-#include "network/sa-offsets.h"                 // sa_len_offset
 #include "network/to-sa-len.h"                  // to_sa_len()
 #endif
 
@@ -28,10 +27,6 @@ auto Network::get_sa_length(const ByteString& addr) noexcept ->
     Network::socket_length_type
 {
 #ifdef HAVE_SOCKADDR_SA_LEN
-    if (addr.size() < sa_len_offset) {
-        return 0;
-    }
-
     const auto* const sa {get_sa_pointer(addr)};
     return to_sa_len(sa->sa_len);
 #else

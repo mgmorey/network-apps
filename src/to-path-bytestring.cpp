@@ -15,9 +15,7 @@
 
 #include "network/to-path-bytestring.h"         // to_path()
 #include "network/bytestring.h"                 // ByteString
-#include "network/familyerror.h"                // FamilyError
 #include "network/get-path-pointer-bs.h"        // get_path_pointer()
-#include "network/get-sa-family.h"              // get_sa_family()
 #include "network/optionalpathname.h"           // OptionalPathname
 #include "network/sun-len-limits.h"             // sun_len_min
 
@@ -32,10 +30,6 @@
 
 auto Network::to_path(const ByteString& addr) -> OptionalPathname
 {
-    if (get_sa_family(addr) != AF_UNIX) {
-        throw FamilyError();
-    }
-
     const auto* const data {get_path_pointer(addr)};
     const auto size_max {addr.size() - sun_len_min};
     const auto size {::strnlen(data, size_max)};
