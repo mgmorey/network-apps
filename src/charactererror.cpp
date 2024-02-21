@@ -17,42 +17,12 @@
 #include "network/rangeerror.h"         // RangeError
 
 #include <climits>      // CHAR_MAX, CHAR_MIN
-#include <utility>      // std::move()
-#include <version>
+#include <string>       // std::string, std::to_string()
 
-#ifdef __cpp_lib_format
-#include <format>       // std::format()
-#else
-#include <sstream>      // std::ostringstream
-#endif
-
-#include <string>       // std::string
-
-auto Network::CharacterError::format(const std::string& t_str) -> std::string
+Network::CharacterError::CharacterError(const std::string& t_value) noexcept :
+    RangeError(t_value,
+               std::to_string(CHAR_MIN),
+               std::to_string(CHAR_MAX),
+               "char")
 {
-#ifdef __cpp_lib_format
-    return std::format("Value {} is out of range [{}, {}] of char",
-                       t_str, CHAR_MIN, CHAR_MAX);
-#else
-    std::ostringstream oss;
-    oss << "Value "
-        << t_str
-        << " is out of range ["
-        << CHAR_MIN
-        << ", "
-        << CHAR_MAX
-        << "] of char";
-    return oss.str();
-#endif
-}
-
-Network::CharacterError::CharacterError(const std::string& t_str) noexcept :
-    RangeError(format(t_str))
-{
-}
-
-Network::CharacterError::CharacterError(std::string&& t_str) noexcept :
-    RangeError(format(t_str))
-{
-    static_cast<void>(std::move(t_str));
 }

@@ -18,7 +18,6 @@
 #include "network/sa-len-type.h"        // sa_len_type
 
 #include <string>       // std::string, std::to_string()
-#include <utility>      // std::move()
 
 Network::SaLengthError::SaLengthError(const std::string &t_value,
                                       sa_len_type t_minimum,

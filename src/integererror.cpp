@@ -17,41 +17,12 @@
 #include "network/rangeerror.h"         // RangeError
 
 #include <climits>      // INT_MAX, INT_MIN
-#include <string>       // std::string
-#include <utility>      // std::move()
-#include <version>
+#include <string>       // std::string, std::to_string()
 
-#ifdef __cpp_lib_format
-#include <format>       // std::format()
-#else
-#include <sstream>      // std::ostringstream
-#endif
-
-auto Network::IntegerError::format(const std::string& t_str) -> std::string
+Network::IntegerError::IntegerError(const std::string& t_value) noexcept :
+    RangeError(t_value,
+               std::to_string(INT_MIN),
+               std::to_string(INT_MAX),
+               "int")
 {
-#ifdef __cpp_lib_format
-    return std::format("Value {} is out of range [{}, {}] of int",
-                       t_str, INT_MIN, INT_MAX);
-#else
-    std::ostringstream oss;
-    oss << "Value "
-        << t_str
-        << " is out of range ["
-        << INT_MIN
-        << ", "
-        << INT_MAX
-        << "] of int";
-    return oss.str();
-#endif
-}
-
-Network::IntegerError::IntegerError(const std::string& t_str) noexcept :
-    RangeError(format(t_str))
-{
-}
-
-Network::IntegerError::IntegerError(std::string&& t_str) noexcept :
-    RangeError(format(t_str))
-{
-    static_cast<void>(std::move(t_str));
 }
