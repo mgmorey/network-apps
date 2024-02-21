@@ -22,7 +22,7 @@
 #include <cerrno>           // errno
 #endif
 
-auto Network::get_last_context_error() -> Network::context_error_type
+auto Network::get_last_context_error() -> context_error_type
 {
     context_error_type error {0};
 #ifdef WIN32
