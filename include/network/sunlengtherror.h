@@ -29,12 +29,8 @@ namespace Network
         public RangeError
     {
     public:
-        static auto format(const std::string &t_str,
-                           sun_len_type size_max) -> std::string;
-        explicit SunLengthError(const std::string& t_str,
-                                sun_len_type size_max) noexcept;
-        explicit SunLengthError(std::string&& t_str,
-                                sun_len_type size_max) noexcept;
+        explicit SunLengthError(const std::string& t_value,
+                                sun_len_type t_maximum) noexcept;
         SunLengthError(const SunLengthError&) noexcept = default;
         SunLengthError(SunLengthError&&) noexcept = default;
         ~SunLengthError() noexcept override = default;

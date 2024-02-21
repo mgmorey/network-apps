@@ -16,49 +16,16 @@
 #include "network/sunlengtherror.h"     // SunLengthError
 #include "network/rangeerror.h"         // RangeError
 #include "network/sun-len-limits.h"     // sun_len_max, sun_len_min
+#include "network/sun-len-type.h"       // sun_len_type
 
 #include <string>       // std::string
 #include <utility>      // std::move()
-#include <version>
 
-#ifdef __cpp_lib_format
-#include <format>       // std::format()
-#else
-#include <sstream>      // std::ostringstream
-#endif
-
-#ifndef WIN32
-
-auto Network::SunLengthError::format(const std::string& t_str,
-                                     sun_len_type size_max) -> std::string
-{
-#ifdef __cpp_lib_format
-    return std::format("Value {} is out of range [{}, {}] of sun_len_type",
-                       t_str, sun_len_min, size_max);
-#else
-    std::ostringstream oss;
-    oss << "Value "
-        << t_str
-        << " is out of range ["
-        << sun_len_min
-        << ", "
-        << size_max
-        << "] of sun_len_type";
-    return oss.str();
-#endif
-}
-
-Network::SunLengthError::SunLengthError(const std::string& t_str,
-                                        sun_len_type size_max) noexcept :
-    RangeError(format(t_str, size_max))
+Network::SunLengthError::SunLengthError(const std::string &t_value,
+                                        sun_len_type t_maximum) noexcept :
+  RangeError(t_value,
+	     std::to_string(sun_len_min),
+	     std::to_string(t_maximum),
+	     "sun_len_type")
 {
 }
-
-Network::SunLengthError::SunLengthError(std::string&& t_str,
-                                        sun_len_type size_max) noexcept :
-    RangeError(format(t_str, size_max))
-{
-    static_cast<void>(std::move(t_str));
-}
-
-#endif

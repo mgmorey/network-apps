@@ -17,47 +17,15 @@
 #include "network/rangeerror.h"         // RangeError
 #include "network/sa-len-type.h"        // sa_len_type
 
-#include <string>       // std::string
+#include <string>       // std::string, std::to_string()
 #include <utility>      // std::move()
-#include <version>
 
-#ifdef __cpp_lib_format
-#include <format>       // std::format()
-#else
-#include <sstream>      // std::ostringstream
-#endif
-
-auto Network::SaLengthError::format(const std::string &t_str,
-                                    sa_len_type size_min,
-                                    sa_len_type size_max) -> std::string
+Network::SaLengthError::SaLengthError(const std::string &t_value,
+                                      sa_len_type t_minimum,
+                                      sa_len_type t_maximum) noexcept :
+  RangeError(t_value,
+	     std::to_string(t_minimum),
+	     std::to_string(t_maximum),
+	     "sa_len_type")
 {
-#ifdef __cpp_lib_format
-    return std::format("Value {} is out of range [{}, {}] of sa_len_type",
-                       t_str, size_min, size_max);
-#else
-    std::ostringstream oss;
-    oss << "Value "
-        << t_str
-        << " is out of range ["
-        << size_min
-        << ", "
-        << size_max
-        << "] of sa_len_type";
-    return oss.str();
-#endif
-}
-
-Network::SaLengthError::SaLengthError(const std::string &t_str,
-                                      sa_len_type size_min,
-                                      sa_len_type size_max) noexcept :
-    RangeError(format(t_str, size_min, size_max))
-{
-}
-
-Network::SaLengthError::SaLengthError(std::string &&t_str,
-                                      sa_len_type size_min,
-                                      sa_len_type size_max) noexcept :
-    RangeError(format(t_str, size_min, size_max))
-{
-    static_cast<void>(std::move(t_str));
 }
