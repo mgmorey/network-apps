@@ -18,15 +18,15 @@
 
 #include "network/rangeerror.h"         // RangeError, std::string
 
+#include <string>       // std::string
+
 namespace Network
 {
     class SizeError :
         public RangeError
     {
     public:
-        static auto format(const std::string& t_str) -> std::string;
-        explicit SizeError(const std::string& t_str) noexcept;
-        explicit SizeError(std::string&& t_str) noexcept;
+        explicit SizeError(const std::string& t_value) noexcept;
         SizeError(const SizeError&) noexcept = default;
         SizeError(SizeError&&) noexcept = default;
         ~SizeError() noexcept override = default;

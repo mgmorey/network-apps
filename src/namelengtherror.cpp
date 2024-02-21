@@ -18,41 +18,12 @@
                                                 // name_length_min
 #include "network/rangeerror.h"                 // RangeError
 
-#include <string>       // std::string
-#include <utility>      // std::move()
-#include <version>
+#include <string>       // std::string, std::to_string()
 
-#ifdef __cpp_lib_format
-#include <format>       // std::format()
-#else
-#include <sstream>      // std::ostringstream
-#endif
-
-auto Network::NameLengthError::format(const std::string& t_str) -> std::string
+Network::NameLengthError::NameLengthError(const std::string& t_value) noexcept :
+    RangeError(t_value,
+               std::to_string(name_length_min),
+               std::to_string(name_length_max),
+               "name_length_type")
 {
-#ifdef __cpp_lib_format
-    return std::format("Value {} is out of range [{}, {}] of name_length_type",
-                       t_str, name_length_min, name_length_max);
-#else
-    std::ostringstream oss;
-    oss << "Value "
-        << t_str
-        << " is out of range ["
-        << name_length_min
-        << ", "
-        << name_length_max
-        << "] of name_length_type";
-    return oss.str();
-#endif
-}
-
-Network::NameLengthError::NameLengthError(const std::string& t_str) noexcept :
-    RangeError(format(t_str))
-{
-}
-
-Network::NameLengthError::NameLengthError(std::string&& t_str) noexcept :
-    RangeError(format(t_str))
-{
-    static_cast<void>(std::move(t_str));
 }

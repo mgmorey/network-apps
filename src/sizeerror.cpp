@@ -17,41 +17,12 @@
 #include "network/rangeerror.h"         // RangeError
 
 #include <cstdint>      // SIZE_MAX
-#include <string>       // std::string
-#include <utility>      // std::move()
-#include <version>
+#include <string>       // std::string, std::to_string()
 
-#ifdef __cpp_lib_format
-#include <format>       // std::format()
-#else
-#include <sstream>      // std::ostringstream
-#endif
-
-auto Network::SizeError::format(const std::string& t_str) -> std::string
+Network::SizeError::SizeError(const std::string& t_value) noexcept :
+    RangeError(t_value,
+               std::to_string(0),
+               std::to_string(SIZE_MAX),
+               "std::size_t")
 {
-#ifdef __cpp_lib_format
-    return std::format("Value {} is out of range [{}, {}] of std::size_t",
-                       t_str, 0, SIZE_MAX);
-#else
-    std::ostringstream oss;
-    oss << "Value "
-        << t_str
-        << " is out of range ["
-        << 0
-        << ", "
-        << SIZE_MAX
-        << "] of std::size_t";
-    return oss.str();
-#endif
-}
-
-Network::SizeError::SizeError(const std::string& t_str) noexcept :
-    RangeError(format(t_str))
-{
-}
-
-Network::SizeError::SizeError(std::string&& t_str) noexcept :
-    RangeError(format(t_str))
-{
-    static_cast<void>(std::move(t_str));
 }

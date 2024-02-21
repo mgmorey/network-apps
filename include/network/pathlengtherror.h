@@ -16,7 +16,9 @@
 #ifndef NETWORK_PATHLENGTHERROR_H
 #define NETWORK_PATHLENGTHERROR_H
 
-#include "network/rangeerror.h"         // RangeError, std::string
+#include "network/rangeerror.h"         // RangeError
+
+#include <string>       // std::string
 
 namespace Network
 {
@@ -25,9 +27,7 @@ namespace Network
         public RangeError
     {
     public:
-        static auto format(const std::string& t_str) -> std::string;
-        explicit PathLengthError(const std::string& t_str) noexcept;
-        explicit PathLengthError(std::string&& t_str) noexcept;
+        explicit PathLengthError(const std::string& t_value) noexcept;
         PathLengthError(const PathLengthError&) noexcept = default;
         PathLengthError(PathLengthError&&) noexcept = default;
         ~PathLengthError() noexcept override = default;

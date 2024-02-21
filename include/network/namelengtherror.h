@@ -16,7 +16,9 @@
 #ifndef NETWORK_NAMELENGTHERROR_H
 #define NETWORK_NAMELENGTHERROR_H
 
-#include "network/rangeerror.h"         // RangeError, std::string
+#include "network/rangeerror.h"         // RangeError
+
+#include <string>       // std::string
 
 namespace Network
 {
@@ -24,9 +26,7 @@ namespace Network
         public RangeError
     {
     public:
-        static auto format(const std::string& t_str) -> std::string;
-        explicit NameLengthError(const std::string& t_str) noexcept;
-        explicit NameLengthError(std::string&& t_str) noexcept;
+        explicit NameLengthError(const std::string& t_value) noexcept;
         NameLengthError(const NameLengthError&) noexcept = default;
         NameLengthError(NameLengthError&&) noexcept = default;
         ~NameLengthError() noexcept override = default;

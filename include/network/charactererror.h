@@ -18,6 +18,8 @@
 
 #include "network/rangeerror.h"         // RangeError, std::string
 
+#include <string>       // std::string
+
 namespace Network
 {
     class CharacterError :
