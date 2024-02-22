@@ -131,8 +131,7 @@ Network::AddrInfo::~AddrInfo() noexcept
     }
 }
 
-auto Network::AddrInfo::begin() const noexcept ->
-    Network::AddrInfo::InputIterator
+auto Network::AddrInfo::begin() const noexcept -> InputIterator
 {
     return m_list;
 }
