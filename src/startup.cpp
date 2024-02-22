@@ -42,9 +42,8 @@ auto Network::startup(Context& context, const OptionalVersion& version) -> void
 #ifdef WIN32
     WSADATA wsa_data {};
     const WindowsVersion required_version {version.value_or(version_default)};
-    const auto error {::WSAStartup(WORD {required_version}, &wsa_data)};
 
-    if (error != 0) {
+    if (const auto error {::WSAStartup(WORD {required_version}, &wsa_data)}) {
         const auto os_error {to_os_error(error)};
         const auto message {format_os_error(os_error)};
 
