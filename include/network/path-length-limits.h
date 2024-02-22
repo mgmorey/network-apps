@@ -16,12 +16,12 @@
 #ifndef NETWORK_PATH_LENGTH_LIMITS_H
 #define NETWORK_PATH_LENGTH_LIMITS_H
 
-#include "network/get-path-size.h"              // get_path_size()
+#include "network/sun-sizes.h"                  // sun_path_size
 
 namespace Network
 {
 #ifndef WIN32
-    static constexpr auto path_length_max {get_path_size()};
+    static constexpr auto path_length_max {sun_path_size};
     static constexpr auto path_length_min {0};
 #endif
 }

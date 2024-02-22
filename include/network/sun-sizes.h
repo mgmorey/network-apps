@@ -20,10 +20,17 @@
 #include <sys/un.h>         // sockaddr_un
 #endif
 
+#include <cstddef>  // offsetof()
+
 namespace Network
 {
 #ifndef WIN32
-    constexpr auto sun_size {sizeof(sockaddr_un)};
+    constexpr auto sun_path_size {
+        sizeof(sockaddr_un) - offsetof(sockaddr_un, sun_path)
+    };
+    constexpr auto sun_size {
+        sizeof(sockaddr_un)
+    };
 #endif
 }
 

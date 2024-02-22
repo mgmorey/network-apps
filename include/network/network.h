@@ -63,7 +63,6 @@
 #include "network/get-nameresult.h"             // get_nameresult()
 #ifndef WIN32
 #include "network/get-path-length.h"            // get_path_length()
-#include "network/get-path-size.h"              // get_path_size()
 #endif
 #include "network/get-peername.h"               // get_peername()
 #include "network/get-peernameresult.h"         // get_peernameresult()
