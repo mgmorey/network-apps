@@ -33,6 +33,7 @@
 
 auto Network::format_os_error(os_error_type error) -> std::string
 {
+    std::string message;
 #ifdef WIN32
     static constexpr DWORD flags {
         FORMAT_MESSAGE_ALLOCATE_BUFFER |
@@ -42,21 +43,17 @@ auto Network::format_os_error(os_error_type error) -> std::string
     static constexpr DWORD lang {
         MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT)
     };
-#endif
-    std::string message;
-#ifdef WIN32
     LPVOID buffer {nullptr};
     LPVOID pbuffer {&buffer};
-    LPTSTR pstring {static_cast<LPTSTR>(pbuffer)};
-    const DWORD result {::FormatMessage(flags,
-                                        nullptr,
-                                        error,
-                                        lang,
-                                        pstring,
-                                        0,
-                                        nullptr)};
+    auto pstring {static_cast<LPTSTR>(pbuffer)};
 
-    if (result != 0U) {
+    if (::FormatMessage(flags,
+                        nullptr,
+                        error,
+                        lang,
+                        pstring,
+                        0,
+                        nullptr)) {
         message = static_cast<LPTSTR>(buffer);
         const auto pos {message.rfind('\r')};
 
