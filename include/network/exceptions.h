@@ -17,10 +17,12 @@
 #define NETWORK_EXCEPTIONS_H
 
 #include "network/addresserror.h"       // AddressError
+#include "network/charactererror.h"     // CharacterError
 #include "network/error.h"              // Error
 #include "network/integererror.h"       // IntegerError
 #include "network/logicerror.h"         // LogicError
 #include "network/namelengtherror.h"    // NameLengthError
+#include "network/oserrorerror.h"       // OsErrorError
 #ifndef WIN32
 #include "network/pathlengtherror.h"    // PathLengthError
 #endif
