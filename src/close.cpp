@@ -26,7 +26,7 @@
 #include <iostream>     // std::cout, std::endl
 
 auto Network::close(descriptor_type handle,
-                    bool verbose) noexcept -> Network::descriptor_type
+                    bool verbose) noexcept -> descriptor_type
 {
 #ifdef WIN32
     static constexpr const auto* method {"::closesocket"};

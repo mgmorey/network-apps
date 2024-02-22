@@ -22,7 +22,7 @@
 #include "network/to-character.h"       // to_character()
 
 auto Network::get_options(const ArgumentSpan& args,
-                          const char* optstring) -> Network::Options
+                          const char* optstring) -> Options
 {
     Options options;
     int opt {};

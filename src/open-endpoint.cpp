@@ -32,7 +32,7 @@
 #include <variant>      // std::visit()
 
 auto Network::open(const OpenHandler& handler,
-                   const OpenEndpointParams& args) -> Network::OpenResult
+                   const OpenEndpointParams& args) -> OpenResult
 {
     OpenResult open_result;
     SocketResultVector socket_results;

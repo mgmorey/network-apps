@@ -24,7 +24,7 @@
 #endif
 
 auto Network::get_sa_length(const ByteString& addr) noexcept ->
-    Network::socket_length_type
+    socket_length_type
 {
 #ifdef HAVE_SOCKADDR_SA_LEN
     const auto* const sa {get_sa_pointer(addr)};

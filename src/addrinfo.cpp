@@ -64,7 +64,7 @@ auto Network::AddrInfo::InputIterator::operator==(const InputIterator& rhs)
     return m_list == rhs.m_list;
 }
 
-auto Network::AddrInfo::end() noexcept -> Network::AddrInfo::InputIterator
+auto Network::AddrInfo::end() noexcept -> InputIterator
 {
     return nullptr;
 }
@@ -137,7 +137,7 @@ auto Network::AddrInfo::begin() const noexcept ->
     return m_list;
 }
 
-auto Network::AddrInfo::result() const -> Network::OsErrorResult
+auto Network::AddrInfo::result() const -> OsErrorResult
 {
     return m_result;
 }

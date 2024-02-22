@@ -24,7 +24,7 @@
 
 auto Network::get_templates(const Endpoint& endpoint,
                             const OptionalHints& hints,
-                            bool verbose) -> Network::TemplateVectorResult
+                            bool verbose) -> TemplateVectorResult
 {
     TemplateVector templates;
     auto result {

@@ -32,7 +32,7 @@ auto Network::Address::sin6_addr() const noexcept -> in6_addr
     return get_sin6_addr(m_value);
 }
 
-auto Network::Address::sin6_port() const noexcept -> Network::port_type
+auto Network::Address::sin6_port() const noexcept -> port_type
 {
     return get_sin6_port(m_value);
 }

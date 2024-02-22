@@ -31,7 +31,7 @@
 #include <sstream>      // std::ostringstream
 
 auto Network::open(const OpenHandler& handler,
-                   const OpenSocketParams& args) -> Network::OsErrorResult
+                   const OpenSocketParams& args) -> OsErrorResult
 {
     const auto* const pointer {get_sa_pointer(args.addr)};
     const auto length {get_length(args.addr)};

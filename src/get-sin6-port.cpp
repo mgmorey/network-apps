@@ -28,7 +28,7 @@
 #include <sys/socket.h>     // AF_INET6
 #endif
 
-auto Network::get_sin6_port(const ByteString& addr) -> Network::port_type
+auto Network::get_sin6_port(const ByteString& addr) -> port_type
 {
     const auto* const sin6 {get_sin6_pointer(addr)};
     return ntohs(sin6->sin6_port);

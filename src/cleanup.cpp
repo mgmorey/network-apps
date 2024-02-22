@@ -34,7 +34,7 @@
 #endif
 
 auto Network::cleanup(Context::failure_mode t_mode) ->
-    Network::context_error_type
+    context_error_type
 {
 #ifdef WIN32
     reset_last_context_error();

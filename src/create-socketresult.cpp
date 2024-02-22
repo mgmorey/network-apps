@@ -36,7 +36,7 @@
 
 auto Network::create_socketresult(const SocketHints& hints,
                                   bool pending,
-                                  bool verbose) -> Network::SocketResult
+                                  bool verbose) -> SocketResult
 {
     static constexpr auto delim {", "};
     static constexpr auto tab {0};

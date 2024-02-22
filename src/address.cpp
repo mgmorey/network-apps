@@ -80,7 +80,7 @@ Network::Address::operator value_type() const
     return m_value;
 }
 
-auto Network::Address::data() const noexcept -> Network::Address::value_type
+auto Network::Address::data() const noexcept -> value_type
 {
     return sa_data();
 }
@@ -90,17 +90,17 @@ auto Network::Address::empty() const noexcept -> bool
     return m_value.empty();
 }
 
-auto Network::Address::family() const noexcept -> Network::socket_family_type
+auto Network::Address::family() const noexcept -> socket_family_type
 {
     return sa_family();
 }
 
-auto Network::Address::length() const noexcept -> Network::length_type
+auto Network::Address::length() const noexcept -> length_type
 {
     return sa_length();
 }
 
-auto Network::Address::port() const noexcept -> Network::port_type
+auto Network::Address::port() const noexcept -> port_type
 {
     switch (sa_family()) {
     case AF_INET:

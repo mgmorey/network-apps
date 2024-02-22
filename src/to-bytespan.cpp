@@ -20,7 +20,7 @@
 #include <cstddef>      // std::size_t
 
 auto Network::to_bytespan(const void* pointer,
-                          std::size_t size) noexcept -> Network::ByteSpan
+                          std::size_t size) noexcept -> ByteSpan
 {
     const auto* const data {static_cast<const Byte*>(pointer)};
     return {data, size};

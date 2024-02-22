@@ -20,7 +20,7 @@
 #include "network/parseresult.h"            // ParseResult
 
 auto Network::parse(const ArgumentSpan& args,
-                    const char* optstring) -> Network::ParseResult
+                    const char* optstring) -> ParseResult
 {
     const auto options {get_options(args, optstring)};
     const auto operands {get_operands(args)};

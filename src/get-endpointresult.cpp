@@ -38,7 +38,7 @@
 
 auto Network::get_endpointresult(const ByteString& addr, int flags,
                                  bool verbose) ->
-    Network::EndpointResult
+    EndpointResult
 {
     const auto* const pointer {get_sa_pointer(addr)};
     const auto length {get_length(addr)};

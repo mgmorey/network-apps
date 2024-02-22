@@ -29,7 +29,7 @@
 
 auto Network::bind(const Socket& sock,
                    const ByteString& addr,
-                   bool verbose) -> Network::OsErrorResult
+                   bool verbose) -> OsErrorResult
 {
     const OpenHandler handler {::bind, "::bind"};
     const OpenSocketParams args {sock, addr, verbose};

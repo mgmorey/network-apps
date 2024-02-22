@@ -39,7 +39,7 @@
 
 auto Network::create_socketpairresult(const SocketHints& hints,
                                       bool verbose) noexcept ->
-    Network::SocketPairResult
+    SocketPairResult
 {
 #ifndef WIN32
     static constexpr auto delim {", "};

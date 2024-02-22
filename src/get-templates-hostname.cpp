@@ -26,7 +26,7 @@
 auto Network::get_templates(const OptionalHostname& hostname,
                             const OptionalService& service,
                             const OptionalHints& hints,
-                            bool verbose) -> Network::TemplateVectorResult
+                            bool verbose) -> TemplateVectorResult
 {
     TemplateVector templates;
     auto result {

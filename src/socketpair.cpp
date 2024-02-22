@@ -51,12 +51,12 @@ Network::SocketPair::SocketPair(const Socket& t_socket1,
 {
 }
 
-auto Network::SocketPair::at(std::size_t index) const -> const Network::Socket&
+auto Network::SocketPair::at(std::size_t index) const -> const Socket&
 {
     return m_socket.at(index);
 }
 
-auto Network::SocketPair::at(std::size_t index) -> Network::Socket&
+auto Network::SocketPair::at(std::size_t index) -> Socket&
 {
     return m_socket.at(index);
 }

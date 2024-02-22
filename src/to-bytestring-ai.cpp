@@ -24,7 +24,7 @@
 #include <netdb.h>      // addrinfo
 #endif
 
-auto Network::to_bytestring(const addrinfo& addrinfo) -> Network::ByteString
+auto Network::to_bytestring(const addrinfo& addrinfo) -> ByteString
 {
     return to_bytestring(addrinfo.ai_addr, to_sa_len(addrinfo.ai_addrlen));
 }

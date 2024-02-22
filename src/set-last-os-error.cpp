@@ -25,7 +25,7 @@
 #endif
 
 auto Network::set_last_os_error(os_error_type os_error) ->
-    Network::os_error_type
+    os_error_type
 {
 #ifdef WIN32
     ::SetLastError(os_error);

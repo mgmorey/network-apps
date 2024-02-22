@@ -17,7 +17,7 @@
 #include "network/context-error-type.h"         // context_error_type
 #include "network/set-last-context-error.h"     // set_last_context_error()
 
-auto Network::reset_last_context_error() -> Network::context_error_type
+auto Network::reset_last_context_error() -> context_error_type
 {
     const context_error_type error {0};
     set_last_context_error(error);

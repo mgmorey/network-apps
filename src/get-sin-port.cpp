@@ -28,7 +28,7 @@
 #include <sys/socket.h>     // AF_INET
 #endif
 
-auto Network::get_sin_port(const ByteString& addr) -> Network::port_type
+auto Network::get_sin_port(const ByteString& addr) -> port_type
 {
     const auto* const sin {get_sin_pointer(addr)};
     return ntohs(sin->sin_port);

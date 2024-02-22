@@ -22,7 +22,7 @@
 
 #include <variant>      // std::visit()
 
-auto Network::get_hostname(bool verbose) -> Network::Hostname
+auto Network::get_hostname(bool verbose) -> Hostname
 {
     Hostname result;
     auto hostname_result {get_hostnameresult(verbose)};

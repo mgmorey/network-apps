@@ -25,7 +25,7 @@
 #include <variant>      // std::visit()
 
 auto Network::get_name(const GetNameHandler& handler,
-                       const GetNameParams& args) -> Network::ByteString
+                       const GetNameParams& args) -> ByteString
 {
     ByteString result;
     auto name_result {get_nameresult(handler, args)};

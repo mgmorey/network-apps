@@ -32,7 +32,7 @@
 #ifndef WIN32
 
 auto Network::to_bytestring(const OptionalPathname& path) ->
-    Network::ByteString
+    ByteString
 {
     sockaddr_un sun {};
     sun_len_type sun_len {sun_len_min};

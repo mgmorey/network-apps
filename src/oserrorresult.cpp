@@ -54,7 +54,7 @@ Network::OsErrorResult::operator bool() const noexcept
     return m_number != 0 || !m_string.empty();
 }
 
-auto Network::OsErrorResult::number() const noexcept -> Network::os_error_type
+auto Network::OsErrorResult::number() const noexcept -> os_error_type
 {
     return m_number;
 }

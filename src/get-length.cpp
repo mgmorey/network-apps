@@ -24,7 +24,7 @@
 #include "network/to-socket-length.h"           // to_socket_length()
 #endif
 
-auto Network::get_length(const ByteString& addr) -> Network::socket_length_type
+auto Network::get_length(const ByteString& addr) -> socket_length_type
 {
 #ifdef HAVE_SOCKADDR_SA_LEN
     return get_sa_length(addr);

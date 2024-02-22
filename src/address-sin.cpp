@@ -32,7 +32,7 @@ auto Network::Address::sin_addr() const noexcept -> in_addr
     return get_sin_addr(m_value);
 }
 
-auto Network::Address::sin_port() const noexcept -> Network::port_type
+auto Network::Address::sin_port() const noexcept -> port_type
 {
     return get_sin_port(m_value);
 }

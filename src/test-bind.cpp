@@ -139,7 +139,7 @@ namespace TestBind
         return codes;
     }
 
-    auto parse_arguments(int argc, char** argv) -> Network::Endpoint
+    auto parse_arguments(int argc, char** argv) -> Endpoint
     {
         const auto [operands, options] {parse(argc, argv, "v")};
 

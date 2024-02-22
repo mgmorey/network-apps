@@ -23,7 +23,7 @@
 #endif
 
 auto Network::set_last_context_error(context_error_type error) ->
-    Network::context_error_type
+    context_error_type
 {
 #ifdef WIN32
     ::WSASetLastError(error);

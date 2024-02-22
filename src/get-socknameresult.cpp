@@ -27,7 +27,7 @@
 #endif
 
 auto Network::get_socknameresult(descriptor_type handle, bool verbose) ->
-    Network::SockNameResult
+    SockNameResult
 {
     const GetNameHandler handler {::getsockname, "::getsockname"};
     const GetNameParams args {handle, verbose};

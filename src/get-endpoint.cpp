@@ -24,7 +24,7 @@
 #include <variant>      // std::visit()
 
 auto Network::get_endpoint(const ByteString& addr, int flags, bool verbose) ->
-    Network::Endpoint
+    Endpoint
 {
     Endpoint result;
     auto endpoint_result {get_endpointresult(addr, flags, verbose)};

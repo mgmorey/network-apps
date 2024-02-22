@@ -33,7 +33,7 @@
 #include <iostream>     // std::cout, std::endl
 #include <sstream>      // std::ostringstream
 
-auto Network::get_hostnameresult(bool verbose) -> Network::HostnameResult
+auto Network::get_hostnameresult(bool verbose) -> HostnameResult
 {
     Buffer buffer {hostname_size_max};
 

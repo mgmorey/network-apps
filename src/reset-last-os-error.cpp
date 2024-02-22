@@ -17,7 +17,7 @@
 #include "network/os-error-type.h"              // os_error_type
 #include "network/set-last-os-error.h"          // set_last_os_error()
 
-auto Network::reset_last_os_error() -> Network::os_error_type
+auto Network::reset_last_os_error() -> os_error_type
 {
     const os_error_type error {0};
     set_last_os_error(error);

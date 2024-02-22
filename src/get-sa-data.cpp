@@ -25,7 +25,7 @@
 #include <sys/socket.h>     // AF_UNSPEC
 #endif
 
-auto Network::get_sa_data(const ByteString& addr) -> Network::ByteString
+auto Network::get_sa_data(const ByteString& addr) -> ByteString
 {
     switch (get_sa_family(addr)) {
 #ifndef WIN32

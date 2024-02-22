@@ -17,7 +17,7 @@
 #include "network/bytespan.h"                   // ByteSpan
 #include "network/bytestring.h"                 // ByteString
 
-auto Network::to_bytestring(const ByteSpan& span) -> Network::ByteString
+auto Network::to_bytestring(const ByteSpan& span) -> ByteString
 {
     return {span.data(), span.size()};
 }

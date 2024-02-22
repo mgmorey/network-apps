@@ -27,7 +27,7 @@
 #endif
 
 auto Network::get_peernameresult(descriptor_type handle, bool verbose) ->
-    Network::PeerNameResult
+    PeerNameResult
 {
     const GetNameHandler handler {::getpeername, "::getpeername"};
     const GetNameParams args {handle, verbose};

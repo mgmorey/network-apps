@@ -34,7 +34,7 @@
 
 auto Network::get_nameresult(const GetNameHandler& handler,
                              const GetNameParams& args) ->
-    Network::ByteStringResult
+    ByteStringResult
 {
     auto addr {create_bytestring()};
     auto* const addr_ptr {get_sa_pointer(addr)};

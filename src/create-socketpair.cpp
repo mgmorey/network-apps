@@ -26,7 +26,7 @@
 #include <variant>      // std::visit()
 
 auto Network::create_socketpair(const SocketHints& hints,
-                                bool verbose) -> Network::SocketPair
+                                bool verbose) -> SocketPair
 {
     std::string result_string;
     std::optional<SocketPair> result_socketpair;

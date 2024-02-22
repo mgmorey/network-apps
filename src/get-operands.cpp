@@ -18,7 +18,7 @@
 #include "network/get-option.h"         // get_optind()
 #include "network/to-size.h"            // to_size()
 
-auto Network::get_operands(const ArgumentSpan& args) -> Network::ArgumentSpan
+auto Network::get_operands(const ArgumentSpan& args) -> ArgumentSpan
 {
     return args.subspan(to_size(get_optind()));
 }

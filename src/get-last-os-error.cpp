@@ -24,7 +24,7 @@
 #include <cerrno>           // errno
 #endif
 
-auto Network::get_last_os_error() -> Network::os_error_type
+auto Network::get_last_os_error() -> os_error_type
 {
     os_error_type os_error {0};
 #ifdef WIN32
