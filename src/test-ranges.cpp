@@ -14,9 +14,19 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/assert.h"             // assert()
+#include "network/charactererror.h"     // CharacterError
+#include "network/integererror.h"       // IntegerError
+#include "network/namelengtherror.h"    // NameLengthError
+#include "network/oserrorerror.h"       // OsErrorError
 #ifndef WIN32
 #include "network/pathlengtherror.h"    // PathLengthError
-#include "network/sunlengtherror.h"     // SunLengtthError
+#endif
+#include "network/rangeerror.h"         // RangeError
+#include "network/salengtherror.h"      // SaLengthError
+#include "network/sizeerror.h"          // SizeError
+#include "network/socketlengtherror.h"  // SocketLengthError
+#ifndef WIN32
+#include "network/sunlengtherror.h"     // SunLengthError
 #endif
 #include "network/to-character.h"       // to_character()
 #include "network/to-integer.h"         // to_integer()
