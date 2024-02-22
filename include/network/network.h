@@ -105,14 +105,20 @@
                                                 // Template
 #include "network/to-bytespan.h"                // to_bytespan()
 #include "network/to-bytestring.h"              // to_bytestring()
+#include "network/to-character.h"               // to_character()
 #include "network/to-integer.h"                 // to_integer()
 #include "network/to-name-length.h"             // to_name_length()
 #include "network/to-os-error.h"                // to_os_error()
 #ifndef WIN32
+#include "network/to-path-length.h"             // to_path_length()
 #include "network/to-path.h"                    // to_path()
 #endif
+#include "network/to-sa-len.h"                  // to_sa_len()
 #include "network/to-size.h"                    // to_size()
-#include "network/to-socket-length.h"           // to_socket_lengtho()
+#include "network/to-socket-length.h"           // to_socket_length()
+#ifndef WIN32
+#include "network/to-sun-len.h"                 // to_sun_len()
+#endif
 #include "network/to-string.h"                  // to_string()
 #include "network/types.h"                      // Buffer, ByteString,
                                                 // Hostname,
