@@ -14,29 +14,21 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/assert.h"             // assert()
-#include "network/charactererror.h"     // CharacterError
-#include "network/integererror.h"       // IntegerError
-#include "network/namelengtherror.h"    // NameLengthError
-#include "network/oserrorerror.h"       // OsErrorError
-#ifndef WIN32
-#include "network/pathlengtherror.h"    // PathLengthError
-#endif
-#include "network/rangeerror.h"         // RangeError
-#include "network/salengtherror.h"      // SaLengthError
-#include "network/sizeerror.h"          // SizeError
-#include "network/socketlengtherror.h"  // SocketLengthError
-#ifndef WIN32
-#include "network/sunlengtherror.h"     // SunLengthError
-#endif
-#include "network/to-character.h"       // to_character()
-#include "network/to-integer.h"         // to_integer()
-#include "network/to-name-length.h"     // to_name_length()
-#include "network/to-os-error.h"        // to_os_error()
-#include "network/to-path-length.h"     // to_path_length()
-#include "network/to-sa-len.h"          // to_sa_len()
-#include "network/to-size.h"            // to_size()
-#include "network/to-socket-length.h"   // to_socket_length()
-#include "network/to-sun-len.h"         // to_sun_len()
+#include "network/network.h"            // CharacterError,
+                                        // IntegerError,
+                                        // NameLengthError,
+                                        // OsErrorError,
+                                        // PathLengthError,
+                                        // RangeError, SaLengthError,
+                                        // SunLengthError,
+                                        // to_character(),
+                                        // to_integer(),
+                                        // to_name_length(),
+                                        // to_os_error(),
+                                        // to_path_length(),
+                                        // to_sa_len(), to_size(),
+                                        // to_socket_length(),
+                                        // to_sun_len()
 
 #include <climits>      // INT_MAX, INT_MIN
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
