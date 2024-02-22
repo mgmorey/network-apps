@@ -287,10 +287,10 @@ install: $(libraries)
 libraries: $(libraries)
 
 .PHONY: objects
-objects: $(objects)
+objects: $(sort $(objects))
 
 .PHONY: programs
-programs: $(programs)
+programs: $(sort $(programs))
 
 .PHONY: realclean
 realclean: distclean
