@@ -21,6 +21,7 @@
 #include "network/to-character.h"       // to_character()
 #include "network/to-integer.h"         // to_integer()
 #include "network/to-name-length.h"     // to_name_length()
+#include "network/to-os-error.h"        // to_os_error()
 #include "network/to-path-length.h"     // to_path_length()
 #include "network/to-sa-len.h"          // to_sa_len()
 #include "network/to-size.h"            // to_size()
@@ -39,6 +40,7 @@ namespace TestRanges
     using Network::CharacterError;
     using Network::IntegerError;
     using Network::NameLengthError;
+    using Network::OsErrorError;
 #ifndef WIN32
     using Network::PathLengthError;
 #endif
@@ -51,6 +53,8 @@ namespace TestRanges
 #endif
     using Network::name_length_max;
     using Network::name_length_min;
+    using Network::os_error_max;
+    using Network::os_error_min;
 #ifndef WIN32
     using Network::path_length_max;
     using Network::path_length_min;
@@ -66,6 +70,7 @@ namespace TestRanges
     using Network::to_character;
     using Network::to_integer;
     using Network::to_name_length;
+    using Network::to_os_error;
 #ifndef WIN32
     using Network::to_path_length;
 #endif
@@ -84,6 +89,9 @@ namespace TestRanges
     };
     static constexpr auto expected_error_name_length_re {
         R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of name_length_type)"
+    };
+    static constexpr auto expected_error_os_error_re {
+        R"(Value (\d+|-\d+) is out of range \[-?\d+, \d+\] of os_error_type)"
     };
 #ifndef WIN32
     static constexpr auto expected_error_path_length_re {
@@ -152,8 +160,8 @@ namespace TestRanges
 
     auto test_integer_invalid() -> void
     {
-        test_integer_invalid(static_cast<long long>(INT_MIN) - 1);
-        test_integer_invalid(static_cast<long long>(INT_MAX) + 1);
+        test_integer_invalid(static_cast<long>(INT_MIN) - 1);
+        test_integer_invalid(static_cast<long>(INT_MAX) + 1);
     }
 
     auto test_name_length_invalid(auto value) -> void
@@ -176,6 +184,28 @@ namespace TestRanges
     {
         test_name_length_invalid(name_length_min - 1);
         test_name_length_invalid(name_length_max + 1);
+    }
+
+    auto test_os_error_invalid(auto value) -> void
+    {
+        std::string actual_error_str;
+
+        try {
+            static_cast<void>(to_os_error(value));
+        }
+        catch (const OsErrorError& error) {
+            print(error);
+            actual_error_str = error.what();
+        }
+
+        const std::regex expected_error_regex {expected_error_os_error_re};
+        assert(std::regex_match(actual_error_str, expected_error_regex));
+    }
+
+    auto test_os_error_invalid() -> void
+    {
+        test_os_error_invalid(static_cast<long>(os_error_min) - 1);
+        test_os_error_invalid(static_cast<long>(os_error_max) + 1);
     }
 
 #ifndef WIN32
@@ -304,6 +334,7 @@ auto main() -> int
         test_character_invalid();
         test_integer_invalid();
         test_name_length_invalid();
+        test_os_error_invalid();
 #ifndef WIN32
         test_path_length_invalid();
 #endif
