@@ -162,8 +162,8 @@ namespace TestRanges
 
     auto test_integer_invalid() -> void
     {
-        test_integer_invalid(static_cast<long>(INT_MIN) - 1);
-        test_integer_invalid(static_cast<long>(INT_MAX) + 1);
+        test_integer_invalid(static_cast<long long>(INT_MIN) - 1);
+        test_integer_invalid(static_cast<long long>(INT_MAX) + 1);
     }
 
     auto test_name_length_invalid(auto value) -> void
@@ -206,8 +206,8 @@ namespace TestRanges
 
     auto test_os_error_invalid() -> void
     {
-        test_os_error_invalid(static_cast<long>(os_error_min) - 1);
-        test_os_error_invalid(static_cast<long>(os_error_max) + 1);
+        test_os_error_invalid(static_cast<long long>(os_error_min) - 1);
+        test_os_error_invalid(static_cast<long long>(os_error_max) + 1);
     }
 
 #ifndef WIN32
