@@ -40,19 +40,19 @@ Network::AddrInfo::InputIterator::InputIterator(pointer t_pointer) noexcept :
 }
 
 auto Network::AddrInfo::InputIterator::operator*() const noexcept ->
-    Network::AddrInfo::InputIterator::reference
+    InputIterator::reference
 {
     return *m_list;
 }
 
 auto Network::AddrInfo::InputIterator::operator->() const noexcept ->
-    Network::AddrInfo::InputIterator::pointer
+    InputIterator::pointer
 {
     return m_list;
 }
 
 auto Network::AddrInfo::InputIterator::operator++() noexcept ->
-    Network::AddrInfo::InputIterator&
+    InputIterator&
 {
     m_list = m_list->ai_next;
     return *this;

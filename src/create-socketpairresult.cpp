@@ -38,8 +38,7 @@
 #include <sstream>      // std::ostringstream
 
 auto Network::create_socketpairresult(const SocketHints& hints,
-                                      bool verbose) noexcept ->
-    SocketPairResult
+                                      bool verbose) noexcept -> SocketPairResult
 {
 #ifndef WIN32
     static constexpr auto delim {", "};

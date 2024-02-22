@@ -33,8 +33,7 @@
 #include <sstream>      // std::ostringstream
 
 auto Network::get_nameresult(const GetNameHandler& handler,
-                             const GetNameParams& args) ->
-    ByteStringResult
+                             const GetNameParams& args) -> ByteStringResult
 {
     auto addr {create_bytestring()};
     auto* const addr_ptr {get_sa_pointer(addr)};

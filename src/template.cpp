@@ -43,8 +43,7 @@ Network::Template::Template(const addrinfo& t_addrinfo) noexcept :
 {
 }
 
-auto Network::Template::operator=(const addrinfo& t_addrinfo) noexcept ->
-    Network::Template&
+auto Network::Template::operator=(const addrinfo& t_addrinfo) noexcept -> Template&
 {
     m_hints = t_addrinfo;
     m_host = t_addrinfo;

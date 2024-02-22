@@ -23,8 +23,7 @@
 namespace Network
 {
     extern auto get_nameresult(const GetNameHandler& handler,
-                               const GetNameParams& args) ->
-        ByteStringResult;
+                               const GetNameParams& args) -> ByteStringResult;
 }
 
 #endif

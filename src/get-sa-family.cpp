@@ -18,8 +18,7 @@
 #include "network/get-sa-pointer.h"             // get_sa_pointer()
 #include "network/socket-family-type.h"         // socket_family_type
 
-auto Network::get_sa_family(const ByteString &addr) ->
-    socket_family_type
+auto Network::get_sa_family(const ByteString &addr) -> socket_family_type
 {
     const auto* const sa {get_sa_pointer(addr)};
     return sa->sa_family;

@@ -43,8 +43,7 @@ Network::Address::Address(value_type&& t_value) :
     validate(m_value);
 }
 
-auto Network::Address::operator=(const value_type& t_value) ->
-    Network::Address&
+auto Network::Address::operator=(const value_type& t_value) -> Address&
 {
     validate(t_value);
     m_value = t_value;

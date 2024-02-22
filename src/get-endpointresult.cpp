@@ -37,8 +37,7 @@
 #include <sstream>      // std::ostringstream
 
 auto Network::get_endpointresult(const ByteString& addr, int flags,
-                                 bool verbose) ->
-    EndpointResult
+                                 bool verbose) -> EndpointResult
 {
     const auto* const pointer {get_sa_pointer(addr)};
     const auto length {get_length(addr)};

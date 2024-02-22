@@ -31,8 +31,7 @@
 
 namespace {
 
-    auto get_prefix(Network::socket_family_type family) noexcept ->
-        std::string
+    auto get_prefix(Network::socket_family_type family) noexcept -> std::string
     {
         switch (family) {
         case AF_UNIX:
@@ -49,8 +48,7 @@ namespace {
         }
     }
 
-    auto get_suffix(Network::socket_family_type family) noexcept ->
-        std::string
+    auto get_suffix(Network::socket_family_type family) noexcept -> std::string
     {
         switch (family) {
         case AF_UNIX:

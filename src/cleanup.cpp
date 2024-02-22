@@ -33,8 +33,7 @@
                             // ::WSACleanup()
 #endif
 
-auto Network::cleanup(Context::failure_mode t_mode) ->
-    context_error_type
+auto Network::cleanup(Context::failure_mode t_mode) -> context_error_type
 {
 #ifdef WIN32
     reset_last_context_error();

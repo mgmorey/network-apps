@@ -30,8 +30,7 @@ Network::SocketHost::SocketHost(const addrinfo& t_addrinfo) :
 {
 }
 
-auto Network::SocketHost::operator=(const addrinfo& t_addrinfo) ->
-    Network::SocketHost&
+auto Network::SocketHost::operator=(const addrinfo& t_addrinfo) -> SocketHost&
 {
     m_addr = to_bytestring(t_addrinfo);
     m_name = to_canonical_name(t_addrinfo.ai_canonname);
@@ -61,14 +60,13 @@ auto Network::SocketHost::address() const -> const Network::ByteString&
     return m_addr;
 }
 
-auto Network::SocketHost::canonical_name() const ->
-    const Network::OptionalHostname&
+auto Network::SocketHost::canonical_name() const -> const OptionalHostname&
 {
     return m_name;
 }
 
 auto Network::SocketHost::to_canonical_name(const char* t_str) noexcept ->
-    Network::OptionalHostname
+    OptionalHostname
 {
     if (t_str == nullptr) {
         return {};
