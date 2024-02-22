@@ -14,7 +14,6 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/get-sin-port.h"       // get_sin_port()
-#include "network/assert.h"             // assert()
 #include "network/bytestring.h"         // ByteString
 #include "network/get-sa-family.h"      // get_sa_family()
 #include "network/get-sin-pointer.h"    // get_sin_pointer()
