@@ -16,7 +16,7 @@
 #ifndef NETWORK_BYTE_ASSERTS_H
 #define NETWORK_BYTE_ASSERTS_H
 
-#include "network/byte-type.h"          // byte-type
+#include "network/byte-type.h"          // byte_type
 
 namespace Network
 {

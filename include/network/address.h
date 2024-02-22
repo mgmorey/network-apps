@@ -16,9 +16,10 @@
 #ifndef NETWORK_ADDRESS_H
 #define NETWORK_ADDRESS_H
 
-#include "network/address-types.h"      // ByteString, length_type,
-                                        // port_type,
-                                        // socket_family_type
+#include "network/bytestring.h"                 // ByteString
+#include "network/length-type.h"                // length_type
+#include "network/port-type.h"                  // port_type
+#include "network/socket-family-type.h"         // socket_family_type
 
 #ifdef WIN32
 #include <winsock2.h>       // in_addr
