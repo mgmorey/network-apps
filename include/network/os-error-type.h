@@ -22,10 +22,12 @@
 #include <windows.h>        // DWORD
 #endif
 
+#include <cstdint>      // uint32_t
+
 namespace Network
 {
 #ifdef WIN32
-    using os_error_type = DWORD;
+    using os_error_type = uint32_t;
 #else
     using os_error_type = int;
 #endif
