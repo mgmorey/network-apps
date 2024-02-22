@@ -15,9 +15,7 @@
 
 #include "network/get-sin-addr.h"       // get_sin_addr()
 #include "network/bytestring.h"         // ByteString
-#include "network/get-sa-family.h"      // get_sa_family()
 #include "network/get-sin-pointer.h"    // get_sin_pointer()
-#include "network/sin-offsets.h"        // sin_addr_offset
 
 #ifdef WIN32
 #include <winsock2.h>       // AF_INET, in_addr
