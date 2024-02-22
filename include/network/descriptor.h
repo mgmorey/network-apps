@@ -16,7 +16,6 @@
 #ifndef NETWORK_DESCRIPTOR_H
 #define NETWORK_DESCRIPTOR_H
 
-#include "network/bytestring.h"                 // ByteString
 #include "network/descriptor-null.h"            // descriptor_null
 #include "network/descriptor-type.h"            // descriptor_type
 
