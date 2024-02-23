@@ -16,6 +16,7 @@
 #include "network/validate-sun.h"               // validate()
 #include "network/familyerror.h"                // FamilyError
 #include "network/get-sun-length.h"             // get_sun_length()
+#include "network/os-features.h"                // HAVE_SOCKADDR_SA_LEN
 #include "network/sun-len-limits.h"             // sun_len_max,
                                                 // sun_len_min
 #include "network/sun-len-type.h"               // sun_len_type
@@ -45,6 +46,16 @@ auto Network::validate(const sockaddr_un* sun,
         std::cmp_greater(sun_len, sun_len_max)) {
         throw SunLengthError(std::to_string(sun_len), sun_len_max);
     }
+
+#ifdef HAVE_SOCKADDR_SA_LEN
+
+    if (std::cmp_not_equal(sun->sun_len, sizeof *sun)) {
+        throw SaLengthError(std::to_string(sun->sun_len),
+                            sizeof *sun,
+                            sizeof *sun);
+    }
+
+#endif
 
     if (sun->sun_family != AF_UNIX) {
         throw FamilyError();

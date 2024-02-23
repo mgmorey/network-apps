@@ -15,6 +15,7 @@
 
 #include "network/validate-sin.h"               // validate()
 #include "network/familyerror.h"                // FamilyError
+#include "network/os-features.h"                // HAVE_SOCKADDR_SA_LEN
 #include "network/sa-len-type.h"                // sa_len_type
 #include "network/salengtherror.h"              // SaLengthError
 
@@ -35,6 +36,16 @@ auto Network::validate(const sockaddr_in *sin,
                             sizeof *sin,
                             sizeof *sin);
     }
+
+#ifdef HAVE_SOCKADDR_SA_LEN
+
+    if (std::cmp_not_equal(sin->sin_len, sizeof *sin)) {
+        throw SaLengthError(std::to_string(sin->sin_len),
+                            sizeof *sin,
+                            sizeof *sin);
+    }
+
+#endif
 
     if (sin->sin_family != AF_INET) {
         throw FamilyError();
