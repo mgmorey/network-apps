@@ -15,46 +15,16 @@
 
 #include "network/get-sin-pointer.h"            // get_sin_pointer()
 #include "network/bytestring.h"                 // ByteString
-#include "network/familyerror.h"                // FamilyError
-#include "network/get-sa-family.h"              // get_sa_family()
-#include "network/sin-sizes.h"                  // sin_size
-#include "network/sinlengtherror.h"             // SinLengthError
+#include "network/validate-sin.h"               // validate()
 
 #ifdef WIN32
-#include <winsock2.h>       // AF_INET, sockaddr_in
+#include <winsock2.h>       // sockaddr_in
 #else
 #include <netinet/in.h>     // sockaddr_in
-#include <sys/socket.h>     // AF_INET
 #endif
-
-#include <string>   // std::to_string()
-
-namespace {
-    auto validate_sin(const Network::ByteString& addr) -> void
-    {
-        if (Network::get_sa_family(addr) != AF_INET) {
-            throw Network::FamilyError();
-        }
-
-        if (addr.size() != Network::sin_size) {
-            throw Network::SinLengthError(std::to_string(addr.size()),
-                                          Network::sin_size,
-                                          Network::sin_size);
-        }
-    }
-}
 
 auto Network::get_sin_pointer(const ByteString& addr) -> const sockaddr_in*
 {
-    validate_sin(addr);
-    const void* pointer = addr.data();
-    return static_cast<const sockaddr_in*>(pointer);
-}
-
-// cppcheck-suppress constParameterReference
-auto Network::get_sin_pointer(ByteString& addr) -> sockaddr_in*
-{
-    validate_sin(addr);
-    void* pointer = addr.data();
-    return static_cast<sockaddr_in*>(pointer);
+    const void* pointer {addr.data()};
+    return validate(static_cast<const sockaddr_in*>(pointer));
 }

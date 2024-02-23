@@ -27,7 +27,6 @@
 namespace Network
 {
     extern auto get_sin_pointer(const ByteString& addr) -> const sockaddr_in*;
-    extern auto get_sin_pointer(ByteString& addr) -> sockaddr_in*;
 }
 
 #endif

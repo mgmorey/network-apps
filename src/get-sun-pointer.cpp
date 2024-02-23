@@ -15,47 +15,24 @@
 
 #include "network/get-sun-pointer.h"            // get_sun_pointer()
 #include "network/bytestring.h"                 // ByteString
-#include "network/familyerror.h"                // FamilyError
-#include "network/get-sa-family.h"              // get_sa_family()
-#include "network/sun-len-limits.h"             // sun_len_min,
-                                                // sun_len_max
-#include "network/sunlengtherror.h"             // SunLengthError
+#include "network/validate-sun.h"               // validate()
 
 #ifndef WIN32
-#include <sys/socket.h>     // AF_UNIX
 #include <sys/un.h>         // sockaddr_un
 #endif
 
 #ifndef WIN32
 
-namespace {
-    auto validate_sun(const Network::ByteString& addr) -> void
-    {
-        if (Network::get_sa_family(addr) != AF_UNIX) {
-            throw Network::FamilyError();
-        }
-
-        if (addr.size() < Network::sun_len_min ||
-            addr.size() > Network::sun_len_max) {
-            throw Network::SunLengthError(std::to_string(addr.size()),
-                                          Network::sun_len_max);
-        }
-    }
-}
-
 auto Network::get_sun_pointer(const ByteString& addr) -> const sockaddr_un*
 {
-    validate_sun(addr);
     const void* pointer = addr.data();
-    return static_cast<const sockaddr_un*>(pointer);
+    return validate(static_cast<const sockaddr_un*>(pointer));
 }
 
-// cppcheck-suppress constParameterReference
 auto Network::get_sun_pointer(ByteString& addr) -> sockaddr_un*
 {
-    validate_sun(addr);
     void* pointer = addr.data();
-    return static_cast<sockaddr_un*>(pointer);
+    return validate(static_cast<sockaddr_un*>(pointer));
 }
 
 #endif

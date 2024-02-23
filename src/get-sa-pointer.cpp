@@ -15,9 +15,7 @@
 
 #include "network/get-sa-pointer.h"             // get_sa_pointer()
 #include "network/bytestring.h"                 // ByteString
-#include "network/sa-len-limits.h"              // sa_len_min,
-                                                // sa_len_max
-#include "network/salengtherror.h"              // SaLengthError
+#include "network/validate-sa.h"                // validate()
 
 #ifdef WIN32
 #include <winsock2.h>       // sockaddr
@@ -25,31 +23,14 @@
 #include <sys/socket.h>     // sockaddr
 #endif
 
-#include <string>   // std::to_string()
-
-namespace {
-    auto validate_sa(const Network::ByteString& addr) -> void
-    {
-        if (addr.size() < Network::sa_len_min ||
-            addr.size() > Network::sa_len_max) {
-            throw Network::SaLengthError(std::to_string(addr.size()),
-                                         Network::sa_len_min,
-                                         Network::sa_len_max);
-        }
-    }
-}
-
-auto Network::get_sa_pointer(const ByteString &addr) -> const sockaddr *
+auto Network::get_sa_pointer(const ByteString& addr) -> const sockaddr *
 {
-    validate_sa(addr);
     const void* pointer {addr.data()};
-    return static_cast<const sockaddr*>(pointer);
+    return validate(static_cast<const sockaddr*>(pointer), addr.size());
 }
 
-// cppcheck-suppress constParameterReference
-auto Network::get_sa_pointer(ByteString& addr) -> sockaddr*
+auto Network::get_sa_pointer(ByteString& addr) -> sockaddr *
 {
-    validate_sa(addr);
     void* pointer {addr.data()};
-    return static_cast<sockaddr*>(pointer);
+    return validate(static_cast<sockaddr*>(pointer), addr.size());
 }
