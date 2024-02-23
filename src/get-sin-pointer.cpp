@@ -26,5 +26,5 @@
 auto Network::get_sin_pointer(const ByteString& addr) -> const sockaddr_in*
 {
     const void* pointer {addr.data()};
-    return validate(static_cast<const sockaddr_in*>(pointer));
+    return validate(static_cast<const sockaddr_in*>(pointer), addr.size());
 }

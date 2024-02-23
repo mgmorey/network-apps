@@ -26,13 +26,13 @@
 auto Network::get_sun_pointer(const ByteString& addr) -> const sockaddr_un*
 {
     const void* pointer = addr.data();
-    return validate(static_cast<const sockaddr_un*>(pointer));
+    return validate(static_cast<const sockaddr_un*>(pointer), addr.size());
 }
 
 auto Network::get_sun_pointer(ByteString& addr) -> sockaddr_un*
 {
     void* pointer = addr.data();
-    return validate(static_cast<sockaddr_un*>(pointer));
+    return validate(static_cast<sockaddr_un*>(pointer), addr.size());
 }
 
 #endif
