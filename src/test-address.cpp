@@ -86,7 +86,7 @@ namespace TestAddress
         R"(Invalid socket address family)"
     };
     static constexpr auto expected_error_length_re {
-        R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of (sa|sun)_len_type)"
+        R"(Value (\d+) is out of range \[\d+, \d+\] of s(a|in|in6|un)_len_type)"
     };
     static constexpr auto print_key_width {20};
     static constexpr auto print_value_width {10};
@@ -280,7 +280,7 @@ namespace TestAddress
 
     auto test_sin_invalid_length() -> void
     {
-        const auto length {sin_size -1};
+        const auto length {sin_size - 1};
         const auto sin {create_sin(AF_INET, length)};
         return test_sin(sin, length, expected_error_length_re);
     }

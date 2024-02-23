@@ -17,8 +17,8 @@
 #include "network/bytestring.h"                 // ByteString
 #include "network/familyerror.h"                // FamilyError
 #include "network/get-sa-family.h"              // get_sa_family()
-#include "network/salengtherror.h"              // SaLengthError
 #include "network/sin6-sizes.h"                 // sin6_size
+#include "network/sin6lengtherror.h"            // Sin6LengthError
 
 #ifdef WIN32
 #include <winsock2.h>       // AF_INET6
@@ -38,9 +38,9 @@ namespace {
         }
 
         if (addr.size() != Network::sin6_size) {
-            throw Network::SaLengthError(std::to_string(addr.size()),
-                                         Network::sin6_size,
-                                         Network::sin6_size);
+            throw Network::Sin6LengthError(std::to_string(addr.size()),
+                                           Network::sin6_size,
+                                           Network::sin6_size);
         }
     }
 }
