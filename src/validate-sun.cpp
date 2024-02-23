@@ -37,22 +37,23 @@ auto Network::validate(const sockaddr_un* sun,
 {
     if (std::cmp_less(size, sun_len_min) ||
         std::cmp_greater(size, sun_len_max)) {
-        throw SunLengthError(std::to_string(size), sun_len_max);
+        throw SunLengthError(std::to_string(size),
+                             sun_len_max);
     }
 
     const auto sun_len {get_sun_length(sun, sun_len_max)};
 
     if (std::cmp_less(sun_len, sun_len_min) ||
         std::cmp_greater(sun_len, sun_len_max)) {
-        throw SunLengthError(std::to_string(sun_len), sun_len_max);
+        throw SunLengthError(std::to_string(sun_len),
+                             sun_len_max);
     }
 
 #ifdef HAVE_SOCKADDR_SA_LEN
 
-    if (std::cmp_not_equal(sun->sun_len, sizeof *sun)) {
-        throw SaLengthError(std::to_string(sun->sun_len),
-                            sizeof *sun,
-                            sizeof *sun);
+    if (std::cmp_greater(sun->sun_len, sun_len)) {
+        throw SunLengthError(std::to_string(sun_len),
+                             sun_len);
     }
 
 #endif

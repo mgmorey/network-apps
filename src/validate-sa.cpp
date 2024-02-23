@@ -30,7 +30,8 @@
 #endif
 
 #include <string>       // std::to_string()
-#include <utility>      // std::cmp_greater(), std::cmp_less()
+#include <utility>      // std::cmp_greater(), std::cmp_less(),
+                        // std::cmp_not_equal
 
 namespace {
     auto validate_length(Network::sa_len_type sa_len,
@@ -52,24 +53,22 @@ namespace {
                                          size_max);
         }
     }
-
-#ifdef HAVE_SOCKADDR_SA_LEN
-
-    if (family != AF_UNSPEC &&
-        (std::cmp_less(sa->sa_len, size_min) ||
-         std::cmp_greater(sa->sa_len, size_max))) {
-        throw SaLengthError(std::to_string(sa->sa_len),
-                            size_min,
-                            size_max);
-    }
-
-#endif
 }
 
 auto Network::validate(const sockaddr *sa, sa_len_type sa_len) -> void
 {
     validate_length(sa_len, AF_UNSPEC);
     const socket_family_type family {sa->sa_family};
+
+#ifdef HAVE_SOCKADDR_SA_LEN
+
+    if (std::cmp_not_equal(sa->sa_len, sa_len)) {
+        throw SaLengthError(std::to_string(sa->sa_len),
+                            sa_len,
+                            sa_len);
+    }
+
+#endif
 
     if (family != AF_INET && family != AF_INET6) {
         throw FamilyError();
