@@ -15,64 +15,67 @@
 
 #include "network/validate-sa.h"                // validate()
 #include "network/familyerror.h"                // FamilyError
-#include "network/get-sa-size-maximum.h"        // get_sa_size_maximum()
-#include "network/get-sa-size-minimum.h"        // get_sa_size_minimum()
-#include "network/os-features.h"                // HAVE_SOCKADDR_SA_LEN
-#include "network/sa-len-limits.h"              // sa_len_min
+#include "network/sa-len-limits.h"              // sa_len_max,
+                                                // sa_len_min
 #include "network/sa-len-type.h"                // sa_len_type
 #include "network/salengtherror.h"              // SaLengthError
-#include "network/socket-family-type.h"         // socket_family_type
+#include "network/validate-sin6.h"              // validate()
+#include "network/validate-sin.h"               // validate()
+
 
 #ifdef WIN32
-#include <winsock2.h>       // AF_INET, AF_INET6, AF_UNSPEC, sockaddr
+#include <winsock2.h>       // AF_INET, AF_INET6, AF_UNSPEC, sockaddr,
+                            // sockaddr_in
+#include <ws2tcpip.h>       // sockaddr_in6
 #else
+#include <netinet/in.h>     // sockaddr_in, sockaddr_in6
 #include <sys/socket.h>     // AF_INET, AF_INET6, AF_UNSPEC, sockaddr
 #endif
 
 #include <string>       // std::to_string()
-#include <utility>      // std::cmp_greater(), std::cmp_less(),
-                        // std::cmp_not_equal
+#include <utility>      // std::cmp_greater(), std::cmp_less()
 
-namespace {
-    auto validate_length(Network::sa_len_type sa_len,
-                         Network::socket_family_type family) -> void
-    {
-        if (std::cmp_less(sa_len, Network::sa_len_min)) {
-            throw Network::SaLengthError(std::to_string(sa_len),
-                                         Network::sa_len_min,
-                                         Network::sa_len_max);
-        }
-
-        const auto size_max {Network::get_sa_size_maximum(family)};
-        const auto size_min {Network::get_sa_size_minimum(family)};
-
-        if (std::cmp_less(sa_len, size_min) ||
-            std::cmp_greater(sa_len, size_max)) {
-            throw Network::SaLengthError(std::to_string(sa_len),
-                                         size_min,
-                                         size_max);
-        }
-    }
-}
-
-auto Network::validate(const sockaddr *sa, sa_len_type sa_len) -> void
+auto Network::validate(const sockaddr* sa, sa_len_type sa_len) ->
+    const sockaddr*
 {
-    validate_length(sa_len, AF_UNSPEC);
-    const socket_family_type family {sa->sa_family};
-
-#ifdef HAVE_SOCKADDR_SA_LEN
-
-    if (std::cmp_not_equal(sa->sa_len, sa_len)) {
-        throw SaLengthError(std::to_string(sa->sa_len),
-                            sa_len,
-                            sa_len);
+    if (std::cmp_less(sa_len, Network::sa_len_min) ||
+        std::cmp_greater(sa_len, Network::sa_len_max)) {
+        throw Network::SaLengthError(std::to_string(sa_len),
+                                     Network::sa_len_min,
+                                     Network::sa_len_max);
     }
 
-#endif
+    const void* pointer {sa};
 
-    if (family != AF_INET && family != AF_INET6) {
+    switch (sa->sa_family) {
+#ifndef WIN32
+    case AF_UNIX:
+        break;
+#endif
+    case AF_INET:
+        validate(static_cast<const sockaddr_in*>(pointer));
+        break;
+    case AF_INET6:
+        validate(static_cast<const sockaddr_in6*>(pointer));
+        break;
+    case AF_UNSPEC:
+        break;
+    default:
         throw FamilyError();
     }
 
-    validate_length(sa_len, family);
+    return sa;
+}
+
+auto Network::validate(sockaddr* sa, sa_len_type sa_len) ->
+    sockaddr*
+{
+    if (std::cmp_less(sa_len, Network::sa_len_min) ||
+        std::cmp_greater(sa_len, Network::sa_len_max)) {
+        throw Network::SaLengthError(std::to_string(sa_len),
+                                     Network::sa_len_min,
+                                     Network::sa_len_max);
+    }
+
+    return sa;
 }

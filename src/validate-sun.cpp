@@ -32,35 +32,52 @@
 
 #ifndef WIN32
 
-auto Network::validate(const sockaddr_un* sun,
-                       sun_len_type size) -> void
-{
-    if (std::cmp_less(size, sun_len_min) ||
-        std::cmp_greater(size, sun_len_max)) {
-        throw SunLengthError(std::to_string(size),
-                             sun_len_max);
-    }
+namespace {
+    auto validate_sun(const sockaddr_un* sun, Network::sun_len_type size) ->
+        void
+    {
+        if (std::cmp_less(size, Network::sun_len_min) ||
+            std::cmp_greater(size, Network::sun_len_max)) {
+            throw Network::SunLengthError(std::to_string(size),
+                                          Network::sun_len_max);
+        }
 
-    const auto sun_len {get_sun_length(sun, sun_len_max)};
+        const auto sun_len {Network::get_sun_length(sun, Network::sun_len_max)};
 
-    if (std::cmp_less(sun_len, sun_len_min) ||
-        std::cmp_greater(sun_len, sun_len_max)) {
-        throw SunLengthError(std::to_string(sun_len),
-                             sun_len_max);
-    }
+        if (std::cmp_less(sun_len, Network::sun_len_min) ||
+            std::cmp_greater(sun_len, Network::sun_len_max)) {
+            throw Network::SunLengthError(std::to_string(sun_len),
+                                          Network::sun_len_max);
+        }
 
 #ifdef HAVE_SOCKADDR_SA_LEN
 
-    if (std::cmp_greater(sun->sun_len, sun_len)) {
-        throw SunLengthError(std::to_string(sun_len),
-                             sun_len);
-    }
+        if (std::cmp_greater(sun->sun_len, sun_len)) {
+            throw Network::SunLengthError(std::to_string(sun_len),
+                                          Network::sun_len);
+        }
 
 #endif
 
-    if (sun->sun_family != AF_UNIX) {
-        throw FamilyError();
+        if (sun->sun_family != AF_UNIX) {
+            throw Network::FamilyError();
+        }
+
     }
+}
+
+auto Network::validate(const sockaddr_un* sun,
+                       sun_len_type size) -> const sockaddr_un*
+{
+    validate_sun(sun, size);
+    return sun;
+}
+
+auto Network::validate(sockaddr_un* sun,
+                       sun_len_type size) -> sockaddr_un*
+{
+    validate_sun(sun, size);
+    return sun;
 }
 
 #endif
