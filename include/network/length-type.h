@@ -16,9 +16,11 @@
 #ifndef NETWORK_LENGTH_TYPE_H
 #define NETWORK_LENGTH_TYPE_H
 
+#include <cstddef>      // std::size_t
+
 namespace Network
 {
-    using length_type = unsigned short;
+    using length_type = std::size_t;
 }
 
 #endif

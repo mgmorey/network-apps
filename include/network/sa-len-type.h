@@ -16,11 +16,11 @@
 #ifndef NETWORK_SA_LEN_TYPE_H
 #define NETWORK_SA_LEN_TYPE_H
 
-#include <cstddef>      // std::size_t
+#include "network/length-type.h"        // length_type
 
 namespace Network
 {
-    using sa_len_type = std::size_t;
+    using sa_len_type = length_type;
 }
 
 #endif
