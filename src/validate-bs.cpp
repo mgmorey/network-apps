@@ -22,6 +22,8 @@
 #include "network/os-features.h"                // HAVE_SOCKADDR_SA_LEN
 #include "network/sa-len-limits.h"              // sa_len_min
 #include "network/salengtherror.h"              // SaLengthError
+#include "network/sin6lengtherror.h"            // Sin6LengthError
+#include "network/sinlengtherror.h"             // SinLengthError
 
 #ifdef HAVE_SOCKADDR_SA_LEN
 #include "network/get-sa-length.h"              // get_sa_length()
@@ -71,8 +73,10 @@ auto Network::validate(const ByteString& addr) -> void
             break;
 #endif
         case AF_INET:
+            throw SinLengthError(std::to_string(size), size_min, size_max);
+            break;
         case AF_INET6:
-            throw SaLengthError(std::to_string(size), size_min, size_max);
+            throw Sin6LengthError(std::to_string(size), size_min, size_max);
             break;
         default:
             throw FamilyError();
