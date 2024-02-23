@@ -238,10 +238,10 @@ namespace TestAddress
         assert(std::regex_match(actual_error_str, expected_error_regex));
     }
 
-    auto test_sa_invalid_family() -> void
+    auto test_sa_invalid_length() -> void
     {
-        const auto sa {create_sa(AF_UNSPEC)};
-        return test_sa(sa, sizeof sa, expected_error_family_re);
+        const auto sa {create_sa(AF_UNSPEC, 0)};
+        return test_sa(sa, 0, expected_error_length_re);
     }
 
     auto test_sin(const sockaddr_in& sin, std::size_t sin_len,
@@ -459,7 +459,7 @@ auto main(int argc, char* argv[]) -> int
             std::cout << context << std::endl;
         }
 
-        test_sa_invalid_family();
+        test_sa_invalid_length();
         test_sin6_invalid_family();
         test_sin6_invalid_length();
         test_sin_invalid_family();
