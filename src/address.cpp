@@ -94,7 +94,7 @@ auto Network::Address::family() const noexcept -> socket_family_type
     return sa_family();
 }
 
-auto Network::Address::length() const noexcept -> length_type
+auto Network::Address::length() const noexcept -> socket_length_type
 {
     return sa_length();
 }

@@ -17,9 +17,9 @@
 #define NETWORK_ADDRESS_H
 
 #include "network/bytestring.h"                 // ByteString
-#include "network/length-type.h"                // length_type
 #include "network/port-type.h"                  // port_type
 #include "network/socket-family-type.h"         // socket_family_type
+#include "network/socket-length-type.h"         // socket_length_type
 
 #ifdef WIN32
 #include <winsock2.h>       // in_addr
@@ -58,7 +58,7 @@ namespace Network
         [[nodiscard]] auto data() const noexcept -> value_type;
         [[nodiscard]] auto empty() const noexcept -> bool;
         [[nodiscard]] auto family() const noexcept -> socket_family_type;
-        [[nodiscard]] auto length() const noexcept -> length_type;
+        [[nodiscard]] auto length() const noexcept -> socket_length_type;
         [[nodiscard]] auto port() const noexcept -> port_type;
         [[nodiscard]] auto size() const noexcept -> std::size_t;
         [[nodiscard]] auto text() const noexcept -> std::string;
@@ -66,7 +66,7 @@ namespace Network
     protected:
         [[nodiscard]] auto sa_data() const noexcept -> value_type;
         [[nodiscard]] auto sa_family() const noexcept -> socket_family_type;
-        [[nodiscard]] auto sa_length() const noexcept -> length_type;
+        [[nodiscard]] auto sa_length() const noexcept -> socket_length_type;
         [[nodiscard]] auto sa_text() const noexcept -> std::string;
         [[nodiscard]] auto sin_addr() const noexcept -> in_addr;
         [[nodiscard]] auto sin_port() const noexcept -> port_type;

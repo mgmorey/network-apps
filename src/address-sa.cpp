@@ -17,8 +17,8 @@
 #include "network/get-sa-data.h"                // get_sa_data()
 #include "network/get-sa-family.h"              // get_sa_family()
 #include "network/get-sa-length.h"              // get_sa_length()
-#include "network/length-type.h"                // length_type
 #include "network/socket-family-type.h"         // socket_family_type
+#include "network/socket-length-type.h"         // socket_length_type
 #include "network/to-string.h"                  // to_string()
 
 #include <string>       // std::string
@@ -33,7 +33,7 @@ auto Network::Address::sa_family() const noexcept -> socket_family_type
     return get_sa_family(m_value);
 }
 
-auto Network::Address::sa_length() const noexcept -> length_type
+auto Network::Address::sa_length() const noexcept -> socket_length_type
 {
     return get_sa_length(m_value);
 }
