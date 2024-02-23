@@ -20,6 +20,7 @@
 #include "network/charactererror.h"     // CharacterError
 #include "network/error.h"              // Error
 #include "network/integererror.h"       // IntegerError
+#include "network/lengtherror.h"        // LengthError
 #include "network/logicerror.h"         // LogicError
 #include "network/namelengtherror.h"    // NameLengthError
 #include "network/oserrorerror.h"       // OsErrorError
