@@ -17,14 +17,14 @@
 #include "network/lengtherror.h"        // LengthError
 #include "network/sa-len-type.h"        // sa_len_type
 
-#include <string>       // std::string, std::to_string()
+#include <string>       // std::string
 
 Network::SaLengthError::SaLengthError(const std::string &t_value,
                                       sa_len_type t_minimum,
                                       sa_len_type t_maximum) noexcept :
-  LengthError(t_value,
-              t_minimum,
-              t_maximum,
-              "sa_len_type")
+    LengthError(t_value,
+                t_minimum,
+                t_maximum,
+                "sa_len_type")
 {
 }

@@ -18,7 +18,7 @@
 #include "network/path-length-limits.h"         // path_length_max,
                                                 // path_length_min
 
-#include <string>       // std::string, std::to_string()
+#include <string>       // std::string
 
 #ifndef WIN32
 

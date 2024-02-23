@@ -23,9 +23,9 @@ Network::LengthError::LengthError(const std::string &t_value,
                                   std::size_t t_minimum,
                                   std::size_t t_maximum,
                                   const std::string& t_type) noexcept :
-  RangeError(t_value,
-	     std::to_string(t_minimum),
-	     std::to_string(t_maximum),
-	     t_type)
+    RangeError(t_value,
+               std::to_string(t_minimum),
+               std::to_string(t_maximum),
+               t_type)
 {
 }

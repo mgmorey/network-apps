@@ -19,13 +19,12 @@
 #include "network/sun-len-type.h"       // sun_len_type
 
 #include <string>       // std::string
-#include <utility>      // std::move()
 
 Network::SunLengthError::SunLengthError(const std::string &t_value,
                                         sun_len_type t_maximum) noexcept :
-  LengthError(t_value,
-              sun_len_min,
-              t_maximum,
-              "sun_len_type")
+    LengthError(t_value,
+                sun_len_min,
+                t_maximum,
+                "sun_len_type")
 {
 }

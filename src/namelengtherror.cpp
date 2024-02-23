@@ -18,7 +18,7 @@
 #include "network/name-length-limits.h"         // name_length_max,
                                                 // name_length_min
 
-#include <string>       // std::string, std::to_string()
+#include <string>       // std::string
 
 Network::NameLengthError::NameLengthError(const std::string& t_value) noexcept :
     LengthError(t_value,

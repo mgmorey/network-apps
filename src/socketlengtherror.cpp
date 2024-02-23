@@ -18,7 +18,7 @@
 #include "network/socket-length-limits.h"       // socket_length_max,
                                                 // socket_length_min
 
-#include <string>       // std::string, std::to_string()
+#include <string>       // std::string
 
 Network::SocketLengthError::SocketLengthError(const std::string& t_value) noexcept :
     LengthError(t_value,
