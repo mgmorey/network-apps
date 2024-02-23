@@ -14,19 +14,19 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/pathlengtherror.h"            // PathLengthError
+#include "network/lengtherror.h"                // LengthError
 #include "network/path-length-limits.h"         // path_length_max,
                                                 // path_length_min
-#include "network/rangeerror.h"                 // RangeError
 
 #include <string>       // std::string, std::to_string()
 
 #ifndef WIN32
 
 Network::PathLengthError::PathLengthError(const std::string& t_value) noexcept :
-    RangeError(t_value,
-               std::to_string(path_length_min),
-               std::to_string(path_length_max),
-               "path_length_type")
+    LengthError(t_value,
+                path_length_min,
+                path_length_max,
+                "path_length_type")
 {
 }
 

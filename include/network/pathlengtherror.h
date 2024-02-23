@@ -16,7 +16,7 @@
 #ifndef NETWORK_PATHLENGTHERROR_H
 #define NETWORK_PATHLENGTHERROR_H
 
-#include "network/rangeerror.h"         // RangeError
+#include "network/lengtherror.h"        // LengthError
 
 #include <string>       // std::string
 
@@ -24,7 +24,7 @@ namespace Network
 {
 #ifndef WIN32
     class PathLengthError :
-        public RangeError
+        public LengthError
     {
     public:
         explicit PathLengthError(const std::string& t_value) noexcept;

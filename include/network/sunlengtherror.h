@@ -18,7 +18,7 @@
 
 #ifndef WIN32
 
-#include "network/rangeerror.h"         // RangeError
+#include "network/lengtherror.h"        // LengthError
 #include "network/sun-len-type.h"       // sun_len_type
 
 #include <string>       // std::string
@@ -26,7 +26,7 @@
 namespace Network
 {
     class SunLengthError :
-        public RangeError
+        public LengthError
     {
     public:
         explicit SunLengthError(const std::string& t_value,

@@ -16,7 +16,7 @@
 #ifndef NETWORK_SALENGTHERROR_H
 #define NETWORK_SALENGTHERROR_H
 
-#include "network/rangeerror.h"         // RangeError, std::string
+#include "network/lengtherror.h"        // LengthError
 #include "network/sa-len-type.h"        // sa_len_type
 
 #include <string>       // std::string
@@ -24,7 +24,7 @@
 namespace Network
 {
     class SaLengthError :
-        public RangeError
+        public LengthError
     {
     public:
         explicit SaLengthError(const std::string& t_value,

@@ -16,12 +16,14 @@
 #ifndef NETWORK_SOCKETLENGTHERROR_H
 #define NETWORK_SOCKETLENGTHERROR_H
 
-#include "network/rangeerror.h"         // RangeError, std::string
+#include "network/lengtherror.h"        // LengthError
+
+#include <string>       // std::string
 
 namespace Network
 {
     class SocketLengthError :
-        public RangeError
+        public LengthError
     {
     public:
         explicit SocketLengthError(const std::string& t_value) noexcept;

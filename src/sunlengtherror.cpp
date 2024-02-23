@@ -14,7 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/sunlengtherror.h"     // SunLengthError
-#include "network/rangeerror.h"         // RangeError
+#include "network/lengtherror.h"        // LengthError
 #include "network/sun-len-limits.h"     // sun_len_max, sun_len_min
 #include "network/sun-len-type.h"       // sun_len_type
 
@@ -23,9 +23,9 @@
 
 Network::SunLengthError::SunLengthError(const std::string &t_value,
                                         sun_len_type t_maximum) noexcept :
-  RangeError(t_value,
-	     std::to_string(sun_len_min),
-	     std::to_string(t_maximum),
-	     "sun_len_type")
+  LengthError(t_value,
+              sun_len_min,
+              t_maximum,
+              "sun_len_type")
 {
 }

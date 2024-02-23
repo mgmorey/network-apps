@@ -14,16 +14,16 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/socketlengtherror.h"          // SocketLengthError
-#include "network/rangeerror.h"                 // RangeError
+#include "network/lengtherror.h"                // LengthError
 #include "network/socket-length-limits.h"       // socket_length_max,
                                                 // socket_length_min
 
 #include <string>       // std::string, std::to_string()
 
 Network::SocketLengthError::SocketLengthError(const std::string& t_value) noexcept :
-    RangeError(t_value,
-               std::to_string(socket_length_min),
-               std::to_string(socket_length_max),
-               "socket_length_type")
+    LengthError(t_value,
+                socket_length_min,
+                socket_length_max,
+                "socket_length_type")
 {
 }

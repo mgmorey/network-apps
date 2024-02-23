@@ -14,16 +14,16 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/namelengtherror.h"            // NameLengthError
+#include "network/lengtherror.h"                // LengthError
 #include "network/name-length-limits.h"         // name_length_max,
                                                 // name_length_min
-#include "network/rangeerror.h"                 // RangeError
 
 #include <string>       // std::string, std::to_string()
 
 Network::NameLengthError::NameLengthError(const std::string& t_value) noexcept :
-    RangeError(t_value,
-               std::to_string(name_length_min),
-               std::to_string(name_length_max),
-               "name_length_type")
+    LengthError(t_value,
+                name_length_min,
+                name_length_max,
+                "name_length_type")
 {
 }

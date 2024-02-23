@@ -16,14 +16,14 @@
 #ifndef NETWORK_NAMELENGTHERROR_H
 #define NETWORK_NAMELENGTHERROR_H
 
-#include "network/rangeerror.h"         // RangeError
+#include "network/lengtherror.h"        // Lengtherror
 
 #include <string>       // std::string
 
 namespace Network
 {
     class NameLengthError :
-        public RangeError
+        public LengthError
     {
     public:
         explicit NameLengthError(const std::string& t_value) noexcept;

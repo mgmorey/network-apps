@@ -14,7 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/salengtherror.h"      // SaLengthError
-#include "network/rangeerror.h"         // RangeError
+#include "network/lengtherror.h"        // LengthError
 #include "network/sa-len-type.h"        // sa_len_type
 
 #include <string>       // std::string, std::to_string()
@@ -22,9 +22,9 @@
 Network::SaLengthError::SaLengthError(const std::string &t_value,
                                       sa_len_type t_minimum,
                                       sa_len_type t_maximum) noexcept :
-  RangeError(t_value,
-	     std::to_string(t_minimum),
-	     std::to_string(t_maximum),
-	     "sa_len_type")
+  LengthError(t_value,
+              t_minimum,
+              t_maximum,
+              "sa_len_type")
 {
 }
