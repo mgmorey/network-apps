@@ -27,8 +27,7 @@
 
 namespace Network
 {
-    auto to_sun_len(auto value,
-                    sun_len_type size_max) -> sun_len_type
+    auto to_sun_len(auto value, sun_len_type size_max) -> sun_len_type
     {
         const sun_len_type size_min {sun_len_min};
 
@@ -43,7 +42,6 @@ namespace Network
     auto to_sun_len(auto value) -> sun_len_type
     {
         return to_sun_len(value, sun_len_max);
-
     }
 }
 

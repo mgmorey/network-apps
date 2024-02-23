@@ -63,7 +63,6 @@ namespace {
         if (sun->sun_family != AF_UNIX) {
             throw Network::FamilyError();
         }
-
     }
 }
 
