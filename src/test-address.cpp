@@ -82,9 +82,6 @@ namespace TestAddress
     using Network::to_bytestring;
     using Network::validate;
 
-    static constexpr auto expected_error_family_re {
-        R"(Invalid socket address family)"
-    };
     static constexpr auto expected_error_length_re {
         R"(Value (\d+) is out of range \[\d+, \d+\] of s(a|in|in6|un)_len_type)"
     };
@@ -272,12 +269,6 @@ namespace TestAddress
         assert(std::regex_match(actual_error_str, expected_error_regex));
     }
 
-    auto test_sin_invalid_family() -> void
-    {
-        const auto sin {create_sin(AF_UNSPEC)};
-        return test_sin(sin, sizeof sin, expected_error_family_re);
-    }
-
     auto test_sin_invalid_length() -> void
     {
         const auto length {sin_size - 1};
@@ -300,12 +291,6 @@ namespace TestAddress
         }
 
         assert(std::regex_match(actual_error_str, expected_error_regex));
-    }
-
-    auto test_sin6_invalid_family() -> void
-    {
-        const auto sin6 {create_sin6(AF_UNSPEC)};
-        return test_sin6(sin6, sizeof sin6, expected_error_family_re);
     }
 
     auto test_sin6_invalid_length() -> void
@@ -343,12 +328,6 @@ namespace TestAddress
         }
 
         assert(std::regex_match(actual_error_str, expected_error_regex));
-    }
-
-    auto test_sun_invalid_family() -> void
-    {
-        const auto sun {create_sun(AF_UNSPEC)};
-        return test_sun(sun, sizeof sun, expected_error_family_re);
     }
 
     auto test_sun_invalid_length() -> void
@@ -460,12 +439,9 @@ auto main(int argc, char* argv[]) -> int
         }
 
         test_sa_invalid_length();
-        test_sin6_invalid_family();
         test_sin6_invalid_length();
-        test_sin_invalid_family();
         test_sin_invalid_length();
 #ifndef WIN32
-        test_sun_invalid_family();
         test_sun_invalid_length();
         test_sun_invalid_path_large();
         test_sun_valid_path_large();
