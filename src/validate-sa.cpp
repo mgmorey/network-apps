@@ -15,12 +15,10 @@
 
 #include "network/validate-sa.h"                // validate()
 #include "network/familyerror.h"                // FamilyError
-#include "network/sa-len-limits.h"              // sa_len_max,
-                                                // sa_len_min
 #include "network/sa-len-type.h"                // sa_len_type
-#include "network/salengtherror.h"              // SaLengthError
-#include "network/validate-sin6.h"              // validate()
+#include "network/to-sa-len.h"                  // to_sa_len()
 #include "network/validate-sin.h"               // validate()
+#include "network/validate-sin6.h"              // validate()
 
 
 #ifdef WIN32
@@ -32,19 +30,10 @@
 #include <sys/socket.h>     // AF_INET, AF_INET6, AF_UNSPEC, sockaddr
 #endif
 
-#include <string>       // std::to_string()
-#include <utility>      // std::cmp_greater(), std::cmp_less()
-
 auto Network::validate(const sockaddr* sa, sa_len_type sa_len) ->
     const sockaddr*
 {
-    if (std::cmp_less(sa_len, Network::sa_len_min) ||
-        std::cmp_greater(sa_len, Network::sa_len_max)) {
-        throw Network::SaLengthError(std::to_string(sa_len),
-                                     Network::sa_len_min,
-                                     Network::sa_len_max);
-    }
-
+    static_cast<void>(to_sa_len(sa_len));
     const void* pointer {sa};
 
     switch (sa->sa_family) {
@@ -70,12 +59,6 @@ auto Network::validate(const sockaddr* sa, sa_len_type sa_len) ->
 auto Network::validate(sockaddr* sa, sa_len_type sa_len) ->
     sockaddr*
 {
-    if (std::cmp_less(sa_len, Network::sa_len_min) ||
-        std::cmp_greater(sa_len, Network::sa_len_max)) {
-        throw Network::SaLengthError(std::to_string(sa_len),
-                                     Network::sa_len_min,
-                                     Network::sa_len_max);
-    }
-
+    static_cast<void>(to_sa_len(sa_len));
     return sa;
 }
