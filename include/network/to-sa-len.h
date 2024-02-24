@@ -46,7 +46,7 @@ namespace Network
         return static_cast<sa_len_type>(value);
     }
 
-    auto to_sa_len(const sockaddr *sa, auto value) -> sa_len_type
+    auto to_sa_len(auto value, const sockaddr *sa) -> sa_len_type
     {
         return to_sa_len(value, sa->sa_family);
     }
