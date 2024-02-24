@@ -18,7 +18,9 @@
 #include "network/sin-sizes.h"                  // sin_size
 #include "network/sin6-sizes.h"                 // sin6_size
 #include "network/socket-family-type.h"         // socket_family_type
-#include "network/sun-len-limits.h"             // sun_len_min
+#ifndef WIN32
+#include "network/sun-offsets.h"                // sun_path_offset
+#endif
 
 #ifdef WIN32
 #include <winsock2.h>       // AF_INET, AF_INET6, AF_UNIX, AF_UNSPEC
@@ -36,7 +38,7 @@ auto Network::get_sa_size_minimum(socket_family_type family) noexcept ->
         return sa_len_min;
 #ifndef WIN32
     case AF_UNIX:
-        return sun_len_min;
+        return sun_path_offset;
 #endif
     case AF_INET:
         return sin_size;
