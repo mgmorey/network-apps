@@ -42,11 +42,10 @@ namespace {
     using Network::sun_len_type;
     using Network::to_sun_len;
 
-    auto validate_sun(const sockaddr_un* sun, sun_len_type size) ->
-        void
+    auto validate_sun(const sockaddr_un* sun, sun_len_type size) -> void
     {
         static_cast<void>(to_sun_len(size));
-        static_cast<void>(to_sun_len(get_sun_length(sun, sun_len_max)));
+        const auto sun_len {to_sun_len(get_sun_length(sun, sun_len_max))};
 
 #ifdef HAVE_SOCKADDR_SA_LEN
 
@@ -54,6 +53,8 @@ namespace {
             throw SunLengthError(std::to_string(sun_len), sun_len);
         }
 
+#else
+        static_cast<void>(sun_len);
 #endif
 
         if (sun->sun_family != AF_UNIX) {
