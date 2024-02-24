@@ -18,6 +18,8 @@
 
 #include "network/get-sa-size-maximum.h"        // get_sa_size_maximum()
 #include "network/get-sa-size-minimum.h"        // get_sa_size_minimum()
+#include "network/sa-len-limits.h"              // sa_len_max,
+                                                // sa_len_min
 #include "network/sa-len-type.h"                // sa_len_type
 #include "network/salengtherror.h"              // SaLengthError
 #include "network/socket-family-type.h"         // socket_family_type
@@ -33,11 +35,10 @@
 
 namespace Network
 {
-    auto to_sa_len(auto value, socket_family_type family = 0) -> sa_len_type
+    auto to_sa_len(auto value,
+                   sa_len_type size_min = sa_len_min,
+                   sa_len_type size_max = sa_len_max) -> sa_len_type
     {
-        const auto size_max {get_sa_size_maximum(family)};
-        const auto size_min {get_sa_size_minimum(family)};
-
         if (std::cmp_less(value, size_min) ||
             std::cmp_greater(value, size_max)) {
             throw SaLengthError(std::to_string(value), size_min, size_max);
@@ -46,9 +47,11 @@ namespace Network
         return static_cast<sa_len_type>(value);
     }
 
-    auto to_sa_len(auto value, const sockaddr *sa) -> sa_len_type
+    auto to_sa_len(auto value, socket_family_type family) -> sa_len_type
     {
-        return to_sa_len(value, sa->sa_family);
+        const auto size_max {get_sa_size_maximum(family)};
+        const auto size_min {get_sa_size_minimum(family)};
+        return to_sa_len(value, size_min, size_max);
     }
 }
 
