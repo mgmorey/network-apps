@@ -28,7 +28,8 @@
 #endif
 
 #include <string>       // std::to_string()
-#include <utility>      // std::cmp_greater(), std::cmp_less()
+#include <utility>      // std::cmp_greater(), std::cmp_less(),
+                        // std::cmp_not_equal()
 
 #ifndef WIN32
 
@@ -52,9 +53,9 @@ namespace {
 
 #ifdef HAVE_SOCKADDR_SA_LEN
 
-        if (std::cmp_greater(sun->sun_len, sun_len)) {
+        if (std::cmp_not_equal(sun->sun_len, sun_len)) {
             throw Network::SunLengthError(std::to_string(sun_len),
-                                          Network::sun_len);
+                                          sun_len);
         }
 
 #endif
