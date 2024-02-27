@@ -291,6 +291,17 @@ namespace TestAddress
         }
 
         assert(std::regex_match(actual_error_str, expected_error_regex));
+        actual_error_str.clear();
+
+        try {
+            validate(to_bytestring(&sin6, sin6_len));
+        }
+        catch (const Error& error) {
+            print(error);
+            actual_error_str = error.what();
+        }
+
+        assert(std::regex_match(actual_error_str, expected_error_regex));
     }
 
     auto test_sin6_invalid_length() -> void
