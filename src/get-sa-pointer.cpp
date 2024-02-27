@@ -23,13 +23,13 @@
 #include <sys/socket.h>     // sockaddr
 #endif
 
-auto Network::get_sa_pointer(const ByteString& addr) -> const sockaddr *
+auto Network::get_sa_pointer(const ByteString& addr) -> const sockaddr*
 {
     const void* pointer {addr.data()};
     return validate(static_cast<const sockaddr*>(pointer), addr.size());
 }
 
-auto Network::get_sa_pointer(ByteString& addr) -> sockaddr *
+auto Network::get_sa_pointer(ByteString& addr) -> sockaddr*
 {
     void* pointer {addr.data()};
     return validate(static_cast<sockaddr*>(pointer), addr.size());

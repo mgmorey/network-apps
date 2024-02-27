@@ -28,7 +28,7 @@ namespace Network
 {
     extern auto validate(const sockaddr* sa, sa_len_type sa_len) ->
         const sockaddr*;
-    extern auto validate(sockaddr *sa, sa_len_type sa_len) ->
+    extern auto validate(sockaddr* sa, sa_len_type sa_len) ->
         sockaddr*;
 }
 
