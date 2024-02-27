@@ -36,7 +36,9 @@
 
 namespace {
     using Network::FamilyError;
+#ifdef HAVE_SOCKADDR_SA_LEN
     using Network::SunLengthError;
+#endif
     using Network::get_sun_length;
     using Network::sun_len_max;
     using Network::sun_len_type;
