@@ -19,6 +19,9 @@
 #include "network/to-sa-len.h"                  // to_sa_len()
 #include "network/validate-sin.h"               // validate()
 #include "network/validate-sin6.h"              // validate()
+#ifndef WIN32
+#include "network/validate-sun.h"               // validate()
+#endif
 
 
 #ifdef WIN32
@@ -28,6 +31,7 @@
 #else
 #include <netinet/in.h>     // sockaddr_in, sockaddr_in6
 #include <sys/socket.h>     // AF_INET, AF_INET6, AF_UNSPEC, sockaddr
+#include <sys/un.h>         // sockaddr_un
 #endif
 
 auto Network::validate(const sockaddr* sa, sa_len_type sa_len) ->
@@ -39,6 +43,7 @@ auto Network::validate(const sockaddr* sa, sa_len_type sa_len) ->
     switch (sa->sa_family) {
 #ifndef WIN32
     case AF_UNIX:
+        validate(static_cast<const sockaddr_un*>(pointer));
         break;
 #endif
     case AF_INET:
