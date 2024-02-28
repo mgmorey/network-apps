@@ -75,7 +75,7 @@ namespace TestSocket
 
         const auto self_path {to_path(self)};
 
-        if (self_path && path == *self_path) {
+        if (self_path.value_or(std::string {}) == path) {
             return true;
         }
 
@@ -161,8 +161,8 @@ namespace TestSocket
         if (result) {
             print(result);
         }
-        else if (path) {
-            assert(equal_to_sockname(*path, sock));
+        else {
+            assert(equal_to_sockname(path.value_or(std::string {}), sock));
         }
 
         assert(expected_codes.contains(actual_code));
