@@ -32,7 +32,6 @@
 #include <exception>    // std::exception
 #include <iomanip>      // std::right, std::setw()
 #include <iostream>     // std::cerr, std::cout, std::endl
-#include <optional>     // std::nullopt
 #include <regex>        // std::regex, std::regex_match
 #include <set>          // std::set
 #include <string>       // std::string
@@ -298,7 +297,7 @@ namespace TestSocket
 	const ErrorCodeSet codes_valid = {0};
 
 #ifndef OS_CYGWIN_NT
-        test_pathname_valid(std::nullopt, codes_valid);
+        test_pathname_valid({}, codes_valid);
         test_pathname_valid(nullptr, codes_valid);
 #endif
 

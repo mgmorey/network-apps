@@ -21,7 +21,6 @@
 #include "network/optionalhostname.h"   // OptionalHostname
 
 #include <iterator>     // std::back_inserter()
-#include <optional>     // std::nullopt
 
 auto Network::get_hosts(const OptionalHostname& hostname,
                         const OptionalHints& hints,
@@ -30,7 +29,7 @@ auto Network::get_hosts(const OptionalHostname& hostname,
     HostVector hosts;
     auto result {
         insert_addrinfo(hostname,
-                        std::nullopt,
+                        {},
                         hints,
                         std::back_inserter(hosts),
                         verbose)
