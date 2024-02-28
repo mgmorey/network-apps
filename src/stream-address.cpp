@@ -61,7 +61,7 @@ namespace {
             return "in6";
             break;
         default:
-            return "";
+            return {};
         }
     }
 
