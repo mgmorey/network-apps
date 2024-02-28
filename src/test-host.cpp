@@ -193,7 +193,7 @@ namespace TestHost
         const auto* const hostname_c {std::getenv("HOSTNAME")};
 
         if (hostname_c == nullptr) {
-            return std::nullopt;
+            return {};
         }
 
         return hostname_c;
