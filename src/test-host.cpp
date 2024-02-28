@@ -107,12 +107,12 @@ namespace TestHost
             const auto endpoint {get_endpoint(addr)};
             Values values = {
                 Address(addr).text(),
-                endpoint.first.value_or(""),
-                t_host.canonical_name().value_or("")
+                endpoint.first.value_or(std::string {}),
+                t_host.canonical_name().value_or(std::string {})
             };
             values.erase(std::remove(values.begin(),
                                      values.end(),
-                                     ""),
+                                     std::string {}),
                          values.end());
             uniquify(values);
             print(values);
@@ -170,7 +170,7 @@ namespace TestHost
     auto get_family(const OptionalHints& hints) -> std::string
     {
         if (!hints) {
-            return "";
+            return {};
         }
 
         switch (hints->family()) {
@@ -179,7 +179,7 @@ namespace TestHost
         case AF_INET6:
             return "IPv6";
         default:
-            return "";
+            return {};
         }
     }
 
