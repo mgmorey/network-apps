@@ -35,6 +35,8 @@
 
 #ifdef WIN32
 static constexpr Network::Version version_default {2, 2};
+#else
+static constexpr auto description {"Berkeley Software Distribution Sockets"};
 #endif
 
 auto Network::startup(Context& context, const OptionalVersion& version) -> void
@@ -63,7 +65,7 @@ auto Network::startup(Context& context, const OptionalVersion& version) -> void
     context.m_system_status = wsa_data.szSystemStatus;		// NOLINT
     context.m_version = WindowsVersion {wsa_data.wVersion};
 #else
-    context.m_description = "Berkeley Software Distribution Sockets";
+    context.m_description = description;
     context.m_version = version;
 #endif
     context.m_is_started = true;
