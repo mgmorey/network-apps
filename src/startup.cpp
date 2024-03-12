@@ -34,7 +34,7 @@
 #endif
 
 #ifdef WIN32
-static constexpr Network::Version version_default {2, 2};
+static constexpr Network::Version winsock_default {2, 2};
 #else
 static constexpr auto description {"Berkeley Software Distribution Sockets"};
 #endif
@@ -42,10 +42,10 @@ static constexpr auto description {"Berkeley Software Distribution Sockets"};
 auto Network::startup(Context& context, const OptionalVersion& version) -> void
 {
 #ifdef WIN32
+    const WindowsVersion winsock_version {version.value_or(winsock_default)};
     WSADATA wsa_data {};
-    const WindowsVersion required_version {version.value_or(version_default)};
 
-    if (const auto error {::WSAStartup(WORD {required_version}, &wsa_data)}) {
+    if (const auto error {::WSAStartup(WORD {winsock_version}, &wsa_data)}) {
         const auto os_error {to_os_error(error)};
         const auto message {format_os_error(os_error)};
 
