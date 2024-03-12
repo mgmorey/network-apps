@@ -24,12 +24,14 @@
 #include "network/runtimeerror.h"       // RuntimeError
 #include "network/to-os-error.h"        // to_os_error()
 #include "network/version.h"            // Version
-#include "network/windowsversion.h"     // WORD, WSADATA, WSAEFAULT,
-                                        // WSAEPROCLIM,
-                                        // WSASYSNOTREADY,
-                                        // WSAVERNOTSUPPORTED,
-                                        // ::WSAStartup(),
-                                        // WindowsVersion
+#include "network/windowsversion.h"     // WindowsVersion
+#endif
+
+#ifdef WIN32
+#include <winsock2.h>       // WSADATA, WSAEFAULT, WSAEPROCLIM,
+                            // WSASYSNOTREADY, WSAVERNOTSUPPORTED,
+                            // ::WSAStartup()
+#include <windows.h>        // WORD
 #endif
 
 #ifdef WIN32
