@@ -26,14 +26,14 @@
 
 Network::SocketHost::SocketHost(const addrinfo& t_ai) :
     m_addr(to_bytestring(t_ai)),
-    m_name(to_canonical_name(t_ai.ai_canonname))
+    m_name(to_canonical_name(t_ai))
 {
 }
 
 auto Network::SocketHost::operator=(const addrinfo& t_ai) -> SocketHost&
 {
     m_addr = to_bytestring(t_ai);
-    m_name = to_canonical_name(t_ai.ai_canonname);
+    m_name = to_canonical_name(t_ai);
     return *this;
 }
 
@@ -65,12 +65,12 @@ auto Network::SocketHost::canonical_name() const -> const OptionalHostname&
     return m_name;
 }
 
-auto Network::SocketHost::to_canonical_name(const char* t_str) noexcept ->
+auto Network::SocketHost::to_canonical_name(const addrinfo& t_ai) noexcept ->
     OptionalHostname
 {
-    if (t_str == nullptr) {
+    if (t_ai.ai_canonname == nullptr) {
         return {};
     }
 
-    return {t_str};
+    return {t_ai.ai_canonname};
 }
