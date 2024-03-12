@@ -38,7 +38,7 @@ namespace Network
     class AddrInfo
     {
         friend auto operator<<(std::ostream& os,
-                               const addrinfo& addrinfo) noexcept ->
+                               const addrinfo& ai) noexcept ->
             std::ostream&;
 
     public:
@@ -89,7 +89,7 @@ namespace Network
     };
 
     extern auto operator<<(std::ostream& os,
-                           const addrinfo& addrinfo) noexcept -> std::ostream&;
+                           const addrinfo& ai) noexcept -> std::ostream&;
 }
 
 #endif

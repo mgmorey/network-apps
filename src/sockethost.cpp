@@ -24,16 +24,16 @@
 #include <netdb.h>      // addrinfo
 #endif
 
-Network::SocketHost::SocketHost(const addrinfo& t_addrinfo) :
-    m_addr(to_bytestring(t_addrinfo)),
-    m_name(to_canonical_name(t_addrinfo.ai_canonname))
+Network::SocketHost::SocketHost(const addrinfo& t_ai) :
+    m_addr(to_bytestring(t_ai)),
+    m_name(to_canonical_name(t_ai.ai_canonname))
 {
 }
 
-auto Network::SocketHost::operator=(const addrinfo& t_addrinfo) -> SocketHost&
+auto Network::SocketHost::operator=(const addrinfo& t_ai) -> SocketHost&
 {
-    m_addr = to_bytestring(t_addrinfo);
-    m_name = to_canonical_name(t_addrinfo.ai_canonname);
+    m_addr = to_bytestring(t_ai);
+    m_name = to_canonical_name(t_ai.ai_canonname);
     return *this;
 }
 

@@ -37,16 +37,16 @@ Network::Template::Template(int t_family,
 {
 }
 
-Network::Template::Template(const addrinfo& t_addrinfo) noexcept :
-    m_hints(t_addrinfo),
-    m_host(t_addrinfo)
+Network::Template::Template(const addrinfo& t_ai) noexcept :
+    m_hints(t_ai),
+    m_host(t_ai)
 {
 }
 
-auto Network::Template::operator=(const addrinfo& t_addrinfo) noexcept -> Template&
+auto Network::Template::operator=(const addrinfo& t_ai) noexcept -> Template&
 {
-    m_hints = t_addrinfo;
-    m_host = t_addrinfo;
+    m_hints = t_ai;
+    m_host = t_ai;
     return *this;
 }
 

@@ -26,7 +26,7 @@
 
 namespace Network
 {
-    extern auto to_bytestring(const addrinfo& addrinfo) -> ByteString;
+    extern auto to_bytestring(const addrinfo& ai) -> ByteString;
 }
 
 #endif

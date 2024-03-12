@@ -57,11 +57,11 @@ namespace Network
         }
 
         // cppcheck-suppress noExplicitConstructor
-        constexpr SocketHints(const addrinfo& t_addrinfo) noexcept :  // NOLINT
-            m_flags(t_addrinfo.ai_flags),
-            m_family(t_addrinfo.ai_family),
-            m_socktype(t_addrinfo.ai_socktype),
-            m_protocol(t_addrinfo.ai_protocol)
+        constexpr SocketHints(const addrinfo& t_ai) noexcept :  // NOLINT
+            m_flags(t_ai.ai_flags),
+            m_family(t_ai.ai_family),
+            m_socktype(t_ai.ai_socktype),
+            m_protocol(t_ai.ai_protocol)
         {
         }
 
@@ -73,13 +73,13 @@ namespace Network
         constexpr auto operator=(SocketHints&&) noexcept ->
             SocketHints& = default;
 
-        constexpr auto operator=(const addrinfo& t_addrinfo) noexcept ->
+        constexpr auto operator=(const addrinfo& t_ai) noexcept ->
             SocketHints&
         {
-            m_flags = t_addrinfo.ai_flags;
-            m_family = t_addrinfo.ai_family;
-            m_socktype = t_addrinfo.ai_socktype;
-            m_protocol = t_addrinfo.ai_protocol;
+            m_flags = t_ai.ai_flags;
+            m_family = t_ai.ai_family;
+            m_socktype = t_ai.ai_socktype;
+            m_protocol = t_ai.ai_protocol;
             return *this;
         }
 

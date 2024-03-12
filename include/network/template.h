@@ -38,13 +38,13 @@ namespace Network
                           int t_protocol = 0,
                           int t_flags = 0);
         // cppcheck-suppress noExplicitConstructor
-        Template(const addrinfo& t_addrinfo) noexcept;  // NOLINT
+        Template(const addrinfo& t_ai) noexcept;  // NOLINT
         Template(const Template&) noexcept = default;
         Template(Template&&) = default;
         ~Template() noexcept = default;
         auto operator=(const Template&) noexcept -> Template& = default;
         auto operator=(Template&&) noexcept -> Template& = default;
-        auto operator=(const addrinfo& t_addrinfo) noexcept -> Template&;
+        auto operator=(const addrinfo& t_ai) noexcept -> Template&;
         auto operator<(const Template& t_sock) const noexcept -> bool;
         auto operator>(const Template& t_sock) const noexcept -> bool;
         auto operator==(const Template& t_sock) const noexcept -> bool;

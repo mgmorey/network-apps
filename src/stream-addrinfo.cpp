@@ -38,14 +38,14 @@
 #include <ostream>      // operator<<(), std::ostream
 
 auto Network::operator<<(std::ostream& os,
-                         const addrinfo& addrinfo) noexcept -> std::ostream&
+                         const addrinfo& ai) noexcept -> std::ostream&
 {
-    const SocketFlags flags(addrinfo.ai_flags);
-    const SocketFamily family(addrinfo.ai_family);
-    const SocketType socktype(addrinfo.ai_socktype);
-    const SocketProtocol protocol(family, addrinfo.ai_protocol);
+    const SocketFlags flags(ai.ai_flags);
+    const SocketFamily family(ai.ai_family);
+    const SocketType socktype(ai.ai_socktype);
+    const SocketProtocol protocol(family, ai.ai_protocol);
 
-    if (addrinfo.ai_addr == nullptr) {
+    if (ai.ai_addr == nullptr) {
         static constexpr auto delim {", "};
         static constexpr auto notab {0};
         os << "addrinfo("
@@ -62,7 +62,7 @@ auto Network::operator<<(std::ostream& os,
     }
     else {
         static constexpr auto tab {9};
-        const auto addr {to_bytestring(addrinfo)};
+        const auto addr {to_bytestring(ai)};
         os << "addrinfo("
            << Format("ai_flags")
            << flags
@@ -73,12 +73,12 @@ auto Network::operator<<(std::ostream& os,
            << Format(tab, "ai_protocol")
            << protocol
            << Format(tab, "ai_addrlen")
-           << addrinfo.ai_addrlen
+           << ai.ai_addrlen
            << Format(tab, "ai_addr")
            << to_string(addr)
            << Format(tab, "ai_canonname")
-           << (addrinfo.ai_canonname == nullptr ? string_null :
-               addrinfo.ai_canonname)
+           << (ai.ai_canonname == nullptr ? string_null :
+               ai.ai_canonname)
            << Format(tab)
            << "...)";
     }
