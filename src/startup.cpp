@@ -23,7 +23,6 @@
 #include "network/logicerror.h"         // LogicError
 #include "network/runtimeerror.h"       // RuntimeError
 #include "network/to-os-error.h"        // to_os_error()
-#include "network/version-null.h"       // version_null
 #include "network/version.h"            // Version
 #include "network/windowsversion.h"     // WORD, WSADATA, WSAEFAULT,
                                         // WSAEPROCLIM,
