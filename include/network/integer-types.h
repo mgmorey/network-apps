@@ -38,6 +38,8 @@
 #ifndef WIN32
 #include "network/sun-len-type.h"                   // sun_len_type
 #endif
+#ifdef WIN32
 #include "network/windows-version-type.h"           // windows_version_type
+#endif
 
 #endif

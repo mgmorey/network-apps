@@ -26,8 +26,6 @@ namespace Network
 {
 #ifdef WIN32
     using windows_version_type = WORD;
-#else
-    using windows_version_type = unsigned short;
 #endif
 }
 
