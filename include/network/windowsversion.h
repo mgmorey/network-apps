@@ -16,13 +16,8 @@
 #ifndef NETWORK_WINDOWSVERSION_H
 #define NETWORK_WINDOWSVERSION_H
 
-#include "network/version.h"            // Version
-
-#ifdef WIN32
-#include <winsock2.h>       // Always include winsock2.h before
-                            // windows.h on Windows
-#include <windows.h>        // WORD
-#endif
+#include "network/version.h"                    // Version
+#include "network/windows-version-type.h"       // windows_version_type
 
 #include <utility>      // std::move()
 
@@ -31,11 +26,7 @@ namespace Network
     struct WindowsVersion :
         public Version
     {
-#ifdef WIN32
-        using value_type = WORD;
-#else
-        using value_type = unsigned short;
-#endif
+        using value_type = windows_version_type;
 
         explicit constexpr WindowsVersion(const Version& t_version) noexcept :
             Version(t_version)
