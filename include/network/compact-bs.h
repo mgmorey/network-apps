@@ -13,10 +13,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/resize-bs.h"          // resize()
-#include "network/bytestring.h"         // ByteString
+#ifndef NETWORK_COMPACT_BS_H
+#define NETWORK_COMPACT_BS_H
 
-auto Network::resize(const ByteString& str) -> ByteString
+#include "network/bytestring.h"                 // ByteString
+
+namespace Network
 {
-    return str;
+    extern auto compact(const ByteString& str) -> ByteString;
 }
+
+#endif

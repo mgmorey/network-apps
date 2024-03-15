@@ -16,8 +16,7 @@
 #ifndef NETWORK_BUFFER_H
 #define NETWORK_BUFFER_H
 
-#include "network/resize-bs.h"          // resize()
-#include "network/resize-str.h"         // resize()
+#include "network/compact.h"            // compact()
 
 #include <string>       // std::basic_string
 
@@ -40,7 +39,7 @@ namespace Network
 
         operator std::basic_string<T>() const // NOLINT
         {
-            return Network::resize(m_value);
+            return compact(m_value);
         }
 
         [[nodiscard]] auto data() noexcept -> T*

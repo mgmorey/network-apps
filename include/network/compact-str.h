@@ -13,11 +13,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/resize-str.h"         // resize()
+#ifndef NETWORK_COMPACT_STR_H
+#define NETWORK_COMPACT_STR_H
 
 #include <string>       // std::string
 
-auto Network::resize(const std::string& str) -> std::string
+namespace Network
 {
-    return str.substr(0, str.find('\0'));
+    extern auto compact(const std::string& str) -> std::string;
 }
+
+#endif

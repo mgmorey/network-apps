@@ -13,14 +13,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_RESIZE_BS_H
-#define NETWORK_RESIZE_BS_H
+#include "network/compact-str.h"        // compact()
 
-#include "network/bytestring.h"                 // ByteString
+#include <string>       // std::string
 
-namespace Network
+auto Network::compact(const std::string& str) -> std::string
 {
-    extern auto resize(const ByteString& str) -> ByteString;
+    return str.substr(0, str.find('\0'));
 }
-
-#endif

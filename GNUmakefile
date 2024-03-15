@@ -52,14 +52,14 @@ libnetwork_common_sources = accept.cpp address-sa.cpp address-sin.cpp	\
 address-sin6.cpp address.cpp addresserror.cpp addressstring.cpp		\
 addrinfo.cpp argumentdata.cpp bind-endpoint.cpp bind-socket-bs.cpp	\
 bytestring.cpp charactererror.cpp cleanup.cpp close.cpp			\
-connect-endpoint.cpp connect-socket-bs.cpp context.cpp			\
-create-socket.cpp create-socketresult.cpp descriptor.cpp error.cpp	\
-familyerror.cpp format-ai-error.cpp format-bytestring.cpp		\
-format-os-error.cpp format.cpp get-endpoint.cpp				\
-get-endpointresult.cpp get-hostname.cpp get-hostnameresult.cpp		\
-get-hosts.cpp get-last-context-error.cpp get-last-os-error.cpp		\
-get-length.cpp get-name.cpp get-nameresult.cpp get-operands.cpp		\
-get-option.cpp get-options.cpp get-peername.cpp				\
+compact-bs.cpp compact-str.cpp connect-endpoint.cpp			\
+connect-socket-bs.cpp context.cpp create-socket.cpp			\
+create-socketresult.cpp descriptor.cpp error.cpp familyerror.cpp	\
+format-ai-error.cpp format-bytestring.cpp format-os-error.cpp		\
+format.cpp get-endpoint.cpp get-endpointresult.cpp get-hostname.cpp	\
+get-hostnameresult.cpp get-hosts.cpp get-last-context-error.cpp		\
+get-last-os-error.cpp get-length.cpp get-name.cpp get-nameresult.cpp	\
+get-operands.cpp get-option.cpp get-options.cpp get-peername.cpp	\
 get-peernameresult.cpp get-sa-data.cpp get-sa-family.cpp		\
 get-sa-length.cpp get-sa-size-maximum.cpp get-sa-size-minimum.cpp	\
 get-sin-addr.cpp get-sin-pointer.cpp get-sin-port.cpp			\
@@ -70,10 +70,10 @@ lengtherror.cpp listen.cpp logicerror.cpp namelengtherror.cpp		\
 open-endpoint.cpp open-socket.cpp oserrorerror.cpp oserrorresult.cpp	\
 parse-argumentspan.cpp parse.cpp rangeerror.cpp read-string.cpp		\
 read.cpp reset-last-context-error.cpp reset-last-os-error.cpp		\
-resize-bs.cpp resize-str.cpp runtimeerror.cpp salengtherror.cpp		\
-set-last-context-error.cpp set-last-os-error.cpp sin6lengtherror.cpp	\
-sinlengtherror.cpp sizeerror.cpp socket.cpp socketfamily.cpp		\
-socketflags.cpp sockethints.cpp sockethost.cpp socketlengtherror.cpp	\
+runtimeerror.cpp salengtherror.cpp set-last-context-error.cpp		\
+set-last-os-error.cpp sin6lengtherror.cpp sinlengtherror.cpp		\
+sizeerror.cpp socket.cpp socketfamily.cpp socketflags.cpp		\
+sockethints.cpp sockethost.cpp socketlengtherror.cpp			\
 socketprotocol.cpp sockettype.cpp startup.cpp stream-address.cpp	\
 stream-addrinfo.cpp stream-context.cpp stream-socket.cpp		\
 stream-template.cpp template.cpp to-bytespan.cpp to-bytestring-ai.cpp	\
