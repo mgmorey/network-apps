@@ -1,4 +1,4 @@
-// Copyright (C) 2022  "Michael G. Morey" <mgmorey@gmail.com>
+// Copyright (C) 2024  "Michael G. Morey" <mgmorey@gmail.com>
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,34 +13,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/buffer.h"             // Buffer
 #include "network/resize-str.h"         // resize()
 
-#include <ostream>      // operator<<(), std::ostream
 #include <string>       // std::string
 
-Network::Buffer::Buffer(std::string::size_type t_size) :
-    m_value(t_size, '\0')
+auto Network::resize(const std::string& str) -> std::string
 {
-}
-
-Network::Buffer::operator std::string() const
-{
-    return resize(m_value);
-}
-
-auto Network::Buffer::data() noexcept -> char*
-{
-    return m_value.data();
-}
-
-auto Network::Buffer::size() const noexcept -> std::string::size_type
-{
-    return m_value.size();
-}
-
-auto Network::operator<<(std::ostream& os,
-                         const Buffer& buffer) noexcept -> std::ostream&
-{
-    return os << std::string {buffer};
+    return str.substr(0, str.find('\0'));
 }
