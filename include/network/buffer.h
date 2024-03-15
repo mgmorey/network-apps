@@ -37,12 +37,17 @@ namespace Network
 
         operator T() const // NOLINT
         {
-            return resize(m_value);
+            return Network::resize(m_value);
         }
 
         [[nodiscard]] auto data() noexcept -> char*
         {
             return m_value.data();
+        }
+
+        auto resize(typename T::size_type t_size) -> void
+        {
+            return m_value.resize(t_size);
         }
 
         [[nodiscard]] auto size() const noexcept -> typename T::size_type
