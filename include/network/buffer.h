@@ -42,7 +42,7 @@ namespace Network
             return m_value;
         }
 
-        [[nodiscard]] auto compact() -> std::basic_string<T> const
+        [[nodiscard]] auto compact() -> std::basic_string<T>
         {
             return Network::compact(m_value);
         }
