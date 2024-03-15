@@ -16,7 +16,11 @@
 #ifndef NETWORK_COMPACT_H
 #define NETWORK_COMPACT_H
 
-#include "network/compact-bs.h"         // compact()
-#include "network/compact-str.h"        // compact()
+#include <string>       // std::string
+
+namespace Network
+{
+    extern auto compact(const std::string& str) -> std::string;
+}
 
 #endif

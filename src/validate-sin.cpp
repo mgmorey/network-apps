@@ -49,7 +49,7 @@ auto Network::validate(const sockaddr_in* sin,
 #endif
 
     if (sin->sin_family != AF_INET) {
-        throw FamilyError();
+        throw FamilyError(sin->sin_family);
     }
 
     return sin;

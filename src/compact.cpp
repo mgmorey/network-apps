@@ -13,14 +13,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_COMPACT_STR_H
-#define NETWORK_COMPACT_STR_H
+#include "network/compact.h"            // compact()
 
 #include <string>       // std::string
 
-namespace Network
+auto Network::compact(const std::string& str) -> std::string
 {
-    extern auto compact(const std::string& str) -> std::string;
+    return str.substr(0, str.find('\0'));
 }
-
-#endif

@@ -55,7 +55,7 @@ auto Network::validate(const sockaddr* sa, sa_len_type sa_len) ->
     case AF_UNSPEC:
         break;
     default:
-        throw FamilyError();
+        throw FamilyError(sa->sa_family);
     }
 
     return sa;

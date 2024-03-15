@@ -16,15 +16,16 @@
 #ifndef NETWORK_FAMILYERROR_H
 #define NETWORK_FAMILYERROR_H
 
-#include "network/addresserror.h"       // AddressError
+#include "network/logicerror.h"                 // LogicError
+#include "network/socket-family-type.h"         // socket_family_type
 
 namespace Network
 {
     class FamilyError :
-        public AddressError
+        public LogicError
     {
     public:
-        explicit FamilyError() noexcept;
+        explicit FamilyError(socket_family_type family) noexcept;
         FamilyError(const FamilyError&) noexcept = default;
         FamilyError(FamilyError&&) noexcept = default;
         ~FamilyError() noexcept override = default;

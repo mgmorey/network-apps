@@ -50,7 +50,7 @@ auto Network::validate(const sockaddr_in6* sin6,
 #endif
 
     if (sin6->sin6_family != AF_INET6) {
-        throw FamilyError();
+        throw FamilyError(sin6->sin6_family);
     }
 
     return sin6;

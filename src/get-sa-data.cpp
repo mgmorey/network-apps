@@ -27,7 +27,9 @@
 
 auto Network::get_sa_data(const ByteString& addr) -> ByteString
 {
-    switch (get_sa_family(addr)) {
+    const auto family {get_sa_family(addr)};
+
+    switch (family) {
 #ifndef WIN32
     case AF_UNIX:
 #endif
@@ -35,7 +37,7 @@ auto Network::get_sa_data(const ByteString& addr) -> ByteString
     case AF_INET6:
         break;
     default:
-        throw FamilyError();
+        throw FamilyError(family);
     }
 
     return addr.substr(sa_data_offset);

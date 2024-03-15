@@ -14,9 +14,12 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/familyerror.h"                // FamilyError
-#include "network/addresserror.h"               // AddressError
+#include "network/logicerror.h"                 // LogicError
+#include "network/socket-family-type.h"         // socket_family_type
 
-Network::FamilyError::FamilyError() noexcept :
-    AddressError("Invalid socket address family")
+#include <string>       // std::to_string()
+
+Network::FamilyError::FamilyError(socket_family_type family) noexcept :
+    LogicError(std::to_string(family) + "Invalid socket address family")
 {
 }

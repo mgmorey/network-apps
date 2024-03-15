@@ -60,7 +60,7 @@ namespace {
 #endif
 
         if (sun->sun_family != AF_UNIX) {
-            throw FamilyError();
+            throw FamilyError(sun->sun_family);
         }
     }
 }

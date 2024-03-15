@@ -20,11 +20,6 @@
 
 #include <string>   // std::string
 
-Network::AddressError::AddressError(const std::string& t_str) noexcept :
-    LogicError(t_str)
-{
-}
-
 Network::AddressError::AddressError(const ByteString& t_str) noexcept :
     LogicError("Invalid socket address: " +
                to_string(t_str))

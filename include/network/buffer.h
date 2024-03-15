@@ -39,7 +39,12 @@ namespace Network
 
         operator std::basic_string<T>() const // NOLINT
         {
-            return compact(m_value);
+            return m_value;
+        }
+
+        [[nodiscard]] auto compact() -> std::basic_string<T> const
+        {
+            return Network::compact(m_value);
         }
 
         [[nodiscard]] auto data() noexcept -> T*
