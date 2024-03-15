@@ -32,7 +32,7 @@
 
 namespace Network
 {
-    enum : descriptor_type { descriptor_null = INVALID_SOCKET };
+    constexpr descriptor_type descriptor_null {INVALID_SOCKET};
 }
 
 #endif
