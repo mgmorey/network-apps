@@ -61,26 +61,25 @@ get-hosts.cpp get-last-context-error.cpp get-last-os-error.cpp		\
 get-length.cpp get-name.cpp get-nameresult.cpp get-operands.cpp		\
 get-option.cpp get-options.cpp get-peername.cpp				\
 get-peernameresult.cpp get-sa-data.cpp get-sa-family.cpp		\
-get-sa-length.cpp get-sa-pointer.cpp get-sa-size-maximum.cpp		\
-get-sa-size-minimum.cpp get-sin-addr.cpp get-sin-pointer.cpp		\
-get-sin-port.cpp get-sin6-addr.cpp get-sin6-pointer.cpp			\
-get-sin6-port.cpp get-sockname.cpp get-socknameresult.cpp		\
-get-templates-endpoint.cpp get-templates-hostname.cpp			\
-integererror.cpp is-running.cpp lengtherror.cpp listen.cpp		\
-logicerror.cpp namelengtherror.cpp open-endpoint.cpp open-socket.cpp	\
-oserrorerror.cpp oserrorresult.cpp parse-argumentspan.cpp parse.cpp	\
-rangeerror.cpp read-string.cpp read.cpp reset-last-context-error.cpp	\
-reset-last-os-error.cpp resize-bs.cpp resize-str.cpp runtimeerror.cpp	\
-salengtherror.cpp set-last-context-error.cpp set-last-os-error.cpp	\
-sin6lengtherror.cpp sinlengtherror.cpp sizeerror.cpp socket.cpp		\
-socketfamily.cpp socketflags.cpp sockethints.cpp sockethost.cpp		\
-socketlengtherror.cpp socketprotocol.cpp sockettype.cpp startup.cpp	\
-stream-address.cpp stream-addrinfo.cpp stream-context.cpp		\
-stream-socket.cpp stream-template.cpp template.cpp to-bytespan.cpp	\
-to-bytestring-ai.cpp to-bytestring-span.cpp to-string-in-addr.cpp	\
-to-string-in6-addr.cpp validate-bs.cpp validate-sa.cpp			\
-validate-sin.cpp validate-sin6.cpp version.cpp write-string.cpp		\
-write.cpp
+get-sa-length.cpp get-sa-size-maximum.cpp get-sa-size-minimum.cpp	\
+get-sin-addr.cpp get-sin-pointer.cpp get-sin-port.cpp			\
+get-sin6-addr.cpp get-sin6-pointer.cpp get-sin6-port.cpp		\
+get-sockname.cpp get-socknameresult.cpp get-templates-endpoint.cpp	\
+get-templates-hostname.cpp integererror.cpp is-running.cpp		\
+lengtherror.cpp listen.cpp logicerror.cpp namelengtherror.cpp		\
+open-endpoint.cpp open-socket.cpp oserrorerror.cpp oserrorresult.cpp	\
+parse-argumentspan.cpp parse.cpp rangeerror.cpp read-string.cpp		\
+read.cpp reset-last-context-error.cpp reset-last-os-error.cpp		\
+resize-bs.cpp resize-str.cpp runtimeerror.cpp salengtherror.cpp		\
+set-last-context-error.cpp set-last-os-error.cpp sin6lengtherror.cpp	\
+sinlengtherror.cpp sizeerror.cpp socket.cpp socketfamily.cpp		\
+socketflags.cpp sockethints.cpp sockethost.cpp socketlengtherror.cpp	\
+socketprotocol.cpp sockettype.cpp startup.cpp stream-address.cpp	\
+stream-addrinfo.cpp stream-context.cpp stream-socket.cpp		\
+stream-template.cpp template.cpp to-bytespan.cpp to-bytestring-ai.cpp	\
+to-bytestring-span.cpp to-string-in-addr.cpp to-string-in6-addr.cpp	\
+validate-bs.cpp validate-sa.cpp validate-sin.cpp validate-sin6.cpp	\
+version.cpp write-string.cpp write.cpp
 
 libnetwork_unix_sources = address-sun.cpp create-socketpair.cpp		\
 create-socketpairresult.cpp get-path-length.cpp				\

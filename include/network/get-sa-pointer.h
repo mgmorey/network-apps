@@ -16,9 +16,7 @@
 #ifndef NETWORK_GET_SA_POINTER_H
 #define NETWORK_GET_SA_POINTER_H
 
-#include "network/buffer.h"             // Buffer
-#include "network/byte.h"               // Byte
-#include "network/bytestring.h"         // ByteString
+#include "network/validate-sa.h"        // validate()
 
 #ifdef WIN32
 #include <winsock2.h>       // sockaddr
@@ -28,9 +26,17 @@
 
 namespace Network
 {
-    extern auto get_sa_pointer(Buffer<Byte>& addr) -> sockaddr*;
-    extern auto get_sa_pointer(ByteString& addr) -> sockaddr*;
-    extern auto get_sa_pointer(const ByteString& addr) -> const sockaddr*;
+    auto get_sa_pointer(auto& addr) -> sockaddr*
+    {
+        void* pointer {addr.data()};
+        return validate(static_cast<sockaddr*>(pointer), addr.size());
+    }
+
+    auto get_sa_pointer(const auto& addr) -> const sockaddr*
+    {
+        const void* pointer {addr.data()};
+        return validate(static_cast<const sockaddr*>(pointer), addr.size());
+    }
 }
 
 #endif
