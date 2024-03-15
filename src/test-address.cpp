@@ -238,7 +238,7 @@ namespace TestAddress
     auto test_sa_invalid_length() -> void
     {
         const auto sa {create_sa(AF_UNSPEC, 0)};
-        return test_sa(sa, 0, expected_error_length_re);
+        test_sa(sa, 0, expected_error_length_re);
     }
 
     auto test_sin(const sockaddr_in& sin, std::size_t sin_len,
@@ -273,7 +273,7 @@ namespace TestAddress
     {
         const auto length {sin_size - 1};
         const auto sin {create_sin(AF_INET, length)};
-        return test_sin(sin, length, expected_error_length_re);
+        test_sin(sin, length, expected_error_length_re);
     }
 
     auto test_sin6(const sockaddr_in6 &sin6, std::size_t sin6_len,
@@ -308,7 +308,7 @@ namespace TestAddress
     {
         const auto length {sin6_size - 1};
         const auto sin6 {create_sin6(AF_INET6, length)};
-        return test_sin6(sin6, length, expected_error_length_re);
+        test_sin6(sin6, length, expected_error_length_re);
     }
 
 #ifndef WIN32
