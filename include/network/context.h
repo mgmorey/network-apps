@@ -18,6 +18,7 @@
 
 #include "network/optionalversion.h"    // OptionalVersion
 
+#include <cstdint>      // std::uint8_t
 #include <ostream>      // std::ostream
 #include <string>       // std::string
 
@@ -33,7 +34,11 @@ namespace Network
                             const OptionalVersion& version) -> void;
 
     public:
-        enum class failure_mode {return_error, return_zero, throw_error};
+        enum class failure_mode : std::uint8_t {
+            return_error,
+            return_zero,
+            throw_error
+        };
         static auto instance() -> const Context&;
         explicit Context(const OptionalVersion& t_version = {});
         Context(const Context&) = delete;
