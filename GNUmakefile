@@ -53,9 +53,9 @@ address-sin6.cpp address.cpp addresserror.cpp addressstring.cpp		\
 addrinfo.cpp argumentdata.cpp bind-endpoint.cpp bind-socket-bs.cpp	\
 bytestring.cpp charactererror.cpp cleanup.cpp close.cpp			\
 connect-endpoint.cpp connect-socket-bs.cpp context.cpp			\
-create-bytestring.cpp create-socket.cpp create-socketresult.cpp		\
-descriptor.cpp error.cpp familyerror.cpp format-ai-error.cpp		\
-format-bytestring.cpp format-os-error.cpp format.cpp get-endpoint.cpp	\
+create-socket.cpp create-socketresult.cpp descriptor.cpp error.cpp	\
+familyerror.cpp format-ai-error.cpp format-bytestring.cpp		\
+format-os-error.cpp format.cpp get-endpoint.cpp				\
 get-endpointresult.cpp get-hostname.cpp get-hostnameresult.cpp		\
 get-hosts.cpp get-last-context-error.cpp get-last-os-error.cpp		\
 get-length.cpp get-name.cpp get-nameresult.cpp get-operands.cpp		\
@@ -70,7 +70,7 @@ integererror.cpp is-running.cpp lengtherror.cpp listen.cpp		\
 logicerror.cpp namelengtherror.cpp open-endpoint.cpp open-socket.cpp	\
 oserrorerror.cpp oserrorresult.cpp parse-argumentspan.cpp parse.cpp	\
 rangeerror.cpp read-string.cpp read.cpp reset-last-context-error.cpp	\
-reset-last-os-error.cpp resize-str.cpp runtimeerror.cpp			\
+reset-last-os-error.cpp resize-bs.cpp resize-str.cpp runtimeerror.cpp	\
 salengtherror.cpp set-last-context-error.cpp set-last-os-error.cpp	\
 sin6lengtherror.cpp sinlengtherror.cpp sizeerror.cpp socket.cpp		\
 socketfamily.cpp socketflags.cpp sockethints.cpp sockethost.cpp		\

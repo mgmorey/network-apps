@@ -13,12 +13,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/create-bytestring.h"  // create_bytestring()
-#include "network/byte.h"               // Byte
+#include "network/resize-bs.h"          // resize()
 #include "network/bytestring.h"         // ByteString
-#include "network/sa-len-limits.h"      // sa_len_max
 
-auto Network::create_bytestring() -> ByteString
+auto Network::resize(const ByteString& str) -> ByteString
 {
-    return ByteString {sa_len_max, Byte {}};
+    return str;
 }

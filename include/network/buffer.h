@@ -16,6 +16,7 @@
 #ifndef NETWORK_BUFFER_H
 #define NETWORK_BUFFER_H
 
+#include "network/resize-bs.h"          // resize()
 #include "network/resize-str.h"         // resize()
 
 #include <string>       // std::basic_string
@@ -26,7 +27,7 @@ namespace Network
     class Buffer
     {
     public:
-        explicit Buffer(typename std::basic_string<T>::size_type t_size = 0) :
+        explicit Buffer(typename std::basic_string<T>::size_type t_size) :
             m_value(t_size, {})
         {
         }

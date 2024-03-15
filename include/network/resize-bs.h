@@ -13,14 +13,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_CREATE_BYTESTRING_H
-#define NETWORK_CREATE_BYTESTRING_H
+#ifndef NETWORK_RESIZE_BS_H
+#define NETWORK_RESIZE_BS_H
 
-#include "network/bytestring.h"         // ByteString
+#include "network/bytestring.h"                 // ByteString
 
 namespace Network
 {
-    extern auto create_bytestring() -> ByteString;
+    extern auto resize(const ByteString& str) -> ByteString;
 }
 
 #endif

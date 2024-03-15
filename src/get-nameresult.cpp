@@ -15,8 +15,9 @@
 
 #include "network/get-nameresult.h"             // get_nameresult()
 #include "network/addressstring.h"              // AddressString
+#include "network/buffer.h"                     // Buffer
+#include "network/byte.h"                       // Byte
 #include "network/bytestringresult.h"           // ByteStringResult
-#include "network/create-bytestring.h"          // create_bytestring()
 #include "network/format-os-error.h"            // format_os_error()
 #include "network/get-last-context-error.h"     // get_last_context_error()
 #include "network/get-sa-pointer.h"             // get_sa_pointer()
@@ -24,6 +25,7 @@
 #include "network/getnameparams.h"              // GetNameParams
 #include "network/oserrorresult.h"              // OsErrorResult
 #include "network/reset-last-context-error.h"   // reset_context_last_error()
+#include "network/sa-len-limits.h"              // sa_len_max
 #include "network/socket-error.h"               // socket_error
 #include "network/to-os-error.h"                // to_os_error()
 #include "network/to-size.h"                    // to_size()
@@ -35,8 +37,9 @@
 auto Network::get_nameresult(const GetNameHandler& handler,
                              const GetNameParams& args) -> ByteStringResult
 {
-    auto addr {create_bytestring()};
-    auto* const addr_ptr {get_sa_pointer(addr)};
+    Buffer<Byte> addr(sa_len_max);
+    void* pointer {addr.data()};
+    auto* addr_ptr {static_cast<sockaddr*>(pointer)};
     auto addr_len {to_socket_length(addr.size())};
     const AddressString addr_str {addr};
 
