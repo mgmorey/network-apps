@@ -26,7 +26,7 @@
 
 namespace Network
 {
-    enum { socket_error = SOCKET_ERROR };
+    constexpr auto socket_error {SOCKET_ERROR};
 }
 
 #endif
