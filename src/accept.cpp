@@ -45,8 +45,7 @@ auto Network::accept(const Socket& sock, bool verbose) ->
     std::pair<Socket, ByteString>
 {
     Buffer<Byte> addr(sa_len_max);
-    void* pointer {addr.data()};
-    auto* addr_ptr {static_cast<sockaddr*>(pointer)};
+    auto* addr_ptr {get_sa_pointer(addr)};
     auto addr_len {to_socket_length(addr.size())};
     const AddressString addr_str {addr};
 
