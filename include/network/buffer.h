@@ -18,8 +18,6 @@
 
 #include "network/resize-str.h"         // resize()
 
-#include <ostream>      // std::ostream
-
 namespace Network
 {
     template<typename T>
@@ -30,19 +28,23 @@ namespace Network
             m_value(t_size, '\0')
         {
         }
+
         Buffer(const Buffer&) noexcept = default;
         Buffer(Buffer&&) noexcept = default;
         ~Buffer() noexcept = default;
         auto operator=(const Buffer&) noexcept -> Buffer& = default;
         auto operator=(Buffer&&) noexcept -> Buffer& = default;
+
         operator T() const // NOLINT
         {
             return resize(m_value);
         }
+
         [[nodiscard]] auto data() noexcept -> char*
         {
             return m_value.data();
         }
+
         [[nodiscard]] auto size() const noexcept -> typename T::size_type
         {
             return m_value.size();
