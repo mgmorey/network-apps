@@ -27,7 +27,7 @@ namespace Network
     {
     public:
         explicit Buffer(typename std::basic_string<T>::size_type t_size = 0) :
-            m_value(t_size, '\0')
+            m_value(t_size, {})
         {
         }
 
