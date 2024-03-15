@@ -44,8 +44,8 @@ auto Network::format_os_error(os_error_type error) -> std::string
         MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT)
     };
     LPVOID buffer {nullptr};
-    LPVOID pbuffer {&buffer};
-    auto pstring {static_cast<LPTSTR>(pbuffer)};
+    LPVOID pbuffer {static_cast<LPVOID>(&buffer)};
+    auto* pstring {static_cast<LPTSTR>(pbuffer)};
 
     if (::FormatMessage(flags,
                         nullptr,
@@ -53,7 +53,7 @@ auto Network::format_os_error(os_error_type error) -> std::string
                         lang,
                         pstring,
                         0,
-                        nullptr)) {
+                        nullptr) != 0) {
         message = static_cast<LPTSTR>(buffer);
         const auto pos {message.rfind('\r')};
 
