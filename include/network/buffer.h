@@ -18,13 +18,15 @@
 
 #include "network/resize-str.h"         // resize()
 
+#include <string>       // std::basic_string
+
 namespace Network
 {
     template<typename T>
     class Buffer
     {
     public:
-        explicit Buffer(typename T::size_type t_size = 0) :
+        explicit Buffer(typename std::basic_string<T>::size_type t_size = 0) :
             m_value(t_size, '\0')
         {
         }
@@ -35,28 +37,29 @@ namespace Network
         auto operator=(const Buffer&) noexcept -> Buffer& = default;
         auto operator=(Buffer&&) noexcept -> Buffer& = default;
 
-        operator T() const // NOLINT
+        operator std::basic_string<T>() const // NOLINT
         {
             return Network::resize(m_value);
         }
 
-        [[nodiscard]] auto data() noexcept -> char*
+        [[nodiscard]] auto data() noexcept -> T*
         {
             return m_value.data();
         }
 
-        auto resize(typename T::size_type t_size) -> void
+        auto resize(typename std::basic_string<T>::size_type t_size) -> void
         {
             return m_value.resize(t_size);
         }
 
-        [[nodiscard]] auto size() const noexcept -> typename T::size_type
+        [[nodiscard]] auto size() const noexcept ->
+            typename std::basic_string<T>::size_type
         {
             return m_value.size();
         }
 
     private:
-        T m_value;
+        std::basic_string<T> m_value;
     };
 }
 

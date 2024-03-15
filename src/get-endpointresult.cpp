@@ -43,8 +43,8 @@ auto Network::get_endpointresult(const ByteString& addr, int flags,
     const auto* const pointer {get_sa_pointer(addr)};
     const auto length {get_length(addr)};
     const AddressString addr_str {addr};
-    Buffer<std::string> hostname {hostname_size_max};
-    Buffer<std::string> service {service_size_max};
+    Buffer<char> hostname {hostname_size_max};
+    Buffer<char> service {service_size_max};
 
     if (verbose) {
         std::cout << "Calling ::getnameinfo("

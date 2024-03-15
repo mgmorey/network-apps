@@ -36,7 +36,7 @@
 
 auto Network::get_hostnameresult(bool verbose) -> HostnameResult
 {
-    Buffer<std::string> buffer {hostname_size_max};
+    Buffer<char> buffer {hostname_size_max};
 
     if (verbose) {
         std::cout << "Calling ::gethostname("
