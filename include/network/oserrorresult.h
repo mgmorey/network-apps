@@ -39,7 +39,7 @@ namespace Network
 
     private:
         os_error_type m_number {0};
-        std::string m_string {};
+        std::string m_string;
     };
 }
 
