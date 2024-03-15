@@ -32,14 +32,15 @@
 
 #include <iostream>     // std::cout, std::endl
 #include <sstream>      // std::ostringstream
+#include <string>       // std::string
 
 auto Network::get_hostnameresult(bool verbose) -> HostnameResult
 {
-    Buffer buffer {hostname_size_max};
+    Buffer<std::string> buffer {hostname_size_max};
 
     if (verbose) {
         std::cout << "Calling ::gethostname("
-                  << buffer
+                  << static_cast<std::string>(buffer)
                   << ", "
                   << buffer.size() - 1
                   << ')'
@@ -54,7 +55,7 @@ auto Network::get_hostnameresult(bool verbose) -> HostnameResult
         const auto os_error {to_os_error(error)};
         std::ostringstream oss;
         oss << "Call to ::gethostname("
-            << buffer
+            << static_cast<std::string>(buffer)
             << ", "
             << buffer.size() - 1
             << ") failed with error "

@@ -51,7 +51,7 @@ include flags.gmk
 libnetwork_common_sources = accept.cpp address-sa.cpp address-sin.cpp	\
 address-sin6.cpp address.cpp addresserror.cpp addressstring.cpp		\
 addrinfo.cpp argumentdata.cpp bind-endpoint.cpp bind-socket-bs.cpp	\
-buffer.cpp bytestring.cpp charactererror.cpp cleanup.cpp close.cpp	\
+bytestring.cpp charactererror.cpp cleanup.cpp close.cpp			\
 connect-endpoint.cpp connect-socket-bs.cpp context.cpp			\
 create-bytestring.cpp create-socket.cpp create-socketresult.cpp		\
 descriptor.cpp error.cpp familyerror.cpp format-ai-error.cpp		\

@@ -16,33 +16,41 @@
 #ifndef NETWORK_BUFFER_H
 #define NETWORK_BUFFER_H
 
+#include "network/resize-str.h"         // resize()
+
 #include <ostream>      // std::ostream
-#include <string>       // std::string
 
 namespace Network
 {
+    template<typename T>
     class Buffer
     {
-        friend auto operator<<(std::ostream& os,
-                               const Buffer& buffer) noexcept -> std::ostream&;
-
     public:
-        explicit Buffer(std::string::size_type t_size = 0);
+        explicit Buffer(typename T::size_type t_size = 0) :
+            m_value(t_size, '\0')
+        {
+        }
         Buffer(const Buffer&) noexcept = default;
         Buffer(Buffer&&) noexcept = default;
         ~Buffer() noexcept = default;
         auto operator=(const Buffer&) noexcept -> Buffer& = default;
         auto operator=(Buffer&&) noexcept -> Buffer& = default;
-        operator std::string() const;  // NOLINT
-        [[nodiscard]] auto data() noexcept -> char*;
-        [[nodiscard]] auto size() const noexcept -> std::string::size_type;
+        operator T() const // NOLINT
+        {
+            return resize(m_value);
+        }
+        [[nodiscard]] auto data() noexcept -> char*
+        {
+            return m_value.data();
+        }
+        [[nodiscard]] auto size() const noexcept -> typename T::size_type
+        {
+            return m_value.size();
+        }
 
     private:
-        std::string m_value;
+        T m_value;
     };
-
-    extern auto operator<<(std::ostream& os,
-                           const Buffer& buffer) noexcept -> std::ostream&;
 }
 
 #endif

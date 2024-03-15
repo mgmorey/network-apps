@@ -29,7 +29,7 @@
 
 auto Network::to_string(const in6_addr& addr) noexcept -> std::string
 {
-    Buffer buffer {INET6_ADDRSTRLEN};
+    Buffer<std::string> buffer {INET6_ADDRSTRLEN};
     ::inet_ntop(AF_INET6, &addr, buffer.data(), buffer.size());
     return std::string {buffer};
 }

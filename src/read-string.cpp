@@ -27,7 +27,7 @@
 auto Network::read_string(std::size_t size, const Socket& sock) ->
     std::pair<std::string, ssize_t>
 {
-    Buffer buffer {size};
+    Buffer<std::string> buffer {size};
     const auto code {read(buffer.data(), buffer.size(), sock)};
     return {buffer, code};
 }
