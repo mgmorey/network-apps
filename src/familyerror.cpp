@@ -19,7 +19,7 @@
 
 #include <string>       // std::to_string()
 
-Network::FamilyError::FamilyError(socket_family_type family) noexcept :
-    LogicError(std::to_string(family) + "Invalid socket address family")
+Network::FamilyError::FamilyError(socket_family_type family) :
+    LogicError("Invalid socket address family: " + std::to_string(family))
 {
 }
