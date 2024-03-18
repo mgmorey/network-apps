@@ -17,7 +17,7 @@
 #include "network/cleanup.h"            // cleanup()
 #include "network/network.h"            // Context, Error,
                                         // OptionalVersion, Version,
-                                        // get_hostname(), to_string()
+                                        // get_hostname()
 #include "network/parse.h"              // parse()
 
 #ifdef WIN32
@@ -30,6 +30,7 @@
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <regex>        // std::regex, std::regex_match
+#include <sstream>      // std::ostringstream
 #include <string>       // std::string
 
 namespace TestContext
@@ -45,7 +46,6 @@ namespace TestContext
     using Network::context_error_type;
     using Network::get_hostname;
     using Network::parse;
-    using Network::to_string;
     using Network::version_null;
 
     static constexpr Version version_0_0 {0, 0};
@@ -169,8 +169,11 @@ namespace TestContext
                       const std::string& scope) -> void
     {
         print(context, scope);
+        std::ostringstream oss;
+        oss << context;
+        const std::string actual_context_str {oss.str()};
         const std::regex expected_context_regex {expected_context_re};
-        assert(std::regex_match(to_string(context), expected_context_regex));
+        assert(std::regex_match(actual_context_str, expected_context_regex));
     }
 
     auto test_context_cleaned_up() -> void
