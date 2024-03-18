@@ -110,7 +110,7 @@ auto Network::operator<<(std::ostream& os,
         os << Format(delim, tab, prefix + "_port")
            << address.port()
            << Format(delim, tab, prefix + "_addr")
-           << to_hex(address.text());
+           << address.text();
         break;
     default:
         os << Format(delim, tab, prefix + "_data")

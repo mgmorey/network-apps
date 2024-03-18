@@ -19,14 +19,16 @@
 #include "network/bytestring.h"                 // ByteString
 #include "network/optionalstring.h"             // OptionalString
 #include "network/to-hex.h"                     // to_hex()
-#include "network/to-string.h"                  // to_string()
 
+#include <sstream>      // std::ostringstream
 #include <string>       // std::string
 
 auto Network::format(const ByteString& addr) noexcept -> std::string
 {
     try {
-        return to_string(Address {addr});
+        std::ostringstream oss;
+        oss << Address(addr);
+        return oss.str();
     }
     catch (const AddressError& error) {
         return to_hex(addr);

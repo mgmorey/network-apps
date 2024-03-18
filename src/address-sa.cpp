@@ -19,7 +19,7 @@
 #include "network/get-sa-length.h"              // get_sa_length()
 #include "network/socket-family-type.h"         // socket_family_type
 #include "network/socket-length-type.h"         // socket_length_type
-#include "network/to-string.h"                  // to_string()
+#include "network/to-hex.h"                     // to_hex()
 
 #include <string>       // std::string
 
@@ -40,5 +40,5 @@ auto Network::Address::sa_length() const noexcept -> socket_length_type
 
 auto Network::Address::sa_text() const noexcept -> std::string
 {
-    return to_string(m_value);
+    return to_hex(m_value);
 }

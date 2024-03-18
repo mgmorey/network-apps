@@ -25,7 +25,7 @@ namespace Network
         public LogicError
     {
     public:
-        explicit FamilyError(socket_family_type family) noexcept;
+        explicit FamilyError(socket_family_type family);
         FamilyError(const FamilyError&) noexcept = default;
         FamilyError(FamilyError&&) noexcept = default;
         ~FamilyError() noexcept override = default;

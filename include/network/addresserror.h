@@ -25,7 +25,7 @@ namespace Network
         public LogicError
     {
     public:
-        explicit AddressError(const ByteString& t_str) noexcept;
+        explicit AddressError(const ByteString& t_str);
         AddressError(const AddressError&) noexcept = default;
         AddressError(AddressError&&) noexcept = default;
         ~AddressError() noexcept override = default;

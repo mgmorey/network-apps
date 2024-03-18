@@ -13,15 +13,15 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/addresserror.h"               // AddressError
-#include "network/bytestring.h"                 // ByteString
-#include "network/logicerror.h"                 // LogicError
-#include "network/to-hex.h"                     // to_string()
+#include "network/to-string-context.h"          // to_string()
+#include "network/context.h"            // Context
 
-#include <string>   // std::string
+#include <sstream>      // std::ostringstream
+#include <string>       // std::string
 
-Network::AddressError::AddressError(const ByteString& t_str) :
-    LogicError("Invalid socket address: " +
-               to_hex(t_str))
+auto Network::to_string(const Context& context) noexcept -> std::string
 {
+    std::ostringstream oss;
+    oss << context;
+    return oss.str();
 }

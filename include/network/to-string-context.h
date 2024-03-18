@@ -13,20 +13,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_TO_STRING_H
-#define NETWORK_TO_STRING_H
+#ifndef NETWORK_TO_STRING_CONTEXT_H
+#define NETWORK_TO_STRING_CONTEXT_H
 
-#include <sstream>      // std::ostringstream
+#include "network/context.h"            // Context
+
 #include <string>       // std::string
 
 namespace Network
 {
-    auto to_string(const auto& value) -> std::string
-    {
-        std::ostringstream oss;
-        oss << value;
-        return oss.str();
-    }
+    extern auto to_string(const Context& context) noexcept -> std::string;
 }
 
 #endif
