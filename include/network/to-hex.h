@@ -13,16 +13,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_BYTESTRING_H
-#define NETWORK_BYTESTRING_H
+#ifndef NETWORK_TO_HEX_H
+#define NETWORK_TO_HEX_H
 
-#include "network/byte.h"               // Byte
+#include "network/bytestring.h"         // ByteString
 
-#include <string>       // std::basic_string
+#include <string>       // std::string
 
 namespace Network
 {
-    using ByteString = std::basic_string<Byte>;
+    extern auto to_hex(const ByteString& bs) -> std::string;
 }
 
 #endif

@@ -13,33 +13,34 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/bytestring.h"         // ByteString, operator<<()
+#include "network/to-hex.h"             // to_hex()
+#include "network/bytestring.h"         // ByteString
 
 #include <iomanip>      // std::setfill(), std::setw()
 #include <ios>          // std::hex, std::ios, std::uppercase
-#include <ostream>      // std::ostream
+#include <sstream>      // std::ostringstream
 
-auto Network::operator<<(std::ostream& os,
-                         const ByteString& bytes) noexcept -> std::ostream&
+auto Network::to_hex(const ByteString& bs) -> std::string
 {
+    std::ostringstream oss;
     std::ios format {nullptr};
-    format.copyfmt(os);
-    os << "0x";
+    format.copyfmt(oss);
+    oss << "0x";
 
-    if (bytes.empty()) {
-        os << '0';
+    if (bs.empty()) {
+        oss << '0';
     }
     else {
-        os << std::hex;
+        oss << std::hex;
 
-        for (const auto byte : bytes) {
-            os << std::setfill('0')
-               << std::setw(2)
-               << std::uppercase
-               << static_cast<unsigned>(byte);
+        for (const auto byte : bs) {
+            oss << std::setfill('0')
+                << std::setw(2)
+                << std::uppercase
+                << static_cast<unsigned>(byte);
         }
     }
 
-    os.copyfmt(format);
-    return os;
+    oss.copyfmt(format);
+    return oss.str();
 }

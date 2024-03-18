@@ -18,6 +18,7 @@
 #include "network/addresserror.h"               // AddressError
 #include "network/bytestring.h"                 // ByteString
 #include "network/optionalstring.h"             // OptionalString
+#include "network/to-hex.h"                     // to_hex()
 #include "network/to-string.h"                  // to_string()
 
 #include <string>       // std::string
@@ -28,7 +29,7 @@ auto Network::format(const ByteString& addr) noexcept -> std::string
         return to_string(Address {addr});
     }
     catch (const AddressError& error) {
-        return to_string(addr);
+        return to_hex(addr);
     }
 }
 
