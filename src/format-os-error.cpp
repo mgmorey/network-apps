@@ -35,33 +35,26 @@ auto Network::format_os_error(os_error_type error) -> std::string
 {
     std::string message;
 #ifdef WIN32
-    static constexpr DWORD flags {
-        FORMAT_MESSAGE_ALLOCATE_BUFFER |
-        FORMAT_MESSAGE_FROM_SYSTEM |
-        FORMAT_MESSAGE_IGNORE_INSERTS
-    };
-    static constexpr DWORD lang {
-        MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT)
-    };
-    LPVOID buffer {nullptr};
-    LPVOID pbuffer {static_cast<LPVOID>(&buffer)};
-    auto* pstring {static_cast<LPTSTR>(pbuffer)};
+    LPTSTR error_text {nullptr};
 
-    if (::FormatMessage(flags,
+    if (::FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM |
+                        FORMAT_MESSAGE_ALLOCATE_BUFFER |
+                        FORMAT_MESSAGE_IGNORE_INSERTS,
                         nullptr,
                         error,
-                        lang,
-                        pstring,
+                        MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+                        reinterpret_cast<LPTSTR>(&error_text),  // NOLINT
                         0,
-                        nullptr) != 0) {
-        message = static_cast<LPTSTR>(buffer);
+                        nullptr) != 0 &&
+        error_text != nullptr) {
+        message = error_text;
         const auto pos {message.rfind('\r')};
 
         if (pos != std::string::npos) {
             message.resize(pos);
         }
 
-        ::LocalFree(buffer);
+        ::LocalFree(error_text);
     }
 #else
     message = std::strerror(error);
