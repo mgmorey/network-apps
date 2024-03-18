@@ -16,7 +16,6 @@
 #ifndef NETWORK_TO_INTEGER_H
 #define NETWORK_TO_INTEGER_H
 
-#include "network/byte.h"               // Byte, std::to_integer()
 #include "network/integererror.h"       // IntegerError
 
 #include <climits>      // INT_MAX, INT_MIN
@@ -25,12 +24,6 @@
 
 namespace Network
 {
-    template<typename T>
-    auto to_integer(Byte byte) noexcept -> T
-    {
-        return std::to_integer<T>(byte);
-    }
-
     auto to_integer(auto value) -> int
     {
         if (std::cmp_less(value, INT_MIN) ||
