@@ -116,8 +116,7 @@
 #include "network/to-sa-len.h"                  // to_sa_len()
 #include "network/to-size.h"                    // to_size()
 #include "network/to-socket-length.h"           // to_socket_length()
-#include "network/to-string-in-addr.h"          // to_string()
-#include "network/to-string-in6-addr.h"         // to_string()
+#include "network/to-string.h"                  // to_string()
 #ifndef WIN32
 #include "network/to-sun-len.h"                 // to_sun_len()
 #endif
