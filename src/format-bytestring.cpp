@@ -15,8 +15,8 @@
 
 #include "network/format-bytestring.h"          // format()
 #include "network/address.h"                    // Address
-#include "network/addresserror.h"               // AddressError
 #include "network/bytestring.h"                 // ByteString
+#include "network/logicerror.h"                 // LogicError
 #include "network/optionalstring.h"             // OptionalString
 #include "network/to-hex.h"                     // to_hex()
 
@@ -30,7 +30,7 @@ auto Network::format(const ByteString& addr) noexcept -> std::string
         oss << Address(addr);
         return oss.str();
     }
-    catch (const AddressError& error) {
+    catch (const LogicError& error) {
         return to_hex(addr);
     }
 }
