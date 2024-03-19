@@ -13,14 +13,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#ifndef WIN32
+
 #include "network/pathlengtherror.h"            // PathLengthError
 #include "network/lengtherror.h"                // LengthError
 #include "network/path-length-limits.h"         // path_length_max,
                                                 // path_length_min
 
 #include <string>       // std::string
-
-#ifndef WIN32
 
 Network::PathLengthError::PathLengthError(const std::string& t_value) noexcept :
     LengthError(t_value,

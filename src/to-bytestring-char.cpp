@@ -13,6 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#ifndef WIN32
+
 #include "network/to-bytestring-char.h"         // to_bytestring()
 #include "network/bytestring.h"                 // ByteString
 #include "network/get-path-pointer-sun.h"       // get_path_pointer()
@@ -23,14 +25,10 @@
 #include "network/to-bytestring-span.h"         // to_bytestring()
 #include "network/to-path-length.h"             // to_path_length()
 
-#ifndef WIN32
 #include <sys/socket.h>     // AF_UNIX
 #include <sys/un.h>         // sockaddr_un
-#endif
 
 #include <cstring>      // ::memcpy(), ::strnlen()
-
-#ifndef WIN32
 
 auto Network::to_bytestring(const char* path) -> ByteString
 {

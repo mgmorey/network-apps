@@ -13,6 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#ifndef WIN32
+
 #include "network/create-socketpair.h"          // create_socketpair()
 #include "network/create-socketpairresult.h"    // create_socketpairresult()
 #include "network/error.h"                      // Error
@@ -46,3 +48,5 @@ auto Network::create_socketpair(const SocketHints& hints,
 
     return *result_socketpair;
 }
+
+#endif

@@ -13,6 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#ifndef WIN32
+
 #include "network/sunlengtherror.h"     // SunLengthError
 #include "network/lengtherror.h"        // LengthError
 #include "network/sun-len-limits.h"     // sun_len_max, sun_len_min
@@ -28,3 +30,5 @@ Network::SunLengthError::SunLengthError(const std::string &t_value,
                 "sun_len_type")
 {
 }
+
+#endif

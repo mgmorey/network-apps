@@ -13,6 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#ifndef WIN32
+
 #include "network/address.h"                    // Address
 #include "network/string-null.h"                // string_null
 #include "network/to-path-bytestring.h"         // to_path()
@@ -23,3 +25,5 @@ auto Network::Address::sun_text() const -> std::string
 {
     return to_path(m_value).value_or(string_null);
 }
+
+#endif

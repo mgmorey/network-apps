@@ -13,13 +13,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#ifndef WIN32
+
 #include "network/get-path-pointer-sun.h"       // get_path_pointer()
 
-#ifndef WIN32
 #include <sys/un.h>         // sockaddr_un
-#endif
-
-#ifndef WIN32
 
 auto Network::get_path_pointer(const sockaddr_un* sun) noexcept -> const char*
 {

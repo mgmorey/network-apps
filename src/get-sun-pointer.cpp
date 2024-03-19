@@ -13,15 +13,13 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#ifndef WIN32
+
 #include "network/get-sun-pointer.h"            // get_sun_pointer()
 #include "network/bytestring.h"                 // ByteString
 #include "network/validate-sun.h"               // validate()
 
-#ifndef WIN32
 #include <sys/un.h>         // sockaddr_un
-#endif
-
-#ifndef WIN32
 
 auto Network::get_sun_pointer(const ByteString& addr) -> const sockaddr_un*
 {

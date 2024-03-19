@@ -13,6 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#ifndef WIN32
+
 #include "network/socketpair.h"                 // SocketPair
 #include "network/create-socketpair.h"          // create_socketpair()
 #include "network/socket-family-type.h"         // socket_family_type
@@ -23,8 +25,6 @@
 #include "network/sockethints.h"                // SocketHints
 
 #include <cstddef>      // std::size_t
-
-#ifndef WIN32
 
 Network::SocketPair::SocketPair(socket_family_type t_family,
                                 socket_type_type t_socktype,
@@ -43,8 +43,6 @@ Network::SocketPair::SocketPair(const SocketHints& t_hints, bool t_verbose) :
 {
 }
 
-#endif
-
 Network::SocketPair::SocketPair(const Socket& t_socket1,
                                 const Socket& t_socket2) noexcept :
     m_socket({t_socket1, t_socket2})
@@ -60,3 +58,5 @@ auto Network::SocketPair::at(std::size_t index) -> Socket&
 {
     return m_socket.at(index);
 }
+
+#endif

@@ -13,6 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#ifndef WIN32
+
 #include "network/validate-char.h"              // validate()
 #include "network/path-length-limits.h"         // path_length_max,
                                                 // path_length_min
@@ -20,8 +22,6 @@
 
 #include <string>       // std::to_string()
 #include <utility>      // std::cmp_greater(), std::cmp_less()
-
-#ifndef WIN32
 
 auto Network::validate(const char* path) -> void
 {

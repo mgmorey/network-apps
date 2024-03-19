@@ -13,16 +13,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#ifndef WIN32
+
 #include "network/get-sun-length.h"             // get_sun_length()
 #include "network/get-path-length.h"            // get_path_length()
 #include "network/sun-len-type.h"               // sun_len_type
 #include "network/sun-offsets.h"                // sun_path_offset
 
-#ifndef WIN32
 #include <sys/un.h>         // sockaddr_un
-#endif
-
-#ifndef WIN32
 
 auto Network::get_sun_length(const sockaddr_un* sun,
                              sun_len_type sun_len) -> sun_len_type
