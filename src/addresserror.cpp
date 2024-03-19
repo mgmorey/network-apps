@@ -14,14 +14,17 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/addresserror.h"               // AddressError
-#include "network/bytestring.h"                 // ByteString
 #include "network/logicerror.h"                 // LogicError
-#include "network/to-hex.h"                     // to_hex()
 
-#include <string>   // std::string
+#include <string>       // std::string
+#include <utility>      // std::move()
 
-Network::AddressError::AddressError(const ByteString& t_str) :
-    LogicError("Invalid socket address: " +
-               to_hex(t_str))
+Network::AddressError::AddressError(const std::string& t_str) noexcept :
+    LogicError(t_str)
+{
+}
+
+Network::AddressError::AddressError(std::string&& t_str) noexcept :
+    LogicError(std::move(t_str))
 {
 }

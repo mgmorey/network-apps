@@ -13,9 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/address.h"                    // Address,
-                                                // value_type
-#include "network/addresserror.h"               // AddressError
+#include "network/address.h"                    // Address
 #include "network/length-type.h"                // length_type
 #include "network/port-type.h"                  // port_type
 #include "network/socket-family-type.h"         // socket_family_type

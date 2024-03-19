@@ -16,7 +16,6 @@
 #ifndef NETWORK_ADDRESSERROR_H
 #define NETWORK_ADDRESSERROR_H
 
-#include "network/bytestring.h"         // ByteString
 #include "network/logicerror.h"         // LogicError
 
 namespace Network
@@ -25,7 +24,8 @@ namespace Network
         public LogicError
     {
     public:
-        explicit AddressError(const ByteString& t_str);
+        explicit AddressError(const std::string& t_str) noexcept;
+        explicit AddressError(std::string&& t_str) noexcept;
         AddressError(const AddressError&) noexcept = default;
         AddressError(AddressError&&) noexcept = default;
         ~AddressError() noexcept override = default;
