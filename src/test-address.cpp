@@ -82,6 +82,9 @@ namespace TestAddress
     using Network::to_bytestring;
     using Network::validate;
 
+    static constexpr auto expected_error_family_re {
+        R"(Invalid socket address family: (\d+))"
+    };
     static constexpr auto expected_error_length_re {
         R"(Value (\d+) is out of range \[\d+, \d+\] of s(a|in|in6|un)_len_type)"
     };
@@ -256,17 +259,26 @@ namespace TestAddress
         }
 
         assert(std::regex_match(actual_error_str, expected_error_regex));
-        actual_error_str.clear();
 
-        try {
-            validate(to_bytestring(&sin, sin_len));
-        }
-        catch (const Error& error) {
-            print(error);
-            actual_error_str = error.what();
-        }
+        if (sin.sin_family == AF_INET) {
+            actual_error_str.clear();
 
-        assert(std::regex_match(actual_error_str, expected_error_regex));
+            try {
+                validate(to_bytestring(&sin, sin_len));
+            }
+            catch (const Error& error) {
+                print(error);
+                actual_error_str = error.what();
+            }
+
+            assert(std::regex_match(actual_error_str, expected_error_regex));
+        }
+    }
+
+    auto test_sin_invalid_family() -> void
+    {
+        const auto sin {create_sin(AF_UNSPEC, sin_size)};
+        return test_sin(sin, sin_size, expected_error_family_re);
     }
 
     auto test_sin_invalid_length() -> void
@@ -291,17 +303,26 @@ namespace TestAddress
         }
 
         assert(std::regex_match(actual_error_str, expected_error_regex));
-        actual_error_str.clear();
 
-        try {
-            validate(to_bytestring(&sin6, sin6_len));
-        }
-        catch (const Error& error) {
-            print(error);
-            actual_error_str = error.what();
-        }
+        if (sin6.sin6_family == AF_INET6) {
+            actual_error_str.clear();
 
-        assert(std::regex_match(actual_error_str, expected_error_regex));
+            try {
+                validate(to_bytestring(&sin6, sin6_len));
+            }
+            catch (const Error& error) {
+                print(error);
+                actual_error_str = error.what();
+            }
+
+            assert(std::regex_match(actual_error_str, expected_error_regex));
+        }
+    }
+
+    auto test_sin6_invalid_family() -> void
+    {
+        const auto sin6 {create_sin6(AF_UNSPEC, sin6_size)};
+        return test_sin6(sin6, sin6_size, expected_error_family_re);
     }
 
     auto test_sin6_invalid_length() -> void
@@ -328,17 +349,26 @@ namespace TestAddress
         }
 
         assert(std::regex_match(actual_error_str, expected_error_regex));
-        actual_error_str.clear();
 
-        try {
-            validate(to_bytestring(&sun, sun_len));
-        }
-        catch (const Error& error) {
-            print(error);
-            actual_error_str = error.what();
-        }
+        if (sun.sun_family == AF_UNIX) {
+            actual_error_str.clear();
 
-        assert(std::regex_match(actual_error_str, expected_error_regex));
+            try {
+                validate(to_bytestring(&sun, sun_len));
+            }
+            catch (const Error& error) {
+                print(error);
+                actual_error_str = error.what();
+            }
+
+            assert(std::regex_match(actual_error_str, expected_error_regex));
+        }
+    }
+
+    auto test_sun_invalid_family() -> void
+    {
+        const auto sun {create_sun(AF_UNSPEC, sun_len_min)};
+        return test_sun(sun, sun_len_min, expected_error_family_re);
     }
 
     auto test_sun_invalid_length() -> void
@@ -443,9 +473,12 @@ auto main(int argc, char* argv[]) -> int
         }
 
         test_sa_invalid_length();
+        test_sin6_invalid_family();
         test_sin6_invalid_length();
+        test_sin_invalid_family();
         test_sin_invalid_length();
 #ifndef WIN32
+        test_sun_invalid_family();
         test_sun_invalid_length();
         test_sun_valid_path_large();
         test_sun_valid_path_small();
