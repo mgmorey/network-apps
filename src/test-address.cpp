@@ -138,7 +138,7 @@ namespace TestAddress
 #ifndef WIN32
 
     auto create_sun(sa_family_type family = AF_UNIX,
-                    std::size_t sun_length = sun_len_max,
+                    std::size_t sun_length = sun_size,
                     std::size_t path_length = 0UL) -> sockaddr_un
     {
         sockaddr_un sun {};
