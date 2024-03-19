@@ -19,7 +19,6 @@
 #include "network/socket-family-type.h"         // socket_family_type
 #include "network/socketfamily.h"               // SocketFamily,
                                                 // operator<<()
-#include "network/to-hex.h"                     // to_hex()
 
 #ifdef WIN32
 #include <winsock2.h>   // AF_INET, AF_INET6, AF_UNIX
@@ -101,22 +100,20 @@ auto Network::operator<<(std::ostream& os,
     switch (family) {
 #ifndef WIN32
     case AF_UNIX:
-        os << Format(delim, tab, prefix + "_path")
-           << address.text();
+        os << Format(delim, tab, prefix + "_path");
         break;
 #endif
     case AF_INET:
     case AF_INET6:
         os << Format(delim, tab, prefix + "_port")
            << address.port()
-           << Format(delim, tab, prefix + "_addr")
-           << address.text();
+           << Format(delim, tab, prefix + "_addr");
         break;
     default:
-        os << Format(delim, tab, prefix + "_data")
-           << to_hex(address.text());
+        os << Format(delim, tab, prefix + "_data");
     }
 
-    os << ')';
+    os << address.text()
+       << ')';
     return os;
 }
