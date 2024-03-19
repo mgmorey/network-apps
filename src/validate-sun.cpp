@@ -13,6 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#ifndef WIN32
+
 #include "network/validate-sun.h"               // validate()
 #include "network/familyerror.h"                // FamilyError
 #include "network/get-sun-length.h"             // get_sun_length()
@@ -23,16 +25,12 @@
 #include "network/sunlengtherror.h"             // SunLengthError
 #include "network/to-sun-len.h"                 // to_sun_len()
 
-#ifndef WIN32
 #include <sys/socket.h>     // AF_UNIX
 #include <sys/un.h>         // sockaddr_un
-#endif
 
 #include <string>       // std::to_string()
 #include <utility>      // std::cmp_greater(), std::cmp_less(),
                         // std::cmp_not_equal()
-
-#ifndef WIN32
 
 namespace {
     using Network::FamilyError;

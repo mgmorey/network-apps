@@ -13,6 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#ifndef WIN32
+
 #include "network/remove-socket.h"              // remove_socket()
 #include "network/descriptor-type.h"            // descriptor_type
 #include "network/to-path-descriptor.h"         // to_path()
@@ -36,3 +38,5 @@ auto Network::remove_socket(descriptor_type handle, bool verbose) -> bool
 
     return false;
 }
+
+#endif
