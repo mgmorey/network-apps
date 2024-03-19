@@ -16,7 +16,7 @@
 #include "network/addresserror.h"               // AddressError
 #include "network/bytestring.h"                 // ByteString
 #include "network/logicerror.h"                 // LogicError
-#include "network/to-hex.h"                     // to_string()
+#include "network/to-hex.h"                     // to_hex()
 
 #include <string>   // std::string
 
