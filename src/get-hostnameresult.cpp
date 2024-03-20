@@ -40,7 +40,7 @@ auto Network::get_hostnameresult(bool verbose) -> HostnameResult
 
     if (verbose) {
         std::cout << "Calling ::gethostname("
-                  << hostname.compact()
+                  << hostname.to_string()
                   << ", "
                   << hostname.size() - 1
                   << ')'
@@ -55,7 +55,7 @@ auto Network::get_hostnameresult(bool verbose) -> HostnameResult
         const auto os_error {to_os_error(error)};
         std::ostringstream oss;
         oss << "Call to ::gethostname("
-            << hostname.compact()
+            << hostname.to_string()
             << ", "
             << hostname.size() - 1
             << ") failed with error "
@@ -65,5 +65,5 @@ auto Network::get_hostnameresult(bool verbose) -> HostnameResult
         return OsErrorResult {os_error, oss.str()};
     }
 
-    return Hostname {hostname.compact()};
+    return Hostname {hostname.to_string()};
 }

@@ -31,5 +31,5 @@ auto Network::to_string(const in_addr& addr) noexcept -> std::string
 {
     Buffer<char> buffer {INET_ADDRSTRLEN};
     ::inet_ntop(AF_INET, &addr, buffer.data(), buffer.size());
-    return buffer.compact();
+    return buffer.to_string();
 }

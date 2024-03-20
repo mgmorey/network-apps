@@ -18,7 +18,9 @@
 
 #include "network/compact.h"            // compact()
 
+#include <cstddef>      // std::size_t
 #include <string>       // std::basic_string
+#include <vector>       // std::vector
 
 namespace Network
 {
@@ -26,9 +28,10 @@ namespace Network
     class Buffer
     {
     public:
-        using value_type = std::basic_string<T>;
+        using size_type = std::size_t;
+        using value_type = std::vector<T>;
 
-        explicit Buffer(typename value_type::size_type t_size) :
+        explicit Buffer(size_type t_size) :
             m_value(t_size, {})
         {
         }
@@ -39,14 +42,14 @@ namespace Network
         auto operator=(const Buffer&) noexcept -> Buffer& = default;
         auto operator=(Buffer&&) noexcept -> Buffer& = default;
 
-        operator value_type() const // NOLINT
+        operator std::basic_string<T>() const // NOLINT
         {
-            return m_value;
+            return std::basic_string<T> {m_value.data(), m_value.size()};
         }
 
-        [[nodiscard]] auto compact() -> value_type
+        [[nodiscard]] auto data() const noexcept -> const T*
         {
-            return Network::compact(m_value);
+            return m_value.data();
         }
 
         [[nodiscard]] auto data() noexcept -> T*
@@ -54,15 +57,20 @@ namespace Network
             return m_value.data();
         }
 
-        auto resize(typename value_type::size_type t_size) -> void
+        auto resize(size_type t_size) -> void
         {
             return m_value.resize(t_size);
         }
 
-        [[nodiscard]] auto size() const noexcept ->
-            typename value_type::size_type
+        [[nodiscard]] auto size() const noexcept -> size_type
         {
             return m_value.size();
+        }
+
+        [[nodiscard]] auto to_string() const -> std::basic_string<T>
+        {
+            const std::basic_string<T> str {m_value.data(), m_value.size()};
+            return compact(str);
         }
 
     private:
