@@ -13,6 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#ifndef WIN32
+
 #include "network/create-socketpairresult.h"    // create_socketpair()
 #include "network/descriptor-null.h"            // descriptor_null
 #include "network/descriptor-type.h"            // descriptor_type
@@ -28,10 +30,7 @@
 #include "network/socketpairresult.h"           // SocketPairResult
 #include "network/to-os-error.h"                // to_os_error()
 
-#ifndef WIN32
 #include <sys/socket.h>     // ::socketpair()
-#endif
-
 
 #include <array>        // std::array
 #include <iostream>     // std::cout, std::endl
@@ -40,14 +39,10 @@
 auto Network::create_socketpairresult(const SocketHints& hints,
                                       bool verbose) noexcept -> SocketPairResult
 {
-#ifndef WIN32
     static constexpr auto delim {", "};
     static constexpr auto tab {0};
-#endif
 
     std::array<descriptor_type, 2> handles {descriptor_null, descriptor_null};
-
-#ifndef WIN32
 
     if (verbose) {
         std::cout << "Calling ::socketpair("
@@ -84,12 +79,10 @@ auto Network::create_socketpairresult(const SocketHints& hints,
         return OsErrorResult {os_error, oss.str()};
     }
 
-#else
-    static_cast<void>(hints);
-#endif
-
     return SocketPair {
         Socket {handles[0], false, verbose},
         Socket {handles[1], false, verbose}
     };
 }
+
+#endif
