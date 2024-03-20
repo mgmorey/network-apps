@@ -29,7 +29,7 @@ auto Network::get_length(const ByteString& addr) -> socket_length_type
 #ifdef HAVE_SOCKADDR_SA_LEN
     return get_sa_length(addr);
 #else
-    return to_socket_length(addr.length());
+    return to_socket_length(addr.size());
 #endif
 
 }

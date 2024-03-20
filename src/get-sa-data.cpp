@@ -40,5 +40,5 @@ auto Network::get_sa_data(const ByteString& addr) -> ByteString
         throw FamilyError(family);
     }
 
-    return addr.substr(sa_data_offset);
+    return {addr.cbegin() + sa_data_offset, addr.end() - sa_data_offset};
 }

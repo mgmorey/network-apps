@@ -28,6 +28,7 @@
 #include "network/templatevector.h"             // TemplateVector
 
 #include <algorithm>    // std::transform()
+#include <iostream>     // std::cout, std::endl
 #include <iterator>     // std::back_inserter()
 #include <variant>      // std::visit()
 
@@ -37,6 +38,11 @@ auto Network::open(const OpenHandler& handler,
     OpenResult open_result;
     SocketResultVector socket_results;
     const auto lambda = [&](const Template& temp) {
+        if (args.verbose) {
+            std::cout << temp
+                      << std::endl;
+        }
+
         auto template_result {create_socketresult(temp.hints(), args.verbose)};
         std::visit(Overloaded {
                 [&](const Socket& sock) {

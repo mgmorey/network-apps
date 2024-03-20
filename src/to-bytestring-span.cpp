@@ -19,5 +19,5 @@
 
 auto Network::to_bytestring(const ByteSpan& span) -> ByteString
 {
-    return {span.data(), span.size()};
+    return {span.data(), span.data() + span.size()};
 }

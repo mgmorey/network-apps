@@ -16,6 +16,7 @@
 #include "network/template.h"           // Template, operator<<()
 #include "network/format.h"             // Format, operator<<()
 #include "network/string-null.h"        // string_null
+#include "network/to-hex.h"             // to_hex()
 
 #include <ostream>      // operator<<(), std::ostream
 
@@ -34,7 +35,7 @@ auto Network::operator<<(std::ostream& os,
        << Format(tab, "protocol")
        << sock.protocol()
        << Format(tab, "address")
-       << sock.address()
+       << to_hex(sock.address())
        << Format(tab, "canonical_name")
        << sock.canonical_name().value_or(string_null)
        << ')';

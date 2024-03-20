@@ -18,11 +18,11 @@
 
 #include "network/byte.h"               // Byte
 
-#include <string>       // std::basic_string
+#include <vector>       // std::vector
 
 namespace Network
 {
-    using ByteString = std::basic_string<Byte>;
+    using ByteString = std::vector<Byte>;
 }
 
 #endif

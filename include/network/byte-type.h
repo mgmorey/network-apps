@@ -16,9 +16,11 @@
 #ifndef NETWORK_BYTE_TYPE_H
 #define NETWORK_BYTE_TYPE_H
 
+#include <cstddef>      // std::byte
+
 namespace Network
 {
-    using byte_type = char;
+    using byte_type = std::byte;
 }
 
 #endif
