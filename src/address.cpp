@@ -77,7 +77,7 @@ Network::Address::operator value_type() const
     return m_value;
 }
 
-auto Network::Address::data() const noexcept -> value_type
+auto Network::Address::data() const noexcept -> ByteSpan
 {
     return sa_data();
 }

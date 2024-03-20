@@ -14,31 +14,13 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/get-sa-data.h"        // get_sa_data()
+#include "network/bytespan.h"           // ByteSpan
 #include "network/bytestring.h"         // ByteString
-#include "network/familyerror.h"        // FamilyError
-#include "network/get-sa-family.h"      // get_sa_family()
-#include "network/sa-offsets.h"         // sa_data_offset
+#include "network/get-sa-pointer.h"     // get_sa_pointer()
+#include "network/to-bytespan.h"        // to_bytestring()
 
-#ifdef WIN32
-#include <winsock2.h>       // AF_UNSPEC
-#else
-#include <sys/socket.h>     // AF_UNSPEC
-#endif
-
-auto Network::get_sa_data(const ByteString& addr) -> ByteString
+auto Network::get_sa_data(const ByteString& addr) -> ByteSpan
 {
-    const auto family {get_sa_family(addr)};
-
-    switch (family) {
-#ifndef WIN32
-    case AF_UNIX:
-#endif
-    case AF_INET:
-    case AF_INET6:
-        break;
-    default:
-        throw FamilyError(family);
-    }
-
-    return {addr.cbegin() + sa_data_offset, addr.end() - sa_data_offset};
+    const auto* const sa {get_sa_pointer(addr)};
+    return to_bytespan(sa->sa_data, sizeof sa->sa_data);  // NOLINT
 }

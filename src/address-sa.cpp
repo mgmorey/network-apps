@@ -14,6 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/address.h"                    // Address
+#include "network/bytespan.h"                   // ByteSpan
 #include "network/get-sa-data.h"                // get_sa_data()
 #include "network/get-sa-family.h"              // get_sa_family()
 #include "network/get-sa-length.h"              // get_sa_length()
@@ -23,7 +24,7 @@
 
 #include <string>       // std::string
 
-auto Network::Address::sa_data() const noexcept -> value_type
+auto Network::Address::sa_data() const noexcept -> ByteSpan
 {
     return get_sa_data(m_value);
 }

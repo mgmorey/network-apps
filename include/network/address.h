@@ -16,6 +16,7 @@
 #ifndef NETWORK_ADDRESS_H
 #define NETWORK_ADDRESS_H
 
+#include "network/bytespan.h"                 // ByteString
 #include "network/bytestring.h"                 // ByteString
 #include "network/port-type.h"                  // port_type
 #include "network/socket-family-type.h"         // socket_family_type
@@ -55,7 +56,7 @@ namespace Network
         auto operator>(const Address& t_address) const noexcept -> bool;
         auto operator==(const Address& t_address) const noexcept -> bool;
         explicit operator value_type() const;
-        [[nodiscard]] auto data() const noexcept -> value_type;
+        [[nodiscard]] auto data() const noexcept -> ByteSpan;
         [[nodiscard]] auto empty() const noexcept -> bool;
         [[nodiscard]] auto family() const noexcept -> socket_family_type;
         [[nodiscard]] auto length() const noexcept -> socket_length_type;
@@ -64,7 +65,7 @@ namespace Network
         [[nodiscard]] auto text() const noexcept -> std::string;
 
     protected:
-        [[nodiscard]] auto sa_data() const noexcept -> value_type;
+        [[nodiscard]] auto sa_data() const noexcept -> ByteSpan;
         [[nodiscard]] auto sa_family() const noexcept -> socket_family_type;
         [[nodiscard]] auto sa_length() const noexcept -> socket_length_type;
         [[nodiscard]] auto sa_text() const noexcept -> std::string;
