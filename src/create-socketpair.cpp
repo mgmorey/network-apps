@@ -37,10 +37,10 @@ auto Network::create_socketpair(const SocketHints& hints,
             [&](const SocketPair& pair) {
                 result_socketpair = pair;
             },
-            [&](const OsErrorResult& result) {
-                result_string = result.string();
-            }
-        }, socketpair_result);
+                [&](const OsErrorResult& result) {
+                    result_string = result.string();
+                }
+                }, socketpair_result);
 
     if (!result_socketpair) {
         throw Error(result_string);
