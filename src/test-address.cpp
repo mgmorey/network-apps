@@ -278,7 +278,7 @@ namespace TestAddress
     auto test_sin_invalid_family() -> void
     {
         const auto sin {create_sin(AF_UNSPEC, sin_size)};
-        return test_sin(sin, sin_size, expected_error_family_re);
+        test_sin(sin, sin_size, expected_error_family_re);
     }
 
     auto test_sin_invalid_length() -> void
@@ -322,7 +322,7 @@ namespace TestAddress
     auto test_sin6_invalid_family() -> void
     {
         const auto sin6 {create_sin6(AF_UNSPEC, sin6_size)};
-        return test_sin6(sin6, sin6_size, expected_error_family_re);
+        test_sin6(sin6, sin6_size, expected_error_family_re);
     }
 
     auto test_sin6_invalid_length() -> void
@@ -368,27 +368,27 @@ namespace TestAddress
     auto test_sun_invalid_family() -> void
     {
         const auto sun {create_sun(AF_UNSPEC, sun_len_min)};
-        return test_sun(sun, sun_len_min, expected_error_family_re);
+        test_sun(sun, sun_len_min, expected_error_family_re);
     }
 
     auto test_sun_invalid_length() -> void
     {
         const auto path_length {sun_size - sun_path_offset};
         const auto sun {create_sun(AF_UNIX, sun_len_max, path_length)};
-        return test_sun(sun, sun_len_max, expected_error_length_re);
+        test_sun(sun, sun_len_max, expected_error_length_re);
     }
 
     auto test_sun_valid_path_large() -> void
     {
         const auto path_length {sun_size - sun_path_offset - 1};
         const auto sun {create_sun(AF_UNIX, sun_len_max, path_length)};
-        return test_sun(sun, sun_len_max, {});
+        test_sun(sun, sun_len_max, {});
     }
 
     auto test_sun_valid_path_small() -> void
     {
         const auto sun {create_sun(AF_UNIX, sun_len_min)};
-        return test_sun(sun, sun_len_min, {});
+        test_sun(sun, sun_len_min, {});
     }
 
 #endif
