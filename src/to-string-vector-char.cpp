@@ -21,17 +21,11 @@
 
 auto Network::to_string(std::vector<char>::const_iterator cbegin,
                         std::vector<char>::const_iterator cend,
-                        bool trim_nuls) -> std::string
+                        bool is_text) -> std::string
 {
-    if (trim_nuls) {
+    if (is_text) {
         cend = std::find(cbegin, cend, '\0');
     }
 
     return {cbegin, cend};
-}
-
-auto Network::to_string(const std::vector<char> &vc,
-                        bool trim_nuls) -> std::string
-{
-    return to_string(vc.cbegin(), vc.cend(), trim_nuls);
 }
