@@ -16,7 +16,7 @@
 #ifndef NETWORK_BUFFER_H
 #define NETWORK_BUFFER_H
 
-#include "network/compact.h"            // compact()
+#include "network/to-string-vector-char.h"      // to_string()
 
 #include <cstddef>      // std::size_t
 #include <string>       // std::basic_string
@@ -42,9 +42,26 @@ namespace Network
         auto operator=(const Buffer&) noexcept -> Buffer& = default;
         auto operator=(Buffer&&) noexcept -> Buffer& = default;
 
+        operator value_type() const // NOLINT
+        {
+            return m_value;
+        }
+
         operator std::basic_string<T>() const // NOLINT
         {
             return std::basic_string<T> {m_value.data(), m_value.size()};
+        }
+
+        [[nodiscard]] auto cbegin() const noexcept ->
+            typename value_type::const_iterator
+        {
+            return m_value.cbegin();
+        }
+
+        [[nodiscard]] auto cend() const noexcept ->
+            typename value_type::const_iterator
+        {
+            return m_value.cend();
         }
 
         [[nodiscard]] auto data() const noexcept -> const T*
@@ -67,10 +84,9 @@ namespace Network
             return m_value.size();
         }
 
-        [[nodiscard]] auto to_string() const -> std::basic_string<T>
+        [[nodiscard]] auto to_string() const -> std::string
         {
-            const std::basic_string<T> str {m_value.data(), m_value.size()};
-            return compact(str);
+            return Network::to_string(m_value.cbegin(), m_value.cend());
         }
 
     private:
