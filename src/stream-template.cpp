@@ -23,7 +23,7 @@
 auto Network::operator<<(std::ostream& os,
                          const Template& sock) noexcept -> std::ostream&
 {
-    static constexpr auto tab {7};
+    static constexpr auto tab {9};
 
     os << "Template("
        << Format("flags")
