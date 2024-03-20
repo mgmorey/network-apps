@@ -29,3 +29,9 @@ auto Network::to_string(std::vector<char>::const_iterator cbegin,
 
     return {cbegin, cend};
 }
+
+auto Network::to_string(const std::vector<char>& v,
+                        bool is_text) -> std::string
+{
+    return to_string(v.cbegin(), v.cend(), is_text);
+}

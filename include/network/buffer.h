@@ -19,7 +19,7 @@
 #include "network/to-string-vector-char.h"      // to_string()
 
 #include <cstddef>      // std::size_t
-#include <string>       // std::basic_string
+#include <string>       // std::basic_string, std::string
 #include <vector>       // std::vector
 
 namespace Network
@@ -31,8 +31,9 @@ namespace Network
         using size_type = std::size_t;
         using value_type = std::vector<T>;
 
-        explicit Buffer(size_type t_size) :
-            m_value(t_size, {})
+        explicit Buffer(size_type t_size, bool t_is_text = true)
+            : m_is_text(t_is_text),
+              m_value(t_size, {})
         {
         }
 
@@ -49,7 +50,7 @@ namespace Network
 
         operator std::basic_string<T>() const // NOLINT
         {
-            return std::basic_string<T> {m_value.data(), m_value.size()};
+            return to_string(m_value, m_is_text);
         }
 
         [[nodiscard]] auto cbegin() const noexcept ->
@@ -84,12 +85,13 @@ namespace Network
             return m_value.size();
         }
 
-        [[nodiscard]] auto to_string() const -> std::string
+        [[nodiscard]] auto text() const -> std::string
         {
-            return Network::to_string(m_value.cbegin(), m_value.cend());
+            return to_string(m_value, m_is_text);
         }
 
     private:
+        bool m_is_text {true};
         value_type m_value;
     };
 }
