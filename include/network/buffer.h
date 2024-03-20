@@ -26,7 +26,9 @@ namespace Network
     class Buffer
     {
     public:
-        explicit Buffer(typename std::basic_string<T>::size_type t_size) :
+        using value_type = std::basic_string<T>;
+
+        explicit Buffer(typename value_type::size_type t_size) :
             m_value(t_size, {})
         {
         }
@@ -37,12 +39,12 @@ namespace Network
         auto operator=(const Buffer&) noexcept -> Buffer& = default;
         auto operator=(Buffer&&) noexcept -> Buffer& = default;
 
-        operator std::basic_string<T>() const // NOLINT
+        operator value_type() const // NOLINT
         {
             return m_value;
         }
 
-        [[nodiscard]] auto compact() -> std::basic_string<T>
+        [[nodiscard]] auto compact() -> value_type
         {
             return Network::compact(m_value);
         }
@@ -52,19 +54,19 @@ namespace Network
             return m_value.data();
         }
 
-        auto resize(typename std::basic_string<T>::size_type t_size) -> void
+        auto resize(typename value_type::size_type t_size) -> void
         {
             return m_value.resize(t_size);
         }
 
         [[nodiscard]] auto size() const noexcept ->
-            typename std::basic_string<T>::size_type
+            typename value_type::size_type
         {
             return m_value.size();
         }
 
     private:
-        std::basic_string<T> m_value;
+        value_type m_value;
     };
 }
 
