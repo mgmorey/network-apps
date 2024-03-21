@@ -29,8 +29,7 @@
 #include <sys/un.h>         // sockaddr_un
 
 #include <string>       // std::to_string()
-#include <utility>      // std::cmp_greater(), std::cmp_less(),
-                        // std::cmp_not_equal()
+#include <utility>      // std::cmp_not_equal()
 
 namespace {
     using Network::FamilyError;
