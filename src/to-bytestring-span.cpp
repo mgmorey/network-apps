@@ -21,5 +21,5 @@ auto Network::to_bytestring(const ByteSpan& span) -> ByteString
 {
     const auto* const data {span.data()};
     const auto size {span.size()};
-    return {data, data + size};
+    return {data, data + size};  // NOLINT
 }
