@@ -44,8 +44,7 @@ namespace {
 
     auto validate_sun(const sockaddr_un* sun, sun_len_type size) -> void
     {
-        static_cast<void>(to_sun_len(size));
-        const auto sun_len {to_sun_len(get_sun_length(sun, sun_len_max))};
+        const auto sun_len {to_sun_len(get_sun_length(sun, size))};
 
 #ifdef HAVE_SOCKADDR_SA_LEN
 
