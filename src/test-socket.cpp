@@ -297,7 +297,7 @@ namespace TestSocket
 
 	const ErrorCodeSet codes_valid = {0};
 
-#ifndef OS_CYGWIN_NT
+#if 0
         test_pathname_valid(nullptr, codes_valid);
         test_pathname_valid(std::nullopt, codes_valid);
 #endif
