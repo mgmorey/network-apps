@@ -168,8 +168,9 @@ namespace TestSocket
         assert(expected_codes.contains(actual_code));
     }
 
-    auto test_pathname_invalid(const char*  path,
-                               const ErrorCodeSet& expected_codes) -> void
+    auto test_pathname_invalid(const char *path,
+                               const ErrorCodeSet &expected_codes,
+                               const std::string& expected_error_re) -> void
     {
         std::string actual_error_str;
 
@@ -181,12 +182,13 @@ namespace TestSocket
             print(error);
         }
 
-        const std::regex expected_error_regex {expected_error_path_length_re};
+        const std::regex expected_error_regex {expected_error_re};
         assert(std::regex_match(actual_error_str, expected_error_regex));
     }
 
-    auto test_pathname_invalid(const OptionalPathname& path,
-                               const ErrorCodeSet& expected_codes) -> void
+    auto test_pathname_invalid(const OptionalPathname &path,
+                               const ErrorCodeSet &expected_codes,
+                               const std::string& expected_error_re) -> void
     {
         std::string actual_error_str;
 
@@ -198,7 +200,7 @@ namespace TestSocket
             print(error);
         }
 
-        const std::regex expected_error_regex {expected_error_path_length_re};
+        const std::regex expected_error_regex {expected_error_re};
         assert(std::regex_match(actual_error_str, expected_error_regex));
     }
 
@@ -282,8 +284,10 @@ namespace TestSocket
 #endif
 
         const auto path_max {get_pathname(path_length_max)};
-        test_pathname_invalid(path_max.c_str(), {});
-        test_pathname_invalid(path_max, {});
+        test_pathname_invalid(path_max.c_str(), {},
+                              expected_error_path_length_re);
+        test_pathname_invalid(path_max, {},
+                              expected_error_path_length_re);
 #ifndef OS_CYGWIN_NT
         test_pathname_invalid_directory("/foo/bar", codes_invalid_directory);
         test_pathname_invalid_permission("/foo", codes_invalid_permission);
