@@ -17,19 +17,11 @@
 #include "network/familyerror.h"                // FamilyError
 #include "network/sa-len-type.h"                // sa_len_type
 #include "network/to-sa-len.h"                  // to_sa_len()
-#include "network/validate-sin.h"               // validate()
-#include "network/validate-sin6.h"              // validate()
-#ifndef WIN32
-#include "network/validate-sun.h"               // validate()
-#endif
-
 
 #ifdef WIN32
 #include <winsock2.h>       // AF_INET, AF_INET6, AF_UNSPEC, sockaddr,
                             // sockaddr_in
-#include <ws2tcpip.h>       // sockaddr_in6
 #else
-#include <netinet/in.h>     // sockaddr_in, sockaddr_in6
 #include <sys/socket.h>     // AF_INET, AF_INET6, AF_UNSPEC, sockaddr
 #include <sys/un.h>         // sockaddr_un
 #endif
@@ -38,20 +30,13 @@ auto Network::validate(const sockaddr* sa, sa_len_type sa_len) ->
     const sockaddr*
 {
     static_cast<void>(to_sa_len(sa_len));
-    const void* pointer {sa};
 
     switch (sa->sa_family) {
 #ifndef WIN32
     case AF_UNIX:
-        validate(static_cast<const sockaddr_un*>(pointer));
-        break;
 #endif
     case AF_INET:
-        validate(static_cast<const sockaddr_in*>(pointer));
-        break;
     case AF_INET6:
-        validate(static_cast<const sockaddr_in6*>(pointer));
-        break;
     case AF_UNSPEC:
         break;
     default:
