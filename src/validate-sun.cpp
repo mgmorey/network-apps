@@ -38,7 +38,6 @@ namespace {
     using Network::SunLengthError;
 #endif
     using Network::get_sun_length;
-    using Network::sun_len_max;
     using Network::sun_len_type;
     using Network::to_sun_len;
 
