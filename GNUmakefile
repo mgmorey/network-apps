@@ -59,11 +59,11 @@ format.cpp get-endpoint.cpp get-endpointresult.cpp get-hostname.cpp	\
 get-hostnameresult.cpp get-hosts.cpp get-last-context-error.cpp		\
 get-last-os-error.cpp get-length.cpp get-name.cpp get-nameresult.cpp	\
 get-operands.cpp get-option.cpp get-options.cpp get-peername.cpp	\
-get-peernameresult.cpp get-sa-data.cpp get-sa-family.cpp		\
-get-sa-length.cpp get-sa-size-maximum.cpp get-sa-size-minimum.cpp	\
-get-sin-addr.cpp get-sin-pointer.cpp get-sin-port.cpp			\
-get-sin6-addr.cpp get-sin6-pointer.cpp get-sin6-port.cpp		\
-get-sockname.cpp get-socknameresult.cpp get-templates-endpoint.cpp	\
+get-peernameresult.cpp get-sa-family.cpp get-sa-length.cpp		\
+get-sa-size-maximum.cpp get-sa-size-minimum.cpp get-sin-addr.cpp	\
+get-sin-pointer.cpp get-sin-port.cpp get-sin6-addr.cpp			\
+get-sin6-pointer.cpp get-sin6-port.cpp get-sockname.cpp			\
+get-socknameresult.cpp get-templates-endpoint.cpp			\
 get-templates-hostname.cpp integererror.cpp is-running.cpp		\
 lengtherror.cpp listen.cpp logicerror.cpp namelengtherror.cpp		\
 open-endpoint.cpp open-socket.cpp oserrorerror.cpp oserrorresult.cpp	\

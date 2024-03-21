@@ -15,7 +15,6 @@
 
 #include "network/address.h"                    // Address
 #include "network/bytespan.h"                   // ByteSpan
-#include "network/get-sa-data.h"                // get_sa_data()
 #include "network/get-sa-family.h"              // get_sa_family()
 #include "network/get-sa-length.h"              // get_sa_length()
 #include "network/socket-family-type.h"         // socket_family_type
@@ -23,11 +22,6 @@
 #include "network/to-hex.h"                     // to_hex()
 
 #include <string>       // std::string
-
-auto Network::Address::sa_data() const noexcept -> ByteSpan
-{
-    return get_sa_data(m_value);
-}
 
 auto Network::Address::sa_family() const noexcept -> socket_family_type
 {
