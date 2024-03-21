@@ -14,12 +14,14 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/open-socket.h"                // open()
+#include "network/addresserror.h"               // AddressError
 #include "network/addressstring.h"              // AddressString
 #include "network/descriptor-type.h"            // descriptor_type
 #include "network/format-os-error.h"            // format_os_error()
 #include "network/get-last-context-error.h"     // get_last_context_error()
 #include "network/get-length.h"                 // get_length()
 #include "network/get-sa-pointer.h"             // get_sa_pointer()
+#include "network/sa-len-limits.h"              // sa_len_min
 #include "network/openhandler.h"                // OpenHandler
 #include "network/opensocketparams.h"           // OpenSocketParams
 #include "network/oserrorresult.h"              // OsErrorResult
@@ -34,8 +36,13 @@ auto Network::open(const OpenHandler& handler,
                    const OpenSocketParams& args) -> OsErrorResult
 {
     const auto* const pointer {get_sa_pointer(args.addr)};
-    const auto length {get_length(args.addr)};
+    const auto length{get_length(args.addr)};
     const AddressString addr_str {args.addr};
+
+    if (length == sa_len_min) {
+        throw AddressError("Address payload length is zero: " +
+                           std::string {addr_str});
+    }
 
     if (args.verbose) {
         std::cout << "Calling "
