@@ -53,8 +53,8 @@ namespace Server {
     {
         Socket bind_sock {AF_UNIX, SOCK_SEQPACKET, 0, 0, verbose};
 
-        if (const auto error {Network::bind(bind_sock, SOCKET_NAME, verbose)}) {
-            std::cerr << error.string() << std::endl;
+        if (const auto result {Network::bind(bind_sock, SOCKET_NAME, verbose)}) {
+            std::cerr << result.string() << std::endl;
             std::exit(EXIT_FAILURE);
         }
 
