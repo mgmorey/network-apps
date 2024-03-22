@@ -38,7 +38,7 @@ namespace Network
     public:
         Socket(socket_family_type t_family,
                socket_type_type t_socktype,
-               socket_protocol_type t_protocol = 0,
+               socket_protocol_type t_protocol,
                socket_flags_type t_flags = 0,
                bool t_verbose = false);
         explicit Socket(const SocketHints& t_hints,

@@ -80,8 +80,8 @@ auto Network::create_socketpairresult(const SocketHints& hints,
     }
 
     return SocketPair {
-        Socket {handles[0], false, verbose},
-        Socket {handles[1], false, verbose}
+        Socket {handles[0], verbose},
+        Socket {handles[1], verbose}
     };
 }
 
