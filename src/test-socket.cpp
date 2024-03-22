@@ -14,8 +14,8 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/assert.h"             // assert()
-#include "network/network.h"            // Address, Context, Error,
-                                        // LogicError,
+#include "network/network.h"            // Address, ByteString,
+                                        // Context, Error, LogicError,
                                         // OptionalPathname,
                                         // OsErrorResult, Pathname,
                                         // Socket, SocketPair, bind(),
@@ -39,6 +39,7 @@
 namespace TestSocket
 {
     using Network::Address;
+    using Network::ByteString;
     using Network::Context;
     using Network::Error;
     using Network::LogicError;
@@ -65,18 +66,58 @@ namespace TestSocket
 
     static bool verbose {false};  // NOLINT
 
-    auto equal_to_sockname(const std::string& path, const Socket& sock) -> bool
+    auto print(const Error& error) -> void
     {
-        const auto self {sock.sockname()};
+        if (verbose) {
+            std::cout << "Exception: "
+                      << error.what()
+                      << std::endl;
+        }
+    }
+
+    auto print(const OsErrorResult& result) -> void
+    {
+        if (verbose) {
+            std::cout << "Number: "
+                      << result.number()
+                      << std::endl
+                      << "String: "
+                      << result.string()
+                      << std::endl;
+        }
+    }
+
+    auto print(const ByteString& self, const Socket& sock) -> void
+    {
         std::cout << "Socket "
                   << std::right << std::setw(handle_width) << sock
                   << " bound to "
                   << Address(self)
                   << std::endl;
+    }
 
-        const auto self_path {to_path(self)};
+    auto equal_to_sockname(const char* path, const Socket& sock) -> bool
+    {
+        if (path == nullptr) {
+            path = "";
+        }
 
-        if (self_path.value_or(std::string {}) == path) {
+        const auto self {sock.sockname()};
+        print(self, sock);
+
+        if (to_path(self).value_or(std::string {}) == path) {
+            return true;
+        }
+
+        return false;
+    }
+
+    auto equal_to_sockname(const OptionalPathname& path, const Socket& sock) -> bool
+    {
+        const auto self {sock.sockname()};
+        print(self, sock);
+
+        if (to_path(self).value_or(std::string {}) == path) {
             return true;
         }
 
@@ -114,59 +155,7 @@ namespace TestSocket
         static_cast<void>(_);
     }
 
-    auto print(const Error& error) -> void
-    {
-        if (verbose) {
-            std::cout << "Exception: "
-                      << error.what()
-                      << std::endl;
-        }
-    }
-
-    auto print(const OsErrorResult& result) -> void
-    {
-        if (verbose) {
-            std::cout << "Number: "
-                      << result.number()
-                      << std::endl
-                      << "String: "
-                      << result.string()
-                      << std::endl;
-        }
-    }
-
-    auto test_path(const char* path,
-                   const ErrorCodeSet& expected_codes,
-                   const std::string& expected_error_re) -> void
-    {
-        std::string actual_error_str;
-
-        try {
-            const Socket sock {AF_UNIX, SOCK_STREAM, 0, 0, true, verbose};
-
-            if (const auto result {bind(sock, path, verbose)}) {
-                print(result);
-                assert(expected_codes.contains(result.number()));
-            }
-            else if (path != nullptr) {
-                assert(equal_to_sockname(path, sock));
-            }
-        }
-        catch (const LogicError& error) {
-            print(error);
-            actual_error_str = error.what();
-        }
-
-        if (expected_error_re.empty()) {
-            assert(actual_error_str.empty());
-        }
-        else {
-            const std::regex expected_error_regex {expected_error_re};
-            assert(std::regex_match(actual_error_str, expected_error_regex));
-        }
-    }
-
-    auto test_path(const OptionalPathname& path,
+    auto test_path(const auto path,
                    const ErrorCodeSet& expected_codes,
                    const std::string& expected_error_re) -> void
     {
@@ -180,7 +169,7 @@ namespace TestSocket
                 assert(expected_codes.contains(result.number()));
             }
             else {
-                assert(equal_to_sockname(path.value_or(std::string {}), sock));
+                assert(equal_to_sockname(path, sock));
             }
         }
         catch (const LogicError& error) {
@@ -226,8 +215,10 @@ namespace TestSocket
 
 	const ErrorCodeSet codes_valid = {0};
 
-        test_path(nullptr, codes_valid, expected_error_payload_length_re);
-        test_path(std::nullopt, codes_valid, expected_error_payload_length_re);
+        test_path(static_cast<const char *>(nullptr), codes_valid,
+                  expected_error_payload_length_re);
+        test_path(std::nullopt, codes_valid,
+                  expected_error_payload_length_re);
 
         for (std::size_t size = size_min; size <= size_max; size *= 2) {
             const auto path {get_pathname(size)};
