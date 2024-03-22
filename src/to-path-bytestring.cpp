@@ -29,14 +29,14 @@ auto Network::to_path(const ByteString& addr) -> OptionalPathname
 {
     const auto* const sun_path {get_path_pointer(addr)};
     const auto sun_len {addr.size()};
-    auto path_len {sun_len - sun_len_min};
+    const auto path_len {sun_len - sun_len_min};
 
     if (path_len == 0UL) {
         return std::nullopt;
     }
 
-    path_len = ::strnlen(sun_path, path_len);
-    return std::string {sun_path, path_len};
+    const auto str_len {::strnlen(sun_path, path_len)};
+    return std::string {sun_path, str_len};
 }
 
 #endif
