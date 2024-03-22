@@ -70,13 +70,21 @@ namespace TestSocket
     auto operator==(const ByteString& addr,
                     const OptionalPathname& path) -> bool
     {
-        return to_path(addr).value_or(std::string {}) ==
-            path.value_or(std::string {});
+        return to_path(addr) == path;
     }
 
     auto operator==(const ByteString& addr, const char* path) -> bool
     {
-        return addr == std::string {path == nullptr ? "" : path};
+        OptionalPathname opt_path;
+
+        if (path == nullptr) {
+            opt_path = std::nullopt;
+        }
+        else {
+            opt_path = path;
+        }
+
+        return addr == opt_path;
     }
 
     auto get_pathname(std::string::size_type size) -> Pathname

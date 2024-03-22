@@ -23,6 +23,7 @@
 
 #include <cstddef>      // std::size_t
 #include <cstring>      // ::strnlen()
+#include <optional>     // std::nullopt
 #include <string>       // std::string
 
 auto Network::to_path(const ByteString& addr) -> OptionalPathname
@@ -30,6 +31,11 @@ auto Network::to_path(const ByteString& addr) -> OptionalPathname
     const auto* const data {get_path_pointer(addr)};
     const auto size_max {addr.size() - sun_len_min};
     const auto size {::strnlen(data, size_max)};
+
+    if (size == 0UL) {
+        return std::nullopt;
+    }
+
     return std::string {data, size};
 }
 
