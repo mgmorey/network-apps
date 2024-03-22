@@ -66,62 +66,22 @@ namespace TestSocket
 
     static bool verbose {false};  // NOLINT
 
-    auto print(const Error& error) -> void
+    auto compare(const OptionalPathname& path, const ByteString& self) -> bool
     {
-        if (verbose) {
-            std::cout << "Exception: "
-                      << error.what()
-                      << std::endl;
+        if (to_path(self).value_or(std::string {}) == path) {
+            return true;
         }
+
+        return false;
     }
 
-    auto print(const OsErrorResult& result) -> void
-    {
-        if (verbose) {
-            std::cout << "Number: "
-                      << result.number()
-                      << std::endl
-                      << "String: "
-                      << result.string()
-                      << std::endl;
-        }
-    }
-
-    auto print(const ByteString& self, const Socket& sock) -> void
-    {
-        std::cout << "Socket "
-                  << std::right << std::setw(handle_width) << sock
-                  << " bound to "
-                  << Address(self)
-                  << std::endl;
-    }
-
-    auto equal_to_sockname(const char* path, const Socket& sock) -> bool
+    auto compare(const char* path, const ByteString& self) -> bool
     {
         if (path == nullptr) {
             path = "";
         }
 
-        const auto self {sock.sockname()};
-        print(self, sock);
-
-        if (to_path(self).value_or(std::string {}) == path) {
-            return true;
-        }
-
-        return false;
-    }
-
-    auto equal_to_sockname(const OptionalPathname& path, const Socket& sock) -> bool
-    {
-        const auto self {sock.sockname()};
-        print(self, sock);
-
-        if (to_path(self).value_or(std::string {}) == path) {
-            return true;
-        }
-
-        return false;
+        return compare(std::string {path}, self);
     }
 
     auto get_pathname(std::string::size_type size) -> Pathname
@@ -155,6 +115,36 @@ namespace TestSocket
         static_cast<void>(_);
     }
 
+    auto print(const Error& error) -> void
+    {
+        if (verbose) {
+            std::cout << "Exception: "
+                      << error.what()
+                      << std::endl;
+        }
+    }
+
+    auto print(const OsErrorResult& result) -> void
+    {
+        if (verbose) {
+            std::cout << "Number: "
+                      << result.number()
+                      << std::endl
+                      << "String: "
+                      << result.string()
+                      << std::endl;
+        }
+    }
+
+    auto print(const ByteString& self, const Socket& sock) -> void
+    {
+        std::cout << "Socket "
+                  << std::right << std::setw(handle_width) << sock
+                  << " bound to "
+                  << Address(self)
+                  << std::endl;
+    }
+
     auto test_path(const auto path,
                    const ErrorCodeSet& expected_codes,
                    const std::string& expected_error_re) -> void
@@ -169,7 +159,9 @@ namespace TestSocket
                 assert(expected_codes.contains(result.number()));
             }
             else {
-                assert(equal_to_sockname(path, sock));
+                const auto self {sock.sockname()};
+                print(self, sock);
+                assert(compare(path, self));
             }
         }
         catch (const LogicError& error) {
