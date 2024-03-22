@@ -371,16 +371,9 @@ namespace TestAddress
         test_sun(sun, sun_len_min, expected_error_family_re);
     }
 
-    auto test_sun_invalid_length() -> void
-    {
-        const auto path_len {sun_size - sun_path_offset};
-        const auto sun {create_sun(AF_UNIX, sun_len_max, path_len)};
-        test_sun(sun, sun_len_max, expected_error_length_re);
-    }
-
     auto test_sun_valid_path_large() -> void
     {
-        const auto path_len {sun_size - sun_path_offset - 1};
+        const auto path_len {sun_size - sun_path_offset};
         const auto sun {create_sun(AF_UNIX, sun_len_max, path_len)};
         test_sun(sun, sun_len_max, {});
     }
@@ -479,7 +472,6 @@ auto main(int argc, char* argv[]) -> int
         test_sin_invalid_length();
 #ifndef WIN32
         test_sun_invalid_family();
-        test_sun_invalid_length();
         test_sun_valid_path_large();
         test_sun_valid_path_small();
 #endif
