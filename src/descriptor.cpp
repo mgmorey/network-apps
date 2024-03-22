@@ -27,10 +27,8 @@
 #endif
 
 Network::Descriptor::Descriptor(descriptor_type t_handle,
-                                bool t_pending,
                                 bool t_verbose) noexcept :
     m_handle(t_handle),
-    m_pending(t_pending),
     m_verbose(t_verbose)
 {
 }
@@ -47,13 +45,18 @@ auto Network::Descriptor::operator=(descriptor_type value) noexcept ->
     return *this;
 }
 
+auto Network::Descriptor::bound(bool t_bound) -> void
+{
+    m_bound = t_bound;
+}
+
 auto Network::Descriptor::close() noexcept -> Descriptor&
 {
     if (m_handle == descriptor_null) {
         return *this;
     }
 
-    if (m_pending) {
+    if (m_bound) {
 #ifndef WIN32
         try {
             remove_socket(m_handle, m_verbose);
@@ -64,7 +67,7 @@ auto Network::Descriptor::close() noexcept -> Descriptor&
         }
 #endif
 
-        m_pending = false;
+        m_bound = false;
     }
 
     m_handle = Network::close(m_handle, m_verbose);

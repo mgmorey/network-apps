@@ -27,11 +27,17 @@
 #include <sys/socket.h>     // ::bind()
 #endif
 
-auto Network::bind(const Socket& sock,
+auto Network::bind(Socket& sock,
                    const ByteString& addr,
                    bool verbose) -> OsErrorResult
 {
     const OpenHandler handler {::bind, "::bind"};
     const OpenSocketParams args {sock, addr, verbose};
-    return open(handler, args);
+    auto result {open(handler, args)};
+
+    if (!result) {
+        sock.bound(true);
+    }
+
+    return result;
 }

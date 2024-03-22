@@ -6,7 +6,9 @@ run_test_program() (
     case "$basename" in
 	(test-*)
 	    cd "$(dirname "$filename")"
-	    ${valgrind:+$valgrind }"./$basename" >"$basename.log"
+	    if ! ${valgrind:+$valgrind }"./$basename" >"$basename.log"; then
+		printf 'Test program %s failed' $basename
+	    fi
 	    ;;
 	(*)
 	    ;;

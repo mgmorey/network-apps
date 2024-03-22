@@ -22,7 +22,6 @@
 namespace Network
 {
     extern auto create_socketresult(const SocketHints& hints,
-                                    bool pending = false,
                                     bool verbose = false) -> SocketResult;
 }
 

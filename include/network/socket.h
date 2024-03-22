@@ -40,13 +40,10 @@ namespace Network
                socket_type_type t_socktype,
                socket_protocol_type t_protocol = 0,
                socket_flags_type t_flags = 0,
-               bool t_pending = false,
                bool t_verbose = false);
         explicit Socket(const SocketHints& t_hints,
-                        bool t_pending = false,
                         bool t_verbose = false);
         explicit Socket(descriptor_type t_handle,
-                        bool t_pending = false,
                         bool t_verbose = false);
         Socket(const Socket&) noexcept = default;
         Socket(Socket&&) noexcept = default;
@@ -55,6 +52,7 @@ namespace Network
         auto operator=(Socket&&) noexcept -> Socket& = default;
         explicit operator descriptor_type() const noexcept;
         auto close() -> Socket&;
+        auto bound(bool t_bound) -> void;
         [[nodiscard]] auto is_open() const noexcept -> bool;
         [[nodiscard]] auto peername() const -> ByteString;
         [[nodiscard]] auto sockname() const -> ByteString;

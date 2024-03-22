@@ -31,25 +31,21 @@ Network::Socket::Socket(socket_family_type t_family,
                         socket_type_type t_socktype,
                         socket_protocol_type t_protocol,
                         socket_flags_type t_flags,
-                        bool t_pending,
                         bool t_verbose) :
     Socket(SocketHints {t_flags, t_family, t_socktype, t_protocol},
-           t_pending,
            t_verbose)
 {
 }
 
 Network::Socket::Socket(const SocketHints& t_hints,
-                        bool t_pending,
                         bool t_verbose) :
-    Socket(create_socket(t_hints, t_pending, t_verbose))
+    Socket(create_socket(t_hints, t_verbose))
 {
 }
 
 Network::Socket::Socket(descriptor_type t_handle,
-                        bool t_pending,
                         bool t_verbose) :
-    m_descriptor(new Descriptor {t_handle, t_pending, t_verbose})
+    m_descriptor(new Descriptor {t_handle, t_verbose})
 {
 }
 
@@ -57,6 +53,12 @@ Network::Socket::operator descriptor_type() const noexcept
 {
     return m_descriptor->handle();
 }
+
+auto Network::Socket::bound(bool t_bound) -> void
+{
+    m_descriptor->bound(t_bound);
+}
+
 
 auto Network::Socket::close() -> Socket&
 {

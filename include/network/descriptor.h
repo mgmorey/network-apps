@@ -25,7 +25,6 @@ namespace Network
     {
     public:
         explicit Descriptor(descriptor_type t_handle,
-                            bool t_pending,
                             bool t_verbose = false) noexcept;
         Descriptor(const Descriptor&) noexcept = delete;
         Descriptor(Descriptor&&) noexcept = delete;
@@ -33,13 +32,14 @@ namespace Network
         auto operator=(const Descriptor&) noexcept -> Descriptor& = delete;
         auto operator=(Descriptor&&) noexcept -> Descriptor& = delete;
         auto operator=(descriptor_type value) noexcept -> Descriptor&;
+        auto bound(bool t_bound) -> void;
         auto close() noexcept -> Descriptor&;
         [[nodiscard]] auto handle() const noexcept -> descriptor_type;
         [[nodiscard]] auto verbose() const noexcept -> bool;
 
     private:
         descriptor_type m_handle {descriptor_null};
-        bool m_pending:1 {false};
+        bool m_bound:1 {false};
         bool m_verbose:1 {false};
     };
 }

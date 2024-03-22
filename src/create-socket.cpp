@@ -25,11 +25,10 @@
 #include <variant>      // std::visit()
 
 auto Network::create_socket(const SocketHints& hints,
-                            bool pending,
                             bool verbose) -> Socket
 {
-    Socket result {descriptor_null, pending, verbose};
-    const auto socket_result {create_socketresult(hints, pending, verbose)};
+    Socket result {descriptor_null, verbose};
+    const auto socket_result {create_socketresult(hints, verbose)};
     std::visit(Overloaded {
             [&](const Socket& sock) {
                 result = sock;

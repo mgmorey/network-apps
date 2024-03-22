@@ -35,7 +35,6 @@
 #include <sstream>      // std::ostringstream
 
 auto Network::create_socketresult(const SocketHints& hints,
-                                  bool pending,
                                   bool verbose) -> SocketResult
 {
     static constexpr auto delim {", "};
@@ -76,5 +75,5 @@ auto Network::create_socketresult(const SocketHints& hints,
         return OsErrorResult {os_error, oss.str()};
     }
 
-    return Socket {handle, pending, verbose};
+    return Socket {handle, verbose};
 }

@@ -51,7 +51,7 @@ namespace Server {
 
     auto bind() -> Socket
     {
-        Socket bind_sock {AF_UNIX, SOCK_SEQPACKET, 0, 0, true, verbose};
+        Socket bind_sock {AF_UNIX, SOCK_SEQPACKET, 0, 0, verbose};
 
         if (const auto error {Network::bind(bind_sock, SOCKET_NAME, verbose)}) {
             std::cerr << error.string() << std::endl;
