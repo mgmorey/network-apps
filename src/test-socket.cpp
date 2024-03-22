@@ -52,6 +52,7 @@ namespace TestSocket
     using Network::os_error_type;
     using Network::parse;
     using Network::path_length_max;
+    using Network::to_bytestring;
     using Network::to_path;
 
     using ErrorCodeSet = std::set<os_error_type>;
@@ -66,14 +67,16 @@ namespace TestSocket
 
     static bool verbose {false};  // NOLINT
 
-    auto operator==(const ByteString& self, const OptionalPathname& path) -> bool
+    auto operator==(const ByteString& addr,
+                    const OptionalPathname& path) -> bool
     {
-        return to_path(self).value_or(std::string {}) == path;
+        return to_path(addr).value_or(std::string {}) ==
+            path.value_or(std::string {});
     }
 
-    auto operator==(const ByteString& self, const char* path) -> bool
+    auto operator==(const ByteString& addr, const char* path) -> bool
     {
-        return self == std::string {path == nullptr ? "" : path};
+        return addr == std::string {path == nullptr ? "" : path};
     }
 
     auto get_pathname(std::string::size_type size) -> Pathname
@@ -128,12 +131,12 @@ namespace TestSocket
         }
     }
 
-    auto print(const ByteString& self, const Socket& sock) -> void
+    auto print(const Socket& sock, const ByteString& addr) -> void
     {
         std::cout << "Socket "
                   << std::right << std::setw(handle_width) << sock
                   << " bound to "
-                  << Address(self)
+                  << Address(addr)
                   << std::endl;
     }
 
@@ -144,6 +147,7 @@ namespace TestSocket
         std::string actual_error_str;
 
         try {
+            assert(to_bytestring(path) == path);
             const Socket sock {AF_UNIX, SOCK_STREAM, 0, 0, true, verbose};
 
             if (const auto result {bind(sock, path, verbose)}) {
@@ -151,9 +155,9 @@ namespace TestSocket
                 assert(expected_codes.contains(result.number()));
             }
             else {
-                const auto self {sock.sockname()};
-                print(self, sock);
-                assert(self == path);
+                const auto addr {sock.sockname()};
+                print(sock, addr);
+                assert(addr == path);
             }
         }
         catch (const LogicError& error) {
@@ -170,6 +174,12 @@ namespace TestSocket
         }
     }
 
+    auto test_path_valid(const auto path) -> void
+    {
+	const ErrorCodeSet codes_valid {0};
+        return test_path(path, codes_valid, {});
+    }
+
     auto test_paths_invalid() -> void
     {
 #ifndef OS_CYGWIN_NT
@@ -180,12 +190,14 @@ namespace TestSocket
 	const ErrorCodeSet codes_invalid_permission {EACCES};
 #endif
 #endif
-
+	const ErrorCodeSet codes_valid {0};
+        test_path(static_cast<const char *>(nullptr), codes_valid,
+                  expected_error_payload_length_re);
+        test_path(static_cast<OptionalPathname>(std::nullopt), codes_valid,
+                  expected_error_payload_length_re);
         const auto path_max {get_pathname(path_length_max)};
-        test_path(path_max.c_str(), {},
-                  expected_error_path_length_re);
-        test_path(path_max, {},
-                  expected_error_path_length_re);
+        test_path(path_max.c_str(), {}, expected_error_path_length_re);
+        test_path(path_max, {}, expected_error_path_length_re);
 #ifndef OS_CYGWIN_NT
         test_path("/foo/bar", codes_invalid_directory, {});
         test_path("/foo", codes_invalid_permission, {});
@@ -197,22 +209,15 @@ namespace TestSocket
         static constexpr auto size_max {64};	// NOLINT
         static constexpr auto size_min {8};	// NOLINT
 
-	const ErrorCodeSet codes_valid = {0};
-
-        test_path(static_cast<const char *>(nullptr), codes_valid,
-                  expected_error_payload_length_re);
-        test_path(std::nullopt, codes_valid,
-                  expected_error_payload_length_re);
-
         for (std::size_t size = size_min; size <= size_max; size *= 2) {
             const auto path {get_pathname(size)};
-            test_path(path.c_str(), codes_valid, {});
-            test_path(path, codes_valid, {});
+            test_path_valid(path.c_str());
+            test_path_valid(path);
         };
 
         const auto path_max_less_one {get_pathname(path_length_max - 1)};
-        test_path(path_max_less_one.c_str(), codes_valid, {});
-        test_path(path_max_less_one, codes_valid, {});
+        test_path_valid(path_max_less_one.c_str());
+        test_path_valid(path_max_less_one);
     }
 
     auto test_socketpair() -> void
