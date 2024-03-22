@@ -230,14 +230,24 @@ namespace TestSocket
 
     auto test_socketpair() -> void
     {
-        SocketPair pair {AF_UNIX, SOCK_STREAM, 0, 0, verbose};
-        std::cout << "Socket "
-                  << std::right << std::setw(handle_width) << pair.at(0)
-                  << " connected to "
-                  << std::endl
-                  << "Socket "
-                  << std::right << std::setw(handle_width) << pair.at(1)
-                  << std::endl;
+        std::string actual_error_str;
+
+        try {
+            SocketPair pair {AF_UNIX, SOCK_STREAM, 0, 0, verbose};
+            std::cout << "Socket "
+                      << std::right << std::setw(handle_width) << pair.at(0)
+                      << " connected to "
+                      << std::endl
+                      << "Socket "
+                      << std::right << std::setw(handle_width) << pair.at(1)
+                      << std::endl;
+        }
+        catch (const LogicError& error) {
+            print(error);
+            actual_error_str = error.what();
+        }
+
+        assert(actual_error_str.empty());
     }
 }
 
