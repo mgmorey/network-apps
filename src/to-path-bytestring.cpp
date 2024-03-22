@@ -21,22 +21,22 @@
 #include "network/optionalpathname.h"           // OptionalPathname
 #include "network/sun-len-limits.h"             // sun_len_min
 
-#include <cstddef>      // std::size_t
 #include <cstring>      // ::strnlen()
 #include <optional>     // std::nullopt
 #include <string>       // std::string
 
 auto Network::to_path(const ByteString& addr) -> OptionalPathname
 {
-    const auto* const data {get_path_pointer(addr)};
-    const auto size_max {addr.size() - sun_len_min};
-    const auto size {::strnlen(data, size_max)};
+    const auto* const sun_path {get_path_pointer(addr)};
+    const auto sun_len {addr.size()};
+    auto path_len {sun_len - sun_len_min};
 
-    if (size == 0UL) {
+    if (path_len == 0UL) {
         return std::nullopt;
     }
 
-    return std::string {data, size};
+    path_len = ::strnlen(sun_path, path_len);
+    return std::string {sun_path, path_len};
 }
 
 #endif
