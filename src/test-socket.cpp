@@ -66,14 +66,14 @@ namespace TestSocket
 
     static bool verbose {false};  // NOLINT
 
-    auto compare(const OptionalPathname& path, const ByteString& self) -> bool
+    auto operator==(const ByteString& self, const OptionalPathname& path) -> bool
     {
         return to_path(self).value_or(std::string {}) == path;
     }
 
-    auto compare(const char* path, const ByteString& self) -> bool
+    auto operator==(const ByteString& self, const char* path) -> bool
     {
-        return compare(std::string {path == nullptr ? "" : path}, self);
+        return self == std::string {path == nullptr ? "" : path};
     }
 
     auto get_pathname(std::string::size_type size) -> Pathname
@@ -153,7 +153,7 @@ namespace TestSocket
             else {
                 const auto self {sock.sockname()};
                 print(self, sock);
-                assert(compare(path, self));
+                assert(self == path);
             }
         }
         catch (const LogicError& error) {
