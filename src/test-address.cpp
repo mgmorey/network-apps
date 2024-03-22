@@ -138,19 +138,19 @@ namespace TestAddress
 #ifndef WIN32
 
     auto create_sun(sa_family_type family = AF_UNIX,
-                    std::size_t sun_length = sun_size,
-                    std::size_t path_length = 0UL) -> sockaddr_un
+                    std::size_t sun_len = sun_size,
+                    std::size_t path_len = 0UL) -> sockaddr_un
     {
         sockaddr_un sun {};
 #ifdef HAVE_SOCKADDR_SA_LEN
-        sun.sun_len = sun_length;
+        sun.sun_len = sun_len;
 #else
-        static_cast<void>(sun_length);
+        static_cast<void>(sun_len);
 #endif
         sun.sun_family = family;
 
-        if (path_length != 0UL) {
-            std::memset(&sun.sun_path, 'X', path_length);
+        if (path_len != 0UL) {
+            std::memset(&sun.sun_path, 'X', path_len);
         }
 
         return sun;
@@ -373,15 +373,15 @@ namespace TestAddress
 
     auto test_sun_invalid_length() -> void
     {
-        const auto path_length {sun_size - sun_path_offset};
-        const auto sun {create_sun(AF_UNIX, sun_len_max, path_length)};
+        const auto path_len {sun_size - sun_path_offset};
+        const auto sun {create_sun(AF_UNIX, sun_len_max, path_len)};
         test_sun(sun, sun_len_max, expected_error_length_re);
     }
 
     auto test_sun_valid_path_large() -> void
     {
-        const auto path_length {sun_size - sun_path_offset - 1};
-        const auto sun {create_sun(AF_UNIX, sun_len_max, path_length)};
+        const auto path_len {sun_size - sun_path_offset - 1};
+        const auto sun {create_sun(AF_UNIX, sun_len_max, path_len)};
         test_sun(sun, sun_len_max, {});
     }
 
