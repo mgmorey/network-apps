@@ -68,20 +68,12 @@ namespace TestSocket
 
     auto compare(const OptionalPathname& path, const ByteString& self) -> bool
     {
-        if (to_path(self).value_or(std::string {}) == path) {
-            return true;
-        }
-
-        return false;
+        return to_path(self).value_or(std::string {}) == path;
     }
 
     auto compare(const char* path, const ByteString& self) -> bool
     {
-        if (path == nullptr) {
-            path = "";
-        }
-
-        return compare(std::string {path}, self);
+        return compare(std::string {path == nullptr ? "" : path}, self);
     }
 
     auto get_pathname(std::string::size_type size) -> Pathname
