@@ -93,7 +93,7 @@ test_common_sources = test-address.cpp test-bind.cpp test-connect.cpp	\
 test-context.cpp test-host.cpp test-hostname.cpp test-option.cpp	\
 test-parse.cpp test-ranges.cpp
 
-test_unix_sources = test-socket.cpp
+test_posix_sources = test-socket.cpp
 
 unix_sources = unix-client.cpp unix-server.cpp
 
@@ -117,10 +117,8 @@ endif
 
 test_sources = $(test_common_sources)
 
-ifneq "$(os_name)" "Darwin"
 ifneq "$(os_name)" "MINGW64_NT"
-	test_sources += $(test_unix_sources)
-endif
+	test_sources += $(test_posix_sources)
 endif
 
 objects = $(addprefix $(object_dir)/,$(addsuffix	\
@@ -242,8 +240,8 @@ endif
 ifneq "$(sort $(test_common_sources))" "$(test_common_sources)"
 	$(error File names in variable test_common_sources are not sorted)
 endif
-ifneq "$(sort $(test_unix_sources))" "$(test_unix_sources)"
-	$(error File names in variable test_unix_sources are not sorted)
+ifneq "$(sort $(test_posix_sources))" "$(test_posix_sources)"
+	$(error File names in variable test_posix_sources are not sorted)
 endif
 ifneq "$(sort $(unix_sources))" "$(unix_sources)"
 	$(error File names in variable unix_sources are not sorted)
