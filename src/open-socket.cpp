@@ -21,11 +21,11 @@
 #include "network/get-last-context-error.h"     // get_last_context_error()
 #include "network/get-length.h"                 // get_length()
 #include "network/get-sa-pointer.h"             // get_sa_pointer()
-#include "network/sa-len-limits.h"              // sa_len_min
 #include "network/openhandler.h"                // OpenHandler
 #include "network/opensocketparams.h"           // OpenSocketParams
 #include "network/oserrorresult.h"              // OsErrorResult
 #include "network/reset-last-context-error.h"   // reset_last_context_error()
+#include "network/sa-len-limits.h"              // sa_len_min
 #include "network/socket-error.h"               // socket_error
 #include "network/to-os-error.h"                // to_os_error()
 
