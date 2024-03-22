@@ -321,7 +321,7 @@ $(libnetwork_shared): $(libnetwork_objects)
 	$(filter-out -flto,$(LINK$(object_suffix))) -o $@ $^ $(LDLIBS)
 
 $(libnetwork): $(libnetwork_shared)
-	ln -sf $< $@
+	test -e $< && ln -sf $< $@
 
 ifeq "$(USING_ARCHIVE_MEMBER_RULE)" "true"
 $(libnetwork_static): $(libnetwork_members)
