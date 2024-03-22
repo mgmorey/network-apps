@@ -161,7 +161,7 @@ namespace TestSocket
         try {
             assert(to_bytestring(path) == path);
 #ifndef OS_DARWIN
-            const Socket sock {AF_UNIX, SOCK_STREAM, 0, 0, verbose};
+            Socket sock {AF_UNIX, SOCK_STREAM, 0, 0, verbose};
 
             if (const auto result {bind(sock, path, verbose)}) {
                 print(result);
