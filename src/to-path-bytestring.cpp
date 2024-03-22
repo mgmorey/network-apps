@@ -29,12 +29,7 @@ auto Network::to_path(const ByteString& addr) -> OptionalPathname
 {
     const auto* const data {get_path_pointer(addr)};
     const auto size_max {addr.size() - sun_len_min};
-    std::size_t size = 0UL;
-
-    if (size_max != 0UL) {
-        size = ::strnlen(data, size_max);
-    }
-
+    const auto size {::strnlen(data, size_max)};
     return std::string {data, size};
 }
 
