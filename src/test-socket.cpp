@@ -47,10 +47,8 @@ namespace TestSocket
     using Network::OsErrorResult;
     using Network::Pathname;
     using Network::Socket;
-#ifndef OS_DARWIN
     using Network::SocketPair;
     using Network::bind;
-#endif
     using Network::os_error_type;
     using Network::parse;
     using Network::path_length_max;
@@ -62,11 +60,9 @@ namespace TestSocket
     static constexpr auto expected_error_path_length_re {
         R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of path_length_type)"
             };
-#ifndef OS_DARWIN
     static constexpr auto expected_error_payload_length_re {
         R"(Address payload length is zero: .+)"
             };
-#endif
     static constexpr auto handle_width {6};
 
     static bool verbose {false};  // NOLINT
@@ -160,7 +156,6 @@ namespace TestSocket
 
         try {
             assert(to_bytestring(path) == path);
-#ifndef OS_DARWIN
             Socket sock {AF_UNIX, SOCK_STREAM, 0, 0, verbose};
 
             if (const auto result {bind(sock, path, verbose)}) {
@@ -172,9 +167,6 @@ namespace TestSocket
                 print(sock, addr);
                 assert(addr == path);
             }
-#else
-            static_cast<void>(expected_codes);
-#endif
         }
         catch (const LogicError& error) {
             print(error);
@@ -206,13 +198,11 @@ namespace TestSocket
 	const ErrorCodeSet codes_invalid_permission {EACCES};
 #endif
 #endif
-#ifndef OS_DARWIN
 	const ErrorCodeSet codes_valid {0};
         test_path(static_cast<const char *>(nullptr), codes_valid,
                   expected_error_payload_length_re);
         test_path(static_cast<OptionalPathname>(std::nullopt), codes_valid,
                   expected_error_payload_length_re);
-#endif
         const auto path_max {get_pathname(path_length_max)};
         test_path(path_max.c_str(), {}, expected_error_path_length_re);
         test_path(path_max, {}, expected_error_path_length_re);
