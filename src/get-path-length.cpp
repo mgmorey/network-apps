@@ -17,26 +17,30 @@
 
 #include "network/get-path-length.h"            // get_path_length()
 #include "network/get-path-pointer-sun.h"       // get_path_pointer()
-#include "network/os-features.h"                // HAVE_SOCKADDR_SA_LEN
-#include "network/path-length-type.h"           // path_length_type,
+#include "network/path-length-type.h"           // path_length_type
 #include "network/sun-len-limits.h"             // sun_len_min
-#include "network/to-sun-len.h"                 // to_sun_len()
+#include "network/sun-len-type.h"               // sun_len_type
 
 #include <sys/un.h>         // sockaddr_un
 
 #include <cstring>      // ::strnlen()
 
-auto Network::get_path_length(const sockaddr_un* sun,
-                              path_length_type size) -> path_length_type
+auto Network::get_path_length(const char* path,
+                              path_length_type path_len) -> path_length_type
 {
-#ifdef HAVE_SOCKADDR_SA_LEN
-    const auto sun_len {to_sun_len(sun->sun_len, size)};
-#else
-    const auto sun_len {size};
-#endif
+    if (path_len == 0UL) {
+        return path_len;
+    }
+
+    return ::strnlen(path, path_len - 1);
+}
+
+auto Network::get_path_length(const sockaddr_un* sun,
+                              sun_len_type sun_len) -> path_length_type
+{
     const auto* const path {get_path_pointer(sun)};
     const auto path_len {sun_len - sun_len_min};
-    return ::strnlen(path, path_len);  // NOLINT
+    return get_path_length(path, path_len);
 }
 
 #endif

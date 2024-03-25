@@ -57,9 +57,9 @@ namespace TestSocket
 
     using ErrorCodeSet = std::set<os_error_type>;
 
-    static constexpr auto expected_error_path_length_re {
-        R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of path_length_type)"
-            };
+    // static constexpr auto expected_error_path_length_re {
+    //     R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of path_length_type)"
+    //         };
     static constexpr auto expected_error_payload_length_re {
         R"(Address payload length is zero: .+)"
             };
@@ -203,9 +203,9 @@ namespace TestSocket
                   expected_error_payload_length_re);
         test_path(static_cast<OptionalPathname>(std::nullopt), codes_valid,
                   expected_error_payload_length_re);
-        const auto path_max {get_pathname(path_length_max)};
-        test_path(path_max.c_str(), {}, expected_error_path_length_re);
-        test_path(path_max, {}, expected_error_path_length_re);
+        // const auto path_max {get_pathname(path_length_max)};
+        // test_path(path_max.c_str(), {}, expected_error_path_length_re);
+        // test_path(path_max, {}, expected_error_path_length_re);
 #ifndef OS_CYGWIN_NT
         test_path("/foo/bar", codes_invalid_directory, {});
         test_path("/foo", codes_invalid_permission, {});

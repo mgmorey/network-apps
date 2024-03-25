@@ -17,6 +17,7 @@
 #define NETWORK_GET_PATH_LENGTH_H
 
 #include "network/path-length-type.h"           // path_length_type
+#include "network/sun-len-type.h"               // sun_len_type
 
 #ifndef WIN32
 #include <sys/un.h>         // sockaddr_un
@@ -25,8 +26,10 @@
 namespace Network
 {
 #ifndef WIN32
+    extern auto get_path_length(const char* path,
+                                path_length_type path_len) -> path_length_type;
     extern auto get_path_length(const sockaddr_un* sun,
-                                path_length_type size) -> path_length_type;
+                                sun_len_type sun_len) -> path_length_type;
 #endif
 }
 

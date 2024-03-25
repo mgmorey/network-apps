@@ -30,7 +30,7 @@ auto Network::get_sun_length(const sockaddr_un* sun,
     const auto path_len {get_path_length(sun, size)};
     auto sun_len {sun_path_offset + path_len};
 
-    if (path_len > path_length_min && path_len < path_length_max) {
+    if (path_len > path_length_min) {
         ++sun_len;
     }
 

@@ -21,7 +21,7 @@
 namespace Network
 {
 #ifndef WIN32
-    static constexpr auto path_length_max {sun_path_size};
+    static constexpr auto path_length_max {sun_path_size - 1};
     static constexpr auto path_length_min {0};
 #endif
 }

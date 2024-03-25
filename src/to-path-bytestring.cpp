@@ -35,7 +35,7 @@ auto Network::to_path(const ByteString& addr) -> OptionalPathname
     }
 
     const auto path_len {sun_len - sun_len_min};
-    return std::string {sun_path, ::strnlen(sun_path, path_len)};
+    return std::string {sun_path, ::strnlen(sun_path, path_len - 1)};
 }
 
 #endif
