@@ -17,14 +17,9 @@
 
 #include "network/to-bytestring-char.h"         // to_bytestring()
 #include "network/bytestring.h"                 // ByteString
-#include "network/get-path-length.h"            // get_path_length()
 #include "network/get-path-pointer-sun.h"       // get_path_pointer()
 #include "network/get-sun-length.h"             // get_sun_length()
 #include "network/os-features.h"                // HAVE_SOCKADDR_SA_LEN
-#include "network/path-length-limits.h"         // path_length_max,
-                                                // path_length_min
-#include "network/sun-len-limits.h"             // sun_len_min
-#include "network/sun-len-type.h"               // sun_len_type
 #include "network/to-bytespan.h"                // to_bytespan()
 #include "network/to-bytestring-span.h"         // to_bytestring()
 #include "network/to-path-length.h"             // to_path_length()
