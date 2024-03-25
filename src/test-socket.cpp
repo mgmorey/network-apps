@@ -223,7 +223,7 @@ namespace TestSocket
             test_path_valid(path);
         };
 
-        const auto path_max_less_one {get_pathname(path_length_max - 1)};
+        const auto path_max_less_one {get_pathname(path_length_max)};
         test_path_valid(path_max_less_one.c_str());
         test_path_valid(path_max_less_one);
     }
