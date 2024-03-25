@@ -228,7 +228,6 @@ namespace TestSocket
         test_path_valid(path_max_less_one);
     }
 
-#ifndef OS_DARWIN
     auto test_socketpair() -> void
     {
         std::string actual_error_str;
@@ -250,7 +249,6 @@ namespace TestSocket
 
         assert(actual_error_str.empty());
     }
-#endif
 }
 
 auto main(int argc, char* argv[]) -> int
@@ -265,9 +263,7 @@ auto main(int argc, char* argv[]) -> int
             std::cout << context << std::endl;
         }
 
-#ifndef OS_DARWIN
         test_socketpair();
-#endif
         test_paths_valid();
         test_paths_invalid();
     }
