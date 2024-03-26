@@ -37,7 +37,7 @@
 auto Network::get_nameresult(const GetNameHandler& handler,
                              const GetNameParams& args) -> ByteStringResult
 {
-    Buffer<Byte> addr {sa_len_max, false};
+    Buffer<Byte> addr {sa_len_max};
     auto* addr_ptr {get_sa_pointer(addr)};
     auto addr_len {to_socket_length(addr.size())};
     const AddressString addr_str {addr};

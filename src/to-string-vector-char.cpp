@@ -20,18 +20,12 @@
 #include <vector>       // std::vector
 
 auto Network::to_string(std::vector<char>::const_iterator cbegin,
-                        std::vector<char>::const_iterator cend,
-                        bool is_text) -> std::string
+                        std::vector<char>::const_iterator cend) -> std::string
 {
-    if (is_text) {
-        cend = std::find(cbegin, cend, '\0');
-    }
-
-    return {cbegin, cend};
+    return {cbegin, std::find(cbegin, cend, '\0')};
 }
 
-auto Network::to_string(const std::vector<char>& v,
-                        bool is_text) -> std::string
+auto Network::to_string(const std::vector<char>& v) -> std::string
 {
-    return to_string(v.cbegin(), v.cend(), is_text);
+    return to_string(v.cbegin(), v.cend());
 }

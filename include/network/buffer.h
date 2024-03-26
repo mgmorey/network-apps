@@ -31,9 +31,8 @@ namespace Network
         using size_type = std::size_t;
         using value_type = std::vector<T>;
 
-        explicit Buffer(size_type t_size, bool t_is_text = true)
-            : m_is_text(t_is_text),
-              m_value(t_size, {})
+        explicit Buffer(size_type t_size)
+            : m_value(t_size, {})
         {
         }
 
@@ -50,7 +49,7 @@ namespace Network
 
         operator std::basic_string<T>() const // NOLINT
         {
-            return to_string(m_value, m_is_text);
+            return to_string(m_value);
         }
 
         [[nodiscard]] auto cbegin() const noexcept ->
@@ -87,11 +86,10 @@ namespace Network
 
         [[nodiscard]] auto text() const -> std::string
         {
-            return to_string(m_value, m_is_text);
+            return to_string(m_value);
         }
 
     private:
-        bool m_is_text {true};
         value_type m_value;
     };
 }
