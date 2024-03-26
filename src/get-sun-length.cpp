@@ -17,8 +17,7 @@
 
 #include "network/get-sun-length.h"             // get_sun_length()
 #include "network/get-path-length.h"            // get_path_length()
-#include "network/path-length-limits.h"         // path_length_max,
-                                                // path_length_min
+#include "network/path-length-limits.h"         // path_length_min
 #include "network/sun-len-type.h"               // sun_len_type
 #include "network/sun-offsets.h"                // sun_path_offset
 
