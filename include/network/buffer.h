@@ -85,11 +85,6 @@ namespace Network
             return m_value.size();
         }
 
-        [[nodiscard]] auto text() const -> std::string
-        {
-            return to_string(m_value);
-        }
-
     private:
         value_type m_value;
     };
