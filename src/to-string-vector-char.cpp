@@ -19,13 +19,7 @@
 #include <string>       // std::string
 #include <vector>       // std::vector
 
-auto Network::to_string(std::vector<char>::const_iterator cbegin,
-                        std::vector<char>::const_iterator cend) -> std::string
-{
-    return {cbegin, std::find(cbegin, cend, '\0')};
-}
-
 auto Network::to_string(const std::vector<char>& v) -> std::string
 {
-    return to_string(v.cbegin(), v.cend());
+    return {v.cbegin(), std::find(v.cbegin(), v.cend(), '\0')};
 }

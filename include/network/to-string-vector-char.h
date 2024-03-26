@@ -21,9 +21,6 @@
 
 namespace Network
 {
-    extern auto to_string(std::vector<char>::const_iterator cbegin,
-                          std::vector<char>::const_iterator cend) ->
-        std::string;
     extern auto to_string(const std::vector<char>& v) -> std::string;
 }
 
