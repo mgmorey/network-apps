@@ -27,7 +27,7 @@
                                                 // operator<<()
 #include "network/string-null.h"                // string_null
 #include "network/to-bytestring-ai.h"           // to_bytestring()
-#include "network/to-hex.h"                     // to_hex()
+#include "network/to-string-vector-byte.h"      // to_string()
 
 #ifdef WIN32
 #include <ws2tcpip.h>   // addrinfo
@@ -75,7 +75,7 @@ auto Network::operator<<(std::ostream& os,
            << Format(tab, "ai_addrlen")
            << ai.ai_addrlen
            << Format(tab, "ai_addr")
-           << to_hex(addr)
+           << to_string(addr)
            << Format(tab, "ai_canonname")
            << (ai.ai_canonname == nullptr ? string_null :
                ai.ai_canonname)

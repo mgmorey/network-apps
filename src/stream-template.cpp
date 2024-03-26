@@ -13,10 +13,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/template.h"           // Template, operator<<()
-#include "network/format.h"             // Format, operator<<()
-#include "network/string-null.h"        // string_null
-#include "network/to-hex.h"             // to_hex()
+#include "network/template.h"                   // Template, operator<<()
+#include "network/format.h"                     // Format, operator<<()
+#include "network/string-null.h"                // string_null
+#include "network/to-string-vector-byte.h"      // to_string()
 
 #include <ostream>      // operator<<(), std::ostream
 
@@ -35,7 +35,7 @@ auto Network::operator<<(std::ostream& os,
        << Format(tab, "protocol")
        << sock.protocol()
        << Format(tab, "address")
-       << to_hex(sock.address())
+       << to_string(sock.address())
        << Format(tab, "canonical_name")
        << sock.canonical_name().value_or(string_null)
        << ')';

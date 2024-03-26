@@ -120,7 +120,6 @@
 #ifndef WIN32
 #include "network/to-sun-len.h"                 // to_sun_len()
 #endif
-#include "network/to-hex.h"                     // to_hex()
 #include "network/types.h"                      // Buffer, ByteString,
                                                 // Hostname,
                                                 // OptionalHostname,

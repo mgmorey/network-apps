@@ -18,7 +18,7 @@
 #include "network/bytestring.h"                 // ByteString
 #include "network/logicerror.h"                 // LogicError
 #include "network/optionalstring.h"             // OptionalString
-#include "network/to-hex.h"                     // to_hex()
+#include "network/to-string-vector-byte.h"      // to_string()
 
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
@@ -31,7 +31,7 @@ auto Network::format(const ByteString& addr) noexcept -> std::string
         return oss.str();
     }
     catch (const LogicError& error) {
-        return to_hex(addr);
+        return to_string(addr);
     }
 }
 

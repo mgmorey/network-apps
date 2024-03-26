@@ -13,27 +13,29 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/to-hex.h"             // to_hex()
-#include "network/bytestring.h"         // ByteString
+#include "network/to-string-vector-byte.h"      // to_string()
+#include "network/byte.h"                       // Byte
 
 #include <iomanip>      // std::setfill(), std::setw()
 #include <ios>          // std::hex, std::ios, std::uppercase
 #include <sstream>      // std::ostringstream
+#include <string>       // std::string
+#include <vector>       // std::vector
 
-auto Network::to_hex(const ByteString& bs) -> std::string
+auto Network::to_string(const std::vector<Byte>& v) -> std::string
 {
     std::ostringstream oss;
     std::ios format {nullptr};
     format.copyfmt(oss);
     oss << "0x";
 
-    if (bs.empty()) {
+    if (v.empty()) {
         oss << '0';
     }
     else {
         oss << std::hex;
 
-        for (const auto byte : bs) {
+        for (const auto byte : v) {
             oss << std::setfill('0')
                 << std::setw(2)
                 << std::uppercase
