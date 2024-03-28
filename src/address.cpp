@@ -104,11 +104,6 @@ auto Network::Address::port() const -> port_type
     }
 }
 
-auto Network::Address::size() const -> std::size_t
-{
-    return m_value.size();
-}
-
 auto Network::Address::text() const -> std::string
 {
     switch (sa_family()) {

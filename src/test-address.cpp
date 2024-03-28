@@ -56,6 +56,7 @@
 namespace TestAddress
 {
     using Network::Address;
+    using Network::ByteString;
     using Network::Context;
     using Network::Error;
     using Network::HostVector;
@@ -177,12 +178,11 @@ namespace TestAddress
         static_cast<void>(_);
     }
 
-    auto print(const Address& address) -> void
+    auto print(const Address& address, std::size_t size) -> void
     {
         const auto length {address.length()};
         const auto family {address.family()};
         const auto port {address.port()};
-        const auto size {address.size()};
         const auto text {address.text()};
         std::cout << "    "
                   << SocketFamily(family)
@@ -386,7 +386,7 @@ namespace TestAddress
 
 #endif
 
-    auto test_valid(const Address& address) -> void
+    auto test_valid(const Address& address, std::size_t size) -> void
     {
         const auto family {address.family()};
 
@@ -402,7 +402,6 @@ namespace TestAddress
             assert(false);
         }
 
-        const auto size {address.size()};
         const auto size_max {get_sa_size_maximum(family)};
         const auto size_min {get_sa_size_minimum(family)};
 
@@ -436,10 +435,11 @@ namespace TestAddress
                               << ": "
                               << std::endl;
 
-                    for (const auto& host : hosts) {
-                        const Address address {host.address()};
-                        print(address);
-                        test_valid(address);
+                    for (const auto &host : hosts) {
+                        const ByteString& addr {host.address()};
+                        const Address address {addr};
+                        print(address, addr.size());
+                        test_valid(address, addr.size());
                     }
                 },
                     [&](const OsErrorResult& result) {

@@ -59,7 +59,6 @@ namespace Network
         [[nodiscard]] auto family() const -> socket_family_type;
         [[nodiscard]] auto length() const -> socket_length_type;
         [[nodiscard]] auto port() const -> port_type;
-        [[nodiscard]] auto size() const -> std::size_t;
         [[nodiscard]] auto text() const -> std::string;
 
     protected:
