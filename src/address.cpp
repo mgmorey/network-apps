@@ -14,9 +14,9 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/address.h"                    // Address
-#include "network/length-type.h"                // length_type
 #include "network/port-type.h"                  // port_type
 #include "network/socket-family-type.h"         // socket_family_type
+#include "network/socket-family-type.h"         // socket_length_type
 #include "network/validate-bs.h"                // validate()
 
 #ifdef WIN32
