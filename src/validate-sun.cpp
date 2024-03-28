@@ -46,7 +46,6 @@ namespace {
     auto validate_sun(const sockaddr_un* sun, sun_len_type size) -> void
     {
         const auto sun_len {to_sun_len(get_sun_length(sun, size))};
-
 #ifdef HAVE_SOCKADDR_SA_LEN
 
         if (std::cmp_not_equal(sun->sun_len, sun_len)) {

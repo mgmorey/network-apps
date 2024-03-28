@@ -49,7 +49,6 @@ namespace {
     auto validate_sa(const sockaddr* sa, sa_len_type size) -> void
     {
         const auto sa_len {to_sa_len(size)};
-
 #ifdef HAVE_SOCKADDR_SA_LEN
 
         if (std::cmp_not_equal(sa->sa_len, 0) &&
