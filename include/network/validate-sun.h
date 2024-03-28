@@ -26,10 +26,10 @@ namespace Network
 {
 #ifndef WIN32
     extern auto validate(const sockaddr_un* sun,
-                         sun_len_type size = sizeof(sockaddr_un)) ->
+                         sun_len_type sun_len = sizeof(sockaddr_un)) ->
         const sockaddr_un*;
     extern auto validate(sockaddr_un* sun,
-                         sun_len_type size = sizeof(sockaddr_un)) ->
+                         sun_len_type sun_len = sizeof(sockaddr_un)) ->
         sockaddr_un*;
 #endif
 }
