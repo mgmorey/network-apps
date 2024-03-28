@@ -23,7 +23,7 @@
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
 
-auto Network::format(const ByteString& addr) noexcept -> std::string
+auto Network::format(const ByteString& addr) -> std::string
 {
     try {
         std::ostringstream oss;
@@ -36,7 +36,7 @@ auto Network::format(const ByteString& addr) noexcept -> std::string
 }
 
 auto Network::format(const ByteString& addr,
-                     OptionalString& addr_str) noexcept -> std::string
+                     OptionalString& addr_str) -> std::string
 {
     if (!addr_str) {
         addr_str = format(addr);

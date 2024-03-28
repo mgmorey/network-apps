@@ -36,42 +36,42 @@ namespace Network
     class Address
     {
         friend auto operator<<(std::ostream& os,
-                               const Address& address) noexcept ->
+                               const Address& address) ->
             std::ostream&;
 
     public:
         using value_type = ByteString;
 
-        Address() noexcept = default;
+        Address() = default;
         explicit Address(const value_type& t_value);
         explicit Address(value_type&& t_value);
-        Address(const Address&) noexcept = default;
-        Address(Address&&) noexcept = default;
-        ~Address() noexcept = default;
-        auto operator=(const Address&) noexcept -> Address& = default;
-        auto operator=(Address&&) noexcept -> Address& = default;
+        Address(const Address&) = default;
+        Address(Address&&) = default;
+        ~Address() = default;
+        auto operator=(const Address&) -> Address& = default;
+        auto operator=(Address&&) -> Address& = default;
         auto operator=(const value_type& t_value) -> Address&;
-        auto operator<(const Address& t_address) const noexcept -> bool;
-        auto operator>(const Address& t_address) const noexcept -> bool;
-        auto operator==(const Address& t_address) const noexcept -> bool;
+        auto operator<(const Address& t_address) const -> bool;
+        auto operator>(const Address& t_address) const -> bool;
+        auto operator==(const Address& t_address) const -> bool;
         explicit operator value_type() const;
-        [[nodiscard]] auto empty() const noexcept -> bool;
-        [[nodiscard]] auto family() const noexcept -> socket_family_type;
-        [[nodiscard]] auto length() const noexcept -> socket_length_type;
-        [[nodiscard]] auto port() const noexcept -> port_type;
-        [[nodiscard]] auto size() const noexcept -> std::size_t;
-        [[nodiscard]] auto text() const noexcept -> std::string;
+        [[nodiscard]] auto empty() const -> bool;
+        [[nodiscard]] auto family() const -> socket_family_type;
+        [[nodiscard]] auto length() const -> socket_length_type;
+        [[nodiscard]] auto port() const -> port_type;
+        [[nodiscard]] auto size() const -> std::size_t;
+        [[nodiscard]] auto text() const -> std::string;
 
     protected:
-        [[nodiscard]] auto sa_family() const noexcept -> socket_family_type;
-        [[nodiscard]] auto sa_length() const noexcept -> socket_length_type;
-        [[nodiscard]] auto sa_text() const noexcept -> std::string;
-        [[nodiscard]] auto sin_addr() const noexcept -> in_addr;
-        [[nodiscard]] auto sin_port() const noexcept -> port_type;
-        [[nodiscard]] auto sin_text() const noexcept -> std::string;
-        [[nodiscard]] auto sin6_addr() const noexcept -> in6_addr;
-        [[nodiscard]] auto sin6_port() const noexcept -> port_type;
-        [[nodiscard]] auto sin6_text() const noexcept -> std::string;
+        [[nodiscard]] auto sa_family() const -> socket_family_type;
+        [[nodiscard]] auto sa_length() const -> socket_length_type;
+        [[nodiscard]] auto sa_text() const -> std::string;
+        [[nodiscard]] auto sin_addr() const -> in_addr;
+        [[nodiscard]] auto sin_port() const -> port_type;
+        [[nodiscard]] auto sin_text() const -> std::string;
+        [[nodiscard]] auto sin6_addr() const -> in6_addr;
+        [[nodiscard]] auto sin6_port() const -> port_type;
+        [[nodiscard]] auto sin6_text() const -> std::string;
 #ifndef WIN32
         [[nodiscard]] auto sun_text() const -> std::string;
 #endif
@@ -81,7 +81,7 @@ namespace Network
     };
 
     extern auto operator<<(std::ostream& os,
-                           const Address& address) noexcept -> std::ostream&;
+                           const Address& address) -> std::ostream&;
 }
 
 #endif

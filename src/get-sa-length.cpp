@@ -23,7 +23,7 @@
 #include "network/to-sa-len.h"                  // to_sa_len()
 #endif
 
-auto Network::get_sa_length(const ByteString& addr) noexcept ->
+auto Network::get_sa_length(const ByteString& addr) ->
     socket_length_type
 {
 #ifdef HAVE_SOCKADDR_SA_LEN

@@ -27,12 +27,12 @@ namespace Network
                                const AddressString& as) -> std::ostream&;
 
     public:
-        explicit AddressString(const ByteString& t_addr) noexcept;
-        AddressString(const AddressString&) noexcept = default;
-        AddressString(AddressString&&) noexcept = default;
-        ~AddressString() noexcept = default;
-        auto operator=(const AddressString&) noexcept -> AddressString& = default;
-        auto operator=(AddressString&&) noexcept -> AddressString& = default;
+        explicit AddressString(const ByteString& t_addr);
+        AddressString(const AddressString&) = default;
+        AddressString(AddressString&&) = default;
+        ~AddressString() = default;
+        auto operator=(const AddressString&) -> AddressString& = default;
+        auto operator=(AddressString&&) -> AddressString& = default;
         explicit operator std::string() const;
 
     private:

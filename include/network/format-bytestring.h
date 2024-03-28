@@ -23,9 +23,9 @@
 
 namespace Network
 {
-    extern auto format(const ByteString& addr) noexcept -> std::string;
+    extern auto format(const ByteString& addr) -> std::string;
     extern auto format(const ByteString& addr,
-                       OptionalString& addr_str) noexcept -> std::string;
+                       OptionalString& addr_str) -> std::string;
 }
 
 #endif

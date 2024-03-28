@@ -48,7 +48,7 @@ auto Network::Address::operator=(const value_type& t_value) -> Address&
     return *this;
 }
 
-auto Network::Address::operator<(const Address& t_address) const noexcept ->
+auto Network::Address::operator<(const Address& t_address) const ->
     bool
 {
     return (family() < t_address.family() ||
@@ -56,7 +56,7 @@ auto Network::Address::operator<(const Address& t_address) const noexcept ->
             text() < t_address.text());
 }
 
-auto Network::Address::operator>(const Address& t_address) const noexcept ->
+auto Network::Address::operator>(const Address& t_address) const ->
     bool
 {
     return (family() > t_address.family() ||
@@ -64,7 +64,7 @@ auto Network::Address::operator>(const Address& t_address) const noexcept ->
             text() > t_address.text());
 }
 
-auto Network::Address::operator==(const Address& t_address) const noexcept ->
+auto Network::Address::operator==(const Address& t_address) const ->
     bool
 {
     return (family() == t_address.family() &&
@@ -77,22 +77,22 @@ Network::Address::operator value_type() const
     return m_value;
 }
 
-auto Network::Address::empty() const noexcept -> bool
+auto Network::Address::empty() const -> bool
 {
     return m_value.empty();
 }
 
-auto Network::Address::family() const noexcept -> socket_family_type
+auto Network::Address::family() const -> socket_family_type
 {
     return sa_family();
 }
 
-auto Network::Address::length() const noexcept -> socket_length_type
+auto Network::Address::length() const -> socket_length_type
 {
     return sa_length();
 }
 
-auto Network::Address::port() const noexcept -> port_type
+auto Network::Address::port() const -> port_type
 {
     switch (sa_family()) {
     case AF_INET:
@@ -104,12 +104,12 @@ auto Network::Address::port() const noexcept -> port_type
     }
 }
 
-auto Network::Address::size() const noexcept -> std::size_t
+auto Network::Address::size() const -> std::size_t
 {
     return m_value.size();
 }
 
-auto Network::Address::text() const noexcept -> std::string
+auto Network::Address::text() const -> std::string
 {
     switch (sa_family()) {
 #ifndef WIN32

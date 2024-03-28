@@ -23,17 +23,17 @@
 
 #include <string>       // std::string
 
-auto Network::Address::sa_family() const noexcept -> socket_family_type
+auto Network::Address::sa_family() const -> socket_family_type
 {
     return get_sa_family(m_value);
 }
 
-auto Network::Address::sa_length() const noexcept -> socket_length_type
+auto Network::Address::sa_length() const -> socket_length_type
 {
     return get_sa_length(m_value);
 }
 
-auto Network::Address::sa_text() const noexcept -> std::string
+auto Network::Address::sa_text() const -> std::string
 {
     return to_string(m_value);
 }

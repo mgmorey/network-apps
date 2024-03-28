@@ -21,7 +21,7 @@
 
 namespace Network
 {
-    extern auto get_sa_length(const ByteString &addr) noexcept ->
+    extern auto get_sa_length(const ByteString &addr) ->
         socket_length_type;
 }
 

@@ -20,7 +20,7 @@
 #include <ostream>      // std::ostream
 #include <string>       // std::string
 
-Network::AddressString::AddressString(const ByteString& t_addr) noexcept :
+Network::AddressString::AddressString(const ByteString& t_addr) :
     m_addr(t_addr)
 {
 }

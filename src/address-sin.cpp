@@ -27,17 +27,17 @@
 
 #include <string>       // std::string
 
-auto Network::Address::sin_addr() const noexcept -> in_addr
+auto Network::Address::sin_addr() const -> in_addr
 {
     return get_sin_addr(m_value);
 }
 
-auto Network::Address::sin_port() const noexcept -> port_type
+auto Network::Address::sin_port() const -> port_type
 {
     return get_sin_port(m_value);
 }
 
-auto Network::Address::sin_text() const noexcept -> std::string
+auto Network::Address::sin_text() const -> std::string
 {
     return to_string(sin_addr());
 }
