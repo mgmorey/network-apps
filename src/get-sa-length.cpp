@@ -28,7 +28,12 @@ auto Network::get_sa_length(const ByteString& addr) ->
 {
 #ifdef HAVE_SOCKADDR_SA_LEN
     const auto* const sa {get_sa_pointer(addr)};
-    return sa->sa_len != 0 ? to_sa_len(sa->sa_len) : 0;
+
+    if (sa->sa_len == 0) {
+        return 0;
+    }
+
+    return sa->sa_len;
 #else
     static_cast<void>(addr);
     return 0;
