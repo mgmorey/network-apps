@@ -185,7 +185,7 @@ namespace TestSocket
     auto test_path_valid(const auto path) -> void
     {
 	const ErrorCodeSet codes_valid {0};
-        return test_path(path, codes_valid, {});
+        test_path(path, codes_valid, {});
     }
 
     auto test_paths_invalid() -> void
