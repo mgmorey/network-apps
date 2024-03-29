@@ -14,12 +14,14 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/address.h"                    // Address
+#include "network/os-features.h"                // HAVE_SOCKADDR_SA_LEN
 #include "network/port-type.h"                  // port_type
 #include "network/socket-family-type.h"         // socket_family_type
-#ifdef HAVE_SOCKADDR_SA_LEN
-#include "network/socket-family-type.h"         // socket_length_type
-#endif
 #include "network/validate-bs.h"                // validate()
+
+#ifdef HAVE_SOCKADDR_SA_LEN
+#include "network/socket-length-type.h"         // socket_length_type
+#endif
 
 #ifdef WIN32
 #include <winsock2.h>       // AF_INET, AF_INET6
@@ -27,7 +29,6 @@
 #include <sys/socket.h>     // AF_INET, AF_INET6
 #endif
 
-#include <cstddef>      // std::size_t
 #include <string>       // std::string
 #include <utility>      // std::move()
 

@@ -14,14 +14,15 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/address.h"                    // Address
-#include "network/bytespan.h"                   // ByteSpan
 #include "network/get-sa-family.h"              // get_sa_family()
-#include "network/get-sa-length.h"              // get_sa_length()
+#include "network/os-features.h"                // HAVE_SOCKADDR_SA_LEN
 #include "network/socket-family-type.h"         // socket_family_type
+#include "network/to-string-vector-byte.h"      // to_string()
+
 #ifdef HAVE_SOCKADDR_SA_LEN
+#include "network/get-sa-length.h"              // get_sa_length()
 #include "network/socket-length-type.h"         // socket_length_type
 #endif
-#include "network/to-string-vector-byte.h"      // to_string()
 
 #include <string>       // std::string
 
