@@ -16,7 +16,9 @@
 #include "network/address.h"                    // Address
 #include "network/port-type.h"                  // port_type
 #include "network/socket-family-type.h"         // socket_family_type
+#ifdef HAVE_SOCKADDR_SA_LEN
 #include "network/socket-family-type.h"         // socket_length_type
+#endif
 #include "network/validate-bs.h"                // validate()
 
 #ifdef WIN32
@@ -87,10 +89,14 @@ auto Network::Address::family() const -> socket_family_type
     return sa_family();
 }
 
+#ifdef HAVE_SOCKADDR_SA_LEN
+
 auto Network::Address::length() const -> socket_length_type
 {
     return sa_length();
 }
+
+#endif
 
 auto Network::Address::port() const -> port_type
 {

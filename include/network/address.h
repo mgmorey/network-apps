@@ -19,7 +19,9 @@
 #include "network/bytestring.h"                 // ByteString
 #include "network/port-type.h"                  // port_type
 #include "network/socket-family-type.h"         // socket_family_type
+#ifdef HAVE_SOCKADDR_SA_LEN
 #include "network/socket-length-type.h"         // socket_length_type
+#endif
 
 #ifdef WIN32
 #include <winsock2.h>       // in_addr
@@ -57,13 +59,17 @@ namespace Network
         explicit operator value_type() const;
         [[nodiscard]] auto empty() const -> bool;
         [[nodiscard]] auto family() const -> socket_family_type;
+#ifdef HAVE_SOCKADDR_SA_LEN
         [[nodiscard]] auto length() const -> socket_length_type;
+#endif
         [[nodiscard]] auto port() const -> port_type;
         [[nodiscard]] auto text() const -> std::string;
 
     protected:
         [[nodiscard]] auto sa_family() const -> socket_family_type;
+#ifdef HAVE_SOCKADDR_SA_LEN
         [[nodiscard]] auto sa_length() const -> socket_length_type;
+#endif
         [[nodiscard]] auto sa_text() const -> std::string;
         [[nodiscard]] auto sin_addr() const -> in_addr;
         [[nodiscard]] auto sin_port() const -> port_type;

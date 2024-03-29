@@ -180,8 +180,10 @@ namespace TestAddress
 
     auto print(const Address& address, std::size_t size) -> void
     {
-        const auto length {address.length()};
         const auto family {address.family()};
+#ifdef HAVE_SOCKADDR_SA_LEN
+        const auto length {address.length()};
+#endif
         const auto port {address.port()};
         const auto text {address.text()};
         std::cout << "    "
@@ -190,9 +192,11 @@ namespace TestAddress
                   << std::setw(print_key_width) << "        Size: "
                   << std::right << std::setw(print_value_width) << size
                   << std::endl
+#ifdef HAVE_SOCKADDR_SA_LEN
                   << std::setw(print_key_width) << "        Length: "
                   << std::right << std::setw(print_value_width) << length
                   << std::endl
+#endif
                   << std::setw(print_key_width) << "        Port: "
                   << std::right << std::setw(print_value_width) << port
                   << std::endl

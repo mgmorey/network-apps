@@ -18,7 +18,9 @@
 #include "network/get-sa-family.h"              // get_sa_family()
 #include "network/get-sa-length.h"              // get_sa_length()
 #include "network/socket-family-type.h"         // socket_family_type
+#ifdef HAVE_SOCKADDR_SA_LEN
 #include "network/socket-length-type.h"         // socket_length_type
+#endif
 #include "network/to-string-vector-byte.h"      // to_string()
 
 #include <string>       // std::string
@@ -28,10 +30,14 @@ auto Network::Address::sa_family() const -> socket_family_type
     return get_sa_family(m_value);
 }
 
+#ifdef HAVE_SOCKADDR_SA_LEN
+
 auto Network::Address::sa_length() const -> socket_length_type
 {
     return get_sa_length(m_value);
 }
+
+#endif
 
 auto Network::Address::sa_text() const -> std::string
 {

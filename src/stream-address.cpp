@@ -16,6 +16,7 @@
 #include "network/address.h"                    // Address,
                                                 // operator<<(),
 #include "network/format.h"                     // Format, operator<<()
+#include "network/os-features.h"                // HAVE_SOCKADDR_SA_LEN
 #include "network/socket-family-type.h"         // socket_family_type
 #include "network/socketfamily.h"               // SocketFamily,
                                                 // operator<<()
@@ -79,22 +80,22 @@ auto Network::operator<<(std::ostream& os,
     }
 
     const SocketFamily family {address.family()};
+#ifdef HAVE_SOCKADDR_SA_LEN
     const auto length {address.length()};
+#endif
     const auto prefix {::get_prefix(family)};
     const auto suffix {::get_suffix(family)};
     os << "sockaddr"
        << suffix
        << '(';
 
-    if (length != 0) {
-        os << Format(prefix + "len")
-           << address.length()
-           << Format(delim, tab, prefix + "family");
-    }
-    else {
-        os << Format(prefix + "family");
-    }
-
+#ifdef HAVE_SOCKADDR_SA_LEN
+    os << Format(prefix + "len")
+       << address.length()
+       << Format(delim, tab, prefix + "family");
+#else
+    os << Format(prefix + "family");
+#endif
     os << family;
 
     switch (family) {
