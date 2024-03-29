@@ -35,16 +35,16 @@ namespace {
     {
         switch (family) {
         case AF_UNIX:
-            return "sun";
+            return "sun_";
             break;
         case AF_INET:
-            return "sin";
+            return "sin_";
             break;
         case AF_INET6:
-            return "sin6";
+            return "sin6_";
             break;
         default:
-            return "sa";
+            return "sa_";
         }
     }
 
@@ -52,13 +52,13 @@ namespace {
     {
         switch (family) {
         case AF_UNIX:
-            return "un";
+            return "_un";
             break;
         case AF_INET:
-            return "in";
+            return "_in";
             break;
         case AF_INET6:
-            return "in6";
+            return "_in6";
             break;
         default:
             return {};
@@ -82,17 +82,17 @@ auto Network::operator<<(std::ostream& os,
     const auto length {address.length()};
     const auto prefix {::get_prefix(family)};
     const auto suffix {::get_suffix(family)};
-    os << (suffix.empty() ? "sockaddr" : "sockaddr_")
+    os << "sockaddr"
        << suffix
        << '(';
 
     if (length != 0) {
-        os << Format(prefix + "_len")
+        os << Format(prefix + "len")
            << address.length()
-           << Format(delim, tab, prefix + "_family");
+           << Format(delim, tab, prefix + "family");
     }
     else {
-        os << Format(prefix + "_family");
+        os << Format(prefix + "family");
     }
 
     os << family;
@@ -100,17 +100,17 @@ auto Network::operator<<(std::ostream& os,
     switch (family) {
 #ifndef WIN32
     case AF_UNIX:
-        os << Format(delim, tab, prefix + "_path");
+        os << Format(delim, tab, prefix + "path");
         break;
 #endif
     case AF_INET:
     case AF_INET6:
-        os << Format(delim, tab, prefix + "_port")
+        os << Format(delim, tab, prefix + "port")
            << address.port()
-           << Format(delim, tab, prefix + "_addr");
+           << Format(delim, tab, prefix + "addr");
         break;
     default:
-        os << Format(delim, tab, prefix + "_data");
+        os << Format(delim, tab, prefix + "data");
     }
 
     os << address.text()
