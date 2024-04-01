@@ -80,9 +80,6 @@ auto Network::operator<<(std::ostream& os,
     }
 
     const SocketFamily family {address.family()};
-#ifdef HAVE_SOCKADDR_SA_LEN
-    const auto length {address.length()};
-#endif
     const auto prefix {::get_prefix(family)};
     const auto suffix {::get_suffix(family)};
     os << "sockaddr"
