@@ -24,19 +24,23 @@
 
 auto Network::remove_socket(descriptor_type handle, bool verbose) -> bool
 {
-    if (const auto path {to_path(handle, verbose)}) {
-        if (std::filesystem::remove(*path)) {
-            if (verbose) {
-                std::cout << "Removed "
-                          << *path
-                          << std::endl;
-            }
+    const auto path {to_path(handle, verbose)};
 
-            return true;
-        }
+    if (!path) {
+        return false;
     }
 
-    return false;
+    if (!std::filesystem::remove(*path)) {
+        return false;
+    }
+
+    if (verbose) {
+        std::cout << "Removed "
+                  << *path
+                  << std::endl;
+    }
+
+    return true;
 }
 
 #endif
