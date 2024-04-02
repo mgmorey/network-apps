@@ -31,6 +31,8 @@
 
 using Network::Socket;
 
+using Number = long long;
+
 static constexpr auto backlog_size {20};
 
 static bool verbose {false};  // NOLINT
@@ -102,9 +104,9 @@ namespace Server {
         return str;
     }
 
-    auto write(const Socket& sock, long long val) -> void
+    auto write(const Socket& sock, auto value) -> void
     {
-        const auto str {std::to_string(val)};
+        const auto str {std::to_string(value)};
         const auto error {Network::write(str, sock)};
 
         if (error == Network::socket_error) {
@@ -133,7 +135,7 @@ auto main(int argc, char* argv[]) -> int
             // Wait for incoming connection.
             const auto accept_sock {Server::accept(bind_sock)};
             std::string read_str;
-            long long sum {0LL};
+            Number sum {};
 
             while((read_str = Server::read(accept_sock)) != "DOWN" &&
                   read_str != "END") {
