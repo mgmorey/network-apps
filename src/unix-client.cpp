@@ -72,8 +72,8 @@ namespace Client {
         const auto [read_str, read_error] {Network::read_string(size, sock)};
 
         if (read_error == Network::socket_error) {
-            perror("read");
-            exit(EXIT_FAILURE);
+            std::perror("read");
+            std::exit(EXIT_FAILURE);
         }
 
         return read_str;
@@ -81,7 +81,9 @@ namespace Client {
 
     auto write(const std::string& str, const Socket& sock) -> void
     {
-        if (Network::write(str, sock) == -1) {
+        const auto write_error {Network::write(str, sock)};
+
+        if (write_error == Network::socket_error) {
             std::perror("write");
             std::exit(EXIT_FAILURE);
         }
