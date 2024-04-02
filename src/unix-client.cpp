@@ -69,21 +69,21 @@ namespace Client {
     auto read(const Socket& sock) -> std::string
     {
         static constexpr auto size {BUFFER_SIZE};
-        const auto [read_str, read_error] {Network::read_string(size, sock)};
+        const auto [str, error] {Network::read_string(size, sock)};
 
-        if (read_error == Network::socket_error) {
+        if (error == Network::socket_error) {
             std::perror("read");
             std::exit(EXIT_FAILURE);
         }
 
-        return read_str;
+        return str;
     }
 
     auto write(const std::string& str, const Socket& sock) -> void
     {
-        const auto write_error {Network::write(str, sock)};
+        const auto error {Network::write(str, sock)};
 
-        if (write_error == Network::socket_error) {
+        if (error == Network::socket_error) {
             std::perror("write");
             std::exit(EXIT_FAILURE);
         }

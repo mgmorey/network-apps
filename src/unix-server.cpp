@@ -92,21 +92,22 @@ namespace Server {
     auto read(const Socket& sock) -> std::string
     {
         static constexpr auto size {BUFFER_SIZE};
-        const auto [read_str, read_error] {Network::read_string(size, sock)};
+        const auto [str, error] {Network::read_string(size, sock)};
 
-        if (read_error == Network::socket_error) {
-            perror("read");
-            exit(EXIT_FAILURE);
+        if (error == Network::socket_error) {
+            std::perror("read");
+            std::exit(EXIT_FAILURE);
         }
 
-        return read_str;
+        return str;
     }
 
     auto write(const Socket& sock, long long val) -> void
     {
-        const auto write_str {std::to_string(val)};
+        const auto str {std::to_string(val)};
+        const auto error {Network::write(str, sock)};
 
-        if (Network::write(write_str, sock) == -1) {
+        if (error == Network::socket_error) {
             std::perror("write");
             std::exit(EXIT_FAILURE);
         }
