@@ -30,6 +30,7 @@
 #include <string>       // std::stoll(), std::string, std::to_string()
 
 using Network::Socket;
+using Network::socket_error;
 
 using Number = long long;
 
@@ -67,7 +68,7 @@ namespace Server {
     {
         const auto result {Network::listen(sock, backlog_size)};
 
-        if (result == -1) {
+        if (result == socket_error) {
             std::perror("listen");
             std::exit(EXIT_FAILURE);
         }
@@ -96,7 +97,7 @@ namespace Server {
         static constexpr auto size {BUFFER_SIZE};
         const auto [str, error] {Network::read_string(size, sock)};
 
-        if (error == Network::socket_error) {
+        if (error == socket_error) {
             std::perror("read");
             std::exit(EXIT_FAILURE);
         }
@@ -109,7 +110,7 @@ namespace Server {
         const auto str {std::to_string(value)};
         const auto error {Network::write(str, sock)};
 
-        if (error == Network::socket_error) {
+        if (error == socket_error) {
             std::perror("write");
             std::exit(EXIT_FAILURE);
         }

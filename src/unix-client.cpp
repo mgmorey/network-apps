@@ -31,6 +31,7 @@
 
 using Network::ArgumentSpan;
 using Network::Socket;
+using Network::socket_error;
 
 static bool verbose {false};  // NOLINT
 
@@ -71,7 +72,7 @@ namespace Client {
         static constexpr auto size {BUFFER_SIZE};
         const auto [str, error] {Network::read_string(size, sock)};
 
-        if (error == Network::socket_error) {
+        if (error == socket_error) {
             std::perror("read");
             std::exit(EXIT_FAILURE);
         }
@@ -83,7 +84,7 @@ namespace Client {
     {
         const auto error {Network::write(str, sock)};
 
-        if (error == Network::socket_error) {
+        if (error == socket_error) {
             std::perror("write");
             std::exit(EXIT_FAILURE);
         }
