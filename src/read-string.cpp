@@ -16,18 +16,14 @@
 #include "network/read-string.h"        // read_string()
 #include "network/buffer.h"             // Buffer
 #include "network/read.h"               // read()
+#include "network/readresult.h"         // ReadResult
 #include "network/socket.h"             // Socket
-
-#include <sys/types.h>          // ssize_t
 
 #include <cstddef>      // std::size_t
 #include <string>       // std::string
-#include <utility>      // std::pair
 
-auto Network::read_string(std::size_t size, const Socket& sock) ->
-    std::pair<std::string, ssize_t>
+auto Network::read_string(std::size_t size, const Socket& sock) -> ReadResult
 {
     Buffer<char> buffer {size};
-    const auto code {read(buffer.data(), buffer.size(), sock)};
-    return {buffer, code};
+    return {buffer, read(buffer.data(), buffer.size(), sock)};
 }

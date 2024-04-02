@@ -16,18 +16,14 @@
 #ifndef NETWORK_READ_STRING_H
 #define NETWORK_READ_STRING_H
 
+#include "network/readresult.h"                 // ReadResult
 #include "network/socket.h"                     // Socket
 
-#include <sys/types.h>          // ssize_t
-
 #include <cstddef>      // std::size_t
-#include <string>       // std::string
-#include <utility>      // std::pair
 
 namespace Network
 {
-    extern auto read_string(std::size_t size, const Socket& sock) ->
-        std::pair<std::string, ssize_t>;
+    extern auto read_string(std::size_t size, const Socket& sock) -> ReadResult;
 }
 
 #endif
