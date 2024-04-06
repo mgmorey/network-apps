@@ -31,22 +31,33 @@
 
 #include <string>       // std::string
 
+#ifdef WIN32
+
+namespace {
+    auto format(Network::os_error_type error,
+                LPTSTR& error_text) -> DWORD
+    {
+        return ::FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM |
+                               FORMAT_MESSAGE_ALLOCATE_BUFFER |
+                               FORMAT_MESSAGE_IGNORE_INSERTS,
+                               nullptr,
+                               error,
+                               MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+                               reinterpret_cast<LPTSTR>(&error_text),  // NOLINT
+                               0,
+                               nullptr);
+    }
+}
+
+#endif
+
 auto Network::format_os_error(os_error_type error) -> std::string
 {
     std::string message;
 #ifdef WIN32
     LPTSTR error_text {nullptr};
 
-    if (::FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM |
-                        FORMAT_MESSAGE_ALLOCATE_BUFFER |
-                        FORMAT_MESSAGE_IGNORE_INSERTS,
-                        nullptr,
-                        error,
-                        MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-                        reinterpret_cast<LPTSTR>(&error_text),  // NOLINT
-                        0,
-                        nullptr) != 0 &&
-        error_text != nullptr) {
+    if (format(error, error_text) != 0 && error_text != nullptr) {
         message = error_text;
         const auto pos {message.rfind('\r')};
 
