@@ -34,8 +34,7 @@
 #ifdef WIN32
 
 namespace {
-    auto format(Network::os_error_type error,
-                LPTSTR& error_text) -> DWORD
+    auto format(DWORD error, LPTSTR& error_text) -> DWORD
     {
         return ::FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM |
                                FORMAT_MESSAGE_ALLOCATE_BUFFER |
