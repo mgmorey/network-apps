@@ -15,6 +15,7 @@
 
 #include "network/format-os-error.h"    // format_os_error()
 #include "network/os-error-type.h"      // os_error_type
+#include "network/runtimeerror.h"       // RuntimeError
 
 #ifdef WIN32
 #include <winsock2.h>       // Always include winsock2.h before
@@ -29,7 +30,7 @@
 #include <cstring>          // std::strerror()
 #endif
 
-#include <string>       // std::string
+#include <string>       // std::string, std::to_string()
 
 namespace {
 #ifdef WIN32
@@ -52,19 +53,20 @@ auto Network::format_os_error(os_error_type error) -> std::string
 {
 #ifdef WIN32
     LPTSTR error_text {nullptr};
-    std::string message;
 
-    if (format(error, error_text) != 0 && error_text != nullptr) {
-        message = error_text;
-        const auto pos {message.rfind('\r')};
-
-        if (pos != std::string::npos) {
-            message.resize(pos);
-        }
-
-        ::LocalFree(error_text);
+    if (format(error, error_text) == 0 || error_text == nullptr) {
+        throw RuntimeError(std::string("Unable to format message for error ") +
+                           std::to_string(error));
     }
 
+    std::string message {error_text};
+    const auto pos {message.rfind('\r')};
+
+    if (pos != std::string::npos) {
+        message.resize(pos);
+    }
+
+    ::LocalFree(error_text);
     return message;
 #else
     return std::strerror(error);
