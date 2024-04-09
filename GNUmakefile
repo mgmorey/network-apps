@@ -262,21 +262,25 @@ check-syntax:
 clean:
 	rm -f $(sort $(wildcard $(build_artifacts)))
 
-count-libnetwork-sources: $(libnetwork_sources)
-	printf '%s\n' $^ | wc -l
-
-count-sources: $(sources)
-	printf '%s\n' $^ | wc -l
-
-count-test-sources: $(test_sources)
-	printf '%s\n' $^ | wc -l
-
-count-unix-sources: $(unix_sources)
-	printf '%s\n' $^ | wc -l
-
-.PHONY: counts
-counts:
+.PHONY: count-include-and-source-lines
+count-include-and-source-lines:
 	find include src -type f | sort | xargs wc
+
+.PHONY: count-libnetwork-source-files
+count-libnetwork-source-files: $(libnetwork_sources)
+	printf '%s\n' $^ | wc -l
+
+.PHONY: count-source-files
+count-source-files: $(sources)
+	printf '%s\n' $^ | wc -l
+
+.PHONY: count-test-source-files
+count-test-source-files: $(test_sources)
+	printf '%s\n' $^ | wc -l
+
+.PHONY: count-unix-source-files
+count-unix-source-files: $(unix_sources)
+	printf '%s\n' $^ | wc -l
 
 .PHONY: distclean
 distclean:
