@@ -15,7 +15,9 @@
 
 #include "network/format-os-error.h"    // format_os_error()
 #include "network/os-error-type.h"      // os_error_type
+#ifdef WIN32
 #include "network/runtimeerror.h"       // RuntimeError
+#endif
 
 #ifdef WIN32
 #include <winsock2.h>       // Always include winsock2.h before
