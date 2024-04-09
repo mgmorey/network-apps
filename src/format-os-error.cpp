@@ -22,18 +22,17 @@
 #include <windows.h>        // DWORD, FORMAT_MESSAGE_ALLOCATE_BUFFER,
                             // FORMAT_MESSAGE_FROM_SYSTEM,
                             // FORMAT_MESSAGE_IGNORE_INSERTS,
-                            // LANG_NEUTRAL, LPTSTR, LPVOID,
-                            // MAKELANGID(), SUBLANG_DEFAULT,
-                            // ::FormatMessage(), ::LocalFree()
+                            // LANG_NEUTRAL, LPTSTR, MAKELANGID(),
+                            // SUBLANG_DEFAULT, ::FormatMessage(),
+                            // ::LocalFree()
 #else
 #include <cstring>          // std::strerror()
 #endif
 
 #include <string>       // std::string
 
-#ifdef WIN32
-
 namespace {
+#ifdef WIN32
     auto format(DWORD error, LPTSTR& error_text) -> DWORD
     {
         return ::FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM |
@@ -46,15 +45,14 @@ namespace {
                                0,
                                nullptr);
     }
-}
-
 #endif
+}
 
 auto Network::format_os_error(os_error_type error) -> std::string
 {
-    std::string message;
 #ifdef WIN32
     LPTSTR error_text {nullptr};
+    std::string message;
 
     if (format(error, error_text) != 0 && error_text != nullptr) {
         message = error_text;
@@ -66,8 +64,9 @@ auto Network::format_os_error(os_error_type error) -> std::string
 
         ::LocalFree(error_text);
     }
-#else
-    message = std::strerror(error);
-#endif
+
     return message;
+#else
+    return std::strerror(error);
+#endif
 }
