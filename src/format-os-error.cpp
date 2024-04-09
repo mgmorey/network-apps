@@ -59,15 +59,9 @@ auto Network::format_os_error(os_error_type error) -> std::string
                            std::to_string(error));
     }
 
-    std::string message {error_text};
-    const auto pos {message.rfind('\r')};
-
-    if (pos != std::string::npos) {
-        message.resize(pos);
-    }
-
-    ::LocalFree(error_text);
-    return message;
+    const std::string message {error_text};
+    static_cast<void>(::LocalFree(error_text));
+    return message.substr(0, message.rfind('\r'));
 #else
     return std::strerror(error);
 #endif
