@@ -53,11 +53,6 @@ namespace Network
             return to_string(m_value);
         }
 
-        [[nodiscard]] auto data() const noexcept -> const T*
-        {
-            return m_value.data();
-        }
-
         [[nodiscard]] auto data() noexcept -> T*
         {
             return m_value.data();
