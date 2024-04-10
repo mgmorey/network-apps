@@ -16,12 +16,11 @@
 #ifndef WIN32
 
 #include "network/validate-path.h"              // validate()
-#include "network/path-length-limits.h"         // path_length_max,
-                                                // path_length_min
+#include "network/path-length-limits.h"         // path_length_max
 #include "network/pathlengtherror.h"            // PathLengthError
 
 #include <string>       // std::to_string()
-#include <utility>      // std::cmp_greater(), std::cmp_less()
+#include <utility>      // std::cmp_greater()
 
 auto Network::validate(const OptionalPathname& path) -> void
 {
@@ -29,8 +28,7 @@ auto Network::validate(const OptionalPathname& path) -> void
         return;
     }
 
-    if (std::cmp_less(path->length(), path_length_min) ||
-        std::cmp_greater(path->length(), path_length_max)) {
+    if (std::cmp_greater(path->length(), path_length_max)) {
         throw PathLengthError(std::to_string(path->length()));
     }
 }
