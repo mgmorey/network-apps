@@ -28,8 +28,10 @@ auto Network::validate(const OptionalPathname& path) -> void
         return;
     }
 
-    if (std::cmp_greater(path->length(), path_length_max)) {
-        throw PathLengthError(std::to_string(path->length()));
+    const auto path_length {path->length()};
+
+    if (std::cmp_greater(path_length, path_length_max)) {
+        throw PathLengthError(std::to_string(path_length));
     }
 }
 
