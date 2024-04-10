@@ -43,12 +43,12 @@ namespace Network
         auto operator=(const Buffer&) noexcept -> Buffer& = default;
         auto operator=(Buffer&&) noexcept -> Buffer& = default;
 
-        operator value_type() const noexcept  // NOLINT
+        explicit operator value_type() const noexcept
         {
             return m_value;
         }
 
-        operator std::basic_string<T>() const  // NOLINT
+        explicit operator std::basic_string<T>() const
         {
             return to_string(m_value);
         }

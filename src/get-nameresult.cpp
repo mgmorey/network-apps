@@ -40,7 +40,7 @@ auto Network::get_nameresult(const GetNameHandler& handler,
     Buffer<Byte> addr {sa_len_max};
     auto* addr_ptr {get_sa_pointer(addr)};
     auto addr_len {to_socket_length(addr.size())};
-    const AddressString addr_str {addr};
+    const AddressString addr_str {ByteString {addr}};
 
     if (args.verbose) {
         std::cout << "Calling "
@@ -77,5 +77,5 @@ auto Network::get_nameresult(const GetNameHandler& handler,
     }
 
     addr.resize(to_size(addr_len));
-    return addr;
+    return ByteString {addr};
 }

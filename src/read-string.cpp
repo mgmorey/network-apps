@@ -25,5 +25,6 @@
 auto Network::read_string(std::size_t size, const Socket& sock) -> ReadResult
 {
     Buffer<char> buffer {size};
-    return {buffer, read(buffer.data(), buffer.size(), sock)};
+    const auto result {read(buffer.data(), buffer.size(), sock)};
+    return {std::string {buffer}, result};
 }

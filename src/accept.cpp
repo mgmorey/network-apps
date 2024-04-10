@@ -47,7 +47,7 @@ auto Network::accept(const Socket& sock, bool verbose) ->
     Buffer<Byte> addr {sa_len_max};
     auto* addr_ptr {get_sa_pointer(addr)};
     auto addr_len {to_socket_length(addr.size())};
-    const AddressString addr_str {addr};
+    const AddressString addr_str {ByteString {addr}};
 
     if (verbose) {
         std::cout << "Calling ::accept("
@@ -80,5 +80,5 @@ auto Network::accept(const Socket& sock, bool verbose) ->
     }
 
     addr.resize(to_size(addr_len));
-    return {Socket {handle_2, verbose}, addr};
+    return {Socket {handle_2, verbose}, ByteString {addr}};
 }
