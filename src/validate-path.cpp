@@ -20,7 +20,6 @@
 #include "network/pathlengtherror.h"            // PathLengthError
 
 #include <string>       // std::to_string()
-#include <utility>      // std::cmp_greater()
 
 auto Network::validate(const OptionalPathname& path) -> void
 {
@@ -30,7 +29,7 @@ auto Network::validate(const OptionalPathname& path) -> void
 
     const auto path_length {path->length()};
 
-    if (std::cmp_greater(path_length, path_length_max)) {
+    if (path_length > path_length_max) {
         throw PathLengthError(std::to_string(path_length));
     }
 }
