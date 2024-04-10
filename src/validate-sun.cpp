@@ -56,7 +56,6 @@ namespace {
 #else
         static_cast<void>(sun_len);
 #endif
-
         if (sun->sun_family != AF_UNIX) {
             throw FamilyError(sun->sun_family);
         }
