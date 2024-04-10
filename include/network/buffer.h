@@ -20,7 +20,7 @@
 #include "network/to-string-vector-char.h"      // to_string()
 
 #include <cstddef>      // std::size_t
-#include <string>       // std::basic_string, std::string
+#include <string>       // std::basic_string
 #include <vector>       // std::vector
 
 namespace Network
