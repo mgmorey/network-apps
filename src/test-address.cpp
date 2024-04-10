@@ -69,7 +69,9 @@ namespace TestAddress
     using Network::get_sa_size_maximum;
     using Network::get_sa_size_minimum;
     using Network::parse;
+#ifndef WIN32
     using Network::path_length_max;
+#endif
     using Network::sa_family_type;
     using Network::sa_size;
     using Network::sin6_size;
