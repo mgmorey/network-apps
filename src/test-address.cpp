@@ -69,6 +69,7 @@ namespace TestAddress
     using Network::get_sa_size_maximum;
     using Network::get_sa_size_minimum;
     using Network::parse;
+    using Network::path_length_max;
     using Network::sa_family_type;
     using Network::sa_size;
     using Network::sin6_size;
@@ -87,7 +88,7 @@ namespace TestAddress
         R"(Invalid socket address family: (\d+))"
     };
     static constexpr auto expected_error_length_re {
-        R"(Value (\d+) is out of range \[\d+, \d+\] of s(a|in|in6|un)_len_type)"
+        R"(Value (\d+) is out of range \[\d+, \d+\] of \w+_type)"
     };
     static constexpr auto print_key_width {20};
     static constexpr auto print_value_width {10};
@@ -338,6 +339,52 @@ namespace TestAddress
 
 #ifndef WIN32
 
+    auto test_char(const char* path,
+                   const std::string& expected_error_re) -> void
+    {
+        const std::regex expected_error_regex {expected_error_re};
+        std::string actual_error_str;
+
+        try {
+            validate(path);
+        }
+        catch (const Error& error) {
+            print(error);
+            actual_error_str = error.what();
+        }
+
+        assert(std::regex_match(actual_error_str, expected_error_regex));
+    }
+
+    auto test_char_invalid_length() -> void
+    {
+        const std::string path(path_length_max + 1, '.');
+        test_char(path.c_str(), expected_error_length_re);
+    }
+
+    auto test_path(const std::string& path,
+                   const std::string& expected_error_re) -> void
+    {
+        const std::regex expected_error_regex {expected_error_re};
+        std::string actual_error_str;
+
+        try {
+            validate(path);
+        }
+        catch (const Error& error) {
+            print(error);
+            actual_error_str = error.what();
+        }
+
+        assert(std::regex_match(actual_error_str, expected_error_regex));
+    }
+
+    auto test_path_invalid_length() -> void
+    {
+        const std::string path(path_length_max + 1, '.' );
+        test_path(path, expected_error_length_re);
+    }
+
     auto test_sun(const sockaddr_un& sun, std::size_t sun_len,
                   const std::string& expected_error_re) -> void
     {
@@ -475,6 +522,8 @@ auto main(int argc, char* argv[]) -> int
         test_sin_invalid_family();
         test_sin_invalid_length();
 #ifndef WIN32
+        test_char_invalid_length();
+        test_path_invalid_length();
         test_sun_invalid_family();
         test_sun_valid_path_large();
         test_sun_valid_path_small();
