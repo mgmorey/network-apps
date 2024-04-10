@@ -20,6 +20,7 @@
                                                 // path_length_min
 #include "network/pathlengtherror.h"            // PathLengthError
 
+#include <cstring>      // ::strnlen()
 #include <string>       // std::to_string()
 #include <utility>      // std::cmp_greater(), std::cmp_less()
 
