@@ -20,7 +20,7 @@
                                                 // path_length_min
 #include "network/pathlengtherror.h"            // PathLengthError
 
-#include <cstring>      // ::strnlen()
+#include <cstring>      // ::strlen()
 #include <string>       // std::to_string()
 #include <utility>      // std::cmp_greater(), std::cmp_less()
 
@@ -30,7 +30,7 @@ auto Network::validate(const char* path) -> void
         return;
     }
 
-    const auto path_length {::strnlen(path, path_length_max)};
+    const auto path_length {::strlen(path)};
 
     if (std::cmp_less(path_length, path_length_min) ||
         std::cmp_greater(path_length, path_length_max)) {
