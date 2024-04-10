@@ -43,26 +43,14 @@ namespace Network
         auto operator=(const Buffer&) noexcept -> Buffer& = default;
         auto operator=(Buffer&&) noexcept -> Buffer& = default;
 
-        operator value_type() const // NOLINT
+        operator value_type() const  // NOLINT
         {
             return m_value;
         }
 
-        operator std::basic_string<T>() const // NOLINT
+        operator std::basic_string<T>() const  // NOLINT
         {
             return to_string(m_value);
-        }
-
-        [[nodiscard]] auto cbegin() const noexcept ->
-            typename value_type::const_iterator
-        {
-            return m_value.cbegin();
-        }
-
-        [[nodiscard]] auto cend() const noexcept ->
-            typename value_type::const_iterator
-        {
-            return m_value.cend();
         }
 
         [[nodiscard]] auto data() const noexcept -> const T*
