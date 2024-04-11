@@ -27,8 +27,7 @@
 namespace Network
 {
     extern auto validate(const sockaddr_in6* sin6,
-                         sa_len_type sin6_len = sizeof(sockaddr_in6)) ->
-        const sockaddr_in6*;
+                         sa_len_type sin6_len) -> const sockaddr_in6*;
 }
 
 #endif
