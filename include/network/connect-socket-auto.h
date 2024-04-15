@@ -19,7 +19,7 @@
 #include "network/connect-socket-bs.h"          // connect()
 #include "network/oserrorresult.h"              // OsErrorResult
 #include "network/socket.h"                     // Socket
-#include "network/to-bytestring-auto.h"         // to_bytestring()
+#include "network/to-bytestring.h"              // to_bytestring()
 #include "network/validate.h"                   // validate()
 
 namespace Network

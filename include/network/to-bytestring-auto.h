@@ -20,10 +20,6 @@
 #include "network/sa-len-type.h"                // sa_len_type
 #include "network/to-bytespan.h"                // to_bytespan()
 #include "network/to-bytestring-ai.h"           // to_bytestring()
-#ifndef WIN32
-#include "network/to-bytestring-char.h"         // to_bytestring()
-#include "network/to-bytestring-path.h"         // to_bytestring()
-#endif
 #include "network/to-bytestring-span.h"         // to_bytestring()
 
 namespace Network
