@@ -21,7 +21,7 @@
 
 namespace Network
 {
-    extern auto to_bytestring(const void* pointer,
+    extern auto to_bytestring(const void* data,
                               sa_len_type size) -> ByteString;
 }
 

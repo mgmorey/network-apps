@@ -16,9 +16,10 @@
 #include "network/to-bytestring-void.h"         // to_bytestring()
 #include "network/bytestring.h"                 // ByteString
 
-auto Network::to_bytestring(const void* pointer,
+auto Network::to_bytestring(const void* data,
                             sa_len_type size) -> ByteString
 {
-    const auto* const data {static_cast<const Byte*>(pointer)};
-    return {data, data + size};  // NOLINT
+    const auto* const first {static_cast<const Byte*>(data)};
+    const auto* const last {first + size};  // NOLINT
+    return {first, last};
 }
