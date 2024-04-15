@@ -32,11 +32,6 @@ namespace Network
     {
         return to_bytestring(to_bytespan(pointer, length));
     }
-
-    auto to_bytestring(const auto* pointer) -> ByteString
-    {
-        return to_bytestring(pointer, sizeof *pointer);
-    }
 }
 
 #endif
