@@ -28,9 +28,9 @@
 
 namespace Network
 {
-    auto to_bytestring(const auto* pointer, sa_len_type length) -> ByteString
+    auto to_bytestring(const auto* pointer, sa_len_type size) -> ByteString
     {
-        return to_bytestring(to_bytespan(pointer, length));
+        return to_bytestring(to_bytespan(pointer, size));
     }
 }
 
