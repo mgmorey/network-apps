@@ -13,21 +13,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_TO_BYTESTRING_AUTO_H
-#define NETWORK_TO_BYTESTRING_AUTO_H
+#ifndef NETWORK_TO_BYTESTRING_VOID_H
+#define NETWORK_TO_BYTESTRING_VOID_H
 
 #include "network/bytestring.h"                 // ByteString
 #include "network/sa-len-type.h"                // sa_len_type
-#include "network/to-bytespan.h"                // to_bytespan()
-#include "network/to-bytestring-ai.h"           // to_bytestring()
-#include "network/to-bytestring-span.h"         // to_bytestring()
 
 namespace Network
 {
-    auto to_bytestring(const auto* pointer, sa_len_type size) -> ByteString
-    {
-        return to_bytestring(to_bytespan(pointer, size));
-    }
+    extern auto to_bytestring(const void* pointer,
+                              sa_len_type size) -> ByteString;
 }
 
 #endif

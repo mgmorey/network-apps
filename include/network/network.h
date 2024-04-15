@@ -103,7 +103,6 @@
 #include "network/template.h"                   // SocketHints,
                                                 // SocketHost,
                                                 // Template
-#include "network/to-bytespan.h"                // to_bytespan()
 #include "network/to-bytestring.h"              // to_bytestring()
 #include "network/to-character.h"               // to_character()
 #include "network/to-integer.h"                 // to_integer()

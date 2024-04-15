@@ -16,11 +16,10 @@
 #ifndef NETWORK_TO_BYTESTRING_H
 #define NETWORK_TO_BYTESTRING_H
 
-#include "network/to-bytestring-auto.h"         // to_bytestring()
 #ifndef WIN32
 #include "network/to-bytestring-char.h"         // to_bytestring()
 #include "network/to-bytestring-path.h"         // to_bytestring()
 #endif
-#include "network/to-bytestring-span.h"         // to_bytestring()
+#include "network/to-bytestring-void.h"         // to_bytestring()
 
 #endif

@@ -21,8 +21,7 @@
 #include "network/get-sun-length.h"             // get_sun_length()
 #include "network/optionalpathname.h"           // OptionalPathname
 #include "network/os-features.h"                // HAVE_SOCKADDR_SA_LEN
-#include "network/to-bytespan.h"                // to_bytespan()
-#include "network/to-bytestring-span.h"         // to_bytestring()
+#include "network/to-bytestring-void.h"         // to_bytestring()
 #include "network/to-path-length.h"             // to_path_length()
 
 #include <sys/socket.h>     // AF_UNIX
@@ -43,7 +42,7 @@ auto Network::to_bytestring(const OptionalPathname& path) -> ByteString
     sun.sun_len = sun_len;
 #endif
     sun.sun_family = AF_UNIX;
-    return to_bytestring(to_bytespan(&sun, sun_len));
+    return to_bytestring(&sun, sun_len);
 }
 
 #endif

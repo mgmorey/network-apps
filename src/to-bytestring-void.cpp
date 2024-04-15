@@ -13,15 +13,12 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_TO_BYTESTRING_SPAN_H
-#define NETWORK_TO_BYTESTRING_SPAN_H
+#include "network/to-bytestring-void.h"         // to_bytestring()
+#include "network/bytestring.h"                 // ByteString
 
-#include "network/bytespan.h"           // ByteSpan
-#include "network/bytestring.h"         // ByteString
-
-namespace Network
+auto Network::to_bytestring(const void* pointer,
+                            sa_len_type size) -> ByteString
 {
-    extern auto to_bytestring(const ByteSpan& span) -> ByteString;
+    const auto *const data{static_cast<const Byte *>(pointer)};
+    return {data, data + size};  // NOLINT
 }
-
-#endif
