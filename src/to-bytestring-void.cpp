@@ -19,6 +19,6 @@
 auto Network::to_bytestring(const void* pointer,
                             sa_len_type size) -> ByteString
 {
-    const auto *const data{static_cast<const Byte *>(pointer)};
+    const auto* const data {static_cast<const Byte*>(pointer)};
     return {data, data + size};  // NOLINT
 }
