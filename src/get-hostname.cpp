@@ -18,21 +18,29 @@
 #include "network/get-hostnameresult.h"         // get_hostname()
 #include "network/hostname.h"                   // Hostname
 #include "network/oserrorresult.h"              // OsErrorResult
-#include "network/overloaded.h"                 // Overloaded
 
+#include <type_traits>  // std::decay_t, std::is_same_v
 #include <variant>      // std::visit()
+
+template <class>
+inline constexpr bool always_false_v {false};
 
 auto Network::get_hostname(bool verbose) -> Hostname
 {
     Hostname result;
     auto hostname_result {get_hostnameresult(verbose)};
-    std::visit(Overloaded {
-            [&](const Hostname& hostname) {
-                result = hostname;
-            },
-                [&](const OsErrorResult& error) {
-                    throw Error(error.string());
-                }
-                }, hostname_result);
+    std::visit([&](auto&& arg) {
+        using T = std::decay_t<decltype(arg)>;
+
+        if constexpr (std::is_same_v<T, Hostname>) {
+            result = arg;
+        }
+        else if constexpr (std::is_same_v<T, OsErrorResult>) {
+            throw Error(arg.string());
+        }
+        else {
+            static_assert(always_false_v<T>, "non-exhaustive visitor!");
+        }
+    }, hostname_result);
     return result;
 }
