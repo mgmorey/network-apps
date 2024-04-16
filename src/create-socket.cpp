@@ -18,24 +18,32 @@
 #include "network/descriptor-null.h"            // descriptor_null
 #include "network/error.h"                      // Error
 #include "network/oserrorresult.h"              // OsErrorResult
-#include "network/overloaded.h"                 // Overloaded
 #include "network/socket.h"                     // Socket
 #include "network/sockethints.h"                // SocketHints
 
+#include <type_traits>  // std::decay_t, std::is_same_v
 #include <variant>      // std::visit()
+
+template <class>
+inline constexpr bool always_false_v {false};
 
 auto Network::create_socket(const SocketHints& hints,
                             bool verbose) -> Socket
 {
     Socket result {descriptor_null, verbose};
     const auto socket_result {create_socketresult(hints, verbose)};
-    std::visit(Overloaded {
-            [&](const Socket& sock) {
-                result = sock;
-            },
-                [&](const OsErrorResult& error) {
-                    throw Error(error.string());
-                }
-                }, socket_result);
+    std::visit([&](auto&& arg) {
+        using T = std::decay_t<decltype(arg)>;
+
+        if constexpr (std::is_same_v<T, Socket>) {
+            result = arg;
+        }
+        else if constexpr (std::is_same_v<T, OsErrorResult>) {
+            throw Error(arg.string());
+        }
+        else {
+            static_assert(always_false_v<T>, "non-exhaustive visitor!");
+        }
+    }, socket_result);
     return result;
 }
