@@ -16,7 +16,7 @@
 #include "network/assert.h"             // assert()
 #include "network/network.h"            // Address, Context, Error,
                                         // HostVector, Hostname,
-                                        // OsErrorResult, Overloaded,
+                                        // OsErrorResult,
                                         // SocketFamily, SocketHints,
                                         // get_hosts(),
                                         // get_sa_size_maximum(),
