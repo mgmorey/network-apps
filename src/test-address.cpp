@@ -51,7 +51,11 @@
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <regex>        // std::regex, std::regex_match
 #include <string>       // std::string
+#include <type_traits>  // std::decay_t, std::is_same_v
 #include <variant>      // std::visit()
+
+template <class>
+inline constexpr bool always_false_v {false};
 
 namespace TestAddress
 {
@@ -62,7 +66,6 @@ namespace TestAddress
     using Network::HostVector;
     using Network::Hostname;
     using Network::OsErrorResult;
-    using Network::Overloaded;
     using Network::SocketFamily;
     using Network::SocketHints;
     using Network::get_hosts;
@@ -461,28 +464,33 @@ namespace TestAddress
         static const Hostname localhost {"localhost"};
 
         const auto hosts_result {get_hosts(localhost, unspec)};
-        std::visit(Overloaded {
-                [&](const HostVector& hosts) {
-                    std::cout << "Socket addresses for "
-                              << localhost
-                              << ": "
-                              << std::endl;
+        std::visit([&](auto&& arg) {
+            using T = std::decay_t<decltype(arg)>;
 
-                    for (const auto &host : hosts) {
-                        const ByteString& addr {host.address()};
-                        const Address address {addr};
-                        print(address, addr.size());
-                        test_valid(address, addr.size());
-                    }
-                },
-                    [&](const OsErrorResult& result) {
-                        std::cout << "No "
-                                  << localhost
-                                  << " addresses: "
-                                  << result.string()
-                                  << std::endl;
-                    }
-                    }, hosts_result);
+            if constexpr (std::is_same_v<T, HostVector>) {
+                std::cout << "Socket addresses for "
+                          << localhost
+                          << ": "
+                          << std::endl;
+
+                for (const auto& host : arg) {
+                    const ByteString& addr {host.address()};
+                    const Address address {addr};
+                    print(address, addr.size());
+                    test_valid(address, addr.size());
+                }
+            }
+            else if constexpr (std::is_same_v<T, OsErrorResult>) {
+                std::cout << "No "
+                          << localhost
+                          << " addresses: "
+                          << arg.string()
+                          << std::endl;
+            }
+            else {
+                static_assert(always_false_v<T>, "non-exhaustive visitor!");
+            }
+        }, hosts_result);
     }
 }
 
