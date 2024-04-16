@@ -20,22 +20,30 @@
 #include "network/getnamehandler.h"     // GetNameHandler
 #include "network/getnameparams.h"      // GetNameParams
 #include "network/oserrorresult.h"      // OsErrorResult
-#include "network/overloaded.h"         // Overloaded
 
+#include <type_traits>  // std::decay_t, std::is_same_v
 #include <variant>      // std::visit()
+
+template <class>
+inline constexpr bool always_false_v {false};
 
 auto Network::get_name(const GetNameHandler& handler,
                        const GetNameParams& args) -> ByteString
 {
     ByteString result;
     auto name_result {get_nameresult(handler, args)};
-    std::visit(Overloaded {
-            [&](const ByteString& addr) {
-                result = addr;
-            },
-                [&](const OsErrorResult& error) {
-                    throw Error(error.string());
-                }
-                }, name_result);
+    std::visit([&](auto&& arg) {
+        using T = std::decay_t<decltype(arg)>;
+
+        if constexpr (std::is_same_v<T, ByteString>) {
+            result = arg;
+        }
+        else if constexpr (std::is_same_v<T, OsErrorResult>) {
+            throw Error(arg.string());
+        }
+        else {
+            static_assert(always_false_v<T>, "non-exhaustive visitor!");
+        }
+    }, name_result);
     return result;
 }
