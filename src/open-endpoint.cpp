@@ -57,10 +57,10 @@ auto Network::open(const OpenHandler& handler,
                         template_result = sock;
                     }
                 },
-                [&](const OsErrorResult& result) {
-                    static_cast<void>(result);
-                }
-            }, template_result);
+                    [&](const OsErrorResult& result) {
+                        static_cast<void>(result);
+                    }
+                    }, template_result);
         return template_result;
     };
     const auto templates_result {get_templates(args.endpoint,
@@ -73,9 +73,9 @@ auto Network::open(const OpenHandler& handler,
                                lambda);
                 open_result = OpenResult {socket_results};
             },
-            [&](const OsErrorResult& result) {
-                open_result = OpenResult {result};
-            }
-        }, templates_result);
+                [&](const OsErrorResult& result) {
+                    open_result = OpenResult {result};
+                }
+                }, templates_result);
     return open_result;
 }

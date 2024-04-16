@@ -30,9 +30,9 @@ auto Network::get_hostname(bool verbose) -> Hostname
             [&](const Hostname& hostname) {
                 result = hostname;
             },
-            [&](const OsErrorResult& error) {
-                throw Error(error.string());
-            }
-        }, hostname_result);
+                [&](const OsErrorResult& error) {
+                    throw Error(error.string());
+                }
+                }, hostname_result);
     return result;
 }

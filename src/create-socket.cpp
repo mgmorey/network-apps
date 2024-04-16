@@ -33,9 +33,9 @@ auto Network::create_socket(const SocketHints& hints,
             [&](const Socket& sock) {
                 result = sock;
             },
-            [&](const OsErrorResult& error) {
-                throw Error(error.string());
-            }
-        }, socket_result);
+                [&](const OsErrorResult& error) {
+                    throw Error(error.string());
+                }
+                }, socket_result);
     return result;
 }

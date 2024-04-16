@@ -33,9 +33,9 @@ auto Network::get_name(const GetNameHandler& handler,
             [&](const ByteString& addr) {
                 result = addr;
             },
-            [&](const OsErrorResult& error) {
-                throw Error(error.string());
-            }
-        }, name_result);
+                [&](const OsErrorResult& error) {
+                    throw Error(error.string());
+                }
+                }, name_result);
     return result;
 }

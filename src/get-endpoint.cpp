@@ -32,9 +32,9 @@ auto Network::get_endpoint(const ByteString& addr, int flags, bool verbose) ->
             [&](const Endpoint& endpoint) {
                 result = endpoint;
             },
-            [&](const OsErrorResult& error) {
-                throw Error(error.string());
-            }
-        }, endpoint_result);
+                [&](const OsErrorResult& error) {
+                    throw Error(error.string());
+                }
+                }, endpoint_result);
     return result;
 }
