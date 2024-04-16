@@ -16,9 +16,8 @@
 #include "network/assert.h"             // assert()
 #include "network/network.h"            // Address, ByteString,
                                         // Context, Endpoint,
-                                        // OsErrorResult, Overloaded,
-                                        // Socket, SocketHints,
-                                        // SocketResult,
+                                        // OsErrorResult, Socket,
+                                        // SocketHints, SocketResult,
                                         // SocketResultVector, bind(),
                                         // os_error_type, string_null
 #include "network/parse.h"              // parse()
@@ -43,8 +42,12 @@
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <set>          // std::set
 #include <string>       // std::string
+#include <type_traits>  // std::decay_t, std::is_same_v
 #include <utility>      // std::move()
 #include <variant>      // std::visit()
+
+template <class>
+inline constexpr bool always_false_v {false};
 
 namespace TestBind
 {
@@ -53,7 +56,6 @@ namespace TestBind
     using Network::Context;
     using Network::Endpoint;
     using Network::OsErrorResult;
-    using Network::Overloaded;
     using Network::Socket;
     using Network::SocketHints;
     using Network::SocketResult;
@@ -82,15 +84,20 @@ namespace TestBind
 
         auto operator()(const SocketResult& t_socket_result) -> void
         {
-            std::visit(Overloaded {
-                    [&](const Socket& sock) {
-                        test_socket(sock);
-                    },
-                        [&](const OsErrorResult& error) {
-                            std::cerr << error.string()
-                                      << std::endl;
-                        }
-                        }, t_socket_result);
+            std::visit([&](auto&& arg) {
+                using T = std::decay_t<decltype(arg)>;
+
+                if constexpr (std::is_same_v<T, Socket>) {
+                    test_socket(arg);
+                }
+                else if constexpr (std::is_same_v<T, OsErrorResult>) {
+                    std::cerr << arg.string()
+                              << std::endl;
+                }
+                else {
+                    static_assert(always_false_v<T>, "non-exhaustive visitor!");
+                }
+            }, t_socket_result);
         }
 
         auto test_socket(const Socket& t_sock) -> void
@@ -177,55 +184,61 @@ namespace TestBind
         }
     }
 
+    auto test_bind_invalid(const Endpoint& endpoint,
+                           const SocketHints& hints,
+                           const ErrorCodeSet& expected_codes) -> void
+    {
+        os_error_type actual_code {0};
+        const auto bind_result {bind(endpoint, hints, verbose)};
+        std::visit([&](auto&& arg) {
+            using T = std::decay_t<decltype(arg)>;
+
+            if constexpr (std::is_same_v<T, SocketResultVector>) {
+                static_cast<void>(arg);
+            }
+            else if constexpr (std::is_same_v<T, OsErrorResult>) {
+                actual_code = arg.number();
+                print(arg, "bind() with invalid host");
+            }
+            else {
+                static_assert(always_false_v<T>, "non-exhaustive visitor!");
+            }
+        }, bind_result);
+        assert(expected_codes.contains(actual_code));
+    }
+
     auto test_bind_invalid_host(const Endpoint& endpoint,
                                 const SocketHints& hints) -> void
     {
-        os_error_type actual_code {0};
-        const auto& expected_codes {get_codes_invalid_host()};
-        const auto bind_result {bind(endpoint, hints, verbose)};
-        std::visit(Overloaded {
-                [&](const SocketResultVector& socket_results) {
-                    static_cast<void>(socket_results);
-                },
-                    [&](const OsErrorResult& error) {
-                        actual_code = error.number();
-                        print(error, "bind() with invalid host");
-                    }
-                    }, bind_result);
-        assert(expected_codes.contains(actual_code));
+        return test_bind_invalid(endpoint, hints,
+                                 get_codes_invalid_host());
     }
 
     auto test_bind_invalid_service(const Endpoint& endpoint,
                                    const SocketHints& hints) -> void
     {
-        os_error_type actual_code {0};
-        const auto& expected_codes {get_codes_invalid_service()};
-        const auto bind_result {bind(endpoint, hints, verbose)};
-        std::visit(Overloaded {
-                [&](const SocketResultVector& socket_results) {
-                    static_cast<void>(socket_results);
-                },
-                    [&](const OsErrorResult& error) {
-                        actual_code = error.number();
-                        print(error, "bind() with invalid service");
-                    }
-                    }, bind_result);
-        assert(expected_codes.contains(actual_code));
+        return test_bind_invalid(endpoint, hints,
+                                 get_codes_invalid_service());
     }
 
     auto test_bind_valid(const Endpoint& endpoint,
                          const SocketHints& hints) -> void
     {
         const auto bind_result {bind(endpoint, hints, verbose)};
-        std::visit(Overloaded {
-                [&](const SocketResultVector& socket_results) {
-                    std::for_each(socket_results.begin(), socket_results.end(),
-                                  Test(endpoint, std::cout));
-                },
-                    [&](const OsErrorResult& error) {
-                        print(error, "bind() with valid endpoint");
-                    }
-                    }, bind_result);
+        std::visit([&](auto&& arg) {
+            using T = std::decay_t<decltype(arg)>;
+
+            if constexpr (std::is_same_v<T, SocketResultVector>) {
+                std::for_each(arg.begin(), arg.end(),
+                              Test(endpoint, std::cout));
+            }
+            else if constexpr (std::is_same_v<T, OsErrorResult>) {
+                print(arg, "bind() with valid endpoint");
+            }
+            else {
+                static_assert(always_false_v<T>, "non-exhaustive visitor!");
+            }
+        }, bind_result);
     }
 }
 
