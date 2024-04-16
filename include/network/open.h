@@ -16,13 +16,7 @@
 #ifndef NETWORK_OPEN_H
 #define NETWORK_OPEN_H
 
-#include "network/open-endpoint.h"              // OpenEndpointParams,
-                                                // OpenHandler,
-                                                // OsErrorResult,
-                                                // open()
-#include "network/open-socket.h"                // OpenHandler,
-                                                // OpenSocketParams,
-                                                // OsErrorResult,
-                                                // open()
+#include "network/open-endpoint.h"              // open()
+#include "network/open-socket.h"                // open()
 
 #endif
