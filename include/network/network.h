@@ -87,7 +87,8 @@
                                                 // socket_length_max,
                                                 // socket_length_min
 #include "network/listen.h"                     // listen()
-#include "network/open.h"                       // open()
+#include "network/open-endpoint.h"              // open()
+#include "network/open-socket.h"                // open()
 #include "network/os-error.h"                   // format_os_error(),
                                                 // get_last_os_error(),
                                                 // reset_last_os_error()

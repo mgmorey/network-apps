@@ -13,48 +13,60 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/open-endpoint.h"              // open()
-#include "network/get-templates-endpoint.h"     // get_templates()
 #include "network/open.h"                       // Open
+#include "network/create-socketresult.h"        // create_socketresult()
+#include "network/open-socket.h"                // open()
 #include "network/openendpointparams.h"         // OpenEndpointParams
 #include "network/openhandler.h"                // OpenHandler
 #include "network/openresult.h"                 // OpenResult
 #include "network/oserrorresult.h"              // OsErrorResult
-#include "network/socketresultvector.h"         // SocketResultVector
-#include "network/templatevector.h"             // TemplateVector
+#include "network/socket.h"                     // Socket
+#include "network/template.h"                   // Template
 
-#include <algorithm>    // std::transform()
-#include <iostream>     // std::cout
-#include <iterator>     // std::back_inserter()
+#include <iostream>     // std::endl
 #include <type_traits>  // std::decay_t, std::is_same_v
 #include <variant>      // std::visit()
 
 template <class>
 inline constexpr bool always_false_v {false};
 
-auto Network::open(const OpenHandler& handler,
-                   const OpenEndpointParams& args) -> OpenResult
+Network::Open::Open(const OpenHandler &t_handler,
+                    const OpenEndpointParams &t_args,
+                    std::ostream &t_os) : m_handler(t_handler),
+                                          m_args(t_args),
+                                          m_os(t_os)
 {
-    OpenResult open_result;
-    SocketResultVector socket_results;
-    const auto templates_result {get_templates(args.endpoint,
-                                               args.hints,
-                                               args.verbose)};
+}
+
+auto Network::Open::operator()(const Template& t_temp) -> SocketResult
+{
+    if (m_args.verbose) {
+        m_os << t_temp
+             << std::endl;
+    }
+
+    auto template_result {create_socketresult(t_temp.hints(), m_args.verbose)};
     std::visit([&](auto&& arg) {
         using T = std::decay_t<decltype(arg)>;
 
-        if constexpr (std::is_same_v<T, TemplateVector>) {
-            std::transform(arg.begin(), arg.end(),
-                           std::back_inserter(socket_results),
-                           Open(handler, args, std::cout));
-            open_result = socket_results;
+        if constexpr (std::is_same_v<T, Socket>) {
+            const auto result {open(m_handler, {arg,
+                                                t_temp.address(),
+                                                m_args.verbose})};
+
+            if (result) {
+                template_result = result;
+            }
+            else {
+                template_result = arg;
+            }
         }
         else if constexpr (std::is_same_v<T, OsErrorResult>) {
-            open_result = arg;
+            static_cast<void>(arg);
         }
         else {
             static_assert(always_false_v<T>, "non-exhaustive visitor!");
         }
-    }, templates_result);
-    return open_result;
+    }, template_result);
+    return template_result;
 }

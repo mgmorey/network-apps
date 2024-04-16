@@ -16,7 +16,28 @@
 #ifndef NETWORK_OPEN_H
 #define NETWORK_OPEN_H
 
-#include "network/open-endpoint.h"              // open()
-#include "network/open-socket.h"                // open()
+#include "network/openendpointparams.h"         // OpenEndpointParams
+#include "network/openhandler.h"                // OpenHandler
+#include "network/socketresult.h"               // SocketResult
+#include "network/template.h"                   // Template
+
+#include <iostream>     // std::cout, std::endl
+
+namespace Network
+{
+    class Open
+    {
+    public:
+        Open(const OpenHandler &t_handler,
+             const OpenEndpointParams &t_args,
+             std::ostream &t_os);
+        auto operator()(const Template& t_temp) -> SocketResult;
+
+    private:
+        const OpenHandler& m_handler;
+        const OpenEndpointParams& m_args;
+        std::ostream& m_os;
+    };
+}
 
 #endif
