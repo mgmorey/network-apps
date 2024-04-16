@@ -16,8 +16,9 @@
 #ifndef NETWORK_CONNECT_ENDPOINT_H
 #define NETWORK_CONNECT_ENDPOINT_H
 
-#include "network/open-endpoint.h"      // Endpoint, OpenResult,
-                                        // SocketHints
+#include "network/endpoint.h"           // Endpoint
+#include "network/openresult.h"         // OpenResult
+#include "network/sockethints.h"        // SocketHints
 
 namespace Network
 {
