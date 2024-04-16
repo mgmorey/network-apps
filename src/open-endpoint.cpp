@@ -21,7 +21,6 @@
 #include "network/openhandler.h"                // OpenHandler
 #include "network/openresult.h"                 // OpenResult
 #include "network/oserrorresult.h"              // OsErrorResult
-#include "network/overloaded.h"                 // Overloaded
 #include "network/socket.h"                     // Socket
 #include "network/socketresultvector.h"         // SocketResultVector
 #include "network/template.h"                   // Template
@@ -30,7 +29,11 @@
 #include <algorithm>    // std::transform()
 #include <iostream>     // std::cout, std::endl
 #include <iterator>     // std::back_inserter()
+#include <type_traits>  // std::decay_t, std::is_same_v
 #include <variant>      // std::visit()
+
+template <class>
+inline constexpr bool always_false_v {false};
 
 auto Network::open(const OpenHandler& handler,
                    const OpenEndpointParams& args) -> OpenResult
@@ -44,38 +47,48 @@ auto Network::open(const OpenHandler& handler,
         }
 
         auto template_result {create_socketresult(temp.hints(), args.verbose)};
-        std::visit(Overloaded {
-                [&](const Socket& sock) {
-                    const auto result {open(handler, {sock,
-                                                      temp.address(),
-                                                      args.verbose})};
+        std::visit([&](auto&& arg) {
+            using T = std::decay_t<decltype(arg)>;
 
-                    if (result) {
-                        template_result = result;
-                    }
-                    else {
-                        template_result = sock;
-                    }
-                },
-                    [&](const OsErrorResult& result) {
-                        static_cast<void>(result);
-                    }
-                    }, template_result);
+            if constexpr (std::is_same_v<T, Socket>) {
+                const auto result {open(handler, {arg,
+                                                  temp.address(),
+                                                  args.verbose})};
+
+                if (result) {
+                    template_result = result;
+                }
+                else {
+                    template_result = arg;
+                }
+            }
+            else if constexpr (std::is_same_v<T, OsErrorResult>) {
+                static_cast<void>(arg);
+            }
+            else {
+                static_assert(always_false_v<T>, "non-exhaustive visitor!");
+            }
+        }, template_result);
         return template_result;
     };
     const auto templates_result {get_templates(args.endpoint,
                                                args.hints,
                                                args.verbose)};
-    std::visit(Overloaded {
-            [&](const TemplateVector& templates) {
-                std::transform(templates.begin(), templates.end(),
-                               std::back_inserter(socket_results),
-                               lambda);
-                open_result = OpenResult {socket_results};
-            },
-                [&](const OsErrorResult& result) {
-                    open_result = OpenResult {result};
-                }
-                }, templates_result);
+    std::visit([&](auto&& arg) {
+        using T = std::decay_t<decltype(arg)>;
+
+        if constexpr (std::is_same_v<T, TemplateVector>) {
+            std::transform(arg.begin(), arg.end(),
+                           std::back_inserter(socket_results),
+                           lambda);
+            open_result = socket_results;
+        }
+        else if constexpr (std::is_same_v<T, OsErrorResult>) {
+            open_result = arg;
+        }
+        else {
+            static_assert(always_false_v<T>, "non-exhaustive visitor!");
+        }
+    }, templates_result);
     return open_result;
 }
