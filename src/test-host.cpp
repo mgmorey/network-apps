@@ -19,9 +19,8 @@
                                         // Context, Endpoint,
                                         // HostVector, OptionalHints,
                                         // OptionalHostname,
-                                        // OsErrorResult, Overloaded,
-                                        // SocketHints, SocketHost,
-                                        // get_endpoint(),
+                                        // OsErrorResult, SocketHints,
+                                        // SocketHost, get_endpoint(),
                                         // get_hosts(), os_error_type,
                                         // uniquify()
 #include "network/parse.h"              // parse()
