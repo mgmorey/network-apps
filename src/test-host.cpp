@@ -47,9 +47,12 @@
 #include <ostream>      // std::ostream
 #include <set>          // std::set
 #include <string>       // std::string
-#include <utility>      // std::pair
+#include <type_traits>  // std::decay_t, std::is_same_v
 #include <variant>      // std::visit()
 #include <vector>       // std::vector
+
+template <class>
+inline constexpr bool always_false_v {false};
 
 namespace TestHost
 {
@@ -62,7 +65,6 @@ namespace TestHost
     using Network::OptionalHints;
     using Network::OptionalHostname;
     using Network::OsErrorResult;
-    using Network::Overloaded;
     using Network::SocketHints;
     using Network::SocketHost;
     using Network::get_hosts;
@@ -238,39 +240,44 @@ namespace TestHost
     {
         const auto hosts_result {get_hosts(host, hints)};
         const auto family {get_family(hints)};
-        std::visit(Overloaded {
-                [&](const HostVector& hosts) {
-                    if (hosts.empty()) {
-                        return;
-                    }
+        std::visit([&](auto&& arg) {
+            using T = std::decay_t<decltype(arg)>;
 
-                    if (family.empty()) {
-                        std::cout << "All";
-                    }
-                    else {
-                        std::cout << family;
-                    }
+            if constexpr (std::is_same_v<T, HostVector>) {
+                if (arg.empty()) {
+                    return;
+                }
 
-                    std::cout << " hosts:"
-                              << std::endl;
-                    std::for_each(hosts.begin(), hosts.end(),
-                                  Test(std::cout));
-                },
-                    [&](const OsErrorResult& result) {
-                        if (family.empty()) {
-                            std::cout << "No";
-                        }
-                        else {
-                            std::cout << "No "
-                                      << family;
-                        }
+                if (family.empty()) {
+                    std::cout << "All";
+                }
+                else {
+                    std::cout << family;
+                }
 
-                        std::cout << " hosts:"
-                                  << std::endl
-                                  << result.string()
-                                  << std::endl;
-                    }
-                    }, hosts_result);
+                std::cout << " hosts:"
+                          << std::endl;
+                std::for_each(arg.begin(), arg.end(),
+                              Test(std::cout));
+            }
+            else if constexpr (std::is_same_v<T, OsErrorResult>) {
+                if (family.empty()) {
+                    std::cout << "No";
+                }
+                else {
+                    std::cout << "No "
+                              << family;
+                }
+
+                std::cout << " hosts:"
+                          << std::endl
+                          << arg.string()
+                          << std::endl;
+            }
+            else {
+                static_assert(always_false_v<T>, "non-exhaustive visitor!");
+            }
+        }, hosts_result);
     }
 
     auto test_host_invalid() -> void
@@ -278,15 +285,20 @@ namespace TestHost
         os_error_type actual_code {0};
         const auto& expected_codes {get_codes_nodata()};
         const auto hosts_result {get_hosts(".")};
-        std::visit(Overloaded {
-                [&](const HostVector& hosts) {
-                    static_cast<void>(hosts);
-                },
-                    [&](const OsErrorResult& result) {
-                        print(result, "get_hosts() with invalid hostname");
-                        actual_code = result.number();
-                    }
-                    }, hosts_result);
+        std::visit([&](auto&& arg) {
+            using T = std::decay_t<decltype(arg)>;
+
+            if constexpr (std::is_same_v<T, HostVector>) {
+                static_cast<void>(arg);
+            }
+            else if constexpr (std::is_same_v<T, OsErrorResult>) {
+                print(arg, "get_hosts() with invalid hostname");
+                actual_code = arg.number();
+            }
+            else {
+                static_assert(always_false_v<T>, "non-exhaustive visitor!");
+            }
+        }, hosts_result);
         assert(expected_codes.contains(actual_code));
     }
 
