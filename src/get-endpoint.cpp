@@ -19,22 +19,30 @@
 #include "network/error.h"                      // Error
 #include "network/get-endpointresult.h"         // get_endpointresult()
 #include "network/oserrorresult.h"              // OsErrorResult,
-#include "network/overloaded.h"                 // Overloaded
 
+#include <type_traits>  // std::decay_t, std::is_same_v
 #include <variant>      // std::visit()
 
-auto Network::get_endpoint(const ByteString& addr, int flags, bool verbose) ->
-    Endpoint
+template <class>
+inline constexpr bool always_false_v {false};
+
+auto Network::get_endpoint(const ByteString &addr, int flags,
+                           bool verbose) -> Endpoint
 {
     Endpoint result;
     auto endpoint_result {get_endpointresult(addr, flags, verbose)};
-    std::visit(Overloaded {
-            [&](const Endpoint& endpoint) {
-                result = endpoint;
-            },
-                [&](const OsErrorResult& error) {
-                    throw Error(error.string());
-                }
-                }, endpoint_result);
+    std::visit([&](auto&& arg) {
+        using T = std::decay_t<decltype(arg)>;
+
+        if constexpr (std::is_same_v<T, Endpoint>) {
+            result = arg;
+        }
+        else if constexpr (std::is_same_v<T, OsErrorResult>) {
+            throw Error(arg.string());
+        }
+        else {
+            static_assert(always_false_v<T>, "non-exhaustive visitor!");
+        }
+    }, endpoint_result);
     return result;
 }
