@@ -22,9 +22,8 @@
                                         // get_sa_size_maximum(),
                                         // get_sa_size_minimum(),
                                         // sa_family_type, sa_size,
-                                        // sin_family_type, sin6_size,
-                                        // sin_size, sun_len_max,
-                                        // sun_len_min,
+                                        // sin_family_type,
+                                        // sun_len_max, sun_len_min,
                                         // sun_path_offset, sun_size,
                                         // to_bytestring(), validate()
 #include "network/os-features.h"        // HAVE_SOCKADDR_SA_LEN
@@ -77,9 +76,7 @@ namespace TestAddress
 #endif
     using Network::sa_family_type;
     using Network::sa_size;
-    using Network::sin6_size;
     using Network::sin_family_type;
-    using Network::sin_size;
 #ifndef WIN32
     using Network::sun_len_max;
     using Network::sun_len_min;
