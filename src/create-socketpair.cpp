@@ -19,13 +19,16 @@
 #include "network/create-socketpairresult.h"    // create_socketpairresult()
 #include "network/error.h"                      // Error
 #include "network/oserrorresult.h"              // OsErrorResult
-#include "network/overloaded.h"                 // Overloaded
 #include "network/sockethints.h"                // SocketHints
 #include "network/socketpair.h"                 // SocketPair
 
 #include <optional>     // std::optional
 #include <string>       // std::string
+#include <type_traits>  // std::decay_t, std::is_same_v
 #include <variant>      // std::visit()
+
+template <class>
+inline constexpr bool always_false_v {false};
 
 auto Network::create_socketpair(const SocketHints& hints,
                                 bool verbose) -> SocketPair
@@ -33,14 +36,19 @@ auto Network::create_socketpair(const SocketHints& hints,
     std::string result_string;
     std::optional<SocketPair> result_socketpair;
     const auto socketpair_result {create_socketpairresult(hints, verbose)};
-    std::visit(Overloaded {
-            [&](const SocketPair& pair) {
-                result_socketpair = pair;
-            },
-                [&](const OsErrorResult& result) {
-                    result_string = result.string();
-                }
-                }, socketpair_result);
+    std::visit([&](auto&& arg) {
+        using T = std::decay_t<decltype(arg)>;
+
+        if constexpr (std::is_same_v<T, SocketPair>) {
+            result_socketpair = arg;
+        }
+        else if constexpr (std::is_same_v<T, OsErrorResult>) {
+            result_string = arg.string();
+        }
+        else {
+            static_assert(always_false_v<T>, "non-exhaustive visitor!");
+        }
+    }, socketpair_result);
 
     if (!result_socketpair) {
         throw Error(result_string);
