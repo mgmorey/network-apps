@@ -113,27 +113,21 @@ namespace TestAddress
         return sa;
     }
 
-    auto create_sin(sin_family_type family = AF_INET,
-                    std::size_t length = sin_size) -> sockaddr_in
+    auto create_sin(sin_family_type family = AF_INET) -> sockaddr_in
     {
         sockaddr_in sin {};
 #ifdef HAVE_SOCKADDR_SA_LEN
-        sin.sin_len = length;
-#else
-        static_cast<void>(length);
+        sin.sin_len = sizeof sin;
 #endif
         sin.sin_family = family;
         return sin;
     }
 
-    auto create_sin6(sin_family_type family = AF_INET6,
-                     std::size_t length = sin6_size) -> sockaddr_in6
+    auto create_sin6(sin_family_type family = AF_INET6) -> sockaddr_in6
     {
         sockaddr_in6 sin6 {};
 #ifdef HAVE_SOCKADDR_SA_LEN
-        sin6.sin6_len = length;
-#else
-        static_cast<void>(length);
+        sin6.sin6_len = sizeof sin;
 #endif
         sin6.sin6_family = family;
         return sin6;
@@ -251,14 +245,14 @@ namespace TestAddress
         test_sa(sa, 0, expected_error_length_re);
     }
 
-    auto test_sin(const sockaddr_in& sin, std::size_t sin_len,
+    auto test_sin(const sockaddr_in& sin,
                   const std::string& expected_error_re) -> void
     {
         const std::regex expected_error_regex {expected_error_re};
         std::string actual_error_str;
 
         try {
-            validate(&sin, sin_len);
+            validate(&sin);
         }
         catch (const Error& error) {
             print(error);
@@ -271,7 +265,7 @@ namespace TestAddress
             actual_error_str.clear();
 
             try {
-                validate(to_bytestring(&sin, sin_len));
+                validate(to_bytestring(&sin, sizeof sin));
             }
             catch (const Error& error) {
                 print(error);
@@ -284,25 +278,18 @@ namespace TestAddress
 
     auto test_sin_invalid_family() -> void
     {
-        const auto sin {create_sin(AF_UNSPEC, sin_size)};
-        test_sin(sin, sin_size, expected_error_family_re);
+        const auto sin {create_sin(AF_UNSPEC)};
+        test_sin(sin, expected_error_family_re);
     }
 
-    auto test_sin_invalid_length() -> void
-    {
-        const auto length {sin_size - 1};
-        const auto sin {create_sin(AF_INET, length)};
-        test_sin(sin, length, expected_error_length_re);
-    }
-
-    auto test_sin6(const sockaddr_in6 &sin6, std::size_t sin6_len,
+    auto test_sin6(const sockaddr_in6 &sin6,
                    const std::string& expected_error_re) -> void
     {
         const std::regex expected_error_regex {expected_error_re};
         std::string actual_error_str;
 
         try {
-            validate(&sin6, sin6_len);
+            validate(&sin6);
         }
         catch (const Error& error) {
             print(error);
@@ -315,7 +302,7 @@ namespace TestAddress
             actual_error_str.clear();
 
             try {
-                validate(to_bytestring(&sin6, sin6_len));
+                validate(to_bytestring(&sin6, sizeof sin6));
             }
             catch (const Error& error) {
                 print(error);
@@ -328,15 +315,8 @@ namespace TestAddress
 
     auto test_sin6_invalid_family() -> void
     {
-        const auto sin6 {create_sin6(AF_UNSPEC, sin6_size)};
-        test_sin6(sin6, sin6_size, expected_error_family_re);
-    }
-
-    auto test_sin6_invalid_length() -> void
-    {
-        const auto length {sin6_size - 1};
-        const auto sin6 {create_sin6(AF_INET6, length)};
-        test_sin6(sin6, length, expected_error_length_re);
+        const auto sin6 {create_sin6(AF_UNSPEC)};
+        test_sin6(sin6, expected_error_family_re);
     }
 
 #ifndef WIN32
@@ -520,9 +500,7 @@ auto main(int argc, char* argv[]) -> int
 
         test_sa_invalid_length();
         test_sin6_invalid_family();
-        test_sin6_invalid_length();
         test_sin_invalid_family();
-        test_sin_invalid_length();
 #ifndef WIN32
         test_char_invalid_length();
         test_path_invalid_length();

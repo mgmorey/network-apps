@@ -26,5 +26,5 @@
 auto Network::get_sin6_pointer(const ByteString& addr) -> const sockaddr_in6*
 {
     const void* pointer {addr.data()};
-    return validate(static_cast<const sockaddr_in6*>(pointer), addr.size());
+    return validate(static_cast<const sockaddr_in6*>(pointer));
 }

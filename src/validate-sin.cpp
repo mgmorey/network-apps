@@ -29,15 +29,8 @@
 #include <string>       // std::to_string()
 #include <utility>      // std::cmp_not_equal()
 
-auto Network::validate(const sockaddr_in* sin,
-                       sa_len_type sin_len) -> const sockaddr_in*
+auto Network::validate(const sockaddr_in* sin) -> const sockaddr_in*
 {
-    if (std::cmp_not_equal(sin_len, sizeof *sin)) {
-        throw SinLengthError(std::to_string(sin_len),
-                             sizeof *sin,
-                             sizeof *sin);
-    }
-
 #ifdef HAVE_SOCKADDR_SA_LEN
 
     if (std::cmp_not_equal(sin->sin_len, sizeof *sin)) {
