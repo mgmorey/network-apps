@@ -127,7 +127,7 @@ namespace TestAddress
     {
         sockaddr_in6 sin6 {};
 #ifdef HAVE_SOCKADDR_SA_LEN
-        sin6.sin6_len = sizeof sin;
+        sin6.sin6_len = sizeof sin6;
 #endif
         sin6.sin6_family = family;
         return sin6;
