@@ -17,17 +17,14 @@
 #include "network/always-false.h"               // always_false_v
 #include "network/error-strings.h"              // VISITOR_ERROR
 #include "network/get-templates-endpoint.h"     // get_templates()
-#include "network/open.h"                       // Open
+#include "network/open-templates.h"             // open()
 #include "network/openendpointparams.h"         // OpenEndpointParams
 #include "network/openhandler.h"                // OpenHandler
 #include "network/openresult.h"                 // OpenResult
 #include "network/oserrorresult.h"              // OsErrorResult
-#include "network/socketresultvector.h"         // SocketResultVector
 #include "network/templatevector.h"             // TemplateVector
 
-#include <algorithm>    // std::transform()
 #include <iostream>     // std::cout
-#include <iterator>     // std::back_inserter()
 #include <type_traits>  // std::decay_t, std::is_same_v
 #include <variant>      // std::visit()
 
@@ -35,7 +32,6 @@ auto Network::open(const OpenHandler& handler,
                    const OpenEndpointParams& args) -> OpenResult
 {
     OpenResult open_result;
-    SocketResultVector socket_results;
     const auto templates_result {get_templates(args.endpoint,
                                                args.hints,
                                                args.verbose)};
@@ -43,10 +39,7 @@ auto Network::open(const OpenHandler& handler,
         using T = std::decay_t<decltype(arg)>;
 
         if constexpr (std::is_same_v<T, TemplateVector>) {
-            std::transform(arg.begin(), arg.end(),
-                           std::back_inserter(socket_results),
-                           Open(handler, args, std::cout));
-            open_result = socket_results;
+            open_result = open(handler, args, arg);
         }
         else if constexpr (std::is_same_v<T, OsErrorResult>) {
             open_result = arg;
