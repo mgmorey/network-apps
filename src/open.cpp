@@ -29,9 +29,9 @@
 #include <type_traits>  // std::decay_t, std::is_same_v
 #include <variant>      // std::visit()
 
-Network::Open::Open(const OpenHandler &t_handler,
-                    const OpenEndpointParams &t_args,
-                    std::ostream &t_os) :
+Network::Open::Open(const OpenHandler& t_handler,
+                    const OpenEndpointParams& t_args,
+                    std::ostream& t_os) :
     m_handler(t_handler),
     m_args(t_args),
     m_os(t_os)

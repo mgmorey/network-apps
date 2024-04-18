@@ -28,9 +28,9 @@ namespace Network
     class Open
     {
     public:
-        Open(const OpenHandler &t_handler,
-             const OpenEndpointParams &t_args,
-             std::ostream &t_os);
+        Open(const OpenHandler& t_handler,
+             const OpenEndpointParams& t_args,
+             std::ostream& t_os);
         auto operator()(const Template& t_temp) -> SocketResult;
 
     private:
