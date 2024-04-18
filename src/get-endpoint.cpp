@@ -14,17 +14,16 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/get-endpoint.h"               // get_endpoint()
+#include "network/always-false.h"               // always_false_v
 #include "network/bytestring.h"                 // ByteString
 #include "network/endpoint.h"                   // Endpoint
+#include "network/error-strings.h"              // VISITOR_ERROR
 #include "network/error.h"                      // Error
 #include "network/get-endpointresult.h"         // get_endpointresult()
 #include "network/oserrorresult.h"              // OsErrorResult,
 
 #include <type_traits>  // std::decay_t, std::is_same_v
 #include <variant>      // std::visit()
-
-template <class>
-inline constexpr bool always_false_v {false};
 
 auto Network::get_endpoint(const ByteString &addr, int flags,
                            bool verbose) -> Endpoint
@@ -41,7 +40,7 @@ auto Network::get_endpoint(const ByteString &addr, int flags,
             throw Error(arg.string());
         }
         else {
-            static_assert(always_false_v<T>, "non-exhaustive visitor!");
+            static_assert(always_false_v<T>, VISITOR_ERROR);
         }
     }, endpoint_result);
     return result;

@@ -16,7 +16,9 @@
 #ifndef WIN32
 
 #include "network/create-socketpair.h"          // create_socketpair()
+#include "network/always-false.h"               // always_false_v
 #include "network/create-socketpairresult.h"    // create_socketpairresult()
+#include "network/error-strings.h"              // VISITOR_ERROR
 #include "network/error.h"                      // Error
 #include "network/oserrorresult.h"              // OsErrorResult
 #include "network/sockethints.h"                // SocketHints
@@ -46,7 +48,7 @@ auto Network::create_socketpair(const SocketHints& hints,
             result_string = arg.string();
         }
         else {
-            static_assert(always_false_v<T>, "non-exhaustive visitor!");
+            static_assert(always_false_v<T>, VISITOR_ERROR);
         }
     }, socketpair_result);
 

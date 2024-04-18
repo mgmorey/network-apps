@@ -51,9 +51,6 @@
 #include <variant>      // std::visit()
 #include <vector>       // std::vector
 
-template <class>
-inline constexpr bool always_false_v {false};
-
 namespace TestHost
 {
     using Network::Address;
@@ -67,6 +64,7 @@ namespace TestHost
     using Network::OsErrorResult;
     using Network::SocketHints;
     using Network::SocketHost;
+    using Network::always_false_v;
     using Network::get_hosts;
     using Network::os_error_type;
     using Network::parse;
@@ -275,7 +273,7 @@ namespace TestHost
                           << std::endl;
             }
             else {
-                static_assert(always_false_v<T>, "non-exhaustive visitor!");
+                static_assert(always_false_v<T>, VISITOR_ERROR);
             }
         }, hosts_result);
     }
@@ -296,7 +294,7 @@ namespace TestHost
                 actual_code = arg.number();
             }
             else {
-                static_assert(always_false_v<T>, "non-exhaustive visitor!");
+                static_assert(always_false_v<T>, VISITOR_ERROR);
             }
         }, hosts_result);
         assert(expected_codes.contains(actual_code));

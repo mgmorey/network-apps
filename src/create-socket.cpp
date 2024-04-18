@@ -14,8 +14,10 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/create-socket.h"              // create_socket()
+#include "network/always-false.h"               // always_false_v
 #include "network/create-socketresult.h"        // create_socketresult()
 #include "network/descriptor-null.h"            // descriptor_null
+#include "network/error-strings.h"              // VISITOR_ERROR
 #include "network/error.h"                      // Error
 #include "network/oserrorresult.h"              // OsErrorResult
 #include "network/socket.h"                     // Socket
@@ -23,9 +25,6 @@
 
 #include <type_traits>  // std::decay_t, std::is_same_v
 #include <variant>      // std::visit()
-
-template <class>
-inline constexpr bool always_false_v {false};
 
 auto Network::create_socket(const SocketHints& hints,
                             bool verbose) -> Socket
@@ -42,7 +41,7 @@ auto Network::create_socket(const SocketHints& hints,
             throw Error(arg.string());
         }
         else {
-            static_assert(always_false_v<T>, "non-exhaustive visitor!");
+            static_assert(always_false_v<T>, VISITOR_ERROR);
         }
     }, socket_result);
     return result;

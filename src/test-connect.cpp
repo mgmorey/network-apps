@@ -49,9 +49,6 @@
 #include <utility>      // std::move()
 #include <variant>      // std::visit()
 
-template <class>
-inline constexpr bool always_false_v {false};
-
 namespace TestConnect
 {
     using Network::Address;
@@ -66,6 +63,7 @@ namespace TestConnect
     using Network::SocketHints;
     using Network::SocketResult;
     using Network::SocketResultVector;
+    using Network::always_false_v;
     using Network::connect;
     using Network::get_hostname;
     using Network::os_error_type;
@@ -128,7 +126,7 @@ namespace TestConnect
                     }
                 }
                 else {
-                    static_assert(always_false_v<T>, "non-exhaustive visitor!");
+                    static_assert(always_false_v<T>, VISITOR_ERROR);
                 }
             }, t_socket_result);
         }
@@ -241,7 +239,7 @@ namespace TestConnect
                 print(arg, "connect() with invalid host");
             }
             else {
-                static_assert(always_false_v<T>, "non-exhaustive visitor!");
+                static_assert(always_false_v<T>, VISITOR_ERROR);
             }
         }, connect_result);
         assert(expected_codes.contains(actual_code));
@@ -279,7 +277,7 @@ namespace TestConnect
                 print(arg, "connect() with valid endpoint");
             }
             else {
-                static_assert(always_false_v<T>, "non-exhaustive visitor!");
+                static_assert(always_false_v<T>, VISITOR_ERROR);
             }
         }, connect_result);
     }

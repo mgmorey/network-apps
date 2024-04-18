@@ -46,9 +46,6 @@
 #include <utility>      // std::move()
 #include <variant>      // std::visit()
 
-template <class>
-inline constexpr bool always_false_v {false};
-
 namespace TestBind
 {
     using Network::Address;
@@ -60,6 +57,7 @@ namespace TestBind
     using Network::SocketHints;
     using Network::SocketResult;
     using Network::SocketResultVector;
+    using Network::always_false_v;
     using Network::bind;
     using Network::os_error_type;
     using Network::parse;
@@ -95,7 +93,7 @@ namespace TestBind
                               << std::endl;
                 }
                 else {
-                    static_assert(always_false_v<T>, "non-exhaustive visitor!");
+                    static_assert(always_false_v<T>, VISITOR_ERROR);
                 }
             }, t_socket_result);
         }
@@ -201,7 +199,7 @@ namespace TestBind
                 print(arg, "bind() with invalid host");
             }
             else {
-                static_assert(always_false_v<T>, "non-exhaustive visitor!");
+                static_assert(always_false_v<T>, VISITOR_ERROR);
             }
         }, bind_result);
         assert(expected_codes.contains(actual_code));
@@ -236,7 +234,7 @@ namespace TestBind
                 print(arg, "bind() with valid endpoint");
             }
             else {
-                static_assert(always_false_v<T>, "non-exhaustive visitor!");
+                static_assert(always_false_v<T>, VISITOR_ERROR);
             }
         }, bind_result);
     }

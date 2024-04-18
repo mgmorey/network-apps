@@ -14,7 +14,9 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/get-name.h"           // get_name()
+#include "network/always-false.h"       // always_false_v
 #include "network/bytestring.h"         // ByteString
+#include "network/error-strings.h"      // VISITOR_ERROR
 #include "network/error.h"              // Error
 #include "network/get-nameresult.h"     // get_nameresult()
 #include "network/getnamehandler.h"     // GetNameHandler
@@ -23,9 +25,6 @@
 
 #include <type_traits>  // std::decay_t, std::is_same_v
 #include <variant>      // std::visit()
-
-template <class>
-inline constexpr bool always_false_v {false};
 
 auto Network::get_name(const GetNameHandler& handler,
                        const GetNameParams& args) -> ByteString
@@ -42,7 +41,7 @@ auto Network::get_name(const GetNameHandler& handler,
             throw Error(arg.string());
         }
         else {
-            static_assert(always_false_v<T>, "non-exhaustive visitor!");
+            static_assert(always_false_v<T>, VISITOR_ERROR);
         }
     }, name_result);
     return result;

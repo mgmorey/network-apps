@@ -20,6 +20,7 @@
 #include "network/address.h"                    // Address
 #include "network/addressstring.h"              // AddressString
 #include "network/ai-error.h"                   // format_ai_error()
+#include "network/always-false.h"               // always_false_v
 #include "network/bind.h"                       // bind()
 #include "network/bytestring.h"                 // ByteString
 #include "network/bytestringresult.h"           // ByteStringResult
@@ -51,6 +52,7 @@
 #include "network/create-socketpairresult.h"    // create_socketpairresult()
 #endif
 #include "network/create-socketresult.h"        // create_socketresult()
+#include "network/error-strings.h"              // VISITOR_ERROR
 #include "network/exceptions.h"                 // Error, LogicError,
                                                 // RuntimeError
 #include "network/get-endpoint.h"               // get_endpoint()

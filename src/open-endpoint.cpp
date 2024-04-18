@@ -14,6 +14,8 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/open-endpoint.h"              // open()
+#include "network/always-false.h"               // always_false_v
+#include "network/error-strings.h"              // VISITOR_ERROR
 #include "network/get-templates-endpoint.h"     // get_templates()
 #include "network/open.h"                       // Open
 #include "network/openendpointparams.h"         // OpenEndpointParams
@@ -28,9 +30,6 @@
 #include <iterator>     // std::back_inserter()
 #include <type_traits>  // std::decay_t, std::is_same_v
 #include <variant>      // std::visit()
-
-template <class>
-inline constexpr bool always_false_v {false};
 
 auto Network::open(const OpenHandler& handler,
                    const OpenEndpointParams& args) -> OpenResult
@@ -53,7 +52,7 @@ auto Network::open(const OpenHandler& handler,
             open_result = arg;
         }
         else {
-            static_assert(always_false_v<T>, "non-exhaustive visitor!");
+            static_assert(always_false_v<T>, VISITOR_ERROR);
         }
     }, templates_result);
     return open_result;

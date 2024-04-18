@@ -14,7 +14,9 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/open.h"                       // Open
+#include "network/always-false.h"               // always_false_v
 #include "network/create-socketresult.h"        // create_socketresult()
+#include "network/error-strings.h"              // VISITOR_ERROR
 #include "network/open-socket.h"                // open()
 #include "network/openendpointparams.h"         // OpenEndpointParams
 #include "network/openhandler.h"                // OpenHandler
@@ -26,9 +28,6 @@
 #include <iostream>     // std::endl
 #include <type_traits>  // std::decay_t, std::is_same_v
 #include <variant>      // std::visit()
-
-template <class>
-inline constexpr bool always_false_v {false};
 
 Network::Open::Open(const OpenHandler &t_handler,
                     const OpenEndpointParams &t_args,
@@ -66,7 +65,7 @@ auto Network::Open::operator()(const Template& t_temp) -> SocketResult
             static_cast<void>(arg);
         }
         else {
-            static_assert(always_false_v<T>, "non-exhaustive visitor!");
+            static_assert(always_false_v<T>, VISITOR_ERROR);
         }
     }, template_result);
     return template_result;

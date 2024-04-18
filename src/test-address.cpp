@@ -53,9 +53,6 @@
 #include <type_traits>  // std::decay_t, std::is_same_v
 #include <variant>      // std::visit()
 
-template <class>
-inline constexpr bool always_false_v {false};
-
 namespace TestAddress
 {
     using Network::Address;
@@ -67,6 +64,7 @@ namespace TestAddress
     using Network::OsErrorResult;
     using Network::SocketFamily;
     using Network::SocketHints;
+    using Network::always_false_v;
     using Network::get_hosts;
     using Network::get_sa_size_maximum;
     using Network::get_sa_size_minimum;
@@ -485,7 +483,7 @@ namespace TestAddress
                           << std::endl;
             }
             else {
-                static_assert(always_false_v<T>, "non-exhaustive visitor!");
+                static_assert(always_false_v<T>, VISITOR_ERROR);
             }
         }, hosts_result);
     }
