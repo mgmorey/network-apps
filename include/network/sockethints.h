@@ -43,9 +43,7 @@ namespace Network
         friend auto operator<<(std::ostream& os,
                                const SocketHints& hints) noexcept -> std::ostream&;
 
-        constexpr SocketHints() noexcept = default;
-
-        constexpr explicit SocketHints(socket_flags_type t_flags,
+        constexpr explicit SocketHints(socket_flags_type t_flags = 0,
                                        socket_family_type t_family = AF_UNSPEC,
                                        socket_type_type t_socktype = 0,
                                        socket_protocol_type t_protocol = 0) noexcept :
