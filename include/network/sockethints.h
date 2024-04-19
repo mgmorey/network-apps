@@ -74,10 +74,10 @@ namespace Network
         constexpr auto operator=(const addrinfo& t_ai) noexcept ->
             SocketHints&
         {
-            m_flags = SocketFlags {t_ai.ai_flags};
-            m_family = SocketFamily {t_ai.ai_family};
-            m_socktype = SocketType {t_ai.ai_socktype};
-            m_protocol = SocketProtocol {t_ai.ai_family, t_ai.ai_protocol};
+            m_flags = SocketFlags(t_ai.ai_flags);
+            m_family = SocketFamily(t_ai.ai_family);
+            m_socktype = SocketType(t_ai.ai_socktype);
+            m_protocol = SocketProtocol(t_ai.ai_family, t_ai.ai_protocol);
             return *this;
         }
 

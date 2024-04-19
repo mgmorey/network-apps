@@ -18,7 +18,7 @@
 
 namespace Network
 {
-    using socket_hint_type = int;
+    using socket_hint_type = unsigned short;
 }
 
 #endif
