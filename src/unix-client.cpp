@@ -39,8 +39,7 @@ static bool verbose {false};  // NOLINT
 namespace Client {
     auto connect() -> Socket
     {
-        const SocketHints hints {0, AF_UNIX, SOCK_SEQPACKET};
-        Socket sock {hints, verbose};
+        Socket sock {SocketHints {0, AF_UNIX, SOCK_SEQPACKET}, verbose};
 
         if (const auto error {Network::connect(sock, SOCKET_NAME, verbose)}) {
             std::cerr << error.string() << std::endl;

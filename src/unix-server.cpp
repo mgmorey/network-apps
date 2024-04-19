@@ -40,9 +40,9 @@ static constexpr auto backlog_size {20};
 static bool verbose {false};  // NOLINT
 
 namespace Server {
-    auto accept(const Socket& sock) -> Socket
+    auto accept(const Socket& bind_sock) -> Socket
     {
-        auto [accept_sock, accept_addr] {Network::accept(sock, verbose)};
+        auto [accept_sock, accept_addr] {Network::accept(bind_sock, verbose)};
 
         if (verbose) {
             std::cout << "Accepted connection from "
@@ -55,15 +55,14 @@ namespace Server {
 
     auto bind() -> Socket
     {
-        const SocketHints hints {0, AF_UNIX, SOCK_SEQPACKET};
-        Socket bind_sock {hints, verbose};
+        Socket sock {SocketHints {0, AF_UNIX, SOCK_SEQPACKET}, verbose};
 
-        if (const auto result {Network::bind(bind_sock, SOCKET_NAME, verbose)}) {
+        if (const auto result {Network::bind(sock, SOCKET_NAME, verbose)}) {
             std::cerr << result.string() << std::endl;
             std::exit(EXIT_FAILURE);
         }
 
-        return bind_sock;
+        return sock;
     }
 
     auto listen(const Socket& sock) -> void
