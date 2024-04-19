@@ -15,11 +15,10 @@
 
 #include "network/familyerror.h"                // FamilyError
 #include "network/addresserror.h"               // AddressError
-#include "network/socket-family-type.h"         // socket_family_type
 
 #include <string>       // std::to_string()
 
-Network::FamilyError::FamilyError(socket_family_type family) :
+Network::FamilyError::FamilyError(int family) :
     AddressError("Invalid socket address family: " + std::to_string(family))
 {
 }

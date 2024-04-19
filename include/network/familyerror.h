@@ -17,7 +17,6 @@
 #define NETWORK_FAMILYERROR_H
 
 #include "network/addresserror.h"               // AddressError
-#include "network/socket-family-type.h"         // socket_family_type
 
 namespace Network
 {
@@ -25,7 +24,7 @@ namespace Network
         public AddressError
     {
     public:
-        explicit FamilyError(socket_family_type family);
+        explicit FamilyError(int family);
         FamilyError(const FamilyError&) noexcept = default;
         FamilyError(FamilyError&&) noexcept = default;
         ~FamilyError() noexcept override = default;
