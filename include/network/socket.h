@@ -36,11 +36,6 @@ namespace Network
                                const Socket& sock) noexcept -> std::ostream&;
 
     public:
-        Socket(socket_family_type t_family,
-               socket_type_type t_socktype,
-               socket_protocol_type t_protocol,
-               socket_flags_type t_flags = 0,
-               bool t_verbose = false);
         explicit Socket(const SocketHints& t_hints,
                         bool t_verbose = false);
         explicit Socket(descriptor_type t_handle,

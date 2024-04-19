@@ -47,6 +47,7 @@ namespace TestSocket
     using Network::OsErrorResult;
     using Network::Pathname;
     using Network::Socket;
+    using Network::SocketHints;
     using Network::SocketPair;
     using Network::bind;
     using Network::os_error_type;
@@ -156,7 +157,8 @@ namespace TestSocket
 
         try {
             assert(to_bytestring(path) == path);
-            Socket sock {AF_UNIX, SOCK_STREAM, 0, 0, verbose};
+            const SocketHints hints {0, AF_UNIX, SOCK_STREAM};
+            Socket sock {hints, verbose};
 
             if (const auto result {bind(sock, path, verbose)}) {
                 print(result);

@@ -30,6 +30,7 @@
 #include <string>       // std::stoll(), std::string, std::to_string()
 
 using Network::Socket;
+using Network::SocketHints;
 using Network::socket_error;
 
 using Number = long long;
@@ -54,7 +55,8 @@ namespace Server {
 
     auto bind() -> Socket
     {
-        Socket bind_sock {AF_UNIX, SOCK_SEQPACKET, 0, 0, verbose};
+        const SocketHints hints {0, AF_UNIX, SOCK_SEQPACKET};
+        Socket bind_sock {hints, verbose};
 
         if (const auto result {Network::bind(bind_sock, SOCKET_NAME, verbose)}) {
             std::cerr << result.string() << std::endl;

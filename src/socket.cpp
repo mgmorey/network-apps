@@ -27,16 +27,6 @@
 #include "network/socket-type-type.h"           // socket_type_type
 #include "network/sockethints.h"                // SocketHints
 
-Network::Socket::Socket(socket_family_type t_family,
-                        socket_type_type t_socktype,
-                        socket_protocol_type t_protocol,
-                        socket_flags_type t_flags,
-                        bool t_verbose) :
-    Socket(SocketHints {t_flags, t_family, t_socktype, t_protocol},
-           t_verbose)
-{
-}
-
 Network::Socket::Socket(const SocketHints& t_hints,
                         bool t_verbose) :
     Socket(create_socket(t_hints, t_verbose))
