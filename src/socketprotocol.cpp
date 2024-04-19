@@ -24,7 +24,7 @@
 #else
 #include <netinet/in.h> // IPPROTO_ICMP, IPPROTO_IGMP, IPPROTO_IP,
                         // IPPROTO_RAW, IPPROTO_TCP, IPPROTO_UDP
-#include <sys/socket.h> // AF_INET, AF_INET6, AF_UNIX, AF_UNSPEC,
+#include <sys/socket.h> // AF_INET, AF_INET6, AF_UNIX, AF_UNSPEC
 #endif
 
 #include <ostream>      // operator<<(), std::ostream
