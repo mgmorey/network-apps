@@ -15,9 +15,8 @@
 
 #include "network/get-templates-endpoint.h"     // get_templates()
 #include "network/endpoint.h"                   // Endpoint
-#include "network/insert-addrinfo.h"            // insert_addrinfo()
+#include "network/get-templates-hostname.h"     // get_templates()
 #include "network/optionalhints.h"              // OptionalHints
-#include "network/templatevector.h"             // TemplateVector
 #include "network/templatevectorresult.h"       // TemplateVectorResult
 
 #include <iterator>     // std::back_inserter()
@@ -26,18 +25,8 @@ auto Network::get_templates(const Endpoint& endpoint,
                             const OptionalHints& hints,
                             bool verbose) -> TemplateVectorResult
 {
-    TemplateVector templates;
-    auto result {
-        insert_addrinfo(endpoint.first,
-                        endpoint.second,
-                        hints,
-                        std::back_inserter(templates),
-                        verbose)
-    };
-
-    if (result) {
-        return result;
-    }
-
-    return templates;
+    return get_templates(endpoint.first,
+                         endpoint.second,
+                         hints,
+                         verbose);
 }
