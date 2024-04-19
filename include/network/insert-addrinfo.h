@@ -16,22 +16,22 @@
 #ifndef NETWORK_INSERT_ADDRINFO_H
 #define NETWORK_INSERT_ADDRINFO_H
 
-#include "network/addrinfo.h"           // OptionalHints,
-                                        // OptionalHostname,
-                                        // OptionalService,
-                                        // OsErrorResult
-#include "network/endpoint.h"           // Endpoint
+#include "network/addrinfo.h"           // AddrInfo
+#include "network/optionalhints.h"      // OptionalHints
+#include "network/optionalhostname.h"   // OptionalHostname
+#include "network/optionalservice.h"    // OptionalService
+#include "network/oserrorresult.h"      // OsErrorResult
 
 #include <iostream>     // std::cerr, std::endl
 
 namespace Network
 {
     template<typename OutputIterator>
-    auto insert_addrinfo(const OptionalHostname& hostname,
-                         const OptionalService& service,
-                         const OptionalHints& hints,
-                         OutputIterator it,
-                         bool verbose) -> OsErrorResult
+    auto insert(const OptionalHostname& hostname,
+                const OptionalService& service,
+                const OptionalHints& hints,
+                OutputIterator it,
+                bool verbose) -> OsErrorResult
     {
         const auto list {AddrInfo(hostname, service, hints, verbose)};
 
@@ -45,19 +45,6 @@ namespace Network
         }
 
         return list.result();
-    }
-
-    template<typename OutputIterator>
-    auto insert_addrinfo(const Endpoint& endpoint,
-                         const OptionalHints& hints,
-                         OutputIterator it,
-                         bool verbose) noexcept -> OsErrorResult
-    {
-        return insert_addrinfo(endpoint.first,
-                               endpoint.second,
-                               hints,
-                               it,
-                               verbose);
     }
 }
 

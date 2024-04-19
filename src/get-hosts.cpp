@@ -16,7 +16,7 @@
 #include "network/get-hosts.h"          // get_hosts()
 #include "network/hostvector.h"         // HostVector
 #include "network/hostvectorresult.h"   // HostVectorResult
-#include "network/insert-addrinfo.h"    // insert_addrinfo()
+#include "network/insert-addrinfo.h"    // insert()
 #include "network/optionalhints.h"      // OptionalHints
 #include "network/optionalhostname.h"   // OptionalHostname
 
@@ -27,13 +27,11 @@ auto Network::get_hosts(const OptionalHostname& hostname,
                         bool verbose) -> HostVectorResult
 {
     HostVector hosts;
-    auto result {
-        insert_addrinfo(hostname,
+    auto result {insert(hostname,
                         {},
                         hints,
                         std::back_inserter(hosts),
-                        verbose)
-    };
+                        verbose)};
 
     if (result) {
         return result;
