@@ -50,7 +50,7 @@ namespace Network
             m_flags(t_flags),
             m_family(t_family),
             m_socktype(t_socktype),
-            m_protocol(t_protocol)
+            m_protocol(t_family, t_protocol)
         {
         }
 
@@ -59,7 +59,7 @@ namespace Network
             m_flags(t_ai.ai_flags),
             m_family(t_ai.ai_family),
             m_socktype(t_ai.ai_socktype),
-            m_protocol(t_ai.ai_protocol)
+            m_protocol(t_ai.ai_family, t_ai.ai_protocol)
         {
         }
 
@@ -74,10 +74,10 @@ namespace Network
         constexpr auto operator=(const addrinfo& t_ai) noexcept ->
             SocketHints&
         {
-            m_flags = t_ai.ai_flags;
-            m_family = t_ai.ai_family;
-            m_socktype = t_ai.ai_socktype;
-            m_protocol = t_ai.ai_protocol;
+            m_flags = SocketFlags {t_ai.ai_flags};
+            m_family = SocketFamily {t_ai.ai_family};
+            m_socktype = SocketType {t_ai.ai_socktype};
+            m_protocol = SocketProtocol {t_ai.ai_family, t_ai.ai_protocol};
             return *this;
         }
 
@@ -117,29 +117,29 @@ namespace Network
 
         [[nodiscard]] constexpr auto flags() const noexcept -> SocketFlags
         {
-            return SocketFlags(m_flags);
+            return m_flags;
         }
 
         [[nodiscard]] constexpr auto family() const noexcept -> SocketFamily
         {
-            return SocketFamily(m_family);
+            return m_family;
         }
 
         [[nodiscard]] constexpr auto socktype() const noexcept -> SocketType
         {
-            return SocketType(m_socktype);
+            return m_socktype;
         }
 
         [[nodiscard]] constexpr auto protocol() const noexcept -> SocketProtocol
         {
-            return {m_family, m_protocol};
+            return m_protocol;
         }
 
     private:
-        socket_flags_type m_flags {};
-        socket_family_type m_family {};
-        socket_type_type m_socktype {};
-        socket_protocol_type m_protocol {};
+        SocketFlags m_flags;
+        SocketFamily m_family;
+        SocketType m_socktype;
+        SocketProtocol m_protocol;
     };
 
     extern auto operator<<(std::ostream& os,

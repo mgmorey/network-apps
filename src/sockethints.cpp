@@ -20,7 +20,7 @@
 #include <ostream>      // operator<<(), std::ostream
 
 auto Network::operator<<(std::ostream& os,
-                         const SocketHints& hints ) noexcept -> std::ostream&
+                         const SocketHints& hints) noexcept -> std::ostream&
 {
     static constexpr auto delim {", "};
     static constexpr auto tab {12};
