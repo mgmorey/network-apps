@@ -29,14 +29,6 @@
 #include <netdb.h>      // addrinfo
 #endif
 
-Network::Template::Template(int t_family,
-                            int t_socktype,
-                            int t_protocol,
-                            int t_flags) :
-    m_hints(t_family, t_socktype, t_protocol, t_flags)
-{
-}
-
 Network::Template::Template(const addrinfo& t_ai) noexcept :
     m_hints(t_ai),
     m_host(t_ai)
