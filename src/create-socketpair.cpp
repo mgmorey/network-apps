@@ -25,7 +25,6 @@
 #include "network/socketpair.h"                 // SocketPair
 
 #include <optional>     // std::optional
-#include <string>       // std::string
 #include <type_traits>  // std::decay_t, std::is_same_v
 #include <variant>      // std::visit()
 
@@ -33,7 +32,7 @@ auto Network::create_socketpair(const SocketHints& hints,
                                 bool verbose) -> SocketPair
 {
     std::optional<SocketPair> socketpair;
-    const auto socketpair_result {create_socketpairresult(hints, verbose)};
+    const auto result {create_socketpairresult(hints, verbose)};
     std::visit([&](auto&& arg) {
         using T = std::decay_t<decltype(arg)>;
 
@@ -46,7 +45,7 @@ auto Network::create_socketpair(const SocketHints& hints,
         else {
             static_assert(always_false_v<T>, VISITOR_ERROR);
         }
-    }, socketpair_result);
+    }, result);
 
     return *socketpair;
 }
