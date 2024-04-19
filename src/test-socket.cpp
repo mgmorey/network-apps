@@ -234,7 +234,7 @@ namespace TestSocket
         std::string actual_error_str;
 
         try {
-            SocketPair pair {AF_UNIX, SOCK_STREAM, 0, 0, verbose};
+            SocketPair pair {SocketHints {AF_UNIX, SOCK_STREAM}, verbose};
             std::cout << "Socket "
                       << std::right << std::setw(handle_width) << pair.at(0)
                       << " connected to "

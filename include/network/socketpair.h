@@ -16,31 +16,20 @@
 #ifndef NETWORK_SOCKETPAIR_H
 #define NETWORK_SOCKETPAIR_H
 
-#include "network/socket.h"             // Socket, SocketHints,
-                                        // SocketPair,
-                                        // socket_family_type,
-                                        // socket_flags_type,
-                                        // socket_protocol_type,
-                                        // socket_type_type
+#include "network/socket.h"             // Socket
+#include "network/sockethints.h"        // SocketHints
 
 #include <array>        // std::array
 
 namespace Network
 {
+#ifndef WIN32
     class SocketPair
     {
     public:
         static constexpr auto m_size {2};
 
-#ifndef WIN32
-        SocketPair(socket_family_type t_family,
-                   socket_type_type t_socktype,
-                   socket_protocol_type t_protocol = 0,
-                   socket_flags_type t_flags = 0,
-                   bool t_verbose = false);
-        explicit SocketPair(const SocketHints& t_hints,
-                            bool t_verbose = false);
-#endif
+        explicit SocketPair(const SocketHints& t_hints, bool t_verbose = false);
         SocketPair(const Socket& t_socket1, const Socket& t_socket2) noexcept;
         SocketPair(const SocketPair&) noexcept = default;
         SocketPair(SocketPair&&) noexcept = default;
@@ -53,6 +42,7 @@ namespace Network
     private:
         std::array<Socket, m_size> m_socket;
     };
+#endif
 }
 
 #endif
