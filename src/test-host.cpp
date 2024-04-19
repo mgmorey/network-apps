@@ -73,17 +73,11 @@ namespace TestHost
     using ErrorCodeSet = std::set<os_error_type>;
     using HintsVector = std::vector<SocketHints>;
 
-    static bool verbose {false};  // NOLINT
+    static const SocketHints inet {AF_INET, SOCK_STREAM, 0, AI_CANONNAME};
+    static const SocketHints inet6 {AF_INET6, SOCK_STREAM, 0, AI_CANONNAME};
+    static const SocketHints unspec {AF_UNSPEC, SOCK_STREAM, 0, AI_CANONNAME};
 
-    static constexpr SocketHints inet {
-        AI_CANONNAME, AF_INET, SOCK_STREAM
-    };
-    static constexpr SocketHints inet6 {
-        AI_CANONNAME, AF_INET6, SOCK_STREAM
-    };
-    static constexpr SocketHints unspec {
-        AI_CANONNAME, AF_UNSPEC, SOCK_STREAM
-    };
+    static bool verbose {false};  // NOLINT
 
     class Test
     {

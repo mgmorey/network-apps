@@ -244,8 +244,7 @@ auto main(int argc, char* argv[]) -> int
 {
     using namespace TestBind;
 
-    static constexpr SocketHints hints
-        {AI_CANONNAME, AF_UNSPEC, SOCK_STREAM, 0};
+    static SocketHints hints {AF_UNSPEC, SOCK_STREAM, 0, AI_CANONNAME};
 
     try {
         const auto& context {Context::instance()};
