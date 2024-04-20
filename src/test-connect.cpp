@@ -248,14 +248,14 @@ namespace TestConnect
     auto test_connect_invalid_host(const Endpoint& endpoint,
                                    const SocketHints& hints) -> void
     {
-        return test_connect_invalid(endpoint, hints,
+        test_connect_invalid(endpoint, hints,
                                     get_codes_invalid_host());
     }
 
     auto test_connect_invalid_service(const Endpoint& endpoint,
                                       const SocketHints& hints) -> void
     {
-        return test_connect_invalid(endpoint, hints,
+        test_connect_invalid(endpoint, hints,
                                     get_codes_invalid_service());
     }
 
@@ -293,7 +293,7 @@ auto main(int argc, char* argv[]) -> int
 {
     using namespace TestConnect;
 
-    static SocketHints hints {AF_UNSPEC, SOCK_STREAM, 0, AI_CANONNAME};
+    static const SocketHints hints {AF_UNSPEC, SOCK_STREAM, 0, AI_CANONNAME};
 
     try {
         const auto& context {Context::instance()};
