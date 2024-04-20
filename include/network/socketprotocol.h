@@ -17,9 +17,9 @@
 #define NETWORK_SOCKETPROTOCOL_H
 
 #include "network/integer.h"                    // Integer
-#include "network/socketfamily.h"               // SocketFamily
 #include "network/socket-family-type.h"         // socket_family_type
 #include "network/socket-protocol-type.h"       // socket_protocol_type
+#include "network/socketfamily.h"               // SocketFamily
 
 #include <ostream>      // std::ostream
 
