@@ -18,6 +18,8 @@
 
 #include "network/name-length-limits.h"         // name_length_max,
                                                 // name_length_min
+#include "network/os-error-limits.h"            // os_error_max,
+                                                // os_error_min
 #ifndef WIN32
 #include "network/path-length-limits.h"         // path_length_max,
                                                 // path_length_min
