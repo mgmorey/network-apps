@@ -21,8 +21,8 @@
 
 namespace Network
 {
-    static constexpr int sa_len_max {ss_size};
-    static constexpr int sa_len_min {sa_data_offset};
+    static constexpr auto sa_len_max {ss_size};
+    static constexpr auto sa_len_min {sa_data_offset};
 }
 
 #endif
