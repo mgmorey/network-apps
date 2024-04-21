@@ -115,25 +115,10 @@ namespace Network
             return ai;
         }
 
-        [[nodiscard]] constexpr auto flags() const noexcept -> SocketFlags
-        {
-            return m_flags;
-        }
-
-        [[nodiscard]] constexpr auto family() const noexcept -> SocketFamily
-        {
-            return m_family;
-        }
-
-        [[nodiscard]] constexpr auto socktype() const noexcept -> SocketType
-        {
-            return m_socktype;
-        }
-
-        [[nodiscard]] constexpr auto protocol() const noexcept -> SocketProtocol
-        {
-            return m_protocol;
-        }
+        [[nodiscard]] auto flags() const noexcept -> SocketFlags;
+        [[nodiscard]] auto family() const noexcept -> SocketFamily;
+        [[nodiscard]] auto socktype() const noexcept -> SocketType;
+        [[nodiscard]] auto protocol() const noexcept -> SocketProtocol;
 
     private:
         SocketFlags m_flags;
