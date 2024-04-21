@@ -17,9 +17,10 @@
 #include "network/bytestring.h"                 // ByteString
 #include "network/get-sa-pointer.h"             // get_sa_pointer()
 #include "network/socket-family-type.h"         // socket_family_type
+#include "network/to-socket-hint.h"             // to_socket_hint
 
 auto Network::get_sa_family(const ByteString &addr) -> socket_family_type
 {
     const auto* const sa {get_sa_pointer(addr)};
-    return sa->sa_family;
+    return to_socket_hint(sa->sa_family);
 }
