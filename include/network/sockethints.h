@@ -20,14 +20,10 @@
 #include "network/socket-flags-type.h"          // socket_flags_type
 #include "network/socket-protocol-type.h"       // socket_protocol_type
 #include "network/socket-type-type.h"           // socket_type_type
-#include "network/socketfamily.h"               // SocketFamily,
-                                                // operator<<()
-#include "network/socketflags.h"                // SocketFlags,
-                                                // operator<<()
-#include "network/socketprotocol.h"             // SocketProtocol,
-                                                // operator<<()
-#include "network/sockettype.h"                 // SocketType,
-                                                // operator<<()
+#include "network/socketfamily.h"               // SocketFamily
+#include "network/socketflags.h"                // SocketFlags
+#include "network/socketprotocol.h"             // SocketProtocol
+#include "network/sockettype.h"                 // SocketType
 
 #ifdef WIN32
 #include <ws2tcpip.h>       // AF_UNSPEC, addrinfo
@@ -50,7 +46,7 @@ namespace Network
             m_flags(t_flags),
             m_family(t_family),
             m_socktype(t_socktype),
-            m_protocol(t_family, t_protocol)
+            m_protocol(t_protocol)
         {
         }
 
@@ -59,7 +55,7 @@ namespace Network
             m_flags(t_ai.ai_flags),
             m_family(t_ai.ai_family),
             m_socktype(t_ai.ai_socktype),
-            m_protocol(t_ai.ai_family, t_ai.ai_protocol)
+            m_protocol(t_ai.ai_protocol)
         {
         }
 
@@ -74,10 +70,10 @@ namespace Network
         constexpr auto operator=(const addrinfo& t_ai) noexcept ->
             SocketHints&
         {
-            m_flags = SocketFlags(t_ai.ai_flags);
-            m_family = SocketFamily(t_ai.ai_family);
-            m_socktype = SocketType(t_ai.ai_socktype);
-            m_protocol = SocketProtocol(t_ai.ai_family, t_ai.ai_protocol);
+            m_flags = t_ai.ai_flags;
+            m_family = t_ai.ai_family;
+            m_socktype = t_ai.ai_socktype;
+            m_protocol = t_ai.ai_protocol;
             return *this;
         }
 
@@ -121,10 +117,10 @@ namespace Network
         [[nodiscard]] auto protocol() const noexcept -> SocketProtocol;
 
     private:
-        SocketFlags m_flags;
-        SocketFamily m_family;
-        SocketType m_socktype;
-        SocketProtocol m_protocol;
+        socket_flags_type m_flags;
+        socket_family_type m_family;
+        socket_type_type m_socktype;
+        socket_protocol_type m_protocol;
     };
 
     extern auto operator<<(std::ostream& os,

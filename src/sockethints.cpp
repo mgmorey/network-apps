@@ -18,20 +18,20 @@
 
 auto Network::SocketHints::flags() const noexcept -> SocketFlags
 {
-    return m_flags;
+    return SocketFlags {m_flags};
 }
 
 auto Network::SocketHints::family() const noexcept -> SocketFamily
 {
-    return m_family;
+    return SocketFamily {m_family};
 }
 
 auto Network::SocketHints::socktype() const noexcept -> SocketType
 {
-    return m_socktype;
+    return SocketType {m_socktype};
 }
 
 auto Network::SocketHints::protocol() const noexcept -> SocketProtocol
 {
-    return m_protocol;
+    return SocketProtocol {m_family, m_protocol};
 }
