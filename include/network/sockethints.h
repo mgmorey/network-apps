@@ -42,19 +42,19 @@ namespace Network
                                        socket_type_type t_socktype = 0,
                                        socket_protocol_type t_protocol = 0,
                                        socket_flags_type t_flags = 0) noexcept :
-            m_flags(t_flags),
             m_family(t_family),
             m_socktype(t_socktype),
-            m_protocol(t_protocol)
+            m_protocol(t_protocol),
+            m_flags(t_flags)
         {
         }
 
         // cppcheck-suppress noExplicitConstructor
         constexpr SocketHints(const addrinfo& t_ai) noexcept :  // NOLINT
-            m_flags(t_ai.ai_flags),
             m_family(t_ai.ai_family),
             m_socktype(t_ai.ai_socktype),
-            m_protocol(t_ai.ai_protocol)
+            m_protocol(t_ai.ai_protocol),
+            m_flags(t_ai.ai_flags)
         {
         }
 
@@ -69,10 +69,10 @@ namespace Network
         constexpr auto operator=(const addrinfo& t_ai) noexcept ->
             SocketHints&
         {
-            m_flags = t_ai.ai_flags;
             m_family = t_ai.ai_family;
             m_socktype = t_ai.ai_socktype;
             m_protocol = t_ai.ai_protocol;
+            m_flags = t_ai.ai_flags;
             return *this;
         }
 
@@ -103,10 +103,10 @@ namespace Network
         constexpr operator addrinfo() const noexcept  // NOLINT
         {
             addrinfo ai {};
-            ai.ai_flags = m_flags;
             ai.ai_family = m_family;
             ai.ai_socktype = m_socktype;
             ai.ai_protocol = m_protocol;
+            ai.ai_flags = m_flags;
             return ai;
         }
 
@@ -116,10 +116,10 @@ namespace Network
         [[nodiscard]] auto protocol() const noexcept -> SocketProtocol;
 
     private:
-        socket_flags_type m_flags;
         socket_family_type m_family;
         socket_type_type m_socktype;
         socket_protocol_type m_protocol;
+        socket_flags_type m_flags;
     };
 
     extern auto operator<<(std::ostream& os,
