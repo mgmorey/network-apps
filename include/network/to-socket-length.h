@@ -19,21 +19,15 @@
 #include "network/socket-length-limits.h"       // socket_length_max,
                                                 // socket_length_min
 #include "network/socket-length-type.h"         // socket_length_type
-#include "network/socketlengtherror.h"          // SocketLengthError
-
-#include <string>       // std::to_string()
-#include <utility>      // std::cmp_greater(), std::cmp_less()
+#include "network/to-value.h"                   // to_value()
 
 namespace Network
 {
     auto to_socket_length(auto value) -> socket_length_type
     {
-        if (std::cmp_less(value, socket_length_min) ||
-            std::cmp_greater(value, socket_length_max)) {
-            throw SocketLengthError(std::to_string(value));
-        }
-
-        return static_cast<socket_length_type>(value);
+        return to_value<socket_length_type>("socket_length_type", value,
+                                            socket_length_min,
+                                            socket_length_max);
     }
 }
 

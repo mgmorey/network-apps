@@ -35,7 +35,7 @@ namespace Network
     template<typename T>
     auto to_value(const std::string& value_type, auto value, T min, T max) -> T
     {
-        if (std::cmp_less<T>(value, min) || std::cmp_greater<T>(value, max)) {
+        if (std::cmp_less(value, min) || std::cmp_greater(value, max)) {
             throw ValueError<T>(value_type, value, min, max);
         }
 

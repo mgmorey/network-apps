@@ -27,7 +27,6 @@
 #include "network/rangeerror.h"         // RangeError
 #include "network/runtimeerror.h"       // RuntimeError
 #include "network/salengtherror.h"      // SaLengthError
-#include "network/socketlengtherror.h"  // SocketLengthError
 #ifndef WIN32
 #include "network/sunlengtherror.h"     // SunLengthError
 #endif

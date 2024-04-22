@@ -14,12 +14,10 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/assert.h"             // assert()
-#include "network/network.h"            // IntegerError,
-                                        // NameLengthError,
-                                        // OsErrorError,
+#include "network/network.h"            // NameLengthError,
                                         // PathLengthError,
                                         // RangeError, SaLengthError,
-                                        // SunLengthError,
+                                        // SunLengthError, ValueError,
                                         // to_name_length(),
                                         // to_os_error(),
                                         // to_path_length(),
@@ -43,7 +41,6 @@ namespace TestRanges
 #endif
     using Network::RangeError;
     using Network::SaLengthError;
-    using Network::SocketLengthError;
 #ifndef WIN32
     using Network::SunLengthError;
 #endif
@@ -64,6 +61,7 @@ namespace TestRanges
     using Network::socket_hint_type;
     using Network::socket_length_max;
     using Network::socket_length_min;
+    using Network::socket_length_type;
 #ifndef WIN32
     using Network::sun_len_max;
     using Network::sun_len_min;
@@ -238,7 +236,7 @@ namespace TestRanges
         try {
             static_cast<void>(to_socket_length(value));
         }
-        catch (const SocketLengthError& error) {
+        catch (const ValueError<socket_length_type>& error) {
             print(error);
             actual_error_str = error.what();
         }
