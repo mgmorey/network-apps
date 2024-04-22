@@ -19,7 +19,6 @@
                                         // get_optind(), get_option(),
                                         // get_optopt()
 #include "network/options.h"            // Options
-#include "network/to-character.h"       // to_character()
 
 auto Network::get_options(const ArgumentSpan& args,
                           const char* optstring) -> Options
@@ -28,7 +27,7 @@ auto Network::get_options(const ArgumentSpan& args,
     int opt {};
 
     while ((opt = get_option(args, optstring)) != -1) {
-        const auto optchar {to_character(opt)};
+        const auto optchar {static_cast<char>(opt)};
         options[optchar] = get_optarg();
     }
 

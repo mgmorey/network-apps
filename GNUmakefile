@@ -51,14 +51,14 @@ include flags.gmk
 libnetwork_common_sources = accept.cpp address-sa.cpp address-sin.cpp	\
 address-sin6.cpp address.cpp addresserror.cpp addressstring.cpp		\
 addrinfo.cpp argumentdata.cpp bind-endpoint.cpp bind-socket-bs.cpp	\
-charactererror.cpp cleanup.cpp close.cpp connect-endpoint.cpp		\
-connect-socket-bs.cpp context.cpp create-socket.cpp			\
-create-socketresult.cpp descriptor.cpp error.cpp familyerror.cpp	\
-format-ai-error.cpp format-bytestring.cpp format-os-error.cpp		\
-format.cpp get-endpoint.cpp get-endpointresult.cpp get-hostname.cpp	\
-get-hostnameresult.cpp get-hosts.cpp get-last-context-error.cpp		\
-get-last-os-error.cpp get-length.cpp get-name.cpp get-nameresult.cpp	\
-get-operands.cpp get-option.cpp get-options.cpp get-peername.cpp	\
+cleanup.cpp close.cpp connect-endpoint.cpp connect-socket-bs.cpp	\
+context.cpp create-socket.cpp create-socketresult.cpp descriptor.cpp	\
+error.cpp familyerror.cpp format-ai-error.cpp format-bytestring.cpp	\
+format-os-error.cpp format.cpp get-endpoint.cpp				\
+get-endpointresult.cpp get-hostname.cpp get-hostnameresult.cpp		\
+get-hosts.cpp get-last-context-error.cpp get-last-os-error.cpp		\
+get-length.cpp get-name.cpp get-nameresult.cpp get-operands.cpp		\
+get-option.cpp get-options.cpp get-peername.cpp				\
 get-peernameresult.cpp get-sa-family.cpp get-sa-length.cpp		\
 get-sa-size-maximum.cpp get-sa-size-minimum.cpp get-sin-addr.cpp	\
 get-sin-pointer.cpp get-sin-port.cpp get-sin6-addr.cpp			\

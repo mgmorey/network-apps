@@ -14,14 +14,12 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/assert.h"             // assert()
-#include "network/network.h"            // CharacterError,
-                                        // IntegerError,
+#include "network/network.h"            // IntegerError,
                                         // NameLengthError,
                                         // OsErrorError,
                                         // PathLengthError,
                                         // RangeError, SaLengthError,
                                         // SunLengthError,
-                                        // to_character(),
                                         // to_integer(),
                                         // to_name_length(),
                                         // to_os_error(),
@@ -40,7 +38,6 @@
 
 namespace TestRanges
 {
-    using Network::CharacterError;
     using Network::IntegerError;
     using Network::NameLengthError;
     using Network::OsErrorError;
@@ -73,7 +70,6 @@ namespace TestRanges
     using Network::sun_len_max;
     using Network::sun_len_min;
 #endif
-    using Network::to_character;
     using Network::to_integer;
     using Network::to_name_length;
     using Network::to_os_error;
@@ -128,28 +124,6 @@ namespace TestRanges
         std::cout << "Exception: "
                   << error.what()
                   << std::endl;
-    }
-
-    auto test_character_invalid(auto value) -> void
-    {
-        std::string actual_error_str;
-
-        try {
-            static_cast<void>(to_character(value));
-        }
-        catch (const CharacterError& error) {
-            print(error);
-            actual_error_str = error.what();
-        }
-
-        const std::regex expected_error_regex {expected_error_character_re};
-        assert(std::regex_match(actual_error_str, expected_error_regex));
-    }
-
-    auto test_character_invalid() -> void
-    {
-        test_character_invalid(CHAR_MIN - 1);
-        test_character_invalid(CHAR_MAX + 1);
     }
 
     auto test_integer_invalid(auto value) -> void
@@ -363,7 +337,6 @@ auto main() -> int
     using namespace TestRanges;
 
     try {
-        test_character_invalid();
         test_integer_invalid();
         test_name_length_invalid();
         test_os_error_invalid();

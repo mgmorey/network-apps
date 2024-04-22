@@ -17,7 +17,6 @@
 #define NETWORK_EXCEPTIONS_H
 
 #include "network/addresserror.h"       // AddressError
-#include "network/charactererror.h"     // CharacterError
 #include "network/error.h"              // Error
 #include "network/integererror.h"       // IntegerError
 #include "network/lengtherror.h"        // LengthError
