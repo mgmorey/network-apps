@@ -16,20 +16,17 @@
 #ifndef NETWORK_TO_OS_ERROR_H
 #define NETWORK_TO_OS_ERROR_H
 
-#include "network/os-error-limits.h"            // os_error_max,
-                                                // os_error_min
 #include "network/os-error-type.h"              // os_error_type
 #include "network/oserrorerror.h"               // OsErrorError
 
 #include <string>       // std::to_string()
-#include <utility>      // std::cmp_greater(), std::cmp_less()
+#include <utility>      // std::in_range()
 
 namespace Network
 {
     auto to_os_error(auto value) -> os_error_type
     {
-        if (std::cmp_less(value, os_error_min) ||
-            std::cmp_greater(value, os_error_max)) {
+        if (!std::in_range<os_error_type>(value)) {
             throw OsErrorError(std::to_string(value));
         }
 
