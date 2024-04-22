@@ -28,21 +28,21 @@
 #endif
 
 auto Network::RangeError::format(const std::string& t_value,
-                                 const std::string& t_minimum,
-                                 const std::string& t_maximum,
+                                 const std::string& t_min,
+                                 const std::string& t_max,
                                  const std::string& t_type) -> std::string
 {
 #ifdef __cpp_lib_format
     return std::format("Value {} is out of range [{}, {}] of {}",
-                       t_value, t_minimum, t_maximum, t_type);
+                       t_value, t_min, t_max, t_type);
 #else
     std::ostringstream oss;
     oss << "Value "
         << t_value
         << " is out of range ["
-        << t_minimum
+        << t_min
         << ", "
-        << t_maximum
+        << t_max
         << "] of "
         << t_type;
     return oss.str();
@@ -62,9 +62,9 @@ Network::RangeError::RangeError(std::string&& t_str) noexcept :
 }
 
 Network::RangeError::RangeError(const std::string& t_value,
-                                const std::string& t_minimum,
-                                const std::string& t_maximum,
+                                const std::string& t_min,
+                                const std::string& t_max,
                                 const std::string& t_type) noexcept :
-    LogicError(format(t_value, t_minimum, t_maximum, t_type))
+    LogicError(format(t_value, t_min, t_max, t_type))
 {
 }

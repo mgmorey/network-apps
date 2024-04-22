@@ -25,14 +25,14 @@ namespace Network
     {
     public:
         static auto format(const std::string& t_value,
-                           const std::string& t_minimum,
-                           const std::string& t_maximum,
+                           const std::string& t_min,
+                           const std::string& t_max,
                            const std::string& t_type) -> std::string;
         explicit RangeError(const std::string& t_str) noexcept;
         explicit RangeError(std::string&& t_str) noexcept;
         RangeError(const std::string& t_value,
-                   const std::string& t_minimum,
-                   const std::string& t_maximum,
+                   const std::string& t_min,
+                   const std::string& t_max,
                    const std::string& t_type) noexcept;
         RangeError(const RangeError&) noexcept = default;
         RangeError(RangeError&&) noexcept = default;
