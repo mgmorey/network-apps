@@ -18,16 +18,14 @@
 
 #include "network/integererror.h"       // IntegerError
 
-#include <climits>      // INT_MAX, INT_MIN
 #include <string>       // std::to_string()
-#include <utility>      // std::cmp_greater(), std::cmp_less()
+#include <utility>      // std::in_range()
 
 namespace Network
 {
     auto to_integer(auto value) -> int
     {
-        if (std::cmp_less(value, INT_MIN) ||
-            std::cmp_greater(value, INT_MAX)) {
+        if (!std::in_range<int>(value)) {
             throw IntegerError(std::to_string(value));
         }
 
