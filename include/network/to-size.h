@@ -19,16 +19,14 @@
 #include "network/sizeerror.h"          // SizeError
 
 #include <cstddef>      // std::size_t
-#include <cstdint>      // SIZE_MAX
 #include <string>       // std::to_string()
-#include <utility>      // std::cmp_greater(), std::cmp_less()
+#include <utility>      // std::in_range()
 
 namespace Network
 {
     auto to_size(auto value) -> std::size_t
     {
-        if (std::cmp_less(value, 0) ||
-            std::cmp_greater(value, SIZE_MAX)) {
+        if (!std::in_range<std::size_t>(value)) {
             throw SizeError(std::to_string(value));
         }
 
