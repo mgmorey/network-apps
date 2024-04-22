@@ -16,20 +16,17 @@
 #ifndef NETWORK_TO_SOCKET_HINT_H
 #define NETWORK_TO_SOCKET_HINT_H
 
-#include "network/socket-hint-limits.h"         // socket_hint_max,
-                                                // socket_hint_min
 #include "network/socket-hint-type.h"           // socket_hint_type
 #include "network/sockethinterror.h"            // SocketHintError
 
 #include <string>       // std::to_string()
-#include <utility>      // std::cmp_greater(), std::cmp_less()
+#include <utility>      // std::in_range()
 
 namespace Network
 {
     auto to_socket_hint(auto value) -> socket_hint_type
     {
-        if (std::cmp_less(value, socket_hint_min) ||
-            std::cmp_greater(value, socket_hint_max)) {
+        if (!std::in_range<socket_hint_type>(value)) {
             throw SocketHintError(std::to_string(value));
         }
 
