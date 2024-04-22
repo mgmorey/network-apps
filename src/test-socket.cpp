@@ -157,7 +157,7 @@ namespace TestSocket
 
         try {
             assert(to_bytestring(path) == path);
-            Socket sock {SocketHints {AF_UNIX, SOCK_SEQPACKET}, verbose};
+            Socket sock {SocketHints {AF_UNIX, SOCK_STREAM}, verbose};
 
             if (const auto result {bind(sock, path, verbose)}) {
                 print(result);
