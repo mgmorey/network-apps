@@ -16,6 +16,9 @@
 #ifndef NETWORK_TYPES_H
 #define NETWORK_TYPES_H
 
+#include "network/enum-types.h"         // socket_family_enum,
+                                        // socket_ip_protocol_enum,
+                                        // socket_type_enum
 #include "network/integer-types.h"      // byte_type,
                                         // context_error_type,
                                         // descriptor_type,
