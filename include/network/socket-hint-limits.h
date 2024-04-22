@@ -16,12 +16,18 @@
 #ifndef NETWORK_SOCKET_HINT_LIMITS_H
 #define NETWORK_SOCKET_HINT_LIMITS_H
 
-#include <climits>      // INT_MAX, INT_MIN
+#include "network/socket-hint-type.h"           // socket_hint_type
+
+#include <limits>       // std::numeric_limits
 
 namespace Network
 {
-    static constexpr auto socket_hint_max {INT_MAX};
-    static constexpr auto socket_hint_min {INT_MIN};
+    static constexpr auto socket_hint_max {
+        std::numeric_limits<socket_hint_type>::max()
+    };
+    static constexpr auto socket_hint_min {
+        std::numeric_limits<socket_hint_type>::min()
+    };
 }
 
 #endif

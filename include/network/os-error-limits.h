@@ -16,18 +16,18 @@
 #ifndef NETWORK_OS_ERROR_LIMITS_H
 #define NETWORK_OS_ERROR_LIMITS_H
 
-#include <climits>      // INT_MAX, INT_MIN
-#include <cstdint>      // UINT32_MAX
+#include "network/os-error-type.h"              // os_error_type
+
+#include <limits>       // std::numeric_limits
 
 namespace Network
 {
-#ifdef WIN32
-    static constexpr auto os_error_max {UINT32_MAX};
-    static constexpr auto os_error_min {0};
-#else
-    static constexpr auto os_error_max {INT_MAX};
-    static constexpr auto os_error_min {INT_MIN};
-#endif
+    static constexpr auto os_error_max {
+        std::numeric_limits<os_error_type>::max()
+    };
+    static constexpr auto os_error_min {
+        std::numeric_limits<os_error_type>::min()
+    };
 }
 
 #endif
