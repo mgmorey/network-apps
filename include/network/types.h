@@ -27,6 +27,7 @@
                                         // sa_len_type,
                                         // socket_family_type,
                                         // socket_flags_type,
+                                        // socket_hint_type,
                                         // socket_length_type,
                                         // socket_protocol_type,
                                         // socket_type_type,

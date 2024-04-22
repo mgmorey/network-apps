@@ -32,6 +32,7 @@
 #include "network/sin-family-type.h"                // sin_family_type
 #include "network/socket-family-type.h"             // socket_family_type
 #include "network/socket-flags-type.h"              // socket_flags_type
+#include "network/socket-hint-type.h"               // socket_hint_type
 #include "network/socket-length-type.h"             // socket_length_type
 #include "network/socket-protocol-type.h"           // socket_protocol_type
 #include "network/socket-type-type.h"               // socket_type_type
