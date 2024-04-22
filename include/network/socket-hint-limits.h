@@ -16,12 +16,12 @@
 #ifndef NETWORK_SOCKET_HINT_LIMITS_H
 #define NETWORK_SOCKET_HINT_LIMITS_H
 
-#include <climits>      // SHRT_MAX, SHRT_MIN
+#include <climits>      // INT_MAX, INT_MIN
 
 namespace Network
 {
-    static constexpr auto socket_hint_max {SHRT_MAX};
-    static constexpr auto socket_hint_min {SHRT_MIN};
+    static constexpr auto socket_hint_max {INT_MAX};
+    static constexpr auto socket_hint_min {INT_MIN};
 }
 
 #endif

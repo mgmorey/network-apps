@@ -284,8 +284,8 @@ namespace TestRanges
 
     auto test_socket_hint_invalid() -> void
     {
-        test_socket_hint_invalid(socket_hint_min - 1);
-        test_socket_hint_invalid(socket_hint_max + 1);
+        test_socket_hint_invalid(static_cast<long long>(socket_hint_min) - 1);
+        test_socket_hint_invalid(static_cast<long long>(socket_hint_max) + 1);
     }
 
     auto test_socket_length_invalid(auto value) -> void
