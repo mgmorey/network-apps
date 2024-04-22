@@ -13,28 +13,34 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_OSERRORERROR_H
-#define NETWORK_OSERRORERROR_H
+#ifndef NETWORK_TO_VALUE_H
+#define NETWORK_TO_VALUE_H
 
-#include "network/rangeerror.h"         // RangeError
+#include "network/valueerror.h"         // ValueError
 
-#include <string>       // std::string
+#include <utility>      // std::in_range()
 
 namespace Network
 {
-    class OsErrorError :
-        public RangeError
+    template<typename T>
+    auto to_value(const std::string& value_type, auto value) -> T
     {
-    public:
-        explicit OsErrorError(const std::string& t_value) noexcept;
-        OsErrorError(const OsErrorError&) noexcept = default;
-        OsErrorError(OsErrorError&&) noexcept = default;
-        ~OsErrorError() noexcept override = default;
-        auto operator=(const OsErrorError&) noexcept ->
-            OsErrorError& = default;
-        auto operator=(OsErrorError&&) noexcept ->
-            OsErrorError& = default;
-    };
+        if (!std::in_range<T>(value)) {
+            throw ValueError<T>(value_type, value);
+        }
+
+        return static_cast<T>(value);
+    }
+
+    template<typename T>
+    auto to_value(const std::string& value_type, auto value, T min, T max) -> T
+    {
+        if (std::cmp_less<T>(value, min) || std::cmp_greater<T>(value, max)) {
+            throw ValueError<T>(value_type, value, min, max);
+        }
+
+        return static_cast<T>(value);
+    }
 }
 
 #endif

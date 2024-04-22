@@ -16,21 +16,13 @@
 #ifndef NETWORK_TO_SIZE_H
 #define NETWORK_TO_SIZE_H
 
-#include "network/sizeerror.h"          // SizeError
-
-#include <cstddef>      // std::size_t
-#include <string>       // std::to_string()
-#include <utility>      // std::in_range()
+#include "network/to-value.h"                   // to_value()
 
 namespace Network
 {
     auto to_size(auto value) -> std::size_t
     {
-        if (!std::in_range<std::size_t>(value)) {
-            throw SizeError(std::to_string(value));
-        }
-
-        return static_cast<std::size_t>(value);
+        return to_value<std::size_t>("std::size_t", value);
     }
 }
 

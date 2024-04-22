@@ -17,20 +17,13 @@
 #define NETWORK_TO_SOCKET_HINT_H
 
 #include "network/socket-hint-type.h"           // socket_hint_type
-#include "network/sockethinterror.h"            // SocketHintError
-
-#include <string>       // std::to_string()
-#include <utility>      // std::in_range()
+#include "network/to-value.h"                   // to_value()
 
 namespace Network
 {
     auto to_socket_hint(auto value) -> socket_hint_type
     {
-        if (!std::in_range<socket_hint_type>(value)) {
-            throw SocketHintError(std::to_string(value));
-        }
-
-        return static_cast<socket_hint_type>(value);
+        return to_value<socket_hint_type>("socket_hint_type", value);
     }
 }
 

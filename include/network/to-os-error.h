@@ -17,20 +17,13 @@
 #define NETWORK_TO_OS_ERROR_H
 
 #include "network/os-error-type.h"              // os_error_type
-#include "network/oserrorerror.h"               // OsErrorError
-
-#include <string>       // std::to_string()
-#include <utility>      // std::in_range()
+#include "network/to-value.h"                   // to_value()
 
 namespace Network
 {
     auto to_os_error(auto value) -> os_error_type
     {
-        if (!std::in_range<os_error_type>(value)) {
-            throw OsErrorError(std::to_string(value));
-        }
-
-        return static_cast<os_error_type>(value);
+        return to_value<os_error_type>("os_error_type", value);
     }
 }
 

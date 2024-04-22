@@ -18,7 +18,6 @@
 #include "network/get-option.h"         // get_optind()
 #include "network/parse-argumentspan.h" // ArgumentSpan, parse(),
                                         // std::span
-#include "network/to-integer.h"         // to_integer()
 #include "network/to-size.h"            // to_size()
 
 #include <cstring>      // std::strlen()
@@ -33,7 +32,6 @@ namespace TestParse
     using Network::ArgumentSpan;
     using Network::get_optind;
     using Network::parse;
-    using Network::to_integer;
     using Network::to_size;
 
     auto get_strings(const char* argv0) -> std::vector<std::string>
@@ -47,7 +45,7 @@ namespace TestParse
         static const char* optstring {"f:v"};
         const auto optind_begin {get_optind()};
         const auto [_, options] {parse(args, optstring)};
-        const auto length {to_integer(std::strlen(optstring))};
+        const auto length {static_cast<int>(std::strlen(optstring))};
         assert(get_optind() == optind_begin + length);
         filename = options.at('f');
         verbose = options.contains('v');

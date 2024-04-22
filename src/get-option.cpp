@@ -18,7 +18,6 @@
                                         // get_optopt()
 #include "network/argumentspan.h"       // ArgumentSpan
 #include "network/logicerror.h"         // LogicError
-#include "network/to-integer.h"         // to_integer()
 
 #ifdef WIN32
 #include <getopt.h>         // getopt(), optarg, opterr, optind,
@@ -51,7 +50,7 @@ auto Network::get_option(const ArgumentSpan& args,
     }
 
     // NOLINTNEXTLINE
-    return ::getopt(to_integer(args.size()), args.data(), optstring);
+    return ::getopt(static_cast<int>(args.size()), args.data(), optstring);
 }
 
 auto Network::get_optopt() noexcept -> int

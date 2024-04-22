@@ -18,7 +18,6 @@
 #include "network/assert.h"             // assert()
 #include "network/get-option.h"         // get_optarg(), get_optind(),
                                         // get_option()
-#include "network/to-integer.h"         // to_integer()
 #include "network/to-size.h"            // to_size()
 
 #include <cstdlib>      // std::abort()
@@ -35,7 +34,6 @@ namespace TestOption
     using Network::get_optarg;
     using Network::get_optind;
     using Network::get_option;
-    using Network::to_integer;
     using Network::to_size;
 
     auto get_strings(const char* argv0) -> std::vector<std::string>
@@ -64,7 +62,7 @@ namespace TestOption
 
         }
 
-        const auto length {to_integer(std::strlen(optstring))};
+        const auto length {static_cast<int>(std::strlen(optstring))};
         assert(get_optind() == optind_begin + length);
     }
 

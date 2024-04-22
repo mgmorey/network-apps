@@ -17,10 +17,6 @@
 #include "network/descriptor-type.h"    // descriptor_type
 #include "network/socket.h"             // Socket
 
-#ifdef WIN32
-#include "network/to-integer.h"         // to_integer()
-#endif
-
 #include <sys/types.h>          // ssize_t
 
 #ifdef WIN32
@@ -36,7 +32,7 @@ auto Network::write(const char* data, std::size_t size,
 {
     const descriptor_type handle {sock};
 #ifdef WIN32
-    return ::send(handle, data, to_integer(size), 0);
+    return ::send(handle, data, static_cast<int>(size), 0);
 #else
     return ::write(handle, data, size);
 #endif

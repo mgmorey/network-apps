@@ -18,22 +18,19 @@
 
 #include "network/addresserror.h"       // AddressError
 #include "network/error.h"              // Error
-#include "network/integererror.h"       // IntegerError
 #include "network/lengtherror.h"        // LengthError
 #include "network/logicerror.h"         // LogicError
 #include "network/namelengtherror.h"    // NameLengthError
-#include "network/oserrorerror.h"       // OsErrorError
 #ifndef WIN32
 #include "network/pathlengtherror.h"    // PathLengthError
 #endif
 #include "network/rangeerror.h"         // RangeError
 #include "network/runtimeerror.h"       // RuntimeError
 #include "network/salengtherror.h"      // SaLengthError
-#include "network/sizeerror.h"          // SizeError
-#include "network/sockethinterror.h"    // SocketHintError
 #include "network/socketlengtherror.h"  // SocketLengthError
 #ifndef WIN32
 #include "network/sunlengtherror.h"     // SunLengthError
 #endif
+#include "network/valueerror.h"         // ValueError
 
 #endif

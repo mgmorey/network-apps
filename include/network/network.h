@@ -107,7 +107,6 @@
                                                 // SocketHost,
                                                 // Template
 #include "network/to-bytestring.h"              // to_bytestring()
-#include "network/to-integer.h"                 // to_integer()
 #include "network/to-name-length.h"             // to_name_length()
 #include "network/to-os-error.h"                // to_os_error()
 #ifndef WIN32

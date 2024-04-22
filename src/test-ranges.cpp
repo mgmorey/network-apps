@@ -20,7 +20,6 @@
                                         // PathLengthError,
                                         // RangeError, SaLengthError,
                                         // SunLengthError,
-                                        // to_integer(),
                                         // to_name_length(),
                                         // to_os_error(),
                                         // to_path_length(),
@@ -38,24 +37,22 @@
 
 namespace TestRanges
 {
-    using Network::IntegerError;
     using Network::NameLengthError;
-    using Network::OsErrorError;
 #ifndef WIN32
     using Network::PathLengthError;
 #endif
     using Network::RangeError;
     using Network::SaLengthError;
-    using Network::SizeError;
-    using Network::SocketHintError;
     using Network::SocketLengthError;
 #ifndef WIN32
     using Network::SunLengthError;
 #endif
+    using Network::ValueError;
     using Network::name_length_max;
     using Network::name_length_min;
     using Network::os_error_max;
     using Network::os_error_min;
+    using Network::os_error_type;
 #ifndef WIN32
     using Network::path_length_max;
     using Network::path_length_min;
@@ -64,13 +61,13 @@ namespace TestRanges
     using Network::sa_len_min;
     using Network::socket_hint_max;
     using Network::socket_hint_min;
+    using Network::socket_hint_type;
     using Network::socket_length_max;
     using Network::socket_length_min;
 #ifndef WIN32
     using Network::sun_len_max;
     using Network::sun_len_min;
 #endif
-    using Network::to_integer;
     using Network::to_name_length;
     using Network::to_os_error;
 #ifndef WIN32
@@ -84,9 +81,6 @@ namespace TestRanges
     using Network::to_sun_len;
 #endif
 
-    static constexpr auto expected_error_integer_re {
-        R"(Value (\d+|-\d+) is out of range \[-\d+, \d+\] of int)"
-    };
     static constexpr auto expected_error_name_length_re {
         R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of name_length_type)"
     };
@@ -123,28 +117,6 @@ namespace TestRanges
                   << std::endl;
     }
 
-    auto test_integer_invalid(auto value) -> void
-    {
-        std::string actual_error_str;
-
-        try {
-            static_cast<void>(to_integer(value));
-        }
-        catch (const IntegerError& error) {
-            print(error);
-            actual_error_str = error.what();
-        }
-
-        const std::regex expected_error_regex {expected_error_integer_re};
-        assert(std::regex_match(actual_error_str, expected_error_regex));
-    }
-
-    auto test_integer_invalid() -> void
-    {
-        test_integer_invalid(static_cast<long long>(INT_MIN) - 1);
-        test_integer_invalid(static_cast<long long>(INT_MAX) + 1);
-    }
-
     auto test_name_length_invalid(auto value) -> void
     {
         std::string actual_error_str;
@@ -174,7 +146,7 @@ namespace TestRanges
         try {
             static_cast<void>(to_os_error(value));
         }
-        catch (const OsErrorError& error) {
+        catch (const ValueError<os_error_type>& error) {
             print(error);
             actual_error_str = error.what();
         }
@@ -244,7 +216,7 @@ namespace TestRanges
         try {
             static_cast<void>(to_socket_hint(value));
         }
-        catch (const SocketHintError& error) {
+        catch (const ValueError<socket_hint_type>& error) {
             print(error);
             actual_error_str = error.what();
         }
@@ -288,7 +260,7 @@ namespace TestRanges
         try {
             static_cast<void>(to_size(value));
         }
-        catch (const SizeError& error) {
+        catch (const ValueError<std::size_t>& error) {
             print(error);
             actual_error_str = error.what();
         }
@@ -334,7 +306,6 @@ auto main() -> int
     using namespace TestRanges;
 
     try {
-        test_integer_invalid();
         test_name_length_invalid();
         test_os_error_invalid();
 #ifndef WIN32
