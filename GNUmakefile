@@ -143,10 +143,10 @@ libraries = $(libnetwork) $(libnetwork_shared) $(libnetwork_static)
 
 program_sources = $(test_sources)
 
-ifneq "$(os_name)" "Darwin"
-ifneq "$(os_name)" "MINGW64_NT"
+ifeq "$(os_name)" "FreeBSD"
 	program_sources += $(unix_sources)
-endif
+else ifeq "$(os_name)" "Linux"
+	program_sources += $(unix_sources)
 endif
 
 program_objects = $(addprefix $(object_dir)/,$(addsuffix	\
@@ -252,7 +252,7 @@ endif
 build: $(build_targets)
 
 .PHONY: check
-check: $(programs)
+check: $(test_programs)
 	$(run_test_programs) $^
 
 .PHONY: check-syntax
