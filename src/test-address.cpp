@@ -93,9 +93,7 @@ namespace TestAddress
     static constexpr auto print_key_width {20};
     static constexpr auto print_value_width {10};
 
-    static constexpr SocketHints unspec {
-        AI_CANONNAME, AF_UNSPEC, SOCK_STREAM
-    };
+    static const SocketHints unspec {AF_UNSPEC, SOCK_STREAM, 0, AI_CANONNAME};
 
     static bool verbose {false};  // NOLINT
 
