@@ -32,8 +32,7 @@ namespace Network
         sock_dgram = SOCK_DGRAM,
         sock_raw = SOCK_RAW,
         sock_rdm = SOCK_RDM,
-        sock_seqpacket = SOCK_SEQPACKET,
-        sock_dccp = SOCK_DCCP
+        sock_seqpacket = SOCK_SEQPACKET
     };
 }
 
