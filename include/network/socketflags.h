@@ -31,7 +31,8 @@ namespace Network
             std::ostream&;
 
     public:
-        constexpr explicit SocketFlags(socket_flags_type t_value) noexcept :
+        // NOLINTNEXTLINE
+        constexpr SocketFlags(socket_flags_type t_value) noexcept :
             Integer(t_value)
         {
         }
