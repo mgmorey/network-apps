@@ -118,10 +118,10 @@ namespace Network
         [[nodiscard]] auto protocol() const noexcept -> SocketProtocol;
 
     private:
-        socket_family_type m_family;
-        socket_type_type m_socktype;
-        socket_protocol_type m_protocol;
-        socket_flags_type m_flags;
+        socket_family_type m_family {};
+        socket_type_type m_socktype {};
+        socket_protocol_type m_protocol {};
+        socket_flags_type m_flags {};
     };
 
     extern auto operator<<(std::ostream& os,
