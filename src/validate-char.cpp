@@ -16,11 +16,12 @@
 #ifndef WIN32
 
 #include "network/validate-char.h"              // validate()
-#include "network/path-length-limits.h"         // path_length_max
-#include "network/pathlengtherror.h"            // PathLengthError
+#include "network/path-length-limits.h"         // path_length_max,
+                                                // path_length_min
+#include "network/path-length-type.h"           // path_length_type
+#include "network/valueerror.h"                 // ValueError
 
 #include <cstring>      // ::strlen()
-#include <string>       // std::to_string()
 
 auto Network::validate(const char* path) -> void
 {
@@ -31,7 +32,10 @@ auto Network::validate(const char* path) -> void
     const auto path_length {::strlen(path)};
 
     if (path_length > path_length_max) {
-        throw PathLengthError(std::to_string(path_length));
+        throw ValueError<path_length_type>("path_length_type",
+                                           path_length,
+                                           path_length_min,
+                                           path_length_max);
     }
 }
 

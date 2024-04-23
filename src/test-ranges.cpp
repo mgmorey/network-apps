@@ -14,10 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/assert.h"             // assert()
-#include "network/network.h"            // NameLengthError,
-                                        // PathLengthError,
-                                        // RangeError, SaLengthError,
-                                        // SunLengthError, ValueError,
+#include "network/network.h"            // RangeError, ValueError,
                                         // to_name_length(),
                                         // to_os_error(),
                                         // to_path_length(),
@@ -35,27 +32,22 @@
 
 namespace TestRanges
 {
-    using Network::NameLengthError;
-#ifndef WIN32
-    using Network::PathLengthError;
-#endif
     using Network::RangeError;
-    using Network::SaLengthError;
-#ifndef WIN32
-    using Network::SunLengthError;
-#endif
     using Network::ValueError;
     using Network::name_length_max;
     using Network::name_length_min;
+    using Network::name_length_type;
     using Network::os_error_max;
     using Network::os_error_min;
     using Network::os_error_type;
 #ifndef WIN32
     using Network::path_length_max;
     using Network::path_length_min;
+    using Network::path_length_type;
 #endif
     using Network::sa_len_max;
     using Network::sa_len_min;
+    using Network::sa_len_type;
     using Network::socket_hint_max;
     using Network::socket_hint_min;
     using Network::socket_hint_type;
@@ -65,6 +57,7 @@ namespace TestRanges
 #ifndef WIN32
     using Network::sun_len_max;
     using Network::sun_len_min;
+    using Network::sun_len_type;
 #endif
     using Network::to_name_length;
     using Network::to_os_error;
@@ -122,7 +115,7 @@ namespace TestRanges
         try {
             static_cast<void>(to_name_length(value));
         }
-        catch (const NameLengthError& error) {
+        catch (const ValueError<name_length_type>& error) {
             print(error);
             actual_error_str = error.what();
         }
@@ -168,7 +161,7 @@ namespace TestRanges
         try {
             static_cast<void>(to_path_length(value));
         }
-        catch (const PathLengthError& error) {
+        catch (const ValueError<path_length_type>& error) {
             print(error);
             actual_error_str = error.what();
         }
@@ -192,7 +185,7 @@ namespace TestRanges
         try {
             static_cast<void>(to_sa_len(value));
         }
-        catch (const SaLengthError& error) {
+        catch (const ValueError<sa_len_type>& error) {
             print(error);
             actual_error_str = error.what();
         }
@@ -281,7 +274,7 @@ namespace TestRanges
         try {
             static_cast<void>(to_sun_len(value));
         }
-        catch (const SunLengthError& error) {
+        catch (const ValueError<sun_len_type>& error) {
             print(error);
             actual_error_str = error.what();
         }

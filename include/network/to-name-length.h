@@ -19,21 +19,15 @@
 #include "network/name-length-limits.h"         // name_length_max,
                                                 // name_length_min
 #include "network/name-length-type.h"           // name_length_type
-#include "network/namelengtherror.h"            // NameLengthError
-
-#include <string>       // std::to_string()
-#include <utility>      // std::cmp_greater(), std::cmp_less()
+#include "network/to-value.h"                   // to_value()
 
 namespace Network
 {
     auto to_name_length(auto value) -> name_length_type
     {
-        if (std::cmp_less(value, name_length_min) ||
-            std::cmp_greater(value, name_length_max)) {
-            throw NameLengthError(std::to_string(value));
-        }
-
-        return static_cast<name_length_type>(value);
+        return to_value<name_length_type>("name_length_type", value,
+                                          name_length_min,
+                                          name_length_max);
     }
 }
 

@@ -19,22 +19,16 @@
 #include "network/path-length-limits.h"         // path_length_max,
                                                 // path_length_min
 #include "network/path-length-type.h"           // path_length_type
-#include "network/pathlengtherror.h"            // PathLengthError
-
-#include <string>       // std::to_string()
-#include <utility>      // std::cmp_greater(), std::cmp_less()
+#include "network/to-value.h"                   // to_value()
 
 namespace Network
 {
 #ifndef WIN32
     auto to_path_length(auto value) -> path_length_type
     {
-        if (std::cmp_less(value, path_length_min) ||
-            std::cmp_greater(value, path_length_max)) {
-            throw PathLengthError(std::to_string(value));
-        }
-
-        return static_cast<path_length_type>(value);
+        return to_value<path_length_type>("path_length_type", value,
+                                          path_length_min,
+                                          path_length_max);
     }
 #endif
 }

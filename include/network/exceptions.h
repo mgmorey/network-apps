@@ -18,18 +18,9 @@
 
 #include "network/addresserror.h"       // AddressError
 #include "network/error.h"              // Error
-#include "network/lengtherror.h"        // LengthError
 #include "network/logicerror.h"         // LogicError
-#include "network/namelengtherror.h"    // NameLengthError
-#ifndef WIN32
-#include "network/pathlengtherror.h"    // PathLengthError
-#endif
 #include "network/rangeerror.h"         // RangeError
 #include "network/runtimeerror.h"       // RuntimeError
-#include "network/salengtherror.h"      // SaLengthError
-#ifndef WIN32
-#include "network/sunlengtherror.h"     // SunLengthError
-#endif
 #include "network/valueerror.h"         // ValueError
 
 #endif

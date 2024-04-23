@@ -25,19 +25,18 @@
 #ifdef HAVE_SOCKADDR_SA_LEN
 #include "network/sun-len-limits.h"             // sun_len_max,
                                                 // sun_len_min
-#include "network/sunlengtherror.h"             // SunLengthError
+#include "network/valueerror.h"                 // ValueError
 #endif
 
 #include <sys/socket.h>     // AF_UNIX
 #include <sys/un.h>         // sockaddr_un
 
-#include <string>       // std::to_string()
 #include <utility>      // std::cmp_not_equal()
 
 namespace {
     using Network::FamilyError;
 #ifdef HAVE_SOCKADDR_SA_LEN
-    using Network::SunLengthError;
+    using Network::ValueError;
 #endif
     using Network::get_sun_length;
     using Network::sun_len_type;
@@ -46,16 +45,18 @@ namespace {
     auto validate_sun(const sockaddr_un* sun, sun_len_type size) -> void
     {
         const auto sun_len {to_sun_len(get_sun_length(sun, size))};
+
 #ifdef HAVE_SOCKADDR_SA_LEN
-
         if (std::cmp_not_equal(sun->sun_len, sun_len)) {
-            throw SunLengthError(std::to_string(sun->sun_len),
-                                 sun_len);
+            throw ValueError<sun_len_type>("sun_len_type",
+                                           sun->sun_len,
+                                           sun_len,
+                                           sun_len);
         }
-
 #else
         static_cast<void>(sun_len);
 #endif
+
         if (sun->sun_family != AF_UNIX) {
             throw FamilyError(sun->sun_family);
         }

@@ -21,11 +21,8 @@
 #include "network/sa-len-limits.h"              // sa_len_max,
                                                 // sa_len_min
 #include "network/sa-len-type.h"                // sa_len_type
-#include "network/salengtherror.h"              // SaLengthError
 #include "network/socket-family-type.h"         // socket_family_type
-
-#include <string>       // std::to_string()
-#include <utility>      // std::cmp_greater(), std::cmp_less()
+#include "network/to-value.h"                   // to_value()
 
 namespace Network
 {
@@ -33,12 +30,9 @@ namespace Network
                    sa_len_type size_min = sa_len_min,
                    sa_len_type size_max = sa_len_max) -> sa_len_type
     {
-        if (std::cmp_less(value, size_min) ||
-            std::cmp_greater(value, size_max)) {
-            throw SaLengthError(std::to_string(value), size_min, size_max);
-        }
-
-        return static_cast<sa_len_type>(value);
+        return to_value<sa_len_type>("sa_len_type", value,
+                                     size_min,
+                                     size_max);
     }
 
     auto to_sa_len(auto value, socket_family_type family) -> sa_len_type

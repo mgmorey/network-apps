@@ -64,18 +64,17 @@ get-sa-size-maximum.cpp get-sa-size-minimum.cpp get-sin-addr.cpp	\
 get-sin-pointer.cpp get-sin-port.cpp get-sin6-addr.cpp			\
 get-sin6-pointer.cpp get-sin6-port.cpp get-sockname.cpp			\
 get-socknameresult.cpp get-templates-endpoint.cpp			\
-get-templates-hostname.cpp is-running.cpp lengtherror.cpp listen.cpp	\
-logicerror.cpp namelengtherror.cpp open-endpoint.cpp open-socket.cpp	\
-open-templates.cpp open.cpp oserrorresult.cpp parse-argumentspan.cpp	\
-parse.cpp rangeerror.cpp read-string.cpp read.cpp			\
-reset-last-context-error.cpp reset-last-os-error.cpp runtimeerror.cpp	\
-salengtherror.cpp set-last-context-error.cpp set-last-os-error.cpp	\
-sin6lengtherror.cpp sinlengtherror.cpp socket.cpp socketfamily.cpp	\
-socketflags.cpp sockethints.cpp sockethost.cpp socketprotocol.cpp	\
-sockettype.cpp startup.cpp stream-address.cpp stream-addrinfo.cpp	\
-stream-context.cpp stream-socket.cpp stream-sockethints.cpp		\
-stream-template.cpp template.cpp to-bytestring-ai.cpp			\
-to-bytestring-void.cpp to-string-in-addr.cpp to-string-in6-addr.cpp	\
+get-templates-hostname.cpp is-running.cpp listen.cpp logicerror.cpp	\
+open-endpoint.cpp open-socket.cpp open-templates.cpp open.cpp		\
+oserrorresult.cpp parse-argumentspan.cpp parse.cpp rangeerror.cpp	\
+read-string.cpp read.cpp reset-last-context-error.cpp			\
+reset-last-os-error.cpp runtimeerror.cpp set-last-context-error.cpp	\
+set-last-os-error.cpp socket.cpp socketfamily.cpp socketflags.cpp	\
+sockethints.cpp sockethost.cpp socketprotocol.cpp sockettype.cpp	\
+startup.cpp stream-address.cpp stream-addrinfo.cpp stream-context.cpp	\
+stream-socket.cpp stream-sockethints.cpp stream-template.cpp		\
+template.cpp to-bytestring-ai.cpp to-bytestring-void.cpp		\
+to-string-in-addr.cpp to-string-in6-addr.cpp				\
 to-string-vector-byte.cpp to-string-vector-char.cpp validate-bs.cpp	\
 validate-sa.cpp validate-sin.cpp validate-sin6.cpp version.cpp		\
 write-string.cpp write.cpp
@@ -83,10 +82,10 @@ write-string.cpp write.cpp
 libnetwork_unix_sources = address-sun.cpp create-socketpair.cpp		\
 create-socketpairresult.cpp get-path-length.cpp				\
 get-path-pointer-bs.cpp get-path-pointer-sun.cpp get-sun-length.cpp	\
-get-sun-pointer.cpp pathlengtherror.cpp remove-socket.cpp		\
-socketpair.cpp sunlengtherror.cpp to-bytestring-char.cpp		\
-to-bytestring-path.cpp to-path-bytestring.cpp to-path-descriptor.cpp	\
-validate-char.cpp validate-path.cpp validate-sun.cpp
+get-sun-pointer.cpp remove-socket.cpp socketpair.cpp			\
+to-bytestring-char.cpp to-bytestring-path.cpp to-path-bytestring.cpp	\
+to-path-descriptor.cpp validate-char.cpp validate-path.cpp		\
+validate-sun.cpp
 
 test_common_sources = test-address.cpp test-bind.cpp test-connect.cpp	\
 test-context.cpp test-host.cpp test-hostname.cpp test-option.cpp	\

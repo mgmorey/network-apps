@@ -22,7 +22,7 @@
 #ifdef HAVE_SOCKADDR_SA_LEN
 #include "network/sa-len-limits.h"              // sa_len_max,
                                                 // sa_len_min
-#include "network/salengtherror.h"              // SaLengthError
+#include "network/valueerror.h"                 // ValueError
 #endif
 
 #ifdef WIN32
@@ -33,13 +33,12 @@
 #include <sys/un.h>         // sockaddr_un
 #endif
 
-#include <string>       // std::to_string()
 #include <utility>      // std::cmp_not_equal()
 
 namespace {
     using Network::FamilyError;
 #ifdef HAVE_SOCKADDR_SA_LEN
-    using Network::SaLengthError;
+    using Network::ValueError;
     using Network::sa_len_max;
     using Network::sa_len_min;
 #endif
@@ -49,15 +48,15 @@ namespace {
     auto validate_sa(const sockaddr* sa, sa_len_type size) -> void
     {
         const auto sa_len {to_sa_len(size)};
-#ifdef HAVE_SOCKADDR_SA_LEN
 
+#ifdef HAVE_SOCKADDR_SA_LEN
         if (std::cmp_not_equal(sa->sa_len, 0) &&
             std::cmp_not_equal(sa->sa_len, sa_len)) {
-          throw SaLengthError(std::to_string(sa->sa_len),
-                              sa_len_min,
-                              sa_len_max);
+            throw ValueError<sa_len_type>("sa_len_type",
+                                           sa->sa_len,
+                                           sa_len_min,
+                                           sa_len_max);
         }
-
 #else
         static_cast<void>(sa_len);
 #endif

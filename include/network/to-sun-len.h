@@ -18,12 +18,10 @@
 
 #ifndef WIN32
 
-#include "network/sun-len-limits.h"     // sun_len_max, sun_len_min
-#include "network/sun-len-type.h"       // sun_len_type
-#include "network/sunlengtherror.h"     // SunLengthError
-
-#include <string>       // std::to_string()
-#include <utility>      // std::cmp_greater(), std::cmp_less()
+#include "network/sun-len-limits.h"             // sun_len_max,
+                                                // sun_len_min
+#include "network/sun-len-type.h"               // sun_len_type
+#include "network/to-value.h"                   // to_value()
 
 namespace Network
 {
@@ -31,12 +29,9 @@ namespace Network
     {
         const sun_len_type size_min {sun_len_min};
 
-        if (std::cmp_less(value, size_min) ||
-            std::cmp_greater(value, size_max)) {
-            throw SunLengthError(std::to_string(value), size_max);
-        }
-
-        return static_cast<sun_len_type>(value);
+        return to_value<sun_len_type>("sun_len_type", value,
+                                      size_min,
+                                      size_max);
     }
 
     auto to_sun_len(auto value) -> sun_len_type
