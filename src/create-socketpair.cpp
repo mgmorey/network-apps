@@ -20,6 +20,7 @@
 #include "network/create-socketpairresult.h"    // create_socketpairresult()
 #include "network/error-strings.h"              // VISITOR_ERROR
 #include "network/error.h"                      // Error
+#include "network/logicerror.h"                 // LogicError
 #include "network/oserrorresult.h"              // OsErrorResult
 #include "network/sockethints.h"                // SocketHints
 #include "network/socketpair.h"                 // SocketPair
@@ -46,6 +47,10 @@ auto Network::create_socketpair(const SocketHints& hints,
             static_assert(always_false_v<T>, VISITOR_ERROR);
         }
     }, result);
+
+    if (!socketpair) {
+        throw LogicError("Socket pair is not initialized!");
+    }
 
     return *socketpair;
 }
