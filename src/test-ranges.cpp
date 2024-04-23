@@ -23,7 +23,6 @@
                                         // to_socket_length(),
                                         // to_sun_len()
 
-#include <climits>      // INT_MAX, INT_MIN
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
