@@ -19,8 +19,6 @@
                                         // to_os_error(),
                                         // to_path_length(),
                                         // to_sa_len(), to_size(),
-                                        // to_socket_hint(),
-                                        // to_socket_length(),
                                         // to_sun_len()
 
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
@@ -47,12 +45,6 @@ namespace TestRanges
     using Network::sa_len_max;
     using Network::sa_len_min;
     using Network::sa_len_type;
-    using Network::socket_hint_max;
-    using Network::socket_hint_min;
-    using Network::socket_hint_type;
-    using Network::socket_length_max;
-    using Network::socket_length_min;
-    using Network::socket_length_type;
 #ifndef WIN32
     using Network::sun_len_max;
     using Network::sun_len_min;
@@ -65,8 +57,6 @@ namespace TestRanges
 #endif
     using Network::to_sa_len;
     using Network::to_size;
-    using Network::to_socket_hint;
-    using Network::to_socket_length;
 #ifndef WIN32
     using Network::to_sun_len;
 #endif
@@ -84,12 +74,6 @@ namespace TestRanges
 #endif
     static constexpr auto expected_error_sa_len_re {
         R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of sa_len_type)"
-    };
-    static constexpr auto expected_error_socket_hint_re {
-        R"(Value (\d+|-\d+) is out of range \[-?\d+, \d+\] of socket_hint_type)"
-    };
-    static constexpr auto expected_error_socket_length_re {
-        R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of socket_length_type)"
     };
     static constexpr auto expected_error_std_size_re {
         R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of std::size_t)"
@@ -199,50 +183,6 @@ namespace TestRanges
         test_sa_len_invalid(sa_len_max + 1);
     }
 
-    auto test_socket_hint_invalid(auto value) -> void
-    {
-        std::string actual_error_str;
-
-        try {
-            static_cast<void>(to_socket_hint(value));
-        }
-        catch (const ValueError<socket_hint_type>& error) {
-            print(error);
-            actual_error_str = error.what();
-        }
-
-        const std::regex expected_error_regex {expected_error_socket_hint_re};
-        assert(std::regex_match(actual_error_str, expected_error_regex));
-    }
-
-    auto test_socket_hint_invalid() -> void
-    {
-        test_socket_hint_invalid(static_cast<long long>(socket_hint_min) - 1);
-        test_socket_hint_invalid(static_cast<long long>(socket_hint_max) + 1);
-    }
-
-    auto test_socket_length_invalid(auto value) -> void
-    {
-        std::string actual_error_str;
-
-        try {
-            static_cast<void>(to_socket_length(value));
-        }
-        catch (const ValueError<socket_length_type>& error) {
-            print(error);
-            actual_error_str = error.what();
-        }
-
-        const std::regex expected_error_regex {expected_error_socket_length_re};
-        assert(std::regex_match(actual_error_str, expected_error_regex));
-    }
-
-    auto test_socket_length_invalid() -> void
-    {
-        test_socket_length_invalid(socket_length_min - 1);
-        test_socket_length_invalid(socket_length_max + 1);
-    }
-
     auto test_std_size_invalid(auto value) -> void
     {
         std::string actual_error_str;
@@ -302,8 +242,6 @@ auto main() -> int
         test_path_length_invalid();
 #endif
         test_sa_len_invalid();
-        test_socket_hint_invalid();
-        test_socket_length_invalid();
         test_std_size_invalid();
 #ifndef WIN32
         test_sun_len_invalid();

@@ -26,8 +26,6 @@
 #endif
 #include "network/sa-len-limits.h"              // sa_len_max,
                                                 // sa_len_min
-#include "network/socket-hint-limits.h"         // socket_hint_max,
-                                                // socket_hint_min
 #include "network/socket-length-limits.h"       // socket_length_max,
                                                 // socket_length_min
 #ifndef WIN32
