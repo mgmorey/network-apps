@@ -49,7 +49,6 @@ auto Network::get_option(const ArgumentSpan& args,
         throw LogicError("No command-line options to parse");
     }
 
-    // NOLINTNEXTLINE
     return ::getopt(static_cast<int>(args.size()), args.data(), optstring);
 }
 
