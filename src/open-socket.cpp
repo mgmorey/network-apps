@@ -19,7 +19,7 @@
 #include "network/descriptor-type.h"            // descriptor_type
 #include "network/format-os-error.h"            // format_os_error()
 #include "network/get-last-context-error.h"     // get_last_context_error()
-#include "network/get-length.h"                 // get_length()
+#include "network/get-sa-length.h"              // get_sa_length()
 #include "network/get-sa-pointer.h"             // get_sa_pointer()
 #include "network/openhandler.h"                // OpenHandler
 #include "network/opensocketparams.h"           // OpenSocketParams
@@ -36,7 +36,7 @@ auto Network::open(const OpenHandler& handler,
                    const OpenSocketParams& args) -> OsErrorResult
 {
     const auto* const addr_ptr {get_sa_pointer(args.addr)};
-    const auto addr_len {get_length(args.addr)};
+    const auto addr_len {get_sa_length(args.addr)};
     const AddressString addr_str {args.addr};
 
     if (addr_len == sa_len_min) {

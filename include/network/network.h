@@ -60,7 +60,6 @@
 #include "network/get-hostname.h"               // get_hostname()
 #include "network/get-hostnameresult.h"         // get_hostnameresult()
 #include "network/get-hosts.h"                  // get_hosts()
-#include "network/get-length.h"                 // get_length()
 #include "network/get-name.h"                   // get_name()
 #include "network/get-nameresult.h"             // get_nameresult()
 #ifndef WIN32
