@@ -19,11 +19,11 @@
 #include "network/bytestring.h"                 // ByteString
 #include "network/os-features.h"                // HAVE_SOCKADDR_SA_LEN
 #include "network/socket-length-type.h"         // socket_length_type
+#include "network/to-socket-length.h"           // to_socket_length()
 
 #ifdef HAVE_SOCKADDR_SA_LEN
 #include "network/get-sa-length.h"              // get_sa_length()
 #else
-#include "network/to-socket-length.h"           // to_socket_length()
 #endif
 
 auto Network::get_length(Buffer<Byte>& addr) -> socket_length_type
