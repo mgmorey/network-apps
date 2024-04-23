@@ -35,11 +35,11 @@
 auto Network::open(const OpenHandler& handler,
                    const OpenSocketParams& args) -> OsErrorResult
 {
-    const auto* const pointer {get_sa_pointer(args.addr)};
-    const auto length {get_length(args.addr)};
+    const auto* const addr_ptr {get_sa_pointer(args.addr)};
+    const auto addr_len {get_length(args.addr)};
     const AddressString addr_str {args.addr};
 
-    if (length == sa_len_min) {
+    if (addr_len == sa_len_min) {
         throw AddressError("Address payload length is zero: " +
                            std::string {addr_str});
     }
@@ -52,7 +52,7 @@ auto Network::open(const OpenHandler& handler,
                   << ", "
                   << addr_str
                   << ", "
-                  << length
+                  << addr_len
                   << ')'
                   << std::endl;
     }
@@ -60,7 +60,7 @@ auto Network::open(const OpenHandler& handler,
     const descriptor_type handle {args.socket};
     reset_last_context_error();
 
-    if (handler.first(handle, pointer, length) == socket_error) {
+    if (handler.first(handle, addr_ptr, addr_len) == socket_error) {
         const auto error {get_last_context_error()};
         const auto os_error {to_os_error(error)};
         std::ostringstream oss;
@@ -71,7 +71,7 @@ auto Network::open(const OpenHandler& handler,
             << ", "
             << addr_str
             << ", "
-            << length
+            << addr_len
             << ") failed with error "
             << error
             << ": "

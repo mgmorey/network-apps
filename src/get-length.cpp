@@ -14,6 +14,8 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/get-length.h"                 // get_length()
+#include "network/buffer.h"                     // Buffer
+#include "network/byte.h"                       // Byte
 #include "network/bytestring.h"                 // ByteString
 #include "network/os-features.h"                // HAVE_SOCKADDR_SA_LEN
 #include "network/socket-length-type.h"         // socket_length_type
@@ -24,6 +26,11 @@
 #include "network/to-socket-length.h"           // to_socket_length()
 #endif
 
+auto Network::get_length(Buffer<Byte>& addr) -> socket_length_type
+{
+    return to_socket_length(addr.size());
+}
+
 auto Network::get_length(const ByteString& addr) -> socket_length_type
 {
 #ifdef HAVE_SOCKADDR_SA_LEN
@@ -31,5 +38,4 @@ auto Network::get_length(const ByteString& addr) -> socket_length_type
 #else
     return to_socket_length(addr.size());
 #endif
-
 }
