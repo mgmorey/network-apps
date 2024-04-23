@@ -16,8 +16,8 @@
 #ifndef NETWORK_SOCKETFLAGS_H
 #define NETWORK_SOCKETFLAGS_H
 
-#include "network/integer.h"            // Integer
-#include "network/socket-flags-type.h"  // socket_flags_type
+#include "network/integer.h"                    // Integer
+#include "network/socket-flags-type.h"          // socket_flags_type
 
 #include <ostream>      // std::ostream
 

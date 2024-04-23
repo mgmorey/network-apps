@@ -33,8 +33,9 @@ namespace Network
             std::ostream&;
 
     public:
-        constexpr SocketProtocol(socket_family_type t_family,
-                                 socket_protocol_type t_value) noexcept :
+        // NOLINTNEXTLINE
+        constexpr SocketProtocol(socket_protocol_type t_value,
+                                 socket_family_type t_family = 0) noexcept :
             Integer(t_value),
             m_family(t_family)
         {
@@ -46,7 +47,7 @@ namespace Network
         }
 
     private:
-        SocketFamily m_family;
+        socket_family_type m_family {};
     };
 
     extern auto operator<<(std::ostream& os,

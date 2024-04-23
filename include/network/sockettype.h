@@ -16,8 +16,8 @@
 #ifndef NETWORK_SOCKETTYPE_H
 #define NETWORK_SOCKETTYPE_H
 
-#include "network/integer.h"            // Integer
-#include "network/socket-type-type.h"   // socket_type_type
+#include "network/integer.h"                    // Integer
+#include "network/socket-type-type.h"           // socket_type_type
 
 #include <ostream>      // std::ostream
 

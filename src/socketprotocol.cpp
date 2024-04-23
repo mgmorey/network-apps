@@ -30,7 +30,7 @@
 #include <ostream>      // operator<<(), std::ostream
 
 auto Network::operator<<(std::ostream& os,
-                         const SocketProtocol& protocol ) noexcept ->
+                         const SocketProtocol& protocol) noexcept ->
     std::ostream&
 {
     switch (socket_family_type {protocol.family()}) {
