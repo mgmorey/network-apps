@@ -20,10 +20,10 @@
 #include "network/os-features.h"                // HAVE_SOCKADDR_SA_LEN
 #include "network/socket-length-type.h"         // socket_length_type
 #include "network/to-socket-length.h"           // to_socket_length()
+#include "network/to-sa-len.h"                  // to_sa_len()
 
 #ifdef HAVE_SOCKADDR_SA_LEN
 #include "network/get-sa-pointer.h"             // get_sa_pointer()
-#include "network/to-sa-len.h"                  // to_sa_len()
 #endif
 
 auto Network::get_sa_length(Buffer<Byte>& addr) -> socket_length_type
@@ -37,7 +37,6 @@ auto Network::get_sa_length(const ByteString& addr) -> socket_length_type
     const auto* const sa {get_sa_pointer(addr)};
     return sa->sa_len;
 #else
-    static_cast<void>(addr);
-    return 0;
+    return to_socket_length(addr.size());
 #endif
 }
