@@ -28,6 +28,14 @@ namespace Network
     {
         constexpr IpSocketHints(socket_ip_family_enum t_family,
                                 socket_type_type t_socktype,
+                                socket_ip_protocol_enum t_protocol,
+                                socket_flags_type t_flags = 0) noexcept :
+            SocketHints(t_family, t_socktype, t_protocol, t_flags)
+        {
+        }
+
+        constexpr IpSocketHints(socket_ip_family_enum t_family,
+                                socket_type_type t_socktype,
                                 socket_flags_type t_flags = 0) noexcept :
             SocketHints(t_family, t_socktype, 0, t_flags)
         {
