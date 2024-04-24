@@ -40,8 +40,8 @@
 auto Network::get_endpointresult(const ByteString& addr, int flags,
                                  bool verbose) -> EndpointResult
 {
-    const auto* const pointer {get_sa_pointer(addr)};
-    const auto length {get_sa_length(addr)};
+    const auto* const addr_ptr {get_sa_pointer(addr)};
+    const auto addr_len {get_sa_length(addr)};
     const AddressString addr_str {addr};
     Buffer<char> hostname {hostname_size_max};
     Buffer<char> service {service_size_max};
@@ -50,14 +50,14 @@ auto Network::get_endpointresult(const ByteString& addr, int flags,
         std::cout << "Calling ::getnameinfo("
                   << addr_str
                   << ", "
-                  << length
+                  << addr_len
                   << ", ..., "
                   << flags
                   << ')'
                   << std::endl;
     }
 
-    if (const auto error {::getnameinfo(pointer, length,
+    if (const auto error {::getnameinfo(addr_ptr, addr_len,
                                         hostname.data(), hostname.size(),
                                         service.data(), service.size(),
                                         flags)}) {
@@ -66,7 +66,7 @@ auto Network::get_endpointresult(const ByteString& addr, int flags,
         oss << "Call to ::getnameinfo("
             << addr_str
             << ", "
-            << length
+            << addr_len
             << ", ..., "
             << flags
             << ") returned "
