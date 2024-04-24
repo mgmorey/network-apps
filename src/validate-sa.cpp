@@ -26,11 +26,9 @@
 #endif
 
 #ifdef WIN32
-#include <winsock2.h>       // AF_INET, AF_INET6, AF_UNSPEC, sockaddr,
-                            // sockaddr_in
+#include <winsock2.h>       // AF_INET, AF_INET6, AF_UNIX, sockaddr
 #else
-#include <sys/socket.h>     // AF_INET, AF_INET6, AF_UNSPEC, sockaddr
-#include <sys/un.h>         // sockaddr_un
+#include <sys/socket.h>     // AF_INET, AF_INET6, AF_UNIX, sockaddr
 #endif
 
 #ifdef HAVE_SOCKADDR_SA_LEN
@@ -46,8 +44,8 @@ auto Network::validate(const sockaddr* sa, length_type sa_len) ->
     if (std::cmp_not_equal(sa->sa_len, sa_len)) {
         throw ValueError<length_type>("sa_len_type",
                                       sa->sa_len,
-                                      sa_len_min,
-                                      sa_len_max);
+                                      sa_len,
+                                      sa_len);
     }
 #else
     static_cast<void>(sa_len);
