@@ -20,8 +20,8 @@
 
 namespace Network
 {
-    static constexpr int socket_length_max {sa_len_max};
-    static constexpr int socket_length_min {sa_len_min};
+    static constexpr auto socket_length_max {sa_len_max};
+    static constexpr auto socket_length_min {sa_len_min};
 }
 
 #endif
