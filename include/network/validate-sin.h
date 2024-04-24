@@ -16,7 +16,7 @@
 #ifndef NETWORK_VALIDATE_SIN_H
 #define NETWORK_VALIDATE_SIN_H
 
-#include "network/sa-len-type.h"                // sa_len_type
+#include "network/length-type.h"                // length_type
 
 #ifdef WIN32
 #include <winsock2.h>       // AF_INET, sockaddr_in

@@ -17,12 +17,12 @@
 #define NETWORK_TO_BYTESTRING_VOID_H
 
 #include "network/bytestring.h"                 // ByteString
-#include "network/sa-len-type.h"                // sa_len_type
+#include "network/length-type.h"                // length_type
 
 namespace Network
 {
     extern auto to_bytestring(const void* data,
-                              sa_len_type size) -> ByteString;
+                              length_type size) -> ByteString;
 }
 
 #endif

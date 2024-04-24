@@ -16,7 +16,7 @@
 #ifndef NETWORK_VALIDATE_SUN_H
 #define NETWORK_VALIDATE_SUN_H
 
-#include "network/sun-len-type.h"               // sun_len_type
+#include "network/length-type.h"                // length_type
 
 #ifndef WIN32
 #include <sys/un.h>         // sockaddr_un
@@ -26,7 +26,7 @@ namespace Network
 {
 #ifndef WIN32
     extern auto validate(const sockaddr_un* sun,
-                         sun_len_type sun_len = sizeof(sockaddr_un)) ->
+                         length_type sun_len = sizeof(sockaddr_un)) ->
         const sockaddr_un*;
 #endif
 }

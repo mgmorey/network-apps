@@ -16,7 +16,7 @@
 #ifndef NETWORK_VALIDATE_SA_H
 #define NETWORK_VALIDATE_SA_H
 
-#include "network/sa-len-type.h"                // sa_len_type
+#include "network/length-type.h"                // length_type
 
 #ifdef WIN32
 #include <winsock2.h>       // sockaddr
@@ -26,7 +26,7 @@
 
 namespace Network
 {
-    extern auto validate(const sockaddr* sa, sa_len_type sa_len) ->
+    extern auto validate(const sockaddr* sa, length_type sa_len) ->
         const sockaddr*;
 }
 

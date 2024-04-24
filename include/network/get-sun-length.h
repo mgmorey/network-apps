@@ -16,7 +16,7 @@
 #ifndef NETWORK_GET_SUN_LENGTH_H
 #define NETWORK_GET_SUN_LENGTH_H
 
-#include "network/sun-len-type.h"       // sun_len_type
+#include "network/length-type.h"        // length_type
 
 #ifndef WIN32
 #include <sys/un.h>         // sockaddr_un
@@ -26,7 +26,7 @@ namespace Network
 {
 #ifndef WIN32
     extern auto get_sun_length(const sockaddr_un* sun,
-                               sun_len_type size) -> sun_len_type;
+                               length_type size) -> length_type;
 #endif
 }
 

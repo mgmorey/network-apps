@@ -31,6 +31,7 @@ namespace TestRanges
 {
     using Network::RangeError;
     using Network::ValueError;
+    using Network::length_type;
     using Network::name_length_max;
     using Network::name_length_min;
     using Network::name_length_type;
@@ -40,15 +41,12 @@ namespace TestRanges
 #ifndef WIN32
     using Network::path_length_max;
     using Network::path_length_min;
-    using Network::path_length_type;
 #endif
     using Network::sa_len_max;
     using Network::sa_len_min;
-    using Network::sa_len_type;
 #ifndef WIN32
     using Network::sun_len_max;
     using Network::sun_len_min;
-    using Network::sun_len_type;
 #endif
     using Network::to_name_length;
     using Network::to_os_error;
@@ -144,7 +142,7 @@ namespace TestRanges
         try {
             static_cast<void>(to_path_length(value));
         }
-        catch (const ValueError<path_length_type>& error) {
+        catch (const ValueError<length_type>& error) {
             print(error);
             actual_error_str = error.what();
         }
@@ -168,7 +166,7 @@ namespace TestRanges
         try {
             static_cast<void>(to_sa_len(value));
         }
-        catch (const ValueError<sa_len_type>& error) {
+        catch (const ValueError<length_type>& error) {
             print(error);
             actual_error_str = error.what();
         }
@@ -213,7 +211,7 @@ namespace TestRanges
         try {
             static_cast<void>(to_sun_len(value));
         }
-        catch (const ValueError<sun_len_type>& error) {
+        catch (const ValueError<length_type>& error) {
             print(error);
             actual_error_str = error.what();
         }

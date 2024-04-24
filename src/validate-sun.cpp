@@ -18,8 +18,8 @@
 #include "network/validate-sun.h"               // validate()
 #include "network/familyerror.h"                // FamilyError
 #include "network/get-sun-length.h"             // get_sun_length()
+#include "network/length-type.h"                // length_type
 #include "network/os-features.h"                // HAVE_SOCKADDR_SA_LEN
-#include "network/sun-len-type.h"               // sun_len_type
 #include "network/to-sun-len.h"                 // to_sun_len()
 
 #ifdef HAVE_SOCKADDR_SA_LEN
@@ -36,16 +36,16 @@
 #endif
 
 auto Network::validate(const sockaddr_un* sun,
-                       sun_len_type sun_len) -> const sockaddr_un*
+                       length_type sun_len) -> const sockaddr_un*
 {
     sun_len = to_sun_len(get_sun_length(sun, sun_len));
 
 #ifdef HAVE_SOCKADDR_SA_LEN
     if (std::cmp_not_equal(sun->sun_len, sun_len)) {
-        throw ValueError<sun_len_type>("sun_len_type",
-                                       sun->sun_len,
-                                       sun_len,
-                                       sun_len);
+        throw ValueError<length_type>("sun_len_type",
+                                      sun->sun_len,
+                                      sun_len,
+                                      sun_len);
     }
 #else
     static_cast<void>(sun_len);

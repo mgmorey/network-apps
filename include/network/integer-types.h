@@ -23,12 +23,8 @@
 #include "network/length-type.h"                    // length_type
 #include "network/name-length-type.h"               // name_length_type
 #include "network/os-error-type.h"                  // os_error_type
-#ifndef WIN32
-#include "network/path-length-type.h"               // path_length_type
-#endif
 #include "network/port-type.h"                      // port_type
 #include "network/sa-family-type.h"                 // sa_family_type
-#include "network/sa-len-type.h"                    // sa_len_type
 #include "network/sin-family-type.h"                // sin_family_type
 #include "network/socket-family-type.h"             // socket_family_type
 #include "network/socket-flags-type.h"              // socket_flags_type
@@ -36,9 +32,6 @@
 #include "network/socket-length-type.h"             // socket_length_type
 #include "network/socket-protocol-type.h"           // socket_protocol_type
 #include "network/socket-type-type.h"               // socket_type_type
-#ifndef WIN32
-#include "network/sun-len-type.h"                   // sun_len_type
-#endif
 #ifdef WIN32
 #include "network/windows-version-type.h"           // windows_version_type
 #endif

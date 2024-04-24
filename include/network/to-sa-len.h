@@ -18,24 +18,24 @@
 
 #include "network/get-sa-size-maximum.h"        // get_sa_size_maximum()
 #include "network/get-sa-size-minimum.h"        // get_sa_size_minimum()
+#include "network/length-type.h"                // length_type
 #include "network/sa-len-limits.h"              // sa_len_max,
                                                 // sa_len_min
-#include "network/sa-len-type.h"                // sa_len_type
 #include "network/socket-family-type.h"         // socket_family_type
 #include "network/to-value.h"                   // to_value()
 
 namespace Network
 {
     auto to_sa_len(auto value,
-                   sa_len_type size_min = sa_len_min,
-                   sa_len_type size_max = sa_len_max) -> sa_len_type
+                   length_type size_min = sa_len_min,
+                   length_type size_max = sa_len_max) -> length_type
     {
-        return to_value<sa_len_type>("sa_len_type", value,
+        return to_value<length_type>("sa_len_type", value,
                                      size_min,
                                      size_max);
     }
 
-    auto to_sa_len(auto value, socket_family_type family) -> sa_len_type
+    auto to_sa_len(auto value, socket_family_type family) -> length_type
     {
         const auto size_max {get_sa_size_maximum(family)};
         const auto size_min {get_sa_size_minimum(family)};
