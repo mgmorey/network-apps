@@ -39,6 +39,18 @@ namespace Network
             SocketHints(t_family, 0, t_protocol, t_flags)
         {
         }
+
+        constexpr explicit IpSocketHints(socket_type_type t_socktype,
+                                         socket_flags_type t_flags = 0) noexcept :
+            SocketHints(0, t_socktype, 0, t_flags)
+        {
+        }
+
+        constexpr explicit IpSocketHints(socket_ip_protocol_enum t_protocol,
+                                         socket_flags_type t_flags = 0) noexcept :
+            SocketHints(0, 0, t_protocol, t_flags)
+        {
+        }
     };
 }
 

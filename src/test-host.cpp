@@ -65,7 +65,6 @@ namespace TestHost
     using Network::OsErrorResult;
     using Network::SocketHints;
     using Network::SocketHost;
-    using Network::af_ip_unspec;
     using Network::af_ip_v4;
     using Network::af_ip_v6;
     using Network::always_false_v;
@@ -79,7 +78,7 @@ namespace TestHost
 
     static const IpSocketHints inet {af_ip_v4, SOCK_STREAM, AI_CANONNAME};
     static const IpSocketHints inet6 {af_ip_v6, SOCK_STREAM, AI_CANONNAME};
-    static const IpSocketHints unspec {af_ip_unspec, SOCK_STREAM, AI_CANONNAME};
+    static const IpSocketHints unspec {SOCK_STREAM, AI_CANONNAME};
 
     static bool verbose {false};  // NOLINT
 
