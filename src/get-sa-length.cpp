@@ -20,7 +20,6 @@
 #include "network/os-features.h"                // HAVE_SOCKADDR_SA_LEN
 #include "network/socket-length-type.h"         // socket_length_type
 #include "network/to-socket-length.h"           // to_socket_length()
-#include "network/to-sa-len.h"                  // to_sa_len()
 
 #ifdef HAVE_SOCKADDR_SA_LEN
 #include "network/get-sa-pointer.h"             // get_sa_pointer()
