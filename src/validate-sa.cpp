@@ -35,8 +35,8 @@
 #include <utility>      // std::cmp_not_equal()
 #endif
 
-auto Network::validate(const sockaddr* sa, length_type sa_len) ->
-    const sockaddr*
+auto Network::validate(const sockaddr* sa,
+                       length_type sa_len) -> const sockaddr*
 {
     static_cast<void>(to_sa_len(sa_len));
 
