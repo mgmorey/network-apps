@@ -16,6 +16,7 @@
 #ifndef NETWORK_SOCKETHINTS_H
 #define NETWORK_SOCKETHINTS_H
 
+#include "network/socket-family-enum.h"         // socket_family_enum
 #include "network/socket-family-type.h"         // socket_family_type
 #include "network/socket-flags-type.h"          // socket_flags_type
 #include "network/socket-protocol-type.h"       // socket_protocol_type
@@ -40,7 +41,7 @@ namespace Network
 
         constexpr SocketHints() noexcept = default;
 
-        constexpr explicit SocketHints(socket_family_type t_family,
+        constexpr explicit SocketHints(socket_family_enum t_family,
                                        socket_type_type t_socktype,
                                        socket_protocol_type t_protocol = 0,
                                        socket_flags_type t_flags = 0) noexcept :

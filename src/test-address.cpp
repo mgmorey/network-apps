@@ -65,6 +65,8 @@ namespace TestAddress
     using Network::SocketFamily;
     using Network::SocketHints;
     using Network::always_false_v;
+    using Network::af_unix;
+    using Network::af_unspec;
     using Network::get_hosts;
     using Network::get_sa_size_maximum;
     using Network::get_sa_size_minimum;
@@ -93,7 +95,7 @@ namespace TestAddress
     static constexpr auto print_key_width {20};
     static constexpr auto print_value_width {10};
 
-    static const SocketHints unspec {AF_UNSPEC, SOCK_STREAM, 0, AI_CANONNAME};
+    static const SocketHints unspec {af_unspec, SOCK_STREAM, 0, AI_CANONNAME};
 
     static bool verbose {false};  // NOLINT
 
@@ -131,7 +133,7 @@ namespace TestAddress
 
 #ifndef WIN32
 
-    auto create_sun(sa_family_type family = AF_UNIX,
+    auto create_sun(sa_family_type family = af_unix,
                     std::size_t sun_len = sun_size,
                     std::size_t path_len = 0UL) -> sockaddr_un
     {
@@ -237,7 +239,7 @@ namespace TestAddress
 
     auto test_sa_invalid_length() -> void
     {
-        const auto sa {create_sa(AF_UNSPEC, 0)};
+        const auto sa {create_sa(af_unspec, 0)};
         test_sa(sa, 0, expected_error_length_re);
     }
 
@@ -274,7 +276,7 @@ namespace TestAddress
 
     auto test_sin_invalid_family() -> void
     {
-        const auto sin {create_sin(AF_UNSPEC)};
+        const auto sin {create_sin(af_unspec)};
         test_sin(sin, expected_error_family_re);
     }
 
@@ -311,7 +313,7 @@ namespace TestAddress
 
     auto test_sin6_invalid_family() -> void
     {
-        const auto sin6 {create_sin6(AF_UNSPEC)};
+        const auto sin6 {create_sin6(af_unspec)};
         test_sin6(sin6, expected_error_family_re);
     }
 
@@ -379,7 +381,7 @@ namespace TestAddress
 
         assert(std::regex_match(actual_error_str, expected_error_regex));
 
-        if (sun.sun_family == AF_UNIX) {
+        if (sun.sun_family == af_unix) {
             actual_error_str.clear();
 
             try {
@@ -396,20 +398,20 @@ namespace TestAddress
 
     auto test_sun_invalid_family() -> void
     {
-        const auto sun {create_sun(AF_UNSPEC, sun_len_min)};
+        const auto sun {create_sun(af_unspec, sun_len_min)};
         test_sun(sun, sun_len_min, expected_error_family_re);
     }
 
     auto test_sun_valid_path_large() -> void
     {
         const auto path_len {sun_size - sun_path_offset};
-        const auto sun {create_sun(AF_UNIX, sun_len_max, path_len)};
+        const auto sun {create_sun(af_unix, sun_len_max, path_len)};
         test_sun(sun, sun_len_max, {});
     }
 
     auto test_sun_valid_path_small() -> void
     {
-        const auto sun {create_sun(AF_UNIX, sun_len_min)};
+        const auto sun {create_sun(af_unix, sun_len_min)};
         test_sun(sun, sun_len_min, {});
     }
 
@@ -420,9 +422,9 @@ namespace TestAddress
         const auto family {address.family()};
 
         switch (family) {
-        case AF_UNSPEC:
+        case af_unspec:
 #ifndef WIN32
-        case AF_UNIX:
+        case af_unix:
 #endif
         case AF_INET:
         case AF_INET6:

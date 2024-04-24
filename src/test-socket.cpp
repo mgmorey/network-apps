@@ -49,6 +49,7 @@ namespace TestSocket
     using Network::Socket;
     using Network::SocketHints;
     using Network::SocketPair;
+    using Network::af_unix;
     using Network::bind;
     using Network::os_error_type;
     using Network::parse;
@@ -157,7 +158,7 @@ namespace TestSocket
 
         try {
             assert(to_bytestring(path) == path);
-            Socket sock {SocketHints {AF_UNIX, SOCK_STREAM}, verbose};
+            Socket sock {SocketHints {af_unix, SOCK_STREAM}, verbose};
 
             if (const auto result {bind(sock, path, verbose)}) {
                 print(result);
@@ -234,7 +235,7 @@ namespace TestSocket
         std::string actual_error_str;
 
         try {
-            SocketPair pair {SocketHints {AF_UNIX, SOCK_STREAM}, verbose};
+            SocketPair pair {SocketHints {af_unix, SOCK_STREAM}, verbose};
             std::cout << "Socket "
                       << std::right << std::setw(handle_width) << pair.at(0)
                       << " connected to "

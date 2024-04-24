@@ -32,6 +32,7 @@
 using Network::ArgumentSpan;
 using Network::Socket;
 using Network::SocketHints;
+using Network::af_unix;
 using Network::socket_error;
 
 static bool verbose {false};  // NOLINT
@@ -39,7 +40,7 @@ static bool verbose {false};  // NOLINT
 namespace Client {
     auto connect() -> Socket
     {
-        Socket sock {SocketHints {AF_UNIX, SOCK_SEQPACKET}, verbose};
+        Socket sock {SocketHints {af_unix, SOCK_SEQPACKET}, verbose};
 
         if (const auto error {Network::connect(sock, SOCKET_NAME, verbose)}) {
             std::cerr << error.string() << std::endl;

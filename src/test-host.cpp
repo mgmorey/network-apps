@@ -64,6 +64,9 @@ namespace TestHost
     using Network::OsErrorResult;
     using Network::SocketHints;
     using Network::SocketHost;
+    using Network::af_inet6;
+    using Network::af_inet;
+    using Network::af_unspec;
     using Network::always_false_v;
     using Network::get_hosts;
     using Network::os_error_type;
@@ -73,9 +76,9 @@ namespace TestHost
     using ErrorCodeSet = std::set<os_error_type>;
     using HintsVector = std::vector<SocketHints>;
 
-    static const SocketHints inet {AF_INET, SOCK_STREAM, 0, AI_CANONNAME};
-    static const SocketHints inet6 {AF_INET6, SOCK_STREAM, 0, AI_CANONNAME};
-    static const SocketHints unspec {AF_UNSPEC, SOCK_STREAM, 0, AI_CANONNAME};
+    static const SocketHints inet {af_inet, SOCK_STREAM, 0, AI_CANONNAME};
+    static const SocketHints inet6 {af_inet6, SOCK_STREAM, 0, AI_CANONNAME};
+    static const SocketHints unspec {af_unspec, SOCK_STREAM, 0, AI_CANONNAME};
 
     static bool verbose {false};  // NOLINT
 

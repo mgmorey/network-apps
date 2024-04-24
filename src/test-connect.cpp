@@ -63,6 +63,7 @@ namespace TestConnect
     using Network::SocketHints;
     using Network::SocketResult;
     using Network::SocketResultVector;
+    using Network::af_unspec;
     using Network::always_false_v;
     using Network::connect;
     using Network::get_hostname;
@@ -293,7 +294,7 @@ auto main(int argc, char* argv[]) -> int
 {
     using namespace TestConnect;
 
-    static const SocketHints hints {AF_UNSPEC, SOCK_STREAM, 0, AI_CANONNAME};
+    static const SocketHints hints {af_unspec, SOCK_STREAM, 0, AI_CANONNAME};
 
     try {
         const auto& context {Context::instance()};
