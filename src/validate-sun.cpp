@@ -31,49 +31,30 @@
 #include <sys/socket.h>     // AF_UNIX
 #include <sys/un.h>         // sockaddr_un
 
+#ifdef HAVE_SOCKADDR_SA_LEN
 #include <utility>      // std::cmp_not_equal()
-
-namespace {
-    using Network::FamilyError;
-#ifdef HAVE_SOCKADDR_SA_LEN
-    using Network::ValueError;
 #endif
-    using Network::get_sun_length;
-    using Network::sun_len_type;
-    using Network::to_sun_len;
-
-    auto validate_sun(const sockaddr_un* sun, sun_len_type size) -> void
-    {
-        const auto sun_len {to_sun_len(get_sun_length(sun, size))};
-
-#ifdef HAVE_SOCKADDR_SA_LEN
-        if (std::cmp_not_equal(sun->sun_len, sun_len)) {
-            throw ValueError<sun_len_type>("sun_len_type",
-                                           sun->sun_len,
-                                           sun_len,
-                                           sun_len);
-        }
-#else
-        static_cast<void>(sun_len);
-#endif
-
-        if (sun->sun_family != AF_UNIX) {
-            throw FamilyError(sun->sun_family);
-        }
-    }
-}
 
 auto Network::validate(const sockaddr_un* sun,
                        sun_len_type sun_len) -> const sockaddr_un*
 {
-    validate_sun(sun, sun_len);
-    return sun;
-}
+    sun_len = to_sun_len(get_sun_length(sun, sun_len));
 
-auto Network::validate(sockaddr_un* sun,
-                       sun_len_type sun_len) -> sockaddr_un*
-{
-    validate_sun(sun, sun_len);
+#ifdef HAVE_SOCKADDR_SA_LEN
+    if (std::cmp_not_equal(sun->sun_len, sun_len)) {
+        throw ValueError<sun_len_type>("sun_len_type",
+                                       sun->sun_len,
+                                       sun_len,
+                                       sun_len);
+    }
+#else
+    static_cast<void>(sun_len);
+#endif
+
+    if (sun->sun_family != AF_UNIX) {
+        throw FamilyError(sun->sun_family);
+    }
+
     return sun;
 }
 
