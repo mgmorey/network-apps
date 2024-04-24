@@ -33,7 +33,9 @@
 #include <sys/un.h>         // sockaddr_un
 #endif
 
+#ifdef HAVE_SOCKADDR_SA_LEN
 #include <utility>      // std::cmp_not_equal()
+#endif
 
 auto Network::validate(const sockaddr* sa, sa_len_type sa_len) ->
     const sockaddr*
