@@ -65,7 +65,9 @@ namespace TestAddress
     using Network::SocketFamily;
     using Network::SocketHints;
     using Network::always_false_v;
+#ifndef WIN32
     using Network::af_unix;
+#endif
     using Network::af_unspec;
     using Network::get_hosts;
     using Network::get_sa_size_maximum;
