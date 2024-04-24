@@ -99,12 +99,12 @@
 #include "network/socket.h"                     // Socket
 #include "network/socketfamily.h"               // SocketFamily
 #include "network/socketflags.h"                // SocketFlags
+#include "network/sockethints.h"                // SocketHints
+#include "network/sockethost.h"                 // SocketHints
 #include "network/socketprotocol.h"             // SocketProtocol
 #include "network/sockettype.h"                 // SocketType
 #include "network/string-null.h"                // string_null
-#include "network/template.h"                   // SocketHints,
-                                                // SocketHost,
-                                                // Template
+#include "network/template.h"                   // Template
 #include "network/to-bytestring.h"              // to_bytestring()
 #include "network/to-name-length.h"             // to_name_length()
 #include "network/to-os-error.h"                // to_os_error()
