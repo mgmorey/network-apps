@@ -28,7 +28,9 @@ namespace Network
 {
     using socket_family_enum = enum : socket_family_type {
         af_unspec = AF_UNSPEC,
+#ifndef WIN32
         af_unix = AF_UNIX,
+#endif
         af_inet = AF_INET,
         af_inet6 = AF_INET6
     };
