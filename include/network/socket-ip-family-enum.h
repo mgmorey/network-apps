@@ -27,9 +27,9 @@
 namespace Network
 {
     using socket_ip_family_enum = enum : socket_family_type {
-        af_unspec = AF_UNSPEC,
-        af_inet = AF_INET,
-        af_inet6 = AF_INET6
+        af_ip_unspec = AF_UNSPEC,
+        af_ip_v4 = AF_INET,
+        af_ip_v6 = AF_INET6
     };
 }
 

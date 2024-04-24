@@ -17,6 +17,7 @@
 #define NETWORK_ENUM_TYPES_H
 
 #include "network/socket-family-enum.h"         // socket_family_enum
+#include "network/socket-ip-family-enum.h"      // socket_ip_family_enum
 #include "network/socket-ip-protocol-enum.h"    // socket_ip_protocol_enum
 #include "network/socket-type-enum.h"           // socket_type_enum
 

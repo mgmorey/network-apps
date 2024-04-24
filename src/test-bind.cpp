@@ -52,12 +52,13 @@ namespace TestBind
     using Network::ByteString;
     using Network::Context;
     using Network::Endpoint;
+    using Network::IpSocketHints;
     using Network::OsErrorResult;
     using Network::Socket;
     using Network::SocketHints;
     using Network::SocketResult;
     using Network::SocketResultVector;
-    using Network::af_unspec;
+    using Network::af_ip_unspec;
     using Network::always_false_v;
     using Network::bind;
     using Network::os_error_type;
@@ -245,7 +246,7 @@ auto main(int argc, char* argv[]) -> int
 {
     using namespace TestBind;
 
-    static const SocketHints hints {af_unspec, SOCK_STREAM, 0, AI_CANONNAME};
+    static const IpSocketHints hints {af_ip_unspec, SOCK_STREAM, AI_CANONNAME};
 
     try {
         const auto& context {Context::instance()};
