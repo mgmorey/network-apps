@@ -27,7 +27,7 @@
 auto Network::get_sa_pointer(Buffer<Byte>& addr) -> sockaddr*
 {
     void* pointer {addr.data()};
-    return validate(static_cast<sockaddr*>(pointer), addr.size());
+    return static_cast<sockaddr*>(pointer);
 }
 
 auto Network::get_sa_pointer(const ByteString& addr) -> const sockaddr*

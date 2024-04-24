@@ -35,56 +35,32 @@
 
 #include <utility>      // std::cmp_not_equal()
 
-namespace {
-    using Network::FamilyError;
-#ifdef HAVE_SOCKADDR_SA_LEN
-    using Network::ValueError;
-    using Network::sa_len_max;
-    using Network::sa_len_min;
-#endif
-    using Network::sa_len_type;
-    using Network::to_sa_len;
-
-    auto validate_sa(const sockaddr* sa, sa_len_type size) -> void
-    {
-        const auto sa_len {to_sa_len(size)};
-
-#ifdef HAVE_SOCKADDR_SA_LEN
-        if (std::cmp_not_equal(sa->sa_len, 0) &&
-            std::cmp_not_equal(sa->sa_len, sa_len)) {
-            throw ValueError<sa_len_type>("sa_len_type",
-                                           sa->sa_len,
-                                           sa_len_min,
-                                           sa_len_max);
-        }
-#else
-        static_cast<void>(sa_len);
-#endif
-
-        switch (sa->sa_family) {
-#ifndef WIN32
-        case AF_UNIX:
-#endif
-        case AF_INET:
-        case AF_INET6:
-        case AF_UNSPEC:
-            break;
-        default:
-            throw FamilyError(sa->sa_family);
-        }
-    }
-}
-
 auto Network::validate(const sockaddr* sa, sa_len_type sa_len) ->
     const sockaddr*
 {
-    validate_sa(sa, sa_len);
-    return sa;
-}
+    static_cast<void>(to_sa_len(sa_len));
 
-auto Network::validate(sockaddr* sa, sa_len_type sa_len) ->
-    sockaddr*
-{
-    validate_sa(sa, sa_len);
+#ifdef HAVE_SOCKADDR_SA_LEN
+    if (std::cmp_not_equal(sa->sa_len, sa_len)) {
+        throw ValueError<sa_len_type>("sa_len_type",
+                                      sa->sa_len,
+                                      sa_len_min,
+                                      sa_len_max);
+    }
+#else
+    static_cast<void>(sa_len);
+#endif
+
+    switch (sa->sa_family) {
+#ifndef WIN32
+    case AF_UNIX:
+#endif
+    case AF_INET:
+    case AF_INET6:
+        break;
+    default:
+        throw FamilyError(sa->sa_family);
+    }
+
     return sa;
 }
