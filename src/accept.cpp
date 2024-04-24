@@ -59,8 +59,8 @@ auto Network::accept(const Socket& sock, bool verbose) ->
     }
 
     reset_last_context_error();
-    const descriptor_type handle_1 {sock};
-    const descriptor_type handle_2 {::accept(handle_1, addr_ptr, &addr_len)};
+    const auto handle_1 {sock.handle()};
+    const auto handle_2 {::accept(handle_1, addr_ptr, &addr_len)};
 
     if (handle_2 == descriptor_null) {
         const auto error {get_last_context_error()};
