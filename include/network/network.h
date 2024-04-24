@@ -137,6 +137,7 @@
                                                 // socket_protocol_type,
                                                 // socket_type_type
 #include "network/uniquify.h"                   // uniquify()
+#include "network/unixsockethints.h"            // UnixSocketHints
 #include "network/version-null.h"               // version_null
 #include "network/version.h"                    // Version
 #include "network/windowsversion.h"             // WindowsVersion
