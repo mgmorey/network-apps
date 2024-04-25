@@ -49,7 +49,6 @@ namespace TestSocket
     using Network::Socket;
     using Network::SocketPair;
     using Network::UnixSocketHints;
-    using Network::af_unix;
     using Network::bind;
     using Network::os_error_type;
     using Network::parse;
