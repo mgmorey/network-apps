@@ -34,14 +34,16 @@
 auto Network::operator<<(std::ostream& os,
                          const addrinfo& ai) noexcept -> std::ostream&
 {
+    static constexpr auto delim {", "};
+    static constexpr auto notab {0};
+    static constexpr auto tab {9};
+
     const SocketFlags flags(ai.ai_flags);
     const SocketFamily family(ai.ai_family);
     const SocketType socktype(ai.ai_socktype);
     const SocketProtocol protocol(family, ai.ai_protocol);
 
     if (ai.ai_addr == nullptr) {
-        static constexpr auto delim {", "};
-        static constexpr auto notab {0};
         os << "addrinfo("
            << Format("ai_flags")
            << flags
@@ -55,7 +57,6 @@ auto Network::operator<<(std::ostream& os,
            << "...)";
     }
     else {
-        static constexpr auto tab {9};
         const auto addr {to_bytestring(ai)};
         os << "addrinfo("
            << Format("ai_flags")
