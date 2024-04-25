@@ -38,10 +38,10 @@ auto Network::operator<<(std::ostream& os,
     static constexpr auto notab {0};
     static constexpr auto tab {9};
 
-    const SocketFlags flags(ai.ai_flags);
-    const SocketFamily family(ai.ai_family);
-    const SocketType socktype(ai.ai_socktype);
-    const SocketProtocol protocol(family, ai.ai_protocol);
+    const SocketFlags flags {ai.ai_flags};
+    const SocketFamily family {ai.ai_family};
+    const SocketType socktype {ai.ai_socktype};
+    const SocketProtocol protocol {family, ai.ai_protocol};
 
     if (ai.ai_addr == nullptr) {
         os << "addrinfo("
