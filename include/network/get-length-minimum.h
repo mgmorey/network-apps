@@ -1,4 +1,4 @@
-// Copyright (C) 2022  "Michael G. Morey" <mgmorey@gmail.com>
+// Copyright (C) 2023  "Michael G. Morey" <mgmorey@gmail.com>
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,15 +13,17 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_SOCKET_LENGTH_LIMITS_H
-#define NETWORK_SOCKET_LENGTH_LIMITS_H
+#ifndef NETWORK_GET_LENGTH_MINIMUM_H
+#define NETWORK_GET_LENGTH_MINIMUM_H
 
-#include "network/sa-len-limits.h"      // sa_len_max, sa_len_min
+#include "network/socket-family-type.h" // socket_family_type
+
+#include <cstddef>      // std::size_t
 
 namespace Network
 {
-    static constexpr auto socket_length_max {sa_len_max};
-    static constexpr auto socket_length_min {sa_len_min};
+    extern auto get_length_minimum(socket_family_type family) noexcept ->
+        std::size_t;
 }
 
 #endif

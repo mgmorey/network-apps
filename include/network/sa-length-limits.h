@@ -13,17 +13,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_GET_SA_SIZE_MAXIMUM_H
-#define NETWORK_GET_SA_SIZE_MAXIMUM_H
+#ifndef NETWORK_SA_LENGTH_LIMITS_H
+#define NETWORK_SA_LENGTH_LIMITS_H
 
-#include "network/socket-family-type.h" // socket_family_type
-
-#include <cstddef>      // std::size_t
+#include "network/sa-offsets.h"         // sa_data_offset
+#include "network/ss-sizes.h"           // ss_size
 
 namespace Network
 {
-    extern auto get_sa_size_maximum(socket_family_type family) noexcept ->
-        std::size_t;
+    static constexpr auto sa_length_max {ss_size};
+    static constexpr auto sa_length_min {sa_data_offset};
 }
 
 #endif

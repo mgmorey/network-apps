@@ -17,11 +17,9 @@
 #include "network/familyerror.h"                // FamilyError
 #include "network/length-type.h"                // length_type
 #include "network/os-features.h"                // HAVE_SOCKADDR_SA_LEN
-#include "network/to-sa-len.h"                  // to_sa_len()
+#include "network/to-sa-length.h"               // to_sa_length()
 
 #ifdef HAVE_SOCKADDR_SA_LEN
-#include "network/sa-len-limits.h"              // sa_len_max,
-                                                // sa_len_min
 #include "network/valueerror.h"                 // ValueError
 #endif
 
@@ -38,11 +36,11 @@
 auto Network::validate(const sockaddr* sa,
                        length_type sa_len) -> const sockaddr*
 {
-    static_cast<void>(to_sa_len(sa_len));
+    static_cast<void>(to_sa_length(sa_len));
 
 #ifdef HAVE_SOCKADDR_SA_LEN
     if (std::cmp_not_equal(sa->sa_len, sa_len)) {
-        throw ValueError<length_type>("sa_len_type",
+        throw ValueError<length_type>("sa_length_type",
                                       sa->sa_len,
                                       sa_len,
                                       sa_len);

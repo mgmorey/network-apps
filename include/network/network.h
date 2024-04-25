@@ -70,8 +70,8 @@
 #include "network/get-sa-family.h"              // get_sa_family()
 #include "network/get-sa-length.h"              // get_sa_length()
 #include "network/get-sa-pointer.h"             // get_sa_pointer()
-#include "network/get-sa-size-maximum.h"        // get_sa_size_maximum()
-#include "network/get-sa-size-minimum.h"        // get_sa_size_minimum()
+#include "network/get-length-maximum.h"         // get_length_maximum()
+#include "network/get-length-minimum.h"         // get_length_minimum()
 #include "network/get-sin-pointer.h"            // get_sin_pointer()
 #include "network/get-sin6-pointer.h"           // get_sin6_pointer()
 #include "network/get-sockname.h"               // get_sockname()
@@ -86,8 +86,6 @@
                                                 // name_length_min,
                                                 // path_length_max,
                                                 // path_length_min,
-                                                // socket_length_max,
-                                                // socket_length_min
 #include "network/listen.h"                     // listen()
 #include "network/open-endpoint.h"              // open()
 #include "network/open-socket.h"                // open()
@@ -113,12 +111,12 @@
 #include "network/to-path-length.h"             // to_path_length()
 #include "network/to-path.h"                    // to_path()
 #endif
-#include "network/to-sa-len.h"                  // to_sa_len()
+#include "network/to-sa-length.h"               // to_sa_length()
 #include "network/to-size.h"                    // to_size()
 #include "network/to-socket-length.h"           // to_socket_length()
 #include "network/to-string.h"                  // to_string()
 #ifndef WIN32
-#include "network/to-sun-len.h"                 // to_sun_len()
+#include "network/to-sun-length.h"              // to_sun_length()
 #endif
 #include "network/types.h"                      // Buffer, ByteString,
                                                 // Hostname,

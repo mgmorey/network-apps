@@ -13,30 +13,30 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_TO_SUN_LEN_H
-#define NETWORK_TO_SUN_LEN_H
+#ifndef NETWORK_TO_SUN_LENGTH_H
+#define NETWORK_TO_SUN_LENGTH_H
 
 #ifndef WIN32
 
 #include "network/length-type.h"                // length_type
-#include "network/sun-len-limits.h"             // sun_len_max,
-                                                // sun_len_min
+#include "network/sun-length-limits.h"          // sun_length_max,
+                                                // sun_length_min
 #include "network/to-value.h"                   // to_value()
 
 namespace Network
 {
-    auto to_sun_len(auto value, length_type size_max) -> length_type
+    auto to_sun_length(auto value, length_type size_max) -> length_type
     {
-        const length_type size_min {sun_len_min};
+        const length_type size_min {sun_length_min};
 
-        return to_value<length_type>("sun_len_type", value,
+        return to_value<length_type>("sun_length_type", value,
                                      size_min,
                                      size_max);
     }
 
-    auto to_sun_len(auto value) -> length_type
+    auto to_sun_length(auto value) -> length_type
     {
-        return to_sun_len(value, sun_len_max);
+        return to_sun_length(value, sun_length_max);
     }
 }
 

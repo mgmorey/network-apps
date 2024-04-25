@@ -26,7 +26,7 @@
 #include "network/get-sa-length.h"              // get_sa_length()
 #include "network/get-sa-pointer.h"             // get_sa_pointer()
 #include "network/reset-last-context-error.h"   // reset_last_context_error()
-#include "network/sa-len-limits.h"              // sa_len_max
+#include "network/sa-length-limits.h"           // sa_length_max
 #include "network/socket.h"                     // Socket
 #include "network/to-os-error.h"                // to_os_error()
 #include "network/to-size.h"                    // to_size()
@@ -44,7 +44,7 @@
 auto Network::accept(const Socket& sock, bool verbose) ->
     std::pair<Socket, ByteString>
 {
-    Buffer<Byte> addr {sa_len_max};
+    Buffer<Byte> addr {sa_length_max};
     auto* addr_ptr {get_sa_pointer(addr)};
     auto addr_len {get_sa_length(addr)};
     const AddressString addr_str {ByteString {addr}};

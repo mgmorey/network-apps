@@ -20,11 +20,11 @@
 #include "network/get-sun-length.h"             // get_sun_length()
 #include "network/length-type.h"                // length_type
 #include "network/os-features.h"                // HAVE_SOCKADDR_SA_LEN
-#include "network/to-sun-len.h"                 // to_sun_len()
+#include "network/to-sun-length.h"              // to_sun_length()
 
 #ifdef HAVE_SOCKADDR_SA_LEN
-#include "network/sun-len-limits.h"             // sun_len_max,
-                                                // sun_len_min
+#include "network/sun-length-limits.h"          // sun_length_max,
+                                                // sun_length_min
 #include "network/valueerror.h"                 // ValueError
 #endif
 
@@ -38,7 +38,7 @@
 auto Network::validate(const sockaddr_un* sun,
                        length_type sun_len) -> const sockaddr_un*
 {
-    sun_len = to_sun_len(get_sun_length(sun, sun_len));
+    sun_len = to_sun_length(get_sun_length(sun, sun_len));
 
 #ifdef HAVE_SOCKADDR_SA_LEN
     if (std::cmp_not_equal(sun->sun_len, sun_len)) {

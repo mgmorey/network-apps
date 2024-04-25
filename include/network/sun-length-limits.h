@@ -13,16 +13,18 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_SA_LEN_LIMITS_H
-#define NETWORK_SA_LEN_LIMITS_H
+#ifndef NETWORK_SUN_LENGTH_LIMITS_H
+#define NETWORK_SUN_LENGTH_LIMITS_H
 
-#include "network/sa-offsets.h"         // sa_data_offset
-#include "network/ss-sizes.h"           // ss_size
+#include "network/sun-offsets.h"                // sun_path_offset
+#include "network/sun-sizes.h"                  // sun_size
 
 namespace Network
 {
-    static constexpr auto sa_len_max {ss_size};
-    static constexpr auto sa_len_min {sa_data_offset};
+#ifndef WIN32
+    static constexpr auto sun_length_max {sun_size};
+    static constexpr auto sun_length_min {sun_path_offset};
+#endif
 }
 
 #endif

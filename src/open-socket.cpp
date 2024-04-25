@@ -25,7 +25,7 @@
 #include "network/opensocketparams.h"           // OpenSocketParams
 #include "network/oserrorresult.h"              // OsErrorResult
 #include "network/reset-last-context-error.h"   // reset_last_context_error()
-#include "network/sa-len-limits.h"              // sa_len_min
+#include "network/sa-length-limits.h"           // sa_length_min
 #include "network/socket-error.h"               // socket_error
 #include "network/to-os-error.h"                // to_os_error()
 
@@ -39,7 +39,7 @@ auto Network::open(const OpenHandler& handler,
     const auto addr_len {get_sa_length(args.addr)};
     const AddressString addr_str {args.addr};
 
-    if (addr_len == sa_len_min) {
+    if (addr_len == sa_length_min) {
         throw AddressError("Address payload length is zero: " +
                            std::string {addr_str});
     }

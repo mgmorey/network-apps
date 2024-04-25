@@ -18,7 +18,7 @@
 #include "network/get-path-length.h"            // get_path_length()
 #include "network/get-path-pointer-sun.h"       // get_path_pointer()
 #include "network/length-type.h"                // length_type
-#include "network/sun-len-limits.h"             // sun_len_min
+#include "network/sun-length-limits.h"          // sun_length_min
 
 #include <sys/un.h>         // sockaddr_un
 
@@ -38,7 +38,7 @@ auto Network::get_path_length(const sockaddr_un* sun,
                               length_type sun_len) -> length_type
 {
     const auto* const path {get_path_pointer(sun)};
-    const auto path_len {sun_len - sun_len_min};
+    const auto path_len {sun_len - sun_length_min};
     return get_path_length(path, path_len);
 }
 

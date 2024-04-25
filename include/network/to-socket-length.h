@@ -16,8 +16,8 @@
 #ifndef NETWORK_TO_SOCKET_LENGTH_H
 #define NETWORK_TO_SOCKET_LENGTH_H
 
-#include "network/socket-length-limits.h"       // socket_length_max,
-                                                // socket_length_min
+#include "network/sa-length-limits.h"           // sa_length_max,
+                                                // sa_length_min
 #include "network/socket-length-type.h"         // socket_length_type
 #include "network/to-value.h"                   // to_value()
 
@@ -26,8 +26,8 @@ namespace Network
     auto to_socket_length(auto value) -> socket_length_type
     {
         return to_value<socket_length_type>("socket_length_type", value,
-                                            socket_length_min,
-                                            socket_length_max);
+                                            sa_length_min,
+                                            sa_length_max);
     }
 }
 

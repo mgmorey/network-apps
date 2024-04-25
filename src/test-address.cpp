@@ -19,11 +19,11 @@
                                         // OsErrorResult,
                                         // SocketFamily, SocketHints,
                                         // get_hosts(),
-                                        // get_sa_size_maximum(),
-                                        // get_sa_size_minimum(),
+                                        // get_length_maximum(),
+                                        // get_length_minimum(),
                                         // sa_family_type, sa_size,
                                         // sin_family_type,
-                                        // sun_len_max, sun_len_min,
+                                        // sun_length_max, sun_length_min,
                                         // sun_path_offset, sun_size,
                                         // to_bytestring(), validate()
 #include "network/os-features.h"        // HAVE_SOCKADDR_SA_LEN
@@ -70,8 +70,8 @@ namespace TestAddress
 #endif
     using Network::af_unspec;
     using Network::get_hosts;
-    using Network::get_sa_size_maximum;
-    using Network::get_sa_size_minimum;
+    using Network::get_length_maximum;
+    using Network::get_length_minimum;
     using Network::parse;
 #ifndef WIN32
     using Network::path_length_max;
@@ -80,8 +80,8 @@ namespace TestAddress
     using Network::sa_size;
     using Network::sin_family_type;
 #ifndef WIN32
-    using Network::sun_len_max;
-    using Network::sun_len_min;
+    using Network::sun_length_max;
+    using Network::sun_length_min;
     using Network::sun_path_offset;
     using Network::sun_size;
 #endif
@@ -400,21 +400,21 @@ namespace TestAddress
 
     auto test_sun_invalid_family() -> void
     {
-        const auto sun {create_sun(af_unspec, sun_len_min)};
-        test_sun(sun, sun_len_min, expected_error_family_re);
+        const auto sun {create_sun(af_unspec, sun_length_min)};
+        test_sun(sun, sun_length_min, expected_error_family_re);
     }
 
     auto test_sun_valid_path_large() -> void
     {
         const auto path_len {sun_size - sun_path_offset};
-        const auto sun {create_sun(af_unix, sun_len_max, path_len)};
-        test_sun(sun, sun_len_max, {});
+        const auto sun {create_sun(af_unix, sun_length_max, path_len)};
+        test_sun(sun, sun_length_max, {});
     }
 
     auto test_sun_valid_path_small() -> void
     {
-        const auto sun {create_sun(af_unix, sun_len_min)};
-        test_sun(sun, sun_len_min, {});
+        const auto sun {create_sun(af_unix, sun_length_min)};
+        test_sun(sun, sun_length_min, {});
     }
 
 #endif
@@ -435,8 +435,8 @@ namespace TestAddress
             assert(false);
         }
 
-        const auto size_max {get_sa_size_maximum(family)};
-        const auto size_min {get_sa_size_minimum(family)};
+        const auto size_max {get_length_maximum(family)};
+        const auto size_min {get_length_minimum(family)};
 
         if (!(size_min <= size && size <= size_max)) {
             assert(false);

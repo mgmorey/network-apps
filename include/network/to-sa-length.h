@@ -13,33 +13,33 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_TO_SA_LEN_H
-#define NETWORK_TO_SA_LEN_H
+#ifndef NETWORK_TO_SA_LENGTH_H
+#define NETWORK_TO_SA_LENGTH_H
 
-#include "network/get-sa-size-maximum.h"        // get_sa_size_maximum()
-#include "network/get-sa-size-minimum.h"        // get_sa_size_minimum()
+#include "network/get-length-maximum.h"         // get_length_maximum()
+#include "network/get-length-minimum.h"         // get_length_minimum()
 #include "network/length-type.h"                // length_type
-#include "network/sa-len-limits.h"              // sa_len_max,
-                                                // sa_len_min
+#include "network/sa-length-limits.h"           // sa_length_max,
+                                                // sa_length_min
 #include "network/socket-family-type.h"         // socket_family_type
 #include "network/to-value.h"                   // to_value()
 
 namespace Network
 {
-    auto to_sa_len(auto value,
-                   length_type size_min = sa_len_min,
-                   length_type size_max = sa_len_max) -> length_type
+    auto to_sa_length(auto value,
+                      length_type size_min = sa_length_min,
+                      length_type size_max = sa_length_max) -> length_type
     {
-        return to_value<length_type>("sa_len_type", value,
+        return to_value<length_type>("sa_length_type", value,
                                      size_min,
                                      size_max);
     }
 
-    auto to_sa_len(auto value, socket_family_type family) -> length_type
+    auto to_sa_length(auto value, socket_family_type family) -> length_type
     {
-        const auto size_max {get_sa_size_maximum(family)};
-        const auto size_min {get_sa_size_minimum(family)};
-        return to_sa_len(value, size_min, size_max);
+        const auto size_max {get_length_maximum(family)};
+        const auto size_min {get_length_minimum(family)};
+        return to_sa_length(value, size_min, size_max);
     }
 }
 

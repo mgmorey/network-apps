@@ -18,8 +18,8 @@
                                         // to_name_length(),
                                         // to_os_error(),
                                         // to_path_length(),
-                                        // to_sa_len(), to_size(),
-                                        // to_sun_len()
+                                        // to_sa_length(), to_size(),
+                                        // to_sun_length()
 
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
 #include <exception>    // std::exception
@@ -41,21 +41,21 @@ namespace TestRanges
     using Network::path_length_max;
     using Network::path_length_min;
 #endif
-    using Network::sa_len_max;
-    using Network::sa_len_min;
+    using Network::sa_length_max;
+    using Network::sa_length_min;
 #ifndef WIN32
-    using Network::sun_len_max;
-    using Network::sun_len_min;
+    using Network::sun_length_max;
+    using Network::sun_length_min;
 #endif
     using Network::to_name_length;
     using Network::to_os_error;
 #ifndef WIN32
     using Network::to_path_length;
 #endif
-    using Network::to_sa_len;
+    using Network::to_sa_length;
     using Network::to_size;
 #ifndef WIN32
-    using Network::to_sun_len;
+    using Network::to_sun_length;
 #endif
 
     static constexpr auto expected_error_name_length_re {
@@ -69,15 +69,15 @@ namespace TestRanges
         R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of path_length_type)"
     };
 #endif
-    static constexpr auto expected_error_sa_len_re {
-        R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of sa_len_type)"
+    static constexpr auto expected_error_sa_length_re {
+        R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of sa_length_type)"
     };
     static constexpr auto expected_error_std_size_re {
         R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of std::size_t)"
     };
 #ifndef WIN32
-    static constexpr auto expected_error_sun_len_re {
-        R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of sun_len_type)"
+    static constexpr auto expected_error_sun_length_re {
+        R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of sun_length_type)"
     };
 #endif
 
@@ -160,26 +160,26 @@ namespace TestRanges
 
 #endif
 
-    auto test_sa_len_invalid(auto value) -> void
+    auto test_sa_length_invalid(auto value) -> void
     {
         std::string actual_error_str;
 
         try {
-            static_cast<void>(to_sa_len(value));
+            static_cast<void>(to_sa_length(value));
         }
         catch (const ValueError<length_type>& error) {
             print(error);
             actual_error_str = error.what();
         }
 
-        const std::regex expected_error_regex {expected_error_sa_len_re};
+        const std::regex expected_error_regex {expected_error_sa_length_re};
         assert(std::regex_match(actual_error_str, expected_error_regex));
     }
 
-    auto test_sa_len_invalid() -> void
+    auto test_sa_length_invalid() -> void
     {
-        test_sa_len_invalid(sa_len_min - 1);
-        test_sa_len_invalid(sa_len_max + 1);
+        test_sa_length_invalid(sa_length_min - 1);
+        test_sa_length_invalid(sa_length_max + 1);
     }
 
     auto test_std_size_invalid(auto value) -> void
@@ -205,26 +205,26 @@ namespace TestRanges
 
 #ifndef WIN32
 
-    auto test_sun_len_invalid(auto value) -> void
+    auto test_sun_length_invalid(auto value) -> void
     {
         std::string actual_error_str;
 
         try {
-            static_cast<void>(to_sun_len(value));
+            static_cast<void>(to_sun_length(value));
         }
         catch (const ValueError<length_type>& error) {
             print(error);
             actual_error_str = error.what();
         }
 
-        const std::regex expected_error_regex {expected_error_sun_len_re};
+        const std::regex expected_error_regex {expected_error_sun_length_re};
         assert(std::regex_match(actual_error_str, expected_error_regex));
     }
 
-    auto test_sun_len_invalid() -> void
+    auto test_sun_length_invalid() -> void
     {
-        test_sun_len_invalid(sun_len_min - 1);
-        test_sun_len_invalid(sun_len_max + 1);
+        test_sun_length_invalid(sun_length_min - 1);
+        test_sun_length_invalid(sun_length_max + 1);
     }
 
 #endif
@@ -240,10 +240,10 @@ auto main() -> int
 #ifndef WIN32
         test_path_length_invalid();
 #endif
-        test_sa_len_invalid();
+        test_sa_length_invalid();
         test_std_size_invalid();
 #ifndef WIN32
-        test_sun_len_invalid();
+        test_sun_length_invalid();
 #endif
     }
     catch (const std::exception& error) {

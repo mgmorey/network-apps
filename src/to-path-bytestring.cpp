@@ -19,7 +19,7 @@
 #include "network/bytestring.h"                 // ByteString
 #include "network/get-path-pointer-bs.h"        // get_path_pointer()
 #include "network/optionalpathname.h"           // OptionalPathname
-#include "network/sun-len-limits.h"             // sun_len_min
+#include "network/sun-length-limits.h"          // sun_length_min
 
 #include <cstring>      // ::strnlen()
 #include <optional>     // std::nullopt
@@ -30,11 +30,11 @@ auto Network::to_path(const ByteString& addr) -> OptionalPathname
     const auto* const sun_path {get_path_pointer(addr)};
     const auto sun_len {addr.size()};
 
-    if (sun_len <= sun_len_min) {
+    if (sun_len <= sun_length_min) {
         return std::nullopt;
     }
 
-    const auto path_len {sun_len - sun_len_min};
+    const auto path_len {sun_len - sun_length_min};
     return std::string {sun_path, ::strnlen(sun_path, path_len - 1)};
 }
 

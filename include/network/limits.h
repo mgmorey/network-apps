@@ -22,13 +22,11 @@
 #include "network/path-length-limits.h"         // path_length_max,
                                                 // path_length_min
 #endif
-#include "network/sa-len-limits.h"              // sa_len_max,
-                                                // sa_len_min
-#include "network/socket-length-limits.h"       // socket_length_max,
-                                                // socket_length_min
+#include "network/sa-length-limits.h"           // sa_length_max,
+                                                // sa_length_min
 #ifndef WIN32
-#include "network/sun-len-limits.h"             // sun_len_max,
-                                                // sun_len_min
+#include "network/sun-length-limits.h"          // sun_length_max,
+                                                // sun_length_min
 #endif
 
 #endif

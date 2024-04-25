@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_GET_SA_SIZE_MINIMUM_H
-#define NETWORK_GET_SA_SIZE_MINIMUM_H
+#ifndef NETWORK_GET_LENGTH_MAXIMUM_H
+#define NETWORK_GET_LENGTH_MAXIMUM_H
 
 #include "network/socket-family-type.h" // socket_family_type
 
@@ -22,7 +22,7 @@
 
 namespace Network
 {
-    extern auto get_sa_size_minimum(socket_family_type family) noexcept ->
+    extern auto get_length_maximum(socket_family_type family) noexcept ->
         std::size_t;
 }
 

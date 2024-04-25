@@ -16,7 +16,7 @@
 #include "network/to-bytestring-ai.h"           // to_bytestring()
 #include "network/bytestring.h"                 // ByteString
 #include "network/to-bytestring-void.h"         // to_bytestring()
-#include "network/to-sa-len.h"                  // to_sa_len()
+#include "network/to-sa-length.h"               // to_sa_length()
 
 #ifdef WIN32
 #include <ws2tcpip.h>   // addrinfo
@@ -26,5 +26,5 @@
 
 auto Network::to_bytestring(const addrinfo& ai) -> ByteString
 {
-    return to_bytestring(ai.ai_addr, to_sa_len(ai.ai_addrlen));
+    return to_bytestring(ai.ai_addr, to_sa_length(ai.ai_addrlen));
 }
