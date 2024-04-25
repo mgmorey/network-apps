@@ -24,6 +24,7 @@
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
+#include <limits>       // std::numeric_limits
 #include <regex>        // std::regex, std::regex_match
 #include <string>       // std::string
 
@@ -35,8 +36,6 @@ namespace TestRanges
     using Network::name_length_max;
     using Network::name_length_min;
     using Network::name_length_type;
-    using Network::os_error_max;
-    using Network::os_error_min;
     using Network::os_error_type;
 #ifndef WIN32
     using Network::path_length_max;
@@ -129,8 +128,10 @@ namespace TestRanges
 
     auto test_os_error_invalid() -> void
     {
-        test_os_error_invalid(static_cast<long long>(os_error_min) - 1);
-        test_os_error_invalid(static_cast<long long>(os_error_max) + 1);
+        long long max {std::numeric_limits<os_error_type>::max()};
+        long long min {std::numeric_limits<os_error_type>::min()};
+        test_os_error_invalid(min - 1);
+        test_os_error_invalid(max + 1);
     }
 
 #ifndef WIN32
