@@ -21,10 +21,6 @@
 #include "network/descriptor.h"                 // Descriptor
 #include "network/get-peername.h"               // get_peername()
 #include "network/get-sockname.h"               // get_sockname()
-#include "network/socket-family-type.h"         // socket_family_type
-#include "network/socket-flags-type.h"          // socket_flags_type
-#include "network/socket-protocol-type.h"       // socket_protocol_type
-#include "network/socket-type-type.h"           // socket_type_type
 #include "network/sockethints.h"                // SocketHints
 
 Network::Socket::Socket(const SocketHints& t_hints, bool t_verbose) :
