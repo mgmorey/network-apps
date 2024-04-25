@@ -38,11 +38,11 @@ Network::Socket::operator descriptor_type() const noexcept
     return m_descriptor->handle();
 }
 
-auto Network::Socket::bound(bool t_bound) -> void
+auto Network::Socket::bound(bool t_bound) -> Socket&
 {
     m_descriptor->bound(t_bound);
+    return *this;
 }
-
 
 auto Network::Socket::close() -> Socket&
 {
