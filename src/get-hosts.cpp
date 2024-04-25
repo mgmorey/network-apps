@@ -16,7 +16,7 @@
 #include "network/get-hosts.h"          // get_hosts()
 #include "network/hostvector.h"         // HostVector
 #include "network/hostvectorresult.h"   // HostVectorResult
-#include "network/insert-addrinfo.h"    // insert()
+#include "network/insert.h"             // insert()
 #include "network/optionalhints.h"      // OptionalHints
 #include "network/optionalhostname.h"   // OptionalHostname
 

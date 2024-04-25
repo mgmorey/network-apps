@@ -35,7 +35,7 @@
 
 namespace Network
 {
-    class AddrInfo
+    class AddressList
     {
         friend auto operator<<(std::ostream& os,
                                const addrinfo& ai) noexcept -> std::ostream&;
@@ -65,16 +65,16 @@ namespace Network
         static auto format(const std::unique_ptr<addrinfo>& hints) ->
             std::string;
 
-        AddrInfo() = delete;
-        AddrInfo(const AddrInfo&) = delete;
-        AddrInfo(const AddrInfo&&) = delete;
-        AddrInfo(const OptionalHostname& t_hostname,
-                 const OptionalService& t_service,
-                 const OptionalHints& t_hints,
-                 bool t_verbose);
-        ~AddrInfo() noexcept;
-        auto operator=(const AddrInfo&) noexcept -> AddrInfo& = delete;
-        auto operator=(const AddrInfo&&) noexcept -> AddrInfo& = delete;
+        AddressList() = delete;
+        AddressList(const AddressList&) = delete;
+        AddressList(const AddressList&&) = delete;
+        AddressList(const OptionalHostname& t_hostname,
+                    const OptionalService& t_service,
+                    const OptionalHints& t_hints,
+                    bool t_verbose);
+        ~AddressList() noexcept;
+        auto operator=(const AddressList&) noexcept -> AddressList& = delete;
+        auto operator=(const AddressList&&) noexcept -> AddressList& = delete;
         [[nodiscard]] auto begin() const noexcept -> InputIterator;
         [[nodiscard]] auto result() const -> OsErrorResult;
 

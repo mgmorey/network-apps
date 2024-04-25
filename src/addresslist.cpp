@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/addrinfo.h"           // AddrInfo, operator<<()
+#include "network/addresslist.h"        // AddressList
 #include "network/format-ai-error.h"    // format_ai_error()
 #include "network/optionalhints.h"      // OptionalHints
 #include "network/optionalhostname.h"   // OptionalHostname
@@ -34,42 +34,42 @@
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
 
-Network::AddrInfo::InputIterator::InputIterator(pointer t_pointer) noexcept :
+Network::AddressList::InputIterator::InputIterator(pointer t_pointer) noexcept :
     m_list(t_pointer)
 {
 }
 
-auto Network::AddrInfo::InputIterator::operator*() const noexcept ->
+auto Network::AddressList::InputIterator::operator*() const noexcept ->
     InputIterator::reference
 {
     return *m_list;
 }
 
-auto Network::AddrInfo::InputIterator::operator->() const noexcept ->
+auto Network::AddressList::InputIterator::operator->() const noexcept ->
     InputIterator::pointer
 {
     return m_list;
 }
 
-auto Network::AddrInfo::InputIterator::operator++() noexcept ->
+auto Network::AddressList::InputIterator::operator++() noexcept ->
     InputIterator&
 {
     m_list = m_list->ai_next;
     return *this;
 }
 
-auto Network::AddrInfo::InputIterator::operator==(const InputIterator& rhs)
+auto Network::AddressList::InputIterator::operator==(const InputIterator& rhs)
     const noexcept -> bool
 {
     return m_list == rhs.m_list;
 }
 
-auto Network::AddrInfo::end() noexcept -> InputIterator
+auto Network::AddressList::end() noexcept -> InputIterator
 {
     return nullptr;
 }
 
-auto Network::AddrInfo::format(const std::unique_ptr<addrinfo>& hints) ->
+auto Network::AddressList::format(const std::unique_ptr<addrinfo>& hints) ->
     std::string
 {
     std::ostringstream oss;
@@ -84,10 +84,10 @@ auto Network::AddrInfo::format(const std::unique_ptr<addrinfo>& hints) ->
     return oss.str();
 }
 
-Network::AddrInfo::AddrInfo(const OptionalHostname& t_hostname,
-                            const OptionalService& t_service,
-                            const OptionalHints& t_hints,
-                            bool t_verbose)
+Network::AddressList::AddressList(const OptionalHostname& t_hostname,
+                                  const OptionalService& t_service,
+                                  const OptionalHints& t_hints,
+                                  bool t_verbose)
 {
     const std::unique_ptr<addrinfo> hints {t_hints ?
         std::make_unique<addrinfo>(*t_hints) :
@@ -124,24 +124,24 @@ Network::AddrInfo::AddrInfo(const OptionalHostname& t_hostname,
     }
 }
 
-Network::AddrInfo::~AddrInfo() noexcept
+Network::AddressList::~AddressList() noexcept
 {
     if (m_list != nullptr) {
         ::freeaddrinfo(m_list);
     }
 }
 
-auto Network::AddrInfo::begin() const noexcept -> InputIterator
+auto Network::AddressList::begin() const noexcept -> InputIterator
 {
     return m_list;
 }
 
-auto Network::AddrInfo::result() const -> OsErrorResult
+auto Network::AddressList::result() const -> OsErrorResult
 {
     return m_result;
 }
 
-auto Network::AddrInfo::to_c_string(const OptionalString& str) noexcept ->
+auto Network::AddressList::to_c_string(const OptionalString& str) noexcept ->
     const char*
 {
     return str ? str->c_str() : nullptr;

@@ -14,7 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/get-templates-hostname.h"     // get_templates()
-#include "network/insert-addrinfo.h"            // insert()
+#include "network/insert.h"                     // insert()
 #include "network/optionalhints.h"              // OptionalHints
 #include "network/optionalhostname.h"           // OptionalHostname
 #include "network/optionalservice.h"            // OptionalService

@@ -16,7 +16,7 @@
 #ifndef NETWORK_INSERT_ADDRINFO_H
 #define NETWORK_INSERT_ADDRINFO_H
 
-#include "network/addrinfo.h"           // AddrInfo
+#include "network/addresslist.h"        // AddressList
 #include "network/optionalhints.h"      // OptionalHints
 #include "network/optionalhostname.h"   // OptionalHostname
 #include "network/optionalservice.h"    // OptionalService
@@ -33,7 +33,7 @@ namespace Network
                 OutputIterator it,
                 bool verbose) -> OsErrorResult
     {
-        const auto list {AddrInfo(hostname, service, hints, verbose)};
+        const auto list {AddressList(hostname, service, hints, verbose)};
 
         for (const auto& item : list) {
             if (verbose) {

@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/addrinfo.h"                   // operator<<(),
+#include "network/addresslist.h"                // operator<<()
 #include "network/format.h"                     // Format
 #include "network/socketfamily.h"               // SocketFamily,
 #include "network/socketflags.h"                // SocketFlags
