@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_INSERT_ADDRINFO_H
-#define NETWORK_INSERT_ADDRINFO_H
+#ifndef NETWORK_INSERT_H
+#define NETWORK_INSERT_H
 
 #include "network/addresslist.h"        // AddressList
 #include "network/optionalhints.h"      // OptionalHints
