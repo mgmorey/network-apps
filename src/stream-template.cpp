@@ -13,14 +13,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/format.h"                     // Format, operator<<()
+#include "network/format.h"                     // Format
 #include "network/socketfamily.h"               // SocketFamily
 #include "network/socketflags.h"                // SocketFlags
 #include "network/sockethints.h"                // SocketHints
 #include "network/socketprotocol.h"             // SocketProtocol
 #include "network/sockettype.h"                 // SocketType
 #include "network/string-null.h"                // string_null
-#include "network/template.h"                   // Template, operator<<()
+#include "network/template.h"                   // Template
 #include "network/to-string-vector-byte.h"      // to_string()
 
 #include <ostream>      // operator<<(), std::ostream
