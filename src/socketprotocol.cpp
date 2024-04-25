@@ -14,7 +14,6 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/socketprotocol.h"             // SocketProtocol
-#include "network/socket-family-type.h"         // socket_family_type
 #include "network/socket-protocol-type.h"       // socket_protocol_type
 
 #ifdef WIN32
@@ -33,11 +32,13 @@ auto Network::operator<<(std::ostream& os,
                          const SocketProtocol& protocol) noexcept ->
     std::ostream&
 {
-    switch (socket_family_type {protocol.family()}) {
+    const socket_protocol_type protocol_value {protocol};
+
+    switch (protocol.family()) {
     case AF_INET:
     case AF_INET6:
     case AF_UNSPEC:
-        switch (protocol) {
+        switch (protocol_value) {
         case IPPROTO_IP:
             os << "IPPROTO_IP";
             break;
@@ -54,11 +55,11 @@ auto Network::operator<<(std::ostream& os,
             os << "IPPROTO_RAW";
             break;
         default:
-            os << socket_protocol_type {protocol};
+            os << protocol_value;
         }
         break;
     default:
-        os << socket_protocol_type {protocol};
+        os << protocol_value;
     }
 
     return os;

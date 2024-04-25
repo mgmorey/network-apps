@@ -45,11 +45,12 @@ auto Network::operator<<(std::ostream& os,
         {AI_V4MAPPED,       "AI_V4MAPPED"},
     };
 
+    const socket_flags_type flags_value {flags};
     std::ostringstream oss;
     std::size_t index {0};
 
-    for(const auto& value : values) {
-        if ((socket_flags_type {flags} & value.first) != 0) {
+    for (const auto& value : values) {
+        if ((flags_value & value.first) != 0) {
             if (index++ > 0) {
                 oss << " | ";
             }
