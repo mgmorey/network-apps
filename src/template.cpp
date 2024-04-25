@@ -70,26 +70,6 @@ auto Network::Template::host() const noexcept -> const SocketHost&
     return m_host;
 }
 
-auto Network::Template::flags() const noexcept -> SocketFlags
-{
-    return m_hints.flags();
-}
-
-auto Network::Template::family() const noexcept -> SocketFamily
-{
-    return m_hints.family();
-}
-
-auto Network::Template::socktype() const noexcept -> SocketType
-{
-    return m_hints.socktype();
-}
-
-auto Network::Template::protocol() const noexcept -> SocketProtocol
-{
-    return m_hints.protocol();
-}
-
 auto Network::Template::address() const noexcept -> const ByteString&
 {
     return m_host.address();

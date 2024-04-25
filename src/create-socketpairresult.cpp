@@ -25,9 +25,13 @@
 #include "network/reset-last-context-error.h"   // reset_last_context_error()
 #include "network/socket-error.h"               // socket_error
 #include "network/socket.h"                     // Socket
+#include "network/socketfamily.h"               // SocketFamily
+#include "network/socketflags.h"                // SocketFlags
 #include "network/sockethints.h"                // SocketHints
 #include "network/socketpair.h"                 // SocketPair
 #include "network/socketpairresult.h"           // SocketPairResult
+#include "network/socketprotocol.h"             // SocketProtocol
+#include "network/sockettype.h"                 // SocketType
 #include "network/to-os-error.h"                // to_os_error()
 
 #include <sys/socket.h>     // ::socketpair()
@@ -47,31 +51,31 @@ auto Network::create_socketpairresult(const SocketHints& hints,
     if (verbose) {
         std::cout << "Calling ::socketpair("
                   << Format("domain")
-                  << hints.family()
+                  << SocketFamily(hints.m_family)
                   << Format(delim, tab, "type")
-                  << hints.socktype()
+                  << SocketType(hints.m_socktype)
                   << Format(delim, tab, "protocol")
-                  << hints.protocol()
+                  << SocketProtocol(hints.m_protocol, hints.m_family)
                   << ", ...)"
                   << std::endl;
     }
 
     reset_last_context_error();
 
-    if (::socketpair(hints.family(),
-                     hints.socktype(),
-                     hints.protocol(),
+    if (::socketpair(hints.m_family,
+                     hints.m_socktype,
+                     hints.m_protocol,
                      handles.data()) == socket_error) {
         const auto error {get_last_context_error()};
         const auto os_error {to_os_error(error)};
         std::ostringstream oss;
         oss << "Call to ::socketpair("
             << Format("domain")
-            << hints.family()
+            << SocketFamily(hints.m_family)
             << Format(delim, tab, "type")
-            << hints.socktype()
+            << SocketType(hints.m_socktype)
             << Format(delim, tab, "protocol")
-            << hints.protocol()
+            << SocketProtocol(hints.m_protocol, hints.m_family)
             << ", ...) failed with error "
             << error
             << ": "

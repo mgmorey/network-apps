@@ -70,8 +70,8 @@ oserrorresult.cpp parse-argumentspan.cpp parse.cpp rangeerror.cpp	\
 read-string.cpp read.cpp reset-last-context-error.cpp			\
 reset-last-os-error.cpp runtimeerror.cpp set-last-context-error.cpp	\
 set-last-os-error.cpp socket.cpp socketfamily.cpp socketflags.cpp	\
-sockethints.cpp sockethost.cpp socketprotocol.cpp sockettype.cpp	\
-startup.cpp stream-address.cpp stream-addrinfo.cpp stream-context.cpp	\
+sockethost.cpp socketprotocol.cpp sockettype.cpp startup.cpp		\
+stream-address.cpp stream-addrinfo.cpp stream-context.cpp		\
 stream-socket.cpp stream-sockethints.cpp stream-template.cpp		\
 template.cpp to-bytestring-ai.cpp to-bytestring-void.cpp		\
 to-string-in-addr.cpp to-string-in6-addr.cpp				\

@@ -14,8 +14,11 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/format.h"             // Format, operator<<()
-#include "network/sockethints.h"        // SocketHints, operator<<(),
-                                        // std::ostream
+#include "network/socketfamily.h"       // SocketFamily
+#include "network/socketflags.h"        // SocketFlags
+#include "network/sockethints.h"        // SocketHints
+#include "network/socketprotocol.h"     // SocketProtocol
+#include "network/sockettype.h"         // SocketType
 
 #include <ostream>      // operator<<(), std::ostream
 
@@ -27,13 +30,13 @@ auto Network::operator<<(std::ostream& os,
 
     os << "SocketHints("
        << Format("flags")
-       << hints.flags()
+       << SocketFlags(hints.m_flags)
        << Format(delim, tab, "family")
-       << hints.family()
+       << SocketFamily(hints.m_family)
        << Format(delim, tab, "socktype")
-       << hints.socktype()
+       << SocketType(hints.m_socktype)
        << Format(delim, tab, "protocol")
-       << hints.protocol()
+       << SocketProtocol(hints.m_protocol, hints.m_family)
        << ')';
     return os;
 }

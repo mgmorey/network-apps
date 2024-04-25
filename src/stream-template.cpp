@@ -13,9 +13,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/template.h"                   // Template, operator<<()
 #include "network/format.h"                     // Format, operator<<()
+#include "network/socketfamily.h"               // SocketFamily
+#include "network/socketflags.h"                // SocketFlags
+#include "network/sockethints.h"                // SocketHints
+#include "network/socketprotocol.h"             // SocketProtocol
+#include "network/sockettype.h"                 // SocketType
 #include "network/string-null.h"                // string_null
+#include "network/template.h"                   // Template, operator<<()
 #include "network/to-string-vector-byte.h"      // to_string()
 
 #include <ostream>      // operator<<(), std::ostream
@@ -24,16 +29,17 @@ auto Network::operator<<(std::ostream& os,
                          const Template& sock) noexcept -> std::ostream&
 {
     static constexpr auto tab {9};
+    const auto hints {sock.hints()};
 
     os << "Template("
        << Format("flags")
-       << sock.flags()
+       << SocketFlags(hints.m_flags)
        << Format(tab, "family")
-       << sock.family()
+       << SocketFamily(hints.m_family)
        << Format(tab, "socktype")
-       << sock.socktype()
+       << SocketType(hints.m_socktype)
        << Format(tab, "protocol")
-       << sock.protocol()
+       << SocketProtocol(hints.m_protocol, hints.m_family)
        << Format(tab, "address")
        << to_string(sock.address())
        << Format(tab, "canonical_name")

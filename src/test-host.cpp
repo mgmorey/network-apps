@@ -169,7 +169,7 @@ namespace TestHost
             return {};
         }
 
-        switch (hints->family()) {
+        switch (hints->m_family) {
         case AF_INET:
             return "IPv4";
         case AF_INET6:

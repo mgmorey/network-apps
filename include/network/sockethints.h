@@ -20,10 +20,6 @@
 #include "network/socket-flags-type.h"          // socket_flags_type
 #include "network/socket-protocol-type.h"       // socket_protocol_type
 #include "network/socket-type-type.h"           // socket_type_type
-#include "network/socketfamily.h"               // SocketFamily
-#include "network/socketflags.h"                // SocketFlags
-#include "network/socketprotocol.h"             // SocketProtocol
-#include "network/sockettype.h"                 // SocketType
 
 #ifdef WIN32
 #include <ws2tcpip.h>       // addrinfo
@@ -31,13 +27,12 @@
 #include <netdb.h>          // addrinfo
 #endif
 
+#include <ostream>      // std::ostream
+
 namespace Network
 {
     struct SocketHints
     {
-        friend auto operator<<(std::ostream& os,
-                               const SocketHints& hints) noexcept -> std::ostream&;
-
         constexpr SocketHints() noexcept = default;
 
         constexpr explicit SocketHints(socket_family_type t_family,
@@ -112,16 +107,10 @@ namespace Network
             return ai;
         }
 
-        [[nodiscard]] auto flags() const noexcept -> SocketFlags;
-        [[nodiscard]] auto family() const noexcept -> SocketFamily;
-        [[nodiscard]] auto socktype() const noexcept -> SocketType;
-        [[nodiscard]] auto protocol() const noexcept -> SocketProtocol;
-
-    private:
-        socket_family_type m_family {};
-        socket_type_type m_socktype {};
-        socket_protocol_type m_protocol {};
-        socket_flags_type m_flags {};
+        socket_family_type m_family {};  // NOLINT
+        socket_type_type m_socktype {};  // NOLINT
+        socket_protocol_type m_protocol {};  // NOLINT
+        socket_flags_type m_flags {};  // NOLINT
     };
 
     extern auto operator<<(std::ostream& os,
