@@ -14,17 +14,11 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/addrinfo.h"                   // operator<<(),
-                                                // std::ostream
-#include "network/format.h"                     // Format,
-                                                // operator<<()
+#include "network/format.h"                     // Format
 #include "network/socketfamily.h"               // SocketFamily,
-                                                // operator<<()
-#include "network/socketflags.h"                // SocketFlags,
-                                                // operator<<()
-#include "network/socketprotocol.h"             // SocketProtocol,
-                                                // operator<<()
-#include "network/sockettype.h"                 // SocketType,
-                                                // operator<<()
+#include "network/socketflags.h"                // SocketFlags
+#include "network/socketprotocol.h"             // SocketProtocol
+#include "network/sockettype.h"                 // SocketType
 #include "network/string-null.h"                // string_null
 #include "network/to-bytestring-ai.h"           // to_bytestring()
 #include "network/to-string-vector-byte.h"      // to_string()

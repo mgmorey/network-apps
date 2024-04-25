@@ -13,9 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/address.h"                    // Address,
-                                                // operator<<(),
-#include "network/format.h"                     // Format, operator<<()
+#include "network/address.h"                    // Address
+#include "network/format.h"                     // Format
 #include "network/os-features.h"                // HAVE_SOCKADDR_SA_LEN
 #include "network/socket-family-type.h"         // socket_family_type
 #include "network/socketfamily.h"               // SocketFamily,
@@ -79,7 +78,7 @@ auto Network::operator<<(std::ostream& os,
         return os;
     }
 
-    const SocketFamily family {address.family()};
+    const auto family {address.family()};
     const auto prefix {::get_prefix(family)};
     const auto suffix {::get_suffix(family)};
     os << "sockaddr"
@@ -93,7 +92,7 @@ auto Network::operator<<(std::ostream& os,
 #else
     os << Format(prefix + "family");
 #endif
-    os << family;
+    os << SocketFamily(family);
 
     switch (family) {
 #ifndef WIN32

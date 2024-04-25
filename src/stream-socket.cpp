@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/socket.h"             // Socket, operator<<()
 #include "network/descriptor-null.h"    // descriptor_null,
+#include "network/socket.h"             // Socket
 #include "network/string-null.h"        // string_null
 
 #include <ostream>      // operator<<(), std::ostream
