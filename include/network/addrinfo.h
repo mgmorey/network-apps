@@ -38,8 +38,7 @@ namespace Network
     class AddrInfo
     {
         friend auto operator<<(std::ostream& os,
-                               const addrinfo& ai) noexcept ->
-            std::ostream&;
+                               const addrinfo& ai) noexcept -> std::ostream&;
 
     public:
         struct InputIterator
