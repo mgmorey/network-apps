@@ -29,6 +29,7 @@ auto Network::operator<<(std::ostream& os,
                          const Template& sock) noexcept -> std::ostream&
 {
     static constexpr auto tab {9};
+
     const auto hints {sock.hints()};
 
     os << "Template("
