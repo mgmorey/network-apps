@@ -48,6 +48,7 @@ namespace TestSocket
     using Network::OsErrorResult;
     using Network::Pathname;
     using Network::Socket;
+    using Network::SocketHints;
     using Network::SocketPair;
     using Network::UnixSocketHints;
     using Network::bind;
@@ -61,10 +62,16 @@ namespace TestSocket
 
     static constexpr auto expected_error_path_length_re {
         R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of path_length_type)"
-            };
+    };
     static constexpr auto expected_error_payload_length_re {
         R"(Address payload length is zero: .+)"
-            };
+    };
+    static constexpr auto expected_error_socket_type_re {
+        R"(Call to ::socket\(.+\) failed with error 94: Socket type not supported)"
+    };
+    static constexpr auto expected_error_socketpair_type_re {
+        R"(Call to ::socketpair\(.+\) failed with error 94: Socket type not supported)"
+    };
     static constexpr auto handle_width {6};
 
     static bool verbose {false};  // NOLINT
@@ -233,12 +240,45 @@ namespace TestSocket
         }
     }
 
-    auto test_socketpair() -> void
+    auto test_socket(const SocketHints& hints,
+                     const std::string& expected_error_re) -> void
     {
         std::string actual_error_str;
 
         try {
-            SocketPair pair {UnixSocketHints {SOCK_STREAM}, verbose};
+            Socket sock {hints, verbose};
+        }
+        catch (const Error& error) {
+            print(error);
+            actual_error_str = error.what();
+        }
+
+        if (expected_error_re.empty()) {
+            assert(actual_error_str.empty());
+        }
+        else {
+            const std::regex expected_error_regex {expected_error_re};
+            assert(std::regex_match(actual_error_str, expected_error_regex));
+        }
+    }
+
+    auto test_socket_invalid() -> void
+    {
+        test_socket(UnixSocketHints {0}, expected_error_socket_type_re);
+    }
+
+    auto test_socket_valid() -> void
+    {
+        test_socket(UnixSocketHints {SOCK_STREAM}, "");
+    }
+
+    auto test_socketpair(const SocketHints& hints,
+                         const std::string& expected_error_re) -> void
+    {
+        std::string actual_error_str;
+
+        try {
+            SocketPair pair {hints, verbose};
             std::cout << "Socket "
                       << std::right << std::setw(handle_width) << pair.at(0)
                       << " connected to "
@@ -247,12 +287,28 @@ namespace TestSocket
                       << std::right << std::setw(handle_width) << pair.at(1)
                       << std::endl;
         }
-        catch (const LogicError& error) {
+        catch (const Error& error) {
             print(error);
             actual_error_str = error.what();
         }
 
-        assert(actual_error_str.empty());
+        if (expected_error_re.empty()) {
+            assert(actual_error_str.empty());
+        }
+        else {
+            const std::regex expected_error_regex {expected_error_re};
+            assert(std::regex_match(actual_error_str, expected_error_regex));
+        }
+    }
+
+    auto test_socketpair_invalid() -> void
+    {
+        test_socketpair(UnixSocketHints {0}, expected_error_socketpair_type_re);
+    }
+
+    auto test_socketpair_valid() -> void
+    {
+        test_socketpair(UnixSocketHints {SOCK_STREAM}, "");
     }
 }
 
@@ -268,9 +324,12 @@ auto main(int argc, char* argv[]) -> int
             std::cout << context << std::endl;
         }
 
-        test_socketpair();
         test_paths_valid();
+        test_socket_valid();
+        test_socketpair_valid();
         test_paths_invalid();
+        test_socket_invalid();
+        test_socketpair_invalid();
     }
     catch (const std::exception& error) {
         std::cerr << error.what()
