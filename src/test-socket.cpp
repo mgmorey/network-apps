@@ -31,6 +31,7 @@
 #include <exception>    // std::exception
 #include <iomanip>      // std::right, std::setw()
 #include <iostream>     // std::cerr, std::cout, std::endl
+#include <list>         // std::list
 #include <optional>     // std::nullopt
 #include <regex>        // std::regex, std::regex_match
 #include <set>          // std::set
@@ -215,14 +216,19 @@ namespace TestSocket
 
     auto test_paths_valid() -> void
     {
-        static constexpr auto size_max {64};	// NOLINT
-        static constexpr auto size_min {8};	// NOLINT
+        static constexpr auto size_max {path_length_max};
+        static constexpr auto size_min {6};  // NOLINT
 
-        for (std::size_t size = size_min; size <= size_max; size *= 2) {
-            const auto path {get_pathname(size)};
+        std::list<Pathname> pathnames;
+
+        for (std::size_t size = size_max; size >= size_min; size /= 2) {
+            pathnames.push_front(get_pathname(size));
+        };
+
+        for (auto path: pathnames) {
             test_path_valid(path.c_str());
             test_path_valid(path);
-        };
+        }
 
         const auto path_max_less_one {get_pathname(path_length_max)};
         test_path_valid(path_max_less_one.c_str());
