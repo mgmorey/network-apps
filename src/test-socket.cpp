@@ -246,7 +246,7 @@ namespace TestSocket
         std::string actual_error_str;
 
         try {
-            Socket sock {hints, verbose};
+            const Socket sock {hints, verbose};
         }
         catch (const Error& error) {
             print(error);
