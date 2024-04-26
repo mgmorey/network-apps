@@ -60,6 +60,8 @@
 #include "network/get-hostname.h"               // get_hostname()
 #include "network/get-hostnameresult.h"         // get_hostnameresult()
 #include "network/get-hosts.h"                  // get_hosts()
+#include "network/get-length-maximum.h"         // get_length_maximum()
+#include "network/get-length-minimum.h"         // get_length_minimum()
 #include "network/get-name.h"                   // get_name()
 #include "network/get-nameresult.h"             // get_nameresult()
 #ifndef WIN32
@@ -70,8 +72,6 @@
 #include "network/get-sa-family.h"              // get_sa_family()
 #include "network/get-sa-length.h"              // get_sa_length()
 #include "network/get-sa-pointer.h"             // get_sa_pointer()
-#include "network/get-length-maximum.h"         // get_length_maximum()
-#include "network/get-length-minimum.h"         // get_length_minimum()
 #include "network/get-sin-pointer.h"            // get_sin_pointer()
 #include "network/get-sin6-pointer.h"           // get_sin6_pointer()
 #include "network/get-sockname.h"               // get_sockname()
