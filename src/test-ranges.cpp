@@ -128,8 +128,8 @@ namespace TestRanges
 
     auto test_os_error_invalid() -> void
     {
-        long long max {std::numeric_limits<os_error_type>::max()};
-        long long min {std::numeric_limits<os_error_type>::min()};
+        const long long max {std::numeric_limits<os_error_type>::max()};
+        const long long min {std::numeric_limits<os_error_type>::min()};
         test_os_error_invalid(min - 1);
         test_os_error_invalid(max + 1);
     }
