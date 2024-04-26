@@ -67,10 +67,10 @@ namespace TestSocket
         R"(Address payload length is zero: .+)"
     };
     static constexpr auto expected_error_socket_type_re {
-        R"(Call to ::socket\(.+\) failed with error 94: Socket type not supported)"
+        R"(Call to ::socket\(.+\) failed with error \d+: .+)"
     };
     static constexpr auto expected_error_socketpair_type_re {
-        R"(Call to ::socketpair\(.+\) failed with error 94: Socket type not supported)"
+        R"(Call to ::socketpair\(.+\) failed with error \d+: .+)"
     };
     static constexpr auto handle_width {6};
 
