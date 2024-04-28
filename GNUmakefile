@@ -88,8 +88,8 @@ to-path-descriptor.cpp validate-char.cpp validate-path.cpp		\
 validate-sun.cpp
 
 test_common_sources = test-address.cpp test-bind.cpp test-connect.cpp	\
-test-context.cpp test-host.cpp test-hostname.cpp test-limits.cpp	\
-test-option.cpp test-parse.cpp
+test-context.cpp test-create.cpp test-host.cpp test-hostname.cpp	\
+test-limits.cpp test-option.cpp test-parse.cpp
 
 test_posix_sources = test-posix.cpp
 
