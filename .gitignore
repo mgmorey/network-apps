@@ -94,11 +94,12 @@ test-address
 test-bind
 test-connect
 test-context
+test-create
 test-host
 test-hostname
 test-option
 test-parse
+test-posix
 test-ranges
-test-socket
 unix-client
 unix-server
