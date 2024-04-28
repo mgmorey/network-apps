@@ -240,7 +240,7 @@ namespace TestSocket
         }
     }
 
-    auto test_socket(const SocketHints& hints,
+    auto test_unix_socket(const SocketHints& hints,
                      const std::string& expected_error_re) -> void
     {
         std::string actual_error_str;
@@ -260,24 +260,6 @@ namespace TestSocket
             const std::regex expected_error_regex {expected_error_re};
             assert(std::regex_match(actual_error_str, expected_error_regex));
         }
-    }
-
-    auto test_socket_invalid_protocol() -> void
-    {
-        const SocketHints hints {AF_UNIX, SOCK_STREAM, -1};
-        test_socket(hints, expected_error_socket_re);
-    }
-
-    auto test_socket_invalid_type() -> void
-    {
-        const SocketHints hints {AF_UNIX, 0, 0};
-        test_socket(hints, expected_error_socket_re);
-    }
-
-    auto test_socket_valid() -> void
-    {
-        const SocketHints hints {AF_UNIX, SOCK_STREAM, 0};
-        test_socket(hints, "");
     }
 
     auto test_socketpair(const SocketHints& hints,
@@ -326,6 +308,24 @@ namespace TestSocket
         const SocketHints hints {AF_UNIX, SOCK_STREAM, 0};
         test_socketpair(hints, "");
     }
+
+    auto test_unix_socket_invalid_protocol() -> void
+    {
+        const SocketHints hints {AF_UNIX, SOCK_STREAM, -1};
+        test_unix_socket(hints, expected_error_socket_re);
+    }
+
+    auto test_unix_socket_invalid_type() -> void
+    {
+        const SocketHints hints {AF_UNIX, 0, 0};
+        test_unix_socket(hints, expected_error_socket_re);
+    }
+
+    auto test_unix_socket_valid() -> void
+    {
+        const SocketHints hints {AF_UNIX, SOCK_STREAM, 0};
+        test_unix_socket(hints, "");
+    }
 }
 
 auto main(int argc, char* argv[]) -> int
@@ -341,13 +341,13 @@ auto main(int argc, char* argv[]) -> int
         }
 
         test_paths_valid();
-        test_socket_valid();
         test_socketpair_valid();
+        test_unix_socket_valid();
         test_paths_invalid();
-        test_socket_invalid_protocol();
-        test_socket_invalid_type();
         test_socketpair_invalid_protocol();
         test_socketpair_invalid_type();
+        test_unix_socket_invalid_protocol();
+        test_unix_socket_invalid_type();
     }
     catch (const std::exception& error) {
         std::cerr << error.what()
