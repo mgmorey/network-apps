@@ -68,7 +68,7 @@ namespace TestBind
 
     static constexpr auto handle_width {6};
     static constexpr auto localhost {"localhost"};
-    static constexpr auto localservice {"8085"};
+    static constexpr auto service {"8085"};
 
     static bool verbose {false};  // NOLINT
 
@@ -163,7 +163,7 @@ namespace TestBind
 
         return {
             !operands.empty() ? operands[0] : localhost,
-            operands.size() > 1 ? operands[1] : localservice
+            operands.size() > 1 ? operands[1] : service
         };
     }
 
@@ -237,7 +237,7 @@ auto main(int argc, char* argv[]) -> int
         }
 
         test_bind_valid(endpoint, hints);
-        const Endpoint invalid_host {".", localservice};
+        const Endpoint invalid_host {".", service};
         test_bind_invalid_host(invalid_host, hints);
         const Endpoint invalid_service {localhost, "."};
         test_bind_invalid_service(invalid_service, hints);
