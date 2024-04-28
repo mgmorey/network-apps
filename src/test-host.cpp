@@ -344,14 +344,14 @@ namespace TestHost
                 print(arg, family);
             }
             else if constexpr (std::is_same_v<T, OsErrorResult>) {
-                actual_code = arg.number();
-
-                if (get_codes_no_data().contains(actual_code)) {
+                if (expected_codes == ErrorCodeSet {0}) {
                     print(arg, family);
                 }
                 else {
                     print(arg);
                 }
+
+                actual_code = arg.number();
             }
             else {
                 static_assert(always_false_v<T>, VISITOR_ERROR);
@@ -363,25 +363,19 @@ namespace TestHost
 
     auto test_invalid_family() -> void
     {
-        const SocketHints hints {-1, SOCK_STREAM};
+        const SocketHints hints {-1, SOCK_STREAM, 0, 0};
         test_host("localhost", hints, get_codes_family());
     }
 
     auto test_invalid_flags() -> void
     {
-        const IpSocketHints hints {SOCK_STREAM, -1};
+        const SocketHints hints {AF_UNSPEC, SOCK_STREAM, 0, -1};
         test_host("localhost", hints, get_codes_flags());
-    }
-
-    auto test_invalid_hostname() -> void
-    {
-        const IpSocketHints hints {SOCK_STREAM};
-        test_host("_", hints, get_codes_no_name());
     }
 
     auto test_invalid_socktype() -> void
     {
-        const IpSocketHints hints {-1};
+        const SocketHints hints {AF_UNSPEC, -1, 0, 0};
         test_host("localhost", hints, get_codes_socktype());
     }
 
@@ -391,7 +385,7 @@ namespace TestHost
         test_host(".", hints, get_codes_no_data());
     }
 
-    auto test_invalid_no_name() -> void
+    auto test_no_name() -> void
     {
         const IpSocketHints hints {SOCK_STREAM};
         test_host("_", hints, get_codes_no_name());
@@ -439,9 +433,9 @@ auto main(int argc, char* argv[]) -> int
 
         test_invalid_family();
         test_invalid_flags();
-        test_invalid_hostname();
         test_invalid_socktype();
         test_no_data();
+        test_no_name();
     }
     catch (const std::exception& error) {
         std::cerr << error.what()
