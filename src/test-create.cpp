@@ -21,10 +21,10 @@
 #include "network/parse.h"              // parse()
 
 #ifdef WIN32
-#include <winsock2.h>   // AF_INET, IPPROTO_IP, IPPROTO_TCP
+#include <winsock2.h>   // AF_INET, IPPROTO_IP, SOCK_STREAM
 #else
-#include <netinet/in.h> // IPPROTO_IP, IPPROTO_TCP
-#include <sys/socket.h> // AF_INET
+#include <netinet/in.h> // IPPROTO_IP
+#include <sys/socket.h> // AF_INET, SOCK_STREAM
 #endif
 
 #include <cerrno>       // EACCES, ENOENT, EROFS
@@ -39,7 +39,6 @@ namespace TestSocket
 {
     using Network::Context;
     using Network::Error;
-    using Network::OsErrorResult;
     using Network::Socket;
     using Network::SocketHints;
     using Network::os_error_type;
@@ -101,6 +100,12 @@ namespace TestSocket
         }
     }
 
+    auto test_socket_invalid_family() -> void
+    {
+        const SocketHints hints {-1, SOCK_STREAM, 0};
+        test_socket(hints, expected_error_socket_re);
+    }
+
     auto test_socket_invalid_protocol() -> void
     {
         const SocketHints hints {AF_INET, SOCK_STREAM, -1};
@@ -109,7 +114,7 @@ namespace TestSocket
 
     auto test_socket_invalid_type() -> void
     {
-        const SocketHints hints {AF_INET, 0, 0};
+        const SocketHints hints {AF_INET, 0, IPPROTO_IP};
         test_socket(hints, expected_error_socket_re);
     }
 
@@ -133,6 +138,7 @@ auto main(int argc, char* argv[]) -> int
         }
 
         test_socket_valid();
+        test_socket_invalid_family();
         test_socket_invalid_protocol();
         test_socket_invalid_type();
     }
