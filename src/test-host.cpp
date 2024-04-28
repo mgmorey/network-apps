@@ -82,7 +82,7 @@ namespace TestHost
 
     static bool verbose {false};  // NOLINT
 
-    class Test
+    class Print
     {
     public:
         using Values = std::vector<std::string>;
@@ -92,7 +92,7 @@ namespace TestHost
             return Network::get_endpoint(addr, 0, verbose);
         }
 
-        explicit Test(std::ostream& t_os) :
+        explicit Print(std::ostream& t_os) :
             m_os(t_os)
         {
         }
@@ -163,6 +163,14 @@ namespace TestHost
         return codes;
     }
 
+    auto get_codes_zero() -> const ErrorCodeSet&
+    {
+        static const ErrorCodeSet codes = {
+            0
+        };
+        return codes;
+    }
+
     auto get_family(const OptionalHints& hints) -> std::string
     {
         if (!hints) {
@@ -186,13 +194,13 @@ namespace TestHost
 
     auto get_hostname() -> OptionalHostname
     {
-        const auto* const hostname_c {std::getenv("HOSTNAME")};
+        const auto* const hostname {std::getenv("HOSTNAME")};
 
-        if (hostname_c == nullptr) {
+        if (hostname == nullptr) {
             return {};
         }
 
-        return hostname_c;
+        return hostname;
     }
 
     auto parse_arguments(int argc, char** argv) -> ArgumentSpan
@@ -214,80 +222,74 @@ namespace TestHost
         return operands;
     }
 
-    auto print(const OsErrorResult& result,
-               const std::string& description = {}) -> void
+    auto print(const OsErrorResult& result) -> void
     {
         if (verbose) {
-            std::cout << "Error result"
-                      << (description.empty() ? "" : ": " + description)
-                      << std::endl
-                      << "    Number: "
+            std::cout << "Number: "
                       << result.number()
                       << std::endl
-                      << "    String: "
+                      << "String: "
                       << result.string()
                       << std::endl;
         }
     }
 
-    auto test_host(const OptionalHostname& host,
-                   const OptionalHints& hints) -> void
+    auto print(const OsErrorResult& result, const std::string& family) -> void
     {
+        if (family.empty()) {
+            std::cout << "No";
+        }
+        else {
+            std::cout << "No "
+                      << family;
+        }
+
+        std::cout << " hosts:"
+                  << std::endl
+                  << result.string()
+                  << std::endl;
+    }
+
+    auto print(const HostVector& hosts, const std::string& family) -> void
+    {
+        if (hosts.empty()) {
+            return;
+        }
+
+        if (family.empty()) {
+            std::cout << "All";
+        }
+        else {
+            std::cout << family;
+        }
+
+        std::cout << " hosts:"
+                  << std::endl;
+        std::for_each(hosts.begin(), hosts.end(),
+                      Print(std::cout));
+    }
+
+    auto test_host(const OptionalHostname& host,
+                   const OptionalHints& hints,
+                   const ErrorCodeSet& expected_codes) -> void
+    {
+        os_error_type actual_code {0};
         const auto hosts_result {get_hosts(host, hints)};
         const auto family {get_family(hints)};
         std::visit([&](auto&& arg) {
             using T = std::decay_t<decltype(arg)>;
 
             if constexpr (std::is_same_v<T, HostVector>) {
-                if (arg.empty()) {
-                    return;
-                }
-
-                if (family.empty()) {
-                    std::cout << "All";
-                }
-                else {
-                    std::cout << family;
-                }
-
-                std::cout << " hosts:"
-                          << std::endl;
-                std::for_each(arg.begin(), arg.end(),
-                              Test(std::cout));
+                print(arg, family);
             }
             else if constexpr (std::is_same_v<T, OsErrorResult>) {
-                if (family.empty()) {
-                    std::cout << "No";
+                if (expected_codes == get_codes_zero()) {
+                    print(arg, family);
                 }
                 else {
-                    std::cout << "No "
-                              << family;
+                    print(arg);
                 }
 
-                std::cout << " hosts:"
-                          << std::endl
-                          << arg.string()
-                          << std::endl;
-            }
-            else {
-                static_assert(always_false_v<T>, VISITOR_ERROR);
-            }
-        }, hosts_result);
-    }
-
-    auto test_host_invalid() -> void
-    {
-        os_error_type actual_code {0};
-        const auto& expected_codes {get_codes_nodata()};
-        const auto hosts_result {get_hosts(".")};
-        std::visit([&](auto&& arg) {
-            using T = std::decay_t<decltype(arg)>;
-
-            if constexpr (std::is_same_v<T, HostVector>) {
-                static_cast<void>(arg);
-            }
-            else if constexpr (std::is_same_v<T, OsErrorResult>) {
-                print(arg, "get_hosts() with invalid hostname");
                 actual_code = arg.number();
             }
             else {
@@ -295,6 +297,11 @@ namespace TestHost
             }
         }, hosts_result);
         assert(expected_codes.contains(actual_code));
+    }
+
+    auto test_host_invalid() -> void
+    {
+        test_host(".", unspec, get_codes_nodata());
     }
 
     auto test_host_valid(const OptionalHostname& host) -> void
@@ -310,7 +317,7 @@ namespace TestHost
         const auto& hints_vector {get_hints_vector(is_local)};
 
         for (const auto& hints : hints_vector) {
-            test_host(host, hints);
+            test_host(host, hints, get_codes_zero());
         }
     }
 }
@@ -332,6 +339,9 @@ auto main(int argc, char* argv[]) -> int
         }
         else if (const auto hostname {get_hostname()}) {
             test_host_valid(hostname);
+        }
+        else {
+            test_host_valid("localhost");
         }
 
         test_host_invalid();
