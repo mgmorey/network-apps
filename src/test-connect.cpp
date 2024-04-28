@@ -134,18 +134,16 @@ namespace TestConnect
 
         auto test_socket(const Socket& t_sock) -> void
         {
-            const auto hostname {m_endpoint.first};
-            const auto service {m_endpoint.second};
             const auto peer {t_sock.peername()};
             const auto self {t_sock.sockname()};
             m_os << "Socket "
                  << std::right << std::setw(handle_width) << t_sock
                  << " connected "
-                 << m_hostname.value_or(string_null)
+                 << m_endpoint.first.value_or(string_null)
                  << " to "
-                 << service.value_or(string_null)
+                 << m_endpoint.second.value_or(string_null)
                  << " on "
-                 << hostname.value_or(string_null)
+                 << m_endpoint.first.value_or(string_null)
                  << std::endl
                  << "Socket "
                  << std::right << std::setw(handle_width) << t_sock
