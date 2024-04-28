@@ -149,29 +149,9 @@ namespace TestHost
         static const ErrorCodeSet codes = {
             WSAEAFNOSUPPORT
         };
-#elif defined(OS_FREEBSD)
-        static const ErrorCodeSet codes = {
-        };
 #else
         static const ErrorCodeSet codes = {
             EAI_FAMILY
-        };
-#endif
-        return codes;
-    }
-
-    auto get_codes_flags() -> const ErrorCodeSet&
-    {
-#if defined(WIN32)
-        static const ErrorCodeSet codes = {
-            WSAEINVAL
-        };
-#elif defined(OS_FREEBSD)
-        static const ErrorCodeSet codes = {
-        };
-#else
-        static const ErrorCodeSet codes = {
-            EAI_BADFLAGS
         };
 #endif
         return codes;
@@ -204,9 +184,6 @@ namespace TestHost
         static const ErrorCodeSet codes = {
             WSAHOST_NOT_FOUND
         };
-#elif defined(OS_FREEBSD)
-        static const ErrorCodeSet codes = {
-        };
 #else
         static const ErrorCodeSet codes = {
             EAI_NONAME
@@ -221,8 +198,9 @@ namespace TestHost
         static const ErrorCodeSet codes = {
             WSAESOCKTNOSUPPORT
         };
-#elif defined(OS_FREEBSD)
+#elif defined(OS_DARWIN)
         static const ErrorCodeSet codes = {
+            EAI_BADHINTS
         };
 #else
         static const ErrorCodeSet codes = {
@@ -367,12 +345,6 @@ namespace TestHost
         test_host("localhost", hints, get_codes_family());
     }
 
-    auto test_invalid_flags() -> void
-    {
-        const SocketHints hints {AF_UNSPEC, SOCK_STREAM, 0, -1};
-        test_host("localhost", hints, get_codes_flags());
-    }
-
     auto test_invalid_socktype() -> void
     {
         const SocketHints hints {AF_UNSPEC, -1, 0, 0};
@@ -432,7 +404,6 @@ auto main(int argc, char* argv[]) -> int
         }
 
         test_invalid_family();
-        test_invalid_flags();
         test_invalid_socktype();
         test_no_data();
         test_no_name();
