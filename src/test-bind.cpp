@@ -167,25 +167,21 @@ namespace TestBind
         };
     }
 
-    auto print(const OsErrorResult& result,
-               const std::string& description = {}) -> void
+    auto print(const OsErrorResult& result) -> void
     {
         if (verbose) {
-            std::cout << "Error result"
-                      << (description.empty() ? "" : ": " + description)
-                      << std::endl
-                      << "    Number: "
+            std::cout << "Number: "
                       << result.number()
                       << std::endl
-                      << "    String: "
+                      << "String: "
                       << result.string()
                       << std::endl;
         }
     }
 
-    auto test_bind_invalid(const Endpoint& endpoint,
-                           const SocketHints& hints,
-                           const ErrorCodeSet& expected_codes) -> void
+    auto test_bind(const Endpoint& endpoint,
+                   const SocketHints& hints,
+                   const ErrorCodeSet& expected_codes) -> void
     {
         os_error_type actual_code {0};
         const auto bind_result {bind(endpoint, hints, verbose)};
@@ -193,11 +189,12 @@ namespace TestBind
             using T = std::decay_t<decltype(arg)>;
 
             if constexpr (std::is_same_v<T, SocketResultVector>) {
-                static_cast<void>(arg);
+                std::for_each(arg.begin(), arg.end(),
+                              Test(endpoint, std::cout));
             }
             else if constexpr (std::is_same_v<T, OsErrorResult>) {
                 actual_code = arg.number();
-                print(arg, "bind() with invalid host");
+                print(arg);
             }
             else {
                 static_assert(always_false_v<T>, VISITOR_ERROR);
@@ -209,35 +206,19 @@ namespace TestBind
     auto test_bind_invalid_host(const Endpoint& endpoint,
                                 const SocketHints& hints) -> void
     {
-        test_bind_invalid(endpoint, hints,
-                                 get_codes_invalid_host());
+        test_bind(endpoint, hints, get_codes_invalid_host());
     }
 
     auto test_bind_invalid_service(const Endpoint& endpoint,
                                    const SocketHints& hints) -> void
     {
-        test_bind_invalid(endpoint, hints,
-                                 get_codes_invalid_service());
+        test_bind(endpoint, hints, get_codes_invalid_service());
     }
 
     auto test_bind_valid(const Endpoint& endpoint,
                          const SocketHints& hints) -> void
     {
-        const auto bind_result {bind(endpoint, hints, verbose)};
-        std::visit([&](auto&& arg) {
-            using T = std::decay_t<decltype(arg)>;
-
-            if constexpr (std::is_same_v<T, SocketResultVector>) {
-                std::for_each(arg.begin(), arg.end(),
-                              Test(endpoint, std::cout));
-            }
-            else if constexpr (std::is_same_v<T, OsErrorResult>) {
-                print(arg, "bind() with valid endpoint");
-            }
-            else {
-                static_assert(always_false_v<T>, VISITOR_ERROR);
-            }
-        }, bind_result);
+        test_bind(endpoint, hints, {0});
     }
 }
 
