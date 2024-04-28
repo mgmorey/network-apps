@@ -75,8 +75,8 @@ namespace TestConnect
 
     static constexpr auto handle_width {6};
     static constexpr auto indent_width {handle_width + 18};
-    static constexpr auto localhost {"example.com"};
-    static constexpr auto localservice {"http"};
+    static constexpr auto remotehost {"example.com"};
+    static constexpr auto service {"http"};
 
     static bool verbose {false};  // NOLINT
 
@@ -202,8 +202,8 @@ namespace TestConnect
         }
 
         return {
-            !operands.empty() ? operands[0] : localhost,
-            operands.size() > 1 ? operands[1] : localservice
+            !operands.empty() ? operands[0] : remotehost,
+            operands.size() > 1 ? operands[1] : service
         };
     }
 
@@ -280,9 +280,9 @@ auto main(int argc, char* argv[]) -> int
         }
 
         test_connect_valid(endpoint, hints);
-        const Endpoint invalid_host {".", localservice};
+        const Endpoint invalid_host {".", service};
         test_connect_invalid_host(invalid_host, hints);
-        const Endpoint invalid_service {localhost, "."};
+        const Endpoint invalid_service {remotehost, "."};
         test_connect_invalid_service(invalid_service, hints);
     }
     catch (const std::exception& error) {
