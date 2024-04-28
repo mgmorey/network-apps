@@ -274,8 +274,8 @@ namespace TestHost
                    const ErrorCodeSet& expected_codes) -> void
     {
         os_error_type actual_code {0};
-        const auto hosts_result {get_hosts(host, hints)};
         const auto family {get_family(hints)};
+        const auto hosts_result {get_hosts(host, hints)};
         std::visit([&](auto&& arg) {
             using T = std::decay_t<decltype(arg)>;
 
