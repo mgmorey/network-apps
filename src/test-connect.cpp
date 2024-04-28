@@ -43,6 +43,7 @@
 #include <exception>    // std::exception
 #include <iomanip>      // std::right, std::setw()
 #include <iostream>     // std::cerr, std::cout, std::endl
+#include <optional>     // std::nullopt
 #include <set>          // std::set
 #include <string>       // std::string
 #include <type_traits>  // std::decay_t, std::is_same_v
@@ -57,7 +58,6 @@ namespace TestConnect
     using Network::Endpoint;
     using Network::Hostname;
     using Network::IpSocketHints;
-    using Network::OptionalHostname;
     using Network::OsErrorResult;
     using Network::PeerName;
     using Network::Socket;
@@ -75,7 +75,6 @@ namespace TestConnect
 
     static constexpr auto handle_width {6};
     static constexpr auto indent_width {handle_width + 18};
-    static constexpr auto localhost {"localhost"};
     static constexpr auto remotehost {"example.com"};
     static constexpr auto service {"http"};
 
@@ -102,7 +101,7 @@ namespace TestConnect
         }
 
         Test(Endpoint t_endpoint,
-             OptionalHostname t_hostname,
+             Hostname t_hostname,
              std::ostream& t_os) :
             m_endpoint(std::move(t_endpoint)),
             m_hostname(std::move(t_hostname)),
@@ -140,7 +139,7 @@ namespace TestConnect
             m_os << "Socket "
                  << std::right << std::setw(handle_width) << t_sock
                  << " connected "
-                 << localhost
+                 << m_hostname
                  << " to "
                  << m_endpoint.second.value_or(string_null)
                  << " on "
@@ -158,7 +157,7 @@ namespace TestConnect
 
     private:
         Endpoint m_endpoint;
-        OptionalHostname m_hostname;
+        Hostname m_hostname;
         std::ostream& m_os;
     };
 
@@ -246,21 +245,24 @@ namespace TestConnect
     }
 
     auto test_connect_invalid_host(const Endpoint& endpoint,
-                                   const SocketHints& hints) -> void
+                                   const SocketHints& hints,
+                                   const Hostname& hostname) -> void
     {
-        test_connect(endpoint, hints, {}, get_codes_invalid_host());
+        test_connect(endpoint, hints, hostname, get_codes_invalid_host());
     }
 
     auto test_connect_invalid_service(const Endpoint& endpoint,
-                                      const SocketHints& hints) -> void
+                                      const SocketHints& hints,
+                                      const Hostname& hostname) -> void
     {
-        test_connect(endpoint, hints, {}, get_codes_invalid_service());
+        test_connect(endpoint, hints, hostname, get_codes_invalid_service());
     }
 
     auto test_connect_valid(const Endpoint& endpoint,
-                            const SocketHints& hints) -> void
+                            const SocketHints& hints,
+                            const Hostname& hostname) -> void
     {
-        test_connect(endpoint, hints, get_hostname(), {0});
+        test_connect(endpoint, hints, hostname, {0});
     }
 }
 
@@ -273,16 +275,17 @@ auto main(int argc, char* argv[]) -> int
     try {
         const auto& context {Context::instance()};
         const auto endpoint {parse_arguments(argc, argv)};
+        const auto hostname {get_hostname()};
 
         if (verbose) {
             std::cout << context << std::endl;
         }
 
-        test_connect_valid(endpoint, hints);
+        test_connect_valid(endpoint, hints, hostname);
         const Endpoint invalid_host {".", service};
-        test_connect_invalid_host(invalid_host, hints);
+        test_connect_invalid_host(invalid_host, hints, hostname);
         const Endpoint invalid_service {remotehost, "."};
-        test_connect_invalid_service(invalid_service, hints);
+        test_connect_invalid_service(invalid_service, hints, hostname);
     }
     catch (const std::exception& error) {
         std::cerr << error.what()
