@@ -192,7 +192,7 @@ namespace TestHost
         return codes;
     }
 
-    auto get_codes_socktype() -> const ErrorCodeSet&
+    auto get_codes_type() -> const ErrorCodeSet&
     {
 #if defined(WIN32)
         static const ErrorCodeSet codes = {
@@ -345,10 +345,10 @@ namespace TestHost
         test_host("localhost", hints, get_codes_family());
     }
 
-    auto test_invalid_socktype() -> void
+    auto test_invalid_type() -> void
     {
         const SocketHints hints {AF_UNSPEC, -1, 0, 0};
-        test_host("localhost", hints, get_codes_socktype());
+        test_host("localhost", hints, get_codes_type());
     }
 
     auto test_no_data() -> void
@@ -404,7 +404,7 @@ auto main(int argc, char* argv[]) -> int
         }
 
         test_invalid_family();
-        test_invalid_socktype();
+        test_invalid_type();
         test_no_data();
         test_no_name();
     }
