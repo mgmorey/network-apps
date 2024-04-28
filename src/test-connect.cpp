@@ -207,63 +207,24 @@ namespace TestConnect
         };
     }
 
-    auto print(const OsErrorResult& result,
-               const std::string& description = {}) -> void
+    auto print(const OsErrorResult& result) -> void
     {
         if (verbose) {
-            std::cout << "Error result"
-                      << (description.empty() ? "" : ": " + description)
-                      << std::endl
-                      << "    Number: "
+            std::cout << "Number: "
                       << result.number()
                       << std::endl
-                      << "    String: "
+                      << "String: "
                       << result.string()
                       << std::endl;
         }
     }
 
-    auto test_connect_invalid(const Endpoint& endpoint,
-                              const SocketHints& hints,
-                              const ErrorCodeSet& expected_codes) -> void
+    auto test_connect(const Endpoint &endpoint,
+                      const SocketHints &hints,
+                      const Hostname &hostname,
+                      const ErrorCodeSet& expected_codes) -> void
     {
         os_error_type actual_code {0};
-        const auto connect_result {connect(endpoint, hints, verbose)};
-        std::visit([&](auto&& arg) {
-            using T = std::decay_t<decltype(arg)>;
-
-            if constexpr (std::is_same_v<T, SocketResultVector>) {
-                static_cast<void>(arg);
-            }
-            else if constexpr (std::is_same_v<T, OsErrorResult>) {
-                actual_code = arg.number();
-                print(arg, "connect() with invalid host");
-            }
-            else {
-                static_assert(always_false_v<T>, VISITOR_ERROR);
-            }
-        }, connect_result);
-        assert(expected_codes.contains(actual_code));
-    }
-
-    auto test_connect_invalid_host(const Endpoint& endpoint,
-                                   const SocketHints& hints) -> void
-    {
-        test_connect_invalid(endpoint, hints,
-                                    get_codes_invalid_host());
-    }
-
-    auto test_connect_invalid_service(const Endpoint& endpoint,
-                                      const SocketHints& hints) -> void
-    {
-        test_connect_invalid(endpoint, hints,
-                                    get_codes_invalid_service());
-    }
-
-    auto test_connect_valid(const Endpoint& endpoint,
-                            const SocketHints& hints,
-                            const Hostname& hostname) -> void
-    {
         const auto connect_result {connect(endpoint, hints, verbose)};
         std::visit([&](auto&& arg) {
             using T = std::decay_t<decltype(arg)>;
@@ -275,18 +236,32 @@ namespace TestConnect
                                    std::cout));
             }
             else if constexpr (std::is_same_v<T, OsErrorResult>) {
-                print(arg, "connect() with valid endpoint");
+                actual_code = arg.number();
+                print(arg);
             }
             else {
                 static_assert(always_false_v<T>, VISITOR_ERROR);
             }
         }, connect_result);
+        assert(expected_codes.contains(actual_code));
+    }
+
+    auto test_connect_invalid_host(const Endpoint& endpoint,
+                                   const SocketHints& hints) -> void
+    {
+        test_connect(endpoint, hints, "", get_codes_invalid_host());
+    }
+
+    auto test_connect_invalid_service(const Endpoint& endpoint,
+                                      const SocketHints& hints) -> void
+    {
+        test_connect(endpoint, hints, "", get_codes_invalid_service());
     }
 
     auto test_connect_valid(const Endpoint& endpoint,
                             const SocketHints& hints) -> void
     {
-        test_connect_valid(endpoint, hints, get_hostname());
+        test_connect(endpoint, hints, get_hostname(), {0});
     }
 }
 
