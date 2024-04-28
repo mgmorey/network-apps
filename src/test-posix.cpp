@@ -66,10 +66,10 @@ namespace TestSocket
     static constexpr auto expected_error_payload_length_re {
         R"(Address payload length is zero: .+)"
     };
-    static constexpr auto expected_error_socket_type_re {
+    static constexpr auto expected_error_socket_re {
         R"(Call to ::socket\(.+\) failed with error \d+: .+)"
     };
-    static constexpr auto expected_error_socketpair_type_re {
+    static constexpr auto expected_error_socketpair_re {
         R"(Call to ::socketpair\(.+\) failed with error \d+: .+)"
     };
     static constexpr auto handle_width {6};
@@ -262,14 +262,22 @@ namespace TestSocket
         }
     }
 
-    auto test_socket_invalid() -> void
+    auto test_socket_invalid_protocol() -> void
     {
-        test_socket(UnixSocketHints {0}, expected_error_socket_type_re);
+        const SocketHints hints {AF_UNIX, SOCK_STREAM, -1};
+        test_socket(hints, expected_error_socket_re);
+    }
+
+    auto test_socket_invalid_type() -> void
+    {
+        const SocketHints hints {AF_UNIX, 0, 0};
+        test_socket(hints, expected_error_socket_re);
     }
 
     auto test_socket_valid() -> void
     {
-        test_socket(UnixSocketHints {SOCK_STREAM}, "");
+        const SocketHints hints {AF_UNIX, SOCK_STREAM, 0};
+        test_socket(hints, "");
     }
 
     auto test_socketpair(const SocketHints& hints,
@@ -301,14 +309,22 @@ namespace TestSocket
         }
     }
 
-    auto test_socketpair_invalid() -> void
+    auto test_socketpair_invalid_protocol() -> void
     {
-        test_socketpair(UnixSocketHints {0}, expected_error_socketpair_type_re);
+        const SocketHints hints {AF_UNIX, SOCK_STREAM, -1};
+        test_socketpair(hints, expected_error_socketpair_re);
+    }
+
+    auto test_socketpair_invalid_type() -> void
+    {
+        const SocketHints hints {AF_UNIX, 0, 0};
+        test_socketpair(hints, expected_error_socketpair_re);
     }
 
     auto test_socketpair_valid() -> void
     {
-        test_socketpair(UnixSocketHints {SOCK_STREAM}, "");
+        const SocketHints hints {AF_UNIX, SOCK_STREAM, 0};
+        test_socketpair(hints, "");
     }
 }
 
@@ -328,8 +344,10 @@ auto main(int argc, char* argv[]) -> int
         test_socket_valid();
         test_socketpair_valid();
         test_paths_invalid();
-        test_socket_invalid();
-        test_socketpair_invalid();
+        test_socket_invalid_protocol();
+        test_socket_invalid_type();
+        test_socketpair_invalid_protocol();
+        test_socketpair_invalid_type();
     }
     catch (const std::exception& error) {
         std::cerr << error.what()
