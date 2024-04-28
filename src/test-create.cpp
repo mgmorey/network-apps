@@ -114,7 +114,7 @@ namespace TestSocket
 
     auto test_socket_invalid_type() -> void
     {
-        const SocketHints hints {AF_INET, 0, IPPROTO_IP};
+        const SocketHints hints {AF_INET, -1, 0};
         test_socket(hints, expected_error_socket_re);
     }
 
