@@ -147,6 +147,7 @@ namespace TestHost
     {
 #if defined(WIN32)
         static const ErrorCodeSet codes = {
+            WSAEAFNOSUPPORT
         };
 #elif defined(OS_FREEBSD)
         static const ErrorCodeSet codes = {
@@ -163,6 +164,7 @@ namespace TestHost
     {
 #if defined(WIN32)
         static const ErrorCodeSet codes = {
+            WSAEINVAL
         };
 #elif defined(OS_FREEBSD)
         static const ErrorCodeSet codes = {
@@ -200,6 +202,7 @@ namespace TestHost
     {
 #if defined(WIN32)
         static const ErrorCodeSet codes = {
+            WSAHOST_NOT_FOUND
         };
 #elif defined(OS_FREEBSD)
         static const ErrorCodeSet codes = {
@@ -216,6 +219,7 @@ namespace TestHost
     {
 #if defined(WIN32)
         static const ErrorCodeSet codes = {
+            WSAESOCKTNOSUPPORT
         };
 #elif defined(OS_FREEBSD)
         static const ErrorCodeSet codes = {
@@ -328,11 +332,11 @@ namespace TestHost
 
     auto test_host(const OptionalHostname& host,
                    const OptionalHints& hints,
-                   const ErrorCodeSet& expected_codes = {}) -> void
+                   const ErrorCodeSet& expected_codes = {0}) -> void
     {
         os_error_type actual_code {0};
         const auto family {get_family(hints)};
-        const auto hosts_result {get_hosts(host, hints)};
+        const auto hosts_result {get_hosts(host, hints, verbose)};
         std::visit([&](auto&& arg) {
             using T = std::decay_t<decltype(arg)>;
 
@@ -340,23 +344,21 @@ namespace TestHost
                 print(arg, family);
             }
             else if constexpr (std::is_same_v<T, OsErrorResult>) {
-                if (expected_codes.empty()) {
+                actual_code = arg.number();
+
+                if (get_codes_no_data().contains(actual_code)) {
                     print(arg, family);
                 }
                 else {
                     print(arg);
                 }
-
-                actual_code = arg.number();
             }
             else {
                 static_assert(always_false_v<T>, VISITOR_ERROR);
             }
         }, hosts_result);
 
-        if (!expected_codes.empty()) {
-            assert(expected_codes.contains(actual_code));
-        }
+        assert(expected_codes.contains(actual_code));
     }
 
     auto test_invalid_family() -> void
@@ -367,7 +369,7 @@ namespace TestHost
 
     auto test_invalid_flags() -> void
     {
-        const IpSocketHints hints {SOCK_STREAM, 0x0800};
+        const IpSocketHints hints {SOCK_STREAM, -1};
         test_host("localhost", hints, get_codes_flags());
     }
 
@@ -379,7 +381,7 @@ namespace TestHost
 
     auto test_invalid_socktype() -> void
     {
-        const IpSocketHints hints {0x80000};
+        const IpSocketHints hints {-1};
         test_host("localhost", hints, get_codes_socktype());
     }
 
