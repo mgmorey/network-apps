@@ -75,6 +75,7 @@ namespace TestConnect
 
     static constexpr auto handle_width {6};
     static constexpr auto indent_width {handle_width + 18};
+    static constexpr auto localhost {"localhost"};
     static constexpr auto remotehost {"example.com"};
     static constexpr auto service {"http"};
 
@@ -139,7 +140,7 @@ namespace TestConnect
             m_os << "Socket "
                  << std::right << std::setw(handle_width) << t_sock
                  << " connected "
-                 << m_endpoint.first.value_or(string_null)
+                 << localhost
                  << " to "
                  << m_endpoint.second.value_or(string_null)
                  << " on "
