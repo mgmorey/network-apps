@@ -249,13 +249,13 @@ namespace TestConnect
     auto test_connect_invalid_host(const Endpoint& endpoint,
                                    const SocketHints& hints) -> void
     {
-        test_connect(endpoint, hints, "", get_codes_invalid_host());
+        test_connect(endpoint, hints, {}, get_codes_invalid_host());
     }
 
     auto test_connect_invalid_service(const Endpoint& endpoint,
                                       const SocketHints& hints) -> void
     {
-        test_connect(endpoint, hints, "", get_codes_invalid_service());
+        test_connect(endpoint, hints, {}, get_codes_invalid_service());
     }
 
     auto test_connect_valid(const Endpoint& endpoint,
