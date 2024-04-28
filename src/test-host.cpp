@@ -77,6 +77,8 @@ namespace TestHost
     using ErrorCodeSet = std::set<os_error_type>;
     using HintsVector = std::vector<SocketHints>;
 
+    static constexpr auto localhost {"localhost"};
+
     static const IpSocketHints ip {SOCK_STREAM, AI_CANONNAME};
     static const IpSocketHints ipv4 {af_ip_v4, SOCK_STREAM, AI_CANONNAME};
     static const IpSocketHints ipv6 {af_ip_v6, SOCK_STREAM, AI_CANONNAME};
@@ -319,13 +321,13 @@ namespace TestHost
     auto test_invalid_family() -> void
     {
         const SocketHints hints {-1, SOCK_STREAM, 0, 0};
-        test_host("localhost", hints, get_codes_family());
+        test_host(localhost, hints, get_codes_family());
     }
 
     auto test_invalid_type() -> void
     {
         const SocketHints hints {AF_UNSPEC, -1, 0, 0};
-        test_host("localhost", hints, get_codes_type());
+        test_host(localhost, hints, get_codes_type());
     }
 
     auto test_no_data() -> void
@@ -377,7 +379,7 @@ auto main(int argc, char* argv[]) -> int
             test_valid(hostname);
         }
         else {
-            test_valid("localhost");
+            test_valid(localhost);
         }
 
         test_invalid_family();
