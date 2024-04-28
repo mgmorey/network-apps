@@ -146,13 +146,9 @@ namespace TestHost
     auto get_codes_family() -> const ErrorCodeSet&
     {
 #if defined(WIN32)
-        static const ErrorCodeSet codes = {
-            WSAEAFNOSUPPORT
-        };
+        static const ErrorCodeSet codes = {WSAEAFNOSUPPORT};
 #else
-        static const ErrorCodeSet codes = {
-            EAI_FAMILY
-        };
+        static const ErrorCodeSet codes = {EAI_FAMILY};
 #endif
         return codes;
     }
@@ -160,20 +156,11 @@ namespace TestHost
     auto get_codes_no_data() -> const ErrorCodeSet&
     {
 #if defined(WIN32)
-        static const ErrorCodeSet codes = {
-            WSAHOST_NOT_FOUND
-        };
+        static const ErrorCodeSet codes = {WSAHOST_NOT_FOUND};
 #elif defined(OS_FREEBSD)
-        static const ErrorCodeSet codes = {
-            EAI_AGAIN,
-            EAI_NONAME
-        };
+        static const ErrorCodeSet codes = {EAI_AGAIN, EAI_NONAME};
 #else
-        static const ErrorCodeSet codes = {
-            EAI_AGAIN,
-            EAI_NODATA,
-            EAI_NONAME
-        };
+        static const ErrorCodeSet codes = {EAI_AGAIN, EAI_NODATA, EAI_NONAME};
 #endif
         return codes;
     }
@@ -181,13 +168,9 @@ namespace TestHost
     auto get_codes_no_name() -> const ErrorCodeSet&
     {
 #if defined(WIN32)
-        static const ErrorCodeSet codes = {
-            WSAHOST_NOT_FOUND
-        };
+        static const ErrorCodeSet codes = {WSAHOST_NOT_FOUND};
 #else
-        static const ErrorCodeSet codes = {
-            EAI_NONAME
-        };
+        static const ErrorCodeSet codes = {EAI_NONAME};
 #endif
         return codes;
     }
@@ -195,17 +178,11 @@ namespace TestHost
     auto get_codes_type() -> const ErrorCodeSet&
     {
 #if defined(WIN32)
-        static const ErrorCodeSet codes = {
-            WSAESOCKTNOSUPPORT
-        };
+        static const ErrorCodeSet codes = {WSAESOCKTNOSUPPORT};
 #elif defined(OS_DARWIN)
-        static const ErrorCodeSet codes = {
-            EAI_BADHINTS
-        };
+        static const ErrorCodeSet codes = {EAI_BADHINTS};
 #else
-        static const ErrorCodeSet codes = {
-            EAI_SOCKTYPE
-        };
+        static const ErrorCodeSet codes = {EAI_SOCKTYPE};
 #endif
         return codes;
     }
