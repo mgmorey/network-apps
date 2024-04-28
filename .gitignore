@@ -97,9 +97,9 @@ test-context
 test-create
 test-host
 test-hostname
+test-limits
 test-option
 test-parse
 test-posix
-test-ranges
 unix-client
 unix-server
