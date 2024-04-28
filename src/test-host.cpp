@@ -32,7 +32,8 @@
 #include <ws2tcpip.h>       // AI_ADDRCONFIG, AI_CANONNAME
 #else
 #include <netdb.h>          // AI_ADDRCONFIG, AI_CANONNAME, EAI_AGAIN,
-                            // EAI_NODATA, EAI_NONAME
+                            // EAI_FAMILY, EAI_NODATA, EAI_NONAME,
+                            // EAI_SOCKTYPE
 #include <netinet/in.h>     // IPPROTO_TCP
 #include <sys/socket.h>     // AF_INET, AF_INET6, AF_UNSPEC,
                             // SOCK_STREAM
@@ -76,9 +77,9 @@ namespace TestHost
     using ErrorCodeSet = std::set<os_error_type>;
     using HintsVector = std::vector<SocketHints>;
 
-    static const IpSocketHints inet {af_ip_v4, SOCK_STREAM, AI_CANONNAME};
-    static const IpSocketHints inet6 {af_ip_v6, SOCK_STREAM, AI_CANONNAME};
-    static const IpSocketHints unspec {SOCK_STREAM, AI_CANONNAME};
+    static const IpSocketHints ip {SOCK_STREAM, AI_CANONNAME};
+    static const IpSocketHints ipv4 {af_ip_v4, SOCK_STREAM, AI_CANONNAME};
+    static const IpSocketHints ipv6 {af_ip_v6, SOCK_STREAM, AI_CANONNAME};
 
     static bool verbose {false};  // NOLINT
 
@@ -142,7 +143,39 @@ namespace TestHost
         std::ostream& m_os;
     };
 
-    auto get_codes_nodata() -> const ErrorCodeSet&
+    auto get_codes_family() -> const ErrorCodeSet&
+    {
+#if defined(WIN32)
+        static const ErrorCodeSet codes = {
+        };
+#elif defined(OS_FREEBSD)
+        static const ErrorCodeSet codes = {
+        };
+#else
+        static const ErrorCodeSet codes = {
+            EAI_FAMILY
+        };
+#endif
+        return codes;
+    }
+
+    auto get_codes_flags() -> const ErrorCodeSet&
+    {
+#if defined(WIN32)
+        static const ErrorCodeSet codes = {
+        };
+#elif defined(OS_FREEBSD)
+        static const ErrorCodeSet codes = {
+        };
+#else
+        static const ErrorCodeSet codes = {
+            EAI_BADFLAGS
+        };
+#endif
+        return codes;
+    }
+
+    auto get_codes_no_data() -> const ErrorCodeSet&
     {
 #if defined(WIN32)
         static const ErrorCodeSet codes = {
@@ -163,11 +196,35 @@ namespace TestHost
         return codes;
     }
 
-    auto get_codes_zero() -> const ErrorCodeSet&
+    auto get_codes_no_name() -> const ErrorCodeSet&
     {
+#if defined(WIN32)
         static const ErrorCodeSet codes = {
-            0
         };
+#elif defined(OS_FREEBSD)
+        static const ErrorCodeSet codes = {
+        };
+#else
+        static const ErrorCodeSet codes = {
+            EAI_NONAME
+        };
+#endif
+        return codes;
+    }
+
+    auto get_codes_socktype() -> const ErrorCodeSet&
+    {
+#if defined(WIN32)
+        static const ErrorCodeSet codes = {
+        };
+#elif defined(OS_FREEBSD)
+        static const ErrorCodeSet codes = {
+        };
+#else
+        static const ErrorCodeSet codes = {
+            EAI_SOCKTYPE
+        };
+#endif
         return codes;
     }
 
@@ -189,7 +246,7 @@ namespace TestHost
 
     auto get_hints_vector(bool is_local) -> HintsVector
     {
-        return is_local ? HintsVector {unspec} : HintsVector {inet, inet6};
+        return is_local ? HintsVector {ip} : HintsVector {ipv4, ipv6};
     }
 
     auto get_hostname() -> OptionalHostname
@@ -271,7 +328,7 @@ namespace TestHost
 
     auto test_host(const OptionalHostname& host,
                    const OptionalHints& hints,
-                   const ErrorCodeSet& expected_codes) -> void
+                   const ErrorCodeSet& expected_codes = {}) -> void
     {
         os_error_type actual_code {0};
         const auto family {get_family(hints)};
@@ -283,7 +340,7 @@ namespace TestHost
                 print(arg, family);
             }
             else if constexpr (std::is_same_v<T, OsErrorResult>) {
-                if (expected_codes == get_codes_zero()) {
+                if (expected_codes.empty()) {
                     print(arg, family);
                 }
                 else {
@@ -296,15 +353,49 @@ namespace TestHost
                 static_assert(always_false_v<T>, VISITOR_ERROR);
             }
         }, hosts_result);
-        assert(expected_codes.contains(actual_code));
+
+        if (!expected_codes.empty()) {
+            assert(expected_codes.contains(actual_code));
+        }
     }
 
-    auto test_host_invalid() -> void
+    auto test_invalid_family() -> void
     {
-        test_host(".", unspec, get_codes_nodata());
+        const SocketHints hints {-1, SOCK_STREAM};
+        test_host("localhost", hints, get_codes_family());
     }
 
-    auto test_host_valid(const OptionalHostname& host) -> void
+    auto test_invalid_flags() -> void
+    {
+        const IpSocketHints hints {SOCK_STREAM, 0x0800};
+        test_host("localhost", hints, get_codes_flags());
+    }
+
+    auto test_invalid_hostname() -> void
+    {
+        const IpSocketHints hints {SOCK_STREAM};
+        test_host("_", hints, get_codes_no_name());
+    }
+
+    auto test_invalid_socktype() -> void
+    {
+        const IpSocketHints hints {0x80000};
+        test_host("localhost", hints, get_codes_socktype());
+    }
+
+    auto test_no_data() -> void
+    {
+        const IpSocketHints hints {SOCK_STREAM};
+        test_host(".", hints, get_codes_no_data());
+    }
+
+    auto test_invalid_no_name() -> void
+    {
+        const IpSocketHints hints {SOCK_STREAM};
+        test_host("_", hints, get_codes_no_name());
+    }
+
+    auto test_valid(const OptionalHostname& host) -> void
     {
         const bool is_local = !host || *host == get_hostname();
 
@@ -317,7 +408,7 @@ namespace TestHost
         const auto& hints_vector {get_hints_vector(is_local)};
 
         for (const auto& hints : hints_vector) {
-            test_host(host, hints, get_codes_zero());
+            test_host(host, hints, {0});
         }
     }
 }
@@ -335,16 +426,20 @@ auto main(int argc, char* argv[]) -> int
         }
 
         if (!hosts.empty()) {
-            std::for_each(hosts.begin(), hosts.end(), test_host_valid);
+            std::for_each(hosts.begin(), hosts.end(), test_valid);
         }
         else if (const auto hostname {get_hostname()}) {
-            test_host_valid(hostname);
+            test_valid(hostname);
         }
         else {
-            test_host_valid("localhost");
+            test_valid("localhost");
         }
 
-        test_host_invalid();
+        test_invalid_family();
+        test_invalid_flags();
+        test_invalid_hostname();
+        test_invalid_socktype();
+        test_no_data();
     }
     catch (const std::exception& error) {
         std::cerr << error.what()
