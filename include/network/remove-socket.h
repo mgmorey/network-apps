@@ -17,10 +17,12 @@
 #define NETWORK_REMOVE_SOCKET_H
 
 #include "network/descriptor-type.h"            // descriptor_type
+#include "network/pathname.h"                   // Pathname
 
 namespace Network
 {
-    extern auto remove_socket(descriptor_type handle, bool verbose) -> bool;
+    extern auto remove(const Pathname& path, bool verbose) -> bool;
+    extern auto remove(descriptor_type handle, bool verbose) -> bool;
 }
 
 #endif
