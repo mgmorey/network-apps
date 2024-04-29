@@ -37,6 +37,9 @@ namespace Network
         [[nodiscard]] auto handle() const noexcept -> descriptor_type;
         [[nodiscard]] auto verbose() const noexcept -> bool;
 
+    protected:
+        auto remove() const noexcept -> void;
+
     private:
         descriptor_type m_handle {descriptor_null};
         bool m_bound:1 {false};

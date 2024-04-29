@@ -57,16 +57,7 @@ auto Network::Descriptor::close() noexcept -> Descriptor&
     }
 
     if (m_bound) {
-#ifndef WIN32
-        try {
-            remove_socket(m_handle, m_verbose);
-        }
-        catch (const std::exception& error) {
-            std::cerr << error.what()
-                      << std::endl;
-        }
-#endif
-
+        remove();
         m_bound = false;
     }
 
@@ -82,4 +73,17 @@ auto Network::Descriptor::handle() const noexcept -> descriptor_type
 auto Network::Descriptor::verbose() const noexcept -> bool
 {
     return m_verbose;
+}
+
+auto Network::Descriptor::remove() const noexcept -> void
+{
+#ifndef WIN32
+    try {
+        Network::remove(m_handle, m_verbose);
+    }
+    catch (const std::exception& error) {
+        std::cerr << error.what()
+                  << std::endl;
+    }
+#endif
 }
