@@ -16,22 +16,10 @@
 #ifndef WIN32
 
 #include "network/remove-socket.h"              // remove_socket()
-#include "network/descriptor-null.h"            // descriptor_null
-#include "network/descriptor-type.h"            // descriptor_type
-#include "network/to-path-descriptor.h"         // to_path()
+#include "network/optionalpathname.h"           // OptionalPathanme
 
 #include <filesystem>   // std::filesystem
 #include <iostream>     // std::cout, std::endl
-
-auto Network::remove(descriptor_type handle, bool verbose) -> bool
-{
-    if (handle == descriptor_null) {
-        return false;
-    }
-
-    const auto path {to_path(handle, verbose)};
-    return path ? remove(*path, verbose) : false;
-}
 
 auto Network::remove(const Pathname& path, bool verbose) -> bool
 {

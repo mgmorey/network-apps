@@ -18,12 +18,14 @@
 #include "network/descriptor-null.h"            // descriptor_null
 #include "network/descriptor-type.h"            // descriptor_type
 #ifndef WIN32
-#include "network/remove-socket.h"              // remove_socket()
+#include "network/remove-socket.h"              // remove()
+#include "network/to-path-descriptor.h"         // to_path()
 #endif
 
 #ifndef WIN32
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::endl
+#include <optional>     // std::nullopt
 #endif
 
 Network::Descriptor::Descriptor(descriptor_type t_handle,
@@ -47,7 +49,23 @@ auto Network::Descriptor::operator=(descriptor_type value) noexcept ->
 
 auto Network::Descriptor::bound(bool t_bound) -> void
 {
-    m_bound = t_bound;
+#ifndef WIN32
+    if (t_bound) {
+        m_path = to_path(m_handle, m_verbose);
+    }
+    else if (m_path) {
+        try {
+            Network::remove(*m_path, m_verbose);
+        }
+        catch (const std::exception& error) {
+            std::cerr << error.what()
+                      << std::endl;
+        }
+        m_path.reset();
+    }
+#else
+    static_cast<void>(t_bound);
+#endif
 }
 
 auto Network::Descriptor::close() noexcept -> Descriptor&
@@ -56,17 +74,15 @@ auto Network::Descriptor::close() noexcept -> Descriptor&
         return *this;
     }
 
-    if (m_bound) {
-        remove();
-        m_bound = false;
-    }
-
     if (const auto result {Network::close(m_handle, m_verbose)}) {
         std::cerr << result.string()
                   << std::endl;
     }
+    else {
+        m_handle = descriptor_null;
+    }
 
-    m_handle = descriptor_null;
+    bound(false);
     return *this;
 }
 
@@ -78,17 +94,4 @@ auto Network::Descriptor::handle() const noexcept -> descriptor_type
 auto Network::Descriptor::verbose() const noexcept -> bool
 {
     return m_verbose;
-}
-
-auto Network::Descriptor::remove() const noexcept -> void
-{
-#ifndef WIN32
-    try {
-        Network::remove(m_handle, m_verbose);
-    }
-    catch (const std::exception& error) {
-        std::cerr << error.what()
-                  << std::endl;
-    }
-#endif
 }

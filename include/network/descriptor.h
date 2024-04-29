@@ -18,6 +18,9 @@
 
 #include "network/descriptor-null.h"            // descriptor_null
 #include "network/descriptor-type.h"            // descriptor_type
+#ifndef WIN32
+#include "network/optionalpathname.h"           // OptionalPathanme
+#endif
 
 namespace Network
 {
@@ -37,13 +40,12 @@ namespace Network
         [[nodiscard]] auto handle() const noexcept -> descriptor_type;
         [[nodiscard]] auto verbose() const noexcept -> bool;
 
-    protected:
-        auto remove() const noexcept -> void;
-
     private:
         descriptor_type m_handle {descriptor_null};
-        bool m_bound:1 {false};
-        bool m_verbose:1 {false};
+#ifndef WIN32
+        OptionalPathname m_path {};
+#endif
+        bool m_verbose {false};
     };
 }
 
