@@ -41,10 +41,6 @@ auto Network::close(descriptor_type handle,
     static constexpr const auto* method {"::close"};
 #endif
 
-    if (handle == descriptor_null) {
-        return OsErrorResult {};
-    }
-
     if (verbose) {
         std::cout << "Calling "
                   << method
