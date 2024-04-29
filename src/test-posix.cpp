@@ -25,7 +25,7 @@
 
 #include <sys/socket.h>     // AF_UNIX, AF_UNSPEC, SOCK_STREAM
 
-#include <cerrno>       // EACCES, ENOENT, EROFS
+#include <cerrno>       // EACCES, EBADF, ENOENT, EROFS
 #include <cstdlib>      // EXIT_FAILURE, std::exit(),
                         // std::size_t
 #include <exception>    // std::exception
@@ -160,14 +160,23 @@ namespace TestSocket
                   << std::endl;
     }
 
-    auto test_close(descriptor_type handle) -> void
+    auto test_close(descriptor_type handle,
+                    const ErrorCodeSet& expected_codes) -> void
     {
-        Network::close(handle, verbose);
+        os_error_type actual_code {};
+
+        if (const auto result {close(handle, verbose)}) {
+            print(result);
+            actual_code = result.number();
+        }
+
+        assert(expected_codes.contains(actual_code));
     }
 
-    auto test_close_null() -> void
+    auto test_close_descriptor_null() -> void
     {
-        test_close(descriptor_null);
+	const ErrorCodeSet codes_bad_file_number {EBADF};
+        test_close(descriptor_null, codes_bad_file_number);
     }
 
     auto test_path(const auto path,
@@ -356,12 +365,12 @@ auto main(int argc, char* argv[]) -> int
         test_paths_valid();
         test_socketpair_valid();
         test_unix_socket_valid();
-        test_close_null();
         test_paths_invalid();
         test_socketpair_invalid_protocol();
         test_socketpair_invalid_type();
         test_unix_socket_invalid_protocol();
         test_unix_socket_invalid_type();
+        test_close_descriptor_null();
     }
     catch (const std::exception& error) {
         std::cerr << error.what()
