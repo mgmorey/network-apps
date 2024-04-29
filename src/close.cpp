@@ -16,6 +16,12 @@
 #include "network/close.h"                      // close()
 #include "network/descriptor-null.h"            // descriptor_null
 #include "network/descriptor-type.h"            // descriptor_type
+#include "network/format-os-error.h"            // format_os_error()
+#include "network/get-last-context-error.h"     // get_last_context_error()
+#include "network/oserrorresult.h"              // OsErrorResult
+#include "network/reset-last-context-error.h"   // reset_last_context_error()
+#include "network/socket-error.h"               // socket_error
+#include "network/to-os-error.h"                // to_os_error()
 
 #ifdef WIN32
 #include <winsock2.h>   // ::closesocket()
@@ -24,9 +30,10 @@
 #endif
 
 #include <iostream>     // std::cout, std::endl
+#include <sstream>      // std::ostringstream
 
 auto Network::close(descriptor_type handle,
-                    bool verbose) noexcept -> descriptor_type
+                    bool verbose) noexcept -> OsErrorResult
 {
 #ifdef WIN32
     static constexpr const auto* method {"::closesocket"};
@@ -35,7 +42,7 @@ auto Network::close(descriptor_type handle,
 #endif
 
     if (handle == descriptor_null) {
-        return handle;
+        return OsErrorResult {};
     }
 
     if (verbose) {
@@ -48,9 +55,25 @@ auto Network::close(descriptor_type handle,
     }
 
 #ifdef WIN32
-    ::closesocket(handle);
+    const auto result {::closesocket(handle)};
 #else
-    ::close(handle);
+    const auto result {::close(handle)};
 #endif
-    return descriptor_null;
+
+    if (result == socket_error) {
+        const auto error {get_last_context_error()};
+        const auto os_error {to_os_error(error)};
+        std::ostringstream oss;
+        oss << "Call to "
+            << method
+            << '('
+            << handle
+            << ") failed with error "
+            << error
+            << ": "
+            << format_os_error(os_error);
+        return OsErrorResult {os_error, oss.str()};
+    }
+
+    return OsErrorResult {};
 }

@@ -17,11 +17,12 @@
 #define NETWORK_CLOSE_H
 
 #include "network/descriptor-type.h"            // descriptor_type
+#include "network/oserrorresult.h"              // OsErrorResult
 
 namespace Network
 {
     extern auto close(descriptor_type handle,
-                      bool verbose = false) noexcept -> descriptor_type;
+                      bool verbose = false) noexcept -> OsErrorResult;
 }
 
 #endif
