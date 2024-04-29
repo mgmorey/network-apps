@@ -18,7 +18,7 @@
 #include "network/descriptor-null.h"            // descriptor_null
 #include "network/descriptor-type.h"            // descriptor_type
 #ifndef WIN32
-#include "network/remove-socket.h"              // remove()
+#include "network/remove.h"                     // remove()
 #include "network/to-path-descriptor.h"         // to_path()
 #endif
 

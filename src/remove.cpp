@@ -15,7 +15,7 @@
 
 #ifndef WIN32
 
-#include "network/remove-socket.h"              // remove_socket()
+#include "network/remove.h"                     // remove()
 #include "network/optionalpathname.h"           // OptionalPathanme
 
 #include <filesystem>   // std::filesystem

@@ -94,6 +94,7 @@
                                                 // reset_last_os_error()
 #include "network/overloaded.h"                 // Overloaded
 #include "network/read-string.h"                // read_string()
+#include "network/remove.h"                     // remove()
 #include "network/socket-error.h"               // socket_error
 #include "network/socket.h"                     // Socket
 #include "network/socketfamily.h"               // SocketFamily
