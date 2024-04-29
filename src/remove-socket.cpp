@@ -33,15 +33,7 @@ auto Network::remove(const Pathname& path, bool verbose) -> bool
                   << std::endl;
     }
 
-    const auto result {std::filesystem::remove(path)};
-
-    if (result && verbose) {
-        std::cout << "Removed "
-                  << path
-                  << std::endl;
-    }
-
-    return result;
+    return std::filesystem::remove(path);
 }
 
 auto Network::remove(descriptor_type handle, bool verbose) -> bool
