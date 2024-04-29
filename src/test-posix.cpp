@@ -52,6 +52,9 @@ namespace TestSocket
     using Network::SocketPair;
     using Network::UnixSocketHints;
     using Network::bind;
+    using Network::close;
+    using Network::descriptor_null;
+    using Network::descriptor_type;
     using Network::os_error_type;
     using Network::parse;
     using Network::path_length_max;
@@ -155,6 +158,16 @@ namespace TestSocket
                   << " bound to "
                   << Address(addr)
                   << std::endl;
+    }
+
+    auto test_close(descriptor_type handle) -> void
+    {
+        Network::close(handle, verbose);
+    }
+
+    auto test_close_null() -> void
+    {
+        test_close(descriptor_null);
     }
 
     auto test_path(const auto path,
@@ -343,6 +356,7 @@ auto main(int argc, char* argv[]) -> int
         test_paths_valid();
         test_socketpair_valid();
         test_unix_socket_valid();
+        test_close_null();
         test_paths_invalid();
         test_socketpair_invalid_protocol();
         test_socketpair_invalid_type();
