@@ -23,6 +23,16 @@
 #include <filesystem>   // std::filesystem
 #include <iostream>     // std::cout, std::endl
 
+auto Network::remove(descriptor_type handle, bool verbose) -> bool
+{
+    if (handle == descriptor_null) {
+        return false;
+    }
+
+    const auto path {to_path(handle, verbose)};
+    return path ? remove(*path, verbose) : false;
+}
+
 auto Network::remove(const Pathname& path, bool verbose) -> bool
 {
     if (verbose) {
@@ -34,16 +44,6 @@ auto Network::remove(const Pathname& path, bool verbose) -> bool
     }
 
     return std::filesystem::remove(path);
-}
-
-auto Network::remove(descriptor_type handle, bool verbose) -> bool
-{
-    if (handle == descriptor_null) {
-        return false;
-    }
-
-    const auto path {to_path(handle, verbose)};
-    return path ? remove(*path, verbose) : false;
 }
 
 #endif
