@@ -25,7 +25,6 @@
 #ifndef WIN32
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::endl
-#include <optional>     // std::nullopt
 #endif
 
 Network::Descriptor::Descriptor(descriptor_type t_handle,
@@ -47,21 +46,21 @@ auto Network::Descriptor::operator=(descriptor_type value) noexcept ->
     return *this;
 }
 
-auto Network::Descriptor::bound(bool t_bound) -> void
+auto Network::Descriptor::bound(bool t_bound) noexcept -> void
 {
 #ifndef WIN32
-    if (t_bound) {
-        m_path = to_path(m_handle, m_verbose);
-    }
-    else if (m_path) {
-        try {
+    try {
+        if (t_bound) {
+            m_path = to_path(m_handle, m_verbose);
+        }
+        else if (m_path) {
             Network::remove(*m_path, m_verbose);
+            m_path.reset();
         }
-        catch (const std::exception& error) {
-            std::cerr << error.what()
-                      << std::endl;
-        }
-        m_path.reset();
+    }
+    catch (const std::exception& error) {
+        std::cerr << error.what()
+                  << std::endl;
     }
 #else
     static_cast<void>(t_bound);

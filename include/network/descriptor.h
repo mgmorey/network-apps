@@ -35,7 +35,7 @@ namespace Network
         auto operator=(const Descriptor&) noexcept -> Descriptor& = delete;
         auto operator=(Descriptor&&) noexcept -> Descriptor& = delete;
         auto operator=(descriptor_type value) noexcept -> Descriptor&;
-        auto bound(bool t_bound) -> void;
+        auto bound(bool t_bound) noexcept -> void;
         auto close() noexcept -> Descriptor&;
         [[nodiscard]] auto handle() const noexcept -> descriptor_type;
         [[nodiscard]] auto verbose() const noexcept -> bool;
