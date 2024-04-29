@@ -61,7 +61,12 @@ auto Network::Descriptor::close() noexcept -> Descriptor&
         m_bound = false;
     }
 
-    m_handle = Network::close(m_handle, m_verbose);
+    if (const auto result {Network::close(m_handle, m_verbose)}) {
+        std::cerr << result.string()
+                  << std::endl;
+    }
+
+    m_handle = descriptor_null;
     return *this;
 }
 
