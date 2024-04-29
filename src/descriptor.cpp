@@ -22,7 +22,7 @@
 #include "network/get-sockname.h"               // get_sockname()
 #ifndef WIN32
 #include "network/remove.h"                     // remove()
-#include "network/to-path-descriptor.h"         // to_path()
+#include "network/to-path-bytestring.h"         // to_path()
 #endif
 
 #ifndef WIN32
@@ -54,7 +54,7 @@ auto Network::Descriptor::bound(bool t_bound) noexcept -> void
 #ifndef WIN32
     try {
         if (t_bound) {
-            m_path = to_path(m_handle, m_verbose);
+            m_path = to_path(sockname());
         }
         else if (m_path) {
             Network::remove(*m_path, m_verbose);
