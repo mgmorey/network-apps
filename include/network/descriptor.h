@@ -16,6 +16,7 @@
 #ifndef NETWORK_DESCRIPTOR_H
 #define NETWORK_DESCRIPTOR_H
 
+#include "network/bytestring.h"                 // ByteString
 #include "network/descriptor-null.h"            // descriptor_null
 #include "network/descriptor-type.h"            // descriptor_type
 #ifndef WIN32
@@ -38,6 +39,8 @@ namespace Network
         auto bound(bool t_bound) noexcept -> void;
         auto close() noexcept -> Descriptor&;
         [[nodiscard]] auto handle() const noexcept -> descriptor_type;
+        [[nodiscard]] auto peername() const -> ByteString;
+        [[nodiscard]] auto sockname() const -> ByteString;
         [[nodiscard]] auto verbose() const noexcept -> bool;
 
     private:

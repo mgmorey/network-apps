@@ -19,8 +19,6 @@
 #include "network/descriptor-null.h"            // descriptor_null
 #include "network/descriptor-type.h"            // descriptor_type
 #include "network/descriptor.h"                 // Descriptor
-#include "network/get-peername.h"               // get_peername()
-#include "network/get-sockname.h"               // get_sockname()
 #include "network/sockethints.h"                // SocketHints
 
 Network::Socket::Socket(const SocketHints& t_hints, bool t_verbose) :
@@ -62,10 +60,10 @@ auto Network::Socket::is_open() const noexcept -> bool
 
 auto Network::Socket::peername() const -> ByteString
 {
-    return get_peername(m_descriptor->handle(), m_descriptor->verbose());
+    return m_descriptor->peername();
 }
 
 auto Network::Socket::sockname() const -> ByteString
 {
-    return get_sockname(m_descriptor->handle(), m_descriptor->verbose());
+    return m_descriptor->sockname();
 }

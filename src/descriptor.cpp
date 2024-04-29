@@ -14,9 +14,12 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/descriptor.h"                 // Descriptor
+#include "network/bytestring.h"                 // ByteString
 #include "network/close.h"                      // close()
 #include "network/descriptor-null.h"            // descriptor_null
 #include "network/descriptor-type.h"            // descriptor_type
+#include "network/get-peername.h"               // get_peername()
+#include "network/get-sockname.h"               // get_sockname()
 #ifndef WIN32
 #include "network/remove.h"                     // remove()
 #include "network/to-path-descriptor.h"         // to_path()
@@ -88,6 +91,16 @@ auto Network::Descriptor::close() noexcept -> Descriptor&
 auto Network::Descriptor::handle() const noexcept -> descriptor_type
 {
     return m_handle;
+}
+
+auto Network::Descriptor::peername() const -> ByteString
+{
+    return get_peername(m_handle, m_verbose);
+}
+
+auto Network::Descriptor::sockname() const -> ByteString
+{
+    return get_sockname(m_handle, m_verbose);
 }
 
 auto Network::Descriptor::verbose() const noexcept -> bool
