@@ -18,8 +18,11 @@
 #include "network/to-path-bytestring.h"         // to_path()
 #include "network/bytestring.h"                 // ByteString
 #include "network/get-path-pointer-bs.h"        // get_path_pointer()
+#include "network/get-sa-family.h"              // get_sa_family()
 #include "network/optionalpathname.h"           // OptionalPathname
 #include "network/sun-length-limits.h"          // sun_length_min
+
+#include <sys/socket.h>     // AF_UNIX
 
 #include <cstring>      // ::strnlen()
 #include <optional>     // std::nullopt
@@ -27,6 +30,10 @@
 
 auto Network::to_path(const ByteString& addr) -> OptionalPathname
 {
+    if (get_sa_family(addr) != AF_UNIX) {
+        return std::nullopt;
+    }
+
     const auto* const sun_path {get_path_pointer(addr)};
     const auto sun_len {addr.size()};
 
