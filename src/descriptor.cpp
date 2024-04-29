@@ -27,8 +27,8 @@
 
 #ifndef WIN32
 #include <exception>    // std::exception
-#include <iostream>     // std::cerr, std::endl
 #endif
+#include <iostream>     // std::cerr, std::endl
 
 Network::Descriptor::Descriptor(descriptor_type t_handle,
                                 bool t_verbose) noexcept :
