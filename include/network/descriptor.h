@@ -19,6 +19,7 @@
 #include "network/bytestring.h"                 // ByteString
 #include "network/descriptor-null.h"            // descriptor_null
 #include "network/descriptor-type.h"            // descriptor_type
+#include "network/optionalbytestring.h"         // OptionalByteString
 #ifndef WIN32
 #include "network/optionalpathname.h"           // OptionalPathanme
 #endif
@@ -48,6 +49,8 @@ namespace Network
 #ifndef WIN32
         OptionalPathname m_path {};
 #endif
+        mutable OptionalByteString m_peername {};
+        mutable OptionalByteString m_sockname {};
         bool m_verbose {false};
     };
 }

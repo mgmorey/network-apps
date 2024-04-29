@@ -95,12 +95,20 @@ auto Network::Descriptor::handle() const noexcept -> descriptor_type
 
 auto Network::Descriptor::peername() const -> ByteString
 {
-    return get_peername(m_handle, m_verbose);
+    if (!m_peername) {
+        m_peername = get_peername(m_handle, m_verbose);
+    }
+
+    return *m_peername;
 }
 
 auto Network::Descriptor::sockname() const -> ByteString
 {
-    return get_sockname(m_handle, m_verbose);
+    if (!m_sockname) {
+        m_sockname = get_sockname(m_handle, m_verbose);
+    }
+
+    return *m_sockname;
 }
 
 auto Network::Descriptor::verbose() const noexcept -> bool
