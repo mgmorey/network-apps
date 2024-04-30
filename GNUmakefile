@@ -67,7 +67,7 @@ get-sockname.cpp get-socknameresult.cpp get-templates-endpoint.cpp	\
 get-templates-hostname.cpp is-running.cpp listen.cpp logicerror.cpp	\
 open-endpoint.cpp open-socket.cpp open-templates.cpp open.cpp		\
 oserrorresult.cpp parse-argumentspan.cpp parse.cpp rangeerror.cpp	\
-read-string.cpp read.cpp reset-last-context-error.cpp			\
+read-string.cpp read.cpp reset-last-context-error.cpp remove.cpp	\
 reset-last-os-error.cpp runtimeerror.cpp set-last-context-error.cpp	\
 set-last-os-error.cpp socket.cpp socketfamily.cpp socketflags.cpp	\
 sockethost.cpp socketprotocol.cpp sockettype.cpp startup.cpp		\
@@ -82,7 +82,7 @@ write-string.cpp write.cpp
 libnetwork_unix_sources = address-sun.cpp create-socketpair.cpp		\
 create-socketpairresult.cpp get-path-length.cpp				\
 get-path-pointer-bs.cpp get-path-pointer-sun.cpp get-sun-length.cpp	\
-get-sun-pointer.cpp remove.cpp socketpair.cpp to-bytestring-char.cpp	\
+get-sun-pointer.cpp socketpair.cpp to-bytestring-char.cpp		\
 to-bytestring-path.cpp to-path-bytestring.cpp to-path-descriptor.cpp	\
 validate-char.cpp validate-path.cpp validate-sun.cpp
 
@@ -262,6 +262,10 @@ clean:
 .PHONY: count-include-and-source-lines
 count-include-and-source-lines:
 	find include src -type f | sort | xargs wc
+
+.PHONY: count-libnetwork-common-source-files
+count-libnetwork-common-source-files: $(libnetwork_common_sources)
+	printf '%s\n' $^ | wc -l
 
 .PHONY: count-libnetwork-source-files
 count-libnetwork-source-files: $(libnetwork_sources)
