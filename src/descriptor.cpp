@@ -49,16 +49,22 @@ auto Network::Descriptor::operator=(descriptor_type value) noexcept ->
     return *this;
 }
 
+auto Network::Descriptor::bound() const noexcept -> bool
+{
+    return m_pathname.has_value();
+}
+
 auto Network::Descriptor::bound(bool t_bound) noexcept -> void
 {
 #ifndef WIN32
     try {
-        if (t_bound) {
-            m_path = to_path(sockname());
-        }
-        else if (m_path) {
-            Network::remove(*m_path, m_verbose);
-            m_path.reset();
+        if (bound() != t_bound) {
+            if (m_pathname) {
+                Network::remove(*m_pathname, m_verbose);
+                m_pathname.reset();
+            } else {
+                m_pathname = pathname();
+            }
         }
     }
     catch (const std::exception& error) {
@@ -91,6 +97,11 @@ auto Network::Descriptor::close() noexcept -> Descriptor&
 auto Network::Descriptor::handle() const noexcept -> descriptor_type
 {
     return m_handle;
+}
+
+auto Network::Descriptor::pathname() const -> OptionalPathname
+{
+    return to_path(sockname());
 }
 
 auto Network::Descriptor::peername() const -> ByteString
