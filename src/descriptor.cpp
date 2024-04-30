@@ -29,6 +29,7 @@
 #include <exception>    // std::exception
 #endif
 #include <iostream>     // std::cerr, std::endl
+#include <optional>     // std::nullopt
 
 Network::Descriptor::Descriptor(descriptor_type t_handle,
                                 bool t_verbose) noexcept :
@@ -51,7 +52,11 @@ auto Network::Descriptor::operator=(descriptor_type value) noexcept ->
 
 auto Network::Descriptor::bound() const noexcept -> bool
 {
+#ifndef WIN32
     return m_pathname.has_value();
+#else
+    return false;
+#endif
 }
 
 auto Network::Descriptor::bound(bool t_bound) noexcept -> void
@@ -101,7 +106,11 @@ auto Network::Descriptor::handle() const noexcept -> descriptor_type
 
 auto Network::Descriptor::pathname() const -> OptionalPathname
 {
+#ifndef WIN32
     return to_path(sockname());
+#else
+    return std::nullopt;
+#endif
 }
 
 auto Network::Descriptor::peername() const -> ByteString
