@@ -41,7 +41,6 @@ namespace Network
         auto bound(bool t_bound) noexcept -> void;
         auto close() noexcept -> Descriptor&;
         [[nodiscard]] auto handle() const noexcept -> descriptor_type;
-        [[nodiscard]] auto pathname() const -> OptionalPathname;
         [[nodiscard]] auto peername() const -> ByteString;
         [[nodiscard]] auto sockname() const -> ByteString;
         [[nodiscard]] auto verbose() const noexcept -> bool;
