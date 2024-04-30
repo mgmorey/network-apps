@@ -67,7 +67,7 @@ get-sockname.cpp get-socknameresult.cpp get-templates-endpoint.cpp	\
 get-templates-hostname.cpp is-running.cpp listen.cpp logicerror.cpp	\
 open-endpoint.cpp open-socket.cpp open-templates.cpp open.cpp		\
 oserrorresult.cpp parse-argumentspan.cpp parse.cpp rangeerror.cpp	\
-read-string.cpp read.cpp reset-last-context-error.cpp remove.cpp	\
+read-string.cpp read.cpp remove.cpp reset-last-context-error.cpp	\
 reset-last-os-error.cpp runtimeerror.cpp set-last-context-error.cpp	\
 set-last-os-error.cpp socket.cpp socketfamily.cpp socketflags.cpp	\
 sockethost.cpp socketprotocol.cpp sockettype.cpp startup.cpp		\
