@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_REMOVE_SOCKET_H
-#define NETWORK_REMOVE_SOCKET_H
+#ifndef NETWORK_REMOVE_H
+#define NETWORK_REMOVE_H
 
 #include "network/pathname.h"                   // Pathname
 
