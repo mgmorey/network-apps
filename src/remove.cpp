@@ -15,8 +15,8 @@
 
 #ifndef WIN32
 
-#include "network/remove.h"                     // remove()
-#include "network/optionalpathname.h"           // OptionalPathanme
+#include "network/remove.h"             // remove()
+#include "network/pathname.h"           // Pathanme
 
 #include <filesystem>   // std::filesystem
 #include <iostream>     // std::cout, std::endl
