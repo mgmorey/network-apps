@@ -24,8 +24,7 @@
 auto Network::remove(const Pathname& path, bool verbose) -> bool
 {
     if (verbose) {
-        std::cout << "Calling std::filesystem::remove"
-                  << '('
+        std::cout << "Calling std::filesystem::remove("
                   << path
                   << ')'
                   << std::endl;
