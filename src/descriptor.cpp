@@ -64,7 +64,7 @@ auto Network::Descriptor::bound(bool t_bound) noexcept -> void
     try {
         if (bound() != t_bound) {
             if (m_pathname) {
-                Network::remove(*m_pathname, m_verbose);
+                remove(*m_pathname, m_verbose);
                 m_pathname.reset();
             } else {
                 m_pathname = to_path(sockname());
