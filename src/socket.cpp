@@ -21,13 +21,20 @@
 #include "network/descriptor.h"                 // Descriptor
 #include "network/sockethints.h"                // SocketHints
 
-Network::Socket::Socket(const SocketHints& t_hints, bool t_verbose) :
-    Socket(create_socket(t_hints, t_verbose))
-{
-}
+#include <utility>      // std::move()
 
 Network::Socket::Socket(descriptor_type t_handle, bool t_verbose) :
     m_descriptor(new Descriptor {t_handle, t_verbose})
+{
+}
+
+Network::Socket::Socket(const SocketHints& t_hints, bool t_verbose) :
+    Socket(create_socket(std::move(t_hints), t_verbose))
+{
+}
+
+Network::Socket::Socket(SocketHints&& t_hints, bool t_verbose) :
+    Socket(create_socket(t_hints, t_verbose))
 {
 }
 
