@@ -13,8 +13,6 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef WIN32
-
 #include "network/remove.h"             // remove()
 #include "network/pathname.h"           // Pathanme
 
@@ -32,5 +30,3 @@ auto Network::remove(const Pathname& path, bool verbose) -> bool
 
     return std::filesystem::remove(path);
 }
-
-#endif
