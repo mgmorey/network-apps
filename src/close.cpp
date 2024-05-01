@@ -32,8 +32,7 @@
 #include <iostream>     // std::cout, std::endl
 #include <sstream>      // std::ostringstream
 
-auto Network::close(descriptor_type handle,
-                    bool verbose) noexcept -> OsErrorResult
+auto Network::close(descriptor_type handle, bool verbose) -> OsErrorResult
 {
 #ifdef WIN32
     static constexpr const auto* method {"::closesocket"};

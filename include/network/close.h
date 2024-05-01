@@ -22,7 +22,7 @@
 namespace Network
 {
     extern auto close(descriptor_type handle,
-                      bool verbose = false) noexcept -> OsErrorResult;
+                      bool verbose = false) -> OsErrorResult;
 }
 
 #endif
