@@ -18,11 +18,6 @@
 
 #include "network/bytestring.h"                 // ByteString
 #include "network/descriptor-type.h"            // descriptor_type
-#include "network/descriptor.h"                 // Descriptor
-#include "network/socket-family-type.h"         // socket_family_type
-#include "network/socket-flags-type.h"          // socket_flags_type
-#include "network/socket-protocol-type.h"       // socket_protocol_type
-#include "network/socket-type-type.h"           // socket_type_type
 #include "network/sockethints.h"                // SocketHints
 
 #include <memory>      // std::shared_ptr
@@ -30,6 +25,8 @@
 
 namespace Network
 {
+    class Descriptor;
+
     class Socket
     {
         friend auto operator<<(std::ostream& os,
