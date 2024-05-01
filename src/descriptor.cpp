@@ -49,20 +49,11 @@ auto Network::Descriptor::operator=(descriptor_type value) noexcept ->
     return *this;
 }
 
-auto Network::Descriptor::bound() const noexcept -> bool
-{
-#ifndef WIN32
-    return m_pathname.has_value();
-#else
-    return false;
-#endif
-}
-
 auto Network::Descriptor::bound(bool t_bound) noexcept -> void
 {
 #ifndef WIN32
     try {
-        if (bound() != t_bound) {
+        if (m_pathname.has_value() != t_bound) {
             if (m_pathname) {
                 remove(*m_pathname, m_verbose);
                 m_pathname.reset();
