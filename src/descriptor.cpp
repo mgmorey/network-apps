@@ -39,7 +39,13 @@ Network::Descriptor::Descriptor(descriptor_type t_handle,
 
 Network::Descriptor::~Descriptor() noexcept
 {
-    static_cast<void>(close());
+    try {
+        static_cast<void>(close());
+    }
+    catch (const std::exception& error) {
+        std::cerr << error.what()
+                  << std::endl;
+    }
 }
 
 auto Network::Descriptor::operator=(descriptor_type value) noexcept ->
@@ -49,29 +55,24 @@ auto Network::Descriptor::operator=(descriptor_type value) noexcept ->
     return *this;
 }
 
-auto Network::Descriptor::bound(bool t_bound) noexcept -> void
+auto Network::Descriptor::bound(bool t_bound) -> Descriptor&
 {
 #ifndef WIN32
-    try {
-        if (m_pathname.has_value() != t_bound) {
-            if (m_pathname) {
-                remove(*m_pathname, m_verbose);
-                m_pathname.reset();
-            } else {
-                m_pathname = to_path(sockname());
-            }
+    if (m_pathname.has_value() != t_bound) {
+        if (m_pathname) {
+            remove(*m_pathname, m_verbose);
+            m_pathname.reset();
+        } else {
+            m_pathname = to_path(sockname());
         }
-    }
-    catch (const std::exception& error) {
-        std::cerr << error.what()
-                  << std::endl;
     }
 #else
     static_cast<void>(t_bound);
 #endif
+    return *this;
 }
 
-auto Network::Descriptor::close() noexcept -> Descriptor&
+auto Network::Descriptor::close() -> Descriptor&
 {
     if (m_handle == descriptor_null) {
         return *this;
