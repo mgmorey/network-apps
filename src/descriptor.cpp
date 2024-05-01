@@ -48,10 +48,10 @@ Network::Descriptor::~Descriptor() noexcept
     }
 }
 
-auto Network::Descriptor::operator=(descriptor_type value) noexcept ->
+auto Network::Descriptor::operator=(descriptor_type t_handle) noexcept ->
     Descriptor&
 {
-    m_handle = value;
+    m_handle = t_handle;
     return *this;
 }
 
