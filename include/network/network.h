@@ -46,12 +46,12 @@
                                                 // sun_path_offset,
                                                 // sun_size
 #include "network/context.h"                    // Context
-#include "network/create-socket.h"              // create_socket()
 #ifndef WIN32
-#include "network/create-socketpair.h"          // create_socketpair()
-#include "network/create-socketpairresult.h"    // create_socketpairresult()
+#include "network/create-pair.h"                // create_pair()
+#include "network/create-pairresult.h"          // create_pairresult()
 #endif
-#include "network/create-socketresult.h"        // create_socketresult()
+#include "network/create-result.h"              // create_result()
+#include "network/create.h"                     // create()
 #include "network/error-strings.h"              // VISITOR_ERROR
 #include "network/exceptions.h"                 // Error, LogicError,
                                                 // RuntimeError

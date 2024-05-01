@@ -13,17 +13,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_CREATE_SOCKETPAIRRESULT_H
-#define NETWORK_CREATE_SOCKETPAIRRESULT_H
+#ifndef NETWORK_CREATE_H
+#define NETWORK_CREATE_H
 
+#include "network/socket.h"                     // Socket
 #include "network/sockethints.h"                // SocketHints
-#include "network/socketpairresult.h"           // SocketPairResult
 
 namespace Network
 {
-    extern auto create_socketpairresult(const SocketHints& hints,
-                                        bool verbose = false) noexcept ->
-        SocketPairResult;
+    extern auto create(const SocketHints &hints,
+                       bool verbose = false) -> Socket;
 }
 
 #endif

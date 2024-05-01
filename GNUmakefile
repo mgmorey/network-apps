@@ -52,18 +52,18 @@ libnetwork_common_sources = accept.cpp address-sa.cpp address-sin.cpp	\
 address-sin6.cpp address.cpp addresserror.cpp addresslist.cpp		\
 addressstring.cpp argumentdata.cpp bind-endpoint.cpp			\
 bind-socket-bs.cpp cleanup.cpp close.cpp connect-endpoint.cpp		\
-connect-socket-bs.cpp context.cpp create-socket.cpp			\
-create-socketresult.cpp descriptor.cpp error.cpp familyerror.cpp	\
-format-ai-error.cpp format-bytestring.cpp format-os-error.cpp		\
-format.cpp get-endpoint.cpp get-endpointresult.cpp get-hostname.cpp	\
-get-hostnameresult.cpp get-hosts.cpp get-last-context-error.cpp		\
-get-last-os-error.cpp get-length-maximum.cpp get-length-minimum.cpp	\
-get-name.cpp get-nameresult.cpp get-operands.cpp get-option.cpp		\
-get-options.cpp get-peername.cpp get-peernameresult.cpp			\
-get-sa-family.cpp get-sa-length.cpp get-sa-pointer.cpp			\
-get-sin-addr.cpp get-sin-pointer.cpp get-sin-port.cpp			\
-get-sin6-addr.cpp get-sin6-pointer.cpp get-sin6-port.cpp		\
-get-sockname.cpp get-socknameresult.cpp get-templates-endpoint.cpp	\
+connect-socket-bs.cpp context.cpp create-result.cpp create.cpp		\
+descriptor.cpp error.cpp familyerror.cpp format-ai-error.cpp		\
+format-bytestring.cpp format-os-error.cpp format.cpp get-endpoint.cpp	\
+get-endpointresult.cpp get-hostname.cpp get-hostnameresult.cpp		\
+get-hosts.cpp get-last-context-error.cpp get-last-os-error.cpp		\
+get-length-maximum.cpp get-length-minimum.cpp get-name.cpp		\
+get-nameresult.cpp get-operands.cpp get-option.cpp get-options.cpp	\
+get-peername.cpp get-peernameresult.cpp get-sa-family.cpp		\
+get-sa-length.cpp get-sa-pointer.cpp get-sin-addr.cpp			\
+get-sin-pointer.cpp get-sin-port.cpp get-sin6-addr.cpp			\
+get-sin6-pointer.cpp get-sin6-port.cpp get-sockname.cpp			\
+get-socknameresult.cpp get-templates-endpoint.cpp			\
 get-templates-hostname.cpp is-running.cpp listen.cpp logicerror.cpp	\
 open-endpoint.cpp open-socket.cpp open-templates.cpp open.cpp		\
 oserrorresult.cpp parse-argumentspan.cpp parse.cpp rangeerror.cpp	\
@@ -79,12 +79,12 @@ to-string-vector-byte.cpp to-string-vector-char.cpp validate-bs.cpp	\
 validate-sa.cpp validate-sin.cpp validate-sin6.cpp version.cpp		\
 write-string.cpp write.cpp
 
-libnetwork_unix_sources = address-sun.cpp create-socketpair.cpp		\
-create-socketpairresult.cpp get-path-length.cpp				\
-get-path-pointer-bs.cpp get-path-pointer-sun.cpp get-sun-length.cpp	\
-get-sun-pointer.cpp socketpair.cpp to-bytestring-char.cpp		\
-to-bytestring-path.cpp to-path-bytestring.cpp to-path-descriptor.cpp	\
-validate-char.cpp validate-path.cpp validate-sun.cpp
+libnetwork_unix_sources = address-sun.cpp create-pair.cpp		\
+create-pairresult.cpp get-path-length.cpp get-path-pointer-bs.cpp	\
+get-path-pointer-sun.cpp get-sun-length.cpp get-sun-pointer.cpp		\
+socketpair.cpp to-bytestring-char.cpp to-bytestring-path.cpp		\
+to-path-bytestring.cpp to-path-descriptor.cpp validate-char.cpp		\
+validate-path.cpp validate-sun.cpp
 
 test_common_sources = test-address.cpp test-bind.cpp test-connect.cpp	\
 test-context.cpp test-create.cpp test-host.cpp test-hostname.cpp	\

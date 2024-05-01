@@ -13,9 +13,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/create-socket.h"              // create_socket()
+#include "network/create.h"                     // create()
 #include "network/always-false.h"               // always_false_v
-#include "network/create-socketresult.h"        // create_socketresult()
+#include "network/create-result.h"              // create_result()
 #include "network/descriptor-null.h"            // descriptor_null
 #include "network/error-strings.h"              // VISITOR_ERROR
 #include "network/error.h"                      // Error
@@ -26,11 +26,10 @@
 #include <type_traits>  // std::decay_t, std::is_same_v
 #include <variant>      // std::visit()
 
-auto Network::create_socket(const SocketHints& hints,
-                            bool verbose) -> Socket
+auto Network::create(const SocketHints& hints, bool verbose) -> Socket
 {
     Socket result {descriptor_null, verbose};
-    const auto socket_result {create_socketresult(hints, verbose)};
+    const auto socket_result {create_result(hints, verbose)};
     std::visit([&](auto&& arg) {
         using T = std::decay_t<decltype(arg)>;
 

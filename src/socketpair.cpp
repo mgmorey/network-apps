@@ -16,14 +16,14 @@
 #ifndef WIN32
 
 #include "network/socketpair.h"                 // SocketPair
-#include "network/create-socketpair.h"          // create_socketpair()
+#include "network/create-pair.h"                // create_pair()
 #include "network/socket.h"                     // Socket
 #include "network/sockethints.h"                // SocketHints
 
 #include <cstddef>      // std::size_t
 
 Network::SocketPair::SocketPair(const SocketHints& t_hints, bool t_verbose) :
-    SocketPair(create_socketpair(t_hints, t_verbose))
+    SocketPair(create_pair(t_hints, t_verbose))
 {
 }
 

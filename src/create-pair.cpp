@@ -15,9 +15,9 @@
 
 #ifndef WIN32
 
-#include "network/create-socketpair.h"          // create_socketpair()
+#include "network/create-pair.h"                // create_pair()
 #include "network/always-false.h"               // always_false_v
-#include "network/create-socketpairresult.h"    // create_socketpairresult()
+#include "network/create-pairresult.h"          // create_pairresult()
 #include "network/error-strings.h"              // VISITOR_ERROR
 #include "network/error.h"                      // Error
 #include "network/logicerror.h"                 // LogicError
@@ -29,11 +29,11 @@
 #include <type_traits>  // std::decay_t, std::is_same_v
 #include <variant>      // std::visit()
 
-auto Network::create_socketpair(const SocketHints& hints,
+auto Network::create_pair(const SocketHints& hints,
                                 bool verbose) -> SocketPair
 {
     std::optional<SocketPair> socketpair;
-    const auto result {create_socketpairresult(hints, verbose)};
+    const auto result {create_pairresult(hints, verbose)};
     std::visit([&](auto&& arg) {
         using T = std::decay_t<decltype(arg)>;
 

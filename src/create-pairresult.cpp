@@ -13,71 +13,80 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/create-socketresult.h"        // create_socketresult()
+#ifndef WIN32
+
+#include "network/create-pairresult.h"          // create_pairresult()
 #include "network/descriptor-null.h"            // descriptor_null
+#include "network/descriptor-type.h"            // descriptor_type
 #include "network/format-os-error.h"            // format_os_error()
 #include "network/format.h"                     // Format
 #include "network/get-last-context-error.h"     // get_last_context_error()
 #include "network/oserrorresult.h"              // OsErrorResult
 #include "network/reset-last-context-error.h"   // reset_last_context_error()
+#include "network/socket-error.h"               // socket_error
 #include "network/socket.h"                     // Socket
 #include "network/socketfamily.h"               // SocketFamily
 #include "network/socketflags.h"                // SocketFlags
 #include "network/sockethints.h"                // SocketHints
+#include "network/socketpair.h"                 // SocketPair
+#include "network/socketpairresult.h"           // SocketPairResult
 #include "network/socketprotocol.h"             // SocketProtocol
-#include "network/socketresult.h"               // SocketResult
 #include "network/sockettype.h"                 // SocketType
 #include "network/to-os-error.h"                // to_os_error()
 
-#ifdef WIN32
-#include <winsock2.h>       // ::socket()
-#else
-#include <sys/socket.h>     // ::socket()
-#endif
+#include <sys/socket.h>     // ::socketpair()
 
+#include <array>        // std::array
 #include <iostream>     // std::cout, std::endl
 #include <sstream>      // std::ostringstream
 
-auto Network::create_socketresult(const SocketHints& hints,
-                                  bool verbose) -> SocketResult
+auto Network::create_pairresult(const SocketHints& hints,
+                                bool verbose) noexcept -> SocketPairResult
 {
     static constexpr auto delim {", "};
     static constexpr auto tab {0};
 
+    std::array<descriptor_type, 2> handles {descriptor_null, descriptor_null};
+
     if (verbose) {
-        std::cout << "Calling ::socket("
+        std::cout << "Calling ::socketpair("
                   << Format("domain")
                   << SocketFamily(hints.m_family)
                   << Format(delim, tab, "type")
                   << SocketType(hints.m_socktype)
                   << Format(delim, tab, "protocol")
                   << SocketProtocol(hints.m_protocol, hints.m_family)
-                  << ')'
+                  << ", ...)"
                   << std::endl;
     }
 
     reset_last_context_error();
-    const auto handle {::socket(hints.m_family,
-                                hints.m_socktype,
-                                hints.m_protocol)};
 
-    if (handle == descriptor_null) {
+    if (::socketpair(hints.m_family,
+                     hints.m_socktype,
+                     hints.m_protocol,
+                     handles.data()) == socket_error) {
         const auto error {get_last_context_error()};
         const auto os_error {to_os_error(error)};
         std::ostringstream oss;
-        oss << "Call to ::socket("
+        oss << "Call to ::socketpair("
             << Format("domain")
             << SocketFamily(hints.m_family)
             << Format(delim, tab, "type")
             << SocketType(hints.m_socktype)
             << Format(delim, tab, "protocol")
             << SocketProtocol(hints.m_protocol, hints.m_family)
-            << ") failed with error "
+            << ", ...) failed with error "
             << error
             << ": "
             << format_os_error(os_error);
         return OsErrorResult {os_error, oss.str()};
     }
 
-    return Socket {handle, verbose};
+    return SocketPair {
+        Socket {handles[0], verbose},
+        Socket {handles[1], verbose}
+    };
 }
+
+#endif
