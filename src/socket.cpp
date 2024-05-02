@@ -53,11 +53,6 @@ auto Network::Socket::close() -> Socket&
     return *this;
 }
 
-auto Network::Socket::handle() const noexcept -> descriptor_type
-{
-    return m_descriptor->handle();
-}
-
 auto Network::Socket::peername() const -> ByteString
 {
     return m_descriptor->peername();

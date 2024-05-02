@@ -22,7 +22,7 @@
 auto Network::operator<<(std::ostream& os,
                          const Socket& sock) noexcept -> std::ostream&
 {
-    const auto handle {sock.handle()};
+    const auto handle {static_cast<descriptor_type>(sock)};
 
     if (handle == descriptor_null) {
         return os << string_null;

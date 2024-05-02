@@ -47,7 +47,6 @@ namespace Network
         explicit operator bool() const noexcept;
         auto bound(bool t_bound) -> Socket&;
         auto close() -> Socket&;
-        [[nodiscard]] auto handle() const noexcept -> descriptor_type;
         [[nodiscard]] auto peername() const -> ByteString;
         [[nodiscard]] auto sockname() const -> ByteString;
 
