@@ -64,6 +64,7 @@ namespace TestConnect
     using Network::SocketHints;
     using Network::SocketResult;
     using Network::SocketResultVector;
+    using Network::af_ip_v4;
     using Network::always_false_v;
     using Network::connect;
     using Network::get_hostname;
@@ -183,6 +184,15 @@ namespace TestConnect
         return codes;
     }
 
+    auto get_hints() -> SocketHints
+    {
+        if (getenv("http_proxy")) {
+            return IpSocketHints {af_ip_v4, SOCK_STREAM, AI_CANONNAME};
+        }
+
+        return IpSocketHints {SOCK_STREAM, AI_CANONNAME};
+    }
+
     auto parse_arguments(int argc, char** argv) -> Endpoint
     {
         const auto [operands, options] {parse(argc, argv, "v")};
@@ -270,7 +280,7 @@ auto main(int argc, char* argv[]) -> int
 {
     using namespace TestConnect;
 
-    static const IpSocketHints hints {SOCK_STREAM, AI_CANONNAME};
+    const SocketHints hints {get_hints()};
 
     try {
         const auto& context {Context::instance()};
