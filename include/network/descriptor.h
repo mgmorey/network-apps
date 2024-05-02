@@ -17,9 +17,9 @@
 #define NETWORK_DESCRIPTOR_H
 
 #include "network/bytestring.h"                 // ByteString
+#include "network/optionalbytestring.h"         // OptionalByteString
 #include "network/socket-null.h"                // socket_null
 #include "network/socket-type.h"                // socket_type
-#include "network/optionalbytestring.h"         // OptionalByteString
 #ifndef WIN32
 #include "network/optionalpathname.h"           // OptionalPathanme
 #endif

@@ -16,8 +16,8 @@
 #ifndef NETWORK_CLOSE_H
 #define NETWORK_CLOSE_H
 
-#include "network/socket-type.h"                // socket_type
 #include "network/oserrorresult.h"              // OsErrorResult
+#include "network/socket-type.h"                // socket_type
 
 namespace Network
 {

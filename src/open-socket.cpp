@@ -16,7 +16,6 @@
 #include "network/open-socket.h"                // open()
 #include "network/addresserror.h"               // AddressError
 #include "network/addressstring.h"              // AddressString
-#include "network/socket-type.h"                // socket_type
 #include "network/format-os-error.h"            // format_os_error()
 #include "network/get-last-context-error.h"     // get_last_context_error()
 #include "network/get-sa-length.h"              // get_sa_length()
@@ -27,6 +26,7 @@
 #include "network/reset-last-context-error.h"   // reset_last_context_error()
 #include "network/sa-length-limits.h"           // sa_length_min
 #include "network/socket-error.h"               // socket_error
+#include "network/socket-type.h"                // socket_type
 #include "network/to-os-error.h"                // to_os_error()
 
 #include <iostream>     // std::cout, std::endl

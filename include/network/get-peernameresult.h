@@ -16,8 +16,8 @@
 #ifndef NETWORK_GET_PEERNAMERESULT_H
 #define NETWORK_GET_PEERNAMERESULT_H
 
-#include "network/socket-type.h"                // socket_type
 #include "network/peernameresult.h"             // PeerNameResult
+#include "network/socket-type.h"                // socket_type
 
 namespace Network
 {

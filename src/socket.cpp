@@ -16,9 +16,9 @@
 #include "network/socket.h"                     // Socket
 #include "network/bytestring.h"                 // ByteString
 #include "network/create.h"                     // create()
+#include "network/descriptor.h"                 // Descriptor
 #include "network/socket-null.h"                // socket_null
 #include "network/socket-type.h"                // socket_type
-#include "network/descriptor.h"                 // Descriptor
 #include "network/sockethints.h"                // SocketHints
 
 Network::Socket::Socket(socket_type t_handle, bool t_verbose) :

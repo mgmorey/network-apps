@@ -16,14 +16,14 @@
 #ifndef WIN32
 
 #include "network/create-pairresult.h"          // create_pairresult()
-#include "network/socket-null.h"                // socket_null
-#include "network/socket-type.h"                // socket_type
 #include "network/format-os-error.h"            // format_os_error()
 #include "network/format.h"                     // Format
 #include "network/get-last-context-error.h"     // get_last_context_error()
 #include "network/oserrorresult.h"              // OsErrorResult
 #include "network/reset-last-context-error.h"   // reset_last_context_error()
 #include "network/socket-error.h"               // socket_error
+#include "network/socket-null.h"                // socket_null
+#include "network/socket-type.h"                // socket_type
 #include "network/socket.h"                     // Socket
 #include "network/socketfamily.h"               // SocketFamily
 #include "network/socketflags.h"                // SocketFlags

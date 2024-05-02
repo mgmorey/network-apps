@@ -14,10 +14,10 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/get-sockname.h"       // get_sockname()
-#include "network/socket-type.h"        // socket_type,
 #include "network/get-name.h"           // get_name()
 #include "network/getnamehandler.h"     // GetNameHandler
 #include "network/getnameparams.h"      // GetNameParams
+#include "network/socket-type.h"        // socket_type,
 #include "network/sockname.h"           // SockName
 
 #ifdef WIN32

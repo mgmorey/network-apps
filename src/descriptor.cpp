@@ -16,10 +16,10 @@
 #include "network/descriptor.h"                 // Descriptor
 #include "network/bytestring.h"                 // ByteString
 #include "network/close.h"                      // close()
-#include "network/socket-null.h"                // socket_null
-#include "network/socket-type.h"                // socket_type
 #include "network/get-peername.h"               // get_peername()
 #include "network/get-sockname.h"               // get_sockname()
+#include "network/socket-null.h"                // socket_null
+#include "network/socket-type.h"                // socket_type
 #ifndef WIN32
 #include "network/remove.h"                     // remove()
 #include "network/to-path-bytestring.h"         // to_path()

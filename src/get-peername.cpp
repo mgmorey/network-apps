@@ -13,13 +13,12 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-peername.h"       // GetNameHandler,
-                                        // get_peername()
-#include "network/socket-type.h"        // socket_type
+#include "network/get-peername.h"       // get_peername()
 #include "network/get-name.h"           // get_name()
 #include "network/getnamehandler.h"     // GetNameHandler
 #include "network/getnameparams.h"      // GetNameParams
 #include "network/peername.h"           // PeerName
+#include "network/socket-type.h"        // socket_type
 
 #ifdef WIN32
 #include <winsock2.h>   // ::getpeername()

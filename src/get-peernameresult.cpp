@@ -14,11 +14,11 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/get-peernameresult.h" // get_peernameresult()
-#include "network/socket-type.h"        // socket_type
 #include "network/get-nameresult.h"     // get_nameresult()
 #include "network/getnamehandler.h"     // GetNameHandler
 #include "network/getnameparams.h"      // GetNameParams
 #include "network/peernameresult.h"     // PeerNameResult
+#include "network/socket-type.h"        // socket_type
 
 #ifdef WIN32
 #include <winsock2.h>   // ::getpeername()
