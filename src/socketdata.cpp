@@ -32,9 +32,9 @@
 #endif
 #include <iostream>     // std::cerr, std::endl
 
-Network::SocketData::SocketData(socket_type t_handle,
+Network::SocketData::SocketData(socket_type t_socket,
                                 bool t_verbose) noexcept :
-    m_handle(t_handle),
+    m_socket(t_socket),
     m_verbose(t_verbose)
 {
 }
@@ -50,21 +50,21 @@ Network::SocketData::~SocketData() noexcept
     }
 }
 
-auto Network::SocketData::operator=(socket_type t_handle) noexcept ->
+auto Network::SocketData::operator=(socket_type t_socket) noexcept ->
     SocketData&
 {
-    m_handle = t_handle;
+    m_socket = t_socket;
     return *this;
 }
 
 Network::SocketData::operator socket_type() const noexcept
 {
-    return m_handle;
+    return m_socket;
 }
 
 Network::SocketData::operator bool() const noexcept
 {
-    return m_handle != socket_null;
+    return m_socket != socket_null;
 }
 
 auto Network::SocketData::bound(bool t_bound) -> SocketData&
@@ -86,16 +86,16 @@ auto Network::SocketData::bound(bool t_bound) -> SocketData&
 
 auto Network::SocketData::close() -> SocketData&
 {
-    if (m_handle == socket_null) {
+    if (m_socket == socket_null) {
         return *this;
     }
 
-    if (const auto result {Network::close(m_handle, m_verbose)}) {
+    if (const auto result {Network::close(m_socket, m_verbose)}) {
         std::cerr << result.string()
                   << std::endl;
     }
     else {
-        m_handle = socket_null;
+        m_socket = socket_null;
     }
 
     bound(false);
@@ -104,13 +104,13 @@ auto Network::SocketData::close() -> SocketData&
 
 auto Network::SocketData::handle() const noexcept -> socket_type
 {
-    return m_handle;
+    return m_socket;
 }
 
 auto Network::SocketData::peername() const -> ByteString
 {
     if (!m_peername) {
-        m_peername = get_peername(m_handle, m_verbose);
+        m_peername = get_peername(m_socket, m_verbose);
     }
 
     return *m_peername;
@@ -119,7 +119,7 @@ auto Network::SocketData::peername() const -> ByteString
 auto Network::SocketData::sockname() const -> ByteString
 {
     if (!m_sockname) {
-        m_sockname = get_sockname(m_handle, m_verbose);
+        m_sockname = get_sockname(m_socket, m_verbose);
     }
 
     return *m_sockname;

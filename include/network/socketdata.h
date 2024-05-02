@@ -30,14 +30,14 @@ namespace Network
     {
     public:
         SocketData() noexcept = default;
-        explicit SocketData(socket_type t_handle,
+        explicit SocketData(socket_type t_socket,
                             bool t_verbose = false) noexcept;
         SocketData(const SocketData&) noexcept = delete;
         SocketData(SocketData&&) noexcept = delete;
         ~SocketData() noexcept;
         auto operator=(const SocketData&) noexcept -> SocketData& = delete;
         auto operator=(SocketData&&) noexcept -> SocketData& = delete;
-        auto operator=(socket_type t_handle) noexcept -> SocketData&;
+        auto operator=(socket_type t_socket) noexcept -> SocketData&;
         explicit operator socket_type() const noexcept;
         explicit operator bool() const noexcept;
         auto bound(bool t_bound) -> SocketData&;
@@ -53,7 +53,7 @@ namespace Network
 #ifndef WIN32
         OptionalPathname m_pathname;
 #endif
-        socket_type m_handle {socket_null};
+        socket_type m_socket {socket_null};
         bool m_verbose {false};
     };
 }
