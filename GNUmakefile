@@ -83,8 +83,8 @@ libnetwork_unix_sources = address-sun.cpp create-pair.cpp		\
 create-pairresult.cpp get-path-length.cpp get-path-pointer-bs.cpp	\
 get-path-pointer-sun.cpp get-sun-length.cpp get-sun-pointer.cpp		\
 socketpair.cpp to-bytestring-char.cpp to-bytestring-path.cpp		\
-to-path-bytestring.cpp to-path-descriptor.cpp validate-char.cpp		\
-validate-path.cpp validate-sun.cpp
+to-path-bytestring.cpp validate-char.cpp validate-path.cpp		\
+validate-sun.cpp
 
 test_common_sources = test-address.cpp test-bind.cpp test-connect.cpp	\
 test-context.cpp test-create.cpp test-host.cpp test-hostname.cpp	\

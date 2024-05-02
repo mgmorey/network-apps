@@ -15,16 +15,4 @@
 
 #ifndef NETWORK_TO_PATH_DESCRIPTOR_H
 #define NETWORK_TO_PATH_DESCRIPTOR_H
-
-#include "network/optionalpathname.h"           // OptionalPathname
-#include "network/socket-type.h"                // socket_type
-
-namespace Network
-{
-#ifndef WIN32
-    extern auto to_path(socket_type handle,
-                        bool verbose = false) -> OptionalPathname;
-#endif
-}
-
 #endif

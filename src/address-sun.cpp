@@ -17,7 +17,7 @@
 
 #include "network/address.h"                    // Address
 #include "network/string-null.h"                // string_null
-#include "network/to-path-bytestring.h"         // to_path()
+#include "network/to-path.h"                    // to_path()
 
 #include <string>       // std::string
 

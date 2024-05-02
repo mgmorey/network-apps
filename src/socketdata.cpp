@@ -24,7 +24,7 @@
 #include "network/socket-null.h"                // socket_null
 #include "network/socket-type.h"                // socket_type
 #ifndef WIN32
-#include "network/to-path-bytestring.h"         // to_path()
+#include "network/to-path.h"                    // to_path()
 #endif
 
 #ifndef WIN32
