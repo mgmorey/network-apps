@@ -53,11 +53,6 @@ auto Network::Socket::handle() const noexcept -> descriptor_type
     return m_descriptor->handle();
 }
 
-auto Network::Socket::is_open() const noexcept -> bool
-{
-    return m_descriptor->handle() != descriptor_null;
-}
-
 auto Network::Socket::peername() const -> ByteString
 {
     return m_descriptor->peername();

@@ -45,7 +45,6 @@ namespace Network
         auto bound(bool t_bound) -> Socket&;
         auto close() -> Socket&;
         [[nodiscard]] auto handle() const noexcept -> descriptor_type;
-        [[nodiscard]] auto is_open() const noexcept -> bool;
         [[nodiscard]] auto peername() const -> ByteString;
         [[nodiscard]] auto sockname() const -> ByteString;
 
