@@ -26,7 +26,7 @@
 
 namespace Network
 {
-    class Descriptor;
+    class SocketData;
 
     class Socket
     {
@@ -51,7 +51,7 @@ namespace Network
         [[nodiscard]] auto sockname() const -> ByteString;
 
     private:
-        std::shared_ptr<Descriptor> m_descriptor;
+        std::shared_ptr<SocketData> m_descriptor;
     };
 
     extern auto operator<<(std::ostream& os,
