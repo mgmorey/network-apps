@@ -291,7 +291,10 @@ auto main(int argc, char* argv[]) -> int
             std::cout << context << std::endl;
         }
 
-        test_connect_valid(endpoint, hints, hostname);
+        if (!getenv("http_proxy")) {
+            test_connect_valid(endpoint, hints, hostname);
+        }
+
         const Endpoint invalid_host {".", service};
         test_connect_invalid_host(invalid_host, hints, hostname);
         const Endpoint invalid_service {remotehost, "."};

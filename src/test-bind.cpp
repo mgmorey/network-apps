@@ -244,7 +244,10 @@ auto main(int argc, char* argv[]) -> int
             std::cout << context << std::endl;
         }
 
-        test_bind_valid(endpoint, hints);
+        if (!getenv("http_proxy")) {
+            test_bind_valid(endpoint, hints);
+        }
+
         const Endpoint invalid_host {".", service};
         test_bind_invalid_host(invalid_host, hints);
         const Endpoint invalid_service {localhost, "."};
