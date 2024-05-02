@@ -43,6 +43,7 @@ namespace TestSocket
     using Network::SocketHints;
     using Network::os_error_type;
     using Network::parse;
+    using Network::socket_type;
 
     static constexpr auto expected_error_socket_re {
         R"(Call to ::socket\(.+\) failed with error \d+: .+)"
@@ -78,6 +79,29 @@ namespace TestSocket
         }
     }
 
+    auto test_socket(const std::string& expected_error_re) -> void
+    {
+        std::string actual_error_str;
+
+        try {
+            const Socket sock;
+            const socket_type handle {sock};
+            static_cast<void>(handle);
+        }
+        catch (const Error& error) {
+            print(error);
+            actual_error_str = error.what();
+        }
+
+        if (expected_error_re.empty()) {
+            assert(actual_error_str.empty());
+        }
+        else {
+            const std::regex expected_error_regex {expected_error_re};
+            assert(std::regex_match(actual_error_str, expected_error_regex));
+        }
+    }
+
     auto test_socket(const SocketHints& hints,
                      const std::string& expected_error_re) -> void
     {
@@ -100,25 +124,29 @@ namespace TestSocket
         }
     }
 
-    auto test_socket_invalid_family() -> void
+    auto test_socket_hints_invalid_family() -> void
     {
         const SocketHints hints {-1, SOCK_STREAM, 0};
         test_socket(hints, expected_error_socket_re);
     }
 
-    auto test_socket_invalid_protocol() -> void
+    auto test_socket_hints_invalid_protocol() -> void
     {
         const SocketHints hints {AF_INET, SOCK_STREAM, -1};
         test_socket(hints, expected_error_socket_re);
     }
 
-    auto test_socket_invalid_type() -> void
+    auto test_socket_hints_invalid_type() -> void
     {
         const SocketHints hints {AF_INET, -1, 0};
         test_socket(hints, expected_error_socket_re);
     }
 
-    auto test_socket_valid() -> void
+    auto test_socket_defaults_valid() -> void
+    {
+        test_socket("");
+    }
+    auto test_socket_hints_valid() -> void
     {
         const SocketHints hints {AF_INET, SOCK_STREAM, 0};
         test_socket(hints, "");
@@ -137,10 +165,10 @@ auto main(int argc, char* argv[]) -> int
             std::cout << context << std::endl;
         }
 
-        test_socket_valid();
-        test_socket_invalid_family();
-        test_socket_invalid_protocol();
-        test_socket_invalid_type();
+        test_socket_hints_valid();
+        test_socket_hints_invalid_family();
+        test_socket_hints_invalid_protocol();
+        test_socket_hints_invalid_type();
     }
     catch (const std::exception& error) {
         std::cerr << error.what()
