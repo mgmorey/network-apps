@@ -45,10 +45,10 @@ namespace Network
         [[nodiscard]] auto verbose() const noexcept -> bool;
 
     private:
-        mutable OptionalByteString m_peername {};
-        mutable OptionalByteString m_sockname {};
+        mutable OptionalByteString m_peername;
+        mutable OptionalByteString m_sockname;
 #ifndef WIN32
-        OptionalPathname m_pathname {};
+        OptionalPathname m_pathname;
 #endif
         descriptor_type m_handle {descriptor_null};
         bool m_verbose {false};
