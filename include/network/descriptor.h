@@ -29,6 +29,7 @@ namespace Network
     class Descriptor
     {
     public:
+        Descriptor() noexcept = default;
         explicit Descriptor(descriptor_type t_handle,
                             bool t_verbose = false) noexcept;
         Descriptor(const Descriptor&) noexcept = delete;
