@@ -34,7 +34,7 @@ namespace Network
                                const Socket& sock) noexcept -> std::ostream&;
 
     public:
-        explicit Socket(socket_type t_handle = socket_null,
+        explicit Socket(socket_type t_socket = socket_null,
                         bool t_verbose = false);
         explicit Socket(SocketHints t_hints,
                         bool t_verbose = false);
@@ -51,7 +51,7 @@ namespace Network
         [[nodiscard]] auto sockname() const -> ByteString;
 
     private:
-        std::shared_ptr<SocketData> m_descriptor;
+        std::shared_ptr<SocketData> m_socket_data;
     };
 
     extern auto operator<<(std::ostream& os,

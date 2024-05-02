@@ -22,7 +22,7 @@
 #include "network/sockethints.h"                // SocketHints
 
 Network::Socket::Socket(socket_type t_handle, bool t_verbose) :
-    m_descriptor(new SocketData {t_handle, t_verbose})
+    m_socket_data(new SocketData {t_handle, t_verbose})
 {
 }
 
@@ -33,32 +33,32 @@ Network::Socket::Socket(SocketHints t_hints, bool t_verbose) :
 
 Network::Socket::operator socket_type() const noexcept
 {
-    return static_cast<socket_type>(*m_descriptor);
+    return static_cast<socket_type>(*m_socket_data);
 }
 
 Network::Socket::operator bool() const noexcept
 {
-    return static_cast<bool>(*m_descriptor);
+    return static_cast<bool>(*m_socket_data);
 }
 
 auto Network::Socket::bound(bool t_bound) -> Socket&
 {
-    m_descriptor->bound(t_bound);
+    m_socket_data->bound(t_bound);
     return *this;
 }
 
 auto Network::Socket::close() -> Socket&
 {
-    m_descriptor->close();
+    m_socket_data->close();
     return *this;
 }
 
 auto Network::Socket::peername() const -> ByteString
 {
-    return m_descriptor->peername();
+    return m_socket_data->peername();
 }
 
 auto Network::Socket::sockname() const -> ByteString
 {
-    return m_descriptor->sockname();
+    return m_socket_data->sockname();
 }
