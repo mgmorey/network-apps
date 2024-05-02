@@ -21,8 +21,8 @@
 #include "network/socketdata.h"                 // SocketData
 #include "network/sockethints.h"                // SocketHints
 
-Network::Socket::Socket(socket_type t_handle, bool t_verbose) :
-    m_socket_data(new SocketData {t_handle, t_verbose})
+Network::Socket::Socket(socket_type t_socket, bool t_verbose) :
+    m_socket_data(new SocketData {t_socket, t_verbose})
 {
 }
 
