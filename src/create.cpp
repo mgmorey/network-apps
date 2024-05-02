@@ -16,7 +16,6 @@
 #include "network/create.h"                     // create()
 #include "network/always-false.h"               // always_false_v
 #include "network/create-result.h"              // create_result()
-#include "network/descriptor-null.h"            // descriptor_null
 #include "network/error-strings.h"              // VISITOR_ERROR
 #include "network/error.h"                      // Error
 #include "network/oserrorresult.h"              // OsErrorResult
@@ -28,13 +27,13 @@
 
 auto Network::create(const SocketHints& hints, bool verbose) -> Socket
 {
-    Socket result {descriptor_null, verbose};
-    const auto socket_result {create_result(hints, verbose)};
+    Socket sock;
+    const auto result {create_result(hints, verbose)};
     std::visit([&](auto&& arg) {
         using T = std::decay_t<decltype(arg)>;
 
         if constexpr (std::is_same_v<T, Socket>) {
-            result = arg;
+            sock = arg;
         }
         else if constexpr (std::is_same_v<T, OsErrorResult>) {
             throw Error(arg.string());
@@ -42,6 +41,6 @@ auto Network::create(const SocketHints& hints, bool verbose) -> Socket
         else {
             static_assert(always_false_v<T>, VISITOR_ERROR);
         }
-    }, socket_result);
-    return result;
+    }, result);
+    return sock;
 }
