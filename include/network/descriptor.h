@@ -38,6 +38,8 @@ namespace Network
         auto operator=(const Descriptor&) noexcept -> Descriptor& = delete;
         auto operator=(Descriptor&&) noexcept -> Descriptor& = delete;
         auto operator=(descriptor_type t_handle) noexcept -> Descriptor&;
+        explicit operator descriptor_type() const noexcept;
+        explicit operator bool() const noexcept;
         auto bound(bool t_bound) -> Descriptor&;
         auto close() -> Descriptor&;
         [[nodiscard]] auto handle() const noexcept -> descriptor_type;

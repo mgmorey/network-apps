@@ -55,6 +55,16 @@ auto Network::Descriptor::operator=(descriptor_type t_handle) noexcept ->
     return *this;
 }
 
+Network::Descriptor::operator descriptor_type() const noexcept
+{
+    return m_handle;
+}
+
+Network::Descriptor::operator bool() const noexcept
+{
+    return m_handle != descriptor_null;
+}
+
 auto Network::Descriptor::bound(bool t_bound) -> Descriptor&
 {
 #ifndef WIN32
