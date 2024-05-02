@@ -42,6 +42,7 @@ namespace Network
         auto operator=(const Socket&) noexcept -> Socket& = default;
         auto operator=(Socket&&) noexcept -> Socket& = default;
         explicit operator descriptor_type() const noexcept;
+        explicit operator bool() const noexcept;
         auto bound(bool t_bound) -> Socket&;
         auto close() -> Socket&;
         [[nodiscard]] auto handle() const noexcept -> descriptor_type;

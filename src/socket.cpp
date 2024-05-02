@@ -33,7 +33,12 @@ Network::Socket::Socket(SocketHints t_hints, bool t_verbose) :
 
 Network::Socket::operator descriptor_type() const noexcept
 {
-    return m_descriptor->handle();
+    return static_cast<descriptor_type>(*m_descriptor);
+}
+
+Network::Socket::operator bool() const noexcept
+{
+    return static_cast<bool>(*m_descriptor);
 }
 
 auto Network::Socket::bound(bool t_bound) -> Socket&
