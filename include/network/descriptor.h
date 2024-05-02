@@ -17,8 +17,8 @@
 #define NETWORK_DESCRIPTOR_H
 
 #include "network/bytestring.h"                 // ByteString
-#include "network/descriptor-null.h"            // descriptor_null
-#include "network/descriptor-type.h"            // descriptor_type
+#include "network/socket-null.h"                // socket_null
+#include "network/socket-type.h"                // socket_type
 #include "network/optionalbytestring.h"         // OptionalByteString
 #ifndef WIN32
 #include "network/optionalpathname.h"           // OptionalPathanme
@@ -30,19 +30,19 @@ namespace Network
     {
     public:
         Descriptor() noexcept = default;
-        explicit Descriptor(descriptor_type t_handle,
+        explicit Descriptor(socket_type t_handle,
                             bool t_verbose = false) noexcept;
         Descriptor(const Descriptor&) noexcept = delete;
         Descriptor(Descriptor&&) noexcept = delete;
         ~Descriptor() noexcept;
         auto operator=(const Descriptor&) noexcept -> Descriptor& = delete;
         auto operator=(Descriptor&&) noexcept -> Descriptor& = delete;
-        auto operator=(descriptor_type t_handle) noexcept -> Descriptor&;
-        explicit operator descriptor_type() const noexcept;
+        auto operator=(socket_type t_handle) noexcept -> Descriptor&;
+        explicit operator socket_type() const noexcept;
         explicit operator bool() const noexcept;
         auto bound(bool t_bound) -> Descriptor&;
         auto close() -> Descriptor&;
-        [[nodiscard]] auto handle() const noexcept -> descriptor_type;
+        [[nodiscard]] auto handle() const noexcept -> socket_type;
         [[nodiscard]] auto peername() const -> ByteString;
         [[nodiscard]] auto sockname() const -> ByteString;
         [[nodiscard]] auto verbose() const noexcept -> bool;
@@ -53,7 +53,7 @@ namespace Network
 #ifndef WIN32
         OptionalPathname m_pathname;
 #endif
-        descriptor_type m_handle {descriptor_null};
+        socket_type m_handle {socket_null};
         bool m_verbose {false};
     };
 }

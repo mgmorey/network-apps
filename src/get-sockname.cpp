@@ -14,7 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/get-sockname.h"       // get_sockname()
-#include "network/descriptor-type.h"    // descriptor_type,
+#include "network/socket-type.h"        // socket_type,
 #include "network/get-name.h"           // get_name()
 #include "network/getnamehandler.h"     // GetNameHandler
 #include "network/getnameparams.h"      // GetNameParams
@@ -26,7 +26,7 @@
 #include <sys/socket.h>     // ::getsockname()
 #endif
 
-auto Network::get_sockname(descriptor_type handle,
+auto Network::get_sockname(socket_type handle,
                            bool verbose) -> SockName
 {
     const GetNameHandler handler {::getsockname, "::getsockname"};

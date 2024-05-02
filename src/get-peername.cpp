@@ -15,7 +15,7 @@
 
 #include "network/get-peername.h"       // GetNameHandler,
                                         // get_peername()
-#include "network/descriptor-type.h"    // descriptor_type
+#include "network/socket-type.h"        // socket_type
 #include "network/get-name.h"           // get_name()
 #include "network/getnamehandler.h"     // GetNameHandler
 #include "network/getnameparams.h"      // GetNameParams
@@ -27,7 +27,7 @@
 #include <sys/socket.h> // ::getpeername()
 #endif
 
-auto Network::get_peername(descriptor_type handle,
+auto Network::get_peername(socket_type handle,
                            bool verbose) -> PeerName
 {
     const GetNameHandler handler {::getpeername, "::getpeername"};

@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/descriptor-null.h"    // descriptor_null,
+#include "network/socket-null.h"        // socket_null,
 #include "network/socket.h"             // Socket
 #include "network/string-null.h"        // string_null
 
@@ -22,9 +22,9 @@
 auto Network::operator<<(std::ostream& os,
                          const Socket& sock) noexcept -> std::ostream&
 {
-    const auto handle {static_cast<descriptor_type>(sock)};
+    const auto handle {static_cast<socket_type>(sock)};
 
-    if (handle == descriptor_null) {
+    if (handle == socket_null) {
         return os << string_null;
     }
 

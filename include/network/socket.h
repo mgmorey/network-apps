@@ -17,8 +17,8 @@
 #define NETWORK_SOCKET_H
 
 #include "network/bytestring.h"                 // ByteString
-#include "network/descriptor-null.h"            // descriptor_null
-#include "network/descriptor-type.h"            // descriptor_type
+#include "network/socket-null.h"                // socket_null
+#include "network/socket-type.h"                // socket_type
 #include "network/sockethints.h"                // SocketHints
 
 #include <memory>      // std::shared_ptr
@@ -34,7 +34,7 @@ namespace Network
                                const Socket& sock) noexcept -> std::ostream&;
 
     public:
-        explicit Socket(descriptor_type t_handle = descriptor_null,
+        explicit Socket(socket_type t_handle = socket_null,
                         bool t_verbose = false);
         explicit Socket(SocketHints t_hints,
                         bool t_verbose = false);
@@ -43,7 +43,7 @@ namespace Network
         ~Socket() = default;
         auto operator=(const Socket&) noexcept -> Socket& = default;
         auto operator=(Socket&&) noexcept -> Socket& = default;
-        explicit operator descriptor_type() const noexcept;
+        explicit operator socket_type() const noexcept;
         explicit operator bool() const noexcept;
         auto bound(bool t_bound) -> Socket&;
         auto close() -> Socket&;

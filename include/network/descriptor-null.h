@@ -16,7 +16,7 @@
 #ifndef NETWORK_DESCRIPTOR_NULL_H
 #define NETWORK_DESCRIPTOR_NULL_H
 
-#include "network/descriptor-type.h"            // descriptor_type
+#include "network/socket-type.h"                // socket_type
 
 #ifdef WIN32
 #include <winsock2.h>       // INVALID_SOCKET
@@ -32,7 +32,7 @@
 
 namespace Network
 {
-    constexpr descriptor_type descriptor_null {INVALID_SOCKET};
+    constexpr socket_type descriptor_null {INVALID_SOCKET};
 }
 
 #endif

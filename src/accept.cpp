@@ -18,8 +18,8 @@
 #include "network/buffer.h"                     // Buffer
 #include "network/byte.h"                       // Byte
 #include "network/bytestring.h"                 // ByteString
-#include "network/descriptor-null.h"            // descriptor_null
-#include "network/descriptor-type.h"            // descriptor_type
+#include "network/socket-null.h"                // socket_null
+#include "network/socket-type.h"                // socket_type
 #include "network/error.h"                      // Error
 #include "network/format-os-error.h"            // format_os_error()
 #include "network/get-last-context-error.h"     // get_last_context_error()
@@ -59,10 +59,10 @@ auto Network::accept(const Socket& sock, bool verbose) ->
     }
 
     reset_last_context_error();
-    const auto handle_1 {static_cast<descriptor_type>(sock)};
+    const auto handle_1 {static_cast<socket_type>(sock)};
     const auto handle_2 {::accept(handle_1, addr_ptr, &addr_len)};
 
-    if (handle_2 == descriptor_null) {
+    if (handle_2 == socket_null) {
         const auto error {get_last_context_error()};
         const auto os_error {to_os_error(error)};
         std::ostringstream oss;

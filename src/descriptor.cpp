@@ -16,8 +16,8 @@
 #include "network/descriptor.h"                 // Descriptor
 #include "network/bytestring.h"                 // ByteString
 #include "network/close.h"                      // close()
-#include "network/descriptor-null.h"            // descriptor_null
-#include "network/descriptor-type.h"            // descriptor_type
+#include "network/socket-null.h"                // socket_null
+#include "network/socket-type.h"                // socket_type
 #include "network/get-peername.h"               // get_peername()
 #include "network/get-sockname.h"               // get_sockname()
 #ifndef WIN32
@@ -30,7 +30,7 @@
 #endif
 #include <iostream>     // std::cerr, std::endl
 
-Network::Descriptor::Descriptor(descriptor_type t_handle,
+Network::Descriptor::Descriptor(socket_type t_handle,
                                 bool t_verbose) noexcept :
     m_handle(t_handle),
     m_verbose(t_verbose)
@@ -48,21 +48,21 @@ Network::Descriptor::~Descriptor() noexcept
     }
 }
 
-auto Network::Descriptor::operator=(descriptor_type t_handle) noexcept ->
+auto Network::Descriptor::operator=(socket_type t_handle) noexcept ->
     Descriptor&
 {
     m_handle = t_handle;
     return *this;
 }
 
-Network::Descriptor::operator descriptor_type() const noexcept
+Network::Descriptor::operator socket_type() const noexcept
 {
     return m_handle;
 }
 
 Network::Descriptor::operator bool() const noexcept
 {
-    return m_handle != descriptor_null;
+    return m_handle != socket_null;
 }
 
 auto Network::Descriptor::bound(bool t_bound) -> Descriptor&
@@ -84,7 +84,7 @@ auto Network::Descriptor::bound(bool t_bound) -> Descriptor&
 
 auto Network::Descriptor::close() -> Descriptor&
 {
-    if (m_handle == descriptor_null) {
+    if (m_handle == socket_null) {
         return *this;
     }
 
@@ -93,14 +93,14 @@ auto Network::Descriptor::close() -> Descriptor&
                   << std::endl;
     }
     else {
-        m_handle = descriptor_null;
+        m_handle = socket_null;
     }
 
     bound(false);
     return *this;
 }
 
-auto Network::Descriptor::handle() const noexcept -> descriptor_type
+auto Network::Descriptor::handle() const noexcept -> socket_type
 {
     return m_handle;
 }

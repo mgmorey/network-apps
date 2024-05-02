@@ -126,7 +126,6 @@
                                                 // OptionalService,
                                                 // Pathname, Service,
                                                 // byte_type,
-                                                // descriptor_type,
                                                 // length_type,
                                                 // os_error_type,
                                                 // port_type,
@@ -135,7 +134,8 @@
                                                 // socket_flags_type,
                                                 // socket_length_type,
                                                 // socket_protocol_type,
-                                                // socket_type_type
+                                                // socket_type_type,
+                                                // socket_type
 #include "network/uniquify.h"                   // uniquify()
 #include "network/unixsockethints.h"            // UnixSocketHints
 #include "network/version-null.h"               // version_null

@@ -16,7 +16,7 @@
 #include "network/open-socket.h"                // open()
 #include "network/addresserror.h"               // AddressError
 #include "network/addressstring.h"              // AddressString
-#include "network/descriptor-type.h"            // descriptor_type
+#include "network/socket-type.h"                // socket_type
 #include "network/format-os-error.h"            // format_os_error()
 #include "network/get-last-context-error.h"     // get_last_context_error()
 #include "network/get-sa-length.h"              // get_sa_length()
@@ -57,7 +57,7 @@ auto Network::open(const OpenHandler& handler,
                   << std::endl;
     }
 
-    const descriptor_type handle {args.socket};
+    const socket_type handle {args.socket};
     reset_last_context_error();
 
     if (handler.first(handle, addr_ptr, addr_len) == socket_error) {

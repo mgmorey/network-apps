@@ -14,7 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/read.h"               // read()
-#include "network/descriptor-type.h"    // descriptor_type
+#include "network/socket-type.h"        // socket_type
 #include "network/socket.h"             // Socket
 
 #include <sys/types.h>          // ssize_t
@@ -30,7 +30,7 @@
 auto Network::read(char* data, std::size_t size,
                    const Socket& sock) -> ssize_t
 {
-    const descriptor_type handle {sock};
+    const socket_type handle {sock};
 #ifdef WIN32
     return ::recv(handle, data, static_cast<int>(size), 0);
 #else

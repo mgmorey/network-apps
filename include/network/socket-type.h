@@ -1,4 +1,4 @@
-// Copyright (C) 2023  "Michael G. Morey" <mgmorey@gmail.com>
+// Copyright (C) 2024  "Michael G. Morey" <mgmorey@gmail.com>
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,27 +13,20 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/write.h"              // write()
-#include "network/socket-type.h"        // socket_type
-#include "network/socket.h"             // Socket
-
-#include <sys/types.h>          // ssize_t
+#ifndef NETWORK_SOCKET_TYPE_H
+#define NETWORK_SOCKET_TYPE_H
 
 #ifdef WIN32
-#include <winsock2.h>       // ::send()
+#include <winsock2.h>       // SOCKET
 #else
-#include <unistd.h>         // ::write()
+#ifndef SOCKET
+#define SOCKET	int
+#endif
 #endif
 
-#include <cstddef>      // std::size_t
-
-auto Network::write(const char* data, std::size_t size,
-                    const Socket& sock) -> ssize_t
+namespace Network
 {
-    const socket_type handle {sock};
-#ifdef WIN32
-    return ::send(handle, data, static_cast<int>(size), 0);
-#else
-    return ::write(handle, data, size);
-#endif
+    using socket_type = SOCKET;
 }
+
+#endif

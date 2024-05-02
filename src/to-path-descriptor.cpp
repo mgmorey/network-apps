@@ -16,7 +16,7 @@
 #ifndef WIN32
 
 #include "network/to-path-descriptor.h"         // to_path()
-#include "network/descriptor-type.h"            // descriptor_type
+#include "network/socket-type.h"                // socket_type
 #include "network/get-sa-family.h"              // get_sa_family()
 #include "network/get-sockname.h"               // get_sockname()
 #include "network/optionalpathname.h"           // OptionalPathname
@@ -24,7 +24,7 @@
 
 #include <sys/socket.h>     // AF_UNIX
 
-auto Network::to_path(descriptor_type handle, bool verbose) -> OptionalPathname
+auto Network::to_path(socket_type handle, bool verbose) -> OptionalPathname
 {
     const auto addr {get_sockname(handle, verbose)};
 

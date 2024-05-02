@@ -16,12 +16,12 @@
 #ifndef NETWORK_GET_PEERNAME_H
 #define NETWORK_GET_PEERNAME_H
 
-#include "network/descriptor-type.h"            // descriptor_type
+#include "network/socket-type.h"                // socket_type
 #include "network/peername.h"                   // PeerName
 
 namespace Network
 {
-    extern auto get_peername(descriptor_type handle,
+    extern auto get_peername(socket_type handle,
                              bool verbose = false) -> PeerName;
 }
 

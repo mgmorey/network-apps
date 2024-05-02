@@ -16,8 +16,8 @@
 #ifndef WIN32
 
 #include "network/create-pairresult.h"          // create_pairresult()
-#include "network/descriptor-null.h"            // descriptor_null
-#include "network/descriptor-type.h"            // descriptor_type
+#include "network/socket-null.h"                // socket_null
+#include "network/socket-type.h"                // socket_type
 #include "network/format-os-error.h"            // format_os_error()
 #include "network/format.h"                     // Format
 #include "network/get-last-context-error.h"     // get_last_context_error()
@@ -46,7 +46,7 @@ auto Network::create_pairresult(const SocketHints& hints,
     static constexpr auto delim {", "};
     static constexpr auto tab {0};
 
-    std::array<descriptor_type, 2> handles {descriptor_null, descriptor_null};
+    std::array<socket_type, 2> handles {socket_null, socket_null};
 
     if (verbose) {
         std::cout << "Calling ::socketpair("

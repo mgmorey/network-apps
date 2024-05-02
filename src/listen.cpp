@@ -15,7 +15,7 @@
 
 #include "network/listen.h"                     // listen()
 #include "network/context-error-type.h"         // context_error_type
-#include "network/descriptor-type.h"            // descriptor_type
+#include "network/socket-type.h"                // socket_type
 #include "network/socket.h"                     // Socket
 
 #ifdef WIN32
@@ -26,5 +26,5 @@
 
 auto Network::listen(const Socket& sock, int backlog_size) -> context_error_type
 {
-    return ::listen(descriptor_type {sock}, backlog_size);
+    return ::listen(socket_type {sock}, backlog_size);
 }

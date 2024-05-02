@@ -16,7 +16,7 @@
 #ifndef NETWORK_OPENHANDLER_H
 #define NETWORK_OPENHANDLER_H
 
-#include "network/descriptor-type.h"            // descriptor_type
+#include "network/socket-type.h"                // socket_type
 
 #ifdef WIN32
 #include <winsock2.h>       // sockaddr
@@ -29,7 +29,7 @@
 
 namespace Network
 {
-    using OpenFunction = int (*)(descriptor_type, const sockaddr*, socklen_t);
+    using OpenFunction = int (*)(socket_type, const sockaddr*, socklen_t);
     using OpenHandler = std::pair<OpenFunction, const char*>;
 }
 

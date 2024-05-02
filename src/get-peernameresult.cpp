@@ -14,7 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/get-peernameresult.h" // get_peernameresult()
-#include "network/descriptor-type.h"    // descriptor_type
+#include "network/socket-type.h"        // socket_type
 #include "network/get-nameresult.h"     // get_nameresult()
 #include "network/getnamehandler.h"     // GetNameHandler
 #include "network/getnameparams.h"      // GetNameParams
@@ -26,7 +26,7 @@
 #include <sys/socket.h> // ::getpeername()
 #endif
 
-auto Network::get_peernameresult(descriptor_type handle, bool verbose) ->
+auto Network::get_peernameresult(socket_type handle, bool verbose) ->
     PeerNameResult
 {
     const GetNameHandler handler {::getpeername, "::getpeername"};

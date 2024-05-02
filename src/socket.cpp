@@ -16,12 +16,12 @@
 #include "network/socket.h"                     // Socket
 #include "network/bytestring.h"                 // ByteString
 #include "network/create.h"                     // create()
-#include "network/descriptor-null.h"            // descriptor_null
-#include "network/descriptor-type.h"            // descriptor_type
+#include "network/socket-null.h"                // socket_null
+#include "network/socket-type.h"                // socket_type
 #include "network/descriptor.h"                 // Descriptor
 #include "network/sockethints.h"                // SocketHints
 
-Network::Socket::Socket(descriptor_type t_handle, bool t_verbose) :
+Network::Socket::Socket(socket_type t_handle, bool t_verbose) :
     m_descriptor(new Descriptor {t_handle, t_verbose})
 {
 }
@@ -31,9 +31,9 @@ Network::Socket::Socket(SocketHints t_hints, bool t_verbose) :
 {
 }
 
-Network::Socket::operator descriptor_type() const noexcept
+Network::Socket::operator socket_type() const noexcept
 {
-    return static_cast<descriptor_type>(*m_descriptor);
+    return static_cast<socket_type>(*m_descriptor);
 }
 
 Network::Socket::operator bool() const noexcept

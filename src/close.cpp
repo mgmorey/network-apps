@@ -14,8 +14,8 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/close.h"                      // close()
-#include "network/descriptor-null.h"            // descriptor_null
-#include "network/descriptor-type.h"            // descriptor_type
+#include "network/socket-null.h"                // socket_null
+#include "network/socket-type.h"                // socket_type
 #include "network/format-os-error.h"            // format_os_error()
 #include "network/get-last-context-error.h"     // get_last_context_error()
 #include "network/oserrorresult.h"              // OsErrorResult
@@ -32,7 +32,7 @@
 #include <iostream>     // std::cout, std::endl
 #include <sstream>      // std::ostringstream
 
-auto Network::close(descriptor_type handle, bool verbose) -> OsErrorResult
+auto Network::close(socket_type handle, bool verbose) -> OsErrorResult
 {
 #ifdef WIN32
     static constexpr const auto* method {"::closesocket"};
