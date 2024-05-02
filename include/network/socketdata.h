@@ -51,7 +51,7 @@ namespace Network
         mutable OptionalByteString m_peername;
         mutable OptionalByteString m_sockname;
 #ifndef WIN32
-        OptionalPathname m_pathname;
+        OptionalPathname m_sockpath;
 #endif
         socket_type m_socket {socket_null};
         bool m_verbose {false};

@@ -70,12 +70,12 @@ Network::SocketData::operator bool() const noexcept
 auto Network::SocketData::bound(bool t_bound) -> SocketData&
 {
 #ifndef WIN32
-    if (m_pathname.has_value() != t_bound) {
-        if (m_pathname) {
-            remove(*m_pathname, m_verbose);
-            m_pathname.reset();
+    if (m_sockpath.has_value() != t_bound) {
+        if (m_sockpath) {
+            remove(*m_sockpath, m_verbose);
+            m_sockpath.reset();
         } else {
-            m_pathname = to_path(sockname());
+            m_sockpath = to_path(sockname());
         }
     }
 #else
