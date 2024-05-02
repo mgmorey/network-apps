@@ -33,6 +33,7 @@ namespace Network
                                const Socket& sock) noexcept -> std::ostream&;
 
     public:
+        Socket() noexcept = default;
         explicit Socket(descriptor_type t_handle, bool t_verbose = false);
         explicit Socket(SocketHints t_hints, bool t_verbose = false);
         Socket(const Socket&) noexcept = default;
