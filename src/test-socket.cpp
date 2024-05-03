@@ -108,14 +108,19 @@ namespace TestSocket
         std::string actual_error_str;
 
         try {
-            Socket sock {hints, verbose};
-            assert(static_cast<bool>(sock));
-            assert(static_cast<socket_type>(sock) != socket_null);
+            Socket sock_1 {hints, verbose};
+            Socket sock_2 {sock_1};
+            assert(static_cast<bool>(sock_1));
+            assert(static_cast<bool>(sock_2));
+            assert(static_cast<socket_type>(sock_1) != socket_null);
+            assert(static_cast<socket_type>(sock_2) != socket_null);
 
             if (with_close) {
-                sock.close();
-                assert(!static_cast<bool>(sock));
-                assert(static_cast<socket_type>(sock) == socket_null);
+                sock_1.close();
+                assert(!static_cast<bool>(sock_1));
+                assert(!static_cast<bool>(sock_2));
+                assert(static_cast<socket_type>(sock_1) == socket_null);
+                assert(static_cast<socket_type>(sock_2) == socket_null);
             }
         }
         catch (const Error& error) {
