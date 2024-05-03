@@ -30,8 +30,7 @@ namespace Network
     {
     public:
         SocketData() noexcept = default;
-        explicit SocketData(socket_type t_socket,
-                            bool t_verbose = false) noexcept;
+        explicit SocketData(socket_type t_socket, bool t_verbose) noexcept;
         SocketData(const SocketData&) noexcept = delete;
         SocketData(SocketData&&) noexcept = delete;
         ~SocketData() noexcept;
