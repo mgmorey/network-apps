@@ -17,7 +17,6 @@
 #define NETWORK_SOCKET_H
 
 #include "network/bytestring.h"                 // ByteString
-#include "network/socket-null.h"                // socket_null
 #include "network/socket-type.h"                // socket_type
 #include "network/sockethints.h"                // SocketHints
 
@@ -34,10 +33,9 @@ namespace Network
                                const Socket& sock) noexcept -> std::ostream&;
 
     public:
-        explicit Socket(socket_type t_socket = socket_null,
-                        bool t_verbose = false);
-        explicit Socket(SocketHints t_hints,
-                        bool t_verbose = false);
+        Socket() noexcept = default;
+        explicit Socket(socket_type t_socket, bool t_verbose = false);
+        explicit Socket(SocketHints t_hints, bool t_verbose = false);
         Socket(const Socket&) noexcept = default;
         Socket(Socket&&) noexcept = default;
         ~Socket() = default;
