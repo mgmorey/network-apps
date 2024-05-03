@@ -93,11 +93,10 @@ auto Network::SocketData::close() -> SocketData&
     if (const auto result {Network::close(m_socket, m_verbose)}) {
         std::cerr << result.string()
                   << std::endl;
-    }
-    else {
-        m_socket = socket_null;
+        return *this;
     }
 
+    m_socket = socket_null;
     bound(false);
     return *this;
 }
