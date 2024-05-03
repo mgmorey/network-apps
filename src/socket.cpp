@@ -16,6 +16,7 @@
 #include "network/socket.h"                     // Socket
 #include "network/bytestring.h"                 // ByteString
 #include "network/create.h"                     // create()
+#include "network/logicerror.h"                 // LogicError
 #include "network/socket-null.h"                // socket_null
 #include "network/socket-type.h"                // socket_type
 #include "network/socketdata.h"                 // SocketData
@@ -33,32 +34,56 @@ Network::Socket::Socket(SocketHints t_hints, bool t_verbose) :
 
 Network::Socket::operator socket_type() const noexcept
 {
+    if (!m_socket_data) {
+        return socket_null;
+    }
+
     return static_cast<socket_type>(*m_socket_data);
 }
 
 Network::Socket::operator bool() const noexcept
 {
+    if (!m_socket_data) {
+        return false;
+    }
+
     return static_cast<bool>(*m_socket_data);
 }
 
 auto Network::Socket::bound() -> Socket&
 {
+    if (!m_socket_data) {
+        return *this;
+    }
+
     m_socket_data->bound(true);
     return *this;
 }
 
 auto Network::Socket::close() -> Socket&
 {
+    if (!m_socket_data) {
+        return *this;
+    }
+
     m_socket_data->close();
     return *this;
 }
 
 auto Network::Socket::peername() const -> ByteString
 {
+    if (!m_socket_data) {
+        throw LogicError("No socket available for peername()");
+    }
+
     return m_socket_data->peername();
 }
 
 auto Network::Socket::sockname() const -> ByteString
 {
+    if (!m_socket_data) {
+        throw LogicError("No socket available for sockname()");
+    }
+
     return m_socket_data->sockname();
 }
