@@ -123,8 +123,3 @@ auto Network::SocketData::sockname() const -> ByteString
 
     return *m_sockname;
 }
-
-auto Network::SocketData::verbose() const noexcept -> bool
-{
-    return m_verbose;
-}

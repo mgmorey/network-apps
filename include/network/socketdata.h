@@ -44,7 +44,6 @@ namespace Network
         auto close() -> SocketData&;
         [[nodiscard]] auto peername() const -> ByteString;
         [[nodiscard]] auto sockname() const -> ByteString;
-        [[nodiscard]] auto verbose() const noexcept -> bool;
 
     private:
         mutable OptionalByteString m_peername;
