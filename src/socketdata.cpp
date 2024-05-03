@@ -102,11 +102,6 @@ auto Network::SocketData::close() -> SocketData&
     return *this;
 }
 
-auto Network::SocketData::handle() const noexcept -> socket_type
-{
-    return m_socket;
-}
-
 auto Network::SocketData::peername() const -> ByteString
 {
     if (!m_peername) {
