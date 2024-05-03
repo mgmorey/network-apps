@@ -26,8 +26,7 @@
 #include "network/bytestringresult.h"           // ByteStringResult
 #include "network/close.h"                      // close()
 #include "network/connect.h"                    // connect()
-#include "network/constants.h"                  // descriptor_null,
-                                                // sa_data_offset,
+#include "network/constants.h"                  // sa_data_offset,
                                                 // sa_size,
                                                 // sin6_addr_offset,
                                                 // sin6_family_offset,
@@ -41,6 +40,7 @@
                                                 // sin_size,
                                                 // sockaddr_size_max,
                                                 // socket_error,
+                                                // socket_null,
                                                 // ss_size,
                                                 // string_null,
                                                 // sun_path_offset,

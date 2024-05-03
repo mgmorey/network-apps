@@ -14,12 +14,12 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/create-result.h"              // create_result()
-#include "network/descriptor-null.h"            // descriptor_null
 #include "network/format-os-error.h"            // format_os_error()
 #include "network/format.h"                     // Format
 #include "network/get-last-context-error.h"     // get_last_context_error()
 #include "network/oserrorresult.h"              // OsErrorResult
 #include "network/reset-last-context-error.h"   // reset_last_context_error()
+#include "network/socket-null.h"                // socket_null
 #include "network/socket.h"                     // Socket
 #include "network/socketfamily.h"               // SocketFamily
 #include "network/socketflags.h"                // SocketFlags
@@ -61,7 +61,7 @@ auto Network::create_result(const SocketHints& hints,
                                 hints.m_socktype,
                                 hints.m_protocol)};
 
-    if (handle == descriptor_null) {
+    if (handle == socket_null) {
         const auto error {get_last_context_error()};
         const auto os_error {to_os_error(error)};
         std::ostringstream oss;
