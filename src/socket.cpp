@@ -41,9 +41,9 @@ Network::Socket::operator bool() const noexcept
     return static_cast<bool>(*m_socket_data);
 }
 
-auto Network::Socket::bound(bool t_bound) -> Socket&
+auto Network::Socket::bound() -> Socket&
 {
-    m_socket_data->bound(t_bound);
+    m_socket_data->bound(true);
     return *this;
 }
 

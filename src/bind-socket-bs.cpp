@@ -36,7 +36,7 @@ auto Network::bind(Socket& sock,
     auto result {open(handler, args)};
 
     if (!result) {
-        sock.bound(true);
+        sock.bound();
     }
 
     return result;
