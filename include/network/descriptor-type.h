@@ -16,17 +16,11 @@
 #ifndef NETWORK_DESCRIPTOR_TYPE_H
 #define NETWORK_DESCRIPTOR_TYPE_H
 
-#ifdef WIN32
-#include <winsock2.h>       // SOCKET
-#endif
+#include "network/socket-type.h"                // socket_type
 
 namespace Network
 {
-#ifdef WIN32
-    using descriptor_type = SOCKET;
-#else
-    using descriptor_type = int;
-#endif
+    using descriptor_type = socket_type;
 }
 
 #endif
