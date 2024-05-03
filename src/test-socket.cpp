@@ -21,9 +21,8 @@
 #include "network/parse.h"              // parse()
 
 #ifdef WIN32
-#include <winsock2.h>   // AF_INET, IPPROTO_IP, SOCK_STREAM
+#include <winsock2.h>   // AF_INET, SOCK_STREAM
 #else
-#include <netinet/in.h> // IPPROTO_IP
 #include <sys/socket.h> // AF_INET, SOCK_STREAM
 #endif
 
@@ -41,7 +40,6 @@ namespace TestSocket
     using Network::Error;
     using Network::Socket;
     using Network::SocketHints;
-    using Network::create;
     using Network::os_error_type;
     using Network::parse;
     using Network::socket_null;
@@ -81,13 +79,35 @@ namespace TestSocket
         }
     }
 
-    auto test_create(const SocketHints& hints,
+    auto test_socket(const std::string& expected_error_re) -> void
+    {
+        std::string actual_error_str;
+
+        try {
+            const Socket sock;
+            assert(static_cast<socket_type>(sock) == socket_null);
+        }
+        catch (const Error& error) {
+            print(error);
+            actual_error_str = error.what();
+        }
+
+        if (expected_error_re.empty()) {
+            assert(actual_error_str.empty());
+        }
+        else {
+            const std::regex expected_error_regex {expected_error_re};
+            assert(std::regex_match(actual_error_str, expected_error_regex));
+        }
+    }
+
+    auto test_socket(const SocketHints& hints,
                      const std::string& expected_error_re) -> void
     {
         std::string actual_error_str;
 
         try {
-            const Socket sock {create(hints, verbose)};
+            const Socket sock {hints, verbose};
             assert(static_cast<socket_type>(sock) != socket_null);
         }
         catch (const Error& error) {
@@ -104,28 +124,33 @@ namespace TestSocket
         }
     }
 
-    auto test_create_hints_invalid_family() -> void
+    auto test_socket_hints_invalid_family() -> void
     {
         const SocketHints hints {-1, SOCK_STREAM, 0};
-        test_create(hints, expected_error_socket_re);
+        test_socket(hints, expected_error_socket_re);
     }
 
-    auto test_create_hints_invalid_protocol() -> void
+    auto test_socket_hints_invalid_protocol() -> void
     {
         const SocketHints hints {AF_INET, SOCK_STREAM, -1};
-        test_create(hints, expected_error_socket_re);
+        test_socket(hints, expected_error_socket_re);
     }
 
-    auto test_create_hints_invalid_type() -> void
+    auto test_socket_hints_invalid_type() -> void
     {
         const SocketHints hints {AF_INET, -1, 0};
-        test_create(hints, expected_error_socket_re);
+        test_socket(hints, expected_error_socket_re);
     }
 
-    auto test_create_hints_valid() -> void
+    auto test_socket_hints_valid() -> void
     {
         const SocketHints hints {AF_INET, SOCK_STREAM, 0};
-        test_create(hints, "");
+        test_socket(hints, "");
+    }
+
+    auto test_socket_valid() -> void
+    {
+        test_socket("");
     }
 }
 
@@ -141,10 +166,11 @@ auto main(int argc, char* argv[]) -> int
             std::cout << context << std::endl;
         }
 
-        test_create_hints_valid();
-        test_create_hints_invalid_family();
-        test_create_hints_invalid_protocol();
-        test_create_hints_invalid_type();
+        test_socket_valid();
+        test_socket_hints_valid();
+        test_socket_hints_invalid_family();
+        test_socket_hints_invalid_protocol();
+        test_socket_hints_invalid_type();
     }
     catch (const std::exception& error) {
         std::cerr << error.what()

@@ -88,7 +88,7 @@ validate-sun.cpp
 
 test_common_sources = test-address.cpp test-bind.cpp test-connect.cpp	\
 test-context.cpp test-create.cpp test-host.cpp test-hostname.cpp	\
-test-limits.cpp test-option.cpp test-parse.cpp
+test-limits.cpp test-option.cpp test-parse.cpp test-socket.cpp
 
 test_posix_sources = test-posix.cpp
 
@@ -188,7 +188,7 @@ ifeq "$(call compare-versions,$(ctags_version),5.8)" "greater"
 endif
 endif
 
-all_targets = $(build_targets) test
+all_targets = $(build_targets) check
 
 ifneq "$(os_type)" "ms-windows"
 ifneq "$(os_distro)" "macos"
@@ -249,7 +249,7 @@ build: $(build_targets)
 
 .PHONY: check
 check: $(test_programs)
-	$(run_test_programs) $^
+	$(run_test_programs) $(sort $^)
 
 .PHONY: check-syntax
 check-syntax:

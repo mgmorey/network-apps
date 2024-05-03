@@ -101,5 +101,6 @@ test-limits
 test-option
 test-parse
 test-posix
+test-socket
 unix-client
 unix-server
