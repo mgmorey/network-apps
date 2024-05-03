@@ -18,10 +18,10 @@
 
 #ifdef WIN32
 #include <winsock2.h>       // SOCKET_ERROR
-#endif
-
+#else
 #ifndef SOCKET_ERROR
 #define SOCKET_ERROR	(-1)	// NOLINT
+#endif
 #endif
 
 namespace Network
