@@ -70,14 +70,17 @@ Network::SocketData::operator bool() const noexcept
 auto Network::SocketData::bound(bool t_bound) -> SocketData&
 {
 #ifndef WIN32
-    if (m_sockpath.has_value() != t_bound) {
-        if (m_sockpath) {
-            remove(*m_sockpath, m_verbose);
-            m_sockpath.reset();
-        } else {
-            m_sockpath = to_path(sockname());
-        }
+    if (m_sockpath.has_value() == t_bound) {
+        return *this;
     }
+
+    if (m_sockpath) {
+        remove(*m_sockpath, m_verbose);
+        m_sockpath.reset();
+    } else {
+        m_sockpath = to_path(sockname());
+    }
+
 #else
     static_cast<void>(t_bound);
 #endif
