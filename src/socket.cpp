@@ -62,11 +62,7 @@ auto Network::Socket::bound() -> Socket&
 
 auto Network::Socket::close() -> Socket&
 {
-    if (!m_socket_data) {
-        return *this;
-    }
-
-    m_socket_data->close();
+    m_socket_data.reset();
     return *this;
 }
 

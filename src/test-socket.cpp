@@ -101,14 +101,22 @@ namespace TestSocket
         }
     }
 
-    auto test_socket(const SocketHints& hints,
+    auto test_socket(bool with_close,
+                     const SocketHints& hints,
                      const std::string& expected_error_re) -> void
     {
         std::string actual_error_str;
 
         try {
-            const Socket sock {hints, verbose};
+            Socket sock {hints, verbose};
+            assert(static_cast<bool>(sock));
             assert(static_cast<socket_type>(sock) != socket_null);
+
+            if (with_close) {
+                sock.close();
+                assert(!static_cast<bool>(sock));
+                assert(static_cast<socket_type>(sock) == socket_null);
+            }
         }
         catch (const Error& error) {
             print(error);
@@ -127,25 +135,31 @@ namespace TestSocket
     auto test_socket_hints_invalid_family() -> void
     {
         const SocketHints hints {-1, SOCK_STREAM, 0};
-        test_socket(hints, expected_error_socket_re);
+        test_socket(false, hints, expected_error_socket_re);
     }
 
     auto test_socket_hints_invalid_protocol() -> void
     {
         const SocketHints hints {AF_INET, SOCK_STREAM, -1};
-        test_socket(hints, expected_error_socket_re);
+        test_socket(false, hints, expected_error_socket_re);
     }
 
     auto test_socket_hints_invalid_type() -> void
     {
         const SocketHints hints {AF_INET, -1, 0};
-        test_socket(hints, expected_error_socket_re);
+        test_socket(false, hints, expected_error_socket_re);
     }
 
     auto test_socket_hints_valid() -> void
     {
         const SocketHints hints {AF_INET, SOCK_STREAM, 0};
-        test_socket(hints, "");
+        test_socket(false, hints, "");
+    }
+
+    auto test_socket_hints_valid_close() -> void
+    {
+        const SocketHints hints {AF_INET, SOCK_STREAM, 0};
+        test_socket(true, hints, "");
     }
 
     auto test_socket_valid() -> void
@@ -168,6 +182,7 @@ auto main(int argc, char* argv[]) -> int
 
         test_socket_valid();
         test_socket_hints_valid();
+        test_socket_hints_valid_close();
         test_socket_hints_invalid_family();
         test_socket_hints_invalid_protocol();
         test_socket_hints_invalid_type();

@@ -88,6 +88,7 @@ namespace TestSocket
 
         try {
             const Socket sock {create(hints, verbose)};
+            assert(static_cast<bool>(sock));
             assert(static_cast<socket_type>(sock) != socket_null);
         }
         catch (const Error& error) {
