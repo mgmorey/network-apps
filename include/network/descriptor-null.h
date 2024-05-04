@@ -16,23 +16,11 @@
 #ifndef NETWORK_DESCRIPTOR_NULL_H
 #define NETWORK_DESCRIPTOR_NULL_H
 
-#include "network/socket-type.h"                // socket_type
-
-#ifdef WIN32
-#include <winsock2.h>       // INVALID_SOCKET
-#endif
-
-#ifndef INVALID_SOCKET
-#ifdef WIN32
-#define INVALID_SOCKET	(~0)	// NOLINT
-#else
-#define INVALID_SOCKET	(-1)	// NOLINT
-#endif
-#endif
+#include "network/socket-null.h"                // socket_null
 
 namespace Network
 {
-    constexpr socket_type descriptor_null {INVALID_SOCKET};
+    constexpr auto descriptor_null {socket_null};
 }
 
 #endif
