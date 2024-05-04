@@ -146,7 +146,7 @@ namespace TestBind
 
     auto get_hints() -> SocketHints
     {
-        if (getenv("http_proxy")) {
+        if (getenv("http_proxy") != nullptr) {
             return IpSocketHints {af_ip_v4, SOCK_STREAM, AI_CANONNAME};
         }
 
@@ -244,7 +244,7 @@ auto main(int argc, char* argv[]) -> int
             std::cout << context << std::endl;
         }
 
-        if (!getenv("http_proxy")) {
+        if (getenv("http_proxy") == nullptr) {
             test_bind_valid(endpoint, hints);
         }
 

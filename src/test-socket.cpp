@@ -109,7 +109,7 @@ namespace TestSocket
 
         try {
             Socket sock_1 {hints, verbose};
-            Socket sock_2 {sock_1};
+            const Socket sock_2 {sock_1};
             assert(static_cast<bool>(sock_1));
             assert(static_cast<bool>(sock_2));
             assert(static_cast<socket_type>(sock_1) != socket_null);
