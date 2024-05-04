@@ -16,17 +16,17 @@
 #ifndef NETWORK_SOCKET_TYPE_ENUM_H
 #define NETWORK_SOCKET_TYPE_ENUM_H
 
-#include "network/socket-type-type.h"           // socket_type_type
-
 #ifdef WIN32
 #include <winsock2.h>       // SOCK_DGRAM, SOCK_STREAM
 #else
 #include <sys/socket.h>     // SOCK_DGRAM, SOCK_STREAM
 #endif
 
+#include <cstdint>      // std::uint8_t
+
 namespace Network
 {
-    using socket_type_enum = enum : socket_type_type {
+    using socket_type_enum = enum : std::uint8_t {
         sock_none = 0,
         sock_stream = SOCK_STREAM,
         sock_dgram = SOCK_DGRAM,

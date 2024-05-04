@@ -16,8 +16,6 @@
 #ifndef NETWORK_SOCKET_IP_PROTOCOL_ENUM_H
 #define NETWORK_SOCKET_IP_PROTOCOL_ENUM_H
 
-#include "network/socket-protocol-type.h"       // socket_protocol_type
-
 #ifdef WIN32
 #include <winsock2.h>       // IPPROTO_IP, IPPROTO_RAW, IPPROTO_TCP,
                             // IPPROTO_UDP
@@ -26,9 +24,11 @@
                             // IPPROTO_UDP
 #endif
 
+#include <cstdint>      // std::uint8_t
+
 namespace Network
 {
-    using socket_ip_protocol_enum = enum : socket_protocol_type {
+    using socket_ip_protocol_enum = enum : std::uint8_t {
         ipproto_ip = IPPROTO_IP,
         ipproto_tcp = IPPROTO_TCP,
         ipproto_udp = IPPROTO_UDP,

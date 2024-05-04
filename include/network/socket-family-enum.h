@@ -16,17 +16,17 @@
 #ifndef NETWORK_SOCKET_FAMILY_ENUM_H
 #define NETWORK_SOCKET_FAMILY_ENUM_H
 
-#include "network/socket-family-type.h"         // socket_family_type
-
 #ifdef WIN32
 #include <winsock2.h>       // AF_INET, AF_INET6, AF_UNIX, AF_UNSPEC
 #else
 #include <sys/socket.h>     // AF_INET, AF_INET6, AF_UNIX, AF_UNSPEC
 #endif
 
+#include <cstdint>      // std::uint8_t
+
 namespace Network
 {
-    using socket_family_enum = enum : socket_family_type {
+    using socket_family_enum = enum : std::uint8_t {
         af_unspec = AF_UNSPEC,
 #ifndef WIN32
         af_unix = AF_UNIX,
