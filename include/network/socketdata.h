@@ -18,11 +18,12 @@
 
 #include "network/bytestring.h"                 // ByteString
 #include "network/optionalbytestring.h"         // OptionalByteString
+#include "network/socket-null.h"                // socket_null
+#include "network/socket-type.h"                // socket_type
+
 #ifndef WIN32
 #include "network/optionalpathname.h"           // OptionalPathanme
 #endif
-#include "network/socket-null.h"                // socket_null
-#include "network/socket-type.h"                // socket_type
 
 namespace Network
 {
