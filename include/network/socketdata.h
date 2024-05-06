@@ -37,7 +37,6 @@ namespace Network
         ~SocketData() noexcept;
         auto operator=(const SocketData&) noexcept -> SocketData& = delete;
         auto operator=(SocketData&&) noexcept -> SocketData& = delete;
-        auto operator=(socket_type t_socket) noexcept -> SocketData&;
         explicit operator socket_type() const noexcept;
         explicit operator bool() const noexcept;
         auto bound(bool t_bound) -> SocketData&;

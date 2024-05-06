@@ -49,13 +49,6 @@ Network::SocketData::~SocketData() noexcept
     }
 }
 
-auto Network::SocketData::operator=(socket_type t_socket) noexcept ->
-    SocketData&
-{
-    m_socket = t_socket;
-    return *this;
-}
-
 Network::SocketData::operator socket_type() const noexcept
 {
     return m_socket;
