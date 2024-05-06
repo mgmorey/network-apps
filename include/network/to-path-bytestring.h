@@ -15,15 +15,3 @@
 
 #ifndef NETWORK_TO_PATH_BYTESTRING_H
 #define NETWORK_TO_PATH_BYTESTRING_H
-
-#include "network/bytestring.h"         // ByteString
-#include "network/optionalpathname.h"   // OptionalPathname
-
-namespace Network
-{
-#ifndef WIN32
-    extern auto to_path(const ByteString& addr) -> OptionalPathname;
-#endif
-}
-
-#endif
