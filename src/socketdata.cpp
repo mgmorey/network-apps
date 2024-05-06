@@ -41,7 +41,7 @@ Network::SocketData::SocketData(socket_type t_socket,
 Network::SocketData::~SocketData() noexcept
 {
     try {
-        static_cast<void>(close());
+        close();
     }
     catch (const std::exception& error) {
         std::cerr << error.what()
