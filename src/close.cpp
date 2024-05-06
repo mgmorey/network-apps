@@ -19,7 +19,6 @@
 #include "network/oserrorresult.h"              // OsErrorResult
 #include "network/reset-last-context-error.h"   // reset_last_context_error()
 #include "network/socket-error.h"               // socket_error
-#include "network/socket-null.h"                // socket_null
 #include "network/socket-type.h"                // socket_type
 #include "network/to-os-error.h"                // to_os_error()
 
@@ -49,6 +48,7 @@ auto Network::close(socket_type handle, bool verbose) -> OsErrorResult
                   << std::endl;
     }
 
+    reset_last_context_error();
 #ifdef WIN32
     const auto result {::closesocket(handle)};
 #else
