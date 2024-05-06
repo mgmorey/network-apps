@@ -101,27 +101,24 @@ namespace TestSocket
         }
     }
 
-    auto test_socket(bool with_close,
-                     const SocketHints& hints,
+    auto test_socket(const SocketHints& hints,
                      const std::string& expected_error_re) -> void
     {
         std::string actual_error_str;
 
         try {
-            Socket sock_1 {hints, verbose};
+            Socket sock_1 {socket_null, verbose};
             const Socket sock_2 {sock_1};
+            assert(!static_cast<bool>(sock_1));
+            assert(!static_cast<bool>(sock_2));
+            assert(static_cast<socket_type>(sock_1) == socket_null);
+            assert(static_cast<socket_type>(sock_2) == socket_null);
+            sock_1 = Socket {hints, verbose};
+            const Socket sock_3 {sock_1};
             assert(static_cast<bool>(sock_1));
-            assert(static_cast<bool>(sock_2));
+            assert(static_cast<bool>(sock_3));
             assert(static_cast<socket_type>(sock_1) != socket_null);
-            assert(static_cast<socket_type>(sock_2) != socket_null);
-
-            if (with_close) {
-                sock_1.close();
-                assert(!static_cast<bool>(sock_1));
-                assert(!static_cast<bool>(sock_2));
-                assert(static_cast<socket_type>(sock_1) == socket_null);
-                assert(static_cast<socket_type>(sock_2) == socket_null);
-            }
+            assert(static_cast<socket_type>(sock_3) != socket_null);
         }
         catch (const Error& error) {
             print(error);
@@ -140,31 +137,31 @@ namespace TestSocket
     auto test_socket_hints_invalid_family() -> void
     {
         const SocketHints hints {-1, SOCK_STREAM, 0};
-        test_socket(false, hints, expected_error_socket_re);
+        test_socket(hints, expected_error_socket_re);
     }
 
     auto test_socket_hints_invalid_protocol() -> void
     {
         const SocketHints hints {AF_INET, SOCK_STREAM, -1};
-        test_socket(false, hints, expected_error_socket_re);
+        test_socket(hints, expected_error_socket_re);
     }
 
     auto test_socket_hints_invalid_type() -> void
     {
         const SocketHints hints {AF_INET, -1, 0};
-        test_socket(false, hints, expected_error_socket_re);
+        test_socket(hints, expected_error_socket_re);
     }
 
     auto test_socket_hints_valid() -> void
     {
         const SocketHints hints {AF_INET, SOCK_STREAM, 0};
-        test_socket(false, hints, "");
+        test_socket(hints, "");
     }
 
     auto test_socket_hints_valid_close() -> void
     {
         const SocketHints hints {AF_INET, SOCK_STREAM, 0};
-        test_socket(true, hints, "");
+        test_socket(hints, "");
     }
 
     auto test_socket_valid() -> void
