@@ -60,16 +60,6 @@ auto Network::Socket::bound() -> Socket&
     return *this;
 }
 
-auto Network::Socket::close() -> Socket&
-{
-    if (!m_socket_data) {
-        return *this;
-    }
-
-    m_socket_data->close();
-    return *this;
-}
-
 auto Network::Socket::peername() const -> ByteString
 {
     if (!m_socket_data) {
