@@ -107,7 +107,7 @@ namespace TestSocket
         std::string actual_error_str;
 
         try {
-            Socket sock_1 {socket_null, verbose};
+            Socket sock_1;
             const Socket sock_2 {sock_1};
             assert(!static_cast<bool>(sock_1));
             assert(!static_cast<bool>(sock_2));

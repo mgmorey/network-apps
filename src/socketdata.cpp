@@ -18,6 +18,7 @@
 #include "network/close.h"                      // close()
 #include "network/get-peername.h"               // get_peername()
 #include "network/get-sockname.h"               // get_sockname()
+#include "network/logicerror.h"                 // LogicError
 #include "network/socket-null.h"                // socket_null
 #include "network/socket-type.h"                // socket_type
 
@@ -28,12 +29,16 @@
 
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::endl
+#include <string>       // std::to_string()
 
-Network::SocketData::SocketData(socket_type t_socket,
-                                bool t_verbose) noexcept :
+Network::SocketData::SocketData(socket_type t_socket, bool t_verbose) :
     m_socket(t_socket),
     m_verbose(t_verbose)
 {
+    if (m_socket == socket_null) {
+        throw LogicError("Invalid socket descriptor value: " +
+                         std::to_string(m_socket));
+    }
 }
 
 Network::SocketData::~SocketData() noexcept
@@ -102,10 +107,6 @@ auto Network::SocketData::bound(bool t_bound) -> SocketData&
 
 auto Network::SocketData::close() -> SocketData&
 {
-    if (m_socket == socket_null) {
-        return *this;
-    }
-
     if (const auto result {Network::close(m_socket, m_verbose)}) {
         std::cerr << result.string()
                   << std::endl;
