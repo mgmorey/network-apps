@@ -40,6 +40,7 @@
 #include <exception>    // std::exception
 #include <iomanip>      // std::right, std::setw()
 #include <iostream>     // std::cerr, std::cout, std::endl
+#include <optional>     // std:nullopt
 #include <set>          // std::set
 #include <string>       // std::string
 #include <type_traits>  // std::decay_t, std::is_same_v
@@ -68,7 +69,6 @@ namespace TestBind
 
     static constexpr auto handle_width {6};
     static constexpr auto localhost {"localhost"};
-    static constexpr auto service {"8085"};
 
     static bool verbose {false};  // NOLINT
 
@@ -133,19 +133,9 @@ namespace TestBind
         return codes;
     }
 
-    auto get_codes_invalid_service() -> const ErrorCodeSet&
-    {
-#if defined(WIN32)
-        static const ErrorCodeSet codes {WSATYPE_NOT_FOUND};
-#else
-        static const ErrorCodeSet codes {EAI_NONAME, EAI_SERVICE};
-#endif
-        return codes;
-    }
-
     auto get_hints() -> SocketHints
     {
-        return IpSocketHints {SOCK_STREAM, AI_CANONNAME};
+        return IpSocketHints {SOCK_STREAM, AI_PASSIVE | AI_CANONNAME};
     }
 
     auto parse_arguments(int argc, char** argv) -> Endpoint
@@ -166,7 +156,7 @@ namespace TestBind
 
         return {
             !operands.empty() ? operands[0] : localhost,
-            operands.size() > 1 ? operands[1] : service
+            std::nullopt
         };
     }
 
@@ -212,12 +202,6 @@ namespace TestBind
         test_bind(endpoint, hints, get_codes_invalid_host());
     }
 
-    auto test_bind_invalid_service(const Endpoint& endpoint,
-                                   const SocketHints& hints) -> void
-    {
-        test_bind(endpoint, hints, get_codes_invalid_service());
-    }
-
     auto test_bind_valid(const Endpoint& endpoint,
                          const SocketHints& hints) -> void
     {
@@ -243,10 +227,8 @@ auto main(int argc, char* argv[]) -> int
             test_bind_valid(endpoint, hints);
         }
 
-        const Endpoint invalid_host {".", service};
+        const Endpoint invalid_host {".", std::nullopt};
         test_bind_invalid_host(invalid_host, hints);
-        const Endpoint invalid_service {localhost, "."};
-        test_bind_invalid_service(invalid_service, hints);
     }
     catch (const std::exception& error) {
         std::cerr << error.what()
