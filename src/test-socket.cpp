@@ -119,6 +119,8 @@ namespace TestSocket
             assert(static_cast<bool>(sock_3));
             assert(static_cast<socket_type>(sock_1) != socket_null);
             assert(static_cast<socket_type>(sock_3) != socket_null);
+            assert(static_cast<socket_type>(sock_1) ==
+                   static_cast<socket_type>(sock_3));
         }
         catch (const Error& error) {
             print(error);
