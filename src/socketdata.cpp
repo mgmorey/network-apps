@@ -65,6 +65,24 @@ auto Network::SocketData::bound() -> SocketData&
 }
 
 
+auto Network::SocketData::peername() const -> ByteString
+{
+    if (!m_peername) {
+        m_peername = get_peername(m_socket, m_verbose);
+    }
+
+    return *m_peername;
+}
+
+auto Network::SocketData::sockname() const -> ByteString
+{
+    if (!m_sockname) {
+        m_sockname = get_sockname(m_socket, m_verbose);
+    }
+
+    return *m_sockname;
+}
+
 auto Network::SocketData::bound(bool t_bound) -> SocketData&
 {
 #ifndef WIN32
@@ -102,22 +120,4 @@ auto Network::SocketData::close() -> SocketData&
     m_peername.reset();
     bound(false);
     return *this;
-}
-
-auto Network::SocketData::peername() const -> ByteString
-{
-    if (!m_peername) {
-        m_peername = get_peername(m_socket, m_verbose);
-    }
-
-    return *m_peername;
-}
-
-auto Network::SocketData::sockname() const -> ByteString
-{
-    if (!m_sockname) {
-        m_sockname = get_sockname(m_socket, m_verbose);
-    }
-
-    return *m_sockname;
 }

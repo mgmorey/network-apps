@@ -40,10 +40,12 @@ namespace Network
         explicit operator socket_type() const noexcept;
         explicit operator bool() const noexcept;
         auto bound() -> SocketData&;
-        auto bound(bool t_bound) -> SocketData&;
-        auto close() -> SocketData&;
         [[nodiscard]] auto peername() const -> ByteString;
         [[nodiscard]] auto sockname() const -> ByteString;
+
+    protected:
+        auto bound(bool t_bound) -> SocketData&;
+        auto close() -> SocketData&;
 
     private:
         mutable OptionalByteString m_peername;
