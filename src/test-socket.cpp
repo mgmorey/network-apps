@@ -39,6 +39,7 @@ namespace TestSocket
     using Network::Context;
     using Network::Error;
     using Network::Socket;
+    using Network::SocketData;
     using Network::SocketHints;
     using Network::os_error_type;
     using Network::parse;
@@ -47,6 +48,9 @@ namespace TestSocket
 
     static constexpr auto expected_error_socket_re {
         R"(Call to ::socket\(.+\) failed with error \d+: .+)"
+    };
+    static constexpr auto expected_error_socket_data_re {
+        R"(Invalid socket descriptor value: (-\d+|\d+))"
     };
 
     static bool verbose {false};  // NOLINT
@@ -136,6 +140,33 @@ namespace TestSocket
         }
     }
 
+    auto test_socket_data(socket_type handle,
+                          const std::string& expected_error_re) -> void
+    {
+        std::string actual_error_str;
+
+        try {
+            SocketData {handle, verbose};
+        }
+        catch (const Error& error) {
+            print(error);
+            actual_error_str = error.what();
+        }
+
+        if (expected_error_re.empty()) {
+            assert(actual_error_str.empty());
+        }
+        else {
+            const std::regex expected_error_regex {expected_error_re};
+            assert(std::regex_match(actual_error_str, expected_error_regex));
+        }
+    }
+
+    auto test_socket_data_invalid() -> void
+    {
+        test_socket_data(socket_null, expected_error_socket_data_re);
+    }
+
     auto test_socket_hints_invalid_family() -> void
     {
         const SocketHints hints {-1, SOCK_STREAM, 0};
@@ -187,6 +218,7 @@ auto main(int argc, char* argv[]) -> int
         test_socket_valid();
         test_socket_hints_valid();
         test_socket_hints_valid_close();
+        test_socket_data_invalid();
         test_socket_hints_invalid_family();
         test_socket_hints_invalid_protocol();
         test_socket_hints_invalid_type();
