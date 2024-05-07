@@ -64,7 +64,6 @@ auto Network::SocketData::bound() const -> const SocketData&
     return bound(true);
 }
 
-
 auto Network::SocketData::peername() const -> ByteString
 {
     if (!m_peername) {
