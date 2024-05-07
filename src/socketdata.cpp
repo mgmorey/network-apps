@@ -115,9 +115,6 @@ auto Network::SocketData::close() -> SocketData&
         return *this;
     }
 
-    m_socket = socket_null;
-    m_sockname.reset();
-    m_peername.reset();
     bound(false);
     return *this;
 }
