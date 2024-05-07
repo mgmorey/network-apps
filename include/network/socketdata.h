@@ -39,12 +39,12 @@ namespace Network
         auto operator=(SocketData&&) noexcept -> SocketData& = delete;
         explicit operator socket_type() const noexcept;
         explicit operator bool() const noexcept;
-        auto bound() const -> const SocketData&;
+        auto bound() -> SocketData&;
         [[nodiscard]] auto peername() const -> ByteString;
         [[nodiscard]] auto sockname() const -> ByteString;
 
     protected:
-        auto bound(bool t_bound) const -> const SocketData&;
+        auto bound(bool t_bound) -> SocketData&;
         auto close() -> SocketData&;
         auto reset() -> SocketData&;
 
@@ -52,7 +52,7 @@ namespace Network
         mutable OptionalByteString m_peername;
         mutable OptionalByteString m_sockname;
 #ifndef WIN32
-        mutable OptionalPathname m_sockpath;
+        OptionalPathname m_sockpath;
 #endif
         socket_type m_socket {socket_null};
         bool m_verbose {false};

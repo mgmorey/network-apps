@@ -60,7 +60,7 @@ Network::SocketData::operator bool() const noexcept
     return m_socket != socket_null;
 }
 
-auto Network::SocketData::bound() const -> const SocketData&
+auto Network::SocketData::bound() -> SocketData&
 {
     return bound(true);
 }
@@ -83,7 +83,7 @@ auto Network::SocketData::sockname() const -> ByteString
     return *m_sockname;
 }
 
-auto Network::SocketData::bound(bool t_bound) const -> const SocketData&
+auto Network::SocketData::bound(bool t_bound) -> SocketData&
 {
 #ifndef WIN32
     if (m_sockpath.has_value() == t_bound) {
