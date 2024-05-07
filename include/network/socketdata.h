@@ -46,6 +46,7 @@ namespace Network
     protected:
         auto bound(bool t_bound) -> SocketData&;
         auto close() -> SocketData&;
+        auto reset() -> SocketData&;
 
     private:
         mutable OptionalByteString m_peername;

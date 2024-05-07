@@ -41,7 +41,7 @@ Network::SocketData::SocketData(socket_type t_socket,
 Network::SocketData::~SocketData() noexcept
 {
     try {
-        close();
+        reset();
     }
     catch (const std::exception& error) {
         std::cerr << error.what()
@@ -116,6 +116,14 @@ auto Network::SocketData::close() -> SocketData&
     }
 
     m_socket = socket_null;
+    return *this;
+}
+
+auto Network::SocketData::reset() -> SocketData&
+{
+    close();
     bound(false);
+    m_sockname.reset();
+    m_peername.reset();
     return *this;
 }
