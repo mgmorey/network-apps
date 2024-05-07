@@ -43,11 +43,7 @@ Network::Socket::operator socket_type() const noexcept
 
 Network::Socket::operator bool() const noexcept
 {
-    if (!m_socket_data) {
-        return false;
-    }
-
-    return static_cast<bool>(*m_socket_data);
+    return static_cast<bool>(m_socket_data);
 }
 
 auto Network::Socket::bound() -> Socket&
