@@ -57,11 +57,6 @@ Network::SocketData::operator socket_type() const noexcept
     return m_socket;
 }
 
-Network::SocketData::operator bool() const noexcept
-{
-    return m_socket != socket_null;
-}
-
 auto Network::SocketData::bound() -> SocketData&
 {
     return bound(true);
