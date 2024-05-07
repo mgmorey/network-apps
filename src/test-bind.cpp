@@ -146,10 +146,6 @@ namespace TestBind
 
     auto get_hints() -> SocketHints
     {
-        if (getenv("http_proxy") != nullptr) {
-            return IpSocketHints {af_ip_v4, SOCK_STREAM, AI_CANONNAME};
-        }
-
         return IpSocketHints {SOCK_STREAM, AI_CANONNAME};
     }
 
