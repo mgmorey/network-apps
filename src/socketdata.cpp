@@ -115,6 +115,7 @@ auto Network::SocketData::close() -> SocketData&
         return *this;
     }
 
+    m_socket = socket_null;
     bound(false);
     return *this;
 }
