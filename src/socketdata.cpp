@@ -111,7 +111,6 @@ auto Network::SocketData::close() -> SocketData&
     if (const auto result {Network::close(m_socket, m_verbose)}) {
         std::cerr << result.string()
                   << std::endl;
-        return *this;
     }
 
     m_socket = socket_null;
