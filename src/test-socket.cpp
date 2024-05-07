@@ -104,6 +104,28 @@ namespace TestSocket
         }
     }
 
+    auto test_socket(socket_type handle,
+                     const std::string& expected_error_re) -> void
+    {
+        std::string actual_error_str;
+
+        try {
+            Socket {handle, verbose};
+        }
+        catch (const Error& error) {
+            print(error);
+            actual_error_str = error.what();
+        }
+
+        if (expected_error_re.empty()) {
+            assert(actual_error_str.empty());
+        }
+        else {
+            const std::regex expected_error_regex {expected_error_re};
+            assert(std::regex_match(actual_error_str, expected_error_regex));
+        }
+    }
+
     auto test_socket(const SocketHints& hints,
                      const std::string& expected_error_re) -> void
     {
@@ -124,28 +146,6 @@ namespace TestSocket
             assert(static_cast<socket_type>(sock_3) != socket_null);
             assert(static_cast<socket_type>(sock_1) ==
                    static_cast<socket_type>(sock_3));
-        }
-        catch (const Error& error) {
-            print(error);
-            actual_error_str = error.what();
-        }
-
-        if (expected_error_re.empty()) {
-            assert(actual_error_str.empty());
-        }
-        else {
-            const std::regex expected_error_regex {expected_error_re};
-            assert(std::regex_match(actual_error_str, expected_error_regex));
-        }
-    }
-
-    auto test_socket(socket_type handle,
-                     const std::string& expected_error_re) -> void
-    {
-        std::string actual_error_str;
-
-        try {
-            Socket {handle, verbose};
         }
         catch (const Error& error) {
             print(error);
@@ -185,12 +185,6 @@ namespace TestSocket
         test_socket(hints, "");
     }
 
-    auto test_socket_hints_valid_close() -> void
-    {
-        const SocketHints hints {AF_INET, SOCK_STREAM, 0};
-        test_socket(hints, "");
-    }
-
     auto test_socket_invalid_data() -> void
     {
         test_socket(socket_null, expected_error_socket_data_re);
@@ -216,7 +210,6 @@ auto main(int argc, char* argv[]) -> int
 
         test_socket_valid();
         test_socket_hints_valid();
-        test_socket_hints_valid_close();
         test_socket_hints_invalid_family();
         test_socket_hints_invalid_protocol();
         test_socket_hints_invalid_type();
