@@ -56,7 +56,7 @@ auto Network::Socket::bound() -> Socket&
         return *this;
     }
 
-    m_socket_data->bound(true);
+    m_socket_data->bound();
     return *this;
 }
 

@@ -59,6 +59,12 @@ Network::SocketData::operator bool() const noexcept
     return m_socket != socket_null;
 }
 
+auto Network::SocketData::bound() -> SocketData&
+{
+    return bound(true);
+}
+
+
 auto Network::SocketData::bound(bool t_bound) -> SocketData&
 {
 #ifndef WIN32
