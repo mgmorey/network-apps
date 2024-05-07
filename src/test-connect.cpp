@@ -64,7 +64,6 @@ namespace TestConnect
     using Network::SocketHints;
     using Network::SocketResult;
     using Network::SocketResultVector;
-    using Network::af_ip_v4;
     using Network::always_false_v;
     using Network::connect;
     using Network::get_hostname;
