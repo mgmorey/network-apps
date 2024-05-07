@@ -26,10 +26,7 @@
 #include "network/to-path.h"                    // to_path()
 #endif
 
-#ifndef WIN32
 #include <exception>    // std::exception
-#endif
-
 #include <iostream>     // std::cerr, std::endl
 
 Network::SocketData::SocketData(socket_type t_socket,
