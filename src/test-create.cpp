@@ -87,9 +87,20 @@ namespace TestSocket
         std::string actual_error_str;
 
         try {
-            const Socket sock {create(hints, verbose)};
-            assert(static_cast<bool>(sock));
-            assert(static_cast<socket_type>(sock) != socket_null);
+            Socket sock_1;
+            const Socket sock_2 {sock_1};
+            assert(!static_cast<bool>(sock_1));
+            assert(!static_cast<bool>(sock_2));
+            assert(static_cast<socket_type>(sock_1) == socket_null);
+            assert(static_cast<socket_type>(sock_2) == socket_null);
+            sock_1 = Socket {create(hints, verbose)};
+            const Socket sock_3 {sock_1};
+            assert(static_cast<bool>(sock_1));
+            assert(static_cast<bool>(sock_3));
+            assert(static_cast<socket_type>(sock_1) != socket_null);
+            assert(static_cast<socket_type>(sock_3) != socket_null);
+            assert(static_cast<socket_type>(sock_1) ==
+                   static_cast<socket_type>(sock_3));
         }
         catch (const Error& error) {
             print(error);
