@@ -16,8 +16,9 @@
 #ifndef NETWORK_SOCKETPAIR_H
 #define NETWORK_SOCKETPAIR_H
 
-#include "network/socket.h"             // Socket
-#include "network/sockethints.h"        // SocketHints
+#include "network/socket.h"                     // Socket
+#include "network/sockethints.h"                // SocketHints
+#include "network/socketpair-size.h"            // socketpair_size
 
 #include <array>        // std::array
 #include <cstddef>      // std::size_t
@@ -29,7 +30,7 @@ namespace Network
     {
     public:
         using size_type = std::size_t;
-        static constexpr auto size {2};
+        using value_type = std::array<Socket, socketpair_size>;
 
         explicit SocketPair(const SocketHints& t_hints, bool t_verbose = false);
         SocketPair(const Socket& t_socket_1, const Socket& t_socket_2) noexcept;
@@ -42,7 +43,7 @@ namespace Network
         [[nodiscard]] auto at(size_type t_index) -> Socket&;
 
     private:
-        std::array<Socket, size> m_socket_pair;
+        value_type m_socket_pair;
     };
 #endif
 }
