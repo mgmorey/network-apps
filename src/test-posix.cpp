@@ -262,28 +262,6 @@ namespace TestSocket
         }
     }
 
-    auto test_unix_socket(const SocketHints& hints,
-                     const std::string& expected_error_re) -> void
-    {
-        std::string actual_error_str;
-
-        try {
-            const Socket sock {hints, verbose};
-        }
-        catch (const Error& error) {
-            print(error);
-            actual_error_str = error.what();
-        }
-
-        if (expected_error_re.empty()) {
-            assert(actual_error_str.empty());
-        }
-        else {
-            const std::regex expected_error_regex {expected_error_re};
-            assert(std::regex_match(actual_error_str, expected_error_regex));
-        }
-    }
-
     auto test_socketpair(const SocketHints& hints,
                          const std::string& expected_error_re) -> void
     {
@@ -329,6 +307,28 @@ namespace TestSocket
     {
         const SocketHints hints {AF_UNIX, SOCK_STREAM, 0};
         test_socketpair(hints, "");
+    }
+
+    auto test_unix_socket(const SocketHints& hints,
+                          const std::string& expected_error_re) -> void
+    {
+        std::string actual_error_str;
+
+        try {
+            const Socket sock {hints, verbose};
+        }
+        catch (const Error& error) {
+            print(error);
+            actual_error_str = error.what();
+        }
+
+        if (expected_error_re.empty()) {
+            assert(actual_error_str.empty());
+        }
+        else {
+            const std::regex expected_error_regex {expected_error_re};
+            assert(std::regex_match(actual_error_str, expected_error_regex));
+        }
     }
 
     auto test_unix_socket_invalid_protocol() -> void
