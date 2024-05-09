@@ -21,9 +21,8 @@
 #include "network/parse.h"              // parse()
 
 #ifdef WIN32
-#include <winsock2.h>   // AF_INET, IPPROTO_IP, SOCK_STREAM
+#include <winsock2.h>   // AF_INET, SOCK_STREAM
 #else
-#include <netinet/in.h> // IPPROTO_IP
 #include <sys/socket.h> // AF_INET, SOCK_STREAM
 #endif
 
