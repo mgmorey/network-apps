@@ -20,27 +20,25 @@
 #include "network/socket.h"                     // Socket
 #include "network/sockethints.h"                // SocketHints
 
-#include <cstddef>      // std::size_t
-
 Network::SocketPair::SocketPair(const SocketHints& t_hints, bool t_verbose) :
     SocketPair(create_pair(t_hints, t_verbose))
 {
 }
 
-Network::SocketPair::SocketPair(const Socket& t_socket1,
-                                const Socket& t_socket2) noexcept :
-    m_socket({t_socket1, t_socket2})
+Network::SocketPair::SocketPair(const Socket& t_socket_1,
+                                const Socket& t_socket_2) noexcept :
+    m_socket_pair({t_socket_1, t_socket_2})
 {
 }
 
-auto Network::SocketPair::at(std::size_t index) const -> const Socket&
+auto Network::SocketPair::at(size_type t_index) const -> const Socket&
 {
-    return m_socket.at(index);
+    return m_socket_pair.at(t_index);
 }
 
-auto Network::SocketPair::at(std::size_t index) -> Socket&
+auto Network::SocketPair::at(size_type t_index) -> Socket&
 {
-    return m_socket.at(index);
+    return m_socket_pair.at(t_index);
 }
 
 #endif

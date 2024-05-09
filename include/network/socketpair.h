@@ -20,6 +20,7 @@
 #include "network/sockethints.h"        // SocketHints
 
 #include <array>        // std::array
+#include <cstddef>      // std::size_t
 
 namespace Network
 {
@@ -27,20 +28,21 @@ namespace Network
     class SocketPair
     {
     public:
-        static constexpr auto m_size {2};
+        using size_type = std::size_t;
+        static constexpr auto size {2};
 
         explicit SocketPair(const SocketHints& t_hints, bool t_verbose = false);
-        SocketPair(const Socket& t_socket1, const Socket& t_socket2) noexcept;
+        SocketPair(const Socket& t_socket_1, const Socket& t_socket_2) noexcept;
         SocketPair(const SocketPair&) noexcept = default;
         SocketPair(SocketPair&&) noexcept = default;
         ~SocketPair() noexcept = default;
         auto operator=(const SocketPair&) noexcept -> SocketPair& = default;
         auto operator=(SocketPair&&) noexcept -> SocketPair& = default;
-        [[nodiscard]] auto at(std::size_t i) const -> const Socket&;
-        [[nodiscard]] auto at(std::size_t i) -> Socket&;
+        [[nodiscard]] auto at(size_type t_index) const -> const Socket&;
+        [[nodiscard]] auto at(size_type t_index) -> Socket&;
 
     private:
-        std::array<Socket, m_size> m_socket;
+        std::array<Socket, size> m_socket_pair;
     };
 #endif
 }
