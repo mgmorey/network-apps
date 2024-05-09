@@ -28,6 +28,7 @@
 #include "network/socketfamily.h"               // SocketFamily
 #include "network/socketflags.h"                // SocketFlags
 #include "network/sockethints.h"                // SocketHints
+#include "network/socketpair-type.h"            // socketpair_type
 #include "network/socketpair.h"                 // SocketPair
 #include "network/socketpairresult.h"           // SocketPairResult
 #include "network/socketprotocol.h"             // SocketProtocol
@@ -46,7 +47,7 @@ auto Network::create_pairresult(const SocketHints& hints,
     static constexpr auto delim {", "};
     static constexpr auto tab {0};
 
-    std::array<socket_type, 2> handles {socket_null, socket_null};
+    socketpair_type handles {socket_null, socket_null};
 
     if (verbose) {
         std::cout << "Calling ::socketpair("
