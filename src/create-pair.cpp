@@ -29,8 +29,7 @@
 #include <type_traits>  // std::decay_t, std::is_same_v
 #include <variant>      // std::visit()
 
-auto Network::create_pair(const SocketHints& hints,
-                                bool verbose) -> SocketPair
+auto Network::create_pair(const SocketHints& hints, bool verbose) -> SocketPair
 {
     std::optional<SocketPair> socketpair;
     const auto result {create_pairresult(hints, verbose)};
