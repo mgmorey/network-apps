@@ -88,7 +88,9 @@ auto Network::SocketData::bound(bool t_is_bound) -> SocketData&
     }
 
     if (t_is_bound) {
-        m_sockname = get_sockname(m_socket, m_verbose);
+        if (!m_sockname) {
+            m_sockname = get_sockname(m_socket, m_verbose);
+        }
     } else if (m_sockname) {
         if (const auto path {to_path(*m_sockname)}) {
             remove(*path, m_verbose);
