@@ -88,10 +88,11 @@ auto Network::SocketData::bound(bool t_is_bound) -> SocketData&
     }
 
     if (t_is_bound) {
-        static_cast<void>(sockname());
-    }
-    else if (const auto path {to_path(sockname())}) {
-        remove(*path, m_verbose);
+        m_sockname = get_sockname(m_socket, m_verbose);
+    } else if (m_sockname) {
+        if (const auto path {to_path(*m_sockname)}) {
+            remove(*path, m_verbose);
+        }
     }
 
     m_is_bound = t_is_bound;
