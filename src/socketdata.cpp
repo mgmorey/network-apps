@@ -82,11 +82,11 @@ auto Network::SocketData::sockname() const -> ByteString
 
 auto Network::SocketData::bound(bool t_is_bound) -> SocketData&
 {
-#ifndef WIN32
     if (m_is_bound == t_is_bound) {
         return *this;
     }
 
+#ifndef WIN32
     if (t_is_bound) {
         if (!m_sockname) {
             m_sockname = get_sockname(m_socket, m_verbose);
@@ -96,11 +96,9 @@ auto Network::SocketData::bound(bool t_is_bound) -> SocketData&
             remove(*path, m_verbose);
         }
     }
+#endif
 
     m_is_bound = t_is_bound;
-#else
-    static_cast<void>(t_is_bound);
-#endif
     return *this;
 }
 
