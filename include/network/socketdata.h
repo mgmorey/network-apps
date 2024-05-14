@@ -21,10 +21,6 @@
 #include "network/socket-null.h"                // socket_null
 #include "network/socket-type.h"                // socket_type
 
-#ifndef WIN32
-#include "network/optionalpathname.h"           // OptionalPathanme
-#endif
-
 namespace Network
 {
     class SocketData
