@@ -80,22 +80,23 @@ auto Network::SocketData::sockname() const -> ByteString
     return *m_sockname;
 }
 
-auto Network::SocketData::bound(bool t_bound) -> SocketData&
+auto Network::SocketData::bound(bool t_is_bound) -> SocketData&
 {
 #ifndef WIN32
-    if (m_sockpath.has_value() == t_bound) {
+    if (m_is_bound == t_is_bound) {
         return *this;
     }
 
-    if (m_sockpath) {
-        remove(*m_sockpath, m_verbose);
-        m_sockpath.reset();
-    } else {
-        m_sockpath = to_path(sockname());
+    if (t_is_bound) {
+        static_cast<void>(sockname());
+    }
+    else if (const auto path {to_path(sockname())}) {
+        remove(*path, m_verbose);
     }
 
+    m_is_bound = t_is_bound;
 #else
-    static_cast<void>(t_bound);
+    static_cast<void>(t_is_bound);
 #endif
     return *this;
 }

@@ -97,7 +97,6 @@
 #include "network/remove.h"                     // remove()
 #include "network/socket-error.h"               // socket_error
 #include "network/socket.h"                     // Socket
-#include "network/socketdata.h"                 // SocketData
 #include "network/socketfamily.h"               // SocketFamily
 #include "network/socketflags.h"                // SocketFlags
 #include "network/sockethints.h"                // SocketHints

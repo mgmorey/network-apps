@@ -43,17 +43,15 @@ namespace Network
         [[nodiscard]] auto sockname() const -> ByteString;
 
     protected:
-        auto bound(bool t_bound) -> SocketData&;
+        auto bound(bool t_is_bound) -> SocketData&;
         auto close() -> SocketData&;
         auto reset() -> SocketData&;
 
     private:
         mutable OptionalByteString m_peername;
         mutable OptionalByteString m_sockname;
-#ifndef WIN32
-        OptionalPathname m_sockpath;
-#endif
         socket_type m_socket {socket_null};
+        bool m_is_bound {false};
         bool m_verbose {false};
     };
 }
