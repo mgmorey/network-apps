@@ -44,7 +44,8 @@ Network::SocketData::SocketData(socket_type t_socket, bool t_verbose) :
 Network::SocketData::~SocketData() noexcept
 {
     try {
-        reset();
+        close();
+        bound(false);
     }
     catch (const std::exception& error) {
         std::cerr << error.what()
@@ -102,22 +103,12 @@ auto Network::SocketData::bound(bool t_is_bound) -> SocketData&
     return *this;
 }
 
-auto Network::SocketData::close() -> SocketData&
+auto Network::SocketData::close() const -> const SocketData&
 {
     if (const auto result {Network::close(m_socket, m_verbose)}) {
         std::cerr << result.string()
                   << std::endl;
     }
 
-    m_socket = socket_null;
-    return *this;
-}
-
-auto Network::SocketData::reset() -> SocketData&
-{
-    close();
-    bound(false);
-    m_sockname.reset();
-    m_peername.reset();
     return *this;
 }

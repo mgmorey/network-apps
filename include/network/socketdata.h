@@ -40,8 +40,7 @@ namespace Network
 
     protected:
         auto bound(bool t_is_bound) -> SocketData&;
-        auto close() -> SocketData&;
-        auto reset() -> SocketData&;
+        auto close() const -> const SocketData&;
 
     private:
         mutable OptionalByteString m_peername;
