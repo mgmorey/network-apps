@@ -25,7 +25,7 @@
 namespace Network
 {
     auto connect(const Socket& sock,
-                 const auto &value,
+                 const auto& value,
                  bool verbose = false) -> OsErrorResult
     {
         validate(value);
