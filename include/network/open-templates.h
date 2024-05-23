@@ -23,8 +23,8 @@
 
 namespace Network
 {
-    extern auto open(const OpenHandler &handler,
-                     const OpenEndpointParams &args,
+    extern auto open(const OpenHandler& handler,
+                     const OpenEndpointParams& args,
                      const TemplateVector& templates) -> SocketResultVector;
 }
 
