@@ -24,8 +24,8 @@
 
 namespace Network
 {
-    auto bind(Socket &sock,
-              const auto &value,
+    auto bind(Socket& sock,
+              const auto& value,
               bool verbose = false) -> OsErrorResult
     {
         validate(value);
