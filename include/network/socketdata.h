@@ -17,9 +17,10 @@
 #define NETWORK_SOCKETDATA_H
 
 #include "network/bytestring.h"                 // ByteString
-#include "network/optionalbytestring.h"         // OptionalByteString
 #include "network/socket-null.h"                // socket_null
 #include "network/socket-type.h"                // socket_type
+
+#include <optional>     // std::optional
 
 namespace Network
 {
@@ -43,8 +44,8 @@ namespace Network
         auto close() const -> const SocketData&;
 
     private:
-        mutable OptionalByteString m_peername;
-        mutable OptionalByteString m_sockname;
+        mutable std::optional<ByteString> m_peername;
+        mutable std::optional<ByteString> m_sockname;
         socket_type m_socket {socket_null};
         bool m_is_bound {false};
         bool m_verbose {false};

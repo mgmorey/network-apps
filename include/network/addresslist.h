@@ -19,7 +19,6 @@
 #include "network/optionalhints.h"      // OptionalHints
 #include "network/optionalhostname.h"   // OptionalHostname
 #include "network/optionalservice.h"    // OptionalService
-#include "network/optionalstring.h"     // OptionalString
 #include "network/oserrorresult.h"      // OsErrorResult
 
 #ifdef WIN32
@@ -31,7 +30,9 @@
 #include <cstddef>      // std::ptrdiff_t
 #include <iterator>     // std::input_iterator_tag
 #include <memory>       // std::unique_ptr
+#include <optional>     // std::optional
 #include <ostream>      // std::ostream
+#include <string>       // std::string
 
 namespace Network
 {
@@ -76,11 +77,11 @@ namespace Network
         auto operator=(const AddressList&) noexcept -> AddressList& = delete;
         auto operator=(const AddressList&&) noexcept -> AddressList& = delete;
         [[nodiscard]] auto begin() const noexcept -> InputIterator;
-        [[nodiscard]] auto result() const -> OsErrorResult;
+        [[nodiscard]] auto result() const noexcept -> OsErrorResult;
 
     protected:
-        static auto to_c_string(const OptionalString& str) noexcept ->
-            const char*;
+        static auto to_c_str(const std::optional<std::string>& str)
+            noexcept -> const char*;
 
     private:
         addrinfo* m_list {nullptr};

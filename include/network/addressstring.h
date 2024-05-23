@@ -17,7 +17,9 @@
 #define NETWORK_ADDRESSSTRING_H
 
 #include "network/bytestring.h"         // ByteString
-#include "network/optionalstring.h"     // OptionalString, std::string
+
+#include <optional>     // std::optional
+#include <string>       // std::string
 
 namespace Network
 {
@@ -37,7 +39,7 @@ namespace Network
 
     private:
         ByteString m_addr;
-        mutable OptionalString m_addr_str;
+        mutable std::optional<std::string> m_addr_str;
     };
 
     extern auto operator<<(std::ostream& os,

@@ -18,7 +18,6 @@
 #include "network/optionalhints.h"      // OptionalHints
 #include "network/optionalhostname.h"   // OptionalHostname
 #include "network/optionalservice.h"    // OptionalService
-#include "network/optionalstring.h"     // OptionalString
 #include "network/oserrorresult.h"      // OsErrorResult
 #include "network/string-null.h"        // string_null
 #include "network/to-os-error.h"        // to_os_error()
@@ -31,6 +30,7 @@
 
 #include <iostream>     // std::cout, std::endl
 #include <memory>       // std::make_unique, std::unique_ptr
+#include <optional>     // std::optional
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
 
@@ -104,8 +104,8 @@ Network::AddressList::AddressList(const OptionalHostname& t_hostname,
                   << std::endl;
     }
 
-    if (const auto error {::getaddrinfo(to_c_string(t_hostname),
-                                        to_c_string(t_service),
+    if (const auto error {::getaddrinfo(to_c_str(t_hostname),
+                                        to_c_str(t_service),
                                         hints.get(),
                                         &m_list)}) {
         const auto os_error {to_os_error(error)};
@@ -136,13 +136,13 @@ auto Network::AddressList::begin() const noexcept -> InputIterator
     return m_list;
 }
 
-auto Network::AddressList::result() const -> OsErrorResult
+auto Network::AddressList::result() const noexcept -> OsErrorResult
 {
     return m_result;
 }
 
-auto Network::AddressList::to_c_string(const OptionalString& str) noexcept ->
-    const char*
+auto Network::AddressList::to_c_str(const std::optional<std::string>& str)
+    noexcept -> const char*
 {
     return str ? str->c_str() : nullptr;
 }

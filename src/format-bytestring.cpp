@@ -17,9 +17,9 @@
 #include "network/address.h"                    // Address
 #include "network/bytestring.h"                 // ByteString
 #include "network/logicerror.h"                 // LogicError
-#include "network/optionalstring.h"             // OptionalString
 #include "network/to-string-vector-byte.h"      // to_string()
 
+#include <optional>     // std::optional
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
 
@@ -36,11 +36,11 @@ auto Network::format(const ByteString& addr) -> std::string
 }
 
 auto Network::format(const ByteString& addr,
-                     OptionalString& addr_str) -> std::string
+                     std::optional<std::string>& str) -> std::string
 {
-    if (!addr_str) {
-        addr_str = format(addr);
+    if (!str) {
+        str = format(addr);
     }
 
-    return *addr_str;
+    return *str;
 }
