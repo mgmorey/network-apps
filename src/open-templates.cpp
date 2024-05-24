@@ -24,9 +24,10 @@
 #include <iostream>     // std::cout
 #include <iterator>     // std::back_inserter()
 
-auto Network::open(const OpenHandler &handler,
-                   const OpenEndpointParams &args,
+auto Network::open(const OpenHandler& handler,
+                   const OpenEndpointParams& args,
                    const TemplateVector& templates) -> SocketResultVector
+
 {
     SocketResultVector socket_results;
     std::transform(templates.begin(), templates.end(),

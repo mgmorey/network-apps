@@ -21,7 +21,7 @@
 
 namespace Network
 {
-    extern auto create(const SocketHints &hints,
+    extern auto create(const SocketHints& hints,
                        bool verbose = false) -> Socket;
 }
 

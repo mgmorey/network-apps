@@ -25,7 +25,8 @@
 #include <type_traits>  // std::decay_t, std::is_same_v
 #include <variant>      // std::visit()
 
-auto Network::get_endpoint(const ByteString &addr, int flags,
+auto Network::get_endpoint(const ByteString& addr,
+                           int flags,
                            bool verbose) -> Endpoint
 {
     Endpoint result;

@@ -33,14 +33,14 @@ Network::OsErrorResult::OsErrorResult(os_error_type t_number,
 {
 }
 
-auto Network::OsErrorResult::operator==(const OsErrorResult &t_result)
+auto Network::OsErrorResult::operator==(const OsErrorResult& t_result)
     const noexcept -> bool
 {
     return (number() == t_result.number() &&
             string() == t_result.string());
 }
 
-auto Network::OsErrorResult::operator!=(const OsErrorResult &t_result)
+auto Network::OsErrorResult::operator!=(const OsErrorResult& t_result)
     const noexcept -> bool
 {
     return (number() != t_result.number() ||

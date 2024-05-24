@@ -222,9 +222,9 @@ namespace TestConnect
         }
     }
 
-    auto test_connect(const Endpoint &endpoint,
-                      const SocketHints &hints,
-                      const Hostname &hostname,
+    auto test_connect(const Endpoint& endpoint,
+                      const SocketHints& hints,
+                      const Hostname& hostname,
                       const ErrorCodeSet& expected_codes) -> void
     {
         os_error_type actual_code {0};
