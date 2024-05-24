@@ -24,7 +24,7 @@
 #include "network/socket.h"                     // Socket
 #include "network/template.h"                   // Template
 
-#include <iostream>     // std::endl
+#include <ostream>      // std::endl, std::ostream
 #include <type_traits>  // std::decay_t, std::is_same_v
 #include <variant>      // std::visit()
 
