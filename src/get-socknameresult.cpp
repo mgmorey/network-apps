@@ -17,7 +17,7 @@
 #include "network/get-nameresult.h"     // get_nameresult()
 #include "network/getnamehandler.h"     // GetNameHandler
 #include "network/getnameparams.h"      // GetNameParams
-#include "network/socket-type.h"        // socket_type,
+#include "network/socket-type.h"        // socket_type
 #include "network/socknameresult.h"     // SockNameResult
 
 #ifdef WIN32
