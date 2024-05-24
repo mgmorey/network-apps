@@ -15,7 +15,7 @@
 
 #include "network/context.h"            // Context, operator<<()
 
-#include <ostream>      // operator<<(), std::endl, std::ostream
+#include <ostream>      // std::endl, std::ostream
 
 auto Network::operator<<(std::ostream& os,
                          const Context& context) noexcept -> std::ostream&
