@@ -20,7 +20,6 @@
 #include "network/open-socket.h"                // open()
 #include "network/openendpointparams.h"         // OpenEndpointParams
 #include "network/openhandler.h"                // OpenHandler
-#include "network/openresult.h"                 // OpenResult
 #include "network/oserrorresult.h"              // OsErrorResult
 #include "network/socket.h"                     // Socket
 #include "network/template.h"                   // Template
