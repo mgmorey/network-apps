@@ -42,8 +42,7 @@ namespace Network
 
         static auto instance() -> const Context&;
 
-        Context() noexcept = default ;
-        explicit Context(const OptionalVersion& t_version);
+        explicit Context(const OptionalVersion& t_version = {});
         Context(const Context&) = delete;
         Context(const Context&&) = delete;
         ~Context();
