@@ -16,18 +16,16 @@
 #ifndef NETWORK_WINDOWSVERSION_H
 #define NETWORK_WINDOWSVERSION_H
 
-#include "network/version.h"                    // Version
 #ifdef WIN32
+
+#include "network/version.h"                    // Version
 #include "network/windows-version-type.h"       // windows_version_type
-#endif
 
 #include <utility>      // std::move()
 
 namespace Network
 {
-#ifdef WIN32
-    struct WindowsVersion :
-        public Version
+    struct WindowsVersion : public Version
     {
         using value_type = windows_version_type;
 
@@ -55,7 +53,8 @@ namespace Network
     private:
         static constexpr value_type m_radix {0x100U};
     };
-#endif
 }
+
+#endif
 
 #endif
