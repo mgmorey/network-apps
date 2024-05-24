@@ -282,7 +282,7 @@ namespace TestAddress
         test_sin(sin, expected_error_family_re);
     }
 
-    auto test_sin6(const sockaddr_in6 &sin6,
+    auto test_sin6(const sockaddr_in6& sin6,
                    const std::string& expected_error_re) -> void
     {
         const std::regex expected_error_regex {expected_error_re};
