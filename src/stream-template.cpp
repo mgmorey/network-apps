@@ -23,7 +23,7 @@
 #include "network/template.h"                   // Template
 #include "network/to-string-vector-byte.h"      // to_string()
 
-#include <ostream>      // operator<<(), std::ostream
+#include <ostream>      // std::ostream
 
 auto Network::operator<<(std::ostream& os,
                          const Template& sock) noexcept -> std::ostream&

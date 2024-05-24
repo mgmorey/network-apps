@@ -17,7 +17,7 @@
 #include "network/socket.h"             // Socket
 #include "network/string-null.h"        // string_null
 
-#include <ostream>      // operator<<(), std::ostream
+#include <ostream>      // std::ostream
 
 auto Network::operator<<(std::ostream& os,
                          const Socket& sock) noexcept -> std::ostream&

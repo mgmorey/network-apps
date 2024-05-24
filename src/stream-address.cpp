@@ -26,7 +26,7 @@
 #include <sys/socket.h> // AF_INET, AF_INET6, AF_UNIX
 #endif
 
-#include <ostream>      // operator<<(), std::ostream
+#include <ostream>      // std::ostream
 #include <string>       // std::string
 
 namespace {

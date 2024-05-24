@@ -26,7 +26,7 @@
 #endif
 
 #include <cstddef>      // std::size_t
-#include <ostream>      // operator<<(), std::ostream
+#include <ostream>      // std::ostream
 #include <sstream>      // std::ostringstream
 #include <utility>      // std::pair
 #include <vector>       // std::vector

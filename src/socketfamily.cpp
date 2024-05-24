@@ -24,7 +24,7 @@
                         // PF_INET, PF_INET6, PF_UNIX, PF_UNSPEC
 #endif
 
-#include <ostream>      // operator<<(), std::ostream
+#include <ostream>      // std::ostream
 
 auto Network::operator<<(std::ostream& os,
                          const SocketFamily& family) noexcept -> std::ostream&

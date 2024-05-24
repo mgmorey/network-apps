@@ -29,7 +29,7 @@
 #include <netdb.h>      // addrinfo
 #endif
 
-#include <ostream>      // operator<<(), std::ostream
+#include <ostream>      // std::ostream
 
 auto Network::operator<<(std::ostream& os,
                          const addrinfo& ai) noexcept -> std::ostream&

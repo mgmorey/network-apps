@@ -20,7 +20,7 @@
 #include "network/socketprotocol.h"     // SocketProtocol
 #include "network/sockettype.h"         // SocketType
 
-#include <ostream>      // operator<<(), std::ostream
+#include <ostream>      // std::ostream
 
 auto Network::operator<<(std::ostream& os,
                          const SocketHints& hints) noexcept -> std::ostream&

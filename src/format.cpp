@@ -15,7 +15,7 @@
 
 #include "network/format.h"             // Format, operator<<()
 
-#include <ostream>      // operator<<(), std::endl, std::ostream
+#include <ostream>      // std::endl, std::ostream
 #include <string>       // std::string
 #include <utility>      // std::move()
 

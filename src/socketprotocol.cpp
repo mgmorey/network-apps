@@ -26,7 +26,7 @@
 #include <sys/socket.h> // AF_INET, AF_INET6, AF_UNIX, AF_UNSPEC
 #endif
 
-#include <ostream>      // operator<<(), std::ostream
+#include <ostream>      // std::ostream
 
 auto Network::operator<<(std::ostream& os,
                          const SocketProtocol& protocol) noexcept ->
