@@ -37,17 +37,17 @@
 auto Network::get_hostnameresult(bool verbose) -> HostnameResult
 {
     Buffer<char> hostname {hostname_size_max};
+    const auto size {to_name_length(hostname.size() - 1)};
 
     if (verbose) {
         std::cout << "Calling ::gethostname("
                   << std::string(hostname)
                   << ", "
-                  << hostname.size() - 1
+                  << size
                   << ')'
                   << std::endl;
     }
 
-    const auto size {to_name_length(hostname.size() - 1)};
     reset_last_context_error();
 
     if (::gethostname(hostname.data(), size) == -1) {
@@ -57,7 +57,7 @@ auto Network::get_hostnameresult(bool verbose) -> HostnameResult
         oss << "Call to ::gethostname("
             << std::string(hostname)
             << ", "
-            << hostname.size() - 1
+            << size
             << ") failed with error "
             << error
             << ": "
