@@ -89,9 +89,7 @@ Network::AddressList::AddressList(const OptionalHostname& t_hostname,
                                   const OptionalHints& t_hints,
                                   bool t_verbose)
 {
-    const std::unique_ptr<addrinfo> hints {t_hints ?
-        std::make_unique<addrinfo>(*t_hints) :
-        nullptr};
+    const auto hints {t_hints ? std::make_unique<addrinfo>(*t_hints) : nullptr};
 
     if (t_verbose) {
         std::cout << "Calling ::getaddrinfo("
