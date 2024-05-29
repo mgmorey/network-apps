@@ -35,8 +35,8 @@
 auto Network::open(const OpenHandler& handler,
                    const OpenSocketParams& args) -> OsErrorResult
 {
-    const auto* const addr_ptr {get_sa_pointer(args.addr)};
     const auto addr_len {get_sa_length(args.addr)};
+    const auto* const addr_ptr {get_sa_pointer(args.addr)};
     const AddressString addr_str {args.addr};
     const socket_type handle {args.socket};
 
