@@ -38,15 +38,16 @@ auto Network::get_nameresult(const GetNameHandler& handler,
                              const GetNameParams& args) -> ByteStringResult
 {
     Buffer<Byte> addr {sa_length_max};
-    auto* addr_ptr {get_sa_pointer(addr)};
     auto addr_len {get_sa_length(addr)};
+    auto* addr_ptr {get_sa_pointer(addr)};
     const AddressString addr_str {ByteString {addr}};
+    const socket_type handle {args.handle};
 
     if (args.verbose) {
         std::cout << "Calling "
                   << handler.second
                   << '('
-                  << args.handle
+                  << handle
                   << ", "
                   << addr_str
                   << ", "
@@ -57,14 +58,14 @@ auto Network::get_nameresult(const GetNameHandler& handler,
 
     reset_last_context_error();
 
-    if (handler.first(args.handle, addr_ptr, &addr_len) == socket_error) {
+    if (handler.first(handle, addr_ptr, &addr_len) == socket_error) {
         const auto error {get_last_context_error()};
         const auto os_error {to_os_error(error)};
         std::ostringstream oss;
         oss << "Call to "
             << handler.second
             << '('
-            << args.handle
+            << handle
             << ", "
             << addr_str
             << ", "
