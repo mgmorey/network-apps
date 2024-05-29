@@ -19,8 +19,6 @@
 #include "network/optionalhints.h"              // OptionalHints
 #include "network/templatevectorresult.h"       // TemplateVectorResult
 
-#include <iterator>     // std::back_inserter()
-
 auto Network::get_templates(const Endpoint& endpoint,
                             const OptionalHints& hints,
                             bool verbose) -> TemplateVectorResult
