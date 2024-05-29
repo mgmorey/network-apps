@@ -38,6 +38,7 @@ auto Network::open(const OpenHandler& handler,
     const auto* const addr_ptr {get_sa_pointer(args.addr)};
     const auto addr_len {get_sa_length(args.addr)};
     const AddressString addr_str {args.addr};
+    const socket_type handle {args.socket};
 
     if (addr_len == sa_length_min) {
         throw AddressError("Address payload length is zero: " +
@@ -48,7 +49,7 @@ auto Network::open(const OpenHandler& handler,
         std::cout << "Calling "
                   << handler.second
                   << '('
-                  << args.socket
+                  << handle
                   << ", "
                   << addr_str
                   << ", "
@@ -57,7 +58,6 @@ auto Network::open(const OpenHandler& handler,
                   << std::endl;
     }
 
-    const socket_type handle {args.socket};
     reset_last_context_error();
 
     if (handler.first(handle, addr_ptr, addr_len) == socket_error) {
@@ -67,7 +67,7 @@ auto Network::open(const OpenHandler& handler,
         oss << "Call to "
             << handler.second
             << '('
-            << args.socket
+            << handle
             << ", "
             << addr_str
             << ", "
