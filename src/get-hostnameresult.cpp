@@ -37,8 +37,8 @@
 auto Network::get_hostnameresult(bool verbose) -> HostnameResult
 {
     Buffer<char> name {hostname_size_max};
-    auto* name_ptr {name.data()};
     const auto name_len {to_name_length(name.size() - 1)};
+    auto* name_ptr {name.data()};
     const std::string name_str {name};
 
     if (verbose) {
