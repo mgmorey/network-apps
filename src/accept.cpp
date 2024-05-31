@@ -21,8 +21,7 @@
 #include "network/error.h"                      // Error
 #include "network/format-os-error.h"            // format_os_error()
 #include "network/get-last-context-error.h"     // get_last_context_error()
-#include "network/get-sa-length.h"              // get_sa_length()
-#include "network/get-sa-pointer.h"             // get_sa_pointer()
+#include "network/get-sa-span.h"                // get_sa_span()
 #include "network/reset-last-context-error.h"   // reset_last_context_error()
 #include "network/sa-length-limits.h"           // sa_length_max
 #include "network/socket-null.h"                // socket_null
@@ -46,8 +45,7 @@ auto Network::accept(const Socket& sock, bool verbose) ->
 {
     Buffer<Byte> addr {sa_length_max};
     const AddressString addr_str {ByteString {addr}};
-    auto* addr_ptr {get_sa_pointer(addr)};
-    auto addr_len {get_sa_length(addr)};
+    auto [addr_ptr, addr_len] {get_sa_span(addr)};
 
     if (verbose) {
         std::cout << "Calling ::accept("

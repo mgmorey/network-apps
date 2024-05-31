@@ -1,4 +1,4 @@
-// Copyright (C) 2022  "Michael G. Morey" <mgmorey@gmail.com>
+// Copyright (C) 2024  "Michael G. Morey" <mgmorey@gmail.com>
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,12 +13,13 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_GET_SA_POINTER_H
-#define NETWORK_GET_SA_POINTER_H
+#ifndef NETWORK_GET_SA_SPAN_H
+#define NETWORK_GET_SA_SPAN_H
 
 #include "network/buffer.h"                     // Buffer
 #include "network/byte.h"                       // Byte
 #include "network/bytestring.h"                 // ByteString
+#include "network/socket-length-type.h"         // socket_length_type
 
 #ifdef WIN32
 #include <winsock2.h>       // sockaddr
@@ -28,8 +29,10 @@
 
 namespace Network
 {
-    extern auto get_sa_pointer(Buffer<Byte>& addr) -> sockaddr*;
-    extern auto get_sa_pointer(const ByteString& addr) -> const sockaddr*;
+    extern auto get_sa_span(Buffer<Byte>& addr) ->
+        std::pair<sockaddr*, socket_length_type>;
+    extern auto get_sa_span(const ByteString& addr) ->
+        std::pair<const sockaddr*, socket_length_type>;
 }
 
 #endif

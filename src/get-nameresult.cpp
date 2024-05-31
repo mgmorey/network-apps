@@ -20,8 +20,7 @@
 #include "network/bytestringresult.h"           // ByteStringResult
 #include "network/format-os-error.h"            // format_os_error()
 #include "network/get-last-context-error.h"     // get_last_context_error()
-#include "network/get-sa-length.h"              // get_sa_length()
-#include "network/get-sa-pointer.h"             // get_sa_pointer()
+#include "network/get-sa-span.h"                // get_sa_span()
 #include "network/getnamehandler.h"             // GetNameHandler
 #include "network/getnameparams.h"              // GetNameParams
 #include "network/oserrorresult.h"              // OsErrorResult
@@ -39,8 +38,7 @@ auto Network::get_nameresult(const GetNameHandler& handler,
 {
     Buffer<Byte> addr {sa_length_max};
     const AddressString addr_str {ByteString {addr}};
-    auto* addr_ptr {get_sa_pointer(addr)};
-    auto addr_len {get_sa_length(addr)};
+    auto [addr_ptr, addr_len] {get_sa_span(addr)};
     const socket_type handle {args.handle};
 
     if (args.verbose) {

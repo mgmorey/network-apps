@@ -20,8 +20,7 @@
 #include "network/endpoint.h"                   // Endpoint
 #include "network/endpointresult.h"             // EndpointResult
 #include "network/format-ai-error.h"            // format_ai_error()
-#include "network/get-sa-length.h"              // get_sa_length()
-#include "network/get-sa-pointer.h"             // get_sa_pointer()
+#include "network/get-sa-span.h"                // get_sa_span()
 #include "network/hostname.h"                   // hostname_size_max
 #include "network/oserrorresult.h"              // OsErrorResult
 #include "network/service.h"                    // service_size_max
@@ -40,8 +39,7 @@ auto Network::get_endpointresult(const ByteString& addr, int flags,
                                  bool verbose) -> EndpointResult
 {
     const AddressString addr_str {addr};
-    const auto* const addr_ptr {get_sa_pointer(addr)};
-    const auto addr_len {get_sa_length(addr)};
+    const auto [addr_ptr, addr_len] {get_sa_span(addr)};
     Buffer<char> hostname {hostname_size_max};
     Buffer<char> service {service_size_max};
 

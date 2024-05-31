@@ -1,4 +1,4 @@
-// Copyright (C) 2022  "Michael G. Morey" <mgmorey@gmail.com>
+// Copyright (C) 2024  "Michael G. Morey" <mgmorey@gmail.com>
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,12 +13,13 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_GET_SA_POINTER_H
-#define NETWORK_GET_SA_POINTER_H
-
+#include "network/get-sa-span.h"                // get_sa_span()
 #include "network/buffer.h"                     // Buffer
 #include "network/byte.h"                       // Byte
 #include "network/bytestring.h"                 // ByteString
+#include "network/get-sa-length.h"              // get_sa_length()
+#include "network/get-sa-pointer.h"             // get_sa_pointer()
+#include "network/socket-length-type.h"         // socket_length_type
 
 #ifdef WIN32
 #include <winsock2.h>       // sockaddr
@@ -26,10 +27,14 @@
 #include <sys/socket.h>     // sockaddr
 #endif
 
-namespace Network
+auto Network::get_sa_span(Buffer<Byte>& addr) ->
+    std::pair<sockaddr*, socket_length_type>
 {
-    extern auto get_sa_pointer(Buffer<Byte>& addr) -> sockaddr*;
-    extern auto get_sa_pointer(const ByteString& addr) -> const sockaddr*;
+    return {get_sa_pointer(addr), get_sa_length(addr)};
 }
 
-#endif
+auto Network::get_sa_span(const ByteString& addr) ->
+    std::pair<const sockaddr*, socket_length_type>
+{
+    return {get_sa_pointer(addr), get_sa_length(addr)};
+}
