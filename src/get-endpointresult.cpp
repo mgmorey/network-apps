@@ -39,9 +39,9 @@
 auto Network::get_endpointresult(const ByteString& addr, int flags,
                                  bool verbose) -> EndpointResult
 {
-    const auto addr_len {get_sa_length(addr)};
-    const auto* const addr_ptr {get_sa_pointer(addr)};
     const AddressString addr_str {addr};
+    const auto* const addr_ptr {get_sa_pointer(addr)};
+    const auto addr_len {get_sa_length(addr)};
     Buffer<char> hostname {hostname_size_max};
     Buffer<char> service {service_size_max};
 

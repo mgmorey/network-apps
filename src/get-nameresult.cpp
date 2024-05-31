@@ -38,9 +38,9 @@ auto Network::get_nameresult(const GetNameHandler& handler,
                              const GetNameParams& args) -> ByteStringResult
 {
     Buffer<Byte> addr {sa_length_max};
-    auto addr_len {get_sa_length(addr)};
-    auto* addr_ptr {get_sa_pointer(addr)};
     const AddressString addr_str {ByteString {addr}};
+    auto* addr_ptr {get_sa_pointer(addr)};
+    auto addr_len {get_sa_length(addr)};
     const socket_type handle {args.handle};
 
     if (args.verbose) {

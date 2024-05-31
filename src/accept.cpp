@@ -45,9 +45,9 @@ auto Network::accept(const Socket& sock, bool verbose) ->
     std::pair<Socket, ByteString>
 {
     Buffer<Byte> addr {sa_length_max};
-    auto addr_len {get_sa_length(addr)};
-    auto* addr_ptr {get_sa_pointer(addr)};
     const AddressString addr_str {ByteString {addr}};
+    auto* addr_ptr {get_sa_pointer(addr)};
+    auto addr_len {get_sa_length(addr)};
 
     if (verbose) {
         std::cout << "Calling ::accept("
