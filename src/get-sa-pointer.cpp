@@ -17,6 +17,7 @@
 #include "network/buffer.h"                     // Buffer
 #include "network/byte.h"                       // Byte
 #include "network/bytestring.h"                 // ByteString
+#include "network/validate-sa.h"                // validate()
 
 #ifdef WIN32
 #include <winsock2.h>       // sockaddr
