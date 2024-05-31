@@ -43,12 +43,15 @@
 auto Network::accept(const Socket& sock, bool verbose) ->
     std::pair<Socket, ByteString>
 {
+    const socket_type handle_1 {sock};
     Buffer<Byte> addr {sa_length_max};
     const AddressString addr_str {ByteString {addr}};
     auto [addr_ptr, addr_len] {get_sa_span(addr)};
 
     if (verbose) {
         std::cout << "Calling ::accept("
+                  << handle_1
+                  << ", "
                   << addr_str
                   << ", "
                   << addr_len
@@ -57,7 +60,6 @@ auto Network::accept(const Socket& sock, bool verbose) ->
     }
 
     reset_last_context_error();
-    const socket_type handle_1 {sock};
     const socket_type handle_2 {::accept(handle_1, addr_ptr, &addr_len)};
 
     if (handle_2 == socket_null) {
