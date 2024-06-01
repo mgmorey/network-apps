@@ -17,6 +17,7 @@
 #include "network/buffer.h"                     // Buffer
 #include "network/format-os-error.h"            // format_os_error()
 #include "network/get-last-context-error.h"     // get_last_context_error()
+#include "network/get-name-span.h"              // get_name_span()
 #include "network/hostname.h"                   // Hostname
 #include "network/hostnameresult.h"             // HostnameResult
 #include "network/oserrorresult.h"              // OsErrorResult
@@ -38,8 +39,7 @@ auto Network::get_hostnameresult(bool verbose) -> HostnameResult
 {
     Buffer<char> name {hostname_size_max};
     const std::string name_str {name};
-    auto* name_ptr {name.data()};
-    const auto name_len {to_name_length(name.size() - 1)};
+    auto [name_ptr, name_len] {get_name_span(name)};
 
     if (verbose) {
         std::cout << "Calling ::gethostname("
