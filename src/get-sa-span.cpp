@@ -27,6 +27,8 @@
 #include <sys/socket.h>     // sockaddr
 #endif
 
+#include <utility>      // std::pair
+
 auto Network::get_sa_span(Buffer<Byte>& addr) ->
     std::pair<sockaddr*, socket_length_type>
 {
