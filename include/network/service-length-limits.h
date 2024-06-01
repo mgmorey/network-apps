@@ -1,4 +1,4 @@
-// Copyright (C) 2022  "Michael G. Morey" <mgmorey@gmail.com>
+// Copyright (C) 2024  "Michael G. Morey" <mgmorey@gmail.com>
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,14 +13,23 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_SERVICE_H
-#define NETWORK_SERVICE_H
+#ifndef NETWORK_SERVICE_LENGTH_LIMITS_H
+#define NETWORK_SERVICE_LENGTH_LIMITS_H
 
-#include <string>       // std::string
+#ifdef WIN32
+#include <ws2tcpip.h>   // NI_MAXSERV
+#else
+#include <netdb.h>      // NI_MAXSERV
+#endif
+
+#ifndef NI_MAXSERV
+#define	NI_MAXSERV	(32)	// NOLINT
+#endif
 
 namespace Network
 {
-    using Service = std::string;
+    static constexpr auto service_length_max {NI_MAXSERV - 1};
+    static constexpr auto service_length_min {0};
 }
 
 #endif
