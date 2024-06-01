@@ -28,7 +28,7 @@
 
 namespace Network
 {
-    static constexpr auto name_length_max {NI_MAXHOST};
+    static constexpr auto name_length_max {NI_MAXHOST - 1};
     static constexpr auto name_length_min {0};
 }
 
