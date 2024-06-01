@@ -21,9 +21,9 @@
 #include "network/endpointresult.h"             // EndpointResult
 #include "network/format-ai-error.h"            // format_ai_error()
 #include "network/get-sa-span.h"                // get_sa_span()
-#include "network/hostname.h"                   // hostname_size_max
+#include "network/hostname-length-limits.h"     // hostname_length_max
 #include "network/oserrorresult.h"              // OsErrorResult
-#include "network/service.h"                    // service_size_max
+#include "network/service-length-limits.h"      // service_length_max
 #include "network/to-os-error.h"                // to_os_error()
 
 #ifdef WIN32
@@ -40,8 +40,8 @@ auto Network::get_endpointresult(const ByteString& addr, int flags,
 {
     const AddressString addr_str {addr};
     const auto [addr_ptr, addr_len] {get_sa_span(addr)};
-    Buffer<char> hostname {hostname_size_max};
-    Buffer<char> service {service_size_max};
+    Buffer<char> hostname {hostname_length_max};
+    Buffer<char> service {service_length_max};
 
     if (verbose) {
         std::cout << "Calling ::getnameinfo("

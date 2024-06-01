@@ -17,12 +17,11 @@
 #include "network/buffer.h"                     // Buffer
 #include "network/format-os-error.h"            // format_os_error()
 #include "network/get-last-context-error.h"     // get_last_context_error()
-#include "network/get-name-span.h"              // get_name_span()
+#include "network/hostname-length-limits.h"     // hostname_length_max
 #include "network/hostname.h"                   // Hostname
 #include "network/hostnameresult.h"             // HostnameResult
 #include "network/oserrorresult.h"              // OsErrorResult
 #include "network/reset-last-context-error.h"   // reset_last_context_error()
-#include "network/to-name-length.h"             // to_name_length()
 #include "network/to-os-error.h"                // to_os_error()
 
 #ifdef WIN32
@@ -37,29 +36,27 @@
 
 auto Network::get_hostnameresult(bool verbose) -> HostnameResult
 {
-    Buffer<char> name {hostname_size_max};
-    const std::string name_str {name};
-    auto [name_ptr, name_len] {get_name_span(name)};
+    Buffer<char> hostname {hostname_length_max};
 
     if (verbose) {
         std::cout << "Calling ::gethostname("
-                  << name_str
+                  << std::string(hostname)
                   << ", "
-                  << name_len
+                  << hostname.size()
                   << ')'
                   << std::endl;
     }
 
     reset_last_context_error();
 
-    if (::gethostname(name_ptr, name_len) == -1) {
+    if (::gethostname(hostname.data(), hostname.size()) == -1) {
         const auto error {get_last_context_error()};
         const auto os_error {to_os_error(error)};
         std::ostringstream oss;
         oss << "Call to ::gethostname("
-            << name_str
+            << std::string(hostname)
             << ", "
-            << name_len
+            << hostname.size()
             << ") failed with error "
             << error
             << ": "
@@ -67,5 +64,5 @@ auto Network::get_hostnameresult(bool verbose) -> HostnameResult
         return OsErrorResult {os_error, oss.str()};
     }
 
-    return Hostname {name};
+    return Hostname {hostname};
 }
