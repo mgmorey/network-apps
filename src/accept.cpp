@@ -60,7 +60,7 @@ auto Network::accept(const Socket& sock, bool verbose) ->
     }
 
     reset_last_context_error();
-    const socket_type handle_2 {::accept(handle_1, addr_ptr, &addr_len)};
+    const auto handle_2 {::accept(handle_1, addr_ptr, &addr_len)};
 
     if (handle_2 == socket_null) {
         const auto error {get_last_context_error()};
