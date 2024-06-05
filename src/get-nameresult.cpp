@@ -17,6 +17,7 @@
 #include "network/addressstring.h"              // AddressString
 #include "network/buffer.h"                     // Buffer
 #include "network/byte.h"                       // Byte
+#include "network/bytestring.h"                 // ByteString
 #include "network/bytestringresult.h"           // ByteStringResult
 #include "network/format-os-error.h"            // format_os_error()
 #include "network/get-last-context-error.h"     // get_last_context_error()
@@ -27,6 +28,7 @@
 #include "network/reset-last-context-error.h"   // reset_context_last_error()
 #include "network/sa-length-limits.h"           // sa_length_max
 #include "network/socket-error.h"               // socket_error
+#include "network/socket-type.h"                // socket_type
 #include "network/to-os-error.h"                // to_os_error()
 #include "network/to-size.h"                    // to_size()
 
