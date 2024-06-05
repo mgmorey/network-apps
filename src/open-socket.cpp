@@ -30,6 +30,7 @@
 
 #include <iostream>     // std::cout, std::endl
 #include <sstream>      // std::ostringstream
+#include <string>       // std::string
 
 auto Network::open(const OpenHandler& handler,
                    const OpenSocketParams& args) -> OsErrorResult
