@@ -17,6 +17,7 @@
 
 #include "network/validate-path.h"              // validate()
 #include "network/length-type.h"                // length_type
+#include "network/optionalpathname.h"           // OptionalPathname
 #include "network/path-length-limits.h"         // path_length_max,
                                                 // path_length_min
 #include "network/valueerror.h"                 // ValueError
