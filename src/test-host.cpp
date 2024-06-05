@@ -44,7 +44,6 @@
                         // std::size_t
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
-#include <iterator>     // std::next()
 #include <ostream>      // std::ostream
 #include <set>          // std::set
 #include <string>       // std::string
