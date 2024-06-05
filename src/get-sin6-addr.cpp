@@ -18,11 +18,9 @@
 #include "network/get-sin6-pointer.h"   // get_sin6_pointer()
 
 #ifdef WIN32
-#include <winsock2.h>       // AF_INET6
 #include <ws2tcpip.h>       // in6_addr
 #else
 #include <netinet/in.h>     // in6_addr
-#include <sys/socket.h>     // AF_INET6
 #endif
 
 auto Network::get_sin6_addr(const ByteString& addr) -> in6_addr

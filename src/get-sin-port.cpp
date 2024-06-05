@@ -19,10 +19,9 @@
 #include "network/port-type.h"          // port_type
 
 #ifdef WIN32
-#include <winsock2.h>       // AF_INET, ntohs()
+#include <winsock2.h>       // ntohs()
 #else
 #include <netinet/in.h>     // ntohs()
-#include <sys/socket.h>     // AF_INET
 #endif
 
 auto Network::get_sin_port(const ByteString& addr) -> port_type

@@ -18,10 +18,9 @@
 #include "network/get-sin-pointer.h"    // get_sin_pointer()
 
 #ifdef WIN32
-#include <winsock2.h>       // AF_INET, in_addr
+#include <winsock2.h>       // in_addr
 #else
 #include <netinet/in.h>     // in_addr
-#include <sys/socket.h>     // AF_INET
 #endif
 
 auto Network::get_sin_addr(const ByteString& addr) -> in_addr
