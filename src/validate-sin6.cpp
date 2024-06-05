@@ -15,10 +15,10 @@
 
 #include "network/validate-sin6.h"              // validate()
 #include "network/familyerror.h"                // FamilyError
-#include "network/length-type.h"                // length_type
-#include "network/os-features.h"                // HAVE_SOCKADDR_SA_LEN
 
 #ifdef HAVE_SOCKADDR_SA_LEN
+#include "network/length-type.h"                // length_type
+#include "network/os-features.h"                // HAVE_SOCKADDR_SA_LEN
 #include "network/valueerror.h"                 // ValueError
 #endif
 
@@ -30,7 +30,9 @@
 #include <sys/socket.h>     // AF_INET6
 #endif
 
+#ifdef HAVE_SOCKADDR_SA_LEN
 #include <utility>      // std::cmp_not_equal()
+#endif
 
 auto Network::validate(const sockaddr_in6* sin6) -> const sockaddr_in6*
 {
