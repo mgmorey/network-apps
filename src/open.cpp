@@ -22,6 +22,7 @@
 #include "network/openhandler.h"                // OpenHandler
 #include "network/oserrorresult.h"              // OsErrorResult
 #include "network/socket.h"                     // Socket
+#include "network/socketresult.h"               // SocketResult
 #include "network/template.h"                   // Template
 
 #include <ostream>      // std::endl, std::ostream
