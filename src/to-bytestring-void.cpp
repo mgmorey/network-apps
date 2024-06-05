@@ -14,7 +14,9 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/to-bytestring-void.h"         // to_bytestring()
+#include "network/byte.h"                       // Byte
 #include "network/bytestring.h"                 // ByteString
+#include "network/length-type.h"                // length_type
 
 auto Network::to_bytestring(const void* data, length_type size) -> ByteString
 {
