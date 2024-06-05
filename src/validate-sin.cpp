@@ -15,10 +15,10 @@
 
 #include "network/validate-sin.h"               // validate()
 #include "network/familyerror.h"                // FamilyError
+#include "network/os-features.h"                // HAVE_SOCKADDR_SA_LEN
 
 #ifdef HAVE_SOCKADDR_SA_LEN
 #include "network/length-type.h"                // length_type
-#include "network/os-features.h"                // HAVE_SOCKADDR_SA_LEN
 #include "network/valueerror.h"                 // ValueError
 #endif
 
