@@ -23,10 +23,8 @@
 #include "network/reset-last-context-error.h"   // reset_last_context_error()
 #include "network/socket-error.h"               // socket_error
 #include "network/socket-null.h"                // socket_null
-#include "network/socket-type.h"                // socket_type
 #include "network/socket.h"                     // Socket
 #include "network/socketfamily.h"               // SocketFamily
-#include "network/socketflags.h"                // SocketFlags
 #include "network/sockethints.h"                // SocketHints
 #include "network/socketpair-type.h"            // socketpair_type
 #include "network/socketpair.h"                 // SocketPair
@@ -37,7 +35,6 @@
 
 #include <sys/socket.h>     // ::socketpair()
 
-#include <array>        // std::array
 #include <iostream>     // std::cout, std::endl
 #include <sstream>      // std::ostringstream
 
