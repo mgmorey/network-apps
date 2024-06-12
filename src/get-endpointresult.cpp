@@ -40,8 +40,8 @@ auto Network::get_endpointresult(const ByteString& addr, int flags,
 {
     const AddressString addr_str {addr};
     const auto [addr_ptr, addr_len] {get_sa_span(addr)};
-    Buffer<char> hostname {hostname_length_max};
-    Buffer<char> service {service_length_max};
+    Buffer<char> hostname_buffer {hostname_length_max};
+    Buffer<char> service_buffer {service_length_max};
 
     if (verbose) {
         std::cout << "Calling ::getnameinfo("
@@ -54,9 +54,12 @@ auto Network::get_endpointresult(const ByteString& addr, int flags,
                   << std::endl;
     }
 
-    if (const auto error {::getnameinfo(addr_ptr, addr_len,
-                                        hostname.data(), hostname.size(),
-                                        service.data(), service.size(),
+    if (const auto error {::getnameinfo(addr_ptr,
+                                        addr_len,
+                                        hostname_buffer.data(),
+                                        hostname_buffer.size(),
+                                        service_buffer.data(),
+                                        service_buffer.size(),
                                         flags)}) {
         const auto os_error {to_os_error(error)};
         std::ostringstream oss;
@@ -74,5 +77,5 @@ auto Network::get_endpointresult(const ByteString& addr, int flags,
         return OsErrorResult {os_error, oss.str()};
     }
 
-    return Endpoint {hostname, service};
+    return Endpoint {hostname_buffer, service_buffer};
 }
