@@ -39,9 +39,9 @@ auto Network::get_nameresult(const GetNameHandler& handler,
                              const GetNameParams& args) -> ByteStringResult
 {
     const socket_type handle {args.handle};
-    Buffer<Byte> addr {sa_length_max};
-    const AddressString addr_str {ByteString {addr}};
-    auto [addr_ptr, addr_len] {get_sa_span(addr)};
+    Buffer<Byte> buffer {sa_length_max};
+    const AddressString addr_str {ByteString {buffer}};
+    auto [addr_ptr, addr_len] {get_sa_span(buffer)};
 
     if (args.verbose) {
         std::cout << "Calling "
@@ -77,6 +77,6 @@ auto Network::get_nameresult(const GetNameHandler& handler,
         return OsErrorResult {os_error, oss.str()};
     }
 
-    addr.resize(to_size(addr_len));
-    return ByteString {addr};
+    buffer.resize(to_size(addr_len));
+    return ByteString {buffer};
 }
