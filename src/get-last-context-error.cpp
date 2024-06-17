@@ -24,11 +24,9 @@
 
 auto Network::get_last_context_error() -> context_error_type
 {
-    context_error_type error {0};
 #ifdef WIN32
-    error = ::WSAGetLastError();
+    return ::WSAGetLastError();
 #else
-    error = errno;
+    return errno;
 #endif
-    return error;
 }
