@@ -26,11 +26,9 @@
 
 auto Network::get_last_os_error() -> os_error_type
 {
-    os_error_type os_error {0};
 #ifdef WIN32
-    os_error = ::GetLastError();
+    return ::GetLastError();
 #else
-    os_error = errno;
+    return errno;
 #endif
-    return os_error;
 }
