@@ -16,7 +16,6 @@
 #ifndef NETWORK_GET_PATH_POINTER_H
 #define NETWORK_GET_PATH_POINTER_H
 
-#include "network/get-path-pointer-bs.h"        // get_path_pointer()
 #include "network/get-path-pointer-sun.h"       // get_path_pointer()
 
 #endif
