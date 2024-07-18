@@ -29,9 +29,7 @@
 
 auto Network::validate(const ByteString& addr) -> void
 {
-    const auto family {get_sa_family(addr)};
-
-    switch (family) {
+    switch (const auto family {get_sa_family(addr)}) {
 #ifndef WIN32
     case AF_UNIX:
         static_cast<void>(get_sun_pointer(addr));
