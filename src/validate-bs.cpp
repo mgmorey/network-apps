@@ -30,6 +30,8 @@
 auto Network::validate(const ByteString& addr) -> void
 {
     switch (const auto family {get_sa_family(addr)}) {
+    case AF_UNSPEC:
+        break;
 #ifndef WIN32
     case AF_UNIX:
         static_cast<void>(get_sun_pointer(addr));
@@ -40,8 +42,6 @@ auto Network::validate(const ByteString& addr) -> void
         break;
     case AF_INET6:
         static_cast<void>(get_sin6_pointer(addr));
-        break;
-    case AF_UNSPEC:
         break;
     default:
         throw FamilyError(family);

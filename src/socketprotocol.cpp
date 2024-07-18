@@ -35,9 +35,9 @@ auto Network::operator<<(std::ostream& os,
     const socket_protocol_type protocol_value {protocol};
 
     switch (protocol.family()) {
+    case AF_UNSPEC:
     case AF_INET:
     case AF_INET6:
-    case AF_UNSPEC:
         switch (protocol_value) {
         case IPPROTO_IP:
             os << "IPPROTO_IP";
