@@ -16,8 +16,6 @@
 #ifndef NETWORK_VALIDATE_SIN6_H
 #define NETWORK_VALIDATE_SIN6_H
 
-#include "network/length-type.h"                // length_type
-
 #ifdef WIN32
 #include <ws2tcpip.h>       // sockaddr_in6
 #else
