@@ -17,9 +17,9 @@
 #define NETWORK_VALIDATE_SIN_H
 
 #ifdef WIN32
-#include <winsock2.h>       // AF_INET, sockaddr_in
+#include <winsock2.h>       // sockaddr_in
 #else
-#include <netinet/in.h>     // AF_INET, sockaddr_in
+#include <netinet/in.h>     // sockaddr_in
 #endif
 
 namespace Network
