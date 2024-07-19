@@ -22,8 +22,6 @@
 #include "network/optionalpathname.h"           // OptionalPathname
 #include "network/sun-length-limits.h"          // sun_length_min
 
-#include <sys/socket.h>     // AF_UNIX
-
 #include <cstring>      // ::strnlen()
 #include <optional>     // std::nullopt
 #include <string>       // std::string
@@ -31,14 +29,9 @@
 auto Network::to_path(const ByteString& addr) -> OptionalPathname
 {
     const auto* const sun {get_sun_pointer(addr)};
-
-    if (sun->sun_family != AF_UNIX) {
-        return std::nullopt;
-    }
-
     const auto sun_len {addr.size()};
 
-    if (sun_len <= sun_length_min) {
+    if (sun_len == sun_length_min) {
         return std::nullopt;
     }
 
