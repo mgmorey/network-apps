@@ -20,7 +20,7 @@ VERSION ?= 0.0.1
 
 # Language
 language = c++
-standard = $(language)20
+standard = $(language)23
 
 # File suffixes
 dependency_suffix = .dep
