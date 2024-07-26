@@ -19,7 +19,6 @@
 #include "network/os-error-type.h"      // os_error_type
 
 #include <string>       // std::string
-#include <utility>      // std::move()
 
 namespace Network
 {
