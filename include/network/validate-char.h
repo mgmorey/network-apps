@@ -19,7 +19,7 @@
 namespace Network
 {
 #ifndef WIN32
-    extern auto validate(const char* path) -> void;
+    extern auto validate(const char* path) -> const char*;
 #endif
 }
 

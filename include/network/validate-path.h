@@ -21,7 +21,7 @@
 namespace Network
 {
 #ifndef WIN32
-    extern auto validate(const OptionalPathname& path) -> void;
+    extern auto validate(const OptionalPathname& path) -> OptionalPathname;
 #endif
 }
 

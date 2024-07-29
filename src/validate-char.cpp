@@ -23,10 +23,10 @@
 
 #include <cstring>      // ::strlen()
 
-auto Network::validate(const char* path) -> void
+auto Network::validate(const char* path) -> const char*
 {
     if (path == nullptr) {
-        return;
+        return path;
     }
 
     const auto path_length {::strlen(path)};
@@ -37,6 +37,8 @@ auto Network::validate(const char* path) -> void
                                       path_length_min,
                                       path_length_max);
     }
+
+    return path;
 }
 
 #endif

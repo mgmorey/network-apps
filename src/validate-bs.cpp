@@ -27,7 +27,7 @@
 #include <sys/socket.h>     // AF_INET, AF_INET6, AF_UNIX, AF_UNSPEC
 #endif
 
-auto Network::validate(const ByteString& addr) -> void
+auto Network::validate(const ByteString& addr) -> ByteString
 {
     switch (const auto family {get_sa_family(addr)}) {
     case AF_UNSPEC:
@@ -46,4 +46,6 @@ auto Network::validate(const ByteString& addr) -> void
     default:
         throw FamilyError(family);
     }
+
+    return addr;
 }

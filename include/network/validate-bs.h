@@ -20,7 +20,7 @@
 
 namespace Network
 {
-    extern auto validate(const ByteString& addr) -> void;
+    extern auto validate(const ByteString& addr) -> ByteString;
 }
 
 #endif

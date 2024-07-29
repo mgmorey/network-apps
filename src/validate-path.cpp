@@ -22,10 +22,10 @@
                                                 // path_length_min
 #include "network/valueerror.h"                 // ValueError
 
-auto Network::validate(const OptionalPathname& path) -> void
+auto Network::validate(const OptionalPathname& path) -> OptionalPathname
 {
     if (!path) {
-        return;
+        return path;
     }
 
     const auto path_length {path->length()};
@@ -36,6 +36,8 @@ auto Network::validate(const OptionalPathname& path) -> void
                                       path_length_min,
                                       path_length_max);
     }
+
+    return path;
 }
 
 #endif
