@@ -22,7 +22,7 @@
 namespace Network
 {
     extern auto create_pairresult(const SocketHints& hints,
-                                  bool verbose = false) noexcept ->
+                                  bool verbose = false) ->
         SocketPairResult;
 }
 

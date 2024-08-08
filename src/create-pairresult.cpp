@@ -39,7 +39,7 @@
 #include <sstream>      // std::ostringstream
 
 auto Network::create_pairresult(const SocketHints& hints,
-                                bool verbose) noexcept -> SocketPairResult
+                                bool verbose) -> SocketPairResult
 {
     static constexpr auto delim {", "};
     static constexpr auto tab {0};
