@@ -43,7 +43,7 @@ namespace Network
         auto operator=(const Buffer&) noexcept -> Buffer& = default;
         auto operator=(Buffer&&) noexcept -> Buffer& = default;
 
-        explicit operator value_type() const
+        explicit operator value_type() const&
         {
             return m_value;
         }
