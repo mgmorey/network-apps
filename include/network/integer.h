@@ -22,8 +22,7 @@ namespace Network
     class Integer
     {
     public:
-        // cppcheck-suppress noExplicitConstructor
-        // NOLINTNEXTLINE
+        // cppcheck-suppress noExplicitConstructor; NOLINTNEXTLINE
         constexpr Integer(T t_value = 0) noexcept :
             m_value(t_value)
         {

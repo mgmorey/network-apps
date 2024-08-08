@@ -31,7 +31,7 @@ namespace Network
             std::ostream&;
 
     public:
-        // NOLINTNEXTLINE
+        // cppcheck-suppress noExplicitConstructor; NOLINTNEXTLINE
         constexpr SocketType(socket_type_type t_value) noexcept :
             Integer(t_value)
         {

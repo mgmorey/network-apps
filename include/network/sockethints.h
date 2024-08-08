@@ -46,8 +46,8 @@ namespace Network
         {
         }
 
-        // cppcheck-suppress noExplicitConstructor
-        constexpr SocketHints(const addrinfo& t_ai) noexcept :  // NOLINT
+        // cppcheck-suppress noExplicitConstructor; NOLINTNEXTLINE
+        constexpr SocketHints(const addrinfo& t_ai) noexcept :
             m_family(t_ai.ai_family),
             m_socktype(t_ai.ai_socktype),
             m_protocol(t_ai.ai_protocol),

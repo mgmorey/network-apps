@@ -50,8 +50,8 @@ namespace Network
             using reference = const addrinfo&;
             using value_type = addrinfo;
 
-            // cppcheck-suppress noExplicitConstructor
-            InputIterator(pointer t_pointer) noexcept;  // NOLINT
+            // cppcheck-suppress noExplicitConstructor; NOLINTNEXTLINE
+            InputIterator(pointer t_pointer) noexcept;
             [[nodiscard]] auto operator*() const noexcept -> reference;
             [[nodiscard]] auto operator->() const noexcept -> pointer;
             auto operator++() noexcept -> InputIterator&;

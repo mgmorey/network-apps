@@ -33,8 +33,8 @@ namespace Network
                                const Template& sock) noexcept -> std::ostream&;
 
         Template() noexcept = default;
-        // cppcheck-suppress noExplicitConstructor
-        Template(const addrinfo& t_ai) noexcept;  // NOLINT
+        // cppcheck-suppress noExplicitConstructor; NOLINTNEXTLINE
+        Template(const addrinfo& t_ai) noexcept;
         Template(const Template&) noexcept = default;
         Template(Template&&) = default;
         ~Template() noexcept = default;

@@ -30,8 +30,8 @@ namespace Network
     struct SocketHost
     {
         SocketHost() = default;
-        // cppcheck-suppress noExplicitConstructor
-        SocketHost(const addrinfo& t_ai);  // NOLINT
+        // cppcheck-suppress noExplicitConstructor; NOLINTNEXTLINE
+        SocketHost(const addrinfo& t_ai);
         SocketHost(const SocketHost&) = default;
         SocketHost(SocketHost&&) = default;
         ~SocketHost() noexcept = default;
