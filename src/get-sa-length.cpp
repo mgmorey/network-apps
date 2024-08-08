@@ -25,7 +25,7 @@
 #include "network/get-sa-pointer.h"             // get_sa_pointer()
 #endif
 
-auto Network::get_sa_length(Buffer<Byte>& addr) -> socket_length_type
+auto Network::get_sa_length(const Buffer<Byte>& addr) -> socket_length_type
 {
     return to_socket_length(addr.size());
 }

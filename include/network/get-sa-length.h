@@ -23,7 +23,7 @@
 
 namespace Network
 {
-    extern auto get_sa_length(Buffer<Byte>& addr) -> socket_length_type;
+    extern auto get_sa_length(const Buffer<Byte>& addr) -> socket_length_type;
     extern auto get_sa_length(const ByteString& addr) -> socket_length_type;
 }
 
