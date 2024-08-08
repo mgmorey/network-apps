@@ -77,7 +77,7 @@ namespace Network
         auto operator=(const AddressList&) noexcept -> AddressList& = delete;
         auto operator=(const AddressList&&) noexcept -> AddressList& = delete;
         [[nodiscard]] auto begin() const noexcept -> InputIterator;
-        [[nodiscard]] auto result() const noexcept -> OsErrorResult;
+        [[nodiscard]] auto result() const noexcept -> const OsErrorResult&;
 
     protected:
         static auto to_c_str(const std::optional<std::string>& str)

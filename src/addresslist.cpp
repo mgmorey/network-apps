@@ -134,7 +134,7 @@ auto Network::AddressList::begin() const noexcept -> InputIterator
     return m_list;
 }
 
-auto Network::AddressList::result() const noexcept -> OsErrorResult
+auto Network::AddressList::result() const noexcept -> const OsErrorResult&
 {
     return m_result;
 }
