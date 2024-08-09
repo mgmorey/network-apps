@@ -42,7 +42,8 @@ CLANG_TIDY_FLAGS += $(CPPFLAGS)
 
 # CPPCHECK_FLAGS
 
-CPPCHECK_FLAGS = --checkers-report=cppcheck.log
+CPPCHECK_FLAGS = --check-level=exhaustive
+CPPCHECK_FLAGS += --checkers-report=cppcheck.log
 CPPCHECK_FLAGS += --cppcheck-build-dir=$(cppbuild_dir)
 CPPCHECK_FLAGS += --enable=all --inline-suppr --quiet
 
