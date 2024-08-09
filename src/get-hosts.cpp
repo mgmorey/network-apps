@@ -28,7 +28,7 @@ auto Network::get_hosts(const OptionalHostname& hostname,
 {
     HostVector hosts;
     auto it {std::back_inserter(hosts)};
-    auto result {insert(hostname, {}, hints, it, verbose)};
+    auto result {insert(hostname, hints, it, verbose)};
 
     if (result) {
         return result;

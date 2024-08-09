@@ -26,11 +26,10 @@
 
 namespace Network
 {
-    template<typename OutputIterator>
     auto insert(const OptionalHostname& hostname,
                 const OptionalService& service,
                 const OptionalHints& hints,
-                OutputIterator it,
+                auto it,
                 bool verbose) -> OsErrorResult
     {
         const auto list {AddressList(hostname, service, hints, verbose)};
@@ -45,6 +44,14 @@ namespace Network
         }
 
         return list.result();
+    }
+
+    auto insert(const OptionalHostname& hostname,
+                const OptionalHints& hints,
+                auto it,
+                bool verbose) -> OsErrorResult
+    {
+        return insert(hostname, {}, hints, it, verbose);
     }
 }
 
