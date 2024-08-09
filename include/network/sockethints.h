@@ -114,7 +114,7 @@ namespace Network
     };
 
     extern auto operator<<(std::ostream& os,
-                           const SocketHints& hints) noexcept -> std::ostream&;
+                           const SocketHints& hints) -> std::ostream&;
 }
 
 #endif

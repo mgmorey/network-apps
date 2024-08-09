@@ -24,7 +24,7 @@ namespace Network
     class Format
     {
         friend auto operator<<(std::ostream& os,
-                               const Format& format) noexcept -> std::ostream&;
+                               const Format& format) -> std::ostream&;
 
     public:
         explicit Format(const std::string& t_key) noexcept;
@@ -56,7 +56,7 @@ namespace Network
     };
 
     extern auto operator<<(std::ostream& os,
-                           const Format& format) noexcept -> std::ostream&;
+                           const Format& format) -> std::ostream&;
 }
 
 #endif

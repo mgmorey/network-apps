@@ -27,7 +27,7 @@ namespace Network
         public Integer<socket_flags_type>
     {
         friend auto operator<<(std::ostream& os,
-                               const SocketFlags& flags) noexcept ->
+                               const SocketFlags& flags) ->
             std::ostream&;
 
     public:
@@ -39,7 +39,7 @@ namespace Network
     };
 
     extern auto operator<<(std::ostream& os,
-                           const SocketFlags& flags) noexcept -> std::ostream&;
+                           const SocketFlags& flags) -> std::ostream&;
 }
 
 #endif

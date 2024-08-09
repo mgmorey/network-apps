@@ -18,7 +18,7 @@
 #include <ostream>      // std::ostream
 
 auto Network::operator<<(std::ostream& os,
-                         const Context& context) noexcept -> std::ostream&
+                         const Context& context) -> std::ostream&
 {
     const auto& description {context.m_description};
     const auto& status {context.m_system_status};

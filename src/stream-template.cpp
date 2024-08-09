@@ -26,7 +26,7 @@
 #include <ostream>      // std::ostream
 
 auto Network::operator<<(std::ostream& os,
-                         const Template& sock) noexcept -> std::ostream&
+                         const Template& sock) -> std::ostream&
 {
     static constexpr auto tab {9};
 

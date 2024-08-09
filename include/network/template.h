@@ -30,7 +30,7 @@ namespace Network
     struct Template
     {
         friend auto operator<<(std::ostream& os,
-                               const Template& sock) noexcept -> std::ostream&;
+                               const Template& sock) -> std::ostream&;
 
         Template() noexcept = default;
         // cppcheck-suppress noExplicitConstructor; NOLINTNEXTLINE
@@ -56,7 +56,7 @@ namespace Network
     };
 
     extern auto operator<<(std::ostream& os,
-                           const Template& sock) noexcept -> std::ostream&;
+                           const Template& sock) -> std::ostream&;
 }
 
 #endif

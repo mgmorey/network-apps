@@ -21,7 +21,7 @@
 #include <ostream>      // std::ostream
 
 auto Network::operator<<(std::ostream& os,
-                         const Socket& sock) noexcept -> std::ostream&
+                         const Socket& sock) -> std::ostream&
 {
     const auto handle {static_cast<socket_type>(sock)};
 

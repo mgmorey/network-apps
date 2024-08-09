@@ -27,7 +27,7 @@
 #include <ostream>      // std::ostream
 
 auto Network::operator<<(std::ostream& os,
-                         const SocketFamily& family) noexcept -> std::ostream&
+                         const SocketFamily& family) -> std::ostream&
 {
     const socket_family_type family_value {family};
 

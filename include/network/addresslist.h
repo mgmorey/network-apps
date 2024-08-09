@@ -39,7 +39,7 @@ namespace Network
     class AddressList
     {
         friend auto operator<<(std::ostream& os,
-                               const addrinfo& ai) noexcept -> std::ostream&;
+                               const addrinfo& ai) -> std::ostream&;
 
     public:
         struct InputIterator
@@ -89,7 +89,7 @@ namespace Network
     };
 
     extern auto operator<<(std::ostream& os,
-                           const addrinfo& ai) noexcept -> std::ostream&;
+                           const addrinfo& ai) -> std::ostream&;
 }
 
 #endif
