@@ -20,8 +20,7 @@
 
 #include <ostream>      // std::ostream
 
-auto Network::operator<<(std::ostream& os,
-                         const Socket& sock) -> std::ostream&
+auto Network::operator<<(std::ostream& os, const Socket& sock) -> std::ostream&
 {
     const socket_type handle {sock};
 
