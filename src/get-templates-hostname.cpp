@@ -29,11 +29,8 @@ auto Network::get_templates(const OptionalHostname& hostname,
                             bool verbose) -> TemplateVectorResult
 {
     TemplateVector templates;
-    auto result {insert(hostname,
-                        service,
-                        hints,
-                        std::back_inserter(templates),
-                        verbose)};
+    auto it {std::back_inserter(templates)};
+    auto result {insert(hostname, service, hints, it, verbose)};
 
     if (result) {
         return result;
