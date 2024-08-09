@@ -23,16 +23,18 @@
 #include "network/oserrorresult.h"      // OsErrorResult
 
 #include <iostream>     // std::cerr, std::endl
+#include <iterator>     // std::back_inserter()
 
 namespace Network
 {
     auto insert(const OptionalHostname& hostname,
                 const OptionalService& service,
                 const OptionalHints& hints,
-                auto it,
+                auto& container,
                 bool verbose) -> OsErrorResult
     {
         const auto list {AddressList(hostname, service, hints, verbose)};
+        auto it {std::back_inserter(container)};
 
         for (const auto& item : list) {
             if (verbose) {
@@ -44,14 +46,6 @@ namespace Network
         }
 
         return list.result();
-    }
-
-    auto insert(const OptionalHostname& hostname,
-                const OptionalHints& hints,
-                auto it,
-                bool verbose) -> OsErrorResult
-    {
-        return insert(hostname, {}, hints, it, verbose);
     }
 }
 

@@ -21,16 +21,13 @@
 #include "network/templatevector.h"             // TemplateVector
 #include "network/templatevectorresult.h"       // TemplateVectorResult
 
-#include <iterator>     // std::back_inserter()
-
 auto Network::get_templates(const OptionalHostname& hostname,
                             const OptionalService& service,
                             const OptionalHints& hints,
                             bool verbose) -> TemplateVectorResult
 {
     TemplateVector templates;
-    auto it {std::back_inserter(templates)};
-    auto result {insert(hostname, service, hints, it, verbose)};
+    auto result {insert(hostname, service, hints, templates, verbose)};
 
     if (result) {
         return result;

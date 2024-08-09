@@ -20,15 +20,12 @@
 #include "network/optionalhints.h"      // OptionalHints
 #include "network/optionalhostname.h"   // OptionalHostname
 
-#include <iterator>     // std::back_inserter()
-
 auto Network::get_hosts(const OptionalHostname& hostname,
                         const OptionalHints& hints,
                         bool verbose) -> HostVectorResult
 {
     HostVector hosts;
-    auto it {std::back_inserter(hosts)};
-    auto result {insert(hostname, hints, it, verbose)};
+    auto result {insert(hostname, {}, hints, hosts, verbose)};
 
     if (result) {
         return result;
