@@ -14,17 +14,15 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/get-templates-endpoint.h"     // get_templates()
-#include "network/endpoint.h"                   // Endpoint
 #include "network/get-templates-hostname.h"     // get_templates()
-#include "network/optionalhints.h"              // OptionalHints
+#include "network/openendpointparams.h"         // OpenEndpointParams
 #include "network/templatevectorresult.h"       // TemplateVectorResult
 
-auto Network::get_templates(const Endpoint& endpoint,
-                            const OptionalHints& hints,
-                            bool verbose) -> TemplateVectorResult
+auto Network::get_templates(const OpenEndpointParams& args) ->
+    TemplateVectorResult
 {
-    return get_templates(endpoint.first,
-                         endpoint.second,
-                         hints,
-                         verbose);
+    return get_templates(args.endpoint.first,
+                         args.endpoint.second,
+                         args.hints,
+                         args.verbose);
 }

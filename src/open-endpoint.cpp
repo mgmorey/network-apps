@@ -31,9 +31,7 @@ auto Network::open(const OpenHandler& handler,
                    const OpenEndpointParams& args) -> OpenResult
 {
     OpenResult open_result;
-    const auto templates_result {get_templates(args.endpoint,
-                                               args.hints,
-                                               args.verbose)};
+    const auto templates_result {get_templates(args)};
     std::visit([&](auto&& arg) {
         using T = std::decay_t<decltype(arg)>;
 

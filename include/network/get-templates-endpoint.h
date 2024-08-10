@@ -16,15 +16,13 @@
 #ifndef NETWORK_GET_TEMPLATES_ENDPOINT_H
 #define NETWORK_GET_TEMPLATES_ENDPOINT_H
 
-#include "network/endpoint.h"                   // Endpoint
-#include "network/optionalhints.h"              // OptionalHints
+#include "network/openendpointparams.h"         // OpenEndpointParams
 #include "network/templatevectorresult.h"       // TemplateVectorResult
 
 namespace Network
 {
-    extern auto get_templates(const Endpoint& endpoint,
-                              const OptionalHints& hints,
-                              bool verbose) -> TemplateVectorResult;
+    extern auto get_templates(const OpenEndpointParams& args) ->
+        TemplateVectorResult;
 }
 
 #endif
