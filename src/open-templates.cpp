@@ -15,8 +15,8 @@
 
 #include "network/open-templates.h"             // open()
 #include "network/open.h"                       // Open
-#include "network/openendpointparams.h"         // OpenEndpointParams
 #include "network/openhandler.h"                // OpenHandler
+#include "network/openparams.h"                 // OpenParams
 #include "network/socketresultvector.h"         // SocketResultVector
 #include "network/templatevector.h"             // TemplateVectorResult
 
@@ -25,7 +25,7 @@
 #include <iterator>     // std::back_inserter()
 
 auto Network::open(const OpenHandler& handler,
-                   const OpenEndpointParams& args,
+                   const OpenParams& args,
                    const TemplateVector& templates) -> SocketResultVector
 
 {

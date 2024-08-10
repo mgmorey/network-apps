@@ -16,15 +16,15 @@
 #ifndef NETWORK_OPEN_TEMPLATES_H
 #define NETWORK_OPEN_TEMPLATES_H
 
-#include "network/openendpointparams.h"         // OpenEndpointParams
 #include "network/openhandler.h"                // OpenHandler
+#include "network/openparams.h"                 // OpenParams
 #include "network/socketresultvector.h"         // SocketResultVector
 #include "network/templatevector.h"             // TemplateVectorResult
 
 namespace Network
 {
     extern auto open(const OpenHandler& handler,
-                     const OpenEndpointParams& args,
+                     const OpenParams& args,
                      const TemplateVector& templates) -> SocketResultVector;
 }
 

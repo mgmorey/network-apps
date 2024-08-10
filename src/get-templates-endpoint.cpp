@@ -15,11 +15,10 @@
 
 #include "network/get-templates-endpoint.h"     // get_templates()
 #include "network/get-templates-hostname.h"     // get_templates()
-#include "network/openendpointparams.h"         // OpenEndpointParams
+#include "network/openparams.h"                 // OpenParams
 #include "network/templatevectorresult.h"       // TemplateVectorResult
 
-auto Network::get_templates(const OpenEndpointParams& args) ->
-    TemplateVectorResult
+auto Network::get_templates(const OpenParams& args) -> TemplateVectorResult
 {
     return get_templates(args.endpoint.first,
                          args.endpoint.second,
