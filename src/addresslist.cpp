@@ -64,11 +64,6 @@ auto Network::AddressList::InputIterator::operator==(const InputIterator& rhs)
     return m_list == rhs.m_list;
 }
 
-auto Network::AddressList::end() noexcept -> InputIterator
-{
-    return nullptr;
-}
-
 auto Network::AddressList::format(const std::unique_ptr<addrinfo>& hints) ->
     std::string
 {
@@ -138,6 +133,11 @@ Network::AddressList::~AddressList() noexcept
 auto Network::AddressList::begin() const noexcept -> InputIterator
 {
     return m_list;
+}
+
+auto Network::AddressList::end() const noexcept -> InputIterator
+{
+    return nullptr;
 }
 
 auto Network::AddressList::result() const noexcept -> const OsErrorResult&

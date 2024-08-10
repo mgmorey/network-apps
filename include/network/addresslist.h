@@ -62,7 +62,6 @@ namespace Network
             pointer m_list {nullptr};
         };
 
-        static auto end() noexcept -> InputIterator;
         static auto format(const std::unique_ptr<addrinfo>& hints) ->
             std::string;
 
@@ -77,6 +76,7 @@ namespace Network
         auto operator=(const AddressList&) noexcept -> AddressList& = delete;
         auto operator=(const AddressList&&) noexcept -> AddressList& = delete;
         [[nodiscard]] auto begin() const noexcept -> InputIterator;
+        [[nodiscard]] auto end() const noexcept -> InputIterator;
         [[nodiscard]] auto result() const noexcept -> const OsErrorResult&;
 
     protected:
