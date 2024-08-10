@@ -16,7 +16,7 @@
 #include "network/connect-endpoint.h"   // connect()
 #include "network/endpoint.h"           // Endpoint
 #include "network/open-endpoint.h"      // open()
-#include "network/openparams.h"         // OpenParams
+#include "network/openendpointparams.h" // OpenEndpointParams
 #include "network/openhandler.h"        // OpenHandler
 #include "network/openresult.h"         // OpenResult
 #include "network/sockethints.h"        // SocketHints
@@ -32,6 +32,6 @@ auto Network::connect(const Endpoint& endpoint,
                       bool verbose) -> OpenResult
 {
     const OpenHandler handler {::connect, "::connect"};
-    const OpenParams args {endpoint, hints, verbose};
+    const OpenEndpointParams args {endpoint, hints, verbose};
     return open(handler, args);
 }

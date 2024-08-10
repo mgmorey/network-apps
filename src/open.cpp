@@ -18,7 +18,7 @@
 #include "network/create-result.h"              // create_result()
 #include "network/error-strings.h"              // VISITOR_ERROR
 #include "network/open-socket.h"                // open()
-#include "network/openparams.h"                 // OpenParams
+#include "network/openendpointparams.h"         // OpenEndpointParams
 #include "network/openhandler.h"                // OpenHandler
 #include "network/oserrorresult.h"              // OsErrorResult
 #include "network/socket.h"                     // Socket
@@ -30,7 +30,7 @@
 #include <variant>      // std::visit()
 
 Network::Open::Open(const OpenHandler& t_handler,
-                    const OpenParams& t_args,
+                    const OpenEndpointParams& t_args,
                     std::ostream& t_os) :
     m_handler(t_handler),
     m_args(t_args),

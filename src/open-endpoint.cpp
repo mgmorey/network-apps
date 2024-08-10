@@ -18,8 +18,8 @@
 #include "network/error-strings.h"              // VISITOR_ERROR
 #include "network/get-templates-endpoint.h"     // get_templates()
 #include "network/open-templates.h"             // open()
+#include "network/openendpointparams.h"         // OpenEndpointParams
 #include "network/openhandler.h"                // OpenHandler
-#include "network/openparams.h"                 // OpenParams
 #include "network/openresult.h"                 // OpenResult
 #include "network/oserrorresult.h"              // OsErrorResult
 #include "network/templatevector.h"             // TemplateVector
@@ -28,7 +28,7 @@
 #include <variant>      // std::visit()
 
 auto Network::open(const OpenHandler& handler,
-                   const OpenParams& args) -> OpenResult
+                   const OpenEndpointParams& args) -> OpenResult
 {
     OpenResult open_result;
     const auto templates_result {get_templates(args)};

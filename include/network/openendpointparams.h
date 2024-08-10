@@ -13,15 +13,15 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_OPENPARAMS_H
-#define NETWORK_OPENPARAMS_H
+#ifndef NETWORK_OPENENDPOINTPARAMS_H
+#define NETWORK_OPENENDPOINTPARAMS_H
 
 #include "network/endpoint.h"           // Endpoint
 #include "network/sockethints.h"        // SocketHints
 
 namespace Network
 {
-    struct OpenParams
+    struct OpenEndpointParams
     {
         const Endpoint& endpoint;
         const SocketHints& hints;
