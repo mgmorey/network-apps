@@ -120,6 +120,12 @@ Network::AddressList::AddressList(const OptionalHostname& t_hostname,
             << format_ai_error(error);
         m_result = {os_error, oss.str()};
     }
+    else if (t_verbose) {
+        for (const auto& item : *this) {
+            std::cerr << item
+                      << std::endl;
+        }
+    }
 }
 
 Network::AddressList::~AddressList() noexcept
