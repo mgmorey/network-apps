@@ -171,7 +171,7 @@ namespace TestHost
 #if defined(WIN32)
         static const ErrorCodeSet codes = {WSAHOST_NOT_FOUND};
 #else
-        static const ErrorCodeSet codes = {EAI_NONAME};
+        static const ErrorCodeSet codes = {EAI_AGAIN, EAI_NONAME};
 #endif
         return codes;
     }
