@@ -81,6 +81,7 @@
 #include "network/get-sun-pointer.h"            // get_sun_pointer()
 #endif
 #include "network/get-templates.h"              // get_templates()
+#include "network/insert.h"                     // insert()
 #include "network/ipsockethints.h"              // IpSocketHints
 #include "network/limits.h"                     // name_length_max,
                                                 // name_length_min,
