@@ -135,7 +135,7 @@ auto Network::AddressList::begin() const noexcept -> InputIterator
     return m_list;
 }
 
-auto Network::AddressList::end() const noexcept -> InputIterator
+auto Network::AddressList::end() const noexcept -> InputIterator // NOLINT
 {
     return nullptr;
 }
