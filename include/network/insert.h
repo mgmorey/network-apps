@@ -24,14 +24,15 @@
 
 #include <algorithm>    // std::copy()
 #include <iterator>     // std::back_inserter()
+#include <optional>     // std::nullopt()
 
 namespace Network
 {
-    auto insert(const OptionalHostname& hostname,
-                const OptionalService& service,
-                const OptionalHints& hints,
-                auto& container,
-                bool verbose) -> OsErrorResult
+    auto insert(auto& container,
+                const OptionalHostname& hostname,
+                const OptionalService& service = std::nullopt,
+                const OptionalHints& hints = std::nullopt,
+                bool verbose = false) -> OsErrorResult
     {
         const auto list {AddressList(hostname, service, hints, verbose)};
         auto it {std::back_inserter(container)};

@@ -25,7 +25,7 @@ auto Network::get_hosts(const OptionalHostname& hostname,
                         bool verbose) -> HostVectorResult
 {
     HostVector hosts;
-    auto result {insert(hostname, {}, hints, hosts, verbose)};
+    auto result {insert(hosts, hostname, {}, hints, verbose)};
 
     if (result) {
         return result;
