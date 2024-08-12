@@ -18,12 +18,13 @@
                                         // HostVector, Hostname,
                                         // OsErrorResult,
                                         // SocketFamily, SocketHints,
-                                        // get_hosts(),
+                                        // SocketHost, get_hosts(),
                                         // get_length_maximum(),
                                         // get_length_minimum(),
                                         // sa_family_type, sa_size,
                                         // sin_family_type,
-                                        // sun_length_max, sun_length_min,
+                                        // sun_length_max,
+                                        // sun_length_min,
                                         // sun_path_offset, sun_size,
                                         // to_bytestring(), validate()
 #include "network/os-features.h"        // HAVE_SOCKADDR_SA_LEN
@@ -50,8 +51,6 @@
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <regex>        // std::regex, std::regex_match
 #include <string>       // std::string
-#include <type_traits>  // std::decay_t, std::is_same_v
-#include <variant>      // std::visit()
 
 namespace TestAddress
 {
@@ -64,14 +63,15 @@ namespace TestAddress
     using Network::OsErrorResult;
     using Network::SocketFamily;
     using Network::SocketHints;
+    using Network::SocketHost;
     using Network::always_false_v;
 #ifndef WIN32
     using Network::af_unix;
 #endif
     using Network::af_unspec;
-    using Network::get_hosts;
     using Network::get_length_maximum;
     using Network::get_length_minimum;
+    using Network::insert;
     using Network::parse;
 #ifndef WIN32
     using Network::path_length_max;
@@ -460,34 +460,26 @@ namespace TestAddress
     {
         static const Hostname localhost {"localhost"};
 
-        const auto hosts_result {get_hosts(localhost, unspec)};
-        std::visit([&](auto&& arg) {
-            using T = std::decay_t<decltype(arg)>;
+        std::vector<SocketHost> hosts;
+        const auto result {insert(hosts, localhost, {}, unspec, verbose)};
 
-            if constexpr (std::is_same_v<T, HostVector>) {
-                std::cout << "Socket addresses for "
-                          << localhost
-                          << ": "
-                          << std::endl;
+        if (result) {
+            std::cout << "No " << localhost << " addresses: " << result.string()
+                      << std::endl;
+        }
+        else {
+            std::cout << "Socket addresses for "
+                      << localhost
+                      << ": "
+                      << std::endl;
 
-                for (const auto& host : arg) {
-                    const ByteString& addr {host.address()};
-                    const Address address {addr};
-                    print(address, addr.size());
-                    test_valid(address, addr.size());
-                }
+            for (const auto& host : hosts) {
+                const ByteString& addr {host.address()};
+                const Address address {addr};
+                print(address, addr.size());
+                test_valid(address, addr.size());
             }
-            else if constexpr (std::is_same_v<T, OsErrorResult>) {
-                std::cout << "No "
-                          << localhost
-                          << " addresses: "
-                          << arg.string()
-                          << std::endl;
-            }
-            else {
-                static_assert(always_false_v<T>, VISITOR_ERROR);
-            }
-        }, hosts_result);
+        }
     }
 }
 
