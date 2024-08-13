@@ -15,25 +15,33 @@
 
 #include "network/open-endpoint.h"              // open()
 #include "network/insert-endpoint.h"            // insert()
-#include "network/open-templates.h"             // open()
+#include "network/open.h"                       // Open
 #include "network/openendpointparams.h"         // OpenEndpointParams
 #include "network/openhandler.h"                // OpenHandler
 #include "network/openresult.h"                 // OpenResult
-#include "network/templatevector.h"             // TemplateVector
+#include "network/socketresultvector.h"         // SocketResultVector
 
+#include <algorithm>    // std::transform()
+#include <iostream>     // std::cout
+#include <iterator>     // std::back_inserter()
+#include <vector>       // std::vector
 
 auto Network::open(const OpenHandler& handler,
                    const OpenEndpointParams& args) -> OpenResult
 {
     OpenResult result;
-    TemplateVector templates;
-    const auto insert_result {insert(templates, args)};
+    std::vector<Template> templates;
+    const auto error_result {insert(templates, args)};
 
-    if (insert_result) {
-        result = insert_result;
+    if (error_result) {
+        result = error_result;
     }
     else {
-        result = open(handler, args, templates);
+        SocketResultVector socket_results;
+        std::transform(templates.begin(), templates.end(),
+                       std::back_inserter(socket_results),
+                       Open(handler, args, std::cout));
+        result = socket_results;
     }
 
     return result;
