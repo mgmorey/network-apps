@@ -31,9 +31,8 @@ auto Network::open(const OpenHandler& handler,
 {
     OpenResult result;
     std::vector<Template> templates;
-    const auto error_result {insert(templates, args)};
 
-    if (error_result) {
+    if (const auto error_result = insert(templates, args)) {
         result = error_result;
     }
     else {
