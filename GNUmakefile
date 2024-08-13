@@ -56,7 +56,7 @@ connect-socket-bs.cpp context.cpp create-result.cpp create.cpp		\
 error.cpp familyerror.cpp format-ai-error.cpp format-bytestring.cpp	\
 format-os-error.cpp format.cpp get-endpoint.cpp				\
 get-endpointresult.cpp get-hostname.cpp get-hostnameresult.cpp		\
-get-hosts.cpp get-last-context-error.cpp get-last-os-error.cpp		\
+get-last-context-error.cpp get-last-os-error.cpp			\
 get-length-maximum.cpp get-length-minimum.cpp get-name.cpp		\
 get-nameresult.cpp get-operands.cpp get-option.cpp get-options.cpp	\
 get-peername.cpp get-peernameresult.cpp get-sa-family.cpp		\
