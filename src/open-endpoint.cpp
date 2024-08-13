@@ -14,36 +14,27 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/open-endpoint.h"              // open()
-#include "network/always-false.h"               // always_false_v
-#include "network/error-strings.h"              // VISITOR_ERROR
-#include "network/get-templates-endpoint.h"     // get_templates()
+#include "network/insert-endpoint.h"            // insert()
 #include "network/open-templates.h"             // open()
 #include "network/openendpointparams.h"         // OpenEndpointParams
 #include "network/openhandler.h"                // OpenHandler
 #include "network/openresult.h"                 // OpenResult
-#include "network/oserrorresult.h"              // OsErrorResult
 #include "network/templatevector.h"             // TemplateVector
 
-#include <type_traits>  // std::decay_t, std::is_same_v
-#include <variant>      // std::visit()
 
 auto Network::open(const OpenHandler& handler,
                    const OpenEndpointParams& args) -> OpenResult
 {
-    OpenResult open_result;
-    const auto templates_result {get_templates(args)};
-    std::visit([&](auto&& arg) {
-        using T = std::decay_t<decltype(arg)>;
+    OpenResult result;
+    TemplateVector templates;
+    const auto insert_result {insert(templates, args)};
 
-        if constexpr (std::is_same_v<T, TemplateVector>) {
-            open_result = open(handler, args, arg);
-        }
-        else if constexpr (std::is_same_v<T, OsErrorResult>) {
-            open_result = arg;
-        }
-        else {
-            static_assert(always_false_v<T>, VISITOR_ERROR);
-        }
-    }, templates_result);
-    return open_result;
+    if (insert_result) {
+        result = insert_result;
+    }
+    else {
+        result = open(handler, args, templates);
+    }
+
+    return result;
 }

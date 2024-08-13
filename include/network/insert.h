@@ -16,29 +16,6 @@
 #ifndef NETWORK_INSERT_H
 #define NETWORK_INSERT_H
 
-#include "network/addresslist.h"        // AddressList
-#include "network/optionalhints.h"      // OptionalHints
-#include "network/optionalhostname.h"   // OptionalHostname
-#include "network/optionalservice.h"    // OptionalService
-#include "network/oserrorresult.h"      // OsErrorResult
-
-#include <algorithm>    // std::copy()
-#include <iterator>     // std::back_inserter()
-#include <optional>     // std::nullopt()
-
-namespace Network
-{
-    auto insert(auto& container,
-                const OptionalHostname& hostname,
-                const OptionalService& service = std::nullopt,
-                const OptionalHints& hints = std::nullopt,
-                bool verbose = false) -> OsErrorResult
-    {
-        const auto list {AddressList(hostname, service, hints, verbose)};
-        auto it {std::back_inserter(container)};
-        std::copy(list.begin(), list.end(), it);
-        return list.result();
-    }
-}
+#include "network/insert-hostname.h"    // insert()
 
 #endif

@@ -19,7 +19,7 @@
 #include "network/openendpointparams.h"         // OpenEndpointParams
 #include "network/openhandler.h"                // OpenHandler
 #include "network/socketresultvector.h"         // SocketResultVector
-#include "network/templatevector.h"             // TemplateVectorResult
+#include "network/templatevector.h"             // TemplateVector
 
 namespace Network
 {

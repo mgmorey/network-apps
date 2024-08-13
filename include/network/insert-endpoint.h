@@ -13,16 +13,24 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-templates-endpoint.h"     // get_templates()
-#include "network/get-templates-hostname.h"     // get_templates()
-#include "network/openendpointparams.h"         // OpenEndpointParams
-#include "network/templatevectorresult.h"       // TemplateVectorResult
+#ifndef NETWORK_INSERT_ENDPOINT_H
+#define NETWORK_INSERT_ENDPOINT_H
 
-auto Network::get_templates(const OpenEndpointParams& args) ->
-    TemplateVectorResult
+#include "network/insert-hostname.h"            // insert()
+#include "network/openendpointparams.h"         // OpenEndpointParams
+#include "network/oserrorresult.h"              // OsErrorResult
+
+namespace Network
 {
-    return get_templates(args.endpoint.first,
-                         args.endpoint.second,
-                         args.hints,
-                         args.verbose);
+    auto insert(auto& container,
+                const OpenEndpointParams& args) -> OsErrorResult
+    {
+        return insert(container,
+                      args.endpoint.first,
+                      args.endpoint.second,
+                      args.hints,
+                      args.verbose);
+    }
 }
+
+#endif

@@ -63,8 +63,7 @@ get-peername.cpp get-peernameresult.cpp get-sa-family.cpp		\
 get-sa-length.cpp get-sa-pointer.cpp get-sa-span.cpp get-sin-addr.cpp	\
 get-sin-pointer.cpp get-sin-port.cpp get-sin6-addr.cpp			\
 get-sin6-pointer.cpp get-sin6-port.cpp get-sockname.cpp			\
-get-socknameresult.cpp get-templates-endpoint.cpp			\
-get-templates-hostname.cpp is-running.cpp listen.cpp logicerror.cpp	\
+get-socknameresult.cpp is-running.cpp listen.cpp logicerror.cpp		\
 open-endpoint.cpp open-socket.cpp open-templates.cpp open.cpp		\
 oserrorresult.cpp parse-argumentspan.cpp parse.cpp rangeerror.cpp	\
 read-string.cpp read.cpp remove.cpp reset-last-context-error.cpp	\
