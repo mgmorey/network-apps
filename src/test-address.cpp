@@ -58,7 +58,6 @@ namespace TestAddress
     using Network::Context;
     using Network::Error;
     using Network::Hostname;
-    using Network::OsErrorResult;
     using Network::SocketFamily;
     using Network::SocketHints;
     using Network::SocketHost;
