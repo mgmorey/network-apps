@@ -15,8 +15,7 @@
 
 #include "network/assert.h"             // assert()
 #include "network/network.h"            // Address, Context, Error,
-                                        // HostVector, Hostname,
-                                        // OsErrorResult,
+                                        // Hostname, OsErrorResult,
                                         // SocketFamily, SocketHints,
                                         // SocketHost,
                                         // get_length_maximum(),
@@ -58,7 +57,6 @@ namespace TestAddress
     using Network::ByteString;
     using Network::Context;
     using Network::Error;
-    using Network::HostVector;
     using Network::Hostname;
     using Network::OsErrorResult;
     using Network::SocketFamily;
