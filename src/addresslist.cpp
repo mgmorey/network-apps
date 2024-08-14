@@ -28,7 +28,7 @@
 #include <netdb.h>      // addrinfo, ::freeaddrinfo(), ::getaddrinfo()
 #endif
 
-#include <iostream>     // std::cout, std::endl
+#include <iostream>     // std::cerr, std::cout, std::endl
 #include <memory>       // std::make_unique, std::unique_ptr
 #include <optional>     // std::optional
 #include <sstream>      // std::ostringstream
@@ -116,10 +116,7 @@ Network::AddressList::AddressList(const OptionalHostname& t_hostname,
         m_result = {os_error, oss.str()};
     }
     else if (t_verbose) {
-        for (const auto& item : *this) {
-            std::cerr << item
-                      << std::endl;
-        }
+        std::cerr << *this;
     }
 }
 

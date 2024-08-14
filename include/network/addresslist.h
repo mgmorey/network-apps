@@ -89,6 +89,8 @@ namespace Network
     };
 
     extern auto operator<<(std::ostream& os,
+                           const AddressList& list) -> std::ostream&;
+    extern auto operator<<(std::ostream& os,
                            const addrinfo& ai) -> std::ostream&;
 }
 

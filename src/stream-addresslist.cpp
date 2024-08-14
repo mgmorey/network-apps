@@ -31,6 +31,17 @@
 
 #include <ostream>      // std::ostream
 
+
+auto Network::operator<<(std::ostream& os, const AddressList& list) -> std::ostream&
+{
+    for (const auto& item : list) {
+        os << item
+           << std::endl;
+    }
+
+    return os;
+}
+
 auto Network::operator<<(std::ostream& os,
                          const addrinfo& ai) -> std::ostream&
 {
