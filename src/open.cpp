@@ -20,6 +20,7 @@
 #include "network/open-socket.h"                // open()
 #include "network/openendpointparams.h"         // OpenEndpointParams
 #include "network/openhandler.h"                // OpenHandler
+#include "network/opensocketparams.h"           // OpenSocketParams
 #include "network/oserrorresult.h"              // OsErrorResult
 #include "network/socket.h"                     // Socket
 #include "network/socketresult.h"               // SocketResult
@@ -50,9 +51,9 @@ auto Network::Open::operator()(const Template& t_temp) -> SocketResult
         using T = std::decay_t<decltype(arg)>;
 
         if constexpr (std::is_same_v<T, Socket>) {
-            if (const auto result {open(m_handler, {arg,
-                                                    t_temp.address(),
-                                                    m_args.verbose})}) {
+            const OpenSocketParams args {arg, t_temp.address(), m_args.verbose};
+
+            if (const auto result {open(m_handler, args)}) {
                 template_result = result;
             }
             else {
