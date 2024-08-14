@@ -46,18 +46,18 @@ auto Network::Open::operator()(const Template& t_temp) -> SocketResult
              << std::endl;
     }
 
-    auto template_result {create_result(t_temp.hints(), m_args.verbose)};
+    auto result {create_result(t_temp.hints(), m_args.verbose)};
     std::visit([&](auto&& arg) {
         using T = std::decay_t<decltype(arg)>;
 
         if constexpr (std::is_same_v<T, Socket>) {
             const OpenSocketParams args {arg, t_temp.address(), m_args.verbose};
 
-            if (const auto result {open(m_handler, args)}) {
-                template_result = result;
+            if (const auto error_result {open(m_handler, args)}) {
+                result = error_result;
             }
             else {
-                template_result = arg;
+                result = arg;
             }
         }
         else if constexpr (std::is_same_v<T, OsErrorResult>) {
@@ -66,6 +66,6 @@ auto Network::Open::operator()(const Template& t_temp) -> SocketResult
         else {
             static_assert(always_false_v<T>, VISITOR_ERROR);
         }
-    }, template_result);
-    return template_result;
+    }, result);
+    return result;
 }
