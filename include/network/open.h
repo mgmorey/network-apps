@@ -21,8 +21,6 @@
 #include "network/socketresult.h"               // SocketResult
 #include "network/template.h"                   // Template
 
-#include <iostream>     // std::cout, std::endl
-
 namespace Network
 {
     class Open
