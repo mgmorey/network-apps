@@ -48,16 +48,6 @@ Network::Socket::operator bool() const noexcept
     return static_cast<bool>(m_socket_data);
 }
 
-auto Network::Socket::bound() -> Socket&
-{
-    if (!m_socket_data) {
-        return *this;
-    }
-
-    m_socket_data->bound();
-    return *this;
-}
-
 auto Network::Socket::peername() const -> ByteString
 {
     if (!m_socket_data) {
@@ -74,4 +64,13 @@ auto Network::Socket::sockname() const -> ByteString
     }
 
     return m_socket_data->sockname();
+}
+
+auto Network::Socket::is_owner() -> Socket&
+{
+    if (m_socket_data) {
+        m_socket_data->is_owner();
+    }
+
+    return *this;
 }

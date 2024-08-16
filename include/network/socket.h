@@ -16,9 +16,10 @@
 #ifndef NETWORK_SOCKET_H
 #define NETWORK_SOCKET_H
 
-#include "network/bytestring.h"                 // ByteString
-#include "network/socket-type.h"                // socket_type
-#include "network/sockethints.h"                // SocketHints
+#include "network/bytestring.h"         // ByteString
+#include "network/oserrorresult.h"      // OsErrorResult
+#include "network/socket-type.h"        // socket_type
+#include "network/sockethints.h"        // SocketHints
 
 #include <memory>      // std::shared_ptr
 #include <ostream>     // std::ostream
@@ -29,6 +30,9 @@ namespace Network
 
     class Socket
     {
+        friend auto bind(Socket& sock,
+                         const ByteString& addr,
+                         bool verbose) -> OsErrorResult;
         friend auto operator<<(std::ostream& os,
                                const Socket& sock) -> std::ostream&;
 
@@ -43,9 +47,11 @@ namespace Network
         auto operator=(Socket&&) noexcept -> Socket& = default;
         explicit operator socket_type() const noexcept;
         explicit operator bool() const noexcept;
-        auto bound() -> Socket&;
         [[nodiscard]] auto peername() const -> ByteString;
         [[nodiscard]] auto sockname() const -> ByteString;
+
+    protected:
+        auto is_owner() -> Socket&;
 
     private:
         std::shared_ptr<SocketData> m_socket_data;

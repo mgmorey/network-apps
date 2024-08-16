@@ -45,7 +45,7 @@ Network::SocketData::~SocketData() noexcept
 {
     try {
         close();
-        bound(false);
+        is_owner(false);
     }
     catch (const std::exception& error) {
         std::cerr << error.what()
@@ -58,9 +58,9 @@ Network::SocketData::operator socket_type() const noexcept
     return m_socket;
 }
 
-auto Network::SocketData::bound() -> SocketData&
+auto Network::SocketData::is_owner() -> SocketData&
 {
-    return bound(true);
+    return is_owner(true);
 }
 
 auto Network::SocketData::peername() const -> ByteString
@@ -81,14 +81,24 @@ auto Network::SocketData::sockname() const -> ByteString
     return *m_sockname;
 }
 
-auto Network::SocketData::bound(bool t_is_bound) -> SocketData&
+auto Network::SocketData::close() const -> const SocketData&
 {
-    if (m_is_bound == t_is_bound) {
+    if (const auto result {Network::close(m_socket, m_verbose)}) {
+        std::cerr << result.string()
+                  << std::endl;
+    }
+
+    return *this;
+}
+
+auto Network::SocketData::is_owner(bool t_is_owner) -> SocketData&
+{
+    if (m_is_owner == t_is_owner) {
         return *this;
     }
 
 #ifndef WIN32
-    if (t_is_bound) {
+    if (t_is_owner) {
         if (!m_sockname) {
             m_sockname = get_sockname(m_socket, m_verbose);
         }
@@ -99,16 +109,6 @@ auto Network::SocketData::bound(bool t_is_bound) -> SocketData&
     }
 #endif
 
-    m_is_bound = t_is_bound;
-    return *this;
-}
-
-auto Network::SocketData::close() const -> const SocketData&
-{
-    if (const auto result {Network::close(m_socket, m_verbose)}) {
-        std::cerr << result.string()
-                  << std::endl;
-    }
-
+    m_is_owner = t_is_owner;
     return *this;
 }
