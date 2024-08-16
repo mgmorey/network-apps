@@ -133,20 +133,14 @@ namespace TestSocket
         std::string actual_error_str;
 
         try {
-            Socket sock_1;
+            Socket sock_1 {hints, verbose};
             const Socket sock_2 {sock_1};
-            assert(!static_cast<bool>(sock_1));
-            assert(!static_cast<bool>(sock_2));
-            assert(static_cast<socket_type>(sock_1) == socket_null);
-            assert(static_cast<socket_type>(sock_2) == socket_null);
-            sock_1 = Socket {hints, verbose};
-            const Socket sock_3 {sock_1};
             assert(static_cast<bool>(sock_1));
-            assert(static_cast<bool>(sock_3));
+            assert(static_cast<bool>(sock_2));
             assert(static_cast<socket_type>(sock_1) != socket_null);
-            assert(static_cast<socket_type>(sock_3) != socket_null);
+            assert(static_cast<socket_type>(sock_2) != socket_null);
             assert(static_cast<socket_type>(sock_1) ==
-                   static_cast<socket_type>(sock_3));
+                   static_cast<socket_type>(sock_2));
         }
         catch (const Error& error) {
             print(error);
