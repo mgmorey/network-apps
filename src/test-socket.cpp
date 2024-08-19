@@ -141,6 +141,7 @@ namespace TestSocket
             assert(static_cast<socket_type>(sock_2) != socket_null);
             assert(static_cast<socket_type>(sock_1) ==
                    static_cast<socket_type>(sock_2));
+            static_cast<void>(sock_2);
         }
         catch (const Error& error) {
             print(error);
