@@ -27,7 +27,8 @@
 
 #include <cstddef>      // std::size_t
 
-auto Network::write(const char* data, std::size_t size,
+auto Network::write(const char* data,
+                    std::size_t size,
                     const Socket& sock) -> ssize_t
 {
     const socket_type handle {sock};
