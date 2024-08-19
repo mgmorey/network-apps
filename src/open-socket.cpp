@@ -38,14 +38,13 @@ auto Network::open(const OpenHandler& handler,
     const socket_type handle {args.socket};
     const AddressString addr_str {args.addr};
     const auto [addr_ptr, addr_len] {get_sa_span(args.addr)};
-    const auto verbose {args.socket.verbose()};
 
     if (addr_len == sa_length_min) {
         throw AddressError("Address payload length is zero: " +
                            std::string {addr_str});
     }
 
-    if (verbose) {
+    if (args.socket.verbose()) {
         std::cout << "Calling "
                   << handler.second
                   << '('
