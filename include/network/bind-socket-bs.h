@@ -22,6 +22,7 @@
 
 namespace Network
 {
+    // NOLINTNEXTLINE
     extern auto bind(Socket& sock, const ByteString& addr) -> OsErrorResult;
 }
 
