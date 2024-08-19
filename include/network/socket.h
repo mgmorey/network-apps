@@ -30,9 +30,7 @@ namespace Network
 
     class Socket
     {
-        friend auto bind(Socket& sock,
-                         const ByteString& addr,
-                         bool verbose) -> OsErrorResult;
+        friend auto bind(Socket& sock, const ByteString& addr) -> OsErrorResult;
         friend auto operator<<(std::ostream& os,
                                const Socket& sock) -> std::ostream&;
 
@@ -49,6 +47,7 @@ namespace Network
         explicit operator bool() const noexcept;
         [[nodiscard]] auto peername() const -> ByteString;
         [[nodiscard]] auto sockname() const -> ByteString;
+        [[nodiscard]] auto verbose() const -> bool;
 
     protected:
         auto is_owner() -> Socket&;

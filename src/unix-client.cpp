@@ -41,7 +41,7 @@ namespace Client {
     {
         Socket sock {UnixSocketHints {SOCK_SEQPACKET}, verbose};
 
-        if (const auto error {Network::connect(sock, SOCKET_NAME, verbose)}) {
+        if (const auto error {Network::connect(sock, SOCKET_NAME)}) {
             std::cerr << error.string() << std::endl;
             std::exit(EXIT_FAILURE);
         }

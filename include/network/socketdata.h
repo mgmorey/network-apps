@@ -38,6 +38,7 @@ namespace Network
         auto is_owner() -> SocketData&;
         [[nodiscard]] auto peername() const -> ByteString;
         [[nodiscard]] auto sockname() const -> ByteString;
+        [[nodiscard]] auto verbose() const -> bool;
 
     protected:
         auto close() const -> const SocketData&;

@@ -23,8 +23,7 @@
 
 namespace Network
 {
-    extern auto accept(const Socket& sock, bool verbose = false) ->
-        std::pair<Socket, ByteString>;
+    extern auto accept(const Socket& sock) -> std::pair<Socket, ByteString>;
 }
 
 #endif

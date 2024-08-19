@@ -81,6 +81,11 @@ auto Network::SocketData::sockname() const -> ByteString
     return *m_sockname;
 }
 
+auto Network::SocketData::verbose() const -> bool
+{
+    return m_verbose;
+}
+
 auto Network::SocketData::close() const -> const SocketData&
 {
     if (const auto result {Network::close(m_socket, m_verbose)}) {

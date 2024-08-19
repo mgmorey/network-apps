@@ -66,6 +66,15 @@ auto Network::Socket::sockname() const -> ByteString
     return m_socket_data->sockname();
 }
 
+auto Network::Socket::verbose() const -> bool
+{
+    if (!m_socket_data) {
+        return false;
+    }
+
+    return m_socket_data->verbose();
+}
+
 auto Network::Socket::is_owner() -> Socket&
 {
     if (m_socket_data) {

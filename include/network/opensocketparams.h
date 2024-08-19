@@ -25,7 +25,6 @@ namespace Network
     {
         const Socket& socket;
         const ByteString& addr;
-        bool verbose;
     };
 }
 

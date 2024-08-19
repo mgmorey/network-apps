@@ -41,7 +41,7 @@ static bool verbose {false};  // NOLINT
 namespace Server {
     auto accept(const Socket& bind_sock) -> Socket
     {
-        auto [accept_sock, accept_addr] {Network::accept(bind_sock, verbose)};
+        auto [accept_sock, accept_addr] {Network::accept(bind_sock)};
 
         if (verbose) {
             std::cout << "Accepted connection from "
@@ -56,7 +56,7 @@ namespace Server {
     {
         Socket sock {UnixSocketHints {SOCK_SEQPACKET}, verbose};
 
-        if (const auto result {Network::bind(sock, SOCKET_NAME, verbose)}) {
+        if (const auto result {Network::bind(sock, SOCKET_NAME)}) {
             std::cerr << result.string() << std::endl;
             std::exit(EXIT_FAILURE);
         }

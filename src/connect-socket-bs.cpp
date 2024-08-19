@@ -28,10 +28,9 @@
 #endif
 
 auto Network::connect(const Socket& sock,
-                      const ByteString& addr,
-                      bool verbose) -> OsErrorResult
+                      const ByteString& addr) -> OsErrorResult
 {
     const OpenHandler handler {::connect, "::connect"};
-    const OpenSocketParams args {sock, addr, verbose};
+    const OpenSocketParams args {sock, addr};
     return open(handler, args);
 }

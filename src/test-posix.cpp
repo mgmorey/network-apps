@@ -189,7 +189,7 @@ namespace TestSocket
             assert(to_bytestring(path) == path);
             Socket sock {UnixSocketHints {SOCK_STREAM}, verbose};
 
-            if (const auto result {bind(sock, path, verbose)}) {
+            if (const auto result {bind(sock, path)}) {
                 print(result);
                 assert(expected_codes.contains(result.number()));
             }

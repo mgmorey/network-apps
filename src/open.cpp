@@ -51,7 +51,7 @@ auto Network::Open::operator()(const Template& t_temp) -> SocketResult
         using T = std::decay_t<decltype(arg)>;
 
         if constexpr (std::is_same_v<T, Socket>) {
-            const OpenSocketParams args {arg, t_temp.address(), m_args.verbose};
+            const OpenSocketParams args {arg, t_temp.address()};
 
             if (const auto error_result {open(m_handler, args)}) {
                 result = error_result;

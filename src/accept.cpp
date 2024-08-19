@@ -40,13 +40,13 @@
 #include <sstream>      // std::ostringstream
 #include <utility>      // std::pair
 
-auto Network::accept(const Socket& sock, bool verbose) ->
-    std::pair<Socket, ByteString>
+auto Network::accept(const Socket& sock) -> std::pair<Socket, ByteString>
 {
     const socket_type handle_1 {sock};
     Buffer<Byte> buffer {sa_length_max};
     const AddressString addr_str {ByteString {buffer}};
     auto [addr_ptr, addr_len] {get_sa_span(buffer)};
+    const auto verbose {sock.verbose()};
 
     if (verbose) {
         std::cout << "Calling ::accept("
