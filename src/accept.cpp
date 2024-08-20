@@ -38,7 +38,6 @@
 
 #include <iostream>     // std::cout, std::endl
 #include <sstream>      // std::ostringstream
-#include <utility>      // std::pair
 
 auto Network::accept(const Socket& sock) -> AcceptResult
 {
