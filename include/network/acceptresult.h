@@ -1,4 +1,4 @@
-// Copyright (C) 2023  "Michael G. Morey" <mgmorey@gmail.com>
+// Copyright (C) 2024  "Michael G. Morey" <mgmorey@gmail.com>
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,15 +13,17 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_ACCEPT_H
-#define NETWORK_ACCEPT_H
+#ifndef NETWORK_ACCEPTRESULT_H
+#define NETWORK_ACCEPTRESULT_H
 
-#include "network/acceptresult.h"       // AcceptResult
+#include "network/bytestring.h"         // ByteString
 #include "network/socket.h"             // Socket
+
+#include <utility>      // std::pair
 
 namespace Network
 {
-    extern auto accept(const Socket& sock) -> AcceptResult;
+    using AcceptResult = std::pair<Socket, ByteString>;
 }
 
 #endif

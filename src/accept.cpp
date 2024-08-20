@@ -14,6 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/accept.h"                     // accept()
+#include "network/acceptresult.h"               // AcceptResult
 #include "network/addressstring.h"              // AddressString
 #include "network/buffer.h"                     // Buffer
 #include "network/byte.h"                       // Byte
@@ -39,7 +40,7 @@
 #include <sstream>      // std::ostringstream
 #include <utility>      // std::pair
 
-auto Network::accept(const Socket& sock) -> std::pair<Socket, ByteString>
+auto Network::accept(const Socket& sock) -> AcceptResult
 {
     Buffer<Byte> buffer {sa_length_max};
     const auto verbose {sock.verbose()};
