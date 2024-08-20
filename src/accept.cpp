@@ -41,9 +41,9 @@
 
 auto Network::accept(const Socket& sock) -> std::pair<Socket, ByteString>
 {
+    Buffer<Byte> buffer {sa_length_max};
     const auto verbose {sock.verbose()};
     const auto handle_1 {sock.handle()};
-    Buffer<Byte> buffer {sa_length_max};
     const AddressString addr_str {ByteString {buffer}};
     auto [addr_ptr, addr_len] {get_sa_span(buffer)};
 
