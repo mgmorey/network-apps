@@ -25,7 +25,6 @@
 #include "network/reset-last-context-error.h"   // reset_last_context_error()
 #include "network/sa-length-limits.h"           // sa_length_max
 #include "network/socket-null.h"                // socket_null
-#include "network/socket-type.h"                // socket_type
 #include "network/socket.h"                     // Socket
 #include "network/to-os-error.h"                // to_os_error()
 #include "network/to-size.h"                    // to_size()
