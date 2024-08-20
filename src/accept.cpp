@@ -42,11 +42,11 @@
 
 auto Network::accept(const Socket& sock) -> std::pair<Socket, ByteString>
 {
-    const socket_type handle_1 {sock};
+    const auto verbose {sock.verbose()};
+    const auto handle_1 {sock.handle()};
     Buffer<Byte> buffer {sa_length_max};
     const AddressString addr_str {ByteString {buffer}};
     auto [addr_ptr, addr_len] {get_sa_span(buffer)};
-    const auto verbose {sock.verbose()};
 
     if (verbose) {
         std::cout << "Calling ::accept("
