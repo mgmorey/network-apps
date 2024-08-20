@@ -48,6 +48,15 @@ Network::Socket::operator bool() const noexcept
     return static_cast<bool>(m_socket_data);
 }
 
+auto Network::Socket::handle() const -> socket_type
+{
+    if (!m_socket_data) {
+        return socket_null;
+    }
+
+    return m_socket_data->handle();
+}
+
 auto Network::Socket::peername() const -> ByteString
 {
     if (!m_socket_data) {

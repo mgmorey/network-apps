@@ -26,6 +26,8 @@ namespace Network
 {
     class SocketData
     {
+        friend class Socket;
+
     public:
         SocketData() noexcept = default;
         explicit SocketData(socket_type t_socket, bool t_verbose);
@@ -35,13 +37,14 @@ namespace Network
         auto operator=(const SocketData&) noexcept -> SocketData& = delete;
         auto operator=(SocketData&&) noexcept -> SocketData& = delete;
         explicit operator socket_type() const noexcept;
-        auto is_owner() -> SocketData&;
+        [[nodiscard]] auto handle() const -> socket_type;
         [[nodiscard]] auto peername() const -> ByteString;
         [[nodiscard]] auto sockname() const -> ByteString;
         [[nodiscard]] auto verbose() const -> bool;
 
     protected:
         auto close() const -> const SocketData&;
+        auto is_owner() -> SocketData&;
         auto is_owner(bool t_is_owner) -> SocketData&;
 
     private:

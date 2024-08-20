@@ -58,9 +58,9 @@ Network::SocketData::operator socket_type() const noexcept
     return m_socket;
 }
 
-auto Network::SocketData::is_owner() -> SocketData&
+auto Network::SocketData::handle() const -> socket_type
 {
-    return is_owner(true);
+    return m_socket;
 }
 
 auto Network::SocketData::peername() const -> ByteString
@@ -94,6 +94,11 @@ auto Network::SocketData::close() const -> const SocketData&
     }
 
     return *this;
+}
+
+auto Network::SocketData::is_owner() -> SocketData&
+{
+    return is_owner(true);
 }
 
 auto Network::SocketData::is_owner(bool t_is_owner) -> SocketData&
