@@ -79,10 +79,10 @@ namespace Network
 
     protected:
         static auto format(const OptionalHints& t_hints) -> std::string;
-        static auto to_ai_ptr(const OptionalHints& t_hints)
-            noexcept -> std::unique_ptr<addrinfo>;
-        static auto to_c_str(const OptionalString& t_str)
-            noexcept -> const char*;
+        static auto to_ai_ptr(const OptionalHints& t_hints) noexcept ->
+            std::unique_ptr<addrinfo>;
+        static auto to_c_str(const OptionalString& t_str) noexcept ->
+            const char*;
 
     private:
         addrinfo* m_list {nullptr};

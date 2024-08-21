@@ -141,14 +141,14 @@ auto Network::AddressList::format(const OptionalHints& t_hints) -> std::string
     return oss.str();
 }
 
-auto Network::AddressList::to_ai_ptr(const OptionalHints& t_hints)
-    noexcept -> std::unique_ptr<addrinfo>
+auto Network::AddressList::to_ai_ptr(const OptionalHints& t_hints) noexcept ->
+    std::unique_ptr<addrinfo>
 {
     return t_hints ? std::make_unique<addrinfo>(*t_hints) : nullptr;
 }
 
-auto Network::AddressList::to_c_str(const OptionalString& t_str)
-    noexcept -> const char*
+auto Network::AddressList::to_c_str(const OptionalString& t_str) noexcept ->
+    const char*
 {
     return t_str ? t_str->c_str() : nullptr;
 }
