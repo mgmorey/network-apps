@@ -83,7 +83,8 @@ Network::AddressList::AddressList(const OptionalHostname& t_hostname,
                                   const OptionalHints& t_hints,
                                   bool t_verbose)
 {
-    const auto hints {to_ai_ptr(t_hints)};
+    const auto hints_ptr {to_ai_ptr(t_hints)};
+    const auto hints_str {format(hints_ptr)};
 
     if (t_verbose) {
         std::cout << "Calling ::getaddrinfo("
@@ -91,14 +92,14 @@ Network::AddressList::AddressList(const OptionalHostname& t_hostname,
                   << ", "
                   << t_service.value_or(string_null)
                   << ", "
-                  << format(hints)
+                  << hints_str
                   << ", ...)"
                   << std::endl;
     }
 
     if (const auto error {::getaddrinfo(to_c_str(t_hostname),
                                         to_c_str(t_service),
-                                        hints.get(),
+                                        hints_ptr.get(),
                                         &m_list)}) {
         const auto os_error {to_os_error(error)};
         std::ostringstream oss;
@@ -107,7 +108,7 @@ Network::AddressList::AddressList(const OptionalHostname& t_hostname,
             << ", "
             << t_service.value_or(string_null)
             << ", "
-            << format(hints)
+            << hints_str
             << ", ...) returned "
             << error
             << ": "
