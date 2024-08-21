@@ -38,6 +38,7 @@ namespace Network
 {
     class AddressList
     {
+        using OptionalString = std::optional<std::string>;
         friend auto operator<<(std::ostream& os,
                                const addrinfo& ai) -> std::ostream&;
 
@@ -80,7 +81,9 @@ namespace Network
         [[nodiscard]] auto result() const noexcept -> const OsErrorResult&;
 
     protected:
-        static auto to_c_str(const std::optional<std::string>& str)
+        static auto to_ai_ptr(const OptionalHints& t_hints)
+            noexcept -> std::unique_ptr<addrinfo>;
+        static auto to_c_str(const OptionalString& t_str)
             noexcept -> const char*;
 
     private:

@@ -30,7 +30,6 @@
 
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <memory>       // std::make_unique, std::unique_ptr
-#include <optional>     // std::optional
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
 
@@ -84,7 +83,7 @@ Network::AddressList::AddressList(const OptionalHostname& t_hostname,
                                   const OptionalHints& t_hints,
                                   bool t_verbose)
 {
-    const auto hints {t_hints ? std::make_unique<addrinfo>(*t_hints) : nullptr};
+    const auto hints {to_ai_ptr(t_hints)};
 
     if (t_verbose) {
         std::cout << "Calling ::getaddrinfo("
@@ -142,8 +141,14 @@ auto Network::AddressList::result() const noexcept -> const OsErrorResult&
     return m_result;
 }
 
-auto Network::AddressList::to_c_str(const std::optional<std::string>& str)
+auto Network::AddressList::to_ai_ptr(const OptionalHints& t_hints)
+    noexcept -> std::unique_ptr<addrinfo>
+{
+    return t_hints ? std::make_unique<addrinfo>(*t_hints) : nullptr;
+}
+
+auto Network::AddressList::to_c_str(const OptionalString& t_str)
     noexcept -> const char*
 {
-    return str ? str->c_str() : nullptr;
+    return t_str ? t_str->c_str() : nullptr;
 }
