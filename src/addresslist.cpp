@@ -69,7 +69,7 @@ Network::AddressList::AddressList(const OptionalHostname& t_hostname,
                                   bool t_verbose)
 {
     const auto hints_ptr {to_ai_ptr(t_hints)};
-    const auto hints_str {format(hints_ptr)};
+    const auto hints_str {format(t_hints)};
 
     if (t_verbose) {
         std::cout << "Calling ::getaddrinfo("
@@ -127,13 +127,12 @@ auto Network::AddressList::result() const noexcept -> const OsErrorResult&
     return m_result;
 }
 
-auto Network::AddressList::format(const std::unique_ptr<addrinfo>& hints) ->
-    std::string
+auto Network::AddressList::format(const OptionalHints& t_hints) -> std::string
 {
     std::ostringstream oss;
 
-    if (hints) {
-        oss << *hints;
+    if (t_hints) {
+        oss << addrinfo(*t_hints);
     }
     else {
         oss << string_null;
