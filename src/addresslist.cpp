@@ -34,33 +34,33 @@
 #include <string>       // std::string
 
 Network::AddressList::InputIterator::InputIterator(pointer t_pointer) noexcept :
-    m_list(t_pointer)
+    m_node(t_pointer)
 {
 }
 
 auto Network::AddressList::InputIterator::operator*() const noexcept ->
     InputIterator::reference
 {
-    return *m_list;
+    return *m_node;
 }
 
 auto Network::AddressList::InputIterator::operator->() const noexcept ->
     InputIterator::pointer
 {
-    return m_list;
+    return m_node;
 }
 
 auto Network::AddressList::InputIterator::operator++() noexcept ->
     InputIterator&
 {
-    m_list = m_list->ai_next;
+    m_node = m_node->ai_next;
     return *this;
 }
 
 auto Network::AddressList::InputIterator::operator==(const InputIterator& rhs)
     const noexcept -> bool
 {
-    return m_list == rhs.m_list;
+    return m_node == rhs.m_node;
 }
 
 Network::AddressList::AddressList(const OptionalHostname& t_hostname,

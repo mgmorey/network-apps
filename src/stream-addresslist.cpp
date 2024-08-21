@@ -34,8 +34,8 @@
 
 auto Network::operator<<(std::ostream& os, const AddressList& list) -> std::ostream&
 {
-    for (const auto& item : list) {
-        os << item
+    for (const auto& node : list) {
+        os << node
            << std::endl;
     }
 

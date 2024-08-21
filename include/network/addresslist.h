@@ -60,7 +60,7 @@ namespace Network
                 const noexcept -> bool;
 
         private:
-            pointer m_list {nullptr};
+            pointer m_node {nullptr};
         };
 
         AddressList() = delete;
