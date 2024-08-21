@@ -63,9 +63,6 @@ namespace Network
             pointer m_list {nullptr};
         };
 
-        static auto format(const std::unique_ptr<addrinfo>& hints) ->
-            std::string;
-
         AddressList() = delete;
         AddressList(const AddressList&) = delete;
         AddressList(const AddressList&&) = delete;
@@ -81,6 +78,8 @@ namespace Network
         [[nodiscard]] auto result() const noexcept -> const OsErrorResult&;
 
     protected:
+        static auto format(const std::unique_ptr<addrinfo>& hints) ->
+            std::string;
         static auto to_ai_ptr(const OptionalHints& t_hints)
             noexcept -> std::unique_ptr<addrinfo>;
         static auto to_c_str(const OptionalString& t_str)

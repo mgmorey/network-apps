@@ -63,21 +63,6 @@ auto Network::AddressList::InputIterator::operator==(const InputIterator& rhs)
     return m_list == rhs.m_list;
 }
 
-auto Network::AddressList::format(const std::unique_ptr<addrinfo>& hints) ->
-    std::string
-{
-    std::ostringstream oss;
-
-    if (hints) {
-        oss << *hints;
-    }
-    else {
-        oss << string_null;
-    }
-
-    return oss.str();
-}
-
 Network::AddressList::AddressList(const OptionalHostname& t_hostname,
                                   const OptionalService& t_service,
                                   const OptionalHints& t_hints,
@@ -140,6 +125,21 @@ auto Network::AddressList::end() const noexcept -> InputIterator // NOLINT
 auto Network::AddressList::result() const noexcept -> const OsErrorResult&
 {
     return m_result;
+}
+
+auto Network::AddressList::format(const std::unique_ptr<addrinfo>& hints) ->
+    std::string
+{
+    std::ostringstream oss;
+
+    if (hints) {
+        oss << *hints;
+    }
+    else {
+        oss << string_null;
+    }
+
+    return oss.str();
 }
 
 auto Network::AddressList::to_ai_ptr(const OptionalHints& t_hints)
