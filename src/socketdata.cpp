@@ -53,6 +53,11 @@ Network::SocketData::~SocketData() noexcept
     }
 }
 
+Network::SocketData::operator bool() const noexcept
+{
+    return m_handle != socket_null;
+}
+
 Network::SocketData::operator socket_type() const noexcept
 {
     return m_handle;
