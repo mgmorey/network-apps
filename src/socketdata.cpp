@@ -63,6 +63,11 @@ auto Network::SocketData::handle() const -> socket_type
     return m_socket;
 }
 
+auto Network::SocketData::is_verbose() const -> bool
+{
+    return m_is_verbose;
+}
+
 auto Network::SocketData::peername() const -> ByteString
 {
     if (!m_peername) {
@@ -79,11 +84,6 @@ auto Network::SocketData::sockname() const -> ByteString
     }
 
     return *m_sockname;
-}
-
-auto Network::SocketData::is_verbose() const -> bool
-{
-    return m_is_verbose;
 }
 
 auto Network::SocketData::close() const -> const SocketData&
