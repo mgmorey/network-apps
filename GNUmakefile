@@ -68,9 +68,9 @@ open-endpoint.cpp open-socket.cpp open.cpp oserrorresult.cpp		\
 parse-argumentspan.cpp parse.cpp rangeerror.cpp read-string.cpp		\
 read.cpp remove.cpp reset-last-context-error.cpp			\
 reset-last-os-error.cpp runtimeerror.cpp set-last-context-error.cpp	\
-set-last-os-error.cpp socket.cpp socketdata.cpp socketfamily.cpp	\
-socketflags.cpp sockethost.cpp socketprotocol.cpp sockettype.cpp	\
-startup.cpp stream-address.cpp stream-addresslist.cpp			\
+set-last-os-error.cpp socket.cpp socketdata.cpp socketerror.cpp		\
+socketfamily.cpp socketflags.cpp sockethost.cpp socketprotocol.cpp	\
+sockettype.cpp startup.cpp stream-address.cpp stream-addresslist.cpp	\
 stream-context.cpp stream-socket.cpp stream-sockethints.cpp		\
 stream-template.cpp template.cpp to-bytestring-ai.cpp			\
 to-bytestring-void.cpp to-string-in-addr.cpp to-string-in6-addr.cpp	\

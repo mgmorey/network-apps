@@ -16,10 +16,9 @@
 #include "network/socket.h"                     // Socket
 #include "network/bytestring.h"                 // ByteString
 #include "network/create.h"                     // create()
-#include "network/logicerror.h"                 // LogicError
-#include "network/socket-null.h"                // socket_null
 #include "network/socket-type.h"                // socket_type
 #include "network/socketdata.h"                 // SocketData
+#include "network/socketerror.h"                // SocketError
 #include "network/sockethints.h"                // SocketHints
 
 #include <memory>       // std::make_shared()
@@ -34,24 +33,24 @@ Network::Socket::Socket(SocketHints t_hints, bool t_is_verbose) :
 {
 }
 
-Network::Socket::operator socket_type() const noexcept
-{
-    if (!m_socket_data) {
-        return socket_null;
-    }
-
-    return static_cast<socket_type>(*m_socket_data);
-}
-
 Network::Socket::operator bool() const noexcept
 {
     return static_cast<bool>(m_socket_data);
 }
 
+Network::Socket::operator socket_type() const
+{
+    if (!m_socket_data) {
+        throw SocketError();
+    }
+
+    return static_cast<socket_type>(*m_socket_data);
+}
+
 auto Network::Socket::handle() const -> socket_type
 {
     if (!m_socket_data) {
-        return socket_null;
+        throw SocketError();
     }
 
     return m_socket_data->handle();
@@ -60,7 +59,7 @@ auto Network::Socket::handle() const -> socket_type
 auto Network::Socket::is_verbose() const -> bool
 {
     if (!m_socket_data) {
-        return false;
+        throw SocketError();
     }
 
     return m_socket_data->is_verbose();
@@ -69,7 +68,7 @@ auto Network::Socket::is_verbose() const -> bool
 auto Network::Socket::peername() const -> ByteString
 {
     if (!m_socket_data) {
-        throw LogicError("No socket available for peername()");
+        throw SocketError();
     }
 
     return m_socket_data->peername();
@@ -78,7 +77,7 @@ auto Network::Socket::peername() const -> ByteString
 auto Network::Socket::sockname() const -> ByteString
 {
     if (!m_socket_data) {
-        throw LogicError("No socket available for sockname()");
+        throw SocketError();
     }
 
     return m_socket_data->sockname();
@@ -86,9 +85,10 @@ auto Network::Socket::sockname() const -> ByteString
 
 auto Network::Socket::is_owner() -> Socket&
 {
-    if (m_socket_data) {
-        m_socket_data->is_owner();
+    if (!m_socket_data) {
+        throw SocketError();
     }
 
+    m_socket_data->is_owner();
     return *this;
 }
