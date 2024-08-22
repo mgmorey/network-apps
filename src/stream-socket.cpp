@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/socket-null.h"        // socket_null,
+#include "network/socket-null.h"        // socket_null
 #include "network/socket-type.h"        // socket_type
 #include "network/socket.h"             // Socket
 #include "network/string-null.h"        // string_null
