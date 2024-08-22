@@ -24,7 +24,8 @@
 
 namespace Network
 {
-    extern auto read(char* data, std::size_t size,
+    extern auto read(char* data,
+                     std::size_t size,
                      const Socket& sock) -> ssize_t;
 }
 
