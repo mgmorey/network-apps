@@ -23,13 +23,13 @@
 
 #include <memory>       // std::make_shared()
 
-Network::Socket::Socket(socket_type t_socket, bool t_is_verbose) :
-    m_socket_data(std::make_shared<SocketData>(t_socket, t_is_verbose))
+Network::Socket::Socket(SocketHints t_hints, bool t_is_verbose) :
+    Socket(create(t_hints, t_is_verbose))
 {
 }
 
-Network::Socket::Socket(SocketHints t_hints, bool t_is_verbose) :
-    Socket(create(t_hints, t_is_verbose))
+Network::Socket::Socket(socket_type t_handle, bool t_is_verbose) :
+    m_socket_data(std::make_shared<SocketData>(t_handle, t_is_verbose))
 {
 }
 

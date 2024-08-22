@@ -36,8 +36,8 @@ namespace Network
 
     public:
         Socket() noexcept = default;
-        explicit Socket(socket_type t_socket, bool t_is_verbose = false);
         explicit Socket(SocketHints t_hints, bool t_is_verbose = false);
+        explicit Socket(socket_type t_handle, bool t_is_verbose = false);
         Socket(const Socket&) noexcept = default;
         Socket(Socket&&) noexcept = default;
         ~Socket() = default;
