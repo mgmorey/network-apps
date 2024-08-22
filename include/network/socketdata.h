@@ -37,8 +37,8 @@ namespace Network
         auto operator=(const SocketData&) noexcept -> SocketData& = delete;
         auto operator=(SocketData&&) noexcept -> SocketData& = delete;
         explicit operator socket_type() const noexcept;
-        [[nodiscard]] auto handle() const -> socket_type;
-        [[nodiscard]] auto is_verbose() const -> bool;
+        [[nodiscard]] auto handle() const noexcept -> socket_type;
+        [[nodiscard]] auto is_verbose() const noexcept -> bool;
         [[nodiscard]] auto peername() const -> ByteString;
         [[nodiscard]] auto sockname() const -> ByteString;
 

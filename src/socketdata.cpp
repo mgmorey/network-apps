@@ -58,12 +58,12 @@ Network::SocketData::operator socket_type() const noexcept
     return m_handle;
 }
 
-auto Network::SocketData::handle() const -> socket_type
+auto Network::SocketData::handle() const noexcept -> socket_type
 {
     return m_handle;
 }
 
-auto Network::SocketData::is_verbose() const -> bool
+auto Network::SocketData::is_verbose() const noexcept -> bool
 {
     return m_is_verbose;
 }
