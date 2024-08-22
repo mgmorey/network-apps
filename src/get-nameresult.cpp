@@ -38,8 +38,8 @@
 auto Network::get_nameresult(const GetNameHandler& handler,
                              const GetNameParams& args) -> ByteStringResult
 {
-    const socket_type handle {args.handle};
     Buffer<Byte> buffer {sa_length_max};
+    const socket_type handle {args.handle};
     const AddressString addr_str {ByteString {buffer}};
     auto [addr_ptr, addr_len] {get_sa_span(buffer)};
 
