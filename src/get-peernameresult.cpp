@@ -27,9 +27,9 @@
 #endif
 
 auto Network::get_peernameresult(socket_type handle,
-                                 bool verbose) -> PeerNameResult
+                                 bool is_verbose) -> PeerNameResult
 {
     const GetNameHandler handler {::getpeername, "::getpeername"};
-    const GetNameParams args {handle, verbose};
+    const GetNameParams args {handle, is_verbose};
     return get_nameresult(handler, args);
 }

@@ -29,7 +29,7 @@ namespace Network
                       args.endpoint.first,
                       args.endpoint.second,
                       args.hints,
-                      args.verbose);
+                      args.is_verbose);
     }
 }
 

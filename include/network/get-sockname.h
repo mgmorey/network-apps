@@ -22,7 +22,7 @@
 namespace Network
 {
     extern auto get_sockname(socket_type handle,
-                             bool verbose = false) -> SockName;
+                             bool is_verbose = false) -> SockName;
 }
 
 #endif

@@ -52,7 +52,7 @@ namespace TestSocket
         R"(Invalid socket descriptor value: (-\d+|\d+))"
     };
 
-    static bool verbose {false};  // NOLINT
+    static bool is_verbose {false};  // NOLINT
 
     auto parse_arguments(int argc, char** argv) -> void
     {
@@ -67,7 +67,7 @@ namespace TestSocket
         }
 
         if (options.contains('v')) {
-            verbose = true;
+            is_verbose = true;
         }
 
         static_cast<void>(_);
@@ -75,7 +75,7 @@ namespace TestSocket
 
     auto print(const Error& error) -> void
     {
-        if (verbose) {
+        if (is_verbose) {
             std::cout << "Exception: "
                       << error.what()
                       << std::endl;
@@ -111,7 +111,7 @@ namespace TestSocket
         std::string actual_error_str;
 
         try {
-            Socket {handle, verbose};
+            Socket {handle, is_verbose};
         }
         catch (const Error& error) {
             print(error);
@@ -133,7 +133,7 @@ namespace TestSocket
         std::string actual_error_str;
 
         try {
-            const Socket sock_1 {hints, verbose};
+            const Socket sock_1 {hints, is_verbose};
             const Socket sock_2 {sock_1};
             assert(static_cast<bool>(sock_1));
             assert(static_cast<bool>(sock_2));
@@ -200,7 +200,7 @@ auto main(int argc, char* argv[]) -> int
         const auto& context {Context::instance()};
         parse_arguments(argc, argv);
 
-        if (verbose) {
+        if (is_verbose) {
             std::cout << context << std::endl;
         }
 

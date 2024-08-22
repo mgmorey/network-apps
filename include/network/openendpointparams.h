@@ -25,7 +25,7 @@ namespace Network
     {
         const Endpoint& endpoint;
         const SocketHints& hints;
-        bool verbose;
+        bool is_verbose;
     };
 }
 

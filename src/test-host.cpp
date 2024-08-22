@@ -80,7 +80,7 @@ namespace TestHost
     static const IpSocketHints ipv4 {af_ip_v4, SOCK_STREAM, AI_CANONNAME};
     static const IpSocketHints ipv6 {af_ip_v6, SOCK_STREAM, AI_CANONNAME};
 
-    static bool verbose {false};  // NOLINT
+    static bool is_verbose {false};  // NOLINT
 
     class Print
     {
@@ -89,7 +89,7 @@ namespace TestHost
 
         static auto get_endpoint(const ByteString& addr) -> Endpoint
         {
-            return Network::get_endpoint(addr, 0, verbose);
+            return Network::get_endpoint(addr, 0, is_verbose);
         }
 
         explicit Print(std::ostream& t_os) :
@@ -231,7 +231,7 @@ namespace TestHost
         }
 
         if (options.contains('v')) {
-            verbose = true;
+            is_verbose = true;
         }
 
         return operands;
@@ -239,7 +239,7 @@ namespace TestHost
 
     auto print(const OsErrorResult& result) -> void
     {
-        if (verbose) {
+        if (is_verbose) {
             std::cout << "Number: "
                       << result.number()
                       << std::endl
@@ -312,7 +312,7 @@ namespace TestHost
         os_error_type actual_code {0};
         std::list<SocketHost> hosts;
         const auto family {get_family(hints)};
-        const auto result {insert(hosts, host, {}, hints, verbose)};
+        const auto result {insert(hosts, host, {}, hints, is_verbose)};
 
         if (result) {
             if (expected_codes == ErrorCodeSet {0}) {
@@ -337,7 +337,7 @@ namespace TestHost
         os_error_type actual_code {0};
         std::vector<SocketHost> hosts;
         const auto family {get_family(hints)};
-        const auto result {insert(hosts, host, {}, hints, verbose)};
+        const auto result {insert(hosts, host, {}, hints, is_verbose)};
 
         if (result) {
             if (expected_codes == ErrorCodeSet {0}) {
@@ -410,7 +410,7 @@ auto main(int argc, char* argv[]) -> int
         const auto& context {Context::instance()};
         const auto hosts {parse_arguments(argc, argv)};
 
-        if (verbose) {
+        if (is_verbose) {
             std::cout << context << std::endl;
         }
 

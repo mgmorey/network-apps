@@ -66,12 +66,12 @@ auto Network::AddressList::InputIterator::operator==(const InputIterator& rhs)
 Network::AddressList::AddressList(const OptionalHostname& t_hostname,
                                   const OptionalService& t_service,
                                   const OptionalHints& t_hints,
-                                  bool t_verbose)
+                                  bool t_is_verbose)
 {
     const auto hints_ptr {to_ai_ptr(t_hints)};
     const auto hints_str {format(t_hints)};
 
-    if (t_verbose) {
+    if (t_is_verbose) {
         std::cout << "Calling ::getaddrinfo("
                   << t_hostname.value_or(string_null)
                   << ", "
@@ -100,7 +100,7 @@ Network::AddressList::AddressList(const OptionalHostname& t_hostname,
             << format_ai_error(error);
         m_result = {os_error, oss.str()};
     }
-    else if (t_verbose) {
+    else if (t_is_verbose) {
         std::cerr << *this;
     }
 }

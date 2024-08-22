@@ -29,7 +29,7 @@ namespace TestHostname
     using Network::get_hostname;
     using Network::parse;
 
-    static bool verbose {false};  // NOLINT
+    static bool is_verbose {false};  // NOLINT
 
     auto parse_arguments(int argc, char** argv) -> void
     {
@@ -44,7 +44,7 @@ namespace TestHostname
         }
 
         if (options.contains('v')) {
-            verbose = true;
+            is_verbose = true;
         }
 
         static_cast<void>(_);
@@ -52,7 +52,7 @@ namespace TestHostname
 
     auto test_hostname() -> void
     {
-        const auto hostname {get_hostname(verbose)};
+        const auto hostname {get_hostname(is_verbose)};
         std::cout << "Hostname: "
                   << hostname
                   << std::endl;
@@ -67,7 +67,7 @@ auto main(int argc, char* argv[]) -> int
         const auto& context {Context::instance()};
         parse_arguments(argc, argv);
 
-        if (verbose) {
+        if (is_verbose) {
             std::cout << context << std::endl;
         }
 

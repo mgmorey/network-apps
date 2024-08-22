@@ -20,7 +20,7 @@
 
 namespace Network
 {
-    extern auto remove(const Pathname& path, bool verbose = false) -> bool;
+    extern auto remove(const Pathname& path, bool is_verbose = false) -> bool;
 }
 
 #endif

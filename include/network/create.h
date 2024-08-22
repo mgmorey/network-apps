@@ -22,7 +22,7 @@
 namespace Network
 {
     extern auto create(const SocketHints& hints,
-                       bool verbose = false) -> Socket;
+                       bool is_verbose = false) -> Socket;
 }
 
 #endif

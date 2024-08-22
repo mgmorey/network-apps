@@ -96,7 +96,7 @@ namespace TestAddress
 
     static const SocketHints unspec {af_unspec, SOCK_STREAM, 0, AI_CANONNAME};
 
-    static bool verbose {false};  // NOLINT
+    static bool is_verbose {false};  // NOLINT
 
     auto create_sa(sa_family_type family, std::size_t length = sa_size) -> sockaddr
     {
@@ -166,7 +166,7 @@ namespace TestAddress
         }
 
         if (options.contains('v')) {
-            verbose = true;
+            is_verbose = true;
         }
 
         static_cast<void>(_);
@@ -201,7 +201,7 @@ namespace TestAddress
 
     auto print(const Error& error) -> void
     {
-        if (verbose) {
+        if (is_verbose) {
             std::cout << "Exception: "
                       << error.what()
                       << std::endl;
@@ -458,7 +458,7 @@ namespace TestAddress
         static const Hostname localhost {"localhost"};
 
         std::vector<SocketHost> hosts;
-        const auto result {insert(hosts, localhost, {}, unspec, verbose)};
+        const auto result {insert(hosts, localhost, {}, unspec, is_verbose)};
 
         if (result) {
             std::cout << "No " << localhost << " addresses: " << result.string()
@@ -488,7 +488,7 @@ auto main(int argc, char* argv[]) -> int
         const auto& context {Context::instance()};
         parse_arguments(argc, argv);
 
-        if (verbose) {
+        if (is_verbose) {
             std::cout << context << std::endl;
         }
 

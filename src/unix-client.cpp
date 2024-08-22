@@ -34,12 +34,12 @@ using Network::Socket;
 using Network::UnixSocketHints;
 using Network::socket_error;
 
-static bool verbose {false};  // NOLINT
+static bool is_verbose {false};  // NOLINT
 
 namespace Client {
     auto connect() -> Socket
     {
-        Socket sock {UnixSocketHints {SOCK_SEQPACKET}, verbose};
+        Socket sock {UnixSocketHints {SOCK_SEQPACKET}, is_verbose};
 
         if (const auto error {Network::connect(sock, SOCKET_NAME)}) {
             std::cerr << error.string() << std::endl;
@@ -62,7 +62,7 @@ namespace Client {
         }
 
         if (options.contains('v')) {
-            verbose = true;
+            is_verbose = true;
         }
 
         return operands;

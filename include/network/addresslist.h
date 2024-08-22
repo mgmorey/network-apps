@@ -69,7 +69,7 @@ namespace Network
         AddressList(const OptionalHostname& t_hostname,
                     const OptionalService& t_service,
                     const OptionalHints& t_hints,
-                    bool t_verbose);
+                    bool t_is_verbose);
         ~AddressList() noexcept;
         auto operator=(const AddressList&) noexcept -> AddressList& = delete;
         auto operator=(const AddressList&&) noexcept -> AddressList& = delete;

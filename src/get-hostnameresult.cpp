@@ -35,11 +35,11 @@
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
 
-auto Network::get_hostnameresult(bool verbose) -> HostnameResult
+auto Network::get_hostnameresult(bool is_verbose) -> HostnameResult
 {
     Buffer<char> buffer {hostname_length_max};
 
-    if (verbose) {
+    if (is_verbose) {
         std::cout << "Calling ::gethostname("
                   << std::string(buffer)
                   << ", "

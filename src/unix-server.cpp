@@ -36,14 +36,14 @@ using Number = long long;
 
 static constexpr auto backlog_size {20};
 
-static bool verbose {false};  // NOLINT
+static bool is_verbose {false};  // NOLINT
 
 namespace Server {
     auto accept(const Socket& bind_sock) -> Socket
     {
         auto [accept_sock, accept_addr] {Network::accept(bind_sock)};
 
-        if (verbose) {
+        if (is_verbose) {
             std::cout << "Accepted connection from "
                       << Network::Address(accept_addr)
                       << std::endl;
@@ -54,7 +54,7 @@ namespace Server {
 
     auto bind() -> Socket
     {
-        Socket sock {UnixSocketHints {SOCK_SEQPACKET}, verbose};
+        Socket sock {UnixSocketHints {SOCK_SEQPACKET}, is_verbose};
 
         if (const auto result {Network::bind(sock, SOCKET_NAME)}) {
             std::cerr << result.string() << std::endl;
@@ -88,7 +88,7 @@ namespace Server {
         }
 
         if (options.contains('v')) {
-            verbose = true;
+            is_verbose = true;
         }
     }
 

@@ -77,7 +77,7 @@ namespace TestSocket
     };
     static constexpr auto handle_width {6};
 
-    static bool verbose {false};  // NOLINT
+    static bool is_verbose {false};  // NOLINT
 
     auto operator==(const ByteString& addr,
                     const OptionalPathname& path) -> bool
@@ -124,7 +124,7 @@ namespace TestSocket
         }
 
         if (options.contains('v')) {
-            verbose = true;
+            is_verbose = true;
         }
 
         static_cast<void>(_);
@@ -132,7 +132,7 @@ namespace TestSocket
 
     auto print(const Error& error) -> void
     {
-        if (verbose) {
+        if (is_verbose) {
             std::cout << "Exception: "
                       << error.what()
                       << std::endl;
@@ -141,7 +141,7 @@ namespace TestSocket
 
     auto print(const OsErrorResult& result) -> void
     {
-        if (verbose) {
+        if (is_verbose) {
             std::cout << "Number: "
                       << result.number()
                       << std::endl
@@ -165,7 +165,7 @@ namespace TestSocket
     {
         os_error_type actual_code {};
 
-        if (const auto result {close(handle, verbose)}) {
+        if (const auto result {close(handle, is_verbose)}) {
             print(result);
             actual_code = result.number();
         }
@@ -187,7 +187,7 @@ namespace TestSocket
 
         try {
             assert(to_bytestring(path) == path);
-            Socket sock {UnixSocketHints {SOCK_STREAM}, verbose};
+            Socket sock {UnixSocketHints {SOCK_STREAM}, is_verbose};
 
             if (const auto result {bind(sock, path)}) {
                 print(result);
@@ -268,7 +268,7 @@ namespace TestSocket
         std::string actual_error_str;
 
         try {
-            SocketPair pair {hints, verbose};
+            SocketPair pair {hints, is_verbose};
             std::cout << "Socket "
                       << std::right << std::setw(handle_width) << pair.at(0)
                       << " connected to "
@@ -315,7 +315,7 @@ namespace TestSocket
         std::string actual_error_str;
 
         try {
-            const Socket sock {hints, verbose};
+            const Socket sock {hints, is_verbose};
         }
         catch (const Error& error) {
             print(error);
@@ -358,7 +358,7 @@ auto main(int argc, char* argv[]) -> int
         const auto& context {Context::instance()};
         parse_arguments(argc, argv);
 
-        if (verbose) {
+        if (is_verbose) {
             std::cout << context << std::endl;
         }
 

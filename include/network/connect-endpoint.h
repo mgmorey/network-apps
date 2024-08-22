@@ -24,7 +24,7 @@ namespace Network
 {
     extern auto connect(const Endpoint& endpoint,
                         const SocketHints& hints,
-                        bool verbose = false) -> OpenResult;
+                        bool is_verbose = false) -> OpenResult;
 }
 
 #endif

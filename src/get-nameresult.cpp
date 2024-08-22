@@ -43,7 +43,7 @@ auto Network::get_nameresult(const GetNameHandler& handler,
     const AddressString addr_str {ByteString {buffer}};
     auto [addr_ptr, addr_len] {get_sa_span(buffer)};
 
-    if (args.verbose) {
+    if (args.is_verbose) {
         std::cout << "Calling "
                   << handler.second
                   << '('

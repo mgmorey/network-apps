@@ -24,10 +24,10 @@
 #include <type_traits>  // std::decay_t, std::is_same_v
 #include <variant>      // std::visit()
 
-auto Network::get_hostname(bool verbose) -> Hostname
+auto Network::get_hostname(bool is_verbose) -> Hostname
 {
     Hostname result;
-    auto hostname_result {get_hostnameresult(verbose)};
+    auto hostname_result {get_hostnameresult(is_verbose)};
     std::visit([&](auto&& arg) {
         using T = std::decay_t<decltype(arg)>;
 

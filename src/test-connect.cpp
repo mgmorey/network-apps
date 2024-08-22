@@ -76,7 +76,7 @@ namespace TestConnect
     static constexpr auto remotehost {"example.com"};
     static constexpr auto service {"http"};
 
-    static bool verbose {false};  // NOLINT
+    static bool is_verbose {false};  // NOLINT
 
     class Test
     {
@@ -199,7 +199,7 @@ namespace TestConnect
         }
 
         if (options.contains('v')) {
-            verbose = true;
+            is_verbose = true;
         }
 
         return {
@@ -210,7 +210,7 @@ namespace TestConnect
 
     auto print(const OsErrorResult& result) -> void
     {
-        if (verbose) {
+        if (is_verbose) {
             std::cout << "Number: "
                       << result.number()
                       << std::endl
@@ -226,7 +226,7 @@ namespace TestConnect
                       const ErrorCodeSet& expected_codes) -> void
     {
         os_error_type actual_code {0};
-        const auto connect_result {connect(endpoint, hints, verbose)};
+        const auto connect_result {connect(endpoint, hints, is_verbose)};
         std::visit([&](auto&& arg) {
             using T = std::decay_t<decltype(arg)>;
 
@@ -280,7 +280,7 @@ auto main(int argc, char* argv[]) -> int
         const auto endpoint {parse_arguments(argc, argv)};
         const auto hostname {get_hostname()};
 
-        if (verbose) {
+        if (is_verbose) {
             std::cout << context << std::endl;
         }
 

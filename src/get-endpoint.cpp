@@ -27,10 +27,10 @@
 
 auto Network::get_endpoint(const ByteString& addr,
                            int flags,
-                           bool verbose) -> Endpoint
+                           bool is_verbose) -> Endpoint
 {
     Endpoint result;
-    auto endpoint_result {get_endpointresult(addr, flags, verbose)};
+    auto endpoint_result {get_endpointresult(addr, flags, is_verbose)};
     std::visit([&](auto&& arg) {
         using T = std::decay_t<decltype(arg)>;
 

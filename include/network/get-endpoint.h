@@ -22,7 +22,7 @@
 namespace Network
 {
     extern auto get_endpoint(const ByteString& addr, int flags,
-                             bool verbose = false) -> Endpoint;
+                             bool is_verbose = false) -> Endpoint;
 }
 
 #endif

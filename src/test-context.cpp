@@ -96,7 +96,7 @@ namespace TestContext
 #endif
 
     static const auto mode {Context::failure_mode::return_error};
-    static bool verbose {false};  // NOLINT
+    static bool is_verbose {false};  // NOLINT
 
     class TestContext :
         public Context
@@ -132,7 +132,7 @@ namespace TestContext
         }
 
         if (options.contains('v')) {
-            verbose = true;
+            is_verbose = true;
         }
 
         static_cast<void>(_);
@@ -143,7 +143,7 @@ namespace TestContext
     {
         std::cout << "Context";
 
-        if (verbose) {
+        if (is_verbose) {
             std::cout << ' '
                       << &context;
         }
@@ -158,7 +158,7 @@ namespace TestContext
 
     auto print(const Error& error) -> void
     {
-        if (verbose) {
+        if (is_verbose) {
             std::cout << "Exception: "
                       << error.what()
                       << std::endl;
@@ -293,7 +293,7 @@ namespace TestContext
         try {
             const TestContext context;
             test_context(context, "local 5");
-            static_cast<void>(get_hostname(verbose));
+            static_cast<void>(get_hostname(is_verbose));
         }
         catch (const Error& error) {
             print(error);
@@ -309,7 +309,7 @@ namespace TestContext
         std::string actual_error_str;
 
         try {
-            static_cast<void>(get_hostname(verbose));
+            static_cast<void>(get_hostname(is_verbose));
         }
         catch (const Error& error) {
             print(error);

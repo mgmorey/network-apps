@@ -23,7 +23,7 @@ namespace Network
     struct GetNameParams
     {
         socket_type handle;
-        bool verbose;
+        bool is_verbose;
     };
 }
 

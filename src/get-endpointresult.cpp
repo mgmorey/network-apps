@@ -36,14 +36,14 @@
 #include <sstream>      // std::ostringstream
 
 auto Network::get_endpointresult(const ByteString& addr, int flags,
-                                 bool verbose) -> EndpointResult
+                                 bool is_verbose) -> EndpointResult
 {
     Buffer<char> hostname_buffer {hostname_length_max};
     Buffer<char> service_buffer {service_length_max};
     const AddressString addr_str {addr};
     const auto [addr_ptr, addr_len] {get_sa_span(addr)};
 
-    if (verbose) {
+    if (is_verbose) {
         std::cout << "Calling ::getnameinfo("
                   << addr_str
                   << ", "

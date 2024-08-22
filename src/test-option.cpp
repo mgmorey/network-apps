@@ -41,7 +41,7 @@ namespace TestOption
         return {argv0, "-f", argv0, "-v", "one", "two", "three"};
     }
 
-    auto parse_arguments(std::string& filename, bool& verbose,
+    auto parse_arguments(std::string& filename, bool& is_verbose,
                          ArgumentSpan args) -> void
     {
         static const char* optstring {"f:v"};
@@ -54,7 +54,7 @@ namespace TestOption
                 filename = get_optarg();
                 break;
             case 'v':
-                verbose = true;
+                is_verbose = true;
                 break;
             default:
                 std::abort();
@@ -114,15 +114,15 @@ namespace TestOption
         ArgumentData data {get_strings(*argv)};
         const std::span args {data.data(), data.size()};
         std::string filename;
-        bool verbose {false};
-        parse_arguments(filename, verbose, args);
+        bool is_verbose {false};
+        parse_arguments(filename, is_verbose, args);
         test_arguments(args, *argv);
         auto options {args.subspan(1, to_size(get_optind()) - 1)};
         test_options(options, *argv);
         auto operands {args.subspan(to_size(get_optind()))};
         test_operands(operands);
         assert(filename == *argv);
-        assert(verbose);
+        assert(is_verbose);
     }
 }
 

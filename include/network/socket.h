@@ -36,8 +36,8 @@ namespace Network
 
     public:
         Socket() noexcept = default;
-        explicit Socket(socket_type t_socket, bool t_verbose = false);
-        explicit Socket(SocketHints t_hints, bool t_verbose = false);
+        explicit Socket(socket_type t_socket, bool t_is_verbose = false);
+        explicit Socket(SocketHints t_hints, bool t_is_verbose = false);
         Socket(const Socket&) noexcept = default;
         Socket(Socket&&) noexcept = default;
         ~Socket() = default;
@@ -48,7 +48,7 @@ namespace Network
         [[nodiscard]] auto handle() const -> socket_type;
         [[nodiscard]] auto peername() const -> ByteString;
         [[nodiscard]] auto sockname() const -> ByteString;
-        [[nodiscard]] auto verbose() const -> bool;
+        [[nodiscard]] auto is_verbose() const -> bool;
 
     protected:
         auto is_owner() -> Socket&;

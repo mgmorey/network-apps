@@ -24,13 +24,13 @@
 
 #include <memory>       // std::make_shared()
 
-Network::Socket::Socket(socket_type t_socket, bool t_verbose) :
-    m_socket_data(std::make_shared<SocketData>(t_socket, t_verbose))
+Network::Socket::Socket(socket_type t_socket, bool t_is_verbose) :
+    m_socket_data(std::make_shared<SocketData>(t_socket, t_is_verbose))
 {
 }
 
-Network::Socket::Socket(SocketHints t_hints, bool t_verbose) :
-    Socket(create(t_hints, t_verbose))
+Network::Socket::Socket(SocketHints t_hints, bool t_is_verbose) :
+    Socket(create(t_hints, t_is_verbose))
 {
 }
 
@@ -75,13 +75,13 @@ auto Network::Socket::sockname() const -> ByteString
     return m_socket_data->sockname();
 }
 
-auto Network::Socket::verbose() const -> bool
+auto Network::Socket::is_verbose() const -> bool
 {
     if (!m_socket_data) {
         return false;
     }
 
-    return m_socket_data->verbose();
+    return m_socket_data->is_verbose();
 }
 
 auto Network::Socket::is_owner() -> Socket&

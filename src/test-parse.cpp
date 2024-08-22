@@ -39,7 +39,7 @@ namespace TestParse
         return {argv0, "-f", argv0, "-v", "one", "two", "three"};
     }
 
-    auto parse_arguments(std::string& filename, bool& verbose,
+    auto parse_arguments(std::string& filename, bool& is_verbose,
                          ArgumentSpan args) -> void
     {
         static const char* optstring {"f:v"};
@@ -48,7 +48,7 @@ namespace TestParse
         const auto length {static_cast<int>(std::strlen(optstring))};
         assert(get_optind() == optind_begin + length);
         filename = options.at('f');
-        verbose = options.contains('v');
+        is_verbose = options.contains('v');
     }
 
     auto print(ArgumentSpan args,
@@ -99,15 +99,15 @@ namespace TestParse
         ArgumentData data {get_strings(*argv)};
         const std::span args {data.data(), data.size()};
         std::string filename;
-        bool verbose {false};
-        parse_arguments(filename, verbose, args);
+        bool is_verbose {false};
+        parse_arguments(filename, is_verbose, args);
         test_arguments(args, *argv);
         auto options {args.subspan(1, to_size(get_optind()) - 1)};
         test_options(options, *argv);
         auto operands {args.subspan(to_size(get_optind()))};
         test_operands(operands);
         assert(filename == *argv);
-        assert(verbose);
+        assert(is_verbose);
     }
 }
 

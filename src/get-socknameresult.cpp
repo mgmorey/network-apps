@@ -26,10 +26,10 @@
 #include <sys/socket.h>     // ::getsockname()
 #endif
 
-auto Network::get_socknameresult(socket_type handle, bool verbose) ->
+auto Network::get_socknameresult(socket_type handle, bool is_verbose) ->
     SockNameResult
 {
     const GetNameHandler handler {::getsockname, "::getsockname"};
-    const GetNameParams args {handle, verbose};
+    const GetNameParams args {handle, is_verbose};
     return get_nameresult(handler, args);
 }

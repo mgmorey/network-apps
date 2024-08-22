@@ -25,10 +25,10 @@
 #include <type_traits>  // std::decay_t, std::is_same_v
 #include <variant>      // std::visit()
 
-auto Network::create(const SocketHints& hints, bool verbose) -> Socket
+auto Network::create(const SocketHints& hints, bool is_verbose) -> Socket
 {
     Socket sock;
-    const auto result {create_result(hints, verbose)};
+    const auto result {create_result(hints, is_verbose)};
     std::visit([&](auto&& arg) {
         using T = std::decay_t<decltype(arg)>;
 

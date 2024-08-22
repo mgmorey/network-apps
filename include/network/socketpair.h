@@ -32,7 +32,7 @@ namespace Network
         using size_type = std::size_t;
         using value_type = std::array<Socket, socketpair_size>;
 
-        explicit SocketPair(const SocketHints& t_hints, bool t_verbose = false);
+        explicit SocketPair(const SocketHints& t_hints, bool t_is_verbose = false);
         SocketPair(const Socket& t_socket_1, const Socket& t_socket_2) noexcept;
         SocketPair(const SocketPair&) noexcept = default;
         SocketPair(SocketPair&&) noexcept = default;

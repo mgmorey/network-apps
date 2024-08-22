@@ -22,7 +22,7 @@
 namespace Network
 {
     extern auto close(socket_type handle,
-                      bool verbose = false) -> OsErrorResult;
+                      bool is_verbose = false) -> OsErrorResult;
 }
 
 #endif

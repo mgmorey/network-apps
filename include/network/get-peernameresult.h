@@ -22,7 +22,7 @@
 namespace Network
 {
     extern auto get_peernameresult(socket_type handle,
-                                   bool verbose = false) -> PeerNameResult;
+                                   bool is_verbose = false) -> PeerNameResult;
 }
 
 #endif

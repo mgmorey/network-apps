@@ -44,7 +44,7 @@ auto Network::open(const OpenHandler& handler,
                            std::string {addr_str});
     }
 
-    if (args.socket.verbose()) {
+    if (args.socket.is_verbose()) {
         std::cout << "Calling "
                   << handler.second
                   << '('

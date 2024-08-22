@@ -27,9 +27,9 @@
 #endif
 
 auto Network::get_sockname(socket_type handle,
-                           bool verbose) -> SockName
+                           bool is_verbose) -> SockName
 {
     const GetNameHandler handler {::getsockname, "::getsockname"};
-    const GetNameParams args {handle, verbose};
+    const GetNameParams args {handle, is_verbose};
     return get_name(handler, args);
 }

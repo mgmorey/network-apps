@@ -20,8 +20,8 @@
 #include "network/socket.h"                     // Socket
 #include "network/sockethints.h"                // SocketHints
 
-Network::SocketPair::SocketPair(const SocketHints& t_hints, bool t_verbose) :
-    SocketPair(create_pair(t_hints, t_verbose))
+Network::SocketPair::SocketPair(const SocketHints& t_hints, bool t_is_verbose) :
+    SocketPair(create_pair(t_hints, t_is_verbose))
 {
 }
 

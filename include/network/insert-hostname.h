@@ -32,9 +32,9 @@ namespace Network
                 const OptionalHostname& hostname,
                 const OptionalService& service = std::nullopt,
                 const OptionalHints& hints = std::nullopt,
-                bool verbose = false) -> OsErrorResult
+                bool is_verbose = false) -> OsErrorResult
     {
-        const auto list {AddressList(hostname, service, hints, verbose)};
+        const auto list {AddressList(hostname, service, hints, is_verbose)};
         auto it {std::back_inserter(container)};
         std::copy(list.begin(), list.end(), it);
         return list.result();

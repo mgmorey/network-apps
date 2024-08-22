@@ -42,12 +42,12 @@
 auto Network::accept(const Socket& sock) -> AcceptResult
 {
     Buffer<Byte> buffer {sa_length_max};
-    const auto verbose {sock.verbose()};
+    const auto is_verbose {sock.is_verbose()};
     const auto handle_1 {sock.handle()};
     const AddressString addr_str {ByteString {buffer}};
     auto [addr_ptr, addr_len] {get_sa_span(buffer)};
 
-    if (verbose) {
+    if (is_verbose) {
         std::cout << "Calling ::accept("
                   << handle_1
                   << ", "
@@ -79,5 +79,5 @@ auto Network::accept(const Socket& sock) -> AcceptResult
     }
 
     buffer.resize(to_size(addr_len));
-    return {Socket {handle_2, verbose}, ByteString {buffer}};
+    return {Socket {handle_2, is_verbose}, ByteString {buffer}};
 }

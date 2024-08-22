@@ -29,9 +29,9 @@
 
 auto Network::connect(const Endpoint& endpoint,
                       const SocketHints& hints,
-                      bool verbose) -> OpenResult
+                      bool is_verbose) -> OpenResult
 {
     const OpenHandler handler {::connect, "::connect"};
-    const OpenEndpointParams args {endpoint, hints, verbose};
+    const OpenEndpointParams args {endpoint, hints, is_verbose};
     return open(handler, args);
 }

@@ -20,7 +20,7 @@
 
 namespace Network
 {
-    extern auto get_hostname(bool verbose = false) -> Hostname;
+    extern auto get_hostname(bool is_verbose = false) -> Hostname;
 }
 
 #endif

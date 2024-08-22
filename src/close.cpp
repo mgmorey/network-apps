@@ -31,7 +31,7 @@
 #include <iostream>     // std::cout, std::endl
 #include <sstream>      // std::ostringstream
 
-auto Network::close(socket_type handle, bool verbose) -> OsErrorResult
+auto Network::close(socket_type handle, bool is_verbose) -> OsErrorResult
 {
 #ifdef WIN32
     static constexpr const auto* method {"::closesocket"};
@@ -39,7 +39,7 @@ auto Network::close(socket_type handle, bool verbose) -> OsErrorResult
     static constexpr const auto* method {"::close"};
 #endif
 
-    if (verbose) {
+    if (is_verbose) {
         std::cout << "Calling "
                   << method
                   << '('

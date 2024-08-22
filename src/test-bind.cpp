@@ -69,7 +69,7 @@ namespace TestBind
     static constexpr auto handle_width {6};
     static constexpr auto localhost {"localhost"};
 
-    static bool verbose {false};  // NOLINT
+    static bool is_verbose {false};  // NOLINT
 
     class Test
     {
@@ -148,7 +148,7 @@ namespace TestBind
         }
 
         if (options.contains('v')) {
-            verbose = true;
+            is_verbose = true;
         }
 
         return {
@@ -159,7 +159,7 @@ namespace TestBind
 
     auto print(const OsErrorResult& result) -> void
     {
-        if (verbose) {
+        if (is_verbose) {
             std::cout << "Number: "
                       << result.number()
                       << std::endl
@@ -174,7 +174,7 @@ namespace TestBind
                    const ErrorCodeSet& expected_codes) -> void
     {
         os_error_type actual_code {0};
-        const auto bind_result {bind(endpoint, hints, verbose)};
+        const auto bind_result {bind(endpoint, hints, is_verbose)};
         std::visit([&](auto&& arg) {
             using T = std::decay_t<decltype(arg)>;
 
@@ -216,7 +216,7 @@ auto main(int argc, char* argv[]) -> int
         const auto& context {Context::instance()};
         const auto endpoint {parse_arguments(argc, argv)};
 
-        if (verbose) {
+        if (is_verbose) {
             std::cout << context << std::endl;
         }
 

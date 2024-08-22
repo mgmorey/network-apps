@@ -50,7 +50,7 @@ namespace TestSocket
         R"(Call to ::socket\(.+\) failed with error \d+: .+)"
     };
 
-    static bool verbose {false};  // NOLINT
+    static bool is_verbose {false};  // NOLINT
 
     auto parse_arguments(int argc, char** argv) -> void
     {
@@ -65,7 +65,7 @@ namespace TestSocket
         }
 
         if (options.contains('v')) {
-            verbose = true;
+            is_verbose = true;
         }
 
         static_cast<void>(_);
@@ -73,7 +73,7 @@ namespace TestSocket
 
     auto print(const Error& error) -> void
     {
-        if (verbose) {
+        if (is_verbose) {
             std::cout << "Exception: "
                       << error.what()
                       << std::endl;
@@ -92,7 +92,7 @@ namespace TestSocket
             assert(!static_cast<bool>(sock_2));
             assert(static_cast<socket_type>(sock_1) == socket_null);
             assert(static_cast<socket_type>(sock_2) == socket_null);
-            sock_1 = Socket {create(hints, verbose)};
+            sock_1 = Socket {create(hints, is_verbose)};
             const Socket sock_3 {sock_1};
             assert(static_cast<bool>(sock_1));
             assert(static_cast<bool>(sock_3));
@@ -148,7 +148,7 @@ auto main(int argc, char* argv[]) -> int
         const auto& context {Context::instance()};
         parse_arguments(argc, argv);
 
-        if (verbose) {
+        if (is_verbose) {
             std::cout << context << std::endl;
         }
 

@@ -19,9 +19,9 @@
 #include <filesystem>   // std::filesystem
 #include <iostream>     // std::cout, std::endl
 
-auto Network::remove(const Pathname& path, bool verbose) -> bool
+auto Network::remove(const Pathname& path, bool is_verbose) -> bool
 {
-    if (verbose) {
+    if (is_verbose) {
         std::cout << "Calling std::filesystem::remove("
                   << path
                   << ')'

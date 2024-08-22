@@ -31,9 +31,9 @@
 #include <iostream>     // std::cerr, std::endl
 #include <string>       // std::to_string()
 
-Network::SocketData::SocketData(socket_type t_socket, bool t_verbose) :
+Network::SocketData::SocketData(socket_type t_socket, bool t_is_verbose) :
     m_socket(t_socket),
-    m_verbose(t_verbose)
+    m_is_verbose(t_is_verbose)
 {
     if (m_socket == socket_null) {
         throw LogicError("Invalid socket descriptor value: " +
@@ -66,7 +66,7 @@ auto Network::SocketData::handle() const -> socket_type
 auto Network::SocketData::peername() const -> ByteString
 {
     if (!m_peername) {
-        m_peername = get_peername(m_socket, m_verbose);
+        m_peername = get_peername(m_socket, m_is_verbose);
     }
 
     return *m_peername;
@@ -75,20 +75,20 @@ auto Network::SocketData::peername() const -> ByteString
 auto Network::SocketData::sockname() const -> ByteString
 {
     if (!m_sockname) {
-        m_sockname = get_sockname(m_socket, m_verbose);
+        m_sockname = get_sockname(m_socket, m_is_verbose);
     }
 
     return *m_sockname;
 }
 
-auto Network::SocketData::verbose() const -> bool
+auto Network::SocketData::is_verbose() const -> bool
 {
-    return m_verbose;
+    return m_is_verbose;
 }
 
 auto Network::SocketData::close() const -> const SocketData&
 {
-    if (const auto result {Network::close(m_socket, m_verbose)}) {
+    if (const auto result {Network::close(m_socket, m_is_verbose)}) {
         std::cerr << result.string()
                   << std::endl;
     }
@@ -110,11 +110,11 @@ auto Network::SocketData::is_owner(bool t_is_owner) -> SocketData&
 #ifndef WIN32
     if (t_is_owner) {
         if (!m_sockname) {
-            m_sockname = get_sockname(m_socket, m_verbose);
+            m_sockname = get_sockname(m_socket, m_is_verbose);
         }
     } else if (m_sockname) {
         if (const auto path {to_path(*m_sockname)}) {
-            remove(*path, m_verbose);
+            remove(*path, m_is_verbose);
         }
     }
 #endif

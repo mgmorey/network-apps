@@ -41,12 +41,12 @@ Network::Open::Open(const OpenHandler& t_handler,
 
 auto Network::Open::operator()(const Template& t_temp) -> SocketResult
 {
-    if (m_args.verbose) {
+    if (m_args.is_verbose) {
         m_os << t_temp
              << std::endl;
     }
 
-    auto result {create_result(t_temp.hints(), m_args.verbose)};
+    auto result {create_result(t_temp.hints(), m_args.is_verbose)};
     std::visit([&](auto&& arg) {
         using T = std::decay_t<decltype(arg)>;
 

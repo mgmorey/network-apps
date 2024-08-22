@@ -39,14 +39,14 @@
 #include <sstream>      // std::ostringstream
 
 auto Network::create_pairresult(const SocketHints& hints,
-                                bool verbose) -> SocketPairResult
+                                bool is_verbose) -> SocketPairResult
 {
     static constexpr auto delim {", "};
     static constexpr auto tab {0};
 
     socketpair_type handles {socket_null, socket_null};
 
-    if (verbose) {
+    if (is_verbose) {
         std::cout << "Calling ::socketpair("
                   << Format("domain")
                   << SocketFamily(hints.m_family)
@@ -82,8 +82,8 @@ auto Network::create_pairresult(const SocketHints& hints,
     }
 
     return SocketPair {
-        Socket {handles[0], verbose},
-        Socket {handles[1], verbose}
+        Socket {handles[0], is_verbose},
+        Socket {handles[1], is_verbose}
     };
 }
 

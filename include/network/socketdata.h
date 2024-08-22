@@ -30,7 +30,7 @@ namespace Network
 
     public:
         SocketData() noexcept = default;
-        explicit SocketData(socket_type t_socket, bool t_verbose);
+        explicit SocketData(socket_type t_socket, bool t_is_verbose);
         SocketData(const SocketData&) noexcept = delete;
         SocketData(SocketData&&) noexcept = delete;
         ~SocketData() noexcept;
@@ -40,7 +40,7 @@ namespace Network
         [[nodiscard]] auto handle() const -> socket_type;
         [[nodiscard]] auto peername() const -> ByteString;
         [[nodiscard]] auto sockname() const -> ByteString;
-        [[nodiscard]] auto verbose() const -> bool;
+        [[nodiscard]] auto is_verbose() const -> bool;
 
     protected:
         auto close() const -> const SocketData&;
@@ -52,7 +52,7 @@ namespace Network
         mutable std::optional<ByteString> m_sockname;
         socket_type m_socket {socket_null};
         bool m_is_owner {false};
-        bool m_verbose {false};
+        bool m_is_verbose {false};
     };
 }
 

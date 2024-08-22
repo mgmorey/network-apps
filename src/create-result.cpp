@@ -38,12 +38,12 @@
 #include <sstream>      // std::ostringstream
 
 auto Network::create_result(const SocketHints& hints,
-                            bool verbose) -> SocketResult
+                            bool is_verbose) -> SocketResult
 {
     static constexpr auto delim {", "};
     static constexpr auto tab {0};
 
-    if (verbose) {
+    if (is_verbose) {
         std::cout << "Calling ::socket("
                   << Format("domain")
                   << SocketFamily(hints.m_family)
@@ -78,5 +78,5 @@ auto Network::create_result(const SocketHints& hints,
         return OsErrorResult {os_error, oss.str()};
     }
 
-    return Socket {handle, verbose};
+    return Socket {handle, is_verbose};
 }
