@@ -31,13 +31,13 @@
 #include <iostream>     // std::cerr, std::endl
 #include <string>       // std::to_string()
 
-Network::SocketData::SocketData(socket_type t_socket, bool t_is_verbose) :
-    m_socket(t_socket),
+Network::SocketData::SocketData(socket_type t_handle, bool t_is_verbose) :
+    m_handle(t_handle),
     m_is_verbose(t_is_verbose)
 {
-    if (m_socket == socket_null) {
+    if (m_handle == socket_null) {
         throw LogicError("Invalid socket descriptor value: " +
-                         std::to_string(m_socket));
+                         std::to_string(m_handle));
     }
 }
 
@@ -55,12 +55,12 @@ Network::SocketData::~SocketData() noexcept
 
 Network::SocketData::operator socket_type() const noexcept
 {
-    return m_socket;
+    return m_handle;
 }
 
 auto Network::SocketData::handle() const -> socket_type
 {
-    return m_socket;
+    return m_handle;
 }
 
 auto Network::SocketData::is_verbose() const -> bool
@@ -71,7 +71,7 @@ auto Network::SocketData::is_verbose() const -> bool
 auto Network::SocketData::peername() const -> ByteString
 {
     if (!m_peername) {
-        m_peername = get_peername(m_socket, m_is_verbose);
+        m_peername = get_peername(m_handle, m_is_verbose);
     }
 
     return *m_peername;
@@ -80,7 +80,7 @@ auto Network::SocketData::peername() const -> ByteString
 auto Network::SocketData::sockname() const -> ByteString
 {
     if (!m_sockname) {
-        m_sockname = get_sockname(m_socket, m_is_verbose);
+        m_sockname = get_sockname(m_handle, m_is_verbose);
     }
 
     return *m_sockname;
@@ -88,7 +88,7 @@ auto Network::SocketData::sockname() const -> ByteString
 
 auto Network::SocketData::close() const -> const SocketData&
 {
-    if (const auto result {Network::close(m_socket, m_is_verbose)}) {
+    if (const auto result {Network::close(m_handle, m_is_verbose)}) {
         std::cerr << result.string()
                   << std::endl;
     }
@@ -110,7 +110,7 @@ auto Network::SocketData::is_owner(bool t_is_owner) -> SocketData&
 #ifndef WIN32
     if (t_is_owner) {
         if (!m_sockname) {
-            m_sockname = get_sockname(m_socket, m_is_verbose);
+            m_sockname = get_sockname(m_handle, m_is_verbose);
         }
     } else if (m_sockname) {
         if (const auto path {to_path(*m_sockname)}) {
