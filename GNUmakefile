@@ -51,7 +51,7 @@ include flags.gmk
 libnetwork_common_sources = accept.cpp address-sa.cpp address-sin.cpp	\
 address-sin6.cpp address.cpp addresserror.cpp addresslist.cpp		\
 addressstring.cpp argumentdata.cpp bind-endpoint.cpp			\
-bind-socket-bs.cpp cleanup.cpp close.cpp connect-endpoint.cpp		\
+bind-socket-bs.cpp close.cpp connect-endpoint.cpp			\
 connect-socket-bs.cpp context.cpp create-result.cpp create.cpp		\
 error.cpp familyerror.cpp format-ai-error.cpp format-bytestring.cpp	\
 format-os-error.cpp format.cpp get-endpoint.cpp				\
@@ -70,13 +70,14 @@ read.cpp remove.cpp reset-last-context-error.cpp			\
 reset-last-os-error.cpp runtimeerror.cpp set-last-context-error.cpp	\
 set-last-os-error.cpp socket.cpp socketdata.cpp socketerror.cpp		\
 socketfamily.cpp socketflags.cpp sockethost.cpp socketprotocol.cpp	\
-sockettype.cpp startup.cpp stream-address.cpp stream-addresslist.cpp	\
-stream-context.cpp stream-socket.cpp stream-sockethints.cpp		\
-stream-template.cpp template.cpp to-bytestring-ai.cpp			\
-to-bytestring-void.cpp to-string-in-addr.cpp to-string-in6-addr.cpp	\
-to-string-vector-byte.cpp to-string-vector-char.cpp validate-bs.cpp	\
-validate-sa.cpp validate-sin.cpp validate-sin6.cpp version.cpp		\
-write-string.cpp write.cpp
+sockettype.cpp start.cpp stop.cpp stream-address.cpp			\
+stream-addresslist.cpp stream-context.cpp stream-socket.cpp		\
+stream-sockethints.cpp stream-template.cpp template.cpp			\
+to-bytestring-ai.cpp to-bytestring-void.cpp to-string-in-addr.cpp	\
+to-string-in6-addr.cpp to-string-vector-byte.cpp			\
+to-string-vector-char.cpp validate-bs.cpp validate-sa.cpp		\
+validate-sin.cpp validate-sin6.cpp version.cpp write-string.cpp		\
+write.cpp
 
 libnetwork_unix_sources = address-sun.cpp create-pair.cpp		\
 create-pairresult.cpp get-path-length.cpp get-path-pointer-sun.cpp	\

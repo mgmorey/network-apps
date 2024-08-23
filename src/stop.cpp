@@ -13,9 +13,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/cleanup.h"                    // cleanup()
 #include "network/context-error-type.h"         // context_error_type
 #include "network/context.h"                    // Context
+#include "network/stop.h"                       // stop()
 
 #ifdef WIN32
 #include "network/error.h"                      // Error
@@ -33,7 +33,7 @@
                             // ::WSACleanup()
 #endif
 
-auto Network::cleanup(Context::failure_mode t_mode) -> context_error_type
+auto Network::stop(Context::failure_mode t_mode) -> context_error_type
 {
 #ifdef WIN32
     reset_last_context_error();

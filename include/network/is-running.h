@@ -13,15 +13,15 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_CLEANUP_H
-#define NETWORK_CLEANUP_H
+#ifndef NETWORK_IS_RUNNING_H
+#define NETWORK_IS_RUNNING_H
 
-#include "network/context-error-type.h"     // context_error_type
-#include "network/context.h"                // Context
+#include "network/context.h"            // Context
 
 namespace Network
 {
-    extern auto cleanup(Context::failure_mode t_mode) -> context_error_type;
+    // NOLINTNEXTLINE
+    extern auto is_running(const Context& context) -> bool;
 }
 
 #endif

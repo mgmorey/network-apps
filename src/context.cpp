@@ -14,10 +14,12 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/context.h"            // Context
-#include "network/cleanup.h"            // cleanup()
 #include "network/error.h"              // Error
+#include "network/is-running.h"         // is_running()
 #include "network/optionalversion.h"    // OptionalVersion
 #include "network/runtimeerror.h"       // RuntimeError
+#include "network/start.h"              // start()
+#include "network/stop.h"               // stop()
 
 auto Network::Context::instance() -> const Context&
 {
@@ -28,7 +30,7 @@ auto Network::Context::instance() -> const Context&
 Network::Context::Context(const OptionalVersion& t_version)
 {
     try {
-        startup(*this, t_version);
+        start(*this, t_version);
 
         // Test for class invariant conditions and possibly throw
         // exceptions here if one or more conditions are not met.
@@ -42,7 +44,7 @@ Network::Context::Context(const OptionalVersion& t_version)
         }
     }
     catch (const Error& error) {
-        if (m_is_started && cleanup(failure_mode::return_zero) == 0) {
+        if (m_is_started && stop(failure_mode::return_zero) == 0) {
             m_is_started = false;
         }
 
@@ -63,7 +65,7 @@ auto Network::Context::is_started(bool t_is_started) noexcept -> Context&
 
 Network::Context::~Context()
 {
-    if (m_is_started && cleanup(failure_mode::return_zero) == 0) {
+    if (m_is_started && stop(failure_mode::return_zero) == 0) {
         m_is_started = false;
     }
 }

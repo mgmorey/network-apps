@@ -14,11 +14,12 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/assert.h"             // assert()
-#include "network/cleanup.h"            // cleanup()
 #include "network/network.h"            // Context, Error,
                                         // OptionalVersion, Version,
                                         // get_hostname()
 #include "network/parse.h"              // parse()
+#include "network/start.h"              // start()
+#include "network/stop.h"               // stop()
 
 #ifdef WIN32
 #include <winsock2.h>       // WSAEFAULT, WSAEPROCLIM,
@@ -118,7 +119,7 @@ namespace TestContext
 
         ~TestContext() final
         {
-            if (is_started() && cleanup(failure_mode::return_zero) == 0) {
+            if (is_started() && stop(failure_mode::return_zero) == 0) {
                 is_started(false);
             }
         }
@@ -190,7 +191,7 @@ namespace TestContext
         std::string actual_error_str;
 
         try {
-            error_code = cleanup(mode);
+            error_code = stop(mode);
         }
         catch (const Error& error) {
             print(error);

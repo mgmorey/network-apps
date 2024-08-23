@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#include "network/start.h"              // start()
 #include "network/context.h"            // Context
 #include "network/optionalversion.h"    // OptionalVersion
 
@@ -39,7 +40,7 @@ static constexpr Network::Version wsa_default {2, 2};
 static constexpr auto description {"Berkeley Software Distribution Sockets"};
 #endif
 
-auto Network::startup(Context& context, const OptionalVersion& version) -> void
+auto Network::start(Context& context, const OptionalVersion& version) -> void
 {
 #ifdef WIN32
     const WindowsVersion wsa_version {version.value_or(wsa_default)};
