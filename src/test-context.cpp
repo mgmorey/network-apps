@@ -98,14 +98,14 @@ namespace TestContext
     static const auto mode {Context::failure_mode::return_error};
     static bool is_verbose {false};  // NOLINT
 
-    class TestContext :
+    class TestContext final :
         public Context
     {
     public:
         static auto test_instance() -> TestContext&
         {
-            static TestContext context;
-            return context;
+            static TestContext test_context;
+            return test_context;
         }
 
         explicit TestContext(const OptionalVersion& t_version = {}) :
@@ -113,10 +113,18 @@ namespace TestContext
         {
         }
 
-        auto shutdown() -> void
+        TestContext(const TestContext&) = delete;
+        TestContext(const TestContext&&) = delete;
+
+        ~TestContext() final
         {
-            Context::shutdown(mode);
+            if (is_started() && cleanup(failure_mode::return_zero) == 0) {
+                is_started(false);
+            }
         }
+
+        auto operator=(const TestContext&) -> TestContext& = delete;
+        auto operator=(const TestContext&&) -> TestContext& = delete;
     };
 
     auto parse_arguments(int argc, char** argv) -> void
@@ -203,8 +211,6 @@ namespace TestContext
             test_context(context1, "global");
             test_context(context2, "global");
             assert(&context1 == &context2);
-            context1.shutdown();
-            context2.shutdown();
         }
         catch (const Error& error) {
             print(error);
@@ -239,9 +245,8 @@ namespace TestContext
         std::string actual_error_str;
 
         try {
-            TestContext context;
+            const TestContext context;
             test_context(context, "local 3");
-            context.shutdown();
         }
         catch (const Error& error) {
             print(error);

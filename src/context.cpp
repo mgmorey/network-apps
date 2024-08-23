@@ -50,14 +50,20 @@ Network::Context::Context(const OptionalVersion& t_version)
     }
 }
 
-Network::Context::~Context()
+auto Network::Context::is_started() const noexcept -> bool
 {
-    shutdown(failure_mode::return_zero);
+    return m_is_started;
 }
 
-auto Network::Context::shutdown(failure_mode t_mode) -> void
+auto Network::Context::is_started(bool t_is_started) noexcept -> Context&
 {
-    if (m_is_started && cleanup(t_mode) == 0) {
+    m_is_started = t_is_started;
+    return *this;
+}
+
+Network::Context::~Context()
+{
+    if (m_is_started && cleanup(failure_mode::return_zero) == 0) {
         m_is_started = false;
     }
 }
