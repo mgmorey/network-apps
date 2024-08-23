@@ -18,7 +18,6 @@
                                         // OptionalVersion, Version,
                                         // get_hostname()
 #include "network/parse.h"              // parse()
-#include "network/start.h"              // start()
 #include "network/stop.h"               // stop()
 
 #ifdef WIN32
@@ -207,8 +206,8 @@ namespace TestContext
         std::string actual_error_str;
 
         try {
-            TestContext& context1 {TestContext::test_instance()};
-            TestContext& context2 {TestContext::test_instance()};
+            const TestContext& context1 {TestContext::test_instance()};
+            const TestContext& context2 {TestContext::test_instance()};
             test_context(context1, "global");
             test_context(context2, "global");
             assert(&context1 == &context2);
