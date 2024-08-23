@@ -13,9 +13,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#include "network/stop.h"                       // stop()
 #include "network/context-error-type.h"         // context_error_type
 #include "network/context.h"                    // Context
-#include "network/stop.h"                       // stop()
 
 #ifdef WIN32
 #include "network/error.h"                      // Error
