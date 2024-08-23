@@ -23,9 +23,9 @@
 #include "network/format-os-error.h"            // format_os_error()
 #include "network/get-last-context-error.h"     // get_last_context_error()
 #include "network/get-sa-span.h"                // get_sa_span()
+#include "network/handle-null.h"                // handle_null
 #include "network/reset-last-context-error.h"   // reset_last_context_error()
 #include "network/sa-length-limits.h"           // sa_length_max
-#include "network/socket-null.h"                // socket_null
 #include "network/socket.h"                     // Socket
 #include "network/to-os-error.h"                // to_os_error()
 #include "network/to-size.h"                    // to_size()
@@ -61,7 +61,7 @@ auto Network::accept(const Socket& sock) -> AcceptResult
     reset_last_context_error();
     const auto handle_2 {::accept(handle_1, addr_ptr, &addr_len)};
 
-    if (handle_2 == socket_null) {
+    if (handle_2 == handle_null) {
         const auto error {get_last_context_error()};
         const auto os_error {to_os_error(error)};
         std::ostringstream oss;

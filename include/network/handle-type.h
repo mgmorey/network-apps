@@ -1,4 +1,4 @@
-// Copyright (C) 2022  "Michael G. Morey" <mgmorey@gmail.com>
+// Copyright (C) 2024  "Michael G. Morey" <mgmorey@gmail.com>
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,24 +13,20 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_GETNAMEHANDLER_H
-#define NETWORK_GETNAMEHANDLER_H
-
-#include "network/handle-type.h"                // handle_type
+#ifndef NETWORK_HANDLE_TYPE_H
+#define NETWORK_HANDLE_TYPE_H
 
 #ifdef WIN32
-#include <winsock2.h>       // sockaddr
-#include <ws2tcpip.h>       // socklen_t
+#include <winsock2.h>       // SOCKET
 #else
-#include <sys/socket.h>     // sockaddr, socklen_t
+#ifndef SOCKET
+#define SOCKET	int
 #endif
-
-#include <utility>      // std::pair
+#endif
 
 namespace Network
 {
-    using GetNameFunction = int (*)(handle_type, sockaddr*, socklen_t*);
-    using GetNameHandler = std::pair<GetNameFunction, const char*>;
+    using handle_type = SOCKET;
 }
 
 #endif

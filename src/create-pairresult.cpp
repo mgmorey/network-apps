@@ -19,10 +19,10 @@
 #include "network/format-os-error.h"            // format_os_error()
 #include "network/format.h"                     // Format
 #include "network/get-last-context-error.h"     // get_last_context_error()
+#include "network/handle-null.h"                // handle_null
 #include "network/oserrorresult.h"              // OsErrorResult
 #include "network/reset-last-context-error.h"   // reset_last_context_error()
 #include "network/socket-error.h"               // socket_error
-#include "network/socket-null.h"                // socket_null
 #include "network/socket.h"                     // Socket
 #include "network/socketfamily.h"               // SocketFamily
 #include "network/sockethints.h"                // SocketHints
@@ -44,7 +44,7 @@ auto Network::create_pairresult(const SocketHints& hints,
     static constexpr auto delim {", "};
     static constexpr auto tab {0};
 
-    socketpair_type handles {socket_null, socket_null};
+    socketpair_type handles {handle_null, handle_null};
 
     if (is_verbose) {
         std::cout << "Calling ::socketpair("

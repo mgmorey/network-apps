@@ -17,8 +17,8 @@
 #define NETWORK_SOCKETDATA_H
 
 #include "network/bytestring.h"                 // ByteString
-#include "network/socket-null.h"                // socket_null
-#include "network/socket-type.h"                // socket_type
+#include "network/handle-null.h"                // handle_null
+#include "network/handle-type.h"                // handle_type
 
 #include <optional>     // std::optional
 
@@ -30,15 +30,15 @@ namespace Network
 
     public:
         SocketData() noexcept = default;
-        explicit SocketData(socket_type t_handle, bool t_is_verbose);
+        explicit SocketData(handle_type t_handle, bool t_is_verbose);
         SocketData(const SocketData&) noexcept = delete;
         SocketData(SocketData&&) noexcept = delete;
         ~SocketData() noexcept;
         auto operator=(const SocketData&) noexcept -> SocketData& = delete;
         auto operator=(SocketData&&) noexcept -> SocketData& = delete;
         explicit operator bool() const noexcept;
-        explicit operator socket_type() const noexcept;
-        [[nodiscard]] auto handle() const noexcept -> socket_type;
+        explicit operator handle_type() const noexcept;
+        [[nodiscard]] auto handle() const noexcept -> handle_type;
         [[nodiscard]] auto is_verbose() const noexcept -> bool;
         [[nodiscard]] auto peername() const -> ByteString;
         [[nodiscard]] auto sockname() const -> ByteString;
@@ -51,7 +51,7 @@ namespace Network
     private:
         mutable std::optional<ByteString> m_peername;
         mutable std::optional<ByteString> m_sockname;
-        socket_type m_handle {socket_null};
+        handle_type m_handle {handle_null};
         bool m_is_owner {false};
         bool m_is_verbose {false};
     };

@@ -16,12 +16,12 @@
 #ifndef NETWORK_GET_PEERNAMERESULT_H
 #define NETWORK_GET_PEERNAMERESULT_H
 
+#include "network/handle-type.h"                // handle_type
 #include "network/peernameresult.h"             // PeerNameResult
-#include "network/socket-type.h"                // socket_type
 
 namespace Network
 {
-    extern auto get_peernameresult(socket_type handle,
+    extern auto get_peernameresult(handle_type handle,
                                    bool is_verbose = false) -> PeerNameResult;
 }
 

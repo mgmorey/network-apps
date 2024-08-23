@@ -19,13 +19,13 @@
 #include "network/format-os-error.h"            // format_os_error()
 #include "network/get-last-context-error.h"     // get_last_context_error()
 #include "network/get-sa-span.h"                // get_sa_span()
+#include "network/handle-type.h"                // handle_type
 #include "network/openhandler.h"                // OpenHandler
 #include "network/opensocketparams.h"           // OpenSocketParams
 #include "network/oserrorresult.h"              // OsErrorResult
 #include "network/reset-last-context-error.h"   // reset_last_context_error()
 #include "network/sa-length-limits.h"           // sa_length_min
 #include "network/socket-error.h"               // socket_error
-#include "network/socket-type.h"                // socket_type
 #include "network/to-os-error.h"                // to_os_error()
 
 #include <iostream>     // std::cout, std::endl
@@ -35,7 +35,7 @@
 auto Network::open(const OpenHandler& handler,
                    const OpenSocketParams& args) -> OsErrorResult
 {
-    const socket_type handle {args.socket};
+    const handle_type handle {args.socket};
     const AddressString addr_str {args.addr};
     const auto [addr_ptr, addr_len] {get_sa_span(args.addr)};
 

@@ -17,9 +17,9 @@
 #include "network/format-os-error.h"            // format_os_error()
 #include "network/format.h"                     // Format
 #include "network/get-last-context-error.h"     // get_last_context_error()
+#include "network/handle-null.h"                // handle_null
 #include "network/oserrorresult.h"              // OsErrorResult
 #include "network/reset-last-context-error.h"   // reset_last_context_error()
-#include "network/socket-null.h"                // socket_null
 #include "network/socket.h"                     // Socket
 #include "network/socketfamily.h"               // SocketFamily
 #include "network/sockethints.h"                // SocketHints
@@ -60,7 +60,7 @@ auto Network::create_result(const SocketHints& hints,
                                 hints.m_socktype,
                                 hints.m_protocol)};
 
-    if (handle == socket_null) {
+    if (handle == handle_null) {
         const auto error {get_last_context_error()};
         const auto os_error {to_os_error(error)};
         std::ostringstream oss;

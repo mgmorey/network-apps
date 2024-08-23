@@ -16,7 +16,7 @@
 #include "network/socket.h"                     // Socket
 #include "network/bytestring.h"                 // ByteString
 #include "network/create.h"                     // create()
-#include "network/socket-type.h"                // socket_type
+#include "network/handle-type.h"                // handle_type
 #include "network/socketdata.h"                 // SocketData
 #include "network/socketerror.h"                // SocketError
 #include "network/sockethints.h"                // SocketHints
@@ -28,7 +28,7 @@ Network::Socket::Socket(SocketHints t_hints, bool t_is_verbose) :
 {
 }
 
-Network::Socket::Socket(socket_type t_handle, bool t_is_verbose) :
+Network::Socket::Socket(handle_type t_handle, bool t_is_verbose) :
     m_socket_data(std::make_shared<SocketData>(t_handle, t_is_verbose))
 {
 }
@@ -38,16 +38,16 @@ Network::Socket::operator bool() const noexcept
     return static_cast<bool>(m_socket_data);
 }
 
-Network::Socket::operator socket_type() const
+Network::Socket::operator handle_type() const
 {
     if (!m_socket_data) {
         throw SocketError();
     }
 
-    return static_cast<socket_type>(*m_socket_data);
+    return static_cast<handle_type>(*m_socket_data);
 }
 
-auto Network::Socket::handle() const -> socket_type
+auto Network::Socket::handle() const -> handle_type
 {
     if (!m_socket_data) {
         throw SocketError();

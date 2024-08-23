@@ -18,9 +18,9 @@
 #include "network/close.h"                      // close()
 #include "network/get-peername.h"               // get_peername()
 #include "network/get-sockname.h"               // get_sockname()
+#include "network/handle-null.h"                // handle_null
+#include "network/handle-type.h"                // handle_type
 #include "network/logicerror.h"                 // LogicError
-#include "network/socket-null.h"                // socket_null
-#include "network/socket-type.h"                // socket_type
 
 #ifndef WIN32
 #include "network/remove.h"                     // remove()
@@ -31,11 +31,11 @@
 #include <iostream>     // std::cerr, std::endl
 #include <string>       // std::to_string()
 
-Network::SocketData::SocketData(socket_type t_handle, bool t_is_verbose) :
+Network::SocketData::SocketData(handle_type t_handle, bool t_is_verbose) :
     m_handle(t_handle),
     m_is_verbose(t_is_verbose)
 {
-    if (m_handle == socket_null) {
+    if (m_handle == handle_null) {
         throw LogicError("Invalid socket descriptor value: " +
                          std::to_string(m_handle));
     }
@@ -55,15 +55,15 @@ Network::SocketData::~SocketData() noexcept
 
 Network::SocketData::operator bool() const noexcept
 {
-    return m_handle != socket_null;
+    return m_handle != handle_null;
 }
 
-Network::SocketData::operator socket_type() const noexcept
+Network::SocketData::operator handle_type() const noexcept
 {
     return m_handle;
 }
 
-auto Network::SocketData::handle() const noexcept -> socket_type
+auto Network::SocketData::handle() const noexcept -> handle_type
 {
     return m_handle;
 }

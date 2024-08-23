@@ -16,10 +16,10 @@
 #include "network/close.h"                      // close()
 #include "network/format-os-error.h"            // format_os_error()
 #include "network/get-last-context-error.h"     // get_last_context_error()
+#include "network/handle-type.h"                // handle_type
 #include "network/oserrorresult.h"              // OsErrorResult
 #include "network/reset-last-context-error.h"   // reset_last_context_error()
 #include "network/socket-error.h"               // socket_error
-#include "network/socket-type.h"                // socket_type
 #include "network/to-os-error.h"                // to_os_error()
 
 #ifdef WIN32
@@ -31,7 +31,7 @@
 #include <iostream>     // std::cout, std::endl
 #include <sstream>      // std::ostringstream
 
-auto Network::close(socket_type handle, bool is_verbose) -> OsErrorResult
+auto Network::close(handle_type handle, bool is_verbose) -> OsErrorResult
 {
 #ifdef WIN32
     static constexpr const auto* method {"::closesocket"};

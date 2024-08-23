@@ -26,7 +26,8 @@
 #include "network/bytestringresult.h"           // ByteStringResult
 #include "network/close.h"                      // close()
 #include "network/connect.h"                    // connect()
-#include "network/constants.h"                  // sa_data_offset,
+#include "network/constants.h"                  // handle_null,
+                                                // sa_data_offset,
                                                 // sa_size,
                                                 // sin6_addr_offset,
                                                 // sin6_family_offset,
@@ -40,7 +41,6 @@
                                                 // sin_size,
                                                 // sockaddr_size_max,
                                                 // socket_error,
-                                                // socket_null,
                                                 // ss_size,
                                                 // string_null,
                                                 // sun_path_offset,
@@ -125,6 +125,7 @@
                                                 // OptionalService,
                                                 // Pathname, Service,
                                                 // byte_type,
+                                                // handle_type,
                                                 // length_type,
                                                 // os_error_type,
                                                 // port_type,
@@ -133,8 +134,7 @@
                                                 // socket_flags_type,
                                                 // socket_length_type,
                                                 // socket_protocol_type,
-                                                // socket_type_type,
-                                                // socket_type
+                                                // socket_type_type
 #include "network/uniquify.h"                   // uniquify()
 #include "network/unixsockethints.h"            // UnixSocketHints
 #include "network/version-null.h"               // version_null

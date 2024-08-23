@@ -17,8 +17,8 @@
 #include "network/get-nameresult.h"     // get_nameresult()
 #include "network/getnamehandler.h"     // GetNameHandler
 #include "network/getnameparams.h"      // GetNameParams
+#include "network/handle-type.h"        // handle_type
 #include "network/peernameresult.h"     // PeerNameResult
-#include "network/socket-type.h"        // socket_type
 
 #ifdef WIN32
 #include <winsock2.h>   // ::getpeername()
@@ -26,7 +26,7 @@
 #include <sys/socket.h> // ::getpeername()
 #endif
 
-auto Network::get_peernameresult(socket_type handle,
+auto Network::get_peernameresult(handle_type handle,
                                  bool is_verbose) -> PeerNameResult
 {
     const GetNameHandler handler {::getpeername, "::getpeername"};

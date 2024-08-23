@@ -41,10 +41,10 @@ namespace TestSocket
     using Network::Socket;
     using Network::SocketHints;
     using Network::create;
+    using Network::handle_null;
+    using Network::handle_type;
     using Network::os_error_type;
     using Network::parse;
-    using Network::socket_null;
-    using Network::socket_type;
 
     static constexpr auto expected_error_socket_re {
         R"(Call to ::socket\(.+\) failed with error \d+: .+)"
@@ -94,10 +94,10 @@ namespace TestSocket
             const Socket sock_3 {sock_1};
             assert(static_cast<bool>(sock_1));
             assert(static_cast<bool>(sock_3));
-            assert(static_cast<socket_type>(sock_1) != socket_null);
-            assert(static_cast<socket_type>(sock_3) != socket_null);
-            assert(static_cast<socket_type>(sock_1) ==
-                   static_cast<socket_type>(sock_3));
+            assert(static_cast<handle_type>(sock_1) != handle_null);
+            assert(static_cast<handle_type>(sock_3) != handle_null);
+            assert(static_cast<handle_type>(sock_1) ==
+                   static_cast<handle_type>(sock_3));
         }
         catch (const Error& error) {
             print(error);

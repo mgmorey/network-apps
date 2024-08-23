@@ -53,8 +53,8 @@ namespace TestSocket
     using Network::UnixSocketHints;
     using Network::bind;
     using Network::close;
-    using Network::socket_null;
-    using Network::socket_type;
+    using Network::handle_null;
+    using Network::handle_type;
     using Network::os_error_type;
     using Network::parse;
     using Network::path_length_max;
@@ -160,7 +160,7 @@ namespace TestSocket
                   << std::endl;
     }
 
-    auto test_close(socket_type handle,
+    auto test_close(handle_type handle,
                     const ErrorCodeSet& expected_codes) -> void
     {
         os_error_type actual_code {};
@@ -173,10 +173,10 @@ namespace TestSocket
         assert(expected_codes.contains(actual_code));
     }
 
-    auto test_close_socket_null() -> void
+    auto test_close_handle_null() -> void
     {
 	const ErrorCodeSet codes_bad_file_number {EBADF};
-        test_close(socket_null, codes_bad_file_number);
+        test_close(handle_null, codes_bad_file_number);
     }
 
     auto test_path(const auto path,
@@ -370,7 +370,7 @@ auto main(int argc, char* argv[]) -> int
         test_socketpair_invalid_type();
         test_unix_socket_invalid_protocol();
         test_unix_socket_invalid_type();
-        test_close_socket_null();
+        test_close_handle_null();
     }
     catch (const std::exception& error) {
         std::cerr << error.what()

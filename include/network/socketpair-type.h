@@ -16,7 +16,7 @@
 #ifndef NETWORK_SOCKETPAIR_TYPE_H
 #define NETWORK_SOCKETPAIR_TYPE_H
 
-#include "network/socket-type.h"                // socket_type
+#include "network/handle-type.h"                // handle_type
 #include "network/socketpair-size.h"            // socketpair_size
 
 #include <array>        // std::array
@@ -24,7 +24,7 @@
 namespace Network
 {
 #ifndef WIN32
-    using socketpair_type = std::array<socket_type, socketpair_size>;
+    using socketpair_type = std::array<handle_type, socketpair_size>;
 #endif
 }
 

@@ -19,6 +19,7 @@
 #include "network/byte-type.h"                      // byte_type
 #include "network/context-error-type.h"             // context_error_type
 #include "network/error-type.h"                     // error_type
+#include "network/handle-type.h"                    // handle_type
 #include "network/length-type.h"                    // length_type
 #include "network/name-length-type.h"               // name_length_type
 #include "network/os-error-type.h"                  // os_error_type
@@ -31,7 +32,6 @@
 #include "network/socket-length-type.h"             // socket_length_type
 #include "network/socket-protocol-type.h"           // socket_protocol_type
 #include "network/socket-type-type.h"               // socket_type_type
-#include "network/socket-type.h"                    // socket_type
 #ifdef WIN32
 #include "network/windows-version-type.h"           // windows_version_type
 #endif

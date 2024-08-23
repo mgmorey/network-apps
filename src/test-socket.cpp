@@ -40,10 +40,10 @@ namespace TestSocket
     using Network::Error;
     using Network::Socket;
     using Network::SocketHints;
+    using Network::handle_null;
+    using Network::handle_type;
     using Network::os_error_type;
     using Network::parse;
-    using Network::socket_null;
-    using Network::socket_type;
 
     static constexpr auto expected_error_socket_re {
         R"(Call to ::socket\(.+\) failed with error \d+: .+)"
@@ -104,7 +104,7 @@ namespace TestSocket
         }
     }
 
-    auto test_socket(socket_type handle,
+    auto test_socket(handle_type handle,
                      const std::string& expected_error_re) -> void
     {
         std::string actual_error_str;
@@ -136,10 +136,10 @@ namespace TestSocket
             const Socket sock_2 {sock_1};
             assert(static_cast<bool>(sock_1));
             assert(static_cast<bool>(sock_2));
-            assert(static_cast<socket_type>(sock_1) != socket_null);
-            assert(static_cast<socket_type>(sock_2) != socket_null);
-            assert(static_cast<socket_type>(sock_1) ==
-                   static_cast<socket_type>(sock_2));
+            assert(static_cast<handle_type>(sock_1) != handle_null);
+            assert(static_cast<handle_type>(sock_2) != handle_null);
+            assert(static_cast<handle_type>(sock_1) ==
+                   static_cast<handle_type>(sock_2));
             static_cast<void>(sock_2);
         }
         catch (const Error& error) {
@@ -182,7 +182,7 @@ namespace TestSocket
 
     auto test_socket_invalid_data() -> void
     {
-        test_socket(socket_null, expected_error_socket_data_re);
+        test_socket(handle_null, expected_error_socket_data_re);
     }
 
     auto test_socket_valid() -> void

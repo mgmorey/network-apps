@@ -24,11 +24,11 @@
 #include "network/get-sa-span.h"                // get_sa_span()
 #include "network/getnamehandler.h"             // GetNameHandler
 #include "network/getnameparams.h"              // GetNameParams
+#include "network/handle-type.h"                // handle_type
 #include "network/oserrorresult.h"              // OsErrorResult
 #include "network/reset-last-context-error.h"   // reset_context_last_error()
 #include "network/sa-length-limits.h"           // sa_length_max
 #include "network/socket-error.h"               // socket_error
-#include "network/socket-type.h"                // socket_type
 #include "network/to-os-error.h"                // to_os_error()
 #include "network/to-size.h"                    // to_size()
 
@@ -39,7 +39,7 @@ auto Network::get_nameresult(const GetNameHandler& handler,
                              const GetNameParams& args) -> ByteStringResult
 {
     Buffer<Byte> buffer {sa_length_max};
-    const socket_type handle {args.handle};
+    const handle_type handle {args.handle};
     const AddressString addr_str {ByteString {buffer}};
     auto [addr_ptr, addr_len] {get_sa_span(buffer)};
 

@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/socket-null.h"        // socket_null
-#include "network/socket-type.h"        // socket_type
+#include "network/handle-null.h"        // handle_null
+#include "network/handle-type.h"        // handle_type
 #include "network/socket.h"             // Socket
 #include "network/string-null.h"        // string_null
 
@@ -22,9 +22,9 @@
 
 auto Network::operator<<(std::ostream& os, const Socket& sock) -> std::ostream&
 {
-    const socket_type handle {sock};
+    const handle_type handle {sock};
 
-    if (handle == socket_null) {
+    if (handle == handle_null) {
         return os << string_null;
     }
 

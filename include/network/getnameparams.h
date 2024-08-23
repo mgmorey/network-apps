@@ -16,13 +16,13 @@
 #ifndef NETWORK_GETNAMEPARAMS_H
 #define NETWORK_GETNAMEPARAMS_H
 
-#include "network/socket-type.h"                // socket_type
+#include "network/handle-type.h"                // handle_type
 
 namespace Network
 {
     struct GetNameParams
     {
-        socket_type handle;
+        handle_type handle;
         bool is_verbose;
     };
 }

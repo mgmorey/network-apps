@@ -16,12 +16,12 @@
 #ifndef NETWORK_CLOSE_H
 #define NETWORK_CLOSE_H
 
+#include "network/handle-type.h"                // handle_type
 #include "network/oserrorresult.h"              // OsErrorResult
-#include "network/socket-type.h"                // socket_type
 
 namespace Network
 {
-    extern auto close(socket_type handle,
+    extern auto close(handle_type handle,
                       bool is_verbose = false) -> OsErrorResult;
 }
 
