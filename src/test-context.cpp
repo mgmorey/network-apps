@@ -123,6 +123,15 @@ namespace TestContext
 
         auto operator=(const TestContext&) -> TestContext& = delete;
         auto operator=(const TestContext&&) -> TestContext& = delete;
+
+        auto stop(failure_mode t_mode) -> Context&
+        {
+            if (is_started() && Network::stop(t_mode) == 0) {
+                is_started(false);
+            }
+
+            return *this;
+        }
     };
 
     auto parse_arguments(int argc, char** argv) -> void
@@ -214,12 +223,12 @@ namespace TestContext
         std::string actual_error_str;
 
         try {
-            const TestContext& context1 {TestContext::test_instance()};
-            const TestContext& context2 {TestContext::test_instance()};
+            TestContext& context1 {TestContext::test_instance()};
+            TestContext& context2 {TestContext::test_instance()};
             test_context(context1, "global");
             test_context(context2, "global");
             assert(&context1 == &context2);
-            Network::stop(mode);
+            context1.stop(mode);
         }
         catch (const Error& error) {
             print(error);
@@ -254,9 +263,9 @@ namespace TestContext
         std::string actual_error_str;
 
         try {
-            const TestContext context;
+            TestContext context;
             test_context(context, "local 3");
-            Network::stop(mode);
+            context.stop(mode);
         }
         catch (const Error& error) {
             print(error);
