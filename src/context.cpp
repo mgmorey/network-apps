@@ -52,6 +52,11 @@ Network::Context::Context(const OptionalVersion& t_version)
     }
 }
 
+Network::Context::~Context()
+{
+    static_cast<void>(stop(failure_mode::return_zero));
+}
+
 auto Network::Context::is_started() const noexcept -> bool
 {
     return m_is_started;
@@ -70,9 +75,4 @@ auto Network::Context::stop(failure_mode t_mode) -> Context&
     }
 
     return *this;
-}
-
-Network::Context::~Context()
-{
-    static_cast<void>(stop(failure_mode::return_zero));
 }
