@@ -223,12 +223,13 @@ namespace TestContext
         std::string actual_error_str;
 
         try {
-            TestContext& context1 {TestContext::test_instance()};
-            TestContext& context2 {TestContext::test_instance()};
-            test_context(context1, "global");
-            test_context(context2, "global");
-            assert(&context1 == &context2);
-            context1.stop(mode);
+            TestContext& context_1 {TestContext::test_instance()};
+            TestContext& context_2 {TestContext::test_instance()};
+            test_context(context_1, "global");
+            test_context(context_2, "global");
+            assert(&context_1 == &context_2);
+            context_1.stop(mode);
+            context_2.stop(mode);
         }
         catch (const Error& error) {
             print(error);
