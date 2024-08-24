@@ -162,6 +162,15 @@ namespace TestContext
                   << std::endl;
     }
 
+    auto print(context_error_type error_code) -> void
+    {
+        if (is_verbose) {
+            std::cout << "Error code: "
+                      << error_code
+                      << std::endl;
+        }
+    }
+
     auto print(const Error& error) -> void
     {
         if (is_verbose) {
@@ -188,13 +197,14 @@ namespace TestContext
         std::string actual_error_str;
 
         try {
-            error_code = stop(mode);
+            error_code = Network::stop(mode);
         }
         catch (const Error& error) {
             print(error);
             actual_error_str = error.what();
         }
 
+        print(error_code);
         assert(error_code == expected_code_stopped);
         assert(actual_error_str.empty());
     }
@@ -209,6 +219,7 @@ namespace TestContext
             test_context(context1, "global");
             test_context(context2, "global");
             assert(&context1 == &context2);
+            Network::stop(mode);
         }
         catch (const Error& error) {
             print(error);
@@ -238,13 +249,14 @@ namespace TestContext
         test_context_is_stopped();
     }
 
-    auto test_context_valid_with_shutdown() -> void
+    auto test_context_valid_with_stop() -> void
     {
         std::string actual_error_str;
 
         try {
             const TestContext context;
             test_context(context, "local 3");
+            Network::stop(mode);
         }
         catch (const Error& error) {
             print(error);
@@ -255,7 +267,7 @@ namespace TestContext
         test_context_is_stopped();
     }
 
-    auto test_context_valid_without_shutdown() -> void
+    auto test_context_valid_without_stop() -> void
     {
         std::string actual_error_str;
 
@@ -332,8 +344,8 @@ auto main(int argc, char* argv[]) -> int
         parse_arguments(argc, argv);
         test_context_global_instance();
         test_context_local_instances();
-        test_context_valid_with_shutdown();
-        test_context_valid_without_shutdown();
+        test_context_valid_with_stop();
+        test_context_valid_without_stop();
         test_context_version_null();
         test_hostname_running();
         test_hostname_stopped();
