@@ -118,9 +118,7 @@ namespace TestContext
 
         ~TestContext() final
         {
-            if (is_started() && stop(failure_mode::return_zero) == 0) {
-                is_started(false);
-            }
+            static_cast<void>(stop(mode));
         }
 
         auto operator=(const TestContext&) -> TestContext& = delete;
@@ -184,7 +182,7 @@ namespace TestContext
         assert(std::regex_match(actual_context_str, expected_context_regex));
     }
 
-    auto test_context_cleaned_up() -> void
+    auto test_context_is_stopped() -> void
     {
         context_error_type error_code {0};
         std::string actual_error_str;
@@ -218,7 +216,7 @@ namespace TestContext
         }
 
         assert(actual_error_str.empty());
-        test_context_cleaned_up();
+        test_context_is_stopped();
     }
 
     auto test_context_local_instances() -> void
@@ -237,7 +235,7 @@ namespace TestContext
         }
 
         assert(actual_error_str.empty());
-        test_context_cleaned_up();
+        test_context_is_stopped();
     }
 
     auto test_context_valid_with_shutdown() -> void
@@ -254,7 +252,7 @@ namespace TestContext
         }
 
         assert(actual_error_str.empty());
-        test_context_cleaned_up();
+        test_context_is_stopped();
     }
 
     auto test_context_valid_without_shutdown() -> void
@@ -271,7 +269,7 @@ namespace TestContext
         }
 
         assert(actual_error_str.empty());
-        test_context_cleaned_up();
+        test_context_is_stopped();
     }
 
     auto test_context_version_null() -> void
@@ -288,7 +286,7 @@ namespace TestContext
         }
 
         assert(actual_error_str == expected_error_version);
-        test_context_cleaned_up();
+        test_context_is_stopped();
     }
 
     auto test_hostname_running() -> void
@@ -306,7 +304,7 @@ namespace TestContext
         }
 
         assert(actual_error_str.empty());
-        test_context_cleaned_up();
+        test_context_is_stopped();
     }
 
     auto test_hostname_stopped() -> void
@@ -322,7 +320,7 @@ namespace TestContext
         }
 
         assert(actual_error_str == expected_error_stopped);
-        test_context_cleaned_up();
+        test_context_is_stopped();
     }
 }
 

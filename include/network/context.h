@@ -51,7 +51,7 @@ namespace Network
     protected:
         [[nodiscard]] auto is_started() const noexcept -> bool;
         auto is_started(bool t_is_started) noexcept -> Context&;
-        auto shutdown(failure_mode t_mode = failure_mode::throw_error) -> void;
+        auto stop(failure_mode t_mode = failure_mode::throw_error) -> Context&;
 
     private:
         std::string m_description;
