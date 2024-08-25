@@ -131,7 +131,8 @@ namespace TestContext
         auto stop() -> Context&
         {
             if (is_started()) {
-                m_error_code = Network::stop(failure_mode::return_error);
+                m_error_code = Network::stop(failure_mode::return_error,
+                                             is_verbose);
 
                 if (m_error_code == 0) {
                     is_started(false);
@@ -217,7 +218,8 @@ namespace TestContext
         std::string actual_error_str;
 
         try {
-            error_code = Network::stop(Context::failure_mode::return_error);
+            error_code = Network::stop(Context::failure_mode::return_error,
+                                       is_verbose);
             print(error_code);
         }
         catch (const Error& error) {

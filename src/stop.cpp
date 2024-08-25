@@ -33,20 +33,38 @@
                             // ::WSACleanup()
 #endif
 
-auto Network::stop(Context::failure_mode t_mode) -> context_error_type
+#ifdef WIN32
+#include <iostream>     // std::cerr, std::cout, std::endl
+#include <sstream>      // std::ostringstream
+#endif
+
+auto Network::stop(Context::failure_mode t_mode,
+                   bool t_is_verbose) -> context_error_type
 {
 #ifdef WIN32
     reset_last_context_error();
 
+    if (t_is_verbose) {
+        std::cout << "Calling ::WSACleanup()"
+                  << std::endl;
+    }
+
     if (::WSACleanup() == socket_error) {
         const auto error {get_last_context_error()};
+        const auto os_error {to_os_error(error)};
+        const auto message {format_os_error(os_error)};
+
+        if (t_is_verbose) {
+            std::cerr << "Call to ::WSACleanup() failed with error "
+                      << error
+                      << ": "
+                      << message
+                      << std::endl;
+        }
 
         switch (t_mode) {
         case Context::failure_mode::throw_error:
         {
-            const auto os_error {to_os_error(error)};
-            const auto message {format_os_error(os_error)};
-
             switch (error) {  // NOLINT
             case WSANOTINITIALISED:
                 throw LogicError {message};
