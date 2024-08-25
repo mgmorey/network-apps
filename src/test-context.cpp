@@ -318,7 +318,7 @@ namespace TestContext
         std::string actual_error_str;
 
         try {
-            const TestContext context {version_null};
+            const TestContext context {version_null, is_verbose};
             static_cast<void>(context);
         }
         catch (const Error& error) {
