@@ -42,7 +42,6 @@
 #include <exception>    // std::exception
 #include <iomanip>      // std::right, std::setw()
 #include <iostream>     // std::cerr, std::cout, std::endl
-#include <optional>     // std::nullopt
 #include <set>          // std::set
 #include <type_traits>  // std::decay_t, std::is_same_v
 #include <utility>      // std::move()
