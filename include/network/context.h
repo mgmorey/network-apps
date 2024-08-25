@@ -41,7 +41,8 @@ namespace Network
 
         static auto instance() -> const Context&;
 
-        explicit Context(const OptionalVersion& t_version = {});
+        explicit Context(const OptionalVersion& t_version = {},
+                         bool t_is_verbose = false);
         Context(const Context&) = delete;
         Context(const Context&&) = delete;
         virtual ~Context();
@@ -50,6 +51,7 @@ namespace Network
 
     protected:
         [[nodiscard]] auto is_started() const noexcept -> bool;
+        [[nodiscard]] auto is_verbose() const noexcept -> bool;
         auto is_started(bool t_is_started) noexcept -> Context&;
 
     private:
@@ -57,6 +59,7 @@ namespace Network
         std::string m_system_status;
         OptionalVersion m_version;
         bool m_is_started {false};
+        bool m_is_verbose {false};
     };
 
     extern auto operator<<(std::ostream& os,

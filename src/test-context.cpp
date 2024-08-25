@@ -29,6 +29,7 @@
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
+#include <optional>     // std::nullopt
 #include <regex>        // std::regex, std::regex_match
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
@@ -103,12 +104,14 @@ namespace TestContext
     public:
         static auto test_instance() -> TestContext&
         {
-            static TestContext test_context;
+            static TestContext test_context {std::nullopt,
+                                             ::TestContext::is_verbose};
             return test_context;
         }
 
-        explicit TestContext(const OptionalVersion& t_version = {}) :
-            Context(t_version)
+        explicit TestContext(const OptionalVersion& t_version = {},
+                             bool t_is_verbose = false) :
+            Context(t_version, t_is_verbose)
         {
         }
 
@@ -132,7 +135,7 @@ namespace TestContext
         {
             if (is_started()) {
                 m_error_code = Network::stop(failure_mode::return_error,
-                                             is_verbose);
+                                             is_verbose());
 
                 if (m_error_code == 0) {
                     is_started(false);
@@ -260,9 +263,9 @@ namespace TestContext
         std::string actual_error_str;
 
         try {
-            const TestContext context_1 {version_1_0};
+            const TestContext context_1 {version_1_0, is_verbose};
             test_context(context_1, "local 1");
-            const TestContext context_2 {version_2_0};
+            const TestContext context_2 {version_2_0, is_verbose};
             test_context(context_2, "local 2");
         }
         catch (const Error& error) {
@@ -279,7 +282,7 @@ namespace TestContext
         std::string actual_error_str;
 
         try {
-            TestContext context;
+            TestContext context {std::nullopt, is_verbose};
             test_context(context, "local 3");
             context.stop();
             assert(!context.error_code());
@@ -298,7 +301,7 @@ namespace TestContext
         std::string actual_error_str;
 
         try {
-            const TestContext context;
+            const TestContext context {std::nullopt, is_verbose};
             test_context(context, "local 4");
         }
         catch (const Error& error) {
@@ -332,7 +335,7 @@ namespace TestContext
         std::string actual_error_str;
 
         try {
-            const TestContext context;
+            const TestContext context {std::nullopt, is_verbose};
             test_context(context, "local 5");
             static_cast<void>(get_hostname(is_verbose));
         }

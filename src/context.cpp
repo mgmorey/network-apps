@@ -27,7 +27,8 @@ auto Network::Context::instance() -> const Context&
     return context;
 }
 
-Network::Context::Context(const OptionalVersion& t_version)
+Network::Context::Context(const OptionalVersion& t_version, bool t_is_verbose)
+    : m_is_verbose(t_is_verbose)
 {
     try {
         start(*this, t_version);
@@ -43,7 +44,7 @@ Network::Context::Context(const OptionalVersion& t_version)
     }
     catch (const Error& error) {
         if (m_is_started) {
-            if (stop(failure_mode::return_zero) == 0) {
+            if (stop(failure_mode::return_zero, m_is_verbose) == 0) {
                 m_is_started = false;
             }
         }
@@ -55,13 +56,18 @@ Network::Context::Context(const OptionalVersion& t_version)
 Network::Context::~Context()
 {
     if (m_is_started) {
-        stop(failure_mode::return_zero);
+        stop(failure_mode::return_zero, m_is_verbose);
     }
 }
 
 auto Network::Context::is_started() const noexcept -> bool
 {
     return m_is_started;
+}
+
+auto Network::Context::is_verbose() const noexcept -> bool
+{
+    return m_is_verbose;
 }
 
 auto Network::Context::is_started(bool t_is_started) noexcept -> Context&
