@@ -36,7 +36,6 @@
 
 namespace TestContext
 {
-    using Network::Context;
     using Network::Error;
     using Network::Hostname;
     using Network::OptionalVersion;
@@ -96,36 +95,36 @@ namespace TestContext
     static constexpr auto expected_error_version {""};
 #endif
 
-    static const auto fail {Context::failure_mode::return_error};  // NOLINT
     static auto is_verbose {false};  // NOLINT
 
-    class TestContext final :
-        public Context
+    class Context final :
+        public Network::Context
     {
     public:
-        static auto test_instance() -> TestContext&
+        static const auto fail {failure_mode::return_error};  // NOLINT
+
+        static auto test_instance() -> Context&
         {
-            static TestContext test_context {std::nullopt,
-                                             ::TestContext::is_verbose};
-            return test_context;
+            static Context context {std::nullopt, TestContext::is_verbose};
+            return context;
         }
 
-        explicit TestContext(const OptionalVersion& t_version = {},
-                             bool t_is_verbose = false) :
-            Context(t_version, t_is_verbose)
+        explicit Context(const OptionalVersion& t_version = {},
+                         bool t_is_verbose = false) :
+            Network::Context(t_version, t_is_verbose)
         {
         }
 
-        TestContext(const TestContext&) = delete;
-        TestContext(const TestContext&&) = delete;
+        Context(const Context&) = delete;
+        Context(const Context&&) = delete;
 
-        ~TestContext() final
+        ~Context() final
         {
             stop();
         }
 
-        auto operator=(const TestContext&) -> TestContext& = delete;
-        auto operator=(const TestContext&&) -> TestContext& = delete;
+        auto operator=(const Context&) -> Context& = delete;
+        auto operator=(const Context&&) -> Context& = delete;
 
         [[nodiscard]] auto error_code() const -> context_error_type
         {
@@ -186,7 +185,7 @@ namespace TestContext
         }
     }
 
-    auto print(const TestContext& context,
+    auto print(const Context& context,
                const std::string& scope) -> void
     {
         std::cout << "Context";
@@ -204,7 +203,7 @@ namespace TestContext
                   << std::endl;
     }
 
-    auto test_context(const TestContext& context,
+    auto test_context(const Context& context,
                       const std::string& scope) -> void
     {
         print(context, scope);
@@ -221,7 +220,7 @@ namespace TestContext
         std::string actual_error_str;
 
         try {
-            error_code = Network::stop(fail, is_verbose);
+            error_code = Network::stop(Context::fail, is_verbose);
             print(error_code);
         }
         catch (const Error& error) {
@@ -238,8 +237,8 @@ namespace TestContext
         std::string actual_error_str;
 
         try {
-            TestContext& context_1 {TestContext::test_instance()};
-            TestContext& context_2 {TestContext::test_instance()};
+            Context& context_1 {Context::test_instance()};
+            Context& context_2 {Context::test_instance()};
             test_context(context_1, "global");
             test_context(context_2, "global");
             assert(&context_1 == &context_2);
@@ -262,9 +261,9 @@ namespace TestContext
         std::string actual_error_str;
 
         try {
-            const TestContext context_1 {version_1_0, is_verbose};
+            const Context context_1 {version_1_0, is_verbose};
             test_context(context_1, "local 1");
-            const TestContext context_2 {version_2_0, is_verbose};
+            const Context context_2 {version_2_0, is_verbose};
             test_context(context_2, "local 2");
         }
         catch (const Error& error) {
@@ -281,7 +280,7 @@ namespace TestContext
         std::string actual_error_str;
 
         try {
-            TestContext context {std::nullopt, is_verbose};
+            Context context {std::nullopt, is_verbose};
             test_context(context, "local 3");
             context.stop();
             assert(!context.error_code());
@@ -300,7 +299,7 @@ namespace TestContext
         std::string actual_error_str;
 
         try {
-            const TestContext context {std::nullopt, is_verbose};
+            const Context context {std::nullopt, is_verbose};
             test_context(context, "local 4");
         }
         catch (const Error& error) {
@@ -317,7 +316,7 @@ namespace TestContext
         std::string actual_error_str;
 
         try {
-            const TestContext context {version_null, is_verbose};
+            const Context context {version_null, is_verbose};
             static_cast<void>(context);
         }
         catch (const Error& error) {
@@ -334,7 +333,7 @@ namespace TestContext
         std::string actual_error_str;
 
         try {
-            const TestContext context {std::nullopt, is_verbose};
+            const Context context {std::nullopt, is_verbose};
             test_context(context, "local 5");
             static_cast<void>(get_hostname(is_verbose));
         }
