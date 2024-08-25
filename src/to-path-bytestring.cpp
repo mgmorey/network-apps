@@ -23,7 +23,6 @@
 #include "network/sun-length-limits.h"          // sun_length_min
 
 #include <cstring>      // ::strnlen()
-#include <optional>     // std::nullopt
 #include <string>       // std::string
 
 auto Network::to_path(const ByteString& addr) -> OptionalPathname
@@ -32,7 +31,7 @@ auto Network::to_path(const ByteString& addr) -> OptionalPathname
     const auto path_len {addr.size() - sun_length_min};
 
     if (path_len == 0) {
-        return std::nullopt;
+        return {};
     }
 
     const auto* const path {get_path_pointer(sun)};
