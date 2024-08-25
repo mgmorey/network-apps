@@ -91,6 +91,7 @@ auto Network::stop(Context::failure_mode mode,
 
 #else
     static_cast<void>(mode);
+    static_cast<void>(is_verbose);
 #endif
     return 0;
 }
