@@ -46,6 +46,7 @@ namespace TestContext
     using Network::context_error_type;
     using Network::get_hostname;
     using Network::parse;
+    using Network::stop;
     using Network::version_null;
 
     static constexpr Version version_0_0 {0, 0};
@@ -96,7 +97,6 @@ namespace TestContext
 #endif
 
     static bool is_verbose {false};  // NOLINT
-    static const auto stop_mode {Context::failure_mode::return_error};
 
     class TestContext final :
         public Context
@@ -118,18 +118,18 @@ namespace TestContext
 
         ~TestContext() final
         {
-            if (is_started()) {
-                Network::stop(stop_mode);
-            }
+            stop();
         }
 
         auto operator=(const TestContext&) -> TestContext& = delete;
         auto operator=(const TestContext&&) -> TestContext& = delete;
 
-        auto stop(failure_mode t_mode) -> Context&
+        auto stop() -> Context&
         {
-            if (is_started() && Network::stop(t_mode) == 0) {
-                is_started(false);
+            if (is_started()) {
+                if (Network::stop(failure_mode::return_error) == 0) {
+                    is_started(false);
+                }
             }
 
             return *this;
@@ -208,7 +208,7 @@ namespace TestContext
         std::string actual_error_str;
 
         try {
-            error_code = Network::stop(stop_mode);
+            error_code = Network::stop(Context::failure_mode::return_error);
         }
         catch (const Error& error) {
             print(error);
@@ -230,8 +230,8 @@ namespace TestContext
             test_context(context_1, "global");
             test_context(context_2, "global");
             assert(&context_1 == &context_2);
-            context_1.stop(stop_mode);
-            context_2.stop(stop_mode);
+            context_1.stop();
+            context_2.stop();
         }
         catch (const Error& error) {
             print(error);
@@ -268,7 +268,7 @@ namespace TestContext
         try {
             TestContext context;
             test_context(context, "local 3");
-            context.stop(stop_mode);
+            context.stop();
         }
         catch (const Error& error) {
             print(error);
