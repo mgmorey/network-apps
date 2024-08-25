@@ -29,7 +29,6 @@
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
-#include <optional>     // std::nullopt
 #include <regex>        // std::regex, std::regex_match
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
@@ -105,7 +104,7 @@ namespace TestContext
 
         static auto test_instance() -> Context&
         {
-            static Context context {std::nullopt, TestContext::is_verbose};
+            static Context context {{}, TestContext::is_verbose};
             return context;
         }
 
@@ -280,7 +279,7 @@ namespace TestContext
         std::string actual_error_str;
 
         try {
-            Context context {std::nullopt, is_verbose};
+            Context context {{}, is_verbose};
             test_context(context, "local 3");
             context.stop();
             assert(!context.error_code());
@@ -299,7 +298,7 @@ namespace TestContext
         std::string actual_error_str;
 
         try {
-            const Context context {std::nullopt, is_verbose};
+            const Context context {{}, is_verbose};
             test_context(context, "local 4");
         }
         catch (const Error& error) {
@@ -333,7 +332,7 @@ namespace TestContext
         std::string actual_error_str;
 
         try {
-            const Context context {std::nullopt, is_verbose};
+            const Context context {{}, is_verbose};
             test_context(context, "local 5");
             static_cast<void>(get_hostname(is_verbose));
         }
