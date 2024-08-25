@@ -95,8 +95,8 @@ namespace TestContext
     static constexpr auto expected_error_version {""};
 #endif
 
-    static const auto mode {Context::failure_mode::return_error};
     static bool is_verbose {false};  // NOLINT
+    static const auto stop_mode {Context::failure_mode::return_error};
 
     class TestContext final :
         public Context
@@ -115,6 +115,14 @@ namespace TestContext
 
         TestContext(const TestContext&) = delete;
         TestContext(const TestContext&&) = delete;
+
+        ~TestContext() final
+        {
+            if (is_started()) {
+                Network::stop(stop_mode);
+            }
+        }
+
         auto operator=(const TestContext&) -> TestContext& = delete;
         auto operator=(const TestContext&&) -> TestContext& = delete;
 
@@ -200,7 +208,7 @@ namespace TestContext
         std::string actual_error_str;
 
         try {
-            error_code = Network::stop(mode);
+            error_code = Network::stop(stop_mode);
         }
         catch (const Error& error) {
             print(error);
@@ -222,8 +230,8 @@ namespace TestContext
             test_context(context_1, "global");
             test_context(context_2, "global");
             assert(&context_1 == &context_2);
-            context_1.stop(mode);
-            context_2.stop(mode);
+            context_1.stop(stop_mode);
+            context_2.stop(stop_mode);
         }
         catch (const Error& error) {
             print(error);
@@ -260,7 +268,7 @@ namespace TestContext
         try {
             TestContext context;
             test_context(context, "local 3");
-            context.stop(mode);
+            context.stop(stop_mode);
         }
         catch (const Error& error) {
             print(error);
