@@ -32,12 +32,10 @@ Network::Context::Context(const OptionalVersion& t_version)
     try {
         start(*this, t_version);
 
-        // Test for class invariant conditions and possibly throw
-        // exceptions here if one or more conditions are not met.
-
-        // The following is an example of a test for a trivial
-        // invariant, that the API should be initialized (or
-        // "Running"):
+        // Test for class invariant conditions and throw exceptions if
+        // one or more conditions are not met. The following is an
+        // example of a test for a trivial invariant (that the API
+        // should be initialized or "running"):
 
         if (!is_running(*this)) {
             throw RuntimeError {"The sockets runtime is not initialized."};
