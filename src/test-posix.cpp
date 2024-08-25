@@ -90,7 +90,7 @@ namespace TestSocket
         OptionalPathname opt_path;
 
         if (path == nullptr) {
-            opt_path = std::nullopt;
+            opt_path = {};
         }
         else {
             opt_path = path;
