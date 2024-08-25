@@ -45,7 +45,7 @@ Network::Context::Context(const OptionalVersion& t_version)
     }
     catch (const Error& error) {
         if (m_is_started) {
-            if (Network::stop(failure_mode::return_zero) == 0) {
+            if (stop(failure_mode::return_zero) == 0) {
                 m_is_started = false;
             }
         }
