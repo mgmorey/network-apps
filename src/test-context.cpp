@@ -155,24 +155,6 @@ namespace TestContext
         static_cast<void>(_);
     }
 
-    auto print(const TestContext& context,
-               const std::string& scope) -> void
-    {
-        std::cout << "Context";
-
-        if (is_verbose) {
-            std::cout << ' '
-                      << &context;
-        }
-
-        std::cout << ": "
-                  << scope
-                  << std::endl
-                  << "    "
-                  << context
-                  << std::endl;
-    }
-
     auto print(context_error_type error_code) -> void
     {
         if (is_verbose) {
@@ -189,6 +171,24 @@ namespace TestContext
                       << error.what()
                       << std::endl;
         }
+    }
+
+    auto print(const TestContext& context,
+               const std::string& scope) -> void
+    {
+        std::cout << "Context";
+
+        if (is_verbose) {
+            std::cout << ' '
+                      << &context;
+        }
+
+        std::cout << ": "
+                  << scope
+                  << std::endl
+                  << "    "
+                  << context
+                  << std::endl;
     }
 
     auto test_context(const TestContext& context,
