@@ -47,7 +47,7 @@
 #include <utility>      // std::move()
 #include <variant>      // std::visit()
 
-namespace TestConnect
+namespace Test
 {
     using Network::Address;
     using Network::ByteString;
@@ -270,7 +270,7 @@ namespace TestConnect
 
 auto main(int argc, char* argv[]) -> int
 {
-    using namespace TestConnect;
+    using namespace Test;
 
     const SocketHints hints {get_hints()};
 

@@ -46,7 +46,7 @@
 #include <utility>      // std::move()
 #include <variant>      // std::visit()
 
-namespace TestBind
+namespace Test
 {
     using Network::Address;
     using Network::ByteString;
@@ -208,7 +208,7 @@ namespace TestBind
 
 auto main(int argc, char* argv[]) -> int
 {
-    using namespace TestBind;
+    using namespace Test;
 
     const SocketHints hints {get_hints()};
 

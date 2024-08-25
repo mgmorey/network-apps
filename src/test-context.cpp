@@ -33,7 +33,7 @@
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
 
-namespace TestContext
+namespace Test
 {
     using Network::Error;
     using Network::Hostname;
@@ -104,7 +104,7 @@ namespace TestContext
 
         static auto test_instance() -> Context&
         {
-            static Context context {{}, TestContext::is_verbose};
+            static Context context {{}, Test::is_verbose};
             return context;
         }
 
@@ -354,7 +354,7 @@ namespace TestContext
 
 auto main(int argc, char* argv[]) -> int
 {
-    using namespace TestContext;
+    using namespace Test;
 
     try {
         parse_arguments(argc, argv);

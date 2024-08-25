@@ -37,7 +37,7 @@
 #include <stack>        // std::stack
 #include <string>       // std::string
 
-namespace TestSocket
+namespace Test
 {
     using Network::Address;
     using Network::ByteString;
@@ -352,7 +352,7 @@ namespace TestSocket
 
 auto main(int argc, char* argv[]) -> int
 {
-    using namespace TestSocket;
+    using namespace Test;
 
     try {
         const auto& context {Context::instance()};

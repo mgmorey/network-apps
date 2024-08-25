@@ -50,7 +50,7 @@
 #include <string>       // std::string
 #include <vector>       // std::vector
 
-namespace TestHost
+namespace Test
 {
     using Network::Address;
     using Network::ArgumentSpan;
@@ -404,7 +404,7 @@ namespace TestHost
 
 auto main(int argc, char* argv[]) -> int
 {
-    using namespace TestHost;
+    using namespace Test;
 
     try {
         const auto& context {Context::instance()};

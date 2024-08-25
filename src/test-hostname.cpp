@@ -22,7 +22,7 @@
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
 
-namespace TestHostname
+namespace Test
 {
     using Network::Context;
     using Network::Hostname;
@@ -61,7 +61,7 @@ namespace TestHostname
 
 auto main(int argc, char* argv[]) -> int
 {
-    using namespace TestHostname;
+    using namespace Test;
 
     try {
         const auto& context {Context::instance()};

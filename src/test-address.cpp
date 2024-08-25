@@ -51,7 +51,7 @@
 #include <regex>        // std::regex, std::regex_match
 #include <string>       // std::string
 
-namespace TestAddress
+namespace Test
 {
     using Network::Address;
     using Network::ByteString;
@@ -482,7 +482,7 @@ namespace TestAddress
 
 auto main(int argc, char* argv[]) -> int
 {
-    using namespace TestAddress;
+    using namespace Test;
 
     try {
         const auto& context {Context::instance()};

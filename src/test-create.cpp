@@ -34,7 +34,7 @@
 #include <regex>        // std::regex, std::regex_match
 #include <string>       // std::string
 
-namespace TestSocket
+namespace Test
 {
     using Network::Context;
     using Network::Error;
@@ -140,7 +140,7 @@ namespace TestSocket
 
 auto main(int argc, char* argv[]) -> int
 {
-    using namespace TestSocket;
+    using namespace Test;
 
     try {
         const auto& context {Context::instance()};

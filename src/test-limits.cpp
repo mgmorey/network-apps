@@ -28,7 +28,7 @@
 #include <regex>        // std::regex, std::regex_match
 #include <string>       // std::string
 
-namespace TestRanges
+namespace Test
 {
     using Network::RangeError;
     using Network::ValueError;
@@ -232,7 +232,7 @@ namespace TestRanges
 
 auto main() -> int
 {
-    using namespace TestRanges;
+    using namespace Test;
 
     try {
         test_name_length_invalid();

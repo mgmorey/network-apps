@@ -26,7 +26,7 @@
 #include <string>       // std::string
 #include <vector>       // std::vector
 
-namespace TestParse
+namespace Test
 {
     using Network::ArgumentData;
     using Network::ArgumentSpan;
@@ -113,7 +113,7 @@ namespace TestParse
 
 auto main(int argc, char* argv[]) -> int
 {
-    using namespace TestParse;
+    using namespace Test;
 
     try {
         test_arguments(argc, argv);
