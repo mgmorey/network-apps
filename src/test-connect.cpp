@@ -76,7 +76,7 @@ namespace TestConnect
     static constexpr auto remotehost {"example.com"};
     static constexpr auto service {"http"};
 
-    static bool is_verbose {false};  // NOLINT
+    static auto is_verbose {false};  // NOLINT
 
     class Test
     {

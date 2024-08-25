@@ -50,7 +50,7 @@ namespace TestSocket
         R"(Call to ::socket\(.+\) failed with error \d+: .+)"
     };
 
-    static bool is_verbose {false};  // NOLINT
+    static auto is_verbose {false};  // NOLINT
 
     auto parse_arguments(int argc, char** argv) -> void
     {

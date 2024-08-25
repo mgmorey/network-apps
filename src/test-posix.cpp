@@ -77,7 +77,7 @@ namespace TestSocket
     };
     static constexpr auto handle_width {6};
 
-    static bool is_verbose {false};  // NOLINT
+    static auto is_verbose {false};  // NOLINT
 
     auto operator==(const ByteString& addr,
                     const OptionalPathname& path) -> bool

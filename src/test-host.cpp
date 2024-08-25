@@ -80,7 +80,7 @@ namespace TestHost
     static const IpSocketHints ipv4 {af_ip_v4, SOCK_STREAM, AI_CANONNAME};
     static const IpSocketHints ipv6 {af_ip_v6, SOCK_STREAM, AI_CANONNAME};
 
-    static bool is_verbose {false};  // NOLINT
+    static auto is_verbose {false};  // NOLINT
 
     class Print
     {

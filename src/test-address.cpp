@@ -96,7 +96,7 @@ namespace TestAddress
 
     static const SocketHints unspec {af_unspec, SOCK_STREAM, 0, AI_CANONNAME};
 
-    static bool is_verbose {false};  // NOLINT
+    static auto is_verbose {false};  // NOLINT
 
     auto create_sa(sa_family_type family, std::size_t length = sa_size) -> sockaddr
     {

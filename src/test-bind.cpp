@@ -69,7 +69,7 @@ namespace TestBind
     static constexpr auto handle_width {6};
     static constexpr auto localhost {"localhost"};
 
-    static bool is_verbose {false};  // NOLINT
+    static auto is_verbose {false};  // NOLINT
 
     class Test
     {

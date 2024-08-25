@@ -29,7 +29,7 @@ namespace TestHostname
     using Network::get_hostname;
     using Network::parse;
 
-    static bool is_verbose {false};  // NOLINT
+    static auto is_verbose {false};  // NOLINT
 
     auto parse_arguments(int argc, char** argv) -> void
     {
