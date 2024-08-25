@@ -153,7 +153,7 @@ namespace TestBind
 
         return {
             !operands.empty() ? operands[0] : localhost,
-            std::nullopt
+            {}
         };
     }
 
@@ -224,7 +224,7 @@ auto main(int argc, char* argv[]) -> int
             test_bind_valid(endpoint, hints);
         }
 
-        const Endpoint invalid_host {".", std::nullopt};
+        const Endpoint invalid_host {".", {}};
         test_bind_invalid_host(invalid_host, hints);
     }
     catch (const std::exception& error) {
