@@ -115,12 +115,6 @@ namespace TestContext
 
         TestContext(const TestContext&) = delete;
         TestContext(const TestContext&&) = delete;
-
-        ~TestContext() final
-        {
-            static_cast<void>(stop(mode));
-        }
-
         auto operator=(const TestContext&) -> TestContext& = delete;
         auto operator=(const TestContext&&) -> TestContext& = delete;
 
