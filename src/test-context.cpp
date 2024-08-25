@@ -96,7 +96,8 @@ namespace TestContext
     static constexpr auto expected_error_version {""};
 #endif
 
-    static bool is_verbose {false};  // NOLINT
+    static const auto fail {Context::failure_mode::return_error};  // NOLINT
+    static auto is_verbose {false};  // NOLINT
 
     class TestContext final :
         public Context
@@ -134,8 +135,7 @@ namespace TestContext
         auto stop() -> Context&
         {
             if (is_started()) {
-                m_error_code = Network::stop(failure_mode::return_error,
-                                             is_verbose());
+                m_error_code = Network::stop(fail, is_verbose());
 
                 if (m_error_code == 0) {
                     is_started(false);
@@ -221,8 +221,7 @@ namespace TestContext
         std::string actual_error_str;
 
         try {
-            error_code = Network::stop(Context::failure_mode::return_error,
-                                       is_verbose);
+            error_code = Network::stop(fail, is_verbose);
             print(error_code);
         }
         catch (const Error& error) {
