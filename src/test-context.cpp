@@ -166,15 +166,6 @@ namespace TestContext
         static_cast<void>(_);
     }
 
-    auto print(context_error_type error_code) -> void
-    {
-        if (is_verbose) {
-            std::cout << "Error code: "
-                      << error_code
-                      << std::endl;
-        }
-    }
-
     auto print(const Error& error) -> void
     {
         if (is_verbose) {
@@ -220,7 +211,6 @@ namespace TestContext
 
         try {
             error_code = Network::stop(Context::fail, is_verbose);
-            print(error_code);
         }
         catch (const Error& error) {
             print(error);
