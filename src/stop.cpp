@@ -38,13 +38,13 @@
 #include <sstream>      // std::ostringstream
 #endif
 
-auto Network::stop(Context::failure_mode t_mode,
-                   bool t_is_verbose) -> context_error_type
+auto Network::stop(Context::failure_mode mode,
+                   bool is_verbose) -> context_error_type
 {
 #ifdef WIN32
     reset_last_context_error();
 
-    if (t_is_verbose) {
+    if (is_verbose) {
         std::cout << "Calling ::WSACleanup()"
                   << std::endl;
     }
@@ -54,7 +54,7 @@ auto Network::stop(Context::failure_mode t_mode,
         const auto os_error {to_os_error(error)};
         const auto message {format_os_error(os_error)};
 
-        if (t_is_verbose) {
+        if (is_verbose) {
             std::cerr << "Call to ::WSACleanup() failed with error "
                       << error
                       << ": "
@@ -62,7 +62,7 @@ auto Network::stop(Context::failure_mode t_mode,
                       << std::endl;
         }
 
-        switch (t_mode) {
+        switch (mode) {
         case Context::failure_mode::throw_error:
         {
             switch (error) {  // NOLINT
@@ -90,7 +90,7 @@ auto Network::stop(Context::failure_mode t_mode,
     }
 
 #else
-    static_cast<void>(t_mode);
+    static_cast<void>(mode);
 #endif
     return 0;
 }
