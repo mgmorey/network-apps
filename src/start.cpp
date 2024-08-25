@@ -35,6 +35,11 @@
 #endif
 
 #ifdef WIN32
+#include <iostream>     // std::cerr, std::cout, std::endl
+#include <sstream>      // std::ostringstream
+#endif
+
+#ifdef WIN32
 static constexpr Network::Version wsa_default {2, 2};
 #else
 static constexpr auto description {"Berkeley Software Distribution Sockets"};
@@ -46,9 +51,26 @@ auto Network::start(Context& context, const OptionalVersion& version) -> void
     const WindowsVersion wsa_version {version.value_or(wsa_default)};
     WSADATA wsa_data {};
 
+    if (context.is_verbose()) {
+        std::cout << "Calling ::WSAStartup("
+                  << wsa_version
+                  << ", ...)"
+                  << std::endl;
+    }
+
     if (const auto error {::WSAStartup(WORD {wsa_version}, &wsa_data)}) {
         const auto os_error {to_os_error(error)};
         const auto message {format_os_error(os_error)};
+
+        if (context.is_verbose()) {
+            std::cerr << "Call to ::WSAStartup("
+                      << wsa_version
+                      << ", ...) failed with error "
+                      << error
+                      << ": "
+                      << message
+                      << std::endl;
+        }
 
         switch (error) {  // NOLINT
         case WSAEFAULT:
