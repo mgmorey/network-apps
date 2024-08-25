@@ -44,8 +44,10 @@ Network::Context::Context(const OptionalVersion& t_version)
         }
     }
     catch (const Error& error) {
-        if (m_is_started && Network::stop(failure_mode::return_zero) == 0) {
-            m_is_started = false;
+        if (m_is_started) {
+            if (Network::stop(failure_mode::return_zero) == 0) {
+                m_is_started = false;
+            }
         }
 
         throw;
@@ -54,7 +56,9 @@ Network::Context::Context(const OptionalVersion& t_version)
 
 Network::Context::~Context()
 {
-    static_cast<void>(stop(failure_mode::return_zero));
+    if (m_is_started) {
+        Network::stop(failure_mode::return_zero);
+    }
 }
 
 auto Network::Context::is_started() const noexcept -> bool
@@ -65,14 +69,5 @@ auto Network::Context::is_started() const noexcept -> bool
 auto Network::Context::is_started(bool t_is_started) noexcept -> Context&
 {
     m_is_started = t_is_started;
-    return *this;
-}
-
-auto Network::Context::stop(failure_mode t_mode) -> Context&
-{
-    if (m_is_started && Network::stop(t_mode) == 0) {
-        m_is_started = false;
-    }
-
     return *this;
 }
