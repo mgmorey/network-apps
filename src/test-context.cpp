@@ -46,7 +46,6 @@ namespace TestContext
     using Network::context_error_type;
     using Network::get_hostname;
     using Network::parse;
-    using Network::stop;
     using Network::version_null;
 
     static constexpr Version version_0_0 {0, 0};
@@ -124,16 +123,26 @@ namespace TestContext
         auto operator=(const TestContext&) -> TestContext& = delete;
         auto operator=(const TestContext&&) -> TestContext& = delete;
 
+        [[nodiscard]] auto error_code() const -> context_error_type
+        {
+            return m_error_code;
+        }
+
         auto stop() -> Context&
         {
             if (is_started()) {
-                if (Network::stop(failure_mode::return_error) == 0) {
+                m_error_code = Network::stop(failure_mode::return_error);
+
+                if (m_error_code == 0) {
                     is_started(false);
                 }
             }
 
             return *this;
         }
+
+    private:
+        context_error_type m_error_code {0};
     };
 
     auto parse_arguments(int argc, char** argv) -> void
@@ -209,13 +218,13 @@ namespace TestContext
 
         try {
             error_code = Network::stop(Context::failure_mode::return_error);
+            print(error_code);
         }
         catch (const Error& error) {
             print(error);
             actual_error_str = error.what();
         }
 
-        print(error_code);
         assert(error_code == expected_code_stopped);
         assert(actual_error_str.empty());
     }
@@ -231,7 +240,9 @@ namespace TestContext
             test_context(context_2, "global");
             assert(&context_1 == &context_2);
             context_1.stop();
+            assert(!context_1.error_code());
             context_2.stop();
+            assert(!context_2.error_code());
         }
         catch (const Error& error) {
             print(error);
@@ -269,6 +280,7 @@ namespace TestContext
             TestContext context;
             test_context(context, "local 3");
             context.stop();
+            assert(!context.error_code());
         }
         catch (const Error& error) {
             print(error);
