@@ -18,12 +18,15 @@
 
 #include "network/valueerror.h"         // ValueError
 
+#include <type_traits>  // std::is_arithmetic_v
 #include <utility>      // std::in_range()
 
 namespace Network
 {
-    template<typename T>
-    auto to_value(const std::string& value_type, auto value) -> T
+    template <typename T, typename V>
+    requires std::is_arithmetic_v<T>
+    and std::is_arithmetic_v<V>
+    auto to_value(const std::string& value_type, V value) -> T
     {
         if (!std::in_range<T>(value)) {
             throw ValueError<T>(value_type, value);
@@ -32,8 +35,10 @@ namespace Network
         return static_cast<T>(value);
     }
 
-    template<typename T>
-    auto to_value(const std::string& value_type, auto value, T min, T max) -> T
+    template<typename T, typename V>
+    requires std::is_arithmetic_v<T>
+    and std::is_arithmetic_v<V>
+    auto to_value(const std::string& value_type, V value, T min, T max) -> T
     {
         if (std::cmp_less(value, min) || std::cmp_greater(value, max)) {
             throw ValueError<T>(value_type, value, min, max);
