@@ -43,7 +43,7 @@
 #ifdef WIN32
 static constexpr Network::Version wsa_default {2, 2};
 #else
-static constexpr auto description {"Berkeley Software Distribution Sockets"};
+static constexpr std::string_view description {"Berkeley Software Distribution Sockets"};
 #endif
 
 auto Network::start(Context& context,
