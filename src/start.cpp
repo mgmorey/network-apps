@@ -37,6 +37,7 @@
 #ifdef WIN32
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <sstream>      // std::ostringstream
+#include <string_view>  // std::string_view
 #endif
 
 #ifdef WIN32
@@ -85,8 +86,8 @@ auto Network::start(Context& context,
         }
     }
 
-    context.m_description = wsa_data.szDescription;		// NOLINT
-    context.m_system_status = wsa_data.szSystemStatus;		// NOLINT
+    context.m_description = std::string_view(wsa_data.szDescription);
+    context.m_system_status = std::string_view(wsa_data.szSystemStatus);
     context.m_version = WindowsVersion {wsa_data.wVersion};
 #else
     context.m_description = description;
