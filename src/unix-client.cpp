@@ -34,7 +34,7 @@ using Network::Socket;
 using Network::UnixSocketHints;
 using Network::socket_error;
 
-static bool is_verbose {false};  // NOLINT
+static auto is_verbose {false};  // NOLINT
 
 namespace Client {
     auto connect() -> Socket
@@ -100,7 +100,7 @@ auto main(int argc, char* argv[]) -> int
     try {
         // Connect Unix domain socket to pathname.
         const auto sock {Client::connect()};
-        bool shutdown_pending {false};
+        auto shutdown_pending {false};
 
         // Send arguments to server.
         for (const auto& arg : args) {

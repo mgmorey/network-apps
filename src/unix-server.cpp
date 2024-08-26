@@ -36,7 +36,7 @@ using Number = long long;
 
 static constexpr auto backlog_size {20};
 
-static bool is_verbose {false};  // NOLINT
+static auto is_verbose {false};  // NOLINT
 
 namespace Server {
     auto accept(const Socket& bind_sock) -> Socket
@@ -125,7 +125,7 @@ auto main(int argc, char* argv[]) -> int
     try {
         // Bind Unix domain socket to pathname.
         const auto bind_sock {Server::bind()};
-        bool shutdown_pending {false};
+        auto shutdown_pending {false};
 
         // Prepare for accepting connections. While one request is
         // being processed other requests can be waiting.
