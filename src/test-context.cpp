@@ -35,6 +35,7 @@
 
 namespace Test
 {
+    using Network::Context;
     using Network::Error;
     using Network::Hostname;
     using Network::OptionalVersion;
@@ -94,51 +95,8 @@ namespace Test
     static constexpr auto expected_error_version {""};
 #endif
 
+    static const auto mode {Context::failure_mode::return_error};
     static auto is_verbose {false};  // NOLINT
-
-    class Context final :
-        public Network::Context
-    {
-    public:
-        static const auto fail {failure_mode::return_error};  // NOLINT
-
-        static auto test_instance() -> Context&
-        {
-            static Context context {{}, Test::is_verbose};
-            return context;
-        }
-
-        explicit Context(const OptionalVersion& t_version = {},
-                         bool t_is_verbose = false) :
-            Network::Context(t_version, t_is_verbose)
-        {
-        }
-
-        Context(const Context&) = delete;
-        Context(const Context&&) = delete;
-
-        ~Context() final
-        {
-            stop();
-        }
-
-        auto operator=(const Context&) -> Context& = delete;
-        auto operator=(const Context&&) -> Context& = delete;
-
-        [[nodiscard]] auto error_code() const -> context_error_type
-        {
-            return m_error_code;
-        }
-
-        auto stop() -> Context&
-        {
-            Network::stop(*this, fail);
-            return *this;
-        }
-
-    private:
-        context_error_type m_error_code {0};
-    };
 
     auto parse_arguments(int argc, char** argv) -> void
     {
@@ -203,7 +161,7 @@ namespace Test
         std::string actual_error_str;
 
         try {
-            error_code = Network::stop(Context::fail, is_verbose);
+            error_code = Network::stop(mode, is_verbose);
         }
         catch (const Error& error) {
             print(error);
@@ -216,24 +174,23 @@ namespace Test
 
     auto test_context_global_instance() -> void
     {
+        context_error_type error_code {0};
         std::string actual_error_str;
 
         try {
-            Context& context_1 {Context::test_instance()};
-            Context& context_2 {Context::test_instance()};
+            const Context& context_1 {Context::instance()};
+            const Context& context_2 {Context::instance()};
             test_context(context_1, "global");
             test_context(context_2, "global");
             assert(&context_1 == &context_2);
-            context_1.stop();
-            assert(!context_1.error_code());
-            context_2.stop();
-            assert(!context_2.error_code());
+            error_code = Network::stop(mode, is_verbose);
         }
         catch (const Error& error) {
             print(error);
             actual_error_str = error.what();
         }
 
+        assert(!error_code);
         assert(actual_error_str.empty());
         test_context_is_stopped();
     }
@@ -264,7 +221,7 @@ namespace Test
         try {
             Context context {{}, is_verbose};
             test_context(context, "local 3");
-            context.stop();
+            context.stop(mode);
             assert(!context.error_code());
         }
         catch (const Error& error) {

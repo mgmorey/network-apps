@@ -27,20 +27,18 @@ namespace Network
 {
     class Context
     {
+        friend auto operator<<(std::ostream& os,
+                               const Context& context) -> std::ostream&;
+        friend auto is_running(const Context& context) -> bool;
+        friend auto start(Context& context,
+                          const OptionalVersion& version) -> Context&;
+
     public:
         enum class failure_mode : std::uint8_t {
             return_error,
             return_zero,
             throw_error
         };
-
-        friend auto operator<<(std::ostream& os,
-                               const Context& context) -> std::ostream&;
-        friend auto is_running(const Context& context) -> bool;
-        friend auto start(Context& context,
-                          const OptionalVersion& version) -> Context&;
-        friend auto stop(Context& context,
-                         Context::failure_mode mode) -> Context&;
 
         static auto instance() -> const Context&;
 
@@ -51,8 +49,10 @@ namespace Network
         virtual ~Context();
         auto operator=(const Context&) -> Context& = delete;
         auto operator=(const Context&&) -> Context& = delete;
+        [[nodiscard]] auto error_code() const noexcept -> context_error_type;
         [[nodiscard]] auto is_started() const noexcept -> bool;
         [[nodiscard]] auto is_verbose() const noexcept -> bool;
+        auto stop(failure_mode mode) -> Context&;
 
     protected:
         auto is_started(bool t_is_started) noexcept -> Context&;
@@ -61,6 +61,7 @@ namespace Network
         std::string m_description;
         std::string m_system_status;
         OptionalVersion m_version;
+        context_error_type m_error_code {0};
         bool m_is_started {false};
         bool m_is_verbose {false};
     };
