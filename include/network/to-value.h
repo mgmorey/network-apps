@@ -35,7 +35,7 @@ namespace Network
         return static_cast<T>(value);
     }
 
-    template<typename T, typename V>
+    template <typename T, typename V>
     requires std::is_arithmetic_v<T>
     and std::is_arithmetic_v<V>
     auto to_value(const std::string& value_type, V value, T min, T max) -> T

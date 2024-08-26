@@ -22,12 +22,12 @@ namespace Network
     // 13.5.1 of "A Tour of C++" (Second Edition) by Bjarne
     // Stroustrup.
 
-    template<typename... Ts>
+    template <typename... Ts>
     struct Overloaded : Ts... {
         using Ts::operator()...;
     };
 
-    template<typename... Ts>
+    template <typename... Ts>
     Overloaded(Ts...) -> Overloaded<Ts...>; // deduction guide
 }
 

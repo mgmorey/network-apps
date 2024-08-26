@@ -23,7 +23,7 @@
 
 namespace Network
 {
-    template<typename T>
+    template <typename T>
     class ValueError :
         public RangeError
     {

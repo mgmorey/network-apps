@@ -20,7 +20,7 @@
 
 namespace Network
 {
-    template<typename Container>
+    template <typename Container>
     auto uniquify(Container& cont) noexcept -> void
     {
         cont.erase(std::unique(cont.begin(),
