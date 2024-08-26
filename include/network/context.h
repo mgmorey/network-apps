@@ -50,7 +50,6 @@ namespace Network
         auto operator=(const Context&) -> Context& = delete;
         auto operator=(const Context&&) -> Context& = delete;
         [[nodiscard]] auto error_code() const noexcept -> context_error_type;
-        [[nodiscard]] auto is_started() const noexcept -> bool;
         [[nodiscard]] auto is_verbose() const noexcept -> bool;
         auto stop(failure_mode mode) -> Context&;
 

@@ -58,11 +58,6 @@ auto Network::Context::error_code() const noexcept -> context_error_type
     return m_error_code;
 }
 
-auto Network::Context::is_started() const noexcept -> bool
-{
-    return m_is_started;
-}
-
 auto Network::Context::is_verbose() const noexcept -> bool
 {
     return m_is_verbose;
