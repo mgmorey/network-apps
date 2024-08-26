@@ -31,7 +31,7 @@ Network::Context::Context(const OptionalVersion& t_version, bool t_is_verbose)
     : m_is_verbose(t_is_verbose)
 {
     try {
-        start(*this, t_version);
+        start(t_version);
 
         // Test for class invariant conditions and throw exceptions if
         // one or more conditions are not met. The following is an
@@ -61,6 +61,11 @@ auto Network::Context::error_code() const noexcept -> context_error_type
 auto Network::Context::is_verbose() const noexcept -> bool
 {
     return m_is_verbose;
+}
+
+auto Network::Context::start(const OptionalVersion& t_version) -> Context&
+{
+    return Network::start(*this, t_version);
 }
 
 auto Network::Context::stop(failure_mode mode) -> Context&
