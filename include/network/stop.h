@@ -23,8 +23,6 @@ namespace Network
 {
     extern auto stop(Context::failure_mode mode,
                      bool is_verbose) -> context_error_type;
-    extern auto stop(Context& context,
-                     Context::failure_mode mode) -> context_error_type;
 }
 
 #endif

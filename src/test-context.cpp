@@ -133,7 +133,7 @@ namespace Test
         auto stop() -> Context&
         {
             if (is_started()) {
-                m_error_code = Network::stop(*this, fail);
+                m_error_code = Network::stop(fail, is_verbose());
 
                 if (m_error_code == 0) {
                     is_started(false);
