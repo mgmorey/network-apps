@@ -22,9 +22,9 @@
 #include <cstddef>      // std::size_t
 #include <string>       // std::string
 
-auto Network::read_string(std::size_t size, const Socket& sock) -> ReadResult
+auto Network::read_string(const Socket& sock, std::size_t size) -> ReadResult
 {
     Buffer<char> buffer {size};
-    const auto result {read(buffer.data(), buffer.size(), sock)};
+    const auto result {read(sock, buffer.data(), buffer.size())};
     return {std::string {buffer}, result};
 }

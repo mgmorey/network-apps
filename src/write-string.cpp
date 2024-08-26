@@ -21,7 +21,7 @@
 
 #include <string>       // std::string
 
-auto Network::write(const std::string& str, const Socket& sock) -> ssize_t
+auto Network::write(const Socket& sock, const std::string& str) -> ssize_t
 {
-    return write(str.data(), str.size(), sock);
+    return write(sock, str.data(), str.size());
 }

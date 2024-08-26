@@ -27,9 +27,9 @@
 
 #include <cstddef>      // std::size_t
 
-auto Network::read(char* data,
-                   std::size_t size,
-                   const Socket& sock) -> ssize_t
+auto Network::read(const Socket& sock,
+                   char* data,
+                   std::size_t size) -> ssize_t
 {
     const handle_type handle {sock};
 #ifdef WIN32

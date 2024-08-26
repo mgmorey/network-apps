@@ -24,7 +24,7 @@
 
 namespace Network
 {
-    extern auto write(const std::string& str, const Socket& sock) -> ssize_t;
+    extern auto write(const Socket& sock, const std::string& str) -> ssize_t;
 }
 
 #endif
