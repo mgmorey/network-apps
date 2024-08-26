@@ -80,9 +80,3 @@ auto Network::Context::stop(failure_mode mode) -> Context&
 
     return *this;
 }
-
-auto Network::Context::is_started(bool t_is_started) noexcept -> Context&
-{
-    m_is_started = t_is_started;
-    return *this;
-}

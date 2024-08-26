@@ -54,9 +54,6 @@ namespace Network
         [[nodiscard]] auto is_verbose() const noexcept -> bool;
         auto stop(failure_mode mode) -> Context&;
 
-    protected:
-        auto is_started(bool t_is_started) noexcept -> Context&;
-
     private:
         std::string m_description;
         std::string m_system_status;
