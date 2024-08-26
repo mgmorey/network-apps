@@ -16,7 +16,8 @@
 #ifndef NETWORK_CONTEXT_H
 #define NETWORK_CONTEXT_H
 
-#include "network/optionalversion.h"    // OptionalVersion
+#include "network/context-error-type.h"     // context_error_type
+#include "network/optionalversion.h"        // OptionalVersion
 
 #include <cstdint>      // std::uint8_t
 #include <ostream>      // std::ostream
@@ -26,18 +27,20 @@ namespace Network
 {
     class Context
     {
-        friend auto operator<<(std::ostream& os,
-                               const Context& context) -> std::ostream&;
-        friend auto is_running(const Context& context) -> bool;
-        friend auto start(Context& context,
-                          const OptionalVersion& version) -> void;
-
     public:
         enum class failure_mode : std::uint8_t {
             return_error,
             return_zero,
             throw_error
         };
+
+        friend auto operator<<(std::ostream& os,
+                               const Context& context) -> std::ostream&;
+        friend auto is_running(const Context& context) -> bool;
+        friend auto start(Context& context,
+                          const OptionalVersion& version) -> Context&;
+        friend auto stop(Context& context,
+                         Context::failure_mode mode) -> Context&;
 
         static auto instance() -> const Context&;
 

@@ -43,21 +43,14 @@ Network::Context::Context(const OptionalVersion& t_version, bool t_is_verbose)
         }
     }
     catch (const Error& error) {
-        if (m_is_started) {
-            if (stop(failure_mode::return_zero, m_is_verbose) == 0) {
-                m_is_started = false;
-            }
-        }
-
+        stop(*this, failure_mode::return_zero);
         throw;
     }
 }
 
 Network::Context::~Context()
 {
-    if (m_is_started) {
-        stop(failure_mode::return_zero, m_is_verbose);
-    }
+    stop(*this, failure_mode::return_zero);
 }
 
 auto Network::Context::is_started() const noexcept -> bool

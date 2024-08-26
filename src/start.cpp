@@ -45,7 +45,8 @@ static constexpr Network::Version wsa_default {2, 2};
 static constexpr auto description {"Berkeley Software Distribution Sockets"};
 #endif
 
-auto Network::start(Context& context, const OptionalVersion& version) -> void
+auto Network::start(Context& context,
+                    const OptionalVersion& version) -> Context&
 {
 #ifdef WIN32
     const WindowsVersion wsa_version {version.value_or(wsa_default)};
@@ -92,4 +93,5 @@ auto Network::start(Context& context, const OptionalVersion& version) -> void
     context.m_version = version;
 #endif
     context.m_is_started = true;
+    return context;
 }

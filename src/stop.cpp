@@ -95,3 +95,15 @@ auto Network::stop(Context::failure_mode mode,
 #endif
     return 0;
 }
+
+auto Network::stop(Context& context,
+                   Context::failure_mode mode) -> Context&
+{
+    if (context.is_started()) {
+        if (stop(mode, context.is_verbose()) == 0) {
+            context.is_started(false);
+        }
+    }
+
+    return context;
+}

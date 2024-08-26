@@ -16,13 +16,16 @@
 #ifndef NETWORK_STOP_H
 #define NETWORK_STOP_H
 
-#include "network/context-error-type.h"     // context_error_type
-#include "network/context.h"                // Context
+#include "network/context-error-type.h"         // context_error_type
+#include "network/context.h"                    // Context
 
 namespace Network
 {
     extern auto stop(Context::failure_mode mode,
                      bool is_verbose) -> context_error_type;
+    // NOLINTNEXTLINE
+    extern auto stop(Context& context,
+                     Context::failure_mode mode) -> Context&;
 }
 
 #endif

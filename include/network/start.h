@@ -23,7 +23,7 @@ namespace Network
 {
     // NOLINTNEXTLINE
     extern auto start(Context& context,
-                      const OptionalVersion& version) -> void;
+                      const OptionalVersion& version) -> Context&;
 }
 
 #endif
