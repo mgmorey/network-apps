@@ -65,6 +65,10 @@ auto Network::Context::is_verbose() const noexcept -> bool
 
 auto Network::Context::start(const OptionalVersion& t_version) -> Context&
 {
+    if (m_is_started) {
+        return *this;
+    }
+
     return Network::start(*this, t_version);
 }
 
