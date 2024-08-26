@@ -48,10 +48,10 @@ namespace Network
         virtual ~Context();
         auto operator=(const Context&) -> Context& = delete;
         auto operator=(const Context&&) -> Context& = delete;
-
-    protected:
         [[nodiscard]] auto is_started() const noexcept -> bool;
         [[nodiscard]] auto is_verbose() const noexcept -> bool;
+
+    protected:
         auto is_started(bool t_is_started) noexcept -> Context&;
 
     private:

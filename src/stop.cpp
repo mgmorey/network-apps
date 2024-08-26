@@ -90,8 +90,14 @@ auto Network::stop(Context::failure_mode mode,
     }
 
 #else
-    static_cast<void>(mode);
     static_cast<void>(is_verbose);
+    static_cast<void>(mode);
 #endif
     return 0;
+}
+
+auto Network::stop(Context& context,
+                   Context::failure_mode mode) -> context_error_type
+{
+    return stop(mode, context.is_verbose());
 }
