@@ -30,7 +30,6 @@ namespace Network
     {
         friend auto operator<<(std::ostream& os,
                                const Context& context) -> std::ostream&;
-        friend auto is_running(const Context& context) -> bool;
 
     public:
         enum class failure_mode : std::uint8_t {
@@ -49,6 +48,7 @@ namespace Network
         auto operator=(const Context&) -> Context& = delete;
         auto operator=(const Context&&) -> Context& = delete;
         [[nodiscard]] auto error_code() const noexcept -> context_error_type;
+        [[nodiscard]] auto is_running() const noexcept -> bool;
         [[nodiscard]] auto is_started() const noexcept -> bool;
         [[nodiscard]] auto is_verbose() const noexcept -> bool;
         auto set(const std::string_view& t_description,

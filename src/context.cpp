@@ -15,7 +15,6 @@
 
 #include "network/context.h"            // Context
 #include "network/error.h"              // Error
-#include "network/is-running.h"         // is_running()
 #include "network/optionalversion.h"    // OptionalVersion
 #include "network/runtimeerror.h"       // RuntimeError
 #include "network/start.h"              // start()
@@ -38,7 +37,7 @@ Network::Context::Context(const OptionalVersion& t_version, bool t_is_verbose)
         // example of a test for a trivial invariant (that the API
         // should be initialized or "running"):
 
-        if (!is_running(*this)) {
+        if (!is_running()) {
             throw RuntimeError {"The sockets runtime is not initialized."};
         }
     }
@@ -56,6 +55,11 @@ Network::Context::~Context()
 auto Network::Context::error_code() const noexcept -> context_error_type
 {
     return m_error_code;
+}
+
+auto Network::Context::is_running() const noexcept -> bool
+{
+    return m_system_status == "Running";
 }
 
 auto Network::Context::is_started() const noexcept -> bool

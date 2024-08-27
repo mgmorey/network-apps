@@ -148,7 +148,7 @@ namespace Test
                       const std::string& scope) -> void
     {
         assert(context.is_started());
-        assert(is_running(context));
+        assert(context.is_running());
         print(context, scope);
         std::ostringstream oss;
         oss << context;
