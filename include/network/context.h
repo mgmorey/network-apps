@@ -38,13 +38,14 @@ namespace Network
             throw_error
         };
 
+        static const auto m_failsafe {failure_mode::return_zero};
         static auto instance() -> const Context&;
 
         explicit Context(const OptionalVersion& t_version = {},
                          bool t_is_verbose = false);
         Context(const Context&) = delete;
         Context(const Context&&) = delete;
-        virtual ~Context();
+        ~Context();
         auto operator=(const Context&) -> Context& = delete;
         auto operator=(const Context&&) -> Context& = delete;
         [[nodiscard]] auto error_code() const noexcept -> context_error_type;

@@ -49,7 +49,9 @@ Network::Context::Context(const OptionalVersion& t_version, bool t_is_verbose)
 
 Network::Context::~Context()
 {
-    stop(failure_mode::return_zero);
+    if (m_is_started) {
+        Network::stop(m_failsafe, m_is_verbose);
+    }
 }
 
 auto Network::Context::error_code() const noexcept -> context_error_type
@@ -98,6 +100,9 @@ auto Network::Context::stop(failure_mode mode) -> Context&
         m_error_code = Network::stop(mode, m_is_verbose);
 
         if (m_error_code == 0) {
+            m_description = {};
+            m_system_status = {};
+            m_version = {};
             m_is_started = false;
         }
     }
