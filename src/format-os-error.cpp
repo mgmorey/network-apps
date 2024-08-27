@@ -51,20 +51,20 @@ namespace {
 #endif
 }
 
-auto Network::format_os_error(os_error_type error) -> std::string
+auto Network::format_os_error(os_error_type os_error_code) -> std::string
 {
 #ifdef WIN32
     LPTSTR error_text {nullptr};
 
-    if (format(error, error_text) == 0 || error_text == nullptr) {
+    if (format(os_error_code, error_text) == 0 || error_text == nullptr) {
         throw RuntimeError(std::string("Unable to format message for error ") +
-                           std::to_string(error));
+                           std::to_string(os_error_code));
     }
 
     const std::string message {error_text};
     static_cast<void>(::LocalFree(error_text));
     return message.substr(0, message.rfind('\r'));
 #else
-    return std::strerror(error);
+    return std::strerror(os_error_code);
 #endif
 }

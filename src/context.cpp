@@ -55,7 +55,7 @@ Network::Context::~Context()
     }
 }
 
-auto Network::Context::error_code() const noexcept -> context_error_type
+auto Network::Context::error_code() const noexcept -> int
 {
     return m_error_code;
 }

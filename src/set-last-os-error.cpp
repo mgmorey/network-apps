@@ -24,12 +24,12 @@
 #include <cerrno>           // errno
 #endif
 
-auto Network::set_last_os_error(os_error_type os_error) -> os_error_type
+auto Network::set_last_os_error(os_error_type os_error_code) -> os_error_type
 {
 #ifdef WIN32
-    ::SetLastError(os_error);
+    ::SetLastError(os_error_code);
 #else
-    errno = os_error;
+    errno = os_error_code;
 #endif
-    return os_error;
+    return os_error_code;
 }

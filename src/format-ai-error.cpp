@@ -14,7 +14,6 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/format-ai-error.h"            // format_ai_error()
-#include "network/context-error-type.h"         // context_error_type
 
 #ifdef WIN32
 #include "network/format-os-error.h"            // format_os_error()
@@ -27,12 +26,12 @@
 
 #include <string>       // std::string
 
-auto Network::format_ai_error(context_error_type error) -> std::string
+auto Network::format_ai_error(int error_code) -> std::string
 {
 #ifdef WIN32
-    const auto os_error {to_os_error(error)};
-    return format_os_error(os_error);
+    const auto os_error_code {to_os_error(error_code)};
+    return format_os_error(os_error_code);
 #else
-    return ::gai_strerror(error);
+    return ::gai_strerror(error_code);
 #endif
 }

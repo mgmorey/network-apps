@@ -14,7 +14,6 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/listen.h"                     // listen()
-#include "network/context-error-type.h"         // context_error_type
 #include "network/handle-type.h"                // handle_type
 #include "network/socket.h"                     // Socket
 
@@ -24,7 +23,7 @@
 #include <sys/socket.h>     // ::listen()
 #endif
 
-auto Network::listen(const Socket& sock, int backlog_size) -> context_error_type
+auto Network::listen(const Socket& sock, int backlog_size) -> int
 {
     return ::listen(handle_type {sock}, backlog_size);
 }

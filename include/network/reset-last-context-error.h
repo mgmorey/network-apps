@@ -16,11 +16,9 @@
 #ifndef NETWORK_RESET_LAST_CONTEXT_ERROR_H
 #define NETWORK_RESET_LAST_CONTEXT_ERROR_H
 
-#include "network/context-error-type.h"     // context_error_type
-
 namespace Network
 {
-    extern auto reset_last_context_error() -> context_error_type;
+    extern auto reset_last_context_error() -> int;
 }
 
 #endif

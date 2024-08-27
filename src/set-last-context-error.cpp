@@ -14,7 +14,6 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/set-last-context-error.h"     // set_last_context_error()
-#include "network/context-error-type.h"         // context_error_type,
 
 #ifdef WIN32
 #include <winsock2.h>       // WSASetLastError()
@@ -22,13 +21,12 @@
 #include <cerrno>           // errno
 #endif
 
-auto Network::set_last_context_error(context_error_type error) ->
-    context_error_type
+auto Network::set_last_context_error(int error_code) -> int
 {
 #ifdef WIN32
-    ::WSASetLastError(error);
+    ::WSASetLastError(error_code);
 #else
-    errno = error;
+    errno = error_code;
 #endif
-    return error;
+    return error_code;
 }

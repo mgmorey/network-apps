@@ -16,7 +16,6 @@
 #ifndef NETWORK_CONTEXT_H
 #define NETWORK_CONTEXT_H
 
-#include "network/context-error-type.h"         // context_error_type
 #include "network/contextdata.h"                // ContextData
 #include "network/failuremode.h"                // FailureMode
 #include "network/optionalversion.h"            // OptionalVersion
@@ -41,7 +40,7 @@ namespace Network
         ~Context();
         auto operator=(const Context&) -> Context& = delete;
         auto operator=(const Context&&) -> Context& = delete;
-        [[nodiscard]] auto error_code() const noexcept -> context_error_type;
+        [[nodiscard]] auto error_code() const noexcept -> int;
         [[nodiscard]] auto is_running() const noexcept -> bool;
         [[nodiscard]] auto is_started() const noexcept -> bool;
         [[nodiscard]] auto is_verbose() const noexcept -> bool;
@@ -50,7 +49,7 @@ namespace Network
 
     private:
         ContextData m_data;
-        context_error_type m_error_code {0};
+        int m_error_code {0};
         bool m_is_started {false};
         bool m_is_verbose {false};
     };

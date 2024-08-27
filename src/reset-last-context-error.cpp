@@ -14,12 +14,11 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/reset-last-context-error.h"   // reset_last_context_error()
-#include "network/context-error-type.h"         // context_error_type
 #include "network/set-last-context-error.h"     // set_last_context_error()
 
-auto Network::reset_last_context_error() -> context_error_type
+auto Network::reset_last_context_error() -> int
 {
-    const context_error_type error {0};
-    set_last_context_error(error);
-    return error;
+    const int error_code {0};
+    set_last_context_error(error_code);
+    return error_code;
 }

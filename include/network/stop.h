@@ -16,12 +16,11 @@
 #ifndef NETWORK_STOP_H
 #define NETWORK_STOP_H
 
-#include "network/context-error-type.h"         // context_error_type
 #include "network/failuremode.h"                // FailureMode
 
 namespace Network
 {
-    extern auto stop(FailureMode mode, bool is_verbose) -> context_error_type;
+    extern auto stop(FailureMode mode, bool is_verbose) -> int;
 }
 
 #endif

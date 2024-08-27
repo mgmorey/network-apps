@@ -16,11 +16,9 @@
 #ifndef NETWORK_GET_LAST_CONTEXT_ERROR_H
 #define NETWORK_GET_LAST_CONTEXT_ERROR_H
 
-#include "network/context-error-type.h"     // context_error_type
-
 namespace Network
 {
-    extern auto get_last_context_error() -> context_error_type;
+    extern auto get_last_context_error() -> int;
 }
 
 #endif

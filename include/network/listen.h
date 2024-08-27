@@ -16,13 +16,11 @@
 #ifndef NETWORK_LISTEN_H
 #define NETWORK_LISTEN_H
 
-#include "network/context-error-type.h"     // context_error_type
 #include "network/socket.h"                 // Socket
 
 namespace Network
 {
-    extern auto listen(const Socket& sock, int backlog_size) ->
-        context_error_type;
+    extern auto listen(const Socket& sock, int backlog_size) -> int;
 }
 
 #endif

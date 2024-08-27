@@ -14,7 +14,6 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/stop.h"                       // stop()
-#include "network/context-error-type.h"         // context_error_type
 #include "network/failuremode.h"                // FailureMode
 
 #ifdef WIN32
@@ -38,7 +37,7 @@
 #include <sstream>      // std::ostringstream
 #endif
 
-auto Network::stop(FailureMode mode, bool is_verbose) -> context_error_type
+auto Network::stop(FailureMode mode, bool is_verbose) -> int
 {
 #ifdef WIN32
     reset_last_context_error();

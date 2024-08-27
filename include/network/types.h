@@ -21,7 +21,6 @@
                                         // socket_ip_protocol_enum,
                                         // socket_type_enum
 #include "network/integer-types.h"      // byte_type,
-                                        // context_error_type,
                                         // error_type, handle_type,
                                         // length_type,
                                         // name_length_type,

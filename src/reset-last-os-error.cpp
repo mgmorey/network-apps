@@ -19,7 +19,7 @@
 
 auto Network::reset_last_os_error() -> os_error_type
 {
-    const os_error_type error {0};
-    set_last_os_error(error);
-    return error;
+    const os_error_type os_error_code {0};
+    set_last_os_error(os_error_code);
+    return os_error_code;
 }

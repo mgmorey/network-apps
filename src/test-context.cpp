@@ -44,7 +44,6 @@ namespace Test
 #ifdef WIN32
     using Network::WindowsVersion;
 #endif
-    using Network::context_error_type;
     using Network::get_hostname;
     using Network::parse;
     using Network::version_null;
@@ -160,7 +159,7 @@ namespace Test
 
     auto test_context_is_stopped() -> void
     {
-        context_error_type error_code {0};
+        int error_code {0};
         std::string actual_error_str;
 
         try {
@@ -177,7 +176,7 @@ namespace Test
 
     auto test_context_global_instance() -> void
     {
-        context_error_type error_code {0};
+        int error_code {0};
         std::string actual_error_str;
 
         try {
