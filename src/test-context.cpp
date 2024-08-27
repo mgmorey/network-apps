@@ -234,17 +234,19 @@ namespace Test
         test_context_inactive();
     }
 
-    auto test_context_valid_single_local_instance_with_stop() -> void
+    auto test_context_valid_single_local_instance_with_restart() -> void
     {
         std::string actual_error_str;
 
         try {
-            Context context {{}, is_verbose};
-            test_context(context, "local 3");
+            Context context {version_1_0, is_verbose};
+            test_context(context, "local 3.1");
             context.stop(fail);
             assert(!context.error_code());
             assert(!context.is_running());
             assert(!context.is_started());
+            context.start(version_2_0);
+            test_context(context, "local 3.2");
         }
         catch (const Error& error) {
             print(error);
@@ -299,7 +301,7 @@ auto main(int argc, char* argv[]) -> int
         test_context_invalid_version_null();
         test_context_valid_global_instance();
         test_context_valid_multiple_local_instances();
-        test_context_valid_single_local_instance_with_stop();
+        test_context_valid_single_local_instance_with_restart();
         test_hostname_running();
         test_hostname_stopped();
     }
