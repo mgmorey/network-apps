@@ -77,7 +77,7 @@ namespace Test
     static constexpr auto expected_code_stopped {WSANOTINITIALISED};
     static constexpr auto expected_context_re {
         R"(WinSock 2.0 Version \d{1,3}\.\d{1,3} Running)"
-            };
+    };
     static constexpr auto expected_error_stopped {
         "Call to ::gethostname(, 1024) failed with error 10093: "
         "Either the application has not called WSAStartup, "
@@ -89,7 +89,7 @@ namespace Test
 #else
     static constexpr auto expected_code_stopped {0};
     static constexpr auto expected_context_re {
-        R"(Berkeley Software Distribution Sockets( Version \d{1,3}\.\d{1,3})?)"
+        R"(Berkeley Software Distribution Sockets( Version \d{1,3}\.\d{1,3})? Running)"
     };
     static constexpr auto expected_error_stopped {""};
     static constexpr auto expected_error_version {""};

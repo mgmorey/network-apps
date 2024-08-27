@@ -46,7 +46,9 @@ static constexpr Network::Version wsa_default {2, 2};
 static constexpr std::string_view description {
     "Berkeley Software Distribution Sockets"
 };
-static constexpr std::string_view system_status {""};
+static constexpr std::string_view system_running {
+    "Running"
+};
 #endif
 
 auto Network::start(Context& context,
@@ -94,7 +96,7 @@ auto Network::start(Context& context,
                        WindowsVersion {wsa_data.wVersion});
 #else
     return context.set(description,
-                       system_status,
+                       system_running,
                        version);
 #endif
 }
