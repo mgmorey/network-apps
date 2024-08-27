@@ -16,13 +16,12 @@
 #ifndef NETWORK_CONTEXT_H
 #define NETWORK_CONTEXT_H
 
-#include "network/context-error-type.h"     // context_error_type
-#include "network/contextdata.h"            // ContextData
-#include "network/optionalversion.h"        // OptionalVersion
+#include "network/context-error-type.h"         // context_error_type
+#include "network/contextdata.h"                // ContextData
+#include "network/optionalversion.h"            // OptionalVersion
 
 #include <cstdint>      // std::uint8_t
 #include <ostream>      // std::ostream
-#include <string_view>  // std::string_view
 
 namespace Network
 {
