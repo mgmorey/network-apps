@@ -198,9 +198,9 @@ namespace Test
 
         try {
             const Context& context_1 {Context::instance()};
-            test_context(context_1, "global");
+            test_context(context_1, "global 1");
             const Context& context_2 {Context::instance()};
-            test_context(context_2, "global");
+            test_context(context_2, "global 2");
             assert(&context_1 == &context_2);
             error_code = Network::stop(fail, is_verbose);
         }
@@ -261,7 +261,7 @@ namespace Test
 
         try {
             const Context context {{}, is_verbose};
-            test_context(context, "local 5");
+            test_context(context, "local 4");
             static_cast<void>(get_hostname(is_verbose));
         }
         catch (const Error& error) {
