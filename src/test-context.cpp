@@ -95,7 +95,7 @@ namespace Test
     static constexpr auto expected_error_version {""};
 #endif
 
-    static const auto mode {FailureMode::return_error};
+    static const auto fail {FailureMode::return_error};
     static auto is_verbose {false};  // NOLINT
 
     auto parse_arguments(int argc, char** argv) -> void
@@ -157,13 +157,13 @@ namespace Test
         assert(std::regex_match(actual_context_str, expected_context_regex));
     }
 
-    auto test_context_is_stopped() -> void
+    auto test_context_down() -> void
     {
         int error_code {0};
         std::string actual_error_str;
 
         try {
-            error_code = Network::stop(mode, is_verbose);
+            error_code = Network::stop(fail, is_verbose);
         }
         catch (const Error& error) {
             print(error);
@@ -174,85 +174,7 @@ namespace Test
         assert(actual_error_str.empty());
     }
 
-    auto test_context_global_instance() -> void
-    {
-        int error_code {0};
-        std::string actual_error_str;
-
-        try {
-            const Context& context_1 {Context::instance()};
-            const Context& context_2 {Context::instance()};
-            test_context(context_1, "global");
-            test_context(context_2, "global");
-            assert(&context_1 == &context_2);
-            error_code = Network::stop(mode, is_verbose);
-        }
-        catch (const Error& error) {
-            print(error);
-            actual_error_str = error.what();
-        }
-
-        assert(!error_code);
-        assert(actual_error_str.empty());
-        test_context_is_stopped();
-    }
-
-    auto test_context_local_instances() -> void
-    {
-        std::string actual_error_str;
-
-        try {
-            const Context context_1 {version_1_0, is_verbose};
-            test_context(context_1, "local 1");
-            const Context context_2 {version_2_0, is_verbose};
-            test_context(context_2, "local 2");
-        }
-        catch (const Error& error) {
-            print(error);
-            actual_error_str = error.what();
-        }
-
-        assert(actual_error_str.empty());
-        test_context_is_stopped();
-    }
-
-    auto test_context_valid_with_stop() -> void
-    {
-        std::string actual_error_str;
-
-        try {
-            Context context {{}, is_verbose};
-            test_context(context, "local 3");
-            context.stop(mode);
-            assert(!context.error_code());
-        }
-        catch (const Error& error) {
-            print(error);
-            actual_error_str = error.what();
-        }
-
-        assert(actual_error_str.empty());
-        test_context_is_stopped();
-    }
-
-    auto test_context_valid_without_stop() -> void
-    {
-        std::string actual_error_str;
-
-        try {
-            const Context context {{}, is_verbose};
-            test_context(context, "local 4");
-        }
-        catch (const Error& error) {
-            print(error);
-            actual_error_str = error.what();
-        }
-
-        assert(actual_error_str.empty());
-        test_context_is_stopped();
-    }
-
-    auto test_context_version_null() -> void
+    auto test_context_invalid_version_null() -> void
     {
         std::string actual_error_str;
 
@@ -266,7 +188,71 @@ namespace Test
         }
 
         assert(actual_error_str == expected_error_version);
-        test_context_is_stopped();
+        test_context_down();
+    }
+
+    auto test_context_valid_global_instance() -> void
+    {
+        int error_code {0};
+        std::string actual_error_str;
+
+        try {
+            const Context& context_1 {Context::instance()};
+            test_context(context_1, "global");
+            const Context& context_2 {Context::instance()};
+            test_context(context_2, "global");
+            assert(&context_1 == &context_2);
+            error_code = Network::stop(fail, is_verbose);
+        }
+        catch (const Error& error) {
+            print(error);
+            actual_error_str = error.what();
+        }
+
+        assert(!error_code);
+        assert(actual_error_str.empty());
+        test_context_down();
+    }
+
+    auto test_context_valid_multiple_local_instances() -> void
+    {
+        std::string actual_error_str;
+
+        try {
+            const Context context_1 {version_1_0, is_verbose};
+            test_context(context_1, "local 1");
+            const Context context_2 {version_2_0, is_verbose};
+            test_context(context_2, "local 2");
+            assert(&context_1 != &context_2);
+        }
+        catch (const Error& error) {
+            print(error);
+            actual_error_str = error.what();
+        }
+
+        assert(actual_error_str.empty());
+        test_context_down();
+    }
+
+    auto test_context_valid_single_local_instance_with_stop() -> void
+    {
+        std::string actual_error_str;
+
+        try {
+            Context context {{}, is_verbose};
+            test_context(context, "local 3");
+            context.stop(fail);
+            assert(!context.error_code());
+            assert(!context.is_running());
+            assert(!context.is_started());
+        }
+        catch (const Error& error) {
+            print(error);
+            actual_error_str = error.what();
+        }
+
+        assert(actual_error_str.empty());
+        test_context_down();
     }
 
     auto test_hostname_running() -> void
@@ -284,7 +270,7 @@ namespace Test
         }
 
         assert(actual_error_str.empty());
-        test_context_is_stopped();
+        test_context_down();
     }
 
     auto test_hostname_stopped() -> void
@@ -300,7 +286,7 @@ namespace Test
         }
 
         assert(actual_error_str == expected_error_stopped);
-        test_context_is_stopped();
+        test_context_down();
     }
 }
 
@@ -310,11 +296,10 @@ auto main(int argc, char* argv[]) -> int
 
     try {
         parse_arguments(argc, argv);
-        test_context_global_instance();
-        test_context_local_instances();
-        test_context_valid_with_stop();
-        test_context_valid_without_stop();
-        test_context_version_null();
+        test_context_invalid_version_null();
+        test_context_valid_global_instance();
+        test_context_valid_multiple_local_instances();
+        test_context_valid_single_local_instance_with_stop();
         test_hostname_running();
         test_hostname_stopped();
     }
