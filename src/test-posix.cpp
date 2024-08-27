@@ -89,10 +89,7 @@ namespace Test
     {
         OptionalPathname opt_path;
 
-        if (path == nullptr) {
-            opt_path = {};
-        }
-        else {
+        if (*path != '\0') {
             opt_path = path;
         }
 
@@ -230,8 +227,7 @@ namespace Test
 #endif
 #endif
 	const ErrorCodeSet codes_valid {0};
-        test_path(static_cast<const char *>(nullptr), codes_valid,
-                  expected_error_payload_length_re);
+        test_path("", codes_valid, expected_error_payload_length_re);
         const auto path_max {get_pathname(path_length_max + 1)};
         test_path(path_max.c_str(), {}, expected_error_path_length_re);
         test_path(path_max, {}, expected_error_path_length_re);

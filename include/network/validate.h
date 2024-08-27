@@ -18,7 +18,6 @@
 
 #include "network/validate-bs.h"        // validate()
 #ifndef WIN32
-#include "network/validate-char.h"      // validate()
 #include "network/validate-path.h"      // validate()
 #endif
 #include "network/validate-sa.h"        // validate()
