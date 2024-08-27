@@ -36,14 +36,12 @@
 
 #ifdef WIN32
 #include <iostream>     // std::cerr, std::cout, std::endl
-#include <sstream>      // std::ostringstream
-#include <string_view>  // std::string_view
 #endif
 
 #ifdef WIN32
 static constexpr Network::Version wsa_default {2, 2};
 #else
-static constexpr auto description {
+static constexpr auto system_description {
     "Berkeley Software Distribution Sockets"
 };
 static constexpr auto system_running {
@@ -91,12 +89,12 @@ auto Network::start(const OptionalVersion& version,
         }
     }
 
-    return {wsa_data.szDescription,
-            wsa_data.szSystemStatus,
+    return {static_cast<const char*>(wsa_data.szDescription),
+            static_cast<const char*>(wsa_data.szSystemStatus),
             WindowsVersion {wsa_data.wVersion}};
 #else
     static_cast<void>(is_verbose);
-    return {description,
+    return {system_description,
             system_running,
             version};
 #endif
