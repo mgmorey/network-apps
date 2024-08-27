@@ -36,6 +36,7 @@
 #include <set>          // std::set
 #include <stack>        // std::stack
 #include <string>       // std::string
+#include <string_view>  // std::string
 
 namespace Test
 {
@@ -80,20 +81,9 @@ namespace Test
     static auto is_verbose {false};  // NOLINT
 
     auto operator==(const ByteString& addr,
-                    const OptionalPathname& path) -> bool
+                    const std::string_view& path) -> bool
     {
-        return to_path(addr) == path;
-    }
-
-    auto operator==(const ByteString& addr, const char* path) -> bool
-    {
-        OptionalPathname opt_path;
-
-        if (*path != '\0') {
-            opt_path = path;
-        }
-
-        return addr == opt_path;
+        return to_path(addr).value_or("") == path;
     }
 
     auto get_pathname(std::string::size_type size) -> Pathname
