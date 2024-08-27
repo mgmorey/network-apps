@@ -147,6 +147,8 @@ namespace Test
     auto test_context(const Context& context,
                       const std::string& scope) -> void
     {
+        assert(context.is_started());
+        assert(is_running(context));
         print(context, scope);
         std::ostringstream oss;
         oss << context;

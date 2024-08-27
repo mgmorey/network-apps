@@ -22,6 +22,7 @@
 #include <cstdint>      // std::uint8_t
 #include <ostream>      // std::ostream
 #include <string>       // std::string
+#include <string_view>  // std::string_view
 
 namespace Network
 {
@@ -30,8 +31,6 @@ namespace Network
         friend auto operator<<(std::ostream& os,
                                const Context& context) -> std::ostream&;
         friend auto is_running(const Context& context) -> bool;
-        friend auto start(Context& context,
-                          const OptionalVersion& version) -> Context&;
 
     public:
         enum class failure_mode : std::uint8_t {
@@ -50,7 +49,11 @@ namespace Network
         auto operator=(const Context&) -> Context& = delete;
         auto operator=(const Context&&) -> Context& = delete;
         [[nodiscard]] auto error_code() const noexcept -> context_error_type;
+        [[nodiscard]] auto is_started() const noexcept -> bool;
         [[nodiscard]] auto is_verbose() const noexcept -> bool;
+        auto set(const std::string_view& t_description,
+                 const std::string_view& t_system_status,
+                 OptionalVersion t_version) -> Context&;
         auto start(const OptionalVersion& t_version) -> Context&;
         auto stop(failure_mode mode) -> Context&;
 

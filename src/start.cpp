@@ -46,6 +46,7 @@ static constexpr Network::Version wsa_default {2, 2};
 static constexpr std::string_view description {
     "Berkeley Software Distribution Sockets"
 };
+static constexpr std::string_view system_status {""};
 #endif
 
 auto Network::start(Context& context,
@@ -88,13 +89,12 @@ auto Network::start(Context& context,
         }
     }
 
-    context.m_description = std::string_view(wsa_data.szDescription);
-    context.m_system_status = std::string_view(wsa_data.szSystemStatus);
-    context.m_version = WindowsVersion {wsa_data.wVersion};
+    return context.set(wsa_data.szDescription,
+                       wsa_data.szSystemStatus,
+                       WindowsVersion {wsa_data.wVersion});
 #else
-    context.m_description = description;
-    context.m_version = version;
+    return context.set(description,
+                       system_status,
+                       version);
 #endif
-    context.m_is_started = true;
-    return context;
 }
