@@ -21,9 +21,10 @@
 #include "network/start.h"              // start()
 #include "network/stop.h"               // stop()
 
-auto Network::Context::instance() -> const Context&
+auto Network::Context::instance(const OptionalVersion& t_version,
+                                bool t_is_verbose) -> const Context&
 {
-    static const Context context;
+    static const Context context(t_version, t_is_verbose);
     return context;
 }
 

@@ -31,7 +31,8 @@ namespace Network
 
     public:
         static const auto m_failsafe {FailureMode::return_zero};
-        static auto instance() -> const Context&;
+        static auto instance(const OptionalVersion& t_version = {},
+                             bool t_is_verbose = false) -> const Context&;
 
         explicit Context(const OptionalVersion& t_version = {},
                          bool t_is_verbose = false);

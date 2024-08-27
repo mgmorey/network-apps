@@ -197,9 +197,9 @@ namespace Test
         std::string actual_error_str;
 
         try {
-            const Context& context_1 {Context::instance()};
+            const Context& context_1 {Context::instance({}, is_verbose)};
             test_context(context_1, "global 1");
-            const Context& context_2 {Context::instance()};
+            const Context& context_2 {Context::instance({}, is_verbose)};
             test_context(context_2, "global 2");
             assert(&context_1 == &context_2);
             error_code = Network::stop(fail, is_verbose);
