@@ -17,6 +17,7 @@
 #define NETWORK_START_H
 
 #include "network/contextdata.h"        // ContextData
+#include "network/optionalversion.h"    // OptionalVersion
 
 namespace Network
 {
