@@ -61,7 +61,7 @@ auto Network::stop(FailureMode mode, bool is_verbose) -> int
         }
 
         switch (mode) {
-        case Context::FailureMode::throw_error:
+        case FailureMode::throw_error:
         {
             switch (error) {  // NOLINT
             case WSANOTINITIALISED:
@@ -74,7 +74,7 @@ auto Network::stop(FailureMode mode, bool is_verbose) -> int
             }
             break;
         }
-        case Context::FailureMode::return_zero:
+        case FailureMode::return_zero:
             switch (error) {  // NOLINT
             case WSANOTINITIALISED:
                 return 0;
@@ -82,7 +82,7 @@ auto Network::stop(FailureMode mode, bool is_verbose) -> int
                 return error;
             }
             break;
-        case Context::FailureMode::return_error:
+        case FailureMode::return_error:
             return error;
         }
     }
