@@ -42,7 +42,7 @@ Network::Context::Context(const OptionalVersion& t_version, bool t_is_verbose)
         }
     }
     catch (const Error& error) {
-        stop(failure_mode::return_zero);
+        stop(m_failsafe);
         throw;
     }
 }
@@ -61,7 +61,7 @@ auto Network::Context::error_code() const noexcept -> context_error_type
 
 auto Network::Context::is_running() const noexcept -> bool
 {
-    return m_system_status == "Running";
+    return m_data.m_system_status == "Running";
 }
 
 auto Network::Context::is_started() const noexcept -> bool
@@ -74,20 +74,10 @@ auto Network::Context::is_verbose() const noexcept -> bool
     return m_is_verbose;
 }
 
-auto Network::Context::set(const std::string_view& t_description,
-                           const std::string_view& t_system_status,
-                           OptionalVersion t_version) -> Context&
-{
-    m_description = t_description;
-    m_system_status = t_system_status;
-    m_version = t_version;
-    return *this;
-}
-
 auto Network::Context::start(const OptionalVersion& t_version) -> Context&
 {
     if (!m_is_started) {
-        Network::start(*this, t_version);
+        m_data = Network::start(t_version, m_is_verbose);
         m_is_started = true;
     }
 
@@ -100,9 +90,7 @@ auto Network::Context::stop(failure_mode mode) -> Context&
         m_error_code = Network::stop(mode, m_is_verbose);
 
         if (m_error_code == 0) {
-            m_description = {};
-            m_system_status = {};
-            m_version = {};
+            m_data = {};
             m_is_started = false;
         }
     }

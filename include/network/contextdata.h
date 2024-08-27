@@ -1,4 +1,4 @@
-// Copyright (C) 2023  "Michael G. Morey" <mgmorey@gmail.com>
+// Copyright (C) 2022  "Michael G. Morey" <mgmorey@gmail.com>
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,27 +13,22 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/context.h"            // Context, operator<<()
+#ifndef NETWORK_CONTEXTDATA_H
+#define NETWORK_CONTEXTDATA_H
 
-#include <ostream>      // std::ostream
+#include "network/optionalversion.h"        // OptionalVersion
 
-auto Network::operator<<(std::ostream& os,
-                         const Context& context) -> std::ostream&
+#include <string>       // std::string
+
+namespace Network
 {
-    const auto& description {context.m_data.m_description};
-    const auto& status {context.m_data.m_system_status};
-    const auto version {context.m_data.m_version};
-    os << description;
-
-    if (version) {
-        os << " Version "
-           << *version;
-    }
-
-    if (!status.empty()) {
-        os << ' '
-           << status;
-    }
-
-    return os;
+    struct ContextData
+    {
+    public:
+        std::string m_description;
+        std::string m_system_status;
+        OptionalVersion m_version;
+    };
 }
+
+#endif

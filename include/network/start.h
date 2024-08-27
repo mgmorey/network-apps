@@ -16,13 +16,12 @@
 #ifndef NETWORK_START_H
 #define NETWORK_START_H
 
-#include "network/context.h"            // Context
-#include "network/optionalversion.h"    // OptionalVersion
+#include "network/contextdata.h"        // ContextData
 
 namespace Network
 {
-    extern auto start(Context& context,
-                      const OptionalVersion& version) -> Context&;
+    extern auto start(const OptionalVersion& version,
+                      bool is_verbose) -> ContextData;
 }
 
 #endif

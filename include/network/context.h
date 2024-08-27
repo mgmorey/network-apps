@@ -17,11 +17,11 @@
 #define NETWORK_CONTEXT_H
 
 #include "network/context-error-type.h"     // context_error_type
+#include "network/contextdata.h"            // ContextData
 #include "network/optionalversion.h"        // OptionalVersion
 
 #include <cstdint>      // std::uint8_t
 #include <ostream>      // std::ostream
-#include <string>       // std::string
 #include <string_view>  // std::string_view
 
 namespace Network
@@ -52,16 +52,11 @@ namespace Network
         [[nodiscard]] auto is_running() const noexcept -> bool;
         [[nodiscard]] auto is_started() const noexcept -> bool;
         [[nodiscard]] auto is_verbose() const noexcept -> bool;
-        auto set(const std::string_view& t_description,
-                 const std::string_view& t_system_status,
-                 OptionalVersion t_version) -> Context&;
         auto start(const OptionalVersion& t_version) -> Context&;
         auto stop(failure_mode mode) -> Context&;
 
     private:
-        std::string m_description;
-        std::string m_system_status;
-        OptionalVersion m_version;
+        ContextData m_data;
         context_error_type m_error_code {0};
         bool m_is_started {false};
         bool m_is_verbose {false};

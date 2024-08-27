@@ -14,7 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/start.h"              // start()
-#include "network/context.h"            // Context
+#include "network/contextdata.h"        // ContextData
 #include "network/optionalversion.h"    // OptionalVersion
 
 #ifdef WIN32
@@ -43,22 +43,22 @@
 #ifdef WIN32
 static constexpr Network::Version wsa_default {2, 2};
 #else
-static constexpr std::string_view description {
+static constexpr auto description {
     "Berkeley Software Distribution Sockets"
 };
-static constexpr std::string_view system_running {
+static constexpr auto system_running {
     "Running"
 };
 #endif
 
-auto Network::start(Context& context,
-                    const OptionalVersion& version) -> Context&
+auto Network::start(const OptionalVersion& version,
+                    bool is_verbose) -> ContextData
 {
 #ifdef WIN32
     const WindowsVersion wsa_version {version.value_or(wsa_default)};
     WSADATA wsa_data {};
 
-    if (context.is_verbose()) {
+    if (is_verbose) {
         std::cout << "Calling ::WSAStartup("
                   << wsa_version
                   << ", ...)"
@@ -69,7 +69,7 @@ auto Network::start(Context& context,
         const auto os_error {to_os_error(error)};
         const auto message {format_os_error(os_error)};
 
-        if (context.is_verbose()) {
+        if (is_verbose) {
             std::cerr << "Call to ::WSAStartup("
                       << wsa_version
                       << ", ...) failed with error "
@@ -91,12 +91,13 @@ auto Network::start(Context& context,
         }
     }
 
-    return context.set(wsa_data.szDescription,
-                       wsa_data.szSystemStatus,
-                       WindowsVersion {wsa_data.wVersion});
+    return {std::string_view(wsa_data.szDescription),
+            std::string_view(wsa_data.szSystemStatus),
+            WindowsVersion {wsa_data.wVersion}};
 #else
-    return context.set(description,
-                       system_running,
-                       version);
+    static_cast<void>(is_verbose);
+    return {description,
+            system_running,
+            version};
 #endif
 }
