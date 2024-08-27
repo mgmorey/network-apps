@@ -91,8 +91,8 @@ auto Network::start(const OptionalVersion& version,
         }
     }
 
-    return {std::string_view(wsa_data.szDescription),
-            std::string_view(wsa_data.szSystemStatus),
+    return {wsa_data.szDescription,
+            wsa_data.szSystemStatus,
             WindowsVersion {wsa_data.wVersion}};
 #else
     static_cast<void>(is_verbose);
