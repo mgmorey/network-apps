@@ -1,4 +1,4 @@
-// Copyright (C) 2022  "Michael G. Morey" <mgmorey@gmail.com>
+// Copyright (C) 2024  "Michael G. Morey" <mgmorey@gmail.com>
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,15 +13,18 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_STOP_H
-#define NETWORK_STOP_H
+#ifndef NETWORK_FAILUREMODE_H
+#define NETWORK_FAILUREMODE_H
 
-#include "network/context-error-type.h"         // context_error_type
-#include "network/failuremode.h"                // FailureMode
+#include <cstdint>      // std::uint8_t
 
 namespace Network
 {
-    extern auto stop(FailureMode mode, bool is_verbose) -> context_error_type;
+    enum class FailureMode : std::uint8_t {
+        return_error,
+        return_zero,
+        throw_error
+    };
 }
 
 #endif

@@ -15,6 +15,7 @@
 
 #include "network/context.h"            // Context
 #include "network/error.h"              // Error
+#include "network/failuremode.h"        // FailureMode
 #include "network/optionalversion.h"    // OptionalVersion
 #include "network/runtimeerror.h"       // RuntimeError
 #include "network/start.h"              // start()
@@ -84,7 +85,7 @@ auto Network::Context::start(const OptionalVersion& t_version) -> Context&
     return *this;
 }
 
-auto Network::Context::stop(failure_mode mode) -> Context&
+auto Network::Context::stop(FailureMode mode) -> Context&
 {
     if (m_is_started) {
         m_error_code = Network::stop(mode, m_is_verbose);

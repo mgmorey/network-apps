@@ -37,6 +37,7 @@ namespace Test
 {
     using Network::Context;
     using Network::Error;
+    using Network::FailureMode;
     using Network::Hostname;
     using Network::OptionalVersion;
     using Network::Version;
@@ -95,7 +96,7 @@ namespace Test
     static constexpr auto expected_error_version {""};
 #endif
 
-    static const auto mode {Context::failure_mode::return_error};
+    static const auto mode {FailureMode::return_error};
     static auto is_verbose {false};  // NOLINT
 
     auto parse_arguments(int argc, char** argv) -> void

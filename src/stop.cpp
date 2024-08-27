@@ -15,7 +15,7 @@
 
 #include "network/stop.h"                       // stop()
 #include "network/context-error-type.h"         // context_error_type
-#include "network/context.h"                    // Context
+#include "network/failuremode.h"                // FailureMode
 
 #ifdef WIN32
 #include "network/error.h"                      // Error
@@ -38,8 +38,7 @@
 #include <sstream>      // std::ostringstream
 #endif
 
-auto Network::stop(Context::failure_mode mode,
-                   bool is_verbose) -> context_error_type
+auto Network::stop(FailureMode mode, bool is_verbose) -> context_error_type
 {
 #ifdef WIN32
     reset_last_context_error();
@@ -63,7 +62,7 @@ auto Network::stop(Context::failure_mode mode,
         }
 
         switch (mode) {
-        case Context::failure_mode::throw_error:
+        case Context::FailureMode::throw_error:
         {
             switch (error) {  // NOLINT
             case WSANOTINITIALISED:
@@ -76,7 +75,7 @@ auto Network::stop(Context::failure_mode mode,
             }
             break;
         }
-        case Context::failure_mode::return_zero:
+        case Context::FailureMode::return_zero:
             switch (error) {  // NOLINT
             case WSANOTINITIALISED:
                 return 0;
@@ -84,7 +83,7 @@ auto Network::stop(Context::failure_mode mode,
                 return error;
             }
             break;
-        case Context::failure_mode::return_error:
+        case Context::FailureMode::return_error:
             return error;
         }
     }

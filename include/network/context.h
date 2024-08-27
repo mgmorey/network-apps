@@ -18,9 +18,9 @@
 
 #include "network/context-error-type.h"         // context_error_type
 #include "network/contextdata.h"                // ContextData
+#include "network/failuremode.h"                // FailureMode
 #include "network/optionalversion.h"            // OptionalVersion
 
-#include <cstdint>      // std::uint8_t
 #include <ostream>      // std::ostream
 
 namespace Network
@@ -31,13 +31,7 @@ namespace Network
                                const Context& context) -> std::ostream&;
 
     public:
-        enum class failure_mode : std::uint8_t {
-            return_error,
-            return_zero,
-            throw_error
-        };
-
-        static const auto m_failsafe {failure_mode::return_zero};
+        static const auto m_failsafe {FailureMode::return_zero};
         static auto instance() -> const Context&;
 
         explicit Context(const OptionalVersion& t_version = {},
@@ -52,7 +46,7 @@ namespace Network
         [[nodiscard]] auto is_started() const noexcept -> bool;
         [[nodiscard]] auto is_verbose() const noexcept -> bool;
         auto start(const OptionalVersion& t_version) -> Context&;
-        auto stop(failure_mode mode) -> Context&;
+        auto stop(FailureMode mode) -> Context&;
 
     private:
         ContextData m_data;
