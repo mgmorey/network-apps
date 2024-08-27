@@ -17,11 +17,12 @@
 #define NETWORK_TO_BYTESTRING_PATH_H
 
 #include "network/bytestring.h"         // ByteString
-#include "network/optionalpathname.h"   // OptionalPathname
+
+#include <string_view>      // std::string_view
 
 namespace Network
 {
-    extern auto to_bytestring(const OptionalPathname& path) -> ByteString;
+    extern auto to_bytestring(const std::string_view& path) -> ByteString;
 }
 
 #endif

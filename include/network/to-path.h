@@ -17,7 +17,7 @@
 #define NETWORK_TO_PATH_H
 
 #include "network/bytestring.h"         // ByteString
-#include "network/optionalpathname.h"   // OptionalPathname
+#include "network/optionalpathname.h"   // Pathname
 
 namespace Network
 {

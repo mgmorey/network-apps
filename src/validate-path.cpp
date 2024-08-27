@@ -17,18 +17,15 @@
 
 #include "network/validate-path.h"              // validate()
 #include "network/length-type.h"                // length_type
-#include "network/optionalpathname.h"           // OptionalPathname
 #include "network/path-length-limits.h"         // path_length_max,
                                                 // path_length_min
 #include "network/valueerror.h"                 // ValueError
 
-auto Network::validate(const OptionalPathname& path) -> OptionalPathname
-{
-    if (!path) {
-        return path;
-    }
+#include <string_view>  // std::string_view
 
-    const auto path_length {path->length()};
+auto Network::validate(const std::string_view& path) -> std::string_view
+{
+    const auto path_length {path.length()};
 
     if (path_length > path_length_max) {
         throw ValueError<length_type>("path_length_type",

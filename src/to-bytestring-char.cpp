@@ -32,7 +32,7 @@ auto Network::to_bytestring(const char* path) -> ByteString
 {
     sockaddr_un sun {};
 
-    if (path != nullptr) {
+    if (path != nullptr && *path != '\0') {
         const auto path_len {to_path_length(::strlen(path))};
         auto* sun_path {get_path_pointer(&sun)};
         ::memcpy(sun_path, path, path_len + 1);

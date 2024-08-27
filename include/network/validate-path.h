@@ -16,12 +16,12 @@
 #ifndef NETWORK_VALIDATE_PATH_H
 #define NETWORK_VALIDATE_PATH_H
 
-#include "network/optionalpathname.h"   // OptionalPathname
+#include <string_view>      // std::string_view
 
 namespace Network
 {
 #ifndef WIN32
-    extern auto validate(const OptionalPathname& path) -> OptionalPathname;
+    extern auto validate(const std::string_view& path) -> std::string_view;
 #endif
 }
 
