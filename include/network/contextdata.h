@@ -24,7 +24,6 @@ namespace Network
 {
     struct ContextData
     {
-    public:
         std::string m_description;
         std::string m_system_status;
         OptionalVersion m_version;
