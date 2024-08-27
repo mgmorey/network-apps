@@ -157,7 +157,7 @@ namespace Test
         assert(std::regex_match(actual_context_str, expected_context_regex));
     }
 
-    auto test_context_down() -> void
+    auto test_context_inactive() -> void
     {
         int error_code {0};
         std::string actual_error_str;
@@ -188,7 +188,7 @@ namespace Test
         }
 
         assert(actual_error_str == expected_error_version);
-        test_context_down();
+        test_context_inactive();
     }
 
     auto test_context_valid_global_instance() -> void
@@ -211,7 +211,7 @@ namespace Test
 
         assert(!error_code);
         assert(actual_error_str.empty());
-        test_context_down();
+        test_context_inactive();
     }
 
     auto test_context_valid_multiple_local_instances() -> void
@@ -231,7 +231,7 @@ namespace Test
         }
 
         assert(actual_error_str.empty());
-        test_context_down();
+        test_context_inactive();
     }
 
     auto test_context_valid_single_local_instance_with_stop() -> void
@@ -252,7 +252,7 @@ namespace Test
         }
 
         assert(actual_error_str.empty());
-        test_context_down();
+        test_context_inactive();
     }
 
     auto test_hostname_running() -> void
@@ -270,7 +270,7 @@ namespace Test
         }
 
         assert(actual_error_str.empty());
-        test_context_down();
+        test_context_inactive();
     }
 
     auto test_hostname_stopped() -> void
@@ -286,7 +286,7 @@ namespace Test
         }
 
         assert(actual_error_str == expected_error_stopped);
-        test_context_down();
+        test_context_inactive();
     }
 }
 
