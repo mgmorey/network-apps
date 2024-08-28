@@ -19,7 +19,7 @@
 #include "network/failuremode.h"        // FailureMode
 #include "network/optionalversion.h"    // OptionalVersion
 
-#include <memory>       // std::make_shared(), std::shared_ptr
+#include <memory>       // std::make_shared()
 
 auto Network::get_context(const OptionalVersion& t_version,
                           FailureMode t_failure,
