@@ -37,7 +37,10 @@ Network::Context::Context(const OptionalVersion& t_version, bool t_is_verbose)
         }
     }
     catch (const Error& error) {
-        stop(m_failsafe);
+        if (m_is_started) {
+            Network::stop(m_failsafe, m_is_verbose);
+        }
+
         throw;
     }
 }
