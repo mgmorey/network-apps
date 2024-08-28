@@ -31,10 +31,11 @@ namespace Network
                                const Context& context) -> std::ostream&;
 
     public:
+        using Instance = std::shared_ptr<const Context>;
+
         static const auto m_failsafe {FailureMode::return_zero};
         static auto instance(const OptionalVersion& t_version = {},
-                             bool t_is_verbose = false) ->
-            std::shared_ptr<const Context>;
+                             bool t_is_verbose = false) -> Instance;
 
         explicit Context(const OptionalVersion& t_version = {},
                          bool t_is_verbose = false);

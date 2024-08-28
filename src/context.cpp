@@ -24,10 +24,9 @@
 #include <memory>       // std::make_shared(), std::shared_ptr
 
 auto Network::Context::instance(const OptionalVersion& t_version,
-                                bool t_is_verbose) ->
-    std::shared_ptr<const Context>
+                                bool t_is_verbose) -> Instance
 {
-    static std::shared_ptr<const Context> context;
+    static Instance context;
 
     if (!context) {
         context = std::make_shared<const Context>(t_version, t_is_verbose);
