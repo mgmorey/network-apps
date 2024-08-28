@@ -41,19 +41,14 @@ Network::Context::Context(const OptionalVersion& t_version,
         }
     }
     catch (const Error& error) {
-        if (m_is_started) {
-            Network::stop(FailureMode::return_zero, m_is_verbose);
-        }
-
+        shutdown();
         throw;
     }
 }
 
 Network::Context::~Context()
 {
-    if (m_is_started) {
-        Network::stop(FailureMode::return_zero, m_is_verbose);
-    }
+    shutdown();
 }
 
 auto Network::Context::error_code() const noexcept -> int
@@ -93,4 +88,11 @@ auto Network::Context::stop() -> Context&
     }
 
     return *this;
+}
+
+auto Network::Context::shutdown() const -> void
+{
+    if (m_is_started) {
+        Network::stop(FailureMode::return_zero, m_is_verbose);
+    }
 }

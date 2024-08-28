@@ -44,6 +44,9 @@ namespace Network
         auto start() -> Context&;
         auto stop() -> Context&;
 
+    protected:
+        auto shutdown() const -> void;
+
     private:
         ContextData m_data;
         OptionalVersion m_version;
