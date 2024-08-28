@@ -80,8 +80,8 @@ auto Network::Context::stop(FailureMode mode) -> Context&
         m_error_code = Network::stop(mode, m_is_verbose);
 
         if (m_error_code == 0) {
-            m_data = {};
             m_is_started = false;
+            m_data = {};
         }
     }
 
