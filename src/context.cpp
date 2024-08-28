@@ -26,11 +26,10 @@
 auto Network::Context::instance(const OptionalVersion& t_version,
                                 bool t_is_verbose) -> Instance
 {
-    static Instance context;
-
-    if (!context) {
-        context = std::make_shared<const Context>(t_version, t_is_verbose);
-    }
+    static const auto context
+    {
+        std::make_shared<const Context>(t_version, t_is_verbose)
+    };
 
     return context;
 }
