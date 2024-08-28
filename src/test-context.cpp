@@ -179,7 +179,7 @@ namespace Test
         std::string actual_error_str;
 
         try {
-            const Context context {version_null, is_verbose};
+            const Context context {version_null, fail, is_verbose};
             static_cast<void>(context);
         }
         catch (const Error& error) {
@@ -197,9 +197,9 @@ namespace Test
         std::string actual_error_str;
 
         try {
-            const auto context_1 {get_context({}, is_verbose)};
+            const auto context_1 {get_context({}, fail, is_verbose)};
             test_context(*context_1, "global 1");
-            const auto context_2 {get_context({}, is_verbose)};
+            const auto context_2 {get_context({}, fail, is_verbose)};
             test_context(*context_2, "global 2");
             assert(context_1 == context_2);
             error_code = Network::stop(fail, is_verbose);
@@ -219,9 +219,9 @@ namespace Test
         std::string actual_error_str;
 
         try {
-            const Context context_1 {version_1_0, is_verbose};
+            const Context context_1 {version_1_0, fail, is_verbose};
             test_context(context_1, "local 1");
-            const Context context_2 {version_2_0, is_verbose};
+            const Context context_2 {version_2_0, fail, is_verbose};
             test_context(context_2, "local 2");
             assert(&context_1 != &context_2);
         }
@@ -239,12 +239,12 @@ namespace Test
         std::string actual_error_str;
 
         try {
-            Context context {version_1_0, is_verbose};
+            Context context {version_1_0, fail, is_verbose};
             test_context(context, "local 3.1");
-            context.stop(fail);
+            context.stop();
             assert(!context.error_code());
             assert(!context.is_running());
-            context.start(version_2_0);
+            context.start();
             test_context(context, "local 3.2");
         }
         catch (const Error& error) {
@@ -261,7 +261,7 @@ namespace Test
         std::string actual_error_str;
 
         try {
-            const Context context {{}, is_verbose};
+            const Context context {{}, fail, is_verbose};
             test_context(context, "local 4");
             static_cast<void>(get_hostname(is_verbose));
         }

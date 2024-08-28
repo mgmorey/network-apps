@@ -17,12 +17,15 @@
 #define NETWORK_GET_CONTEXT_H
 
 #include "network/contextinstance.h"    // ContextInstance
+#include "network/failuremode.h"        // FailureMode
 #include "network/optionalversion.h"    // OptionalVersion
 
 namespace Network
 {
-    extern auto get_context(const OptionalVersion& t_version = {},
+    extern auto get_context(const OptionalVersion& t_version,
+                            FailureMode t_failure,
                             bool t_is_verbose = false) -> ContextInstance;
+    extern auto get_context(bool t_is_verbose = false) -> ContextInstance;
 }
 
 #endif

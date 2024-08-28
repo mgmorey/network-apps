@@ -30,10 +30,9 @@ namespace Network
                                const Context& context) -> std::ostream&;
 
     public:
-        static const auto m_failsafe {FailureMode::return_zero};
-
-        explicit Context(const OptionalVersion& t_version = {},
-                         bool t_is_verbose = false);
+        Context(const OptionalVersion& t_version,
+                FailureMode t_failure,
+                bool t_is_verbose = false);
         Context(const Context&) = delete;
         Context(const Context&&) = delete;
         ~Context();
@@ -42,12 +41,14 @@ namespace Network
         [[nodiscard]] auto error_code() const noexcept -> int;
         [[nodiscard]] auto is_running() const noexcept -> bool;
         [[nodiscard]] auto is_verbose() const noexcept -> bool;
-        auto start(const OptionalVersion& t_version) -> Context&;
-        auto stop(FailureMode t_mode) -> Context&;
+        auto start() -> Context&;
+        auto stop() -> Context&;
 
     private:
         ContextData m_data;
+        OptionalVersion m_version;
         int m_error_code {0};
+        FailureMode m_failure {FailureMode::throw_error};
         bool m_is_started {false};
         bool m_is_verbose {false};
     };

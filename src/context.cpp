@@ -21,11 +21,15 @@
 #include "network/start.h"              // start()
 #include "network/stop.h"               // stop()
 
-Network::Context::Context(const OptionalVersion& t_version, bool t_is_verbose)
-    : m_is_verbose(t_is_verbose)
+Network::Context::Context(const OptionalVersion& t_version,
+                          FailureMode t_failure,
+                          bool t_is_verbose)
+    : m_version(t_version),
+      m_failure(t_failure),
+      m_is_verbose(t_is_verbose)
 {
     try {
-        start(t_version);
+        start();
 
         // Test for class invariant conditions and throw exceptions if
         // one or more conditions are not met. The following is an
@@ -38,7 +42,7 @@ Network::Context::Context(const OptionalVersion& t_version, bool t_is_verbose)
     }
     catch (const Error& error) {
         if (m_is_started) {
-            Network::stop(m_failsafe, m_is_verbose);
+            Network::stop(FailureMode::return_zero, m_is_verbose);
         }
 
         throw;
@@ -48,7 +52,7 @@ Network::Context::Context(const OptionalVersion& t_version, bool t_is_verbose)
 Network::Context::~Context()
 {
     if (m_is_started) {
-        Network::stop(m_failsafe, m_is_verbose);
+        Network::stop(FailureMode::return_zero, m_is_verbose);
     }
 }
 
@@ -67,20 +71,20 @@ auto Network::Context::is_verbose() const noexcept -> bool
     return m_is_verbose;
 }
 
-auto Network::Context::start(const OptionalVersion& t_version) -> Context&
+auto Network::Context::start() -> Context&
 {
     if (!m_is_started) {
-        m_data = Network::start(t_version, m_is_verbose);
+        m_data = Network::start(m_version, m_is_verbose);
         m_is_started = true;
     }
 
     return *this;
 }
 
-auto Network::Context::stop(FailureMode t_mode) -> Context&
+auto Network::Context::stop() -> Context&
 {
     if (m_is_started) {
-        m_error_code = Network::stop(t_mode, m_is_verbose);
+        m_error_code = Network::stop(m_failure, m_is_verbose);
 
         if (m_error_code == 0) {
             m_is_started = false;

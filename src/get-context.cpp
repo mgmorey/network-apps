@@ -16,17 +16,26 @@
 #include "network/get-context.h"        // get_context()
 #include "network/context.h"            // Context
 #include "network/contextinstance.h"    // ContextInstance
+#include "network/failuremode.h"        // FailureMode
 #include "network/optionalversion.h"    // OptionalVersion
 
 #include <memory>       // std::make_shared(), std::shared_ptr
 
 auto Network::get_context(const OptionalVersion& t_version,
+                          FailureMode t_failure,
                           bool t_is_verbose) -> ContextInstance
 {
     static const auto context
     {
-        std::make_shared<const Context>(t_version, t_is_verbose)
+        std::make_shared<const Context>(t_version, t_failure, t_is_verbose)
     };
 
     return context;
+}
+
+auto Network::get_context(bool t_is_verbose) -> ContextInstance
+{
+    return get_context({},
+                       FailureMode::throw_error,
+                       t_is_verbose);
 }
