@@ -74,10 +74,10 @@ auto Network::Context::start(const OptionalVersion& t_version) -> Context&
     return *this;
 }
 
-auto Network::Context::stop(FailureMode mode) -> Context&
+auto Network::Context::stop(FailureMode t_mode) -> Context&
 {
     if (m_is_started) {
-        m_error_code = Network::stop(mode, m_is_verbose);
+        m_error_code = Network::stop(t_mode, m_is_verbose);
 
         if (m_error_code == 0) {
             m_is_started = false;
