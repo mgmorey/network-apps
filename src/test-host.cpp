@@ -407,7 +407,7 @@ auto main(int argc, char* argv[]) -> int
     using namespace Test;
 
     try {
-        const auto context {Context::instance()};
+        const auto context {Context::instance({}, is_verbose)};
         const auto hosts {parse_arguments(argc, argv)};
 
         if (is_verbose) {
