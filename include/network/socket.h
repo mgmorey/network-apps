@@ -21,8 +21,8 @@
 #include "network/oserrorresult.h"      // OsErrorResult
 #include "network/sockethints.h"        // SocketHints
 
-#include <memory>      // std::shared_ptr
-#include <ostream>     // std::ostream
+#include <memory>       // std::shared_ptr
+#include <ostream>      // std::ostream
 
 namespace Network
 {
