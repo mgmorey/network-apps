@@ -36,7 +36,6 @@
 
 namespace Test
 {
-    using Network::Context;
     using Network::Error;
     using Network::Socket;
     using Network::SocketHints;

@@ -24,7 +24,6 @@
 
 namespace Test
 {
-    using Network::Context;
     using Network::Hostname;
     using Network::get_context;
     using Network::get_hostname;

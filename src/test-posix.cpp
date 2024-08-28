@@ -42,7 +42,6 @@ namespace Test
 {
     using Network::Address;
     using Network::ByteString;
-    using Network::Context;
     using Network::Error;
     using Network::LogicError;
     using Network::OptionalPathname;
