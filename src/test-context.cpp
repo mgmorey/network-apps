@@ -148,7 +148,6 @@ namespace Test
     auto test_context(const Context& context,
                       const std::string& scope) -> void
     {
-        assert(context.is_started());
         assert(context.is_running());
         print(context, scope);
         std::ostringstream oss;
@@ -245,7 +244,6 @@ namespace Test
             context.stop(fail);
             assert(!context.error_code());
             assert(!context.is_running());
-            assert(!context.is_started());
             context.start(version_2_0);
             test_context(context, "local 3.2");
         }
