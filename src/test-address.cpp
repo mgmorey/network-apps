@@ -485,8 +485,8 @@ auto main(int argc, char* argv[]) -> int
     using namespace Test;
 
     try {
-        const auto context {Context::instance({}, is_verbose)};
         parse_arguments(argc, argv);
+        const auto context {Context::instance({}, is_verbose)};
 
         if (is_verbose) {
             std::cout << *context << std::endl;

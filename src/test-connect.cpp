@@ -275,13 +275,14 @@ auto main(int argc, char* argv[]) -> int
     const SocketHints hints {get_hints()};
 
     try {
-        const auto context {Context::instance({}, is_verbose)};
         const auto endpoint {parse_arguments(argc, argv)};
-        const auto hostname {get_hostname()};
+        const auto context {Context::instance({}, is_verbose)};
 
         if (is_verbose) {
             std::cout << context << std::endl;
         }
+
+        const auto hostname {get_hostname()};
 
         if (getenv("http_proxy") == nullptr) {
             test_connect_valid(endpoint, hints, hostname);
