@@ -63,6 +63,7 @@ namespace Test
     using Network::SocketResultVector;
     using Network::always_false_v;
     using Network::connect;
+    using Network::get_context;
     using Network::get_hostname;
     using Network::os_error_type;
     using Network::parse;
@@ -276,7 +277,7 @@ auto main(int argc, char* argv[]) -> int
 
     try {
         const auto endpoint {parse_arguments(argc, argv)};
-        const auto context {Context::instance({}, is_verbose)};
+        const auto context {get_context({}, is_verbose)};
 
         if (is_verbose) {
             std::cout << context << std::endl;

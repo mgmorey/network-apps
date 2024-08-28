@@ -54,7 +54,7 @@ addressstring.cpp argumentdata.cpp bind-endpoint.cpp			\
 bind-socket-bs.cpp close.cpp connect-endpoint.cpp			\
 connect-socket-bs.cpp context.cpp create-result.cpp create.cpp		\
 error.cpp familyerror.cpp format-ai-error.cpp format-bytestring.cpp	\
-format-os-error.cpp format.cpp get-endpoint.cpp				\
+format-os-error.cpp format.cpp get-context.cpp get-endpoint.cpp		\
 get-endpointresult.cpp get-hostname.cpp get-hostnameresult.cpp		\
 get-last-context-error.cpp get-last-os-error.cpp			\
 get-length-maximum.cpp get-length-minimum.cpp get-name.cpp		\

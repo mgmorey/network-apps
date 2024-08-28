@@ -54,6 +54,7 @@ namespace Test
     using Network::UnixSocketHints;
     using Network::bind;
     using Network::close;
+    using Network::get_context;
     using Network::handle_null;
     using Network::handle_type;
     using Network::os_error_type;
@@ -340,7 +341,7 @@ auto main(int argc, char* argv[]) -> int
 
     try {
         parse_arguments(argc, argv);
-        const auto context {Context::instance({}, is_verbose)};
+        const auto context {get_context({}, is_verbose)};
 
         if (is_verbose) {
             std::cout << *context << std::endl;

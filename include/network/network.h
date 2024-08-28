@@ -56,6 +56,7 @@
 #include "network/exceptions.h"                 // Error, LogicError,
                                                 // RuntimeError
 #include "network/failuremode.h"                // FailureMode
+#include "network/get-context.h"                // get_context()
 #include "network/get-endpoint.h"               // get_endpoint()
 #include "network/get-endpointresult.h"         // get_endpointresult()
 #include "network/get-hostname.h"               // get_hostname()
