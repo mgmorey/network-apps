@@ -28,27 +28,12 @@ Network::Context::Context(const OptionalVersion& t_version,
       m_failure(t_failure),
       m_is_verbose(t_is_verbose)
 {
-    try {
-        start();
-
-        // Test for class invariant conditions and throw exceptions if
-        // one or more conditions are not met. The following is an
-        // example of a test for a trivial invariant (that the API
-        // should be initialized or "running"):
-
-        if (!is_running()) {
-            throw RuntimeError {"The sockets runtime is not initialized."};
-        }
-    }
-    catch (const Error& error) {
-        shutdown();
-        throw;
-    }
+    start_up();
 }
 
 Network::Context::~Context()
 {
-    shutdown();
+    shut_down();
 }
 
 auto Network::Context::error_code() const noexcept -> int
@@ -90,9 +75,24 @@ auto Network::Context::stop() -> Context&
     return *this;
 }
 
-auto Network::Context::shutdown() const -> void
+auto Network::Context::shut_down() const -> void
 {
     if (m_is_started) {
         Network::stop(FailureMode::return_zero, m_is_verbose);
+    }
+}
+
+auto Network::Context::start_up() -> void
+{
+    try {
+        start();
+
+        if (!is_running()) {
+            throw RuntimeError {"The sockets runtime is not initialized."};
+        }
+    }
+    catch (const Error& error) {
+        shut_down();
+        throw;
     }
 }
