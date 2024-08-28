@@ -64,11 +64,11 @@ auto main(int argc, char* argv[]) -> int
     using namespace Test;
 
     try {
-        const auto& context {Context::instance()};
+        const auto context {Context::instance()};
         parse_arguments(argc, argv);
 
         if (is_verbose) {
-            std::cout << context << std::endl;
+            std::cout << *context << std::endl;
         }
 
         test_hostname();

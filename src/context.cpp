@@ -21,10 +21,18 @@
 #include "network/start.h"              // start()
 #include "network/stop.h"               // stop()
 
+#include <memory>       // std::make_shared(), std::shared_ptr
+
 auto Network::Context::instance(const OptionalVersion& t_version,
-                                bool t_is_verbose) -> const Context&
+                                bool t_is_verbose) ->
+    std::shared_ptr<const Context>
 {
-    static const Context context(t_version, t_is_verbose);
+    static std::shared_ptr<const Context> context;
+
+    if (!context) {
+        context = std::make_shared<const Context>(t_version, t_is_verbose);
+    }
+
     return context;
 }
 

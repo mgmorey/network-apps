@@ -213,11 +213,11 @@ auto main(int argc, char* argv[]) -> int
     const SocketHints hints {get_hints()};
 
     try {
-        const auto& context {Context::instance()};
+        const auto context {Context::instance()};
         const auto endpoint {parse_arguments(argc, argv)};
 
         if (is_verbose) {
-            std::cout << context << std::endl;
+            std::cout << *context << std::endl;
         }
 
         if (getenv("http_proxy") == nullptr) {

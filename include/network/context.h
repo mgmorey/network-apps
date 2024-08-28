@@ -20,6 +20,7 @@
 #include "network/failuremode.h"                // FailureMode
 #include "network/optionalversion.h"            // OptionalVersion
 
+#include <memory>       // std::shared_ptr
 #include <ostream>      // std::ostream
 
 namespace Network
@@ -32,7 +33,8 @@ namespace Network
     public:
         static const auto m_failsafe {FailureMode::return_zero};
         static auto instance(const OptionalVersion& t_version = {},
-                             bool t_is_verbose = false) -> const Context&;
+                             bool t_is_verbose = false) ->
+            std::shared_ptr<const Context>;
 
         explicit Context(const OptionalVersion& t_version = {},
                          bool t_is_verbose = false);
