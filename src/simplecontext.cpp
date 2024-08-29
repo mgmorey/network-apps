@@ -26,8 +26,7 @@
 Network::SimpleContext::SimpleContext(const OptionalVersion& t_version,
                                     FailureMode t_failure,
                                     bool t_is_verbose)
-    : Context(),
-      m_version(t_version),
+    : m_version(t_version),
       m_failure(t_failure),
       m_is_verbose(t_is_verbose)
 {
@@ -35,8 +34,7 @@ Network::SimpleContext::SimpleContext(const OptionalVersion& t_version,
 }
 
 Network::SimpleContext::SimpleContext(bool t_is_verbose)
-    : Context(),
-      m_is_verbose(t_is_verbose)
+    : m_is_verbose(t_is_verbose)
 {
     start_up();
 }
