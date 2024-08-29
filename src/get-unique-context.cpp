@@ -25,9 +25,13 @@ auto Network::get_unique_context(const OptionalVersion& t_version,
                                  FailureMode t_failure,
                                  bool t_is_verbose) -> UniqueContext
 {
-    const auto context
+    auto context
     {
+#ifdef WIN32
         std::make_unique<SimpleContext>(t_version, t_failure, t_is_verbose)
+#else
+        std::make_unique<SimpleContext>(t_version, t_failure, t_is_verbose)
+#endif
     };
 
     if (context) {

@@ -27,7 +27,11 @@ auto Network::get_shared_context(const OptionalVersion& t_version,
 {
     static const auto context
     {
+#ifdef WIN32
         std::make_shared<SimpleContext>(t_version, t_failure, t_is_verbose)
+#else
+        std::make_shared<SimpleContext>(t_version, t_failure, t_is_verbose)
+#endif
     };
 
     if (context) {
