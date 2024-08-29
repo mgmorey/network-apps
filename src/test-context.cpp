@@ -76,8 +76,13 @@ namespace Test
 
 #ifdef WIN32
     static constexpr auto expected_code_stopped {WSANOTINITIALISED};
-    static constexpr auto expected_context_re {
-        R"(WinSock 2.0 Version \d{1,3}\.\d{1,3} Running)"
+    static constexpr auto expected_context_platform_re
+    {
+        "WinSock 2.0"
+    };
+    static constexpr auto expected_context_version_re
+    {
+        "( Version \\d{1,3}\\.\\d{1,3})" // NOLINT
     };
     static constexpr auto expected_error_stopped {
         "Call to ::gethostname(, 1024) failed with error 10093: "
@@ -89,8 +94,11 @@ namespace Test
     };
 #else
     static constexpr auto expected_code_stopped {0};
-    static constexpr auto expected_context_re {
-        R"(Berkeley Software Distribution Sockets( Version \d{1,3}\.\d{1,3})? Running)"
+    static constexpr auto expected_context_platform_re {
+        "Berkeley Software Distribution Sockets"
+    };
+    static constexpr auto expected_context_version_re {
+        "( Version \\d{1,3}\\.\\d{1,3})?" // NOLINT
     };
     static constexpr auto expected_error_stopped {""};
     static constexpr auto expected_error_version {""};
@@ -98,6 +106,15 @@ namespace Test
 
     static const auto fail {FailureMode::return_error};
     static auto is_verbose {false};  // NOLINT
+
+    constexpr auto get_expected_context_re() -> std::string
+    {
+        std::string result {"("};
+        result += expected_context_platform_re;
+        result += expected_context_version_re;
+        result += " Running)";
+        return result;
+    }
 
     auto parse_arguments(int argc, char** argv) -> void
     {
@@ -153,7 +170,7 @@ namespace Test
         std::ostringstream oss;
         oss << context;
         const std::string actual_context_str {oss.str()};
-        const std::regex expected_context_regex {expected_context_re};
+        const std::regex expected_context_regex {get_expected_context_re()};
         assert(std::regex_match(actual_context_str, expected_context_regex));
     }
 
