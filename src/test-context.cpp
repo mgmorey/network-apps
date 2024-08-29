@@ -200,7 +200,10 @@ namespace Test
         std::string actual_error_str;
 
         try {
-            const auto context {get_unique_context(version_null, fail, is_verbose)};
+            const auto context
+            {
+                get_unique_context(version_null, fail, is_verbose)
+            };
             static_cast<void>(context);
         }
         catch (const Error& error) {
@@ -240,9 +243,15 @@ namespace Test
         std::string actual_error_str;
 
         try {
-            const auto context_1 {get_unique_context(version_1_0, fail, is_verbose)};
+            const auto context_1
+            {
+                get_unique_context(version_1_0, fail, is_verbose)
+            };
             test_context(*context_1, "local 1", version_1_0);
-            const auto context_2 {get_unique_context(version_2_0, fail, is_verbose)};
+            const auto context_2
+            {
+                get_unique_context(version_2_0, fail, is_verbose)
+            };
             test_context(*context_2, "local 2", version_2_0);
             assert(context_1 != context_2);
         }
