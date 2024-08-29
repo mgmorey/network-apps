@@ -14,9 +14,9 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/get-unique-context.h" // get_unique_context()
-#include "network/context.h"            // Context
 #include "network/failuremode.h"        // FailureMode
 #include "network/optionalversion.h"    // OptionalVersion
+#include "network/simplecontext.h"      // SimpleContext
 #include "network/uniquecontext.h"      // UniqueContext
 
 #include <memory>       // std::make_unique()
@@ -25,7 +25,7 @@ auto Network::get_unique_context(const OptionalVersion& t_version,
                                  FailureMode t_failure,
                                  bool t_is_verbose) -> UniqueContext
 {
-    return std::make_unique<Context>(t_version, t_failure, t_is_verbose);
+    return std::make_unique<SimpleContext>(t_version, t_failure, t_is_verbose);
 }
 
 auto Network::get_unique_context(bool t_is_verbose) -> UniqueContext

@@ -16,12 +16,9 @@
 #ifndef NETWORK_CONTEXT_H
 #define NETWORK_CONTEXT_H
 
-#include "network/contextdata.h"                // ContextData
-#include "network/failuremode.h"                // FailureMode
 #include "network/optionalversion.h"            // OptionalVersion
 
 #include <ostream>      // std::ostream
-#include <string>       // std::string
 
 namespace Network
 {
@@ -31,41 +28,18 @@ namespace Network
                                const Context& context) -> std::ostream&;
 
     public:
-        Context(const OptionalVersion& t_version,
-                FailureMode t_failure,
-                bool t_is_verbose = false);
-        explicit Context(bool t_is_verbose = false);
+        Context() = default;
         Context(const Context&) = delete;
         Context(const Context&&) = delete;
-        ~Context();
+        virtual ~Context() {};
         auto operator=(const Context&) -> Context& = delete;
         auto operator=(const Context&&) -> Context& = delete;
-        [[nodiscard]] auto error_code() const noexcept -> int;
-        [[nodiscard]] auto is_running() const noexcept -> bool;
-        [[nodiscard]] auto is_verbose() const noexcept -> bool;
-        auto start() -> Context&;
-        auto stop() -> Context&;
-
-        [[nodiscard]] auto system_status() const -> std::string
-        {
-            return m_data.m_system_status;
-        }
-        [[nodiscard]] auto version() const -> OptionalVersion
-        {
-            return m_data.m_version;
-        }
-
-    protected:
-        auto shut_down() const -> void;
-        auto start_up() -> void;
-
-    private:
-        ContextData m_data;
-        OptionalVersion m_version;
-        int m_error_code {0};
-        FailureMode m_failure {FailureMode::throw_error};
-        bool m_is_started {false};
-        bool m_is_verbose {false};
+        [[nodiscard]] virtual auto error_code() const noexcept -> int = 0;
+        [[nodiscard]] virtual auto is_running() const noexcept -> bool = 0;
+        virtual auto start() -> Context& = 0;
+        virtual auto stop() -> Context& = 0;
+        [[nodiscard]] virtual auto to_string() const -> std::string = 0;
+        [[nodiscard]] virtual auto version() const -> OptionalVersion = 0;
     };
 
     extern auto operator<<(std::ostream& os,

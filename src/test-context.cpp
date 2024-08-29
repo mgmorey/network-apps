@@ -200,7 +200,7 @@ namespace Test
         std::string actual_error_str;
 
         try {
-            const Context context {version_null, fail, is_verbose};
+            const auto context {get_unique_context(version_null, fail, is_verbose)};
             static_cast<void>(context);
         }
         catch (const Error& error) {

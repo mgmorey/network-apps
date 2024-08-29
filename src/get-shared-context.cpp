@@ -14,9 +14,9 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/get-shared-context.h" // get_shared_context()
-#include "network/context.h"            // Context
 #include "network/failuremode.h"        // FailureMode
 #include "network/optionalversion.h"    // OptionalVersion
+#include "network/simplecontext.h"      // SimpleContext
 #include "network/sharedcontext.h"      // SharedContext
 
 #include <memory>       // std::make_shared()
@@ -27,7 +27,7 @@ auto Network::get_shared_context(const OptionalVersion& t_version,
 {
     static const auto context
     {
-        std::make_shared<const Context>(t_version, t_failure, t_is_verbose)
+        std::make_shared<const SimpleContext>(t_version, t_failure, t_is_verbose)
     };
 
     return context;

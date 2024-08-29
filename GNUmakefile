@@ -52,8 +52,8 @@ libnetwork_common_sources = accept.cpp address-sa.cpp address-sin.cpp	\
 address-sin6.cpp address.cpp addresserror.cpp addresslist.cpp		\
 addressstring.cpp argumentdata.cpp bind-endpoint.cpp			\
 bind-socket-bs.cpp close.cpp connect-endpoint.cpp			\
-connect-socket-bs.cpp context.cpp create-result.cpp create.cpp		\
-error.cpp familyerror.cpp format-ai-error.cpp format-bytestring.cpp	\
+connect-socket-bs.cpp create-result.cpp create.cpp error.cpp		\
+familyerror.cpp format-ai-error.cpp format-bytestring.cpp		\
 format-os-error.cpp format.cpp get-endpoint.cpp				\
 get-endpointresult.cpp get-hostname.cpp get-hostnameresult.cpp		\
 get-last-context-error.cpp get-last-os-error.cpp			\
@@ -68,13 +68,13 @@ get-unique-context.cpp listen.cpp logicerror.cpp open-endpoint.cpp	\
 open-socket.cpp open.cpp oserrorresult.cpp parse-argumentspan.cpp	\
 parse.cpp rangeerror.cpp read-string.cpp read.cpp remove.cpp		\
 reset-last-context-error.cpp reset-last-os-error.cpp runtimeerror.cpp	\
-set-last-context-error.cpp set-last-os-error.cpp socket.cpp		\
-socketdata.cpp socketerror.cpp socketfamily.cpp socketflags.cpp		\
-sockethost.cpp socketprotocol.cpp sockettype.cpp start.cpp stop.cpp	\
-stream-address.cpp stream-addresslist.cpp stream-context.cpp		\
-stream-socket.cpp stream-sockethints.cpp stream-template.cpp		\
-template.cpp to-bytestring-ai.cpp to-bytestring-void.cpp		\
-to-string-in-addr.cpp to-string-in6-addr.cpp				\
+set-last-context-error.cpp set-last-os-error.cpp simplecontext.cpp	\
+socket.cpp socketdata.cpp socketerror.cpp socketfamily.cpp		\
+socketflags.cpp sockethost.cpp socketprotocol.cpp sockettype.cpp	\
+start.cpp stop.cpp stream-address.cpp stream-addresslist.cpp		\
+stream-context.cpp stream-socket.cpp stream-sockethints.cpp		\
+stream-template.cpp template.cpp to-bytestring-ai.cpp			\
+to-bytestring-void.cpp to-string-in-addr.cpp to-string-in6-addr.cpp	\
 to-string-vector-byte.cpp to-string-vector-char.cpp validate-bs.cpp	\
 validate-sa.cpp validate-sin.cpp validate-sin6.cpp version.cpp		\
 write-string.cpp write.cpp
@@ -88,7 +88,7 @@ test_common_sources = test-address.cpp test-bind.cpp test-connect.cpp	\
 test-context.cpp test-create.cpp test-host.cpp test-hostname.cpp	\
 test-limits.cpp test-option.cpp test-parse.cpp test-socket.cpp
 
-test_posix_sources = test-posix.cpp
+test_simple_sources = test-posix.cpp
 
 unix_sources = unix-client.cpp unix-server.cpp
 

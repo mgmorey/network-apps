@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/context.h"            // Context
+#include "network/simplecontext.h"      // SimpleContext
 #include "network/error.h"              // Error
 #include "network/failuremode.h"        // FailureMode
 #include "network/optionalversion.h"    // OptionalVersion
@@ -21,43 +21,47 @@
 #include "network/start.h"              // start()
 #include "network/stop.h"               // stop()
 
-Network::Context::Context(const OptionalVersion& t_version,
-                          FailureMode t_failure,
-                          bool t_is_verbose)
-    : m_version(t_version),
+#include <sstream>      // std::ostringstream
+
+Network::SimpleContext::SimpleContext(const OptionalVersion& t_version,
+                                    FailureMode t_failure,
+                                    bool t_is_verbose)
+    : Context(),
+      m_version(t_version),
       m_failure(t_failure),
       m_is_verbose(t_is_verbose)
 {
     start_up();
 }
 
-Network::Context::Context(bool t_is_verbose)
-    : m_is_verbose(t_is_verbose)
+Network::SimpleContext::SimpleContext(bool t_is_verbose)
+    : Context(),
+      m_is_verbose(t_is_verbose)
 {
     start_up();
 }
 
-Network::Context::~Context()
+Network::SimpleContext::~SimpleContext()
 {
     shut_down();
 }
 
-auto Network::Context::error_code() const noexcept -> int
+auto Network::SimpleContext::error_code() const noexcept -> int
 {
     return m_error_code;
 }
 
-auto Network::Context::is_running() const noexcept -> bool
+auto Network::SimpleContext::is_running() const noexcept -> bool
 {
     return m_is_started && system_status() == "Running";
 }
 
-auto Network::Context::is_verbose() const noexcept -> bool
+auto Network::SimpleContext::is_verbose() const noexcept -> bool
 {
     return m_is_verbose;
 }
 
-auto Network::Context::start() -> Context&
+auto Network::SimpleContext::start() -> Context&
 {
     if (!m_is_started) {
         m_data = Network::start(m_version, m_is_verbose);
@@ -67,7 +71,7 @@ auto Network::Context::start() -> Context&
     return *this;
 }
 
-auto Network::Context::stop() -> Context&
+auto Network::SimpleContext::stop() -> Context&
 {
     if (m_is_started) {
         m_error_code = Network::stop(m_failure, m_is_verbose);
@@ -81,14 +85,14 @@ auto Network::Context::stop() -> Context&
     return *this;
 }
 
-auto Network::Context::shut_down() const -> void
+auto Network::SimpleContext::shut_down() const -> void
 {
     if (m_is_started) {
         Network::stop(FailureMode::return_zero, m_is_verbose);
     }
 }
 
-auto Network::Context::start_up() -> void
+auto Network::SimpleContext::start_up() -> void
 {
     try {
         start();
@@ -104,4 +108,25 @@ auto Network::Context::start_up() -> void
         shut_down();
         throw;
     }
+}
+
+auto Network::SimpleContext::to_string() const -> std::string
+{
+    const auto& description {m_data.m_description};
+    const auto& status {m_data.m_system_status};
+    const auto version {m_data.m_version};
+    std::ostringstream oss;
+    oss << description;
+
+    if (version) {
+        oss << " Version "
+            << *version;
+    }
+
+    if (!status.empty()) {
+        oss << ' '
+            << status;
+    }
+
+    return oss.str();
 }

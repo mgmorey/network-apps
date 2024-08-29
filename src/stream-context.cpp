@@ -13,27 +13,13 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/context.h"            // Context, operator<<()
+#include "network/simplecontext.h"      // SimpleContext, operator<<()
 
 #include <ostream>      // std::ostream
 
 auto Network::operator<<(std::ostream& os,
                          const Context& context) -> std::ostream&
 {
-    const auto& description {context.m_data.m_description};
-    const auto& status {context.m_data.m_system_status};
-    const auto version {context.m_data.m_version};
-    os << description;
-
-    if (version) {
-        os << " Version "
-           << *version;
-    }
-
-    if (!status.empty()) {
-        os << ' '
-           << status;
-    }
-
+    os << context.to_string();
     return os;
 }
