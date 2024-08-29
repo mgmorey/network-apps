@@ -13,19 +13,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_GET_CONTEXT_H
-#define NETWORK_GET_CONTEXT_H
+#ifndef NETWORK_CONTEXTPOINTER_H
+#define NETWORK_CONTEXTPOINTER_H
 
-#include "network/contextpointer.h"     // ContextPointer
-#include "network/failuremode.h"        // FailureMode
-#include "network/optionalversion.h"    // OptionalVersion
+#include "network/context.h"            // Context
+
+#include <memory>       // std::shared_ptr
 
 namespace Network
 {
-    extern auto get_context(const OptionalVersion& t_version,
-                            FailureMode t_failure,
-                            bool t_is_verbose = false) -> ContextPointer;
-    extern auto get_context(bool t_is_verbose = false) -> ContextPointer;
+    using ContextPointer = std::shared_ptr<const Context>;
 }
 
 #endif

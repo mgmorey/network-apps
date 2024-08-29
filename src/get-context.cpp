@@ -15,7 +15,7 @@
 
 #include "network/get-context.h"        // get_context()
 #include "network/context.h"            // Context
-#include "network/contextinstance.h"    // ContextInstance
+#include "network/contextpointer.h"     // ContextPointer
 #include "network/failuremode.h"        // FailureMode
 #include "network/optionalversion.h"    // OptionalVersion
 
@@ -23,7 +23,7 @@
 
 auto Network::get_context(const OptionalVersion& t_version,
                           FailureMode t_failure,
-                          bool t_is_verbose) -> ContextInstance
+                          bool t_is_verbose) -> ContextPointer
 {
     static const auto context
     {
@@ -33,7 +33,7 @@ auto Network::get_context(const OptionalVersion& t_version,
     return context;
 }
 
-auto Network::get_context(bool t_is_verbose) -> ContextInstance
+auto Network::get_context(bool t_is_verbose) -> ContextPointer
 {
     return get_context({},
                        FailureMode::throw_error,
