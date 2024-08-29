@@ -31,7 +31,7 @@ namespace Network
         Context() = default;
         Context(const Context&) = delete;
         Context(const Context&&) = delete;
-        virtual ~Context() {};
+        virtual ~Context() = default;
         auto operator=(const Context&) -> Context& = delete;
         auto operator=(const Context&&) -> Context& = delete;
         [[nodiscard]] virtual auto error_code() const noexcept -> int = 0;
