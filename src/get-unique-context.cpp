@@ -19,6 +19,10 @@
 #include "network/simplecontext.h"      // SimpleContext
 #include "network/uniquecontext.h"      // UniqueContext
 
+#ifdef WIN32
+#include "network/windowscontext.h"     // WindowsContext
+#endif
+
 #include <memory>       // std::make_unique()
 
 auto Network::get_unique_context(const OptionalVersion& t_version,
@@ -28,14 +32,14 @@ auto Network::get_unique_context(const OptionalVersion& t_version,
     auto context
     {
 #ifdef WIN32
-        std::make_unique<SimpleContext>(t_version, t_failure, t_is_verbose)
+        std::make_unique<WindowsContext>(t_version, t_failure, t_is_verbose)
 #else
         std::make_unique<SimpleContext>(t_version, t_failure, t_is_verbose)
 #endif
     };
 
     if (context) {
-        context->start();
+        context->start_up();
     }
 
     return context;

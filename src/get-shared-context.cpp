@@ -19,6 +19,10 @@
 #include "network/sharedcontext.h"      // SharedContext
 #include "network/simplecontext.h"      // SimpleContext
 
+#ifdef WIN32
+#include "network/windowscontext.h"     // WindowsContext
+#endif
+
 #include <memory>       // std::make_shared()
 
 auto Network::get_shared_context(const OptionalVersion& t_version,
@@ -28,14 +32,14 @@ auto Network::get_shared_context(const OptionalVersion& t_version,
     static const auto context
     {
 #ifdef WIN32
-        std::make_shared<SimpleContext>(t_version, t_failure, t_is_verbose)
+        std::make_shared<WindowsContext>(t_version, t_failure, t_is_verbose)
 #else
         std::make_shared<SimpleContext>(t_version, t_failure, t_is_verbose)
 #endif
     };
 
     if (context) {
-        context->start();
+        context->start_up();
     }
 
     return context;

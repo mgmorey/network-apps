@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_SIMPLECONTEXT_H
-#define NETWORK_SIMPLECONTEXT_H
+#ifndef NETWORK_WINDOWSCONTEXT_H
+#define NETWORK_WINDOWSCONTEXT_H
 
 #include "network/context.h"                    // Context
 #include "network/contextdata.h"                // ContextData
@@ -25,19 +25,19 @@
 
 namespace Network
 {
-    class SimpleContext final
+    class WindowsContext final
         : public Context
     {
     public:
-        SimpleContext(const OptionalVersion& t_version,
+        WindowsContext(const OptionalVersion& t_version,
                        FailureMode t_failure,
                        bool t_is_verbose = false);
-        explicit SimpleContext(bool t_is_verbose = false);
-        SimpleContext(const SimpleContext&) = delete;
-        SimpleContext(const SimpleContext&&) = delete;
-        ~SimpleContext() final;
-        auto operator=(const SimpleContext&) -> SimpleContext& = delete;
-        auto operator=(const SimpleContext&&) -> SimpleContext& = delete;
+        explicit WindowsContext(bool t_is_verbose = false);
+        WindowsContext(const WindowsContext&) = delete;
+        WindowsContext(const WindowsContext&&) = delete;
+        ~WindowsContext() final;
+        auto operator=(const WindowsContext&) -> WindowsContext& = delete;
+        auto operator=(const WindowsContext&&) -> WindowsContext& = delete;
         [[nodiscard]] auto error_code() const noexcept -> int final;
         [[nodiscard]] auto is_running() const noexcept -> bool final;
         [[nodiscard]] auto is_verbose() const noexcept -> bool;
