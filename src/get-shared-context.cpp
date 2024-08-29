@@ -16,8 +16,8 @@
 #include "network/get-shared-context.h" // get_shared_context()
 #include "network/failuremode.h"        // FailureMode
 #include "network/optionalversion.h"    // OptionalVersion
-#include "network/simplecontext.h"      // SimpleContext
 #include "network/sharedcontext.h"      // SharedContext
+#include "network/simplecontext.h"      // SimpleContext
 
 #include <memory>       // std::make_shared()
 
