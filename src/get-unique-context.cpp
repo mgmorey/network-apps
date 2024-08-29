@@ -16,11 +16,12 @@
 #include "network/get-unique-context.h" // get_unique_context()
 #include "network/failuremode.h"        // FailureMode
 #include "network/optionalversion.h"    // OptionalVersion
-#include "network/simplecontext.h"      // SimpleContext
 #include "network/uniquecontext.h"      // UniqueContext
 
 #ifdef WIN32
 #include "network/windowscontext.h"     // WindowsContext
+#else
+#include "network/simplecontext.h"      // SimpleContext
 #endif
 
 #include <memory>       // std::make_unique()

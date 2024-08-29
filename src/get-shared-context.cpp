@@ -17,10 +17,11 @@
 #include "network/failuremode.h"        // FailureMode
 #include "network/optionalversion.h"    // OptionalVersion
 #include "network/sharedcontext.h"      // SharedContext
-#include "network/simplecontext.h"      // SimpleContext
 
 #ifdef WIN32
 #include "network/windowscontext.h"     // WindowsContext
+#else
+#include "network/simplecontext.h"      // SimpleContext
 #endif
 
 #include <memory>       // std::make_shared()
