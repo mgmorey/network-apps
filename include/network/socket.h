@@ -35,6 +35,8 @@ namespace Network
                                const Socket& sock) -> std::ostream&;
 
     public:
+        using SocketDataPointer = std::shared_ptr<SocketData>;
+
         Socket() noexcept = default;
         explicit Socket(SocketHints t_hints, bool t_is_verbose = false);
         explicit Socket(handle_type t_handle, bool t_is_verbose = false);
@@ -54,7 +56,7 @@ namespace Network
         auto is_owner() -> Socket&;
 
     private:
-        std::shared_ptr<SocketData> m_socket_data;
+        SocketDataPointer m_socket_data;
     };
 
     extern auto operator<<(std::ostream& os,
