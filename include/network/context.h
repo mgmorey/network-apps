@@ -21,6 +21,7 @@
 #include "network/optionalversion.h"            // OptionalVersion
 
 #include <ostream>      // std::ostream
+#include <string>       // std::string
 
 namespace Network
 {
@@ -43,6 +44,15 @@ namespace Network
         [[nodiscard]] auto is_verbose() const noexcept -> bool;
         auto start() -> Context&;
         auto stop() -> Context&;
+
+        [[nodiscard]] auto system_status() const -> std::string
+        {
+            return m_data.m_system_status;
+        }
+        [[nodiscard]] auto version() const -> OptionalVersion
+        {
+            return m_data.m_version;
+        }
 
     protected:
         auto shut_down() const -> void;

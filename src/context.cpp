@@ -43,7 +43,7 @@ auto Network::Context::error_code() const noexcept -> int
 
 auto Network::Context::is_running() const noexcept -> bool
 {
-    return m_is_started && m_data.m_system_status == "Running";
+    return m_is_started && system_status() == "Running";
 }
 
 auto Network::Context::is_verbose() const noexcept -> bool
@@ -88,7 +88,10 @@ auto Network::Context::start_up() -> void
         start();
 
         if (!is_running()) {
-            throw RuntimeError {"The sockets runtime is not initialized."};
+            throw RuntimeError
+            {
+                "Sockets runtime status is \"" + system_status() + "\"."
+            };
         }
     }
     catch (const Error& error) {

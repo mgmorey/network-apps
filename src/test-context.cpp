@@ -146,7 +146,7 @@ namespace Test
     }
 
     auto print(const Context& context,
-               const std::string& scope) -> void
+               const std::string& description) -> void
     {
         std::cout << "Context";
 
@@ -156,7 +156,7 @@ namespace Test
         }
 
         std::cout << ": "
-                  << scope
+                  << description
                   << std::endl
                   << "    "
                   << context
@@ -164,10 +164,12 @@ namespace Test
     }
 
     auto test_context(const Context& context,
-                      const std::string& scope) -> void
+                      const std::string& description,
+                      const OptionalVersion& version = {}) -> void
     {
+        print(context, description);
         assert(context.is_running());
-        print(context, scope);
+        assert(context.version() == version);
         std::ostringstream oss;
         oss << context;
         const std::string actual_context_str {oss.str()};
@@ -238,9 +240,9 @@ namespace Test
 
         try {
             const Context context_1 {version_1_0, fail, is_verbose};
-            test_context(context_1, "local 1");
+            test_context(context_1, "local 1", version_1_0);
             const Context context_2 {version_2_0, fail, is_verbose};
-            test_context(context_2, "local 2");
+            test_context(context_2, "local 2", version_2_0);
             assert(&context_1 != &context_2);
         }
         catch (const Error& error) {
@@ -258,12 +260,12 @@ namespace Test
 
         try {
             Context context {version_1_0, fail, is_verbose};
-            test_context(context, "local 3.1");
+            test_context(context, "local 3.1", version_1_0);
             context.stop();
             assert(!context.error_code());
             assert(!context.is_running());
             context.start();
-            test_context(context, "local 3.2");
+            test_context(context, "local 3.2", version_1_0);
         }
         catch (const Error& error) {
             print(error);
