@@ -35,7 +35,5 @@ auto Network::get_context(const OptionalVersion& t_version,
 
 auto Network::get_context(bool t_is_verbose) -> ContextPointer
 {
-    return get_context({},
-                       FailureMode::throw_error,
-                       t_is_verbose);
+    return get_context({}, FailureMode::throw_error, t_is_verbose);
 }
