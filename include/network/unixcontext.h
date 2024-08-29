@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_SIMPLECONTEXT_H
-#define NETWORK_SIMPLECONTEXT_H
+#ifndef NETWORK_UNIXCONTEXT_H
+#define NETWORK_UNIXCONTEXT_H
 
 #include "network/context.h"                    // Context
 #include "network/contextdata.h"                // ContextData
@@ -25,19 +25,19 @@
 
 namespace Network
 {
-    class SimpleContext final
+    class UnixContext final
         : public Context
     {
     public:
-        SimpleContext(const OptionalVersion& t_version,
+        UnixContext(const OptionalVersion& t_version,
                        FailureMode t_failure,
                        bool t_is_verbose = false);
-        explicit SimpleContext(bool t_is_verbose = false);
-        SimpleContext(const SimpleContext&) = delete;
-        SimpleContext(const SimpleContext&&) = delete;
-        ~SimpleContext() final;
-        auto operator=(const SimpleContext&) -> SimpleContext& = delete;
-        auto operator=(const SimpleContext&&) -> SimpleContext& = delete;
+        explicit UnixContext(bool t_is_verbose = false);
+        UnixContext(const UnixContext&) = delete;
+        UnixContext(const UnixContext&&) = delete;
+        ~UnixContext() final;
+        auto operator=(const UnixContext&) -> UnixContext& = delete;
+        auto operator=(const UnixContext&&) -> UnixContext& = delete;
         [[nodiscard]] auto error_code() const noexcept -> int final;
         [[nodiscard]] auto is_running() const noexcept -> bool final;
         [[nodiscard]] auto is_verbose() const noexcept -> bool;
@@ -63,7 +63,6 @@ namespace Network
         ContextData m_data;
         OptionalVersion m_version;
         int m_error_code {0};
-        FailureMode m_failure {FailureMode::throw_error};
         bool m_is_started {false};
         bool m_is_verbose {false};
     };

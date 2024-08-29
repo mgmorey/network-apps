@@ -1,4 +1,4 @@
-// Copyright (C) 2022  "Michael G. Morey" <mgmorey@gmail.com>
+// Copyright (C) 2024  "Michael G. Morey" <mgmorey@gmail.com>
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,10 +13,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#ifdef WIN32
+
 #include "network/stop.h"                       // stop()
 #include "network/failuremode.h"                // FailureMode
 
-#ifdef WIN32
 #include "network/error.h"                      // Error
 #include "network/format-os-error.h"            // format_os_error()
 #include "network/get-last-context-error.h"     // get_last_context_error()
@@ -25,21 +26,15 @@
 #include "network/runtimeerror.h"               // RuntimeError
 #include "network/socket-error.h"               // socket_error
 #include "network/to-os-error.h"                // to_os_error()
-#endif
 
-#ifdef WIN32
 #include <winsock2.h>       // WSAEINPROGRESS, WSAENETDOWN, WSANOTINITIALISED,
                             // ::WSACleanup()
-#endif
 
-#ifdef WIN32
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <sstream>      // std::ostringstream
-#endif
 
 auto Network::stop(FailureMode mode, bool is_verbose) -> int
 {
-#ifdef WIN32
     reset_last_context_error();
 
     if (is_verbose) {
@@ -87,9 +82,7 @@ auto Network::stop(FailureMode mode, bool is_verbose) -> int
         }
     }
 
-#else
-    static_cast<void>(is_verbose);
-    static_cast<void>(mode);
-#endif
     return 0;
 }
+
+#endif

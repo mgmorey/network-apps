@@ -68,27 +68,31 @@ get-unique-context.cpp listen.cpp logicerror.cpp open-endpoint.cpp	\
 open-socket.cpp open.cpp oserrorresult.cpp parse-argumentspan.cpp	\
 parse.cpp rangeerror.cpp read-string.cpp read.cpp remove.cpp		\
 reset-last-context-error.cpp reset-last-os-error.cpp runtimeerror.cpp	\
-set-last-context-error.cpp set-last-os-error.cpp simplecontext.cpp	\
-socket.cpp socketdata.cpp socketerror.cpp socketfamily.cpp		\
-socketflags.cpp sockethost.cpp socketprotocol.cpp sockettype.cpp	\
-start.cpp stop.cpp stream-address.cpp stream-addresslist.cpp		\
-stream-context.cpp stream-socket.cpp stream-sockethints.cpp		\
-stream-template.cpp template.cpp to-bytestring-ai.cpp			\
-to-bytestring-void.cpp to-string-in-addr.cpp to-string-in6-addr.cpp	\
-to-string-vector-byte.cpp to-string-vector-char.cpp validate-bs.cpp	\
-validate-sa.cpp validate-sin.cpp validate-sin6.cpp version.cpp		\
-windowscontext.cpp write-string.cpp write.cpp
+set-last-context-error.cpp set-last-os-error.cpp socket.cpp		\
+socketdata.cpp socketerror.cpp socketfamily.cpp socketflags.cpp		\
+sockethost.cpp socketprotocol.cpp sockettype.cpp stream-address.cpp	\
+stream-addresslist.cpp stream-context.cpp stream-socket.cpp		\
+stream-sockethints.cpp stream-template.cpp template.cpp			\
+to-bytestring-ai.cpp to-bytestring-void.cpp to-string-in-addr.cpp	\
+to-string-in6-addr.cpp to-string-vector-byte.cpp			\
+to-string-vector-char.cpp validate-bs.cpp validate-sa.cpp		\
+validate-sin.cpp validate-sin6.cpp version.cpp write-string.cpp		\
+write.cpp
 
 libnetwork_unix_sources = address-sun.cpp create-pair.cpp		\
 create-pairresult.cpp get-path-length.cpp get-path-pointer-sun.cpp	\
 get-sun-length.cpp get-sun-pointer.cpp socketpair.cpp			\
-to-bytestring-path.cpp to-path.cpp validate-path.cpp validate-sun.cpp
+to-bytestring-path.cpp to-path.cpp unix-start.cpp unix-stop.cpp		\
+unixcontext.cpp validate-path.cpp validate-sun.cpp
+
+libnetwork_windows_sources = windowscontext.cpp windows-start.cpp	\
+windows-stop.cpp
 
 test_common_sources = test-address.cpp test-bind.cpp test-connect.cpp	\
 test-context.cpp test-create.cpp test-host.cpp test-hostname.cpp	\
 test-limits.cpp test-option.cpp test-parse.cpp test-socket.cpp
 
-test_simple_sources = test-posix.cpp
+test_posix_sources = test-posix.cpp
 
 unix_sources = unix-client.cpp unix-server.cpp
 
@@ -100,7 +104,9 @@ tags = TAGS
 
 libnetwork_sources = $(libnetwork_common_sources)
 
-ifneq "$(os_name)" "MINGW64_NT"
+ifeq "$(os_name)" "MINGW64_NT"
+	libnetwork_sources += $(libnetwork_windows_sources)
+else
 	libnetwork_sources += $(libnetwork_unix_sources)
 endif
 

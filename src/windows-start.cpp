@@ -1,4 +1,4 @@
-// Copyright (C) 2022  "Michael G. Morey" <mgmorey@gmail.com>
+// Copyright (C) 2024  "Michael G. Morey" <mgmorey@gmail.com>
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,11 +13,12 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#ifdef WIN32
+
 #include "network/start.h"              // start()
 #include "network/contextdata.h"        // ContextData
 #include "network/optionalversion.h"    // OptionalVersion
 
-#ifdef WIN32
 #include "network/error.h"              // Error
 #include "network/format-os-error.h"    // format_os_error()
 #include "network/logicerror.h"         // LogicError
@@ -25,34 +26,19 @@
 #include "network/to-os-error.h"        // to_os_error()
 #include "network/version.h"            // Version
 #include "network/windowsversion.h"     // WindowsVersion
-#endif
 
-#ifdef WIN32
 #include <winsock2.h>       // WSADATA, WSAEFAULT, WSAEPROCLIM,
                             // WSASYSNOTREADY, WSAVERNOTSUPPORTED,
                             // ::WSAStartup()
 #include <windows.h>        // WORD
-#endif
 
-#ifdef WIN32
 #include <iostream>     // std::cerr, std::cout, std::endl
-#endif
 
-#ifdef WIN32
 static constexpr Network::Version wsa_default {2, 2};
-#else
-static constexpr auto system_description {
-    "Berkeley Software Distribution Sockets"
-};
-static constexpr auto system_running {
-    "Running"
-};
-#endif
 
 auto Network::start(const OptionalVersion& version,
                     bool is_verbose) -> ContextData
 {
-#ifdef WIN32
     const WindowsVersion wsa_version {version.value_or(wsa_default)};
     WSADATA wsa_data {};
 
@@ -92,10 +78,6 @@ auto Network::start(const OptionalVersion& version,
     return {static_cast<const char*>(wsa_data.szDescription),
             static_cast<const char*>(wsa_data.szSystemStatus),
             WindowsVersion {wsa_data.wVersion}};
-#else
-    static_cast<void>(is_verbose);
-    return {system_description,
-            system_running,
-            version};
-#endif
 }
+
+#endif
