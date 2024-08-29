@@ -107,9 +107,10 @@ namespace Test
     static const auto fail {FailureMode::return_error};
     static auto is_verbose {false};  // NOLINT
 
-    constexpr auto get_expected_context_re() -> std::string
+    auto get_expected_context_re() -> std::string
     {
-        std::string result {"("};
+        std::string result;
+        result += "(";
         result += expected_context_platform_re;
         result += expected_context_version_re;
         result += " Running)";
