@@ -51,7 +51,6 @@ namespace Test
 {
     using Network::Address;
     using Network::ByteString;
-    using Network::Context;
     using Network::Endpoint;
     using Network::Hostname;
     using Network::IpSocketHints;
@@ -63,8 +62,8 @@ namespace Test
     using Network::SocketResultVector;
     using Network::always_false_v;
     using Network::connect;
-    using Network::get_context;
     using Network::get_hostname;
+    using Network::get_shared_context;
     using Network::os_error_type;
     using Network::parse;
     using Network::string_null;
@@ -273,7 +272,7 @@ auto main(int argc, char* argv[]) -> int
 
     try {
         const auto endpoint {parse_arguments(argc, argv)};
-        const auto context {get_context(is_verbose)};
+        const auto context {get_shared_context(is_verbose)};
 
         if (is_verbose) {
             std::cout << *context << std::endl;

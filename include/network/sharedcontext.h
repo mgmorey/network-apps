@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_CONTEXTPOINTER_H
-#define NETWORK_CONTEXTPOINTER_H
+#ifndef NETWORK_SHAREDCONTEXT_H
+#define NETWORK_SHAREDCONTEXT_H
 
 #include "network/context.h"            // Context
 
@@ -22,7 +22,7 @@
 
 namespace Network
 {
-    using ContextPointer = std::shared_ptr<const Context>;
+    using SharedContext = std::shared_ptr<const Context>;
 }
 
 #endif

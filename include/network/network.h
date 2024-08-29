@@ -56,7 +56,6 @@
 #include "network/exceptions.h"                 // Error, LogicError,
                                                 // RuntimeError
 #include "network/failuremode.h"                // FailureMode
-#include "network/get-context.h"                // get_context()
 #include "network/get-endpoint.h"               // get_endpoint()
 #include "network/get-endpointresult.h"         // get_endpointresult()
 #include "network/get-hostname.h"               // get_hostname()
@@ -73,6 +72,7 @@
 #include "network/get-sa-family.h"              // get_sa_family()
 #include "network/get-sa-length.h"              // get_sa_length()
 #include "network/get-sa-pointer.h"             // get_sa_pointer()
+#include "network/get-shared-context.h"         // get_shared_context()
 #include "network/get-sin-pointer.h"            // get_sin_pointer()
 #include "network/get-sin6-pointer.h"           // get_sin6_pointer()
 #include "network/get-sockname.h"               // get_sockname()
@@ -81,6 +81,7 @@
 #include "network/get-sun-length.h"             // get_sun_length()
 #include "network/get-sun-pointer.h"            // get_sun_pointer()
 #endif
+#include "network/get-unique-context.h"         // get_unique_context()
 #include "network/insert.h"                     // insert()
 #include "network/ipsockethints.h"              // IpSocketHints
 #include "network/limits.h"                     // name_length_max,

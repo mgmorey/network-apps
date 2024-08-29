@@ -13,16 +13,19 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_CONTEXTINSTANCE_H
-#define NETWORK_CONTEXTINSTANCE_H
+#ifndef NETWORK_GET_UNIQUE_CONTEXT_H
+#define NETWORK_GET_UNIQUE_CONTEXT_H
 
-#include "network/context.h"            // Context
-
-#include <memory>       // std::shared_ptr
+#include "network/failuremode.h"        // FailureMode
+#include "network/optionalversion.h"    // OptionalVersion
+#include "network/uniquecontext.h"      // UniqueContext
 
 namespace Network
 {
-    using ContextInstance = std::shared_ptr<const Context>;
+    extern auto get_unique_context(const OptionalVersion& t_version,
+                                   FailureMode t_failure,
+                                   bool t_is_verbose = false) -> UniqueContext;
+    extern auto get_unique_context(bool t_is_verbose = false) -> UniqueContext;
 }
 
 #endif

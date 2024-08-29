@@ -65,9 +65,9 @@ namespace Test
     using Network::af_unix;
 #endif
     using Network::af_unspec;
-    using Network::get_context;
     using Network::get_length_maximum;
     using Network::get_length_minimum;
+    using Network::get_shared_context;
     using Network::insert;
     using Network::parse;
 #ifndef WIN32
@@ -486,7 +486,7 @@ auto main(int argc, char* argv[]) -> int
 
     try {
         parse_arguments(argc, argv);
-        const auto context {get_context(is_verbose)};
+        const auto context {get_shared_context(is_verbose)};
 
         if (is_verbose) {
             std::cout << *context << std::endl;

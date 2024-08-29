@@ -13,17 +13,17 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-context.h"        // get_context()
+#include "network/get-shared-context.h" // get_shared_context()
 #include "network/context.h"            // Context
-#include "network/contextpointer.h"     // ContextPointer
 #include "network/failuremode.h"        // FailureMode
 #include "network/optionalversion.h"    // OptionalVersion
+#include "network/sharedcontext.h"      // SharedContext
 
 #include <memory>       // std::make_shared()
 
-auto Network::get_context(const OptionalVersion& t_version,
-                          FailureMode t_failure,
-                          bool t_is_verbose) -> ContextPointer
+auto Network::get_shared_context(const OptionalVersion& t_version,
+                                 FailureMode t_failure,
+                                 bool t_is_verbose) -> SharedContext
 {
     static const auto context
     {
@@ -33,7 +33,7 @@ auto Network::get_context(const OptionalVersion& t_version,
     return context;
 }
 
-auto Network::get_context(bool t_is_verbose) -> ContextPointer
+auto Network::get_shared_context(bool t_is_verbose) -> SharedContext
 {
-    return get_context({}, FailureMode::throw_error, t_is_verbose);
+    return get_shared_context({}, FailureMode::throw_error, t_is_verbose);
 }

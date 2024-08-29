@@ -40,7 +40,7 @@ namespace Test
     using Network::Socket;
     using Network::SocketHints;
     using Network::create;
-    using Network::get_context;
+    using Network::get_shared_context;
     using Network::handle_null;
     using Network::handle_type;
     using Network::os_error_type;
@@ -144,7 +144,7 @@ auto main(int argc, char* argv[]) -> int
 
     try {
         parse_arguments(argc, argv);
-        const auto context {get_context(is_verbose)};
+        const auto context {get_shared_context(is_verbose)};
 
         if (is_verbose) {
             std::cout << *context << std::endl;

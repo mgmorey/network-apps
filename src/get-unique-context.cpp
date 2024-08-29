@@ -13,19 +13,22 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_GET_CONTEXT_H
-#define NETWORK_GET_CONTEXT_H
-
-#include "network/contextpointer.h"     // ContextPointer
+#include "network/get-unique-context.h" // get_unique_context()
+#include "network/context.h"            // Context
 #include "network/failuremode.h"        // FailureMode
 #include "network/optionalversion.h"    // OptionalVersion
+#include "network/uniquecontext.h"      // UniqueContext
 
-namespace Network
+#include <memory>       // std::make_unique()
+
+auto Network::get_unique_context(const OptionalVersion& t_version,
+                                 FailureMode t_failure,
+                                 bool t_is_verbose) -> UniqueContext
 {
-    extern auto get_context(const OptionalVersion& t_version,
-                            FailureMode t_failure,
-                            bool t_is_verbose = false) -> ContextPointer;
-    extern auto get_context(bool t_is_verbose = false) -> ContextPointer;
+    return std::make_unique<Context>(t_version, t_failure, t_is_verbose);
 }
 
-#endif
+auto Network::get_unique_context(bool t_is_verbose) -> UniqueContext
+{
+    return get_unique_context({}, FailureMode::throw_error, t_is_verbose);
+}

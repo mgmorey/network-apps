@@ -44,8 +44,9 @@ namespace Test
 #ifdef WIN32
     using Network::WindowsVersion;
 #endif
-    using Network::get_context;
     using Network::get_hostname;
+    using Network::get_shared_context;
+    using Network::get_unique_context;
     using Network::parse;
     using Network::version_null;
 
@@ -217,9 +218,9 @@ namespace Test
         std::string actual_error_str;
 
         try {
-            const auto context_1 {get_context({}, fail, is_verbose)};
+            const auto context_1 {get_shared_context({}, fail, is_verbose)};
             test_context(*context_1, "global 1");
-            const auto context_2 {get_context({}, fail, is_verbose)};
+            const auto context_2 {get_shared_context({}, fail, is_verbose)};
             test_context(*context_2, "global 2");
             assert(context_1 == context_2);
             error_code = Network::stop(fail, is_verbose);
@@ -239,11 +240,11 @@ namespace Test
         std::string actual_error_str;
 
         try {
-            const Context context_1 {version_1_0, fail, is_verbose};
-            test_context(context_1, "local 1", version_1_0);
-            const Context context_2 {version_2_0, fail, is_verbose};
-            test_context(context_2, "local 2", version_2_0);
-            assert(&context_1 != &context_2);
+            const auto context_1 {get_unique_context(version_1_0, fail, is_verbose)};
+            test_context(*context_1, "local 1", version_1_0);
+            const auto context_2 {get_unique_context(version_2_0, fail, is_verbose)};
+            test_context(*context_2, "local 2", version_2_0);
+            assert(context_1 != context_2);
         }
         catch (const Error& error) {
             print(error);
@@ -259,13 +260,13 @@ namespace Test
         std::string actual_error_str;
 
         try {
-            Context context {version_1_0, fail, is_verbose};
-            test_context(context, "local 3.1", version_1_0);
-            context.stop();
-            assert(!context.error_code());
-            assert(!context.is_running());
-            context.start();
-            test_context(context, "local 3.2", version_1_0);
+            auto context {get_unique_context(version_1_0, fail, is_verbose)};
+            test_context(*context, "local 3.1", version_1_0);
+            context->stop();
+            assert(!context->error_code());
+            assert(!context->is_running());
+            context->start();
+            test_context(*context, "local 3.2", version_1_0);
         }
         catch (const Error& error) {
             print(error);
@@ -281,8 +282,8 @@ namespace Test
         std::string actual_error_str;
 
         try {
-            const Context context {{}, fail, is_verbose};
-            test_context(context, "local 4");
+            const auto context {get_unique_context({}, fail, is_verbose)};
+            test_context(*context, "local 4");
             static_cast<void>(get_hostname(is_verbose));
         }
         catch (const Error& error) {
