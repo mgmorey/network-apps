@@ -34,6 +34,7 @@ namespace Network
         Context(const OptionalVersion& t_version,
                 FailureMode t_failure,
                 bool t_is_verbose = false);
+        explicit Context(bool t_is_verbose = false);
         Context(const Context&) = delete;
         Context(const Context&&) = delete;
         ~Context();

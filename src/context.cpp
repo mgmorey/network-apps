@@ -31,6 +31,12 @@ Network::Context::Context(const OptionalVersion& t_version,
     start_up();
 }
 
+Network::Context::Context(bool t_is_verbose)
+    : m_is_verbose(t_is_verbose)
+{
+    start_up();
+}
+
 Network::Context::~Context()
 {
     shut_down();
