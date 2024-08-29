@@ -36,8 +36,8 @@ namespace Network
         auto operator=(const Context&&) -> Context& = delete;
         [[nodiscard]] virtual auto error_code() const noexcept -> int = 0;
         [[nodiscard]] virtual auto is_running() const noexcept -> bool = 0;
-        virtual auto start() -> Context& = 0;
-        virtual auto stop() -> Context& = 0;
+        virtual auto start() -> Context* = 0;
+        virtual auto stop() -> Context* = 0;
         [[nodiscard]] virtual auto to_string() const -> std::string = 0;
         [[nodiscard]] virtual auto version() const -> OptionalVersion = 0;
     };

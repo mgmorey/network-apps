@@ -30,13 +30,11 @@ Network::SimpleContext::SimpleContext(const OptionalVersion& t_version,
       m_failure(t_failure),
       m_is_verbose(t_is_verbose)
 {
-    start_up();
 }
 
 Network::SimpleContext::SimpleContext(bool t_is_verbose)
     : m_is_verbose(t_is_verbose)
 {
-    start_up();
 }
 
 Network::SimpleContext::~SimpleContext()
@@ -59,17 +57,30 @@ auto Network::SimpleContext::is_verbose() const noexcept -> bool
     return m_is_verbose;
 }
 
-auto Network::SimpleContext::start() -> Context&
+auto Network::SimpleContext::start() -> Context*
 {
-    if (!m_is_started) {
-        m_data = Network::start(m_version, m_is_verbose);
-        m_is_started = true;
+    try {
+        if (!m_is_started) {
+            m_data = Network::start(m_version, m_is_verbose);
+            m_is_started = true;
+        }
+
+        if (!is_running()) {
+            throw RuntimeError
+            {
+                "Sockets runtime status is \"" + system_status() + "\"."
+            };
+        }
+    }
+    catch (const Error& error) {
+        stop();
+        throw;
     }
 
-    return *this;
+    return this;
 }
 
-auto Network::SimpleContext::stop() -> Context&
+auto Network::SimpleContext::stop() -> Context*
 {
     if (m_is_started) {
         m_error_code = Network::stop(m_failure, m_is_verbose);
@@ -80,31 +91,13 @@ auto Network::SimpleContext::stop() -> Context&
         }
     }
 
-    return *this;
+    return this;
 }
 
 auto Network::SimpleContext::shut_down() const -> void
 {
     if (m_is_started) {
         Network::stop(FailureMode::return_zero, m_is_verbose);
-    }
-}
-
-auto Network::SimpleContext::start_up() -> void
-{
-    try {
-        start();
-
-        if (!is_running()) {
-            throw RuntimeError
-            {
-                "Sockets runtime status is \"" + system_status() + "\"."
-            };
-        }
-    }
-    catch (const Error& error) {
-        shut_down();
-        throw;
     }
 }
 

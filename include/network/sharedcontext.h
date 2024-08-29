@@ -22,7 +22,7 @@
 
 namespace Network
 {
-    using SharedContext = std::shared_ptr<const Context>;
+    using SharedContext = std::shared_ptr<Context>;
 }
 
 #endif

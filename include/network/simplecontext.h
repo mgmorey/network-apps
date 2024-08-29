@@ -41,8 +41,8 @@ namespace Network
         [[nodiscard]] auto error_code() const noexcept -> int override;
         [[nodiscard]] auto is_running() const noexcept -> bool override;
         [[nodiscard]] auto is_verbose() const noexcept -> bool;
-        auto start() -> Context& override;
-        auto stop() -> Context& override;
+        auto start() -> Context* override;
+        auto stop() -> Context* override;
         [[nodiscard]] auto to_string() const -> std::string override;
 
         [[nodiscard]] auto version() const -> OptionalVersion override
@@ -52,7 +52,6 @@ namespace Network
 
     protected:
         auto shut_down() const -> void;
-        auto start_up() -> void;
 
         [[nodiscard]] auto system_status() const -> std::string
         {

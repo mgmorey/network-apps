@@ -25,7 +25,16 @@ auto Network::get_unique_context(const OptionalVersion& t_version,
                                  FailureMode t_failure,
                                  bool t_is_verbose) -> UniqueContext
 {
-    return std::make_unique<SimpleContext>(t_version, t_failure, t_is_verbose);
+    auto context
+    {
+        std::make_unique<SimpleContext>(t_version, t_failure, t_is_verbose)
+    };
+
+    if (context) {
+        context->start();
+    }
+
+    return context;
 }
 
 auto Network::get_unique_context(bool t_is_verbose) -> UniqueContext
