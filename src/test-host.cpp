@@ -240,11 +240,7 @@ namespace Test
     auto print(const OsErrorResult& result) -> void
     {
         if (is_verbose) {
-            std::cout << "Number: "
-                      << result.number()
-                      << std::endl
-                      << "String: "
-                      << result.string()
+            std::cout << result.string()
                       << std::endl;
         }
     }
@@ -414,6 +410,11 @@ auto main(int argc, char* argv[]) -> int
             std::cout << *context << std::endl;
         }
 
+        test_invalid_family();
+        test_invalid_type();
+        test_no_data();
+        test_no_name();
+
         if (!hosts.empty()) {
             std::for_each(hosts.begin(), hosts.end(), test_valid);
         }
@@ -423,11 +424,6 @@ auto main(int argc, char* argv[]) -> int
         else {
             test_valid(localhost);
         }
-
-        test_invalid_family();
-        test_invalid_type();
-        test_no_data();
-        test_no_name();
     }
     catch (const std::exception& error) {
         std::cerr << error.what()

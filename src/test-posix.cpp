@@ -129,11 +129,7 @@ namespace Test
     auto print(const OsErrorResult& result) -> void
     {
         if (is_verbose) {
-            std::cout << "Number: "
-                      << result.number()
-                      << std::endl
-                      << "String: "
-                      << result.string()
+            std::cout << result.string()
                       << std::endl;
         }
     }
@@ -346,15 +342,15 @@ auto main(int argc, char* argv[]) -> int
             std::cout << *context << std::endl;
         }
 
-        test_paths_valid();
-        test_socketpair_valid();
-        test_unix_socket_valid();
         test_paths_invalid();
         test_socketpair_invalid_protocol();
         test_socketpair_invalid_type();
         test_unix_socket_invalid_protocol();
         test_unix_socket_invalid_type();
         test_close_handle_null();
+        test_paths_valid();
+        test_socketpair_valid();
+        test_unix_socket_valid();
     }
     catch (const std::exception& error) {
         std::cerr << error.what()

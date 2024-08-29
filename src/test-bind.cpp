@@ -160,11 +160,7 @@ namespace Test
     auto print(const OsErrorResult& result) -> void
     {
         if (is_verbose) {
-            std::cout << "Number: "
-                      << result.number()
-                      << std::endl
-                      << "String: "
-                      << result.string()
+            std::cout << result.string()
                       << std::endl;
         }
     }
@@ -220,12 +216,12 @@ auto main(int argc, char* argv[]) -> int
             std::cout << *context << std::endl;
         }
 
+        const Endpoint invalid_host {".", {}};
+        test_bind_invalid_host(invalid_host, hints);
+
         if (getenv("http_proxy") == nullptr) {
             test_bind_valid(endpoint, hints);
         }
-
-        const Endpoint invalid_host {".", {}};
-        test_bind_invalid_host(invalid_host, hints);
     }
     catch (const std::exception& error) {
         std::cerr << error.what()

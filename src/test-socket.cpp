@@ -203,12 +203,12 @@ auto main(int argc, char* argv[]) -> int
             std::cout << *context << std::endl;
         }
 
-        test_socket_valid();
-        test_socket_hints_valid();
         test_socket_hints_invalid_family();
         test_socket_hints_invalid_protocol();
         test_socket_hints_invalid_type();
         test_socket_invalid_data();
+        test_socket_hints_valid();
+        test_socket_valid();
     }
     catch (const std::exception& error) {
         std::cerr << error.what()

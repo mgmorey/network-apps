@@ -150,10 +150,10 @@ auto main(int argc, char* argv[]) -> int
             std::cout << *context << std::endl;
         }
 
-        test_create_hints_valid();
         test_create_hints_invalid_family();
         test_create_hints_invalid_protocol();
         test_create_hints_invalid_type();
+        test_create_hints_valid();
     }
     catch (const std::exception& error) {
         std::cerr << error.what()
