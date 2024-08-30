@@ -24,6 +24,7 @@
 #include "network/windows-start.h"      // start()
 
 #include <sstream>      // std::ostringstream
+#include <string>       // std::string
 
 Network::WindowsContext::WindowsContext(const OptionalVersion& t_version,
                                         FailureMode t_failure,
@@ -46,6 +47,27 @@ Network::WindowsContext::~WindowsContext()
     }
 }
 
+Network::WindowsContext::operator std::string() const
+{
+    const auto& description {m_data.m_description};
+    const auto& status {m_data.m_system_status};
+    const auto version {m_data.m_version};
+    std::ostringstream oss;
+    oss << description;
+
+    if (version) {
+        oss << " Version "
+            << *version;
+    }
+
+    if (!status.empty()) {
+        oss << ' '
+            << status;
+    }
+
+    return oss.str();
+}
+
 auto Network::WindowsContext::error_code() const noexcept -> int
 {
     return m_error_code;
@@ -53,7 +75,7 @@ auto Network::WindowsContext::error_code() const noexcept -> int
 
 auto Network::WindowsContext::is_running() const noexcept -> bool
 {
-    return m_is_started && system_status() == "Running";
+    return m_is_started && m_data.m_system_status == "Running";
 }
 
 auto Network::WindowsContext::is_verbose() const noexcept -> bool
@@ -104,32 +126,6 @@ auto Network::WindowsContext::stop() -> Context*
     }
 
     return this;
-}
-
-auto Network::WindowsContext::system_status() const -> std::string
-{
-    return m_data.m_system_status;
-}
-
-auto Network::WindowsContext::to_string() const -> std::string
-{
-    const auto& description {m_data.m_description};
-    const auto& status {m_data.m_system_status};
-    const auto version {m_data.m_version};
-    std::ostringstream oss;
-    oss << description;
-
-    if (version) {
-        oss << " Version "
-            << *version;
-    }
-
-    if (!status.empty()) {
-        oss << ' '
-            << status;
-    }
-
-    return oss.str();
 }
 
 auto Network::WindowsContext::version() const -> OptionalVersion

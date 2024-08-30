@@ -40,13 +40,12 @@ namespace Network
         ~WindowsContext() final;
         auto operator=(const WindowsContext&) -> WindowsContext& = delete;
         auto operator=(const WindowsContext&&) -> WindowsContext& = delete;
+        explicit operator std::string() const final;
         [[nodiscard]] auto error_code() const noexcept -> int final;
         [[nodiscard]] auto is_running() const noexcept -> bool final;
-        [[nodiscard]] auto is_verbose() const noexcept -> bool;
+        [[nodiscard]] auto is_verbose() const noexcept -> bool final;
         auto start() -> Context* final;
         auto stop() -> Context* final;
-        [[nodiscard]] auto system_status() const -> std::string;
-        [[nodiscard]] auto to_string() const -> std::string final;
         [[nodiscard]] auto version() const -> OptionalVersion final;
 
     private:

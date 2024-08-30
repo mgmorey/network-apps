@@ -24,6 +24,7 @@
 #include "network/unix-start.h"         // start()
 
 #include <sstream>      // std::ostringstream
+#include <string>       // std::string
 
 Network::UnixContext::UnixContext(const OptionalVersion& t_version,
                                   FailureMode t_failure,
@@ -46,6 +47,27 @@ Network::UnixContext::~UnixContext()
     }
 }
 
+Network::UnixContext::operator std::string() const
+{
+    const auto& description {m_data.m_description};
+    const auto& status {m_data.m_system_status};
+    const auto version {m_data.m_version};
+    std::ostringstream oss;
+    oss << description;
+
+    if (version) {
+        oss << " Version "
+            << *version;
+    }
+
+    if (!status.empty()) {
+        oss << ' '
+            << status;
+    }
+
+    return oss.str();
+}
+
 auto Network::UnixContext::error_code() const noexcept -> int
 {
     return m_error_code;
@@ -53,7 +75,7 @@ auto Network::UnixContext::error_code() const noexcept -> int
 
 auto Network::UnixContext::is_running() const noexcept -> bool
 {
-    return m_is_started && system_status() == "Running";
+    return m_is_started && m_data.m_system_status == "Running";
 }
 
 auto Network::UnixContext::is_verbose() const noexcept -> bool
@@ -74,7 +96,7 @@ auto Network::UnixContext::start() -> Context*
         if (!is_running()) {
             throw RuntimeError
             {
-                "Sockets runtime status is \"" + system_status() + "\"."
+                "Sockets runtime status is \"" + m_data.m_system_status + "\"."
             };
         }
     }
@@ -104,32 +126,6 @@ auto Network::UnixContext::stop() -> Context*
     }
 
     return this;
-}
-
-auto Network::UnixContext::system_status() const -> std::string
-{
-    return m_data.m_system_status;
-}
-
-auto Network::UnixContext::to_string() const -> std::string
-{
-    const auto& description {m_data.m_description};
-    const auto& status {m_data.m_system_status};
-    const auto version {m_data.m_version};
-    std::ostringstream oss;
-    oss << description;
-
-    if (version) {
-        oss << " Version "
-            << *version;
-    }
-
-    if (!status.empty()) {
-        oss << ' '
-            << status;
-    }
-
-    return oss.str();
 }
 
 auto Network::UnixContext::version() const -> OptionalVersion

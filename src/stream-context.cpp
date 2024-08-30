@@ -16,10 +16,11 @@
 #include "network/context.h"            // SimpleContext, operator<<()
 
 #include <ostream>      // std::ostream
+#include <string>       // std::string
 
 auto Network::operator<<(std::ostream& os,
                          const Context& context) -> std::ostream&
 {
-    os << context.to_string();
+    os << std::string(context);
     return os;
 }
