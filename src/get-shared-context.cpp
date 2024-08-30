@@ -40,7 +40,7 @@ auto Network::get_shared_context(const OptionalVersion& t_version,
     };
 
     if (context) {
-        context->start_up();
+        context->start();
     }
 
     return context;

@@ -61,18 +61,13 @@ auto Network::WindowsContext::is_verbose() const noexcept -> bool
 
 auto Network::WindowsContext::start() -> Context*
 {
-    if (!m_is_started) {
-        m_data = Network::start(m_version, m_is_verbose);
-        m_is_started = true;
+    if (m_is_started) {
+        return this;
     }
 
-    return this;
-}
-
-auto Network::WindowsContext::start_up() -> Context*
-{
     try {
-        start();
+        m_data = Network::start(m_version, m_is_verbose);
+        m_is_started = true;
 
         if (!is_running()) {
             throw RuntimeError
@@ -82,7 +77,13 @@ auto Network::WindowsContext::start_up() -> Context*
         }
     }
     catch (const Error& error) {
-        stop();
+        m_error_code = Network::stop(FailureMode::return_zero, m_is_verbose);
+
+        if (m_error_code == 0) {
+            m_is_started = false;
+            m_data = {};
+        }
+
         throw;
     }
 

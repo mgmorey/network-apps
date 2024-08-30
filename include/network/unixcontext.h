@@ -42,7 +42,6 @@ namespace Network
         [[nodiscard]] auto is_running() const noexcept -> bool final;
         [[nodiscard]] auto is_verbose() const noexcept -> bool;
         auto start() -> Context* final;
-        auto start_up() -> Context* final;
         auto stop() -> Context* final;
         [[nodiscard]] auto to_string() const -> std::string final;
 
