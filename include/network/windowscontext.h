@@ -16,6 +16,8 @@
 #ifndef NETWORK_WINDOWSCONTEXT_H
 #define NETWORK_WINDOWSCONTEXT_H
 
+#ifdef WIN32
+
 #include "network/context.h"                    // Context
 #include "network/failuremode.h"                // FailureMode
 #include "network/optionalversion.h"            // OptionalVersion
@@ -56,5 +58,7 @@ namespace Network
         bool m_is_verbose {false};
     };
 }
+
+#endif
 
 #endif

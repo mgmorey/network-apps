@@ -13,6 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#ifndef WIN32
+
 #include "network/unixcontext.h"        // UnixContext
 #include "network/error.h"              // Error
 #include "network/failuremode.h"        // FailureMode
@@ -134,3 +136,5 @@ auto Network::UnixContext::version() const -> OptionalVersion
 {
     return m_data.m_version;
 }
+
+#endif
