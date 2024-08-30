@@ -19,6 +19,7 @@
 #include "network/optionalversion.h"            // OptionalVersion
 
 #include <ostream>      // std::ostream
+#include <string>       // std::string
 
 namespace Network
 {
