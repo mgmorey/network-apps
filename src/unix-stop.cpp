@@ -18,9 +18,15 @@
 #include "network/stop.h"                       // stop()
 #include "network/failuremode.h"                // FailureMode
 
+#include <iostream>     // std::cout, std::endl
+
 auto Network::stop(FailureMode mode, bool is_verbose) -> int
 {
-    static_cast<void>(is_verbose);
+    if (is_verbose) {
+        std::cout << "Stopping the network runtime."
+                  << std::endl;
+    }
+
     static_cast<void>(mode);
     return 0;
 }
