@@ -72,11 +72,11 @@ set-last-os-error.cpp socket.cpp socketdata.cpp socketerror.cpp		\
 socketfamily.cpp socketflags.cpp sockethost.cpp socketprotocol.cpp	\
 sockettype.cpp stream-address.cpp stream-addresslist.cpp		\
 stream-context.cpp stream-socket.cpp stream-sockethints.cpp		\
-stream-template.cpp template.cpp to-bytestring-ai.cpp			\
-to-bytestring-void.cpp to-string-in-addr.cpp to-string-in6-addr.cpp	\
-to-string-vector-byte.cpp to-string-vector-char.cpp validate-bs.cpp	\
-validate-sa.cpp validate-sin.cpp validate-sin6.cpp version.cpp		\
-write-string.cpp write.cpp
+stream-template.cpp stream-version.cpp template.cpp			\
+to-bytestring-ai.cpp to-bytestring-void.cpp to-string-in-addr.cpp	\
+to-string-in6-addr.cpp to-string-vector-byte.cpp			\
+to-string-vector-char.cpp validate-bs.cpp validate-sa.cpp		\
+validate-sin.cpp validate-sin6.cpp write-string.cpp write.cpp
 
 libnetwork_unix_sources = address-sun.cpp create-pair.cpp		\
 create-pairresult.cpp get-path-length.cpp get-path-pointer-sun.cpp	\
