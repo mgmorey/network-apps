@@ -48,7 +48,7 @@ namespace Network
         [[nodiscard]] auto version() const -> OptionalVersion final;
 
     private:
-        WindowsContextData m_data;
+        WindowsContextData m_data {};
         OptionalVersion m_version;
         int m_error_code {0};
         FailureMode m_failure {FailureMode::throw_error};

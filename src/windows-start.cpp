@@ -76,9 +76,7 @@ auto Network::start(const OptionalVersion& version,
         }
     }
 
-    return {static_cast<const char*>(wsa_data.szDescription),
-            static_cast<const char*>(wsa_data.szSystemStatus),
-            WindowsVersion {wsa_data.wVersion}};
+    return wsa_data;
 }
 
 #endif

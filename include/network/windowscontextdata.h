@@ -18,18 +18,11 @@
 
 #ifdef WIN32
 
-#include "network/optionalversion.h"        // OptionalVersion
-
-#include <string>       // std::string
+#include <winsock2.h>       // WSADATA
 
 namespace Network
 {
-    struct WindowsContextData
-    {
-        std::string m_description;
-        std::string m_system_status;
-        OptionalVersion m_version;
-    };
+    using WindowsContextData = WSADATA;
 }
 
 #endif

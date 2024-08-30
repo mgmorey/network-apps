@@ -22,9 +22,11 @@
 #include "network/runtimeerror.h"       // RuntimeError
 #include "network/stop.h"               // stop()
 #include "network/windows-start.h"      // start()
+#include "network/windowsversion.h"     // WindowsVersion
 
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
+#include <string_view>  // std::string_view
 
 Network::WindowsContext::WindowsContext(const OptionalVersion& t_version,
                                         FailureMode t_failure,
@@ -49,18 +51,15 @@ Network::WindowsContext::~WindowsContext()
 
 Network::WindowsContext::operator std::string() const
 {
-    const auto& description {m_data.m_description};
-    const auto& status {m_data.m_system_status};
-    const auto version {m_data.m_version};
+    const auto* description {static_cast<const char*>(m_data.szDescription)};
+    const auto* status {static_cast<const char*>(m_data.szSystemStatus)};
+    const WindowsVersion version {m_data.wVersion};
     std::ostringstream oss;
-    oss << description;
+    oss << description
+        << " Version "
+        << version;
 
-    if (version) {
-        oss << " Version "
-            << *version;
-    }
-
-    if (!status.empty()) {
+    if (*status != '\0') {
         oss << ' '
             << status;
     }
@@ -75,7 +74,8 @@ auto Network::WindowsContext::error_code() const noexcept -> int
 
 auto Network::WindowsContext::is_running() const noexcept -> bool
 {
-    return m_is_started && m_data.m_system_status == "Running";
+    const std::string_view status {m_data.szSystemStatus};
+    return m_is_started && std::string(status) == "Running";
 }
 
 auto Network::WindowsContext::start() -> Context*
@@ -89,9 +89,10 @@ auto Network::WindowsContext::start() -> Context*
         m_is_started = true;
 
         if (!is_running()) {
+            const std::string status {static_cast<const char*>(m_data.szSystemStatus)};
             throw RuntimeError
             {
-                "Sockets runtime status is \"" + m_data.m_system_status + "\"."
+                std::string("Sockets runtime status is \"") + status + "\"."
             };
         }
     }
@@ -125,7 +126,8 @@ auto Network::WindowsContext::stop() -> Context*
 
 auto Network::WindowsContext::version() const -> OptionalVersion
 {
-    return m_data.m_version;
+    const WindowsVersion windows_version {m_data.wVersion};
+    return Version {windows_version};
 }
 
 #endif
