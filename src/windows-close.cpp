@@ -13,6 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#ifdef WIN32
+
 #include "network/close.h"                      // close()
 #include "network/format-os-error.h"            // format_os_error()
 #include "network/get-last-context-error.h"     // get_last_context_error()
@@ -54,3 +56,5 @@ auto Network::close(handle_type handle, bool is_verbose) -> OsErrorResult
 
     return OsErrorResult {};
 }
+
+#endif
