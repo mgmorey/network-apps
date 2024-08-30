@@ -39,7 +39,9 @@ Network::UnixContext::UnixContext(bool t_is_verbose)
 
 Network::UnixContext::~UnixContext()
 {
-    shut_down();
+    if (m_is_started) {
+        Network::stop(FailureMode::return_zero, m_is_verbose);
+    }
 }
 
 auto Network::UnixContext::error_code() const noexcept -> int
@@ -120,11 +122,4 @@ auto Network::UnixContext::to_string() const -> std::string
     }
 
     return oss.str();
-}
-
-auto Network::UnixContext::shut_down() const -> void
-{
-    if (m_is_started) {
-        Network::stop(FailureMode::return_zero, m_is_verbose);
-    }
 }

@@ -52,8 +52,6 @@ namespace Network
         }
 
     protected:
-        auto shut_down() const -> void;
-
         [[nodiscard]] auto system_status() const -> std::string
         {
             return m_data.m_system_status;

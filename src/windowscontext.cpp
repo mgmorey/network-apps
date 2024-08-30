@@ -39,7 +39,9 @@ Network::WindowsContext::WindowsContext(bool t_is_verbose)
 
 Network::WindowsContext::~WindowsContext()
 {
-    shut_down();
+    if (m_is_started) {
+        Network::stop(FailureMode::return_zero, m_is_verbose);
+    }
 }
 
 auto Network::WindowsContext::error_code() const noexcept -> int
@@ -120,11 +122,4 @@ auto Network::WindowsContext::to_string() const -> std::string
     }
 
     return oss.str();
-}
-
-auto Network::WindowsContext::shut_down() const -> void
-{
-    if (m_is_started) {
-        Network::stop(FailureMode::return_zero, m_is_verbose);
-    }
 }
