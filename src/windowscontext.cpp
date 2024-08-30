@@ -101,13 +101,6 @@ auto Network::WindowsContext::stop() -> Context*
     return this;
 }
 
-auto Network::WindowsContext::shut_down() const -> void
-{
-    if (m_is_started) {
-        Network::stop(FailureMode::return_zero, m_is_verbose);
-    }
-}
-
 auto Network::WindowsContext::to_string() const -> std::string
 {
     const auto& description {m_data.m_description};
@@ -127,4 +120,11 @@ auto Network::WindowsContext::to_string() const -> std::string
     }
 
     return oss.str();
+}
+
+auto Network::WindowsContext::shut_down() const -> void
+{
+    if (m_is_started) {
+        Network::stop(FailureMode::return_zero, m_is_verbose);
+    }
 }
