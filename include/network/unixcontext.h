@@ -30,8 +30,8 @@ namespace Network
     {
     public:
         UnixContext(const OptionalVersion& t_version,
-                       FailureMode t_failure,
-                       bool t_is_verbose = false);
+                    FailureMode t_failure,
+                    bool t_is_verbose = false);
         explicit UnixContext(bool t_is_verbose = false);
         UnixContext(const UnixContext&) = delete;
         UnixContext(const UnixContext&&) = delete;
