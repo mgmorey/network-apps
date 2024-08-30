@@ -50,7 +50,6 @@ namespace Network
             return m_data.m_version;
         }
 
-    protected:
         [[nodiscard]] auto system_status() const -> std::string
         {
             return m_data.m_system_status;
