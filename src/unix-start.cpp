@@ -19,6 +19,8 @@
 #include "network/unix-start.h"         // start()
 #include "network/unixcontextdata.h"    // UnixContextData
 
+#include <iostream>     // std::cout, std::endl
+
 static constexpr auto system_description {
     "Berkeley Software Distribution Sockets"
 };
@@ -29,7 +31,11 @@ static constexpr auto system_running {
 auto Network::start(const OptionalVersion& version,
                     bool is_verbose) -> UnixContextData
 {
-    static_cast<void>(is_verbose);
+    if (is_verbose) {
+        std::cout << "Starting the network runtime."
+                  << std::endl;
+    }
+
     return {system_description,
             system_running,
             version};
