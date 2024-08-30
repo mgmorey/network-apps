@@ -92,7 +92,7 @@ auto Network::UnixContext::start_up() -> Context*
 auto Network::UnixContext::stop() -> Context*
 {
     if (m_is_started) {
-        m_error_code = 0;
+        m_error_code = Network::stop(FailureMode::return_zero, m_is_verbose);
 
         if (m_error_code == 0) {
             m_is_started = false;
