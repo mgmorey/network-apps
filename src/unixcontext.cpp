@@ -104,6 +104,11 @@ auto Network::UnixContext::stop() -> Context*
     return this;
 }
 
+auto Network::UnixContext::system_status() const -> std::string
+{
+    return m_data.m_system_status;
+}
+
 auto Network::UnixContext::to_string() const -> std::string
 {
     const auto& description {m_data.m_description};
@@ -123,4 +128,9 @@ auto Network::UnixContext::to_string() const -> std::string
     }
 
     return oss.str();
+}
+
+auto Network::UnixContext::version() const -> OptionalVersion
+{
+    return m_data.m_version;
 }

@@ -43,17 +43,9 @@ namespace Network
         [[nodiscard]] auto is_verbose() const noexcept -> bool;
         auto start() -> Context* final;
         auto stop() -> Context* final;
+        [[nodiscard]] auto system_status() const -> std::string;
         [[nodiscard]] auto to_string() const -> std::string final;
-
-        [[nodiscard]] auto version() const -> OptionalVersion final
-        {
-            return m_data.m_version;
-        }
-
-        [[nodiscard]] auto system_status() const -> std::string
-        {
-            return m_data.m_system_status;
-        }
+        [[nodiscard]] auto version() const -> OptionalVersion final;
 
     private:
         UnixContextData m_data;
