@@ -43,7 +43,6 @@ namespace Network
         explicit operator std::string() const final;
         [[nodiscard]] auto error_code() const noexcept -> int final;
         [[nodiscard]] auto is_running() const noexcept -> bool final;
-        [[nodiscard]] auto is_verbose() const noexcept -> bool final;
         auto start() -> Context* final;
         auto stop() -> Context* final;
         [[nodiscard]] auto version() const -> OptionalVersion final;

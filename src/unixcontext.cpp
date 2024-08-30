@@ -78,11 +78,6 @@ auto Network::UnixContext::is_running() const noexcept -> bool
     return m_is_started && m_data.m_system_status == "Running";
 }
 
-auto Network::UnixContext::is_verbose() const noexcept -> bool
-{
-    return m_is_verbose;
-}
-
 auto Network::UnixContext::start() -> Context*
 {
     if (m_is_started) {

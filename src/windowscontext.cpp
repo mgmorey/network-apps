@@ -78,11 +78,6 @@ auto Network::WindowsContext::is_running() const noexcept -> bool
     return m_is_started && m_data.m_system_status == "Running";
 }
 
-auto Network::WindowsContext::is_verbose() const noexcept -> bool
-{
-    return m_is_verbose;
-}
-
 auto Network::WindowsContext::start() -> Context*
 {
     if (m_is_started) {
