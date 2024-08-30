@@ -50,27 +50,27 @@ namespace Test
     using Network::parse;
     using Network::version_null;
 
-    static constexpr Version version_0_0 {0, 0};
-    static constexpr Version version_0_1 {0, 1};
-    static constexpr Version version_1_0 {1, 0};
-    static constexpr Version version_2_0 {2, 0};
+    static constexpr Version v0_0 {0, 0};
+    static constexpr Version v0_1 {0, 1};
+    static constexpr Version v1_0 {1, 0};
+    static constexpr Version v2_0 {2, 0};
     static constexpr Version version_max {255, 255};
 
-    static_assert(version_0_0 == Version {} && Version {} == Version {0, 0});
-    static_assert(version_0_0 != version_0_1 && version_0_1 != version_1_0);
-    static_assert(version_0_0 < version_0_1 && version_0_1 < version_1_0);
-    static_assert(version_1_0 > version_0_1 && version_1_0 > version_0_0);
-    static_assert(version_0_0 < version_max);
+    static_assert(v0_0 == Version {} && Version {} == Version {0, 0});
+    static_assert(v0_0 != v0_1 && v0_1 != v1_0);
+    static_assert(v0_0 < v0_1 && v0_1 < v1_0);
+    static_assert(v1_0 > v0_1 && v1_0 > v0_0);
+    static_assert(v0_0 < version_max);
 
 #ifdef WIN32
-    static_assert(WORD {WindowsVersion(version_0_0)} == 0x0U);        // NOLINT
-    static_assert(Version {WindowsVersion(0x0U)} == version_0_0);     // NOLINT
-    static_assert(WORD {WindowsVersion(version_0_1)} == 0x100U);      // NOLINT
-    static_assert(Version {WindowsVersion(0x100U)} == version_0_1);   // NOLINT
-    static_assert(WORD {WindowsVersion(version_1_0)} == 0x1U);	      // NOLINT
-    static_assert(Version {WindowsVersion(0x1U)} == version_1_0);     // NOLINT
-    static_assert(WORD {WindowsVersion(version_2_0)} == 0x2U);	      // NOLINT
-    static_assert(Version {WindowsVersion(0x2U)} == version_2_0);     // NOLINT
+    static_assert(WORD {WindowsVersion(v0_0)} == 0x0U);        // NOLINT
+    static_assert(Version {WindowsVersion(0x0U)} == v0_0);     // NOLINT
+    static_assert(WORD {WindowsVersion(v0_1)} == 0x100U);      // NOLINT
+    static_assert(Version {WindowsVersion(0x100U)} == v0_1);   // NOLINT
+    static_assert(WORD {WindowsVersion(v1_0)} == 0x1U);	      // NOLINT
+    static_assert(Version {WindowsVersion(0x1U)} == v1_0);     // NOLINT
+    static_assert(WORD {WindowsVersion(v2_0)} == 0x2U);	      // NOLINT
+    static_assert(Version {WindowsVersion(0x2U)} == v2_0);     // NOLINT
     static_assert(WORD {WindowsVersion(version_max)} == 0xFFFFU);     // NOLINT
     static_assert(Version {WindowsVersion(0xFFFFU)} == version_max);  // NOLINT
 #endif
@@ -243,16 +243,10 @@ namespace Test
         std::string actual_error_str;
 
         try {
-            const auto context_1
-            {
-                get_unique_context(version_1_0, fail, is_verbose)
-            };
-            test_context(*context_1, "local 1", version_1_0);
-            const auto context_2
-            {
-                get_unique_context(version_2_0, fail, is_verbose)
-            };
-            test_context(*context_2, "local 2", version_2_0);
+            const auto context_1 {get_unique_context(v1_0, fail, is_verbose)};
+            test_context(*context_1, "local 1", v1_0);
+            const auto context_2 {get_unique_context(v2_0, fail, is_verbose)};
+            test_context(*context_2, "local 2", v2_0);
             assert(context_1 != context_2);
         }
         catch (const Error& error) {
@@ -269,13 +263,13 @@ namespace Test
         std::string actual_error_str;
 
         try {
-            auto context {get_unique_context(version_1_0, fail, is_verbose)};
-            test_context(*context, "local 3.1", version_1_0);
+            auto context {get_unique_context(v1_0, fail, is_verbose)};
+            test_context(*context, "local 3.1", v1_0);
             context->stop();
             assert(!context->error_code());
             assert(!context->is_running());
             context->start();
-            test_context(*context, "local 3.2", version_1_0);
+            test_context(*context, "local 3.2", v1_0);
         }
         catch (const Error& error) {
             print(error);
