@@ -51,42 +51,41 @@ include flags.gmk
 libnetwork_common_sources = accept.cpp address-sa.cpp address-sin.cpp	\
 address-sin6.cpp address.cpp addresserror.cpp addresslist.cpp		\
 addressstring.cpp argumentdata.cpp bind-endpoint.cpp			\
-bind-socket-bs.cpp close.cpp connect-endpoint.cpp			\
-connect-socket-bs.cpp create-result.cpp create.cpp error.cpp		\
-familyerror.cpp format-ai-error.cpp format-bytestring.cpp		\
-format-os-error.cpp format.cpp get-endpoint.cpp				\
-get-endpointresult.cpp get-hostname.cpp get-hostnameresult.cpp		\
-get-last-context-error.cpp get-last-os-error.cpp			\
-get-length-maximum.cpp get-length-minimum.cpp get-name.cpp		\
-get-nameresult.cpp get-operands.cpp get-option.cpp get-options.cpp	\
-get-peername.cpp get-peernameresult.cpp get-sa-family.cpp		\
-get-sa-length.cpp get-sa-pointer.cpp get-sa-span.cpp			\
-get-shared-context.cpp get-sin-addr.cpp get-sin-pointer.cpp		\
-get-sin-port.cpp get-sin6-addr.cpp get-sin6-pointer.cpp			\
-get-sin6-port.cpp get-sockname.cpp get-socknameresult.cpp		\
-get-unique-context.cpp listen.cpp logicerror.cpp open-endpoint.cpp	\
-open-socket.cpp open.cpp oserrorresult.cpp parse-argumentspan.cpp	\
-parse.cpp rangeerror.cpp read-string.cpp read.cpp remove.cpp		\
-reset-last-context-error.cpp reset-last-os-error.cpp runtimeerror.cpp	\
-set-last-context-error.cpp set-last-os-error.cpp socket.cpp		\
-socketdata.cpp socketerror.cpp socketfamily.cpp socketflags.cpp		\
-sockethost.cpp socketprotocol.cpp sockettype.cpp stream-address.cpp	\
-stream-addresslist.cpp stream-context.cpp stream-socket.cpp		\
-stream-sockethints.cpp stream-template.cpp template.cpp			\
-to-bytestring-ai.cpp to-bytestring-void.cpp to-string-in-addr.cpp	\
-to-string-in6-addr.cpp to-string-vector-byte.cpp			\
-to-string-vector-char.cpp validate-bs.cpp validate-sa.cpp		\
-validate-sin.cpp validate-sin6.cpp version.cpp write-string.cpp		\
-write.cpp
+bind-socket-bs.cpp connect-endpoint.cpp connect-socket-bs.cpp		\
+create-result.cpp create.cpp error.cpp familyerror.cpp			\
+format-ai-error.cpp format-bytestring.cpp format-os-error.cpp		\
+format.cpp get-endpoint.cpp get-endpointresult.cpp get-hostname.cpp	\
+get-hostnameresult.cpp get-last-context-error.cpp			\
+get-last-os-error.cpp get-length-maximum.cpp get-length-minimum.cpp	\
+get-name.cpp get-nameresult.cpp get-operands.cpp get-option.cpp		\
+get-options.cpp get-peername.cpp get-peernameresult.cpp			\
+get-sa-family.cpp get-sa-length.cpp get-sa-pointer.cpp			\
+get-sa-span.cpp get-shared-context.cpp get-sin-addr.cpp			\
+get-sin-pointer.cpp get-sin-port.cpp get-sin6-addr.cpp			\
+get-sin6-pointer.cpp get-sin6-port.cpp get-sockname.cpp			\
+get-socknameresult.cpp get-unique-context.cpp listen.cpp		\
+logicerror.cpp open-endpoint.cpp open-socket.cpp open.cpp		\
+oserrorresult.cpp parse-argumentspan.cpp parse.cpp rangeerror.cpp	\
+read-string.cpp read.cpp remove.cpp reset-last-context-error.cpp	\
+reset-last-os-error.cpp runtimeerror.cpp set-last-context-error.cpp	\
+set-last-os-error.cpp socket.cpp socketdata.cpp socketerror.cpp		\
+socketfamily.cpp socketflags.cpp sockethost.cpp socketprotocol.cpp	\
+sockettype.cpp stream-address.cpp stream-addresslist.cpp		\
+stream-context.cpp stream-socket.cpp stream-sockethints.cpp		\
+stream-template.cpp template.cpp to-bytestring-ai.cpp			\
+to-bytestring-void.cpp to-string-in-addr.cpp to-string-in6-addr.cpp	\
+to-string-vector-byte.cpp to-string-vector-char.cpp validate-bs.cpp	\
+validate-sa.cpp validate-sin.cpp validate-sin6.cpp version.cpp		\
+write-string.cpp write.cpp
 
 libnetwork_unix_sources = address-sun.cpp create-pair.cpp		\
 create-pairresult.cpp get-path-length.cpp get-path-pointer-sun.cpp	\
 get-sun-length.cpp get-sun-pointer.cpp socketpair.cpp			\
-to-bytestring-path.cpp to-path.cpp unix-start.cpp unix-stop.cpp		\
-unixcontext.cpp validate-path.cpp validate-sun.cpp
+to-bytestring-path.cpp to-path.cpp unix-close.cpp unix-start.cpp	\
+unix-stop.cpp unixcontext.cpp validate-path.cpp validate-sun.cpp
 
-libnetwork_windows_sources = windowscontext.cpp windows-start.cpp	\
-windows-stop.cpp
+libnetwork_windows_sources = windows-close.cpp windowscontext.cpp	\
+windows-start.cpp windows-stop.cpp
 
 test_common_sources = test-address.cpp test-bind.cpp test-connect.cpp	\
 test-context.cpp test-create.cpp test-host.cpp test-hostname.cpp	\

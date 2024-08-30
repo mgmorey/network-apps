@@ -22,46 +22,28 @@
 #include "network/socket-error.h"               // socket_error
 #include "network/to-os-error.h"                // to_os_error()
 
-#ifdef WIN32
-#include <winsock2.h>   // ::closesocket()
-#else
 #include <unistd.h>     // ::close()
-#endif
 
 #include <iostream>     // std::cout, std::endl
 #include <sstream>      // std::ostringstream
 
 auto Network::close(handle_type handle, bool is_verbose) -> OsErrorResult
 {
-#ifdef WIN32
-    static constexpr const auto* method {"::closesocket"};
-#else
-    static constexpr const auto* method {"::close"};
-#endif
-
     if (is_verbose) {
-        std::cout << "Calling "
-                  << method
-                  << '('
+        std::cout << "Calling ::close("
                   << handle
                   << ')'
                   << std::endl;
     }
 
     reset_last_context_error();
-#ifdef WIN32
-    const auto result {::closesocket(handle)};
-#else
     const auto result {::close(handle)};
-#endif
 
     if (result == socket_error) {
         const auto error {get_last_context_error()};
         const auto os_error {to_os_error(error)};
         std::ostringstream oss;
-        oss << "Call to "
-            << method
-            << '('
+        oss << "Call to ::close("
             << handle
             << ") failed with error "
             << error
