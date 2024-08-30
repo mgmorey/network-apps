@@ -16,6 +16,8 @@
 #ifndef NETWORK_UNIXCONTEXTDATA_H
 #define NETWORK_UNIXCONTEXTDATA_H
 
+#ifndef WIN32
+
 #include "network/optionalversion.h"        // OptionalVersion
 
 #include <string>       // std::string
@@ -29,5 +31,7 @@ namespace Network
         OptionalVersion m_version;
     };
 }
+
+#endif
 
 #endif
