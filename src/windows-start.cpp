@@ -43,7 +43,8 @@ auto Network::start(const OptionalVersion& version,
     WSADATA wsa_data {};
 
     if (is_verbose) {
-        std::cout << "Calling ::WSAStartup("
+        std::cout << "Starting the network runtime.\n"
+                  << "Calling ::WSAStartup("
                   << wsa_version
                   << ", ...)"
                   << std::endl;

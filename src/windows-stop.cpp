@@ -38,7 +38,8 @@ auto Network::stop(FailureMode mode, bool is_verbose) -> int
     reset_last_context_error();
 
     if (is_verbose) {
-        std::cout << "Calling ::WSACleanup()"
+        std::cout << "Stopping the network runtime.\n"
+                  << "Calling ::WSACleanup()"
                   << std::endl;
     }
 
