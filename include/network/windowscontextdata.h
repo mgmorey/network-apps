@@ -13,26 +13,21 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef WIN32
+#ifndef NETWORK_WINDOWSCONTEXTDATA_H
+#define NETWORK_WINDOWSCONTEXTDATA_H
 
-#include "network/optionalversion.h"    // OptionalVersion
-#include "network/unix-start.h"         // start()
-#include "network/unixcontextdata.h"    // UnixContextData
+#include "network/optionalversion.h"        // OptionalVersion
 
-static constexpr auto system_description {
-    "Berkeley Software Distribution Sockets"
-};
-static constexpr auto system_running {
-    "Running"
-};
+#include <string>       // std::string
 
-auto Network::start(const OptionalVersion& version,
-                    bool is_verbose) -> UnixContextData
+namespace Network
 {
-    static_cast<void>(is_verbose);
-    return {system_description,
-            system_running,
-            version};
+    struct WindowsContextData
+    {
+        std::string m_description;
+        std::string m_system_status;
+        OptionalVersion m_version;
+    };
 }
 
 #endif

@@ -17,9 +17,9 @@
 #define NETWORK_WINDOWSCONTEXT_H
 
 #include "network/context.h"                    // Context
-#include "network/contextdata.h"                // ContextData
 #include "network/failuremode.h"                // FailureMode
 #include "network/optionalversion.h"            // OptionalVersion
+#include "network/windowscontextdata.h"         // WindowsContextData
 
 #include <string>       // std::string
 
@@ -60,7 +60,7 @@ namespace Network
         }
 
     private:
-        ContextData m_data;
+        WindowsContextData m_data;
         OptionalVersion m_version;
         int m_error_code {0};
         FailureMode m_failure {FailureMode::throw_error};

@@ -17,9 +17,9 @@
 #define NETWORK_UNIXCONTEXT_H
 
 #include "network/context.h"                    // Context
-#include "network/contextdata.h"                // ContextData
 #include "network/failuremode.h"                // FailureMode
 #include "network/optionalversion.h"            // OptionalVersion
+#include "network/unixcontextdata.h"            // UnixContextData
 
 #include <string>       // std::string
 
@@ -60,7 +60,7 @@ namespace Network
         }
 
     private:
-        ContextData m_data;
+        UnixContextData m_data;
         OptionalVersion m_version;
         int m_error_code {0};
         bool m_is_started {false};

@@ -13,16 +13,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_START_H
-#define NETWORK_START_H
+#ifndef NETWORK_WINDOWS_START_H
+#define NETWORK_WINDOWS_START_H
 
-#include "network/contextdata.h"        // ContextData
 #include "network/optionalversion.h"    // OptionalVersion
+#include "network/windowscontextdata.h" // ContextData
 
 namespace Network
 {
     extern auto start(const OptionalVersion& version,
-                      bool is_verbose) -> ContextData;
+                      bool is_verbose) -> WindowsContextData;
 }
 
 #endif

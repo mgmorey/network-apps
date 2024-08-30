@@ -1,4 +1,4 @@
-// Copyright (C) 2024  "Michael G. Morey" <mgmorey@gmail.com>
+// Copyright (C) 2022  "Michael G. Morey" <mgmorey@gmail.com>
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,21 +13,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_CONTEXTDATA_H
-#define NETWORK_CONTEXTDATA_H
+#ifndef NETWORK_UNIX_START_H
+#define NETWORK_UNIX_START_H
 
-#include "network/optionalversion.h"        // OptionalVersion
-
-#include <string>       // std::string
+#include "network/contextdata.h"        // ContextData
+#include "network/optionalversion.h"    // OptionalVersion
 
 namespace Network
 {
-    struct ContextData
-    {
-        std::string m_description;
-        std::string m_system_status;
-        OptionalVersion m_version;
-    };
+    extern auto start(const OptionalVersion& version,
+                      bool is_verbose) -> ContextData;
 }
 
 #endif

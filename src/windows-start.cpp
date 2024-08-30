@@ -15,9 +15,9 @@
 
 #ifdef WIN32
 
-#include "network/start.h"              // start()
-#include "network/contextdata.h"        // ContextData
 #include "network/optionalversion.h"    // OptionalVersion
+#include "network/windows-start.h"      // start()
+#include "network/windowscontextdata.h" // WindowsContextData
 
 #include "network/error.h"              // Error
 #include "network/format-os-error.h"    // format_os_error()
@@ -37,7 +37,7 @@
 static constexpr Network::Version wsa_default {2, 2};
 
 auto Network::start(const OptionalVersion& version,
-                    bool is_verbose) -> ContextData
+                    bool is_verbose) -> WindowsContextData
 {
     const WindowsVersion wsa_version {version.value_or(wsa_default)};
     WSADATA wsa_data {};
