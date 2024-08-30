@@ -13,12 +13,12 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/address.h"                    // Address
+#include "network/address.h"                    // Address,
+                                                // operator<<()
 #include "network/format.h"                     // Format
 #include "network/os-features.h"                // HAVE_SOCKADDR_SA_LEN
 #include "network/socket-family-type.h"         // socket_family_type
-#include "network/socketfamily.h"               // SocketFamily,
-                                                // operator<<()
+#include "network/socketfamily.h"               // SocketFamily
 
 #ifdef WIN32
 #include <winsock2.h>   // AF_INET, AF_INET6, AF_UNIX

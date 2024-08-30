@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/context.h"            // SimpleContext, operator<<()
+#include "network/context.h"            // Context, operator<<()
 
 #include <ostream>      // std::ostream
 #include <string>       // std::string

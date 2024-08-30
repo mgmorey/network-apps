@@ -13,7 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/socketprotocol.h"             // SocketProtocol
+#include "network/socketprotocol.h"             // SocketProtocol,
+                                                // operator<<()
 #include "network/socket-protocol-type.h"       // socket_protocol_type
 
 #ifdef WIN32

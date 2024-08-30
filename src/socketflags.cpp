@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/socketflags.h"                // SocketFlags
-#include "network/socket-flags-type.h"          // socket_flags_type
+#include "network/socketflags.h"        // SocketFlags, operator<<()
+#include "network/socket-flags-type.h"  // socket_flags_type
 
 #ifdef WIN32
 #include <ws2tcpip.h>   // AI_ADDRCONFIG, AI_ALL, AI_CANONNAME,

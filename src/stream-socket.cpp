@@ -13,9 +13,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#include "network/socket.h"             // Socket, operator<<()
 #include "network/handle-null.h"        // handle_null
 #include "network/handle-type.h"        // handle_type
-#include "network/socket.h"             // Socket
 #include "network/string-null.h"        // string_null
 
 #include <ostream>      // std::ostream
