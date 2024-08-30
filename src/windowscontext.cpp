@@ -91,7 +91,7 @@ auto Network::WindowsContext::start() -> Context*
         if (!is_running()) {
             throw RuntimeError
             {
-                "Sockets runtime status is \"" + system_status() + "\"."
+                "Sockets runtime status is \"" + m_data.m_system_status + "\"."
             };
         }
     }
