@@ -16,6 +16,7 @@
 #ifndef NETWORK_FORMAT_H
 #define NETWORK_FORMAT_H
 
+#include <cstddef>      // std::size_t
 #include <ostream>      // std::ostream
 #include <string>       // std::string
 #include <string_view>  // std::string_view
@@ -29,10 +30,10 @@ namespace Network
 
     public:
         explicit Format(std::string_view t_key) noexcept;
-        explicit Format(std::string::size_type t_indent,
+        explicit Format(std::size_t t_indent,
                         std::string_view t_key = {}) noexcept;
         Format(std::string_view t_delimiter,
-               std::string::size_type t_indent,
+               std::size_t t_indent,
                std::string_view key = {});
 
     private:
@@ -40,7 +41,7 @@ namespace Network
         static constexpr std::size_t m_indent_default {std::string::npos};
 
         std::string m_delimiter {m_delimiter_default};
-        std::string::size_type m_indent {m_indent_default};
+        std::size_t m_indent {m_indent_default};
         std::string m_key;
     };
 
