@@ -24,6 +24,7 @@
 #include "network/windowscontextdata.h"         // WindowsContextData
 
 #include <string>       // std::string
+#include <string_view>  // std::string_view
 
 namespace Network
 {
@@ -49,6 +50,8 @@ namespace Network
 
     private:
         WindowsContextData m_data {};
+        std::string_view m_description;
+        std::string_view m_status;
         OptionalVersion m_version;
         int m_error_code {0};
         FailureMode m_failure {FailureMode::throw_error};
