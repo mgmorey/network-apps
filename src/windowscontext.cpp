@@ -83,8 +83,8 @@ auto Network::WindowsContext::start() -> Context*
 
     try {
         m_data = Network::start(m_version, m_is_verbose);
-        m_description = std::string_view(m_data.szDescription);
-        m_status = std::string_view(m_data.szSystemStatus);
+        m_description = static_cast<const char*>(m_data.szDescription);
+        m_status = static_cast<const char*>(m_data.szSystemStatus);
         m_is_started = true;
 
         if (!is_running()) {
