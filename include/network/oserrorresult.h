@@ -19,6 +19,7 @@
 #include "network/os-error-type.h"      // os_error_type
 
 #include <string>       // std::string
+#include <string_view>  // std::string_view
 
 namespace Network
 {
@@ -27,9 +28,7 @@ namespace Network
         OsErrorResult() = default;
 
         OsErrorResult(os_error_type t_number,
-                      const std::string& t_string);
-        OsErrorResult(os_error_type t_number,
-                      std::string&& t_string);
+                      std::string_view t_string);
         auto operator==(const OsErrorResult& t_result) const noexcept -> bool;
         auto operator!=(const OsErrorResult& t_result) const noexcept -> bool;
         operator bool() const noexcept;  // NOLINT

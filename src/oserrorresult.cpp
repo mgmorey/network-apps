@@ -17,19 +17,13 @@
 #include "network/os-error-type.h"      // os_error_type
 
 #include <string>       // std::string
+#include <string_view>  // std::string_view
 #include <utility>      // std::move()
 
 Network::OsErrorResult::OsErrorResult(os_error_type t_number,
-                                      const std::string& t_string) :
+                                      std::string_view t_string) :
     m_number(t_number),
     m_string(t_string)
-{
-}
-
-Network::OsErrorResult::OsErrorResult(os_error_type t_number,
-                                      std::string&& t_string) :
-    m_number(t_number),
-    m_string(std::move(t_string))
 {
 }
 
