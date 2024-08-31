@@ -18,6 +18,7 @@
 
 #include <ostream>      // std::ostream
 #include <string>       // std::string
+#include <string_view>  // std::string_view
 
 namespace Network
 {
@@ -27,24 +28,12 @@ namespace Network
                                const Format& format) -> std::ostream&;
 
     public:
-        explicit Format(const std::string& t_key) noexcept;
-        explicit Format(std::string&& t_key) noexcept;
+        explicit Format(std::string_view t_key) noexcept;
         explicit Format(std::string::size_type t_indent,
-                        const std::string& t_key = {}) noexcept;
-        Format(std::string::size_type t_indent,
-               std::string&& t_key) noexcept;
-        Format(const std::string& t_delimiter,
+                        std::string_view t_key = {}) noexcept;
+        Format(std::string_view t_delimiter,
                std::string::size_type t_indent,
-               const std::string& key = {});
-        Format(const std::string& t_delimiter,
-               std::string::size_type t_indent,
-               std::string&& key);
-        Format(std::string&& t_delimiter,
-               std::string::size_type indent,
-               const std::string& key = {});
-        Format(std::string&& t_delimiter,
-               std::string::size_type t_indent,
-               std::string&& key);
+               std::string_view key = {});
 
     private:
         static constexpr const char* m_delimiter_default {","};

@@ -17,71 +17,29 @@
 
 #include <ostream>      // std::endl, std::ostream
 #include <string>       // std::string
-#include <utility>      // std::move()
+#include <string_view>  // std::string_view
 
-Network::Format::Format(const std::string& t_key) noexcept :
+Network::Format::Format(std::string_view t_key) noexcept :
     Format(m_delimiter_default,
            m_indent_default,
            t_key)
 {
 }
 
-Network::Format::Format(std::string&& t_key) noexcept :
-    Format(m_delimiter_default,
-           m_indent_default,
-           std::move(t_key))
-{
-}
-
 Network::Format::Format(std::string::size_type t_indent,
-                        const std::string& t_key) noexcept :
+                        std::string_view t_key) noexcept :
     Format(m_delimiter_default,
            t_indent,
            t_key)
 {
 }
 
-Network::Format::Format(std::string::size_type t_indent,
-                        std::string&& t_key) noexcept :
-    Format(m_delimiter_default,
-           t_indent,
-           std::move(t_key))
-{
-}
-
-Network::Format::Format(const std::string& t_delimiter,
+Network::Format::Format(std::string_view t_delimiter,
                         std::string::size_type t_indent,
-                        const std::string& t_key) :
+                        std::string_view t_key) :
     m_delimiter(t_delimiter),
     m_indent(t_indent),
     m_key(t_key)
-{
-}
-
-Network::Format::Format(const std::string& t_delimiter,
-                        std::string::size_type t_indent,
-                        std::string&& t_key) :
-    m_delimiter(t_delimiter),
-    m_indent(t_indent),
-    m_key(std::move(t_key))
-{
-}
-
-Network::Format::Format(std::string&& t_delimiter,
-                        std::string::size_type t_indent,
-                        const std::string& t_key) :
-    m_delimiter(std::move(t_delimiter)),
-    m_indent(t_indent),
-    m_key(t_key)
-{
-}
-
-Network::Format::Format(std::string&& t_delimiter,
-                        std::string::size_type t_indent,
-                        std::string&& t_key) :
-    m_delimiter(std::move(t_delimiter)),
-    m_indent(t_indent),
-    m_key(std::move(t_key))
 {
 }
 
