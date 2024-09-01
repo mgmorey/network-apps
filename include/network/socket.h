@@ -31,8 +31,6 @@ namespace Network
     class Socket
     {
         friend auto bind(Socket& sock, const ByteString& addr) -> OsErrorResult;
-        friend auto operator<<(std::ostream& os,
-                               const Socket& sock) -> std::ostream&;
 
     public:
         using SocketDataPointer = std::shared_ptr<SocketData>;
