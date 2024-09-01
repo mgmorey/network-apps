@@ -30,8 +30,6 @@ namespace Network
 
     class Socket
     {
-        friend auto bind(Socket& sock, const ByteString& addr) -> OsErrorResult;
-
     public:
         using SocketDataPointer = std::shared_ptr<SocketData>;
 
@@ -46,12 +44,10 @@ namespace Network
         explicit operator bool() const noexcept;
         explicit operator handle_type() const;
         [[nodiscard]] auto handle() const -> handle_type;
+        auto is_owner() -> Socket&;
         [[nodiscard]] auto is_verbose() const -> bool;
         [[nodiscard]] auto peername() const -> ByteString;
         [[nodiscard]] auto sockname() const -> ByteString;
-
-    protected:
-        auto is_owner() -> Socket&;
 
     private:
         SocketDataPointer m_socket_data;
