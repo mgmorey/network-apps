@@ -51,9 +51,9 @@
 #include "network/create-pair.h"                // create_pair()
 #include "network/create-pairresult.h"          // create_pairresult()
 #endif
-#include "network/create-result.h"              // create_result()
 #include "network/create-handle.h"              // create()
 #include "network/create-hints.h"               // create()
+#include "network/create-result.h"              // create_result()
 #include "network/error-strings.h"              // VISITOR_ERROR
 #include "network/exceptions.h"                 // Error, LogicError,
                                                 // RuntimeError
