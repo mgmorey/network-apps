@@ -18,9 +18,7 @@
 #include "network/handle-type.h"                // handle_type
 #include "network/socket.h"                     // Socket
 
-#include <type_traits>  // std::decay_t, std::is_same_v
 #include <memory>       // std::make_shared()
-#include <variant>      // std::visit()
 
 auto Network::create(handle_type handle, bool is_verbose) -> Socket
 {
