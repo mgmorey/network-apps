@@ -27,6 +27,7 @@
 #include <memory>       // std::make_shared()
 
 namespace {
+
     using namespace Network;
 
     auto get_shared_context(const OptionalVersion& t_version,
@@ -43,6 +44,7 @@ namespace {
                                              t_is_verbose);
 #endif
     }
+
 }
 
 auto Network::get_context(const OptionalVersion& t_version,
