@@ -47,7 +47,6 @@ namespace Test
     using Network::get_context;
     using Network::get_hostname;
     using Network::parse;
-    using Network::version_null;
 
     static constexpr Version v0_0 {0, 0};
     static constexpr Version v0_1 {0, 1};
