@@ -16,8 +16,8 @@
 #ifndef NETWORK_SOCKET_H
 #define NETWORK_SOCKET_H
 
-#include "network/socketdata.h"         // SocketData
 #include "network/oserrorresult.h"      // OsErrorResult
+#include "network/socketdata.h"         // SocketData
 
 #include <memory>       // std::shared_ptr
 #include <ostream>      // std::ostream
