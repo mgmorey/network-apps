@@ -81,28 +81,17 @@ auto Network::WindowsContext::start() -> Context*
         return this;
     }
 
-    try {
-        m_data = Network::start(m_version, m_is_verbose);
-        m_description = static_cast<const char*>(m_data.szDescription);
-        m_status = static_cast<const char*>(m_data.szSystemStatus);
-        m_is_started = true;
+    m_data = Network::start(m_version, m_is_verbose);
+    m_description = static_cast<const char*>(m_data.szDescription);
+    m_status = static_cast<const char*>(m_data.szSystemStatus);
+    m_is_started = true;
 
-        if (!is_running()) {
-            throw RuntimeError
-            {
-                "Sockets runtime status is \"" + std::string(m_status) + "\"."
-            };
-        }
-    }
-    catch (const Error& error) {
-        m_error_code = Network::stop(FailureMode::return_zero, m_is_verbose);
-
-        if (m_error_code == 0) {
-            m_is_started = false;
-            m_data = {};
-        }
-
-        throw;
+    if (!is_running()) {
+        std::ostringstream oss;
+        oss << "Sockets runtime status is \""
+            << m_status
+            << "\".";
+        throw RuntimeError {oss.str()};
     }
 
     return this;
