@@ -112,7 +112,7 @@ namespace Test
         std::string actual_error_str;
 
         try {
-            std::make_shared<SocketData>(handle, is_verbose);
+            create(handle, is_verbose);
         }
         catch (const Error& error) {
             print(error);

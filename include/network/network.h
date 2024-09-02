@@ -25,6 +25,7 @@
 #include "network/bytestring.h"                 // ByteString
 #include "network/bytestringresult.h"           // ByteStringResult
 #include "network/close.h"                      // close()
+#include "network/commonsocketdata.h"           // CommonSocketData
 #include "network/connect.h"                    // connect()
 #include "network/constants.h"                  // handle_null,
                                                 // sa_data_offset,
@@ -51,7 +52,8 @@
 #include "network/create-pairresult.h"          // create_pairresult()
 #endif
 #include "network/create-result.h"              // create_result()
-#include "network/create.h"                     // create()
+#include "network/create-handle.h"              // create()
+#include "network/create-hints.h"               // create()
 #include "network/error-strings.h"              // VISITOR_ERROR
 #include "network/exceptions.h"                 // Error, LogicError,
                                                 // RuntimeError

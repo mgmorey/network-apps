@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/socketdata.h"                 // SocketData
+#include "network/commonsocketdata.h"           // CommonSocketData
 #include "network/bytestring.h"                 // ByteString
 #include "network/close.h"                      // close()
 #include "network/get-peername.h"               // get_peername()
@@ -31,9 +31,10 @@
 #include <iostream>     // std::cerr, std::endl
 #include <string>       // std::to_string()
 
-Network::SocketData::SocketData(handle_type t_handle, bool t_is_verbose) :
-    m_handle(t_handle),
-    m_is_verbose(t_is_verbose)
+Network::CommonSocketData::CommonSocketData(handle_type t_handle,
+                                            bool t_is_verbose)
+    : m_handle(t_handle),
+      m_is_verbose(t_is_verbose)
 {
     if (m_handle == handle_null) {
         throw LogicError("Invalid socket descriptor value: " +
@@ -41,7 +42,7 @@ Network::SocketData::SocketData(handle_type t_handle, bool t_is_verbose) :
     }
 }
 
-Network::SocketData::~SocketData() noexcept
+Network::CommonSocketData::~CommonSocketData() noexcept
 {
     try {
         close();
@@ -53,17 +54,17 @@ Network::SocketData::~SocketData() noexcept
     }
 }
 
-Network::SocketData::operator bool() const noexcept
+Network::CommonSocketData::operator bool() const noexcept
 {
     return m_handle != handle_null;
 }
 
-Network::SocketData::operator handle_type() const noexcept
+Network::CommonSocketData::operator handle_type() const noexcept
 {
     return m_handle;
 }
 
-auto Network::SocketData::close() const -> const SocketData&
+auto Network::CommonSocketData::close() const -> const SocketData&
 {
     if (const auto result {Network::close(m_handle, m_is_verbose)}) {
         std::cerr << result.string()
@@ -73,12 +74,12 @@ auto Network::SocketData::close() const -> const SocketData&
     return *this;
 }
 
-auto Network::SocketData::handle() const noexcept -> handle_type
+auto Network::CommonSocketData::handle() const noexcept -> handle_type
 {
     return m_handle;
 }
 
-auto Network::SocketData::is_owner(bool t_is_owner) -> SocketData&
+auto Network::CommonSocketData::is_owner(bool t_is_owner) -> SocketData&
 {
     if (m_is_owner == t_is_owner) {
         return *this;
@@ -100,12 +101,12 @@ auto Network::SocketData::is_owner(bool t_is_owner) -> SocketData&
     return *this;
 }
 
-auto Network::SocketData::is_verbose() const noexcept -> bool
+auto Network::CommonSocketData::is_verbose() const noexcept -> bool
 {
     return m_is_verbose;
 }
 
-auto Network::SocketData::peername() const -> ByteString
+auto Network::CommonSocketData::peername() const -> ByteString
 {
     if (!m_peername) {
         m_peername = get_peername(m_handle, m_is_verbose);
@@ -114,7 +115,7 @@ auto Network::SocketData::peername() const -> ByteString
     return *m_peername;
 }
 
-auto Network::SocketData::sockname() const -> ByteString
+auto Network::CommonSocketData::sockname() const -> ByteString
 {
     if (!m_sockname) {
         m_sockname = get_sockname(m_handle, m_is_verbose);

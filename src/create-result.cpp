@@ -14,6 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/create-result.h"              // create_result()
+#include "network/create-handle.h"              // create()
 #include "network/format-os-error.h"            // format_os_error()
 #include "network/format.h"                     // Format
 #include "network/get-last-context-error.h"     // get_last_context_error()
@@ -78,5 +79,5 @@ auto Network::create_result(const SocketHints& hints,
         return OsErrorResult {os_error, oss.str()};
     }
 
-    return std::make_shared<SocketData>(handle, is_verbose);
+    return create(handle, is_verbose);
 }

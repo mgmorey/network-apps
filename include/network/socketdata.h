@@ -17,10 +17,7 @@
 #define NETWORK_SOCKETDATA_H
 
 #include "network/bytestring.h"                 // ByteString
-#include "network/handle-null.h"                // handle_null
 #include "network/handle-type.h"                // handle_type
-
-#include <optional>     // std::optional
 
 namespace Network
 {
@@ -28,27 +25,18 @@ namespace Network
     {
     public:
         SocketData() noexcept = default;
-        SocketData(handle_type t_handle, bool t_is_verbose);
         SocketData(const SocketData&) noexcept = delete;
-        SocketData(SocketData&&) noexcept = delete;
-        ~SocketData() noexcept;
+        SocketData(const SocketData&&) noexcept = delete;
+        virtual ~SocketData() noexcept = default;
         auto operator=(const SocketData&) noexcept -> SocketData& = delete;
         auto operator=(SocketData&&) noexcept -> SocketData& = delete;
-        explicit operator bool() const noexcept;
-        explicit operator handle_type() const noexcept;
-        auto close() const -> const SocketData&;
-        [[nodiscard]] auto handle() const noexcept -> handle_type;
-        auto is_owner(bool t_is_owner = true) -> SocketData&;
-        [[nodiscard]] auto is_verbose() const noexcept -> bool;
-        [[nodiscard]] auto peername() const -> ByteString;
-        [[nodiscard]] auto sockname() const -> ByteString;
-
-    private:
-        mutable std::optional<ByteString> m_peername;
-        mutable std::optional<ByteString> m_sockname;
-        handle_type m_handle {handle_null};
-        bool m_is_owner {false};
-        bool m_is_verbose {false};
+        explicit virtual operator bool() const noexcept = 0;
+        explicit virtual operator handle_type() const noexcept = 0;
+        [[nodiscard]] virtual auto handle() const noexcept -> handle_type = 0;
+        auto virtual is_owner(bool t_is_owner = true) -> SocketData& = 0;
+        [[nodiscard]] auto virtual is_verbose() const noexcept -> bool = 0;
+        [[nodiscard]] auto virtual peername() const -> ByteString = 0;
+        [[nodiscard]] auto virtual sockname() const -> ByteString = 0;
     };
 }
 

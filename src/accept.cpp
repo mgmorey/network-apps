@@ -19,6 +19,7 @@
 #include "network/buffer.h"                     // Buffer
 #include "network/byte.h"                       // Byte
 #include "network/bytestring.h"                 // ByteString
+#include "network/create-handle.h"              // create()
 #include "network/error.h"                      // Error
 #include "network/format-os-error.h"            // format_os_error()
 #include "network/get-last-context-error.h"     // get_last_context_error()
@@ -37,7 +38,6 @@
 #endif
 
 #include <iostream>     // std::cout, std::endl
-#include <memory>       // std::make_shared()
 #include <sstream>      // std::ostringstream
 
 auto Network::accept(const Socket& sock) -> AcceptResult
@@ -80,8 +80,5 @@ auto Network::accept(const Socket& sock) -> AcceptResult
     }
 
     buffer.resize(to_size(addr_len));
-    return {
-        std::make_shared<SocketData>(handle_2, is_verbose),
-        ByteString {buffer}
-    };
+    return {create(handle_2, is_verbose), ByteString {buffer}};
 }

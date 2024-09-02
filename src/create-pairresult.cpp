@@ -16,6 +16,7 @@
 #ifndef WIN32
 
 #include "network/create-pairresult.h"          // create_pairresult()
+#include "network/create-handle.h"              // create()
 #include "network/format-os-error.h"            // format_os_error()
 #include "network/format.h"                     // Format
 #include "network/get-last-context-error.h"     // get_last_context_error()
@@ -82,8 +83,8 @@ auto Network::create_pairresult(const SocketHints& hints,
     }
 
     return SocketPair {
-        std::make_shared<SocketData>(handles[0], is_verbose),
-        std::make_shared<SocketData>(handles[1], is_verbose)
+        create(handles[0], is_verbose),
+        create(handles[1], is_verbose)
     };
 }
 

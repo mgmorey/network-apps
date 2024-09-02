@@ -13,11 +13,12 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/create.h"                     // create()
+#include "network/create-hints.h"               // create()
 #include "network/always-false.h"               // always_false_v
 #include "network/create-result.h"              // create_result()
 #include "network/error-strings.h"              // VISITOR_ERROR
 #include "network/error.h"                      // Error
+#include "network/handle-type.h"                // handle_type
 #include "network/oserrorresult.h"              // OsErrorResult
 #include "network/socket.h"                     // Socket
 #include "network/sockethints.h"                // SocketHints

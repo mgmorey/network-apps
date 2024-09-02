@@ -1,4 +1,4 @@
-// Copyright (C) 2022  "Michael G. Morey" <mgmorey@gmail.com>
+// Copyright (C) 2024  "Michael G. Morey" <mgmorey@gmail.com>
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_CREATE_H
-#define NETWORK_CREATE_H
+#ifndef NETWORK_CREATE_HINTS_H
+#define NETWORK_CREATE_HINTS_H
 
 #include "network/socket.h"                     // Socket
 #include "network/sockethints.h"                // SocketHints
