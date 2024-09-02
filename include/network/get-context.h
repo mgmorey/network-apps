@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_GET_SHARED_CONTEXT_H
-#define NETWORK_GET_SHARED_CONTEXT_H
+#ifndef NETWORK_GET_CONTEXT_H
+#define NETWORK_GET_CONTEXT_H
 
 #include "network/failuremode.h"        // FailureMode
 #include "network/optionalversion.h"    // OptionalVersion
