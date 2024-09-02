@@ -26,7 +26,7 @@ namespace Network
     class Context
     {
     public:
-        Context() = default;
+        Context() noexcept = default;
         Context(const Context&) = delete;
         Context(const Context&&) = delete;
         virtual ~Context() = default;
