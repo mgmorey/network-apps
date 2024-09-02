@@ -14,7 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/argumentspan.h"       // ArgumentSpan
-#include "network/network.h"            // Socket, connect(),
+#include "network/network.h"            // Socket, create(), connect(),
                                         // read_string() socket_error,
                                         // write()
 #include "network/parse.h"              // parse()
@@ -32,6 +32,7 @@
 using Network::ArgumentSpan;
 using Network::Socket;
 using Network::UnixSocketHints;
+using Network::create;
 using Network::socket_error;
 
 static auto is_verbose {false};  // NOLINT
