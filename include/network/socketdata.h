@@ -36,15 +36,12 @@ namespace Network
         auto operator=(SocketData&&) noexcept -> SocketData& = delete;
         explicit operator bool() const noexcept;
         explicit operator handle_type() const noexcept;
+        auto close() const -> const SocketData&;
         [[nodiscard]] auto handle() const noexcept -> handle_type;
-        auto is_owner() -> SocketData&;
+        auto is_owner(bool t_is_owner = true) -> SocketData&;
         [[nodiscard]] auto is_verbose() const noexcept -> bool;
         [[nodiscard]] auto peername() const -> ByteString;
         [[nodiscard]] auto sockname() const -> ByteString;
-
-    protected:
-        auto close() const -> const SocketData&;
-        auto is_owner(bool t_is_owner) -> SocketData&;
 
     private:
         mutable std::optional<ByteString> m_peername;

@@ -63,9 +63,41 @@ Network::SocketData::operator handle_type() const noexcept
     return m_handle;
 }
 
+auto Network::SocketData::close() const -> const SocketData&
+{
+    if (const auto result {Network::close(m_handle, m_is_verbose)}) {
+        std::cerr << result.string()
+                  << std::endl;
+    }
+
+    return *this;
+}
+
 auto Network::SocketData::handle() const noexcept -> handle_type
 {
     return m_handle;
+}
+
+auto Network::SocketData::is_owner(bool t_is_owner) -> SocketData&
+{
+    if (m_is_owner == t_is_owner) {
+        return *this;
+    }
+
+#ifndef WIN32
+    if (t_is_owner) {
+        if (!m_sockname) {
+            m_sockname = get_sockname(m_handle, m_is_verbose);
+        }
+    } else if (m_sockname) {
+        if (const auto path {to_path(*m_sockname)}) {
+            remove(*path, m_is_verbose);
+        }
+    }
+#endif
+
+    m_is_owner = t_is_owner;
+    return *this;
 }
 
 auto Network::SocketData::is_verbose() const noexcept -> bool
@@ -89,41 +121,4 @@ auto Network::SocketData::sockname() const -> ByteString
     }
 
     return *m_sockname;
-}
-
-auto Network::SocketData::close() const -> const SocketData&
-{
-    if (const auto result {Network::close(m_handle, m_is_verbose)}) {
-        std::cerr << result.string()
-                  << std::endl;
-    }
-
-    return *this;
-}
-
-auto Network::SocketData::is_owner() -> SocketData&
-{
-    return is_owner(true);
-}
-
-auto Network::SocketData::is_owner(bool t_is_owner) -> SocketData&
-{
-    if (m_is_owner == t_is_owner) {
-        return *this;
-    }
-
-#ifndef WIN32
-    if (t_is_owner) {
-        if (!m_sockname) {
-            m_sockname = get_sockname(m_handle, m_is_verbose);
-        }
-    } else if (m_sockname) {
-        if (const auto path {to_path(*m_sockname)}) {
-            remove(*path, m_is_verbose);
-        }
-    }
-#endif
-
-    m_is_owner = t_is_owner;
-    return *this;
 }
