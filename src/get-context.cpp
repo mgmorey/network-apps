@@ -28,20 +28,18 @@
 
 namespace {
 
-    using namespace Network;
-
-    auto get_shared_context(const OptionalVersion& t_version,
-                            FailureMode t_failure,
-                            bool t_is_verbose) -> SharedContext
+    auto get_shared_context(const Network::OptionalVersion& t_version,
+                            Network::FailureMode t_failure,
+                            bool t_is_verbose) -> Network::SharedContext
     {
 #ifdef WIN32
-        return std::make_shared<WindowsContext>(t_version,
-                                                t_failure,
-                                                t_is_verbose);
+        return std::make_shared<Network::WindowsContext>(t_version,
+                                                         t_failure,
+                                                         t_is_verbose);
 #else
-        return std::make_shared<UnixContext>(t_version,
-                                             t_failure,
-                                             t_is_verbose);
+        return std::make_shared<Network::UnixContext>(t_version,
+                                                      t_failure,
+                                                      t_is_verbose);
 #endif
     }
 
