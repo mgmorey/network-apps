@@ -75,13 +75,13 @@ auto Network::UnixContext::error_code() const noexcept -> int
 
 auto Network::UnixContext::is_running() const noexcept -> bool
 {
-    return m_is_started && m_data.m_system_status == "Running";
+    return m_data.m_system_status == "Running";
 }
 
-auto Network::UnixContext::start() -> Context*
+auto Network::UnixContext::start() -> void
 {
     if (m_is_started) {
-        return this;
+        return;
     }
 
     m_data = Network::start(m_version, m_is_verbose);
@@ -95,10 +95,10 @@ auto Network::UnixContext::start() -> Context*
         throw RuntimeError {oss.str()};
     }
 
-    return this;
+    m_is_started = true;
 }
 
-auto Network::UnixContext::stop() -> Context*
+auto Network::UnixContext::stop() -> void
 {
     if (m_is_started) {
         m_error_code = Network::stop(FailureMode::return_zero, m_is_verbose);
@@ -108,8 +108,6 @@ auto Network::UnixContext::stop() -> Context*
             m_data = {};
         }
     }
-
-    return this;
 }
 
 auto Network::UnixContext::version() const -> OptionalVersion

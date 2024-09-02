@@ -44,14 +44,14 @@ namespace Network
         explicit operator std::string() const final;
         [[nodiscard]] auto error_code() const noexcept -> int final;
         [[nodiscard]] auto is_running() const noexcept -> bool final;
-        auto start() -> Context* final;
-        auto stop() -> Context* final;
+        auto start() -> void final;
+        auto stop() -> void final;
         [[nodiscard]] auto version() const -> OptionalVersion final;
 
     private:
         WindowsContextData m_data {};
         std::string_view m_description;
-        std::string_view m_status;
+        std::string_view m_system_status;
         OptionalVersion m_version;
         int m_error_code {0};
         FailureMode m_failure {FailureMode::throw_error};

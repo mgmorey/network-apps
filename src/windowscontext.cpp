@@ -57,9 +57,9 @@ Network::WindowsContext::operator std::string() const
         << " Version "
         << version;
 
-    if (!m_status.empty()) {
+    if (!m_system_status.empty()) {
         oss << ' '
-            << m_status;
+            << m_system_status;
     }
 
     return oss.str();
@@ -72,32 +72,31 @@ auto Network::WindowsContext::error_code() const noexcept -> int
 
 auto Network::WindowsContext::is_running() const noexcept -> bool
 {
-    return m_is_started && m_status == "Running";
+    return m_system_status == "Running";
 }
 
-auto Network::WindowsContext::start() -> Context*
+auto Network::WindowsContext::start() -> void
 {
     if (m_is_started) {
-        return this;
+        return;
     }
 
     m_data = Network::start(m_version, m_is_verbose);
     m_description = static_cast<const char*>(m_data.szDescription);
-    m_status = static_cast<const char*>(m_data.szSystemStatus);
-    m_is_started = true;
+    m_system_status = static_cast<const char*>(m_data.szSystemStatus);
 
     if (!is_running()) {
         std::ostringstream oss;
         oss << "Sockets runtime status is \""
-            << m_status
+            << m_system_status
             << "\".";
         throw RuntimeError {oss.str()};
     }
 
-    return this;
+    m_is_started = true;
 }
 
-auto Network::WindowsContext::stop() -> Context*
+auto Network::WindowsContext::stop() -> void
 {
     if (m_is_started) {
         m_error_code = Network::stop(m_failure, m_is_verbose);
@@ -107,8 +106,6 @@ auto Network::WindowsContext::stop() -> Context*
             m_data = {};
         }
     }
-
-    return this;
 }
 
 auto Network::WindowsContext::version() const -> OptionalVersion
