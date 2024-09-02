@@ -67,8 +67,6 @@ namespace Test
     static_assert(Version {WindowsVersion(0x100U)} == v0_1);   // NOLINT
     static_assert(WORD {WindowsVersion(v1_0)} == 0x1U);	      // NOLINT
     static_assert(Version {WindowsVersion(0x1U)} == v1_0);     // NOLINT
-    static_assert(WORD {WindowsVersion(v2_0)} == 0x2U);	      // NOLINT
-    static_assert(Version {WindowsVersion(0x2U)} == v2_0);     // NOLINT
     static_assert(WORD {WindowsVersion(version_max)} == 0xFFFFU);     // NOLINT
     static_assert(Version {WindowsVersion(0xFFFFU)} == version_max);  // NOLINT
 #endif
@@ -223,6 +221,28 @@ namespace Test
             const auto context_2 {get_context({}, fail, is_verbose)};
             test_context(*context_1, "global 1", {});
             assert(context_1 == context_2);
+            error_code = Network::stop(fail, is_verbose);
+        }
+        catch (const Error& error) {
+            print(error);
+            actual_error_str = error.what();
+        }
+
+        assert(actual_error_str.empty());
+        assert(!error_code);
+        test_context_inactive();
+    }
+
+    auto test_context_valid_global_instance_with_restart() -> void
+    {
+        std::string actual_error_str;
+        int error_code {0};
+
+        try {
+            const auto context_1 {get_context({}, fail, is_verbose)};
+            const auto context_2 {get_context({}, fail, is_verbose)};
+            test_context(*context_1, "global 1", {});
+            assert(context_1 == context_2);
             context_1->stop();
             assert(!context_1->error_code());
             assert(!context_1->is_running());
@@ -286,6 +306,7 @@ auto main(int argc, char* argv[]) -> int
         parse_arguments(argc, argv);
         test_context_invalid_version_null();
         test_context_valid_global_instance();
+        test_context_valid_global_instance_with_restart();
         test_hostname_running();
         test_hostname_stopped();
     }
