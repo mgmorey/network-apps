@@ -20,7 +20,7 @@
 
 namespace Network
 {
-    extern auto listen(const Socket& sock, int backlog_size) -> int;
+    extern auto listen(Socket sock, int backlog_size) -> int;
 }
 
 #endif

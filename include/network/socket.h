@@ -16,45 +16,17 @@
 #ifndef NETWORK_SOCKET_H
 #define NETWORK_SOCKET_H
 
-#include "network/bytestring.h"         // ByteString
-#include "network/handle-type.h"        // handle_type
+#include "network/socketdata.h"         // SocketData
 #include "network/oserrorresult.h"      // OsErrorResult
-#include "network/sockethints.h"        // SocketHints
 
 #include <memory>       // std::shared_ptr
 #include <ostream>      // std::ostream
 
 namespace Network
 {
-    class SocketData;
-
-    class Socket
-    {
-    public:
-        using SocketDataPointer = std::shared_ptr<SocketData>;
-
-        Socket() noexcept = default;
-        explicit Socket(SocketHints t_hints, bool t_is_verbose = false);
-        explicit Socket(handle_type t_handle, bool t_is_verbose = false);
-        Socket(const Socket&) noexcept = default;
-        Socket(Socket&&) noexcept = default;
-        ~Socket() = default;
-        auto operator=(const Socket&) noexcept -> Socket& = default;
-        auto operator=(Socket&&) noexcept -> Socket& = default;
-        explicit operator bool() const noexcept;
-        explicit operator handle_type() const;
-        [[nodiscard]] auto handle() const -> handle_type;
-        auto is_owner() -> Socket&;
-        [[nodiscard]] auto is_verbose() const -> bool;
-        [[nodiscard]] auto peername() const -> ByteString;
-        [[nodiscard]] auto sockname() const -> ByteString;
-
-    private:
-        SocketDataPointer m_socket_data;
-    };
-
+    using Socket = std::shared_ptr<SocketData>;
     extern auto operator<<(std::ostream& os,
-                           const Socket& sock) -> std::ostream&;
+                           Socket sock) -> std::ostream&;
 }
 
 #endif

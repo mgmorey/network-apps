@@ -82,8 +82,8 @@ auto Network::create_pairresult(const SocketHints& hints,
     }
 
     return SocketPair {
-        Socket {handles[0], is_verbose},
-        Socket {handles[1], is_verbose}
+        std::make_shared<SocketData>(handles[0], is_verbose),
+        std::make_shared<SocketData>(handles[1], is_verbose)
     };
 }
 

@@ -27,7 +27,7 @@
 #include <sys/socket.h>     // ::connect()
 #endif
 
-auto Network::connect(const Socket& sock,
+auto Network::connect(Socket sock,
                       const ByteString& addr) -> OsErrorResult
 {
     const OpenHandler handler {::connect, "::connect"};

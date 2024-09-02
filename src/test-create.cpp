@@ -40,7 +40,7 @@ namespace Test
     using Network::Socket;
     using Network::SocketHints;
     using Network::create;
-    using Network::get_shared_context;
+    using Network::get_context;
     using Network::handle_null;
     using Network::handle_type;
     using Network::os_error_type;
@@ -94,10 +94,10 @@ namespace Test
             const Socket sock_3 {sock_1};
             assert(static_cast<bool>(sock_1));
             assert(static_cast<bool>(sock_3));
-            assert(static_cast<handle_type>(sock_1) != handle_null);
-            assert(static_cast<handle_type>(sock_3) != handle_null);
-            assert(static_cast<handle_type>(sock_1) ==
-                   static_cast<handle_type>(sock_3));
+            assert(static_cast<handle_type>(*sock_1) != handle_null);
+            assert(static_cast<handle_type>(*sock_3) != handle_null);
+            assert(static_cast<handle_type>(*sock_1) ==
+                   static_cast<handle_type>(*sock_3));
         }
         catch (const Error& error) {
             print(error);
@@ -144,7 +144,7 @@ auto main(int argc, char* argv[]) -> int
 
     try {
         parse_arguments(argc, argv);
-        const auto context {get_shared_context(is_verbose)};
+        const auto context {get_context(is_verbose)};
 
         if (is_verbose) {
             std::cout << *context << std::endl;

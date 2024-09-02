@@ -59,7 +59,7 @@ namespace Test
     using Network::SocketResultVector;
     using Network::always_false_v;
     using Network::bind;
-    using Network::get_shared_context;
+    using Network::get_context;
     using Network::os_error_type;
     using Network::parse;
     using Network::string_null;
@@ -98,9 +98,9 @@ namespace Test
             }, t_socket_result);
         }
 
-        auto test_socket(const Socket& t_sock) -> void
+        auto test_socket(Socket t_sock) -> void
         {
-            const auto self {t_sock.sockname()};
+            const auto self {t_sock->sockname()};
             m_os << "Socket "
                  << std::right << std::setw(handle_width) << t_sock
                  << " bound on "
@@ -210,7 +210,7 @@ auto main(int argc, char* argv[]) -> int
 
     try {
         const auto endpoint {parse_arguments(argc, argv)};
-        const auto context {get_shared_context(is_verbose)};
+        const auto context {get_context(is_verbose)};
 
         if (is_verbose) {
             std::cout << *context << std::endl;

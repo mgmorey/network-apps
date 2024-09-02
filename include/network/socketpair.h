@@ -33,14 +33,14 @@ namespace Network
         using value_type = std::array<Socket, socketpair_size>;
 
         explicit SocketPair(const SocketHints& t_hints, bool t_is_verbose = false);
-        SocketPair(const Socket& t_socket_1, const Socket& t_socket_2) noexcept;
+        SocketPair(Socket t_socket_1, Socket t_socket_2) noexcept;
         SocketPair(const SocketPair&) noexcept = default;
         SocketPair(SocketPair&&) noexcept = default;
         ~SocketPair() noexcept = default;
         auto operator=(const SocketPair&) noexcept -> SocketPair& = default;
         auto operator=(SocketPair&&) noexcept -> SocketPair& = default;
-        [[nodiscard]] auto at(size_type t_index) const -> const Socket&;
-        [[nodiscard]] auto at(size_type t_index) -> Socket&;
+        [[nodiscard]] auto at(size_type t_index) const -> Socket;
+        [[nodiscard]] auto at(size_type t_index) -> Socket;
 
     private:
         value_type m_socket_pair;

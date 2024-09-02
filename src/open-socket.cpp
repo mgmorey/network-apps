@@ -35,7 +35,7 @@
 auto Network::open(const OpenHandler& handler,
                    const OpenSocketParams& args) -> OsErrorResult
 {
-    const handle_type handle {args.socket};
+    const auto handle {args.socket->handle()};
     const AddressString addr_str {args.addr};
     const auto [addr_ptr, addr_len] {get_sa_span(args.addr)};
 
@@ -44,7 +44,7 @@ auto Network::open(const OpenHandler& handler,
                            std::string {addr_str});
     }
 
-    if (args.socket.is_verbose()) {
+    if (args.socket->is_verbose()) {
         std::cout << "Calling "
                   << handler.second
                   << '('

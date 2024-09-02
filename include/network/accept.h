@@ -21,7 +21,7 @@
 
 namespace Network
 {
-    extern auto accept(const Socket& sock) -> AcceptResult;
+    extern auto accept(Socket sock) -> AcceptResult;
 }
 
 #endif

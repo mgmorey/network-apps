@@ -53,7 +53,7 @@ namespace Test
     using Network::UnixSocketHints;
     using Network::bind;
     using Network::close;
-    using Network::get_shared_context;
+    using Network::get_context;
     using Network::handle_null;
     using Network::handle_type;
     using Network::os_error_type;
@@ -134,7 +134,7 @@ namespace Test
         }
     }
 
-    auto print(const Socket& sock, const ByteString& addr) -> void
+    auto print(Socket sock, const ByteString& addr) -> void
     {
         std::cout << "Socket "
                   << std::right << std::setw(handle_width) << sock
@@ -170,14 +170,14 @@ namespace Test
 
         try {
             assert(to_bytestring(path) == path);
-            Socket sock {UnixSocketHints {SOCK_STREAM}, is_verbose};
+            Socket sock {create(UnixSocketHints {SOCK_STREAM}, is_verbose)};
 
             if (const auto result {bind(sock, path)}) {
                 print(result);
                 assert(expected_codes.contains(result.number()));
             }
             else {
-                const auto addr {sock.sockname()};
+                const auto addr {sock->sockname()};
                 print(sock, addr);
                 assert(addr == path);
             }
@@ -295,7 +295,7 @@ namespace Test
         std::string actual_error_str;
 
         try {
-            const Socket sock {hints, is_verbose};
+            const Socket sock {create(hints, is_verbose)};
         }
         catch (const Error& error) {
             print(error);
@@ -336,7 +336,7 @@ auto main(int argc, char* argv[]) -> int
 
     try {
         parse_arguments(argc, argv);
-        const auto context {get_shared_context(is_verbose)};
+        const auto context {get_context(is_verbose)};
 
         if (is_verbose) {
             std::cout << *context << std::endl;

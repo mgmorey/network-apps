@@ -44,16 +44,14 @@ namespace Test
 #ifdef WIN32
     using Network::WindowsVersion;
 #endif
+    using Network::get_context;
     using Network::get_hostname;
-    using Network::get_shared_context;
-    using Network::get_unique_context;
     using Network::parse;
     using Network::version_null;
 
     static constexpr Version v0_0 {0, 0};
     static constexpr Version v0_1 {0, 1};
     static constexpr Version v1_0 {1, 0};
-    static constexpr Version v2_0 {2, 0};
     static constexpr Version version_max {255, 255};
 
     static_assert(v0_0 == Version {} && Version {} == Version {0, 0});
@@ -191,8 +189,8 @@ namespace Test
             actual_error_str = error.what();
         }
 
-        assert(error_code == expected_code_stopped);
         assert(actual_error_str.empty());
+        assert(error_code == expected_code_stopped);
     }
 
     auto test_context_invalid_version_null() -> void
@@ -202,7 +200,7 @@ namespace Test
         try {
             const auto context
             {
-                get_unique_context(version_null, fail, is_verbose)
+                get_context(version_null, fail, is_verbose)
             };
             static_cast<void>(context);
         }
@@ -217,15 +215,19 @@ namespace Test
 
     auto test_context_valid_global_instance() -> void
     {
-        int error_code {0};
         std::string actual_error_str;
+        int error_code {0};
 
         try {
-            const auto context_1 {get_shared_context({}, fail, is_verbose)};
+            const auto context_1 {get_context({}, fail, is_verbose)};
+            const auto context_2 {get_context({}, fail, is_verbose)};
             test_context(*context_1, "global 1", {});
-            const auto context_2 {get_shared_context({}, fail, is_verbose)};
-            test_context(*context_2, "global 2", {});
             assert(context_1 == context_2);
+            context_1->stop();
+            assert(!context_1->error_code());
+            assert(!context_1->is_running());
+            context_1->start();
+            test_context(*context_1, "global 1", {});
             error_code = Network::stop(fail, is_verbose);
         }
         catch (const Error& error) {
@@ -233,61 +235,21 @@ namespace Test
             actual_error_str = error.what();
         }
 
+        assert(actual_error_str.empty());
         assert(!error_code);
-        assert(actual_error_str.empty());
-        test_context_inactive();
-    }
-
-    auto test_context_valid_multiple_local_instances() -> void
-    {
-        std::string actual_error_str;
-
-        try {
-            const auto context_1 {get_unique_context(v1_0, fail, is_verbose)};
-            test_context(*context_1, "local 1", v1_0);
-            const auto context_2 {get_unique_context(v2_0, fail, is_verbose)};
-            test_context(*context_2, "local 2", v2_0);
-            assert(context_1 != context_2);
-        }
-        catch (const Error& error) {
-            print(error);
-            actual_error_str = error.what();
-        }
-
-        assert(actual_error_str.empty());
-        test_context_inactive();
-    }
-
-    auto test_context_valid_single_local_instance_with_restart() -> void
-    {
-        std::string actual_error_str;
-
-        try {
-            auto context {get_unique_context(v1_0, fail, is_verbose)};
-            test_context(*context, "local 3.1", v1_0);
-            context->stop();
-            assert(!context->error_code());
-            assert(!context->is_running());
-            context->start();
-            test_context(*context, "local 3.2", v1_0);
-        }
-        catch (const Error& error) {
-            print(error);
-            actual_error_str = error.what();
-        }
-
-        assert(actual_error_str.empty());
         test_context_inactive();
     }
 
     auto test_hostname_running() -> void
     {
         std::string actual_error_str;
+        int error_code {0};
 
         try {
-            const auto context {get_unique_context({}, fail, is_verbose)};
-            test_context(*context, "local 4", {});
+            const auto context {get_context({}, fail, is_verbose)};
+            test_context(*context, "global 3", {});
             static_cast<void>(get_hostname(is_verbose));
+            error_code = Network::stop(fail, is_verbose);
         }
         catch (const Error& error) {
             print(error);
@@ -295,6 +257,7 @@ namespace Test
         }
 
         assert(actual_error_str.empty());
+        assert(!error_code);
         test_context_inactive();
     }
 
@@ -323,8 +286,6 @@ auto main(int argc, char* argv[]) -> int
         parse_arguments(argc, argv);
         test_context_invalid_version_null();
         test_context_valid_global_instance();
-        test_context_valid_multiple_local_instances();
-        test_context_valid_single_local_instance_with_restart();
         test_hostname_running();
         test_hostname_stopped();
     }

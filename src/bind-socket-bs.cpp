@@ -27,14 +27,14 @@
 #include <sys/socket.h>     // ::bind()
 #endif
 
-auto Network::bind(Socket& sock, const ByteString& addr) -> OsErrorResult
+auto Network::bind(Socket sock, const ByteString& addr) -> OsErrorResult
 {
     const OpenHandler handler {::bind, "::bind"};
     const OpenSocketParams args {sock, addr};
     auto result {open(handler, args)};
 
     if (!result) {
-        sock.is_owner();
+        sock->is_owner();
     }
 
     return result;

@@ -39,7 +39,7 @@ static constexpr auto backlog_size {20};
 static auto is_verbose {false};  // NOLINT
 
 namespace Server {
-    auto accept(const Socket& bind_sock) -> Socket
+    auto accept(Socket bind_sock) -> Socket
     {
         auto [accept_sock, accept_addr] {Network::accept(bind_sock)};
 
@@ -54,7 +54,7 @@ namespace Server {
 
     auto bind() -> Socket
     {
-        Socket sock {UnixSocketHints {SOCK_SEQPACKET}, is_verbose};
+        Socket sock {create(UnixSocketHints {SOCK_SEQPACKET}, is_verbose)};
 
         if (const auto result {Network::bind(sock, SOCKET_NAME)}) {
             std::cerr << result.string() << std::endl;
@@ -64,7 +64,7 @@ namespace Server {
         return sock;
     }
 
-    auto listen(const Socket& sock) -> void
+    auto listen(Socket sock) -> void
     {
         const auto result {Network::listen(sock, backlog_size)};
 
@@ -92,7 +92,7 @@ namespace Server {
         }
     }
 
-    auto read(const Socket& sock) -> std::string
+    auto read(Socket sock) -> std::string
     {
         static constexpr auto size {BUFFER_SIZE};
         const auto [str, error] {Network::read_string(sock, size)};
@@ -105,7 +105,7 @@ namespace Server {
         return str;
     }
 
-    auto write(const Socket& sock, auto value) -> void
+    auto write(Socket sock, auto value) -> void
     {
         const auto str {std::to_string(value)};
         const auto error {Network::write(sock, str)};

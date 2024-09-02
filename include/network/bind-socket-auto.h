@@ -24,7 +24,7 @@
 
 namespace Network
 {
-    auto bind(Socket& sock, const auto& value) -> OsErrorResult
+    auto bind(Socket sock, const auto& value) -> OsErrorResult
     {
         return Network::bind(sock, to_bytestring(validate(value)));
     }

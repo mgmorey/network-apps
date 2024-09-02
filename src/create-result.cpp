@@ -78,5 +78,5 @@ auto Network::create_result(const SocketHints& hints,
         return OsErrorResult {os_error, oss.str()};
     }
 
-    return Socket {handle, is_verbose};
+    return std::make_shared<SocketData>(handle, is_verbose);
 }

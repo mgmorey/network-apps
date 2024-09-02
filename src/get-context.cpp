@@ -13,10 +13,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-unique-context.h" // get_unique_context()
+#include "network/get-context.h"        // get_context()
 #include "network/failuremode.h"        // FailureMode
 #include "network/optionalversion.h"    // OptionalVersion
-#include "network/uniquecontext.h"      // UniqueContext
+#include "network/sharedcontext.h"      // SharedContext
 
 #ifdef WIN32
 #include "network/windowscontext.h"     // WindowsContext
@@ -24,20 +24,20 @@
 #include "network/unixcontext.h"        // UnixContext
 #endif
 
-#include <memory>       // std::make_unique()
+#include <memory>       // std::make_shared()
 
-auto Network::get_unique_context(const OptionalVersion& t_version,
-                                 FailureMode t_failure,
-                                 bool t_is_verbose) -> UniqueContext
+auto Network::get_context(const OptionalVersion& t_version,
+                          FailureMode t_failure,
+                          bool t_is_verbose) -> SharedContext
 {
-    auto context
-    {
+    static const auto context
+        {
 #ifdef WIN32
-        std::make_unique<WindowsContext>(t_version, t_failure, t_is_verbose)
+            std::make_shared<WindowsContext>(t_version, t_failure, t_is_verbose)
 #else
-        std::make_unique<UnixContext>(t_version, t_failure, t_is_verbose)
+            std::make_shared<UnixContext>(t_version, t_failure, t_is_verbose)
 #endif
-    };
+        };
 
     if (context) {
         context->start();
@@ -46,7 +46,7 @@ auto Network::get_unique_context(const OptionalVersion& t_version,
     return context;
 }
 
-auto Network::get_unique_context(bool t_is_verbose) -> UniqueContext
+auto Network::get_context(bool t_is_verbose) -> SharedContext
 {
-    return get_unique_context({}, FailureMode::throw_error, t_is_verbose);
+    return get_context({}, FailureMode::throw_error, t_is_verbose);
 }

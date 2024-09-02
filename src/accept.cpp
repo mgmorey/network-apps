@@ -37,13 +37,14 @@
 #endif
 
 #include <iostream>     // std::cout, std::endl
+#include <memory>       // std::make_shared()
 #include <sstream>      // std::ostringstream
 
-auto Network::accept(const Socket& sock) -> AcceptResult
+auto Network::accept(Socket sock) -> AcceptResult
 {
     Buffer<Byte> buffer {sa_length_max};
-    const auto is_verbose {sock.is_verbose()};
-    const auto handle_1 {sock.handle()};
+    const auto is_verbose {sock->is_verbose()};
+    const auto handle_1 {sock->handle()};
     const AddressString addr_str {ByteString {buffer}};
     auto [addr_ptr, addr_len] {get_sa_span(buffer)};
 
@@ -79,5 +80,8 @@ auto Network::accept(const Socket& sock) -> AcceptResult
     }
 
     buffer.resize(to_size(addr_len));
-    return {Socket {handle_2, is_verbose}, ByteString {buffer}};
+    return {
+        std::make_shared<SocketData>(handle_2, is_verbose),
+        ByteString {buffer}
+    };
 }

@@ -13,19 +13,19 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_GET_UNIQUE_CONTEXT_H
-#define NETWORK_GET_UNIQUE_CONTEXT_H
+#ifndef NETWORK_GET_SHARED_CONTEXT_H
+#define NETWORK_GET_SHARED_CONTEXT_H
 
 #include "network/failuremode.h"        // FailureMode
 #include "network/optionalversion.h"    // OptionalVersion
-#include "network/uniquecontext.h"      // UniqueContext
+#include "network/sharedcontext.h"      // SharedContext
 
 namespace Network
 {
-    extern auto get_unique_context(const OptionalVersion& t_version,
-                                   FailureMode t_failure,
-                                   bool t_is_verbose = false) -> UniqueContext;
-    extern auto get_unique_context(bool t_is_verbose = false) -> UniqueContext;
+    extern auto get_context(const OptionalVersion& t_version,
+                            FailureMode t_failure,
+                            bool t_is_verbose = false) -> SharedContext;
+    extern auto get_context(bool t_is_verbose = false) -> SharedContext;
 }
 
 #endif

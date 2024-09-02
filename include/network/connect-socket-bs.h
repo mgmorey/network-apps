@@ -22,7 +22,7 @@
 
 namespace Network
 {
-    extern auto connect(const Socket& sock,
+    extern auto connect(Socket sock,
                         const ByteString& addr) -> OsErrorResult;
 }
 

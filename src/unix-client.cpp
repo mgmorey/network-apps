@@ -39,7 +39,7 @@ static auto is_verbose {false};  // NOLINT
 namespace Client {
     auto connect() -> Socket
     {
-        Socket sock {UnixSocketHints {SOCK_SEQPACKET}, is_verbose};
+        Socket sock {create(UnixSocketHints {SOCK_SEQPACKET}, is_verbose)};
 
         if (const auto error {Network::connect(sock, SOCKET_NAME)}) {
             std::cerr << error.string() << std::endl;
@@ -68,7 +68,7 @@ namespace Client {
         return operands;
     }
 
-    auto read(const Socket& sock) -> std::string
+    auto read(Socket sock) -> std::string
     {
         static constexpr auto size {BUFFER_SIZE};
         const auto [str, error] {Network::read_string(sock, size)};
@@ -81,7 +81,7 @@ namespace Client {
         return str;
     }
 
-    auto write(const std::string& str, const Socket& sock) -> void
+    auto write(const std::string& str, Socket sock) -> void
     {
         const auto error {Network::write(sock, str)};
 

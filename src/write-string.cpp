@@ -21,7 +21,7 @@
 
 #include <string_view>  // std::string_view
 
-auto Network::write(const Socket& sock, std::string_view str) -> ssize_t
+auto Network::write(Socket sock, std::string_view str) -> ssize_t
 {
     return write(sock, str.data(), str.size());
 }

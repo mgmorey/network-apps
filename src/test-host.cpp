@@ -65,7 +65,7 @@ namespace Test
     using Network::af_ip_v4;
     using Network::af_ip_v6;
     using Network::always_false_v;
-    using Network::get_shared_context;
+    using Network::get_context;
     using Network::insert;
     using Network::os_error_type;
     using Network::parse;
@@ -404,7 +404,7 @@ auto main(int argc, char* argv[]) -> int
 
     try {
         const auto hosts {parse_arguments(argc, argv)};
-        const auto context {get_shared_context(is_verbose)};
+        const auto context {get_context(is_verbose)};
 
         if (is_verbose) {
             std::cout << *context << std::endl;

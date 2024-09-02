@@ -38,8 +38,10 @@ namespace Test
 {
     using Network::Error;
     using Network::Socket;
+    using Network::SocketData;
     using Network::SocketHints;
-    using Network::get_shared_context;
+    using Network::create;
+    using Network::get_context;
     using Network::handle_null;
     using Network::handle_type;
     using Network::os_error_type;
@@ -110,7 +112,7 @@ namespace Test
         std::string actual_error_str;
 
         try {
-            Socket {handle, is_verbose};
+            std::make_shared<SocketData>(handle, is_verbose);
         }
         catch (const Error& error) {
             print(error);
@@ -132,14 +134,14 @@ namespace Test
         std::string actual_error_str;
 
         try {
-            const Socket sock_1 {hints, is_verbose};
+            const Socket sock_1 {create(hints, is_verbose)};
             const Socket sock_2 {sock_1};
             assert(static_cast<bool>(sock_1));
             assert(static_cast<bool>(sock_2));
-            assert(static_cast<handle_type>(sock_1) != handle_null);
-            assert(static_cast<handle_type>(sock_2) != handle_null);
-            assert(static_cast<handle_type>(sock_1) ==
-                   static_cast<handle_type>(sock_2));
+            assert(static_cast<handle_type>(*sock_1) != handle_null);
+            assert(static_cast<handle_type>(*sock_2) != handle_null);
+            assert(static_cast<handle_type>(*sock_1) ==
+                   static_cast<handle_type>(*sock_2));
             static_cast<void>(sock_2);
         }
         catch (const Error& error) {
@@ -197,7 +199,7 @@ auto main(int argc, char* argv[]) -> int
 
     try {
         parse_arguments(argc, argv);
-        const auto context {get_shared_context(is_verbose)};
+        const auto context {get_context(is_verbose)};
 
         if (is_verbose) {
             std::cout << *context << std::endl;

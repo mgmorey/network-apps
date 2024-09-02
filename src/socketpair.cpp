@@ -25,18 +25,18 @@ Network::SocketPair::SocketPair(const SocketHints& t_hints, bool t_is_verbose) :
 {
 }
 
-Network::SocketPair::SocketPair(const Socket& t_socket_1,
-                                const Socket& t_socket_2) noexcept :
+Network::SocketPair::SocketPair(Socket t_socket_1,
+                                Socket t_socket_2) noexcept :
     m_socket_pair({t_socket_1, t_socket_2})
 {
 }
 
-auto Network::SocketPair::at(size_type t_index) const -> const Socket&
+auto Network::SocketPair::at(size_type t_index) const -> Socket
 {
     return m_socket_pair.at(t_index);
 }
 
-auto Network::SocketPair::at(size_type t_index) -> Socket&
+auto Network::SocketPair::at(size_type t_index) -> Socket
 {
     return m_socket_pair.at(t_index);
 }

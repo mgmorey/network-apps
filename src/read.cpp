@@ -27,11 +27,11 @@
 
 #include <cstddef>      // std::size_t
 
-auto Network::read(const Socket& sock,
+auto Network::read(Socket sock,
                    char* data,
                    std::size_t size) -> ssize_t
 {
-    const handle_type handle {sock};
+    const auto handle {sock->handle()};
 #ifdef WIN32
     return ::recv(handle, data, static_cast<int>(size), 0);
 #else
