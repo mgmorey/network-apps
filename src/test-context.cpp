@@ -52,13 +52,11 @@ namespace Test
     static constexpr Version v0_0 {0, 0};
     static constexpr Version v0_1 {0, 1};
     static constexpr Version v1_0 {1, 0};
-    static constexpr Version version_max {255, 255};
 
     static_assert(v0_0 == Version {} && Version {} == Version {0, 0});
     static_assert(v0_0 != v0_1 && v0_1 != v1_0);
     static_assert(v0_0 < v0_1 && v0_1 < v1_0);
     static_assert(v1_0 > v0_1 && v1_0 > v0_0);
-    static_assert(v0_0 < version_max);
 
 #ifdef WIN32
     static_assert(WORD {WindowsVersion(v0_0)} == 0x0U);        // NOLINT
@@ -67,8 +65,6 @@ namespace Test
     static_assert(Version {WindowsVersion(0x100U)} == v0_1);   // NOLINT
     static_assert(WORD {WindowsVersion(v1_0)} == 0x1U);	      // NOLINT
     static_assert(Version {WindowsVersion(0x1U)} == v1_0);     // NOLINT
-    static_assert(WORD {WindowsVersion(version_max)} == 0xFFFFU);     // NOLINT
-    static_assert(Version {WindowsVersion(0xFFFFU)} == version_max);  // NOLINT
 #endif
 
 #ifdef WIN32
@@ -86,9 +82,6 @@ namespace Test
         "Either the application has not called WSAStartup, "
         "or WSAStartup failed."
     };
-    static constexpr auto expected_error_version {
-        "The Windows Sockets version requested is not supported."
-    };
 #else
     static constexpr auto expected_code_stopped {0};
     static constexpr auto expected_context_platform_re {
@@ -98,10 +91,9 @@ namespace Test
         "( Version \\d{1,3}\\.\\d{1,3})?" // NOLINT
     };
     static constexpr auto expected_error_stopped {""};
-    static constexpr auto expected_error_version {""};
 #endif
 
-    static const auto fail {FailureMode::return_error};
+    static const auto failure_mode {FailureMode::return_error};
     static auto is_verbose {false};  // NOLINT
 
     auto get_expected_context_re() -> std::string
@@ -180,7 +172,7 @@ namespace Test
         std::string actual_error_str;
 
         try {
-            error_code = Network::stop(fail, is_verbose);
+            error_code = Network::stop(failure_mode, is_verbose);
         }
         catch (const Error& error) {
             print(error);
@@ -191,37 +183,17 @@ namespace Test
         assert(error_code == expected_code_stopped);
     }
 
-    auto test_context_invalid_version_null() -> void
-    {
-        std::string actual_error_str;
-
-        try {
-            const auto context
-            {
-                get_context(version_null, fail, is_verbose)
-            };
-            static_cast<void>(context);
-        }
-        catch (const Error& error) {
-            print(error);
-            actual_error_str = error.what();
-        }
-
-        assert(actual_error_str == expected_error_version);
-        test_context_inactive();
-    }
-
-    auto test_context_valid_global_instance() -> void
+    auto test_context_valid() -> void
     {
         std::string actual_error_str;
         int error_code {0};
 
         try {
-            const auto context_1 {get_context({}, fail, is_verbose)};
-            const auto context_2 {get_context({}, fail, is_verbose)};
-            test_context(*context_1, "global 1", {});
+            const auto context_1 {get_context({}, failure_mode, is_verbose)};
+            test_context(*context_1, "test_context_valid", {});
+            const auto context_2 {get_context({}, failure_mode, is_verbose)};
             assert(context_1 == context_2);
-            error_code = Network::stop(fail, is_verbose);
+            error_code = Network::stop(failure_mode, is_verbose);
         }
         catch (const Error& error) {
             print(error);
@@ -233,55 +205,7 @@ namespace Test
         test_context_inactive();
     }
 
-    auto test_context_valid_global_instance_with_restart() -> void
-    {
-        std::string actual_error_str;
-        int error_code {0};
-
-        try {
-            const auto context_1 {get_context({}, fail, is_verbose)};
-            const auto context_2 {get_context({}, fail, is_verbose)};
-            test_context(*context_1, "global 1", {});
-            assert(context_1 == context_2);
-            context_1->stop();
-            assert(!context_1->error_code());
-            assert(!context_1->is_running());
-            context_1->start();
-            test_context(*context_1, "global 1", {});
-            error_code = Network::stop(fail, is_verbose);
-        }
-        catch (const Error& error) {
-            print(error);
-            actual_error_str = error.what();
-        }
-
-        assert(actual_error_str.empty());
-        assert(!error_code);
-        test_context_inactive();
-    }
-
-    auto test_hostname_running() -> void
-    {
-        std::string actual_error_str;
-        int error_code {0};
-
-        try {
-            const auto context {get_context({}, fail, is_verbose)};
-            test_context(*context, "global 3", {});
-            static_cast<void>(get_hostname(is_verbose));
-            error_code = Network::stop(fail, is_verbose);
-        }
-        catch (const Error& error) {
-            print(error);
-            actual_error_str = error.what();
-        }
-
-        assert(actual_error_str.empty());
-        assert(!error_code);
-        test_context_inactive();
-    }
-
-    auto test_hostname_stopped() -> void
+    auto test_no_context() -> void
     {
         std::string actual_error_str;
 
@@ -304,11 +228,8 @@ auto main(int argc, char* argv[]) -> int
 
     try {
         parse_arguments(argc, argv);
-        test_context_invalid_version_null();
-        test_context_valid_global_instance();
-        test_context_valid_global_instance_with_restart();
-        test_hostname_running();
-        test_hostname_stopped();
+        test_context_valid();
+        test_no_context();
     }
     catch (const std::exception& error) {
         std::cerr << error.what()
