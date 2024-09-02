@@ -26,17 +26,41 @@
 
 #include <memory>       // std::make_shared()
 
+namespace {
+    using namespace Network;
+
+    auto get_shared_context(const OptionalVersion& t_version,
+                            FailureMode t_failure,
+                            bool t_is_verbose) -> SharedContext
+    {
+#ifdef WIN32
+        return std::make_shared<WindowsContext>(t_version,
+                                                t_failure,
+                                                t_is_verbose);
+#else
+        return std::make_shared<UnixContext>(t_version,
+                                             t_failure,
+                                             t_is_verbose);
+#endif
+    }
+}
+
 auto Network::get_context(const OptionalVersion& t_version,
                           FailureMode t_failure,
+                          bool t_is_global,
                           bool t_is_verbose) -> SharedContext
 {
-    static const auto context {
-#ifdef WIN32
-        std::make_shared<WindowsContext>(t_version, t_failure, t_is_verbose)
-#else
-        std::make_shared<UnixContext>(t_version, t_failure, t_is_verbose)
-#endif
-    };
+    SharedContext context;
+
+    if (t_is_global) {
+        static const auto global_context =
+            get_shared_context(t_version, t_failure, t_is_verbose);
+        context = global_context;
+    }
+    else {
+        context =
+            get_shared_context(t_version, t_failure, t_is_verbose);
+    }
 
     if (context) {
         context->start();
@@ -45,7 +69,7 @@ auto Network::get_context(const OptionalVersion& t_version,
     return context;
 }
 
-auto Network::get_context(bool t_is_verbose) -> SharedContext
+auto Network::get_context(bool t_is_global, bool t_is_verbose) -> SharedContext
 {
-    return get_context({}, FailureMode::throw_error, t_is_verbose);
+    return get_context({}, FailureMode::throw_error, t_is_global, t_is_verbose);
 }

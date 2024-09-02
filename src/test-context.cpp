@@ -183,17 +183,46 @@ namespace Test
         assert(error_code == expected_code_stopped);
     }
 
-    auto test_context_valid() -> void
+    auto test_context_valid_global() -> void
     {
         std::string actual_error_str;
         int error_code {0};
 
         try {
-            const auto context_1 {get_context({}, failure_mode, is_verbose)};
+            const auto context_1 {
+                get_context({}, failure_mode, true, is_verbose)
+            };
             test_context(*context_1, "test_context_valid", {});
-            const auto context_2 {get_context({}, failure_mode, is_verbose)};
+            const auto context_2 {
+                get_context({}, failure_mode, true, is_verbose)
+            };
             assert(context_1 == context_2);
             error_code = Network::stop(failure_mode, is_verbose);
+        }
+        catch (const Error& error) {
+            print(error);
+            actual_error_str = error.what();
+        }
+
+        assert(actual_error_str.empty());
+        assert(!error_code);
+        test_context_inactive();
+    }
+
+    auto test_context_valid_local() -> void
+    {
+        std::string actual_error_str;
+        int error_code {0};
+
+        try {
+            const auto context_1 {
+                get_context({}, failure_mode, false, is_verbose)
+            };
+            test_context(*context_1, "test_context_valid", {});
+            const auto context_2 {
+                get_context({}, failure_mode, false, is_verbose)
+            };
+            assert(context_1 != context_2);
         }
         catch (const Error& error) {
             print(error);
@@ -228,7 +257,8 @@ auto main(int argc, char* argv[]) -> int
 
     try {
         parse_arguments(argc, argv);
-        test_context_valid();
+        test_context_valid_global();
+        test_context_valid_local();
         test_no_context();
     }
     catch (const std::exception& error) {

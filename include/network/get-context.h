@@ -24,8 +24,10 @@ namespace Network
 {
     extern auto get_context(const OptionalVersion& t_version,
                             FailureMode t_failure,
+                            bool t_is_global,
                             bool t_is_verbose = false) -> SharedContext;
-    extern auto get_context(bool t_is_verbose = false) -> SharedContext;
+    extern auto get_context(bool t_is_global,
+                            bool t_is_verbose = false) -> SharedContext;
 }
 
 #endif
