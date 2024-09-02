@@ -30,14 +30,13 @@ auto Network::get_context(const OptionalVersion& t_version,
                           FailureMode t_failure,
                           bool t_is_verbose) -> SharedContext
 {
-    static const auto context
-        {
+    static const auto context {
 #ifdef WIN32
-            std::make_shared<WindowsContext>(t_version, t_failure, t_is_verbose)
+        std::make_shared<WindowsContext>(t_version, t_failure, t_is_verbose)
 #else
-            std::make_shared<UnixContext>(t_version, t_failure, t_is_verbose)
+        std::make_shared<UnixContext>(t_version, t_failure, t_is_verbose)
 #endif
-        };
+    };
 
     if (context) {
         context->start();
