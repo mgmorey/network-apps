@@ -82,6 +82,9 @@ namespace Test
         "Either the application has not called WSAStartup, "
         "or WSAStartup failed."
     };
+    static constexpr auto expected_error_version {
+        "The Windows Sockets version requested is not supported."
+    };
 #else
     static constexpr auto expected_code_stopped {0};
     static constexpr auto expected_context_platform_re {
@@ -91,6 +94,7 @@ namespace Test
         "( Version \\d{1,3}\\.\\d{1,3})?" // NOLINT
     };
     static constexpr auto expected_error_stopped {""};
+    static constexpr auto expected_error_version {""};
 #endif
 
     static const auto failure_mode {FailureMode::return_error};
@@ -183,6 +187,24 @@ namespace Test
         assert(error_code == expected_code_stopped);
     }
 
+    auto test_context_invalid() -> void
+    {
+        std::string actual_error_str;
+
+        try {
+            const auto context {
+                get_context(v0_0, failure_mode, false, is_verbose)
+            };
+        }
+        catch (const Error& error) {
+            print(error);
+            actual_error_str = error.what();
+        }
+
+        assert(actual_error_str == expected_error_version);
+        test_context_inactive();
+    }
+
     auto test_context_valid_global() -> void
     {
         std::string actual_error_str;
@@ -192,7 +214,7 @@ namespace Test
             const auto context_1 {
                 get_context({}, failure_mode, true, is_verbose)
             };
-            test_context(*context_1, "test_context_valid", {});
+            test_context(*context_1, "global", {});
             const auto context_2 {
                 get_context({}, failure_mode, true, is_verbose)
             };
@@ -212,17 +234,21 @@ namespace Test
     auto test_context_valid_local() -> void
     {
         std::string actual_error_str;
-        int error_code {0};
 
         try {
             const auto context_1 {
                 get_context({}, failure_mode, false, is_verbose)
             };
-            test_context(*context_1, "test_context_valid", {});
+            test_context(*context_1, "local 1", {});
             const auto context_2 {
                 get_context({}, failure_mode, false, is_verbose)
             };
+            test_context(*context_1, "local 2", {});
             assert(context_1 != context_2);
+            context_1->stop();
+            assert(!context_1->error_code());
+            context_2->stop();
+            assert(!context_2->error_code());
         }
         catch (const Error& error) {
             print(error);
@@ -230,7 +256,6 @@ namespace Test
         }
 
         assert(actual_error_str.empty());
-        assert(!error_code);
         test_context_inactive();
     }
 
@@ -257,6 +282,7 @@ auto main(int argc, char* argv[]) -> int
 
     try {
         parse_arguments(argc, argv);
+        test_context_invalid();
         test_context_valid_global();
         test_context_valid_local();
         test_no_context();
