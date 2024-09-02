@@ -170,7 +170,7 @@ namespace Test
 
         try {
             assert(to_bytestring(path) == path);
-            Socket sock {create(UnixSocketHints {SOCK_STREAM}, is_verbose)};
+            const Socket sock {create(UnixSocketHints {SOCK_STREAM}, is_verbose)};
 
             if (const auto result {bind(sock, path)}) {
                 print(result);

@@ -23,7 +23,7 @@
 
 namespace Network
 {
-    extern auto read_string(Socket sock, std::size_t size) -> ReadResult;
+    extern auto read_string(const Socket& sock, std::size_t size) -> ReadResult;
 }
 
 #endif
