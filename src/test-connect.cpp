@@ -129,7 +129,7 @@ namespace Test
             }, t_socket_result);
         }
 
-        auto test_socket(Socket t_sock) -> void
+        auto test_socket(const Socket& t_sock) -> void
         {
             const auto peer {t_sock->peername()};
             const auto self {t_sock->sockname()};

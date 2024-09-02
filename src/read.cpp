@@ -27,7 +27,7 @@
 
 #include <cstddef>      // std::size_t
 
-auto Network::read(Socket sock,
+auto Network::read(const Socket& sock,
                    char* data,
                    std::size_t size) -> ssize_t
 {

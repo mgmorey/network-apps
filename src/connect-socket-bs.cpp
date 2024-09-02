@@ -27,10 +27,12 @@
 #include <sys/socket.h>     // ::connect()
 #endif
 
+#include <utility>      // std::move()
+
 auto Network::connect(Socket sock,
                       const ByteString& addr) -> OsErrorResult
 {
     const OpenHandler handler {::connect, "::connect"};
-    const OpenSocketParams args {sock, addr};
+    const OpenSocketParams args {std::move(sock), addr};
     return open(handler, args);
 }

@@ -20,8 +20,9 @@
 #include <sys/types.h>          // ssize_t
 
 #include <string_view>  // std::string_view
+#include <utility>      // std::move()
 
 auto Network::write(Socket sock, std::string_view str) -> ssize_t
 {
-    return write(sock, str.data(), str.size());
+    return write(std::move(sock), str.data(), str.size());
 }

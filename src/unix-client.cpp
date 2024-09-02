@@ -28,6 +28,7 @@
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <string>       // std::string, std::to_string()
+#include <utility>      // std::move()
 
 using Network::ArgumentSpan;
 using Network::Socket;
@@ -72,7 +73,7 @@ namespace Client {
     auto read(Socket sock) -> std::string
     {
         static constexpr auto size {BUFFER_SIZE};
-        const auto [str, error] {Network::read_string(sock, size)};
+        const auto [str, error] {Network::read_string(std::move(sock), size)};
 
         if (error == socket_error) {
             std::perror("read");
@@ -84,7 +85,7 @@ namespace Client {
 
     auto write(const std::string& str, Socket sock) -> void
     {
-        const auto error {Network::write(sock, str)};
+        const auto error {Network::write(std::move(sock), str)};
 
         if (error == socket_error) {
             std::perror("write");

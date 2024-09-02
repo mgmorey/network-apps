@@ -27,6 +27,7 @@
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <string>       // std::stoll(), std::string, std::to_string()
+#include <utility>      // std::move()
 
 using Network::Socket;
 using Network::UnixSocketHints;
@@ -42,7 +43,7 @@ static auto is_verbose {false};  // NOLINT
 namespace Server {
     auto accept(Socket bind_sock) -> Socket
     {
-        auto [accept_sock, accept_addr] {Network::accept(bind_sock)};
+        auto [accept_sock, accept_addr] {Network::accept(std::move(bind_sock))};
 
         if (is_verbose) {
             std::cout << "Accepted connection from "
@@ -67,7 +68,7 @@ namespace Server {
 
     auto listen(Socket sock) -> void
     {
-        const auto result {Network::listen(sock, backlog_size)};
+        const auto result {Network::listen(std::move(sock), backlog_size)};
 
         if (result == socket_error) {
             std::perror("listen");
@@ -96,7 +97,7 @@ namespace Server {
     auto read(Socket sock) -> std::string
     {
         static constexpr auto size {BUFFER_SIZE};
-        const auto [str, error] {Network::read_string(sock, size)};
+        const auto [str, error] {Network::read_string(std::move(sock), size)};
 
         if (error == socket_error) {
             std::perror("read");
@@ -106,7 +107,7 @@ namespace Server {
         return str;
     }
 
-    auto write(Socket sock, auto value) -> void
+    auto write(const Socket& sock, auto value) -> void
     {
         const auto str {std::to_string(value)};
         const auto error {Network::write(sock, str)};

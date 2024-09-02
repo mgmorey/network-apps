@@ -134,7 +134,7 @@ namespace Test
         }
     }
 
-    auto print(Socket sock, const ByteString& addr) -> void
+    auto print(const Socket& sock, const ByteString& addr) -> void
     {
         std::cout << "Socket "
                   << std::right << std::setw(handle_width) << sock

@@ -26,7 +26,7 @@ namespace Network
 {
     using Socket = std::shared_ptr<SocketData>;
     extern auto operator<<(std::ostream& os,
-                           Socket sock) -> std::ostream&;
+                           const Socket& sock) -> std::ostream&;
 }
 
 #endif

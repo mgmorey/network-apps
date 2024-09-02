@@ -40,7 +40,7 @@
 #include <memory>       // std::make_shared()
 #include <sstream>      // std::ostringstream
 
-auto Network::accept(Socket sock) -> AcceptResult
+auto Network::accept(const Socket& sock) -> AcceptResult
 {
     Buffer<Byte> buffer {sa_length_max};
     const auto is_verbose {sock->is_verbose()};

@@ -27,7 +27,7 @@
 #include <sys/socket.h>     // ::bind()
 #endif
 
-auto Network::bind(Socket sock, const ByteString& addr) -> OsErrorResult
+auto Network::bind(const Socket& sock, const ByteString& addr) -> OsErrorResult
 {
     const OpenHandler handler {::bind, "::bind"};
     const OpenSocketParams args {sock, addr};

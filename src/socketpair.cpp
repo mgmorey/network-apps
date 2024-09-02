@@ -20,6 +20,8 @@
 #include "network/socket.h"                     // Socket
 #include "network/sockethints.h"                // SocketHints
 
+#include <utility>      // std::move()
+
 Network::SocketPair::SocketPair(const SocketHints& t_hints, bool t_is_verbose) :
     SocketPair(create_pair(t_hints, t_is_verbose))
 {
@@ -27,7 +29,7 @@ Network::SocketPair::SocketPair(const SocketHints& t_hints, bool t_is_verbose) :
 
 Network::SocketPair::SocketPair(Socket t_socket_1,
                                 Socket t_socket_2) noexcept :
-    m_socket_pair({t_socket_1, t_socket_2})
+    m_socket_pair({std::move(t_socket_1), std::move(t_socket_2)})
 {
 }
 
