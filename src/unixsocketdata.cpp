@@ -17,11 +17,8 @@
 #include "network/close.h"                      // close()
 #include "network/get-sockname.h"               // get_sockname()
 #include "network/handle-type.h"                // handle_type
-
-#ifndef WIN32
 #include "network/remove.h"                     // remove()
 #include "network/to-path.h"                    // to_path()
-#endif
 
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::endl
@@ -60,7 +57,6 @@ auto Network::UnixSocketData::is_owner(bool t_is_owner) -> SocketData&
         return *this;
     }
 
-#ifndef WIN32
     if (t_is_owner) {
         if (!m_sockname) {
             m_sockname = get_sockname(m_handle, m_is_verbose);
@@ -70,7 +66,6 @@ auto Network::UnixSocketData::is_owner(bool t_is_owner) -> SocketData&
             remove(*path, m_is_verbose);
         }
     }
-#endif
 
     m_is_owner = t_is_owner;
     return *this;
