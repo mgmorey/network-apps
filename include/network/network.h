@@ -25,7 +25,6 @@
 #include "network/bytestring.h"                 // ByteString
 #include "network/bytestringresult.h"           // ByteStringResult
 #include "network/close.h"                      // close()
-#include "network/commonsocketdata.h"           // CommonSocketData
 #include "network/connect.h"                    // connect()
 #include "network/constants.h"                  // handle_null,
                                                 // sa_data_offset,
