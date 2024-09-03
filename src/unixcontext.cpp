@@ -16,7 +16,6 @@
 #ifndef WIN32
 
 #include "network/unixcontext.h"        // UnixContext
-#include "network/error.h"              // Error
 #include "network/failuremode.h"        // FailureMode
 #include "network/optionalversion.h"    // OptionalVersion
 #include "network/runtimeerror.h"       // RuntimeError
