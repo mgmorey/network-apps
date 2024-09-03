@@ -14,12 +14,12 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/remove.h"             // remove()
-#include "network/pathname.h"           // Pathanme
 
 #include <filesystem>   // std::filesystem
 #include <iostream>     // std::cout, std::endl
+#include <string_view>  // std::string_view
 
-auto Network::remove(const Pathname& path, bool is_verbose) -> bool
+auto Network::remove(std::string_view path, bool is_verbose) -> bool
 {
     if (is_verbose) {
         std::cout << "Calling std::filesystem::remove("

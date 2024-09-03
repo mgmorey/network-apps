@@ -16,11 +16,11 @@
 #ifndef NETWORK_REMOVE_H
 #define NETWORK_REMOVE_H
 
-#include "network/pathname.h"                   // Pathname
+#include <string_view>  // std::string_view
 
 namespace Network
 {
-    extern auto remove(const Pathname& path, bool is_verbose = false) -> bool;
+    extern auto remove(std::string_view path, bool is_verbose = false) -> bool;
 }
 
 #endif
