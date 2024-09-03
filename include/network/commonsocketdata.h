@@ -47,14 +47,14 @@ namespace Network
         ~CommonSocketData() noexcept override = default;
         auto operator=(const CommonSocketData&) noexcept -> SocketData& = delete;
         auto operator=(CommonSocketData&&) noexcept -> SocketData& = delete;
-        explicit operator bool() const noexcept override;
-        explicit operator handle_type() const noexcept override;
-        [[nodiscard]] auto family() const noexcept -> socket_family_type override;
-        [[nodiscard]] auto handle() const noexcept -> handle_type override;
+        explicit operator bool() const noexcept final;
+        explicit operator handle_type() const noexcept final;
+        [[nodiscard]] auto family() const noexcept -> socket_family_type final;
+        [[nodiscard]] auto handle() const noexcept -> handle_type final;
         auto is_owner(bool t_is_owner = true) -> SocketData& override;
-        [[nodiscard]] auto is_verbose() const noexcept -> bool override;
-        [[nodiscard]] auto peername() const -> ByteString override;
-        [[nodiscard]] auto sockname() const -> ByteString override;
+        [[nodiscard]] auto is_verbose() const noexcept -> bool final;
+        [[nodiscard]] auto peername() const -> ByteString final;
+        [[nodiscard]] auto sockname() const -> ByteString final;
 
     private:
         mutable std::optional<ByteString> m_peername;
