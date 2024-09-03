@@ -34,10 +34,6 @@ Network::CommonSocketData::CommonSocketData(handle_type t_handle,
     }
 }
 
-Network::CommonSocketData::~CommonSocketData() noexcept
-{
-}
-
 Network::CommonSocketData::operator bool() const noexcept
 {
     return m_handle != handle_null;
