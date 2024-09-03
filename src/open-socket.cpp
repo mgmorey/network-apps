@@ -18,6 +18,7 @@
 #include "network/addressstring.h"              // AddressString
 #include "network/format-os-error.h"            // format_os_error()
 #include "network/get-last-context-error.h"     // get_last_context_error()
+#include "network/get-sa-family.h"              // get_sa_family()
 #include "network/get-sa-span.h"                // get_sa_span()
 #include "network/openhandler.h"                // OpenHandler
 #include "network/opensocketparams.h"           // OpenSocketParams
@@ -26,6 +27,12 @@
 #include "network/sa-length-limits.h"           // sa_length_min
 #include "network/socket-error.h"               // socket_error
 #include "network/to-os-error.h"                // to_os_error()
+
+#ifdef WIN32
+#include <winsock2.h>       // AF_UNIX
+#else
+#include <sys/socket.h>     // AF_UNIX
+#endif
 
 #include <iostream>     // std::cout, std::endl
 #include <sstream>      // std::ostringstream
@@ -75,6 +82,10 @@ auto Network::open(const OpenHandler& handler,
             << ": "
             << format_os_error(os_error);
         return OsErrorResult {os_error, oss.str()};
+    }
+
+    if (handler.second == "::bind" && get_sa_family(args.addr) == AF_UNIX) {
+        args.socket->is_owner(true);
     }
 
     return OsErrorResult {};
