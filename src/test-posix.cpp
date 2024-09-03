@@ -31,7 +31,6 @@
 #include <exception>    // std::exception
 #include <iomanip>      // std::right, std::setw()
 #include <iostream>     // std::cerr, std::cout, std::endl
-#include <optional>     // std::nullopt
 #include <regex>        // std::regex, std::regex_match
 #include <set>          // std::set
 #include <stack>        // std::stack
