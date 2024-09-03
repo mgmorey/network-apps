@@ -26,11 +26,12 @@
 #endif
 
 #include <utility>      // std::pair
+#include <string_view>  // std::string_view
 
 namespace Network
 {
     using GetNameFunction = int (*)(handle_type, sockaddr*, socklen_t*);
-    using GetNameHandler = std::pair<GetNameFunction, const char*>;
+    using GetNameHandler = std::pair<GetNameFunction, std::string_view>;
 }
 
 #endif
