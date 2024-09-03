@@ -19,7 +19,6 @@
 #include "network/format-os-error.h"            // format_os_error()
 #include "network/get-last-context-error.h"     // get_last_context_error()
 #include "network/get-sa-span.h"                // get_sa_span()
-#include "network/handle-type.h"                // handle_type
 #include "network/openhandler.h"                // OpenHandler
 #include "network/opensocketparams.h"           // OpenSocketParams
 #include "network/oserrorresult.h"              // OsErrorResult
