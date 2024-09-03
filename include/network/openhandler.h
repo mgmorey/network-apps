@@ -25,8 +25,8 @@
 #include <sys/socket.h>     // sockaddr, socklen_t
 #endif
 
-#include <utility>      // std::pair
 #include <string_view>  // std::string_view
+#include <utility>      // std::pair
 
 namespace Network
 {

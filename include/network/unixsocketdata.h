@@ -18,6 +18,7 @@
 
 #include "network/commonsocketdata.h"           // CommonSocketData
 #include "network/handle-type.h"                // handle_type
+#include "network/socket-family-type.h"         // socket_family_type
 
 namespace Network
 {
@@ -26,7 +27,9 @@ namespace Network
     {
     public:
         UnixSocketData() noexcept = default;
-        UnixSocketData(handle_type t_handle, bool t_is_verbose);
+        UnixSocketData(socket_family_type t_family,
+                       handle_type t_handle,
+                       bool t_is_verbose);
         UnixSocketData(const UnixSocketData&) noexcept = delete;
         UnixSocketData(const UnixSocketData&&) noexcept = delete;
         ~UnixSocketData() noexcept final;

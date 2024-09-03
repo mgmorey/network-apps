@@ -82,8 +82,8 @@ auto Network::create_pairresult(const SocketHints& hints,
     }
 
     return SocketPair {
-        create(handles[0], is_verbose),
-        create(handles[1], is_verbose)
+        create(hints.m_family, handles[0], is_verbose),
+        create(hints.m_family, handles[1], is_verbose)
     };
 }
 

@@ -44,6 +44,7 @@ auto Network::accept(const Socket& sock) -> AcceptResult
 {
     Buffer<Byte> buffer {sa_length_max};
     const auto is_verbose {sock->is_verbose()};
+    const auto family {sock->family()};
     const auto handle_1 {sock->handle()};
     const AddressString addr_str {ByteString {buffer}};
     auto [addr_ptr, addr_len] {get_sa_span(buffer)};
@@ -80,5 +81,5 @@ auto Network::accept(const Socket& sock) -> AcceptResult
     }
 
     buffer.resize(to_size(addr_len));
-    return {create(handle_2, is_verbose), ByteString {buffer}};
+    return {create(family, handle_2, is_verbose), ByteString {buffer}};
 }

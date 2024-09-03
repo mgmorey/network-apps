@@ -21,9 +21,9 @@
 #include "network/parse.h"              // parse()
 
 #ifdef WIN32
-#include <winsock2.h>   // AF_INET, SOCK_STREAM
+#include <winsock2.h>   // AF_INET, AF_UNSPEC, SOCK_STREAM
 #else
-#include <sys/socket.h> // AF_INET, SOCK_STREAM
+#include <sys/socket.h> // AF_INET, AF_UNSPEC, SOCK_STREAM
 #endif
 
 #include <cerrno>       // EACCES, ENOENT, EROFS
@@ -111,7 +111,7 @@ namespace Test
         std::string actual_error_str;
 
         try {
-            create(handle, is_verbose);
+            create(AF_UNSPEC, handle, is_verbose);
         }
         catch (const Error& error) {
             print(error);

@@ -18,14 +18,16 @@
 #include "network/get-sockname.h"               // get_sockname()
 #include "network/handle-type.h"                // handle_type
 #include "network/remove.h"                     // remove()
+#include "network/socket-family-type.h"         // socket_family_type
 #include "network/to-path.h"                    // to_path()
 
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::endl
 
-Network::UnixSocketData::UnixSocketData(handle_type t_handle,
+Network::UnixSocketData::UnixSocketData(socket_family_type t_family,
+                                        handle_type t_handle,
                                         bool t_is_verbose)
-    : CommonSocketData(t_handle, t_is_verbose)
+    : CommonSocketData(t_family, t_handle, t_is_verbose)
 {
 }
 

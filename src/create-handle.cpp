@@ -15,6 +15,7 @@
 
 #include "network/create-handle.h"              // create()
 #include "network/handle-type.h"                // handle_type
+#include "network/socket-family-type.h"         // socket_family_type
 #include "network/socket.h"                     // Socket
 
 #ifdef WIN32
@@ -23,13 +24,23 @@
 #include "network/unixsocketdata.h"             // UnixSocketData
 #endif
 
+#ifdef WIN32
+#include <winsock2.h>       // AF_UNIX
+#else
+#include <sys/socket.h>     // AF_UNIX
+#endif
+
 #include <memory>       // std::make_shared()
 
-auto Network::create(handle_type handle, bool is_verbose) -> Socket
+auto Network::create(socket_family_type family,
+                     handle_type handle,
+                     bool is_verbose) -> Socket
 {
-#ifdef WIN32
-    return std::make_shared<CommonSocketData>(handle, is_verbose);
-#else
-    return std::make_shared<UnixSocketData>(handle, is_verbose);
+#ifndef WIN32
+    if (family == AF_UNIX) {
+        return std::make_shared<UnixSocketData>(family, handle, is_verbose);
+    }
 #endif
+
+    return std::make_shared<CommonSocketData>(family, handle, is_verbose);
 }

@@ -18,6 +18,7 @@
 
 #include "network/bytestring.h"                 // ByteString
 #include "network/handle-type.h"                // handle_type
+#include "network/socket-family-type.h"         // socket_family_type
 
 namespace Network
 {
@@ -32,6 +33,7 @@ namespace Network
         auto operator=(SocketData&&) noexcept -> SocketData& = delete;
         explicit virtual operator bool() const noexcept = 0;
         explicit virtual operator handle_type() const noexcept = 0;
+        [[nodiscard]] virtual auto family() const noexcept -> socket_family_type = 0;
         [[nodiscard]] virtual auto handle() const noexcept -> handle_type = 0;
         auto virtual is_owner(bool t_is_owner = true) -> SocketData& = 0;
         [[nodiscard]] auto virtual is_verbose() const noexcept -> bool = 0;

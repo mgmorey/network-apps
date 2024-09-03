@@ -18,7 +18,6 @@
 #include "network/addressstring.h"              // AddressString
 #include "network/format-os-error.h"            // format_os_error()
 #include "network/get-last-context-error.h"     // get_last_context_error()
-#include "network/get-sa-family.h"              // get_sa_family()
 #include "network/get-sa-span.h"                // get_sa_span()
 #include "network/openhandler.h"                // OpenHandler
 #include "network/opensocketparams.h"           // OpenSocketParams
@@ -41,6 +40,7 @@
 auto Network::open(const OpenHandler& handler,
                    const OpenSocketParams& args) -> OsErrorResult
 {
+    const auto family {args.socket->family()};
     const auto handle {args.socket->handle()};
     const AddressString addr_str {args.addr};
     const auto [addr_ptr, addr_len] {get_sa_span(args.addr)};
@@ -84,7 +84,7 @@ auto Network::open(const OpenHandler& handler,
         return OsErrorResult {os_error, oss.str()};
     }
 
-    if (handler.second == "::bind" && get_sa_family(args.addr) == AF_UNIX) {
+    if (family == AF_UNIX && handler.second == "::bind") {
         args.socket->is_owner(true);
     }
 

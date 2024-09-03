@@ -78,5 +78,5 @@ auto Network::create_result(const SocketHints& hints,
         return OsErrorResult {os_error, oss.str()};
     }
 
-    return create(handle, is_verbose);
+    return create(hints.m_family, handle, is_verbose);
 }

@@ -20,12 +20,15 @@
 #include "network/handle-null.h"                // handle_null
 #include "network/handle-type.h"                // handle_type
 #include "network/logicerror.h"                 // LogicError
+#include "network/socket-family-type.h"         // socket_family_type
 
 #include <string>       // std::to_string()
 
-Network::CommonSocketData::CommonSocketData(handle_type t_handle,
+Network::CommonSocketData::CommonSocketData(socket_family_type t_family,
+                                            handle_type t_handle,
                                             bool t_is_verbose)
-    : m_handle(t_handle),
+    : m_family(t_family),
+      m_handle(t_handle),
       m_is_verbose(t_is_verbose)
 {
     if (m_handle == handle_null) {
@@ -42,6 +45,11 @@ Network::CommonSocketData::operator bool() const noexcept
 Network::CommonSocketData::operator handle_type() const noexcept
 {
     return m_handle;
+}
+
+auto Network::CommonSocketData::family() const noexcept -> socket_family_type
+{
+    return m_family;
 }
 
 auto Network::CommonSocketData::handle() const noexcept -> handle_type

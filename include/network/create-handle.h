@@ -17,11 +17,14 @@
 #define NETWORK_CREATE_HANDLE_H
 
 #include "network/handle-type.h"                // handle_type
+#include "network/socket-family-type.h"         // socket_family_type
 #include "network/socket.h"                     // Socket
 
 namespace Network
 {
-    extern auto create(handle_type handle, bool is_verbose = false) -> Socket;
+    extern auto create(socket_family_type family,
+                       handle_type handle,
+                       bool is_verbose = false) -> Socket;
 }
 
 #endif
