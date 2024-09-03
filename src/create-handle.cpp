@@ -14,13 +14,22 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/create-handle.h"              // create()
-#include "network/commonsocketdata.h"           // CommonSocketData
 #include "network/handle-type.h"                // handle_type
 #include "network/socket.h"                     // Socket
+
+#ifdef WIN32
+#include "network/commonsocketdata.h"           // CommonSocketData
+#else
+#include "network/unixsocketdata.h"             // UnixSocketData
+#endif
 
 #include <memory>       // std::make_shared()
 
 auto Network::create(handle_type handle, bool is_verbose) -> Socket
 {
+#ifdef WIN32
     return std::make_shared<CommonSocketData>(handle, is_verbose);
+#else
+    return std::make_shared<UnixSocketData>(handle, is_verbose);
+#endif
 }

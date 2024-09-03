@@ -82,7 +82,8 @@ libnetwork_unix_sources = address-sun.cpp create-pair.cpp		\
 create-pairresult.cpp get-path-length.cpp get-path-pointer-sun.cpp	\
 get-sun-length.cpp get-sun-pointer.cpp socketpair.cpp			\
 to-bytestring-path.cpp to-path.cpp unix-close.cpp unix-start.cpp	\
-unix-stop.cpp unixcontext.cpp validate-path.cpp validate-sun.cpp
+unix-stop.cpp unixcontext.cpp unixsocketdata.cpp validate-path.cpp	\
+validate-sun.cpp
 
 libnetwork_windows_sources = windows-close.cpp windowscontext.cpp	\
 windows-start.cpp windows-stop.cpp

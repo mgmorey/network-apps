@@ -25,31 +25,31 @@
 
 namespace Network
 {
-    class CommonSocketData final
+    class CommonSocketData
         : public SocketData
     {
+        friend class UnixSocketData;
+
     public:
         CommonSocketData() noexcept = default;
         CommonSocketData(handle_type t_handle, bool t_is_verbose);
         CommonSocketData(const CommonSocketData&) noexcept = delete;
         CommonSocketData(const CommonSocketData&&) noexcept = delete;
-        ~CommonSocketData() noexcept final;
+        ~CommonSocketData() noexcept override;
         auto operator=(const CommonSocketData&) noexcept -> SocketData& = delete;
         auto operator=(CommonSocketData&&) noexcept -> SocketData& = delete;
-        explicit operator bool() const noexcept final;
-        explicit operator handle_type() const noexcept final;
-        auto close() const -> const SocketData&;
-        [[nodiscard]] auto handle() const noexcept -> handle_type final;
-        auto is_owner(bool t_is_owner = true) -> SocketData& final;
-        [[nodiscard]] auto is_verbose() const noexcept -> bool final;
-        [[nodiscard]] auto peername() const -> ByteString final;
-        [[nodiscard]] auto sockname() const -> ByteString final;
+        explicit operator bool() const noexcept override;
+        explicit operator handle_type() const noexcept override;
+        [[nodiscard]] auto handle() const noexcept -> handle_type override;
+        auto is_owner(bool t_is_owner = true) -> SocketData& override;
+        [[nodiscard]] auto is_verbose() const noexcept -> bool override;
+        [[nodiscard]] auto peername() const -> ByteString override;
+        [[nodiscard]] auto sockname() const -> ByteString override;
 
     private:
         mutable std::optional<ByteString> m_peername;
         mutable std::optional<ByteString> m_sockname;
         handle_type m_handle {handle_null};
-        bool m_is_owner {false};
         bool m_is_verbose {false};
     };
 }

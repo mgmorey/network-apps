@@ -15,20 +15,12 @@
 
 #include "network/commonsocketdata.h"           // CommonSocketData
 #include "network/bytestring.h"                 // ByteString
-#include "network/close.h"                      // close()
 #include "network/get-peername.h"               // get_peername()
 #include "network/get-sockname.h"               // get_sockname()
 #include "network/handle-null.h"                // handle_null
 #include "network/handle-type.h"                // handle_type
 #include "network/logicerror.h"                 // LogicError
 
-#ifndef WIN32
-#include "network/remove.h"                     // remove()
-#include "network/to-path.h"                    // to_path()
-#endif
-
-#include <exception>    // std::exception
-#include <iostream>     // std::cerr, std::endl
 #include <string>       // std::to_string()
 
 Network::CommonSocketData::CommonSocketData(handle_type t_handle,
@@ -44,14 +36,6 @@ Network::CommonSocketData::CommonSocketData(handle_type t_handle,
 
 Network::CommonSocketData::~CommonSocketData() noexcept
 {
-    try {
-        close();
-        is_owner(false);
-    }
-    catch (const std::exception& error) {
-        std::cerr << error.what()
-                  << std::endl;
-    }
 }
 
 Network::CommonSocketData::operator bool() const noexcept
@@ -64,16 +48,6 @@ Network::CommonSocketData::operator handle_type() const noexcept
     return m_handle;
 }
 
-auto Network::CommonSocketData::close() const -> const SocketData&
-{
-    if (const auto result {Network::close(m_handle, m_is_verbose)}) {
-        std::cerr << result.string()
-                  << std::endl;
-    }
-
-    return *this;
-}
-
 auto Network::CommonSocketData::handle() const noexcept -> handle_type
 {
     return m_handle;
@@ -81,23 +55,7 @@ auto Network::CommonSocketData::handle() const noexcept -> handle_type
 
 auto Network::CommonSocketData::is_owner(bool t_is_owner) -> SocketData&
 {
-    if (m_is_owner == t_is_owner) {
-        return *this;
-    }
-
-#ifndef WIN32
-    if (t_is_owner) {
-        if (!m_sockname) {
-            m_sockname = get_sockname(m_handle, m_is_verbose);
-        }
-    } else if (m_sockname) {
-        if (const auto path {to_path(*m_sockname)}) {
-            remove(*path, m_is_verbose);
-        }
-    }
-#endif
-
-    m_is_owner = t_is_owner;
+    static_cast<void>(t_is_owner);
     return *this;
 }
 
