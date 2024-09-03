@@ -14,7 +14,6 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/listen.h"                     // listen()
-#include "network/handle-type.h"                // handle_type
 #include "network/socket.h"                     // Socket
 
 #ifdef WIN32
@@ -25,5 +24,5 @@
 
 auto Network::listen(const Socket& sock, int backlog_size) -> int
 {
-    return ::listen(handle_type {sock->handle()}, backlog_size);
+    return ::listen(sock->handle(), backlog_size);
 }
