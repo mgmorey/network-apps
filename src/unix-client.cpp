@@ -42,7 +42,7 @@ namespace Client {
     {
         Socket sock {create(UnixSocketHints {SOCK_SEQPACKET}, is_verbose)};
 
-        if (const auto error {Network::connect(sock, SOCKET_NAME)}) {
+        if (const auto error {sock->connect(SOCKET_NAME)}) {
             std::cerr << error.string() << std::endl;
             std::exit(EXIT_FAILURE);
         }

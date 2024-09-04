@@ -57,7 +57,7 @@ namespace Server {
     {
         Socket sock {create(UnixSocketHints {SOCK_SEQPACKET}, is_verbose)};
 
-        if (const auto result {Network::bind(sock, SOCKET_NAME)}) {
+        if (const auto result {sock->bind(SOCKET_NAME)}) {
             std::cerr << result.string() << std::endl;
             std::exit(EXIT_FAILURE);
         }
