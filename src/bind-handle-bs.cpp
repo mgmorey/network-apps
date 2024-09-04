@@ -1,4 +1,4 @@
-// Copyright (C) 2022  "Michael G. Morey" <mgmorey@gmail.com>
+// Copyright (C) 2024  "Michael G. Morey" <mgmorey@gmail.com>
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,32 +13,25 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/open-socket.h"                // open()
+#include "network/bind-handle-bs.h"             // bind()
+#include "network/bytestring.h"                 // ByteString
+#include "network/handle-type.h"                // handle_type
 #include "network/open-handle.h"                // open()
+#include "network/openhandleparams.h"           // OpenHandleParams
 #include "network/openhandler.h"                // OpenHandler
-#include "network/opensocketparams.h"           // OpenSocketParams
 #include "network/oserrorresult.h"              // OsErrorResult
 
-auto Network::open(const OpenHandler& handler,
-                   const OpenSocketParams& args) -> OsErrorResult
+#ifdef WIN32
+#include <winsock2.h>       // ::bind()
+#else
+#include <sys/socket.h>     // ::bind()
+#endif
+
+auto Network::bind(handle_type handle,
+                   const ByteString& addr,
+                   bool is_verbose) -> OsErrorResult
 {
-    auto result
-    {
-        open(handler,
-             {
-                 args.socket->handle(),
-                 args.addr,
-                 args.socket->is_verbose()
-             })
-    };
-
-    if (result) {
-        return result;
-    }
-
-    if (handler.second == "::bind") {
-        args.socket->is_owner();
-    }
-
-    return OsErrorResult {};
+    const OpenHandler handler {::bind, "::bind"};
+    const OpenHandleParams args {handle, addr, is_verbose};
+    return open(handler, args);
 }
