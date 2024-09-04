@@ -23,7 +23,7 @@ namespace Network
 {
     struct OpenSocketParams
     {
-        Socket socket;
+        const Socket& socket;
         const ByteString& addr;
     };
 }
