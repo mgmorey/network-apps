@@ -27,12 +27,6 @@
 #include "network/socket-error.h"               // socket_error
 #include "network/to-os-error.h"                // to_os_error()
 
-#ifdef WIN32
-#include <winsock2.h>       // AF_UNIX
-#else
-#include <sys/socket.h>     // AF_UNIX
-#endif
-
 #include <iostream>     // std::cout, std::endl
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
@@ -40,7 +34,6 @@
 auto Network::open(const OpenHandler& handler,
                    const OpenSocketParams& args) -> OsErrorResult
 {
-    const auto family {args.socket->family()};
     const auto handle {args.socket->handle()};
     const AddressString addr_str {args.addr};
     const auto [addr_ptr, addr_len] {get_sa_span(args.addr)};
@@ -84,8 +77,8 @@ auto Network::open(const OpenHandler& handler,
         return OsErrorResult {os_error, oss.str()};
     }
 
-    if (family == AF_UNIX && handler.second == "::bind") {
-        args.socket->is_owner(true);
+    if (handler.second == "::bind") {
+        args.socket->is_owner();
     }
 
     return OsErrorResult {};
