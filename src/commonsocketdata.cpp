@@ -33,8 +33,10 @@
 #include <sys/socket.h>     // ::bind(), ::connect()
 #endif
 
+#include <array>        // std::arrray
 #include <iostream>     // std::cerr, std::endl
 #include <string>       // std::to_string()
+#include <utility>      // std::make_pair
 
 Network::CommonSocketData::CommonSocketData(socket_family_type t_family,
                                             handle_type t_handle,
@@ -101,13 +103,16 @@ auto Network::CommonSocketData::is_verbose() const noexcept -> bool
 auto Network::CommonSocketData::open(const ByteString& t_addr,
                                      bool t_is_bind) -> OsErrorResult
 {
-    const OpenHandler handler {
-        (t_is_bind ? ::bind : ::connect),
-        (t_is_bind ? "::bind" : "::connect")
+    static const std::array<OpenHandler, 2> handler
+    {
+        std::make_pair(::connect, "connect"),
+        std::make_pair(::bind, "bind"),
     };
-    const OpenHandleParams args {m_handle, t_addr, m_is_verbose};
 
-    if (auto result {Network::open(handler, args)}) {
+    const OpenHandleParams args {m_handle, t_addr, m_is_verbose};
+    const auto index {static_cast<std::size_t>(t_is_bind)};
+
+    if (auto result {Network::open(handler.at(index), args)}) {
         return result;
     }
 
