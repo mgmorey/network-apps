@@ -44,7 +44,7 @@ namespace Network
                          bool t_is_verbose);
         CommonSocketData(const CommonSocketData&) noexcept = delete;
         CommonSocketData(const CommonSocketData&&) noexcept = delete;
-        ~CommonSocketData() noexcept override = default;
+        ~CommonSocketData() noexcept override;
         auto operator=(const CommonSocketData&) noexcept -> SocketData& = delete;
         auto operator=(CommonSocketData&&) noexcept -> SocketData& = delete;
         explicit operator bool() const noexcept final;

@@ -15,6 +15,7 @@
 
 #include "network/commonsocketdata.h"           // CommonSocketData
 #include "network/bytestring.h"                 // ByteString
+#include "network/close.h"                      // close()
 #include "network/get-peername.h"               // get_peername()
 #include "network/get-sockname.h"               // get_sockname()
 #include "network/handle-null.h"                // handle_null
@@ -22,6 +23,7 @@
 #include "network/logicerror.h"                 // LogicError
 #include "network/socket-family-type.h"         // socket_family_type
 
+#include <iostream>     // std::cerr, std::endl
 #include <string>       // std::to_string()
 
 Network::CommonSocketData::CommonSocketData(socket_family_type t_family,
@@ -34,6 +36,14 @@ Network::CommonSocketData::CommonSocketData(socket_family_type t_family,
     if (m_handle == handle_null) {
         throw LogicError("Invalid socket descriptor value: " +
                          std::to_string(m_handle));
+    }
+}
+
+Network::CommonSocketData::~CommonSocketData() noexcept
+{
+    if (const auto result {Network::close(m_handle, m_is_verbose)}) {
+        std::cerr << result.string()
+                  << std::endl;
     }
 }
 

@@ -14,15 +14,11 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/unixsocketdata.h"             // UnixSocketData
-#include "network/close.h"                      // close()
 #include "network/get-sockname.h"               // get_sockname()
 #include "network/handle-type.h"                // handle_type
 #include "network/remove.h"                     // remove()
 #include "network/socket-family-type.h"         // socket_family_type
 #include "network/to-path.h"                    // to_path()
-
-#include <exception>    // std::exception
-#include <iostream>     // std::cerr, std::endl
 
 Network::UnixSocketData::UnixSocketData(socket_family_type t_family,
                                         handle_type t_handle,
@@ -33,24 +29,7 @@ Network::UnixSocketData::UnixSocketData(socket_family_type t_family,
 
 Network::UnixSocketData::~UnixSocketData() noexcept
 {
-    try {
-        close();
-        is_owner(false);
-    }
-    catch (const std::exception& error) {
-        std::cerr << error.what()
-                  << std::endl;
-    }
-}
-
-auto Network::UnixSocketData::close() const -> const SocketData&
-{
-    if (const auto result {Network::close(m_handle, m_is_verbose)}) {
-        std::cerr << result.string()
-                  << std::endl;
-    }
-
-    return *this;
+    is_owner(false);
 }
 
 auto Network::UnixSocketData::is_owner(bool t_is_owner) -> SocketData&

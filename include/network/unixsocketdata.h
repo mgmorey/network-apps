@@ -35,7 +35,6 @@ namespace Network
         ~UnixSocketData() noexcept final;
         auto operator=(const UnixSocketData&) noexcept -> SocketData& = delete;
         auto operator=(UnixSocketData&&) noexcept -> SocketData& = delete;
-        auto close() const -> const SocketData&;
         auto is_owner(bool t_is_owner = true) -> SocketData& final;
 
     private:

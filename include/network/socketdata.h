@@ -35,10 +35,10 @@ namespace Network
         explicit virtual operator handle_type() const noexcept = 0;
         [[nodiscard]] virtual auto family() const noexcept -> socket_family_type = 0;
         [[nodiscard]] virtual auto handle() const noexcept -> handle_type = 0;
-        auto virtual is_owner(bool t_is_owner = true) -> SocketData& = 0;
-        [[nodiscard]] auto virtual is_verbose() const noexcept -> bool = 0;
-        [[nodiscard]] auto virtual peername() const -> ByteString = 0;
-        [[nodiscard]] auto virtual sockname() const -> ByteString = 0;
+        virtual auto is_owner(bool t_is_owner = true) -> SocketData& = 0;
+        [[nodiscard]] virtual auto is_verbose() const noexcept -> bool = 0;
+        [[nodiscard]] virtual auto peername() const -> ByteString = 0;
+        [[nodiscard]] virtual auto sockname() const -> ByteString = 0;
     };
 }
 
