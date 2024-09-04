@@ -21,9 +21,9 @@
 #include "network/handle-null.h"                // handle_null
 #include "network/handle-type.h"                // handle_type
 #include "network/logicerror.h"                 // LogicError
+#include "network/open-handle.h"                // open()
 #include "network/openhandleparams.h"           // OpenHandleParams
 #include "network/openhandler.h"                // OpenHandler
-#include "network/open-handle.h"                // open()
 #include "network/oserrorresult.h"              // OsErrorResult
 #include "network/socket-family-type.h"         // socket_family_type
 
