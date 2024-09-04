@@ -21,7 +21,17 @@
 #include "network/handle-null.h"                // handle_null
 #include "network/handle-type.h"                // handle_type
 #include "network/logicerror.h"                 // LogicError
+#include "network/openhandleparams.h"           // OpenHandleParams
+#include "network/openhandler.h"                // OpenHandler
+#include "network/open-handle.h"                // open()
+#include "network/oserrorresult.h"              // OsErrorResult
 #include "network/socket-family-type.h"         // socket_family_type
+
+#ifdef WIN32
+#include <winsock2.h>       // ::bind(), ::connect()
+#else
+#include <sys/socket.h>     // ::bind(), ::connect()
+#endif
 
 #include <iostream>     // std::cerr, std::endl
 #include <string>       // std::to_string()
@@ -57,6 +67,16 @@ Network::CommonSocketData::operator handle_type() const noexcept
     return m_handle;
 }
 
+auto Network::CommonSocketData::bind(const ByteString& t_addr) -> OsErrorResult
+{
+    return open(t_addr, true);
+}
+
+auto Network::CommonSocketData::connect(const ByteString& t_addr) -> OsErrorResult
+{
+    return open(t_addr, false);
+}
+
 auto Network::CommonSocketData::family() const noexcept -> socket_family_type
 {
     return m_family;
@@ -78,10 +98,30 @@ auto Network::CommonSocketData::is_verbose() const noexcept -> bool
     return m_is_verbose;
 }
 
+auto Network::CommonSocketData::open(const ByteString& t_addr,
+                                     bool t_is_bind) -> OsErrorResult
+{
+    const OpenHandler handler {
+        (t_is_bind ? ::bind : ::connect),
+        (t_is_bind ? "::bind" : "::connect")
+    };
+    const OpenHandleParams args {m_handle, t_addr, m_is_verbose};
+
+    if (auto result {Network::open(handler, args)}) {
+        return result;
+    }
+
+    if (t_is_bind) {
+        is_owner();
+    }
+
+    return {};
+}
+
 auto Network::CommonSocketData::peername() const -> ByteString
 {
     if (!m_peername) {
-        m_peername = get_peername(m_handle, m_is_verbose);
+        m_peername = Network::get_peername(m_handle, m_is_verbose);
     }
 
     return *m_peername;
@@ -90,7 +130,7 @@ auto Network::CommonSocketData::peername() const -> ByteString
 auto Network::CommonSocketData::sockname() const -> ByteString
 {
     if (!m_sockname) {
-        m_sockname = get_sockname(m_handle, m_is_verbose);
+        m_sockname = Network::get_sockname(m_handle, m_is_verbose);
     }
 
     return *m_sockname;
