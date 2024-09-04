@@ -171,7 +171,7 @@ namespace Test
             assert(to_bytestring(path) == path);
             const Socket sock {create(UnixSocketHints {SOCK_STREAM}, is_verbose)};
 
-            if (const auto result {bind(sock, path)}) {
+            if (const auto result {sock->bind(path)}) {
                 print(result);
                 assert(expected_codes.contains(result.number()));
             }
