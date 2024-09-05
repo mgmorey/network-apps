@@ -17,13 +17,12 @@
 #define NETWORK_OPEN_HANDLE_H
 
 #include "network/openhandleparams.h"   // OpenHandleParams
-#include "network/openhandler.h"        // OpenHandler
 #include "network/oserrorresult.h"      // OsErrorResult
 
 namespace Network
 {
-    extern auto open(const OpenHandler& handler,
-                     const OpenHandleParams& args) -> OsErrorResult;
+    extern auto open(const OpenHandleParams& args,
+                     bool is_bind) -> OsErrorResult;
 }
 
 #endif

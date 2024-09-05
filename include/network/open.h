@@ -17,7 +17,6 @@
 #define NETWORK_OPEN_H
 
 #include "network/openendpointparams.h"         // OpenEndpointParams
-#include "network/openhandler.h"                // OpenHandler
 #include "network/socketresult.h"               // SocketResult
 #include "network/template.h"                   // Template
 
@@ -26,15 +25,12 @@ namespace Network
     class Open
     {
     public:
-        Open(const OpenHandler& t_handler,
-             const OpenEndpointParams& t_args,
-             std::ostream& t_os);
+        Open(const OpenEndpointParams& t_args, bool t_is_bind);
         auto operator()(const Template& t_temp) -> SocketResult;
 
     private:
-        const OpenHandler& m_handler;
         const OpenEndpointParams& m_args;
-        std::ostream& m_os;
+        bool m_is_bind;
     };
 }
 

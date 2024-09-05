@@ -17,17 +17,14 @@
 #include "network/insert-endpoint.h"            // insert()
 #include "network/open.h"                       // Open
 #include "network/openendpointparams.h"         // OpenEndpointParams
-#include "network/openhandler.h"                // OpenHandler
 #include "network/openresult.h"                 // OpenResult
 #include "network/socketresultvector.h"         // SocketResultVector
 
 #include <algorithm>    // std::transform()
-#include <iostream>     // std::cout
 #include <iterator>     // std::back_inserter()
 #include <vector>       // std::vector
 
-auto Network::open(const OpenHandler& handler,
-                   const OpenEndpointParams& args) -> OpenResult
+auto Network::open(const OpenEndpointParams& args, bool is_bind) -> OpenResult
 {
     OpenResult result;
     std::vector<Template> templates;
@@ -39,7 +36,7 @@ auto Network::open(const OpenHandler& handler,
         SocketResultVector socket_results;
         std::transform(templates.begin(), templates.end(),
                        std::back_inserter(socket_results),
-                       Open(handler, args, std::cout));
+                       Open(args, is_bind));
         result = socket_results;
     }
 

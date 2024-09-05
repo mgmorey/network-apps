@@ -19,31 +19,27 @@
 #include "network/error-strings.h"              // VISITOR_ERROR
 #include "network/open-handle.h"                // open()
 #include "network/openendpointparams.h"         // OpenEndpointParams
-#include "network/openhandler.h"                // OpenHandler
 #include "network/openhandleparams.h"           // OpenHandleParams
 #include "network/oserrorresult.h"              // OsErrorResult
 #include "network/socket.h"                     // Socket
 #include "network/socketresult.h"               // SocketResult
 #include "network/template.h"                   // Template
 
-#include <ostream>      // std::endl, std::ostream
+#include <iostream>     // std::cout, std::endl
 #include <type_traits>  // std::decay_t, std::is_same_v
 #include <variant>      // std::visit()
 
-Network::Open::Open(const OpenHandler& t_handler,
-                    const OpenEndpointParams& t_args,
-                    std::ostream& t_os) :
-    m_handler(t_handler),
-    m_args(t_args),
-    m_os(t_os)
+Network::Open::Open(const OpenEndpointParams& t_args, bool t_is_bind)
+    : m_args(t_args),
+      m_is_bind(t_is_bind)
 {
 }
 
 auto Network::Open::operator()(const Template& t_temp) -> SocketResult
 {
     if (m_args.is_verbose) {
-        m_os << t_temp
-             << std::endl;
+        std::cout << t_temp
+                  << std::endl;
     }
 
     auto result {create_result(t_temp.hints(), m_args.is_verbose)};
@@ -58,7 +54,7 @@ auto Network::Open::operator()(const Template& t_temp) -> SocketResult
                 arg->is_verbose()
             };
 
-            if (const auto error_result {open(m_handler, args)}) {
+            if (const auto error_result {open(args, m_is_bind)}) {
                 result = error_result;
             }
             else {

@@ -18,20 +18,12 @@
 #include "network/handle-type.h"                // handle_type
 #include "network/open-handle.h"                // open()
 #include "network/openhandleparams.h"           // OpenHandleParams
-#include "network/openhandler.h"                // OpenHandler
 #include "network/oserrorresult.h"              // OsErrorResult
-
-#ifdef WIN32
-#include <winsock2.h>       // ::bind()
-#else
-#include <sys/socket.h>     // ::bind()
-#endif
 
 auto Network::bind(handle_type handle,
                    const ByteString& addr,
                    bool is_verbose) -> OsErrorResult
 {
-    const OpenHandler handler {::bind, "::bind"};
     const OpenHandleParams args {handle, addr, is_verbose};
-    return open(handler, args);
+    return open(args, true);
 }

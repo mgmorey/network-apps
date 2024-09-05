@@ -27,13 +27,34 @@
 #include "network/socket-error.h"               // socket_error
 #include "network/to-os-error.h"                // to_os_error()
 
+#ifdef WIN32
+#include <winsock2.h>       // ::bind(), ::connect()
+#else
+#include <sys/socket.h>     // ::bind(), ::connect()
+#endif
+
+#include <array>        // std::arrray
 #include <iostream>     // std::cout, std::endl
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
+#include <utility>      // std::make_pair
 
-auto Network::open(const OpenHandler& handler,
-                   const OpenHandleParams& args) -> OsErrorResult
+namespace
 {
+    auto get_binding(bool is_bind) -> Network::OpenHandler
+    {
+        static const std::array<Network::OpenHandler, 2> bindings {
+            std::make_pair(::connect, "::connect"),
+            std::make_pair(::bind, "::bind"),
+        };
+
+        return bindings.at(static_cast<std::size_t>(is_bind));
+    }
+}
+
+auto Network::open(const OpenHandleParams& args, bool is_bind) -> OsErrorResult
+{
+    const auto binding {get_binding(is_bind)};
     const auto handle {args.handle};
     const AddressString addr_str {args.addr};
     const auto [addr_ptr, addr_len] {get_sa_span(args.addr)};
@@ -45,7 +66,7 @@ auto Network::open(const OpenHandler& handler,
 
     if (args.is_verbose) {
         std::cout << "Calling "
-                  << handler.second
+                  << binding.second
                   << '('
                   << handle
                   << ", "
@@ -58,12 +79,12 @@ auto Network::open(const OpenHandler& handler,
 
     reset_last_context_error();
 
-    if (handler.first(handle, addr_ptr, addr_len) == socket_error) {
+    if (binding.first(handle, addr_ptr, addr_len) == socket_error) {
         const auto error {get_last_context_error()};
         const auto os_error {to_os_error(error)};
         std::ostringstream oss;
         oss << "Call to "
-            << handler.second
+            << binding.second
             << '('
             << handle
             << ", "

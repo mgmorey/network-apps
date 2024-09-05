@@ -17,13 +17,12 @@
 #define NETWORK_OPEN_ENDPOINT_H
 
 #include "network/openendpointparams.h" // OpenEndpointParams
-#include "network/openhandler.h"        // OpenHandler
 #include "network/openresult.h"         // OpenResult
 
 namespace Network
 {
-    extern auto open(const OpenHandler& handler,
-                     const OpenEndpointParams& args) -> OpenResult;
+    extern auto open(const OpenEndpointParams& args,
+                     bool is_bind) -> OpenResult;
 }
 
 #endif

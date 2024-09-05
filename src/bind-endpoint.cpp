@@ -17,21 +17,13 @@
 #include "network/endpoint.h"           // Endpoint
 #include "network/open-endpoint.h"      // open()
 #include "network/openendpointparams.h" // OpenEndpointParams
-#include "network/openhandler.h"        // OpenHandler
 #include "network/openresult.h"         // OpenResult
 #include "network/sockethints.h"        // SocketHints
-
-#ifdef WIN32
-#include <winsock2.h>       // ::bind()
-#else
-#include <sys/socket.h>     // ::bind()
-#endif
 
 auto Network::bind(const Endpoint& endpoint,
                    const SocketHints& hints,
                    bool is_verbose) -> OpenResult
 {
-    const OpenHandler handler {::bind, "::bind"};
     const OpenEndpointParams args {endpoint, hints, is_verbose};
-    return open(handler, args);
+    return open(args, true);
 }
