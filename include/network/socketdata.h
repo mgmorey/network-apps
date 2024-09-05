@@ -51,10 +51,10 @@ namespace Network
         family() const noexcept -> socket_family_type = 0;
         [[nodiscard]] virtual auto handle() const noexcept -> handle_type = 0;
         virtual auto is_owner(bool t_is_owner = true) -> SocketData& = 0;
+        [[nodiscard]] virtual auto name(bool t_is_peer) const -> ByteString = 0;
         [[nodiscard]] virtual auto open(const ByteString& t_addr,
                                         bool t_is_bind) -> OsErrorResult = 0;
         [[nodiscard]] virtual auto is_verbose() const noexcept -> bool = 0;
-        [[nodiscard]] virtual auto name(bool t_is_peer) const -> ByteString = 0;
 
         [[nodiscard]] auto peername() const -> ByteString
         {
