@@ -22,7 +22,7 @@
 #include <sys/socket.h>     // ::listen()
 #endif
 
-auto Network::listen(const Socket& sock, int backlog_size) -> int
+auto Network::listen(handle_type handle, int backlog_size) -> int
 {
-    return ::listen(sock->handle(), backlog_size);
+    return ::listen(handle, backlog_size);
 }

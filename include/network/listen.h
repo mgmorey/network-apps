@@ -16,11 +16,11 @@
 #ifndef NETWORK_LISTEN_H
 #define NETWORK_LISTEN_H
 
-#include "network/socket.h"                 // Socket
+#include "network/handle-type.h"            // handle_type
 
 namespace Network
 {
-    extern auto listen(const Socket& sock, int backlog_size) -> int;
+    extern auto listen(handle_type handle, int backlog_size) -> int;
 }
 
 #endif

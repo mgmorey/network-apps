@@ -20,6 +20,7 @@
 #include "network/getnameparams.h"              // GetNameParams
 #include "network/handle-null.h"                // handle_null
 #include "network/handle-type.h"                // handle_type
+#include "network/listen.h"                     // listen()
 #include "network/logicerror.h"                 // LogicError
 #include "network/open-handle.h"                // open()
 #include "network/openhandleparams.h"           // OpenHandleParams
@@ -73,6 +74,11 @@ auto Network::CommonSocket::handle() const noexcept -> handle_type
 auto Network::CommonSocket::is_verbose() const noexcept -> bool
 {
     return m_is_verbose;
+}
+
+auto Network::CommonSocket::listen(int t_backlog_size) const -> int
+{
+    return Network::listen(m_handle, t_backlog_size);
 }
 
 auto Network::CommonSocket::name(bool t_is_peer) const -> ByteString
