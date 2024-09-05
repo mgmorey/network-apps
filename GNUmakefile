@@ -50,30 +50,29 @@ include flags.gmk
 
 libnetwork_common_sources = accept.cpp address-sa.cpp address-sin.cpp	\
 address-sin6.cpp address.cpp addresserror.cpp addresslist.cpp		\
-addressstring.cpp argumentdata.cpp bind-endpoint.cpp			\
-bind-handle-bs.cpp commonsocket.cpp connect-endpoint.cpp		\
-connect-handle-bs.cpp create-handle.cpp create-hints.cpp		\
-create-result.cpp error.cpp familyerror.cpp format-ai-error.cpp		\
-format-bytestring.cpp format-os-error.cpp format.cpp get-context.cpp	\
-get-endpoint.cpp get-endpointresult.cpp get-hostname.cpp		\
-get-hostnameresult.cpp get-last-context-error.cpp			\
-get-last-os-error.cpp get-length-maximum.cpp get-length-minimum.cpp	\
-get-name.cpp get-nameresult.cpp get-operands.cpp get-option.cpp		\
-get-options.cpp get-peername.cpp get-peernameresult.cpp			\
-get-sa-family.cpp get-sa-length.cpp get-sa-pointer.cpp			\
-get-sa-span.cpp get-sin-addr.cpp get-sin-pointer.cpp get-sin-port.cpp	\
-get-sin6-addr.cpp get-sin6-pointer.cpp get-sin6-port.cpp		\
-get-sockname.cpp get-socknameresult.cpp listen.cpp logicerror.cpp	\
-open-endpoint.cpp open-handle.cpp open.cpp oserrorresult.cpp		\
-parse-argumentspan.cpp parse.cpp rangeerror.cpp read-string.cpp		\
-read.cpp remove.cpp reset-last-context-error.cpp			\
-reset-last-os-error.cpp runtimeerror.cpp set-last-context-error.cpp	\
-set-last-os-error.cpp socketfamily.cpp socketflags.cpp sockethost.cpp	\
-socketprotocol.cpp sockettype.cpp stream-address.cpp			\
-stream-addresslist.cpp stream-context.cpp stream-socket.cpp		\
-stream-sockethints.cpp stream-template.cpp stream-version.cpp		\
-template.cpp to-bytestring-ai.cpp to-bytestring-void.cpp		\
-to-string-in-addr.cpp to-string-in6-addr.cpp				\
+addressstring.cpp argumentdata.cpp bind-endpoint.cpp bind-handle.cpp	\
+commonsocket.cpp connect-endpoint.cpp connect-handle.cpp		\
+create-handle.cpp create-hints.cpp create-result.cpp error.cpp		\
+familyerror.cpp format-ai-error.cpp format-bytestring.cpp		\
+format-os-error.cpp format.cpp get-context.cpp get-endpoint.cpp		\
+get-endpointresult.cpp get-hostname.cpp get-hostnameresult.cpp		\
+get-last-context-error.cpp get-last-os-error.cpp			\
+get-length-maximum.cpp get-length-minimum.cpp get-name.cpp		\
+get-nameresult.cpp get-operands.cpp get-option.cpp get-options.cpp	\
+get-peername.cpp get-peernameresult.cpp get-sa-family.cpp		\
+get-sa-length.cpp get-sa-pointer.cpp get-sa-span.cpp get-sin-addr.cpp	\
+get-sin-pointer.cpp get-sin-port.cpp get-sin6-addr.cpp			\
+get-sin6-pointer.cpp get-sin6-port.cpp get-sockname.cpp			\
+get-socknameresult.cpp listen.cpp logicerror.cpp open-endpoint.cpp	\
+open-handle.cpp open.cpp oserrorresult.cpp parse-argumentspan.cpp	\
+parse.cpp rangeerror.cpp read-string.cpp read.cpp remove.cpp		\
+reset-last-context-error.cpp reset-last-os-error.cpp runtimeerror.cpp	\
+set-last-context-error.cpp set-last-os-error.cpp socketfamily.cpp	\
+socketflags.cpp sockethost.cpp socketprotocol.cpp sockettype.cpp	\
+stream-address.cpp stream-addresslist.cpp stream-context.cpp		\
+stream-socket.cpp stream-sockethints.cpp stream-template.cpp		\
+stream-version.cpp template.cpp to-bytestring-ai.cpp			\
+to-bytestring-void.cpp to-string-in-addr.cpp to-string-in6-addr.cpp	\
 to-string-vector-byte.cpp to-string-vector-char.cpp validate-bs.cpp	\
 validate-sa.cpp validate-sin.cpp validate-sin6.cpp write-string.cpp	\
 write.cpp

@@ -17,6 +17,6 @@
 #define NETWORK_BIND_H
 
 #include "network/bind-endpoint.h"              // bind()
-#include "network/bind-handle-bs.h"             // bind()
+#include "network/bind-handle.h"                // bind()
 
 #endif

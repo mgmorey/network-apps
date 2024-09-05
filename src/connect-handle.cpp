@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/connect-handle-bs.h"          // connect()
+#include "network/connect-handle.h"             // connect()
 #include "network/bytestring.h"                 // ByteString
 #include "network/handle-type.h"                // handle_type
 #include "network/open-handle.h"                // open()

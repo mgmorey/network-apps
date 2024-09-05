@@ -17,7 +17,7 @@
 #define NETWORK_CONNECT_H
 
 #include "network/connect-endpoint.h"           // connect()
-#include "network/connect-handle-bs.h"          // connect()
+#include "network/connect-handle.h"             // connect()
 
 
 #endif
