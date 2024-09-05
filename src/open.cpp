@@ -17,10 +17,10 @@
 #include "network/always-false.h"               // always_false_v
 #include "network/create-result.h"              // create_result()
 #include "network/error-strings.h"              // VISITOR_ERROR
-#include "network/open-socket.h"                // open()
+#include "network/open-handle.h"                // open()
 #include "network/openendpointparams.h"         // OpenEndpointParams
 #include "network/openhandler.h"                // OpenHandler
-#include "network/opensocketparams.h"           // OpenSocketParams
+#include "network/openhandleparams.h"           // OpenHandleParams
 #include "network/oserrorresult.h"              // OsErrorResult
 #include "network/socket.h"                     // Socket
 #include "network/socketresult.h"               // SocketResult
@@ -51,7 +51,12 @@ auto Network::Open::operator()(const Template& t_temp) -> SocketResult
         using T = std::decay_t<decltype(arg)>;
 
         if constexpr (std::is_same_v<T, Socket>) {
-            const OpenSocketParams args {arg, t_temp.address()};
+            const OpenHandleParams args
+            {
+                arg->handle(),
+                t_temp.address(),
+                arg->is_verbose()
+            };
 
             if (const auto error_result {open(m_handler, args)}) {
                 result = error_result;
