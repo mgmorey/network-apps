@@ -17,13 +17,12 @@
 #define NETWORK_GET_NAME_H
 
 #include "network/bytestring.h"         // ByteString
-#include "network/getnamehandler.h"     // GetNameHandler
 #include "network/getnameparams.h"      // GetNameParams
 
 namespace Network
 {
-    extern auto get_name(const GetNameHandler& handler,
-                         const GetNameParams& args) -> ByteString;
+    extern auto get_name(const GetNameParams& args,
+                         bool is_peer) -> ByteString;
 }
 
 #endif

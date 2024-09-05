@@ -32,12 +32,28 @@
 #include "network/to-os-error.h"                // to_os_error()
 #include "network/to-size.h"                    // to_size()
 
+#include <array>        // std::arrray
 #include <iostream>     // std::cout, std::endl
 #include <sstream>      // std::ostringstream
+#include <utility>      // std::make_pair
 
-auto Network::get_nameresult(const GetNameHandler& handler,
-                             const GetNameParams& args) -> ByteStringResult
+namespace
 {
+    auto get_binding(bool is_bind) -> Network::GetNameHandler
+    {
+        static const std::array<Network::GetNameHandler, 2> bindings {
+            std::make_pair(::getsockname, "::getsockname"),
+            std::make_pair(::getpeername, "::getpeername"),
+        };
+
+        return bindings.at(static_cast<std::size_t>(is_bind));
+    }
+}
+
+auto Network::get_nameresult(const GetNameParams& args,
+                             bool is_peer) -> ByteStringResult
+{
+    const auto binding {get_binding(is_peer)};
     Buffer<Byte> buffer {sa_length_max};
     const handle_type handle {args.handle};
     const AddressString addr_str {ByteString {buffer}};
@@ -45,7 +61,7 @@ auto Network::get_nameresult(const GetNameHandler& handler,
 
     if (args.is_verbose) {
         std::cout << "Calling "
-                  << handler.second
+                  << binding.second
                   << '('
                   << handle
                   << ", "
@@ -58,12 +74,12 @@ auto Network::get_nameresult(const GetNameHandler& handler,
 
     reset_last_context_error();
 
-    if (handler.first(handle, addr_ptr, &addr_len) == socket_error) {
+    if (binding.first(handle, addr_ptr, &addr_len) == socket_error) {
         const auto error {get_last_context_error()};
         const auto os_error {to_os_error(error)};
         std::ostringstream oss;
         oss << "Call to "
-            << handler.second
+            << binding.second
             << '('
             << handle
             << ", "

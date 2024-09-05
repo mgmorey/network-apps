@@ -15,21 +15,13 @@
 
 #include "network/get-peernameresult.h" // get_peernameresult()
 #include "network/get-nameresult.h"     // get_nameresult()
-#include "network/getnamehandler.h"     // GetNameHandler
 #include "network/getnameparams.h"      // GetNameParams
 #include "network/handle-type.h"        // handle_type
 #include "network/peernameresult.h"     // PeerNameResult
 
-#ifdef WIN32
-#include <winsock2.h>   // ::getpeername()
-#else
-#include <sys/socket.h> // ::getpeername()
-#endif
-
 auto Network::get_peernameresult(handle_type handle,
                                  bool is_verbose) -> PeerNameResult
 {
-    const GetNameHandler handler {::getpeername, "::getpeername"};
     const GetNameParams args {handle, is_verbose};
-    return get_nameresult(handler, args);
+    return get_nameresult(args, true);
 }

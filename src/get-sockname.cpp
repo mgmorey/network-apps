@@ -15,21 +15,13 @@
 
 #include "network/get-sockname.h"       // get_sockname()
 #include "network/get-name.h"           // get_name()
-#include "network/getnamehandler.h"     // GetNameHandler
 #include "network/getnameparams.h"      // GetNameParams
 #include "network/handle-type.h"        // handle_type
 #include "network/sockname.h"           // SockName
 
-#ifdef WIN32
-#include <winsock2.h>       // ::getsockname()
-#else
-#include <sys/socket.h>     // ::getsockname()
-#endif
-
 auto Network::get_sockname(handle_type handle,
                            bool is_verbose) -> SockName
 {
-    const GetNameHandler handler {::getsockname, "::getsockname"};
     const GetNameParams args {handle, is_verbose};
-    return get_name(handler, args);
+    return get_name(args, false);
 }
