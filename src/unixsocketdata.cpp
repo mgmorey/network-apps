@@ -14,7 +14,6 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/unixsocketdata.h"             // UnixSocketData
-#include "network/get-sockname.h"               // get_sockname()
 #include "network/handle-type.h"                // handle_type
 #include "network/remove.h"                     // remove()
 #include "network/socket-family-type.h"         // socket_family_type
@@ -38,12 +37,8 @@ auto Network::UnixSocketData::is_owner(bool t_is_owner) -> SocketData&
         return *this;
     }
 
-    if (t_is_owner) {
-        if (!m_sockname) {
-            m_sockname = get_sockname(m_handle, m_is_verbose);
-        }
-    } else if (m_sockname) {
-        if (const auto path {to_path(*m_sockname)}) {
+    if (!t_is_owner) {
+        if (const auto path {to_path(sockname())}) {
             remove(*path, m_is_verbose);
         }
     }

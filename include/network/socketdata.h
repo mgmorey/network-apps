@@ -54,8 +54,17 @@ namespace Network
         [[nodiscard]] virtual auto open(const ByteString& t_addr,
                                         bool t_is_bind) -> OsErrorResult = 0;
         [[nodiscard]] virtual auto is_verbose() const noexcept -> bool = 0;
-        [[nodiscard]] virtual auto peername() const -> ByteString = 0;
-        [[nodiscard]] virtual auto sockname() const -> ByteString = 0;
+        [[nodiscard]] virtual auto name(bool t_is_peer) const -> ByteString = 0;
+
+        [[nodiscard]] auto peername() const -> ByteString
+        {
+            return name(true);
+        }
+
+        [[nodiscard]] auto sockname() const -> ByteString
+        {
+            return name(false);
+        }
     };
 }
 

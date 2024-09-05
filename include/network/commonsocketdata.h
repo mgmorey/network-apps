@@ -22,13 +22,14 @@
 #include "network/socket-family-type.h"         // socket_family_type
 #include "network/socketdata.h"                 // SocketData
 
-#include <optional>     // std::optional
-
 #ifdef WIN32
 #include <winsock2.h>       // AF_UNSPEC
 #else
 #include <sys/socket.h>     // AF_UNSPEC
 #endif
+
+#include <array>        // std::array
+#include <optional>     // std::optional
 
 namespace Network
 {
@@ -53,14 +54,12 @@ namespace Network
         [[nodiscard]] auto handle() const noexcept -> handle_type final;
         auto is_owner(bool t_is_owner = true) -> SocketData& override;
         [[nodiscard]] auto is_verbose() const noexcept -> bool final;
+        [[nodiscard]] auto name(bool t_is_peer) const -> ByteString final;
         [[nodiscard]] auto open(const ByteString& t_addr,
                                 bool t_is_bind) -> OsErrorResult final;
-        [[nodiscard]] auto peername() const -> ByteString final;
-        [[nodiscard]] auto sockname() const -> ByteString final;
 
     private:
-        mutable std::optional<ByteString> m_peername;
-        mutable std::optional<ByteString> m_sockname;
+        mutable std::array<std::optional<ByteString>, 2> m_names;
         socket_family_type m_family {AF_UNSPEC};
         handle_type m_handle {handle_null};
         bool m_is_verbose {false};
