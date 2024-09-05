@@ -76,9 +76,9 @@ auto Network::CommonSocket::is_verbose() const noexcept -> bool
     return m_is_verbose;
 }
 
-auto Network::CommonSocket::listen(int t_backlog_size) const -> int
+auto Network::CommonSocket::listen(int t_backlog_size) const -> OsErrorResult
 {
-    return Network::listen(m_handle, t_backlog_size);
+    return Network::listen(m_handle, t_backlog_size, m_is_verbose);
 }
 
 auto Network::CommonSocket::name(bool t_is_peer) const -> ByteString

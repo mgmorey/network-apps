@@ -14,7 +14,13 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/listen.h"                     // listen()
-#include "network/socket.h"                     // Socket
+#include "network/format-os-error.h"            // format_os_error()
+#include "network/get-last-context-error.h"     // get_last_context_error()
+#include "network/handle-type.h"                // handle_type
+#include "network/oserrorresult.h"              // OsErrorResult
+#include "network/reset-last-context-error.h"   // reset_last_context_error()
+#include "network/socket-error.h"               // socket_error
+#include "network/to-os-error.h"                // to_os_error()
 
 #ifdef WIN32
 #include <winsock2.h>       // ::listen()
@@ -22,7 +28,39 @@
 #include <sys/socket.h>     // ::listen()
 #endif
 
-auto Network::listen(handle_type handle, int backlog_size) -> int
+#include <iostream>     // std::cout, std::endl
+#include <sstream>      // std::ostringstream
+
+auto Network::listen(handle_type handle,
+                     int backlog_size,
+                     bool is_verbose) -> OsErrorResult
 {
-    return ::listen(handle, backlog_size);
+    if (is_verbose) {
+        std::cout << "Calling ::listen("
+                  << handle
+                  << ", "
+                  << backlog_size
+                  << ')'
+                  << std::endl;
+    }
+
+    reset_last_context_error();
+    const auto result {::listen(handle, backlog_size)};
+
+    if (result == socket_error) {
+        const auto error {get_last_context_error()};
+        const auto os_error {to_os_error(error)};
+        std::ostringstream oss;
+        oss << "Call to ::listen("
+            << handle
+            << ", "
+            << backlog_size
+            << ") failed with error "
+            << error
+            << ": "
+            << format_os_error(os_error);
+        return OsErrorResult {os_error, oss.str()};
+    }
+
+    return OsErrorResult {};
 }

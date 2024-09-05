@@ -16,11 +16,14 @@
 #ifndef NETWORK_LISTEN_H
 #define NETWORK_LISTEN_H
 
-#include "network/handle-type.h"            // handle_type
+#include "network/handle-type.h"        // handle_type
+#include "network/oserrorresult.h"      // OsErrorResult
 
 namespace Network
 {
-    extern auto listen(handle_type handle, int backlog_size) -> int;
+    extern auto listen(handle_type handle,
+                       int backlog_size,
+                       bool is_verbose) -> OsErrorResult;
 }
 
 #endif

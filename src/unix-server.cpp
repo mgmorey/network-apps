@@ -67,10 +67,8 @@ namespace Server {
 
     auto listen(const Socket& sock) -> void
     {
-        const auto result {sock->listen(backlog_size)};
-
-        if (result == socket_error) {
-            std::perror("listen");
+        if (const auto result {sock->listen(backlog_size)}) {
+            std::cerr << result.string() << std::endl;
             std::exit(EXIT_FAILURE);
         }
     }
