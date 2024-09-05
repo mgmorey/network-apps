@@ -20,6 +20,7 @@
 #include "network/handle-type.h"                // handle_type
 #include "network/oserrorresult.h"              // OsErrorResult
 #include "network/socket-family-type.h"         // socket_family_type
+#include "network/socketstate.h"                // SocketState
 #include "network/to-bytestring.h"              // to_bytestring()
 #include "network/validate.h"                   // validate()
 
@@ -50,7 +51,6 @@ namespace Network
         [[nodiscard]] virtual auto
         family() const noexcept -> socket_family_type = 0;
         [[nodiscard]] virtual auto handle() const noexcept -> handle_type = 0;
-        virtual auto is_owner(bool t_is_owner = true) -> SocketData& = 0;
         [[nodiscard]] virtual auto name(bool t_is_peer) const -> ByteString = 0;
         [[nodiscard]] virtual auto open(const ByteString& t_addr,
                                         bool t_is_bind) -> OsErrorResult = 0;
@@ -65,6 +65,8 @@ namespace Network
         {
             return name(false);
         }
+
+        virtual auto state(SocketState t_state) -> SocketData& = 0;
     };
 }
 

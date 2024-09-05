@@ -19,6 +19,7 @@
 #include "network/commonsocketdata.h"           // CommonSocketData
 #include "network/handle-type.h"                // handle_type
 #include "network/socket-family-type.h"         // socket_family_type
+#include "network/socketstate.h"                // SocketState
 
 namespace Network
 {
@@ -35,10 +36,7 @@ namespace Network
         ~UnixSocketData() noexcept final;
         auto operator=(const UnixSocketData&) noexcept -> SocketData& = delete;
         auto operator=(UnixSocketData&&) noexcept -> SocketData& = delete;
-        auto is_owner(bool t_is_owner = true) -> SocketData& final;
-
-    private:
-        bool m_is_owner {false};
+        auto state(SocketState t_state) -> SocketData& final;
     };
 }
 

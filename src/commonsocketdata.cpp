@@ -70,12 +70,6 @@ auto Network::CommonSocketData::handle() const noexcept -> handle_type
     return m_handle;
 }
 
-auto Network::CommonSocketData::is_owner(bool t_is_owner) -> SocketData&
-{
-    static_cast<void>(t_is_owner);
-    return *this;
-}
-
 auto Network::CommonSocketData::is_verbose() const noexcept -> bool
 {
     return m_is_verbose;
@@ -104,8 +98,17 @@ auto Network::CommonSocketData::open(const ByteString& t_addr,
     }
 
     if (t_is_bind) {
-        is_owner();
+        state(SocketState::bound);
+    }
+    else {
+        state(SocketState::connected);
     }
 
     return {};
+}
+
+auto Network::CommonSocketData::state(SocketState t_state) -> SocketData&
+{
+    m_state = t_state;
+    return *this;
 }

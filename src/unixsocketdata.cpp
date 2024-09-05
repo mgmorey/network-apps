@@ -28,21 +28,21 @@ Network::UnixSocketData::UnixSocketData(socket_family_type t_family,
 
 Network::UnixSocketData::~UnixSocketData() noexcept
 {
-    is_owner(false);
+    state(SocketState::closing);
 }
 
-auto Network::UnixSocketData::is_owner(bool t_is_owner) -> SocketData&
+auto Network::UnixSocketData::state(SocketState t_state) -> SocketData&
 {
-    if (m_is_owner == t_is_owner) {
+    if (m_state == t_state) {
         return *this;
     }
 
-    if (!t_is_owner) {
+    if (m_state == SocketState::bound && t_state == SocketState::closing) {
         if (const auto path {to_path(sockname())}) {
             remove(*path, m_is_verbose);
         }
     }
 
-    m_is_owner = t_is_owner;
+    m_state = t_state;
     return *this;
 }

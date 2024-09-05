@@ -21,6 +21,7 @@
 #include "network/handle-type.h"                // handle_type
 #include "network/socket-family-type.h"         // socket_family_type
 #include "network/socketdata.h"                 // SocketData
+#include "network/socketstate.h"                // SocketState
 
 #ifdef WIN32
 #include <winsock2.h>       // AF_UNSPEC
@@ -51,17 +52,18 @@ namespace Network
         explicit operator handle_type() const noexcept final;
         [[nodiscard]] auto family() const noexcept -> socket_family_type final;
         [[nodiscard]] auto handle() const noexcept -> handle_type final;
-        auto is_owner(bool t_is_owner = true) -> SocketData& override;
         [[nodiscard]] auto is_verbose() const noexcept -> bool final;
         [[nodiscard]] auto name(bool t_is_peer) const -> ByteString final;
         [[nodiscard]] auto open(const ByteString& t_addr,
                                 bool t_is_bind) -> OsErrorResult final;
+        auto state(SocketState t_state) -> SocketData& override;
 
     private:
         mutable std::array<ByteString, 2> m_names;
         socket_family_type m_family {AF_UNSPEC};
         handle_type m_handle {handle_null};
         bool m_is_verbose {false};
+        SocketState m_state {SocketState::allocated};
     };
 }
 
