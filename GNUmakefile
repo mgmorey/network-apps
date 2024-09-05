@@ -51,7 +51,7 @@ include flags.gmk
 libnetwork_common_sources = accept.cpp address-sa.cpp address-sin.cpp	\
 address-sin6.cpp address.cpp addresserror.cpp addresslist.cpp		\
 addressstring.cpp argumentdata.cpp bind-endpoint.cpp			\
-bind-handle-bs.cpp commonsocketdata.cpp connect-endpoint.cpp		\
+bind-handle-bs.cpp commonsocket.cpp connect-endpoint.cpp		\
 connect-handle-bs.cpp create-handle.cpp create-hints.cpp		\
 create-result.cpp error.cpp familyerror.cpp format-ai-error.cpp		\
 format-bytestring.cpp format-os-error.cpp format.cpp get-context.cpp	\
@@ -82,7 +82,7 @@ libnetwork_unix_sources = address-sun.cpp create-pair.cpp		\
 create-pairresult.cpp get-path-length.cpp get-path-pointer-sun.cpp	\
 get-sun-length.cpp get-sun-pointer.cpp socketpair.cpp			\
 to-bytestring-path.cpp to-path.cpp unix-close.cpp unix-start.cpp	\
-unix-stop.cpp unixcontext.cpp unixsocketdata.cpp validate-path.cpp	\
+unix-stop.cpp unixcontext.cpp unixsocket.cpp validate-path.cpp		\
 validate-sun.cpp
 
 libnetwork_windows_sources = windows-close.cpp windowscontext.cpp	\

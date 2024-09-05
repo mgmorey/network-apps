@@ -13,25 +13,25 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/unixsocketdata.h"             // UnixSocketData
+#include "network/unixsocket.h"                 // UnixSocket
 #include "network/handle-type.h"                // handle_type
 #include "network/remove.h"                     // remove()
 #include "network/socket-family-type.h"         // socket_family_type
 #include "network/to-path.h"                    // to_path()
 
-Network::UnixSocketData::UnixSocketData(socket_family_type t_family,
+Network::UnixSocket::UnixSocket(socket_family_type t_family,
                                         handle_type t_handle,
                                         bool t_is_verbose)
-    : CommonSocketData(t_family, t_handle, t_is_verbose)
+    : CommonSocket(t_family, t_handle, t_is_verbose)
 {
 }
 
-Network::UnixSocketData::~UnixSocketData() noexcept
+Network::UnixSocket::~UnixSocket() noexcept
 {
     state(SocketState::closing);
 }
 
-auto Network::UnixSocketData::state(SocketState t_state) -> SocketData&
+auto Network::UnixSocket::state(SocketState t_state) -> GenericSocket&
 {
     if (m_state == t_state) {
         return *this;

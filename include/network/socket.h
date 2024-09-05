@@ -16,15 +16,15 @@
 #ifndef NETWORK_SOCKET_H
 #define NETWORK_SOCKET_H
 
+#include "network/genericsocket.h"      // GenericSocket
 #include "network/oserrorresult.h"      // OsErrorResult
-#include "network/socketdata.h"         // SocketData
 
 #include <memory>       // std::shared_ptr
 #include <ostream>      // std::ostream
 
 namespace Network
 {
-    using Socket = std::shared_ptr<SocketData>;
+    using Socket = std::shared_ptr<GenericSocket>;
     extern auto operator<<(std::ostream& os,
                            const Socket& sock) -> std::ostream&;
 }

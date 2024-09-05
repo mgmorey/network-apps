@@ -13,14 +13,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_COMMONSOCKETDATA_H
-#define NETWORK_COMMONSOCKETDATA_H
+#ifndef NETWORK_COMMONSOCKET_H
+#define NETWORK_COMMONSOCKET_H
 
 #include "network/bytestring.h"                 // ByteString
+#include "network/genericsocket.h"              // GenericSocket
 #include "network/handle-null.h"                // handle_null
 #include "network/handle-type.h"                // handle_type
 #include "network/socket-family-type.h"         // socket_family_type
-#include "network/socketdata.h"                 // SocketData
 #include "network/socketstate.h"                // SocketState
 
 #ifdef WIN32
@@ -33,21 +33,21 @@
 
 namespace Network
 {
-    class CommonSocketData
-        : public SocketData
+    class CommonSocket
+        : public GenericSocket
     {
-        friend class UnixSocketData;
+        friend class UnixSocket;
 
     public:
-        CommonSocketData() noexcept = default;
-        CommonSocketData(socket_family_type t_family,
+        CommonSocket() noexcept = default;
+        CommonSocket(socket_family_type t_family,
                          handle_type t_handle,
                          bool t_is_verbose);
-        CommonSocketData(const CommonSocketData&) noexcept = delete;
-        CommonSocketData(const CommonSocketData&&) noexcept = delete;
-        ~CommonSocketData() noexcept override;
-        auto operator=(const CommonSocketData&) noexcept -> SocketData& = delete;
-        auto operator=(CommonSocketData&&) noexcept -> SocketData& = delete;
+        CommonSocket(const CommonSocket&) noexcept = delete;
+        CommonSocket(const CommonSocket&&) noexcept = delete;
+        ~CommonSocket() noexcept override;
+        auto operator=(const CommonSocket&) noexcept -> GenericSocket& = delete;
+        auto operator=(CommonSocket&&) noexcept -> GenericSocket& = delete;
         explicit operator bool() const noexcept final;
         explicit operator handle_type() const noexcept final;
         [[nodiscard]] auto family() const noexcept -> socket_family_type final;
@@ -56,7 +56,7 @@ namespace Network
         [[nodiscard]] auto name(bool t_is_peer) const -> ByteString final;
         [[nodiscard]] auto open(const ByteString& t_addr,
                                 bool t_is_bind) -> OsErrorResult final;
-        auto state(SocketState t_state) -> SocketData& override;
+        auto state(SocketState t_state) -> GenericSocket& override;
 
     private:
         mutable std::array<ByteString, 2> m_names;

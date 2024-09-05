@@ -19,9 +19,9 @@
 #include "network/socket.h"                     // Socket
 
 #ifdef WIN32
-#include "network/commonsocketdata.h"           // CommonSocketData
+#include "network/commonsocket.h"               // CommonSocketData
 #else
-#include "network/unixsocketdata.h"             // UnixSocketData
+#include "network/unixsocket.h"                 // UnixSocket
 #endif
 
 #ifdef WIN32
@@ -38,9 +38,9 @@ auto Network::create(socket_family_type family,
 {
 #ifndef WIN32
     if (family == AF_UNIX) {
-        return std::make_shared<UnixSocketData>(family, handle, is_verbose);
+        return std::make_shared<UnixSocket>(family, handle, is_verbose);
     }
 #endif
 
-    return std::make_shared<CommonSocketData>(family, handle, is_verbose);
+    return std::make_shared<CommonSocket>(family, handle, is_verbose);
 }

@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_SOCKETDATA_H
-#define NETWORK_SOCKETDATA_H
+#ifndef NETWORK_GENERICSOCKET_H
+#define NETWORK_GENERICSOCKET_H
 
 #include "network/bytestring.h"                 // ByteString
 #include "network/handle-type.h"                // handle_type
@@ -26,15 +26,15 @@
 
 namespace Network
 {
-    class SocketData
+    class GenericSocket
     {
     public:
-        SocketData() noexcept = default;
-        SocketData(const SocketData&) noexcept = delete;
-        SocketData(const SocketData&&) noexcept = delete;
-        virtual ~SocketData() noexcept = default;
-        auto operator=(const SocketData&) noexcept -> SocketData& = delete;
-        auto operator=(SocketData&&) noexcept -> SocketData& = delete;
+        GenericSocket() noexcept = default;
+        GenericSocket(const GenericSocket&) noexcept = delete;
+        GenericSocket(const GenericSocket&&) noexcept = delete;
+        virtual ~GenericSocket() noexcept = default;
+        auto operator=(const GenericSocket&) noexcept -> GenericSocket& = delete;
+        auto operator=(GenericSocket&&) noexcept -> GenericSocket& = delete;
         explicit virtual operator bool() const noexcept = 0;
         explicit virtual operator handle_type() const noexcept = 0;
 
@@ -66,7 +66,7 @@ namespace Network
             return name(false);
         }
 
-        virtual auto state(SocketState t_state) -> SocketData& = 0;
+        virtual auto state(SocketState t_state) -> GenericSocket& = 0;
     };
 }
 

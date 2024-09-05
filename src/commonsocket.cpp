@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/commonsocketdata.h"           // CommonSocketData
+#include "network/commonsocket.h"               // CommonSocket
 #include "network/bytestring.h"                 // ByteString
 #include "network/close.h"                      // close()
 #include "network/get-name.h"                   // get_name()
@@ -29,7 +29,7 @@
 #include <iostream>     // std::cerr, std::endl
 #include <string>       // std::to_string()
 
-Network::CommonSocketData::CommonSocketData(socket_family_type t_family,
+Network::CommonSocket::CommonSocket(socket_family_type t_family,
                                             handle_type t_handle,
                                             bool t_is_verbose)
     : m_family(t_family),
@@ -42,7 +42,7 @@ Network::CommonSocketData::CommonSocketData(socket_family_type t_family,
     }
 }
 
-Network::CommonSocketData::~CommonSocketData() noexcept
+Network::CommonSocket::~CommonSocket() noexcept
 {
     if (const auto result {Network::close(m_handle, m_is_verbose)}) {
         std::cerr << result.string()
@@ -50,32 +50,32 @@ Network::CommonSocketData::~CommonSocketData() noexcept
     }
 }
 
-Network::CommonSocketData::operator bool() const noexcept
+Network::CommonSocket::operator bool() const noexcept
 {
     return m_handle != handle_null;
 }
 
-Network::CommonSocketData::operator handle_type() const noexcept
+Network::CommonSocket::operator handle_type() const noexcept
 {
     return m_handle;
 }
 
-auto Network::CommonSocketData::family() const noexcept -> socket_family_type
+auto Network::CommonSocket::family() const noexcept -> socket_family_type
 {
     return m_family;
 }
 
-auto Network::CommonSocketData::handle() const noexcept -> handle_type
+auto Network::CommonSocket::handle() const noexcept -> handle_type
 {
     return m_handle;
 }
 
-auto Network::CommonSocketData::is_verbose() const noexcept -> bool
+auto Network::CommonSocket::is_verbose() const noexcept -> bool
 {
     return m_is_verbose;
 }
 
-auto Network::CommonSocketData::name(bool t_is_peer) const -> ByteString
+auto Network::CommonSocket::name(bool t_is_peer) const -> ByteString
 {
     const auto index {static_cast<std::size_t>(t_is_peer)};
     ByteString& value {m_names.at(index)};
@@ -88,7 +88,7 @@ auto Network::CommonSocketData::name(bool t_is_peer) const -> ByteString
     return value;
 }
 
-auto Network::CommonSocketData::open(const ByteString& t_addr,
+auto Network::CommonSocket::open(const ByteString& t_addr,
                                      bool t_is_bind) -> OsErrorResult
 {
     const OpenHandleParams args {m_handle, t_addr, m_is_verbose};
@@ -107,7 +107,7 @@ auto Network::CommonSocketData::open(const ByteString& t_addr,
     return {};
 }
 
-auto Network::CommonSocketData::state(SocketState t_state) -> SocketData&
+auto Network::CommonSocket::state(SocketState t_state) -> GenericSocket&
 {
     m_state = t_state;
     return *this;

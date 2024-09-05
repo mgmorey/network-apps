@@ -13,30 +13,30 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_UNIXSOCKETDATA_H
-#define NETWORK_UNIXSOCKETDATA_H
+#ifndef NETWORK_UNIXSOCKET_H
+#define NETWORK_UNIXSOCKET_H
 
-#include "network/commonsocketdata.h"           // CommonSocketData
+#include "network/commonsocket.h"               // CommonSocket
 #include "network/handle-type.h"                // handle_type
 #include "network/socket-family-type.h"         // socket_family_type
 #include "network/socketstate.h"                // SocketState
 
 namespace Network
 {
-    class UnixSocketData final
-        : public CommonSocketData
+    class UnixSocket final
+        : public CommonSocket
     {
     public:
-        UnixSocketData() noexcept = default;
-        UnixSocketData(socket_family_type t_family,
+        UnixSocket() noexcept = default;
+        UnixSocket(socket_family_type t_family,
                        handle_type t_handle,
                        bool t_is_verbose);
-        UnixSocketData(const UnixSocketData&) noexcept = delete;
-        UnixSocketData(const UnixSocketData&&) noexcept = delete;
-        ~UnixSocketData() noexcept final;
-        auto operator=(const UnixSocketData&) noexcept -> SocketData& = delete;
-        auto operator=(UnixSocketData&&) noexcept -> SocketData& = delete;
-        auto state(SocketState t_state) -> SocketData& final;
+        UnixSocket(const UnixSocket&) noexcept = delete;
+        UnixSocket(const UnixSocket&&) noexcept = delete;
+        ~UnixSocket() noexcept final;
+        auto operator=(const UnixSocket&) noexcept -> GenericSocket& = delete;
+        auto operator=(UnixSocket&&) noexcept -> GenericSocket& = delete;
+        auto state(SocketState t_state) -> GenericSocket& final;
     };
 }
 

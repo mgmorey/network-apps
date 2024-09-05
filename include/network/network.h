@@ -57,6 +57,7 @@
 #include "network/exceptions.h"                 // Error, LogicError,
                                                 // RuntimeError
 #include "network/failuremode.h"                // FailureMode
+#include "network/genericsocket.h"              // GenericSocket
 #include "network/get-context.h"                // get_context()
 #include "network/get-endpoint.h"               // get_endpoint()
 #include "network/get-endpointresult.h"         // get_endpointresult()
@@ -99,7 +100,6 @@
 #include "network/remove.h"                     // remove()
 #include "network/socket-error.h"               // socket_error
 #include "network/socket.h"                     // Socket
-#include "network/socketdata.h"                 // SocketData
 #include "network/socketfamily.h"               // SocketFamily
 #include "network/socketflags.h"                // SocketFlags
 #include "network/sockethints.h"                // SocketHints
