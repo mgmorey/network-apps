@@ -78,6 +78,9 @@ namespace Test
 
     static auto is_verbose {false};  // NOLINT
 
+    static constexpr auto size_max {path_length_max};
+    static constexpr auto size_min {6};  // NOLINT
+
     auto operator==(const ByteString& addr,
                     const std::string_view& path) -> bool
     {
@@ -94,6 +97,17 @@ namespace Test
         }
 
         return path;
+    }
+
+    auto get_pathnames() -> std::stack<Pathname>
+    {
+        std::stack<Pathname> pathnames;
+
+        for (std::size_t size = size_max; size >= size_min; size /= 2) {
+            pathnames.push(get_pathname(size));
+        };
+
+        return pathnames;
     }
 
     auto parse_arguments(int argc, char** argv) -> void
@@ -223,14 +237,7 @@ namespace Test
 
     auto test_paths_valid() -> void
     {
-        static constexpr auto size_max {path_length_max};
-        static constexpr auto size_min {6};  // NOLINT
-
-        std::stack<Pathname> pathnames;
-
-        for (std::size_t size = size_max; size >= size_min; size /= 2) {
-            pathnames.push(get_pathname(size));
-        };
+        auto pathnames {get_pathnames()};
 
         while (!pathnames.empty()) {
             const auto path {pathnames.top()};
