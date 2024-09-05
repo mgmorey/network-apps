@@ -84,14 +84,14 @@ auto Network::CommonSocketData::is_verbose() const noexcept -> bool
 auto Network::CommonSocketData::name(bool t_is_peer) const -> ByteString
 {
     const auto index {static_cast<std::size_t>(t_is_peer)};
-    std::optional<ByteString>& value {m_names.at(index)};
+    ByteString& value {m_names.at(index)};
 
-    if (!value) {
+    if (value.empty()) {
         const GetNameParams args {m_handle, m_is_verbose};
         value = Network::get_name(args, t_is_peer);
     }
 
-    return *value;
+    return value;
 }
 
 auto Network::CommonSocketData::open(const ByteString& t_addr,

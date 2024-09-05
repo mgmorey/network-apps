@@ -29,7 +29,6 @@
 #endif
 
 #include <array>        // std::array
-#include <optional>     // std::optional
 
 namespace Network
 {
@@ -59,7 +58,7 @@ namespace Network
                                 bool t_is_bind) -> OsErrorResult final;
 
     private:
-        mutable std::array<std::optional<ByteString>, 2> m_names;
+        mutable std::array<ByteString, 2> m_names;
         socket_family_type m_family {AF_UNSPEC};
         handle_type m_handle {handle_null};
         bool m_is_verbose {false};
