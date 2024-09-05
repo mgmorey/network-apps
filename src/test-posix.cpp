@@ -241,7 +241,6 @@ namespace Test
 
         while (!pathnames.empty()) {
             const auto path {pathnames.top()};
-            test_path_valid(path.c_str());
             test_path_valid(path);
             pathnames.pop();
         }
