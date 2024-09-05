@@ -49,14 +49,12 @@ namespace Network
         auto operator=(CommonSocketData&&) noexcept -> SocketData& = delete;
         explicit operator bool() const noexcept final;
         explicit operator handle_type() const noexcept final;
-        [[nodiscard]] auto bind(const ByteString& t_addr) -> OsErrorResult final;
-        [[nodiscard]] auto connect(const ByteString& t_addr) -> OsErrorResult final;
         [[nodiscard]] auto family() const noexcept -> socket_family_type final;
         [[nodiscard]] auto handle() const noexcept -> handle_type final;
         auto is_owner(bool t_is_owner = true) -> SocketData& override;
         [[nodiscard]] auto is_verbose() const noexcept -> bool final;
         [[nodiscard]] auto open(const ByteString& t_addr,
-                                bool t_is_bind) -> OsErrorResult;
+                                bool t_is_bind) -> OsErrorResult final;
         [[nodiscard]] auto peername() const -> ByteString final;
         [[nodiscard]] auto sockname() const -> ByteString final;
 

@@ -26,12 +26,6 @@
 #include "network/oserrorresult.h"              // OsErrorResult
 #include "network/socket-family-type.h"         // socket_family_type
 
-#ifdef WIN32
-#include <winsock2.h>       // ::bind(), ::connect()
-#else
-#include <sys/socket.h>     // ::bind(), ::connect()
-#endif
-
 #include <iostream>     // std::cerr, std::endl
 #include <string>       // std::to_string()
 
@@ -64,16 +58,6 @@ Network::CommonSocketData::operator bool() const noexcept
 Network::CommonSocketData::operator handle_type() const noexcept
 {
     return m_handle;
-}
-
-auto Network::CommonSocketData::bind(const ByteString& t_addr) -> OsErrorResult
-{
-    return open(t_addr, true);
-}
-
-auto Network::CommonSocketData::connect(const ByteString& t_addr) -> OsErrorResult
-{
-    return open(t_addr, false);
 }
 
 auto Network::CommonSocketData::family() const noexcept -> socket_family_type

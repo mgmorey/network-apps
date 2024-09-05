@@ -36,26 +36,23 @@ namespace Network
         auto operator=(SocketData&&) noexcept -> SocketData& = delete;
         explicit virtual operator bool() const noexcept = 0;
         explicit virtual operator handle_type() const noexcept = 0;
-        [[nodiscard]] virtual auto
-        bind(const ByteString& addr) -> OsErrorResult = 0;
 
         [[nodiscard]] auto bind(const auto& value) -> OsErrorResult
         {
-            return bind(to_bytestring(validate(value)));
+            return open(to_bytestring(validate(value)), true);
         }
-
-        [[nodiscard]] virtual auto
-        connect(const ByteString& addr) -> OsErrorResult = 0;
 
         [[nodiscard]] auto connect(const auto& value) -> OsErrorResult
         {
-            return connect(to_bytestring(validate(value)));
+            return open(to_bytestring(validate(value)), false);
         }
 
         [[nodiscard]] virtual auto
         family() const noexcept -> socket_family_type = 0;
         [[nodiscard]] virtual auto handle() const noexcept -> handle_type = 0;
         virtual auto is_owner(bool t_is_owner = true) -> SocketData& = 0;
+        [[nodiscard]] virtual auto open(const ByteString& t_addr,
+                                        bool t_is_bind) -> OsErrorResult = 0;
         [[nodiscard]] virtual auto is_verbose() const noexcept -> bool = 0;
         [[nodiscard]] virtual auto peername() const -> ByteString = 0;
         [[nodiscard]] virtual auto sockname() const -> ByteString = 0;
