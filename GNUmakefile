@@ -65,7 +65,7 @@ get-sin-pointer.cpp get-sin-port.cpp get-sin6-addr.cpp			\
 get-sin6-pointer.cpp get-sin6-port.cpp get-sockname.cpp			\
 get-socknameresult.cpp listen.cpp logicerror.cpp open-endpoint.cpp	\
 open-handle.cpp open.cpp oserrorresult.cpp parse-argumentspan.cpp	\
-parse.cpp rangeerror.cpp read-string.cpp read.cpp remove.cpp		\
+parse.cpp rangeerror.cpp read-string.cpp read.cpp			\
 reset-last-context-error.cpp reset-last-os-error.cpp runtimeerror.cpp	\
 set-last-context-error.cpp set-last-os-error.cpp socketfamily.cpp	\
 socketflags.cpp sockethost.cpp socketprotocol.cpp sockettype.cpp	\

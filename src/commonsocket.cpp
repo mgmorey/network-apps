@@ -31,8 +31,8 @@
 #include <string>       // std::to_string()
 
 Network::CommonSocket::CommonSocket(socket_family_type t_family,
-                                            handle_type t_handle,
-                                            bool t_is_verbose)
+                                    handle_type t_handle,
+                                    bool t_is_verbose)
     : m_family(t_family),
       m_handle(t_handle),
       m_is_verbose(t_is_verbose)

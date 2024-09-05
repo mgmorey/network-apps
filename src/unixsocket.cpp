@@ -15,13 +15,15 @@
 
 #include "network/unixsocket.h"                 // UnixSocket
 #include "network/handle-type.h"                // handle_type
-#include "network/remove.h"                     // remove()
 #include "network/socket-family-type.h"         // socket_family_type
 #include "network/to-path.h"                    // to_path()
 
+#include <filesystem>   // std::filesystem
+#include <iostream>     // std::cout, std::endl
+
 Network::UnixSocket::UnixSocket(socket_family_type t_family,
-                                        handle_type t_handle,
-                                        bool t_is_verbose)
+                                handle_type t_handle,
+                                bool t_is_verbose)
     : CommonSocket(t_family, t_handle, t_is_verbose)
 {
 }
@@ -39,7 +41,14 @@ auto Network::UnixSocket::state(SocketState t_state) -> GenericSocket&
 
     if (m_state == SocketState::bound && t_state == SocketState::closing) {
         if (const auto path {to_path(sockname())}) {
-            remove(*path, m_is_verbose);
+            if (m_is_verbose) {
+                std::cout << "Calling std::filesystem::remove("
+                          << *path
+                          << ')'
+                          << std::endl;
+            }
+
+            std::filesystem::remove(*path);
         }
     }
 
