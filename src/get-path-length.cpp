@@ -16,7 +16,6 @@
 #ifndef WIN32
 
 #include "network/get-path-length.h"            // get_path_length()
-#include "network/get-path-pointer-sun.h"       // get_path_pointer()
 #include "network/length-type.h"                // length_type
 #include "network/sun-length-limits.h"          // sun_length_min
 
@@ -37,7 +36,7 @@ auto Network::get_path_length(const char* path,
 auto Network::get_path_length(const sockaddr_un* sun,
                               length_type sun_len) -> length_type
 {
-    const auto* const path {get_path_pointer(sun)};
+    const auto* const path {static_cast<const char*>(sun->sun_path)};
     const auto path_len {sun_len - sun_length_min};
     return get_path_length(path, path_len);
 }
