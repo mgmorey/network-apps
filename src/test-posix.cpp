@@ -50,7 +50,6 @@ namespace Test
     using Network::SocketHints;
     using Network::SocketPair;
     using Network::UnixSocketHints;
-    using Network::bind;
     using Network::close;
     using Network::get_context;
     using Network::handle_null;
