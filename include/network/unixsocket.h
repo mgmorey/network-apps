@@ -18,7 +18,7 @@
 
 #include "network/commonsocket.h"               // CommonSocket
 #include "network/handle-type.h"                // handle_type
-#include "network/pathname.h"                   // Pathname
+#include "network/optionalpathname.h"           // Pathname
 #include "network/socket-family-type.h"         // socket_family_type
 #include "network/socketstate.h"                // SocketState
 
@@ -41,7 +41,7 @@ namespace Network
                                 bool t_is_bind) -> OsErrorResult final;
 
     protected:
-        auto remove(const Pathname& pathname) const -> void;
+        auto remove(const OptionalPathname& pathname) const -> void;
         auto state(SocketState t_state) -> UnixSocket&;
 
     private:
