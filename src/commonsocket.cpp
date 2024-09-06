@@ -103,17 +103,5 @@ auto Network::CommonSocket::open(const ByteString& t_addr,
         return result;
     }
 
-    state(t_is_bind ? SocketState::bound : SocketState::connected);
     return {};
-}
-
-auto Network::CommonSocket::state() const -> SocketState
-{
-    return m_state;
-}
-
-auto Network::CommonSocket::state(SocketState t_state) -> CommonSocket&
-{
-    m_state = t_state;
-    return *this;
 }

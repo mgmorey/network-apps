@@ -37,10 +37,15 @@ namespace Network
         ~UnixSocket() noexcept final;
         auto operator=(const UnixSocket&) noexcept -> UnixSocket& = delete;
         auto operator=(UnixSocket&&) noexcept -> UnixSocket& = delete;
+        [[nodiscard]] auto open(const ByteString& t_addr,
+                                bool t_is_bind) -> OsErrorResult final;
 
     protected:
         auto remove(const Pathname& pathname) const -> void;
-        auto state(SocketState t_state) -> UnixSocket& final;
+        auto state(SocketState t_state) -> UnixSocket&;
+
+    private:
+        SocketState m_state {SocketState::allocated};
     };
 }
 

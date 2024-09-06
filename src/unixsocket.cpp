@@ -34,6 +34,18 @@ Network::UnixSocket::~UnixSocket() noexcept
     state(SocketState::closing);
 }
 
+auto Network::UnixSocket::open(const ByteString& t_addr,
+                               bool t_is_bind) -> OsErrorResult
+{
+    auto result {CommonSocket::open(t_addr, t_is_bind)};
+
+    if (!result) {
+        state(t_is_bind ? SocketState::bound : SocketState::connected);
+    }
+
+    return result;
+}
+
 auto Network::UnixSocket::remove(const Pathname& pathname) const -> void
 {
     if (is_verbose()) {
@@ -49,7 +61,7 @@ auto Network::UnixSocket::remove(const Pathname& pathname) const -> void
 auto Network::UnixSocket::state(SocketState t_state) -> UnixSocket&
 {
     const auto next {t_state};
-    const auto previous {CommonSocket::state()};
+    const auto previous {m_state};
 
     if (previous == next) {
         return *this;
@@ -61,6 +73,6 @@ auto Network::UnixSocket::state(SocketState t_state) -> UnixSocket&
         }
     }
 
-    CommonSocket::state(next);
+    m_state = next;
     return *this;
 }

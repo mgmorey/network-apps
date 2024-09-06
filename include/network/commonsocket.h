@@ -55,18 +55,13 @@ namespace Network
         listen(int backlog_size) const -> OsErrorResult final;
         [[nodiscard]] auto name(bool t_is_peer) const -> ByteString final;
         [[nodiscard]] auto open(const ByteString& t_addr,
-                                bool t_is_bind) -> OsErrorResult final;
-
-    protected:
-        [[nodiscard]] auto state() const -> SocketState;
-        virtual auto state(SocketState t_state) -> CommonSocket&;
+                                bool t_is_bind) -> OsErrorResult override;
 
     private:
         mutable std::array<ByteString, 2> m_names;
         socket_family_type m_family {AF_UNSPEC};
         handle_type m_handle {handle_null};
         bool m_is_verbose {false};
-        SocketState m_state {SocketState::allocated};
     };
 }
 
