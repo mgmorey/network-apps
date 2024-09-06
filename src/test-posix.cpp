@@ -175,6 +175,7 @@ namespace Test
     }
 
     auto test_path(const auto path,
+                   const Socket& sock,
                    const ErrorCodeSet& expected_codes,
                    const std::string& expected_error_re) -> void
     {
@@ -182,7 +183,6 @@ namespace Test
 
         try {
             assert(to_bytestring(path) == path);
-            const Socket sock {create(UnixSocketHints {SOCK_STREAM}, is_verbose)};
 
             if (const auto result {sock->bind(path)}) {
                 print(result);
@@ -208,10 +208,19 @@ namespace Test
         }
     }
 
+    auto test_path(const auto path,
+                   const ErrorCodeSet& expected_codes,
+                   const std::string& expected_error_re) -> void
+    {
+        const auto sock {create(UnixSocketHints {SOCK_STREAM}, is_verbose)};
+        return test_path(path, sock, expected_codes, expected_error_re);
+    }
+
     auto test_path_valid(const auto path) -> void
     {
-	const ErrorCodeSet codes_valid {0};
-        test_path(path, codes_valid, {});
+        const auto sock {create(UnixSocketHints {SOCK_STREAM}, is_verbose)};
+        test_path(path, sock, {0}, {});
+        test_path(path, sock, {98}, {});
     }
 
     auto test_paths_invalid() -> void
