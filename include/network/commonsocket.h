@@ -36,8 +36,6 @@ namespace Network
     class CommonSocket
         : public GenericSocket
     {
-        friend class UnixSocket;
-
     public:
         CommonSocket() noexcept = default;
         CommonSocket(socket_family_type t_family,
@@ -46,8 +44,8 @@ namespace Network
         CommonSocket(const CommonSocket&) noexcept = delete;
         CommonSocket(const CommonSocket&&) noexcept = delete;
         ~CommonSocket() noexcept override;
-        auto operator=(const CommonSocket&) noexcept -> GenericSocket& = delete;
-        auto operator=(CommonSocket&&) noexcept -> GenericSocket& = delete;
+        auto operator=(const CommonSocket&) noexcept -> CommonSocket& = delete;
+        auto operator=(CommonSocket&&) noexcept -> CommonSocket& = delete;
         explicit operator bool() const noexcept final;
         explicit operator handle_type() const noexcept final;
         [[nodiscard]] auto family() const noexcept -> socket_family_type final;
@@ -55,12 +53,13 @@ namespace Network
         [[nodiscard]] auto is_verbose() const noexcept -> bool final;
         [[nodiscard]] auto
         listen(int backlog_size) const -> OsErrorResult final;
-
-    private:
         [[nodiscard]] auto name(bool t_is_peer) const -> ByteString final;
         [[nodiscard]] auto open(const ByteString& t_addr,
                                 bool t_is_bind) -> OsErrorResult final;
-        auto state(SocketState t_state) -> GenericSocket& override;
+
+    protected:
+        [[nodiscard]] auto state() const -> SocketState;
+        virtual auto state(SocketState t_state) -> CommonSocket&;
 
     private:
         mutable std::array<ByteString, 2> m_names;

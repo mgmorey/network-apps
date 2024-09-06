@@ -18,6 +18,7 @@
 
 #include "network/commonsocket.h"               // CommonSocket
 #include "network/handle-type.h"                // handle_type
+#include "network/pathname.h"                   // Pathname
 #include "network/socket-family-type.h"         // socket_family_type
 #include "network/socketstate.h"                // SocketState
 
@@ -34,11 +35,12 @@ namespace Network
         UnixSocket(const UnixSocket&) noexcept = delete;
         UnixSocket(const UnixSocket&&) noexcept = delete;
         ~UnixSocket() noexcept final;
-        auto operator=(const UnixSocket&) noexcept -> GenericSocket& = delete;
-        auto operator=(UnixSocket&&) noexcept -> GenericSocket& = delete;
+        auto operator=(const UnixSocket&) noexcept -> UnixSocket& = delete;
+        auto operator=(UnixSocket&&) noexcept -> UnixSocket& = delete;
 
     protected:
-        auto state(SocketState t_state) -> GenericSocket& final;
+        auto remove(const Pathname& pathname) const -> void;
+        auto state(SocketState t_state) -> UnixSocket& final;
     };
 }
 

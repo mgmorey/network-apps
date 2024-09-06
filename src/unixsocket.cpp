@@ -15,6 +15,7 @@
 
 #include "network/unixsocket.h"                 // UnixSocket
 #include "network/handle-type.h"                // handle_type
+#include "network/pathname.h"                   // Pathname
 #include "network/socket-family-type.h"         // socket_family_type
 #include "network/to-path.h"                    // to_path()
 
@@ -33,25 +34,33 @@ Network::UnixSocket::~UnixSocket() noexcept
     state(SocketState::closing);
 }
 
-auto Network::UnixSocket::state(SocketState t_state) -> GenericSocket&
+auto Network::UnixSocket::remove(const Pathname& pathname) const -> void
 {
-    if (m_state == t_state) {
+    if (is_verbose()) {
+        std::cout << "Calling std::filesystem::remove("
+                  << pathname
+                  << ')'
+                  << std::endl;
+    }
+
+    std::filesystem::remove(pathname);
+}
+
+auto Network::UnixSocket::state(SocketState t_state) -> UnixSocket&
+{
+    const auto next {t_state};
+    const auto previous {CommonSocket::state()};
+
+    if (previous == next) {
         return *this;
     }
 
-    if (m_state == SocketState::bound && t_state == SocketState::closing) {
-        if (const auto path {to_path(sockname())}) {
-            if (m_is_verbose) {
-                std::cout << "Calling std::filesystem::remove("
-                          << *path
-                          << ')'
-                          << std::endl;
-            }
-
-            std::filesystem::remove(*path);
+    if (previous == SocketState::bound && next == SocketState::closing) {
+        if (const auto pathname {to_path(sockname())}) {
+            remove(*pathname);
         }
     }
 
-    m_state = t_state;
+    CommonSocket::state(next);
     return *this;
 }

@@ -95,7 +95,7 @@ auto Network::CommonSocket::name(bool t_is_peer) const -> ByteString
 }
 
 auto Network::CommonSocket::open(const ByteString& t_addr,
-                                     bool t_is_bind) -> OsErrorResult
+                                 bool t_is_bind) -> OsErrorResult
 {
     const OpenHandleParams args {m_handle, t_addr, m_is_verbose};
 
@@ -103,17 +103,16 @@ auto Network::CommonSocket::open(const ByteString& t_addr,
         return result;
     }
 
-    if (t_is_bind) {
-        state(SocketState::bound);
-    }
-    else {
-        state(SocketState::connected);
-    }
-
+    state(t_is_bind ? SocketState::bound : SocketState::connected);
     return {};
 }
 
-auto Network::CommonSocket::state(SocketState t_state) -> GenericSocket&
+auto Network::CommonSocket::state() const -> SocketState
+{
+    return m_state;
+}
+
+auto Network::CommonSocket::state(SocketState t_state) -> CommonSocket&
 {
     m_state = t_state;
     return *this;
