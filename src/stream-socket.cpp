@@ -15,7 +15,6 @@
 
 #include "network/socket.h"             // Socket, operator<<()
 #include "network/handle-null.h"        // handle_null
-#include "network/handle-type.h"        // handle_type
 #include "network/string-null.h"        // string_null
 
 #include <ostream>      // std::ostream
