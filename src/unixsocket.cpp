@@ -46,35 +46,38 @@ auto Network::UnixSocket::open(const ByteString& t_addr,
     return result;
 }
 
-auto Network::UnixSocket::remove(const OptionalPathname& pathname) const -> bool
+auto Network::UnixSocket::remove(const OptionalPathname& t_path) const -> bool
 {
-    if (!pathname) {
+    if (!t_path) {
         return false;
     }
 
     if (is_verbose()) {
         std::cout << "Calling std::filesystem::remove("
-                  << *pathname
+                  << *t_path
                   << ')'
                   << std::endl;
     }
 
-    return std::filesystem::remove(*pathname);
+    return std::filesystem::remove(*t_path);
 }
 
 auto Network::UnixSocket::state(SocketState t_state) -> UnixSocket&
 {
-    const auto next {t_state};
+    const auto current {t_state};
     const auto previous {m_state};
 
-    if (previous == next) {
+    if (previous == current) {
         return *this;
     }
 
-    if (previous == SocketState::bound) {
-        static_cast<void>(remove(to_path(sockname())));
+    if (current == SocketState::bound) {
+        m_path = to_path(sockname());
+    }
+    else if (previous == SocketState::bound) {
+        static_cast<void>(remove(m_path));
     }
 
-    m_state = next;
+    m_state = current;
     return *this;
 }
