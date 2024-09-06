@@ -25,7 +25,7 @@
 
 #include <sys/socket.h>     // AF_UNIX, AF_UNSPEC, SOCK_STREAM
 
-#include <cerrno>       // EACCES, EBADF, ENOENT, EROFS
+#include <cerrno>       // EACCES, EBADF, EADDRINUSE, ENOENT, EROFS
 #include <cstdlib>      // EXIT_FAILURE, std::exit(),
                         // std::size_t
 #include <exception>    // std::exception
@@ -220,7 +220,7 @@ namespace Test
     {
         const auto sock {create(UnixSocketHints {SOCK_STREAM}, is_verbose)};
         test_path(path, sock, {0}, {});
-        test_path(path, sock, {98}, {});
+        test_path(path, sock, {EADDRINUSE}, {});
     }
 
     auto test_paths_invalid() -> void
