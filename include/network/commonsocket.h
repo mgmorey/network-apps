@@ -21,7 +21,6 @@
 #include "network/handle-null.h"                // handle_null
 #include "network/handle-type.h"                // handle_type
 #include "network/socket-family-type.h"         // socket_family_type
-#include "network/socketstate.h"                // SocketState
 
 #ifdef WIN32
 #include <winsock2.h>       // AF_UNSPEC

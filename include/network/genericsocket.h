@@ -20,7 +20,6 @@
 #include "network/handle-type.h"                // handle_type
 #include "network/oserrorresult.h"              // OsErrorResult
 #include "network/socket-family-type.h"         // socket_family_type
-#include "network/socketstate.h"                // SocketState
 #include "network/to-bytestring.h"              // to_bytestring()
 #include "network/validate.h"                   // validate()
 
