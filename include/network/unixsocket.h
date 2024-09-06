@@ -36,6 +36,8 @@ namespace Network
         ~UnixSocket() noexcept final;
         auto operator=(const UnixSocket&) noexcept -> GenericSocket& = delete;
         auto operator=(UnixSocket&&) noexcept -> GenericSocket& = delete;
+
+    protected:
         auto state(SocketState t_state) -> GenericSocket& final;
     };
 }

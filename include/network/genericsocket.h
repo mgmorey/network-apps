@@ -28,6 +28,8 @@ namespace Network
 {
     class GenericSocket
     {
+        friend class Open;
+
     public:
         GenericSocket() noexcept = default;
         GenericSocket(const GenericSocket&) noexcept = delete;
@@ -54,9 +56,6 @@ namespace Network
         [[nodiscard]] virtual auto is_verbose() const noexcept -> bool = 0;
         [[nodiscard]] virtual auto
         listen(int backlog_size) const -> OsErrorResult = 0;
-        [[nodiscard]] virtual auto name(bool t_is_peer) const -> ByteString = 0;
-        [[nodiscard]] virtual auto open(const ByteString& t_addr,
-                                        bool t_is_bind) -> OsErrorResult = 0;
 
         [[nodiscard]] auto peername() const -> ByteString
         {
@@ -68,6 +67,10 @@ namespace Network
             return name(false);
         }
 
+    protected:
+        [[nodiscard]] virtual auto name(bool t_is_peer) const -> ByteString = 0;
+        [[nodiscard]] virtual auto open(const ByteString& t_addr,
+                                        bool t_is_bind) -> OsErrorResult = 0;
         virtual auto state(SocketState t_state) -> GenericSocket& = 0;
     };
 }

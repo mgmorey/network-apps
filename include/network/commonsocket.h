@@ -55,6 +55,8 @@ namespace Network
         [[nodiscard]] auto is_verbose() const noexcept -> bool final;
         [[nodiscard]] auto
         listen(int backlog_size) const -> OsErrorResult final;
+
+    private:
         [[nodiscard]] auto name(bool t_is_peer) const -> ByteString final;
         [[nodiscard]] auto open(const ByteString& t_addr,
                                 bool t_is_bind) -> OsErrorResult final;
