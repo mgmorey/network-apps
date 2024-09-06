@@ -14,7 +14,6 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/read.h"               // read()
-#include "network/handle-type.h"        // handle_type
 #include "network/socket.h"             // Socket
 
 #include <sys/types.h>          // ssize_t
