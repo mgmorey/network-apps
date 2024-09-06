@@ -14,8 +14,10 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/unixsocket.h"                 // UnixSocket
+#include "network/bytestring.h"                 // ByteString
 #include "network/handle-type.h"                // handle_type
 #include "network/optionalpathname.h"           // OptionalPathname
+#include "network/oserrorresult.h"              // OsErrorResult
 #include "network/socket-family-type.h"         // socket_family_type
 #include "network/to-path.h"                    // to_path()
 

@@ -34,6 +34,7 @@
 #endif
 
 #include <array>        // std::arrray
+#include <cstddef>      // std::size_t
 #include <iostream>     // std::cout, std::endl
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string

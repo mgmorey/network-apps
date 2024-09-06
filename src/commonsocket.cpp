@@ -27,6 +27,7 @@
 #include "network/oserrorresult.h"              // OsErrorResult
 #include "network/socket-family-type.h"         // socket_family_type
 
+#include <cstddef>      // std::size_t
 #include <iostream>     // std::cerr, std::endl
 #include <string>       // std::to_string()
 

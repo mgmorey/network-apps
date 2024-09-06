@@ -19,6 +19,7 @@
 #include "network/openendpointparams.h"         // OpenEndpointParams
 #include "network/openresult.h"                 // OpenResult
 #include "network/socketresultvector.h"         // SocketResultVector
+#include "network/template.h"                   // Template
 
 #include <algorithm>    // std::transform()
 #include <iterator>     // std::back_inserter()

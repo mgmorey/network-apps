@@ -23,6 +23,7 @@
 #include <cstring>      // std::strlen()
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
+#include <span>         // std::span
 #include <string>       // std::string
 #include <vector>       // std::vector
 

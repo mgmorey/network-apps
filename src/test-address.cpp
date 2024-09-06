@@ -50,6 +50,7 @@
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <regex>        // std::regex, std::regex_match
 #include <string>       // std::string
+#include <vector>       // std::vector
 
 namespace Test
 {

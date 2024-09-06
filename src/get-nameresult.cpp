@@ -32,6 +32,12 @@
 #include "network/to-os-error.h"                // to_os_error()
 #include "network/to-size.h"                    // to_size()
 
+#ifdef WIN32
+#include <winsock2.h>       // ::getpeername(), ::getsockname()
+#else
+#include <sys/socket.h>     // ::getpeername(), ::getsockname()
+#endif
+
 #include <array>        // std::arrray
 #include <iostream>     // std::cout, std::endl
 #include <sstream>      // std::ostringstream
