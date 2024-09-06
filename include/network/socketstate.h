@@ -22,7 +22,6 @@ namespace Network
 {
     enum class SocketState : std::uint8_t {
         allocated,
-        opening,
         connected,
         bound,
         closing

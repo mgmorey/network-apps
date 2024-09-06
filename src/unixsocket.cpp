@@ -37,7 +37,6 @@ Network::UnixSocket::~UnixSocket() noexcept
 auto Network::UnixSocket::open(const ByteString& t_addr,
                                bool t_is_bind) -> OsErrorResult
 {
-    state(SocketState::opening);
     auto result {CommonSocket::open(t_addr, t_is_bind)};
 
     if (!result) {
