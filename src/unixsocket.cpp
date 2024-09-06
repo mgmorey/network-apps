@@ -15,7 +15,7 @@
 
 #include "network/unixsocket.h"                 // UnixSocket
 #include "network/handle-type.h"                // handle_type
-#include "network/optionalpathname.h"           // Pathname
+#include "network/optionalpathname.h"           // OptionalPathname
 #include "network/socket-family-type.h"         // socket_family_type
 #include "network/to-path.h"                    // to_path()
 
@@ -46,10 +46,10 @@ auto Network::UnixSocket::open(const ByteString& t_addr,
     return result;
 }
 
-auto Network::UnixSocket::remove(const OptionalPathname& pathname) const -> void
+auto Network::UnixSocket::remove(const OptionalPathname& pathname) const -> bool
 {
     if (!pathname) {
-        return;
+        return false;
     }
 
     if (is_verbose()) {
@@ -59,7 +59,7 @@ auto Network::UnixSocket::remove(const OptionalPathname& pathname) const -> void
                   << std::endl;
     }
 
-    std::filesystem::remove(*pathname);
+    return std::filesystem::remove(*pathname);
 }
 
 auto Network::UnixSocket::state(SocketState t_state) -> UnixSocket&
@@ -72,7 +72,7 @@ auto Network::UnixSocket::state(SocketState t_state) -> UnixSocket&
     }
 
     if (previous == SocketState::bound) {
-        remove(to_path(sockname()));
+        static_cast<void>(remove(to_path(sockname())));
     }
 
     m_state = next;

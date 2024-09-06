@@ -41,7 +41,8 @@ namespace Network
                                 bool t_is_bind) -> OsErrorResult final;
 
     protected:
-        auto remove(const OptionalPathname& pathname) const -> void;
+        [[nodiscard]] auto
+        remove(const OptionalPathname& pathname) const -> bool;
         auto state(SocketState t_state) -> UnixSocket&;
 
     private:
