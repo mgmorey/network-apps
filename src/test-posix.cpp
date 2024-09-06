@@ -35,7 +35,7 @@
 #include <set>          // std::set
 #include <stack>        // std::stack
 #include <string>       // std::string
-#include <string_view>  // std::string
+#include <string_view>  // std::string_view
 
 namespace Test
 {
