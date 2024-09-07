@@ -38,8 +38,8 @@ namespace Network
     public:
         CommonSocket() noexcept = default;
         CommonSocket(socket_family_type t_family,
-                         handle_type t_handle,
-                         bool t_is_verbose);
+                     handle_type t_handle,
+                     bool t_is_verbose);
         CommonSocket(const CommonSocket&) noexcept = delete;
         CommonSocket(const CommonSocket&&) noexcept = delete;
         ~CommonSocket() noexcept override;
