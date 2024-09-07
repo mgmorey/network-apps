@@ -30,8 +30,8 @@ namespace Network
     public:
         UnixSocket() noexcept = default;
         UnixSocket(socket_family_type t_family,
-                       handle_type t_handle,
-                       bool t_is_verbose);
+                   handle_type t_handle,
+                   bool t_is_verbose);
         UnixSocket(const UnixSocket&) noexcept = delete;
         UnixSocket(const UnixSocket&&) noexcept = delete;
         ~UnixSocket() noexcept final;
