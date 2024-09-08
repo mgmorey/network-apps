@@ -104,7 +104,7 @@ namespace Test
             const auto endpoint {get_endpoint(addr)};
             Values values = {
                 Address(addr).text(),
-                endpoint.first.value_or(std::string {}),
+                endpoint.at(0),
                 t_host.canonical_name().value_or(std::string {})
             };
             values.erase(std::remove(values.begin(),
