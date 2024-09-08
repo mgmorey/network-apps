@@ -18,6 +18,7 @@
 
 #include "network/commonsocket.h"               // CommonSocket
 #include "network/handle-type.h"                // handle_type
+#include "network/pathname.h"                   // Pathname
 #include "network/socket-family-type.h"         // socket_family_type
 #include "network/socketstate.h"                // SocketState
 
@@ -46,7 +47,7 @@ namespace Network
         auto state(SocketState t_state) -> UnixSocket&;
 
     private:
-        std::string_view m_path;
+        Pathname m_path;
         SocketState m_state {SocketState::allocated};
     };
 }
