@@ -16,7 +16,6 @@
 #ifndef NETWORK_STRING_TYPES_H
 #define NETWORK_STRING_TYPES_H
 
-#include "network/bytestring.h"         // ByteString
 #include "network/hostname.h"           // Hostname
 #include "network/optionalhostname.h"   // OptionalHostname
 #include "network/optionalpathname.h"   // OptionalPathname
