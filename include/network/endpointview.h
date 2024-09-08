@@ -17,7 +17,7 @@
 #define NETWORK_ENDPOINTVIEW_H
 
 #include <array>        // std::array
-#include <string>       // std::string_view
+#include <string_view>  // std::string_view
 
 namespace Network
 {
