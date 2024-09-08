@@ -18,7 +18,6 @@
 
 #include "network/commonsocket.h"               // CommonSocket
 #include "network/handle-type.h"                // handle_type
-#include "network/optionalpathname.h"           // OptionalPathname
 #include "network/socket-family-type.h"         // socket_family_type
 #include "network/socketstate.h"                // SocketState
 
