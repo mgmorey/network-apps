@@ -16,13 +16,13 @@
 #ifndef NETWORK_BIND_ENDPOINT_H
 #define NETWORK_BIND_ENDPOINT_H
 
-#include "network/endpoint.h"           // Endpoint
+#include "network/endpointview.h"       // EndpointView
 #include "network/openresult.h"         // OpenResult
 #include "network/sockethints.h"        // SocketHints
 
 namespace Network
 {
-    extern auto bind(const Endpoint& endpoint,
+    extern auto bind(const EndpointView& endpoint,
                      const SocketHints& hints,
                      bool is_verbose = false) -> OpenResult;
 }

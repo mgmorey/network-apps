@@ -56,6 +56,7 @@ namespace Test
     using Network::ArgumentSpan;
     using Network::ByteString;
     using Network::Endpoint;
+    using Network::HostnameView;
     using Network::IpSocketHints;
     using Network::OptionalHints;
     using Network::OptionalHostname;
@@ -301,7 +302,7 @@ namespace Test
                       Print(std::cout));
     }
 
-    auto test_host_list(const OptionalHostname& host,
+    auto test_host_list(const HostnameView& host,
                         const OptionalHints& hints,
                         const ErrorCodeSet& expected_codes = {0}) -> void
     {
@@ -326,7 +327,7 @@ namespace Test
         assert(expected_codes.contains(actual_code));
     }
 
-    auto test_host_vector(const OptionalHostname& host,
+    auto test_host_vector(const HostnameView& host,
                           const OptionalHints& hints,
                           const ErrorCodeSet& expected_codes = {0}) -> void
     {
@@ -379,13 +380,13 @@ namespace Test
         test_host_vector("_", hints, get_codes_no_name());
     }
 
-    auto test_valid(const OptionalHostname& host) -> void
+    auto test_valid(const HostnameView& host) -> void
     {
-        const bool is_local = !host || *host == get_hostname();
+        const bool is_local = host.empty() || host == get_hostname();
 
-        if (host && !is_local) {
+        if (!host.empty() && !is_local) {
             std::cout << "Host: "
-                      << *host
+                      << host
                       << std::endl;
         }
 
@@ -419,7 +420,7 @@ auto main(int argc, char* argv[]) -> int
             std::for_each(hosts.begin(), hosts.end(), test_valid);
         }
         else if (const auto hostname {get_hostname()}) {
-            test_valid(hostname);
+            test_valid(*hostname);
         }
         else {
             test_valid(localhost);

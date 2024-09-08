@@ -51,8 +51,9 @@ namespace Test
 {
     using Network::Address;
     using Network::ByteString;
-    using Network::Endpoint;
+    using Network::EndpointView;
     using Network::Hostname;
+    using Network::HostnameView;
     using Network::IpSocketHints;
     using Network::OsErrorResult;
     using Network::PeerName;
@@ -97,7 +98,7 @@ namespace Test
             return codes;
         }
 
-        Test(Endpoint t_endpoint,
+        Test(EndpointView t_endpoint,
              Hostname t_hostname,
              std::ostream& t_os) :
             m_endpoint(std::move(t_endpoint)),
@@ -138,9 +139,11 @@ namespace Test
                  << " connected "
                  << m_hostname
                  << " to "
-                 << m_endpoint.second.value_or(string_null)
+                 << (m_endpoint.at(1).data() == nullptr ?
+                     string_null : m_endpoint.at(1))
                  << " on "
-                 << m_endpoint.first.value_or(string_null)
+                 << (m_endpoint.at(0).data() == nullptr ?
+                     string_null : m_endpoint.at(0))
                  << std::endl
                  << "Socket "
                  << std::right << std::setw(handle_width) << t_sock
@@ -153,8 +156,8 @@ namespace Test
         }
 
     private:
-        Endpoint m_endpoint;
-        Hostname m_hostname;
+        EndpointView m_endpoint;
+        HostnameView m_hostname;
         std::ostream& m_os;
     };
 
@@ -185,7 +188,7 @@ namespace Test
         return IpSocketHints {SOCK_STREAM, AI_CANONNAME};
     }
 
-    auto parse_arguments(int argc, char** argv) -> Endpoint
+    auto parse_arguments(int argc, char** argv) -> EndpointView
     {
         const auto [operands, options] {parse(argc, argv, "v")};
 
@@ -215,7 +218,7 @@ namespace Test
         }
     }
 
-    auto test_connect(const Endpoint& endpoint,
+    auto test_connect(const EndpointView& endpoint,
                       const SocketHints& hints,
                       const Hostname& hostname,
                       const ErrorCodeSet& expected_codes) -> void
@@ -242,21 +245,21 @@ namespace Test
         assert(expected_codes.contains(actual_code));
     }
 
-    auto test_connect_invalid_host(const Endpoint& endpoint,
+    auto test_connect_invalid_host(const EndpointView& endpoint,
                                    const SocketHints& hints,
                                    const Hostname& hostname) -> void
     {
         test_connect(endpoint, hints, hostname, get_codes_invalid_host());
     }
 
-    auto test_connect_invalid_service(const Endpoint& endpoint,
+    auto test_connect_invalid_service(const EndpointView& endpoint,
                                       const SocketHints& hints,
                                       const Hostname& hostname) -> void
     {
         test_connect(endpoint, hints, hostname, get_codes_invalid_service());
     }
 
-    auto test_connect_valid(const Endpoint& endpoint,
+    auto test_connect_valid(const EndpointView& endpoint,
                             const SocketHints& hints,
                             const Hostname& hostname) -> void
     {
@@ -279,9 +282,9 @@ auto main(int argc, char* argv[]) -> int
         }
 
         const auto hostname {get_hostname()};
-        const Endpoint invalid_host {".", service};
+        const EndpointView invalid_host {".", service};
         test_connect_invalid_host(invalid_host, hints, hostname);
-        const Endpoint invalid_service {remotehost, "."};
+        const EndpointView invalid_service {remotehost, "."};
         test_connect_invalid_service(invalid_service, hints, hostname);
 
         if (getenv("http_proxy") == nullptr) {

@@ -17,10 +17,10 @@
 #define NETWORK_INSERT_HOSTNAME_H
 
 #include "network/addresslist.h"        // AddressList
+#include "network/hostnameview.h"       // HostnameView
 #include "network/optionalhints.h"      // OptionalHints
-#include "network/optionalhostname.h"   // OptionalHostname
-#include "network/optionalservice.h"    // OptionalService
 #include "network/oserrorresult.h"      // OsErrorResult
+#include "network/serviceview.h"        // ServiceView
 
 #include <algorithm>    // std::copy()
 #include <iterator>     // std::back_inserter()
@@ -29,9 +29,9 @@
 namespace Network
 {
     auto insert(auto& container,
-                const OptionalHostname& hostname,
-                const OptionalService& service = std::nullopt,
-                const OptionalHints& hints = std::nullopt,
+                const HostnameView& hostname,
+                const ServiceView& service = {},
+                const OptionalHints& hints = {},
                 bool is_verbose = false) -> OsErrorResult
     {
         const auto list {AddressList(hostname, service, hints, is_verbose)};

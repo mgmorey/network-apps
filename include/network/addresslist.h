@@ -16,10 +16,10 @@
 #ifndef NETWORK_ADDRESSLIST_H
 #define NETWORK_ADDRESSLIST_H
 
+#include "network/hostnameview.h"       // HostnameView
 #include "network/optionalhints.h"      // OptionalHints
-#include "network/optionalhostname.h"   // OptionalHostname
-#include "network/optionalservice.h"    // OptionalService
 #include "network/oserrorresult.h"      // OsErrorResult
+#include "network/serviceview.h"        // ServiceView
 
 #ifdef WIN32
 #include <ws2tcpip.h>   // addrinfo
@@ -66,8 +66,8 @@ namespace Network
         AddressList() = delete;
         AddressList(const AddressList&) = delete;
         AddressList(const AddressList&&) = delete;
-        AddressList(const OptionalHostname& t_hostname,
-                    const OptionalService& t_service,
+        AddressList(const HostnameView& t_hostname,
+                    const ServiceView& t_service,
                     const OptionalHints& t_hints,
                     bool t_is_verbose);
         ~AddressList() noexcept;
@@ -81,8 +81,6 @@ namespace Network
         static auto format(const OptionalHints& t_hints) -> std::string;
         static auto to_ai_ptr(const OptionalHints& t_hints) noexcept ->
             std::unique_ptr<addrinfo>;
-        static auto to_c_str(const OptionalString& t_str) noexcept ->
-            const char*;
 
     private:
         addrinfo* m_list {nullptr};

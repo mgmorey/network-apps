@@ -13,24 +13,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_INSERT_ENDPOINT_H
-#define NETWORK_INSERT_ENDPOINT_H
+#ifndef NETWORK_PATHNAMEVIEW_H
+#define NETWORK_PATHNAMEVIEW_H
 
-#include "network/insert-hostname.h"            // insert()
-#include "network/openendpointparams.h"         // OpenEndpointParams
-#include "network/oserrorresult.h"              // OsErrorResult
+#include <string_view>  // std::string_view
 
 namespace Network
 {
-    auto insert(auto& container,
-                const OpenEndpointParams& args) -> OsErrorResult
-    {
-        return insert(container,
-                      args.endpoint.at(0),
-                      args.endpoint.at(1),
-                      args.hints,
-                      args.is_verbose);
-    }
+    using PathnameView = std::string_view;
 }
 
 #endif

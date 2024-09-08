@@ -22,7 +22,6 @@
 
 #include <filesystem>   // std::filesystem
 #include <iostream>     // std::cout, std::endl
-#include <string_view>  // std::string_view
 
 Network::UnixSocket::UnixSocket(socket_family_type t_family,
                                 handle_type t_handle,
@@ -48,7 +47,7 @@ auto Network::UnixSocket::open(const ByteString& t_addr,
     return result;
 }
 
-auto Network::UnixSocket::remove(std::string_view t_path) const -> bool
+auto Network::UnixSocket::remove(const PathnameView& t_path) const -> bool
 {
     if (t_path.empty()) {
         return false;

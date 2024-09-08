@@ -16,14 +16,14 @@
 #ifndef NETWORK_OPENENDPOINTPARAMS_H
 #define NETWORK_OPENENDPOINTPARAMS_H
 
-#include "network/endpoint.h"           // Endpoint
+#include "network/endpointview.h"       // Endpoint
 #include "network/sockethints.h"        // SocketHints
 
 namespace Network
 {
     struct OpenEndpointParams
     {
-        const Endpoint& endpoint;
+        const EndpointView& endpoint;
         const SocketHints& hints;
         bool is_verbose;
     };

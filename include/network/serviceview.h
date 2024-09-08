@@ -1,4 +1,4 @@
-// Copyright (C) 2022  "Michael G. Morey" <mgmorey@gmail.com>
+// Copyright (C) 2024  "Michael G. Morey" <mgmorey@gmail.com>
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,24 +13,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_INSERT_ENDPOINT_H
-#define NETWORK_INSERT_ENDPOINT_H
+#ifndef NETWORK_SERVICEVIEW_H
+#define NETWORK_SERVICEVIEW_H
 
-#include "network/insert-hostname.h"            // insert()
-#include "network/openendpointparams.h"         // OpenEndpointParams
-#include "network/oserrorresult.h"              // OsErrorResult
+#include <string_view>  // std::string_view
 
 namespace Network
 {
-    auto insert(auto& container,
-                const OpenEndpointParams& args) -> OsErrorResult
-    {
-        return insert(container,
-                      args.endpoint.at(0),
-                      args.endpoint.at(1),
-                      args.hints,
-                      args.is_verbose);
-    }
+    using ServiceView = std::string_view;
 }
 
 #endif

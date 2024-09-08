@@ -50,7 +50,7 @@ namespace Test
 {
     using Network::Address;
     using Network::ByteString;
-    using Network::Endpoint;
+    using Network::EndpointView;
     using Network::IpSocketHints;
     using Network::OsErrorResult;
     using Network::Socket;
@@ -74,7 +74,7 @@ namespace Test
     class Test
     {
     public:
-        Test(Endpoint t_endpoint, std::ostream& t_os) :
+        Test(EndpointView t_endpoint, std::ostream& t_os) :
             m_endpoint(std::move(t_endpoint)),
             m_os(t_os)
         {
@@ -104,7 +104,8 @@ namespace Test
             m_os << "Socket "
                  << std::right << std::setw(handle_width) << t_sock
                  << " bound on "
-                 << m_endpoint.first.value_or(string_null)
+                 << (m_endpoint.at(0).data() != nullptr ?
+                     string_null : m_endpoint.at(0))
                  << std::endl
                  << "Socket "
                  << std::right << std::setw(handle_width) << t_sock
@@ -114,7 +115,7 @@ namespace Test
         }
 
     private:
-        Endpoint m_endpoint;
+        EndpointView m_endpoint;
         std::ostream& m_os;
     };
 
@@ -135,7 +136,7 @@ namespace Test
         return IpSocketHints {SOCK_STREAM, AI_PASSIVE | AI_CANONNAME};
     }
 
-    auto parse_arguments(int argc, char** argv) -> Endpoint
+    auto parse_arguments(int argc, char** argv) -> EndpointView
     {
         const auto [operands, options] {parse(argc, argv, "v")};
 
@@ -165,7 +166,7 @@ namespace Test
         }
     }
 
-    auto test_bind(const Endpoint& endpoint,
+    auto test_bind(const EndpointView& endpoint,
                    const SocketHints& hints,
                    const ErrorCodeSet& expected_codes) -> void
     {
@@ -189,13 +190,13 @@ namespace Test
         assert(expected_codes.contains(actual_code));
     }
 
-    auto test_bind_invalid_host(const Endpoint& endpoint,
+    auto test_bind_invalid_host(const EndpointView& endpoint,
                                 const SocketHints& hints) -> void
     {
         test_bind(endpoint, hints, get_codes_invalid_host());
     }
 
-    auto test_bind_valid(const Endpoint& endpoint,
+    auto test_bind_valid(const EndpointView& endpoint,
                          const SocketHints& hints) -> void
     {
         test_bind(endpoint, hints, {0});
@@ -216,7 +217,7 @@ auto main(int argc, char* argv[]) -> int
             std::cout << *context << std::endl;
         }
 
-        const Endpoint invalid_host {".", {}};
+        const EndpointView invalid_host {".", {}};
         test_bind_invalid_host(invalid_host, hints);
 
         if (getenv("http_proxy") == nullptr) {

@@ -15,10 +15,10 @@
 
 #include "network/addresslist.h"        // AddressList
 #include "network/format-ai-error.h"    // format_ai_error()
+#include "network/hostnameview.h"       // HostnameView
 #include "network/optionalhints.h"      // OptionalHints
-#include "network/optionalhostname.h"   // OptionalHostname
-#include "network/optionalservice.h"    // OptionalService
 #include "network/oserrorresult.h"      // OsErrorResult
+#include "network/serviceview.h"        // ServiceView
 #include "network/string-null.h"        // string_null
 #include "network/to-os-error.h"        // to_os_error()
 
@@ -63,8 +63,8 @@ auto Network::AddressList::InputIterator::operator==(const InputIterator& rhs)
     return m_node == rhs.m_node;
 }
 
-Network::AddressList::AddressList(const OptionalHostname& t_hostname,
-                                  const OptionalService& t_service,
+Network::AddressList::AddressList(const HostnameView& t_hostname,
+                                  const ServiceView& t_service,
                                   const OptionalHints& t_hints,
                                   bool t_is_verbose)
 {
@@ -73,25 +73,25 @@ Network::AddressList::AddressList(const OptionalHostname& t_hostname,
 
     if (t_is_verbose) {
         std::cout << "Calling ::getaddrinfo("
-                  << t_hostname.value_or(string_null)
+                  << (t_hostname.data() == nullptr ? string_null : t_hostname)
                   << ", "
-                  << t_service.value_or(string_null)
+                  << (t_service.data() == nullptr ? string_null : t_service)
                   << ", "
                   << hints_str
                   << ", ...)"
                   << std::endl;
     }
 
-    if (const auto error {::getaddrinfo(to_c_str(t_hostname),
-                                        to_c_str(t_service),
+    if (const auto error {::getaddrinfo(t_hostname.data(),
+                                        t_service.data(),
                                         hints_ptr.get(),
                                         &m_list)}) {
         const auto os_error {to_os_error(error)};
         std::ostringstream oss;
         oss << "Call to ::getaddrinfo("
-            << t_hostname.value_or(string_null)
+            << (t_hostname.data() == nullptr ? string_null : t_hostname)
             << ", "
-            << t_service.value_or(string_null)
+            << (t_service.data() == nullptr ? string_null : t_service)
             << ", "
             << hints_str
             << ", ...) returned "
@@ -145,10 +145,4 @@ auto Network::AddressList::to_ai_ptr(const OptionalHints& t_hints) noexcept ->
     std::unique_ptr<addrinfo>
 {
     return t_hints ? std::make_unique<addrinfo>(*t_hints) : nullptr;
-}
-
-auto Network::AddressList::to_c_str(const OptionalString& t_str) noexcept ->
-    const char*
-{
-    return t_str ? t_str->c_str() : nullptr;
 }

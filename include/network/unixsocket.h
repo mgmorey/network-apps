@@ -19,10 +19,9 @@
 #include "network/commonsocket.h"               // CommonSocket
 #include "network/handle-type.h"                // handle_type
 #include "network/pathname.h"                   // Pathname
+#include "network/pathnameview.h"               // PathnameView
 #include "network/socket-family-type.h"         // socket_family_type
 #include "network/socketstate.h"                // SocketState
-
-#include <string_view>  // std::string_view
 
 namespace Network
 {
@@ -43,7 +42,7 @@ namespace Network
                                 bool t_is_bind) -> OsErrorResult final;
 
     protected:
-        [[nodiscard]] auto remove(std::string_view t_path) const -> bool;
+        [[nodiscard]] auto remove(const PathnameView& t_path) const -> bool;
         auto state(SocketState t_state) -> UnixSocket&;
 
     private:

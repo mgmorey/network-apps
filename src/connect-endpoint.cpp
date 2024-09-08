@@ -14,13 +14,13 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/connect-endpoint.h"   // connect()
-#include "network/endpoint.h"           // Endpoint
+#include "network/endpointview.h"       // EndpointView
 #include "network/open-endpoint.h"      // open()
 #include "network/openendpointparams.h" // OpenEndpointParams
 #include "network/openresult.h"         // OpenResult
 #include "network/sockethints.h"        // SocketHints
 
-auto Network::connect(const Endpoint& endpoint,
+auto Network::connect(const EndpointView& endpoint,
                       const SocketHints& hints,
                       bool is_verbose) -> OpenResult
 {
