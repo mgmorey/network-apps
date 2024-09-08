@@ -73,7 +73,7 @@ namespace Test
     class Test
     {
     public:
-        Test(EndpointView t_endpoint, std::ostream& t_os) :
+        Test(const EndpointView& t_endpoint, std::ostream& t_os) :
             m_endpoint(t_endpoint),
             m_os(t_os)
         {
