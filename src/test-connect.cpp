@@ -16,9 +16,9 @@
 #include "network/assert.h"             // assert()
 #include "network/network.h"            // Address, ByteString,
                                         // Context, Endpoint,
-                                        // Hostname, OptionalHostname,
-                                        // OsErrorResult, Socket,
-                                        // SocketHints, SocketResult,
+                                        // Hostname, OsErrorResult,
+                                        // Socket, SocketHints,
+                                        // SocketResult,
                                         // SocketResultVector,
                                         // connect(), get_hostname(),
                                         // os_error_type, string_null
