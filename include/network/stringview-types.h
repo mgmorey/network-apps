@@ -1,4 +1,4 @@
-// Copyright (C) 2022  "Michael G. Morey" <mgmorey@gmail.com>
+// Copyright (C) 2024  "Michael G. Morey" <mgmorey@gmail.com>
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,15 +13,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_STRING_TYPES_H
-#define NETWORK_STRING_TYPES_H
+#ifndef NETWORK_STRINGVIEW_TYPES_H
+#define NETWORK_STRINGVIEW_TYPES_H
 
-#include "network/bytestring.h"         // ByteString
-#include "network/hostname.h"           // Hostname
-#include "network/optionalhostname.h"   // OptionalHostname
-#include "network/optionalpathname.h"   // OptionalPathname
-#include "network/optionalservice.h"    // OptionalService
-#include "network/pathname.h"           // Pathmame
-#include "network/service.h"            // Service
+#include "network/hostnameview.h"       // HostnameView
+#include "network/pathnameview.h"       // PathmameView
+#include "network/serviceview.h"        // ServiceView
 
 #endif

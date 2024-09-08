@@ -32,10 +32,13 @@
                                         // socket_length_type,
                                         // socket_protocol_type,
                                         // socket_type_type
-#include "network/string-types.h"       // Buffer, ByteString,
-                                        // Hostname, OptionalHostname,
+#include "network/string-types.h"       // ByteString, Hostname,
+                                        // OptionalHostname,
                                         // OptionalPathname,
                                         // OptionalService, Pathname,
                                         // Service
+#include "network/stringview-types.h"   // HostnameView,
+                                        // PathnameView,
+                                        // ServiceView
 
 #endif

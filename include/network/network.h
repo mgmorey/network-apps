@@ -22,6 +22,7 @@
 #include "network/ai-error.h"                   // format_ai_error()
 #include "network/always-false.h"               // always_false_v
 #include "network/bind.h"                       // bind()
+#include "network/buffer.h"                     // Buffer
 #include "network/bytestring.h"                 // ByteString
 #include "network/bytestringresult.h"           // ByteStringResult
 #include "network/close.h"                      // close()
