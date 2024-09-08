@@ -21,7 +21,6 @@
 #include "network/sun-length-limits.h"          // sun_length_min
 
 #include <cstring>      // ::strnlen()
-
 #include <string_view>  // std::string_view
 
 auto Network::to_path(const ByteString& addr) -> std::string_view
