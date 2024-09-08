@@ -97,7 +97,7 @@ namespace Test
             return codes;
         }
 
-        Test(EndpointView t_endpoint,
+        Test(const EndpointView& t_endpoint,
              const Hostname& t_hostname,
              std::ostream& t_os) :
             m_endpoint(t_endpoint),
