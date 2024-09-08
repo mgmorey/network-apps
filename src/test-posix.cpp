@@ -16,7 +16,6 @@
 #include "network/assert.h"             // assert()
 #include "network/network.h"            // Address, ByteString,
                                         // Context, Error, LogicError,
-                                        // OptionalPathname,
                                         // OsErrorResult, Pathname,
                                         // Socket, SocketPair, bind(),
                                         // os_error_type,
@@ -44,7 +43,6 @@ namespace Test
     using Network::ByteString;
     using Network::Error;
     using Network::LogicError;
-    using Network::OptionalPathname;
     using Network::OsErrorResult;
     using Network::Pathname;
     using Network::Socket;
