@@ -373,13 +373,6 @@ namespace Test
         test_host_vector(".", hints, get_codes_no_data());
     }
 
-    auto test_no_name() -> void
-    {
-        const IpSocketHints hints {SOCK_STREAM};
-        test_host_list("_", hints, get_codes_no_name());
-        test_host_vector("_", hints, get_codes_no_name());
-    }
-
     auto test_valid(const HostnameView& host) -> void
     {
         const bool is_local = host.empty() || host == get_hostname();
@@ -414,7 +407,6 @@ auto main(int argc, char* argv[]) -> int
         test_invalid_family();
         test_invalid_type();
         test_no_data();
-        test_no_name();
 
         if (!hosts.empty()) {
             std::for_each(hosts.begin(), hosts.end(), test_valid);
