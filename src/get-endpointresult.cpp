@@ -77,5 +77,8 @@ auto Network::get_endpointresult(const ByteString& addr, int flags,
         return OsErrorResult {os_error, oss.str()};
     }
 
-    return Endpoint {hostname_buffer, service_buffer};
+    return Endpoint {
+        std::string {hostname_buffer},
+        std::string {service_buffer}
+    };
 }
