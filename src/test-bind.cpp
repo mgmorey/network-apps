@@ -43,7 +43,6 @@
 #include <optional>     // std:nullopt
 #include <set>          // std::set
 #include <type_traits>  // std::decay_t, std::is_same_v
-#include <utility>      // std::move()
 #include <variant>      // std::visit()
 
 namespace Test
@@ -75,7 +74,7 @@ namespace Test
     {
     public:
         Test(EndpointView t_endpoint, std::ostream& t_os) :
-            m_endpoint(std::move(t_endpoint)),
+            m_endpoint(t_endpoint),
             m_os(t_os)
         {
         }
