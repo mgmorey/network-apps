@@ -44,7 +44,6 @@
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <set>          // std::set
 #include <type_traits>  // std::decay_t, std::is_same_v
-#include <utility>      // std::move()
 #include <variant>      // std::visit()
 
 namespace Test
@@ -99,10 +98,10 @@ namespace Test
         }
 
         Test(EndpointView t_endpoint,
-             Hostname t_hostname,
+             const Hostname& t_hostname,
              std::ostream& t_os) :
-            m_endpoint(std::move(t_endpoint)),
-            m_hostname(std::move(t_hostname)),
+            m_endpoint(t_endpoint),
+            m_hostname(t_hostname),
             m_os(t_os)
         {
         }
