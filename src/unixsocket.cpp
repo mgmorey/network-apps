@@ -16,13 +16,13 @@
 #include "network/unixsocket.h"                 // UnixSocket
 #include "network/bytestring.h"                 // ByteString
 #include "network/handle-type.h"                // handle_type
-#include "network/optionalpathname.h"           // OptionalPathname
 #include "network/oserrorresult.h"              // OsErrorResult
 #include "network/socket-family-type.h"         // socket_family_type
 #include "network/to-path.h"                    // to_path()
 
 #include <filesystem>   // std::filesystem
 #include <iostream>     // std::cout, std::endl
+#include <string_view>  // std::string_view
 
 Network::UnixSocket::UnixSocket(socket_family_type t_family,
                                 handle_type t_handle,
@@ -48,20 +48,20 @@ auto Network::UnixSocket::open(const ByteString& t_addr,
     return result;
 }
 
-auto Network::UnixSocket::remove(const OptionalPathname& t_path) const -> bool
+auto Network::UnixSocket::remove(std::string_view t_path) const -> bool
 {
-    if (!t_path) {
+    if (t_path.empty()) {
         return false;
     }
 
     if (is_verbose()) {
         std::cout << "Calling std::filesystem::remove("
-                  << *t_path
+                  << t_path
                   << ')'
                   << std::endl;
     }
 
-    return std::filesystem::remove(*t_path);
+    return std::filesystem::remove(t_path);
 }
 
 auto Network::UnixSocket::state(SocketState t_state) -> UnixSocket&

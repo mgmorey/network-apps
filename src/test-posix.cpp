@@ -85,7 +85,7 @@ namespace Test
     auto operator==(const ByteString& addr,
                     const std::string_view& path) -> bool
     {
-        return to_path(addr).value_or("") == path;
+        return to_path(addr) == path;
     }
 
     auto get_pathname(std::string::size_type size) -> Pathname

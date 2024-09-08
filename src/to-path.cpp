@@ -18,13 +18,13 @@
 #include "network/to-path.h"                    // to_path()
 #include "network/bytestring.h"                 // ByteString
 #include "network/get-sun-pointer.h"            // get_sun_pointer()
-#include "network/optionalpathname.h"           // OptionalPathname
 #include "network/sun-length-limits.h"          // sun_length_min
 
 #include <cstring>      // ::strnlen()
-#include <string>       // std::string
 
-auto Network::to_path(const ByteString& addr) -> OptionalPathname
+#include <string_view>  // std::string_view
+
+auto Network::to_path(const ByteString& addr) -> std::string_view
 {
     const auto* const sun {get_sun_pointer(addr)};
     const auto path_len {addr.size() - sun_length_min};
@@ -34,7 +34,7 @@ auto Network::to_path(const ByteString& addr) -> OptionalPathname
     }
 
     const auto* const path {static_cast<const char*>(sun->sun_path)};
-    return std::string {path, ::strnlen(path, path_len - 1)};
+    return {path, ::strnlen(path, path_len - 1)};
 }
 
 #endif

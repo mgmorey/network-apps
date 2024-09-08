@@ -17,12 +17,13 @@
 #define NETWORK_TO_PATH_H
 
 #include "network/bytestring.h"         // ByteString
-#include "network/optionalpathname.h"   // Pathname
+
+#include <string_view>  // std::string_view
 
 namespace Network
 {
 #ifndef WIN32
-    extern auto to_path(const ByteString& addr) -> OptionalPathname;
+    extern auto to_path(const ByteString& addr) -> std::string_view;
 #endif
 }
 

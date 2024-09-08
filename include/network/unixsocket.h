@@ -22,6 +22,8 @@
 #include "network/socket-family-type.h"         // socket_family_type
 #include "network/socketstate.h"                // SocketState
 
+#include <string_view>  // std::string_view
+
 namespace Network
 {
     class UnixSocket final
@@ -41,11 +43,11 @@ namespace Network
                                 bool t_is_bind) -> OsErrorResult final;
 
     protected:
-        [[nodiscard]] auto remove(const OptionalPathname& t_path) const -> bool;
+        [[nodiscard]] auto remove(std::string_view t_path) const -> bool;
         auto state(SocketState t_state) -> UnixSocket&;
 
     private:
-        OptionalPathname m_path;
+        std::string_view m_path;
         SocketState m_state {SocketState::allocated};
     };
 }
