@@ -18,14 +18,15 @@
 
 #include "network/logicerror.h"         // LogicError
 
+#include <string_view>  // std::string_view
+
 namespace Network
 {
     class AddressError :
         public LogicError
     {
     public:
-        explicit AddressError(const std::string& t_str) noexcept;
-        explicit AddressError(std::string&& t_str) noexcept;
+        explicit AddressError(const std::string_view& t_sv) noexcept;
         AddressError(const AddressError&) noexcept = default;
         AddressError(AddressError&&) noexcept = default;
         ~AddressError() noexcept override = default;

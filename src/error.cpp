@@ -15,16 +15,10 @@
 
 #include "network/error.h"              // Error
 
-#include <string>       // std::string
-#include <utility>      // std::move()
+#include <string_view>  // std::string_view
 
-Network::Error::Error(const std::string& t_str) noexcept :
-    m_str(t_str)
-{
-}
-
-Network::Error::Error(std::string&& t_str) noexcept :
-    m_str(std::move(t_str))
+Network::Error::Error(const std::string_view& t_sv) noexcept :
+    m_str(t_sv)
 {
 }
 

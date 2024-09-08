@@ -16,7 +16,9 @@
 #ifndef NETWORK_RUNTIMEERROR_H
 #define NETWORK_RUNTIMEERROR_H
 
-#include "network/error.h"              // Error, std::string
+#include "network/error.h"              // Error
+
+#include <string_view>  // std::string_view
 
 namespace Network
 {
@@ -24,8 +26,7 @@ namespace Network
         public Error
     {
     public:
-        explicit RuntimeError(const std::string& t_str) noexcept;
-        explicit RuntimeError(std::string&& t_str) noexcept;
+        explicit RuntimeError(const std::string_view& t_sv) noexcept;
         RuntimeError(const RuntimeError&) noexcept = default;
         RuntimeError(RuntimeError&&) noexcept = default;
         ~RuntimeError() noexcept override = default;

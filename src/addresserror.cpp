@@ -16,15 +16,9 @@
 #include "network/addresserror.h"               // AddressError
 #include "network/logicerror.h"                 // LogicError
 
-#include <string>       // std::string
-#include <utility>      // std::move()
+#include <string_view>  // std::string_view
 
-Network::AddressError::AddressError(const std::string& t_str) noexcept :
-    LogicError(t_str)
-{
-}
-
-Network::AddressError::AddressError(std::string&& t_str) noexcept :
-    LogicError(std::move(t_str))
+Network::AddressError::AddressError(const std::string_view& t_sv) noexcept :
+    LogicError(t_sv)
 {
 }

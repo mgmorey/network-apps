@@ -17,7 +17,7 @@
 #include "network/logicerror.h"         // LogicError
 
 #include <string>       // std::string
-#include <utility>      // std::move()
+#include <string_view>  // std::string_view
 
 #include <version>
 
@@ -27,10 +27,10 @@
 #include <sstream>      // std::ostringstream
 #endif
 
-auto Network::RangeError::format(const std::string& t_value,
-                                 const std::string& t_min,
-                                 const std::string& t_max,
-                                 const std::string& t_type) -> std::string
+auto Network::RangeError::format(const std::string_view& t_value,
+                                 const std::string_view& t_min,
+                                 const std::string_view& t_max,
+                                 const std::string_view& t_type) -> std::string
 {
 #ifdef __cpp_lib_format
     return std::format("Value {} is out of range [{}, {}] of {}",
@@ -49,21 +49,15 @@ auto Network::RangeError::format(const std::string& t_value,
 #endif
 }
 
-Network::RangeError::RangeError(const std::string& t_str) noexcept :
-    LogicError(t_str)
+Network::RangeError::RangeError(const std::string_view& t_sv) noexcept :
+    LogicError(t_sv)
 {
 }
 
-
-Network::RangeError::RangeError(std::string&& t_str) noexcept :
-    LogicError(std::move(t_str))
-{
-}
-
-Network::RangeError::RangeError(const std::string& t_value,
-                                const std::string& t_min,
-                                const std::string& t_max,
-                                const std::string& t_type) noexcept :
+Network::RangeError::RangeError(const std::string_view& t_value,
+                                const std::string_view& t_min,
+                                const std::string_view& t_max,
+                                const std::string_view& t_type) noexcept :
     LogicError(format(t_value, t_min, t_max, t_type))
 {
 }

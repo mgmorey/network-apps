@@ -16,7 +16,9 @@
 #ifndef NETWORK_LOGICERROR_H
 #define NETWORK_LOGICERROR_H
 
-#include "network/error.h"              // Error, std::string
+#include "network/error.h"              // Error
+
+#include <string_view>  // std::string_view
 
 namespace Network
 {
@@ -24,8 +26,7 @@ namespace Network
         public Error
     {
     public:
-        explicit LogicError(const std::string& t_str) noexcept;
-        explicit LogicError(std::string&& t_str) noexcept;
+        explicit LogicError(const std::string_view& t_sv) noexcept;
         LogicError(const LogicError&) noexcept = default;
         LogicError(LogicError&&) noexcept = default;
         ~LogicError() noexcept override = default;

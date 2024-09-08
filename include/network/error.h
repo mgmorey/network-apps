@@ -18,6 +18,7 @@
 
 #include <exception>    // std::exception
 #include <string>       // std::string
+#include <string_view>  // std::string_view
 
 namespace Network
 {
@@ -25,8 +26,7 @@ namespace Network
         public std::exception
     {
     public:
-        explicit Error(const std::string& t_str) noexcept;
-        explicit Error(std::string&& t_str) noexcept;
+        explicit Error(const std::string_view& t_sv) noexcept;
         Error(const Error&) noexcept = default;
         Error(Error&&) noexcept = default;
         ~Error() noexcept override = default;

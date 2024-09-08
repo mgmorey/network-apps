@@ -19,7 +19,7 @@
 #include "network/rangeerror.h"        // RangeError
 
 #include <limits>       // std::numeric_limits
-#include <string>       // std::string
+#include <string_view>  // std::string_view
 
 namespace Network
 {
@@ -28,7 +28,8 @@ namespace Network
         public RangeError
     {
     public:
-        ValueError(const std::string& t_value_type, auto t_value,
+        ValueError(const std::string_view& t_value_type,
+                   auto t_value,
                    T t_min = std::numeric_limits<T>::min(),
                    T t_max = std::numeric_limits<T>::max()) noexcept :
             RangeError(std::to_string(t_value),

@@ -16,7 +16,10 @@
 #ifndef NETWORK_RANGEERROR_H
 #define NETWORK_RANGEERROR_H
 
-#include "network/logicerror.h"         // LogicError, std::string
+#include "network/logicerror.h"         // LogicError
+
+#include <string>       // std::string
+#include <string_view>  // std::string_view
 
 namespace Network
 {
@@ -24,16 +27,15 @@ namespace Network
         public LogicError
     {
     public:
-        static auto format(const std::string& t_value,
-                           const std::string& t_min,
-                           const std::string& t_max,
-                           const std::string& t_type) -> std::string;
-        explicit RangeError(const std::string& t_str) noexcept;
-        explicit RangeError(std::string&& t_str) noexcept;
-        RangeError(const std::string& t_value,
-                   const std::string& t_min,
-                   const std::string& t_max,
-                   const std::string& t_type) noexcept;
+        static auto format(const std::string_view& t_value,
+                           const std::string_view& t_min,
+                           const std::string_view& t_max,
+                           const std::string_view& t_type) -> std::string;
+        explicit RangeError(const std::string_view& t_sv) noexcept;
+        RangeError(const std::string_view& t_value,
+                   const std::string_view& t_min,
+                   const std::string_view& t_max,
+                   const std::string_view& t_type) noexcept;
         RangeError(const RangeError&) noexcept = default;
         RangeError(RangeError&&) noexcept = default;
         ~RangeError() noexcept override = default;

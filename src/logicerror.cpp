@@ -16,15 +16,9 @@
 #include "network/logicerror.h"         // LogicError
 #include "network/error.h"              // Error
 
-#include <string>       // std::string
-#include <utility>      // std::move()
+#include <string_view>  // std::string_view
 
-Network::LogicError::LogicError(const std::string& t_str) noexcept :
-    Error(t_str)
-{
-}
-
-Network::LogicError::LogicError(std::string&& t_str) noexcept :
-    Error(std::move(t_str))
+Network::LogicError::LogicError(const std::string_view& t_sv) noexcept :
+    Error(t_sv)
 {
 }
