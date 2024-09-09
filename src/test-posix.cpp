@@ -307,7 +307,7 @@ namespace Test
         std::string actual_error_str;
 
         try {
-            const SharedSocket sock {create(hints, is_verbose)};
+            const auto sock {create(hints, is_verbose)};
         }
         catch (const Error& error) {
             print(error);
