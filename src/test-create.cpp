@@ -87,10 +87,10 @@ namespace Test
 
         try {
             SharedSocket sock_1;
-            const SharedSocket sock_2 {sock_1};
+            const auto sock_2 {sock_1};
             assert(!static_cast<bool>(sock_1));
             assert(!static_cast<bool>(sock_2));
-            sock_1 = SharedSocket {create(hints, is_verbose)};
+            sock_1 = create(hints, is_verbose);
             const SharedSocket sock_3 {sock_1};
             assert(static_cast<bool>(sock_1));
             assert(static_cast<bool>(sock_3));
