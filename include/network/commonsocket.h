@@ -17,10 +17,10 @@
 #define NETWORK_COMMONSOCKET_H
 
 #include "network/bytestring.h"                 // ByteString
-#include "network/genericsocket.h"              // GenericSocket
 #include "network/handle-null.h"                // handle_null
 #include "network/handle-type.h"                // handle_type
 #include "network/socket-family-type.h"         // socket_family_type
+#include "network/socket.h"                     // Socket
 
 #ifdef WIN32
 #include <winsock2.h>       // AF_UNSPEC
@@ -33,7 +33,7 @@
 namespace Network
 {
     class CommonSocket
-        : public GenericSocket
+        : public Socket
     {
     public:
         CommonSocket() noexcept = default;

@@ -1,4 +1,4 @@
-// Copyright (C) 2023  "Michael G. Morey" <mgmorey@gmail.com>
+// Copyright (C) 2022  "Michael G. Morey" <mgmorey@gmail.com>
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,20 +13,19 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_READ_H
-#define NETWORK_READ_H
+#ifndef NETWORK_SHAREDSOCKET_H
+#define NETWORK_SHAREDSOCKET_H
 
-#include "network/sharedsocket.h"               // SharedSocket
+#include "network/socket.h"             // Socket
 
-#include <sys/types.h>          // ssize_t
-
-#include <cstddef>      // std::size_t
+#include <memory>       // std::shared_ptr
+#include <ostream>      // std::ostream
 
 namespace Network
 {
-    extern auto read(const SharedSocket& sock,
-                     char* data,
-                     std::size_t size) -> ssize_t;
+    using SharedSocket = std::shared_ptr<Socket>;
+    extern auto operator<<(std::ostream& os,
+                           const SharedSocket& sock) -> std::ostream&;
 }
 
 #endif

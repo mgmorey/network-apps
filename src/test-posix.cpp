@@ -45,7 +45,7 @@ namespace Test
     using Network::LogicError;
     using Network::OsErrorResult;
     using Network::Pathname;
-    using Network::Socket;
+    using Network::SharedSocket;
     using Network::SocketHints;
     using Network::SocketPair;
     using Network::UnixSocketHints;
@@ -145,7 +145,7 @@ namespace Test
         }
     }
 
-    auto print(const Socket& sock, const ByteString& addr) -> void
+    auto print(const SharedSocket& sock, const ByteString& addr) -> void
     {
         std::cout << "Socket "
                   << std::right << std::setw(handle_width) << sock
@@ -174,7 +174,7 @@ namespace Test
     }
 
     auto test_path(const auto path,
-                   const Socket& sock,
+                   const SharedSocket& sock,
                    const ErrorCodeSet& expected_codes,
                    const std::string& expected_error_re) -> void
     {
@@ -307,7 +307,7 @@ namespace Test
         std::string actual_error_str;
 
         try {
-            const Socket sock {create(hints, is_verbose)};
+            const SharedSocket sock {create(hints, is_verbose)};
         }
         catch (const Error& error) {
             print(error);

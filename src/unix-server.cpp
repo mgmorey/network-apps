@@ -28,7 +28,7 @@
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <string>       // std::stoll(), std::string, std::to_string()
 
-using Network::Socket;
+using Network::SharedSocket;
 using Network::UnixSocketHints;
 using Network::create;
 using Network::socket_error;
@@ -40,7 +40,7 @@ static constexpr auto backlog_size {20};
 static auto is_verbose {false};  // NOLINT
 
 namespace Server {
-    auto accept(const Socket& bind_sock) -> Socket
+    auto accept(const SharedSocket& bind_sock) -> SharedSocket
     {
         auto [accept_sock, accept_addr] {Network::accept(bind_sock)};
 
@@ -53,9 +53,9 @@ namespace Server {
         return accept_sock;
     }
 
-    auto bind() -> Socket
+    auto bind() -> SharedSocket
     {
-        Socket sock {create(UnixSocketHints {SOCK_SEQPACKET}, is_verbose)};
+        SharedSocket sock {create(UnixSocketHints {SOCK_SEQPACKET}, is_verbose)};
 
         if (const auto result {sock->bind(SOCKET_NAME)}) {
             std::cerr << result.string() << std::endl;
@@ -65,7 +65,7 @@ namespace Server {
         return sock;
     }
 
-    auto listen(const Socket& sock) -> void
+    auto listen(const SharedSocket& sock) -> void
     {
         if (const auto result {sock->listen(backlog_size)}) {
             std::cerr << result.string() << std::endl;
@@ -91,7 +91,7 @@ namespace Server {
         }
     }
 
-    auto read(const Socket& sock) -> std::string
+    auto read(const SharedSocket& sock) -> std::string
     {
         static constexpr auto size {BUFFER_SIZE};
         const auto [str, error] {Network::read_string(sock, size)};
@@ -104,7 +104,7 @@ namespace Server {
         return str;
     }
 
-    auto write(const Socket& sock, auto value) -> void
+    auto write(const SharedSocket& sock, auto value) -> void
     {
         const auto str {std::to_string(value)};
         const auto error {Network::write(sock, str)};

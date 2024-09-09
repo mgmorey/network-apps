@@ -17,13 +17,13 @@
 #define NETWORK_SOCKETRESULT_H
 
 #include "network/oserrorresult.h"      // OsErrorResult
-#include "network/socket.h"             // Socket
+#include "network/sharedsocket.h"       // SharedSocket
 
 #include <variant>      // std::variant
 
 namespace Network
 {
-    using SocketResult = std::variant<Socket, OsErrorResult>;
+    using SocketResult = std::variant<SharedSocket, OsErrorResult>;
 }
 
 #endif

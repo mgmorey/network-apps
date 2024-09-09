@@ -58,7 +58,6 @@
 #include "network/exceptions.h"                 // Error, LogicError,
                                                 // RuntimeError
 #include "network/failuremode.h"                // FailureMode
-#include "network/genericsocket.h"              // GenericSocket
 #include "network/get-context.h"                // get_context()
 #include "network/get-endpoint.h"               // get_endpoint()
 #include "network/get-endpointresult.h"         // get_endpointresult()
@@ -98,6 +97,7 @@
                                                 // reset_last_os_error()
 #include "network/overloaded.h"                 // Overloaded
 #include "network/read-string.h"                // read_string()
+#include "network/sharedsocket.h"               // SharedSocket
 #include "network/socket-error.h"               // socket_error
 #include "network/socket.h"                     // Socket
 #include "network/socketfamily.h"               // SocketFamily

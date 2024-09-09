@@ -19,20 +19,20 @@
 #include "network/error-strings.h"              // VISITOR_ERROR
 #include "network/error.h"                      // Error
 #include "network/oserrorresult.h"              // OsErrorResult
-#include "network/socket.h"                     // Socket
+#include "network/sharedsocket.h"               // SharedSocket
 #include "network/sockethints.h"                // SocketHints
 
 #include <type_traits>  // std::decay_t, std::is_same_v
 #include <variant>      // std::visit()
 
-auto Network::create(const SocketHints& hints, bool is_verbose) -> Socket
+auto Network::create(const SocketHints& hints, bool is_verbose) -> SharedSocket
 {
-    Socket sock;
+    SharedSocket sock;
     const auto result {create_result(hints, is_verbose)};
     std::visit([&](auto&& arg) {
         using T = std::decay_t<decltype(arg)>;
 
-        if constexpr (std::is_same_v<T, Socket>) {
+        if constexpr (std::is_same_v<T, SharedSocket>) {
             sock = arg;
         }
         else if constexpr (std::is_same_v<T, OsErrorResult>) {

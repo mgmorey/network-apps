@@ -16,13 +16,13 @@
 #ifndef NETWORK_CREATE_HINTS_H
 #define NETWORK_CREATE_HINTS_H
 
-#include "network/socket.h"                     // Socket
+#include "network/sharedsocket.h"               // SharedSocket
 #include "network/sockethints.h"                // SocketHints
 
 namespace Network
 {
     extern auto create(const SocketHints& hints,
-                       bool is_verbose = false) -> Socket;
+                       bool is_verbose = false) -> SharedSocket;
 }
 
 #endif

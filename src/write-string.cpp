@@ -14,14 +14,15 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/write-string.h"       // write_string()
-#include "network/socket.h"             // Socket
+#include "network/sharedsocket.h"       // SharedSocket
 #include "network/write.h"              // write()
 
 #include <sys/types.h>          // ssize_t
 
 #include <string_view>  // std::string_view
 
-auto Network::write(const Socket& sock, std::string_view str) -> ssize_t
+auto Network::write(const SharedSocket& sock,
+                    std::string_view str) -> ssize_t
 {
     return write(sock, str.data(), str.size());
 }

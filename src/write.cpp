@@ -14,7 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/write.h"              // write()
-#include "network/socket.h"             // Socket
+#include "network/sharedsocket.h"       // SharedSocket
 
 #include <sys/types.h>          // ssize_t
 
@@ -26,7 +26,7 @@
 
 #include <cstddef>      // std::size_t
 
-auto Network::write(const Socket& sock,
+auto Network::write(const SharedSocket& sock,
                     const char* data,
                     std::size_t size) -> ssize_t
 {

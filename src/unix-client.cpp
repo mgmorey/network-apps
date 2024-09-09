@@ -30,7 +30,7 @@
 #include <string>       // std::string, std::to_string()
 
 using Network::ArgumentSpan;
-using Network::Socket;
+using Network::SharedSocket;
 using Network::UnixSocketHints;
 using Network::create;
 using Network::socket_error;
@@ -38,9 +38,9 @@ using Network::socket_error;
 static auto is_verbose {false};  // NOLINT
 
 namespace Client {
-    auto connect() -> Socket
+    auto connect() -> SharedSocket
     {
-        Socket sock {create(UnixSocketHints {SOCK_SEQPACKET}, is_verbose)};
+        SharedSocket sock {create(UnixSocketHints {SOCK_SEQPACKET}, is_verbose)};
 
         if (const auto error {sock->connect(SOCKET_NAME)}) {
             std::cerr << error.string() << std::endl;
@@ -69,7 +69,7 @@ namespace Client {
         return operands;
     }
 
-    auto read(const Socket& sock) -> std::string
+    auto read(const SharedSocket& sock) -> std::string
     {
         static constexpr auto size {BUFFER_SIZE};
         const auto [str, error] {Network::read_string(sock, size)};
@@ -82,7 +82,7 @@ namespace Client {
         return str;
     }
 
-    auto write(const std::string& str, const Socket& sock) -> void
+    auto write(const std::string& str, const SharedSocket& sock) -> void
     {
         const auto error {Network::write(sock, str)};
 

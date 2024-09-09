@@ -16,7 +16,7 @@
 #ifndef NETWORK_SOCKETPAIR_H
 #define NETWORK_SOCKETPAIR_H
 
-#include "network/socket.h"                     // Socket
+#include "network/sharedsocket.h"               // SharedSocket
 #include "network/sockethints.h"                // SocketHints
 #include "network/socketpair-size.h"            // socketpair_size
 
@@ -30,17 +30,17 @@ namespace Network
     {
     public:
         using size_type = std::size_t;
-        using value_type = std::array<Socket, socketpair_size>;
+        using value_type = std::array<SharedSocket, socketpair_size>;
 
         explicit SocketPair(const SocketHints& t_hints, bool t_is_verbose = false);
-        SocketPair(Socket t_socket_1, Socket t_socket_2) noexcept;
+        SocketPair(SharedSocket t_socket_1, SharedSocket t_socket_2) noexcept;
         SocketPair(const SocketPair&) noexcept = default;
         SocketPair(SocketPair&&) noexcept = default;
         ~SocketPair() noexcept = default;
         auto operator=(const SocketPair&) noexcept -> SocketPair& = default;
         auto operator=(SocketPair&&) noexcept -> SocketPair& = default;
-        [[nodiscard]] auto at(size_type t_index) const -> Socket;
-        [[nodiscard]] auto at(size_type t_index) -> Socket;
+        [[nodiscard]] auto at(size_type t_index) const -> SharedSocket;
+        [[nodiscard]] auto at(size_type t_index) -> SharedSocket;
 
     private:
         value_type m_socket_pair;

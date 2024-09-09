@@ -17,13 +17,13 @@
 #define NETWORK_OPENSOCKETPARAMS_H
 
 #include "network/bytestring.h"         // ByteString
-#include "network/socket.h"             // Socket
+#include "network/sharedsocket.h"       // SharedSocket
 
 namespace Network
 {
     struct OpenSocketParams
     {
-        const Socket& socket;
+        const SharedSocket& socket;
         const ByteString& addr;
     };
 }
