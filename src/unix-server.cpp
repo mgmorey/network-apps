@@ -30,7 +30,6 @@
 #include <string>       // std::stoll(), std::string, std::to_string()
 
 using Network::SharedSocket;
-using Network::UnixSocketHints;
 using Network::create;
 using Network::socket_error;
 
