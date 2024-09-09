@@ -133,8 +133,8 @@ namespace Test
         std::string actual_error_str;
 
         try {
-            const SharedSocket sock_1 {create(hints, is_verbose)};
-            const SharedSocket sock_2 {sock_1};
+            const auto sock_1 {create(hints, is_verbose)};
+            const auto sock_2 {sock_1};
             assert(static_cast<bool>(sock_1));
             assert(static_cast<bool>(sock_2));
             assert(static_cast<handle_type>(*sock_1) != handle_null);
