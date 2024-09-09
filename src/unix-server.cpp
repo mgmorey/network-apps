@@ -55,7 +55,8 @@ namespace Server {
 
     auto bind() -> SharedSocket
     {
-        SharedSocket sock {create(UnixSocketHints {SOCK_SEQPACKET}, is_verbose)};
+        const UnixSocketHints hints {SOCK_SEQPACKET};
+        auto sock {create(hints, is_verbose)};
 
         if (const auto result {sock->bind(SOCKET_NAME)}) {
             std::cerr << result.string() << std::endl;
