@@ -40,7 +40,8 @@ static auto is_verbose {false};  // NOLINT
 namespace Client {
     auto connect() -> SharedSocket
     {
-        SharedSocket sock {create(UnixSocketHints {SOCK_SEQPACKET}, is_verbose)};
+        const UnixSocketHints hints {SOCK_SEQPACKET};
+        auto sock {create(hints, is_verbose)};
 
         if (const auto error {sock->connect(SOCKET_NAME)}) {
             std::cerr << error.string() << std::endl;
