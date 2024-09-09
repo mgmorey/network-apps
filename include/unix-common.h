@@ -16,11 +16,11 @@
 #ifndef UNIX_COMMON_H
 #define UNIX_COMMON_H
 
-/*
- * File connection.h
- */
+#include "network/unixsockethints.h"    // UnixSocketHints
 
-constexpr auto SOCKET_NAME {"/tmp/9Lq7BNBnBycd6nxy.socket"};
+constexpr auto BACKLOG_SIZE {20};
 constexpr auto BUFFER_SIZE {12};
+constexpr auto SOCKET_NAME {"/tmp/9Lq7BNBnBycd6nxy.socket"};
+constexpr Network::UnixSocketHints SOCKET_HINTS {SOCK_SEQPACKET};
 
 #endif

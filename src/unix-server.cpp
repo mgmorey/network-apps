@@ -13,12 +13,13 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/network.h"            // Address, Socket, accept(),
-                                        // bind(), listen(),
+#include "network/network.h"            // Address, SharedSocket,
+                                        // accept(), bind(), listen(),
                                         // read_string(),
                                         // socket_error, write()
 #include "network/parse.h"              // parse()
-#include "unix-common.h"                // BUFFER_SIZE, SOCKET_NAME
+#include "unix-common.h"                // BACKLOG_SIZE, BUFFER_SIZE,
+                                        // SOCKET_NAME, SOCKET_HINTS
 
 #include <sys/socket.h>         // SOCK_SEQPACKET
 
@@ -34,8 +35,6 @@ using Network::create;
 using Network::socket_error;
 
 using Number = long long;
-
-static constexpr auto backlog_size {20};
 
 static auto is_verbose {false};  // NOLINT
 
@@ -55,8 +54,7 @@ namespace Server {
 
     auto bind() -> SharedSocket
     {
-        const UnixSocketHints hints {SOCK_SEQPACKET};
-        auto sock {create(hints, is_verbose)};
+        auto sock {create(SOCKET_HINTS, is_verbose)};
 
         if (const auto result {sock->bind(SOCKET_NAME)}) {
             std::cerr << result.string() << std::endl;
@@ -68,7 +66,7 @@ namespace Server {
 
     auto listen(const SharedSocket& sock) -> void
     {
-        if (const auto result {sock->listen(backlog_size)}) {
+        if (const auto result {sock->listen(BACKLOG_SIZE)}) {
             std::cerr << result.string() << std::endl;
             std::exit(EXIT_FAILURE);
         }

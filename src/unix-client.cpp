@@ -14,11 +14,12 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/argumentspan.h"       // ArgumentSpan
-#include "network/network.h"            // Socket, create(), connect(),
-                                        // read_string() socket_error,
-                                        // write()
+#include "network/network.h"            // SharedSocket, create(),
+                                        // connect(), read_string()
+                                        // socket_error, write()
 #include "network/parse.h"              // parse()
-#include "unix-common.h"                // BUFFER_SIZE, SOCKET_NAME
+#include "unix-common.h"                // BUFFER_SIZE, SOCKET_NAME,
+                                        // SOCKET_HINTS
 
 #include <sys/socket.h>         // SOCK_SEQPACKET
 #include <sys/un.h>             // AF_UNIX
@@ -31,7 +32,6 @@
 
 using Network::ArgumentSpan;
 using Network::SharedSocket;
-using Network::UnixSocketHints;
 using Network::create;
 using Network::socket_error;
 
@@ -40,8 +40,7 @@ static auto is_verbose {false};  // NOLINT
 namespace Client {
     auto connect() -> SharedSocket
     {
-        const UnixSocketHints hints {SOCK_SEQPACKET};
-        auto sock {create(hints, is_verbose)};
+        auto sock {create(SOCKET_HINTS, is_verbose)};
 
         if (const auto error {sock->connect(SOCKET_NAME)}) {
             std::cerr << error.string() << std::endl;
