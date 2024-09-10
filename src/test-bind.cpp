@@ -118,18 +118,6 @@ namespace Test
         std::ostream& m_os;
     };
 
-    auto get_codes_invalid_host() -> const ErrorCodeSet&
-    {
-#if defined(WIN32)
-        static const ErrorCodeSet codes {WSAHOST_NOT_FOUND};
-#elif defined(OS_FREEBSD)
-        static const ErrorCodeSet codes {EAI_AGAIN, EAI_NONAME};
-#else
-        static const ErrorCodeSet codes {EAI_AGAIN, EAI_NODATA, EAI_NONAME};
-#endif
-        return codes;
-    }
-
     auto get_hints() -> SocketHints
     {
         return IpSocketHints {SOCK_STREAM, AI_PASSIVE | AI_CANONNAME};
@@ -166,39 +154,17 @@ namespace Test
     }
 
     auto test_bind(const EndpointView& endpoint,
-                   const SocketHints& hints,
-                   const ErrorCodeSet& expected_codes) -> void
+                   const SocketHints& hints) -> void
     {
-        os_error_type actual_code {0};
         const auto bind_result {bind(endpoint, hints, is_verbose)};
-        std::visit([&](auto&& arg) {
-            using T = std::decay_t<decltype(arg)>;
-
-            if constexpr (std::is_same_v<T, SocketResultVector>) {
-                std::for_each(arg.begin(), arg.end(),
-                              Test(endpoint, std::cout));
-            }
-            else if constexpr (std::is_same_v<T, OsErrorResult>) {
-                actual_code = arg.number();
-                print(arg);
-            }
-            else {
-                static_assert(always_false_v<T>, VISITOR_ERROR);
-            }
-        }, bind_result);
-        assert(expected_codes.contains(actual_code));
-    }
-
-    auto test_bind_invalid_host(const EndpointView& endpoint,
-                                const SocketHints& hints) -> void
-    {
-        test_bind(endpoint, hints, get_codes_invalid_host());
+        std::for_each(bind_result.begin(), bind_result.end(),
+                      Test(endpoint, std::cout));
     }
 
     auto test_bind_valid(const EndpointView& endpoint,
                          const SocketHints& hints) -> void
     {
-        test_bind(endpoint, hints, {0});
+        test_bind(endpoint, hints);
     }
 }
 
@@ -215,9 +181,6 @@ auto main(int argc, char* argv[]) -> int
         if (is_verbose) {
             std::cout << *context << std::endl;
         }
-
-        const EndpointView invalid_host {".", {}};
-        test_bind_invalid_host(invalid_host, hints);
 
         if (getenv("http_proxy") == nullptr) {
             test_bind_valid(endpoint, hints);

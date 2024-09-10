@@ -14,10 +14,10 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/open-endpoint.h"              // open()
+#include "network/error.h"                      // Error()
 #include "network/insert-endpoint.h"            // insert()
 #include "network/open.h"                       // Open
 #include "network/openendpointparams.h"         // OpenEndpointParams
-#include "network/openresult.h"                 // OpenResult
 #include "network/socketresultvector.h"         // SocketResultVector
 #include "network/template.h"                   // Template
 
@@ -25,21 +25,17 @@
 #include <iterator>     // std::back_inserter()
 #include <vector>       // std::vector
 
-auto Network::open(const OpenEndpointParams& args, bool is_bind) -> OpenResult
+auto Network::open(const OpenEndpointParams& args, bool is_bind) -> SocketResultVector
 {
-    OpenResult result;
     std::vector<Template> templates;
 
     if (const auto error_result = insert(templates, args)) {
-        result = error_result;
-    }
-    else {
-        SocketResultVector socket_results;
-        std::transform(templates.begin(), templates.end(),
-                       std::back_inserter(socket_results),
-                       Open(args, is_bind));
-        result = socket_results;
+        throw Error(error_result.string());
     }
 
-    return result;
+    SocketResultVector socket_results;
+    std::transform(templates.begin(), templates.end(),
+                   std::back_inserter(socket_results),
+                   Open(args, is_bind));
+    return socket_results;
 }

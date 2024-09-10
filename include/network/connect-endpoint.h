@@ -16,15 +16,15 @@
 #ifndef NETWORK_CONNECT_ENDPOINT_H
 #define NETWORK_CONNECT_ENDPOINT_H
 
-#include "network/endpointview.h"       // EndpointView
-#include "network/openresult.h"         // OpenResult
-#include "network/sockethints.h"        // SocketHints
+#include "network/endpointview.h"               // EndpointView
+#include "network/sockethints.h"                // SocketHints
+#include "network/socketresultvector.h"         // SocketResultVector
 
 namespace Network
 {
     extern auto connect(const EndpointView& endpoint,
                         const SocketHints& hints,
-                        bool is_verbose = false) -> OpenResult;
+                        bool is_verbose = false) -> SocketResultVector;
 }
 
 #endif

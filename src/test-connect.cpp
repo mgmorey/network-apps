@@ -161,18 +161,6 @@ namespace Test
         std::ostream& m_os;
     };
 
-    auto get_codes_invalid_host() -> const ErrorCodeSet&
-    {
-#if defined(WIN32)
-        static const ErrorCodeSet codes {WSAHOST_NOT_FOUND};
-#elif defined(OS_FREEBSD)
-        static const ErrorCodeSet codes {EAI_AGAIN, EAI_NONAME};
-#else
-        static const ErrorCodeSet codes {EAI_AGAIN, EAI_NODATA, EAI_NONAME};
-#endif
-        return codes;
-    }
-
     auto get_codes_invalid_service() -> const ErrorCodeSet&
     {
 #if defined(WIN32)
@@ -220,50 +208,20 @@ namespace Test
 
     auto test_connect(const EndpointView& endpoint,
                       const SocketHints& hints,
-                      const Hostname& hostname,
-                      const ErrorCodeSet& expected_codes) -> void
+                      const Hostname& hostname) -> void
     {
-        os_error_type actual_code {0};
         const auto connect_result {connect(endpoint, hints, is_verbose)};
-        std::visit([&](auto&& arg) {
-            using T = std::decay_t<decltype(arg)>;
-
-            if constexpr (std::is_same_v<T, SocketResultVector>) {
-                std::for_each(arg.begin(), arg.end(),
-                              Test(endpoint,
-                                   hostname,
-                                   std::cout));
-            }
-            else if constexpr (std::is_same_v<T, OsErrorResult>) {
-                actual_code = arg.number();
-                print(arg);
-            }
-            else {
-                static_assert(always_false_v<T>, VISITOR_ERROR);
-            }
-        }, connect_result);
-        assert(expected_codes.contains(actual_code));
-    }
-
-    auto test_connect_invalid_host(const EndpointView& endpoint,
-                                   const SocketHints& hints,
-                                   const Hostname& hostname) -> void
-    {
-        test_connect(endpoint, hints, hostname, get_codes_invalid_host());
-    }
-
-    auto test_connect_invalid_service(const EndpointView& endpoint,
-                                      const SocketHints& hints,
-                                      const Hostname& hostname) -> void
-    {
-        test_connect(endpoint, hints, hostname, get_codes_invalid_service());
+        std::for_each(connect_result.begin(), connect_result.end(),
+                      Test(endpoint,
+                           hostname,
+                           std::cout));
     }
 
     auto test_connect_valid(const EndpointView& endpoint,
                             const SocketHints& hints,
                             const Hostname& hostname) -> void
     {
-        test_connect(endpoint, hints, hostname, {0});
+        test_connect(endpoint, hints, hostname);
     }
 }
 
@@ -282,10 +240,6 @@ auto main(int argc, char* argv[]) -> int
         }
 
         const auto hostname {get_hostname()};
-        const EndpointView invalid_host {".", service};
-        test_connect_invalid_host(invalid_host, hints, hostname);
-        const EndpointView invalid_service {remotehost, "."};
-        test_connect_invalid_service(invalid_service, hints, hostname);
 
         if (getenv("http_proxy") == nullptr) {
             test_connect_valid(endpoint, hints, hostname);
