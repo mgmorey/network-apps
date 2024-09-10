@@ -74,6 +74,7 @@ namespace Test
         R"(Call to ::socketpair\(.+\) failed with error \d+: .+)"
     };
     static constexpr auto handle_width {6};
+    static constexpr UnixSocketHints socket_hints {SOCK_STREAM};
 
     static auto is_verbose {false};  // NOLINT
 
@@ -211,13 +212,13 @@ namespace Test
                    const ErrorCodeSet& expected_codes,
                    const std::string& expected_error_re) -> void
     {
-        const auto sock {create(UnixSocketHints {SOCK_STREAM}, is_verbose)};
+        const auto sock {create(socket_hints, is_verbose)};
         return test_path(path, sock, expected_codes, expected_error_re);
     }
 
     auto test_path_valid(const auto path) -> void
     {
-        const auto sock {create(UnixSocketHints {SOCK_STREAM}, is_verbose)};
+        const auto sock {create(socket_hints, is_verbose)};
         test_path(path, sock, {0}, {});
         test_path(path, sock, {EADDRINUSE, EINVAL}, {});
     }
