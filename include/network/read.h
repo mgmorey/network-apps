@@ -16,7 +16,7 @@
 #ifndef NETWORK_READ_H
 #define NETWORK_READ_H
 
-#include "network/sharedsocket.h"               // SharedSocket
+#include "network/handle-type.h"        // handle_type
 
 #include <sys/types.h>          // ssize_t
 
@@ -24,7 +24,7 @@
 
 namespace Network
 {
-    extern auto read(const SharedSocket& sock,
+    extern auto read(handle_type handle,
                      char* data,
                      std::size_t size) -> ssize_t;
 }

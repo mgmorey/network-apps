@@ -16,15 +16,14 @@
 #ifndef NETWORK_READ_STRING_H
 #define NETWORK_READ_STRING_H
 
-#include "network/readresult.h"                 // ReadResult
-#include "network/sharedsocket.h"               // SharedSocket
+#include "network/readresult.h"         // ReadResult
+#include "network/socket.h"             // Socket
 
 #include <cstddef>      // std::size_t
 
 namespace Network
 {
-    extern auto read_string(const SharedSocket& sock,
-                            std::size_t size) -> ReadResult;
+    extern auto read_string(Socket& sock, std::size_t size) -> ReadResult;
 }
 
 #endif

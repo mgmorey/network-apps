@@ -14,7 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/write.h"              // write()
-#include "network/sharedsocket.h"       // SharedSocket
+#include "network/handle-type.h"        // handle_type
 
 #include <sys/types.h>          // ssize_t
 
@@ -26,11 +26,10 @@
 
 #include <cstddef>      // std::size_t
 
-auto Network::write(const SharedSocket& sock,
+auto Network::write(handle_type handle,
                     const char* data,
                     std::size_t size) -> ssize_t
 {
-    const auto handle {sock->handle()};
 #ifdef WIN32
     return ::send(handle, data, static_cast<int>(size), 0);
 #else

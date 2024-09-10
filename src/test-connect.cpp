@@ -57,6 +57,7 @@ namespace Test
     using Network::OsErrorResult;
     using Network::PeerName;
     using Network::SharedSocket;
+    using Network::Socket;
     using Network::SocketHints;
     using Network::SocketResult;
     using Network::SocketResultVector;
@@ -113,7 +114,7 @@ namespace Test
                 using T = std::decay_t<decltype(arg)>;
 
                 if constexpr (std::is_same_v<T, SharedSocket>) {
-                    test_socket(arg);
+                    test_socket(*arg);
                 }
                 else if constexpr (std::is_same_v<T, OsErrorResult>) {
                     auto actual_code {arg.number()};
@@ -129,12 +130,12 @@ namespace Test
             }, t_socket_result);
         }
 
-        auto test_socket(const SharedSocket& t_sock) -> void
+        auto test_socket(const Socket& t_sock) -> void
         {
-            const auto peer {t_sock->peername()};
-            const auto self {t_sock->sockname()};
+            const auto peer {t_sock.peername()};
+            const auto self {t_sock.sockname()};
             m_os << "Socket "
-                 << std::right << std::setw(handle_width) << *t_sock
+                 << std::right << std::setw(handle_width) << t_sock
                  << " connected "
                  << m_hostname
                  << " to "
@@ -145,7 +146,7 @@ namespace Test
                      string_null : m_endpoint.at(0))
                  << std::endl
                  << "Socket "
-                 << std::right << std::setw(handle_width) << *t_sock
+                 << std::right << std::setw(handle_width) << t_sock
                  << " connected "
                  << Address(self)
                  << std::endl

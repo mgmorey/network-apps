@@ -58,6 +58,8 @@ namespace Network
         [[nodiscard]] virtual auto name(bool t_is_peer) const -> ByteString = 0;
         [[nodiscard]] virtual auto open(const ByteString& t_addr,
                                         bool t_is_bind) -> OsErrorResult = 0;
+        [[nodiscard]] virtual auto read(char* data,
+                                        std::size_t size) -> ssize_t = 0;
 
         [[nodiscard]] auto peername() const -> ByteString
         {
@@ -68,6 +70,9 @@ namespace Network
         {
             return name(false);
         }
+
+        [[nodiscard]] virtual auto write(const char* data,
+                                         std::size_t size) -> ssize_t = 0;
     };
 
     extern auto operator<<(std::ostream& os,

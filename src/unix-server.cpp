@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/network.h"            // Address, SharedSocket,
-                                        // accept(), bind(), listen(),
+#include "network/network.h"            // Address, Socket, accept(),
+                                        // bind(), listen(),
                                         // read_string(),
                                         // socket_error, write()
 #include "network/parse.h"              // parse()
@@ -29,7 +29,7 @@
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <string>       // std::stoll(), std::string, std::to_string()
 
-using Network::SharedSocket;
+using Network::Socket;
 using Network::create;
 using Network::socket_error;
 
@@ -38,7 +38,7 @@ using Number = long long;
 static auto is_verbose {false};  // NOLINT
 
 namespace Server {
-    auto accept(const SharedSocket& bind_sock) -> SharedSocket
+    auto accept(const Socket& bind_sock)
     {
         auto [accept_sock, accept_addr] {Network::accept(bind_sock)};
 
@@ -51,7 +51,7 @@ namespace Server {
         return accept_sock;
     }
 
-    auto bind() -> SharedSocket
+    auto bind()
     {
         auto sock {create(SOCKET_HINTS, is_verbose)};
 
@@ -63,15 +63,15 @@ namespace Server {
         return sock;
     }
 
-    auto listen(const SharedSocket& sock) -> void
+    auto listen(const Socket& sock)
     {
-        if (const auto result {sock->listen(BACKLOG_SIZE)}) {
+        if (const auto result {sock.listen(BACKLOG_SIZE)}) {
             std::cerr << result.string() << std::endl;
             std::exit(EXIT_FAILURE);
         }
     }
 
-    auto parse(int argc, char** argv) -> void
+    auto parse(int argc, char** argv)
     {
         const auto arguments {Network::parse(argc, argv, "v")};
         const auto& options {arguments.second};
@@ -89,7 +89,7 @@ namespace Server {
         }
     }
 
-    auto read(const SharedSocket& sock) -> std::string
+    auto read(Socket& sock)
     {
         static constexpr auto size {BUFFER_SIZE};
         const auto [str, error] {Network::read_string(sock, size)};
@@ -102,7 +102,7 @@ namespace Server {
         return str;
     }
 
-    auto write(const SharedSocket& sock, auto value) -> void
+    auto write(Socket& sock, auto value)
     {
         const auto str {std::to_string(value)};
         const auto error {Network::write(sock, str)};
@@ -126,16 +126,16 @@ auto main(int argc, char* argv[]) -> int
 
         // Prepare for accepting connections. While one request is
         // being processed other requests can be waiting.
-        Server::listen(bind_sock);
+        Server::listen(*bind_sock);
 
         // This is the main loop for handling connections.
         while (!shutdown_pending) {
             // Wait for incoming connection.
-            const auto accept_sock {Server::accept(bind_sock)};
+            const auto accept_sock {Server::accept(*bind_sock)};
             std::string read_str;
             Number sum {};
 
-            while((read_str = Server::read(accept_sock)) != "DOWN" &&
+            while((read_str = Server::read(*accept_sock)) != "DOWN" &&
                   read_str != "END") {
                 // Add received inputs.
                 sum += std::stoll(read_str);
@@ -149,7 +149,7 @@ auto main(int argc, char* argv[]) -> int
 
             if (!shutdown_pending) {
                 // Send output sum.
-                Server::write(accept_sock, sum);
+                Server::write(*accept_sock, sum);
             }
         }
     }

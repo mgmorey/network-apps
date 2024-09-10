@@ -16,7 +16,7 @@
 #ifndef NETWORK_WRITE_H
 #define NETWORK_WRITE_H
 
-#include "network/sharedsocket.h"               // SharedSocket
+#include "network/handle-type.h"        // handle_type
 
 #include <sys/types.h>          // ssize_t
 
@@ -24,7 +24,7 @@
 
 namespace Network
 {
-    extern auto write(const SharedSocket& sock,
+    extern auto write(handle_type handle,
                       const char* data,
                       std::size_t size) -> ssize_t;
 }

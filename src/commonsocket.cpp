@@ -25,7 +25,9 @@
 #include "network/open-handle.h"                // open()
 #include "network/openhandleparams.h"           // OpenHandleParams
 #include "network/oserrorresult.h"              // OsErrorResult
+#include "network/read.h"                       // read()
 #include "network/socket-family-type.h"         // socket_family_type
+#include "network/write.h"                      // write()
 
 #include <cstddef>      // std::size_t
 #include <iostream>     // std::cerr, std::endl
@@ -105,4 +107,14 @@ auto Network::CommonSocket::open(const ByteString& t_addr,
     }
 
     return {};
+}
+
+auto Network::CommonSocket::read(char* data, std::size_t size) -> ssize_t
+{
+    return Network::read(m_handle, data, size);
+}
+
+auto Network::CommonSocket::write(const char* data, std::size_t size) -> ssize_t
+{
+    return Network::write(m_handle, data, size);
 }

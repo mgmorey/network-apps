@@ -55,6 +55,10 @@ namespace Network
         [[nodiscard]] auto name(bool t_is_peer) const -> ByteString final;
         [[nodiscard]] auto open(const ByteString& t_addr,
                                 bool t_is_bind) -> OsErrorResult override;
+        [[nodiscard]] auto read(char* data,
+                                std::size_t size) -> ssize_t final;
+        [[nodiscard]] auto write(const char* data,
+                                 std::size_t size) -> ssize_t final;
 
     private:
         mutable std::array<ByteString, 2> m_names;

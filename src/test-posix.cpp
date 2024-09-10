@@ -46,6 +46,7 @@ namespace Test
     using Network::OsErrorResult;
     using Network::Pathname;
     using Network::SharedSocket;
+    using Network::Socket;
     using Network::SocketHints;
     using Network::SocketPair;
     using Network::UnixSocketHints;
@@ -146,10 +147,10 @@ namespace Test
         }
     }
 
-    auto print(const SharedSocket& sock, const ByteString& addr) -> void
+    auto print(const Socket& sock, const ByteString& addr) -> void
     {
         std::cout << "Socket "
-                  << std::right << std::setw(handle_width) << *sock
+                  << std::right << std::setw(handle_width) << sock
                   << " bound to "
                   << Address(addr)
                   << std::endl;
@@ -175,7 +176,7 @@ namespace Test
     }
 
     auto test_path(const auto path,
-                   const SharedSocket& sock,
+                   Socket& sock,
                    const ErrorCodeSet& expected_codes,
                    const std::string& expected_error_re) -> void
     {
@@ -184,12 +185,12 @@ namespace Test
         try {
             assert(to_bytestring(path) == path);
 
-            if (const auto result {sock->bind(path)}) {
+            if (const auto result {sock.bind(path)}) {
                 print(result);
                 assert(expected_codes.contains(result.number()));
             }
             else {
-                const auto addr {sock->sockname()};
+                const auto addr {sock.sockname()};
                 print(sock, addr);
                 assert(addr == path);
             }
@@ -213,14 +214,14 @@ namespace Test
                    const std::string& expected_error_re) -> void
     {
         const auto sock {create(socket_hints, is_verbose)};
-        return test_path(path, sock, expected_codes, expected_error_re);
+        return test_path(path, *sock, expected_codes, expected_error_re);
     }
 
     auto test_path_valid(const auto path) -> void
     {
         const auto sock {create(socket_hints, is_verbose)};
-        test_path(path, sock, {0}, {});
-        test_path(path, sock, {EADDRINUSE, EINVAL}, {});
+        test_path(path, *sock, {0}, {});
+        test_path(path, *sock, {EADDRINUSE, EINVAL}, {});
     }
 
     auto test_paths_invalid() -> void

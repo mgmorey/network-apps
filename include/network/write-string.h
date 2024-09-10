@@ -16,7 +16,7 @@
 #ifndef NETWORK_WRITE_STRING_H
 #define NETWORK_WRITE_STRING_H
 
-#include "network/sharedsocket.h"               // SharedSocket
+#include "network/socket.h"             // Socket
 
 #include <sys/types.h>          // ssize_t
 
@@ -24,8 +24,7 @@
 
 namespace Network
 {
-    extern auto write(const SharedSocket& sock,
-                      std::string_view str) -> ssize_t;
+    extern auto write(Socket& sock, std::string_view sv) -> ssize_t;
 }
 
 #endif

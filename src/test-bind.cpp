@@ -40,7 +40,6 @@
 #include <exception>    // std::exception
 #include <iomanip>      // std::right, std::setw()
 #include <iostream>     // std::cerr, std::cout, std::endl
-#include <optional>     // std:nullopt
 #include <set>          // std::set
 #include <type_traits>  // std::decay_t, std::is_same_v
 #include <variant>      // std::visit()
@@ -53,6 +52,7 @@ namespace Test
     using Network::IpSocketHints;
     using Network::OsErrorResult;
     using Network::SharedSocket;
+    using Network::Socket;
     using Network::SocketHints;
     using Network::SocketResult;
     using Network::SocketResultVector;
@@ -85,7 +85,7 @@ namespace Test
                 using T = std::decay_t<decltype(arg)>;
 
                 if constexpr (std::is_same_v<T, SharedSocket>) {
-                    test_socket(arg);
+                    test_socket(*arg);
                 }
                 else if constexpr (std::is_same_v<T, OsErrorResult>) {
                     std::cerr << arg.string()
@@ -97,17 +97,17 @@ namespace Test
             }, t_socket_result);
         }
 
-        auto test_socket(const SharedSocket& t_sock) -> void
+        auto test_socket(const Socket& t_sock) -> void
         {
-            const auto self {t_sock->sockname()};
+            const auto self {t_sock.sockname()};
             m_os << "Socket "
-                 << std::right << std::setw(handle_width) << *t_sock
+                 << std::right << std::setw(handle_width) << t_sock
                  << " bound on "
                  << (m_endpoint.at(0).data() != nullptr ?
                      string_null : m_endpoint.at(0))
                  << std::endl
                  << "Socket "
-                 << std::right << std::setw(handle_width) << *t_sock
+                 << std::right << std::setw(handle_width) << t_sock
                  << " bound to "
                  << Address(self)
                  << std::endl;

@@ -14,8 +14,8 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/argumentspan.h"       // ArgumentSpan
-#include "network/network.h"            // SharedSocket, create(),
-                                        // connect(), read_string()
+#include "network/network.h"            // Socket, create(),
+                                        // connect(), read_string(),
                                         // socket_error, write()
 #include "network/parse.h"              // parse()
 #include "unix-common.h"                // BUFFER_SIZE, SOCKET_NAME,
@@ -31,14 +31,14 @@
 #include <string>       // std::string, std::to_string()
 
 using Network::ArgumentSpan;
-using Network::SharedSocket;
+using Network::Socket;
 using Network::create;
 using Network::socket_error;
 
 static auto is_verbose {false};  // NOLINT
 
 namespace Client {
-    auto connect() -> SharedSocket
+    auto connect()
     {
         auto sock {create(SOCKET_HINTS, is_verbose)};
 
@@ -50,7 +50,7 @@ namespace Client {
         return sock;
     }
 
-    auto parse(int argc, char** argv) -> ArgumentSpan
+    auto parse(int argc, char** argv)
     {
         const auto [operands, options] {Network::parse(argc, argv, "v")};
 
@@ -69,7 +69,7 @@ namespace Client {
         return operands;
     }
 
-    auto read(const SharedSocket& sock) -> std::string
+    auto read(Socket& sock)
     {
         static constexpr auto size {BUFFER_SIZE};
         const auto [str, error] {Network::read_string(sock, size)};
@@ -82,7 +82,7 @@ namespace Client {
         return str;
     }
 
-    auto write(const std::string& str, const SharedSocket& sock) -> void
+    auto write(const std::string& str, Socket& sock)
     {
         const auto error {Network::write(sock, str)};
 
@@ -100,13 +100,13 @@ auto main(int argc, char* argv[]) -> int
 
     try {
         // Connect Unix domain socket to pathname.
-        const auto sock {Client::connect()};
+        auto sock {Client::connect()};
         auto shutdown_pending {false};
 
         // Send arguments to server.
         for (const auto& arg : args) {
             const std::string write_str {arg};
-            Client::write(write_str, sock);
+            Client::write(write_str, *sock);
 
             if (write_str == "DOWN") {
                 shutdown_pending = true;
@@ -116,10 +116,10 @@ auto main(int argc, char* argv[]) -> int
 
         if (!shutdown_pending) {
             // Request result.
-            Client::write("END", sock);
+            Client::write("END", *sock);
 
             // Receive result.
-            const auto read_str {Client::read(sock)};
+            const auto read_str {Client::read(*sock)};
             std::cerr << "Result: " << read_str << std::endl;
         }
     }

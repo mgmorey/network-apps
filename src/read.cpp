@@ -14,7 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/read.h"               // read()
-#include "network/sharedsocket.h"       // SharedSocket
+#include "network/handle-type.h"        // handle_type
 
 #include <sys/types.h>          // ssize_t
 
@@ -26,11 +26,10 @@
 
 #include <cstddef>      // std::size_t
 
-auto Network::read(const SharedSocket& sock,
+auto Network::read(handle_type handle,
                    char* data,
                    std::size_t size) -> ssize_t
 {
-    const auto handle {sock->handle()};
 #ifdef WIN32
     return ::recv(handle, data, static_cast<int>(size), 0);
 #else
