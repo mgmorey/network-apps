@@ -398,7 +398,7 @@ auto main(int argc, char* argv[]) -> int
 
     try {
         const auto hosts {parse_arguments(argc, argv)};
-        const auto context {get_context(true, is_verbose)};
+        const auto context {get_context(is_verbose)};
 
         if (is_verbose) {
             std::cout << *context << std::endl;

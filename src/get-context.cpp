@@ -54,8 +54,7 @@ auto Network::get_context(const OptionalVersion& t_version,
         context = global_context;
     }
     else {
-        context =
-            get_context(t_version, t_failure, t_is_verbose);
+        context = get_context(t_version, t_failure, t_is_verbose);
     }
 
     if (context) {
@@ -65,7 +64,7 @@ auto Network::get_context(const OptionalVersion& t_version,
     return context;
 }
 
-auto Network::get_context(bool t_is_global, bool t_is_verbose) -> SharedContext
+auto Network::get_context(bool t_is_verbose) -> SharedContext
 {
-    return get_context({}, FailureMode::throw_error, t_is_global, t_is_verbose);
+    return get_context({}, FailureMode::throw_error, true, t_is_verbose);
 }
