@@ -48,9 +48,6 @@ auto Network::Open::operator()(const Template& t_temp) -> SocketResult
             if (const auto error_result {arg->open(t_temp.address(), m_is_bind)}) {
                 result = error_result;
             }
-            else {
-                static_cast<void>(arg);
-            }
         }
         else if constexpr (std::is_same_v<T, OsErrorResult>) {
             static_cast<void>(arg);
