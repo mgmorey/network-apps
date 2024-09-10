@@ -20,24 +20,23 @@
 #include "network/create-pairresult.h"          // create_pairresult()
 #include "network/error-strings.h"              // VISITOR_ERROR
 #include "network/error.h"                      // Error
-#include "network/logicerror.h"                 // LogicError
 #include "network/oserrorresult.h"              // OsErrorResult
 #include "network/sockethints.h"                // SocketHints
 #include "network/socketpair.h"                 // SocketPair
 
-#include <optional>     // std::optional
 #include <type_traits>  // std::decay_t, std::is_same_v
 #include <variant>      // std::visit()
 
 auto Network::create_pair(const SocketHints& hints, bool is_verbose) -> SocketPair
 {
-    std::optional<SocketPair> socketpair;
-    const auto result {create_pairresult(hints, is_verbose)};
+    SocketPair socketpair;
+    auto result {create_pairresult(hints, is_verbose)};
     std::visit([&](auto&& arg) {
         using T = std::decay_t<decltype(arg)>;
 
         if constexpr (std::is_same_v<T, SocketPair>) {
-            socketpair = arg;
+            socketpair[0].swap(arg[0]);
+            socketpair[1].swap(arg[1]);
         }
         else if constexpr (std::is_same_v<T, OsErrorResult>) {
             throw Error(arg.string());
@@ -46,12 +45,7 @@ auto Network::create_pair(const SocketHints& hints, bool is_verbose) -> SocketPa
             static_assert(always_false_v<T>, VISITOR_ERROR);
         }
     }, result);
-
-    if (!socketpair) {
-        throw LogicError("Socket pair is not initialized!");
-    }
-
-    return *socketpair;
+    return socketpair;
 }
 
 #endif
