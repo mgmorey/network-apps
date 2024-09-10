@@ -29,6 +29,7 @@
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <string>       // std::stoll(), std::string, std::to_string()
 
+using Network::SharedSocket;
 using Network::Socket;
 using Network::create;
 using Network::socket_error;
@@ -38,7 +39,7 @@ using Number = long long;
 static auto is_verbose {false};  // NOLINT
 
 namespace Server {
-    auto accept(const Socket& bind_sock)
+    auto accept(const SharedSocket& bind_sock)
     {
         auto [accept_sock, accept_addr] {Network::accept(bind_sock)};
 
@@ -53,7 +54,7 @@ namespace Server {
 
     auto bind()
     {
-        auto sock {create(SOCKET_HINTS, is_verbose)};
+        SharedSocket sock {create(SOCKET_HINTS, is_verbose)};
 
         if (const auto result {sock->bind(SOCKET_NAME)}) {
             std::cerr << result.string() << std::endl;
@@ -131,7 +132,7 @@ auto main(int argc, char* argv[]) -> int
         // This is the main loop for handling connections.
         while (!shutdown_pending) {
             // Wait for incoming connection.
-            const auto accept_sock {Server::accept(*bind_sock)};
+            const auto accept_sock {Server::accept(bind_sock)};
             std::string read_str;
             Number sum {};
 

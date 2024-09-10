@@ -39,6 +39,7 @@ namespace Test
     using Network::Error;
     using Network::SharedSocket;
     using Network::SocketHints;
+    using Network::UniqueSocket;
     using Network::create;
     using Network::get_context;
     using Network::handle_null;
@@ -88,7 +89,7 @@ namespace Test
         std::string actual_error_str;
 
         try {
-            const SharedSocket sock;
+            const UniqueSocket sock;
             assert(!static_cast<bool>(sock));
         }
         catch (const Error& error) {
@@ -133,8 +134,8 @@ namespace Test
         std::string actual_error_str;
 
         try {
-            const auto sock_1 {create(hints, is_verbose)};
-            const auto sock_2 {sock_1};
+            const SharedSocket sock_1 {create(hints, is_verbose)};
+            const SharedSocket sock_2 {sock_1};
             assert(static_cast<bool>(sock_1));
             assert(static_cast<bool>(sock_2));
             assert(static_cast<handle_type>(*sock_1) != handle_null);

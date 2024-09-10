@@ -17,8 +17,8 @@
 
 #include "network/socketpair.h"                 // SocketPair
 #include "network/create-pair.h"                // create_pair()
-#include "network/sharedsocket.h"               // SharedSocket
 #include "network/sockethints.h"                // SocketHints
+#include "network/uniquesocket.h"               // UniqueSocket
 
 #include <utility>      // std::move()
 
@@ -27,18 +27,18 @@ Network::SocketPair::SocketPair(const SocketHints& t_hints, bool t_is_verbose) :
 {
 }
 
-Network::SocketPair::SocketPair(SharedSocket t_socket_1,
-                                SharedSocket t_socket_2) noexcept :
+Network::SocketPair::SocketPair(UniqueSocket t_socket_1,
+                                UniqueSocket t_socket_2) noexcept :
     m_socket_pair({std::move(t_socket_1), std::move(t_socket_2)})
 {
 }
 
-auto Network::SocketPair::at(size_type t_index) const -> SharedSocket
+auto Network::SocketPair::at(size_type t_index) const -> UniqueSocket
 {
     return m_socket_pair.at(t_index);
 }
 
-auto Network::SocketPair::at(size_type t_index) -> SharedSocket
+auto Network::SocketPair::at(size_type t_index) -> UniqueSocket
 {
     return m_socket_pair.at(t_index);
 }

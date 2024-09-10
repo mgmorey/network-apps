@@ -15,8 +15,8 @@
 
 #include "network/create-handle.h"              // create()
 #include "network/handle-type.h"                // handle_type
-#include "network/sharedsocket.h"               // SharedSocket
 #include "network/socket-family-type.h"         // socket_family_type
+#include "network/uniquesocket.h"               // UniqueSocket
 
 #ifdef WIN32
 #include "network/commonsocket.h"               // CommonSocketData
@@ -34,13 +34,13 @@
 
 auto Network::create(socket_family_type family,
                      handle_type handle,
-                     bool is_verbose) -> SharedSocket
+                     bool is_verbose) -> UniqueSocket
 {
 #ifndef WIN32
     if (family == AF_UNIX) {
-        return std::make_shared<UnixSocket>(family, handle, is_verbose);
+        return std::make_unique<UnixSocket>(family, handle, is_verbose);
     }
 #endif
 
-    return std::make_shared<CommonSocket>(family, handle, is_verbose);
+    return std::make_unique<CommonSocket>(family, handle, is_verbose);
 }

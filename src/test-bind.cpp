@@ -51,11 +51,11 @@ namespace Test
     using Network::EndpointView;
     using Network::IpSocketHints;
     using Network::OsErrorResult;
-    using Network::SharedSocket;
     using Network::Socket;
     using Network::SocketHints;
     using Network::SocketResult;
     using Network::SocketResultVector;
+    using Network::UniqueSocket;
     using Network::always_false_v;
     using Network::bind;
     using Network::get_context;
@@ -84,7 +84,7 @@ namespace Test
             std::visit([&](auto&& arg) {
                 using T = std::decay_t<decltype(arg)>;
 
-                if constexpr (std::is_same_v<T, SharedSocket>) {
+                if constexpr (std::is_same_v<T, UniqueSocket>) {
                     test_socket(*arg);
                 }
                 else if constexpr (std::is_same_v<T, OsErrorResult>) {

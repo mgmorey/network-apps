@@ -17,14 +17,14 @@
 #define NETWORK_CREATE_HANDLE_H
 
 #include "network/handle-type.h"                // handle_type
-#include "network/sharedsocket.h"               // SharedSocket
 #include "network/socket-family-type.h"         // socket_family_type
+#include "network/uniquesocket.h"               // UniqueSocket
 
 namespace Network
 {
     extern auto create(socket_family_type family,
                        handle_type handle,
-                       bool is_verbose = false) -> SharedSocket;
+                       bool is_verbose = false) -> UniqueSocket;
 }
 
 #endif

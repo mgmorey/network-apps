@@ -16,15 +16,15 @@
 #ifndef NETWORK_SOCKETPAIR_H
 #define NETWORK_SOCKETPAIR_H
 
-#include "network/sharedsocket.h"               // SharedSocket
 #include "network/socketpair-size.h"            // socketpair_size
+#include "network/uniquesocket.h"               // UniqueSocket
 
 #include <array>        // std::array
 
 namespace Network
 {
 #ifndef WIN32
-    using SocketPair = std::array<SharedSocket, socketpair_size>;
+    using SocketPair = std::array<UniqueSocket, socketpair_size>;
 #endif
 }
 

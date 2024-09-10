@@ -27,7 +27,7 @@
 #include "network/handle-null.h"                // handle_null
 #include "network/reset-last-context-error.h"   // reset_last_context_error()
 #include "network/sa-length-limits.h"           // sa_length_max
-#include "network/socket.h"                     // Socket
+#include "network/sharedsocket.h"               // SharedSocket
 #include "network/to-os-error.h"                // to_os_error()
 #include "network/to-size.h"                    // to_size()
 
@@ -40,12 +40,12 @@
 #include <iostream>     // std::cout, std::endl
 #include <sstream>      // std::ostringstream
 
-auto Network::accept(const Socket& sock) -> AcceptResult
+auto Network::accept(const SharedSocket& sock) -> AcceptResult
 {
     Buffer<Byte> buffer {sa_length_max};
-    const auto family {sock.family()};
-    const auto handle_1 {sock.handle()};
-    const auto is_verbose {sock.is_verbose()};
+    const auto family {sock->family()};
+    const auto handle_1 {sock->handle()};
+    const auto is_verbose {sock->is_verbose()};
     const AddressString addr_str {ByteString {buffer}};
     auto [addr_ptr, addr_len] {get_sa_span(buffer)};
 

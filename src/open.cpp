@@ -19,9 +19,9 @@
 #include "network/error-strings.h"              // VISITOR_ERROR
 #include "network/openendpointparams.h"         // OpenEndpointParams
 #include "network/oserrorresult.h"              // OsErrorResult
-#include "network/sharedsocket.h"               // SharedSocket
 #include "network/socketresult.h"               // SocketResult
 #include "network/template.h"                   // Template
+#include "network/uniquesocket.h"               // UniqueSocket
 
 #include <iostream>     // std::cout, std::endl
 #include <type_traits>  // std::decay_t, std::is_same_v
@@ -44,7 +44,7 @@ auto Network::Open::operator()(const Template& t_temp) -> SocketResult
     std::visit([&](auto&& arg) {
         using T = std::decay_t<decltype(arg)>;
 
-        if constexpr (std::is_same_v<T, SharedSocket>) {
+        if constexpr (std::is_same_v<T, UniqueSocket>) {
             if (const auto error_result {arg->open(t_temp.address(), m_is_bind)}) {
                 result = error_result;
             }

@@ -1,4 +1,4 @@
-// Copyright (C) 2022  "Michael G. Morey" <mgmorey@gmail.com>
+// Copyright (C) 2024  "Michael G. Morey" <mgmorey@gmail.com>
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,17 +13,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_SOCKETRESULT_H
-#define NETWORK_SOCKETRESULT_H
+#ifndef NETWORK_UNIQUESOCKET_H
+#define NETWORK_UNIQUESOCKET_H
 
-#include "network/oserrorresult.h"      // OsErrorResult
-#include "network/uniquesocket.h"       // UniqueSocket
+#include "network/socket.h"            // Socket
 
-#include <variant>      // std::variant
+#include <memory>       // std::unique_ptr
 
 namespace Network
 {
-    using SocketResult = std::variant<UniqueSocket, OsErrorResult>;
+    using UniqueSocket = std::unique_ptr<Socket>;
 }
 
 #endif

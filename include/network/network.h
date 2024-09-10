@@ -139,6 +139,7 @@
                                                 // socket_length_type,
                                                 // socket_protocol_type,
                                                 // socket_type_type
+#include "network/uniquesocket.h"               // UniqueSocket
 #include "network/uniquify.h"                   // uniquify()
 #include "network/unixsockethints.h"            // UnixSocketHints
 #include "network/version-null.h"               // version_null

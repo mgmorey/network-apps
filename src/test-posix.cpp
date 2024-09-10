@@ -46,7 +46,6 @@ namespace Test
     using Network::LogicError;
     using Network::OsErrorResult;
     using Network::Pathname;
-    using Network::SharedSocket;
     using Network::Socket;
     using Network::SocketHints;
     using Network::SocketPair;
