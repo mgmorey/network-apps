@@ -28,12 +28,12 @@
 auto Network::create(const SocketHints& hints, bool is_verbose) -> SharedSocket
 {
     SharedSocket sock;
-    const auto result {create_result(hints, is_verbose)};
+    auto result {create_result(hints, is_verbose)};
     std::visit([&](auto&& arg) {
         using T = std::decay_t<decltype(arg)>;
 
         if constexpr (std::is_same_v<T, SharedSocket>) {
-            sock = arg;
+            sock.swap(arg);
         }
         else if constexpr (std::is_same_v<T, OsErrorResult>) {
             throw Error(arg.string());
