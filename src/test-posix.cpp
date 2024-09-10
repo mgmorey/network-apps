@@ -17,7 +17,8 @@
 #include "network/network.h"            // Address, ByteString,
                                         // Context, Error, LogicError,
                                         // OsErrorResult, Pathname,
-                                        // Socket, SocketPair, bind(),
+                                        // Socket, bind(),
+                                        // create_pair()
                                         // os_error_type,
                                         // path_length_max, to_path()
 #include "network/parse.h"              // parse()
@@ -262,7 +263,7 @@ namespace Test
         std::string actual_error_str;
 
         try {
-            SocketPair pair {hints, is_verbose};
+            auto pair {create_pair(hints, is_verbose)};
             std::cout << "Socket "
                       << std::right << std::setw(handle_width) << *pair.at(0)
                       << " connected to "
