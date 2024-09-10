@@ -23,6 +23,8 @@
 #include "network/to-bytestring.h"              // to_bytestring()
 #include "network/validate.h"                   // validate()
 
+#include <ostream>      // std::ostream
+
 namespace Network
 {
     class Socket
@@ -67,6 +69,9 @@ namespace Network
             return name(false);
         }
     };
+
+    extern auto operator<<(std::ostream& os,
+                           const Socket& sock) -> std::ostream&;
 }
 
 #endif

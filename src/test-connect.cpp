@@ -134,7 +134,7 @@ namespace Test
             const auto peer {t_sock->peername()};
             const auto self {t_sock->sockname()};
             m_os << "Socket "
-                 << std::right << std::setw(handle_width) << t_sock
+                 << std::right << std::setw(handle_width) << *t_sock
                  << " connected "
                  << m_hostname
                  << " to "
@@ -145,7 +145,7 @@ namespace Test
                      string_null : m_endpoint.at(0))
                  << std::endl
                  << "Socket "
-                 << std::right << std::setw(handle_width) << t_sock
+                 << std::right << std::setw(handle_width) << *t_sock
                  << " connected "
                  << Address(self)
                  << std::endl

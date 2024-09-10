@@ -19,13 +19,10 @@
 #include "network/socket.h"             // Socket
 
 #include <memory>       // std::shared_ptr
-#include <ostream>      // std::ostream
 
 namespace Network
 {
     using SharedSocket = std::shared_ptr<Socket>;
-    extern auto operator<<(std::ostream& os,
-                           const SharedSocket& sock) -> std::ostream&;
 }
 
 #endif

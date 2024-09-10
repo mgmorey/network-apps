@@ -149,7 +149,7 @@ namespace Test
     auto print(const SharedSocket& sock, const ByteString& addr) -> void
     {
         std::cout << "Socket "
-                  << std::right << std::setw(handle_width) << sock
+                  << std::right << std::setw(handle_width) << *sock
                   << " bound to "
                   << Address(addr)
                   << std::endl;
@@ -263,11 +263,11 @@ namespace Test
         try {
             SocketPair pair {hints, is_verbose};
             std::cout << "Socket "
-                      << std::right << std::setw(handle_width) << pair.at(0)
+                      << std::right << std::setw(handle_width) << *pair.at(0)
                       << " connected to "
                       << std::endl
                       << "Socket "
-                      << std::right << std::setw(handle_width) << pair.at(1)
+                      << std::right << std::setw(handle_width) << *pair.at(1)
                       << std::endl;
         }
         catch (const Error& error) {

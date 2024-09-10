@@ -101,13 +101,13 @@ namespace Test
         {
             const auto self {t_sock->sockname()};
             m_os << "Socket "
-                 << std::right << std::setw(handle_width) << t_sock
+                 << std::right << std::setw(handle_width) << *t_sock
                  << " bound on "
                  << (m_endpoint.at(0).data() != nullptr ?
                      string_null : m_endpoint.at(0))
                  << std::endl
                  << "Socket "
-                 << std::right << std::setw(handle_width) << t_sock
+                 << std::right << std::setw(handle_width) << *t_sock
                  << " bound to "
                  << Address(self)
                  << std::endl;

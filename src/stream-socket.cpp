@@ -13,16 +13,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/sharedsocket.h"       // SharedSocket, operator<<()
+#include "network/socket.h"             // Socket, operator<<()
 #include "network/handle-null.h"        // handle_null
 #include "network/string-null.h"        // string_null
 
 #include <ostream>      // std::ostream
 
 auto Network::operator<<(std::ostream& os,
-                         const SharedSocket& sock) -> std::ostream&
+                         const Socket& sock) -> std::ostream&
 {
-    const auto handle {sock->handle()};
+    const auto handle {sock.handle()};
 
     if (handle == handle_null) {
         return os << string_null;
