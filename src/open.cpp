@@ -49,7 +49,7 @@ auto Network::Open::operator()(const Template& t_temp) -> SocketResult
                 result = error_result;
             }
             else {
-                result = arg;
+                static_cast<void>(arg);
             }
         }
         else if constexpr (std::is_same_v<T, OsErrorResult>) {
