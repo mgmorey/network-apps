@@ -26,23 +26,19 @@
 
 #include <memory>       // std::make_shared()
 
-namespace {
-
-    auto get_shared_context(const Network::OptionalVersion& t_version,
-                            Network::FailureMode t_failure,
-                            bool t_is_verbose) -> Network::SharedContext
-    {
+auto Network::get_context(const OptionalVersion& t_version,
+                          FailureMode t_failure,
+                          bool t_is_verbose) -> Network::SharedContext
+{
 #ifdef WIN32
-        return std::make_shared<Network::WindowsContext>(t_version,
-                                                         t_failure,
-                                                         t_is_verbose);
+    return std::make_shared<Network::WindowsContext>(t_version,
+                                                     t_failure,
+                                                     t_is_verbose);
 #else
-        return std::make_shared<Network::UnixContext>(t_version,
-                                                      t_failure,
-                                                      t_is_verbose);
+    return std::make_shared<Network::UnixContext>(t_version,
+                                                  t_failure,
+                                                  t_is_verbose);
 #endif
-    }
-
 }
 
 auto Network::get_context(const OptionalVersion& t_version,
@@ -54,12 +50,12 @@ auto Network::get_context(const OptionalVersion& t_version,
 
     if (t_is_global) {
         static const auto global_context =
-            get_shared_context(t_version, t_failure, t_is_verbose);
+            get_context(t_version, t_failure, t_is_verbose);
         context = global_context;
     }
     else {
         context =
-            get_shared_context(t_version, t_failure, t_is_verbose);
+            get_context(t_version, t_failure, t_is_verbose);
     }
 
     if (context) {
