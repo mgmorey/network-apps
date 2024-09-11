@@ -44,9 +44,9 @@ namespace Test
 #ifdef WIN32
     using Network::WindowsVersion;
 #endif
-    using Network::get_context;
     using Network::get_hostname;
     using Network::parse;
+    using Network::start_context;
 
     static constexpr Version v0_0 {0, 0};
     static constexpr Version v0_1 {0, 1};
@@ -191,9 +191,7 @@ namespace Test
         std::string actual_error_str;
 
         try {
-            const auto context {
-                get_context(v0_0, failure_mode, is_verbose)
-            };
+            const auto context {start_context(v0_0, failure_mode, is_verbose)};
         }
         catch (const Error& error) {
             print(error);
@@ -209,9 +207,9 @@ namespace Test
         std::string actual_error_str;
 
         try {
-            const auto context_1 {get_context({}, failure_mode, is_verbose)};
+            const auto context_1 {start_context({}, failure_mode, is_verbose)};
             test_context(*context_1, "1", {});
-            const auto context_2 {get_context({}, failure_mode, is_verbose)};
+            const auto context_2 {start_context({}, failure_mode, is_verbose)};
             test_context(*context_1, "2", {});
             assert(context_1 != context_2);
             context_1->stop();

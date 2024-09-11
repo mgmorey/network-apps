@@ -25,9 +25,9 @@
 namespace Test
 {
     using Network::Hostname;
-    using Network::get_context;
     using Network::get_hostname;
     using Network::parse;
+    using Network::start_context;
 
     static auto is_verbose {false};  // NOLINT
 
@@ -65,7 +65,7 @@ auto main(int argc, char* argv[]) -> int
 
     try {
         parse_arguments(argc, argv);
-        const auto context {get_context(is_verbose)};
+        const auto context {start_context(is_verbose)};
 
         if (is_verbose) {
             std::cout << *context << std::endl;

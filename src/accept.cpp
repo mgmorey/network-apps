@@ -19,7 +19,7 @@
 #include "network/buffer.h"                     // Buffer
 #include "network/byte.h"                       // Byte
 #include "network/bytestring.h"                 // ByteString
-#include "network/create-handle.h"              // create()
+#include "network/create-socket-handle.h"       // create_socket()
 #include "network/error.h"                      // Error
 #include "network/format-os-error.h"            // format_os_error()
 #include "network/get-last-context-error.h"     // get_last_context_error()
@@ -81,5 +81,5 @@ auto Network::accept(const SharedSocket& sock) -> AcceptResult
     }
 
     buffer.resize(to_size(addr_len));
-    return {create(family, handle_2, is_verbose), ByteString {buffer}};
+    return {create_socket(family, handle_2, is_verbose), ByteString {buffer}};
 }

@@ -47,18 +47,18 @@
                                                 // sun_path_offset,
                                                 // sun_size
 #include "network/context.h"                    // Context
+#include "network/create-context.h"             // create_context()
 #ifndef WIN32
-#include "network/create-pair.h"                // create_pair()
-#include "network/create-pairresult.h"          // create_pairresult()
+#include "network/create-socketpair.h"          // create_socketpair()
+#include "network/create-socketpairresult.h"    // create_socketpairresult()
 #endif
-#include "network/create-handle.h"              // create()
-#include "network/create-hints.h"               // create()
-#include "network/create-result.h"              // create_result()
+#include "network/create-socket-handle.h"       // create_socket()
+#include "network/create-socket-hints.h"        // create_socket()
+#include "network/create-socketresult.h"        // create_result()
 #include "network/error-strings.h"              // VISITOR_ERROR
 #include "network/exceptions.h"                 // Error, LogicError,
                                                 // RuntimeError
 #include "network/failuremode.h"                // FailureMode
-#include "network/get-context.h"                // get_context()
 #include "network/get-endpoint.h"               // get_endpoint()
 #include "network/get-endpointresult.h"         // get_endpointresult()
 #include "network/get-hostname.h"               // get_hostname()
@@ -106,6 +106,7 @@
 #include "network/sockethost.h"                 // SocketHints
 #include "network/socketprotocol.h"             // SocketProtocol
 #include "network/sockettype.h"                 // SocketType
+#include "network/start-context.h"              // start_context()
 #include "network/string-null.h"                // string_null
 #include "network/template.h"                   // Template
 #include "network/to-bytestring.h"              // to_bytestring()

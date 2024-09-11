@@ -39,12 +39,12 @@ namespace Test
     using Network::Error;
     using Network::SharedSocket;
     using Network::SocketHints;
-    using Network::create;
-    using Network::get_context;
+    using Network::create_socket;
     using Network::handle_null;
     using Network::handle_type;
     using Network::os_error_type;
     using Network::parse;
+    using Network::start_context;
 
     static constexpr auto expected_error_socket_re {
         R"(Call to ::socket\(.+\) failed with error \d+: .+)"
@@ -90,7 +90,7 @@ namespace Test
             const auto sock_2 {sock_1};
             assert(!static_cast<bool>(sock_1));
             assert(!static_cast<bool>(sock_2));
-            sock_1 = create(hints, is_verbose);
+            sock_1 = create_socket(hints, is_verbose);
             const SharedSocket sock_3 {sock_1};
             assert(static_cast<bool>(sock_1));
             assert(static_cast<bool>(sock_3));
@@ -144,7 +144,7 @@ auto main(int argc, char* argv[]) -> int
 
     try {
         parse_arguments(argc, argv);
-        const auto context {get_context(is_verbose)};
+        const auto context {start_context(is_verbose)};
 
         if (is_verbose) {
             std::cout << *context << std::endl;

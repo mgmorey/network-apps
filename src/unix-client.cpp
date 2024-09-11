@@ -32,7 +32,7 @@
 
 using Network::ArgumentSpan;
 using Network::Socket;
-using Network::create;
+using Network::create_socket;
 using Network::socket_error;
 
 static auto is_verbose {false};  // NOLINT
@@ -40,7 +40,7 @@ static auto is_verbose {false};  // NOLINT
 namespace Client {
     auto connect()
     {
-        auto sock {create(SOCKET_HINTS, is_verbose)};
+        auto sock {create_socket(SOCKET_HINTS, is_verbose)};
 
         if (const auto error {sock->connect(SOCKET_NAME)}) {
             std::cerr << error.string() << std::endl;

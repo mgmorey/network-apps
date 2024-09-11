@@ -18,7 +18,7 @@
                                         // Context, Error, LogicError,
                                         // OsErrorResult, Pathname,
                                         // Socket, bind(),
-                                        // create_pair()
+                                        // create_socketpair()
                                         // os_error_type,
                                         // path_length_max, to_path()
 #include "network/parse.h"              // parse()
@@ -51,12 +51,12 @@ namespace Test
     using Network::SocketPair;
     using Network::UnixSocketHints;
     using Network::close;
-    using Network::get_context;
     using Network::handle_null;
     using Network::handle_type;
     using Network::os_error_type;
     using Network::parse;
     using Network::path_length_max;
+    using Network::start_context;
     using Network::to_bytestring;
     using Network::to_path;
 
@@ -213,13 +213,13 @@ namespace Test
                    const ErrorCodeSet& expected_codes,
                    const std::string& expected_error_re) -> void
     {
-        const auto sock {create(socket_hints, is_verbose)};
+        const auto sock {create_socket(socket_hints, is_verbose)};
         return test_path(path, *sock, expected_codes, expected_error_re);
     }
 
     auto test_path_valid(const auto path) -> void
     {
-        const auto sock {create(socket_hints, is_verbose)};
+        const auto sock {create_socket(socket_hints, is_verbose)};
         test_path(path, *sock, {0}, {});
         test_path(path, *sock, {EADDRINUSE, EINVAL}, {});
     }
@@ -262,7 +262,7 @@ namespace Test
         std::string actual_error_str;
 
         try {
-            auto pair {create_pair(hints, is_verbose)};
+            auto pair {create_socketpair(hints, is_verbose)};
             std::cout << "Socket "
                       << std::right << std::setw(handle_width) << *pair.at(0)
                       << " connected to "
@@ -309,7 +309,7 @@ namespace Test
         std::string actual_error_str;
 
         try {
-            const auto sock {create(hints, is_verbose)};
+            const auto sock {create_socket(hints, is_verbose)};
         }
         catch (const Error& error) {
             print(error);
@@ -350,7 +350,7 @@ auto main(int argc, char* argv[]) -> int
 
     try {
         parse_arguments(argc, argv);
-        const auto context {get_context(is_verbose)};
+        const auto context {start_context(is_verbose)};
 
         if (is_verbose) {
             std::cout << *context << std::endl;

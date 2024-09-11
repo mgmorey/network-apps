@@ -15,7 +15,7 @@
 
 #include "network/open.h"                       // Open
 #include "network/always-false.h"               // always_false_v
-#include "network/create-result.h"              // create_result()
+#include "network/create-socketresult.h"        // create_socketresult()
 #include "network/error-strings.h"              // VISITOR_ERROR
 #include "network/openendpointparams.h"         // OpenEndpointParams
 #include "network/oserrorresult.h"              // OsErrorResult
@@ -40,7 +40,7 @@ auto Network::Open::operator()(const Template& t_temp) -> SocketResult
                   << std::endl;
     }
 
-    auto result {create_result(t_temp.hints(), m_args.is_verbose)};
+    auto result {create_socketresult(t_temp.hints(), m_args.is_verbose)};
     std::visit([&](auto&& arg) {
         using T = std::decay_t<decltype(arg)>;
 

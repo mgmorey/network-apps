@@ -31,7 +31,7 @@
 
 using Network::SharedSocket;
 using Network::Socket;
-using Network::create;
+using Network::create_socket;
 using Network::socket_error;
 
 using Number = long long;
@@ -54,7 +54,7 @@ namespace Server {
 
     auto bind()
     {
-        SharedSocket sock {create(SOCKET_HINTS, is_verbose)};
+        SharedSocket sock {create_socket(SOCKET_HINTS, is_verbose)};
 
         if (const auto result {sock->bind(SOCKET_NAME)}) {
             std::cerr << result.string() << std::endl;

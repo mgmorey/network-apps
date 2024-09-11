@@ -15,8 +15,8 @@
 
 #ifndef WIN32
 
-#include "network/create-pairresult.h"          // create_pairresult()
-#include "network/create-handle.h"              // create()
+#include "network/create-socket-handle.h"       // create_socket()
+#include "network/create-socketpairresult.h"    // create_socketpairresult()
 #include "network/format-os-error.h"            // format_os_error()
 #include "network/format.h"                     // Format
 #include "network/get-last-context-error.h"     // get_last_context_error()
@@ -38,8 +38,8 @@
 #include <iostream>     // std::cout, std::endl
 #include <sstream>      // std::ostringstream
 
-auto Network::create_pairresult(const SocketHints& hints,
-                                bool is_verbose) -> SocketPairResult
+auto Network::create_socketpairresult(const SocketHints& hints,
+                                      bool is_verbose) -> SocketPairResult
 {
     static constexpr auto delim {", "};
     static constexpr auto tab {0};
@@ -82,8 +82,8 @@ auto Network::create_pairresult(const SocketHints& hints,
     }
 
     return SocketPair {
-        create(hints.m_family, handles[0], is_verbose),
-        create(hints.m_family, handles[1], is_verbose)
+        create_socket(hints.m_family, handles[0], is_verbose),
+        create_socket(hints.m_family, handles[1], is_verbose)
     };
 }
 

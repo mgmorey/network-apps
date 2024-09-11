@@ -1,4 +1,4 @@
-// Copyright (C) 2022  "Michael G. Morey" <mgmorey@gmail.com>
+// Copyright (C) 2024  "Michael G. Morey" <mgmorey@gmail.com>
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,17 +13,19 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_CREATE_PAIRRESULT_H
-#define NETWORK_CREATE_PAIRRESULT_H
+#ifndef NETWORK_START_CONTEXT_H
+#define NETWORK_START_CONTEXT_H
 
-#include "network/sockethints.h"                // SocketHints
-#include "network/socketpairresult.h"           // SocketPairResult
+#include "network/failuremode.h"        // FailureMode
+#include "network/optionalversion.h"    // OptionalVersion
+#include "network/uniquecontext.h"      // UniqueContext
 
 namespace Network
 {
-    extern auto create_pairresult(const SocketHints& hints,
-                                  bool is_verbose = false) ->
-        SocketPairResult;
+    extern auto start_context(const OptionalVersion& t_version,
+                              FailureMode t_failure,
+                              bool t_is_verbose) -> UniqueContext;
+    extern auto start_context(bool t_is_verbose = false) -> UniqueContext;
 }
 
 #endif

@@ -63,10 +63,10 @@ namespace Test
     using Network::UniqueSocket;
     using Network::always_false_v;
     using Network::connect;
-    using Network::get_context;
     using Network::get_hostname;
     using Network::os_error_type;
     using Network::parse;
+    using Network::start_context;
     using Network::string_null;
 
     using ErrorCodeSet = std::set<os_error_type>;
@@ -233,7 +233,7 @@ auto main(int argc, char* argv[]) -> int
 
     try {
         const auto endpoint {parse_arguments(argc, argv)};
-        const auto context {get_context(is_verbose)};
+        const auto context {start_context(is_verbose)};
 
         if (is_verbose) {
             std::cout << *context << std::endl;

@@ -52,9 +52,9 @@ libnetwork_common_sources = accept.cpp address-sa.cpp address-sin.cpp	\
 address-sin6.cpp address.cpp addresserror.cpp addresslist.cpp		\
 addressstring.cpp argumentdata.cpp bind-endpoint.cpp bind-handle.cpp	\
 commonsocket.cpp connect-endpoint.cpp connect-handle.cpp		\
-create-handle.cpp create-hints.cpp create-result.cpp error.cpp		\
-familyerror.cpp format-ai-error.cpp format-bytestring.cpp		\
-format-os-error.cpp format.cpp get-context.cpp get-endpoint.cpp		\
+create-context.cpp create-socket-handle.cpp create-socket-hints.cpp	\
+create-socketresult.cpp error.cpp familyerror.cpp format-ai-error.cpp	\
+format-bytestring.cpp format-os-error.cpp format.cpp get-endpoint.cpp	\
 get-endpointresult.cpp get-hostname.cpp get-hostnameresult.cpp		\
 get-last-context-error.cpp get-last-os-error.cpp			\
 get-length-maximum.cpp get-length-minimum.cpp get-name.cpp		\
@@ -69,16 +69,16 @@ parse.cpp rangeerror.cpp read-string.cpp read.cpp			\
 reset-last-context-error.cpp reset-last-os-error.cpp runtimeerror.cpp	\
 set-last-context-error.cpp set-last-os-error.cpp socketfamily.cpp	\
 socketflags.cpp sockethost.cpp socketprotocol.cpp sockettype.cpp	\
-stream-address.cpp stream-addresslist.cpp stream-context.cpp		\
-stream-socket.cpp stream-sockethints.cpp stream-template.cpp		\
-stream-version.cpp template.cpp to-bytestring-ai.cpp			\
-to-bytestring-void.cpp to-string-in-addr.cpp to-string-in6-addr.cpp	\
-to-string-vector-byte.cpp to-string-vector-char.cpp validate-bs.cpp	\
-validate-sa.cpp validate-sin.cpp validate-sin6.cpp write-string.cpp	\
-write.cpp
+start-context.cpp stream-address.cpp stream-addresslist.cpp		\
+stream-context.cpp stream-socket.cpp stream-sockethints.cpp		\
+stream-template.cpp stream-version.cpp template.cpp			\
+to-bytestring-ai.cpp to-bytestring-void.cpp to-string-in-addr.cpp	\
+to-string-in6-addr.cpp to-string-vector-byte.cpp			\
+to-string-vector-char.cpp validate-bs.cpp validate-sa.cpp		\
+validate-sin.cpp validate-sin6.cpp write-string.cpp write.cpp
 
-libnetwork_unix_sources = address-sun.cpp create-pair.cpp		\
-create-pairresult.cpp get-path-length.cpp get-path-pointer.cpp		\
+libnetwork_unix_sources = address-sun.cpp create-socketpair.cpp		\
+create-socketpairresult.cpp get-path-length.cpp get-path-pointer.cpp	\
 get-sun-length.cpp get-sun-pointer.cpp to-bytestring-path.cpp		\
 to-path.cpp unix-close.cpp unix-start.cpp unix-stop.cpp			\
 unixcontext.cpp unixsocket.cpp validate-path.cpp validate-sun.cpp

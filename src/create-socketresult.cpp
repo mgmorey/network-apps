@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/create-result.h"              // create_result()
-#include "network/create-handle.h"              // create()
+#include "network/create-socketresult.h"        // create_socketresult()
+#include "network/create-socket-handle.h"       // create_socket()
 #include "network/format-os-error.h"            // format_os_error()
 #include "network/format.h"                     // Format
 #include "network/get-last-context-error.h"     // get_last_context_error()
@@ -37,8 +37,8 @@
 #include <iostream>     // std::cout, std::endl
 #include <sstream>      // std::ostringstream
 
-auto Network::create_result(const SocketHints& hints,
-                            bool is_verbose) -> SocketResult
+auto Network::create_socketresult(const SocketHints& hints,
+                                  bool is_verbose) -> SocketResult
 {
     static constexpr auto delim {", "};
     static constexpr auto tab {0};
@@ -78,5 +78,5 @@ auto Network::create_result(const SocketHints& hints,
         return OsErrorResult {os_error, oss.str()};
     }
 
-    return create(hints.m_family, handle, is_verbose);
+    return create_socket(hints.m_family, handle, is_verbose);
 }

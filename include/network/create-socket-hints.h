@@ -1,4 +1,4 @@
-// Copyright (C) 2022  "Michael G. Morey" <mgmorey@gmail.com>
+// Copyright (C) 2024  "Michael G. Morey" <mgmorey@gmail.com>
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,16 +13,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_CREATE_RESULT_H
-#define NETWORK_CREATE_RESULT_H
+#ifndef NETWORK_CREATE_SOCKET_HINTS_H
+#define NETWORK_CREATE_SOCKET_HINTS_H
 
 #include "network/sockethints.h"                // SocketHints
-#include "network/socketresult.h"               // SocketResult
+#include "network/uniquesocket.h"               // UniqueSocket
 
 namespace Network
 {
-    extern auto create_result(const SocketHints& hints,
-                              bool is_verbose = false) -> SocketResult;
+    extern auto create_socket(const SocketHints& hints,
+                              bool is_verbose = false) -> UniqueSocket;
 }
 
 #endif

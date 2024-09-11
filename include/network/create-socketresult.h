@@ -1,4 +1,4 @@
-// Copyright (C) 2024  "Michael G. Morey" <mgmorey@gmail.com>
+// Copyright (C) 2022  "Michael G. Morey" <mgmorey@gmail.com>
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,18 +13,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_CREATE_HANDLE_H
-#define NETWORK_CREATE_HANDLE_H
+#ifndef NETWORK_CREATE_SOCKETRESULT_H
+#define NETWORK_CREATE_SOCKETRESULT_H
 
-#include "network/handle-type.h"                // handle_type
-#include "network/socket-family-type.h"         // socket_family_type
-#include "network/uniquesocket.h"               // UniqueSocket
+#include "network/sockethints.h"                // SocketHints
+#include "network/socketresult.h"               // SocketResult
 
 namespace Network
 {
-    extern auto create(socket_family_type family,
-                       handle_type handle,
-                       bool is_verbose = false) -> UniqueSocket;
+    extern auto create_socketresult(const SocketHints& hints,
+                                    bool is_verbose = false) -> SocketResult;
 }
 
 #endif

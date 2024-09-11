@@ -13,30 +13,28 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef WIN32
-
-#include "network/create-pair.h"                // create_pair()
+#include "network/create-socket-hints.h"        // create_socket()
 #include "network/always-false.h"               // always_false_v
-#include "network/create-pairresult.h"          // create_pairresult()
+#include "network/create-socketresult.h"        // create_socketresult()
 #include "network/error-strings.h"              // VISITOR_ERROR
 #include "network/error.h"                      // Error
 #include "network/oserrorresult.h"              // OsErrorResult
 #include "network/sockethints.h"                // SocketHints
-#include "network/socketpair.h"                 // SocketPair
+#include "network/uniquesocket.h"               // UniqueSocket
 
 #include <type_traits>  // std::decay_t, std::is_same_v
 #include <variant>      // std::visit()
 
-auto Network::create_pair(const SocketHints& hints, bool is_verbose) -> SocketPair
+auto Network::create_socket(const SocketHints& hints,
+                            bool is_verbose) -> UniqueSocket
 {
-    SocketPair socketpair;
-    auto result {create_pairresult(hints, is_verbose)};
+    UniqueSocket sock;
+    auto result {create_socketresult(hints, is_verbose)};
     std::visit([&](auto&& arg) {
         using T = std::decay_t<decltype(arg)>;
 
-        if constexpr (std::is_same_v<T, SocketPair>) {
-            socketpair[0].swap(arg[0]);
-            socketpair[1].swap(arg[1]);
+        if constexpr (std::is_same_v<T, UniqueSocket>) {
+            sock.swap(arg);
         }
         else if constexpr (std::is_same_v<T, OsErrorResult>) {
             throw Error(arg.string());
@@ -45,7 +43,5 @@ auto Network::create_pair(const SocketHints& hints, bool is_verbose) -> SocketPa
             static_assert(always_false_v<T>, VISITOR_ERROR);
         }
     }, result);
-    return socketpair;
+    return sock;
 }
-
-#endif
