@@ -21,9 +21,9 @@
 namespace Network
 {
     enum class FailureMode : std::uint8_t {
+        throw_error,
         return_error,
-        return_zero,
-        throw_error
+        return_zero
     };
 }
 
