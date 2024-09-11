@@ -17,6 +17,7 @@
 
 #include "network/to-bytestring-path.h"         // to_bytestring()
 #include "network/bytestring.h"                 // ByteString
+#include "network/get-path-pointer.h"           // get_path_pointer()
 #include "network/get-sun-length.h"             // get_sun_length()
 #include "network/os-features.h"                // HAVE_SOCKADDR_SA_LEN
 #include "network/to-bytestring-void.h"         // to_bytestring()
@@ -33,7 +34,7 @@ auto Network::to_bytestring(const std::string_view& path) -> ByteString
 
     if (!path.empty()) {
         const auto path_len {to_path_length(path.length())};
-        auto* sun_path {static_cast<char*>(sun.sun_path)};
+        auto* sun_path {get_path_pointer(&sun)};
         path.copy(sun_path, path_len);
     }
 
