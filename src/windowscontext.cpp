@@ -75,10 +75,10 @@ auto Network::WindowsContext::is_running() const noexcept -> bool
     return m_system_status == "Running";
 }
 
-auto Network::WindowsContext::start() -> void
+auto Network::WindowsContext::start() -> Context&
 {
     if (m_is_started) {
-        return;
+        return *this;
     }
 
     m_data = Network::start(m_version, m_is_verbose);
@@ -94,9 +94,10 @@ auto Network::WindowsContext::start() -> void
     }
 
     m_is_started = true;
+    return *this;
 }
 
-auto Network::WindowsContext::stop() -> void
+auto Network::WindowsContext::stop() -> Context&
 {
     if (m_is_started) {
         m_error_code = Network::stop(m_failure, m_is_verbose);
@@ -106,6 +107,8 @@ auto Network::WindowsContext::stop() -> void
             m_data = {};
         }
     }
+
+    return *this;
 }
 
 auto Network::WindowsContext::version() const -> OptionalVersion
