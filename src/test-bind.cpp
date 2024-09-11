@@ -67,9 +67,9 @@ namespace Test
 
     static constexpr auto handle_width {6};
     static constexpr auto localhost {"localhost"};
-    static constexpr auto socket_hints
+    static constexpr IpSocketHints socket_hints
     {
-        IpSocketHints { SOCK_STREAM, AI_PASSIVE | AI_CANONNAME }
+        SOCK_STREAM, AI_PASSIVE | AI_CANONNAME
     };
 
     static auto is_verbose {false};  // NOLINT

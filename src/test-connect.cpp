@@ -75,9 +75,9 @@ namespace Test
     static constexpr auto indent_width {handle_width + 18};
     static constexpr auto remotehost {"example.com"};
     static constexpr auto service {"http"};
-    static constexpr auto socket_hints
+    static constexpr IpSocketHints socket_hints
     {
-        IpSocketHints { SOCK_STREAM, AI_CANONNAME}
+         SOCK_STREAM, AI_CANONNAME
     };
 
     static auto is_verbose {false};  // NOLINT
