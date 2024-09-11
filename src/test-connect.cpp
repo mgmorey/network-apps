@@ -75,6 +75,10 @@ namespace Test
     static constexpr auto indent_width {handle_width + 18};
     static constexpr auto remotehost {"example.com"};
     static constexpr auto service {"http"};
+    static constexpr auto socket_hints
+    {
+        IpSocketHints { SOCK_STREAM, AI_CANONNAME}
+    };
 
     static auto is_verbose {false};  // NOLINT
 
@@ -171,11 +175,6 @@ namespace Test
         return codes;
     }
 
-    auto get_hints() -> SocketHints
-    {
-        return IpSocketHints {SOCK_STREAM, AI_CANONNAME};
-    }
-
     auto parse_arguments(int argc, char** argv) -> EndpointView
     {
         const auto [operands, options] {parse(argc, argv, "v")};
@@ -229,8 +228,6 @@ auto main(int argc, char* argv[]) -> int
 {
     using namespace Test;
 
-    const SocketHints hints {get_hints()};
-
     try {
         const auto endpoint {parse_arguments(argc, argv)};
         const auto context {start_context(is_verbose)};
@@ -242,7 +239,7 @@ auto main(int argc, char* argv[]) -> int
         const auto hostname {get_hostname()};
 
         if (getenv("http_proxy") == nullptr) {
-            test_connect_valid(endpoint, hints, hostname);
+            test_connect_valid(endpoint, socket_hints, hostname);
         }
     }
     catch (const std::exception& error) {
