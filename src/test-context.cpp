@@ -192,7 +192,7 @@ namespace Test
 
         try {
             const auto context {
-                get_context(v0_0, failure_mode, false, is_verbose)
+                get_context(v0_0, failure_mode, is_verbose)
             };
         }
         catch (const Error& error) {
@@ -204,45 +204,19 @@ namespace Test
         test_context_inactive();
     }
 
-    auto test_context_valid_global() -> void
-    {
-        std::string actual_error_str;
-        int error_code {0};
-
-        try {
-            const auto context_1 {
-                get_context({}, failure_mode, true, is_verbose)
-            };
-            test_context(*context_1, "global", {});
-            const auto context_2 {
-                get_context({}, failure_mode, true, is_verbose)
-            };
-            assert(context_1 == context_2);
-            error_code = Network::stop(failure_mode, is_verbose);
-        }
-        catch (const Error& error) {
-            print(error);
-            actual_error_str = error.what();
-        }
-
-        assert(actual_error_str.empty());
-        assert(!error_code);
-        test_context_inactive();
-    }
-
-    auto test_context_valid_local() -> void
+    auto test_context_valid() -> void
     {
         std::string actual_error_str;
 
         try {
             const auto context_1 {
-                get_context({}, failure_mode, false, is_verbose)
+                get_context({}, failure_mode, is_verbose)
             };
-            test_context(*context_1, "local 1", {});
+            test_context(*context_1, "1", {});
             const auto context_2 {
-                get_context({}, failure_mode, false, is_verbose)
+                get_context({}, failure_mode, is_verbose)
             };
-            test_context(*context_1, "local 2", {});
+            test_context(*context_1, "2", {});
             assert(context_1 != context_2);
             context_1->stop();
             assert(!context_1->error_code());
@@ -282,8 +256,7 @@ auto main(int argc, char* argv[]) -> int
     try {
         parse_arguments(argc, argv);
         test_context_invalid();
-        test_context_valid_global();
-        test_context_valid_local();
+        test_context_valid();
         test_no_context();
     }
     catch (const std::exception& error) {

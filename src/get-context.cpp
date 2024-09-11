@@ -16,7 +16,7 @@
 #include "network/get-context.h"        // get_context()
 #include "network/failuremode.h"        // FailureMode
 #include "network/optionalversion.h"    // OptionalVersion
-#include "network/sharedcontext.h"      // SharedContext
+#include "network/uniquecontext.h"      // UniqueContext
 
 #ifdef WIN32
 #include "network/windowscontext.h"     // WindowsContext
@@ -24,38 +24,21 @@
 #include "network/unixcontext.h"        // UnixContext
 #endif
 
-#include <memory>       // std::make_shared()
+#include <memory>       // std::make_unique()
 
 auto Network::get_context(const OptionalVersion& t_version,
                           FailureMode t_failure,
-                          bool t_is_verbose) -> Network::SharedContext
+                          bool t_is_verbose) -> UniqueContext
 {
 #ifdef WIN32
-    return std::make_shared<Network::WindowsContext>(t_version,
-                                                     t_failure,
-                                                     t_is_verbose);
+    auto context {std::make_unique<Network::WindowsContext>(t_version,
+                                                            t_failure,
+                                                            t_is_verbose)};
 #else
-    return std::make_shared<Network::UnixContext>(t_version,
-                                                  t_failure,
-                                                  t_is_verbose);
+    auto context {std::make_unique<Network::UnixContext>(t_version,
+                                                         t_failure,
+                                                         t_is_verbose)};
 #endif
-}
-
-auto Network::get_context(const OptionalVersion& t_version,
-                          FailureMode t_failure,
-                          bool t_is_global,
-                          bool t_is_verbose) -> SharedContext
-{
-    SharedContext context;
-
-    if (t_is_global) {
-        static const auto global_context =
-            get_context(t_version, t_failure, t_is_verbose);
-        context = global_context;
-    }
-    else {
-        context = get_context(t_version, t_failure, t_is_verbose);
-    }
 
     if (context) {
         context->start();
@@ -64,7 +47,7 @@ auto Network::get_context(const OptionalVersion& t_version,
     return context;
 }
 
-auto Network::get_context(bool t_is_verbose) -> SharedContext
+auto Network::get_context(bool t_is_verbose) -> UniqueContext
 {
-    return get_context({}, FailureMode::throw_error, true, t_is_verbose);
+    return get_context({}, FailureMode::throw_error, t_is_verbose);
 }
