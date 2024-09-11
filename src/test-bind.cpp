@@ -67,6 +67,10 @@ namespace Test
 
     static constexpr auto handle_width {6};
     static constexpr auto localhost {"localhost"};
+    static constexpr auto socket_hints
+    {
+        IpSocketHints { SOCK_STREAM, AI_PASSIVE | AI_CANONNAME }
+    };
 
     static auto is_verbose {false};  // NOLINT
 
@@ -118,11 +122,6 @@ namespace Test
         std::ostream& m_os;
     };
 
-    auto get_hints() -> SocketHints
-    {
-        return IpSocketHints {SOCK_STREAM, AI_PASSIVE | AI_CANONNAME};
-    }
-
     auto parse_arguments(int argc, char** argv) -> EndpointView
     {
         const auto [operands, options] {parse(argc, argv, "v")};
@@ -172,8 +171,6 @@ auto main(int argc, char* argv[]) -> int
 {
     using namespace Test;
 
-    const SocketHints hints {get_hints()};
-
     try {
         const auto endpoint {parse_arguments(argc, argv)};
         const auto context {start_context(is_verbose)};
@@ -183,7 +180,7 @@ auto main(int argc, char* argv[]) -> int
         }
 
         if (getenv("http_proxy") == nullptr) {
-            test_bind_valid(endpoint, hints);
+            test_bind_valid(endpoint, socket_hints);
         }
     }
     catch (const std::exception& error) {
