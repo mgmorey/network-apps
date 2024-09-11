@@ -22,6 +22,9 @@
 
 namespace Network
 {
+    extern auto create_context(const OptionalVersion& t_version,
+                               FailureMode t_failure,
+                               bool t_is_verbose) -> UniqueContext;
     extern auto get_context(const OptionalVersion& t_version,
                             FailureMode t_failure,
                             bool t_is_verbose) -> UniqueContext;
