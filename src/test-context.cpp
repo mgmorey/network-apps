@@ -209,13 +209,9 @@ namespace Test
         std::string actual_error_str;
 
         try {
-            const auto context_1 {
-                get_context({}, failure_mode, is_verbose)
-            };
+            const auto context_1 {get_context({}, failure_mode, is_verbose)};
             test_context(*context_1, "1", {});
-            const auto context_2 {
-                get_context({}, failure_mode, is_verbose)
-            };
+            const auto context_2 {get_context({}, failure_mode, is_verbose)};
             test_context(*context_1, "2", {});
             assert(context_1 != context_2);
             context_1->stop();
