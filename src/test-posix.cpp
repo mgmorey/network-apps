@@ -247,12 +247,8 @@ namespace Test
 
     auto test_paths_valid() -> void
     {
-        auto pathnames {get_pathnames()};
-
-        while (!pathnames.empty()) {
-            const auto path {pathnames.top()};
-            test_path_valid(path);
-            pathnames.pop();
+        for (auto paths {get_pathnames()}; !paths.empty(); paths.pop()) {
+            test_path_valid(paths.top());
         }
     }
 
