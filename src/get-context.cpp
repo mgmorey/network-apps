@@ -31,13 +31,13 @@ auto Network::get_context(const OptionalVersion& t_version,
                           bool t_is_verbose) -> UniqueContext
 {
 #ifdef WIN32
-    auto context {std::make_unique<Network::WindowsContext>(t_version,
-                                                            t_failure,
-                                                            t_is_verbose)};
+    auto context {std::make_unique<WindowsContext>(t_version,
+                                                   t_failure,
+                                                   t_is_verbose)};
 #else
-    auto context {std::make_unique<Network::UnixContext>(t_version,
-                                                         t_failure,
-                                                         t_is_verbose)};
+    auto context {std::make_unique<UnixContext>(t_version,
+                                                t_failure,
+                                                t_is_verbose)};
 #endif
 
     if (context) {
