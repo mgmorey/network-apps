@@ -16,13 +16,14 @@
 #include "network/argumentspan.h"       // ArgumentSpan
 #include "network/assert.h"             // assert()
 #include "network/network.h"            // Address, ByteString,
-                                        // Context, Endpoint,
+                                        // Endpoint, HostnameView,
+                                        // IpSocketHints,
                                         // OptionalHints,
                                         // OptionalHostname,
                                         // OsErrorResult, SocketHints,
                                         // SocketHost, get_endpoint(),
                                         // insert(), os_error_type,
-                                        // uniquify()
+                                        // start_context, uniquify()
 #include "network/parse.h"              // parse()
 
 #ifdef WIN32
@@ -44,7 +45,6 @@
                         // std::size_t
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
-#include <list>         // std::list
 #include <ostream>      // std::ostream
 #include <set>          // std::set
 #include <string>       // std::string
@@ -262,26 +262,6 @@ namespace Test
                   << std::endl;
     }
 
-    auto print(const std::list<SocketHost>& hosts,
-               const std::string& family) -> void
-    {
-        if (hosts.empty()) {
-            return;
-        }
-
-        if (family.empty()) {
-            std::cout << "All";
-        }
-        else {
-            std::cout << family;
-        }
-
-        std::cout << " hosts:"
-                  << std::endl;
-        std::for_each(hosts.begin(), hosts.end(),
-                      Print(std::cout));
-    }
-
     auto print(const std::vector<SocketHost>& hosts,
                const std::string& family) -> void
     {
@@ -302,34 +282,9 @@ namespace Test
                       Print(std::cout));
     }
 
-    auto test_host_list(const HostnameView& host,
-                        const OptionalHints& hints,
-                        const ErrorCodeSet& expected_codes = {0}) -> void
-    {
-        os_error_type actual_code {0};
-        std::list<SocketHost> hosts;
-        const auto family {get_family(hints)};
-        const auto result {insert(hosts, host, {}, hints, is_verbose)};
-
-        if (result) {
-            if (expected_codes == ErrorCodeSet {0}) {
-                print(result, family);
-            }
-            else {
-                print(result);
-            }
-
-            actual_code = result.number();
-        } else {
-            print(hosts, family);
-        }
-
-        assert(expected_codes.contains(actual_code));
-    }
-
-    auto test_host_vector(const HostnameView& host,
-                          const OptionalHints& hints,
-                          const ErrorCodeSet& expected_codes = {0}) -> void
+    auto test_host(const HostnameView& host,
+                   const OptionalHints& hints,
+                   const ErrorCodeSet& expected_codes = {0}) -> void
     {
         os_error_type actual_code {0};
         std::vector<SocketHost> hosts;
@@ -355,22 +310,22 @@ namespace Test
     auto test_invalid_family() -> void
     {
         const SocketHints hints {-1, SOCK_STREAM, 0, 0};
-        test_host_list(localhost, hints, get_codes_family());
-        test_host_vector(localhost, hints, get_codes_family());
+        test_host(localhost, hints, get_codes_family());
+        test_host(localhost, hints, get_codes_family());
     }
 
     auto test_invalid_type() -> void
     {
         const SocketHints hints {AF_UNSPEC, -1, 0, 0};
-        test_host_list(localhost, hints, get_codes_type());
-        test_host_vector(localhost, hints, get_codes_type());
+        test_host(localhost, hints, get_codes_type());
+        test_host(localhost, hints, get_codes_type());
     }
 
     auto test_no_data() -> void
     {
         const IpSocketHints hints {SOCK_STREAM};
-        test_host_list(".", hints, get_codes_no_data());
-        test_host_vector(".", hints, get_codes_no_data());
+        test_host(".", hints, get_codes_no_data());
+        test_host(".", hints, get_codes_no_data());
     }
 
     auto test_valid(const HostnameView& host) -> void
@@ -386,8 +341,8 @@ namespace Test
         const auto& hints_vector {get_hints_vector(is_local)};
 
         for (const auto& hints : hints_vector) {
-            test_host_list(host, hints, {0});
-            test_host_vector(host, hints, {0});
+            test_host(host, hints, {0});
+            test_host(host, hints, {0});
         }
     }
 }
