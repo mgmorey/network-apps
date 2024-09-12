@@ -342,7 +342,6 @@ namespace Test
 
         for (const auto& hints : hints_vector) {
             test_host(host, hints, {0});
-            test_host(host, hints, {0});
         }
     }
 }
