@@ -1,4 +1,4 @@
-// Copyright (C) 2022  "Michael G. Morey" <mgmorey@gmail.com>
+// Copyright (C) 2024  "Michael G. Morey" <mgmorey@gmail.com>
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,16 +13,25 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_EXCEPTIONS_H
-#define NETWORK_EXCEPTIONS_H
+#ifndef NETWORK_SOCKETERROR_H
+#define NETWORK_SOCKETERROR_H
 
-#include "network/addresserror.h"       // AddressError
-#include "network/error.h"              // Error
-#include "network/familyerror.h"        // FamilyError
+#include "network/handle-type.h"        // handle_type
 #include "network/logicerror.h"         // LogicError
-#include "network/rangeerror.h"         // RangeError
-#include "network/runtimeerror.h"       // RuntimeError
-#include "network/socketerror.h"        // SocketError
-#include "network/valueerror.h"         // ValueError
+
+namespace Network
+{
+    class SocketError :
+        public LogicError
+    {
+    public:
+        explicit SocketError(handle_type t_handle);
+        SocketError(const SocketError&) noexcept = default;
+        SocketError(SocketError&&) noexcept = default;
+        ~SocketError() noexcept override = default;
+        auto operator=(const SocketError&) noexcept -> SocketError& = default;
+        auto operator=(SocketError&&) noexcept -> SocketError& = default;
+    };
+}
 
 #endif

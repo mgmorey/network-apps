@@ -13,16 +13,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_EXCEPTIONS_H
-#define NETWORK_EXCEPTIONS_H
-
-#include "network/addresserror.h"       // AddressError
-#include "network/error.h"              // Error
-#include "network/familyerror.h"        // FamilyError
-#include "network/logicerror.h"         // LogicError
-#include "network/rangeerror.h"         // RangeError
-#include "network/runtimeerror.h"       // RuntimeError
 #include "network/socketerror.h"        // SocketError
-#include "network/valueerror.h"         // ValueError
+#include "network/handle-type.h"        // handle_type
+#include "network/logicerror.h"         // LogicError
 
-#endif
+#include <string>       // std::to_string()
+
+Network::SocketError::SocketError(handle_type t_handle) :
+    LogicError("Invalid socket descriptor value: " +
+               std::to_string(t_handle))
+{
+}

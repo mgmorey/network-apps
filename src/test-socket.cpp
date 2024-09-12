@@ -15,7 +15,7 @@
 
 #include "network/assert.h"             // assert()
 #include "network/network.h"            // Address, ByteString,
-                                        // Context, Error, LogicError,
+                                        // Context, Error,
                                         // OsErrorResult, Socket,
                                         // os_error_type
 #include "network/parse.h"              // parse()
