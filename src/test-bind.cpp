@@ -15,11 +15,15 @@
 
 #include "network/assert.h"             // assert()
 #include "network/network.h"            // Address, ByteString,
-                                        // Context, Endpoint,
+                                        // EndpointView,
+                                        // IpSocketHints,
                                         // OsErrorResult, Socket,
                                         // SocketHints, SocketResult,
-                                        // SocketResultVector, bind(),
-                                        // os_error_type, string_null
+                                        // SocketResultVector,
+                                        // UniqueSocket, bind(),
+                                        // os_error_type,
+                                        // start_context(),
+                                        // string_null
 #include "network/parse.h"              // parse()
 
 #ifdef WIN32

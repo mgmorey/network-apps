@@ -15,13 +15,17 @@
 
 #include "network/assert.h"             // assert()
 #include "network/network.h"            // Address, ByteString,
-                                        // Context, Endpoint,
-                                        // Hostname, OsErrorResult,
-                                        // Socket, SocketHints,
-                                        // SocketResult,
+                                        // EndpointView, Hostname,
+                                        // HostnameView,
+                                        // IpSocketHints,
+                                        // OsErrorResult, Socket,
+                                        // SocketHints, SocketResult,
                                         // SocketResultVector,
-                                        // connect(), get_hostname(),
-                                        // os_error_type, string_null
+                                        // UniqueSocket, connect(),
+                                        // get_hostname(),
+                                        // os_error_type,
+                                        // start_context(),
+                                        // string_null
 #include "network/parse.h"              // parse()
 
 #ifdef WIN32
@@ -55,7 +59,6 @@ namespace Test
     using Network::HostnameView;
     using Network::IpSocketHints;
     using Network::OsErrorResult;
-    using Network::PeerName;
     using Network::Socket;
     using Network::SocketHints;
     using Network::SocketResult;
