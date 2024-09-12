@@ -25,8 +25,9 @@ auto Network::operator<<(std::ostream& os,
     const auto handle {sock.handle()};
 
     if (handle == handle_null) {
-        return os << string_null;
+        os << string_null;
     }
 
-    return os << handle;
+    os << handle;
+    return os;
 }
