@@ -14,10 +14,12 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/assert.h"             // assert()
-#include "network/network.h"            // Address, ByteString,
-                                        // Context, Error,
-                                        // OsErrorResult, Socket,
-                                        // os_error_type
+#include "network/network.h"            // Error, SharedSocket,
+                                        // SocketHints,
+                                        // create_socket(),
+                                        // handle_null, handle_type,
+                                        // os_error_type,
+                                        // start_context()
 #include "network/parse.h"              // parse()
 
 #ifdef WIN32
@@ -39,7 +41,6 @@ namespace Test
     using Network::Error;
     using Network::SharedSocket;
     using Network::SocketHints;
-    using Network::UniqueSocket;
     using Network::create_socket;
     using Network::handle_null;
     using Network::handle_type;
@@ -81,28 +82,6 @@ namespace Test
             std::cout << "Exception: "
                       << error.what()
                       << std::endl;
-        }
-    }
-
-    auto test_socket(const std::string& expected_error_re) -> void
-    {
-        std::string actual_error_str;
-
-        try {
-            const UniqueSocket sock;
-            assert(!static_cast<bool>(sock));
-        }
-        catch (const Error& error) {
-            print(error);
-            actual_error_str = error.what();
-        }
-
-        if (expected_error_re.empty()) {
-            assert(actual_error_str.empty());
-        }
-        else {
-            const std::regex expected_error_regex {expected_error_re};
-            assert(std::regex_match(actual_error_str, expected_error_regex));
         }
     }
 
@@ -186,11 +165,6 @@ namespace Test
     {
         test_socket(handle_null, expected_error_socket_data_re);
     }
-
-    auto test_socket_valid() -> void
-    {
-        test_socket("");
-    }
 }
 
 auto main(int argc, char* argv[]) -> int
@@ -210,7 +184,6 @@ auto main(int argc, char* argv[]) -> int
         test_socket_hints_invalid_type();
         test_socket_invalid_data();
         test_socket_hints_valid();
-        test_socket_valid();
     }
     catch (const std::exception& error) {
         std::cerr << error.what()
