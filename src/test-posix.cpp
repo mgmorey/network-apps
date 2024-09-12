@@ -14,13 +14,18 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/assert.h"             // assert()
-#include "network/network.h"            // Address, ByteString,
-                                        // Context, Error, LogicError,
-                                        // OsErrorResult, Pathname,
-                                        // Socket, bind(),
-                                        // create_socketpair()
+#include "network/network.h"            // Address, ByteString, Error,
+                                        // LogicError, OsErrorResult,
+                                        // Pathname, Socket,
+                                        // SocketHints, SocketPair,
+                                        // UnixSocketHints, close(),
+                                        // create_socket(),
+                                        // create_socketpair(),
+                                        // handle_null, handle_type,
                                         // os_error_type,
-                                        // path_length_max, to_path()
+                                        // path_length_max,
+                                        // start_context()
+                                        // to_bytestring(), to_path()
 #include "network/parse.h"              // parse()
 
 #include <sys/socket.h>     // AF_UNIX, AF_UNSPEC, SOCK_STREAM
@@ -51,6 +56,8 @@ namespace Test
     using Network::SocketPair;
     using Network::UnixSocketHints;
     using Network::close;
+    using Network::create_socket;
+    using Network::create_socketpair;
     using Network::handle_null;
     using Network::handle_type;
     using Network::os_error_type;
