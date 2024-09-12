@@ -14,10 +14,12 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/assert.h"             // assert()
-#include "network/network.h"            // Address, ByteString,
-                                        // Context, Error,
-                                        // OsErrorResult, Socket,
-                                        // os_error_type
+#include "network/network.h"            // Error, SharedSocket,
+                                        // SocketHints,
+                                        // create_socket(),
+                                        // handle_null, handle_type,
+                                        // os_error_type,
+                                        // start_context()
 #include "network/parse.h"              // parse()
 
 #ifdef WIN32
