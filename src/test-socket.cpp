@@ -113,15 +113,18 @@ namespace Test
         std::string actual_error_str;
 
         try {
-            const SharedSocket sock_1 {create_socket(hints, is_verbose)};
-            const SharedSocket sock_2 {sock_1};
+            SharedSocket sock_1;
+            const auto sock_2 {sock_1};
+            assert(!static_cast<bool>(sock_1));
+            assert(!static_cast<bool>(sock_2));
+            sock_1 = create_socket(hints, is_verbose);
+            const SharedSocket sock_3 {sock_1};
             assert(static_cast<bool>(sock_1));
-            assert(static_cast<bool>(sock_2));
+            assert(static_cast<bool>(sock_3));
             assert(static_cast<handle_type>(*sock_1) ==
-                   static_cast<handle_type>(*sock_2));
+                   static_cast<handle_type>(*sock_3));
             assert(static_cast<handle_type>(*sock_1) != handle_null);
-            assert(static_cast<handle_type>(*sock_2) != handle_null);
-            static_cast<void>(sock_2);
+            assert(static_cast<handle_type>(*sock_3) != handle_null);
         }
         catch (const Error& error) {
             print(error);
