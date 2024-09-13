@@ -88,8 +88,8 @@ libnetwork_windows_sources = windows-close.cpp windowscontext.cpp	\
 windows-start.cpp windows-stop.cpp
 
 test_common_sources = test-address.cpp test-bind.cpp test-connect.cpp	\
-test-context.cpp test-create.cpp test-host.cpp test-hostname.cpp	\
-test-limits.cpp test-option.cpp test-parse.cpp test-socket.cpp
+test-context.cpp test-host.cpp test-hostname.cpp test-limits.cpp	\
+test-option.cpp test-parse.cpp test-socket.cpp
 
 test_posix_sources = test-posix.cpp
 
