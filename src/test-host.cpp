@@ -22,7 +22,8 @@
                                         // OptionalHostname,
                                         // OsErrorResult, SocketHints,
                                         // SocketHost, get_endpoint(),
-                                        // insert(), os_error_type,
+                                        // get_hostname(), insert(),
+                                        // os_error_type,
                                         // start_context, uniquify()
 #include "network/parse.h"              // parse()
 
@@ -66,6 +67,7 @@ namespace Test
     using Network::af_ip_v4;
     using Network::af_ip_v6;
     using Network::always_false_v;
+    using Network::get_hostname;
     using Network::insert;
     using Network::os_error_type;
     using Network::parse;
@@ -208,17 +210,6 @@ namespace Test
         return is_local ? HintsVector {ip} : HintsVector {ipv4, ipv6};
     }
 
-    auto get_hostname() -> OptionalHostname
-    {
-        const auto* const hostname {std::getenv("HOSTNAME")};
-
-        if (hostname == nullptr) {
-            return {};
-        }
-
-        return hostname;
-    }
-
     auto parse_arguments(int argc, char** argv) -> ArgumentSpan
     {
         const auto [operands, options] {parse(argc, argv, "v")};
@@ -330,7 +321,7 @@ namespace Test
 
     auto test_valid(const HostnameView& host) -> void
     {
-        const bool is_local = host.empty() || host == get_hostname();
+        const bool is_local = host.empty() || host == get_hostname(is_verbose);
 
         if (!host.empty() && !is_local) {
             std::cout << "Host: "
@@ -365,11 +356,8 @@ auto main(int argc, char* argv[]) -> int
         if (!hosts.empty()) {
             std::for_each(hosts.begin(), hosts.end(), test_valid);
         }
-        else if (const auto hostname {get_hostname()}) {
-            test_valid(*hostname);
-        }
         else {
-            test_valid(localhost);
+            test_valid(get_hostname());
         }
     }
     catch (const std::exception& error) {

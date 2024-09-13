@@ -13,7 +13,6 @@ run_test_program() (
     esac
 )
 
-export HOSTNAME=${HOSTNAME-$(hostname)}
 export LD_LIBRARY_PATH=".${LD_LIBRARY_PATH+:$LD_LIBRARY_PATH}"
 
 if [ "${USING_VALGRIND-}" = true ]; then
