@@ -117,10 +117,10 @@ namespace Test
             const SharedSocket sock_2 {sock_1};
             assert(static_cast<bool>(sock_1));
             assert(static_cast<bool>(sock_2));
-            assert(static_cast<handle_type>(*sock_1) != handle_null);
-            assert(static_cast<handle_type>(*sock_2) != handle_null);
             assert(static_cast<handle_type>(*sock_1) ==
                    static_cast<handle_type>(*sock_2));
+            assert(static_cast<handle_type>(*sock_1) != handle_null);
+            assert(static_cast<handle_type>(*sock_2) != handle_null);
             static_cast<void>(sock_2);
         }
         catch (const Error& error) {
@@ -149,7 +149,7 @@ namespace Test
         test_socket(hints, expected_error_socket_re);
     }
 
-    auto test_socket_hints_invalid_type() -> void
+    auto test_socket_hints_invalid_socktype() -> void
     {
         const SocketHints hints {AF_INET, -1, 0};
         test_socket(hints, expected_error_socket_re);
@@ -180,8 +180,8 @@ auto main(int argc, char* argv[]) -> int
         }
 
         test_socket_hints_invalid_family();
+        test_socket_hints_invalid_socktype();
         test_socket_hints_invalid_protocol();
-        test_socket_hints_invalid_type();
         test_socket_invalid_data();
         test_socket_hints_valid();
     }
