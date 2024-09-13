@@ -15,7 +15,6 @@
 
 #include "network/socketprotocol.h"             // SocketProtocol,
                                                 // operator<<()
-#include "network/socket-protocol-type.h"       // socket_protocol_type
 
 #ifdef WIN32
 #include <winsock2.h>   // AF_INET, AF_INET6, AF_UNIX, AF_UNSPEC,
@@ -33,13 +32,11 @@ auto Network::operator<<(std::ostream& os,
                          const SocketProtocol& protocol) noexcept ->
     std::ostream&
 {
-    const socket_protocol_type protocol_value {protocol};
-
     switch (protocol.family()) {
     case AF_UNSPEC:
     case AF_INET:
     case AF_INET6:
-        switch (protocol_value) {
+        switch (protocol) {
         case IPPROTO_IP:
             os << "IPPROTO_IP";
             break;
@@ -56,11 +53,11 @@ auto Network::operator<<(std::ostream& os,
             os << "IPPROTO_RAW";
             break;
         default:
-            os << protocol_value;
+            os << static_cast<int>(protocol);
         }
         break;
     default:
-        os << protocol_value;
+        os << static_cast<int>(protocol);
     }
 
     return os;

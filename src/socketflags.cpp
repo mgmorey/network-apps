@@ -14,7 +14,6 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/socketflags.h"        // SocketFlags, operator<<()
-#include "network/socket-flags-type.h"  // socket_flags_type
 
 #ifdef WIN32
 #include <ws2tcpip.h>   // AI_ADDRCONFIG, AI_ALL, AI_CANONNAME,
@@ -45,12 +44,11 @@ auto Network::operator<<(std::ostream& os,
         {AI_V4MAPPED,       "AI_V4MAPPED"},
     };
 
-    const socket_flags_type flags_value {flags};
     std::ostringstream oss;
     std::size_t index {0};
 
     for (const auto& value : values) {
-        if ((flags_value & value.first) != 0) {
+        if ((flags & value.first) != 0) {
             if (index++ > 0) {
                 oss << " | ";
             }

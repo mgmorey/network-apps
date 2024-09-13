@@ -15,7 +15,6 @@
 
 #include "network/socketfamily.h"               // SocketFamily,
                                                 // operator<<()
-#include "network/socket-family-type.h"         // socket_family_type
 
 #ifdef WIN32
 #include <winsock2.h>   // AF_INET, AF_INET6, AF_UNIX, AF_UNSPEC,
@@ -30,9 +29,7 @@
 auto Network::operator<<(std::ostream& os,
                          const SocketFamily& family) -> std::ostream&
 {
-    const socket_family_type family_value {family};
-
-    switch (family_value) {
+    switch (family) {
     case AF_UNSPEC:
         os << "AF_UNSPEC";
         break;
@@ -46,7 +43,7 @@ auto Network::operator<<(std::ostream& os,
         os << "AF_INET6";
         break;
     default:
-        os << family_value;
+        os << static_cast<int>(family);
     }
 
     return os;
