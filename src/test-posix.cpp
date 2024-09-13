@@ -294,7 +294,7 @@ namespace Test
         test_socketpair(hints, expected_error_socketpair_re);
     }
 
-    auto test_socketpair_invalid_type() -> void
+    auto test_socketpair_invalid_socktype() -> void
     {
         const SocketHints hints {AF_UNIX, 0, 0};
         test_socketpair(hints, expected_error_socketpair_re);
@@ -334,7 +334,7 @@ namespace Test
         test_unix_socket(hints, expected_error_socket_re);
     }
 
-    auto test_unix_socket_invalid_type() -> void
+    auto test_unix_socket_invalid_socktype() -> void
     {
         const SocketHints hints {AF_UNIX, 0, 0};
         test_unix_socket(hints, expected_error_socket_re);
@@ -360,10 +360,10 @@ auto main(int argc, char* argv[]) -> int
         }
 
         test_paths_invalid();
+        test_socketpair_invalid_socktype();
         test_socketpair_invalid_protocol();
-        test_socketpair_invalid_type();
+        test_unix_socket_invalid_socktype();
         test_unix_socket_invalid_protocol();
-        test_unix_socket_invalid_type();
         test_close_handle_null();
         test_paths_valid();
         test_socketpair_valid();
