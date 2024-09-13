@@ -100,7 +100,7 @@ test-hostname
 test-limits
 test-option
 test-parse
-test-posix
-test-socket
+test-socket-inet
+test-socket-unix
 unix-client
 unix-server
