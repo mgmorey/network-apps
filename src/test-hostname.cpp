@@ -14,8 +14,8 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/assert.h"             // assert()
-#include "network/network.h"            // Context, Hostname,
-                                        // get_hostname()
+#include "network/network.h"            // Hostname, get_hostname(),
+                                        // start_context()
 #include "network/parse.h"              // parse()
 
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
