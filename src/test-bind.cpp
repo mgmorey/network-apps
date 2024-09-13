@@ -65,7 +65,6 @@ namespace Test
     using Network::os_error_type;
     using Network::parse;
     using Network::start_context;
-    using Network::string_null;
 
     using ErrorCodeSet = std::set<os_error_type>;
 
@@ -109,12 +108,6 @@ namespace Test
         {
             const auto self {t_sock.sockname()};
             m_os << "Socket "
-                 << std::right << std::setw(handle_width) << t_sock
-                 << " bound on "
-                 << (m_endpoint.at(0).data() != nullptr ?
-                     string_null : m_endpoint.at(0))
-                 << std::endl
-                 << "Socket "
                  << std::right << std::setw(handle_width) << t_sock
                  << " bound to "
                  << Address(self)
