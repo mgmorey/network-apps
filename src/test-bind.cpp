@@ -21,6 +21,7 @@
                                         // SocketHints, SocketResult,
                                         // SocketResultVector,
                                         // UniqueSocket, bind(),
+                                        // handle_null, handle_type,
                                         // os_error_type,
                                         // start_context(),
                                         // string_null
@@ -62,6 +63,8 @@ namespace Test
     using Network::UniqueSocket;
     using Network::always_false_v;
     using Network::bind;
+    using Network::handle_null;
+    using Network::handle_type;
     using Network::os_error_type;
     using Network::parse;
     using Network::start_context;
@@ -106,6 +109,8 @@ namespace Test
 
         auto test_socket(const Socket& t_sock) -> void
         {
+            assert(static_cast<bool>(t_sock));
+            assert(static_cast<handle_type>(t_sock) != handle_null);
             const auto self {t_sock.sockname()};
             m_os << "Socket "
                  << std::right << std::setw(handle_width) << t_sock
