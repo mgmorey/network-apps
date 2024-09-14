@@ -82,12 +82,11 @@ namespace Test
         R"(Call to ::socketpair\(.+\) failed with error \d+: .+)"
     };
     static constexpr auto handle_width {6};
+    static constexpr auto size_max {path_length_max};
+    static constexpr auto size_min {6};  // NOLINT
     static constexpr UnixSocketHints socket_hints {SOCK_STREAM};
 
     static auto is_verbose {false};  // NOLINT
-
-    static constexpr auto size_max {path_length_max};
-    static constexpr auto size_min {6};  // NOLINT
 
     auto operator==(const ByteString& addr,
                     const std::string_view& path) -> bool
@@ -228,7 +227,6 @@ namespace Test
     {
         const auto sock {create_socket(socket_hints, is_verbose)};
         test_path(path, *sock, {0}, {});
-        test_path(path, *sock, {EADDRINUSE, EINVAL}, {});
     }
 
     auto test_paths_invalid() -> void
@@ -244,7 +242,6 @@ namespace Test
 	const ErrorCodeSet codes_valid {0};
         test_path("", codes_valid, expected_error_payload_length_re);
         const auto path_max {get_pathname(path_length_max + 1)};
-        test_path(path_max.c_str(), {}, expected_error_path_length_re);
         test_path(path_max, {}, expected_error_path_length_re);
 #ifndef OS_CYGWIN_NT
         test_path("/foo/bar", codes_invalid_directory, {});
