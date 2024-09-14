@@ -263,12 +263,16 @@ namespace Test
 
         try {
             auto pair {create_socketpair(hints, is_verbose)};
+            assert(static_cast<bool>(*pair[0]));
+            assert(static_cast<bool>(*pair[1]));
+            assert(static_cast<handle_type>(*pair[0]) != handle_null);
+            assert(static_cast<handle_type>(*pair[1]) != handle_null);
             std::cout << "Socket "
-                      << std::right << std::setw(handle_width) << *pair.at(0)
+                      << std::right << std::setw(handle_width) << *pair[0]
                       << " connected to "
                       << std::endl
                       << "Socket "
-                      << std::right << std::setw(handle_width) << *pair.at(1)
+                      << std::right << std::setw(handle_width) << *pair[1]
                       << std::endl;
         }
         catch (const Error& error) {
