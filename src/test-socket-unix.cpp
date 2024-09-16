@@ -13,6 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#ifndef WIN32
+
 #include "network/assert.h"             // assert()
 #include "network/network.h"            // Address, ByteString, Error,
                                         // LogicError, OsErrorResult,
@@ -375,3 +377,5 @@ auto main(int argc, char* argv[]) -> int
                   << std::endl;
     }
 }
+
+#endif
