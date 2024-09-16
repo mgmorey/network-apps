@@ -183,7 +183,7 @@ $(text_artifacts))))
 
 artifacts = $(binary_artifacts) $(text_artifacts)
 
-build_targets = assert objects libraries programs sizes
+build_targets = assert objects libraries programs
 
 ifeq "$(is_ctags_universal)" "true"
 ifeq "$(call compare-versions,$(ctags_version),5.8)" "greater"
@@ -191,7 +191,7 @@ ifeq "$(call compare-versions,$(ctags_version),5.8)" "greater"
 endif
 endif
 
-all_targets = $(build_targets) check
+all_targets = $(build_targets) sizes test
 
 ifneq "$(os_type)" "ms-windows"
 ifneq "$(os_distro)" "macos"
