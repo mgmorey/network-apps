@@ -21,7 +21,8 @@
                                         // OptionalHints,
                                         // OptionalHostname,
                                         // OsErrorResult, SocketHints,
-                                        // SocketHost, get_endpoint(),
+                                        // SocketHost, af_ip_v4,
+                                        // af_ip_v6, always_false_v,
                                         // get_hostname(), insert(),
                                         // os_error_type,
                                         // start_context, uniquify()
