@@ -84,8 +84,8 @@ namespace Test
         R"(Call to ::socketpair\(.+\) failed with error \d+: .+)"
     };
     static constexpr auto handle_width {6};
-    static constexpr auto size_max {path_length_max};
-    static constexpr auto size_min {6};  // NOLINT
+    static constexpr std::size_t size_max {path_length_max};
+    static constexpr std::size_t size_min {6};  // NOLINT
     static constexpr UnixSocketHints socket_hints {SOCK_STREAM};
 
     static auto is_verbose {false};  // NOLINT
@@ -192,6 +192,8 @@ namespace Test
 
         try {
             assert(to_bytestring(path) == path);
+            assert(static_cast<bool>(sock));
+            assert(static_cast<handle_type>(sock) != handle_null);
 
             if (const auto result {sock.bind(path)}) {
                 print(result);
