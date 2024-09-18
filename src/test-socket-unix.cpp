@@ -96,7 +96,7 @@ namespace Test
         return to_path(addr) == path;
     }
 
-    auto get_codes_bad_file_number() -> ErrorCodeSet
+    auto get_codes_bad_file_number() -> const ErrorCodeSet&
     {
 	static const ErrorCodeSet codes {EBADF};
         return codes;
@@ -104,18 +104,18 @@ namespace Test
 
 #ifndef OS_CYGWIN_NT
 
-    auto get_codes_invalid_directory() -> ErrorCodeSet
+    auto get_codes_invalid_directory() -> const ErrorCodeSet&
     {
         static const ErrorCodeSet codes {ENOENT};
         return codes;
     }
 
-    auto get_codes_invalid_permission() -> ErrorCodeSet
+    auto get_codes_invalid_permission() -> const ErrorCodeSet&
     {
 #ifdef OS_DARWIN
-        const ErrorCodeSet codes {EACCES, EROFS};
+        static const ErrorCodeSet codes {EACCES, EROFS};
 #else
-	const ErrorCodeSet codes {EACCES};
+	static const ErrorCodeSet codes {EACCES};
 #endif
         return codes;
     }
