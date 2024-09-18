@@ -18,9 +18,10 @@
 #include "network/bytestring.h"                 // ByteString
 #include "network/length-type.h"                // length_type
 
+#include <span>         // std::span
+
 auto Network::to_bytestring(const void* data, length_type size) -> ByteString
 {
-    const auto* const first {static_cast<const Byte*>(data)};
-    const auto* const last {first + size};  // NOLINT
-    return {first, last};
+    const std::span<const Byte> span {static_cast<const Byte*>(data), size};
+    return {span.begin(), span.end()};
 }
