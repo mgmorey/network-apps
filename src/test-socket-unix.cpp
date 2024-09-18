@@ -96,6 +96,32 @@ namespace Test
         return to_path(addr) == path;
     }
 
+    auto get_codes_bad_file_number() -> ErrorCodeSet
+    {
+	static const ErrorCodeSet codes {EBADF};
+        return codes;
+    }
+
+#ifndef OS_CYGWIN_NT
+
+    auto get_codes_invalid_directory() -> ErrorCodeSet
+    {
+        static const ErrorCodeSet codes {ENOENT};
+        return codes;
+    }
+
+    auto get_codes_invalid_permission() -> ErrorCodeSet
+    {
+#ifdef OS_DARWIN
+        const ErrorCodeSet codes {EACCES, EROFS};
+#else
+	const ErrorCodeSet codes {EACCES};
+#endif
+        return codes;
+    }
+
+#endif
+
     auto get_pathname(std::string::size_type size) -> Pathname
     {
         const Pathname prefix {"/tmp/"};
@@ -179,8 +205,7 @@ namespace Test
 
     auto test_close_handle_null() -> void
     {
-	const ErrorCodeSet codes_bad_file_number {EBADF};
-        test_close(handle_null, codes_bad_file_number);
+        test_close(handle_null, get_codes_bad_file_number());
     }
 
     auto test_path(const auto path,
@@ -235,21 +260,12 @@ namespace Test
 
     auto test_paths_invalid() -> void
     {
-#ifndef OS_CYGWIN_NT
-	const ErrorCodeSet codes_invalid_directory {ENOENT};
-#ifdef OS_DARWIN
-	const ErrorCodeSet codes_invalid_permission {EACCES, EROFS};
-#else
-	const ErrorCodeSet codes_invalid_permission {EACCES};
-#endif
-#endif
-	const ErrorCodeSet codes_valid {0};
-        test_path("", codes_valid, expected_error_payload_length_re);
+        test_path("", {0}, expected_error_payload_length_re);
         const auto path_max {get_pathname(path_length_max + 1)};
         test_path(path_max, {}, expected_error_path_length_re);
 #ifndef OS_CYGWIN_NT
-        test_path("/foo/bar", codes_invalid_directory, {});
-        test_path("/foo", codes_invalid_permission, {});
+        test_path("/foo/bar", get_codes_invalid_directory(), {});
+        test_path("/foo", get_codes_invalid_permission(), {});
 #endif
     }
 
