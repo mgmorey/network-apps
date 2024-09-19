@@ -22,7 +22,6 @@
 #include "network/logicerror.h"         // LogicError
 #include "network/rangeerror.h"         // RangeError
 #include "network/runtimeerror.h"       // RuntimeError
-#include "network/socketerror.h"        // SocketError
 #include "network/valueerror.h"         // ValueError
 
 #endif

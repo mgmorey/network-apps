@@ -51,9 +51,6 @@ namespace Test
     static constexpr auto expected_error_socket_re {
         R"(Call to ::socket\(.+\) failed with error \d+: .+)"
     };
-    static constexpr auto expected_error_socket_data_re {
-        R"(Invalid socket descriptor value: (-\d+|\d+))"
-    };
 
     static auto is_verbose {false};  // NOLINT
 
@@ -156,11 +153,6 @@ namespace Test
         const SocketHints hints {AF_INET, SOCK_STREAM, 0};
         test_socket(hints, "");
     }
-
-    auto test_socket_invalid_data() -> void
-    {
-        test_socket(handle_null, expected_error_socket_data_re);
-    }
 }
 
 auto main(int argc, char* argv[]) -> int
@@ -178,7 +170,6 @@ auto main(int argc, char* argv[]) -> int
         test_socket_hints_invalid_family();
         test_socket_hints_invalid_socktype();
         test_socket_hints_invalid_protocol();
-        test_socket_invalid_data();
         test_socket_hints_valid();
     }
     catch (const std::exception& error) {

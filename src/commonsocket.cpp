@@ -26,7 +26,6 @@
 #include "network/oserrorresult.h"              // OsErrorResult
 #include "network/read.h"                       // read()
 #include "network/socket-family-type.h"         // socket_family_type
-#include "network/socketerror.h"                // SocketError
 #include "network/write.h"                      // write()
 
 #include <cstddef>      // std::size_t
@@ -39,9 +38,6 @@ Network::CommonSocket::CommonSocket(socket_family_type t_family,
       m_handle(t_handle),
       m_is_verbose(t_is_verbose)
 {
-    if (m_handle == handle_null) {
-        throw SocketError(m_handle);
-    }
 }
 
 Network::CommonSocket::~CommonSocket() noexcept
