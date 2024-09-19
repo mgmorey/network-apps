@@ -24,7 +24,7 @@
                                         // sa_size, sin_family_type,
                                         // sun_length_max,
                                         // sun_length_min,
-                                        // sun_path_offset, sun_size,
+                                        // sun_path_size, sun_size,
                                         // to_bytestring(), validate()
 #include "network/os-features.h"        // HAVE_SOCKADDR_SA_LEN
 #include "network/parse.h"              // parse()
@@ -80,7 +80,7 @@ namespace Test
 #ifndef WIN32
     using Network::sun_length_max;
     using Network::sun_length_min;
-    using Network::sun_path_offset;
+    using Network::sun_path_size;
     using Network::sun_size;
 #endif
     using Network::to_bytestring;
@@ -404,8 +404,7 @@ namespace Test
 
     auto test_sun_valid_path_large() -> void
     {
-        const auto path_len {sun_size - sun_path_offset};
-        const auto sun {create_sun(af_unix, sun_length_max, path_len)};
+        const auto sun {create_sun(af_unix, sun_length_max, sun_path_size)};
         test_sun(sun, sun_length_max, {});
     }
 
