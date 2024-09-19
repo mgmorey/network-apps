@@ -27,16 +27,20 @@ auto Network::operator<<(std::ostream& os,
 {
     static constexpr auto delim {", "};
     static constexpr auto tab {12};
+    const SocketFlags flags {hints.m_flags};
+    const SocketFamily family {hints.m_family};
+    const SocketType socktype {hints.m_socktype};
+    const SocketProtocol protocol {family, hints.m_protocol};
 
     os << "SocketHints("
        << Format("flags")
-       << SocketFlags(hints.m_flags)
+       << flags
        << Format(delim, tab, "family")
-       << SocketFamily(hints.m_family)
+       << family
        << Format(delim, tab, "socktype")
-       << SocketType(hints.m_socktype)
+       << socktype
        << Format(delim, tab, "protocol")
-       << SocketProtocol(hints.m_protocol, hints.m_family)
+       << protocol
        << ')';
     return os;
 }
