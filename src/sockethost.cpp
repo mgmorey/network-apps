@@ -16,7 +16,8 @@
 #include "network/sockethost.h"         // SocketHost
 #include "network/bytestring.h"         // ByteString
 #include "network/optionalhostname.h"   // OptionalHostname
-#include "network/to-bytestring-ai.h"   // to_bytestring()
+#include "network/to-bytestring-void.h" // to_bytestring()
+#include "network/to-sa-length.h"       // to_sa_length()
 
 #ifdef WIN32
 #include <ws2tcpip.h>   // addrinfo
@@ -63,6 +64,11 @@ auto Network::SocketHost::address() const -> const Network::ByteString&
 auto Network::SocketHost::canonical_name() const -> const OptionalHostname&
 {
     return m_name;
+}
+
+auto Network::SocketHost::to_bytestring(const addrinfo& ai) -> ByteString
+{
+    return Network::to_bytestring(ai.ai_addr, to_sa_length(ai.ai_addrlen));
 }
 
 auto Network::SocketHost::to_canonical_name(const addrinfo& t_ai) noexcept ->

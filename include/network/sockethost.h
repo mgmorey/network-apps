@@ -45,6 +45,7 @@ namespace Network
         [[nodiscard]] auto canonical_name() const -> const OptionalHostname&;
 
     protected:
+        static auto to_bytestring(const addrinfo& ai) -> ByteString;
         static auto to_canonical_name(const addrinfo& t_ai) noexcept ->
             OptionalHostname;
 

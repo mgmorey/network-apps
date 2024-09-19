@@ -18,10 +18,11 @@
 #include "network/format.h"                     // Format
 #include "network/socketfamily.h"               // SocketFamily,
 #include "network/socketflags.h"                // SocketFlags
+#include "network/sockethints.h"                // SocketHints
+#include "network/sockethost.h"                 // SocketHost
 #include "network/socketprotocol.h"             // SocketProtocol
 #include "network/sockettype.h"                 // SocketType
 #include "network/string-null.h"                // string_null
-#include "network/to-bytestring-ai.h"           // to_bytestring()
 #include "network/to-string-vector-byte.h"      // to_string()
 
 #ifdef WIN32
@@ -68,7 +69,9 @@ auto Network::operator<<(std::ostream& os,
     }
     else {
         constexpr auto tab {9};
-        const auto addr {to_bytestring(ai)};
+        const SocketHost host {ai};
+        const auto& host_addr {host.address()};
+        const auto& host_name {host.canonical_name()};
         os << "addrinfo("
            << Format("ai_flags")
            << flags
@@ -81,10 +84,9 @@ auto Network::operator<<(std::ostream& os,
            << Format(tab, "ai_addrlen")
            << ai.ai_addrlen
            << Format(tab, "ai_addr")
-           << to_string(addr)
+           << to_string(host_addr)
            << Format(tab, "ai_canonname")
-           << (ai.ai_canonname == nullptr ? string_null :
-               ai.ai_canonname)
+           << (host_name ? *host_name : string_null)
            << Format(tab)
            << "...)";
     }
