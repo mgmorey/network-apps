@@ -18,7 +18,6 @@
 #include "network/format.h"                     // Format
 #include "network/socketfamily.h"               // SocketFamily,
 #include "network/socketflags.h"                // SocketFlags
-#include "network/sockethost.h"                 // SocketHost
 #include "network/socketprotocol.h"             // SocketProtocol
 #include "network/sockettype.h"                 // SocketType
 #include "network/string-null.h"                // string_null
@@ -31,7 +30,7 @@
 #endif
 
 #include <ostream>      // std::ostream
-
+#include <span>         // std::span
 
 auto Network::operator<<(std::ostream& os, const AddressList& list) -> std::ostream&
 {
@@ -68,7 +67,6 @@ auto Network::operator<<(std::ostream& os,
     }
     else {
         constexpr auto tab {9};
-        const SocketHost host {ai};
         os << "addrinfo("
            << Format("ai_flags")
            << flags
@@ -79,11 +77,11 @@ auto Network::operator<<(std::ostream& os,
            << Format(tab, "ai_protocol")
            << protocol
            << Format(tab, "ai_addrlen")
-           << host.address_length()
+           << ai.ai_addrlen
            << Format(tab, "ai_addr")
-           << to_string(host.address())
+           << to_string(ai.ai_addr, ai.ai_addrlen)
            << Format(tab, "ai_canonname")
-           << host.canonical_name().value_or(string_null)
+           << (ai.ai_canonname == nullptr ? string_null : ai.ai_canonname)
            << Format(tab)
            << "...)";
     }
