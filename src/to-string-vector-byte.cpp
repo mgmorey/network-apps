@@ -45,6 +45,11 @@ auto Network::to_string(const std::span<const Byte>& span) -> std::string
     return oss.str();
 }
 
+auto Network::to_string(const void* data, length_type size) -> std::string
+{
+    return to_string(std::span(static_cast<const Byte*>(data), size));
+}
+
 auto Network::to_string(const std::vector<Byte>& v) -> std::string
 {
     return to_string(std::span(v.cbegin(), v.cend()));

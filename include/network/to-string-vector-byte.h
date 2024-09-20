@@ -17,6 +17,7 @@
 #define NETWORK_TO_STRING_VECTOR_BYTE_H
 
 #include "network/byte.h"               // Byte
+#include "network/length-type.h"        // length_type
 
 #include <span>         // std::span
 #include <string>       // std::string
@@ -25,6 +26,7 @@
 namespace Network
 {
     extern auto to_string(const std::span<const Byte>& span) -> std::string;
+    extern auto to_string(const void* data, length_type size) -> std::string;
     extern auto to_string(const std::vector<Byte>& v) -> std::string;
 }
 
