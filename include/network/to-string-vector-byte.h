@@ -24,7 +24,7 @@
 
 namespace Network
 {
-    extern auto to_string(const std::span<const Byte>& vs) -> std::string;
+    extern auto to_string(const std::span<const Byte>& span) -> std::string;
     extern auto to_string(const std::vector<Byte>& v) -> std::string;
 }
 
