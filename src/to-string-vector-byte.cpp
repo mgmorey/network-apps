@@ -18,24 +18,23 @@
 
 #include <iomanip>      // std::setfill(), std::setw()
 #include <ios>          // std::hex, std::ios, std::uppercase
+#include <span>         // std::span
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
 #include <vector>       // std::vector
 
-auto Network::to_string(const std::vector<Byte>& v) -> std::string
+auto Network::to_string(const std::span<const Byte>& vs) -> std::string
 {
     std::ostringstream oss;
-    std::ios format {nullptr};
-    format.copyfmt(oss);
     oss << "0x";
 
-    if (v.empty()) {
+    if (vs.empty()) {
         oss << '0';
     }
     else {
         oss << std::hex;
 
-        for (const auto byte : v) {
+        for (const auto byte : vs) {
             oss << std::setfill('0')
                 << std::setw(2)
                 << std::uppercase
@@ -43,6 +42,10 @@ auto Network::to_string(const std::vector<Byte>& v) -> std::string
         }
     }
 
-    oss.copyfmt(format);
     return oss.str();
+}
+
+auto Network::to_string(const std::vector<Byte>& v) -> std::string
+{
+    return to_string(std::span(v.cbegin(), v.cend()));
 }

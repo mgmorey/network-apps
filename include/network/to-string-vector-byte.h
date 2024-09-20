@@ -18,11 +18,13 @@
 
 #include "network/byte.h"               // Byte
 
+#include <span>         // std::span
 #include <string>       // std::string
 #include <vector>       // std::vector
 
 namespace Network
 {
+    extern auto to_string(const std::span<const Byte>& vs) -> std::string;
     extern auto to_string(const std::vector<Byte>& v) -> std::string;
 }
 
