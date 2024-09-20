@@ -30,18 +30,20 @@ auto Network::operator<<(std::ostream& os,
                          const Template& sock) -> std::ostream&
 {
     static constexpr auto tab {9};
-
     const auto hints {sock.hints()};
-
+    const SocketFlags flags {hints.m_flags};
+    const SocketFamily family {hints.m_family};
+    const SocketType socktype {hints.m_socktype};
+    const SocketProtocol protocol {hints.m_protocol, family};
     os << "Template("
        << Format("flags")
-       << SocketFlags(hints.m_flags)
+       << flags
        << Format(tab, "family")
-       << SocketFamily(hints.m_family)
+       << family
        << Format(tab, "socktype")
-       << SocketType(hints.m_socktype)
+       << socktype
        << Format(tab, "protocol")
-       << SocketProtocol(hints.m_protocol, hints.m_family)
+       << protocol
        << Format(tab, "address")
        << to_string(sock.address())
        << Format(tab, "canonical_name")
