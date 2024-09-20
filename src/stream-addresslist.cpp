@@ -49,7 +49,7 @@ auto Network::operator<<(std::ostream& os,
     const SocketFlags flags {ai.ai_flags};
     const SocketFamily family {ai.ai_family};
     const SocketType socktype {ai.ai_socktype};
-    const SocketProtocol protocol {family, ai.ai_protocol};
+    const SocketProtocol protocol {ai.ai_protocol, family};
 
     if (ai.ai_addr == nullptr) {
         constexpr auto delim {", "};
@@ -69,8 +69,6 @@ auto Network::operator<<(std::ostream& os,
     else {
         constexpr auto tab {9};
         const SocketHost host {ai};
-        const auto& host_addr {host.address()};
-        const auto& host_name {host.canonical_name()};
         os << "addrinfo("
            << Format("ai_flags")
            << flags
@@ -83,9 +81,9 @@ auto Network::operator<<(std::ostream& os,
            << Format(tab, "ai_addrlen")
            << ai.ai_addrlen
            << Format(tab, "ai_addr")
-           << to_string(host_addr)
+           << to_string(host.address())
            << Format(tab, "ai_canonname")
-           << (host_name ? *host_name : string_null)
+           << host.canonical_name().value_or(string_null)
            << Format(tab)
            << "...)";
     }
