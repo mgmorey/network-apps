@@ -23,9 +23,9 @@
 #include "network/to-os-error.h"        // to_os_error()
 
 #ifdef WIN32
-#include <ws2tcpip.h>   // addrinfo, ::freeaddrinfo(), ::getaddrinfo()
+#include <ws2tcpip.h>       // addrinfo, ::freeaddrinfo(), ::getaddrinfo()
 #else
-#include <netdb.h>      // addrinfo, ::freeaddrinfo(), ::getaddrinfo()
+#include <netdb.h>          // addrinfo, ::freeaddrinfo(), ::getaddrinfo()
 #endif
 
 #include <iostream>     // std::cerr, std::cout, std::endl
