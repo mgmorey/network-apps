@@ -13,11 +13,12 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/template.h"                   // Template
-#include "network/bytestring.h"                 // ByteString
-#include "network/optionalhostname.h"           // OptionalHostname
-#include "network/sockethints.h"                // SocketHints
-#include "network/sockethost.h"                 // SocketHost
+#include "network/template.h"           // Template
+#include "network/bytestring.h"         // ByteString
+#include "network/length-type.h"        // length_type
+#include "network/optionalhostname.h"   // OptionalHostname
+#include "network/sockethints.h"        // SocketHints
+#include "network/sockethost.h"         // SocketHost
 
 #ifdef WIN32
 #include <ws2tcpip.h>   // addrinfo
@@ -69,6 +70,11 @@ auto Network::Template::host() const noexcept -> const SocketHost&
 auto Network::Template::address() const noexcept -> const ByteString&
 {
     return m_host.address();
+}
+
+auto Network::Template::address_length() const noexcept -> length_type
+{
+    return m_host.address().size();
 }
 
 auto Network::Template::canonical_name() const noexcept ->

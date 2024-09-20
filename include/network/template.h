@@ -16,6 +16,9 @@
 #ifndef NETWORK_TEMPLATE_H
 #define NETWORK_TEMPLATE_H
 
+#include "network/bytestring.h"         // ByteString
+#include "network/length-type.h"        // length_type
+#include "network/optionalhostname.h"   // OptionalHostname
 #include "network/sockethints.h"        // SocketHints
 #include "network/sockethost.h"         // SocketHost
 
@@ -47,6 +50,7 @@ namespace Network
         [[nodiscard]] auto hints() const noexcept -> const SocketHints&;
         [[nodiscard]] auto host() const noexcept -> const SocketHost&;
         [[nodiscard]] auto address() const noexcept -> const ByteString&;
+        [[nodiscard]] auto address_length() const noexcept -> length_type;
         [[nodiscard]] auto canonical_name() const noexcept ->
             const OptionalHostname&;
 
