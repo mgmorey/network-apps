@@ -18,7 +18,6 @@
 #include "network/format.h"                     // Format
 #include "network/socketfamily.h"               // SocketFamily,
 #include "network/socketflags.h"                // SocketFlags
-#include "network/sockethints.h"                // SocketHints
 #include "network/sockethost.h"                 // SocketHost
 #include "network/socketprotocol.h"             // SocketProtocol
 #include "network/sockettype.h"                 // SocketType
