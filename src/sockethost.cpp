@@ -15,6 +15,7 @@
 
 #include "network/sockethost.h"         // SocketHost
 #include "network/bytestring.h"         // ByteString
+#include "network/length-type.h"        // length_type
 #include "network/optionalhostname.h"   // OptionalHostname
 #include "network/to-bytestring-void.h" // to_bytestring()
 #include "network/to-sa-length.h"       // to_sa_length()
@@ -56,12 +57,18 @@ auto Network::SocketHost::operator==(const SocketHost& t_host) const noexcept ->
     return m_addr == t_host.m_addr;
 }
 
-auto Network::SocketHost::address() const -> const Network::ByteString&
+auto Network::SocketHost::address() const noexcept -> const Network::ByteString&
 {
     return m_addr;
 }
 
-auto Network::SocketHost::canonical_name() const -> const OptionalHostname&
+auto Network::SocketHost::address_length() const noexcept -> length_type
+{
+    return m_addr.size();
+}
+
+auto Network::SocketHost::canonical_name() const noexcept ->
+    const OptionalHostname&
 {
     return m_name;
 }
