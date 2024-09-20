@@ -21,9 +21,9 @@
 #include "network/optionalhostname.h"   // OptionalHostname
 
 #ifdef WIN32
-#include <ws2tcpip.h>   // addrinfo
+#include <ws2tcpip.h>       // addrinfo
 #else
-#include <netdb.h>      // addrinfo
+#include <netdb.h>          // addrinfo
 #endif
 
 namespace Network

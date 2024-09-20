@@ -21,9 +21,9 @@
 #include "network/to-sa-length.h"       // to_sa_length()
 
 #ifdef WIN32
-#include <ws2tcpip.h>   // addrinfo
+#include <ws2tcpip.h>       // addrinfo
 #else
-#include <netdb.h>      // addrinfo
+#include <netdb.h>          // addrinfo
 #endif
 
 Network::SocketHost::SocketHost(const addrinfo& t_ai) :

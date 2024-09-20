@@ -21,9 +21,9 @@
 #include "network/sockethost.h"         // SocketHost
 
 #ifdef WIN32
-#include <ws2tcpip.h>   // addrinfo
+#include <ws2tcpip.h>       // addrinfo
 #else
-#include <netdb.h>      // addrinfo
+#include <netdb.h>          // addrinfo
 #endif
 
 Network::Template::Template(const addrinfo& t_ai) noexcept :

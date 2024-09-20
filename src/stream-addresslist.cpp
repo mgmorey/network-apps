@@ -25,9 +25,9 @@
 #include "network/to-string-vector-byte.h"      // to_string()
 
 #ifdef WIN32
-#include <ws2tcpip.h>   // addrinfo
+#include <ws2tcpip.h>       // addrinfo
 #else
-#include <netdb.h>      // addrinfo
+#include <netdb.h>          // addrinfo
 #endif
 
 #include <ostream>      // std::ostream
