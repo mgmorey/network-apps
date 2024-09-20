@@ -30,8 +30,7 @@ auto Network::operator<<(std::ostream& os,
     const SocketFlags flags {hints.m_flags};
     const SocketFamily family {hints.m_family};
     const SocketType socktype {hints.m_socktype};
-    const SocketProtocol protocol {family, hints.m_protocol};
-
+    const SocketProtocol protocol {hints.m_protocol, family};
     os << "SocketHints("
        << Format("flags")
        << flags
