@@ -79,7 +79,7 @@ auto Network::operator<<(std::ostream& os,
            << Format(tab, "ai_protocol")
            << protocol
            << Format(tab, "ai_addrlen")
-           << ai.ai_addrlen
+           << host.address_length()
            << Format(tab, "ai_addr")
            << to_string(host.address())
            << Format(tab, "ai_canonname")
