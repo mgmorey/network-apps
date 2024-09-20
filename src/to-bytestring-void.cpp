@@ -22,6 +22,6 @@
 
 auto Network::to_bytestring(const void* data, length_type size) -> ByteString
 {
-    const std::span<const Byte> span {static_cast<const Byte*>(data), size};
+    const std::span span {static_cast<const Byte*>(data), size};
     return {span.begin(), span.end()};
 }

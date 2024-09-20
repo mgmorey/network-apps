@@ -16,8 +16,8 @@
 #ifndef NETWORK_TO_BYTESTRING_VOID_H
 #define NETWORK_TO_BYTESTRING_VOID_H
 
-#include "network/bytestring.h"                 // ByteString
-#include "network/length-type.h"                // length_type
+#include "network/bytestring.h"         // ByteString
+#include "network/length-type.h"        // length_type
 
 namespace Network
 {
