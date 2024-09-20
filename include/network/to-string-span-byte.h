@@ -13,17 +13,17 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_TO_STRING_VECTOR_BYTE_H
-#define NETWORK_TO_STRING_VECTOR_BYTE_H
+#ifndef NETWORK_TO_STRING_SPAN_BYTE_H
+#define NETWORK_TO_STRING_SPAN_BYTE_H
 
 #include "network/byte.h"               // Byte
 
+#include <span>         // std::span
 #include <string>       // std::string
-#include <vector>       // std::vector
 
 namespace Network
 {
-    extern auto to_string(const std::vector<Byte>& v) -> std::string;
+    extern auto to_string(const std::span<const Byte>& span) -> std::string;
 }
 
 #endif

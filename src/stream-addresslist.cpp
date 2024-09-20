@@ -21,7 +21,7 @@
 #include "network/socketprotocol.h"             // SocketProtocol
 #include "network/sockettype.h"                 // SocketType
 #include "network/string-null.h"                // string_null
-#include "network/to-string-vector-byte.h"      // to_string()
+#include "network/to-string-void.h"             // to_string()
 
 #ifdef WIN32
 #include <ws2tcpip.h>       // addrinfo

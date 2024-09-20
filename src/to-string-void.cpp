@@ -1,4 +1,4 @@
-// Copyright (C) 2024  "Michael G. Morey" <mgmorey@gmail.com>
+// Copyright (C) 2022  "Michael G. Morey" <mgmorey@gmail.com>
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,17 +13,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_TO_STRING_VECTOR_BYTE_H
-#define NETWORK_TO_STRING_VECTOR_BYTE_H
+#include "network/to-string-void.h"             // to_string()
+#include "network/byte.h"                       // Byte
+#include "network/to-string-span-byte.h"        // to_string()
 
-#include "network/byte.h"               // Byte
-
+#include <span>         // std::span
 #include <string>       // std::string
-#include <vector>       // std::vector
 
-namespace Network
+auto Network::to_string(const void* data, length_type size) -> std::string
 {
-    extern auto to_string(const std::vector<Byte>& v) -> std::string;
+    return to_string(std::span(static_cast<const Byte*>(data), size));
 }
-
-#endif

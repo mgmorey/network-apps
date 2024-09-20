@@ -73,7 +73,8 @@ start-context.cpp stream-address.cpp stream-addresslist.cpp		\
 stream-context.cpp stream-socket.cpp stream-sockethints.cpp		\
 stream-template.cpp stream-version.cpp template.cpp			\
 to-bytestring-void.cpp to-string-in-addr.cpp to-string-in6-addr.cpp	\
-to-string-vector-byte.cpp to-string-vector-char.cpp validate-bs.cpp	\
+to-string-span-byte.cpp to-string-vector-byte.cpp			\
+to-string-vector-char.cpp to-string-void.cpp validate-bs.cpp		\
 validate-sa.cpp validate-sin.cpp validate-sin6.cpp write-string.cpp	\
 write.cpp
 

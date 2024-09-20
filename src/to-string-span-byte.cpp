@@ -13,15 +13,33 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/to-string-vector-byte.h"      // to_string()
-#include "network/byte.h"                       // Byte
 #include "network/to-string-span-byte.h"        // to_string()
+#include "network/byte.h"                       // Byte
 
+#include <iomanip>      // std::setfill(), std::setw()
+#include <ios>          // std::hex, std::ios, std::uppercase
 #include <span>         // std::span
+#include <sstream>      // std::ostringstream
 #include <string>       // std::string
-#include <vector>       // std::vector
 
-auto Network::to_string(const std::vector<Byte>& v) -> std::string
+auto Network::to_string(const std::span<const Byte>& span) -> std::string
 {
-    return to_string(std::span(v.cbegin(), v.cend()));
+    std::ostringstream oss;
+    oss << "0x";
+
+    if (span.empty()) {
+        oss << '0';
+    }
+    else {
+        oss << std::hex;
+
+        for (const auto byte : span) {
+            oss << std::setfill('0')
+                << std::setw(2)
+                << std::uppercase
+                << static_cast<unsigned>(byte);
+        }
+    }
+
+    return oss.str();
 }
