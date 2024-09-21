@@ -102,7 +102,9 @@ Network::AddressList::AddressList(const HostnameView& t_hostname,
         m_result = {os_error, oss.str()};
     }
     else if (t_is_verbose) {
-        std::cerr << *this;
+        for (const auto& node : *this) {
+            std::cerr << node << std::endl;
+        }
     }
 }
 

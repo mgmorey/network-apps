@@ -31,7 +31,6 @@
 #include <iterator>     // std::input_iterator_tag
 #include <memory>       // std::unique_ptr
 #include <optional>     // std::optional
-#include <ostream>      // std::ostream
 #include <string>       // std::string
 
 namespace Network
@@ -84,9 +83,6 @@ namespace Network
         addrinfo* m_list {nullptr};
         OsErrorResult m_result;
     };
-
-    extern auto operator<<(std::ostream& os,
-                           const AddressList& list) -> std::ostream&;
 }
 
 #endif

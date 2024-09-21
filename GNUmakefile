@@ -69,13 +69,13 @@ parse.cpp rangeerror.cpp read-string.cpp read.cpp			\
 reset-last-context-error.cpp reset-last-os-error.cpp runtimeerror.cpp	\
 set-last-context-error.cpp set-last-os-error.cpp socketfamily.cpp	\
 socketflags.cpp sockethost.cpp socketprotocol.cpp sockettype.cpp	\
-start-context.cpp stream-address.cpp stream-addresslist.cpp		\
-stream-addrinfo.cpp stream-context.cpp stream-socket.cpp		\
-stream-version.cpp template.cpp to-bytestring-void.cpp			\
-to-string-in-addr.cpp to-string-in6-addr.cpp to-string-span-byte.cpp	\
-to-string-vector-byte.cpp to-string-vector-char.cpp			\
-to-string-void.cpp validate-bs.cpp validate-sa.cpp validate-sin.cpp	\
-validate-sin6.cpp write-string.cpp write.cpp
+start-context.cpp stream-address.cpp stream-addrinfo.cpp		\
+stream-context.cpp stream-socket.cpp stream-version.cpp template.cpp	\
+to-bytestring-void.cpp to-string-in-addr.cpp to-string-in6-addr.cpp	\
+to-string-span-byte.cpp to-string-vector-byte.cpp			\
+to-string-vector-char.cpp to-string-void.cpp validate-bs.cpp		\
+validate-sa.cpp validate-sin.cpp validate-sin6.cpp write-string.cpp	\
+write.cpp
 
 libnetwork_unix_sources = address-sun.cpp create-socketpair.cpp		\
 create-socketpairresult.cpp get-path-length.cpp get-path-pointer.cpp	\
