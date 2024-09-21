@@ -129,7 +129,7 @@ ifdef standard
 	CXXFLAGS += -std=$(standard)
 endif
 
-CXXFLAGS += -Wall -Werror -Wextra -Wpedantic -Wshadow -Wsign-conversion
+CXXFLAGS += -Wall -Werror -Wextra -Wshadow -Wsign-conversion
 CXXFLAGS += $(CXX_ASFLAGS)
 
 # LDFLAGS
