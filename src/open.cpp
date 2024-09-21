@@ -23,7 +23,6 @@
 #include "network/template.h"                   // Template
 #include "network/uniquesocket.h"               // UniqueSocket
 
-#include <iostream>     // std::cout, std::endl
 #include <type_traits>  // std::decay_t, std::is_same_v
 #include <variant>      // std::visit()
 
@@ -35,11 +34,6 @@ Network::Open::Open(const OpenEndpointParams& t_args, bool t_is_bind)
 
 auto Network::Open::operator()(const Template& t_temp) -> SocketResult
 {
-    if (m_args.is_verbose) {
-        std::cout << t_temp
-                  << std::endl;
-    }
-
     auto result {create_socketresult(t_temp.hints(), m_args.is_verbose)};
     std::visit([&](auto&& arg) {
         using T = std::decay_t<decltype(arg)>;

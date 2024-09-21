@@ -27,8 +27,6 @@
 #include <netdb.h>          // addrinfo
 #endif
 
-#include <ostream>      // std::ostream
-
 namespace Network
 {
     struct SocketHints
@@ -112,9 +110,6 @@ namespace Network
         socket_protocol_type m_protocol {};  // NOLINT
         socket_flags_type m_flags {};  // NOLINT
     };
-
-    extern auto operator<<(std::ostream& os,
-                           const SocketHints& hints) -> std::ostream&;
 }
 
 #endif

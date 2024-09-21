@@ -28,8 +28,6 @@
 #include <netdb.h>          // addrinfo
 #endif
 
-#include <ostream>      // std::ostream
-
 namespace Network
 {
     struct Template
@@ -60,9 +58,6 @@ namespace Network
         SocketHints m_hints;
         SocketHost m_host;
     };
-
-    extern auto operator<<(std::ostream& os,
-                           const Template& sock) -> std::ostream&;
 }
 
 #endif
