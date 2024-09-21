@@ -20,6 +20,7 @@
 #include "network/socketprotocol.h"     // SocketProtocol
 #include "network/sockettype.h"         // SocketType
 #include "network/string-null.h"        // string_null
+#include "network/to-sa-length.h"       // to_sa_length()
 #include "network/to-string-void.h"     // to_string()
 
 #ifdef WIN32
@@ -67,7 +68,7 @@ auto Network::operator<<(std::ostream& os,
            << Format(tab, "ai_addrlen")
            << ai.ai_addrlen
            << Format(tab, "ai_addr")
-           << to_string(ai.ai_addr, ai.ai_addrlen)
+           << to_string(ai.ai_addr, to_sa_length(ai.ai_addrlen))
            << Format(tab, "ai_canonname")
            << (ai.ai_canonname == nullptr ? string_null : ai.ai_canonname)
            << Format(tab)
