@@ -1,4 +1,4 @@
-// Copyright (C) 2022  "Michael G. Morey" <mgmorey@gmail.com>
+// Copyright (C) 2024  "Michael G. Morey" <mgmorey@gmail.com>
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,17 +13,21 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/addresslist.h"        // AddressList, operator<<()
-#include "network/stream-addrinfo.h"    // operator<<()
+#ifndef NETWORK_STREAM_ADDRINFO_H
+#define NETWORK_STREAM_ADDRINFO_H
+
+#ifdef WIN32
+#include <ws2tcpip.h>       // addrinfo
+#else
+#include <netdb.h>          // addrinfo
+#endif
 
 #include <ostream>      // std::ostream
 
-auto Network::operator<<(std::ostream& os, const AddressList& list) -> std::ostream&
+namespace Network
 {
-    for (const auto& node : list) {
-        os << node
-           << std::endl;
-    }
-
-    return os;
+    extern auto operator<<(std::ostream& os,
+                           const addrinfo& ai) -> std::ostream&;
 }
+
+#endif

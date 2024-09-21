@@ -39,8 +39,6 @@ namespace Network
     class AddressList
     {
         using OptionalString = std::optional<std::string>;
-        friend auto operator<<(std::ostream& os,
-                               const addrinfo& ai) -> std::ostream&;
 
     public:
         struct InputIterator
@@ -89,8 +87,6 @@ namespace Network
 
     extern auto operator<<(std::ostream& os,
                            const AddressList& list) -> std::ostream&;
-    extern auto operator<<(std::ostream& os,
-                           const addrinfo& ai) -> std::ostream&;
 }
 
 #endif
