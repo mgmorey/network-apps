@@ -18,7 +18,8 @@
 
 #include <ostream>      // std::ostream
 
-auto Network::operator<<(std::ostream& os, const AddressList& list) -> std::ostream&
+auto Network::operator<<(std::ostream& os,
+                         const AddressList& list) -> std::ostream&
 {
     for (const auto& node : list) {
         os << node
