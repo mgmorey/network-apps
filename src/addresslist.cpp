@@ -19,6 +19,7 @@
 #include "network/optionalhints.h"      // OptionalHints
 #include "network/oserrorresult.h"      // OsErrorResult
 #include "network/serviceview.h"        // ServiceView
+#include "network/stream-addrinfo.h"    // operator<<()
 #include "network/string-null.h"        // string_null
 #include "network/to-os-error.h"        // to_os_error()
 
