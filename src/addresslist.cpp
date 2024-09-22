@@ -70,7 +70,7 @@ Network::AddressList::AddressList(const HostnameView& t_hostname,
                                   bool t_is_verbose)
 {
     const auto hints_ptr {to_ai_ptr(t_hints)};
-    const auto hints_str {format(t_hints)};
+    const auto hints_str {to_string(t_hints)};
 
     if (t_is_verbose) {
         std::cout << "Calling ::getaddrinfo("
@@ -130,7 +130,14 @@ auto Network::AddressList::result() const noexcept -> const OsErrorResult&
     return m_result;
 }
 
-auto Network::AddressList::format(const OptionalHints& t_hints) -> std::string
+auto Network::AddressList::to_ai_ptr(const OptionalHints& t_hints) noexcept ->
+    std::unique_ptr<addrinfo>
+{
+    return t_hints ? std::make_unique<addrinfo>(*t_hints) : nullptr;
+}
+
+auto Network::AddressList::to_string(const OptionalHints& t_hints) ->
+    std::string
 {
     std::ostringstream oss;
 
@@ -142,10 +149,4 @@ auto Network::AddressList::format(const OptionalHints& t_hints) -> std::string
     }
 
     return oss.str();
-}
-
-auto Network::AddressList::to_ai_ptr(const OptionalHints& t_hints) noexcept ->
-    std::unique_ptr<addrinfo>
-{
-    return t_hints ? std::make_unique<addrinfo>(*t_hints) : nullptr;
 }
