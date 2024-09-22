@@ -58,10 +58,10 @@ auto Network::AddressList::InputIterator::operator++() noexcept ->
     return *this;
 }
 
-auto Network::AddressList::InputIterator::operator==(const InputIterator& rhs)
+auto Network::AddressList::InputIterator::operator==(const InputIterator& t_rhs)
     const noexcept -> bool
 {
-    return m_node == rhs.m_node;
+    return m_node == t_rhs.m_node;
 }
 
 Network::AddressList::AddressList(const HostnameView& t_hostname,

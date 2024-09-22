@@ -50,7 +50,7 @@ namespace Network
             [[nodiscard]] auto operator*() const noexcept -> reference;
             [[nodiscard]] auto operator->() const noexcept -> pointer;
             auto operator++() noexcept -> InputIterator&;
-            [[nodiscard]] auto operator==(const InputIterator& rhs)
+            [[nodiscard]] auto operator==(const InputIterator& t_rhs)
                 const noexcept -> bool;
 
         private:
