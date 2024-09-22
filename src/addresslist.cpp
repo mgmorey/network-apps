@@ -135,7 +135,7 @@ auto Network::AddressList::format(const OptionalHints& t_hints) -> std::string
     std::ostringstream oss;
 
     if (t_hints) {
-        oss << addrinfo(*t_hints);
+        oss << static_cast<addrinfo>(*t_hints);
     }
     else {
         oss << string_null;
