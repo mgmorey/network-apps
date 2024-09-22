@@ -30,15 +30,12 @@
 #include <cstddef>      // std::ptrdiff_t
 #include <iterator>     // std::input_iterator_tag
 #include <memory>       // std::unique_ptr
-#include <optional>     // std::optional
 #include <string>       // std::string
 
 namespace Network
 {
     class AddressList
     {
-        using OptionalString = std::optional<std::string>;
-
     public:
         struct InputIterator
         {
