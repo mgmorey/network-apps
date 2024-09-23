@@ -15,7 +15,6 @@
 
 #include "network/get-sa-pointer.h"             // get_sa_pointer()
 #include "network/buffer.h"                     // Buffer
-#include "network/byte.h"                       // Byte
 #include "network/bytestring.h"                 // ByteString
 #include "network/validate-sa.h"                // validate()
 
@@ -25,7 +24,9 @@
 #include <sys/socket.h>     // sockaddr
 #endif
 
-auto Network::get_sa_pointer(Buffer<Byte>& addr) -> sockaddr*
+#include <cstddef>      // std::byte
+
+auto Network::get_sa_pointer(Buffer<std::byte>& addr) -> sockaddr*
 {
     void* pointer {addr.data()};
     return static_cast<sockaddr*>(pointer);

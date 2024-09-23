@@ -17,7 +17,6 @@
 #define NETWORK_GET_SA_POINTER_H
 
 #include "network/buffer.h"                     // Buffer
-#include "network/byte.h"                       // Byte
 #include "network/bytestring.h"                 // ByteString
 
 #ifdef WIN32
@@ -26,9 +25,11 @@
 #include <sys/socket.h>     // sockaddr
 #endif
 
+#include <cstddef>      // std::byte
+
 namespace Network
 {
-    extern auto get_sa_pointer(Buffer<Byte>& addr) -> sockaddr*;
+    extern auto get_sa_pointer(Buffer<std::byte>& addr) -> sockaddr*;
     extern auto get_sa_pointer(const ByteString& addr) -> const sockaddr*;
 }
 
