@@ -178,7 +178,19 @@ namespace Test
         return codes;
     }
 
-    auto get_codes_type() -> const ErrorCodeSet&
+    auto get_codes_protocol() -> const ErrorCodeSet&
+    {
+#if defined(WIN32)
+        static const ErrorCodeSet codes = {WSAESOCKTNOSUPPORT};
+#elif defined(OS_DARWIN)
+        static const ErrorCodeSet codes = {EAI_BADHINTS};
+#else
+        static const ErrorCodeSet codes = {EAI_SOCKTYPE};
+#endif
+        return codes;
+    }
+
+    auto get_codes_socktype() -> const ErrorCodeSet&
     {
 #if defined(WIN32)
         static const ErrorCodeSet codes = {WSAESOCKTNOSUPPORT};
@@ -303,20 +315,23 @@ namespace Test
     {
         const SocketHints hints {-1, SOCK_STREAM, 0, 0};
         test_host(localhost, hints, get_codes_family());
-        test_host(localhost, hints, get_codes_family());
     }
 
-    auto test_invalid_type() -> void
+    auto test_invalid_protocol() -> void
+    {
+        const SocketHints hints {AF_UNSPEC, SOCK_STREAM, -1, 0};
+        test_host(localhost, hints, get_codes_protocol());
+    }
+
+    auto test_invalid_socktype() -> void
     {
         const SocketHints hints {AF_UNSPEC, -1, 0, 0};
-        test_host(localhost, hints, get_codes_type());
-        test_host(localhost, hints, get_codes_type());
+        test_host(localhost, hints, get_codes_socktype());
     }
 
     auto test_no_data() -> void
     {
         const IpSocketHints hints {SOCK_STREAM};
-        test_host(".", hints, get_codes_no_data());
         test_host(".", hints, get_codes_no_data());
     }
 
@@ -351,7 +366,8 @@ auto main(int argc, char* argv[]) -> int
         }
 
         test_invalid_family();
-        test_invalid_type();
+        test_invalid_socktype();
+        test_invalid_protocol();
         test_no_data();
 
         if (!hosts.empty()) {
