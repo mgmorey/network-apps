@@ -14,13 +14,13 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/to-string-void.h"             // to_string()
-#include "network/byte.h"                       // Byte
 #include "network/to-string-span-byte.h"        // to_string()
 
+#include <cstddef>      // std::byte
 #include <span>         // std::span
 #include <string>       // std::string
 
 auto Network::to_string(const void* data, length_type size) -> std::string
 {
-    return to_string(std::span(static_cast<const Byte*>(data), size));
+    return to_string(std::span(static_cast<const std::byte*>(data), size));
 }

@@ -14,15 +14,15 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/to-string-span-byte.h"        // to_string()
-#include "network/byte.h"                       // Byte
 
+#include <cstddef>      // std::byte
 #include <iomanip>      // std::setfill(), std::setw()
 #include <ios>          // std::hex, std::ios, std::uppercase
 #include <span>         // std::span
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
 
-auto Network::to_string(const std::span<const Byte>& span) -> std::string
+auto Network::to_string(const std::span<const std::byte>& span) -> std::string
 {
     std::ostringstream oss;
     oss << "0x";

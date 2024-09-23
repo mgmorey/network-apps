@@ -16,14 +16,13 @@
 #ifndef NETWORK_TO_STRING_SPAN_BYTE_H
 #define NETWORK_TO_STRING_SPAN_BYTE_H
 
-#include "network/byte.h"               // Byte
-
+#include <cstddef>      // std::byte
 #include <span>         // std::span
 #include <string>       // std::string
 
 namespace Network
 {
-    extern auto to_string(const std::span<const Byte>& span) -> std::string;
+    extern auto to_string(const std::span<const std::byte>& span) -> std::string;
 }
 
 #endif

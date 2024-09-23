@@ -14,14 +14,14 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/to-string-vector-byte.h"      // to_string()
-#include "network/byte.h"                       // Byte
 #include "network/to-string-span-byte.h"        // to_string()
 
+#include <cstddef>      // std::byte
 #include <span>         // std::span
 #include <string>       // std::string
 #include <vector>       // std::vector
 
-auto Network::to_string(const std::vector<Byte>& v) -> std::string
+auto Network::to_string(const std::vector<std::byte>& v) -> std::string
 {
     return to_string(std::span(v.cbegin(), v.cend()));
 }
