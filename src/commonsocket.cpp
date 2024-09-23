@@ -21,6 +21,7 @@
 #include "network/handle-null.h"                // handle_null
 #include "network/handle-type.h"                // handle_type
 #include "network/listen.h"                     // listen()
+#include "network/logicerror.h"                 // LogicError
 #include "network/open-handle.h"                // open()
 #include "network/openhandleparams.h"           // OpenHandleParams
 #include "network/oserrorresult.h"              // OsErrorResult
@@ -38,6 +39,9 @@ Network::CommonSocket::CommonSocket(socket_family_type t_family,
       m_handle(t_handle),
       m_is_verbose(t_is_verbose)
 {
+    if (m_handle == handle_null) {
+        throw LogicError("Invalid socket descriptor value");
+    }
 }
 
 Network::CommonSocket::~CommonSocket() noexcept
