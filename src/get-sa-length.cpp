@@ -15,7 +15,6 @@
 
 #include "network/get-sa-length.h"              // get_sa_length()
 #include "network/buffer.h"                     // Buffer
-#include "network/byte.h"                       // Byte
 #include "network/bytestring.h"                 // ByteString
 #include "network/os-features.h"                // HAVE_SOCKADDR_SA_LEN
 #include "network/socket-length-type.h"         // socket_length_type
@@ -25,7 +24,9 @@
 #include "network/get-sa-pointer.h"             // get_sa_pointer()
 #endif
 
-auto Network::get_sa_length(const Buffer<Byte>& addr) -> socket_length_type
+#include <cstddef>      // std::byte
+
+auto Network::get_sa_length(const Buffer<std::byte>& addr) -> socket_length_type
 {
     return to_socket_length(addr.size());
 }
