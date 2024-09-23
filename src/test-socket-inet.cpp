@@ -48,6 +48,9 @@ namespace Test
     using Network::parse;
     using Network::start_context;
 
+    static constexpr auto expected_error_handle_re {
+        R"(Invalid socket descriptor value)"
+    };
     static constexpr auto expected_error_socket_re {
         R"(Call to ::socket\(.+\) failed with error \d+: .+)"
     };
@@ -130,6 +133,11 @@ namespace Test
         }
     }
 
+    auto test_socket_handle_invalid() -> void
+    {
+        test_socket(handle_null, expected_error_handle_re);
+    }
+
     auto test_socket_hints_invalid_family() -> void
     {
         const SocketHints hints {-1, SOCK_STREAM, 0};
@@ -167,6 +175,7 @@ auto main(int argc, char* argv[]) -> int
             std::cout << *context << std::endl;
         }
 
+        test_socket_handle_invalid();
         test_socket_hints_invalid_family();
         test_socket_hints_invalid_socktype();
         test_socket_hints_invalid_protocol();
