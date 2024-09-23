@@ -15,7 +15,6 @@
 
 #include "network/get-sa-span.h"                // get_sa_span()
 #include "network/buffer.h"                     // Buffer
-#include "network/byte.h"                       // Byte
 #include "network/bytestring.h"                 // ByteString
 #include "network/get-sa-length.h"              // get_sa_length()
 #include "network/get-sa-pointer.h"             // get_sa_pointer()
@@ -27,9 +26,10 @@
 #include <sys/socket.h>     // sockaddr
 #endif
 
+#include <cstddef>      // std::byte
 #include <utility>      // std::pair
 
-auto Network::get_sa_span(Buffer<Byte>& addr) ->
+auto Network::get_sa_span(Buffer<std::byte>& addr) ->
     std::pair<sockaddr*, socket_length_type>
 {
     return {get_sa_pointer(addr), get_sa_length(addr)};
