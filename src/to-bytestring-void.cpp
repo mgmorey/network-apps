@@ -14,14 +14,14 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/to-bytestring-void.h"         // to_bytestring()
-#include "network/byte.h"                       // Byte
 #include "network/bytestring.h"                 // ByteString
 #include "network/length-type.h"                // length_type
 
+#include <cstddef>      // std::byte
 #include <span>         // std::span
 
 auto Network::to_bytestring(const void* data, length_type size) -> ByteString
 {
-    const std::span span {static_cast<const Byte*>(data), size};
+    const std::span span {static_cast<const std::byte*>(data), size};
     return {span.begin(), span.end()};
 }
