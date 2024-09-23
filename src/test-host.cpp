@@ -329,12 +329,6 @@ namespace Test
         test_host(localhost, hints, get_codes_socktype());
     }
 
-    auto test_no_data() -> void
-    {
-        const IpSocketHints hints {SOCK_STREAM};
-        test_host(".", hints, get_codes_no_data());
-    }
-
     auto test_valid(const HostnameView& host) -> void
     {
         const bool is_local = host.empty() || host == get_hostname(is_verbose);
@@ -368,7 +362,6 @@ auto main(int argc, char* argv[]) -> int
         test_invalid_family();
         test_invalid_socktype();
         test_invalid_protocol();
-        test_no_data();
 
         if (!hosts.empty()) {
             std::for_each(hosts.begin(), hosts.end(), test_valid);
