@@ -16,13 +16,12 @@
 #ifndef NETWORK_BYTESTRING_H
 #define NETWORK_BYTESTRING_H
 
-#include "network/byte.h"               // Byte
-
+#include <cstddef>      // std::byte
 #include <vector>       // std::vector
 
 namespace Network
 {
-    using ByteString = std::vector<Byte>;
+    using ByteString = std::vector<std::byte>;
 }
 
 #endif
