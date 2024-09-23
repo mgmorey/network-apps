@@ -17,7 +17,6 @@
 #include "network/acceptresult.h"               // AcceptResult
 #include "network/addressstring.h"              // AddressString
 #include "network/buffer.h"                     // Buffer
-#include "network/byte.h"                       // Byte
 #include "network/bytestring.h"                 // ByteString
 #include "network/create-socket-handle.h"       // create_socket()
 #include "network/error.h"                      // Error
@@ -37,12 +36,13 @@
 #include <sys/socket.h>     // ::accept()
 #endif
 
+#include <cstddef>      // std::byte
 #include <iostream>     // std::cout, std::endl
 #include <sstream>      // std::ostringstream
 
 auto Network::accept(const SharedSocket& sock) -> AcceptResult
 {
-    Buffer<Byte> buffer {sa_length_max};
+    Buffer<std::byte> buffer {sa_length_max};
     const auto family {sock->family()};
     const auto handle_1 {sock->handle()};
     const auto is_verbose {sock->is_verbose()};
