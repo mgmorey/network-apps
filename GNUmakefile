@@ -65,26 +65,27 @@ get-sin-pointer.cpp get-sin-port.cpp get-sin6-addr.cpp			\
 get-sin6-pointer.cpp get-sin6-port.cpp get-sockname.cpp			\
 get-socknameresult.cpp listen.cpp logicerror.cpp open-endpoint.cpp	\
 open-handle.cpp open.cpp oserrorresult.cpp parse-argumentspan.cpp	\
-parse.cpp rangeerror.cpp read-string.cpp read.cpp			\
-reset-last-context-error.cpp reset-last-os-error.cpp runtimeerror.cpp	\
-set-last-context-error.cpp set-last-os-error.cpp socketfamily.cpp	\
-socketflags.cpp sockethost.cpp socketprotocol.cpp sockettype.cpp	\
-start-context.cpp stream-address.cpp stream-addrinfo.cpp		\
-stream-context.cpp stream-socket.cpp stream-version.cpp template.cpp	\
+parse.cpp rangeerror.cpp read-string.cpp reset-last-context-error.cpp	\
+reset-last-os-error.cpp runtimeerror.cpp set-last-context-error.cpp	\
+set-last-os-error.cpp socketfamily.cpp socketflags.cpp sockethost.cpp	\
+socketprotocol.cpp sockettype.cpp start-context.cpp			\
+stream-address.cpp stream-addrinfo.cpp stream-context.cpp		\
+stream-socket.cpp stream-version.cpp template.cpp			\
 to-bytestring-void.cpp to-string-in-addr.cpp to-string-in6-addr.cpp	\
 to-string-span-byte.cpp to-string-vector-byte.cpp			\
 to-string-vector-char.cpp to-string-void.cpp validate-bs.cpp		\
-validate-sa.cpp validate-sin.cpp validate-sin6.cpp write-string.cpp	\
-write.cpp
+validate-sa.cpp validate-sin.cpp validate-sin6.cpp write-string.cpp
+
 
 libnetwork_unix_sources = address-sun.cpp create-socketpair.cpp		\
 create-socketpairresult.cpp get-path-length.cpp get-path-pointer.cpp	\
 get-sun-length.cpp get-sun-pointer.cpp to-bytestring-path.cpp		\
-to-path.cpp unix-close.cpp unix-start.cpp unix-stop.cpp			\
-unixcontext.cpp unixsocket.cpp validate-path.cpp validate-sun.cpp
+to-path.cpp unix-close.cpp unix-read.cpp unix-start.cpp unix-stop.cpp	\
+unix-write.cpp unixcontext.cpp unixsocket.cpp validate-path.cpp		\
+validate-sun.cpp
 
 libnetwork_windows_sources = windows-close.cpp windowscontext.cpp	\
-windows-start.cpp windows-stop.cpp
+windows-read.cpp windows-start.cpp windows-stop.cpp windows-write.cpp
 
 test_common_sources = test-address.cpp test-bind.cpp test-connect.cpp	\
 test-context.cpp test-host.cpp test-limits.cpp test-option.cpp		\

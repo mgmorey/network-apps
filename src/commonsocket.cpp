@@ -109,10 +109,10 @@ auto Network::CommonSocket::open(const ByteString& t_addr,
 
 auto Network::CommonSocket::read(char* data, std::size_t size) -> ssize_t
 {
-    return Network::read(m_handle, data, size);
+    return Network::read(m_handle, data, size, m_is_verbose);
 }
 
 auto Network::CommonSocket::write(const char* data, std::size_t size) -> ssize_t
 {
-    return Network::write(m_handle, data, size);
+    return Network::write(m_handle, data, size, m_is_verbose);
 }

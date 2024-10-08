@@ -26,7 +26,8 @@ namespace Network
 {
     extern auto read(handle_type handle,
                      char* data,
-                     std::size_t size) -> ssize_t;
+                     std::size_t size,
+                     bool is_verbose = false) -> ssize_t;
 }
 
 #endif
