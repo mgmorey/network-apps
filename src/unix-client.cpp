@@ -103,13 +103,13 @@ auto main(int argc, char* argv[]) -> int
 
     try {
         // Connect Unix domain socket to pathname.
-        auto sock {Client::connect()};
+        auto data_socket {Client::connect()};
         auto shutdown_pending {false};
 
         // Send arguments to server.
         for (const auto& arg : args) {
             const std::string write_str {arg};
-            Client::write(write_str, *sock);
+            Client::write(write_str, *data_socket);
 
             if (write_str == "DOWN") {
                 shutdown_pending = true;
@@ -119,10 +119,10 @@ auto main(int argc, char* argv[]) -> int
 
         if (!shutdown_pending) {
             // Request result.
-            Client::write("END", *sock);
+            Client::write("END", *data_socket);
 
             // Receive result.
-            const auto read_str {Client::read(*sock)};
+            const auto read_str {Client::read(*data_socket)};
             std::cerr << "Result: " << read_str << std::endl;
         }
     }

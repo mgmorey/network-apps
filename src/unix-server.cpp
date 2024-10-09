@@ -129,21 +129,21 @@ auto main(int argc, char* argv[]) -> int
 
     try {
         // Bind Unix domain socket to pathname.
-        const auto bind_sock {Server::bind()};
+        const auto connection_socket {Server::bind()};
         auto shutdown_pending {false};
 
         // Prepare for accepting connections. While one request is
         // being processed other requests can be waiting.
-        Server::listen(*bind_sock);
+        Server::listen(*connection_socket);
 
         // This is the main loop for handling connections.
         while (!shutdown_pending) {
             // Wait for incoming connection.
-            const auto accept_sock {Server::accept(bind_sock)};
+            const auto data_socket {Server::accept(connection_socket)};
             std::string read_str;
             Number sum {};
 
-            while((read_str = Server::read(*accept_sock)) != "DOWN" &&
+            while((read_str = Server::read(*data_socket)) != "DOWN" &&
                   read_str != "END") {
                 // Add received inputs.
                 sum += std::stoll(read_str);
@@ -157,7 +157,7 @@ auto main(int argc, char* argv[]) -> int
 
             if (!shutdown_pending) {
                 // Send output sum.
-                Server::write(*accept_sock, sum);
+                Server::write(*data_socket, sum);
             }
         }
     }
