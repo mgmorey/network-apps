@@ -20,6 +20,7 @@
 #include "network/get-path-pointer.h"           // get_path_pointer()
 #include "network/get-sun-length.h"             // get_sun_length()
 #include "network/os-features.h"                // HAVE_SOCKADDR_SA_LEN
+#include "network/sun-offsets.h"                // sun_path_offset
 #include "network/to-bytestring-void.h"         // to_bytestring()
 #include "network/to-path-length.h"             // to_path_length()
 
@@ -31,14 +32,15 @@
 auto Network::to_bytestring(const std::string_view& path) -> ByteString
 {
     sockaddr_un sun {};
+    std::size_t sun_len {sun_path_offset};
 
-    if (!path.empty()) {
+    if (path.data() != nullptr) {
         const auto path_len {to_path_length(path.length())};
         auto* sun_path {get_path_pointer(&sun)};
         path.copy(sun_path, path_len);
+        sun_len += path_len + 1;
     }
 
-    const auto sun_len {get_sun_length(&sun, sizeof sun)};
 #ifdef HAVE_SOCKADDR_SA_LEN
     sun.sun_len = sun_len;
 #endif
