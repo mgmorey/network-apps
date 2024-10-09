@@ -22,6 +22,7 @@ namespace Network
 {
 #ifndef WIN32
     extern auto validate(const std::string_view& path) -> std::string_view;
+    extern auto validate(const std::nullptr_t& path) -> std::string_view;
 #endif
 }
 

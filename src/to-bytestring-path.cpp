@@ -47,4 +47,10 @@ auto Network::to_bytestring(const std::string_view& path) -> ByteString
     return to_bytestring(&sun, sun_len);
 }
 
+auto Network::to_bytestring(const std::nullptr_t& path) -> ByteString
+{
+    static_cast<void>(path);
+    return to_bytestring(std::string_view {});
+}
+
 #endif

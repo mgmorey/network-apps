@@ -37,4 +37,10 @@ auto Network::validate(const std::string_view& path) -> std::string_view
     return path;
 }
 
+auto Network::validate(const std::nullptr_t& path) -> std::string_view
+{
+    static_cast<void>(path);
+    return {};
+}
+
 #endif

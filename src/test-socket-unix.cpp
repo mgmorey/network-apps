@@ -96,6 +96,13 @@ namespace Test
         return to_path(addr) == path;
     }
 
+    auto operator==(const ByteString& addr,
+                    const std::nullptr_t& path) -> bool
+    {
+        static_cast<void>(path);
+        return to_path(addr).data() == nullptr;
+    }
+
     auto get_codes_bad_file_number() -> const ErrorCodeSet&
     {
 	static const ErrorCodeSet codes {EBADF};
@@ -261,7 +268,7 @@ namespace Test
     auto test_paths_invalid() -> void
     {
         const auto path_max {get_pathname(path_length_max + 1)};
-        test_path(std::string_view {}, {0}, expected_error_payload_length_re);
+        test_path(nullptr, {0}, expected_error_payload_length_re);
         test_path(path_max, {}, expected_error_path_length_re);
 #ifndef OS_CYGWIN_NT
         test_path("/foo/bar", get_codes_invalid_directory(), {});
