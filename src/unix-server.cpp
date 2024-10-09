@@ -13,13 +13,17 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/network.h"            // Address, Socket, accept(),
+// This UNIX domain sequenced-packet socket example is adapted from the
+// example in https://www.man7.org/linux/man-pages/man7/unix.7.html.
+
+#include "network/network.h"            // Address, Socket,
+                                        // UnixSocketHints, accept(),
                                         // bind(), listen(),
                                         // read_string(),
                                         // socket_error, write()
 #include "network/parse.h"              // parse()
-#include "unix-common.h"                // BACKLOG_SIZE, BUFFER_SIZE,
-                                        // SOCKET_NAME, SOCKET_HINTS
+#include "unix-common.h"                // BUFFER_SIZE, SOCKET_HINTS,
+                                        // SOCKET_NAME
 
 #include <sys/socket.h>         // SOCK_SEQPACKET
 
@@ -29,12 +33,15 @@
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <string>       // std::stoll(), std::string, std::to_string()
 
+using Network::Address;
 using Network::SharedSocket;
 using Network::Socket;
 using Network::create_socket;
 using Network::socket_error;
 
 using Number = long long;
+
+static constexpr auto backlog_size {20};
 
 static auto is_verbose {false};  // NOLINT
 
@@ -45,7 +52,7 @@ namespace Server {
 
         if (is_verbose) {
             std::cout << "Accepted connection from "
-                      << Network::Address(accept_addr)
+                      << Address(accept_addr)
                       << std::endl;
         }
 
@@ -66,7 +73,7 @@ namespace Server {
 
     auto listen(const Socket& sock)
     {
-        if (const auto result {sock.listen(BACKLOG_SIZE)}) {
+        if (const auto result {sock.listen(backlog_size)}) {
             std::cerr << result.string() << std::endl;
             std::exit(EXIT_FAILURE);
         }

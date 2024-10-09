@@ -13,13 +13,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+// This UNIX domain sequenced-packet socket example is adapted from the
+// example in https://www.man7.org/linux/man-pages/man7/unix.7.html.
+
 #include "network/argumentspan.h"       // ArgumentSpan
 #include "network/network.h"            // Socket, create(),
                                         // connect(), read_string(),
                                         // socket_error, write()
 #include "network/parse.h"              // parse()
-#include "unix-common.h"                // BUFFER_SIZE, SOCKET_NAME,
-                                        // SOCKET_HINTS
+#include "unix-common.h"                // BUFFER_SIZE, SOCKET_HINTS,
+                                        // SOCKET_NAME
 
 #include <sys/socket.h>         // SOCK_SEQPACKET
 #include <sys/un.h>             // AF_UNIX

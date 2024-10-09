@@ -13,12 +13,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+// This UNIX domain sequenced-packet socket example is adapted from the
+// example in https://www.man7.org/linux/man-pages/man7/unix.7.html.
+
 #ifndef UNIX_COMMON_H
 #define UNIX_COMMON_H
 
 #include "network/unixsockethints.h"    // UnixSocketHints
 
-constexpr auto BACKLOG_SIZE {20};
 constexpr auto BUFFER_SIZE {12};
 constexpr auto SOCKET_NAME {"/tmp/9Lq7BNBnBycd6nxy.socket"};
 constexpr Network::UnixSocketHints SOCKET_HINTS {SOCK_SEQPACKET};
