@@ -21,8 +21,10 @@
 
 #include "network/unixsockethints.h"    // UnixSocketHints
 
-constexpr auto BUFFER_SIZE {12};
-constexpr auto SOCKET_NAME {"/tmp/9Lq7BNBnBycd6nxy.socket"};
+#include <cstddef>      // std::size_t
+
+constexpr std::size_t BUFFER_SIZE {12};
 constexpr Network::UnixSocketHints SOCKET_HINTS {SOCK_SEQPACKET};
+constexpr const char* SOCKET_NAME {"/tmp/9Lq7BNBnBycd6nxy.socket"};
 
 #endif
