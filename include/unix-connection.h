@@ -16,8 +16,8 @@
 // This UNIX domain sequenced-packet socket example is adapted from the
 // example in https://www.man7.org/linux/man-pages/man7/unix.7.html.
 
-#ifndef UNIX_COMMON_H
-#define UNIX_COMMON_H
+#ifndef UNIX_CONNECTION_H
+#define UNIX_CONNECTION_H
 
 #include "network/unixsockethints.h"    // UnixSocketHints
 
