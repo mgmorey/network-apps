@@ -24,9 +24,9 @@
 #include "network/socket.h"                     // Socket
 
 #ifdef WIN32
-#include <winsock2.h>       // AF_UNSPEC
+#include <winsock2.h>           // AF_UNSPEC
 #else
-#include <sys/socket.h>     // AF_UNSPEC
+#include <sys/socket.h>         // AF_UNSPEC
 #endif
 
 #include <sys/types.h>          // ssize_t
