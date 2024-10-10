@@ -16,8 +16,8 @@
 #ifndef WIN32
 
 #include "network/to-bytestring-null.h"         // to_bytestring()
-#include "network/to-bytestring-path.h"         // to_bytestring()
 #include "network/bytestring.h"                 // ByteString
+#include "network/to-bytestring-path.h"         // to_bytestring()
 
 #include <cstddef>      // std::nullptr_t
 #include <string_view>  // std::string_view
