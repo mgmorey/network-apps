@@ -1,4 +1,4 @@
-// Copyright (C) 2024  "Michael G. Morey" <mgmorey@gmail.com>
+// Copyright (C) 2022  "Michael G. Morey" <mgmorey@gmail.com>
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,19 +13,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_VALIDATE_H
-#define NETWORK_VALIDATE_H
+#ifndef NETWORK_TO_BYTESTRING_NULL_H
+#define NETWORK_TO_BYTESTRING_NULL_H
 
-#include "network/validate-bs.h"        // validate()
-#ifndef WIN32
-#include "network/validate-null.h"      // validate()
-#include "network/validate-path.h"      // validate()
-#endif
-#include "network/validate-sa.h"        // validate()
-#include "network/validate-sin.h"       // validate()
-#include "network/validate-sin6.h"      // validate()
-#ifndef WIN32
-#include "network/validate-sun.h"       // validate()
-#endif
+#include "network/bytestring.h"         // ByteString
+
+#include <cstddef>      // std::nullptr_t
+
+namespace Network
+{
+    extern auto to_bytestring(const std::nullptr_t& path) -> ByteString;
+}
 
 #endif

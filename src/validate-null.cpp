@@ -15,26 +15,15 @@
 
 #ifndef WIN32
 
-#include "network/validate-path.h"              // validate()
-#include "network/length-type.h"                // length_type
-#include "network/path-length-limits.h"         // path_length_max,
-                                                // path_length_min
-#include "network/valueerror.h"                 // ValueError
+#include "network/validate-null.h"              // validate()
 
+#include <cstddef>      // std::nullptr_t
 #include <string_view>  // std::string_view
 
-auto Network::validate(const std::string_view& path) -> std::string_view
+auto Network::validate(const std::nullptr_t& path) -> std::string_view
 {
-    const auto path_length {path.length()};
-
-    if (path_length > path_length_max) {
-        throw ValueError<length_type>("path_length_type",
-                                      path_length,
-                                      path_length_min,
-                                      path_length_max);
-    }
-
-    return path;
+    static_cast<void>(path);
+    return {};
 }
 
 #endif
