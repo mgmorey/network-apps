@@ -22,8 +22,9 @@
 
 namespace Network
 {
+#ifndef WIN32
     extern auto to_bytestring(const std::string_view& path) -> ByteString;
-    extern auto to_bytestring(const std::nullptr_t& path) -> ByteString;
+#endif
 }
 
 #endif
