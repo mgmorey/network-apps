@@ -75,7 +75,7 @@ namespace Client {
     auto read(Socket& sock)
     {
         static constexpr auto size {BUFFER_SIZE};
-        const auto [str, error] {Network::read_string(sock, size)};
+        const auto [str, error] {sock.read(size)};
 
         if (error == socket_error) {
             std::perror("read");
@@ -87,7 +87,7 @@ namespace Client {
 
     auto write(const std::string& str, Socket& sock)
     {
-        const auto error {Network::write(sock, str)};
+        const auto error {sock.write(str)};
 
         if (error == socket_error) {
             std::perror("write");

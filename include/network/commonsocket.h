@@ -19,6 +19,7 @@
 #include "network/bytestring.h"                 // ByteString
 #include "network/handle-null.h"                // handle_null
 #include "network/handle-type.h"                // handle_type
+#include "network/readresult.h"                 // ReadResult
 #include "network/socket-family-type.h"         // socket_family_type
 #include "network/socket.h"                     // Socket
 
@@ -28,7 +29,10 @@
 #include <sys/socket.h>     // AF_UNSPEC
 #endif
 
+#include <sys/types.h>          // ssize_t
+
 #include <array>        // std::array
+#include <string_view>  // std::string_view
 
 namespace Network
 {
@@ -57,8 +61,10 @@ namespace Network
                                 bool t_is_bind) -> OsErrorResult override;
         [[nodiscard]] auto read(char* data,
                                 std::size_t size) -> ssize_t final;
+        [[nodiscard]] auto read(std::size_t size) -> ReadResult final;
         [[nodiscard]] auto write(const char* data,
                                  std::size_t size) -> ssize_t final;
+        [[nodiscard]] auto write(std::string_view sv) -> ssize_t final;
 
     private:
         mutable std::array<ByteString, 2> m_names;

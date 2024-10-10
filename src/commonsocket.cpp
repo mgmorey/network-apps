@@ -14,6 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/commonsocket.h"               // CommonSocket
+#include "network/buffer.h"                     // Buffer
 #include "network/bytestring.h"                 // ByteString
 #include "network/close.h"                      // close()
 #include "network/get-name.h"                   // get_name()
@@ -112,7 +113,19 @@ auto Network::CommonSocket::read(char* data, std::size_t size) -> ssize_t
     return Network::read(m_handle, data, size, m_is_verbose);
 }
 
+auto Network::CommonSocket::read(std::size_t size) -> ReadResult
+{
+    Buffer<char> buffer {size};
+    const auto result {read(buffer.data(), buffer.size())};
+    return {std::string {buffer}, result};
+}
+
 auto Network::CommonSocket::write(const char* data, std::size_t size) -> ssize_t
 {
     return Network::write(m_handle, data, size, m_is_verbose);
+}
+
+auto Network::CommonSocket::write(std::string_view sv) -> ssize_t
+{
+    return write(sv.data(), sv.size());
 }

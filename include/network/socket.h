@@ -19,6 +19,7 @@
 #include "network/bytestring.h"                 // ByteString
 #include "network/handle-type.h"                // handle_type
 #include "network/oserrorresult.h"              // OsErrorResult
+#include "network/readresult.h"                 // ReadResult
 #include "network/socket-family-type.h"         // socket_family_type
 #include "network/to-bytestring.h"              // to_bytestring()
 #include "network/validate.h"                   // validate()
@@ -60,6 +61,7 @@ namespace Network
                                         bool t_is_bind) -> OsErrorResult = 0;
         [[nodiscard]] virtual auto read(char* data,
                                         std::size_t size) -> ssize_t = 0;
+        [[nodiscard]] virtual auto read(std::size_t size) -> ReadResult = 0;
 
         [[nodiscard]] auto peername() const -> ByteString
         {
@@ -73,6 +75,7 @@ namespace Network
 
         [[nodiscard]] virtual auto write(const char* data,
                                          std::size_t size) -> ssize_t = 0;
+        [[nodiscard]] virtual auto write(std::string_view sv) -> ssize_t = 0;
     };
 
     extern auto operator<<(std::ostream& os,
