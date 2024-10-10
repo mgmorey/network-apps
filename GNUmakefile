@@ -65,7 +65,7 @@ get-sin-pointer.cpp get-sin-port.cpp get-sin6-addr.cpp			\
 get-sin6-pointer.cpp get-sin6-port.cpp get-sockname.cpp			\
 get-socknameresult.cpp listen.cpp logicerror.cpp open-endpoint.cpp	\
 open-handle.cpp open.cpp oserrorresult.cpp parse-argumentspan.cpp	\
-parse.cpp rangeerror.cpp read-string.cpp reset-last-context-error.cpp	\
+parse.cpp rangeerror.cpp reset-last-context-error.cpp			\
 reset-last-os-error.cpp runtimeerror.cpp set-last-context-error.cpp	\
 set-last-os-error.cpp socketfamily.cpp socketflags.cpp sockethost.cpp	\
 socketprotocol.cpp sockettype.cpp start-context.cpp			\
@@ -74,7 +74,7 @@ stream-socket.cpp stream-version.cpp template.cpp			\
 to-bytestring-void.cpp to-string-in-addr.cpp to-string-in6-addr.cpp	\
 to-string-span-byte.cpp to-string-vector-byte.cpp			\
 to-string-vector-char.cpp to-string-void.cpp validate-bs.cpp		\
-validate-sa.cpp validate-sin.cpp validate-sin6.cpp write-string.cpp
+validate-sa.cpp validate-sin.cpp validate-sin6.cpp
 
 
 libnetwork_unix_sources = address-sun.cpp create-socketpair.cpp		\
