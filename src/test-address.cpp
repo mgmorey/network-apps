@@ -101,7 +101,7 @@ namespace Test
 
     auto create_sa(sa_family_type family, std::size_t length = sa_size) -> sockaddr
     {
-        sockaddr sa{};
+        sockaddr sa {};
 #ifdef HAVE_SOCKADDR_SA_LEN
         sa.sa_len = length;
 #else
@@ -319,29 +319,6 @@ namespace Test
 
 #ifndef WIN32
 
-    auto test_char(const char* path,
-                   const std::string& expected_error_re) -> void
-    {
-        const std::regex expected_error_regex {expected_error_re};
-        std::string actual_error_str;
-
-        try {
-            validate(path);
-        }
-        catch (const Error& error) {
-            print(error);
-            actual_error_str = error.what();
-        }
-
-        assert(std::regex_match(actual_error_str, expected_error_regex));
-    }
-
-    auto test_char_invalid_length() -> void
-    {
-        const std::string path(path_length_max + 1, '.');
-        test_char(path.c_str(), expected_error_length_re);
-    }
-
     auto test_path(const std::string& path,
                    const std::string& expected_error_re) -> void
     {
@@ -496,7 +473,6 @@ auto main(int argc, char* argv[]) -> int
         test_sin6_invalid_family();
         test_sin_invalid_family();
 #ifndef WIN32
-        test_char_invalid_length();
         test_path_invalid_length();
         test_sun_invalid_family();
         test_sun_valid_path_large();
