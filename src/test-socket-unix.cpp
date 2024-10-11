@@ -113,13 +113,13 @@ namespace Test
 
 #ifndef OS_CYGWIN_NT
 
-    auto get_codes_invalid_directory() -> const ErrorCodeSet&
+    auto get_codes_no_such_file_or_directory() -> const ErrorCodeSet&
     {
         static const ErrorCodeSet codes {ENOENT};
         return codes;
     }
 
-    auto get_codes_invalid_permission() -> const ErrorCodeSet&
+    auto get_codes_permission_denied() -> const ErrorCodeSet&
     {
 #ifdef OS_DARWIN
         static const ErrorCodeSet codes {EACCES, EROFS};
@@ -270,18 +270,17 @@ namespace Test
     auto test_paths_invalid() -> void
     {
         const auto path_max {get_pathname(path_length_max + 1)};
-        test_path(path_max, {}, expected_error_path_length_re);
         test_path(nullptr, {0}, expected_error_payload_length_re);
+        test_path("", get_codes_no_such_file_or_directory(), {});
 #ifndef OS_CYGWIN_NT
-        test_path("/foo/bar", get_codes_invalid_directory(), {});
-        test_path("/foo", get_codes_invalid_permission(), {});
+        test_path("/foo/bar", get_codes_no_such_file_or_directory(), {});
+        test_path("/var/foo", get_codes_permission_denied(), {});
 #endif
+        test_path(path_max, {}, expected_error_path_length_re);
     }
 
     auto test_paths_valid() -> void
     {
-        test_path("", {0}, {});
-
         for (auto paths {get_pathnames()}; !paths.empty(); paths.pop()) {
             test_path_valid(paths.top());
         }
