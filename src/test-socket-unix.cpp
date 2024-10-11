@@ -93,14 +93,16 @@ namespace Test
     auto operator==(const ByteString& addr,
                     const std::string_view& path) -> bool
     {
-        return to_path(addr) == path;
+        const auto addr_path {to_path(addr)};
+        return addr_path == path;
     }
 
     auto operator==(const ByteString& addr,
                     const std::nullptr_t& path) -> bool
     {
+        const auto addr_path {to_path(addr)};
         static_cast<void>(path);
-        return to_path(addr).data() == nullptr;
+        return addr_path.empty();
     }
 
     auto get_codes_bad_file_number() -> const ErrorCodeSet&
@@ -268,8 +270,8 @@ namespace Test
     auto test_paths_invalid() -> void
     {
         const auto path_max {get_pathname(path_length_max + 1)};
-        test_path(nullptr, {0}, expected_error_payload_length_re);
         test_path(path_max, {}, expected_error_path_length_re);
+        test_path(nullptr, {0}, expected_error_payload_length_re);
 #ifndef OS_CYGWIN_NT
         test_path("/foo/bar", get_codes_invalid_directory(), {});
         test_path("/foo", get_codes_invalid_permission(), {});
