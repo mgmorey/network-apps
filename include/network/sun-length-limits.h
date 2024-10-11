@@ -16,15 +16,17 @@
 #ifndef NETWORK_SUN_LENGTH_LIMITS_H
 #define NETWORK_SUN_LENGTH_LIMITS_H
 
+#ifndef WIN32
+
 #include "network/sun-offsets.h"                // sun_path_offset
 #include "network/sun-sizes.h"                  // sun_size
 
 namespace Network
 {
-#ifndef WIN32
     static constexpr auto sun_length_max {sun_size};
     static constexpr auto sun_length_min {sun_path_offset};
-#endif
 }
+
+#endif
 
 #endif

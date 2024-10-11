@@ -16,15 +16,17 @@
 #ifndef NETWORK_TO_BYTESTRING_PATH_H
 #define NETWORK_TO_BYTESTRING_PATH_H
 
+#ifndef WIN32
+
 #include "network/bytestring.h"         // ByteString
 
 #include <string_view>      // std::string_view
 
 namespace Network
 {
-#ifndef WIN32
     extern auto to_bytestring(const std::string_view& path) -> ByteString;
-#endif
 }
+
+#endif
 
 #endif

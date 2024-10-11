@@ -16,13 +16,15 @@
 #ifndef NETWORK_VALIDATE_NULL_H
 #define NETWORK_VALIDATE_NULL_H
 
+#ifndef WIN32
+
 #include <cstddef>      // std::nullptr_t
 
 namespace Network
 {
-#ifndef WIN32
     extern auto validate(const std::nullptr_t& path) -> std::nullptr_t;
-#endif
 }
+
+#endif
 
 #endif

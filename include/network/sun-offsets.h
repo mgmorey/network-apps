@@ -16,23 +16,23 @@
 #ifndef NETWORK_SUN_OFFSETS_H
 #define NETWORK_SUN_OFFSETS_H
 
+#ifndef WIN32
+
 #include "network/os-features.h"        // HAVE_SOCKADDR_SA_LEN
 
-#ifndef WIN32
 #include <sys/un.h>         // sockaddr_un
-#endif
 
 #include <cstddef>      // offsetof()
 
 namespace Network
 {
-#ifndef WIN32
 #ifdef HAVE_SOCKADDR_SA_LEN
     constexpr auto sun_len_offset {offsetof(sockaddr_un, sun_len)};
 #endif
     constexpr auto sun_family_offset {offsetof(sockaddr_un, sun_family)};
     constexpr auto sun_path_offset {offsetof(sockaddr_un, sun_path)};
-#endif
 }
+
+#endif
 
 #endif

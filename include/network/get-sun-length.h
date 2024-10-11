@@ -16,18 +16,18 @@
 #ifndef NETWORK_GET_SUN_LENGTH_H
 #define NETWORK_GET_SUN_LENGTH_H
 
+#ifndef WIN32
+
 #include "network/length-type.h"        // length_type
 
-#ifndef WIN32
 #include <sys/un.h>         // sockaddr_un
-#endif
 
 namespace Network
 {
-#ifndef WIN32
     extern auto get_sun_length(const sockaddr_un* sun,
                                length_type sun_len) -> length_type;
-#endif
 }
+
+#endif
 
 #endif

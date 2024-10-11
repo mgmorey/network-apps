@@ -16,6 +16,8 @@
 #ifndef NETWORK_CREATE_SOCKETPAIR_H
 #define NETWORK_CREATE_SOCKETPAIR_H
 
+#ifndef WIN32
+
 #include "network/sockethints.h"                // SocketHints
 #include "network/socketpair.h"                 // SocketPair
 
@@ -24,5 +26,7 @@ namespace Network
     extern auto create_socketpair(const SocketHints& hints,
                                   bool verbose = false) -> SocketPair;
 }
+
+#endif
 
 #endif

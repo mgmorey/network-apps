@@ -16,6 +16,8 @@
 #ifndef NETWORK_TO_BYTESTRING_NULL_H
 #define NETWORK_TO_BYTESTRING_NULL_H
 
+#ifndef WIN32
+
 #include "network/bytestring.h"         // ByteString
 
 #include <cstddef>      // std::nullptr_t
@@ -24,5 +26,7 @@ namespace Network
 {
     extern auto to_bytestring(const std::nullptr_t& path) -> ByteString;
 }
+
+#endif
 
 #endif

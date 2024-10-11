@@ -16,6 +16,8 @@
 #ifndef NETWORK_UNIXSOCKETHINTS_H
 #define NETWORK_UNIXSOCKETHINTS_H
 
+#ifndef WIN32
+
 #include "network/socket-family-enum.h"         // socket_family_enum
 #include "network/socket-flags-type.h"          // socket_flags_type
 #include "network/socket-type-type.h"           // socket_type_type
@@ -23,7 +25,6 @@
 
 namespace Network
 {
-#ifndef WIN32
     struct UnixSocketHints : public SocketHints
     {
         constexpr explicit UnixSocketHints(socket_type_type t_socktype,
@@ -32,7 +33,8 @@ namespace Network
         {
         }
     };
-#endif
 }
+
+#endif
 
 #endif

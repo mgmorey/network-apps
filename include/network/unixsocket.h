@@ -16,6 +16,8 @@
 #ifndef NETWORK_UNIXSOCKET_H
 #define NETWORK_UNIXSOCKET_H
 
+#ifndef WIN32
+
 #include "network/commonsocket.h"               // CommonSocket
 #include "network/handle-type.h"                // handle_type
 #include "network/pathname.h"                   // Pathname
@@ -50,5 +52,7 @@ namespace Network
         SocketState m_state {SocketState::allocated};
     };
 }
+
+#endif
 
 #endif

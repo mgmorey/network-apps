@@ -16,6 +16,8 @@
 #ifndef NETWORK_UNIX_START_H
 #define NETWORK_UNIX_START_H
 
+#ifndef WIN32
+
 #include "network/optionalversion.h"    // OptionalVersion
 #include "network/unixcontextdata.h"    // UnixContextData
 
@@ -24,5 +26,7 @@ namespace Network
     extern auto start(const OptionalVersion& version,
                       bool is_verbose) -> UnixContextData;
 }
+
+#endif
 
 #endif

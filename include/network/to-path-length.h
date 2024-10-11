@@ -16,6 +16,8 @@
 #ifndef NETWORK_TO_PATH_LENGTH_H
 #define NETWORK_TO_PATH_LENGTH_H
 
+#ifndef WIN32
+
 #include "network/length-type.h"                // length_type
 #include "network/path-length-limits.h"         // path_length_max,
                                                 // path_length_min
@@ -23,14 +25,14 @@
 
 namespace Network
 {
-#ifndef WIN32
     auto to_path_length(auto value) -> length_type
     {
         return to_value<length_type>("path_length_type", value,
                                      path_length_min,
                                      path_length_max);
     }
-#endif
 }
+
+#endif
 
 #endif

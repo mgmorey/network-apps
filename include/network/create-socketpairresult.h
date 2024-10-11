@@ -16,6 +16,8 @@
 #ifndef NETWORK_CREATE_SOCKETPAIRRESULT_H
 #define NETWORK_CREATE_SOCKETPAIRRESULT_H
 
+#ifndef WIN32
+
 #include "network/sockethints.h"                // SocketHints
 #include "network/socketpairresult.h"           // SocketPairResult
 
@@ -25,5 +27,7 @@ namespace Network
                                         bool is_verbose = false) ->
         SocketPairResult;
 }
+
+#endif
 
 #endif

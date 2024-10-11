@@ -17,16 +17,15 @@
 #define NETWORK_GET_PATH_POINTER_H
 
 #ifndef WIN32
+
 #include <sys/un.h>         // sockaddr_un
-#endif
 
 namespace Network
 {
-#ifndef WIN32
     extern auto get_path_pointer(const sockaddr_un* sun) noexcept -> const char*;
     extern auto get_path_pointer(sockaddr_un* sun) noexcept -> char*;
-#endif
 }
 
+#endif
 
 #endif
