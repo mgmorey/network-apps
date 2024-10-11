@@ -181,7 +181,7 @@ namespace Test
     auto get_codes_protocol() -> const ErrorCodeSet&
     {
 #if defined(WIN32)
-        static const ErrorCodeSet codes = {WSAESOCKTNOSUPPORT};
+        static const ErrorCodeSet codes = {0};
 #elif defined(OS_DARWIN)
         static const ErrorCodeSet codes = {EAI_BADHINTS};
 #else
@@ -244,10 +244,8 @@ namespace Test
 
     auto print(const OsErrorResult& result) -> void
     {
-        if (is_verbose) {
-            std::cout << result.string()
-                      << std::endl;
-        }
+        std::cout << result.string()
+                  << std::endl;
     }
 
     auto print(const OsErrorResult& result, const std::string& family) -> void
@@ -293,13 +291,12 @@ namespace Test
         os_error_type actual_code {0};
         std::vector<SocketHost> hosts;
         const auto family {get_family(hints)};
-        const auto result {insert(hosts, host, {}, hints, is_verbose)};
 
-        if (result) {
+        if (const auto result {insert(hosts, host, {}, hints, is_verbose)}) {
             if (expected_codes == ErrorCodeSet {0}) {
                 print(result, family);
             }
-            else {
+            else if (is_verbose) {
                 print(result);
             }
 
