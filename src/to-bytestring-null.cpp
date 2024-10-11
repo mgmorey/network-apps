@@ -28,13 +28,13 @@
 
 auto Network::to_bytestring(const std::nullptr_t& path) -> ByteString
 {
-    static_cast<void>(path);
     sockaddr_un sun {};
-    std::size_t sun_len {sun_path_offset};
+    const std::size_t sun_len {sun_path_offset};
 #ifdef HAVE_SOCKADDR_SA_LEN
     sun.sun_len = sun_len;
 #endif
     sun.sun_family = AF_UNIX;
+    static_cast<void>(path);
     return to_bytestring(&sun, sun_len);
 }
 
