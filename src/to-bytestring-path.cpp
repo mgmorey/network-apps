@@ -31,15 +31,10 @@
 auto Network::to_bytestring(const std::string_view& path) -> ByteString
 {
     sockaddr_un sun {};
-    std::size_t sun_len {sun_path_offset};
-
-    if (path.data() != nullptr) {
-        const auto path_len {to_path_length(path.length())};
-        auto* sun_path {get_path_pointer(&sun)};
-        path.copy(sun_path, path_len);
-        sun_len += path_len + 1;
-    }
-
+    const auto path_len {to_path_length(path.length())};
+    const auto sun_len {sun_path_offset + path_len + 1};
+    auto* sun_path {get_path_pointer(&sun)};
+    path.copy(sun_path, path_len);
 #ifdef HAVE_SOCKADDR_SA_LEN
     sun.sun_len = sun_len;
 #endif
