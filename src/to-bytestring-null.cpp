@@ -25,7 +25,6 @@
 #include <sys/un.h>         // sockaddr_un
 
 #include <cstddef>      // std::nullptr_t
-#include <string_view>  // std::string_view
 
 auto Network::to_bytestring(const std::nullptr_t& path) -> ByteString
 {
