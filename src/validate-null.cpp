@@ -18,12 +18,10 @@
 #include "network/validate-null.h"              // validate()
 
 #include <cstddef>      // std::nullptr_t
-#include <string_view>  // std::string_view
 
-auto Network::validate(const std::nullptr_t& path) -> std::string_view
+auto Network::validate(const std::nullptr_t& path) -> std::nullptr_t
 {
-    static_cast<void>(path);
-    return {};
+    return path;
 }
 
 #endif

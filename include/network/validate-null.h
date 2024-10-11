@@ -17,12 +17,11 @@
 #define NETWORK_VALIDATE_NULL_H
 
 #include <cstddef>      // std::nullptr_t
-#include <string_view>  // std::string_view
 
 namespace Network
 {
 #ifndef WIN32
-    extern auto validate(const std::nullptr_t& path) -> std::string_view;
+    extern auto validate(const std::nullptr_t& path) -> std::nullptr_t;
 #endif
 }
 
