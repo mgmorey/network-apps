@@ -38,7 +38,7 @@
 auto Network::validate(const sockaddr_un* sun,
                        length_type sun_len) -> const sockaddr_un*
 {
-    sun_len = to_sun_length(get_sun_length(sun, sun_len));
+    sun_len = get_sun_length(sun, to_sun_length(sun_len));
 
 #ifdef HAVE_SOCKADDR_SA_LEN
     if (std::cmp_not_equal(sun->sun_len, sun_len)) {
@@ -47,14 +47,15 @@ auto Network::validate(const sockaddr_un* sun,
                                       sun_len,
                                       sun_len);
     }
-#else
-    static_cast<void>(sun_len);
 #endif
 
     if (sun->sun_family != AF_UNIX) {
         throw FamilyError(sun->sun_family);
     }
 
+#ifndef HAVE_SOCKADDR_SA_LEN
+    static_cast<void>(sun_len);
+#endif
     return sun;
 }
 
