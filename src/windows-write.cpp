@@ -29,6 +29,8 @@
 #include <winsock2.h>       // ::send()
 
 #include <cstddef>      // std::size_t
+#include <iostream>     // std::cout, std::endl
+#include <sstream>      // std::ostringstream
 
 auto Network::write(handle_type handle,
                     const char* data,
