@@ -34,11 +34,11 @@ auto Network::to_bytestring(const std::string_view& path) -> ByteString
     const auto path_len {to_path_length(path.length())};
     const auto sun_len {sun_path_offset + path_len + 1};
     auto* sun_path {get_path_pointer(&sun)};
-    path.copy(sun_path, path_len);
 #ifdef HAVE_SOCKADDR_SA_LEN
     sun.sun_len = sun_len;
 #endif
     sun.sun_family = AF_UNIX;
+    path.copy(sun_path, path_len);
     return to_bytestring(&sun, sun_len);
 }
 
