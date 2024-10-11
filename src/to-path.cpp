@@ -28,7 +28,7 @@ auto Network::to_path(const ByteString& addr) -> std::string_view
 {
     const auto path_len {addr.size() - sun_length_min};
 
-    if (path_len == 0) {
+    if (path_len == 0UL) {
         return {};
     }
 
