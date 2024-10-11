@@ -26,13 +26,13 @@
 
 auto Network::to_path(const ByteString& addr) -> std::string_view
 {
-    const auto* const sun {get_sun_pointer(addr)};
     const auto path_len {addr.size() - sun_length_min};
 
     if (path_len == 0) {
         return {};
     }
 
+    const auto* const sun {get_sun_pointer(addr)};
     const auto* const path {get_path_pointer(sun)};
     return {path, ::strnlen(path, path_len - 1)};
 }
