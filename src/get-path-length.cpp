@@ -26,18 +26,19 @@
 auto Network::get_path_length(const char* path,
                               length_type path_len) -> length_type
 {
-    if (path_len == 0UL) {
-        return path_len;
-    }
-
     return ::strnlen(path, path_len - 1);
 }
 
 auto Network::get_path_length(const sockaddr_un* sun,
                               length_type sun_len) -> length_type
 {
-    const auto* const path {static_cast<const char*>(sun->sun_path)};
     const auto path_len {sun_len - sun_length_min};
+
+    if (path_len == 0UL) {
+        return 0UL;
+    }
+
+    const auto* const path {static_cast<const char*>(sun->sun_path)};
     return get_path_length(path, path_len);
 }
 
