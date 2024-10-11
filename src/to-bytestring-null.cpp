@@ -17,7 +17,12 @@
 
 #include "network/to-bytestring-null.h"         // to_bytestring()
 #include "network/bytestring.h"                 // ByteString
-#include "network/to-bytestring-path.h"         // to_bytestring()
+#include "network/os-features.h"                // HAVE_SOCKADDR_SA_LEN
+#include "network/sun-offsets.h"                // sun_path_offset
+#include "network/to-bytestring-void.h"         // to_bytestring()
+
+#include <sys/socket.h>     // AF_UNIX
+#include <sys/un.h>         // sockaddr_un
 
 #include <cstddef>      // std::nullptr_t
 #include <string_view>  // std::string_view
@@ -25,7 +30,13 @@
 auto Network::to_bytestring(const std::nullptr_t& path) -> ByteString
 {
     static_cast<void>(path);
-    return to_bytestring(std::string_view {});
+    sockaddr_un sun {};
+    std::size_t sun_len {sun_path_offset};
+#ifdef HAVE_SOCKADDR_SA_LEN
+    sun.sun_len = sun_len;
+#endif
+    sun.sun_family = AF_UNIX;
+    return to_bytestring(&sun, sun_len);
 }
 
 #endif
