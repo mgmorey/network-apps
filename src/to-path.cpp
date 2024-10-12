@@ -21,20 +21,15 @@
 #include "network/get-sun-pointer.h"            // get_sun_pointer()
 #include "network/sun-offsets.h"                // sun_path_offset
 
-#include <cstring>      // ::strnlen()
 #include <string_view>  // std::string_view
 
 auto Network::to_path(const ByteString& addr) -> std::string_view
 {
     const auto* const sun {get_sun_pointer(addr)};
-
-    if (addr.size() == sun_path_offset) {
-        return {};
-    }
-
-    const auto path_len {addr.size() - sun_path_offset};
     const auto* const path {get_path_pointer(sun)};
-    return {path, ::strnlen(path, path_len - 1)};
+    auto path_len {addr.size() - sun_path_offset};
+    const std::string_view view {path, path_len};
+    return view.substr(0, view.find('\0'));
 }
 
 #endif
