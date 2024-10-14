@@ -27,7 +27,7 @@ auto Network::to_path(const ByteString& addr) -> std::string_view
 {
     const auto* const sun {get_sun_pointer(addr)};
     const auto* const path {get_path_pointer(sun)};
-    auto path_len {addr.size() - sun_path_offset};
+    const auto path_len {addr.size() - sun_path_offset};
     const std::string_view view {path, path_len};
     return view.substr(0, view.find('\0'));
 }
