@@ -35,16 +35,25 @@ Network::UnixSocket::~UnixSocket() noexcept
     state(SocketState::closing);
 }
 
+auto Network::UnixSocket::close() -> OsErrorResult
+{
+    if (auto result {CommonSocket::close()}) {
+        return result;
+    }
+
+    state(SocketState::allocated);
+    return {};
+}
+
 auto Network::UnixSocket::open(const ByteString& t_addr,
                                bool t_is_bind) -> OsErrorResult
 {
-    auto result {CommonSocket::open(t_addr, t_is_bind)};
-
-    if (!result) {
-        state(t_is_bind ? SocketState::bound : SocketState::connected);
+    if (auto result {CommonSocket::open(t_addr, t_is_bind)}) {
+        return result;
     }
 
-    return result;
+    state(t_is_bind ? SocketState::bound : SocketState::connected);
+    return {};
 }
 
 auto Network::UnixSocket::remove(const PathnameView& t_path) const -> bool
