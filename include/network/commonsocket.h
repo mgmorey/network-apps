@@ -57,17 +57,17 @@ namespace Network
         [[nodiscard]] auto is_verbose() const noexcept -> bool final;
 
         [[nodiscard]] auto close() -> OsErrorResult override;
-        [[nodiscard]] auto
-        listen(int backlog_size) const -> OsErrorResult final;
+        [[nodiscard]] auto listen(int t_backlog) const ->
+            OsErrorResult final;
         [[nodiscard]] auto name(bool t_is_peer) const -> ByteString final;
         [[nodiscard]] auto open(const ByteString& t_addr,
                                 bool t_is_bind) -> OsErrorResult override;
-        [[nodiscard]] auto read(char* data,
-                                std::size_t size) -> ssize_t final;
-        [[nodiscard]] auto read(std::size_t size) -> ReadResult final;
-        [[nodiscard]] auto write(const char* data,
-                                 std::size_t size) -> ssize_t final;
-        [[nodiscard]] auto write(std::string_view sv) -> ssize_t final;
+        [[nodiscard]] auto read(char* t_data,
+                                std::size_t t_size) const -> ssize_t final;
+        [[nodiscard]] auto read(std::size_t t_size) const -> ReadResult final;
+        [[nodiscard]] auto write(const char* t_data,
+                                 std::size_t t_size) const -> ssize_t final;
+        [[nodiscard]] auto write(std::string_view t_sv) const -> ssize_t final;
 
     private:
         mutable std::array<ByteString, 2> m_names;

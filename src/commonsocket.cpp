@@ -89,9 +89,9 @@ auto Network::CommonSocket::close() -> OsErrorResult
     return {};
 }
 
-auto Network::CommonSocket::listen(int t_backlog_size) const -> OsErrorResult
+auto Network::CommonSocket::listen(int t_backlog) const -> OsErrorResult
 {
-    return Network::listen(m_handle, t_backlog_size, m_is_verbose);
+    return Network::listen(m_handle, t_backlog, m_is_verbose);
 }
 
 auto Network::CommonSocket::name(bool t_is_peer) const -> ByteString
@@ -119,24 +119,26 @@ auto Network::CommonSocket::open(const ByteString& t_addr,
     return {};
 }
 
-auto Network::CommonSocket::read(char* data, std::size_t size) -> ssize_t
+auto Network::CommonSocket::read(char* t_data,
+                                 std::size_t t_size) const -> ssize_t
 {
-    return Network::read(m_handle, data, size, m_is_verbose);
+    return Network::read(m_handle, t_data, t_size, m_is_verbose);
 }
 
-auto Network::CommonSocket::read(std::size_t size) -> ReadResult
+auto Network::CommonSocket::read(std::size_t t_size) const -> ReadResult
 {
-    Buffer<char> buffer {size};
+    Buffer<char> buffer {t_size};
     const auto result {read(buffer.data(), buffer.size())};
     return {std::string {buffer}, result};
 }
 
-auto Network::CommonSocket::write(const char* data, std::size_t size) -> ssize_t
+auto Network::CommonSocket::write(const char* t_data,
+                                  std::size_t t_size) const -> ssize_t
 {
-    return Network::write(m_handle, data, size, m_is_verbose);
+    return Network::write(m_handle, t_data, t_size, m_is_verbose);
 }
 
-auto Network::CommonSocket::write(std::string_view sv) -> ssize_t
+auto Network::CommonSocket::write(std::string_view t_sv) const -> ssize_t
 {
-    return write(sv.data(), sv.size());
+    return write(t_sv.data(), t_sv.size());
 }

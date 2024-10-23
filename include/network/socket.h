@@ -45,17 +45,17 @@ namespace Network
         [[nodiscard]] virtual auto is_verbose() const noexcept -> bool = 0;
 
         [[nodiscard]] virtual auto close() -> OsErrorResult = 0;
-        [[nodiscard]] virtual auto
-        listen(int backlog_size) const -> OsErrorResult = 0;
+        [[nodiscard]] virtual auto listen(int t_backlog) const ->
+            OsErrorResult = 0;
         [[nodiscard]] virtual auto name(bool t_is_peer) const -> ByteString = 0;
         [[nodiscard]] virtual auto open(const ByteString& t_addr,
                                         bool t_is_bind) -> OsErrorResult = 0;
-        [[nodiscard]] virtual auto read(char* data,
-                                        std::size_t size) -> ssize_t = 0;
-        [[nodiscard]] virtual auto read(std::size_t size) -> ReadResult = 0;
-        [[nodiscard]] virtual auto write(const char* data,
-                                         std::size_t size) -> ssize_t = 0;
-        [[nodiscard]] virtual auto write(std::string_view sv) -> ssize_t = 0;
+        [[nodiscard]] virtual auto read(char* t_data,
+                                        std::size_t t_size) const -> ssize_t = 0;
+        [[nodiscard]] virtual auto read(std::size_t t_size) const -> ReadResult = 0;
+        [[nodiscard]] virtual auto write(const char* t_data,
+                                         std::size_t t_size) const -> ssize_t = 0;
+        [[nodiscard]] virtual auto write(std::string_view t_sv) const -> ssize_t = 0;
 
         [[nodiscard]] auto bind(const auto& value) -> OsErrorResult
         {
