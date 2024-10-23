@@ -39,17 +39,6 @@ namespace Network
         auto operator=(Socket&&) noexcept -> Socket& = delete;
         explicit virtual operator bool() const noexcept = 0;
         explicit virtual operator handle_type() const noexcept = 0;
-
-        [[nodiscard]] auto bind(const auto& value) -> OsErrorResult
-        {
-            return open(to_bytestring(validate(value)), true);
-        }
-
-        [[nodiscard]] auto connect(const auto& value) -> OsErrorResult
-        {
-            return open(to_bytestring(validate(value)), false);
-        }
-
         [[nodiscard]] virtual auto
         family() const noexcept -> socket_family_type = 0;
         [[nodiscard]] virtual auto handle() const noexcept -> handle_type = 0;
@@ -62,6 +51,19 @@ namespace Network
         [[nodiscard]] virtual auto read(char* data,
                                         std::size_t size) -> ssize_t = 0;
         [[nodiscard]] virtual auto read(std::size_t size) -> ReadResult = 0;
+        [[nodiscard]] virtual auto write(const char* data,
+                                         std::size_t size) -> ssize_t = 0;
+        [[nodiscard]] virtual auto write(std::string_view sv) -> ssize_t = 0;
+
+        [[nodiscard]] auto bind(const auto& value) -> OsErrorResult
+        {
+            return open(to_bytestring(validate(value)), true);
+        }
+
+        [[nodiscard]] auto connect(const auto& value) -> OsErrorResult
+        {
+            return open(to_bytestring(validate(value)), false);
+        }
 
         [[nodiscard]] auto peername() const -> ByteString
         {
@@ -72,10 +74,6 @@ namespace Network
         {
             return name(false);
         }
-
-        [[nodiscard]] virtual auto write(const char* data,
-                                         std::size_t size) -> ssize_t = 0;
-        [[nodiscard]] virtual auto write(std::string_view sv) -> ssize_t = 0;
     };
 
     extern auto operator<<(std::ostream& os,
