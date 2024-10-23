@@ -63,6 +63,17 @@ Network::CommonSocket::operator handle_type() const noexcept
     return m_handle;
 }
 
+auto Network::CommonSocket::close() -> OsErrorResult
+{
+    if (auto result {Network::close(m_handle)}) {
+        return result;
+    }
+
+    m_names[0].clear();
+    m_names[1].clear();
+    return {};
+}
+
 auto Network::CommonSocket::family() const noexcept -> socket_family_type
 {
     return m_family;
@@ -105,8 +116,6 @@ auto Network::CommonSocket::open(const ByteString& t_addr,
         return result;
     }
 
-    m_names[0].clear();
-    m_names[1].clear();
     return {};
 }
 
