@@ -39,11 +39,13 @@ namespace Network
         auto operator=(Socket&&) noexcept -> Socket& = delete;
         explicit virtual operator bool() const noexcept = 0;
         explicit virtual operator handle_type() const noexcept = 0;
-        [[nodiscard]] virtual auto close() -> OsErrorResult = 0;
+
         [[nodiscard]] virtual auto
         family() const noexcept -> socket_family_type = 0;
         [[nodiscard]] virtual auto handle() const noexcept -> handle_type = 0;
         [[nodiscard]] virtual auto is_verbose() const noexcept -> bool = 0;
+
+        [[nodiscard]] virtual auto close() -> OsErrorResult = 0;
         [[nodiscard]] virtual auto
         listen(int backlog_size) const -> OsErrorResult = 0;
         [[nodiscard]] virtual auto name(bool t_is_peer) const -> ByteString = 0;

@@ -51,10 +51,12 @@ namespace Network
         auto operator=(CommonSocket&&) noexcept -> CommonSocket& = delete;
         explicit operator bool() const noexcept final;
         explicit operator handle_type() const noexcept final;
-        [[nodiscard]] auto close() -> OsErrorResult override;
+
         [[nodiscard]] auto family() const noexcept -> socket_family_type final;
         [[nodiscard]] auto handle() const noexcept -> handle_type final;
         [[nodiscard]] auto is_verbose() const noexcept -> bool final;
+
+        [[nodiscard]] auto close() -> OsErrorResult override;
         [[nodiscard]] auto
         listen(int backlog_size) const -> OsErrorResult final;
         [[nodiscard]] auto name(bool t_is_peer) const -> ByteString final;

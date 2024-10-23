@@ -63,17 +63,6 @@ Network::CommonSocket::operator handle_type() const noexcept
     return m_handle;
 }
 
-auto Network::CommonSocket::close() -> OsErrorResult
-{
-    if (const auto result {Network::close(m_handle, m_is_verbose)}) {
-        return result;
-    }
-
-    m_names[0].clear();
-    m_names[1].clear();
-    return {};
-}
-
 auto Network::CommonSocket::family() const noexcept -> socket_family_type
 {
     return m_family;
@@ -87,6 +76,17 @@ auto Network::CommonSocket::handle() const noexcept -> handle_type
 auto Network::CommonSocket::is_verbose() const noexcept -> bool
 {
     return m_is_verbose;
+}
+
+auto Network::CommonSocket::close() -> OsErrorResult
+{
+    if (const auto result {Network::close(m_handle, m_is_verbose)}) {
+        return result;
+    }
+
+    m_names[0].clear();
+    m_names[1].clear();
+    return {};
 }
 
 auto Network::CommonSocket::listen(int t_backlog_size) const -> OsErrorResult

@@ -40,6 +40,7 @@ namespace Network
         ~UnixSocket() noexcept final;
         auto operator=(const UnixSocket&) noexcept -> UnixSocket& = delete;
         auto operator=(UnixSocket&&) noexcept -> UnixSocket& = delete;
+
         [[nodiscard]] auto close() -> OsErrorResult final;
         [[nodiscard]] auto open(const ByteString& t_addr,
                                 bool t_is_bind) -> OsErrorResult final;
