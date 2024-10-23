@@ -65,7 +65,7 @@ Network::CommonSocket::operator handle_type() const noexcept
 
 auto Network::CommonSocket::close() -> OsErrorResult
 {
-    if (auto result {Network::close(m_handle)}) {
+    if (const auto result {Network::close(m_handle, m_is_verbose)}) {
         return result;
     }
 
@@ -112,7 +112,7 @@ auto Network::CommonSocket::open(const ByteString& t_addr,
 {
     const OpenHandleParams args {m_handle, t_addr, m_is_verbose};
 
-    if (auto result {Network::open(args, t_is_bind)}) {
+    if (const auto result {Network::open(args, t_is_bind)}) {
         return result;
     }
 
