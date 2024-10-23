@@ -105,6 +105,8 @@ auto Network::CommonSocket::open(const ByteString& t_addr,
         return result;
     }
 
+    m_names[0].clear();
+    m_names[1].clear();
     return {};
 }
 
