@@ -17,10 +17,10 @@
 #define NETWORK_SOCKET_H
 
 #include "network/bytestring.h"                 // ByteString
+#include "network/family-type.h"                // family_type
 #include "network/handle-type.h"                // handle_type
 #include "network/oserrorresult.h"              // OsErrorResult
 #include "network/readresult.h"                 // ReadResult
-#include "network/socket-family-type.h"         // socket_family_type
 #include "network/to-bytestring.h"              // to_bytestring()
 #include "network/validate.h"                   // validate()
 
@@ -40,8 +40,7 @@ namespace Network
         explicit virtual operator bool() const noexcept = 0;
         explicit virtual operator handle_type() const noexcept = 0;
 
-        [[nodiscard]] virtual auto
-        family() const noexcept -> socket_family_type = 0;
+        [[nodiscard]] virtual auto family() const noexcept -> family_type = 0;
         [[nodiscard]] virtual auto handle() const noexcept -> handle_type = 0;
         [[nodiscard]] virtual auto is_verbose() const noexcept -> bool = 0;
 

@@ -17,10 +17,10 @@
 #define NETWORK_COMMONSOCKET_H
 
 #include "network/bytestring.h"                 // ByteString
+#include "network/family-type.h"                // family_type
 #include "network/handle-null.h"                // handle_null
 #include "network/handle-type.h"                // handle_type
 #include "network/readresult.h"                 // ReadResult
-#include "network/socket-family-type.h"         // socket_family_type
 #include "network/socket.h"                     // Socket
 
 #ifdef WIN32
@@ -41,7 +41,7 @@ namespace Network
     {
     public:
         CommonSocket() noexcept = default;
-        CommonSocket(socket_family_type t_family,
+        CommonSocket(family_type t_family,
                      handle_type t_handle,
                      bool t_is_verbose);
         CommonSocket(const CommonSocket&) noexcept = delete;
@@ -52,7 +52,7 @@ namespace Network
         explicit operator bool() const noexcept final;
         explicit operator handle_type() const noexcept final;
 
-        [[nodiscard]] auto family() const noexcept -> socket_family_type final;
+        [[nodiscard]] auto family() const noexcept -> family_type final;
         [[nodiscard]] auto handle() const noexcept -> handle_type final;
         [[nodiscard]] auto is_verbose() const noexcept -> bool final;
 
@@ -71,7 +71,7 @@ namespace Network
 
     private:
         mutable std::array<ByteString, 2> m_names;
-        socket_family_type m_family {AF_UNSPEC};
+        family_type m_family {AF_UNSPEC};
         handle_type m_handle {handle_null};
         bool m_is_verbose {false};
     };

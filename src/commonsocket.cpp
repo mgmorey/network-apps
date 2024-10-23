@@ -17,6 +17,7 @@
 #include "network/buffer.h"                     // Buffer
 #include "network/bytestring.h"                 // ByteString
 #include "network/close.h"                      // close()
+#include "network/family-type.h"                // family_type
 #include "network/get-name.h"                   // get_name()
 #include "network/getnameparams.h"              // GetNameParams
 #include "network/handle-null.h"                // handle_null
@@ -27,13 +28,12 @@
 #include "network/openhandleparams.h"           // OpenHandleParams
 #include "network/oserrorresult.h"              // OsErrorResult
 #include "network/read.h"                       // read()
-#include "network/socket-family-type.h"         // socket_family_type
 #include "network/write.h"                      // write()
 
 #include <cstddef>      // std::size_t
 #include <iostream>     // std::cerr, std::endl
 
-Network::CommonSocket::CommonSocket(socket_family_type t_family,
+Network::CommonSocket::CommonSocket(family_type t_family,
                                     handle_type t_handle,
                                     bool t_is_verbose)
     : m_family(t_family),
@@ -63,7 +63,7 @@ Network::CommonSocket::operator handle_type() const noexcept
     return m_handle;
 }
 
-auto Network::CommonSocket::family() const noexcept -> socket_family_type
+auto Network::CommonSocket::family() const noexcept -> family_type
 {
     return m_family;
 }
