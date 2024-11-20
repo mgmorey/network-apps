@@ -20,8 +20,7 @@
 #endif
 
 #ifdef WIN32
-#include <winsock2.h>       // Always include winsock2.h before
-                            // windows.h on Windows
+#define WIN32_LEAN_AND_MEAN
 #include <windows.h>        // DWORD, FORMAT_MESSAGE_ALLOCATE_BUFFER,
                             // FORMAT_MESSAGE_FROM_SYSTEM,
                             // FORMAT_MESSAGE_IGNORE_INSERTS,

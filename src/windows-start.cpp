@@ -27,10 +27,11 @@
 #include "network/version.h"            // Version
 #include "network/windowsversion.h"     // WindowsVersion
 
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>        // WORD
 #include <winsock2.h>       // WSADATA, WSAEFAULT, WSAEPROCLIM,
                             // WSASYSNOTREADY, WSAVERNOTSUPPORTED,
                             // ::WSAStartup()
-#include <windows.h>        // WORD
 
 #include <iostream>     // std::cerr, std::cout, std::endl
 

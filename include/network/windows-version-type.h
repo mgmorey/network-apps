@@ -17,8 +17,7 @@
 #define NETWORK_WINDOWS_VERSION_TYPE_H
 
 #ifdef WIN32
-#include <winsock2.h>       // Always include winsock2.h before
-                            // windows.h on Windows
+#define WIN32_LEAN_AND_MEAN
 #include <windows.h>        // WORD
 #endif
 

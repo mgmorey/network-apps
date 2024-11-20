@@ -17,9 +17,8 @@
 #include "network/os-error-type.h"      // os_error_type
 
 #ifdef WIN32
-#include <winsock2.h>       // Always include winsock2.h before
-                            // windows.h on Windows
-#include <windows.h>        // SetLastError()
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>        // ::SetLastError()
 #else
 #include <cerrno>           // errno
 #endif
