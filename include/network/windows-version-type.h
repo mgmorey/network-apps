@@ -17,15 +17,15 @@
 #define NETWORK_WINDOWS_VERSION_TYPE_H
 
 #ifdef WIN32
+
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>        // WORD
-#endif
 
 namespace Network
 {
-#ifdef WIN32
     using windows_version_type = WORD;
-#endif
 }
+
+#endif
 
 #endif
