@@ -225,19 +225,22 @@ namespace Test
         std::string actual_error_str;
 
         try {
+            OsErrorResult actual_result;
             assert(to_bytestring(path) == path);
             assert(static_cast<bool>(sock));
             assert(static_cast<handle_type>(sock) != handle_null);
 
             if (const auto result {sock.bind(path)}) {
                 print(result);
-                assert(expected_codes.contains(result.number()));
+                actual_result = result;
             }
             else {
                 const auto addr {sock.sockname()};
                 print(sock, addr);
                 assert(addr == path);
             }
+
+            assert(expected_codes.contains(actual_result.number()));
         }
         catch (const LogicError& error) {
             print(error);
@@ -269,13 +272,13 @@ namespace Test
 
     auto test_paths_invalid() -> void
     {
-        const auto path_max {get_pathname(path_length_max + 1)};
         test_path(nullptr, {0}, expected_error_payload_length_re);
-        test_path("", get_codes_no_such_file_or_directory(), {});
+        test_path("", {0}, {});
 #ifndef OS_CYGWIN_NT
         test_path("/foo/bar", get_codes_no_such_file_or_directory(), {});
         test_path("/var/foo", get_codes_permission_denied(), {});
 #endif
+        const auto path_max {get_pathname(path_length_max + 1)};
         test_path(path_max, {}, expected_error_path_length_re);
     }
 
