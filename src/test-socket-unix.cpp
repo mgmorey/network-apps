@@ -273,7 +273,9 @@ namespace Test
     auto test_paths_invalid() -> void
     {
         test_path(nullptr, {0}, expected_error_payload_length_re);
-        test_path("", {0}, {});
+#ifdef OS_DARWIN
+        test_path("", get_codes_no_such_file_or_directory(), {});
+#endif
 #ifndef OS_CYGWIN_NT
         test_path("/foo/bar", get_codes_no_such_file_or_directory(), {});
         test_path("/var/foo", get_codes_permission_denied(), {});
@@ -284,6 +286,10 @@ namespace Test
 
     auto test_paths_valid() -> void
     {
+#ifndef OS_DARWIN
+        test_path("", {0}, {});
+#endif
+
         for (auto paths {get_pathnames()}; !paths.empty(); paths.pop()) {
             test_path_valid(paths.top());
         }
