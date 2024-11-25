@@ -217,8 +217,8 @@ namespace Test
         test_close(handle_null, get_codes_bad_file_number());
     }
 
-    auto test_path(const auto path,
-                   Socket& sock,
+    auto test_path(Socket& sock,
+                   const auto path,
                    const ErrorCodeSet& expected_codes,
                    const std::string& expected_error_re) -> void
     {
@@ -261,13 +261,13 @@ namespace Test
                    const std::string& expected_error_re) -> void
     {
         const auto sock {create_socket(socket_hints, is_verbose)};
-        return test_path(path, *sock, expected_codes, expected_error_re);
+        return test_path(*sock, path, expected_codes, expected_error_re);
     }
 
     auto test_path_valid(const auto path) -> void
     {
         const auto sock {create_socket(socket_hints, is_verbose)};
-        test_path(path, *sock, {0}, {});
+        test_path(*sock, path, {0}, {});
     }
 
     auto test_paths_invalid() -> void
