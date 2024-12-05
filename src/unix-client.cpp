@@ -33,14 +33,15 @@
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <string>       // std::string, std::to_string()
 
-using Network::ArgumentSpan;
-using Network::Socket;
-using Network::create_socket;
-using Network::socket_error;
+namespace
+{
+    using Network::ArgumentSpan;
+    using Network::Socket;
+    using Network::create_socket;
+    using Network::socket_error;
 
-static auto is_verbose {false};  // NOLINT
+    auto is_verbose {false};  // NOLINT
 
-namespace Client {
     auto connect()
     {
         auto sock {create_socket(SOCKET_HINTS, is_verbose)};
@@ -99,17 +100,17 @@ namespace Client {
 auto main(int argc, char* argv[]) -> int
 {
     // Fetch arguments from command line.
-    const auto args {Client::parse(argc, argv)};
+    const auto args {parse(argc, argv)};
 
     try {
         // Connect Unix domain socket to pathname.
-        auto data_socket {Client::connect()};
+        auto data_socket {connect()};
         auto shutdown_pending {false};
 
         // Send arguments to server.
         for (const auto& arg : args) {
             const std::string write_str {arg};
-            Client::write(write_str, *data_socket);
+            write(write_str, *data_socket);
 
             if (write_str == "DOWN") {
                 shutdown_pending = true;
@@ -119,10 +120,10 @@ auto main(int argc, char* argv[]) -> int
 
         if (!shutdown_pending) {
             // Request result.
-            Client::write("END", *data_socket);
+            write("END", *data_socket);
 
             // Receive result.
-            const auto read_str {Client::read(*data_socket)};
+            const auto read_str {read(*data_socket)};
             std::cerr << "Result: " << read_str << std::endl;
         }
     }

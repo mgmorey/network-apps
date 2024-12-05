@@ -33,20 +33,21 @@
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <string>       // std::stoll(), std::string, std::to_string()
 
-using Network::Address;
-using Network::SharedSocket;
-using Network::Socket;
-using Network::create_socket;
-using Network::socket_error;
+namespace
+{
+    using Network::Address;
+    using Network::SharedSocket;
+    using Network::Socket;
+    using Network::create_socket;
+    using Network::socket_error;
 
-using Number = long long;
+    using Number = long long;
 
-static constexpr auto backlog_size {20};
+    constexpr auto backlog_size {20};
 
-static auto is_verbose {false};  // NOLINT
+    auto is_verbose {false};  // NOLINT
 
-namespace Server {
-    auto accept(const SharedSocket& bind_sock)
+    auto accept_verbose(const SharedSocket& bind_sock)
     {
         auto [accept_sock, accept_addr] {Network::accept(bind_sock)};
 
@@ -125,25 +126,25 @@ namespace Server {
 auto main(int argc, char* argv[]) -> int
 {
     // Fetch arguments from command line.
-    Server::parse(argc, argv);
+    parse(argc, argv);
 
     try {
         // Bind Unix domain socket to pathname.
-        const auto connection_socket {Server::bind()};
+        const auto connection_socket {bind()};
         auto shutdown_pending {false};
 
         // Prepare for accepting connections. While one request is
         // being processed other requests can be waiting.
-        Server::listen(*connection_socket);
+        listen(*connection_socket);
 
         // This is the main loop for handling connections.
         while (!shutdown_pending) {
             // Wait for incoming connection.
-            const auto data_socket {Server::accept(connection_socket)};
+            const auto data_socket {accept_verbose(connection_socket)};
             std::string read_str;
             Number sum {};
 
-            while((read_str = Server::read(*data_socket)) != "DOWN" &&
+            while((read_str = read(*data_socket)) != "DOWN" &&
                   read_str != "END") {
                 // Add received inputs.
                 sum += std::stoll(read_str);
@@ -157,7 +158,7 @@ auto main(int argc, char* argv[]) -> int
 
             if (!shutdown_pending) {
                 // Send output sum.
-                Server::write(*data_socket, sum);
+                write(*data_socket, sum);
             }
         }
     }
