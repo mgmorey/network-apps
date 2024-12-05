@@ -314,11 +314,13 @@ namespace Test
         test_host(localhost, hints, get_codes_family());
     }
 
+#ifndef OS_CYGWIN_NT
     auto test_invalid_protocol() -> void
     {
         const SocketHints hints {AF_UNSPEC, SOCK_STREAM, -1, 0};
         test_host(localhost, hints, get_codes_protocol());
     }
+#endif
 
     auto test_invalid_socktype() -> void
     {
@@ -358,7 +360,9 @@ auto main(int argc, char* argv[]) -> int
 
         test_invalid_family();
         test_invalid_socktype();
+#ifndef OS_CYGWIN_NT
         test_invalid_protocol();
+#endif
 
         if (!hosts.empty()) {
             std::for_each(hosts.begin(), hosts.end(), test_valid);
