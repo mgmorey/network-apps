@@ -30,7 +30,10 @@
 #include <cstddef>      // std::ptrdiff_t
 #include <iterator>     // std::input_iterator_tag
 #include <memory>       // std::unique_ptr
+#include <optional>     // std::optional
+#include <ostream>      // std::ostream
 #include <string>       // std::string
+#include <string_view>  // std::string_view
 
 namespace Network
 {
@@ -57,6 +60,20 @@ namespace Network
             pointer m_node {nullptr};
         };
 
+        class StringOrNull
+        {
+            friend auto operator<<(std::ostream& os,
+                                   const AddressList::StringOrNull& str) ->
+                std::ostream&;
+
+        public:
+            explicit StringOrNull(const std::string_view& t_sv);
+            [[nodiscard]] auto c_str() const -> const char*;
+
+        private:
+            std::optional<std::string> m_value;
+        };
+
         AddressList() = delete;
         AddressList(const AddressList&) = delete;
         AddressList(const AddressList&&) = delete;
@@ -80,6 +97,10 @@ namespace Network
         addrinfo* m_list {nullptr};
         OsErrorResult m_result;
     };
+
+    extern auto operator<<(std::ostream& os,
+                           const AddressList::StringOrNull& str) ->
+        std::ostream&;
 }
 
 #endif

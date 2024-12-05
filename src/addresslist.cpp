@@ -64,6 +64,18 @@ auto Network::AddressList::InputIterator::operator==(const InputIterator& t_rhs)
     return m_node == t_rhs.m_node;
 }
 
+Network::AddressList::StringOrNull::StringOrNull(const std::string_view& t_sv)
+{
+    if (t_sv.data() != nullptr) {
+        m_value = t_sv;
+    }
+}
+
+auto Network::AddressList::StringOrNull::c_str() const -> const char*
+{
+    return m_value ? m_value->c_str() : nullptr;
+}
+
 Network::AddressList::AddressList(const HostnameView& t_hostname,
                                   const ServiceView& t_service,
                                   const OptionalHints& t_hints,
@@ -71,28 +83,30 @@ Network::AddressList::AddressList(const HostnameView& t_hostname,
 {
     const auto hints_ptr {to_ai_ptr(t_hints)};
     const auto hints_str {to_string(t_hints)};
+    const StringOrNull hostname {t_hostname};
+    const StringOrNull service {t_service};
 
     if (t_is_verbose) {
         std::cout << "Calling ::getaddrinfo("
-                  << (t_hostname.data() == nullptr ? string_null : t_hostname)
+                  << hostname
                   << ", "
-                  << (t_service.data() == nullptr ? string_null : t_service)
+                  << service
                   << ", "
                   << hints_str
                   << ", ...)"
                   << std::endl;
     }
 
-    if (const auto error {::getaddrinfo(t_hostname.data(),
-                                        t_service.data(),
+    if (const auto error {::getaddrinfo(hostname.c_str(),
+                                        service.c_str(),
                                         hints_ptr.get(),
                                         &m_list)}) {
         const auto os_error {to_os_error(error)};
         std::ostringstream oss;
         oss << "Call to ::getaddrinfo("
-            << (t_hostname.data() == nullptr ? string_null : t_hostname)
+            << hostname
             << ", "
-            << (t_service.data() == nullptr ? string_null : t_service)
+            << service
             << ", "
             << hints_str
             << ", ...) returned "
@@ -149,4 +163,10 @@ auto Network::AddressList::to_string(const OptionalHints& t_hints) ->
     }
 
     return oss.str();
+}
+
+auto Network::operator<<(std::ostream& os,
+                         const AddressList::StringOrNull& str) -> std::ostream&
+{
+    return os << str.m_value.value_or(string_null);
 }
