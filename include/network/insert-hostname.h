@@ -27,14 +27,14 @@
 
 namespace Network
 {
-    auto insert(auto& container,
+    auto insert(auto& destination,
                 const HostnameView& hostname,
                 const ServiceView& service = {},
                 const OptionalHints& hints = {},
                 bool is_verbose = false) -> OsErrorResult
     {
         const auto list {AddressList(hostname, service, hints, is_verbose)};
-        auto it {std::back_inserter(container)};
+        auto it {std::back_inserter(destination)};
         std::copy(list.begin(), list.end(), it);
         return list.result();
     }
