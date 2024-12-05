@@ -111,13 +111,13 @@ namespace Test
         return codes;
     }
 
-#ifndef OS_CYGWIN_NT
-
     auto get_codes_no_such_file_or_directory() -> const ErrorCodeSet&
     {
         static const ErrorCodeSet codes {ENOENT};
         return codes;
     }
+
+#ifndef OS_CYGWIN_NT
 
     auto get_codes_permission_denied() -> const ErrorCodeSet&
     {
@@ -273,7 +273,7 @@ namespace Test
     auto test_paths_invalid() -> void
     {
         test_path(nullptr, {0}, expected_error_payload_length_re);
-#ifdef OS_DARWIN
+#if defined(OS_DARWIN) || defined(OS_CYGWIN_NT)
         test_path("", get_codes_no_such_file_or_directory(), {});
 #endif
 #ifndef OS_CYGWIN_NT
@@ -286,7 +286,7 @@ namespace Test
 
     auto test_paths_valid() -> void
     {
-#ifndef OS_DARWIN
+#if ! (defined(OS_DARWIN) || defined(OS_CYGWIN_NT))
         test_path("", {0}, {});
 #endif
 
