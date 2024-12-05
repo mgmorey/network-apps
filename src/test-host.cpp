@@ -156,6 +156,7 @@ namespace
         return codes;
     }
 
+#ifndef OS_CYGWIN_NT
     auto get_codes_protocol() -> const ErrorCodeSet&
     {
 #if defined(WIN32)
@@ -167,6 +168,7 @@ namespace
 #endif
         return codes;
     }
+#endif
 
     auto get_codes_socktype() -> const ErrorCodeSet&
     {
