@@ -16,7 +16,7 @@
 #include "network/argument.h"           // Argument
 #include "network/argumentdata.h"       // ArgumentData
 
-#include <algorithm>    // std::for_each, std::transform()
+#include <algorithm>    // std::ranges
 #include <cstdlib>      // std::free(), std::size_t
 #include <cstring>      // ::strdup()
 #include <iterator>     // std::back_inserter()
@@ -25,16 +25,16 @@
 
 Network::ArgumentData::ArgumentData(const std::vector<std::string>& data)
 {
-    std::transform(data.begin(), data.end(),
-                   std::back_inserter(m_args),
-                   [&](const std::string& arg) {
-                       return ::strdup(arg.c_str());  // NOLINT
-                   });
+    std::ranges::transform(data,
+                           std::back_inserter(m_args),
+                           [&](const std::string& arg) {
+                               return ::strdup(arg.c_str());  // NOLINT
+                           });
 }
 
 Network::ArgumentData::~ArgumentData()
 {
-    std::for_each(m_args.begin(), m_args.end(), std::free);
+    std::ranges::for_each(m_args, std::free);
 }
 
 auto Network::ArgumentData::data() -> Argument*

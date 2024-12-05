@@ -39,7 +39,7 @@
                             // SOCK_DGRAM, SOCK_STREAM
 #endif
 
-#include <algorithm>    // std::for_each()
+#include <algorithm>    // std::ranges
 #include <cerrno>       // EFAULT, EINVAL, EAFNOSUPPORT
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
 #include <exception>    // std::exception
@@ -150,8 +150,7 @@ namespace
                    const SocketHints& hints) -> void
     {
         const auto bind_result {bind(endpoint, hints, is_verbose)};
-        std::for_each(bind_result.begin(), bind_result.end(),
-                      Test(endpoint, std::cout));
+        std::ranges::for_each(bind_result, Test(endpoint, std::cout));
     }
 
     auto test_bind_valid(const EndpointView& endpoint,

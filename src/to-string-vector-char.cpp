@@ -15,11 +15,11 @@
 
 #include "network/to-string-vector-char.h"      // to_string()
 
-#include <algorithm>    // std::find()
+#include <algorithm>    // std::ranges
 #include <string>       // std::string
 #include <vector>       // std::vector
 
 auto Network::to_string(const std::vector<char>& v) -> std::string
 {
-    return {v.cbegin(), std::find(v.cbegin(), v.cend(), '\0')};
+    return {v.cbegin(), std::ranges::find(v, '\0')};
 }

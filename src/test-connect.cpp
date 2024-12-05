@@ -41,7 +41,7 @@
                             // SOCK_DGRAM, SOCK_STREAM
 #endif
 
-#include <algorithm>    // std::for_each()
+#include <algorithm>    // std::ranges
 #include <cerrno>       // EFAULT, EINVAL, EAFNOSUPPORT
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
 #include <exception>    // std::exception
@@ -200,10 +200,10 @@ namespace
                       const Hostname& hostname) -> void
     {
         const auto connect_result {connect(endpoint, hints, is_verbose)};
-        std::for_each(connect_result.begin(), connect_result.end(),
-                      Test(endpoint,
-                           hostname,
-                           std::cout));
+        std::ranges::for_each(connect_result,
+                              Test(endpoint,
+                                   hostname,
+                                   std::cout));
     }
 
     auto test_connect_valid(const EndpointView& endpoint,

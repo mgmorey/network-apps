@@ -42,7 +42,7 @@
                             // SOCK_STREAM
 #endif
 
-#include <algorithm>    // std::for_each(), std::remove()
+#include <algorithm>    // std::ranges, std::remove()
 #include <cstdlib>      // EXIT_FAILURE, std::exit(), std::getenv(),
                         // std::size_t
 #include <exception>    // std::exception
@@ -260,8 +260,7 @@ namespace
 
         std::cout << " hosts:"
                   << std::endl;
-        std::for_each(hosts.begin(), hosts.end(),
-                      Print(std::cout));
+        std::ranges::for_each(hosts, Print(std::cout));
     }
 
     auto test_host(const HostnameView& host,
@@ -343,7 +342,7 @@ auto main(int argc, char* argv[]) -> int
 #endif
 
         if (!hosts.empty()) {
-            std::for_each(hosts.begin(), hosts.end(), test_valid);
+            std::ranges::for_each(hosts, test_valid);
         }
         else {
             test_valid(get_hostname());

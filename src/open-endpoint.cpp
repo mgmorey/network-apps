@@ -21,7 +21,7 @@
 #include "network/socketresultvector.h"         // SocketResultVector
 #include "network/template.h"                   // Template
 
-#include <algorithm>    // std::transform()
+#include <algorithm>    // std::ranges
 #include <iterator>     // std::back_inserter()
 #include <vector>       // std::vector
 
@@ -34,8 +34,8 @@ auto Network::open(const OpenEndpointParams& args, bool is_bind) -> SocketResult
     }
 
     SocketResultVector socket_results;
-    std::transform(templates.begin(), templates.end(),
-                   std::back_inserter(socket_results),
-                   Open(args, is_bind));
+    std::ranges::transform(templates,
+                           std::back_inserter(socket_results),
+                           Open(args, is_bind));
     return socket_results;
 }
