@@ -42,11 +42,12 @@
                             // SOCK_STREAM
 #endif
 
-#include <algorithm>    // std::ranges, std::remove()
+#include <algorithm>    // std::ranges
 #include <cstdlib>      // EXIT_FAILURE, std::exit(), std::getenv(),
                         // std::size_t
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
+#include <list>         // std::list
 #include <ostream>      // std::ostream
 #include <set>          // std::set
 #include <string>       // std::string
@@ -89,7 +90,7 @@ namespace
     class Print
     {
     public:
-        using Values = std::vector<std::string>;
+        using StringList = std::list<std::string>;
 
         static auto get_endpoint(const ByteString& addr) -> Endpoint
         {
@@ -103,35 +104,33 @@ namespace
 
         auto operator()(const SocketHost& t_host) -> void
         {
-            const ByteString& addr {t_host.address()};
+            const auto& addr {t_host.address()};
             const auto endpoint {get_endpoint(addr)};
-            Values values = {
+            StringList list = {
                 Address(addr).text(),
                 endpoint.at(0),
                 t_host.canonical_name().value_or(std::string {})
             };
-            values.erase(std::remove(values.begin(),
-                                     values.end(),
-                                     std::string {}),
-                         values.end());
-            uniquify(values);
-            print(values);
+            list.remove(std::string {});
+            uniquify(list);
+            print(list);
         }
 
-        auto print(const Values& values) -> void
+        auto print(const StringList& list) -> void
         {
-            if (values.empty()) {
+            if (list.empty()) {
                 return;
             }
 
+            auto element {list.begin()};
             m_os << "    ";
 
-            for (std::size_t i = 0; i < values.size(); ++i) {
+            for (std::size_t i = 0; i < list.size(); ++i) {
                 if (i > 1) {
                     m_os << ", ";
                 }
 
-                m_os << values[i];
+                m_os << *element++;
 
                 if (i == 0U) {
                     m_os << " (";
