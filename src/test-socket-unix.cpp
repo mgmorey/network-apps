@@ -218,7 +218,7 @@ namespace
     }
 
     auto test_path(Socket& sock,
-                   const auto path,
+                   const auto& path,
                    const ErrorCodeSet& expected_codes,
                    const std::string& expected_error_re) -> void
     {
@@ -256,7 +256,7 @@ namespace
         }
     }
 
-    auto test_path(const auto path,
+    auto test_path(const auto& path,
                    const ErrorCodeSet& expected_codes,
                    const std::string& expected_error_re) -> void
     {
@@ -264,7 +264,7 @@ namespace
         return test_path(*sock, path, expected_codes, expected_error_re);
     }
 
-    auto test_path_valid(const auto path) -> void
+    auto test_path_valid(const auto& path) -> void
     {
         const auto sock {create_socket(socket_hints, is_verbose)};
         test_path(*sock, path, {0}, {});
