@@ -100,7 +100,10 @@ auto Network::CommonSocket::name(bool t_is_peer) const -> ByteString
     ByteString& value {m_names.at(index)};
 
     if (value.empty()) {
-        const GetNameParams args {m_handle, m_is_verbose};
+        const GetNameParams args
+        {
+            .handle = m_handle, .is_verbose = m_is_verbose
+        };
         value = Network::get_name(args, t_is_peer);
     }
 
@@ -110,7 +113,10 @@ auto Network::CommonSocket::name(bool t_is_peer) const -> ByteString
 auto Network::CommonSocket::open(const ByteString& t_addr,
                                  bool t_is_bind) -> OsErrorResult
 {
-    const OpenHandleParams args {m_handle, t_addr, m_is_verbose};
+    const OpenHandleParams args
+    {
+        .handle = m_handle, .addr = t_addr, .is_verbose = m_is_verbose
+    };
 
     if (const auto result {Network::open(args, t_is_bind)}) {
         return result;

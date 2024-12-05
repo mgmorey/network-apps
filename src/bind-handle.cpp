@@ -24,6 +24,9 @@ auto Network::bind(handle_type handle,
                    const ByteString& addr,
                    bool is_verbose) -> OsErrorResult
 {
-    const OpenHandleParams args {handle, addr, is_verbose};
+    const OpenHandleParams args
+    {
+        .handle = handle, .addr = addr, .is_verbose = is_verbose
+    };
     return open(args, true);
 }

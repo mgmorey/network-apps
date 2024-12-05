@@ -24,6 +24,9 @@ auto Network::bind(const EndpointView& endpoint,
                    const SocketHints& hints,
                    bool is_verbose) -> SocketResultVector
 {
-    const OpenEndpointParams args {endpoint, hints, is_verbose};
+    const OpenEndpointParams args
+    {
+        .endpoint = endpoint, .hints = hints, .is_verbose = is_verbose
+    };
     return open(args, true);
 }

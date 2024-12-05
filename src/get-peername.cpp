@@ -22,6 +22,6 @@
 auto Network::get_peername(handle_type handle,
                            bool is_verbose) -> PeerName
 {
-    const GetNameParams args {handle, is_verbose};
+    const GetNameParams args {.handle = handle, .is_verbose = is_verbose};
     return get_name(args, true);
 }
