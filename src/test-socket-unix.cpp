@@ -226,7 +226,7 @@ namespace
 
         try {
             OsErrorResult actual_result;
-            assert(to_bytestring(path) == path);
+            assert(to_bytestring(path) == path);  // NOLINT
             assert(static_cast<bool>(sock));
             assert(static_cast<handle_type>(sock) != handle_null);
 
@@ -237,7 +237,7 @@ namespace
             else {
                 const auto addr {sock.sockname()};
                 print(sock, addr);
-                assert(addr == path);
+                assert(addr == path);  // NOLINT
             }
 
             assert(expected_codes.contains(actual_result.number()));

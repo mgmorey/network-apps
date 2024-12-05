@@ -59,7 +59,7 @@ namespace Network
 
         [[nodiscard]] auto bind(const auto& value) -> OsErrorResult
         {
-            return open(to_bytestring(validate(value)), true);
+            return open(to_bytestring(validate(value)), true);  // NOLINT
         }
 
         [[nodiscard]] auto connect(const auto& value) -> OsErrorResult
