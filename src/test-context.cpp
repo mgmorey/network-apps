@@ -48,9 +48,9 @@ namespace
     using Network::parse;
     using Network::start_context;
 
-    static constexpr Version v0_0 {0, 0};
-    static constexpr Version v0_1 {0, 1};
-    static constexpr Version v1_0 {1, 0};
+    constexpr Version v0_0 {0, 0};
+    constexpr Version v0_1 {0, 1};
+    constexpr Version v1_0 {1, 0};
 
     static_assert(v0_0 == Version {} && Version {} == Version {0, 0});
     static_assert(v0_0 != v0_1 && v0_1 != v1_0);
