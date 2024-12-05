@@ -24,7 +24,6 @@
 
 #include <algorithm>    // std::copy()
 #include <iterator>     // std::back_inserter()
-#include <optional>     // std::nullopt()
 
 namespace Network
 {
