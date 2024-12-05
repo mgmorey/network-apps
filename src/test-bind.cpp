@@ -49,7 +49,7 @@
 #include <type_traits>  // std::decay_t, std::is_same_v
 #include <variant>      // std::visit()
 
-namespace Test
+namespace
 {
     using Network::Address;
     using Network::ByteString;
@@ -71,14 +71,14 @@ namespace Test
 
     using ErrorCodeSet = std::set<os_error_type>;
 
-    static constexpr auto handle_width {6};
-    static constexpr auto localhost {"localhost"};
-    static constexpr IpSocketHints socket_hints
+    constexpr auto handle_width {6};
+    constexpr auto localhost {"localhost"};
+    constexpr IpSocketHints socket_hints
     {
-        SOCK_STREAM, AI_PASSIVE | AI_CANONNAME
+        (SOCK_STREAM), (AI_PASSIVE | AI_CANONNAME)
     };
 
-    static auto is_verbose {false};  // NOLINT
+    auto is_verbose {false};  // NOLINT
 
     class Test
     {
@@ -146,14 +146,6 @@ namespace Test
         };
     }
 
-    auto print(const OsErrorResult& result) -> void
-    {
-        if (is_verbose) {
-            std::cout << result.string()
-                      << std::endl;
-        }
-    }
-
     auto test_bind(const EndpointView& endpoint,
                    const SocketHints& hints) -> void
     {
@@ -167,12 +159,12 @@ namespace Test
     {
         test_bind(endpoint, hints);
     }
+
 }
+
 
 auto main(int argc, char* argv[]) -> int
 {
-    using namespace Test;
-
     try {
         const auto endpoint {parse_arguments(argc, argv)};
         const auto context {start_context(is_verbose)};

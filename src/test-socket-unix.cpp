@@ -45,7 +45,7 @@
 #include <string>       // std::string
 #include <string_view>  // std::string_view
 
-namespace Test
+namespace
 {
     using Network::Address;
     using Network::ByteString;
@@ -71,24 +71,24 @@ namespace Test
 
     using ErrorCodeSet = std::set<os_error_type>;
 
-    static constexpr auto expected_error_path_length_re {
+    constexpr auto expected_error_path_length_re {
         R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of path_length_type)"
     };
-    static constexpr auto expected_error_payload_length_re {
+    constexpr auto expected_error_payload_length_re {
         R"(Address payload length is zero: .+)"
     };
-    static constexpr auto expected_error_socket_re {
+    constexpr auto expected_error_socket_re {
         R"(Call to ::socket\(.+\) failed with error \d+: .+)"
     };
-    static constexpr auto expected_error_socketpair_re {
+    constexpr auto expected_error_socketpair_re {
         R"(Call to ::socketpair\(.+\) failed with error \d+: .+)"
     };
-    static constexpr auto handle_width {6};
-    static constexpr std::size_t size_max {path_length_max};
-    static constexpr std::size_t size_min {6};  // NOLINT
-    static constexpr UnixSocketHints socket_hints {SOCK_STREAM};
+    constexpr auto handle_width {6};
+    constexpr std::size_t size_max {path_length_max};
+    constexpr std::size_t size_min {6};  // NOLINT
+    constexpr UnixSocketHints socket_hints {SOCK_STREAM};
 
-    static auto is_verbose {false};  // NOLINT
+    auto is_verbose {false};  // NOLINT
 
     auto operator==(const ByteString& addr,
                     const std::string_view& path) -> bool
@@ -389,8 +389,6 @@ namespace Test
 
 auto main(int argc, char* argv[]) -> int
 {
-    using namespace Test;
-
     try {
         parse_arguments(argc, argv);
         const auto context {start_context(is_verbose)};

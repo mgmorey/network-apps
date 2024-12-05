@@ -52,7 +52,7 @@
 #include <string>       // std::string
 #include <vector>       // std::vector
 
-namespace Test
+namespace
 {
     using Network::Address;
     using Network::ArgumentSpan;
@@ -78,13 +78,13 @@ namespace Test
     using ErrorCodeSet = std::set<os_error_type>;
     using HintsVector = std::vector<SocketHints>;
 
-    static constexpr auto localhost {"localhost"};
+    constexpr auto localhost {"localhost"};
 
-    static const IpSocketHints ip {SOCK_STREAM, AI_CANONNAME};
-    static const IpSocketHints ipv4 {af_ip_v4, SOCK_STREAM, AI_CANONNAME};
-    static const IpSocketHints ipv6 {af_ip_v6, SOCK_STREAM, AI_CANONNAME};
+    const IpSocketHints ip {SOCK_STREAM, AI_CANONNAME};
+    const IpSocketHints ipv4 {af_ip_v4, SOCK_STREAM, AI_CANONNAME};
+    const IpSocketHints ipv6 {af_ip_v6, SOCK_STREAM, AI_CANONNAME};
 
-    static auto is_verbose {false};  // NOLINT
+    auto is_verbose {false};  // NOLINT
 
     class Print
     {
@@ -152,28 +152,6 @@ namespace Test
         static const ErrorCodeSet codes = {WSAEAFNOSUPPORT};
 #else
         static const ErrorCodeSet codes = {EAI_FAMILY};
-#endif
-        return codes;
-    }
-
-    auto get_codes_no_data() -> const ErrorCodeSet&
-    {
-#if defined(WIN32)
-        static const ErrorCodeSet codes = {WSAHOST_NOT_FOUND};
-#elif defined(OS_FREEBSD)
-        static const ErrorCodeSet codes = {EAI_AGAIN, EAI_NONAME};
-#else
-        static const ErrorCodeSet codes = {EAI_AGAIN, EAI_NODATA, EAI_NONAME};
-#endif
-        return codes;
-    }
-
-    auto get_codes_no_name() -> const ErrorCodeSet&
-    {
-#if defined(WIN32)
-        static const ErrorCodeSet codes = {WSAHOST_NOT_FOUND};
-#else
-        static const ErrorCodeSet codes = {EAI_AGAIN, EAI_NONAME};
 #endif
         return codes;
     }
@@ -348,8 +326,6 @@ namespace Test
 
 auto main(int argc, char* argv[]) -> int
 {
-    using namespace Test;
-
     try {
         const auto hosts {parse_arguments(argc, argv)};
         const auto context {start_context(is_verbose)};

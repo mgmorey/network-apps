@@ -51,7 +51,7 @@
 #include <type_traits>  // std::decay_t, std::is_same_v
 #include <variant>      // std::visit()
 
-namespace Test
+namespace
 {
     using Network::Address;
     using Network::ByteString;
@@ -77,16 +77,16 @@ namespace Test
 
     using ErrorCodeSet = std::set<os_error_type>;
 
-    static constexpr auto handle_width {6};
-    static constexpr auto indent_width {handle_width + 18};
-    static constexpr auto remotehost {"example.com"};
-    static constexpr auto service {"http"};
-    static constexpr IpSocketHints socket_hints
+    constexpr auto handle_width {6};
+    constexpr auto indent_width {handle_width + 18};
+    constexpr auto remotehost {"example.com"};
+    constexpr auto service {"http"};
+    constexpr IpSocketHints socket_hints
     {
-         SOCK_STREAM, AI_CANONNAME
+        (SOCK_STREAM), (AI_CANONNAME)
     };
 
-    static auto is_verbose {false};  // NOLINT
+    auto is_verbose {false};  // NOLINT
 
     class Test
     {
@@ -173,16 +173,6 @@ namespace Test
         std::ostream& m_os;
     };
 
-    auto get_codes_invalid_service() -> const ErrorCodeSet&
-    {
-#if defined(WIN32)
-        static const ErrorCodeSet codes {WSATYPE_NOT_FOUND};
-#else
-        static const ErrorCodeSet codes {EAI_NONAME, EAI_SERVICE};
-#endif
-        return codes;
-    }
-
     auto parse_arguments(int argc, char** argv) -> EndpointView
     {
         const auto [operands, options] {parse(argc, argv, "v")};
@@ -203,14 +193,6 @@ namespace Test
             !operands.empty() ? operands[0] : remotehost,
             operands.size() > 1 ? operands[1] : service
         };
-    }
-
-    auto print(const OsErrorResult& result) -> void
-    {
-        if (is_verbose) {
-            std::cout << result.string()
-                      << std::endl;
-        }
     }
 
     auto test_connect(const EndpointView& endpoint,
@@ -234,8 +216,6 @@ namespace Test
 
 auto main(int argc, char* argv[]) -> int
 {
-    using namespace Test;
-
     try {
         const auto endpoint {parse_arguments(argc, argv)};
         const auto context {start_context(is_verbose)};

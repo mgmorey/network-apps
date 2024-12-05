@@ -28,7 +28,7 @@
 #include <regex>        // std::regex, std::regex_match
 #include <string>       // std::string
 
-namespace Test
+namespace
 {
     using Network::RangeError;
     using Network::ValueError;
@@ -58,25 +58,25 @@ namespace Test
     using Network::to_sun_length;
 #endif
 
-    static constexpr auto expected_error_name_length_re {
+    constexpr auto expected_error_name_length_re {
         R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of name_length_type)"
     };
-    static constexpr auto expected_error_os_error_re {
+    constexpr auto expected_error_os_error_re {
         R"(Value (\d+|-\d+) is out of range \[-?\d+, \d+\] of os_error_type)"
     };
 #ifndef WIN32
-    static constexpr auto expected_error_path_length_re {
+    constexpr auto expected_error_path_length_re {
         R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of path_length_type)"
     };
 #endif
-    static constexpr auto expected_error_sa_length_re {
+    constexpr auto expected_error_sa_length_re {
         R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of sa_length_type)"
     };
-    static constexpr auto expected_error_std_size_re {
+    constexpr auto expected_error_std_size_re {
         R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of std::size_t)"
     };
 #ifndef WIN32
-    static constexpr auto expected_error_sun_length_re {
+    constexpr auto expected_error_sun_length_re {
         R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of sun_length_type)"
     };
 #endif
@@ -232,8 +232,6 @@ namespace Test
 
 auto main() -> int
 {
-    using namespace Test;
-
     try {
         test_name_length_invalid();
         test_os_error_invalid();

@@ -36,7 +36,7 @@
 #include <regex>        // std::regex, std::regex_match
 #include <string>       // std::string
 
-namespace Test
+namespace
 {
     using Network::Error;
     using Network::SharedSocket;
@@ -48,14 +48,14 @@ namespace Test
     using Network::parse;
     using Network::start_context;
 
-    static constexpr auto expected_error_handle_re {
+    constexpr auto expected_error_handle_re {
         R"(Invalid socket descriptor value)"
     };
-    static constexpr auto expected_error_socket_re {
+    constexpr auto expected_error_socket_re {
         R"(Call to ::socket\(.+\) failed with error \d+: .+)"
     };
 
-    static auto is_verbose {false};  // NOLINT
+    auto is_verbose {false};  // NOLINT
 
     auto parse_arguments(int argc, char** argv) -> void
     {
@@ -165,8 +165,6 @@ namespace Test
 
 auto main(int argc, char* argv[]) -> int
 {
-    using namespace Test;
-
     try {
         parse_arguments(argc, argv);
         const auto context {start_context(is_verbose)};

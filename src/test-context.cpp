@@ -33,7 +33,7 @@
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
 
-namespace Test
+namespace
 {
     using Network::Context;
     using Network::Error;
@@ -67,37 +67,37 @@ namespace Test
 #endif
 
 #ifdef WIN32
-    static constexpr auto expected_code_stopped {WSANOTINITIALISED};
-    static constexpr auto expected_context_platform_re
+    constexpr auto expected_code_stopped {WSANOTINITIALISED};
+    constexpr auto expected_context_platform_re
     {
         "WinSock 2.0"
     };
-    static constexpr auto expected_context_version_re
+    constexpr auto expected_context_version_re
     {
         "( Version \\d{1,3}\\.\\d{1,3})" // NOLINT
     };
-    static constexpr auto expected_error_stopped {
+    constexpr auto expected_error_stopped {
         "Call to ::gethostname(, 1024) failed with error 10093: "
         "Either the application has not called WSAStartup, "
         "or WSAStartup failed."
     };
-    static constexpr auto expected_error_version {
+    constexpr auto expected_error_version {
         "The Windows Sockets version requested is not supported."
     };
 #else
-    static constexpr auto expected_code_stopped {0};
-    static constexpr auto expected_context_platform_re {
+    constexpr auto expected_code_stopped {0};
+    constexpr auto expected_context_platform_re {
         "Berkeley Software Distribution Sockets"
     };
-    static constexpr auto expected_context_version_re {
+    constexpr auto expected_context_version_re {
         "( Version \\d{1,3}\\.\\d{1,3})?" // NOLINT
     };
-    static constexpr auto expected_error_stopped {""};
-    static constexpr auto expected_error_version {""};
+    constexpr auto expected_error_stopped {""};
+    constexpr auto expected_error_version {""};
 #endif
 
-    static const auto failure_mode {FailureMode::return_error};
-    static auto is_verbose {false};  // NOLINT
+    const auto failure_mode {FailureMode::return_error};
+    auto is_verbose {false};  // NOLINT
 
     auto get_expected_context_re() -> std::string
     {
@@ -245,8 +245,6 @@ namespace Test
 
 auto main(int argc, char* argv[]) -> int
 {
-    using namespace Test;
-
     try {
         parse_arguments(argc, argv);
         test_context_invalid();

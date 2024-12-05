@@ -52,7 +52,7 @@
 #include <string>       // std::string
 #include <vector>       // std::vector
 
-namespace Test
+namespace
 {
     using Network::Address;
     using Network::ByteString;
@@ -86,385 +86,379 @@ namespace Test
     using Network::to_bytestring;
     using Network::validate;
 
-    static constexpr auto expected_error_family_re {
+    constexpr auto expected_error_family_re {
         R"(Invalid socket address family: (\d+))"
     };
-    static constexpr auto expected_error_length_re {
+    constexpr auto expected_error_length_re {
         R"(Value (\d+) is out of range \[\d+, \d+\] of \w+_type)"
     };
-    static constexpr auto print_key_width {20};
-    static constexpr auto print_value_width {10};
+    constexpr auto print_key_width {20};
+    constexpr auto print_value_width {10};
 
-    static const SocketHints unspec {af_unspec, SOCK_STREAM, 0, AI_CANONNAME};
+    const SocketHints unspec {af_unspec, SOCK_STREAM, 0, AI_CANONNAME};
 
-    static auto is_verbose {false};  // NOLINT
+    auto is_verbose {false};  // NOLINT
 
-    namespace {
-
-        auto create_sa(sa_family_type family, std::size_t length = sa_size) -> sockaddr
-        {
-            sockaddr sa {};
+    auto create_sa(sa_family_type family, std::size_t length = sa_size) -> sockaddr
+    {
+        sockaddr sa {};
 #ifdef HAVE_SOCKADDR_SA_LEN
-            sa.sa_len = length;
+        sa.sa_len = length;
 #else
-            static_cast<void>(length);
+        static_cast<void>(length);
 #endif
-            sa.sa_family = family;
-            return sa;
-        }
+        sa.sa_family = family;
+        return sa;
+    }
 
-        auto create_sin(sin_family_type family = AF_INET) -> sockaddr_in
-        {
-            sockaddr_in sin {};
+    auto create_sin(sin_family_type family = AF_INET) -> sockaddr_in
+    {
+        sockaddr_in sin {};
 #ifdef HAVE_SOCKADDR_SA_LEN
-            sin.sin_len = sizeof sin;
+        sin.sin_len = sizeof sin;
 #endif
-            sin.sin_family = family;
-            return sin;
-        }
+        sin.sin_family = family;
+        return sin;
+    }
 
-        auto create_sin6(sin_family_type family = AF_INET6) -> sockaddr_in6
-        {
-            sockaddr_in6 sin6 {};
+    auto create_sin6(sin_family_type family = AF_INET6) -> sockaddr_in6
+    {
+        sockaddr_in6 sin6 {};
 #ifdef HAVE_SOCKADDR_SA_LEN
-            sin6.sin6_len = sizeof sin6;
+        sin6.sin6_len = sizeof sin6;
 #endif
-            sin6.sin6_family = family;
-            return sin6;
-        }
+        sin6.sin6_family = family;
+        return sin6;
+    }
 
 #ifndef WIN32
 
-        auto create_sun(sa_family_type family = af_unix,
-                        std::size_t sun_len = sun_size,
-                        std::size_t path_len = 0UL) -> sockaddr_un
-        {
-            sockaddr_un sun {};
+    auto create_sun(sa_family_type family = af_unix,
+                    std::size_t sun_len = sun_size,
+                    std::size_t path_len = 0UL) -> sockaddr_un
+    {
+        sockaddr_un sun {};
 #ifdef HAVE_SOCKADDR_SA_LEN
-            sun.sun_len = sun_len;
+        sun.sun_len = sun_len;
 #else
-            static_cast<void>(sun_len);
+        static_cast<void>(sun_len);
 #endif
-            sun.sun_family = family;
+        sun.sun_family = family;
 
-            if (path_len != 0UL) {
-                std::memset(&sun.sun_path, 'X', path_len);
-            }
-
-            return sun;
+        if (path_len != 0UL) {
+            std::memset(&sun.sun_path, 'X', path_len);
         }
 
+        return sun;
+    }
+
 #endif
 
-        auto parse_arguments(int argc, char** argv) -> void
-        {
-            const auto [_, options] {parse(argc, argv, "v")};
+    auto parse_arguments(int argc, char** argv) -> void
+    {
+        const auto [_, options] {parse(argc, argv, "v")};
 
-            if (options.contains('?')) {
-                std::cerr << "Usage: "
-                          << *argv
-                          << " [-v]"
-                          << std::endl;
-                std::exit(EXIT_FAILURE);
-            }
-
-            if (options.contains('v')) {
-                is_verbose = true;
-            }
-
-            static_cast<void>(_);
-        }
-
-        auto print(const Address& address, std::size_t size) -> void
-        {
-            const auto family {address.family()};
-#ifdef HAVE_SOCKADDR_SA_LEN
-            const auto length {address.length()};
-#endif
-            const auto port {address.port()};
-            const auto text {address.text()};
-            std::cout << "    "
-                      << SocketFamily(family)
-                      << std::endl
-                      << std::setw(print_key_width) << "        Size: "
-                      << std::right << std::setw(print_value_width) << size
-                      << std::endl
-#ifdef HAVE_SOCKADDR_SA_LEN
-                      << std::setw(print_key_width) << "        Length: "
-                      << std::right << std::setw(print_value_width) << length
-                      << std::endl
-#endif
-                      << std::setw(print_key_width) << "        Port: "
-                      << std::right << std::setw(print_value_width) << port
-                      << std::endl
-                      << std::setw(print_key_width) << "        Address: "
-                      << std::right << std::setw(print_value_width) << text
+        if (options.contains('?')) {
+            std::cerr << "Usage: "
+                      << *argv
+                      << " [-v]"
                       << std::endl;
+            std::exit(EXIT_FAILURE);
         }
 
-        auto print(const Error& error) -> void
-        {
-            if (is_verbose) {
-                std::cout << "Exception: "
-                          << error.what()
-                          << std::endl;
-            }
+        if (options.contains('v')) {
+            is_verbose = true;
         }
 
-        auto test_sa(const sockaddr& sa, std::size_t sa_len,
-                     const std::string& expected_error_re) -> void
-        {
-            const std::regex expected_error_regex {expected_error_re};
-            std::string actual_error_str;
+        static_cast<void>(_);
+    }
 
-            try {
-                validate(&sa, sa_len);
-            }
-            catch (const Error& error) {
-                print(error);
-                actual_error_str = error.what();
-            }
-
-            assert(std::regex_match(actual_error_str, expected_error_regex));
-            actual_error_str.clear();
-
-            try {
-                validate(to_bytestring(&sa, sa_len));
-            }
-            catch (const Error& error) {
-                print(error);
-                actual_error_str = error.what();
-            }
-
-            assert(std::regex_match(actual_error_str, expected_error_regex));
-        }
-
-        auto test_sa_invalid_length() -> void
-        {
-            const auto sa {create_sa(af_unspec, 0)};
-            test_sa(sa, 0, expected_error_length_re);
-        }
-
-        auto test_sin(const sockaddr_in& sin,
-                      const std::string& expected_error_re) -> void
-        {
-            const std::regex expected_error_regex {expected_error_re};
-            std::string actual_error_str;
-
-            try {
-                validate(&sin);
-            }
-            catch (const Error& error) {
-                print(error);
-                actual_error_str = error.what();
-            }
-
-            assert(std::regex_match(actual_error_str, expected_error_regex));
-
-            if (sin.sin_family == AF_INET) {
-                actual_error_str.clear();
-
-                try {
-                    validate(to_bytestring(&sin, sizeof sin));
-                }
-                catch (const Error& error) {
-                    print(error);
-                    actual_error_str = error.what();
-                }
-
-                assert(std::regex_match(actual_error_str, expected_error_regex));
-            }
-        }
-
-        auto test_sin_invalid_family() -> void
-        {
-            const auto sin {create_sin(af_unspec)};
-            test_sin(sin, expected_error_family_re);
-        }
-
-        auto test_sin6(const sockaddr_in6& sin6,
-                       const std::string& expected_error_re) -> void
-        {
-            const std::regex expected_error_regex {expected_error_re};
-            std::string actual_error_str;
-
-            try {
-                validate(&sin6);
-            }
-            catch (const Error& error) {
-                print(error);
-                actual_error_str = error.what();
-            }
-
-            assert(std::regex_match(actual_error_str, expected_error_regex));
-
-            if (sin6.sin6_family == AF_INET6) {
-                actual_error_str.clear();
-
-                try {
-                    validate(to_bytestring(&sin6, sizeof sin6));
-                }
-                catch (const Error& error) {
-                    print(error);
-                    actual_error_str = error.what();
-                }
-
-                assert(std::regex_match(actual_error_str, expected_error_regex));
-            }
-        }
-
-        auto test_sin6_invalid_family() -> void
-        {
-            const auto sin6 {create_sin6(af_unspec)};
-            test_sin6(sin6, expected_error_family_re);
-        }
-
-#ifndef WIN32
-
-        auto test_path(const std::string& path,
-                       const std::string& expected_error_re) -> void
-        {
-            const std::regex expected_error_regex {expected_error_re};
-            std::string actual_error_str;
-
-            try {
-                validate(path);
-            }
-            catch (const Error& error) {
-                print(error);
-                actual_error_str = error.what();
-            }
-
-            assert(std::regex_match(actual_error_str, expected_error_regex));
-        }
-
-        auto test_path_invalid_length() -> void
-        {
-            const std::string path(path_length_max + 1, '.' );
-            test_path(path, expected_error_length_re);
-        }
-
-        auto test_sun(const sockaddr_un& sun, std::size_t sun_len,
-                      const std::string& expected_error_re) -> void
-        {
-            const std::regex expected_error_regex {expected_error_re};
-            std::string actual_error_str;
-
-            try {
-                validate(&sun, sun_len);
-            }
-            catch (const Error& error) {
-                print(error);
-                actual_error_str = error.what();
-            }
-
-            assert(std::regex_match(actual_error_str, expected_error_regex));
-
-            if (sun.sun_family == af_unix) {
-                actual_error_str.clear();
-
-                try {
-                    validate(to_bytestring(&sun, sun_len));
-                }
-                catch (const Error& error) {
-                    print(error);
-                    actual_error_str = error.what();
-                }
-
-                assert(std::regex_match(actual_error_str, expected_error_regex));
-            }
-        }
-
-        auto test_sun_invalid_family() -> void
-        {
-            const auto sun {create_sun(af_unspec, sun_length_min)};
-            test_sun(sun, sun_length_min, expected_error_family_re);
-        }
-
-        auto test_sun_valid_path_large() -> void
-        {
-            const auto sun {create_sun(af_unix, sun_length_max, sun_path_size)};
-            test_sun(sun, sun_length_max, {});
-        }
-
-        auto test_sun_valid_path_small() -> void
-        {
-            const auto sun {create_sun(af_unix, sun_length_min)};
-            test_sun(sun, sun_length_min, {});
-        }
-
+    auto print(const Address& address, std::size_t size) -> void
+    {
+        const auto family {address.family()};
+#ifdef HAVE_SOCKADDR_SA_LEN
+        const auto length {address.length()};
 #endif
-
-        auto test_valid(const Address& address, std::size_t size) -> void
-        {
-            const auto family {address.family()};
-
-            switch (family) {
-            case af_unspec:
-#ifndef WIN32
-            case af_unix:
+        const auto port {address.port()};
+        const auto text {address.text()};
+        std::cout << "    "
+                  << SocketFamily(family)
+                  << std::endl
+                  << std::setw(print_key_width) << "        Size: "
+                  << std::right << std::setw(print_value_width) << size
+                  << std::endl
+#ifdef HAVE_SOCKADDR_SA_LEN
+                  << std::setw(print_key_width) << "        Length: "
+                  << std::right << std::setw(print_value_width) << length
+                  << std::endl
 #endif
-            case AF_INET:
-            case AF_INET6:
-                break;
-            default:
-                assert(false);
-            }
+                  << std::setw(print_key_width) << "        Port: "
+                  << std::right << std::setw(print_value_width) << port
+                  << std::endl
+                  << std::setw(print_key_width) << "        Address: "
+                  << std::right << std::setw(print_value_width) << text
+                  << std::endl;
+    }
 
-            const auto size_max {get_length_maximum(family)};
-            const auto size_min {get_length_minimum(family)};
-
-            if (!(size_min <= size && size <= size_max)) {
-                assert(false);
-            }
-
-            const auto text {address.text()};
-
-            switch (family) {
-            case AF_INET:
-                assert(text == "127.0.0.1");
-                break;
-            case AF_INET6:
-                assert(text == "::1");
-                break;
-            default:
-                assert(false);
-            }
-        }
-
-        auto test_valid() -> void
-        {
-            static const Hostname localhost {"localhost"};
-
-            std::vector<SocketHost> hosts;
-            const auto result {insert(hosts, localhost, {}, unspec, is_verbose)};
-
-            if (result) {
-                std::cout << "No " << localhost << " addresses: " << result.string()
-                          << std::endl;
-            }
-            else {
-                std::cout << "Socket addresses for "
-                          << localhost
-                          << ": "
-                          << std::endl;
-
-                for (const auto& host : hosts) {
-                    const ByteString& addr {host.address()};
-                    const Address address {addr};
-                    print(address, addr.size());
-                    test_valid(address, addr.size());
-                }
-            }
+    auto print(const Error& error) -> void
+    {
+        if (is_verbose) {
+            std::cout << "Exception: "
+                      << error.what()
+                      << std::endl;
         }
     }
 
+    auto test_sa(const sockaddr& sa, std::size_t sa_len,
+                 const std::string& expected_error_re) -> void
+    {
+        const std::regex expected_error_regex {expected_error_re};
+        std::string actual_error_str;
+
+        try {
+            validate(&sa, sa_len);
+        }
+        catch (const Error& error) {
+            print(error);
+            actual_error_str = error.what();
+        }
+
+        assert(std::regex_match(actual_error_str, expected_error_regex));
+        actual_error_str.clear();
+
+        try {
+            validate(to_bytestring(&sa, sa_len));
+        }
+        catch (const Error& error) {
+            print(error);
+            actual_error_str = error.what();
+        }
+
+        assert(std::regex_match(actual_error_str, expected_error_regex));
+    }
+
+    auto test_sa_invalid_length() -> void
+    {
+        const auto sa {create_sa(af_unspec, 0)};
+        test_sa(sa, 0, expected_error_length_re);
+    }
+
+    auto test_sin(const sockaddr_in& sin,
+                  const std::string& expected_error_re) -> void
+    {
+        const std::regex expected_error_regex {expected_error_re};
+        std::string actual_error_str;
+
+        try {
+            validate(&sin);
+        }
+        catch (const Error& error) {
+            print(error);
+            actual_error_str = error.what();
+        }
+
+        assert(std::regex_match(actual_error_str, expected_error_regex));
+
+        if (sin.sin_family == AF_INET) {
+            actual_error_str.clear();
+
+            try {
+                validate(to_bytestring(&sin, sizeof sin));
+            }
+            catch (const Error& error) {
+                print(error);
+                actual_error_str = error.what();
+            }
+
+            assert(std::regex_match(actual_error_str, expected_error_regex));
+        }
+    }
+
+    auto test_sin_invalid_family() -> void
+    {
+        const auto sin {create_sin(af_unspec)};
+        test_sin(sin, expected_error_family_re);
+    }
+
+    auto test_sin6(const sockaddr_in6& sin6,
+                   const std::string& expected_error_re) -> void
+    {
+        const std::regex expected_error_regex {expected_error_re};
+        std::string actual_error_str;
+
+        try {
+            validate(&sin6);
+        }
+        catch (const Error& error) {
+            print(error);
+            actual_error_str = error.what();
+        }
+
+        assert(std::regex_match(actual_error_str, expected_error_regex));
+
+        if (sin6.sin6_family == AF_INET6) {
+            actual_error_str.clear();
+
+            try {
+                validate(to_bytestring(&sin6, sizeof sin6));
+            }
+            catch (const Error& error) {
+                print(error);
+                actual_error_str = error.what();
+            }
+
+            assert(std::regex_match(actual_error_str, expected_error_regex));
+        }
+    }
+
+    auto test_sin6_invalid_family() -> void
+    {
+        const auto sin6 {create_sin6(af_unspec)};
+        test_sin6(sin6, expected_error_family_re);
+    }
+
+#ifndef WIN32
+
+    auto test_path(const std::string& path,
+                   const std::string& expected_error_re) -> void
+    {
+        const std::regex expected_error_regex {expected_error_re};
+        std::string actual_error_str;
+
+        try {
+            validate(path);
+        }
+        catch (const Error& error) {
+            print(error);
+            actual_error_str = error.what();
+        }
+
+        assert(std::regex_match(actual_error_str, expected_error_regex));
+    }
+
+    auto test_path_invalid_length() -> void
+    {
+        const std::string path(path_length_max + 1, '.' );
+        test_path(path, expected_error_length_re);
+    }
+
+    auto test_sun(const sockaddr_un& sun, std::size_t sun_len,
+                  const std::string& expected_error_re) -> void
+    {
+        const std::regex expected_error_regex {expected_error_re};
+        std::string actual_error_str;
+
+        try {
+            validate(&sun, sun_len);
+        }
+        catch (const Error& error) {
+            print(error);
+            actual_error_str = error.what();
+        }
+
+        assert(std::regex_match(actual_error_str, expected_error_regex));
+
+        if (sun.sun_family == af_unix) {
+            actual_error_str.clear();
+
+            try {
+                validate(to_bytestring(&sun, sun_len));
+            }
+            catch (const Error& error) {
+                print(error);
+                actual_error_str = error.what();
+            }
+
+            assert(std::regex_match(actual_error_str, expected_error_regex));
+        }
+    }
+
+    auto test_sun_invalid_family() -> void
+    {
+        const auto sun {create_sun(af_unspec, sun_length_min)};
+        test_sun(sun, sun_length_min, expected_error_family_re);
+    }
+
+    auto test_sun_valid_path_large() -> void
+    {
+        const auto sun {create_sun(af_unix, sun_length_max, sun_path_size)};
+        test_sun(sun, sun_length_max, {});
+    }
+
+    auto test_sun_valid_path_small() -> void
+    {
+        const auto sun {create_sun(af_unix, sun_length_min)};
+        test_sun(sun, sun_length_min, {});
+    }
+
+#endif
+
+    auto test_valid(const Address& address, std::size_t size) -> void
+    {
+        const auto family {address.family()};
+
+        switch (family) {
+        case af_unspec:
+#ifndef WIN32
+        case af_unix:
+#endif
+        case AF_INET:
+        case AF_INET6:
+            break;
+        default:
+            assert(false);
+        }
+
+        const auto size_max {get_length_maximum(family)};
+        const auto size_min {get_length_minimum(family)};
+
+        if (!(size_min <= size && size <= size_max)) {
+            assert(false);
+        }
+
+        const auto text {address.text()};
+
+        switch (family) {
+        case AF_INET:
+            assert(text == "127.0.0.1");
+            break;
+        case AF_INET6:
+            assert(text == "::1");
+            break;
+        default:
+            assert(false);
+        }
+    }
+
+    auto test_valid() -> void
+    {
+        static const Hostname localhost {"localhost"};
+
+        std::vector<SocketHost> hosts;
+        const auto result {insert(hosts, localhost, {}, unspec, is_verbose)};
+
+        if (result) {
+            std::cout << "No " << localhost << " addresses: " << result.string()
+                      << std::endl;
+        }
+        else {
+            std::cout << "Socket addresses for "
+                      << localhost
+                      << ": "
+                      << std::endl;
+
+            for (const auto& host : hosts) {
+                const ByteString& addr {host.address()};
+                const Address address {addr};
+                print(address, addr.size());
+                test_valid(address, addr.size());
+            }
+        }
+    }
 }
 
 auto main(int argc, char* argv[]) -> int
 {
-    using namespace Test;
-
     try {
         parse_arguments(argc, argv);
         const auto context {start_context(is_verbose)};
