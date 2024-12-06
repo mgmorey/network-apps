@@ -48,6 +48,7 @@
 #include <exception>    // std::exception
 #include <iomanip>      // std::right, std::setw()
 #include <iostream>     // std::cerr, std::cout, std::endl
+#include <iterator>     // std::back_inserter()
 #include <regex>        // std::regex, std::regex_match
 #include <string>       // std::string
 #include <vector>       // std::vector
@@ -435,7 +436,8 @@ namespace
         static const Hostname localhost {"localhost"};
 
         std::vector<SocketHost> hosts;
-        const auto result {insert(hosts, localhost, {}, unspec, is_verbose)};
+        auto it {std::back_inserter(hosts)};
+        const auto result {insert(it, localhost, {}, unspec, is_verbose)};
 
         if (result) {
             std::cout << "No " << localhost << " addresses: " << result.string()

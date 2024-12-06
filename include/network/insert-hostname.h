@@ -23,18 +23,16 @@
 #include "network/serviceview.h"        // ServiceView
 
 #include <algorithm>    // std::copy()
-#include <iterator>     // std::back_inserter()
 
 namespace Network
 {
-    auto insert(auto& destination,
+    auto insert(auto& it,
                 const HostnameView& hostname,
                 const ServiceView& service = {},
                 const OptionalHints& hints = {},
                 bool is_verbose = false) -> OsErrorResult
     {
         const auto list {AddressList(hostname, service, hints, is_verbose)};
-        auto it {std::back_inserter(destination)};
         std::copy(list.begin(), list.end(), it);
         return list.result();
     }

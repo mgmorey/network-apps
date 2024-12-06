@@ -269,7 +269,8 @@ namespace
         std::vector<SocketHost> hosts;
         const auto family {get_family(hints)};
 
-        if (const auto result {insert(hosts, host, {}, hints, is_verbose)}) {
+        auto it {std::back_inserter(hosts)};
+        if (const auto result {insert(it, host, {}, hints, is_verbose)}) {
             if (expected_codes == ErrorCodeSet {0}) {
                 print(result, family);
             }

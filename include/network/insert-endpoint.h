@@ -22,10 +22,9 @@
 
 namespace Network
 {
-    auto insert(auto& container,
-                const OpenEndpointParams& args) -> OsErrorResult
+    auto insert(auto& it, const OpenEndpointParams& args) -> OsErrorResult
     {
-        return insert(container,
+        return insert(it,
                       args.endpoint.at(0),
                       args.endpoint.at(1),
                       args.hints,

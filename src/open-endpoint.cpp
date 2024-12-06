@@ -28,8 +28,9 @@
 auto Network::open(const OpenEndpointParams& args, bool is_bind) -> SocketResultVector
 {
     std::vector<Template> templates;
+    auto it {std::back_inserter(templates)};
 
-    if (const auto error_result = insert(templates, args)) {
+    if (const auto error_result = insert(it, args)) {
         throw Error(error_result.string());
     }
 
