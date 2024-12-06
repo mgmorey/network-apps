@@ -46,6 +46,7 @@
 #include <cstdlib>      // EXIT_FAILURE, std::exit(), std::size_t
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
+#include <iterator>     // std::back_inserter()
 #include <list>         // std::list
 #include <ostream>      // std::ostream
 #include <set>          // std::set
@@ -338,9 +339,7 @@ auto main(int argc, char* argv[]) -> int
 #endif
 
         StringList hosts;
-        std::ranges::for_each(args, [&](const auto& arg) {
-            hosts.emplace_back(arg);
-        });
+        std::copy(args.begin(), args.end(), std::back_inserter(hosts));
 
         if (hosts.empty()) {
             hosts.emplace_back(get_hostname());
