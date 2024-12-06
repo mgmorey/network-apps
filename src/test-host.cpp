@@ -77,6 +77,7 @@ namespace
 
     using ErrorCodeSet = std::set<os_error_type>;
     using HintsVector = std::vector<SocketHints>;
+    using StringList = std::list<std::string>;
 
     constexpr auto localhost {"localhost"};
 
@@ -89,8 +90,6 @@ namespace
     class Print
     {
     public:
-        using StringList = std::list<std::string>;
-
         static auto get_endpoint(const ByteString& addr) -> Endpoint
         {
             return Network::get_endpoint(addr, 0, is_verbose);
@@ -325,7 +324,7 @@ namespace
 auto main(int argc, char* argv[]) -> int
 {
     try {
-        const auto hosts {parse_arguments(argc, argv)};
+        const auto args {parse_arguments(argc, argv)};
         const auto context {start_context(is_verbose)};
 
         if (is_verbose) {
@@ -338,12 +337,16 @@ auto main(int argc, char* argv[]) -> int
         test_invalid_protocol();
 #endif
 
-        if (!hosts.empty()) {
-            std::ranges::for_each(hosts, test_valid);
+        StringList hosts;
+        std::ranges::for_each(args, [&](const auto& arg) {
+            hosts.emplace_back(arg);
+        });
+
+        if (hosts.empty()) {
+            hosts.emplace_back(get_hostname());
         }
-        else {
-            test_valid(get_hostname());
-        }
+
+        std::ranges::for_each(hosts, test_valid);
     }
     catch (const std::exception& error) {
         std::cerr << error.what()
