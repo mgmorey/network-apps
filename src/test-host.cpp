@@ -43,8 +43,7 @@
 #endif
 
 #include <algorithm>    // std::ranges
-#include <cstdlib>      // EXIT_FAILURE, std::exit(), std::getenv(),
-                        // std::size_t
+#include <cstdlib>      // EXIT_FAILURE, std::exit(), std::size_t
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <list>         // std::list
