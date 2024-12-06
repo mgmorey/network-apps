@@ -339,7 +339,7 @@ auto main(int argc, char* argv[]) -> int
 #endif
 
         StringList hosts;
-        std::copy(args.begin(), args.end(), std::back_inserter(hosts));
+        std::ranges::copy(args.begin(), args.end(), std::back_inserter(hosts));
 
         if (hosts.empty()) {
             hosts.emplace_back(get_hostname());
