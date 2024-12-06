@@ -317,10 +317,9 @@ namespace
         }
 
         const auto& hints_vector {get_hints_vector(is_local)};
-
-        for (const auto& hints : hints_vector) {
+        std::ranges::for_each(hints_vector, [&](const auto& hints) {
             test_host(host, hints, {0});
-        }
+        });
     }
 }
 
