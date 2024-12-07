@@ -27,8 +27,6 @@
 #include "network/version.h"            // Version
 #include "network/windowsversion.h"     // WindowsVersion
 
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>        // WORD
 #include <winsock2.h>       // WSADATA, WSAEFAULT, WSAEPROCLIM,
                             // WSASYSNOTREADY, WSAVERNOTSUPPORTED,
                             // ::WSAStartup()
@@ -40,8 +38,8 @@ static constexpr Network::Version wsa_default {2, 2};
 auto Network::start(const OptionalVersion& version,
                     bool is_verbose) -> WindowsContextData
 {
+    WindowsContextData wsa_data {};
     const WindowsVersion wsa_version {version.value_or(wsa_default)};
-    WSADATA wsa_data {};
 
     if (is_verbose) {
         std::cout << "Starting the network runtime.\n"
@@ -51,7 +49,7 @@ auto Network::start(const OptionalVersion& version,
                   << std::endl;
     }
 
-    if (const auto error {::WSAStartup(WORD {wsa_version}, &wsa_data)}) {
+    if (const auto error {::WSAStartup(wsa_version, &wsa_data)}) {
         const auto os_error {to_os_error(error)};
         const auto message {format_os_error(os_error)};
 
