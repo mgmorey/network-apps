@@ -41,9 +41,6 @@ namespace
     using Network::Hostname;
     using Network::OptionalVersion;
     using Network::Version;
-#ifdef WIN32
-    using Network::WindowsVersion;
-#endif
     using Network::get_hostname;
     using Network::parse;
     using Network::start_context;
