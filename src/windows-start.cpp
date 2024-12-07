@@ -15,31 +15,27 @@
 
 #ifdef WIN32
 
-#include "network/optionalversion.h"    // OptionalVersion
 #include "network/windows-start.h"      // start()
-#include "network/windowscontextdata.h" // WindowsContextData
-
 #include "network/error.h"              // Error
 #include "network/format-os-error.h"    // format_os_error()
 #include "network/logicerror.h"         // LogicError
+#include "network/optionalversion.h"    // OptionalVersion
 #include "network/runtimeerror.h"       // RuntimeError
 #include "network/to-os-error.h"        // to_os_error()
 #include "network/version.h"            // Version
+#include "network/windowscontextdata.h" // WindowsContextData
 #include "network/windowsversion.h"     // WindowsVersion
 
-#include <winsock2.h>       // WSADATA, WSAEFAULT, WSAEPROCLIM,
-                            // WSASYSNOTREADY, WSAVERNOTSUPPORTED,
-                            // ::WSAStartup()
+#include <winsock2.h>       // WSAEFAULT, WSAEPROCLIM, WSASYSNOTREADY,
+                            // WSAVERNOTSUPPORTED, ::WSAStartup()
 
 #include <iostream>     // std::cerr, std::cout, std::endl
-
-static constexpr Network::Version wsa_default {2, 2};
 
 auto Network::start(const OptionalVersion& version,
                     bool is_verbose) -> WindowsContextData
 {
     WindowsContextData wsa_data {};
-    const WindowsVersion wsa_version {version.value_or(wsa_default)};
+    const WindowsVersion wsa_version {version.value_or(Version {2, 2})};
 
     if (is_verbose) {
         std::cout << "Starting the network runtime.\n"
