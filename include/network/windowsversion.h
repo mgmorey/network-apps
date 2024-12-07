@@ -19,7 +19,9 @@
 #ifdef WIN32
 
 #include "network/version.h"                    // Version
-#include "network/windows-version-type.h"       // windows_version_type
+
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>        // HIBYTE(), LOBYTE(), MAKEWORD(), WORD
 
 #include <utility>      // std::move()
 
@@ -27,7 +29,7 @@ namespace Network
 {
     struct WindowsVersion : public Version
     {
-        using value_type = windows_version_type;
+        using value_type = WORD;
 
         explicit constexpr WindowsVersion(const Version& t_version) noexcept :
             Version(t_version)
@@ -40,19 +42,23 @@ namespace Network
         }
 
         explicit constexpr WindowsVersion(value_type t_version) noexcept :
-            Version(static_cast<field_type>(t_version % m_radix),
-                    static_cast<field_type>(t_version / m_radix))
+            Version(static_cast<field_type>(LOBYTE(t_version)),
+                    static_cast<field_type>(HIBYTE(t_version)))
         {
         }
 
         explicit constexpr operator value_type() const noexcept
         {
-            return (m_minor * m_radix) + m_major;
+            return MAKEWORD(m_major, m_minor);
         }
-
-    private:
-        static constexpr value_type m_radix {0x100U};
     };
+
+    static_assert(WORD {WindowsVersion(Version {0, 0})} == 0x0000U);
+    static_assert(WORD {WindowsVersion(Version {0, 1})} == 0x0100U);
+    static_assert(WORD {WindowsVersion(Version {1, 0})} == 0x0001U);
+    static_assert(Version {WindowsVersion(0x0000U)} == Version {0, 0});
+    static_assert(Version {WindowsVersion(0x0100U)} == Version {0, 1});
+    static_assert(Version {WindowsVersion(0x0001U)} == Version {1, 0});
 }
 
 #endif

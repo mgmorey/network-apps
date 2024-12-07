@@ -48,24 +48,6 @@ namespace
     using Network::parse;
     using Network::start_context;
 
-    constexpr Version v0_0 {0, 0};
-    constexpr Version v0_1 {0, 1};
-    constexpr Version v1_0 {1, 0};
-
-    static_assert(v0_0 == Version {} && Version {} == Version {0, 0});
-    static_assert(v0_0 != v0_1 && v0_1 != v1_0);
-    static_assert(v0_0 < v0_1 && v0_1 < v1_0);
-    static_assert(v1_0 > v0_1 && v1_0 > v0_0);
-
-#ifdef WIN32
-    static_assert(WORD {WindowsVersion(v0_0)} == 0x0U);        // NOLINT
-    static_assert(Version {WindowsVersion(0x0U)} == v0_0);     // NOLINT
-    static_assert(WORD {WindowsVersion(v0_1)} == 0x100U);      // NOLINT
-    static_assert(Version {WindowsVersion(0x100U)} == v0_1);   // NOLINT
-    static_assert(WORD {WindowsVersion(v1_0)} == 0x1U);	      // NOLINT
-    static_assert(Version {WindowsVersion(0x1U)} == v1_0);     // NOLINT
-#endif
-
 #ifdef WIN32
     constexpr auto expected_code_stopped {WSANOTINITIALISED};
     constexpr auto expected_context_platform_re
@@ -188,10 +170,13 @@ namespace
 
     auto test_context_invalid() -> void
     {
+        constexpr Version invalid;
         std::string actual_error_str;
 
         try {
-            const auto context {start_context(v0_0, failure_mode, is_verbose)};
+            const auto context {
+                start_context(invalid, failure_mode, is_verbose)
+            };
         }
         catch (const Error& error) {
             print(error);

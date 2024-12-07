@@ -73,6 +73,11 @@ namespace Network
 
     extern auto operator<<(std::ostream& os,
                            Version version) noexcept -> std::ostream&;
+
+    static_assert(Version {} == Version {0, 0});
+    static_assert(Version {0, 0} < Version {0, 1});
+    static_assert(Version {0, 1} < Version {1, 0});
+    static_assert(Version {1, 0} < Version {2, 0});
 }
 
 #endif

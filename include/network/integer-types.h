@@ -30,8 +30,5 @@
 #include "network/socket-length-type.h"             // socket_length_type
 #include "network/socket-protocol-type.h"           // socket_protocol_type
 #include "network/socket-type-type.h"               // socket_type_type
-#ifdef WIN32
-#include "network/windows-version-type.h"           // windows_version_type
-#endif
 
 #endif
