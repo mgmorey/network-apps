@@ -31,34 +31,34 @@ namespace Network
     {
         using value_type = WORD;
 
-        explicit constexpr WindowsVersion(const Version& t_version) noexcept :
+        constexpr WindowsVersion(const Version& t_version) noexcept :  //NOLINT
             Version(t_version)
         {
         }
 
-        explicit constexpr WindowsVersion(Version&& t_version) noexcept :
+        constexpr WindowsVersion(Version&& t_version) noexcept :  //NOLINT
             Version(std::move(t_version))  // NOLINT
         {
         }
 
-        explicit constexpr WindowsVersion(value_type t_version) noexcept :
+        constexpr WindowsVersion(value_type t_version) noexcept :  //NOLINT
             Version(static_cast<field_type>(LOBYTE(t_version)),
                     static_cast<field_type>(HIBYTE(t_version)))
         {
         }
 
-        explicit constexpr operator value_type() const noexcept
+        constexpr operator value_type() const noexcept  //NOLINT
         {
             return MAKEWORD(m_major, m_minor);
         }
     };
 
-    static_assert(WORD {WindowsVersion(Version {0, 0})} == 0x0000U);
-    static_assert(WORD {WindowsVersion(Version {0, 1})} == 0x0100U);
-    static_assert(WORD {WindowsVersion(Version {1, 0})} == 0x0001U);
-    static_assert(Version {WindowsVersion(0x0000U)} == Version {0, 0});
-    static_assert(Version {WindowsVersion(0x0100U)} == Version {0, 1});
-    static_assert(Version {WindowsVersion(0x0001U)} == Version {1, 0});
+    static_assert(WindowsVersion(Version {0, 0}) == 0x0000U);  //NOLINT
+    static_assert(WindowsVersion(Version {0, 1}) == 0x0100U);  //NOLINT
+    static_assert(WindowsVersion(Version {1, 0}) == 0x0001U);  //NOLINT
+    static_assert(WindowsVersion(0x0000U) == Version {0, 0});  //NOLINT
+    static_assert(WindowsVersion(0x0100U) == Version {0, 1});  //NOLINT
+    static_assert(WindowsVersion(0x0001U) == Version {1, 0});  //NOLINT
 }
 
 #endif
