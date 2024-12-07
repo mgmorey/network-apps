@@ -47,7 +47,7 @@ namespace Network
 
         explicit constexpr operator value_type() const noexcept
         {
-            return m_minor * m_radix + m_major;
+            return (m_minor * m_radix) + m_major;
         }
 
     private:
