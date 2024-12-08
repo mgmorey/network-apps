@@ -15,11 +15,8 @@
 
 #include "network/format-os-error.h"    // format_os_error()
 #include "network/os-error-type.h"      // os_error_type
-#ifdef WIN32
 #include "network/runtimeerror.h"       // RuntimeError
-#endif
 
-#ifdef WIN32
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>        // DWORD, FORMAT_MESSAGE_ALLOCATE_BUFFER,
                             // FORMAT_MESSAGE_FROM_SYSTEM,
@@ -27,14 +24,10 @@
                             // LANG_NEUTRAL, LPTSTR, MAKELANGID(),
                             // SUBLANG_DEFAULT, ::FormatMessage(),
                             // ::LocalFree()
-#else
-#include <cstring>          // std::strerror()
-#endif
 
 #include <string>       // std::string, std::to_string()
 
 namespace {
-#ifdef WIN32
     auto format(DWORD error, LPTSTR& error_text) -> DWORD
     {
         return ::FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM |
@@ -47,12 +40,10 @@ namespace {
                                0,
                                nullptr);
     }
-#endif
 }
 
 auto Network::format_os_error(os_error_type os_error_code) -> std::string
 {
-#ifdef WIN32
     LPTSTR error_text {nullptr};
 
     if (format(os_error_code, error_text) == 0 || error_text == nullptr) {
@@ -63,7 +54,4 @@ auto Network::format_os_error(os_error_type os_error_code) -> std::string
     const std::string message {error_text};
     static_cast<void>(::LocalFree(error_text));
     return message.substr(0, message.rfind('\r'));
-#else
-    return std::strerror(os_error_code);
-#endif
 }

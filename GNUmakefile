@@ -54,7 +54,7 @@ addressstring.cpp argumentdata.cpp bind-endpoint.cpp bind-handle.cpp	\
 commonsocket.cpp connect-endpoint.cpp connect-handle.cpp		\
 create-context.cpp create-socket-handle.cpp create-socket-hints.cpp	\
 create-socketresult.cpp error.cpp familyerror.cpp format-ai-error.cpp	\
-format-bytestring.cpp format-os-error.cpp format.cpp get-endpoint.cpp	\
+format-bytestring.cpp format.cpp get-endpoint.cpp			\
 get-endpointresult.cpp get-hostname.cpp get-hostnameresult.cpp		\
 get-last-context-error.cpp get-last-os-error.cpp			\
 get-length-maximum.cpp get-length-minimum.cpp get-name.cpp		\
@@ -76,16 +76,17 @@ to-string-span-byte.cpp to-string-vector-byte.cpp			\
 to-string-vector-char.cpp to-string-void.cpp validate-bs.cpp		\
 validate-sa.cpp validate-sin.cpp validate-sin6.cpp
 
-
 libnetwork_unix_sources = address-sun.cpp create-socketpair.cpp		\
 create-socketpairresult.cpp get-path-length.cpp get-path-pointer.cpp	\
 get-sun-length.cpp get-sun-pointer.cpp to-bytestring-null.cpp		\
-to-bytestring-path.cpp to-path.cpp unix-close.cpp unix-read.cpp		\
-unix-start.cpp unix-stop.cpp unix-write.cpp unixcontext.cpp		\
-unixsocket.cpp validate-null.cpp validate-path.cpp validate-sun.cpp
+to-bytestring-path.cpp to-path.cpp unix-close.cpp			\
+unix-format-os-error.cpp unix-read.cpp unix-start.cpp unix-stop.cpp	\
+unix-write.cpp unixcontext.cpp unixsocket.cpp validate-null.cpp		\
+validate-path.cpp validate-sun.cpp
 
 libnetwork_windows_sources = windows-close.cpp windowscontext.cpp	\
-windows-read.cpp windows-start.cpp windows-stop.cpp windows-write.cpp
+windows-format-os-error.cpp windows-read.cpp windows-start.cpp		\
+windows-stop.cpp windows-write.cpp
 
 test_common_sources = test-address.cpp test-bind.cpp test-connect.cpp	\
 test-context.cpp test-host.cpp test-limits.cpp test-option.cpp		\
