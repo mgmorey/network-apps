@@ -13,6 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#ifndef WIN32
+
 #include "network/format-os-error.h"    // format_os_error()
 #include "network/os-error-type.h"      // os_error_type
 
@@ -23,3 +25,5 @@ auto Network::format_os_error(os_error_type os_error_code) -> std::string
 {
     return std::strerror(os_error_code);
 }
+
+#endif

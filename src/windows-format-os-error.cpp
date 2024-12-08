@@ -13,6 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#ifdef WIN32
+
 #include "network/format-os-error.h"    // format_os_error()
 #include "network/os-error-type.h"      // os_error_type
 #include "network/runtimeerror.h"       // RuntimeError
@@ -55,3 +57,5 @@ auto Network::format_os_error(os_error_type os_error_code) -> std::string
     static_cast<void>(::LocalFree(error_text));
     return message.substr(0, message.rfind('\r'));
 }
+
+#endif
