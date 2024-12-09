@@ -23,14 +23,13 @@ namespace Network
     struct Version
     {
         using field_type = unsigned short;
-        using input_type = unsigned char;
 
         friend auto operator<<(std::ostream& os,
                                Version version) noexcept -> std::ostream&;
 
         constexpr Version() noexcept = default;
 
-        constexpr Version(input_type t_major, input_type t_minor) noexcept :
+        constexpr Version(field_type t_major, field_type t_minor) noexcept :
             m_major(t_major),
             m_minor(t_minor)
         {
