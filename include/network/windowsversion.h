@@ -18,7 +18,7 @@
 
 #ifdef WIN32
 
-#include "network/version.h"                    // Version
+#include "network/version.h"    // Version
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>        // HIBYTE(), LOBYTE(), MAKEWORD(), WORD
@@ -30,6 +30,8 @@ namespace Network
     struct WindowsVersion : public Version
     {
         using value_type = WORD;
+
+        static constexpr Version latest {2, 2};
 
         constexpr WindowsVersion(const Version& t_version) noexcept :  //NOLINT
             Version(t_version)

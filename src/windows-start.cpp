@@ -35,7 +35,7 @@ auto Network::start(const OptionalVersion& version,
                     bool is_verbose) -> WindowsContextData
 {
     WindowsContextData wsa_data {};
-    const WindowsVersion wsa_version {version.value_or(Version {2, 2})};
+    const WindowsVersion wsa_version {version.value_or(WindowsVersion::latest)};
 
     if (is_verbose) {
         std::cout << "Starting the network runtime.\n"
