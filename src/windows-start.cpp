@@ -22,7 +22,6 @@
 #include "network/optionalversion.h"    // OptionalVersion
 #include "network/runtimeerror.h"       // RuntimeError
 #include "network/to-os-error.h"        // to_os_error()
-#include "network/version.h"            // Version
 #include "network/windowscontextdata.h" // WindowsContextData
 #include "network/windowsversion.h"     // WindowsVersion
 
@@ -35,7 +34,7 @@ auto Network::start(const OptionalVersion& version,
                     bool is_verbose) -> WindowsContextData
 {
     WindowsContextData wsa_data {};
-    const WindowsVersion wsa_version {version.value_or(Version {2, 2})};
+    const WindowsVersion wsa_version {version.value_or(WindowsVersion::latest)};
 
     if (is_verbose) {
         std::cout << "Starting the network runtime.\n"
