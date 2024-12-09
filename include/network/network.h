@@ -144,7 +144,6 @@
 #ifndef WIN32
 #include "network/unixsockethints.h"            // UnixSocketHints
 #endif
-#include "network/version-null.h"               // version_null
 #include "network/version.h"                    // Version
 #ifdef WIN32
 #include "network/windowsversion.h"             // WindowsVersion
