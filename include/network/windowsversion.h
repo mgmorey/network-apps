@@ -33,6 +33,14 @@ namespace Network
 
         static constexpr Version latest {2, 2};
 
+        constexpr WindowsVersion(const WindowsVersion&) noexcept = default;
+        constexpr WindowsVersion(WindowsVersion&&) noexcept = default;
+        constexpr ~WindowsVersion() noexcept = default;
+        constexpr auto operator=(const WindowsVersion&) noexcept ->
+            WindowsVersion& = default;
+        constexpr auto operator=(WindowsVersion&&) noexcept ->
+            WindowsVersion& = default;
+
         constexpr WindowsVersion(const Version& t_version) noexcept :  //NOLINT
             Version(t_version)
         {
