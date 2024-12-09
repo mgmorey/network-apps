@@ -22,7 +22,6 @@
 #include "network/optionalversion.h"    // OptionalVersion
 #include "network/runtimeerror.h"       // RuntimeError
 #include "network/to-os-error.h"        // to_os_error()
-#include "network/version.h"            // Version
 #include "network/windowscontextdata.h" // WindowsContextData
 #include "network/windowsversion.h"     // WindowsVersion
 
