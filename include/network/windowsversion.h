@@ -43,9 +43,9 @@ namespace Network
         {
         }
 
-        constexpr WindowsVersion(value_type t_version) noexcept :  //NOLINT
-            Version(static_cast<field_type>(LOBYTE(t_version)),
-                    static_cast<field_type>(HIBYTE(t_version)))
+        constexpr WindowsVersion(value_type t_value) noexcept :  //NOLINT
+            Version(static_cast<field_type>(LOBYTE(t_value)),
+                    static_cast<field_type>(HIBYTE(t_value)))
         {
         }
 
