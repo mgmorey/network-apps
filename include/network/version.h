@@ -28,6 +28,8 @@ namespace Network
                                Version version) noexcept -> std::ostream&;
 
         constexpr Version() noexcept = default;
+        constexpr Version(const Version&) noexcept = default;
+        constexpr Version(Version&&) noexcept = default;
 
         constexpr Version(field_type t_major, field_type t_minor) noexcept :
             m_major(t_major),
@@ -35,8 +37,6 @@ namespace Network
         {
         }
 
-        constexpr Version(const Version&) noexcept = default;
-        constexpr Version(Version&&) noexcept = default;
         constexpr ~Version() noexcept = default;
         constexpr auto operator=(const Version&) noexcept -> Version& = default;
         constexpr auto operator=(Version&&) noexcept -> Version& = default;
