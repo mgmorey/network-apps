@@ -33,13 +33,9 @@ namespace Network
 
         static constexpr Version latest {2, 2};
 
+        constexpr WindowsVersion() noexcept = default;
         constexpr WindowsVersion(const WindowsVersion&) noexcept = default;
         constexpr WindowsVersion(WindowsVersion&&) noexcept = default;
-        constexpr ~WindowsVersion() noexcept = default;
-        constexpr auto operator=(const WindowsVersion&) noexcept ->
-            WindowsVersion& = default;
-        constexpr auto operator=(WindowsVersion&&) noexcept ->
-            WindowsVersion& = default;
 
         constexpr WindowsVersion(const Version& t_version) noexcept :  //NOLINT
             Version(t_version)
@@ -56,6 +52,12 @@ namespace Network
                     static_cast<field_type>(HIBYTE(t_value)))
         {
         }
+
+        constexpr ~WindowsVersion() noexcept = default;
+        constexpr auto operator=(const WindowsVersion&) noexcept ->
+            WindowsVersion& = default;
+        constexpr auto operator=(WindowsVersion&&) noexcept ->
+            WindowsVersion& = default;
 
         constexpr operator value_type() const noexcept  //NOLINT
         {
