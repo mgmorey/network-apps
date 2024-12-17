@@ -22,19 +22,6 @@ VERSION ?= 0.0.1
 language = c++
 standard = $(language)20
 
-# Platform
-ifeq "$(os_name)" "MINGW64_NT"
-	platform = windows
-else
-	platform = unix
-endif
-
-# File suffixes
-dependency_suffix = .dep
-include_suffix = .h
-object_suffix = .o
-source_suffix = .cpp
-
 # Directories
 cache_dir = .cache
 cppbuild_dir = $(cache_dir)/cppcheck
@@ -45,13 +32,26 @@ object_dir = object
 script_dir = script
 source_dir = src
 
-# Set virtual paths
-vpath %$(include_suffix) $(include_dir)/network
-vpath %$(source_suffix) $(source_dir)/$(platform) $(source_dir)
+# File suffixes
+dependency_suffix = .dep
+include_suffix = .h
+object_suffix = .o
+source_suffix = .cpp
 
 # Include common functions and flag variables
 include common.gmk
 include flags.gmk
+
+# Set platform
+ifeq "$(os_name)" "MINGW64_NT"
+	platform = windows
+else
+	platform = unix
+endif
+
+# Set virtual paths
+vpath %$(include_suffix) $(include_dir)/network
+vpath %$(source_suffix) $(source_dir)/$(platform) $(source_dir)
 
 # Define enumerated file list variables
 
