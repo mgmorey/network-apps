@@ -22,6 +22,13 @@ VERSION ?= 0.0.1
 language = c++
 standard = $(language)20
 
+# Platform
+ifeq "$(os_name)" "MINGW64_NT"
+	platform = windows
+else
+	platform = unix
+endif
+
 # File suffixes
 dependency_suffix = .dep
 include_suffix = .h
@@ -40,7 +47,7 @@ source_dir = src
 
 # Set virtual paths
 vpath %$(include_suffix) $(include_dir)/network
-vpath %$(source_suffix) $(source_dir)
+vpath %$(source_suffix) $(source_dir)/$(platform) $(source_dir)
 
 # Include common functions and flag variables
 include common.gmk
