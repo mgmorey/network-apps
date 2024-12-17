@@ -50,7 +50,8 @@ else
 endif
 
 # Set virtual paths
-vpath %$(include_suffix) $(include_dir)/network
+vpath %$(include_suffix) $(include_dir)/network/$(platform)	\
+$(include_dir)/network
 vpath %$(source_suffix) $(source_dir)/$(platform) $(source_dir)
 
 # Define enumerated file list variables

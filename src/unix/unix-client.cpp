@@ -21,7 +21,7 @@
                                         // connect(), read_string(),
                                         // socket_error, write()
 #include "network/parse.h"              // parse()
-#include "unix-connection.h"            // BUFFER_SIZE, SOCKET_HINTS,
+#include "unix/connection.h"            // BUFFER_SIZE, SOCKET_HINTS,
                                         // SOCKET_NAME
 
 #include <sys/socket.h>         // SOCK_SEQPACKET
