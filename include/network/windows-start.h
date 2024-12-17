@@ -19,7 +19,7 @@
 #ifdef WIN32
 
 #include "network/optionalversion.h"    // OptionalVersion
-#include "network/windowscontextdata.h" // ContextData
+#include "network/windowscontextdata.h" // WindowsContextData
 
 namespace Network
 {
