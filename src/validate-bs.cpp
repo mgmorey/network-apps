@@ -19,7 +19,9 @@
 #include "network/get-sa-family.h"              // get_sa_family()
 #include "network/get-sin-pointer.h"            // get_sin_pointer()
 #include "network/get-sin6-pointer.h"           // get_sin6_pointer()
+#ifndef WIN32
 #include "network/get-sun-pointer.h"            // get_sun_pointer()
+#endif
 
 #ifdef WIN32
 #include <winsock2.h>       // AF_INET, AF_INET6, AF_UNIX, AF_UNSPEC
