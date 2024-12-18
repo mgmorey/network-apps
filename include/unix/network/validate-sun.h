@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_VALIDATE_SUN_H
-#define NETWORK_VALIDATE_SUN_H
+#ifndef UNIX_NETWORK_VALIDATE_SUN_H
+#define UNIX_NETWORK_VALIDATE_SUN_H
 
 #ifndef WIN32
 

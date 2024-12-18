@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_CREATE_SOCKETPAIR_H
-#define NETWORK_CREATE_SOCKETPAIR_H
+#ifndef UNIX_NETWORK_CREATE_SOCKETPAIR_H
+#define UNIX_NETWORK_CREATE_SOCKETPAIR_H
 
 #ifndef WIN32
 
