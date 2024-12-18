@@ -16,7 +16,6 @@
 #ifndef WIN32
 
 #include "network/address.h"                    // Address
-#include "network/string-null.h"                // string_null
 #include "network/to-path.h"                    // to_path()
 
 #include <string>       // std::string
