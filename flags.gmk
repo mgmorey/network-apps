@@ -80,7 +80,7 @@ else ifeq "$(is_gcc)" "true"
 	cpp_symbols += _GLIBCXX_DEBUG
 endif
 
-include_dirs = include
+include_dirs = include/$(platform) include
 CPPFLAGS += $(addprefix -I,$(include_dirs))
 CPPFLAGS += $(addprefix -D,$(sort $(cpp_symbols)))
 

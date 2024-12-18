@@ -42,16 +42,7 @@ source_suffix = .cpp
 include common.gmk
 include flags.gmk
 
-# Set platform
-ifeq "$(os_name)" "MINGW64_NT"
-	platform = windows
-else
-	platform = unix
-endif
-
 # Set virtual paths
-vpath %$(include_suffix) $(include_dir)/network/$(platform)	\
-$(include_dir)/network
 vpath %$(source_suffix) $(source_dir)/$(platform) $(source_dir)
 
 # Define enumerated file list variables

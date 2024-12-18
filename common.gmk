@@ -31,6 +31,13 @@ os_distro = $(word 1,$(os_release))
 os_name = $(word 2,$(os_release))
 os_type = $(word 3,$(os_release))
 
+# Platform name
+ifeq "$(os_name)" "MINGW64_NT"
+	platform = windows
+else
+	platform = unix
+endif
+
 # Program presence flags
 is_clang = $(shell $(script_dir)/is-clang $(CXX))
 is_ctags_universal = $(shell $(script_dir)/is-ctags-universal ctags)
