@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef UNIX_NETWORK_UNIXCONTEXTDATA_H
-#define UNIX_NETWORK_UNIXCONTEXTDATA_H
+#ifndef UNIX_NETWORK_CONTEXTDATA_H
+#define UNIX_NETWORK_CONTEXTDATA_H
 
 #ifndef WIN32
 
@@ -24,7 +24,7 @@
 
 namespace Network
 {
-    struct UnixContextData
+    struct ContextData
     {
         std::string m_description;
         std::string m_system_status;

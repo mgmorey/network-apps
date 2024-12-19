@@ -1,4 +1,4 @@
-// Copyright (C) 2022  "Michael G. Morey" <mgmorey@gmail.com>
+// Copyright (C) 2024  "Michael G. Morey" <mgmorey@gmail.com>
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,18 +13,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef WINDOWS_NETWORK_START_H
-#define WINDOWS_NETWORK_START_H
+#ifndef WINDOWS_NETWORK_CONTEXTDATA_H
+#define WINDOWS_NETWORK_CONTEXTDATA_H
 
 #ifdef WIN32
 
-#include "network/optionalversion.h"    // OptionalVersion
-#include "network/windowscontextdata.h" // WindowsContextData
+#include <winsock2.h>       // WSADATA
 
 namespace Network
 {
-    extern auto start(const OptionalVersion& version,
-                      bool is_verbose) -> WindowsContextData;
+    using ContextData = WSADATA;
 }
 
 #endif

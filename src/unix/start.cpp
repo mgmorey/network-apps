@@ -15,9 +15,9 @@
 
 #ifndef WIN32
 
+#include "network/contextdata.h"        // ContextData
 #include "network/optionalversion.h"    // OptionalVersion
 #include "network/start.h"              // start()
-#include "network/unixcontextdata.h"    // UnixContextData
 
 #include <iostream>     // std::cout, std::endl
 
@@ -29,7 +29,7 @@ static constexpr auto system_running {
 };
 
 auto Network::start(const OptionalVersion& version,
-                    bool is_verbose) -> UnixContextData
+                    bool is_verbose) -> ContextData
 {
     if (is_verbose) {
         std::cout << "Starting the network runtime."

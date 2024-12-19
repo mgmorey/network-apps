@@ -19,9 +19,9 @@
 #ifdef WIN32
 
 #include "network/context.h"                    // Context
+#include "network/contextdata.h"                // ContextData
 #include "network/failuremode.h"                // FailureMode
 #include "network/optionalversion.h"            // OptionalVersion
-#include "network/windowscontextdata.h"         // WindowsContextData
 
 #include <string>       // std::string
 #include <string_view>  // std::string_view
@@ -49,7 +49,7 @@ namespace Network
         [[nodiscard]] auto version() const -> OptionalVersion final;
 
     private:
-        WindowsContextData m_data {};
+        ContextData m_data {};
         std::string_view m_description;
         std::string_view m_system_status;
         OptionalVersion m_version;

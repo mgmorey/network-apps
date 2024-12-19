@@ -19,9 +19,9 @@
 #ifndef WIN32
 
 #include "network/context.h"                    // Context
+#include "network/contextdata.h"                // ContextData
 #include "network/failuremode.h"                // FailureMode
 #include "network/optionalversion.h"            // OptionalVersion
-#include "network/unixcontextdata.h"            // UnixContextData
 
 #include <string>       // std::string
 
@@ -48,7 +48,7 @@ namespace Network
         [[nodiscard]] auto version() const -> OptionalVersion final;
 
     private:
-        UnixContextData m_data;
+        ContextData m_data;
         OptionalVersion m_version;
         int m_error_code {0};
         bool m_is_started {false};

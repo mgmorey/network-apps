@@ -16,13 +16,13 @@
 #ifdef WIN32
 
 #include "network/start.h"              // start()
+#include "network/contextdata.h"        // ContextData
 #include "network/error.h"              // Error
 #include "network/format-os-error.h"    // format_os_error()
 #include "network/logicerror.h"         // LogicError
 #include "network/optionalversion.h"    // OptionalVersion
 #include "network/runtimeerror.h"       // RuntimeError
 #include "network/to-os-error.h"        // to_os_error()
-#include "network/windowscontextdata.h" // WindowsContextData
 #include "network/windowsversion.h"     // WindowsVersion
 
 #include <winsock2.h>       // WSAEFAULT, WSAEPROCLIM, WSASYSNOTREADY,
@@ -31,9 +31,9 @@
 #include <iostream>     // std::cerr, std::cout, std::endl
 
 auto Network::start(const OptionalVersion& version,
-                    bool is_verbose) -> WindowsContextData
+                    bool is_verbose) -> ContextData
 {
-    WindowsContextData wsa_data {};
+    ContextData wsa_data {};
     const WindowsVersion wsa_version {version.value_or(WindowsVersion::latest)};
 
     if (is_verbose) {
