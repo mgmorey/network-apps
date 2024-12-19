@@ -75,17 +75,16 @@ to-string-span-byte.cpp to-string-vector-byte.cpp			\
 to-string-vector-char.cpp to-string-void.cpp validate-bs.cpp		\
 validate-sa.cpp validate-sin.cpp validate-sin6.cpp
 
+libnetwork_native_sources = close.cpp format-os-error.cpp read.cpp	\
+start.cpp stop.cpp write.cpp
+
 libnetwork_unix_sources = address-sun.cpp create-socketpair.cpp		\
 create-socketpairresult.cpp get-path-length.cpp get-path-pointer.cpp	\
 get-sun-length.cpp get-sun-pointer.cpp to-bytestring-null.cpp		\
-to-bytestring-path.cpp to-path.cpp unix-close.cpp			\
-unix-format-os-error.cpp unix-read.cpp unix-start.cpp unix-stop.cpp	\
-unix-write.cpp unixcontext.cpp unixsocket.cpp validate-null.cpp		\
-validate-path.cpp validate-sun.cpp
+to-bytestring-path.cpp to-path.cpp unixcontext.cpp unixsocket.cpp	\
+validate-null.cpp validate-path.cpp validate-sun.cpp
 
-libnetwork_windows_sources = windows-close.cpp windowscontext.cpp	\
-windows-format-os-error.cpp windows-read.cpp windows-start.cpp		\
-windows-stop.cpp windows-write.cpp
+libnetwork_windows_sources = windowscontext.cpp
 
 test_common_sources = test-address.cpp test-bind.cpp test-connect.cpp	\
 test-context.cpp test-host.cpp test-limits.cpp test-option.cpp		\
@@ -101,7 +100,7 @@ tags = TAGS
 
 # Define computed file list variables
 
-libnetwork_sources = $(libnetwork_common_sources)
+libnetwork_sources = $(libnetwork_common_sources) $(libnetwork_native_sources)
 
 ifeq "$(os_name)" "MINGW64_NT"
 	libnetwork_sources += $(libnetwork_windows_sources)
