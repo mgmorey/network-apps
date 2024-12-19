@@ -19,8 +19,8 @@
 #include "network/failuremode.h"        // FailureMode
 #include "network/optionalversion.h"    // OptionalVersion
 #include "network/runtimeerror.h"       // RuntimeError
+#include "network/start.h"              // start()
 #include "network/stop.h"               // stop()
-#include "network/unix-start.h"         // start()
 
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string

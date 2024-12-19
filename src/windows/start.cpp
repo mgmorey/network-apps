@@ -15,7 +15,7 @@
 
 #ifdef WIN32
 
-#include "network/windows-start.h"      // start()
+#include "network/start.h"              // start()
 #include "network/error.h"              // Error
 #include "network/format-os-error.h"    // format_os_error()
 #include "network/logicerror.h"         // LogicError
