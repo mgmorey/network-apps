@@ -55,7 +55,6 @@ create-context.cpp create-socket-handle.cpp create-socket-hints.cpp	\
 create-socketresult.cpp error.cpp familyerror.cpp			\
 format-bytestring.cpp format.cpp get-endpoint.cpp			\
 get-endpointresult.cpp get-hostname.cpp get-hostnameresult.cpp		\
-get-last-context-error.cpp get-last-os-error.cpp			\
 get-length-maximum.cpp get-length-minimum.cpp get-name.cpp		\
 get-nameresult.cpp get-operands.cpp get-option.cpp get-options.cpp	\
 get-peername.cpp get-peernameresult.cpp get-sa-family.cpp		\
@@ -65,18 +64,19 @@ get-sin6-pointer.cpp get-sin6-port.cpp get-sockname.cpp			\
 get-socknameresult.cpp listen.cpp logicerror.cpp open-endpoint.cpp	\
 open-handle.cpp open.cpp oserrorresult.cpp parse-argumentspan.cpp	\
 parse.cpp rangeerror.cpp reset-last-context-error.cpp			\
-reset-last-os-error.cpp runtimeerror.cpp set-last-context-error.cpp	\
-set-last-os-error.cpp socketfamily.cpp socketflags.cpp sockethost.cpp	\
-socketprotocol.cpp sockettype.cpp start-context.cpp			\
-stream-address.cpp stream-addrinfo.cpp stream-context.cpp		\
-stream-socket.cpp stream-version.cpp template.cpp			\
+reset-last-os-error.cpp runtimeerror.cpp socketfamily.cpp		\
+socketflags.cpp sockethost.cpp socketprotocol.cpp sockettype.cpp	\
+start-context.cpp stream-address.cpp stream-addrinfo.cpp		\
+stream-context.cpp stream-socket.cpp stream-version.cpp template.cpp	\
 to-bytestring-void.cpp to-string-in-addr.cpp to-string-in6-addr.cpp	\
 to-string-span-byte.cpp to-string-vector-byte.cpp			\
 to-string-vector-char.cpp to-string-void.cpp validate-bs.cpp		\
 validate-sa.cpp validate-sin.cpp validate-sin6.cpp
 
-libnetwork_native_sources = close.cpp format-ai-error.cpp	\
-format-os-error.cpp read.cpp start.cpp stop.cpp write.cpp
+libnetwork_native_sources = close.cpp format-ai-error.cpp		\
+format-os-error.cpp get-last-context-error.cpp get-last-os-error.cpp	\
+read.cpp set-last-context-error.cpp set-last-os-error.cpp start.cpp	\
+stop.cpp write.cpp
 
 libnetwork_unix_sources = address-sun.cpp create-socketpair.cpp		\
 create-socketpairresult.cpp get-path-length.cpp get-path-pointer.cpp	\
