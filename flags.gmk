@@ -102,7 +102,7 @@ ifeq "$(is_gnu_as)" "true"
 	CXXFLAGS += -pipe
 endif
 
-CXXFLAGS += -fPIC
+CXXFLAGS += -fPIC -ftrivial-auto-var-init=zero
 
 ifdef NDEBUG
 ifeq "$(is_clang)" "true"
