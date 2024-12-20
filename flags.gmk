@@ -102,18 +102,18 @@ ifeq "$(is_gnu_as)" "true"
 	CXXFLAGS += -pipe
 endif
 
-CXXFLAGS += -fPIC -ftrivial-auto-var-init=zero
+CXXFLAGS += -fPIC
 
-ifdef NDEBUG
-ifeq "$(is_clang)" "true"
-	CXXFLAGS += -flto
-endif
-	CXXFLAGS += -O2
-else
+ifndef NDEBUG
 	CXXFLAGS += -fno-omit-frame-pointer
 ifeq "$(USING_LIBASAN)" "true"
 	CXXFLAGS += -fsanitize=address -fsanitize-address-use-after-scope
 endif
+endif
+
+CXXFLAGS += -ftrivial-auto-var-init=zero
+
+ifndef NDEBUG
 ifeq "$(USING_VALGRIND)" "true"
 	CXXFLAGS += -gdwarf-4
 endif
@@ -122,6 +122,11 @@ ifeq "$(is_gcc)" "true"
 else
 	CXXFLAGS += -g3
 endif
+endif
+
+ifdef NDEBUG
+	CXXFLAGS += -O2
+else
 	CXXFLAGS += -O0
 endif
 
@@ -129,8 +134,8 @@ ifdef standard
 	CXXFLAGS += -std=$(standard)
 endif
 
-CXXFLAGS += -Wall -Werror -Wextra -Wshadow -Wsign-conversion
 CXXFLAGS += $(CXX_ASFLAGS)
+CXXFLAGS += -Wall -Werror -Wextra -Wshadow -Wsign-conversion
 
 # LDFLAGS
 
