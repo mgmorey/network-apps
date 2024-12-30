@@ -20,8 +20,8 @@
 #include "network/uniquecontext.h"      // UniqueContext
 
 auto Network::start_context(const OptionalVersion& t_version,
-                          FailureMode t_failure,
-                          bool t_is_verbose) -> UniqueContext
+                            FailureMode t_failure,
+                            bool t_is_verbose) -> UniqueContext
 {
     auto context {create_context(t_version, t_failure, t_is_verbose)};
 
