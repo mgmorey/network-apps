@@ -19,7 +19,7 @@ This project has been tested on the following platforms:
 +-----------+---------------------+--------------------------+--------+--------+
 | Windows   | Cygwin              | 10.0 (amd64)             | 12.4.0 | N/A    |
 +-----------+---------------------+--------------------------+--------+--------+
-| Windows   | MinGW               | 10.0 (amd64)             | 14.2.0 | 19.1.4 |
+| Windows   | MinGW               | 10.0 (amd64)             | 14.2.0 | 19.1.6 |
 +-----------+---------------------+--------------------------+--------+--------+
 
 The various OS ports have been tested on the following processors:
