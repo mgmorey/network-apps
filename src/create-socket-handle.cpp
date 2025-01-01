@@ -19,14 +19,12 @@
 #include "network/uniquesocket.h"               // UniqueSocket
 
 #ifdef WIN32
-#include "network/commonsocket.h"               // CommonSocketData
+#include "network/commonsocket.h"               // CommonSocket
 #else
 #include "network/unixsocket.h"                 // UnixSocket
 #endif
 
-#ifdef WIN32
-#include <winsock2.h>       // AF_UNIX
-#else
+#ifndef WIN32
 #include <sys/socket.h>     // AF_UNIX
 #endif
 
