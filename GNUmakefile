@@ -75,16 +75,14 @@ validate-sa.cpp validate-sin.cpp validate-sin6.cpp
 
 libnetwork_native_sources = close.cpp format-ai-error.cpp		\
 format-os-error.cpp get-last-context-error.cpp get-last-os-error.cpp	\
-read.cpp set-last-context-error.cpp set-last-os-error.cpp start.cpp	\
-stop.cpp write.cpp
+nativecontext.cpp read.cpp set-last-context-error.cpp			\
+set-last-os-error.cpp start.cpp stop.cpp write.cpp
 
 libnetwork_unix_sources = address-sun.cpp create-socketpair.cpp		\
 create-socketpairresult.cpp get-path-length.cpp get-path-pointer.cpp	\
 get-sun-length.cpp get-sun-pointer.cpp nativecontext.cpp		\
 to-bytestring-null.cpp to-bytestring-path.cpp to-path.cpp		\
 unixsocket.cpp validate-null.cpp validate-path.cpp validate-sun.cpp
-
-libnetwork_windows_sources = windowscontext.cpp
 
 test_common_sources = test-address.cpp test-bind.cpp test-connect.cpp	\
 test-context.cpp test-host.cpp test-limits.cpp test-option.cpp		\
@@ -102,9 +100,7 @@ tags = TAGS
 
 libnetwork_sources = $(libnetwork_common_sources) $(libnetwork_native_sources)
 
-ifeq "$(os_name)" "MINGW64_NT"
-	libnetwork_sources += $(libnetwork_windows_sources)
-else
+ifneq "$(os_name)" "MINGW64_NT"
 	libnetwork_sources += $(libnetwork_unix_sources)
 endif
 

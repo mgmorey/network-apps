@@ -15,14 +15,9 @@
 
 #include "network/create-context.h"     // create_context()
 #include "network/failuremode.h"        // FailureMode
+#include "network/nativecontext.h"      // NativeContext
 #include "network/optionalversion.h"    // OptionalVersion
 #include "network/uniquecontext.h"      // UniqueContext
-
-#ifdef WIN32
-#include "network/windowscontext.h"     // WindowsContext
-#else
-#include "network/nativecontext.h"      // NativeContext
-#endif
 
 #include <memory>       // std::make_unique()
 
@@ -30,9 +25,5 @@ auto Network::create_context(const OptionalVersion& t_version,
                              FailureMode t_failure,
                              bool t_is_verbose) -> UniqueContext
 {
-#ifdef WIN32
-    return std::make_unique<WindowsContext>(t_version, t_failure, t_is_verbose);
-#else
     return std::make_unique<NativeContext>(t_version, t_failure, t_is_verbose);
-#endif
 }
