@@ -15,7 +15,7 @@
 
 #ifndef WIN32
 
-#include "network/unixcontext.h"        // UnixContext
+#include "network/nativecontext.h"      // NativeContext
 #include "network/failuremode.h"        // FailureMode
 #include "network/optionalversion.h"    // OptionalVersion
 #include "network/runtimeerror.h"       // RuntimeError
@@ -25,28 +25,28 @@
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
 
-Network::UnixContext::UnixContext(const OptionalVersion& t_version,
-                                  FailureMode t_failure,
-                                  bool t_is_verbose)
+Network::NativeContext::NativeContext(const OptionalVersion& t_version,
+                                      FailureMode t_failure,
+                                      bool t_is_verbose)
     : m_version(t_version),
       m_is_verbose(t_is_verbose)
 {
     static_cast<void>(t_failure);
 }
 
-Network::UnixContext::UnixContext(bool t_is_verbose)
+Network::NativeContext::NativeContext(bool t_is_verbose)
     : m_is_verbose(t_is_verbose)
 {
 }
 
-Network::UnixContext::~UnixContext()
+Network::NativeContext::~NativeContext()
 {
     if (m_is_started) {
         Network::stop(FailureMode::return_zero, m_is_verbose);
     }
 }
 
-Network::UnixContext::operator std::string() const
+Network::NativeContext::operator std::string() const
 {
     const auto& description {m_data.m_description};
     const auto& status {m_data.m_system_status};
@@ -67,17 +67,17 @@ Network::UnixContext::operator std::string() const
     return oss.str();
 }
 
-auto Network::UnixContext::error_code() const noexcept -> int
+auto Network::NativeContext::error_code() const noexcept -> int
 {
     return m_error_code;
 }
 
-auto Network::UnixContext::is_running() const noexcept -> bool
+auto Network::NativeContext::is_running() const noexcept -> bool
 {
     return m_data.m_system_status == "Running";
 }
 
-auto Network::UnixContext::start() -> Context&
+auto Network::NativeContext::start() -> Context&
 {
     if (m_is_started) {
         return *this;
@@ -98,7 +98,7 @@ auto Network::UnixContext::start() -> Context&
     return *this;
 }
 
-auto Network::UnixContext::stop() -> Context&
+auto Network::NativeContext::stop() -> Context&
 {
     if (m_is_started) {
         m_error_code = Network::stop(FailureMode::return_zero, m_is_verbose);
@@ -112,7 +112,7 @@ auto Network::UnixContext::stop() -> Context&
     return *this;
 }
 
-auto Network::UnixContext::version() const -> OptionalVersion
+auto Network::NativeContext::version() const -> OptionalVersion
 {
     return m_data.m_version;
 }

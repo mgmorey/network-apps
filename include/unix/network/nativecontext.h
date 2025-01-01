@@ -27,19 +27,19 @@
 
 namespace Network
 {
-    class UnixContext final
+    class NativeContext final
         : public Context
     {
     public:
-        UnixContext(const OptionalVersion& t_version,
-                    FailureMode t_failure,
-                    bool t_is_verbose = false);
-        explicit UnixContext(bool t_is_verbose = false);
-        UnixContext(const UnixContext&) = delete;
-        UnixContext(const UnixContext&&) = delete;
-        ~UnixContext() final;
-        auto operator=(const UnixContext&) -> UnixContext& = delete;
-        auto operator=(const UnixContext&&) -> UnixContext& = delete;
+        NativeContext(const OptionalVersion& t_version,
+                      FailureMode t_failure,
+                      bool t_is_verbose = false);
+        explicit NativeContext(bool t_is_verbose = false);
+        NativeContext(const NativeContext&) = delete;
+        NativeContext(const NativeContext&&) = delete;
+        ~NativeContext() final;
+        auto operator=(const NativeContext&) -> NativeContext& = delete;
+        auto operator=(const NativeContext&&) -> NativeContext& = delete;
         explicit operator std::string() const final;
         [[nodiscard]] auto error_code() const noexcept -> int final;
         [[nodiscard]] auto is_running() const noexcept -> bool final;

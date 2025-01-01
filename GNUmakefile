@@ -80,9 +80,9 @@ stop.cpp write.cpp
 
 libnetwork_unix_sources = address-sun.cpp create-socketpair.cpp		\
 create-socketpairresult.cpp get-path-length.cpp get-path-pointer.cpp	\
-get-sun-length.cpp get-sun-pointer.cpp to-bytestring-null.cpp		\
-to-bytestring-path.cpp to-path.cpp unixcontext.cpp unixsocket.cpp	\
-validate-null.cpp validate-path.cpp validate-sun.cpp
+get-sun-length.cpp get-sun-pointer.cpp nativecontext.cpp		\
+to-bytestring-null.cpp to-bytestring-path.cpp to-path.cpp		\
+unixsocket.cpp validate-null.cpp validate-path.cpp validate-sun.cpp
 
 libnetwork_windows_sources = windowscontext.cpp
 
