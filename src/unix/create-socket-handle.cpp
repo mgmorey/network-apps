@@ -13,20 +13,15 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#ifndef WIN32
+
 #include "network/create-socket-handle.h"       // create_socket()
 #include "network/handle-type.h"                // handle_type
 #include "network/socket-family-type.h"         // socket_family_type
 #include "network/uniquesocket.h"               // UniqueSocket
-
-#ifdef WIN32
-#include "network/commonsocket.h"               // CommonSocket
-#else
 #include "network/unixsocket.h"                 // UnixSocket
-#endif
 
-#ifndef WIN32
 #include <sys/socket.h>     // AF_UNIX
-#endif
 
 #include <memory>       // std::make_shared()
 
@@ -34,11 +29,11 @@ auto Network::create_socket(socket_family_type family,
                             handle_type handle,
                             bool is_verbose) -> UniqueSocket
 {
-#ifndef WIN32
     if (family == AF_UNIX) {
         return std::make_unique<UnixSocket>(family, handle, is_verbose);
     }
-#endif
 
     return std::make_unique<CommonSocket>(family, handle, is_verbose);
 }
+
+#endif
