@@ -16,15 +16,17 @@
 #ifndef UNIX_NETWORK_SOCKETPAIR_H
 #define UNIX_NETWORK_SOCKETPAIR_H
 
+#ifndef WIN32
+
 #include "network/uniquesocket.h"       // UniqueSocket
 
 #include <array>        // std::array
 
 namespace Network
 {
-#ifndef WIN32
     using SocketPair = std::array<UniqueSocket, 2>;
-#endif
 }
+
+#endif
 
 #endif
