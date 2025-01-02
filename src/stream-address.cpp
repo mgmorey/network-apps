@@ -95,11 +95,9 @@ auto Network::operator<<(std::ostream& os,
     os << SocketFamily(family);
 
     switch (family) {
-#ifndef WIN32
     case AF_UNIX:
         os << Format(delim, tab, prefix + "path");
         break;
-#endif
     case AF_INET:
     case AF_INET6:
         os << Format(delim, tab, prefix + "port")
