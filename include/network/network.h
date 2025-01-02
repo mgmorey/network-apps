@@ -47,7 +47,6 @@
                                                 // sun_path_offset,
                                                 // sun_size
 #include "network/context.h"                    // Context
-#include "network/create-context.h"             // create_context()
 #ifndef WIN32
 #include "network/create-socketpair.h"          // create_socketpair()
 #include "network/create-socketpairresult.h"    // create_socketpairresult()

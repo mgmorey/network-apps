@@ -14,16 +14,21 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/start-context.h"      // start_context()
-#include "network/create-context.h"     // create_context()
 #include "network/failuremode.h"        // FailureMode
+#include "network/nativecontext.h"      // NativeContext
 #include "network/optionalversion.h"    // OptionalVersion
 #include "network/uniquecontext.h"      // UniqueContext
+
+#include <memory>       // std::make_unique()
 
 auto Network::start_context(const OptionalVersion& t_version,
                             FailureMode t_failure,
                             bool t_is_verbose) -> UniqueContext
 {
-    auto context {create_context(t_version, t_failure, t_is_verbose)};
+    auto context
+    {
+        std::make_unique<NativeContext>(t_version, t_failure, t_is_verbose)
+    };
 
     if (context) {
         context->start();
