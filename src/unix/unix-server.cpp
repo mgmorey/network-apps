@@ -47,7 +47,7 @@ namespace
 
     auto is_verbose {false};  // NOLINT
 
-    auto accept_verbose(const SharedSocket& bind_sock)
+    auto accept_verbose(const Socket& bind_sock)
     {
         auto [accept_sock, accept_addr] {Network::accept(bind_sock)};
 
@@ -140,7 +140,7 @@ auto main(int argc, char* argv[]) -> int
         // This is the main loop for handling connections.
         while (!shutdown_pending) {
             // Wait for incoming connection.
-            const auto data_socket {accept_verbose(connection_socket)};
+            const auto data_socket {accept_verbose(*connection_socket)};
             std::string read_str;
             Number sum {};
 
