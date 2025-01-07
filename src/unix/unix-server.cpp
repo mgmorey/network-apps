@@ -32,6 +32,7 @@
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <string>       // std::stoll(), std::string, std::to_string()
+#include <utility>      // std::move()
 
 namespace
 {
@@ -57,7 +58,7 @@ namespace
                       << std::endl;
         }
 
-        return accept_sock;
+        return std::move(accept_sock);
     }
 
     auto bind()
