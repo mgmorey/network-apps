@@ -37,7 +37,6 @@
 namespace
 {
     using Network::Address;
-    using Network::SharedSocket;
     using Network::Socket;
     using Network::create_socket;
     using Network::socket_error;
@@ -63,7 +62,7 @@ namespace
 
     auto bind()
     {
-        SharedSocket sock {create_socket(SOCKET_HINTS, is_verbose)};
+        auto sock {create_socket(SOCKET_HINTS, is_verbose)};
 
         if (const auto result {sock->bind(SOCKET_NAME)}) {
             std::cerr << result.string() << std::endl;
