@@ -14,8 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/assert.h"             // assert()
-#include "network/network.h"            // Error, SharedSocket,
-                                        // SocketHints,
+#include "network/network.h"            // Error, SocketHints,
                                         // create_socket(),
                                         // handle_null, handle_type,
                                         // os_error_type,
@@ -39,7 +38,6 @@
 namespace
 {
     using Network::Error;
-    using Network::SharedSocket;
     using Network::SocketHints;
     using Network::create_socket;
     using Network::handle_null;
