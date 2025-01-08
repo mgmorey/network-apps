@@ -137,6 +137,7 @@
                                                 // socket_length_type,
                                                 // socket_protocol_type,
                                                 // socket_type_type
+#include "network/uniquecontext.h"              // UniqueContext
 #include "network/uniquesocket.h"               // UniqueSocket
 #include "network/uniquify.h"                   // uniquify()
 #ifndef WIN32
