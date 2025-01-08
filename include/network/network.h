@@ -95,7 +95,6 @@
                                                 // get_last_os_error(),
                                                 // reset_last_os_error()
 #include "network/overloaded.h"                 // Overloaded
-#include "network/sharedsocket.h"               // SharedSocket
 #include "network/socket-error.h"               // socket_error
 #include "network/socket.h"                     // Socket
 #include "network/socketfamily.h"               // SocketFamily
