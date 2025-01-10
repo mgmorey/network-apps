@@ -46,6 +46,9 @@
                                                 // string_null,
                                                 // sun_path_offset,
                                                 // sun_size
+#include "network/context-error.h"              // get_last_context_error()
+                                                // reset_last_context_error()
+                                                // set_last_context_error()
 #include "network/context.h"                    // Context
 #ifndef WIN32
 #include "network/create-socketpair.h"          // create_socketpair()
