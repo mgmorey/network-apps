@@ -27,9 +27,9 @@
 namespace Network
 {
 #ifdef WIN32
-    constexpr close_function_type close_function_pointer {::closesocket};
+    const close_function_type close_function_pointer {::closesocket};
 #else
-    constexpr close_function_type close_function_pointer {::close};
+    const close_function_type close_function_pointer {::close};
 #endif
 }
 

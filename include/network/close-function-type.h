@@ -17,11 +17,10 @@
 #define NETWORK_CLOSE_FUNCTION_TYPE_H
 
 #include "network/handle-type.h"        // handle_type
-#include "network/os-error-type.h"      // os_error_type
 
 namespace Network
 {
-    using close_function_type = os_error_type (*)(handle_type);
+    using close_function_type = int (*)(handle_type);
 }
 
 #endif
