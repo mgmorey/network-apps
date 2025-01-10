@@ -31,21 +31,20 @@
 #include <iostream>     // std::cout, std::endl
 #include <sstream>      // std::ostringstream
 
-auto Network::listen(handle_type handle,
-                     int backlog_size,
-                     bool is_verbose) -> OsErrorResult
+auto Network::listen(handle_type handle, int backlog, bool is_verbose) ->
+    OsErrorResult
 {
     if (is_verbose) {
         std::cout << "Calling ::listen("
                   << handle
                   << ", "
-                  << backlog_size
+                  << backlog
                   << ')'
                   << std::endl;
     }
 
     reset_last_context_error();
-    const auto result {::listen(handle, backlog_size)};
+    const auto result {::listen(handle, backlog)};
 
     if (result == socket_error) {
         const auto error {get_last_context_error()};
@@ -54,7 +53,7 @@ auto Network::listen(handle_type handle,
         oss << "Call to ::listen("
             << handle
             << ", "
-            << backlog_size
+            << backlog
             << ") failed with error "
             << error
             << ": "

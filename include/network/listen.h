@@ -21,9 +21,8 @@
 
 namespace Network
 {
-    extern auto listen(handle_type handle,
-                       int backlog_size,
-                       bool is_verbose) -> OsErrorResult;
+    extern auto listen(handle_type handle, int backlog, bool is_verbose) ->
+        OsErrorResult;
 }
 
 #endif
