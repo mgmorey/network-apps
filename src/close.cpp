@@ -14,9 +14,9 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/close.h"                      // close()
-#include "network/format-os-error.h"            // format_os_error()
 #include "network/close-function-name.h"        // close_function_name
 #include "network/close-function-pointer.h"     // close_function_pointer
+#include "network/format-os-error.h"            // format_os_error()
 #include "network/get-last-context-error.h"     // get_last_context_error()
 #include "network/handle-type.h"                // handle_type
 #include "network/oserrorresult.h"              // OsErrorResult
