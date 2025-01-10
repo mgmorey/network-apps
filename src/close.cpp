@@ -29,8 +29,8 @@
 
 auto Network::close(handle_type handle, bool is_verbose) -> OsErrorResult
 {
-    const char* function_name {get_close_function_name};
-    const CloseFunctionPointer function_pointer {get_close_function_pointer()};
+    const auto* function_name {get_close_function_name};
+    const auto function_pointer {get_close_function_pointer()};
 
     if (is_verbose) {
         std::cout << "Calling "
