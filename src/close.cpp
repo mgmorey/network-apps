@@ -13,10 +13,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifdef WIN32
-
 #include "network/close.h"                      // close()
 #include "network/format-os-error.h"            // format_os_error()
+#include "network/get-close-function-name.h"    // get_close_function_name()
+#include "network/get-close-function-pointer.h" // get_close_function_pointer()
 #include "network/get-last-context-error.h"     // get_last_context_error()
 #include "network/handle-type.h"                // handle_type
 #include "network/oserrorresult.h"              // OsErrorResult
@@ -24,28 +24,33 @@
 #include "network/socket-error.h"               // socket_error
 #include "network/to-os-error.h"                // to_os_error()
 
-#include <winsock2.h>   // ::closesocket()
-
 #include <iostream>     // std::cout, std::endl
 #include <sstream>      // std::ostringstream
 
 auto Network::close(handle_type handle, bool is_verbose) -> OsErrorResult
 {
+    const char* function_name {get_close_function_name};
+    const CloseFunctionPointer function_pointer {get_close_function_pointer()};
+
     if (is_verbose) {
-        std::cout << "Calling ::closesocket("
+        std::cout << "Calling "
+                  << function_name
+                  << '('
                   << handle
                   << ')'
                   << std::endl;
     }
 
     reset_last_context_error();
-    const auto result {::closesocket(handle)};
+    const auto result {function_pointer(handle)};
 
     if (result == socket_error) {
         const auto error {get_last_context_error()};
         const auto os_error {to_os_error(error)};
         std::ostringstream oss;
-        oss << "Call to ::closesocket("
+        oss << "Call to "
+            << function_name
+            << '('
             << handle
             << ") failed with error "
             << error
@@ -56,5 +61,3 @@ auto Network::close(handle_type handle, bool is_verbose) -> OsErrorResult
 
     return OsErrorResult {};
 }
-
-#endif

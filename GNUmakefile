@@ -50,9 +50,10 @@ vpath %$(source_suffix) $(source_dir)/$(platform) $(source_dir)
 libnetwork_common_sources = accept.cpp address-sa.cpp address-sin.cpp	\
 address-sin6.cpp address.cpp addresserror.cpp addresslist.cpp		\
 addressstring.cpp argumentdata.cpp bind-endpoint.cpp bind-handle.cpp	\
-commonsocket.cpp connect-endpoint.cpp connect-handle.cpp		\
+close.cpp commonsocket.cpp connect-endpoint.cpp connect-handle.cpp	\
 create-socket-hints.cpp create-socketresult.cpp error.cpp		\
-familyerror.cpp format-bytestring.cpp format.cpp get-endpoint.cpp	\
+familyerror.cpp format-bytestring.cpp format.cpp			\
+get-close-function-pointer.cpp get-endpoint.cpp				\
 get-endpointresult.cpp get-hostname.cpp get-hostnameresult.cpp		\
 get-length-maximum.cpp get-length-minimum.cpp get-name.cpp		\
 get-nameresult.cpp get-operands.cpp get-option.cpp get-options.cpp	\
@@ -72,7 +73,7 @@ to-string-span-byte.cpp to-string-vector-byte.cpp			\
 to-string-vector-char.cpp to-string-void.cpp validate-bs.cpp		\
 validate-sa.cpp validate-sin.cpp validate-sin6.cpp
 
-libnetwork_native_sources = close.cpp create-socket-handle.cpp		\
+libnetwork_native_sources = create-socket-handle.cpp			\
 format-ai-error.cpp format-os-error.cpp get-last-context-error.cpp	\
 get-last-os-error.cpp nativecontext.cpp read.cpp			\
 set-last-context-error.cpp set-last-os-error.cpp start.cpp stop.cpp	\
