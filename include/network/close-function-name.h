@@ -13,16 +13,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_GET_CLOSE_FUNCTION_POINTER_H
-#define NETWORK_GET_CLOSE_FUNCTION_POINTER_H
-
-#include "network/handle-type.h"        // handle_type
-#include "network/os-error-type.h"      // os_error_type
+#ifndef NETWORK_CLOSE_FUNCTION_NAME_H
+#define NETWORK_CLOSE_FUNCTION_NAME_H
 
 namespace Network
 {
-    using CloseFunctionPointer = os_error_type (*)(handle_type);
-    extern auto get_close_function_pointer() -> CloseFunctionPointer;
+#ifdef WIN32
+    constexpr const char* close_function_name {"::closesocket"};
+#else
+    constexpr const char* close_function_name {"::close"};
+#endif
 }
 
 #endif

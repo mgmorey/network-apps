@@ -15,8 +15,8 @@
 
 #include "network/close.h"                      // close()
 #include "network/format-os-error.h"            // format_os_error()
-#include "network/get-close-function-name.h"    // get_close_function_name()
-#include "network/get-close-function-pointer.h" // get_close_function_pointer()
+#include "network/close-function-name.h"        // close_function_name
+#include "network/close-function-pointer.h"     // close_function_pointer
 #include "network/get-last-context-error.h"     // get_last_context_error()
 #include "network/handle-type.h"                // handle_type
 #include "network/oserrorresult.h"              // OsErrorResult
@@ -29,8 +29,8 @@
 
 auto Network::close(handle_type handle, bool is_verbose) -> OsErrorResult
 {
-    const auto* function_name {get_close_function_name};
-    const auto function_pointer {get_close_function_pointer()};
+    const auto* function_name {close_function_name};
+    const auto function_pointer {close_function_pointer};
 
     if (is_verbose) {
         std::cout << "Calling "
