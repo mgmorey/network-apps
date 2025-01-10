@@ -23,12 +23,6 @@
 
 #include <cstring>      // ::strnlen()
 
-auto Network::get_path_length(const char* path,
-                              length_type path_len) -> length_type
-{
-    return ::strnlen(path, path_len - 1);
-}
-
 auto Network::get_path_length(const sockaddr_un* sun,
                               length_type sun_len) -> length_type
 {
@@ -38,7 +32,7 @@ auto Network::get_path_length(const sockaddr_un* sun,
 
     const auto* const path {static_cast<const char*>(sun->sun_path)};
     const auto path_len {sun_len - sun_path_offset};
-    return get_path_length(path, path_len);
+    return ::strnlen(path, path_len - 1);
 }
 
 #endif
