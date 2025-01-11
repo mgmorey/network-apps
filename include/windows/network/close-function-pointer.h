@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_CLOSE_FUNCTION_POINTER_H
-#define NETWORK_CLOSE_FUNCTION_POINTER_H
+#ifndef WINDOWS_NETWORK_CLOSE_FUNCTION_POINTER_H
+#define WINDOWS_NETWORK_CLOSE_FUNCTION_POINTER_H
 
 #ifdef WIN32
 
