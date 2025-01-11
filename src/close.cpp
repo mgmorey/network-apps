@@ -29,12 +29,9 @@
 
 auto Network::close(handle_type handle, bool is_verbose) -> OsErrorResult
 {
-    const auto* function_name {close_function_name};
-    const auto function_pointer {close_function_pointer};
-
     if (is_verbose) {
         std::cout << "Calling "
-                  << function_name
+                  << close_function_name
                   << '('
                   << handle
                   << ')'
@@ -42,14 +39,14 @@ auto Network::close(handle_type handle, bool is_verbose) -> OsErrorResult
     }
 
     reset_last_context_error();
-    const auto result {function_pointer(handle)};
+    const auto result {close_function_pointer(handle)};
 
     if (result == socket_error) {
         const auto error {get_last_context_error()};
         const auto os_error {to_os_error(error)};
         std::ostringstream oss;
         oss << "Call to "
-            << function_name
+            << close_function_name
             << '('
             << handle
             << ") failed with error "
