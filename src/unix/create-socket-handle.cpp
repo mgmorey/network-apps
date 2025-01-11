@@ -29,11 +29,12 @@ auto Network::create_socket(socket_family_type family,
                             handle_type handle,
                             bool is_verbose) -> UniqueSocket
 {
-    if (family == AF_UNIX) {
+    switch (family) {  // NOLINT
+    case AF_UNIX:
         return std::make_unique<UnixSocket>(family, handle, is_verbose);
+    default:
+        return std::make_unique<CommonSocket>(family, handle, is_verbose);
     }
-
-    return std::make_unique<CommonSocket>(family, handle, is_verbose);
 }
 
 #endif
