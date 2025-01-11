@@ -16,21 +16,17 @@
 #ifndef NETWORK_CLOSE_FUNCTION_POINTER_H
 #define NETWORK_CLOSE_FUNCTION_POINTER_H
 
+#ifdef WIN32
+
 #include "network/close-function-type.h"        // close_function_type
 
-#ifdef WIN32
 #include <winsock2.h>       // ::closesocket()
-#else
-#include <unistd.h>         // ::close()
-#endif
 
 namespace Network
 {
-#ifdef WIN32
     const close_function_type close_function_pointer {::closesocket};
-#else
-    const close_function_type close_function_pointer {::close};
-#endif
 }
+
+#endif
 
 #endif

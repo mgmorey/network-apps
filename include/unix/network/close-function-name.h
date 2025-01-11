@@ -16,13 +16,13 @@
 #ifndef NETWORK_CLOSE_FUNCTION_NAME_H
 #define NETWORK_CLOSE_FUNCTION_NAME_H
 
+#ifndef WIN32
+
 namespace Network
 {
-#ifdef WIN32
-    constexpr const char* close_function_name {"::closesocket"};
-#else
     constexpr const char* close_function_name {"::close"};
-#endif
 }
+
+#endif
 
 #endif
