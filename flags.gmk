@@ -76,7 +76,11 @@ endif
 
 ifdef NDEBUG
 	cpp_symbols += _FORTIFY_SOURCE=2
-else ifeq "$(is_gcc)" "true"
+endif
+
+cpp_symbols += _GLIBCXX_ASSERTIONS
+
+ifndef NDEBUG
 	cpp_symbols += _GLIBCXX_DEBUG
 endif
 
