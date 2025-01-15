@@ -24,9 +24,6 @@
 #include "unix/connection.h"            // BUFFER_SIZE, SOCKET_HINTS,
                                         // SOCKET_NAME
 
-#include <sys/socket.h>         // SOCK_SEQPACKET
-#include <sys/un.h>             // AF_UNIX
-
 #include <cstdio>       // std::perror()
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
 #include <exception>    // std::exception
