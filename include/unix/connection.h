@@ -21,6 +21,8 @@
 
 #include "network/unixsockethints.h"    // UnixSocketHints
 
+#include <sys/socket.h>         // SOCK_SEQPACKET
+
 #include <cstddef>      // std::size_t
 
 constexpr std::size_t BUFFER_SIZE {12};
