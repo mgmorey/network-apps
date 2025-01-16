@@ -68,6 +68,18 @@ auto Network::read(handle_type handle,
         throw Error(oss.str());
     }
 
+    if (is_verbose) {
+        std::cout << "Call to ::read("
+                  << handle
+                  << ", \""
+                  << data
+                  << "\", "
+                  << size << ") returned data \""
+                  << data
+                  << '\"'
+                  << std::endl;
+    }
+
     return result;
 }
 
