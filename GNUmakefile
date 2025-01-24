@@ -15,6 +15,10 @@
 
 # Define project-specific variables
 
+ifneq "$(CLANG_CXX)" ""
+	CXX := $(CLANG_CXX)
+endif
+
 PREFIX ?= /usr/local
 VERSION ?= 0.0.1
 
