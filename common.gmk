@@ -25,18 +25,13 @@ to-upper = $(shell echo $1 | tr '[:lower:]' '[:upper:]')
 
 # Define platform-specific variables
 
-# Operating system name and release
-os_release = $(shell $(script_dir)/get-os-release -iko)
-os_distro = $(word 1,$(os_release))
-os_name = $(word 2,$(os_release))
-os_type = $(word 3,$(os_release))
+# Program aliases
+clang_tidy = clang-tidy$(LLVM_SUFFIX)
 
-# Platform name
-ifeq "$(os_name)" "MINGW64_NT"
-	platform = windows
-else
-	platform = unix
-endif
+# Program versions
+clang_tidy_version = $(shell $(script_dir)/get-llvm-version $(clang_tidy))
+cppcheck_version = $(shell $(script_dir)/which-version cppcheck)
+ctags_version = $(shell $(script_dir)/which-version ctags)
 
 # Program presence flags
 is_clang = $(shell $(script_dir)/is-clang $(CXX))
@@ -45,13 +40,18 @@ is_gcc = $(shell $(script_dir)/is-gcc $(CXX))
 is_gnu_as = $(shell $(script_dir)/is-gnu-as $(AS))
 is_gnu_ld = $(shell $(script_dir)/is-gnu-ld $(LD))
 
-# Program aliases
-clang_tidy = clang-tidy$(LLVM_SUFFIX)
+# Operating system name and release
+os_data = $(shell $(script_dir)/get-os-release -iko)
+os_dist = $(word 1,$(os_data))
+os_name = $(word 2,$(os_data))
+os_type = $(word 3,$(os_data))
 
-# Program versions
-clang_tidy_version = $(shell $(script_dir)/get-llvm-version $(clang_tidy))
-cppcheck_version = $(shell $(script_dir)/which-version cppcheck)
-ctags_version = $(shell $(script_dir)/which-version ctags)
+# Platform name
+ifeq "$(os_name)" "MINGW64_NT"
+	platform = windows
+else
+	platform = unix
+endif
 
 # Local Variables:
 # mode: makefile

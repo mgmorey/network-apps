@@ -63,7 +63,7 @@ endif
 cpp_symbols += OS_$(call to-macro,$(os_name))
 
 ifeq "$(os_name)" "Linux"
-	cpp_symbols += OS_LINUX_$(call to-macro,$(os_distro))
+	cpp_symbols += OS_LINUX_$(call to-macro,$(os_dist))
 endif
 
 ifeq "$(os_name)" "CYGWIN_NT"

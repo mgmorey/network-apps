@@ -190,7 +190,7 @@ endif
 all_targets = $(build_targets) sizes test
 
 ifneq "$(os_type)" "ms-windows"
-ifneq "$(os_distro)" "macos"
+ifneq "$(os_dist)" "macos"
 	all_targets += unix
 endif
 endif
