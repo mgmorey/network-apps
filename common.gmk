@@ -34,11 +34,11 @@ cppcheck_version = $(shell $(script_dir)/which-version cppcheck)
 ctags_version = $(shell $(script_dir)/which-version ctags)
 
 # Program presence flags
-is_clang = $(shell $(script_dir)/is-clang $(CXX))
-is_ctags_universal = $(shell $(script_dir)/is-ctags-universal ctags)
-is_gcc = $(shell $(script_dir)/is-gcc $(CXX))
-is_gnu_as = $(shell $(script_dir)/is-gnu-as $(AS))
-is_gnu_ld = $(shell $(script_dir)/is-gnu-ld $(LD))
+exists_clang = $(shell $(script_dir)/is-clang $(CXX))
+exists_ctags_universal = $(shell $(script_dir)/is-ctags-universal ctags)
+exists_gcc = $(shell $(script_dir)/is-gcc $(CXX))
+exists_gnu_as = $(shell $(script_dir)/is-gnu-as $(AS))
+exists_gnu_ld = $(shell $(script_dir)/is-gnu-ld $(LD))
 
 # Operating system name and release
 os_data = $(shell $(script_dir)/get-os-release -iko)
