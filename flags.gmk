@@ -153,7 +153,7 @@ endif
 endif
 
 ifdef WITH_LOAD_MAP_OPT
-	ldflags += $(call format-option-ld,$(WITH_LOAD_MAP_OPT),$@.map)
+	ldflags += $(call format-option-ld,$(WITH_LOAD_MAP_OPT),$(subst .exe,.map,$@))
 endif
 
 ldflags_o = $(ldflags)
@@ -162,7 +162,7 @@ ldflags_so = $(ldflags)
 ifneq "$(WITH_SHARED_OBJS)" "false"
 ifeq "$(exists_gnu_ld)" "true"
 	ldflags_o += $(call format-option-ld,-rpath,'\$$ORIGIN')
-	ldflags_so += $(call format-option-ld,-soname,$(call get-alias,$@))
+	ldflags_so += $(call format-option-ld,-soname,$(subst .$(VERSION),,$@))
 endif
 endif
 
