@@ -92,7 +92,7 @@ CPPFLAGS += $(addprefix -D,$(sort $(cpp_symbols)))
 ifeq "$(WITH_LISTINGS)" "true"
 ifeq "$(exists_gcc)" "true"
 ifeq "$(exists_gnu_as)" "true"
-	listing = $(subst .o,.lst,$@)
+	listing = $(@:.o=.lst)
 	ASFLAGS += $(call format-option-as,-adghln,$(listing))
 	CXX_ASFLAGS += $(call format-option-native,a,$(ASFLAGS))
 endif
