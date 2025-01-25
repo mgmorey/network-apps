@@ -23,24 +23,24 @@ PREFIX ?= /usr/local
 VERSION ?= 0.0.1
 
 # Language
-language = c++
-standard = $(language)20
+language := c++
+standard := $(language)20
 
 # Directories
-cache_dir = .cache
-cppbuild_dir = $(cache_dir)/cppcheck
-dependency_dir = $(cache_dir)/dependency
-include_dir = include
-library_dir = lib
-object_dir = object
-script_dir = script
-source_dir = src
+cache_dir := .cache
+cppbuild_dir := $(cache_dir)/cppcheck
+dependency_dir := $(cache_dir)/dependency
+include_dir := include
+library_dir := lib
+object_dir := object
+script_dir := script
+source_dir := src
 
 # File suffixes
-dependency_suffix = .dep
-include_suffix = .h
-object_suffix = .o
-source_suffix = .cpp
+dependency_suffix := .dep
+include_suffix := .h
+object_suffix := .o
+source_suffix := .cpp
 
 # Include common functions and flag variables
 include common.gmk
@@ -133,12 +133,12 @@ $(libnetwork_objects))
 
 ifneq "$(WITH_SHARED_OBJS)" "false"
 	libnetwork_shared = libnetwork.so.$(VERSION)
-	libnetwork = $(call get-alias,$(libnetwork_shared))
+	libnetwork_alias = $(call get-alias,$(libnetwork_shared))
 endif
 
 libnetwork_static = $(library_dir)/libnetwork.a
 
-libraries = $(libnetwork) $(libnetwork_shared) $(libnetwork_static)
+libraries = $(libnetwork_alias) $(libnetwork_shared) $(libnetwork_static)
 
 program_sources = $(test_sources)
 
@@ -164,7 +164,7 @@ $(source_suffix),$(dependency_suffix),$(sources)))
 listings = $(subst $(object_suffix),.lst,$(objects))
 logfiles = $(addsuffix .log,$(basename $(programs)))
 mapfiles = $(addsuffix .map,$(basename $(programs))) $(call	\
-subst-suffix,.map,$(libnetwork))
+subst-suffix,.map,$(libnetwork_alias))
 
 dumps = $(addsuffix .stackdump,$(programs))
 
@@ -299,7 +299,7 @@ install: $(libraries)
 	$(install) -d $(PREFIX)/include/network $(PREFIX)/lib
 	$(install) $(include_dir)/network/* $(PREFIX)/include/network
 	$(install) $(libnetwork_static) $(libnetwork_shared) $(PREFIX)/lib
-	cd $(PREFIX)/lib && ln -sf $(libnetwork_shared) $(libnetwork)
+	cd $(PREFIX)/lib && ln -sf $(libnetwork_shared) $(libnetwork_alias)
 
 .PHONY: libraries
 libraries: $(libraries)
@@ -338,7 +338,7 @@ unix: $(sort $(unix_programs))
 $(libnetwork_shared): $(libnetwork_objects)
 	$(filter-out -flto,$(LINK$(object_suffix))) -o $@ $^ $(LDLIBS)
 
-$(libnetwork): $(libnetwork_shared)
+$(libnetwork_alias): $(libnetwork_shared)
 	test -e $< && ln -sf $< $@
 
 ifeq "$(USING_ARCHIVE_MEMBER_RULE)" "true"
@@ -351,7 +351,7 @@ endif
 ifeq "$(WITH_SHARED_OBJS)" "false"
 $(programs): $(libnetwork_static)
 else
-$(programs): $(libnetwork)
+$(programs): $(libnetwork_alias)
 endif
 
 # Define suffix rules

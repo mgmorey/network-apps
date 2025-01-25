@@ -15,6 +15,13 @@
 
 # Define common functions
 
+# Operating system name and release
+os_data := $(shell $(script_dir)/get-os-release -iko)
+os_dist := $(word 1,$(os_data))
+os_name := $(word 2,$(os_data))
+os_type := $(word 3,$(os_data))
+
+# Functions
 compare-versions = $(shell $(script_dir)/compare-versions "$1" "$2")
 get-alias = $(shell echo $1 | sed 's/\(\.[0-9][0-9]*\)\(\.[0-9][0-9]*\)*$$/\1/')
 not-version = $(shell echo $1 | sed 's/\.[0-9][0-9]*\(\.[0-9][0-9]*\)*$$//')
@@ -39,12 +46,6 @@ exists_ctags_universal = $(shell $(script_dir)/is-ctags-universal ctags)
 exists_gcc = $(shell $(script_dir)/is-gcc $(CXX))
 exists_gnu_as = $(shell $(script_dir)/is-gnu-as $(AS))
 exists_gnu_ld = $(shell $(script_dir)/is-gnu-ld $(LD))
-
-# Operating system name and release
-os_data = $(shell $(script_dir)/get-os-release -iko)
-os_dist = $(word 1,$(os_data))
-os_name = $(word 2,$(os_data))
-os_type = $(word 3,$(os_data))
 
 # Platform name
 ifeq "$(os_name)" "MINGW64_NT"
