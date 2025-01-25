@@ -14,11 +14,10 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 # Define functions for formatting compiler and linker options
-
-format-option := $(if $(filter true,$1),$2=$3,$2 $3)
-format-option-as := $(call format-option,$(exists_gnu_as),$1,$2)
-format-option-ld := $(call format-option,$(exists_gnu_ld),$1,$2)
-format-option-native := $(shell echo $(if $2,-W$1,) $2 | tr ' ' ',')
+format-option = $(if $(filter true,$1),$2=$3,$2 $3)
+format-option-as = $(call format-option,$(exists_gnu_as),$1,$2)
+format-option-ld = $(call format-option,$(exists_gnu_ld),$1,$2)
+format-option-native = $(shell echo $(if $2,-W$1,) $2 | tr ' ' ',')
 
 # ARFLAGS
 ARFLAGS = r
@@ -154,8 +153,7 @@ endif
 endif
 
 ifdef WITH_LOAD_MAP_OPT
-	load_map = $(call subst-suffix,.map,$@)
-	ldflags += $(call format-option-ld,$(WITH_LOAD_MAP_OPT),$(load_map))
+	ldflags += $(call format-option-ld,$(WITH_LOAD_MAP_OPT),$@.map)
 endif
 
 ldflags_o = $(ldflags)

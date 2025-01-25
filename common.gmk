@@ -17,9 +17,7 @@
 
 # Define common functions
 compare-versions = $(shell $(script_dir)/compare-versions "$1" "$2")
-subst-suffix = $(shell echo $2 | sed 's/\(\.[^.]*\)*$$/$1/')
 to-macro = $(shell echo $1 | tr '[:lower:]' '[:upper:]' | tr '-' '_')
-to-upper = $(shell echo $1 | tr '[:lower:]' '[:upper:]')
 
 # Define platform-specific variables
 
