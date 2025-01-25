@@ -26,9 +26,9 @@ to-upper = $(shell echo $1 | tr '[:lower:]' '[:upper:]')
 # Define operating system name and release
 os_data := $(shell $(script_dir)/get-os-release -iko)
 os_dist := $(word 1,$(os_data))
-os_dist_macro := $(call to-macro,$(word 1,$(os_data)))
+os_dist_macro := $(call to-macro,$(os_dist))
 os_name := $(word 2,$(os_data))
-os_name_macro := $(call to-macro,$(word 2,$(os_name)))
+os_name_macro := $(call to-macro,$(os_name))
 os_type := $(word 3,$(os_data))
 
 # Define program aliases
