@@ -13,45 +13,44 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+# Define common functions and variables
+
 # Define common functions
-
-# Operating system name and release
-os_data := $(shell $(script_dir)/get-os-release -iko)
-os_dist := $(word 1,$(os_data))
-os_name := $(word 2,$(os_data))
-os_type := $(word 3,$(os_data))
-
-# Functions
 compare-versions = $(shell $(script_dir)/compare-versions "$1" "$2")
-get-alias = $(shell echo $1 | sed 's/\(\.[0-9][0-9]*\)\(\.[0-9][0-9]*\)*$$/\1/')
-not-version = $(shell echo $1 | sed 's/\.[0-9][0-9]*\(\.[0-9][0-9]*\)*$$//')
 subst-suffix = $(shell echo $2 | sed 's/\(\.[^.]*\)*$$/$1/')
-to-macro = $(call to-upper,$(call to-under,$1))
-to-under = $(shell echo $1 | tr '-' '_')
+to-macro = $(shell echo $1 | tr '[:lower:]' '[:upper:]' | tr '-' '_')
 to-upper = $(shell echo $1 | tr '[:lower:]' '[:upper:]')
 
 # Define platform-specific variables
 
-# Program aliases
+# Define operating system name and release
+os_data := $(shell $(script_dir)/get-os-release -iko)
+os_dist := $(word 1,$(os_data))
+os_dist_macro := $(call to-macro,$(word 1,$(os_data)))
+os_name := $(word 2,$(os_data))
+os_name_macro := $(call to-macro,$(word 2,$(os_name)))
+os_type := $(word 3,$(os_data))
+
+# Define program aliases
 clang_tidy = clang-tidy$(LLVM_SUFFIX)
 
-# Program versions
+# Define program versions
 clang_tidy_version = $(shell $(script_dir)/get-llvm-version $(clang_tidy))
 cppcheck_version = $(shell $(script_dir)/which-version cppcheck)
 ctags_version = $(shell $(script_dir)/which-version ctags)
 
-# Program presence flags
+# Define program presence flags
 exists_clang = $(shell $(script_dir)/is-clang $(CXX))
 exists_ctags_universal = $(shell $(script_dir)/is-ctags-universal ctags)
 exists_gcc = $(shell $(script_dir)/is-gcc $(CXX))
 exists_gnu_as = $(shell $(script_dir)/is-gnu-as $(AS))
 exists_gnu_ld = $(shell $(script_dir)/is-gnu-ld $(LD))
 
-# Platform name
+# Define platform name
 ifeq "$(os_name)" "MINGW64_NT"
-	platform = windows
+	platform := windows
 else
-	platform = unix
+	platform := unix
 endif
 
 # Local Variables:

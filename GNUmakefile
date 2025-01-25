@@ -133,7 +133,7 @@ $(libnetwork_objects))
 
 ifneq "$(WITH_SHARED_OBJS)" "false"
 	libnetwork_shared = libnetwork.so.$(VERSION)
-	libnetwork_alias = $(call get-alias,$(libnetwork_shared))
+	libnetwork_alias = libnetwork.so
 endif
 
 libnetwork_static = $(library_dir)/libnetwork.a

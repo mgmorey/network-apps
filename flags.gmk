@@ -15,10 +15,10 @@
 
 # Define functions for formatting compiler and linker options
 
-format-option = $(if $(filter true,$1),$2=$3,$2 $3)
-format-option-as = $(call format-option,$(exists_gnu_as),$1,$2)
-format-option-ld = $(call format-option,$(exists_gnu_ld),$1,$2)
-format-option-native = $(shell echo $(if $2,-W$1,) $2 | tr ' ' ',')
+format-option := $(if $(filter true,$1),$2=$3,$2 $3)
+format-option-as := $(call format-option,$(exists_gnu_as),$1,$2)
+format-option-ld := $(call format-option,$(exists_gnu_ld),$1,$2)
+format-option-native := $(shell echo $(if $2,-W$1,) $2 | tr ' ' ',')
 
 # ARFLAGS
 ARFLAGS = r
@@ -60,10 +60,10 @@ ifeq "$(USING_DMALLOC)" "true"
 	cpp_symbols += DMALLOC DMALLOC_FUNC_CHECK
 endif
 
-cpp_symbols += OS_$(call to-macro,$(os_name))
+cpp_symbols += OS_$(os_name_macro)
 
 ifeq "$(os_name)" "Linux"
-	cpp_symbols += OS_LINUX_$(call to-macro,$(os_dist))
+	cpp_symbols += OS_LINUX_$(os_dist_macro)
 endif
 
 ifeq "$(os_name)" "CYGWIN_NT"
