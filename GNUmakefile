@@ -36,6 +36,9 @@ object_dir := object
 script_dir := script
 source_dir := src
 
+# File prefixes
+library_prefix := lib
+
 # File suffixes
 dependency_suffix := .dep
 include_suffix := .h

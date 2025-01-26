@@ -21,6 +21,10 @@ format-option-as = $(call format-option,$(family_of_as),$1,$2)
 format-option-ld = $(call format-option,$(family_of_ld),$1,$2)
 format-option = $(if $(filter gnu,$1),$2=$3,$2 $3)
 
+# Define predicates for object and shared object files
+is_object = $(filter %$(object_suffix),$@)
+is_shared = $(filter $(library_prerfix)%.so.$(VERSION),$@)
+
 # ARFLAGS
 ARFLAGS = r
 
@@ -94,9 +98,9 @@ CPPFLAGS += $(addprefix -D,$(sort $(cpp_symbols)))
 ifeq "$(WITH_LISTINGS)" "true"
 ifeq "$(family_of_cc)" "gnu"
 ifeq "$(family_of_as)" "gnu"
-	listing = $(@:.o=.lst)
-	ASFLAGS += $(call format-option-as,-adghln,$(listing))
-	CXX_ASFLAGS += $(call format-gcc-option-as,$(ASFLAGS))
+	asflags = -adghln,$(@:.o=.lst)
+	CXX_ASFLAGS += $(if $(is_object),$(call	\
+	format-option-as,$(asflags)),)
 endif
 endif
 endif
@@ -144,36 +148,27 @@ CXXFLAGS += -Wall -Werror -Wextra -Wshadow -Wsign-conversion
 
 # LDFLAGS
 
-ifdef NDEBUG
-ifeq "$(family_of_cc)" "clang"
-	LDFLAGS += -flto
-endif
-else
+ifndef NDEBUG
 ifeq "$(USING_LIBASAN)" "true"
 	LDFLAGS += -fsanitize=address
 endif
 endif
 
 ifdef WITH_LOAD_MAP_OPT
-	ldflags += $(call format-option-ld,$(WITH_LOAD_MAP_OPT),$(@).map)
+	ldflags += $(if $(target_is_object),,$(call		\
+	format-option-ld,$(WITH_LOAD_MAP_OPT),$(@).map))
 endif
-
-ldflags_o = $(ldflags)
-ldflags_so = $(ldflags)
 
 ifneq "$(WITH_SHARED_OBJS)" "false"
 ifeq "$(family_of_ld)" "gnu"
-	ldflags_o += $(call format-option-ld,-rpath,'$$ORIGIN')
-	ldflags_so += $(call format-option-ld,-soname,$(@:.$(VERSION)=))
+	ldflags += $(if $(is_shared),$(call			\
+	format-option-ld,-soname,$(@:.$(VERSION)=)),$(call	\
+	format-option-ld,-rpath,'$$ORIGIN'))
 endif
 endif
 
-ldflags_native = $(if $(target_is_library),$(ldflags_so),$(ldflags_o))
-ldflags_target = $(if $(target_is_library),-shared,)
-
-target_is_library = $(filter lib%,$@)
-
-LDFLAGS += $(call format-gcc-option-ld,$(ldflags_native)) $(ldflags_target)
+LDFLAGS += $(if $(is_object),,$(call format-gcc-option-ld,$(ldflags)))
+LDFLAGS += $(if $(is_shared),-shared,)
 
 # LDLIBS
 
