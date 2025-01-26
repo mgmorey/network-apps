@@ -98,9 +98,8 @@ CPPFLAGS += $(addprefix -D,$(sort $(cpp_symbols)))
 ifeq "$(WITH_LISTINGS)" "true"
 ifeq "$(family_of_cc)" "gnu"
 ifeq "$(family_of_as)" "gnu"
-	asflags = -adghln,$(@:.o=.lst)
 	CXX_ASFLAGS += $(if $(is_object),$(call	\
-	format-option-as,$(asflags)),)
+	format-option-gcc-as,-adghln,$(@:.o=.lst)),)
 endif
 endif
 endif
@@ -120,7 +119,15 @@ ifeq "$(USING_LIBASAN)" "true"
 endif
 endif
 
-CXXFLAGS += -ftrivial-auto-var-init=zero
+ifeq "$(family_of_cc)" "clang"
+ifeq "$(call compare-versions,$(gcc_version),15)" "greater"
+	CXXFLAGS += -ftrivial-auto-var-init=zero
+endif
+else
+ifeq "$(call compare-versions,$(gcc_version),12)" "greater"
+	CXXFLAGS += -ftrivial-auto-var-init=zero
+endif
+endif
 
 ifndef NDEBUG
 ifeq "$(USING_VALGRIND)" "true"
