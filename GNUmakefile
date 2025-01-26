@@ -185,7 +185,7 @@ artifacts = $(binary_artifacts) $(text_artifacts)
 
 build_targets = assert objects libraries programs sizes
 
-ifeq "$(exists_ctags_universal)" "true"
+ifeq "$(ctags_is_universal)" "true"
 ifeq "$(call compare-versions,$(ctags_version),5.8)" "greater"
 	build_targets += tags
 endif

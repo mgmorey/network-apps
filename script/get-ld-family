@@ -1,6 +1,6 @@
 #!/bin/sh -eu
 
-# Copyright (C) 2022  "Michael G. Morey" <mgmorey@gmail.com>
+# Copyright (C) 2025  "Michael G. Morey" <mgmorey@gmail.com>
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,18 +15,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-grep_command_name() {
-    grep -Eq '^(g?cc|[cg]\+\+)(-[0-9]+)?(\.exe)? \(.+\) .+$'
+is_gnu_ld() {
+    "$1" --version 2>/dev/null | grep -Eq '^GNU ld '
 }
 
-is_gcc() {
-    "$1" --version 2>/dev/null | grep_command_name
-}
-
-if is_gcc "${1-gcc}"; then
-    result=true
+if is_gnu_ld "${1-ld}"; then
+    result=gnu
 else
-    result=false
+    result=clang
 fi
 
 printf '%s\n' "$result"

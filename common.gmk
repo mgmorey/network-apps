@@ -37,12 +37,13 @@ clang_tidy_version := $(shell $(script_dir)/get-llvm-version $(clang_tidy))
 cppcheck_version := $(shell $(script_dir)/which-version cppcheck)
 ctags_version := $(shell $(script_dir)/which-version ctags)
 
-# Define program presence flags
-exists_clang := $(shell $(script_dir)/is-clang $(CXX))
-exists_ctags_universal := $(shell $(script_dir)/is-ctags-universal ctags)
-exists_gcc := $(shell $(script_dir)/is-gcc $(CXX))
-exists_gnu_as := $(shell $(script_dir)/is-gnu-as $(AS))
-exists_gnu_ld := $(shell $(script_dir)/is-gnu-ld $(LD))
+# Define program extant flags
+ctags_is_universal := $(shell $(script_dir)/is-ctags-universal ctags)
+
+# Define program family flags
+family_of_as := $(shell $(script_dir)/get-as-family $(AS))
+family_of_cc := $(shell $(script_dir)/get-cc-family $(CC))
+family_of_ld := $(shell $(script_dir)/get-ld-family $(LD))
 
 # Define platform name
 ifeq "$(os_name)" "MINGW64_NT"

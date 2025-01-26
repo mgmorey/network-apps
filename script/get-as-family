@@ -1,6 +1,6 @@
 #!/bin/sh -eu
 
-# Copyright (C) 2022  "Michael G. Morey" <mgmorey@gmail.com>
+# Copyright (C) 2025  "Michael G. Morey" <mgmorey@gmail.com>
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -20,9 +20,9 @@ is_gnu_as() {
 }
 
 if is_gnu_as "${1-as}"; then
-    result=true
+    result=gnu
 else
-    result=false
+    result=clang
 fi
 
 printf '%s\n' "$result"

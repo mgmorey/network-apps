@@ -11,9 +11,6 @@ ctags	--version	1s/Universal Ctags \([0-9][0-9]*\(\.[0-9][0-9]*\)*\).*/\1/p
 curl	--version	1s/curl \([0-9][0-9]*\(\.[0-9][0-9]*\)*\).*/\1/p
 curl-config	--version	s/libcurl \([0-9][0-9]*\(\.[0-9][0-9]*\)*\).*/\1/p
 dmalloc	--version	1s/Dmalloc utility version string is: \([0-9][0-9]*\(\.[0-9][0-9]*\)*\).*/\1/p
-docker	--version	s/Docker version \([0-9][0-9]*\(\.[0-9][0-9]*\)*\).*/\1/p
-docker-compose	--version	s/docker-compose version \([0-9][0-9]*\(\.[0-9][0-9]*\)*\), .*/\1/p
-emacs	--version	1s/GNU Emacs \([0-9][0-9]*\(\.[0-9][0-9]*\)*\).*/\1/p
 expr	--version	s/expr .* \([0-9][0-9]*\(\.[0-9][0-9]*\)*\)/\1/p
 g++	-dumpfullversion,-dumpversion	s/\([0-9][0-9]*\(\.[0-9][0-9]*\)*\)/\1/p
 gawk	--version	1s/GNU Awk \([0-9][0-9]*\(\.[0-9][0-9]*\)*\).*/\1/p
@@ -44,6 +41,5 @@ sbcl	--version	s/SBCL \([0-9][0-9]*\(\.[0-9][0-9]*\)*\).*/\1/p
 sed	--version	1s/.*sed .* \([0-9][0-9]*\(\.[0-9][0-9]*\)*\)/\1/p
 sqlite3	--version	s/\([0-9][0-9]*\(\.[0-9][0-9]*\)*\).*/\1/p
 ssh	-V	s/OpenSSH[A-Z_a-z]*_\([0-9][0-9]*\(\.[0-9][0-9]*\)*\).*/\1/p
-uwsgi	--version	s/\([0-9][0-9]*\(\.[0-9][0-9]*\)*\).*/\1/p
 which	--version	1s/GNU which v\([0-9][0-9]*\(\.[0-9][0-9]*\)*\), .*/\1/p
 xargs	--version	1s/xargs .* \([0-9][0-9]*\(\.[0-9][0-9]*\)*\).*/\1/p

@@ -14,9 +14,9 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 # Define functions for formatting compiler and linker options
-format-option = $(if $(filter true,$1),$2=$3,$2 $3)
-format-option-as = $(call format-option,$(exists_gnu_as),$1,$2)
-format-option-ld = $(call format-option,$(exists_gnu_ld),$1,$2)
+format-option = $(if $(filter gnu,$1),$2=$3,$2 $3)
+format-option-as = $(call format-option,$(family_of_as),$1,$2)
+format-option-ld = $(call format-option,$(family_of_ld),$1,$2)
 format-option-native = $(shell echo $(if $2,-W$1,) $2 | tr ' ' ',')
 
 # ARFLAGS
@@ -90,8 +90,8 @@ CPPFLAGS += $(addprefix -D,$(sort $(cpp_symbols)))
 # CXX_ASFLAGS
 
 ifeq "$(WITH_LISTINGS)" "true"
-ifeq "$(exists_gcc)" "true"
-ifeq "$(exists_gnu_as)" "true"
+ifeq "$(family_of_cc)" "gnu"
+ifeq "$(family_of_as)" "gnu"
 	listing = $(@:.o=.lst)
 	ASFLAGS += $(call format-option-as,-adghln,$(listing))
 	CXX_ASFLAGS += $(call format-option-native,a,$(ASFLAGS))
@@ -101,7 +101,7 @@ endif
 
 # CXXFLAGS
 
-ifeq "$(exists_gnu_as)" "true"
+ifeq "$(family_of_as)" "gnu"
 	CXXFLAGS += -pipe
 endif
 
@@ -120,7 +120,7 @@ ifndef NDEBUG
 ifeq "$(USING_VALGRIND)" "true"
 	CXXFLAGS += -gdwarf-4
 endif
-ifeq "$(exists_gcc)" "true"
+ifeq "$(family_of_cc)" "gnu"
 	CXXFLAGS += -ggdb
 else
 	CXXFLAGS += -g3
@@ -143,7 +143,7 @@ CXXFLAGS += -Wall -Werror -Wextra -Wshadow -Wsign-conversion
 # LDFLAGS
 
 ifdef NDEBUG
-ifeq "$(exists_clang)" "true"
+ifeq "$(family_of_cc)" "clang"
 	LDFLAGS += -flto
 endif
 else
@@ -160,16 +160,16 @@ ldflags_o = $(ldflags)
 ldflags_so = $(ldflags)
 
 ifneq "$(WITH_SHARED_OBJS)" "false"
-ifeq "$(exists_gnu_ld)" "true"
+ifeq "$(family_of_ld)" "gnu"
 	ldflags_o += $(call format-option-ld,-rpath,'\$$ORIGIN')
 	ldflags_so += $(call format-option-ld,-soname,$(@:.$(VERSION)=))
 endif
 endif
 
-lib_target = $(filter lib%,$@)
+ldflags_native = $(if $(target_is_library),$(ldflags_so),$(ldflags_o))
+ldflags_target = $(if $(target_is_library),-shared,)
 
-ldflags_native = $(if $(lib_target),$(ldflags_so),$(ldflags_o))
-ldflags_target = $(if $(lib_target),-shared,)
+target_is_library = $(filter lib%,$@)
 
 LDFLAGS += $(call format-option-native,l,$(ldflags_native)) $(ldflags_target)
 
