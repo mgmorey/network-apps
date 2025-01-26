@@ -36,6 +36,7 @@ clang_tidy := clang-tidy$(LLVM_SUFFIX)
 clang_tidy_version := $(shell $(script_dir)/get-llvm-version $(clang_tidy))
 cppcheck_version := $(shell $(script_dir)/which-version cppcheck)
 ctags_version := $(shell $(script_dir)/which-version ctags)
+gcc_version := $(shell $(script_dir)/which-version $(CC))
 
 # Define program extant flags
 ctags_is_universal := $(shell $(script_dir)/is-ctags-universal ctags)
