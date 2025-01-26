@@ -98,8 +98,10 @@ CPPFLAGS += $(addprefix -D,$(sort $(cpp_symbols)))
 ifeq "$(WITH_LISTINGS)" "true"
 ifeq "$(family_of_cc)" "gnu"
 ifeq "$(family_of_as)" "gnu"
+	listing = $(@:$(object_suffix)=.lst)
+	asflags = $(call format-option-as,-adghln,$(listing))
 	CXX_ASFLAGS += $(if $(is_object),$(call	\
-	format-option-gcc-as,-adghln,$(@:.o=.lst)),)
+	format-gcc-option-as,$(asflags)),)
 endif
 endif
 endif
