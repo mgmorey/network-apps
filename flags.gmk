@@ -13,8 +13,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-# Define functions for formatting compiler and linker options
-format-native-option = $(shell $(script_dir)/format-native-option '$1' $2)
+# Define functions for formatting compiler options to the assembler and linker
+format-gcc-option-as = $(call format-gcc-option,as,$1)
+format-gcc-option-ld = $(call format-gcc-option,ld,$1)
+format-gcc-option = $(shell $(script_dir)/format-gcc-option $1 $2)
 format-option-as = $(call format-option,$(family_of_as),$1,$2)
 format-option-ld = $(call format-option,$(family_of_ld),$1,$2)
 format-option = $(if $(filter gnu,$1),$2=$3,$2 $3)
@@ -94,7 +96,7 @@ ifeq "$(family_of_cc)" "gnu"
 ifeq "$(family_of_as)" "gnu"
 	listing = $(@:.o=.lst)
 	ASFLAGS += $(call format-option-as,-adghln,$(listing))
-	CXX_ASFLAGS += $(call format-native-option,as,$(ASFLAGS))
+	CXX_ASFLAGS += $(call format-gcc-option-as,$(ASFLAGS))
 endif
 endif
 endif
@@ -171,7 +173,7 @@ ldflags_target = $(if $(target_is_library),-shared,)
 
 target_is_library = $(filter lib%,$@)
 
-LDFLAGS += $(call format-native-option,ld,$(ldflags_native)) $(ldflags_target)
+LDFLAGS += $(call format-gcc-option-ld,$(ldflags_native)) $(ldflags_target)
 
 # LDLIBS
 

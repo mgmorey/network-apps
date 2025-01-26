@@ -1,6 +1,6 @@
 #!/usr/bin/awk -f
 
-# format-native-option: format as/ld options for compiler
+# format-gcc-option: format compiler option for assembler or linker
 # Copyright (C) 2025  "Michael G. Morey" <mgmorey@gmail.com>
 
 # This program is free software: you can redistribute it and/or modify
