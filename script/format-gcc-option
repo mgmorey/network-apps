@@ -32,7 +32,7 @@ BEGIN {
 
     while (i < ARGC) {
 	arg = ARGV[i++];
-	sub(/\$ORIGIN/, "'$ORIGIN'", arg);
+	gsub(/\$/, "\\$", arg);
 	printf(",%s", arg);
     }
 
