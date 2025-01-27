@@ -23,8 +23,8 @@ ifeq "$(USING_CLANG)" "true"
 endif
 
 # Define common functions
-compare-versions := $(shell $(script_dir)/compare-versions "$1" "$2")
-to-macro := $(shell echo $1 | tr '[:lower:]' '[:upper:]' | tr '-' '_')
+compare-versions = $(shell $(script_dir)/compare-versions "$1" "$2")
+to-macro = $(shell echo $1 | tr '[:lower:]' '[:upper:]' | tr '-' '_')
 
 # Define platform-specific variables
 
