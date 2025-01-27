@@ -36,7 +36,7 @@ standard := $(language)20
 major = $(MAJOR_VERSION)
 minor = $(MINOR_VERSION)
 micro = $(MICRO_VERSION)
-version = $(MAJOR_VERSION).$(MINOR_VERSION).$(MICRO_VERSION)
+version = $(major).$(minor).$(micro)
 
 # Define directories
 cache_dir := .cache
