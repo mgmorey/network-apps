@@ -23,7 +23,7 @@ format-option = $(if $(filter gnu,$1),$2=$3,$2 $3)
 
 # Define predicates for object and shared object files
 is_object = $(filter %$(object_suffix),$@)
-is_shared = $(filter $(library_prerfix)%$(shared_suffix).$(version),$@)
+is_shared = $(filter $(library_prerfix)%$(shared_suffix),$@)
 
 # ARFLAGS
 ARFLAGS = r
@@ -164,8 +164,9 @@ endif
 endif
 
 ifdef WITH_LOAD_MAP_OPT
-	ldflags += $(if $(target_is_object),,$(call		\
-	format-option-ld,$(WITH_LOAD_MAP_OPT),$(@).map))
+	ldsuffix = $(if $(is_shared),$(shared_suffix),$(binary_suffix))
+	ldflags += $(if $(is_object),,$(call				\
+	format-option-ld,$(WITH_LOAD_MAP_OPT),$(@:$(ldsuffix)=).map))
 endif
 
 ifneq "$(WITH_SHARED_OBJS)" "false"

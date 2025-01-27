@@ -45,7 +45,8 @@ ld_family := $(shell $(script_dir)/get-ld-family $(LD))
 cxx_version := $(shell $(script_dir)/which-version $(CXX))
 
 # Define utility version variables
-clang_tidy_version := $(shell $(script_dir)/get-llvm-version $(CLANG_TIDY))
+clang_tidy_version := $(if $(CLANG_TIDY),$(shell	\
+$(script_dir)/get-llvm-version $(CLANG_TIDY)),)
 cppcheck_version := $(shell $(script_dir)/which-version cppcheck)
 ctags_version := $(shell $(script_dir)/which-version ctags)
 

@@ -45,10 +45,12 @@ source_dir := src
 library_prefix := lib
 
 # File suffixes
+alias_suffix := .so.$(major)
+binary_suffix := .exe
 dependency_suffix := .dep
 include_suffix := .h
 object_suffix := .o
-shared_suffix := .so
+shared_suffix := .so.$(version)
 source_suffix := .cpp
 
 # Include common functions and flag variables
@@ -141,13 +143,15 @@ libnetwork_members = $(patsubst					\
 $(libnetwork_objects))
 
 ifneq "$(WITH_SHARED_OBJS)" "false"
-	libnetwork_shared = libnetwork$(shared_suffix).$(version)
-	libnetwork_alias = libnetwork$(shared_suffix).$(major)
+	libnetwork_alias = libnetwork$(alias_suffix)
+	libnetwork_shared = libnetwork$(shared_suffix)
 endif
 
+libnetwork_mapfile = libnetwork.map
 libnetwork_static = $(library_dir)/libnetwork.a
 
 libraries = $(libnetwork_alias) $(libnetwork_shared) $(libnetwork_static)
+library_mapfiles = $(libnetwork_map)
 
 program_sources = $(test_sources)
 
@@ -172,8 +176,8 @@ dependencies = $(addprefix $(dependency_dir)/,$(subst	\
 $(source_suffix),$(dependency_suffix),$(sources)))
 listings = $(subst $(object_suffix),.lst,$(objects))
 logfiles = $(addsuffix .log,$(basename $(programs)))
-mapfiles = $(addsuffix .map,$(libraries) $(programs)) $(call	\
-subst-suffix,.map,$(libnetwork_alias))
+mapfiles = $(addsuffix .map,$(basename $(programs)))	\
+$(library_mapfiles)
 
 dumps = $(addsuffix .stackdump,$(programs))
 
