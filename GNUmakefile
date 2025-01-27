@@ -48,6 +48,7 @@ library_prefix := lib
 dependency_suffix := .dep
 include_suffix := .h
 object_suffix := .o
+shared_suffix := .so
 source_suffix := .cpp
 
 # Include common functions and flag variables
@@ -140,8 +141,8 @@ libnetwork_members = $(patsubst					\
 $(libnetwork_objects))
 
 ifneq "$(WITH_SHARED_OBJS)" "false"
-	libnetwork_shared = libnetwork.so.$(version)
-	libnetwork_alias = libnetwork.so.$(major)
+	libnetwork_shared = libnetwork$(shared_suffix).$(version)
+	libnetwork_alias = libnetwork$(shared_suffix).$(major)
 endif
 
 libnetwork_static = $(library_dir)/libnetwork.a

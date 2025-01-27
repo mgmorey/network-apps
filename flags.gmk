@@ -23,7 +23,7 @@ format-option = $(if $(filter gnu,$1),$2=$3,$2 $3)
 
 # Define predicates for object and shared object files
 is_object = $(filter %$(object_suffix),$@)
-is_shared = $(filter $(library_prerfix)%.so.$(version),$@)
+is_shared = $(filter $(library_prerfix)%$(shared_suffix).$(version),$@)
 
 # ARFLAGS
 ARFLAGS = r
