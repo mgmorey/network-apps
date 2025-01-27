@@ -17,10 +17,8 @@
 
 # Override CC and CXX with CLANG_CC and CLANG_CXX
 ifeq "$(USING_CLANG)" "true"
-	CLANG_CC ?= clang$(LLVM_SUFFIX)
 	CLANG_CXX ?= clang++$(LLVM_SUFFIX)
 	CLANG_TIDY ?= clang-tidy$(LLVM_SUFFIX)
-	override CC := $(CLANG_CC)
 	override CXX := $(CLANG_CXX)
 endif
 
