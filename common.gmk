@@ -17,8 +17,9 @@
 
 # Override CC and CXX with CLANG_CC and CLANG_CXX
 ifeq "$(USING_CLANG)" "true"
-	CLANG_CC ?= clang
-	CLANG_CXX ?= clang++
+	CLANG_CC ?= clang$(LLVM_SUFFIX)
+	CLANG_CXX ?= clang++$(LLVM_SUFFIX)
+	CLANG_TIDY ?= clang-tidy$(LLVM_SUFFIX)
 	override CC := $(CLANG_CC)
 	override CXX := $(CLANG_CXX)
 endif
@@ -37,23 +38,21 @@ os_name := $(word 2,$(os_data))
 os_name_macro := $(call to-macro,$(os_name))
 os_type := $(word 3,$(os_data))
 
-# Define program aliases
-clang_tidy := clang-tidy$(LLVM_SUFFIX)
+# Define toolchain family variables
+as_family := $(shell $(script_dir)/get-as-family $(AS))
+cxx_family := $(shell $(script_dir)/get-cc-family $(CXX))
+ld_family := $(shell $(script_dir)/get-ld-family $(LD))
 
-# Define program versions
-clang_tidy_version := $(shell $(script_dir)/get-llvm-version $(clang_tidy))
+# Define compiler version variables
+cxx_version := $(shell $(script_dir)/which-version $(CXX))
+
+# Define utility version variables
+clang_tidy_version := $(shell $(script_dir)/get-llvm-version $(CLANG_TIDY))
 cppcheck_version := $(shell $(script_dir)/which-version cppcheck)
 ctags_version := $(shell $(script_dir)/which-version ctags)
-gcc_version := $(shell $(script_dir)/which-version $(CC))
 
-# Define program extant flags
+# Define program extant variables
 ctags_is_universal := $(shell $(script_dir)/is-ctags-universal ctags)
-
-# Define program family flags
-family_of_as := $(shell $(script_dir)/get-as-family $(AS))
-family_of_cc := $(shell $(script_dir)/get-cc-family $(CC))
-family_of_cxx := $(shell $(script_dir)/get-cc-family $(CXX))
-family_of_ld := $(shell $(script_dir)/get-ld-family $(LD))
 
 # Define platform name
 ifeq "$(os_name)" "MINGW64_NT"

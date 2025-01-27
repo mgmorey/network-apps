@@ -333,7 +333,7 @@ test: check
 
 .PHONY: tidy
 tidy: $(sort $(sources))
-	$(clang_tidy) $^ $(CLANG_TIDY_FLAGS)
+	$(CLANG_TIDY) $^ $(CLANG_TIDY_FLAGS)
 
 .PHONY: unix
 unix: $(sort $(unix_programs))

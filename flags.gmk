@@ -17,8 +17,8 @@
 format-gcc-option-as = $(call format-gcc-option,as,$1)
 format-gcc-option-ld = $(call format-gcc-option,ld,$1)
 format-gcc-option = $(shell $(script_dir)/format-gcc-option $1 $2)
-format-option-as = $(call format-option,$(family_of_as),$1,$2)
-format-option-ld = $(call format-option,$(family_of_ld),$1,$2)
+format-option-as = $(call format-option,$(as_family),$1,$2)
+format-option-ld = $(call format-option,$(ld_family),$1,$2)
 format-option = $(if $(filter gnu,$1),$2=$3,$2 $3)
 
 # Define predicates for object and shared object files
@@ -96,8 +96,8 @@ CPPFLAGS += $(addprefix -D,$(sort $(cpp_symbols)))
 # CXX_ASFLAGS
 
 ifeq "$(WITH_LISTINGS)" "true"
-ifeq "$(family_of_cxx)" "gnu"
-ifeq "$(family_of_as)" "gnu"
+ifeq "$(cxx_family)" "gnu"
+ifeq "$(as_family)" "gnu"
 	listing = $(@:$(object_suffix)=.lst)
 	asflags = $(call format-option-as,-adghln,$(listing))
 	CXX_ASFLAGS += $(if $(is_object),$(call	\
@@ -108,7 +108,7 @@ endif
 
 # CXXFLAGS
 
-ifeq "$(family_of_as)" "gnu"
+ifeq "$(as_family)" "gnu"
 	CXXFLAGS += -pipe
 endif
 
@@ -121,12 +121,12 @@ ifeq "$(USING_LIBASAN)" "true"
 endif
 endif
 
-ifeq "$(family_of_cxx)" "clang"
-ifeq "$(call compare-versions,$(gcc_version),15)" "greater"
+ifeq "$(cxx_family)" "clang"
+ifeq "$(call compare-versions,$(cxx_version),15)" "greater"
 	CXXFLAGS += -ftrivial-auto-var-init=zero
 endif
 else
-ifeq "$(call compare-versions,$(gcc_version),12)" "greater"
+ifeq "$(call compare-versions,$(cxx_version),12)" "greater"
 	CXXFLAGS += -ftrivial-auto-var-init=zero
 endif
 endif
@@ -135,7 +135,7 @@ ifndef NDEBUG
 ifeq "$(USING_VALGRIND)" "true"
 	CXXFLAGS += -gdwarf-4
 endif
-ifeq "$(family_of_cxx)" "gnu"
+ifeq "$(cxx_family)" "gnu"
 	CXXFLAGS += -ggdb
 else
 	CXXFLAGS += -g3
@@ -169,7 +169,7 @@ ifdef WITH_LOAD_MAP_OPT
 endif
 
 ifneq "$(WITH_SHARED_OBJS)" "false"
-ifeq "$(family_of_ld)" "gnu"
+ifeq "$(ld_family)" "gnu"
 	ldflags += $(if $(is_shared),$(call				\
 	format-option-ld,-soname,$(@:.$(minor).$(micro)=)),$(call	\
 	format-option-ld,-rpath,'$$ORIGIN'))
