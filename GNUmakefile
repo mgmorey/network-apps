@@ -151,7 +151,7 @@ libnetwork_mapfile = libnetwork.map
 libnetwork_static = $(library_dir)/libnetwork.a
 
 libraries = $(libnetwork_alias) $(libnetwork_shared) $(libnetwork_static)
-library_mapfiles = $(libnetwork_map)
+library_mapfiles = $(libnetwork_mapfile)
 
 program_sources = $(test_sources)
 
