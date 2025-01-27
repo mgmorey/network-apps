@@ -15,6 +15,9 @@
 
 # Define project-specific variables
 
+ifneq "$(CLANG_CC)" ""
+	CC := $(CLANG_CC)
+endif
 ifneq "$(CLANG_CXX)" ""
 	CXX := $(CLANG_CXX)
 endif
