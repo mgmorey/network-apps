@@ -15,9 +15,17 @@
 
 # Define common functions and variables
 
+# Override CC and CXX with CLANG_CC and CLANG_CXX
+ifeq "$(USING_CLANG)" "true"
+	CLANG_CC ?= clang
+	CLANG_CXX ?= clang++
+	override CC := $(CLANG_CC)
+	override CXX := $(CLANG_CXX)
+endif
+
 # Define common functions
-compare-versions = $(shell $(script_dir)/compare-versions "$1" "$2")
-to-macro = $(shell echo $1 | tr '[:lower:]' '[:upper:]' | tr '-' '_')
+compare-versions := $(shell $(script_dir)/compare-versions "$1" "$2")
+to-macro := $(shell echo $1 | tr '[:lower:]' '[:upper:]' | tr '-' '_')
 
 # Define platform-specific variables
 

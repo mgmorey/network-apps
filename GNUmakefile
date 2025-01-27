@@ -15,16 +15,9 @@
 
 # Define project-specific variables
 
-ifneq "$(CLANG_CC)" ""
-	CC := $(CLANG_CC)
-endif
-ifneq "$(CLANG_CXX)" ""
-	CXX := $(CLANG_CXX)
-endif
-
-MAJOR_VERSION = 0
-MINOR_VERSION = 0
-MICRO_VERSION = 1
+MAJOR_VERSION := 0
+MINOR_VERSION := 0
+MICRO_VERSION := 1
 
 PREFIX ?= /usr/local
 
