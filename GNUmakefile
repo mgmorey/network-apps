@@ -22,14 +22,23 @@ ifneq "$(CLANG_CXX)" ""
 	CXX := $(CLANG_CXX)
 endif
 
-PREFIX ?= /usr/local
-VERSION ?= 0.0.1
+MAJOR_VERSION = 0
+MINOR_VERSION = 0
+MICRO_VERSION = 1
 
-# Language
+PREFIX ?= /usr/local
+
+# Define language
 language := c++
 standard := $(language)20
 
-# Directories
+# Define version
+major = $(MAJOR_VERSION)
+minor = $(MINOR_VERSION)
+micro = $(MICRO_VERSION)
+version = $(MAJOR_VERSION).$(MINOR_VERSION).$(MICRO_VERSION)
+
+# Define directories
 cache_dir := .cache
 cppbuild_dir := $(cache_dir)/cppcheck
 dependency_dir := $(cache_dir)/dependency
@@ -138,8 +147,8 @@ libnetwork_members = $(patsubst					\
 $(libnetwork_objects))
 
 ifneq "$(WITH_SHARED_OBJS)" "false"
-	libnetwork_shared = libnetwork.so.$(VERSION)
-	libnetwork_alias = libnetwork.so
+	libnetwork_shared = libnetwork.so.$(version)
+	libnetwork_alias = libnetwork.so.$(major)
 endif
 
 libnetwork_static = $(library_dir)/libnetwork.a

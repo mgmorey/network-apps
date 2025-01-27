@@ -23,7 +23,7 @@ format-option = $(if $(filter gnu,$1),$2=$3,$2 $3)
 
 # Define predicates for object and shared object files
 is_object = $(filter %$(object_suffix),$@)
-is_shared = $(filter $(library_prerfix)%.so.$(VERSION),$@)
+is_shared = $(filter $(library_prerfix)%.so.$(version),$@)
 
 # ARFLAGS
 ARFLAGS = r
@@ -170,8 +170,8 @@ endif
 
 ifneq "$(WITH_SHARED_OBJS)" "false"
 ifeq "$(family_of_ld)" "gnu"
-	ldflags += $(if $(is_shared),$(call			\
-	format-option-ld,-soname,$(@:.$(VERSION)=)),$(call	\
+	ldflags += $(if $(is_shared),$(call				\
+	format-option-ld,-soname,$(@:.$(minor).$(micro)=)),$(call	\
 	format-option-ld,-rpath,'$$ORIGIN'))
 endif
 endif
