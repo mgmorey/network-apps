@@ -7,11 +7,13 @@ cc	-dumpfullversion,-dumpversion	s/\([0-9][0-9]*\(\.[0-9][0-9]*\)*\)/\1/p
 clang	-dumpfullversion,-dumpversion	s/\([0-9][0-9]*\(\.[0-9][0-9]*\)*\)/\1/p
 clang++	-dumpfullversion,-dumpversion	s/\([0-9][0-9]*\(\.[0-9][0-9]*\)*\)/\1/p
 clang-tidy	--version	s/.*LLVM version \([0-9][0-9]*\(\.[0-9][0-9]*\)*\).*/\1/p
+cmake	--version	s/cmake version \([0-9][0-9]*\(\.[0-9][0-9]*\)*\).*/\1/p
 cppcheck	--version	s/Cppcheck \([0-9][0-9]*\(\.[0-9][0-9]*\)*\).*/\1/p
-ctags	--version	1s/Universal Ctags \([0-9][0-9]*\(\.[0-9][0-9]*\)*\).*/\1/p
+ctags	--version	1s/\(Exuberant\|Universal\) Ctags \([0-9][0-9]*\(\.[0-9][0-9]*\)*\).*/\2/p
 curl	--version	1s/curl \([0-9][0-9]*\(\.[0-9][0-9]*\)*\).*/\1/p
 curl-config	--version	s/libcurl \([0-9][0-9]*\(\.[0-9][0-9]*\)*\).*/\1/p
 dmalloc	--version	1s/Dmalloc utility version string is: \([0-9][0-9]*\(\.[0-9][0-9]*\)*\).*/\1/p
+dos2unix	--version	1s/dos2unix \([0-9][0-9]*\(\.[0-9][0-9]*\)*\).*/\1/p
 expr	--version	s/expr .* \([0-9][0-9]*\(\.[0-9][0-9]*\)*\)/\1/p
 g++	-dumpfullversion,-dumpversion	s/\([0-9][0-9]*\(\.[0-9][0-9]*\)*\)/\1/p
 gawk	--version	1s/GNU Awk \([0-9][0-9]*\(\.[0-9][0-9]*\)*\).*/\1/p
@@ -19,7 +21,10 @@ gcc	-dumpfullversion,-dumpversion	s/\([0-9][0-9]*\(\.[0-9][0-9]*\)*\)/\1/p
 gdb	--version	1s/GNU gdb .* \([0-9][0-9]*\(\.[0-9][0-9]*\)*\).*/\1/p
 git	--version	s/git version \([0-9][0-9]*\(\.[0-9][0-9]*\)*\).*/\1/p
 gmake	--version	1s/GNU Make \([0-9][0-9]*\(\.[0-9][0-9]*\)*\)/\1/p
+gnuplot	--version	1s/gnuplot \([0-9][0-9]*\.[0-9][0-9]*\) patchlevel \([0-9][0-9]*\)/\1\.\2/p
+gnutls-cli	--version	1s/gnutls-cli \([0-9][0-9]*\(\.[0-9][0-9]*\)*\).*/\1/p
 gsed	--version	1s/.*sed .* \([0-9][0-9]*\(\.[0-9][0-9]*\)*\)/\1/p
+idn2	--version	1s/idn2 .* \([0-9][0-9]*\(\.[0-9][0-9]*\)*\).*/\1/p
 java	-version	s/\(java\|openjdk\) version "\([0-9][0-9]*\(\.[0-9][0-9]*\)*\).*"/\2/p
 ld	--version	1s/GNU ld .* \([0-9][0-9]*\(\.[0-9][0-9]*\)*\).*/\1/p
 ldd	--version	s/ldd .* \([0-9][0-9]*\(\.[0-9][0-9]*\)*\).*/\1/p
@@ -31,7 +36,9 @@ nm	--version	1s/\(Apple LLVM version\|GNU nm .*\) \([0-9][0-9]*\(\.[0-9][0-9]*\)
 objdump	--version	1s/GNU objdump .* \([0-9][0-9]*\(\.[0-9][0-9]*\)*\).*/\1/p
 openssl	version	s/OpenSSL \([0-9][0-9]*\(\.[0-9][0-9]*\)*\).*/\1/p
 pip	--version	s/pip \([0-9][0-9]*\(\.[0-9][0-9]*\)*\) from .*/\1/p
+pip3	--version	s/pip \([0-9][0-9]*\(\.[0-9][0-9]*\)*\) from .*/\1/p
 pipenv	--version	s/pipenv, version \([0-9][0-9]*\(\.[0-9][0-9]*\)*\)/\1/p
+psl	--version	1s/psl \([0-9][0-9]*\(\.[0-9][0-9]*\)*\).*/\1/p
 pyenv	--version	s/pyenv \([0-9][0-9]*\(\.[0-9][0-9]*\)*\).*/\1/p
 pytest	--version	s/pytest \([0-9][0-9]*\(\.[0-9][0-9]*\)*\).*/\1/p
 python	--version	s/Python \([0-9][0-9]*\(\.[0-9][0-9]*\)*\)/\1/p
@@ -42,5 +49,6 @@ sbcl	--version	s/SBCL \([0-9][0-9]*\(\.[0-9][0-9]*\)*\).*/\1/p
 sed	--version	1s/.*sed .* \([0-9][0-9]*\(\.[0-9][0-9]*\)*\)/\1/p
 sqlite3	--version	s/\([0-9][0-9]*\(\.[0-9][0-9]*\)*\).*/\1/p
 ssh	-V	s/OpenSSH[A-Z_a-z]*_\([0-9][0-9]*\(\.[0-9][0-9]*\)*\).*/\1/p
+valgrind	--version	s/valgrind-\([0-9][0-9]*\(\.[0-9][0-9]*\)*\).*/\1/p
 which	--version	1s/GNU which v\([0-9][0-9]*\(\.[0-9][0-9]*\)*\), .*/\1/p
 xargs	--version	1s/xargs .* \([0-9][0-9]*\(\.[0-9][0-9]*\)*\).*/\1/p
