@@ -31,7 +31,7 @@ os_id_name := $(word 2,$(os_id_data))
 os_id_type := $(word 3,$(os_id_data))
 
 # Define operating system macros
-os_macro_data := $(shell $(script_dir)/format-as-macro $(os_id_data))
+os_macro_data := $(shell $(script_dir)/format-os-macro $(os_id_data))
 os_macro_dist := $(word 1,$(os_macro_data))
 os_macro_name := $(word 2,$(os_macro_data))
 

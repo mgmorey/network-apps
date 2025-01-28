@@ -1,6 +1,6 @@
 #!/bin/sh -eu
 
-# format-as-macro: convert letters to uppercase and replace dashes
+# format-os-macro: convert letters to uppercase and replace dashes
 # Copyright (C) 2025  "Michael G. Morey" <mgmorey@gmail.com>
 
 # This program is free software: you can redistribute it and/or modify
@@ -16,10 +16,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-format_as_macro() {
+format_os_macro() {
     tr '[:lower:]' '[:upper:]' | tr '-' '_'
 }
 
 if [ $# -gt 1 ]; then
-    printf "%s\n" "$@" | format_as_macro
+    printf "%s\n" "$@" | format_os_macro
 fi
