@@ -173,7 +173,7 @@ ifeq "$(WITH_LOAD_MAP)" "true"
 endif
 
 ifneq "$(WITH_SHARED_OBJS)" "false"
-ifeq "$(ld_family)" "gnu"
+ifeq "$(cxx_family)" "gnu"
 	rpath = '$$ORIGIN'
 	soname = $(@:.$(minor).$(micro)=)
 	ldflags += $(if $(is_shared),$(call		\
