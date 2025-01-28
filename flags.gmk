@@ -69,15 +69,15 @@ endif
 
 cpp_symbols += OS_$(os_macro_name)
 
-ifeq "$(os_name)" "Linux"
+ifeq "$(os_id_name)" "Linux"
 	cpp_symbols += OS_LINUX_$(os_macro_dist)
 endif
 
-ifeq "$(os_name)" "CYGWIN_NT"
+ifeq "$(os_id_name)" "CYGWIN_NT"
 	cpp_symbols += _GNU_SOURCE
-else ifeq "$(os_name)" "Darwin"
+else ifeq "$(os_id_name)" "Darwin"
 	cpp_symbols += _DARWIN_C_SOURCE
-else ifeq "$(os_name)" "MINGW64_NT"
+else ifeq "$(os_id_name)" "MINGW64_NT"
 	cpp_symbols += WIN32
 endif
 
@@ -192,7 +192,7 @@ ifeq "$(USING_DMALLOC)" "true"
 	LDLIBS += -ldmalloc
 endif
 
-ifeq "$(os_name)" "MINGW64_NT"
+ifeq "$(os_id_name)" "MINGW64_NT"
 	LDLIBS += -lws2_32
 endif
 
