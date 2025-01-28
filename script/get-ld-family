@@ -16,7 +16,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 is_gnu_ld() {
-    "$1" --version 2>/dev/null | grep -Eq '^GNU ld '
+    ("$1" --version || "$1" -v) 2>/dev/null | grep -Eq '^(GNU ld|LLD) '
 }
 
 if is_gnu_ld "${1-ld}"; then
