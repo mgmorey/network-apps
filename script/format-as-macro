@@ -1,6 +1,7 @@
 #!/bin/sh -eu
 
-# Copyright (C) 2022  "Michael G. Morey" <mgmorey@gmail.com>
+# format-as-macro: convert letters to uppercase and replace dashes
+# Copyright (C) 2025  "Michael G. Morey" <mgmorey@gmail.com>
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,8 +16,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-get_version() {
-    sed -n 's/.*LLVM version \([0-9][0-9]*\(\.[0-9][0-9]*\)*\).*/\1/p'
+format_as_macro() {
+    tr '[:lower:]' '[:upper:]' | tr '-' '_'
 }
 
-"$1" --version 2>/dev/null | get_version
+if [ $# -gt 1 ]; then
+    printf "%s\n" "$@" | format_as_macro
+fi

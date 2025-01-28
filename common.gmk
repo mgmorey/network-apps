@@ -22,19 +22,18 @@ ifeq "$(USING_CLANG)" "true"
 	override CXX := $(CLANG_CXX)
 endif
 
-# Define common functions
-compare-versions = $(shell $(script_dir)/compare-versions "$1" "$2")
-to-macro = $(shell echo $1 | tr '[:lower:]' '[:upper:]' | tr '-' '_')
-
 # Define platform-specific variables
 
-# Define operating system name and release
-os_data := $(shell $(script_dir)/get-os-release -iko)
-os_dist := $(word 1,$(os_data))
-os_dist_macro := $(call to-macro,$(os_dist))
-os_name := $(word 2,$(os_data))
-os_name_macro := $(call to-macro,$(os_name))
-os_type := $(word 3,$(os_data))
+# Define operating system identifiers
+os_id_data := $(shell $(script_dir)/get-os-release -iko)
+os_id_dist := $(word 1,$(os_id_data))
+os_id_name := $(word 2,$(os_id_data))
+os_id_type := $(word 3,$(os_id_data))
+
+# Define operating system macros
+os_macro_data := $(shell $(script_dir)/format-as-macro $(os_id_data))
+os_macro_dist := $(word 1,$(os_macros))
+os_macro_name := $(word 2,$(os_macros))
 
 # Define toolchain family variables
 as_family := $(shell $(script_dir)/get-as-family $(AS))
@@ -46,7 +45,7 @@ cxx_version := $(shell $(script_dir)/which-version $(CXX))
 
 # Define utility version variables
 clang_tidy_version := $(if $(CLANG_TIDY),$(shell	\
-$(script_dir)/get-llvm-version $(CLANG_TIDY)),)
+$(script_dir)/which-version $(CLANG_TIDY)),)
 cppcheck_version := $(shell $(script_dir)/which-version cppcheck)
 ctags_version := $(shell $(script_dir)/which-version ctags)
 
@@ -54,7 +53,7 @@ ctags_version := $(shell $(script_dir)/which-version ctags)
 ctags_is_universal := $(shell $(script_dir)/is-ctags-universal ctags)
 
 # Define platform name
-ifeq "$(os_name)" "MINGW64_NT"
+ifeq "$(os_id_name)" "MINGW64_NT"
 	platform := windows
 else
 	platform := unix

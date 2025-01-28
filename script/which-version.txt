@@ -6,6 +6,7 @@ c++	-dumpfullversion,-dumpversion	s/\([0-9][0-9]*\(\.[0-9][0-9]*\)*\)/\1/p
 cc	-dumpfullversion,-dumpversion	s/\([0-9][0-9]*\(\.[0-9][0-9]*\)*\)/\1/p
 clang	-dumpfullversion,-dumpversion	s/\([0-9][0-9]*\(\.[0-9][0-9]*\)*\)/\1/p
 clang++	-dumpfullversion,-dumpversion	s/\([0-9][0-9]*\(\.[0-9][0-9]*\)*\)/\1/p
+clang-tidy	--version	s/.*LLVM version \([0-9][0-9]*\(\.[0-9][0-9]*\)*\).*/\1/p
 cppcheck	--version	s/Cppcheck \([0-9][0-9]*\(\.[0-9][0-9]*\)*\).*/\1/p
 ctags	--version	1s/Universal Ctags \([0-9][0-9]*\(\.[0-9][0-9]*\)*\).*/\1/p
 curl	--version	1s/curl \([0-9][0-9]*\(\.[0-9][0-9]*\)*\).*/\1/p

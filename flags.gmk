@@ -14,6 +14,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 # Define functions for formatting compiler options to the assembler and linker
+compare-versions = $(shell $(script_dir)/compare-versions "$1" "$2")
 format-gcc-option-as = $(call format-gcc-option,as,$1)
 format-gcc-option-ld = $(call format-gcc-option,ld,$1)
 format-gcc-option = $(shell $(script_dir)/format-gcc-option $1 $2)
@@ -22,8 +23,9 @@ format-option-ld = $(call format-option,$(ld_family),$1,$2)
 format-option = $(if $(filter gnu,$1),$2=$3,$2 $3)
 
 # Define predicates for object and shared object files
+is_dependency = $(filter %$(dependency_suffix),$@)
 is_object = $(filter %$(object_suffix),$@)
-is_shared = $(filter $(library_prerfix)%$(shared_suffix),$@)
+is_shared = $(filter $(library_prefix)%$(shared_suffix),$@)
 
 # ARFLAGS
 ARFLAGS = r
@@ -65,10 +67,10 @@ ifeq "$(USING_DMALLOC)" "true"
 	cpp_symbols += DMALLOC DMALLOC_FUNC_CHECK
 endif
 
-cpp_symbols += OS_$(os_name_macro)
+cpp_symbols += OS_$(os_macro_name)
 
 ifeq "$(os_name)" "Linux"
-	cpp_symbols += OS_LINUX_$(os_dist_macro)
+	cpp_symbols += OS_LINUX_$(os_macro_dist)
 endif
 
 ifeq "$(os_name)" "CYGWIN_NT"
@@ -163,21 +165,25 @@ ifeq "$(USING_LIBASAN)" "true"
 endif
 endif
 
-ifdef WITH_LOAD_MAP_OPT
+ifeq "$(WITH_LOAD_MAP)" "true"
 	ldsuffix = $(if $(is_shared),$(shared_suffix),$(binary_suffix))
-	ldflags += $(if $(is_object),,$(call				\
-	format-option-ld,$(WITH_LOAD_MAP_OPT),$(@:$(ldsuffix)=).map))
+	loadmap = $(@:$(ldsuffix)=).map
+	loadopt = $(if $(filter clang,$(ld_family)),-map,-Map)
+	ldflags += $(call format-option-ld,$(loadopt),$(loadmap))
 endif
 
 ifneq "$(WITH_SHARED_OBJS)" "false"
 ifeq "$(ld_family)" "gnu"
-	ldflags += $(if $(is_shared),$(call				\
-	format-option-ld,-soname,$(@:.$(minor).$(micro)=)),$(call	\
-	format-option-ld,-rpath,'$$ORIGIN'))
+	rpath = '$$ORIGIN'
+	soname = $(@:.$(minor).$(micro)=)
+	ldflags += $(if $(is_shared),$(call		\
+	format-option-ld,-soname,$(soname)),$(call	\
+	format-option-ld,-rpath,$(rpath)))
 endif
 endif
 
-LDFLAGS += $(if $(is_object),,$(call format-gcc-option-ld,$(ldflags)))
+LDFLAGS += $(if $(is_dependency),,$(if $(is_object),,$(call	\
+format-gcc-option-ld,$(ldflags))))
 LDFLAGS += $(if $(is_shared),-shared,)
 
 # LDLIBS

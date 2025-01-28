@@ -116,19 +116,19 @@ tags = TAGS
 
 libnetwork_sources = $(libnetwork_common_sources) $(libnetwork_native_sources)
 
-ifneq "$(os_name)" "MINGW64_NT"
+ifneq "$(os_id_name)" "MINGW64_NT"
 	libnetwork_sources += $(libnetwork_unix_sources)
 endif
 
 sources = $(libnetwork_sources) $(test_sources)
 
-ifneq "$(os_name)" "MINGW64_NT"
+ifneq "$(os_id_name)" "MINGW64_NT"
 	sources += $(unix_sources)
 endif
 
 test_sources = $(test_common_sources)
 
-ifneq "$(os_name)" "MINGW64_NT"
+ifneq "$(os_id_name)" "MINGW64_NT"
 	test_sources += $(test_unix_sources)
 endif
 
@@ -155,16 +155,16 @@ library_mapfiles = $(libnetwork_mapfile)
 
 program_sources = $(test_sources)
 
-ifeq "$(os_name)" "FreeBSD"
+ifeq "$(os_id_name)" "FreeBSD"
 	program_sources += $(unix_sources)
-else ifeq "$(os_name)" "Linux"
+else ifeq "$(os_id_name)" "Linux"
 	program_sources += $(unix_sources)
 endif
 
 program_objects = $(addprefix $(object_dir)/,$(addsuffix	\
 $(object_suffix),$(basename $(program_sources))))
 
-ifeq "$(os_type)" "ms-windows"
+ifeq "$(os_id_type)" "ms-windows"
 	program_suffix = .exe
 endif
 
@@ -206,13 +206,13 @@ endif
 
 all_targets = $(build_targets) sizes test
 
-ifneq "$(os_type)" "ms-windows"
-ifneq "$(os_dist)" "macos"
+ifneq "$(os_id_type)" "ms-windows"
+ifneq "$(os_id_dist)" "macos"
 	all_targets += unix
 endif
 endif
 
-ifeq "$(os_name)" "MINGW64_NT"
+ifeq "$(os_id_name)" "MINGW64_NT"
 	all_targets += dos2unix
 endif
 
@@ -222,7 +222,7 @@ COMPILE.cc = $(strip $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c)
 LINK$(object_suffix) = $(strip $(CXX) $(LDFLAGS))
 
 # Define install program variable
-ifeq "$(os_name)" "Darwin"
+ifeq "$(os_id_name)" "Darwin"
 	install = ginstall
 else
 	install = install
