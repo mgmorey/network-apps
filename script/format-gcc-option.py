@@ -18,13 +18,13 @@
 
 import sys
 
-if (len(sys.argv) < 2):
-    exit(1)
+if len(sys.argv) < 3:
+    sys.exit(1)
 
 tool = sys.argv[1]
 
-if (tool != "as" and tool != "ld"):
-    exit(1)
+if tool not in ('as', 'ld'):
+    sys.exit(1)
 
 option = '-W%.1s,%s' % (tool, ','.join(sys.argv[2:]))
 print(option.replace('$', '\\$'))
