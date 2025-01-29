@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-"""Combine multiple options for an assembler or linker into a single
+"""Join multiple options for an assembler or linker into a single
 option for the compiler.
 
 """
@@ -24,8 +24,8 @@ import sys
 
 
 def main():
-    """Main function for script."""
-    print(','.join(sys.argv[1:]).replace('$', '\\$'))
+    """Define script main function."""
+    print(','.join(sys.argv[1:]))
     return 0
 
 
