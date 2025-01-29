@@ -18,13 +18,21 @@
 
 import sys
 
-if len(sys.argv) < 3:
-    sys.exit(1)
+def main():
+    try:
+        tool = sys.argv[1]
 
-tool = sys.argv[1]
+        if tool not in ('as', 'ld'):
+            print('Invalid argument %s' % tool, file=sys.stderr)
+            sys.exit(1)
 
-if tool not in ('as', 'ld'):
-    sys.exit(1)
+        if len(sys.argv) > 2:
+            option = '-W%.1s,%s' % (tool, ','.join(sys.argv[2:]))
+            print(option.replace('$', '\\$'))
+        return 0
+    except IndexError:
+        print('Not enough arguments', file=sys.stderr)
+        sys.exit(1)
 
-option = '-W%.1s,%s' % (tool, ','.join(sys.argv[2:]))
-print(option.replace('$', '\\$'))
+if __name__ == '__main__':
+    sys.exit(main())
