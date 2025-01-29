@@ -16,9 +16,13 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+"""Script to format compiler options for an assembler or linker."""
+
 import sys
 
+
 def main():
+    """Main function for script."""
     try:
         tool = sys.argv[1]
 
@@ -33,6 +37,7 @@ def main():
     except IndexError:
         print('Not enough arguments', file=sys.stderr)
         sys.exit(1)
+
 
 if __name__ == '__main__':
     sys.exit(main())
