@@ -336,9 +336,11 @@ tags: $(tags)
 .PHONY: test
 test: check
 
+ifeq "$(cxx_family)" "clang"
 .PHONY: tidy
 tidy: $(sort $(sources))
 	$(CLANG_TIDY) $^ $(CLANG_TIDY_FLAGS)
+endif
 
 .PHONY: unix
 unix: $(sort $(unix_programs))
