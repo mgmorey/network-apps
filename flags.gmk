@@ -15,12 +15,12 @@
 
 # Define functions for formatting compiler options to the assembler and linker
 compare-versions = $(shell $(script_dir)/compare-versions '$1' '$2')
-format-gcc-option-as = $(call format-gcc-option,-Wa $1)
-format-gcc-option-ld = $(call format-gcc-option,-Wl $1)
-format-gcc-option = '$(shell $(script_dir)/join-options.py $1)'
-format-option-as = $(call format-option,$(as_family),$1,$2)
-format-option-ld = $(call format-option,$(ld_family),$1,$2)
+format-as-option = $(call format-option,$(as_family),$1,$2)
+format-ld-option = $(call format-option,$(ld_family),$1,$2)
 format-option = $(if $(filter gnu,$1),$2=$3,$2 $3)
+join-as-options = $(call join-options,-Wa $1)
+join-ld-options = $(call join-options,-Wl $1)
+join-options = '$(shell $(script_dir)/join-options.py $1)'
 
 # Define predicates for object and shared object files
 is_dependency = $(filter %$(dependency_suffix),$@)
@@ -105,9 +105,9 @@ ifeq "$(WITH_LISTINGS)" "true"
 ifeq "$(cxx_family)" "gnu"
 ifeq "$(as_family)" "gnu"
 	listing = $(@:$(object_suffix)=.lst)
-	asflags = $(call format-option-as,-adghln,$(listing))
+	asflags = $(call format-as-option,-adghln,$(listing))
 	CXX_ASFLAGS += $(if $(is_object),$(call	\
-	format-gcc-option-as,$(asflags)),)
+	join-as-options,$(asflags)),)
 endif
 endif
 endif
@@ -173,7 +173,7 @@ ifeq "$(WITH_LOAD_MAP)" "true"
 	ldsuffix = $(if $(is_shared),$(shared_suffix),$(binary_suffix))
 	loadmap = $(@:$(ldsuffix)=).map
 	loadopt = $(if $(filter gnu,$(ld_family)),-Map,-map)
-	ldflags += $(call format-option-ld,$(loadopt),$(loadmap))
+	ldflags += $(call format-ld-option,$(loadopt),$(loadmap))
 endif
 
 ifneq "$(WITH_SHARED_OBJS)" "false"
@@ -181,13 +181,13 @@ ifeq "$(cxx_family)" "gnu"
 	rpath = '$$ORIGIN'
 	soname = $(@:.$(minor).$(micro)=)
 	ldflags += $(if $(is_shared),$(call		\
-	format-option-ld,-soname,$(soname)),$(call	\
-	format-option-ld,-rpath,$(rpath)))
+	format-ld-option,-soname,$(soname)),$(call	\
+	format-ld-option,-rpath,$(rpath)))
 endif
 endif
 
 LDFLAGS += $(if $(is_dependency),,$(if $(is_object),,$(call	\
-format-gcc-option-ld,$(ldflags))))
+join-ld-options,$(ldflags))))
 LDFLAGS += $(if $(is_shared),-shared,)
 
 # LDLIBS
