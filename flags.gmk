@@ -32,6 +32,8 @@ ARFLAGS = r
 
 # CLANG_TIDY_FLAGS
 
+ifeq "$(cxx_family)" "clang"
+
 ifeq "$(call compare-versions,$(clang_tidy_version),12)" "greater"
 	CLANG_TIDY_FLAGS = -config-file='.clang-tidy'
 else
@@ -46,6 +48,8 @@ ifdef standard
 endif
 
 CLANG_TIDY_FLAGS += $(CPPFLAGS)
+
+endif
 
 # CPPCHECK_FLAGS
 
