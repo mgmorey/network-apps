@@ -20,7 +20,7 @@ format-ld-option = $(call format-option,$(ld_family),$1,$2)
 format-option = $(if $(filter gnu,$1),$2=$3,$2 $3)
 join-as-options = $(call join-options,-Wa $1)
 join-ld-options = $(call join-options,-Wl $1)
-join-options = '$(shell $(script_dir)/join-options.py $1)'
+join-options = $(shell $(script_dir)/join-options.py $1)
 
 # Define predicates for object and shared object files
 is_dependency = $(filter %$(dependency_suffix),$@)

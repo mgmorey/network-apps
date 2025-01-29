@@ -219,7 +219,7 @@ endif
 # Define compiler and linker variables
 
 COMPILE.cc = $(strip $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c)
-LINK$(object_suffix) = $(strip $(CXX) $(LDFLAGS))
+LINK$(object_suffix) = $(strip $(CXX) $(LDFLAGS:$$=\\$$))
 
 # Define install program variable
 ifeq "$(os_id_name)" "Darwin"
