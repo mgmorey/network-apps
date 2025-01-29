@@ -22,7 +22,7 @@ is_gnu_ld() {
 if is_gnu_ld "${1-ld}"; then
     result=gnu
 else
-    result=clang
+    result=unknown
 fi
 
 printf '%s\n' "$result"

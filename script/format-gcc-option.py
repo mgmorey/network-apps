@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-# format-gcc-option: format compiler option for assembler or linker
 # Copyright (C) 2025  "Michael G. Morey" <mgmorey@gmail.com>
 
 # This program is free software: you can redistribute it and/or modify
@@ -16,27 +15,18 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-"""Script to format compiler options for an assembler or linker."""
+"""Combine multiple options for an assembler or linker into a single
+option for the compiler.
+
+"""
 
 import sys
 
 
 def main():
     """Main function for script."""
-    try:
-        tool = sys.argv[1]
-
-        if tool not in ('as', 'ld'):
-            print('Invalid argument %s' % tool, file=sys.stderr)
-            sys.exit(1)
-
-        if len(sys.argv) > 2:
-            option = '-W%.1s,%s' % (tool, ','.join(sys.argv[2:]))
-            print(option.replace('$', '\\$'))
-        return 0
-    except IndexError:
-        print('Not enough arguments', file=sys.stderr)
-        sys.exit(1)
+    print(','.join(sys.argv[1:]).replace('$', '\\$'))
+    return 0
 
 
 if __name__ == '__main__':

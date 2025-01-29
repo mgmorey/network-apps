@@ -15,8 +15,8 @@
 
 # Define functions for formatting compiler options to the assembler and linker
 compare-versions = $(shell $(script_dir)/compare-versions "$1" "$2")
-format-gcc-option-as = $(call format-gcc-option,as,$1)
-format-gcc-option-ld = $(call format-gcc-option,ld,$1)
+format-gcc-option-as = $(call format-gcc-option,-Wa,$1)
+format-gcc-option-ld = $(call format-gcc-option,-Wl,$1)
 format-gcc-option = $(shell $(script_dir)/format-gcc-option.py $1 $2)
 format-option-as = $(call format-option,$(as_family),$1,$2)
 format-option-ld = $(call format-option,$(ld_family),$1,$2)
@@ -168,7 +168,7 @@ endif
 ifeq "$(WITH_LOAD_MAP)" "true"
 	ldsuffix = $(if $(is_shared),$(shared_suffix),$(binary_suffix))
 	loadmap = $(@:$(ldsuffix)=).map
-	loadopt = $(if $(filter clang,$(ld_family)),-map,-Map)
+	loadopt = $(if $(filter gnu,$(ld_family)),-Map,-map)
 	ldflags += $(call format-option-ld,$(loadopt),$(loadmap))
 endif
 
