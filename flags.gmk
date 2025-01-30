@@ -13,6 +13,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+# Define constants
+comma = ,
+empty =
+space = $(empty) $(empty)
+
 # Define functions for formatting compiler options to the assembler and linker
 compare-versions = $(shell $(script_dir)/compare-versions '$1' '$2')
 format-as-option = $(call format-option,$(as_family),$1,$2)
@@ -20,7 +25,7 @@ format-ld-option = $(call format-option,$(ld_family),$1,$2)
 format-option = $(if $(filter gnu,$1),$2=$3,$2 $3)
 join-as-options = $(call join-options,-Wa $1)
 join-ld-options = $(call join-options,-Wl $1)
-join-options = $(shell $(script_dir)/join-options.py $1)
+join-options = $(subst $(space),$(comma),$1)
 
 # Define predicates for object and shared object files
 is_dependency = $(filter %$(dependency_suffix),$@)
