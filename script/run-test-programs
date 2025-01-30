@@ -3,7 +3,7 @@
 run_test_program() (
     case "$1" in
 	(*/test-*)
-	    ${valgrind:+$valgrind }"$1" >"$(basename $1).log"
+	    ${valgrind:+$valgrind }"$1" >"${1%.exe}.log"
 	    ;;
 	(*)
 	    ;;
