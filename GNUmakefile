@@ -317,8 +317,8 @@ install: $(libraries) $(programs)
 	$(PREFIX)/include/network
 	$(install) -s $(filter-out %$(alias_suffix),$(libraries)) $(PREFIX)/lib
 	$(install) -s $(programs) $(PREFIX)/bin
-	cd $(PREFIX)/lib && \
-	ln -sf $(notdir $(library_shared) $(library_alias).$(major))
+	test -e $(library_shared) && cd $(PREFIX)/lib && \
+	ln -sf $(notdir $(library_shared) $(library_alias).$(major)) && \
 	ln -sf $(notdir $(library_shared) $(library_alias))
 
 .PHONY: libraries
