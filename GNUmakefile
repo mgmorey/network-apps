@@ -121,12 +121,14 @@ tags = TAGS
 
 # Define functions for computing lists of objects and programs
 
+get-dependencies = $(addprefix $(dependency_dir)/,$(addsuffix	\
+$(dependency_suffix),$(basename $1)))
 get-objects = $(addprefix $(object_dir)/,$(addsuffix	\
 $(object_suffix),$(basename $1)))
 get-programs = $(addprefix $(binary_dir)/,$(addsuffix	\
 $(binary_suffix),$(basename $1)))
 
-# Define computed file list variables
+# Define variables for computed file lists
 
 library_sources = $(library_common_sources) $(library_native_sources)
 
@@ -175,33 +177,32 @@ endif
 
 program_objects = $(call get-objects,$(program_sources))
 
+programs = $(call get-programs,$(program_sources))
 test_programs = $(call get-programs,$(test_sources))
 unix_programs = $(call get-programs,$(unix_sources))
-programs = $(call get-programs,$(program_sources))
 
-dependencies = $(addprefix						\
-$(dependency_dir)/,$(sources:$(source_suffix)=$(dependency_suffix)))
+dependencies = $(call get-dependencies,$(sources))
 listings = $(objects:$(object_suffix)=.lst)
-mapfiles = $(programs:$(binary_suffix)=.map)
 logfiles = $(notdir $(programs:$(binary_suffix)=.log))
+mapfiles = $(programs:$(binary_suffix)=.map)
+stackdumps = $(programs:$(binary_suffix)=.stackdump)
 
-dumps = $(addsuffix .stackdump,$(programs))
-
+artifacts = $(binary_artifacts) $(text_artifacts)
 binary_artifacts = $(libraries) $(objects) $(programs) $(tags)
 build_artifacts = $(libraries) $(listings) $(mapfiles) $(objects)	\
 $(programs) $(sizes) $(sizes)~
-text_artifacts = $(commands) $(dependencies) $(dumps) $(listings)	\
-$(logfiles) $(mapfiles) $(sizes) $(sizes)~
+text_artifacts = $(commands) $(dependencies) $(listings) $(logfiles)	\
+$(mapfiles) $(sizes) $(sizes)~ $(stackdumps)
+
+dos2unix_args = $(sort $(filter-out %$(dependency_suffix),$(wildcard	\
+$(text_artifacts))))
 
 rm_args = $(sort $(filter-out $(binary_dir)/%,$(filter-out		\
 $(cache_dir)/%,$(filter-out $(library_dir)/%,$(filter-out		\
 $(object_dir)/%,$(wildcard $(binary_dir) $(cache_dir) $(library_dir)	\
 $(object_dir) $(artifacts)))))))
 
-dos2unix_args = $(sort $(filter-out %$(dependency_suffix),$(wildcard	\
-$(text_artifacts))))
-
-artifacts = $(binary_artifacts) $(text_artifacts)
+# Define variables for build target lists
 
 build_targets = assert objects libraries programs sizes
 
@@ -223,7 +224,7 @@ ifeq "$(os_id_name)" "MINGW64_NT"
 	all_targets += dos2unix
 endif
 
-# Define compiler and linker variables
+# Define variables for compiler and linker commands
 
 COMPILE.cc = $(strip $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c)
 LINK$(object_suffix) = $(strip $(CXX) $(LDFLAGS))
