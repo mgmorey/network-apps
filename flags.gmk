@@ -179,7 +179,7 @@ ifeq "$(WITH_LOAD_MAP)" "true"
 	ldflags += $(call format-ld-option,$(loadopt),$(loadmap))
 endif
 
-ifeq "$(cxx_family)" "gnu"
+ifeq "$(ld_family)" "gnu"
 	rpath = \$$ORIGIN/../$(library_dir)
 	soname = $(@:.$(minor).$(micro)=)
 	ldflags += $(if $(is_shared),$(call		\
