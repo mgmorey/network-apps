@@ -186,9 +186,9 @@ stackdumps = $(programs:$(binary_suffix)=.stackdump)
 artifacts = $(binary_artifacts) $(text_artifacts)
 binary_artifacts = $(libraries) $(objects) $(programs) TAGS
 build_artifacts = $(libraries) $(listings) $(mapfiles) $(objects)	\
-$(programs) sizes.txt?
+$(programs) sizes.txt*
 text_artifacts = $(commands) $(dependencies) $(listings) $(logfiles)	\
-$(mapfiles) $(stackdumps) sizes.txt?
+$(mapfiles) $(stackdumps) sizes.txt*
 
 dos2unix_args = $(sort $(filter-out %$(dependency_suffix),$(wildcard	\
 $(text_artifacts))))
