@@ -52,7 +52,7 @@ library_prefix = lib
 # File suffixes
 alias_suffix = .so
 
-ifeq "$(os_id_type)" "ms-windows"
+ifeq "$(os_id_name)" "MINGW64_NT"
 	binary_suffix = .exe
 else
 	binary_suffix =
@@ -146,10 +146,6 @@ endif
 objects = $(call get-objects,$(sources))
 
 library_objects = $(call get-objects,$(library_sources))
-
-library_members = $(patsubst				\
-%$(object_suffix),$(library_static)(%$(object_suffix)),	\
-$(library_objects))
 
 ifeq "$(os_id_type)" "ms-windows"
 	library_static = $(library_dir)/libnetwork.a
