@@ -35,7 +35,6 @@ run_server() {
 }
 
 run_unix_programs() {
-    export LD_LIBRARY_PATH=".${LD_LIBRARY_PATH+:$LD_LIBRARY_PATH}"
     run_server & (sleep 1; run_client)
 }
 
