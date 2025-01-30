@@ -46,7 +46,7 @@ source_dir := src
 library_prefix := lib
 
 # File suffixes
-alias_suffix := .so.$(major)
+alias_suffix := .so
 
 ifeq "$(os_id_type)" "ms-windows"
 	binary_suffix = .exe
@@ -156,13 +156,15 @@ library_members = $(patsubst				\
 $(library_objects))
 
 library_alias = $(library_dir)/libnetwork$(alias_suffix)
-library_mapfile = $(library_dir)/libnetwork.map
+library_loadmap = $(library_dir)/libnetwork.map
 library_shared = $(library_dir)/libnetwork$(shared_suffix)
 library_static = $(library_dir)/libnetwork.a
 
 ifeq "$(os_id_type)" "ms-windows"
+	library = $(library_static)
 	libraries = $(library_static)
 else
+	library = $(library_alias)
 	libraries = $(library_alias) $(library_shared)
 endif
 
@@ -183,7 +185,7 @@ unix_programs = $(call get-programs,$(unix_sources))
 dependencies = $(call get-dependencies,$(sources))
 listings = $(objects:$(object_suffix)=.lst)
 logfiles = $(notdir $(programs:$(binary_suffix)=.log))
-mapfiles = $(programs:$(binary_suffix)=.map)
+mapfiles = $(programs:$(binary_suffix)=.map) $(library_loadmap)
 stackdumps = $(programs:$(binary_suffix)=.stackdump)
 
 artifacts = $(binary_artifacts) $(text_artifacts)
@@ -315,7 +317,9 @@ install: $(libraries) $(programs)
 	$(PREFIX)/include/network
 	$(install) -s $(filter-out %$(alias_suffix),$(libraries)) $(PREFIX)/lib
 	$(install) -s $(programs) $(PREFIX)/bin
-	cd $(PREFIX)/lib && ln -sf $(notdir $(library_shared) $(library_alias))
+	cd $(PREFIX)/lib && \
+	ln -sf $(notdir $(library_shared) $(library_alias).$(major))
+	ln -sf $(notdir $(library_shared) $(library_alias))
 
 .PHONY: libraries
 libraries: $(libraries)
@@ -354,15 +358,17 @@ unix: $(sort $(unix_programs))
 # Define targets
 
 $(library_alias): $(library_shared)
-	cd $(library_dir) && ln -sf $(notdir $< $@)
-
-$(library_shared): $(library_objects)
-	$(LINK$(object_suffix)) -o $@ $^ $(LDLIBS)
+	cd $(library_dir) && \
+	ln -sf $(notdir $< $@.$(major)) && \
+	ln -sf $(notdir $< $@)
 
 $(library_static): $(library_objects)
 	rm -f $@ && $(AR) $(ARFLAGS) $@ $^
 
-$(programs): $(library_alias)
+$(library_shared): $(library_objects)
+	$(LINK$(object_suffix)) -o $@ $^ $(LDLIBS)
+
+$(programs): $(library)
 
 # Define suffix rules
 
@@ -370,13 +376,13 @@ $(programs): $(library_alias)
 	$(AR) $(ARFLAGS) $@ $<
 
 $(binary_dir)/%$(binary_suffix): $(object_dir)/%$(object_suffix)
-	$(LINK$(object_suffix)) -o $@ $^ $(LDLIBS)
-
-$(dependency_dir)/%$(dependency_suffix): %$(source_suffix)
-	$(CXX) $(CPPFLAGS) -MM $< | $(make_makefile) -o $@ TAGS
+	$(LINK$(object_suffix)) -o $@ $(filter-out $(library),$^) $(LDLIBS)
 
 $(object_dir)/%$(object_suffix): %$(source_suffix)
 	$(COMPILE$(source_suffix)) $(OUTPUT_OPTION) $<
+
+$(dependency_dir)/%$(dependency_suffix): %$(source_suffix)
+	$(CXX) $(CPPFLAGS) -MM $< | $(make_makefile) -o $@ TAGS
 
 sizes.txt: $(sort $(library_shared) $(objects) $(programs))
 	if [ -e $@ ]; then mv -f $@ $@~; fi

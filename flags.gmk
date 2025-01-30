@@ -166,6 +166,8 @@ CXXFLAGS += -Wall -Werror -Wextra -Wshadow -Wsign-conversion
 
 # LDFLAGS
 
+LDFLAGS += -L$(library_dir)
+
 ifndef NDEBUG
 ifeq "$(USING_LIBASAN)" "true"
 	LDFLAGS += -fsanitize=address
@@ -173,9 +175,9 @@ endif
 endif
 
 ifeq "$(WITH_LOAD_MAP)" "true"
-	ldsuffix = $(if $(is_shared),$(shared_suffix),$(binary_suffix))
-	loadmap = $(@:$(ldsuffix)=).map
+	loadmap = $(@:$(suffix)=).map
 	loadopt = $(if $(filter gnu,$(ld_family)),-Map,-map)
+	suffix = $(if $(is_shared),$(shared_suffix),$(binary_suffix))
 	ldflags += $(call format-ld-option,$(loadopt),$(loadmap))
 endif
 
@@ -199,6 +201,8 @@ endif
 ifeq "$(os_id_name)" "MINGW64_NT"
 	LDLIBS += -lws2_32
 endif
+
+LDLIBS += $(if $(is_binary),-lnetwork)
 
 # Local Variables:
 # mode: makefile
