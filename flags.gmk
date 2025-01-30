@@ -152,12 +152,9 @@ ifeq "$(cxx_family)" "gnu"
 else
 	CXXFLAGS += -g3
 endif
-endif
-
-ifdef NDEBUG
-	CXXFLAGS += -O2
-else
 	CXXFLAGS += -O0
+else
+	CXXFLAGS += -O2
 endif
 
 ifdef standard
