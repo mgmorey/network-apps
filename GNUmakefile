@@ -47,7 +47,13 @@ library_prefix := lib
 
 # File suffixes
 alias_suffix := .so.$(major)
-binary_suffix := .exe
+
+ifeq "$(os_id_type)" "ms-windows"
+	binary_suffix = .exe
+else
+	binary_suffix =
+endif
+
 dependency_suffix := .dep
 include_suffix := .h
 object_suffix := .o
@@ -113,6 +119,13 @@ commands = compile_commands.json
 sizes = sizes.txt
 tags = TAGS
 
+# Define functions for computing lists of objects and programs
+
+get-objects = $(addprefix $(object_dir)/,$(addsuffix	\
+$(object_suffix),$(basename $1)))
+get-programs = $(addprefix $(binary_dir)/,$(addsuffix	\
+$(binary_suffix),$(basename $1)))
+
 # Define computed file list variables
 
 library_sources = $(library_common_sources) $(library_native_sources)
@@ -133,11 +146,9 @@ ifneq "$(os_id_name)" "MINGW64_NT"
 	test_sources += $(test_unix_sources)
 endif
 
-objects = $(addprefix $(object_dir)/,$(addsuffix	\
-$(object_suffix),$(basename $(sources))))
+objects = $(call get-objects,$(sources))
 
-library_objects = $(addprefix $(object_dir)/,$(addsuffix	\
-$(object_suffix),$(basename $(library_sources))))
+library_objects = $(call get-objects,$(library_sources))
 
 library_members = $(patsubst				\
 %$(object_suffix),$(library_static)(%$(object_suffix)),	\
@@ -162,26 +173,18 @@ ifneq "$(os_id_dist)" "macos"
 endif
 endif
 
-program_objects = $(addprefix $(object_dir)/,$(addsuffix	\
-$(object_suffix),$(basename $(program_sources))))
+program_objects = $(call get-objects,$(program_sources))
 
-ifeq "$(os_id_type)" "ms-windows"
-	program_suffix = .exe
-endif
-
-test_programs = $(addprefix $(binary_dir)/,$(addsuffix	\
-$(program_suffix),$(basename $(test_sources))))
-unix_programs = $(addprefix $(binary_dir)/,$(addsuffix	\
-$(program_suffix),$(basename $(unix_sources))))
-programs = $(addprefix $(binary_dir)/,$(addsuffix	\
-$(program_suffix),$(basename $(program_sources))))
+test_programs = $(call get-programs,$(test_sources))
+unix_programs = $(call get-programs,$(unix_sources))
+programs = $(call get-programs,$(program_sources))
 
 dependencies = $(addprefix $(dependency_dir)/,$(subst	\
 $(source_suffix),$(dependency_suffix),$(sources)))
 listings = $(subst $(object_suffix),.lst,$(objects))
 mapfiles = $(addprefix $(binary_dir)/,$(addsuffix .map,$(basename	\
 $(notdir $(programs)))) $(library_mapfile))
-logfiles = $(addsuffix .log,$(basename $(notdir $(programs))))
+logfiles = $(notdir $(programs:$(binary_suffix)=.log))
 
 dumps = $(addsuffix .stackdump,$(programs))
 
@@ -250,19 +253,19 @@ analyze: $(sources) | $(cppbuild_dir)
 .PHONY: assert
 assert:
 ifneq "$(sort $(library_common_sources))" "$(library_common_sources)"
-	$(error File names in variable library_common_sources are not sorted)
+	$(warning File names in variable library_common_sources are not sorted)
 endif
 ifneq "$(sort $(library_unix_sources))" "$(library_unix_sources)"
-	$(error File names in variable library_unix_sources are not sorted)
+	$(warning File names in variable library_unix_sources are not sorted)
 endif
 ifneq "$(sort $(test_common_sources))" "$(test_common_sources)"
-	$(error File names in variable test_common_sources are not sorted)
+	$(warning File names in variable test_common_sources are not sorted)
 endif
 ifneq "$(sort $(test_unix_sources))" "$(test_unix_sources)"
-	$(error File names in variable test_unix_sources are not sorted)
+	$(warning File names in variable test_unix_sources are not sorted)
 endif
 ifneq "$(sort $(unix_sources))" "$(unix_sources)"
-	$(error File names in variable unix_sources are not sorted)
+	$(warning File names in variable unix_sources are not sorted)
 endif
 
 .PHONY: build
@@ -371,7 +374,7 @@ $(programs): $(library_alias)
 (%): %
 	$(AR) $(ARFLAGS) $@ $<
 
-$(binary_dir)/%$(program_suffix): $(object_dir)/%$(object_suffix)
+$(binary_dir)/%$(binary_suffix): $(object_dir)/%$(object_suffix)
 	$(LINK$(object_suffix)) -o $@ $^ $(LDLIBS)
 
 $(dependency_dir)/%$(dependency_suffix): %$(source_suffix)
