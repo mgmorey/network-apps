@@ -28,9 +28,10 @@ join-ld-options = $(call join-options,-Wl $1)
 join-options = $(subst $(space),$(comma),$1)
 
 # Define predicates for object and shared object files
+is_binary = $(filter $(binary_dir)/%,$@)
 is_dependency = $(filter %$(dependency_suffix),$@)
 is_object = $(filter %$(object_suffix),$@)
-is_shared = $(filter $(library_prefix)%$(shared_suffix),$@)
+is_shared = $(filter %$(shared_suffix),$@)
 
 # ARFLAGS
 ARFLAGS = r
