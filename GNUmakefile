@@ -317,7 +317,8 @@ install: $(libraries) $(programs)
 	$(PREFIX)/include/network
 	$(install) -s $(filter-out %$(alias_suffix),$(libraries)) $(PREFIX)/lib
 	$(install) -s $(programs) $(PREFIX)/bin
-	test -e $(library_shared) && cd $(PREFIX)/lib && \
+	cd $(PREFIX)/lib && \
+	test -e $(notdir $(library_shared)) && \
 	ln -sf $(notdir $(library_shared) $(library_alias).$(major)) && \
 	ln -sf $(notdir $(library_shared) $(library_alias))
 
