@@ -121,7 +121,7 @@ ifneq "$(os_id_name)" "MINGW64_NT"
 	library_sources += $(library_unix_sources)
 endif
 
-sources = $(libnetwork_sources) $(test_sources)
+sources = $(library_sources) $(test_sources)
 
 ifneq "$(os_id_name)" "MINGW64_NT"
 	sources += $(unix_sources)
@@ -139,7 +139,7 @@ $(object_suffix),$(basename $(sources))))
 library_objects = $(addprefix $(object_dir)/,$(addsuffix	\
 $(object_suffix),$(basename $(library_sources))))
 
-library_members = $(patsubst					\
+library_members = $(patsubst				\
 %$(object_suffix),$(library_static)(%$(object_suffix)),	\
 $(library_objects))
 
@@ -148,7 +148,7 @@ library_shared = $(library_dir)/libnetwork$(shared_suffix)
 library_mapfile = $(library_dir)/libnetwork.map
 library_static = $(library_dir)/libnetwork.a
 
-ifneq "$(os_id_type)" "ms-windows"
+ifeq "$(os_id_type)" "ms-windows"
 	libraries = $(library_static)
 else
 	libraries = $(library_alias) $(library_shared)
