@@ -30,8 +30,8 @@ join-options = $(subst $(space),$(comma),$1)
 # Define predicates for object and shared object files
 is_binary = $(filter $(binary_dir)/%,$@)
 is_dependency = $(filter %$(dependency_suffix),$@)
-is_object = $(filter %$(object_suffix),$@)
-is_shared = $(filter %$(shared_suffix),$@)
+is_object = $(filter $(object_dir)/%$(object_suffix),$@)
+is_shared = $(filter $(library_dir)/%$(shared_suffix),$@)
 
 # ARFLAGS
 ARFLAGS = r
@@ -187,9 +187,8 @@ ifeq "$(cxx_family)" "gnu"
 	format-ld-option,-rpath,$(rpath)))
 endif
 
-LDFLAGS += $(if $(is_dependency),,$(if $(is_object),,$(call	\
-join-ld-options,$(ldflags))))
-LDFLAGS += $(if $(is_shared),-shared,)
+LDFLAGS += $(if $(is_binary),$(call join-ld-options,$(ldflags)))
+LDFLAGS += $(if $(is_shared),$(call join-ld-options,$(ldflags)) -shared)
 
 # LDLIBS
 
