@@ -116,8 +116,6 @@ test_unix_sources = test-socket-unix.cpp
 unix_sources = unix-client.cpp unix-server.cpp
 
 commands = compile_commands.json
-sizes = sizes.txt
-tags = TAGS
 
 # Define functions for computing lists of objects and programs
 
@@ -128,6 +126,7 @@ $(object_suffix),$(basename $1)))
 get-programs = $(addprefix $(binary_dir)/,$(addsuffix	\
 $(binary_suffix),$(basename $1)))
 
+# Define variables
 # Define variables for computed file lists
 
 library_sources = $(library_common_sources) $(library_native_sources)
@@ -188,11 +187,11 @@ mapfiles = $(programs:$(binary_suffix)=.map)
 stackdumps = $(programs:$(binary_suffix)=.stackdump)
 
 artifacts = $(binary_artifacts) $(text_artifacts)
-binary_artifacts = $(libraries) $(objects) $(programs) $(tags)
+binary_artifacts = $(libraries) $(objects) $(programs) TAGS
 build_artifacts = $(libraries) $(listings) $(mapfiles) $(objects)	\
-$(programs) $(sizes) $(sizes)~
+$(programs) sizes.txt sizes.txt~
 text_artifacts = $(commands) $(dependencies) $(listings) $(logfiles)	\
-$(mapfiles) $(sizes) $(sizes)~ $(stackdumps)
+$(mapfiles) sizes.txt sizes.txt~ $(stackdumps)
 
 dos2unix_args = $(sort $(filter-out %$(dependency_suffix),$(wildcard	\
 $(text_artifacts))))
@@ -224,10 +223,10 @@ ifeq "$(os_id_name)" "MINGW64_NT"
 	all_targets += dos2unix
 endif
 
-# Define variables for compiler and linker commands
-
+# Define variables for compiler, linker, and script commands
 COMPILE.cc = $(strip $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c)
 LINK$(object_suffix) = $(strip $(CXX) $(LDFLAGS))
+make_makefile = $(script_dir)/make-makefile -d $(object_dir)
 
 # Define install program variable
 ifeq "$(os_id_name)" "Darwin"
@@ -235,11 +234,6 @@ ifeq "$(os_id_name)" "Darwin"
 else
 	install = install
 endif
-
-# Define script variables
-make_depfile = $(script_dir)/make-makefile -d $(object_dir)
-run_test_programs = $(script_dir)/run-test-programs
-run_unix_programs = $(script_dir)/run-unix-programs
 
 # Define pseudotargets
 
@@ -273,7 +267,7 @@ build: $(build_targets)
 
 .PHONY: check
 check: $(test_programs)
-	$(run_test_programs) $(sort $^)
+	$(script_dir)/run-test-programs $(sort $^)
 
 .PHONY: check-syntax
 check-syntax:
@@ -335,11 +329,11 @@ programs: $(sort $(programs))
 realclean: distclean
 
 .PHONY: sizes
-sizes: $(sizes)
+sizes: sizes.txt
 	test -e $<~ && diff -b $<~ $< || true
 
 .PHONY: tags
-tags: $(tags)
+tags: TAGS
 
 .PHONY: test
 test: check
@@ -352,7 +346,7 @@ endif
 
 .PHONY: unix
 unix: $(sort $(unix_programs))
-	$(run_unix_programs)
+	$(script_dir)/run-unix-programs
 
 .SECONDARY: $(objects)
 
@@ -378,17 +372,17 @@ $(binary_dir)/%$(binary_suffix): $(object_dir)/%$(object_suffix)
 	$(LINK$(object_suffix)) -o $@ $^ $(LDLIBS)
 
 $(dependency_dir)/%$(dependency_suffix): %$(source_suffix)
-	$(CXX) $(CPPFLAGS) -MM $< | $(make_depfile) -o $@ $(tags)
+	$(CXX) $(CPPFLAGS) -MM $< | $(make_makefile) -o $@ TAGS
 
 $(object_dir)/%$(object_suffix): %$(source_suffix)
 	$(COMPILE$(source_suffix)) $(OUTPUT_OPTION) $<
 
-$(tags):
-	ctags -e $(filter -D%,$(CPPFLAGS)) -R $(include_dir) $(source_dir)
-
 sizes.txt: $(sort $(library_shared) $(objects) $(programs))
 	if [ -e $@ ]; then mv -f $@ $@~; fi
 	size $^ >$@
+
+TAGS:
+	ctags -e $(filter -D%,$(CPPFLAGS)) -R $(include_dir) $(source_dir)
 
 $(dependencies): | $(dependency_dir)
 
