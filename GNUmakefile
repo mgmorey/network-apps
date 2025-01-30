@@ -155,8 +155,8 @@ library_members = $(patsubst				\
 $(library_objects))
 
 library_alias = $(library_dir)/libnetwork$(alias_suffix)
-library_shared = $(library_dir)/libnetwork$(shared_suffix)
 library_mapfile = $(library_dir)/libnetwork.map
+library_shared = $(library_dir)/libnetwork$(shared_suffix)
 library_static = $(library_dir)/libnetwork.a
 
 ifeq "$(os_id_type)" "ms-windows"
@@ -179,11 +179,10 @@ test_programs = $(call get-programs,$(test_sources))
 unix_programs = $(call get-programs,$(unix_sources))
 programs = $(call get-programs,$(program_sources))
 
-dependencies = $(addprefix $(dependency_dir)/,$(subst	\
-$(source_suffix),$(dependency_suffix),$(sources)))
-listings = $(subst $(object_suffix),.lst,$(objects))
-mapfiles = $(addprefix $(binary_dir)/,$(addsuffix .map,$(basename	\
-$(notdir $(programs)))) $(library_mapfile))
+dependencies = $(addprefix						\
+$(dependency_dir)/,$(sources:$(source_suffix)=$(dependency_suffix)))
+listings = $(objects:$(object_suffix)=.lst)
+mapfiles = $(programs:$(binary_suffix)=.map)
 logfiles = $(notdir $(programs:$(binary_suffix)=.log))
 
 dumps = $(addsuffix .stackdump,$(programs))
@@ -194,10 +193,10 @@ $(programs) $(sizes) $(sizes)~
 text_artifacts = $(commands) $(dependencies) $(dumps) $(listings)	\
 $(logfiles) $(mapfiles) $(sizes) $(sizes)~
 
-rm_args = $(sort $(filter-out $(cache_dir)/%,$(filter-out	\
-$(library_dir)/%,$(filter-out $(object_dir)/%,$(wildcard	\
-$(binary_dir) $(cache_dir) $(library_dir) $(object_dir)		\
-$(artifacts))))))
+rm_args = $(sort $(filter-out $(binary_dir)/%,$(filter-out		\
+$(cache_dir)/%,$(filter-out $(library_dir)/%,$(filter-out		\
+$(object_dir)/%,$(wildcard $(binary_dir) $(cache_dir) $(library_dir)	\
+$(object_dir) $(artifacts)))))))
 
 dos2unix_args = $(sort $(filter-out %$(dependency_suffix),$(wildcard	\
 $(text_artifacts))))
