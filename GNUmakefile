@@ -305,9 +305,14 @@ dos2unix:
 
 .PHONY: install
 install: $(libraries)
-	$(install) -d $(PREFIX)/include/network $(PREFIX)/lib
-	$(install) $(include_dir)/network/* $(PREFIX)/include/network
+	$(install) -d $(PREFIX)/include/$(platform)/network \
+	$(PREFIX)/include/network $(PREFIX)/bin $(PREFIX)/lib
+	$(install) $(include_dir)/$(platform)/network/* \
+	$(PREFIX)/include/$(platform)/network
+	$(install) $(include_dir)/network/* \
+	$(PREFIX)/include/network
 	$(install) $(libraries) $(PREFIX)/lib
+	$(install) $(programs) $(PREFIX)/bin
 
 .PHONY: libraries
 libraries: $(libraries)
