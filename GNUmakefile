@@ -228,7 +228,7 @@ COMPILE.cc = $(strip $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c)
 LINK$(object_suffix) = $(strip $(CXX) $(LDFLAGS))
 make_makefile = $(script_dir)/make-makefile -d $(object_dir)
 
-# Define install program variable
+# Define variable for install program
 ifeq "$(os_id_name)" "Darwin"
 	install = ginstall
 else
@@ -306,15 +306,16 @@ dos2unix:
 	printf '%s\n' $(dos2unix_args) | xargs dos2unix -q
 
 .PHONY: install
-install: $(libraries)
+install: $(libraries) $(programs)
 	$(install) -d $(PREFIX)/include/$(platform)/network \
 	$(PREFIX)/include/network $(PREFIX)/bin $(PREFIX)/lib
-	$(install) $(include_dir)/$(platform)/network/* \
+	$(install) -m 644 $(include_dir)/$(platform)/network/* \
 	$(PREFIX)/include/$(platform)/network
-	$(install) $(include_dir)/network/* \
+	$(install) -m 644 $(include_dir)/network/* \
 	$(PREFIX)/include/network
-	$(install) $(libraries) $(PREFIX)/lib
-	$(install) $(programs) $(PREFIX)/bin
+	$(install) -s $(filter-out %$(alias_suffix),$(libraries)) $(PREFIX)/lib
+	$(install) -s $(programs) $(PREFIX)/bin
+	cd $(PREFIX)/lib && ln -sf $(notdir $(library_shared) $(library_alias))
 
 .PHONY: libraries
 libraries: $(libraries)
@@ -352,11 +353,11 @@ unix: $(sort $(unix_programs))
 
 # Define targets
 
-$(library_shared): $(library_objects)
-	$(LINK$(object_suffix)) -o $@ $^ $(LDLIBS)
-
 $(library_alias): $(library_shared)
 	cd $(library_dir) && ln -sf $(notdir $< $@)
+
+$(library_shared): $(library_objects)
+	$(LINK$(object_suffix)) -o $@ $^ $(LDLIBS)
 
 $(library_static): $(library_objects)
 	rm -f $@ && $(AR) $(ARFLAGS) $@ $^
