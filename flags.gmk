@@ -181,14 +181,12 @@ ifeq "$(WITH_LOAD_MAP)" "true"
 	ldflags += $(call format-ld-option,$(loadopt),$(loadmap))
 endif
 
-ifneq "$(WITH_SHARED_OBJS)" "false"
 ifeq "$(cxx_family)" "gnu"
-	rpath = $$ORIGIN/../$(library_dir)
+	rpath = \$$ORIGIN/../$(library_dir)
 	soname = $(@:.$(minor).$(micro)=)
 	ldflags += $(if $(is_shared),$(call		\
 	format-ld-option,-soname,$(soname)),$(call	\
 	format-ld-option,-rpath,$(rpath)))
-endif
 endif
 
 LDFLAGS += $(if $(is_dependency),,$(if $(is_object),,$(call	\
