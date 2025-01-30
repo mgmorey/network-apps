@@ -142,23 +142,19 @@ libnetwork_members = $(patsubst					\
 %$(object_suffix),$(libnetwork_static)(%$(object_suffix)),	\
 $(libnetwork_objects))
 
-ifneq "$(WITH_SHARED_OBJS)" "false"
-	libnetwork_alias = libnetwork$(alias_suffix)
-	libnetwork_shared = libnetwork$(shared_suffix)
-endif
-
-libnetwork_mapfile = libnetwork.map
+libnetwork_alias = $(library_dir)/libnetwork$(alias_suffix)
+libnetwork_shared = $(library_dir)/libnetwork$(shared_suffix)
+libnetwork_mapfile = $(library_dir)/libnetwork.map
 libnetwork_static = $(library_dir)/libnetwork.a
 
 libraries = $(libnetwork_alias) $(libnetwork_shared) $(libnetwork_static)
-library_mapfiles = $(libnetwork_mapfile)
 
 program_sources = $(test_sources)
 
-ifeq "$(os_id_name)" "FreeBSD"
+ifneq "$(os_id_type)" "ms-windows"
+ifneq "$(os_id_dist)" "macos"
 	program_sources += $(unix_sources)
-else ifeq "$(os_id_name)" "Linux"
-	program_sources += $(unix_sources)
+endif
 endif
 
 program_objects = $(addprefix $(object_dir)/,$(addsuffix	\
@@ -175,9 +171,8 @@ programs = $(addsuffix $(program_suffix),$(basename $(program_sources)))
 dependencies = $(addprefix $(dependency_dir)/,$(subst	\
 $(source_suffix),$(dependency_suffix),$(sources)))
 listings = $(subst $(object_suffix),.lst,$(objects))
+mapfiles = $(addsuffix .map,$(basename $(programs))) $(libnetwork_mapfile)
 logfiles = $(addsuffix .log,$(basename $(programs)))
-mapfiles = $(addsuffix .map,$(basename $(programs)))	\
-$(library_mapfiles)
 
 dumps = $(addsuffix .stackdump,$(programs))
 
@@ -187,7 +182,7 @@ $(programs) $(sizes) $(sizes)~
 text_artifacts = $(commands) $(dependencies) $(dumps) $(listings)	\
 $(logfiles) $(mapfiles) $(sizes) $(sizes)~
 
-rm_args = $(sort $(filter-out $(cache_dir)/%,$(filter-out	\
+rm_args = $(sort $(filter-out $(cache_dir)/%,$(filter-out		\
 $(library_dir)/%,$(filter-out $(object_dir)/%,$(wildcard $(cache_dir)	\
 $(library_dir) $(object_dir) $(artifacts))))))
 
@@ -307,8 +302,7 @@ dos2unix:
 install: $(libraries)
 	$(install) -d $(PREFIX)/include/network $(PREFIX)/lib
 	$(install) $(include_dir)/network/* $(PREFIX)/include/network
-	$(install) $(libnetwork_static) $(libnetwork_shared) $(PREFIX)/lib
-	cd $(PREFIX)/lib && ln -sf $(libnetwork_shared) $(libnetwork_alias)
+	$(install) $(libraries) $(PREFIX)/lib
 
 .PHONY: libraries
 libraries: $(libraries)
@@ -347,23 +341,15 @@ unix: $(sort $(unix_programs))
 # Define targets
 
 $(libnetwork_shared): $(libnetwork_objects)
-	$(filter-out -flto,$(LINK$(object_suffix))) -o $@ $^ $(LDLIBS)
+	$(LINK$(object_suffix)) -o $@ $^ $(LDLIBS)
 
 $(libnetwork_alias): $(libnetwork_shared)
-	test -e $< && ln -sf $< $@
+	cd $(library_dir) && ln -sf $(notdir $< $@)
 
-ifeq "$(USING_ARCHIVE_MEMBER_RULE)" "true"
-$(libnetwork_static): $(libnetwork_members)
-else
 $(libnetwork_static): $(libnetwork_objects)
 	rm -f $@ && $(AR) $(ARFLAGS) $@ $^
-endif
 
-ifeq "$(WITH_SHARED_OBJS)" "false"
-$(programs): $(libnetwork_static)
-else
 $(programs): $(libnetwork_alias)
-endif
 
 # Define suffix rules
 
@@ -377,7 +363,7 @@ $(dependency_dir)/%$(dependency_suffix): %$(source_suffix)
 	$(CXX) $(CPPFLAGS) -MM $< | $(make_depfile) -o $@ $(tags)
 
 $(object_dir)/%$(object_suffix): %$(source_suffix)
-	$(filter-out -flto,$(COMPILE$(source_suffix))) $(OUTPUT_OPTION) $<
+	$(COMPILE$(source_suffix)) $(OUTPUT_OPTION) $<
 
 $(tags):
 	ctags -e $(filter -D%,$(CPPFLAGS)) -R $(include_dir) $(source_dir)

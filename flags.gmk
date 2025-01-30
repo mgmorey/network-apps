@@ -178,7 +178,7 @@ endif
 
 ifneq "$(WITH_SHARED_OBJS)" "false"
 ifeq "$(cxx_family)" "gnu"
-	rpath = '$$ORIGIN'
+	rpath = '$$ORIGIN/$(library_dir)'
 	soname = $(@:.$(minor).$(micro)=)
 	ldflags += $(if $(is_shared),$(call		\
 	format-ld-option,-soname,$(soname)),$(call	\
