@@ -63,7 +63,7 @@ vpath %$(source_suffix) $(source_dir)/$(platform) $(source_dir)
 
 # Define enumerated file list variables
 
-libnetwork_common_sources = accept.cpp address-sa.cpp address-sin.cpp	\
+library_common_sources = accept.cpp address-sa.cpp address-sin.cpp	\
 address-sin6.cpp address.cpp addresserror.cpp addresslist.cpp		\
 addressstring.cpp argumentdata.cpp bind-endpoint.cpp bind-handle.cpp	\
 close.cpp commonsocket.cpp connect-endpoint.cpp connect-handle.cpp	\
@@ -89,13 +89,13 @@ to-string-vector-byte.cpp to-string-vector-char.cpp			\
 to-string-void.cpp validate-bs.cpp validate-sa.cpp validate-sin.cpp	\
 validate-sin6.cpp
 
-libnetwork_native_sources = create-socket-handle.cpp			\
+library_native_sources = create-socket-handle.cpp			\
 format-ai-error.cpp format-os-error.cpp get-last-context-error.cpp	\
 get-last-os-error.cpp nativecontext.cpp read.cpp			\
 set-last-context-error.cpp set-last-os-error.cpp start.cpp stop.cpp	\
 write.cpp
 
-libnetwork_unix_sources = address-sun.cpp create-socketpair.cpp		\
+library_unix_sources = address-sun.cpp create-socketpair.cpp		\
 create-socketpairresult.cpp get-path-length.cpp get-path-pointer.cpp	\
 get-sun-length.cpp get-sun-pointer.cpp nativecontext.cpp		\
 to-bytestring-null.cpp to-bytestring-path.cpp to-path.cpp		\
@@ -115,13 +115,13 @@ tags = TAGS
 
 # Define computed file list variables
 
-libnetwork_sources = $(libnetwork_common_sources) $(libnetwork_native_sources)
+library_sources = $(library_common_sources) $(library_native_sources)
 
 ifneq "$(os_id_name)" "MINGW64_NT"
-	libnetwork_sources += $(libnetwork_unix_sources)
+	library_sources += $(library_unix_sources)
 endif
 
-sources = $(libnetwork_sources) $(test_sources)
+sources = $(library_sources) $(test_sources)
 
 ifneq "$(os_id_name)" "MINGW64_NT"
 	sources += $(unix_sources)
@@ -136,19 +136,23 @@ endif
 objects = $(addprefix $(object_dir)/,$(addsuffix	\
 $(object_suffix),$(basename $(sources))))
 
-libnetwork_objects = $(addprefix $(object_dir)/,$(addsuffix	\
-$(object_suffix),$(basename $(libnetwork_sources))))
+library_objects = $(addprefix $(object_dir)/,$(addsuffix	\
+$(object_suffix),$(basename $(library_sources))))
 
-libnetwork_members = $(patsubst					\
-%$(object_suffix),$(libnetwork_static)(%$(object_suffix)),	\
-$(libnetwork_objects))
+library_members = $(patsubst					\
+%$(object_suffix),$(library_static)(%$(object_suffix)),	\
+$(library_objects))
 
-libnetwork_alias = $(library_dir)/libnetwork$(alias_suffix)
-libnetwork_shared = $(library_dir)/libnetwork$(shared_suffix)
-libnetwork_mapfile = $(library_dir)/libnetwork.map
-libnetwork_static = $(library_dir)/libnetwork.a
+library_alias = $(library_dir)/library$(alias_suffix)
+library_shared = $(library_dir)/library$(shared_suffix)
+library_mapfile = $(library_dir)/library.map
+library_static = $(library_dir)/library.a
 
-libraries = $(libnetwork_alias) $(libnetwork_shared) $(libnetwork_static)
+ifneq "$(os_id_type)" "ms-windows"
+	libraries = $(library_static)
+else
+	libraries = $(library_alias) $(library_shared)
+endif
 
 program_sources = $(test_sources)
 
@@ -176,7 +180,7 @@ dependencies = $(addprefix $(dependency_dir)/,$(subst	\
 $(source_suffix),$(dependency_suffix),$(sources)))
 listings = $(subst $(object_suffix),.lst,$(objects))
 mapfiles = $(addprefix $(binary_dir)/,$(addsuffix .map,$(basename	\
-$(notdir $(programs)))) $(libnetwork_mapfile))
+$(notdir $(programs)))) $(library_mapfile))
 logfiles = $(addsuffix .log,$(basename $(notdir $(programs))))
 
 dumps = $(addsuffix .stackdump,$(programs))
@@ -187,9 +191,10 @@ $(programs) $(sizes) $(sizes)~
 text_artifacts = $(commands) $(dependencies) $(dumps) $(listings)	\
 $(logfiles) $(mapfiles) $(sizes) $(sizes)~
 
-rm_args = $(sort $(filter-out $(cache_dir)/%,$(filter-out		\
-$(library_dir)/%,$(filter-out $(object_dir)/%,$(wildcard $(cache_dir)	\
-$(library_dir) $(object_dir) $(artifacts))))))
+rm_args = $(sort $(filter-out $(cache_dir)/%,$(filter-out	\
+$(library_dir)/%,$(filter-out $(object_dir)/%,$(wildcard	\
+$(binary_dir) $(cache_dir) $(library_dir) $(object_dir)		\
+$(artifacts))))))
 
 dos2unix_args = $(sort $(filter-out %$(dependency_suffix),$(wildcard	\
 $(text_artifacts))))
@@ -244,11 +249,11 @@ analyze: $(sources) | $(cppbuild_dir)
 
 .PHONY: assert
 assert:
-ifneq "$(sort $(libnetwork_common_sources))" "$(libnetwork_common_sources)"
-	$(error File names in variable libnetwork_common_sources are not sorted)
+ifneq "$(sort $(library_common_sources))" "$(library_common_sources)"
+	$(error File names in variable library_common_sources are not sorted)
 endif
-ifneq "$(sort $(libnetwork_unix_sources))" "$(libnetwork_unix_sources)"
-	$(error File names in variable libnetwork_unix_sources are not sorted)
+ifneq "$(sort $(library_unix_sources))" "$(library_unix_sources)"
+	$(error File names in variable library_unix_sources are not sorted)
 endif
 ifneq "$(sort $(test_common_sources))" "$(test_common_sources)"
 	$(error File names in variable test_common_sources are not sorted)
@@ -275,12 +280,12 @@ check-syntax:
 clean:
 	rm -f $(sort $(wildcard $(build_artifacts)))
 
-.PHONY: count-libnetwork-common-source-files
-count-libnetwork-common-source-files: $(libnetwork_common_sources)
+.PHONY: count-library-common-source-files
+count-library-common-source-files: $(library_common_sources)
 	@printf '%s\n' $(words $^)
 
-.PHONY: count-libnetwork-source-files
-count-libnetwork-source-files: $(libnetwork_sources)
+.PHONY: count-library-source-files
+count-library-source-files: $(library_sources)
 	@printf '%s\n' $(words $^)
 
 .PHONY: count-source-files
@@ -350,16 +355,16 @@ unix: $(sort $(unix_programs))
 
 # Define targets
 
-$(libnetwork_shared): $(libnetwork_objects)
+$(library_shared): $(library_objects)
 	$(LINK$(object_suffix)) -o $@ $^ $(LDLIBS)
 
-$(libnetwork_alias): $(libnetwork_shared)
+$(library_alias): $(library_shared)
 	cd $(library_dir) && ln -sf $(notdir $< $@)
 
-$(libnetwork_static): $(libnetwork_objects)
+$(library_static): $(library_objects)
 	rm -f $@ && $(AR) $(ARFLAGS) $@ $^
 
-$(programs): $(libnetwork_alias)
+$(programs): $(library_alias)
 
 # Define suffix rules
 
@@ -378,7 +383,7 @@ $(object_dir)/%$(object_suffix): %$(source_suffix)
 $(tags):
 	ctags -e $(filter -D%,$(CPPFLAGS)) -R $(include_dir) $(source_dir)
 
-sizes.txt: $(sort $(libnetwork_shared) $(objects) $(programs))
+sizes.txt: $(sort $(library_shared) $(objects) $(programs))
 	if [ -e $@ ]; then mv -f $@ $@~; fi
 	size $^ >$@
 
