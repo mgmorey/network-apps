@@ -155,10 +155,13 @@ library_members = $(patsubst				\
 %$(object_suffix),$(library_static)(%$(object_suffix)),	\
 $(library_objects))
 
-library_alias = $(library_dir)/libnetwork$(alias_suffix)
-library_loadmap = $(library_dir)/libnetwork.map
-library_shared = $(library_dir)/libnetwork$(shared_suffix)
-library_static = $(library_dir)/libnetwork.a
+ifeq "$(os_id_type)" "ms-windows"
+	library_static = $(library_dir)/libnetwork.a
+else
+	library_alias = $(library_dir)/libnetwork$(alias_suffix)
+	library_loadmap = $(library_dir)/libnetwork.map
+	library_shared = $(library_dir)/libnetwork$(shared_suffix)
+endif
 
 ifeq "$(os_id_type)" "ms-windows"
 	library = $(library_static)

@@ -181,12 +181,14 @@ ifeq "$(WITH_LOAD_MAP)" "true"
 	ldflags += $(call format-ld-option,$(loadopt),$(loadmap))
 endif
 
+ifneq "$(os_id_type)" "ms-windows"
 ifeq "$(ld_family)" "gnu"
 	rpath = \$$ORIGIN/../$(library_dir)
 	soname = $(@:.$(minor).$(micro)=)
 	ldflags += $(if $(is_shared),$(call		\
 	format-ld-option,-soname,$(soname)),$(call	\
 	format-ld-option,-rpath,$(rpath)))
+endif
 endif
 
 LDFLAGS += $(if $(is_binary),$(call join-ld-options,$(ldflags)))
