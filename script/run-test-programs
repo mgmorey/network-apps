@@ -1,24 +1,25 @@
 #!/bin/sh -eu
 
 run_test_program() (
-    basename="$(basename "$filename" .exe)"
-
-    case "$basename" in
-	(test-*)
-	    cd "$(dirname "$filename")"
-	    ${valgrind:+$valgrind }"./$basename" >"$basename.log"
+    case "$1" in
+	(*/test-*)
+	    ${valgrind:+$valgrind }"$1" >"$(basename $1).log"
 	    ;;
 	(*)
 	    ;;
     esac
 )
 
-if [ "${USING_VALGRIND-}" = true ]; then
-   valgrind="valgrind -q"
-else
-   valgrind=
-fi
+run_test_programs() {
+    if [ "${USING_VALGRIND-}" = true ]; then
+	valgrind="valgrind -q"
+    else
+	valgrind=
+    fi
 
-for filename in "$@"; do
-    run_test_program "$filename"
-done
+    for filename in "$@"; do
+	run_test_program "$filename"
+    done
+}
+
+run_test_programs "$@"

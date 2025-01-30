@@ -32,6 +32,7 @@ micro = $(MICRO_VERSION)
 version = $(major).$(minor).$(micro)
 
 # Define directories
+binary_dir := bin
 cache_dir := .cache
 cppbuild_dir := $(cache_dir)/cppcheck
 dependency_dir := $(cache_dir)/dependency
@@ -164,15 +165,19 @@ ifeq "$(os_id_type)" "ms-windows"
 	program_suffix = .exe
 endif
 
-test_programs = $(addsuffix $(program_suffix),$(basename $(test_sources)))
-unix_programs = $(addsuffix $(program_suffix),$(basename $(unix_sources)))
-programs = $(addsuffix $(program_suffix),$(basename $(program_sources)))
+test_programs = $(addprefix $(binary_dir)/,$(addsuffix	\
+$(program_suffix),$(basename $(test_sources))))
+unix_programs = $(addprefix $(binary_dir)/,$(addsuffix	\
+$(program_suffix),$(basename $(unix_sources))))
+programs = $(addprefix $(binary_dir)/,$(addsuffix	\
+$(program_suffix),$(basename $(program_sources))))
 
 dependencies = $(addprefix $(dependency_dir)/,$(subst	\
 $(source_suffix),$(dependency_suffix),$(sources)))
 listings = $(subst $(object_suffix),.lst,$(objects))
-mapfiles = $(addsuffix .map,$(basename $(programs))) $(libnetwork_mapfile)
-logfiles = $(addsuffix .log,$(basename $(programs)))
+mapfiles = $(addprefix $(binary_dir)/,$(addsuffix .map,$(basename	\
+$(notdir $(programs)))) $(libnetwork_mapfile))
+logfiles = $(addsuffix .log,$(basename $(notdir $(programs))))
 
 dumps = $(addsuffix .stackdump,$(programs))
 
@@ -356,7 +361,7 @@ $(programs): $(libnetwork_alias)
 (%): %
 	$(AR) $(ARFLAGS) $@ $<
 
-%$(program_suffix): $(object_dir)/%$(object_suffix)
+$(binary_dir)/%$(program_suffix): $(object_dir)/%$(object_suffix)
 	$(LINK$(object_suffix)) -o $@ $^ $(LDLIBS)
 
 $(dependency_dir)/%$(dependency_suffix): %$(source_suffix)
@@ -377,6 +382,11 @@ $(dependencies): | $(dependency_dir)
 $(libraries): | $(library_dir)
 
 $(objects): | $(object_dir)
+
+$(programs): | $(binary_dir)
+
+$(binary_dir):
+	mkdir -p $(binary_dir)
 
 $(cppbuild_dir):
 	mkdir -p $(cppbuild_dir)
