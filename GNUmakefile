@@ -42,11 +42,15 @@ object_dir := object
 script_dir := script
 source_dir := src
 
+# Define common functions and flag variables
+include common.gmk
+include flags.gmk
+
 # File prefixes
-library_prefix := lib
+library_prefix = lib
 
 # File suffixes
-alias_suffix := .so
+alias_suffix = .so
 
 ifeq "$(os_id_type)" "ms-windows"
 	binary_suffix = .exe
@@ -54,18 +58,11 @@ else
 	binary_suffix =
 endif
 
-dependency_suffix := .dep
-include_suffix := .h
-object_suffix := .o
-shared_suffix := .so.$(version)
-source_suffix := .cpp
-
-# Include common functions and flag variables
-include common.gmk
-include flags.gmk
-
-# Set virtual paths
-vpath %$(source_suffix) $(source_dir)/$(platform) $(source_dir)
+dependency_suffix = .dep
+include_suffix = .h
+object_suffix = .o
+shared_suffix = .so.$(version)
+source_suffix = .cpp
 
 # Define enumerated file list variables
 
@@ -126,7 +123,6 @@ $(object_suffix),$(basename $1)))
 get-programs = $(addprefix $(binary_dir)/,$(addsuffix	\
 $(binary_suffix),$(basename $1)))
 
-# Define variables
 # Define variables for computed file lists
 
 library_sources = $(library_common_sources) $(library_native_sources)
@@ -239,6 +235,9 @@ ifeq "$(os_id_name)" "Darwin"
 else
 	install = install
 endif
+
+# Set virtual paths
+vpath %$(source_suffix) $(source_dir)/$(platform) $(source_dir)
 
 # Define pseudotargets
 
