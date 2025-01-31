@@ -31,8 +31,6 @@ assert() {
 
 configure_platform() {
     install=$(get_installer)
-    libraries=$(get_libraries)
-    programs=$(get_programs)
 }
 
 get_installer() {
@@ -46,24 +44,27 @@ get_installer() {
     esac
 }
 
+get_includes() {
+    find ${1:-.} -type f '(' -name '*.h' -o -name '*.hpp' ')'
+}
+
 get_libraries() {
-    find $LIBRARY_DIR -type f '(' -name 'lib*.a' -o -name 'lib*.so.*' ')'
+    find ${1:-.} -type f '(' -name '*.a' -o -name '*.so*' ')'
 }
 
 get_programs() {
-    find $BINARY_DIR -type f ! -name '*.map'
+    find ${1:-.} -type f ! -name '*.map'
 }
 
 install_files() {
     $install -d $prefix/include/network $prefix/lib $prefix/bin
-    $install -m 644 $INCLUDE_DIR/$platform/network/* \
+    $install -m 644 $(get_includes $INCLUDE_DIR/$platform/network \
+				   $INCLUDE_DIR/network) \
 	     $prefix/include/network
-    $install -m 644 $INCLUDE_DIR/network/* \
-	     $prefix/include/network
-    $install $libraries $prefix/lib
-    $install $programs $prefix/bin
+    $install $(get_libraries "$LIBRARY_DIR") "$prefix/lib"
+    $install $(get_programs "$BINARY_DIR") "$prefix/bin"
     install_programs
-    install_symlinks
+    install_symlinks $(get_libraries "$prefix/lib")
 }
 
 install_programs() {
@@ -77,7 +78,7 @@ install_programs() {
 }
 
 install_symlinks() {
-    "${script_prefix}install-symlinks" $libraries
+    "${script_prefix}install-symlinks" "$@"
 }
 
 parse_arguments() {

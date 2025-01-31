@@ -17,7 +17,7 @@
 
 install_symlinks() (
     cd "$(dirname "$1")"
-    file="${1#*/}"
+    file="$(basename "$1")"
     stem="${file%.*.*.*}"
     alias="$file"
 
@@ -27,8 +27,8 @@ install_symlinks() (
     done
 )
 
-for file in "$@"; do
-    if [ -e "$file" ]; then
+for file; do
+    if [ -f "$file" ]; then
 	case "$file" in
 	    (*/lib*.so.*|lib*.so.*)
 		install_symlinks "$file"
