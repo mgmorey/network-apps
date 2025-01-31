@@ -18,6 +18,7 @@
 BINARY_DIR=bin
 INCLUDE_DIR=include
 LIBRARY_DIR=lib
+PREFIX=/usr/local
 
 abort() {
     printf "$@" >&2
@@ -54,30 +55,45 @@ get_programs() {
 }
 
 install_files() {
-    $install -d $PREFIX/include/network $PREFIX/lib $PREFIX/bin
+    $install -d $prefix/include/network $prefix/lib $prefix/bin
     $install -m 644 $INCLUDE_DIR/$platform/network/* \
-	     $PREFIX/include/network
+	     $prefix/include/network
     $install -m 644 $INCLUDE_DIR/network/* \
-	     $PREFIX/include/network
-    $install $libraries $PREFIX/lib
-    $install $programs $PREFIX/bin
+	     $prefix/include/network
+    $install $libraries $prefix/lib
+    $install $programs $prefix/bin
+    install_programs
+    install_symlinks
 }
 
-install_package() {
-    install_files
-    install_symlinks $libraries
+install_programs() {
+    if [ -z "$rpath" ]; then
+	return
+    fi
+
+    for program in $programs; do
+	chrpath -r "$rpath" "$program"
+    done
 }
 
 install_symlinks() {
-    "${script_prefix}install-symlinks" "$@"
+    "${script_prefix}install-symlinks" $libraries
 }
 
 parse_arguments() {
     platform=unix
+    prefix=$PREFIX
+    rpath=
 
-    while getopts p:h opt; do
+    while getopts p:t:h opt; do
 	case $opt in
 	    (p)
+		prefix="$OPTARG"
+		;;
+	    (r)
+		rpath="$OPTARG"
+		;;
+	    (t)
 		platform="$OPTARG"
 		;;
 	    (h)
@@ -95,7 +111,7 @@ parse_arguments() {
 
 usage() {
     cat <<EOF >&2
-Usage: $script [-p platform]
+Usage: $script [-p PREFIX] [-t PLATFORM]
        $script -h
 EOF
 }
@@ -125,4 +141,4 @@ script_prefix=${script_dir:+$script_dir/}
 
 parse_arguments "$@"
 configure_platform
-install_package
+install_files

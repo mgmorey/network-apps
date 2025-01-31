@@ -16,7 +16,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 install_symlinks() (
-    cd "${1%/*}"
+    cd "$(dirname "$1")"
     file="${1#*/}"
     stem="${file%.*.*.*}"
     alias="$file"
@@ -30,7 +30,7 @@ install_symlinks() (
 for file in "$@"; do
     if [ -e "$file" ]; then
 	case "$file" in
-	    (*/lib*.so.*)
+	    (*/lib*.so.*|lib*.so.*)
 		install_symlinks "$file"
 		;;
 	    (*)

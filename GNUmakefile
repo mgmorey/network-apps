@@ -306,7 +306,7 @@ dos2unix:
 
 .PHONY: install
 install: $(libraries) $(programs)
-	$(script_dir)/install-package -p $(platform)
+	$(script_dir)/install-files -p $(PREFIX) -t $(platform)
 
 .PHONY: libraries
 libraries: $(libraries)
