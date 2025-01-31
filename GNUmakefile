@@ -375,7 +375,7 @@ $(programs): $(library)
 	$(AR) $(ARFLAGS) $@ $<
 
 $(binary_dir)/%$(binary_suffix): $(object_dir)/%$(object_suffix)
-	$(LINK$(object_suffix)) -o $@ $(filter-out $(library),$^) $(LDLIBS)
+	$(LINK$(object_suffix)) -o $@ $^ $(LDLIBS)
 
 $(object_dir)/%$(object_suffix): %$(source_suffix)
 	$(COMPILE$(source_suffix)) $(OUTPUT_OPTION) $<

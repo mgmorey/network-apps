@@ -166,8 +166,6 @@ CXXFLAGS += -Wall -Werror -Wextra -Wshadow -Wsign-conversion
 
 # LDFLAGS
 
-LDFLAGS += -L$(library_dir)
-
 ifndef NDEBUG
 ifeq "$(USING_LIBASAN)" "true"
 	LDFLAGS += -fsanitize=address
@@ -196,15 +194,9 @@ endif
 
 # LDLIBS
 
-ifeq "$(USING_DMALLOC)" "true"
-	LDLIBS += -ldmalloc
-endif
-
 ifeq "$(os_id_name)" "MINGW64_NT"
 	LDLIBS += -lws2_32
 endif
-
-LDLIBS += $(if $(is_binary),-lnetwork)
 
 # Local Variables:
 # mode: makefile
