@@ -1,7 +1,7 @@
 #!/bin/sh -eux
 
 get_libraries() {
-    find $library_dir -type f -name '*.so.*.*'
+    find $library_dir -type f -name '*.so.'"$version"
 }
 
 get_programs() {
@@ -47,11 +47,11 @@ programs=$(get_programs)
 
 # Get installer program
 case "$(uname)" in
-    (Linux)
-	install=install
-	;;
     (Darwin)
 	install=ginstall
+	;;
+    (*)
+	install=install
 	;;
 esac
 
