@@ -32,7 +32,7 @@ patch = $(PATCH_VERSION)
 version = $(major).$(minor).$(patch)
 
 # Define directories
-binary_dir := .
+binary_dir := bin
 cache_dir := .cache
 cppbuild_dir := $(cache_dir)/cppcheck
 dependency_dir := $(cache_dir)/dependency
