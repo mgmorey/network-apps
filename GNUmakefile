@@ -46,11 +46,10 @@ source_dir := src
 include common.gmk
 include flags.gmk
 
-# File prefixes
-library_prefix = lib
-
-# File suffixes
+# Filenames
 alias_suffix = .so
+library_prefix = lib
+library_name = $(library_prefix)network
 
 ifeq "$(os_id_name)" "MINGW64_NT"
 	binary_suffix = .exe
@@ -147,20 +146,20 @@ objects = $(call get-objects,$(sources))
 
 library_objects = $(call get-objects,$(library_sources))
 
-ifeq "$(os_id_type)" "ms-windows"
-	library_static = $(library_dir)/libnetwork.a
-else
-	library_alias = $(library_dir)/libnetwork$(alias_suffix)
-	library_loadmap = $(library_dir)/libnetwork.map
-	library_shared = $(library_dir)/libnetwork$(shared_suffix)
+ifneq "$(os_id_type)" "ms-windows"
+	library_alias = $(library_dir)/$(library_name)$(alias_suffix)
+	library_loadmap = $(library_dir)/$(library_name).map
+	library_shared = $(library_dir)/$(library_name)$(shared_suffix)
 endif
 
-ifeq "$(os_id_type)" "ms-windows"
+library_static = $(library_dir)/$(library_name).a
+
+ifneq "$(os_id_type)" "ms-windows"
+	library = $(library_alias)
+	libraries = $(library_alias) $(library_shared) $(library_static)
+else
 	library = $(library_static)
 	libraries = $(library_static)
-else
-	library = $(library_alias)
-	libraries = $(library_alias) $(library_shared)
 endif
 
 program_sources = $(test_sources)
