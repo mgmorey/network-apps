@@ -1,0 +1,68 @@
+#!/bin/sh -eux
+
+get_libraries() {
+    find $library_dir -type f -name '*.so.*.*'
+}
+
+get_programs() {
+    find $binary_dir -type f ! -name '*.map'
+}
+
+install_files() {
+    $install -d $PREFIX/include/network $PREFIX/lib $PREFIX/bin
+    $install -m 644 $include_dir/$platform/network/* \
+	     $PREFIX/include/network
+    $install -m 644 $include_dir/network/* \
+	     $PREFIX/include/network
+    $install $libraries $PREFIX/lib
+    $install $programs $PREFIX/bin
+}
+
+install_symlinks() (
+    cd $PREFIX/lib
+    library="$(basename "$1")"
+
+    if [ -e $library ]; then
+	stem=${library%.*.*.*}
+	ln -sf $library $stem.$major
+	ln -sf $library $stem
+    fi
+)
+
+# Parse arguments
+platform="$1"
+major="$2"
+minor="$3"
+micro="$4"
+version="$2.$3.$4"
+
+# Define file directories
+binary_dir=bin
+include_dir=include
+library_dir=lib
+
+# Get file lists
+libraries=$(get_libraries)
+programs=$(get_programs)
+
+# Get installer program
+case "$(uname)" in
+    (Linux)
+	install=install
+	;;
+    (Darwin)
+	install=ginstall
+	;;
+esac
+
+install_files
+
+for library in $libraries; do
+    case "$library" in
+	(*.so.*)
+	    install_symlinks "$library"
+	    ;;
+	(*)
+	    ;;
+    esac
+done
