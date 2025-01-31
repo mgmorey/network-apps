@@ -17,7 +17,7 @@
 
 MAJOR_VERSION := 0
 MINOR_VERSION := 0
-MICRO_VERSION := 1
+PATCH_VERSION := 1
 
 PREFIX ?= /usr/local
 
@@ -28,8 +28,8 @@ standard := $(language)20
 # Define version
 major = $(MAJOR_VERSION)
 minor = $(MINOR_VERSION)
-micro = $(MICRO_VERSION)
-version = $(major).$(minor).$(micro)
+patch = $(PATCH_VERSION)
+version = $(major).$(minor).$(patch)
 
 # Define directories
 binary_dir := bin
@@ -306,7 +306,7 @@ dos2unix:
 
 .PHONY: install
 install: $(libraries) $(programs)
-	$(script_dir)/install-package $(platform) $(major) $(minor) $(micro)
+	$(script_dir)/install-package -p $(platform)
 
 .PHONY: libraries
 libraries: $(libraries)
@@ -345,9 +345,7 @@ unix: $(sort $(unix_programs))
 # Define targets
 
 $(library_alias): $(library_shared)
-	cd $(library_dir) && \
-	ln -sf $(notdir $< $@.$(major)) && \
-	ln -sf $(notdir $< $@)
+	$(script_dir)/install-symlinks $(library_shared)
 
 $(library_static): $(library_objects)
 	rm -f $@ && $(AR) $(ARFLAGS) $@ $^

@@ -1,68 +1,128 @@
-#!/bin/sh -eux
+#!/bin/sh -eu
+
+# Copyright (C) 2025  "Michael G. Morey" <mgmorey@gmail.com>
+
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+BINARY_DIR=bin
+INCLUDE_DIR=include
+LIBRARY_DIR=lib
+
+abort() {
+    printf "$@" >&2
+    exit 1
+}
+
+assert() {
+    "$@" || abort '%s: Assertion failed: %s\n' "$0" "$*"
+}
+
+configure_platform() {
+    install=$(get_installer)
+    libraries=$(get_libraries)
+    programs=$(get_programs)
+}
+
+get_installer() {
+    case "$(uname)" in
+	(Darwin)
+	    printf '%s\n' ginstall
+	    ;;
+	(*)
+	    printf '%s\n' install
+	    ;;
+    esac
+}
 
 get_libraries() {
-    find $library_dir -type f '(' -name '*.a' -o -name '*.so.'"$version" ')'
+    find $LIBRARY_DIR -type f '(' -name 'lib*.a' -o -name 'lib*.so.*' ')'
 }
 
 get_programs() {
-    find $binary_dir -type f ! -name '*.map'
+    find $BINARY_DIR -type f ! -name '*.map'
 }
 
 install_files() {
     $install -d $PREFIX/include/network $PREFIX/lib $PREFIX/bin
-    $install -m 644 $include_dir/$platform/network/* \
+    $install -m 644 $INCLUDE_DIR/$platform/network/* \
 	     $PREFIX/include/network
-    $install -m 644 $include_dir/network/* \
+    $install -m 644 $INCLUDE_DIR/network/* \
 	     $PREFIX/include/network
     $install $libraries $PREFIX/lib
     $install $programs $PREFIX/bin
 }
 
-install_symlinks() (
-    cd $PREFIX/lib
-    library="$(basename "$1")"
+install_package() {
+    install_files
+    install_symlinks $libraries
+}
 
-    if [ -e $library ]; then
-	stem=${library%.*.*.*}
-	ln -sf $library $stem.$major
-	ln -sf $library $stem
+install_symlinks() {
+    "${script_prefix}install-symlinks" "$@"
+}
+
+parse_arguments() {
+    platform=unix
+
+    while getopts p:h opt; do
+	case $opt in
+	    (p)
+		platform="$OPTARG"
+		;;
+	    (h)
+		usage
+		exit 0
+		;;
+	    (\?)
+		exit 2
+		;;
+	esac
+    done
+
+    shift $(($OPTIND - 1))
+}
+
+usage() {
+    cat <<EOF >&2
+Usage: $script [-p platform]
+       $script -h
+EOF
+}
+
+usage_error() {
+    if [ $# -gt 0 ]; then
+	printf "$@" >&2
     fi
-)
 
-# Parse arguments
-platform="$1"
-major="$2"
-minor="$3"
-micro="$4"
-version="$2.$3.$4"
+    printf '%s\n' '' >&2
+    usage
+    exit 2
+}
 
-# Define file directories
-binary_dir=bin
-include_dir=include
-library_dir=lib
+script="$(basename "$0")"
 
-# Get file lists
-libraries=$(get_libraries)
-programs=$(get_programs)
-
-# Get installer program
-case "$(uname)" in
-    (Darwin)
-	install=ginstall
+case "$0" in
+    (*/*)
+	script_dir=$(cd "$(dirname "$0")" && pwd)
 	;;
     (*)
-	install=install
+	script_dir=
 	;;
 esac
 
-install_files
+script_prefix=${script_dir:+$script_dir/}
 
-for library in $libraries; do
-    case "$library" in
-	(*.so.*)
-	    install_symlinks "$library"
-	    ;;
-	(*)
-	    ;;
-    esac
-done
+parse_arguments "$@"
+configure_platform
+install_package
