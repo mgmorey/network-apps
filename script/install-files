@@ -57,10 +57,10 @@ get_programs() {
 }
 
 install_files() {
-    $install -d $prefix/include/network $prefix/lib $prefix/bin
-    $install -m 644 $(get_includes $INCLUDE_DIR/$platform/network \
-				   $INCLUDE_DIR/network) \
-	     $prefix/include/network
+    $install -d "$prefix/include/network" "$prefix/lib" "$prefix/bin"
+    $install -m 644 $(get_includes "$INCLUDE_DIR/$platform/network" \
+				   "$INCLUDE_DIR/network") \
+	     "$prefix/include/network"
     $install $(get_libraries "$LIBRARY_DIR") "$prefix/lib"
     $install $(get_programs "$BINARY_DIR") "$prefix/bin"
     install_programs
@@ -86,7 +86,7 @@ parse_arguments() {
     prefix=$PREFIX
     rpath=
 
-    while getopts p:t:h opt; do
+    while getopts p:r:t:h opt; do
 	case $opt in
 	    (p)
 		prefix="$OPTARG"
@@ -112,7 +112,7 @@ parse_arguments() {
 
 usage() {
     cat <<EOF >&2
-Usage: $script [-p PREFIX] [-t PLATFORM]
+Usage: $script [-p PREFIX] [-r RPATH] [-t PLATFORM]
        $script -h
 EOF
 }
