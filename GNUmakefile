@@ -313,8 +313,8 @@ install: $(libraries) $(programs)
 	$(PREFIX)/include/$(platform)/network
 	$(install) -m 644 $(include_dir)/network/* \
 	$(PREFIX)/include/network
-	$(install) -s $(filter-out %$(alias_suffix),$(libraries)) $(PREFIX)/lib
-	$(install) -s $(programs) $(PREFIX)/bin
+	$(install) $(filter-out %$(alias_suffix),$(libraries)) $(PREFIX)/lib
+	$(install) $(programs) $(PREFIX)/bin
 	cd $(PREFIX)/lib && \
 	test -e $(notdir $(library_shared)) && \
 	ln -sf $(notdir $(library_shared) $(library_alias).$(major)) && \
