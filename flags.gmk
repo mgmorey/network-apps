@@ -31,7 +31,7 @@ join-options = $(subst $(space),$(comma),$1)
 is_binary = $(filter $(binary_dir)/%,$@)
 is_dependency = $(filter %$(dependency_suffix),$@)
 is_object = $(filter $(object_dir)/%$(object_suffix),$@)
-is_shared = $(filter $(library_dir)/%$(shared_suffix),$@)
+is_shared = $(filter $(library_dir)/$(library_prefix)%$(shared_suffix),$@)
 
 # ARFLAGS
 ARFLAGS = r
@@ -173,7 +173,7 @@ endif
 endif
 
 ifeq "$(WITH_LOAD_MAP)" "true"
-	loadmap = $(@:$(suffix)=).map
+	loadmap = $(@:$(suffix)=.map)
 	loadopt = $(if $(filter gnu,$(ld_family)),-Map,-map)
 	suffix = $(if $(is_shared),$(shared_suffix),$(binary_suffix))
 	ldflags += $(call format-ld-option,$(loadopt),$(loadmap))
