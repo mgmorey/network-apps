@@ -32,7 +32,7 @@ patch = $(PATCH_VERSION)
 version = $(major).$(minor).$(patch)
 
 # Define directories
-binary_dir := bin
+binary_dir := .
 cache_dir := .cache
 cppbuild_dir := $(cache_dir)/cppcheck
 dependency_dir := $(cache_dir)/dependency
@@ -266,7 +266,7 @@ build: $(build_targets)
 
 .PHONY: check
 check: $(test_programs)
-	$(script_dir)/run-test-programs $(sort $^)
+	$(script_dir)/run-test-programs $^
 
 .PHONY: check-syntax
 check-syntax:
@@ -332,13 +332,13 @@ test: check
 
 ifeq "$(cxx_family)" "clang"
 .PHONY: tidy
-tidy: $(sort $(sources))
-	$(CLANG_TIDY) $^ $(CLANG_TIDY_FLAGS)
+tidy: $(sources)
+	$(CLANG_TIDY) $(sort $^) $(CLANG_TIDY_FLAGS)
 endif
 
 .PHONY: unix
-unix: $(sort $(unix_programs))
-	$(script_dir)/run-unix-programs
+unix: $(unix_programs)
+	$(script_dir)/run-unix-programs $^
 
 .SECONDARY: $(objects)
 

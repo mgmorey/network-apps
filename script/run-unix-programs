@@ -1,5 +1,20 @@
 #!/bin/sh -eu
 
+# Copyright (C) 2022  "Michael G. Morey" <mgmorey@gmail.com>
+
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 parse_arguments() {
     args=
 
@@ -19,22 +34,22 @@ parse_arguments() {
     done
 
     shift $(($OPTIND - 1))
-
-    if [ $# -gt 0 ]; then
-	usage_error '%s: Too many arguments\n' "$script"
-    fi
+    programs="$@"
 }
 
 run_unix_program() (
-    case "$1" in
-	(*/unix-client)
-	    # cd "$dirname"
-	    "$1"${args:+ $args} 2 2
-	    "$1"${args:+ $args} DOWN
+    basename="$(basename "$1")"
+    dirname="$(dirname "$1")"
+    pathname="$dirname/$basename"
+
+    case "$basename" in
+	(unix-client)
+	    sleep 1
+	    "$pathname"${args:+ $args} 2 2
+	    "$pathname"${args:+ $args} DOWN
 	    ;;
-	(*/unix-server)
-	    # cd "$dirname"
-	    "$1"${args:+ $args}
+	(unix-server)
+	    "$pathname"${args:+ $args} &
 	    ;;
 	(*)
 	    ;;
@@ -42,9 +57,9 @@ run_unix_program() (
 )
 
 run_unix_programs() {
-    run_unix_program bin/unix-server &
-    sleep 1
-    run_unix_program bin/unix-client
+    for program in $(printf '%s\n' $programs | sort -r); do
+	run_unix_program "$program"
+    done
 }
 
 usage() {
