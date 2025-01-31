@@ -34,7 +34,7 @@ version = $(major).$(minor).$(patch)
 # Define directories
 binary_dir := bin
 cache_dir := .cache
-cppbuild_dir := $(cache_dir)/cppcheck
+cppcheck_dir := $(cache_dir)/cppcheck
 dependency_dir := $(cache_dir)/dependency
 include_dir := include
 library_dir := lib
@@ -48,8 +48,8 @@ include flags.gmk
 
 # Filenames
 alias_suffix = .so
-library_prefix = lib
 library_name = $(library_prefix)network
+library_prefix = lib
 
 ifeq "$(os_id_name)" "MINGW64_NT"
 	binary_suffix = .exe
@@ -240,7 +240,7 @@ vpath %$(source_suffix) $(source_dir)/$(platform) $(source_dir)
 all: $(all_targets)
 
 .PHONY: analyze
-analyze: $(sources) | $(cppbuild_dir)
+analyze: $(sources) | $(cppcheck_dir)
 	printf '%s\n' $^ | xargs cppcheck $(CPPCHECK_FLAGS)
 
 .PHONY: assert
@@ -387,8 +387,8 @@ $(programs): | $(binary_dir)
 $(binary_dir):
 	mkdir -p $(binary_dir)
 
-$(cppbuild_dir):
-	mkdir -p $(cppbuild_dir)
+$(cppcheck_dir):
+	mkdir -p $(cppcheck_dir)
 
 $(dependency_dir):
 	mkdir -p $(dependency_dir)
