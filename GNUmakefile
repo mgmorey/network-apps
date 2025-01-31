@@ -307,13 +307,12 @@ dos2unix:
 
 .PHONY: install
 install: $(libraries) $(programs)
-	$(install) -d $(PREFIX)/include/$(platform)/network \
-	$(PREFIX)/include/network $(PREFIX)/bin $(PREFIX)/lib
+	$(install) -d $(PREFIX)/include/network $(PREFIX)/lib $(PREFIX)/bin
 	$(install) -m 644 $(include_dir)/$(platform)/network/* \
-	$(PREFIX)/include/$(platform)/network
+	$(PREFIX)/include/network
 	$(install) -m 644 $(include_dir)/network/* \
 	$(PREFIX)/include/network
-	$(install) $(filter-out %$(alias_suffix),$(libraries)) $(PREFIX)/lib
+	$(install) $(libraries) $(PREFIX)/lib
 	$(install) $(programs) $(PREFIX)/bin
 	cd $(PREFIX)/lib && \
 	test -e $(notdir $(library_shared)) && \
