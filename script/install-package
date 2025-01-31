@@ -1,7 +1,7 @@
 #!/bin/sh -eux
 
 get_libraries() {
-    find $library_dir -type f -name '*.so.'"$version"
+    find $library_dir -type f '(' -name '*.a' -o -name '*.so.'"$version" ')'
 }
 
 get_programs() {
