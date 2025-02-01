@@ -61,7 +61,7 @@ source_suffix = .cpp
 
 # Define linker options rpath and soname
 rpath = \$$ORIGIN/../$(library_dir)
-soname = $(@:$(shared_suffix)=$(soname_suffix))
+soname = $(library_soname)
 
 # Define enumerated file list variables
 
@@ -151,6 +151,7 @@ ifneq "$(os_id_type)" "ms-windows"
 	$(library_dir)/$(library_file),$(alias_suffixes))
 	library_mapfile = $(library_dir)/$(library_file).map
 	library_shared = $(library_dir)/$(library_file)$(shared_suffix)
+	library_soname = $(library_dir)/$(library_file)$(soname_suffix)
 endif
 
 library_static = $(library_dir)/$(library_file).a
