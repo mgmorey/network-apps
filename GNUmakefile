@@ -143,7 +143,7 @@ library_objects = $(call get-objects,$(library_sources))
 
 ifneq "$(os_id_type)" "ms-windows"
 	library_alias = $(library_dir)/$(library_name)$(alias_suffix)
-	library_loadmap = $(library_dir)/$(library_name).map
+	library_mapfile = $(library_dir)/$(library_name).map
 	library_shared = $(library_dir)/$(library_name)$(shared_suffix)
 endif
 
@@ -174,7 +174,7 @@ unix_programs = $(call get-programs,$(unix_sources))
 dependencies = $(call get-dependencies,$(sources))
 listings = $(objects:$(object_suffix)=.lst)
 logfiles = $(notdir $(programs:$(binary_suffix)=.log))
-mapfiles = $(programs:$(binary_suffix)=.map) $(library_loadmap)
+mapfiles = $(programs:$(binary_suffix)=.map) $(library_mapfile)
 stackdumps = $(programs:$(binary_suffix)=.stackdump)
 
 artifacts = $(binary_artifacts) $(text_artifacts)

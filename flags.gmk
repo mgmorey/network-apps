@@ -173,10 +173,9 @@ endif
 endif
 
 ifeq "$(WITH_LOAD_MAP)" "true"
-	loadmap = $(@:$(suffix)=.map)
-	loadopt = $(if $(filter gnu,$(ld_family)),-Map,-map)
-	suffix = $(if $(is_shared),$(shared_suffix),$(binary_suffix))
-	ldflags += $(call format-ld-option,$(loadopt),$(loadmap))
+	mapfile = $(@:$(if $(is_shared),$(shared_suffix),$(binary_suffix))=.map)
+	mapopt = $(if $(filter gnu,$(ld_family)),-Map,-map)
+	ldflags += $(call format-ld-option,$(mapopt),$(mapfile))
 endif
 
 ifeq "$(ld_family)" "gnu"
