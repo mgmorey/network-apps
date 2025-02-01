@@ -179,14 +179,15 @@ ifeq "$(WITH_LOAD_MAP)" "true"
 endif
 
 ifeq "$(ld_family)" "gnu"
-	ldflags += $(if $(is_shared),$(call				\
-	format-ld-option,-soname,$(soname)),$(if $(rpath),$(call	\
-	format-ld-option,-rpath,$(rpath))))
+	ldflags += $(if $(is_shared),$(if $(soname),$(call		\
+	format-ld-option,-soname,$(soname)),),$(if $(rpath),$(call	\
+	format-ld-option,-rpath,$(rpath)),))
 endif
 
 ifneq "$(os_id_type)" "ms-windows"
-	LDFLAGS += $(if $(is_binary),$(call join-ld-options,$(ldflags)))
-	LDFLAGS += $(if $(is_shared),$(call join-ld-options,$(ldflags)) -shared)
+	LDFLAGS += $(if $(is_binary),$(call join-ld-options,$(ldflags)),)
+	LDFLAGS += $(if $(is_shared),$(call join-ld-options,$(ldflags)),)
+	LDFLAGS += $(if $(is_shared),-shared,)
 endif
 
 # LDLIBS
