@@ -58,6 +58,10 @@ object_suffix = .o
 shared_suffix = .so.$(VERSION)
 source_suffix = .cpp
 
+# Define linker options rpath and soname
+rpath = \$$ORIGIN/../$(library_dir)
+soname = $(@:.$(minor).$(patch)=)
+
 # Define enumerated file list variables
 
 library_common_sources = accept.cpp address-sa.cpp address-sin.cpp	\

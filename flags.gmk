@@ -179,8 +179,6 @@ ifeq "$(WITH_LOAD_MAP)" "true"
 endif
 
 ifeq "$(ld_family)" "gnu"
-	rpath = \$$ORIGIN/../$(library_dir)
-	soname = $(@:.$(minor).$(patch)=)
 	ldflags += $(if $(is_shared),$(call				\
 	format-ld-option,-soname,$(soname)),$(if $(rpath),$(call	\
 	format-ld-option,-rpath,$(rpath))))
