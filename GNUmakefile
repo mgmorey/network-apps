@@ -42,7 +42,6 @@ include common.gmk
 include flags.gmk
 
 # Define filenames, prefixes, and suffixes
-alias_suffix = .so
 library_name = $(library_prefix)network
 library_prefix = lib
 
@@ -52,6 +51,7 @@ else
 	binary_suffix =
 endif
 
+alias_suffixes = .so .so.$(major) .so.$(major).$(minor)
 depend_suffix = .dep
 include_suffix = .h
 object_suffix = .o
@@ -146,7 +146,8 @@ objects = $(call get-objects,$(sources))
 library_objects = $(call get-objects,$(library_sources))
 
 ifneq "$(os_id_type)" "ms-windows"
-	library_alias = $(library_dir)/$(library_name)$(alias_suffix)
+	library_aliases = $(addprefix				\
+	$(library_dir)/$(library_name),$(alias_suffixes))
 	library_mapfile = $(library_dir)/$(library_name).map
 	library_shared = $(library_dir)/$(library_name)$(shared_suffix)
 endif
@@ -154,12 +155,10 @@ endif
 library_static = $(library_dir)/$(library_name).a
 
 ifneq "$(os_id_type)" "ms-windows"
-	library = $(library_alias)
-	libraries = $(library_alias) $(library_shared) $(library_static)
-else
-	library = $(library_static)
-	libraries = $(library_static)
+	libraries = $(library_aliases) $(library_shared) $(library_static)
 endif
+
+libraries += $(library_static)
 
 program_sources = $(test_sources)
 
@@ -336,7 +335,7 @@ unix: $(unix_programs)
 
 # Define targets
 
-$(library_alias): $(library_shared)
+$(library_aliases): $(library_shared)
 	$(script_dir)/install-symlinks $(library_shared)
 
 $(library_static): $(library_objects)
@@ -345,7 +344,7 @@ $(library_static): $(library_objects)
 $(library_shared): $(library_objects)
 	$(LINK$(object_suffix)) -o $@ $^ $(LDLIBS)
 
-$(programs): $(library)
+$(programs): $(firstword $(libraries))
 
 # Define suffix rules
 
