@@ -45,15 +45,15 @@ get_installer() {
 }
 
 get_includes() {
-    find ${1:-.} -type f '(' -name '*.h' -o -name '*.hpp' ')'
+    find "$@" -type f '(' -name '*.h' -o -name '*.hpp' ')'
 }
 
 get_libraries() {
-    find ${1:-.} -type f '(' -name '*.a' -o -name '*.so*' ')'
+    find "$@" -type f '(' -name '*.a' -o -name '*.so*' ')'
 }
 
 get_programs() {
-    find ${1:-.} -type f ! -name '*.map'
+    find "$@" -type f ! -name '*.map'
 }
 
 install_files() {
