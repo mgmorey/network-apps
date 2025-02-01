@@ -42,7 +42,7 @@ include common.gmk
 include flags.gmk
 
 # Define filenames, prefixes, and suffixes
-library_name = $(library_prefix)network
+library_file = $(library_prefix)network
 library_prefix = lib
 
 ifeq "$(os_id_name)" "MINGW64_NT"
@@ -148,12 +148,12 @@ library_objects = $(call get-objects,$(library_sources))
 
 ifneq "$(os_id_type)" "ms-windows"
 	library_aliases = $(addprefix				\
-	$(library_dir)/$(library_name),$(alias_suffixes))
-	library_mapfile = $(library_dir)/$(library_name).map
-	library_shared = $(library_dir)/$(library_name)$(shared_suffix)
+	$(library_dir)/$(library_file),$(alias_suffixes))
+	library_mapfile = $(library_dir)/$(library_file).map
+	library_shared = $(library_dir)/$(library_file)$(shared_suffix)
 endif
 
-library_static = $(library_dir)/$(library_name).a
+library_static = $(library_dir)/$(library_file).a
 
 ifneq "$(os_id_type)" "ms-windows"
 	libraries = $(library_aliases) $(library_shared) $(library_static)
