@@ -189,8 +189,10 @@ $(programs) sizes.txt*
 text_artifacts = $(commands) $(dependencies) $(listings) $(logfiles)	\
 $(mapfiles) $(stackdumps) sizes.txt*
 
-dos2unix_args = $(sort $(filter-out %$(dependency_suffix),$(wildcard	\
-$(text_artifacts))))
+build_dirs = $(filter-out .,$(binary_dir) $(cache_dir)	\
+$(library_dir) $(object_dir))
+dos2unix_files = $(filter-out %$(dependency_suffix),$(wildcard	\
+$(text_artifacts)))
 
 # Define variables for build target lists
 
@@ -293,11 +295,11 @@ count-unix-source-files: $(unix_sources)
 
 .PHONY: distclean
 distclean:
-	printf '%s\n' $(sort $(wildcard $(artifacts))) | xargs rm -f
+	printf '%s\n' $(sort $(artifacts) $(build_dirs)) | xargs rm -rf
 
 .PHONY: dos2unix
 dos2unix:
-	printf '%s\n' $(dos2unix_args) | xargs dos2unix -q
+	printf '%s\n' $(sort $(dos2unix_files)) | xargs dos2unix -q
 
 .PHONY: install
 install: $(libraries) $(programs)
