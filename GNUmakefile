@@ -257,12 +257,7 @@ endif
 build: $(build_targets)
 
 .PHONY: check
-check: $(test_programs)
-	$(script_dir)/run-test-programs $^
-
-.PHONY: check-syntax
-check-syntax:
-	$(CXX) -fsyntax-only $(CXXFLAGS) $(CPPFLAGS) $(CHK_SOURCES)
+check: test
 
 .PHONY: clean
 clean:
@@ -320,7 +315,8 @@ sizes: sizes.txt
 tags: TAGS
 
 .PHONY: test
-test: check
+test: $(test_programs)
+	$(script_dir)/run-test-programs $^
 
 ifeq "$(cxx_family)" "clang"
 .PHONY: tidy
