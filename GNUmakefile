@@ -192,11 +192,6 @@ $(mapfiles) $(stackdumps) sizes.txt*
 dos2unix_args = $(sort $(filter-out %$(dependency_suffix),$(wildcard	\
 $(text_artifacts))))
 
-rm_args = $(sort $(filter-out $(binary_dir)/%,$(filter-out		\
-$(cache_dir)/%,$(filter-out $(library_dir)/%,$(filter-out		\
-$(object_dir)/%,$(wildcard $(binary_dir) $(cache_dir) $(library_dir)	\
-$(object_dir) $(artifacts)))))))
-
 # Define variables for build target lists
 
 build_targets = assert objects libraries programs sizes
@@ -298,7 +293,7 @@ count-unix-source-files: $(unix_sources)
 
 .PHONY: distclean
 distclean:
-	printf '%s\n' $(rm_args) | xargs rm -rf
+	printf '%s\n' $(sort $(wildcard $(artifacts))) | xargs rm -f
 
 .PHONY: dos2unix
 dos2unix:
