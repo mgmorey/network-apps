@@ -174,14 +174,14 @@ endif
 
 ifeq "$(WITH_LOAD_MAP)" "true"
 	mapfile = $(@:$(if $(is_shared),$(shared_suffix),$(binary_suffix))=.map)
-	mapopt = $(if $(filter gnu,$(ld_family)),-Map,-map)
-	ldflags += $(call format-ld-option,$(mapopt),$(mapfile))
+	ldflags += $(call format-ld-option,$(if $(filter	\
+	gnu,$(ld_family)),-Map,-map),$(mapfile))
 endif
 
 ifeq "$(ld_family)" "gnu"
-	ldflags += $(if $(is_shared),$(if $(soname),$(call		\
-	format-ld-option,-soname,$(soname)),),$(if $(rpath),$(call	\
-	format-ld-option,-rpath,$(rpath)),))
+	ldflags += $(if $(is_shared),$(call		\
+	format-ld-option,-soname,$(soname)),$(call	\
+	format-ld-option,-rpath,$(rpath)))
 endif
 
 ifneq "$(os_id_type)" "ms-windows"
