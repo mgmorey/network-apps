@@ -185,7 +185,7 @@ ifeq "$(ld_family)" "gnu"
 endif
 
 ifneq "$(os_id_type)" "ms-windows"
-	LDFLAGS += $(call join-ld-options,$(ldflags:$(space)=))
+	LDFLAGS += $(call join-ld-options,$(strip $(ldflags)))
 	LDFLAGS += $(if $(is_shared),-shared,)
 endif
 
