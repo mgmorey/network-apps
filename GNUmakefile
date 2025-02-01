@@ -15,30 +15,25 @@
 
 # Define project-specific variables
 
-MAJOR_VERSION := 0
-MINOR_VERSION := 0
-PATCH_VERSION := 1
-
 PREFIX ?= /usr/local
+VERSION = 0.0.1
 
 # Define language
 language := c++
 standard := $(language)20
 
-# Define version
-major = $(MAJOR_VERSION)
-minor = $(MINOR_VERSION)
-patch = $(PATCH_VERSION)
-version = $(major).$(minor).$(patch)
-
-# Define directories
-binary_dir := bin
+# Define cache directory
 cache_dir := .cache
+
+# Define build directories
+binary_dir := bin
 cppcheck_dir := $(cache_dir)/cppcheck
-dependency_dir := $(cache_dir)/dependency
-include_dir := include
+depend_dir := $(cache_dir)/dependency
 library_dir := lib
 object_dir := object
+
+# Define include and source directories
+include_dir := include
 script_dir := script
 source_dir := src
 
@@ -46,7 +41,7 @@ source_dir := src
 include common.gmk
 include flags.gmk
 
-# Filenames
+# Define filenames, prefixes, and suffixes
 alias_suffix = .so
 library_name = $(library_prefix)network
 library_prefix = lib
@@ -57,10 +52,10 @@ else
 	binary_suffix =
 endif
 
-dependency_suffix = .dep
+depend_suffix = .dep
 include_suffix = .h
 object_suffix = .o
-shared_suffix = .so.$(version)
+shared_suffix = .so.$(VERSION)
 source_suffix = .cpp
 
 # Define enumerated file list variables
@@ -115,8 +110,8 @@ commands = compile_commands.json
 
 # Define functions for computing lists of objects and programs
 
-get-dependencies = $(addprefix $(dependency_dir)/,$(addsuffix	\
-$(dependency_suffix),$(basename $1)))
+get-dependencies = $(addprefix $(depend_dir)/,$(addsuffix	\
+$(depend_suffix),$(basename $1)))
 get-objects = $(addprefix $(object_dir)/,$(addsuffix	\
 $(object_suffix),$(basename $1)))
 get-programs = $(addprefix $(binary_dir)/,$(addsuffix	\
@@ -191,7 +186,7 @@ $(mapfiles) $(stackdumps) sizes.txt*
 
 build_dirs = $(filter-out .,$(binary_dir) $(cache_dir)	\
 $(library_dir) $(object_dir))
-dos2unix_files = $(filter-out %$(dependency_suffix),$(wildcard	\
+dos2unix_files = $(filter-out %$(depend_suffix),$(wildcard	\
 $(text_artifacts)))
 
 # Define variables for build target lists
@@ -303,7 +298,7 @@ dos2unix:
 
 .PHONY: install
 install: $(libraries) $(programs)
-	$(script_dir)/install-files -p $(PREFIX) -t $(platform)
+	$(script_dir)/install-files -o $(platform) -p $(PREFIX)
 
 .PHONY: libraries
 libraries: $(libraries)
@@ -363,7 +358,7 @@ $(binary_dir)/%$(binary_suffix): $(object_dir)/%$(object_suffix)
 $(object_dir)/%$(object_suffix): %$(source_suffix)
 	$(COMPILE$(source_suffix)) $(OUTPUT_OPTION) $<
 
-$(dependency_dir)/%$(dependency_suffix): %$(source_suffix)
+$(depend_dir)/%$(depend_suffix): %$(source_suffix)
 	$(CXX) $(CPPFLAGS) -MM $< | $(make_makefile) -o $@ TAGS
 
 sizes.txt: $(sort $(library_shared) $(objects) $(programs))
@@ -373,7 +368,7 @@ sizes.txt: $(sort $(library_shared) $(objects) $(programs))
 TAGS:
 	ctags -e $(filter -D%,$(CPPFLAGS)) -R $(include_dir) $(source_dir)
 
-$(dependencies): | $(dependency_dir)
+$(dependencies): | $(depend_dir)
 
 $(libraries): | $(library_dir)
 
@@ -387,8 +382,8 @@ $(binary_dir):
 $(cppcheck_dir):
 	mkdir -p $(cppcheck_dir)
 
-$(dependency_dir):
-	mkdir -p $(dependency_dir)
+$(depend_dir):
+	mkdir -p $(depend_dir)
 
 $(library_dir):
 	mkdir -p $(library_dir)

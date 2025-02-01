@@ -29,10 +29,6 @@ assert() {
     "$@" || abort '%s: Assertion failed: %s\n' "$0" "$*"
 }
 
-configure_platform() {
-    install=$(get_installer)
-}
-
 get_installer() {
     case "$(uname)" in
 	(Darwin)
@@ -57,8 +53,9 @@ get_programs() {
 }
 
 install_files() {
+    install=$(get_installer)
     $install -d "$prefix/include/network" "$prefix/lib" "$prefix/bin"
-    $install -m 644 $(get_includes "$INCLUDE_DIR/$platform/network" \
+    $install -m 644 $(get_includes "$INCLUDE_DIR/$ostype/network" \
 				   "$INCLUDE_DIR/network") \
 	     "$prefix/include/network"
     $install $(get_libraries "$LIBRARY_DIR") "$prefix/lib"
@@ -82,20 +79,20 @@ install_symlinks() {
 }
 
 parse_arguments() {
-    platform=unix
+    ostype=unix
     prefix=$PREFIX
     rpath=
 
-    while getopts p:r:t:h opt; do
+    while getopts o:p:r:h opt; do
 	case $opt in
+	    (o)
+		ostype="$OPTARG"
+		;;
 	    (p)
 		prefix="$OPTARG"
 		;;
 	    (r)
 		rpath="$OPTARG"
-		;;
-	    (t)
-		platform="$OPTARG"
 		;;
 	    (h)
 		usage
@@ -112,7 +109,7 @@ parse_arguments() {
 
 usage() {
     cat <<EOF >&2
-Usage: $script [-p PREFIX] [-r RPATH] [-t PLATFORM]
+Usage: $script [-o OSTYPE] [-p PREFIX] [-r RPATH]
        $script -h
 EOF
 }
@@ -141,5 +138,4 @@ esac
 script_prefix=${script_dir:+$script_dir/}
 
 parse_arguments "$@"
-configure_platform
 install_files

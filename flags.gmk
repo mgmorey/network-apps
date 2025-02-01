@@ -29,7 +29,7 @@ join-options = $(subst $(space),$(comma),$1)
 
 # Define predicates for object and shared object files
 is_binary = $(filter $(binary_dir)/%,$@)
-is_dependency = $(filter %$(dependency_suffix),$@)
+is_depend = $(filter %$(depend_suffix),$@)
 is_object = $(filter $(object_dir)/%$(object_suffix),$@)
 is_shared = $(filter $(library_dir)/$(library_prefix)%$(shared_suffix),$@)
 
