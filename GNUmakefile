@@ -56,11 +56,12 @@ depend_suffix = .dep
 include_suffix = .h
 object_suffix = .o
 shared_suffix = .so.$(VERSION)
+soname_suffix = .so.$(major)
 source_suffix = .cpp
 
 # Define linker options rpath and soname
 rpath = \$$ORIGIN/../$(library_dir)
-soname = $(@:.$(minor).$(patch)=)
+soname = $(@:$(shared_suffix)=$(soname_suffix))
 
 # Define enumerated file list variables
 
