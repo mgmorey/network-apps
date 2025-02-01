@@ -17,12 +17,12 @@
 
 install_symlinks() (
     cd "$(dirname "$1")"
-    file="$(basename "$1")"
-    stem="${file%.*.*.*}"
-    alias="$file"
+    file=$(basename "$1")
+    stem=${file%.*.*.*}
+    alias=$file
 
     until [ "$alias" = "$stem" ]; do
-	alias="${alias%.*}"
+	alias=${alias%.*}
 	ln -sf "$file" "$alias"
     done
 )
