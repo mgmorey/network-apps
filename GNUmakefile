@@ -149,17 +149,17 @@ ifneq "$(os_id_type)" "ms-windows"
 	library_aliases = $(addprefix				\
 	$(library_dir)/$(library_file),$(alias_suffixes))
 	library_mapfile = $(library_dir)/$(library_file).map
-	library_shared = $(library_dir)/$(library_file)$(shared_suffix)
+	shared_library = $(library_dir)/$(library_file)$(shared_suffix)
 	soname = $(library_file)$(soname_suffix)
 endif
 
-library_static = $(library_dir)/$(library_file).a
+static_library = $(library_dir)/$(library_file).a
 
 ifneq "$(os_id_type)" "ms-windows"
-	libraries = $(library_aliases) $(library_shared) $(library_static)
+	libraries = $(library_aliases) $(shared_library) $(static_library)
 endif
 
-libraries += $(library_static)
+libraries += $(static_library)
 
 program_sources = $(test_sources)
 
@@ -336,14 +336,14 @@ unix: $(unix_programs)
 
 # Define targets
 
-$(library_aliases): $(library_shared)
-	$(script_dir)/install-symlinks $(library_shared)
+$(library_aliases): $(shared_library)
+	$(script_dir)/install-symlinks $(shared_library)
 
-$(library_static): $(library_objects)
-	rm -f $@ && $(AR) $(ARFLAGS) $@ $^
-
-$(library_shared): $(library_objects)
+$(shared_library): $(library_objects)
 	$(LINK$(object_suffix)) -o $@ $^ $(LDLIBS)
+
+$(static_library): $(library_objects)
+	rm -f $@ && $(AR) $(ARFLAGS) $@ $^
 
 $(programs): $(firstword $(libraries))
 
@@ -361,7 +361,7 @@ $(object_dir)/%$(object_suffix): %$(source_suffix)
 $(depend_dir)/%$(depend_suffix): %$(source_suffix)
 	$(CXX) $(CPPFLAGS) -MM $< | $(make_makefile) -o $@ TAGS
 
-sizes.txt: $(sort $(library_shared) $(objects) $(programs))
+sizes.txt: $(sort $(shared_library) $(objects) $(programs))
 	if [ -e $@ ]; then mv -f $@ $@~; fi
 	size $^ >$@
 
