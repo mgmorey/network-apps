@@ -188,8 +188,8 @@ $(programs) sizes.txt*
 text_artifacts = $(commands) $(dependencies) $(listings) $(logfiles)	\
 $(mapfiles) $(stackdumps) sizes.txt*
 
-build_dirs = $(filter-out .,$(binary_dir) $(cache_dir)	\
-$(library_dir) $(object_dir))
+build_dirs = $(filter-out .,$(binary_dir) $(cache_dir) $(library_dir)	\
+$(object_dir))
 dos2unix_files = $(filter-out %$(depend_suffix),$(wildcard	\
 $(text_artifacts)))
 
