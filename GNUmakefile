@@ -156,7 +156,7 @@ endif
 static_library = $(library_dir)/$(library_file).a
 
 ifneq "$(os_id_type)" "ms-windows"
-	libraries = $(library_aliases) $(shared_library) $(static_library)
+	libraries = $(library_aliases) $(shared_library)
 endif
 
 libraries += $(static_library)
