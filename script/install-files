@@ -115,7 +115,7 @@ parse_arguments() {
 
 usage() {
     cat <<EOF >&2
-Usage: $script [-o OSTYPE] [-p PREFIX] [-r RPATH]
+Usage: $script [-i INSTALL] [-o OSTYPE] [-p PREFIX] [-r RPATH]
        $script -h
 EOF
 }
