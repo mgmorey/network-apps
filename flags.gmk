@@ -28,10 +28,9 @@ join-ld-options = $(call join-options,-Wl $1)
 join-options = $(subst $(space),$(comma),$1)
 
 # Define predicates for object and shared object files
-is_binary = $(filter $(binary_dir)/%,$@)
 is_depend = $(filter %$(depend_suffix),$@)
 is_object = $(filter $(object_dir)/%$(object_suffix),$@)
-is_shared = $(filter $(library_dir)/$(library_prefix)%$(shared_suffix),$@)
+is_shared = $(filter $(output_dir)/$(library_prefix)%$(shared_suffix),$@)
 
 # ARFLAGS
 ARFLAGS = r
@@ -184,10 +183,8 @@ ifeq "$(ld_family)" "gnu"
 	format-ld-option,-rpath,$(rpath)),))
 endif
 
-ifneq "$(os_id_type)" "ms-windows"
-	LDFLAGS += $(call join-ld-options,$(strip $(ldflags)))
-	LDFLAGS += $(if $(is_shared),-shared,)
-endif
+LDFLAGS += $(call join-ld-options,$(strip $(ldflags)))
+LDFLAGS += $(if $(is_shared),-shared,)
 
 # LDLIBS
 

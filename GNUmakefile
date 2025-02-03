@@ -26,11 +26,10 @@ standard := $(language)20
 cache_dir := .cache
 
 # Define build directories
-binary_dir := bin
 cppcheck_dir := $(cache_dir)/cppcheck
 depend_dir := $(cache_dir)/dependency
-library_dir := lib
 object_dir := object
+output_dir := output
 
 # Define include and source directories
 include_dir := include
@@ -60,7 +59,7 @@ shared_suffix = .so.$(VERSION)
 source_suffix = .cpp
 
 # Define linker options rpath and soname
-rpath = \$$ORIGIN/../$(library_dir)
+rpath = \$$ORIGIN
 soname = $(library_file)$(alias_suffix)
 
 # Define enumerated file list variables
@@ -119,7 +118,7 @@ get-dependencies = $(addprefix $(depend_dir)/,$(addsuffix	\
 $(depend_suffix),$(basename $1)))
 get-objects = $(addprefix $(object_dir)/,$(addsuffix	\
 $(object_suffix),$(basename $1)))
-get-programs = $(addprefix $(binary_dir)/,$(addsuffix	\
+get-programs = $(addprefix $(output_dir)/,$(addsuffix	\
 $(binary_suffix),$(basename $1)))
 
 # Define variables for computed file lists
@@ -147,17 +146,13 @@ objects = $(call get-objects,$(sources))
 library_objects = $(call get-objects,$(library_sources))
 
 library_aliases = $(addprefix				\
-$(library_dir)/$(library_file),$(alias_suffixes))
-library_mapfile = $(library_dir)/$(library_file).map
-shared_library = $(library_dir)/$(library_file)$(shared_suffix)
+$(output_dir)/$(library_file),$(alias_suffixes))
+library_mapfile = $(output_dir)/$(library_file).map
+shared_library = $(output_dir)/$(library_file)$(shared_suffix)
 
-static_library = $(library_dir)/$(library_file).a
+static_library = $(output_dir)/$(library_file).a
 
-ifneq "$(os_id_type)" "ms-windows"
-	libraries = $(library_aliases) $(shared_library)
-endif
-
-libraries += $(static_library)
+libraries = $(library_aliases) $(shared_library) $(static_library)
 
 program_sources = $(test_sources)
 
@@ -186,7 +181,7 @@ $(programs) sizes.txt*
 text_artifacts = $(commands) $(dependencies) $(listings) $(logfiles)	\
 $(mapfiles) $(stackdumps) sizes.txt*
 
-build_dirs = $(filter-out .,$(binary_dir) $(cache_dir) $(library_dir)	\
+build_dirs = $(filter-out .,$(output_dir) $(cache_dir) $(output_dir)	\
 $(object_dir))
 dos2unix_files = $(filter-out %$(depend_suffix),$(wildcard	\
 $(text_artifacts)))
@@ -350,7 +345,7 @@ $(programs): $(firstword $(libraries))
 (%): %
 	$(AR) $(ARFLAGS) $@ $<
 
-$(binary_dir)/%$(binary_suffix): $(object_dir)/%$(object_suffix)
+$(output_dir)/%$(binary_suffix): $(object_dir)/%$(object_suffix)
 	$(LINK$(object_suffix)) -o $@ $^ $(LDLIBS)
 
 $(object_dir)/%$(object_suffix): %$(source_suffix)
@@ -368,14 +363,11 @@ TAGS:
 
 $(dependencies): | $(depend_dir)
 
-$(libraries): | $(library_dir)
+$(libraries): | $(output_dir)
 
 $(objects): | $(object_dir)
 
-$(programs): | $(binary_dir)
-
-$(binary_dir):
-	mkdir -p $(binary_dir)
+$(programs): | $(output_dir)
 
 $(cppcheck_dir):
 	mkdir -p $(cppcheck_dir)
@@ -383,11 +375,11 @@ $(cppcheck_dir):
 $(depend_dir):
 	mkdir -p $(depend_dir)
 
-$(library_dir):
-	mkdir -p $(library_dir)
-
 $(object_dir):
 	mkdir -p $(object_dir)
+
+$(output_dir):
+	mkdir -p $(output_dir)
 
 # Include dependency files
 ifeq "$(filter %clean,$(MAKECMDGOALS))" "$(filter-out %clean,$(MAKECMDGOALS))"
