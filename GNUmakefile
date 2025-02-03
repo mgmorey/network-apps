@@ -51,12 +51,12 @@ else
 	binary_suffix =
 endif
 
+alias_suffix = .so.$(major)
 alias_suffixes = .so .so.$(major) .so.$(major).$(minor)
 depend_suffix = .dep
 include_suffix = .h
 object_suffix = .o
 shared_suffix = .so.$(VERSION)
-soname_suffix = .so.$(major)
 source_suffix = .cpp
 
 # Define linker option rpath
@@ -150,7 +150,7 @@ ifneq "$(os_id_type)" "ms-windows"
 	$(library_dir)/$(library_file),$(alias_suffixes))
 	library_mapfile = $(library_dir)/$(library_file).map
 	shared_library = $(library_dir)/$(library_file)$(shared_suffix)
-	soname = $(library_file)$(soname_suffix)
+	soname = $(library_file)$(alias_suffix)
 endif
 
 static_library = $(library_dir)/$(library_file).a
