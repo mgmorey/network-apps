@@ -52,7 +52,7 @@ else
 endif
 
 alias_suffix = .so.$(major)
-alias_suffixes = .so .so.$(major) .so.$(major).$(minor)
+alias_suffixes = $(alias_suffix) $(alias_suffix).$(minor)
 depend_suffix = .dep
 include_suffix = .h
 object_suffix = .o
