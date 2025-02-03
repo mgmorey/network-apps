@@ -27,14 +27,52 @@ install_symlinks() (
     done
 )
 
-for file; do
-    if [ -f "$file" ]; then
-	case "$file" in
-	    (*/lib*.so.*|lib*.so.*)
-		install_symlinks "$file"
+parse_arguments() {
+    while getopts i:o:p:r:h opt; do
+	case $opt in
+	    (h)
+		usage
+		exit 0
 		;;
-	    (*)
+	    (\?)
+		exit 2
 		;;
 	esac
+    done
+
+    if [ -z "$install" ]; then
+	install=$(get_installer)
     fi
-done
+
+    shift $(($OPTIND - 1))
+}
+
+usage() {
+    cat <<EOF >&2
+Usage: $script LIBRARY [LIBRARY] [...]
+       $script -h
+EOF
+}
+
+usage_error() {
+    if [ $# -gt 0 ]; then
+	printf "$@" >&2
+    fi
+
+    printf '%s\n' '' >&2
+    usage
+    exit 2
+}
+
+if [ -n "$1" -a -f "$1" ]; then
+    case "$1" in
+	(*/lib*.so.*|lib*.so.*)
+	    install_symlinks "$1"
+	    ;;
+	(*)
+	    usage_error
+	    ;;
+    esac
+else
+    usage_error
+fi
