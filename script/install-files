@@ -1,4 +1,4 @@
-#!/bin/sh -eu
+#!/bin/sh -eux
 
 # Copyright (C) 2025  "Michael G. Morey" <mgmorey@gmail.com>
 
@@ -53,7 +53,6 @@ get_programs() {
 }
 
 install_files() {
-    install=$(get_installer)
     $install -d "$prefix/include/network" "$prefix/lib" "$prefix/bin"
     $install -m 644 $(get_includes "$INCLUDE_DIR/$ostype/network" \
 				   "$INCLUDE_DIR/network") \
@@ -83,8 +82,11 @@ parse_arguments() {
     prefix=$PREFIX
     rpath=
 
-    while getopts o:p:r:h opt; do
+    while getopts i:o:p:r:h opt; do
 	case $opt in
+	    (i)
+		install="$OPTARG"
+		;;
 	    (o)
 		ostype="$OPTARG"
 		;;
@@ -103,6 +105,10 @@ parse_arguments() {
 		;;
 	esac
     done
+
+    if [ -z "$install" ]; then
+	install=$(get_installer)
+    fi
 
     shift $(($OPTIND - 1))
 }

@@ -297,7 +297,7 @@ dos2unix:
 
 .PHONY: install
 install: $(libraries) $(programs)
-	$(script_dir)/install-files -o $(platform) -p $(PREFIX)
+	$(script_dir)/install-files -i $(install) -o $(platform) -p $(PREFIX)
 
 .PHONY: libraries
 libraries: $(libraries)
