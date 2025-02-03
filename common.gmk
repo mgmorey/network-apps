@@ -43,6 +43,7 @@ os_macro_name := $(word 2,$(os_macro_data))
 as_family := $(shell $(script_dir)/get-as-family $(AS))
 cxx_family := $(shell $(script_dir)/get-cc-family $(CXX))
 ld_family := $(shell $(script_dir)/get-ld-family $(LD))
+ld_name := $(shell $(script_dir)/get-ld-name $(LD))
 
 # Define compiler version variables
 cxx_version := $(shell $(script_dir)/which-version $(CXX))

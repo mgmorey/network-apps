@@ -59,8 +59,10 @@ shared_suffix = .so.$(VERSION)
 source_suffix = .cpp
 
 # Define linker options rpath and soname
+ifeq "$(ld_name)" "gnu"
 rpath = \$$ORIGIN
 soname = $(library_file)$(alias_suffix)
+endif
 
 # Define enumerated file list variables
 
