@@ -28,7 +28,7 @@ install_symlinks() (
 )
 
 parse_arguments() {
-    while getopts i:o:p:r:h opt; do
+    while getopts h opt; do
 	case $opt in
 	    (h)
 		usage
@@ -40,16 +40,18 @@ parse_arguments() {
 	esac
     done
 
-    if [ -z "$install" ]; then
-	install=$(get_installer)
+    shift $(($OPTIND - 1))
+
+    if [ $# -lt 2 ]; then
+       usage_error
     fi
 
-    shift $(($OPTIND - 1))
+    library="$1"
 }
 
 usage() {
     cat <<EOF >&2
-Usage: $script LIBRARY [LIBRARY] [...]
+Usage: $script LIBRARY
        $script -h
 EOF
 }
@@ -64,10 +66,14 @@ usage_error() {
     exit 2
 }
 
-if [ -n "$1" -a -f "$1" ]; then
-    case "$1" in
+script="$(basename "$0")"
+
+parse_arguments "$@"
+
+if [ -f "$library" ]; then
+    case "$library" in
 	(*/lib*.so.*|lib*.so.*)
-	    install_symlinks "$1"
+	    install_symlinks "$library"
 	    ;;
 	(*)
 	    usage_error
