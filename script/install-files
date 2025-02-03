@@ -41,14 +41,17 @@ get_installer() {
 }
 
 get_includes() {
+    assert [ $# -gt 0 ]
     find "$@" -type f '(' -name '*.h' -o -name '*.hpp' ')'
 }
 
 get_libraries() {
+    assert [ $# -gt 0 ]
     find "$@" -type f '(' -name '*.a' -o -name '*.so*' ')'
 }
 
 get_programs() {
+    assert [ $# -gt 0 ]
     find "$@" -type f ! -name '*.map'
 }
 
@@ -74,6 +77,7 @@ install_programs() {
 }
 
 install_symlinks() {
+    assert [ $# -gt 0 ]
     "${script_prefix}install-symlinks" "$@"
 }
 
@@ -106,7 +110,7 @@ parse_arguments() {
 	esac
     done
 
-    if [ -z "$install" ]; then
+    if [ -z "${install:-}" ]; then
 	install=$(get_installer)
     fi
 
