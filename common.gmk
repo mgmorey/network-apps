@@ -57,12 +57,8 @@ ctags_version := $(shell $(script_dir)/which-version ctags)
 # Define program extant variables
 ctags_is_universal := $(shell $(script_dir)/is-ctags-universal ctags)
 
-# Define operating system type
-ifeq "$(os_id_name)" "MINGW64_NT"
-	ostype := windows
-else
-	ostype := unix
-endif
+# Define Sockets API type
+api_type := $(if $(filter MINGW64_NT,$(os_id_name)),windows,unix)
 
 # Local Variables:
 # mode: makefile
