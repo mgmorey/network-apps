@@ -28,6 +28,11 @@ assert() {
     "$@" || abort '%s: Assertion failed: %s\n' "$0" "$*"
 }
 
+get_includes() {
+    assert [ $# -gt 0 ]
+    find "$@" -type f '(' -name '*.h' -o -name '*.hpp' ')'
+}
+
 get_installer() {
     case "$(uname)" in
 	(Darwin)
@@ -37,6 +42,11 @@ get_installer() {
 	    printf '%s\n' install
 	    ;;
     esac
+}
+
+get_libraries() {
+    assert [ $# -gt 0 ]
+    find "$@" -type f '(' -name '*.a' -o -name '*.so*' ')'
 }
 
 get_ostype() {
@@ -50,19 +60,9 @@ get_ostype() {
     esac
 }
 
-get_includes() {
-    assert [ $# -gt 0 ]
-    find "$@" -type f '(' -name '*.h' -o -name '*.hpp' ')'
-}
-
-get_libraries() {
-    assert [ $# -gt 0 ]
-    find "$@" -type f '(' -name '*.a' -o -name '*.so*' ')'
-}
-
 get_programs() {
     assert [ $# -gt 0 ]
-    find "$@" -type f ! -name '*.*'
+    find "$@" -type f '(' -name '*.exe' -o ! -name '*.*' ')'
 }
 
 install_files() {
