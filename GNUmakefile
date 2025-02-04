@@ -37,7 +37,7 @@ script_dir := script
 source_dir := src
 
 # Define include directory and file variables
-include_dirs = $(include_dir)/$(ostype) $(include_dir)
+include_dirs = $(include_dir)/$(api_type) $(include_dir)
 include_files = $(addsuffix /network/*.h,$(include_dirs))
 
 # Define common functions and flag variables
@@ -134,13 +134,8 @@ static_library = $(output_dir)/$(library_file).a
 
 libraries = $(library_aliases) $(shared_library) $(static_library)
 
-program_sources = $(test_sources)
-
-ifneq "$(os_id_dist)" "macos"
-ifneq "$(os_id_type)" "ms-windows"
-	program_sources += $(unix_sources)
-endif
-endif
+program_sources = $(test_sources) $(if $(filter Darwin	\
+MINGW64_NT,$(os_id_dist)),,$(unix_sources))
 
 program_objects = $(call get-objects,$(program_sources))
 
@@ -176,17 +171,9 @@ ifeq "$(call compare-versions,$(ctags_version),5.8)" "greater"
 endif
 endif
 
-all_targets = $(build_targets) sizes test
-
-ifneq "$(os_id_dist)" "macos"
-ifneq "$(os_id_type)" "ms-windows"
-	all_targets += unix
-endif
-endif
-
-ifeq "$(os_id_name)" "MINGW64_NT"
-	all_targets += dos2unix
-endif
+all_targets = $(build_targets) sizes test $(if $(filter Darwin	\
+MINGW64_NT,$(os_id_dist)),,unix) $(if $(filter			\
+MINGW64_NT,$(os_id_dist)),dos2unix,)
 
 # Define object and program list generation functions
 get-dependencies = $(addprefix $(depend_dir)/,$(addsuffix	\
@@ -202,7 +189,7 @@ LINK$(object_suffix) = $(strip $(CXX) $(LDFLAGS))
 make_makefile = $(script_dir)/make-makefile -d $(object_dir)
 
 # Set virtual paths
-vpath %$(source_suffix) $(source_dir)/$(ostype) $(source_dir)
+vpath %$(source_suffix) $(source_dir)/$(api_type) $(source_dir)
 
 # Define pseudotargets
 
