@@ -40,21 +40,8 @@ source_dir := src
 include common.gmk
 include flags.gmk
 
-# Define function install-aliases
-install-aliases = cd $1 $(foreach suffix,$(alias_suffixes),&& ln -sf	\
-$(addprefix $(library_file),$(shared_suffix) $(suffix)))
-
-# Define installation macro
-define install-files
-	$(install) -d $(install_dirs)
-	$(install) -m 644 $(includes) $(PREFIX)/include/network
-	$(install) $(shared_library) $(static_library) $(PREFIX)/lib
-	$(install) $(programs) $(PREFIX)/bin
-	$(call install-aliases,$(PREFIX)/lib)
-endef
-
 # Define install dirs
-includes = $(addprefix $(include_dir)/,$(addsuffix	\
+include_files = $(addprefix $(include_dir)/,$(addsuffix	\
 /*.h,$(ostype)/network network))
 install_dirs = $(addprefix $(PREFIX)/,bin include/network lib)
 
@@ -76,7 +63,7 @@ object_suffix = .o
 shared_suffix = .so.$(VERSION)
 source_suffix = .cpp
 
-# Define linker options rpaths and soname
+# Define rpaths and soname linker option variables
 ifeq "$(ld_origin)" "gnu"
 rpaths = '$$ORIGIN' '$$ORIGIN/../lib'
 soname = $(library_file)$(alias_suffix)
@@ -132,16 +119,7 @@ unix_sources = unix-client.cpp unix-server.cpp
 
 commands = compile_commands.json
 
-# Define functions for computing lists of objects and programs
-
-get-dependencies = $(addprefix $(depend_dir)/,$(addsuffix	\
-$(depend_suffix),$(basename $1)))
-get-objects = $(addprefix $(object_dir)/,$(addsuffix	\
-$(object_suffix),$(basename $1)))
-get-programs = $(addprefix $(output_dir)/,$(addsuffix	\
-$(binary_suffix),$(basename $1)))
-
-# Define variables for computed file lists
+# Define computed file list variables
 
 sources = $(library_sources) $(test_sources)
 library_sources = $(library_common_sources) $(library_native_sources)
@@ -199,7 +177,7 @@ $(text_artifacts)))
 
 tarfile = /tmp/$(library_file).tar.gz
 
-# Define variables for build target lists
+# Define build target list variables
 
 build_targets = assert objects libraries programs sizes
 
@@ -221,7 +199,28 @@ ifeq "$(os_id_name)" "MINGW64_NT"
 	all_targets += dos2unix
 endif
 
-# Define variables for compiler, linker, and script commands
+# Define object and program list generation functions
+get-dependencies = $(addprefix $(depend_dir)/,$(addsuffix	\
+$(depend_suffix),$(basename $1)))
+get-objects = $(addprefix $(object_dir)/,$(addsuffix	\
+$(object_suffix),$(basename $1)))
+get-programs = $(addprefix $(output_dir)/,$(addsuffix	\
+$(binary_suffix),$(basename $1)))
+
+# Define function install-aliases
+install-aliases = cd $1 $(foreach suffix,$(alias_suffixes),&& ln -sf	\
+$(addprefix $(library_file),$(shared_suffix) $(suffix)))
+
+# Define macro install-files
+define install-files
+	$(install) -d $(install_dirs)
+	$(install) -m 644 $(include_files) $(PREFIX)/include/network
+	$(install) $(shared_library) $(static_library) $(PREFIX)/lib
+	$(install) $(programs) $(PREFIX)/bin
+	$(call install-aliases,$(PREFIX)/lib)
+endef
+
+# Define compiler, linker, and script command variables
 COMPILE.cc = $(strip $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c)
 LINK$(object_suffix) = $(strip $(CXX) $(LDFLAGS))
 make_makefile = $(script_dir)/make-makefile -d $(object_dir)
