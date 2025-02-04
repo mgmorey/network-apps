@@ -283,7 +283,7 @@ dos2unix:
 	printf '%s\n' $(sort $(dos2unix_files)) | xargs dos2unix -q
 
 .PHONY: install
-install: $(libraries)
+install: $(libraries) $(programs)
 	$(script_dir)/install-files -i $(include_dir) -o $(output_dir) -p $(PREFIX)
 
 .PHONY: libraries
