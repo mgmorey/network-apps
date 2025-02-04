@@ -312,7 +312,7 @@ realclean: distclean
 
 .PHONY: sizes
 sizes: sizes.txt
-	test -e $<~ && diff -b $<~ $< || true
+	if [ -e $<~ ]; then diff -b $<~ $<; fi
 
 .PHONY: tags
 tags: TAGS
