@@ -336,7 +336,7 @@ unix: $(unix_programs)
 # Define targets
 
 $(library_aliases): $(shared_library)
-	$(call install-symlinks,$(shared_library))
+	$(shell $(script_dir)/install-symlinks $(shared_library))
 
 $(shared_library): $(library_objects)
 	$(LINK$(object_suffix)) -o $@ $^ $(LDLIBS)
@@ -367,9 +367,8 @@ sizes.txt: $(sort $(shared_library) $(objects) $(programs))
 TAGS:
 	ctags -e $(filter -D%,$(CPPFLAGS)) -R $(include_dir) $(source_dir)
 
-$(tarfile): $(libraries) $(programs)
-	$(install-files)
-	tar -C /tmp -cf /tmp/$(library_file).tar $(library_file)
+$(tarfile): install
+	tar -C /tmp -cf $(tarfile) $(library_file)
 
 $(tarfile).gz: $(tarfile)
 	gzip -9f $^
