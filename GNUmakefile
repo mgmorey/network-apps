@@ -58,9 +58,9 @@ object_suffix = .o
 shared_suffix = .so.$(VERSION)
 source_suffix = .cpp
 
-# Define linker options rpath and soname
+# Define linker options rpaths and soname
 ifeq "$(ld_origin)" "gnu"
-rpath = '$$ORIGIN'
+rpaths = '$$ORIGIN' '$$ORIGIN/../lib'
 soname = $(library_file)$(alias_suffix)
 endif
 

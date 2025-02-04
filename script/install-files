@@ -60,9 +60,15 @@ get_libraries() {
     find "$@" -type f '(' -name '*.a' -o -name '*.so*' ')'
 }
 
+get_programs() {
+    assert [ $# -gt 0 ]
+    find "$@" -type f ! -name '*.*'
+}
+
 install_files() {
     install=$(get_installer)
-    $install -d "$prefix/include/network" "$prefix/lib"
+    $install -d "$prefix/bin" "$prefix/include/network" "$prefix/lib"
+    $install $(get_programs "$OUTPUT_DIR") "$prefix/bin"
     $install -m 644 $(get_includes "$INCLUDE_DIR/$ostype/network" \
 				   "$INCLUDE_DIR/network") \
 	     "$prefix/include/network"
