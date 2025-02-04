@@ -49,8 +49,8 @@ define install-files
 	$(install) -d $(install_dirs)
 	$(install) -m 644 $(includes) $(PREFIX)/include/network
 	$(install) $(shared_library) $(static_library) $(PREFIX)/lib
-	$(call install-aliases,$(PREFIX)/lib)
 	$(install) $(programs) $(PREFIX)/bin
+	$(call install-aliases,$(PREFIX)/lib)
 endef
 
 # Define install dirs
