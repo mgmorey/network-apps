@@ -125,21 +125,13 @@ $(binary_suffix),$(basename $1)))
 
 # Define variables for computed file lists
 
-library_sources = $(library_common_sources) $(library_native_sources)
-
-ifneq "$(os_id_name)" "MINGW64_NT"
-	library_sources += $(library_unix_sources)
-endif
-
 sources = $(library_sources) $(test_sources)
-
-ifneq "$(os_id_name)" "MINGW64_NT"
-	sources += $(unix_sources)
-endif
-
+library_sources = $(library_common_sources) $(library_native_sources)
 test_sources = $(test_common_sources)
 
 ifneq "$(os_id_name)" "MINGW64_NT"
+	sources += $(unix_sources)
+	library_sources += $(library_unix_sources)
 	test_sources += $(test_unix_sources)
 endif
 
@@ -157,8 +149,8 @@ libraries = $(library_aliases) $(shared_library) $(static_library)
 
 program_sources = $(test_sources)
 
-ifneq "$(os_id_type)" "ms-windows"
 ifneq "$(os_id_dist)" "macos"
+ifneq "$(os_id_type)" "ms-windows"
 	program_sources += $(unix_sources)
 endif
 endif
@@ -199,8 +191,8 @@ endif
 
 all_targets = $(build_targets) sizes test
 
-ifneq "$(os_id_type)" "ms-windows"
 ifneq "$(os_id_dist)" "macos"
+ifneq "$(os_id_type)" "ms-windows"
 	all_targets += unix
 endif
 endif
