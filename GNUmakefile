@@ -59,8 +59,8 @@ shared_suffix = .so.$(VERSION)
 source_suffix = .cpp
 
 # Define linker options rpath and soname
-ifeq "$(ld_name)" "gnu"
-rpath = \$$ORIGIN
+ifeq "$(ld_origin)" "gnu"
+rpath = '$$ORIGIN'
 soname = $(library_file)$(alias_suffix)
 endif
 
@@ -215,15 +215,8 @@ COMPILE.cc = $(strip $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c)
 LINK$(object_suffix) = $(strip $(CXX) $(LDFLAGS))
 make_makefile = $(script_dir)/make-makefile -d $(object_dir)
 
-# Define variable for install program
-ifeq "$(os_id_name)" "Darwin"
-	install = ginstall
-else
-	install = install
-endif
-
 # Set virtual paths
-vpath %$(source_suffix) $(source_dir)/$(platform) $(source_dir)
+vpath %$(source_suffix) $(source_dir)/$(ostype) $(source_dir)
 
 # Define pseudotargets
 
@@ -291,8 +284,8 @@ dos2unix:
 	printf '%s\n' $(sort $(dos2unix_files)) | xargs dos2unix -q
 
 .PHONY: install
-install: $(libraries) $(programs)
-	$(script_dir)/install-files -i $(install) -o $(platform) -p $(PREFIX)
+install: $(libraries)
+	$(script_dir)/install-files -i $(include_dir) -o $(output_dir) -p $(PREFIX)
 
 .PHONY: libraries
 libraries: $(libraries)

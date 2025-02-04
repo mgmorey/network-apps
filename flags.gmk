@@ -100,7 +100,7 @@ ifndef NDEBUG
 	cpp_symbols += _GLIBCXX_DEBUG
 endif
 
-include_dirs = include/$(platform) include
+include_dirs = include/$(ostype) include
 CPPFLAGS += $(addprefix -I,$(include_dirs))
 CPPFLAGS += $(addprefix -D,$(sort $(cpp_symbols)))
 

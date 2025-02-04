@@ -1,4 +1,4 @@
-#!/bin/sh -eu
+#!/bin/sh -eux
 
 # Copyright (C) 2025  "Michael G. Morey" <mgmorey@gmail.com>
 
@@ -15,9 +15,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-BINARY_DIR=bin
 INCLUDE_DIR=include
-LIBRARY_DIR=lib
+OUTPUT_DIR=output
 PREFIX=/usr/local
 
 abort() {
@@ -40,6 +39,17 @@ get_installer() {
     esac
 }
 
+get_ostype() {
+    case "$(uname)" in
+	(MINGW64_NT)
+	    printf '%s\n' windows
+	    ;;
+	(*)
+	    printf '%s\n' unix
+	    ;;
+    esac
+}
+
 get_includes() {
     assert [ $# -gt 0 ]
     find "$@" -type f '(' -name '*.h' -o -name '*.hpp' ')'
@@ -50,30 +60,14 @@ get_libraries() {
     find "$@" -type f '(' -name '*.a' -o -name '*.so*' ')'
 }
 
-get_programs() {
-    assert [ $# -gt 0 ]
-    find "$@" -type f ! -name '*.map'
-}
-
 install_files() {
+    install=$(get_installer)
     $install -d "$prefix/include/network" "$prefix/lib" "$prefix/bin"
     $install -m 644 $(get_includes "$INCLUDE_DIR/$ostype/network" \
 				   "$INCLUDE_DIR/network") \
 	     "$prefix/include/network"
-    $install $(get_libraries "$LIBRARY_DIR") "$prefix/lib"
-    $install $(get_programs "$BINARY_DIR") "$prefix/bin"
-    install_programs
+    $install $(get_libraries "$OUTPUT_DIR") "$prefix/lib"
     install_symlinks $(get_libraries "$prefix/lib")
-}
-
-install_programs() {
-    if [ -z "$rpath" ]; then
-	return
-    fi
-
-    for program in $programs; do
-	chrpath -r "$rpath" "$program"
-    done
 }
 
 install_symlinks() {
@@ -82,23 +76,20 @@ install_symlinks() {
 }
 
 parse_arguments() {
-    ostype=unix
+    include_dir=$INCLUDE_DIR
+    output_dir=$OUTPUT_DIR
     prefix=$PREFIX
-    rpath=
 
-    while getopts i:o:p:r:h opt; do
+    while getopts i:o:p:h opt; do
 	case $opt in
 	    (i)
-		install="$OPTARG"
+		include_dir="$OPTARG"
 		;;
 	    (o)
-		ostype="$OPTARG"
+		output_dir="$OPTARG"
 		;;
 	    (p)
 		prefix="$OPTARG"
-		;;
-	    (r)
-		rpath="$OPTARG"
 		;;
 	    (h)
 		usage
@@ -110,8 +101,8 @@ parse_arguments() {
 	esac
     done
 
-    if [ -z "${install:-}" ]; then
-	install=$(get_installer)
+    if [ -z "${ostype:-}" ]; then
+	ostype=$(get_ostype)
     fi
 
     shift $(($OPTIND - 1))
@@ -119,7 +110,7 @@ parse_arguments() {
 
 usage() {
     cat <<EOF >&2
-Usage: $script [-i INSTALL] [-o OSTYPE] [-p PREFIX] [-r RPATH]
+Usage: $script [-i INCLUDE_DIR] [-o OUTPUT_DIR] [-p PREFIX] [-t OSTYPE]
        $script -h
 EOF
 }

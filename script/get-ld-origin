@@ -15,10 +15,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-get_gnu_name() {
+get_ld_origin() {
     ("$1" --version || "$1" -v) 2>/dev/null \
 	| sed -n '1s/\(GNU\|LLD\) .*/\1/p' \
 	| tr '[:upper:]' '[:lower:]'
 }
 
-get_gnu_name "${1-ld}"
+get_ld_origin "${1-ld}"

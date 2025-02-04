@@ -75,6 +75,8 @@ if [ -f "$library" ]; then
 	(*/lib*.so.*|lib*.so.*)
 	    install_symlinks "$library"
 	    ;;
+	(*/lib*.a|lib*.a)
+	    ;;
 	(*)
 	    usage_error
 	    ;;
