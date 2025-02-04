@@ -40,6 +40,21 @@ source_dir := src
 include common.gmk
 include flags.gmk
 
+# Define installation macro
+define install-files
+	$(install) -d $(install_dirs)
+	$(install) -m 644 $(includes) $(PREFIX)/include/network
+	$(install) $(shared_library) $(static_library) $(PREFIX)/lib
+	$(script_dir)/install-symlinks \
+	$(shared_library:$(output_dir)/%=$(PREFIX)/lib/%)
+	$(install) $(programs) $(PREFIX)/bin
+endef
+
+# Define install dirs
+includes = $(addprefix $(include_dir)/,$(addsuffix	\
+/*.h,$(ostype)/network network))
+install_dirs = $(addprefix $(PREFIX)/,bin include/network lib)
+
 # Define filenames, prefixes, and suffixes
 library_file = $(library_prefix)network
 library_prefix = lib
@@ -276,7 +291,7 @@ dos2unix:
 
 .PHONY: install
 install: $(libraries) $(programs)
-	$(script_dir)/install-files -i $(include_dir) -o $(output_dir) -p $(PREFIX)
+	$(install-files)
 
 .PHONY: libraries
 libraries: $(libraries)
@@ -316,7 +331,7 @@ unix: $(unix_programs)
 # Define targets
 
 $(library_aliases): $(shared_library)
-	$(script_dir)/install-symlinks $(shared_library)
+	$(call install-symlinks,$(shared_library))
 
 $(shared_library): $(library_objects)
 	$(LINK$(object_suffix)) -o $@ $^ $(LDLIBS)
