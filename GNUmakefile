@@ -45,9 +45,14 @@ define install-files
 	$(install) -d $(install_dirs)
 	$(install) -m 644 $(includes) $(PREFIX)/include/network
 	$(install) $(shared_library) $(static_library) $(PREFIX)/lib
-	$(script_dir)/install-symlinks \
-	$(shared_library:$(output_dir)/%=$(PREFIX)/lib/%)
+	cd $(PREFIX)/lib $(foreach suffix,$(alias_suffixes),&& ln -sf \
+	$(addprefix $(library_file),$(shared_suffix) $(suffix)))
 	$(install) $(programs) $(PREFIX)/bin
+endef
+
+define install-aliases
+	cd $(output_dir) $(foreach suffix,$(alias_suffixes),&& ln -sf \
+	$(addprefix $(library_file),$(shared_suffix) $(suffix)))
 endef
 
 # Define install dirs
@@ -336,7 +341,7 @@ unix: $(unix_programs)
 # Define targets
 
 $(library_aliases): $(shared_library)
-	$(shell $(script_dir)/install-symlinks $(shared_library))
+	$(install-aliases)
 
 $(shared_library): $(library_objects)
 	$(LINK$(object_suffix)) -o $@ $^ $(LDLIBS)
