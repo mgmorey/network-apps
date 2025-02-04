@@ -50,6 +50,7 @@ define install-files
 	$(install) -m 644 $(includes) $(PREFIX)/include/network
 	$(install) $(shared_library) $(static_library) $(PREFIX)/lib
 	$(call install-aliases,$(PREFIX)/lib)
+	$(install) $(programs) $(PREFIX)/bin
 endef
 
 # Define install dirs
