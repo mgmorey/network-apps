@@ -151,7 +151,6 @@ library_aliases = $(addprefix				\
 $(output_dir)/$(library_file),$(alias_suffixes))
 library_mapfile = $(output_dir)/$(library_file).map
 shared_library = $(output_dir)/$(library_file)$(shared_suffix)
-
 static_library = $(output_dir)/$(library_file).a
 
 libraries = $(library_aliases) $(shared_library) $(static_library)
