@@ -62,7 +62,7 @@ get_libraries() {
 
 install_files() {
     install=$(get_installer)
-    $install -d "$prefix/include/network" "$prefix/lib" "$prefix/bin"
+    $install -d "$prefix/include/network" "$prefix/lib"
     $install -m 644 $(get_includes "$INCLUDE_DIR/$ostype/network" \
 				   "$INCLUDE_DIR/network") \
 	     "$prefix/include/network"
