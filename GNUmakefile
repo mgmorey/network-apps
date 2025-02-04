@@ -108,8 +108,6 @@ test_unix_sources = test-socket-unix.cpp
 
 unix_sources = unix-client.cpp unix-server.cpp
 
-tarfile = /tmp/$(library_file).tar.gz
-
 # Define computed file list variables
 
 sources = $(library_sources) $(test_sources)
@@ -160,6 +158,8 @@ build_dirs = $(filter-out .,$(output_dir) $(cache_dir) $(output_dir)	\
 $(object_dir))
 dos2unix_files = $(filter-out %$(depend_suffix),$(wildcard	\
 $(text_artifacts)))
+
+tarfile = /tmp/$(library_file).tar.gz
 
 # Define build target list variables
 
