@@ -40,19 +40,16 @@ source_dir := src
 include common.gmk
 include flags.gmk
 
+# Define function install-aliases
+install-aliases = cd $1 $(foreach suffix,$(alias_suffixes),&& ln -sf	\
+$(addprefix $(library_file),$(shared_suffix) $(suffix)))
+
 # Define installation macro
 define install-files
 	$(install) -d $(install_dirs)
 	$(install) -m 644 $(includes) $(PREFIX)/include/network
 	$(install) $(shared_library) $(static_library) $(PREFIX)/lib
-	cd $(PREFIX)/lib $(foreach suffix,$(alias_suffixes),&& ln -sf \
-	$(addprefix $(library_file),$(shared_suffix) $(suffix)))
-	$(install) $(programs) $(PREFIX)/bin
-endef
-
-define install-aliases
-	cd $(output_dir) $(foreach suffix,$(alias_suffixes),&& ln -sf \
-	$(addprefix $(library_file),$(shared_suffix) $(suffix)))
+	$(call install-aliases,$(PREFIX)/lib)
 endef
 
 # Define install dirs
@@ -341,7 +338,7 @@ unix: $(unix_programs)
 # Define targets
 
 $(library_aliases): $(shared_library)
-	$(install-aliases)
+	$(call install-aliases,$(output_dir))
 
 $(shared_library): $(library_objects)
 	$(LINK$(object_suffix)) -o $@ $^ $(LDLIBS)
