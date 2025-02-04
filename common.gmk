@@ -50,7 +50,7 @@ cxx_version := $(shell $(script_dir)/which-version $(CXX))
 
 # Define utility version variables
 clang_tidy_version := $(if $(CLANG_TIDY),$(shell	\
-$(script_dir)/which-version $(CLANG_TIDY)),)
+$(script_dir)/which-version $(CLANG_TIDY)),0)
 cppcheck_version := $(shell $(script_dir)/which-version cppcheck)
 ctags_version := $(shell $(script_dir)/which-version ctags)
 
