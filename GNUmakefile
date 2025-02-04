@@ -22,54 +22,45 @@ VERSION ?= 0.0.1
 language := c++
 standard := $(language)20
 
-# Define cache directory
+# Define cache directory variable
 cache_dir := .cache
 
-# Define build directories
+# Define build directory variables
 cppcheck_dir := $(cache_dir)/cppcheck
 depend_dir := $(cache_dir)/dependency
 object_dir := object
 output_dir := output
 
-# Define include and source directories
+# Define include and source directory variables
 include_dir := include
 script_dir := script
 source_dir := src
 
+# Define include directory and file variables
+include_dirs = $(include_dir)/$(ostype) $(include_dir)
+include_files = $(addsuffix /network/*.h,$(include_dirs))
+
 # Define common functions and flag variables
 include common.gmk
 include flags.gmk
+include install.gmk
 
-# Define install dirs
-include_files = $(addprefix $(include_dir)/,$(addsuffix	\
-/*.h,$(ostype)/network network))
-install_dirs = $(addprefix $(PREFIX)/,bin include/network lib)
-
-# Define filenames, prefixes, and suffixes
+# Define filename, prefix, and suffix variables
 library_file = $(library_prefix)network
 library_prefix = lib
 
-ifeq "$(os_id_name)" "MINGW64_NT"
-	binary_suffix = .exe
-else
-	binary_suffix =
-endif
-
 alias_suffix = .so.$(major)
 alias_suffixes = $(alias_suffix)
+binary_suffix = $(if $(filter MINGW64_NT,$(os_id_name)),.exe,)
 depend_suffix = .dep
 include_suffix = .h
 object_suffix = .o
 shared_suffix = .so.$(VERSION)
 source_suffix = .cpp
 
-# Define rpaths and soname linker option variables
-ifeq "$(ld_origin)" "gnu"
-rpaths = '$$ORIGIN' '$$ORIGIN/../lib'
-soname = $(library_file)$(alias_suffix)
-endif
-
 # Define enumerated file list variables
+
+commands = compile_commands.json
 
 library_common_sources = accept.cpp address-sa.cpp address-sin.cpp	\
 address-sin6.cpp address.cpp addresserror.cpp addresslist.cpp		\
@@ -117,7 +108,7 @@ test_unix_sources = test-socket-unix.cpp
 
 unix_sources = unix-client.cpp unix-server.cpp
 
-commands = compile_commands.json
+tarfile = /tmp/$(library_file).tar.gz
 
 # Define computed file list variables
 
@@ -175,8 +166,6 @@ $(object_dir))
 dos2unix_files = $(filter-out %$(depend_suffix),$(wildcard	\
 $(text_artifacts)))
 
-tarfile = /tmp/$(library_file).tar.gz
-
 # Define build target list variables
 
 build_targets = assert objects libraries programs sizes
@@ -206,19 +195,6 @@ get-objects = $(addprefix $(object_dir)/,$(addsuffix	\
 $(object_suffix),$(basename $1)))
 get-programs = $(addprefix $(output_dir)/,$(addsuffix	\
 $(binary_suffix),$(basename $1)))
-
-# Define function install-aliases
-install-aliases = cd $1 $(foreach suffix,$(alias_suffixes),&& ln -sf	\
-$(addprefix $(library_file),$(shared_suffix) $(suffix)))
-
-# Define macro install-files
-define install-files
-	$(install) -d $(install_dirs)
-	$(install) -m 644 $(include_files) $(PREFIX)/include/network
-	$(install) $(shared_library) $(static_library) $(PREFIX)/lib
-	$(install) $(programs) $(PREFIX)/bin
-	$(call install-aliases,$(PREFIX)/lib)
-endef
 
 # Define compiler, linker, and script command variables
 COMPILE.cc = $(strip $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c)

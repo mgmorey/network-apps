@@ -57,13 +57,6 @@ ctags_version := $(shell $(script_dir)/which-version ctags)
 # Define program extant variables
 ctags_is_universal := $(shell $(script_dir)/is-ctags-universal ctags)
 
-# Define installer
-ifeq "$(os_id_name)" "Darwin"
-	install := ginstall
-else
-	install := install
-endif
-
 # Define operating system type
 ifeq "$(os_id_name)" "MINGW64_NT"
 	ostype := windows

@@ -1,0 +1,30 @@
+# Copyright (C) 2025  "Michael G. Morey" <mgmorey@gmail.com>
+
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+# Define installer variable
+install = $(if $(filter Darwin,$(os_id_name)),ginstall,install)
+
+# Define function install-aliases
+install-aliases = cd $1 $(foreach suffix,$(alias_suffixes),&& ln -sf	\
+$(addprefix $(library_file),$(shared_suffix) $(suffix)))
+
+# Define macro install-files
+define install-files
+	$(install) -d $(addprefix $(PREFIX)/,bin include/network lib)
+	$(install) -m 644 $(include_files) $(PREFIX)/include/network
+	$(install) $(shared_library) $(static_library) $(PREFIX)/lib
+	$(install) $(programs) $(PREFIX)/bin
+	$(call install-aliases,$(PREFIX)/lib)
+endef

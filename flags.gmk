@@ -32,6 +32,12 @@ is_depend = $(filter %$(depend_suffix),$@)
 is_object = $(filter $(object_dir)/%$(object_suffix),$@)
 is_shared = $(filter $(output_dir)/$(library_prefix)%$(shared_suffix),$@)
 
+# Define rpaths and soname linker option variables
+ifeq "$(ld_origin)" "gnu"
+rpaths = '$$ORIGIN' '$$ORIGIN/../lib'
+soname = $(library_file)$(alias_suffix)
+endif
+
 # ARFLAGS
 ARFLAGS = r
 
@@ -100,7 +106,6 @@ ifndef NDEBUG
 	cpp_symbols += _GLIBCXX_DEBUG
 endif
 
-include_dirs = include/$(ostype) include
 CPPFLAGS += $(addprefix -I,$(include_dirs))
 CPPFLAGS += $(addprefix -D,$(sort $(cpp_symbols)))
 
