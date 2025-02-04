@@ -15,8 +15,8 @@
 
 # Define project-specific variables
 
-PREFIX ?= /usr/local
-VERSION = 0.0.1
+PREFIX ?= /tmp/$(library_file)
+VERSION ?= 0.0.1
 
 # Define language
 language := c++
