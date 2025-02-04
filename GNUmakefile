@@ -168,7 +168,7 @@ endif
 endif
 
 all_targets = $(build_targets) sizes test $(if $(filter	\
-$(os_id_name),Darwin MINGW64_NT),,unix) $(if $(filter	\
+$(os_id_name),Linux),unix,) $(if $(filter		\
 $(os_id_name),MINGW64_NT),dos2unix,)
 
 # Define object and program list generation functions
