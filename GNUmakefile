@@ -51,7 +51,7 @@ library_prefix = lib
 
 alias_suffix = .so.$(major)
 alias_suffixes = $(alias_suffix)
-binary_suffix = $(if $(filter MINGW64_NT,$(os_id_name)),.exe,)
+binary_suffix = $(if $(filter $(os_id_name),MINGW64_NT),.exe,)
 depend_suffix = .dep
 include_suffix = .h
 object_suffix = .o
@@ -110,15 +110,14 @@ unix_sources = unix-client.cpp unix-server.cpp
 
 # Define computed file list variables
 
-sources = $(library_sources) $(test_sources)
-library_sources = $(library_common_sources) $(library_native_sources)
-test_sources = $(test_common_sources)
-
-ifneq "$(os_id_name)" "MINGW64_NT"
-	sources += $(unix_sources)
-	library_sources += $(library_unix_sources)
-	test_sources += $(test_unix_sources)
-endif
+sources = $(library_sources) $(test_sources) $(if $(filter	\
+$(os_id_name),MINGW64_NT),,$(unix_sources))
+library_sources = $(library_common_sources) $(library_native_sources)	\
+$(if $(filter $(os_id_name),MINGW64_NT),,$(library_unix_sources))
+test_sources = $(test_common_sources) $(if $(filter	\
+$(os_id_name),MINGW64_NT),,$(test_unix_sources))
+program_sources = $(test_sources) $(if $(filter $(os_id_name),Darwin	\
+MINGW64_NT),,$(unix_sources))
 
 objects = $(call get-objects,$(sources))
 
@@ -131,9 +130,6 @@ shared_library = $(output_dir)/$(library_file)$(shared_suffix)
 static_library = $(output_dir)/$(library_file).a
 
 libraries = $(library_aliases) $(shared_library) $(static_library)
-
-program_sources = $(test_sources) $(if $(filter Darwin	\
-MINGW64_NT,$(os_id_dist)),,$(unix_sources))
 
 program_objects = $(call get-objects,$(program_sources))
 
@@ -171,9 +167,9 @@ ifeq "$(call compare-versions,$(ctags_version),5.8)" "greater"
 endif
 endif
 
-all_targets = $(build_targets) sizes test $(if $(filter Darwin	\
-MINGW64_NT,$(os_id_dist)),,unix) $(if $(filter			\
-MINGW64_NT,$(os_id_dist)),dos2unix,)
+all_targets = $(build_targets) sizes test $(if $(filter	\
+$(os_id_name),Darwin MINGW64_NT),,unix) $(if $(filter	\
+$(os_id_name),MINGW64_NT),dos2unix,)
 
 # Define object and program list generation functions
 get-dependencies = $(addprefix $(depend_dir)/,$(addsuffix	\
