@@ -194,7 +194,7 @@ $(object_dir))
 dos2unix_files = $(filter-out %$(depend_suffix),$(wildcard	\
 $(text_artifacts)))
 
-tarfile = /tmp/$(library_file).tar
+tarfile = /tmp/$(library_file).tar.gz
 
 # Define variables for build target lists
 
@@ -315,7 +315,7 @@ sizes: sizes.txt
 tags: TAGS
 
 .PHONY: tarfile
-tarfile: $(tarfile).gz
+tarfile: $(tarfile)
 
 .PHONY: test
 test: $(test_programs)
@@ -367,11 +367,10 @@ sizes.txt: $(sort $(shared_library) $(objects) $(programs))
 TAGS:
 	ctags -e $(filter -D%,$(CPPFLAGS)) -R $(include_dir) $(source_dir)
 
-$(tarfile): install
-	tar -C /tmp -cf $(tarfile) $(library_file)
-
-$(tarfile).gz: $(tarfile)
-	gzip -9f $^
+$(tarfile): $(libraries) $(programs)
+	$(install-files)
+	tar -C /tmp/$(library_file) -cf $(@:.gz=) .
+	gzip -9f $(@:.gz=)
 
 $(dependencies): | $(depend_dir)
 
