@@ -16,9 +16,13 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 run_test_program() (
-    case "$1" in
-	(*/test-*)
-	    ${valgrind:+$valgrind }"$1" >"$(basename ${1%.exe}.log)"
+    basename=$(basename "$1")
+    dirname=$(dirname "$1")
+    program="$dirname/$basename"
+
+    case "$basename" in
+	(test-*)
+	    ${valgrind:+$valgrind }"$program" >"${program%.exe}.log"
 	    ;;
 	(*)
 	    ;;
@@ -32,8 +36,8 @@ run_test_programs() {
 	valgrind=
     fi
 
-    for filename in "$@"; do
-	run_test_program "$filename"
+    for file; do
+	run_test_program "$file"
     done
 }
 
