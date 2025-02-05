@@ -184,7 +184,7 @@ endif
 name_opt = $(if $(filter gnu,$(ld_family)),-soname,-install_name)
 ldflags += $(if $(is_shared),$(call				\
 format-ld-option,$(name_opt),$(soname)),$(foreach		\
-rpath,$(rpaths),$(call format-ld-option,-rpath,'$(rpath)')))
+rpath,$(rpaths),$(call format-ld-option,-rpath,'$(rpath:/.=)')))
 
 LDFLAGS += $(call join-ld-options,$(strip $(ldflags)))
 LDFLAGS += $(if $(is_shared),-shared,)
