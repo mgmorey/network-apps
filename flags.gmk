@@ -33,7 +33,7 @@ is_object = $(filter $(object_dir)/%$(object_suffix),$@)
 is_shared = $(filter $(output_dir)/$(library_prefix)%$(shared_suffix),$@)
 
 # Define rpaths and soname linker option variables
-rprefix = $(if $(filter,gnu,$(ld_family)),$$ORIGIN,@executable_path)
+rprefix = $(if $(filter gnu,$(ld_family)),$$ORIGIN,@executable_path)
 rpaths = $(addprefix $(rprefix)/,. ../lib)
 soname = $(library_file)$(alias_suffix)
 
