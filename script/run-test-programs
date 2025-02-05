@@ -16,13 +16,13 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 run_test_program() (
-    basename=$(basename "$1")
+    basename=$(basename "$1" .exe)
     dirname=$(dirname "$1")
     program="$dirname/$basename"
 
     case "$basename" in
 	(test-*)
-	    ${valgrind:+$valgrind }"$program" >"${program%.exe}.log"
+	    ${valgrind:+$valgrind }"$program" >"$program.log"
 	    ;;
 	(*)
 	    ;;
