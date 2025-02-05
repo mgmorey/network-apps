@@ -1,1 +1,2 @@
+CYGWIN_NT	/usr/bin/ld	all
 Linux	/usr/bin/ld	all
