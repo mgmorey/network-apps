@@ -1,4 +1,6 @@
 CYGWIN_NT	/usr/bin/ld	all
+Darwin	/opt/local/bin/ld	all
+Darwin	/usr/bin/ld	all
 Linux	/usr/bin/ld	all
 MINGW64_NT	/clang64/bin/ld	all
 MINGW64_NT	/mingw64/bin/ld	all
