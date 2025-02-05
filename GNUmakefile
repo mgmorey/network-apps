@@ -280,7 +280,7 @@ tarfile: $(tarfile)
 
 .PHONY: test
 test: $(test_programs)
-	cd $(output_dir) && ../$(script_dir)/run-test-programs $(^F)
+	cd $(output_dir) && ../$(script_dir)/run-programs $(^F)
 
 ifeq "$(cxx_family)" "clang"
 .PHONY: tidy
@@ -290,7 +290,7 @@ endif
 
 .PHONY: unix
 unix: $(unix_programs)
-	cd $(output_dir) && ../$(script_dir)/run-unix-programs $(^F)
+	cd $(output_dir) && ../$(script_dir)/run-programs -r $(^F)
 
 .SECONDARY: $(objects)
 

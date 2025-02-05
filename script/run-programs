@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-run_test_program() (
+run_program() (
     basename=$(basename "$1" .exe)
     dirname=$(dirname "$1")
     program="$dirname/$basename"
@@ -24,21 +24,71 @@ run_test_program() (
 	(test-*)
 	    ${valgrind:+$valgrind }"$program" >"$program.log"
 	    ;;
+	(unix-client)
+	    "$program"${args:+ $args} 2 2
+	    "$program"${args:+ $args} DOWN
+	    ;;
+	(unix-server)
+	    "$program"${args:+ $args} &
+	    sleep 1
+	    ;;
 	(*)
 	    ;;
     esac
 )
 
-run_test_programs() {
+run_programs() {
+    args=
+    sort_args=
+
     if [ "${USING_VALGRIND-}" = true ]; then
 	valgrind="valgrind -q"
     else
 	valgrind=
     fi
 
-    for file; do
-	run_test_program "$file"
+    while getopts rvh opt; do
+	case $opt in
+	    (r)
+		sort_args=-r
+		;;
+	    (v)
+		args=-v
+		;;
+	    (h)
+		usage
+		exit 0
+		;;
+	    (\?)
+		exit 2
+		;;
+	esac
+    done
+
+    shift $(($OPTIND - 1))
+
+    for file in $(printf '%s\n' "$@" | sort${sort_args+ ${sort_args}}); do
+	run_program "$file"
     done
 }
 
-run_test_programs "$@"
+usage() {
+    cat <<EOF >&2
+Usage: $script [-v]
+       $script -h
+EOF
+}
+
+usage_error() {
+    if [ $# -gt 0 ]; then
+	printf "$@" >&2
+    fi
+
+    printf '%s\n' '' >&2
+    usage
+    exit 2
+}
+
+script=$(basename "$0")
+
+run_programs "$@"
