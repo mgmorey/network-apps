@@ -27,12 +27,18 @@ join-as-options = $(call join-options,-Wa $1)
 join-ld-options = $(call join-options,-Wl $1)
 join-options = $(subst $(space),$(comma),$1)
 
+# Define predicates for command features
+is_ld_install_name = $(filter $(ld_features),install_name)
+is_ld_rpath = $(filter $(ld_features),rpath)
+is_ld_soname = $(filter $(ld_features),soname)
+
 # Define predicates for object and shared object files
 is_depend = $(filter %$(depend_suffix),$@)
 is_object = $(filter $(object_dir)/%$(object_suffix),$@)
 is_shared = $(filter $(output_dir)/$(library_prefix)%$(shared_suffix),$@)
 
-# Define rpaths and soname linker option variables
+# Define install_name, rpath, and soname linker option variables
+install_name = $(library_file)$(alias_suffix)
 rprefix = $(if $(filter gnu,$(ld_family)),$$ORIGIN,@executable_path)
 rpaths = $(addprefix $(rprefix)/,. ../lib)
 soname = $(library_file)$(alias_suffix)
@@ -181,10 +187,13 @@ ifeq "$(WITH_LOAD_MAP)" "true"
 	ldflags += $(call format-ld-option,$(map_opt),$(map))
 endif
 
-name_opt = $(if $(filter gnu,$(ld_family)),-soname,-install_name)
-ldflags += $(if $(filter lld,$(ld_origin)),,$(if			\
-$(is_shared),$(call format-ld-option,$(name_opt),$(soname)),$(foreach	\
-rpath,$(rpaths),$(call format-ld-option,-rpath,'$(rpath:/.=)'))))
+ldflags += $(if $(is_shared),$(if $(is_ld_install_name),$(call	\
+format-ld-option,-install_name,$(install_name)),),)
+ldflags += $(if $(is_shared),$(if $(is_ld_soname),$(call	\
+format-ld-option,-soname,$(soname)),),)
+
+ldflags += $(if $(is_shared),,$(if $(is_ld_rpath),$(foreach		\
+rpath,$(rpaths),$(call format-ld-option,-rpath,'$(rpath:/.=)')),))
 
 LDFLAGS += $(call join-ld-options,$(strip $(ldflags)))
 LDFLAGS += $(if $(is_shared),-shared,)

@@ -44,6 +44,7 @@ as_family := $(shell $(script_dir)/get-as-family $(AS))
 cxx_family := $(shell $(script_dir)/get-cc-family $(CXX))
 ld_family := $(shell $(script_dir)/get-ld-family $(LD))
 ld_origin := $(shell $(script_dir)/get-ld-origin $(LD))
+ld_features := $(shell $(script_dir)/get-features $(LD))
 
 # Define compiler version variables
 cxx_version := $(shell $(script_dir)/which-version $(CXX))
