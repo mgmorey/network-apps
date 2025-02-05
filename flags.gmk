@@ -28,6 +28,7 @@ join-ld-options = $(call join-options,-Wl $1)
 join-options = $(subst $(space),$(comma),$1)
 
 # Define predicates for command features
+is_as_listings = $(filter $(as_features),listings)
 is_ld_install_name = $(filter $(ld_features),install_name)
 is_ld_rpath = $(filter $(ld_features),rpath)
 is_ld_soname = $(filter $(ld_features),soname)
@@ -117,14 +118,11 @@ CPPFLAGS += $(addprefix -D,$(sort $(cpp_symbols)))
 # CXX_ASFLAGS
 
 ifeq "$(WITH_LISTINGS)" "true"
-ifeq "$(cxx_family)" "gnu"
-ifeq "$(as_family)" "gnu"
 	listing = $(@:$(object_suffix)=.lst)
-	asflags = $(call format-as-option,-adghln,$(listing))
+	asflags = $(if $(is_as_listings),$(call	\
+	format-as-option,-adghln,$(listing)),)
 	CXX_ASFLAGS += $(if $(is_object),$(call	\
 	join-as-options,$(asflags)),)
-endif
-endif
 endif
 
 # CXXFLAGS

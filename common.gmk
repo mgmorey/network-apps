@@ -41,6 +41,7 @@ os_macro_name := $(word 2,$(os_macro_data))
 
 # Define toolchain family variables
 as_family := $(shell $(script_dir)/get-as-family $(AS))
+as_features := $(shell $(script_dir)/get-features $(AS))
 cxx_family := $(shell $(script_dir)/get-cc-family $(CXX))
 ld_family := $(shell $(script_dir)/get-ld-family $(LD))
 ld_origin := $(shell $(script_dir)/get-ld-origin $(LD))

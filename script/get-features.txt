@@ -1,6 +1,12 @@
+CYGWIN_NT	/usr/bin/as	listings
 CYGWIN_NT	/usr/bin/ld	rpath soname
+Darwin	/opt/local/bin/as
 Darwin	/opt/local/bin/ld	install_name rpath
+Darwin	/usr/bin/as
 Darwin	/usr/bin/ld	install_name rpath
+Linux	/usr/bin/as	listings
 Linux	/usr/bin/ld	rpath soname
+MINGW64_NT	/clang64/bin/as
 MINGW64_NT	/clang64/bin/ld
+MINGW64_NT	/mingw64/bin/as	listings
 MINGW64_NT	/mingw64/bin/ld	rpath soname
