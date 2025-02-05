@@ -15,7 +15,26 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-parse_arguments() {
+run_unix_program() (
+    basename="$(basename "$1")"
+    dirname="$(dirname "$1")"
+    program="$dirname/$basename"
+
+    case "$basename" in
+	(unix-client)
+	    sleep 1
+	    "$program"${args:+ $args} 2 2
+	    "$program"${args:+ $args} DOWN
+	    ;;
+	(unix-server)
+	    "$program"${args:+ $args} &
+	    ;;
+	(*)
+	    ;;
+    esac
+)
+
+run_unix_programs() {
     args=
 
     while getopts vh opt; do
@@ -34,31 +53,9 @@ parse_arguments() {
     done
 
     shift $(($OPTIND - 1))
-    programs="$@"
-}
 
-run_unix_program() (
-    basename="$(basename "$1")"
-    dirname="$(dirname "$1")"
-    pathname="$dirname/$basename"
-
-    case "$basename" in
-	(unix-client)
-	    sleep 1
-	    "$pathname"${args:+ $args} 2 2
-	    "$pathname"${args:+ $args} DOWN
-	    ;;
-	(unix-server)
-	    "$pathname"${args:+ $args} &
-	    ;;
-	(*)
-	    ;;
-    esac
-)
-
-run_unix_programs() {
-    for program in $(printf '%s\n' $programs | sort -r); do
-	run_unix_program "$program"
+    for file in $(printf '%s\n' "$@" | sort -r); do
+	run_unix_program "$file"
     done
 }
 
@@ -80,5 +77,5 @@ usage_error() {
 }
 
 script=$(basename "$0")
-parse_arguments "$@"
-run_unix_programs
+
+run_unix_programs "$@"
