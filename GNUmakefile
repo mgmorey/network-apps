@@ -183,10 +183,10 @@ $(binary_suffix),$(basename $1)))
 COMPILE.cc = $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c
 LINK$(object_suffix) = $(CXX) $(LDFLAGS)
 
-# Define function make-makefile
-define make-makefile
+# Define function make-rule
+define make-rule
 	$(CXX) $(CPPFLAGS) -MM $< | \
-	$(script_dir)/make-makefile -d $(object_dir) -o $@ TAGS
+	$(script_dir)/make-rule -d $(object_dir) -o $@ TAGS
 endef
 
 # Set virtual paths
@@ -321,7 +321,7 @@ $(object_dir)/%$(object_suffix): %$(source_suffix)
 	$(strip $(COMPILE$(source_suffix)) $(OUTPUT_OPTION) $<)
 
 $(depend_dir)/%$(depend_suffix): %$(source_suffix)
-	$(make-makefile)
+	$(make-rule)
 
 sizes.txt: $(sort $(shared_library) $(objects) $(programs))
 	if [ -e $@ ]; then mv -f $@ $@~; fi

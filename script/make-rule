@@ -1,5 +1,6 @@
 #!/bin/sh -eu
 
+# make-rule: generate a dependency rule from compiler output
 # Copyright (C) 2022  "Michael G. Morey" <mgmorey@gmail.com>
 
 # This program is free software: you can redistribute it and/or modify
@@ -29,7 +30,7 @@ cat_makefile() {
     fi
 }
 
-make_makefile() {
+make_rule() {
     tmpfile=$(mktemp)
     trap "rm -f $tmpfile" EXIT INT QUIT TERM
     cat_makefile >$tmpfile
@@ -116,4 +117,4 @@ usage_error() {
 script=$(basename "$0")
 
 parse_arguments "$@"
-make_makefile
+make_rule
