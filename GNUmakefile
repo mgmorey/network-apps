@@ -305,23 +305,20 @@ $(library_aliases): $(shared_library)
 	$(call install-aliases,$(output_dir))
 
 $(shared_library): $(library_objects)
-	$(LINK$(object_suffix)) -o $@ $^ $(LDLIBS)
+	$(strip $(LINK$(object_suffix)) -o $@ $^ $(LDLIBS))
 
 $(static_library): $(library_objects)
-	rm -f $@ && $(AR) $(ARFLAGS) $@ $^
+	$(strip rm -f $@ && $(AR) $(ARFLAGS) $@ $^)
 
 $(programs): $(firstword $(libraries))
 
 # Define suffix rules
 
-(%): %
-	$(AR) $(ARFLAGS) $@ $<
-
 $(output_dir)/%$(binary_suffix): $(object_dir)/%$(object_suffix)
-	$(LINK$(object_suffix)) -o $@ $^ $(LDLIBS)
+	$(strip $(LINK$(object_suffix)) -o $@ $^ $(LDLIBS))
 
 $(object_dir)/%$(object_suffix): %$(source_suffix)
-	$(COMPILE$(source_suffix)) $(OUTPUT_OPTION) $<
+	$(strip $(COMPILE$(source_suffix)) $(OUTPUT_OPTION) $<)
 
 $(depend_dir)/%$(depend_suffix): %$(source_suffix)
 	$(make-makefile)
