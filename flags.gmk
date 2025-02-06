@@ -38,11 +38,13 @@ is_depend = $(filter %$(depend_suffix),$@)
 is_object = $(filter $(object_dir)/%$(object_suffix),$@)
 is_shared = $(filter $(output_dir)/$(library_prefix)%$(shared_suffix),$@)
 
-# Define install_name, rpath, and soname linker option variables
+# Define install_name and soname linker option variables
 install_name = $(library_file)$(alias_suffix)
-rprefix = $(if $(filter gnu,$(ld_family)),$$ORIGIN,@executable_path)
-rpaths = $(addprefix $(rprefix)/,. ../lib)
 soname = $(library_file)$(alias_suffix)
+
+# Define rpath linker option variable
+rprefix = $(if $(filter gnu,$(ld_family)),$$ORIGIN,)
+rpaths = $(if $(rprefix),$(addprefix $(rprefix)/,. ../lib),)
 
 # ARFLAGS
 ARFLAGS = r
@@ -118,11 +120,13 @@ CPPFLAGS += $(addprefix -D,$(sort $(cpp_symbols)))
 # CXX_ASFLAGS
 
 ifeq "$(WITH_LISTINGS)" "true"
+ifeq "$(cxx_family)" "gnu"
 	listing = $(@:$(object_suffix)=.lst)
 	asflags = $(if $(is_as_listings),$(call	\
 	format-as-option,-adghln,$(listing)),)
 	CXX_ASFLAGS += $(if $(is_object),$(call	\
 	join-as-options,$(asflags)),)
+endif
 endif
 
 # CXXFLAGS
