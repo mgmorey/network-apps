@@ -22,7 +22,7 @@ space = $(empty) $(empty)
 compare-versions = $(shell $(script_dir)/compare-versions '$1' '$2')
 
 # Define function to single-quote words
-single-quote = $(foreach word,$1,'$(word)')
+shell-quote = $(subst $$,\$$,$1)
 
 # Define functions to format assembler/linker flags for the compiler
 format-as-flag = $(call format-flag,$(as_family),$1,$2)
@@ -208,7 +208,7 @@ ldflags += $(if $(is_shared),$(if $(is_ld_soname),$(call	\
 get-soname-flag,$(soname)),),)
 
 ldflags += $(if $(is_shared),,$(if $(is_ld_rpath),$(call	\
-get-rpath-flag,$(call single-quote,$(rpaths:/.=))),))
+get-rpath-flag,$(call shell-quote,$(rpaths:/.=))),))
 
 LDFLAGS += $(call join-flags,-Wl,$(ldflags))
 LDFLAGS += $(if $(is_shared),-shared,)
