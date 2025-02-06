@@ -156,7 +156,7 @@ $(object_dir))
 dos2unix_files = $(filter-out %$(depend_suffix),$(wildcard	\
 $(text_artifacts)))
 
-tarfile = $(TMP_PREFIX).tar.gz
+tarfile = $(library_file).tar.gz
 
 # Define build target list variables
 
@@ -337,7 +337,6 @@ TAGS:
 	ctags -e $(filter -D%,$(CPPFLAGS)) -R $(include_dir) $(source_dir)
 
 $(tarfile): $(libraries) $(programs)
-	$(call install-files,$(TMP_PREFIX))
 	$(call archive-files,$(TMP_PREFIX))
 
 $(dependencies): | $(depend_dir)

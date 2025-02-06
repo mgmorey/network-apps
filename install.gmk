@@ -22,6 +22,7 @@ $(addprefix $(library_file),$(shared_suffix) $(suffix)))
 
 # Define function archive-files
 define archive-files
+	$(call install-files,$1)
 	tar -C $1 -acf $@ .
 endef
 

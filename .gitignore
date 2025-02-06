@@ -52,6 +52,10 @@ Module.symvers
 Mkfile.old
 dkms.conf
 
+# Archives
+*.tar.gz
+*.tar.xz
+
 # Assembler listings
 *.lst
 
