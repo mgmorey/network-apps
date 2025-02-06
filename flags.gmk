@@ -18,14 +18,22 @@ comma = ,
 empty =
 space = $(empty) $(empty)
 
-# Define functions for formatting compiler options to the assembler and linker
+# Define function to compare semantic version strings
 compare-versions = $(shell $(script_dir)/compare-versions '$1' '$2')
-format-as-option = $(call format-option,$(as_family),$1,$2)
-format-ld-option = $(call format-option,$(ld_family),$1,$2)
-format-option = $(if $(filter gnu,$1),$2=$3,$2 $3)
-join-as-options = $(call join-options,-Wa $1)
-join-ld-options = $(call join-options,-Wl $1)
-join-options = $(subst $(space),$(comma),$1)
+
+# Define functions to format assembler/linker flags for the compiler
+format-as-flag = $(call format-flag,$(as_family),$1,$2)
+format-ld-flag = $(call format-flag,$(ld_family),$1,$2)
+format-flag = $(if $(strip $3),$(if $(filter gnu,$1),$2=$3,$2 $3),)
+join-flags = $(if $(strip $1),$(subst $(space),$(comma),$(strip $1)),)
+
+# Define functions to compute install_name and soname flags
+get-install-name-flag = $(call format-ld-flag,-install_name,$1)
+get-soname-flag = $(call format-ld-flag,-soname,$1)
+
+# Define functions to compute rpath flag
+get-rpath-flag = $(foreach rpath,$1,$(call	\
+format-ld-flag,-rpath,'$(rpath:/.=)'))
 
 # Define predicates for command features
 is_as_listings = $(filter $(as_features),listings)
@@ -123,9 +131,9 @@ ifeq "$(WITH_LISTINGS)" "true"
 ifeq "$(cxx_family)" "gnu"
 	listing = $(@:$(object_suffix)=.lst)
 	asflags = $(if $(is_as_listings),$(call	\
-	format-as-option,-adghln,$(listing)),)
-	CXX_ASFLAGS += $(if $(is_object),$(if $(strip			\
-	$(asflags)),$(call join-as-options,$(strip $(asflags))),),)
+	format-as-flag,-adghln,$(listing)),)
+	CXX_ASFLAGS += $(if $(is_object),$(if $(strip		\
+	$(asflags)),$(call join-flags,-Wa $(asflags)),),)
 endif
 endif
 
@@ -186,19 +194,19 @@ endif
 ifeq "$(WITH_LOAD_MAP)" "true"
 	map = $(@:$(if $(is_shared),$(shared_suffix),$(binary_suffix))=.map)
 	map_opt = $(if $(filter gnu,$(ld_family)),-Map,-map)
-	ldflags += $(call format-ld-option,$(map_opt),$(map))
+	ldflags += $(call format-ld-flag,$(map_opt),$(map))
 endif
 
 ldflags += $(if $(is_shared),$(if $(is_ld_install_name),$(call	\
-format-ld-option,-install_name,$(install_name)),),)
+get-install-name-flag,$(install_name)),),)
 ldflags += $(if $(is_shared),$(if $(is_ld_soname),$(call	\
-format-ld-option,-soname,$(soname)),),)
+get-soname-flag,$(soname)),),)
 
-ldflags += $(if $(is_shared),,$(if $(is_ld_rpath),$(foreach		\
-rpath,$(rpaths),$(call format-ld-option,-rpath,'$(rpath:/.=)')),))
+ldflags += $(if $(is_shared),,$(if $(is_ld_rpath),$(call	\
+get-rpath-flag,$(rpaths)),),)
 
-LDFLAGS += $(if $(strip $(ldflags)),$(call join-ld-options,$(strip	\
-$(ldflags))),)
+LDFLAGS += $(if $(strip $(ldflags)),$(call join-flags,-Wl	\
+$(ldflags)),)
 LDFLAGS += $(if $(is_shared),-shared,)
 
 # LDLIBS
