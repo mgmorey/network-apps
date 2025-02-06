@@ -20,6 +20,12 @@ install = $(if $(filter Darwin,$(os_id_name)),ginstall,install)
 install-aliases = cd $1 $(foreach suffix,$(alias_suffixes),&& ln -sf	\
 $(addprefix $(library_file),$(shared_suffix) $(suffix)))
 
+# Define function archive-files
+define archive-files
+	tar -C $(PREFIX) -cf $(@:.gz=) .
+	gzip -9f $(@:.gz=)
+endef
+
 # Define function install-files
 define install-files
 	$(install) -d $(addprefix $(PREFIX)/,bin include/network lib)

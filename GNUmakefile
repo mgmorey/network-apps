@@ -155,7 +155,7 @@ $(object_dir))
 dos2unix_files = $(filter-out %$(depend_suffix),$(wildcard	\
 $(text_artifacts)))
 
-tarfile = /tmp/$(library_file).tar.gz
+tarfile = $(PREFIX).tar.gz
 
 # Define build target list variables
 
@@ -337,8 +337,7 @@ TAGS:
 
 $(tarfile): $(libraries) $(programs)
 	$(install-files)
-	tar -C /tmp/$(library_file) -cf $(@:.gz=) .
-	gzip -9f $(@:.gz=)
+	$(archive-files)
 
 $(dependencies): | $(depend_dir)
 
