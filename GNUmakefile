@@ -189,6 +189,11 @@ define make-rule
 	$(script_dir)/make-rule -d $(object_dir) -o $@ TAGS
 endef
 
+# Define function make-programs
+define run-programs
+	cd $(output_dir) && ../$(script_dir)/run-programs $1
+endef
+
 # Set virtual paths
 vpath %$(source_suffix) $(source_dir)/$(api_type) $(source_dir)
 
@@ -285,7 +290,7 @@ tarfile: $(tarfile)
 
 .PHONY: test
 test: $(test_programs)
-	cd $(output_dir) && ../$(script_dir)/run-programs $(^F)
+	$(call run-programs,$(^F:$(binary_suffix)=))
 
 ifeq "$(cxx_family)" "clang"
 .PHONY: tidy
@@ -295,7 +300,7 @@ endif
 
 .PHONY: unix
 unix: $(unix_programs)
-	cd $(output_dir) && ../$(script_dir)/run-programs -r $(^F)
+	$(call run-programs,-r $(^F:$(binary_suffix)=))
 
 .SECONDARY: $(objects)
 
