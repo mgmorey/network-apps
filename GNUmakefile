@@ -14,8 +14,9 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 # Define project-specific variables
-
-PREFIX ?= /tmp/$(library_file)
+PREFIX ?= /usr/local
+TMPDIR ?= /tmp
+TMP_PREFIX ?= $(TMPDIR:/=)/$(library_file)
 VERSION ?= 0.0.1
 
 # Define language
@@ -155,7 +156,7 @@ $(object_dir))
 dos2unix_files = $(filter-out %$(depend_suffix),$(wildcard	\
 $(text_artifacts)))
 
-tarfile = $(PREFIX).tar.gz
+tarfile = $(TMP_PREFIX).tar.gz
 
 # Define build target list variables
 
@@ -264,7 +265,7 @@ dos2unix:
 
 .PHONY: install
 install: $(libraries) $(programs)
-	$(install-files)
+	$(install-files) $(PREFIX)
 
 .PHONY: libraries
 libraries: $(libraries)
@@ -336,8 +337,8 @@ TAGS:
 	ctags -e $(filter -D%,$(CPPFLAGS)) -R $(include_dir) $(source_dir)
 
 $(tarfile): $(libraries) $(programs)
-	$(install-files)
-	$(archive-files)
+	$(call install-files,$(TMP_PREFIX))
+	$(call archive-files,$(TMP_PREFIX))
 
 $(dependencies): | $(depend_dir)
 

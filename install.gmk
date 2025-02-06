@@ -22,14 +22,14 @@ $(addprefix $(library_file),$(shared_suffix) $(suffix)))
 
 # Define function archive-files
 define archive-files
-	tar -C $(PREFIX) -acf $@ .
+	tar -C $1 -acf $@ .
 endef
 
 # Define function install-files
 define install-files
-	$(install) -d $(addprefix $(PREFIX)/,bin include/network lib)
-	$(install) -m 644 $(include_files) $(PREFIX)/include/network
-	$(install) $(shared_library) $(static_library) $(PREFIX)/lib
-	$(install) $(programs) $(PREFIX)/bin
-	$(call install-aliases,$(PREFIX)/lib)
+	$(install) -d $(addprefix $1/,bin include/network lib)
+	$(install) -m 644 $(include_files) $1/include/network
+	$(install) $(shared_library) $(static_library) $1/lib
+	$(install) $(programs) $1/bin
+	$(call install-aliases,$1/lib)
 endef
