@@ -57,7 +57,7 @@ parse_arguments() {
 		files="${files+$files }$OPTARG"
 		;;
 	    (o)
-		parse_output
+		parse_output "$OPTARG"
 		;;
 	    (h)
 		usage
@@ -80,15 +80,15 @@ parse_arguments() {
 }
 
 parse_output() {
-    output_dir=$(dirname "$OPTARG")
+    output_dir=$(dirname "$1")
 
     if [ ! -d "$output_dir" ]; then
 	usage_error '%s: "%s": No such directory\n' "$script" "$output_dir"
 	exit 2
     fi
 
-    output_file=$(basename "$OPTARG")
-    output_path="$OPTARG"
+    output_file=$(basename "$1")
+    output_path="$1"
     object_stem="${output_file%.*}"
 }
 
@@ -113,7 +113,7 @@ usage_error() {
     exit 2
 }
 
-script="$(basename "$0")"
+script=$(basename "$0")
 
 parse_arguments "$@"
 make_makefile
