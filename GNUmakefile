@@ -179,10 +179,15 @@ $(object_suffix),$(basename $1)))
 get-programs = $(addprefix $(output_dir)/,$(addsuffix	\
 $(binary_suffix),$(basename $1)))
 
-# Define compiler, linker, and script command variables
-COMPILE.cc = $(strip $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c)
-LINK$(object_suffix) = $(strip $(CXX) $(LDFLAGS))
-make_makefile = $(script_dir)/make-makefile -d $(object_dir)
+# Define compiler and linker command variables
+COMPILE.cc = $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c
+LINK$(object_suffix) = $(CXX) $(LDFLAGS)
+
+# Define function make-makefile
+define make-makefile
+	$(CXX) $(CPPFLAGS) -MM $< | \
+	$(script_dir)/make-makefile -d $(object_dir) -o $@ TAGS
+endef
 
 # Set virtual paths
 vpath %$(source_suffix) $(source_dir)/$(api_type) $(source_dir)
@@ -319,7 +324,7 @@ $(object_dir)/%$(object_suffix): %$(source_suffix)
 	$(COMPILE$(source_suffix)) $(OUTPUT_OPTION) $<
 
 $(depend_dir)/%$(depend_suffix): %$(source_suffix)
-	$(CXX) $(CPPFLAGS) -MM $< | $(make_makefile) -o $@ TAGS
+	$(make-makefile)
 
 sizes.txt: $(sort $(shared_library) $(objects) $(programs))
 	if [ -e $@ ]; then mv -f $@ $@~; fi
