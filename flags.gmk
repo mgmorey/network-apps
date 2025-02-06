@@ -203,7 +203,7 @@ ldflags += $(if $(is_shared),$(if $(is_ld_soname),$(call	\
 get-soname-flag,$(soname)),),)
 
 ldflags += $(if $(is_shared),,$(if $(is_ld_rpath),$(call	\
-get-rpath-flag,$(rpaths)),),)
+get-rpath-flag,$(rpaths)),))
 
 LDFLAGS += $(if $(strip $(ldflags)),$(call join-flags,-Wl	\
 $(ldflags)),)
