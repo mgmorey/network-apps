@@ -28,7 +28,10 @@ single-quote = $(foreach word,$1,'$(word)')
 format-as-flag = $(call format-flag,$(as_family),$1,$2)
 format-ld-flag = $(call format-flag,$(ld_family),$1,$2)
 format-flag = $(if $(strip $3),$(if $(filter gnu,$1),$2=$3,$2 $3),)
-join-flags = $(if $(strip $1),$(subst $(space),$(comma),$(strip $1)),)
+join-flags = $(if $(strip $2),$(subst $(space),$(comma),$1 $(strip $2)),)
+
+# Define functions to compute assembler listing flag
+get-listing-flag = $(call format-as-flag,-adghln,$1)
 
 # Define functions to compute install_name and soname flags
 get-install-name-flag = $(call format-ld-flag,-install_name,$1)
@@ -133,10 +136,9 @@ CPPFLAGS += $(addprefix -D,$(sort $(cpp_symbols)))
 ifeq "$(WITH_LISTINGS)" "true"
 ifeq "$(cxx_family)" "gnu"
 	listing = $(@:$(object_suffix)=.lst)
-	asflags = $(if $(is_as_listings),$(call	\
-	format-as-flag,-adghln,$(listing)),)
-	CXX_ASFLAGS += $(if $(is_object),$(if $(strip		\
-	$(asflags)),$(call join-flags,-Wa $(asflags)),),)
+	asflags = $(if $(is_object),$(if $(is_as_listings),$(call	\
+	get-listing-flag,$(listing)),),)
+	CXX_ASFLAGS += $(call join-flags,-Wa,$(asflags))
 endif
 endif
 
@@ -208,8 +210,7 @@ get-soname-flag,$(soname)),),)
 ldflags += $(if $(is_shared),,$(if $(is_ld_rpath),$(call	\
 get-rpath-flag,$(call single-quote,$(rpaths))),))
 
-LDFLAGS += $(if $(strip $(ldflags)),$(call join-flags,-Wl	\
-$(ldflags)),)
+LDFLAGS += $(call join-flags,-Wl,$(ldflags))
 LDFLAGS += $(if $(is_shared),-shared,)
 
 # LDLIBS
