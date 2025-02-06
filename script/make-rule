@@ -94,7 +94,10 @@ parse_output() {
 }
 
 sed_makefile() {
-    sed "$(printf "$SED\n" "$object_stem" "${object_dir:+$object_dir/}" "$files")"
+    sed "$(printf "$SED\n" \
+	"$object_stem" \
+	"${object_dir:+$object_dir/}" \
+	"$files")"
 }
 
 usage() {
