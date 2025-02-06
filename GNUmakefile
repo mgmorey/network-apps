@@ -139,7 +139,7 @@ unix_programs = $(call get-programs,$(unix_sources))
 
 dependencies = $(call get-dependencies,$(sources))
 listings = $(objects:$(object_suffix)=.lst)
-logfiles = $(notdir $(programs:$(binary_suffix)=.log))
+logfiles = $(programs:$(binary_suffix)=.log)
 mapfiles = $(programs:$(binary_suffix)=.map) $(library_mapfile)
 stackdumps = $(programs:$(binary_suffix)=.stackdump)
 
