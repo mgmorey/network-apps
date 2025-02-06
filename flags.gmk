@@ -124,8 +124,8 @@ ifeq "$(cxx_family)" "gnu"
 	listing = $(@:$(object_suffix)=.lst)
 	asflags = $(if $(is_as_listings),$(call	\
 	format-as-option,-adghln,$(listing)),)
-	CXX_ASFLAGS += $(if $(is_object),$(call	\
-	join-as-options,$(asflags)),)
+	CXX_ASFLAGS += $(if $(is_object),$(if $(strip		\
+	$(asflags)),$(call join-as-options,$(asflags)),),)
 endif
 endif
 
@@ -197,12 +197,12 @@ format-ld-option,-soname,$(soname)),),)
 ldflags += $(if $(is_shared),,$(if $(is_ld_rpath),$(foreach		\
 rpath,$(rpaths),$(call format-ld-option,-rpath,'$(rpath:/.=)')),))
 
-LDFLAGS += $(call join-ld-options,$(strip $(ldflags)))
+LDFLAGS += $(if $(strip $(ldflags)),$(call join-ld-options,$(ldflags)),)
 LDFLAGS += $(if $(is_shared),-shared,)
 
 # LDLIBS
 
-LDLIBS += $(if $(filter MINGW64_NT,$(os_id_name)),-lws2_32,)
+LDLIBS += $(if $(filter $(os_id_name),MINGW64_NT),-lws2_32,)
 
 # Local Variables:
 # mode: makefile
