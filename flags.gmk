@@ -50,9 +50,9 @@ is_shared = $(filter $(output_dir)/$(library_prefix)%$(shared_suffix),$@)
 install_name = $(library_file)$(alias_suffix)
 soname = $(library_file)$(alias_suffix)
 
-# Define rpath linker option variable
-rprefix = $(if $(filter gnu,$(ld_family)),$$ORIGIN,)
-rpaths = $(if $(rprefix),$(addprefix $(rprefix)/,. ../lib),)
+# Define rpath linker option component variables
+origin = $(if $(filter gnu,$(ld_family)),$$ORIGIN,)
+rpaths = $(if $(origin),$(addprefix $(origin)/,. ../lib),)
 
 # ARFLAGS
 ARFLAGS = r
