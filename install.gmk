@@ -24,6 +24,7 @@ $(addprefix $(library_file),$(shared_suffix) $(suffix)))
 define archive-files
 	$(call install-files,$1)
 	tar -C $1 -acf $@ .
+	/bin/rm -rf $1
 endef
 
 # Define function install-files
