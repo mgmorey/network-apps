@@ -156,7 +156,7 @@ $(object_dir))
 dos2unix_files = $(filter-out %$(depend_suffix),$(wildcard	\
 $(text_artifacts)))
 
-tarfile = $(library_file).tar.gz
+tarfile = $(output_dir)/$(library_file).tar.gz
 
 # Define build target list variables
 
