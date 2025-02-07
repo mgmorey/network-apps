@@ -16,7 +16,6 @@
 # Define project-specific variables
 PREFIX ?= /usr/local
 TMPDIR ?= /tmp
-TMP_PREFIX ?= $(TMPDIR:/=)/$(library_file)
 VERSION ?= 0.0.1
 
 # Define language
@@ -36,6 +35,7 @@ output_dir := output
 include_dir := include
 script_dir := script
 source_dir := src
+temporary_dir ?= $(TMPDIR:/=)/$(library_file)
 
 # Define include directory and file variables
 include_dirs = $(include_dir)/$(api_type) $(include_dir)
@@ -145,7 +145,8 @@ mapfiles = $(programs:$(binary_suffix)=.map) $(library_mapfile)
 stackdumps = $(programs:$(binary_suffix)=.stackdump)
 
 artifacts = $(binary_artifacts) $(text_artifacts)
-binary_artifacts = $(libraries) $(objects) $(programs) TAGS
+binary_artifacts = $(libraries) $(objects) $(programs) $(tarfile)	\
+TAGS
 build_artifacts = $(libraries) $(listings) $(mapfiles) $(objects)	\
 $(programs) sizes.txt*
 text_artifacts = $(commands) $(dependencies) $(listings) $(logfiles)	\
@@ -337,7 +338,7 @@ TAGS:
 	ctags -e $(filter -D%,$(CPPFLAGS)) -R $(include_dir) $(source_dir)
 
 $(tarfile): $(libraries) $(programs)
-	$(call archive-files,$(TMP_PREFIX))
+	$(call archive-files,$(temporary_dir))
 
 $(dependencies): | $(depend_dir)
 
