@@ -16,15 +16,17 @@
 # Define installer variable
 install = $(if $(filter Darwin,$(os_id_name)),ginstall,install)
 
-# Define function install-aliases
-install-aliases = cd $1 $(foreach suffix,$(alias_suffixes),&& ln -sf	\
-$(addprefix $(library_file),$(shared_suffix) $(suffix)))
-
 # Define function archive-files
 define archive-files
 	$(call install-files,$1)
 	tar -C $1 -acf $@ .
 	/bin/rm -rf $1
+endef
+
+# Define function install-aliases
+define install-aliases
+	cd $1 $(foreach suffix,$(alias_suffixes),&& ln -sf		\
+	$(addprefix $(library_file),$(shared_suffix) $(suffix)))
 endef
 
 # Define function install-files
