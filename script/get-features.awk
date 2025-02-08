@@ -16,10 +16,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-BEGIN {
-    FS = "\t";
-}
 $1 == kernel_name && $2 == command {
-    print $column;
-    exit;
+    features = $column
+    gsub(/,/, " ", features)
+    print features
+    exit
 }
