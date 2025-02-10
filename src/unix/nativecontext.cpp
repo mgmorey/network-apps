@@ -48,20 +48,17 @@ Network::NativeContext::~NativeContext()
 
 Network::NativeContext::operator std::string() const
 {
-    const auto& description {m_data.m_description};
-    const auto& status {m_data.m_system_status};
-    const auto version {m_data.m_version};
     std::ostringstream oss;
-    oss << description;
+    oss << m_data.m_description;
 
-    if (version) {
+    if (m_data.m_version) {
         oss << " Version "
-            << *version;
+            << *m_data.m_version;
     }
 
-    if (!status.empty()) {
+    if (!m_data.m_system_status.empty()) {
         oss << ' '
-            << status;
+            << m_data.m_system_status;
     }
 
     return oss.str();
