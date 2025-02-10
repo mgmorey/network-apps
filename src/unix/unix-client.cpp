@@ -70,7 +70,7 @@ namespace
         return operands;
     }
 
-    auto read(Socket& sock)
+    auto read(const Socket& sock)
     {
         static constexpr auto size {BUFFER_SIZE};
         const auto [str, error] {sock.read(size)};
@@ -83,7 +83,7 @@ namespace
         return str;
     }
 
-    auto write(const std::string& str, Socket& sock)
+    auto write(const std::string& str, const Socket& sock)
     {
         const auto error {sock.write(str)};
 
