@@ -155,6 +155,9 @@ ifndef NDEBUG
 ifeq "$(USING_LIBASAN)" "true"
 	CXXFLAGS += -fsanitize=address -fsanitize-address-use-after-scope
 endif
+ifeq "$(cxx_family)" "gnu"
+	CXXFLAGS += -ftest-coverage
+endif
 endif
 
 ifeq "$(cxx_family)" "clang"
