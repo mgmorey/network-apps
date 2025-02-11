@@ -363,19 +363,19 @@ $(objects): | $(object_dir)
 $(programs): | $(output_dir)
 
 $(coverage_dir):
-	mkdir -p $(coverage_dir)
+	mkdir -p $@
 
 $(cppcheck_dir):
-	mkdir -p $(cppcheck_dir)
+	mkdir -p $@
 
 $(depend_dir):
-	mkdir -p $(depend_dir)
+	mkdir -p $@
 
 $(object_dir):
-	mkdir -p $(object_dir)
+	mkdir -p $@
 
 $(output_dir):
-	mkdir -p $(output_dir)
+	mkdir -p $@
 
 # Define suffix rules
 
