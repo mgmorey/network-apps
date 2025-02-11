@@ -104,11 +104,8 @@ ifeq "$(USING_DMALLOC)" "true"
 	cpp_symbols += DMALLOC DMALLOC_FUNC_CHECK
 endif
 
-cpp_symbols += OS_$(os_macro_name)
-
-ifeq "$(os_id_name)" "Linux"
-	cpp_symbols += OS_LINUX_$(os_macro_dist)
-endif
+cpp_symbols += OS_$(os_macro_name) $(if $(filter	\
+Linux,$(od_id_name)),OS_LINUX_$(os_macro_dist),)
 
 ifeq "$(os_id_name)" "CYGWIN_NT"
 	cpp_symbols += _GNU_SOURCE
@@ -145,13 +142,7 @@ endif
 # CXXFLAGS
 
 ifndef NDEBUG
-ifeq "$(cxx_family)" "gnu"
-	CXXFLAGS += --coverage
-endif
-endif
-
-ifeq "$(as_family)" "gnu"
-	CXXFLAGS += -pipe
+	CXXFLAGS += $(if $(filter gnu,$(cxx_family)),--coverage,)
 endif
 
 CXXFLAGS += -fPIC
@@ -162,7 +153,9 @@ ifeq "$(USING_LIBASAN)" "true"
 	CXXFLAGS += -fsanitize=address -fsanitize-address-use-after-scope
 endif
 ifeq "$(cxx_family)" "clang"
-	CXXFLAGS += -fcoverage-mapping -fprofile-instr-generate
+	CXXFLAGS += $(if $(filter		\
+	clang,$(cxx_family)),-fcoverage-mapping	\
+	-fprofile-instr-generate,)
 endif
 endif
 
@@ -180,29 +173,19 @@ ifndef NDEBUG
 ifeq "$(USING_VALGRIND)" "true"
 	CXXFLAGS += -gdwarf-4
 endif
-ifeq "$(cxx_family)" "gnu"
-	CXXFLAGS += -ggdb
-else
-	CXXFLAGS += -g3
-endif
-	CXXFLAGS += -O0
+	CXXFLAGS += $(if $(filter gnu,$(cxx_family)),-ggdb,-g3) -O0
 else
 	CXXFLAGS += -O2
 endif
 
-ifdef standard
-	CXXFLAGS += -std=$(standard)
-endif
-
-CXXFLAGS += $(CXX_ASFLAGS)
+CXXFLAGS += $(if $(filter gnu,$(as_family)),-pipe,)
+CXXFLAGS += $(if $(standard),-std=$(standard),) $(CXX_ASFLAGS)
 CXXFLAGS += -Wall -Werror -Wextra -Wshadow -Wsign-conversion
 
 # LDFLAGS
 
 ifndef NDEBUG
-ifeq "$(cxx_family)" "gnu"
-	LDFLAGS += --coverage
-endif
+	LDFLAGS += $(if $(filter gnu,$(cxx_family)),--coverage,)
 ifeq "$(USING_LIBASAN)" "true"
 	LDFLAGS += -fsanitize=address
 endif
