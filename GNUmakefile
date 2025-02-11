@@ -109,6 +109,9 @@ test_unix_sources = test-socket-unix.cpp
 
 unix_sources = unix-client.cpp unix-server.cpp
 
+sizes = sizes.txt sizes.txt~
+tags = TAGS
+
 # Define computed file list variables
 
 sources = $(library_sources) $(test_sources) $(if $(filter	\
@@ -139,18 +142,20 @@ test_programs = $(call get-programs,$(test_sources))
 unix_programs = $(call get-programs,$(unix_sources))
 
 dependencies = $(call get-dependencies,$(sources))
+gcdafiles = $(objects:$(object_suffix)=.gcda)
+gcnofiles = $(objects:$(object_suffix)=.gcno)
+gcovfiles = $(gcdafiles) $(gcnofiles)
 listings = $(objects:$(object_suffix)=.lst)
 logfiles = $(programs:$(binary_suffix)=.log)
 mapfiles = $(programs:$(binary_suffix)=.map) $(library_mapfile)
 stackdumps = $(programs:$(binary_suffix)=.stackdump)
 
 artifacts = $(binary_artifacts) $(text_artifacts)
-binary_artifacts = $(libraries) $(objects) $(programs) $(tarfile)	\
-TAGS
-build_artifacts = $(libraries) $(listings) $(mapfiles) $(objects)	\
-$(programs) sizes.txt*
+binary_artifacts = $(gcovfiles) $(libraries) $(objects) $(programs)	\
+$(tags) $(tarfile)
+clean_artifacts = $(gcovfiles) $(libraries) $(objects) $(programs)
 text_artifacts = $(commands) $(dependencies) $(listings) $(logfiles)	\
-$(mapfiles) $(stackdumps) sizes.txt*
+$(mapfiles) $(stackdumps) $(sizes)
 
 build_dirs = $(filter-out .,$(output_dir) $(cache_dir) $(output_dir)	\
 $(object_dir))
@@ -188,7 +193,7 @@ LINK$(object_suffix) = $(CXX) $(LDFLAGS)
 # Define function make-rule
 define make-rule
 	$(CXX) $(CPPFLAGS) -MM $< | \
-	$(script_dir)/make-rule -d $(object_dir) -o $@ TAGS
+	$(script_dir)/make-rule -d $(object_dir) -o $@ $(tags)
 endef
 
 # Define function make-programs
@@ -235,7 +240,7 @@ check: test
 
 .PHONY: clean
 clean:
-	rm -f $(sort $(wildcard $(build_artifacts)))
+	rm -f $(sort $(wildcard $(clean_artifacts)))
 
 .PHONY: coverage-gcov
 coverage-gcov: $(sources)
@@ -290,7 +295,7 @@ sizes: sizes.txt
 	if [ -e $<~ ]; then diff -b $<~ $< || true; fi
 
 .PHONY: tags
-tags: TAGS
+tags: $(tags)
 
 .PHONY: tarfile
 tarfile: $(tarfile)
@@ -339,7 +344,7 @@ sizes.txt: $(sort $(shared_library) $(objects) $(programs))
 	if [ -e $@ ]; then mv -f $@ $@~; fi
 	size $^ >$@
 
-TAGS:
+$(tags):
 	ctags -e $(filter -D%,$(CPPFLAGS)) -R $(include_dir) $(source_dir)
 
 $(tarfile): $(libraries) $(programs)
