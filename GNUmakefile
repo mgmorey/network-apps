@@ -61,7 +61,9 @@ source_suffix = .cpp
 
 # Define enumerated file list variables
 
-commands = compile_commands.json
+compile_commands = compile_commands.json
+cppchecklog = cppcheck.log
+gcovfile = coverage.gcov
 
 library_common_sources = accept.cpp address-sa.cpp address-sin.cpp	\
 address-sin6.cpp address.cpp addresserror.cpp addresslist.cpp		\
@@ -154,8 +156,9 @@ artifacts = $(binary_artifacts) $(text_artifacts)
 binary_artifacts = $(gcovfiles) $(libraries) $(objects) $(programs)	\
 $(tags) $(tarfile)
 clean_artifacts = $(gcovfiles) $(libraries) $(objects) $(programs)
-text_artifacts = $(commands) $(dependencies) $(listings) $(logfiles)	\
-$(mapfiles) $(stackdumps) $(sizes)
+text_artifacts = $(compile_commands) $(cppchecklog) $(dependencies)	\
+$(gcovfile) $(listings) $(logfiles) $(mapfiles) $(stackdumps)		\
+$(sizes)
 
 build_dirs = $(filter-out .,$(output_dir) $(cache_dir) $(output_dir)	\
 $(object_dir))
