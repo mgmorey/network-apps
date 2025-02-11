@@ -14,6 +14,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 # Define project-specific variables
+GCOVR_HTML_THEME ?= github.green
 PREFIX ?= /usr/local
 TMPDIR ?= /tmp
 VERSION ?= 0.0.1
@@ -326,7 +327,7 @@ unix: $(unix_programs)
 # Define targets
 
 $(gcovhtml): $(gcovtext)
-	gcovr --html-details --html-theme github.dark-green --output $@
+	gcovr --html-details --html-theme $(GCOVR_HTML_THEME) --output $@
 
 $(gcovtext): $(sources)
 	gcov -mo $(object_dir) -rt $^ >$@
