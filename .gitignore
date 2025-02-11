@@ -6,7 +6,7 @@
 *.gcov
 
 # Gcovr output files
-*.html
+coverage/
 
 # Object files
 *.o
