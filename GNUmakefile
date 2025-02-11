@@ -26,6 +26,7 @@ standard := $(language)20
 cache_dir := .cache
 
 # Define build directory variables
+coverage_dir := coverage
 cppcheck_dir := $(cache_dir)/cppcheck
 depend_dir := $(cache_dir)/dependency
 object_dir := object
@@ -63,7 +64,7 @@ source_suffix = .cpp
 
 compile_commands = compile_commands.json
 cppchecklog = cppcheck.log
-gcovhtml = coverage.html
+gcovhtml = coverage/coverage.html
 gcovtext = coverage.gcov
 
 library_common_sources = accept.cpp address-sa.cpp address-sin.cpp	\
@@ -325,7 +326,7 @@ unix: $(unix_programs)
 # Define targets
 
 $(gcovhtml): $(gcovtext)
-	gcovr --html $@
+	gcovr --html-details $@
 
 $(gcovtext): $(sources)
 	gcov -mo $(object_dir) -rt $^ >$@
@@ -351,6 +352,8 @@ $(tags):
 $(tarfile): $(libraries) $(programs)
 	$(call archive-files,$(temporary_dir))
 
+$(gcovhtml): | $(coverage_dir)
+
 $(dependencies): | $(depend_dir)
 
 $(libraries): | $(output_dir)
@@ -358,6 +361,9 @@ $(libraries): | $(output_dir)
 $(objects): | $(object_dir)
 
 $(programs): | $(output_dir)
+
+$(coverage_dir):
+	mkdir -p $(coverage_dir)
 
 $(cppcheck_dir):
 	mkdir -p $(cppcheck_dir)
