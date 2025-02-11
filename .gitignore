@@ -1,3 +1,10 @@
+# Gcov data files
+*.gcda
+*.gcno
+
+# Gcov output files
+*.gcov
+
 # Object files
 *.o
 *.ko
