@@ -305,7 +305,7 @@ tarfile: $(tarfile)
 
 .PHONY: test
 test: $(test_programs)
-	$(call run-programs,$(^F:$(binary_suffix)=))
+	$(call run-programs,-v $(^F:$(binary_suffix)=))
 
 ifeq "$(cxx_family)" "clang"
 .PHONY: tidy
