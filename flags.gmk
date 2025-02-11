@@ -75,11 +75,7 @@ endif
 
 CLANG_TIDY_FLAGS += -header-filter='.*'
 CLANG_TIDY_FLAGS += --
-
-ifdef standard
-	CLANG_TIDY_FLAGS += -std=$(standard)
-endif
-
+CLANG_TIDY_FLAGS += $(if $(standard),-std=$(standard),)
 CLANG_TIDY_FLAGS += $(CPPFLAGS)
 
 endif
@@ -90,12 +86,8 @@ CPPCHECK_FLAGS = --check-level=exhaustive
 CPPCHECK_FLAGS += --checkers-report=cppcheck.log
 CPPCHECK_FLAGS += --cppcheck-build-dir=$(cppcheck_dir)
 CPPCHECK_FLAGS += --enable=all --inline-suppr --quiet
-
-ifdef standard
-	CPPCHECK_FLAGS += --std=$(standard)
-endif
-
 CPPCHECK_FLAGS += --suppress=missingIncludeSystem
+CPPCHECK_FLAGS += $(if $(standard),-std=$(standard),)
 CPPCHECK_FLAGS += $(filter-out -I$(SDKROOT)/usr/include,$(CPPFLAGS))
 
 # CPPFLAGS
@@ -152,11 +144,9 @@ ifndef NDEBUG
 ifeq "$(USING_LIBASAN)" "true"
 	CXXFLAGS += -fsanitize=address -fsanitize-address-use-after-scope
 endif
-ifeq "$(cxx_family)" "clang"
 	CXXFLAGS += $(if $(filter		\
 	clang,$(cxx_family)),-fcoverage-mapping	\
 	-fprofile-instr-generate,)
-endif
 endif
 
 ifeq "$(cxx_family)" "clang"
