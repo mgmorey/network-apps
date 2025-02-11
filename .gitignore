@@ -5,6 +5,9 @@
 # Gcov output files
 *.gcov
 
+# Gcovr output files
+*.html
+
 # Object files
 *.o
 *.ko
