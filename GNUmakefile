@@ -197,6 +197,7 @@ define run-programs
 endef
 
 # Set virtual paths
+vpath %$(include_suffix) $(include_dir)/$(api_type) $(include_dir)
 vpath %$(source_suffix) $(source_dir)/$(api_type) $(source_dir)
 
 # Define pseudotargets
