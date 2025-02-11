@@ -144,6 +144,12 @@ endif
 
 # CXXFLAGS
 
+ifndef NDEBUG
+ifeq "$(cxx_family)" "gnu"
+	CXXFLAGS += --coverage
+endif
+endif
+
 ifeq "$(as_family)" "gnu"
 	CXXFLAGS += -pipe
 endif
@@ -157,8 +163,6 @@ ifeq "$(USING_LIBASAN)" "true"
 endif
 ifeq "$(cxx_family)" "clang"
 	CXXFLAGS += -fcoverage-mapping -fprofile-instr-generate
-else
-	CXXFLAGS += -fprofile-arcs -ftest-coverage
 endif
 endif
 
@@ -196,14 +200,11 @@ CXXFLAGS += -Wall -Werror -Wextra -Wshadow -Wsign-conversion
 # LDFLAGS
 
 ifndef NDEBUG
+ifeq "$(cxx_family)" "gnu"
+	LDFLAGS += --coverage
+endif
 ifeq "$(USING_LIBASAN)" "true"
 	LDFLAGS += -fsanitize=address
-endif
-endif
-
-ifndef NDEBUG
-ifeq "$(cxx_family)" "gcc"
-	LDFLAGS += --coverage
 endif
 endif
 
@@ -225,12 +226,6 @@ LDFLAGS += $(call join-flags,-Wl,$(ldflags))
 LDFLAGS += $(if $(is_shared),-shared,)
 
 # LDLIBS
-
-ifndef NDEBUG
-ifeq "$(cxx_family)" "gnu"
-	LDLIBS += -lgcov
-endif
-endif
 
 LDLIBS += $(if $(filter $(os_id_name),MINGW64_NT),-lws2_32,)
 
