@@ -325,7 +325,7 @@ unix: $(unix_programs)
 # Define targets
 
 $(gcovhtml): $(gcovtext)
-	gcovr >$@
+	gcovr --html $@
 
 $(gcovtext): $(sources)
 	gcov -mo $(object_dir) -rt $^ >$@
