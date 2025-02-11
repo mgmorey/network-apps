@@ -105,7 +105,7 @@ ifeq "$(USING_DMALLOC)" "true"
 endif
 
 cpp_symbols += OS_$(os_macro_name) $(if $(filter	\
-Linux,$(od_id_name)),OS_LINUX_$(os_macro_dist),)
+Linux,$(os_id_name)),OS_LINUX_$(os_macro_dist),)
 
 ifeq "$(os_id_name)" "CYGWIN_NT"
 	cpp_symbols += _GNU_SOURCE
