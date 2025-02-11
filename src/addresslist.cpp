@@ -117,7 +117,7 @@ Network::AddressList::AddressList(const HostnameView& t_hostname,
     }
     else if (t_is_verbose) {
         for (const auto& node : *this) {
-            std::cerr << node << std::endl;
+            std::cout << node << std::endl;
         }
     }
 }
