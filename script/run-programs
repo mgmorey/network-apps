@@ -22,14 +22,14 @@ run_program() (
 
     case "$basename" in
 	(test-*)
-	    ${valgrind:+$valgrind }"$program" >"$program.log"
+	    ${prefix:+$prefix }"$program" $2 >"$program.log"
 	    ;;
 	(unix-client)
-	    "$program"${args:+ $args} 2 2
-	    "$program"${args:+ $args} DOWN
+	    "$program" $2 2 2
+	    "$program" $2 DOWN
 	    ;;
 	(unix-server)
-	    "$program"${args:+ $args} &
+	    "$program" $2 &
 	    sleep 1
 	    ;;
 	(*)
@@ -39,13 +39,14 @@ run_program() (
 
 run_programs() {
     args=
-    sort_args=
 
     if [ "${USING_VALGRIND-}" = true ]; then
-	valgrind="valgrind -q"
+	prefix="valgrind -q"
     else
-	valgrind=
+	prefix=
     fi
+
+    sort_args=
 
     while getopts rvh opt; do
 	case $opt in
@@ -67,8 +68,8 @@ run_programs() {
 
     shift $(($OPTIND - 1))
 
-    for file in $(printf '%s\n' "$@" | sort${sort_args+ ${sort_args}}); do
-	run_program "$file"
+    for file in $(printf '%s\n' "$@" | sort $sort_args); do
+	run_program "$file" "$args"
     done
 }
 
