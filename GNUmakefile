@@ -63,7 +63,8 @@ source_suffix = .cpp
 
 compile_commands = compile_commands.json
 cppchecklog = cppcheck.log
-gcovfile = coverage.gcov
+gcovhtml = coverage.html
+gcovtext = coverage.gcov
 
 library_common_sources = accept.cpp address-sa.cpp address-sin.cpp	\
 address-sin6.cpp address.cpp addresserror.cpp addresslist.cpp		\
@@ -245,9 +246,11 @@ check: test
 clean:
 	rm -f $(sort $(wildcard $(clean_artifacts)))
 
-.PHONY: coverage-gcov
-coverage-gcov: $(sources)
-	gcov -mo $(object_dir) -rt $^ >coverage.gcov
+.PHONY: coverage-gcov-html
+coverage-gcov-html: $(gcovhtml)
+
+.PHONY: coverage-gcov-text
+coverage-gcov-text: $(gcovtext)
 
 .PHONY: count-library-common-source-files
 count-library-common-source-files: $(library_common_sources)
@@ -321,6 +324,12 @@ unix: $(unix_programs)
 
 # Define targets
 
+$(gcovhtml): $(gcovtext)
+	gcovr >$@
+
+$(gcovtext): $(sources)
+	gcov -mo $(object_dir) -rt $^ >$@
+
 $(library_aliases): $(shared_library)
 	$(call install-aliases,$(output_dir))
 
@@ -331,17 +340,6 @@ $(static_library): $(library_objects)
 	$(strip rm -f $@ && $(AR) $(ARFLAGS) $@ $^)
 
 $(programs): $(firstword $(libraries))
-
-# Define suffix rules
-
-$(output_dir)/%$(binary_suffix): $(object_dir)/%$(object_suffix)
-	$(strip $(LINK$(object_suffix)) -o $@ $^ $(LDLIBS))
-
-$(object_dir)/%$(object_suffix): %$(source_suffix)
-	$(strip $(COMPILE$(source_suffix)) $(OUTPUT_OPTION) $<)
-
-$(depend_dir)/%$(depend_suffix): %$(source_suffix)
-	$(make-rule)
 
 sizes.txt: $(sort $(shared_library) $(objects) $(programs))
 	if [ -e $@ ]; then mv -f $@ $@~; fi
@@ -372,6 +370,17 @@ $(object_dir):
 
 $(output_dir):
 	mkdir -p $(output_dir)
+
+# Define suffix rules
+
+$(output_dir)/%$(binary_suffix): $(object_dir)/%$(object_suffix)
+	$(strip $(LINK$(object_suffix)) -o $@ $^ $(LDLIBS))
+
+$(object_dir)/%$(object_suffix): %$(source_suffix)
+	$(strip $(COMPILE$(source_suffix)) $(OUTPUT_OPTION) $<)
+
+$(depend_dir)/%$(depend_suffix): %$(source_suffix)
+	$(make-rule)
 
 # Include dependency files
 ifeq "$(filter %clean,$(MAKECMDGOALS))" "$(filter-out %clean,$(MAKECMDGOALS))"
