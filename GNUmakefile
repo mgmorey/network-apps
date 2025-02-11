@@ -239,7 +239,7 @@ clean:
 
 .PHONY: coverage-gcov
 coverage-gcov: $(sources)
-	gcov -o $(object_dir) -s $(source_dir) -t $^ >coverage.gcov
+	gcov -mo $(object_dir) -rs $(source_dir) -t $^ >coverage.gcov
 
 .PHONY: count-library-common-source-files
 count-library-common-source-files: $(library_common_sources)
