@@ -237,6 +237,10 @@ check: test
 clean:
 	rm -f $(sort $(wildcard $(build_artifacts)))
 
+.PHONY: coverage-gcov
+coverage-gcov: $(sources)
+	gcov -no $(object_dir) -p $^
+
 .PHONY: count-library-common-source-files
 count-library-common-source-files: $(library_common_sources)
 	@printf '%s\n' $(words $^)
