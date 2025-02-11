@@ -159,11 +159,11 @@ binary_artifacts = $(gcovfiles) $(libraries) $(objects) $(programs)	\
 $(tags) $(tarfile)
 clean_artifacts = $(gcovfiles) $(libraries) $(objects) $(programs)
 text_artifacts = $(compile_commands) $(cppchecklog) $(dependencies)	\
-$(gcovfile) $(listings) $(logfiles) $(mapfiles) $(stackdumps)		\
+$(gcovtext) $(listings) $(logfiles) $(mapfiles) $(stackdumps)		\
 $(sizes)
 
-build_dirs = $(filter-out .,$(output_dir) $(cache_dir) $(output_dir)	\
-$(object_dir))
+build_dirs = $(filter-out .,$(cache_dir) $(coverage_dir)	\
+$(object_dir) $(output_dir))
 dos2unix_files = $(filter-out %$(depend_suffix),$(wildcard	\
 $(text_artifacts)))
 
