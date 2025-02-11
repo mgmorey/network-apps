@@ -326,7 +326,7 @@ unix: $(unix_programs)
 # Define targets
 
 $(gcovhtml): $(gcovtext)
-	gcovr --html-details $@
+	gcovr --html-details --html-theme github.dark-green --output $@
 
 $(gcovtext): $(sources)
 	gcov -mo $(object_dir) -rt $^ >$@
