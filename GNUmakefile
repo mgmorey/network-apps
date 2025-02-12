@@ -196,10 +196,16 @@ $(binary_suffix),$(basename $1)))
 COMPILE.cc = $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c
 LINK$(object_suffix) = $(CXX) $(LDFLAGS)
 
+# Define function clean-artifacts
+define clean-artifacts
+	printf '%s\n' $(sort $(wildcard $(filter-out		\
+	$(object_dir)/%,$1) $(build_dirs))) | xargs -r rm -rf
+endef
+
 # Define function make-rule
 define make-rule
-	$(CXX) $(CPPFLAGS) -MM $< | \
-	$(script_dir)/make-rule -d $(object_dir) -o $@ $(tags)
+	$(CXX) $(CPPFLAGS) -MM $< | $(script_dir)/make-rule -d	\
+	$(object_dir) -o $@ $(tags)
 endef
 
 # Define function make-programs
@@ -246,7 +252,7 @@ check: test
 
 .PHONY: clean
 clean:
-	rm -f $(sort $(wildcard $(clean_artifacts)))
+	$(call clean-artifacts,$(clean_artifacts))
 
 .PHONY: cleangcov
 cleangcov:
@@ -274,7 +280,7 @@ count-unix-source-files: $(unix_sources)
 
 .PHONY: distclean
 distclean:
-	printf '%s\n' $(sort $(artifacts) $(build_dirs)) | xargs rm -rf
+	$(call clean-artifacts,$(artifacts))
 
 .PHONY: gcov
 gcov: $(gcovtext)
