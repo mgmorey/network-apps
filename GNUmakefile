@@ -197,8 +197,9 @@ LINK$(object_suffix) = $(CXX) $(LDFLAGS)
 
 # Define function clean-artifacts
 define clean-artifacts
-	printf '%s\n' $(sort $(wildcard $(filter-out		\
-	$(object_dir)/%,$1) $(build_dirs))) | xargs -r rm -rf
+	printf '%s\n' $(sort $(wildcard $(filter-out	\
+	$(cache_dir)/%,$(filter-out $(object_dir)/%,$1)	\
+	$(build_dirs)))) | xargs -r rm -rf
 endef
 
 # Define function make-rule
