@@ -179,6 +179,8 @@ ifndef NDEBUG
 ifeq "$(USING_LIBASAN)" "true"
 	LDFLAGS += -fsanitize=address
 endif
+	LDFLAGS += $(if $(filter			\
+	clang,$(cxx_family)),-fprofile-instr-generate,)
 endif
 
 ifeq "$(WITH_LOAD_MAP)" "true"
