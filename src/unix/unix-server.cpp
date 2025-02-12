@@ -18,9 +18,7 @@
 
 #include "network/network.h"            // Address, Socket,
                                         // UnixSocketHints, accept(),
-                                        // bind(), listen(),
-                                        // read_string(),
-                                        // socket_error, write()
+                                        // socket_error
 #include "network/parse.h"              // parse()
 #include "unix/connection.h"            // BUFFER_SIZE, SOCKET_HINTS,
                                         // SOCKET_NAME
