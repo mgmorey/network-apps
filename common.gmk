@@ -17,14 +17,10 @@
 
 # Set defaults for CC and CXX
 ifeq "$(USING_CLANG)" "true"
-	CC ?= clang$(LLVM_SUFFIX)
-	CXX ?= clang++$(LLVM_SUFFIX)
-else
-	CC ?= gcc
-	CXX ?= g++
+	override CC := clang$(LLVM_SUFFIX)
+	override CXX := clang++$(LLVM_SUFFIX)
+	override CLANG_TIDY := clang-tidy$(LLVM_SUFFIX)
 endif
-
-CLANG_TIDY ?= clang-tidy$(LLVM_SUFFIX)
 
 # Define version components
 major := $(shell printf '%s\n' $(VERSION) | awk -F. '{print $$1}')

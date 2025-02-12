@@ -322,7 +322,7 @@ tarfile: $(tarfile)
 test: $(test_programs)
 	$(call run-programs,-v $(^F:$(binary_suffix)=))
 
-ifeq "$(cxx_family)" "clang"
+ifdef CLANG_TIDY
 .PHONY: tidy
 tidy: $(sources)
 	$(CLANG_TIDY) $(sort $^) $(CLANG_TIDY_FLAGS)
