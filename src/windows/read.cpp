@@ -29,7 +29,7 @@
 #include <winsock2.h>       // ::recv()
 
 #include <cstddef>      // std::size_t
-#include <iostream>     // std::cerr, std::cout, std::endl
+#include <iostream>     // std::cout, std::endl
 #include <sstream>      // std::ostringstream
 
 auto Network::read(handle_type handle,
