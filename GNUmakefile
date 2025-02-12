@@ -157,7 +157,7 @@ stackdumps = $(programs:$(binary_suffix)=.stackdump)
 artifacts = $(binary_artifacts) $(text_artifacts)
 binary_artifacts = $(gcovfiles) $(libraries) $(objects) $(programs)	\
 $(tags) $(tarfile)
-clean_artifacts = $(gcovfiles) $(libraries) $(objects) $(programs)
+build_artifacts = $(gcovfiles) $(libraries) $(objects) $(programs)
 text_artifacts = $(compile_commands) $(cppchecklog) $(dependencies)	\
 $(gcovtext) $(listings) $(logfiles) $(mapfiles) $(stackdumps)		\
 $(sizes)
@@ -195,11 +195,17 @@ $(binary_suffix),$(basename $1)))
 COMPILE.cc = $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c
 LINK$(object_suffix) = $(CXX) $(LDFLAGS)
 
-# Define function clean-artifacts
-define clean-artifacts
+# Define function clean-all-artifacts
+define clean-all-artifacts
 	printf '%s\n' $(sort $(wildcard $(filter-out	\
 	$(cache_dir)/%,$(filter-out $(object_dir)/%,$1)	\
 	$(build_dirs)))) | xargs -r rm -rf
+endef
+
+# Define function clean-build-artifacts
+define clean-build-artifacts
+	printf '%s\n' $(sort $(wildcard $(filter-out $(object_dir)/%,$1)	\
+	$(object_dir))) | xargs -r rm -rf
 endef
 
 # Define function make-rule
@@ -252,7 +258,7 @@ check: test
 
 .PHONY: clean
 clean:
-	$(call clean-artifacts,$(clean_artifacts))
+	$(call clean-build-artifacts,$(build_artifacts))
 
 .PHONY: cleangcov
 cleangcov:
@@ -280,7 +286,7 @@ count-unix-source-files: $(unix_sources)
 
 .PHONY: distclean
 distclean:
-	$(call clean-artifacts,$(artifacts))
+	$(call clean-all-artifacts,$(artifacts))
 
 .PHONY: gcov
 gcov: $(gcovtext)
