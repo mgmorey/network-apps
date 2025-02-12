@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_CREATE_SOCKET_HANDLE_H
-#define NETWORK_CREATE_SOCKET_HANDLE_H
+#ifndef NETWORK_CREATE_SOCKET_H
+#define NETWORK_CREATE_SOCKET_H
 
 #include "network/handle-type.h"                // handle_type
 #include "network/socket-family-type.h"         // socket_family_type
