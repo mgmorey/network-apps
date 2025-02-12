@@ -256,7 +256,7 @@ clean:
 
 .PHONY: cleangcov
 cleangcov:
-	rm -f $(sort $(gcdafiles))
+	rm -f $(sort $(wildcard $(gcdafiles)))
 
 .PHONY: count-library-common-source-files
 count-library-common-source-files: $(library_common_sources)
