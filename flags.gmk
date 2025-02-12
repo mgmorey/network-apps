@@ -176,11 +176,11 @@ CXXFLAGS += -Wall -Werror -Wextra -Wshadow -Wsign-conversion
 
 ifndef NDEBUG
 	LDFLAGS += $(if $(filter gnu,$(cxx_family)),--coverage,)
+	LDFLAGS += $(if $(filter			\
+	clang,$(cxx_family)),-fprofile-instr-generate,)
 ifeq "$(USING_LIBASAN)" "true"
 	LDFLAGS += -fsanitize=address
 endif
-	LDFLAGS += $(if $(filter			\
-	clang,$(cxx_family)),-fprofile-instr-generate,)
 endif
 
 ifeq "$(WITH_LOAD_MAP)" "true"
