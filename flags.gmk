@@ -134,7 +134,7 @@ endif
 # CXXFLAGS
 
 ifndef NDEBUG
-	CXXFLAGS += $(if $(filter gnu,$(cxx_family)),--coverage,)
+	CXXFLAGS += --coverage
 endif
 
 CXXFLAGS += -fPIC
@@ -175,9 +175,7 @@ CXXFLAGS += -Wall -Werror -Wextra -Wshadow -Wsign-conversion
 # LDFLAGS
 
 ifndef NDEBUG
-	LDFLAGS += $(if $(filter gnu,$(cxx_family)),--coverage,)
-	LDFLAGS += $(if $(filter			\
-	clang,$(cxx_family)),-fprofile-instr-generate,)
+	LDFLAGS += --coverage
 ifeq "$(USING_LIBASAN)" "true"
 	LDFLAGS += -fsanitize=address
 endif
