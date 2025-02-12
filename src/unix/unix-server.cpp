@@ -45,14 +45,14 @@ namespace
 
     auto accept_verbose(const Socket& bind_sock)
     {
-        const auto bind_family {bind_sock.family()};
-        const auto bind_is_verbose {bind_sock.is_verbose()};
-        const auto [accept_handle, accept_addr] {bind_sock.accept()};
+        const auto [accept_data, accept_addr] {bind_sock.accept()};
         auto accept_sock {
-            create_socket(bind_family, accept_handle, bind_is_verbose)
+            create_socket(accept_data.m_family,
+                          accept_data.m_handle,
+                          accept_data.m_is_verbose)
         };
 
-        if (bind_is_verbose) {
+        if (accept_data.m_is_verbose) {
             std::cout << "Accepted connection from "
                       << Address(accept_addr)
                       << std::endl;

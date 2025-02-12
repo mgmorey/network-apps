@@ -18,7 +18,6 @@
 #include "network/addressstring.h"              // AddressString
 #include "network/buffer.h"                     // Buffer
 #include "network/bytestring.h"                 // ByteString
-#include "network/create-socket-handle.h"       // create_socket()
 #include "network/error.h"                      // Error
 #include "network/format-os-error.h"            // format_os_error()
 #include "network/get-last-context-error.h"     // get_last_context_error()
@@ -42,6 +41,7 @@
 auto Network::accept(const Socket& sock) -> AcceptResult
 {
     Buffer<std::byte> buffer {sa_length_max};
+    const auto family {sock.family()};
     const auto handle_1 {sock.handle()};
     const auto is_verbose {sock.is_verbose()};
     const AddressString addr_str {ByteString {buffer}};
@@ -79,5 +79,10 @@ auto Network::accept(const Socket& sock) -> AcceptResult
     }
 
     buffer.resize(to_size(addr_len));
-    return {handle_2, ByteString {buffer}};
+    const SocketData data
+    {
+        .m_family = family, .m_handle = handle_2,
+        .m_is_verbose = is_verbose
+    };
+    return {data, ByteString {buffer}};
 }

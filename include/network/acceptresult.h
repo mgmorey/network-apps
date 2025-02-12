@@ -17,13 +17,13 @@
 #define NETWORK_ACCEPTRESULT_H
 
 #include "network/bytestring.h"         // ByteString
-#include "network/handle-type.h"        // handle_type
+#include "network/socketdata.h"         // SocketData
 
 #include <utility>      // std::pair
 
 namespace Network
 {
-    using AcceptResult = std::pair<handle_type, ByteString>;
+    using AcceptResult = std::pair<SocketData, ByteString>;
 }
 
 #endif
