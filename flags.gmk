@@ -86,8 +86,8 @@ CPPCHECK_FLAGS = --check-level=exhaustive
 CPPCHECK_FLAGS += --checkers-report=cppcheck.log
 CPPCHECK_FLAGS += --cppcheck-build-dir=$(cppcheck_dir)
 CPPCHECK_FLAGS += --enable=all --inline-suppr --quiet
+CPPCHECK_FLAGS += $(if $(standard),--std=$(standard),)
 CPPCHECK_FLAGS += --suppress=missingIncludeSystem
-CPPCHECK_FLAGS += $(if $(standard),-std=$(standard),)
 CPPCHECK_FLAGS += $(filter-out -I$(SDKROOT)/usr/include,$(CPPFLAGS))
 
 # CPPFLAGS
