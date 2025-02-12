@@ -1,3 +1,6 @@
+# Clang profile instrumentation data
+default.profraw
+
 # Gcov data files
 *.gcda
 *.gcno
