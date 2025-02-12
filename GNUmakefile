@@ -248,12 +248,6 @@ check: test
 clean:
 	rm -f $(sort $(wildcard $(clean_artifacts)))
 
-.PHONY: gcov
-gcov: $(gcovtext)
-
-.PHONY: gcovr
-gcovr: $(gcovhtml)
-
 .PHONY: count-library-common-source-files
 count-library-common-source-files: $(library_common_sources)
 	@printf '%s\n' $(words $^)
@@ -277,6 +271,12 @@ count-unix-source-files: $(unix_sources)
 .PHONY: distclean
 distclean:
 	printf '%s\n' $(sort $(artifacts) $(build_dirs)) | xargs rm -rf
+
+.PHONY: gcov
+gcov: $(gcovtext)
+
+.PHONY: gcovr
+gcovr: $(gcovhtml)
 
 .PHONY: dos2unix
 dos2unix:
