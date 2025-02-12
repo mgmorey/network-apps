@@ -54,8 +54,8 @@
 #include "network/create-socketpair.h"          // create_socketpair()
 #include "network/create-socketpairresult.h"    // create_socketpairresult()
 #endif
-#include "network/create-socket.h"              // create_socket()
 #include "network/create-socket-hints.h"        // create_socket()
+#include "network/create-socket.h"              // create_socket()
 #include "network/create-socketresult.h"        // create_result()
 #include "network/error-strings.h"              // VISITOR_ERROR
 #include "network/exceptions.h"                 // Error, LogicError,
