@@ -79,5 +79,8 @@ auto Network::create_socketresult(const SocketHints& hints,
         return OsErrorResult {os_error, oss.str()};
     }
 
-    return create_socket(SocketData {hints.m_family, handle, is_verbose});
+    return create_socket(SocketData {
+            .m_family = hints.m_family,
+            .m_handle = handle,
+            .m_is_verbose = is_verbose});
 }

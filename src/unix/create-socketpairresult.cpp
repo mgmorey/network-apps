@@ -83,8 +83,14 @@ auto Network::create_socketpairresult(const SocketHints& hints,
     }
 
     return SocketPair {
-        create_socket(SocketData {hints.m_family, handles[0], is_verbose}),
-        create_socket(SocketData {hints.m_family, handles[1], is_verbose})
+        create_socket(SocketData {
+                .m_family = hints.m_family,
+                .m_handle = handles[0],
+                .m_is_verbose = is_verbose}),
+        create_socket(SocketData {
+                .m_family = hints.m_family,
+                .m_handle = handles[0],
+                .m_is_verbose = is_verbose})
     };
 }
 
