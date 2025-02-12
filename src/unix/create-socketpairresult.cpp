@@ -24,6 +24,7 @@
 #include "network/oserrorresult.h"              // OsErrorResult
 #include "network/reset-last-context-error.h"   // reset_last_context_error()
 #include "network/socket-error.h"               // socket_error
+#include "network/socketdata.h"                 // SocketData
 #include "network/socketfamily.h"               // SocketFamily
 #include "network/sockethints.h"                // SocketHints
 #include "network/socketpair.h"                 // SocketPair
@@ -82,8 +83,8 @@ auto Network::create_socketpairresult(const SocketHints& hints,
     }
 
     return SocketPair {
-        create_socket(hints.m_family, handles[0], is_verbose),
-        create_socket(hints.m_family, handles[1], is_verbose)
+        create_socket(SocketData {hints.m_family, handles[0], is_verbose}),
+        create_socket(SocketData {hints.m_family, handles[1], is_verbose})
     };
 }
 

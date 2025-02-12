@@ -79,10 +79,6 @@ auto Network::accept(const Socket& sock) -> AcceptResult
     }
 
     buffer.resize(to_size(addr_len));
-    const SocketData data
-    {
-        .m_family = family, .m_handle = handle_2,
-        .m_is_verbose = is_verbose
-    };
-    return {data, ByteString {buffer}};
+    return {SocketData {family, handle_2, is_verbose},
+            ByteString {buffer}};
 }
