@@ -26,7 +26,7 @@ auto Network::connect(handle_type handle,
 {
     const OpenHandleParams args
     {
-        .handle = handle, .addr = addr, .is_verbose = is_verbose
+        .m_handle = handle, .m_addr = addr, .m_is_verbose = is_verbose
     };
     return open(args, false);
 }

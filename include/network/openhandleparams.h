@@ -23,9 +23,9 @@ namespace Network
 {
     struct OpenHandleParams
     {
-        handle_type handle;
-        const ByteString& addr;
-        bool is_verbose;
+        handle_type m_handle;
+        const ByteString& m_addr;
+        bool m_is_verbose;
     };
 }
 

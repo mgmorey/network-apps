@@ -25,10 +25,10 @@ namespace Network
     auto insert(auto& it, const OpenEndpointParams& args) -> OsErrorResult
     {
         return insert(it,
-                      args.endpoint.at(0),
-                      args.endpoint.at(1),
-                      args.hints,
-                      args.is_verbose);
+                      args.m_endpoint.at(0),
+                      args.m_endpoint.at(1),
+                      args.m_hints,
+                      args.m_is_verbose);
     }
 }
 

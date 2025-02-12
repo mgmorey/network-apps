@@ -26,7 +26,7 @@ auto Network::connect(const EndpointView& endpoint,
 {
     const OpenEndpointParams args
     {
-        .endpoint = endpoint, .hints = hints, .is_verbose = is_verbose
+        .m_endpoint = endpoint, .m_hints = hints, .m_is_verbose = is_verbose
     };
     return open(args, false);
 }

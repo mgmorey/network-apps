@@ -34,7 +34,7 @@ Network::Open::Open(const OpenEndpointParams& t_args, bool t_is_bind)
 
 auto Network::Open::operator()(const Template& t_temp) -> SocketResult
 {
-    auto result {create_socketresult(t_temp.hints(), m_args.is_verbose)};
+    auto result {create_socketresult(t_temp.hints(), m_args.m_is_verbose)};
     std::visit([&](auto&& arg) {
         using T = std::decay_t<decltype(arg)>;
 

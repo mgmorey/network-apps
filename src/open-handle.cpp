@@ -56,16 +56,16 @@ namespace
 auto Network::open(const OpenHandleParams& args, bool is_bind) -> OsErrorResult
 {
     const auto binding {get_binding(is_bind)};
-    const auto handle {args.handle};
-    const AddressString addr_str {args.addr};
-    const auto [addr_ptr, addr_len] {get_sa_span(args.addr)};
+    const auto handle {args.m_handle};
+    const AddressString addr_str {args.m_addr};
+    const auto [addr_ptr, addr_len] {get_sa_span(args.m_addr)};
 
     if (addr_len == sa_length_min) {
         throw AddressError("Address payload length is zero: " +
                            std::string {addr_str});
     }
 
-    if (args.is_verbose) {
+    if (args.m_is_verbose) {
         std::cout << "Calling "
                   << binding.second
                   << '('

@@ -119,7 +119,7 @@ auto Network::CommonSocket::name(bool t_is_peer) const -> ByteString
     if (value.empty()) {
         const GetNameParams args
         {
-            .handle = m_data.m_handle, .is_verbose = m_data.m_is_verbose
+            .m_handle = m_data.m_handle, .m_is_verbose = m_data.m_is_verbose
         };
         value = Network::get_name(args, t_is_peer);
     }
@@ -132,8 +132,8 @@ auto Network::CommonSocket::open(const ByteString& t_addr,
 {
     const OpenHandleParams args
     {
-        .handle = m_data.m_handle, .addr = t_addr,
-        .is_verbose = m_data.m_is_verbose
+        .m_handle = m_data.m_handle, .m_addr = t_addr,
+        .m_is_verbose = m_data.m_is_verbose
     };
 
     if (const auto result {Network::open(args, t_is_bind)}) {

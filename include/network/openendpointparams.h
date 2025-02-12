@@ -23,9 +23,9 @@ namespace Network
 {
     struct OpenEndpointParams
     {
-        const EndpointView& endpoint;
-        const SocketHints& hints;
-        bool is_verbose;
+        const EndpointView& m_endpoint;
+        const SocketHints& m_hints;
+        bool m_is_verbose;
     };
 }
 

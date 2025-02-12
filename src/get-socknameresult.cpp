@@ -22,6 +22,6 @@
 auto Network::get_socknameresult(handle_type handle, bool is_verbose) ->
     SockNameResult
 {
-    const GetNameParams args {.handle = handle, .is_verbose = is_verbose};
+    const GetNameParams args {.m_handle = handle, .m_is_verbose = is_verbose};
     return get_nameresult(args, false);
 }

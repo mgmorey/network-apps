@@ -22,8 +22,8 @@ namespace Network
 {
     struct GetNameParams
     {
-        handle_type handle;
-        bool is_verbose;
+        handle_type m_handle;
+        bool m_is_verbose;
     };
 }
 
