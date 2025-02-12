@@ -29,7 +29,7 @@
 #include <netdb.h>          // addrinfo, ::freeaddrinfo(), ::getaddrinfo()
 #endif
 
-#include <iostream>     // std::cerr, std::cout, std::endl
+#include <iostream>     // std::cout, std::endl
 #include <memory>       // std::make_unique, std::unique_ptr
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
