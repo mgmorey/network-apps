@@ -172,7 +172,7 @@ tarfile = $(output_dir)/$(library_file).tar.gz
 
 # Define build target list variables
 
-build_targets = assert objects libraries programs sizes
+build_targets = assert cleangcov objects libraries programs sizes
 
 ifeq "$(ctags_is_universal)" "true"
 ifeq "$(call compare-versions,$(ctags_version),5.8)" "greater"
@@ -247,6 +247,10 @@ check: test
 .PHONY: clean
 clean:
 	rm -f $(sort $(wildcard $(clean_artifacts)))
+
+.PHONY: cleangcov
+cleangcov:
+	rm -f $(sort $(gcovdafiles))
 
 .PHONY: count-library-common-source-files
 count-library-common-source-files: $(library_common_sources)
