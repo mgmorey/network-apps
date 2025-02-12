@@ -16,6 +16,7 @@
 #ifndef NETWORK_COMMONSOCKET_H
 #define NETWORK_COMMONSOCKET_H
 
+#include "network/acceptresult.h"               // AcceptResult
 #include "network/bytestring.h"                 // ByteString
 #include "network/family-type.h"                // family_type
 #include "network/handle-null.h"                // handle_null
@@ -56,6 +57,7 @@ namespace Network
         [[nodiscard]] auto handle() const noexcept -> handle_type final;
         [[nodiscard]] auto is_verbose() const noexcept -> bool final;
 
+        [[nodiscard]] auto accept() const -> AcceptResult final;
         [[nodiscard]] auto close() -> OsErrorResult override;
         [[nodiscard]] auto listen(int t_backlog) const ->
             OsErrorResult final;

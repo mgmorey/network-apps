@@ -16,6 +16,7 @@
 #ifndef NETWORK_SOCKET_H
 #define NETWORK_SOCKET_H
 
+#include "network/acceptresult.h"               // AcceptResult
 #include "network/bytestring.h"                 // ByteString
 #include "network/family-type.h"                // family_type
 #include "network/handle-type.h"                // handle_type
@@ -44,6 +45,7 @@ namespace Network
         [[nodiscard]] virtual auto handle() const noexcept -> handle_type = 0;
         [[nodiscard]] virtual auto is_verbose() const noexcept -> bool = 0;
 
+        [[nodiscard]] virtual auto accept() const -> AcceptResult = 0;
         [[nodiscard]] virtual auto close() -> OsErrorResult = 0;
         [[nodiscard]] virtual auto listen(int t_backlog) const ->
             OsErrorResult = 0;

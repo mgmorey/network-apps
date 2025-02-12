@@ -17,7 +17,7 @@
 // example in https://www.man7.org/linux/man-pages/man7/unix.7.html.
 
 #include "network/network.h"            // Address, Socket,
-                                        // UnixSocketHints, accept(),
+                                        // UnixSocketHints,
                                         // socket_error
 #include "network/parse.h"              // parse()
 #include "unix/connection.h"            // BUFFER_SIZE, SOCKET_HINTS,
@@ -45,15 +45,20 @@ namespace
 
     auto accept_verbose(const Socket& bind_sock)
     {
-        auto [accept_sock, accept_addr] {Network::accept(bind_sock)};
+        const auto bind_family {bind_sock.family()};
+        const auto bind_is_verbose {bind_sock.is_verbose()};
+        const auto [accept_handle, accept_addr] {bind_sock.accept()};
+        auto accept_sock {
+            create_socket(bind_family, accept_handle, bind_is_verbose)
+        };
 
-        if (is_verbose) {
+        if (bind_is_verbose) {
             std::cout << "Accepted connection from "
                       << Address(accept_addr)
                       << std::endl;
         }
 
-        return std::move(accept_sock);
+        return accept_sock;
     }
 
     auto bind()

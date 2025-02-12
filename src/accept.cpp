@@ -42,7 +42,6 @@
 auto Network::accept(const Socket& sock) -> AcceptResult
 {
     Buffer<std::byte> buffer {sa_length_max};
-    const auto family {sock.family()};
     const auto handle_1 {sock.handle()};
     const auto is_verbose {sock.is_verbose()};
     const AddressString addr_str {ByteString {buffer}};
@@ -80,5 +79,5 @@ auto Network::accept(const Socket& sock) -> AcceptResult
     }
 
     buffer.resize(to_size(addr_len));
-    return {create_socket(family, handle_2, is_verbose), ByteString {buffer}};
+    return {handle_2, ByteString {buffer}};
 }

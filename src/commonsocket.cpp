@@ -14,6 +14,8 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/commonsocket.h"               // CommonSocket
+#include "network/accept.h"                     // accept()
+#include "network/acceptresult.h"               // AcceptResult
 #include "network/buffer.h"                     // Buffer
 #include "network/bytestring.h"                 // ByteString
 #include "network/close.h"                      // close()
@@ -76,6 +78,11 @@ auto Network::CommonSocket::handle() const noexcept -> handle_type
 auto Network::CommonSocket::is_verbose() const noexcept -> bool
 {
     return m_is_verbose;
+}
+
+auto Network::CommonSocket::accept() const -> AcceptResult
+{
+    return Network::accept(*this);
 }
 
 auto Network::CommonSocket::close() -> OsErrorResult
