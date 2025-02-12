@@ -18,12 +18,23 @@
 #include "network/create-socket-handle.h"       // create_socket()
 #include "network/handle-type.h"                // handle_type
 #include "network/socket-family-type.h"         // socket_family_type
+#include "network/socketdata.h"                 // SocketData
 #include "network/uniquesocket.h"               // UniqueSocket
 #include "network/unixsocket.h"                 // UnixSocket
 
 #include <sys/socket.h>     // AF_UNIX
 
 #include <memory>       // std::make_shared()
+
+auto Network::create_socket(const SocketData& data) -> UniqueSocket
+{
+    switch (data.m_family) {  // NOLINT
+    case AF_UNIX:
+        return std::make_unique<UnixSocket>(data);
+    default:
+        return std::make_unique<CommonSocket>(data);
+    }
+}
 
 auto Network::create_socket(socket_family_type family,
                             handle_type handle,

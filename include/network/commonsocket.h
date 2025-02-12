@@ -45,6 +45,7 @@ namespace Network
         CommonSocket(family_type t_family,
                      handle_type t_handle,
                      bool t_is_verbose);
+        explicit CommonSocket(const SocketData& t_data);
         CommonSocket(const CommonSocket&) noexcept = delete;
         CommonSocket(const CommonSocket&&) noexcept = delete;
         ~CommonSocket() noexcept override;

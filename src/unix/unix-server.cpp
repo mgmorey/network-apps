@@ -46,11 +46,7 @@ namespace
     auto accept_verbose(const Socket& bind_sock)
     {
         const auto [accept_data, accept_addr] {bind_sock.accept()};
-        auto accept_sock {
-            create_socket(accept_data.m_family,
-                          accept_data.m_handle,
-                          accept_data.m_is_verbose)
-        };
+        auto accept_sock {create_socket(accept_data)};
 
         if (accept_data.m_is_verbose) {
             std::cout << "Accepted connection from "

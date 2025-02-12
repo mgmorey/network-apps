@@ -18,10 +18,12 @@
 
 #include "network/handle-type.h"                // handle_type
 #include "network/socket-family-type.h"         // socket_family_type
+#include "network/socketdata.h"                 // SocketData
 #include "network/uniquesocket.h"               // UniqueSocket
 
 namespace Network
 {
+    extern auto create_socket(const SocketData& data) -> UniqueSocket;
     extern auto create_socket(socket_family_type family,
                               handle_type handle,
                               bool is_verbose = false) -> UniqueSocket;

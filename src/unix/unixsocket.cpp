@@ -18,6 +18,7 @@
 #include "network/family-type.h"                // family_type
 #include "network/handle-type.h"                // handle_type
 #include "network/oserrorresult.h"              // OsErrorResult
+#include "network/socketdata.h"                 // SocketData
 #include "network/to-path.h"                    // to_path()
 
 #include <filesystem>   // std::filesystem
@@ -27,6 +28,11 @@ Network::UnixSocket::UnixSocket(family_type t_family,
                                 handle_type t_handle,
                                 bool t_is_verbose)
     : CommonSocket(t_family, t_handle, t_is_verbose)
+{
+}
+
+Network::UnixSocket::UnixSocket(const SocketData& t_data)
+    : CommonSocket(t_data)
 {
 }
 

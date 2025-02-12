@@ -23,6 +23,7 @@
 #include "network/handle-type.h"                // handle_type
 #include "network/pathname.h"                   // Pathname
 #include "network/pathnameview.h"               // PathnameView
+#include "network/socketdata.h"                 // SocketData
 #include "network/socketstate.h"                // SocketState
 
 namespace Network
@@ -35,6 +36,7 @@ namespace Network
         UnixSocket(family_type t_family,
                    handle_type t_handle,
                    bool t_is_verbose);
+        explicit UnixSocket(const SocketData& t_data);
         UnixSocket(const UnixSocket&) noexcept = delete;
         UnixSocket(const UnixSocket&&) noexcept = delete;
         ~UnixSocket() noexcept final;
