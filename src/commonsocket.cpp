@@ -38,18 +38,17 @@
 Network::CommonSocket::CommonSocket(family_type t_family,
                                     handle_type t_handle,
                                     bool t_is_verbose)
-    : m_family(t_family),
-      m_handle(t_handle),
-      m_is_verbose(t_is_verbose)
+    : m_data(t_family, t_handle, t_is_verbose)
 {
-    if (m_handle == handle_null) {
+    if (m_data.m_handle == handle_null) {
         throw LogicError("Invalid socket descriptor value");
     }
 }
 
 Network::CommonSocket::~CommonSocket() noexcept
 {
-    if (const auto result {Network::close(m_handle, m_is_verbose)}) {
+    if (const auto result {Network::close(m_data.m_handle,
+                                          m_data.m_is_verbose)}) {
         std::cerr << result.string()
                   << std::endl;
     }
@@ -57,27 +56,27 @@ Network::CommonSocket::~CommonSocket() noexcept
 
 Network::CommonSocket::operator bool() const noexcept
 {
-    return m_handle != handle_null;
+    return m_data.m_handle != handle_null;
 }
 
 Network::CommonSocket::operator handle_type() const noexcept
 {
-    return m_handle;
+    return m_data.m_handle;
 }
 
 auto Network::CommonSocket::family() const noexcept -> family_type
 {
-    return m_family;
+    return m_data.m_family;
 }
 
 auto Network::CommonSocket::handle() const noexcept -> handle_type
 {
-    return m_handle;
+    return m_data.m_handle;
 }
 
 auto Network::CommonSocket::is_verbose() const noexcept -> bool
 {
-    return m_is_verbose;
+    return m_data.m_is_verbose;
 }
 
 auto Network::CommonSocket::accept() const -> AcceptResult
@@ -87,7 +86,8 @@ auto Network::CommonSocket::accept() const -> AcceptResult
 
 auto Network::CommonSocket::close() -> OsErrorResult
 {
-    if (const auto result {Network::close(m_handle, m_is_verbose)}) {
+    if (const auto result {Network::close(m_data.m_handle,
+                                          m_data.m_is_verbose)}) {
         return result;
     }
 
@@ -98,7 +98,8 @@ auto Network::CommonSocket::close() -> OsErrorResult
 
 auto Network::CommonSocket::listen(int t_backlog) const -> OsErrorResult
 {
-    return Network::listen(m_handle, t_backlog, m_is_verbose);
+    return Network::listen(m_data.m_handle, t_backlog,
+                           m_data.m_is_verbose);
 }
 
 auto Network::CommonSocket::name(bool t_is_peer) const -> ByteString
@@ -109,7 +110,7 @@ auto Network::CommonSocket::name(bool t_is_peer) const -> ByteString
     if (value.empty()) {
         const GetNameParams args
         {
-            .handle = m_handle, .is_verbose = m_is_verbose
+            .handle = m_data.m_handle, .is_verbose = m_data.m_is_verbose
         };
         value = Network::get_name(args, t_is_peer);
     }
@@ -122,7 +123,8 @@ auto Network::CommonSocket::open(const ByteString& t_addr,
 {
     const OpenHandleParams args
     {
-        .handle = m_handle, .addr = t_addr, .is_verbose = m_is_verbose
+        .handle = m_data.m_handle, .addr = t_addr,
+        .is_verbose = m_data.m_is_verbose
     };
 
     if (const auto result {Network::open(args, t_is_bind)}) {
@@ -135,7 +137,8 @@ auto Network::CommonSocket::open(const ByteString& t_addr,
 auto Network::CommonSocket::read(char* t_data,
                                  std::size_t t_size) const -> ssize_t
 {
-    return Network::read(m_handle, t_data, t_size, m_is_verbose);
+    return Network::read(m_data.m_handle, t_data, t_size,
+                         m_data.m_is_verbose);
 }
 
 auto Network::CommonSocket::read(std::size_t t_size) const -> ReadResult
@@ -148,7 +151,10 @@ auto Network::CommonSocket::read(std::size_t t_size) const -> ReadResult
 auto Network::CommonSocket::write(const char* t_data,
                                   std::size_t t_size) const -> ssize_t
 {
-    return Network::write(m_handle, t_data, t_size, m_is_verbose);
+    return Network::write(m_data.m_handle,
+                          t_data,
+                          t_size,
+                          m_data.m_is_verbose);
 }
 
 auto Network::CommonSocket::write(std::string_view t_sv) const -> ssize_t

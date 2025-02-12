@@ -19,10 +19,10 @@
 #include "network/acceptresult.h"               // AcceptResult
 #include "network/bytestring.h"                 // ByteString
 #include "network/family-type.h"                // family_type
-#include "network/handle-null.h"                // handle_null
 #include "network/handle-type.h"                // handle_type
 #include "network/readresult.h"                 // ReadResult
 #include "network/socket.h"                     // Socket
+#include "network/socketdata.h"                 // SocketData
 
 #ifdef WIN32
 #include <winsock2.h>           // AF_UNSPEC
@@ -72,10 +72,8 @@ namespace Network
         [[nodiscard]] auto write(std::string_view t_sv) const -> ssize_t final;
 
     private:
+        SocketData m_data;
         mutable std::array<ByteString, 2> m_names;
-        family_type m_family {AF_UNSPEC};
-        handle_type m_handle {handle_null};
-        bool m_is_verbose {false};
     };
 }
 
