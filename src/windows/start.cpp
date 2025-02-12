@@ -28,7 +28,7 @@
 #include <winsock2.h>       // WSAEFAULT, WSAEPROCLIM, WSASYSNOTREADY,
                             // WSAVERNOTSUPPORTED, ::WSAStartup()
 
-#include <iostream>     // std::cerr, std::cout, std::endl
+#include <iostream>     // std::cout, std::endl
 
 auto Network::start(const OptionalVersion& version,
                     bool is_verbose) -> ContextData
@@ -49,7 +49,7 @@ auto Network::start(const OptionalVersion& version,
         const auto message {format_os_error(os_error)};
 
         if (is_verbose) {
-            std::cerr << "Call to ::WSAStartup("
+            std::cout << "Call to ::WSAStartup("
                       << wsa_version
                       << ", ...) failed with error "
                       << error

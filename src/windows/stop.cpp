@@ -30,7 +30,7 @@
 #include <winsock2.h>       // WSAEINPROGRESS, WSAENETDOWN, WSANOTINITIALISED,
                             // ::WSACleanup()
 
-#include <iostream>     // std::cerr, std::cout, std::endl
+#include <iostream>     // std::cout, std::endl
 #include <sstream>      // std::ostringstream
 
 auto Network::stop(FailureMode mode, bool is_verbose) -> int
@@ -49,7 +49,7 @@ auto Network::stop(FailureMode mode, bool is_verbose) -> int
         const auto message {format_os_error(os_error)};
 
         if (is_verbose) {
-            std::cerr << "Call to ::WSACleanup() failed with error "
+            std::cout << "Call to ::WSACleanup() failed with error "
                       << error
                       << ": "
                       << message
