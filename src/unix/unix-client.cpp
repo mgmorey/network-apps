@@ -17,9 +17,7 @@
 // example in https://www.man7.org/linux/man-pages/man7/unix.7.html.
 
 #include "network/argumentspan.h"       // ArgumentSpan
-#include "network/network.h"            // Socket, create(),
-                                        // connect(), read_string(),
-                                        // socket_error, write()
+#include "network/network.h"            // Socket, socket_error
 #include "network/parse.h"              // parse()
 #include "unix/connection.h"            // BUFFER_SIZE, SOCKET_HINTS,
                                         // SOCKET_NAME
