@@ -248,11 +248,11 @@ check: test
 clean:
 	rm -f $(sort $(wildcard $(clean_artifacts)))
 
-.PHONY: coverage-gcov-html
-coverage-gcov-html: $(gcovhtml)
+.PHONY: gcov
+gcov: $(gcovtext)
 
-.PHONY: coverage-gcov-text
-coverage-gcov-text: $(gcovtext)
+.PHONY: gcovr
+gcovr: $(gcovhtml)
 
 .PHONY: count-library-common-source-files
 count-library-common-source-files: $(library_common_sources)
