@@ -24,16 +24,14 @@
 #endif
 
 #ifdef WIN32
-#include <winsock2.h>       // AF_INET, AF_INET6, AF_UNIX, AF_UNSPEC
+#include <winsock2.h>       // AF_INET, AF_INET6, AF_UNIX
 #else
-#include <sys/socket.h>     // AF_INET, AF_INET6, AF_UNIX, AF_UNSPEC
+#include <sys/socket.h>     // AF_INET, AF_INET6, AF_UNIX
 #endif
 
 auto Network::validate(const ByteString& addr) -> ByteString
 {
     switch (const auto family {get_sa_family(addr)}) {
-    case AF_UNSPEC:
-        break;
 #ifndef WIN32
     case AF_UNIX:
         static_cast<void>(get_sun_pointer(addr));
