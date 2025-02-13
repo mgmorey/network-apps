@@ -336,10 +336,12 @@ tidy: $(sources)
 	$(CLANG_TIDY) $(sort $^) $(CLANG_TIDY_FLAGS)
 endif
 
+ifeq "$(filter $(os_id_name),CYGWIN_NT Darwin MINGW64_NT)" ""
 .PHONY: unix
 unix: $(unix_programs)
 	$(call run-programs,-v $(^F:$(binary_suffix)=))
 	@touch .unix-complete
+endif
 
 .SECONDARY: $(objects)
 
@@ -370,9 +372,11 @@ sizes.txt: $(sort $(shared_library) $(objects) $(programs))
 	$(call run-programs,-v $(^F:$(binary_suffix)=))
 	@touch .test-complete
 
+ifeq "$(filter $(os_id_name),CYGWIN_NT Darwin MINGW64_NT)" ""
 .unix-complete: $(unix_programs)
 	$(call run-programs,-v $(^F:$(binary_suffix)=))
 	@touch .unix-complete
+endif
 
 $(tags):
 	ctags -e $(filter -D%,$(CPPFLAGS)) -R $(include_dir) $(source_dir)
