@@ -38,7 +38,8 @@
 namespace Network
 {
     class CommonSocket
-        : public Socket
+        : public Socket,
+          public SocketData
     {
     public:
         explicit CommonSocket(const SocketData& t_data);
@@ -70,7 +71,6 @@ namespace Network
         [[nodiscard]] auto write(std::string_view t_sv) const -> ssize_t final;
 
     private:
-        SocketData m_data;
         mutable std::array<ByteString, 2> m_names;
     };
 }
