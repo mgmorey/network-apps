@@ -39,6 +39,10 @@ default.profraw
 *.so.*
 *.dylib
 
+# Timestamp files
+.test-complete
+.unix-complete
+
 # Executables
 *.exe
 *.out
