@@ -124,8 +124,8 @@ library_sources = $(library_common_sources) $(library_native_sources)	\
 $(if $(filter $(os_id_name),MINGW64_NT),,$(library_unix_sources))
 test_sources = $(test_common_sources) $(if $(filter	\
 $(os_id_name),MINGW64_NT),,$(test_unix_sources))
-program_sources = $(test_sources) $(if $(filter $(os_id_name),Darwin	\
-MINGW64_NT),,$(unix_sources))
+program_sources = $(test_sources) $(if $(filter			\
+$(os_id_name),CYGWIN_NT Darwin MINGW64_NT),,$(unix_sources))
 
 objects = $(call get-objects,$(sources))
 
