@@ -119,7 +119,7 @@ tags = TAGS
 # Define computed file list variables
 
 sources = $(library_sources) $(test_sources) $(if $(filter	\
-$(os_id_name),MINGW64_NT),,$(unix_sources))
+$(os_id_name),CYGWIN_NT Darwin MINGW64_NT),,$(unix_sources))
 library_sources = $(library_common_sources) $(library_native_sources)	\
 $(if $(filter $(os_id_name),MINGW64_NT),,$(library_unix_sources))
 test_sources = $(test_common_sources) $(if $(filter	\
@@ -170,7 +170,11 @@ $(text_artifacts)))
 
 tarfile = $(output_dir)/$(library_file).tar.gz
 
-# Define build target list variables
+# Define target list variables
+
+all_targets = $(build_targets) test $(if $(filter		\
+$(os_id_name),CYGWIN_NT Darwin MINGW64_NT),,unix) $(if $(filter	\
+$(os_id_name),MINGW64_NT),dos2unix,)
 
 build_targets = assert cleangcov objects libraries programs sizes
 
@@ -180,9 +184,8 @@ ifeq "$(call compare-versions,$(ctags_version),5.8)" "greater"
 endif
 endif
 
-all_targets = $(build_targets) sizes test $(if $(filter	\
-$(os_id_name),Linux),unix,) $(if $(filter		\
-$(os_id_name),MINGW64_NT),dos2unix,)
+timestamps = .test-complete $(if $(filter $(os_id_name),CYGWIN_NT	\
+Darwin MINGW64_NT),,.unix-complete)
 
 # Define object and program list generation functions
 get-dependencies = $(addprefix $(depend_dir)/,$(addsuffix	\
@@ -345,7 +348,7 @@ unix: $(unix_programs)
 $(gcovhtml): $(gcovtext)
 	gcovr --html-details --html-theme $(GCOVR_HTML_THEME) --output $@
 
-$(gcovtext): .test-complete .unix-complete $(sources)
+$(gcovtext): $(sources) $(timestamps)
 	gcov -mo $(object_dir) -rt $(filter-out .%,$^) >$@
 
 $(library_aliases): $(shared_library)
