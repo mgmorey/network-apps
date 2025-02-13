@@ -36,16 +36,6 @@
 #include <cstddef>      // std::size_t
 #include <iostream>     // std::cerr, std::endl
 
-Network::CommonSocket::CommonSocket(family_type t_family,
-                                    handle_type t_handle,
-                                    bool t_is_verbose)
-    : m_data(t_family, t_handle, t_is_verbose)
-{
-    if (m_data.m_handle == handle_null) {
-        throw LogicError("Invalid socket descriptor value");
-    }
-}
-
 Network::CommonSocket::CommonSocket(const SocketData& t_data)
     : m_data(t_data)
 {
