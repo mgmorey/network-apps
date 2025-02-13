@@ -157,10 +157,11 @@ stackdumps = $(programs:$(binary_suffix)=.stackdump)
 artifacts = $(binary_artifacts) $(text_artifacts)
 binary_artifacts = $(gcovfiles) $(libraries) $(objects) $(programs)	\
 $(tags) $(tarfile)
-build_artifacts = $(gcovfiles) $(libraries) $(objects) $(programs)
+build_artifacts = $(gcovfiles) $(libraries) $(objects) $(programs)	\
+.test-complete .unix-complete
 text_artifacts = $(compile_commands) $(cppchecklog) $(dependencies)	\
 $(gcovtext) $(listings) $(logfiles) $(mapfiles) $(stackdumps)		\
-$(sizes)
+$(sizes) .test-complete .unix-complete
 
 build_dirs = $(filter-out .,$(cache_dir) $(coverage_dir)	\
 $(object_dir) $(output_dir))
@@ -214,7 +215,7 @@ define make-rule
 	$(object_dir) -o $@ $(tags)
 endef
 
-# Define function make-programs
+# Define function run-programs
 define run-programs
 	cd $(output_dir) && ../$(script_dir)/run-programs $1
 endef
@@ -327,6 +328,7 @@ tarfile: $(tarfile)
 .PHONY: test
 test: $(test_programs)
 	$(call run-programs,-v $(^F:$(binary_suffix)=))
+	@touch .test-complete
 
 ifdef CLANG_TIDY
 .PHONY: tidy
@@ -336,7 +338,8 @@ endif
 
 .PHONY: unix
 unix: $(unix_programs)
-	$(call run-programs,-r $(^F:$(binary_suffix)=))
+	$(call run-programs,-rv $(^F:$(binary_suffix)=))
+	@touch .unix-complete
 
 .SECONDARY: $(objects)
 
@@ -345,8 +348,8 @@ unix: $(unix_programs)
 $(gcovhtml): $(gcovtext)
 	gcovr --html-details --html-theme $(GCOVR_HTML_THEME) --output $@
 
-$(gcovtext): $(sources)
-	gcov -mo $(object_dir) -rt $^ >$@
+$(gcovtext): .test-complete .unix-complete $(sources)
+	gcov -mo $(object_dir) -rt $(filter-out .%,$^) >$@
 
 $(library_aliases): $(shared_library)
 	$(call install-aliases,$(output_dir))
@@ -362,6 +365,14 @@ $(programs): $(firstword $(libraries))
 sizes.txt: $(sort $(shared_library) $(objects) $(programs))
 	if [ -e $@ ]; then mv -f $@ $@~; fi
 	size $^ >$@
+
+.test-complete :$(test_programs)
+	$(call run-programs,-v $(^F:$(binary_suffix)=))
+	@touch .test-complete
+
+.unix-complete: $(unix_programs)
+	$(call run-programs,-rv $(^F:$(binary_suffix)=))
+	@touch .unix-complete
 
 $(tags):
 	ctags -e $(filter -D%,$(CPPFLAGS)) -R $(include_dir) $(source_dir)
