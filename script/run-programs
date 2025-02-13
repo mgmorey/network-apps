@@ -22,7 +22,7 @@ run_program() (
 
     case "$basename" in
 	(test-*)
-	    ${prefix:+$prefix }"$program" $2 >"$program.log"
+	    ${prefix:+$prefix }"$program" $2 >"$program.log" 2>&1
 	    ;;
 	(unix-client)
 	    "$program" $2 2 2
