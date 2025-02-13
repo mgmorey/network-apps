@@ -25,11 +25,11 @@ run_program() (
 	    ${prefix:+$prefix }"$program" $2 >"$program.log" 2>&1
 	    ;;
 	(unix-client)
-	    "$program" $2 2 2
-	    "$program" $2 DOWN
+	    "$program" $2 1 2 3 4 >"$program.log" 2>&1
+	    "$program" $2 DOWN >>"$program.log" 2>&1
 	    ;;
 	(unix-server)
-	    "$program" $2 &
+	    "$program" $2 >"$program.log" 2>&1 &
 	    sleep 1
 	    ;;
 	(*)
