@@ -111,7 +111,7 @@ test-parse.cpp test-socket-inet.cpp
 
 test_unix_sources = test-socket-unix.cpp
 
-unix_sources = unix-client.cpp unix-server.cpp
+unix_sources = unix-server.cpp unix-client.cpp
 
 sizes = sizes.txt sizes.txt~
 tags = TAGS
@@ -247,9 +247,6 @@ endif
 ifneq "$(sort $(test_unix_sources))" "$(test_unix_sources)"
 	$(warning File names in variable test_unix_sources are not sorted)
 endif
-ifneq "$(sort $(unix_sources))" "$(unix_sources)"
-	$(warning File names in variable unix_sources are not sorted)
-endif
 
 .PHONY: build
 build: $(build_targets)
@@ -338,7 +335,7 @@ endif
 
 .PHONY: unix
 unix: $(unix_programs)
-	$(call run-programs,-rv $(^F:$(binary_suffix)=))
+	$(call run-programs,-v $(^F:$(binary_suffix)=))
 	@touch .unix-complete
 
 .SECONDARY: $(objects)
@@ -371,7 +368,7 @@ sizes.txt: $(sort $(shared_library) $(objects) $(programs))
 	@touch .test-complete
 
 .unix-complete: $(unix_programs)
-	$(call run-programs,-rv $(^F:$(binary_suffix)=))
+	$(call run-programs,-v $(^F:$(binary_suffix)=))
 	@touch .unix-complete
 
 $(tags):

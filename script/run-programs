@@ -18,18 +18,18 @@
 run_program() (
     basename=$(basename "$1" .exe)
     dirname=$(dirname "$1")
-    program="$dirname/$basename"
+    filename="$dirname/$basename"
 
     case "$basename" in
 	(test-*)
-	    ${prefix:+$prefix }"$program" $2 >"$program.log" 2>&1
+	    ${wrapper:+$wrapper }"$filename" $2 >"$filename.log" 2>&1
 	    ;;
 	(unix-client)
-	    "$program" $2 1 2 3 4 >"$program.log" 2>&1
-	    "$program" $2 DOWN >>"$program.log" 2>&1
+	    "$filename" $2 1 2 3 4 >"$filename.log" 2>&1
+	    "$filename" $2 DOWN >>"$filename.log" 2>&1
 	    ;;
 	(unix-server)
-	    "$program" $2 >"$program.log" 2>&1 &
+	    "$filename" $2 >"$filename.log" 2>&1 &
 	    sleep 1
 	    ;;
 	(*)
@@ -41,18 +41,13 @@ run_programs() {
     args=
 
     if [ "${USING_VALGRIND-}" = true ]; then
-	prefix="valgrind -q"
+	wrapper="valgrind -q"
     else
-	prefix=
+	wrapper=
     fi
-
-    sort_args=
 
     while getopts rvh opt; do
 	case $opt in
-	    (r)
-		sort_args=-r
-		;;
 	    (v)
 		args=-v
 		;;
@@ -68,8 +63,8 @@ run_programs() {
 
     shift $(($OPTIND - 1))
 
-    for file in $(printf '%s\n' "$@" | sort $sort_args); do
-	run_program "$file" "$args"
+    for program; do
+	run_program "$program" "$args"
     done
 }
 
