@@ -89,7 +89,7 @@ auto Network::create_socketpairresult(const SocketHints& hints,
                 .m_is_verbose = is_verbose}),
         create_socket(SocketData {
                 .m_family = hints.m_family,
-                .m_handle = handles[0],
+                .m_handle = handles[1],
                 .m_is_verbose = is_verbose})
     };
 }
