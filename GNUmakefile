@@ -14,7 +14,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 # Define project-specific variables
-GCOVR_HTML_THEME ?= github.green
+GCOVR_HTML_THEME ?= green
 PREFIX ?= /usr/local
 TMPDIR ?= /tmp
 VERSION ?= 0.0.1
