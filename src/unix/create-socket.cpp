@@ -24,7 +24,7 @@
 
 #include <sys/socket.h>     // AF_UNIX
 
-#include <memory>       // std::make_shared()
+#include <memory>       // std::make_unique()
 
 auto Network::create_socket(const SocketData& data) -> UniqueSocket
 {
@@ -40,12 +40,9 @@ auto Network::create_socket(socket_family_type family,
                             handle_type handle,
                             bool is_verbose) -> UniqueSocket
 {
-    switch (family) {  // NOLINT
-    case AF_UNIX:
-        return std::make_unique<UnixSocket>(family, handle, is_verbose);
-    default:
-        return std::make_unique<CommonSocket>(family, handle, is_verbose);
-    }
+    return create_socket(SocketData {.m_family = family,
+                                     .m_handle = handle,
+                                     .m_is_verbose = is_verbose});
 }
 
 #endif
