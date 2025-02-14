@@ -255,7 +255,7 @@ check: test
 
 .PHONY: clean
 clean:
-	$(call clean-build-artifacts,$(build_artifacts))
+	$(call clean-build,$(build_artifacts))
 
 .PHONY: count-library-common-source-files
 count-library-common-source-files: $(library_common_sources)
@@ -279,11 +279,11 @@ count-unix-source-files: $(unix_sources)
 
 .PHONY: dataclean
 dataclean:
-	rm -f $(sort $(wildcard $(datafiles)))
+	$(call clean-files,$(datafiles))
 
 .PHONY: distclean
 distclean:
-	$(call clean-all-artifacts,$(artifacts))
+	$(call clean-artifacts,$(artifacts))
 
 .PHONY: gcov
 gcov: $(gcovtext)
