@@ -28,7 +28,7 @@ endef
 
 # Define function clean-files
 define clean-files
-	printf '%s\n' $(sort $(wildcard $1)) | xargs -r rm -rf
+	printf '%s\n' $(sort $(wildcard $1)) | xargs -r rm -f
 endef
 
 # Define function create-tarfile
