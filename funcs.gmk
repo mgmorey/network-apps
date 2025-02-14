@@ -22,8 +22,8 @@ endef
 
 # Define function clean-build
 define clean-build
-	printf '%s\n' $(sort $(wildcard $(filter-out $(object_dir)/%,$1)	\
-	$(object_dir))) | xargs -r rm -rf
+	printf '%s\n' $(sort $(wildcard $(filter-out		\
+	$(object_dir)/%,$1) $(object_dir))) | xargs -r rm -rf
 endef
 
 # Define function clean-files
