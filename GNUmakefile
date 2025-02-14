@@ -163,24 +163,24 @@ libraries = $(library_aliases) $(shared_library) $(static_library)
 
 program_objects = $(call get-objects,$(program_sources))
 
+dependencies = $(call get-dependencies,$(sources))
 programs = $(call get-programs,$(program_sources))
 test_programs = $(call get-programs,$(test_sources))
 unix_programs = $(call get-programs,$(unix_sources))
 
-dependencies = $(call get-dependencies,$(sources))
-gcdafiles = $(objects:$(object_suffix)=.gcda)
-gcnofiles = $(objects:$(object_suffix)=.gcno)
-gcovfiles = $(gcdafiles) $(gcnofiles)
+coverage_files = $(datafiles) $(notefiles)
+datafiles = $(objects:$(object_suffix)=.gcda)
 listings = $(objects:$(object_suffix)=.lst)
 logfiles = $(programs:$(binary_suffix)=.log)
 mapfiles = $(programs:$(binary_suffix)=.map) $(library_mapfile)
+notefiles = $(objects:$(object_suffix)=.gcno)
 stackdumps = $(programs:$(binary_suffix)=.stackdump)
 
 artifacts = $(binary_artifacts) $(text_artifacts)
-binary_artifacts = $(gcovfiles) $(libraries) $(objects) $(programs)	\
-$(tags) $(tarfile)
-build_artifacts = $(gcovfiles) $(libraries) $(objects) $(programs)	\
-$(timestamps)
+binary_artifacts = $(coverage_files) $(libraries) $(objects)	\
+$(programs) $(tags) $(tarfile)
+build_artifacts = $(coverage_files) $(libraries) $(objects)	\
+$(programs) $(timestamps)
 text_artifacts = $(compile_commands) $(cppchecklog) $(dependencies)	\
 $(gcovtext) $(listings) $(logfiles) $(mapfiles) $(stackdumps)		\
 $(sizes) $(timestamps)
@@ -197,7 +197,7 @@ tarfile = $(output_dir)/$(library_file).tar.gz
 all_targets = $(build_targets) test $(if $(is_posix),unix,) $(if	\
 $(is_windows),dos2unix,)
 
-build_targets = assert cleangcov objects libraries programs sizes
+build_targets = assert dataclean objects libraries programs sizes
 
 ifeq "$(ctags_is_universal)" "true"
 ifeq "$(call compare-versions,$(ctags_version),5.8)" "greater"
@@ -235,16 +235,16 @@ analyze: $(sources) | $(cppcheck_dir)
 .PHONY: assert
 assert:
 ifneq "$(sort $(library_common_sources))" "$(library_common_sources)"
-	$(warning File names in variable library_common_sources are not sorted)
+	$(warning Filenames in list library_common_sources are not sorted)
 endif
 ifneq "$(sort $(library_unix_sources))" "$(library_unix_sources)"
-	$(warning File names in variable library_unix_sources are not sorted)
+	$(warning Filenames in list library_unix_sources are not sorted)
 endif
 ifneq "$(sort $(test_common_sources))" "$(test_common_sources)"
-	$(warning File names in variable test_common_sources are not sorted)
+	$(warning Filenames in list test_common_sources are not sorted)
 endif
 ifneq "$(sort $(test_unix_sources))" "$(test_unix_sources)"
-	$(warning File names in variable test_unix_sources are not sorted)
+	$(warning Filenames in list test_unix_sources are not sorted)
 endif
 
 .PHONY: build
@@ -256,10 +256,6 @@ check: test
 .PHONY: clean
 clean:
 	$(call clean-build-artifacts,$(build_artifacts))
-
-.PHONY: cleangcov
-cleangcov:
-	rm -f $(sort $(wildcard $(gcdafiles)))
 
 .PHONY: count-library-common-source-files
 count-library-common-source-files: $(library_common_sources)
@@ -280,6 +276,10 @@ count-test-source-files: $(test_sources)
 .PHONY: count-unix-source-files
 count-unix-source-files: $(unix_sources)
 	@printf '%s\n' $(words $^)
+
+.PHONY: dataclean
+dataclean:
+	rm -f $(sort $(wildcard $(datafiles)))
 
 .PHONY: distclean
 distclean:
