@@ -179,10 +179,10 @@ artifacts = $(binary_artifacts) $(text_artifacts)
 binary_artifacts = $(gcovfiles) $(libraries) $(objects) $(programs)	\
 $(tags) $(tarfile)
 build_artifacts = $(gcovfiles) $(libraries) $(objects) $(programs)	\
-.test-complete .unix-complete
+$(timestamps)
 text_artifacts = $(compile_commands) $(cppchecklog) $(dependencies)	\
 $(gcovtext) $(listings) $(logfiles) $(mapfiles) $(stackdumps)		\
-$(sizes) .test-complete .unix-complete
+$(sizes) $(timestamps)
 
 build_dirs = $(filter-out .,$(cache_dir) $(coverage_dir)	\
 $(object_dir) $(output_dir))
