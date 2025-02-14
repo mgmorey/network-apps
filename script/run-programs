@@ -19,17 +19,19 @@ run_program() (
     basename=$(basename "$1" .exe)
     dirname=$(dirname "$1")
     filename="$dirname/$basename"
+    shift
 
     case "$basename" in
 	(test-*)
-	    ${wrapper:+$wrapper }"$filename" $2 >"$filename.log" 2>&1
+	    ${wrapper:+$wrapper }"$filename" "$@" >"$filename.log" 2>&1
 	    ;;
 	(unix-client)
-	    "$filename" $2 1 2 3 4 >"$filename.log" 2>&1
-	    "$filename" $2 DOWN >>"$filename.log" 2>&1
+	    "$filename" "$@" 1 2 3 4 >"$filename.log" 2>&1
+	    "$filename" "$@" DOWN >>"$filename.log" 2>&1
+	    sleep 1
 	    ;;
 	(unix-server)
-	    "$filename" $2 >"$filename.log" 2>&1 &
+	    "$filename" "$@" >"$filename.log" 2>&1 &
 	    sleep 1
 	    ;;
 	(*)
@@ -64,8 +66,14 @@ run_programs() {
     shift $(($OPTIND - 1))
 
     for program; do
-	run_program "$program" "$args"
+	run_program "$program"
     done
+
+    if [ -n "$args" ]; then
+	for program; do
+	    run_program "$program" $args
+	done
+    fi
 }
 
 usage() {
