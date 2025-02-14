@@ -13,42 +13,64 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-# Define project-specific variables
+ifeq "$(USING_CLANG)" "true"
+	CC := clang$(LLVM_SUFFIX)
+	CXX := clang++$(LLVM_SUFFIX)
+	CLANG_TIDY := clang-tidy$(LLVM_SUFFIX)
+else
+	CLANG_TIDY := false
+endif
+
 GCOVR_HTML_THEME ?= green
 PREFIX ?= /usr/local
 TMPDIR ?= /tmp
 VERSION ?= 0.0.1
 
-# Define language
+# Define variables for language and standard
 language := c++
 standard := $(language)20
 
-# Define cache directory variable
+# Define variable for cache directory
 cache_dir := .cache
 
-# Define build directory variables
+# Define variables for build directories
 coverage_dir := coverage
 cppcheck_dir := $(cache_dir)/cppcheck
 depend_dir := $(cache_dir)/dependency
 object_dir := object
 output_dir := output
 
-# Define include and source directory variables
+# Define variables for include and source directories
 include_dir := include
 script_dir := script
 source_dir := src
-temporary_dir ?= $(TMPDIR:/=)/$(library_file)
-
-# Define include directory and file variables
-include_dirs = $(include_dir)/$(api) $(include_dir)
-include_files = $(addsuffix /network/*.h,$(include_dirs))
 
 # Define common functions and flag variables
 include common.gmk
 include flags.gmk
 include install.gmk
 
-# Define filename, prefix, and suffix variables
+# Define variables for API and OS type
+api = $(if $(is_windows),windows,unix)
+is_posix = $(filter $(os_id_name),FreeBSD Linux)
+is_unix = $(filter $(os_id_name),Darwin FreeBSD)
+is_windows = $(filter $(os_id_name),MINGW64_NT)
+
+# Define variables for version components
+major = $(word 1,$(subst ., ,$(VERSION)))
+minor = $(word 2,$(subst ., ,$(VERSION)))
+
+# Define variable for temporary directory
+temporary_dir ?= $(TMPDIR:/=)/$(library_file)
+
+# Define variables for directory lists
+include_dirs = $(include_dir)/$(api) $(include_dir)
+source_dirs = $(source_dir)/$(api) $(source_dir)
+
+# Define variables for file lists
+include_files = $(addsuffix /network/*.h,$(include_dirs))
+
+# Define variables for filenames, prefixes, and suffixes
 library_file = $(library_prefix)network
 library_prefix = lib
 
@@ -221,8 +243,8 @@ define run-programs
 endef
 
 # Set virtual paths
-vpath %$(include_suffix) $(include_dir)/$(api) $(include_dir)
-vpath %$(source_suffix) $(source_dir)/$(api) $(source_dir)
+vpath %$(include_suffix) $(include_dirs)
+vpath %$(source_suffix) $(source_dirs)
 
 # Define pseudotargets
 

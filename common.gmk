@@ -13,21 +13,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-# Define common functions and variables
-
-# Set defaults for CC and CXX
-ifeq "$(USING_CLANG)" "true"
-	override CC := clang$(LLVM_SUFFIX)
-	override CXX := clang++$(LLVM_SUFFIX)
-	override CLANG_TIDY := clang-tidy$(LLVM_SUFFIX)
-endif
-
-# Define version components
-major := $(shell printf '%s\n' $(VERSION) | awk -F. '{print $$1}')
-minor := $(shell printf '%s\n' $(VERSION) | awk -F. '{print $$2}')
-
-# Define platform-specific variables
-
 # Define variables for operating system identifiers
 os_id_data := $(shell $(script_dir)/get-os-release -iko)
 os_id_dist := $(word 1,$(os_id_data))
@@ -47,17 +32,13 @@ ld_features := $(shell $(script_dir)/get-features $(LD))
 cxx_version := $(shell $(script_dir)/which-version $(CXX))
 
 # Define variables for utility versions
-clang_tidy_version := $(if $(CLANG_TIDY),$(shell	\
-$(script_dir)/which-version $(CLANG_TIDY)),0)
+clang_tidy_version := $(shell $(script_dir)/which-version	\
+$(CLANG_TIDY) 2>/dev/null)
 cppcheck_version := $(shell $(script_dir)/which-version cppcheck)
 ctags_version := $(shell $(script_dir)/which-version ctags)
-ctags_is_universal := $(shell $(script_dir)/is-ctags-universal ctags)
 
-# Define variables for API and OS type
-api = $(if $(is_windows),windows,unix)
-is_posix = $(filter $(os_id_name),FreeBSD Linux)
-is_unix = $(filter $(os_id_name),Darwin FreeBSD)
-is_windows = $(filter $(os_id_name),MINGW64_NT)
+#Define variable for Universal Ctags predicate
+ctags_is_universal := $(shell $(script_dir)/is-ctags-universal ctags)
 
 # Local Variables:
 # mode: makefile
