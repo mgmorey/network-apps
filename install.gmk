@@ -14,7 +14,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 # Define installer variable
-install = $(if $(filter Darwin,$(os_id_name)),ginstall,install)
+install = $(if $(is_unix),ginstall,install)
 
 # Define function archive-files
 define archive-files

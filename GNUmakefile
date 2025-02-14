@@ -40,7 +40,7 @@ source_dir := src
 temporary_dir ?= $(TMPDIR:/=)/$(library_file)
 
 # Define include directory and file variables
-include_dirs = $(include_dir)/$(api_type) $(include_dir)
+include_dirs = $(include_dir)/$(api) $(include_dir)
 include_files = $(addsuffix /network/*.h,$(include_dirs))
 
 # Define common functions and flag variables
@@ -54,7 +54,7 @@ library_prefix = lib
 
 alias_suffix = .so.$(major)
 alias_suffixes = $(alias_suffix)
-binary_suffix = $(if $(filter $(os_id_name),MINGW64_NT),.exe,)
+binary_suffix = $(if $(is_windows),.exe,)
 depend_suffix = .dep
 include_suffix = .h
 object_suffix = .o
@@ -118,14 +118,13 @@ tags = TAGS
 
 # Define computed file list variables
 
-sources = $(library_sources) $(test_sources) $(if $(filter	\
-$(os_id_name),CYGWIN_NT Darwin MINGW64_NT),,$(unix_sources))
+sources = $(library_sources) $(test_sources) $(if	\
+$(is_posix),$(unix_sources),)
 library_sources = $(library_common_sources) $(library_native_sources)	\
-$(if $(filter $(os_id_name),MINGW64_NT),,$(library_unix_sources))
+$(if $(filter $(api),unix),$(library_unix_sources),)
+program_sources = $(test_sources) $(if $(is_posix),$(unix_sources),)
 test_sources = $(test_common_sources) $(if $(filter	\
-$(os_id_name),MINGW64_NT),,$(test_unix_sources))
-program_sources = $(test_sources) $(if $(filter			\
-$(os_id_name),CYGWIN_NT Darwin MINGW64_NT),,$(unix_sources))
+$(api),unix),$(test_unix_sources),)
 
 objects = $(call get-objects,$(sources))
 
@@ -172,9 +171,8 @@ tarfile = $(output_dir)/$(library_file).tar.gz
 
 # Define target list variables
 
-all_targets = $(build_targets) test $(if $(filter		\
-$(os_id_name),CYGWIN_NT Darwin MINGW64_NT),,unix) $(if $(filter	\
-$(os_id_name),MINGW64_NT),dos2unix,)
+all_targets = $(build_targets) test $(if $(is_posix),unix,) $(if	\
+$(is_windows),dos2unix,)
 
 build_targets = assert cleangcov objects libraries programs sizes
 
@@ -184,8 +182,7 @@ ifeq "$(call compare-versions,$(ctags_version),5.8)" "greater"
 endif
 endif
 
-timestamps = .test-complete $(if $(filter $(os_id_name),CYGWIN_NT	\
-Darwin MINGW64_NT),,.unix-complete)
+timestamps = .test-complete $(if $(is_posix),.unix-complete,)
 
 # Define object and program list generation functions
 get-dependencies = $(addprefix $(depend_dir)/,$(addsuffix	\
@@ -224,8 +221,8 @@ define run-programs
 endef
 
 # Set virtual paths
-vpath %$(include_suffix) $(include_dir)/$(api_type) $(include_dir)
-vpath %$(source_suffix) $(source_dir)/$(api_type) $(source_dir)
+vpath %$(include_suffix) $(include_dir)/$(api) $(include_dir)
+vpath %$(source_suffix) $(source_dir)/$(api) $(source_dir)
 
 # Define pseudotargets
 
@@ -336,7 +333,7 @@ tidy: $(sources)
 	$(CLANG_TIDY) $(sort $^) $(CLANG_TIDY_FLAGS)
 endif
 
-ifeq "$(filter $(os_id_name),CYGWIN_NT Darwin MINGW64_NT)" ""
+ifneq "$(is_posix)" ""
 .PHONY: unix
 unix: $(unix_programs)
 	$(call run-programs,-v $(^F:$(binary_suffix)=))
@@ -372,7 +369,7 @@ sizes.txt: $(sort $(shared_library) $(objects) $(programs))
 	$(call run-programs,-v $(^F:$(binary_suffix)=))
 	@touch .test-complete
 
-ifeq "$(filter $(os_id_name),CYGWIN_NT Darwin MINGW64_NT)" ""
+ifneq "$(is_posix)" ""
 .unix-complete: $(unix_programs)
 	$(call run-programs,-v $(^F:$(binary_suffix)=))
 	@touch .unix-complete

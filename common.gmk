@@ -28,38 +28,36 @@ minor := $(shell printf '%s\n' $(VERSION) | awk -F. '{print $$2}')
 
 # Define platform-specific variables
 
-# Define operating system identifiers
+# Define variables for operating system identifiers
 os_id_data := $(shell $(script_dir)/get-os-release -iko)
 os_id_dist := $(word 1,$(os_id_data))
 os_id_name := $(word 2,$(os_id_data))
-os_id_type := $(word 3,$(os_id_data))
-
-# Define operating system macros
 os_macro_data := $(shell $(script_dir)/format-constant $(os_id_data))
 os_macro_dist := $(word 1,$(os_macro_data))
 os_macro_name := $(word 2,$(os_macro_data))
 
-# Define toolchain family variables
+# Define variables for tool family and features
 as_family := $(shell $(script_dir)/get-as-family $(AS))
 as_features := $(shell $(script_dir)/get-features $(AS))
 cxx_family := $(shell $(script_dir)/get-cc-family $(CXX))
 ld_family := $(shell $(script_dir)/get-ld-family $(LD))
 ld_features := $(shell $(script_dir)/get-features $(LD))
 
-# Define compiler version variables
+# Define variables for compiler version
 cxx_version := $(shell $(script_dir)/which-version $(CXX))
 
-# Define utility version variables
+# Define variables for utility versions
 clang_tidy_version := $(if $(CLANG_TIDY),$(shell	\
 $(script_dir)/which-version $(CLANG_TIDY)),0)
 cppcheck_version := $(shell $(script_dir)/which-version cppcheck)
 ctags_version := $(shell $(script_dir)/which-version ctags)
-
-# Define program extant variables
 ctags_is_universal := $(shell $(script_dir)/is-ctags-universal ctags)
 
-# Define Sockets API type
-api_type := $(if $(filter MINGW64_NT,$(os_id_name)),windows,unix)
+# Define variables for API and OS type
+api := $(if $(is_windows),windows,unix)
+is_posix := $(filter $(os_id_name),FreeBSD Linux)
+is_unix := $(filter $(os_id_name),Darwin FreeBSD)
+is_windows := $(filter $(os_id_name),MINGW64_NT)
 
 # Local Variables:
 # mode: makefile
