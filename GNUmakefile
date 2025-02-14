@@ -49,7 +49,6 @@ source_dir := src
 include common.gmk
 include flags.gmk
 include funcs.gmk
-include install.gmk
 
 # Define variables for API and OS
 api = $(if $(is_windows),windows,unix)
