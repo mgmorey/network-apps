@@ -54,10 +54,10 @@ ctags_version := $(shell $(script_dir)/which-version ctags)
 ctags_is_universal := $(shell $(script_dir)/is-ctags-universal ctags)
 
 # Define variables for API and OS type
-api := $(if $(is_windows),windows,unix)
-is_posix := $(filter $(os_id_name),FreeBSD Linux)
-is_unix := $(filter $(os_id_name),Darwin FreeBSD)
-is_windows := $(filter $(os_id_name),MINGW64_NT)
+api = $(if $(is_windows),windows,unix)
+is_posix = $(filter $(os_id_name),FreeBSD Linux)
+is_unix = $(filter $(os_id_name),Darwin FreeBSD)
+is_windows = $(filter $(os_id_name),MINGW64_NT)
 
 # Local Variables:
 # mode: makefile
