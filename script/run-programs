@@ -48,8 +48,11 @@ run_programs() {
 	wrapper=
     fi
 
-    while getopts rvh opt; do
+    while getopts d:rvh opt; do
 	case $opt in
+	    (d)
+		cd "$OPTARG"
+		;;
 	    (v)
 		args=-v
 		;;
@@ -78,7 +81,7 @@ run_programs() {
 
 usage() {
     cat <<EOF >&2
-Usage: $script [-v]
+Usage: $script [-d DIRECTORY] [-v]
        $script -h
 EOF
 }

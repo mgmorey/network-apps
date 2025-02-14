@@ -48,10 +48,12 @@ source_dir := src
 # Define common functions and flag variables
 include common.gmk
 include flags.gmk
+include funcs.gmk
 include install.gmk
 
-# Define variables for API and OS type
+# Define variables for API and OS
 api = $(if $(is_windows),windows,unix)
+install = $(if $(is_unix),ginstall,install)
 is_posix = $(filter $(os_id_name),FreeBSD Linux)
 is_unix = $(filter $(os_id_name),Darwin FreeBSD)
 is_windows = $(filter $(os_id_name),MINGW64_NT)
@@ -218,31 +220,6 @@ $(binary_suffix),$(basename $1)))
 COMPILE$(source_suffix) = $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c
 LINK$(object_suffix) = $(CXX) $(LDFLAGS)
 
-# Define function clean-all-artifacts
-define clean-all-artifacts
-	printf '%s\n' $(sort $(wildcard $(filter-out	\
-	$(cache_dir)/%,$(filter-out $(object_dir)/%,$1)	\
-	$(build_dirs)))) | xargs -r rm -rf
-endef
-
-# Define function clean-build-artifacts
-define clean-build-artifacts
-	printf '%s\n' $(sort $(wildcard $(filter-out $(object_dir)/%,$1)	\
-	$(object_dir))) | xargs -r rm -rf
-endef
-
-# Define function make-rule
-define make-rule
-	$(CXX) $(CPPFLAGS) -MM $< | $(script_dir)/make-rule -d	\
-	$(object_dir) -o $@ $(tags)
-endef
-
-# Define function run-programs
-define run-programs
-	cd $(output_dir) && ../$(script_dir)/run-programs $1 $2
-	@$(if $3,touch $3,,)
-endef
-
 # Set virtual paths
 vpath %$(include_suffix) $(include_dirs)
 vpath %$(source_suffix) $(source_dirs)
@@ -347,7 +324,7 @@ tarfile: $(tarfile)
 
 .PHONY: test
 test: $(test_programs)
-	$(call run-programs,-v,$(^F:$(binary_suffix)=),.test-complete)
+	$(call run-test-programs,$(^F),-d $(output_dir) -v)
 
 ifdef CLANG_TIDY
 .PHONY: tidy
@@ -358,7 +335,7 @@ endif
 ifneq "$(is_posix)" ""
 .PHONY: unix
 unix: $(unix_programs)
-	$(call run-programs,-v,$(^F:$(binary_suffix)=),.unix-complete)
+	$(call run-unix-programs,$(^F),-d $(output_dir) -v)
 endif
 
 .SECONDARY: $(objects)
@@ -387,18 +364,18 @@ sizes.txt: $(sort $(shared_library) $(objects) $(programs))
 	size $^ >$@
 
 .test-complete :$(test_programs)
-	$(call run-programs,-v,$(^F:$(binary_suffix)=),.test-complete)
+	$(call run-test-programs,$(^F),-d $(output_dir) -v)
 
 ifneq "$(is_posix)" ""
 .unix-complete: $(unix_programs)
-	$(call run-programs,-v,$(^F:$(binary_suffix)=),.unix-complete)
+	$(call run-unix-programs,$(^F),-d $(output_dir) -v)
 endif
 
 $(tags):
 	ctags -e $(filter -D%,$(CPPFLAGS)) -R $(include_dir) $(source_dir)
 
 $(tarfile): $(libraries) $(programs)
-	$(call archive-files,$(temporary_dir))
+	$(call create-tarfile,$(temporary_dir),$@)
 
 $(gcovhtml): | $(coverage_dir)
 
