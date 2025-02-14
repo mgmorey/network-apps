@@ -239,7 +239,8 @@ endef
 
 # Define function run-programs
 define run-programs
-	cd $(output_dir) && ../$(script_dir)/run-programs $1
+	cd $(output_dir) && ../$(script_dir)/run-programs $1 $2
+	@$(if $3,touch $3,,)
 endef
 
 # Set virtual paths
@@ -346,8 +347,7 @@ tarfile: $(tarfile)
 
 .PHONY: test
 test: $(test_programs)
-	$(call run-programs,-v $(^F:$(binary_suffix)=))
-	@touch .test-complete
+	$(call run-programs,-v,$(^F:$(binary_suffix)=),.test-complete)
 
 ifdef CLANG_TIDY
 .PHONY: tidy
@@ -358,8 +358,7 @@ endif
 ifneq "$(is_posix)" ""
 .PHONY: unix
 unix: $(unix_programs)
-	$(call run-programs,-v $(^F:$(binary_suffix)=))
-	@touch .unix-complete
+	$(call run-programs,-v,$(^F:$(binary_suffix)=),.unix-complete)
 endif
 
 .SECONDARY: $(objects)
@@ -388,13 +387,11 @@ sizes.txt: $(sort $(shared_library) $(objects) $(programs))
 	size $^ >$@
 
 .test-complete :$(test_programs)
-	$(call run-programs,-v $(^F:$(binary_suffix)=))
-	@touch .test-complete
+	$(call run-programs,-v,$(^F:$(binary_suffix)=),.test-complete)
 
 ifneq "$(is_posix)" ""
 .unix-complete: $(unix_programs)
-	$(call run-programs,-v $(^F:$(binary_suffix)=))
-	@touch .unix-complete
+	$(call run-programs,-v,$(^F:$(binary_suffix)=),.unix-complete)
 endif
 
 $(tags):
