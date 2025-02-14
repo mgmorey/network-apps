@@ -123,12 +123,11 @@ CPPFLAGS += $(addprefix -D,$(sort $(cpp_symbols)))
 # CXX_ASFLAGS
 
 ifeq "$(WITH_LISTINGS)" "true"
-ifeq "$(cxx_family)" "gnu"
 	listing = $(@:$(object_suffix)=.lst)
-	asflags = $(if $(is_object),$(if $(is_as_listings),$(call	\
-	get-listing-flag,$(listing)),),)
+	asflags = $(if $(is_object),$(if $(filter		\
+	$(cxx_family),gnu),$(if $(is_as_listings),$(call	\
+	get-listing-flag,$(listing)),),),)
 	CXX_ASFLAGS += $(call join-flags,-Wa,$(asflags))
-endif
 endif
 
 # CXXFLAGS
