@@ -215,7 +215,7 @@ get-programs = $(addprefix $(output_dir)/,$(addsuffix	\
 $(binary_suffix),$(basename $1)))
 
 # Define compiler and linker command variables
-COMPILE.cc = $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c
+COMPILE$(source_suffix) = $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c
 LINK$(object_suffix) = $(CXX) $(LDFLAGS)
 
 # Define function clean-all-artifacts
@@ -376,7 +376,7 @@ $(library_aliases): $(shared_library)
 	$(call install-aliases,$(output_dir))
 
 $(shared_library): $(library_objects)
-	$(strip $(LINK$(object_suffix)) -o $@ $^ $(LDLIBS))
+	$(strip $(LINK$(object_suffix)) $^ $(LOADLIBES) $(LDLIBS) -o $@)
 
 $(static_library): $(library_objects)
 	$(strip rm -f $@ && $(AR) $(ARFLAGS) $@ $^)
@@ -431,7 +431,7 @@ $(output_dir):
 # Define suffix rules
 
 $(output_dir)/%$(binary_suffix): $(object_dir)/%$(object_suffix)
-	$(strip $(LINK$(object_suffix)) -o $@ $^ $(LDLIBS))
+	$(strip $(LINK$(object_suffix)) $^ $(LOADLIBES) $(LDLIBS) -o $@)
 
 $(object_dir)/%$(object_suffix): %$(source_suffix)
 	$(strip $(COMPILE$(source_suffix)) $(OUTPUT_OPTION) $<)
