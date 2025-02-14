@@ -139,32 +139,45 @@ endif
 CXXFLAGS += -fPIC
 
 ifndef NDEBUG
+
 	CXXFLAGS += -fno-omit-frame-pointer
+
 ifeq "$(USING_LIBASAN)" "true"
 	CXXFLAGS += -fsanitize=address -fsanitize-address-use-after-scope
 endif
+
 	CXXFLAGS += $(if $(filter		\
 	clang,$(cxx_family)),-fcoverage-mapping	\
 	-fprofile-instr-generate,)
+
 endif
 
 ifeq "$(cxx_family)" "clang"
+
 ifeq "$(call compare-versions,$(cxx_version),15)" "greater"
 	CXXFLAGS += -ftrivial-auto-var-init=zero
 endif
+
 else
+
 ifeq "$(call compare-versions,$(cxx_version),12)" "greater"
 	CXXFLAGS += -ftrivial-auto-var-init=zero
 endif
+
 endif
 
 ifndef NDEBUG
+
 ifeq "$(USING_VALGRIND)" "true"
 	CXXFLAGS += -gdwarf-4
 endif
+
 	CXXFLAGS += $(if $(filter gnu,$(cxx_family)),-ggdb,-g3) -O0
+
 else
+
 	CXXFLAGS += -O2
+
 endif
 
 CXXFLAGS += $(if $(filter gnu,$(as_family)),-pipe,)
@@ -174,10 +187,13 @@ CXXFLAGS += -Wall -Werror -Wextra -Wshadow -Wsign-conversion
 # LDFLAGS
 
 ifndef NDEBUG
+
 	LDFLAGS += --coverage
+
 ifeq "$(USING_LIBASAN)" "true"
 	LDFLAGS += -fsanitize=address
 endif
+
 endif
 
 ifeq "$(WITH_LOAD_MAP)" "true"
