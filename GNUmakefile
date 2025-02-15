@@ -28,7 +28,7 @@ TMPDIR ?= /tmp
 
 # Define variables for project
 BUILD_DIR ?= .
-PREFIX ?= $(HOME)/.local
+PREFIX ?= ~/.local
 VERSION ?= 0.0.1
 
 # Define variables for language and standard
