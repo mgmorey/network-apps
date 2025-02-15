@@ -27,7 +27,7 @@ GCOVR_HTML_THEME ?= green
 TMPDIR ?= /tmp
 
 # Define variables for project
-BUILD_DIR ?= .
+OUTPUT_DIR ?= .
 PREFIX ?= ~/.local
 VERSION ?= 0.0.1
 
@@ -42,8 +42,8 @@ cache_dir := .cache
 coverage_dir := coverage
 cppcheck_dir := $(cache_dir)/cppcheck
 depend_dir := $(cache_dir)/dependency
-object_dir := $(BUILD_DIR)/object
-output_dir := $(BUILD_DIR)
+object_dir := $(OUTPUT_DIR)/object
+output_dir := $(OUTPUT_DIR)
 
 # Define variables for include and source directories
 include_dir := include
