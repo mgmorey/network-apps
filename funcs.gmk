@@ -64,7 +64,7 @@ $(binary_suffix),$(basename $1)))
 # Define function make-rule
 define make-rule
 	$(CXX) $(CPPFLAGS) -MM $< | $(script_dir)/make-rule -d	\
-	$(subst ./%,,$(object_dir)) -o $@ $(tags)
+	$(subst ./,,$(object_dir)) -o $@ $(tags)
 endef
 
 # Define function run-programs
