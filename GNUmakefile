@@ -13,6 +13,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+# Define variables for customization
+
 ifeq "$(USING_CLANG)" "true"
 	CC := clang$(LLVM_SUFFIX)
 	CXX := clang++$(LLVM_SUFFIX)
@@ -21,10 +23,12 @@ else
 	CLANG_TIDY := false
 endif
 
-BUILD_DIR ?= .
 GCOVR_HTML_THEME ?= green
-PREFIX ?= /usr/local
 TMPDIR ?= /tmp
+
+# Define variables for project
+BUILD_DIR ?= .
+PREFIX ?= $(HOME)/.local
 VERSION ?= 0.0.1
 
 # Define variables for language and standard
@@ -291,7 +295,7 @@ dos2unix:
 
 .PHONY: install
 install: $(libraries) $(programs)
-	$(install-files) $(PREFIX)
+	$(call install-files,$(PREFIX))
 
 .PHONY: libraries
 libraries: $(libraries)
