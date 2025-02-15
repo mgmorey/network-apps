@@ -40,8 +40,9 @@ endef
 
 # Define function install-aliases
 define install-aliases
-	cd $1 $(foreach suffix,$(alias_suffixes),&& ln -sf		\
-	$(addprefix $(library_file),$(shared_suffix) $(suffix)))
+	$(if $(filter .,$1),,cd $1 && )$(foreach		\
+	suffix,$(alias_suffixes),ln -sf $(addprefix		\
+	$(library_file),$(shared_suffix) $(suffix)) && )true
 endef
 
 # Define function install-files

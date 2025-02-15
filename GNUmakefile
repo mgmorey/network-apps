@@ -21,7 +21,7 @@ else
 	CLANG_TIDY := false
 endif
 
-BUILD_DIR := .
+BUILD_DIR ?= .
 GCOVR_HTML_THEME ?= green
 PREFIX ?= /usr/local
 TMPDIR ?= /tmp
@@ -243,9 +243,6 @@ endif
 ifneq "$(sort $(test_unix_sources))" "$(test_unix_sources)"
 	$(warning Filenames in list test_unix_sources are not sorted)
 endif
-
-.PHONY: build
-build: $(build_targets)
 
 .PHONY: check
 check: test
