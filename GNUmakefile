@@ -38,7 +38,7 @@ coverage_dir := coverage
 cppcheck_dir := $(cache_dir)/cppcheck
 depend_dir := $(cache_dir)/dependency
 object_dir := object
-output_dir := output
+output_dir := .
 
 # Define variables for include and source directories
 include_dir := include
