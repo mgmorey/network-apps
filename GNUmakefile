@@ -56,11 +56,12 @@ include flags.gmk
 include funcs.gmk
 
 # Define variables for API and OS
-api = $(if $(is_windows),windows,unix)
+api = $(if $(is_windows_api),windows,unix)
 install = $(if $(is_unix),ginstall,install)
 is_posix = $(filter $(os_id_name),FreeBSD Linux)
 is_unix = $(filter $(os_id_name),Darwin FreeBSD)
-is_windows = $(filter $(os_id_name),MINGW64_NT)
+is_windows_api = $(filter $(os_id_name),MINGW64_NT)
+is_windows_os = $(filter $(os_id_dist),windows)
 
 # Define variables for version components
 major = $(word 1,$(subst ., ,$(VERSION)))
@@ -82,7 +83,7 @@ library_prefix = lib
 
 alias_suffix = .so.$(major)
 alias_suffixes = $(alias_suffix)
-binary_suffix = $(if $(is_windows),.exe,)
+binary_suffix = $(if $(is_windows_os),.exe,)
 depend_suffix = .dep
 include_suffix = .h
 object_suffix = .o
@@ -200,7 +201,7 @@ tarfile = $(output_dir)/$(library_file).tar.gz
 # Define target list variables
 
 all_targets = $(build_targets) test $(if $(is_posix),unix,) $(if	\
-$(is_windows),dos2unix,)
+$(is_windows_api),dos2unix,)
 
 build_targets = assert dataclean objects libraries programs sizes
 
