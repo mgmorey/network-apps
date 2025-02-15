@@ -15,14 +15,17 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-case "$(uname -s)" in
-    (Darwin|*BSD)
-	make=gmake
-	;;
-    (*)
-	make=make
-	;;
-esac
+make_commands() {
+    case "$(uname -s)" in
+        (*BSD|Darwin)
+	    make=gmake
+	    ;;
+        (*)
+	    make=make
+	    ;;
+    esac
 
-target="$@"
-bear -- $make ${CXX+CXX=$CXX} ${target:-clean build}
+    bear -- $make ${CXX+CXX=$CXX} "$@"
+}
+
+make_commands ${@:-clean programs}
