@@ -21,6 +21,7 @@ else
 	CLANG_TIDY := false
 endif
 
+BUILD_DIR := .
 GCOVR_HTML_THEME ?= green
 PREFIX ?= /usr/local
 TMPDIR ?= /tmp
@@ -37,8 +38,8 @@ cache_dir := .cache
 coverage_dir := coverage
 cppcheck_dir := $(cache_dir)/cppcheck
 depend_dir := $(cache_dir)/dependency
-object_dir := object
-output_dir := .
+object_dir := $(BUILD_DIR)/object
+output_dir := $(BUILD_DIR)
 
 # Define variables for include and source directories
 include_dir := include
@@ -205,15 +206,11 @@ ifeq "$(call compare-versions,$(ctags_version),5.8)" "greater"
 endif
 endif
 
+# Define variable for timestamp files
 timestamps = .test-complete $(if $(is_posix),.unix-complete,)
 
-# Define object and program list generation functions
-get-dependencies = $(addprefix $(depend_dir)/,$(addsuffix	\
-$(depend_suffix),$(basename $1)))
-get-objects = $(addprefix $(object_dir)/,$(addsuffix	\
-$(object_suffix),$(basename $1)))
-get-programs = $(addprefix $(output_dir)/,$(addsuffix	\
-$(binary_suffix),$(basename $1)))
+# Define variable for run-program arguments
+program_args = $(strip $(if $(filter .,$(output_dir)),,-d $(output_dir)) -v)
 
 # Define compiler and linker command variables
 COMPILE$(source_suffix) = $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c
@@ -323,7 +320,7 @@ tarfile: $(tarfile)
 
 .PHONY: test
 test: $(test_programs)
-	$(call run-test-programs,$(^F),-d $(output_dir) -v)
+	$(call run-test-programs,$(^F),$(program_args))
 
 ifdef CLANG_TIDY
 .PHONY: tidy
@@ -334,7 +331,7 @@ endif
 ifneq "$(is_posix)" ""
 .PHONY: unix
 unix: $(unix_programs)
-	$(call run-unix-programs,$(^F),-d $(output_dir) -v)
+	$(call run-unix-programs,$(^F),$(program_args))
 endif
 
 .SECONDARY: $(objects)
@@ -363,11 +360,11 @@ sizes.txt: $(sort $(shared_library) $(objects) $(programs))
 	size $^ >$@
 
 .test-complete :$(test_programs)
-	$(call run-test-programs,$(^F),-d $(output_dir) -v)
+	$(call run-test-programs,$(^F),$(program_args))
 
 ifneq "$(is_posix)" ""
 .unix-complete: $(unix_programs)
-	$(call run-unix-programs,$(^F),-d $(output_dir) -v)
+	$(call run-unix-programs,$(^F),$(program_args))
 endif
 
 $(tags):

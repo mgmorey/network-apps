@@ -72,6 +72,10 @@ parse_arguments() {
 
     shift $(($OPTIND - 1))
 
+    if [ -z "${object_stem:-}" ]; then
+	usage_error '%s: No object file stem\n' "$script"
+    fi
+
     if [ -z "$output_path" ]; then
 	output_path="$1"
 	shift

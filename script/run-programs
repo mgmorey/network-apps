@@ -41,6 +41,7 @@ run_program() (
 
 run_programs() {
     args=
+    dir=
 
     if [ "${USING_VALGRIND-}" = true ]; then
 	wrapper="valgrind -q"
@@ -51,7 +52,7 @@ run_programs() {
     while getopts d:rvh opt; do
 	case $opt in
 	    (d)
-		cd "$OPTARG"
+		dir="$OPTARG"
 		;;
 	    (v)
 		args=-v
@@ -67,6 +68,10 @@ run_programs() {
     done
 
     shift $(($OPTIND - 1))
+
+    if [ -n "$dir" -a "$dir" != "." ]; then
+	cd "$dir"
+    fi
 
     for program; do
 	run_program "$program"

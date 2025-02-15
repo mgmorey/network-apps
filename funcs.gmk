@@ -53,16 +53,23 @@ define install-files
 	$(call install-aliases,$1/lib)
 endef
 
+# Define object and program list generation functions
+get-dependencies = $(addprefix $(depend_dir)/,$(addsuffix	\
+$(depend_suffix),$(basename $1)))
+get-objects = $(addprefix $(object_dir)/,$(addsuffix	\
+$(object_suffix),$(basename $1)))
+get-programs = $(addprefix $(output_dir)/,$(addsuffix	\
+$(binary_suffix),$(basename $1)))
+
 # Define function make-rule
 define make-rule
 	$(CXX) $(CPPFLAGS) -MM $< | $(script_dir)/make-rule -d	\
-	$(object_dir) -o $@ $(tags)
+	$(subst ./%,,$(object_dir)) -o $@ $(tags)
 endef
 
 # Define function run-programs
 define run-programs
-	$(script_dir)/run-programs $3 $(2:$(binary_suffix)=)
-	@touch $1
+	$(script_dir)/run-programs $3 $(2:$(binary_suffix)=) && touch $1
 endef
 
 # Define function run-test-programs
