@@ -13,72 +13,77 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-# Define function clean-artifacts
 define clean-artifacts
-	printf '%s\n' $(sort $(wildcard $(subst ./,,$(filter-out	\
+	printf '%s\n' $(sort $(wildcard $(patsubst ./%,%,$(filter-out	\
 	$(cache_dir)/%,$(filter-out $(coverage_dir)/%,$(filter-out	\
 	$(object_dir)/%,$1) $(build_dirs)))))) | xargs -r rm -rf
 endef
 
-# Define function clean-build
 define clean-build
-	printf '%s\n' $(sort $(wildcard $(subst ./,,$(filter-out	\
+	printf '%s\n' $(sort $(wildcard $(patsubst ./%,%,$(filter-out	\
 	$(object_dir)/%,$1) $(object_dir)))) | xargs -r rm -rf
 endef
 
-# Define function clean-files
 define clean-files
-	printf '%s\n' $(sort $(wildcard $(subst ./,,$1))) | xargs -r rm -f
+	printf '%s\n' $(sort $(wildcard $(patsubst ./%,%,$1))) | xargs -r rm -f
 endef
 
-# Define function create-tarfile
 define create-tarfile
 	$(call install-files,$1)
 	tar -C $1 -acf $2 .
 	/bin/rm -rf $1
 endef
 
-# Define function install-aliases
+define dos-to-unix
+	printf '%s\n' $(sort $(patsubst ./%,%,$1)) | xargs dos2unix -q
+endef
+
+define get-dependencies
+	$(addprefix $(depend_dir)/,$(addsuffix	\
+	$(depend_suffix),$(basename $1)))
+endef
+
+define get-objects
+	$(addprefix $(object_dir)/,$(addsuffix	\
+	$(object_suffix),$(basename $1)))
+endef
+
+define get-programs
+	$(addprefix $(call get-prefix,$(output_dir)),$(addsuffix	\
+	$(binary_suffix),$(basename $1)))
+endef
+
 define install-aliases
 	$(if $(filter .,$1),,cd $1 && )$(foreach		\
 	suffix,$(alias_suffixes),ln -sf $(addprefix		\
 	$(library_file),$(shared_suffix) $(suffix)) && )true
 endef
 
-# Define function install-files
 define install-files
 	$(install) -d $(addprefix $1/,bin include/network lib)
-	$(install) -m 644 $(include_files) $1/include/network
-	$(install) $(shared_library) $(static_library) $1/lib
-	$(install) $(programs) $1/bin
+	$(install) -m u=rw,go=r $(include_files) $1/include/network
+	$(install) -m u=rwx,go=rx $(shared_library) $(static_library) $1/lib
+	$(install) -m u=rwx,go=rx $(programs) $1/bin
 	$(call install-aliases,$1/lib)
 endef
 
-# Define object and program list generation functions
-get-dependencies = $(addprefix $(depend_dir)/,$(addsuffix	\
-$(depend_suffix),$(basename $1)))
-get-objects = $(addprefix $(object_dir)/,$(addsuffix	\
-$(object_suffix),$(basename $1)))
-get-programs = $(addprefix $(output_dir)/,$(addsuffix	\
-$(binary_suffix),$(basename $1)))
-
-# Define function make-rule
 define make-rule
 	$(CXX) $(CPPFLAGS) -MM $< | $(script_dir)/make-rule -d	\
-	$(subst ./,,$(object_dir)) -o $@ $(tags)
+	$(patsubst ./%,%,$(object_dir)) -o $@ $(tags)
 endef
 
-# Define function run-programs
 define run-programs
 	$(script_dir)/run-programs $3 $(2:$(binary_suffix)=) && touch $1
 endef
 
-# Define function run-test-programs
 define run-test-programs
 	$(call run-programs,.test-complete,$1,$2)
 endef
 
-# Define function run-unix-programs
 define run-unix-programs
 	$(call run-programs,.unix-complete,$1,$2)
 endef
+
+# Local Variables:
+# mode: makefile
+# End:

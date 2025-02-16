@@ -282,7 +282,7 @@ gcovr: $(gcovhtml)
 
 .PHONY: dos2unix
 dos2unix:
-	printf '%s\n' $(sort $(subst ./,,$(dos2unix_files))) | xargs dos2unix -q
+	$(call dos-to-unix,$(dos2unix_files))
 
 .PHONY: install
 install: $(libraries) $(programs)
