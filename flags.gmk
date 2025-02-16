@@ -67,12 +67,7 @@ ARFLAGS = r
 
 ifeq "$(cxx_family)" "clang"
 
-ifeq "$(call compare-versions,$(clang_tidy_version),12)" "greater"
-	CLANG_TIDY_FLAGS = -config-file='.clang-tidy'
-else
-	CLANG_TIDY_FLAGS = -config=
-endif
-
+CLANG_TIDY_FLAGS = -config-file='.clang-tidy'
 CLANG_TIDY_FLAGS += -header-filter='.*'
 CLANG_TIDY_FLAGS += --
 CLANG_TIDY_FLAGS += $(if $(standard),-std=$(standard),)
@@ -145,25 +140,9 @@ ifeq "$(USING_LIBASAN)" "true"
 	CXXFLAGS += -fsanitize=address -fsanitize-address-use-after-scope
 endif
 
-	CXXFLAGS += $(if $(filter		\
-	clang,$(cxx_family)),-fcoverage-mapping	\
-	-fprofile-instr-generate,)
-
 endif
 
-ifeq "$(cxx_family)" "clang"
-
-ifeq "$(call compare-versions,$(cxx_version),15)" "greater"
-	CXXFLAGS += -ftrivial-auto-var-init=zero
-endif
-
-else
-
-ifeq "$(call compare-versions,$(cxx_version),12)" "greater"
-	CXXFLAGS += -ftrivial-auto-var-init=zero
-endif
-
-endif
+CXXFLAGS += -ftrivial-auto-var-init=zero
 
 ifndef NDEBUG
 
