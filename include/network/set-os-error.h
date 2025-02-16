@@ -13,12 +13,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/reset-last-context-error.h"   // reset_last_context_error()
-#include "network/set-last-context-error.h"     // set_last_context_error()
+#ifndef NETWORK_SET_OS_ERROR_H
+#define NETWORK_SET_OS_ERROR_H
 
-auto Network::reset_last_context_error() -> int
+#include "network/os-error-type.h"      // os_error_type
+
+namespace Network
 {
-    const int error_code {0};
-    set_last_context_error(error_code);
-    return error_code;
+    extern auto set_os_error(os_error_type os_error_code) -> os_error_type;
 }
+
+#endif

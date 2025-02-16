@@ -13,16 +13,15 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifdef WIN32
+#ifndef WIN32
 
-#include "network/set-last-context-error.h"     // set_last_context_error()
+#include "network/get-api-error.h"     // get_api_error()
 
-#include <winsock2.h>       // WSASetLastError()
+#include <cerrno>           // errno
 
-auto Network::set_last_context_error(int error_code) -> int
+auto Network::get_api_error() -> int
 {
-    ::WSASetLastError(error_code);
-    return error_code;
+    return errno;
 }
 
 #endif

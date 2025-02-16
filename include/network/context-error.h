@@ -16,8 +16,8 @@
 #ifndef NETWORK_CONTEXT_ERROR_H
 #define NETWORK_CONTEXT_ERROR_H
 
-#include "network/get-last-context-error.h"     // get_last_context_error()
-#include "network/reset-last-context-error.h"   // reset_last_context_error()
-#include "network/set-last-context-error.h"     // set_last_context_error()
+#include "network/get-api-error.h"      // get_api_error()
+#include "network/reset-api-error.h"    // reset_api_error()
+#include "network/set-api-error.h"      // set_api_error()
 
 #endif

@@ -15,14 +15,14 @@
 
 #ifndef WIN32
 
-#include "network/read.h"                       // read()
-#include "network/error.h"                      // Error
-#include "network/format-os-error.h"            // format_os_error()
-#include "network/get-last-context-error.h"     // get_last_context_error()
-#include "network/handle-type.h"                // handle_type
-#include "network/reset-last-context-error.h"   // reset_last_context_error()
-#include "network/socket-error.h"               // socket_error
-#include "network/to-os-error.h"                // to_os_error()
+#include "network/read.h"               // read()
+#include "network/error.h"              // Error
+#include "network/format-os-error.h"    // format_os_error()
+#include "network/get-api-error.h"      // get_api_error()
+#include "network/handle-type.h"        // handle_type
+#include "network/reset-api-error.h"    // reset_api_error()
+#include "network/socket-error.h"       // socket_error
+#include "network/to-os-error.h"        // to_os_error()
 
 #include <sys/types.h>          // ssize_t
 
@@ -48,11 +48,11 @@ auto Network::read(handle_type handle,
                   << std::endl;
     }
 
-    reset_last_context_error();
+    reset_api_error();
     const auto result {::read(handle, data, size)};
 
     if (result == socket_error) {
-        const auto error {get_last_context_error()};
+        const auto error {get_api_error()};
         const auto os_error {to_os_error(error)};
         std::ostringstream oss;
         oss << "Call to ::read("

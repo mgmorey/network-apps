@@ -13,14 +13,12 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_GET_LAST_OS_ERROR_H
-#define NETWORK_GET_LAST_OS_ERROR_H
-
-#include "network/os-error-type.h"      // os_error_type
+#ifndef NETWORK_SET_API_ERROR_H
+#define NETWORK_SET_API_ERROR_H
 
 namespace Network
 {
-    extern auto get_last_os_error() -> os_error_type;
+    extern auto set_api_error(int error_code) -> int;
 }
 
 #endif

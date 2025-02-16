@@ -17,12 +17,12 @@
 #include "network/addresserror.h"               // AddressError
 #include "network/addressstring.h"              // AddressString
 #include "network/format-os-error.h"            // format_os_error()
-#include "network/get-last-context-error.h"     // get_last_context_error()
+#include "network/get-api-error.h"              // get_api_error()
 #include "network/get-sa-span.h"                // get_sa_span()
 #include "network/openhandleparams.h"           // OpenHandleParams
 #include "network/openhandler.h"                // OpenHandler
 #include "network/oserrorresult.h"              // OsErrorResult
-#include "network/reset-last-context-error.h"   // reset_last_context_error()
+#include "network/reset-api-error.h"            // reset_api_error()
 #include "network/sa-length-limits.h"           // sa_length_min
 #include "network/socket-error.h"               // socket_error
 #include "network/to-os-error.h"                // to_os_error()
@@ -78,10 +78,10 @@ auto Network::open(const OpenHandleParams& args, bool is_bind) -> OsErrorResult
                   << std::endl;
     }
 
-    reset_last_context_error();
+    reset_api_error();
 
     if (binding.first(handle, addr_ptr, addr_len) == socket_error) {
-        const auto error {get_last_context_error()};
+        const auto error {get_api_error()};
         const auto os_error {to_os_error(error)};
         std::ostringstream oss;
         oss << "Call to "

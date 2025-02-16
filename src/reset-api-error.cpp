@@ -13,14 +13,12 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_SET_LAST_OS_ERROR_H
-#define NETWORK_SET_LAST_OS_ERROR_H
+#include "network/reset-api-error.h"    // reset_api_error()
+#include "network/set-api-error.h"      // set_api_error()
 
-#include "network/os-error-type.h"      // os_error_type
-
-namespace Network
+auto Network::reset_api_error() -> int
 {
-    extern auto set_last_os_error(os_error_type os_error_code) -> os_error_type;
+    const int error_code {0};
+    set_api_error(error_code);
+    return error_code;
 }
-
-#endif

@@ -16,9 +16,9 @@
 #ifndef NETWORK_OS_ERROR_H
 #define NETWORK_OS_ERROR_H
 
-#include "network/format-os-error.h"            // format_os_error()
-#include "network/get-last-os-error.h"          // get_last_os_error()
-#include "network/reset-last-os-error.h"        // reset_last_os_error()
-#include "network/set-last-os-error.h"          // set_last_os_error()
+#include "network/format-os-error.h"    // format_os_error()
+#include "network/get-os-error.h"       // get_os_error()
+#include "network/reset-os-error.h"     // reset_os_error()
+#include "network/set-os-error.h"       // set_os_error()
 
 #endif

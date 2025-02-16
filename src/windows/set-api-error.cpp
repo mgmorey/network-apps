@@ -13,12 +13,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_RESET_LAST_CONTEXT_ERROR_H
-#define NETWORK_RESET_LAST_CONTEXT_ERROR_H
+#ifdef WIN32
 
-namespace Network
+#include "network/set-api-error.h"      // set_api_error()
+
+#include <winsock2.h>       // WSASetLastError()
+
+auto Network::set_api_error(int error_code) -> int
 {
-    extern auto reset_last_context_error() -> int;
+    ::WSASetLastError(error_code);
+    return error_code;
 }
 
 #endif

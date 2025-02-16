@@ -13,12 +13,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_GET_LAST_CONTEXT_ERROR_H
-#define NETWORK_GET_LAST_CONTEXT_ERROR_H
+#ifndef WIN32
 
-namespace Network
+#include "network/set-api-error.h"     // set_api_error()
+
+#include <cerrno>           // errno
+
+auto Network::set_api_error(int error_code) -> int
 {
-    extern auto get_last_context_error() -> int;
+    errno = error_code;
+    return error_code;
 }
 
 #endif

@@ -15,17 +15,16 @@
 
 #ifdef WIN32
 
-#include "network/stop.h"                       // stop()
-#include "network/failuremode.h"                // FailureMode
-
-#include "network/error.h"                      // Error
-#include "network/format-os-error.h"            // format_os_error()
-#include "network/get-last-context-error.h"     // get_last_context_error()
-#include "network/logicerror.h"                 // LogicError
-#include "network/reset-last-context-error.h"   // reset_last_context_error()
-#include "network/runtimeerror.h"               // RuntimeError
-#include "network/socket-error.h"               // socket_error
-#include "network/to-os-error.h"                // to_os_error()
+#include "network/stop.h"               // stop()
+#include "network/error.h"              // Error
+#include "network/failuremode.h"        // FailureMode
+#include "network/format-os-error.h"    // format_os_error()
+#include "network/get-api-error.h"      // get_api_error()
+#include "network/logicerror.h"         // LogicError
+#include "network/reset-api-error.h"    // reset_api_error()
+#include "network/runtimeerror.h"       // RuntimeError
+#include "network/socket-error.h"       // socket_error
+#include "network/to-os-error.h"        // to_os_error()
 
 #include <winsock2.h>       // WSAEINPROGRESS, WSAENETDOWN, WSANOTINITIALISED,
                             // ::WSACleanup()
@@ -35,7 +34,7 @@
 
 auto Network::stop(FailureMode mode, bool is_verbose) -> int
 {
-    reset_last_context_error();
+    reset_api_error();
 
     if (is_verbose) {
         std::cout << "Stopping the network runtime.\n"
@@ -44,7 +43,7 @@ auto Network::stop(FailureMode mode, bool is_verbose) -> int
     }
 
     if (::WSACleanup() == socket_error) {
-        const auto error {get_last_context_error()};
+        const auto error {get_api_error()};
         const auto os_error {to_os_error(error)};
         const auto message {format_os_error(os_error)};
 

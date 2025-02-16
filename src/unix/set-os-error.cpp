@@ -13,12 +13,17 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_SET_LAST_CONTEXT_ERROR_H
-#define NETWORK_SET_LAST_CONTEXT_ERROR_H
+#ifndef WIN32
 
-namespace Network
+#include "network/set-os-error.h"  // set_os_error()
+#include "network/os-error-type.h"      // os_error_type
+
+#include <cerrno>           // errno
+
+auto Network::set_os_error(os_error_type os_error_code) -> os_error_type
 {
-    extern auto set_last_context_error(int error_code) -> int;
+    errno = os_error_code;
+    return os_error_code;
 }
 
 #endif

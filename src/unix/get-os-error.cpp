@@ -13,18 +13,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifdef WIN32
+#ifndef WIN32
 
-#include "network/set-last-os-error.h"  // set_last_os_error()
-#include "network/os-error-type.h"      // os_error_type
+#include "network/get-os-error.h"          // get_os_error()
+#include "network/os-error-type.h"              // os_error_type
 
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>        // ::SetLastError()
+#include <cerrno>           // errno
 
-auto Network::set_last_os_error(os_error_type os_error_code) -> os_error_type
+auto Network::get_os_error() -> os_error_type
 {
-    ::SetLastError(os_error_code);
-    return os_error_code;
+    return errno;
 }
 
 #endif

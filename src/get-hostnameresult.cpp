@@ -16,12 +16,12 @@
 #include "network/get-hostnameresult.h"         // get_hostname()
 #include "network/buffer.h"                     // Buffer
 #include "network/format-os-error.h"            // format_os_error()
-#include "network/get-last-context-error.h"     // get_last_context_error()
+#include "network/get-api-error.h"              // get_api_error()
 #include "network/hostname-length-limits.h"     // hostname_length_max
 #include "network/hostname.h"                   // Hostname
 #include "network/hostnameresult.h"             // HostnameResult
 #include "network/oserrorresult.h"              // OsErrorResult
-#include "network/reset-last-context-error.h"   // reset_last_context_error()
+#include "network/reset-api-error.h"            // reset_api_error()
 #include "network/to-name-length.h"             // to_name_length()
 #include "network/to-os-error.h"                // to_os_error()
 
@@ -48,10 +48,10 @@ auto Network::get_hostnameresult(bool is_verbose) -> HostnameResult
                   << std::endl;
     }
 
-    reset_last_context_error();
+    reset_api_error();
 
     if (::gethostname(buffer.data(), to_name_length(buffer.size())) == -1) {
-        const auto error {get_last_context_error()};
+        const auto error {get_api_error()};
         const auto os_error {to_os_error(error)};
         std::ostringstream oss;
         oss << "Call to ::gethostname("

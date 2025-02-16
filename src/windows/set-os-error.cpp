@@ -15,15 +15,16 @@
 
 #ifdef WIN32
 
-#include "network/get-last-os-error.h"          // get_last_os_error()
-#include "network/os-error-type.h"              // os_error_type
+#include "network/set-os-error.h"       // set_os_error()
+#include "network/os-error-type.h"      // os_error_type
 
 #define WIN32_LEAN_AND_MEAN
-#include <windows.h>        // ::GetLastError()
+#include <windows.h>        // ::SetLastError()
 
-auto Network::get_last_os_error() -> os_error_type
+auto Network::set_os_error(os_error_type os_error_code) -> os_error_type
 {
-    return ::GetLastError();
+    ::SetLastError(os_error_code);
+    return os_error_code;
 }
 
 #endif

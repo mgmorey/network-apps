@@ -13,17 +13,12 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef WIN32
+#ifndef NETWORK_GET_API_ERROR_H
+#define NETWORK_GET_API_ERROR_H
 
-#include "network/set-last-os-error.h"  // set_last_os_error()
-#include "network/os-error-type.h"      // os_error_type
-
-#include <cerrno>           // errno
-
-auto Network::set_last_os_error(os_error_type os_error_code) -> os_error_type
+namespace Network
 {
-    errno = os_error_code;
-    return os_error_code;
+    extern auto get_api_error() -> int;
 }
 
 #endif

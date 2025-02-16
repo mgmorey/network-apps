@@ -13,20 +13,20 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/accept.h"                     // accept()
-#include "network/acceptresult.h"               // AcceptResult
-#include "network/addressstring.h"              // AddressString
-#include "network/buffer.h"                     // Buffer
-#include "network/bytestring.h"                 // ByteString
-#include "network/error.h"                      // Error
-#include "network/format-os-error.h"            // format_os_error()
-#include "network/get-last-context-error.h"     // get_last_context_error()
-#include "network/get-sa-span.h"                // get_sa_span()
-#include "network/handle-null.h"                // handle_null
-#include "network/reset-last-context-error.h"   // reset_last_context_error()
-#include "network/sa-length-limits.h"           // sa_length_max
-#include "network/to-os-error.h"                // to_os_error()
-#include "network/to-size.h"                    // to_size()
+#include "network/accept.h"             // accept()
+#include "network/acceptresult.h"       // AcceptResult
+#include "network/addressstring.h"      // AddressString
+#include "network/buffer.h"             // Buffer
+#include "network/bytestring.h"         // ByteString
+#include "network/error.h"              // Error
+#include "network/format-os-error.h"    // format_os_error()
+#include "network/get-api-error.h"      // get_api_error()
+#include "network/get-sa-span.h"        // get_sa_span()
+#include "network/handle-null.h"        // handle_null
+#include "network/reset-api-error.h"    // reset_api_error()
+#include "network/sa-length-limits.h"   // sa_length_max
+#include "network/to-os-error.h"        // to_os_error()
+#include "network/to-size.h"            // to_size()
 
 #ifdef WIN32
 #include <winsock2.h>       // ::accept()
@@ -58,11 +58,11 @@ auto Network::accept(const Socket& sock) -> AcceptResult
                   << std::endl;
     }
 
-    reset_last_context_error();
+    reset_api_error();
     const auto handle_2 {::accept(handle_1, addr_ptr, &addr_len)};
 
     if (handle_2 == handle_null) {
-        const auto error {get_last_context_error()};
+        const auto error {get_api_error()};
         const auto os_error {to_os_error(error)};
         std::ostringstream oss;
         oss << "Call to ::accept("

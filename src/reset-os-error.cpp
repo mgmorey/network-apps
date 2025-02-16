@@ -13,16 +13,13 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef WIN32
+#include "network/reset-os-error.h"     // reset_os_error()
+#include "network/os-error-type.h"      // os_error_type
+#include "network/set-os-error.h"       // set_os_error()
 
-#include "network/set-last-context-error.h"     // set_last_context_error()
-
-#include <cerrno>           // errno
-
-auto Network::set_last_context_error(int error_code) -> int
+auto Network::reset_os_error() -> os_error_type
 {
-    errno = error_code;
-    return error_code;
+    const os_error_type os_error_code {0};
+    set_os_error(os_error_code);
+    return os_error_code;
 }
-
-#endif

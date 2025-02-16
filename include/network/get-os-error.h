@@ -13,15 +13,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef WIN32
+#ifndef NETWORK_GET_OS_ERROR_H
+#define NETWORK_GET_OS_ERROR_H
 
-#include "network/get-last-context-error.h"     // get_last_context_error()
+#include "network/os-error-type.h"      // os_error_type
 
-#include <cerrno>           // errno
-
-auto Network::get_last_context_error() -> int
+namespace Network
 {
-    return errno;
+    extern auto get_os_error() -> os_error_type;
 }
 
 #endif
