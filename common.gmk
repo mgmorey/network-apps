@@ -14,7 +14,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 # Define variables for operating system identifiers
-os_label_data := $(shell $(script_dir)/get-os-release -iko)
+os_label_data := $(shell $(script_dir)/get-os-release -ik)
 os_macro_data := $(shell $(script_dir)/format-constant $(os_label_data))
 
 # Define variables for tool family and features
@@ -39,7 +39,6 @@ ctags_is_universal := $(shell $(script_dir)/is-ctags-universal ctags)
 # Define variables for OS ID and kernel
 os_label_id = $(word 1,$(os_label_data))
 os_label_kernel = $(word 2,$(os_label_data))
-os_macro_id = $(word 1,$(os_macro_data))
 os_macro_kernel = $(word 2,$(os_macro_data))
 
 # Local Variables:

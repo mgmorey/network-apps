@@ -96,8 +96,7 @@ ifeq "$(USING_DMALLOC)" "true"
 	cpp_symbols += DMALLOC DMALLOC_FUNC_CHECK
 endif
 
-cpp_symbols += OS_$(os_macro_kernel) $(if $(filter	\
-Linux,$(os_label_kernel)),OS_LINUX_$(os_macro_id),)
+cpp_symbols += OS_$(os_macro_kernel)
 
 ifeq "$(os_label_kernel)" "CYGWIN_NT"
 	cpp_symbols += _GNU_SOURCE
