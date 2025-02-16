@@ -58,10 +58,10 @@ include funcs.gmk
 # Define variables for API and OS
 api = $(if $(is_windows_api),windows,unix)
 install = $(if $(is_unix),ginstall,install)
-is_posix = $(filter $(os_id_name),FreeBSD Linux)
-is_unix = $(filter $(os_id_name),Darwin FreeBSD)
-is_windows_api = $(filter $(os_id_name),MINGW64_NT)
-is_windows_os = $(filter $(os_id_dist),windows)
+is_posix = $(filter $(os_label_kernel),FreeBSD Linux)
+is_unix = $(filter $(os_label_kernel),Darwin FreeBSD)
+is_windows_api = $(filter $(os_label_kernel),MINGW64_NT)
+is_windows_os = $(filter $(os_label_id),windows)
 
 # Define variables for version components
 major = $(word 1,$(subst ., ,$(VERSION)))

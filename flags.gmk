@@ -96,14 +96,14 @@ ifeq "$(USING_DMALLOC)" "true"
 	cpp_symbols += DMALLOC DMALLOC_FUNC_CHECK
 endif
 
-cpp_symbols += OS_$(os_macro_name) $(if $(filter	\
-Linux,$(os_id_name)),OS_LINUX_$(os_macro_dist),)
+cpp_symbols += OS_$(os_macro_kernel) $(if $(filter	\
+Linux,$(os_label_kernel)),OS_LINUX_$(os_macro_id),)
 
-ifeq "$(os_id_name)" "CYGWIN_NT"
+ifeq "$(os_label_kernel)" "CYGWIN_NT"
 	cpp_symbols += _GNU_SOURCE
-else ifeq "$(os_id_name)" "Darwin"
+else ifeq "$(os_label_kernel)" "Darwin"
 	cpp_symbols += _DARWIN_C_SOURCE
-else ifeq "$(os_id_name)" "MINGW64_NT"
+else ifeq "$(os_label_kernel)" "MINGW64_NT"
 	cpp_symbols += WIN32
 endif
 
@@ -215,7 +215,7 @@ LDFLAGS += $(if $(is_shared),-shared,)
 
 # LDLIBS
 
-LDLIBS += $(if $(filter $(os_id_name),MINGW64_NT),-lws2_32,)
+LDLIBS += $(if $(filter $(os_label_kernel),MINGW64_NT),-lws2_32,)
 
 # Local Variables:
 # mode: makefile
