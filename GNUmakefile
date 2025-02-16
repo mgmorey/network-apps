@@ -14,20 +14,12 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 # Define variables for customization
-
-ifeq "$(USING_CLANG)" "true"
-	CC := clang$(LLVM_SUFFIX)
-	CXX := clang++$(LLVM_SUFFIX)
-	CLANG_TIDY := clang-tidy$(LLVM_SUFFIX)
-else
-	CLANG_TIDY := false
-endif
-
 GCOVR_HTML_THEME ?= green
 TMPDIR ?= /tmp
 
 # Define variables for project
-OUTPUT_DIR ?= .
+BUILD_DIR ?= .
+BUILD_TYPE ?= Debug
 PREFIX ?= ~/.local
 VERSION ?= 0.0.1
 
@@ -42,8 +34,8 @@ cache_dir := .cache
 coverage_dir := coverage
 cppcheck_dir := $(cache_dir)/cppcheck
 depend_dir := $(cache_dir)/dependency
-object_dir := $(OUTPUT_DIR)/object
-output_dir := $(OUTPUT_DIR)
+object_dir := $(BUILD_DIR)/object
+output_dir := $(BUILD_DIR)
 
 # Define variables for include and source directories
 include_dir := include

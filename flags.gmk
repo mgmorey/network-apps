@@ -101,13 +101,13 @@ else ifeq "$(os_label_kernel)" "MINGW64_NT"
 	cpp_symbols += WIN32
 endif
 
-ifdef NDEBUG
+ifeq "$(BUILD_TYPE)" "Release"
 	cpp_symbols += _FORTIFY_SOURCE=2
 endif
 
 cpp_symbols += _GLIBCXX_ASSERTIONS
 
-ifndef NDEBUG
+ifeq "$(BUILD_TYPE)" "Debug"
 	cpp_symbols += _GLIBCXX_DEBUG
 endif
 
@@ -126,13 +126,13 @@ endif
 
 # CXXFLAGS
 
-ifndef NDEBUG
+ifeq "$(BUILD_TYPE)" "Debug"
 	CXXFLAGS += --coverage
 endif
 
 CXXFLAGS += -fPIC
 
-ifndef NDEBUG
+ifeq "$(BUILD_TYPE)" "Debug"
 
 	CXXFLAGS += -fno-omit-frame-pointer
 
@@ -144,7 +144,7 @@ endif
 
 CXXFLAGS += -ftrivial-auto-var-init=zero
 
-ifndef NDEBUG
+ifeq "$(BUILD_TYPE)" "Debug"
 
 ifeq "$(USING_VALGRIND)" "true"
 	CXXFLAGS += -gdwarf-4
@@ -152,7 +152,7 @@ endif
 
 	CXXFLAGS += $(if $(filter gnu,$(cxx_family)),-ggdb,-g3) -O0
 
-else
+else ifeq "$(BUILD_TYPE)" "Release"
 
 	CXXFLAGS += -O2
 
@@ -164,7 +164,7 @@ CXXFLAGS += -Wall -Werror -Wextra -Wshadow -Wsign-conversion
 
 # LDFLAGS
 
-ifndef NDEBUG
+ifeq "$(BUILD_TYPE)" "Debug"
 
 	LDFLAGS += --coverage
 

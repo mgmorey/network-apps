@@ -13,6 +13,13 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+# Override variables for tools
+ifeq "$(USING_CLANG)" "true"
+	CC := clang$(LLVM_SUFFIX)
+	CXX := clang++$(LLVM_SUFFIX)
+	CLANG_TIDY := clang-tidy$(LLVM_SUFFIX)
+endif
+
 # Define variables for operating system identifiers
 os_labels := $(shell $(script_dir)/get-os-release -ik)
 os_macros := $(shell $(script_dir)/uppercase $(os_labels))
