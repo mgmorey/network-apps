@@ -14,8 +14,8 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 # Define variables for operating system identifiers
-os_label_data := $(shell $(script_dir)/get-os-release -ik)
-os_macro_data := $(shell $(script_dir)/format-constant $(os_label_data))
+os_labels := $(shell $(script_dir)/get-os-release -ik)
+os_macros := $(shell $(script_dir)/uppercase $(os_labels))
 
 # Define variables for tool family and features
 as_family := $(shell $(script_dir)/get-as-family $(AS))
@@ -24,22 +24,13 @@ cxx_family := $(shell $(script_dir)/get-cc-family $(CXX))
 ld_family := $(shell $(script_dir)/get-ld-family $(LD))
 ld_features := $(shell $(script_dir)/get-features $(LD))
 
-# Define variables for compiler version
-cxx_version := $(shell $(script_dir)/which-version $(CXX))
-
-# Define variables for utility versions
-clang_tidy_version := $(shell $(script_dir)/which-version	\
-$(CLANG_TIDY) 2>/dev/null)
-cppcheck_version := $(shell $(script_dir)/which-version cppcheck)
-ctags_version := $(shell $(script_dir)/which-version ctags)
-
 # Define variable for Universal Ctags predicate
-ctags_is_universal := $(shell $(script_dir)/is-ctags-universal ctags)
+is_universal_ctags := $(shell $(script_dir)/is-universal-ctags ctags)
 
 # Define variables for OS ID and kernel
-os_label_id = $(word 1,$(os_label_data))
-os_label_kernel = $(word 2,$(os_label_data))
-os_macro_kernel = $(word 2,$(os_macro_data))
+os_label_id = $(word 1,$(os_labels))
+os_label_kernel = $(word 2,$(os_labels))
+os_macro_kernel = $(word 2,$(os_macros))
 
 # Local Variables:
 # mode: makefile

@@ -15,11 +15,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-is_ctags_universal() {
+is_universal_ctags() {
     "$1" --version 2>/dev/null | grep -Eq '^Universal Ctags '
 }
 
-if is_ctags_universal "${1-as}"; then
+if is_universal_ctags "${1-as}"; then
     result=true
 else
     result=false

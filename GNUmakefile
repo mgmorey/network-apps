@@ -205,10 +205,8 @@ $(is_windows_api),dos2unix,)
 
 build_targets = assert dataclean objects libraries programs sizes
 
-ifeq "$(ctags_is_universal)" "true"
-ifeq "$(call compare-versions,$(ctags_version),5.8)" "greater"
+ifeq "$(is_universal_ctags)" "true"
 	build_targets += tags
-endif
 endif
 
 # Define variable for timestamp files
