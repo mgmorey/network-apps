@@ -18,6 +18,8 @@ ifeq "$(USING_CLANG)" "true"
 	CC := clang$(LLVM_SUFFIX)
 	CXX := clang++$(LLVM_SUFFIX)
 	CLANG_TIDY := clang-tidy$(LLVM_SUFFIX)
+else
+	CLANG_TIDY := $(shell which clang-tidy 2>/dev/null)
 endif
 
 # Define variables for operating system identifiers

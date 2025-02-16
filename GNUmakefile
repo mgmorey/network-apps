@@ -13,15 +13,15 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-# Define variables for customization
-GCOVR_HTML_THEME ?= green
-TMPDIR ?= /tmp
-
-# Define variables for project
+# Define variables for project defaults
 BUILD_DIR ?= .
 BUILD_TYPE ?= Debug
 PREFIX ?= ~/.local
 VERSION ?= 0.0.1
+
+# Define variables for other defaults
+GCOVR_HTML_THEME ?= green
+TMPDIR ?= /tmp
 
 # Define variables for language and standard
 language := c++
@@ -314,7 +314,7 @@ tarfile: $(tarfile)
 test: $(test_programs)
 	$(call run-test-programs,$(^F),$(program_args))
 
-ifdef CLANG_TIDY
+ifneq "$(CLANG_TIDY)" ""
 .PHONY: tidy
 tidy: $(sources)
 	$(CLANG_TIDY) $(sort $^) $(CLANG_TIDY_FLAGS)
