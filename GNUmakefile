@@ -16,7 +16,7 @@
 # Define variables for project defaults
 BUILD_DIR ?= .
 BUILD_TYPE ?= Debug
-PREFIX ?= ~/.local
+INSTALL_PREFIX ?= ~/.local
 VERSION ?= 0.0.1
 
 # Define variables for other defaults
@@ -286,7 +286,7 @@ dos2unix:
 
 .PHONY: install
 install: $(libraries) $(programs)
-	$(call install-files,$(PREFIX))
+	$(call install-files,$(INSTALL_PREFIX))
 
 .PHONY: libraries
 libraries: $(libraries)
