@@ -15,12 +15,10 @@
 
 # Override variables for tools
 ifeq "$(USING_CLANG)" "true"
-	CC := clang$(LLVM_SUFFIX)
-	CXX := clang++$(LLVM_SUFFIX)
-	CLANG_TIDY := clang-tidy$(LLVM_SUFFIX)
-else
-	CLANG_TIDY := $(shell which clang-tidy 2>/dev/null)
+	CXX := $(shell which clang++$(LLVM_SUFFIX) 2>/dev/null)
 endif
+
+CLANG_TIDY := $(shell which clang-tidy$(LLVM_SUFFIX) 2>/dev/null)
 
 # Define variables for operating system identifiers
 os_labels := $(shell $(script_dir)/get-os-release -ik)
