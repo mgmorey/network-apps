@@ -62,8 +62,8 @@ auto Network::accept(const Socket& sock) -> AcceptResult
     const auto handle_2 {::accept(handle_1, addr_ptr, &addr_len)};
 
     if (handle_2 == handle_null) {
-        const auto error {get_api_error()};
-        const auto os_error {to_os_error(error)};
+        const auto api_error {get_api_error()};
+        const auto os_error {to_os_error(api_error)};
         std::ostringstream oss;
         oss << "Call to ::accept("
             << handle_1
@@ -72,7 +72,7 @@ auto Network::accept(const Socket& sock) -> AcceptResult
             << ", "
             << addr_len
             << ", ...) failed with error "
-            << error
+            << api_error
             << ": "
             << format_os_error(os_error);
         throw Error(oss.str());

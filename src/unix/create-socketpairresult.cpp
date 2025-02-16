@@ -65,8 +65,8 @@ auto Network::create_socketpairresult(const SocketHints& hints,
                      hints.m_socktype,
                      hints.m_protocol,
                      handles.data()) == socket_error) {
-        const auto error {get_api_error()};
-        const auto os_error {to_os_error(error)};
+        const auto api_error {get_api_error()};
+        const auto os_error {to_os_error(api_error)};
         std::ostringstream oss;
         oss << "Call to ::socketpair("
             << Format("domain")
@@ -76,7 +76,7 @@ auto Network::create_socketpairresult(const SocketHints& hints,
             << Format(delim, tab, "protocol")
             << SocketProtocol(hints.m_protocol, hints.m_family)
             << ", ...) failed with error "
-            << error
+            << api_error
             << ": "
             << format_os_error(os_error);
         return OsErrorResult {os_error, oss.str()};

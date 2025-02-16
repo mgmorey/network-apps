@@ -51,15 +51,15 @@ auto Network::get_hostnameresult(bool is_verbose) -> HostnameResult
     reset_api_error();
 
     if (::gethostname(buffer.data(), to_name_length(buffer.size())) == -1) {
-        const auto error {get_api_error()};
-        const auto os_error {to_os_error(error)};
+        const auto api_error {get_api_error()};
+        const auto os_error {to_os_error(api_error)};
         std::ostringstream oss;
         oss << "Call to ::gethostname("
             << std::string(buffer)
             << ", "
             << buffer.size()
             << ") failed with error "
-            << error
+            << api_error
             << ": "
             << format_os_error(os_error);
         return OsErrorResult {os_error, oss.str()};

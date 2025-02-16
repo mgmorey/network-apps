@@ -42,15 +42,15 @@ auto Network::close(handle_type handle, bool is_verbose) -> OsErrorResult
     const auto result {close_function_pointer(handle)};
 
     if (result == socket_error) {
-        const auto error {get_api_error()};
-        const auto os_error {to_os_error(error)};
+        const auto api_error {get_api_error()};
+        const auto os_error {to_os_error(api_error)};
         std::ostringstream oss;
         oss << "Call to "
             << close_function_name
             << '('
             << handle
             << ") failed with error "
-            << error
+            << api_error
             << ": "
             << format_os_error(os_error);
         return OsErrorResult {os_error, oss.str()};

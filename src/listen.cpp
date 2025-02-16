@@ -47,15 +47,15 @@ auto Network::listen(handle_type handle, int backlog, bool is_verbose) ->
     const auto result {::listen(handle, backlog)};
 
     if (result == socket_error) {
-        const auto error {get_api_error()};
-        const auto os_error {to_os_error(error)};
+        const auto api_error {get_api_error()};
+        const auto os_error {to_os_error(api_error)};
         std::ostringstream oss;
         oss << "Call to ::listen("
             << handle
             << ", "
             << backlog
             << ") failed with error "
-            << error
+            << api_error
             << ": "
             << format_os_error(os_error);
         return OsErrorResult {os_error, oss.str()};

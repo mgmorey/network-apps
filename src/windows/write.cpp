@@ -52,8 +52,8 @@ auto Network::write(handle_type handle,
     const auto result {::send(handle, data, static_cast<int>(size), 0)};
 
     if (result == socket_error) {
-        const auto error {get_api_error()};
-        const auto os_error {to_os_error(error)};
+        const auto api_error {get_api_error()};
+        const auto os_error {to_os_error(api_error)};
         std::ostringstream oss;
         oss << "Call to ::send("
             << handle
@@ -62,7 +62,7 @@ auto Network::write(handle_type handle,
             << "\", "
             << size
             << ", 0) failed with error "
-            << error
+            << api_error
             << ": "
             << format_os_error(os_error);
         throw Error(oss.str());
