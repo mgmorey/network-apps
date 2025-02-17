@@ -14,18 +14,18 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 define clean-artifacts
-$(strip printf '%s\n' $(call tidy-files,$(filter-out		\
+$(strip printf '%s\n' $(call tidy-files,$(wildcard $(filter-out	\
 $(cache_dir)/%,$(filter-out $(coverage_dir)/%,$(filter-out	\
-$(object_dir)/%,$1) $(build_dirs)))) | xargs -r rm -rf)
+$(object_dir)/%,$1) $(build_dirs))))) | xargs -r rm -rf)
 endef
 
 define clean-build
-$(strip printf '%s\n' $(call tidy-files,$(filter-out		\
-$(object_dir)/%,$1) $(object_dir)) | xargs -r rm -rf)
+$(strip printf '%s\n' $(call tidy-files,$(wildcard $(filter-out	\
+$(object_dir)/%,$1) $(object_dir))) | xargs -r rm -rf)
 endef
 
 define clean-files
-$(strip printf '%s\n' $(call tidy-files,$1) | xargs -r rm -f)
+$(strip printf '%s\n' $(call tidy-files,$(wildcard $1)) | xargs -r rm -f)
 endef
 
 define create-tarfile
@@ -35,7 +35,7 @@ tar -C $1 -acf $2 .
 endef
 
 define dos-to-unix
-printf '%s\n' $(call tidy-files,$1) | xargs dos2unix -q
+$(strip printf '%s\n' $(call tidy-files,$(wildcard $1)) | xargs dos2unix -q)
 endef
 
 define get-dependencies
@@ -54,22 +54,23 @@ $(binary_suffix),$(basename $1)))
 endef
 
 define install-aliases
-$(if $(filter .,$1),,cd $1 && )$(foreach		\
+$(strip $(if $(filter .,$1),,cd $1 && )$(foreach	\
 suffix,$(alias_suffixes),ln -sf $(addprefix		\
-$(library_file),$(shared_suffix) $(suffix)) && )true
+$(library_file),$(shared_suffix) $(suffix)) && )true)
 endef
 
 define install-files
 $(install) -d $(addprefix $1/,bin include/network lib)
 $(install) -m u=rw,go=r $(include_files) $1/include/network
-$(install) -m u=rwx,go=rx $(shared_library) $(static_library) $1/lib
-$(install) -m u=rwx,go=rx $(programs) $1/bin
+$(install) -m u=rwx,go=rx $(call tidy-files,$(shared_library)	\
+$(static_library)) $1/lib
+$(install) -m u=rwx,go=rx $(call tidy-files,$(programs)) $1/bin
 $(call install-aliases,$1/lib)
 endef
 
 define make-rule
 $(CXX) $(CPPFLAGS) -MM $< | $(script_dir)/make-rule -d	\
-$(patsubst ./%,%,$(object_dir)) -o $@ $(tags)
+$(call tidy-files,$(object_dir)) -o $@ $(tags)
 endef
 
 define run-programs
@@ -85,7 +86,7 @@ $(call run-programs,.unix-complete,$1,$2)
 endef
 
 define tidy-files
-$(strip $(sort $(wildcard $(patsubst ./%,%,$1))))
+$(sort $(patsubst ./%,%,$1))
 endef
 
 # Local Variables:
