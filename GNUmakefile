@@ -50,6 +50,8 @@ include funcs.gmk
 # Define variables for API and OS
 api = $(if $(is_windows_api),windows,unix)
 install = $(if $(is_unix),ginstall,install)
+is_darwin_source = $(filter $(os_label_kernel),Darwin)
+is_gnu_source = $(filter $(os_label_kernel),CYGWIN_NT)
 is_posix = $(filter $(os_label_kernel),FreeBSD Linux)
 is_unix = $(filter $(os_label_kernel),Darwin FreeBSD)
 is_windows_api = $(filter $(os_label_kernel),MINGW64_NT)
