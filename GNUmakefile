@@ -177,8 +177,8 @@ stackdumps = $(programs:$(binary_suffix)=.stackdump)
 artifacts = $(binary_artifacts) $(text_artifacts)
 binary_artifacts = $(coverage_files) $(libraries) $(objects)	\
 $(programs) $(tags) $(tarfile)
-build_artifacts = $(coverage_files) $(libraries) $(objects)	\
-$(programs) $(timestamps)
+build_artifacts = $(coverage_files) $(libraries) $(mapfiles)	\
+$(objects) $(programs) $(timestamps)
 text_artifacts = $(compile_commands) $(cppchecklog) $(dependencies)	\
 $(gcovtext) $(listings) $(logfiles) $(mapfiles) $(stackdumps)		\
 $(sizes) $(timestamps)
