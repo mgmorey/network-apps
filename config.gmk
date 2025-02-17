@@ -34,11 +34,6 @@ ld_features := $(shell $(script_dir)/get-features $(LD))
 # Define variable for Universal Ctags predicate
 is_universal_ctags := $(shell $(script_dir)/is-universal-ctags ctags)
 
-# Define variables for OS ID and kernel
-os_label_id = $(word 1,$(os_labels))
-os_label_kernel = $(word 2,$(os_labels))
-os_macro_kernel = $(word 2,$(os_macros))
-
 # Local Variables:
 # mode: makefile
 # End:
