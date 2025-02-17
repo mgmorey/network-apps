@@ -188,7 +188,7 @@ LDLIBS += $(if $(filter $(os_label_kernel),MINGW64_NT),-lws2_32,)
 
 # Define functions to compute flag values
 
-# Define functions to format assembler/linker flags for the compiler
+# Define functions to format assembler/linker flags
 format-as-flag = $(call format-flag,$(as_family),$1,$2)
 format-ld-flag = $(call format-flag,$(ld_family),$1,$2)
 format-flag = $(if $(strip $3),$(if $(filter gnu,$1),$2=$3,$2 $3),)
@@ -197,13 +197,15 @@ join-flags = $(if $(strip $2),$(subst $(space),$(comma),$1 $(strip $2)),)
 # Define functions to compute assembler listing flag
 get-listing-flag = $(call format-as-flag,-adghln,$1)
 
-# Define functions to compute install_name and soname flags
+# Define functions to compute install_name flag
 get-install-name-flag = $(call format-ld-flag,-install_name,$1)
-get-soname-flag = $(call format-ld-flag,-soname,$1)
 
 # Define functions to compute rpath flag
 get-rpath-flag = $(foreach rpath,$1,$(call	\
 format-ld-flag,-rpath,$(rpath:/.=)))
+
+# Define functions to compute soname flag
+get-soname-flag = $(call format-ld-flag,-soname,$1)
 
 # Define function to quote shell metacharacters
 shell-quote = $(subst $$,\$$,$1)
