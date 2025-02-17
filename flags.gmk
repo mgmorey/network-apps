@@ -18,9 +18,6 @@ comma = ,
 empty =
 space = $(empty) $(empty)
 
-# Define function to compare semantic version strings
-compare-versions = $(shell $(script_dir)/compare-versions '$1' '$2')
-
 # Define function to quote (escape) shell metacharacters
 shell-quote = $(subst $$,\$$,$1)
 
