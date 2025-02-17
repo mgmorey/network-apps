@@ -47,6 +47,12 @@ is_ld_install_name = $(filter $(ld_features),install_name)
 is_ld_rpath = $(filter $(ld_features),rpath)
 is_ld_soname = $(filter $(ld_features),soname)
 
+# Define predicates for feature sets
+with_listings = $(filter $(WITH_LISTINGS),true)
+with_loadmaps = $(filter $(WITH_LOADMAPS),true)
+using_libasan = $(filter $(USING_LIBASAN),true)
+using_valgrind = $(filter $(USING_VALGRIND),true)
+
 # Define predicates for object and shared object files
 is_depend = $(filter %$(depend_suffix),$@)
 is_object = $(filter %$(object_suffix),$@)
@@ -107,13 +113,11 @@ CPPFLAGS += $(addprefix -D,$(sort $(cpp_symbols)))
 
 # CXX_ASFLAGS
 
-ifeq "$(WITH_LISTINGS)" "true"
-	listing = $(@:$(object_suffix)=.lst)
-	asflags = $(if $(is_object),$(if $(filter		\
-	$(cxx_family),gnu),$(if $(is_as_listings),$(call	\
-	get-listing-flag,$(listing)),),),)
-	CXX_ASFLAGS += $(call join-flags,-Wa,$(asflags))
-endif
+listing = $(@:$(object_suffix)=.lst)
+asflags += $(if $(is_object),$(if $(with_listings),$(if		\
+$(is_as_listings),$(if $(filter $(cxx_family),gnu),$(call	\
+get-listing-flag,$(listing)),),),),)
+CXX_ASFLAGS += $(call join-flags,-Wa,$(asflags))
 
 # CXXFLAGS
 
@@ -124,29 +128,18 @@ endif
 CXXFLAGS += -fPIC
 
 ifeq "$(BUILD_TYPE)" "Debug"
-
 	CXXFLAGS += -fno-omit-frame-pointer
-
-ifeq "$(USING_LIBASAN)" "true"
-	CXXFLAGS += -fsanitize=address -fsanitize-address-use-after-scope
-endif
-
+	CXXFLAGS += $(if $(using_libasan),-fsanitize=address	\
+	-fsanitize-address-use-after-scope)
 endif
 
 CXXFLAGS += -ftrivial-auto-var-init=zero
 
 ifeq "$(BUILD_TYPE)" "Debug"
-
-ifeq "$(USING_VALGRIND)" "true"
-	CXXFLAGS += -gdwarf-4
-endif
-
+	CXXFLAGS += $(if $(using_valgrind),-gdwarf-4,)
 	CXXFLAGS += $(if $(filter gnu,$(cxx_family)),-ggdb,-g3) -O0
-
 else ifeq "$(BUILD_TYPE)" "Release"
-
 	CXXFLAGS += -O2
-
 endif
 
 CXXFLAGS += $(if $(filter gnu,$(as_family)),-pipe,)
@@ -156,31 +149,24 @@ CXXFLAGS += -Wall -Werror -Wextra -Wshadow -Wsign-conversion
 # LDFLAGS
 
 ifeq "$(BUILD_TYPE)" "Debug"
-
-	LDFLAGS += --coverage
-
-ifeq "$(USING_LIBASAN)" "true"
-	LDFLAGS += -fsanitize=address
-endif
-
-endif
-
-ifeq "$(WITH_LOAD_MAP)" "true"
-	map = $(@:$(if $(is_shared),$(shared_suffix),$(binary_suffix))=.map)
-	map_opt = $(if $(filter gnu,$(ld_family)),-Map,-map)
-	ldflags += $(call format-ld-flag,$(map_opt),$(map))
+	LDFLAGS += --coverage $(if $(using_libasan),-fsanitize=address,)
 endif
 
 ldflags += $(if $(is_shared),$(if $(is_ld_install_name),$(call	\
 get-install-name-flag,$(install_name)),),)
-ldflags += $(if $(is_shared),$(if $(is_ld_soname),$(call	\
-get-soname-flag,$(soname)),),)
+
+map = $(@:$(if $(is_shared),$(shared_suffix),$(binary_suffix))=.map)
+map_opt = $(if $(filter gnu,$(ld_family)),-Map,-map)
+ldflags += $(if $(with_loadmaps),$(call		\
+format-ld-flag,$(map_opt),$(map)),)
 
 ldflags += $(if $(is_shared),,$(if $(is_ld_rpath),$(call	\
 get-rpath-flag,$(call shell-quote,$(rpaths:/.=))),))
 
-LDFLAGS += $(call join-flags,-Wl,$(ldflags))
-LDFLAGS += $(if $(is_shared),-shared,)
+ldflags += $(if $(is_shared),$(if $(is_ld_soname),$(call	\
+get-soname-flag,$(soname)),),)
+
+LDFLAGS += $(call join-flags,-Wl,$(ldflags)) $(if $(is_shared),-shared,)
 
 # LDLIBS
 
