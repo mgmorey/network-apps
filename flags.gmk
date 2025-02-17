@@ -90,14 +90,9 @@ $(filter-out -I$(SDKROOT)/usr/include,$(CPPFLAGS))
 
 # Add OS macro flags to CPPFLAGS
 cpp_symbols += OS_$(os_macro_kernel)
-
-ifeq "$(os_label_kernel)" "CYGWIN_NT"
-	cpp_symbols += _GNU_SOURCE
-else ifeq "$(os_label_kernel)" "Darwin"
-	cpp_symbols += _DARWIN_C_SOURCE
-else ifeq "$(os_label_kernel)" "MINGW64_NT"
-	cpp_symbols += WIN32
-endif
+cpp_symbols += $(if $(is_darwin_source),_DARWIN_C_SOURCE,)
+cpp_symbols += $(if $(is_gnu_source),_GNU_SOURCE,)
+cpp_symbols += $(if $(is_windows_api),WIN32,)
 
 # Add fortify source flag to CPPFLAGS
 cpp_symbols += $(if $(is_release_build),_FORTIFY_SOURCE=2,)
