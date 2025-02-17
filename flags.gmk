@@ -23,25 +23,22 @@ comma = ,
 empty =
 space = $(empty) $(empty)
 
-# Define function to quote (escape) shell metacharacters
-shell-quote = $(subst $$,\$$,$1)
+# Define variables for OS ID and kernel
+os_label_id = $(word 1,$(os_labels))
+os_label_kernel = $(word 2,$(os_labels))
+os_macro_kernel = $(word 2,$(os_macros))
 
-# Define functions to format assembler/linker flags for the compiler
-format-as-flag = $(call format-flag,$(as_family),$1,$2)
-format-ld-flag = $(call format-flag,$(ld_family),$1,$2)
-format-flag = $(if $(strip $3),$(if $(filter gnu,$1),$2=$3,$2 $3),)
-join-flags = $(if $(strip $2),$(subst $(space),$(comma),$1 $(strip $2)),)
+# Define variables for API and OS
+api = $(if $(is_windows_api),windows,unix)
+install = $(if $(is_unix),ginstall,install)
 
-# Define functions to compute assembler listing flag
-get-listing-flag = $(call format-as-flag,-adghln,$1)
-
-# Define functions to compute install_name and soname flags
-get-install-name-flag = $(call format-ld-flag,-install_name,$1)
-get-soname-flag = $(call format-ld-flag,-soname,$1)
-
-# Define functions to compute rpath flag
-get-rpath-flag = $(foreach rpath,$1,$(call	\
-format-ld-flag,-rpath,$(rpath:/.=)))
+# Define predicates for API and OS
+is_darwin_source = $(filter $(os_label_kernel),Darwin)
+is_gnu_source = $(filter $(os_label_kernel),CYGWIN_NT)
+is_posix = $(filter $(os_label_kernel),FreeBSD Linux)
+is_unix = $(filter $(os_label_kernel),Darwin FreeBSD)
+is_windows_api = $(filter $(os_label_kernel),MINGW64_NT)
+is_windows_os = $(filter $(os_label_id),windows)
 
 # Define predicates for build types
 is_debug_build = $(filter $(BUILD_TYPE),Debug)
@@ -188,6 +185,28 @@ LDFLAGS += $(call join-flags,-Wl,$(ldflags)) $(if $(is_shared),-shared,)
 # LDLIBS
 
 LDLIBS += $(if $(filter $(os_label_kernel),MINGW64_NT),-lws2_32,)
+
+# Define functions to compute flag values
+
+# Define functions to format assembler/linker flags for the compiler
+format-as-flag = $(call format-flag,$(as_family),$1,$2)
+format-ld-flag = $(call format-flag,$(ld_family),$1,$2)
+format-flag = $(if $(strip $3),$(if $(filter gnu,$1),$2=$3,$2 $3),)
+join-flags = $(if $(strip $2),$(subst $(space),$(comma),$1 $(strip $2)),)
+
+# Define functions to compute assembler listing flag
+get-listing-flag = $(call format-as-flag,-adghln,$1)
+
+# Define functions to compute install_name and soname flags
+get-install-name-flag = $(call format-ld-flag,-install_name,$1)
+get-soname-flag = $(call format-ld-flag,-soname,$1)
+
+# Define functions to compute rpath flag
+get-rpath-flag = $(foreach rpath,$1,$(call	\
+format-ld-flag,-rpath,$(rpath:/.=)))
+
+# Define function to quote shell metacharacters
+shell-quote = $(subst $$,\$$,$1)
 
 # Local Variables:
 # mode: makefile

@@ -29,21 +29,6 @@ include config.gmk
 include flags.gmk
 include funcs.gmk
 
-# Define variables for OS ID and kernel
-os_label_id = $(word 1,$(os_labels))
-os_label_kernel = $(word 2,$(os_labels))
-os_macro_kernel = $(word 2,$(os_macros))
-
-# Define variables for API and OS
-api = $(if $(is_windows_api),windows,unix)
-install = $(if $(is_unix),ginstall,install)
-is_darwin_source = $(filter $(os_label_kernel),Darwin)
-is_gnu_source = $(filter $(os_label_kernel),CYGWIN_NT)
-is_posix = $(filter $(os_label_kernel),FreeBSD Linux)
-is_unix = $(filter $(os_label_kernel),Darwin FreeBSD)
-is_windows_api = $(filter $(os_label_kernel),MINGW64_NT)
-is_windows_os = $(filter $(os_label_id),windows)
-
 # Define variables for version components
 major = $(word 1,$(subst ., ,$(VERSION)))
 minor = $(word 2,$(subst ., ,$(VERSION)))
