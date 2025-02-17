@@ -65,25 +65,16 @@ ARFLAGS = r
 
 # CLANG_TIDY_FLAGS
 
-ifeq "$(cxx_family)" "clang"
-
-CLANG_TIDY_FLAGS = -config-file='.clang-tidy'
-CLANG_TIDY_FLAGS += -header-filter='.*'
-CLANG_TIDY_FLAGS += --
-CLANG_TIDY_FLAGS += $(if $(standard),-std=$(standard),)
-CLANG_TIDY_FLAGS += $(CPPFLAGS)
-
-endif
+CLANG_TIDY_FLAGS = -config-file='.clang-tidy' -header-filter='.*' --	\
+$(if $(standard),-std=$(standard),) $(CPPFLAGS)
 
 # CPPCHECK_FLAGS
 
-CPPCHECK_FLAGS = --check-level=exhaustive
-CPPCHECK_FLAGS += --checkers-report=cppcheck.log
-CPPCHECK_FLAGS += --cppcheck-build-dir=$(cppcheck_dir)
-CPPCHECK_FLAGS += --enable=all --inline-suppr --quiet
-CPPCHECK_FLAGS += $(if $(standard),--std=$(standard),)
-CPPCHECK_FLAGS += --suppress=missingIncludeSystem
-CPPCHECK_FLAGS += $(filter-out -I$(SDKROOT)/usr/include,$(CPPFLAGS))
+CPPCHECK_FLAGS = --check-level=exhaustive				\
+--checkers-report=cppcheck.log --cppcheck-build-dir=$(cppcheck_dir)	\
+--enable=all --inline-suppr --quiet $(if				\
+$(standard),--std=$(standard),) --suppress=missingIncludeSystem		\
+$(filter-out -I$(SDKROOT)/usr/include,$(CPPFLAGS))
 
 # CPPFLAGS
 
