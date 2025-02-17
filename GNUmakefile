@@ -17,6 +17,7 @@
 BUILD_DIR ?= .
 BUILD_TYPE ?= Debug
 INSTALL_PREFIX ?= ~/.local
+PROJECT_NAME = network
 VERSION ?= 0.0.1
 
 # Define variables for other defaults
@@ -41,10 +42,10 @@ include_dirs = $(include_dir)/$(api) $(include_dir)
 source_dirs = $(source_dir)/$(api) $(source_dir)
 
 # Define variables for file lists
-include_files = $(addsuffix /network/*.h,$(include_dirs))
+include_files = $(addsuffix /$(PROJECT_NAME)/*.h,$(include_dirs))
 
 # Define variables for filenames, prefixes, and suffixes
-library_file = $(library_prefix)network
+library_file = $(library_prefix)$(PROJECT_NAME)
 library_prefix = lib
 
 alias_suffix = .so.$(major)

@@ -60,8 +60,8 @@ $(library_file),$(shared_suffix) $(suffix)) && )true)
 endef
 
 define install-files
-$(install) -d $(addprefix $1/,bin include/network lib)
-$(install) -m u=rw,go=r $(include_files) $1/include/network
+$(install) -d $(addprefix $1/,bin include/$(PROJECT_NAME) lib)
+$(install) -m u=rw,go=r $(include_files) $1/include/$(PROJECT_NAME)
 $(install) -m u=rwx,go=rx $(call tidy-files,$(shared_library)	\
 $(static_library)) $1/lib
 $(install) -m u=rwx,go=rx $(call tidy-files,$(programs)) $1/bin
