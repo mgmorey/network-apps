@@ -23,26 +23,8 @@ VERSION ?= 0.0.1
 GCOVR_HTML_THEME ?= green
 TMPDIR ?= /tmp
 
-# Define variables for language and standard
-language := c++
-standard := $(language)20
-
-# Define variable for cache directory
-cache_dir := .cache
-
-# Define variables for build directories
-coverage_dir := coverage
-cppcheck_dir := $(cache_dir)/cppcheck
-depend_dir := $(cache_dir)/dependency
-object_dir := $(BUILD_DIR)/object
-output_dir := $(BUILD_DIR)
-
-# Define variables for include and source directories
-include_dir := include
-script_dir := script
-source_dir := src
-
 # Define common functions and flag variables
+include common.gmk
 include config.gmk
 include flags.gmk
 include funcs.gmk
