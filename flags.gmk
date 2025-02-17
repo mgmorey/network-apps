@@ -41,13 +41,17 @@ get-soname-flag = $(call format-ld-flag,-soname,$1)
 get-rpath-flag = $(foreach rpath,$1,$(call	\
 format-ld-flag,-rpath,$(rpath:/.=)))
 
-# Define predicates for command features
+# Define predicates for build types
+is_debug_build = $(filter $(BUILD_TYPE),Debug)
+is_release_build = $(filter $(BUILD_TYPE),Release)
+
+# Define predicates for compiler and linker features
 is_as_listings = $(filter $(as_features),listings)
 is_ld_install_name = $(filter $(ld_features),install_name)
 is_ld_rpath = $(filter $(ld_features),rpath)
 is_ld_soname = $(filter $(ld_features),soname)
 
-# Define predicates for feature sets
+# Define predicates for feature options
 with_listings = $(filter $(WITH_LISTINGS),true)
 with_loadmaps = $(filter $(WITH_LOADMAPS),true)
 using_libasan = $(filter $(USING_LIBASAN),true)
@@ -84,10 +88,7 @@ $(filter-out -I$(SDKROOT)/usr/include,$(CPPFLAGS))
 
 # CPPFLAGS
 
-ifeq "$(USING_DMALLOC)" "true"
-	cpp_symbols += DMALLOC DMALLOC_FUNC_CHECK
-endif
-
+# Add OS macro flags to CPPFLAGS
 cpp_symbols += OS_$(os_macro_kernel)
 
 ifeq "$(os_label_kernel)" "CYGWIN_NT"
@@ -98,21 +99,19 @@ else ifeq "$(os_label_kernel)" "MINGW64_NT"
 	cpp_symbols += WIN32
 endif
 
-ifeq "$(BUILD_TYPE)" "Release"
-	cpp_symbols += _FORTIFY_SOURCE=2
-endif
+# Add fortify source flag to CPPFLAGS
+cpp_symbols += $(if $(is_release_build),_FORTIFY_SOURCE=2,)
 
+# Add Glibc assertion flags to CPPFLAGS
 cpp_symbols += _GLIBCXX_ASSERTIONS
-
-ifeq "$(BUILD_TYPE)" "Debug"
-	cpp_symbols += _GLIBCXX_DEBUG
-endif
+cpp_symbols += $(if $(is_debug_build),_GLIBCXX_DEBUG,)
 
 CPPFLAGS += $(addprefix -I,$(include_dirs))
 CPPFLAGS += $(addprefix -D,$(sort $(cpp_symbols)))
 
 # CXX_ASFLAGS
 
+# Add assembler listing options to CXX_ASFLAGS
 listing = $(@:$(object_suffix)=.lst)
 asflags += $(if $(is_object),$(if $(with_listings),$(if		\
 $(is_as_listings),$(if $(filter $(cxx_family),gnu),$(call	\
@@ -121,51 +120,72 @@ CXX_ASFLAGS += $(call join-flags,-Wa,$(asflags))
 
 # CXXFLAGS
 
-ifeq "$(BUILD_TYPE)" "Debug"
-	CXXFLAGS += --coverage
-endif
+# Add code coverage flag to CXXFLAGS
+CXXFLAGS += $(if $(is_debug_build),--coverage,)
 
+# Add position-independent code flag to CXXFLAGS
 CXXFLAGS += -fPIC
 
-ifeq "$(BUILD_TYPE)" "Debug"
-	CXXFLAGS += -fno-omit-frame-pointer
-	CXXFLAGS += $(if $(using_libasan),-fsanitize=address	\
-	-fsanitize-address-use-after-scope)
-endif
+# Add omit frame pointer flag to CXXFLAGS
+CXXFLAGS += $(if $(is_debug_build),-fno-omit-frame-pointer,)
 
+# Add address sanitizer flags to CXXFLAGS
+CXXFLAGS += $(if $(is_debug_build),$(if		\
+$(using_libasan),-fsanitize=address		\
+-fsanitize-address-use-after-scope),)
+
+# Add automatic variable initialization flag to CXXFLAGS
 CXXFLAGS += -ftrivial-auto-var-init=zero
 
-ifeq "$(BUILD_TYPE)" "Debug"
-	CXXFLAGS += $(if $(using_valgrind),-gdwarf-4,)
-	CXXFLAGS += $(if $(filter gnu,$(cxx_family)),-ggdb,-g3) -O0
-else ifeq "$(BUILD_TYPE)" "Release"
-	CXXFLAGS += -O2
-endif
+# Add debug format flag to CXXFLAGS
+CXXFLAGS += $(if $(is_debug_build),$(if $(using_valgrind),-gdwarf-4,),)
 
+# Add debug flag to CXXFLAGS
+CXXFLAGS += $(if $(is_debug_build),$(if $(filter gnu,$(cxx_family)),-ggdb,-g3),)
+
+# Add optimization flag to CXXFLAGS
+CXXFLAGS += $(if $(is_debug_build),-O0,)
+CXXFLAGS += $(if $(is_release_build),-O2,)
+
+# Add pipe flag to CXXFLAGS
 CXXFLAGS += $(if $(filter gnu,$(as_family)),-pipe,)
-CXXFLAGS += $(if $(standard),-std=$(standard),) $(CXX_ASFLAGS)
+
+# Add language standard flag to CXXFLAGS
+CXXFLAGS += $(if $(standard),-std=$(standard),)
+
+# Add assembler option flags to CXXFLAGS
+CXXFLAGS += $(CXX_ASFLAGS)
+
+# Add warning flags to CXXFLAGS
 CXXFLAGS += -Wall -Werror -Wextra -Wshadow -Wsign-conversion
 
 # LDFLAGS
 
-ifeq "$(BUILD_TYPE)" "Debug"
-	LDFLAGS += --coverage $(if $(using_libasan),-fsanitize=address,)
-endif
+# Add code coverage flag to LDFLAGS
+LDFLAGS += $(if $(is_debug_build),--coverage,)
 
+# Add address sanitizer flags to LDFLAGS
+LDFLAGS += $(if $(is_debug_build),$(if $(using_libasan),-fsanitize=address,),)
+
+# Add -install_name linker option flag to LDFLAGS
 ldflags += $(if $(is_shared),$(if $(is_ld_install_name),$(call	\
 get-install-name-flag,$(install_name)),),)
 
+# Add load map linker option flag to LDFLAGS
 map = $(@:$(if $(is_shared),$(shared_suffix),$(binary_suffix))=.map)
 map_opt = $(if $(filter gnu,$(ld_family)),-Map,-map)
 ldflags += $(if $(with_loadmaps),$(call		\
 format-ld-flag,$(map_opt),$(map)),)
 
+# Add -rpath linker option flag to LDFLAGS
 ldflags += $(if $(is_shared),,$(if $(is_ld_rpath),$(call	\
 get-rpath-flag,$(call shell-quote,$(rpaths:/.=))),))
 
+# Add -soname linker option flag to LDFLAGS
 ldflags += $(if $(is_shared),$(if $(is_ld_soname),$(call	\
 get-soname-flag,$(soname)),),)
 
+# Add -shared option flag to LDFLAGS
 LDFLAGS += $(call join-flags,-Wl,$(ldflags)) $(if $(is_shared),-shared,)
 
 # LDLIBS
