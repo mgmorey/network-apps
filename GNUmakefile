@@ -14,13 +14,13 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 # Define variables for project defaults
-BUILD_DIR ?= .
-BUILD_TYPE ?= Debug
-INSTALL_PREFIX ?= ~/.local
 PROJECT_NAME = network
 VERSION ?= 0.0.1
 
-# Define variables for other defaults
+# Define variables for build defaults
+BUILD_DIR ?= .
+BUILD_TYPE ?= Debug
+INSTALL_PREFIX ?= ~/.local
 GCOVR_HTML_THEME ?= green
 TMPDIR ?= /tmp
 
