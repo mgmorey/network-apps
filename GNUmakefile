@@ -195,11 +195,8 @@ tarfile = $(output_dir)/$(library_file).tar.gz
 all_targets = $(build_targets) test $(if $(is_posix),unix,) $(if	\
 $(is_windows_api),dos2unix,)
 
-build_targets = assert dataclean objects libraries programs sizes
-
-ifeq "$(is_universal_ctags)" "true"
-	build_targets += tags
-endif
+build_targets = assert dataclean objects libraries programs sizes	\
+$(if $(filter $(is_universal_ctags),true),tags)
 
 # Define variable for timestamp files
 timestamps = .test-complete $(if $(is_posix),.unix-complete,)
