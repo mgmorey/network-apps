@@ -43,7 +43,7 @@ script_dir := script
 source_dir := src
 
 # Define common functions and flag variables
-include common.gmk
+include config.gmk
 include flags.gmk
 include funcs.gmk
 
