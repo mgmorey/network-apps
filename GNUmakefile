@@ -50,11 +50,11 @@ minor = $(call get-version-number,2,$(VERSION))
 patch = $(call get-version-number,3,$(VERSION))
 
 # Define variables for directory lists
-include_dirs = $(include_dir)/$(api) $(include_dir)
-source_dirs = $(source_dir)/$(api) $(source_dir)
+include_dirs = $(addprefix $(include_dir)/,$(api) .)
+source_dirs = $(addprefix $(source_dir)/,$(api) .)
 
 # Define variable for include file list
-include_files = $(addsuffix /$(PROJECT_NAME)/*.h,$(include_dirs))
+include_files = $(addsuffix /$(PROJECT_NAME)/*.h,$(include_dirs:/.=))
 
 # Define variables for filename prefixes/suffixes
 alias_suffix = .so.$(major)
@@ -199,8 +199,8 @@ COMPILE$(source_suffix) = $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c
 LINK$(object_suffix) = $(CXX) $(LDFLAGS)
 
 # Set virtual paths
-vpath %$(include_suffix) $(include_dirs)
-vpath %$(source_suffix) $(source_dirs)
+vpath %$(include_suffix) $(include_dirs:/.=)
+vpath %$(source_suffix) $(source_dirs:/.=)
 
 # Define pseudotargets
 

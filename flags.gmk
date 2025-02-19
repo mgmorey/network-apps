@@ -100,7 +100,7 @@ cpp_symbols += $(if $(is_release_build),_FORTIFY_SOURCE=2,)
 cpp_symbols += _GLIBCXX_ASSERTIONS
 cpp_symbols += $(if $(is_debug_build),_GLIBCXX_DEBUG,)
 
-CPPFLAGS += $(addprefix -I,$(include_dirs))
+CPPFLAGS += $(addprefix -I,$(include_dirs:/.=))
 CPPFLAGS += $(addprefix -D,$(sort $(cpp_symbols)))
 
 # CXX_ASFLAGS
