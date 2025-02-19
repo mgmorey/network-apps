@@ -28,4 +28,4 @@ make_commands() {
     bear -- $make ${CXX+CXX=$CXX} "$@"
 }
 
-make_commands ${@:-clean libraries programs}
+make_commands ${@:-clean objects libraries programs}
