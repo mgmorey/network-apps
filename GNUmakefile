@@ -31,8 +31,8 @@ include flags.gmk
 include funcs.gmk
 
 # Define variables for version components
-major = $(word 1,$(subst ., ,$(VERSION)))
-minor = $(word 2,$(subst ., ,$(VERSION)))
+major = $(call get-version-number,1,$(VERSION))
+minor = $(call get-version-number,2,$(VERSION))
 
 # Define variable for temporary directory
 temporary_dir ?= $(TMPDIR:/=)/$(library_file)

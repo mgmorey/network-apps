@@ -53,6 +53,10 @@ $(addprefix $(call get-prefix,$(output_dir)),$(addsuffix	\
 $(binary_suffix),$(basename $1)))
 endef
 
+define get-version-number
+$(word $1,$(call split-string,.,$2))
+endef
+
 define install-aliases
 $(strip $(if $(filter .,$1),,cd $1 && )$(foreach	\
 suffix,$(alias_suffixes),ln -sf $(addprefix		\
@@ -75,6 +79,10 @@ endef
 
 define run-programs
 $(script_dir)/run-programs $3 $(2:$(binary_suffix)=) && touch $1
+endef
+
+define split-string
+$(subst $1, ,$2)
 endef
 
 define tidy-files
