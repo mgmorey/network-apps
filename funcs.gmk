@@ -16,16 +16,16 @@
 define clean-artifacts
 $(strip printf '%s\n' $(call tidy-files,$(wildcard $(filter-out	\
 $(cache_dir)/%,$(filter-out $(coverage_dir)/%,$(filter-out	\
-$(object_dir)/%,$1) $(build_dirs))))) | xargs -r rm -rf)
+$(object_dir)/%,$1) $(build_dirs))))) | xargs -r /bin/rm -rf)
 endef
 
 define clean-build
 $(strip printf '%s\n' $(call tidy-files,$(wildcard $(filter-out	\
-$(object_dir)/%,$1) $(object_dir))) | xargs -r rm -rf)
+$(object_dir)/%,$1) $(object_dir))) | xargs -r /bin/rm -rf)
 endef
 
 define clean-files
-$(strip printf '%s\n' $(call tidy-files,$(wildcard $1)) | xargs -r rm -f)
+$(strip printf '%s\n' $(call tidy-files,$(wildcard $1)) | xargs -r /bin/rm -f)
 endef
 
 define create-tarfile
