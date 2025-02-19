@@ -33,6 +33,7 @@ include funcs.gmk
 # Define variables for version components
 major = $(call get-version-number,1,$(VERSION))
 minor = $(call get-version-number,2,$(VERSION))
+patch = $(call get-version-number,3,$(VERSION))
 
 # Define variable for temporary directory
 temporary_dir ?= $(TMPDIR:/=)/$(library_file)
