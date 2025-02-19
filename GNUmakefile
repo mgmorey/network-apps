@@ -39,7 +39,7 @@ include_dir = include
 script_dir = script
 source_dir = src
 
-# Define configuration/flag variables and functions
+# Include configuration/flag variable and function definitions
 include config.gmk
 include flags.gmk
 include funcs.gmk
