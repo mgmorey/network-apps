@@ -77,14 +77,6 @@ define run-programs
 $(script_dir)/run-programs $3 $(2:$(binary_suffix)=) && touch $1
 endef
 
-define run-test-programs
-$(call run-programs,.test-complete,$1,$2)
-endef
-
-define run-unix-programs
-$(call run-programs,.unix-complete,$1,$2)
-endef
-
 define tidy-files
 $(sort $(patsubst ./%,%,$1))
 endef

@@ -283,7 +283,7 @@ tarfile: $(tarfile)
 
 .PHONY: test
 test: $(test_programs)
-	$(call run-test-programs,$(^F),$(program_args))
+	$(call run-programs,.test-complete,$(^F),$(program_args))
 
 ifneq "$(CLANG_TIDY)" ""
 .PHONY: tidy
@@ -294,7 +294,7 @@ endif
 ifneq "$(is_posix)" ""
 .PHONY: unix
 unix: $(unix_programs)
-	$(call run-unix-programs,$(^F),$(program_args))
+	$(call run-programs,.unix-complete,$(^F),$(program_args))
 endif
 
 .SECONDARY: $(objects)
