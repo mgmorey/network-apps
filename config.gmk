@@ -32,7 +32,7 @@ ld_family := $(shell $(script_dir)/get-ld-family $(LD))
 ld_features := $(shell $(script_dir)/get-features $(LD))
 
 # Define variable for Universal Ctags predicate
-is_universal_ctags := $(shell $(script_dir)/is-universal-ctags ctags)
+is_uctags := $(filter $(shell $(script_dir)/is-uctags ctags),true)
 
 # Local Variables:
 # mode: makefile

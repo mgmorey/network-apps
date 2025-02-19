@@ -182,11 +182,11 @@ tarfile = $(output_dir)/$(library_file).tar.gz
 
 # Define target list variables
 
-all_targets = $(build_targets) test $(if $(is_posix),unix,) $(if	\
+all_targets = dataclean $(build_targets) sizes $(if	\
+$(is_uctags),tags) test $(if $(is_posix),unix,) $(if	\
 $(is_windows_api),dos2unix,)
 
-build_targets = assert dataclean objects libraries programs sizes	\
-$(if $(filter $(is_universal_ctags),true),tags)
+build_targets = assert objects libraries programs
 
 # Define variable for timestamp files
 timestamps = .test-complete $(if $(is_posix),.unix-complete,)
@@ -206,6 +206,9 @@ vpath %$(source_suffix) $(source_dirs:/.=)
 
 .PHONY: all
 all: $(all_targets)
+
+.PHONY: buildonly
+buildonly: $(build_targets)
 
 .PHONY: analyze
 analyze: $(sources) | $(cppcheck_dir)
