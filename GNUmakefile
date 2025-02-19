@@ -24,8 +24,22 @@ INSTALL_PREFIX ?= ~/.local
 GCOVR_HTML_THEME ?= green
 TMPDIR ?= /tmp
 
-# Define common functions and flag variables
-include common.gmk
+# Define variable for cache directory
+cache_dir = .cache
+
+# Define variables for build directories
+coverage_dir = coverage
+cppcheck_dir = $(cache_dir)/cppcheck
+depend_dir = $(cache_dir)/dependency
+object_dir = $(BUILD_DIR)/object
+output_dir = $(BUILD_DIR)
+
+# Define variables for include and source directories
+include_dir = include
+script_dir = script
+source_dir = src
+
+# Define configuration/flag variables and functions
 include config.gmk
 include flags.gmk
 include funcs.gmk
