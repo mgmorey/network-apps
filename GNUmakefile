@@ -49,30 +49,31 @@ major = $(call get-version-number,1,$(VERSION))
 minor = $(call get-version-number,2,$(VERSION))
 patch = $(call get-version-number,3,$(VERSION))
 
-# Define variable for temporary directory
-temporary_dir ?= $(TMPDIR:/=)/$(library_file)
-
 # Define variables for directory lists
 include_dirs = $(include_dir)/$(api) $(include_dir)
 source_dirs = $(source_dir)/$(api) $(source_dir)
 
-# Define variables for file lists
+# Define variable for include file list
 include_files = $(addsuffix /$(PROJECT_NAME)/*.h,$(include_dirs))
 
-# Define variables for filenames, prefixes, and suffixes
-library_file = $(library_prefix)$(PROJECT_NAME)
-library_prefix = lib
-
+# Define variables for filename prefixes/suffixes
 alias_suffix = .so.$(major)
 alias_suffixes = $(alias_suffix)
 binary_suffix = $(if $(is_windows_os),.exe,)
 depend_suffix = .dep
 include_suffix = .h
+library_prefix = lib
 object_suffix = .o
 shared_suffix = .so.$(VERSION)
 source_suffix = .cpp
 
-# Define enumerated file list variables
+# Define variable for library filename
+library_file = $(library_prefix)$(PROJECT_NAME)
+
+# Define variable for temporary directory
+temporary_dir ?= $(TMPDIR:/=)/$(library_file)
+
+# Define variabled for enumerated file lists
 
 compile_commands = compile_commands.json
 cppchecklog = cppcheck.log
@@ -126,7 +127,7 @@ unix_sources = unix-server.cpp unix-client.cpp
 sizes = sizes.txt sizes.txt~
 tags = TAGS
 
-# Define computed file list variables
+# Define variables for computed file lists
 
 sources = $(library_sources) $(test_sources) $(if	\
 $(is_posix),$(unix_sources),)
@@ -193,7 +194,7 @@ timestamps = .test-complete $(if $(is_posix),.unix-complete,)
 # Define variable for run-program arguments
 program_args = $(strip $(if $(filter .,$(output_dir)),,-d $(output_dir)) -v)
 
-# Define compiler and linker command variables
+# Define variables for compiler and linker commands
 COMPILE$(source_suffix) = $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c
 LINK$(object_suffix) = $(CXX) $(LDFLAGS)
 
