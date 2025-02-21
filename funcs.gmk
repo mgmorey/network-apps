@@ -68,7 +68,7 @@ $(install) -d $(addprefix $1/,bin include/$(PROJECT_NAME) lib)
 $(install) -m u=rw,go=r $(include_files) $1/include/$(PROJECT_NAME)
 $(install) -m u=rwx,go=rx $(call tidy-files,$(shared_library)	\
 $(static_library)) $1/lib
-$(install) -m u=rwx,go=rx $(call tidy-files,$(programs)) $1/bin
+$(install) -m u=rwx,go=rx $(call tidy-files,$(test_programs)) $1/bin
 $(call install-aliases,$1/lib)
 endef
 
