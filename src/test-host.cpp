@@ -66,8 +66,6 @@ namespace
     using Network::OsErrorResult;
     using Network::SocketHints;
     using Network::SocketHost;
-    using Network::af_ip_v4;
-    using Network::af_ip_v6;
     using Network::always_false_v;
     using Network::get_hostname;
     using Network::insert;
@@ -77,14 +75,11 @@ namespace
     using Network::uniquify;
 
     using ErrorCodeSet = std::set<os_error_type>;
-    using HintsVector = std::vector<SocketHints>;
     using StringList = std::list<std::string>;
 
     constexpr auto localhost {"localhost"};
 
-    const IpSocketHints ip {SOCK_STREAM, AI_CANONNAME};
-    const IpSocketHints ipv4 {af_ip_v4, SOCK_STREAM, AI_CANONNAME};
-    const IpSocketHints ipv6 {af_ip_v6, SOCK_STREAM, AI_CANONNAME};
+    const IpSocketHints stream_any {SOCK_STREAM, AI_CANONNAME};
 
     auto is_verbose {false};  // NOLINT
 
@@ -180,27 +175,6 @@ namespace
         return codes;
     }
 
-    auto get_family(const OptionalHints& hints) -> std::string
-    {
-        if (!hints) {
-            return {};
-        }
-
-        switch (hints->m_family) {
-        case AF_INET:
-            return "IPv4";
-        case AF_INET6:
-            return "IPv6";
-        default:
-            return {};
-        }
-    }
-
-    auto get_hints_vector(bool is_local) -> HintsVector
-    {
-        return is_local ? HintsVector {ip} : HintsVector {ipv4, ipv6};
-    }
-
     auto parse_arguments(int argc, char** argv) -> ArgumentSpan
     {
         const auto [operands, options] {parse(argc, argv, "v")};
@@ -226,38 +200,12 @@ namespace
                   << std::endl;
     }
 
-    auto print(const OsErrorResult& result, const std::string& family) -> void
-    {
-        if (family.empty()) {
-            std::cout << "No";
-        }
-        else {
-            std::cout << "No "
-                      << family;
-        }
-
-        std::cout << " hosts:"
-                  << std::endl
-                  << result.string()
-                  << std::endl;
-    }
-
-    auto print(const std::vector<SocketHost>& hosts,
-               const std::string& family) -> void
+    auto print(const std::vector<SocketHost>& hosts) -> void
     {
         if (hosts.empty()) {
             return;
         }
 
-        if (family.empty()) {
-            std::cout << "All";
-        }
-        else {
-            std::cout << family;
-        }
-
-        std::cout << " hosts:"
-                  << std::endl;
         std::ranges::for_each(hosts, Print(std::cout));
     }
 
@@ -267,20 +215,16 @@ namespace
     {
         os_error_type actual_code {0};
         std::vector<SocketHost> hosts;
-        const auto family {get_family(hints)};
 
         auto it {std::back_inserter(hosts)};
         if (const auto result {insert(it, host, {}, hints, is_verbose)}) {
-            if (expected_codes == ErrorCodeSet {0}) {
-                print(result, family);
-            }
-            else if (is_verbose) {
+            if (is_verbose || expected_codes == ErrorCodeSet {0}) {
                 print(result);
             }
 
             actual_code = result.number();
         } else {
-            print(hosts, family);
+            print(hosts);
         }
 
         assert(expected_codes.contains(actual_code));
@@ -308,18 +252,13 @@ namespace
 
     auto test_valid(const HostnameView& host) -> void
     {
-        const bool is_local = host.empty() || host == get_hostname(is_verbose);
-
-        if (!host.empty() && !is_local) {
+        if (!host.empty()) {
             std::cout << "Host: "
                       << host
                       << std::endl;
         }
 
-        const auto& hints_vector {get_hints_vector(is_local)};
-        std::ranges::for_each(hints_vector, [&](const auto& hints) {
-            test_host(host, hints, {0});
-        });
+        test_host(host, stream_any, {0});
     }
 }
 
