@@ -19,8 +19,6 @@
 #ifndef WIN32
 
 #include "network/commonsocket.h"               // CommonSocket
-#include "network/family-type.h"                // family_type
-#include "network/handle-type.h"                // handle_type
 #include "network/pathname.h"                   // Pathname
 #include "network/pathnameview.h"               // PathnameView
 #include "network/socketdata.h"                 // SocketData
