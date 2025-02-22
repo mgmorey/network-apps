@@ -278,7 +278,7 @@ auto main(int argc, char* argv[]) -> int
 
         test_invalid_family();
         test_invalid_socktype();
-#ifndef OS_CYGWIN_NT
+#if !defined(OS_CYGWIN_NT) && !defined(OS_MINGW64_NT)
         test_invalid_protocol();
 #endif
 
