@@ -83,18 +83,6 @@ auto Network::CommonSocket::accept() const -> AcceptResult
     return Network::accept(*this);
 }
 
-auto Network::CommonSocket::close() -> OsErrorResult
-{
-    if (const auto result {Network::close(m_handle,
-                                          m_is_verbose)}) {
-        return result;
-    }
-
-    m_names[0].clear();
-    m_names[1].clear();
-    return {};
-}
-
 auto Network::CommonSocket::listen(int t_backlog) const -> OsErrorResult
 {
     return Network::listen(m_handle, t_backlog,

@@ -46,7 +46,6 @@ namespace Network
         [[nodiscard]] virtual auto is_verbose() const noexcept -> bool = 0;
 
         [[nodiscard]] virtual auto accept() const -> AcceptResult = 0;
-        [[nodiscard]] virtual auto close() -> OsErrorResult = 0;
         [[nodiscard]] virtual auto listen(int t_backlog) const ->
             OsErrorResult = 0;
         [[nodiscard]] virtual auto name(bool t_is_peer) const -> ByteString = 0;

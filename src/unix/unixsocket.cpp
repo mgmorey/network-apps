@@ -32,16 +32,6 @@ Network::UnixSocket::~UnixSocket() noexcept
     state(SocketState::closing);
 }
 
-auto Network::UnixSocket::close() -> OsErrorResult
-{
-    if (auto result {CommonSocket::close()}) {
-        return result;
-    }
-
-    state(SocketState::allocated);
-    return {};
-}
-
 auto Network::UnixSocket::open(const ByteString& t_addr,
                                bool t_is_bind) -> OsErrorResult
 {

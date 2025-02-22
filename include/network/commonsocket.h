@@ -57,7 +57,6 @@ namespace Network
         [[nodiscard]] auto is_verbose() const noexcept -> bool final;
 
         [[nodiscard]] auto accept() const -> AcceptResult final;
-        [[nodiscard]] auto close() -> OsErrorResult override;
         [[nodiscard]] auto listen(int t_backlog) const ->
             OsErrorResult final;
         [[nodiscard]] auto name(bool t_is_peer) const -> ByteString final;
