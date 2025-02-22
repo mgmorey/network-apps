@@ -79,7 +79,7 @@ namespace
 
     constexpr auto localhost {"localhost"};
 
-    const IpSocketHints stream_any {SOCK_STREAM, AI_CANONNAME};
+    const IpSocketHints ip_any {SOCK_STREAM, AI_CANONNAME};
 
     auto is_verbose {false};  // NOLINT
 
@@ -252,13 +252,17 @@ namespace
 
     auto test_valid(const HostnameView& host) -> void
     {
-        if (!host.empty()) {
+        if (host.empty()) {
+            std::cout << "Local host:"
+                      << std::endl;
+        }
+        else {
             std::cout << "Host: "
                       << host
                       << std::endl;
         }
 
-        test_host(host, stream_any, {0});
+        test_host(host, ip_any, {0});
     }
 }
 
