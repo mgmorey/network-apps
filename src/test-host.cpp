@@ -149,7 +149,7 @@ namespace
         return codes;
     }
 
-#ifndef OS_CYGWIN_NT
+#if !defined(OS_CYGWIN_NT) && !defined(OS_MINGW64_NT)
     auto get_codes_protocol() -> const ErrorCodeSet&
     {
 #if defined(WIN32)
@@ -236,7 +236,7 @@ namespace
         test_host(localhost, hints, get_codes_family());
     }
 
-#ifndef OS_CYGWIN_NT
+#if !defined(OS_CYGWIN_NT) && !defined(OS_MINGW64_NT)
     auto test_invalid_protocol() -> void
     {
         const SocketHints hints {AF_UNSPEC, SOCK_STREAM, -1, 0};
