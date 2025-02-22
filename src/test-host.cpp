@@ -42,7 +42,7 @@
                             // SOCK_STREAM
 #endif
 
-#include <algorithm>    // std::ranges
+#include <algorithm>    // std::ranges, std::sort()
 #include <cstdlib>      // EXIT_FAILURE, std::exit(), std::size_t
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
@@ -223,7 +223,9 @@ namespace
             }
 
             actual_code = result.number();
-        } else {
+        }
+        else {
+            std::sort(hosts.begin(), hosts.end());
             print(hosts);
         }
 
