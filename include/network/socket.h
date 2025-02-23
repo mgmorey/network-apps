@@ -39,7 +39,7 @@ namespace Network
 
         Socket() noexcept = default;
         Socket(const Socket&) noexcept = delete;
-        Socket(const Socket&&) noexcept = delete;
+        Socket(Socket&&) noexcept = delete;
         virtual ~Socket() noexcept = default;
         auto operator=(const Socket&) noexcept -> Socket& = delete;
         auto operator=(Socket&&) noexcept -> Socket& = delete;
