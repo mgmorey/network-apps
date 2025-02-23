@@ -17,8 +17,6 @@
 
 #include "network/create-socket.h"              // create_socket()
 #include "network/commonsocket.h"               // CommonSocket
-#include "network/handle-type.h"                // handle_type
-#include "network/socket-family-type.h"         // socket_family_type
 #include "network/socketdata.h"                 // SocketData
 #include "network/uniquesocket.h"               // UniqueSocket
 
@@ -27,15 +25,6 @@
 auto Network::create_socket(const SocketData& data) -> UniqueSocket
 {
     return std::make_unique<CommonSocket>(data);
-}
-
-auto Network::create_socket(socket_family_type family,
-                            handle_type handle,
-                            bool is_verbose) -> UniqueSocket
-{
-    return create_socket(SocketData {.m_family = family,
-                                     .m_handle = handle,
-                                     .m_is_verbose = is_verbose});
 }
 
 #endif

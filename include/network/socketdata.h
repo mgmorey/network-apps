@@ -28,10 +28,26 @@
 
 namespace Network
 {
-    struct SocketData
+    class SocketData
     {
-        family_type m_family {AF_UNSPEC};
+    public:
+        SocketData(handle_type t_handle,
+                   family_type t_family,
+                   bool t_is_verbose);
+        SocketData() noexcept = default;
+        SocketData(const SocketData&) noexcept = default;
+        ~SocketData() noexcept = default;
+        auto operator=(const SocketData&) noexcept -> SocketData& = delete;
+        explicit operator bool() const noexcept;
+        explicit operator handle_type() const noexcept;
+
+        [[nodiscard]] auto family() const noexcept -> family_type;
+        [[nodiscard]] auto handle() const noexcept -> handle_type;
+        [[nodiscard]] auto is_verbose() const noexcept -> bool;
+
+    private:
         handle_type m_handle {handle_null};
+        family_type m_family {AF_UNSPEC};
         bool m_is_verbose {false};
     };
 }

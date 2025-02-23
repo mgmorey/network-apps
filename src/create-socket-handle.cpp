@@ -1,4 +1,4 @@
-// Copyright (C) 2024  "Michael G. Morey" <mgmorey@gmail.com>
+// Copyright (C) 2022  "Michael G. Morey" <mgmorey@gmail.com>
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,15 +13,19 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_CREATE_SOCKET_H
-#define NETWORK_CREATE_SOCKET_H
+#ifndef WIN32
 
+#include "network/create-socket-handle.h"       // create_socket()
+#include "network/create-socket.h"              // create_socket()
+#include "network/handle-type.h"                // handle_type
+#include "network/family-type.h"                // family_type
 #include "network/socketdata.h"                 // SocketData
-#include "network/uniquesocket.h"               // UniqueSocket
 
-namespace Network
+auto Network::create_socket(handle_type handle,
+                            family_type family,
+                            bool is_verbose) -> UniqueSocket
 {
-    extern auto create_socket(const SocketData& data) -> UniqueSocket;
+    return create_socket(SocketData {handle, family, is_verbose});
 }
 
 #endif

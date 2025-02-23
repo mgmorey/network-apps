@@ -13,15 +13,18 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_CREATE_SOCKET_H
-#define NETWORK_CREATE_SOCKET_H
+#ifndef NETWORK_CREATE_SOCKET_HANDLE_H
+#define NETWORK_CREATE_SOCKET_HANDLE_H
 
-#include "network/socketdata.h"                 // SocketData
-#include "network/uniquesocket.h"               // UniqueSocket
+#include "network/family-type.h"        // family_type
+#include "network/handle-type.h"        // handle_type
+#include "network/uniquesocket.h"       // UniqueSocket
 
 namespace Network
 {
-    extern auto create_socket(const SocketData& data) -> UniqueSocket;
+    extern auto create_socket(handle_type handle,
+                              family_type family,
+                              bool is_verbose = false) -> UniqueSocket;
 }
 
 #endif

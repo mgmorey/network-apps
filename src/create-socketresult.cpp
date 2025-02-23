@@ -14,14 +14,13 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/create-socketresult.h"        // create_socketresult()
-#include "network/create-socket.h"              // create_socket()
+#include "network/create-socket-handle.h"       // create_socket()
 #include "network/format-os-error.h"            // format_os_error()
 #include "network/format.h"                     // Format
 #include "network/get-api-error.h"              // get_api_error()
 #include "network/handle-null.h"                // handle_null
 #include "network/oserrorresult.h"              // OsErrorResult
 #include "network/reset-api-error.h"            // reset_api_error()
-#include "network/socketdata.h"                 // SocketData
 #include "network/socketfamily.h"               // SocketFamily
 #include "network/sockethints.h"                // SocketHints
 #include "network/socketprotocol.h"             // SocketProtocol
@@ -44,20 +43,22 @@ auto Network::create_socketresult(const SocketHints& hints,
     static constexpr auto delim {", "};
     static constexpr auto tab {0};
 
+    const auto family {hints.m_family};
+
     if (is_verbose) {
         std::cout << "Calling ::socket("
                   << Format("domain")
-                  << SocketFamily(hints.m_family)
+                  << SocketFamily(family)
                   << Format(delim, tab, "type")
                   << SocketType(hints.m_socktype)
                   << Format(delim, tab, "protocol")
-                  << SocketProtocol(hints.m_protocol, hints.m_family)
+                  << SocketProtocol(hints.m_protocol, family)
                   << ')'
                   << std::endl;
     }
 
     reset_api_error();
-    const auto handle {::socket(hints.m_family,
+    const auto handle {::socket(family,
                                 hints.m_socktype,
                                 hints.m_protocol)};
 
@@ -67,11 +68,11 @@ auto Network::create_socketresult(const SocketHints& hints,
         std::ostringstream oss;
         oss << "Call to ::socket("
             << Format("domain")
-            << SocketFamily(hints.m_family)
+            << SocketFamily(family)
             << Format(delim, tab, "type")
             << SocketType(hints.m_socktype)
             << Format(delim, tab, "protocol")
-            << SocketProtocol(hints.m_protocol, hints.m_family)
+            << SocketProtocol(hints.m_protocol, family)
             << ") failed with error "
             << api_error
             << ": "
@@ -79,8 +80,5 @@ auto Network::create_socketresult(const SocketHints& hints,
         return OsErrorResult {os_error, oss.str()};
     }
 
-    return create_socket(SocketData {
-            .m_family = hints.m_family,
-            .m_handle = handle,
-            .m_is_verbose = is_verbose});
+    return create_socket(handle, family, is_verbose);
 }

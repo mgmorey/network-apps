@@ -89,7 +89,7 @@ namespace
         std::string actual_error_str;
 
         try {
-            auto sock {create_socket(AF_UNSPEC, handle, is_verbose)};
+            auto sock {create_socket(handle, AF_UNSPEC, is_verbose)};
             assert(static_cast<bool>(*sock));
             assert(static_cast<handle_type>(*sock) != handle_null);
         }

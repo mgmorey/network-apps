@@ -18,17 +18,8 @@
 
 #include "network/acceptresult.h"               // AcceptResult
 #include "network/bytestring.h"                 // ByteString
-#include "network/family-type.h"                // family_type
-#include "network/handle-type.h"                // handle_type
 #include "network/readresult.h"                 // ReadResult
 #include "network/socket.h"                     // Socket
-#include "network/socketdata.h"                 // SocketData
-
-#ifdef WIN32
-#include <winsock2.h>           // AF_UNSPEC
-#else
-#include <sys/socket.h>         // AF_UNSPEC
-#endif
 
 #include <sys/types.h>          // ssize_t
 
@@ -38,23 +29,15 @@
 namespace Network
 {
     class CommonSocket
-        : public Socket,
-          public SocketData
+        : public Socket
     {
     public:
         explicit CommonSocket(const SocketData& t_data);
-        CommonSocket() noexcept = default;
         CommonSocket(const CommonSocket&) noexcept = delete;
         CommonSocket(const CommonSocket&&) noexcept = delete;
         ~CommonSocket() noexcept override;
         auto operator=(const CommonSocket&) noexcept -> CommonSocket& = delete;
         auto operator=(CommonSocket&&) noexcept -> CommonSocket& = delete;
-        explicit operator bool() const noexcept final;
-        explicit operator handle_type() const noexcept final;
-
-        [[nodiscard]] auto family() const noexcept -> family_type final;
-        [[nodiscard]] auto handle() const noexcept -> handle_type final;
-        [[nodiscard]] auto is_verbose() const noexcept -> bool final;
 
         [[nodiscard]] auto accept() const -> AcceptResult final;
         [[nodiscard]] auto listen(int t_backlog) const ->

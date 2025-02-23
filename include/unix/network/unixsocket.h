@@ -31,7 +31,6 @@ namespace Network
     {
     public:
         explicit UnixSocket(const SocketData& t_data);
-        UnixSocket() noexcept = default;
         UnixSocket(const UnixSocket&) noexcept = delete;
         UnixSocket(const UnixSocket&&) noexcept = delete;
         ~UnixSocket() noexcept final;

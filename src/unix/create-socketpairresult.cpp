@@ -16,7 +16,7 @@
 #ifndef WIN32
 
 #include "network/create-socketpairresult.h"    // create_socketpairresult()
-#include "network/create-socket.h"              // create_socket()
+#include "network/create-socket-handle.h"       // create_socket()
 #include "network/format-os-error.h"            // format_os_error()
 #include "network/format.h"                     // Format
 #include "network/get-api-error.h"              // get_api_error()
@@ -44,23 +44,24 @@ auto Network::create_socketpairresult(const SocketHints& hints,
     static constexpr auto delim {", "};
     static constexpr auto tab {0};
 
+    const auto family {hints.m_family};
     std::array<handle_type, 2> handles {handle_null, handle_null};
 
     if (is_verbose) {
         std::cout << "Calling ::socketpair("
                   << Format("domain")
-                  << SocketFamily(hints.m_family)
+                  << SocketFamily(family)
                   << Format(delim, tab, "type")
                   << SocketType(hints.m_socktype)
                   << Format(delim, tab, "protocol")
-                  << SocketProtocol(hints.m_protocol, hints.m_family)
+                  << SocketProtocol(hints.m_protocol, family)
                   << ", ...)"
                   << std::endl;
     }
 
     reset_api_error();
 
-    if (::socketpair(hints.m_family,
+    if (::socketpair(family,
                      hints.m_socktype,
                      hints.m_protocol,
                      handles.data()) == socket_error) {
@@ -69,11 +70,11 @@ auto Network::create_socketpairresult(const SocketHints& hints,
         std::ostringstream oss;
         oss << "Call to ::socketpair("
             << Format("domain")
-            << SocketFamily(hints.m_family)
+            << SocketFamily(family)
             << Format(delim, tab, "type")
             << SocketType(hints.m_socktype)
             << Format(delim, tab, "protocol")
-            << SocketProtocol(hints.m_protocol, hints.m_family)
+            << SocketProtocol(hints.m_protocol, family)
             << ", ...) failed with error "
             << api_error
             << ": "
@@ -82,12 +83,8 @@ auto Network::create_socketpairresult(const SocketHints& hints,
     }
 
     return SocketPair {
-        create_socket(hints.m_family,
-                      handles[0],
-                      is_verbose),
-        create_socket(hints.m_family,
-                      handles[1],
-                      is_verbose)
+        create_socket(handles[0], family, is_verbose),
+        create_socket(handles[1], family, is_verbose)
     };
 }
 
