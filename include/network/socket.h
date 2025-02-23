@@ -32,10 +32,7 @@ namespace Network
         : public SocketData
     {
     public:
-        explicit Socket(const SocketData& t_data)
-            : SocketData(t_data)
-        {
-        }
+        explicit Socket(const SocketData& t_data);
 
         Socket() noexcept = default;
         Socket(const Socket&) noexcept = delete;

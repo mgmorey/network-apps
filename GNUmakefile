@@ -97,14 +97,15 @@ get-sin6-pointer.cpp get-sin6-port.cpp get-sockname.cpp			\
 get-socknameresult.cpp listen.cpp logicerror.cpp open-endpoint.cpp	\
 open-handle.cpp open.cpp oserrorresult.cpp parse-argumentspan.cpp	\
 parse.cpp rangeerror.cpp reset-api-error.cpp reset-os-error.cpp		\
-runtimeerror.cpp shutdown.cpp socketdata.cpp socketfamily.cpp		\
-socketflags.cpp sockethost.cpp socketprotocol.cpp sockettype.cpp	\
-start-context.cpp stream-address.cpp stream-addrinfo.cpp		\
-stream-context.cpp stream-socket.cpp stream-version.cpp template.cpp	\
-to-bytestring-void.cpp to-string-in-addr.cpp to-string-in6-addr.cpp	\
-to-string-span-byte.cpp to-string-vector-byte.cpp			\
-to-string-vector-char.cpp to-string-void.cpp validate-bs.cpp		\
-validate-sa.cpp validate-sin.cpp validate-sin6.cpp
+runtimeerror.cpp shutdown.cpp socket.cpp socketdata.cpp			\
+socketfamily.cpp socketflags.cpp sockethost.cpp socketprotocol.cpp	\
+sockettype.cpp start-context.cpp stream-address.cpp			\
+stream-addrinfo.cpp stream-context.cpp stream-socket.cpp		\
+stream-version.cpp template.cpp to-bytestring-void.cpp			\
+to-string-in-addr.cpp to-string-in6-addr.cpp to-string-span-byte.cpp	\
+to-string-vector-byte.cpp to-string-vector-char.cpp			\
+to-string-void.cpp validate-bs.cpp validate-sa.cpp validate-sin.cpp	\
+validate-sin6.cpp
 
 library_native_sources = create-socket.cpp format-ai-error.cpp	\
 format-os-error.cpp get-api-error.cpp get-os-error.cpp		\
