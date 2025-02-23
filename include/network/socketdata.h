@@ -36,8 +36,10 @@ namespace Network
                    bool t_is_verbose);
         SocketData() noexcept = default;
         SocketData(const SocketData&) noexcept = default;
+        SocketData(SocketData&&) noexcept = default;
         ~SocketData() noexcept = default;
-        auto operator=(const SocketData&) noexcept -> SocketData& = delete;
+        auto operator=(const SocketData&) noexcept -> SocketData& = default;
+        auto operator=(SocketData&&) noexcept -> SocketData& = default;
         explicit operator bool() const noexcept;
         explicit operator handle_type() const noexcept;
 
