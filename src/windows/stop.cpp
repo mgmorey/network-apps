@@ -43,13 +43,13 @@ auto Network::stop(FailureMode mode, bool is_verbose) -> int
     }
 
     if (::WSACleanup() == socket_error) {
-        const auto error {get_api_error()};
-        const auto os_error {to_os_error(error)};
+        const auto api_error {get_api_error()};
+        const auto os_error {to_os_error(api_error)};
         const auto message {format_os_error(os_error)};
 
         if (is_verbose) {
             std::cout << "Call to ::WSACleanup() failed with error "
-                      << error
+                      << api_error
                       << ": "
                       << message
                       << std::endl;
@@ -58,7 +58,7 @@ auto Network::stop(FailureMode mode, bool is_verbose) -> int
         switch (mode) {
         case FailureMode::throw_error:
         {
-            switch (error) {  // NOLINT
+            switch (api_error) {  // NOLINT
             case WSANOTINITIALISED:
                 throw LogicError {message};
             case WSAEINPROGRESS:
@@ -70,15 +70,15 @@ auto Network::stop(FailureMode mode, bool is_verbose) -> int
             break;
         }
         case FailureMode::return_zero:
-            switch (error) {  // NOLINT
+            switch (api_error) {  // NOLINT
             case WSANOTINITIALISED:
                 return 0;
             default:
-                return error;
+                return api_error;
             }
             break;
         case FailureMode::return_error:
-            return error;
+            return api_error;
         }
     }
 
