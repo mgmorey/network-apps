@@ -35,18 +35,21 @@ namespace Network
         friend auto operator<<(std::ostream& os,
                                const Template& sock) -> std::ostream&;
 
-        Template() noexcept = default;
         // cppcheck-suppress noExplicitConstructor; NOLINTNEXTLINE
         Template(const addrinfo& t_ai) noexcept;
+
+        Template() noexcept = default;
         Template(const Template&) noexcept = default;
         Template(Template&&) = default;
         ~Template() noexcept = default;
         auto operator=(const Template&) noexcept -> Template& = default;
         auto operator=(Template&&) noexcept -> Template& = default;
+
         auto operator=(const addrinfo& t_ai) noexcept -> Template&;
         auto operator<(const Template& t_sock) const noexcept -> bool;
         auto operator>(const Template& t_sock) const noexcept -> bool;
         auto operator==(const Template& t_sock) const noexcept -> bool;
+
         [[nodiscard]] auto hints() const noexcept -> const SocketHints&;
         [[nodiscard]] auto host() const noexcept -> const SocketHost&;
         [[nodiscard]] auto address() const noexcept -> const ByteString&;
