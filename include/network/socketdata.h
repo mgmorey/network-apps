@@ -34,6 +34,7 @@ namespace Network
         SocketData(handle_type t_handle,
                    family_type t_family,
                    bool t_is_verbose);
+
         SocketData() noexcept = default;
         SocketData(const SocketData&) noexcept = default;
         SocketData(SocketData&&) noexcept = default;
