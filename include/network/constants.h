@@ -17,6 +17,18 @@
 #define NETWORK_CONSTANTS_H
 
 #include "network/handle-null.h"                // handle_null
+#include "network/limits.h"                     // name_length_max,
+                                                // name_length_min,
+                                                // path_length_max,
+                                                // path_length_min,
+                                                // sa_length_max,
+                                                // sa_length_min,
+                                                // sin6_length_max,
+                                                // sin6_length_min,
+                                                // sin_length_max,
+                                                // sin_length_min,
+                                                // sun_length_max,
+                                                // sun_length_min
 #include "network/offsets.h"                    // sa_data_offset,
                                                 // sun_path_offset
 #include "network/sizes.h"                      // sa_size, sin6_size,

@@ -28,22 +28,33 @@
 #include "network/close.h"                      // close()
 #include "network/connect.h"                    // connect()
 #include "network/constants.h"                  // handle_null,
+                                                // name_length_max,
+                                                // name_length_min,
+                                                // path_length_max,
+                                                // path_length_min,
                                                 // sa_data_offset,
+                                                // sa_length_max,
+                                                // sa_length_min,
                                                 // sa_size,
                                                 // sin6_addr_offset,
                                                 // sin6_family_offset,
+                                                // sin6_length_max,
+                                                // sin6_length_min,
                                                 // sin6_len_offset,
                                                 // sin6_port_offset,
                                                 // sin6_size,
                                                 // sin_addr_offset,
                                                 // sin_family_offset,
+                                                // sin_length_max,
+                                                // sin_length_min,
                                                 // sin_len_offset,
                                                 // sin_port_offset,
                                                 // sin_size,
-                                                // sockaddr_size_max,
                                                 // socket_error,
                                                 // ss_size,
                                                 // string_null,
+                                                // sun_length_max,
+                                                // sun_length_min,
                                                 // sun_path_offset,
                                                 // sun_size
 #include "network/context-error.h"              // get_last_context_error()
@@ -86,10 +97,6 @@
 #endif
 #include "network/insert.h"                     // insert()
 #include "network/ipsockethints.h"              // IpSocketHints
-#include "network/limits.h"                     // name_length_max,
-                                                // name_length_min,
-                                                // path_length_max,
-                                                // path_length_min,
 #include "network/listen.h"                     // listen()
 #include "network/open-endpoint.h"              // open()
 #include "network/open-handle.h"                // open()
