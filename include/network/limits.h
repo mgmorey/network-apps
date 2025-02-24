@@ -24,6 +24,10 @@
 #endif
 #include "network/sa-length-limits.h"           // sa_length_max,
                                                 // sa_length_min
+#include "network/sin-length-limits.h"          // sin_length_max,
+                                                // sin_length_min
+#include "network/sin6-length-limits.h"         // sin6_length_max,
+                                                // sin6_length_min
 #ifndef WIN32
 #include "network/sun-length-limits.h"          // sun_length_max,
                                                 // sun_length_min

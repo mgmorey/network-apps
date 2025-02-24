@@ -16,30 +16,25 @@
 #ifndef NETWORK_TO_SA_LENGTH_H
 #define NETWORK_TO_SA_LENGTH_H
 
-#include "network/get-length-limits.h"          // get_length_maximum(),
-                                                // get_length_minimum()
+#include "network/family-type.h"                // family_type
 #include "network/length-type.h"                // length_type
-#include "network/sa-length-limits.h"           // sa_length_max,
-                                                // sa_length_min
-#include "network/socket-family-type.h"         // socket_family_type
+#include "network/socketlimits.h"               // SocketLimits
 #include "network/to-value.h"                   // to_value()
+
+#ifdef WIN32
+#include <winsock2.h>           // AF_UNSPEC
+#else
+#include <sys/socket.h>         // AF_UNSPEC
+#endif
 
 namespace Network
 {
-    auto to_sa_length(auto value,
-                      length_type size_min = sa_length_min,
-                      length_type size_max = sa_length_max) -> length_type
+    auto to_sa_length(auto value, family_type family = AF_UNSPEC) -> length_type
     {
+        const auto [size_min, size_max] {SocketLimits(family).limits()};
         return to_value<length_type>("sa_length_type", value,
                                      size_min,
                                      size_max);
-    }
-
-    auto to_sa_length(auto value, socket_family_type family) -> length_type
-    {
-        const auto size_max {get_length_maximum(family)};
-        const auto size_min {get_length_minimum(family)};
-        return to_sa_length(value, size_min, size_max);
     }
 }
 

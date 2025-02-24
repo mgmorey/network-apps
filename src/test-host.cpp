@@ -225,7 +225,7 @@ namespace
             actual_code = result.number();
         }
         else {
-            std::sort(hosts.begin(), hosts.end());
+            std::sort(hosts.begin(), hosts.end());  // NOLINT
             print(hosts);
         }
 

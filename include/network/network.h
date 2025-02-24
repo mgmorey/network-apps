@@ -66,7 +66,6 @@
 #include "network/get-endpointresult.h"         // get_endpointresult()
 #include "network/get-hostname.h"               // get_hostname()
 #include "network/get-hostnameresult.h"         // get_hostnameresult()
-#include "network/get-length-limits.h"          // get_length_maximum()
 #include "network/get-name.h"                   // get_name()
 #include "network/get-nameresult.h"             // get_nameresult()
 #ifndef WIN32
@@ -104,7 +103,8 @@
 #include "network/socketfamily.h"               // SocketFamily
 #include "network/socketflags.h"                // SocketFlags
 #include "network/sockethints.h"                // SocketHints
-#include "network/sockethost.h"                 // SocketHints
+#include "network/sockethost.h"                 // SocketHost
+#include "network/socketlimits.h"               // SocketLimits
 #include "network/socketprotocol.h"             // SocketProtocol
 #include "network/sockettype.h"                 // SocketType
 #include "network/start-context.h"              // start_context()

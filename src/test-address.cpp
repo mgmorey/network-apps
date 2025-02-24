@@ -17,9 +17,7 @@
 #include "network/network.h"            // Address, Context, Error,
                                         // Hostname, OsErrorResult,
                                         // SocketFamily, SocketHints,
-                                        // SocketHost,
-                                        // get_length_maximum(),
-                                        // get_length_minimum(),
+                                        // SocketHost, SocketLimits,
                                         // insert(), sa_family_type,
                                         // sa_size, sin_family_type,
                                         // sun_length_max,
@@ -62,13 +60,12 @@ namespace
     using Network::SocketFamily;
     using Network::SocketHints;
     using Network::SocketHost;
+    using Network::SocketLimits;
     using Network::always_false_v;
 #ifndef WIN32
     using Network::af_unix;
 #endif
     using Network::af_unspec;
-    using Network::get_length_maximum;
-    using Network::get_length_minimum;
     using Network::insert;
     using Network::parse;
 #ifndef WIN32
@@ -410,8 +407,7 @@ namespace
             assert(false);
         }
 
-        const auto size_max {get_length_maximum(family)};
-        const auto size_min {get_length_minimum(family)};
+        const auto [size_min, size_max] {SocketLimits(family).limits()};
 
         if (!(size_min <= size && size <= size_max)) {
             assert(false);

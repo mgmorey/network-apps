@@ -13,19 +13,15 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_GET_LENGTH_LIMITS_H
-#define NETWORK_GET_LENGTH_LIMITS_H
+#ifndef NETWORK_SIN_LENGTH_LIMITS_H
+#define NETWORK_SIN_LENGTH_LIMITS_H
 
-#include "network/socket-family-type.h" // socket_family_type
-
-#include <cstddef>      // std::size_t
+#include "network/sin-sizes.h"          // sin_size
 
 namespace Network
 {
-    extern auto get_length_maximum(socket_family_type family) noexcept ->
-        std::size_t;
-    extern auto get_length_minimum(socket_family_type family) noexcept ->
-        std::size_t;
+    static constexpr auto sin_length_max {sin_size};
+    static constexpr auto sin_length_min {sin_size};
 }
 
 #endif
