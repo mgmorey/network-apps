@@ -61,8 +61,8 @@ auto Network::UnixSocket::remove(const PathnameView& t_path) const -> bool
 
 auto Network::UnixSocket::state(SocketState t_state) -> UnixSocket&
 {
-    const auto current {t_state};
-    const auto previous {m_state};
+    const auto& current {t_state};
+    auto& previous {m_state};
 
     if (previous == current) {
         return *this;
@@ -75,6 +75,6 @@ auto Network::UnixSocket::state(SocketState t_state) -> UnixSocket&
         static_cast<void>(remove(m_path));
     }
 
-    m_state = current;
+    previous = current;
     return *this;
 }
