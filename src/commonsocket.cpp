@@ -78,8 +78,7 @@ auto Network::CommonSocket::open(const ByteString& t_addr,
 {
     const OpenHandleParams args
     {
-        .m_handle = handle(), .m_addr = t_addr,
-        .m_is_verbose = is_verbose()
+        .m_handle = handle(), .m_addr = t_addr, .m_is_verbose = is_verbose()
     };
 
     if (const auto result {Network::open(args, t_is_bind)}) {
