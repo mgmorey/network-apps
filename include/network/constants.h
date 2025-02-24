@@ -19,7 +19,8 @@
 #include "network/handle-null.h"                // handle_null
 #include "network/offsets.h"                    // sa_data_offset,
                                                 // sun_path_offset
-#include "network/sizes.h"                      // sockaddr_size_max, ss_size,
+#include "network/sizes.h"                      // sa_size, sin6_size,
+                                                // sin_size, ss_size,
                                                 // sun_size
 #include "network/socket-error.h"               // socket_error
 
