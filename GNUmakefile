@@ -88,10 +88,10 @@ create-socket-handle.cpp create-socket-hints.cpp			\
 create-socketresult.cpp error.cpp familyerror.cpp			\
 format-bytestring.cpp format.cpp get-endpoint.cpp			\
 get-endpointresult.cpp get-hostname.cpp get-hostnameresult.cpp		\
-get-length-maximum.cpp get-length-minimum.cpp get-name.cpp		\
-get-nameresult.cpp get-operands.cpp get-option.cpp get-options.cpp	\
-get-peername.cpp get-peernameresult.cpp get-sa-family.cpp		\
-get-sa-length.cpp get-sa-pointer.cpp get-sa-span.cpp get-sin-addr.cpp	\
+get-length-limits.cpp get-name.cpp get-nameresult.cpp			\
+get-operands.cpp get-option.cpp get-options.cpp get-peername.cpp	\
+get-peernameresult.cpp get-sa-family.cpp get-sa-length.cpp		\
+get-sa-pointer.cpp get-sa-span.cpp get-sin-addr.cpp			\
 get-sin-pointer.cpp get-sin-port.cpp get-sin6-addr.cpp			\
 get-sin6-pointer.cpp get-sin6-port.cpp get-sockname.cpp			\
 get-socknameresult.cpp listen.cpp logicerror.cpp open-endpoint.cpp	\

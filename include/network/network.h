@@ -66,8 +66,7 @@
 #include "network/get-endpointresult.h"         // get_endpointresult()
 #include "network/get-hostname.h"               // get_hostname()
 #include "network/get-hostnameresult.h"         // get_hostnameresult()
-#include "network/get-length-maximum.h"         // get_length_maximum()
-#include "network/get-length-minimum.h"         // get_length_minimum()
+#include "network/get-length-limits.h"          // get_length_maximum()
 #include "network/get-name.h"                   // get_name()
 #include "network/get-nameresult.h"             // get_nameresult()
 #ifndef WIN32

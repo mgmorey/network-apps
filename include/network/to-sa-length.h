@@ -16,8 +16,8 @@
 #ifndef NETWORK_TO_SA_LENGTH_H
 #define NETWORK_TO_SA_LENGTH_H
 
-#include "network/get-length-maximum.h"         // get_length_maximum()
-#include "network/get-length-minimum.h"         // get_length_minimum()
+#include "network/get-length-limits.h"          // get_length_maximum(),
+                                                // get_length_minimum()
 #include "network/length-type.h"                // length_type
 #include "network/sa-length-limits.h"           // sa_length_max,
                                                 // sa_length_min

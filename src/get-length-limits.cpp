@@ -13,12 +13,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-length-maximum.h"         // get_length_maximum()
-#include "network/sa-length-limits.h"           // sa_length_max
+#include "network/get-length-limits.h"          // get_length_maximum(),
+                                                // get_length_minimum()
+#include "network/sa-length-limits.h"           // sa_length_min
 #include "network/sin-sizes.h"                  // sin_size
 #include "network/sin6-sizes.h"                 // sin6_size
 #include "network/socket-family-type.h"         // socket_family_type
 #ifndef WIN32
+#include "network/sun-offsets.h"                // sun_path_offset
 #include "network/sun-sizes.h"                  // sun_size
 #endif
 
@@ -29,6 +31,25 @@
 #endif
 
 #include <cstddef>      // std::size_t
+
+auto Network::get_length_minimum(socket_family_type family) noexcept ->
+    std::size_t
+{
+    switch (family) {
+    case AF_UNSPEC:
+        return sa_length_min;
+#ifndef WIN32
+    case AF_UNIX:
+        return sun_path_offset;
+#endif
+    case AF_INET:
+        return sin_size;
+    case AF_INET6:
+        return sin6_size;
+    default:
+        return sa_length_min;
+    }
+}
 
 auto Network::get_length_maximum(socket_family_type family) noexcept ->
     std::size_t
