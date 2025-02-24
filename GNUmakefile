@@ -183,11 +183,10 @@ tarfile = $(output_dir)/$(library_file).tar.gz
 
 # Define target list variables
 
-all_targets = dataclean $(build_targets) sizes $(if	\
-$(is_uctags),tags) test $(if $(is_posix),unix,) $(if	\
-$(is_windows_api),dos2unix,)
+all_targets = dataclean $(build_targets) $(if $(is_uctags),tags) test	\
+$(if $(is_posix),unix,) $(if $(is_windows_api),dos2unix,)
 
-build_targets = assert objects libraries programs
+build_targets = assert objects libraries programs sizes
 
 # Define variable for timestamp files
 timestamps = .test-complete $(if $(is_posix),.unix-complete,)
