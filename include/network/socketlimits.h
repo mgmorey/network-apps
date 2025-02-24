@@ -32,9 +32,6 @@ namespace Network
     class SocketLimits
     {
     public:
-        static auto max(family_type family) noexcept -> std::size_t;
-        static auto min(family_type family) noexcept -> std::size_t;
-
         explicit SocketLimits(family_type t_family) noexcept;
 
         SocketLimits() noexcept = default;

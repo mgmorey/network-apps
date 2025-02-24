@@ -33,9 +33,20 @@
 #include <cstddef>      // std::size_t
 #include <utility>      // std::pair
 
-auto Network::SocketLimits::max(family_type family) noexcept -> std::size_t
+Network::SocketLimits::SocketLimits(family_type t_family) noexcept
+    : m_family(t_family)
 {
-    switch (family) {
+}
+
+auto Network::SocketLimits::limits() const noexcept ->
+    std::pair<std::size_t, std::size_t>
+{
+    return {min(), max()};
+}
+
+auto Network::SocketLimits::max() const noexcept -> std::size_t
+{
+    switch (m_family) {
     case AF_UNSPEC:
         return sa_length_max;
 #ifndef WIN32
@@ -51,9 +62,9 @@ auto Network::SocketLimits::max(family_type family) noexcept -> std::size_t
     }
 }
 
-auto Network::SocketLimits::min(family_type family) noexcept -> std::size_t
+auto Network::SocketLimits::min() const noexcept -> std::size_t
 {
-    switch (family) {
+    switch (m_family) {
     case AF_UNSPEC:
         return sa_length_min;
 #ifndef WIN32
@@ -67,25 +78,4 @@ auto Network::SocketLimits::min(family_type family) noexcept -> std::size_t
     default:
         return sa_length_min;
     }
-}
-
-Network::SocketLimits::SocketLimits(family_type t_family) noexcept
-    : m_family(t_family)
-{
-}
-
-auto Network::SocketLimits::limits() const noexcept ->
-    std::pair<std::size_t, std::size_t>
-{
-    return {min(m_family), max(m_family)};
-}
-
-auto Network::SocketLimits::max() const noexcept -> std::size_t
-{
-    return max(m_family);
-}
-
-auto Network::SocketLimits::min() const noexcept -> std::size_t
-{
-    return min(m_family);
 }
