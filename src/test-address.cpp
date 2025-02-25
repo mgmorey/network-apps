@@ -95,8 +95,8 @@ namespace
 
     const SocketHints unspec {af_unspec, SOCK_STREAM, 0, AI_CANONNAME};
 
-    auto is_verbose {false}; // NOLINT
-    Address previous_address;
+    auto is_verbose {false};	// NOLINT
+    Address previous_address;		// NOLINT
 
     auto create_sa(sa_family_type family, std::size_t length = sa_size) -> sockaddr
     {
@@ -211,27 +211,23 @@ namespace
 
     auto test(const ByteString& addr) -> void
     {
+        const auto size {addr.size()};
+        assert(addr.size());
         const Address address {addr};
+        const auto empty {address.empty()};
+        assert(!empty);
         const auto family {address.family()};
-
-        switch (family) {
-        case AF_UNSPEC:
-#ifndef WIN32
-        case AF_UNIX:
-#endif
-        case AF_INET:
-        case AF_INET6:
-            break;
-        default:
-            assert(false);
-        }
-
         const auto [size_min, size_max] {SocketLimits(family).limits()};
-
-        if (!(size_min <= addr.size() && addr.size() <= size_max)) {
-            assert(false);
-        }
-
+        assert(size_min <= size);
+        assert(size <= size_max);
+#ifdef HAVE_SOCKADDR_SA_LEN
+        const auto length {address.length()};
+        static_cast<void>(length);
+#endif
+        const auto port {address.port()};
+        static_cast<void>(port);
+        const auto text {address.text()};
+        static_cast<void>(text);
         assert(ByteString {address} == addr);
         previous_address = addr;
     }
