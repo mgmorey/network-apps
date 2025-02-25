@@ -16,13 +16,13 @@
 #ifndef NETWORK_SOCKET_H
 #define NETWORK_SOCKET_H
 
-#include "network/acceptresult.h"               // AcceptResult
-#include "network/bytestring.h"                 // ByteString
-#include "network/oserrorresult.h"              // OsErrorResult
-#include "network/readresult.h"                 // ReadResult
-#include "network/socketdata.h"                 // SocketData
-#include "network/to-bytestring.h"              // to_bytestring()
-#include "network/validate.h"                   // validate()
+#include "network/acceptresult.h"       // AcceptResult
+#include "network/bytestring.h"         // ByteString
+#include "network/oserrorresult.h"      // OsErrorResult
+#include "network/readresult.h"         // ReadResult
+#include "network/socketdata.h"         // SocketData
+#include "network/to-bytestring.h"      // to_bytestring()
+#include "network/validate.h"           // validate()
 
 #include <ostream>      // std::ostream
 
