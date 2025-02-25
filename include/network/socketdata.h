@@ -16,9 +16,9 @@
 #ifndef NETWORK_SOCKETDATA_H
 #define NETWORK_SOCKETDATA_H
 
-#include "network/family-type.h"                // family_type
-#include "network/handle-null.h"                // handle_null
-#include "network/handle-type.h"                // handle_type
+#include "network/family-type.h"        // family_type
+#include "network/handle-null.h"        // handle_null
+#include "network/handle-type.h"        // handle_type
 
 #ifdef WIN32
 #include <winsock2.h>           // AF_UNSPEC
