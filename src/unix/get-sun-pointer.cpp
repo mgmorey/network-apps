@@ -27,10 +27,4 @@ auto Network::get_sun_pointer(const ByteString& addr) -> const sockaddr_un*
     return validate(static_cast<const sockaddr_un*>(pointer), addr.size());
 }
 
-auto Network::get_sun_pointer(ByteString& addr) -> sockaddr_un*
-{
-    void* pointer {addr.data()};
-    return static_cast<sockaddr_un*>(pointer);
-}
-
 #endif

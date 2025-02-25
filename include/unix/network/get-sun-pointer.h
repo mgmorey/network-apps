@@ -25,7 +25,6 @@
 namespace Network
 {
     extern auto get_sun_pointer(const ByteString& addr) -> const sockaddr_un*;
-    extern auto get_sun_pointer(ByteString& addr) -> sockaddr_un*;
 }
 
 #endif
