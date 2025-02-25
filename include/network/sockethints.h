@@ -60,16 +60,6 @@ namespace Network
         constexpr auto operator=(SocketHints&&) noexcept ->
             SocketHints& = default;
 
-        constexpr auto operator=(const addrinfo& t_ai) noexcept ->
-            SocketHints&
-        {
-            m_family = t_ai.ai_family;
-            m_socktype = t_ai.ai_socktype;
-            m_protocol = t_ai.ai_protocol;
-            m_flags = t_ai.ai_flags;
-            return *this;
-        }
-
         constexpr operator addrinfo() const noexcept  // NOLINT
         {
             addrinfo ai {};
