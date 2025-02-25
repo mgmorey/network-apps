@@ -18,11 +18,11 @@
 
 #ifndef WIN32
 
-#include "network/commonsocket.h"               // CommonSocket
-#include "network/pathname.h"                   // Pathname
-#include "network/pathnameview.h"               // PathnameView
-#include "network/socketdata.h"                 // SocketData
-#include "network/socketstate.h"                // SocketState
+#include "network/commonsocket.h"       // CommonSocket
+#include "network/pathname.h"           // Pathname
+#include "network/pathnameview.h"       // PathnameView
+#include "network/socketdata.h"         // SocketData
+#include "network/socketstate.h"        // SocketState
 
 namespace Network
 {
