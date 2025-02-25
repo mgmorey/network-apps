@@ -51,30 +51,6 @@ auto Network::Address::operator=(const value_type& t_value) -> Address&
     return *this;
 }
 
-auto Network::Address::operator<(const Address& t_address) const ->
-    bool
-{
-    return (family() < t_address.family() ||
-            port() < t_address.port() ||
-            text() < t_address.text());
-}
-
-auto Network::Address::operator>(const Address& t_address) const ->
-    bool
-{
-    return (family() > t_address.family() ||
-            port() > t_address.port() ||
-            text() > t_address.text());
-}
-
-auto Network::Address::operator==(const Address& t_address) const ->
-    bool
-{
-    return (family() == t_address.family() &&
-            port() == t_address.port() &&
-            text() == t_address.text());
-}
-
 Network::Address::operator value_type() const
 {
     return m_value;

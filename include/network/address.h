@@ -55,9 +55,6 @@ namespace Network
         auto operator=(const Address&) -> Address& = default;
         auto operator=(Address&&) -> Address& = default;
         auto operator=(const value_type& t_value) -> Address&;
-        auto operator<(const Address& t_address) const -> bool;
-        auto operator>(const Address& t_address) const -> bool;
-        auto operator==(const Address& t_address) const -> bool;
         explicit operator value_type() const;
         [[nodiscard]] auto empty() const -> bool;
         [[nodiscard]] auto family() const -> socket_family_type;
