@@ -17,7 +17,6 @@
 #define NETWORK_SOCKETHOST_H
 
 #include "network/bytestring.h"         // ByteString
-#include "network/length-type.h"        // length_type
 #include "network/optionalhostname.h"   // OptionalHostname
 
 #ifdef WIN32
@@ -30,20 +29,19 @@ namespace Network
 {
     struct SocketHost
     {
-        SocketHost() = default;
         // cppcheck-suppress noExplicitConstructor; NOLINTNEXTLINE
         SocketHost(const addrinfo& t_ai);
+
+        SocketHost() = default;
         SocketHost(const SocketHost&) = default;
         SocketHost(SocketHost&&) = default;
         ~SocketHost() noexcept = default;
-        auto operator=(const addrinfo& t_ai) -> SocketHost&;
         auto operator=(const SocketHost&) -> SocketHost& = default;
         auto operator=(SocketHost&&) -> SocketHost& = default;
+
+        auto operator=(const addrinfo& t_ai) -> SocketHost&;
         auto operator<(const SocketHost& t_host) const noexcept -> bool;
-        auto operator>(const SocketHost& t_host) const noexcept -> bool;
-        auto operator==(const SocketHost& t_host) const noexcept -> bool;
         [[nodiscard]] auto address() const noexcept -> const ByteString&;
-        [[nodiscard]] auto address_length() const noexcept -> length_type;
         [[nodiscard]] auto canonical_name() const noexcept ->
             const OptionalHostname&;
 

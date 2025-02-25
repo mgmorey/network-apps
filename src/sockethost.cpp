@@ -45,26 +45,9 @@ auto Network::SocketHost::operator<(const SocketHost& t_host) const noexcept ->
     return m_addr < t_host.m_addr;
 }
 
-auto Network::SocketHost::operator>(const SocketHost& t_host) const noexcept ->
-    bool
-{
-    return m_addr > t_host.m_addr;
-}
-
-auto Network::SocketHost::operator==(const SocketHost& t_host) const noexcept ->
-    bool
-{
-    return m_addr == t_host.m_addr;
-}
-
 auto Network::SocketHost::address() const noexcept -> const Network::ByteString&
 {
     return m_addr;
-}
-
-auto Network::SocketHost::address_length() const noexcept -> length_type
-{
-    return m_addr.size();
 }
 
 auto Network::SocketHost::canonical_name() const noexcept ->
