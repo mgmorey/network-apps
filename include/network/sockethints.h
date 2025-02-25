@@ -31,8 +31,6 @@ namespace Network
 {
     struct SocketHints
     {
-        constexpr SocketHints() noexcept = default;
-
         constexpr explicit SocketHints(socket_family_type t_family,
                                        socket_type_type t_socktype,
                                        socket_protocol_type t_protocol = 0,
@@ -53,6 +51,7 @@ namespace Network
         {
         }
 
+        constexpr SocketHints() noexcept = default;
         constexpr SocketHints(const SocketHints&) noexcept = default;
         constexpr SocketHints(SocketHints&&) noexcept = default;
         constexpr ~SocketHints() noexcept = default;
