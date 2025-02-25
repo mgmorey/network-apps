@@ -29,8 +29,6 @@ namespace Network
 
         OsErrorResult(os_error_type t_number,
                       std::string_view t_string);
-        auto operator==(const OsErrorResult& t_result) const noexcept -> bool;
-        auto operator!=(const OsErrorResult& t_result) const noexcept -> bool;
         operator bool() const noexcept;  // NOLINT
         [[nodiscard]] auto number() const noexcept -> os_error_type;
         [[nodiscard]] auto string() const -> const std::string&;
