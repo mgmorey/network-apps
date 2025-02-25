@@ -449,6 +449,7 @@ namespace
                 const ByteString& addr {host.address()};
                 const Address address {addr};
                 print(address, addr.size());
+                assert(ByteString {address} == addr);
                 test_valid(address, addr.size());
             }
         }
