@@ -13,11 +13,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/unixsocket.h"                 // UnixSocket
-#include "network/bytestring.h"                 // ByteString
-#include "network/oserrorresult.h"              // OsErrorResult
-#include "network/socketdata.h"                 // SocketData
-#include "network/to-path.h"                    // to_path()
+#include "network/unixsocket.h"         // UnixSocket
+#include "network/bytestring.h"         // ByteString
+#include "network/oserrorresult.h"      // OsErrorResult
+#include "network/socketdata.h"         // SocketData
+#include "network/to-path.h"            // to_path()
 
 #include <filesystem>   // std::filesystem
 #include <iostream>     // std::cout, std::endl
