@@ -95,7 +95,8 @@ namespace
 
     const SocketHints unspec {af_unspec, SOCK_STREAM, 0, AI_CANONNAME};
 
-    auto is_verbose {false};  // NOLINT
+    auto is_verbose {false}; // NOLINT
+    Address previous_address;
 
     auto create_sa(sa_family_type family, std::size_t length = sa_size) -> sockaddr
     {
@@ -171,8 +172,9 @@ namespace
         static_cast<void>(_);
     }
 
-    auto print(const Address& address, std::size_t size) -> void
+    auto print(const ByteString& addr) -> void
     {
+        const Address address {addr};
         const auto family {address.family()};
 #ifdef HAVE_SOCKADDR_SA_LEN
         const auto length {address.length()};
@@ -183,7 +185,7 @@ namespace
                   << SocketFamily(family)
                   << std::endl
                   << std::setw(print_key_width) << "        Size: "
-                  << std::right << std::setw(print_value_width) << size
+                  << std::right << std::setw(print_value_width) << addr.size()
                   << std::endl
 #ifdef HAVE_SOCKADDR_SA_LEN
                   << std::setw(print_key_width) << "        Length: "
@@ -391,8 +393,9 @@ namespace
 
 #endif
 
-    auto test_valid(const Address& address, std::size_t size) -> void
+    auto test_valid(const ByteString& addr) -> void
     {
+        const Address address {addr};
         const auto family {address.family()};
 
         switch (family) {
@@ -409,7 +412,7 @@ namespace
 
         const auto [size_min, size_max] {SocketLimits(family).limits()};
 
-        if (!(size_min <= size && size <= size_max)) {
+        if (!(size_min <= addr.size() && addr.size() <= size_max)) {
             assert(false);
         }
 
@@ -425,6 +428,9 @@ namespace
         default:
             assert(false);
         }
+
+        assert(ByteString {address} == addr);
+        previous_address = addr;
     }
 
     auto test_valid() -> void
@@ -447,10 +453,8 @@ namespace
 
             for (const auto& host : hosts) {
                 const ByteString& addr {host.address()};
-                const Address address {addr};
-                print(address, addr.size());
-                assert(ByteString {address} == addr);
-                test_valid(address, addr.size());
+                print(addr);
+                test_valid(addr);
             }
         }
     }
