@@ -16,10 +16,10 @@
 #ifndef NETWORK_COMMONSOCKET_H
 #define NETWORK_COMMONSOCKET_H
 
-#include "network/acceptresult.h"               // AcceptResult
-#include "network/bytestring.h"                 // ByteString
-#include "network/readresult.h"                 // ReadResult
-#include "network/socket.h"                     // Socket
+#include "network/acceptresult.h"       // AcceptResult
+#include "network/bytestring.h"         // ByteString
+#include "network/readresult.h"         // ReadResult
+#include "network/socket.h"             // Socket
 
 #include <sys/types.h>          // ssize_t
 
