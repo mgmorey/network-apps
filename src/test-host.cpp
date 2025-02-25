@@ -43,12 +43,14 @@
 #endif
 
 #include <algorithm>    // std::ranges, std::sort()
+#include <cstddef>      // std::byte
 #include <cstdlib>      // EXIT_FAILURE, std::exit(), std::size_t
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <iterator>     // std::back_inserter()
 #include <list>         // std::list
 #include <ostream>      // std::ostream
+#include <regex>        // std::regex, std::regex_match
 #include <set>          // std::set
 #include <string>       // std::string
 #include <vector>       // std::vector
@@ -59,6 +61,7 @@ namespace
     using Network::ArgumentSpan;
     using Network::ByteString;
     using Network::Endpoint;
+    using Network::Error;
     using Network::HostnameView;
     using Network::IpSocketHints;
     using Network::OptionalHints;
@@ -72,11 +75,15 @@ namespace
     using Network::os_error_type;
     using Network::parse;
     using Network::start_context;
+    using Network::to_bytestring;
     using Network::uniquify;
 
     using ErrorCodeSet = std::set<os_error_type>;
     using StringList = std::list<std::string>;
 
+    constexpr auto expected_error_getnameinfo_re {
+        R"(Call to ::getnameinfo\(.+\) returned -1 \(.+\))"
+    };
     constexpr auto localhost {"localhost"};
 
     const IpSocketHints ip_any {SOCK_STREAM, AI_CANONNAME};
@@ -194,6 +201,15 @@ namespace
         return operands;
     }
 
+    auto print(const Error& error) -> void
+    {
+        if (is_verbose) {
+            std::cout << "Exception: "
+                      << error.what()
+                      << std::endl;
+        }
+    }
+
     auto print(const OsErrorResult& result) -> void
     {
         std::cout << result.string()
@@ -230,6 +246,29 @@ namespace
         }
 
         assert(expected_codes.contains(actual_code));
+    }
+
+    auto test_invalid_addr() -> void
+    {
+        const std::string expected_error_re {expected_error_getnameinfo_re};
+        std::string actual_error_str;
+
+        try {
+            ByteString addr {to_bytestring("")};
+            static_cast<void>(Network::get_endpoint(addr, -1, is_verbose));
+        }
+        catch (const Error& error) {
+            print(error);
+            actual_error_str = error.what();
+        }
+
+        if (expected_error_re.empty()) {
+            assert(actual_error_str.empty());
+        }
+        else {
+            const std::regex expected_error_regex {expected_error_re};
+            assert(std::regex_match(actual_error_str, expected_error_regex));
+        }
     }
 
     auto test_invalid_family() -> void
@@ -278,6 +317,7 @@ auto main(int argc, char* argv[]) -> int
             std::cout << *context << std::endl;
         }
 
+        test_invalid_addr();
         test_invalid_family();
         test_invalid_socktype();
 #if !defined(OS_CYGWIN_NT) && !defined(OS_MINGW64_NT)
