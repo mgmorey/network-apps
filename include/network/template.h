@@ -44,6 +44,7 @@ namespace Network
         ~Template() noexcept = default;
         auto operator=(const Template&) noexcept -> Template& = default;
         auto operator=(Template&&) noexcept -> Template& = default;
+
         auto operator=(const addrinfo& t_ai) noexcept -> Template&;
 
         [[nodiscard]] auto hints() const noexcept -> const SocketHints&;
