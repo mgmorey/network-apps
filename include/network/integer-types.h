@@ -17,6 +17,7 @@
 #define NETWORK_INTEGER_TYPES_H
 
 #include "network/error-type.h"                     // error_type
+#include "network/family-type.h"                    // family_type
 #include "network/handle-type.h"                    // handle_type
 #include "network/length-type.h"                    // length_type
 #include "network/name-length-type.h"               // name_length_type
