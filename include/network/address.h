@@ -69,7 +69,6 @@ namespace Network
 #ifdef HAVE_SOCKADDR_SA_LEN
         [[nodiscard]] auto sa_length() const -> socket_length_type;
 #endif
-        [[nodiscard]] auto sa_text() const -> std::string;
         [[nodiscard]] auto sin_addr() const -> in_addr;
         [[nodiscard]] auto sin_port() const -> port_type;
         [[nodiscard]] auto sin_text() const -> std::string;

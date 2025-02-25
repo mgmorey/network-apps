@@ -14,6 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/address.h"                    // Address
+#include "network/familyerror.h"                // FamilyError
 #include "network/os-features.h"                // HAVE_SOCKADDR_SA_LEN
 #include "network/port-type.h"                  // port_type
 #include "network/socket-family-type.h"         // socket_family_type
@@ -77,19 +78,27 @@ auto Network::Address::length() const -> socket_length_type
 
 auto Network::Address::port() const -> port_type
 {
-    switch (sa_family()) {
+    const auto family {sa_family()};
+
+    switch (family) {
+#ifndef WIN32
+    case AF_UNIX:
+        return 0;
+#endif
     case AF_INET:
         return sin_port();
     case AF_INET6:
         return sin6_port();
     default:
-        return 0;
+        throw FamilyError(family);
     }
 }
 
 auto Network::Address::text() const -> std::string
 {
-    switch (sa_family()) {
+    const auto family {sa_family()};
+
+    switch (family) {
 #ifndef WIN32
     case AF_UNIX:
         return sun_text();
@@ -99,6 +108,6 @@ auto Network::Address::text() const -> std::string
     case AF_INET6:
         return sin6_text();
     default:
-        return sa_text();
+        throw FamilyError(family);
     }
 }
