@@ -16,13 +16,13 @@
 #ifndef NETWORK_ADDRESS_H
 #define NETWORK_ADDRESS_H
 
-#include "network/bytestring.h"                 // ByteString
-#include "network/os-features.h"                // HAVE_SOCKADDR_SA_LEN
-#include "network/port-type.h"                  // port_type
-#include "network/socket-family-type.h"         // socket_family_type
+#include "network/bytestring.h"         // ByteString
+#include "network/family-type.h"        // socket_family_type
+#include "network/os-features.h"        // HAVE_SOCKADDR_SA_LEN
+#include "network/port-type.h"          // port_type
 
 #ifdef HAVE_SOCKADDR_SA_LEN
-#include "network/socket-length-type.h"         // socket_length_type
+#include "network/socket-length-type.h" // socket_length_type
 #endif
 
 #ifdef WIN32
@@ -57,7 +57,7 @@ namespace Network
         auto operator=(const value_type& t_value) -> Address&;
         explicit operator value_type() const;
         [[nodiscard]] auto empty() const -> bool;
-        [[nodiscard]] auto family() const -> socket_family_type;
+        [[nodiscard]] auto family() const -> family_type;
 #ifdef HAVE_SOCKADDR_SA_LEN
         [[nodiscard]] auto length() const -> socket_length_type;
 #endif
@@ -65,7 +65,7 @@ namespace Network
         [[nodiscard]] auto text() const -> std::string;
 
     protected:
-        [[nodiscard]] auto sa_family() const -> socket_family_type;
+        [[nodiscard]] auto sa_family() const -> family_type;
 #ifdef HAVE_SOCKADDR_SA_LEN
         [[nodiscard]] auto sa_length() const -> socket_length_type;
 #endif
