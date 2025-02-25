@@ -70,30 +70,6 @@ namespace Network
             return *this;
         }
 
-        constexpr auto operator<(const SocketHints& t_hints) const noexcept ->
-            bool
-        {
-            return (m_protocol < t_hints.m_protocol ||
-                    m_socktype < t_hints.m_socktype ||
-                    m_family < t_hints.m_family);
-        }
-
-        constexpr auto operator>(const SocketHints& t_hints) const noexcept ->
-            bool
-        {
-            return (m_protocol > t_hints.m_protocol ||
-                    m_socktype > t_hints.m_socktype ||
-                    m_family > t_hints.m_family);
-        }
-
-        constexpr auto operator==(const SocketHints& t_hints) const noexcept ->
-            bool
-        {
-            return (m_protocol == t_hints.m_protocol &&
-                    m_socktype == t_hints.m_socktype &&
-                    m_family == t_hints.m_family);
-        }
-
         constexpr operator addrinfo() const noexcept  // NOLINT
         {
             addrinfo ai {};

@@ -39,24 +39,6 @@ auto Network::Template::operator=(const addrinfo& t_ai) noexcept -> Template&
     return *this;
 }
 
-auto Network::Template::operator<(const Template& t_sock) const noexcept -> bool
-{
-    return (hints() < t_sock.hints() ||
-            host() < t_sock.host());
-}
-
-auto Network::Template::operator>(const Template& t_sock) const noexcept -> bool
-{
-    return (hints() > t_sock.hints() ||
-            host() > t_sock.host());
-}
-
-auto Network::Template::operator==(const Template& t_sock) const noexcept -> bool
-{
-    return (hints() == t_sock.hints() &&
-            host() == t_sock.host());
-}
-
 auto Network::Template::hints() const noexcept -> const SocketHints&
 {
     return m_hints;
