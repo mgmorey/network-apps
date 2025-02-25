@@ -209,6 +209,33 @@ namespace
         }
     }
 
+    auto test(const ByteString& addr) -> void
+    {
+        const Address address {addr};
+        const auto family {address.family()};
+
+        switch (family) {
+        case AF_UNSPEC:
+#ifndef WIN32
+        case AF_UNIX:
+#endif
+        case AF_INET:
+        case AF_INET6:
+            break;
+        default:
+            assert(false);
+        }
+
+        const auto [size_min, size_max] {SocketLimits(family).limits()};
+
+        if (!(size_min <= addr.size() && addr.size() <= size_max)) {
+            assert(false);
+        }
+
+        assert(ByteString {address} == addr);
+        previous_address = addr;
+    }
+
     auto test_sa(const sockaddr& sa, std::size_t sa_len,
                  const std::string& expected_error_re) -> void
     {
@@ -227,7 +254,7 @@ namespace
         actual_error_str.clear();
 
         try {
-            validate(to_bytestring(&sa, sa_len));
+            test(validate(to_bytestring(&sa, sa_len)));
         }
         catch (const Error& error) {
             print(error);
@@ -263,7 +290,7 @@ namespace
             actual_error_str.clear();
 
             try {
-                validate(to_bytestring(&sin, sizeof sin));
+                test(validate(to_bytestring(&sin, sizeof sin)));
             }
             catch (const Error& error) {
                 print(error);
@@ -300,7 +327,7 @@ namespace
             actual_error_str.clear();
 
             try {
-                validate(to_bytestring(&sin6, sizeof sin6));
+                test(validate(to_bytestring(&sin6, sizeof sin6)));
             }
             catch (const Error& error) {
                 print(error);
@@ -362,7 +389,7 @@ namespace
             actual_error_str.clear();
 
             try {
-                validate(to_bytestring(&sun, sun_len));
+                test(validate(to_bytestring(&sun, sun_len)));
             }
             catch (const Error& error) {
                 print(error);
@@ -393,47 +420,7 @@ namespace
 
 #endif
 
-    auto test_valid(const ByteString& addr) -> void
-    {
-        const Address address {addr};
-        const auto family {address.family()};
-
-        switch (family) {
-        case af_unspec:
-#ifndef WIN32
-        case af_unix:
-#endif
-        case AF_INET:
-        case AF_INET6:
-            break;
-        default:
-            assert(false);
-        }
-
-        const auto [size_min, size_max] {SocketLimits(family).limits()};
-
-        if (!(size_min <= addr.size() && addr.size() <= size_max)) {
-            assert(false);
-        }
-
-        const auto text {address.text()};
-
-        switch (family) {
-        case AF_INET:
-            assert(text == "127.0.0.1");
-            break;
-        case AF_INET6:
-            assert(text == "::1");
-            break;
-        default:
-            assert(false);
-        }
-
-        assert(ByteString {address} == addr);
-        previous_address = addr;
-    }
-
-    auto test_valid() -> void
+    auto test() -> void
     {
         static const Hostname localhost {"localhost"};
 
@@ -454,7 +441,7 @@ namespace
             for (const auto& host : hosts) {
                 const ByteString& addr {host.address()};
                 print(addr);
-                test_valid(addr);
+                test(addr);
             }
         }
     }
@@ -479,7 +466,7 @@ auto main(int argc, char* argv[]) -> int
         test_sun_valid_path_large();
         test_sun_valid_path_small();
 #endif
-        test_valid();
+        test();
     }
     catch (const std::exception& error) {
         std::cerr << error.what()
