@@ -104,10 +104,10 @@ namespace Network
             return ai;
         }
 
-        socket_family_type m_family {};  // NOLINT
-        socket_type_type m_socktype {};  // NOLINT
-        socket_protocol_type m_protocol {};  // NOLINT
-        socket_flags_type m_flags {};  // NOLINT
+        socket_family_type m_family {};		// NOLINT
+        socket_type_type m_socktype {};		// NOLINT
+        socket_protocol_type m_protocol {};	// NOLINT
+        socket_flags_type m_flags {};		// NOLINT
     };
 }
 
