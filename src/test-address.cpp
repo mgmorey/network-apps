@@ -246,7 +246,10 @@ namespace
             actual_error_str = error.what();
         }
 
-        assert(std::regex_match(actual_error_str, expected_error_regex));
+        if (!expected_error_re.empty()) {
+            assert(std::regex_match(actual_error_str, expected_error_regex));
+        }
+
         actual_error_str.clear();
 
         try {
@@ -257,12 +260,14 @@ namespace
             actual_error_str = error.what();
         }
 
-        assert(std::regex_match(actual_error_str, expected_error_regex));
+        if (!expected_error_re.empty()) {
+            assert(std::regex_match(actual_error_str, expected_error_regex));
+        }
     }
 
     auto test_sa_invalid_length() -> void
     {
-        const auto sa {create_sa(af_unspec, 0)};
+        const auto sa {create_sa(AF_UNSPEC, 0)};
         test_sa(sa, 0, expected_error_length_re);
     }
 
@@ -299,8 +304,14 @@ namespace
 
     auto test_sin_invalid_family() -> void
     {
-        const auto sin {create_sin(af_unspec)};
+        const auto sin {create_sin(AF_UNSPEC)};
         test_sin(sin, expected_error_family_re);
+    }
+
+    auto test_sin_valid() -> void
+    {
+        const auto sin {create_sin()};
+        test_sin(sin, {});
     }
 
     auto test_sin6(const sockaddr_in6& sin6,
@@ -336,8 +347,14 @@ namespace
 
     auto test_sin6_invalid_family() -> void
     {
-        const auto sin6 {create_sin6(af_unspec)};
+        const auto sin6 {create_sin6(AF_UNSPEC)};
         test_sin6(sin6, expected_error_family_re);
+    }
+
+    auto test_sin6_valid() -> void
+    {
+        const auto sin6 {create_sin6()};
+        test_sin6(sin6, {});
     }
 
 #ifndef WIN32
@@ -398,7 +415,7 @@ namespace
 
     auto test_sun_invalid_family() -> void
     {
-        const auto sun {create_sun(af_unspec, sun_length_min)};
+        const auto sun {create_sun(AF_UNSPEC, sun_length_min)};
         test_sun(sun, sun_length_min, expected_error_family_re);
     }
 
@@ -462,6 +479,8 @@ auto main(int argc, char* argv[]) -> int
         test_sun_valid_path_large();
         test_sun_valid_path_small();
 #endif
+        test_sin_valid();
+        test_sin6_valid();
         test();
     }
     catch (const std::exception& error) {
