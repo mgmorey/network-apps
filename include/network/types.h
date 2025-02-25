@@ -20,8 +20,8 @@
                                         // socket_ip_family_enum,
                                         // socket_ip_protocol_enum,
                                         // socket_type_enum
-#include "network/integer-types.h"      // byte_type,
-                                        // error_type, handle_type,
+#include "network/integer-types.h"      // byte_type, error_type,
+                                        // family_type, handle_type,
                                         // length_type,
                                         // name_length_type,
                                         // os_error_type, port_type,
