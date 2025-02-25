@@ -16,7 +16,7 @@
 #ifndef NETWORK_UNIQUESOCKET_H
 #define NETWORK_UNIQUESOCKET_H
 
-#include "network/socket.h"            // Socket
+#include "network/socket.h"             // Socket
 
 #include <memory>       // std::unique_ptr
 
