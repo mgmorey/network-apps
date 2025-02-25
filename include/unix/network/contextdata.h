@@ -18,8 +18,6 @@
 
 #ifndef WIN32
 
-#include "network/optionalversion.h"        // OptionalVersion
-
 #include <string>       // std::string
 
 namespace Network
@@ -28,7 +26,6 @@ namespace Network
     {
         std::string m_description;
         std::string m_system_status;
-        OptionalVersion m_version;
     };
 }
 

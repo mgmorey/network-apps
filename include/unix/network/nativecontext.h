@@ -49,7 +49,6 @@ namespace Network
 
     private:
         ContextData m_data;
-        OptionalVersion m_version;
         int m_error_code {0};
         bool m_is_started {false};
         bool m_is_verbose {false};

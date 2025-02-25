@@ -28,10 +28,10 @@
 Network::NativeContext::NativeContext(const OptionalVersion& t_version,
                                       FailureMode t_failure,
                                       bool t_is_verbose)
-    : m_version(t_version),
-      m_is_verbose(t_is_verbose)
+    : m_is_verbose(t_is_verbose)
 {
     static_cast<void>(t_failure);
+    static_cast<void>(t_version);
 }
 
 Network::NativeContext::NativeContext(bool t_is_verbose)
@@ -50,11 +50,6 @@ Network::NativeContext::operator std::string() const
 {
     std::ostringstream oss;
     oss << m_data.m_description;
-
-    if (m_data.m_version) {
-        oss << " Version "
-            << *m_data.m_version;
-    }
 
     if (!m_data.m_system_status.empty()) {
         oss << ' '
@@ -80,7 +75,7 @@ auto Network::NativeContext::start() -> Context&
         return *this;
     }
 
-    m_data = Network::start(m_version, m_is_verbose);
+    m_data = Network::start({}, m_is_verbose);
     m_is_started = true;
 
     if (!is_running()) {
@@ -111,7 +106,7 @@ auto Network::NativeContext::stop() -> Context&
 
 auto Network::NativeContext::version() const -> OptionalVersion
 {
-    return m_data.m_version;
+    return {};
 }
 
 #endif

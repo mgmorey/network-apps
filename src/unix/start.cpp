@@ -36,9 +36,9 @@ auto Network::start(const OptionalVersion& version,
                   << std::endl;
     }
 
+    static_cast<void>(version);
     return {.m_description = system_description,
-            .m_system_status = system_running,
-            .m_version = version};
+            .m_system_status = system_running};
 }
 
 #endif
