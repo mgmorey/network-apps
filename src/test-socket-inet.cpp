@@ -70,7 +70,7 @@ namespace
 
     auto create_null_socket() -> Network::UniqueSocket
     {
-        return create_socket(handle_null, AF_UNSPEC, is_verbose, false);
+        return create_socket(handle_null, AF_UNSPEC, is_verbose, true);
     }
 
     auto parse_arguments(int argc, char** argv) -> void

@@ -25,7 +25,7 @@ namespace Network
     extern auto create_socket(handle_type handle,
                               family_type family,
                               bool is_verbose = false,
-                              bool is_notnull = true) -> UniqueSocket;
+                              bool is_testing = false) -> UniqueSocket;
 }
 
 #endif

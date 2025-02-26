@@ -33,8 +33,8 @@ namespace Network
     public:
         SocketData(handle_type t_handle,
                    family_type t_family,
-                   bool t_is_verbose,
-                   bool t_is_notnull = true);
+                   bool t_is_verbose = false,
+                   bool t_is_testing = false);
 
         SocketData() noexcept = default;
         SocketData(const SocketData&) noexcept = default;
@@ -53,7 +53,7 @@ namespace Network
         handle_type m_handle {handle_null};
         family_type m_family {AF_UNSPEC};
         bool m_is_verbose {false};
-        bool m_is_notnull {false};
+        bool m_is_testing {false};
     };
 }
 

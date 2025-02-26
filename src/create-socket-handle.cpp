@@ -22,7 +22,7 @@
 auto Network::create_socket(handle_type handle,
                             family_type family,
                             bool is_verbose,
-                            bool is_notnull) -> UniqueSocket
+                            bool is_testing) -> UniqueSocket
 {
-    return create_socket(SocketData {handle, family, is_verbose, is_notnull});
+    return create_socket(SocketData {handle, family, is_verbose, is_testing});
 }
