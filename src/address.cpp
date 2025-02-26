@@ -78,9 +78,7 @@ auto Network::Address::length() const -> socket_length_type
 
 auto Network::Address::port() const -> port_type
 {
-    const auto family {sa_family()};
-
-    switch (family) {
+    switch (sa_family()) {
 #ifndef WIN32
     case AF_UNIX:
         return 0;
@@ -90,15 +88,13 @@ auto Network::Address::port() const -> port_type
     case AF_INET6:
         return sin6_port();
     default:
-        throw FamilyError(family);
+        throw FamilyError(sa_family());
     }
 }
 
 auto Network::Address::text() const -> std::string
 {
-    const auto family {sa_family()};
-
-    switch (family) {
+    switch (sa_family()) {
 #ifndef WIN32
     case AF_UNIX:
         return sun_text();
@@ -108,6 +104,6 @@ auto Network::Address::text() const -> std::string
     case AF_INET6:
         return sin6_text();
     default:
-        throw FamilyError(family);
+        throw FamilyError(sa_family());
     }
 }
