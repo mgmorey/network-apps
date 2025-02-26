@@ -29,7 +29,9 @@ $(strip printf '%s\n' $(call tidy-files,$(wildcard $1)) | xargs -r /bin/rm -f)
 endef
 
 define compile-source-to-object
-$(strip $(COMPILE$(source_suffix)) $(OUTPUT_OPTION) $1)
+$(strip $(COMPILE$(source_suffix)) $(OUTPUT_OPTION) $1 && /bin/rm -f	\
+$(patsubst ./%,%,$(addprefix $(object_dir)/,$(notdir			\
+$(1:$(source_suffix)=.gcda)))))
 endef
 
 define create-tarfile
