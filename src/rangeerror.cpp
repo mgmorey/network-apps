@@ -49,11 +49,6 @@ auto Network::RangeError::format(const std::string_view& t_value,
 #endif
 }
 
-Network::RangeError::RangeError(const std::string_view& t_sv) noexcept :
-    LogicError(t_sv)
-{
-}
-
 Network::RangeError::RangeError(const std::string_view& t_value,
                                 const std::string_view& t_min,
                                 const std::string_view& t_max,

@@ -31,7 +31,6 @@ namespace Network
                            const std::string_view& t_min,
                            const std::string_view& t_max,
                            const std::string_view& t_type) -> std::string;
-        explicit RangeError(const std::string_view& t_sv) noexcept;
         RangeError(const std::string_view& t_value,
                    const std::string_view& t_min,
                    const std::string_view& t_max,
