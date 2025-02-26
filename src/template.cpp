@@ -44,19 +44,9 @@ auto Network::Template::hints() const noexcept -> const SocketHints&
     return m_hints;
 }
 
-auto Network::Template::host() const noexcept -> const SocketHost&
-{
-    return m_host;
-}
-
 auto Network::Template::address() const noexcept -> const ByteString&
 {
     return m_host.address();
-}
-
-auto Network::Template::address_length() const noexcept -> length_type
-{
-    return m_host.address().size();
 }
 
 auto Network::Template::canonical_name() const noexcept ->

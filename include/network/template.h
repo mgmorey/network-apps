@@ -48,9 +48,7 @@ namespace Network
         auto operator=(const addrinfo& t_ai) noexcept -> Template&;
 
         [[nodiscard]] auto hints() const noexcept -> const SocketHints&;
-        [[nodiscard]] auto host() const noexcept -> const SocketHost&;
         [[nodiscard]] auto address() const noexcept -> const ByteString&;
-        [[nodiscard]] auto address_length() const noexcept -> length_type;
         [[nodiscard]] auto canonical_name() const noexcept ->
             const OptionalHostname&;
 
