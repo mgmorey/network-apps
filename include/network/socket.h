@@ -50,6 +50,7 @@ namespace Network
         [[nodiscard]] virtual auto read(char* t_data,
                                         std::size_t t_size) const -> ssize_t = 0;
         [[nodiscard]] virtual auto read(std::size_t t_size) const -> ReadResult = 0;
+        [[nodiscard]] virtual auto shutdown(int t_how) const -> OsErrorResult = 0;
         [[nodiscard]] virtual auto write(const char* t_data,
                                          std::size_t t_size) const -> ssize_t = 0;
         [[nodiscard]] virtual auto write(std::string_view t_sv) const -> ssize_t = 0;

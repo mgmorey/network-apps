@@ -26,6 +26,7 @@
 #include "network/openhandleparams.h"           // OpenHandleParams
 #include "network/oserrorresult.h"              // OsErrorResult
 #include "network/read.h"                       // read()
+#include "network/shutdown.h"                   // shutdown()
 #include "network/socketdata.h"                 // SocketData
 #include "network/write.h"                      // write()
 
@@ -93,6 +94,11 @@ auto Network::CommonSocket::read(char* t_data,
 {
     return Network::read(handle(), t_data, t_size,
                          is_verbose());
+}
+
+auto Network::CommonSocket::shutdown(int t_how) const -> OsErrorResult
+{
+    return Network::shutdown(handle(), t_how, is_verbose());
 }
 
 auto Network::CommonSocket::read(std::size_t t_size) const -> ReadResult
