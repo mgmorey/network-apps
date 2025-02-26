@@ -28,6 +28,10 @@ define clean-files
 $(strip printf '%s\n' $(call tidy-files,$(wildcard $1)) | xargs -r /bin/rm -f)
 endef
 
+define compile-source-to-object
+$(strip $(COMPILE$(source_suffix)) $(OUTPUT_OPTION) $1)
+endef
+
 define create-tarfile
 $(call install-files,$1)
 tar -C $1 -acf $2 .
@@ -72,9 +76,13 @@ $(install) -m u=rwx,go=rx $(call tidy-files,$(test_programs)) $1/bin
 $(call install-aliases,$1/lib)
 endef
 
-define make-rule
-$(CXX) $(CPPFLAGS) -MM $< | $(script_dir)/make-rule -d	\
-$(call tidy-files,$(object_dir)) -o $@ $(tags)
+define link-objects-to-binary
+$(strip $(LINK$(object_suffix)) $1 $(LOADLIBES) $(LDLIBS) -o $2)
+endef
+
+define make-dependency-rule
+$(CXX) $(CPPFLAGS) -MM $1 | $(script_dir)/make-rule -d	\
+$(call tidy-files,$(object_dir)) -o $2 $(tags)
 endef
 
 define run-programs

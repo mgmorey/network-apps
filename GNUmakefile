@@ -330,7 +330,7 @@ $(library_aliases): $(shared_library)
 	$(call install-aliases,$(output_dir))
 
 $(shared_library): $(library_objects)
-	$(strip $(LINK$(object_suffix)) $^ $(LOADLIBES) $(LDLIBS) -o $@)
+	$(call link-objects-to-binary,$^,$@)
 
 $(static_library): $(library_objects)
 	$(strip rm -f $@ && $(AR) $(ARFLAGS) $@ $^)
@@ -383,13 +383,13 @@ $(output_dir):
 # Define suffix rules
 
 $(output_dir)/%$(binary_suffix): $(object_dir)/%$(object_suffix)
-	$(strip $(LINK$(object_suffix)) $^ $(LOADLIBES) $(LDLIBS) -o $@)
+	$(call link-objects-to-binary,$^,$@)
 
 $(object_dir)/%$(object_suffix): %$(source_suffix)
-	$(strip $(COMPILE$(source_suffix)) $(OUTPUT_OPTION) $<)
+	$(call compile-source-to-object,$<)
 
 $(depend_dir)/%$(depend_suffix): %$(source_suffix)
-	$(make-rule)
+	$(call make-dependency-rule,$<,$@)
 
 # Include dependency files
 ifeq "$(filter %clean,$(MAKECMDGOALS))" "$(filter-out %clean,$(MAKECMDGOALS))"
