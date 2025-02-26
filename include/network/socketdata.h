@@ -35,6 +35,8 @@ namespace Network
                    family_type t_family,
                    bool t_is_verbose = false,
                    bool t_is_testing = false);
+        SocketData(const SocketData& t_socket,
+                   handle_type t_handle);
 
         SocketData() noexcept = default;
         SocketData(const SocketData&) noexcept = default;

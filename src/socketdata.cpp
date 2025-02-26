@@ -32,6 +32,15 @@ Network::SocketData::SocketData(handle_type t_handle,
     }
 }
 
+Network::SocketData::SocketData(const SocketData& t_socket,
+                                handle_type t_handle)
+    : SocketData(t_handle,
+                 t_socket.m_family,
+                 t_socket.m_is_verbose,
+                 t_socket.m_is_testing)
+{
+}
+
 Network::SocketData::operator bool() const noexcept
 {
     return m_handle != handle_null;
