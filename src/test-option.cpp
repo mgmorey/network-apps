@@ -67,7 +67,7 @@ namespace
 
         const auto length {static_cast<int>(std::strlen(optstring))};
         assert(get_optind() == optind_begin + length);
-        assert(get_optopt() == 0);
+        assert(get_optopt() == '?');
     }
 
     auto print(ArgumentSpan args,
