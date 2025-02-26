@@ -60,6 +60,7 @@ namespace
         "Either the application has not called WSAStartup, "
         "or WSAStartup failed."
     };
+    constexpr auto expected_error_toolong {"Call to ::gethostname(, 0) failed with error 36: File name too long"};
     constexpr auto expected_error_version {
         "The Windows Sockets version requested is not supported."
     };
@@ -72,6 +73,7 @@ namespace
         "( Version \\d{1,3}\\.\\d{1,3})?" // NOLINT
     };
     constexpr auto expected_error_stopped {""};
+    constexpr auto expected_error_toolong {"Call to ::gethostname(, 0) failed with error 36: File name too long"};
     constexpr auto expected_error_version {""};
 #endif
 
@@ -134,6 +136,9 @@ namespace
                   << std::endl;
     }
 
+    auto test_hostname_too_long() -> void;
+    auto test_hostname_valid() -> void;
+
     auto test_context(const Context& context,
                       const std::string& description,
                       const OptionalVersion& version = {}) -> void
@@ -146,6 +151,8 @@ namespace
         const std::string actual_context_str {oss.str()};
         const std::regex expected_context_regex {get_expected_context_re()};
         assert(std::regex_match(actual_context_str, expected_context_regex));
+        test_hostname_too_long();
+        test_hostname_valid();
     }
 
     auto test_context_inactive() -> void
@@ -165,6 +172,21 @@ namespace
         assert(error_code == expected_code_stopped);
     }
 
+    auto test_context_stopped() -> void
+    {
+        std::string actual_error_str;
+
+        try {
+            static_cast<void>(get_hostname());
+        }
+        catch (const Error& error) {
+            print(error);
+            actual_error_str = error.what();
+        }
+
+        assert(actual_error_str == expected_error_stopped);
+    }
+
     auto test_context_invalid() -> void
     {
         constexpr Version invalid;
@@ -181,7 +203,6 @@ namespace
         }
 
         assert(actual_error_str == expected_error_version);
-        test_context_inactive();
     }
 
     auto test_context_valid() -> void
@@ -205,10 +226,24 @@ namespace
         }
 
         assert(actual_error_str.empty());
-        test_context_inactive();
     }
 
-    auto test_no_context() -> void
+    auto test_hostname_too_long() -> void
+    {
+        std::string actual_error_str;
+
+        try {
+            static_cast<void>(get_hostname(0, is_verbose));
+        }
+        catch (const Error& error) {
+            print(error);
+            actual_error_str = error.what();
+        }
+
+        assert(actual_error_str == expected_error_toolong);
+    }
+
+    auto test_hostname_valid() -> void
     {
         std::string actual_error_str;
 
@@ -220,8 +255,7 @@ namespace
             actual_error_str = error.what();
         }
 
-        assert(actual_error_str == expected_error_stopped);
-        test_context_inactive();
+        assert(actual_error_str == "");
     }
 }
 
@@ -231,7 +265,8 @@ auto main(int argc, char* argv[]) -> int
         parse_arguments(argc, argv);
         test_context_invalid();
         test_context_valid();
-        test_no_context();
+        test_context_stopped();
+        test_context_inactive();
     }
     catch (const std::exception& error) {
         std::cerr << error.what()
