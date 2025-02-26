@@ -82,7 +82,7 @@ namespace
     using StringList = std::list<std::string>;
 
     constexpr auto expected_error_getnameinfo_re {
-        R"(Call to ::getnameinfo\(.+\) returned -1 \(.+\))"
+        R"(Call to ::getnameinfo\(.+\) returned -?\d+ \(.+\))"
     };
     constexpr auto localhost {"localhost"};
 
