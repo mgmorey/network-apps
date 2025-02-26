@@ -255,7 +255,7 @@ namespace
             actual_error_str = error.what();
         }
 
-        assert(actual_error_str == "");
+        assert(actual_error_str.empty());
     }
 }
 
