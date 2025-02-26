@@ -254,7 +254,7 @@ namespace
         std::string actual_error_str;
 
         try {
-            ByteString addr {to_bytestring("")};
+            const ByteString addr {to_bytestring("")};
             static_cast<void>(Network::get_endpoint(addr, -1, is_verbose));
         }
         catch (const Error& error) {
