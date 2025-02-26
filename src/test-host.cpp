@@ -225,9 +225,9 @@ namespace
         std::ranges::for_each(hosts, Print(std::cout));
     }
 
-    auto test_host(const HostnameView& host,
-                   const OptionalHints& hints,
-                   const ErrorCodeSet& expected_codes = {0}) -> void
+    auto test(const HostnameView& host,
+              const OptionalHints& hints,
+              const ErrorCodeSet& expected_codes = {0}) -> void
     {
         os_error_type actual_code {0};
         std::vector<SocketHost> hosts;
@@ -274,21 +274,21 @@ namespace
     auto test_invalid_family() -> void
     {
         const SocketHints hints {-1, SOCK_STREAM, 0, 0};
-        test_host(localhost, hints, get_codes_family());
+        test(localhost, hints, get_codes_family());
     }
 
 #if !defined(OS_CYGWIN_NT) && !defined(OS_MINGW64_NT)
     auto test_invalid_protocol() -> void
     {
         const SocketHints hints {AF_UNSPEC, SOCK_STREAM, -1, 0};
-        test_host(localhost, hints, get_codes_protocol());
+        test(localhost, hints, get_codes_protocol());
     }
 #endif
 
     auto test_invalid_socktype() -> void
     {
         const SocketHints hints {AF_UNSPEC, -1, 0, 0};
-        test_host(localhost, hints, get_codes_socktype());
+        test(localhost, hints, get_codes_socktype());
     }
 
     auto test_valid(const HostnameView& host) -> void
@@ -303,7 +303,7 @@ namespace
                       << std::endl;
         }
 
-        test_host(host, ip_any, {0});
+        test(host, ip_any, {0});
     }
 }
 
