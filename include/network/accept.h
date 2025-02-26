@@ -17,11 +17,11 @@
 #define NETWORK_ACCEPT_H
 
 #include "network/acceptresult.h"       // AcceptResult
-#include "network/socket.h"             // Socket
+#include "network/socketdata.h"         // SocketData
 
 namespace Network
 {
-    extern auto accept(const Socket& sock) -> AcceptResult;
+    extern auto accept(const SocketData& sd) -> AcceptResult;
 }
 
 #endif
