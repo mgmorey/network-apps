@@ -211,11 +211,10 @@ namespace
 
     auto test(const ByteString& addr) -> void
     {
+        assert(!addr.empty());
         const auto size {addr.size()};
-        assert(addr.size());
         const Address address {addr};
-        const auto empty {address.empty()};
-        assert(!empty);
+        assert(!address.empty());
         const auto family {address.family()};
         const auto [size_min, size_max] {SocketLimits(family).limits()};
         assert(size_min <= size);
