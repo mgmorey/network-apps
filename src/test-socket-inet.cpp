@@ -185,7 +185,6 @@ namespace
 
     auto test_socket_listen_invalid() -> void
     {
-        const std::string expected_error_re;
         std::string actual_error_str;
 
         try {
@@ -197,13 +196,7 @@ namespace
             actual_error_str = error.what();
         }
 
-        if (expected_error_re.empty()) {
-            assert(actual_error_str.empty());
-        }
-        else {
-            const std::regex expected_error_regex {expected_error_re};
-            assert(std::regex_match(actual_error_str, expected_error_regex));
-        }
+        assert(actual_error_str.empty());
     }
 
     auto test_socket_peername_invalid() -> void
