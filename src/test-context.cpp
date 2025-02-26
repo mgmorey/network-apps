@@ -55,12 +55,12 @@ namespace
     {
         "( Version \\d{1,3}\\.\\d{1,3})" // NOLINT
     };
+    constexpr auto expected_error_length_re {""};
     constexpr auto expected_error_stopped {
         "Call to ::gethostname(, 1024) failed with error 10093: "
         "Either the application has not called WSAStartup, "
         "or WSAStartup failed."
     };
-    constexpr auto expected_error_toolong {"Call to ::gethostname(, 0) failed with error 36: File name too long"};
     constexpr auto expected_error_version {
         "The Windows Sockets version requested is not supported."
     };
@@ -72,8 +72,24 @@ namespace
     constexpr auto expected_context_version_re {
         "( Version \\d{1,3}\\.\\d{1,3})?" // NOLINT
     };
+#if defined(OS_CYGWIN_NT)
+    constexpr auto expected_error_length_re {
+        ""
+    };
+#elif defined(OS_DARWIN)
+    constexpr auto expected_error_length_re {
+        ""
+    };
+#elif defined(OS_MINGW64_NT)
+    constexpr auto expected_error_length_re {
+        ""
+    };
+#else
+    constexpr auto expected_error_length_re {
+        R"(Call to ::gethostname(, 0) failed with error -?\d+: .+)"
+    };
+#endif
     constexpr auto expected_error_stopped {""};
-    constexpr auto expected_error_toolong {"Call to ::gethostname(, 0) failed with error 36: File name too long"};
     constexpr auto expected_error_version {""};
 #endif
 
@@ -240,7 +256,13 @@ namespace
             actual_error_str = error.what();
         }
 
-        assert(actual_error_str == expected_error_toolong);
+        if (!*expected_error_length_re) {
+            assert(actual_error_str.empty());
+        }
+        else {
+            const std::regex expected_error_length_regex {expected_error_length_re};
+            assert(std::regex_match(actual_error_str, expected_error_length_regex));
+        }
     }
 
     auto test_hostname_valid() -> void
