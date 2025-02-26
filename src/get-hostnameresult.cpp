@@ -17,7 +17,6 @@
 #include "network/buffer.h"                     // Buffer
 #include "network/format-os-error.h"            // format_os_error()
 #include "network/get-api-error.h"              // get_api_error()
-#include "network/hostname-length-limits.h"     // hostname_length_max
 #include "network/hostname.h"                   // Hostname
 #include "network/hostnameresult.h"             // HostnameResult
 #include "network/oserrorresult.h"              // OsErrorResult
@@ -31,13 +30,15 @@
 #include <unistd.h>     // ::gethostname()
 #endif
 
+#include <cstddef>      // std::size_t
 #include <iostream>     // std::cout, std::endl
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
 
-auto Network::get_hostnameresult(bool is_verbose) -> HostnameResult
+auto Network::get_hostnameresult(std::size_t size,
+                                 bool is_verbose) -> HostnameResult
 {
-    Buffer<char> buffer {hostname_length_max};
+    Buffer<char> buffer {size};
 
     if (is_verbose) {
         std::cout << "Calling ::gethostname("
