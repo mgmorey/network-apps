@@ -33,8 +33,10 @@ namespace
     using Network::ArgumentData;
     using Network::ArgumentSpan;
     using Network::get_optarg;
+    using Network::get_opterr;
     using Network::get_optind;
     using Network::get_option;
+    using Network::get_optopt;
     using Network::to_size;
 
     auto get_strings(const char* argv0) -> std::vector<std::string>
@@ -65,6 +67,7 @@ namespace
 
         const auto length {static_cast<int>(std::strlen(optstring))};
         assert(get_optind() == optind_begin + length);
+        assert(get_optopt() == 0);
     }
 
     auto print(ArgumentSpan args,
@@ -112,6 +115,7 @@ namespace
     {
         assert(argc > 0);
         assert(*argv != nullptr);
+        assert(get_opterr() == 1);
         ArgumentData data {get_strings(*argv)};
         const std::span args {data.data(), data.size()};
         std::string filename;
