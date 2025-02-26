@@ -213,7 +213,7 @@ namespace
         std::string actual_error_str;
 
         try {
-            static_cast<void>(get_hostname(is_verbose));
+            static_cast<void>(get_hostname());
         }
         catch (const Error& error) {
             print(error);
