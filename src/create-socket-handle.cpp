@@ -21,7 +21,8 @@
 
 auto Network::create_socket(handle_type handle,
                             family_type family,
-                            bool is_verbose) -> UniqueSocket
+                            bool is_verbose,
+                            bool is_notnull) -> UniqueSocket
 {
-    return create_socket(SocketData {handle, family, is_verbose});
+    return create_socket(SocketData {handle, family, is_verbose, is_notnull});
 }

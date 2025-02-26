@@ -21,11 +21,13 @@
 
 Network::SocketData::SocketData(handle_type t_handle,
                                 family_type t_family,
-                                bool t_is_verbose)
+                                bool t_is_verbose,
+                                bool t_is_notnull)
     : m_handle(t_handle), m_family(t_family),
-      m_is_verbose(t_is_verbose)
+      m_is_verbose(t_is_verbose),
+      m_is_notnull(t_is_notnull)
 {
-    if (m_handle == handle_null) {
+    if (m_is_notnull && m_handle == handle_null) {
         throw LogicError("Invalid socket descriptor value");
     }
 }

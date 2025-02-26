@@ -56,11 +56,22 @@ namespace
     constexpr auto expected_error_peername_re {
         R"(Call to ::getpeername\(.+\) failed with error \d+: .+)"
     };
+    constexpr auto expected_error_read_re {
+        R"(Call to ::read\(.+\) failed with error \d+: .+)"
+    };
     constexpr auto expected_error_socket_re {
         R"(Call to ::socket\(.+\) failed with error \d+: .+)"
     };
+    constexpr auto expected_error_write_re {
+        R"(Call to ::write\(.+\) failed with error \d+: .+)"
+    };
 
-    auto is_verbose {false};  // NOLINT
+    auto is_verbose {false}; // NOLINT
+
+    auto create_null_socket() -> Network::UniqueSocket
+    {
+        return create_socket(handle_null, AF_UNSPEC, is_verbose, false);
+    }
 
     auto parse_arguments(int argc, char** argv) -> void
     {
@@ -140,14 +151,11 @@ namespace
 
     auto test_socket_accept_invalid() -> void
     {
-        const SocketHints hints {AF_INET, SOCK_STREAM, 0};
         const std::string expected_error_re {expected_error_accept_re};
         std::string actual_error_str;
 
         try {
-            auto sock {create_socket(hints, is_verbose)};
-            assert(static_cast<bool>(*sock));
-            assert(static_cast<handle_type>(*sock) != handle_null);
+            auto sock {create_null_socket()};
             static_cast<void>(sock->accept());
         }
         catch (const Error& error) {
@@ -177,14 +185,11 @@ namespace
 
     auto test_socket_peername_invalid() -> void
     {
-        const SocketHints hints {AF_INET, SOCK_STREAM, 0};
         const std::string expected_error_re {expected_error_peername_re};
         std::string actual_error_str;
 
         try {
-            auto sock {create_socket(hints, is_verbose)};
-            assert(static_cast<bool>(*sock));
-            assert(static_cast<handle_type>(*sock) != handle_null);
+            auto sock {create_null_socket()};
             static_cast<void>(sock->peername());
         }
         catch (const Error& error) {
@@ -207,13 +212,59 @@ namespace
         test_socket(hints, expected_error_socket_re);
     }
 
+    auto test_socket_read_invalid() -> void
+    {
+        const std::string expected_error_re {expected_error_read_re};
+        std::string actual_error_str;
+
+        try {
+            auto sock {create_null_socket()};
+            static_cast<void>(sock->read(nullptr, 0));
+        }
+        catch (const Error& error) {
+            print(error);
+            actual_error_str = error.what();
+        }
+
+        if (expected_error_re.empty()) {
+            assert(actual_error_str.empty());
+        }
+        else {
+            const std::regex expected_error_regex {expected_error_re};
+            assert(std::regex_match(actual_error_str, expected_error_regex));
+        }
+    }
+
     auto test_socket_socktype_invalid() -> void
     {
         const SocketHints hints {AF_INET, -1, 0};
         test_socket(hints, expected_error_socket_re);
     }
 
-    auto test_socket_valid() -> void
+    auto test_socket_write_invalid() -> void
+    {
+        const std::string expected_error_re {expected_error_write_re};
+        std::string actual_error_str;
+
+        try {
+            auto sock {create_null_socket()};
+            static_cast<void>(sock->write(""));
+        }
+        catch (const Error& error) {
+            print(error);
+            actual_error_str = error.what();
+        }
+
+        if (expected_error_re.empty()) {
+            assert(actual_error_str.empty());
+        }
+        else {
+            const std::regex expected_error_regex {expected_error_re};
+            assert(std::regex_match(actual_error_str, expected_error_regex));
+        }
+    }
+
+    auto test_valid() -> void
     {
         const SocketHints hints {AF_INET, SOCK_STREAM, 0};
         test_socket(hints, "");
@@ -235,8 +286,10 @@ auto main(int argc, char* argv[]) -> int
         test_socket_handle_invalid();
         test_socket_peername_invalid();
         test_socket_protocol_invalid();
+        test_socket_read_invalid();
         test_socket_socktype_invalid();
-        test_socket_valid();
+        test_socket_write_invalid();
+        test_valid();
     }
     catch (const std::exception& error) {
         std::cerr << error.what()

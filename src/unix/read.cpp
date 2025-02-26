@@ -22,6 +22,7 @@
 #include "network/handle-type.h"        // handle_type
 #include "network/reset-api-error.h"    // reset_api_error()
 #include "network/socket-error.h"       // socket_error
+#include "network/string-null.h"        // string_null
 #include "network/to-os-error.h"        // to_os_error()
 
 #include <sys/types.h>          // ssize_t
@@ -41,7 +42,7 @@ auto Network::read(handle_type handle,
         std::cout << "Calling ::read("
                   << handle
                   << ", \""
-                  << data
+                  << (data == nullptr ? string_null : data)
                   << "\", "
                   << size
                   << ')'
@@ -58,7 +59,7 @@ auto Network::read(handle_type handle,
         oss << "Call to ::read("
             << handle
             << ", \""
-            << data
+            << (data == nullptr ? string_null : data)
             << "\", "
             << size
             << ") failed with error "
@@ -72,10 +73,10 @@ auto Network::read(handle_type handle,
         std::cout << "Call to ::read("
                   << handle
                   << ", \""
-                  << data
+                  << (data == nullptr ? string_null : data)
                   << "\", "
                   << size << ") returned data \""
-                  << data
+                  << (data == nullptr ? string_null : data)
                   << '\"'
                   << std::endl;
     }
