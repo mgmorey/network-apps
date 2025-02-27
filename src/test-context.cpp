@@ -55,7 +55,35 @@ namespace
     {
         "( Version \\d{1,3}\\.\\d{1,3})" // NOLINT
     };
-    constexpr auto expected_error_length_re {""};
+#else
+    constexpr auto expected_code_stopped {0};
+    constexpr auto expected_context_platform_re {
+        "Berkeley Software Distribution Sockets"
+    };
+    constexpr auto expected_context_version_re {
+        "( Version \\d{1,3}\\.\\d{1,3})?" // NOLINT
+    };
+#endif
+#if defined(OS_CYGWIN_NT)
+    constexpr auto expected_error_length {
+        ""
+    };
+#elif defined(OS_DARWIN)
+    constexpr auto expected_error_length {
+        ""
+    };
+#elif defined(OS_MINGW64_NT)
+    constexpr auto expected_error_length {
+        "Call to ::gethostname(, 1) failed with error 10014: "
+        "The system detected an invalid pointer address in "
+        "attempting to use a pointer argument in a call."
+    };
+#else
+    constexpr auto expected_error_length {
+        ""
+    };
+#endif
+#ifdef WIN32
     constexpr auto expected_error_stopped {
         "Call to ::gethostname(, 1024) failed with error 10093: "
         "Either the application has not called WSAStartup, "
@@ -65,30 +93,6 @@ namespace
         "The Windows Sockets version requested is not supported."
     };
 #else
-    constexpr auto expected_code_stopped {0};
-    constexpr auto expected_context_platform_re {
-        "Berkeley Software Distribution Sockets"
-    };
-    constexpr auto expected_context_version_re {
-        "( Version \\d{1,3}\\.\\d{1,3})?" // NOLINT
-    };
-#if defined(OS_CYGWIN_NT)
-    constexpr auto expected_error_length_re {
-        ""
-    };
-#elif defined(OS_DARWIN)
-    constexpr auto expected_error_length_re {
-        ""
-    };
-#elif defined(OS_MINGW64_NT)
-    constexpr auto expected_error_length_re {
-        ""
-    };
-#else
-    constexpr auto expected_error_length_re {
-        R"(Call to ::gethostname(, 0) failed with error -?\d+: .+)"
-    };
-#endif
     constexpr auto expected_error_stopped {""};
     constexpr auto expected_error_version {""};
 #endif
@@ -152,7 +156,7 @@ namespace
                   << std::endl;
     }
 
-    auto test_hostname_too_long() -> void;
+    auto test_hostname_length() -> void;
     auto test_hostname_valid() -> void;
 
     auto test_context(const Context& context,
@@ -165,9 +169,9 @@ namespace
         std::ostringstream oss;
         oss << context;
         const std::string actual_context_str {oss.str()};
-        const std::regex expected_context_regex {get_expected_context_re()};
-        assert(std::regex_match(actual_context_str, expected_context_regex));
-        test_hostname_too_long();
+        const std::regex expected_regex {get_expected_context_re()};
+        assert(std::regex_match(actual_context_str, expected_regex));
+        test_hostname_length();
         test_hostname_valid();
     }
 
@@ -244,7 +248,7 @@ namespace
         assert(actual_error_str.empty());
     }
 
-    auto test_hostname_too_long() -> void
+    auto test_hostname_length() -> void
     {
         std::string actual_error_str;
 
@@ -256,12 +260,17 @@ namespace
             actual_error_str = error.what();
         }
 
-        if (!*expected_error_length_re) {
+        if (!*expected_error_length) {
             assert(actual_error_str.empty());
         }
         else {
-            const std::regex expected_error_length_regex {expected_error_length_re};
-            assert(std::regex_match(actual_error_str, expected_error_length_regex));
+            std::cerr << "expected_error_length = "
+                      << expected_error_length
+                      << std::endl;
+            std::cerr << "actual_error_str = "
+                      << actual_error_str
+                      << std::endl;
+            assert(actual_error_str == expected_error_length);
         }
     }
 
