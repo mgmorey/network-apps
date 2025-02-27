@@ -64,6 +64,7 @@ namespace
     using Network::SocketHints;
     using Network::SocketHost;
     using Network::always_false_v;
+    using Network::get_endpointresult;
     using Network::get_hostname;
     using Network::insert;
     using Network::os_error_type;
@@ -248,7 +249,7 @@ namespace
         assert(expected_codes.contains(actual_code));
     }
 
-    auto test_invalid_addr() -> void
+    auto test_endpoint_overflow(std::size_t size) -> void
     {
         const std::string expected_error_re {expected_error_getnameinfo_re};
         std::string actual_error_str;
@@ -260,7 +261,21 @@ namespace
 #endif
             sin.sin_family = AF_INET;
             const ByteString addr {to_bytestring(&sin, sizeof sin)};
-            static_cast<void>(Network::get_endpoint(addr, -1, is_verbose));
+            std::string hostname(size, '\0');
+            std::span<char> hostname_span
+                {
+                    size > 0 ? hostname.data() : nullptr, hostname.size()
+                };
+            std::string service(size, '\0');
+            std::span<char> service_span
+                {
+                    size > 0 ? service.data() : nullptr, service.size()
+                };
+
+            if (auto result {get_endpointresult(
+                        hostname_span, service_span, addr, -1, is_verbose)}) {
+                actual_error_str = result.string();
+            }
         }
         catch (const Error& error) {
             print(error);
@@ -274,6 +289,11 @@ namespace
             const std::regex expected_error_regex {expected_error_re};
             assert(std::regex_match(actual_error_str, expected_error_regex));
         }
+    }
+
+    auto test_endpoint_overflow() -> void
+    {
+        test_endpoint_overflow(0);
     }
 
     auto test_invalid_family() -> void
@@ -322,7 +342,7 @@ auto main(int argc, char* argv[]) -> int
             std::cout << *context << std::endl;
         }
 
-        test_invalid_addr();
+        test_endpoint_overflow();
         test_invalid_family();
         test_invalid_socktype();
 #if !defined(OS_CYGWIN_NT) && !defined(OS_MINGW64_NT)

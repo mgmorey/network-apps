@@ -18,9 +18,16 @@
 
 #include "network/bytestring.h"         // ByteString
 #include "network/endpointresult.h"     // EndpointResult
+#include "network/oserrorresult.h"      // OsErrorResult
+
+#include <span>         // std::span
 
 namespace Network
 {
+    extern auto get_endpointresult(std::span<char>& hostname,
+                                   std::span<char>& service,
+                                   const ByteString& addr, int flags,
+                                   bool is_verbose = false) -> OsErrorResult;
     extern auto get_endpointresult(const ByteString& addr, int flags,
                                    bool is_verbose = false) -> EndpointResult;
 }

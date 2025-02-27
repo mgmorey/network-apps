@@ -73,12 +73,12 @@ namespace
     auto test_hostname_overflow(std::size_t size) -> void
     {
         std::string hostname(size, '\0');
-        std::span<char> span
+        std::span<char> hostname_span
         {
             size > 0 ? hostname.data() : nullptr, hostname.size()
         };
 
-        if (auto result {get_hostnameresult(span, is_verbose)}) {
+        if (auto result {get_hostnameresult(hostname_span, is_verbose)}) {
             std::cerr << result.string() << std::endl;
         }
     }

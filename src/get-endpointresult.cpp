@@ -25,6 +25,7 @@
 #include "network/oserrorresult.h"              // OsErrorResult
 #include "network/service-length-limits.h"      // service_length_max
 #include "network/to-os-error.h"                // to_os_error()
+#include "network/to-string-string-view.h"      // to_string()
 
 #ifdef WIN32
 #include <ws2tcpip.h>   // ::getnameinfo()
@@ -33,17 +34,22 @@
 #endif
 
 #include <iostream>     // std::cout, std::endl
+#include <span>         // std::span
 #include <sstream>      // std::ostringstream
+#include <string_view>  // std::string_view
 
-auto Network::get_endpointresult(const ByteString& addr, int flags,
-                                 bool is_verbose) -> EndpointResult
+auto Network::get_endpointresult(std::span<char>& hostname,
+                                 std::span<char>& service,
+                                 const ByteString& addr, int flags,
+                                 bool is_verbose) -> OsErrorResult
 {
-    Buffer<char> hostname_buffer {hostname_length_max};
-    Buffer<char> service_buffer {service_length_max};
     const AddressString addr_str {addr};
     const auto [addr_ptr, addr_len] {get_sa_span(addr)};
+    const std::string_view hostname_sv {hostname.data(), hostname.size()};
+    const std::string_view service_sv {service.data(), service.size()};
 
     if (is_verbose) {
+        // clang-format off
         std::cout << "Calling ::getnameinfo("
                   << addr_str
                   << ", "
@@ -52,17 +58,19 @@ auto Network::get_endpointresult(const ByteString& addr, int flags,
                   << flags
                   << ')'
                   << std::endl;
+        // clang-format on
     }
 
-    if (const auto error {::getnameinfo(addr_ptr,
-                                        addr_len,
-                                        hostname_buffer.data(),
-                                        hostname_buffer.size(),
-                                        service_buffer.data(),
-                                        service_buffer.size(),
-                                        flags)}) {
-        const auto os_error {to_os_error(error)};
+    if (const auto api_error {::getnameinfo(addr_ptr,
+                                            addr_len,
+                                            hostname.data(),
+                                            hostname.size(),
+                                            service.data(),
+                                            service.size(),
+                                            flags)}) {
+        const auto os_error {to_os_error(api_error)};
         std::ostringstream oss;
+        // clang-format off
         oss << "Call to ::getnameinfo("
             << addr_str
             << ", "
@@ -70,11 +78,44 @@ auto Network::get_endpointresult(const ByteString& addr, int flags,
             << ", ..., "
             << flags
             << ") returned "
-            << error
+            << api_error
             << " ("
-            << format_ai_error(error)
+            << format_ai_error(api_error)
             << ')';
+        // clang-format on
         return OsErrorResult {os_error, oss.str()};
+    }
+
+    if (is_verbose) {
+        // clang-format off
+        std::cout << "Call to ::getnameinfo(" << addr_str << ", " << addr_len
+                  << ", ..., " << flags
+                  << ") returned data {"
+                  << to_string(hostname_sv)
+                  << ", "
+                  << to_string(service_sv)
+                  << '}'
+                  << std::endl;
+        // clang-format on
+    }
+
+    return {};
+}
+
+auto Network::get_endpointresult(const ByteString& addr, int flags,
+                                 bool is_verbose) -> EndpointResult
+{
+    Buffer<char> hostname_buffer {hostname_length_max};
+    Buffer<char> service_buffer {service_length_max};
+    std::span<char> hostname_span {hostname_buffer};
+    std::span<char> service_span {service_buffer};
+
+    if (auto result {get_endpointresult(hostname_span,
+                                        service_span,
+                                        addr,
+                                        flags,
+                                        is_verbose)}) {
+        return result;
     }
 
     return Endpoint {

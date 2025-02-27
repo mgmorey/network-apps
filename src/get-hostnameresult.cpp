@@ -89,12 +89,12 @@ auto Network::get_hostnameresult(std::span<char>& hostname,
 
 auto Network::get_hostnameresult(bool is_verbose) -> HostnameResult
 {
-    Buffer<char> hostname {hostname_length_max};
-    std::span<char> hostname_span {hostname};
+    Buffer<char> hostname_buffer {hostname_length_max};
+    std::span<char> hostname_span {hostname_buffer};
 
     if (auto result {get_hostnameresult(hostname_span, is_verbose)}) {
         return result;
     }
 
-    return Hostname {hostname};
+    return Hostname {hostname_buffer};
 }
