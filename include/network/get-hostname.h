@@ -16,15 +16,11 @@
 #ifndef NETWORK_GET_HOSTNAME_H
 #define NETWORK_GET_HOSTNAME_H
 
-#include "network/hostname-length-limits.h"     // hostname_length_max
 #include "network/hostname.h"                   // Hostname
-
-#include <cstddef>      // std::size_t
 
 namespace Network
 {
-    extern auto get_hostname(std::size_t size = hostname_length_max,
-                             bool is_verbose = false) -> Hostname;
+    extern auto get_hostname(bool is_verbose = false) -> Hostname;
 }
 
 #endif

@@ -17,12 +17,14 @@
 #include "network/buffer.h"                     // Buffer
 #include "network/format-os-error.h"            // format_os_error()
 #include "network/get-api-error.h"              // get_api_error()
+#include "network/hostname-length-limits.h"     // hostname_length_max
 #include "network/hostname.h"                   // Hostname
 #include "network/hostnameresult.h"             // HostnameResult
 #include "network/oserrorresult.h"              // OsErrorResult
 #include "network/reset-api-error.h"            // reset_api_error()
 #include "network/to-name-length.h"             // to_name_length()
 #include "network/to-os-error.h"                // to_os_error()
+#include "network/to-string-string-view.h"      // to_string()
 
 #ifdef WIN32
 #include <winsock2.h>   // ::gethostname()
@@ -33,32 +35,55 @@
 #include <cstddef>      // std::size_t
 #include <iostream>     // std::cout, std::endl
 #include <sstream>      // std::ostringstream
+#include <string_view>  // std::string_view
 
-auto Network::get_hostnameresult(std::size_t size,
-                                 bool is_verbose) -> HostnameResult
+auto Network::get_hostnameresult(char* data,
+                                 std::size_t size,
+                                 bool is_verbose) -> OsErrorResult
 {
-    Buffer<char> buffer {size};
+    const std::string_view sv {data, size};
 
     if (is_verbose) {
-        std::cout << "Calling ::gethostname(, "
-                  << buffer.size()
+        // clang-format off
+        std::cout << "Calling ::gethostname("
+                  << to_string(sv)
+                  << ", "
+                  << size
                   << ')'
                   << std::endl;
+        // clang-format on
     }
 
     reset_api_error();
 
-    if (::gethostname(buffer.data(), to_name_length(buffer.size())) == -1) {
+    if (::gethostname(data, to_name_length(size)) == -1) {
         const auto api_error {get_api_error()};
         const auto os_error {to_os_error(api_error)};
         std::ostringstream oss;
-        oss << "Call to ::gethostname(, "
-            << buffer.size()
+        // clang-format off
+        oss << "Call to ::gethostname("
+            << to_string(sv)
+            << ", "
+            << size
             << ") failed with error "
             << api_error
             << ": "
             << format_os_error(os_error);
+        // clang-format on
         return OsErrorResult {os_error, oss.str()};
+    }
+
+    return {};
+}
+
+auto Network::get_hostnameresult(bool is_verbose) -> HostnameResult
+{
+    Buffer<char> buffer {hostname_length_max};
+
+    if (auto result {get_hostnameresult(buffer.data(),
+                                        buffer.size(),
+                                        is_verbose)}) {
+        return result;
     }
 
     return Hostname {buffer};

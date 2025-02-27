@@ -15,7 +15,7 @@
 
 #include "network/assert.h"             // assert()
 #include "network/network.h"            // Context, Error,
-                                        // get_hostname()
+                                        // get_hostnameresult()
 #include "network/parse.h"              // parse()
 
 #ifdef WIN32
@@ -24,6 +24,7 @@
                             // WSAVERNOTSUPPORTED
 #endif
 
+#include <cstddef>      // std::size_t
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
@@ -34,28 +35,9 @@ namespace
     using Network::Error;
     using Network::Hostname;
     using Network::get_hostname;
+    using Network::get_hostnameresult;
     using Network::parse;
     using Network::start_context;
-
-#if defined(OS_CYGWIN_NT)
-    constexpr auto expected_error_length {
-        ""
-    };
-#elif defined(OS_DARWIN)
-    constexpr auto expected_error_length {
-        ""
-    };
-#elif defined(OS_MINGW64_NT)
-    constexpr auto expected_error_length {
-        "Call to ::gethostname(, 1) failed with error 10014: "
-        "The system detected an invalid pointer address in "
-        "attempting to use a pointer argument in a call."
-    };
-#else
-    constexpr auto expected_error_length {
-        "Call to ::gethostname(, 1) failed with error 36: File name too long"
-    };
-#endif
 
     auto is_verbose {false};  // NOLINT
 
@@ -87,24 +69,19 @@ namespace
         }
     }
 
-    auto test_hostname_length() -> void
+    auto test_hostname_overflow(std::size_t size) -> void
     {
-        std::string actual_error_str;
+        std::string buffer(size, '\0');
 
-        try {
-            static_cast<void>(get_hostname(1, is_verbose));
+        if (auto result {get_hostnameresult(size > 0 ? buffer.data() : nullptr,
+                                            buffer.size(), is_verbose)}) {
+            std::cerr << result.string() << std::endl;
         }
-        catch (const Error& error) {
-            print(error);
-            actual_error_str = error.what();
-        }
+    }
 
-        if (*expected_error_length == '\0') {
-            assert(actual_error_str.empty());
-        }
-        else {
-            assert(actual_error_str == expected_error_length);
-        }
+    auto test_hostname_overflow() -> void
+    {
+        test_hostname_overflow(0);
     }
 
     auto test_hostname_valid() -> void
@@ -112,7 +89,7 @@ namespace
         std::string actual_error_str;
 
         try {
-            static_cast<void>(get_hostname());
+            static_cast<void>(get_hostname(is_verbose));
         }
         catch (const Error& error) {
             print(error);
@@ -133,7 +110,7 @@ auto main(int argc, char* argv[]) -> int
             std::cout << *context << std::endl;
         }
 
-        test_hostname_length();
+        test_hostname_overflow();
         test_hostname_valid();
     }
     catch (const std::exception& error) {
