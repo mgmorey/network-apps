@@ -301,7 +301,7 @@ tarfile: $(tarfile)
 
 .PHONY: test
 test: $(test_programs)
-	$(call run-programs,.test-complete,$(^F),$(program_args))
+	$(call run-programs,.test-complete,$(sort $(^F)),$(program_args))
 
 ifneq "$(CLANG_TIDY)" ""
 .PHONY: tidy
