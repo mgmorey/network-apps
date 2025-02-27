@@ -44,6 +44,9 @@ namespace
         assert(v1_0 < v1_5);
         assert(v1_5 < v2_0);
         assert(v2_0 > v0_0);
+        std::cout << v0 << std::endl;
+        std::cout << v1 << std::endl;
+        std::cout << v2 << std::endl;
     }
 }
 
