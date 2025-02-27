@@ -183,6 +183,16 @@ namespace
         return codes;
     }
 
+    auto get_inet_address() -> ByteString
+    {
+        sockaddr_in sin {};
+#ifdef HAVE_SOCKADDR_SA_LEN
+        sin.sin_len = sizeof sin;
+#endif
+        sin.sin_family = AF_INET;
+        return to_bytestring(&sin, sizeof sin);
+    }
+
     auto parse_arguments(int argc, char** argv) -> ArgumentSpan
     {
         const auto [operands, options] {parse(argc, argv, "v")};
@@ -200,15 +210,6 @@ namespace
         }
 
         return operands;
-    }
-
-    auto print(const Error& error) -> void
-    {
-        if (is_verbose) {
-            std::cout << "Exception: "
-                      << error.what()
-                      << std::endl;
-        }
     }
 
     auto print(const OsErrorResult& result) -> void
@@ -249,51 +250,19 @@ namespace
         assert(expected_codes.contains(actual_code));
     }
 
-    auto test_endpoint_overflow(std::size_t size) -> void
-    {
-        const std::string expected_error_re {expected_error_getnameinfo_re};
-        std::string actual_error_str;
-
-        try {
-            sockaddr_in sin {};
-#ifdef HAVE_SOCKADDR_SA_LEN
-            sin.sin_len = sizeof sin;
-#endif
-            sin.sin_family = AF_INET;
-            const ByteString addr {to_bytestring(&sin, sizeof sin)};
-            std::string hostname(size, '\0');
-            std::span<char> hostname_span
-                {
-                    size > 0 ? hostname.data() : nullptr, hostname.size()
-                };
-            std::string service(size, '\0');
-            std::span<char> service_span
-                {
-                    size > 0 ? service.data() : nullptr, service.size()
-                };
-
-            if (auto result {get_endpointresult(
-                        hostname_span, service_span, addr, -1, is_verbose)}) {
-                actual_error_str = result.string();
-            }
-        }
-        catch (const Error& error) {
-            print(error);
-            actual_error_str = error.what();
-        }
-
-        if (expected_error_re.empty()) {
-            assert(actual_error_str.empty());
-        }
-        else {
-            const std::regex expected_error_regex {expected_error_re};
-            assert(std::regex_match(actual_error_str, expected_error_regex));
-        }
-    }
-
     auto test_endpoint_overflow() -> void
     {
-        test_endpoint_overflow(0);
+        std::span<char> null {static_cast<char*>(nullptr), 0};
+        const ByteString addr {get_inet_address()};
+        std::string actual_str;
+
+        if (auto result {get_endpointresult(null, null, addr, -1, is_verbose)}) {
+            print(result);
+            actual_str = result.string();
+        }
+
+        const std::regex expected_regex {expected_error_getnameinfo_re};
+        assert(std::regex_match(actual_str, expected_regex));
     }
 
     auto test_invalid_family() -> void
