@@ -33,7 +33,6 @@
 #include <cstddef>      // std::size_t
 #include <iostream>     // std::cout, std::endl
 #include <sstream>      // std::ostringstream
-#include <string>       // std::string
 
 auto Network::get_hostnameresult(std::size_t size,
                                  bool is_verbose) -> HostnameResult
@@ -41,9 +40,7 @@ auto Network::get_hostnameresult(std::size_t size,
     Buffer<char> buffer {size};
 
     if (is_verbose) {
-        std::cout << "Calling ::gethostname("
-                  << std::string(buffer)
-                  << ", "
+        std::cout << "Calling ::gethostname(, "
                   << buffer.size()
                   << ')'
                   << std::endl;
@@ -55,9 +52,7 @@ auto Network::get_hostnameresult(std::size_t size,
         const auto api_error {get_api_error()};
         const auto os_error {to_os_error(api_error)};
         std::ostringstream oss;
-        oss << "Call to ::gethostname("
-            << std::string(buffer)
-            << ", "
+        oss << "Call to ::gethostname(, "
             << buffer.size()
             << ") failed with error "
             << api_error
