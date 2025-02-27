@@ -28,6 +28,7 @@
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
+#include <span>         // std::span
 #include <string>       // std::string
 
 namespace
@@ -71,10 +72,13 @@ namespace
 
     auto test_hostname_overflow(std::size_t size) -> void
     {
-        std::string buffer(size, '\0');
+        std::string hostname(size, '\0');
+        std::span<char> span
+        {
+            size > 0 ? hostname.data() : nullptr, hostname.size()
+        };
 
-        if (auto result {get_hostnameresult(size > 0 ? buffer.data() : nullptr,
-                                            buffer.size(), is_verbose)}) {
+        if (auto result {get_hostnameresult(span, is_verbose)}) {
             std::cerr << result.string() << std::endl;
         }
     }

@@ -32,23 +32,22 @@
 #include <unistd.h>     // ::gethostname()
 #endif
 
-#include <cstddef>      // std::size_t
 #include <iostream>     // std::cout, std::endl
+#include <span>         // std::span
 #include <sstream>      // std::ostringstream
 #include <string_view>  // std::string_view
 
-auto Network::get_hostnameresult(char* data,
-                                 std::size_t size,
+auto Network::get_hostnameresult(std::span<char>& hostname,
                                  bool is_verbose) -> OsErrorResult
 {
-    const std::string_view sv {data, size};
+    const std::string_view hostname_sv {hostname.data(), hostname.size()};
 
-    if (is_verbose) {
+        if (is_verbose) {
         // clang-format off
         std::cout << "Calling ::gethostname("
-                  << to_string(sv)
+                  << to_string(hostname_sv)
                   << ", "
-                  << size
+                  << hostname_sv.size()
                   << ')'
                   << std::endl;
         // clang-format on
@@ -56,15 +55,15 @@ auto Network::get_hostnameresult(char* data,
 
     reset_api_error();
 
-    if (::gethostname(data, to_name_length(size)) == -1) {
+    if (::gethostname(hostname.data(), to_name_length(hostname.size())) == -1) {
         const auto api_error {get_api_error()};
         const auto os_error {to_os_error(api_error)};
         std::ostringstream oss;
         // clang-format off
         oss << "Call to ::gethostname("
-            << to_string(sv)
+            << to_string(hostname_sv)
             << ", "
-            << size
+            << hostname_sv.size()
             << ") failed with error "
             << api_error
             << ": "
@@ -73,18 +72,29 @@ auto Network::get_hostnameresult(char* data,
         return OsErrorResult {os_error, oss.str()};
     }
 
+    if (is_verbose) {
+        // clang-format off
+        std::cout << "Call to ::gethostname("
+                  << to_string(hostname_sv)
+                  << ", "
+                  << hostname_sv.size()
+                  << ") returned data "
+                  << to_string(hostname_sv)
+                  << std::endl;
+        // clang-format on
+    }
+
     return {};
 }
 
 auto Network::get_hostnameresult(bool is_verbose) -> HostnameResult
 {
-    Buffer<char> buffer {hostname_length_max};
+    Buffer<char> hostname {hostname_length_max};
+    std::span<char> span {hostname.data(), hostname.size()};
 
-    if (auto result {get_hostnameresult(buffer.data(),
-                                        buffer.size(),
-                                        is_verbose)}) {
+    if (auto result {get_hostnameresult(span, is_verbose)}) {
         return result;
     }
 
-    return Hostname {buffer};
+    return Hostname {hostname};
 }

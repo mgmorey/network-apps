@@ -19,12 +19,11 @@
 #include "network/hostnameresult.h"             // HostnameResult
 #include "network/oserrorresult.h"              // OsErrorResult
 
-#include <cstddef>      // std::size_t
+#include <span>         // std::span
 
 namespace Network
 {
-    extern auto get_hostnameresult(char* data,
-                                   std::size_t size,
+    extern auto get_hostnameresult(std::span<char>& hostname,
                                    bool is_verbose = false) -> OsErrorResult;
     extern auto get_hostnameresult(bool is_verbose = false) -> HostnameResult;
 }
