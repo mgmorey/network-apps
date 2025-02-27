@@ -117,7 +117,8 @@ unixsocket.cpp validate-null.cpp validate-path.cpp validate-sun.cpp
 
 test_common_sources = test-address.cpp test-bind.cpp test-connect.cpp	\
 test-context.cpp test-errors.cpp test-host.cpp test-hostname.cpp	\
-test-limits.cpp test-option.cpp test-parse.cpp test-socket-inet.cpp
+test-limits.cpp test-option.cpp test-parse.cpp test-socket-inet.cpp	\
+test-version.cpp
 
 test_unix_sources = test-socket-unix.cpp
 
