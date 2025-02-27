@@ -20,6 +20,7 @@
 #include "network/to-string-vector-char.h"      // to_string()
 
 #include <cstddef>      // std::size_t
+#include <span>         // std::span
 #include <string>       // std::basic_string
 #include <vector>       // std::vector
 
@@ -30,6 +31,7 @@ namespace Network
     {
     public:
         using size_type = std::size_t;
+        using span_type = std::span<T>;
         using value_type = std::vector<T>;
 
         explicit Buffer(size_type t_size)
@@ -51,6 +53,11 @@ namespace Network
         explicit operator std::basic_string<T>() const
         {
             return to_string(m_value);
+        }
+
+        explicit operator span_type() noexcept
+        {
+            return span_type(m_value);
         }
 
         [[nodiscard]] auto data() noexcept -> T*
