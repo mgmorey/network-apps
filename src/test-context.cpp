@@ -80,7 +80,7 @@ namespace
     };
 #else
     constexpr auto expected_error_length {
-        ""
+        "Call to ::gethostname(, 1) failed with error 36: File name too long"
     };
 #endif
 #ifdef WIN32
@@ -264,12 +264,6 @@ namespace
             assert(actual_error_str.empty());
         }
         else {
-            std::cerr << "expected_error_length = "
-                      << expected_error_length
-                      << std::endl;
-            std::cerr << "actual_error_str = "
-                      << actual_error_str
-                      << std::endl;
             assert(actual_error_str == expected_error_length);
         }
     }
