@@ -151,39 +151,39 @@ namespace
     auto test_context_inactive() -> void
     {
         int error_code {0};
-        std::string actual_error_str;
+        std::string actual_str;
 
         try {
             error_code = Network::stop(failure_mode, is_verbose);
         }
         catch (const Error& error) {
             print(error);
-            actual_error_str = error.what();
+            actual_str = error.what();
         }
 
-        assert(actual_error_str.empty());
+        assert(actual_str.empty());
         assert(error_code == expected_code_stopped);
     }
 
     auto test_context_stopped() -> void
     {
-        std::string actual_error_str;
+        std::string actual_str;
 
         try {
             static_cast<void>(get_hostname(is_verbose));
         }
         catch (const Error& error) {
             print(error);
-            actual_error_str = error.what();
+            actual_str = error.what();
         }
 
-        assert(actual_error_str == expected_error_stopped);
+        assert(actual_str == expected_error_stopped);
     }
 
     auto test_context_invalid() -> void
     {
         constexpr Version invalid;
-        std::string actual_error_str;
+        std::string actual_str;
 
         try {
             const auto context {
@@ -192,15 +192,15 @@ namespace
         }
         catch (const Error& error) {
             print(error);
-            actual_error_str = error.what();
+            actual_str = error.what();
         }
 
-        assert(actual_error_str == expected_error_version);
+        assert(actual_str == expected_error_version);
     }
 
     auto test_context_valid() -> void
     {
-        std::string actual_error_str;
+        std::string actual_str;
 
         try {
             const auto context_1 {start_context({}, failure_mode, is_verbose)};
@@ -215,10 +215,10 @@ namespace
         }
         catch (const Error& error) {
             print(error);
-            actual_error_str = error.what();
+            actual_str = error.what();
         }
 
-        assert(actual_error_str.empty());
+        assert(actual_str.empty());
     }
 }
 
