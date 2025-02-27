@@ -26,7 +26,6 @@
                             // WSAVERNOTSUPPORTED
 #endif
 
-#include <cstddef>      // std::size_t
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
