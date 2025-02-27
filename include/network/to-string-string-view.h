@@ -1,4 +1,4 @@
-// Copyright (C) 2024  "Michael G. Morey" <mgmorey@gmail.com>
+// Copyright (C) 2025  "Michael G. Morey" <mgmorey@gmail.com>
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,13 +13,15 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_TO_STRING_H
-#define NETWORK_TO_STRING_H
+#ifndef NETWORK_TO_STRING_STRING_VIEW_H
+#define NETWORK_TO_STRING_STRING_VIEW_H
 
-#include "network/to-string-in-addr.h"          // to_string()
-#include "network/to-string-in6-addr.h"         // to_string()
-#include "network/to-string-string-view.h"      // to_string()
-#include "network/to-string-vector-byte.h"      // to_string()
-#include "network/to-string-vector-char.h"      // to_string()
+#include <string>       // std::string
+#include <string_view>  // std::string_view
+
+namespace Network
+{
+    extern auto to_string(const std::string_view& sv) -> std::string;
+}
 
 #endif

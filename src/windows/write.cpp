@@ -15,14 +15,15 @@
 
 #ifdef WIN32
 
-#include "network/write.h"              // write()
-#include "network/error.h"              // Error
-#include "network/format-os-error.h"    // format_os_error()
-#include "network/get-api-error.h"      // get_api_error()
-#include "network/handle-type.h"        // handle_type
-#include "network/reset-api-error.h"    // reset_api_error()
-#include "network/socket-error.h"       // socket_error
-#include "network/to-os-error.h"        // to_os_error()
+#include "network/write.h"                      // write()
+#include "network/error.h"                      // Error
+#include "network/format-os-error.h"            // format_os_error()
+#include "network/get-api-error.h"              // get_api_error()
+#include "network/handle-type.h"                // handle_type
+#include "network/reset-api-error.h"            // reset_api_error()
+#include "network/socket-error.h"               // socket_error
+#include "network/to-os-error.h"                // to_os_error()
+#include "network/to-string-string-view.h"      // to_string()
 
 #include <sys/types.h>          // ssize_t
 
@@ -31,21 +32,26 @@
 #include <cstddef>      // std::size_t
 #include <iostream>     // std::cout, std::endl
 #include <sstream>      // std::ostringstream
+#include <string_view>  // std::string_view
 
 auto Network::write(handle_type handle,
                     const char* data,
                     std::size_t size,
                     bool is_verbose) -> ssize_t
 {
+    const std::string_view sv {data, size};
+
     if (is_verbose) {
+        // clang-format off
         std::cout << "Calling ::send("
                   << handle
-                  << ", \""
-                  << data
-                  << "\", "
+                  << ", "
+                  << to_string(sv)
+                  << ", "
                   << size
                   << ", 0)"
                   << std::endl;
+        // clang-format on
     }
 
     reset_api_error();
@@ -55,16 +61,18 @@ auto Network::write(handle_type handle,
         const auto api_error {get_api_error()};
         const auto os_error {to_os_error(api_error)};
         std::ostringstream oss;
+        // clang-format off
         oss << "Call to ::send("
             << handle
-            << ", \""
-            << data
-            << "\", "
+            << ", "
+            << to_string(sv)
+            << ", "
             << size
             << ", 0) failed with error "
             << api_error
             << ": "
             << format_os_error(os_error);
+        // clang-format on
         throw Error(oss.str());
     }
 
