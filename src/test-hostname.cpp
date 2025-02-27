@@ -45,8 +45,6 @@ namespace
 
 #if defined(OS_CYGWIN_NT)
     constexpr auto expected_error_gethostname_re {""};
-#elif defined(OS_MINGW64_NT)
-    constexpr auto expected_error_gethostname_re {""};
 #else
     constexpr auto expected_error_gethostname_re {
         R"(Call to ::gethostname\(.+\) failed with error \d+: .+)"
