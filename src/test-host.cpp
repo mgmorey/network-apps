@@ -75,7 +75,11 @@ namespace
     using ErrorCodeSet = std::set<os_error_type>;
     using StringList = std::list<std::string>;
 
-#ifdef WIN32
+#if defined(OS_CYGWIN_NT)
+    constexpr auto expected_error_getnameinfo_re {""};
+#elif defined(OS_DARWIN)
+    constexpr auto expected_error_getnameinfo_re {""};
+#elif defined(OS_MINGW64_NT)
     constexpr auto expected_error_getnameinfo_re {""};
 #else
     constexpr auto expected_error_getnameinfo_re {
