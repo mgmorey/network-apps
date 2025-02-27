@@ -54,7 +54,15 @@ auto Network::get_endpointresult(std::span<char>& hostname,
                   << addr_str
                   << ", "
                   << addr_len
-                  << ", ..., "
+                  << ", "
+                  << to_string(hostname_sv)
+                  << ", "
+                  << hostname_sv.size()
+                  << ", "
+                  << to_string(service_sv)
+                  << ", "
+                  << service_sv.size()
+                  << ", "
                   << flags
                   << ')'
                   << std::endl;
@@ -75,7 +83,15 @@ auto Network::get_endpointresult(std::span<char>& hostname,
             << addr_str
             << ", "
             << addr_len
-            << ", ..., "
+            << ", "
+            << to_string(hostname_sv)
+            << ", "
+            << hostname_sv.size()
+            << ", "
+            << to_string(service_sv)
+            << ", "
+            << service_sv.size()
+            << ", "
             << flags
             << ") returned "
             << api_error
@@ -88,8 +104,20 @@ auto Network::get_endpointresult(std::span<char>& hostname,
 
     if (is_verbose) {
         // clang-format off
-        std::cout << "Call to ::getnameinfo(" << addr_str << ", " << addr_len
-                  << ", ..., " << flags
+        std::cout << "Call to ::getnameinfo("
+                  << addr_str
+                  << ", "
+                  << addr_len
+                  << ", "
+                  << to_string(hostname_sv)
+                  << ", "
+                  << hostname_sv.size()
+                  << ", "
+                  << to_string(service_sv)
+                  << ", "
+                  << service_sv.size()
+                  << ", "
+                  << flags
                   << ") returned data {"
                   << to_string(hostname_sv)
                   << ", "
