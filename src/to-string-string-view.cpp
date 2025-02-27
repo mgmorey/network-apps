@@ -30,7 +30,7 @@ auto Network::to_string(const std::string_view& sv) -> std::string
         oss << string_null;
     }
     else {
-        oss << "\"";
+        oss << '\"';
 
         for (const auto ch : sv) {
             if (isprint(ch) != 0) {
@@ -45,7 +45,7 @@ auto Network::to_string(const std::string_view& sv) -> std::string
             }
         }
 
-        oss << "\"";
+        oss << '\"';
     }
 
     return oss.str();
