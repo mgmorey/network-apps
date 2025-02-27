@@ -26,14 +26,14 @@ namespace
 
     auto test_version() -> void
     {
-        const Version v0 {0, 0};
         const Version v0_0 {0, 0};
         const Version v0_5 {0, 5};
-        const Version v1 {1, 0};
         const Version v1_0 {1, 0};
         const Version v1_5 {1, 5};
-        const Version v2 {2, 0};
         const Version v2_0 {2, 0};
+        const Version v0 {Version {0, 0}};
+        const Version v1 = v1_0;
+        const Version v2 {v2_0};
         assert(v0 != v1);
         assert(v1 != v2);
         assert(v0 == v0_0);
