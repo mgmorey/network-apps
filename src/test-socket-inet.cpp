@@ -288,7 +288,7 @@ namespace
 
         try {
             const auto sock {create_null_socket()};
-            static_cast<void>(sock->write(""));
+            static_cast<void>(sock->write({}));
         }
         catch (const Error& error) {
             print(error);
