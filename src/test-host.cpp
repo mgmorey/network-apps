@@ -77,8 +77,6 @@ namespace
 
 #if defined(OS_CYGWIN_NT)
     constexpr auto expected_error_getnameinfo_re {""};
-#elif defined(OS_DARWIN)
-    constexpr auto expected_error_getnameinfo_re {""};
 #elif defined(OS_MINGW64_NT)
     constexpr auto expected_error_getnameinfo_re {""};
 #else
