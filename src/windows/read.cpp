@@ -22,6 +22,7 @@
 #include "network/handle-type.h"        // handle_type
 #include "network/reset-api-error.h"    // reset_api_error()
 #include "network/socket-error.h"       // socket_error
+#include "network/string-null.h"        // string_null
 #include "network/to-os-error.h"        // to_os_error()
 
 #include <sys/types.h>          // ssize_t
@@ -41,7 +42,7 @@ auto Network::read(handle_type handle,
         std::cout << "Calling ::recv("
                   << handle
                   << ", \""
-                  << data
+                  << (data == nullptr ? string_null : data)
                   << "\", "
                   << size
                   << ", 0)"
@@ -58,7 +59,7 @@ auto Network::read(handle_type handle,
         oss << "Call to ::recv("
             << handle
             << ", \""
-            << data
+            << (data == nullptr ? string_null : data)
             << "\", "
             << size
             << ", 0) failed with error "
@@ -66,6 +67,19 @@ auto Network::read(handle_type handle,
             << ": "
             << format_os_error(os_error);
         throw Error(oss.str());
+    }
+
+    if (is_verbose) {
+        std::cout << "Call to ::recv("
+                  << handle
+                  << ", \""
+                  << (data == nullptr ? string_null : data)
+                  << "\", "
+                  << size
+                  << ", 0) returned data \""
+                  << (data == nullptr ? string_null : data)
+                  << '\"'
+                  << std::endl;
     }
 
     return result;
