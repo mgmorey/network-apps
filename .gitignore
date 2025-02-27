@@ -117,6 +117,7 @@ test-bind
 test-connect
 test-context
 test-create
+test-errors
 test-host
 test-hostname
 test-limits

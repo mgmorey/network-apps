@@ -18,8 +18,6 @@
 #include "network/assert.h"             // assert()
 #include "network/get-option.h"         // get_optarg(), get_optind(),
                                         // get_option()
-#include "network/get-os-error.h"       // get_os_error()
-#include "network/reset-os-error.h"     // reset_os_error()
 #include "network/to-size.h"            // to_size()
 
 #include <cstdlib>      // std::abort()
@@ -39,8 +37,6 @@ namespace
     using Network::get_optind;
     using Network::get_option;
     using Network::get_optopt;
-    using Network::get_os_error;
-    using Network::reset_os_error;
     using Network::to_size;
 
     auto get_strings(const char* argv0) -> std::vector<std::string>
@@ -133,19 +129,12 @@ namespace
         assert(filename == *argv);
         assert(is_verbose);
     }
-
-    auto test_os_errors() -> void
-    {
-        reset_os_error();
-        assert(get_os_error() == 0);
-    }
 }
 
 auto main(int argc, char* argv[]) -> int
 {
     try {
         test_arguments(argc, argv);
-        test_os_errors();
     }
     catch (const std::exception& error) {
         std::cerr << error.what()
