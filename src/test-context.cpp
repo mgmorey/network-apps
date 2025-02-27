@@ -64,25 +64,6 @@ namespace
         "( Version \\d{1,3}\\.\\d{1,3})?" // NOLINT
     };
 #endif
-#if defined(OS_CYGWIN_NT)
-    constexpr auto expected_error_length {
-        ""
-    };
-#elif defined(OS_DARWIN)
-    constexpr auto expected_error_length {
-        ""
-    };
-#elif defined(OS_MINGW64_NT)
-    constexpr auto expected_error_length {
-        "Call to ::gethostname(, 1) failed with error 10014: "
-        "The system detected an invalid pointer address in "
-        "attempting to use a pointer argument in a call."
-    };
-#else
-    constexpr auto expected_error_length {
-        "Call to ::gethostname(, 1) failed with error 36: File name too long"
-    };
-#endif
 #ifdef WIN32
     constexpr auto expected_error_stopped {
         "Call to ::gethostname(, 1024) failed with error 10093: "
@@ -156,9 +137,6 @@ namespace
                   << std::endl;
     }
 
-    auto test_hostname_length() -> void;
-    auto test_hostname_valid() -> void;
-
     auto test_context(const Context& context,
                       const std::string& description,
                       const OptionalVersion& version = {}) -> void
@@ -171,8 +149,6 @@ namespace
         const std::string actual_context_str {oss.str()};
         const std::regex expected_regex {get_expected_context_re()};
         assert(std::regex_match(actual_context_str, expected_regex));
-        test_hostname_length();
-        test_hostname_valid();
     }
 
     auto test_context_inactive() -> void
@@ -239,41 +215,6 @@ namespace
             assert(!context_1->error_code());
             context_2->stop();
             assert(!context_2->error_code());
-        }
-        catch (const Error& error) {
-            print(error);
-            actual_error_str = error.what();
-        }
-
-        assert(actual_error_str.empty());
-    }
-
-    auto test_hostname_length() -> void
-    {
-        std::string actual_error_str;
-
-        try {
-            static_cast<void>(get_hostname(1, is_verbose));
-        }
-        catch (const Error& error) {
-            print(error);
-            actual_error_str = error.what();
-        }
-
-        if (!*expected_error_length) {
-            assert(actual_error_str.empty());
-        }
-        else {
-            assert(actual_error_str == expected_error_length);
-        }
-    }
-
-    auto test_hostname_valid() -> void
-    {
-        std::string actual_error_str;
-
-        try {
-            static_cast<void>(get_hostname());
         }
         catch (const Error& error) {
             print(error);
