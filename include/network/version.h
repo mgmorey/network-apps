@@ -27,16 +27,16 @@ namespace Network
         friend auto operator<<(std::ostream& os,
                                Version version) noexcept -> std::ostream&;
 
-        constexpr Version() noexcept = default;
-        constexpr Version(const Version&) noexcept = default;
-        constexpr Version(Version&&) noexcept = default;
-
-        constexpr Version(field_type t_major, field_type t_minor) noexcept :
+        explicit constexpr Version(field_type t_major,
+                                   field_type t_minor = 0U) noexcept :
             m_major(t_major),
             m_minor(t_minor)
         {
         }
 
+        constexpr Version() noexcept = default;
+        constexpr Version(const Version&) noexcept = default;
+        constexpr Version(Version&&) noexcept = default;
         constexpr ~Version() noexcept = default;
         constexpr auto operator=(const Version&) noexcept -> Version& = default;
         constexpr auto operator=(Version&&) noexcept -> Version& = default;
@@ -66,8 +66,8 @@ namespace Network
         }
 
     protected:
-        field_type m_major {0U};  // NOLINT
-        field_type m_minor {0U};  // NOLINT
+        field_type m_major {0U};	// NOLINT
+        field_type m_minor {0U};	// NOLINT
     };
 
     extern auto operator<<(std::ostream& os,
