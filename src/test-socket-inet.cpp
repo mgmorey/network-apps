@@ -56,15 +56,27 @@ namespace
     constexpr auto expected_error_peername_re {
         R"(Call to ::getpeername\(.+\) failed with error \d+: .+)"
     };
+#ifdef WIN32
+    constexpr auto expected_error_read_re {
+        R"(Call to ::recv\(.+\) failed with error \d+: .+)"
+    };
+#else
     constexpr auto expected_error_read_re {
         R"(Call to ::read\(.+\) failed with error \d+: .+)"
     };
+#endif
     constexpr auto expected_error_socket_re {
         R"(Call to ::socket\(.+\) failed with error \d+: .+)"
     };
+#ifdef WIN32
+    constexpr auto expected_error_write_re {
+        R"(Call to ::send\(.+\) failed with error \d+: .+)"
+    };
+#else
     constexpr auto expected_error_write_re {
         R"(Call to ::write\(.+\) failed with error \d+: .+)"
     };
+#endif
 
     auto is_verbose {false}; // NOLINT
 
