@@ -29,17 +29,11 @@
 #include "network/parse.h"              // parse()
 
 #ifdef WIN32
-#include <winsock2.h>       // AF_INET, AF_INET6, AF_UNSPEC,
-                            // IPPROTO_TCP, SOCK_STREAM,
-                            // WSAHOST_NOT_FOUND
-#include <ws2tcpip.h>       // AI_ADDRCONFIG, AI_CANONNAME
+#include <winsock2.h>       // AF_INET, AF_UNSPEC, SOCK_STREAM, sockaddr_in
+#include <ws2tcpip.h>       // AI_CANONNAME
 #else
-#include <netdb.h>          // AI_ADDRCONFIG, AI_CANONNAME, EAI_AGAIN,
-                            // EAI_FAMILY, EAI_NODATA, EAI_NONAME,
-                            // EAI_SOCKTYPE
-#include <netinet/in.h>     // IPPROTO_TCP
-#include <sys/socket.h>     // AF_INET, AF_INET6, AF_UNSPEC,
-                            // SOCK_STREAM
+#include <netdb.h>          // AI_CANONNAME
+#include <sys/socket.h>     // AF_INET, AF_UNSPEC, SOCK_STREAM, sockaddr_in
 #endif
 
 #include <algorithm>    // std::ranges, std::sort()
@@ -81,9 +75,13 @@ namespace
     using ErrorCodeSet = std::set<os_error_type>;
     using StringList = std::list<std::string>;
 
+#ifdef WIN32
+    constexpr auto expected_error_getnameinfo_re {""};
+#else
     constexpr auto expected_error_getnameinfo_re {
         R"(Call to ::getnameinfo\(.+\) returned -?\d+ \(.+\))"
     };
+#endif
     constexpr auto localhost {"localhost"};
 
     const IpSocketHints ip_any {SOCK_STREAM, AI_CANONNAME};
@@ -254,7 +252,12 @@ namespace
         std::string actual_error_str;
 
         try {
-            const ByteString addr {to_bytestring("")};
+            sockaddr_in sin {};
+#ifdef HAVE_SOCKADDR_SA_LEN
+            sin.sin_len = sizeof sin;
+#endif
+            sin.sin_family = AF_INET;
+            const ByteString addr {to_bytestring(&sin, sizeof sin)};
             static_cast<void>(Network::get_endpoint(addr, -1, is_verbose));
         }
         catch (const Error& error) {
