@@ -21,11 +21,11 @@
                                         // OptionalHints,
                                         // OptionalHostname,
                                         // OsErrorResult, SocketHints,
-                                        // SocketHost, af_ip_v4,
-                                        // af_ip_v6, always_false_v,
+                                        // SocketHost, always_false_v,
                                         // get_hostname(), insert(),
                                         // os_error_type,
-                                        // start_context, uniquify()
+                                        // start_context,
+                                        // to_bytestring(), uniquify()
 #include "network/parse.h"              // parse()
 
 #ifdef WIN32
@@ -55,7 +55,6 @@ namespace
     using Network::ArgumentSpan;
     using Network::ByteString;
     using Network::Endpoint;
-    using Network::Error;
     using Network::HostnameView;
     using Network::IpSocketHints;
     using Network::OptionalHints;
