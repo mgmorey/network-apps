@@ -55,6 +55,14 @@ namespace
     {
         "( Version \\d{1,3}\\.\\d{1,3})" // NOLINT
     };
+    constexpr auto expected_error_stopped {
+        "Call to ::gethostname(\"\", 1024) failed with error 10093: "
+        "Either the application has not called WSAStartup, "
+        "or WSAStartup failed."
+    };
+    constexpr auto expected_error_version {
+        "The Windows Sockets version requested is not supported."
+    };
 #else
     constexpr auto expected_code_stopped {0};
     constexpr auto expected_context_platform_re {
@@ -63,17 +71,6 @@ namespace
     constexpr auto expected_context_version_re {
         "( Version \\d{1,3}\\.\\d{1,3})?" // NOLINT
     };
-#endif
-#ifdef WIN32
-    constexpr auto expected_error_stopped {
-        "Call to ::gethostname(, 1024) failed with error 10093: "
-        "Either the application has not called WSAStartup, "
-        "or WSAStartup failed."
-    };
-    constexpr auto expected_error_version {
-        "The Windows Sockets version requested is not supported."
-    };
-#else
     constexpr auto expected_error_stopped {""};
     constexpr auto expected_error_version {""};
 #endif
@@ -173,7 +170,7 @@ namespace
         std::string actual_error_str;
 
         try {
-            static_cast<void>(get_hostname());
+            static_cast<void>(get_hostname(is_verbose));
         }
         catch (const Error& error) {
             print(error);
