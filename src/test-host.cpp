@@ -75,13 +75,10 @@ namespace
     using ErrorCodeSet = std::set<os_error_type>;
     using StringList = std::list<std::string>;
 
-#if defined(OS_MINGW64_NT)
-    constexpr auto expected_error_getnameinfo_re {""};
-#else
     constexpr auto expected_error_getnameinfo_re {
         R"(Call to ::getnameinfo\(.+\) returned -?\d+ \(.+\))"
     };
-#endif
+
     constexpr auto localhost {"localhost"};
 
     const IpSocketHints ip_any {SOCK_STREAM, AI_CANONNAME};
