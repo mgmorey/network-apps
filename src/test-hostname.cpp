@@ -30,7 +30,6 @@
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <regex>        // std::regex, std::regex_match
-#include <span>         // std::span
 #include <string>       // std::string
 #include <type_traits>  // std::decay_t, std::is_same_v
 #include <variant>      // std::visit()
@@ -96,11 +95,10 @@ namespace
 
     auto test_get_hostnameresult_overflow() -> void
     {
-        std::string hostname_buffer(1, '\0');
-        std::span<char> hostname {hostname_buffer};
+        std::string hostname_str(1, '\0');
         std::string actual_str;
 
-        if (auto result {get_hostnameresult(hostname,
+        if (auto result {get_hostnameresult(hostname_str,
                                             is_verbose)}) {
             print(result);
             actual_str = result.string();
