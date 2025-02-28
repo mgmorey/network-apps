@@ -14,6 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/socketlimits.h"               // SocketLimits
+#include "network/familyerror.h"                // FamilyError
 #include "network/family-type.h"                // family_type
 #include "network/limits.h"                     // sa_length_max,
                                                 // sa_length_min,
@@ -33,9 +34,20 @@
 #include <cstddef>      // std::size_t
 #include <utility>      // std::pair
 
-Network::SocketLimits::SocketLimits(family_type t_family) noexcept
+Network::SocketLimits::SocketLimits(family_type t_family)
     : m_family(t_family)
 {
+    switch (m_family) {
+    case AF_UNSPEC:
+#ifndef WIN32
+    case AF_UNIX:
+#endif
+    case AF_INET:
+    case AF_INET6:
+        break;
+    default:
+        throw FamilyError(m_family);
+    }
 }
 
 auto Network::SocketLimits::limits() const noexcept ->
@@ -58,7 +70,7 @@ auto Network::SocketLimits::max() const noexcept -> std::size_t
     case AF_INET6:
         return sin6_length_max;
     default:
-        return sa_length_max;
+        return 0;
     }
 }
 
@@ -76,6 +88,6 @@ auto Network::SocketLimits::min() const noexcept -> std::size_t
     case AF_INET6:
         return sin6_length_min;
     default:
-        return sa_length_min;
+        return 0;
     }
 }

@@ -32,7 +32,7 @@ namespace Network
     class SocketLimits
     {
     public:
-        explicit SocketLimits(family_type t_family) noexcept;
+        explicit SocketLimits(family_type t_family);
 
         SocketLimits() noexcept = default;
         SocketLimits(const SocketLimits&) noexcept = default;
