@@ -46,7 +46,6 @@
 #include <ostream>      // std::ostream
 #include <regex>        // std::regex, std::regex_match
 #include <set>          // std::set
-#include <span>         // std::span
 #include <string>       // std::string
 #include <vector>       // std::vector
 
