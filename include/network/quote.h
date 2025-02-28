@@ -13,40 +13,15 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/to-string-string-view.h"      // to_string()
-#include "network/string-null.h"                // string_null
+#ifndef NETWORK_QUOTE_H
+#define NETWORK_QUOTE_H
 
-#include <cctype>       // isprint()
-#include <sstream>      // std::ostringstream
 #include <string>       // std::string
 #include <string_view>  // std::string_view
 
-auto Network::to_string(const std::string_view& sv) -> std::string
+namespace Network
 {
-    std::ostringstream oss;
-    oss << std::oct;
-
-    if (sv.data() == nullptr) {
-        oss << string_null;
-    }
-    else {
-        oss << '\"';
-
-        for (const auto ch : sv) {
-            if (isprint(ch) != 0) {
-                oss << ch;
-            }
-            else if (ch != '\0') {
-                oss << '\\'
-                    << static_cast<unsigned>(ch);
-            }
-            else {
-                break;
-            }
-        }
-
-        oss << '\"';
-    }
-
-    return oss.str();
+    extern auto quote(const std::string_view& sv) -> std::string;
 }
+
+#endif

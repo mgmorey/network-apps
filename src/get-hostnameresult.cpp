@@ -20,10 +20,10 @@
 #include "network/hostname-length-limits.h"     // hostname_length_max
 #include "network/hostnameresult.h"             // HostnameResult
 #include "network/oserrorresult.h"              // OsErrorResult
+#include "network/quote.h"                      // quote()
 #include "network/reset-api-error.h"            // reset_api_error()
 #include "network/to-name-length.h"             // to_name_length()
 #include "network/to-os-error.h"                // to_os_error()
-#include "network/to-string-string-view.h"      // to_string()
 
 #ifdef WIN32
 #include <winsock2.h>   // ::gethostname()
@@ -44,7 +44,7 @@ auto Network::get_hostnameresult(const std::span<char>& hostname,
         if (is_verbose) {
         // clang-format off
         std::cout << "Calling ::gethostname("
-                  << to_string(hostname_sv)
+                  << quote(hostname_sv)
                   << ", "
                   << hostname_sv.size()
                   << ')'
@@ -60,7 +60,7 @@ auto Network::get_hostnameresult(const std::span<char>& hostname,
         std::ostringstream oss;
         // clang-format off
         oss << "Call to ::gethostname("
-            << to_string(hostname_sv)
+            << quote(hostname_sv)
             << ", "
             << hostname_sv.size()
             << ") failed with error "
@@ -74,11 +74,11 @@ auto Network::get_hostnameresult(const std::span<char>& hostname,
     if (is_verbose) {
         // clang-format off
         std::cout << "Call to ::gethostname("
-                  << to_string(hostname_sv)
+                  << quote(hostname_sv)
                   << ", "
                   << hostname_sv.size()
                   << ") returned data "
-                  << to_string(hostname_sv)
+                  << quote(hostname_sv)
                   << std::endl;
         // clang-format on
     }
