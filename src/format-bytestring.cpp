@@ -17,10 +17,11 @@
 #include "network/address.h"                    // Address
 #include "network/bytestring.h"                 // ByteString
 #include "network/logicerror.h"                 // LogicError
-#include "network/to-string-vector-byte.h"      // to_string()
+#include "network/to-string-span-byte.h"        // to_string()
 
 #include <optional>     // std::optional
 #include <sstream>      // std::ostringstream
+#include <span>         // std::span
 #include <string>       // std::string
 
 auto Network::format(const ByteString& addr) -> std::string

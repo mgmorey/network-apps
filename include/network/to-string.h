@@ -18,8 +18,8 @@
 
 #include "network/to-string-in-addr.h"          // to_string()
 #include "network/to-string-in6-addr.h"         // to_string()
+#include "network/to-string-span-byte.h"        // to_string()
+#include "network/to-string-span-char.h"        // to_string()
 #include "network/to-string-string-view.h"      // to_string()
-#include "network/to-string-vector-byte.h"      // to_string()
-#include "network/to-string-vector-char.h"      // to_string()
 
 #endif

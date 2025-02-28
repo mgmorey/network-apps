@@ -100,10 +100,9 @@ socketlimits.cpp socketprotocol.cpp sockettype.cpp start-context.cpp	\
 stream-address.cpp stream-addrinfo.cpp stream-context.cpp		\
 stream-socket.cpp stream-version.cpp template.cpp			\
 to-bytestring-void.cpp to-string-in-addr.cpp to-string-in6-addr.cpp	\
-to-string-span-byte.cpp to-string-string-view.cpp			\
-to-string-vector-byte.cpp to-string-vector-char.cpp			\
-to-string-void.cpp validate-bs.cpp validate-sa.cpp validate-sin.cpp	\
-validate-sin6.cpp
+to-string-span-byte.cpp to-string-span-char.cpp				\
+to-string-string-view.cpp to-string-void.cpp validate-bs.cpp		\
+validate-sa.cpp validate-sin.cpp validate-sin6.cpp
 
 library_native_sources = create-socket.cpp format-ai-error.cpp	\
 format-os-error.cpp get-api-error.cpp get-os-error.cpp		\
