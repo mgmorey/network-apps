@@ -133,21 +133,16 @@ auto Network::get_endpointresult(const std::span<char>& hostname,
 auto Network::get_endpointresult(const ByteString& addr, int flags,
                                  bool is_verbose) -> EndpointResult
 {
-    Buffer<char> hostname_buffer {hostname_length_max};
-    Buffer<char> service_buffer {service_length_max};
-    std::span<char> hostname_span {hostname_buffer};
-    std::span<char> service_span {service_buffer};
+    Buffer<char> hostname {hostname_length_max};
+    Buffer<char> service {service_length_max};
 
-    if (auto result {get_endpointresult(hostname_span,
-                                        service_span,
+    if (auto result {get_endpointresult(hostname,
+                                        service,
                                         addr,
                                         flags,
                                         is_verbose)}) {
         return result;
     }
 
-    return Endpoint {
-        std::string {hostname_buffer},
-        std::string {service_buffer}
-    };
+    return Endpoint {hostname, service};
 }

@@ -18,7 +18,6 @@
 #include "network/format-os-error.h"            // format_os_error()
 #include "network/get-api-error.h"              // get_api_error()
 #include "network/hostname-length-limits.h"     // hostname_length_max
-#include "network/hostname.h"                   // Hostname
 #include "network/hostnameresult.h"             // HostnameResult
 #include "network/oserrorresult.h"              // OsErrorResult
 #include "network/reset-api-error.h"            // reset_api_error()
@@ -89,12 +88,11 @@ auto Network::get_hostnameresult(const std::span<char>& hostname,
 
 auto Network::get_hostnameresult(bool is_verbose) -> HostnameResult
 {
-    Buffer<char> hostname_buffer {hostname_length_max};
-    std::span<char> hostname_span {hostname_buffer};
+    Buffer<char> hostname {hostname_length_max};
 
-    if (auto result {get_hostnameresult(hostname_span, is_verbose)}) {
+    if (auto result {get_hostnameresult(hostname, is_verbose)}) {
         return result;
     }
 
-    return Hostname {hostname_buffer};
+    return hostname;
 }

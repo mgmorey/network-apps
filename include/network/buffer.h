@@ -32,6 +32,7 @@ namespace Network
     public:
         using size_type = std::size_t;
         using span_type = std::span<T>;
+        using string_type = std::basic_string<T>;
         using value_type = std::vector<T>;
 
         explicit Buffer(size_type t_size)
@@ -45,19 +46,22 @@ namespace Network
         auto operator=(const Buffer&) noexcept -> Buffer& = default;
         auto operator=(Buffer&&) noexcept -> Buffer& = default;
 
-        explicit operator value_type() const&
-        {
-            return m_value;
-        }
-
-        explicit operator std::basic_string<T>() const
+        // NOLINTNEXTLINE
+        operator string_type() const
         {
             return to_string(m_value);
         }
 
-        explicit operator span_type() noexcept
+        // NOLINTNEXTLINE
+        operator span_type() noexcept
         {
             return span_type(m_value);
+        }
+
+        // NOLINTNEXTLINE
+        operator value_type()& noexcept // NOLINT
+        {
+            return m_value;
         }
 
         [[nodiscard]] auto data() noexcept -> T*

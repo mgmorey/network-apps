@@ -250,14 +250,12 @@ namespace
     auto test_get_endpoint_invalid_flag() -> void
     {
         const ByteString addr {get_inet_address()};
-        std::string hostname_buffer(1, '\0');
-        std::span<char> hostname {hostname_buffer};
-        std::string service_buffer;
-        std::span<char> service {service_buffer};
+        std::string hostname_str {1};
+        std::string service_str;
         std::string actual_str;
 
-        if (auto result {get_endpointresult(hostname,
-                                            service,
+        if (auto result {get_endpointresult(hostname_str,
+                                            service_str,
                                             addr, -1,
                                             is_verbose)}) {
             print(result);
