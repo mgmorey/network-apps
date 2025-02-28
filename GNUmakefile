@@ -21,7 +21,7 @@ VERSION ?= 0.0.1
 BUILD_DIR ?= .
 BUILD_TYPE ?= Debug
 INSTALL_PREFIX ?= ~/.local
-GCOVR_HTML_THEME ?= green
+HTML_THEME ?= green
 TMPDIR ?= /tmp
 
 # Define variable for cache directory
@@ -324,7 +324,7 @@ $(coverage_gcov): $(sources) $(timestamps)
 	gcov -mo $(object_dir) -rt $(filter-out .%,$^) >$@
 
 $(coverage_html): $(sources) $(timestamps)
-	gcovr --html-details --html-theme $(GCOVR_HTML_THEME) --output $@
+	gcovr --calls --html-details --html-theme $(HTML_THEME) --output $@
 
 $(library_aliases): $(shared_library)
 	$(call install-aliases,$(output_dir))
