@@ -76,9 +76,9 @@ temporary_dir ?= $(TMPDIR:/=)/$(library_file)
 # Define variabled for enumerated file lists
 
 compile_commands = compile_commands.json
+coverage_gcov = coverage.gcov
+coverage_html = coverage/coverage.html
 cppchecklog = cppcheck.log
-gcovhtml = coverage/coverage.html
-gcovtext = coverage.gcov
 
 library_common_sources = accept.cpp address-sa.cpp address-sin.cpp	\
 address-sin6.cpp address.cpp addresserror.cpp addresslist.cpp		\
@@ -171,7 +171,7 @@ $(programs) $(tags) $(tarfile)
 build_artifacts = $(coverage_files) $(libraries) $(mapfiles)	\
 $(objects) $(programs) $(timestamps)
 text_artifacts = $(compile_commands) $(cppchecklog) $(dependencies)	\
-$(gcovtext) $(listings) $(logfiles) $(mapfiles) $(stackdumps)		\
+$(coverage_gcov) $(listings) $(logfiles) $(mapfiles) $(stackdumps)		\
 $(sizes) $(timestamps)
 
 build_dirs = $(filter-out .,$(cache_dir) $(coverage_dir)	\
@@ -265,10 +265,10 @@ distclean:
 	$(call clean-artifacts,$(artifacts))
 
 .PHONY: gcov
-gcov: $(gcovtext)
+gcov: $(coverage_gcov)
 
 .PHONY: gcovr
-gcovr: $(gcovhtml)
+gcovr: $(coverage_html)
 
 .PHONY: dos2unix
 dos2unix:
@@ -320,11 +320,11 @@ endif
 
 # Define targets
 
-$(gcovhtml): $(gcovtext)
-	gcovr --html-details --html-theme $(GCOVR_HTML_THEME) --output $@
-
-$(gcovtext): $(sources) $(timestamps)
+$(coverage_gcov): $(sources) $(timestamps)
 	gcov -mo $(object_dir) -rt $(filter-out .%,$^) >$@
+
+$(coverage_html): $(sources) $(timestamps)
+	gcovr --html-details --html-theme $(GCOVR_HTML_THEME) --output $@
 
 $(library_aliases): $(shared_library)
 	$(call install-aliases,$(output_dir))
@@ -355,7 +355,7 @@ $(tags):
 $(tarfile): $(libraries) $(programs)
 	$(call create-tarfile,$(temporary_dir),$@)
 
-$(gcovhtml): | $(coverage_dir)
+$(coverage_html): | $(coverage_dir)
 
 $(dependencies): | $(depend_dir)
 
