@@ -45,6 +45,8 @@ namespace
 
 #if defined(OS_CYGWIN_NT)
     constexpr auto expected_error_gethostname_re {""};
+#elif defined(OS_DARWIN)
+    constexpr auto expected_error_gethostname_re {""};
 #else
     constexpr auto expected_error_gethostname_re {
         R"(Call to ::gethostname\(.+\) failed with error \d+: .+)"
@@ -89,10 +91,12 @@ namespace
 
     auto test_hostname_overflow() -> void
     {
-        std::span<char> null {static_cast<char*>(nullptr), 0};
+        std::string hostname_buffer(1, '\0');
+        std::span<char> hostname {hostname_buffer};
         std::string actual_str;
 
-        if (auto result {get_hostnameresult(null, is_verbose)}) {
+        if (auto result {get_hostnameresult(hostname,
+                                            is_verbose)}) {
             print(result);
             actual_str = result.string();
         }
