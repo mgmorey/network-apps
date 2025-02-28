@@ -247,7 +247,7 @@ namespace
     auto test_get_endpoint_invalid_flag() -> void
     {
         const ByteString addr {get_inet_address()};
-        std::string hostname_buffer;
+        std::string hostname_buffer(1, '\0');
         std::span<char> hostname {hostname_buffer};
         std::string service_buffer;
         std::span<char> service {service_buffer};
