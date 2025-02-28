@@ -251,11 +251,17 @@ namespace
 
     auto test_endpoint_overflow() -> void
     {
-        std::span<char> null {static_cast<char*>(nullptr), 0};
         const ByteString addr {get_inet_address()};
+        std::string hostname_buffer(1, '\0');
+        std::span<char> hostname {hostname_buffer};
+        std::string service_buffer(1, '\0');
+        std::span<char> service {service_buffer};
         std::string actual_str;
 
-        if (auto result {get_endpointresult(null, null, addr, -1, is_verbose)}) {
+        if (auto result {get_endpointresult(hostname,
+                                            service,
+                                            addr, 0,
+                                            is_verbose)}) {
             print(result);
             actual_str = result.string();
         }
