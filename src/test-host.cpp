@@ -208,8 +208,10 @@ namespace
 
     auto print(const OsErrorResult& result) -> void
     {
-        std::cout << result.string()
-                  << std::endl;
+        if (is_verbose) {
+            std::cout << result.string()
+                      << std::endl;
+        }
     }
 
     auto print(const std::vector<SocketHost>& hosts) -> void
