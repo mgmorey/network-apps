@@ -59,7 +59,7 @@ namespace Network
         }
 
         // NOLINTNEXTLINE
-        operator value_type()& noexcept // NOLINT
+        operator value_type()& noexcept
         {
             return m_value;
         }
