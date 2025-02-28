@@ -13,9 +13,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#include "network/always-false.h"       // always_false_v
 #include "network/assert.h"             // assert()
 #include "network/network.h"            // Context, Error, Hostname,
-                                        // get_hostname(),
                                         // get_hostnameresult(),
                                         // start_context()
 #include "network/parse.h"              // parse()
@@ -32,12 +32,15 @@
 #include <regex>        // std::regex, std::regex_match
 #include <span>         // std::span
 #include <string>       // std::string
+#include <type_traits>  // std::decay_t, std::is_same_v
+#include <variant>      // std::visit()
 
 namespace
 {
     using Network::Error;
     using Network::Hostname;
     using Network::OsErrorResult;
+    using Network::always_false_v;
     using Network::get_hostname;
     using Network::get_hostnameresult;
     using Network::parse;
@@ -85,11 +88,13 @@ namespace
 
     auto print(const OsErrorResult& result) -> void
     {
-        std::cout << result.string()
-                  << std::endl;
+        if (is_verbose) {
+            std::cout << result.string()
+                      << std::endl;
+        }
     }
 
-    auto test_hostname_overflow() -> void
+    auto test_get_hostnameresult_overflow() -> void
     {
         std::string hostname_buffer(1, '\0');
         std::span<char> hostname {hostname_buffer};
@@ -105,7 +110,28 @@ namespace
         assert(std::regex_match(actual_str, expected_regex));
     }
 
-    auto test_hostname_valid() -> void
+    auto test_get_hostnameresult_valid() -> void
+    {
+        std::string actual_str;
+        const auto hostname_result {get_hostnameresult(is_verbose)};
+        std::visit([&](auto&& arg) {
+            using T = std::decay_t<decltype(arg)>;
+
+            if constexpr (std::is_same_v<T, Hostname>) {
+                static_cast<void>(arg);
+            }
+            else if constexpr (std::is_same_v<T, OsErrorResult>) {
+                print(arg);
+                actual_str = arg.string();
+            }
+            else {
+                static_assert(always_false_v<T>, VISITOR_ERROR);
+            }
+        }, hostname_result);
+        assert(actual_str.empty());
+    }
+
+    auto test_get_hostname_valid() -> void
     {
         std::string actual_str;
 
@@ -116,7 +142,6 @@ namespace
             print(error);
             actual_str = error.what();
         }
-
         assert(actual_str.empty());
     }
 }
@@ -131,8 +156,9 @@ auto main(int argc, char* argv[]) -> int
             std::cout << *context << std::endl;
         }
 
-        test_hostname_overflow();
-        test_hostname_valid();
+        test_get_hostnameresult_overflow();
+        test_get_hostnameresult_valid();
+        test_get_hostname_valid();
     }
     catch (const std::exception& error) {
         std::cerr << error.what()
