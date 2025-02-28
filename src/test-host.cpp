@@ -244,18 +244,18 @@ namespace
         assert(expected_codes.contains(actual_code));
     }
 
-    auto test_endpoint_overflow() -> void
+    auto test_get_endpoint_invalid_flag() -> void
     {
         const ByteString addr {get_inet_address()};
-        std::string hostname_buffer(1, '\0');
+        std::string hostname_buffer;
         std::span<char> hostname {hostname_buffer};
-        std::string service_buffer(1, '\0');
+        std::string service_buffer;
         std::span<char> service {service_buffer};
         std::string actual_str;
 
         if (auto result {get_endpointresult(hostname,
                                             service,
-                                            addr, 0,
+                                            addr, -1,
                                             is_verbose)}) {
             print(result);
             actual_str = result.string();
@@ -311,7 +311,7 @@ auto main(int argc, char* argv[]) -> int
             std::cout << *context << std::endl;
         }
 
-        test_endpoint_overflow();
+        test_get_endpoint_invalid_flag();
         test_invalid_family();
         test_invalid_socktype();
 #if !defined(OS_CYGWIN_NT) && !defined(OS_MINGW64_NT)
