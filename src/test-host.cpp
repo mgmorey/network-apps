@@ -216,10 +216,6 @@ namespace
 
     auto print(const std::vector<SocketHost>& hosts) -> void
     {
-        if (hosts.empty()) {
-            return;
-        }
-
         std::ranges::for_each(hosts, Print(std::cout));
     }
 
