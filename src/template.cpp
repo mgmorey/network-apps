@@ -15,10 +15,7 @@
 
 #include "network/template.h"           // Template
 #include "network/bytestring.h"         // ByteString
-#include "network/length-type.h"        // length_type
-#include "network/optionalhostname.h"   // OptionalHostname
 #include "network/sockethints.h"        // SocketHints
-#include "network/sockethost.h"         // SocketHost
 
 #ifdef WIN32
 #include <ws2tcpip.h>       // addrinfo
@@ -32,13 +29,6 @@ Network::Template::Template(const addrinfo& t_ai) noexcept :
 {
 }
 
-auto Network::Template::operator=(const addrinfo& t_ai) noexcept -> Template&
-{
-    m_hints = t_ai;
-    m_host = t_ai;
-    return *this;
-}
-
 auto Network::Template::hints() const noexcept -> const SocketHints&
 {
     return m_hints;
@@ -47,10 +37,4 @@ auto Network::Template::hints() const noexcept -> const SocketHints&
 auto Network::Template::address() const noexcept -> const ByteString&
 {
     return m_host.address();
-}
-
-auto Network::Template::canonical_name() const noexcept ->
-    const OptionalHostname&
-{
-    return m_host.canonical_name();
 }

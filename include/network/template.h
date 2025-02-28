@@ -17,8 +17,6 @@
 #define NETWORK_TEMPLATE_H
 
 #include "network/bytestring.h"         // ByteString
-#include "network/length-type.h"        // length_type
-#include "network/optionalhostname.h"   // OptionalHostname
 #include "network/sockethints.h"        // SocketHints
 #include "network/sockethost.h"         // SocketHost
 
@@ -45,12 +43,8 @@ namespace Network
         auto operator=(const Template&) noexcept -> Template& = default;
         auto operator=(Template&&) noexcept -> Template& = default;
 
-        auto operator=(const addrinfo& t_ai) noexcept -> Template&;
-
         [[nodiscard]] auto hints() const noexcept -> const SocketHints&;
         [[nodiscard]] auto address() const noexcept -> const ByteString&;
-        [[nodiscard]] auto canonical_name() const noexcept ->
-            const OptionalHostname&;
 
     private:
         SocketHints m_hints;
