@@ -38,8 +38,8 @@
 #include <sstream>      // std::ostringstream
 #include <string_view>  // std::string_view
 
-auto Network::get_endpointresult(std::span<char>& hostname,
-                                 std::span<char>& service,
+auto Network::get_endpointresult(const std::span<char>& hostname,
+                                 const std::span<char>& service,
                                  const ByteString& addr, int flags,
                                  bool is_verbose) -> OsErrorResult
 {

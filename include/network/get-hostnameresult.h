@@ -23,7 +23,7 @@
 
 namespace Network
 {
-    extern auto get_hostnameresult(std::span<char>& hostname,
+    extern auto get_hostnameresult(const std::span<char>& hostname,
                                    bool is_verbose = false) -> OsErrorResult;
     extern auto get_hostnameresult(bool is_verbose = false) -> HostnameResult;
 }

@@ -24,8 +24,8 @@
 
 namespace Network
 {
-    extern auto get_endpointresult(std::span<char>& hostname,
-                                   std::span<char>& service,
+    extern auto get_endpointresult(const std::span<char>& hostname,
+                                   const std::span<char>& service,
                                    const ByteString& addr, int flags,
                                    bool is_verbose = false) -> OsErrorResult;
     extern auto get_endpointresult(const ByteString& addr, int flags,

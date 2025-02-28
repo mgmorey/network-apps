@@ -37,7 +37,7 @@
 #include <sstream>      // std::ostringstream
 #include <string_view>  // std::string_view
 
-auto Network::get_hostnameresult(std::span<char>& hostname,
+auto Network::get_hostnameresult(const std::span<char>& hostname,
                                  bool is_verbose) -> OsErrorResult
 {
     const std::string_view hostname_sv {hostname.data(), hostname.size()};
