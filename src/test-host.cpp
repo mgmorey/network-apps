@@ -37,7 +37,6 @@
 #endif
 
 #include <algorithm>    // std::ranges, std::sort()
-#include <cstddef>      // std::byte
 #include <cstdlib>      // EXIT_FAILURE, std::exit(), std::size_t
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
