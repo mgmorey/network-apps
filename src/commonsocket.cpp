@@ -104,7 +104,7 @@ auto Network::CommonSocket::shutdown(int t_how) const -> OsErrorResult
 
 auto Network::CommonSocket::read(std::size_t t_size) const -> ReadResult
 {
-    Buffer<char, std::basic_string<char>> buffer {t_size};
+    Buffer<std::basic_string<char>> buffer {t_size};
     const auto result {read(buffer.data(), buffer.size())};
     return {buffer.to_string(), result};
 }

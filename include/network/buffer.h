@@ -23,16 +23,17 @@
 
 namespace Network
 {
-    template <typename T, typename V>
+    template <typename T>
     class Buffer
     {
     public:
         using size_type = std::size_t;
-        using span_type = std::span<T>;
         using string_type = std::string;
+        using span_type = std::span<typename T::value_type>;
+        using value_type = typename T::value_type;
 
         explicit Buffer(size_type t_size)
-            : m_value(t_size, {})
+            : m_container(t_size, {})
         {
         }
 
@@ -45,38 +46,38 @@ namespace Network
         // NOLINTNEXTLINE
         operator span_type() noexcept
         {
-            return span_type(m_value);
+            return span_type(m_container);
         }
 
         // NOLINTNEXTLINE
-        operator V()& noexcept
+        operator T()& noexcept
         {
-            return m_value;
+            return m_container;
         }
 
-        [[nodiscard]] auto data() noexcept -> T*
+        [[nodiscard]] auto data() noexcept -> value_type*
         {
-            return m_value.data();
+            return m_container.data();
         }
 
         [[nodiscard]] auto size() const noexcept -> size_type
         {
-            return m_value.size();
+            return m_container.size();
         }
 
-        [[nodiscard]] auto size(size_type t_size) -> V&
+        [[nodiscard]] auto size(size_type t_size) -> T&
         {
-            m_value.resize(t_size);
-            return m_value;
+            m_container.resize(t_size);
+            return m_container;
         }
 
         [[nodiscard]] auto to_string() const -> string_type
         {
-            return {m_value.begin(), std::ranges::find(m_value, '\0')};
+            return {m_container.begin(), std::ranges::find(m_container, '\0')};
         }
 
     private:
-        V m_value;
+        T m_container;
     };
 }
 

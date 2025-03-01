@@ -17,7 +17,6 @@
 #include "network/acceptresult.h"       // AcceptResult
 #include "network/addressstring.h"      // AddressString
 #include "network/buffer.h"             // Buffer
-#include "network/bytestring.h"         // ByteString
 #include "network/error.h"              // Error
 #include "network/format-os-error.h"    // format_os_error()
 #include "network/get-api-error.h"      // get_api_error()
@@ -41,7 +40,7 @@
 
 auto Network::accept(const SocketData& sd) -> AcceptResult
 {
-    Buffer<std::byte, std::vector<std::byte>> buffer {sa_length_max};
+    Buffer<std::vector<std::byte>> buffer {sa_length_max};
     const auto handle_1 {sd.handle()};
     const auto is_verbose {sd.is_verbose()};
     const AddressString addr_str {buffer};
