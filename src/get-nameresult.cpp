@@ -38,7 +38,6 @@
 #endif
 
 #include <array>        // std::arrray
-#include <cstddef>      // std::byte
 #include <iostream>     // std::cout, std::endl
 #include <sstream>      // std::ostringstream
 #include <utility>      // std::make_pair
@@ -60,7 +59,7 @@ auto Network::get_nameresult(const GetNameParams& args,
                              bool is_peer) -> ByteStringResult
 {
     const auto binding {get_binding(is_peer)};
-    Buffer<std::vector<std::byte>> buffer {sa_length_max};
+    Buffer<ByteString> buffer {sa_length_max};
     const handle_type handle {args.m_handle};
     const AddressString addr_str {buffer};
     auto [addr_ptr, addr_len] {get_sa_span(buffer)};
