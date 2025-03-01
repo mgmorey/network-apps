@@ -79,5 +79,5 @@ auto Network::accept(const SocketData& sd) -> AcceptResult
     }
 
     buffer.resize(to_size(addr_len));
-    return {SocketData {sd, handle_2}, ByteString {buffer}};
+    return {SocketData {sd, handle_2}, buffer};
 }

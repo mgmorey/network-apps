@@ -100,5 +100,5 @@ auto Network::get_nameresult(const GetNameParams& args,
     }
 
     buffer.resize(to_size(addr_len));
-    return ByteString {buffer};
+    return buffer;
 }

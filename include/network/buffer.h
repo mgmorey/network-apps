@@ -56,7 +56,8 @@ namespace Network
             return span_type(m_value);
         }
 
-        explicit operator value_type()& noexcept
+        // NOLINTNEXTLINE
+        operator value_type()& noexcept
         {
             return m_value;
         }
