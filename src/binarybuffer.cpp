@@ -13,17 +13,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/textbuffer.h"         // TextBuffer
+#include "network/binarybuffer.h"       // BinaryBuffer
 #include "network/buffer.h"             // Buffer
 
-Network::TextBuffer::TextBuffer(size_type t_size)
+Network::BinaryBuffer::BinaryBuffer(size_type t_size)
     : Buffer(t_size)
 {
 }
 
-Network::TextBuffer::operator string_type()
+auto Network::BinaryBuffer::size(size_type t_size) -> string_type&
 {
-    const auto& str {this->get()};
-    const auto last {str.find('\0')};
-    return str.substr(0, last);
+    this->resize(t_size);
+    return this->get();
 }

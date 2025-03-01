@@ -46,7 +46,7 @@ namespace Network
             return static_cast<span_type>(m_buffer);
         }
 
-        [[nodiscard]] auto get() const noexcept -> const T&
+        [[nodiscard]] auto get() noexcept -> T&
         {
             return m_buffer;
         }
@@ -56,15 +56,14 @@ namespace Network
             return m_buffer.data();
         }
 
+        auto resize(size_type t_size) noexcept -> void
+        {
+            return m_buffer.resize(t_size);
+        }
+
         [[nodiscard]] auto size() const noexcept -> size_type
         {
             return m_buffer.size();
-        }
-
-        [[nodiscard]] auto size(size_type t_size) -> T&
-        {
-            m_buffer.resize(t_size);
-            return m_buffer;
         }
 
     private:

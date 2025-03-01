@@ -82,10 +82,11 @@ cppchecklog = cppcheck.log
 
 library_common_sources = accept.cpp address-sa.cpp address-sin.cpp	\
 address-sin6.cpp address.cpp addresserror.cpp addresslist.cpp		\
-addressstring.cpp argumentdata.cpp bind-endpoint.cpp close.cpp		\
-commonsocket.cpp connect-endpoint.cpp create-socket-handle.cpp		\
-create-socket-hints.cpp create-socketresult.cpp error.cpp		\
-familyerror.cpp format-bytestring.cpp format.cpp get-endpoint.cpp	\
+addressstring.cpp argumentdata.cpp binarybuffer.cpp bind-endpoint.cpp	\
+close.cpp commonsocket.cpp connect-endpoint.cpp				\
+create-socket-handle.cpp create-socket-hints.cpp			\
+create-socketresult.cpp error.cpp familyerror.cpp			\
+format-bytestring.cpp format.cpp get-endpoint.cpp			\
 get-endpointresult.cpp get-hostname.cpp get-hostnameresult.cpp		\
 get-name.cpp get-nameresult.cpp get-operands.cpp get-option.cpp		\
 get-options.cpp get-sa-family.cpp get-sa-length.cpp			\

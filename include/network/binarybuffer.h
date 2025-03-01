@@ -13,17 +13,30 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/textbuffer.h"         // TextBuffer
+#ifndef NETWORK_BINARYBUFFER_H
+#define NETWORK_BINARYBUFFER_H
+
 #include "network/buffer.h"             // Buffer
+#include "network/bytestring.h"         // ByteString
 
-Network::TextBuffer::TextBuffer(size_type t_size)
-    : Buffer(t_size)
+namespace Network
 {
+    class BinaryBuffer
+        : public Buffer<ByteString>
+    {
+    public:
+        using string_type = ByteString;
+
+        explicit BinaryBuffer(size_type t_size);
+
+        BinaryBuffer(const BinaryBuffer&) noexcept = default;
+        BinaryBuffer(BinaryBuffer&&) noexcept = default;
+        ~BinaryBuffer() noexcept = default;
+        auto operator=(const BinaryBuffer&) noexcept -> BinaryBuffer& = default;
+        auto operator=(BinaryBuffer&&) noexcept -> BinaryBuffer& = default;
+
+        [[nodiscard]] auto size(size_type t_size) -> string_type&;
+    };
 }
 
-Network::TextBuffer::operator string_type()
-{
-    const auto& str {this->get()};
-    const auto last {str.find('\0')};
-    return str.substr(0, last);
-}
+#endif

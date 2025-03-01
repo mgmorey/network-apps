@@ -15,8 +15,7 @@
 
 #include "network/get-nameresult.h"             // get_nameresult()
 #include "network/addressstring.h"              // AddressString
-#include "network/buffer.h"                     // Buffer
-#include "network/bytestring.h"                 // ByteString
+#include "network/binarybuffer.h"               // BinaryBuffer
 #include "network/bytestringresult.h"           // ByteStringResult
 #include "network/format-os-error.h"            // format_os_error()
 #include "network/get-api-error.h"              // get_api_error()
@@ -59,7 +58,7 @@ auto Network::get_nameresult(const GetNameParams& args,
                              bool is_peer) -> ByteStringResult
 {
     const auto binding {get_binding(is_peer)};
-    Buffer<ByteString> buffer {sa_length_max};
+    BinaryBuffer buffer {sa_length_max};
     const handle_type handle {args.m_handle};
     const AddressString addr_str {buffer.get()};
     auto [addr_ptr, addr_len] {get_sa_span(buffer)};
@@ -98,5 +97,5 @@ auto Network::get_nameresult(const GetNameParams& args,
         return OsErrorResult {os_error, oss.str()};
     }
 
-    return ByteString {buffer.size(to_size(addr_len))};
+    return buffer.size(to_size(addr_len));
 }
