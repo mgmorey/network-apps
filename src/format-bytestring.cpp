@@ -20,8 +20,8 @@
 #include "network/to-string-span-byte.h"        // to_string()
 
 #include <optional>     // std::optional
-#include <sstream>      // std::ostringstream
 #include <span>         // std::span
+#include <sstream>      // std::ostringstream
 #include <string>       // std::string
 
 auto Network::format(const ByteString& addr) -> std::string
