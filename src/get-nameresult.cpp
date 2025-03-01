@@ -62,7 +62,7 @@ auto Network::get_nameresult(const GetNameParams& args,
     const auto binding {get_binding(is_peer)};
     Buffer<std::byte, std::vector<std::byte>> buffer {sa_length_max};
     const handle_type handle {args.m_handle};
-    const AddressString addr_str {ByteString {buffer}};
+    const AddressString addr_str {buffer};
     auto [addr_ptr, addr_len] {get_sa_span(buffer)};
 
     if (args.m_is_verbose) {
