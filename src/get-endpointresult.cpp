@@ -134,8 +134,8 @@ auto Network::get_endpointresult(const std::span<char>& hostname,
 auto Network::get_endpointresult(const ByteString& addr, int flags,
                                  bool is_verbose) -> EndpointResult
 {
-    Buffer<char> hostname {hostname_length_max};
-    Buffer<char> service {service_length_max};
+    Buffer<char, std::basic_string<char>> hostname {hostname_length_max};
+    Buffer<char, std::basic_string<char>> service {service_length_max};
 
     if (auto result {get_endpointresult(hostname,
                                         service,
@@ -145,5 +145,5 @@ auto Network::get_endpointresult(const ByteString& addr, int flags,
         return result;
     }
 
-    return Endpoint {std::string {hostname}, std::string {service}};
+    return Endpoint {hostname.to_string(), service.to_string()};
 }

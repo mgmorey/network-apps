@@ -32,6 +32,7 @@
 
 #include <cstddef>      // std::size_t
 #include <iostream>     // std::cerr, std::endl
+#include <string>       // std::basic_string
 
 Network::CommonSocket::CommonSocket(const SocketData& t_data)
     : Socket(t_data)
@@ -103,9 +104,9 @@ auto Network::CommonSocket::shutdown(int t_how) const -> OsErrorResult
 
 auto Network::CommonSocket::read(std::size_t t_size) const -> ReadResult
 {
-    Buffer<char> buffer {t_size};
+    Buffer<char, std::basic_string<char>> buffer {t_size};
     const auto result {read(buffer.data(), buffer.size())};
-    return {std::string {buffer}, result};
+    return {buffer.to_string(), result};
 }
 
 auto Network::CommonSocket::write(const char* t_data,

@@ -16,23 +16,20 @@
 #ifndef NETWORK_BUFFER_H
 #define NETWORK_BUFFER_H
 
-#include "network/to-string-span-char.h"        // to_string()
-
 #include <cstddef>      // std::size_t
 #include <span>         // std::span
-#include <string>       // std::basic_string
-#include <vector>       // std::vector
+#include <ranges>       // std::ranges
+#include <string>       // std::string
 
 namespace Network
 {
-    template <typename T>
+    template <typename T, typename V>
     class Buffer
     {
     public:
         using size_type = std::size_t;
         using span_type = std::span<T>;
-        using string_type = std::basic_string<T>;
-        using value_type = std::vector<T>;
+        using string_type = std::string;
 
         explicit Buffer(size_type t_size)
             : m_value(t_size, {})
@@ -45,11 +42,6 @@ namespace Network
         auto operator=(const Buffer&) noexcept -> Buffer& = default;
         auto operator=(Buffer&&) noexcept -> Buffer& = default;
 
-        explicit operator string_type() const
-        {
-            return to_string(m_value);
-        }
-
         // NOLINTNEXTLINE
         operator span_type() noexcept
         {
@@ -57,7 +49,7 @@ namespace Network
         }
 
         // NOLINTNEXTLINE
-        operator value_type()& noexcept
+        operator V()& noexcept
         {
             return m_value;
         }
@@ -72,14 +64,19 @@ namespace Network
             return m_value.size();
         }
 
-        [[nodiscard]] auto size(size_type t_size) -> value_type&
+        [[nodiscard]] auto size(size_type t_size) -> V&
         {
             m_value.resize(t_size);
             return m_value;
         }
 
+        [[nodiscard]] auto to_string() const -> string_type
+        {
+            return {m_value.begin(), std::ranges::find(m_value, '\0')};
+        }
+
     private:
-        value_type m_value;
+        V m_value;
     };
 }
 
