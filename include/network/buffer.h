@@ -17,7 +17,6 @@
 #define NETWORK_BUFFER_H
 
 #include <cstddef>      // std::size_t
-#include <ranges>       // std::ranges
 #include <span>         // std::span
 #include <string>       // std::string
 
