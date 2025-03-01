@@ -72,7 +72,7 @@ namespace Network
             return m_value.size();
         }
 
-        [[nodiscard]] auto size(size_type t_size) -> value_type
+        [[nodiscard]] auto size(size_type t_size) -> value_type&
         {
             m_value.resize(t_size);
             return m_value;
