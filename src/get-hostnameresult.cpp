@@ -34,7 +34,7 @@
 #include <iostream>     // std::cout, std::endl
 #include <span>         // std::span
 #include <sstream>      // std::ostringstream
-#include <string>       // std::basic_string
+#include <string>       // std::string
 #include <string_view>  // std::string_view
 
 auto Network::get_hostnameresult(const std::span<char>& hostname,
@@ -89,7 +89,7 @@ auto Network::get_hostnameresult(const std::span<char>& hostname,
 
 auto Network::get_hostnameresult(bool is_verbose) -> HostnameResult
 {
-    Buffer<std::basic_string<char>> hostname {hostname_length_max};
+    Buffer<std::string> hostname {hostname_length_max};
 
     if (auto result {get_hostnameresult(hostname, is_verbose)}) {
         return result;

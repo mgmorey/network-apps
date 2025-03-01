@@ -25,11 +25,11 @@
 #include <sys/socket.h>     // AF_INET6, INET6_ADDRSTRLEN
 #endif
 
-#include <string>       // std::basic_string, std::string
+#include <string>       // std::string
 
 auto Network::to_string(const in6_addr& addr) noexcept -> std::string
 {
-    Buffer<std::basic_string<char>> buffer {INET6_ADDRSTRLEN};
+    Buffer<std::string> buffer {INET6_ADDRSTRLEN};
     ::inet_ntop(AF_INET6, &addr, buffer.data(), buffer.size());
     return buffer.to_string();
 }
