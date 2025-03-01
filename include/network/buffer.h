@@ -17,8 +17,8 @@
 #define NETWORK_BUFFER_H
 
 #include <cstddef>      // std::size_t
-#include <span>         // std::span
 #include <ranges>       // std::ranges
+#include <span>         // std::span
 #include <string>       // std::string
 
 namespace Network
@@ -33,7 +33,7 @@ namespace Network
         using value_type = typename T::value_type;
 
         explicit Buffer(size_type t_size)
-            : m_container(t_size, {})
+            : m_buffer(t_size, {})
         {
         }
 
@@ -46,38 +46,38 @@ namespace Network
         // NOLINTNEXTLINE
         operator span_type() noexcept
         {
-            return span_type(m_container);
+            return static_cast<span_type>(m_buffer);
         }
 
         // NOLINTNEXTLINE
         operator T()& noexcept
         {
-            return m_container;
+            return m_buffer;
         }
 
         [[nodiscard]] auto data() noexcept -> value_type*
         {
-            return m_container.data();
+            return m_buffer.data();
         }
 
         [[nodiscard]] auto size() const noexcept -> size_type
         {
-            return m_container.size();
+            return m_buffer.size();
         }
 
         [[nodiscard]] auto size(size_type t_size) -> T&
         {
-            m_container.resize(t_size);
-            return m_container;
+            m_buffer.resize(t_size);
+            return m_buffer;
         }
 
         [[nodiscard]] auto to_string() const -> string_type
         {
-            return {m_container.begin(), std::ranges::find(m_container, '\0')};
+            return m_buffer.substr(0, m_buffer.find('\0'));
         }
 
     private:
-        T m_container;
+        T m_buffer;
     };
 }
 
