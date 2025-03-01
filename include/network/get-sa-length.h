@@ -23,9 +23,9 @@
 
 namespace Network
 {
-    extern auto get_sa_length(const std::span<std::byte>& span) ->
+    extern auto get_sa_length(const std::span<std::byte>& bs) ->
         socket_length_type;
-    extern auto get_sa_length(const std::span<const std::byte>& span) ->
+    extern auto get_sa_length(const std::span<const std::byte>& bs) ->
         socket_length_type;
 }
 

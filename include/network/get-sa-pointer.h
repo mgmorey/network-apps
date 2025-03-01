@@ -27,8 +27,8 @@
 
 namespace Network
 {
-    extern auto get_sa_pointer(const std::span<std::byte>& span) -> sockaddr*;
-    extern auto get_sa_pointer(const std::span<const std::byte>& span) ->
+    extern auto get_sa_pointer(const std::span<std::byte>& bs) -> sockaddr*;
+    extern auto get_sa_pointer(const std::span<const std::byte>& bs) ->
         const sockaddr*;
 }
 
