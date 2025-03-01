@@ -46,8 +46,7 @@ namespace Network
         auto operator=(const Buffer&) noexcept -> Buffer& = default;
         auto operator=(Buffer&&) noexcept -> Buffer& = default;
 
-        // NOLINTNEXTLINE
-        operator string_type() const
+        explicit operator string_type() const
         {
             return to_string(m_value);
         }
@@ -58,8 +57,7 @@ namespace Network
             return span_type(m_value);
         }
 
-        // NOLINTNEXTLINE
-        operator value_type()& noexcept
+        explicit operator value_type()& noexcept
         {
             return m_value;
         }

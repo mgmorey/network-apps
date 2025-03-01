@@ -14,8 +14,6 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/get-sa-pointer.h"             // get_sa_pointer()
-#include "network/buffer.h"                     // Buffer
-#include "network/bytestring.h"                 // ByteString
 #include "network/validate-sa.h"                // validate()
 
 #ifdef WIN32
@@ -25,15 +23,17 @@
 #endif
 
 #include <cstddef>      // std::byte
+#include <span>         // std::span
 
-auto Network::get_sa_pointer(Buffer<std::byte>& addr) -> sockaddr*
+auto Network::get_sa_pointer(const std::span<std::byte>& span) -> sockaddr*
 {
-    void* pointer {addr.data()};
+    void* pointer {span.data()};
     return static_cast<sockaddr*>(pointer);
 }
 
-auto Network::get_sa_pointer(const ByteString& addr) -> const sockaddr*
+auto Network::get_sa_pointer(const std::span<const std::byte>& span) ->
+    const sockaddr*
 {
-    const void* pointer {addr.data()};
-    return validate(static_cast<const sockaddr*>(pointer), addr.size());
+    const void* pointer {span.data()};
+    return validate(static_cast<const sockaddr*>(pointer), span.size());
 }

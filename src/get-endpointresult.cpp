@@ -36,6 +36,7 @@
 #include <iostream>     // std::cout, std::endl
 #include <span>         // std::span
 #include <sstream>      // std::ostringstream
+#include <string>       // std::string
 #include <string_view>  // std::string_view
 
 auto Network::get_endpointresult(const std::span<char>& hostname,
@@ -144,5 +145,5 @@ auto Network::get_endpointresult(const ByteString& addr, int flags,
         return result;
     }
 
-    return Endpoint {hostname, service};
+    return Endpoint {std::string {hostname}, std::string {service}};
 }

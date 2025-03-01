@@ -16,9 +16,6 @@
 #ifndef NETWORK_GET_SA_POINTER_H
 #define NETWORK_GET_SA_POINTER_H
 
-#include "network/buffer.h"                     // Buffer
-#include "network/bytestring.h"                 // ByteString
-
 #ifdef WIN32
 #include <winsock2.h>       // sockaddr
 #else
@@ -26,11 +23,13 @@
 #endif
 
 #include <cstddef>      // std::byte
+#include <span>         // std::span
 
 namespace Network
 {
-    extern auto get_sa_pointer(Buffer<std::byte>& addr) -> sockaddr*;
-    extern auto get_sa_pointer(const ByteString& addr) -> const sockaddr*;
+    extern auto get_sa_pointer(const std::span<std::byte>& span) -> sockaddr*;
+    extern auto get_sa_pointer(const std::span<const std::byte>& span) ->
+        const sockaddr*;
 }
 
 #endif
