@@ -37,7 +37,7 @@ namespace Network
         auto operator=(TextBuffer&&) noexcept -> TextBuffer& = default;
 
         // NOLINTNEXTLINE
-        operator string_type();
+        operator string_type() const;
     };
 }
 
