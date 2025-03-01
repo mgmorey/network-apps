@@ -19,7 +19,7 @@
 #include <span>         // std::span
 #include <string>       // std::string
 
-auto Network::to_string(const std::span<const char>& v) -> std::string
+auto Network::to_string(const std::span<const char>& span) -> std::string
 {
-    return {v.begin(), std::ranges::find(v, '\0')};
+    return {span.begin(), std::ranges::find(span, '\0')};
 }
