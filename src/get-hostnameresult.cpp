@@ -94,5 +94,5 @@ auto Network::get_hostnameresult(bool is_verbose) -> HostnameResult
         return result;
     }
 
-    return hostname.to_string();
+    return hostname;
 }

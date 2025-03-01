@@ -23,11 +23,6 @@ Network::TextBuffer::TextBuffer(size_type t_size)
 
 Network::TextBuffer::operator string_type() const
 {
-    return to_string();
-}
-
-auto Network::TextBuffer::to_string() const -> string_type
-{
     const auto& str {this->get()};
     return str.substr(0, str.find('\0'));
 }

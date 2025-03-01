@@ -144,5 +144,5 @@ auto Network::get_endpointresult(const ByteString& addr, int flags,
         return result;
     }
 
-    return Endpoint {hostname.to_string(), service.to_string()};
+    return Endpoint {hostname, service};
 }

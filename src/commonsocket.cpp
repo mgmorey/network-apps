@@ -105,7 +105,7 @@ auto Network::CommonSocket::read(std::size_t t_size) const -> ReadResult
 {
     TextBuffer buffer {t_size};
     const auto result {read(buffer.data(), buffer.size())};
-    return {buffer.to_string(), result};
+    return {buffer, result};
 }
 
 auto Network::CommonSocket::write(const char* t_data,

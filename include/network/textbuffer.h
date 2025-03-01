@@ -36,8 +36,8 @@ namespace Network
         auto operator=(const TextBuffer&) noexcept -> TextBuffer& = default;
         auto operator=(TextBuffer&&) noexcept -> TextBuffer& = default;
 
-        explicit operator string_type() const;
-        [[nodiscard]] auto to_string() const -> string_type;
+        // NOLINTNEXTLINE
+        operator string_type() const;
     };
 }
 
