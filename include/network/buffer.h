@@ -27,6 +27,7 @@ namespace Network
     public:
         using size_type = std::size_t;
         using span_type = std::span<typename T::value_type>;
+        using span_view_type = std::span<const typename T::value_type>;
         using value_type = typename T::value_type;
 
         explicit Buffer(size_type t_size)
@@ -40,10 +41,9 @@ namespace Network
         auto operator=(const Buffer&) noexcept -> Buffer& = default;
         auto operator=(Buffer&&) noexcept -> Buffer& = default;
 
-        // NOLINTNEXTLINE
-        operator span_type() noexcept
+        [[nodiscard]] auto data() noexcept -> value_type*
         {
-            return static_cast<span_type>(m_buffer);
+            return m_buffer.data();
         }
 
         [[nodiscard]] auto get() noexcept -> T&
@@ -56,11 +56,6 @@ namespace Network
             return m_buffer;
         }
 
-        [[nodiscard]] auto data() noexcept -> value_type*
-        {
-            return m_buffer.data();
-        }
-
         auto resize(size_type t_size) noexcept -> void
         {
             return m_buffer.resize(t_size);
@@ -69,6 +64,16 @@ namespace Network
         [[nodiscard]] auto size() const noexcept -> size_type
         {
             return m_buffer.size();
+        }
+
+        [[nodiscard]] auto span() noexcept -> span_type
+        {
+            return static_cast<span_type>(m_buffer);
+        }
+
+        [[nodiscard]] auto span_view() noexcept -> span_view_type
+        {
+            return static_cast<span_view_type>(m_buffer);
         }
 
     private:
