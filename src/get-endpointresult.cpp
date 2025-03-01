@@ -23,9 +23,9 @@
 #include "network/get-sa-span.h"                // get_sa_span()
 #include "network/hostname-length-limits.h"     // hostname_length_max
 #include "network/oserrorresult.h"              // OsErrorResult
+#include "network/quote.h"                      // quote()
 #include "network/service-length-limits.h"      // service_length_max
 #include "network/to-os-error.h"                // to_os_error()
-#include "network/to-string-string-view.h"      // to_string()
 
 #ifdef WIN32
 #include <ws2tcpip.h>   // ::getnameinfo()
@@ -56,11 +56,11 @@ auto Network::get_endpointresult(const std::span<char>& hostname,
                   << ", "
                   << addr_len
                   << ", "
-                  << to_string(hostname_sv)
+                  << quote(hostname_sv)
                   << ", "
                   << hostname_sv.size()
                   << ", "
-                  << to_string(service_sv)
+                  << quote(service_sv)
                   << ", "
                   << service_sv.size()
                   << ", "
@@ -85,11 +85,11 @@ auto Network::get_endpointresult(const std::span<char>& hostname,
             << ", "
             << addr_len
             << ", "
-            << to_string(hostname_sv)
+            << quote(hostname_sv)
             << ", "
             << hostname_sv.size()
             << ", "
-            << to_string(service_sv)
+            << quote(service_sv)
             << ", "
             << service_sv.size()
             << ", "
@@ -110,19 +110,19 @@ auto Network::get_endpointresult(const std::span<char>& hostname,
                   << ", "
                   << addr_len
                   << ", "
-                  << to_string(hostname_sv)
+                  << quote(hostname_sv)
                   << ", "
                   << hostname_sv.size()
                   << ", "
-                  << to_string(service_sv)
+                  << quote(service_sv)
                   << ", "
                   << service_sv.size()
                   << ", "
                   << flags
                   << ") returned data {"
-                  << to_string(hostname_sv)
+                  << quote(hostname_sv)
                   << ", "
-                  << to_string(service_sv)
+                  << quote(service_sv)
                   << '}'
                   << std::endl;
         // clang-format on

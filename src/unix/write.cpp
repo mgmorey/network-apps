@@ -20,10 +20,10 @@
 #include "network/format-os-error.h"            // format_os_error()
 #include "network/get-api-error.h"              // get_api_error()
 #include "network/handle-type.h"                // handle_type
+#include "network/quote.h"                      // quote()
 #include "network/reset-api-error.h"            // reset_api_error()
 #include "network/socket-error.h"               // socket_error
 #include "network/to-os-error.h"                // to_os_error()
-#include "network/to-string-string-view.h"      // to_string()
 
 #include <sys/types.h>          // ssize_t
 
@@ -46,7 +46,7 @@ auto Network::write(handle_type handle,
         std::cout << "Calling ::write("
                   << handle
                   << ", "
-                  << to_string(sv)
+                  << quote(sv)
                   << ", "
                   << size
                   << ')'
@@ -65,7 +65,7 @@ auto Network::write(handle_type handle,
         oss << "Call to ::write("
             << handle
             << ", "
-            << to_string(sv)
+            << quote(sv)
             << ", "
             << size
             << ") failed with error "
