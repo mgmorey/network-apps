@@ -14,7 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/to-string-in-addr.h"          // to_string()
-#include "network/buffer.h"                     // Buffer
+#include "network/textbuffer.h"                 // TextBuffer
 
 #ifdef WIN32
 #include <winsock2.h>       // AF_INET, in_addr
@@ -29,7 +29,7 @@
 
 auto Network::to_string(const in_addr& addr) noexcept -> std::string
 {
-    Buffer<std::string> buffer {INET_ADDRSTRLEN};
+    TextBuffer buffer {INET_ADDRSTRLEN};
     ::inet_ntop(AF_INET, &addr, buffer.data(), buffer.size());
     return buffer.to_string();
 }

@@ -18,7 +18,6 @@
 
 #include <cstddef>      // std::size_t
 #include <span>         // std::span
-#include <string>       // std::string
 
 namespace Network
 {
@@ -27,7 +26,6 @@ namespace Network
     {
     public:
         using size_type = std::size_t;
-        using string_type = std::string;
         using span_type = std::span<typename T::value_type>;
         using value_type = typename T::value_type;
 
@@ -48,8 +46,7 @@ namespace Network
             return static_cast<span_type>(m_buffer);
         }
 
-        // NOLINTNEXTLINE
-        operator T()& noexcept
+        [[nodiscard]] auto get() const noexcept -> const T&
         {
             return m_buffer;
         }
@@ -68,11 +65,6 @@ namespace Network
         {
             m_buffer.resize(t_size);
             return m_buffer;
-        }
-
-        [[nodiscard]] auto to_string() const -> string_type
-        {
-            return m_buffer.substr(0, m_buffer.find('\0'));
         }
 
     private:

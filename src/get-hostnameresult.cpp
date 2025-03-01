@@ -14,7 +14,6 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/get-hostnameresult.h"         // get_hostname()
-#include "network/buffer.h"                     // Buffer
 #include "network/format-os-error.h"            // format_os_error()
 #include "network/get-api-error.h"              // get_api_error()
 #include "network/hostname-length-limits.h"     // hostname_length_max
@@ -22,6 +21,7 @@
 #include "network/oserrorresult.h"              // OsErrorResult
 #include "network/quote.h"                      // quote()
 #include "network/reset-api-error.h"            // reset_api_error()
+#include "network/textbuffer.h"                 // TextBuffer
 #include "network/to-name-length.h"             // to_name_length()
 #include "network/to-os-error.h"                // to_os_error()
 
@@ -34,7 +34,6 @@
 #include <iostream>     // std::cout, std::endl
 #include <span>         // std::span
 #include <sstream>      // std::ostringstream
-#include <string>       // std::string
 #include <string_view>  // std::string_view
 
 auto Network::get_hostnameresult(const std::span<char>& hostname,
@@ -89,7 +88,7 @@ auto Network::get_hostnameresult(const std::span<char>& hostname,
 
 auto Network::get_hostnameresult(bool is_verbose) -> HostnameResult
 {
-    Buffer<std::string> hostname {hostname_length_max};
+    TextBuffer hostname {hostname_length_max};
 
     if (auto result {get_hostnameresult(hostname, is_verbose)}) {
         return result;

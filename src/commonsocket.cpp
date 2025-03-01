@@ -16,7 +16,6 @@
 #include "network/commonsocket.h"               // CommonSocket
 #include "network/accept.h"                     // accept()
 #include "network/acceptresult.h"               // AcceptResult
-#include "network/buffer.h"                     // Buffer
 #include "network/bytestring.h"                 // ByteString
 #include "network/close.h"                      // close()
 #include "network/get-name.h"                   // get_name()
@@ -28,11 +27,11 @@
 #include "network/read.h"                       // read()
 #include "network/shutdown.h"                   // shutdown()
 #include "network/socketdata.h"                 // SocketData
+#include "network/textbuffer.h"                 // TextBuffer
 #include "network/write.h"                      // write()
 
 #include <cstddef>      // std::size_t
 #include <iostream>     // std::cerr, std::endl
-#include <string>       // std::string
 
 Network::CommonSocket::CommonSocket(const SocketData& t_data)
     : Socket(t_data)
@@ -104,7 +103,7 @@ auto Network::CommonSocket::shutdown(int t_how) const -> OsErrorResult
 
 auto Network::CommonSocket::read(std::size_t t_size) const -> ReadResult
 {
-    Buffer<std::string> buffer {t_size};
+    TextBuffer buffer {t_size};
     const auto result {read(buffer.data(), buffer.size())};
     return {buffer.to_string(), result};
 }

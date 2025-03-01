@@ -15,7 +15,6 @@
 
 #include "network/get-endpointresult.h"         // get_endpoint()
 #include "network/addressstring.h"              // AddressString
-#include "network/buffer.h"                     // Buffer
 #include "network/bytestring.h"                 // ByteString
 #include "network/endpoint.h"                   // Endpoint
 #include "network/endpointresult.h"             // EndpointResult
@@ -25,6 +24,7 @@
 #include "network/oserrorresult.h"              // OsErrorResult
 #include "network/quote.h"                      // quote()
 #include "network/service-length-limits.h"      // service_length_max
+#include "network/textbuffer.h"                 // TextBuffer
 #include "network/to-os-error.h"                // to_os_error()
 
 #ifdef WIN32
@@ -36,7 +36,6 @@
 #include <iostream>     // std::cout, std::endl
 #include <span>         // std::span
 #include <sstream>      // std::ostringstream
-#include <string>       // std::string
 #include <string_view>  // std::string_view
 
 auto Network::get_endpointresult(const std::span<char>& hostname,
@@ -134,8 +133,8 @@ auto Network::get_endpointresult(const std::span<char>& hostname,
 auto Network::get_endpointresult(const ByteString& addr, int flags,
                                  bool is_verbose) -> EndpointResult
 {
-    Buffer<std::string> hostname {hostname_length_max};
-    Buffer<std::string> service {service_length_max};
+    TextBuffer hostname {hostname_length_max};
+    TextBuffer service {service_length_max};
 
     if (auto result {get_endpointresult(hostname,
                                         service,
