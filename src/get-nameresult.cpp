@@ -99,6 +99,5 @@ auto Network::get_nameresult(const GetNameParams& args,
         return OsErrorResult {os_error, oss.str()};
     }
 
-    buffer.resize(to_size(addr_len));
-    return ByteString {buffer};
+    return ByteString {buffer.size(to_size(addr_len))};
 }

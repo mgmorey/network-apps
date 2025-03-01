@@ -67,14 +67,15 @@ namespace Network
             return m_value.data();
         }
 
-        auto resize(size_type t_size) -> void
-        {
-            return m_value.resize(t_size);
-        }
-
         [[nodiscard]] auto size() const noexcept -> size_type
         {
             return m_value.size();
+        }
+
+        [[nodiscard]] auto size(size_type t_size) -> value_type
+        {
+            m_value.resize(t_size);
+            return m_value;
         }
 
     private:

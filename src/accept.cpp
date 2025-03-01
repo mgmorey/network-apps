@@ -78,6 +78,5 @@ auto Network::accept(const SocketData& sd) -> AcceptResult
         throw Error(oss.str());
     }
 
-    buffer.resize(to_size(addr_len));
-    return {SocketData {sd, handle_2}, buffer};
+    return {SocketData {sd, handle_2}, buffer.size(to_size(addr_len))};
 }
