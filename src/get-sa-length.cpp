@@ -14,13 +14,8 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/get-sa-length.h"              // get_sa_length()
-#include "network/os-features.h"                // HAVE_SOCKADDR_SA_LEN
 #include "network/socket-length-type.h"         // socket_length_type
 #include "network/to-socket-length.h"           // to_socket_length()
-
-#ifdef HAVE_SOCKADDR_SA_LEN
-#include "network/get-sa-pointer.h"             // get_sa_pointer()
-#endif
 
 #include <cstddef>      // std::byte
 #include <span>         // std::span
@@ -34,10 +29,5 @@ auto Network::get_sa_length(const std::span<std::byte>& bs) ->
 auto Network::get_sa_length(const std::span<const std::byte>& bs) ->
     socket_length_type
 {
-#ifdef HAVE_SOCKADDR_SA_LEN
-    const auto* const sa {get_sa_pointer(span)};
-    return sa->sa_len;
-#else
     return to_socket_length(bs.size());
-#endif
 }
