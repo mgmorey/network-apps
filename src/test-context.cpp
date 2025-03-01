@@ -76,6 +76,13 @@ namespace
     const auto failure_mode {FailureMode::return_error};
     auto is_verbose {false};  // NOLINT
 
+    auto get_actual_context_str(const Context& context) -> std::string
+    {
+        std::ostringstream oss;
+        oss << context;
+        return oss.str();
+    }
+
     auto get_expected_context_re() -> std::string
     {
         std::string result;
@@ -139,11 +146,9 @@ namespace
         print(context, description);
         assert(context.is_running());
         assert(!version || context.version() == version);
-        std::ostringstream oss;
-        oss << context;
-        const std::string actual_context_str {oss.str()};
+        const std::string actual_str {get_actual_context_str(context)};
         const std::regex expected_regex {get_expected_context_re()};
-        assert(std::regex_match(actual_context_str, expected_regex));
+        assert(std::regex_match(actual_str, expected_regex));
     }
 
     auto test_context_inactive() -> void
