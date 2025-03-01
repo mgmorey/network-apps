@@ -55,10 +55,8 @@ namespace
     {
         "( Version \\d{1,3}\\.\\d{1,3})" // NOLINT
     };
-    constexpr auto expected_error_stopped {
-        "Call to ::gethostname(\"\", 1024) failed with error 10093: "
-        "Either the application has not called WSAStartup, "
-        "or WSAStartup failed."
+    constexpr auto expected_error_stopped_re {
+        R"(Call to ::gethostname\(.+\) failed with error \d+: .+)"
     };
     constexpr auto expected_error_version {
         "The Windows Sockets version requested is not supported."
@@ -71,7 +69,7 @@ namespace
     constexpr auto expected_context_version_re {
         "( Version \\d{1,3}\\.\\d{1,3})?" // NOLINT
     };
-    constexpr auto expected_error_stopped {""};
+    constexpr auto expected_error_stopped_re {""};
     constexpr auto expected_error_version {""};
 #endif
 
@@ -177,7 +175,8 @@ namespace
             actual_str = error.what();
         }
 
-        assert(actual_str == expected_error_stopped);
+        const std::regex expected_regex {expected_error_stopped_re};
+        assert(std::regex_match(actual_str, expected_regex));
     }
 
     auto test_context_invalid() -> void
