@@ -22,18 +22,18 @@
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
 
-auto Network::to_string(const std::span<const std::byte>& span) -> std::string
+auto Network::to_string(const std::span<const std::byte>& bs) -> std::string
 {
     std::ostringstream oss;
     oss << "0x";
 
-    if (span.empty()) {
+    if (bs.empty()) {
         oss << '0';
     }
     else {
         oss << std::hex;
 
-        for (const auto byte : span) {
+        for (const auto byte : bs) {
             oss << std::setfill('0')
                 << std::setw(2)
                 << std::uppercase

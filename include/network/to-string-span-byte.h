@@ -22,7 +22,7 @@
 
 namespace Network
 {
-    extern auto to_string(const std::span<const std::byte>& span) -> std::string;
+    extern auto to_string(const std::span<const std::byte>& bs) -> std::string;
 }
 
 #endif
