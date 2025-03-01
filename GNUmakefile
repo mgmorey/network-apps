@@ -318,11 +318,11 @@ endif
 
 # Define targets
 
-$(coverage_gcov): $(sources) $(timestamps)
-	gcov -mo $(object_dir) -rt $(filter-out .%,$^) >$@
+$(coverage_gcov): $(program_sources) $(timestamps)
+	$(strip gcov $(GCOVFLAGS) -t $(filter-out .%,$^) >$@)
 
-$(coverage_html): $(sources) $(timestamps)
-	gcovr --calls --html-details --html-theme $(HTML_THEME) --output $@
+$(coverage_html): $(program_sources) $(timestamps)
+	$(strip gcovr $(GCOVRFLAGS) --output $@)
 
 $(library_aliases): $(shared_library)
 	$(call install-aliases,$(output_dir))

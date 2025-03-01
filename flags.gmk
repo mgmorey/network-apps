@@ -19,9 +19,9 @@ language_release = 20
 standard = $(language)$(language_release)
 
 # Define variables for character constants
-comma = ,
-empty =
-space = $(empty) $(empty)
+com = ,
+nul =
+spc = $(nul) $(nul)
 
 # Define variables for OS ID and kernel
 os_label_id = $(word 1,$(os_labels))
@@ -154,13 +154,24 @@ CXXFLAGS += $(CXX_ASFLAGS)
 # Add warning flags to CXXFLAGS
 CXXFLAGS += -Wall -Werror -Wextra -Wshadow -Wsign-conversion
 
+# GCOVFLAGS
+
+GCOVFLAGS = -mo $(object_dir) -r
+
+# GCOVRFLAGS
+
+gcovr_exclude = '$(source_dir)/($(api)/)?(test|unix)-\w+$(source_suffix)'
+GCOVRFLAGS = --calls --exclude $(gcovr_exclude) --html-details	\
+--html-theme $(HTML_THEME)
+
 # LDFLAGS
 
 # Add code coverage flag to LDFLAGS
 LDFLAGS += $(if $(is_debug_build),--coverage,)
 
 # Add address sanitizer flags to LDFLAGS
-LDFLAGS += $(if $(is_debug_build),$(if $(using_libasan),-fsanitize=address,),)
+LDFLAGS += $(if $(is_debug_build),$(if		\
+$(using_libasan),-fsanitize=address,),)
 
 # Add -install_name linker option flag to LDFLAGS
 ldflags += $(if $(is_shared),$(if $(is_ld_install_name),$(call	\
@@ -181,7 +192,8 @@ ldflags += $(if $(is_shared),$(if $(is_ld_soname),$(call	\
 get-soname-flag,$(soname)),),)
 
 # Add -shared option flag to LDFLAGS
-LDFLAGS += $(call join-flags,-Wl,$(ldflags)) $(if $(is_shared),-shared,)
+LDFLAGS += $(call join-flags,-Wl,$(ldflags)) $(if	\
+$(is_shared),-shared,)
 
 # LDLIBS
 
@@ -193,7 +205,7 @@ LDLIBS += $(if $(filter $(os_label_kernel),MINGW64_NT),-lws2_32,)
 format-as-flag = $(call format-flag,$(as_family),$1,$2)
 format-ld-flag = $(call format-flag,$(ld_family),$1,$2)
 format-flag = $(if $(strip $3),$(if $(filter gnu,$1),$2=$3,$2 $3),)
-join-flags = $(if $(strip $2),$(subst $(space),$(comma),$1 $(strip $2)),)
+join-flags = $(if $(strip $2),$(subst $(spc),$(com),$1 $(strip $2)),)
 
 # Define functions to compute assembler listing flag
 get-listing-flag = $(call format-as-flag,-adghln,$1)
