@@ -1,3 +1,6 @@
+# Apple macOS metadata
+.DS_Store
+
 # Clang profile instrumentation data
 default.profraw
 
