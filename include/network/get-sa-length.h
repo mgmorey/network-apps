@@ -16,17 +16,17 @@
 #ifndef NETWORK_GET_SA_LENGTH_H
 #define NETWORK_GET_SA_LENGTH_H
 
-#include "network/buffer.h"                     // Buffer
-#include "network/bytestring.h"                 // ByteString
 #include "network/socket-length-type.h"         // socket_length_type
 
 #include <cstddef>      // std::byte
+#include <span>         // std::span
 
 namespace Network
 {
-    extern auto get_sa_length(const Buffer<std::byte>& addr) ->
+    extern auto get_sa_length(const std::span<std::byte>& span) ->
         socket_length_type;
-    extern auto get_sa_length(const ByteString& addr) -> socket_length_type;
+    extern auto get_sa_length(const std::span<const std::byte>& span) ->
+        socket_length_type;
 }
 
 #endif
