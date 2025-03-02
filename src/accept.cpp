@@ -35,6 +35,7 @@
 #endif
 
 #include <iostream>     // std::cout, std::endl
+#include <span>         // std::span
 #include <sstream>      // std::ostringstream
 
 auto Network::accept(const SocketData& sd) -> AcceptResult
@@ -42,7 +43,7 @@ auto Network::accept(const SocketData& sd) -> AcceptResult
     BinaryBuffer buffer {sa_length_max};
     const auto handle_1 {sd.handle()};
     const auto is_verbose {sd.is_verbose()};
-    const auto bs {buffer.span()};
+    const std::span bs {buffer};
     const AddressString addr_str {bs};
     auto [addr_ptr, addr_len] {get_sa_span(bs)};
 

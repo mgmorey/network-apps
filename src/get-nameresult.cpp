@@ -38,6 +38,7 @@
 
 #include <array>        // std::arrray
 #include <iostream>     // std::cout, std::endl
+#include <span>         // std::span
 #include <sstream>      // std::ostringstream
 #include <utility>      // std::make_pair
 
@@ -60,7 +61,7 @@ auto Network::get_nameresult(const GetNameParams& args,
     const auto binding {get_binding(is_peer)};
     BinaryBuffer buffer {sa_length_max};
     const handle_type handle {args.m_handle};
-    const auto bs {buffer.span()};
+    const std::span bs {buffer};
     const AddressString addr_str {bs};
     auto [addr_ptr, addr_len] {get_sa_span(bs)};
 

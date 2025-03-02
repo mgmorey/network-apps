@@ -136,8 +136,8 @@ auto Network::get_endpointresult(const ByteString& addr, int flags,
     TextBuffer hostname {hostname_length_max};
     TextBuffer service {service_length_max};
 
-    if (auto result {get_endpointresult(hostname.span(),
-                                        service.span(),
+    if (auto result {get_endpointresult(std::span(hostname),
+                                        std::span(service),
                                         addr,
                                         flags,
                                         is_verbose)}) {

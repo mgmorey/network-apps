@@ -90,7 +90,7 @@ auto Network::get_hostnameresult(bool is_verbose) -> HostnameResult
 {
     TextBuffer hostname {hostname_length_max};
 
-    if (auto result {get_hostnameresult(hostname.span(), is_verbose)}) {
+    if (auto result {get_hostnameresult(std::span(hostname), is_verbose)}) {
         return result;
     }
 
