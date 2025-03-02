@@ -18,7 +18,9 @@
 
 #include "network/bytestring.h"         // ByteString
 
+#include <cstddef>      // std::byte
 #include <optional>     // std::optional
+#include <span>         // std::span
 #include <string>       // std::string
 
 namespace Network
@@ -29,7 +31,7 @@ namespace Network
                                const AddressString& as) -> std::ostream&;
 
     public:
-        explicit AddressString(const ByteString& t_addr);
+        explicit AddressString(const std::span<const std::byte>& t_bs);
         AddressString(const AddressString&) = default;
         AddressString(AddressString&&) = default;
         ~AddressString() = default;

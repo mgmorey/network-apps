@@ -33,6 +33,12 @@
 #include <string>       // std::string
 #include <utility>      // std::move()
 
+Network::Address::Address(const std::span<const std::byte>& t_bs) :
+    m_value(t_bs.data(), t_bs.data() + t_bs.size())
+{
+    validate(m_value);
+}
+
 Network::Address::Address(const value_type& t_value) :
     m_value(t_value)
 {

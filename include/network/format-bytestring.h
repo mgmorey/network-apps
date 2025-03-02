@@ -16,15 +16,15 @@
 #ifndef NETWORK_FORMAT_BYTESTRING_H
 #define NETWORK_FORMAT_BYTESTRING_H
 
-#include "network/bytestring.h"         // ByteString
-
+#include <cstddef>      // std::byte
 #include <optional>     // std::optional
+#include <span>         // std::span
 #include <string>       // std::string
 
 namespace Network
 {
-    extern auto format(const ByteString& addr) -> std::string;
-    extern auto format(const ByteString& addr,
+    extern auto format(const std::span<const std::byte>& bs) -> std::string;
+    extern auto format(const std::span<const std::byte>& bs,
                        std::optional<std::string>& str) -> std::string;
 }
 

@@ -32,6 +32,8 @@
 #include <netinet/in.h>     // in_addr, in6_addr
 #endif
 
+#include <cstddef>      // std::byte
+#include <span>         // std::span
 #include <ostream>      // std::ostream
 #include <string>       // std::string
 
@@ -46,16 +48,20 @@ namespace Network
     public:
         using value_type = ByteString;
 
-        Address() = default;
+        explicit Address(const std::span<const std::byte>& t_bs);
         explicit Address(const value_type& t_value);
         explicit Address(value_type&& t_value);
+
+        Address() = default;
         Address(const Address&) = default;
         Address(Address&&) = default;
         ~Address() = default;
         auto operator=(const Address&) -> Address& = default;
         auto operator=(Address&&) -> Address& = default;
+
         auto operator=(const value_type& t_value) -> Address&;
         explicit operator value_type() const;
+
         [[nodiscard]] auto empty() const -> bool;
         [[nodiscard]] auto family() const -> family_type;
 #ifdef HAVE_SOCKADDR_SA_LEN

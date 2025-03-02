@@ -15,32 +15,32 @@
 
 #include "network/format-bytestring.h"          // format()
 #include "network/address.h"                    // Address
-#include "network/bytestring.h"                 // ByteString
 #include "network/logicerror.h"                 // LogicError
 #include "network/to-string-span-byte.h"        // to_string()
 
+#include <cstddef>      // std::byte
 #include <optional>     // std::optional
 #include <span>         // std::span
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
 
-auto Network::format(const ByteString& addr) -> std::string
+auto Network::format(const std::span<const std::byte>& bs) -> std::string
 {
     try {
         std::ostringstream oss;
-        oss << Address(addr);
+        oss << Address(bs);
         return oss.str();
     }
     catch (const LogicError& error) {
-        return to_string(addr);
+        return to_string(bs);
     }
 }
 
-auto Network::format(const ByteString& addr,
+auto Network::format(const std::span<const std::byte>& bs,
                      std::optional<std::string>& str) -> std::string
 {
     if (!str) {
-        str = format(addr);
+        str = format(bs);
     }
 
     return *str;

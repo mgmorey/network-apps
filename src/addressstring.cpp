@@ -17,11 +17,13 @@
 #include "network/bytestring.h"         // ByteString
 #include "network/format-bytestring.h"  // format()
 
+#include <cstddef>      // std::byte
 #include <ostream>      // std::ostream
+#include <span>         // std::span
 #include <string>       // std::string
 
-Network::AddressString::AddressString(const ByteString& t_addr) :
-    m_addr(t_addr)
+Network::AddressString::AddressString(const std::span<const std::byte>& t_bs) :
+    m_addr({t_bs.data(), t_bs.data() + t_bs.size()})
 {
 }
 
