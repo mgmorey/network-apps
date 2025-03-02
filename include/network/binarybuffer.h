@@ -25,8 +25,6 @@ namespace Network
         : public Buffer<ByteString>
     {
     public:
-        using string_type = ByteString;
-
         explicit BinaryBuffer(size_type t_size);
 
         BinaryBuffer(const BinaryBuffer&) noexcept = default;
@@ -35,7 +33,7 @@ namespace Network
         auto operator=(const BinaryBuffer&) noexcept -> BinaryBuffer& = default;
         auto operator=(BinaryBuffer&&) noexcept -> BinaryBuffer& = default;
 
-        [[nodiscard]] auto size(size_type t_size) -> string_type&;
+        [[nodiscard]] auto size(size_type t_size) -> buffer_type&;
     };
 }
 

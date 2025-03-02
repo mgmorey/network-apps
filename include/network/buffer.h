@@ -25,6 +25,7 @@ namespace Network
     class Buffer
     {
     public:
+        using buffer_type = T;
         using size_type = std::size_t;
         using span_type = std::span<typename T::value_type>;
         using span_view_type = std::span<const typename T::value_type>;
@@ -46,17 +47,12 @@ namespace Network
             return m_buffer.data();
         }
 
-        [[nodiscard]] auto data() const noexcept -> const value_type*
-        {
-            return m_buffer.data();
-        }
-
-        [[nodiscard]] auto get() noexcept -> T&
+        [[nodiscard]] auto get() noexcept -> buffer_type&
         {
             return m_buffer;
         }
 
-        [[nodiscard]] auto get_view() const noexcept -> const T&
+        [[nodiscard]] auto get_view() const noexcept -> const buffer_type&
         {
             return m_buffer;
         }
@@ -82,7 +78,7 @@ namespace Network
         }
 
     private:
-        T m_buffer;
+        buffer_type m_buffer;
     };
 }
 
