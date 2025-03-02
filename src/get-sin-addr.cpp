@@ -14,7 +14,6 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/get-sin-addr.h"       // get_sin_addr()
-#include "network/bytestring.h"         // ByteString
 #include "network/get-sin-pointer.h"    // get_sin_pointer()
 
 #ifdef WIN32
@@ -23,8 +22,11 @@
 #include <netinet/in.h>     // in_addr
 #endif
 
-auto Network::get_sin_addr(const ByteString& addr) -> in_addr
+#include <cstddef>      // std::byte
+#include <span>         // std::span
+
+auto Network::get_sin_addr(const std::span<const std::byte>& bs) -> in_addr
 {
-    const auto* const sin {get_sin_pointer(addr)};
+    const auto* const sin {get_sin_pointer(bs)};
     return sin->sin_addr;
 }

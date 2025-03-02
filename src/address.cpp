@@ -33,39 +33,29 @@
 #include <string>       // std::string
 #include <utility>      // std::move()
 
-Network::Address::Address(const std::span<const std::byte>& t_bs) :
-    m_value(t_bs.data(), t_bs.data() + t_bs.size())
+Network::Address::Address(const std::span<const std::byte>& t_bs)
 {
-    validate(m_value);
+    static_cast<void>(validate(t_bs));
+    address_type value {t_bs.data(), t_bs.data() + t_bs.size()};
+    m_address = value;
 }
 
-Network::Address::Address(const value_type& t_value) :
-    m_value(t_value)
+auto Network::Address::operator=(const std::span<const std::byte>& t_bs) -> Address&
 {
-    validate(m_value);
-}
-
-Network::Address::Address(value_type&& t_value) :
-    m_value(std::move(t_value))
-{
-    validate(m_value);
-}
-
-auto Network::Address::operator=(const value_type& t_value) -> Address&
-{
-    validate(t_value);
-    m_value = t_value;
+    static_cast<void>(validate(t_bs));
+    address_type value {t_bs.data(), t_bs.data() + t_bs.size()};
+    m_address = value;
     return *this;
 }
 
-Network::Address::operator value_type() const
+Network::Address::operator address_type() const
 {
-    return m_value;
+    return m_address;
 }
 
 auto Network::Address::empty() const -> bool
 {
-    return m_value.empty();
+    return m_address.empty();
 }
 
 auto Network::Address::family() const -> socket_family_type

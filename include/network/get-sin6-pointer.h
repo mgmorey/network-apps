@@ -16,17 +16,19 @@
 #ifndef NETWORK_GET_SIN6_POINTER_H
 #define NETWORK_GET_SIN6_POINTER_H
 
-#include "network/bytestring.h"         // ByteString
-
 #ifdef WIN32
 #include <ws2tcpip.h>       // sockaddr_in6
 #else
 #include <netinet/in.h>     // sockaddr_in6
 #endif
 
+#include <cstddef>      // std::byte
+#include <span>         // std::span
+
 namespace Network
 {
-    extern auto get_sin6_pointer(const ByteString& addr) -> const sockaddr_in6*;
+    extern auto get_sin6_pointer(const std::span<const std::byte>& bs) ->
+        const sockaddr_in6*;
 }
 
 #endif

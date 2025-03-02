@@ -14,7 +14,6 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/get-sin-port.h"       // get_sin_port()
-#include "network/bytestring.h"         // ByteString
 #include "network/get-sin-pointer.h"    // get_sin_pointer()
 #include "network/port-type.h"          // port_type
 
@@ -24,8 +23,11 @@
 #include <netinet/in.h>     // ntohs()
 #endif
 
-auto Network::get_sin_port(const ByteString& addr) -> port_type
+#include <cstddef>      // std::byte
+#include <span>         // std::span
+
+auto Network::get_sin_port(const std::span<const std::byte>& bs) -> port_type
 {
-    const auto* const sin {get_sin_pointer(addr)};
+    const auto* const sin {get_sin_pointer(bs)};
     return ntohs(sin->sin_port);
 }

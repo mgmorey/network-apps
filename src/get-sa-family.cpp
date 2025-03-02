@@ -13,13 +13,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-sa-family.h"              // get_sa_family()
-#include "network/bytestring.h"                 // ByteString
-#include "network/get-sa-pointer.h"             // get_sa_pointer()
-#include "network/socket-family-type.h"         // socket_family_type
+#include "network/get-sa-family.h"      // get_sa_family()
+#include "network/family-type.h"        // socket_family_type
+#include "network/get-sa-pointer.h"     // get_sa_pointer()
 
-auto Network::get_sa_family(const ByteString& addr) -> socket_family_type
+#include <cstddef>      // std::byte
+#include <span>         // std::span
+
+auto Network::get_sa_family(const std::span<const std::byte>& bs) ->
+    family_type
 {
-    const auto* const sa {get_sa_pointer(addr)};
+    const auto* const sa {get_sa_pointer(bs)};
     return static_cast<socket_family_type>(sa->sa_family);
 }

@@ -16,11 +16,13 @@
 #ifndef NETWORK_VALIDATE_BS_H
 #define NETWORK_VALIDATE_BS_H
 
-#include "network/bytestring.h"         // ByteString
+#include <cstddef>      // std::byte
+#include <span>         // std::span
 
 namespace Network
 {
-    extern auto validate(const ByteString& addr) -> ByteString;
+    extern auto validate(const std::span<const std::byte>& bs) ->
+        std::span<const std::byte>;
 }
 
 #endif

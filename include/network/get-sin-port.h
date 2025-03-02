@@ -16,12 +16,15 @@
 #ifndef NETWORK_GET_SIN_PORT_H
 #define NETWORK_GET_SIN_PORT_H
 
-#include "network/bytestring.h"         // ByteString
 #include "network/port-type.h"          // port_type
+
+#include <cstddef>      // std::byte
+#include <span>         // std::span
 
 namespace Network
 {
-    extern auto get_sin_port(const ByteString& addr) -> port_type;
+    extern auto get_sin_port(const std::span<const std::byte>& bs) ->
+        port_type;
 }
 
 #endif

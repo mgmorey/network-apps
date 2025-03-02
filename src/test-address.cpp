@@ -41,6 +41,7 @@
                             // sockaddr_un
 #endif
 
+#include <cstddef>      // std::byte
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
 #include <cstring>      // std::memset()
 #include <exception>    // std::exception
@@ -48,6 +49,7 @@
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <iterator>     // std::back_inserter()
 #include <regex>        // std::regex, std::regex_match
+#include <span>         // std::span
 #include <string>       // std::string
 #include <vector>       // std::vector
 
@@ -209,11 +211,11 @@ namespace
         }
     }
 
-    auto test(const ByteString& addr) -> void
+    auto test(const std::span<const std::byte>& bs) -> void
     {
-        assert(!addr.empty());
-        const auto size {addr.size()};
-        const Address address {addr};
+        assert(!bs.empty());
+        const auto size {bs.size()};
+        const Address address {bs};
         assert(!address.empty());
         const auto family {address.family()};
         const auto [size_min, size_max] {SocketLimits(family).limits()};
@@ -227,6 +229,7 @@ namespace
         static_cast<void>(port);
         const auto text {address.text()};
         static_cast<void>(text);
+        ByteString addr {bs.data(), bs.data() + bs.size()};
         assert(ByteString {address} == addr);
         previous_address = addr;
     }

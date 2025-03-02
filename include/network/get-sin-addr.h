@@ -24,9 +24,12 @@
 #include <netinet/in.h>     // in_addr
 #endif
 
+#include <cstddef>      // std::byte
+#include <span>         // std::span
+
 namespace Network
 {
-    extern auto get_sin_addr(const ByteString& addr) -> in_addr;
+    extern auto get_sin_addr(const std::span<const std::byte>& bs) -> in_addr;
 }
 
 #endif

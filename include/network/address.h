@@ -46,11 +46,9 @@ namespace Network
             std::ostream&;
 
     public:
-        using value_type = ByteString;
+        using address_type = ByteString;
 
         explicit Address(const std::span<const std::byte>& t_bs);
-        explicit Address(const value_type& t_value);
-        explicit Address(value_type&& t_value);
 
         Address() = default;
         Address(const Address&) = default;
@@ -59,8 +57,8 @@ namespace Network
         auto operator=(const Address&) -> Address& = default;
         auto operator=(Address&&) -> Address& = default;
 
-        auto operator=(const value_type& t_value) -> Address&;
-        explicit operator value_type() const;
+        auto operator=(const std::span<const std::byte>& t_bs) -> Address&;
+        explicit operator address_type() const;
 
         [[nodiscard]] auto empty() const -> bool;
         [[nodiscard]] auto family() const -> family_type;
@@ -86,7 +84,7 @@ namespace Network
 #endif
 
     private:
-        value_type m_value;
+        address_type m_address;
     };
 
     extern auto operator<<(std::ostream& os,

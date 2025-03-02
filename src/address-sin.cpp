@@ -29,12 +29,12 @@
 
 auto Network::Address::sin_addr() const -> in_addr
 {
-    return get_sin_addr(m_value);
+    return get_sin_addr(m_address);
 }
 
 auto Network::Address::sin_port() const -> port_type
 {
-    return get_sin_port(m_value);
+    return get_sin_port(m_address);
 }
 
 auto Network::Address::sin_text() const -> std::string

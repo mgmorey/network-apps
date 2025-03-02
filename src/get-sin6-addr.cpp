@@ -14,7 +14,6 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/get-sin6-addr.h"      // get_sin6_addr()
-#include "network/bytestring.h"         // ByteString
 #include "network/get-sin6-pointer.h"   // get_sin6_pointer()
 
 #ifdef WIN32
@@ -23,8 +22,11 @@
 #include <netinet/in.h>     // in6_addr
 #endif
 
-auto Network::get_sin6_addr(const ByteString& addr) -> in6_addr
+#include <cstddef>      // std::byte
+#include <span>         // std::span
+
+auto Network::get_sin6_addr(const std::span<const std::byte>& bs) -> in6_addr
 {
-    const auto* const sin6 {get_sin6_pointer(addr)};
+    const auto* const sin6 {get_sin6_pointer(bs)};
     return sin6->sin6_addr;
 }

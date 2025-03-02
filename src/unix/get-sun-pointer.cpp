@@ -16,15 +16,18 @@
 #ifndef WIN32
 
 #include "network/get-sun-pointer.h"            // get_sun_pointer()
-#include "network/bytestring.h"                 // ByteString
 #include "network/validate-sun.h"               // validate()
 
 #include <sys/un.h>         // sockaddr_un
 
-auto Network::get_sun_pointer(const ByteString& addr) -> const sockaddr_un*
+#include <cstddef>      // std::byte
+#include <span>         // std::span
+
+auto Network::get_sun_pointer(const std::span<const std::byte>& bs) ->
+    const sockaddr_un*
 {
-    const void* pointer {addr.data()};
-    return validate(static_cast<const sockaddr_un*>(pointer), addr.size());
+    const void* pointer {bs.data()};
+    return validate(static_cast<const sockaddr_un*>(pointer), bs.size());
 }
 
 #endif

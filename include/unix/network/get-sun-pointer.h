@@ -18,13 +18,15 @@
 
 #ifndef WIN32
 
-#include "network/bytestring.h"         // ByteString
-
 #include <sys/un.h>         // sockaddr_un
+
+#include <cstddef>      // std::byte
+#include <span>         // std::span
 
 namespace Network
 {
-    extern auto get_sun_pointer(const ByteString& addr) -> const sockaddr_un*;
+    extern auto get_sun_pointer(const std::span<const std::byte>& bs) ->
+        const sockaddr_un*;
 }
 
 #endif

@@ -18,13 +18,14 @@
 
 #ifndef WIN32
 
-#include "network/bytestring.h"         // ByteString
-
+#include <cstddef>      // std::byte
+#include <span>         // std::span
 #include <string_view>  // std::string_view
 
 namespace Network
 {
-    extern auto to_path(const ByteString& addr) -> std::string_view;
+    extern auto to_path(const std::span<const std::byte>& bs) ->
+        std::string_view;
 }
 
 #endif

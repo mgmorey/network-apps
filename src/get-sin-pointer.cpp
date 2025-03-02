@@ -14,7 +14,6 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/get-sin-pointer.h"            // get_sin_pointer()
-#include "network/bytestring.h"                 // ByteString
 #include "network/validate-sin.h"               // validate()
 
 #ifdef WIN32
@@ -23,8 +22,12 @@
 #include <netinet/in.h>     // sockaddr_in
 #endif
 
-auto Network::get_sin_pointer(const ByteString& addr) -> const sockaddr_in*
+#include <cstddef>      // std::byte
+#include <span>         // std::span
+
+auto Network::get_sin_pointer(const std::span<const std::byte>& bs) ->
+    const sockaddr_in*
 {
-    const void* pointer {addr.data()};
+    const void* pointer {bs.data()};
     return validate(static_cast<const sockaddr_in*>(pointer));
 }

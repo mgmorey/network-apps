@@ -16,12 +16,15 @@
 #ifndef NETWORK_GET_SA_FAMILY_H
 #define NETWORK_GET_SA_FAMILY_H
 
-#include "network/bytestring.h"                 // ByteString
-#include "network/socket-family-type.h"         // socket_family_type
+#include "network/family-type.h"        // family_type
+
+#include <cstddef>      // std::byte
+#include <span>         // std::span
 
 namespace Network
 {
-    extern auto get_sa_family(const ByteString& addr) -> socket_family_type;
+    extern auto get_sa_family(const std::span<const std::byte>& bs) ->
+        family_type;
 }
 
 #endif

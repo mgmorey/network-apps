@@ -14,7 +14,6 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/validate-bs.h"        // validate
-#include "network/bytestring.h"         // ByteString
 #include "network/familyerror.h"        // FamilyError
 #include "network/get-sa-family.h"      // get_sa_family()
 #include "network/get-sin-pointer.h"    // get_sin_pointer()
@@ -29,23 +28,27 @@
 #include <sys/socket.h>     // AF_INET, AF_INET6, AF_UNIX
 #endif
 
-auto Network::validate(const ByteString& addr) -> ByteString
+#include <cstddef>      // std::byte
+#include <span>         // std::span
+
+auto Network::validate(const std::span<const std::byte>& bs) ->
+    std::span<const std::byte>
 {
-    switch (const auto family {get_sa_family(addr)}) {
+    switch (const auto family {get_sa_family(bs)}) {
 #ifndef WIN32
     case AF_UNIX:
-        static_cast<void>(get_sun_pointer(addr));
+        static_cast<void>(get_sun_pointer(bs));
         break;
 #endif
     case AF_INET:
-        static_cast<void>(get_sin_pointer(addr));
+        static_cast<void>(get_sin_pointer(bs));
         break;
     case AF_INET6:
-        static_cast<void>(get_sin6_pointer(addr));
+        static_cast<void>(get_sin6_pointer(bs));
         break;
     default:
         throw FamilyError(family);
     }
 
-    return addr;
+    return bs;
 }
