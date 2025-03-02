@@ -46,6 +46,11 @@ namespace Network
             return m_buffer.data();
         }
 
+        [[nodiscard]] auto data() const noexcept -> const value_type*
+        {
+            return m_buffer.data();
+        }
+
         [[nodiscard]] auto get() noexcept -> T&
         {
             return m_buffer;
