@@ -27,8 +27,6 @@ namespace Network
     public:
         using buffer_type = T;
         using size_type = std::size_t;
-        using span_type = std::span<typename T::value_type>;
-        using span_view_type = std::span<const typename T::value_type>;
         using value_type = typename T::value_type;
 
         explicit Buffer(size_type t_size)
@@ -72,12 +70,12 @@ namespace Network
             return m_buffer.size();
         }
 
-        [[nodiscard]] auto span() noexcept -> span_type
+        [[nodiscard]] auto span() noexcept -> std::span<value_type>
         {
             return std::span {m_buffer.data(), m_buffer.size()};
         }
 
-        [[nodiscard]] auto span() const noexcept -> span_view_type
+        [[nodiscard]] auto span() const noexcept -> std::span<const value_type>
         {
             return std::span {m_buffer.data(), m_buffer.size()};
         }
