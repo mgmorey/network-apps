@@ -16,9 +16,6 @@
 #ifndef NETWORK_BUFFER_H
 #define NETWORK_BUFFER_H
 
-#include <cstddef>      // std::size_t
-#include <span>         // std::span
-
 namespace Network
 {
     template <typename T>
@@ -26,7 +23,9 @@ namespace Network
     {
     public:
         using buffer_type = T;
-        using size_type = std::size_t;
+        using const_iterator = typename T::const_iterator;
+        using iterator = typename T::iterator;
+        using size_type = typename T::size_type;
         using value_type = typename T::value_type;
 
         explicit Buffer(size_type t_size)
@@ -40,14 +39,29 @@ namespace Network
         auto operator=(const Buffer&) noexcept -> Buffer& = default;
         auto operator=(Buffer&&) noexcept -> Buffer& = default;
 
+        [[nodiscard]] auto begin() noexcept -> iterator
+        {
+            return m_buffer.begin();
+        }
+
         [[nodiscard]] auto data() noexcept -> value_type*
         {
             return m_buffer.data();
         }
 
-        [[nodiscard]] auto data() const noexcept -> const value_type*
+        [[nodiscard]] auto cbegin() noexcept -> const_iterator
         {
-            return m_buffer.data();
+            return m_buffer.cbegin();
+        }
+
+        [[nodiscard]] auto cend() noexcept -> const_iterator
+        {
+            return m_buffer.cend();
+        }
+
+        [[nodiscard]] auto end() noexcept -> iterator
+        {
+            return m_buffer.end();
         }
 
         [[nodiscard]] auto get() noexcept -> buffer_type&
@@ -68,16 +82,6 @@ namespace Network
         [[nodiscard]] auto size() const noexcept -> size_type
         {
             return m_buffer.size();
-        }
-
-        [[nodiscard]] auto span() noexcept -> std::span<value_type>
-        {
-            return m_buffer;
-        }
-
-        [[nodiscard]] auto span() const noexcept -> std::span<const value_type>
-        {
-            return m_buffer;
         }
 
     private:
