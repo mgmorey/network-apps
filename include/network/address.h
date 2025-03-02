@@ -33,8 +33,8 @@
 #endif
 
 #include <cstddef>      // std::byte
-#include <span>         // std::span
 #include <ostream>      // std::ostream
+#include <span>         // std::span
 #include <string>       // std::string
 
 namespace Network
