@@ -24,5 +24,5 @@ Network::BinaryBuffer::BinaryBuffer(size_type t_size)
 auto Network::BinaryBuffer::size(size_type t_size) -> buffer_type&
 {
     this->resize(t_size);
-    return this->get();
+    return **this;
 }

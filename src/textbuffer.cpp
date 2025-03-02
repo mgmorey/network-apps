@@ -23,7 +23,7 @@ Network::TextBuffer::TextBuffer(size_type t_size)
 
 Network::TextBuffer::operator string_type() const
 {
-    const auto& str {this->get()};
+    const auto& str {**this};
     const auto last {str.find('\0')};
     return str.substr(0, last);
 }
