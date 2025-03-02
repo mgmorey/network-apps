@@ -42,7 +42,7 @@ auto Network::accept(const SocketData& sd) -> AcceptResult
     BinaryBuffer buffer {sa_length_max};
     const auto handle_1 {sd.handle()};
     const auto is_verbose {sd.is_verbose()};
-    const AddressString addr_str {buffer.span_view()};
+    const AddressString addr_str {buffer.span()};
     auto [addr_ptr, addr_len] {get_sa_span(buffer.span())};
 
     if (is_verbose) {

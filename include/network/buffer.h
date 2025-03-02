@@ -52,7 +52,7 @@ namespace Network
             return m_buffer;
         }
 
-        [[nodiscard]] auto get_view() const noexcept -> const buffer_type&
+        [[nodiscard]] auto get() const noexcept -> const buffer_type&
         {
             return m_buffer;
         }
@@ -72,7 +72,7 @@ namespace Network
             return static_cast<span_type>(m_buffer);
         }
 
-        [[nodiscard]] auto span_view() noexcept -> span_view_type
+        [[nodiscard]] auto span() const noexcept -> span_view_type
         {
             return static_cast<span_view_type>(m_buffer);
         }
