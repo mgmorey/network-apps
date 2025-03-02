@@ -34,16 +34,14 @@
 
 Network::Address::Address(const std::span<const std::byte>& t_bs)
 {
-    static_cast<void>(validate(t_bs));
-    address_type value {t_bs.data(), t_bs.data() + t_bs.size()};
-    m_address = value;
+    *this = t_bs;
 }
 
 auto Network::Address::operator=(const std::span<const std::byte>& t_bs) -> Address&
 {
     static_cast<void>(validate(t_bs));
-    address_type value {t_bs.data(), t_bs.data() + t_bs.size()};
-    m_address = value;
+    const address_type address {t_bs.data(), t_bs.data() + t_bs.size()};
+    m_address = address;
     return *this;
 }
 
