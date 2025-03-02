@@ -31,7 +31,6 @@
 #endif
 
 #include <string>       // std::string
-#include <utility>      // std::move()
 
 Network::Address::Address(const std::span<const std::byte>& t_bs)
 {
