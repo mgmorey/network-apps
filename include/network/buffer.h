@@ -72,12 +72,12 @@ namespace Network
 
         [[nodiscard]] auto span() noexcept -> std::span<value_type>
         {
-            return std::span {m_buffer.data(), m_buffer.size()};
+            return m_buffer;
         }
 
         [[nodiscard]] auto span() const noexcept -> std::span<const value_type>
         {
-            return std::span {m_buffer.data(), m_buffer.size()};
+            return m_buffer;
         }
 
     private:
