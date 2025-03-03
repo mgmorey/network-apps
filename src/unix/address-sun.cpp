@@ -22,7 +22,7 @@
 
 auto Network::Address::sun_text() const -> std::string
 {
-    return std::string {to_path(m_address)};
+    return std::string {to_path(m_span)};
 }
 
 #endif

@@ -25,14 +25,14 @@
 
 auto Network::Address::sa_family() const -> family_type
 {
-    return get_sa_family(m_address);
+    return get_sa_family(m_span);
 }
 
 #ifdef HAVE_SOCKADDR_SA_LEN
 
 auto Network::Address::sa_length() const -> socket_length_type
 {
-    return get_sa_length(m_address);
+    return get_sa_length(m_span);
 }
 
 #endif

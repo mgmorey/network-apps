@@ -84,7 +84,8 @@ namespace Network
 #endif
 
     private:
-        address_type m_address;
+        address_type m_addr;
+        std::span<const std::byte> m_span;
     };
 
     extern auto operator<<(std::ostream& os,

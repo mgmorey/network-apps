@@ -29,12 +29,12 @@
 
 auto Network::Address::sin6_addr() const -> in6_addr
 {
-    return get_sin6_addr(m_address);
+    return get_sin6_addr(m_span);
 }
 
 auto Network::Address::sin6_port() const -> port_type
 {
-    return get_sin6_port(m_address);
+    return get_sin6_port(m_span);
 }
 
 auto Network::Address::sin6_text() const -> std::string

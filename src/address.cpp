@@ -40,19 +40,20 @@ Network::Address::Address(const std::span<const std::byte>& t_bs)
 auto Network::Address::operator=(const std::span<const std::byte>& t_bs) -> Address&
 {
     static_cast<void>(validate(t_bs));
-    const address_type address {t_bs.data(), t_bs.data() + t_bs.size()};
-    m_address = address;
+    const address_type addr {t_bs.data(), t_bs.data() + t_bs.size()};
+    m_addr = addr;
+    m_span = t_bs;
     return *this;
 }
 
 Network::Address::operator address_type() const
 {
-    return m_address;
+    return m_addr;
 }
 
 auto Network::Address::empty() const -> bool
 {
-    return m_address.empty();
+    return m_addr.empty();
 }
 
 auto Network::Address::family() const -> socket_family_type
