@@ -41,8 +41,7 @@ auto Network::Address::operator=(const std::span<const std::byte>& t_bs) -> Addr
 {
     static_cast<void>(validate(t_bs));
     const address_type addr {t_bs.data(), t_bs.data() + t_bs.size()};
-    m_addr = addr;
-    m_span = t_bs;
+    m_span = std::span(m_addr = addr);
     return *this;
 }
 
