@@ -14,10 +14,10 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/address.h"                    // Address
+#include "network/family-type.h"                // family_type
 #include "network/familyerror.h"                // FamilyError
 #include "network/os-features.h"                // HAVE_SOCKADDR_SA_LEN
 #include "network/port-type.h"                  // port_type
-#include "network/socket-family-type.h"         // socket_family_type
 #include "network/validate-bs.h"                // validate()
 
 #ifdef HAVE_SOCKADDR_SA_LEN
@@ -55,7 +55,7 @@ auto Network::Address::empty() const -> bool
     return m_addr.empty();
 }
 
-auto Network::Address::family() const -> socket_family_type
+auto Network::Address::family() const -> family_type
 {
     return sa_family();
 }

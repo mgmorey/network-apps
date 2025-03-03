@@ -17,7 +17,7 @@
 #define NETWORK_ADDRESS_H
 
 #include "network/bytestring.h"         // ByteString
-#include "network/family-type.h"        // socket_family_type
+#include "network/family-type.h"        // family_type
 #include "network/os-features.h"        // HAVE_SOCKADDR_SA_LEN
 #include "network/port-type.h"          // port_type
 
