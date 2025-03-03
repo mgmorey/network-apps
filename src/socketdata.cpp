@@ -23,13 +23,11 @@ Network::SocketData::SocketData(handle_type t_handle,
                                 family_type t_family,
                                 bool t_is_verbose,
                                 bool t_is_testing)
-    : m_handle(t_handle), m_family(t_family),
+    : m_family(t_family),
       m_is_verbose(t_is_verbose),
       m_is_testing(t_is_testing)
 {
-    if (!m_is_testing && m_handle == handle_null) {
-        throw LogicError("Invalid socket descriptor value");
-    }
+    static_cast<void>(handle(t_handle));
 }
 
 Network::SocketData::SocketData(const SocketData& t_socket,
@@ -59,6 +57,16 @@ auto Network::SocketData::family() const noexcept -> family_type
 auto Network::SocketData::handle() const noexcept -> handle_type
 {
     return m_handle;
+}
+
+auto Network::SocketData::handle(handle_type t_handle) -> SocketData&
+{
+    if (!m_is_testing && t_handle == handle_null) {
+        throw LogicError("Invalid socket descriptor value");
+    }
+
+    m_handle = t_handle;
+    return *this;
 }
 
 auto Network::SocketData::is_verbose() const noexcept -> bool

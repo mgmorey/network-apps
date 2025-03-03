@@ -49,6 +49,7 @@ namespace Network
 
         [[nodiscard]] auto family() const noexcept -> family_type;
         [[nodiscard]] auto handle() const noexcept -> handle_type;
+        [[nodiscard]] auto handle(handle_type t_handle) -> SocketData&;
         [[nodiscard]] auto is_verbose() const noexcept -> bool;
 
     private:
