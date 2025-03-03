@@ -13,19 +13,35 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_FORMAT_BYTESTRING_H
-#define NETWORK_FORMAT_BYTESTRING_H
+#include "network/format-span-byte.h"           // format()
+#include "network/address.h"                    // Address
+#include "network/logicerror.h"                 // LogicError
+#include "network/to-string-span-byte.h"        // to_string()
 
 #include <cstddef>      // std::byte
 #include <optional>     // std::optional
 #include <span>         // std::span
+#include <sstream>      // std::ostringstream
 #include <string>       // std::string
 
-namespace Network
+auto Network::format(const std::span<const std::byte>& bs) -> std::string
 {
-    extern auto format(const std::span<const std::byte>& bs) -> std::string;
-    extern auto format(const std::span<const std::byte>& bs,
-                       std::optional<std::string>& str) -> std::string;
+    try {
+        std::ostringstream oss;
+        oss << Address(bs);
+        return oss.str();
+    }
+    catch (const LogicError& error) {
+        return to_string(bs);
+    }
 }
 
-#endif
+auto Network::format(const std::span<const std::byte>& bs,
+                     std::optional<std::string>& str) -> std::string
+{
+    if (!str) {
+        str = format(bs);
+    }
+
+    return *str;
+}

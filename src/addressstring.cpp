@@ -15,7 +15,7 @@
 
 #include "network/addressstring.h"      // AddressString, operator<<()
 #include "network/bytestring.h"         // ByteString
-#include "network/format-bytestring.h"  // format()
+#include "network/format-span-byte.h"   // format()
 
 #include <cstddef>      // std::byte
 #include <ostream>      // std::ostream
