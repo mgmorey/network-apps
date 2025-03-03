@@ -16,8 +16,6 @@
 #ifndef NETWORK_ADDRESSSTRING_H
 #define NETWORK_ADDRESSSTRING_H
 
-#include "network/bytestring.h"         // ByteString
-
 #include <cstddef>      // std::byte
 #include <optional>     // std::optional
 #include <span>         // std::span
@@ -40,8 +38,8 @@ namespace Network
         explicit operator std::string() const;
 
     private:
-        ByteString m_addr;
-        mutable std::optional<std::string> m_addr_str;
+        std::span<const std::byte> m_bs;
+        mutable std::optional<std::string> m_str;
     };
 
     extern auto operator<<(std::ostream& os,

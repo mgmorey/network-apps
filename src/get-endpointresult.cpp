@@ -43,17 +43,17 @@ auto Network::get_endpointresult(const std::span<char>& hostname,
                                  const ByteString& addr, int flags,
                                  bool is_verbose) -> OsErrorResult
 {
-    const AddressString addr_str {addr};
-    const auto [addr_ptr, addr_len] {get_sa_span(addr)};
+    const AddressString sa_str {addr};
+    const auto [sa, sa_length] {get_sa_span(addr)};
     const std::string_view hostname_sv {hostname.data(), hostname.size()};
     const std::string_view service_sv {service.data(), service.size()};
 
     if (is_verbose) {
         // clang-format off
         std::cout << "Calling ::getnameinfo("
-                  << addr_str
+                  << sa_str
                   << ", "
-                  << addr_len
+                  << sa_length
                   << ", "
                   << quote(hostname_sv)
                   << ", "
@@ -69,8 +69,8 @@ auto Network::get_endpointresult(const std::span<char>& hostname,
         // clang-format on
     }
 
-    if (const auto api_error {::getnameinfo(addr_ptr,
-                                            addr_len,
+    if (const auto api_error {::getnameinfo(sa,
+                                            sa_length,
                                             hostname.data(),
                                             hostname.size(),
                                             service.data(),
@@ -80,9 +80,9 @@ auto Network::get_endpointresult(const std::span<char>& hostname,
         std::ostringstream oss;
         // clang-format off
         oss << "Call to ::getnameinfo("
-            << addr_str
+            << sa_str
             << ", "
-            << addr_len
+            << sa_length
             << ", "
             << quote(hostname_sv)
             << ", "
@@ -105,9 +105,9 @@ auto Network::get_endpointresult(const std::span<char>& hostname,
     if (is_verbose) {
         // clang-format off
         std::cout << "Call to ::getnameinfo("
-                  << addr_str
+                  << sa_str
                   << ", "
-                  << addr_len
+                  << sa_length
                   << ", "
                   << quote(hostname_sv)
                   << ", "

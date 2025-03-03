@@ -62,8 +62,8 @@ auto Network::get_nameresult(const GetNameParams& args,
     BinaryBuffer buffer {sa_length_max};
     const handle_type handle {args.m_handle};
     const std::span bs {buffer};
-    const AddressString addr_str {bs};
-    auto [addr_ptr, addr_len] {get_sa_span(bs)};
+    const AddressString sa_str {bs};
+    auto [sa, sa_length] {get_sa_span(bs)};
 
     if (args.m_is_verbose) {
         std::cout << "Calling "
@@ -71,16 +71,16 @@ auto Network::get_nameresult(const GetNameParams& args,
                   << '('
                   << handle
                   << ", "
-                  << addr_str
+                  << sa_str
                   << ", "
-                  << addr_len
+                  << sa_length
                   << ", ...)"
                   << std::endl;
     }
 
     reset_api_error();
 
-    if (binding.first(handle, addr_ptr, &addr_len) == socket_error) {
+    if (binding.first(handle, sa, &sa_length) == socket_error) {
         const auto api_error {get_api_error()};
         const auto os_error {to_os_error(api_error)};
         std::ostringstream oss;
@@ -89,9 +89,9 @@ auto Network::get_nameresult(const GetNameParams& args,
             << '('
             << handle
             << ", "
-            << addr_str
+            << sa_str
             << ", "
-            << addr_len
+            << sa_length
             << ", ...) failed with error "
             << api_error
             << ": "
@@ -99,5 +99,5 @@ auto Network::get_nameresult(const GetNameParams& args,
         return OsErrorResult {os_error, oss.str()};
     }
 
-    return buffer.size(to_size(addr_len));
+    return buffer.size(to_size(sa_length));
 }

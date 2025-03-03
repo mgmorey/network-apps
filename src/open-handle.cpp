@@ -57,12 +57,12 @@ auto Network::open(const OpenHandleParams& args, bool is_bind) -> OsErrorResult
 {
     const auto binding {get_binding(is_bind)};
     const auto handle {args.m_handle};
-    const AddressString addr_str {args.m_addr};
-    const auto [addr_ptr, addr_len] {get_sa_span(args.m_addr)};
+    const AddressString sa_str {args.m_addr};
+    const auto [sa, sa_length] {get_sa_span(args.m_addr)};
 
-    if (addr_len == sa_length_min) {
+    if (sa_length == sa_length_min) {
         throw AddressError("Address payload length is zero: " +
-                           std::string {addr_str});
+                           std::string {sa_str});
     }
 
     if (args.m_is_verbose) {
@@ -71,16 +71,16 @@ auto Network::open(const OpenHandleParams& args, bool is_bind) -> OsErrorResult
                   << '('
                   << handle
                   << ", "
-                  << addr_str
+                  << sa_str
                   << ", "
-                  << addr_len
+                  << sa_length
                   << ')'
                   << std::endl;
     }
 
     reset_api_error();
 
-    if (binding.first(handle, addr_ptr, addr_len) == socket_error) {
+    if (binding.first(handle, sa, sa_length) == socket_error) {
         const auto api_error {get_api_error()};
         const auto os_error {to_os_error(api_error)};
         std::ostringstream oss;
@@ -89,9 +89,9 @@ auto Network::open(const OpenHandleParams& args, bool is_bind) -> OsErrorResult
             << '('
             << handle
             << ", "
-            << addr_str
+            << sa_str
             << ", "
-            << addr_len
+            << sa_length
             << ") failed with error "
             << api_error
             << ": "

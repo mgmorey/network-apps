@@ -41,25 +41,25 @@
 auto Network::accept(const SocketData& sd) -> AcceptResult
 {
     BinaryBuffer buffer {sa_length_max};
+    const std::span bs {buffer};
+    const AddressString sa_str {bs};
+    auto [sa, sa_length] {get_sa_span(bs)};
     const auto handle_1 {sd.handle()};
     const auto is_verbose {sd.is_verbose()};
-    const std::span bs {buffer};
-    const AddressString addr_str {bs};
-    auto [addr_ptr, addr_len] {get_sa_span(bs)};
 
     if (is_verbose) {
         std::cout << "Calling ::accept("
                   << handle_1
                   << ", "
-                  << addr_str
+                  << sa_str
                   << ", "
-                  << addr_len
+                  << sa_length
                   << ", ...)"
                   << std::endl;
     }
 
     reset_api_error();
-    const auto handle_2 {::accept(handle_1, addr_ptr, &addr_len)};
+    const auto handle_2 {::accept(handle_1, sa, &sa_length)};
 
     if (handle_2 == handle_null) {
         const auto api_error {get_api_error()};
@@ -68,9 +68,9 @@ auto Network::accept(const SocketData& sd) -> AcceptResult
         oss << "Call to ::accept("
             << handle_1
             << ", "
-            << addr_str
+            << sa_str
             << ", "
-            << addr_len
+            << sa_length
             << ", ...) failed with error "
             << api_error
             << ": "
@@ -78,5 +78,5 @@ auto Network::accept(const SocketData& sd) -> AcceptResult
         throw Error(oss.str());
     }
 
-    return {SocketData {sd, handle_2}, buffer.size(to_size(addr_len))};
+    return {SocketData {sd, handle_2}, buffer.size(to_size(sa_length))};
 }

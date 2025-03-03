@@ -14,7 +14,6 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/addressstring.h"      // AddressString, operator<<()
-#include "network/bytestring.h"         // ByteString
 #include "network/format-span-byte.h"   // format()
 
 #include <cstddef>      // std::byte
@@ -23,13 +22,13 @@
 #include <string>       // std::string
 
 Network::AddressString::AddressString(const std::span<const std::byte>& t_bs) :
-    m_addr({t_bs.data(), t_bs.data() + t_bs.size()})
+    m_bs(t_bs)
 {
 }
 
 Network::AddressString::operator std::string() const
 {
-    return format(m_addr, m_addr_str);
+    return format(m_bs, m_str);
 }
 
 auto Network::operator<<(std::ostream& os,
