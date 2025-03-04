@@ -15,9 +15,16 @@
 
 #include "network/socketdata.h"         // SocketData
 #include "network/family-type.h"        // family_type
+#include "network/familyerror.h"        // FamilyError
 #include "network/handle-null.h"        // handle_null
 #include "network/handle-type.h"        // handle_type
 #include "network/logicerror.h"         // LogicError
+
+#ifdef WIN32
+#include <winsock2.h>           // AF_UNSPEC
+#else
+#include <sys/socket.h>         // AF_UNSPEC
+#endif
 
 Network::SocketData::SocketData(handle_type t_handle,
                                 family_type t_family,
@@ -52,6 +59,16 @@ Network::SocketData::operator handle_type() const noexcept
 auto Network::SocketData::family() const noexcept -> family_type
 {
     return m_family;
+}
+
+auto Network::SocketData::family(family_type t_family) -> SocketData&
+{
+    if (!m_is_testing && t_family == AF_UNSPEC) {
+        throw FamilyError(t_family);
+    }
+
+    m_family = t_family;
+    return *this;
 }
 
 auto Network::SocketData::handle() const noexcept -> handle_type
