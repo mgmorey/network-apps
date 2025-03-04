@@ -24,7 +24,7 @@
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
 
-auto Network::format(const std::span<const std::byte>& bs) -> std::string
+auto Network::format(std::span<const std::byte> bs) -> std::string
 {
     try {
         std::ostringstream oss;
@@ -36,7 +36,7 @@ auto Network::format(const std::span<const std::byte>& bs) -> std::string
     }
 }
 
-auto Network::format(const std::span<const std::byte>& bs,
+auto Network::format(std::span<const std::byte> bs,
                      std::optional<std::string>& str) -> std::string
 {
     if (!str) {

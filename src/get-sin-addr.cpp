@@ -25,7 +25,7 @@
 #include <cstddef>      // std::byte
 #include <span>         // std::span
 
-auto Network::get_sin_addr(const std::span<const std::byte>& bs) -> in_addr
+auto Network::get_sin_addr(std::span<const std::byte> bs) -> in_addr
 {
     const auto* const sin {get_sin_pointer(bs)};
     return sin->sin_addr;

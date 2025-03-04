@@ -29,7 +29,7 @@ namespace Network
                                const AddressString& as) -> std::ostream&;
 
     public:
-        explicit AddressString(const std::span<const std::byte>& t_bs);
+        explicit AddressString(std::span<const std::byte> t_bs);
         AddressString(const AddressString&) = default;
         AddressString(AddressString&&) = default;
         ~AddressString() = default;

@@ -25,13 +25,13 @@
 #include <cstddef>      // std::byte
 #include <span>         // std::span
 
-auto Network::get_sa_pointer(const std::span<std::byte>& bs) -> sockaddr*
+auto Network::get_sa_pointer(std::span<std::byte> bs) -> sockaddr*
 {
     void* pointer {bs.data()};
     return static_cast<sockaddr*>(pointer);
 }
 
-auto Network::get_sa_pointer(const std::span<const std::byte>& bs) ->
+auto Network::get_sa_pointer(std::span<const std::byte> bs) ->
     const sockaddr*
 {
     const void* pointer {bs.data()};

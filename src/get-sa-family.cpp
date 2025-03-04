@@ -20,8 +20,7 @@
 #include <cstddef>      // std::byte
 #include <span>         // std::span
 
-auto Network::get_sa_family(const std::span<const std::byte>& bs) ->
-    family_type
+auto Network::get_sa_family(std::span<const std::byte> bs) -> family_type
 {
     const auto* const sa {get_sa_pointer(bs)};
     return static_cast<socket_family_type>(sa->sa_family);

@@ -31,7 +31,7 @@
 #include <cstddef>      // std::byte
 #include <span>         // std::span
 
-auto Network::validate(const std::span<const std::byte>& bs) ->
+auto Network::validate(std::span<const std::byte> bs) ->
     std::span<const std::byte>
 {
     switch (const auto family {get_sa_family(bs)}) {

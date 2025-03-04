@@ -21,7 +21,7 @@
 
 namespace Network
 {
-    extern auto validate(const std::span<const std::byte>& bs) ->
+    extern auto validate(std::span<const std::byte> bs) ->
         std::span<const std::byte>;
 }
 

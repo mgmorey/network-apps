@@ -32,13 +32,12 @@
 
 #include <string>       // std::string
 
-Network::Address::Address(const std::span<const std::byte>& t_bs)
+Network::Address::Address(std::span<const std::byte> t_bs)
 {
     *this = t_bs;
 }
 
-auto Network::Address::operator=(const std::span<const std::byte>& t_bs) ->
-    Address&
+auto Network::Address::operator=(std::span<const std::byte> t_bs) -> Address&
 {
     static_cast<void>(validate(t_bs));
     const address_type addr {t_bs.data(), t_bs.data() + t_bs.size()};

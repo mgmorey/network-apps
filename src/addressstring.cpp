@@ -21,7 +21,7 @@
 #include <span>         // std::span
 #include <string>       // std::string
 
-Network::AddressString::AddressString(const std::span<const std::byte>& t_bs) :
+Network::AddressString::AddressString(std::span<const std::byte> t_bs) :
     m_bs(t_bs)
 {
 }

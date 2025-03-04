@@ -22,7 +22,7 @@
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
 
-auto Network::to_string(const std::span<const std::byte>& bs) -> std::string
+auto Network::to_string(std::span<const std::byte> bs) -> std::string
 {
     std::ostringstream oss;
     oss << "0x";

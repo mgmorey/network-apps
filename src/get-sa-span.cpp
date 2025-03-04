@@ -28,13 +28,13 @@
 #include <span>         // std::span
 #include <utility>      // std::pair
 
-auto Network::get_sa_span(const std::span<std::byte>& bs) ->
+auto Network::get_sa_span(std::span<std::byte> bs) ->
     std::pair<sockaddr*, socket_length_type>
 {
     return {get_sa_pointer(bs), get_sa_length(bs)};
 }
 
-auto Network::get_sa_span(const std::span<const std::byte>& bs) ->
+auto Network::get_sa_span(std::span<const std::byte> bs) ->
     std::pair<const sockaddr*, socket_length_type>
 {
     return {get_sa_pointer(bs), get_sa_length(bs)};

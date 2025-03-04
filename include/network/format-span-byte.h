@@ -23,8 +23,8 @@
 
 namespace Network
 {
-    extern auto format(const std::span<const std::byte>& bs) -> std::string;
-    extern auto format(const std::span<const std::byte>& bs,
+    extern auto format(std::span<const std::byte> bs) -> std::string;
+    extern auto format(std::span<const std::byte> bs,
                        std::optional<std::string>& str) -> std::string;
 }
 

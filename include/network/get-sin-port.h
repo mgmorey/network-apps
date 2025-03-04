@@ -23,7 +23,7 @@
 
 namespace Network
 {
-    extern auto get_sin_port(const std::span<const std::byte>& bs) ->
+    extern auto get_sin_port(std::span<const std::byte> bs) ->
         port_type;
 }
 

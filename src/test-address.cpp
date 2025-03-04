@@ -211,7 +211,7 @@ namespace
         }
     }
 
-    auto test(const std::span<const std::byte>& bs) -> void
+    auto test(std::span<const std::byte> bs) -> void
     {
         assert(!bs.empty());
         const auto size {bs.size()};

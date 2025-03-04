@@ -25,7 +25,7 @@
 #include <cstddef>      // std::byte
 #include <span>         // std::span
 
-auto Network::get_sin6_pointer(const std::span<const std::byte>& bs) ->
+auto Network::get_sin6_pointer(std::span<const std::byte> bs) ->
     const sockaddr_in6*
 {
     const void* pointer {bs.data()};

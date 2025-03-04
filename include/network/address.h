@@ -48,7 +48,7 @@ namespace Network
     public:
         using address_type = ByteString;
 
-        explicit Address(const std::span<const std::byte>& t_bs);
+        explicit Address(std::span<const std::byte> t_bs);
 
         Address() = default;
         Address(const Address&) = default;
@@ -57,7 +57,7 @@ namespace Network
         auto operator=(const Address&) -> Address& = default;
         auto operator=(Address&&) -> Address& = default;
 
-        auto operator=(const std::span<const std::byte>& t_bs) -> Address&;
+        auto operator=(std::span<const std::byte> t_bs) -> Address&;
         explicit operator address_type() const;
 
         [[nodiscard]] auto empty() const -> bool;

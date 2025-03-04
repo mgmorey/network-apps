@@ -25,7 +25,7 @@
 #include <cstddef>      // std::byte
 #include <span>         // std::span
 
-auto Network::get_sin6_addr(const std::span<const std::byte>& bs) -> in6_addr
+auto Network::get_sin6_addr(std::span<const std::byte> bs) -> in6_addr
 {
     const auto* const sin6 {get_sin6_pointer(bs)};
     return sin6->sin6_addr;

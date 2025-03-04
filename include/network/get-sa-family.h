@@ -23,7 +23,7 @@
 
 namespace Network
 {
-    extern auto get_sa_family(const std::span<const std::byte>& bs) ->
+    extern auto get_sa_family(std::span<const std::byte> bs) ->
         family_type;
 }
 

@@ -24,7 +24,7 @@
 #include <span>         // std::span
 #include <string_view>  // std::string_view
 
-auto Network::to_path(const std::span<const std::byte>& bs) ->
+auto Network::to_path(std::span<const std::byte> bs) ->
     std::string_view
 {
     const auto* const path_str {get_path_pointer(get_sun_pointer(bs))};

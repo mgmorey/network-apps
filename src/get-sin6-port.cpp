@@ -26,7 +26,7 @@
 #include <cstddef>      // std::byte
 #include <span>         // std::span
 
-auto Network::get_sin6_port(const std::span<const std::byte>& bs) -> port_type
+auto Network::get_sin6_port(std::span<const std::byte> bs) -> port_type
 {
     const auto* const sin6 {get_sin6_pointer(bs)};
     return ntohs(sin6->sin6_port);

@@ -30,9 +30,9 @@
 
 namespace Network
 {
-    extern auto get_sa_span(const std::span<std::byte>& bs) ->
+    extern auto get_sa_span(std::span<std::byte> bs) ->
         std::pair<sockaddr*, socket_length_type>;
-    extern auto get_sa_span(const std::span<const std::byte>& bs) ->
+    extern auto get_sa_span(std::span<const std::byte> bs) ->
         std::pair<const sockaddr*, socket_length_type>;
 }
 

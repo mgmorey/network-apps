@@ -27,7 +27,7 @@
 
 namespace Network
 {
-    extern auto get_sin6_addr(const std::span<const std::byte>& bs) ->
+    extern auto get_sin6_addr(std::span<const std::byte> bs) ->
         in6_addr;
 }
 

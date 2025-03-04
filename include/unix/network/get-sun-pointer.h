@@ -25,7 +25,7 @@
 
 namespace Network
 {
-    extern auto get_sun_pointer(const std::span<const std::byte>& bs) ->
+    extern auto get_sun_pointer(std::span<const std::byte> bs) ->
         const sockaddr_un*;
 }
 

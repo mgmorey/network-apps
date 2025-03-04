@@ -23,7 +23,7 @@
 #include <cstddef>      // std::byte
 #include <span>         // std::span
 
-auto Network::get_sun_pointer(const std::span<const std::byte>& bs) ->
+auto Network::get_sun_pointer(std::span<const std::byte> bs) ->
     const sockaddr_un*
 {
     const void* pointer {bs.data()};

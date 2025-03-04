@@ -24,7 +24,7 @@
 
 namespace Network
 {
-    extern auto to_path(const std::span<const std::byte>& bs) ->
+    extern auto to_path(std::span<const std::byte> bs) ->
         std::string_view;
 }
 

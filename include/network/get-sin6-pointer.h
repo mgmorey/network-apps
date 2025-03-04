@@ -27,7 +27,7 @@
 
 namespace Network
 {
-    extern auto get_sin6_pointer(const std::span<const std::byte>& bs) ->
+    extern auto get_sin6_pointer(std::span<const std::byte> bs) ->
         const sockaddr_in6*;
 }
 
