@@ -38,7 +38,6 @@ namespace Network
         SocketData(const SocketData& t_socket,
                    handle_type t_handle);
 
-        SocketData() noexcept = default;
         SocketData(const SocketData&) noexcept = default;
         SocketData(SocketData&&) noexcept = default;
         ~SocketData() noexcept = default;

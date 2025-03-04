@@ -34,7 +34,6 @@ namespace Network
     public:
         explicit Socket(const SocketData& t_data);
 
-        Socket() noexcept = default;
         Socket(const Socket&) noexcept = delete;
         Socket(Socket&&) noexcept = delete;
         virtual ~Socket() noexcept = default;
