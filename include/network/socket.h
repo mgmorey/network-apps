@@ -37,8 +37,16 @@ namespace Network
         auto operator=(const Socket&) noexcept -> Socket& = delete;
         auto operator=(Socket&&) noexcept -> Socket& = delete;
 
-        explicit virtual operator bool() const noexcept = 0;
-        explicit virtual operator handle_type() const noexcept = 0;
+        explicit operator bool() const noexcept
+        {
+            return handle() != handle_null;
+        }
+
+        explicit operator handle_type() const noexcept
+        {
+            return handle();
+        }
+
         [[nodiscard]] virtual auto family() const noexcept -> family_type = 0;
         [[nodiscard]] virtual auto family(family_type t_family) -> Socket& = 0;
         [[nodiscard]] virtual auto handle() const noexcept -> handle_type = 0;

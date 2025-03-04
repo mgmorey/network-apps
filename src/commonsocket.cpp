@@ -79,16 +79,6 @@ Network::CommonSocket::~CommonSocket() noexcept
     }
 }
 
-Network::CommonSocket::operator bool() const noexcept
-{
-    return m_handle != handle_null;
-}
-
-Network::CommonSocket::operator handle_type() const noexcept
-{
-    return m_handle;
-}
-
 auto Network::CommonSocket::family() const noexcept -> family_type
 {
     return m_family;

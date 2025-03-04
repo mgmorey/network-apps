@@ -48,8 +48,6 @@ namespace Network
         auto operator=(const CommonSocket&) noexcept -> CommonSocket& = delete;
         auto operator=(CommonSocket&&) noexcept -> CommonSocket& = delete;
 
-        explicit operator bool() const noexcept override;
-        explicit operator handle_type() const noexcept override;
         [[nodiscard]] auto family() const noexcept -> family_type override;
         [[nodiscard]] auto family(family_type t_family) ->
             CommonSocket& override;
