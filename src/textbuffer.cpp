@@ -16,8 +16,8 @@
 #include "network/textbuffer.h"         // TextBuffer
 #include "network/buffer.h"             // Buffer
 
-Network::TextBuffer::TextBuffer(size_type t_size)
-    : Buffer(t_size)
+Network::TextBuffer::TextBuffer(size_type t_size) :
+    Buffer(t_size)
 {
 }
 
