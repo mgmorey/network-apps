@@ -14,8 +14,9 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/assert.h"             // assert()
-#include "network/network.h"            // Error, SocketHints,
-                                        // create_socket(),
+#include "network/commonsocket.h"       // CommonSocket
+#include "network/network.h"            // Error, SocketData,
+                                        // SocketHints, UniqueSocket,
                                         // handle_null, handle_type,
                                         // os_error_type,
                                         // start_context()
@@ -32,20 +33,33 @@
                         // std::size_t
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
+#include <memory>       // std::make_unique()
 #include <regex>        // std::regex, std::regex_match
 #include <string>       // std::string
 
 namespace
 {
-    using Network::ByteString;
+    using Network::CommonSocket;
     using Network::Error;
+    using Network::SocketData;
     using Network::SocketHints;
+    using Network::UniqueSocket;
     using Network::create_socket;
     using Network::handle_null;
     using Network::handle_type;
     using Network::os_error_type;
     using Network::parse;
     using Network::start_context;
+
+    class TestCommonSocket
+        : public CommonSocket
+    {
+    public:
+        explicit TestCommonSocket(const SocketData& t_data)
+            : CommonSocket(t_data)
+        {
+        }
+    };
 
     constexpr auto expected_error_accept_re {
         R"(Call to ::accept\(.+\) failed with error \d+: .+)"
@@ -80,9 +94,10 @@ namespace
 
     auto is_verbose {false}; // NOLINT
 
-    auto create_null_socket() -> Network::UniqueSocket
+    auto create_null_socket() -> UniqueSocket
     {
-        return create_socket(handle_null, AF_UNSPEC, is_verbose, true);
+        const SocketData sd {handle_null, AF_UNSPEC, true, true};
+        return std::make_unique<TestCommonSocket>(sd);
     }
 
     auto parse_arguments(int argc, char** argv) -> void
