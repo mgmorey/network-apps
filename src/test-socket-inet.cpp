@@ -44,6 +44,7 @@ namespace
     using Network::SocketData;
     using Network::SocketHints;
     using Network::UniqueSocket;
+    using Network::create_socket;
     using Network::family_type;
     using Network::handle_null;
     using Network::handle_type;
@@ -110,14 +111,6 @@ namespace
         return std::make_unique<TestCommonSocket>(sd);
     }
 
-    auto create_test_socket(handle_type handle,
-                            family_type family,
-                            bool is_testing = true) -> UniqueSocket
-    {
-        const SocketData sd {handle, family, is_verbose, is_testing};
-        return create_test_socket(sd);
-    }
-
     auto create_test_socket() -> UniqueSocket
     {
         const SocketData sd {handle_null, AF_UNSPEC, is_verbose, true};
@@ -154,13 +147,14 @@ namespace
 
     auto test_socket(handle_type handle,
                      family_type family,
-                     bool is_testing,
                      const std::string& expected_error_re) -> void
     {
         std::string actual_error_str;
 
         try {
-            const auto sock {create_test_socket(handle, family, is_testing)};
+            const auto sock {create_socket(handle, family, is_verbose, false)};
+            assert(static_cast<bool>(*sock));
+            assert(static_cast<handle_type>(*sock) != handle_null);
         }
         catch (const Error& error) {
             print(error);
@@ -237,7 +231,7 @@ namespace
 
     auto test_socket_handle_invalid() -> void
     {
-        test_socket(handle_null, AF_UNSPEC, true, expected_error_handle_re);
+        test_socket(handle_null, AF_UNSPEC, expected_error_handle_re);
     }
 
     auto test_socket_listen_invalid() -> void
