@@ -16,7 +16,7 @@
 #ifndef NETWORK_HANDLE_NULL_H
 #define NETWORK_HANDLE_NULL_H
 
-#include "network/handle-type.h"                // handle_type
+#include "network/handle-type.h"        // handle_type
 
 #ifdef WIN32
 #include <winsock2.h>       // INVALID_SOCKET
