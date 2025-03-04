@@ -26,8 +26,7 @@
 
 namespace Network
 {
-    class UnixSocket final
-        : public CommonSocket
+    class UnixSocket final : public CommonSocket
     {
     public:
         explicit UnixSocket(const SocketData& t_data);
