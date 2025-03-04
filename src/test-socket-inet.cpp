@@ -52,8 +52,7 @@ namespace
     using Network::parse;
     using Network::start_context;
 
-    class TestCommonSocket
-        : public CommonSocket
+    class TestCommonSocket : public CommonSocket
     {
     public:
         explicit TestCommonSocket(const SocketData& t_data)
