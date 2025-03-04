@@ -22,8 +22,7 @@
 
 namespace Network
 {
-    class TextBuffer
-        : public Buffer<std::string>
+    class TextBuffer : public Buffer<std::string>
     {
     public:
         using string_type = std::string;
