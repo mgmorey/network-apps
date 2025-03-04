@@ -50,11 +50,7 @@ namespace Network
         auto operator=(CommonSocket&&) noexcept -> CommonSocket& = delete;
 
         [[nodiscard]] auto family() const noexcept -> family_type override;
-        [[nodiscard]] auto family(family_type t_family) ->
-            CommonSocket& override;
         [[nodiscard]] auto handle() const noexcept -> handle_type override;
-        [[nodiscard]] auto handle(handle_type t_handle) ->
-            CommonSocket& override;
         [[nodiscard]] auto is_verbose() const noexcept -> bool override;
         [[nodiscard]] auto is_testing() const noexcept -> bool override;
 

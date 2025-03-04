@@ -46,8 +46,17 @@ Network::CommonSocket::CommonSocket(handle_type t_handle,
     m_is_verbose(t_is_verbose),
     m_is_testing(t_is_testing)
 {
-    static_cast<void>(handle(t_handle));
-    static_cast<void>(family(t_family));
+    if (!is_testing() && t_handle == handle_null) {
+        throw LogicError("Invalid socket descriptor value");
+    }
+
+    m_handle = t_handle;
+
+    if (!is_testing() && t_family == family_null) {
+        throw FamilyError(t_family);
+    }
+
+    m_family = t_family;
 }
 
 Network::CommonSocket::CommonSocket(const SocketData& t_sd,
@@ -81,29 +90,9 @@ auto Network::CommonSocket::family() const noexcept -> family_type
     return m_family;
 }
 
-auto Network::CommonSocket::family(family_type t_family) -> CommonSocket&
-{
-    if (!is_testing() && t_family == family_null) {
-        throw FamilyError(t_family);
-    }
-
-    m_family = t_family;
-    return *this;
-}
-
 auto Network::CommonSocket::handle() const noexcept -> handle_type
 {
     return m_handle;
-}
-
-auto Network::CommonSocket::handle(handle_type t_handle) -> CommonSocket&
-{
-    if (!is_testing() && t_handle == handle_null) {
-        throw LogicError("Invalid socket descriptor value");
-    }
-
-    m_handle = t_handle;
-    return *this;
 }
 
 auto Network::CommonSocket::is_verbose() const noexcept -> bool

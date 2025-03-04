@@ -17,8 +17,9 @@
 #include "network/commonsocket.h"       // CommonSocket
 #include "network/network.h"            // Error, SocketData,
                                         // SocketHints, UniqueSocket,
-                                        // handle_null, handle_type,
-                                        // os_error_type,
+                                        // create_socket(),
+                                        // family_type, handle_null,
+                                        // handle_type, os_error_type,
                                         // start_context()
 #include "network/parse.h"              // parse()
 
@@ -58,18 +59,6 @@ namespace
         explicit TestCommonSocket(const SocketData& t_data)
             : CommonSocket(t_data)
         {
-        }
-
-        auto family(family_type t_family) -> TestCommonSocket& final
-        {
-            static_cast<void>(CommonSocket::family(t_family));
-            return *this;
-        }
-
-        auto handle(handle_type t_handle) -> TestCommonSocket& final
-        {
-            static_cast<void>(CommonSocket::handle(t_handle));
-            return *this;
         }
     };
 

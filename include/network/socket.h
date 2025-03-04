@@ -48,9 +48,7 @@ namespace Network
         }
 
         [[nodiscard]] virtual auto family() const noexcept -> family_type = 0;
-        [[nodiscard]] virtual auto family(family_type t_family) -> Socket& = 0;
         [[nodiscard]] virtual auto handle() const noexcept -> handle_type = 0;
-        [[nodiscard]] virtual auto handle(handle_type t_handle) -> Socket& = 0;
         [[nodiscard]] virtual auto is_verbose() const noexcept -> bool = 0;
         [[nodiscard]] virtual auto is_testing() const noexcept -> bool = 0;
 
