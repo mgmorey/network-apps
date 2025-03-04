@@ -27,15 +27,15 @@
 
 Network::NativeContext::NativeContext(const OptionalVersion& t_version,
                                       FailureMode t_failure,
-                                      bool t_is_verbose)
-    : m_is_verbose(t_is_verbose)
+                                      bool t_is_verbose) :
+    m_is_verbose(t_is_verbose)
 {
     static_cast<void>(t_failure);
     static_cast<void>(t_version);
 }
 
-Network::NativeContext::NativeContext(bool t_is_verbose)
-    : m_is_verbose(t_is_verbose)
+Network::NativeContext::NativeContext(bool t_is_verbose) :
+    m_is_verbose(t_is_verbose)
 {
 }
 
