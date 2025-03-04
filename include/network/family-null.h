@@ -16,7 +16,7 @@
 #ifndef NETWORK_FAMILY_NULL_H
 #define NETWORK_FAMILY_NULL_H
 
-#include "network/family-type.h"                // family_type
+#include "network/family-type.h"        // family_type
 
 #ifdef WIN32
 #include <winsock2.h>           // AF_UNSPEC
