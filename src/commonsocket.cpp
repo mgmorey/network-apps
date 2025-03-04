@@ -108,8 +108,7 @@ auto Network::CommonSocket::is_testing() const noexcept -> bool
 auto Network::CommonSocket::accept() const -> AcceptResult
 
 {
-    const SocketData sd {m_handle, m_family, m_is_verbose, m_is_testing};
-    return Network::accept(sd);
+    return Network::accept({m_handle, m_family, m_is_verbose, m_is_testing});
 }
 
 auto Network::CommonSocket::listen(int t_backlog) const -> OsErrorResult
