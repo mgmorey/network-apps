@@ -23,7 +23,9 @@
 #include "network/to-bytestring.h"      // to_bytestring()
 #include "network/validate.h"           // validate()
 
+#include <cstddef>      // std::byte
 #include <ostream>      // std::ostream
+#include <span>         // std::span
 
 namespace Network
 {
@@ -56,7 +58,7 @@ namespace Network
         [[nodiscard]] virtual auto listen(int t_backlog) const ->
             OsErrorResult = 0;
         [[nodiscard]] virtual auto name(bool t_is_peer) const -> ByteString = 0;
-        [[nodiscard]] virtual auto open(const ByteString& t_addr,
+        [[nodiscard]] virtual auto open(std::span<const std::byte> t_bs,
                                         bool t_is_bind) -> OsErrorResult = 0;
         [[nodiscard]] virtual auto read(char* t_data,
                                         std::size_t t_size) const -> ssize_t = 0;

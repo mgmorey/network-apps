@@ -36,7 +36,8 @@
 #include "network/textbuffer.h"                 // TextBuffer
 #include "network/write.h"                      // write()
 
-#include <cstddef>      // std::size_t
+#include <cstddef>      // std::byte, std::size_t
+#include <span>         // std::span
 #include <iostream>     // std::cerr, std::endl
 
 Network::CommonSocket::CommonSocket(handle_type t_handle,
@@ -133,12 +134,12 @@ auto Network::CommonSocket::name(bool t_is_peer) const -> ByteString
     return value;
 }
 
-auto Network::CommonSocket::open(const ByteString& t_addr,
+auto Network::CommonSocket::open(std::span<const std::byte> t_bs,
                                  bool t_is_bind) -> OsErrorResult
 {
     const OpenHandleParams args
     {
-        .m_handle = handle(), .m_addr = t_addr, .m_is_verbose = is_verbose()
+        .m_handle = handle(), .m_bs = t_bs, .m_is_verbose = is_verbose()
     };
 
     if (const auto result {Network::open(args, t_is_bind)}) {

@@ -29,6 +29,8 @@
 #include <sys/types.h>          // ssize_t
 
 #include <array>        // std::array
+#include <cstddef>      // std::byte
+#include <span>         // std::span
 #include <string_view>  // std::string_view
 
 namespace Network
@@ -58,7 +60,7 @@ namespace Network
         [[nodiscard]] auto listen(int t_backlog) const ->
             OsErrorResult final;
         [[nodiscard]] auto name(bool t_is_peer) const -> ByteString final;
-        [[nodiscard]] auto open(const ByteString& t_addr,
+        [[nodiscard]] auto open(std::span<const std::byte> t_bs,
                                 bool t_is_bind) -> OsErrorResult override;
         [[nodiscard]] auto read(char* t_data,
                                 std::size_t t_size) const -> ssize_t final;

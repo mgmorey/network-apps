@@ -19,8 +19,10 @@
 #include "network/socketdata.h"         // SocketData
 #include "network/to-path.h"            // to_path()
 
+#include <cstddef>      // std::byte
 #include <filesystem>   // std::filesystem
 #include <iostream>     // std::cout, std::endl
+#include <span>         // std::span
 
 Network::UnixSocket::UnixSocket(const SocketData& t_sd) :
     CommonSocket(t_sd)
@@ -32,10 +34,10 @@ Network::UnixSocket::~UnixSocket() noexcept
     state(SocketState::closing);
 }
 
-auto Network::UnixSocket::open(const ByteString& t_addr,
+auto Network::UnixSocket::open(std::span<const std::byte> t_bs,
                                bool t_is_bind) -> OsErrorResult
 {
-    if (auto result {CommonSocket::open(t_addr, t_is_bind)}) {
+    if (auto result {CommonSocket::open(t_bs, t_is_bind)}) {
         return result;
     }
 

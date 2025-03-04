@@ -57,8 +57,8 @@ auto Network::open(const OpenHandleParams& args, bool is_bind) -> OsErrorResult
 {
     const auto binding {get_binding(is_bind)};
     const auto handle {args.m_handle};
-    const AddressString sa_str {args.m_addr};
-    const auto [sa, sa_length] {get_sa_span(args.m_addr)};
+    const AddressString sa_str {args.m_bs};
+    const auto [sa, sa_length] {get_sa_span(args.m_bs)};
 
     if (sa_length == sa_length_min) {
         throw AddressError("Address payload length is zero: " +

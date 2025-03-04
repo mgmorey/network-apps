@@ -30,6 +30,8 @@
 #include <sys/socket.h>     // AF_INET, AF_INET6
 #endif
 
+#include <cstddef>      // std::byte
+#include <span>         // std::span
 #include <string>       // std::string
 
 Network::Address::Address(std::span<const std::byte> t_bs)

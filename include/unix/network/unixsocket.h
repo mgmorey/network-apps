@@ -24,6 +24,9 @@
 #include "network/socketdata.h"         // SocketData
 #include "network/socketstate.h"        // SocketState
 
+#include <cstddef>      // std::byte
+#include <span>         // std::span
+
 namespace Network
 {
     class UnixSocket final : public CommonSocket
@@ -36,7 +39,7 @@ namespace Network
         auto operator=(const UnixSocket&) noexcept -> UnixSocket& = delete;
         auto operator=(UnixSocket&&) noexcept -> UnixSocket& = delete;
 
-        [[nodiscard]] auto open(const ByteString& t_addr,
+        [[nodiscard]] auto open(std::span<const std::byte> t_bs,
                                 bool t_is_bind) -> OsErrorResult final;
 
     protected:

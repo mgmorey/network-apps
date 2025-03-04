@@ -16,15 +16,17 @@
 #ifndef NETWORK_OPENHANDLEPARAMS_H
 #define NETWORK_OPENHANDLEPARAMS_H
 
-#include "network/bytestring.h"         // ByteString
 #include "network/handle-type.h"        // handle-type
+
+#include <cstddef>      // std::byte
+#include <span>         // std::span
 
 namespace Network
 {
     struct OpenHandleParams
     {
         handle_type m_handle;
-        const ByteString& m_addr;
+        std::span<const std::byte> m_bs;
         bool m_is_verbose;
     };
 }
