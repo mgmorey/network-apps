@@ -29,7 +29,7 @@ namespace Network
     class UnixSocket final : public CommonSocket
     {
     public:
-        explicit UnixSocket(const SocketData& t_data);
+        explicit UnixSocket(const SocketData& t_sd);
         UnixSocket(const UnixSocket&) noexcept = delete;
         UnixSocket(const UnixSocket&&) noexcept = delete;
         ~UnixSocket() noexcept final;

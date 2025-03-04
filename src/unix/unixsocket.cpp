@@ -22,8 +22,8 @@
 #include <filesystem>   // std::filesystem
 #include <iostream>     // std::cout, std::endl
 
-Network::UnixSocket::UnixSocket(const SocketData& t_data) :
-    CommonSocket(t_data)
+Network::UnixSocket::UnixSocket(const SocketData& t_sd) :
+    CommonSocket(t_sd)
 {
 }
 
