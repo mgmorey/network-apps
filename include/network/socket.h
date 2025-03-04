@@ -20,7 +20,6 @@
 #include "network/bytestring.h"         // ByteString
 #include "network/oserrorresult.h"      // OsErrorResult
 #include "network/readresult.h"         // ReadResult
-#include "network/socketdata.h"         // SocketData
 #include "network/to-bytestring.h"      // to_bytestring()
 #include "network/validate.h"           // validate()
 
@@ -29,16 +28,23 @@
 namespace Network
 {
     class Socket
-        : public SocketData
     {
     public:
-        explicit Socket(const SocketData& t_data);
-
+        Socket() noexcept = default;
         Socket(const Socket&) noexcept = delete;
         Socket(Socket&&) noexcept = delete;
         virtual ~Socket() noexcept = default;
         auto operator=(const Socket&) noexcept -> Socket& = delete;
         auto operator=(Socket&&) noexcept -> Socket& = delete;
+
+        explicit virtual operator bool() const noexcept = 0;
+        explicit virtual operator handle_type() const noexcept = 0;
+        [[nodiscard]] virtual auto family() const noexcept -> family_type = 0;
+        [[nodiscard]] virtual auto family(family_type t_family) -> Socket& = 0;
+        [[nodiscard]] virtual auto handle() const noexcept -> handle_type = 0;
+        [[nodiscard]] virtual auto handle(handle_type t_handle) -> Socket& = 0;
+        [[nodiscard]] virtual auto is_verbose() const noexcept -> bool = 0;
+        [[nodiscard]] virtual auto is_testing() const noexcept -> bool = 0;
 
         [[nodiscard]] virtual auto accept() const -> AcceptResult = 0;
         [[nodiscard]] virtual auto listen(int t_backlog) const ->

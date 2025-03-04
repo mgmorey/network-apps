@@ -45,6 +45,7 @@ namespace
     using Network::SocketHints;
     using Network::UniqueSocket;
     using Network::create_socket;
+    using Network::family_type;
     using Network::handle_null;
     using Network::handle_type;
     using Network::os_error_type;
@@ -58,6 +59,18 @@ namespace
         explicit TestCommonSocket(const SocketData& t_data)
             : CommonSocket(t_data)
         {
+        }
+
+        auto family(family_type t_family) -> TestCommonSocket& final
+        {
+            static_cast<void>(CommonSocket::family(t_family));
+            return *this;
+        }
+
+        auto handle(handle_type t_handle) -> TestCommonSocket& final
+        {
+            static_cast<void>(CommonSocket::handle(t_handle));
+            return *this;
         }
     };
 

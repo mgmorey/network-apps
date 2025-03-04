@@ -18,9 +18,12 @@
 #include "network/acceptresult.h"               // AcceptResult
 #include "network/bytestring.h"                 // ByteString
 #include "network/close.h"                      // close()
+#include "network/family-type.h"                // family_type
+#include "network/familyerror.h"                // FamilyError
 #include "network/get-name.h"                   // get_name()
 #include "network/getnameparams.h"              // GetNameParams
 #include "network/listen.h"                     // listen()
+#include "network/logicerror.h"                 // LogicError
 #include "network/open-handle.h"                // open()
 #include "network/openhandleparams.h"           // OpenHandleParams
 #include "network/oserrorresult.h"              // OsErrorResult
@@ -30,11 +33,40 @@
 #include "network/textbuffer.h"                 // TextBuffer
 #include "network/write.h"                      // write()
 
+#ifdef WIN32
+#include <winsock2.h>           // AF_UNSPEC
+#else
+#include <sys/socket.h>         // AF_UNSPEC
+#endif
+
 #include <cstddef>      // std::size_t
 #include <iostream>     // std::cerr, std::endl
 
-Network::CommonSocket::CommonSocket(const SocketData& t_data)
-    : Socket(t_data)
+Network::CommonSocket::CommonSocket(handle_type t_handle,
+                                    family_type t_family,
+                                    bool t_is_verbose,
+                                    bool t_is_testing) :
+    m_is_verbose(t_is_verbose),
+    m_is_testing(t_is_testing)
+{
+    static_cast<void>(handle(t_handle));
+    static_cast<void>(family(t_family));
+}
+
+Network::CommonSocket::CommonSocket(const SocketData& t_sd,
+                                    handle_type t_handle) :
+    CommonSocket(t_handle,
+                 t_sd.family(),
+                 t_sd.is_verbose(),
+                 t_sd.is_testing())
+{
+}
+
+Network::CommonSocket::CommonSocket(const SocketData& t_sd) :
+    CommonSocket(t_sd.handle(),
+                 t_sd.family(),
+                 t_sd.is_verbose(),
+                 t_sd.is_testing())
 {
 }
 
@@ -47,9 +79,61 @@ Network::CommonSocket::~CommonSocket() noexcept
     }
 }
 
-auto Network::CommonSocket::accept() const -> AcceptResult
+Network::CommonSocket::operator bool() const noexcept
 {
-    return Network::accept(*this);
+    return m_handle != handle_null;
+}
+
+Network::CommonSocket::operator handle_type() const noexcept
+{
+    return m_handle;
+}
+
+auto Network::CommonSocket::family() const noexcept -> family_type
+{
+    return m_family;
+}
+
+auto Network::CommonSocket::family(family_type t_family) -> CommonSocket&
+{
+    if (!is_testing() && t_family == AF_UNSPEC) {
+        throw FamilyError(t_family);
+    }
+
+    m_family = t_family;
+    return *this;
+}
+
+auto Network::CommonSocket::handle() const noexcept -> handle_type
+{
+    return m_handle;
+}
+
+auto Network::CommonSocket::handle(handle_type t_handle) -> CommonSocket&
+{
+    if (!is_testing() && t_handle == handle_null) {
+        throw LogicError("Invalid socket descriptor value");
+    }
+
+    m_handle = t_handle;
+    return *this;
+}
+
+auto Network::CommonSocket::is_verbose() const noexcept -> bool
+{
+    return m_is_verbose;
+}
+
+auto Network::CommonSocket::is_testing() const noexcept -> bool
+{
+    return m_is_testing;
+}
+
+auto Network::CommonSocket::accept() const -> AcceptResult
+
+{
+    const SocketData sd {m_handle, m_family, m_is_verbose, m_is_testing};
+    return Network::accept(sd);
 }
 
 auto Network::CommonSocket::listen(int t_backlog) const -> OsErrorResult

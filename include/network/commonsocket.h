@@ -18,8 +18,12 @@
 
 #include "network/acceptresult.h"       // AcceptResult
 #include "network/bytestring.h"         // ByteString
+#include "network/family-type.h"        // family_type
+#include "network/handle-null.h"        // handle_null
+#include "network/handle-type.h"        // handle_type
 #include "network/readresult.h"         // ReadResult
 #include "network/socket.h"             // Socket
+#include "network/socketdata.h"         // SocketData
 
 #include <sys/types.h>          // ssize_t
 
@@ -28,16 +32,32 @@
 
 namespace Network
 {
-    class CommonSocket
-        : public Socket
+    class CommonSocket : public Socket
     {
     public:
-        explicit CommonSocket(const SocketData& t_data);
+        CommonSocket(handle_type t_handle,
+                     family_type t_family,
+                     bool t_is_verbose = false,
+                     bool t_is_testing = false);
+        CommonSocket(const SocketData& t_sd, handle_type t_handle);
+        explicit CommonSocket(const SocketData& t_sd);
+
         CommonSocket(const CommonSocket&) noexcept = delete;
         CommonSocket(const CommonSocket&&) noexcept = delete;
         ~CommonSocket() noexcept override;
         auto operator=(const CommonSocket&) noexcept -> CommonSocket& = delete;
         auto operator=(CommonSocket&&) noexcept -> CommonSocket& = delete;
+
+        explicit operator bool() const noexcept override;
+        explicit operator handle_type() const noexcept override;
+        [[nodiscard]] auto family() const noexcept -> family_type override;
+        [[nodiscard]] auto family(family_type t_family) ->
+            CommonSocket& override;
+        [[nodiscard]] auto handle() const noexcept -> handle_type override;
+        [[nodiscard]] auto handle(handle_type t_handle) ->
+            CommonSocket& override;
+        [[nodiscard]] auto is_verbose() const noexcept -> bool override;
+        [[nodiscard]] auto is_testing() const noexcept -> bool override;
 
         [[nodiscard]] auto accept() const -> AcceptResult final;
         [[nodiscard]] auto listen(int t_backlog) const ->
@@ -55,6 +75,10 @@ namespace Network
 
     private:
         mutable std::array<ByteString, 2> m_names;
+        handle_type m_handle {handle_null};
+        family_type m_family {AF_UNSPEC};
+        bool m_is_verbose {false};
+        bool m_is_testing {false};
     };
 }
 

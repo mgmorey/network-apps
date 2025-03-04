@@ -43,14 +43,11 @@ namespace Network
         ~SocketData() noexcept = default;
         auto operator=(const SocketData&) noexcept -> SocketData& = default;
         auto operator=(SocketData&&) noexcept -> SocketData& = default;
-        explicit operator bool() const noexcept;
-        explicit operator handle_type() const noexcept;
 
         [[nodiscard]] auto family() const noexcept -> family_type;
-        [[nodiscard]] auto family(family_type t_family) -> SocketData&;
         [[nodiscard]] auto handle() const noexcept -> handle_type;
-        [[nodiscard]] auto handle(handle_type t_handle) -> SocketData&;
         [[nodiscard]] auto is_verbose() const noexcept -> bool;
+        [[nodiscard]] auto is_testing() const noexcept -> bool;
 
     private:
         handle_type m_handle {handle_null};

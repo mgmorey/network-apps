@@ -15,8 +15,3 @@
 
 #include "network/socket.h"             // Socket
 #include "network/socketdata.h"         // SocketData
-
-Network::Socket::Socket(const SocketData& t_data)
-    : SocketData(t_data)
-{
-}
