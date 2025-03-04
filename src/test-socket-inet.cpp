@@ -44,7 +44,6 @@ namespace
     using Network::SocketData;
     using Network::SocketHints;
     using Network::UniqueSocket;
-    using Network::create_socket;
     using Network::family_type;
     using Network::handle_null;
     using Network::handle_type;
@@ -106,10 +105,23 @@ namespace
 
     auto is_verbose {false}; // NOLINT
 
-    auto create_null_socket() -> UniqueSocket
+    auto create_test_socket(const SocketData& sd) -> UniqueSocket
     {
-        const SocketData sd {handle_null, AF_UNSPEC, true, true};
         return std::make_unique<TestCommonSocket>(sd);
+    }
+
+    auto create_test_socket(handle_type handle,
+                            family_type family,
+                            bool is_testing = true) -> UniqueSocket
+    {
+        const SocketData sd {handle, family, is_verbose, is_testing};
+        return create_test_socket(sd);
+    }
+
+    auto create_test_socket() -> UniqueSocket
+    {
+        const SocketData sd {handle_null, AF_UNSPEC, is_verbose, true};
+        return create_test_socket(sd);
     }
 
     auto parse_arguments(int argc, char** argv) -> void
@@ -141,14 +153,14 @@ namespace
     }
 
     auto test_socket(handle_type handle,
+                     family_type family,
+                     bool is_testing,
                      const std::string& expected_error_re) -> void
     {
         std::string actual_error_str;
 
         try {
-            const auto sock {create_socket(handle, AF_UNSPEC, is_verbose)};
-            assert(static_cast<bool>(*sock));
-            assert(static_cast<handle_type>(*sock) != handle_null);
+            const auto sock {create_test_socket(handle, family, is_testing)};
         }
         catch (const Error& error) {
             print(error);
@@ -194,7 +206,7 @@ namespace
         std::string actual_error_str;
 
         try {
-            const auto sock {create_null_socket()};
+            const auto sock {create_test_socket()};
             static_cast<void>(sock->accept());
         }
         catch (const Error& error) {
@@ -213,7 +225,7 @@ namespace
 
     auto test_socket_close_invalid() -> void
     {
-        const auto sock {create_null_socket()};
+        const auto sock {create_test_socket()};
         static_cast<void>(Network::close(sock->handle()));
     }
 
@@ -225,7 +237,7 @@ namespace
 
     auto test_socket_handle_invalid() -> void
     {
-        test_socket(handle_null, expected_error_handle_re);
+        test_socket(handle_null, AF_UNSPEC, true, expected_error_handle_re);
     }
 
     auto test_socket_listen_invalid() -> void
@@ -233,7 +245,7 @@ namespace
         std::string actual_error_str;
 
         try {
-            const auto sock {create_null_socket()};
+            const auto sock {create_test_socket()};
             static_cast<void>(sock->listen(0));
         }
         catch (const Error& error) {
@@ -250,7 +262,7 @@ namespace
         std::string actual_error_str;
 
         try {
-            const auto sock {create_null_socket()};
+            const auto sock {create_test_socket()};
             static_cast<void>(sock->peername());
         }
         catch (const Error& error) {
@@ -279,7 +291,7 @@ namespace
         std::string actual_error_str;
 
         try {
-            const auto sock {create_null_socket()};
+            const auto sock {create_test_socket()};
             static_cast<void>(sock->read(nullptr, 0));
         }
         catch (const Error& error) {
@@ -298,7 +310,7 @@ namespace
 
     auto test_socket_shutdown_invalid() -> void
     {
-        const auto sock {create_null_socket()};
+        const auto sock {create_test_socket()};
         static_cast<void>(sock->shutdown(0));
     }
 
@@ -314,7 +326,7 @@ namespace
         std::string actual_error_str;
 
         try {
-            const auto sock {create_null_socket()};
+            const auto sock {create_test_socket()};
             static_cast<void>(sock->write({}));
         }
         catch (const Error& error) {
