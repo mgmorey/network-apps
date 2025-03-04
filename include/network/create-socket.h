@@ -16,8 +16,8 @@
 #ifndef NETWORK_CREATE_SOCKET_H
 #define NETWORK_CREATE_SOCKET_H
 
-#include "network/socketdata.h"                 // SocketData
-#include "network/uniquesocket.h"               // UniqueSocket
+#include "network/socketdata.h"         // SocketData
+#include "network/uniquesocket.h"       // UniqueSocket
 
 namespace Network
 {
