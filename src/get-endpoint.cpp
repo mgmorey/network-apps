@@ -15,22 +15,23 @@
 
 #include "network/get-endpoint.h"               // get_endpoint()
 #include "network/always-false.h"               // always_false_v
-#include "network/bytestring.h"                 // ByteString
 #include "network/endpoint.h"                   // Endpoint
 #include "network/error-strings.h"              // VISITOR_ERROR
 #include "network/error.h"                      // Error
 #include "network/get-endpointresult.h"         // get_endpointresult()
 #include "network/oserrorresult.h"              // OsErrorResult,
 
+#include <cstddef>      // std::byte
+#include <span>         // std::span
 #include <type_traits>  // std::decay_t, std::is_same_v
 #include <variant>      // std::visit()
 
-auto Network::get_endpoint(const ByteString& addr,
+auto Network::get_endpoint(std::span<const std::byte> bs,
                            int flags,
                            bool is_verbose) -> Endpoint
 {
     Endpoint result;
-    auto endpoint_result {get_endpointresult(addr, flags, is_verbose)};
+    auto endpoint_result {get_endpointresult(bs, flags, is_verbose)};
     std::visit([&](auto&& arg) {
         using T = std::decay_t<decltype(arg)>;
 

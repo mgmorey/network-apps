@@ -25,6 +25,9 @@
 #include <netdb.h>          // addrinfo
 #endif
 
+#include <cstddef>      // std::byte
+#include <span>         // std::span
+
 namespace Network
 {
     struct SocketHost
@@ -41,7 +44,7 @@ namespace Network
 
         auto operator=(const addrinfo& t_ai) -> SocketHost&;
         auto operator<(const SocketHost& t_host) const noexcept -> bool;
-        [[nodiscard]] auto address() const noexcept -> const ByteString&;
+        [[nodiscard]] auto address() const noexcept -> std::span<const std::byte>;
         [[nodiscard]] auto canonical_name() const noexcept ->
             const OptionalHostname&;
 

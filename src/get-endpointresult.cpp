@@ -15,7 +15,6 @@
 
 #include "network/get-endpointresult.h"         // get_endpoint()
 #include "network/addressstring.h"              // AddressString
-#include "network/bytestring.h"                 // ByteString
 #include "network/endpoint.h"                   // Endpoint
 #include "network/endpointresult.h"             // EndpointResult
 #include "network/format-ai-error.h"            // format_ai_error()
@@ -40,11 +39,11 @@
 
 auto Network::get_endpointresult(std::span<char> hostname,
                                  std::span<char> service,
-                                 const ByteString& addr, int flags,
+                                 std::span<const std::byte> bs, int flags,
                                  bool is_verbose) -> OsErrorResult
 {
-    const AddressString sa_str {addr};
-    const auto [sa, sa_length] {get_sa_span(addr)};
+    const AddressString sa_str {bs};
+    const auto [sa, sa_length] {get_sa_span(bs)};
     const std::string_view hostname_sv {hostname.data(), hostname.size()};
     const std::string_view service_sv {service.data(), service.size()};
 
@@ -130,7 +129,7 @@ auto Network::get_endpointresult(std::span<char> hostname,
     return {};
 }
 
-auto Network::get_endpointresult(const ByteString& addr, int flags,
+auto Network::get_endpointresult(std::span<const std::byte> bs, int flags,
                                  bool is_verbose) -> EndpointResult
 {
     TextBuffer hostname {hostname_length_max};
@@ -138,7 +137,7 @@ auto Network::get_endpointresult(const ByteString& addr, int flags,
 
     if (auto result {get_endpointresult(std::span(hostname),
                                         std::span(service),
-                                        addr,
+                                        bs,
                                         flags,
                                         is_verbose)}) {
         return result;

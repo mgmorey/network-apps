@@ -14,7 +14,6 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/template.h"           // Template
-#include "network/bytestring.h"         // ByteString
 #include "network/sockethints.h"        // SocketHints
 
 #ifdef WIN32
@@ -22,6 +21,9 @@
 #else
 #include <netdb.h>          // addrinfo
 #endif
+
+#include <cstddef>      // std::byte
+#include <span>         // std::span
 
 Network::Template::Template(const addrinfo& t_ai) noexcept :
     m_hints(t_ai),
@@ -34,7 +36,7 @@ auto Network::Template::hints() const noexcept -> const SocketHints&
     return m_hints;
 }
 
-auto Network::Template::address() const noexcept -> const ByteString&
+auto Network::Template::address() const noexcept -> std::span<const std::byte>
 {
     return m_host.address();
 }

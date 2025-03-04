@@ -174,9 +174,9 @@ namespace
         static_cast<void>(_);
     }
 
-    auto print(const ByteString& addr) -> void
+    auto print(std::span<const std::byte> bs) -> void
     {
-        const Address address {addr};
+        const Address address {bs};
         const auto family {address.family()};
 #ifdef HAVE_SOCKADDR_SA_LEN
         const auto length {address.length()};
@@ -187,7 +187,7 @@ namespace
                   << SocketFamily(family)
                   << std::endl
                   << std::setw(print_key_width) << "        Size: "
-                  << std::right << std::setw(print_value_width) << addr.size()
+                  << std::right << std::setw(print_value_width) << bs.size()
                   << std::endl
 #ifdef HAVE_SOCKADDR_SA_LEN
                   << std::setw(print_key_width) << "        Length: "
@@ -454,9 +454,9 @@ namespace
                       << std::endl;
 
             for (const auto& host : hosts) {
-                const ByteString& addr {host.address()};
-                print(addr);
-                test(addr);
+                std::span<const std::byte> bs {host.address()};
+                print(bs);
+                test(bs);
             }
         }
     }

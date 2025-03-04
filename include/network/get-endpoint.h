@@ -19,9 +19,12 @@
 #include "network/bytestring.h"         // ByteString
 #include "network/endpoint.h"           // Endpoint
 
+#include <cstddef>      // std::byte
+#include <span>         // std::span
+
 namespace Network
 {
-    extern auto get_endpoint(const ByteString& addr, int flags,
+    extern auto get_endpoint(std::span<const std::byte> bs, int flags,
                              bool is_verbose = false) -> Endpoint;
 }
 

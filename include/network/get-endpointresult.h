@@ -20,15 +20,16 @@
 #include "network/endpointresult.h"     // EndpointResult
 #include "network/oserrorresult.h"      // OsErrorResult
 
+#include <cstddef>      // std::byte
 #include <span>         // std::span
 
 namespace Network
 {
     extern auto get_endpointresult(std::span<char> hostname,
                                    std::span<char> service,
-                                   const ByteString& addr, int flags,
+                                   std::span<const std::byte> bs, int flags,
                                    bool is_verbose = false) -> OsErrorResult;
-    extern auto get_endpointresult(const ByteString& addr, int flags,
+    extern auto get_endpointresult(std::span<const std::byte> bs, int flags,
                                    bool is_verbose = false) -> EndpointResult;
 }
 

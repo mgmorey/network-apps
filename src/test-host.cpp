@@ -87,9 +87,9 @@ namespace
     class Print
     {
     public:
-        static auto get_endpoint(const ByteString& addr) -> Endpoint
+        static auto get_endpoint(std::span<const std::byte> bs) -> Endpoint
         {
-            return Network::get_endpoint(addr, 0, is_verbose);
+            return Network::get_endpoint(bs, 0, is_verbose);
         }
 
         explicit Print(std::ostream& t_os) :
