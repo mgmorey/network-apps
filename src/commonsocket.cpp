@@ -18,10 +18,13 @@
 #include "network/acceptresult.h"               // AcceptResult
 #include "network/bytestring.h"                 // ByteString
 #include "network/close.h"                      // close()
+#include "network/family-null.h"                // family_null
 #include "network/family-type.h"                // family_type
 #include "network/familyerror.h"                // FamilyError
 #include "network/get-name.h"                   // get_name()
 #include "network/getnameparams.h"              // GetNameParams
+#include "network/handle-null.h"                // handle_null
+#include "network/handle-type.h"                // handle_type
 #include "network/listen.h"                     // listen()
 #include "network/logicerror.h"                 // LogicError
 #include "network/open-handle.h"                // open()
@@ -32,12 +35,6 @@
 #include "network/socketdata.h"                 // SocketData
 #include "network/textbuffer.h"                 // TextBuffer
 #include "network/write.h"                      // write()
-
-#ifdef WIN32
-#include <winsock2.h>           // AF_UNSPEC
-#else
-#include <sys/socket.h>         // AF_UNSPEC
-#endif
 
 #include <cstddef>      // std::size_t
 #include <iostream>     // std::cerr, std::endl
@@ -86,7 +83,7 @@ auto Network::CommonSocket::family() const noexcept -> family_type
 
 auto Network::CommonSocket::family(family_type t_family) -> CommonSocket&
 {
-    if (!is_testing() && t_family == AF_UNSPEC) {
+    if (!is_testing() && t_family == family_null) {
         throw FamilyError(t_family);
     }
 

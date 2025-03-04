@@ -16,15 +16,10 @@
 #ifndef NETWORK_SOCKETDATA_H
 #define NETWORK_SOCKETDATA_H
 
+#include "network/family-null.h"        // family_null
 #include "network/family-type.h"        // family_type
 #include "network/handle-null.h"        // handle_null
 #include "network/handle-type.h"        // handle_type
-
-#ifdef WIN32
-#include <winsock2.h>           // AF_UNSPEC
-#else
-#include <sys/socket.h>         // AF_UNSPEC
-#endif
 
 namespace Network
 {
@@ -51,7 +46,7 @@ namespace Network
 
     private:
         handle_type m_handle {handle_null};
-        family_type m_family {AF_UNSPEC};
+        family_type m_family {family_null};
         bool m_is_verbose {false};
         bool m_is_testing {false};
     };

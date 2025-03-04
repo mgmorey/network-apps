@@ -18,6 +18,7 @@
 
 #include "network/acceptresult.h"       // AcceptResult
 #include "network/bytestring.h"         // ByteString
+#include "network/family-null.h"        // family_null
 #include "network/family-type.h"        // family_type
 #include "network/handle-null.h"        // handle_null
 #include "network/handle-type.h"        // handle_type
@@ -74,7 +75,7 @@ namespace Network
     private:
         mutable std::array<ByteString, 2> m_names;
         handle_type m_handle {handle_null};
-        family_type m_family {AF_UNSPEC};
+        family_type m_family {family_null};
         bool m_is_verbose {false};
         bool m_is_testing {false};
     };

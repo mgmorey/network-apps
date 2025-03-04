@@ -16,13 +16,8 @@
 #ifndef NETWORK_SOCKETLIMITS_H
 #define NETWORK_SOCKETLIMITS_H
 
+#include "network/family-null.h"        // family_null
 #include "network/family-type.h"        // family_type
-
-#ifdef WIN32
-#include <winsock2.h>           // AF_UNSPEC
-#else
-#include <sys/socket.h>         // AF_UNSPEC
-#endif
 
 #include <cstddef>      // std::size_t
 #include <utility>      // std::pair
@@ -47,7 +42,7 @@ namespace Network
         [[nodiscard]] auto min() const noexcept -> std::size_t;
 
     private:
-        family_type m_family {AF_UNIX};;
+        family_type m_family {family_null};
     };
 }
 
