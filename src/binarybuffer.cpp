@@ -16,8 +16,8 @@
 #include "network/binarybuffer.h"       // BinaryBuffer
 #include "network/buffer.h"             // Buffer
 
-Network::BinaryBuffer::BinaryBuffer(size_type t_size)
-    : Buffer(t_size)
+Network::BinaryBuffer::BinaryBuffer(size_type t_size) :
+    Buffer(t_size)
 {
 }
 
