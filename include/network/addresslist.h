@@ -67,7 +67,7 @@ namespace Network
                 std::ostream&;
 
         public:
-            explicit StringOrNull(const std::string_view& t_sv);
+            explicit StringOrNull(std::string_view t_sv);
             [[nodiscard]] auto c_str() const -> const char*;
 
         private:

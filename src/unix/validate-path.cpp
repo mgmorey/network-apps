@@ -23,7 +23,7 @@
 
 #include <string_view>  // std::string_view
 
-auto Network::validate(const std::string_view& path) -> std::string_view
+auto Network::validate(std::string_view path) -> std::string_view
 {
     const auto path_length {path.length()};
 

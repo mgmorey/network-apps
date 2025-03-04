@@ -21,7 +21,7 @@
 #include <string>       // std::string
 #include <string_view>  // std::string_view
 
-auto Network::quote(const std::string_view& sv) -> std::string
+auto Network::quote(std::string_view sv) -> std::string
 {
     std::ostringstream oss;
     oss << std::oct;

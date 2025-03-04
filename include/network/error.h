@@ -26,7 +26,7 @@ namespace Network
         public std::exception
     {
     public:
-        explicit Error(const std::string_view& t_sv) noexcept;
+        explicit Error(std::string_view t_sv) noexcept;
         Error(const Error&) noexcept = default;
         Error(Error&&) noexcept = default;
         ~Error() noexcept override = default;

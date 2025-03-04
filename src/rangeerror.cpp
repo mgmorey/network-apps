@@ -27,10 +27,10 @@
 #include <sstream>      // std::ostringstream
 #endif
 
-auto Network::RangeError::format(const std::string_view& t_value,
-                                 const std::string_view& t_min,
-                                 const std::string_view& t_max,
-                                 const std::string_view& t_type) -> std::string
+auto Network::RangeError::format(std::string_view t_value,
+                                 std::string_view t_min,
+                                 std::string_view t_max,
+                                 std::string_view t_type) -> std::string
 {
 #ifdef __cpp_lib_format
     return std::format("Value {} is out of range [{}, {}] of {}",
@@ -49,10 +49,10 @@ auto Network::RangeError::format(const std::string_view& t_value,
 #endif
 }
 
-Network::RangeError::RangeError(const std::string_view& t_value,
-                                const std::string_view& t_min,
-                                const std::string_view& t_max,
-                                const std::string_view& t_type) noexcept :
+Network::RangeError::RangeError(std::string_view t_value,
+                                std::string_view t_min,
+                                std::string_view t_max,
+                                std::string_view t_type) noexcept :
     LogicError(format(t_value, t_min, t_max, t_type))
 {
 }

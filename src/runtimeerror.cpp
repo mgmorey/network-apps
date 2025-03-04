@@ -18,7 +18,7 @@
 
 #include <string_view>  // std::string_view
 
-Network::RuntimeError::RuntimeError(const std::string_view& t_sv) noexcept :
+Network::RuntimeError::RuntimeError(std::string_view t_sv) noexcept :
     Error(t_sv)
 {
 }

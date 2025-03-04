@@ -24,7 +24,7 @@
 
 namespace Network
 {
-    extern auto to_bytestring(const std::string_view& path) -> ByteString;
+    extern auto to_bytestring(std::string_view path) -> ByteString;
 }
 
 #endif

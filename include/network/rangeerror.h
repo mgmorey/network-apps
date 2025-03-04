@@ -27,14 +27,14 @@ namespace Network
         public LogicError
     {
     public:
-        static auto format(const std::string_view& t_value,
-                           const std::string_view& t_min,
-                           const std::string_view& t_max,
-                           const std::string_view& t_type) -> std::string;
-        RangeError(const std::string_view& t_value,
-                   const std::string_view& t_min,
-                   const std::string_view& t_max,
-                   const std::string_view& t_type) noexcept;
+        static auto format(std::string_view t_value,
+                           std::string_view t_min,
+                           std::string_view t_max,
+                           std::string_view t_type) -> std::string;
+        RangeError(std::string_view t_value,
+                   std::string_view t_min,
+                   std::string_view t_max,
+                   std::string_view t_type) noexcept;
         RangeError(const RangeError&) noexcept = default;
         RangeError(RangeError&&) noexcept = default;
         ~RangeError() noexcept override = default;

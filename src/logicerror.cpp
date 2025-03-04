@@ -18,7 +18,7 @@
 
 #include <string_view>  // std::string_view
 
-Network::LogicError::LogicError(const std::string_view& t_sv) noexcept :
+Network::LogicError::LogicError(std::string_view t_sv) noexcept :
     Error(t_sv)
 {
 }

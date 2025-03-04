@@ -26,7 +26,7 @@ namespace Network
         public LogicError
     {
     public:
-        explicit AddressError(const std::string_view& t_sv) noexcept;
+        explicit AddressError(std::string_view t_sv) noexcept;
         AddressError(const AddressError&) noexcept = default;
         AddressError(AddressError&&) noexcept = default;
         ~AddressError() noexcept override = default;

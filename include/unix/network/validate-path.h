@@ -22,7 +22,7 @@
 
 namespace Network
 {
-    extern auto validate(const std::string_view& path) -> std::string_view;
+    extern auto validate(std::string_view path) -> std::string_view;
 }
 
 #endif

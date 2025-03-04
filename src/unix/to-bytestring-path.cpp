@@ -28,7 +28,7 @@
 
 #include <string_view>  // std::string_view
 
-auto Network::to_bytestring(const std::string_view& path) -> ByteString
+auto Network::to_bytestring(std::string_view path) -> ByteString
 {
     sockaddr_un sun {};
     const auto path_len {to_path_length(path.length())};

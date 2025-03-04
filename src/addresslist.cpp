@@ -64,7 +64,7 @@ auto Network::AddressList::InputIterator::operator==(const InputIterator& t_rhs)
     return m_node == t_rhs.m_node;
 }
 
-Network::AddressList::StringOrNull::StringOrNull(const std::string_view& t_sv)
+Network::AddressList::StringOrNull::StringOrNull(std::string_view t_sv)
 {
     if (t_sv.data() != nullptr) {
         m_value = t_sv;

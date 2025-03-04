@@ -28,7 +28,7 @@ namespace Network
         public RangeError
     {
     public:
-        ValueError(const std::string_view& t_value_type,
+        ValueError(std::string_view t_value_type,
                    auto t_value,
                    T t_min = std::numeric_limits<T>::min(),
                    T t_max = std::numeric_limits<T>::max()) noexcept :

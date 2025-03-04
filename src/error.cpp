@@ -17,7 +17,7 @@
 
 #include <string_view>  // std::string_view
 
-Network::Error::Error(const std::string_view& t_sv) noexcept :
+Network::Error::Error(std::string_view t_sv) noexcept :
     m_str(t_sv)
 {
 }

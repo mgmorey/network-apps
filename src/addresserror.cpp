@@ -18,7 +18,7 @@
 
 #include <string_view>  // std::string_view
 
-Network::AddressError::AddressError(const std::string_view& t_sv) noexcept :
+Network::AddressError::AddressError(std::string_view t_sv) noexcept :
     LogicError(t_sv)
 {
 }

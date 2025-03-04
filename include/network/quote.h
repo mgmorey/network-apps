@@ -21,7 +21,7 @@
 
 namespace Network
 {
-    extern auto quote(const std::string_view& sv) -> std::string;
+    extern auto quote(std::string_view sv) -> std::string;
 }
 
 #endif

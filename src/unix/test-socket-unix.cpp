@@ -91,7 +91,7 @@ namespace
     auto is_verbose {false};  // NOLINT
 
     auto operator==(const ByteString& addr,
-                    const std::string_view& path) -> bool
+                    std::string_view path) -> bool
     {
         const auto addr_path {to_path(addr)};
         return addr_path == path;
