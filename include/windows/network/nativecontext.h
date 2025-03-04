@@ -28,8 +28,7 @@
 
 namespace Network
 {
-    class NativeContext final
-        : public Context
+    class NativeContext final : public Context
     {
     public:
         NativeContext(const OptionalVersion& t_version,
