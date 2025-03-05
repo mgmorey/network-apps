@@ -47,13 +47,13 @@ Network::CommonSocket::CommonSocket(handle_type t_handle,
     m_is_verbose(t_is_verbose),
     m_is_testing(t_is_testing)
 {
-    if (!is_testing() && t_handle == handle_null) {
+    if (!m_is_testing && t_handle == handle_null) {
         throw LogicError("Invalid socket descriptor value");
     }
 
     m_handle = t_handle;
 
-    if (!is_testing() && t_family == family_null) {
+    if (!m_is_testing && t_family == family_null) {
         throw FamilyError(t_family);
     }
 
