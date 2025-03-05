@@ -13,6 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#include "network/address.h"                    // Address
+#include "network/logicerror.h"                 // LogicError
 #include "network/to-string-span-byte.h"        // to_string()
 
 #include <cstddef>      // std::byte
@@ -25,19 +27,25 @@
 auto Network::to_string(std::span<const std::byte> bs) -> std::string
 {
     std::ostringstream oss;
-    oss << "0x";
 
-    if (bs.empty()) {
-        oss << '0';
+    try {
+        oss << Address(bs);
     }
-    else {
-        oss << std::hex;
+    catch (const LogicError& error) {
+        oss << "0x";
 
-        for (const auto byte : bs) {
-            oss << std::setfill('0')
-                << std::setw(2)
-                << std::uppercase
-                << static_cast<unsigned>(byte);
+        if (bs.empty()) {
+            oss << '0';
+        }
+        else {
+            oss << std::hex;
+
+            for (const auto byte : bs) {
+                oss << std::setfill('0')
+                    << std::setw(2)
+                    << std::uppercase
+                    << static_cast<unsigned>(byte);
+            }
         }
     }
 
