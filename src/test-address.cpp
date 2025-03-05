@@ -454,7 +454,7 @@ namespace
                       << std::endl;
 
             for (const auto& host : hosts) {
-                std::span<const std::byte> bs {host.address()};
+                const std::span<const std::byte> bs {host.address()};
                 print(bs);
                 test(bs);
             }
