@@ -26,7 +26,7 @@
 #include "network/socketdata.h"                 // SocketData
 #include "network/to-os-error.h"                // to_os_error()
 #include "network/to-size.h"                    // to_size()
-#include "network/to-string.h"                  // to_string()
+#include "network/to-string-span-byte.h"        // to_string()
 
 #ifdef WIN32
 #include <winsock2.h>       // ::accept()
@@ -82,17 +82,18 @@ auto Network::accept(const SocketData& sd) -> AcceptResult
     }
 
     buffer.resize(to_size(sa_length));
+    const auto str {to_string(bs)};
 
     if (is_verbose) {
         // clang-format off
         std::cout << "Call to ::accept("
                   << handle_1
                   << ", "
-                  << to_string(bs)
+                  << str
                   << ", "
                   << sa_length
                   << ") returned data "
-                  << to_string(bs)
+                  << str
                   << std::endl;
         // clang-format on
     }

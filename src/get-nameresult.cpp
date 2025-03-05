@@ -28,7 +28,7 @@
 #include "network/socket-error.h"               // socket_error
 #include "network/to-os-error.h"                // to_os_error()
 #include "network/to-size.h"                    // to_size()
-#include "network/to-string.h"                  // to_string()
+#include "network/to-string-span-byte.h"        // to_string()
 
 #ifdef WIN32
 #include <winsock2.h>       // ::getpeername(), ::getsockname()
@@ -103,6 +103,7 @@ auto Network::get_nameresult(const GetNameParams& args,
     }
 
     buffer.resize(to_size(sa_length));
+    const auto str {to_string(bs)};
 
     if (args.m_is_verbose) {
         // clang-format off
@@ -111,11 +112,11 @@ auto Network::get_nameresult(const GetNameParams& args,
                   << '('
                   << handle
                   << ", "
-                  << to_string(bs)
+                  << str
                   << ", "
                   << sa_length
                   << ") returned data "
-                  << to_string(bs)
+                  << str
                   << std::endl;
         // clang-format on
     }
