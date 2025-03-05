@@ -57,7 +57,6 @@ namespace Network
         [[nodiscard]] auto family() const noexcept -> family_type;
         [[nodiscard]] auto handle() const noexcept -> handle_type;
         [[nodiscard]] auto is_verbose() const noexcept -> bool;
-        [[nodiscard]] auto is_testing() const noexcept -> bool;
 
         [[nodiscard]] auto accept() const -> AcceptResult final;
         [[nodiscard]] auto bind(std::span<const std::byte> t_bs) ->

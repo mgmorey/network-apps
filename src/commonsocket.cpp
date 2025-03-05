@@ -111,11 +111,6 @@ auto Network::CommonSocket::is_verbose() const noexcept -> bool
     return m_is_verbose;
 }
 
-auto Network::CommonSocket::is_testing() const noexcept -> bool
-{
-    return m_is_testing;
-}
-
 auto Network::CommonSocket::accept() const -> AcceptResult
 
 {
