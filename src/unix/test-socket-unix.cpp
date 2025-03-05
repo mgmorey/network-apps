@@ -34,6 +34,7 @@
 
 #include <cerrno>       // EACCES, EADDRINUSE, EBADF, EINVAL, ENOENT,
                         // EROFS
+#include <cstddef>      // std::byte
 #include <cstdlib>      // EXIT_FAILURE, std::exit(),
                         // std::size_t
 #include <exception>    // std::exception
@@ -41,6 +42,7 @@
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <regex>        // std::regex, std::regex_match
 #include <set>          // std::set
+#include <span>         // std::span
 #include <stack>        // std::stack
 #include <string>       // std::string
 #include <string_view>  // std::string_view
@@ -90,14 +92,14 @@ namespace
 
     auto is_verbose {false};  // NOLINT
 
-    auto operator==(const ByteString& addr,
+    auto operator==(std::span<const std::byte> addr,
                     std::string_view path) -> bool
     {
         const auto addr_path {to_path(addr)};
         return addr_path == path;
     }
 
-    auto operator==(const ByteString& addr,
+    auto operator==(std::span<const std::byte> addr,
                     const std::nullptr_t& path) -> bool
     {
         const auto addr_path {to_path(addr)};
@@ -190,12 +192,12 @@ namespace
         }
     }
 
-    auto print(const Socket& sock, const ByteString& addr) -> void
+    auto print(const Socket& sock, std::span<const std::byte> bs) -> void
     {
         std::cout << "Socket "
                   << std::right << std::setw(handle_width) << sock
                   << " bound to "
-                  << Address(addr)
+                  << Address(bs)
                   << std::endl;
     }
 
@@ -233,9 +235,9 @@ namespace
                 actual_result = result;
             }
             else {
-                const auto addr {sock.sockname()};
-                print(sock, addr);
-                assert(addr == path);  // NOLINT
+                const auto bs {sock.sockname()};
+                print(sock, bs);
+                assert(bs == path);  // NOLINT
             }
 
             assert(expected_codes.contains(actual_result.number()));

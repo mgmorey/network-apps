@@ -139,17 +139,16 @@ auto Network::CommonSocket::listen(int t_backlog) const -> OsErrorResult
                            m_is_verbose);
 }
 
-auto Network::CommonSocket::name(bool t_is_peer) const -> ByteString
+auto Network::CommonSocket::name(bool t_is_peer) const ->
+    std::span<const std::byte>
 {
     const auto index {static_cast<std::size_t>(t_is_peer)};
     ByteString& value {m_names.at(index)};
 
     if (value.empty()) {
-        const GetNameParams args
-        {
-            .m_handle = m_handle, .m_is_verbose = m_is_verbose
-        };
-        value = Network::get_name(args, t_is_peer);
+        value = Network::get_name(
+            {.m_handle = m_handle, .m_is_verbose = m_is_verbose},
+            t_is_peer);
     }
 
     return value;
@@ -158,12 +157,11 @@ auto Network::CommonSocket::name(bool t_is_peer) const -> ByteString
 auto Network::CommonSocket::open(std::span<const std::byte> t_bs,
                                  bool t_is_bind) -> OsErrorResult
 {
-    const OpenHandleParams args
-    {
-        .m_handle = m_handle, .m_bs = t_bs, .m_is_verbose = m_is_verbose
-    };
-
-    if (const auto result {Network::open(args, t_is_bind)}) {
+    if (const auto result {Network::open({
+            .m_handle = m_handle,
+            .m_bs = t_bs,
+            .m_is_verbose = m_is_verbose},
+                t_is_bind)}) {
         return result;
     }
 

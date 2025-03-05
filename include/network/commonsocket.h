@@ -63,7 +63,8 @@ namespace Network
         [[nodiscard]] auto accept() const -> AcceptResult final;
         [[nodiscard]] auto listen(int t_backlog) const ->
             OsErrorResult final;
-        [[nodiscard]] auto name(bool t_is_peer) const -> ByteString final;
+        [[nodiscard]] auto name(bool t_is_peer) const ->
+            std::span<const std::byte> final;
         [[nodiscard]] auto open(std::span<const std::byte> t_bs,
                                 bool t_is_bind) -> OsErrorResult override;
         [[nodiscard]] auto read(char* t_data,
