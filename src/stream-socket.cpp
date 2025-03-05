@@ -14,20 +14,12 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/socket.h"             // Socket, operator<<()
-#include "network/handle-null.h"        // handle_null
-#include "network/string-null.h"        // string_null
 
 #include <ostream>      // std::ostream
 
 auto Network::operator<<(std::ostream& os,
                          const Socket& sock) -> std::ostream&
 {
-    const auto handle {sock.handle()};
-
-    if (handle == handle_null) {
-        os << string_null;
-    }
-
-    os << handle;
+    os << std::string(sock);
     return os;
 }

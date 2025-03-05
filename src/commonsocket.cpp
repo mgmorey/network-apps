@@ -33,12 +33,14 @@
 #include "network/read.h"                       // read()
 #include "network/shutdown.h"                   // shutdown()
 #include "network/socketdata.h"                 // SocketData
+#include "network/string-null.h"                // string_null
 #include "network/textbuffer.h"                 // TextBuffer
 #include "network/write.h"                      // write()
 
 #include <cstddef>      // std::byte, std::size_t
 #include <iostream>     // std::cerr, std::endl
 #include <span>         // std::span
+#include <string>       // std::string, std::to_string()
 
 Network::CommonSocket::CommonSocket(handle_type t_handle,
                                     family_type t_family,
@@ -84,6 +86,25 @@ Network::CommonSocket::~CommonSocket() noexcept
         std::cerr << result.string()
                   << std::endl;
     }
+}
+
+Network::CommonSocket::operator bool() const noexcept
+{
+    return m_handle != handle_null;
+}
+
+Network::CommonSocket::operator handle_type() const noexcept
+{
+    return m_handle;
+}
+
+Network::CommonSocket::operator std::string() const
+{
+    if (m_handle == handle_null) {
+        return string_null;
+    }
+
+    return std::to_string(m_handle);
 }
 
 auto Network::CommonSocket::family() const noexcept -> family_type

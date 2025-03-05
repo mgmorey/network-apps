@@ -51,10 +51,14 @@ namespace Network
         auto operator=(const CommonSocket&) noexcept -> CommonSocket& = delete;
         auto operator=(CommonSocket&&) noexcept -> CommonSocket& = delete;
 
-        [[nodiscard]] auto family() const noexcept -> family_type override;
-        [[nodiscard]] auto handle() const noexcept -> handle_type override;
-        [[nodiscard]] auto is_verbose() const noexcept -> bool override;
-        [[nodiscard]] auto is_testing() const noexcept -> bool override;
+        explicit operator bool() const noexcept;
+        explicit operator handle_type() const noexcept;
+        explicit operator std::string() const final;
+
+        [[nodiscard]] auto family() const noexcept -> family_type;
+        [[nodiscard]] auto handle() const noexcept -> handle_type;
+        [[nodiscard]] auto is_verbose() const noexcept -> bool;
+        [[nodiscard]] auto is_testing() const noexcept -> bool;
 
         [[nodiscard]] auto accept() const -> AcceptResult final;
         [[nodiscard]] auto listen(int t_backlog) const ->

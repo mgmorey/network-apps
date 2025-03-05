@@ -142,8 +142,6 @@ namespace
 
         auto test_socket(const Socket& t_sock) -> void
         {
-            assert(static_cast<bool>(t_sock));
-            assert(static_cast<handle_type>(t_sock) != handle_null);
             const auto peer {t_sock.peername()};
             const auto self {t_sock.sockname()};
             m_os << "Socket "

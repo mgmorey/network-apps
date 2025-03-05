@@ -142,8 +142,6 @@ namespace
 
         try {
             const auto sock {create_socket(handle, family, is_verbose, false)};
-            assert(static_cast<bool>(*sock));
-            assert(static_cast<handle_type>(*sock) != handle_null);
         }
         catch (const Error& error) {
             print(error);
@@ -166,8 +164,6 @@ namespace
 
         try {
             const auto sock {create_socket(hints, is_verbose)};
-            assert(static_cast<bool>(*sock));
-            assert(static_cast<handle_type>(*sock) != handle_null);
         }
         catch (const Error& error) {
             print(error);
@@ -204,12 +200,6 @@ namespace
             const std::regex expected_error_regex {expected_error_re};
             assert(std::regex_match(actual_error_str, expected_error_regex));
         }
-    }
-
-    auto test_socket_close_invalid() -> void
-    {
-        const auto sock {create_test_socket()};
-        static_cast<void>(Network::close(sock->handle()));
     }
 
     auto test_socket_family_invalid() -> void
@@ -344,7 +334,6 @@ auto main(int argc, char* argv[]) -> int
         }
 
         test_socket_accept_invalid();
-        test_socket_close_invalid();
         test_socket_family_invalid();
         test_socket_handle_invalid();
         test_socket_listen_invalid();

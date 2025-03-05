@@ -39,20 +39,7 @@ namespace Network
         auto operator=(const Socket&) noexcept -> Socket& = delete;
         auto operator=(Socket&&) noexcept -> Socket& = delete;
 
-        explicit operator bool() const noexcept
-        {
-            return handle() != handle_null;
-        }
-
-        explicit operator handle_type() const noexcept
-        {
-            return handle();
-        }
-
-        [[nodiscard]] virtual auto family() const noexcept -> family_type = 0;
-        [[nodiscard]] virtual auto handle() const noexcept -> handle_type = 0;
-        [[nodiscard]] virtual auto is_verbose() const noexcept -> bool = 0;
-        [[nodiscard]] virtual auto is_testing() const noexcept -> bool = 0;
+        explicit virtual operator std::string() const = 0;
 
         [[nodiscard]] virtual auto accept() const -> AcceptResult = 0;
         [[nodiscard]] virtual auto listen(int t_backlog) const ->

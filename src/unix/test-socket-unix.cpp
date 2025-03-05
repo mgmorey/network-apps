@@ -227,8 +227,6 @@ namespace
         try {
             OsErrorResult actual_result;
             assert(to_bytestring(path) == path);  // NOLINT
-            assert(static_cast<bool>(sock));
-            assert(static_cast<handle_type>(sock) != handle_null);
 
             if (const auto result {sock.bind(path)}) {
                 print(result);
@@ -302,10 +300,6 @@ namespace
 
         try {
             auto pair {create_socketpair(hints, is_verbose)};
-            assert(static_cast<bool>(*pair[0]));
-            assert(static_cast<bool>(*pair[1]));
-            assert(static_cast<handle_type>(*pair[0]) != handle_null);
-            assert(static_cast<handle_type>(*pair[1]) != handle_null);
             std::cout << "Socket "
                       << std::right << std::setw(handle_width) << *pair[0]
                       << " connected to "
