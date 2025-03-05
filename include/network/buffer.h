@@ -23,7 +23,6 @@ namespace Network
     {
     public:
         using buffer_type = T;
-        using const_iterator = typename T::const_iterator;
         using iterator = typename T::iterator;
         using size_type = typename T::size_type;
         using value_type = typename T::value_type;
