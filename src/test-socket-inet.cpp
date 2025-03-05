@@ -53,6 +53,21 @@ namespace
     using Network::parse;
     using Network::start_context;
 
+    class TestSocketData : public SocketData
+    {
+    public:
+        explicit TestSocketData(handle_type t_handle,
+                                family_type t_family,
+                                bool t_is_verbose = false,
+                                bool t_is_testing = false) :
+            SocketData(t_handle,
+                       t_family,
+                       t_is_verbose,
+                       t_is_testing)
+        {
+        }
+    };
+
     class TestCommonSocket : public CommonSocket
     {
     public:
