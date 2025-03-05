@@ -59,16 +59,6 @@ namespace Network
             return m_buffer.data();
         }
 
-        [[nodiscard]] auto cbegin() noexcept -> const_iterator
-        {
-            return m_buffer.cbegin();
-        }
-
-        [[nodiscard]] auto cend() noexcept -> const_iterator
-        {
-            return m_buffer.cend();
-        }
-
         [[nodiscard]] auto end() noexcept -> iterator
         {
             return m_buffer.end();
