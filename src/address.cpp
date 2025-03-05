@@ -34,16 +34,16 @@
 #include <span>         // std::span
 #include <string>       // std::string
 
-Network::Address::Address(std::span<const std::byte> t_bs)
+Network::Address::Address(std::span<const std::byte> t_bs) :
+    m_addr(t_bs.begin(), t_bs.end()),
+    m_span(m_addr)
 {
-    *this = t_bs;
 }
 
 auto Network::Address::operator=(std::span<const std::byte> t_bs) -> Address&
 {
-    static_cast<void>(validate(t_bs));
-    m_addr.assign(t_bs.data(), t_bs.data() + t_bs.size());
-    m_span = std::span(m_addr);
+    m_addr.assign(t_bs.begin(), t_bs.end());
+    m_span = m_addr;
     return *this;
 }
 
