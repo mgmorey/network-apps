@@ -32,7 +32,6 @@
                         // ::socket()
 #endif
 
-#include <cerrno>       // EACCES, ENOENT, EROFS
 #include <cstdlib>      // EXIT_FAILURE, std::exit(),
                         // std::size_t
 #include <exception>    // std::exception
