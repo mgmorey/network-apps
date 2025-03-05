@@ -45,10 +45,6 @@ auto Network::to_string(std::span<const std::byte> bs) -> std::string
                     << std::setw(2)
                     << std::uppercase
                     << static_cast<unsigned>(b);
-
-                if (static_cast<char>(b) == '\0') {
-                    break;
-                }
             }
         }
     }
