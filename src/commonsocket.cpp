@@ -60,15 +60,6 @@ Network::CommonSocket::CommonSocket(handle_type t_handle,
     m_family = t_family;
 }
 
-Network::CommonSocket::CommonSocket(const SocketData& t_sd,
-                                    handle_type t_handle) :
-    CommonSocket(t_handle,
-                 t_sd.family(),
-                 t_sd.is_verbose(),
-                 t_sd.is_testing())
-{
-}
-
 Network::CommonSocket::CommonSocket(const SocketData& t_sd) :
     CommonSocket(t_sd.handle(),
                  t_sd.family(),

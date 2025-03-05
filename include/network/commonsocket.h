@@ -42,7 +42,6 @@ namespace Network
                      family_type t_family,
                      bool t_is_verbose = false,
                      bool t_is_testing = false);
-        CommonSocket(const SocketData& t_sd, handle_type t_handle);
         explicit CommonSocket(const SocketData& t_sd);
 
         CommonSocket(const CommonSocket&) noexcept = delete;
