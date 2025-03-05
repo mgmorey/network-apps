@@ -32,13 +32,13 @@ auto Network::quote(std::string_view sv) -> std::string
     else {
         oss << '\"';
 
-        for (const auto ch : sv) {
-            if (isprint(ch) != 0) {
-                oss << ch;
+        for (const auto c : sv) {
+            if (isprint(c) != 0) {
+                oss << c;
             }
-            else if (ch != '\0') {
+            else if (c != '\0') {
                 oss << '\\'
-                    << static_cast<unsigned>(ch);
+                    << static_cast<unsigned>(c);
             }
             else {
                 break;
