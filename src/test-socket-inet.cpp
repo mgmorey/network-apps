@@ -149,6 +149,36 @@ namespace
         }
     }
 
+    auto test_common_socket(handle_type handle,
+                            family_type family,
+                            const std::string& expected_error_re) -> void
+    {
+        std::string actual_error_str;
+
+        try {
+            const CommonSocket sock {handle, family, is_verbose, false};
+            assert(static_cast<bool>(sock.handle()));
+            assert(static_cast<handle_type>(sock.handle()) != handle_null);
+        }
+        catch (const Error& error) {
+            print(error);
+            actual_error_str = error.what();
+        }
+
+        if (expected_error_re.empty()) {
+            assert(actual_error_str.empty());
+        }
+        else {
+            const std::regex expected_error_regex {expected_error_re};
+            assert(std::regex_match(actual_error_str, expected_error_regex));
+        }
+    }
+
+    auto test_common_socket_handle_invalid() -> void
+    {
+        test_common_socket(handle_null, AF_UNSPEC, expected_error_handle_re);
+    }
+
     auto test_socket(handle_type handle,
                      family_type family,
                      const std::string& expected_error_re) -> void
@@ -348,6 +378,7 @@ auto main(int argc, char* argv[]) -> int
             std::cout << *context << std::endl;
         }
 
+        test_common_socket_handle_invalid();
         test_socket_accept_invalid();
         test_socket_family_invalid();
         test_socket_handle_invalid();
