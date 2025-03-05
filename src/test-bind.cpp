@@ -21,7 +21,6 @@
                                         // SocketHints, SocketResult,
                                         // SocketResultVector,
                                         // UniqueSocket, bind(),
-                                        // handle_null, handle_type,
                                         // os_error_type,
                                         // start_context(),
                                         // string_null
@@ -63,8 +62,6 @@ namespace
     using Network::UniqueSocket;
     using Network::always_false_v;
     using Network::bind;
-    using Network::handle_null;
-    using Network::handle_type;
     using Network::os_error_type;
     using Network::parse;
     using Network::start_context;
