@@ -40,11 +40,15 @@ auto Network::to_string(std::span<const std::byte> bs) -> std::string
         else {
             oss << std::hex;
 
-            for (const auto byte : bs) {
+            for (const auto b : bs) {
                 oss << std::setfill('0')
                     << std::setw(2)
                     << std::uppercase
-                    << static_cast<unsigned>(byte);
+                    << static_cast<unsigned>(b);
+
+                if (static_cast<char>(b) == '\0') {
+                    break;
+                }
             }
         }
     }
