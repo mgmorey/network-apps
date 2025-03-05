@@ -37,8 +37,8 @@
 #include "network/write.h"                      // write()
 
 #include <cstddef>      // std::byte, std::size_t
-#include <span>         // std::span
 #include <iostream>     // std::cerr, std::endl
+#include <span>         // std::span
 
 Network::CommonSocket::CommonSocket(handle_type t_handle,
                                     family_type t_family,
