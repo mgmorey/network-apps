@@ -17,7 +17,6 @@
 #define NETWORK_SOCKET_H
 
 #include "network/acceptresult.h"       // AcceptResult
-#include "network/bytestring.h"         // ByteString
 #include "network/oserrorresult.h"      // OsErrorResult
 #include "network/readresult.h"         // ReadResult
 #include "network/to-bytestring.h"      // to_bytestring()
