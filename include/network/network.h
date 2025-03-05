@@ -18,7 +18,6 @@
 
 #include "network/accept.h"                     // accept()
 #include "network/address.h"                    // Address
-#include "network/addressstring.h"              // AddressString
 #include "network/ai-error.h"                   // format_ai_error()
 #include "network/always-false.h"               // always_false_v
 #include "network/bind.h"                       // bind()
