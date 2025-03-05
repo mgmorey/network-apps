@@ -22,13 +22,11 @@
 #include "network/family-type.h"                // family_type
 #include "network/familyerror.h"                // FamilyError
 #include "network/get-name.h"                   // get_name()
-#include "network/getnameparams.h"              // GetNameParams
 #include "network/handle-null.h"                // handle_null
 #include "network/handle-type.h"                // handle_type
 #include "network/listen.h"                     // listen()
 #include "network/logicerror.h"                 // LogicError
 #include "network/open-handle.h"                // open()
-#include "network/openhandleparams.h"           // OpenHandleParams
 #include "network/oserrorresult.h"              // OsErrorResult
 #include "network/read.h"                       // read()
 #include "network/shutdown.h"                   // shutdown()
@@ -133,6 +131,16 @@ auto Network::CommonSocket::accept() const -> AcceptResult
     return Network::accept({m_handle, m_family, m_is_verbose, m_is_testing});
 }
 
+auto Network::CommonSocket::bind(std::span<const std::byte> t_bs) -> OsErrorResult
+{
+    return open(t_bs, true);
+}
+
+auto Network::CommonSocket::connect(std::span<const std::byte> t_bs) -> OsErrorResult
+{
+    return open(t_bs, false);
+}
+
 auto Network::CommonSocket::listen(int t_backlog) const -> OsErrorResult
 {
     return Network::listen(m_handle, t_backlog,
@@ -168,6 +176,11 @@ auto Network::CommonSocket::open(std::span<const std::byte> t_bs,
     return {};
 }
 
+auto Network::CommonSocket::peername() const -> std::span<const std::byte>
+{
+    return name(true);
+}
+
 auto Network::CommonSocket::read(char* t_data,
                                  std::size_t t_size) const -> ssize_t
 {
@@ -178,6 +191,11 @@ auto Network::CommonSocket::read(char* t_data,
 auto Network::CommonSocket::shutdown(int t_how) const -> OsErrorResult
 {
     return Network::shutdown(m_handle, t_how, m_is_verbose);
+}
+
+auto Network::CommonSocket::sockname() const -> std::span<const std::byte>
+{
+    return name(false);
 }
 
 auto Network::CommonSocket::read(std::size_t t_size) const -> ReadResult

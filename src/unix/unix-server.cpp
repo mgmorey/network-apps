@@ -18,7 +18,8 @@
 
 #include "network/network.h"            // Address, Socket,
                                         // UnixSocketHints,
-                                        // socket_error
+                                        // socket_error,
+                                        // to_bytestring()
 #include "network/parse.h"              // parse()
 #include "unix/connection.h"            // BUFFER_SIZE, SOCKET_HINTS,
                                         // SOCKET_NAME
@@ -36,6 +37,7 @@ namespace
     using Network::Socket;
     using Network::create_socket;
     using Network::socket_error;
+    using Network::to_bytestring;
 
     using Number = long long;
 
@@ -60,8 +62,9 @@ namespace
     auto bind()
     {
         auto sock {create_socket(SOCKET_HINTS, is_verbose)};
+        const auto bs {to_bytestring(SOCKET_NAME)};
 
-        if (const auto result {sock->bind(SOCKET_NAME)}) {
+        if (const auto result {sock->bind(bs)}) {
             std::cerr << result.string() << std::endl;
             std::exit(EXIT_FAILURE);
         }

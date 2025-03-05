@@ -139,8 +139,8 @@ namespace
 
         auto test_socket(const Socket& t_sock) -> void
         {
-            const auto peer {t_sock.peername()};
-            const auto self {t_sock.sockname()};
+            const auto peer {t_sock.name(true)};
+            const auto self {t_sock.name(false)};
             m_os << "Socket "
                  << std::right << std::setw(handle_width) << t_sock
                  << " connected "

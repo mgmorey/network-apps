@@ -17,7 +17,8 @@
 // example in https://www.man7.org/linux/man-pages/man7/unix.7.html.
 
 #include "network/argumentspan.h"       // ArgumentSpan
-#include "network/network.h"            // Socket, socket_error
+#include "network/network.h"            // Socket, socket_error,
+                                        // to_bytestring()
 #include "network/parse.h"              // parse()
 #include "unix/connection.h"            // BUFFER_SIZE, SOCKET_HINTS,
                                         // SOCKET_NAME
@@ -34,14 +35,16 @@ namespace
     using Network::Socket;
     using Network::create_socket;
     using Network::socket_error;
+    using Network::to_bytestring;
 
     auto is_verbose {false};  // NOLINT
 
     auto connect()
     {
         auto sock {create_socket(SOCKET_HINTS, is_verbose)};
+        const auto bs {to_bytestring(SOCKET_NAME)};
 
-        if (const auto error {sock->connect(SOCKET_NAME)}) {
+        if (const auto error {sock->connect(bs)}) {
             std::cerr << error.string() << std::endl;
             std::exit(EXIT_FAILURE);
         }

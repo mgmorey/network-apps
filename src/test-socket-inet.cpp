@@ -236,7 +236,7 @@ namespace
 
         try {
             const auto sock {create_test_socket()};
-            static_cast<void>(sock->peername());
+            static_cast<void>(sock->name(true));
         }
         catch (const Error& error) {
             print(error);

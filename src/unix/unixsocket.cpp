@@ -14,7 +14,6 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/unixsocket.h"         // UnixSocket
-#include "network/bytestring.h"         // ByteString
 #include "network/oserrorresult.h"      // OsErrorResult
 #include "network/socketdata.h"         // SocketData
 #include "network/to-path.h"            // to_path()
@@ -71,7 +70,7 @@ auto Network::UnixSocket::state(SocketState t_state) -> UnixSocket&
     }
 
     if (current == SocketState::bound) {
-        m_path = to_path(sockname());
+        m_path = to_path(name(false));
     }
     else if (previous == SocketState::bound) {
         static_cast<void>(remove(m_path));

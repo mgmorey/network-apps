@@ -228,16 +228,17 @@ namespace
 
         try {
             OsErrorResult actual_result;
-            assert(to_bytestring(path) == path);  // NOLINT
+            const auto bs {to_bytestring(path)};  // NOLINT
+            assert(bs == path);  // NOLINT
 
-            if (const auto result {sock.bind(path)}) {
+            if (const auto result {sock.bind(bs)}) {
                 print(result);
                 actual_result = result;
             }
             else {
-                const auto bs {sock.sockname()};
-                print(sock, bs);
-                assert(bs == path);  // NOLINT
+                const auto self {sock.sockname()};
+                print(sock, self);
+                assert(self == path);  // NOLINT
             }
 
             assert(expected_codes.contains(actual_result.number()));

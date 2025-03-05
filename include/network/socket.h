@@ -19,8 +19,6 @@
 #include "network/acceptresult.h"       // AcceptResult
 #include "network/oserrorresult.h"      // OsErrorResult
 #include "network/readresult.h"         // ReadResult
-#include "network/to-bytestring.h"      // to_bytestring()
-#include "network/validate.h"           // validate()
 
 #include <cstddef>      // std::byte
 #include <ostream>      // std::ostream
@@ -39,41 +37,28 @@ namespace Network
         auto operator=(Socket&&) noexcept -> Socket& = delete;
 
         explicit virtual operator std::string() const = 0;
-
         [[nodiscard]] virtual auto accept() const -> AcceptResult = 0;
+        [[nodiscard]] virtual auto bind(std::span<const std::byte> t_bs) ->
+            OsErrorResult = 0;
+        [[nodiscard]] virtual auto connect(std::span<const std::byte> t_bs) ->
+            OsErrorResult = 0;
         [[nodiscard]] virtual auto listen(int t_backlog) const ->
             OsErrorResult = 0;
         [[nodiscard]] virtual auto name(bool t_is_peer) const ->
             std::span<const std::byte> = 0;
         [[nodiscard]] virtual auto open(std::span<const std::byte> t_bs,
                                         bool t_is_bind) -> OsErrorResult = 0;
+        [[nodiscard]] virtual auto peername() const ->
+            std::span<const std::byte> = 0;
         [[nodiscard]] virtual auto read(char* t_data,
                                         std::size_t t_size) const -> ssize_t = 0;
         [[nodiscard]] virtual auto read(std::size_t t_size) const -> ReadResult = 0;
         [[nodiscard]] virtual auto shutdown(int t_how) const -> OsErrorResult = 0;
+        [[nodiscard]] virtual auto sockname() const ->
+            std::span<const std::byte> = 0;
         [[nodiscard]] virtual auto write(const char* t_data,
                                          std::size_t t_size) const -> ssize_t = 0;
         [[nodiscard]] virtual auto write(std::string_view t_sv) const -> ssize_t = 0;
-
-        [[nodiscard]] auto bind(const auto& value) -> OsErrorResult
-        {
-            return open(to_bytestring(validate(value)), true);  // NOLINT
-        }
-
-        [[nodiscard]] auto connect(const auto& value) -> OsErrorResult
-        {
-            return open(to_bytestring(validate(value)), false);
-        }
-
-        [[nodiscard]] auto peername() const -> std::span<const std::byte>
-        {
-            return name(true);
-        }
-
-        [[nodiscard]] auto sockname() const -> std::span<const std::byte>
-        {
-            return name(false);
-        }
     };
 
     extern auto operator<<(std::ostream& os,

@@ -148,6 +148,7 @@
 #include "network/uniquecontext.h"              // UniqueContext
 #include "network/uniquesocket.h"               // UniqueSocket
 #include "network/uniquify.h"                   // uniquify()
+#include "network/validate.h"                   // validate()
 #ifndef WIN32
 #include "network/unixsockethints.h"            // UnixSocketHints
 #endif
