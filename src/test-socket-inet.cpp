@@ -24,9 +24,11 @@
 #include "network/parse.h"              // parse()
 
 #ifdef WIN32
-#include <winsock2.h>   // AF_INET, AF_UNSPEC, SOCK_STREAM
+#include <winsock2.h>   // AF_INET, AF_UNSPEC, SOCK_STREAM, ::close(),
+                        // ::socket()
 #else
-#include <sys/socket.h> // AF_INET, AF_UNSPEC, SOCK_STREAM
+#include <sys/socket.h> // AF_INET, AF_UNSPEC, SOCK_STREAM ::close(),
+                        // ::socket()
 #endif
 
 #include <cerrno>       // EACCES, ENOENT, EROFS
@@ -157,8 +159,8 @@ namespace
 
         try {
             const CommonSocket sock {handle, family, is_verbose, false};
-            assert(static_cast<bool>(sock.handle()));
             assert(static_cast<handle_type>(sock.handle()) != handle_null);
+            assert(static_cast<bool>(sock.handle()));
         }
         catch (const Error& error) {
             print(error);
@@ -177,6 +179,14 @@ namespace
     auto test_common_socket_handle_invalid() -> void
     {
         test_common_socket(handle_null, AF_UNSPEC, expected_error_handle_re);
+    }
+
+    auto test_common_socket_handle_valid() -> void
+    {
+        family_type family {AF_INET};
+        handle_type handle {::socket(family, SOCK_STREAM, 0)};
+        test_common_socket(handle, family, "");
+        ::close(handle);
     }
 
     auto test_socket(handle_type handle,
@@ -389,6 +399,8 @@ auto main(int argc, char* argv[]) -> int
         test_socket_shutdown_invalid();
         test_socket_socktype_invalid();
         test_socket_write_invalid();
+
+        test_common_socket_handle_valid();
         test_valid();
     }
     catch (const std::exception& error) {
