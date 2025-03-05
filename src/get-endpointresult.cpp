@@ -14,7 +14,6 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/get-endpointresult.h"         // get_endpoint()
-#include "network/addressstring.h"              // AddressString
 #include "network/endpoint.h"                   // Endpoint
 #include "network/endpointresult.h"             // EndpointResult
 #include "network/format-ai-error.h"            // format_ai_error()
@@ -25,6 +24,7 @@
 #include "network/service-length-limits.h"      // service_length_max
 #include "network/textbuffer.h"                 // TextBuffer
 #include "network/to-os-error.h"                // to_os_error()
+#include "network/to-string.h"                  // to_string()
 
 #ifdef WIN32
 #include <ws2tcpip.h>   // ::getnameinfo()
@@ -42,7 +42,6 @@ auto Network::get_endpointresult(std::span<char> hostname,
                                  std::span<const std::byte> bs, int flags,
                                  bool is_verbose) -> OsErrorResult
 {
-    const AddressString sa_str {bs};
     const auto [sa, sa_length] {get_sa_span(bs)};
     const std::string_view hostname_sv {hostname.data(), hostname.size()};
     const std::string_view service_sv {service.data(), service.size()};
@@ -50,7 +49,7 @@ auto Network::get_endpointresult(std::span<char> hostname,
     if (is_verbose) {
         // clang-format off
         std::cout << "Calling ::getnameinfo("
-                  << sa_str
+                  << to_string(bs)
                   << ", "
                   << sa_length
                   << ", "
@@ -79,7 +78,7 @@ auto Network::get_endpointresult(std::span<char> hostname,
         std::ostringstream oss;
         // clang-format off
         oss << "Call to ::getnameinfo("
-            << sa_str
+            << to_string(bs)
             << ", "
             << sa_length
             << ", "
@@ -104,7 +103,7 @@ auto Network::get_endpointresult(std::span<char> hostname,
     if (is_verbose) {
         // clang-format off
         std::cout << "Call to ::getnameinfo("
-                  << sa_str
+                  << to_string(bs)
                   << ", "
                   << sa_length
                   << ", "

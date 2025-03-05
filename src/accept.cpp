@@ -15,7 +15,6 @@
 
 #include "network/accept.h"             // accept()
 #include "network/acceptresult.h"       // AcceptResult
-#include "network/addressstring.h"      // AddressString
 #include "network/binarybuffer.h"       // BinaryBuffer
 #include "network/error.h"              // Error
 #include "network/format-os-error.h"    // format_os_error()
@@ -27,6 +26,7 @@
 #include "network/socketdata.h"         // SocketData
 #include "network/to-os-error.h"        // to_os_error()
 #include "network/to-size.h"            // to_size()
+#include "network/to-string.h"          // to_string()
 
 #ifdef WIN32
 #include <winsock2.h>       // ::accept()
@@ -42,20 +42,21 @@ auto Network::accept(const SocketData& sd) -> AcceptResult
 {
     BinaryBuffer buffer {sa_length_max};
     const std::span bs {buffer};
-    const AddressString sa_str {bs};
     auto [sa, sa_length] {get_sa_span(bs)};
     const auto handle_1 {sd.handle()};
     const auto is_verbose {sd.is_verbose()};
 
     if (is_verbose) {
+        // clang-format off
         std::cout << "Calling ::accept("
                   << handle_1
                   << ", "
-                  << sa_str
+                  << to_string(bs)
                   << ", "
                   << sa_length
-                  << ", ...)"
+                  << ')'
                   << std::endl;
+        // clang-format on
     }
 
     reset_api_error();
@@ -65,17 +66,33 @@ auto Network::accept(const SocketData& sd) -> AcceptResult
         const auto api_error {get_api_error()};
         const auto os_error {to_os_error(api_error)};
         std::ostringstream oss;
+        // clang-format off
         oss << "Call to ::accept("
             << handle_1
             << ", "
-            << sa_str
+            << to_string(bs)
             << ", "
             << sa_length
-            << ", ...) failed with error "
+            << ") failed with error "
             << api_error
             << ": "
             << format_os_error(os_error);
+        // clang-format on
         throw Error(oss.str());
+    }
+
+    if (is_verbose) {
+        // clang-format off
+        std::cout << "Call to ::accept("
+                  << handle_1
+                  << ", "
+                  << to_string(bs)
+                  << ", "
+                  << sa_length
+                  << ") returned data "
+                  << to_string(bs)
+                  << std::endl;
+        // clang-format on
     }
 
     return {SocketData {sd, handle_2}, buffer.size(to_size(sa_length))};

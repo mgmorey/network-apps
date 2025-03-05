@@ -14,7 +14,6 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/get-nameresult.h"             // get_nameresult()
-#include "network/addressstring.h"              // AddressString
 #include "network/binarybuffer.h"               // BinaryBuffer
 #include "network/bytestringresult.h"           // ByteStringResult
 #include "network/format-os-error.h"            // format_os_error()
@@ -29,6 +28,7 @@
 #include "network/socket-error.h"               // socket_error
 #include "network/to-os-error.h"                // to_os_error()
 #include "network/to-size.h"                    // to_size()
+#include "network/to-string.h"                  // to_string()
 
 #ifdef WIN32
 #include <winsock2.h>       // ::getpeername(), ::getsockname()
@@ -62,20 +62,21 @@ auto Network::get_nameresult(const GetNameParams& args,
     BinaryBuffer buffer {sa_length_max};
     const handle_type handle {args.m_handle};
     const std::span bs {buffer};
-    const AddressString sa_str {bs};
     auto [sa, sa_length] {get_sa_span(bs)};
 
     if (args.m_is_verbose) {
+        // clang-format off
         std::cout << "Calling "
                   << binding.second
                   << '('
                   << handle
                   << ", "
-                  << sa_str
+                  << to_string(bs)
                   << ", "
                   << sa_length
-                  << ", ...)"
+                  << ')'
                   << std::endl;
+        // clang-format on
     }
 
     reset_api_error();
@@ -84,19 +85,37 @@ auto Network::get_nameresult(const GetNameParams& args,
         const auto api_error {get_api_error()};
         const auto os_error {to_os_error(api_error)};
         std::ostringstream oss;
+        // clang-format off
         oss << "Call to "
             << binding.second
             << '('
             << handle
             << ", "
-            << sa_str
+            << to_string(bs)
             << ", "
             << sa_length
-            << ", ...) failed with error "
+            << ") failed with error "
             << api_error
             << ": "
             << format_os_error(os_error);
+        // clang-format on
         return OsErrorResult {os_error, oss.str()};
+    }
+
+    if (args.m_is_verbose) {
+        // clang-format off
+        std::cout << "Call to "
+                  << binding.second
+                  << '('
+                  << handle
+                  << ", "
+                  << to_string(bs)
+                  << ", "
+                  << sa_length
+                  << ") returned data "
+                  << to_string(bs)
+                  << std::endl;
+        // clang-format on
     }
 
     return buffer.size(to_size(sa_length));
