@@ -18,11 +18,11 @@
 #include "network/address.h"                    // Address
 #include "network/to-path.h"                    // to_path()
 
-#include <string>       // std::string
+#include <string_view>  // std::string_view
 
-auto Network::Address::sun_text() const -> std::string
+auto Network::Address::sun_text() const -> std::string_view
 {
-    return std::string {to_path(m_span)};
+    return to_path(m_span);
 }
 
 #endif

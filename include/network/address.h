@@ -36,6 +36,9 @@
 #include <ostream>      // std::ostream
 #include <span>         // std::span
 #include <string>       // std::string
+#ifndef WIN32
+#include <string_view> // std::string_view
+#endif
 
 namespace Network
 {
@@ -80,7 +83,7 @@ namespace Network
         [[nodiscard]] auto sin6_port() const -> port_type;
         [[nodiscard]] auto sin6_text() const -> std::string;
 #ifndef WIN32
-        [[nodiscard]] auto sun_text() const -> std::string;
+        [[nodiscard]] auto sun_text() const -> std::string_view;
 #endif
 
     private:

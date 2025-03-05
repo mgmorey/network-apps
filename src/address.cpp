@@ -42,8 +42,8 @@ Network::Address::Address(std::span<const std::byte> t_bs)
 auto Network::Address::operator=(std::span<const std::byte> t_bs) -> Address&
 {
     static_cast<void>(validate(t_bs));
-    const address_type addr {t_bs.data(), t_bs.data() + t_bs.size()};
-    m_span = std::span(m_addr = addr);
+    m_addr.assign(t_bs.data(), t_bs.data() + t_bs.size());
+    m_span = std::span(m_addr);
     return *this;
 }
 
@@ -92,7 +92,7 @@ auto Network::Address::text() const -> std::string
     switch (sa_family()) {
 #ifndef WIN32
     case AF_UNIX:
-        return sun_text();
+        return std::string(sun_text());
 #endif
     case AF_INET:
         return sin_text();
