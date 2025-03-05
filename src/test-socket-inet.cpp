@@ -18,8 +18,9 @@
 #include "network/network.h"            // Error, SocketData,
                                         // SocketHints, UniqueSocket,
                                         // create_socket(),
-                                        // family_type, handle_null,
-                                        // handle_type, os_error_type,
+                                        // family_null, family_type,
+                                        // handle_null, handle_type,
+                                        // os_error_type,
                                         // start_context()
 #include "network/parse.h"              // parse()
 
@@ -48,6 +49,7 @@ namespace
     using Network::SocketHints;
     using Network::UniqueSocket;
     using Network::create_socket;
+    using Network::family_null;
     using Network::family_type;
     using Network::handle_null;
     using Network::handle_type;
@@ -159,8 +161,10 @@ namespace
 
         try {
             const CommonSocket sock {handle, family, is_verbose, false};
-            assert(static_cast<handle_type>(sock.handle()) != handle_null);
-            assert(static_cast<bool>(sock.handle()));
+            assert(sock.family() != family_null);
+            assert(sock.handle() != handle_null);
+            assert(static_cast<handle_type>(sock) != handle_null);
+            assert(static_cast<bool>(sock));
         }
         catch (const Error& error) {
             print(error);
