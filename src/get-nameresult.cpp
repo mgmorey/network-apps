@@ -102,6 +102,8 @@ auto Network::get_nameresult(const GetNameParams& args,
         return OsErrorResult {os_error, oss.str()};
     }
 
+    buffer.resize(to_size(sa_length));
+
     if (args.m_is_verbose) {
         // clang-format off
         std::cout << "Call to "
@@ -118,5 +120,5 @@ auto Network::get_nameresult(const GetNameParams& args,
         // clang-format on
     }
 
-    return buffer.size(to_size(sa_length));
+    return *buffer;
 }

@@ -81,6 +81,8 @@ auto Network::accept(const SocketData& sd) -> AcceptResult
         throw Error(oss.str());
     }
 
+    buffer.resize(to_size(sa_length));
+
     if (is_verbose) {
         // clang-format off
         std::cout << "Call to ::accept("
@@ -95,5 +97,5 @@ auto Network::accept(const SocketData& sd) -> AcceptResult
         // clang-format on
     }
 
-    return {SocketData {sd, handle_2}, buffer.size(to_size(sa_length))};
+    return {SocketData {sd, handle_2}, *buffer};
 }
