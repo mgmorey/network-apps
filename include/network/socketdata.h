@@ -28,8 +28,7 @@ namespace Network
     public:
         SocketData(handle_type t_handle,
                    family_type t_family,
-                   bool t_is_verbose = false,
-                   bool t_is_testing = false);
+                   bool t_is_verbose = false);
         SocketData(const SocketData& t_socket,
                    handle_type t_handle);
 
@@ -54,7 +53,6 @@ namespace Network
         handle_type m_handle {handle_null};
         family_type m_family {family_null};
         bool m_is_verbose {false};
-        bool m_is_testing {false};
     };
 }
 

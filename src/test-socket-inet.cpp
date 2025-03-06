@@ -122,15 +122,10 @@ namespace
 
     auto is_verbose {false}; // NOLINT
 
-    auto create_test_socket(const SocketData& sd) -> UniqueSocket
+    auto create_null_socket() -> UniqueSocket
     {
+        const TestSocketData sd {handle_null, AF_UNSPEC, is_verbose, true};
         return std::make_unique<TestCommonSocket>(sd);
-    }
-
-    auto create_test_socket() -> UniqueSocket
-    {
-        const SocketData sd {handle_null, AF_UNSPEC, is_verbose, true};
-        return create_test_socket(sd);
     }
 
     auto parse_arguments(int argc, char** argv) -> void
@@ -206,7 +201,7 @@ namespace
         std::string actual_error_str;
 
         try {
-            const auto sock {create_socket(handle, family, is_verbose, false)};
+            const auto sock {create_socket(handle, family, is_verbose)};
         }
         catch (const Error& error) {
             print(error);
@@ -250,7 +245,7 @@ namespace
         std::string actual_error_str;
 
         try {
-            const auto sock {create_test_socket()};
+            const auto sock {create_null_socket()};
             static_cast<void>(sock->accept());
         }
         catch (const Error& error) {
@@ -283,7 +278,7 @@ namespace
         std::string actual_error_str;
 
         try {
-            const auto sock {create_test_socket()};
+            const auto sock {create_null_socket()};
             static_cast<void>(sock->listen(0));
         }
         catch (const Error& error) {
@@ -300,7 +295,7 @@ namespace
         std::string actual_error_str;
 
         try {
-            const auto sock {create_test_socket()};
+            const auto sock {create_null_socket()};
             static_cast<void>(sock->name(true));
         }
         catch (const Error& error) {
@@ -329,7 +324,7 @@ namespace
         std::string actual_error_str;
 
         try {
-            const auto sock {create_test_socket()};
+            const auto sock {create_null_socket()};
             static_cast<void>(sock->read(nullptr, 0));
         }
         catch (const Error& error) {
@@ -348,7 +343,7 @@ namespace
 
     auto test_socket_shutdown_invalid() -> void
     {
-        const auto sock {create_test_socket()};
+        const auto sock {create_null_socket()};
         static_cast<void>(sock->shutdown(0));
     }
 
@@ -364,7 +359,7 @@ namespace
         std::string actual_error_str;
 
         try {
-            const auto sock {create_test_socket()};
+            const auto sock {create_null_socket()};
             static_cast<void>(sock->write({}));
         }
         catch (const Error& error) {
