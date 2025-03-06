@@ -49,8 +49,6 @@ namespace Network
         explicit operator bool() const noexcept;
         explicit operator std::string() const final;
 
-        [[nodiscard]] auto family() const noexcept -> family_type;
-        [[nodiscard]] auto handle() const noexcept -> handle_type;
         [[nodiscard]] auto is_verbose() const noexcept -> bool;
 
         [[nodiscard]] auto accept() const -> AcceptResult final;

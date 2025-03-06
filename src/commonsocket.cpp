@@ -19,11 +19,9 @@
 #include "network/bytestring.h"                 // ByteString
 #include "network/close.h"                      // close()
 #include "network/family-null.h"                // family_null
-#include "network/family-type.h"                // family_type
 #include "network/familyerror.h"                // FamilyError
 #include "network/get-name.h"                   // get_name()
 #include "network/handle-null.h"                // handle_null
-#include "network/handle-type.h"                // handle_type
 #include "network/listen.h"                     // listen()
 #include "network/logicerror.h"                 // LogicError
 #include "network/open-handle.h"                // open()
@@ -76,16 +74,6 @@ Network::CommonSocket::operator std::string() const
     }
 
     return std::to_string(m_handle);
-}
-
-auto Network::CommonSocket::family() const noexcept -> family_type
-{
-    return m_family;
-}
-
-auto Network::CommonSocket::handle() const noexcept -> handle_type
-{
-    return m_handle;
 }
 
 auto Network::CommonSocket::is_verbose() const noexcept -> bool
