@@ -21,7 +21,7 @@
 
 namespace Network
 {
-    extern auto create_socket(const SocketData& data) -> UniqueSocket;
+    extern auto create_socket(const SocketData& sd) -> UniqueSocket;
 }
 
 #endif

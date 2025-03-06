@@ -24,13 +24,13 @@
 
 #include <memory>       // std::make_unique()
 
-auto Network::create_socket(const SocketData& data) -> UniqueSocket
+auto Network::create_socket(const SocketData& sd) -> UniqueSocket
 {
-    switch (data.family()) {  // NOLINT
+    switch (sd.family()) {  // NOLINT
     case AF_UNIX:
-        return std::make_unique<UnixSocket>(data);
+        return std::make_unique<UnixSocket>(sd);
     default:
-        return std::make_unique<CommonSocket>(data);
+        return std::make_unique<CommonSocket>(sd);
     }
 }
 

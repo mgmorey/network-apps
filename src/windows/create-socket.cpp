@@ -22,9 +22,9 @@
 
 #include <memory>       // std::make_unique()
 
-auto Network::create_socket(const SocketData& data) -> UniqueSocket
+auto Network::create_socket(const SocketData& sd) -> UniqueSocket
 {
-    return std::make_unique<CommonSocket>(data);
+    return std::make_unique<CommonSocket>(sd);
 }
 
 #endif
