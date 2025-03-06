@@ -15,7 +15,6 @@
 
 #include "network/sockethost.h"         // SocketHost
 #include "network/bytestring.h"         // ByteString
-#include "network/length-type.h"        // length_type
 #include "network/optionalhostname.h"   // OptionalHostname
 #include "network/to-bytestring-void.h" // to_bytestring()
 #include "network/to-sa-length.h"       // to_sa_length()
