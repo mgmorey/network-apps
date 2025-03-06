@@ -159,7 +159,8 @@ namespace
         std::string actual_error_str;
 
         try {
-            const CommonSocket sock {handle, family, is_verbose, false};
+            const TestSocketData sd {handle, family, is_verbose, false};
+            const TestCommonSocket sock {sd};
             assert(sock.family() != family_null);
             assert(sock.handle() != handle_null);
             assert(static_cast<bool>(sock));
