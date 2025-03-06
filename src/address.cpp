@@ -18,7 +18,7 @@
 #include "network/familyerror.h"                // FamilyError
 #include "network/os-features.h"                // HAVE_SOCKADDR_SA_LEN
 #include "network/port-type.h"                  // port_type
-#include "network/validate-bs.h"                // validate()
+#include "network/quote.h"                      // quote()
 
 #ifdef HAVE_SOCKADDR_SA_LEN
 #include "network/socket-length-type.h"         // socket_length_type
@@ -92,7 +92,7 @@ auto Network::Address::text() const -> std::string
     switch (sa_family()) {
 #ifndef WIN32
     case AF_UNIX:
-        return std::string(sun_text());
+        return quote(sun_text());
 #endif
     case AF_INET:
         return sin_text();
