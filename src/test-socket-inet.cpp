@@ -186,8 +186,8 @@ namespace
 
     auto test_common_socket_handle_valid() -> void
     {
-        family_type family {AF_INET};
-        handle_type handle {::socket(family, SOCK_STREAM, 0)};
+        const family_type family {AF_INET};
+        const handle_type handle {::socket(family, SOCK_STREAM, 0)};
         test_common_socket(handle, family, "");
         ::close(handle);
     }
