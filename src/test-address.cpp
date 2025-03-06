@@ -229,7 +229,7 @@ namespace
         static_cast<void>(port);
         const auto text {address.text()};
         static_cast<void>(text);
-        ByteString addr {bs.data(), bs.data() + bs.size()};
+        ByteString addr {bs.begin(), bs.end()};
         assert(ByteString {address} == addr);
         previous_address = addr;
     }
