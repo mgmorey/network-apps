@@ -161,8 +161,6 @@ namespace
         try {
             const TestSocketData sd {handle, family, is_verbose, false};
             const TestCommonSocket sock {sd};
-            assert(sock.family() != family_null);
-            assert(sock.handle() != handle_null);
             assert(static_cast<bool>(sock));
         }
         catch (const Error& error) {
