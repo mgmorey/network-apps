@@ -35,17 +35,17 @@ auto Network::validate(std::span<const std::byte> bs) ->
     std::span<const std::byte>
 {
     switch (const auto family {get_sa_family(bs)}) {
-#ifndef WIN32
-    case AF_UNIX:
-        static_cast<void>(get_sun_pointer(bs));
-        break;
-#endif
     case AF_INET:
         static_cast<void>(get_sin_pointer(bs));
         break;
     case AF_INET6:
         static_cast<void>(get_sin6_pointer(bs));
         break;
+#ifndef WIN32
+    case AF_UNIX:
+        static_cast<void>(get_sun_pointer(bs));
+        break;
+#endif
     default:
         throw FamilyError(family);
     }

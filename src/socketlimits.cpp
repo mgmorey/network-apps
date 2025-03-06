@@ -38,12 +38,12 @@ Network::SocketLimits::SocketLimits(family_type t_family)
     : m_family(t_family)
 {
     switch (m_family) {
-    case AF_UNSPEC:
+    case AF_INET:
+    case AF_INET6:
 #ifndef WIN32
     case AF_UNIX:
 #endif
-    case AF_INET:
-    case AF_INET6:
+    case AF_UNSPEC:
         break;
     default:
         throw FamilyError(m_family);
@@ -59,14 +59,14 @@ auto Network::SocketLimits::limits() const noexcept ->
 auto Network::SocketLimits::max() const noexcept -> std::size_t
 {
     switch (m_family) {
-#ifndef WIN32
-    case AF_UNIX:
-        return sun_length_max;
-#endif
     case AF_INET:
         return sin_length_max;
     case AF_INET6:
         return sin6_length_max;
+#ifndef WIN32
+    case AF_UNIX:
+        return sun_length_max;
+#endif
     default:
         return sa_length_max;
     }
@@ -75,14 +75,14 @@ auto Network::SocketLimits::max() const noexcept -> std::size_t
 auto Network::SocketLimits::min() const noexcept -> std::size_t
 {
     switch (m_family) {
-#ifndef WIN32
-    case AF_UNIX:
-        return sun_length_min;
-#endif
     case AF_INET:
         return sin_length_min;
     case AF_INET6:
         return sin6_length_min;
+#ifndef WIN32
+    case AF_UNIX:
+        return sun_length_min;
+#endif
     default:
         return sa_length_min;
     }

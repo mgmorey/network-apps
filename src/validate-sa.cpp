@@ -50,11 +50,11 @@ auto Network::validate(const sockaddr* sa,
 #endif
 
     switch (sa->sa_family) {
+    case AF_INET:
+    case AF_INET6:
 #ifndef WIN32
     case AF_UNIX:
 #endif
-    case AF_INET:
-    case AF_INET6:
         break;
     default:
         throw FamilyError(sa->sa_family);

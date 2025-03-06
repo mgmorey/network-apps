@@ -225,8 +225,11 @@ namespace
         const auto length {address.length()};
         static_cast<void>(length);
 #endif
-        const auto port {address.port()};
-        static_cast<void>(port);
+        if (family != AF_UNIX) {
+            const auto port {address.port()};
+            static_cast<void>(port);
+        }
+
         const auto text {address.text()};
         static_cast<void>(text);
         ByteString addr {bs.begin(), bs.end()};

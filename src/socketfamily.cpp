@@ -30,17 +30,17 @@ auto Network::operator<<(std::ostream& os,
                          const SocketFamily& family) -> std::ostream&
 {
     switch (family) {
-    case AF_UNSPEC:
-        os << "AF_UNSPEC";
-        break;
-    case AF_UNIX:
-        os << "AF_UNIX";
-        break;
     case AF_INET:
         os << "AF_INET";
         break;
     case AF_INET6:
         os << "AF_INET6";
+        break;
+    case AF_UNIX:
+        os << "AF_UNIX";
+        break;
+    case AF_UNSPEC:
+        os << "AF_UNSPEC";
         break;
     default:
         os << static_cast<int>(family);

@@ -34,14 +34,14 @@ namespace {
     auto get_prefix(Network::socket_family_type family) -> std::string
     {
         switch (family) {
-        case AF_UNIX:
-            return "sun_";
-            break;
         case AF_INET:
             return "sin_";
             break;
         case AF_INET6:
             return "sin6_";
+            break;
+        case AF_UNIX:
+            return "sun_";
             break;
         default:
             return "sa_";
@@ -51,14 +51,14 @@ namespace {
     auto get_suffix(Network::socket_family_type family) -> std::string
     {
         switch (family) {
-        case AF_UNIX:
-            return "_un";
-            break;
         case AF_INET:
             return "_in";
             break;
         case AF_INET6:
             return "_in6";
+            break;
+        case AF_UNIX:
+            return "_un";
             break;
         default:
             return {};
@@ -95,14 +95,14 @@ auto Network::operator<<(std::ostream& os,
     os << SocketFamily(family);
 
     switch (family) {
-    case AF_UNIX:
-        os << Format(delim, tab, prefix + "path");
-        break;
     case AF_INET:
     case AF_INET6:
         os << Format(delim, tab, prefix + "port")
            << address.port()
            << Format(delim, tab, prefix + "addr");
+        break;
+    case AF_UNIX:
+        os << Format(delim, tab, prefix + "path");
         break;
     default:
         os << Format(delim, tab, prefix + "data");
