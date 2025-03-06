@@ -30,12 +30,14 @@
 auto Network::close(handle_type handle, bool is_verbose) -> OsErrorResult
 {
     if (is_verbose) {
+        // clang-format off
         std::cout << "Calling "
                   << close_function_name
                   << '('
                   << handle
                   << ')'
                   << std::endl;
+        // clang-format on
     }
 
     reset_api_error();
@@ -45,6 +47,7 @@ auto Network::close(handle_type handle, bool is_verbose) -> OsErrorResult
         const auto api_error {get_api_error()};
         const auto os_error {to_os_error(api_error)};
         std::ostringstream oss;
+        // clang-format off
         oss << "Call to "
             << close_function_name
             << '('
@@ -53,6 +56,7 @@ auto Network::close(handle_type handle, bool is_verbose) -> OsErrorResult
             << api_error
             << ": "
             << format_os_error(os_error);
+        // clang-format on
         return OsErrorResult {os_error, oss.str()};
     }
 
