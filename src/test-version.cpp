@@ -26,24 +26,24 @@ namespace
 
     auto test_version() -> void
     {
-        const Version v0_0 {0, 0};
-        const Version v0_5 {0, 5};
-        const Version v1_0 {1, 0};
-        const Version v1_5 {1, 5};
-        const Version v2_0 {2, 0};
-        const Version v0 {Version {0, 0}};
-        const Version v1 = v1_0;
-        const Version v2 {v2_0};
-        assert(v0 != v1);
-        assert(v1 != v2);
-        assert(v0 == v0_0);
-        assert(v1 == v1_0);
-        assert(v2 == v2_0);
-        assert(v0_0 < v0_5);
-        assert(v0_5 < v1_0);
-        assert(v1_0 < v1_5);
-        assert(v1_5 < v2_0);
-        assert(v2_0 > v0_0);
+        constexpr Version v0_0 {0, 0};
+        constexpr Version v0_5 {0, 5};
+        constexpr Version v1_0 {1, 0};
+        constexpr Version v1_5 {1, 5};
+        constexpr Version v2_0 {2, 0};
+        constexpr Version v0 {Version {0, 0}};
+        constexpr Version v1 = v1_0;
+        constexpr Version v2 {v2_0};
+        static_assert(v0 != v1);
+        static_assert(v1 != v2);
+        static_assert(v0 == v0_0);
+        static_assert(v1 == v1_0);
+        static_assert(v2 == v2_0);
+        static_assert(v0_0 < v0_5);
+        static_assert(v0_5 < v1_0);
+        static_assert(v1_0 < v1_5);
+        static_assert(v1_5 < v2_0);
+        static_assert(v2_0 > v0_0);
         std::cout << v0 << std::endl;
         std::cout << v1 << std::endl;
         std::cout << v2 << std::endl;
