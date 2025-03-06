@@ -163,8 +163,8 @@ namespace
         std::string actual_error_str;
 
         try {
-            const TestSocketData sd {handle, family, is_verbose, false};
-            const TestCommonSocket sock {sd};
+            const SocketData sd {handle, family, is_verbose};
+            const CommonSocket sock {sd};
             assert(static_cast<bool>(sock));
         }
         catch (const Error& error) {
