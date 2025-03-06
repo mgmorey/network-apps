@@ -42,7 +42,6 @@ namespace Network
         [[nodiscard]] auto family() const noexcept -> family_type;
         [[nodiscard]] auto handle() const noexcept -> handle_type;
         [[nodiscard]] auto is_verbose() const noexcept -> bool;
-        [[nodiscard]] auto is_testing() const noexcept -> bool;
 
     private:
         handle_type m_handle {handle_null};

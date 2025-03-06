@@ -62,8 +62,3 @@ auto Network::SocketData::is_verbose() const noexcept -> bool
 {
     return m_is_verbose;
 }
-
-auto Network::SocketData::is_testing() const noexcept -> bool
-{
-    return m_is_testing;
-}
