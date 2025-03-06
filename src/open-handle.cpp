@@ -25,7 +25,7 @@
 #include "network/sa-length-limits.h"           // sa_length_min
 #include "network/socket-error.h"               // socket_error
 #include "network/to-os-error.h"                // to_os_error()
-#include "network/to-string.h"                  // to_string()
+#include "network/to-string-span-byte.h"        // to_string()
 
 #ifdef WIN32
 #include <winsock2.h>       // ::bind(), ::connect()
