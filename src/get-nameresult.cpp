@@ -21,7 +21,6 @@
 #include "network/get-sa-span.h"                // get_sa_span()
 #include "network/getnamehandler.h"             // GetNameHandler
 #include "network/getnameparams.h"              // GetNameParams
-#include "network/handle-type.h"                // handle_type
 #include "network/oserrorresult.h"              // OsErrorResult
 #include "network/reset-api-error.h"            // reset_api_error()
 #include "network/sa-length-limits.h"           // sa_length_max
@@ -60,9 +59,9 @@ auto Network::get_nameresult(const GetNameParams& args,
 {
     const auto binding {get_binding(is_peer)};
     BinaryBuffer buffer {sa_length_max};
-    const handle_type handle {args.m_handle};
     const std::span bs {buffer};
     auto [sa, sa_length] {get_sa_span(bs)};
+    const auto handle {args.m_handle};
 
     if (args.m_is_verbose) {
         // clang-format off
