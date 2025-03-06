@@ -82,11 +82,6 @@ Network::CommonSocket::operator bool() const noexcept
     return m_handle != handle_null;
 }
 
-Network::CommonSocket::operator handle_type() const noexcept
-{
-    return m_handle;
-}
-
 Network::CommonSocket::operator std::string() const
 {
     if (m_handle == handle_null) {

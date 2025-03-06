@@ -51,7 +51,6 @@ namespace Network
         auto operator=(CommonSocket&&) noexcept -> CommonSocket& = delete;
 
         explicit operator bool() const noexcept;
-        explicit operator handle_type() const noexcept;
         explicit operator std::string() const final;
 
         [[nodiscard]] auto family() const noexcept -> family_type;

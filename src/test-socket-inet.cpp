@@ -162,7 +162,6 @@ namespace
             const CommonSocket sock {handle, family, is_verbose, false};
             assert(sock.family() != family_null);
             assert(sock.handle() != handle_null);
-            assert(static_cast<handle_type>(sock) != handle_null);
             assert(static_cast<bool>(sock));
         }
         catch (const Error& error) {
