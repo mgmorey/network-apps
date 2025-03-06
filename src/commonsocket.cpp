@@ -40,32 +40,19 @@
 #include <span>         // std::span
 #include <string>       // std::string, std::to_string()
 
-Network::CommonSocket::CommonSocket(handle_type t_handle,
-                                    family_type t_family,
-                                    bool t_is_verbose,
-                                    bool t_is_testing) :
-    m_is_verbose(t_is_verbose),
-    m_is_testing(t_is_testing)
+Network::CommonSocket::CommonSocket(const SocketData& t_sd) :
+    m_handle(t_sd.handle()),
+    m_family(t_sd.family()),
+    m_is_verbose(t_sd.is_verbose()),
+    m_is_testing(t_sd.is_testing())
 {
-    if (!m_is_testing && t_handle == handle_null) {
+    if (!m_is_testing && m_handle == handle_null) {
         throw LogicError("Invalid socket descriptor value");
     }
 
-    m_handle = t_handle;
-
-    if (!m_is_testing && t_family == family_null) {
-        throw FamilyError(t_family);
+    if (!m_is_testing && m_family == family_null) {
+        throw FamilyError(m_family);
     }
-
-    m_family = t_family;
-}
-
-Network::CommonSocket::CommonSocket(const SocketData& t_sd) :
-    CommonSocket(t_sd.handle(),
-                 t_sd.family(),
-                 t_sd.is_verbose(),
-                 t_sd.is_testing())
-{
 }
 
 Network::CommonSocket::~CommonSocket() noexcept
