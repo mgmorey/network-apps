@@ -24,7 +24,7 @@
 #include "network/service-length-limits.h"      // service_length_max
 #include "network/textbuffer.h"                 // TextBuffer
 #include "network/to-os-error.h"                // to_os_error()
-#include "network/to-string.h"                  // to_string()
+#include "network/to-string-span-byte.h"        // to_string()
 
 #ifdef WIN32
 #include <ws2tcpip.h>   // ::getnameinfo()
