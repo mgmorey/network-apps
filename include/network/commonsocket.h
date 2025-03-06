@@ -74,10 +74,7 @@ namespace Network
 
     private:
         mutable std::array<ByteString, 2> m_names;
-        handle_type m_handle {handle_null};
-        family_type m_family {family_null};
-        bool m_is_verbose {false};
-        bool m_is_testing {false};
+        SocketData m_sd;
     };
 }
 

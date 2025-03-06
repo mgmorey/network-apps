@@ -14,8 +14,12 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/socketdata.h"         // SocketData
+#include "network/family-null.h"        // family_null
 #include "network/family-type.h"        // family_type
+#include "network/familyerror.h"        // FamilyError
+#include "network/handle-null.h"        // handle_null
 #include "network/handle-type.h"        // handle_type
+#include "network/logicerror.h"         // LogicError
 
 Network::SocketData::SocketData(handle_type t_handle,
                                 family_type t_family,
@@ -26,6 +30,13 @@ Network::SocketData::SocketData(handle_type t_handle,
     m_is_verbose(t_is_verbose),
     m_is_testing(t_is_testing)
 {
+    if (!m_is_testing && m_handle == handle_null) {
+        throw LogicError("Invalid socket descriptor value");
+    }
+
+    if (!m_is_testing && m_family == family_null) {
+        throw FamilyError(m_family);
+    }
 }
 
 Network::SocketData::SocketData(const SocketData& t_socket,
