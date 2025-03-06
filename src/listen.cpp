@@ -35,12 +35,14 @@ auto Network::listen(handle_type handle, int backlog, bool is_verbose) ->
     OsErrorResult
 {
     if (is_verbose) {
+        // clang-format off
         std::cout << "Calling ::listen("
                   << handle
                   << ", "
                   << backlog
                   << ')'
                   << std::endl;
+        // clang-format on
     }
 
     reset_api_error();
@@ -50,6 +52,7 @@ auto Network::listen(handle_type handle, int backlog, bool is_verbose) ->
         const auto api_error {get_api_error()};
         const auto os_error {to_os_error(api_error)};
         std::ostringstream oss;
+        // clang-format off
         oss << "Call to ::listen("
             << handle
             << ", "
@@ -58,6 +61,7 @@ auto Network::listen(handle_type handle, int backlog, bool is_verbose) ->
             << api_error
             << ": "
             << format_os_error(os_error);
+        // clang-format on
         return OsErrorResult {os_error, oss.str()};
     }
 
