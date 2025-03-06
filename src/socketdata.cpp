@@ -62,3 +62,21 @@ auto Network::SocketData::is_verbose() const noexcept -> bool
 {
     return m_is_verbose;
 }
+
+auto Network::SocketData::family(family_type t_family) -> SocketData&
+{
+    m_family = t_family;
+    return *this;
+}
+
+auto Network::SocketData::handle(handle_type t_handle) -> SocketData&
+{
+    m_handle = t_handle;
+    return *this;
+}
+
+auto Network::SocketData::is_verbose(bool t_is_verbose) -> SocketData&
+{
+    m_is_verbose = t_is_verbose;
+    return *this;
+}

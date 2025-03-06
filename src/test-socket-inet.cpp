@@ -44,6 +44,8 @@ namespace
 {
     using Network::CommonSocket;
     using Network::Error;
+    using Network::FamilyError;
+    using Network::LogicError;
     using Network::SocketData;
     using Network::SocketHints;
     using Network::UniqueSocket;
@@ -59,23 +61,30 @@ namespace
     class TestSocketData : public SocketData
     {
     public:
-        explicit TestSocketData(handle_type t_handle,
-                                family_type t_family,
-                                bool t_is_verbose = false,
-                                bool t_is_testing = false) :
-            SocketData(t_handle,
-                       t_family,
-                       t_is_verbose,
-                       t_is_testing)
+        TestSocketData(handle_type t_handle,
+                       family_type t_family,
+                       bool t_is_verbose,
+                       bool t_is_testing)
         {
+            if (!t_is_testing && t_handle == handle_null) {
+                throw LogicError("Invalid socket descriptor value");
+            }
+
+            if (!t_is_testing && t_family == family_null) {
+                throw FamilyError(t_family);
+            }
+
+            handle(t_handle);
+            family(t_family);
+            is_verbose(t_is_verbose);
         }
     };
 
     class TestCommonSocket : public CommonSocket
     {
     public:
-        explicit TestCommonSocket(const SocketData& t_data)
-            : CommonSocket(t_data)
+        explicit TestCommonSocket(const SocketData& t_sd) :
+            CommonSocket(t_sd)
         {
         }
     };

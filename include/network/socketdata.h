@@ -43,6 +43,13 @@ namespace Network
         [[nodiscard]] auto handle() const noexcept -> handle_type;
         [[nodiscard]] auto is_verbose() const noexcept -> bool;
 
+    protected:
+        SocketData() = default;
+
+        auto family(family_type t_family) -> SocketData&;
+        auto handle(handle_type t_handle) -> SocketData&;
+        auto is_verbose(bool t_is_verbose) -> SocketData&;
+
     private:
         handle_type m_handle {handle_null};
         family_type m_family {family_null};
