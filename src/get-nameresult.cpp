@@ -62,8 +62,9 @@ auto Network::get_nameresult(const SocketData& sd, bool is_peer) ->
     const std::span bs {buffer};
     auto [sa, sa_length] {get_sa_span(bs)};
     const auto handle {sd.handle()};
+    const auto is_verbose {sd.is_verbose()};
 
-    if (sd.is_verbose()) {
+    if (is_verbose) {
         // clang-format off
         std::cout << "Calling "
                   << binding.second
@@ -103,7 +104,7 @@ auto Network::get_nameresult(const SocketData& sd, bool is_peer) ->
 
     buffer.resize(to_size(sa_length));
 
-    if (sd.is_verbose()) {
+    if (is_verbose) {
         const auto str {to_string(std::span<std::byte>(buffer))};
         // clang-format off
         std::cout << "Call to "
