@@ -134,8 +134,8 @@ auto Network::get_endpointresult(std::span<const std::byte> bs, int flags,
     TextBuffer hostname {hostname_length_max};
     TextBuffer service {service_length_max};
 
-    if (auto result {get_endpointresult(std::span(hostname),
-                                        std::span(service),
+    if (auto result {get_endpointresult(hostname,
+                                        service,
                                         bs,
                                         flags,
                                         is_verbose)}) {
