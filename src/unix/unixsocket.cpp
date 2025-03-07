@@ -43,7 +43,8 @@ auto Network::UnixSocket::bind(std::span<const std::byte> t_bs) -> OsErrorResult
     return {};
 }
 
-auto Network::UnixSocket::connect(std::span<const std::byte> t_bs) -> OsErrorResult
+auto Network::UnixSocket::connect(std::span<const std::byte> t_bs) ->
+    OsErrorResult
 {
     if (auto result {CommonSocket::connect(t_bs)}) {
         return result;
