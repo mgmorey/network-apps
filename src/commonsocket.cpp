@@ -122,6 +122,13 @@ auto Network::CommonSocket::read(char* t_data,
     return Network::read(m_sd, t_data, t_size);
 }
 
+auto Network::CommonSocket::read(std::size_t t_size) const -> ReadResult
+{
+    TextBuffer buffer {t_size};
+    const auto result {read(buffer.data(), buffer.size())};
+    return {buffer, result};
+}
+
 auto Network::CommonSocket::shutdown(int t_how) const -> OsErrorResult
 {
     return Network::shutdown(m_sd, t_how);
@@ -130,13 +137,6 @@ auto Network::CommonSocket::shutdown(int t_how) const -> OsErrorResult
 auto Network::CommonSocket::sockname() const -> std::span<const std::byte>
 {
     return name(false);
-}
-
-auto Network::CommonSocket::read(std::size_t t_size) const -> ReadResult
-{
-    TextBuffer buffer {t_size};
-    const auto result {read(buffer.data(), buffer.size())};
-    return {buffer, result};
 }
 
 auto Network::CommonSocket::write(const char* t_data,
