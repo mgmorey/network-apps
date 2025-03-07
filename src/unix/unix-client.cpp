@@ -33,6 +33,7 @@ namespace
 {
     using Network::ArgumentSpan;
     using Network::Socket;
+    using Network::TextBuffer;
     using Network::create_socket;
     using Network::socket_error;
     using Network::to_bytestring;
@@ -71,17 +72,17 @@ namespace
         return operands;
     }
 
-    auto read(const Socket& sock)
+    auto read(const Socket& sock) -> std::string
     {
-        static constexpr auto size {BUFFER_SIZE};
-        const auto [str, error] {sock.read(size)};
+        TextBuffer buffer {BUFFER_SIZE};
+        const auto error {sock.read(buffer)};
 
         if (error == socket_error) {
             std::perror("read");
             std::exit(EXIT_FAILURE);
         }
 
-        return str;
+        return buffer;
     }
 
     auto write(const std::string& str, const Socket& sock)
