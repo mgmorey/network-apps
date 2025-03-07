@@ -18,10 +18,6 @@
 
 #include "network/acceptresult.h"       // AcceptResult
 #include "network/bytestring.h"         // ByteString
-#include "network/family-null.h"        // family_null
-#include "network/family-type.h"        // family_type
-#include "network/handle-null.h"        // handle_null
-#include "network/handle-type.h"        // handle_type
 #include "network/readresult.h"         // ReadResult
 #include "network/socket.h"             // Socket
 #include "network/socketdata.h"         // SocketData

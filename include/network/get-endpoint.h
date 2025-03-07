@@ -16,7 +16,6 @@
 #ifndef NETWORK_GET_ENDPOINT_H
 #define NETWORK_GET_ENDPOINT_H
 
-#include "network/bytestring.h"         // ByteString
 #include "network/endpoint.h"           // Endpoint
 
 #include <cstddef>      // std::byte

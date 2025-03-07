@@ -19,17 +19,16 @@
 #include "network/error-strings.h"      // VISITOR_ERROR
 #include "network/error.h"              // Error
 #include "network/get-nameresult.h"     // get_nameresult()
-#include "network/getnameparams.h"      // GetNameParams
 #include "network/oserrorresult.h"      // OsErrorResult
+#include "network/socketdata.h"         // SocketData
 
 #include <type_traits>  // std::decay_t, std::is_same_v
 #include <variant>      // std::visit()
 
-auto Network::get_name(const GetNameParams& args,
-                       bool is_peer) -> ByteString
+auto Network::get_name(const SocketData& sd, bool is_peer) -> ByteString
 {
     ByteString result;
-    auto name_result {get_nameresult(args, is_peer)};
+    auto name_result {get_nameresult(sd, is_peer)};
     std::visit([&](auto&& arg) {
         using T = std::decay_t<decltype(arg)>;
 

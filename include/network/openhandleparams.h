@@ -16,7 +16,7 @@
 #ifndef NETWORK_OPENHANDLEPARAMS_H
 #define NETWORK_OPENHANDLEPARAMS_H
 
-#include "network/handle-type.h"        // handle-type
+#include "network/socketdata.h"         // SocketData
 
 #include <cstddef>      // std::byte
 #include <span>         // std::span
@@ -25,9 +25,8 @@ namespace Network
 {
     struct OpenHandleParams
     {
-        handle_type m_handle;
+        SocketData m_sd;
         std::span<const std::byte> m_bs;
-        bool m_is_verbose;
     };
 }
 

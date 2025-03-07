@@ -17,12 +17,12 @@
 #define NETWORK_GET_NAMERESULT_H
 
 #include "network/bytestringresult.h"   // ByteStringResult
-#include "network/getnameparams.h"      // GetNameParams
+#include "network/socketdata.h"         // SocketData
 
 namespace Network
 {
-    extern auto get_nameresult(const GetNameParams& args,
-                               bool is_peer) -> ByteStringResult;
+    extern auto get_nameresult(const SocketData& sd, bool is_peer) ->
+        ByteStringResult;
 }
 
 #endif

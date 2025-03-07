@@ -16,10 +16,10 @@
 #include "network/listen.h"             // listen()
 #include "network/format-os-error.h"    // format_os_error()
 #include "network/get-api-error.h"      // get_api_error()
-#include "network/handle-type.h"        // handle_type
 #include "network/oserrorresult.h"      // OsErrorResult
 #include "network/reset-api-error.h"    // reset_api_error()
 #include "network/socket-error.h"       // socket_error
+#include "network/socketdata.h"         // SocketData
 #include "network/to-os-error.h"        // to_os_error()
 
 #ifdef WIN32
@@ -31,13 +31,12 @@
 #include <iostream>     // std::cout, std::endl
 #include <sstream>      // std::ostringstream
 
-auto Network::listen(handle_type handle, int backlog, bool is_verbose) ->
-    OsErrorResult
+auto Network::listen(const SocketData& sd, int backlog) -> OsErrorResult
 {
-    if (is_verbose) {
+    if (sd.is_verbose()) {
         // clang-format off
         std::cout << "Calling ::listen("
-                  << handle
+                  << sd.handle()
                   << ", "
                   << backlog
                   << ')'
@@ -46,7 +45,7 @@ auto Network::listen(handle_type handle, int backlog, bool is_verbose) ->
     }
 
     reset_api_error();
-    const auto result {::listen(handle, backlog)};
+    const auto result {::listen(sd.handle(), backlog)};
 
     if (result == socket_error) {
         const auto api_error {get_api_error()};
@@ -54,7 +53,7 @@ auto Network::listen(handle_type handle, int backlog, bool is_verbose) ->
         std::ostringstream oss;
         // clang-format off
         oss << "Call to ::listen("
-            << handle
+            << sd.handle()
             << ", "
             << backlog
             << ") failed with error "

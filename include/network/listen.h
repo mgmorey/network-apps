@@ -16,13 +16,12 @@
 #ifndef NETWORK_LISTEN_H
 #define NETWORK_LISTEN_H
 
-#include "network/handle-type.h"        // handle_type
 #include "network/oserrorresult.h"      // OsErrorResult
+#include "network/socketdata.h"         // SocketData
 
 namespace Network
 {
-    extern auto listen(handle_type handle, int backlog, bool is_verbose) ->
-        OsErrorResult;
+    extern auto listen(const SocketData& sd, int backlog) -> OsErrorResult;
 }
 
 #endif

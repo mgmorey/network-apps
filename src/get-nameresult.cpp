@@ -20,11 +20,11 @@
 #include "network/get-api-error.h"              // get_api_error()
 #include "network/get-sa-span.h"                // get_sa_span()
 #include "network/getnamehandler.h"             // GetNameHandler
-#include "network/getnameparams.h"              // GetNameParams
 #include "network/oserrorresult.h"              // OsErrorResult
 #include "network/reset-api-error.h"            // reset_api_error()
 #include "network/sa-length-limits.h"           // sa_length_max
 #include "network/socket-error.h"               // socket_error
+#include "network/socketdata.h"                 // SocketData
 #include "network/to-os-error.h"                // to_os_error()
 #include "network/to-size.h"                    // to_size()
 #include "network/to-string-span-byte.h"        // to_string()
@@ -54,16 +54,16 @@ namespace
     }
 }
 
-auto Network::get_nameresult(const GetNameParams& args,
-                             bool is_peer) -> ByteStringResult
+auto Network::get_nameresult(const SocketData& sd, bool is_peer) ->
+    ByteStringResult
 {
     const auto binding {get_binding(is_peer)};
     BinaryBuffer buffer {sa_length_max};
     const std::span bs {buffer};
     auto [sa, sa_length] {get_sa_span(bs)};
-    const auto handle {args.m_handle};
+    const auto handle {sd.handle()};
 
-    if (args.m_is_verbose) {
+    if (sd.is_verbose()) {
         // clang-format off
         std::cout << "Calling "
                   << binding.second
@@ -103,7 +103,7 @@ auto Network::get_nameresult(const GetNameParams& args,
 
     buffer.resize(to_size(sa_length));
 
-    if (args.m_is_verbose) {
+    if (sd.is_verbose()) {
         const auto str {to_string(std::span<std::byte>(buffer))};
         // clang-format off
         std::cout << "Call to "

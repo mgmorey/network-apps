@@ -55,7 +55,8 @@ namespace
 auto Network::open(const OpenHandleParams& args, bool is_bind) -> OsErrorResult
 {
     const auto binding {get_binding(is_bind)};
-    const auto handle {args.m_handle};
+    const auto sd {args.m_sd};
+    const auto handle {sd.handle()};
     const auto [sa, sa_length] {get_sa_span(args.m_bs)};
 
     if (sa_length == sa_length_min) {
@@ -63,7 +64,7 @@ auto Network::open(const OpenHandleParams& args, bool is_bind) -> OsErrorResult
                            to_string(args.m_bs));
     }
 
-    if (args.m_is_verbose) {
+    if (sd.is_verbose()) {
         // clang-format off
         std::cout << "Calling "
                   << binding.second

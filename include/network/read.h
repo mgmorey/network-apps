@@ -16,7 +16,7 @@
 #ifndef NETWORK_READ_H
 #define NETWORK_READ_H
 
-#include "network/handle-type.h"        // handle_type
+#include "network/socketdata.h"         // SocketData
 
 #include <sys/types.h>          // ssize_t
 
@@ -24,10 +24,8 @@
 
 namespace Network
 {
-    extern auto read(handle_type handle,
-                     char* data,
-                     std::size_t size,
-                     bool is_verbose = false) -> ssize_t;
+    extern auto read(const SocketData& sd, char* data, std::size_t size) ->
+        ssize_t;
 }
 
 #endif

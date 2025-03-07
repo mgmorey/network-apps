@@ -42,8 +42,7 @@ Network::CommonSocket::CommonSocket(const SocketData& t_sd) :
 
 Network::CommonSocket::~CommonSocket() noexcept
 {
-    if (const auto result {Network::close(m_sd.handle(),
-                                          m_sd.is_verbose())}) {
+    if (const auto result {Network::close(m_sd)}) {
         std::cerr << result.string()
                   << std::endl;
     }
@@ -86,8 +85,7 @@ auto Network::CommonSocket::connect(std::span<const std::byte> t_bs) -> OsErrorR
 
 auto Network::CommonSocket::listen(int t_backlog) const -> OsErrorResult
 {
-    return Network::listen(m_sd.handle(), t_backlog,
-                           m_sd.is_verbose());
+    return Network::listen(m_sd, t_backlog);
 }
 
 auto Network::CommonSocket::name(bool t_is_peer) const ->
@@ -97,9 +95,7 @@ auto Network::CommonSocket::name(bool t_is_peer) const ->
     ByteString& value {m_names.at(index)};
 
     if (value.empty()) {
-        value = Network::get_name(
-            {.m_handle = m_sd.handle(), .m_is_verbose = m_sd.is_verbose()},
-            t_is_peer);
+        value = Network::get_name(m_sd, t_is_peer);
     }
 
     return value;
@@ -109,9 +105,7 @@ auto Network::CommonSocket::open(std::span<const std::byte> t_bs,
                                  bool t_is_bind) -> OsErrorResult
 {
     if (const auto result {Network::open({
-            .m_handle = m_sd.handle(),
-            .m_bs = t_bs,
-            .m_is_verbose = m_sd.is_verbose()},
+                    .m_sd = m_sd, .m_bs = t_bs},
                 t_is_bind)}) {
         return result;
     }
@@ -127,8 +121,7 @@ auto Network::CommonSocket::peername() const -> std::span<const std::byte>
 auto Network::CommonSocket::read(char* t_data,
                                  std::size_t t_size) const -> ssize_t
 {
-    return Network::read(m_sd.handle(), t_data, t_size,
-                         m_sd.is_verbose());
+    return Network::read(m_sd, t_data, t_size);
 }
 
 auto Network::CommonSocket::shutdown(int t_how) const -> OsErrorResult
@@ -151,10 +144,7 @@ auto Network::CommonSocket::read(std::size_t t_size) const -> ReadResult
 auto Network::CommonSocket::write(const char* t_data,
                                   std::size_t t_size) const -> ssize_t
 {
-    return Network::write(m_sd.handle(),
-                          t_data,
-                          t_size,
-                          m_sd.is_verbose());
+    return Network::write(m_sd, t_data, t_size);
 }
 
 auto Network::CommonSocket::write(std::string_view t_sv) const -> ssize_t

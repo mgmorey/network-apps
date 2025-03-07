@@ -16,7 +16,7 @@
 #ifndef NETWORK_WRITE_H
 #define NETWORK_WRITE_H
 
-#include "network/handle-type.h"        // handle_type
+#include "network/socketdata.h"         // SocketData
 
 #include <sys/types.h>          // ssize_t
 
@@ -24,10 +24,9 @@
 
 namespace Network
 {
-    extern auto write(handle_type handle,
+    extern auto write(const SocketData& sd,
                       const char* data,
-                      std::size_t size,
-                      bool is_verbose = false) -> ssize_t;
+                      std::size_t size) -> ssize_t;
 }
 
 #endif

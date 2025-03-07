@@ -18,30 +18,30 @@
 #include "network/close-function-pointer.h"     // close_function_pointer
 #include "network/format-os-error.h"            // format_os_error()
 #include "network/get-api-error.h"              // get_api_error()
-#include "network/handle-type.h"                // handle_type
 #include "network/oserrorresult.h"              // OsErrorResult
 #include "network/reset-api-error.h"            // reset_api_error()
 #include "network/socket-error.h"               // socket_error
+#include "network/socketdata.h"                 // SocketData
 #include "network/to-os-error.h"                // to_os_error()
 
 #include <iostream>     // std::cout, std::endl
 #include <sstream>      // std::ostringstream
 
-auto Network::close(handle_type handle, bool is_verbose) -> OsErrorResult
+auto Network::close(const SocketData& sd) -> OsErrorResult
 {
-    if (is_verbose) {
+    if (sd.is_verbose()) {
         // clang-format off
         std::cout << "Calling "
                   << close_function_name
                   << '('
-                  << handle
+                  << sd.handle()
                   << ')'
                   << std::endl;
         // clang-format on
     }
 
     reset_api_error();
-    const auto result {close_function_pointer(handle)};
+    const auto result {close_function_pointer(sd.handle())};
 
     if (result == socket_error) {
         const auto api_error {get_api_error()};
@@ -51,7 +51,7 @@ auto Network::close(handle_type handle, bool is_verbose) -> OsErrorResult
         oss << "Call to "
             << close_function_name
             << '('
-            << handle
+            << sd.handle()
             << ") failed with error "
             << api_error
             << ": "

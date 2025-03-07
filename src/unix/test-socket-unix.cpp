@@ -56,12 +56,14 @@ namespace
     using Network::OsErrorResult;
     using Network::Pathname;
     using Network::Socket;
+    using Network::SocketData;
     using Network::SocketHints;
     using Network::SocketPair;
     using Network::UnixSocketHints;
     using Network::close;
     using Network::create_socket;
     using Network::create_socketpair;
+    using Network::family_type;
     using Network::handle_null;
     using Network::handle_type;
     using Network::os_error_type;
@@ -202,11 +204,13 @@ namespace
     }
 
     auto test_close(handle_type handle,
+                    family_type family,
                     const ErrorCodeSet& expected_codes) -> void
     {
         os_error_type actual_code {};
 
-        if (const auto result {close(handle, is_verbose)}) {
+        const SocketData sd {handle, family, is_verbose};
+        if (const auto result {close(sd)}) {
             print(result);
             actual_code = result.number();
         }
@@ -216,7 +220,7 @@ namespace
 
     auto test_close_handle_null() -> void
     {
-        test_close(handle_null, get_codes_bad_file_number());
+        test_close(handle_null, AF_UNIX, get_codes_bad_file_number());
     }
 
     auto test_path(Socket& sock,

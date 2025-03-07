@@ -19,10 +19,10 @@
 #include "network/error.h"                      // Error
 #include "network/format-os-error.h"            // format_os_error()
 #include "network/get-api-error.h"              // get_api_error()
-#include "network/handle-type.h"                // handle_type
 #include "network/quote.h"                      // quote()
 #include "network/reset-api-error.h"            // reset_api_error()
 #include "network/socket-error.h"               // socket_error
+#include "network/socketdata.h"                 // SocketData
 #include "network/to-os-error.h"                // to_os_error()
 
 #include <sys/types.h>          // ssize_t
@@ -34,17 +34,16 @@
 #include <sstream>      // std::ostringstream
 #include <string_view>  // std::string_view
 
-auto Network::write(handle_type handle,
+auto Network::write(const SocketData& sd,
                     const char* data,
-                    std::size_t size,
-                    bool is_verbose) -> ssize_t
+                    std::size_t size) -> ssize_t
 {
     const std::string_view sv {data, size};
 
-    if (is_verbose) {
+    if (sd.is_verbose()) {
         // clang-format off
         std::cout << "Calling ::write("
-                  << handle
+                  << sd.handle()
                   << ", "
                   << quote(sv)
                   << ", "
@@ -55,7 +54,7 @@ auto Network::write(handle_type handle,
     }
 
     reset_api_error();
-    const auto result {::write(handle, data, size)};
+    const auto result {::write(sd.handle(), data, size)};
 
     if (result == socket_error) {
         const auto api_error {get_api_error()};
@@ -63,7 +62,7 @@ auto Network::write(handle_type handle,
         std::ostringstream oss;
         // clang-format off
         oss << "Call to ::write("
-            << handle
+            << sd.handle()
             << ", "
             << quote(sv)
             << ", "
