@@ -124,7 +124,7 @@ auto Network::CommonSocket::read(char* t_data,
 
 auto Network::CommonSocket::shutdown(int t_how) const -> OsErrorResult
 {
-    return Network::shutdown(m_sd.handle(), t_how, m_sd.is_verbose());
+    return Network::shutdown(m_sd, t_how);
 }
 
 auto Network::CommonSocket::sockname() const -> std::span<const std::byte>

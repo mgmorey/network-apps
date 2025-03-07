@@ -16,14 +16,12 @@
 #ifndef NETWORK_SHUTDOWN_H
 #define NETWORK_SHUTDOWN_H
 
-#include "network/handle-type.h"                // handle_type
 #include "network/oserrorresult.h"              // OsErrorResult
+#include "network/socketdata.h"                 // SocketData
 
 namespace Network
 {
-    extern auto shutdown(handle_type handle,
-                         int how,
-                         bool is_verbose = false) -> OsErrorResult;
+    extern auto shutdown(const SocketData& sd, int how) -> OsErrorResult;
 }
 
 #endif

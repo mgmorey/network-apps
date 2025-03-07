@@ -16,10 +16,10 @@
 #include "network/shutdown.h"           // shutdown()
 #include "network/format-os-error.h"    // format_os_error()
 #include "network/get-api-error.h"      // get_api_error()
-#include "network/handle-type.h"        // handle_type
 #include "network/oserrorresult.h"      // OsErrorResult
 #include "network/reset-api-error.h"    // reset_api_error()
 #include "network/socket-error.h"       // socket_error
+#include "network/socketdata.h"         // SocketData
 #include "network/to-os-error.h"        // to_os_error()
 
 #ifdef WIN32
@@ -31,11 +31,11 @@
 #include <iostream>     // std::cout, std::endl
 #include <sstream>      // std::ostringstream
 
-auto Network::shutdown(handle_type handle,
-                       int how,
-                       bool is_verbose) -> OsErrorResult
+auto Network::shutdown(const SocketData& sd, int how) -> OsErrorResult
 {
-    if (is_verbose) {
+    const auto handle {sd.handle()};
+
+    if (sd.is_verbose()) {
         std::cout << "Calling ::shutdown("
                   << handle
                   << ')'
