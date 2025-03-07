@@ -31,8 +31,6 @@ namespace Network
         ~BinaryBuffer() noexcept = default;
         auto operator=(const BinaryBuffer&) noexcept -> BinaryBuffer& = default;
         auto operator=(BinaryBuffer&&) noexcept -> BinaryBuffer& = default;
-
-        [[nodiscard]] auto size(size_type t_size) -> buffer_type&;
     };
 }
 
