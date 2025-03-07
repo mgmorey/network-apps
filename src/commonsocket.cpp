@@ -74,20 +74,12 @@ auto Network::CommonSocket::accept() const -> AcceptResult
 
 auto Network::CommonSocket::bind(std::span<const std::byte> t_bs) -> OsErrorResult
 {
-    if (const auto result {Network::open(m_sd, t_bs, true)}) {
-        return result;
-    }
-
-    return {};
+    return Network::open(m_sd, t_bs, true);
 }
 
 auto Network::CommonSocket::connect(std::span<const std::byte> t_bs) -> OsErrorResult
 {
-    if (const auto result {Network::open(m_sd, t_bs, false)}) {
-        return result;
-    }
-
-    return {};
+    return Network::open(m_sd, t_bs, false);
 }
 
 auto Network::CommonSocket::listen(int t_backlog) const -> OsErrorResult
