@@ -29,19 +29,21 @@
 
 auto Network::close(const SocketData& sd) -> OsErrorResult
 {
+    const auto handle {sd.handle()};
+
     if (sd.is_verbose()) {
         // clang-format off
         std::cout << "Calling "
                   << close_function_name
                   << '('
-                  << sd.handle()
+                  << handle
                   << ')'
                   << std::endl;
         // clang-format on
     }
 
     reset_api_error();
-    const auto result {close_function_pointer(sd.handle())};
+    const auto result {close_function_pointer(handle)};
 
     if (result == socket_error) {
         const auto api_error {get_api_error()};
@@ -51,7 +53,7 @@ auto Network::close(const SocketData& sd) -> OsErrorResult
         oss << "Call to "
             << close_function_name
             << '('
-            << sd.handle()
+            << handle
             << ") failed with error "
             << api_error
             << ": "
