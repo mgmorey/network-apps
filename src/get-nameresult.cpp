@@ -43,21 +43,21 @@
 
 namespace
 {
-    auto get_binding(bool is_bind) -> Network::GetNameHandler
+    auto get_binding(bool is_sockname) -> Network::GetNameHandler
     {
         static const std::array<Network::GetNameHandler, 2> bindings {
-            std::make_pair(::getsockname, "::getsockname"),
             std::make_pair(::getpeername, "::getpeername"),
+            std::make_pair(::getsockname, "::getsockname"),
         };
 
-        return bindings.at(static_cast<std::size_t>(is_bind));
+        return bindings.at(static_cast<std::size_t>(is_sockname));
     }
 }
 
-auto Network::get_nameresult(const SocketData& sd, bool is_peer) ->
+auto Network::get_nameresult(const SocketData& sd, bool is_sockname) ->
     ByteStringResult
 {
-    const auto binding {get_binding(is_peer)};
+    const auto binding {get_binding(is_sockname)};
     BinaryBuffer buffer {sa_length_max};
     const std::span bs {buffer};
     auto [sa, sa_length] {get_sa_span(bs)};

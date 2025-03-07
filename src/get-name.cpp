@@ -25,10 +25,10 @@
 #include <type_traits>  // std::decay_t, std::is_same_v
 #include <variant>      // std::visit()
 
-auto Network::get_name(const SocketData& sd, bool is_peer) -> ByteString
+auto Network::get_name(const SocketData& sd, bool is_sockname) -> ByteString
 {
     ByteString result;
-    auto name_result {get_nameresult(sd, is_peer)};
+    auto name_result {get_nameresult(sd, is_sockname)};
     std::visit([&](auto&& arg) {
         using T = std::decay_t<decltype(arg)>;
 

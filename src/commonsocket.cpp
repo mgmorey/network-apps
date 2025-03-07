@@ -94,7 +94,7 @@ auto Network::CommonSocket::peername() const -> std::span<const std::byte>
     ByteString& value {m_names[1]};
 
     if (value.empty()) {
-        value = Network::get_name(m_sd, true);
+        value = Network::get_name(m_sd, false);
     }
 
     return value;
@@ -115,7 +115,7 @@ auto Network::CommonSocket::sockname() const -> std::span<const std::byte>
     ByteString& value {m_names[0]};
 
     if (value.empty()) {
-        value = Network::get_name(m_sd, false);
+        value = Network::get_name(m_sd, true);
     }
 
     return value;

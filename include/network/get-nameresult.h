@@ -21,7 +21,7 @@
 
 namespace Network
 {
-    extern auto get_nameresult(const SocketData& sd, bool is_peer) ->
+    extern auto get_nameresult(const SocketData& sd, bool is_sockname) ->
         ByteStringResult;
 }
 
