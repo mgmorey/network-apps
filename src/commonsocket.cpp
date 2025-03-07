@@ -116,16 +116,15 @@ auto Network::CommonSocket::peername() const -> std::span<const std::byte>
     return name(true);
 }
 
-auto Network::CommonSocket::read(char* t_data,
-                                 std::size_t t_size) const -> ssize_t
+auto Network::CommonSocket::read(std::span<char> t_cs) const -> ssize_t
 {
-    return Network::read(m_sd, t_data, t_size);
+    return Network::read(m_sd, t_cs);
 }
 
 auto Network::CommonSocket::read(std::size_t t_size) const -> ReadResult
 {
     TextBuffer buffer {t_size};
-    const auto result {read(buffer.data(), buffer.size())};
+    const auto result {read(std::span(buffer))};
     return {buffer, result};
 }
 

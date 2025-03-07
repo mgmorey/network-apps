@@ -313,7 +313,7 @@ namespace
 
         try {
             const auto sock {create_null_socket()};
-            static_cast<void>(sock->read(nullptr, 0));
+            static_cast<void>(sock->read(std::span<char> {}));
         }
         catch (const Error& error) {
             print(error);

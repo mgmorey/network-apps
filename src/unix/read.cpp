@@ -29,15 +29,14 @@
 
 #include <unistd.h>         // ::read()
 
-#include <cstddef>      // std::size_t
 #include <iostream>     // std::cout, std::endl
+#include <span>         // std::span
 #include <sstream>      // std::ostringstream
 #include <string_view>  // std::string_view
 
-auto Network::read(const SocketData& sd, char* data, std::size_t size) ->
-    ssize_t
+auto Network::read(const SocketData& sd, std::span<char> sc) -> ssize_t
 {
-    const std::string_view sv {data, size};
+    const std::string_view sv {sc.data(), sc.size()};
     const auto handle {sd.handle()};
     const auto is_verbose {sd.is_verbose()};
 
@@ -48,14 +47,14 @@ auto Network::read(const SocketData& sd, char* data, std::size_t size) ->
                   << ", "
                   << quote(sv)
                   << ", "
-                  << size
+                  << sc.size()
                   << ')'
                   << std::endl;
         // clang-format on
     }
 
     reset_api_error();
-    const auto result {::read(handle, data, size)};
+    const auto result {::read(handle, sc.data(), sc.size())};
 
     if (result == socket_error) {
         const auto api_error {get_api_error()};
@@ -67,7 +66,7 @@ auto Network::read(const SocketData& sd, char* data, std::size_t size) ->
             << ", "
             << quote(sv)
             << ", "
-            << size
+            << sc.size()
             << ") failed with error "
             << api_error
             << ": "
@@ -83,7 +82,7 @@ auto Network::read(const SocketData& sd, char* data, std::size_t size) ->
                   << ", "
                   << quote(sv)
                   << ", "
-                  << size
+                  << sc.size()
                   << ") returned data "
                   << quote(sv)
                   << std::endl;

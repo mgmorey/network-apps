@@ -20,11 +20,11 @@
 
 #include <sys/types.h>          // ssize_t
 
-#include <cstddef>      // std::size_t
+#include <span>         // std::span
 
 namespace Network
 {
-    extern auto read(const SocketData& sd, char* data, std::size_t size) ->
+    extern auto read(const SocketData& sd, std::span<char> sc) ->
         ssize_t;
 }
 

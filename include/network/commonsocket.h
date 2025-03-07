@@ -59,8 +59,7 @@ namespace Network
         [[nodiscard]] auto open(std::span<const std::byte> t_bs,
                                 bool t_is_bind) -> OsErrorResult override;
         [[nodiscard]] auto peername() const -> std::span<const std::byte> final;
-        [[nodiscard]] auto read(char* t_data,
-                                std::size_t t_size) const -> ssize_t final;
+        [[nodiscard]] auto read(std::span<char> t_cs) const -> ssize_t final;
         [[nodiscard]] auto read(std::size_t t_size) const -> ReadResult final;
         [[nodiscard]] auto shutdown(int t_how) const -> OsErrorResult final;
         [[nodiscard]] auto sockname() const -> std::span<const std::byte> final;
