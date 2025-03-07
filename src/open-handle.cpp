@@ -23,7 +23,7 @@
 #include "network/reset-api-error.h"            // reset_api_error()
 #include "network/sa-length-limits.h"           // sa_length_min
 #include "network/socket-error.h"               // socket_error
-#include "network/socketdata.h"         // SocketData
+#include "network/socketdata.h"                 // SocketData
 #include "network/to-os-error.h"                // to_os_error()
 #include "network/to-string-span-byte.h"        // to_string()
 
@@ -58,8 +58,8 @@ auto Network::open(const SocketData& sd,
                    bool is_bind) -> OsErrorResult
 {
     const auto binding {get_binding(is_bind)};
-    const auto handle {sd.handle()};
     const auto [sa, sa_length] {get_sa_span(bs)};
+    const auto handle {sd.handle()};
 
     if (std::cmp_equal(sa_length, sa_length_min)) {
         throw AddressError("Address payload length is zero: " +
