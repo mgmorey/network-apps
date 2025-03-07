@@ -160,7 +160,7 @@ GCOVFLAGS = -mo $(object_dir) -r
 
 # GCOVRFLAGS
 
-gcovr_exclude = '$(source_dir)/($(api)/)?(test|unix)-\w+$(source_suffix)'
+gcovr_exclude = '$(source_dir)/($(api)/)?(test|unix)-[\w-]+$(source_suffix)'
 GCOVRFLAGS = --calls --exclude $(gcovr_exclude) --html-details	\
 --html-theme $(HTML_THEME)
 
