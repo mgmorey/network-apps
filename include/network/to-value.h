@@ -19,7 +19,8 @@
 #include "network/valueerror.h"         // ValueError
 
 #include <type_traits>  // std::is_arithmetic_v
-#include <utility>      // std::in_range()
+#include <utility>      // std::cmp_greater(), std::cmp_less(),
+                        // std::in_range()
 
 namespace Network
 {
