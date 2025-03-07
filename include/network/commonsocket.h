@@ -18,6 +18,7 @@
 
 #include "network/acceptresult.h"       // AcceptResult
 #include "network/bytestring.h"         // ByteString
+#include "network/oserrorresult.h"      // OsErrorResult
 #include "network/socket.h"             // Socket
 #include "network/socketdata.h"         // SocketData
 
@@ -51,8 +52,7 @@ namespace Network
             OsErrorResult override;
         [[nodiscard]] auto connect(std::span<const std::byte> t_bs) ->
             OsErrorResult override;
-        [[nodiscard]] auto listen(int t_backlog) const ->
-            OsErrorResult final;
+        [[nodiscard]] auto listen(int t_backlog) const -> OsErrorResult final;
         [[nodiscard]] auto peername() const -> std::span<const std::byte> final;
         [[nodiscard]] auto read(std::span<char> t_cs) const -> ssize_t final;
         [[nodiscard]] auto shutdown(int t_how) const -> OsErrorResult final;
