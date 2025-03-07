@@ -139,13 +139,7 @@ auto Network::CommonSocket::sockname() const -> std::span<const std::byte>
     return name(false);
 }
 
-auto Network::CommonSocket::write(const char* t_data,
-                                  std::size_t t_size) const -> ssize_t
-{
-    return Network::write(m_sd, t_data, t_size);
-}
-
 auto Network::CommonSocket::write(std::string_view t_sv) const -> ssize_t
 {
-    return write(t_sv.data(), t_sv.size());
+    return Network::write(m_sd, t_sv.data(), t_sv.size());
 }
