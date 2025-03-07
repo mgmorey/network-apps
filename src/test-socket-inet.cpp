@@ -18,9 +18,8 @@
 #include "network/network.h"            // Error, SocketData,
                                         // SocketHints, UniqueSocket,
                                         // close(), create_socket(),
-                                        // family_null, family_type,
-                                        // handle_null, handle_type,
-                                        // os_error_type,
+                                        // family_type, handle_null,
+                                        // handle_type, os_error_type,
                                         // start_context()
 #include "network/parse.h"              // parse()
 
@@ -44,13 +43,10 @@ namespace
 {
     using Network::CommonSocket;
     using Network::Error;
-    using Network::FamilyError;
-    using Network::LogicError;
     using Network::SocketData;
     using Network::SocketHints;
     using Network::UniqueSocket;
     using Network::create_socket;
-    using Network::family_null;
     using Network::family_type;
     using Network::handle_null;
     using Network::handle_type;
@@ -63,17 +59,8 @@ namespace
     public:
         TestSocketData(handle_type t_handle,
                        family_type t_family,
-                       bool t_is_verbose,
-                       bool t_is_testing)
+                       bool t_is_verbose)
         {
-            if (!t_is_testing && t_handle == handle_null) {
-                throw LogicError("Invalid socket descriptor value");
-            }
-
-            if (!t_is_testing && t_family == family_null) {
-                throw FamilyError(t_family);
-            }
-
             handle(t_handle);
             family(t_family);
             is_verbose(t_is_verbose);
@@ -124,7 +111,7 @@ namespace
 
     auto create_null_socket() -> UniqueSocket
     {
-        const TestSocketData sd {handle_null, AF_UNSPEC, is_verbose, true};
+        const TestSocketData sd {handle_null, AF_UNSPEC, is_verbose};
         return std::make_unique<TestCommonSocket>(sd);
     }
 
