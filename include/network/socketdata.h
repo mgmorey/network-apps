@@ -26,9 +26,9 @@ namespace Network
     class SocketData
     {
     public:
-        SocketData(handle_type t_handle,
-                   family_type t_family,
-                   bool t_is_verbose = false);
+        explicit SocketData(handle_type t_handle,
+                            family_type t_family = family_null,
+                            bool t_is_verbose = false);
         SocketData(const SocketData& t_socket,
                    handle_type t_handle);
 
