@@ -26,9 +26,9 @@
 #include <type_traits>  // std::decay_t, std::is_same_v
 #include <variant>      // std::visit()
 
-Network::Open::Open(const OpenEndpointParams& t_args, bool t_is_bind)
-    : m_args(t_args),
-      m_is_bind(t_is_bind)
+Network::Open::Open(const OpenEndpointParams& t_args, bool t_is_bind) :
+    m_args(t_args),
+    m_is_bind(t_is_bind)
 {
 }
 
