@@ -36,10 +36,14 @@ auto Network::shutdown(const SocketData& sd, int how) -> OsErrorResult
     const auto handle {sd.handle()};
 
     if (sd.is_verbose()) {
+        // clang-format off
         std::cout << "Calling ::shutdown("
                   << handle
+                  << ", "
+                  << how
                   << ')'
                   << std::endl;
+        // clang-format on
     }
 
     reset_api_error();
@@ -49,12 +53,16 @@ auto Network::shutdown(const SocketData& sd, int how) -> OsErrorResult
         const auto error {get_api_error()};
         const auto os_error {to_os_error(error)};
         std::ostringstream oss;
+        // clang-format off
         oss << "Call to ::shutdown("
             << handle
+            << ", "
+            << how
             << ") failed with error "
             << error
             << ": "
             << format_os_error(os_error);
+        // clang-format on
         return OsErrorResult {os_error, oss.str()};
     }
 
