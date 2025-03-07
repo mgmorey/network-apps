@@ -104,9 +104,7 @@ auto Network::CommonSocket::name(bool t_is_peer) const ->
 auto Network::CommonSocket::open(std::span<const std::byte> t_bs,
                                  bool t_is_bind) -> OsErrorResult
 {
-    if (const auto result {Network::open({
-                    .m_sd = m_sd, .m_bs = t_bs},
-                t_is_bind)}) {
+    if (const auto result {Network::open(m_sd, t_bs, t_is_bind)}) {
         return result;
     }
 

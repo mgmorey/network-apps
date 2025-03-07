@@ -18,12 +18,12 @@
 #include "network/format-os-error.h"            // format_os_error()
 #include "network/get-api-error.h"              // get_api_error()
 #include "network/get-sa-span.h"                // get_sa_span()
-#include "network/openhandleparams.h"           // OpenHandleParams
 #include "network/openhandler.h"                // OpenHandler
 #include "network/oserrorresult.h"              // OsErrorResult
 #include "network/reset-api-error.h"            // reset_api_error()
 #include "network/sa-length-limits.h"           // sa_length_min
 #include "network/socket-error.h"               // socket_error
+#include "network/socketdata.h"         // SocketData
 #include "network/to-os-error.h"                // to_os_error()
 #include "network/to-string-span-byte.h"        // to_string()
 
@@ -34,8 +34,9 @@
 #endif
 
 #include <array>        // std::arrray
-#include <cstddef>      // std::size_t
+#include <cstddef>      // std::byte, std::size_t
 #include <iostream>     // std::cout, std::endl
+#include <span>         // std::span
 #include <sstream>      // std::ostringstream
 #include <utility>      // std::cmp_equal(), std::make_pair
 
@@ -52,16 +53,17 @@ namespace
     }
 }
 
-auto Network::open(const OpenHandleParams& args, bool is_bind) -> OsErrorResult
+auto Network::open(const SocketData& sd,
+                   std::span<const std::byte> bs,
+                   bool is_bind) -> OsErrorResult
 {
     const auto binding {get_binding(is_bind)};
-    const auto sd {args.m_sd};
     const auto handle {sd.handle()};
-    const auto [sa, sa_length] {get_sa_span(args.m_bs)};
+    const auto [sa, sa_length] {get_sa_span(bs)};
 
     if (std::cmp_equal(sa_length, sa_length_min)) {
         throw AddressError("Address payload length is zero: " +
-                           to_string(args.m_bs));
+                           to_string(bs));
     }
 
     if (sd.is_verbose()) {
@@ -71,7 +73,7 @@ auto Network::open(const OpenHandleParams& args, bool is_bind) -> OsErrorResult
                   << '('
                   << handle
                   << ", "
-                  << to_string(args.m_bs)
+                  << to_string(bs)
                   << ", "
                   << sa_length
                   << ')'
@@ -91,7 +93,7 @@ auto Network::open(const OpenHandleParams& args, bool is_bind) -> OsErrorResult
             << '('
             << handle
             << ", "
-            << to_string(args.m_bs)
+            << to_string(bs)
             << ", "
             << sa_length
             << ") failed with error "
