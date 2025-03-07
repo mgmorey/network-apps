@@ -37,7 +37,7 @@
 #include <cstddef>      // std::size_t
 #include <iostream>     // std::cout, std::endl
 #include <sstream>      // std::ostringstream
-#include <utility>      // std::make_pair
+#include <utility>      // std::cmp_equal(), std::make_pair
 
 namespace
 {
@@ -59,7 +59,7 @@ auto Network::open(const OpenHandleParams& args, bool is_bind) -> OsErrorResult
     const auto handle {sd.handle()};
     const auto [sa, sa_length] {get_sa_span(args.m_bs)};
 
-    if (sa_length == sa_length_min) {
+    if (std::cmp_equal(sa_length, sa_length_min)) {
         throw AddressError("Address payload length is zero: " +
                            to_string(args.m_bs));
     }
