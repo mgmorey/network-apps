@@ -33,10 +33,12 @@
 
 auto Network::listen(const SocketData& sd, int backlog) -> OsErrorResult
 {
+    const auto handle {sd.handle()};
+
     if (sd.is_verbose()) {
         // clang-format off
         std::cout << "Calling ::listen("
-                  << sd.handle()
+                  << handle
                   << ", "
                   << backlog
                   << ')'
@@ -45,7 +47,7 @@ auto Network::listen(const SocketData& sd, int backlog) -> OsErrorResult
     }
 
     reset_api_error();
-    const auto result {::listen(sd.handle(), backlog)};
+    const auto result {::listen(handle, backlog)};
 
     if (result == socket_error) {
         const auto api_error {get_api_error()};
@@ -53,7 +55,7 @@ auto Network::listen(const SocketData& sd, int backlog) -> OsErrorResult
         std::ostringstream oss;
         // clang-format off
         oss << "Call to ::listen("
-            << sd.handle()
+            << handle
             << ", "
             << backlog
             << ") failed with error "
