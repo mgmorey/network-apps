@@ -18,7 +18,6 @@
 
 #include "network/acceptresult.h"       // AcceptResult
 #include "network/bytestring.h"         // ByteString
-#include "network/readresult.h"         // ReadResult
 #include "network/socket.h"             // Socket
 #include "network/socketdata.h"         // SocketData
 

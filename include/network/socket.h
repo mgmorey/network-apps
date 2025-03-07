@@ -18,7 +18,6 @@
 
 #include "network/acceptresult.h"       // AcceptResult
 #include "network/oserrorresult.h"      // OsErrorResult
-#include "network/readresult.h"         // ReadResult
 
 #include <cstddef>      // std::byte
 #include <ostream>      // std::ostream
