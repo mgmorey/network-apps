@@ -254,13 +254,13 @@ count-test-source-files: $(test_sources)
 count-unix-source-files: $(unix_sources)
 	@printf '%s\n' $(words $^)
 
-.PHONY: dataclean
-dataclean:
+.PHONY: coverageclean
+coverageclean:
 	$(call clean-files,$(datafiles))
 
-.PHONY: deepclean
-deepclean:
-	$(call clean-build,$(build_artifacts) $(dependencies))
+.PHONY: dependencyclean
+dependencyclean:
+	$(call clean-files,$(dependencies))
 
 .PHONY: distclean
 distclean:
