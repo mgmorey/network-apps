@@ -29,16 +29,12 @@
 
 #include <unistd.h>         // ::write()
 
-#include <cstddef>      // std::size_t
 #include <iostream>     // std::cout, std::endl
 #include <sstream>      // std::ostringstream
 #include <string_view>  // std::string_view
 
-auto Network::write(const SocketData& sd,
-                    const char* data,
-                    std::size_t size) -> ssize_t
+auto Network::write(const SocketData& sd, std::string_view sv) -> ssize_t
 {
-    const std::string_view sv {data, size};
     const auto handle {sd.handle()};
 
     if (sd.is_verbose()) {
@@ -48,14 +44,14 @@ auto Network::write(const SocketData& sd,
                   << ", "
                   << quote(sv)
                   << ", "
-                  << size
+                  << sv.size()
                   << ')'
                   << std::endl;
         // clang-format on
     }
 
     reset_api_error();
-    const auto result {::write(handle, data, size)};
+    const auto result {::write(handle, sv.data(), sv.size())};
 
     if (result == socket_error) {
         const auto api_error {get_api_error()};
@@ -67,7 +63,7 @@ auto Network::write(const SocketData& sd,
             << ", "
             << quote(sv)
             << ", "
-            << size
+            << sv.size()
             << ") failed with error "
             << api_error
             << ": "

@@ -20,13 +20,11 @@
 
 #include <sys/types.h>          // ssize_t
 
-#include <cstddef>      // std::size_t
+#include <string_view>  // std::string_view
 
 namespace Network
 {
-    extern auto write(const SocketData& sd,
-                      const char* data,
-                      std::size_t size) -> ssize_t;
+    extern auto write(const SocketData& sd, std::string_view sv) -> ssize_t;
 }
 
 #endif
