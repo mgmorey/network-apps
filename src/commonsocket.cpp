@@ -27,7 +27,6 @@
 #include "network/shutdown.h"                   // shutdown()
 #include "network/socketdata.h"                 // SocketData
 #include "network/string-null.h"                // string_null
-#include "network/textbuffer.h"                 // TextBuffer
 #include "network/write.h"                      // write()
 
 #include <cstddef>      // std::byte, std::size_t
@@ -119,13 +118,6 @@ auto Network::CommonSocket::peername() const -> std::span<const std::byte>
 auto Network::CommonSocket::read(std::span<char> t_cs) const -> ssize_t
 {
     return Network::read(m_sd, t_cs);
-}
-
-auto Network::CommonSocket::read(std::size_t t_size) const -> ReadResult
-{
-    TextBuffer buffer {t_size};
-    const auto result {read(std::span(buffer))};
-    return {buffer, result};
 }
 
 auto Network::CommonSocket::shutdown(int t_how) const -> OsErrorResult
