@@ -38,11 +38,13 @@ auto Network::read(const SocketData& sd, char* data, std::size_t size) ->
     ssize_t
 {
     const std::string_view sv {data, size};
+    const auto handle {sd.handle()};
+    const auto is_verbose {sd.is_verbose()};
 
-    if (sd.is_verbose()) {
+    if (is_verbose) {
         // clang-format off
         std::cout << "Calling ::read("
-                  << sd.handle()
+                  << handle
                   << ", "
                   << quote(sv)
                   << ", "
@@ -53,7 +55,7 @@ auto Network::read(const SocketData& sd, char* data, std::size_t size) ->
     }
 
     reset_api_error();
-    const auto result {::read(sd.handle(), data, size)};
+    const auto result {::read(handle, data, size)};
 
     if (result == socket_error) {
         const auto api_error {get_api_error()};
@@ -61,7 +63,7 @@ auto Network::read(const SocketData& sd, char* data, std::size_t size) ->
         std::ostringstream oss;
         // clang-format off
         oss << "Call to ::read("
-            << sd.handle()
+            << handle
             << ", "
             << quote(sv)
             << ", "
@@ -74,10 +76,10 @@ auto Network::read(const SocketData& sd, char* data, std::size_t size) ->
         throw Error(oss.str());
     }
 
-    if (sd.is_verbose()) {
+    if (is_verbose) {
         // clang-format off
         std::cout << "Call to ::read("
-                  << sd.handle()
+                  << handle
                   << ", "
                   << quote(sv)
                   << ", "
