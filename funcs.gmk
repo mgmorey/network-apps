@@ -13,7 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-define clean-artifacts
+define clean-all
 $(strip printf '%s\n' $(call tidy-files,$(wildcard $(filter-out	\
 $(cache_dir)/%,$(filter-out $(coverage_dir)/%,$(filter-out	\
 $(object_dir)/%,$1) $(build_dirs))))) | xargs -r /bin/rm -rf)

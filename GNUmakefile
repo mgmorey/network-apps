@@ -169,7 +169,7 @@ $(programs) $(tags) $(tarfile)
 build_artifacts = $(coverage_files) $(libraries) $(mapfiles)	\
 $(objects) $(programs) $(timestamps)
 text_artifacts = $(compile_commands) $(cppchecklog) $(dependencies)	\
-$(coverage_gcov) $(listings) $(logfiles) $(mapfiles) $(stackdumps)		\
+$(coverage_gcov) $(listings) $(logfiles) $(mapfiles) $(stackdumps)	\
 $(sizes) $(timestamps)
 
 build_dirs = $(filter-out .,$(cache_dir) $(coverage_dir)	\
@@ -258,9 +258,13 @@ count-unix-source-files: $(unix_sources)
 dataclean:
 	$(call clean-files,$(datafiles))
 
+.PHONY: deepclean
+deepclean:
+	$(call clean-build,$(build_artifacts) $(dependencies))
+
 .PHONY: distclean
 distclean:
-	$(call clean-artifacts,$(artifacts))
+	$(call clean-all,$(artifacts))
 
 .PHONY: gcov
 gcov: $(coverage_gcov)
