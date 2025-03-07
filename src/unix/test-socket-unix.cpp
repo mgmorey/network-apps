@@ -75,6 +75,19 @@ namespace
 
     using ErrorCodeSet = std::set<os_error_type>;
 
+    class TestSocketData : public SocketData
+    {
+    public:
+        TestSocketData(handle_type t_handle,
+                       family_type t_family,
+                       bool t_is_verbose)
+        {
+            handle(t_handle);
+            family(t_family);
+            is_verbose(t_is_verbose);
+        }
+    };
+
     constexpr auto expected_error_path_length_re {
         R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of path_length_type)"
     };
@@ -205,22 +218,33 @@ namespace
 
     auto test_close(handle_type handle,
                     family_type family,
-                    const ErrorCodeSet& expected_codes) -> void
+                    const ErrorCodeSet& expected_codes,
+                    const std::string& expected_error_re) -> void
     {
         os_error_type actual_code {};
+        std::string actual_error_str;
 
-        const SocketData sd {handle, family, is_verbose};
-        if (const auto result {close(sd)}) {
-            print(result);
-            actual_code = result.number();
+        try {
+            const TestSocketData sd {handle, family, is_verbose};
+
+            if (const auto result {close(sd)}) {
+                print(result);
+                actual_code = result.number();
+            }
+        }
+        catch (const LogicError& error) {
+            print(error);
+            actual_error_str = error.what();
         }
 
         assert(expected_codes.contains(actual_code));
+        const std::regex expected_error_regex {expected_error_re};
+        assert(std::regex_match(actual_error_str, expected_error_regex));
     }
 
     auto test_close_handle_null() -> void
     {
-        test_close(handle_null, AF_UNIX, get_codes_bad_file_number());
+        test_close(handle_null, AF_UNIX, get_codes_bad_file_number(), {});
     }
 
     auto test_path(Socket& sock,
@@ -252,13 +276,8 @@ namespace
             actual_error_str = error.what();
         }
 
-        if (expected_error_re.empty()) {
-            assert(actual_error_str.empty());
-        }
-        else {
-            const std::regex expected_error_regex {expected_error_re};
-            assert(std::regex_match(actual_error_str, expected_error_regex));
-        }
+        const std::regex expected_error_regex {expected_error_re};
+        assert(std::regex_match(actual_error_str, expected_error_regex));
     }
 
     auto test_path(const auto& path,
