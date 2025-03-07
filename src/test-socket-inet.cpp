@@ -284,7 +284,7 @@ namespace
 
         try {
             const auto sock {create_null_socket()};
-            static_cast<void>(sock->name(true));
+            static_cast<void>(sock->peername());
         }
         catch (const Error& error) {
             print(error);

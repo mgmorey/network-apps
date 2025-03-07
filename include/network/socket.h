@@ -44,10 +44,6 @@ namespace Network
             OsErrorResult = 0;
         [[nodiscard]] virtual auto listen(int t_backlog) const ->
             OsErrorResult = 0;
-        [[nodiscard]] virtual auto name(bool t_is_peer) const ->
-            std::span<const std::byte> = 0;
-        [[nodiscard]] virtual auto open(std::span<const std::byte> t_bs,
-                                        bool t_is_bind) -> OsErrorResult = 0;
         [[nodiscard]] virtual auto peername() const ->
             std::span<const std::byte> = 0;
         [[nodiscard]] virtual auto read(std::span<char> t_cs) const -> ssize_t = 0;

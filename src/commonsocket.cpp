@@ -74,12 +74,20 @@ auto Network::CommonSocket::accept() const -> AcceptResult
 
 auto Network::CommonSocket::bind(std::span<const std::byte> t_bs) -> OsErrorResult
 {
-    return open(t_bs, true);
+    if (const auto result {Network::open(m_sd, t_bs, true)}) {
+        return result;
+    }
+
+    return {};
 }
 
 auto Network::CommonSocket::connect(std::span<const std::byte> t_bs) -> OsErrorResult
 {
-    return open(t_bs, false);
+    if (const auto result {Network::open(m_sd, t_bs, false)}) {
+        return result;
+    }
+
+    return {};
 }
 
 auto Network::CommonSocket::listen(int t_backlog) const -> OsErrorResult
@@ -87,32 +95,15 @@ auto Network::CommonSocket::listen(int t_backlog) const -> OsErrorResult
     return Network::listen(m_sd, t_backlog);
 }
 
-auto Network::CommonSocket::name(bool t_is_peer) const ->
-    std::span<const std::byte>
+auto Network::CommonSocket::peername() const -> std::span<const std::byte>
 {
-    const auto index {static_cast<std::size_t>(t_is_peer)};
-    ByteString& value {m_names.at(index)};
+    ByteString& value {m_names[1]};
 
     if (value.empty()) {
-        value = Network::get_name(m_sd, t_is_peer);
+        value = Network::get_name(m_sd, true);
     }
 
     return value;
-}
-
-auto Network::CommonSocket::open(std::span<const std::byte> t_bs,
-                                 bool t_is_bind) -> OsErrorResult
-{
-    if (const auto result {Network::open(m_sd, t_bs, t_is_bind)}) {
-        return result;
-    }
-
-    return {};
-}
-
-auto Network::CommonSocket::peername() const -> std::span<const std::byte>
-{
-    return name(true);
 }
 
 auto Network::CommonSocket::read(std::span<char> t_cs) const -> ssize_t
@@ -127,7 +118,13 @@ auto Network::CommonSocket::shutdown(int t_how) const -> OsErrorResult
 
 auto Network::CommonSocket::sockname() const -> std::span<const std::byte>
 {
-    return name(false);
+    ByteString& value {m_names[0]};
+
+    if (value.empty()) {
+        value = Network::get_name(m_sd, false);
+    }
+
+    return value;
 }
 
 auto Network::CommonSocket::write(std::string_view t_sv) const -> ssize_t

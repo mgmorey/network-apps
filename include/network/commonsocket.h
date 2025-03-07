@@ -49,15 +49,11 @@ namespace Network
 
         [[nodiscard]] auto accept() const -> AcceptResult final;
         [[nodiscard]] auto bind(std::span<const std::byte> t_bs) ->
-            OsErrorResult final;
+            OsErrorResult override;
         [[nodiscard]] auto connect(std::span<const std::byte> t_bs) ->
-            OsErrorResult final;
+            OsErrorResult override;
         [[nodiscard]] auto listen(int t_backlog) const ->
             OsErrorResult final;
-        [[nodiscard]] auto name(bool t_is_peer) const ->
-            std::span<const std::byte> final;
-        [[nodiscard]] auto open(std::span<const std::byte> t_bs,
-                                bool t_is_bind) -> OsErrorResult override;
         [[nodiscard]] auto peername() const -> std::span<const std::byte> final;
         [[nodiscard]] auto read(std::span<char> t_cs) const -> ssize_t final;
         [[nodiscard]] auto shutdown(int t_how) const -> OsErrorResult final;

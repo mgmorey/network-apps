@@ -39,7 +39,9 @@ auto Network::Open::operator()(const Template& t_temp) -> SocketResult
         using T = std::decay_t<decltype(arg)>;
 
         if constexpr (std::is_same_v<T, UniqueSocket>) {
-            if (const auto error_result {arg->open(t_temp.address(), m_is_bind)}) {
+            if (const auto error_result {m_is_bind ?
+                                         arg->bind(t_temp.address()) :
+                                         arg->connect(t_temp.address())}) {
                 result = error_result;
             }
         }

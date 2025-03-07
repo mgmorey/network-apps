@@ -33,14 +33,23 @@ Network::UnixSocket::~UnixSocket() noexcept
     state(SocketState::closing);
 }
 
-auto Network::UnixSocket::open(std::span<const std::byte> t_bs,
-                               bool t_is_bind) -> OsErrorResult
+auto Network::UnixSocket::bind(std::span<const std::byte> t_bs) -> OsErrorResult
 {
-    if (auto result {CommonSocket::open(t_bs, t_is_bind)}) {
+    if (auto result {CommonSocket::bind(t_bs)}) {
         return result;
     }
 
-    state(t_is_bind ? SocketState::bound : SocketState::connected);
+    state(SocketState::bound);
+    return {};
+}
+
+auto Network::UnixSocket::connect(std::span<const std::byte> t_bs) -> OsErrorResult
+{
+    if (auto result {CommonSocket::connect(t_bs)}) {
+        return result;
+    }
+
+    state(SocketState::connected);
     return {};
 }
 
@@ -70,7 +79,7 @@ auto Network::UnixSocket::state(SocketState t_state) -> UnixSocket&
     }
 
     if (current == SocketState::bound) {
-        m_path = to_path(name(false));
+        m_path = to_path(sockname());
     }
     else if (previous == SocketState::bound) {
         static_cast<void>(remove(m_path));
