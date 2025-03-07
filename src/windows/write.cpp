@@ -39,11 +39,12 @@ auto Network::write(const SocketData& sd,
                     std::size_t size) -> ssize_t
 {
     const std::string_view sv {data, size};
+    const auto handle {sd.handle()};
 
     if (sd.is_verbose()) {
         // clang-format off
         std::cout << "Calling ::send("
-                  << sd.handle()
+                  << handle
                   << ", "
                   << quote(sv)
                   << ", "
@@ -54,7 +55,7 @@ auto Network::write(const SocketData& sd,
     }
 
     reset_api_error();
-    const auto result {::send(sd.handle(), data, static_cast<int>(size), 0)};
+    const auto result {::send(handle, data, static_cast<int>(size), 0)};
 
     if (result == socket_error) {
         const auto api_error {get_api_error()};
@@ -62,7 +63,7 @@ auto Network::write(const SocketData& sd,
         std::ostringstream oss;
         // clang-format off
         oss << "Call to ::send("
-            << sd.handle()
+            << handle
             << ", "
             << quote(sv)
             << ", "
