@@ -72,12 +72,14 @@ auto Network::CommonSocket::accept() const -> AcceptResult
     return Network::accept(m_sd);
 }
 
-auto Network::CommonSocket::bind(std::span<const std::byte> t_bs) -> OsErrorResult
+auto Network::CommonSocket::bind(std::span<const std::byte> t_bs) ->
+    OsErrorResult
 {
     return Network::open(m_sd, t_bs, true);
 }
 
-auto Network::CommonSocket::connect(std::span<const std::byte> t_bs) -> OsErrorResult
+auto Network::CommonSocket::connect(std::span<const std::byte> t_bs) ->
+    OsErrorResult
 {
     return Network::open(m_sd, t_bs, false);
 }
