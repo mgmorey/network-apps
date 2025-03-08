@@ -25,11 +25,11 @@ namespace Network
     class Open
     {
     public:
-        Open(const OpenParameters& t_args, bool t_is_bind);
+        Open(const OpenParameters& t_op, bool t_is_bind);
         auto operator()(const Template& t_temp) -> SocketResult;
 
     private:
-        const OpenParameters& m_args;
+        const OpenParameters& m_op;
         bool m_is_bind;
     };
 }
