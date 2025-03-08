@@ -31,11 +31,11 @@ Network::SocketData::SocketData(handle_type t_handle,
     }
 }
 
-Network::SocketData::SocketData(const SocketData& t_socket,
+Network::SocketData::SocketData(const SocketData& t_sd,
                                 handle_type t_handle) :
     SocketData(t_handle,
-               t_socket.m_family,
-               t_socket.m_is_verbose)
+               t_sd.m_family,
+               t_sd.m_is_verbose)
 {
 }
 
