@@ -26,7 +26,7 @@ namespace Network
     {
     public:
         Open(const OpenParameters& t_op, bool t_is_bind);
-        auto operator()(const Template& t_temp) -> SocketResult;
+        auto operator()(const Template& t_temp) const -> SocketResult;
 
     private:
         const OpenParameters& m_op;
