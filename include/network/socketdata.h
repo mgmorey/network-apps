@@ -29,7 +29,7 @@ namespace Network
         explicit SocketData(handle_type t_handle,
                             family_type t_family = family_null,
                             bool t_is_verbose = false);
-        SocketData(const SocketData& t_socket,
+        SocketData(const SocketData& t_sd,
                    handle_type t_handle);
 
         SocketData(const SocketData&) noexcept = default;
