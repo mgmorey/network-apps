@@ -61,6 +61,19 @@ Network::CommonSocket::operator std::string() const
     return std::to_string(m_sd.handle());
 }
 
+
+auto Network::CommonSocket::get_name(bool t_is_sockname) const ->
+    std::span<const std::byte>
+{
+    ByteString& value {m_names.at(static_cast<std::size_t>(t_is_sockname))};
+
+    if (value.empty()) {
+        value = Network::get_name(m_sd, t_is_sockname);
+    }
+
+    return value;
+}
+
 auto Network::CommonSocket::is_verbose() const noexcept -> bool
 {
     return m_sd.is_verbose();
@@ -91,13 +104,7 @@ auto Network::CommonSocket::listen(int t_backlog) const -> OsErrorResult
 
 auto Network::CommonSocket::peername() const -> std::span<const std::byte>
 {
-    ByteString& value {m_names[1]};
-
-    if (value.empty()) {
-        value = Network::get_name(m_sd, false);
-    }
-
-    return value;
+    return get_name(false);
 }
 
 auto Network::CommonSocket::read(std::span<char> t_cs) const -> ssize_t
@@ -112,13 +119,7 @@ auto Network::CommonSocket::shutdown(int t_how) const -> OsErrorResult
 
 auto Network::CommonSocket::sockname() const -> std::span<const std::byte>
 {
-    ByteString& value {m_names[0]};
-
-    if (value.empty()) {
-        value = Network::get_name(m_sd, true);
-    }
-
-    return value;
+    return get_name(true);
 }
 
 auto Network::CommonSocket::write(std::string_view t_sv) const -> ssize_t
