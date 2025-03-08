@@ -13,15 +13,13 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/socketfamily.h"               // SocketFamily,
-                                                // operator<<()
+#include "network/socketfamily.h"       // SocketFamily,
+                                        // operator<<()
 
 #ifdef WIN32
 #include <winsock2.h>   // AF_INET, AF_INET6, AF_UNIX, AF_UNSPEC,
-                        // PF_INET, PF_INET6, PF_UNIX, PF_UNSPEC
 #else
 #include <sys/socket.h> // AF_INET, AF_INET6, AF_UNIX, AF_UNSPEC,
-                        // PF_INET, PF_INET6, PF_UNIX, PF_UNSPEC
 #endif
 
 #include <ostream>      // std::ostream

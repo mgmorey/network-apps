@@ -16,8 +16,8 @@
 #ifndef NETWORK_HOSTNAME_LENGTH_LIMITS_H
 #define NETWORK_HOSTNAME_LENGTH_LIMITS_H
 
-#include "network/name-length-limits.h"         // name_length_max,
-                                                // name_length_min
+#include "network/name-length-limits.h" // name_length_max,
+                                        // name_length_min
 
 namespace Network
 {

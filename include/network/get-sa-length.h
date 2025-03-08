@@ -16,7 +16,7 @@
 #ifndef NETWORK_GET_SA_LENGTH_H
 #define NETWORK_GET_SA_LENGTH_H
 
-#include "network/socket-length-type.h"         // socket_length_type
+#include "network/socket-length-type.h" // socket_length_type
 
 #include <cstddef>      // std::byte
 #include <span>         // std::span

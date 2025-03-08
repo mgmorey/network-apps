@@ -16,8 +16,6 @@
 #ifndef NETWORK_GET_SIN_ADDR_H
 #define NETWORK_GET_SIN_ADDR_H
 
-#include "network/bytestring.h"         // ByteString
-
 #ifdef WIN32
 #include <winsock2.h>       // in_addr
 #else

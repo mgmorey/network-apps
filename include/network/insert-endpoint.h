@@ -16,9 +16,9 @@
 #ifndef NETWORK_INSERT_ENDPOINT_H
 #define NETWORK_INSERT_ENDPOINT_H
 
-#include "network/insert-hostname.h"            // insert()
-#include "network/openparameters.h"             // OpenParameters
-#include "network/oserrorresult.h"              // OsErrorResult
+#include "network/insert-hostname.h"    // insert()
+#include "network/openparameters.h"     // OpenParameters
+#include "network/oserrorresult.h"      // OsErrorResult
 
 namespace Network
 {

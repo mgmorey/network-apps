@@ -16,7 +16,8 @@
 #ifndef NETWORK_PARSERESULT_H
 #define NETWORK_PARSERESULT_H
 
-#include "network/get-options.h"        // ArgumentSpan, Options
+#include "network/argumentspan.h"       // ArgumentSpan
+#include "network/options.h"            // Options
 
 #include <utility>      // std::pair
 

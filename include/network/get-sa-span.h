@@ -16,7 +16,7 @@
 #ifndef NETWORK_GET_SA_SPAN_H
 #define NETWORK_GET_SA_SPAN_H
 
-#include "network/socket-length-type.h"         // socket_length_type
+#include "network/socket-length-type.h" // socket_length_type
 
 #ifdef WIN32
 #include <winsock2.h>       // sockaddr

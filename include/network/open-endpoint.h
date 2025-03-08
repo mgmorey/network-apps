@@ -16,8 +16,8 @@
 #ifndef NETWORK_OPEN_ENDPOINT_H
 #define NETWORK_OPEN_ENDPOINT_H
 
-#include "network/openparameters.h"             // OpenParameters
-#include "network/socketresultvector.h"         // SocketResultVector
+#include "network/openparameters.h"     // OpenParameters
+#include "network/socketresultvector.h" // SocketResultVector
 
 namespace Network
 {
