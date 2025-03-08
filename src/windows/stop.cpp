@@ -37,9 +37,11 @@ auto Network::stop(FailureMode mode, bool is_verbose) -> int
     reset_api_error();
 
     if (is_verbose) {
+        // clang-format off
         std::cout << "Stopping the network runtime.\n"
                   << "Calling ::WSACleanup()"
                   << std::endl;
+        // clang-format on
     }
 
     if (::WSACleanup() == socket_error) {
@@ -48,11 +50,13 @@ auto Network::stop(FailureMode mode, bool is_verbose) -> int
         const auto message {format_os_error(os_error)};
 
         if (is_verbose) {
+            // clang-format off
             std::cout << "Call to ::WSACleanup() failed with error "
                       << api_error
                       << ": "
                       << message
                       << std::endl;
+            // clang-format on
         }
 
         switch (mode) {

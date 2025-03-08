@@ -48,6 +48,7 @@ auto Network::create_socketpairresult(const SocketHints& hints,
     std::array<handle_type, 2> handles {handle_null, handle_null};
 
     if (is_verbose) {
+        // clang-format off
         std::cout << "Calling ::socketpair("
                   << Format("domain")
                   << SocketFamily(family)
@@ -57,6 +58,7 @@ auto Network::create_socketpairresult(const SocketHints& hints,
                   << SocketProtocol(hints.m_protocol, family)
                   << ", ...)"
                   << std::endl;
+        // clang-format on
     }
 
     reset_api_error();
@@ -68,6 +70,7 @@ auto Network::create_socketpairresult(const SocketHints& hints,
         const auto api_error {get_api_error()};
         const auto os_error {to_os_error(api_error)};
         std::ostringstream oss;
+        // clang-format off
         oss << "Call to ::socketpair("
             << Format("domain")
             << SocketFamily(family)
@@ -79,6 +82,7 @@ auto Network::create_socketpairresult(const SocketHints& hints,
             << api_error
             << ": "
             << format_os_error(os_error);
+        // clang-format on
         return OsErrorResult {os_error, oss.str()};
     }
 

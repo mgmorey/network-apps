@@ -37,11 +37,13 @@ auto Network::start(const OptionalVersion& version,
     const WindowsVersion wsa_version {version.value_or(WindowsVersion::latest)};
 
     if (is_verbose) {
+        // clang-format off
         std::cout << "Starting the network runtime.\n"
                   << "Calling ::WSAStartup("
                   << wsa_version
                   << ", ...)"
                   << std::endl;
+        // clang-format on
     }
 
     if (const auto api_error {::WSAStartup(wsa_version, &wsa_data)}) {
@@ -49,6 +51,7 @@ auto Network::start(const OptionalVersion& version,
         const auto message {format_os_error(os_error)};
 
         if (is_verbose) {
+            // clang-format off
             std::cout << "Call to ::WSAStartup("
                       << wsa_version
                       << ", ...) failed with error "
@@ -56,6 +59,7 @@ auto Network::start(const OptionalVersion& version,
                       << ": "
                       << message
                       << std::endl;
+            // clang-format on
         }
 
         switch (api_error) {  // NOLINT

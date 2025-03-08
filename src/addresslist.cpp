@@ -87,6 +87,7 @@ Network::AddressList::AddressList(const HostnameView& t_hostname,
     const StringOrNull service {t_service};
 
     if (t_is_verbose) {
+        // clang-format off
         std::cout << "Calling ::getaddrinfo("
                   << hostname
                   << ", "
@@ -95,6 +96,7 @@ Network::AddressList::AddressList(const HostnameView& t_hostname,
                   << hints_str
                   << ", ...)"
                   << std::endl;
+        // clang-format on
     }
 
     if (const auto error {::getaddrinfo(hostname.c_str(),
@@ -103,6 +105,7 @@ Network::AddressList::AddressList(const HostnameView& t_hostname,
                                         &m_list)}) {
         const auto os_error {to_os_error(error)};
         std::ostringstream oss;
+        // clang-format off
         oss << "Call to ::getaddrinfo("
             << hostname
             << ", "
@@ -113,6 +116,7 @@ Network::AddressList::AddressList(const HostnameView& t_hostname,
             << error
             << ": "
             << format_ai_error(error);
+        // clang-format on
         m_result = {os_error, oss.str()};
     }
     else if (t_is_verbose) {
