@@ -63,8 +63,8 @@ auto Network::listen(const SocketData& sd, int backlog) -> OsErrorResult
             << ": "
             << format_os_error(os_error);
         // clang-format on
-        return OsErrorResult {os_error, oss.str()};
+        return {os_error, oss.str()};
     }
 
-    return OsErrorResult {};
+    return {};
 }
