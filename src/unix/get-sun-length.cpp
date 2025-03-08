@@ -15,10 +15,10 @@
 
 #ifndef WIN32
 
-#include "network/get-sun-length.h"             // get_sun_length()
-#include "network/get-path-length.h"            // get_path_length()
-#include "network/length-type.h"                // length_type
-#include "network/sun-offsets.h"                // sun_path_offset
+#include "network/get-sun-length.h"     // get_sun_length()
+#include "network/get-path-length.h"    // get_path_length()
+#include "network/length-type.h"        // length_type
+#include "network/sun-offsets.h"        // sun_path_offset
 
 #include <sys/un.h>         // sockaddr_un
 

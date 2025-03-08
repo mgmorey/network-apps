@@ -16,7 +16,6 @@
 #ifndef NETWORK_GET_ENDPOINTRESULT_H
 #define NETWORK_GET_ENDPOINTRESULT_H
 
-#include "network/bytestring.h"         // ByteString
 #include "network/endpointresult.h"     // EndpointResult
 #include "network/oserrorresult.h"      // OsErrorResult
 

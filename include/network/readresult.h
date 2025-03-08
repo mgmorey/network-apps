@@ -16,7 +16,7 @@
 #ifndef NETWORK_READRESULT_H
 #define NETWORK_READRESULT_H
 
-#include <sys/types.h>          // ssize_t
+#include <sys/types.h>      // ssize_t
 
 #include <string>       // std::string
 #include <utility>      // std::pair

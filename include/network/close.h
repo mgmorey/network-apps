@@ -16,8 +16,8 @@
 #ifndef NETWORK_CLOSE_H
 #define NETWORK_CLOSE_H
 
-#include "network/oserrorresult.h"              // OsErrorResult
-#include "network/socketdata.h"                 // SocketData
+#include "network/oserrorresult.h"      // OsErrorResult
+#include "network/socketdata.h"         // SocketData
 
 namespace Network
 {

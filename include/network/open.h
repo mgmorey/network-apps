@@ -16,9 +16,9 @@
 #ifndef NETWORK_OPEN_H
 #define NETWORK_OPEN_H
 
-#include "network/openparameters.h"             // OpenParameters
-#include "network/socketresult.h"               // SocketResult
-#include "network/template.h"                   // Template
+#include "network/openparameters.h"     // OpenParameters
+#include "network/socketresult.h"       // SocketResult
+#include "network/template.h"           // Template
 
 namespace Network
 {

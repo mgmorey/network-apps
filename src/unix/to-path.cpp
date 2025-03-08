@@ -15,10 +15,10 @@
 
 #ifndef WIN32
 
-#include "network/to-path.h"                    // to_path()
-#include "network/get-path-pointer.h"           // get_path_pointer()
-#include "network/get-sun-pointer.h"            // get_sun_pointer()
-#include "network/sun-offsets.h"                // sun_path_offset
+#include "network/to-path.h"            // to_path()
+#include "network/get-path-pointer.h"   // get_path_pointer()
+#include "network/get-sun-pointer.h"    // get_sun_pointer()
+#include "network/sun-offsets.h"        // sun_path_offset
 
 #include <cstddef>      // std::byte
 #include <span>         // std::span

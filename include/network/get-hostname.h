@@ -16,7 +16,7 @@
 #ifndef NETWORK_GET_HOSTNAME_H
 #define NETWORK_GET_HOSTNAME_H
 
-#include "network/hostname.h"                   // Hostname
+#include "network/hostname.h"           // Hostname
 
 namespace Network
 {

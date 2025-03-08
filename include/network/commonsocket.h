@@ -22,7 +22,7 @@
 #include "network/socket.h"             // Socket
 #include "network/socketdata.h"         // SocketData
 
-#include <sys/types.h>          // ssize_t
+#include <sys/types.h>      // ssize_t
 
 #include <array>        // std::array
 #include <cstddef>      // std::byte

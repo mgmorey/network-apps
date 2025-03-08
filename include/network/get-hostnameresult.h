@@ -16,8 +16,8 @@
 #ifndef NETWORK_GET_HOSTNAMERESULT_H
 #define NETWORK_GET_HOSTNAMERESULT_H
 
-#include "network/hostnameresult.h"             // HostnameResult
-#include "network/oserrorresult.h"              // OsErrorResult
+#include "network/hostnameresult.h"     // HostnameResult
+#include "network/oserrorresult.h"      // OsErrorResult
 
 #include <span>         // std::span
 

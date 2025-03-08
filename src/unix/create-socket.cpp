@@ -15,10 +15,10 @@
 
 #ifndef WIN32
 
-#include "network/create-socket.h"              // create_socket()
-#include "network/socketdata.h"                 // SocketData
-#include "network/uniquesocket.h"               // UniqueSocket
-#include "network/unixsocket.h"                 // UnixSocket
+#include "network/create-socket.h"      // create_socket()
+#include "network/socketdata.h"         // SocketData
+#include "network/uniquesocket.h"       // UniqueSocket
+#include "network/unixsocket.h"         // UnixSocket
 
 #include <sys/socket.h>     // AF_UNIX
 

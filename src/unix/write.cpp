@@ -15,18 +15,17 @@
 
 #ifndef WIN32
 
-#include "network/write.h"                      // write()
-#include "network/error.h"                      // Error
-#include "network/format-os-error.h"            // format_os_error()
-#include "network/get-api-error.h"              // get_api_error()
-#include "network/quote.h"                      // quote()
-#include "network/reset-api-error.h"            // reset_api_error()
-#include "network/socket-error.h"               // socket_error
-#include "network/socketdata.h"                 // SocketData
-#include "network/to-os-error.h"                // to_os_error()
+#include "network/write.h"              // write()
+#include "network/error.h"              // Error
+#include "network/format-os-error.h"    // format_os_error()
+#include "network/get-api-error.h"      // get_api_error()
+#include "network/quote.h"              // quote()
+#include "network/reset-api-error.h"    // reset_api_error()
+#include "network/socket-error.h"       // socket_error
+#include "network/socketdata.h"         // SocketData
+#include "network/to-os-error.h"        // to_os_error()
 
-#include <sys/types.h>          // ssize_t
-
+#include <sys/types.h>      // ssize_t
 #include <unistd.h>         // ::write()
 
 #include <iostream>     // std::cout, std::endl

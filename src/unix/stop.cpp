@@ -15,8 +15,8 @@
 
 #ifndef WIN32
 
-#include "network/stop.h"                       // stop()
-#include "network/failuremode.h"                // FailureMode
+#include "network/stop.h"               // stop()
+#include "network/failuremode.h"        // FailureMode
 
 #include <iostream>     // std::cout, std::endl
 

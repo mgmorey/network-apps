@@ -18,7 +18,7 @@
 
 #include "network/socketdata.h"         // SocketData
 
-#include <sys/types.h>          // ssize_t
+#include <sys/types.h>      // ssize_t
 
 #include <string_view>  // std::string_view
 
