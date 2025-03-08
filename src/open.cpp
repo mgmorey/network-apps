@@ -17,7 +17,7 @@
 #include "network/always-false.h"               // always_false_v
 #include "network/create-socketresult.h"        // create_socketresult()
 #include "network/error-strings.h"              // VISITOR_ERROR
-#include "network/openendpointparams.h"         // OpenEndpointParams
+#include "network/openparameters.h"             // OpenParameters
 #include "network/oserrorresult.h"              // OsErrorResult
 #include "network/socketresult.h"               // SocketResult
 #include "network/template.h"                   // Template
@@ -26,7 +26,7 @@
 #include <type_traits>  // std::decay_t, std::is_same_v
 #include <variant>      // std::visit()
 
-Network::Open::Open(const OpenEndpointParams& t_args, bool t_is_bind) :
+Network::Open::Open(const OpenParameters& t_args, bool t_is_bind) :
     m_args(t_args),
     m_is_bind(t_is_bind)
 {

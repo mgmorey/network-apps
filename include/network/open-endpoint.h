@@ -16,12 +16,12 @@
 #ifndef NETWORK_OPEN_ENDPOINT_H
 #define NETWORK_OPEN_ENDPOINT_H
 
-#include "network/openendpointparams.h"         // OpenEndpointParams
+#include "network/openparameters.h"             // OpenParameters
 #include "network/socketresultvector.h"         // SocketResultVector
 
 namespace Network
 {
-    extern auto open(const OpenEndpointParams& args,
+    extern auto open(const OpenParameters& args,
                      bool is_bind) -> SocketResultVector;
 }
 

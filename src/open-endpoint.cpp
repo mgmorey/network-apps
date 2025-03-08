@@ -17,7 +17,7 @@
 #include "network/error.h"                      // Error()
 #include "network/insert-endpoint.h"            // insert()
 #include "network/open.h"                       // Open
-#include "network/openendpointparams.h"         // OpenEndpointParams
+#include "network/openparameters.h"             // OpenParameters
 #include "network/socketresultvector.h"         // SocketResultVector
 #include "network/template.h"                   // Template
 
@@ -25,7 +25,7 @@
 #include <iterator>     // std::back_inserter()
 #include <vector>       // std::vector
 
-auto Network::open(const OpenEndpointParams& args, bool is_bind) -> SocketResultVector
+auto Network::open(const OpenParameters& args, bool is_bind) -> SocketResultVector
 {
     std::vector<Template> templates;
     auto it {std::back_inserter(templates)};

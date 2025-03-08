@@ -17,12 +17,12 @@
 #define NETWORK_INSERT_ENDPOINT_H
 
 #include "network/insert-hostname.h"            // insert()
-#include "network/openendpointparams.h"         // OpenEndpointParams
+#include "network/openparameters.h"             // OpenParameters
 #include "network/oserrorresult.h"              // OsErrorResult
 
 namespace Network
 {
-    auto insert(auto& it, const OpenEndpointParams& args) -> OsErrorResult
+    auto insert(auto& it, const OpenParameters& args) -> OsErrorResult
     {
         return insert(it,
                       args.m_endpoint.at(0),

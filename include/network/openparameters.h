@@ -21,7 +21,7 @@
 
 namespace Network
 {
-    struct OpenEndpointParams
+    struct OpenParameters
     {
         const EndpointView& m_endpoint;
         const SocketHints& m_hints;
