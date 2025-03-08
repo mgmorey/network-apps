@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_OPENENDPOINTPARAMS_H
-#define NETWORK_OPENENDPOINTPARAMS_H
+#ifndef NETWORK_OPENPARAMETERS_H
+#define NETWORK_OPENPARAMETERS_H
 
 #include "network/endpointview.h"       // Endpoint
 #include "network/sockethints.h"        // SocketHints
