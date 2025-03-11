@@ -25,6 +25,7 @@
 #include "network/oserrorresult.h"      // OsErrorResult
 #include "network/read.h"               // read()
 #include "network/shutdown.h"           // shutdown()
+#include "network/socketapi.h"          // SocketApi
 #include "network/socketdata.h"         // SocketData
 #include "network/string-null.h"        // string_null
 #include "network/write.h"              // write()
@@ -65,7 +66,8 @@ Network::CommonSocket::operator std::string() const
 auto Network::CommonSocket::get_name(bool t_is_sockname) const ->
     std::span<const std::byte>
 {
-    ByteString& value {m_names.at(static_cast<std::size_t>(t_is_sockname))};
+    const auto key {t_is_sockname ? SocketApi::sockname : SocketApi::peername};
+    ByteString& value {m_names[key]};
 
     if (value.empty()) {
         value = Network::get_name(m_sd, t_is_sockname);

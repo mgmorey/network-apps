@@ -20,12 +20,13 @@
 #include "network/bytestring.h"         // ByteString
 #include "network/oserrorresult.h"      // OsErrorResult
 #include "network/socket.h"             // Socket
+#include "network/socketapi.h"          // SocketApi
 #include "network/socketdata.h"         // SocketData
 
 #include <sys/types.h>      // ssize_t
 
-#include <array>        // std::array
 #include <cstddef>      // std::byte
+#include <map>          // std::map
 #include <span>         // std::span
 #include <string_view>  // std::string_view
 
@@ -60,7 +61,7 @@ namespace Network
         [[nodiscard]] auto write(std::string_view t_sv) const -> ssize_t final;
 
     private:
-        mutable std::array<ByteString, 2> m_names;
+        mutable std::map<SocketApi, ByteString> m_names;
         SocketData m_sd;
     };
 }
