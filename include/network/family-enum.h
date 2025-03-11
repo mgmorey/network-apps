@@ -1,4 +1,4 @@
-// Copyright (C) 2024  "Michael G. Morey" <mgmorey@gmail.com>
+// Copyright (C) 2025  "Michael G. Morey" <mgmorey@gmail.com>
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,13 +13,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_ENUM_TYPES_H
-#define NETWORK_ENUM_TYPES_H
+#ifndef NETWORK_FAMILY_ENUM_H
+#define NETWORK_FAMILY_ENUM_H
 
-#include "network/family-enum.h"                // family_enum
 #include "network/socket-family-enum.h"         // socket_family_enum
-#include "network/socket-ip-family-enum.h"      // socket_ip_family_enum
-#include "network/socket-ip-protocol-enum.h"    // socket_ip_protocol_enum
-#include "network/socket-type-enum.h"           // socket_type_enum
+
+namespace Network
+{
+    using family_enum = socket_family_enum;
+}
 
 #endif
