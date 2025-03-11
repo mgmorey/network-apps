@@ -45,8 +45,11 @@ namespace Network
 
         explicit operator bool() const noexcept;
         explicit operator std::string() const final;
+
         auto get_name(bool t_is_sockname) const -> std::span<const std::byte>;
         [[nodiscard]] auto is_verbose() const noexcept -> bool;
+        [[nodiscard]] auto open(std::span<const std::byte> t_bs,
+                                bool is_bind) const -> OsErrorResult;
 
         [[nodiscard]] auto accept() const -> AcceptResult final;
         [[nodiscard]] auto bind(std::span<const std::byte> t_bs) ->

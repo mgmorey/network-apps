@@ -81,6 +81,19 @@ auto Network::CommonSocket::is_verbose() const noexcept -> bool
     return m_sd.is_verbose();
 }
 
+auto Network::CommonSocket::open(std::span<const std::byte> t_bs,
+                                 bool t_is_bind) const -> OsErrorResult
+{
+    const auto key {t_is_bind ? SocketApi::bind : SocketApi::connect};
+
+    if (const auto result {Network::open(m_sd, t_bs, t_is_bind)}) {
+        return result;
+    }
+
+    m_names[key] = ByteString {t_bs.begin(), t_bs.end()};
+    return {};
+}
+
 auto Network::CommonSocket::accept() const -> AcceptResult
 
 {
@@ -90,13 +103,13 @@ auto Network::CommonSocket::accept() const -> AcceptResult
 auto Network::CommonSocket::bind(std::span<const std::byte> t_bs) ->
     OsErrorResult
 {
-    return Network::open(m_sd, t_bs, true);
+    return open(t_bs, true);
 }
 
 auto Network::CommonSocket::connect(std::span<const std::byte> t_bs) ->
     OsErrorResult
 {
-    return Network::open(m_sd, t_bs, false);
+    return open(t_bs, false);
 }
 
 auto Network::CommonSocket::listen(int t_backlog) const -> OsErrorResult
