@@ -136,15 +136,21 @@
                                                 // OptionalService,
                                                 // Pathname, Service,
                                                 // byte_type,
+                                                // family_enum,
+                                                // family_type,
                                                 // handle_type,
                                                 // length_type,
                                                 // os_error_type,
                                                 // port_type,
                                                 // result_type,
+                                                // socket_family_enum,
                                                 // socket_family_type,
                                                 // socket_flags_type,
+                                                // socket_ip_family_enum,
+                                                // socket_ip_protocol_enum,
                                                 // socket_length_type,
                                                 // socket_protocol_type,
+                                                // socket_type_enum
                                                 // socket_type_type
 #include "network/uniquecontext.h"              // UniqueContext
 #include "network/uniquesocket.h"               // UniqueSocket
