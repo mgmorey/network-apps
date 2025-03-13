@@ -325,8 +325,8 @@ endif
 $(coverage_gcov): $(program_sources) $(timestamps)
 	$(strip $(GCOV) $(GCOVFLAGS) -t $(filter-out .%,$^) >$@)
 
-$(coverage_html): $(program_sources) $(timestamps)
-	$(strip gcovr $(GCOVRFLAGS) --output $@)
+$(coverage_html): $(coverage_gcov)
+	$(strip gcovr $(GCOVRFLAGS) --output $@ --use-gcov-files)
 
 $(library_aliases): $(shared_library)
 	$(call install-aliases,$(output_dir))
