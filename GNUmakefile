@@ -326,7 +326,7 @@ $(coverage_gcov): $(program_sources) $(timestamps)
 	$(strip $(GCOV) $(GCOVFLAGS) -t $(filter-out .%,$^) >$@)
 
 $(coverage_html): $(coverage_gcov)
-	$(strip gcovr $(GCOVRFLAGS) --output $@ --use-gcov-files)
+	$(strip gcovr $(GCOVRFLAGS) --output $@ --keep --use-gcov-files)
 
 $(library_aliases): $(shared_library)
 	$(call install-aliases,$(output_dir))
