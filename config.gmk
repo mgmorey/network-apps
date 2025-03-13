@@ -19,6 +19,7 @@ ifeq "$(USING_CLANG)" "true"
 endif
 
 CLANG_TIDY := $(shell which clang-tidy$(LLVM_SUFFIX) 2>/dev/null)
+GCOV :=  $(shell which gcov$(GCC_SUFFIX) 2>/dev/null)
 
 # Define variables for operating system identifiers
 os_labels := $(shell $(script_dir)/get-os-release -ik)

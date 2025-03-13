@@ -323,7 +323,7 @@ endif
 # Define targets
 
 $(coverage_gcov): $(program_sources) $(timestamps)
-	$(strip gcov $(GCOVFLAGS) -t $(filter-out .%,$^) >$@)
+	$(strip $(GCOV) $(GCOVFLAGS) -t $(filter-out .%,$^) >$@)
 
 $(coverage_html): $(program_sources) $(timestamps)
 	$(strip gcovr $(GCOVRFLAGS) --output $@)
