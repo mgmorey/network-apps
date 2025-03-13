@@ -76,7 +76,6 @@ temporary_dir ?= $(TMPDIR:/=)/$(library_file)
 # Define variabled for enumerated file lists
 
 compile_commands = compile_commands.json
-coverage_gcov = coverage.gcov
 coverage_html = coverage/coverage.html
 cppchecklog = cppcheck.log
 
@@ -266,9 +265,6 @@ dependencyclean:
 distclean:
 	$(call clean-all,$(artifacts))
 
-.PHONY: gcov
-gcov: $(coverage_gcov)
-
 .PHONY: gcovr
 gcovr: $(coverage_html)
 
@@ -322,11 +318,8 @@ endif
 
 # Define targets
 
-$(coverage_gcov): $(program_sources) $(timestamps)
-	$(strip $(GCOV) $(GCOVFLAGS) -t $(filter-out .%,$^) >$@)
-
-$(coverage_html): $(coverage_gcov)
-	$(strip gcovr $(GCOVRFLAGS) --output $@ --keep --use-gcov-files)
+$(coverage_html): $(library_sources) $(program_sources) $(timestamps)
+	$(strip gcovr $(GCOVRFLAGS))
 
 $(library_aliases): $(shared_library)
 	$(call install-aliases,$(output_dir))

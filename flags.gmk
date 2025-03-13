@@ -154,15 +154,11 @@ CXXFLAGS += $(CXX_ASFLAGS)
 # Add warning flags to CXXFLAGS
 CXXFLAGS += -Wall -Werror -Wextra -Wshadow -Wsign-conversion
 
-# GCOVFLAGS
-
-GCOVFLAGS = -mo $(object_dir) -r
-
 # GCOVRFLAGS
 
-gcovr_exclude = '$(source_dir)/($(api)/)?(test|unix)-[\w-]+$(source_suffix)'
-GCOVRFLAGS = --calls --exclude $(gcovr_exclude) --html-details	\
---html-theme $(HTML_THEME)
+exclude = '$(source_dir)/($(api)/)?(test|unix)-[\w-]+$(source_suffix)'
+GCOVRFLAGS = --calls --exclude=$(exclude) --html-details \
+--html-theme=$(HTML_THEME) --output=$@
 
 # LDFLAGS
 
