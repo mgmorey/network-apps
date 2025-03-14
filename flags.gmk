@@ -151,9 +151,10 @@ CXXFLAGS += -Wall -Werror -Wextra -Wshadow -Wsign-conversion
 
 # GCOVRFLAGS
 
-exclude = '$(source_dir)/($(api)/)?(test|unix)-[\w-]+$(source_suffix)'
-GCOVRFLAGS = --calls --exclude=$(exclude) --gcov-executable='$(GCOV)' \
---html-details --html-theme=$(HTML_THEME) --output=$@ --verbose
+exclude = $(source_dir)/($(api)/)?(test|unix)-[\w-]+$(source_suffix)
+GCOVRFLAGS = --calls --exclude='$(exclude)' $(if	\
+$(GCOV),--gcov-executable='$(GCOV)',) --html-details	\
+--html-theme=$(HTML_THEME) --output=$@ --verbose
 
 # LDFLAGS
 
