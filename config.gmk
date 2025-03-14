@@ -33,7 +33,7 @@ ifneq "$(USING_COMPILER)" ""
 	tidy := $(if $(is_clang),$(tidy_clang))
 
 	CXX := $(shell which $(cxx) 2>/dev/null)
-	GCOV := $(strip $(shell which $(word 1,$(gcov)) 2>/dev/null) \
+	GCOV := $(strip $(shell which $(word 1,$(gcov)) 2>/dev/null)	\
 	$(word 2,$(gcov)))
 	TIDY := $(if $(tidy),$(shell which $(tidy) 2>/dev/null),)
 
