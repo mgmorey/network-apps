@@ -26,11 +26,11 @@ is_uctags := $(filter $(shell $(script_dir)/is-uctags ctags),true)
 
 cxx_clang := clang++$(LLVM_SUFFIX)
 cxx_gcc := g++$(GCC_SUFFIX)
-cxx := $(if $(is_clang),$(cxx_clang),$(if $(is_gcc),$(cxx_gcc),))
+cxx := $(if $(is_clang),$(cxx_clang),$(if $(is_gcc),$(cxx_gcc),)$(CXX))
 
 gcov_clang := llvm-cov$(LLVM_SUFFIX) gcov
 gcov_gcc := gcov$(GCC_SUFFIX)
-gcov := $(if $(is_clang),$(gcov_clang),$(if $(is_gcc),$(gcov_gcc),))
+gcov := $(if $(is_clang),$(gcov_clang),$(if $(is_gcc),$(gcov_gcc),)$(GCOV))
 
 tidy_clang := clang-tidy$(LLVM_SUFFIX)
 tidy_gcc :=
