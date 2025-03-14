@@ -184,8 +184,7 @@ tarfile = $(output_dir)/$(library_file).tar.gz
 
 # Define target list variables
 
-all_targets = $(build_targets) test $(if $(is_posix),unix,) $(if	\
-$(is_windows_api),dos2unix,)
+all_targets = $(build_targets) test $(if $(is_windows_api),dos2unix,)
 
 build_targets = assert objects libraries programs sizes $(if $(is_uctags),tags)
 
@@ -300,7 +299,7 @@ tags: $(tags)
 tarfile: $(tarfile)
 
 .PHONY: test
-test: $(test_logfiles)
+test: $(logfiles)
 
 ifneq "$(TIDY)" ""
 .PHONY: tidy
@@ -308,16 +307,11 @@ tidy: $(sources)
 	$(TIDY) $(sort $^) $(TIDY_FLAGS)
 endif
 
-ifneq "$(is_posix)" ""
-.PHONY: unix
-unix: $(unix_logfiles)
-endif
-
 .SECONDARY: $(objects)
 
 # Define targets
 
-$(coverage_html): $(test_logfiles) $(unix_logfiles)
+$(coverage_html): $(logfiles)
 	$(strip gcovr $(GCOVRFLAGS))
 
 $(library_aliases): $(shared_library)
@@ -331,10 +325,7 @@ $(static_library): $(library_objects)
 
 $(programs): $(firstword $(libraries))
 
-$(test_logfiles): $(test_programs)
-	$(call run-programs,$(^F),$(program_args))
-
-$(unix_logfiles): $(unix_programs)
+$(logfiles): $(programs)
 	$(call run-programs,$(^F),$(program_args))
 
 sizes.txt: $(shared_library) $(objects) $(programs)
