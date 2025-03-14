@@ -37,7 +37,7 @@ tidy_gcc :=
 tidy := $(if $(is_clang),$(tidy_clang),$(tidy_gcc))
 
 CXX := $(shell which $(cxx) 2>/dev/null)
-GCOV := $(shell which $(word 1,$(gcov)) 2>/dev/null) $(word 2,$(gcov))
+GCOV := $(strip $(shell which $(word 1,$(gcov)) 2>/dev/null) $(word 2,$(gcov)))
 TIDY := $(if $(tidy),$(shell which $(tidy) 2>/dev/null),)
 
 # Define variables for compiler family and features
