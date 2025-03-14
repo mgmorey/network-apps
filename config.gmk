@@ -13,32 +13,31 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-# Define variables for operating system identifiers
-os_labels := $(shell $(script_dir)/get-os-release -ik)
-os_macros := $(shell $(script_dir)/uppercase $(os_labels))
+# Define variables for compiler toolsets
 
-# Define variables for Clang/Ctags/GCC predicates
-is_clang := $(filter $(USING_COMPILER),clang)
-is_gcc := $(filter $(USING_COMPILER),gcc)
-is_uctags := $(filter $(shell $(script_dir)/is-uctags ctags),true)
+ifneq "$(USING_COMPILER)" ""
 
-# Define variables for compilers
+	is_clang := $(filter $(USING_COMPILER),clang)
+	is_gcc := $(filter $(USING_COMPILER),gcc)
 
-cxx_clang := clang++$(LLVM_SUFFIX)
-cxx_gcc := g++$(GCC_SUFFIX)
-cxx := $(if $(is_clang),$(cxx_clang),$(if $(is_gcc),$(cxx_gcc),)$(CXX))
+	cxx_clang := clang++$(LLVM_SUFFIX)
+	cxx_gcc := g++$(GCC_SUFFIX)
 
-gcov_clang := llvm-cov$(LLVM_SUFFIX) gcov
-gcov_gcc := gcov$(GCC_SUFFIX)
-gcov := $(if $(is_clang),$(gcov_clang),$(if $(is_gcc),$(gcov_gcc),)$(GCOV))
+	gcov_clang := llvm-cov$(LLVM_SUFFIX) gcov
+	gcov_gcc := gcov$(GCC_SUFFIX)
 
-tidy_clang := clang-tidy$(LLVM_SUFFIX)
-tidy_gcc :=
-tidy := $(if $(is_clang),$(tidy_clang),$(tidy_gcc))
+	tidy_clang := clang-tidy$(LLVM_SUFFIX)
 
-CXX := $(shell which $(cxx) 2>/dev/null)
-GCOV := $(strip $(shell which $(word 1,$(gcov)) 2>/dev/null) $(word 2,$(gcov)))
-TIDY := $(if $(tidy),$(shell which $(tidy) 2>/dev/null),)
+	cxx := $(if $(is_clang),$(cxx_clang),$(cxx_gcc))
+	gcov := $(if $(is_clang),$(gcov_clang),$(gcov_gcc))
+	tidy := $(if $(is_clang),$(tidy_clang))
+
+	CXX := $(shell which $(cxx) 2>/dev/null)
+	GCOV := $(strip $(shell which $(word 1,$(gcov)) 2>/dev/null) \
+	$(word 2,$(gcov)))
+	TIDY := $(if $(tidy),$(shell which $(tidy) 2>/dev/null),)
+
+endif
 
 # Define variables for compiler family and features
 as_family := $(shell $(script_dir)/get-as-family $(AS))
@@ -46,6 +45,13 @@ as_features := $(shell $(script_dir)/get-features $(AS))
 cxx_family := $(shell $(script_dir)/get-cc-family $(CXX))
 ld_family := $(shell $(script_dir)/get-ld-family $(LD))
 ld_features := $(shell $(script_dir)/get-features $(LD))
+
+# Define variable for Universal Ctags predicate
+is_uctags := $(filter $(shell $(script_dir)/is-uctags ctags),true)
+
+# Define variables for operating system identifiers
+os_labels := $(shell $(script_dir)/get-os-release -ik)
+os_macros := $(shell $(script_dir)/uppercase $(os_labels))
 
 # Local Variables:
 # mode: makefile
