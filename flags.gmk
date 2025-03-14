@@ -73,11 +73,6 @@ rpaths = $(if $(origin),$(addprefix $(origin)/,. ../lib),)
 # ARFLAGS
 ARFLAGS = r
 
-# CLANG_TIDY_FLAGS
-
-CLANG_TIDY_FLAGS = -config-file='.clang-tidy' -header-filter='.*' --	\
-$(if $(standard),-std=$(standard),) $(CPPFLAGS)
-
 # CPPCHECK_FLAGS
 
 CPPCHECK_FLAGS = --check-level=exhaustive				\
@@ -157,8 +152,8 @@ CXXFLAGS += -Wall -Werror -Wextra -Wshadow -Wsign-conversion
 # GCOVRFLAGS
 
 exclude = '$(source_dir)/($(api)/)?(test|unix)-[\w-]+$(source_suffix)'
-GCOVRFLAGS = --calls --exclude=$(exclude) --html-details \
---html-theme=$(HTML_THEME) --output=$@
+GCOVRFLAGS = --calls --exclude=$(exclude) --gcov-executable='$(GCOV)' \
+--html-details --html-theme=$(HTML_THEME) --output=$@ --verbose
 
 # LDFLAGS
 
@@ -218,6 +213,11 @@ get-soname-flag = $(call format-ld-flag,-soname,$1)
 
 # Define function to quote shell metacharacters
 shell-quote = $(subst $$,\$$,$1)
+
+# TIDY_FLAGS
+
+TIDY_FLAGS = -config-file='.clang-tidy' -header-filter='.*' --	\
+$(if $(standard),-std=$(standard),) $(CPPFLAGS)
 
 # Local Variables:
 # mode: makefile

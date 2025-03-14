@@ -302,10 +302,10 @@ tarfile: $(tarfile)
 test: $(test_programs)
 	$(call run-programs,.test-complete,$(sort $(^F)),$(program_args))
 
-ifneq "$(CLANG_TIDY)" ""
+ifneq "$(TIDY)" ""
 .PHONY: tidy
 tidy: $(sources)
-	$(CLANG_TIDY) $(sort $^) $(CLANG_TIDY_FLAGS)
+	$(TIDY) $(sort $^) $(TIDY_FLAGS)
 endif
 
 ifneq "$(is_posix)" ""

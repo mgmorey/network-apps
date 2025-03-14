@@ -13,26 +13,39 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-# Override variables for tools
-ifeq "$(USING_CLANG)" "true"
-	CXX := $(shell which clang++$(LLVM_SUFFIX) 2>/dev/null)
-endif
-
-CLANG_TIDY := $(shell which clang-tidy$(LLVM_SUFFIX) 2>/dev/null)
-
 # Define variables for operating system identifiers
 os_labels := $(shell $(script_dir)/get-os-release -ik)
 os_macros := $(shell $(script_dir)/uppercase $(os_labels))
 
-# Define variables for tool family and features
+# Define variables for Clang/Ctags/GCC predicates
+is_clang := $(filter $(USING_COMPILER),clang)
+is_gcc := $(filter $(USING_COMPILER),gcc)
+is_uctags := $(filter $(shell $(script_dir)/is-uctags ctags),true)
+
+# Define variables for compilers
+
+cxx_clang := clang++$(LLVM_SUFFIX)
+cxx_gcc := g++(GCC_SUFFIX)
+cxx := $(if $(is_clang),$(cxx_clang),$(if $(is_gcc),$(cxx_gcc),))
+
+gcov_clang := llvm-cov$(LLVM_SUFFIX) gcov
+gcov_gcc := gcov$(GCC_SUFFIX)
+gcov := $(if $(is_clang),$(gcov_clang),$(if $(is_gcc),$(gcov_gcc),))
+
+tidy_clang := clang-tidy$(LLVM_SUFFIX)
+tidy_gcc :=
+tidy := $(if $(is_clang),$(tidy_clang),$(tidy_gcc))
+
+CXX := $(shell which $(cxx) 2>/dev/null)
+GCOV := $(shell which $(word 1,$(gcov)) 2>/dev/null) $(word 2,$(gcov))
+TIDY := $(if $(tidy),$(shell which $(tidy) 2>/dev/null),)
+
+# Define variables for compiler family and features
 as_family := $(shell $(script_dir)/get-as-family $(AS))
 as_features := $(shell $(script_dir)/get-features $(AS))
 cxx_family := $(shell $(script_dir)/get-cc-family $(CXX))
 ld_family := $(shell $(script_dir)/get-ld-family $(LD))
 ld_features := $(shell $(script_dir)/get-features $(LD))
-
-# Define variable for Universal Ctags predicate
-is_uctags := $(filter $(shell $(script_dir)/is-uctags ctags),true)
 
 # Local Variables:
 # mode: makefile
