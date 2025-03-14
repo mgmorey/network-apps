@@ -161,15 +161,17 @@ logfiles = $(programs:$(binary_suffix)=.log)
 mapfiles = $(programs:$(binary_suffix)=.map) $(library_mapfile)
 notefiles = $(objects:$(object_suffix)=.gcno)
 stackdumps = $(programs:$(binary_suffix)=.stackdump)
+test_logfiles = $(test_programs:$(binary_suffix)=.log)
+unix_logfiles = $(unix_programs:$(binary_suffix)=.log)
 
 artifacts = $(binary_artifacts) $(text_artifacts)
 binary_artifacts = $(coverage_files) $(libraries) $(objects)	\
 $(programs) $(tags) $(tarfile)
 build_artifacts = $(coverage_files) $(libraries) $(mapfiles)	\
-$(objects) $(programs) $(timestamps)
+$(objects) $(programs)
 text_artifacts = $(compile_commands) $(cppchecklog) $(dependencies)	\
 $(coverage_gcov) $(listings) $(logfiles) $(mapfiles) $(stackdumps)	\
-$(sizes) $(timestamps)
+$(sizes)
 
 build_dirs = $(filter-out .,$(cache_dir) $(coverage_dir)	\
 $(object_dir) $(output_dir))
@@ -184,9 +186,6 @@ all_targets = $(build_targets) test $(if $(is_posix),unix,) $(if	\
 $(is_windows_api),dos2unix,)
 
 build_targets = assert objects libraries programs sizes $(if $(is_uctags),tags)
-
-# Define variable for timestamp files
-timestamps = .test-complete $(if $(is_posix),.unix-complete,)
 
 # Define variable for run-program arguments
 program_args = $(strip $(if $(filter .,$(output_dir)),,-d $(output_dir)) -v)
@@ -299,8 +298,7 @@ tags: $(tags)
 tarfile: $(tarfile)
 
 .PHONY: test
-test: $(test_programs)
-	$(call run-programs,.test-complete,$(sort $(^F)),$(program_args))
+test: $(test_logfiles)
 
 ifneq "$(TIDY)" ""
 .PHONY: tidy
@@ -310,15 +308,14 @@ endif
 
 ifneq "$(is_posix)" ""
 .PHONY: unix
-unix: $(unix_programs)
-	$(call run-programs,.unix-complete,$(^F),$(program_args))
+unix: $(unix_logfiles)
 endif
 
 .SECONDARY: $(objects)
 
 # Define targets
 
-$(coverage_html): $(library_sources) $(program_sources) $(timestamps)
+$(coverage_html): $(test_logfiles) $(unix_logfiles)
 	$(strip gcovr $(GCOVRFLAGS))
 
 $(library_aliases): $(shared_library)
@@ -332,17 +329,15 @@ $(static_library): $(library_objects)
 
 $(programs): $(firstword $(libraries))
 
+$(test_logfiles): $(test_programs)
+	$(call run-programs,$(^F),$(program_args))
+
+$(unix_logfiles): $(unix_programs)
+	$(call run-programs,$(^F),$(program_args))
+
 sizes.txt: $(sort $(shared_library) $(objects) $(programs))
 	if [ -e $@ ]; then mv -f $@ $@~; fi
 	size $^ >$@
-
-.test-complete :$(test_programs)
-	$(call run-test-programs,$(^F),$(program_args))
-
-ifneq "$(is_posix)" ""
-.unix-complete: $(unix_programs)
-	$(call run-unix-programs,$(^F),$(program_args))
-endif
 
 $(tags):
 	ctags -e $(filter -D%,$(CPPFLAGS)) -R $(include_dir) $(source_dir)

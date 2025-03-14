@@ -88,7 +88,7 @@ $(call tidy-files,$(object_dir)) -o $2 $(tags)
 endef
 
 define run-programs
-$(script_dir)/run-programs $3 $(2:$(binary_suffix)=) && touch $1
+$(script_dir)/run-programs $2 $(1:$(binary_suffix)=)
 endef
 
 define split-string
