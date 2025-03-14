@@ -25,7 +25,7 @@ is_uctags := $(filter $(shell $(script_dir)/is-uctags ctags),true)
 # Define variables for compilers
 
 cxx_clang := clang++$(LLVM_SUFFIX)
-cxx_gcc := g++(GCC_SUFFIX)
+cxx_gcc := g++$(GCC_SUFFIX)
 cxx := $(if $(is_clang),$(cxx_clang),$(if $(is_gcc),$(cxx_gcc),))
 
 gcov_clang := llvm-cov$(LLVM_SUFFIX) gcov
