@@ -35,6 +35,11 @@ namespace Network
         Format(std::string_view t_delimiter,
                std::size_t t_indent,
                std::string_view key = {});
+        Format(const Format&) noexcept = delete;
+        Format(Format&&) noexcept = delete;
+        ~Format() noexcept = default;
+        auto operator=(const Format&) -> Format& = delete;
+        auto operator=(Format&&) noexcept -> Format& = delete;
 
     private:
         static constexpr const char* m_delimiter_default {","};
