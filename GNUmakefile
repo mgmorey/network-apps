@@ -150,17 +150,19 @@ libraries = $(library_aliases) $(shared_library) $(static_library)
 program_objects = $(call get-objects,$(program_sources))
 
 dependencies = $(call get-dependencies,$(sources))
-programs = $(call get-programs,$(program_sources))
+
+programs = $(test_programs) $(if $(is_posix),$(unix_programs),)
 test_programs = $(call get-programs,$(test_sources))
 unix_programs = $(call get-programs,$(unix_sources))
 
 coverage_files = $(datafiles) $(notefiles)
 datafiles = $(objects:$(object_suffix)=.gcda)
 listings = $(objects:$(object_suffix)=.lst)
-logfiles = $(programs:$(binary_suffix)=.log)
 mapfiles = $(programs:$(binary_suffix)=.map) $(library_mapfile)
 notefiles = $(objects:$(object_suffix)=.gcno)
 stackdumps = $(programs:$(binary_suffix)=.stackdump)
+
+logfiles = $(test_logfiles) $(if $(is_posix),$(unix_logfiles),)
 test_logfiles = $(test_programs:$(binary_suffix)=.log)
 unix_logfiles = $(unix_programs:$(binary_suffix)=.log)
 
@@ -289,7 +291,7 @@ realclean: distclean
 
 .PHONY: sizes
 sizes: sizes.txt
-	if [ -e $<~ ]; then diff -b $<~ $< || true; fi
+	@if [ -e $<~ ]; then diff -b $<~ $< || true; fi
 
 .PHONY: tags
 tags: $(tags)
@@ -335,9 +337,9 @@ $(test_logfiles): $(test_programs)
 $(unix_logfiles): $(unix_programs)
 	$(call run-programs,$(^F),$(program_args))
 
-sizes.txt: $(sort $(shared_library) $(objects) $(programs))
+sizes.txt: $(shared_library) $(objects) $(programs)
 	if [ -e $@ ]; then mv -f $@ $@~; fi
-	size $^ >$@
+	size $(sort $^) >$@
 
 $(tags):
 	ctags -e $(filter -D%,$(CPPFLAGS)) -R $(include_dir) $(source_dir)
