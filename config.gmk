@@ -39,6 +39,8 @@ ifneq "$(USING_COMPILER)" ""
 
 endif
 
+GCOVR := $(if $(GCOV),$(shell which gcovr 2>/dev/null),)
+
 # Define variables for compiler family and features
 as_family := $(shell $(script_dir)/get-as-family $(AS))
 as_features := $(shell $(script_dir)/get-features $(AS))
