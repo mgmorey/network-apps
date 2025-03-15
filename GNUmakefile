@@ -184,7 +184,8 @@ tarfile = $(output_dir)/$(library_file).tar.gz
 
 # Define target list variables
 
-all_targets = $(build_targets) test $(if $(is_windows_api),dos2unix,)
+all_targets = $(build_targets) test $(if $(GCOVR),gcovr,) $(if	\
+$(is_windows_api),dos2unix,)
 
 build_targets = assert objects libraries programs sizes $(if $(is_uctags),tags)
 
@@ -312,7 +313,7 @@ endif
 # Define targets
 
 $(coverage_html): $(logfiles)
-	$(strip gcovr $(GCOVRFLAGS))
+	$(strip gcovr $(GCOVRFLAGS) --output=$@)
 
 $(library_aliases): $(shared_library)
 	$(call install-aliases,$(output_dir))
