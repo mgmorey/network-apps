@@ -16,37 +16,17 @@
 #include "network/rangeerror.h"         // RangeError
 #include "network/logicerror.h"         // LogicError
 
+#include <format>       // std::format()
 #include <string>       // std::string
 #include <string_view>  // std::string_view
-
-#include <version>
-
-#ifdef __cpp_lib_format
-#include <format>       // std::format()
-#else
-#include <sstream>      // std::ostringstream
-#endif
 
 auto Network::RangeError::format(std::string_view t_value,
                                  std::string_view t_min,
                                  std::string_view t_max,
                                  std::string_view t_type) -> std::string
 {
-#ifdef __cpp_lib_format
     return std::format("Value {} is out of range [{}, {}] of {}",
                        t_value, t_min, t_max, t_type);
-#else
-    std::ostringstream oss;
-    oss << "Value "
-        << t_value
-        << " is out of range ["
-        << t_min
-        << ", "
-        << t_max
-        << "] of "
-        << t_type;
-    return oss.str();
-#endif
 }
 
 Network::RangeError::RangeError(std::string_view t_value,
