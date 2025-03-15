@@ -169,11 +169,12 @@ unix_logfiles = $(unix_programs:$(binary_suffix)=.log)
 artifacts = $(binary_artifacts) $(text_artifacts)
 binary_artifacts = $(coverage_files) $(libraries) $(objects)	\
 $(programs) $(tags) $(tarfile)
-build_artifacts = $(coverage_files) $(libraries) $(mapfiles)	\
-$(objects) $(programs)
 text_artifacts = $(compile_commands) $(cppchecklog) $(dependencies)	\
 $(coverage_gcov) $(listings) $(logfiles) $(mapfiles) $(stackdumps)	\
 $(sizes)
+
+build_artifacts = $(coverage_files) $(libraries) $(mapfiles)	\
+$(objects) $(programs) $(sizes)
 
 build_dirs = $(filter-out .,$(cache_dir) $(coverage_dir)	\
 $(object_dir) $(output_dir))
@@ -184,7 +185,8 @@ tarfile = $(output_dir)/$(library_file).tar.gz
 
 # Define target list variables
 
-all_targets = $(build_targets) test $(if $(GCOVR),gcovr,) $(if	\
+all_targets = $(build_targets) test $(if $(filter	\
+$(BUILD_TYPE),Debug),$(if $(GCOVR),gcovr,),) $(if	\
 $(is_windows_api),dos2unix,)
 
 build_targets = assert objects libraries programs sizes $(if $(is_uctags),tags)
