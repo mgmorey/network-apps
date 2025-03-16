@@ -16,9 +16,7 @@
 # Define variables for compiler toolsets
 
 ifneq "$(USING_COMPILER)" ""
-
 	is_clang := $(filter $(USING_COMPILER),clang)
-	is_gcc := $(filter $(USING_COMPILER),gcc)
 
 	cxx_clang := clang++$(LLVM_SUFFIX)
 	cxx_gcc := g++$(GCC_SUFFIX)
@@ -28,18 +26,20 @@ ifneq "$(USING_COMPILER)" ""
 
 	tidy_clang := clang-tidy$(LLVM_SUFFIX)
 
-	cxx := $(if $(is_clang),$(cxx_clang),$(cxx_gcc))
-	gcov := $(if $(is_clang),$(gcov_clang),$(gcov_gcc))
-	tidy := $(if $(is_clang),$(tidy_clang))
-
-	CXX := $(shell which $(cxx) 2>/dev/null)
-	GCOV := $(strip $(shell which $(word 1,$(gcov)) 2>/dev/null)	\
-	$(word 2,$(gcov)))
-	TIDY := $(if $(tidy),$(shell which $(tidy) 2>/dev/null),)
-
+	CXX := $(if $(is_clang),$(cxx_clang),$(cxx_gcc))
+ifndef GCOV
+	GCOV := $(if $(is_clang),$(gcov_clang),$(gcov_gcc))
+endif
+ifndef TIDY
+	TIDY := $(tidy_clang)
+endif
 endif
 
-GCOVR := $(if $(GCOV),$(shell which gcovr 2>/dev/null),)
+ifndef GCOVR
+ifneq "$(shell which gcovr 2>/dev/null)" ""
+	GCOVR := gcovr
+endif
+endif
 
 # Define variables for compiler family and features
 as_family := $(shell $(script_dir)/get-as-family $(AS))
