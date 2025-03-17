@@ -321,7 +321,7 @@ $(library_aliases): $(shared_library)
 	$(call install-aliases,$(output_dir))
 
 $(shared_library): $(library_objects)
-	$(call link-objects-to-binary,$^,$@)
+	$(call link-objects,$^,$@)
 
 $(static_library): $(library_objects)
 	$(strip rm -f $@ && $(AR) $(ARFLAGS) $@ $^)
@@ -369,10 +369,10 @@ $(output_dir):
 # Define suffix rules
 
 $(output_dir)/%$(binary_suffix): $(object_dir)/%$(object_suffix)
-	$(call link-objects-to-binary,$^,$@)
+	$(call link-objects,$^,$@)
 
 $(object_dir)/%$(object_suffix): %$(source_suffix)
-	$(call compile-source-to-object,$<,$@)
+	$(call compile-source,$<,$@)
 
 $(depend_dir)/%$(depend_suffix): %$(source_suffix)
 	$(call make-dependency-rule,$<,$@)

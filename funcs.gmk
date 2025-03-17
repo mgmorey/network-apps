@@ -28,10 +28,10 @@ define clean-files
 $(strip printf '%s\n' $(call tidy-files,$(wildcard $1)) | xargs -r /bin/rm -f)
 endef
 
-define compile-source-to-object
+define compile-source
 $(strip $(COMPILE$(source_suffix)) $(OUTPUT_OPTION) $1 $(if	\
-$(wildcard $(call get-gcda-from-object,$2)), && /bin/rm -f	\
-$(call get-gcda-from-object,$2),))
+$(wildcard $(2:$(object_suffix)=.gcda)), && /bin/rm -f	\
+$(2:$(object_suffix)=.gcda),))
 endef
 
 define create-tarfile
@@ -47,10 +47,6 @@ endef
 define get-dependencies-from-sources
 $(addprefix $(depend_dir)/,$(addsuffix	\
 $(depend_suffix),$(basename $1)))
-endef
-
-define get-gcda-from-object
-$(1:$(object_suffix)=.gcda)
 endef
 
 define get-objects-from-sources
@@ -82,7 +78,7 @@ $(install) -m u=rwx,go=rx $(call tidy-files,$(test_programs)) $1/bin
 $(call install-aliases,$1/lib)
 endef
 
-define link-objects-to-binary
+define link-objects
 $(strip $(LINK$(object_suffix)) $1 $(LOADLIBES) $(LDLIBS) -o $2)
 endef
 
