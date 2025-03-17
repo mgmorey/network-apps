@@ -135,9 +135,9 @@ program_sources = $(test_sources) $(if $(is_posix),$(unix_sources),)
 test_sources = $(test_common_sources) $(if $(filter	\
 $(api),unix),$(test_unix_sources),)
 
-objects = $(call get-objects,$(sources))
+objects = $(call get-objects-from-sources,$(sources))
 
-library_objects = $(call get-objects,$(library_sources))
+library_objects = $(call get-objects-from-sources,$(library_sources))
 
 library_aliases = $(addprefix				\
 $(output_dir)/$(library_file),$(alias_suffixes))
@@ -147,13 +147,13 @@ static_library = $(output_dir)/$(library_file).a
 
 libraries = $(library_aliases) $(shared_library) $(static_library)
 
-program_objects = $(call get-objects,$(program_sources))
+program_objects = $(call get-objects-from-sources,$(program_sources))
 
-dependencies = $(call get-dependencies,$(sources))
+dependencies = $(call get-dependencies-from-sources,$(sources))
 
 programs = $(test_programs) $(if $(is_posix),$(unix_programs),)
-test_programs = $(call get-programs,$(test_sources))
-unix_programs = $(call get-programs,$(unix_sources))
+test_programs = $(call get-programs-from-sources,$(test_sources))
+unix_programs = $(call get-programs-from-sources,$(unix_sources))
 
 coverage_files = $(datafiles) $(notefiles)
 datafiles = $(objects:$(object_suffix)=.gcda)
