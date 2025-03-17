@@ -83,7 +83,7 @@ $(strip $(LINK$(object_suffix)) $1 $(LOADLIBES) $(LDLIBS) -o $2)
 endef
 
 define make-dependency-rule
-$(CXX) $(CPPFLAGS) -MM $1 | $(script_dir)/make-rule -d	\
+$(CXX) $(sort $(CPPFLAGS) -MM) $1 | $(script_dir)/make-rule -d	\
 $(call tidy-files,$(object_dir)) -o $2 $(tags)
 endef
 
