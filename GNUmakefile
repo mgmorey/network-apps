@@ -372,7 +372,7 @@ $(output_dir)/%$(binary_suffix): $(object_dir)/%$(object_suffix)
 	$(call link-objects-to-binary,$^,$@)
 
 $(object_dir)/%$(object_suffix): %$(source_suffix)
-	$(call compile-source-to-object,$<)
+	$(call compile-source-to-object,$<,$@)
 
 $(depend_dir)/%$(depend_suffix): %$(source_suffix)
 	$(call make-dependency-rule,$<,$@)
