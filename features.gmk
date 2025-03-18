@@ -15,43 +15,13 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-# Define variables for compiler toolsets
-
-ifneq "$(USING_COMPILER)" ""
-	is_clang := $(filter $(USING_COMPILER),clang)
-
-	cxx_clang := clang++$(LLVM_SUFFIX)
-	cxx_gcc := g++$(GCC_SUFFIX)
-
-	gcov_clang := llvm-cov$(LLVM_SUFFIX) gcov
-	gcov_gcc := gcov$(GCC_SUFFIX)
-
-	tidy_clang := clang-tidy$(LLVM_SUFFIX)
-
-	CXX := $(if $(is_clang),$(cxx_clang),$(cxx_gcc))
-ifndef GCOV
-	GCOV := $(if $(is_clang),$(gcov_clang),$(gcov_gcc))
-endif
-ifndef TIDY
-	TIDY := $(tidy_clang)
-endif
-endif
-
-ifndef GCOVR
-ifneq "$(shell which gcovr 2>/dev/null)" ""
-	GCOVR := gcovr
-endif
-endif
-
-# Define variables for compiler family and features
+# Define variables for toolset family and features
 as_family := $(shell $(script_dir)/get-as-family $(AS))
 as_features := $(shell $(script_dir)/get-features $(AS))
 cxx_family := $(shell $(script_dir)/get-cc-family $(CXX))
+is_uctags := $(filter true,$(shell $(script_dir)/is-uctags ctags))
 ld_family := $(shell $(script_dir)/get-ld-family $(LD))
 ld_features := $(shell $(script_dir)/get-features $(LD))
-
-# Define variable for Universal Ctags predicate
-is_uctags := $(filter $(shell $(script_dir)/is-uctags ctags),true)
 
 # Define variables for operating system identifiers
 os_labels := $(shell $(script_dir)/get-os-release -ik)

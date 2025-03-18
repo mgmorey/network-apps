@@ -1,0 +1,49 @@
+# -*- Mode: Makefile-GMake -*-
+
+# Copyright (C) 2025  "Michael G. Morey" <mgmorey@gmail.com>
+
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+# Define variables for compiler toolsets
+
+GCC_CXX := g++$(GCC_SUFFIX)
+GCC_GCOV := gcov$(GCC_SUFFIX)
+
+LLVM_CXX := clang++$(LLVM_SUFFIX)
+LLVM_GCOV := llvm-cov$(LLVM_SUFFIX) gcov
+
+ifneq "$(USING_COMPILER)" ""
+
+	is_llvm := $(filter clang llvm,$(USING_COMPILER))
+	CXX := $(if $(is_llvm),$(LLVM_CXX),$(GCC_CXX))
+
+ifndef GCOV
+	GCOV := $(if $(is_llvm),$(LLVM_GCOV),$(GCC_GCOV))
+endif
+
+ifndef TIDY
+	TIDY := clang-tidy$(LLVM_SUFFIX)
+endif
+
+endif
+
+ifndef GCOVR
+ifneq "$(shell which gcovr 2>/dev/null)" ""
+	GCOVR := gcovr
+endif
+endif
+
+# Local Variables:
+# mode: makefile
+# End:
