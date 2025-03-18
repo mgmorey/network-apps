@@ -97,7 +97,7 @@ define link-objects
 $(strip $(LINK$(object_suffix)) -o $2 $1 $(LOADLIBES) $(LDLIBS))
 endef
 
-# $(call make-dependency-rule,SOURCE-FILENAME,OBJECT-FILENAME)
+# $(call make-dependency-rule,SOURCE-FILENAME,OUTPUT-FILENAME)
 define make-dependency-rule
 $(CXX) $(sort $(CPPFLAGS) -MM) $1 | $(script_dir)/make-rule -d	\
 $(call tidy-files,$(object_dir)) -o $2 $(tags)
