@@ -1,3 +1,5 @@
+# -*- Mode: Makefile-GMake -*-
+
 # Copyright (C) 2025  "Michael G. Morey" <mgmorey@gmail.com>
 
 # This program is free software: you can redistribute it and/or modify
@@ -13,62 +15,74 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+# $(call clean-all,PATHNAMES)
 define clean-all
 $(strip printf '%s\n' $(call tidy-files,$(wildcard $(filter-out	\
 $(cache_dir)/%,$(filter-out $(coverage_dir)/%,$(filter-out	\
 $(object_dir)/%,$1) $(build_dirs))))) | xargs -r /bin/rm -rf)
 endef
 
+# $(call clean-build,PATHNAMES)
 define clean-build
 $(strip printf '%s\n' $(call tidy-files,$(wildcard $(filter-out	\
 $(object_dir)/%,$1) $(object_dir))) | xargs -r /bin/rm -rf)
 endef
 
+# $(call clean-files,PATHNAMES)
 define clean-files
 $(strip printf '%s\n' $(call tidy-files,$(wildcard $1)) | xargs -r /bin/rm -f)
 endef
 
+# $(call compile-source,SOURCE-FILENAMES,OBJECT-FILENAME)
 define compile-source
 $(strip $(COMPILE$(source_suffix)) $(OUTPUT_OPTION) $1 $(if	\
 $(wildcard $(2:$(object_suffix)=.gcda)), && /bin/rm -f	\
 $(2:$(object_suffix)=.gcda),))
 endef
 
+# $(call create-tarfile,ARCHIVE-DIRECTORY,ARCHIVE-FILENAME)
 define create-tarfile
 $(call install-files,$1)
 tar -C $1 -acf $2 .
 /bin/rm -rf $1
 endef
 
+# $(call dos-to-unix,TEXT-FILENAMES)
 define dos-to-unix
 $(strip printf '%s\n' $(call tidy-files,$(wildcard $1)) | xargs dos2unix -q)
 endef
 
+# $(call get-dependencies-from-sources,SOURCE-FILENAMES)
 define get-dependencies-from-sources
 $(addprefix $(depend_dir)/,$(addsuffix	\
 $(depend_suffix),$(basename $1)))
 endef
 
+# $(call get-objects-from-sources,SOURCE-FILENAMES)
 define get-objects-from-sources
 $(addprefix $(object_dir)/,$(addsuffix	\
 $(object_suffix),$(basename $1)))
 endef
 
+# $(call get-programs-from-sources,SOURCE-FILENAMES)
 define get-programs-from-sources
 $(addprefix $(call get-prefix,$(output_dir)),$(addsuffix	\
 $(binary_suffix),$(basename $1)))
 endef
 
+# $(call get-version-number,VERSION-STRING)
 define get-version-number
 $(word $1,$(call split-string,.,$2))
 endef
 
+# $(call install-aliases,LIBRARY-DIRECTORY,LIBRARY-FILE)
 define install-aliases
 $(strip $(if $(filter .,$1),,cd $1 && )$(foreach	\
 suffix,$(alias_suffixes),ln -sf $(addprefix		\
-$(library_file),$(shared_suffix) $(suffix)) && )true)
+$2,$(shared_suffix) $(suffix)) && )true)
 endef
 
+# $(call install-files,PREFIX-DIRECTORY)
 define install-files
 $(install) -d $(addprefix $1/,bin include/$(PROJECT_NAME) lib)
 $(install) -m u=rw,go=r $(include_files) $1/include/$(PROJECT_NAME)
@@ -78,23 +92,28 @@ $(install) -m u=rwx,go=rx $(call tidy-files,$(test_programs)) $1/bin
 $(call install-aliases,$1/lib)
 endef
 
+# $(call link-objects,INPUT-FILENAMES,OUTPUT-FILENAME)
 define link-objects
 $(strip $(LINK$(object_suffix)) -o $2 $1 $(LOADLIBES) $(LDLIBS))
 endef
 
+# $(call make-dependency-rule,SOURCE-FILENAME,OBJECT-FILENAME)
 define make-dependency-rule
 $(CXX) $(sort $(CPPFLAGS) -MM) $1 | $(script_dir)/make-rule -d	\
 $(call tidy-files,$(object_dir)) -o $2 $(tags)
 endef
 
+# $(call run-programs,PROGRAM-FILENAME,PROGRAM-ARGUMENTS)
 define run-programs
 $(script_dir)/run-programs $2 $(1:$(binary_suffix)=)
 endef
 
+# $(call split-string,DELIMITER,STRING)
 define split-string
 $(subst $1, ,$2)
 endef
 
+# $(call tidy-files,FILENAMES)
 define tidy-files
 $(sort $(patsubst ./%,%,$1))
 endef

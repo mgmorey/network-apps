@@ -319,7 +319,7 @@ $(coverage_html): $(logfiles)
 	$(strip gcovr $(GCOVRFLAGS) --output=$@)
 
 $(library_aliases): $(shared_library)
-	$(call install-aliases,$(output_dir))
+	$(call install-aliases,$(output_dir),$(library_file))
 
 $(shared_library): $(library_objects)
 	$(call link-objects,$^,$@)
