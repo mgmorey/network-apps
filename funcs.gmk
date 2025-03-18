@@ -79,7 +79,7 @@ $(call install-aliases,$1/lib)
 endef
 
 define link-objects
-$(strip $(LINK$(object_suffix)) $1 $(LOADLIBES) $(LDLIBS) -o $2)
+$(strip $(LINK$(object_suffix)) -o $2 $1 $(LOADLIBES) $(LDLIBS))
 endef
 
 define make-dependency-rule
