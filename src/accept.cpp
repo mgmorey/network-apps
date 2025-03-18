@@ -84,7 +84,7 @@ auto Network::accept(const SocketData& sd) -> AcceptResult
     buffer.resize(to_size(sa_length));
 
     if (is_verbose) {
-        const auto str {to_string(std::span<std::byte>(buffer))};
+        const auto str {to_string(buffer)};
         // clang-format off
         std::cout << "Call to ::accept("
                   << handle_1
