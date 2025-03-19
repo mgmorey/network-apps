@@ -317,7 +317,7 @@ endif
 # Define targets
 
 $(coverage_html): $(logfiles)
-	$(strip gcovr $(GCOVRFLAGS) --output=$@)
+	$(strip $(GCOVR) $(GCOVRFLAGS) --output=$@)
 
 $(library_aliases): $(shared_library)
 	$(call install-aliases,$(output_dir),$(library_file))
