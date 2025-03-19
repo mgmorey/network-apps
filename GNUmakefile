@@ -196,9 +196,9 @@ build_targets = assert objects libraries programs sizes $(if $(is_uctags),tags)
 program_args = $(strip $(if $(filter .,$(output_dir)),,-d $(output_dir)) -v)
 
 # Define variables for compiler and linker commands
-COMPILE$(source_suffix) = $(CXX) $(sort $(CXXFLAGS) $(CPPFLAGS)	\
-$(TARGET_ARCH)) -c
-LINK$(object_suffix) = $(CXX) $(sort $(LDFLAGS))
+COMPILE$(source_suffix) = $(if $(CXX),$(CXX),c++) $(sort $(CXXFLAGS)	\
+$(CPPFLAGS) $(TARGET_ARCH)) -c
+LINK$(object_suffix) = $(if $(CXX),$(CXX),c++) $(sort $(LDFLAGS))
 
 # Set virtual paths
 vpath %$(include_suffix) $(include_dirs:/.=)
