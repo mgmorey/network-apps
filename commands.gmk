@@ -17,34 +17,19 @@
 
 # Define variables for compiler toolsets
 
-GCC_CC := gcc$(GCC_SUFFIX)
-GCC_CXX := g++$(GCC_SUFFIX)
-GCC_GCOV := gcov$(GCC_SUFFIX)
-
-LLVM_CC := clang$(LLVM_SUFFIX)
-LLVM_CXX := clang++$(LLVM_SUFFIX)
-LLVM_GCOV := llvm-cov$(LLVM_SUFFIX) gcov
-
-ifneq "$(USING_COMPILER)" ""
-
-	is_llvm := $(filter clang llvm,$(USING_COMPILER))
-	CC := $(if $(is_llvm),$(LLVM_CC),$(GCC_CC))
-	CXX := $(if $(is_llvm),$(LLVM_CXX),$(GCC_CXX))
-
-ifndef GCOV
-	GCOV := $(if $(is_llvm),$(LLVM_GCOV),$(GCC_GCOV))
-endif
-
-ifndef TIDY
+ifeq "$(USING_COMPILER)" "clang"
+	CC := clang$(LLVM_SUFFIX)
+	CXX := clang++$(LLVM_SUFFIX)
+	GCOV := llvm-cov$(LLVM_SUFFIX) gcov
 	TIDY := clang-tidy$(LLVM_SUFFIX)
-endif
-
+else ifeq "$(USING_COMPILER)" "gcc"
+	CC := gcc$(GCC_SUFFIX)
+	CXX := g++$(GCC_SUFFIX)
+	GCOV := gcov$(GCC_SUFFIX)
 endif
 
 ifndef GCOVR
-ifneq "$(shell which gcovr 2>/dev/null)" ""
-	GCOVR := gcovr
-endif
+	GCOVR := $(shell which gcovr 2>/dev/null)
 endif
 
 # Local Variables:
