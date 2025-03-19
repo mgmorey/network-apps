@@ -58,14 +58,14 @@ source_dirs = $(addprefix $(source_dir)/,$(api) .)
 include_files = $(addsuffix /$(PROJECT_NAME)/*.h,$(include_dirs:/.=))
 
 # Define variables for filename prefixes/suffixes
-alias_suffix = .so.$(major)
+alias_suffix = $(if $(is_windows_os),,.so.$(major))
 alias_suffixes = $(alias_suffix)
 binary_suffix = $(if $(is_windows_os),.exe,)
 depend_suffix = .dep
 include_suffix = .h
 library_prefix = lib
 object_suffix = .o
-shared_suffix = .so.$(VERSION)
+shared_suffix = $(if $(is_windows_os),.dll,.so.$(VERSION))
 source_suffix = .cpp
 
 # Define variable for library filename
