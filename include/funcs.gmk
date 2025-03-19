@@ -70,6 +70,18 @@ $(addprefix $(call get-prefix,$(output_dir)),$(addsuffix	\
 $(binary_suffix),$(basename $1)))
 endef
 
+# $(call get-compiler-sanitizer-flags,SANITIZERS)
+define get-compiler-sanitizer-flags
+$(foreach option,$1,-fsanitize=$(option)				\
+$(if $(filter address,$(option)),-fsanitize-address-use-after-scope)	\
+$(if $(filter undefined,$(option)),-fno-sanitize-recover))
+endef
+
+# $(call get-linker-sanitizer-flags,SANITIZERS)
+define get-linker-sanitizer-flags
+$(foreach option,$1,-fsanitize=$(option))
+endef
+
 # $(call get-version-number,VERSION-STRING)
 define get-version-number
 $(word $1,$(call split-string,.,$2))
@@ -77,16 +89,16 @@ endef
 
 # $(call install-aliases,LIBRARY-DIRECTORY,LIBRARY-FILE)
 define install-aliases
-$(strip $(if $(filter .,$1),,cd $1 && )$(foreach	\
-suffix,$(alias_suffixes),ln -sf $(addprefix		\
-$2,$(shared_suffix) $(suffix)) && )true)
+$(strip $(if $(filter .,$1),,cd $1 && ) $(foreach	\
+suffix,$(alias_suffixes), ln -sf $(addprefix		\
+$2,$(shared_suffix) $(suffix)) && ) true)
 endef
 
 # $(call install-files,PREFIX-DIRECTORY)
 define install-files
 $(install) -d $(addprefix $1/,bin include/$(PROJECT_NAME) lib)
 $(install) -m u=rw,go=r $(include_files) $1/include/$(PROJECT_NAME)
-$(install) -m u=rwx,go=rx $(call tidy-files,$(shared_library)	\
+$(install) -m u=rwx,go=rx $(call tidy-files,$(shared_library)		\
 $(static_library)) $1/lib
 $(install) -m u=rwx,go=rx $(call tidy-files,$(test_programs)) $1/bin
 $(call install-aliases,$1/lib)

@@ -25,9 +25,7 @@ CPPFLAGS += -D_GLIBCXX_DEBUG
 CXXFLAGS += --coverage
 
 # Add sanitizer flags to CXXFLAGS
-CXXFLAGS += $(foreach option,$(WITH_SANITIZE),-fsanitize=$(option)	\
-$(if $(filter address,$(option)),-fsanitize-address-use-after-scope)	\
-$(if $(filter undefined,$(option)),-fno-sanitize-recover))
+CXXFLAGS += $(call get-compiler-sanitizer-flags,$(WITH_SANITIZE))
 
 # Add debug format flag to CXXFLAGS
 CXXFLAGS += $(if $(using_valgrind),-gdwarf-4,)
@@ -47,7 +45,7 @@ CXXFLAGS += -fno-omit-frame-pointer
 LDFLAGS += --coverage
 
 # Add sanitize flags to LDFLAGS
-LDFLAGS += $(foreach option,$(WITH_SANITIZE),-fsanitize=$(option))
+LDFLAGS += $(call get-linker-sanitizer-flags,$(WITH_SANITIZE))
 
 # Local Variables:
 # mode: makefile
