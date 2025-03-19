@@ -1,0 +1,168 @@
+# -*- Mode: Makefile-GMake -*-
+
+# Copyright (C) 2025  "Michael G. Morey" <mgmorey@gmail.com>
+
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+# Define variables for language and standard
+language = c++
+language_release = 20
+standard = $(language)$(language_release)
+
+# Define variables for character constants
+com = ,
+nul =
+spc = $(nul) $(nul)
+
+# Define variables for OS ID and kernel
+os_label_id = $(word 1,$(os_labels))
+os_label_kernel = $(word 2,$(os_labels))
+os_macro_kernel = $(word 2,$(os_macros))
+
+# Define variables for API and OS
+api = $(if $(is_windows_api),windows,unix)
+install = $(if $(is_unix),ginstall,install)
+
+# Define predicates for API and OS
+is_darwin_source = $(filter $(os_label_kernel),Darwin)
+is_gnu_source = $(filter $(os_label_kernel),CYGWIN_NT)
+is_posix = $(filter $(os_label_kernel),FreeBSD Linux)
+is_unix = $(filter $(os_label_kernel),Darwin FreeBSD)
+is_windows_api = $(filter $(os_label_kernel),MINGW64_NT)
+is_windows_os = $(filter $(os_label_id),windows)
+
+# Define predicates for compiler and linker features
+is_as_listings = $(filter $(as_features),listings)
+is_ld_install_name = $(filter $(ld_features),install_name)
+is_ld_rpath = $(filter $(ld_features),rpath)
+is_ld_soname = $(filter $(ld_features),soname)
+
+# Define predicates for feature options
+with_listings = $(filter $(WITH_LISTINGS),true)
+with_loadmaps = $(filter $(WITH_LOADMAPS),true)
+using_libasan = $(filter $(USING_LIBASAN),true)
+using_valgrind = $(filter $(USING_VALGRIND),true)
+
+# Define predicates for object and shared object files
+is_depend = $(filter %$(depend_suffix),$@)
+is_object = $(filter %$(object_suffix),$@)
+is_shared = $(filter %$(shared_suffix),$@)
+
+# Define install_name and soname linker option variables
+install_name = $(library_file)$(alias_suffix)
+soname = $(library_file)$(alias_suffix)
+
+# Define rpath linker option component variables
+origin = $(if $(filter $(ld_family),gnu),$(if $(filter	\
+$(os_label_kernel),FreeBSD Linux),$$ORIGIN,),)
+rpaths = $(if $(origin),$(addprefix $(origin)/,. ../lib),)
+
+# ARFLAGS
+ARFLAGS = r
+
+# CPPCHECK_FLAGS
+
+CPPCHECK_FLAGS = --check-level=exhaustive				\
+--checkers-report=cppcheck.log --cppcheck-build-dir=$(cppcheck_dir)	\
+--enable=all --inline-suppr --quiet $(if				\
+$(standard),--std=$(standard),) --suppress=missingIncludeSystem		\
+$(filter-out -I$(SDKROOT)/usr/include,$(CPPFLAGS))
+
+# CPPFLAGS
+
+# Add OS macro flags and feature flags to CPPFLAGS
+cpp_symbols = OS_$(os_macro_kernel)		\
+$(if $(is_darwin_source),_DARWIN_C_SOURCE,)	\
+$(if $(is_gnu_source),_GNU_SOURCE,)		\
+$(if $(is_windows_api),WIN32,)			\
+_GLIBCXX_ASSERTIONS
+
+CPPFLAGS += $(addprefix -I,$(include_dirs:/.=))
+CPPFLAGS += $(addprefix -D,$(cpp_symbols))
+
+# CXX_ASFLAGS
+
+# CXXFLAGS
+
+# Add position-independent code flag to CXXFLAGS
+CXXFLAGS += -fPIC
+
+# Add automatic variable initialization flag to CXXFLAGS
+CXXFLAGS += -ftrivial-auto-var-init=zero
+
+# Add pipe flag to CXXFLAGS
+CXXFLAGS += $(if $(filter gnu,$(as_family)),-pipe,)
+
+# Add language standard flag to CXXFLAGS
+CXXFLAGS += $(if $(standard),-std=$(standard),)
+
+# Define variables for assembler option flags
+listing = $(@:$(object_suffix)=.lst)
+asflags = $(if $(is_object),$(if $(with_listings),$(if		\
+$(is_as_listings),$(if $(filter $(cxx_family),gnu),$(call	\
+get-listing-flag,$(listing)),),),),)
+
+# Add assembler option flags to CXXFLAGS
+CXXFLAGS += $(call join-flags,-Wa,$(asflags))
+
+# Add warning flags to CXXFLAGS
+CXXFLAGS += -Wall -Werror -Wextra -Wshadow -Wsign-conversion
+
+# GCOVRFLAGS
+
+exclude = $(source_dir)/($(api)/)?(test|unix)-[\w-]+$(source_suffix)
+GCOVRFLAGS = --calls --exclude='$(exclude)' $(if	\
+$(GCOV),--gcov-executable='$(GCOV)',) --html-details	\
+--html-theme=$(HTML_THEME)
+
+# LDFLAGS
+
+# Define variables for linker option flags
+
+# Add -install_name linker option flag to LDFLAGS
+ldflags += $(if $(is_shared),$(if $(is_ld_install_name),$(call	\
+get-install-name-flag,$(install_name)),),)
+
+# Add load map linker option flag to LDFLAGS
+map = $(@:$(if $(is_shared),$(shared_suffix),$(binary_suffix))=.map)
+map_opt = $(if $(filter gnu,$(ld_family)),-Map,-map)
+ldflags += $(if $(with_loadmaps),$(call		\
+format-ld-flag,$(map_opt),$(map)),)
+
+# Add -rpath linker option flag to LDFLAGS
+ldflags += $(if $(is_shared),,$(if $(is_ld_rpath),$(call	\
+get-rpath-flag,$(call shell-quote,$(rpaths:/.=))),))
+
+# Add -soname linker option flag to LDFLAGS
+ldflags += $(if $(is_shared),$(if $(is_ld_soname),$(call	\
+get-soname-flag,$(soname)),),)
+
+# Add linker option flags to LDFLAGS
+LDFLAGS += $(call join-flags,-Wl,$(ldflags))
+
+# Add -shared option flag to LDFLAGS
+LDFLAGS += $(if $(is_shared),-shared,)
+
+# LDLIBS
+
+LDLIBS += $(if $(filter $(os_label_kernel),MINGW64_NT),-lws2_32,)
+
+# TIDY_FLAGS
+
+TIDY_FLAGS = -config-file='.clang-tidy' -header-filter='.*' --	\
+$(if $(standard),-std=$(standard),) $(CPPFLAGS)
+
+# Local Variables:
+# mode: makefile
+# End:

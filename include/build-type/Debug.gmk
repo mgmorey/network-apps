@@ -1,0 +1,53 @@
+# -*- Mode: Makefile-GMake -*-
+
+# Copyright (C) 2025  "Michael G. Morey" <mgmorey@gmail.com>
+
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+# Debug build CPPFLAGS
+
+CPPFLAGS += -D_GLIBCXX_DEBUG
+
+# Debug build CXXFLAGS
+
+# Add code coverage flag to CXXFLAGS
+CXXFLAGS += --coverage
+
+# Add address sanitizer flags to CXXFLAGS
+CXXFLAGS += $(if $(using_libasan),-fsanitize=address	\
+-fsanitize-address-use-after-scope)
+
+# Add debug format flag to CXXFLAGS
+CXXFLAGS += $(if $(using_valgrind),-gdwarf-4,)
+
+# Add debug flag to CXXFLAGS
+CXXFLAGS += $(if $(filter gnu,$(cxx_family)),-ggdb,-g3)
+
+# Add optimization flag to CXXFLAGS
+CXXFLAGS += -O0
+
+# Add omit frame pointer flag to CXXFLAGS
+CXXFLAGS += -fno-omit-frame-pointer
+
+# Debug build LDFLAGS
+
+# Add code coverage flag to LDFLAGS
+LDFLAGS += --coverage
+
+# Add address sanitizer flags to LDFLAGS
+LDFLAGS += $(if	$(using_libasan),-fsanitize=address,)
+
+# Local Variables:
+# mode: makefile
+# End:
