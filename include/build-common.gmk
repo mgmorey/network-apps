@@ -35,24 +35,24 @@ api = $(if $(is_windows_api),windows,unix)
 install = $(if $(is_unix),ginstall,install)
 
 # Define predicates for API and OS
-is_darwin_source = $(filter $(os_label_kernel),Darwin)
-is_gnu_source = $(filter $(os_label_kernel),CYGWIN_NT)
-is_posix = $(filter $(os_label_kernel),FreeBSD Linux)
-is_unix = $(filter $(os_label_kernel),Darwin FreeBSD)
-is_windows_api = $(filter $(os_label_kernel),MINGW64_NT)
-is_windows_os = $(filter $(os_label_id),windows)
+is_darwin_source = $(filter Darwin,$(os_label_kernel))
+is_gnu_source = $(filter CYGWIN_NT,$(os_label_kernel))
+is_posix = $(filter FreeBSD Linux,$(os_label_kernel))
+is_unix = $(filter Darwin FreeBSD,$(os_label_kernel))
+is_windows_api = $(filter MINGW64_NT,$(os_label_kernel))
+is_windows_os = $(filter windows,$(os_label_id))
 
 # Define predicates for compiler and linker features
-is_as_listings = $(filter $(as_features),listings)
-is_ld_install_name = $(filter $(ld_features),install_name)
-is_ld_rpath = $(filter $(ld_features),rpath)
-is_ld_soname = $(filter $(ld_features),soname)
+is_as_listings = $(filter listings,$(as_features))
+is_ld_install_name = $(filter install_name,$(ld_features))
+is_ld_rpath = $(filter rpath,$(ld_features))
+is_ld_soname = $(filter soname,$(ld_features))
 
 # Define predicates for feature options
-with_listings = $(filter $(WITH_LISTINGS),true)
-with_loadmaps = $(filter $(WITH_LOADMAPS),true)
-using_libasan = $(filter $(USING_LIBASAN),true)
-using_valgrind = $(filter $(USING_VALGRIND),true)
+with_listings = $(filter true,$(WITH_LISTINGS))
+with_loadmaps = $(filter true,$(WITH_LOADMAPS))
+using_libasan = $(filter true,$(USING_LIBASAN))
+using_valgrind = $(filter true,$(USING_VALGRIND))
 
 # Define predicates for object and shared object files
 is_depend = $(filter %$(depend_suffix),$@)
@@ -64,8 +64,8 @@ install_name = $(library_file)$(alias_suffix)
 soname = $(library_file)$(alias_suffix)
 
 # Define rpath linker option component variables
-origin = $(if $(filter $(ld_family),gnu),$(if $(filter	\
-$(os_label_kernel),FreeBSD Linux),$$ORIGIN,),)
+origin = $(if $(filter gnu,$(ld_family)),$(if $(filter	\
+FreeBSD Linux,$(os_label_kernel)),$$ORIGIN,),)
 rpaths = $(if $(origin),$(addprefix $(origin)/,. ../lib),)
 
 # ARFLAGS
@@ -110,7 +110,7 @@ CXXFLAGS += $(if $(standard),-std=$(standard),)
 # Define variables for assembler option flags
 listing = $(@:$(object_suffix)=.lst)
 asflags = $(if $(is_object),$(if $(with_listings),$(if		\
-$(is_as_listings),$(if $(filter $(cxx_family),gnu),$(call	\
+$(is_as_listings),$(if $(filter gnu,$(cxx_family)),$(call	\
 get-listing-flag,$(listing)),),),),)
 
 # Add assembler option flags to CXXFLAGS
@@ -156,7 +156,7 @@ LDFLAGS += $(if $(is_shared),-shared,)
 
 # LDLIBS
 
-LDLIBS += $(if $(filter $(os_label_kernel),MINGW64_NT),-lws2_32,)
+LDLIBS += $(if $(filter MINGW64_NT,$(os_label_kernel)),-lws2_32,)
 
 # TIDY_FLAGS
 
