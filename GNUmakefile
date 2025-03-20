@@ -68,11 +68,14 @@ object_suffix = .o
 shared_suffix = $(if $(is_windows_os),.dll,.so.$(VERSION))
 source_suffix = .cpp
 
-# Define variable for library filename
-library_file = $(library_prefix)$(PROJECT_NAME)
+# Define variable for archive filename
+archive = $(output_dir)/$(library_stem).tar.gz
+
+# Define variable for library filestem
+library_stem = $(library_prefix)$(PROJECT_NAME)
 
 # Define variable for temporary directory
-temporary_dir ?= $(TMPDIR:/=)/$(library_file)
+temporary_dir ?= $(TMPDIR:/=)/$(library_stem)
 
 # Define variabled for enumerated file lists
 
@@ -141,10 +144,10 @@ objects = $(call get-objects-from-sources,$(sources))
 library_objects = $(call get-objects-from-sources,$(library_sources))
 
 library_aliases = $(addprefix				\
-$(output_dir)/$(library_file),$(alias_suffixes))
-library_mapfile = $(output_dir)/$(library_file).map
-shared_library = $(output_dir)/$(library_file)$(shared_suffix)
-static_library = $(output_dir)/$(library_file).a
+$(output_dir)/$(library_stem),$(alias_suffixes))
+library_mapfile = $(output_dir)/$(library_stem).map
+shared_library = $(output_dir)/$(library_stem)$(shared_suffix)
+static_library = $(output_dir)/$(library_stem).a
 
 libraries = $(library_aliases) $(shared_library) $(static_library)
 
@@ -168,8 +171,8 @@ test_logfiles = $(test_programs:$(binary_suffix)=.log)
 unix_logfiles = $(unix_programs:$(binary_suffix)=.log)
 
 artifacts = $(binary_artifacts) $(text_artifacts)
-binary_artifacts = $(coverage_files) $(libraries) $(objects)	\
-$(programs) $(tags) $(tarfile)
+binary_artifacts = $(archive) $(coverage_files) $(libraries) $(objects)	\
+$(programs) $(tags)
 text_artifacts = $(compile_commands) $(cppchecklog) $(dependencies)	\
 $(coverage_gcov) $(listings) $(logfiles) $(mapfiles) $(stackdumps)	\
 $(sizes)
@@ -181,8 +184,6 @@ build_dirs = $(filter-out .,$(cache_dir) $(coverage_dir)	\
 $(object_dir) $(output_dir))
 dos2unix_files = $(filter-out %$(depend_suffix),$(wildcard	\
 $(text_artifacts)))
-
-tarfile = $(output_dir)/$(library_file).tar.gz
 
 # Define target list variables
 
@@ -300,8 +301,8 @@ sizes: sizes.txt
 .PHONY: tags
 tags: $(tags)
 
-.PHONY: tarfile
-tarfile: $(tarfile)
+.PHONY: archive
+archive: $(archive)
 
 .PHONY: test
 test: $(logfiles)
@@ -316,11 +317,14 @@ endif
 
 # Define targets
 
+$(archive): $(libraries) $(programs)
+	$(call create-archive,$(temporary_dir),$@)
+
 $(coverage_html): $(logfiles)
 	$(strip $(GCOVR) $(GCOVRFLAGS) --output=$@)
 
 $(library_aliases): $(shared_library)
-	$(call install-aliases,$(output_dir),$(library_file))
+	$(call install-aliases,$(output_dir),$(library_stem))
 
 $(shared_library): $(library_objects)
 	$(call link-objects,$^,$@)
@@ -339,9 +343,6 @@ sizes.txt: $(shared_library) $(objects) $(programs)
 
 $(tags):
 	ctags -e $(filter -D%,$(CPPFLAGS)) -R $(include_dir) $(source_dir)
-
-$(tarfile): $(libraries) $(programs)
-	$(call create-tarfile,$(temporary_dir),$@)
 
 $(coverage_html): | $(coverage_dir)
 

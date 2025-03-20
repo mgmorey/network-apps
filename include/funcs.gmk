@@ -40,8 +40,8 @@ $(wildcard $(2:$(object_suffix)=.gcda)), && /bin/rm -f	\
 $(2:$(object_suffix)=.gcda),))
 endef
 
-# $(call create-tarfile,ARCHIVE-DIRECTORY,ARCHIVE-FILENAME)
-define create-tarfile
+# $(call create-archive,ARCHIVE-DIRECTORY,ARCHIVE-FILENAME)
+define create-archive
 $(call install-files,$1)
 tar -C $1 -acf $2 .
 /bin/rm -rf $1
@@ -87,7 +87,7 @@ define get-version-number
 $(word $1,$(call split-string,.,$2))
 endef
 
-# $(call install-aliases,LIBRARY-DIRECTORY,LIBRARY-FILE)
+# $(call install-aliases,LIBRARY-DIRECTORY,LIBRARY-STEM)
 define install-aliases
 $(strip $(if $(filter .,$1),,cd $1 && ) $(foreach	\
 suffix,$(alias_suffixes), ln -sf $(addprefix		\
@@ -101,7 +101,7 @@ $(install) -m u=rw,go=r $(include_files) $1/include/$(PROJECT_NAME)
 $(install) -m u=rwx,go=rx $(call tidy-files,$(shared_library)		\
 $(static_library)) $1/lib
 $(install) -m u=rwx,go=rx $(call tidy-files,$(test_programs)) $1/bin
-$(call install-aliases,$1/lib,$(library_file))
+$(call install-aliases,$1/lib,$(library_stem))
 endef
 
 # $(call link-objects,INPUT-FILENAMES,OUTPUT-FILENAME)

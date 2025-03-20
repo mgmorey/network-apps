@@ -59,8 +59,8 @@ is_object = $(filter %$(object_suffix),$@)
 is_shared = $(filter %$(shared_suffix),$@)
 
 # Define install_name and soname linker option variables
-install_name = $(library_file)$(alias_suffix)
-soname = $(library_file)$(alias_suffix)
+install_name = $(library_stem)$(alias_suffix)
+soname = $(library_stem)$(alias_suffix)
 
 # Define rpath linker option component variables
 origin = $(if $(filter gnu,$(ld_family)),$(if $(is_posix),$$ORIGIN,),)
