@@ -107,7 +107,10 @@ CXXFLAGS += $(if $(filter gnu,$(as_family)),-pipe,)
 # Add language standard flag to CXXFLAGS
 CXXFLAGS += $(if $(standard),-std=$(standard),)
 
-# Define variables for assembler option flags
+# Add warning flags to CXXFLAGS
+CXXFLAGS += -Wall -Werror -Wextra -Wshadow -Wsign-conversion
+
+# Define variables for assembler listing option flags
 listing = $(@:$(object_suffix)=.lst)
 asflags = $(if $(is_object),$(if $(with_listings),$(if		\
 $(is_as_listings),$(if $(filter gnu,$(cxx_family)),$(call	\
@@ -116,12 +119,12 @@ get-listing-flag,$(listing)),),),),)
 # Add assembler option flags to CXXFLAGS
 CXXFLAGS += $(call join-flags,-Wa,$(asflags))
 
-# Add warning flags to CXXFLAGS
-CXXFLAGS += -Wall -Werror -Wextra -Wshadow -Wsign-conversion
-
 # GCOVRFLAGS
 
+# Define variable for gcovr --exclude option
 exclude = $(source_dir)/($(api)/)?(test|unix)-[\w-]+$(source_suffix)
+
+# Define variable for gcovr option flags
 GCOVRFLAGS = --calls --exclude='$(exclude)' $(if	\
 $(GCOV),--gcov-executable='$(GCOV)',) --html-details	\
 --html-theme=$(HTML_THEME)
@@ -130,28 +133,30 @@ $(GCOV),--gcov-executable='$(GCOV)',) --html-details	\
 
 # Define variables for linker option flags
 
-# Add -install_name linker option flag to LDFLAGS
-ldflags += $(if $(is_shared),$(if $(is_ld_install_name),$(call	\
-get-install-name-flag,$(install_name)),),)
-
-# Add load map linker option flag to LDFLAGS
+# Define variables for load map filename and linker option
 map = $(@:$(if $(is_shared),$(shared_suffix),$(binary_suffix))=.map)
 map_opt = $(if $(filter gnu,$(ld_family)),-Map,-map)
+
+# Add load map linker option flag to LDFLAGS
 ldflags += $(if $(with_loadmaps),$(call		\
 format-ld-flag,$(map_opt),$(map)),)
 
-# Add -rpath linker option flag to LDFLAGS
-ldflags += $(if $(is_shared),,$(if $(is_ld_rpath),$(call	\
-get-rpath-flag,$(call shell-quote,$(rpaths:/.=))),))
+# Add -install_name linker option flag to LDFLAGS
+ldflags += $(if $(is_shared),$(if $(is_ld_install_name),$(call	\
+get-install-name-flag,$(install_name)),),)
 
 # Add -soname linker option flag to LDFLAGS
 ldflags += $(if $(is_shared),$(if $(is_ld_soname),$(call	\
 get-soname-flag,$(soname)),),)
 
+# Add -rpath linker option flag to LDFLAGS
+ldflags += $(if $(is_shared),,$(if $(is_ld_rpath),$(call	\
+get-rpath-flag,$(call shell-quote,$(rpaths:/.=))),))
+
 # Add linker option flags to LDFLAGS
 LDFLAGS += $(call join-flags,-Wl,$(ldflags))
 
-# Add -shared option flag to LDFLAGS
+# Add shared library flag to LDFLAGS
 LDFLAGS += $(if $(is_shared),-shared,)
 
 # LDLIBS
