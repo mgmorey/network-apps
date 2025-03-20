@@ -72,9 +72,9 @@ endef
 
 # $(call get-compiler-sanitizer-flags,SANITIZERS)
 define get-compiler-sanitizer-flags
-$(call get-sanitizer-flags,$1)					\
 $(if $(filter address,$1),-fsanitize-address-use-after-scope)	\
-$(if $(filter undefined,$1),-fno-sanitize-recover)
+$(if $(filter undefined,$1),-fno-sanitize-recover)		\
+$(call get-sanitizer-flags,$1)
 endef
 
 # $(call get-sanitizer-flags,SANITIZERS)
