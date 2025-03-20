@@ -49,10 +49,9 @@ is_ld_rpath = $(filter rpath,$(ld_features))
 is_ld_soname = $(filter soname,$(ld_features))
 
 # Define predicates for feature options
+using_valgrind = $(filter true,$(USING_VALGRIND))
 with_listings = $(filter true,$(WITH_LISTINGS))
 with_loadmaps = $(filter true,$(WITH_LOADMAPS))
-using_libasan = $(filter true,$(USING_LIBASAN))
-using_valgrind = $(filter true,$(USING_VALGRIND))
 
 # Define predicates for object and shared object files
 is_depend = $(filter %$(depend_suffix),$@)
