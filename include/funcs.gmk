@@ -89,9 +89,9 @@ endef
 
 # $(call install-aliases,LIBRARY-DIRECTORY,LIBRARY-STEM)
 define install-aliases
-$(strip $(if $(filter .,$1),,cd $1 && ) $(foreach	\
-suffix,$(alias_suffixes), ln -sf $(addprefix		\
-$2,$(shared_suffix) $(suffix)) && ) true)
+$(strip $(if $(alias_suffixes),$(if $(filter .,$1),,cd $1 && )	\
+$(foreach suffix,$(alias_suffixes), ln -sf $(addprefix		\
+$2,$(shared_suffix) $(suffix)) && ) true,))
 endef
 
 # $(call install-files,PREFIX-DIRECTORY)
