@@ -63,8 +63,7 @@ install_name = $(library_file)$(alias_suffix)
 soname = $(library_file)$(alias_suffix)
 
 # Define rpath linker option component variables
-origin = $(if $(filter gnu,$(ld_family)),$(if $(filter	\
-FreeBSD Linux,$(os_label_kernel)),$$ORIGIN,),)
+origin = $(if $(filter gnu,$(ld_family)),$(if $(is_posix),$$ORIGIN,),)
 rpaths = $(if $(origin),$(addprefix $(origin)/,. ../lib),)
 
 # ARFLAGS
