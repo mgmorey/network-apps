@@ -72,14 +72,14 @@ endef
 
 # $(call get-compiler-sanitizer-flags,SANITIZERS)
 define get-compiler-sanitizer-flags
-$(foreach option,$1,-fsanitize=$(option)				\
-$(if $(filter address,$(option)),-fsanitize-address-use-after-scope)	\
-$(if $(filter undefined,$(option)),-fno-sanitize-recover))
+$(call get-sanitizer-flags,$1)					\
+$(if $(filter address,$1),-fsanitize-address-use-after-scope)	\
+$(if $(filter undefined,$1),-fno-sanitize-recover)
 endef
 
-# $(call get-linker-sanitizer-flags,SANITIZERS)
-define get-linker-sanitizer-flags
-$(foreach option,$1,-fsanitize=$(option))
+# $(call get-sanitizer-flags,SANITIZERS)
+define get-sanitizer-flags
+$(foreach option,$(filter address undefined,$1),-fsanitize=$(option))
 endef
 
 # $(call get-version-number,VERSION-STRING)

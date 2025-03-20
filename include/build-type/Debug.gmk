@@ -45,7 +45,7 @@ CXXFLAGS += -fno-omit-frame-pointer
 LDFLAGS += --coverage
 
 # Add sanitize flags to LDFLAGS
-LDFLAGS += $(call get-linker-sanitizer-flags,$(WITH_SANITIZE))
+LDFLAGS += $(call get-sanitizer-flags,$(WITH_SANITIZE))
 
 # Local Variables:
 # mode: makefile
