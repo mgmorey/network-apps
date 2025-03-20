@@ -101,7 +101,7 @@ $(install) -m u=rw,go=r $(include_files) $1/include/$(PROJECT_NAME)
 $(install) -m u=rwx,go=rx $(call tidy-files,$(shared_library)		\
 $(static_library)) $1/lib
 $(install) -m u=rwx,go=rx $(call tidy-files,$(test_programs)) $1/bin
-$(call install-aliases,$1/lib)
+$(call install-aliases,$1/lib,$(library_file))
 endef
 
 # $(call link-objects,INPUT-FILENAMES,OUTPUT-FILENAME)
