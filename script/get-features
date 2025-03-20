@@ -67,7 +67,7 @@ get_features() {
 
     "$script_prefix$script.awk" \
 	column=3 \
-	command=$(which "$1") \
+	command=$(which "$1" 2>/dev/null) \
 	kernel_name="$kernel_name" \
 	"$script_prefix$script.txt"
 }
