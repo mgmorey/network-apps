@@ -48,11 +48,6 @@ is_ld_install_name = $(filter install_name,$(ld_features))
 is_ld_rpath = $(filter rpath,$(ld_features))
 is_ld_soname = $(filter soname,$(ld_features))
 
-# Define predicates for feature options
-using_valgrind = $(filter true,$(USING_VALGRIND))
-with_listings = $(filter true,$(WITH_LISTINGS))
-with_loadmaps = $(filter true,$(WITH_LOADMAPS))
-
 # Define predicates for object and shared object files
 is_depend = $(filter %$(depend_suffix),$@)
 is_object = $(filter %$(object_suffix),$@)
@@ -110,8 +105,8 @@ CXXFLAGS += -Wall -Werror -Wextra -Wshadow -Wsign-conversion
 
 # Define variables for assembler listing option flags
 listing = $(@:$(object_suffix)=.lst)
-asflags = $(if $(is_object),$(if $(with_listings),$(if		\
-$(is_as_listings),$(if $(filter gnu,$(cxx_family)),$(call	\
+asflags = $(if $(is_object),$(if $(filter true,$(WITH_LISTINGS)),$(if	\
+$(is_as_listings),$(if $(filter gnu,$(cxx_family)),$(call		\
 get-listing-flag,$(listing)),),),),)
 
 # Add assembler option flags to CXXFLAGS
@@ -136,7 +131,7 @@ map = $(@:$(if $(is_shared),$(shared_suffix),$(binary_suffix))=.map)
 map_opt = $(if $(filter gnu,$(ld_family)),-Map,-map)
 
 # Add load map linker option flag to LDFLAGS
-ldflags += $(if $(with_loadmaps),$(call		\
+ldflags += $(if $(filter true,$(WITH_LOADMAPS)),$(call		\
 format-ld-flag,$(map_opt),$(map)),)
 
 # Add -install_name linker option flag to LDFLAGS

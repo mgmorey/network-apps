@@ -134,10 +134,10 @@ tags = TAGS
 sources = $(library_sources) $(test_sources) $(if	\
 $(is_posix),$(unix_sources),)
 library_sources = $(library_common_sources) $(library_native_sources)	\
-$(if $(filter $(api),unix),$(library_unix_sources),)
+$(if $(filter unix,$(api)),$(library_unix_sources),)
 program_sources = $(test_sources) $(if $(is_posix),$(unix_sources),)
 test_sources = $(test_common_sources) $(if $(filter	\
-$(api),unix),$(test_unix_sources),)
+unix,$(api)),$(test_unix_sources),)
 
 objects = $(call get-objects-from-sources,$(sources))
 
@@ -188,7 +188,7 @@ $(text_artifacts)))
 # Define target list variables
 
 all_targets = $(build_targets) test $(if $(filter	\
-$(BUILD_TYPE),Debug),$(if $(GCOVR),gcovr,),) $(if	\
+true,$(WITH_COVERAGE)),$(if $(GCOVR),gcovr,),) $(if	\
 $(is_windows_api),dos2unix,)
 
 build_targets = assert objects libraries programs sizes $(if $(is_uctags),tags)

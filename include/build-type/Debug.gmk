@@ -22,13 +22,13 @@ CPPFLAGS += -D_GLIBCXX_DEBUG
 # Debug build CXXFLAGS
 
 # Add code coverage flag to CXXFLAGS
-CXXFLAGS += --coverage
+CXXFLAGS += $(if $(filter true,$(WITH_COVERAGE)),--coverage,)
 
 # Add sanitizer flags to CXXFLAGS
 CXXFLAGS += $(call get-compiler-sanitizer-flags,$(WITH_SANITIZE))
 
 # Add debug format flag to CXXFLAGS
-CXXFLAGS += $(if $(using_valgrind),-gdwarf-4,)
+CXXFLAGS += $(if $(filter true,$(USING_VALGRIND)),-gdwarf-4,)
 
 # Add debug flag to CXXFLAGS
 CXXFLAGS += $(if $(filter gnu,$(cxx_family)),-ggdb,-g3)
@@ -42,7 +42,7 @@ CXXFLAGS += -fno-omit-frame-pointer
 # Debug build LDFLAGS
 
 # Add code coverage flag to LDFLAGS
-LDFLAGS += --coverage
+LDFLAGS += $(if $(filter true,$(WITH_COVERAGE)),--coverage,)
 
 # Add sanitize flags to LDFLAGS
 LDFLAGS += $(call get-sanitizer-flags,$(WITH_SANITIZE))
