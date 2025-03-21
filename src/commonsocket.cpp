@@ -90,7 +90,7 @@ auto Network::CommonSocket::open(std::span<const std::byte> t_bs,
         return result;
     }
 
-    m_names[key] = ByteString {t_bs.begin(), t_bs.end()};
+    m_names[key].assign(t_bs.begin(), t_bs.end());
     return {};
 }
 
