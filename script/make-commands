@@ -15,16 +15,19 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-make_commands() {
+get_make_command() {
     case "$(uname -s)" in
         (*BSD|Darwin)
-	    make=gmake
+	    printf '%s\n' gmake
 	    ;;
         (*)
-	    make=make
+	    printf '%s\n' make
 	    ;;
     esac
+}
 
+make_commands() {
+    make=$(get_make_command)
     bear -- $make ${CXX+CXX=$CXX} "$@"
 }
 
