@@ -16,7 +16,6 @@
 #include "network/commonsocket.h"       // CommonSocket
 #include "network/accept.h"             // accept()
 #include "network/acceptresult.h"       // AcceptResult
-#include "network/bytestring.h"         // ByteString
 #include "network/close.h"              // close()
 #include "network/get-name.h"           // get_name()
 #include "network/handle-null.h"        // handle_null
@@ -67,13 +66,13 @@ auto Network::CommonSocket::get_name(bool t_is_sockname) const ->
     std::span<const std::byte>
 {
     const auto key {t_is_sockname ? SocketApi::sockname : SocketApi::peername};
-    ByteString& value {m_names[key]};
 
-    if (value.empty()) {
-        value = Network::get_name(m_sd, t_is_sockname);
+    if (!m_names.contains(key)) {
+        const auto bs {Network::get_name(m_sd, t_is_sockname)};
+        m_names[key].assign(bs.begin(), bs.end());
     }
 
-    return value;
+    return m_names[key];
 }
 
 auto Network::CommonSocket::is_verbose() const noexcept -> bool
