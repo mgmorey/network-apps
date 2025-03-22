@@ -30,7 +30,7 @@ make_package() {
     make=$(get_make_command)
 
     if printf '%s\n' "$1" | grep -Eq '^(Debug|Release)$'; then
-	$make BUILD_TYPE="$1" clean archive
+	$make BUILD_TYPE="$1" WITH_COVERAGE=false clean package
     fi
 }
 
