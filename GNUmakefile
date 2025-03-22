@@ -27,12 +27,17 @@ TMPDIR ?= /tmp
 # Define variable for cache directory
 cache_dir = .cache
 
-# Define variables for build directories
+# Define variables for build/output directories
 coverage_dir = coverage
 cppcheck_dir = $(cache_dir)/cppcheck
 depend_dir = $(cache_dir)/dependency
-object_dir = $(BUILD_DIR)/object
+
+# Define variables for output directory/prefix
 output_dir = $(BUILD_DIR)
+output_prefix = $(call get-prefix,$(output_dir))
+
+# Define variable for object directory
+object_dir = $(output_prefix)object
 
 # Define variables for include and source directories
 include_dir = include
@@ -72,7 +77,7 @@ source_suffix = .cpp
 library_stem = $(library_prefix)$(PROJECT_NAME)
 
 # Define variable for package filename
-package = $(output_dir)/$(library_stem).tar.gz
+package = $(output_prefix)$(library_stem).tar.gz
 
 # Define variable for temporary directory
 temporary_dir ?= $(TMPDIR:/=)/$(library_stem)
@@ -144,10 +149,10 @@ objects = $(call get-objects-from-sources,$(sources))
 library_objects = $(call get-objects-from-sources,$(library_sources))
 
 library_aliases = $(addprefix				\
-$(output_dir)/$(library_stem),$(alias_suffixes))
-library_mapfile = $(output_dir)/$(library_stem).map
-shared_library = $(output_dir)/$(library_stem)$(shared_suffix)
-static_library = $(output_dir)/$(library_stem).a
+$(output_prefix)$(library_stem),$(alias_suffixes))
+library_mapfile = $(output_prefix)$(library_stem).map
+shared_library = $(output_prefix)$(library_stem)$(shared_suffix)
+static_library = $(output_prefix)$(library_stem).a
 
 libraries = $(library_aliases) $(shared_library) $(static_library)
 
@@ -363,7 +368,7 @@ $(output_dir):
 
 # Define suffix rules
 
-$(output_dir)/%$(binary_suffix): $(object_dir)/%$(object_suffix)
+$(output_prefix)%$(binary_suffix): $(object_dir)/%$(object_suffix)
 	$(call link-objects,$^,$@)
 
 $(object_dir)/%$(object_suffix): %$(source_suffix)

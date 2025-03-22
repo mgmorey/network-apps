@@ -24,20 +24,20 @@ endef
 
 # $(call clean-all,PATHNAMES)
 define clean-all
-$(strip printf '%s\n' $(call tidy-files,$(wildcard $(filter-out	\
+$(strip printf '%s\n' $(sort $(wildcard $(filter-out		\
 $(cache_dir)/%,$(filter-out $(coverage_dir)/%,$(filter-out	\
 $(object_dir)/%,$1) $(build_dirs))))) | xargs -r /bin/rm -rf)
 endef
 
 # $(call clean-build,PATHNAMES)
 define clean-build
-$(strip printf '%s\n' $(call tidy-files,$(wildcard $(filter-out	\
+$(strip printf '%s\n' $(sort $(wildcard $(filter-out		\
 $(object_dir)/%,$1) $(object_dir))) | xargs -r /bin/rm -rf)
 endef
 
 # $(call clean-files,PATHNAMES)
 define clean-files
-$(strip printf '%s\n' $(call tidy-files,$(wildcard $1)) | xargs -r /bin/rm -f)
+$(strip printf '%s\n' $(sort $(wildcard $1)) | xargs -r /bin/rm -f)
 endef
 
 # $(call compile-source,SOURCE-FILENAMES,OBJECT-FILENAME)
@@ -49,7 +49,7 @@ endef
 
 # $(call dos-to-unix,TEXT-FILENAMES)
 define dos-to-unix
-$(strip printf '%s\n' $(call tidy-files,$(wildcard $1)) | xargs dos2unix -q)
+$(strip printf '%s\n' $(sort $(wildcard $1)) | xargs dos2unix -q)
 endef
 
 # $(call get-dependencies-from-sources,SOURCE-FILENAMES)
@@ -60,14 +60,12 @@ endef
 
 # $(call get-objects-from-sources,SOURCE-FILENAMES)
 define get-objects-from-sources
-$(addprefix $(object_dir)/,$(addsuffix	\
-$(object_suffix),$(basename $1)))
+$(addprefix $(object_dir)/,$(addsuffix $(object_suffix),$(basename $1)))
 endef
 
 # $(call get-programs-from-sources,SOURCE-FILENAMES)
 define get-programs-from-sources
-$(addprefix $(call get-prefix,$(output_dir)),$(addsuffix	\
-$(binary_suffix),$(basename $1)))
+$(addprefix $(output_prefix),$(addsuffix $(binary_suffix),$(basename $1)))
 endef
 
 # $(call get-compiler-sanitizer-flags,SANITIZERS)
@@ -75,6 +73,11 @@ define get-compiler-sanitizer-flags
 $(if $(filter address,$1),-fsanitize-address-use-after-scope)	\
 $(if $(filter undefined,$1),-fno-sanitize-recover)		\
 $(call get-sanitizer-flags,$1)
+endef
+
+# $(call get-prefix,DIRECTORY)
+define get-prefix
+$(if $(filter .,$1),,$1/)
 endef
 
 # $(call get-sanitizer-flags,SANITIZERS)
@@ -97,7 +100,7 @@ endef
 # $(call install-binaries,BINARY-DIRECTORY)
 define install-binaries
 $(install) -d $1
-$(install) $(patsubst ./%,%,$(test_programs)) $1
+$(install) $(sort $(test_programs)) $1
 endef
 
 # $(call install-include-files,INCLUDE-DIRECTORY)
@@ -109,7 +112,7 @@ endef
 # $(call install-libraries,LIBRARY-DIRECTORY)
 define install-libraries
 $(install) -d $1
-$(install) $(patsubst ./%,%,$(shared_library) $(static_library)) $1
+$(install) $(sort $(shared_library) $(static_library)) $1
 $(call install-aliases,$1,$(library_stem))
 endef
 
@@ -128,7 +131,7 @@ endef
 # $(call make-dependency-rule,SOURCE-FILENAME,OUTPUT-FILENAME)
 define make-dependency-rule
 $(CXX) $(sort $(CPPFLAGS) -MM) $1 | $(script_dir)/make-rule -d	\
-$(call tidy-files,$(object_dir)) -o $2 $(tags)
+$(sort $(object_dir)) -o $2 $(tags)
 endef
 
 # $(call run-programs,PROGRAM-FILENAME,PROGRAM-ARGUMENTS)
@@ -139,11 +142,6 @@ endef
 # $(call split-string,DELIMITER,STRING)
 define split-string
 $(subst $1, ,$2)
-endef
-
-# $(call tidy-files,FILENAMES)
-define tidy-files
-$(sort $(patsubst ./%,%,$1))
 endef
 
 # Local Variables:
