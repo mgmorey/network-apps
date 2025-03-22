@@ -66,7 +66,7 @@ auto Network::CommonSocket::get_name(bool t_is_sockname) const ->
     std::span<const std::byte>
 {
     const auto key {t_is_sockname ? SocketApi::sockname : SocketApi::peername};
-    auto& name {m_names[key]};
+    auto& name {m_cache[key]};
 
     if (name.empty()) {
         name = Network::get_name(m_sd, t_is_sockname);
@@ -89,7 +89,7 @@ auto Network::CommonSocket::open(std::span<const std::byte> t_bs,
         return result;
     }
 
-    m_names[key].assign(t_bs.begin(), t_bs.end());
+    m_cache[key].assign(t_bs.begin(), t_bs.end());
     return {};
 }
 
@@ -105,6 +105,11 @@ auto Network::CommonSocket::bind(std::span<const std::byte> t_bs) ->
     return open(t_bs, true);
 }
 
+auto Network::CommonSocket::cache(SocketApi api) const -> std::span<const std::byte>
+{
+    return m_cache[api];
+}
+
 auto Network::CommonSocket::connect(std::span<const std::byte> t_bs) ->
     OsErrorResult
 {
@@ -114,11 +119,6 @@ auto Network::CommonSocket::connect(std::span<const std::byte> t_bs) ->
 auto Network::CommonSocket::listen(int t_backlog) const -> OsErrorResult
 {
     return Network::listen(m_sd, t_backlog);
-}
-
-auto Network::CommonSocket::name(SocketApi key) const -> std::span<const std::byte>
-{
-    return m_names[key];
 }
 
 auto Network::CommonSocket::peername() const -> std::span<const std::byte>

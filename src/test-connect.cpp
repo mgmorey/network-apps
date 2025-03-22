@@ -140,7 +140,7 @@ namespace
 
         auto test_socket(const Socket& t_sock) -> void
         {
-            const Address name {t_sock.name(SocketApi::connect)};
+            const Address name {t_sock.cache(SocketApi::connect)};
             const Address peer {t_sock.peername()};
             const Address self {t_sock.sockname()};
             m_os << "Socket "

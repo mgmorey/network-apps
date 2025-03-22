@@ -54,11 +54,11 @@ namespace Network
         [[nodiscard]] auto accept() const -> AcceptResult final;
         [[nodiscard]] auto bind(std::span<const std::byte> t_bs) ->
             OsErrorResult override;
+        [[nodiscard]] auto cache(SocketApi api) const ->
+            std::span<const std::byte> final;
         [[nodiscard]] auto connect(std::span<const std::byte> t_bs) ->
             OsErrorResult override;
         [[nodiscard]] auto listen(int t_backlog) const -> OsErrorResult final;
-        [[nodiscard]] auto name(SocketApi key) const ->
-            std::span<const std::byte> final;
         [[nodiscard]] auto peername() const -> std::span<const std::byte> final;
         [[nodiscard]] auto read(std::span<char> t_cs) const -> ssize_t final;
         [[nodiscard]] auto shutdown(int t_how) const -> OsErrorResult final;
@@ -66,7 +66,7 @@ namespace Network
         [[nodiscard]] auto write(std::string_view t_sv) const -> ssize_t final;
 
     private:
-        mutable std::map<SocketApi, ByteString> m_names;
+        mutable std::map<SocketApi, ByteString> m_cache;
         SocketData m_sd;
     };
 }

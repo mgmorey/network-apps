@@ -40,12 +40,12 @@ namespace Network
         [[nodiscard]] virtual auto accept() const -> AcceptResult = 0;
         [[nodiscard]] virtual auto bind(std::span<const std::byte> t_bs) ->
             OsErrorResult = 0;
+        [[nodiscard]] virtual auto cache(SocketApi api) const ->
+            std::span<const std::byte> = 0;
         [[nodiscard]] virtual auto connect(std::span<const std::byte> t_bs) ->
             OsErrorResult = 0;
         [[nodiscard]] virtual auto listen(int t_backlog) const ->
             OsErrorResult = 0;
-        [[nodiscard]] virtual auto name(SocketApi key) const ->
-            std::span<const std::byte> = 0;
         [[nodiscard]] virtual auto peername() const ->
             std::span<const std::byte> = 0;
         [[nodiscard]] virtual auto read(std::span<char> t_cs) const ->
