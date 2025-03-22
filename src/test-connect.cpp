@@ -60,6 +60,7 @@ namespace
     using Network::IpSocketHints;
     using Network::OsErrorResult;
     using Network::Socket;
+    using Network::SocketApi;
     using Network::SocketHints;
     using Network::SocketResult;
     using Network::SocketResultVector;
@@ -139,8 +140,9 @@ namespace
 
         auto test_socket(const Socket& t_sock) -> void
         {
-            const auto peer {t_sock.peername()};
-            const auto self {t_sock.sockname()};
+            const Address name {t_sock.name(SocketApi::connect)};
+            const Address peer {t_sock.peername()};
+            const Address self {t_sock.sockname()};
             m_os << "Socket "
                  << std::right << std::setw(handle_width) << t_sock
                  << " connected "
@@ -155,11 +157,12 @@ namespace
                  << "Socket "
                  << std::right << std::setw(handle_width) << t_sock
                  << " connected "
-                 << Address(self)
+                 << self
                  << std::endl
                  << std::right << std::setw(indent_width) << "to "
-                 << Address(peer)
+                 << peer
                  << std::endl;
+            assert(name.value() == peer.value());
         }
 
     private:
