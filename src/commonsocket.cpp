@@ -66,13 +66,13 @@ auto Network::CommonSocket::get_name(bool t_is_sockname) const ->
     std::span<const std::byte>
 {
     const auto key {t_is_sockname ? SocketApi::sockname : SocketApi::peername};
+    auto& name {m_names[key]};
 
-    if (!m_names.contains(key)) {
-        const auto bs {Network::get_name(m_sd, t_is_sockname)};
-        m_names[key].assign(bs.begin(), bs.end());
-    }
+    if (name.empty()) {
+        name = Network::get_name(m_sd, t_is_sockname);
+     }
 
-    return m_names[key];
+    return name;
 }
 
 auto Network::CommonSocket::is_verbose() const noexcept -> bool
