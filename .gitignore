@@ -18,6 +18,9 @@ default.profraw
 *.css
 *.html
 
+# GNU debugger
+.gdb_history
+
 # Object files
 *.o
 *.ko
