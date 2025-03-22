@@ -106,11 +106,11 @@ namespace
 
         auto test_socket(const Socket& t_sock) -> void
         {
-            const auto self {t_sock.sockname()};
+            const Address self {t_sock.sockname()};
             m_os << "Socket "
                  << std::right << std::setw(handle_width) << t_sock
                  << " bound to "
-                 << Address(self)
+                 << self
                  << std::endl;
         }
 
