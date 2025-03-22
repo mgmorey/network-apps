@@ -68,11 +68,11 @@ object_suffix = .o
 shared_suffix = $(if $(is_windows_api),.dll,.so.$(VERSION))
 source_suffix = .cpp
 
-# Define variable for archive filename
-archive = $(output_dir)/$(library_stem).tar.gz
-
-# Define variable for library filestem
+# Define variable for library file stem
 library_stem = $(library_prefix)$(PROJECT_NAME)
+
+# Define variable for package filename
+package = $(output_dir)/$(library_stem).tar.gz
 
 # Define variable for temporary directory
 temporary_dir ?= $(TMPDIR:/=)/$(library_stem)
@@ -171,8 +171,8 @@ test_logfiles = $(test_programs:$(binary_suffix)=.log)
 unix_logfiles = $(unix_programs:$(binary_suffix)=.log)
 
 artifacts = $(binary_artifacts) $(text_artifacts)
-binary_artifacts = $(archive) $(coverage_files) $(libraries) $(objects)	\
-$(programs) $(tags)
+binary_artifacts = $(coverage_files) $(libraries) $(objects)	\
+$(package) $(programs) $(tags)
 text_artifacts = $(compile_commands) $(cppchecklog) $(dependencies)	\
 $(coverage_gcov) $(listings) $(logfiles) $(mapfiles) $(stackdumps)	\
 $(sizes)
@@ -280,13 +280,16 @@ dos2unix:
 
 .PHONY: install
 install: $(libraries) $(programs)
-	$(call install-files,$(INSTALL_PREFIX))
+	$(call install-package,$(INSTALL_PREFIX))
 
 .PHONY: libraries
 libraries: $(libraries)
 
 .PHONY: objects
 objects: $(sort $(objects))
+
+.PHONY: package
+package: $(package)
 
 .PHONY: programs
 programs: $(sort $(programs))
@@ -301,9 +304,6 @@ sizes: sizes.txt
 .PHONY: tags
 tags: $(tags)
 
-.PHONY: archive
-archive: $(archive)
-
 .PHONY: test
 test: $(logfiles)
 
@@ -317,14 +317,14 @@ endif
 
 # Define targets
 
-$(archive): $(libraries) $(programs)
-	$(call create-archive,$(temporary_dir),$@)
-
 $(coverage_html): $(logfiles)
 	$(strip $(GCOVR) $(GCOVRFLAGS) --output=$@)
 
 $(library_aliases): $(shared_library)
 	$(call install-aliases,$(output_dir),$(library_stem))
+
+$(package): $(libraries) $(programs)
+	$(call archive-package,$(temporary_dir),$@)
 
 $(shared_library): $(library_objects)
 	$(call link-objects,$^,$@)

@@ -15,6 +15,13 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+# $(call archive-package,ARCHIVE-DIRECTORY,ARCHIVE-FILENAME)
+define archive-package
+$(call install-package,$1)
+tar -C $1 -acf $2 .
+/bin/rm -rf $1
+endef
+
 # $(call clean-all,PATHNAMES)
 define clean-all
 $(strip printf '%s\n' $(call tidy-files,$(wildcard $(filter-out	\
@@ -38,13 +45,6 @@ define compile-source
 $(strip $(COMPILE$(source_suffix)) $(OUTPUT_OPTION) $1 $(if	\
 $(wildcard $(2:$(object_suffix)=.gcda)), && /bin/rm -f	\
 $(2:$(object_suffix)=.gcda),))
-endef
-
-# $(call create-archive,ARCHIVE-DIRECTORY,ARCHIVE-FILENAME)
-define create-archive
-$(call install-files,$1)
-tar -C $1 -acf $2 .
-/bin/rm -rf $1
 endef
 
 # $(call dos-to-unix,TEXT-FILENAMES)
@@ -94,14 +94,31 @@ $(foreach suffix,$(alias_suffixes), ln -sf $(addprefix		\
 $2,$(shared_suffix) $(suffix)) && ) true,))
 endef
 
-# $(call install-files,PREFIX-DIRECTORY)
-define install-files
-$(install) -d $(addprefix $1/,bin include/$(PROJECT_NAME) lib)
-$(install) -m u=rw,go=r $(include_files) $1/include/$(PROJECT_NAME)
-$(install) -m u=rwx,go=rx $(call tidy-files,$(shared_library)		\
-$(static_library)) $1/lib
+# $(call install-binaries,PREFIX-DIRECTORY)
+define install-binaries
+$(install) -d $1/bin
 $(install) -m u=rwx,go=rx $(call tidy-files,$(test_programs)) $1/bin
+endef
+
+# $(call install-include-files,PREFIX-DIRECTORY)
+define install-include-files
+$(install) -d $1/include/$(PROJECT_NAME)
+$(install) -m u=rw,go=r $(include_files) $1/include/$(PROJECT_NAME)
+endef
+
+# $(call install-libraries,PREFIX-DIRECTORY)
+define install-libraries
+$(install) -d $1/lib
+$(install) -m u=rwx,go=rx $(call tidy-files,$(shared_library)	\
+$(static_library)) $1/lib
 $(call install-aliases,$1/lib,$(library_stem))
+endef
+
+# $(call install-package,PREFIX-DIRECTORY)
+define install-package
+$(call install-binaries,$1)
+$(call install-include-files,$1)
+$(call install-libraries,$1)
 endef
 
 # $(call link-objects,INPUT-FILENAMES,OUTPUT-FILENAME)
