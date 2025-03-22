@@ -99,7 +99,7 @@ auto Network::Address::text() const -> std::string
     }
 }
 
-auto Network::Address::value() const -> address_type
+auto Network::Address::value() const -> const address_type&
 {
     return m_addr;
 }

@@ -70,7 +70,7 @@ namespace Network
 #endif
         [[nodiscard]] auto port() const -> port_type;
         [[nodiscard]] auto text() const -> std::string;
-        [[nodiscard]] auto value() const -> address_type;
+        [[nodiscard]] auto value() const -> const address_type&;
 
     protected:
         [[nodiscard]] auto sa_family() const -> family_type;
