@@ -94,31 +94,31 @@ $(foreach suffix,$(alias_suffixes), ln -sf $(addprefix		\
 $2,$(shared_suffix) $(suffix)) && ) true,))
 endef
 
-# $(call install-binaries,PREFIX-DIRECTORY)
+# $(call install-binaries,BINARY-DIRECTORY)
 define install-binaries
-$(install) -d $1/bin
-$(install) -m u=rwx,go=rx $(call tidy-files,$(test_programs)) $1/bin
+$(install) -d $1
+$(install) $(patsubst ./%,%,$(test_programs)) $1
 endef
 
-# $(call install-include-files,PREFIX-DIRECTORY)
+# $(call install-include-files,INCLUDE-DIRECTORY)
 define install-include-files
-$(install) -d $1/include/$(PROJECT_NAME)
-$(install) -m u=rw,go=r $(include_files) $1/include/$(PROJECT_NAME)
+$(install) -d $1
+$(install) -m u=rw,go=r $(include_files) $1
 endef
 
-# $(call install-libraries,PREFIX-DIRECTORY)
+# $(call install-libraries,LIBRARY-DIRECTORY)
 define install-libraries
-$(install) -d $1/lib
-$(install) -m u=rwx,go=rx $(call tidy-files,$(shared_library)	\
-$(static_library)) $1/lib
-$(call install-aliases,$1/lib,$(library_stem))
+$(install) -d $1
+$(install) $(patsubst ./%,%,$(shared_library)) $1
+$(install) $(patsubst ./%,%,$(static_library)) $1
+$(call install-aliases,$1,$(library_stem))
 endef
 
 # $(call install-package,PREFIX-DIRECTORY)
 define install-package
-$(call install-binaries,$1)
-$(call install-include-files,$1)
-$(call install-libraries,$1)
+$(call install-binaries,$1/bin)
+$(call install-include-files,$1/include/$(PROJECT_NAME))
+$(call install-libraries,$1/lib)
 endef
 
 # $(call link-objects,INPUT-FILENAMES,OUTPUT-FILENAME)
