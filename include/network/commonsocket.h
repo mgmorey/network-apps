@@ -57,6 +57,8 @@ namespace Network
         [[nodiscard]] auto connect(std::span<const std::byte> t_bs) ->
             OsErrorResult override;
         [[nodiscard]] auto listen(int t_backlog) const -> OsErrorResult final;
+        [[nodiscard]] auto name(SocketApi key) const ->
+            std::span<const std::byte> final;
         [[nodiscard]] auto peername() const -> std::span<const std::byte> final;
         [[nodiscard]] auto read(std::span<char> t_cs) const -> ssize_t final;
         [[nodiscard]] auto shutdown(int t_how) const -> OsErrorResult final;

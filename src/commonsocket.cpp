@@ -116,6 +116,11 @@ auto Network::CommonSocket::listen(int t_backlog) const -> OsErrorResult
     return Network::listen(m_sd, t_backlog);
 }
 
+auto Network::CommonSocket::name(SocketApi key) const -> std::span<const std::byte>
+{
+    return m_names[key];
+}
+
 auto Network::CommonSocket::peername() const -> std::span<const std::byte>
 {
     return get_name(false);

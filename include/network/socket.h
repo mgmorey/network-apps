@@ -18,6 +18,7 @@
 
 #include "network/acceptresult.h"       // AcceptResult
 #include "network/oserrorresult.h"      // OsErrorResult
+#include "network/socketapi.h"          // SocketApi
 
 #include <cstddef>      // std::byte
 #include <ostream>      // std::ostream
@@ -43,6 +44,8 @@ namespace Network
             OsErrorResult = 0;
         [[nodiscard]] virtual auto listen(int t_backlog) const ->
             OsErrorResult = 0;
+        [[nodiscard]] virtual auto name(SocketApi key) const ->
+            std::span<const std::byte> = 0;
         [[nodiscard]] virtual auto peername() const ->
             std::span<const std::byte> = 0;
         [[nodiscard]] virtual auto read(std::span<char> t_cs) const ->
