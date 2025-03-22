@@ -109,8 +109,7 @@ endef
 # $(call install-libraries,LIBRARY-DIRECTORY)
 define install-libraries
 $(install) -d $1
-$(install) $(patsubst ./%,%,$(shared_library)) $1
-$(install) $(patsubst ./%,%,$(static_library)) $1
+$(install) $(patsubst ./%,%,$(shared_library) $(static_library)) $1
 $(call install-aliases,$1,$(library_stem))
 endef
 
