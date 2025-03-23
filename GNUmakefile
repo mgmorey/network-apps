@@ -140,8 +140,7 @@ tags = TAGS
 
 # Define variables for computed file lists
 
-sources = $(library_sources) $(test_sources) $(if	\
-$(is_posix),$(unix_sources),)
+sources = $(library_sources) $(test_sources) $(if $(is_posix),$(unix_sources),)
 library_sources = $(library_common_sources) $(library_native_sources)	\
 $(if $(filter unix,$(api)),$(library_unix_sources),)
 program_sources = $(test_sources) $(if $(is_posix),$(unix_sources),)
@@ -152,8 +151,7 @@ objects = $(call get-objects-from-sources,$(sources))
 
 library_objects = $(call get-objects-from-sources,$(library_sources))
 
-library_aliases = $(addprefix				\
-$(output_prefix)$(library_stem),$(alias_suffixes))
+library_aliases = $(addprefix $(output_prefix)$(library_stem),$(alias_suffixes))
 library_mapfile = $(output_prefix)$(library_stem).map
 shared_library = $(output_prefix)$(library_stem)$(shared_suffix)
 static_library = $(output_prefix)$(library_stem).a
