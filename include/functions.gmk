@@ -53,13 +53,13 @@ $(strip printf '%s\n' $(sort $(wildcard $1)) | xargs dos2unix -q)
 endef
 
 # $(call format-as-flag,FLAG-OPTION,FLAG-ARG)
-format-as-flag = $(call format-flag,$(as_family),$1,$2)
-
-# $(call format-flag,TOOL,FLAG-OPTION,FLAG-ARG)
-format-flag = $(if $(strip $3),$(if $(filter gnu,$1),$2=$3,$2 $3),)
+format-as-flag = $(call format-xx-flag,$(as_family),$1,$2)
 
 # $(call format-ld-flag,FLAG-OPTION,FLAG-ARG)
-format-ld-flag = $(call format-flag,$(ld_family),$1,$2)
+format-ld-flag = $(call format-xx-flag,$(ld_family),$1,$2)
+
+# $(call format-xx-flag,TOOL,FLAG-OPTION,FLAG-ARG)
+format-xx-flag = $(if $(strip $3),$(if $(filter gnu,$1),$2=$3,$2 $3),)
 
 # $(call get-compiler-sanitizer-flags,SANITIZERS)
 define get-compiler-sanitizer-flags
