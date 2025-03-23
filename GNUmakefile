@@ -24,9 +24,10 @@ INSTALL_PREFIX ?= ~/.local
 HTML_THEME ?= green
 TMPDIR ?= /tmp
 
-# Define variables for include and script directories
+# Define variables for include, script, and source directories
 include_dir := include
 script_dir := script
+source_dir := src
 
 # Include function and variable definitions
 include $(include_dir)/commands.gmk
@@ -35,15 +36,13 @@ include $(include_dir)/flags.gmk
 include $(include_dir)/funcs.gmk
 
 # Define variables for cache, coverage, cppcheck, dependency, object,
-# output, source, and temporary directories
+# output, and temporary directories
 cache_dir = .cache
 coverage_dir = coverage
 cppcheck_dir = $(cache_dir)/cppcheck
 depend_dir = $(cache_dir)/dependency
 object_dir = $(output_prefix)object
 output_dir = $(BUILD_DIR)
-source_dir = src
-temp_dir ?= $(TMPDIR:/=)/$(library_stem)
 
 # Define variables for directory lists
 include_dirs = $(addprefix $(include_dir)/,$(api) .)
@@ -314,7 +313,7 @@ $(library_aliases): $(shared_library)
 	$(call install-aliases,$(output_dir),$(library_stem))
 
 $(package): $(libraries) $(programs)
-	$(call archive-package,$(temp_dir),$@)
+	$(call archive-package,$(TMPDIR:/=)/$(library_stem),$@)
 
 $(shared_library): $(library_objects)
 	$(call link-objects,$^,$@)
