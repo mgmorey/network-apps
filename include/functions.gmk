@@ -81,7 +81,7 @@ get-listing-flag = $(call format-as-flag,-adghln,$1)
 
 # $(call get-objects-from-sources,SOURCE-FILENAMES)
 define get-objects-from-sources
-$(addprefix $(object_dir)/,$(addsuffix $(object_suffix),$(basename $1)))
+$(addprefix $(object_prefix),$(addsuffix $(object_suffix),$(basename $1)))
 endef
 
 # $(call get-prefix,DIRECTORY)
