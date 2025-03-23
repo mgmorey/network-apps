@@ -14,7 +14,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 # Define variables for project defaults
-PROJECT_NAME = network
+PROJECT_NAME := network
 VERSION ?= 0.0.1
 
 # Define variables for build defaults
@@ -24,13 +24,9 @@ INSTALL_PREFIX ?= ~/.local
 HTML_THEME ?= green
 TMPDIR ?= /tmp
 
-# Define variables for cache, coverage, include, script, and source
-# directories
-cache_dir = .cache
-coverage_dir = coverage
-include_dir = include
-script_dir = script
-source_dir = src
+# Define variables for include and script directories
+include_dir := include
+script_dir := script
 
 # Include function and variable definitions
 include $(include_dir)/commands.gmk
@@ -38,12 +34,15 @@ include $(include_dir)/features.gmk
 include $(include_dir)/flags.gmk
 include $(include_dir)/funcs.gmk
 
-# Define variables for cppcheck, dependency, object, output, and
-# temporary directories
+# Define variables for cache, coverage, cppcheck, dependency, object,
+# output, source, and temporary directories
+cache_dir = .cache
+coverage_dir = coverage
 cppcheck_dir = $(cache_dir)/cppcheck
 depend_dir = $(cache_dir)/dependency
 object_dir = $(output_prefix)object
 output_dir = $(BUILD_DIR)
+source_dir = src
 temp_dir ?= $(TMPDIR:/=)/$(library_stem)
 
 # Define variables for directory lists
