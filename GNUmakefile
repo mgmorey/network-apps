@@ -24,9 +24,13 @@ INSTALL_PREFIX ?= ~/.local
 HTML_THEME ?= green
 TMPDIR ?= /tmp
 
-# Define variables for include and script directories
+# Define variables for cache, coverage, include, script, and source
+# directories
+cache_dir = .cache
+coverage_dir = coverage
 include_dir = include
 script_dir = script
+source_dir = src
 
 # Include function and variable definitions
 include $(include_dir)/commands.gmk
@@ -34,28 +38,13 @@ include $(include_dir)/features.gmk
 include $(include_dir)/flags.gmk
 include $(include_dir)/funcs.gmk
 
-# Define variable for cache directory
-cache_dir = .cache
-
-# Define variables for directories
-coverage_dir = coverage
+# Define variables for cppcheck, dependency, object, output, and
+# temporary directories
 cppcheck_dir = $(cache_dir)/cppcheck
 depend_dir = $(cache_dir)/dependency
-
-# Define variables for output directory/prefix
-output_dir = $(BUILD_DIR)
-output_prefix = $(call get-prefix,$(output_dir))
-
-# Define variable for object directory
 object_dir = $(output_prefix)object
-
-# Define variables for source directory
-source_dir = src
-
-# Define variables for version components
-major = $(call get-version-number,1,$(VERSION))
-minor = $(call get-version-number,2,$(VERSION))
-patch = $(call get-version-number,3,$(VERSION))
+output_dir = $(BUILD_DIR)
+temp_dir ?= $(TMPDIR:/=)/$(library_stem)
 
 # Define variables for directory lists
 include_dirs = $(addprefix $(include_dir)/,$(api) .)
@@ -64,8 +53,9 @@ source_dirs = $(addprefix $(source_dir)/,$(api) .)
 # Define variable for include file list
 include_files = $(addsuffix /$(PROJECT_NAME)/*.h,$(include_dirs:/.=))
 
-# Define variable for library prefix
+# Define variables for library and output prefixes
 library_prefix = lib
+output_prefix = $(call get-prefix,$(output_dir))
 
 # Define variables for filename suffixes
 alias_suffix = $(if $(is_windows_api),,.so.$(major))
@@ -83,10 +73,12 @@ library_stem = $(library_prefix)$(PROJECT_NAME)
 # Define variable for package filename
 package = $(output_prefix)$(library_stem).tar.gz
 
-# Define variable for temporary directory
-temporary_dir ?= $(TMPDIR:/=)/$(library_stem)
+# Define variables for version components
+major = $(call get-version-number,1,$(VERSION))
+minor = $(call get-version-number,2,$(VERSION))
+patch = $(call get-version-number,3,$(VERSION))
 
-# Define variabled for enumerated file lists
+# Define variables for enumerated file lists
 
 compile_commands = compile_commands.json
 coverage_html = coverage/coverage.html
@@ -323,7 +315,7 @@ $(library_aliases): $(shared_library)
 	$(call install-aliases,$(output_dir),$(library_stem))
 
 $(package): $(libraries) $(programs)
-	$(call archive-package,$(temporary_dir),$@)
+	$(call archive-package,$(temp_dir),$@)
 
 $(shared_library): $(library_objects)
 	$(call link-objects,$^,$@)
