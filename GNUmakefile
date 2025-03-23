@@ -34,7 +34,7 @@ source_dir := src
 include $(include_dir)/commands.gmk
 include $(include_dir)/features.gmk
 include $(include_dir)/functions.gmk
-include $(include_dir)/makeflags.gmk
+include $(include_dir)/variables.gmk
 
 # Define variables for version components
 major = $(call get-version-number,1,$(VERSION))
