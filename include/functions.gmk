@@ -152,7 +152,7 @@ endef
 # $(call make-dependency-rule,SOURCE-FILENAME,OUTPUT-FILENAME)
 define make-dependency-rule
 $(CXX) $(sort $(CPPFLAGS) -MM) $1 | $(script_dir)/make-rule -d	\
-$(sort $(object_dir)) -o $2 TAGS
+$(object_dir) -o $2 TAGS
 endef
 
 # $(call run-programs,PROGRAM-FILENAME,PROGRAM-ARGUMENTS)
