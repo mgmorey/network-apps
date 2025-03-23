@@ -15,29 +15,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-# Define functions to compute flag values
-
-# $(call FORMAT-FUNCTION,FLAG-OPTION,FLAG-ARG)
-format-as-flag = $(call format-flag,$(as_family),$1,$2)
-format-ld-flag = $(call format-flag,$(ld_family),$1,$2)
-format-flag = $(if $(strip $3),$(if $(filter gnu,$1),$2=$3,$2 $3),)
-join-flags = $(if $(strip $2),$(subst $(spc),$(com),$1 $(strip $2)),)
-
-# $(call get-listing-flag,LISTING-FILENAME)
-get-listing-flag = $(call format-as-flag,-adghln,$1)
-
-# $(call get-install-name-flag,INSTALL-NAME-ARG)
-get-install-name-flag = $(call format-ld-flag,-install_name,$1)
-
-# $(call get-rpath-flag,RPATH-ARG)
-get-rpath-flag = $(foreach rpath,$1,$(call format-ld-flag,-rpath,$(rpath:/.=)))
-
-# $(call get-soname-flag,SONAME-ARG)
-get-soname-flag = $(call format-ld-flag,-soname,$1)
-
-# $(call shell-quote SHELL-STRING)
-shell-quote = $(subst $$,\$$,$1)
-
 # $(call archive-package,ARCHIVE-DIRECTORY,ARCHIVE-FILENAME)
 define archive-package
 $(call install-package,$1)
@@ -75,20 +52,14 @@ define dos-to-unix
 $(strip printf '%s\n' $(sort $(wildcard $1)) | xargs dos2unix -q)
 endef
 
-# $(call get-dependencies-from-sources,SOURCE-FILENAMES)
-define get-dependencies-from-sources
-$(addprefix $(depend_dir)/,$(addsuffix $(depend_suffix),$(basename $1)))
-endef
+# $(call format-as-flag,FLAG-OPTION,FLAG-ARG)
+format-as-flag = $(call format-flag,$(as_family),$1,$2)
 
-# $(call get-objects-from-sources,SOURCE-FILENAMES)
-define get-objects-from-sources
-$(addprefix $(object_dir)/,$(addsuffix $(object_suffix),$(basename $1)))
-endef
+# $(call format-flag,TOOL,FLAG-OPTION,FLAG-ARG)
+format-flag = $(if $(strip $3),$(if $(filter gnu,$1),$2=$3,$2 $3),)
 
-# $(call get-programs-from-sources,SOURCE-FILENAMES)
-define get-programs-from-sources
-$(addprefix $(output_prefix),$(addsuffix $(binary_suffix),$(basename $1)))
-endef
+# $(call format-ld-flag,FLAG-OPTION,FLAG-ARG)
+format-ld-flag = $(call format-flag,$(ld_family),$1,$2)
 
 # $(call get-compiler-sanitizer-flags,SANITIZERS)
 define get-compiler-sanitizer-flags
@@ -97,15 +68,40 @@ $(if $(filter undefined,$1),-fno-sanitize-recover)		\
 $(call get-sanitizer-flags,$1)
 endef
 
-# $(call get-prefix,DIRECTORY)
-define get-prefix
-$(if $(filter .,$1),,$1/)
+# $(call get-dependencies-from-sources,SOURCE-FILENAMES)
+define get-dependencies-from-sources
+$(addprefix $(depend_dir)/,$(addsuffix $(depend_suffix),$(basename $1)))
 endef
+
+# $(call get-install-name-flag,INSTALL-NAME-ARG)
+get-install-name-flag = $(call format-ld-flag,-install_name,$1)
+
+# $(call get-listing-flag,LISTING-FILENAME)
+get-listing-flag = $(call format-as-flag,-adghln,$1)
+
+# $(call get-objects-from-sources,SOURCE-FILENAMES)
+define get-objects-from-sources
+$(addprefix $(object_dir)/,$(addsuffix $(object_suffix),$(basename $1)))
+endef
+
+# $(call get-prefix,DIRECTORY)
+get-prefix = $(if $(filter .,$1),,$1/)
+
+# $(call get-programs-from-sources,SOURCE-FILENAMES)
+define get-programs-from-sources
+$(addprefix $(output_prefix),$(addsuffix $(binary_suffix),$(basename $1)))
+endef
+
+# $(call get-rpath-flag,RPATH-ARG)
+get-rpath-flag = $(foreach rpath,$1,$(call format-ld-flag,-rpath,$(rpath:/.=)))
 
 # $(call get-sanitizer-flags,SANITIZERS)
 define get-sanitizer-flags
 $(foreach option,$(filter address undefined,$1),-fsanitize=$(option))
 endef
+
+# $(call get-soname-flag,SONAME-ARG)
+get-soname-flag = $(call format-ld-flag,-soname,$1)
 
 # $(call get-version-number,VERSION-STRING)
 define get-version-number
@@ -145,6 +141,9 @@ $(call install-includes,$1/include/$(PROJECT_NAME))
 $(call install-libraries,$1/lib)
 endef
 
+# $(call join-flags,FLAG-OPTION,FLAG-ARG)
+join-flags = $(if $(strip $2),$(subst $(spc),$(com),$1 $(strip $2)),)
+
 # $(call link-objects,INPUT-FILENAMES,OUTPUT-FILENAME)
 define link-objects
 $(strip $(LINK$(object_suffix)) -o $2 $1 $(LOADLIBES) $(LDLIBS))
@@ -157,14 +156,13 @@ $(sort $(object_dir)) -o $2 TAGS
 endef
 
 # $(call run-programs,PROGRAM-FILENAME,PROGRAM-ARGUMENTS)
-define run-programs
-$(script_dir)/run-programs $2 $(1:$(binary_suffix)=)
-endef
+run-programs = $(script_dir)/run-programs $2 $(1:$(binary_suffix)=)
+
+# $(call shell-quote SHELL-STRING)
+shell-quote = $(subst $$,\$$,$1)
 
 # $(call split-string,DELIMITER,STRING)
-define split-string
-$(subst $1, ,$2)
-endef
+split-string = $(subst $1, ,$2)
 
 # Local Variables:
 # mode: makefile
