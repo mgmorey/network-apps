@@ -15,6 +15,30 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+# Define functions to compute flag values
+
+# $(call FORMAT-FUNCTION,FLAG-OPTION,FLAG-ARG)
+format-as-flag = $(call format-flag,$(as_family),$1,$2)
+format-ld-flag = $(call format-flag,$(ld_family),$1,$2)
+format-flag = $(if $(strip $3),$(if $(filter gnu,$1),$2=$3,$2 $3),)
+join-flags = $(if $(strip $2),$(subst $(spc),$(com),$1 $(strip $2)),)
+
+# $(call get-listing-flag,LISTING-FILENAME)
+get-listing-flag = $(call format-as-flag,-adghln,$1)
+
+# $(call get-install-name-flag,INSTALL-NAME-ARG)
+get-install-name-flag = $(call format-ld-flag,-install_name,$1)
+
+# $(call get-rpath-flag,RPATH-ARG)
+get-rpath-flag = $(foreach rpath,$1,$(call	\
+format-ld-flag,-rpath,$(rpath:/.=)))
+
+# $(call get-soname-flag,SONAME-ARG)
+get-soname-flag = $(call format-ld-flag,-soname,$1)
+
+# $(call shell-quote SHELL-STRING)
+shell-quote = $(subst $$,\$$,$1)
+
 # $(call archive-package,ARCHIVE-DIRECTORY,ARCHIVE-FILENAME)
 define archive-package
 $(call install-package,$1)
@@ -131,7 +155,7 @@ endef
 # $(call make-dependency-rule,SOURCE-FILENAME,OUTPUT-FILENAME)
 define make-dependency-rule
 $(CXX) $(sort $(CPPFLAGS) -MM) $1 | $(script_dir)/make-rule -d	\
-$(sort $(object_dir)) -o $2 $(tags)
+$(sort $(object_dir)) -o $2 TAGS
 endef
 
 # $(call run-programs,PROGRAM-FILENAME,PROGRAM-ARGUMENTS)

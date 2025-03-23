@@ -23,9 +23,6 @@ ifneq "$(filter Debug Release,$(BUILD_TYPE))" ""
 include $(include_dir)/build-type/$(BUILD_TYPE).gmk
 endif
 
-# Define functions to compute flag values
-include $(include_dir)/flag-funcs.gmk
-
 # Local Variables:
 # mode: makefile
 # End:

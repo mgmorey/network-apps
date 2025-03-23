@@ -29,20 +29,32 @@ include_dir := include
 script_dir := script
 source_dir := src
 
-# Include function and variable definitions
+# Include variable definitions for toolchain commands and features,
+# functions, and make flags
 include $(include_dir)/commands.gmk
 include $(include_dir)/features.gmk
-include $(include_dir)/flags.gmk
-include $(include_dir)/funcs.gmk
+include $(include_dir)/functions.gmk
+include $(include_dir)/makeflags.gmk
+
+# Define variables for version components
+major = $(call get-version-number,1,$(VERSION))
+minor = $(call get-version-number,2,$(VERSION))
+patch = $(call get-version-number,3,$(VERSION))
 
 # Define variables for cache, coverage, cppcheck, dependency, object,
 # output, and temporary directories
 cache_dir = .cache
 coverage_dir = coverage
-cppcheck_dir = $(cache_dir)/cppcheck
-depend_dir = $(cache_dir)/dependency
+cppcheck_dir = $(cache_prefix)cppcheck
+depend_dir = $(cache_prefix)dependency
 object_dir = $(output_prefix)object
 output_dir = $(BUILD_DIR)
+
+# Define variables for cache, depend, object, and output prefixes
+cache_prefix = $(call get-prefix,$(cache_dir))
+depend_prefix = $(call get-prefix,$(depend_dir))
+object_prefix = $(call get-prefix,$(object_dir))
+output_prefix = $(call get-prefix,$(output_dir))
 
 # Define variables for directory lists
 include_dirs = $(addprefix $(include_dir)/,$(api) .)
@@ -50,10 +62,6 @@ source_dirs = $(addprefix $(source_dir)/,$(api) .)
 
 # Define variable for include file list
 include_files = $(addsuffix /$(PROJECT_NAME)/*.h,$(include_dirs:/.=))
-
-# Define variables for library and output prefixes
-library_prefix = lib
-output_prefix = $(call get-prefix,$(output_dir))
 
 # Define variables for filename suffixes
 alias_suffix = $(if $(is_windows_api),,.so.$(major))
@@ -64,17 +72,6 @@ include_suffix = .h
 object_suffix = .o
 shared_suffix = $(if $(is_windows_api),.dll,.so.$(VERSION))
 source_suffix = .cpp
-
-# Define variable for library file stem
-library_stem = $(library_prefix)$(PROJECT_NAME)
-
-# Define variable for package filename
-package = $(output_prefix)$(library_stem).tar.gz
-
-# Define variables for version components
-major = $(call get-version-number,1,$(VERSION))
-minor = $(call get-version-number,2,$(VERSION))
-patch = $(call get-version-number,3,$(VERSION))
 
 # Define variables for enumerated file lists
 
@@ -122,11 +119,9 @@ test-limits.cpp test-option.cpp test-parse.cpp test-socket-inet.cpp	\
 test-version.cpp
 
 test_unix_sources = test-socket-unix.cpp
-
 unix_sources = unix-server.cpp unix-client.cpp
 
 sizes = sizes.txt sizes.txt~
-tags = TAGS
 
 # Define variables for computed file lists
 
@@ -138,11 +133,11 @@ test_sources = $(test_common_sources) $(if $(filter	\
 unix,$(api)),$(test_unix_sources),)
 
 objects = $(call get-objects-from-sources,$(sources))
-
 library_objects = $(call get-objects-from-sources,$(library_sources))
 
 library_aliases = $(addprefix $(output_prefix)$(library_stem),$(alias_suffixes))
 library_mapfile = $(output_prefix)$(library_stem).map
+library_stem = lib$(PROJECT_NAME)
 shared_library = $(output_prefix)$(library_stem)$(shared_suffix)
 static_library = $(output_prefix)$(library_stem).a
 
@@ -167,9 +162,11 @@ logfiles = $(test_logfiles) $(if $(is_posix),$(unix_logfiles),)
 test_logfiles = $(test_programs:$(binary_suffix)=.log)
 unix_logfiles = $(unix_programs:$(binary_suffix)=.log)
 
+package = $(output_prefix)$(library_stem).tar.gz
+
 artifacts = $(binary_artifacts) $(text_artifacts)
 binary_artifacts = $(coverage_files) $(libraries) $(objects)	\
-$(package) $(programs) $(tags)
+$(package) $(programs) TAGS
 text_artifacts = $(compile_commands) $(cppchecklog) $(dependencies)	\
 $(coverage_gcov) $(listings) $(logfiles) $(mapfiles) $(stackdumps)	\
 $(sizes)
@@ -182,6 +179,9 @@ $(object_dir) $(output_dir))
 dos2unix_files = $(filter-out %$(depend_suffix),$(wildcard	\
 $(text_artifacts)))
 
+# Define variable for run-program arguments
+program_args = $(strip $(if $(filter .,$(output_dir)),,-d $(output_dir)) -v)
+
 # Define target list variables
 
 all_targets = $(build_targets) test $(if $(filter	\
@@ -189,9 +189,6 @@ true,$(WITH_COVERAGE)),$(if $(GCOVR),gcovr,),) $(if	\
 $(is_windows_api),dos2unix,)
 
 build_targets = assert objects libraries programs sizes $(if $(is_uctags),tags)
-
-# Define variable for run-program arguments
-program_args = $(strip $(if $(filter .,$(output_dir)),,-d $(output_dir)) -v)
 
 # Define variables for compiler and linker commands
 COMPILE$(source_suffix) = $(if $(CXX),$(CXX),c++) $(sort $(CXXFLAGS)	\
@@ -291,7 +288,7 @@ sizes: sizes.txt
 	@if [ -e $<~ ]; then diff -b $<~ $< || true; fi
 
 .PHONY: tags
-tags: $(tags)
+tags: TAGS
 
 .PHONY: test
 test: $(logfiles)
@@ -330,7 +327,7 @@ sizes.txt: $(shared_library) $(objects) $(programs)
 	if [ -e $@ ]; then mv -f $@ $@~; fi
 	size $(sort $^) >$@
 
-$(tags):
+TAGS:
 	ctags -e $(filter -D%,$(CPPFLAGS)) -R $(include_dir) $(source_dir)
 
 $(coverage_html): | $(coverage_dir)
@@ -360,13 +357,13 @@ $(output_dir):
 
 # Define suffix rules
 
-$(output_prefix)%$(binary_suffix): $(object_dir)/%$(object_suffix)
+$(output_prefix)%$(binary_suffix): $(object_prefix)%$(object_suffix)
 	$(call link-objects,$^,$@)
 
-$(object_dir)/%$(object_suffix): %$(source_suffix)
+$(object_prefix)%$(object_suffix): %$(source_suffix)
 	$(call compile-source,$<,$@)
 
-$(depend_dir)/%$(depend_suffix): %$(source_suffix)
+$(depend_prefix)%$(depend_suffix): %$(source_suffix)
 	$(call make-dependency-rule,$<,$@)
 
 # Include dependency files
