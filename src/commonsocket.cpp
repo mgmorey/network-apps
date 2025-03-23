@@ -65,8 +65,8 @@ Network::CommonSocket::operator std::string() const
 auto Network::CommonSocket::get_name(bool t_is_sockname) const ->
     std::span<const std::byte>
 {
-    const auto key {t_is_sockname ? SocketApi::sockname : SocketApi::peername};
-    auto& name {m_cache[key]};
+    const auto api {t_is_sockname ? SocketApi::sockname : SocketApi::peername};
+    auto& name {m_cache[api]};
 
     if (name.empty()) {
         name = Network::get_name(m_sd, t_is_sockname);
@@ -83,13 +83,13 @@ auto Network::CommonSocket::is_verbose() const noexcept -> bool
 auto Network::CommonSocket::open(std::span<const std::byte> t_bs,
                                  bool t_is_bind) const -> OsErrorResult
 {
-    const auto key {t_is_bind ? SocketApi::bind : SocketApi::connect};
+    const auto api {t_is_bind ? SocketApi::bind : SocketApi::connect};
 
     if (const auto result {Network::open(m_sd, t_bs, t_is_bind)}) {
         return result;
     }
 
-    m_cache[key].assign(t_bs.begin(), t_bs.end());
+    m_cache[api].assign(t_bs.begin(), t_bs.end());
     return {};
 }
 
