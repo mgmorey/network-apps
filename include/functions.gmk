@@ -30,8 +30,7 @@ get-listing-flag = $(call format-as-flag,-adghln,$1)
 get-install-name-flag = $(call format-ld-flag,-install_name,$1)
 
 # $(call get-rpath-flag,RPATH-ARG)
-get-rpath-flag = $(foreach rpath,$1,$(call	\
-format-ld-flag,-rpath,$(rpath:/.=)))
+get-rpath-flag = $(foreach rpath,$1,$(call format-ld-flag,-rpath,$(rpath:/.=)))
 
 # $(call get-soname-flag,SONAME-ARG)
 get-soname-flag = $(call format-ld-flag,-soname,$1)
@@ -78,8 +77,7 @@ endef
 
 # $(call get-dependencies-from-sources,SOURCE-FILENAMES)
 define get-dependencies-from-sources
-$(addprefix $(depend_dir)/,$(addsuffix	\
-$(depend_suffix),$(basename $1)))
+$(addprefix $(depend_dir)/,$(addsuffix $(depend_suffix),$(basename $1)))
 endef
 
 # $(call get-objects-from-sources,SOURCE-FILENAMES)
@@ -127,8 +125,8 @@ $(install) -d $1
 $(install) $(sort $(test_programs)) $1
 endef
 
-# $(call install-include-files,INCLUDE-DIRECTORY)
-define install-include-files
+# $(call install-includes,INCLUDE-DIRECTORY)
+define install-includes
 $(install) -d $1
 $(install) -m u=rw,go=r $(include_files) $1
 endef
@@ -143,7 +141,7 @@ endef
 # $(call install-package,PREFIX-DIRECTORY)
 define install-package
 $(call install-binaries,$1/bin)
-$(call install-include-files,$1/include/$(PROJECT_NAME))
+$(call install-includes,$1/include/$(PROJECT_NAME))
 $(call install-libraries,$1/lib)
 endef
 
