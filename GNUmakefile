@@ -24,10 +24,20 @@ INSTALL_PREFIX ?= ~/.local
 HTML_THEME ?= green
 TMPDIR ?= /tmp
 
+# Define variables for include and script directories
+include_dir = include
+script_dir = script
+
+# Include function and variable definitions
+include $(include_dir)/commands.gmk
+include $(include_dir)/features.gmk
+include $(include_dir)/flags.gmk
+include $(include_dir)/funcs.gmk
+
 # Define variable for cache directory
 cache_dir = .cache
 
-# Define variables for build/output directories
+# Define variables for directories
 coverage_dir = coverage
 cppcheck_dir = $(cache_dir)/cppcheck
 depend_dir = $(cache_dir)/dependency
@@ -39,16 +49,8 @@ output_prefix = $(call get-prefix,$(output_dir))
 # Define variable for object directory
 object_dir = $(output_prefix)object
 
-# Define variables for include and source directories
-include_dir = include
-script_dir = script
+# Define variables for source directory
 source_dir = src
-
-# Include function and variable definitions
-include $(include_dir)/commands.gmk
-include $(include_dir)/features.gmk
-include $(include_dir)/flags.gmk
-include $(include_dir)/funcs.gmk
 
 # Define variables for version components
 major = $(call get-version-number,1,$(VERSION))
@@ -62,13 +64,15 @@ source_dirs = $(addprefix $(source_dir)/,$(api) .)
 # Define variable for include file list
 include_files = $(addsuffix /$(PROJECT_NAME)/*.h,$(include_dirs:/.=))
 
-# Define variables for filename prefixes/suffixes
+# Define variable for library prefix
+library_prefix = lib
+
+# Define variables for filename suffixes
 alias_suffix = $(if $(is_windows_api),,.so.$(major))
 alias_suffixes = $(alias_suffix)
 binary_suffix = $(if $(is_windows_api),.exe,)
 depend_suffix = .dep
 include_suffix = .h
-library_prefix = lib
 object_suffix = .o
 shared_suffix = $(if $(is_windows_api),.dll,.so.$(VERSION))
 source_suffix = .cpp
