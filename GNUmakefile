@@ -365,7 +365,7 @@ $(object_prefix)%$(object_suffix): %$(source_suffix)
 	$(call compile-source-to-object,$<,$@)
 
 $(depend_prefix)%$(depend_suffix): %$(source_suffix)
-	$(call compile-source-to-build-rule,$<,$@)
+	$(call compile-source-to-depend,$<,$@)
 
 # Include dependency files
 ifeq "$(filter %clean,$(MAKECMDGOALS))" "$(filter-out %clean,$(MAKECMDGOALS))"
