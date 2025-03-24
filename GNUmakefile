@@ -358,14 +358,14 @@ $(output_dir):
 
 # Define suffix rules
 
-$(output_prefix)%$(binary_suffix): $(object_prefix)%$(object_suffix)
-	$(call link-objects,$^,$@)
+$(depend_prefix)%$(depend_suffix): %$(source_suffix)
+	$(call compile-source-to-depend,$<,$@)
 
 $(object_prefix)%$(object_suffix): %$(source_suffix)
 	$(call compile-source-to-object,$<,$@)
 
-$(depend_prefix)%$(depend_suffix): %$(source_suffix)
-	$(call compile-source-to-depend,$<,$@)
+$(output_prefix)%$(binary_suffix): $(object_prefix)%$(object_suffix)
+	$(call link-objects,$^,$@)
 
 # Include dependency files
 ifeq "$(filter %clean,$(MAKECMDGOALS))" "$(filter-out %clean,$(MAKECMDGOALS))"
