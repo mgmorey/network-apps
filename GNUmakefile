@@ -191,6 +191,7 @@ $(is_windows_api),dos2unix,)
 build_targets = assert objects libraries programs sizes $(if $(is_uctags),tags)
 
 # Define variables for compiler and linker commands
+COMPILE$(depend_suffix) = $(if $(CXX),$(CXX),c++) $(sort $(CPPFLAGS) -MM)
 COMPILE$(source_suffix) = $(if $(CXX),$(CXX),c++) $(sort $(CXXFLAGS)	\
 $(CPPFLAGS) $(TARGET_ARCH)) -c
 LINK$(object_suffix) = $(if $(CXX),$(CXX),c++) $(sort $(LDFLAGS))
@@ -364,7 +365,7 @@ $(object_prefix)%$(object_suffix): %$(source_suffix)
 	$(call compile-source,$<,$@)
 
 $(depend_prefix)%$(depend_suffix): %$(source_suffix)
-	$(call make-dependency-rule,$<,$@)
+	$(call compile-source-to-build-rule,$<,$@)
 
 # Include dependency files
 ifeq "$(filter %clean,$(MAKECMDGOALS))" "$(filter-out %clean,$(MAKECMDGOALS))"

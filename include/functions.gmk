@@ -47,6 +47,12 @@ $(wildcard $(2:$(object_suffix)=.gcda)), && /bin/rm -f	\
 $(2:$(object_suffix)=.gcda),))
 endef
 
+# $(call compile-source-to-build-rule,SOURCE-FILENAME,OUTPUT-FILENAME)
+define compile-source-to-build-rule
+$(strip $(COMPILE$(depend_suffix)) $1 | $(script_dir)/make-rule -d	\
+$(object_dir) -o $2 TAGS)
+endef
+
 # $(call dos-to-unix,TEXT-FILENAMES)
 define dos-to-unix
 $(strip printf '%s\n' $(sort $(wildcard $1)) | xargs dos2unix -q)
@@ -147,12 +153,6 @@ join-flags = $(if $(strip $2),$(subst $(spc),$(com),$1 $(strip $2)),)
 # $(call link-objects,INPUT-FILENAMES,OUTPUT-FILENAME)
 define link-objects
 $(strip $(LINK$(object_suffix)) -o $2 $1 $(LOADLIBES) $(LDLIBS))
-endef
-
-# $(call make-dependency-rule,SOURCE-FILENAME,OUTPUT-FILENAME)
-define make-dependency-rule
-$(CXX) $(sort $(CPPFLAGS) -MM) $1 | $(script_dir)/make-rule -d	\
-$(object_dir) -o $2 TAGS
 endef
 
 # $(call run-programs,PROGRAM-FILENAME,PROGRAM-ARGUMENTS)
