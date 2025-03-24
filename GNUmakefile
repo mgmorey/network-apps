@@ -362,7 +362,7 @@ $(output_prefix)%$(binary_suffix): $(object_prefix)%$(object_suffix)
 	$(call link-objects,$^,$@)
 
 $(object_prefix)%$(object_suffix): %$(source_suffix)
-	$(call compile-source,$<,$@)
+	$(call compile-source-to-object,$<,$@)
 
 $(depend_prefix)%$(depend_suffix): %$(source_suffix)
 	$(call compile-source-to-build-rule,$<,$@)
