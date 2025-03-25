@@ -30,7 +30,7 @@ script_dir := script
 source_dir := src
 
 # Include variable definitions for toolchain commands and features,
-# functions, and make flags
+# and functions.
 include $(include_dir)/commands.gmk
 include $(include_dir)/features.gmk
 include $(include_dir)/functions.gmk
