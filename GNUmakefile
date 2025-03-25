@@ -34,7 +34,14 @@ source_dir := src
 include $(include_dir)/commands.gmk
 include $(include_dir)/features.gmk
 include $(include_dir)/functions.gmk
-include $(include_dir)/variables.gmk
+
+# Set flags common to all build types
+include $(include_dir)/build-common.gmk
+
+# Set flags specific to the build type
+ifneq "$(filter Debug Release,$(BUILD_TYPE))" ""
+include $(include_dir)/build-type/$(BUILD_TYPE).gmk
+endif
 
 # Define variables for version components
 major = $(call get-version-number,1,$(VERSION))
