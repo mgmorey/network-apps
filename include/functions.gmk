@@ -129,8 +129,9 @@ endef
 
 # $(call install-includes,INCLUDE-DIRECTORY)
 define install-includes
-$(install) -d $1
-$(install) -m u=rw,go=r $(include_files) $1
+$(install) -d $1/$(PROJECT_NAME) $1/$(api)/$(PROJECT_NAME)
+$(install) -m 644 $(include_dir)/$(PROJECT_NAME)/*.h $1/$(PROJECT_NAME)
+$(install) -m 644 $(include_dir)/$(api)/$(PROJECT_NAME)/*.h $1/$(api)/$(PROJECT_NAME)
 endef
 
 # $(call install-libraries,LIBRARY-DIRECTORY)
@@ -140,11 +141,26 @@ $(install) $(sort $(shared_library) $(static_library)) $1
 $(call install-aliases,$1,$(library_stem))
 endef
 
+# $(call install-objects,OBJECT-DIRECTORY)
+define install-objects
+$(install) -d $1
+$(install) $(sort $(datafiles) $(notefiles)) $1
+endef
+
+# $(call install-sources,SOURCE-DIRECTORY)
+define install-sources
+$(install) -d $1 $1/$(api)
+$(install) -m u=rw,go=r $(source_dir)/*.cpp $1
+$(install) -m u=rw,go=r $(source_dir)/$(api)/*.cpp $1/$(api)
+endef
+
 # $(call install-package,PREFIX-DIRECTORY)
 define install-package
 $(call install-binaries,$1/bin)
-$(call install-includes,$1/include/$(PROJECT_NAME))
+$(call install-includes,$1/include)
 $(call install-libraries,$1/lib)
+$(if $(filter true,$(WITH_COVERAGE)),$(call install-objects,$1/object),)
+$(if $(filter true,$(WITH_COVERAGE)),$(call install-sources,$1/src),)
 endef
 
 # $(call join-flags,FLAG-OPTION,FLAG-ARG)
