@@ -25,14 +25,16 @@ com = ,
 nul =
 spc = $(nul) $(nul)
 
+# Define variable for API
+api = $(if $(is_windows_api),windows,unix)
+
+# Define variable for install command
+install = $(if $(is_unix),ginstall,install)
+
 # Define variables for OS ID and kernel
 os_label_id = $(word 1,$(os_labels))
 os_label_kernel = $(word 2,$(os_labels))
 os_macro_kernel = $(word 2,$(os_macros))
-
-# Define variables for API and OS
-api = $(if $(is_windows_api),windows,unix)
-install = $(if $(is_unix),ginstall,install)
 
 # Define predicates for API and OS
 is_darwin_source = $(filter Darwin,$(os_label_kernel))
