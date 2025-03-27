@@ -147,7 +147,7 @@ endef
 # $(call install-objects,OBJECT-DIRECTORY)
 define install-objects
 $(install) -d $1
-$(install) $(sort $(datafiles) $(notefiles)) $1
+$(install) $(object_prefix)*.gc?? $1
 endef
 
 # $(call install-sources,SOURCE-DIRECTORY)
