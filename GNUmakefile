@@ -63,7 +63,11 @@ depend_prefix = $(call get-prefix,$(depend_dir))
 object_prefix = $(call get-prefix,$(object_dir))
 output_prefix = $(call get-prefix,$(output_dir))
 
-# Define variables for directory lists
+# Define variable for build directory list
+build_dirs = $(filter-out .,$(cache_dir) $(coverage_dir)	\
+$(object_dir) $(output_dir))
+
+# Define variables for other directory lists
 include_dirs = $(addprefix $(include_dir)/,$(api) .)
 source_dirs = $(addprefix $(source_dir)/,$(api) .)
 
@@ -130,6 +134,14 @@ unix_sources = unix-server.cpp unix-client.cpp
 
 sizes = sizes.txt sizes.txt~
 
+# Define variables for computed filenames
+
+library_mapfile = $(output_prefix)$(library_stem).map
+library_stem = lib$(PROJECT_NAME)
+shared_library = $(output_prefix)$(library_stem)$(shared_suffix)
+static_library = $(output_prefix)$(library_stem).a
+package = $(output_prefix)$(library_stem).tar.gz
+
 # Define variables for computed file lists
 
 sources = $(library_sources) $(test_sources) $(if $(is_posix),$(unix_sources),)
@@ -139,24 +151,18 @@ program_sources = $(test_sources) $(if $(is_posix),$(unix_sources),)
 test_sources = $(test_common_sources) $(if $(filter	\
 unix,$(api)),$(test_unix_sources),)
 
+dependencies = $(call get-dependencies-from-sources,$(sources))
+
 objects = $(call get-objects-from-sources,$(sources))
 library_objects = $(call get-objects-from-sources,$(library_sources))
-
-library_aliases = $(addprefix $(output_prefix)$(library_stem),$(alias_suffixes))
-library_mapfile = $(output_prefix)$(library_stem).map
-library_stem = lib$(PROJECT_NAME)
-shared_library = $(output_prefix)$(library_stem)$(shared_suffix)
-static_library = $(output_prefix)$(library_stem).a
-
-libraries = $(library_aliases) $(shared_library) $(static_library)
-
 program_objects = $(call get-objects-from-sources,$(program_sources))
-
-dependencies = $(call get-dependencies-from-sources,$(sources))
 
 programs = $(test_programs) $(if $(is_posix),$(unix_programs),)
 test_programs = $(call get-programs-from-sources,$(test_sources))
 unix_programs = $(call get-programs-from-sources,$(unix_sources))
+
+library_aliases = $(addprefix $(output_prefix)$(library_stem),$(alias_suffixes))
+libraries = $(library_aliases) $(shared_library) $(static_library)
 
 coverage_files = $(datafiles) $(notefiles)
 datafiles = $(objects:$(object_suffix)=.gcda)
@@ -169,8 +175,6 @@ logfiles = $(test_logfiles) $(if $(is_posix),$(unix_logfiles),)
 test_logfiles = $(test_programs:$(binary_suffix)=.log)
 unix_logfiles = $(unix_programs:$(binary_suffix)=.log)
 
-package = $(output_prefix)$(library_stem).tar.gz
-
 artifacts = $(binary_artifacts) $(text_artifacts)
 binary_artifacts = $(coverage_files) $(libraries) $(objects)	\
 $(package) $(programs) TAGS
@@ -181,8 +185,6 @@ $(sizes)
 build_artifacts = $(coverage_files) $(libraries) $(mapfiles)	\
 $(objects) $(programs) $(sizes)
 
-build_dirs = $(filter-out .,$(cache_dir) $(coverage_dir)	\
-$(object_dir) $(output_dir))
 dos2unix_files = $(filter-out %$(depend_suffix),$(wildcard	\
 $(text_artifacts)))
 
