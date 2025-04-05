@@ -51,11 +51,10 @@ Network::NativeContext::~NativeContext()
 
 Network::NativeContext::operator std::string() const
 {
-    const WindowsVersion version {m_data.wVersion};
     std::ostringstream oss;
     oss << m_description
         << " Version "
-        << version;
+        << WindowsVersion(m_data.wVersion);
 
     if (!m_system_status.empty()) {
         oss << ' '
