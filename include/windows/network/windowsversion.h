@@ -37,17 +37,20 @@ namespace Network
         constexpr WindowsVersion(const WindowsVersion&) noexcept = default;
         constexpr WindowsVersion(WindowsVersion&&) noexcept = default;
 
-        constexpr WindowsVersion(const Version& t_version) noexcept :  //NOLINT
+        // cppcheck-suppress noExplicitConstructor; NOLINTNEXTLINE
+        constexpr WindowsVersion(const Version& t_version) noexcept :
             Version(t_version)
         {
         }
 
-        constexpr WindowsVersion(Version&& t_version) noexcept :  //NOLINT
+        // cppcheck-suppress noExplicitConstructor; NOLINTNEXTLINE
+        constexpr WindowsVersion(Version&& t_version) noexcept :
             Version(std::move(t_version))  // NOLINT
         {
         }
 
-        constexpr WindowsVersion(value_type t_value) noexcept :  //NOLINT
+        // cppcheck-suppress noExplicitConstructor; NOLINTNEXTLINE
+        constexpr WindowsVersion(value_type t_value) noexcept :
             Version(static_cast<field_type>(LOBYTE(t_value)),
                     static_cast<field_type>(HIBYTE(t_value)))
         {
@@ -59,18 +62,18 @@ namespace Network
         constexpr auto operator=(WindowsVersion&&) noexcept ->
             WindowsVersion& = default;
 
-        constexpr operator value_type() const noexcept  //NOLINT
+        constexpr operator value_type() const noexcept  // NOLINT
         {
             return MAKEWORD(m_major, m_minor);
         }
     };
 
-    static_assert(WindowsVersion(Version {0, 0}) == 0x0000U);  //NOLINT
-    static_assert(WindowsVersion(Version {0, 1}) == 0x0100U);  //NOLINT
-    static_assert(WindowsVersion(Version {1, 0}) == 0x0001U);  //NOLINT
-    static_assert(WindowsVersion(0x0000U) == Version {0, 0});  //NOLINT
-    static_assert(WindowsVersion(0x0100U) == Version {0, 1});  //NOLINT
-    static_assert(WindowsVersion(0x0001U) == Version {1, 0});  //NOLINT
+    static_assert(WindowsVersion(Version {0, 0}) == 0x0000U);  // NOLINT
+    static_assert(WindowsVersion(Version {0, 1}) == 0x0100U);  // NOLINT
+    static_assert(WindowsVersion(Version {1, 0}) == 0x0001U);  // NOLINT
+    static_assert(WindowsVersion(0x0000U) == Version {0, 0});  // NOLINT
+    static_assert(WindowsVersion(0x0100U) == Version {0, 1});  // NOLINT
+    static_assert(WindowsVersion(0x0001U) == Version {1, 0});  // NOLINT
 }
 
 #endif
