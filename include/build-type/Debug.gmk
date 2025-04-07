@@ -39,6 +39,17 @@ CXXFLAGS += -O0
 # Add no omit frame pointer flag to CXXFLAGS
 CXXFLAGS += -fno-omit-frame-pointer
 
+# Debug build GCOVRFLAGS
+
+GCOVRFLAGS = --calls
+GCOVRFLAGS += $(if $(GCOV),--gcov-executable='$(GCOV)',)
+GCOVRFLAGS += $(if $(GCOVRFLAGS_EXCL),--exclude='$(GCOVRFLAGS_EXCL)',)
+GCOVRFLAGS += $(if $(filter %.html,$@),$(GCOVRFLAGS_HTML),$(GCOVRFLAGS_JSON))
+
+GCOVRFLAGS_EXCL = $(source_dir)/($(api)/)?(test|unix)-[\w-]+$(source_suffix)
+GCOVRFLAGS_HTML = --html-details --html-theme=$(HTML_THEME)
+GCOVRFLAGS_JSON = --json
+
 # Debug build LDFLAGS
 
 # Add code coverage flag to LDFLAGS

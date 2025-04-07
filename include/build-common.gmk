@@ -114,22 +114,7 @@ get-listing-flag,$(listing)),),),),)
 # Add assembler option flags to CXXFLAGS
 CXXFLAGS += $(call join-flags,-Wa,$(asflags))
 
-# GCOVRFLAGS
-
-# Define variables for gcovr option flags
-
-GCOVRFLAGS = --calls
-GCOVRFLAGS += $(if $(GCOV),--gcov-executable='$(GCOV)',)
-GCOVRFLAGS += $(if $(GCOVRFLAGS_EXCL),--exclude='$(GCOVRFLAGS_EXCL)',)
-GCOVRFLAGS += $(if $(filter %.html,$@),$(GCOVRFLAGS_HTML),$(GCOVRFLAGS_JSON))
-
-GCOVRFLAGS_EXCL = $(source_dir)/($(api)/)?(test|unix)-[\w-]+$(source_suffix)
-GCOVRFLAGS_HTML = --html-details --html-theme=$(HTML_THEME)
-GCOVRFLAGS_JSON = --json
-
 # LDFLAGS
-
-# Define variables for linker option flags
 
 # Define variables for load map filename and linker option
 map = $(@:$(if $(is_shared),$(shared_suffix),$(binary_suffix))=.map)
