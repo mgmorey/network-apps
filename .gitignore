@@ -17,6 +17,7 @@ default.profraw
 # Gcovr output files
 *.css
 *.html
+*.json
 
 # GNU debugger
 .gdb_history
