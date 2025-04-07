@@ -88,6 +88,7 @@ source_suffix = .cpp
 
 compile_commands = compile_commands.json
 coverage_html = coverage/coverage.html
+coverage_json = coverage.json
 cppchecklog = cppcheck.log
 
 library_common_sources = accept.cpp address-sa.cpp address-sin.cpp	\
@@ -179,8 +180,7 @@ artifacts = $(binary_artifacts) $(text_artifacts)
 binary_artifacts = $(coverage_files) $(libraries) $(objects)	\
 $(package) $(programs) TAGS
 text_artifacts = $(compile_commands) $(cppchecklog) $(dependencies)	\
-$(coverage_gcov) $(listings) $(logfiles) $(mapfiles) $(stackdumps)	\
-$(sizes)
+$(listings) $(logfiles) $(mapfiles) $(stackdumps) $(sizes)
 
 build_artifacts = $(coverage_files) $(libraries) $(mapfiles)	\
 $(objects) $(programs) $(sizes)
@@ -193,11 +193,12 @@ program_args = $(strip $(if $(filter .,$(output_dir)),,-d $(output_dir)) -v)
 
 # Define target list variables
 
-all_targets = $(build_targets) test $(if $(filter	\
-true,$(WITH_COVERAGE)),$(if $(GCOVR),gcovr,),) $(if	\
-$(is_windows_api),dos2unix,)
+all_targets = $(build_targets) test $(if $(filter		\
+true,$(WITH_COVERAGE)),$(if $(GCOVR),$(gcovr_targets),),)	\
+$(if $(is_windows_api),dos2unix,)
 
 build_targets = assert objects libraries programs sizes $(if $(is_uctags),tags)
+gcovr_targets = gcovr-html gcovr-json
 
 # Define variables for compiler and linker commands
 COMPILE$(depend_suffix) = $(if $(CXX),$(CXX),c++) $(sort $(CPPFLAGS) -MM)
@@ -267,8 +268,11 @@ count-unix-source-files: $(unix_sources)
 distclean:
 	$(call clean-all,$(artifacts))
 
-.PHONY: gcovr
-gcovr: $(coverage_html)
+.PHONY: gcovr-html
+gcovr-html: $(coverage_html)
+
+.PHONY: gcovr-json
+gcovr-json: $(coverage_json)
 
 .PHONY: dos2unix
 dos2unix:
@@ -314,6 +318,9 @@ endif
 # Define targets
 
 $(coverage_html): $(logfiles)
+	$(strip $(GCOVR) $(GCOVRFLAGS) --output=$@)
+
+$(coverage_json): $(logfiles)
 	$(strip $(GCOVR) $(GCOVRFLAGS) --output=$@)
 
 $(library_aliases): $(shared_library)
