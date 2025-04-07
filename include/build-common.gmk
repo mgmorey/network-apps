@@ -116,13 +116,16 @@ CXXFLAGS += $(call join-flags,-Wa,$(asflags))
 
 # GCOVRFLAGS
 
-# Define variable for gcovr --exclude option
-exclude = $(source_dir)/($(api)/)?(test|unix)-[\w-]+$(source_suffix)
+# Define variables for gcovr option flags
 
-# Define variable for gcovr option flags
-GCOVRFLAGS = --calls --exclude='$(exclude)' $(if	\
-$(GCOV),--gcov-executable='$(GCOV)',) --html-details	\
---html-theme=$(HTML_THEME)
+GCOVRFLAGS = --calls
+GCOVRFLAGS += $(if $(GCOV),--gcov-executable='$(GCOV)',)
+GCOVRFLAGS += $(if $(GCOVRFLAGS_EXCL),--exclude='$(GCOVRFLAGS_EXCL)',)
+GCOVRFLAGS += $(if $(filter %.html,$@),$(GCOVRFLAGS_HTML),$(GCOVRFLAGS_JSON))
+
+GCOVRFLAGS_EXCL = $(source_dir)/($(api)/)?(test|unix)-[\w-]+$(source_suffix)
+GCOVRFLAGS_HTML = --html-details --html-theme=$(HTML_THEME)
+GCOVRFLAGS_JSON = --json
 
 # LDFLAGS
 
