@@ -165,11 +165,11 @@ unix_programs = $(call get-programs-from-sources,$(unix_sources))
 library_aliases = $(addprefix $(output_prefix)$(library_stem),$(alias_suffixes))
 libraries = $(library_aliases) $(shared_library) $(static_library)
 
-coverage_files = $(datafiles) $(notefiles)
-datafiles = $(objects:$(object_suffix)=.gcda)
+gcov_files = $(gcov_datafiles) $(gcov_notefiles)
+gcov_datafiles = $(objects:$(object_suffix)=.gcda)
+gcov_notefiles = $(objects:$(object_suffix)=.gcno)
 listings = $(objects:$(object_suffix)=.lst)
 mapfiles = $(programs:$(binary_suffix)=.map) $(library_mapfile)
-notefiles = $(objects:$(object_suffix)=.gcno)
 stackdumps = $(programs:$(binary_suffix)=.stackdump)
 
 logfiles = $(test_logfiles) $(if $(is_posix),$(unix_logfiles),)
@@ -177,12 +177,12 @@ test_logfiles = $(test_programs:$(binary_suffix)=.log)
 unix_logfiles = $(unix_programs:$(binary_suffix)=.log)
 
 artifacts = $(binary_artifacts) $(text_artifacts)
-binary_artifacts = $(coverage_files) $(libraries) $(objects)	\
+binary_artifacts = $(gcov_files) $(libraries) $(objects)	\
 $(package) $(programs) TAGS
 text_artifacts = $(compile_commands) $(cppchecklog) $(dependencies)	\
 $(listings) $(logfiles) $(mapfiles) $(stackdumps) $(sizes)
 
-build_artifacts = $(coverage_files) $(libraries) $(mapfiles)	\
+build_artifacts = $(gcov_files) $(libraries) $(mapfiles)	\
 $(objects) $(programs) $(sizes)
 
 dos2unix_files = $(filter-out %$(depend_suffix),$(wildcard	\
