@@ -193,8 +193,9 @@ program_args = $(strip $(if $(filter .,$(output_dir)),,-d $(output_dir)) -v)
 
 # Define target list variables
 
-all_targets = $(build_targets) test $(if $(filter		\
-true,$(WITH_COVERAGE)),$(if $(GCOVR),$(gcovr_targets),),)	\
+all_targets = $(build_targets) test $(if $(filter 	\
+Debug,$(BUILD_TYPE)),$(if $(GCOVR),$(if $(filter	\
+true,$(WITH_COVERAGE)),$(gcovr_targets),),))		\
 $(if $(is_windows_api),dos2unix,)
 
 build_targets = assert objects libraries programs sizes $(if $(is_uctags),tags)
