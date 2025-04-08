@@ -318,11 +318,11 @@ endif
 
 # Define targets
 
-$(coverage_html): $(logfiles)
-	$(strip $(GCOVR) $(GCOVRFLAGS))
+$(coverage_html): $(coverage_json)
+	$(generate-code-coverage-report)
 
 $(coverage_json): $(logfiles)
-	$(strip $(GCOVR) $(GCOVRFLAGS))
+	$(generate-code-coverage-report)
 
 $(library_aliases): $(shared_library)
 	$(call install-aliases,$(output_dir),$(library_stem))

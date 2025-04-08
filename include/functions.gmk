@@ -67,6 +67,9 @@ format-ld-flag = $(call format-xx-flag,$(ld_family),$1,$2)
 # $(call format-xx-flag,TOOL,FLAG-OPTION,FLAG-ARG)
 format-xx-flag = $(if $(strip $3),$(if $(filter gnu,$1),$2=$3,$2 $3),)
 
+# $(generate-code-coverage-report)
+generate-code-coverage-report = $(strip $(GCOVR) $(GCOVRFLAGS))
+
 # $(call get-compiler-sanitizer-flags,SANITIZERS)
 define get-compiler-sanitizer-flags
 $(if $(filter address,$1),-fsanitize-address-use-after-scope)	\
