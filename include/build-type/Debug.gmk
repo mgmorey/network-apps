@@ -42,7 +42,7 @@ CXXFLAGS += -fno-omit-frame-pointer
 # Debug build GCOVRFLAGS
 
 GCOVRFLAGS_HTML = --html-details --html-theme=$(HTML_THEME)	\
-$(foreach file,$^,--json-add-tracefile $(file))
+$(foreach file,$^,--json-add-tracefile=$(file))
 GCOVRFLAGS = --calls $(if $(GCOV),--gcov-executable='$(GCOV)',)	\
 $(if $(filter %.json,$@),--json,$(GCOVRFLAGS_HTML))		\
 --output=$@
