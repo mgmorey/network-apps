@@ -29,7 +29,7 @@ else ifeq "$(USING_COMPILER)" "gcc"
 endif
 
 ifndef GCOVR
-	GCOVR := $(shell which gcovr 2>/dev/null)
+	GCOVR := $(subst $(HOME),~,$(shell which gcovr 2>/dev/null))
 endif
 
 # Local Variables:
