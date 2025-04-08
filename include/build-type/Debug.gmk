@@ -45,6 +45,7 @@ GCOVRFLAGS = --calls
 GCOVRFLAGS += $(if $(GCOV),--gcov-executable='$(GCOV)',)
 GCOVRFLAGS += $(if $(GCOVRFLAGS_EXCL),--exclude='$(GCOVRFLAGS_EXCL)',)
 GCOVRFLAGS += $(if $(filter %.html,$@),$(GCOVRFLAGS_HTML),$(GCOVRFLAGS_JSON))
+GCOVRFLAGS += --output=$@
 
 GCOVRFLAGS_EXCL = $(source_dir)/($(api)/)?(test|unix)-[\w-]+$(source_suffix)
 GCOVRFLAGS_HTML = --html-details --html-theme=$(HTML_THEME)
