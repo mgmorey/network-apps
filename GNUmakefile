@@ -87,6 +87,7 @@ source_suffix = .cpp
 # Define variables for enumerated file lists
 
 compile_commands = compile_commands.json
+compile_flags = compile_flags.txt
 coverage_html = coverage/coverage.html
 coverage_json = coverage.json
 cppchecklog = cppcheck.log
@@ -179,8 +180,8 @@ unix_logfiles = $(unix_programs:$(binary_suffix)=.log)
 artifacts = $(binary_artifacts) $(text_artifacts)
 binary_artifacts = $(gcov_files) $(libraries) $(objects)	\
 $(package) $(programs) TAGS
-text_artifacts = $(compile_commands) $(cppchecklog) $(dependencies)	\
-$(listings) $(logfiles) $(mapfiles) $(stackdumps) $(sizes)
+text_artifacts = $(compile_commands) $(compile_flags) $(cppchecklog)	\
+$(dependencies) $(listings) $(logfiles) $(mapfiles) $(stackdumps) $(sizes)
 
 build_artifacts = $(gcov_files) $(libraries) $(mapfiles)	\
 $(objects) $(programs) $(sizes)
@@ -198,7 +199,8 @@ Debug,$(BUILD_TYPE)),$(if $(GCOVR),$(if $(filter	\
 true,$(WITH_COVERAGE)),$(gcovr_targets),),))		\
 $(if $(is_windows_api),dos2unix,)
 
-build_targets = assert objects libraries programs sizes $(if $(is_uctags),tags)
+build_targets = assert compile-flags objects libraries programs sizes	\
+$(if $(is_uctags),tags)
 gcovr_targets = gcovr-html gcovr-json
 
 # Define variables for compiler and linker commands
@@ -244,6 +246,9 @@ check: test
 .PHONY: clean
 clean:
 	$(call clean-build,$(build_artifacts))
+
+.PHONY: compile-flags
+compile-flags: $(compile_flags)
 
 .PHONY: count-library-common-source-files
 count-library-common-source-files: $(library_common_sources)
@@ -317,6 +322,9 @@ endif
 .SECONDARY: $(objects)
 
 # Define targets
+
+$(compile_flags):
+	printf '%s\n' $(sort $(CXXFLAGS) $(CPPFLAGS) $(TARGET_ARCH)) >$@
 
 $(coverage_html): $(coverage_json)
 	$(generate-code-coverage-report)
