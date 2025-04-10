@@ -15,8 +15,9 @@
 
 #include "network/binarybuffer.h"       // BinaryBuffer
 #include "network/buffer.h"             // Buffer
+#include "network/sa-length-limits.h"   // sa_length_max
 
-Network::BinaryBuffer::BinaryBuffer(size_type t_size) :
-    Buffer(t_size)
+Network::BinaryBuffer::BinaryBuffer() :
+    Buffer(sa_length_max)
 {
 }

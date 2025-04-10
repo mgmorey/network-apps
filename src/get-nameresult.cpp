@@ -58,7 +58,7 @@ auto Network::get_nameresult(const SocketData& sd, bool is_sockname) ->
     ByteStringResult
 {
     const auto binding {get_binding(is_sockname)};
-    BinaryBuffer buffer {sa_length_max};
+    BinaryBuffer buffer;
     const std::span bs {buffer};
     auto [sa, sa_length] {get_sa_span(bs)};
     const auto handle {sd.handle()};

@@ -24,7 +24,7 @@ namespace Network
     class BinaryBuffer : public Buffer<ByteString>
     {
     public:
-        explicit BinaryBuffer(size_type t_size);
+        BinaryBuffer();
 
         BinaryBuffer(const BinaryBuffer&) noexcept = default;
         BinaryBuffer(BinaryBuffer&&) noexcept = default;

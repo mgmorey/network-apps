@@ -22,7 +22,6 @@
 #include "network/get-sa-span.h"                // get_sa_span()
 #include "network/handle-null.h"                // handle_null
 #include "network/reset-api-error.h"            // reset_api_error()
-#include "network/sa-length-limits.h"           // sa_length_max
 #include "network/socketdata.h"                 // SocketData
 #include "network/to-os-error.h"                // to_os_error()
 #include "network/to-size.h"                    // to_size()
@@ -40,7 +39,7 @@
 
 auto Network::accept(const SocketData& sd) -> AcceptResult
 {
-    BinaryBuffer buffer {sa_length_max};
+    BinaryBuffer buffer;
     const std::span bs {buffer};
     auto [sa, sa_length] {get_sa_span(bs)};
     const auto handle_1 {sd.handle()};
