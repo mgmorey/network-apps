@@ -22,7 +22,6 @@
 #include "network/getnamehandler.h"             // GetNameHandler
 #include "network/oserrorresult.h"              // OsErrorResult
 #include "network/reset-api-error.h"            // reset_api_error()
-#include "network/sa-length-limits.h"           // sa_length_max
 #include "network/socket-error.h"               // socket_error
 #include "network/socketdata.h"                 // SocketData
 #include "network/to-os-error.h"                // to_os_error()
