@@ -90,7 +90,7 @@ compile_commands = compile_commands.json
 compile_flags = compile_flags.txt
 coverage_html = coverage/coverage.html
 coverage_json = coverage.json
-cppchecklog = cppcheck.log
+cppcheck_log = cppcheck.log
 
 library_common_sources = accept.cpp address-sa.cpp address-sin.cpp	\
 address-sin6.cpp address.cpp addresserror.cpp addresslist.cpp		\
@@ -180,8 +180,9 @@ unix_logfiles = $(unix_programs:$(binary_suffix)=.log)
 artifacts = $(binary_artifacts) $(text_artifacts)
 binary_artifacts = $(gcov_files) $(libraries) $(objects)	\
 $(package) $(programs) TAGS
-text_artifacts = $(compile_commands) $(compile_flags) $(cppchecklog)	\
-$(dependencies) $(listings) $(logfiles) $(mapfiles) $(stackdumps) $(sizes)
+text_artifacts = $(coverage_html) $(coverage_json $(compile_commands)	\
+$(compile_flags) $(cppcheck_log)$(dependencies) $(listings) $(logfiles)	\
+$(mapfiles) $(stackdumps) $(sizes)
 
 build_artifacts = $(gcov_files) $(libraries) $(mapfiles)	\
 $(objects) $(programs) $(sizes)
