@@ -133,10 +133,12 @@ endef
 # $(call install-includes,INCLUDE-DIRECTORY)
 define install-includes
 $(install) -d $1/$(PROJECT_NAME)
-$(install) -m 644 $(include_dir)/$(PROJECT_NAME)/*.h		\
+$(install) -m 644						\
+$(include_dir)/$(PROJECT_NAME)/*$(include_suffix)		\
 $1/$(PROJECT_NAME)
 $(install) -d $1/$(api)/$(PROJECT_NAME)
-$(install) -m 644 $(include_dir)/$(api)/$(PROJECT_NAME)/*.h	\
+$(install) -m 644						\
+$(include_dir)/$(api)/$(PROJECT_NAME)/*$(include_suffix)	\
 $1/$(api)/$(PROJECT_NAME)
 endef
 
