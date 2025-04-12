@@ -180,7 +180,7 @@ unix_logfiles = $(unix_programs:$(binary_suffix)=.log)
 artifacts = $(binary_artifacts) $(text_artifacts)
 binary_artifacts = $(gcov_files) $(libraries) $(objects)	\
 $(package) $(programs) TAGS
-text_artifacts = $(coverage_html) $(coverage_json $(compile_commands)	\
+text_artifacts = $(coverage_html) $(coverage_json) $(compile_commands)	\
 $(compile_flags) $(cppcheck_log)$(dependencies) $(listings) $(logfiles)	\
 $(mapfiles) $(stackdumps) $(sizes)
 
