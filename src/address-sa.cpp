@@ -13,14 +13,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/address.hpp"          // Address
-#include "network/family-type.hpp"      // family_type
-#include "network/get-sa-family.hpp"    // get_sa_family()
-#include "network/os-features.hpp"      // HAVE_SOCKADDR_SA_LEN
+#include "network/address.hpp"                  // Address
+#include "network/family-type.hpp"              // family_type
+#include "network/get-sa-family.hpp"            // get_sa_family()
+#include "network/os-features.hpp"              // HAVE_SOCKADDR_SA_LEN
 
 #ifdef HAVE_SOCKADDR_SA_LEN
-#include "network/get-sa-length.hpp"    // get_sa_length()
-#include "network/socket-length-type.h" // socket_length_type
+#include "network/get-sa-length.hpp"            // get_sa_length()
+#include "network/socket-length-type.hpp"       // socket_length_type
 #endif
 
 auto Network::Address::sa_family() const -> family_type
