@@ -73,12 +73,6 @@ namespace Network
             return m_buffer.size();
         }
 
-        [[nodiscard]] auto size(size_type t_size) -> buffer_type&
-        {
-            m_buffer->resize(t_size);
-            return m_buffer;
-        }
-
     private:
         buffer_type m_buffer;
     };
