@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_BYTESTRINGRESULT_H
-#define NETWORK_BYTESTRINGRESULT_H
+#ifndef NETWORK_BYTESTRINGRESULT_HPP
+#define NETWORK_BYTESTRINGRESULT_HPP
 
 #include "network/bytestring.hpp"       // ByteString
 #include "network/oserrorresult.hpp"    // OsErrorResult

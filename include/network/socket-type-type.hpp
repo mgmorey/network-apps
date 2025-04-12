@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_SOCKET_TYPE_TYPE_H
-#define NETWORK_SOCKET_TYPE_TYPE_H
+#ifndef NETWORK_SOCKET_TYPE_TYPE_HPP
+#define NETWORK_SOCKET_TYPE_TYPE_HPP
 
 #include "network/socket-hint-type.hpp" // socket_hint_type
 

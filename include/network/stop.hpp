@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_STOP_H
-#define NETWORK_STOP_H
+#ifndef NETWORK_STOP_HPP
+#define NETWORK_STOP_HPP
 
 #include "network/failuremode.hpp"              // FailureMode
 

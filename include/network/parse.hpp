@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_PARSE_H
-#define NETWORK_PARSE_H
+#ifndef NETWORK_PARSE_HPP
+#define NETWORK_PARSE_HPP
 
 #include "network/parseresult.hpp"      // ParseResult
 

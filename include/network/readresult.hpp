@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_READRESULT_H
-#define NETWORK_READRESULT_H
+#ifndef NETWORK_READRESULT_HPP
+#define NETWORK_READRESULT_HPP
 
 #include <sys/types.h>      // ssize_t
 

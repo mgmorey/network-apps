@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_OPENHANDLER_H
-#define NETWORK_OPENHANDLER_H
+#ifndef NETWORK_OPENHANDLER_HPP
+#define NETWORK_OPENHANDLER_HPP
 
 #include "network/handle-type.hpp"      // handle_type
 

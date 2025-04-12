@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_PARSE_ARGUMENTSPAN_H
-#define NETWORK_PARSE_ARGUMENTSPAN_H
+#ifndef NETWORK_PARSE_ARGUMENTSPAN_HPP
+#define NETWORK_PARSE_ARGUMENTSPAN_HPP
 
 #include "network/argumentspan.hpp"     // ArgumentSpan
 #include "network/parseresult.hpp"      // ParseResult

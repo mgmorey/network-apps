@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_TEXTBUFFER_H
-#define NETWORK_TEXTBUFFER_H
+#ifndef NETWORK_TEXTBUFFER_HPP
+#define NETWORK_TEXTBUFFER_HPP
 
 #include "network/buffer.hpp"   // Buffer
 

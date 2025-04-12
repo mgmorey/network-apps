@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_TO_STRING_SPAN_BYTE_H
-#define NETWORK_TO_STRING_SPAN_BYTE_H
+#ifndef NETWORK_TO_STRING_SPAN_BYTE_HPP
+#define NETWORK_TO_STRING_SPAN_BYTE_HPP
 
 #include <cstddef>      // std::byte
 #include <span>         // std::span

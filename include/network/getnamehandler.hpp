@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_GETNAMEHANDLER_H
-#define NETWORK_GETNAMEHANDLER_H
+#ifndef NETWORK_GETNAMEHANDLER_HPP
+#define NETWORK_GETNAMEHANDLER_HPP
 
 #include "network/handle-type.hpp"              // handle_type
 

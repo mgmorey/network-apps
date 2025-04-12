@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_CREATE_SOCKET_HANDLE_H
-#define NETWORK_CREATE_SOCKET_HANDLE_H
+#ifndef NETWORK_CREATE_SOCKET_HANDLE_HPP
+#define NETWORK_CREATE_SOCKET_HANDLE_HPP
 
 #include "network/family-type.hpp"      // family_type
 #include "network/handle-type.hpp"      // handle_type

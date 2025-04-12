@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_CONTEXT_ERROR_H
-#define NETWORK_CONTEXT_ERROR_H
+#ifndef NETWORK_CONTEXT_ERROR_HPP
+#define NETWORK_CONTEXT_ERROR_HPP
 
 #include "network/get-api-error.hpp"    // get_api_error()
 #include "network/reset-api-error.hpp"  // reset_api_error()

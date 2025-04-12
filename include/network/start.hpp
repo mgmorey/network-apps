@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_START_H
-#define NETWORK_START_H
+#ifndef NETWORK_START_HPP
+#define NETWORK_START_HPP
 
 #include "network/contextdata.hpp"      // ContextData
 #include "network/optionalversion.hpp"  // OptionalVersion

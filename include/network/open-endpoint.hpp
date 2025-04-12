@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_OPEN_ENDPOINT_H
-#define NETWORK_OPEN_ENDPOINT_H
+#ifndef NETWORK_OPEN_ENDPOINT_HPP
+#define NETWORK_OPEN_ENDPOINT_HPP
 
 #include "network/openparameters.hpp"           // OpenParameters
 #include "network/socketresultvector.hpp"       // SocketResultVector

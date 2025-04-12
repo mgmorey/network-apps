@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_TO_NAME_LENGTH_H
-#define NETWORK_TO_NAME_LENGTH_H
+#ifndef NETWORK_TO_NAME_LENGTH_HPP
+#define NETWORK_TO_NAME_LENGTH_HPP
 
 #include "network/name-length-limits.hpp"       // name_length_max,
                                                 // name_length_min

@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_GET_NAMERESULT_H
-#define NETWORK_GET_NAMERESULT_H
+#ifndef NETWORK_GET_NAMERESULT_HPP
+#define NETWORK_GET_NAMERESULT_HPP
 
 #include "network/bytestringresult.hpp" // ByteStringResult
 #include "network/socketdata.hpp"       // SocketData

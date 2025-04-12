@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_BYTESTRING_H
-#define NETWORK_BYTESTRING_H
+#ifndef NETWORK_BYTESTRING_HPP
+#define NETWORK_BYTESTRING_HPP
 
 #include <cstddef>      // std::byte
 #include <vector>       // std::vector

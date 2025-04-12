@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_READ_H
-#define NETWORK_READ_H
+#ifndef NETWORK_READ_HPP
+#define NETWORK_READ_HPP
 
 #include "network/socketdata.hpp"       // SocketData
 

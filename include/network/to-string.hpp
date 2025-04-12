@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_TO_STRING_H
-#define NETWORK_TO_STRING_H
+#ifndef NETWORK_TO_STRING_HPP
+#define NETWORK_TO_STRING_HPP
 
 #include "network/to-string-in-addr.hpp"        // to_string()
 #include "network/to-string-in6-addr.hpp"       // to_string()

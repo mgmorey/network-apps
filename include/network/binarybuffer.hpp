@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_BINARYBUFFER_H
-#define NETWORK_BINARYBUFFER_H
+#ifndef NETWORK_BINARYBUFFER_HPP
+#define NETWORK_BINARYBUFFER_HPP
 
 #include "network/buffer.hpp"                   // Buffer
 #include "network/bytestring.hpp"               // ByteString

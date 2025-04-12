@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_VERSION_H
-#define NETWORK_VERSION_H
+#ifndef NETWORK_VERSION_HPP
+#define NETWORK_VERSION_HPP
 
 #include <ostream>     // std::ostream
 

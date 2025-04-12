@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_SOCKNAMERESULT_H
-#define NETWORK_SOCKNAMERESULT_H
+#ifndef NETWORK_SOCKNAMERESULT_HPP
+#define NETWORK_SOCKNAMERESULT_HPP
 
 #include "network/oserrorresult.hpp"    // OsErrorResult
 #include "network/sockname.hpp"         // SockName

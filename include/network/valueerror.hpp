@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_VALUEERROR_H
-#define NETWORK_VALUEERROR_H
+#ifndef NETWORK_VALUEERROR_HPP
+#define NETWORK_VALUEERROR_HPP
 
 #include "network/rangeerror.hpp"      // RangeError
 

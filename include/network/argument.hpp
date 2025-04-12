@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_ARGUMENT_H
-#define NETWORK_ARGUMENT_H
+#ifndef NETWORK_ARGUMENT_HPP
+#define NETWORK_ARGUMENT_HPP
 
 namespace Network
 {

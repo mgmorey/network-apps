@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_SOCKETTYPE_H
-#define NETWORK_SOCKETTYPE_H
+#ifndef NETWORK_SOCKETTYPE_HPP
+#define NETWORK_SOCKETTYPE_HPP
 
 #include "network/integer.hpp"                  // Integer
 #include "network/socket-type-type.hpp"         // socket_type_type

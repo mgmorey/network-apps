@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_SHUTDOWN_H
-#define NETWORK_SHUTDOWN_H
+#ifndef NETWORK_SHUTDOWN_HPP
+#define NETWORK_SHUTDOWN_HPP
 
 #include "network/oserrorresult.hpp"            // OsErrorResult
 #include "network/socketdata.hpp"               // SocketData

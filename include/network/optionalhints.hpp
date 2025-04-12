@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_OPTIONALHINTS_H
-#define NETWORK_OPTIONALHINTS_H
+#ifndef NETWORK_OPTIONALHINTS_HPP
+#define NETWORK_OPTIONALHINTS_HPP
 
 #include "network/sockethints.hpp"      // SocketHints
 

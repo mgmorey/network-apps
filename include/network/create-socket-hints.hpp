@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_CREATE_SOCKET_HINTS_H
-#define NETWORK_CREATE_SOCKET_HINTS_H
+#ifndef NETWORK_CREATE_SOCKET_HINTS_HPP
+#define NETWORK_CREATE_SOCKET_HINTS_HPP
 
 #include "network/sockethints.hpp"              // SocketHints
 #include "network/uniquesocket.hpp"             // UniqueSocket

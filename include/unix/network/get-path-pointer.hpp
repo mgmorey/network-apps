@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef UNIX_NETWORK_GET_PATH_POINTER_H
-#define UNIX_NETWORK_GET_PATH_POINTER_H
+#ifndef UNIX_NETWORK_GET_PATH_POINTER_HPP
+#define UNIX_NETWORK_GET_PATH_POINTER_HPP
 
 #ifndef WIN32
 

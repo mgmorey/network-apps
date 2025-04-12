@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_VALIDATE_BS_H
-#define NETWORK_VALIDATE_BS_H
+#ifndef NETWORK_VALIDATE_BS_HPP
+#define NETWORK_VALIDATE_BS_HPP
 
 #include <cstddef>      // std::byte
 #include <span>         // std::span

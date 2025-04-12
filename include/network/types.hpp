@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_TYPES_H
-#define NETWORK_TYPES_H
+#ifndef NETWORK_TYPES_HPP
+#define NETWORK_TYPES_HPP
 
 #include "network/enum-types.hpp"       // socket_family_enum,
                                         // socket_ip_family_enum,

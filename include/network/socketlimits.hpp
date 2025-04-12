@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_SOCKETLIMITS_H
-#define NETWORK_SOCKETLIMITS_H
+#ifndef NETWORK_SOCKETLIMITS_HPP
+#define NETWORK_SOCKETLIMITS_HPP
 
 #include "network/family-null.hpp"      // family_null
 #include "network/family-type.hpp"      // family_type

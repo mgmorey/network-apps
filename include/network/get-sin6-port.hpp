@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_GET_SIN6_PORT_H
-#define NETWORK_GET_SIN6_PORT_H
+#ifndef NETWORK_GET_SIN6_PORT_HPP
+#define NETWORK_GET_SIN6_PORT_HPP
 
 #include "network/port-type.hpp"        // port_type
 

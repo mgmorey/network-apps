@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_TO_SOCKET_LENGTH_H
-#define NETWORK_TO_SOCKET_LENGTH_H
+#ifndef NETWORK_TO_SOCKET_LENGTH_HPP
+#define NETWORK_TO_SOCKET_LENGTH_HPP
 
 #include "network/sa-length-limits.hpp"         // sa_length_max,
                                                 // sa_length_min

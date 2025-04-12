@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_ACCEPT_H
-#define NETWORK_ACCEPT_H
+#ifndef NETWORK_ACCEPT_HPP
+#define NETWORK_ACCEPT_HPP
 
 #include "network/acceptresult.hpp"     // AcceptResult
 #include "network/socketdata.hpp"       // SocketData

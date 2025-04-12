@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_NETWORK_H
-#define NETWORK_NETWORK_H
+#ifndef NETWORK_NETWORK_HPP
+#define NETWORK_NETWORK_HPP
 
 #include "network/accept.hpp"                   // accept()
 #include "network/address.hpp"                  // Address

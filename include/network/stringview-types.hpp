@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_STRINGVIEW_TYPES_H
-#define NETWORK_STRINGVIEW_TYPES_H
+#ifndef NETWORK_STRINGVIEW_TYPES_HPP
+#define NETWORK_STRINGVIEW_TYPES_HPP
 
 #include "network/hostnameview.hpp"     // HostnameView
 #include "network/pathnameview.hpp"     // PathmameView

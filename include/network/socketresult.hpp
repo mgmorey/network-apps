@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_SOCKETRESULT_H
-#define NETWORK_SOCKETRESULT_H
+#ifndef NETWORK_SOCKETRESULT_HPP
+#define NETWORK_SOCKETRESULT_HPP
 
 #include "network/oserrorresult.hpp"    // OsErrorResult
 #include "network/uniquesocket.hpp"     // UniqueSocket

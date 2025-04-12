@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_FAILUREMODE_H
-#define NETWORK_FAILUREMODE_H
+#ifndef NETWORK_FAILUREMODE_HPP
+#define NETWORK_FAILUREMODE_HPP
 
 #include <cstdint>      // std::uint8_t
 

@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_RESET_API_ERROR_H
-#define NETWORK_RESET_API_ERROR_H
+#ifndef NETWORK_RESET_API_ERROR_HPP
+#define NETWORK_RESET_API_ERROR_HPP
 
 namespace Network
 {

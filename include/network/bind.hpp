@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_BIND_H
-#define NETWORK_BIND_H
+#ifndef NETWORK_BIND_HPP
+#define NETWORK_BIND_HPP
 
 #include "network/bind-endpoint.hpp"            // bind()
 

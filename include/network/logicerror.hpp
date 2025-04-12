@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_LOGICERROR_H
-#define NETWORK_LOGICERROR_H
+#ifndef NETWORK_LOGICERROR_HPP
+#define NETWORK_LOGICERROR_HPP
 
 #include "network/error.hpp"            // Error
 

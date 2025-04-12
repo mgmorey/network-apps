@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_CONNECT_H
-#define NETWORK_CONNECT_H
+#ifndef NETWORK_CONNECT_HPP
+#define NETWORK_CONNECT_HPP
 
 #include "network/connect-endpoint.hpp"         // connect()
 

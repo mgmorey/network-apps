@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_ENDPOINT_H
-#define NETWORK_ENDPOINT_H
+#ifndef NETWORK_ENDPOINT_HPP
+#define NETWORK_ENDPOINT_HPP
 
 #include <array>        // std::array
 #include <string>       // std::string

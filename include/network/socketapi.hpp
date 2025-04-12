@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_SOCKETAPI_H
-#define NETWORK_SOCKETAPI_H
+#ifndef NETWORK_SOCKETAPI_HPP
+#define NETWORK_SOCKETAPI_HPP
 
 #include <cstdint>      // std::uint8_t
 

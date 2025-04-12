@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_TEMPLATE_H
-#define NETWORK_TEMPLATE_H
+#ifndef NETWORK_TEMPLATE_HPP
+#define NETWORK_TEMPLATE_HPP
 
 #include "network/sockethints.hpp"      // SocketHints
 #include "network/sockethost.hpp"       // SocketHost

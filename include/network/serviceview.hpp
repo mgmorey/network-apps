@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_SERVICEVIEW_H
-#define NETWORK_SERVICEVIEW_H
+#ifndef NETWORK_SERVICEVIEW_HPP
+#define NETWORK_SERVICEVIEW_HPP
 
 #include <string_view>  // std::string_view
 

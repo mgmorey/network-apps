@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_SOCKET_FAMILY_ENUM_H
-#define NETWORK_SOCKET_FAMILY_ENUM_H
+#ifndef NETWORK_SOCKET_FAMILY_ENUM_HPP
+#define NETWORK_SOCKET_FAMILY_ENUM_HPP
 
 #ifdef WIN32
 #include <winsock2.h>       // AF_INET, AF_INET6, AF_UNIX, AF_UNSPEC

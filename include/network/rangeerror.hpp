@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_RANGEERROR_H
-#define NETWORK_RANGEERROR_H
+#ifndef NETWORK_RANGEERROR_HPP
+#define NETWORK_RANGEERROR_HPP
 
 #include "network/logicerror.hpp"       // LogicError
 

@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_SIN6_SIZES_H
-#define NETWORK_SIN6_SIZES_H
+#ifndef NETWORK_SIN6_SIZES_HPP
+#define NETWORK_SIN6_SIZES_HPP
 
 #ifdef WIN32
 #include <ws2tcpip.h>       // sockaddr_in6

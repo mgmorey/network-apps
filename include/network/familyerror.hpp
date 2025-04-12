@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_FAMILYERROR_H
-#define NETWORK_FAMILYERROR_H
+#ifndef NETWORK_FAMILYERROR_HPP
+#define NETWORK_FAMILYERROR_HPP
 
 #include "network/addresserror.hpp"             // AddressError
 

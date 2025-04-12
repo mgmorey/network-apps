@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_GET_HOSTNAMERESULT_H
-#define NETWORK_GET_HOSTNAMERESULT_H
+#ifndef NETWORK_GET_HOSTNAMERESULT_HPP
+#define NETWORK_GET_HOSTNAMERESULT_HPP
 
 #include "network/hostnameresult.hpp"   // HostnameResult
 #include "network/oserrorresult.hpp"    // OsErrorResult

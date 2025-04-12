@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_VALIDATE_SA_H
-#define NETWORK_VALIDATE_SA_H
+#ifndef NETWORK_VALIDATE_SA_HPP
+#define NETWORK_VALIDATE_SA_HPP
 
 #include "network/length-type.hpp"              // length_type
 

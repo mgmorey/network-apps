@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_STRING_TYPES_H
-#define NETWORK_STRING_TYPES_H
+#ifndef NETWORK_STRING_TYPES_HPP
+#define NETWORK_STRING_TYPES_HPP
 
 #include "network/hostname.hpp"         // Hostname
 #include "network/optionalhostname.hpp" // OptionalHostname

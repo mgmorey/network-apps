@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_SIN_LENGTH_LIMITS_H
-#define NETWORK_SIN_LENGTH_LIMITS_H
+#ifndef NETWORK_SIN_LENGTH_LIMITS_HPP
+#define NETWORK_SIN_LENGTH_LIMITS_HPP
 
 #include "network/sin-sizes.hpp"        // sin_size
 

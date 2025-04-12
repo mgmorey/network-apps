@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_TO_OS_ERROR_H
-#define NETWORK_TO_OS_ERROR_H
+#ifndef NETWORK_TO_OS_ERROR_HPP
+#define NETWORK_TO_OS_ERROR_HPP
 
 #include "network/os-error-type.hpp"            // os_error_type
 #include "network/to-value.hpp"                 // to_value()

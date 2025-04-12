@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_FORMAT_H
-#define NETWORK_FORMAT_H
+#ifndef NETWORK_FORMAT_HPP
+#define NETWORK_FORMAT_HPP
 
 #include <cstddef>      // std::size_t
 #include <ostream>      // std::ostream

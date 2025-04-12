@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_CLOSE_H
-#define NETWORK_CLOSE_H
+#ifndef NETWORK_CLOSE_HPP
+#define NETWORK_CLOSE_HPP
 
 #include "network/oserrorresult.hpp"    // OsErrorResult
 #include "network/socketdata.hpp"       // SocketData

@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef WINDOWS_NETWORK_CLOSE_FUNCTION_NAME_H
-#define WINDOWS_NETWORK_CLOSE_FUNCTION_NAME_H
+#ifndef WINDOWS_NETWORK_CLOSE_FUNCTION_NAME_HPP
+#define WINDOWS_NETWORK_CLOSE_FUNCTION_NAME_HPP
 
 #ifdef WIN32
 

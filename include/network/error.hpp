@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_ERROR_H
-#define NETWORK_ERROR_H
+#ifndef NETWORK_ERROR_HPP
+#define NETWORK_ERROR_HPP
 
 #include <exception>    // std::exception
 #include <string>       // std::string

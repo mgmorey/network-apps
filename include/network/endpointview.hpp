@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_ENDPOINTVIEW_H
-#define NETWORK_ENDPOINTVIEW_H
+#ifndef NETWORK_ENDPOINTVIEW_HPP
+#define NETWORK_ENDPOINTVIEW_HPP
 
 #include <array>        // std::array
 #include <string_view>  // std::string_view

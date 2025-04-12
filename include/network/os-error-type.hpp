@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_OS_ERROR_TYPE_H
-#define NETWORK_OS_ERROR_TYPE_H
+#ifndef NETWORK_OS_ERROR_TYPE_HPP
+#define NETWORK_OS_ERROR_TYPE_HPP
 
 #ifdef WIN32
 #define WIN32_LEAN_AND_MEAN

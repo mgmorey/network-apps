@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_GET_SA_FAMILY_H
-#define NETWORK_GET_SA_FAMILY_H
+#ifndef NETWORK_GET_SA_FAMILY_HPP
+#define NETWORK_GET_SA_FAMILY_HPP
 
 #include "network/family-type.hpp"      // family_type
 

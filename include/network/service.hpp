@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_SERVICE_H
-#define NETWORK_SERVICE_H
+#ifndef NETWORK_SERVICE_HPP
+#define NETWORK_SERVICE_HPP
 
 #include <string>       // std::string
 

@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_ADDRESS_H
-#define NETWORK_ADDRESS_H
+#ifndef NETWORK_ADDRESS_HPP
+#define NETWORK_ADDRESS_HPP
 
 #include "network/bytestring.hpp"       // ByteString
 #include "network/family-type.hpp"      // family_type

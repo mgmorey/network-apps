@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_GET_SIN6_ADDR_H
-#define NETWORK_GET_SIN6_ADDR_H
+#ifndef NETWORK_GET_SIN6_ADDR_HPP
+#define NETWORK_GET_SIN6_ADDR_HPP
 
 #ifdef WIN32
 #include <ws2tcpip.h>       // in6_addr

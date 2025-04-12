@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_UNIQUIFY_H
-#define NETWORK_UNIQUIFY_H
+#ifndef NETWORK_UNIQUIFY_HPP
+#define NETWORK_UNIQUIFY_HPP
 
 #include <algorithm>    // std::unique()
 

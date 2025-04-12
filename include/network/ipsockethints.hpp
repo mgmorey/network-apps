@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_IPSOCKETHINTS_H
-#define NETWORK_IPSOCKETHINTS_H
+#ifndef NETWORK_IPSOCKETHINTS_HPP
+#define NETWORK_IPSOCKETHINTS_HPP
 
 #include "network/socket-flags-type.hpp"        // socket_flags_type
 #include "network/socket-ip-family-enum.hpp"    // socket_ip_family_enum

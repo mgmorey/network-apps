@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_OPTIONALVERSION_H
-#define NETWORK_OPTIONALVERSION_H
+#ifndef NETWORK_OPTIONALVERSION_HPP
+#define NETWORK_OPTIONALVERSION_HPP
 
 #include "network/version.hpp"          // Version
 

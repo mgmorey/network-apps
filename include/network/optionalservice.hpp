@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_OPTIONALSERVICE_H
-#define NETWORK_OPTIONALSERVICE_H
+#ifndef NETWORK_OPTIONALSERVICE_HPP
+#define NETWORK_OPTIONALSERVICE_HPP
 
 #include "network/service.hpp"          // Service
 

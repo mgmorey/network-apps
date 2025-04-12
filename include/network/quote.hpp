@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_QUOTE_H
-#define NETWORK_QUOTE_H
+#ifndef NETWORK_QUOTE_HPP
+#define NETWORK_QUOTE_HPP
 
 #include <string>       // std::string
 #include <string_view>  // std::string_view

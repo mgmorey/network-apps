@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_VALIDATE_SIN_H
-#define NETWORK_VALIDATE_SIN_H
+#ifndef NETWORK_VALIDATE_SIN_HPP
+#define NETWORK_VALIDATE_SIN_HPP
 
 #ifdef WIN32
 #include <winsock2.h>       // sockaddr_in

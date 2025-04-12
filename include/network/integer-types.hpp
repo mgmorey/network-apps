@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_INTEGER_TYPES_H
-#define NETWORK_INTEGER_TYPES_H
+#ifndef NETWORK_INTEGER_TYPES_HPP
+#define NETWORK_INTEGER_TYPES_HPP
 
 #include "network/error-type.hpp"                   // error_type
 #include "network/family-type.hpp"                  // family_type

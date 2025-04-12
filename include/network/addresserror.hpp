@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_ADDRESSERROR_H
-#define NETWORK_ADDRESSERROR_H
+#ifndef NETWORK_ADDRESSERROR_HPP
+#define NETWORK_ADDRESSERROR_HPP
 
 #include "network/logicerror.hpp"       // LogicError
 

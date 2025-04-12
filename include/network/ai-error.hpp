@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_AI_ERROR_H
-#define NETWORK_AI_ERROR_H
+#ifndef NETWORK_AI_ERROR_HPP
+#define NETWORK_AI_ERROR_HPP
 
 #include "network/format-ai-error.hpp"          // format_ai_error()
 

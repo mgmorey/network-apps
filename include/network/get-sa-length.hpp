@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_GET_SA_LENGTH_H
-#define NETWORK_GET_SA_LENGTH_H
+#ifndef NETWORK_GET_SA_LENGTH_HPP
+#define NETWORK_GET_SA_LENGTH_HPP
 
 #include "network/socket-length-type.hpp"       // socket_length_type
 

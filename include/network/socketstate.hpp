@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_SOCKETSTATE_H
-#define NETWORK_SOCKETSTATE_H
+#ifndef NETWORK_SOCKETSTATE_HPP
+#define NETWORK_SOCKETSTATE_HPP
 
 #include <cstdint>      // std::uint8_t
 

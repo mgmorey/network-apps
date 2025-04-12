@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_SOCKETDATA_H
-#define NETWORK_SOCKETDATA_H
+#ifndef NETWORK_SOCKETDATA_HPP
+#define NETWORK_SOCKETDATA_HPP
 
 #include "network/family-null.hpp"      // family_null
 #include "network/family-type.hpp"      // family_type
