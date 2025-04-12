@@ -16,13 +16,13 @@
 #ifndef NETWORK_ADDRESS_HPP
 #define NETWORK_ADDRESS_HPP
 
-#include "network/bytestring.hpp"       // ByteString
-#include "network/family-type.hpp"      // family_type
-#include "network/os-features.hpp"      // HAVE_SOCKADDR_SA_LEN
-#include "network/port-type.hpp"        // port_type
+#include "network/bytestring.hpp"               // ByteString
+#include "network/family-type.hpp"              // family_type
+#include "network/os-features.hpp"              // HAVE_SOCKADDR_SA_LEN
+#include "network/port-type.hpp"                // port_type
 
 #ifdef HAVE_SOCKADDR_SA_LEN
-#include "network/socket-length-type.h" // socket_length_type
+#include "network/socket-length-type.hpp"       // socket_length_type
 #endif
 
 #ifdef WIN32
