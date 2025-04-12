@@ -13,12 +13,12 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/address.h"            // Address
-#include "network/family-type.h"        // family_type
-#include "network/familyerror.h"        // FamilyError
-#include "network/os-features.h"        // HAVE_SOCKADDR_SA_LEN
-#include "network/port-type.h"          // port_type
-#include "network/quote.h"              // quote()
+#include "network/address.hpp"          // Address
+#include "network/family-type.hpp"      // family_type
+#include "network/familyerror.hpp"      // FamilyError
+#include "network/os-features.hpp"      // HAVE_SOCKADDR_SA_LEN
+#include "network/port-type.hpp"        // port_type
+#include "network/quote.hpp"            // quote()
 
 #ifdef HAVE_SOCKADDR_SA_LEN
 #include "network/socket-length-type.h" // socket_length_type

@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-sin-pointer.h"    // get_sin_pointer()
-#include "network/validate-sin.h"       // validate()
+#include "network/get-sin-pointer.hpp"  // get_sin_pointer()
+#include "network/validate-sin.hpp"     // validate()
 
 #ifdef WIN32
 #include <winsock2.h>       // sockaddr_in

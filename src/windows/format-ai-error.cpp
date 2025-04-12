@@ -15,9 +15,9 @@
 
 #ifdef WIN32
 
-#include "network/format-ai-error.h"    // format_ai_error()
-#include "network/format-os-error.h"    // format_os_error()
-#include "network/to-os-error.h"        // to_os_error()
+#include "network/format-ai-error.hpp"  // format_ai_error()
+#include "network/format-os-error.hpp"  // format_os_error()
+#include "network/to-os-error.hpp"      // to_os_error()
 
 #include <string>       // std::string
 

@@ -15,11 +15,11 @@
 
 #ifndef WIN32
 
-#include "network/validate-path.h"              // validate()
-#include "network/length-type.h"                // length_type
-#include "network/path-length-limits.h"         // path_length_max,
+#include "network/validate-path.hpp"            // validate()
+#include "network/length-type.hpp"              // length_type
+#include "network/path-length-limits.hpp"       // path_length_max,
                                                 // path_length_min
-#include "network/valueerror.h"                 // ValueError
+#include "network/valueerror.hpp"               // ValueError
 
 #include <string_view>  // std::string_view
 

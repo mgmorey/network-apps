@@ -13,11 +13,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/bind-endpoint.h"              // bind()
-#include "network/endpointview.h"               // EndpointView
-#include "network/open-endpoint.h"              // open()
-#include "network/sockethints.h"                // SocketHints
-#include "network/socketresultvector.h"         // SocketResultVector
+#include "network/bind-endpoint.hpp"            // bind()
+#include "network/endpointview.hpp"             // EndpointView
+#include "network/open-endpoint.hpp"            // open()
+#include "network/sockethints.hpp"              // SocketHints
+#include "network/socketresultvector.hpp"       // SocketResultVector
 
 auto Network::bind(const EndpointView& endpoint,
                    const SocketHints& hints,

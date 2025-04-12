@@ -15,15 +15,15 @@
 
 #ifdef WIN32
 
-#include "network/start.h"              // start()
-#include "network/contextdata.h"        // ContextData
-#include "network/error.h"              // Error
-#include "network/format-os-error.h"    // format_os_error()
-#include "network/logicerror.h"         // LogicError
-#include "network/optionalversion.h"    // OptionalVersion
-#include "network/runtimeerror.h"       // RuntimeError
-#include "network/to-os-error.h"        // to_os_error()
-#include "network/windowsversion.h"     // WindowsVersion
+#include "network/start.hpp"            // start()
+#include "network/contextdata.hpp"      // ContextData
+#include "network/error.hpp"            // Error
+#include "network/format-os-error.hpp"  // format_os_error()
+#include "network/logicerror.hpp"       // LogicError
+#include "network/optionalversion.hpp"  // OptionalVersion
+#include "network/runtimeerror.hpp"     // RuntimeError
+#include "network/to-os-error.hpp"      // to_os_error()
+#include "network/windowsversion.hpp"   // WindowsVersion
 
 #include <winsock2.h>       // WSAEFAULT, WSAEPROCLIM, WSASYSNOTREADY,
                             // WSAVERNOTSUPPORTED, ::WSAStartup()

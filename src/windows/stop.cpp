@@ -15,16 +15,16 @@
 
 #ifdef WIN32
 
-#include "network/stop.h"               // stop()
-#include "network/error.h"              // Error
-#include "network/failuremode.h"        // FailureMode
-#include "network/format-os-error.h"    // format_os_error()
-#include "network/get-api-error.h"      // get_api_error()
-#include "network/logicerror.h"         // LogicError
-#include "network/reset-api-error.h"    // reset_api_error()
-#include "network/runtimeerror.h"       // RuntimeError
-#include "network/socket-error.h"       // socket_error
-#include "network/to-os-error.h"        // to_os_error()
+#include "network/stop.hpp"             // stop()
+#include "network/error.hpp"            // Error
+#include "network/failuremode.hpp"      // FailureMode
+#include "network/format-os-error.hpp"  // format_os_error()
+#include "network/get-api-error.hpp"    // get_api_error()
+#include "network/logicerror.hpp"       // LogicError
+#include "network/reset-api-error.hpp"  // reset_api_error()
+#include "network/runtimeerror.hpp"     // RuntimeError
+#include "network/socket-error.hpp"     // socket_error
+#include "network/to-os-error.hpp"      // to_os_error()
 
 #include <winsock2.h>       // WSAEINPROGRESS, WSAENETDOWN, WSANOTINITIALISED,
                             // ::WSACleanup()

@@ -15,8 +15,8 @@
 
 #ifndef WIN32
 
-#include "network/set-os-error.h"       // set_os_error()
-#include "network/os-error-type.h"      // os_error_type
+#include "network/set-os-error.hpp"     // set_os_error()
+#include "network/os-error-type.hpp"    // os_error_type
 
 #include <cerrno>           // errno
 

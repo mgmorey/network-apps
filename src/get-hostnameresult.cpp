@@ -13,17 +13,17 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-hostnameresult.h"         // get_hostname()
-#include "network/format-os-error.h"            // format_os_error()
-#include "network/get-api-error.h"              // get_api_error()
-#include "network/hostname-length-limits.h"     // hostname_length_max
-#include "network/hostnameresult.h"             // HostnameResult
-#include "network/oserrorresult.h"              // OsErrorResult
-#include "network/quote.h"                      // quote()
-#include "network/reset-api-error.h"            // reset_api_error()
-#include "network/textbuffer.h"                 // TextBuffer
-#include "network/to-name-length.h"             // to_name_length()
-#include "network/to-os-error.h"                // to_os_error()
+#include "network/get-hostnameresult.hpp"       // get_hostname()
+#include "network/format-os-error.hpp"          // format_os_error()
+#include "network/get-api-error.hpp"            // get_api_error()
+#include "network/hostname-length-limits.hpp"   // hostname_length_max
+#include "network/hostnameresult.hpp"           // HostnameResult
+#include "network/oserrorresult.hpp"            // OsErrorResult
+#include "network/quote.hpp"                    // quote()
+#include "network/reset-api-error.hpp"          // reset_api_error()
+#include "network/textbuffer.hpp"               // TextBuffer
+#include "network/to-name-length.hpp"           // to_name_length()
+#include "network/to-os-error.hpp"              // to_os_error()
 
 #ifdef WIN32
 #include <winsock2.h>   // ::gethostname()

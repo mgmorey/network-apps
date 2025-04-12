@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/to-string-in-addr.h"          // to_string()
-#include "network/textbuffer.h"                 // TextBuffer
+#include "network/to-string-in-addr.hpp"        // to_string()
+#include "network/textbuffer.hpp"               // TextBuffer
 
 #ifdef WIN32
 #include <winsock2.h>       // AF_INET, in_addr

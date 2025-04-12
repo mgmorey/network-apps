@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/addresserror.h"               // AddressError
-#include "network/logicerror.h"                 // LogicError
+#include "network/addresserror.hpp"             // AddressError
+#include "network/logicerror.hpp"               // LogicError
 
 #include <string_view>  // std::string_view
 

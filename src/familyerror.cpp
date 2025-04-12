@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/familyerror.h"                // FamilyError
-#include "network/addresserror.h"               // AddressError
+#include "network/familyerror.hpp"              // FamilyError
+#include "network/addresserror.hpp"             // AddressError
 
 #include <string>       // std::to_string()
 

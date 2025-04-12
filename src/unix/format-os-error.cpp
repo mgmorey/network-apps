@@ -15,8 +15,8 @@
 
 #ifndef WIN32
 
-#include "network/format-os-error.h"    // format_os_error()
-#include "network/os-error-type.h"      // os_error_type
+#include "network/format-os-error.hpp"  // format_os_error()
+#include "network/os-error-type.hpp"    // os_error_type
 
 #include <cstring>      // std::strerror()
 #include <string>       // std::string, std::to_string()

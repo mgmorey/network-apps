@@ -13,9 +13,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/reset-os-error.h"     // reset_os_error()
-#include "network/os-error-type.h"      // os_error_type
-#include "network/set-os-error.h"       // set_os_error()
+#include "network/reset-os-error.hpp"   // reset_os_error()
+#include "network/os-error-type.hpp"    // os_error_type
+#include "network/set-os-error.hpp"     // set_os_error()
 
 auto Network::reset_os_error() -> os_error_type
 {

@@ -15,14 +15,14 @@
 
 #ifdef WIN32
 
-#include "network/nativecontext.h"      // NativeContext
-#include "network/error.h"              // Error
-#include "network/failuremode.h"        // FailureMode
-#include "network/optionalversion.h"    // OptionalVersion
-#include "network/runtimeerror.h"       // RuntimeError
-#include "network/start.h"              // start()
-#include "network/stop.h"               // stop()
-#include "network/windowsversion.h"     // WindowsVersion
+#include "network/nativecontext.hpp"    // NativeContext
+#include "network/error.hpp"            // Error
+#include "network/failuremode.hpp"      // FailureMode
+#include "network/optionalversion.hpp"  // OptionalVersion
+#include "network/runtimeerror.hpp"     // RuntimeError
+#include "network/start.hpp"            // start()
+#include "network/stop.hpp"             // stop()
+#include "network/windowsversion.hpp"   // WindowsVersion
 
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string

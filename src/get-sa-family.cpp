@@ -13,9 +13,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-sa-family.h"      // get_sa_family()
-#include "network/family-type.h"        // socket_family_type
-#include "network/get-sa-pointer.h"     // get_sa_pointer()
+#include "network/get-sa-family.hpp"    // get_sa_family()
+#include "network/family-type.hpp"      // socket_family_type
+#include "network/get-sa-pointer.hpp"   // get_sa_pointer()
 
 #include <cstddef>      // std::byte
 #include <span>         // std::span

@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/assert.h"             // assert()
-#include "network/network.h"            // Address, Context, Error,
+#include "network/assert.hpp"           // assert()
+#include "network/network.hpp"          // Address, Context, Error,
                                         // Hostname, OsErrorResult,
                                         // SocketFamily, SocketHints,
                                         // SocketHost, SocketLimits,
@@ -24,8 +24,8 @@
                                         // sun_length_min,
                                         // sun_path_size, sun_size,
                                         // to_bytestring(), validate()
-#include "network/os-features.h"        // HAVE_SOCKADDR_SA_LEN
-#include "network/parse.h"              // parse()
+#include "network/os-features.hpp"      // HAVE_SOCKADDR_SA_LEN
+#include "network/parse.hpp"            // parse()
 
 #ifdef WIN32
 #include <winsock2.h>       // AF_INET, AF_INET6, AF_UNIX, AF_UNSPEC,

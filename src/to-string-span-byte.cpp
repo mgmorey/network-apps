@@ -13,9 +13,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/address.h"                    // Address
-#include "network/logicerror.h"                 // LogicError
-#include "network/to-string-span-byte.h"        // to_string()
+#include "network/address.hpp"                  // Address
+#include "network/logicerror.hpp"               // LogicError
+#include "network/to-string-span-byte.hpp"      // to_string()
 
 #include <cstddef>      // std::byte
 #include <iomanip>      // std::setfill(), std::setw()

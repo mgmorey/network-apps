@@ -13,10 +13,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/socketlimits.h"       // SocketLimits
-#include "network/family-type.h"        // family_type
-#include "network/familyerror.h"        // FamilyError
-#include "network/limits.h"             // sa_length_max,
+#include "network/socketlimits.hpp"     // SocketLimits
+#include "network/family-type.hpp"      // family_type
+#include "network/familyerror.hpp"      // FamilyError
+#include "network/limits.hpp"           // sa_length_max,
                                         // sa_length_min,
                                         // sin_length_max,
                                         // sin_length_min,

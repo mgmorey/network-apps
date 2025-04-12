@@ -13,14 +13,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/validate-sa.h"        // validate()
-#include "network/familyerror.h"        // FamilyError
-#include "network/length-type.h"        // length_type
-#include "network/os-features.h"        // HAVE_SOCKADDR_SA_LEN
-#include "network/to-sa-length.h"       // to_sa_length()
+#include "network/validate-sa.hpp"      // validate()
+#include "network/familyerror.hpp"      // FamilyError
+#include "network/length-type.hpp"      // length_type
+#include "network/os-features.hpp"      // HAVE_SOCKADDR_SA_LEN
+#include "network/to-sa-length.hpp"     // to_sa_length()
 
 #ifdef HAVE_SOCKADDR_SA_LEN
-#include "network/valueerror.h"         // ValueError
+#include "network/valueerror.hpp"       // ValueError
 #endif
 
 #ifdef WIN32

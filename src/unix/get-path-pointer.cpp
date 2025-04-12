@@ -15,7 +15,7 @@
 
 #ifndef WIN32
 
-#include "network/get-path-pointer.h"           // get_path_pointer()
+#include "network/get-path-pointer.hpp"         // get_path_pointer()
 
 #include <sys/un.h>         // sockaddr_un
 

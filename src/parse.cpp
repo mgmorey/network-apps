@@ -13,10 +13,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/parse.h"                  // parse()
-#include "network/parse-argumentspan.h"     // parse()
-#include "network/parseresult.h"            // ParseResult
-#include "network/to-size.h"                // to_size()
+#include "network/parse.hpp"                // parse()
+#include "network/parse-argumentspan.hpp"   // parse()
+#include "network/parseresult.hpp"          // ParseResult
+#include "network/to-size.hpp"              // to_size()
 
 #include <span>         // std::span
 

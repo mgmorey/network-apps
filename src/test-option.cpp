@@ -13,12 +13,12 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/argumentdata.h"       // ArgumentData
-#include "network/argumentspan.h"       // ArgumentSpan, std::span
-#include "network/assert.h"             // assert()
-#include "network/get-option.h"         // get_optarg(), get_optind(),
+#include "network/argumentdata.hpp"     // ArgumentData
+#include "network/argumentspan.hpp"     // ArgumentSpan, std::span
+#include "network/assert.hpp"           // assert()
+#include "network/get-option.hpp"       // get_optarg(), get_optind(),
                                         // get_option()
-#include "network/to-size.h"            // to_size()
+#include "network/to-size.hpp"          // to_size()
 
 #include <cstdlib>      // std::abort()
 #include <cstring>      // std::strlen()

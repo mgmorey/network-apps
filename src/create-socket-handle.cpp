@@ -13,11 +13,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/create-socket-handle.h"       // create_socket()
-#include "network/create-socket.h"              // create_socket()
-#include "network/family-type.h"                // family_type
-#include "network/handle-type.h"                // handle_type
-#include "network/socketdata.h"                 // SocketData
+#include "network/create-socket-handle.hpp"     // create_socket()
+#include "network/create-socket.hpp"            // create_socket()
+#include "network/family-type.hpp"              // family_type
+#include "network/handle-type.hpp"              // handle_type
+#include "network/socketdata.hpp"               // SocketData
 
 auto Network::create_socket(handle_type handle,
                             family_type family,

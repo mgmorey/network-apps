@@ -13,18 +13,18 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-endpointresult.h"         // get_endpoint()
-#include "network/endpoint.h"                   // Endpoint
-#include "network/endpointresult.h"             // EndpointResult
-#include "network/format-ai-error.h"            // format_ai_error()
-#include "network/get-sa-span.h"                // get_sa_span()
-#include "network/hostname-length-limits.h"     // hostname_length_max
-#include "network/oserrorresult.h"              // OsErrorResult
-#include "network/quote.h"                      // quote()
-#include "network/service-length-limits.h"      // service_length_max
-#include "network/textbuffer.h"                 // TextBuffer
-#include "network/to-os-error.h"                // to_os_error()
-#include "network/to-string-span-byte.h"        // to_string()
+#include "network/get-endpointresult.hpp"       // get_endpoint()
+#include "network/endpoint.hpp"                 // Endpoint
+#include "network/endpointresult.hpp"           // EndpointResult
+#include "network/format-ai-error.hpp"          // format_ai_error()
+#include "network/get-sa-span.hpp"              // get_sa_span()
+#include "network/hostname-length-limits.hpp"   // hostname_length_max
+#include "network/oserrorresult.hpp"            // OsErrorResult
+#include "network/quote.hpp"                    // quote()
+#include "network/service-length-limits.hpp"    // service_length_max
+#include "network/textbuffer.hpp"               // TextBuffer
+#include "network/to-os-error.hpp"              // to_os_error()
+#include "network/to-string-span-byte.hpp"      // to_string()
 
 #ifdef WIN32
 #include <ws2tcpip.h>   // ::getnameinfo()

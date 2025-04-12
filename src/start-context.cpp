@@ -13,11 +13,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/start-context.h"      // start_context()
-#include "network/failuremode.h"        // FailureMode
-#include "network/nativecontext.h"      // NativeContext
-#include "network/optionalversion.h"    // OptionalVersion
-#include "network/uniquecontext.h"      // UniqueContext
+#include "network/start-context.hpp"    // start_context()
+#include "network/failuremode.hpp"      // FailureMode
+#include "network/nativecontext.hpp"    // NativeContext
+#include "network/optionalversion.hpp"  // OptionalVersion
+#include "network/uniquecontext.hpp"    // UniqueContext
 
 #include <memory>       // std::make_unique()
 

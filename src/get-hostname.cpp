@@ -13,13 +13,13 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-hostname.h"               // get_hostname()
-#include "network/always-false.h"               // always_false_v
-#include "network/error-strings.h"              // VISITOR_ERROR
-#include "network/error.h"                      // Error
-#include "network/get-hostnameresult.h"         // get_hostname()
-#include "network/hostname.h"                   // Hostname
-#include "network/oserrorresult.h"              // OsErrorResult
+#include "network/get-hostname.hpp"             // get_hostname()
+#include "network/always-false.hpp"             // always_false_v
+#include "network/error-strings.hpp"            // VISITOR_ERROR
+#include "network/error.hpp"                    // Error
+#include "network/get-hostnameresult.hpp"       // get_hostname()
+#include "network/hostname.hpp"                 // Hostname
+#include "network/oserrorresult.hpp"            // OsErrorResult
 
 #include <type_traits>  // std::decay_t, std::is_same_v
 #include <variant>      // std::visit()

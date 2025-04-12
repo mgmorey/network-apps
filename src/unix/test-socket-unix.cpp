@@ -15,8 +15,8 @@
 
 #ifndef WIN32
 
-#include "network/assert.h"             // assert()
-#include "network/network.h"            // Address, ByteString, Error,
+#include "network/assert.hpp"           // assert()
+#include "network/network.hpp"          // Address, ByteString, Error,
                                         // LogicError, OsErrorResult,
                                         // Pathname, Socket,
                                         // SocketHints, SocketPair,
@@ -28,7 +28,7 @@
                                         // path_length_max,
                                         // start_context()
                                         // to_bytestring(), to_path()
-#include "network/parse.h"              // parse()
+#include "network/parse.hpp"            // parse()
 
 #include <sys/socket.h>     // AF_UNIX, AF_UNSPEC, SOCK_STREAM
 

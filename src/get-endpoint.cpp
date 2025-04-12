@@ -13,13 +13,13 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-endpoint.h"               // get_endpoint()
-#include "network/always-false.h"               // always_false_v
-#include "network/endpoint.h"                   // Endpoint
-#include "network/error-strings.h"              // VISITOR_ERROR
-#include "network/error.h"                      // Error
-#include "network/get-endpointresult.h"         // get_endpointresult()
-#include "network/oserrorresult.h"              // OsErrorResult,
+#include "network/get-endpoint.hpp"             // get_endpoint()
+#include "network/always-false.hpp"             // always_false_v
+#include "network/endpoint.hpp"                 // Endpoint
+#include "network/error-strings.hpp"            // VISITOR_ERROR
+#include "network/error.hpp"                    // Error
+#include "network/get-endpointresult.hpp"       // get_endpointresult()
+#include "network/oserrorresult.hpp"            // OsErrorResult,
 
 #include <cstddef>      // std::byte
 #include <span>         // std::span

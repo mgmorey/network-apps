@@ -13,11 +13,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/connect-endpoint.h"           // connect()
-#include "network/endpointview.h"               // EndpointView
-#include "network/open-endpoint.h"              // open()
-#include "network/sockethints.h"                // SocketHints
-#include "network/socketresultvector.h"         // SocketResultVector
+#include "network/connect-endpoint.hpp"         // connect()
+#include "network/endpointview.hpp"             // EndpointView
+#include "network/open-endpoint.hpp"            // open()
+#include "network/sockethints.hpp"              // SocketHints
+#include "network/socketresultvector.hpp"       // SocketResultVector
 
 auto Network::connect(const EndpointView& endpoint,
                       const SocketHints& hints,

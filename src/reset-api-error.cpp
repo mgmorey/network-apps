@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/reset-api-error.h"    // reset_api_error()
-#include "network/set-api-error.h"      // set_api_error()
+#include "network/reset-api-error.hpp"  // reset_api_error()
+#include "network/set-api-error.hpp"    // set_api_error()
 
 auto Network::reset_api_error() -> int
 {

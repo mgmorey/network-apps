@@ -13,11 +13,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/socketdata.h"         // SocketData
-#include "network/family-type.h"        // family_type
-#include "network/handle-null.h"        // handle_null
-#include "network/handle-type.h"        // handle_type
-#include "network/logicerror.h"         // LogicError
+#include "network/socketdata.hpp"       // SocketData
+#include "network/family-type.hpp"      // family_type
+#include "network/handle-null.hpp"      // handle_null
+#include "network/handle-type.hpp"      // handle_type
+#include "network/logicerror.hpp"       // LogicError
 
 Network::SocketData::SocketData(handle_type t_handle,
                                 family_type t_family,

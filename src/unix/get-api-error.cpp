@@ -15,7 +15,7 @@
 
 #ifndef WIN32
 
-#include "network/get-api-error.h"     // get_api_error()
+#include "network/get-api-error.hpp"   // get_api_error()
 
 #include <cerrno>           // errno
 

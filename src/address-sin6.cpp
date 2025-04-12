@@ -13,11 +13,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/address.h"            // Address
-#include "network/get-sin6-addr.h"      // get_sin6_addr()
-#include "network/get-sin6-port.h"      // get_sin6_port()
-#include "network/port-type.h"          // port_type
-#include "network/to-string-in6-addr.h" // to_string()
+#include "network/address.hpp"                  // Address
+#include "network/get-sin6-addr.hpp"            // get_sin6_addr()
+#include "network/get-sin6-port.hpp"            // get_sin6_port()
+#include "network/port-type.hpp"                // port_type
+#include "network/to-string-in6-addr.hpp"       // to_string()
 
 #ifdef WIN32
 #include <winsock2.h>       // in6_addr

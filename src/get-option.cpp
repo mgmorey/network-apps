@@ -13,11 +13,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-option.h"         // get_optarg(), get_opterr(),
+#include "network/get-option.hpp"       // get_optarg(), get_opterr(),
                                         // get_optind(), get_option(),
                                         // get_optopt()
-#include "network/argumentspan.h"       // ArgumentSpan
-#include "network/logicerror.h"         // LogicError
+#include "network/argumentspan.hpp"     // ArgumentSpan
+#include "network/logicerror.hpp"       // LogicError
 
 #ifdef WIN32
 #include <getopt.h>         // getopt(), optarg, opterr, optind,

@@ -13,13 +13,13 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/open-endpoint.h"              // open()
-#include "network/error.h"                      // Error()
-#include "network/insert-endpoint.h"            // insert()
-#include "network/open.h"                       // Open
-#include "network/openparameters.h"             // OpenParameters
-#include "network/socketresultvector.h"         // SocketResultVector
-#include "network/template.h"                   // Template
+#include "network/open-endpoint.hpp"            // open()
+#include "network/error.hpp"                    // Error()
+#include "network/insert-endpoint.hpp"          // insert()
+#include "network/open.hpp"                     // Open
+#include "network/openparameters.hpp"           // OpenParameters
+#include "network/socketresultvector.hpp"       // SocketResultVector
+#include "network/template.hpp"                 // Template
 
 #include <algorithm>    // std::ranges
 #include <iterator>     // std::back_inserter()

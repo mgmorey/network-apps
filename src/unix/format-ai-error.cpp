@@ -15,7 +15,7 @@
 
 #ifndef WIN32
 
-#include "network/format-ai-error.h"    // format_ai_error()
+#include "network/format-ai-error.hpp"  // format_ai_error()
 
 #include <netdb.h>          // ::gai_strerror()
 

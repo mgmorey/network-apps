@@ -13,12 +13,12 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/always-false.h"       // always_false_v
-#include "network/assert.h"             // assert()
-#include "network/network.h"            // Context, Error, Hostname,
+#include "network/always-false.hpp"     // always_false_v
+#include "network/assert.hpp"           // assert()
+#include "network/network.hpp"          // Context, Error, Hostname,
                                         // get_hostnameresult(),
                                         // start_context()
-#include "network/parse.h"              // parse()
+#include "network/parse.hpp"            // parse()
 
 #ifdef WIN32
 #include <winsock2.h>       // WSAEFAULT, WSAEPROCLIM,

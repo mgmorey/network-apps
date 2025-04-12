@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/quote.h"              // quote()
-#include "network/string-null.h"        // string_null
+#include "network/quote.hpp"            // quote()
+#include "network/string-null.hpp"      // string_null
 
 #include <cctype>       // isprint()
 #include <sstream>      // std::ostringstream

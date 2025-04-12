@@ -15,9 +15,9 @@
 
 #ifdef WIN32
 
-#include "network/format-os-error.h"    // format_os_error()
-#include "network/os-error-type.h"      // os_error_type
-#include "network/runtimeerror.h"       // RuntimeError
+#include "network/format-os-error.hpp"  // format_os_error()
+#include "network/os-error-type.hpp"    // os_error_type
+#include "network/runtimeerror.hpp"     // RuntimeError
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>        // DWORD, FORMAT_MESSAGE_ALLOCATE_BUFFER,

@@ -13,18 +13,18 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/accept.h"                     // accept()
-#include "network/acceptresult.h"               // AcceptResult
-#include "network/binarybuffer.h"               // BinaryBuffer
-#include "network/error.h"                      // Error
-#include "network/format-os-error.h"            // format_os_error()
-#include "network/get-api-error.h"              // get_api_error()
-#include "network/get-sa-span.h"                // get_sa_span()
-#include "network/handle-null.h"                // handle_null
-#include "network/reset-api-error.h"            // reset_api_error()
-#include "network/socketdata.h"                 // SocketData
-#include "network/to-os-error.h"                // to_os_error()
-#include "network/to-string-span-byte.h"        // to_string()
+#include "network/accept.hpp"                   // accept()
+#include "network/acceptresult.hpp"             // AcceptResult
+#include "network/binarybuffer.hpp"             // BinaryBuffer
+#include "network/error.hpp"                    // Error
+#include "network/format-os-error.hpp"          // format_os_error()
+#include "network/get-api-error.hpp"            // get_api_error()
+#include "network/get-sa-span.hpp"              // get_sa_span()
+#include "network/handle-null.hpp"              // handle_null
+#include "network/reset-api-error.hpp"          // reset_api_error()
+#include "network/socketdata.hpp"               // SocketData
+#include "network/to-os-error.hpp"              // to_os_error()
+#include "network/to-string-span-byte.hpp"      // to_string()
 
 #ifdef WIN32
 #include <winsock2.h>       // ::accept()

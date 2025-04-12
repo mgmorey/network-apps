@@ -13,11 +13,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-sa-span.h"                // get_sa_span()
-#include "network/binarybuffer.h"               // BinaryBuffer
-#include "network/get-sa-length.h"              // get_sa_length()
-#include "network/get-sa-pointer.h"             // get_sa_pointer()
-#include "network/socket-length-type.h"         // socket_length_type
+#include "network/get-sa-span.hpp"              // get_sa_span()
+#include "network/binarybuffer.hpp"             // BinaryBuffer
+#include "network/get-sa-length.hpp"            // get_sa_length()
+#include "network/get-sa-pointer.hpp"           // get_sa_pointer()
+#include "network/socket-length-type.hpp"       // socket_length_type
 
 #ifdef WIN32
 #include <winsock2.h>       // sockaddr

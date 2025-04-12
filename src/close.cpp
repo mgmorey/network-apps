@@ -13,16 +13,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/close.h"                      // close()
-#include "network/close-function-name.h"        // close_function_name
-#include "network/close-function-pointer.h"     // close_function_pointer
-#include "network/format-os-error.h"            // format_os_error()
-#include "network/get-api-error.h"              // get_api_error()
-#include "network/oserrorresult.h"              // OsErrorResult
-#include "network/reset-api-error.h"            // reset_api_error()
-#include "network/socket-error.h"               // socket_error
-#include "network/socketdata.h"                 // SocketData
-#include "network/to-os-error.h"                // to_os_error()
+#include "network/close.hpp"                    // close()
+#include "network/close-function-name.hpp"      // close_function_name
+#include "network/close-function-pointer.hpp"   // close_function_pointer
+#include "network/format-os-error.hpp"          // format_os_error()
+#include "network/get-api-error.hpp"            // get_api_error()
+#include "network/oserrorresult.hpp"            // OsErrorResult
+#include "network/reset-api-error.hpp"          // reset_api_error()
+#include "network/socket-error.hpp"             // socket_error
+#include "network/socketdata.hpp"               // SocketData
+#include "network/to-os-error.hpp"              // to_os_error()
 
 #include <iostream>     // std::cout, std::endl
 #include <sstream>      // std::ostringstream

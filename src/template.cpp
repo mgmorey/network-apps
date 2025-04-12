@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/template.h"           // Template
-#include "network/sockethints.h"        // SocketHints
+#include "network/template.hpp"         // Template
+#include "network/sockethints.hpp"      // SocketHints
 
 #ifdef WIN32
 #include <ws2tcpip.h>       // addrinfo

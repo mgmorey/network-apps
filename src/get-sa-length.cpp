@@ -13,9 +13,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-sa-length.h"              // get_sa_length()
-#include "network/socket-length-type.h"         // socket_length_type
-#include "network/to-socket-length.h"           // to_socket_length()
+#include "network/get-sa-length.hpp"            // get_sa_length()
+#include "network/socket-length-type.hpp"       // socket_length_type
+#include "network/to-socket-length.hpp"         // to_socket_length()
 
 #include <cstddef>      // std::byte
 #include <span>         // std::span

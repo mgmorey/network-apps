@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/rangeerror.h"         // RangeError
-#include "network/logicerror.h"         // LogicError
+#include "network/rangeerror.hpp"       // RangeError
+#include "network/logicerror.hpp"       // LogicError
 
 #include <format>       // std::format()
 #include <string>       // std::string

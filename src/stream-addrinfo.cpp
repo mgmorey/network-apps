@@ -13,15 +13,15 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/stream-addrinfo.h"    // operator<<()
-#include "network/format.h"             // Format
-#include "network/socketfamily.h"       // SocketFamily,
-#include "network/socketflags.h"        // SocketFlags
-#include "network/socketprotocol.h"     // SocketProtocol
-#include "network/sockettype.h"         // SocketType
-#include "network/string-null.h"        // string_null
-#include "network/to-sa-length.h"       // to_sa_length()
-#include "network/to-string-void.h"     // to_string()
+#include "network/stream-addrinfo.hpp"  // operator<<()
+#include "network/format.hpp"           // Format
+#include "network/socketfamily.hpp"     // SocketFamily,
+#include "network/socketflags.hpp"      // SocketFlags
+#include "network/socketprotocol.hpp"   // SocketProtocol
+#include "network/sockettype.hpp"       // SocketType
+#include "network/string-null.hpp"      // string_null
+#include "network/to-sa-length.hpp"     // to_sa_length()
+#include "network/to-string-void.hpp"   // to_string()
 
 #ifdef WIN32
 #include <ws2tcpip.h>       // addrinfo

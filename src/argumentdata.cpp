@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/argument.h"           // Argument
-#include "network/argumentdata.h"       // ArgumentData
+#include "network/argument.hpp"         // Argument
+#include "network/argumentdata.hpp"     // ArgumentData
 
 #include <algorithm>    // std::ranges
 #include <cstdlib>      // std::free(), std::size_t

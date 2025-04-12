@@ -13,21 +13,21 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/commonsocket.h"       // CommonSocket
-#include "network/accept.h"             // accept()
-#include "network/acceptresult.h"       // AcceptResult
-#include "network/close.h"              // close()
-#include "network/get-name.h"           // get_name()
-#include "network/handle-null.h"        // handle_null
-#include "network/listen.h"             // listen()
-#include "network/open-handle.h"        // open()
-#include "network/oserrorresult.h"      // OsErrorResult
-#include "network/read.h"               // read()
-#include "network/shutdown.h"           // shutdown()
-#include "network/socketapi.h"          // SocketApi
-#include "network/socketdata.h"         // SocketData
-#include "network/string-null.h"        // string_null
-#include "network/write.h"              // write()
+#include "network/commonsocket.hpp"     // CommonSocket
+#include "network/accept.hpp"           // accept()
+#include "network/acceptresult.hpp"     // AcceptResult
+#include "network/close.hpp"            // close()
+#include "network/get-name.hpp"         // get_name()
+#include "network/handle-null.hpp"      // handle_null
+#include "network/listen.hpp"           // listen()
+#include "network/open-handle.hpp"      // open()
+#include "network/oserrorresult.hpp"    // OsErrorResult
+#include "network/read.hpp"             // read()
+#include "network/shutdown.hpp"         // shutdown()
+#include "network/socketapi.hpp"        // SocketApi
+#include "network/socketdata.hpp"       // SocketData
+#include "network/string-null.hpp"      // string_null
+#include "network/write.hpp"            // write()
 
 #include <cstddef>      // std::byte, std::size_t
 #include <iostream>     // std::cerr, std::endl

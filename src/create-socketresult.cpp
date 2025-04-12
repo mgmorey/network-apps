@@ -13,20 +13,20 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/create-socketresult.h"        // create_socketresult()
-#include "network/create-socket-handle.h"       // create_socket()
-#include "network/format-os-error.h"            // format_os_error()
-#include "network/format.h"                     // Format
-#include "network/get-api-error.h"              // get_api_error()
-#include "network/handle-null.h"                // handle_null
-#include "network/oserrorresult.h"              // OsErrorResult
-#include "network/reset-api-error.h"            // reset_api_error()
-#include "network/socketfamily.h"               // SocketFamily
-#include "network/sockethints.h"                // SocketHints
-#include "network/socketprotocol.h"             // SocketProtocol
-#include "network/socketresult.h"               // SocketResult
-#include "network/sockettype.h"                 // SocketType
-#include "network/to-os-error.h"                // to_os_error()
+#include "network/create-socketresult.hpp"      // create_socketresult()
+#include "network/create-socket-handle.hpp"     // create_socket()
+#include "network/format-os-error.hpp"          // format_os_error()
+#include "network/format.hpp"                   // Format
+#include "network/get-api-error.hpp"            // get_api_error()
+#include "network/handle-null.hpp"              // handle_null
+#include "network/oserrorresult.hpp"            // OsErrorResult
+#include "network/reset-api-error.hpp"          // reset_api_error()
+#include "network/socketfamily.hpp"             // SocketFamily
+#include "network/sockethints.hpp"              // SocketHints
+#include "network/socketprotocol.hpp"           // SocketProtocol
+#include "network/socketresult.hpp"             // SocketResult
+#include "network/sockettype.hpp"               // SocketType
+#include "network/to-os-error.hpp"              // to_os_error()
 
 #ifdef WIN32
 #include <winsock2.h>       // ::socket()

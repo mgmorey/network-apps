@@ -15,13 +15,13 @@
 
 #ifndef WIN32
 
-#include "network/to-bytestring-path.h"         // to_bytestring()
-#include "network/bytestring.h"                 // ByteString
-#include "network/get-path-pointer.h"           // get_path_pointer()
-#include "network/os-features.h"                // HAVE_SOCKADDR_SA_LEN
-#include "network/sun-offsets.h"                // sun_path_offset
-#include "network/to-bytestring-void.h"         // to_bytestring()
-#include "network/to-path-length.h"             // to_path_length()
+#include "network/to-bytestring-path.hpp"       // to_bytestring()
+#include "network/bytestring.hpp"               // ByteString
+#include "network/get-path-pointer.hpp"         // get_path_pointer()
+#include "network/os-features.hpp"              // HAVE_SOCKADDR_SA_LEN
+#include "network/sun-offsets.hpp"              // sun_path_offset
+#include "network/to-bytestring-void.hpp"       // to_bytestring()
+#include "network/to-path-length.hpp"           // to_path_length()
 
 #include <sys/socket.h>     // AF_UNIX
 #include <sys/un.h>         // sockaddr_un

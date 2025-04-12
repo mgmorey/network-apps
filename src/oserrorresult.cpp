@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/oserrorresult.h"      // OsErrorResult
-#include "network/os-error-type.h"      // os_error_type
+#include "network/oserrorresult.hpp"    // OsErrorResult
+#include "network/os-error-type.hpp"    // os_error_type
 
 #include <string>       // std::string
 #include <string_view>  // std::string_view

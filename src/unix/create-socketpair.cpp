@@ -15,14 +15,14 @@
 
 #ifndef WIN32
 
-#include "network/create-socketpair.h"          // create_socketpair()
-#include "network/always-false.h"               // always_false_v
-#include "network/create-socketpairresult.h"    // create_socketpairresult()
-#include "network/error-strings.h"              // VISITOR_ERROR
-#include "network/error.h"                      // Error
-#include "network/oserrorresult.h"              // OsErrorResult
-#include "network/sockethints.h"                // SocketHints
-#include "network/socketpair.h"                 // SocketPair
+#include "network/create-socketpair.hpp"        // create_socketpair()
+#include "network/always-false.hpp"             // always_false_v
+#include "network/create-socketpairresult.hpp"  // create_socketpairresult()
+#include "network/error-strings.hpp"            // VISITOR_ERROR
+#include "network/error.hpp"                    // Error
+#include "network/oserrorresult.hpp"            // OsErrorResult
+#include "network/sockethints.hpp"              // SocketHints
+#include "network/socketpair.hpp"               // SocketPair
 
 #include <type_traits>  // std::decay_t, std::is_same_v
 #include <variant>      // std::visit()

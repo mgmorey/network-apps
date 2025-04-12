@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/error.h"              // Error
+#include "network/error.hpp"            // Error
 
 #include <string_view>  // std::string_view
 

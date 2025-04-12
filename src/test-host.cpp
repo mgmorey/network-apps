@@ -13,9 +13,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/argumentspan.h"       // ArgumentSpan
-#include "network/assert.h"             // assert()
-#include "network/network.h"            // Address, ByteString,
+#include "network/argumentspan.hpp"     // ArgumentSpan
+#include "network/assert.hpp"           // assert()
+#include "network/network.hpp"          // Address, ByteString,
                                         // Endpoint, HostnameView,
                                         // IpSocketHints,
                                         // OptionalHints,
@@ -26,7 +26,7 @@
                                         // os_error_type,
                                         // start_context,
                                         // to_bytestring(), uniquify()
-#include "network/parse.h"              // parse()
+#include "network/parse.hpp"            // parse()
 
 #ifdef WIN32
 #include <winsock2.h>       // AF_INET, AF_UNSPEC, SOCK_STREAM, sockaddr_in

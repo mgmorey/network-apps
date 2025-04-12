@@ -15,9 +15,9 @@
 
 #ifndef WIN32
 
-#include "network/contextdata.h"        // ContextData
-#include "network/optionalversion.h"    // OptionalVersion
-#include "network/start.h"              // start()
+#include "network/contextdata.hpp"      // ContextData
+#include "network/optionalversion.hpp"  // OptionalVersion
+#include "network/start.hpp"            // start()
 
 #include <iostream>     // std::cout, std::endl
 

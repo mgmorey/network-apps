@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/assert.h"             // assert()
-#include "network/network.h"            // RangeError, ValueError,
+#include "network/assert.hpp"           // assert()
+#include "network/network.hpp"          // RangeError, ValueError,
                                         // to_name_length(),
                                         // to_os_error(),
                                         // to_path_length(),

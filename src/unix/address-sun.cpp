@@ -15,8 +15,8 @@
 
 #ifndef WIN32
 
-#include "network/address.h"            // Address
-#include "network/to-path.h"            // to_path()
+#include "network/address.hpp"          // Address
+#include "network/to-path.hpp"          // to_path()
 
 #include <string_view>  // std::string_view
 

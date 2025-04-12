@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/sockettype.h"         // SocketType, operator<<()
+#include "network/sockettype.hpp"       // SocketType, operator<<()
 
 #ifdef WIN32
 #include <winsock2.h>   // SOCK_DGRAM, SOCK_RAW, SOCK_RDM,

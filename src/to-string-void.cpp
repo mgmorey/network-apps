@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/to-string-void.h"             // to_string()
-#include "network/to-string-span-byte.h"        // to_string()
+#include "network/to-string-void.hpp"           // to_string()
+#include "network/to-string-span-byte.hpp"      // to_string()
 
 #include <cstddef>      // std::byte
 #include <span>         // std::span

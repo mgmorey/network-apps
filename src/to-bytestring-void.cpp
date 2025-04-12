@@ -13,9 +13,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/to-bytestring-void.h"         // to_bytestring()
-#include "network/bytestring.h"                 // ByteString
-#include "network/length-type.h"                // length_type
+#include "network/to-bytestring-void.hpp"       // to_bytestring()
+#include "network/bytestring.hpp"               // ByteString
+#include "network/length-type.hpp"              // length_type
 
 #include <cstddef>      // std::byte
 #include <span>         // std::span

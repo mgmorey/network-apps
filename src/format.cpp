@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/format.h"             // Format, operator<<()
+#include "network/format.hpp"           // Format, operator<<()
 
 #include <ostream>      // std::endl, std::ostream
 #include <string>       // std::string

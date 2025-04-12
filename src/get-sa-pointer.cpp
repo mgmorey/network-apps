@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-sa-pointer.h"     // get_sa_pointer()
-#include "network/validate-sa.h"        // validate()
+#include "network/get-sa-pointer.hpp"   // get_sa_pointer()
+#include "network/validate-sa.hpp"      // validate()
 
 #ifdef WIN32
 #include <winsock2.h>       // sockaddr

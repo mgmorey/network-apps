@@ -15,8 +15,8 @@
 
 #ifndef WIN32
 
-#include "network/get-sun-pointer.h"    // get_sun_pointer()
-#include "network/validate-sun.h"       // validate()
+#include "network/get-sun-pointer.hpp"  // get_sun_pointer()
+#include "network/validate-sun.hpp"     // validate()
 
 #include <sys/un.h>         // sockaddr_un
 

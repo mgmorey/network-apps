@@ -13,15 +13,15 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/addresslist.h"        // AddressList
-#include "network/format-ai-error.h"    // format_ai_error()
-#include "network/hostnameview.h"       // HostnameView
-#include "network/optionalhints.h"      // OptionalHints
-#include "network/oserrorresult.h"      // OsErrorResult
-#include "network/serviceview.h"        // ServiceView
-#include "network/stream-addrinfo.h"    // operator<<()
-#include "network/string-null.h"        // string_null
-#include "network/to-os-error.h"        // to_os_error()
+#include "network/addresslist.hpp"      // AddressList
+#include "network/format-ai-error.hpp"  // format_ai_error()
+#include "network/hostnameview.hpp"     // HostnameView
+#include "network/optionalhints.hpp"    // OptionalHints
+#include "network/oserrorresult.hpp"    // OsErrorResult
+#include "network/serviceview.hpp"      // ServiceView
+#include "network/stream-addrinfo.hpp"  // operator<<()
+#include "network/string-null.hpp"      // string_null
+#include "network/to-os-error.hpp"      // to_os_error()
 
 #ifdef WIN32
 #include <ws2tcpip.h>       // addrinfo, ::freeaddrinfo(), ::getaddrinfo()

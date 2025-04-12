@@ -13,14 +13,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-name.h"           // get_name()
-#include "network/always-false.h"       // always_false_v
-#include "network/bytestring.h"         // ByteString
-#include "network/error-strings.h"      // VISITOR_ERROR
-#include "network/error.h"              // Error
-#include "network/get-nameresult.h"     // get_nameresult()
-#include "network/oserrorresult.h"      // OsErrorResult
-#include "network/socketdata.h"         // SocketData
+#include "network/get-name.hpp"         // get_name()
+#include "network/always-false.hpp"     // always_false_v
+#include "network/bytestring.hpp"       // ByteString
+#include "network/error-strings.hpp"    // VISITOR_ERROR
+#include "network/error.hpp"            // Error
+#include "network/get-nameresult.hpp"   // get_nameresult()
+#include "network/oserrorresult.hpp"    // OsErrorResult
+#include "network/socketdata.hpp"       // SocketData
 
 #include <type_traits>  // std::decay_t, std::is_same_v
 #include <variant>      // std::visit()

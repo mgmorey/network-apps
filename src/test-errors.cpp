@@ -13,13 +13,13 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/assert.h"             // assert()
-#include "network/network.h"            // RuntimeError
+#include "network/assert.hpp"           // assert()
+#include "network/network.hpp"          // RuntimeError
                                         // get_api_error()
                                         // get_os_error()
                                         // reset_api_error()
                                         // reset_os_error()
-#include "network/parse.h"              // parse()
+#include "network/parse.hpp"            // parse()
 
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl

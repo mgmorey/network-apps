@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/textbuffer.h"         // TextBuffer
-#include "network/buffer.h"             // Buffer
+#include "network/textbuffer.hpp"       // TextBuffer
+#include "network/buffer.hpp"           // Buffer
 
 Network::TextBuffer::TextBuffer(size_type t_size) :
     Buffer(t_size)

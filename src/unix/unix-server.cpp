@@ -16,12 +16,12 @@
 // This UNIX domain sequenced-packet socket example is adapted from the
 // example in https://www.man7.org/linux/man-pages/man7/unix.7.html.
 
-#include "network/network.h"            // Address, Socket,
+#include "network/network.hpp"          // Address, Socket,
                                         // UnixSocketHints,
                                         // socket_error,
                                         // to_bytestring()
-#include "network/parse.h"              // parse()
-#include "unix/connection.h"            // BUFFER_SIZE, SOCKET_HINTS,
+#include "network/parse.hpp"            // parse()
+#include "unix/connection.hpp"          // BUFFER_SIZE, SOCKET_HINTS,
                                         // SOCKET_NAME
 
 #include <cstdio>       // std::perror()

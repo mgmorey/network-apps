@@ -13,15 +13,15 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/assert.h"             // assert()
-#include "network/commonsocket.h"       // CommonSocket
-#include "network/network.h"            // Error, SocketData,
+#include "network/assert.hpp"           // assert()
+#include "network/commonsocket.hpp"     // CommonSocket
+#include "network/network.hpp"          // Error, SocketData,
                                         // SocketHints, UniqueSocket,
                                         // close(), create_socket(),
                                         // family_type, handle_null,
                                         // handle_type, os_error_type,
                                         // start_context()
-#include "network/parse.h"              // parse()
+#include "network/parse.hpp"            // parse()
 
 #ifdef WIN32
 #include <winsock2.h>   // AF_INET, AF_UNSPEC, SOCK_STREAM, ::close(),

@@ -15,8 +15,8 @@
 
 #ifdef WIN32
 
-#include "network/get-os-error.h"       // get_os_error()
-#include "network/os-error-type.h"      // os_error_type
+#include "network/get-os-error.hpp"     // get_os_error()
+#include "network/os-error-type.hpp"    // os_error_type
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>        // ::GetLastError()

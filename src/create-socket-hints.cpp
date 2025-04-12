@@ -13,14 +13,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/create-socket-hints.h"        // create_socket()
-#include "network/always-false.h"               // always_false_v
-#include "network/create-socketresult.h"        // create_socketresult()
-#include "network/error-strings.h"              // VISITOR_ERROR
-#include "network/error.h"                      // Error
-#include "network/oserrorresult.h"              // OsErrorResult
-#include "network/sockethints.h"                // SocketHints
-#include "network/uniquesocket.h"               // UniqueSocket
+#include "network/create-socket-hints.hpp"      // create_socket()
+#include "network/always-false.hpp"             // always_false_v
+#include "network/create-socketresult.hpp"      // create_socketresult()
+#include "network/error-strings.hpp"            // VISITOR_ERROR
+#include "network/error.hpp"                    // Error
+#include "network/oserrorresult.hpp"            // OsErrorResult
+#include "network/sockethints.hpp"              // SocketHints
+#include "network/uniquesocket.hpp"             // UniqueSocket
 
 #include <type_traits>  // std::decay_t, std::is_same_v
 #include <variant>      // std::visit()

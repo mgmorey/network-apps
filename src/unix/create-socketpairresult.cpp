@@ -15,22 +15,22 @@
 
 #ifndef WIN32
 
-#include "network/create-socketpairresult.h"    // create_socketpairresult()
-#include "network/create-socket-handle.h"       // create_socket()
-#include "network/format-os-error.h"            // format_os_error()
-#include "network/format.h"                     // Format
-#include "network/get-api-error.h"              // get_api_error()
-#include "network/handle-null.h"                // handle_null
-#include "network/oserrorresult.h"              // OsErrorResult
-#include "network/reset-api-error.h"            // reset_api_error()
-#include "network/socket-error.h"               // socket_error
-#include "network/socketfamily.h"               // SocketFamily
-#include "network/sockethints.h"                // SocketHints
-#include "network/socketpair.h"                 // SocketPair
-#include "network/socketpairresult.h"           // SocketPairResult
-#include "network/socketprotocol.h"             // SocketProtocol
-#include "network/sockettype.h"                 // SocketType
-#include "network/to-os-error.h"                // to_os_error()
+#include "network/create-socketpairresult.hpp"  // create_socketpairresult()
+#include "network/create-socket-handle.hpp"     // create_socket()
+#include "network/format-os-error.hpp"          // format_os_error()
+#include "network/format.hpp"                   // Format
+#include "network/get-api-error.hpp"            // get_api_error()
+#include "network/handle-null.hpp"              // handle_null
+#include "network/oserrorresult.hpp"            // OsErrorResult
+#include "network/reset-api-error.hpp"          // reset_api_error()
+#include "network/socket-error.hpp"             // socket_error
+#include "network/socketfamily.hpp"             // SocketFamily
+#include "network/sockethints.hpp"              // SocketHints
+#include "network/socketpair.hpp"               // SocketPair
+#include "network/socketpairresult.hpp"         // SocketPairResult
+#include "network/socketprotocol.hpp"           // SocketProtocol
+#include "network/sockettype.hpp"               // SocketType
+#include "network/to-os-error.hpp"              // to_os_error()
 
 #include <sys/socket.h>     // ::socketpair()
 

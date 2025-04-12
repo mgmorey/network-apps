@@ -15,7 +15,7 @@
 
 #ifdef WIN32
 
-#include "network/set-api-error.h"      // set_api_error()
+#include "network/set-api-error.hpp"    // set_api_error()
 
 #include <winsock2.h>       // WSASetLastError()
 

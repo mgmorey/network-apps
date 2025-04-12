@@ -13,9 +13,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-sin6-port.h"      // get_sin6_port()
-#include "network/get-sin6-pointer.h"   // get_sin6_pointer()
-#include "network/port-type.h"          // port_type
+#include "network/get-sin6-port.hpp"    // get_sin6_port()
+#include "network/get-sin6-pointer.hpp" // get_sin6_pointer()
+#include "network/port-type.hpp"        // port_type
 
 #ifdef WIN32
 #include <winsock2.h>       // ntohs()

@@ -13,11 +13,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/sockethost.h"         // SocketHost
-#include "network/bytestring.h"         // ByteString
-#include "network/optionalhostname.h"   // OptionalHostname
-#include "network/to-bytestring-void.h" // to_bytestring()
-#include "network/to-sa-length.h"       // to_sa_length()
+#include "network/sockethost.hpp"               // SocketHost
+#include "network/bytestring.hpp"               // ByteString
+#include "network/optionalhostname.hpp"         // OptionalHostname
+#include "network/to-bytestring-void.hpp"       // to_bytestring()
+#include "network/to-sa-length.hpp"             // to_sa_length()
 
 #ifdef WIN32
 #include <ws2tcpip.h>       // addrinfo
