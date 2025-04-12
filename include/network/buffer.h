@@ -63,12 +63,12 @@ namespace Network
             return m_buffer.size();
         }
 
-        [[nodiscard]] auto value() noexcept -> buffer_type&
+        [[nodiscard]] auto value() const noexcept -> const buffer_type&
         {
             return m_buffer;
         }
 
-        [[nodiscard]] auto value() const noexcept -> const buffer_type&
+        [[nodiscard]] auto value() noexcept -> buffer_type&
         {
             return m_buffer;
         }

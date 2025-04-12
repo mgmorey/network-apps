@@ -32,8 +32,8 @@ namespace Network
         ~BinaryBuffer() noexcept = default;
         auto operator=(const BinaryBuffer&) noexcept -> BinaryBuffer& = default;
         auto operator=(BinaryBuffer&&) noexcept -> BinaryBuffer& = default;
+        auto operator*() noexcept -> buffer_type&;
         [[nodiscard]] auto length() noexcept -> socket_length_type&;
-        [[nodiscard]] auto value() noexcept -> buffer_type&;
 
     private:
         socket_length_type m_length {0};

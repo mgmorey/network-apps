@@ -117,5 +117,5 @@ auto Network::get_nameresult(const SocketData& sd, bool is_sockname) ->
         // clang-format on
     }
 
-    return buffer.value();
+    return *buffer;
 }

@@ -94,5 +94,5 @@ auto Network::accept(const SocketData& sd) -> AcceptResult
         // clang-format on
     }
 
-    return {SocketData {sd, handle_2}, buffer.value()};
+    return {SocketData {sd, handle_2}, *buffer};
 }

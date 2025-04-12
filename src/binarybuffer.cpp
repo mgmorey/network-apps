@@ -24,13 +24,13 @@ Network::BinaryBuffer::BinaryBuffer() :
 {
 }
 
-auto Network::BinaryBuffer::length() noexcept -> socket_length_type&
-{
-    return m_length;
-}
-
-auto Network::BinaryBuffer::value() noexcept -> Buffer::buffer_type&
+auto Network::BinaryBuffer::operator*() noexcept -> Buffer::buffer_type&
 {
     resize(to_size(m_length));
     return Buffer::value();
+}
+
+auto Network::BinaryBuffer::length() noexcept -> socket_length_type&
+{
+    return m_length;
 }
