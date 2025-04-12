@@ -24,7 +24,6 @@
 #include "network/reset-api-error.h"            // reset_api_error()
 #include "network/socketdata.h"                 // SocketData
 #include "network/to-os-error.h"                // to_os_error()
-#include "network/to-size.h"                    // to_size()
 #include "network/to-string-span-byte.h"        // to_string()
 
 #ifdef WIN32
@@ -41,7 +40,7 @@ auto Network::accept(const SocketData& sd) -> AcceptResult
 {
     BinaryBuffer buffer;
     const std::span bs {buffer};
-    auto [sa, sa_length] {get_sa_span(bs)};
+    auto [sa, sa_length] {get_sa_span(buffer)};
     const auto handle_1 {sd.handle()};
     const auto is_verbose {sd.is_verbose()};
 
@@ -80,8 +79,6 @@ auto Network::accept(const SocketData& sd) -> AcceptResult
         throw Error(oss.str());
     }
 
-    buffer.resize(to_size(sa_length));
-
     if (is_verbose) {
         const auto str {to_string(buffer)};
         // clang-format off
@@ -97,5 +94,5 @@ auto Network::accept(const SocketData& sd) -> AcceptResult
         // clang-format on
     }
 
-    return {SocketData {sd, handle_2}, *buffer};
+    return {SocketData {sd, handle_2}, buffer.value()};
 }

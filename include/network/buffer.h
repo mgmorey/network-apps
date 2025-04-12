@@ -38,16 +38,6 @@ namespace Network
         auto operator=(const Buffer&) noexcept -> Buffer& = default;
         auto operator=(Buffer&&) noexcept -> Buffer& = default;
 
-        auto operator*() noexcept -> buffer_type&
-        {
-            return m_buffer;
-        }
-
-        auto operator*() const noexcept -> const buffer_type&
-        {
-            return m_buffer;
-        }
-
         [[nodiscard]] auto begin() noexcept -> iterator
         {
             return m_buffer.begin();
@@ -71,6 +61,16 @@ namespace Network
         [[nodiscard]] auto size() const noexcept -> size_type
         {
             return m_buffer.size();
+        }
+
+        [[nodiscard]] auto value() noexcept -> buffer_type&
+        {
+            return m_buffer;
+        }
+
+        [[nodiscard]] auto value() const noexcept -> const buffer_type&
+        {
+            return m_buffer;
         }
 
     private:

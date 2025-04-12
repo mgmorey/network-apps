@@ -14,6 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/get-sa-span.h"                // get_sa_span()
+#include "network/binarybuffer.h"               // BinaryBuffer
 #include "network/get-sa-length.h"              // get_sa_length()
 #include "network/get-sa-pointer.h"             // get_sa_pointer()
 #include "network/socket-length-type.h"         // socket_length_type
@@ -27,6 +28,14 @@
 #include <cstddef>      // std::byte
 #include <span>         // std::span
 #include <utility>      // std::pair
+
+auto Network::get_sa_span(BinaryBuffer& buffer) ->
+    std::pair<sockaddr*, socket_length_type&>
+{
+    void* pointer {buffer.data()};
+    auto& length {buffer.length()};
+    return {static_cast<sockaddr*>(pointer), length};
+}
 
 auto Network::get_sa_span(std::span<std::byte> bs) ->
     std::pair<sockaddr*, socket_length_type>

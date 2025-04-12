@@ -25,7 +25,6 @@
 #include "network/socket-error.h"               // socket_error
 #include "network/socketdata.h"                 // SocketData
 #include "network/to-os-error.h"                // to_os_error()
-#include "network/to-size.h"                    // to_size()
 #include "network/to-string-span-byte.h"        // to_string()
 
 #ifdef WIN32
@@ -59,7 +58,7 @@ auto Network::get_nameresult(const SocketData& sd, bool is_sockname) ->
     const auto binding {get_binding(is_sockname)};
     BinaryBuffer buffer;
     const std::span bs {buffer};
-    auto [sa, sa_length] {get_sa_span(bs)};
+    auto [sa, sa_length] {get_sa_span(buffer)};
     const auto handle {sd.handle()};
     const auto is_verbose {sd.is_verbose()};
 
@@ -101,8 +100,6 @@ auto Network::get_nameresult(const SocketData& sd, bool is_sockname) ->
         return OsErrorResult {os_error, oss.str()};
     }
 
-    buffer.resize(to_size(sa_length));
-
     if (is_verbose) {
         const auto str {to_string(buffer)};
         // clang-format off
@@ -120,5 +117,5 @@ auto Network::get_nameresult(const SocketData& sd, bool is_sockname) ->
         // clang-format on
     }
 
-    return *buffer;
+    return buffer.value();
 }

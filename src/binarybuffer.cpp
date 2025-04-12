@@ -16,8 +16,21 @@
 #include "network/binarybuffer.h"       // BinaryBuffer
 #include "network/buffer.h"             // Buffer
 #include "network/sa-length-limits.h"   // sa_length_max
+#include "network/to-size.h"            // to_size()
 
 Network::BinaryBuffer::BinaryBuffer() :
-    Buffer(sa_length_max)
+    Buffer(sa_length_max),
+    m_length(sa_length_max)
 {
+}
+
+auto Network::BinaryBuffer::length() noexcept -> socket_length_type&
+{
+    return m_length;
+}
+
+auto Network::BinaryBuffer::value() noexcept -> Buffer::buffer_type&
+{
+    resize(to_size(m_length));
+    return Buffer::value();
 }

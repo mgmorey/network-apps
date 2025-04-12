@@ -16,8 +16,9 @@
 #ifndef NETWORK_BINARYBUFFER_H
 #define NETWORK_BINARYBUFFER_H
 
-#include "network/buffer.h"             // Buffer
-#include "network/bytestring.h"         // ByteString
+#include "network/buffer.h"                     // Buffer
+#include "network/bytestring.h"                 // ByteString
+#include "network/socket-length-type.h"         // socket_length_type
 
 namespace Network
 {
@@ -31,6 +32,11 @@ namespace Network
         ~BinaryBuffer() noexcept = default;
         auto operator=(const BinaryBuffer&) noexcept -> BinaryBuffer& = default;
         auto operator=(BinaryBuffer&&) noexcept -> BinaryBuffer& = default;
+        [[nodiscard]] auto length() noexcept -> socket_length_type&;
+        [[nodiscard]] auto value() noexcept -> buffer_type&;
+
+    private:
+        socket_length_type m_length {0};
     };
 }
 
