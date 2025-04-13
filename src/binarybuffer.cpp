@@ -13,10 +13,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/binarybuffer.hpp"     // BinaryBuffer
-#include "network/buffer.hpp"           // Buffer
-#include "network/sa-length-limits.hpp" // sa_length_max
-#include "network/to-size.hpp"          // to_size()
+#include "network/binarybuffer.hpp"             // BinaryBuffer
+#include "network/buffer.hpp"                   // Buffer
+#include "network/sa-length-limits.hpp"         // sa_length_max
+#include "network/to-size.hpp"                  // to_size()
 
 Network::BinaryBuffer::BinaryBuffer() :
     Buffer(sa_length_max),

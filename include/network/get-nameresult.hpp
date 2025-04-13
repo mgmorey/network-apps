@@ -16,8 +16,8 @@
 #ifndef NETWORK_GET_NAMERESULT_HPP
 #define NETWORK_GET_NAMERESULT_HPP
 
-#include "network/bytestringresult.hpp" // ByteStringResult
-#include "network/socketdata.hpp"       // SocketData
+#include "network/bytestringresult.hpp"         // ByteStringResult
+#include "network/socketdata.hpp"               // SocketData
 
 namespace Network
 {

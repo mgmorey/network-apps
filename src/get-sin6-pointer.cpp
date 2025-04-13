@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-sin6-pointer.hpp" // get_sin6_pointer()
-#include "network/validate-sin6.hpp"    // validate()
+#include "network/get-sin6-pointer.hpp"         // get_sin6_pointer()
+#include "network/validate-sin6.hpp"            // validate()
 
 #ifdef WIN32
 #include <ws2tcpip.h>       // sockaddr_in6

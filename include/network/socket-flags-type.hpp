@@ -16,7 +16,7 @@
 #ifndef NETWORK_SOCKET_FLAGS_TYPE_HPP
 #define NETWORK_SOCKET_FLAGS_TYPE_HPP
 
-#include "network/socket-hint-type.hpp" // socket_hint_type
+#include "network/socket-hint-type.hpp"         // socket_hint_type
 
 namespace Network
 {

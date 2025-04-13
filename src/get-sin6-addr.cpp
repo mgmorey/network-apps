@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-sin6-addr.hpp"    // get_sin6_addr()
-#include "network/get-sin6-pointer.hpp" // get_sin6_pointer()
+#include "network/get-sin6-addr.hpp"            // get_sin6_addr()
+#include "network/get-sin6-pointer.hpp"         // get_sin6_pointer()
 
 #ifdef WIN32
 #include <ws2tcpip.h>       // in6_addr

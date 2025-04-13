@@ -13,13 +13,13 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/validate-bs.hpp"      // validate
-#include "network/familyerror.hpp"      // FamilyError
-#include "network/get-sa-family.hpp"    // get_sa_family()
-#include "network/get-sin-pointer.hpp"  // get_sin_pointer()
-#include "network/get-sin6-pointer.hpp" // get_sin6_pointer()
+#include "network/validate-bs.hpp"              // validate
+#include "network/familyerror.hpp"              // FamilyError
+#include "network/get-sa-family.hpp"            // get_sa_family()
+#include "network/get-sin-pointer.hpp"          // get_sin_pointer()
+#include "network/get-sin6-pointer.hpp"         // get_sin6_pointer()
 #ifndef WIN32
-#include "network/get-sun-pointer.hpp"  // get_sun_pointer()
+#include "network/get-sun-pointer.hpp"          // get_sun_pointer()
 #endif
 
 #ifdef WIN32

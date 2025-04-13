@@ -16,11 +16,11 @@
 #ifndef NETWORK_STRING_TYPES_HPP
 #define NETWORK_STRING_TYPES_HPP
 
-#include "network/hostname.hpp"         // Hostname
-#include "network/optionalhostname.hpp" // OptionalHostname
-#include "network/optionalpathname.hpp" // OptionalPathname
-#include "network/optionalservice.hpp"  // OptionalService
-#include "network/pathname.hpp"         // Pathmame
-#include "network/service.hpp"          // Service
+#include "network/hostname.hpp"                 // Hostname
+#include "network/optionalhostname.hpp"         // OptionalHostname
+#include "network/optionalpathname.hpp"         // OptionalPathname
+#include "network/optionalservice.hpp"          // OptionalService
+#include "network/pathname.hpp"                 // Pathmame
+#include "network/service.hpp"                  // Service
 
 #endif

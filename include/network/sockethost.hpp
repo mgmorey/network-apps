@@ -16,8 +16,8 @@
 #ifndef NETWORK_SOCKETHOST_HPP
 #define NETWORK_SOCKETHOST_HPP
 
-#include "network/bytestring.hpp"       // ByteString
-#include "network/optionalhostname.hpp" // OptionalHostname
+#include "network/bytestring.hpp"               // ByteString
+#include "network/optionalhostname.hpp"         // OptionalHostname
 
 #ifdef WIN32
 #include <ws2tcpip.h>       // addrinfo
