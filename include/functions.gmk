@@ -49,7 +49,7 @@ endef
 # $(call compile-source-to-object,SOURCE-FILENAMES,OBJECT-FILENAME)
 define compile-source-to-object
 $(strip $(COMPILE$(source_suffix)) $(OUTPUT_OPTION) $1 $(if	\
-$(wildcard $(2:$(object_suffix)=.gcda)), && /bin/rm -f	\
+$(wildcard $(2:$(object_suffix)=.gcda)), && /bin/rm -f		\
 $(2:$(object_suffix)=.gcda),))
 endef
 
@@ -133,8 +133,8 @@ endef
 # $(call install-includes,INCLUDE-DIRECTORY)
 define install-includes
 $(install) -d $1/$(PROJECT_NAME)
-$(install) -m 644						\
-$(include_dir)/$(PROJECT_NAME)/*$(include_suffix)		\
+$(install) -m 644					\
+$(include_dir)/$(PROJECT_NAME)/*$(include_suffix)	\
 $1/$(PROJECT_NAME)
 $(install) -d $1/$(api)/$(PROJECT_NAME)
 $(install) -m 644						\
