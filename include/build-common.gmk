@@ -121,7 +121,7 @@ map = $(@:$(if $(is_shared),$(shared_suffix),$(binary_suffix))=.map)
 map_opt = $(if $(filter gnu,$(ld_family)),-Map,-map)
 
 # Add load map linker option flag to LDFLAGS
-ldflags += $(if $(filter true,$(WITH_LOADMAPS)),$(call		\
+ldflags += $(if $(filter true,$(WITH_LOADMAPS)),$(call	\
 format-ld-flag,$(map_opt),$(map)),)
 
 # Add -install_name linker option flag to LDFLAGS

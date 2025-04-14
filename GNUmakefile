@@ -178,7 +178,7 @@ test_logfiles = $(test_programs:$(binary_suffix)=.log)
 unix_logfiles = $(unix_programs:$(binary_suffix)=.log)
 
 artifacts = $(binary_artifacts) $(text_artifacts)
-binary_artifacts = $(gcov_files) $(libraries)		\
+binary_artifacts = $(gcov_files) $(libraries)	\
 $(objects) $(package) $(programs) TAGS
 text_artifacts = $(coverage_html) $(coverage_json)	\
 $(compile_commands) $(compile_flags) $(cppcheck_log)	\
@@ -196,7 +196,7 @@ program_args = $(strip $(if $(filter .,$(output_dir)),,-d $(output_dir)) -v)
 
 # Define target list variables
 
-all_targets = $(build_targets) test $(if $(filter 	\
+all_targets = $(build_targets) test $(if $(filter	\
 Debug,$(BUILD_TYPE)),$(if $(GCOVR),$(if $(filter	\
 true,$(WITH_COVERAGE)),$(gcovr_targets),),))		\
 $(if $(is_windows_api),dos2unix,)
