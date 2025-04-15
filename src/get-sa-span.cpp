@@ -37,12 +37,6 @@ auto Network::get_sa_span(BinaryBuffer& buffer) ->
     return {static_cast<sockaddr*>(pointer), length};
 }
 
-auto Network::get_sa_span(std::span<std::byte> bs) ->
-    std::pair<sockaddr*, socket_length_type>
-{
-    return {get_sa_pointer(bs), get_sa_length(bs)};
-}
-
 auto Network::get_sa_span(std::span<const std::byte> bs) ->
     std::pair<const sockaddr*, socket_length_type>
 {
