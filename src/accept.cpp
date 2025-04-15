@@ -19,7 +19,6 @@
 #include "network/error.hpp"                    // Error
 #include "network/format-os-error.hpp"          // format_os_error()
 #include "network/get-api-error.hpp"            // get_api_error()
-#include "network/get-sa-span-buffer.hpp"       // get_sa_span()
 #include "network/handle-null.hpp"              // handle_null
 #include "network/reset-api-error.hpp"          // reset_api_error()
 #include "network/socketdata.hpp"               // SocketData
@@ -40,7 +39,7 @@ auto Network::accept(const SocketData& sd) -> AcceptResult
 {
     BinaryBuffer buffer;
     const std::span bs {buffer};
-    auto [sa, sa_length] {get_sa_span(buffer)};
+    auto [sa, sa_length] {buffer.span()};
     const auto handle_1 {sd.handle()};
     const auto is_verbose {sd.is_verbose()};
 

@@ -20,11 +20,19 @@
 #include "network/bytestring.hpp"               // ByteString
 #include "network/socket-length-type.hpp"       // socket_length_type
 
+#ifdef WIN32
+#include <winsock2.h>       // sockaddr
+#else
+#include <sys/socket.h>     // sockaddr
+#endif
+
 namespace Network
 {
     class BinaryBuffer : public Buffer<ByteString>
     {
     public:
+        using span_type = std::pair<sockaddr*, socket_length_type&>;
+
         BinaryBuffer();
 
         BinaryBuffer(const BinaryBuffer&) noexcept = default;
@@ -33,7 +41,7 @@ namespace Network
         auto operator=(const BinaryBuffer&) noexcept -> BinaryBuffer& = default;
         auto operator=(BinaryBuffer&&) noexcept -> BinaryBuffer& = default;
         auto operator*() noexcept -> buffer_type&;
-        [[nodiscard]] auto length() noexcept -> socket_length_type&;
+        [[nodiscard]] auto span() -> span_type;
 
     private:
         socket_length_type m_length {0};

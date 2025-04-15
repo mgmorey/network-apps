@@ -18,6 +18,12 @@
 #include "network/sa-length-limits.hpp"         // sa_length_max
 #include "network/to-size.hpp"                  // to_size()
 
+#ifdef WIN32
+#include <winsock2.h>       // sockaddr
+#else
+#include <sys/socket.h>     // sockaddr
+#endif
+
 Network::BinaryBuffer::BinaryBuffer() :
     Buffer(sa_length_max),
     m_length(sa_length_max)
@@ -30,7 +36,9 @@ auto Network::BinaryBuffer::operator*() noexcept -> Buffer::buffer_type&
     return Buffer::value();
 }
 
-auto Network::BinaryBuffer::length() noexcept -> socket_length_type&
+auto Network::BinaryBuffer::span() -> span_type
 {
-    return m_length;
+    void* pointer {data()};
+    auto& length {m_length};
+    return {static_cast<sockaddr*>(pointer), length};
 }

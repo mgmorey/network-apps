@@ -18,7 +18,6 @@
 #include "network/bytestringresult.hpp"         // ByteStringResult
 #include "network/format-os-error.hpp"          // format_os_error()
 #include "network/get-api-error.hpp"            // get_api_error()
-#include "network/get-sa-span-buffer.hpp"       // get_sa_span()
 #include "network/getnamehandler.hpp"           // GetNameHandler
 #include "network/oserrorresult.hpp"            // OsErrorResult
 #include "network/reset-api-error.hpp"          // reset_api_error()
@@ -58,7 +57,7 @@ auto Network::get_nameresult(const SocketData& sd, bool is_sockname) ->
     const auto binding {get_binding(is_sockname)};
     BinaryBuffer buffer;
     const std::span bs {buffer};
-    auto [sa, sa_length] {get_sa_span(buffer)};
+    auto [sa, sa_length] {buffer.span()};
     const auto handle {sd.handle()};
     const auto is_verbose {sd.is_verbose()};
 
