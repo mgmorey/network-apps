@@ -13,10 +13,23 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_GET_SA_SPAN_HPP
-#define NETWORK_GET_SA_SPAN_HPP
-
 #include "network/get-sa-span-buffer.hpp"       // get_sa_span()
-#include "network/get-sa-span-span.hpp"         // get_sa_span()
+#include "network/binarybuffer.hpp"             // BinaryBuffer
+#include "network/socket-length-type.hpp"       // socket_length_type
 
+#ifdef WIN32
+#include <winsock2.h>       // sockaddr
+#else
+#include <sys/socket.h>     // sockaddr
 #endif
+
+
+#include <utility>      // std::pair
+
+auto Network::get_sa_span(BinaryBuffer& buffer) ->
+    std::pair<sockaddr*, socket_length_type&>
+{
+    void* pointer {buffer.data()};
+    auto& length {buffer.length()};
+    return {static_cast<sockaddr*>(pointer), length};
+}
