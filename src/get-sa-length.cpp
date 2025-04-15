@@ -20,12 +20,6 @@
 #include <cstddef>      // std::byte
 #include <span>         // std::span
 
-auto Network::get_sa_length(std::span<std::byte> bs) ->
-    socket_length_type
-{
-    return to_socket_length(bs.size());
-}
-
 auto Network::get_sa_length(std::span<const std::byte> bs) ->
     socket_length_type
 {
