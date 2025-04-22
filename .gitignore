@@ -49,10 +49,6 @@ default.profraw
 *.so.*
 *.dylib
 
-# Timestamp files
-.test-complete
-.unix-complete
-
 # Executables
 *.exe
 *.out
@@ -127,7 +123,6 @@ test-address
 test-bind
 test-connect
 test-context
-test-create
 test-errors
 test-host
 test-hostname
