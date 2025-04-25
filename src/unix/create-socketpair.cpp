@@ -30,14 +30,14 @@
 auto Network::create_socketpair(const SocketHints& hints,
                                 bool is_verbose) -> SocketPair
 {
-    SocketPair socketpair;
+    SocketPair sp;
     auto result {create_socketpairresult(hints, is_verbose)};
     std::visit([&](auto&& arg) {
         using T = std::decay_t<decltype(arg)>;
 
         if constexpr (std::is_same_v<T, SocketPair>) {
-            socketpair[0].swap(arg[0]);
-            socketpair[1].swap(arg[1]);
+            sp[0].swap(arg[0]);
+            sp[1].swap(arg[1]);
         }
         else if constexpr (std::is_same_v<T, OsErrorResult>) {
             throw Error(arg.string());
@@ -46,7 +46,7 @@ auto Network::create_socketpair(const SocketHints& hints,
             static_assert(always_false_v<T>, VISITOR_ERROR);
         }
     }, result);
-    return socketpair;
+    return sp;
 }
 
 #endif
