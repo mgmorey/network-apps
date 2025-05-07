@@ -36,6 +36,7 @@
 
 #include <algorithm>    // std::transform
 #include <iostream>     // std::cout, std::endl
+#include <iterator>     // std::back_inserter
 #include <sstream>      // std::ostringstream
 #include <vector>       // std::vector
 
@@ -90,7 +91,7 @@ auto Network::create_socketpairresult(const SocketHints& hints,
     SocketPair sp;
     std::ranges::transform(handles,
                            std::back_inserter(sp),
-                           [family, is_verbose](handle_type handle) {
+                           [=](handle_type handle) {
                                return create_socket(handle, family, is_verbose);
                            });
     return sp;
