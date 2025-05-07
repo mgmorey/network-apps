@@ -20,11 +20,11 @@
 
 #include "network/uniquesocket.hpp"     // UniqueSocket
 
-#include <array>        // std::array
+#include <vector>       // std::vector
 
 namespace Network
 {
-    using SocketPair = std::array<UniqueSocket, 2>;
+    using SocketPair = std::vector<UniqueSocket>;
 }
 
 #endif

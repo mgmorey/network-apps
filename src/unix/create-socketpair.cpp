@@ -36,8 +36,7 @@ auto Network::create_socketpair(const SocketHints& hints,
         using T = std::decay_t<decltype(arg)>;
 
         if constexpr (std::is_same_v<T, SocketPair>) {
-            sp[0].swap(arg[0]);
-            sp[1].swap(arg[1]);
+            sp.swap(arg);
         }
         else if constexpr (std::is_same_v<T, OsErrorResult>) {
             throw Error(arg.string());

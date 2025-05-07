@@ -34,9 +34,10 @@
 
 #include <sys/socket.h>     // ::socketpair()
 
-#include <array>        // std::array
+#include <algorithm>    // std::transform
 #include <iostream>     // std::cout, std::endl
 #include <sstream>      // std::ostringstream
+#include <vector>       // std::vector
 
 auto Network::create_socketpairresult(const SocketHints& hints,
                                       bool is_verbose) -> SocketPairResult
@@ -45,7 +46,7 @@ auto Network::create_socketpairresult(const SocketHints& hints,
     static constexpr auto tab {0};
 
     const auto family {hints.m_family};
-    std::array<handle_type, 2> handles {handle_null, handle_null};
+    std::vector<handle_type> handles(2, handle_null);
 
     if (is_verbose) {
         // clang-format off
@@ -86,10 +87,12 @@ auto Network::create_socketpairresult(const SocketHints& hints,
         return OsErrorResult {os_error, oss.str()};
     }
 
-    return SocketPair {
-        create_socket(handles[0], family, is_verbose),
-        create_socket(handles[1], family, is_verbose)
-    };
+    SocketPair sp;
+    std::ranges::transform(
+        handles, std::back_inserter(sp), [&](handle_type handle) {
+            return create_socket(handle, family, is_verbose);
+        });
+    return sp;
 }
 
 #endif
