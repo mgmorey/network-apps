@@ -21,7 +21,7 @@
 #include "network/socketresultvector.hpp"       // SocketResultVector
 #include "network/template.hpp"                 // Template
 
-#include <algorithm>    // std::ranges
+#include <algorithm>    // std::ranges::transform()
 #include <iterator>     // std::back_inserter()
 #include <vector>       // std::vector
 

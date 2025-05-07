@@ -34,7 +34,7 @@
 
 #include <sys/socket.h>     // ::socketpair()
 
-#include <algorithm>    // std::transform
+#include <algorithm>    // std::ranges::transform()
 #include <iostream>     // std::cout, std::endl
 #include <iterator>     // std::back_inserter
 #include <sstream>      // std::ostringstream
