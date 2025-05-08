@@ -92,7 +92,9 @@ auto Network::create_socketpairresult(const SocketHints& hints,
     std::ranges::transform(handles,
                            std::back_inserter(sp),
                            [=](handle_type handle) {
-                               return create_socket(handle, family, is_verbose);
+                               return create_socket(handle,
+                                                    family,
+                                                    is_verbose);
                            });
     return sp;
 }
