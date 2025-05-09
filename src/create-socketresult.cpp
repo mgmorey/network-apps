@@ -84,5 +84,20 @@ auto Network::create_socketresult(const SocketHints& hints,
         return OsErrorResult {os_error, oss.str()};
     }
 
+    if (is_verbose) {
+        // clang-format off
+        std::cout << "Call to ::socket("
+                  << Format("domain")
+                  << SocketFamily(family)
+                  << Format(delim, tab, "type")
+                  << SocketType(hints.m_socktype)
+                  << Format(delim, tab, "protocol")
+                  << SocketProtocol(hints.m_protocol, family)
+                  << ") returned data "
+                  << handle
+                  << std::endl;
+        // clang-format on
+    }
+
     return create_socket(handle, family, is_verbose);
 }
