@@ -88,6 +88,24 @@ auto Network::create_socketpairresult(const SocketHints& hints,
         return OsErrorResult {os_error, oss.str()};
     }
 
+    if (is_verbose) {
+        // clang-format off
+        std::cout << "Call to ::socketpair("
+                  << Format("domain")
+                  << SocketFamily(family)
+                  << Format(delim, tab, "type")
+                  << SocketType(hints.m_socktype)
+                  << Format(delim, tab, "protocol")
+                  << SocketProtocol(hints.m_protocol, family)
+                  << ") returned data {"
+                  << handles[0]
+                  << ", "
+                  << handles[1]
+                  << '}'
+                  << std::endl;
+        // clang-format on
+    }
+
     SocketPair sp;
     std::ranges::transform(handles,
                            std::back_inserter(sp),
