@@ -58,7 +58,12 @@ auto Network::create_socketpairresult(const SocketHints& hints,
                   << SocketType(hints.m_socktype)
                   << Format(delim, tab, "protocol")
                   << SocketProtocol(hints.m_protocol, family)
-                  << ", ...)"
+                  << Format(delim, tab, "fds")
+                  << '{'
+                  << handles[0]
+                  << ", "
+                  << handles[1]
+                  << "})"
                   << std::endl;
         // clang-format on
     }
@@ -80,7 +85,12 @@ auto Network::create_socketpairresult(const SocketHints& hints,
             << SocketType(hints.m_socktype)
             << Format(delim, tab, "protocol")
             << SocketProtocol(hints.m_protocol, family)
-            << ", ...) failed with error "
+            << Format(delim, tab, "fds")
+            << '{'
+            << handles[0]
+            << ", "
+            << handles[1]
+            << "}) failed with error "
             << api_error
             << ": "
             << format_os_error(os_error);
@@ -97,7 +107,12 @@ auto Network::create_socketpairresult(const SocketHints& hints,
                   << SocketType(hints.m_socktype)
                   << Format(delim, tab, "protocol")
                   << SocketProtocol(hints.m_protocol, family)
-                  << ") returned data {"
+                  << Format(delim, tab, "fds")
+                  << '{'
+                  << handles[0]
+                  << ", "
+                  << handles[1]
+                  << "}) returned data {"
                   << handles[0]
                   << ", "
                   << handles[1]
