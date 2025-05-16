@@ -33,9 +33,9 @@
 #include <sstream>      // std::ostringstream
 #include <string_view>  // std::string_view
 
-auto Network::read(const SocketData& sd, std::span<char> sc) -> ssize_t
+auto Network::read(const SocketData& sd, std::span<char> cs) -> ssize_t
 {
-    const std::string_view sv {sc.data(), sc.size()};
+    const std::string_view sv {cs.data(), cs.size()};
     const auto handle {sd.handle()};
     const auto is_verbose {sd.is_verbose()};
 
@@ -46,14 +46,14 @@ auto Network::read(const SocketData& sd, std::span<char> sc) -> ssize_t
                   << ", "
                   << quote(sv)
                   << ", "
-                  << sc.size()
+                  << cs.size()
                   << ')'
                   << std::endl;
         // clang-format on
     }
 
     reset_api_error();
-    const auto result {::read(handle, sc.data(), sc.size())};
+    const auto result {::read(handle, cs.data(), cs.size())};
 
     if (result == socket_error) {
         const auto api_error {get_api_error()};
@@ -65,7 +65,7 @@ auto Network::read(const SocketData& sd, std::span<char> sc) -> ssize_t
             << ", "
             << quote(sv)
             << ", "
-            << sc.size()
+            << cs.size()
             << ") failed with error "
             << api_error
             << ": "
@@ -81,7 +81,7 @@ auto Network::read(const SocketData& sd, std::span<char> sc) -> ssize_t
                   << ", "
                   << quote(sv)
                   << ", "
-                  << sc.size()
+                  << cs.size()
                   << ") returned data "
                   << quote(sv)
                   << std::endl;
