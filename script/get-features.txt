@@ -10,6 +10,8 @@ Linux		/opt/rh/gcc-toolset-14/root/usr/bin/as	listings
 Linux		/opt/rh/gcc-toolset-14/root/usr/bin/ld	rpath,soname
 Linux		/usr/bin/as				listings
 Linux		/usr/bin/ld				rpath,soname
+Linux		/usr/sbin/as				listings
+Linux		/usr/sbin/ld				rpath,soname
 MINGW64_NT	/clang64/bin/as
 MINGW64_NT	/clang64/bin/ld
 MINGW64_NT	/mingw64/bin/as				listings
