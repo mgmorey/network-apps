@@ -248,10 +248,10 @@ namespace
         std::string service_str;
         std::string actual_str;
 
-        if (auto result {get_endpointresult(hostname_str,
-                                            service_str,
-                                            addr, -1,
-                                            is_verbose)}) {
+        if (const auto result {get_endpointresult(hostname_str,
+                                                  service_str,
+                                                  addr, -1,
+                                                  is_verbose)}) {
             print(result);
             actual_str = result.string();
         }
