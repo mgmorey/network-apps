@@ -100,13 +100,12 @@ namespace
     auto is_verbose {false};	// NOLINT
     Address previous_address;		// NOLINT
 
-    auto create_sa(sa_family_type family, std::size_t length = sa_size) -> sockaddr
+    auto create_sa(sa_family_type family,
+                   [[maybe_unused]] std::size_t length = sa_size) -> sockaddr
     {
         sockaddr sa {};
 #ifdef HAVE_SOCKADDR_SA_LEN
         sa.sa_len = length;
-#else
-        static_cast<void>(length);
 #endif
         sa.sa_family = family;
         return sa;
@@ -135,14 +134,12 @@ namespace
 #ifndef WIN32
 
     auto create_sun(sa_family_type family = af_unix,
-                    std::size_t sun_len = sun_size,
+                    [[maybe_unused]] std::size_t sun_len = sun_size,
                     std::size_t path_len = 0UL) -> sockaddr_un
     {
         sockaddr_un sun {};
 #ifdef HAVE_SOCKADDR_SA_LEN
         sun.sun_len = sun_len;
-#else
-        static_cast<void>(sun_len);
 #endif
         sun.sun_family = family;
 
@@ -157,7 +154,7 @@ namespace
 
     auto parse_arguments(int argc, char** argv) -> void
     {
-        const auto [_, options] {parse(argc, argv, "v")};
+        [[maybe_unused]] const auto [args, options] {parse(argc, argv, "v")};
 
         if (options.contains('?')) {
             std::cerr << "Usage: "
@@ -170,8 +167,6 @@ namespace
         if (options.contains('v')) {
             is_verbose = true;
         }
-
-        static_cast<void>(_);
     }
 
     auto print(std::span<const std::byte> bs) -> void
@@ -222,12 +217,10 @@ namespace
         assert(size_min <= size);
         assert(size <= size_max);
 #ifdef HAVE_SOCKADDR_SA_LEN
-        const auto length {address.length()};
-        static_cast<void>(length);
+        static_cast<void>(address.length());
 #endif
         if (family != AF_UNIX) {
-            const auto port {address.port()};
-            static_cast<void>(port);
+            static_cast<void>(address.port());
         }
 
         const auto text {address.text()};

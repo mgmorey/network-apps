@@ -50,11 +50,8 @@ namespace
     }
 }
 
-auto main(int argc, char* argv[]) -> int
+auto main() -> int
 {
-    static_cast<void>(argc);
-    static_cast<void>(argv);
-
     try {
         test_version();
     }

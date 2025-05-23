@@ -25,13 +25,11 @@
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
 
-Network::NativeContext::NativeContext(const OptionalVersion& t_version,
-                                      FailureMode t_failure,
+Network::NativeContext::NativeContext([[maybe_unused]] const OptionalVersion& t_version,
+                                      [[maybe_unused]] FailureMode t_failure,
                                       bool t_is_verbose) :
     m_is_verbose(t_is_verbose)
 {
-    static_cast<void>(t_failure);
-    static_cast<void>(t_version);
 }
 
 Network::NativeContext::NativeContext(bool t_is_verbose) :

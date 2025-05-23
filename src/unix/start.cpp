@@ -28,7 +28,7 @@ static constexpr auto system_running {
     "Running"
 };
 
-auto Network::start(const OptionalVersion& version,
+auto Network::start([[maybe_unused]] const OptionalVersion& version,
                     bool is_verbose) -> ContextData
 {
     if (is_verbose) {
@@ -36,7 +36,6 @@ auto Network::start(const OptionalVersion& version,
                   << std::endl;
     }
 
-    static_cast<void>(version);
     return {.m_description = system_description,
             .m_system_status = system_running};
 }

@@ -39,7 +39,7 @@ namespace
 
     auto parse_arguments(int argc, char** argv) -> void
     {
-        const auto [_, options] {parse(argc, argv, "v")};
+        [[maybe_unused]] const auto [args, options] {parse(argc, argv, "v")};
 
         if (options.contains('?')) {
             std::cerr << "Usage: "
@@ -52,8 +52,6 @@ namespace
         if (options.contains('v')) {
             is_verbose = true;
         }
-
-        static_cast<void>(_);
     }
 
     auto print(const Error& error) -> void

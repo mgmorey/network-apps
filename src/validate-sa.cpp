@@ -34,7 +34,7 @@
 #endif
 
 auto Network::validate(const sockaddr* sa,
-                       length_type sa_len) -> const sockaddr*
+                       [[maybe_unused]] length_type sa_len) -> const sockaddr*
 {
     static_cast<void>(to_sa_length(sa_len));
 
@@ -45,8 +45,6 @@ auto Network::validate(const sockaddr* sa,
                                       sa_len,
                                       sa_len);
     }
-#else
-    static_cast<void>(sa_len);
 #endif
 
     switch (sa->sa_family) {

@@ -36,7 +36,8 @@
 #endif
 
 auto Network::validate(const sockaddr_un* sun,
-                       length_type sun_len) -> const sockaddr_un*
+                       [[maybe_unused]] length_type sun_len) ->
+    const sockaddr_un*
 {
     sun_len = get_sun_length(sun, to_sun_length(sun_len));
 
@@ -53,9 +54,6 @@ auto Network::validate(const sockaddr_un* sun,
         throw FamilyError(sun->sun_family);
     }
 
-#ifndef HAVE_SOCKADDR_SA_LEN
-    static_cast<void>(sun_len);
-#endif
     return sun;
 }
 

@@ -26,9 +26,9 @@
 
 #include <cstddef>      // std::nullptr_t
 
-auto Network::to_bytestring(const std::nullptr_t& path) -> ByteString
+auto Network::to_bytestring([[maybe_unused]] const std::nullptr_t& path) ->
+    ByteString
 {
-    static_cast<void>(path);
     sockaddr_un sun {};
     const auto sun_len {sun_length_min};
 #ifdef HAVE_SOCKADDR_SA_LEN
