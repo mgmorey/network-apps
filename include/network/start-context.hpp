@@ -17,13 +17,15 @@
 #define NETWORK_START_CONTEXT_HPP
 
 #include "network/failuremode.hpp"      // FailureMode
-#include "network/optionalversion.hpp"  // OptionalVersion
 #include "network/uniquecontext.hpp"    // UniqueContext
+#include "network/version.hpp"          // Version
 
 namespace Network
 {
-    extern auto start_context(const OptionalVersion& t_version,
+    extern auto start_context(Version t_version,
                               FailureMode t_failure,
+                              bool t_is_verbose) -> UniqueContext;
+    extern auto start_context(FailureMode t_failure,
                               bool t_is_verbose) -> UniqueContext;
     extern auto start_context(bool t_is_verbose = false) -> UniqueContext;
 }

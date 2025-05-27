@@ -28,7 +28,7 @@
 #include <string>       // std::string
 #include <string_view>  // std::string_view
 
-Network::NativeContext::NativeContext(const OptionalVersion& t_version,
+Network::NativeContext::NativeContext(OptionalVersion t_version,
                                       FailureMode t_failure,
                                       bool t_is_verbose)
     : m_version(t_version),

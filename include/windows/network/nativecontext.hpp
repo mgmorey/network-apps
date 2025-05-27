@@ -31,7 +31,7 @@ namespace Network
     class NativeContext final : public Context
     {
     public:
-        NativeContext(const OptionalVersion& t_version,
+        NativeContext(OptionalVersion t_version,
                       FailureMode t_failure,
                       bool t_is_verbose = false);
         explicit NativeContext(bool t_is_verbose = false);

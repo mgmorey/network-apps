@@ -18,26 +18,40 @@
 #include "network/contextdata.hpp"      // ContextData
 #include "network/optionalversion.hpp"  // OptionalVersion
 #include "network/start.hpp"            // start()
+#include "network/version.hpp"          // Version
 
 #include <iostream>     // std::cout, std::endl
 
-static constexpr auto system_description {
-    "Berkeley Software Distribution Sockets"
-};
-static constexpr auto system_running {
-    "Running"
-};
+namespace {
+    constexpr auto system_description {
+        "Berkeley Software Distribution Sockets"
+    };
+    constexpr auto system_running {
+        "Running"
+    };
 
-auto Network::start([[maybe_unused]] const OptionalVersion& version,
+    auto start([[maybe_unused]] Network::OptionalVersion version,
+               bool is_verbose) -> Network::ContextData
+    {
+        if (is_verbose) {
+            std::cout << "Starting the network runtime."
+                      << std::endl;
+        }
+
+        return {.m_description = system_description,
+                .m_system_status = system_running};
+    }
+} // namespace
+
+auto Network::start([[maybe_unused]] Version version,
                     bool is_verbose) -> ContextData
 {
-    if (is_verbose) {
-        std::cout << "Starting the network runtime."
-                  << std::endl;
-    }
+    return ::start(version, is_verbose);
+}
 
-    return {.m_description = system_description,
-            .m_system_status = system_running};
+auto Network::start(bool is_verbose) -> ContextData
+{
+    return ::start({}, is_verbose);
 }
 
 #endif

@@ -17,12 +17,12 @@
 #define NETWORK_START_HPP
 
 #include "network/contextdata.hpp"      // ContextData
-#include "network/optionalversion.hpp"  // OptionalVersion
+#include "network/version.hpp"          // Version
 
 namespace Network
 {
-    extern auto start(const OptionalVersion& version,
-                      bool is_verbose) -> ContextData;
+    extern auto start(Version version, bool is_verbose) -> ContextData;
+    extern auto start(bool is_verbose) -> ContextData;
 }
 
 #endif

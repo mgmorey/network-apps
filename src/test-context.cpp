@@ -139,7 +139,7 @@ namespace
 
     auto test_context(const Context& context,
                       const std::string& description,
-                      const OptionalVersion& version = {}) -> void
+                      OptionalVersion version = {}) -> void
     {
         print(context, description);
         assert(context.is_running());
@@ -205,9 +205,9 @@ namespace
         std::string actual_str;
 
         try {
-            const auto context_1 {start_context({}, failure_mode, is_verbose)};
+            const auto context_1 {start_context(failure_mode, is_verbose)};
             test_context(*context_1, "1", {});
-            const auto context_2 {start_context({}, failure_mode, is_verbose)};
+            const auto context_2 {start_context(failure_mode, is_verbose)};
             test_context(*context_1, "2", {});
             assert(context_1 != context_2);
             context_1->stop();

@@ -18,26 +18,46 @@
 #include "network/nativecontext.hpp"    // NativeContext
 #include "network/optionalversion.hpp"  // OptionalVersion
 #include "network/uniquecontext.hpp"    // UniqueContext
+#include "network/version.hpp"          // Version
 
 #include <memory>       // std::make_unique()
 
-auto Network::start_context(const OptionalVersion& t_version,
+namespace
+{
+    auto start_context(Network::OptionalVersion t_version,
+                       Network::FailureMode t_failure,
+                       bool t_is_verbose) ->
+        Network::UniqueContext
+    {
+        auto context
+        {
+            std::make_unique<Network::NativeContext>(t_version,
+                                                     t_failure,
+                                                     t_is_verbose)
+        };
+
+        if (context) {
+            context->start();
+        }
+
+        return context;
+    }
+}
+
+auto Network::start_context(Version t_version,
                             FailureMode t_failure,
                             bool t_is_verbose) -> UniqueContext
 {
-    auto context
-    {
-        std::make_unique<NativeContext>(t_version, t_failure, t_is_verbose)
-    };
+    return ::start_context(t_version, t_failure, t_is_verbose);
+}
 
-    if (context) {
-        context->start();
-    }
-
-    return context;
+auto Network::start_context(FailureMode t_failure,
+                            bool t_is_verbose) -> UniqueContext
+{
+    return ::start_context({}, t_failure, t_is_verbose);
 }
 
 auto Network::start_context(bool t_is_verbose) -> UniqueContext
 {
-    return start_context({}, {}, t_is_verbose);
+    return ::start_context({}, {}, t_is_verbose);
 }
