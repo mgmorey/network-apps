@@ -37,6 +37,13 @@ Network::NativeContext::NativeContext(OptionalVersion t_version,
 {
 }
 
+Network::NativeContext::NativeContext(FailureMode t_failure,
+                                      bool t_is_verbose)
+    : m_failure(t_failure),
+      m_is_verbose(t_is_verbose)
+{
+}
+
 Network::NativeContext::NativeContext(bool t_is_verbose)
     : m_is_verbose(t_is_verbose)
 {

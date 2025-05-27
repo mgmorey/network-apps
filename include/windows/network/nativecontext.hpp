@@ -18,10 +18,10 @@
 
 #ifdef WIN32
 
-#include "network/context.hpp"                  // Context
-#include "network/contextdata.hpp"              // ContextData
-#include "network/failuremode.hpp"              // FailureMode
-#include "network/optionalversion.hpp"          // OptionalVersion
+#include "network/context.hpp"          // Context
+#include "network/contextdata.hpp"      // ContextData
+#include "network/failuremode.hpp"      // FailureMode
+#include "network/optionalversion.hpp"  // OptionalVersion
 
 #include <string>       // std::string
 #include <string_view>  // std::string_view
@@ -33,7 +33,9 @@ namespace Network
     public:
         NativeContext(OptionalVersion t_version,
                       FailureMode t_failure,
-                      bool t_is_verbose = false);
+                      bool t_is_verbose);
+        NativeContext(FailureMode t_failure,
+                      bool t_is_verbose);
         explicit NativeContext(bool t_is_verbose = false);
         NativeContext(const NativeContext&) = delete;
         NativeContext(const NativeContext&&) = delete;
