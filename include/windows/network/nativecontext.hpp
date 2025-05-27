@@ -22,6 +22,7 @@
 #include "network/contextdata.hpp"      // ContextData
 #include "network/failuremode.hpp"      // FailureMode
 #include "network/optionalversion.hpp"  // OptionalVersion
+#include "network/version.hpp"          // Version
 
 #include <string>       // std::string
 #include <string_view>  // std::string_view
@@ -31,7 +32,7 @@ namespace Network
     class NativeContext final : public Context
     {
     public:
-        NativeContext(OptionalVersion t_version,
+        NativeContext(Version t_version,
                       FailureMode t_failure,
                       bool t_is_verbose);
         NativeContext(FailureMode t_failure,

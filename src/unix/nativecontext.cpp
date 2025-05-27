@@ -17,15 +17,15 @@
 
 #include "network/nativecontext.hpp"    // NativeContext
 #include "network/failuremode.hpp"      // FailureMode
-#include "network/optionalversion.hpp"  // OptionalVersion
 #include "network/runtimeerror.hpp"     // RuntimeError
 #include "network/start.hpp"            // start()
 #include "network/stop.hpp"             // stop()
+#include "network/version.hpp"          // OptionalVersion
 
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
 
-Network::NativeContext::NativeContext([[maybe_unused]] OptionalVersion t_version,
+Network::NativeContext::NativeContext([[maybe_unused]] Version t_version,
                                       [[maybe_unused]] FailureMode t_failure,
                                       bool t_is_verbose) :
     m_is_verbose(t_is_verbose)

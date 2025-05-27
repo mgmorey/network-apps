@@ -18,17 +18,17 @@
 #include "network/nativecontext.hpp"    // NativeContext
 #include "network/error.hpp"            // Error
 #include "network/failuremode.hpp"      // FailureMode
-#include "network/optionalversion.hpp"  // OptionalVersion
 #include "network/runtimeerror.hpp"     // RuntimeError
 #include "network/start.hpp"            // start()
 #include "network/stop.hpp"             // stop()
+#include "network/version.hpp"          // Version
 #include "network/windowsversion.hpp"   // WindowsVersion
 
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
 #include <string_view>  // std::string_view
 
-Network::NativeContext::NativeContext(OptionalVersion t_version,
+Network::NativeContext::NativeContext(Version t_version,
                                       FailureMode t_failure,
                                       bool t_is_verbose)
     : m_version(t_version),
