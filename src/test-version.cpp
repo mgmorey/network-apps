@@ -14,14 +14,12 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/assert.hpp"           // assert()
-#include "network/network.hpp"          // Version,
+#include "network/version.hpp"          // Version
 
-#include <cstdlib>      // EXIT_FAILURE, std::exit()
 #include <iostream>     // std::cerr, std::cout, std::endl
 
 namespace
 {
-    using Network::OptionalVersion;
     using Network::Version;
 
     auto test_version() -> void
