@@ -48,7 +48,6 @@ namespace Network
         [[nodiscard]] auto is_running() const noexcept -> bool final;
         auto start() -> Context& final;
         auto stop() -> Context& final;
-        [[nodiscard]] auto version() const -> OptionalVersion final;
 
     private:
         ContextData m_data {};

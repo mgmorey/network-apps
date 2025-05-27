@@ -117,9 +117,4 @@ auto Network::NativeContext::stop() -> Context&
     return *this;
 }
 
-auto Network::NativeContext::version() const -> OptionalVersion
-{
-    return WindowsVersion {m_data.wVersion};
-}
-
 #endif

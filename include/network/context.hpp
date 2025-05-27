@@ -16,8 +16,6 @@
 #ifndef NETWORK_CONTEXT_HPP
 #define NETWORK_CONTEXT_HPP
 
-#include "network/optionalversion.hpp"          // OptionalVersion
-
 #include <ostream>      // std::ostream
 #include <string>       // std::string
 
@@ -37,7 +35,6 @@ namespace Network
         [[nodiscard]] virtual auto is_running() const noexcept -> bool = 0;
         virtual auto start() -> Context& = 0;
         virtual auto stop() -> Context& = 0;
-        [[nodiscard]] virtual auto version() const -> OptionalVersion = 0;
     };
 
     extern auto operator<<(std::ostream& os,

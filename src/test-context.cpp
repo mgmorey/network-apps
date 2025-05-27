@@ -39,7 +39,6 @@ namespace
     using Network::Error;
     using Network::FailureMode;
     using Network::Hostname;
-    using Network::OptionalVersion;
     using Network::Version;
     using Network::get_hostname;
     using Network::parse;
@@ -138,12 +137,10 @@ namespace
     }
 
     auto test_context(const Context& context,
-                      const std::string& description,
-                      OptionalVersion version = {}) -> void
+                      const std::string& description) -> void
     {
         print(context, description);
         assert(context.is_running());
-        assert(!version || context.version() == version);
         const std::string actual_str {get_actual_context_str(context)};
         const std::regex expected_regex {get_expected_context_re()};
         assert(std::regex_match(actual_str, expected_regex));
@@ -206,9 +203,9 @@ namespace
 
         try {
             const auto context_1 {start_context(failure_mode, is_verbose)};
-            test_context(*context_1, "1", {});
+            test_context(*context_1, "1");
             const auto context_2 {start_context(failure_mode, is_verbose)};
-            test_context(*context_1, "2", {});
+            test_context(*context_1, "2");
             assert(context_1 != context_2);
             context_1->stop();
             assert(!context_1->error_code());
