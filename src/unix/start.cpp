@@ -20,29 +20,22 @@
 
 #include <iostream>     // std::cout, std::endl
 
-namespace {
-    constexpr auto system_description {
-        "Berkeley Software Distribution Sockets"
-    };
-    constexpr auto system_running {
-        "Running"
-    };
-
-    auto start(bool is_verbose) -> Network::RuntimeData
-    {
-        if (is_verbose) {
-            std::cout << "Starting the network runtime."
-                      << std::endl;
-        }
-
-        return {.m_description = system_description,
-                .m_system_status = system_running};
-    }
-} // namespace
+constexpr auto system_description {
+    "Berkeley Software Distribution Sockets"
+};
+constexpr auto system_running {
+    "Running"
+};
 
 auto Network::start(bool is_verbose) -> RuntimeData
 {
-    return ::start(is_verbose);
+    if (is_verbose) {
+        std::cout << "Starting the network runtime."
+                  << std::endl;
+    }
+
+    return {.m_description = system_description,
+            .m_system_status = system_running};
 }
 
 #endif
