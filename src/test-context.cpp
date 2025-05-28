@@ -38,7 +38,9 @@ namespace
     using Network::Error;
     using Network::FailureMode;
     using Network::Hostname;
+#ifdef WIN32
     using Network::Version;
+#endif
     using Network::get_hostname;
     using Network::parse;
     using Network::start_context;
