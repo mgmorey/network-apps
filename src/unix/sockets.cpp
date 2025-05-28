@@ -20,17 +20,9 @@
 #include "network/runtimeerror.hpp"     // RuntimeError
 #include "network/start.hpp"            // start()
 #include "network/stop.hpp"             // stop()
-#include "network/version.hpp"          // Version
 
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
-
-Network::Sockets::Sockets([[maybe_unused]] Version t_version,
-                          [[maybe_unused]] FailureMode t_failure,
-                          bool t_is_verbose) :
-    m_is_verbose(t_is_verbose)
-{
-}
 
 Network::Sockets::Sockets([[maybe_unused]] FailureMode t_failure,
                           bool t_is_verbose) :
