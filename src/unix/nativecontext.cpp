@@ -20,7 +20,7 @@
 #include "network/runtimeerror.hpp"     // RuntimeError
 #include "network/start.hpp"            // start()
 #include "network/stop.hpp"             // stop()
-#include "network/version.hpp"          // OptionalVersion
+#include "network/version.hpp"          // Version
 
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
