@@ -83,8 +83,7 @@ namespace {
     }
 } // namespace
 
-auto Network::start([[maybe_unused]] Version version,
-                    bool is_verbose) -> RuntimeData
+auto Network::start(Version version, bool is_verbose) -> RuntimeData
 {
     return ::start(version, is_verbose);
 }
