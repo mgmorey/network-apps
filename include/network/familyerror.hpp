@@ -20,8 +20,7 @@
 
 namespace Network
 {
-    class FamilyError :
-        public AddressError
+    class FamilyError : public AddressError
     {
     public:
         explicit FamilyError(int family);
