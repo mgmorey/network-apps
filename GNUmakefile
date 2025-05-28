@@ -71,9 +71,6 @@ $(object_dir) $(output_dir))
 include_dirs = $(addprefix $(include_dir)/,$(api) .)
 source_dirs = $(addprefix $(source_dir)/,$(api) .)
 
-# Define variable for include file list
-include_files = $(addsuffix /$(PROJECT_NAME)/*.h,$(include_dirs:/.=))
-
 # Define variables for filename suffixes
 alias_suffix = $(if $(is_windows_api),,.so.$(major))
 alias_suffixes = $(alias_suffix)
@@ -356,7 +353,7 @@ sizes.txt: $(shared_library) $(objects) $(programs)
 	size $(sort $^) >$@
 
 TAGS:
-	ctags -e $(filter -D%,$(CPPFLAGS)) -R $(include_dir) $(source_dir)
+	$(call tag-files,$(include_dirs),$(source_dirs))
 
 $(coverage_html): | $(coverage_dir)
 

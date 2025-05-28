@@ -189,6 +189,12 @@ shell-quote = $(subst $$,\$$,$1)
 # $(call split-string,DELIMITER,STRING)
 split-string = $(subst $1, ,$2)
 
+# $(call tag-files,INCLUDE-DIRS,SOURCE-DIRS)
+define tag-files
+ctags --maxdepth=1 --output-format=etags --recurse $(filter -D%,$(CPPFLAGS)) \
+$(addsuffix /$(PROJECT_NAME),$1) $2
+endef
+
 # Local Variables:
 # mode: makefile
 # End:
