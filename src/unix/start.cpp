@@ -18,7 +18,6 @@
 #include "network/contextdata.hpp"      // ContextData
 #include "network/optionalversion.hpp"  // OptionalVersion
 #include "network/start.hpp"            // start()
-#include "network/version.hpp"          // Version
 
 #include <iostream>     // std::cout, std::endl
 
@@ -42,11 +41,6 @@ namespace {
                 .m_system_status = system_running};
     }
 } // namespace
-
-auto Network::start(Version version, bool is_verbose) -> ContextData
-{
-    return ::start(version, is_verbose);
-}
 
 auto Network::start(bool is_verbose) -> ContextData
 {
