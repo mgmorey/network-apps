@@ -353,7 +353,7 @@ sizes.txt: $(shared_library) $(objects) $(programs)
 	size $(sort $^) >$@
 
 TAGS:
-	$(call tag-files,$(include_dirs),$(source_dirs))
+	$(call tag-dirs,$(include_dirs:/.=),$(source_dirs:/.=))
 
 $(coverage_html): | $(coverage_dir)
 
