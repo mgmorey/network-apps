@@ -31,16 +31,16 @@ source_dir := src
 
 # Include variable definitions for toolchain commands/features and
 # functions.
-include $(include_dir)/commands.gmk
-include $(include_dir)/features.gmk
-include $(include_dir)/functions.gmk
+include gmake/commands.gmk
+include gmake/features.gmk
+include gmake/functions.gmk
 
 # Set flags common to all build types
-include $(include_dir)/build-common.gmk
+include gmake/build-common.gmk
 
 # Set flags specific to the build type
 ifneq "$(filter Debug Release,$(BUILD_TYPE))" ""
-include $(include_dir)/build-type/$(BUILD_TYPE).gmk
+include gmake/build-type/$(BUILD_TYPE).gmk
 endif
 
 # Define variables for version components
