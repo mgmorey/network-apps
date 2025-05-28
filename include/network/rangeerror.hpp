@@ -23,8 +23,7 @@
 
 namespace Network
 {
-    class RangeError :
-        public LogicError
+    class RangeError : public LogicError
     {
     public:
         static auto format(std::string_view t_value,
