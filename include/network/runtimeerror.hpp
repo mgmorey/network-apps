@@ -22,8 +22,7 @@
 
 namespace Network
 {
-    class RuntimeError :
-        public Error
+    class RuntimeError : public Error
     {
     public:
         explicit RuntimeError(std::string_view t_sv) noexcept;
