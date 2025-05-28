@@ -13,79 +13,94 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef WIN32
+#ifdef WIN32
 
-#include "network/nativecontext.hpp"    // NativeContext
+#include "network/error.hpp"            // Error
 #include "network/failuremode.hpp"      // FailureMode
 #include "network/runtimeerror.hpp"     // RuntimeError
+#include "network/sockets.hpp"          // Sockets
 #include "network/start.hpp"            // start()
 #include "network/stop.hpp"             // stop()
 #include "network/version.hpp"          // Version
+#include "network/windowsversion.hpp"   // WindowsVersion
 
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
+#include <string_view>  // std::string_view
 
-Network::NativeContext::NativeContext([[maybe_unused]] Version t_version,
-                                      [[maybe_unused]] FailureMode t_failure,
-                                      bool t_is_verbose) :
-    m_is_verbose(t_is_verbose)
+Network::Sockets::Sockets(Version t_version,
+                          FailureMode t_failure,
+                          bool t_is_verbose)
+    : m_version(t_version),
+      m_failure(t_failure),
+      m_is_verbose(t_is_verbose)
 {
 }
 
-Network::NativeContext::NativeContext([[maybe_unused]] FailureMode t_failure,
-                                      bool t_is_verbose) :
-    m_is_verbose(t_is_verbose)
+Network::Sockets::Sockets(FailureMode t_failure,
+                          bool t_is_verbose)
+    : m_failure(t_failure),
+      m_is_verbose(t_is_verbose)
 {
 }
 
-Network::NativeContext::NativeContext(bool t_is_verbose) :
-    m_is_verbose(t_is_verbose)
+Network::Sockets::Sockets(bool t_is_verbose)
+    : m_is_verbose(t_is_verbose)
 {
 }
 
-Network::NativeContext::~NativeContext()
+Network::Sockets::~Sockets()
 {
     if (m_is_started) {
         Network::stop(FailureMode::return_zero, m_is_verbose);
     }
 }
 
-Network::NativeContext::operator std::string() const
+Network::Sockets::operator std::string() const
 {
     std::ostringstream oss;
-    oss << m_data.m_description;
+    oss << m_description
+        << " Version "
+        << WindowsVersion(m_data.wVersion);
 
-    if (!m_data.m_system_status.empty()) {
+    if (!m_system_status.empty()) {
         oss << ' '
-            << m_data.m_system_status;
+            << m_system_status;
     }
 
     return oss.str();
 }
 
-auto Network::NativeContext::error_code() const noexcept -> int
+auto Network::Sockets::error_code() const noexcept -> int
 {
     return m_error_code;
 }
 
-auto Network::NativeContext::is_running() const noexcept -> bool
+auto Network::Sockets::is_running() const noexcept -> bool
 {
-    return m_data.m_system_status == "Running";
+    return m_system_status == "Running";
 }
 
-auto Network::NativeContext::start() -> Context&
+auto Network::Sockets::start() -> Context&
 {
     if (m_is_started) {
         return *this;
     }
 
-    m_data = Network::start(m_is_verbose);
-    m_is_started = true;
+    if (m_version) {
+        m_data = Network::start(*m_version, m_is_verbose);
+    }
+    else {
+        m_data = Network::start(m_is_verbose);
+    }
+
+    m_description = static_cast<const char*>(m_data.szDescription);
+    m_system_status = static_cast<const char*>(m_data.szSystemStatus);
 
     if (!is_running()) {
         std::ostringstream oss;
         oss << "Sockets runtime status is \""
-            << m_data.m_system_status
+            << m_system_status
             << "\".";
         throw RuntimeError {oss.str()};
     }
@@ -94,10 +109,10 @@ auto Network::NativeContext::start() -> Context&
     return *this;
 }
 
-auto Network::NativeContext::stop() -> Context&
+auto Network::Sockets::stop() -> Context&
 {
     if (m_is_started) {
-        m_error_code = Network::stop(FailureMode::return_zero, m_is_verbose);
+        m_error_code = Network::stop(m_failure, m_is_verbose);
 
         if (m_error_code == 0) {
             m_is_started = false;

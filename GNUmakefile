@@ -112,16 +112,16 @@ to-string-in-addr.cpp to-string-in6-addr.cpp to-string-span-byte.cpp	\
 to-string-void.cpp validate-bs.cpp validate-sa.cpp validate-sin.cpp	\
 validate-sin6.cpp
 
-library_native_sources = create-socket.cpp format-ai-error.cpp	\
-format-os-error.cpp get-api-error.cpp get-os-error.cpp		\
-nativecontext.cpp read.cpp set-api-error.cpp set-os-error.cpp	\
-start.cpp stop.cpp write.cpp
+library_native_sources = create-socket.cpp format-ai-error.cpp		\
+format-os-error.cpp get-api-error.cpp get-os-error.cpp read.cpp		\
+set-api-error.cpp set-os-error.cpp sockets.cpp start.cpp stop.cpp	\
+write.cpp
 
 library_unix_sources = address-sun.cpp create-socketpair.cpp		\
 create-socketpairresult.cpp get-path-length.cpp get-path-pointer.cpp	\
-get-sun-length.cpp get-sun-pointer.cpp nativecontext.cpp		\
-to-bytestring-null.cpp to-bytestring-path.cpp to-path.cpp		\
-unixsocket.cpp validate-path.cpp validate-sun.cpp
+get-sun-length.cpp get-sun-pointer.cpp to-bytestring-null.cpp		\
+to-bytestring-path.cpp to-path.cpp unixsocket.cpp validate-path.cpp	\
+validate-sun.cpp
 
 test_common_sources = test-address.cpp test-bind.cpp test-connect.cpp	\
 test-context.cpp test-errors.cpp test-host.cpp test-hostname.cpp	\

@@ -15,7 +15,7 @@
 
 #include "network/start-context.hpp"    // start_context()
 #include "network/failuremode.hpp"      // FailureMode
-#include "network/nativecontext.hpp"    // NativeContext
+#include "network/sockets.hpp"          // Sockets
 #include "network/uniquecontext.hpp"    // UniqueContext
 #ifdef WIN32
 #include "network/version.hpp"          // Version
@@ -29,9 +29,9 @@ auto Network::start_context(Version t_version,
                             FailureMode t_failure,
                             bool t_is_verbose) -> UniqueContext
 {
-    auto context {std::make_unique<Network::NativeContext>(t_version,
-                                                           t_failure,
-                                                           t_is_verbose)};
+    auto context {std::make_unique<Network::Sockets>(t_version,
+                                                     t_failure,
+                                                     t_is_verbose)};
 
     if (context) {
         context->start();
@@ -45,8 +45,8 @@ auto Network::start_context(Version t_version,
 auto Network::start_context(FailureMode t_failure,
                             bool t_is_verbose) -> UniqueContext
 {
-    auto context {std::make_unique<Network::NativeContext>(t_failure,
-                                                           t_is_verbose)};
+    auto context {std::make_unique<Network::Sockets>(t_failure,
+                                                     t_is_verbose)};
 
     if (context) {
         context->start();
@@ -57,7 +57,7 @@ auto Network::start_context(FailureMode t_failure,
 
 auto Network::start_context(bool t_is_verbose) -> UniqueContext
 {
-    auto context {std::make_unique<Network::NativeContext>(t_is_verbose)};
+    auto context {std::make_unique<Network::Sockets>(t_is_verbose)};
 
     if (context) {
         context->start();

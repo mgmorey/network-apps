@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef UNIX_NETWORK_NATIVECONTEXT_HPP
-#define UNIX_NETWORK_NATIVECONTEXT_HPP
+#ifndef UNIX_NETWORK_SOCKETS_HPP
+#define UNIX_NETWORK_SOCKETS_HPP
 
 #ifndef WIN32
 
@@ -27,20 +27,20 @@
 
 namespace Network
 {
-    class NativeContext final : public Context
+    class Sockets final : public Context
     {
     public:
-        NativeContext(Version t_version,
+        Sockets(Version t_version,
                       FailureMode t_failure,
                       bool t_is_verbose);
-        NativeContext(FailureMode t_failure,
+        Sockets(FailureMode t_failure,
                       bool t_is_verbose);
-        explicit NativeContext(bool t_is_verbose = false);
-        NativeContext(const NativeContext&) = delete;
-        NativeContext(const NativeContext&&) = delete;
-        ~NativeContext() final;
-        auto operator=(const NativeContext&) -> NativeContext& = delete;
-        auto operator=(const NativeContext&&) -> NativeContext& = delete;
+        explicit Sockets(bool t_is_verbose = false);
+        Sockets(const Sockets&) = delete;
+        Sockets(const Sockets&&) = delete;
+        ~Sockets() final;
+        auto operator=(const Sockets&) -> Sockets& = delete;
+        auto operator=(const Sockets&&) -> Sockets& = delete;
         explicit operator std::string() const final;
         [[nodiscard]] auto error_code() const noexcept -> int final;
         [[nodiscard]] auto is_running() const noexcept -> bool final;
