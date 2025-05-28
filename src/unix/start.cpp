@@ -43,8 +43,7 @@ namespace {
     }
 } // namespace
 
-auto Network::start([[maybe_unused]] Version version,
-                    bool is_verbose) -> ContextData
+auto Network::start(Version version, bool is_verbose) -> ContextData
 {
     return ::start(version, is_verbose);
 }
