@@ -79,7 +79,7 @@ auto Network::NativeContext::start() -> Context&
         return *this;
     }
 
-    m_data = Network::start({}, m_is_verbose);
+    m_data = Network::start(m_is_verbose);
     m_is_started = true;
 
     if (!is_running()) {
