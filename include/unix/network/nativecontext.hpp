@@ -21,7 +21,6 @@
 #include "network/context.hpp"          // Context
 #include "network/contextdata.hpp"      // ContextData
 #include "network/failuremode.hpp"      // FailureMode
-#include "network/optionalversion.hpp"  // OptionalVersion
 #include "network/version.hpp"          // Version
 
 #include <string>       // std::string

@@ -14,8 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/assert.hpp"           // assert()
-#include "network/network.hpp"          // Context, Error,
-                                        // OptionalVersion, Version,
+#include "network/network.hpp"          // Context, Error, Version,
                                         // get_hostname()
 #include "network/parse.hpp"            // parse()
 #include "network/stop.hpp"             // stop()
