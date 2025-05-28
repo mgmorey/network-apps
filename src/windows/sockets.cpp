@@ -81,7 +81,7 @@ auto Network::Sockets::is_running() const noexcept -> bool
     return m_system_status == "Running";
 }
 
-auto Network::Sockets::start() -> Context&
+auto Network::Sockets::start() -> Runtime&
 {
     if (m_is_started) {
         return *this;
@@ -109,7 +109,7 @@ auto Network::Sockets::start() -> Context&
     return *this;
 }
 
-auto Network::Sockets::stop() -> Context&
+auto Network::Sockets::stop() -> Runtime&
 {
     if (m_is_started) {
         m_error_code = Network::stop(m_failure, m_is_verbose);

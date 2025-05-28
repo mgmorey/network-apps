@@ -13,25 +13,22 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_START_CONTEXT_HPP
-#define NETWORK_START_CONTEXT_HPP
+#ifndef UNIX_NETWORK_RUNTIMEDATA_HPP
+#define UNIX_NETWORK_RUNTIMEDATA_HPP
 
-#include "network/failuremode.hpp"      // FailureMode
-#include "network/uniquecontext.hpp"    // UniqueContext
-#ifdef WIN32
-#include "network/version.hpp"          // Version
-#endif
+#ifndef WIN32
+
+#include <string>       // std::string
 
 namespace Network
 {
-#ifdef WIN32
-    extern auto start_context(Version t_version,
-                              FailureMode t_failure,
-                              bool t_is_verbose) -> UniqueContext;
-#endif
-    extern auto start_context(FailureMode t_failure,
-                              bool t_is_verbose) -> UniqueContext;
-    extern auto start_context(bool t_is_verbose = false) -> UniqueContext;
+    struct RuntimeData
+    {
+        std::string m_description;
+        std::string m_system_status;
+    };
 }
+
+#endif
 
 #endif

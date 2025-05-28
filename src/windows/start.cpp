@@ -16,11 +16,11 @@
 #ifdef WIN32
 
 #include "network/start.hpp"            // start()
-#include "network/contextdata.hpp"      // ContextData
 #include "network/error.hpp"            // Error
 #include "network/format-os-error.hpp"  // format_os_error()
 #include "network/logicerror.hpp"       // LogicError
 #include "network/optionalversion.hpp"  // OptionalVersion
+#include "network/runtimedata.hpp"      // RuntimeData
 #include "network/runtimeerror.hpp"     // RuntimeError
 #include "network/to-os-error.hpp"      // to_os_error()
 #include "network/version.hpp"          // Version
@@ -33,9 +33,9 @@
 
 namespace {
     auto start(Network::OptionalVersion version,
-               bool is_verbose) -> Network::ContextData
+               bool is_verbose) -> Network::RuntimeData
     {
-        Network::ContextData wsa_data {};
+        Network::RuntimeData wsa_data {};
         const Network::WindowsVersion wsa_version
         {
             version.value_or(Network::WindowsVersion::latest)
@@ -84,12 +84,12 @@ namespace {
 } // namespace
 
 auto Network::start([[maybe_unused]] Version version,
-                    bool is_verbose) -> ContextData
+                    bool is_verbose) -> RuntimeData
 {
     return ::start(version, is_verbose);
 }
 
-auto Network::start(bool is_verbose) -> ContextData
+auto Network::start(bool is_verbose) -> RuntimeData
 {
     return ::start({}, is_verbose);
 }

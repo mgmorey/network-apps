@@ -122,13 +122,13 @@ sizes.txt
 test-address
 test-bind
 test-connect
-test-context
 test-errors
 test-host
 test-hostname
 test-limits
 test-option
 test-parse
+test-runtime
 test-socket-inet
 test-socket-unix
 test-version

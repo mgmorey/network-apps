@@ -13,16 +13,25 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_UNIQUECONTEXT_HPP
-#define NETWORK_UNIQUECONTEXT_HPP
+#ifndef NETWORK_START_RUNTIME_HPP
+#define NETWORK_START_RUNTIME_HPP
 
-#include "network/context.hpp"          // Context
-
-#include <memory>       // std::unique_ptr
+#include "network/failuremode.hpp"      // FailureMode
+#include "network/uniqueruntime.hpp"    // UniqueRuntime
+#ifdef WIN32
+#include "network/version.hpp"          // Version
+#endif
 
 namespace Network
 {
-    using UniqueContext = std::unique_ptr<Context>;
+#ifdef WIN32
+    extern auto start_runtime(Version t_version,
+                              FailureMode t_failure,
+                              bool t_is_verbose) -> UniqueRuntime;
+#endif
+    extern auto start_runtime(FailureMode t_failure,
+                              bool t_is_verbose) -> UniqueRuntime;
+    extern auto start_runtime(bool t_is_verbose = false) -> UniqueRuntime;
 }
 
 #endif

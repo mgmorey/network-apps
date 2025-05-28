@@ -22,7 +22,7 @@
                                         // SocketResultVector,
                                         // UniqueSocket, bind(),
                                         // os_error_type,
-                                        // start_context(),
+                                        // start_runtime(),
                                         // string_null
 #include "network/parse.hpp"            // parse()
 
@@ -64,7 +64,7 @@ namespace
     using Network::bind;
     using Network::os_error_type;
     using Network::parse;
-    using Network::start_context;
+    using Network::start_runtime;
 
     using ErrorCodeSet = std::set<os_error_type>;
 
@@ -161,10 +161,10 @@ auto main(int argc, char* argv[]) -> int
 {
     try {
         const auto endpoint {parse_arguments(argc, argv)};
-        const auto context {start_context(is_verbose)};
+        const auto runtime {start_runtime(is_verbose)};
 
         if (is_verbose) {
-            std::cout << *context << std::endl;
+            std::cout << *runtime << std::endl;
         }
 
         if (getenv("http_proxy") == nullptr) {

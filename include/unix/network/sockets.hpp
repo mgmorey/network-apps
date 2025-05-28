@@ -18,16 +18,16 @@
 
 #ifndef WIN32
 
-#include "network/context.hpp"          // Context
-#include "network/contextdata.hpp"      // ContextData
 #include "network/failuremode.hpp"      // FailureMode
+#include "network/runtime.hpp"          // Runtime
+#include "network/runtimedata.hpp"      // RuntimeData
 #include "network/version.hpp"          // Version
 
 #include <string>       // std::string
 
 namespace Network
 {
-    class Sockets final : public Context
+    class Sockets final : public Runtime
     {
     public:
         Sockets(Version t_version,
@@ -44,11 +44,11 @@ namespace Network
         explicit operator std::string() const final;
         [[nodiscard]] auto error_code() const noexcept -> int final;
         [[nodiscard]] auto is_running() const noexcept -> bool final;
-        auto start() -> Context& final;
-        auto stop() -> Context& final;
+        auto start() -> Runtime& final;
+        auto stop() -> Runtime& final;
 
     private:
-        ContextData m_data;
+        RuntimeData m_data;
         int m_error_code {0};
         bool m_is_started {false};
         bool m_is_verbose {false};

@@ -1,4 +1,4 @@
-// Copyright (C) 2024  "Michael G. Morey" <mgmorey@gmail.com>
+// Copyright (C) 2022  "Michael G. Morey" <mgmorey@gmail.com>
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,18 +13,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef WINDOWS_NETWORK_CONTEXTDATA_HPP
-#define WINDOWS_NETWORK_CONTEXTDATA_HPP
+#ifndef NETWORK_API_ERROR_HPP
+#define NETWORK_API_ERROR_HPP
 
-#ifdef WIN32
-
-#include <winsock2.h>       // WSADATA
-
-namespace Network
-{
-    using ContextData = WSADATA;
-}
-
-#endif
+#include "network/get-api-error.hpp"    // get_api_error()
+#include "network/reset-api-error.hpp"  // reset_api_error()
+#include "network/set-api-error.hpp"    // set_api_error()
 
 #endif

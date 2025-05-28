@@ -13,32 +13,32 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_CONTEXT_HPP
-#define NETWORK_CONTEXT_HPP
+#ifndef NETWORK_RUNTIME_HPP
+#define NETWORK_RUNTIME_HPP
 
 #include <ostream>      // std::ostream
 #include <string>       // std::string
 
 namespace Network
 {
-    class Context
+    class Runtime
     {
     public:
-        Context() noexcept = default;
-        Context(const Context&) = delete;
-        Context(const Context&&) = delete;
-        virtual ~Context() = default;
-        auto operator=(const Context&) -> Context& = delete;
-        auto operator=(const Context&&) -> Context& = delete;
+        Runtime() noexcept = default;
+        Runtime(const Runtime&) = delete;
+        Runtime(const Runtime&&) = delete;
+        virtual ~Runtime() = default;
+        auto operator=(const Runtime&) -> Runtime& = delete;
+        auto operator=(const Runtime&&) -> Runtime& = delete;
         explicit virtual operator std::string() const = 0;
         [[nodiscard]] virtual auto error_code() const noexcept -> int = 0;
         [[nodiscard]] virtual auto is_running() const noexcept -> bool = 0;
-        virtual auto start() -> Context& = 0;
-        virtual auto stop() -> Context& = 0;
+        virtual auto start() -> Runtime& = 0;
+        virtual auto stop() -> Runtime& = 0;
     };
 
     extern auto operator<<(std::ostream& os,
-                           const Context& context) -> std::ostream&;
+                           const Runtime& runtime) -> std::ostream&;
 }
 
 #endif

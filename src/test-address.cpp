@@ -14,7 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/assert.hpp"           // assert()
-#include "network/network.hpp"          // Address, Context, Error,
+#include "network/network.hpp"          // Address, Runtime, Error,
                                         // Hostname, OsErrorResult,
                                         // SocketFamily, SocketHints,
                                         // SocketHost, SocketLimits,
@@ -76,7 +76,7 @@ namespace
     using Network::sa_family_type;
     using Network::sa_size;
     using Network::sin_family_type;
-    using Network::start_context;
+    using Network::start_runtime;
 #ifndef WIN32
     using Network::sun_length_max;
     using Network::sun_length_min;
@@ -462,10 +462,10 @@ auto main(int argc, char* argv[]) -> int
 {
     try {
         parse_arguments(argc, argv);
-        const auto context {start_context(is_verbose)};
+        const auto runtime {start_runtime(is_verbose)};
 
         if (is_verbose) {
-            std::cout << *context << std::endl;
+            std::cout << *runtime << std::endl;
         }
 
         test_sa_invalid_length();

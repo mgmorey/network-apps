@@ -13,10 +13,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/start-context.hpp"    // start_context()
+#include "network/start-runtime.hpp"    // start_runtime()
 #include "network/failuremode.hpp"      // FailureMode
 #include "network/sockets.hpp"          // Sockets
-#include "network/uniquecontext.hpp"    // UniqueContext
+#include "network/uniqueruntime.hpp"    // UniqueRuntime
 #ifdef WIN32
 #include "network/version.hpp"          // Version
 #endif
@@ -25,43 +25,43 @@
 
 #ifdef WIN32
 
-auto Network::start_context(Version t_version,
+auto Network::start_runtime(Version t_version,
                             FailureMode t_failure,
-                            bool t_is_verbose) -> UniqueContext
+                            bool t_is_verbose) -> UniqueRuntime
 {
-    auto context {std::make_unique<Network::Sockets>(t_version,
+    auto runtime {std::make_unique<Network::Sockets>(t_version,
                                                      t_failure,
                                                      t_is_verbose)};
 
-    if (context) {
-        context->start();
+    if (runtime) {
+        runtime->start();
     }
 
-    return context;
+    return runtime;
 }
 
 #endif
 
-auto Network::start_context(FailureMode t_failure,
-                            bool t_is_verbose) -> UniqueContext
+auto Network::start_runtime(FailureMode t_failure,
+                            bool t_is_verbose) -> UniqueRuntime
 {
-    auto context {std::make_unique<Network::Sockets>(t_failure,
+    auto runtime {std::make_unique<Network::Sockets>(t_failure,
                                                      t_is_verbose)};
 
-    if (context) {
-        context->start();
+    if (runtime) {
+        runtime->start();
     }
 
-    return context;
+    return runtime;
 }
 
-auto Network::start_context(bool t_is_verbose) -> UniqueContext
+auto Network::start_runtime(bool t_is_verbose) -> UniqueRuntime
 {
-    auto context {std::make_unique<Network::Sockets>(t_is_verbose)};
+    auto runtime {std::make_unique<Network::Sockets>(t_is_verbose)};
 
-    if (context) {
-        context->start();
+    if (runtime) {
+        runtime->start();
     }
 
-    return context;
+    return runtime;
 }

@@ -13,20 +13,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef UNIX_NETWORK_CONTEXTDATA_HPP
-#define UNIX_NETWORK_CONTEXTDATA_HPP
+#ifndef WINDOWS_NETWORK_RUNTIMEDATA_HPP
+#define WINDOWS_NETWORK_RUNTIMEDATA_HPP
 
-#ifndef WIN32
+#ifdef WIN32
 
-#include <string>       // std::string
+#include <winsock2.h>       // WSADATA
 
 namespace Network
 {
-    struct ContextData
-    {
-        std::string m_description;
-        std::string m_system_status;
-    };
+    using RuntimeData = WSADATA;
 }
 
 #endif

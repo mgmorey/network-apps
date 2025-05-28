@@ -15,9 +15,9 @@
 
 #include "network/always-false.hpp"     // always_false_v
 #include "network/assert.hpp"           // assert()
-#include "network/network.hpp"          // Context, Error, Hostname,
+#include "network/network.hpp"          // Runtime, Error, Hostname,
                                         // get_hostnameresult(),
-                                        // start_context()
+                                        // start_runtime()
 #include "network/parse.hpp"            // parse()
 
 #ifdef WIN32
@@ -43,7 +43,7 @@ namespace
     using Network::get_hostname;
     using Network::get_hostnameresult;
     using Network::parse;
-    using Network::start_context;
+    using Network::start_runtime;
 
 #if defined(OS_CYGWIN_NT)
     constexpr auto expected_error_gethostname_re {""};
@@ -146,10 +146,10 @@ auto main(int argc, char* argv[]) -> int
 {
     try {
         parse_arguments(argc, argv);
-        const auto context {start_context(is_verbose)};
+        const auto runtime {start_runtime(is_verbose)};
 
         if (is_verbose) {
-            std::cout << *context << std::endl;
+            std::cout << *runtime << std::endl;
         }
 
         test_get_hostnameresult_overflow();

@@ -24,7 +24,7 @@
                                         // SocketHost, always_false_v,
                                         // get_hostname(), insert(),
                                         // os_error_type,
-                                        // start_context,
+                                        // start_runtime,
                                         // to_bytestring(), uniquify()
 #include "network/parse.hpp"            // parse()
 
@@ -67,7 +67,7 @@ namespace
     using Network::insert;
     using Network::os_error_type;
     using Network::parse;
-    using Network::start_context;
+    using Network::start_runtime;
     using Network::to_bytestring;
     using Network::uniquify;
 
@@ -300,10 +300,10 @@ auto main(int argc, char* argv[]) -> int
 {
     try {
         const auto args {parse_arguments(argc, argv)};
-        const auto context {start_context(is_verbose)};
+        const auto runtime {start_runtime(is_verbose)};
 
         if (is_verbose) {
-            std::cout << *context << std::endl;
+            std::cout << *runtime << std::endl;
         }
 
         test_get_endpoint_invalid_flag();

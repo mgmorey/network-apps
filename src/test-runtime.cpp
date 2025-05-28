@@ -14,7 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/assert.hpp"           // assert()
-#include "network/network.hpp"          // Context, Error, Version,
+#include "network/network.hpp"          // Runtime, Error, Version,
                                         // get_hostname()
 #include "network/parse.hpp"            // parse()
 #include "network/stop.hpp"             // stop()
@@ -34,7 +34,7 @@
 
 namespace
 {
-    using Network::Context;
+    using Network::Runtime;
     using Network::Error;
     using Network::FailureMode;
     using Network::Hostname;
@@ -43,15 +43,15 @@ namespace
 #endif
     using Network::get_hostname;
     using Network::parse;
-    using Network::start_context;
+    using Network::start_runtime;
 
 #ifdef WIN32
     constexpr auto expected_code_stopped {WSANOTINITIALISED};
-    constexpr auto expected_context_platform_re
+    constexpr auto expected_runtime_platform_re
     {
         "WinSock 2.0"
     };
-    constexpr auto expected_context_version_re
+    constexpr auto expected_runtime_version_re
     {
         "( Version \\d{1,3}\\.\\d{1,3})" // NOLINT
     };
@@ -63,10 +63,10 @@ namespace
     };
 #else
     constexpr auto expected_code_stopped {0};
-    constexpr auto expected_context_platform_re {
+    constexpr auto expected_runtime_platform_re {
         "Berkeley Software Distribution Sockets"
     };
-    constexpr auto expected_context_version_re {
+    constexpr auto expected_runtime_version_re {
         "( Version \\d{1,3}\\.\\d{1,3})?" // NOLINT
     };
     constexpr auto expected_error_stopped_re {""};
@@ -75,19 +75,19 @@ namespace
     const auto failure_mode {FailureMode::return_error};
     auto is_verbose {false};  // NOLINT
 
-    auto get_actual_context_str(const Context& context) -> std::string
+    auto get_actual_runtime_str(const Runtime& runtime) -> std::string
     {
         std::ostringstream oss;
-        oss << context;
+        oss << runtime;
         return oss.str();
     }
 
-    auto get_expected_context_re() -> std::string
+    auto get_expected_runtime_re() -> std::string
     {
         std::string result;
         result += "(";
-        result += expected_context_platform_re;
-        result += expected_context_version_re;
+        result += expected_runtime_platform_re;
+        result += expected_runtime_version_re;
         result += " Running)";
         return result;
     }
@@ -118,35 +118,35 @@ namespace
         }
     }
 
-    auto print(const Context& context,
+    auto print(const Runtime& runtime,
                const std::string& description) -> void
     {
-        std::cout << "Context";
+        std::cout << "Runtime";
 
         if (is_verbose) {
             std::cout << ' '
-                      << &context;
+                      << &runtime;
         }
 
         std::cout << ": "
                   << description
                   << std::endl
                   << "    "
-                  << context
+                  << runtime
                   << std::endl;
     }
 
-    auto test_context(const Context& context,
+    auto test_runtime(const Runtime& runtime,
                       const std::string& description) -> void
     {
-        print(context, description);
-        assert(context.is_running());
-        const std::string actual_str {get_actual_context_str(context)};
-        const std::regex expected_regex {get_expected_context_re()};
+        print(runtime, description);
+        assert(runtime.is_running());
+        const std::string actual_str {get_actual_runtime_str(runtime)};
+        const std::regex expected_regex {get_expected_runtime_re()};
         assert(std::regex_match(actual_str, expected_regex));
     }
 
-    auto test_context_inactive() -> void
+    auto test_runtime_inactive() -> void
     {
         int error_code {0};
         std::string actual_str;
@@ -163,7 +163,7 @@ namespace
         assert(error_code == expected_code_stopped);
     }
 
-    auto test_context_stopped() -> void
+    auto test_runtime_stopped() -> void
     {
         std::string actual_str;
 
@@ -181,14 +181,14 @@ namespace
 
 #ifdef WIN32
 
-    auto test_context_invalid() -> void
+    auto test_runtime_invalid() -> void
     {
         constexpr Version invalid;
         std::string actual_str;
 
         try {
-            const auto context {
-                start_context(invalid, failure_mode, is_verbose)
+            const auto runtime {
+                start_runtime(invalid, failure_mode, is_verbose)
             };
         }
         catch (const Error& error) {
@@ -201,20 +201,20 @@ namespace
 
 #endif
 
-    auto test_context_valid() -> void
+    auto test_runtime_valid() -> void
     {
         std::string actual_str;
 
         try {
-            const auto context_1 {start_context(failure_mode, is_verbose)};
-            test_context(*context_1, "1");
-            const auto context_2 {start_context(failure_mode, is_verbose)};
-            test_context(*context_1, "2");
-            assert(context_1 != context_2);
-            context_1->stop();
-            assert(!context_1->error_code());
-            context_2->stop();
-            assert(!context_2->error_code());
+            const auto runtime_1 {start_runtime(failure_mode, is_verbose)};
+            test_runtime(*runtime_1, "1");
+            const auto runtime_2 {start_runtime(failure_mode, is_verbose)};
+            test_runtime(*runtime_1, "2");
+            assert(runtime_1 != runtime_2);
+            runtime_1->stop();
+            assert(!runtime_1->error_code());
+            runtime_2->stop();
+            assert(!runtime_2->error_code());
         }
         catch (const Error& error) {
             print(error);
@@ -230,11 +230,11 @@ auto main(int argc, char* argv[]) -> int
     try {
         parse_arguments(argc, argv);
 #ifdef WIN32
-        test_context_invalid();
+        test_runtime_invalid();
 #endif
-        test_context_valid();
-        test_context_stopped();
-        test_context_inactive();
+        test_runtime_valid();
+        test_runtime_stopped();
+        test_runtime_inactive();
     }
     catch (const std::exception& error) {
         std::cerr << error.what()

@@ -15,8 +15,8 @@
 
 #ifndef WIN32
 
-#include "network/contextdata.hpp"      // ContextData
 #include "network/optionalversion.hpp"  // OptionalVersion
+#include "network/runtimedata.hpp"      // RuntimeData
 #include "network/start.hpp"            // start()
 
 #include <iostream>     // std::cout, std::endl
@@ -30,7 +30,7 @@ namespace {
     };
 
     auto start([[maybe_unused]] Network::OptionalVersion version,
-               bool is_verbose) -> Network::ContextData
+               bool is_verbose) -> Network::RuntimeData
     {
         if (is_verbose) {
             std::cout << "Starting the network runtime."
@@ -42,7 +42,7 @@ namespace {
     }
 } // namespace
 
-auto Network::start(bool is_verbose) -> ContextData
+auto Network::start(bool is_verbose) -> RuntimeData
 {
     return ::start({}, is_verbose);
 }

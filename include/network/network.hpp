@@ -20,6 +20,9 @@
 #include "network/address.hpp"                  // Address
 #include "network/ai-error.hpp"                 // format_ai_error()
 #include "network/always-false.hpp"             // always_false_v
+#include "network/api-error.hpp"                // get_last_runtime_error()
+                                                // reset_last_runtime_error()
+                                                // set_last_runtime_error()
 #include "network/binarybuffer.hpp"             // BinaryBuffer
 #include "network/bind.hpp"                     // bind()
 #include "network/buffer.hpp"                   // Buffer
@@ -57,10 +60,6 @@
                                                 // sun_length_min,
                                                 // sun_path_offset,
                                                 // sun_size
-#include "network/context-error.hpp"            // get_last_context_error()
-                                                // reset_last_context_error()
-                                                // set_last_context_error()
-#include "network/context.hpp"                  // Context
 #ifndef WIN32
 #include "network/create-socketpair.hpp"        // create_socketpair()
 #include "network/create-socketpairresult.hpp"  // create_socketpairresult()
@@ -101,6 +100,7 @@
                                                 // reset_last_os_error()
 #include "network/overloaded.hpp"               // Overloaded
 #include "network/quote.hpp"                    // quote()
+#include "network/runtime.hpp"                  // Runtime
 #include "network/socket-error.hpp"             // socket_error
 #include "network/socket.hpp"                   // Socket
 #include "network/socketdata.hpp"               // SocketData
@@ -111,7 +111,7 @@
 #include "network/socketlimits.hpp"             // SocketLimits
 #include "network/socketprotocol.hpp"           // SocketProtocol
 #include "network/sockettype.hpp"               // SocketType
-#include "network/start-context.hpp"            // start_context()
+#include "network/start-runtime.hpp"            // start_runtime()
 #include "network/string-null.hpp"              // string_null
 #include "network/template.hpp"                 // Template
 #include "network/textbuffer.hpp"               // TextBuffer
@@ -152,7 +152,7 @@
                                                 // socket_protocol_type,
                                                 // socket_type_enum
                                                 // socket_type_type
-#include "network/uniquecontext.hpp"            // UniqueContext
+#include "network/uniqueruntime.hpp"            // UniqueRuntime
 #include "network/uniquesocket.hpp"             // UniqueSocket
 #include "network/uniquify.hpp"                 // uniquify()
 #include "network/validate.hpp"                 // validate()
