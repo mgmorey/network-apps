@@ -22,8 +22,7 @@
 
 namespace Network
 {
-    class Error :
-        public std::exception
+    class Error : public std::exception
     {
     public:
         explicit Error(std::string_view t_sv) noexcept;
