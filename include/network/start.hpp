@@ -17,11 +17,15 @@
 #define NETWORK_START_HPP
 
 #include "network/contextdata.hpp"      // ContextData
+#ifdef WIN32
 #include "network/version.hpp"          // Version
+#endif
 
 namespace Network
 {
+#ifdef WIN32
     extern auto start(Version version, bool is_verbose) -> ContextData;
+#endif
     extern auto start(bool is_verbose) -> ContextData;
 }
 
