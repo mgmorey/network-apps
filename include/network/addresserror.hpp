@@ -22,8 +22,7 @@
 
 namespace Network
 {
-    class AddressError :
-        public LogicError
+    class AddressError : public LogicError
     {
     public:
         explicit AddressError(std::string_view t_sv) noexcept;
