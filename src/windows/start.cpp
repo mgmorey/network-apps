@@ -35,10 +35,10 @@ namespace {
     auto start(Network::OptionalVersion version,
                bool is_verbose) -> Network::ContextData
     {
-        ContextData wsa_data {};
-        const WindowsVersion wsa_version
+        Network::ContextData wsa_data {};
+        const Network::WindowsVersion wsa_version
         {
-            version.value_or(WindowsVersion::latest)
+            version.value_or(Network::WindowsVersion::latest)
         };
 
         if (is_verbose) {
@@ -52,8 +52,8 @@ namespace {
         }
 
         if (const auto api_error {::WSAStartup(wsa_version, &wsa_data)}) {
-            const auto os_error {to_os_error(api_error)};
-            const auto message {format_os_error(os_error)};
+            const auto os_error {Network::to_os_error(api_error)};
+            const auto message {Network::format_os_error(os_error)};
 
             if (is_verbose) {
                 // clang-format off
@@ -70,12 +70,12 @@ namespace {
             switch (api_error) {  // NOLINT
             case WSAEFAULT:
             case WSAVERNOTSUPPORTED:
-                throw LogicError {message};
+                throw Network::LogicError {message};
             case WSAEPROCLIM:
             case WSASYSNOTREADY:
-                throw RuntimeError {message};
+                throw Network::RuntimeError {message};
             default:
-                throw Error {message};
+                throw Network::Error {message};
             }
         }
 
