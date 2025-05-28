@@ -24,8 +24,7 @@
 namespace Network
 {
     template <typename T>
-    class ValueError :
-        public RangeError
+    class ValueError : public RangeError
     {
     public:
         ValueError(std::string_view t_value_type,
