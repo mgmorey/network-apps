@@ -30,11 +30,8 @@ namespace Network
     class Sockets final : public Runtime
     {
     public:
-        Sockets(Version t_version,
-                      FailureMode t_failure,
-                      bool t_is_verbose);
-        Sockets(FailureMode t_failure,
-                      bool t_is_verbose);
+        Sockets(Version t_version, FailureMode t_failure, bool t_is_verbose);
+        Sockets(FailureMode t_failure, bool t_is_verbose);
         explicit Sockets(bool t_is_verbose = false);
         Sockets(const Sockets&) = delete;
         Sockets(const Sockets&&) = delete;
