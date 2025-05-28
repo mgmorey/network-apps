@@ -18,13 +18,17 @@
 
 #include "network/failuremode.hpp"      // FailureMode
 #include "network/uniquecontext.hpp"    // UniqueContext
+#ifdef WIN32
 #include "network/version.hpp"          // Version
+#endif
 
 namespace Network
 {
+#ifdef WIN32
     extern auto start_context(Version t_version,
                               FailureMode t_failure,
                               bool t_is_verbose) -> UniqueContext;
+#endif
     extern auto start_context(FailureMode t_failure,
                               bool t_is_verbose) -> UniqueContext;
     extern auto start_context(bool t_is_verbose = false) -> UniqueContext;

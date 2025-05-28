@@ -17,9 +17,13 @@
 #include "network/failuremode.hpp"      // FailureMode
 #include "network/nativecontext.hpp"    // NativeContext
 #include "network/uniquecontext.hpp"    // UniqueContext
+#ifdef WIN32
 #include "network/version.hpp"          // Version
+#endif
 
 #include <memory>       // std::make_unique()
+
+#ifdef WIN32
 
 auto Network::start_context(Version t_version,
                             FailureMode t_failure,
@@ -35,6 +39,8 @@ auto Network::start_context(Version t_version,
 
     return context;
 }
+
+#endif
 
 auto Network::start_context(FailureMode t_failure,
                             bool t_is_verbose) -> UniqueContext

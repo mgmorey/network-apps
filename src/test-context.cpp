@@ -68,7 +68,6 @@ namespace
         "( Version \\d{1,3}\\.\\d{1,3})?" // NOLINT
     };
     constexpr auto expected_error_stopped_re {""};
-    constexpr auto expected_error_version {""};
 #endif
 
     const auto failure_mode {FailureMode::return_error};
@@ -178,6 +177,8 @@ namespace
         assert(std::regex_match(actual_str, expected_regex));
     }
 
+#ifdef WIN32
+
     auto test_context_invalid() -> void
     {
         constexpr Version invalid;
@@ -195,6 +196,8 @@ namespace
 
         assert(actual_str == expected_error_version);
     }
+
+#endif
 
     auto test_context_valid() -> void
     {
@@ -224,7 +227,9 @@ auto main(int argc, char* argv[]) -> int
 {
     try {
         parse_arguments(argc, argv);
+#ifdef WIN32
         test_context_invalid();
+#endif
         test_context_valid();
         test_context_stopped();
         test_context_inactive();
