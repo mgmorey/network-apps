@@ -29,13 +29,17 @@ constexpr auto system_running {
 
 auto Network::start(bool is_verbose) -> RuntimeData
 {
+    static constexpr RuntimeData data
+    {
+        .m_description = system_description, .m_system_status = system_running
+    };
+
     if (is_verbose) {
         std::cout << "Starting the network runtime."
                   << std::endl;
     }
 
-    return {.m_description = system_description,
-            .m_system_status = system_running};
+    return data;
 }
 
 #endif

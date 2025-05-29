@@ -18,14 +18,14 @@
 
 #ifndef WIN32
 
-#include <string>       // std::string
+#include <string_view>  // std::string_view
 
 namespace Network
 {
     struct RuntimeData
     {
-        std::string m_description;
-        std::string m_system_status;
+        std::string_view m_description;
+        std::string_view m_system_status;
     };
 }
 

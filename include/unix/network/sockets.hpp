@@ -43,7 +43,7 @@ namespace Network
         auto stop() -> Runtime& final;
 
     private:
-        RuntimeData m_data;
+        RuntimeData m_data {.m_description = {}, .m_system_status = {}};
         int m_error_code {0};
         FailureMode m_failure {FailureMode::throw_error};
         bool m_is_started {false};
