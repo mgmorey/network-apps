@@ -26,10 +26,10 @@ namespace Network
 {
 #ifdef WIN32
     extern auto start_runtime(Version t_version,
-                              FailureMode t_failure,
+                              FailureMode t_failure_mode,
                               bool t_is_verbose) -> UniqueRuntime;
 #endif
-    extern auto start_runtime(FailureMode t_failure,
+    extern auto start_runtime(FailureMode t_failure_mode,
                               bool t_is_verbose) -> UniqueRuntime;
     extern auto start_runtime(bool t_is_verbose = false) -> UniqueRuntime;
 }

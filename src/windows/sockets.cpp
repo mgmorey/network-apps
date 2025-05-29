@@ -29,17 +29,17 @@
 #include <string_view>  // std::string_view
 
 Network::Sockets::Sockets(Version t_version,
-                          FailureMode t_failure,
+                          FailureMode t_failure_mode,
                           bool t_is_verbose) :
     m_version(t_version),
-    m_failure(t_failure),
+    m_failure_mode(t_failure_mode),
     m_is_verbose(t_is_verbose)
 {
 }
 
-Network::Sockets::Sockets(FailureMode t_failure,
+Network::Sockets::Sockets(FailureMode t_failure_mode,
                           bool t_is_verbose) :
-    m_failure(t_failure),
+    m_failure_mode(t_failure_mode),
     m_is_verbose(t_is_verbose)
 {
 }
@@ -52,7 +52,7 @@ Network::Sockets::Sockets(bool t_is_verbose) :
 Network::Sockets::~Sockets()
 {
     if (m_is_started) {
-        Network::stop(m_failure, m_is_verbose);
+        Network::stop(m_failure_mode, m_is_verbose);
     }
 }
 
@@ -112,7 +112,7 @@ auto Network::Sockets::start() -> Runtime&
 auto Network::Sockets::stop() -> Runtime&
 {
     if (m_is_started) {
-        m_error_code = Network::stop(m_failure, m_is_verbose);
+        m_error_code = Network::stop(m_failure_mode, m_is_verbose);
 
         if (m_error_code == 0) {
             m_is_started = false;

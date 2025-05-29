@@ -26,11 +26,11 @@
 #ifdef WIN32
 
 auto Network::start_runtime(Version t_version,
-                            FailureMode t_failure,
+                            FailureMode t_failure_mode,
                             bool t_is_verbose) -> UniqueRuntime
 {
     auto runtime {std::make_unique<Network::Sockets>(t_version,
-                                                     t_failure,
+                                                     t_failure_mode,
                                                      t_is_verbose)};
 
     if (runtime) {
@@ -42,10 +42,10 @@ auto Network::start_runtime(Version t_version,
 
 #endif
 
-auto Network::start_runtime(FailureMode t_failure,
+auto Network::start_runtime(FailureMode t_failure_mode,
                             bool t_is_verbose) -> UniqueRuntime
 {
-    auto runtime {std::make_unique<Network::Sockets>(t_failure,
+    auto runtime {std::make_unique<Network::Sockets>(t_failure_mode,
                                                      t_is_verbose)};
 
     if (runtime) {

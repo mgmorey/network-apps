@@ -32,8 +32,11 @@ namespace Network
     class Sockets final : public Runtime
     {
     public:
-        Sockets(Version t_version, FailureMode t_failure, bool t_is_verbose);
-        Sockets(FailureMode t_failure, bool t_is_verbose);
+        Sockets(Version t_version,
+                FailureMode t_failure_mode,
+                bool t_is_verbose);
+        Sockets(FailureMode t_failure_mode,
+                bool t_is_verbose);
         explicit Sockets(bool t_is_verbose = false);
         Sockets(const Sockets&) = delete;
         Sockets(const Sockets&&) = delete;
@@ -52,7 +55,7 @@ namespace Network
         std::string_view m_system_status;
         OptionalVersion m_version;
         int m_error_code {0};
-        FailureMode m_failure {FailureMode::throw_error};
+        FailureMode m_failure_mode {FailureMode::throw_error};
         bool m_is_started {false};
         bool m_is_verbose {false};
     };
