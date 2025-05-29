@@ -38,14 +38,14 @@ Network::Sockets::Sockets(Version t_version,
 }
 
 Network::Sockets::Sockets(FailureMode t_failure,
-                          bool t_is_verbose)
-    : m_failure(t_failure),
-      m_is_verbose(t_is_verbose)
+                          bool t_is_verbose) :
+    m_failure(t_failure),
+    m_is_verbose(t_is_verbose)
 {
 }
 
-Network::Sockets::Sockets(bool t_is_verbose)
-    : m_is_verbose(t_is_verbose)
+Network::Sockets::Sockets(bool t_is_verbose) :
+    m_is_verbose(t_is_verbose)
 {
 }
 
