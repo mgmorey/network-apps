@@ -15,7 +15,7 @@
 
 #include "network/always-false.hpp"     // always_false_v
 #include "network/assert.hpp"           // assert()
-#include "network/network.hpp"          // Runtime, Error, Hostname,
+#include "network/network.hpp"          // Error, Hostname,
                                         // get_hostnameresult(),
                                         // start_runtime()
 #include "network/parse.hpp"            // parse()
