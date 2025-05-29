@@ -20,7 +20,7 @@
 
 namespace Network
 {
-    extern auto stop(FailureMode mode, bool is_verbose) -> int;
+    extern auto stop(FailureMode failure_mode, bool is_verbose) -> int;
 }
 
 #endif

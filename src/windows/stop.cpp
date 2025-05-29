@@ -32,7 +32,7 @@
 #include <iostream>     // std::cout, std::endl
 #include <sstream>      // std::ostringstream
 
-auto Network::stop(FailureMode mode, bool is_verbose) -> int
+auto Network::stop(FailureMode failure_mode, bool is_verbose) -> int
 {
     reset_api_error();
 
@@ -59,7 +59,7 @@ auto Network::stop(FailureMode mode, bool is_verbose) -> int
             // clang-format on
         }
 
-        switch (mode) {
+        switch (failure_mode) {
         case FailureMode::throw_error:
         {
             switch (api_error) {  // NOLINT

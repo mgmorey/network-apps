@@ -20,7 +20,8 @@
 
 #include <iostream>     // std::cout, std::endl
 
-auto Network::stop([[maybe_unused]] FailureMode mode, bool is_verbose) -> int
+auto Network::stop([[maybe_unused]] FailureMode failure_mode,
+                   bool is_verbose) -> int
 {
     if (is_verbose) {
         std::cout << "Stopping the network runtime."
