@@ -14,8 +14,8 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/assert.hpp"           // assert()
-#include "network/network.hpp"          // Address, Runtime, Error,
-                                        // Hostname, OsErrorResult,
+#include "network/network.hpp"          // Address, Error, Hostname,
+                                        // OsErrorResult,
                                         // SocketFamily, SocketHints,
                                         // SocketHost, SocketLimits,
                                         // insert(), sa_family_type,
