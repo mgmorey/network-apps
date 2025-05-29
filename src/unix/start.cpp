@@ -20,18 +20,12 @@
 
 #include <iostream>     // std::cout, std::endl
 
-constexpr auto system_description {
-    "Berkeley Software Distribution Sockets"
-};
-constexpr auto system_running {
-    "Running"
-};
-
 auto Network::start(bool is_verbose) -> RuntimeData
 {
     static constexpr RuntimeData data
     {
-        .m_description = system_description, .m_system_status = system_running
+        .m_description = "Berkeley Software Distribution Sockets",
+        .m_system_status = "Running"
     };
 
     if (is_verbose) {
