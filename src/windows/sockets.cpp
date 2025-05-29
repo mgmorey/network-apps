@@ -30,10 +30,10 @@
 
 Network::Sockets::Sockets(Version t_version,
                           FailureMode t_failure,
-                          bool t_is_verbose)
-    : m_version(t_version),
-      m_failure(t_failure),
-      m_is_verbose(t_is_verbose)
+                          bool t_is_verbose) :
+    m_version(t_version),
+    m_failure(t_failure),
+    m_is_verbose(t_is_verbose)
 {
 }
 
@@ -52,7 +52,7 @@ Network::Sockets::Sockets(bool t_is_verbose)
 Network::Sockets::~Sockets()
 {
     if (m_is_started) {
-        Network::stop(FailureMode::return_zero, m_is_verbose);
+        Network::stop(m_failure, m_is_verbose);
     }
 }
 

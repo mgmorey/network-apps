@@ -24,8 +24,9 @@
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
 
-Network::Sockets::Sockets([[maybe_unused]] FailureMode t_failure,
+Network::Sockets::Sockets(FailureMode t_failure,
                           bool t_is_verbose) :
+    m_failure(t_failure),
     m_is_verbose(t_is_verbose)
 {
 }
@@ -89,7 +90,7 @@ auto Network::Sockets::start() -> Runtime&
 auto Network::Sockets::stop() -> Runtime&
 {
     if (m_is_started) {
-        m_error_code = Network::stop(FailureMode::return_zero, m_is_verbose);
+        m_error_code = Network::stop(m_failure, m_is_verbose);
 
         if (m_error_code == 0) {
             m_is_started = false;
