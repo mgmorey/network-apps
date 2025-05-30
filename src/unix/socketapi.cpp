@@ -24,8 +24,7 @@
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
 
-Network::SocketApi::SocketApi(FailMode t_fail_mode,
-                              bool t_is_verbose)
+Network::SocketApi::SocketApi(FailMode t_fail_mode, bool t_is_verbose)
 {
     m_state.m_fail_mode = t_fail_mode;
     m_state.m_is_verbose = t_is_verbose;
