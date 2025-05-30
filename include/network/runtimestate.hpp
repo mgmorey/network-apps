@@ -18,14 +18,14 @@
 
 #ifndef WIN32
 
-#include "network/failuremode.hpp"      // FailureMode
+#include "network/failmode.hpp"         // FailMode
 
 namespace Network
 {
     struct RuntimeState
     {
         int m_error_code {0};
-        FailureMode m_failure_mode {FailureMode::throw_error};
+        FailMode m_fail_mode {FailMode::throw_error};
         bool m_is_started {false};
         bool m_is_verbose {false};
     };

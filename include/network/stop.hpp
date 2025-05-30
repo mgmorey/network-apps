@@ -16,11 +16,11 @@
 #ifndef NETWORK_STOP_HPP
 #define NETWORK_STOP_HPP
 
-#include "network/failuremode.hpp"              // FailureMode
+#include "network/failmode.hpp"                 // FailMode
 
 namespace Network
 {
-    extern auto stop(FailureMode failure_mode, bool is_verbose) -> int;
+    extern auto stop(FailMode fail_mode, bool is_verbose) -> int;
 }
 
 #endif

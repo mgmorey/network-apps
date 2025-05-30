@@ -17,7 +17,7 @@
 
 #include "network/stop.hpp"             // stop()
 #include "network/error.hpp"            // Error
-#include "network/failuremode.hpp"      // FailureMode
+#include "network/failmode.hpp"         // FailMode
 #include "network/format-os-error.hpp"  // format_os_error()
 #include "network/get-api-error.hpp"    // get_api_error()
 #include "network/logicerror.hpp"       // LogicError
@@ -32,7 +32,7 @@
 #include <iostream>     // std::cout, std::endl
 #include <sstream>      // std::ostringstream
 
-auto Network::stop(FailureMode failure_mode, bool is_verbose) -> int
+auto Network::stop(FailMode fail_mode, bool is_verbose) -> int
 {
     reset_api_error();
 
@@ -59,8 +59,8 @@ auto Network::stop(FailureMode failure_mode, bool is_verbose) -> int
             // clang-format on
         }
 
-        switch (failure_mode) {
-        case FailureMode::throw_error:
+        switch (fail_mode) {
+        case FailMode::throw_error:
         {
             switch (api_error) {  // NOLINT
             case WSANOTINITIALISED:
@@ -73,7 +73,7 @@ auto Network::stop(FailureMode failure_mode, bool is_verbose) -> int
             }
             break;
         }
-        case FailureMode::return_zero:
+        case FailMode::return_zero:
             switch (api_error) {  // NOLINT
             case WSANOTINITIALISED:
                 return 0;
@@ -81,7 +81,7 @@ auto Network::stop(FailureMode failure_mode, bool is_verbose) -> int
                 return api_error;
             }
             break;
-        case FailureMode::return_error:
+        case FailMode::return_error:
             return api_error;
         }
     }

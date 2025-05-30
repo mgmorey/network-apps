@@ -16,11 +16,11 @@
 #ifndef WIN32
 
 #include "network/stop.hpp"             // stop()
-#include "network/failuremode.hpp"      // FailureMode
+#include "network/failmode.hpp"         // FailMode
 
 #include <iostream>     // std::cout, std::endl
 
-auto Network::stop([[maybe_unused]] FailureMode failure_mode,
+auto Network::stop([[maybe_unused]] FailMode fail_mode,
                    bool is_verbose) -> int
 {
     if (is_verbose) {

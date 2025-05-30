@@ -18,7 +18,7 @@
 
 #ifdef WIN32
 
-#include "network/failuremode.hpp"      // FailureMode
+#include "network/failmode.hpp"         // FailMode
 #include "network/optionalversion.hpp"  // OptionalVersion
 #include "network/runtime.hpp"          // Runtime
 #include "network/socketsdata.hpp"      // SocketsData
@@ -33,9 +33,9 @@ namespace Network
     {
     public:
         Sockets(Version t_version,
-                FailureMode t_failure_mode,
+                FailMode t_fail_mode,
                 bool t_is_verbose);
-        Sockets(FailureMode t_failure_mode,
+        Sockets(FailMode t_fail_mode,
                 bool t_is_verbose);
         explicit Sockets(bool t_is_verbose = false);
         Sockets(const Sockets&) = delete;
@@ -55,7 +55,7 @@ namespace Network
         std::string_view m_system_status;
         OptionalVersion m_version;
         int m_error_code {0};
-        FailureMode m_failure_mode {FailureMode::throw_error};
+        FailMode m_fail_mode {FailMode::throw_error};
         bool m_is_started {false};
         bool m_is_verbose {false};
     };

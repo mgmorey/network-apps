@@ -18,7 +18,7 @@
 
 #ifndef WIN32
 
-#include "network/failuremode.hpp"      // FailureMode
+#include "network/failmode.hpp"         // FailMode
 #include "network/runtime.hpp"          // Runtime
 #include "network/runtimestate.hpp"     // RuntimeState
 #include "network/socketsdata.hpp"      // SocketsData
@@ -30,7 +30,7 @@ namespace Network
     class Sockets final : public Runtime
     {
     public:
-        Sockets(FailureMode t_failure_mode, bool t_is_verbose);
+        Sockets(FailMode t_fail_mode, bool t_is_verbose);
         explicit Sockets(bool t_is_verbose = false);
         Sockets(const Sockets&) = delete;
         Sockets(const Sockets&&) = delete;

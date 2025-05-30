@@ -36,7 +36,7 @@ namespace
 {
     using Network::Runtime;
     using Network::Error;
-    using Network::FailureMode;
+    using Network::FailMode;
     using Network::Hostname;
 #ifdef WIN32
     using Network::Version;
@@ -72,7 +72,7 @@ namespace
     constexpr auto expected_error_stopped_re {""};
 #endif
 
-    const auto failure_mode {FailureMode::return_error};
+    const auto fail_mode {FailMode::return_error};
     auto is_verbose {false};  // NOLINT
 
     auto get_actual_runtime_str(const Runtime& runtime) -> std::string
@@ -152,7 +152,7 @@ namespace
         std::string actual_str;
 
         try {
-            error_code = Network::stop(failure_mode, is_verbose);
+            error_code = Network::stop(fail_mode, is_verbose);
         }
         catch (const Error& error) {
             print(error);
@@ -188,7 +188,7 @@ namespace
 
         try {
             const auto runtime {
-                start_runtime(invalid, failure_mode, is_verbose)
+                start_runtime(invalid, fail_mode, is_verbose)
             };
         }
         catch (const Error& error) {
@@ -206,9 +206,9 @@ namespace
         std::string actual_str;
 
         try {
-            const auto runtime_1 {start_runtime(failure_mode, is_verbose)};
+            const auto runtime_1 {start_runtime(fail_mode, is_verbose)};
             test_runtime(*runtime_1, "1");
-            const auto runtime_2 {start_runtime(failure_mode, is_verbose)};
+            const auto runtime_2 {start_runtime(fail_mode, is_verbose)};
             test_runtime(*runtime_1, "2");
             assert(runtime_1 != runtime_2);
             runtime_1->stop();

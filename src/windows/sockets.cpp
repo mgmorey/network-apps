@@ -16,7 +16,7 @@
 #ifdef WIN32
 
 #include "network/error.hpp"            // Error
-#include "network/failuremode.hpp"      // FailureMode
+#include "network/failmode.hpp"         // FailMode
 #include "network/runtimeerror.hpp"     // RuntimeError
 #include "network/sockets.hpp"          // Sockets
 #include "network/start.hpp"            // start()
@@ -29,17 +29,17 @@
 #include <string_view>  // std::string_view
 
 Network::Sockets::Sockets(Version t_version,
-                          FailureMode t_failure_mode,
+                          FailMode t_fail_mode,
                           bool t_is_verbose) :
     m_version(t_version),
-    m_failure_mode(t_failure_mode),
+    m_fail_mode(t_fail_mode),
     m_is_verbose(t_is_verbose)
 {
 }
 
-Network::Sockets::Sockets(FailureMode t_failure_mode,
+Network::Sockets::Sockets(FailMode t_fail_mode,
                           bool t_is_verbose) :
-    m_failure_mode(t_failure_mode),
+    m_fail_mode(t_fail_mode),
     m_is_verbose(t_is_verbose)
 {
 }
@@ -52,7 +52,7 @@ Network::Sockets::Sockets(bool t_is_verbose) :
 Network::Sockets::~Sockets()
 {
     if (m_is_started) {
-        Network::stop(m_failure_mode, m_is_verbose);
+        Network::stop(m_fail_mode, m_is_verbose);
     }
 }
 
@@ -107,7 +107,7 @@ auto Network::Sockets::start() -> Runtime&
 auto Network::Sockets::stop() -> Runtime&
 {
     if (m_is_started) {
-        m_error_code = Network::stop(m_failure_mode, m_is_verbose);
+        m_error_code = Network::stop(m_fail_mode, m_is_verbose);
 
         if (m_error_code == 0) {
             m_is_started = false;

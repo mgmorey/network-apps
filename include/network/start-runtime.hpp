@@ -16,7 +16,7 @@
 #ifndef NETWORK_START_RUNTIME_HPP
 #define NETWORK_START_RUNTIME_HPP
 
-#include "network/failuremode.hpp"      // FailureMode
+#include "network/failmode.hpp"         // FailMode
 #include "network/uniqueruntime.hpp"    // UniqueRuntime
 #ifdef WIN32
 #include "network/version.hpp"          // Version
@@ -26,10 +26,10 @@ namespace Network
 {
 #ifdef WIN32
     extern auto start_runtime(Version t_version,
-                              FailureMode t_failure_mode,
+                              FailMode t_fail_mode,
                               bool t_is_verbose) -> UniqueRuntime;
 #endif
-    extern auto start_runtime(FailureMode t_failure_mode,
+    extern auto start_runtime(FailMode t_fail_mode,
                               bool t_is_verbose) -> UniqueRuntime;
     extern auto start_runtime(bool t_is_verbose = false) -> UniqueRuntime;
 }

@@ -14,7 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/start-runtime.hpp"    // start_runtime()
-#include "network/failuremode.hpp"      // FailureMode
+#include "network/failmode.hpp"         // FailMode
 #include "network/sockets.hpp"          // Sockets
 #include "network/uniqueruntime.hpp"    // UniqueRuntime
 #ifdef WIN32
@@ -26,11 +26,11 @@
 #ifdef WIN32
 
 auto Network::start_runtime(Version t_version,
-                            FailureMode t_failure_mode,
+                            FailMode t_fail_mode,
                             bool t_is_verbose) -> UniqueRuntime
 {
     auto runtime {std::make_unique<Network::Sockets>(t_version,
-                                                     t_failure_mode,
+                                                     t_fail_mode,
                                                      t_is_verbose)};
 
     if (runtime) {
@@ -42,10 +42,10 @@ auto Network::start_runtime(Version t_version,
 
 #endif
 
-auto Network::start_runtime(FailureMode t_failure_mode,
+auto Network::start_runtime(FailMode t_fail_mode,
                             bool t_is_verbose) -> UniqueRuntime
 {
-    auto runtime {std::make_unique<Network::Sockets>(t_failure_mode,
+    auto runtime {std::make_unique<Network::Sockets>(t_fail_mode,
                                                      t_is_verbose)};
 
     if (runtime) {
