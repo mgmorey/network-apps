@@ -16,7 +16,7 @@
 #ifndef NETWORK_START_HPP
 #define NETWORK_START_HPP
 
-#include "network/runtimedata.hpp"      // RuntimeData
+#include "network/socketsdata.hpp"      // SocketsData
 #ifdef WIN32
 #include "network/version.hpp"          // Version
 #endif
@@ -24,9 +24,9 @@
 namespace Network
 {
 #ifdef WIN32
-    extern auto start(Version version, bool is_verbose) -> RuntimeData;
+    extern auto start(Version version, bool is_verbose) -> SocketsData;
 #endif
-    extern auto start(bool is_verbose) -> RuntimeData;
+    extern auto start(bool is_verbose) -> SocketsData;
 }
 
 #endif

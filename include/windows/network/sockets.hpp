@@ -21,7 +21,7 @@
 #include "network/failuremode.hpp"      // FailureMode
 #include "network/optionalversion.hpp"  // OptionalVersion
 #include "network/runtime.hpp"          // Runtime
-#include "network/runtimedata.hpp"      // RuntimeData
+#include "network/socketsdata.hpp"      // SocketsData
 #include "network/version.hpp"          // Version
 
 #include <string>       // std::string
@@ -50,7 +50,7 @@ namespace Network
         auto stop() -> Runtime& final;
 
     private:
-        RuntimeData m_data {};
+        SocketsData m_data {};
         std::string_view m_description;
         std::string_view m_system_status;
         OptionalVersion m_version;
