@@ -87,13 +87,8 @@ auto Network::Sockets::start() -> Runtime&
         return *this;
     }
 
-    if (m_version) {
-        m_data = Network::start(*m_version, m_is_verbose);
-    }
-    else {
-        m_data = Network::start(m_is_verbose);
-    }
-
+    m_data = m_version ? Network::start(*m_version, m_is_verbose) :
+        Network::start(m_is_verbose);
     m_description = static_cast<const char*>(m_data.szDescription);
     m_system_status = static_cast<const char*>(m_data.szSystemStatus);
 
