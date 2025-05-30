@@ -25,21 +25,21 @@
 #include <string>       // std::string
 
 Network::Sockets::Sockets(FailureMode t_failure_mode,
-                          bool t_is_verbose) :
-    m_failure_mode(t_failure_mode),
-    m_is_verbose(t_is_verbose)
+                          bool t_is_verbose)
 {
+    m_state.m_failure_mode = t_failure_mode;
+    m_state.m_is_verbose = t_is_verbose;
 }
 
-Network::Sockets::Sockets(bool t_is_verbose) :
-    m_is_verbose(t_is_verbose)
+Network::Sockets::Sockets(bool t_is_verbose)
 {
+    m_state.m_is_verbose = t_is_verbose;
 }
 
 Network::Sockets::~Sockets()
 {
-    if (m_is_started) {
-        Network::stop(FailureMode::return_zero, m_is_verbose);
+    if (m_state.m_is_started) {
+        Network::stop(FailureMode::return_zero, m_state.m_is_verbose);
     }
 }
 
@@ -58,7 +58,7 @@ Network::Sockets::operator std::string() const
 
 auto Network::Sockets::error_code() const noexcept -> int
 {
-    return m_error_code;
+    return m_state.m_error_code;
 }
 
 auto Network::Sockets::is_running() const noexcept -> bool
@@ -68,11 +68,11 @@ auto Network::Sockets::is_running() const noexcept -> bool
 
 auto Network::Sockets::start() -> Runtime&
 {
-    if (m_is_started) {
+    if (m_state.m_is_started) {
         return *this;
     }
 
-    m_data = Network::start(m_is_verbose);
+    m_data = Network::start(m_state.m_is_verbose);
 
     if (!is_running()) {
         std::ostringstream oss;
@@ -82,17 +82,18 @@ auto Network::Sockets::start() -> Runtime&
         throw RuntimeError {oss.str()};
     }
 
-    m_is_started = true;
+    m_state.m_is_started = true;
     return *this;
 }
 
 auto Network::Sockets::stop() -> Runtime&
 {
-    if (m_is_started) {
-        m_error_code = Network::stop(m_failure_mode, m_is_verbose);
+    if (m_state.m_is_started) {
+        m_state.m_error_code = Network::stop(m_state.m_failure_mode,
+                                             m_state.m_is_verbose);
 
-        if (m_error_code == 0) {
-            m_is_started = false;
+        if (m_state.m_error_code == 0) {
+            m_state.m_is_started = false;
             m_data = {};
         }
     }

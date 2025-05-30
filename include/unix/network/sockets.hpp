@@ -20,6 +20,7 @@
 
 #include "network/failuremode.hpp"      // FailureMode
 #include "network/runtime.hpp"          // Runtime
+#include "network/runtimestate.hpp"     // RuntimeState
 #include "network/socketsdata.hpp"      // SocketsData
 
 #include <string>       // std::string
@@ -44,10 +45,7 @@ namespace Network
 
     private:
         SocketsData m_data {};
-        int m_error_code {0};
-        FailureMode m_failure_mode {FailureMode::throw_error};
-        bool m_is_started {false};
-        bool m_is_verbose {false};
+        RuntimeState m_state {};
     };
 }
 
