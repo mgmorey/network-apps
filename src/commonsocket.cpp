@@ -24,9 +24,9 @@
 #include "network/oserrorresult.hpp"    // OsErrorResult
 #include "network/read.hpp"             // read()
 #include "network/shutdown.hpp"         // shutdown()
-#include "network/socketapi.hpp"        // SocketApi
 #include "network/socketdata.hpp"       // SocketData
 #include "network/string-null.hpp"      // string_null
+#include "network/symbol.hpp"           // Symbol
 #include "network/write.hpp"            // write()
 
 #include <cstddef>      // std::byte, std::size_t
@@ -65,7 +65,7 @@ Network::CommonSocket::operator std::string() const
 auto Network::CommonSocket::get_name(bool t_is_sockname) const ->
     std::span<const std::byte>
 {
-    const auto api {t_is_sockname ? SocketApi::sockname : SocketApi::peername};
+    const auto api {t_is_sockname ? Symbol::sockname : Symbol::peername};
     auto& name {m_cache[api]};
 
     if (name.empty()) {
@@ -83,7 +83,7 @@ auto Network::CommonSocket::is_verbose() const noexcept -> bool
 auto Network::CommonSocket::open(std::span<const std::byte> t_bs,
                                  bool t_is_bind) const -> OsErrorResult
 {
-    const auto api {t_is_bind ? SocketApi::bind : SocketApi::connect};
+    const auto api {t_is_bind ? Symbol::bind : Symbol::connect};
 
     if (const auto result {Network::open(m_sd, t_bs, t_is_bind)}) {
         return result;
@@ -105,9 +105,9 @@ auto Network::CommonSocket::bind(std::span<const std::byte> t_bs) ->
     return open(t_bs, true);
 }
 
-auto Network::CommonSocket::cache(SocketApi api) const -> std::span<const std::byte>
+auto Network::CommonSocket::cache(Symbol symbol) const -> std::span<const std::byte>
 {
-    return m_cache[api];
+    return m_cache[symbol];
 }
 
 auto Network::CommonSocket::connect(std::span<const std::byte> t_bs) ->

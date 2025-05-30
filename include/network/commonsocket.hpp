@@ -20,8 +20,8 @@
 #include "network/bytestring.hpp"       // ByteString
 #include "network/oserrorresult.hpp"    // OsErrorResult
 #include "network/socket.hpp"           // Socket
-#include "network/socketapi.hpp"        // SocketApi
 #include "network/socketdata.hpp"       // SocketData
+#include "network/symbol.hpp"           // Symbol
 
 #include <sys/types.h>      // ssize_t
 
@@ -54,7 +54,7 @@ namespace Network
         [[nodiscard]] auto accept() const -> AcceptResult final;
         [[nodiscard]] auto bind(std::span<const std::byte> t_bs) ->
             OsErrorResult override;
-        [[nodiscard]] auto cache(SocketApi api) const ->
+        [[nodiscard]] auto cache(Symbol symbol) const ->
             std::span<const std::byte> final;
         [[nodiscard]] auto connect(std::span<const std::byte> t_bs) ->
             OsErrorResult override;
@@ -66,7 +66,7 @@ namespace Network
         [[nodiscard]] auto write(std::string_view t_sv) const -> ssize_t final;
 
     private:
-        mutable std::map<SocketApi, ByteString> m_cache;
+        mutable std::map<Symbol, ByteString> m_cache;
         SocketData m_sd;
     };
 }

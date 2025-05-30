@@ -60,10 +60,10 @@ namespace
     using Network::IpSocketHints;
     using Network::OsErrorResult;
     using Network::Socket;
-    using Network::SocketApi;
     using Network::SocketHints;
     using Network::SocketResult;
     using Network::SocketResultVector;
+    using Network::Symbol;
     using Network::UniqueSocket;
     using Network::always_false_v;
     using Network::connect;
@@ -140,7 +140,7 @@ namespace
 
         auto test_socket(const Socket& t_sock) -> void
         {
-            const Address name {t_sock.cache(SocketApi::connect)};
+            const Address name {t_sock.cache(Symbol::connect)};
             const Address peer {t_sock.peername()};
             const Address self {t_sock.sockname()};
             m_os << "Socket "
