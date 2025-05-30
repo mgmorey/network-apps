@@ -15,14 +15,14 @@
 
 #ifndef WIN32
 
-#include "network/socketsdata.hpp"      // SocketsData
+#include "network/socketapidata.hpp"    // SocketApiData
 #include "network/start.hpp"            // start()
 
 #include <iostream>     // std::cout, std::endl
 
-auto Network::start(bool is_verbose) -> SocketsData
+auto Network::start(bool is_verbose) -> SocketApiData
 {
-    static constexpr SocketsData data
+    static constexpr SocketApiData data
     {
         .m_description = "Berkeley Software Distribution Sockets",
         .m_system_status = "Running"

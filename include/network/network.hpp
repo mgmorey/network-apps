@@ -72,7 +72,6 @@
 #include "network/exceptions.hpp"               // Error, LogicError,
                                                 // RuntimeError
 #include "network/failmode.hpp"                 // FailMode
-#include "network/failuremode.hpp"              // FailureMode
 #include "network/get-endpoint.hpp"             // get_endpoint()
 #include "network/get-endpointresult.hpp"       // get_endpointresult()
 #include "network/get-hostname.hpp"             // get_hostname()

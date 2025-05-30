@@ -13,15 +13,15 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef WINDOWS_NETWORK_SOCKETS_HPP
-#define WINDOWS_NETWORK_SOCKETS_HPP
+#ifndef WINDOWS_NETWORK_SOCKETAPI_HPP
+#define WINDOWS_NETWORK_SOCKETAPI_HPP
 
 #ifdef WIN32
 
 #include "network/failmode.hpp"         // FailMode
 #include "network/optionalversion.hpp"  // OptionalVersion
 #include "network/runtime.hpp"          // Runtime
-#include "network/socketsdata.hpp"      // SocketsData
+#include "network/socketapidata.hpp"    // SocketApiData
 #include "network/version.hpp"          // Version
 
 #include <string>       // std::string
@@ -29,20 +29,20 @@
 
 namespace Network
 {
-    class Sockets final : public Runtime
+    class SocketApi final : public Runtime
     {
     public:
-        Sockets(Version t_version,
-                FailMode t_fail_mode,
-                bool t_is_verbose);
-        Sockets(FailMode t_fail_mode,
-                bool t_is_verbose);
-        explicit Sockets(bool t_is_verbose = false);
-        Sockets(const Sockets&) = delete;
-        Sockets(const Sockets&&) = delete;
-        ~Sockets() final;
-        auto operator=(const Sockets&) -> Sockets& = delete;
-        auto operator=(const Sockets&&) -> Sockets& = delete;
+        SocketApi(Version t_version,
+                  FailMode t_fail_mode,
+                  bool t_is_verbose);
+        SocketApi(FailMode t_fail_mode,
+                  bool t_is_verbose);
+        explicit SocketApi(bool t_is_verbose = false);
+        SocketApi(const SocketApi&) = delete;
+        SocketApi(const SocketApi&&) = delete;
+        ~SocketApi() final;
+        auto operator=(const SocketApi&) -> SocketApi& = delete;
+        auto operator=(const SocketApi&&) -> SocketApi& = delete;
         explicit operator std::string() const final;
         [[nodiscard]] auto error_code() const noexcept -> int final;
         [[nodiscard]] auto is_running() const noexcept -> bool final;
@@ -50,7 +50,7 @@ namespace Network
         auto stop() -> Runtime& final;
 
     private:
-        SocketsData m_data {};
+        SocketApiData m_data {};
         std::string_view m_description;
         std::string_view m_system_status;
         OptionalVersion m_version;

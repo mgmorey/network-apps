@@ -114,7 +114,7 @@ validate-sin6.cpp
 
 library_native_sources = create-socket.cpp format-ai-error.cpp		\
 format-os-error.cpp get-api-error.cpp get-os-error.cpp read.cpp		\
-set-api-error.cpp set-os-error.cpp sockets.cpp start.cpp stop.cpp	\
+set-api-error.cpp set-os-error.cpp socketapi.cpp start.cpp stop.cpp	\
 write.cpp
 
 library_unix_sources = address-sun.cpp create-socketpair.cpp		\

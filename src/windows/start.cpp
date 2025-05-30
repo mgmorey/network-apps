@@ -21,7 +21,7 @@
 #include "network/logicerror.hpp"       // LogicError
 #include "network/optionalversion.hpp"  // OptionalVersion
 #include "network/runtimeerror.hpp"     // RuntimeError
-#include "network/socketsdata.hpp"      // SocketsData
+#include "network/socketsdata.hpp"      // SocketApiData
 #include "network/to-os-error.hpp"      // to_os_error()
 #include "network/version.hpp"          // Version
 #include "network/windowsversion.hpp"   // WindowsVersion
@@ -33,9 +33,9 @@
 
 namespace {
     auto start(Network::OptionalVersion version,
-               bool is_verbose) -> Network::SocketsData
+               bool is_verbose) -> Network::SocketApiData
     {
-        Network::SocketsData wsa_data {};
+        Network::SocketApiData wsa_data {};
         const Network::WindowsVersion wsa_version
         {
             version.value_or(Network::WindowsVersion::latest)
@@ -83,12 +83,12 @@ namespace {
     }
 } // namespace
 
-auto Network::start(Version version, bool is_verbose) -> SocketsData
+auto Network::start(Version version, bool is_verbose) -> SocketApiData
 {
     return ::start(version, is_verbose);
 }
 
-auto Network::start(bool is_verbose) -> SocketsData
+auto Network::start(bool is_verbose) -> SocketApiData
 {
     return ::start({}, is_verbose);
 }

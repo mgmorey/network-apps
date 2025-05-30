@@ -13,19 +13,22 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_SOCKETAPI_HPP
-#define NETWORK_SOCKETAPI_HPP
+#ifndef UNIX_NETWORK_SOCKETAPIDATA_HPP
+#define UNIX_NETWORK_SOCKETAPIDATA_HPP
 
-#include <cstdint>      // std::uint8_t
+#ifndef WIN32
+
+#include <string_view>  // std::string_view
 
 namespace Network
 {
-    enum class SocketApi : std::uint8_t {
-        bind,
-        connect,
-        peername,
-        sockname
+    struct SocketApiData
+    {
+        std::string_view m_description;
+        std::string_view m_system_status;
     };
 }
+
+#endif
 
 #endif

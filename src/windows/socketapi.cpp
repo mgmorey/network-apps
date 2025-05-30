@@ -18,7 +18,7 @@
 #include "network/error.hpp"            // Error
 #include "network/failmode.hpp"         // FailMode
 #include "network/runtimeerror.hpp"     // RuntimeError
-#include "network/sockets.hpp"          // Sockets
+#include "network/socketapi.hpp"        // SocketApi
 #include "network/start.hpp"            // start()
 #include "network/stop.hpp"             // stop()
 #include "network/version.hpp"          // Version
@@ -28,35 +28,35 @@
 #include <string>       // std::string
 #include <string_view>  // std::string_view
 
-Network::Sockets::Sockets(Version t_version,
-                          FailMode t_fail_mode,
-                          bool t_is_verbose) :
+Network::SocketApi::SocketApi(Version t_version,
+                              FailMode t_fail_mode,
+                              bool t_is_verbose) :
     m_version(t_version),
     m_fail_mode(t_fail_mode),
     m_is_verbose(t_is_verbose)
 {
 }
 
-Network::Sockets::Sockets(FailMode t_fail_mode,
-                          bool t_is_verbose) :
+Network::SocketApi::SocketApi(FailMode t_fail_mode,
+                              bool t_is_verbose) :
     m_fail_mode(t_fail_mode),
     m_is_verbose(t_is_verbose)
 {
 }
 
-Network::Sockets::Sockets(bool t_is_verbose) :
+Network::SocketApi::SocketApi(bool t_is_verbose) :
     m_is_verbose(t_is_verbose)
 {
 }
 
-Network::Sockets::~Sockets()
+Network::SocketApi::~SocketApi()
 {
     if (m_is_started) {
         Network::stop(m_fail_mode, m_is_verbose);
     }
 }
 
-Network::Sockets::operator std::string() const
+Network::SocketApi::operator std::string() const
 {
     std::ostringstream oss;
     oss << m_description
@@ -71,17 +71,17 @@ Network::Sockets::operator std::string() const
     return oss.str();
 }
 
-auto Network::Sockets::error_code() const noexcept -> int
+auto Network::SocketApi::error_code() const noexcept -> int
 {
     return m_error_code;
 }
 
-auto Network::Sockets::is_running() const noexcept -> bool
+auto Network::SocketApi::is_running() const noexcept -> bool
 {
     return m_system_status == "Running";
 }
 
-auto Network::Sockets::start() -> Runtime&
+auto Network::SocketApi::start() -> Runtime&
 {
     if (m_is_started) {
         return *this;
@@ -94,7 +94,7 @@ auto Network::Sockets::start() -> Runtime&
 
     if (!is_running()) {
         std::ostringstream oss;
-        oss << "Sockets runtime status is \""
+        oss << "SocketApi runtime status is \""
             << m_system_status
             << "\".";
         throw RuntimeError {oss.str()};
@@ -104,7 +104,7 @@ auto Network::Sockets::start() -> Runtime&
     return *this;
 }
 
-auto Network::Sockets::stop() -> Runtime&
+auto Network::SocketApi::stop() -> Runtime&
 {
     if (m_is_started) {
         m_error_code = Network::stop(m_fail_mode, m_is_verbose);

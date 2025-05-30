@@ -13,30 +13,30 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef UNIX_NETWORK_SOCKETS_HPP
-#define UNIX_NETWORK_SOCKETS_HPP
+#ifndef UNIX_NETWORK_SOCKETAPI_HPP
+#define UNIX_NETWORK_SOCKETAPI_HPP
 
 #ifndef WIN32
 
 #include "network/failmode.hpp"         // FailMode
 #include "network/runtime.hpp"          // Runtime
 #include "network/runtimestate.hpp"     // RuntimeState
-#include "network/socketsdata.hpp"      // SocketsData
+#include "network/socketapidata.hpp"    // SocketApiData
 
 #include <string>       // std::string
 
 namespace Network
 {
-    class Sockets final : public Runtime
+    class SocketApi final : public Runtime
     {
     public:
-        Sockets(FailMode t_fail_mode, bool t_is_verbose);
-        explicit Sockets(bool t_is_verbose = false);
-        Sockets(const Sockets&) = delete;
-        Sockets(const Sockets&&) = delete;
-        ~Sockets() final;
-        auto operator=(const Sockets&) -> Sockets& = delete;
-        auto operator=(const Sockets&&) -> Sockets& = delete;
+        SocketApi(FailMode t_fail_mode, bool t_is_verbose);
+        explicit SocketApi(bool t_is_verbose = false);
+        SocketApi(const SocketApi&) = delete;
+        SocketApi(const SocketApi&&) = delete;
+        ~SocketApi() final;
+        auto operator=(const SocketApi&) -> SocketApi& = delete;
+        auto operator=(const SocketApi&&) -> SocketApi& = delete;
         explicit operator std::string() const final;
         [[nodiscard]] auto error_code() const noexcept -> int final;
         [[nodiscard]] auto is_running() const noexcept -> bool final;
@@ -44,7 +44,7 @@ namespace Network
         auto stop() -> Runtime& final;
 
     private:
-        SocketsData m_data {};
+        SocketApiData m_data {};
         RuntimeState m_state {};
     };
 }

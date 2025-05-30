@@ -1,4 +1,4 @@
-// Copyright (C) 2024  "Michael G. Morey" <mgmorey@gmail.com>
+// Copyright (C) 2025  "Michael G. Morey" <mgmorey@gmail.com>
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,18 +13,18 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_FAILUREMODE_HPP
-#define NETWORK_FAILUREMODE_HPP
+#ifndef WINDOWS_NETWORK_SOCKETAPIDATA_HPP
+#define WINDOWS_NETWORK_SOCKETAPIDATA_HPP
 
-#include <cstdint>      // std::uint8_t
+#ifdef WIN32
+
+#include <winsock2.h>       // WSADATA
 
 namespace Network
 {
-    enum class FailureMode : std::uint8_t {
-        throw_error,
-        return_error,
-        return_zero
-    };
+    using SocketApiData = WSADATA;
 }
+
+#endif
 
 #endif

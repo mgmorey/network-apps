@@ -15,7 +15,7 @@
 
 #ifndef WIN32
 
-#include "network/sockets.hpp"          // Sockets
+#include "network/socketapi.hpp"        // SocketApi
 #include "network/failmode.hpp"         // FailMode
 #include "network/runtimeerror.hpp"     // RuntimeError
 #include "network/start.hpp"            // start()
@@ -24,26 +24,26 @@
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
 
-Network::Sockets::Sockets(FailMode t_fail_mode,
-                          bool t_is_verbose)
+Network::SocketApi::SocketApi(FailMode t_fail_mode,
+                              bool t_is_verbose)
 {
     m_state.m_fail_mode = t_fail_mode;
     m_state.m_is_verbose = t_is_verbose;
 }
 
-Network::Sockets::Sockets(bool t_is_verbose)
+Network::SocketApi::SocketApi(bool t_is_verbose)
 {
     m_state.m_is_verbose = t_is_verbose;
 }
 
-Network::Sockets::~Sockets()
+Network::SocketApi::~SocketApi()
 {
     if (m_state.m_is_started) {
         Network::stop(FailMode::return_zero, m_state.m_is_verbose);
     }
 }
 
-Network::Sockets::operator std::string() const
+Network::SocketApi::operator std::string() const
 {
     std::ostringstream oss;
     oss << m_data.m_description;
@@ -56,17 +56,17 @@ Network::Sockets::operator std::string() const
     return oss.str();
 }
 
-auto Network::Sockets::error_code() const noexcept -> int
+auto Network::SocketApi::error_code() const noexcept -> int
 {
     return m_state.m_error_code;
 }
 
-auto Network::Sockets::is_running() const noexcept -> bool
+auto Network::SocketApi::is_running() const noexcept -> bool
 {
     return m_data.m_system_status == "Running";
 }
 
-auto Network::Sockets::start() -> Runtime&
+auto Network::SocketApi::start() -> Runtime&
 {
     if (m_state.m_is_started) {
         return *this;
@@ -76,7 +76,7 @@ auto Network::Sockets::start() -> Runtime&
 
     if (!is_running()) {
         std::ostringstream oss;
-        oss << "Sockets runtime status is \""
+        oss << "Socket API runtime status is \""
             << m_data.m_system_status
             << "\".";
         throw RuntimeError {oss.str()};
@@ -86,7 +86,7 @@ auto Network::Sockets::start() -> Runtime&
     return *this;
 }
 
-auto Network::Sockets::stop() -> Runtime&
+auto Network::SocketApi::stop() -> Runtime&
 {
     if (m_state.m_is_started) {
         m_state.m_error_code = Network::stop(m_state.m_fail_mode,
