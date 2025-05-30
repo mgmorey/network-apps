@@ -73,7 +73,6 @@ auto Network::Sockets::start() -> Runtime&
     }
 
     m_data = Network::start(m_is_verbose);
-    m_is_started = true;
 
     if (!is_running()) {
         std::ostringstream oss;
