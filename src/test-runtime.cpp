@@ -210,7 +210,6 @@ namespace
             test_runtime(*runtime_1, "1");
             const auto runtime_2 {start_runtime(fail_mode, is_verbose)};
             test_runtime(*runtime_1, "2");
-            assert(runtime_1 != runtime_2);
             runtime_1->stop();
             assert(!runtime_1->error_code());
             runtime_2->stop();
