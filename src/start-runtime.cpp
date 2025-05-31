@@ -21,19 +21,20 @@
 #include "network/version.hpp"          // Version
 #endif
 
-#include <memory>       // std::make_shared()
+#include <memory>       // std::make_unique()
 #include <utility>      // std::move()
 
 namespace {
-    auto start(Network::SharedRuntime runtime) -> Network::SharedRuntime
+    auto start(std::unique_ptr<Network::Runtime> unique) ->
+        Network::SharedRuntime
     {
-        static auto static_runtime {std::move(runtime)};
+        static Network::SharedRuntime shared {std::move(unique)};
 
-        if (static_runtime) {
-            static_runtime->start();
+        if (shared) {
+            shared->start();
         }
 
-        return static_runtime;
+        return shared;
     }
 }
 
@@ -43,7 +44,7 @@ auto Network::start_runtime(Version t_version,
                             FailMode t_fail_mode,
                             bool t_is_verbose) -> SharedRuntime
 {
-    return ::start(std::make_shared<Network::SocketApi>(t_version,
+    return ::start(std::make_unique<Network::SocketApi>(t_version,
                                                         t_fail_mode,
                                                         t_is_verbose));
 }
@@ -53,11 +54,11 @@ auto Network::start_runtime(Version t_version,
 auto Network::start_runtime(FailMode t_fail_mode,
                             bool t_is_verbose) -> SharedRuntime
 {
-    return ::start(std::make_shared<Network::SocketApi>(t_fail_mode,
+    return ::start(std::make_unique<Network::SocketApi>(t_fail_mode,
                                                         t_is_verbose));
 }
 
 auto Network::start_runtime(bool t_is_verbose) -> SharedRuntime
 {
-    return ::start(std::make_shared<Network::SocketApi>(t_is_verbose));
+    return ::start(std::make_unique<Network::SocketApi>(t_is_verbose));
 }
