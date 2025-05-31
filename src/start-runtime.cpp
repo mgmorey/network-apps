@@ -17,6 +17,8 @@
 #include "network/failmode.hpp"         // FailMode
 #include "network/sharedruntime.hpp"    // SharedRuntime
 #include "network/socketapi.hpp"        // SocketApi
+#include "network/uniqueruntime.hpp"    // UniqueRuntime
+
 #ifdef WIN32
 #include "network/version.hpp"          // Version
 #endif
@@ -25,16 +27,11 @@
 #include <utility>      // std::move()
 
 namespace {
-    auto start(std::unique_ptr<Network::Runtime> unique) ->
-        Network::SharedRuntime
+    auto start(Network::UniqueRuntime unique_rt) -> Network::SharedRuntime
     {
-        static Network::SharedRuntime shared {std::move(unique)};
-
-        if (shared) {
-            shared->start();
-        }
-
-        return shared;
+        static Network::SharedRuntime shared_rt {std::move(unique_rt)};
+        shared_rt->start();
+        return shared_rt;
     }
 }
 
