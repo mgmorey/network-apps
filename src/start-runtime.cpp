@@ -15,21 +15,21 @@
 
 #include "network/start-runtime.hpp"    // start_runtime()
 #include "network/failmode.hpp"         // FailMode
+#include "network/sharedruntime.hpp"    // SharedRuntime
 #include "network/socketapi.hpp"        // SocketApi
-#include "network/uniqueruntime.hpp"    // UniqueRuntime
 #ifdef WIN32
 #include "network/version.hpp"          // Version
 #endif
 
-#include <memory>       // std::make_unique()
+#include <memory>       // std::make_shared()
 
 #ifdef WIN32
 
 auto Network::start_runtime(Version t_version,
                             FailMode t_fail_mode,
-                            bool t_is_verbose) -> UniqueRuntime
+                            bool t_is_verbose) -> SharedRuntime
 {
-    auto runtime {std::make_unique<Network::SocketApi>(t_version,
+    auto runtime {std::make_shared<Network::SocketApi>(t_version,
                                                        t_fail_mode,
                                                        t_is_verbose)};
 
@@ -43,9 +43,9 @@ auto Network::start_runtime(Version t_version,
 #endif
 
 auto Network::start_runtime(FailMode t_fail_mode,
-                            bool t_is_verbose) -> UniqueRuntime
+                            bool t_is_verbose) -> SharedRuntime
 {
-    auto runtime {std::make_unique<Network::SocketApi>(t_fail_mode,
+    auto runtime {std::make_shared<Network::SocketApi>(t_fail_mode,
                                                        t_is_verbose)};
 
     if (runtime) {
@@ -55,9 +55,9 @@ auto Network::start_runtime(FailMode t_fail_mode,
     return runtime;
 }
 
-auto Network::start_runtime(bool t_is_verbose) -> UniqueRuntime
+auto Network::start_runtime(bool t_is_verbose) -> SharedRuntime
 {
-    auto runtime {std::make_unique<Network::SocketApi>(t_is_verbose)};
+    auto runtime {std::make_shared<Network::SocketApi>(t_is_verbose)};
 
     if (runtime) {
         runtime->start();

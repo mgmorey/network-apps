@@ -101,6 +101,7 @@
 #include "network/overloaded.hpp"               // Overloaded
 #include "network/quote.hpp"                    // quote()
 #include "network/runtime.hpp"                  // Runtime
+#include "network/sharedruntime.hpp"            // SharedRuntime
 #include "network/socket-error.hpp"             // socket_error
 #include "network/socket.hpp"                   // Socket
 #include "network/socketdata.hpp"               // SocketData

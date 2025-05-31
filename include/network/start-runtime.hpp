@@ -17,7 +17,7 @@
 #define NETWORK_START_RUNTIME_HPP
 
 #include "network/failmode.hpp"         // FailMode
-#include "network/uniqueruntime.hpp"    // UniqueRuntime
+#include "network/sharedruntime.hpp"    // SharedRuntime
 #ifdef WIN32
 #include "network/version.hpp"          // Version
 #endif
@@ -27,11 +27,11 @@ namespace Network
 #ifdef WIN32
     extern auto start_runtime(Version t_version,
                               FailMode t_fail_mode,
-                              bool t_is_verbose) -> UniqueRuntime;
+                              bool t_is_verbose) -> SharedRuntime;
 #endif
     extern auto start_runtime(FailMode t_fail_mode,
-                              bool t_is_verbose) -> UniqueRuntime;
-    extern auto start_runtime(bool t_is_verbose = false) -> UniqueRuntime;
+                              bool t_is_verbose) -> SharedRuntime;
+    extern auto start_runtime(bool t_is_verbose = false) -> SharedRuntime;
 }
 
 #endif
