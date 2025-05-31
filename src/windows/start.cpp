@@ -84,6 +84,13 @@ namespace {
             std::cout << "Call to ::WSAStartup("
                       << wsa_version
                       << ", ...) returned data {"
+                      << wsa_data.iMaxSockets
+                      << ", "
+                      << wsa_data.iMaxUdpDg
+                      << ", "
+                      << (wsa_data.lpVendorInfo != nullptr ?
+                          wsa_data.lpVendorInfo : "<NULL>")
+                      << ", "
                       << Network::WindowsVersion(wsa_data.wVersion)
                       << ", "
                       << wsa_data.szDescription
