@@ -25,7 +25,7 @@
 #include <utility>      // std::move()
 
 namespace {
-    auto start(Network::SharedRuntime&& runtime) -> Network::SharedRuntime
+    auto start(Network::SharedRuntime runtime) -> Network::SharedRuntime
     {
         static auto static_runtime {std::move(runtime)};
 
