@@ -17,6 +17,7 @@
 #include "network/network.hpp"          // Error, Runtime, Version,
                                         // get_hostname()
 #include "network/parse.hpp"            // parse()
+#include "network/socketapi.hpp"        // SocketApi()
 #include "network/stop.hpp"             // stop()
 
 #ifdef WIN32
@@ -39,6 +40,7 @@ namespace
     using Network::FailMode;
     using Network::Hostname;
 #ifdef WIN32
+    using Network::SocketApi;
     using Network::Version;
 #endif
     using Network::get_hostname;
@@ -148,8 +150,8 @@ namespace
 
     auto test_runtime_inactive() -> void
     {
-        int error_code {0};
         std::string actual_str;
+        int error_code {0};
 
         try {
             error_code = Network::stop(fail_mode, is_verbose);
@@ -183,19 +185,19 @@ namespace
 
     auto test_runtime_invalid() -> void
     {
-        constexpr Version invalid;
+        constexpr Version invalid {0, 0};
         std::string actual_str;
 
         try {
-            const auto runtime {
-                start_runtime(invalid, fail_mode, is_verbose)
-            };
+            SocketApi runtime {invalid, FailMode::throw_error, is_verbose};
+            runtime.start();
         }
         catch (const Error& error) {
             print(error);
             actual_str = error.what();
         }
 
+        std::cerr << actual_str << std::endl;
         assert(actual_str == expected_error_version);
     }
 
