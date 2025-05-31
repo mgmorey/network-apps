@@ -79,6 +79,21 @@ namespace {
             }
         }
 
+        if (is_verbose) {
+            // clang-format off
+            std::cout << "Call to ::WSAStartup("
+                      << wsa_version
+                      << ", ...) returned data {"
+                      << Network::WindowsVersion(wsa_data.wVersion)
+                      << ", "
+                      << wsa_data.szDescription
+                      << ", "
+                      << wsa_data.szSystemStatus
+                      << '}'
+                      << std::endl;
+            // clang-format on
+        }
+
         return wsa_data;
     }
 } // namespace
