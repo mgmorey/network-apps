@@ -22,6 +22,20 @@
 #endif
 
 #include <memory>       // std::make_shared()
+#include <utility>      // std::move()
+
+namespace {
+    auto start(Network::SharedRuntime&& runtime) -> Network::SharedRuntime
+    {
+        static auto static_runtime {std::move(runtime)};
+
+        if (static_runtime) {
+            static_runtime->start();
+        }
+
+        return static_runtime;
+    }
+}
 
 #ifdef WIN32
 
@@ -29,15 +43,9 @@ auto Network::start_runtime(Version t_version,
                             FailMode t_fail_mode,
                             bool t_is_verbose) -> SharedRuntime
 {
-    static auto runtime {std::make_shared<Network::SocketApi>(t_version,
-                                                              t_fail_mode,
-                                                              t_is_verbose)};
-
-    if (runtime) {
-        runtime->start();
-    }
-
-    return runtime;
+    return ::start(std::make_shared<Network::SocketApi>(t_version,
+                                                        t_fail_mode,
+                                                        t_is_verbose));
 }
 
 #endif
@@ -45,23 +53,11 @@ auto Network::start_runtime(Version t_version,
 auto Network::start_runtime(FailMode t_fail_mode,
                             bool t_is_verbose) -> SharedRuntime
 {
-    static auto runtime {std::make_shared<Network::SocketApi>(t_fail_mode,
-                                                              t_is_verbose)};
-
-    if (runtime) {
-        runtime->start();
-    }
-
-    return runtime;
+    return ::start(std::make_shared<Network::SocketApi>(t_fail_mode,
+                                                        t_is_verbose));
 }
 
 auto Network::start_runtime(bool t_is_verbose) -> SharedRuntime
 {
-    static auto runtime {std::make_shared<Network::SocketApi>(t_is_verbose)};
-
-    if (runtime) {
-        runtime->start();
-    }
-
-    return runtime;
+    return ::start(std::make_shared<Network::SocketApi>(t_is_verbose));
 }
