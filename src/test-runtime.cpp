@@ -206,7 +206,9 @@ namespace
 
     auto test_runtime_valid() -> void
     {
+#ifdef WIN32
         constexpr Version latest {WindowsVersion::latest};
+#endif
         std::string actual_str;
 
         try {
