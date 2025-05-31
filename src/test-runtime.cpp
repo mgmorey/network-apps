@@ -1,4 +1,4 @@
-// Copyright (C) 2022  "Michael G. Morey" <mgmorey@gmail.com>
+g// Copyright (C) 2022  "Michael G. Morey" <mgmorey@gmail.com>
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -42,6 +42,7 @@ namespace
 #ifdef WIN32
     using Network::SocketApi;
     using Network::Version;
+    using Network::WindowsVersion;
 #endif
     using Network::get_hostname;
     using Network::parse;
@@ -205,10 +206,12 @@ namespace
 
     auto test_runtime_valid() -> void
     {
+        constexpr Version latest {WindowsVersion::latest};
         std::string actual_str;
 
         try {
-            const auto runtime_1 {start_runtime(fail_mode, is_verbose)};
+#ifdef WIN32
+            const auto runtime_1 {start_runtime(latest, fail_mode, is_verbose)};
             test_runtime(*runtime_1, "1");
             const auto runtime_2 {start_runtime(fail_mode, is_verbose)};
             test_runtime(*runtime_1, "2");
@@ -216,6 +219,12 @@ namespace
             assert(!runtime_1->error_code());
             runtime_2->stop();
             assert(!runtime_2->error_code());
+#else
+            const auto runtime_1 {start_runtime(fail_mode, is_verbose)};
+            test_runtime(*runtime_1, "1");
+            runtime_1->stop();
+            assert(!runtime_1->error_code());
+#endif
         }
         catch (const Error& error) {
             print(error);
