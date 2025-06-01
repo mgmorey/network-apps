@@ -26,7 +26,7 @@ namespace Network
     struct RuntimeData
     {
 #ifdef WIN32
-        RuntimeData(Version t_version,
+        RuntimeData(OptionalVersion t_version,
                     FailMode t_fail_mode,
                     bool t_is_verbose) :
             m_version(t_version),
@@ -47,7 +47,7 @@ namespace Network
         }
 
 #ifdef WIN32
-        OptionalVersion t_version;  // NOLINT
+        OptionalVersion m_version;  // NOLINT
 #endif
         FailMode m_fail_mode {FailMode::throw_error};  // NOLINT
         bool m_is_verbose {false};  // NOLINT
