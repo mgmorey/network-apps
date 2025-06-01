@@ -49,11 +49,11 @@ Network::SocketApi::operator std::string() const
         oss << m_description
             << " Version "
             << WindowsVersion(m_sa_data.wVersion);
-    }
 
-    if (!m_system_status.empty()) {
-        oss << ' '
-            << m_system_status;
+        if (!m_system_status.empty()) {
+            oss << ' '
+                << m_system_status;
+        }
     }
 
     return oss.str();
