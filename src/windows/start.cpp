@@ -93,9 +93,9 @@ namespace {
                       << ", "
                       << Network::WindowsVersion(wsa_data.wVersion)
                       << ", "
-                      << wsa_data.szDescription
+                      << static_cast<const char*>(wsa_data.szDescription)
                       << ", "
-                      << wsa_data.szSystemStatus
+                      << static_cast<const char*>(wsa_data.szSystemStatus)
                       << '}'
                       << std::endl;
             // clang-format on
