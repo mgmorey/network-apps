@@ -19,6 +19,7 @@
 #include "network/close.hpp"            // close()
 #include "network/get-name.hpp"         // get_name()
 #include "network/handle-null.hpp"      // handle_null
+#include "network/handle-type.hpp"      // handle_type
 #include "network/listen.hpp"           // listen()
 #include "network/open-handle.hpp"      // open()
 #include "network/oserrorresult.hpp"    // OsErrorResult
@@ -50,6 +51,11 @@ Network::CommonSocket::~CommonSocket() noexcept
 Network::CommonSocket::operator bool() const noexcept
 {
     return m_sd.handle() != handle_null;
+}
+
+Network::CommonSocket::operator handle_type() const noexcept
+{
+    return m_sd.handle();
 }
 
 Network::CommonSocket::operator std::string() const

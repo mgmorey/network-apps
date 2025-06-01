@@ -17,6 +17,7 @@
 #define NETWORK_SOCKET_HPP
 
 #include "network/acceptresult.hpp"     // AcceptResult
+#include "network/handle-type.hpp"      // handle_type
 #include "network/oserrorresult.hpp"    // OsErrorResult
 #include "network/symbol.hpp"           // Symbol
 
@@ -37,6 +38,7 @@ namespace Network
         auto operator=(Socket&&) noexcept -> Socket& = delete;
 
         explicit virtual operator bool() const noexcept = 0;
+        explicit virtual operator handle_type() const noexcept = 0;
         explicit virtual operator std::string() const = 0;
 
         [[nodiscard]] virtual auto accept() const -> AcceptResult = 0;

@@ -18,6 +18,7 @@
 
 #include "network/acceptresult.hpp"     // AcceptResult
 #include "network/bytestring.hpp"       // ByteString
+#include "network/handle-type.hpp"      // handle_type
 #include "network/oserrorresult.hpp"    // OsErrorResult
 #include "network/socket.hpp"           // Socket
 #include "network/socketdata.hpp"       // SocketData
@@ -44,6 +45,7 @@ namespace Network
         auto operator=(CommonSocket&&) noexcept -> CommonSocket& = delete;
 
         explicit operator bool() const noexcept final;
+        explicit operator handle_type() const noexcept final;
         explicit operator std::string() const final;
 
         [[nodiscard]] auto accept() const -> AcceptResult final;
