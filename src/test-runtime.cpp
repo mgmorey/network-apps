@@ -214,9 +214,9 @@ namespace
 
         try {
 #ifdef WIN32
-            RuntimeData rd {valid, fail_mode, is_verbose};
+            const RuntimeData rd {valid, fail_mode, is_verbose};
 #else
-            RuntimeData rd {fail_mode, is_verbose};
+            const RuntimeData rd {fail_mode, is_verbose};
 #endif
             SocketApi sa {rd};
             sa.start();

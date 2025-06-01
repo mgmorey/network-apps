@@ -58,7 +58,6 @@ namespace
     using Network::HostnameView;
     using Network::IpSocketHints;
     using Network::OsErrorResult;
-    using Network::RuntimeData;
     using Network::Socket;
     using Network::SocketHints;
     using Network::SocketResult;

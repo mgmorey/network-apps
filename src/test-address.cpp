@@ -60,7 +60,6 @@ namespace
     using Network::ByteString;
     using Network::Error;
     using Network::Hostname;
-    using Network::RuntimeData;
     using Network::SocketFamily;
     using Network::SocketHints;
     using Network::SocketHost;

@@ -54,7 +54,6 @@ namespace
     using Network::LogicError;
     using Network::OsErrorResult;
     using Network::Pathname;
-    using Network::RuntimeData;
     using Network::Socket;
     using Network::SocketData;
     using Network::SocketHints;

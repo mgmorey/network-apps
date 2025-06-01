@@ -43,7 +43,6 @@ namespace
 {
     using Network::CommonSocket;
     using Network::Error;
-    using Network::RuntimeData;
     using Network::SocketData;
     using Network::SocketHints;
     using Network::UniqueSocket;

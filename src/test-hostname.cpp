@@ -39,7 +39,6 @@ namespace
     using Network::Error;
     using Network::Hostname;
     using Network::OsErrorResult;
-    using Network::RuntimeData;
     using Network::always_false_v;
     using Network::get_hostname;
     using Network::get_hostnameresult;

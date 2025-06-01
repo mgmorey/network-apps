@@ -58,7 +58,6 @@ namespace
     using Network::OptionalHints;
     using Network::OptionalHostname;
     using Network::OsErrorResult;
-    using Network::RuntimeData;
     using Network::SocketHints;
     using Network::SocketHost;
     using Network::always_false_v;
