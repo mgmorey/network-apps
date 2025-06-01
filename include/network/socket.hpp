@@ -39,7 +39,6 @@ namespace Network
 
         explicit virtual operator bool() const noexcept = 0;
         explicit virtual operator handle_type() const noexcept = 0;
-        explicit virtual operator std::string() const = 0;
 
         [[nodiscard]] virtual auto accept() const -> AcceptResult = 0;
         [[nodiscard]] virtual auto bind(std::span<const std::byte> t_bs) ->

@@ -26,14 +26,12 @@
 #include "network/read.hpp"             // read()
 #include "network/shutdown.hpp"         // shutdown()
 #include "network/socketdata.hpp"       // SocketData
-#include "network/string-null.hpp"      // string_null
 #include "network/symbol.hpp"           // Symbol
 #include "network/write.hpp"            // write()
 
 #include <cstddef>      // std::byte, std::size_t
 #include <iostream>     // std::cerr, std::endl
 #include <span>         // std::span
-#include <string>       // std::string, std::to_string()
 
 Network::CommonSocket::CommonSocket(const SocketData& t_sd) :
     m_sd(t_sd)
@@ -56,15 +54,6 @@ Network::CommonSocket::operator bool() const noexcept
 Network::CommonSocket::operator handle_type() const noexcept
 {
     return m_sd.handle();
-}
-
-Network::CommonSocket::operator std::string() const
-{
-    if (m_sd.handle() == handle_null) {
-        return string_null;
-    }
-
-    return std::to_string(m_sd.handle());
 }
 
 auto Network::CommonSocket::accept() const -> AcceptResult

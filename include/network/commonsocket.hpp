@@ -46,7 +46,6 @@ namespace Network
 
         explicit operator bool() const noexcept final;
         explicit operator handle_type() const noexcept final;
-        explicit operator std::string() const final;
 
         [[nodiscard]] auto accept() const -> AcceptResult final;
         [[nodiscard]] auto bind(std::span<const std::byte> t_bs) ->
