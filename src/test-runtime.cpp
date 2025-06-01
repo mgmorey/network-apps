@@ -214,18 +214,15 @@ namespace
 
         try {
 #ifdef WIN32
-            SocketApi sa {RuntimeData {valid, fail_mode, is_verbose}};
-            sa.start();
-            test_rt(sa, "auto");
-            sa.stop();
-            assert(!sa.error_code());
+            RuntimeData rd {valid, fail_mode, is_verbose};
 #else
-            SocketApi sa {RuntimeData {fail_mode, is_verbose}};
+            RuntimeData rd {fail_mode, is_verbose};
+#endif
+            SocketApi sa {rd};
             sa.start();
             test_rt(sa, "auto");
             sa.stop();
             assert(!sa.error_code());
-#endif
             auto rt {run(RuntimeData {fail_mode, is_verbose})};
             test_rt(*rt, "shared");
             rt->stop();
