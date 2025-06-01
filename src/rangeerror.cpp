@@ -17,22 +17,13 @@
 #include "network/logicerror.hpp"       // LogicError
 
 #include <format>       // std::format()
-#include <string>       // std::string
 #include <string_view>  // std::string_view
-
-auto Network::RangeError::format(std::string_view t_value,
-                                 std::string_view t_min,
-                                 std::string_view t_max,
-                                 std::string_view t_type) -> std::string
-{
-    return std::format("Value {} is out of range [{}, {}] of {}",
-                       t_value, t_min, t_max, t_type);
-}
 
 Network::RangeError::RangeError(std::string_view t_value,
                                 std::string_view t_min,
                                 std::string_view t_max,
                                 std::string_view t_type) noexcept :
-    LogicError(format(t_value, t_min, t_max, t_type))
+    LogicError(std::format("Value {} is out of range [{}, {}] of {}",
+                           t_value, t_min, t_max, t_type))
 {
 }
