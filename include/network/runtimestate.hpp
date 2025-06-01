@@ -16,8 +16,6 @@
 #ifndef NETWORK_RUNTIMESTATE_HPP
 #define NETWORK_RUNTIMESTATE_HPP
 
-#ifndef WIN32
-
 #include "network/failmode.hpp"         // FailMode
 
 namespace Network
@@ -30,7 +28,5 @@ namespace Network
         bool m_is_verbose {false};
     };
 }
-
-#endif
 
 #endif
