@@ -17,9 +17,7 @@
 #include "network/network.hpp"          // Error, Runtime, Version,
                                         // get_hostname(), run()
 #include "network/parse.hpp"            // parse()
-#ifdef WIN32
 #include "network/socketapi.hpp"        // SocketApi()
-#endif
 #include "network/stop.hpp"             // stop()
 
 #ifdef WIN32
@@ -42,8 +40,8 @@ namespace
     using Network::Hostname;
     using Network::Runtime;
     using Network::RuntimeData;
-#ifdef WIN32
     using Network::SocketApi;
+#ifdef WIN32
     using Network::Version;
     using Network::WindowsVersion;
 #endif
@@ -188,13 +186,11 @@ namespace
 
     auto test_rt_invalid() -> void
     {
-        constexpr Version invalid {0, 0};
         std::string actual_str;
 
         try {
-            const RuntimeData rd {invalid, FailMode::throw_error, is_verbose};
-            SocketApi rt {rd};
-            rt.start();
+            SocketApi sa {RuntimeData {{}, FailMode::throw_error, is_verbose}};
+            sa.start();
         }
         catch (const Error& error) {
             print(error);
@@ -209,30 +205,32 @@ namespace
 
     auto test_rt_valid() -> void
     {
-#ifdef WIN32
-        constexpr Version latest {WindowsVersion::latest};
-#endif
         std::string actual_str;
 
         try {
 #ifdef WIN32
-            const RuntimeData rd_1 {latest, fail_mode, is_verbose};
-            const auto rt_1 {run(rd_1)};
-            test_rt(*rt_1, "1");
-            const RuntimeData rd_2 {fail_mode, is_verbose};
-            const auto rt_2 {run(rd_2)};
-            test_rt(*rt_1, "2");
-            rt_1->stop();
-            assert(!rt_1->error_code());
-            rt_2->stop();
-            assert(!rt_2->error_code());
+            constexpr Version latest {WindowsVersion::latest};
+            SocketApi sa_1 {RuntimeData {latest, fail_mode, is_verbose}};
+            sa_1.start();
+            test_rt(sa_2, "1");
+            SocketApi sa_2 {RuntimeData {fail_mode, is_verbose}};
+            sa_1.start();
+            test_rt(sa_2, "2");
+            sa_2.stop();
+            assert(!sa_2.error_code());
+            sa_1.stop();
+            assert(!sa_1.error_code());
 #else
-            const RuntimeData rd {fail_mode, is_verbose};
-            const auto rt {run(rd)};
-            test_rt(*rt, "1");
+            SocketApi sa {RuntimeData {fail_mode, is_verbose}};
+            sa.start();
+            test_rt(sa, "1");
+            sa.stop();
+            assert(!sa.error_code());
+#endif
+            auto rt {run(RuntimeData {fail_mode, is_verbose})};
+            test_rt(*rt, "shared");
             rt->stop();
             assert(!rt->error_code());
-#endif
         }
         catch (const Error& error) {
             print(error);
