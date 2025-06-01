@@ -186,10 +186,12 @@ namespace
 
     auto test_rt_invalid() -> void
     {
+        constexpr auto fail_mode_throw {FailMode::throw_error};
+        constexpr Version invalid {0, 0};
         std::string actual_str;
 
         try {
-            SocketApi sa {RuntimeData {{}, FailMode::throw_error, is_verbose}};
+            SocketApi sa {RuntimeData {invalid, fail_mode_throw, is_verbose}};
             sa.start();
         }
         catch (const Error& error) {
@@ -205,25 +207,20 @@ namespace
 
     auto test_rt_valid() -> void
     {
+        constexpr Version valid {WindowsVersion::latest};
         std::string actual_str;
 
         try {
 #ifdef WIN32
-            constexpr Version latest {WindowsVersion::latest};
-            SocketApi sa_1 {RuntimeData {latest, fail_mode, is_verbose}};
-            sa_1.start();
-            test_rt(sa_2, "1");
-            SocketApi sa_2 {RuntimeData {fail_mode, is_verbose}};
-            sa_1.start();
-            test_rt(sa_2, "2");
-            sa_2.stop();
-            assert(!sa_2.error_code());
-            sa_1.stop();
-            assert(!sa_1.error_code());
+            SocketApi sa {RuntimeData {valid, fail_mode, is_verbose}};
+            sa.start();
+            test_rt(sa, "auto");
+            sa.stop();
+            assert(!sa.error_code());
 #else
             SocketApi sa {RuntimeData {fail_mode, is_verbose}};
             sa.start();
-            test_rt(sa, "1");
+            test_rt(sa, "auto");
             sa.stop();
             assert(!sa.error_code());
 #endif
