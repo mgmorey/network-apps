@@ -32,7 +32,7 @@ Network::SocketApi::SocketApi(const RuntimeData& t_rd) :
 Network::SocketApi::~SocketApi()
 {
     if (m_rt_state.m_is_started) {
-        Network::stop(FailMode::return_zero, m_rt_state.m_is_verbose);
+        Network::stop(FailMode::return_zero, m_rt_data.is_verbose());
     }
 }
 
@@ -65,7 +65,7 @@ auto Network::SocketApi::start() -> Runtime&
         return *this;
     }
 
-    m_sa_data = Network::start(m_rt_state.m_is_verbose);
+    m_sa_data = Network::start(m_rt_data.is_verbose());
 
     if (!is_running()) {
         std::ostringstream oss;
@@ -82,8 +82,8 @@ auto Network::SocketApi::start() -> Runtime&
 auto Network::SocketApi::stop() -> Runtime&
 {
     if (m_rt_state.m_is_started) {
-        m_rt_state.m_error_code = Network::stop(m_rt_state.m_fail_mode,
-                                                m_rt_state.m_is_verbose);
+        m_rt_state.m_error_code = Network::stop(m_rt_data.fail_mode(),
+                                                m_rt_data.is_verbose());
 
         if (m_rt_state.m_error_code == 0) {
             m_rt_state.m_is_started = false;

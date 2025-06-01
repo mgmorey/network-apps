@@ -102,7 +102,7 @@ get-sa-span.cpp get-sin-addr.cpp get-sin-pointer.cpp get-sin-port.cpp	\
 get-sin6-addr.cpp get-sin6-pointer.cpp get-sin6-port.cpp listen.cpp	\
 logicerror.cpp open-endpoint.cpp open-handle.cpp open.cpp		\
 oserrorresult.cpp parse-argumentspan.cpp parse.cpp quote.cpp		\
-rangeerror.cpp reset-api-error.cpp reset-os-error.cpp			\
+rangeerror.cpp reset-api-error.cpp reset-os-error.cpp runtimedata.cpp	\
 runtimeerror.cpp shutdown.cpp socketdata.cpp socketfamily.cpp		\
 socketflags.cpp sockethost.cpp socketlimits.cpp socketprotocol.cpp	\
 sockettype.cpp start-runtime.cpp stream-address.cpp			\

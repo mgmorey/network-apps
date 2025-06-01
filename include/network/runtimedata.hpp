@@ -28,29 +28,31 @@ namespace Network
 #ifdef WIN32
         RuntimeData(OptionalVersion t_version,
                     FailMode t_fail_mode,
-                    bool t_is_verbose) :
-            m_version(t_version),
-            m_fail_mode(t_fail_mode),
-            m_is_verbose(t_is_verbose)
-        {
-        }
+                    bool t_is_verbose) noexcept;
 #endif
         RuntimeData(FailMode t_fail_mode,
-                    bool t_is_verbose) :
-            m_fail_mode(t_fail_mode),
-            m_is_verbose(t_is_verbose)
-        {
-        }
-        explicit RuntimeData(bool t_is_verbose = false) :
-            m_is_verbose(t_is_verbose)
-        {
-        }
+                    bool t_is_verbose) noexcept;
+        explicit RuntimeData(bool t_is_verbose) noexcept;
 
+        RuntimeData() noexcept = default;
+        RuntimeData(const RuntimeData&) noexcept = default;
+        RuntimeData(RuntimeData&&) noexcept = default;
+        ~RuntimeData() noexcept = default;
+        auto operator=(const RuntimeData&) noexcept -> RuntimeData& = default;
+        auto operator=(RuntimeData&&) noexcept -> RuntimeData& = default;
+
+        [[nodiscard]] auto fail_mode() const noexcept -> FailMode;
+        [[nodiscard]] auto is_verbose() const noexcept -> bool;
 #ifdef WIN32
-        OptionalVersion m_version;  // NOLINT
+        [[nodiscard]] auto version() const noexcept -> OptionalVersion;
 #endif
-        FailMode m_fail_mode {FailMode::throw_error};  // NOLINT
-        bool m_is_verbose {false};  // NOLINT
+
+    private:
+#ifdef WIN32
+        OptionalVersion m_version;                          // NOLINT
+#endif
+        FailMode m_fail_mode {FailMode::throw_error};       // NOLINT
+        bool m_is_verbose {false};                          // NOLINT
     };
 }
 

@@ -36,8 +36,8 @@ Network::SocketApi::SocketApi(const RuntimeData& t_rd) :
 Network::SocketApi::~SocketApi()
 {
     if (m_rt_state.m_is_started) {
-        Network::stop(m_rt_data.m_fail_mode,
-                      m_rt_data.m_is_verbose);
+        Network::stop(m_rt_data.fail_mode(),
+                      m_rt_data.is_verbose());
     }
 }
 
@@ -72,9 +72,9 @@ auto Network::SocketApi::start() -> Runtime&
         return *this;
     }
 
-    m_sa_data = m_rt_data.m_version ?
-        Network::start(*m_rt_data.m_version, m_rt_data.m_is_verbose) :
-        Network::start(m_rt_data.m_is_verbose);
+    m_sa_data = m_rt_data.version() ?
+        Network::start(*m_rt_data.version(), m_rt_data.is_verbose()) :
+        Network::start(m_rt_data.is_verbose());
     m_description = static_cast<const char*>(m_sa_data.szDescription);
     m_system_status = static_cast<const char*>(m_sa_data.szSystemStatus);
 
@@ -93,8 +93,8 @@ auto Network::SocketApi::start() -> Runtime&
 auto Network::SocketApi::stop() -> Runtime&
 {
     if (m_rt_state.m_is_started) {
-        m_rt_state.m_error_code = Network::stop(m_rt_data.m_fail_mode,
-                                                m_rt_data.m_is_verbose);
+        m_rt_state.m_error_code = Network::stop(m_rt_data.fail_mode(),
+                                                m_rt_data.is_verbose());
 
         if (m_rt_state.m_error_code == 0) {
             m_rt_state.m_is_started = false;

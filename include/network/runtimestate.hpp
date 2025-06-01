@@ -16,16 +16,12 @@
 #ifndef NETWORK_RUNTIMESTATE_HPP
 #define NETWORK_RUNTIMESTATE_HPP
 
-#include "network/failmode.hpp"         // FailMode
-
 namespace Network
 {
     struct RuntimeState
     {
         int m_error_code {0};
-        FailMode m_fail_mode {FailMode::throw_error};
         bool m_is_started {false};
-        bool m_is_verbose {false};
     };
 }
 
