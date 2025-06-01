@@ -44,9 +44,12 @@ Network::SocketApi::~SocketApi()
 Network::SocketApi::operator std::string() const
 {
     std::ostringstream oss;
-    oss << m_description
-        << " Version "
-        << WindowsVersion(m_sa_data.wVersion);
+
+    if (!m_description.empty()) {
+        oss << m_description
+            << " Version "
+            << WindowsVersion(m_sa_data.wVersion);
+    }
 
     if (!m_system_status.empty()) {
         oss << ' '
