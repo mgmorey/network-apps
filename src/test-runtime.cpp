@@ -207,7 +207,9 @@ namespace
 
     auto test_rt_valid() -> void
     {
+#ifdef WIN32
         constexpr Version valid {WindowsVersion::latest};
+#endif
         std::string actual_str;
 
         try {
