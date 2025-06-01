@@ -23,6 +23,5 @@
 auto Network::parse(int argc, char** argv,
                     const char* optstring) -> ParseResult
 {
-    const auto args {std::span {argv, to_size(argc)}};
-    return parse(args, optstring);
+    return parse(std::span {argv, to_size(argc)}, optstring);
 }
