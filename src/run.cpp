@@ -20,9 +20,14 @@
 
 #include <memory>       // std::make_shared()
 
-auto Network::run(const RuntimeData& rd) -> SharedRuntime
+auto Network::run(RuntimeData rd) -> SharedRuntime
 {
-    static auto sr {std::make_shared<Network::SocketApi>(rd)};
+    static auto sr {std::make_shared<SocketApi>(rd)};
     sr->start();
     return sr;
+}
+
+auto Network::run(bool is_verbose) -> SharedRuntime
+{
+    return run(RuntimeData {is_verbose});
 }

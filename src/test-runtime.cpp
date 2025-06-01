@@ -17,7 +17,9 @@
 #include "network/network.hpp"          // Error, Runtime, Version,
                                         // get_hostname(), run()
 #include "network/parse.hpp"            // parse()
+#ifdef WIN32
 #include "network/socketapi.hpp"        // SocketApi()
+#endif
 #include "network/stop.hpp"             // stop()
 
 #ifdef WIN32

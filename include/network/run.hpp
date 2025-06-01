@@ -21,7 +21,8 @@
 
 namespace Network
 {
-    extern auto run(const RuntimeData& rd) -> SharedRuntime;
+    extern auto run(RuntimeData rd) -> SharedRuntime;
+    extern auto run(bool is_verbose = false) -> SharedRuntime;
 }
 
 #endif

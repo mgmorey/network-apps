@@ -216,8 +216,7 @@ auto main(int argc, char* argv[]) -> int
 {
     try {
         const auto endpoint {parse_arguments(argc, argv)};
-        const RuntimeData rd {is_verbose};
-        const auto rt {run(rd)};
+        const auto rt {run(is_verbose)};
 
         if (is_verbose) {
             std::cout << *rt << std::endl;
