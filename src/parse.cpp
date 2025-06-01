@@ -20,8 +20,7 @@
 
 #include <span>         // std::span
 
-auto Network::parse(int argc, char** argv,
-                    const char* optstring) -> ParseResult
+auto Network::parse(int argc, char** argv, const char* optstring) -> ParseResult
 {
     return parse(std::span {argv, to_size(argc)}, optstring);
 }

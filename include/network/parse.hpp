@@ -20,8 +20,7 @@
 
 namespace Network
 {
-    auto parse(int argc, char** argv,
-               const char* optstring) -> ParseResult;
+    auto parse(int argc, char** argv, const char* optstring) -> ParseResult;
 }
 
 #endif
