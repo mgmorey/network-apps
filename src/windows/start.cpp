@@ -31,7 +31,8 @@
 
 #include <iostream>     // std::cout, std::endl
 
-namespace {
+namespace
+{
     auto start(Network::OptionalVersion version,
                bool is_verbose) -> Network::SocketApiData
     {

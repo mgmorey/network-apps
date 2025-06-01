@@ -29,8 +29,8 @@
 #include <ostream>      // std::ostream
 #include <string>       // std::string
 
-namespace {
-
+namespace
+{
     auto get_prefix(Network::socket_family_type family) -> std::string
     {
         switch (family) {

@@ -29,7 +29,8 @@
 
 #include <string>       // std::string, std::to_string()
 
-namespace {
+namespace
+{
     auto format(DWORD error, LPTSTR& error_text) -> DWORD
     {
         return ::FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM |
