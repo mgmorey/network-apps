@@ -23,8 +23,7 @@
                                         // SocketResultVector,
                                         // UniqueSocket, connect(),
                                         // get_hostname(),
-                                        // os_error_type,
-                                        // start_runtime(),
+                                        // os_error_type, run(),
                                         // string_null
 #include "network/parse.hpp"            // parse()
 
@@ -71,7 +70,7 @@ namespace
     using Network::get_hostname;
     using Network::os_error_type;
     using Network::parse;
-    using Network::start;
+    using Network::run;
     using Network::string_null;
 
     using ErrorCodeSet = std::set<os_error_type>;
@@ -218,7 +217,7 @@ auto main(int argc, char* argv[]) -> int
     try {
         const auto endpoint {parse_arguments(argc, argv)};
         const RuntimeData rd {is_verbose};
-        const auto rt {start(rd)};
+        const auto rt {run(rd)};
 
         if (is_verbose) {
             std::cout << *rt << std::endl;

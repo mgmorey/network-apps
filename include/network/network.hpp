@@ -100,6 +100,7 @@
                                                 // reset_last_os_error()
 #include "network/overloaded.hpp"               // Overloaded
 #include "network/quote.hpp"                    // quote()
+#include "network/run.hpp"                      // run()
 #include "network/runtime.hpp"                  // Runtime
 #include "network/runtimedata.hpp"              // RuntimeDataa
 #include "network/sharedruntime.hpp"            // SharedRuntime
@@ -113,7 +114,6 @@
 #include "network/socketlimits.hpp"             // SocketLimits
 #include "network/socketprotocol.hpp"           // SocketProtocol
 #include "network/sockettype.hpp"               // SocketType
-#include "network/start-runtime.hpp"            // start_runtime()
 #include "network/string-null.hpp"              // string_null
 #include "network/template.hpp"                 // Template
 #include "network/textbuffer.hpp"               // TextBuffer
@@ -154,7 +154,6 @@
                                                 // socket_protocol_type,
                                                 // socket_type_enum
                                                 // socket_type_type
-#include "network/uniqueruntime.hpp"            // UniqueRuntime
 #include "network/uniquesocket.hpp"             // UniqueSocket
 #include "network/uniquify.hpp"                 // uniquify()
 #include "network/validate.hpp"                 // validate()

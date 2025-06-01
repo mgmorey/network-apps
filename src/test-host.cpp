@@ -23,8 +23,7 @@
                                         // OsErrorResult, SocketHints,
                                         // SocketHost, always_false_v,
                                         // get_hostname(), insert(),
-                                        // os_error_type,
-                                        // start_runtime,
+                                        // os_error_type, run(),
                                         // to_bytestring(), uniquify()
 #include "network/parse.hpp"            // parse()
 
@@ -68,7 +67,7 @@ namespace
     using Network::insert;
     using Network::os_error_type;
     using Network::parse;
-    using Network::start;
+    using Network::run;
     using Network::to_bytestring;
     using Network::uniquify;
 
@@ -302,7 +301,7 @@ auto main(int argc, char* argv[]) -> int
     try {
         const auto args {parse_arguments(argc, argv)};
         const RuntimeData rd {is_verbose};
-        const auto rt {start(rd)};
+        const auto rt {run(rd)};
 
         if (is_verbose) {
             std::cout << *rt << std::endl;

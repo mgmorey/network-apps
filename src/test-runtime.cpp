@@ -15,7 +15,7 @@
 
 #include "network/assert.hpp"           // assert()
 #include "network/network.hpp"          // Error, Runtime, Version,
-                                        // get_hostname()
+                                        // get_hostname(), run()
 #include "network/parse.hpp"            // parse()
 #include "network/socketapi.hpp"        // SocketApi()
 #include "network/stop.hpp"             // stop()
@@ -47,7 +47,7 @@ namespace
 #endif
     using Network::get_hostname;
     using Network::parse;
-    using Network::start;
+    using Network::run;
 
 #ifdef WIN32
     constexpr auto expected_code_stopped {WSANOTINITIALISED};
@@ -215,10 +215,10 @@ namespace
         try {
 #ifdef WIN32
             const RuntimeData rd_1 {latest, fail_mode, is_verbose};
-            const auto rt_1 {start(rd_1)};
+            const auto rt_1 {run(rd_1)};
             test_rt(*rt_1, "1");
             const RuntimeData rd_2 {fail_mode, is_verbose};
-            const auto rt_2 {start(rd_2)};
+            const auto rt_2 {run(rd_2)};
             test_rt(*rt_1, "2");
             rt_1->stop();
             assert(!rt_1->error_code());
@@ -226,7 +226,7 @@ namespace
             assert(!rt_2->error_code());
 #else
             const RuntimeData rd {fail_mode, is_verbose};
-            const auto rt {start(rd)};
+            const auto rt {run(rd)};
             test_rt(*rt, "1");
             rt->stop();
             assert(!rt->error_code());

@@ -18,8 +18,9 @@
                                         // OsErrorResult,
                                         // SocketFamily, SocketHints,
                                         // SocketHost, SocketLimits,
-                                        // insert(), sa_family_type,
-                                        // sa_size, sin_family_type,
+                                        // insert(), run(),
+                                        // sa_family_type, sa_size,
+                                        // sin_family_type,
                                         // sun_length_max,
                                         // sun_length_min,
                                         // sun_path_size, sun_size,
@@ -74,10 +75,10 @@ namespace
 #ifndef WIN32
     using Network::path_length_max;
 #endif
+    using Network::run;
     using Network::sa_family_type;
     using Network::sa_size;
     using Network::sin_family_type;
-    using Network::start;
 #ifndef WIN32
     using Network::sun_length_max;
     using Network::sun_length_min;
@@ -464,7 +465,7 @@ auto main(int argc, char* argv[]) -> int
     try {
         parse_arguments(argc, argv);
         const RuntimeData rd {is_verbose};
-        const auto rt {start(rd)};
+        const auto rt {run(rd)};
 
         if (is_verbose) {
             std::cout << *rt << std::endl;

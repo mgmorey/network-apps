@@ -13,16 +13,15 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_UNIQUERUNTIME_HPP
-#define NETWORK_UNIQUERUNTIME_HPP
+#ifndef NETWORK_RUN_HPP
+#define NETWORK_RUN_HPP
 
-#include "network/runtime.hpp"          // Runtime
-
-#include <memory>       // std::unique_ptr
+#include "network/runtimedata.hpp"      // RuntimeData
+#include "network/sharedruntime.hpp"    // SharedRuntime
 
 namespace Network
 {
-    using UniqueRuntime = std::unique_ptr<Runtime>;
+    extern auto run(const RuntimeData& rd) -> SharedRuntime;
 }
 
 #endif

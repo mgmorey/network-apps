@@ -17,7 +17,7 @@
 #include "network/assert.hpp"           // assert()
 #include "network/network.hpp"          // Error, Hostname,
                                         // get_hostnameresult(),
-                                        // start_runtime()
+                                        // run()
 #include "network/parse.hpp"            // parse()
 
 #ifdef WIN32
@@ -44,7 +44,7 @@ namespace
     using Network::get_hostname;
     using Network::get_hostnameresult;
     using Network::parse;
-    using Network::start;
+    using Network::run;
 
 #if defined(OS_CYGWIN_NT)
     constexpr auto expected_error_gethostname_re {""};
@@ -148,7 +148,7 @@ auto main(int argc, char* argv[]) -> int
     try {
         parse_arguments(argc, argv);
         const RuntimeData rd {is_verbose};
-        const auto rt {start(rd)};
+        const auto rt {run(rd)};
 
         if (is_verbose) {
             std::cout << *rt << std::endl;

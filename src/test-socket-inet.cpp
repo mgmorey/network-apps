@@ -20,7 +20,7 @@
                                         // close(), create_socket(),
                                         // family_type, handle_null,
                                         // handle_type, os_error_type,
-                                        // start_runtime()
+                                        // run()
 #include "network/parse.hpp"            // parse()
 
 #ifdef WIN32
@@ -53,7 +53,7 @@ namespace
     using Network::handle_type;
     using Network::os_error_type;
     using Network::parse;
-    using Network::start;
+    using Network::run;
 
     class TestSocketData : public SocketData
     {
@@ -375,7 +375,7 @@ auto main(int argc, char* argv[]) -> int
     try {
         parse_arguments(argc, argv);
         const RuntimeData rd {is_verbose};
-        const auto rt {start(rd)};
+        const auto rt {run(rd)};
 
         if (is_verbose) {
             std::cout << *rt << std::endl;

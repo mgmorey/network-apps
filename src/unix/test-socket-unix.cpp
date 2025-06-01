@@ -25,8 +25,7 @@
                                         // create_socketpair(),
                                         // handle_null, handle_type,
                                         // os_error_type,
-                                        // path_length_max,
-                                        // start_runtime()
+                                        // path_length_max, run(),
                                         // to_bytestring(), to_path()
 #include "network/parse.hpp"            // parse()
 
@@ -70,7 +69,7 @@ namespace
     using Network::os_error_type;
     using Network::parse;
     using Network::path_length_max;
-    using Network::start;
+    using Network::run;
     using Network::to_bytestring;
     using Network::to_path;
 
@@ -411,7 +410,7 @@ auto main(int argc, char* argv[]) -> int
     try {
         parse_arguments(argc, argv);
         const RuntimeData rd {is_verbose};
-        const auto rt {start(rd)};
+        const auto rt {run(rd)};
 
         if (is_verbose) {
             std::cout << *rt << std::endl;
