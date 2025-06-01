@@ -190,7 +190,8 @@ namespace
         std::string actual_str;
 
         try {
-            SocketApi rt {invalid, FailMode::throw_error, is_verbose};
+            const RuntimeData rd {invalid, FailMode::throw_error, is_verbose};
+            SocketApi rt {rd};
             rt.start();
         }
         catch (const Error& error) {
