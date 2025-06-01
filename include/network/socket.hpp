@@ -36,7 +36,9 @@ namespace Network
         auto operator=(const Socket&) noexcept -> Socket& = delete;
         auto operator=(Socket&&) noexcept -> Socket& = delete;
 
+        explicit virtual operator bool() const noexcept = 0;
         explicit virtual operator std::string() const = 0;
+
         [[nodiscard]] virtual auto accept() const -> AcceptResult = 0;
         [[nodiscard]] virtual auto bind(std::span<const std::byte> t_bs) ->
             OsErrorResult = 0;
@@ -44,6 +46,7 @@ namespace Network
             std::span<const std::byte> = 0;
         [[nodiscard]] virtual auto connect(std::span<const std::byte> t_bs) ->
             OsErrorResult = 0;
+        [[nodiscard]] virtual auto is_verbose() const noexcept -> bool = 0;
         [[nodiscard]] virtual auto listen(int t_backlog) const ->
             OsErrorResult = 0;
         [[nodiscard]] virtual auto peername() const ->

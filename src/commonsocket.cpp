@@ -61,38 +61,6 @@ Network::CommonSocket::operator std::string() const
     return std::to_string(m_sd.handle());
 }
 
-
-auto Network::CommonSocket::get_name(bool t_is_sockname) const ->
-    std::span<const std::byte>
-{
-    const auto api {t_is_sockname ? Symbol::sockname : Symbol::peername};
-    auto& name {m_cache[api]};
-
-    if (name.empty()) {
-        name = Network::get_name(m_sd, t_is_sockname);
-     }
-
-    return name;
-}
-
-auto Network::CommonSocket::is_verbose() const noexcept -> bool
-{
-    return m_sd.is_verbose();
-}
-
-auto Network::CommonSocket::open(std::span<const std::byte> t_bs,
-                                 bool t_is_bind) const -> OsErrorResult
-{
-    const auto api {t_is_bind ? Symbol::bind : Symbol::connect};
-
-    if (const auto result {Network::open(m_sd, t_bs, t_is_bind)}) {
-        return result;
-    }
-
-    m_cache[api].assign(t_bs.begin(), t_bs.end());
-    return {};
-}
-
 auto Network::CommonSocket::accept() const -> AcceptResult
 
 {
@@ -114,6 +82,11 @@ auto Network::CommonSocket::connect(std::span<const std::byte> t_bs) ->
     OsErrorResult
 {
     return open(t_bs, false);
+}
+
+auto Network::CommonSocket::is_verbose() const noexcept -> bool
+{
+    return m_sd.is_verbose();
 }
 
 auto Network::CommonSocket::listen(int t_backlog) const -> OsErrorResult
@@ -144,4 +117,30 @@ auto Network::CommonSocket::sockname() const -> std::span<const std::byte>
 auto Network::CommonSocket::write(std::string_view t_sv) const -> ssize_t
 {
     return Network::write(m_sd, t_sv);
+}
+
+auto Network::CommonSocket::get_name(bool t_is_sockname) const ->
+    std::span<const std::byte>
+{
+    const auto api {t_is_sockname ? Symbol::sockname : Symbol::peername};
+    auto& name {m_cache[api]};
+
+    if (name.empty()) {
+        name = Network::get_name(m_sd, t_is_sockname);
+     }
+
+    return name;
+}
+
+auto Network::CommonSocket::open(std::span<const std::byte> t_bs,
+                                 bool t_is_bind) const -> OsErrorResult
+{
+    const auto api {t_is_bind ? Symbol::bind : Symbol::connect};
+
+    if (const auto result {Network::open(m_sd, t_bs, t_is_bind)}) {
+        return result;
+    }
+
+    m_cache[api].assign(t_bs.begin(), t_bs.end());
+    return {};
 }

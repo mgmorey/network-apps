@@ -43,13 +43,8 @@ namespace Network
         auto operator=(const CommonSocket&) noexcept -> CommonSocket& = delete;
         auto operator=(CommonSocket&&) noexcept -> CommonSocket& = delete;
 
-        explicit operator bool() const noexcept;
+        explicit operator bool() const noexcept final;
         explicit operator std::string() const final;
-
-        auto get_name(bool t_is_sockname) const -> std::span<const std::byte>;
-        [[nodiscard]] auto is_verbose() const noexcept -> bool;
-        [[nodiscard]] auto open(std::span<const std::byte> t_bs,
-                                bool is_bind) const -> OsErrorResult;
 
         [[nodiscard]] auto accept() const -> AcceptResult final;
         [[nodiscard]] auto bind(std::span<const std::byte> t_bs) ->
@@ -58,12 +53,17 @@ namespace Network
             std::span<const std::byte> final;
         [[nodiscard]] auto connect(std::span<const std::byte> t_bs) ->
             OsErrorResult override;
+        [[nodiscard]] auto is_verbose() const noexcept -> bool final;
         [[nodiscard]] auto listen(int t_backlog) const -> OsErrorResult final;
         [[nodiscard]] auto peername() const -> std::span<const std::byte> final;
         [[nodiscard]] auto read(std::span<char> t_cs) const -> ssize_t final;
         [[nodiscard]] auto shutdown(int t_how) const -> OsErrorResult final;
         [[nodiscard]] auto sockname() const -> std::span<const std::byte> final;
         [[nodiscard]] auto write(std::string_view t_sv) const -> ssize_t final;
+
+        auto get_name(bool t_is_sockname) const -> std::span<const std::byte>;
+        [[nodiscard]] auto open(std::span<const std::byte> t_bs,
+                                bool is_bind) const -> OsErrorResult;
 
     private:
         mutable std::map<Symbol, ByteString> m_cache;
