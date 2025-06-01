@@ -128,16 +128,14 @@ namespace
         std::cout << "Runtime";
 
         if (is_verbose) {
-            std::cout << ' '
-                      << &rt;
+            std::cout << ' ' << &rt;
         }
 
-        std::cout << ": "
-                  << description
-                  << std::endl
-                  << "    "
-                  << rt
-                  << std::endl;
+        std::cout << ": " << description << std::endl;
+
+        if (rt.is_running()) {
+            std::cout << "    " << rt << std::endl;
+        }
     }
 
     auto test_rt(const Runtime& rt, const std::string& description) -> void
