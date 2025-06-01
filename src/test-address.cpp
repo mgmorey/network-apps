@@ -59,6 +59,7 @@ namespace
     using Network::ByteString;
     using Network::Error;
     using Network::Hostname;
+    using Network::RuntimeData;
     using Network::SocketFamily;
     using Network::SocketHints;
     using Network::SocketHost;
@@ -76,7 +77,7 @@ namespace
     using Network::sa_family_type;
     using Network::sa_size;
     using Network::sin_family_type;
-    using Network::start_runtime;
+    using Network::start;
 #ifndef WIN32
     using Network::sun_length_max;
     using Network::sun_length_min;
@@ -462,10 +463,11 @@ auto main(int argc, char* argv[]) -> int
 {
     try {
         parse_arguments(argc, argv);
-        const auto runtime {start_runtime(is_verbose)};
+        const RuntimeData rd {is_verbose};
+        const auto rt {start(rd)};
 
         if (is_verbose) {
-            std::cout << *runtime << std::endl;
+            std::cout << *rt << std::endl;
         }
 
         test_sa_invalid_length();

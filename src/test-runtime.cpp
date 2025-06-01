@@ -35,10 +35,11 @@
 
 namespace
 {
-    using Network::Runtime;
     using Network::Error;
     using Network::FailMode;
     using Network::Hostname;
+    using Network::Runtime;
+    using Network::RuntimeData;
 #ifdef WIN32
     using Network::SocketApi;
     using Network::Version;
@@ -46,15 +47,15 @@ namespace
 #endif
     using Network::get_hostname;
     using Network::parse;
-    using Network::start_runtime;
+    using Network::start;
 
 #ifdef WIN32
     constexpr auto expected_code_stopped {WSANOTINITIALISED};
-    constexpr auto expected_runtime_platform_re
+    constexpr auto expected_rt_platform_re
     {
         "WinSock 2.0"
     };
-    constexpr auto expected_runtime_version_re
+    constexpr auto expected_rt_version_re
     {
         "( Version \\d{1,3}\\.\\d{1,3})" // NOLINT
     };
@@ -66,10 +67,10 @@ namespace
     };
 #else
     constexpr auto expected_code_stopped {0};
-    constexpr auto expected_runtime_platform_re {
+    constexpr auto expected_rt_platform_re {
         "Berkeley Software Distribution Sockets"
     };
-    constexpr auto expected_runtime_version_re {
+    constexpr auto expected_rt_version_re {
         "( Version \\d{1,3}\\.\\d{1,3})?" // NOLINT
     };
     constexpr auto expected_error_stopped_re {""};
@@ -78,19 +79,19 @@ namespace
     const auto fail_mode {FailMode::return_error};
     auto is_verbose {false};  // NOLINT
 
-    auto get_actual_runtime_str(const Runtime& runtime) -> std::string
+    auto get_actual_rt_str(const Runtime& rt) -> std::string
     {
         std::ostringstream oss;
-        oss << runtime;
+        oss << rt;
         return oss.str();
     }
 
-    auto get_expected_runtime_re() -> std::string
+    auto get_expected_rt_re() -> std::string
     {
         std::string result;
         result += "(";
-        result += expected_runtime_platform_re;
-        result += expected_runtime_version_re;
+        result += expected_rt_platform_re;
+        result += expected_rt_version_re;
         result += " Running)";
         return result;
     }
@@ -121,35 +122,34 @@ namespace
         }
     }
 
-    auto print(const Runtime& runtime,
+    auto print(const Runtime& rt,
                const std::string& description) -> void
     {
         std::cout << "Runtime";
 
         if (is_verbose) {
             std::cout << ' '
-                      << &runtime;
+                      << &rt;
         }
 
         std::cout << ": "
                   << description
                   << std::endl
                   << "    "
-                  << runtime
+                  << rt
                   << std::endl;
     }
 
-    auto test_runtime(const Runtime& runtime,
-                      const std::string& description) -> void
+    auto test_rt(const Runtime& rt, const std::string& description) -> void
     {
-        print(runtime, description);
-        assert(runtime.is_running());
-        const std::string actual_str {get_actual_runtime_str(runtime)};
-        const std::regex expected_regex {get_expected_runtime_re()};
+        print(rt, description);
+        assert(rt.is_running());
+        const std::string actual_str {get_actual_rt_str(rt)};
+        const std::regex expected_regex {get_expected_rt_re()};
         assert(std::regex_match(actual_str, expected_regex));
     }
 
-    auto test_runtime_inactive() -> void
+    auto test_rt_inactive() -> void
     {
         std::string actual_str;
         int error_code {0};
@@ -166,7 +166,7 @@ namespace
         assert(error_code == expected_code_stopped);
     }
 
-    auto test_runtime_stopped() -> void
+    auto test_rt_stopped() -> void
     {
         std::string actual_str;
 
@@ -184,14 +184,14 @@ namespace
 
 #ifdef WIN32
 
-    auto test_runtime_invalid() -> void
+    auto test_rt_invalid() -> void
     {
         constexpr Version invalid {0, 0};
         std::string actual_str;
 
         try {
-            SocketApi runtime {invalid, FailMode::throw_error, is_verbose};
-            runtime.start();
+            SocketApi rt {invalid, FailMode::throw_error, is_verbose};
+            rt.start();
         }
         catch (const Error& error) {
             print(error);
@@ -204,7 +204,7 @@ namespace
 
 #endif
 
-    auto test_runtime_valid() -> void
+    auto test_rt_valid() -> void
     {
 #ifdef WIN32
         constexpr Version latest {WindowsVersion::latest};
@@ -213,19 +213,22 @@ namespace
 
         try {
 #ifdef WIN32
-            const auto runtime_1 {start_runtime(latest, fail_mode, is_verbose)};
-            test_runtime(*runtime_1, "1");
-            const auto runtime_2 {start_runtime(fail_mode, is_verbose)};
-            test_runtime(*runtime_1, "2");
-            runtime_1->stop();
-            assert(!runtime_1->error_code());
-            runtime_2->stop();
-            assert(!runtime_2->error_code());
+            const RuntimeData rd_1 {latest, fail_mode, is_verbose};
+            const auto rt_1 {start(rd_1)};
+            test_rt(*rt_1, "1");
+            const RuntimeData rd_2 {fail_mode, is_verbose};
+            const auto rt_2 {start(rd_2)};
+            test_rt(*rt_1, "2");
+            rt_1->stop();
+            assert(!rt_1->error_code());
+            rt_2->stop();
+            assert(!rt_2->error_code());
 #else
-            const auto runtime_1 {start_runtime(fail_mode, is_verbose)};
-            test_runtime(*runtime_1, "1");
-            runtime_1->stop();
-            assert(!runtime_1->error_code());
+            const RuntimeData rd {fail_mode, is_verbose};
+            const auto rt {start(rd)};
+            test_rt(*rt, "1");
+            rt->stop();
+            assert(!rt->error_code());
 #endif
         }
         catch (const Error& error) {
@@ -242,11 +245,11 @@ auto main(int argc, char* argv[]) -> int
     try {
         parse_arguments(argc, argv);
 #ifdef WIN32
-        test_runtime_invalid();
+        test_rt_invalid();
 #endif
-        test_runtime_valid();
-        test_runtime_stopped();
-        test_runtime_inactive();
+        test_rt_valid();
+        test_rt_stopped();
+        test_rt_inactive();
     }
     catch (const std::exception& error) {
         std::cerr << error.what()

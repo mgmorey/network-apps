@@ -13,49 +13,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/start-runtime.hpp"    // start_runtime()
-#include "network/failmode.hpp"         // FailMode
+#include "network/start-runtime.hpp"    // start()
+#include "network/runtimedata.hpp"      // RuntimeData
 #include "network/sharedruntime.hpp"    // SharedRuntime
 #include "network/socketapi.hpp"        // SocketApi
-#include "network/uniqueruntime.hpp"    // UniqueRuntime
 
-#ifdef WIN32
-#include "network/version.hpp"          // Version
-#endif
+#include <memory>       // std::make_shared()
 
-#include <memory>       // std::make_unique()
-#include <utility>      // std::move()
-
-namespace {
-    auto start(Network::UniqueRuntime unique_rt) -> Network::SharedRuntime
-    {
-        static Network::SharedRuntime shared_rt {std::move(unique_rt)};
-        shared_rt->start();
-        return shared_rt;
-    }
-}
-
-#ifdef WIN32
-
-auto Network::start_runtime(Version t_version,
-                            FailMode t_fail_mode,
-                            bool t_is_verbose) -> SharedRuntime
+auto Network::start(const RuntimeData& rd) -> SharedRuntime
 {
-    return ::start(std::make_unique<Network::SocketApi>(t_version,
-                                                        t_fail_mode,
-                                                        t_is_verbose));
-}
-
-#endif
-
-auto Network::start_runtime(FailMode t_fail_mode,
-                            bool t_is_verbose) -> SharedRuntime
-{
-    return ::start(std::make_unique<Network::SocketApi>(t_fail_mode,
-                                                        t_is_verbose));
-}
-
-auto Network::start_runtime(bool t_is_verbose) -> SharedRuntime
-{
-    return ::start(std::make_unique<Network::SocketApi>(t_is_verbose));
+    static auto sr {std::make_shared<Network::SocketApi>(rd)};
+    sr->start();
+    return sr;
 }

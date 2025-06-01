@@ -18,11 +18,10 @@
 
 #ifdef WIN32
 
-#include "network/failmode.hpp"         // FailMode
-#include "network/optionalversion.hpp"  // OptionalVersion
 #include "network/runtime.hpp"          // Runtime
+#include "network/runtimedata.hpp"      // RuntimeData
+#include "network/runtimestate.hpp"     // RuntimeState
 #include "network/socketapidata.hpp"    // SocketApiData
-#include "network/version.hpp"          // Version
 
 #include <string>       // std::string
 #include <string_view>  // std::string_view
@@ -32,12 +31,7 @@ namespace Network
     class SocketApi final : public Runtime
     {
     public:
-        SocketApi(Version t_version,
-                  FailMode t_fail_mode,
-                  bool t_is_verbose);
-        SocketApi(FailMode t_fail_mode,
-                  bool t_is_verbose);
-        explicit SocketApi(bool t_is_verbose = false);
+        explicit SocketApi(const RuntimeData& rd);
         SocketApi(const SocketApi&) = delete;
         SocketApi(const SocketApi&&) = delete;
         ~SocketApi() final;
@@ -50,14 +44,11 @@ namespace Network
         auto stop() -> Runtime& final;
 
     private:
-        SocketApiData m_data {};
+        RuntimeData m_rt_data;
+        RuntimeState m_rt_state;
+        SocketApiData m_sa_data {};
         std::string_view m_description;
         std::string_view m_system_status;
-        OptionalVersion m_version;
-        int m_error_code {0};
-        FailMode m_fail_mode {FailMode::throw_error};
-        bool m_is_started {false};
-        bool m_is_verbose {false};
     };
 }
 

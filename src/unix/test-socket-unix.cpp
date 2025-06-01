@@ -55,6 +55,7 @@ namespace
     using Network::LogicError;
     using Network::OsErrorResult;
     using Network::Pathname;
+    using Network::RuntimeData;
     using Network::Socket;
     using Network::SocketData;
     using Network::SocketHints;
@@ -69,7 +70,7 @@ namespace
     using Network::os_error_type;
     using Network::parse;
     using Network::path_length_max;
-    using Network::start_runtime;
+    using Network::start;
     using Network::to_bytestring;
     using Network::to_path;
 
@@ -409,10 +410,11 @@ auto main(int argc, char* argv[]) -> int
 {
     try {
         parse_arguments(argc, argv);
-        const auto runtime {start_runtime(is_verbose)};
+        const RuntimeData rd {is_verbose};
+        const auto rt {start(rd)};
 
         if (is_verbose) {
-            std::cout << *runtime << std::endl;
+            std::cout << *rt << std::endl;
         }
 
         test_paths_invalid();

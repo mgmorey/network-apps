@@ -24,32 +24,26 @@
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
 
-Network::SocketApi::SocketApi(FailMode t_fail_mode, bool t_is_verbose)
+Network::SocketApi::SocketApi(const RuntimeData& t_rd) :
+    m_rt_data(t_rd)
 {
-    m_state.m_fail_mode = t_fail_mode;
-    m_state.m_is_verbose = t_is_verbose;
-}
-
-Network::SocketApi::SocketApi(bool t_is_verbose)
-{
-    m_state.m_is_verbose = t_is_verbose;
 }
 
 Network::SocketApi::~SocketApi()
 {
-    if (m_state.m_is_started) {
-        Network::stop(FailMode::return_zero, m_state.m_is_verbose);
+    if (m_rt_state.m_is_started) {
+        Network::stop(FailMode::return_zero, m_rt_state.m_is_verbose);
     }
 }
 
 Network::SocketApi::operator std::string() const
 {
     std::ostringstream oss;
-    oss << m_data.m_description;
+    oss << m_sa_data.m_description;
 
-    if (!m_data.m_system_status.empty()) {
+    if (!m_sa_data.m_system_status.empty()) {
         oss << ' '
-            << m_data.m_system_status;
+            << m_sa_data.m_system_status;
     }
 
     return oss.str();
@@ -57,43 +51,43 @@ Network::SocketApi::operator std::string() const
 
 auto Network::SocketApi::error_code() const noexcept -> int
 {
-    return m_state.m_error_code;
+    return m_rt_state.m_error_code;
 }
 
 auto Network::SocketApi::is_running() const noexcept -> bool
 {
-    return m_data.m_system_status == "Running";
+    return m_sa_data.m_system_status == "Running";
 }
 
 auto Network::SocketApi::start() -> Runtime&
 {
-    if (m_state.m_is_started) {
+    if (m_rt_state.m_is_started) {
         return *this;
     }
 
-    m_data = Network::start(m_state.m_is_verbose);
+    m_sa_data = Network::start(m_rt_state.m_is_verbose);
 
     if (!is_running()) {
         std::ostringstream oss;
-        oss << "Socket API runtime status is \""
-            << m_data.m_system_status
+        oss << "BSD Socket API runtime status is \""
+            << m_sa_data.m_system_status
             << "\".";
         throw RuntimeError {oss.str()};
     }
 
-    m_state.m_is_started = true;
+    m_rt_state.m_is_started = true;
     return *this;
 }
 
 auto Network::SocketApi::stop() -> Runtime&
 {
-    if (m_state.m_is_started) {
-        m_state.m_error_code = Network::stop(m_state.m_fail_mode,
-                                             m_state.m_is_verbose);
+    if (m_rt_state.m_is_started) {
+        m_rt_state.m_error_code = Network::stop(m_rt_state.m_fail_mode,
+                                                m_rt_state.m_is_verbose);
 
-        if (m_state.m_error_code == 0) {
-            m_state.m_is_started = false;
-            m_data = {};
+        if (m_rt_state.m_error_code == 0) {
+            m_rt_state.m_is_started = false;
+            m_sa_data = {};
         }
     }
 

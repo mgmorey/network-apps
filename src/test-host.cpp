@@ -59,6 +59,7 @@ namespace
     using Network::OptionalHints;
     using Network::OptionalHostname;
     using Network::OsErrorResult;
+    using Network::RuntimeData;
     using Network::SocketHints;
     using Network::SocketHost;
     using Network::always_false_v;
@@ -67,7 +68,7 @@ namespace
     using Network::insert;
     using Network::os_error_type;
     using Network::parse;
-    using Network::start_runtime;
+    using Network::start;
     using Network::to_bytestring;
     using Network::uniquify;
 
@@ -300,10 +301,11 @@ auto main(int argc, char* argv[]) -> int
 {
     try {
         const auto args {parse_arguments(argc, argv)};
-        const auto runtime {start_runtime(is_verbose)};
+        const RuntimeData rd {is_verbose};
+        const auto rt {start(rd)};
 
         if (is_verbose) {
-            std::cout << *runtime << std::endl;
+            std::cout << *rt << std::endl;
         }
 
         test_get_endpoint_invalid_flag();

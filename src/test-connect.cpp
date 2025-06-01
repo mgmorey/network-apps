@@ -59,6 +59,7 @@ namespace
     using Network::HostnameView;
     using Network::IpSocketHints;
     using Network::OsErrorResult;
+    using Network::RuntimeData;
     using Network::Socket;
     using Network::SocketHints;
     using Network::SocketResult;
@@ -70,7 +71,7 @@ namespace
     using Network::get_hostname;
     using Network::os_error_type;
     using Network::parse;
-    using Network::start_runtime;
+    using Network::start;
     using Network::string_null;
 
     using ErrorCodeSet = std::set<os_error_type>;
@@ -216,10 +217,11 @@ auto main(int argc, char* argv[]) -> int
 {
     try {
         const auto endpoint {parse_arguments(argc, argv)};
-        const auto runtime {start_runtime(is_verbose)};
+        const RuntimeData rd {is_verbose};
+        const auto rt {start(rd)};
 
         if (is_verbose) {
-            std::cout << *runtime << std::endl;
+            std::cout << *rt << std::endl;
         }
 
         const auto hostname {get_hostname()};

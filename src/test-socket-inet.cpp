@@ -43,6 +43,7 @@ namespace
 {
     using Network::CommonSocket;
     using Network::Error;
+    using Network::RuntimeData;
     using Network::SocketData;
     using Network::SocketHints;
     using Network::UniqueSocket;
@@ -52,7 +53,7 @@ namespace
     using Network::handle_type;
     using Network::os_error_type;
     using Network::parse;
-    using Network::start_runtime;
+    using Network::start;
 
     class TestSocketData : public SocketData
     {
@@ -373,10 +374,11 @@ auto main(int argc, char* argv[]) -> int
 {
     try {
         parse_arguments(argc, argv);
-        const auto runtime {start_runtime(is_verbose)};
+        const RuntimeData rd {is_verbose};
+        const auto rt {start(rd)};
 
         if (is_verbose) {
-            std::cout << *runtime << std::endl;
+            std::cout << *rt << std::endl;
         }
 
         test_common_socket_handle_invalid();

@@ -28,31 +28,16 @@
 #include <string>       // std::string
 #include <string_view>  // std::string_view
 
-Network::SocketApi::SocketApi(Version t_version,
-                              FailMode t_fail_mode,
-                              bool t_is_verbose) :
-    m_version(t_version),
-    m_fail_mode(t_fail_mode),
-    m_is_verbose(t_is_verbose)
-{
-}
-
-Network::SocketApi::SocketApi(FailMode t_fail_mode,
-                              bool t_is_verbose) :
-    m_fail_mode(t_fail_mode),
-    m_is_verbose(t_is_verbose)
-{
-}
-
-Network::SocketApi::SocketApi(bool t_is_verbose) :
-    m_is_verbose(t_is_verbose)
+Network::SocketApi::SocketApi(const RuntimeData& t_rd) :
+    m_rt_data(t_rd)
 {
 }
 
 Network::SocketApi::~SocketApi()
 {
-    if (m_is_started) {
-        Network::stop(m_fail_mode, m_is_verbose);
+    if (m_rt_state.m_is_started) {
+        Network::stop(m_rt_data.m_fail_mode,
+                      m_rt_data.m_is_verbose);
     }
 }
 
@@ -61,7 +46,7 @@ Network::SocketApi::operator std::string() const
     std::ostringstream oss;
     oss << m_description
         << " Version "
-        << WindowsVersion(m_data.wVersion);
+        << WindowsVersion(m_sa_data.wVersion);
 
     if (!m_system_status.empty()) {
         oss << ' '
@@ -73,7 +58,7 @@ Network::SocketApi::operator std::string() const
 
 auto Network::SocketApi::error_code() const noexcept -> int
 {
-    return m_error_code;
+    return m_rt_state.m_error_code;
 }
 
 auto Network::SocketApi::is_running() const noexcept -> bool
@@ -83,35 +68,37 @@ auto Network::SocketApi::is_running() const noexcept -> bool
 
 auto Network::SocketApi::start() -> Runtime&
 {
-    if (m_is_started) {
+    if (m_rt_state.m_is_started) {
         return *this;
     }
 
-    m_data = m_version ? Network::start(*m_version, m_is_verbose) :
-        Network::start(m_is_verbose);
-    m_description = static_cast<const char*>(m_data.szDescription);
-    m_system_status = static_cast<const char*>(m_data.szSystemStatus);
+    m_sa_data = m_rt_data.m_version ?
+        Network::start(*m_rt_data.m_version, m_rt_data.m_is_verbose) :
+        Network::start(m_rt_data.m_is_verbose);
+    m_description = static_cast<const char*>(m_sa_data.szDescription);
+    m_system_status = static_cast<const char*>(m_sa_data.szSystemStatus);
 
     if (!is_running()) {
         std::ostringstream oss;
-        oss << "SocketApi runtime status is \""
+        oss << "Windows Socket API runtime status is \""
             << m_system_status
             << "\".";
         throw RuntimeError {oss.str()};
     }
 
-    m_is_started = true;
+    m_rt_state.m_is_started = true;
     return *this;
 }
 
 auto Network::SocketApi::stop() -> Runtime&
 {
-    if (m_is_started) {
-        m_error_code = Network::stop(m_fail_mode, m_is_verbose);
+    if (m_rt_state.m_is_started) {
+        m_rt_state.m_error_code = Network::stop(m_rt_data.m_fail_mode,
+                                                m_rt_data.m_is_verbose);
 
-        if (m_error_code == 0) {
-            m_is_started = false;
-            m_data = {};
+        if (m_rt_state.m_error_code == 0) {
+            m_rt_state.m_is_started = false;
+            m_sa_data = {};
         }
     }
 

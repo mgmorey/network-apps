@@ -39,11 +39,12 @@ namespace
     using Network::Error;
     using Network::Hostname;
     using Network::OsErrorResult;
+    using Network::RuntimeData;
     using Network::always_false_v;
     using Network::get_hostname;
     using Network::get_hostnameresult;
     using Network::parse;
-    using Network::start_runtime;
+    using Network::start;
 
 #if defined(OS_CYGWIN_NT)
     constexpr auto expected_error_gethostname_re {""};
@@ -146,10 +147,11 @@ auto main(int argc, char* argv[]) -> int
 {
     try {
         parse_arguments(argc, argv);
-        const auto runtime {start_runtime(is_verbose)};
+        const RuntimeData rd {is_verbose};
+        const auto rt {start(rd)};
 
         if (is_verbose) {
-            std::cout << *runtime << std::endl;
+            std::cout << *rt << std::endl;
         }
 
         test_get_hostnameresult_overflow();

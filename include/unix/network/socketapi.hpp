@@ -18,8 +18,8 @@
 
 #ifndef WIN32
 
-#include "network/failmode.hpp"         // FailMode
 #include "network/runtime.hpp"          // Runtime
+#include "network/runtimedata.hpp"      // RuntimeData
 #include "network/runtimestate.hpp"     // RuntimeState
 #include "network/socketapidata.hpp"    // SocketApiData
 
@@ -30,8 +30,7 @@ namespace Network
     class SocketApi final : public Runtime
     {
     public:
-        SocketApi(FailMode t_fail_mode, bool t_is_verbose);
-        explicit SocketApi(bool t_is_verbose = false);
+        explicit SocketApi(const RuntimeData& t_rd);
         SocketApi(const SocketApi&) = delete;
         SocketApi(const SocketApi&&) = delete;
         ~SocketApi() final;
@@ -44,8 +43,9 @@ namespace Network
         auto stop() -> Runtime& final;
 
     private:
-        SocketApiData m_data {};
-        RuntimeState m_state {};
+        RuntimeData m_rt_data;
+        RuntimeState m_rt_state;
+        SocketApiData m_sa_data {};
     };
 }
 
