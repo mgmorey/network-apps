@@ -23,7 +23,7 @@
 auto Network::operator<<(std::ostream& os,
                          const Socket& sock) -> std::ostream&
 {
-    handle_type handle {sock};
+    const handle_type handle {sock};
 
     if (handle == handle_null) {
         os << string_null;
