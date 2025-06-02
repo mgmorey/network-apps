@@ -61,6 +61,7 @@
                                                 // sun_path_offset,
                                                 // sun_size
 #ifndef WIN32
+#include "network/create-runtime.hpp"           // create_runtime()
 #include "network/create-socketpair.hpp"        // create_socketpair()
 #include "network/create-socketpairresult.hpp"  // create_socketpairresult()
 #endif

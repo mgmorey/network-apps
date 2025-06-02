@@ -14,10 +14,10 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/assert.hpp"           // assert()
-#include "network/network.hpp"          // Error, Runtime, Version,
+#include "network/network.hpp"          // Error, SharedRuntime,
+                                        // Version, create_runtime(),
                                         // get_hostname(), run()
 #include "network/parse.hpp"            // parse()
-#include "network/socketapi.hpp"        // SocketApi()
 #include "network/stop.hpp"             // stop()
 
 #ifdef WIN32
@@ -38,16 +38,14 @@ namespace
     using Network::Error;
     using Network::FailMode;
     using Network::Hostname;
-    using Network::Runtime;
     using Network::RuntimeData;
-    using Network::SocketApi;
+    using Network::SharedRuntime;
 #ifdef WIN32
     using Network::Version;
     using Network::WindowsVersion;
 #endif
     using Network::get_hostname;
     using Network::parse;
-    using Network::run;
 
 #ifdef WIN32
     constexpr auto expected_code_stopped {WSANOTINITIALISED};
@@ -79,10 +77,10 @@ namespace
     const auto fail_mode {FailMode::return_error};
     auto is_verbose {false};  // NOLINT
 
-    auto get_actual_rt_str(const Runtime& rt) -> std::string
+    auto get_actual_rt_str(const SharedRuntime& rt) -> std::string
     {
         std::ostringstream oss;
-        oss << rt;
+        oss << *rt;
         return oss.str();
     }
 
@@ -122,7 +120,7 @@ namespace
         }
     }
 
-    auto print(const Runtime& rt,
+    auto print(SharedRuntime rt,
                const std::string& description) -> void
     {
         std::cout << "Runtime";
@@ -133,21 +131,21 @@ namespace
 
         std::cout << ": " << description << std::endl;
 
-        if (rt.is_running()) {
+        if (rt->is_running()) {
             std::cout << "    " << rt << std::endl;
         }
     }
 
-    auto test_rt(const Runtime& rt, const std::string& description) -> void
+    auto test_runtime(const SharedRuntime& rt, const std::string& description) -> void
     {
         print(rt, description);
-        assert(rt.is_running());
+        assert(rt->is_running());
         const std::string actual_str {get_actual_rt_str(rt)};
         const std::regex expected_regex {get_expected_rt_re()};
         assert(std::regex_match(actual_str, expected_regex));
     }
 
-    auto test_rt_inactive() -> void
+    auto test_runtime_inactive() -> void
     {
         std::string actual_str;
         int error_code {0};
@@ -164,7 +162,7 @@ namespace
         assert(error_code == expected_code_stopped);
     }
 
-    auto test_rt_stopped() -> void
+    auto test_runtime_stopped() -> void
     {
         std::string actual_str;
 
@@ -182,15 +180,16 @@ namespace
 
 #ifdef WIN32
 
-    auto test_rt_invalid() -> void
+    auto test_runtime_invalid() -> void
     {
-        constexpr auto fail_mode_throw {FailMode::throw_error};
-        constexpr Version invalid {0, 0};
         std::string actual_str;
 
         try {
-            SocketApi sa {RuntimeData {invalid, fail_mode_throw, is_verbose}};
-            sa.start();
+            constexpr Version invalid {0, 0};
+            constexpr auto fail_mode_throw {FailMode::throw_error};
+            const RuntimeData rd {invalid, fail_mode_throw, is_verbose};
+            auto rt {create_runtime(rd)};
+            rt->start();
         }
         catch (const Error& error) {
             print(error);
@@ -203,26 +202,20 @@ namespace
 
 #endif
 
-    auto test_rt_valid() -> void
+    auto test_runtime_valid() -> void
     {
-#ifdef WIN32
-        constexpr Version valid {WindowsVersion::latest};
-#endif
         std::string actual_str;
 
         try {
 #ifdef WIN32
+            constexpr Version valid {WindowsVersion::latest};
             const RuntimeData rd {valid, fail_mode, is_verbose};
 #else
             const RuntimeData rd {fail_mode, is_verbose};
 #endif
-            SocketApi sa {rd};
-            sa.start();
-            test_rt(sa, "auto");
-            sa.stop();
-            assert(!sa.error_code());
-            auto rt {run(RuntimeData {fail_mode, is_verbose})};
-            test_rt(*rt, "shared");
+            auto rt {create_runtime(rd)};
+            rt->start();
+            test_runtime(rt, "shared");
             rt->stop();
             assert(!rt->error_code());
         }
@@ -240,11 +233,11 @@ auto main(int argc, char* argv[]) -> int
     try {
         parse_arguments(argc, argv);
 #ifdef WIN32
-        test_rt_invalid();
+        test_runtime_invalid();
 #endif
-        test_rt_valid();
-        test_rt_stopped();
-        test_rt_inactive();
+        test_runtime_valid();
+        test_runtime_stopped();
+        test_runtime_inactive();
     }
     catch (const std::exception& error) {
         std::cerr << error.what()
