@@ -16,7 +16,6 @@
 #ifndef WIN32
 
 #include "network/socketapi.hpp"        // SocketApi
-#include "network/failmode.hpp"         // FailMode
 #include "network/is-running.hpp"       // is_running()
 #include "network/optionalversion.hpp"  // OptionalVersion
 #include "network/runtimeerror.hpp"     // RuntimeError
@@ -33,7 +32,7 @@ Network::SocketApi::SocketApi(const RuntimeData& t_rd) : m_rt_data(t_rd)
 Network::SocketApi::~SocketApi()
 {
     if (m_rt_state.m_is_started) {
-        Network::stop(FailMode::return_zero, m_rt_data.is_verbose());
+        Network::stop(m_rt_data.fail_mode(), m_rt_data.is_verbose());
     }
 }
 
