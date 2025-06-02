@@ -85,7 +85,7 @@ auto Network::SocketApi::system_status() const noexcept -> std::string_view
 
 auto Network::SocketApi::version() const noexcept -> OptionalVersion
 {
-    return Version {0, 0};
+    return m_sa_data.m_version;
 }
 
 #endif
