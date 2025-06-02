@@ -31,88 +31,73 @@
 
 #include <iostream>     // std::cout, std::endl
 
-namespace
+auto Network::start(const RuntimeData& rd) -> SocketApiData
 {
-    auto start(const RuntimeData& rd) -> Network::SocketApiData
-    {
-        Network::SocketApiData wsa_data {};
-        const Network::WindowsVersion wsa_version
-        {
-            rd.version().value_or(Network::WindowsVersion::latest)
-        };
+    SocketApiData wsa_data {};
+    const Version version {rd.version().value_or(WindowsVersion::latest)};
+    const WindowsVersion wsa_version {version};
+
+    if (rd.is_verbose()) {
+        // clang-format off
+        std::cout << "Starting the network runtime.\n"
+                  << "Calling ::WSAStartup("
+                  << wsa_version
+                  << ", ...)"
+                  << std::endl;
+        // clang-format on
+    }
+
+    if (const auto api_error {::WSAStartup(wsa_version, &wsa_data)}) {
+        const auto os_error {to_os_error(api_error)};
+        const auto message {format_os_error(os_error)};
 
         if (rd.is_verbose()) {
             // clang-format off
-            std::cout << "Starting the network runtime.\n"
-                      << "Calling ::WSAStartup("
-                      << wsa_version
-                      << ", ...)"
-                      << std::endl;
-            // clang-format on
-        }
-
-        if (const auto api_error {::WSAStartup(wsa_version, &wsa_data)}) {
-            const auto os_error {Network::to_os_error(api_error)};
-            const auto message {Network::format_os_error(os_error)};
-
-            if (rd.is_verbose()) {
-                // clang-format off
-                std::cout << "Call to ::WSAStartup("
-                          << wsa_version
-                          << ", ...) failed with error "
-                          << api_error
-                          << ": "
-                          << message
-                          << std::endl;
-                // clang-format on
-            }
-
-            switch (api_error) {  // NOLINT
-            case WSAEFAULT:
-            case WSAVERNOTSUPPORTED:
-                throw Network::LogicError {message};
-            case WSAEPROCLIM:
-            case WSASYSNOTREADY:
-                throw Network::RuntimeError {message};
-            default:
-                throw Network::Error {message};
-            }
-        }
-
-        if (is_verbose) {
-            // clang-format off
             std::cout << "Call to ::WSAStartup("
                       << wsa_version
-                      << ", ...) returned data {"
-                      << wsa_data.iMaxSockets
-                      << ", "
-                      << wsa_data.iMaxUdpDg
-                      << ", "
-                      << (wsa_data.lpVendorInfo != nullptr ?
-                          wsa_data.lpVendorInfo : "<NULL>")
-                      << ", "
-                      << Network::WindowsVersion(wsa_data.wVersion)
-                      << ", "
-                      << static_cast<const char*>(wsa_data.szDescription)
-                      << ", "
-                      << static_cast<const char*>(wsa_data.szSystemStatus)
-                      << '}'
+                      << ", ...) failed with error "
+                      << api_error
+                      << ": "
+                      << message
                       << std::endl;
             // clang-format on
         }
 
-        return wsa_data;
+        switch (api_error) {  // NOLINT
+        case WSAEFAULT:
+        case WSAVERNOTSUPPORTED:
+            throw LogicError {message};
+        case WSAEPROCLIM:
+        case WSASYSNOTREADY:
+            throw RuntimeError {message};
+        default:
+            throw Error {message};
+        }
     }
-} // namespace
 
-auto Network::start(Version version, bool is_verbose) -> SocketApiData
-{
-    return ::start(version, is_verbose);
-}
+    if (rd.is_verbose()) {
+        // clang-format off
+        std::cout << "Call to ::WSAStartup("
+                  << wsa_version
+                  << ", ...) returned data {"
+                  << wsa_data.iMaxSockets
+                  << ", "
+                  << wsa_data.iMaxUdpDg
+                  << ", "
+                  << (wsa_data.lpVendorInfo != nullptr ?
+                      wsa_data.lpVendorInfo : "<NULL>")
+                  << ", "
+                  << WindowsVersion(wsa_data.wVersion)
+                  << ", "
+                  << static_cast<const char*>(wsa_data.szDescription)
+                  << ", "
+                  << static_cast<const char*>(wsa_data.szSystemStatus)
+                  << '}'
+                  << std::endl;
+        // clang-format on
+    }
 
-auto Network::start(bool is_verbose) -> SocketApiData
-{
-    return ::start({}, is_verbose);
+    return wsa_data;
 }
 
 #endif
