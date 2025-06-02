@@ -33,8 +33,8 @@ namespace Network
         explicit virtual operator std::string() const = 0;
         [[nodiscard]] virtual auto error_code() const noexcept -> int = 0;
         [[nodiscard]] virtual auto is_running() const noexcept -> bool = 0;
-        virtual auto start() -> Runtime& = 0;
-        virtual auto stop() -> Runtime& = 0;
+        virtual auto start() -> void = 0;
+        virtual auto stop() -> void = 0;
     };
 
     extern auto operator<<(std::ostream& os,

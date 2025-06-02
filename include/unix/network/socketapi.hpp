@@ -39,8 +39,8 @@ namespace Network
         explicit operator std::string() const final;
         [[nodiscard]] auto error_code() const noexcept -> int final;
         [[nodiscard]] auto is_running() const noexcept -> bool final;
-        auto start() -> Runtime& final;
-        auto stop() -> Runtime& final;
+        auto start() -> void final;
+        auto stop() -> void final;
 
     private:
         RuntimeData m_rt_data;

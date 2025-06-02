@@ -61,10 +61,10 @@ auto Network::SocketApi::is_running() const noexcept -> bool
     return m_sa_data.m_system_status == "Running";
 }
 
-auto Network::SocketApi::start() -> Runtime&
+auto Network::SocketApi::start() -> void
 {
     if (m_rt_state.m_is_started) {
-        return *this;
+        return;
     }
 
     m_sa_data = Network::start(m_rt_data.is_verbose());
@@ -78,10 +78,9 @@ auto Network::SocketApi::start() -> Runtime&
     }
 
     m_rt_state.m_is_started = true;
-    return *this;
 }
 
-auto Network::SocketApi::stop() -> Runtime&
+auto Network::SocketApi::stop() -> void
 {
     if (m_rt_state.m_is_started) {
         m_rt_state.m_error_code = Network::stop(m_rt_data.fail_mode(),
@@ -92,8 +91,6 @@ auto Network::SocketApi::stop() -> Runtime&
             m_sa_data = {};
         }
     }
-
-    return *this;
 }
 
 #endif
