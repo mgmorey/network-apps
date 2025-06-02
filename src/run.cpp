@@ -14,18 +14,38 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/run.hpp"              // run()
+#include "network/create-runtime.hpp"   // create_runtime()
 #include "network/get-runtime.hpp"      // get_runtime()
+#include "network/logicerror.hpp"       // LogicError
 #include "network/runtimedata.hpp"      // RuntimeData
+#include "network/runtimescope.hpp"     // RuntimeScope
 #include "network/sharedruntime.hpp"    // SharedRuntime
 
-auto Network::run(RuntimeData rd) -> SharedRuntime
+auto Network::run(RuntimeData rd, RuntimeScope scope) -> SharedRuntime
 {
-    auto sr {get_runtime(rd)};
+    SharedRuntime sr;
+
+    switch (scope) {
+    case RuntimeScope::global:
+        sr = get_runtime(rd);
+        break;
+    case RuntimeScope::shared:
+        sr = create_runtime(rd);
+        break;
+    default:
+        throw LogicError("Invalid scope");
+    }
+
     sr->start();
     return sr;
 }
 
+auto Network::run(RuntimeScope scope, bool is_verbose) -> SharedRuntime
+{
+    return run(RuntimeData {is_verbose}, scope);
+}
+
 auto Network::run(bool is_verbose) -> SharedRuntime
 {
-    return run(RuntimeData {is_verbose});
+    return run(RuntimeScope::global, is_verbose);
 }

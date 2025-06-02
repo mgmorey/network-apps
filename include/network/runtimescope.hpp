@@ -1,4 +1,4 @@
-// Copyright (C) 2024  "Michael G. Morey" <mgmorey@gmail.com>
+// Copyright (C) 2025  "Michael G. Morey" <mgmorey@gmail.com>
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,18 +13,17 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_RUN_HPP
-#define NETWORK_RUN_HPP
+#ifndef NETWORK_RUNTIMESCOPE_HPP
+#define NETWORK_RUNTIMESCOPE_HPP
 
-#include "network/runtimedata.hpp"      // RuntimeData
-#include "network/runtimescope.hpp"     // RuntimeScope
-#include "network/sharedruntime.hpp"    // SharedRuntime
+#include <cstdint>      // std::uint8_t
 
 namespace Network
 {
-    extern auto run(RuntimeData rd, RuntimeScope scope) -> SharedRuntime;
-    extern auto run(RuntimeScope scope, bool is_verbose) -> SharedRuntime;
-    extern auto run(bool is_verbose = false) -> SharedRuntime;
+    enum class RuntimeScope : std::uint8_t {
+        global,
+        shared
+    };
 }
 
 #endif
