@@ -24,8 +24,7 @@
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
 
-Network::SocketApi::SocketApi(const RuntimeData& t_rd) :
-    m_rt_data(t_rd)
+Network::SocketApi::SocketApi(const RuntimeData& t_rd) : m_rt_data(t_rd)
 {
 }
 
