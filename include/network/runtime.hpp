@@ -19,7 +19,6 @@
 #include "network/optionalversion.hpp"  // OptionalVersion
 
 #include <ostream>      // std::ostream
-#include <string>       // std::string
 #include <string_view>  // std::string_view
 
 namespace Network
