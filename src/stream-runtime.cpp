@@ -20,13 +20,19 @@
 auto Network::operator<<(std::ostream& os,
                          const Runtime& runtime) -> std::ostream&
 {
-    os << runtime.description();
-
-    if (runtime.system_status().empty()) {
+    if (runtime.description().empty()) {
         return os;
     }
 
-    os << ' ' << runtime.system_status();
+    os << runtime.description();
+
+    if (runtime.version()) {
+        os << " Version " << *runtime.version();
+    }
+
+    if (!runtime.system_status().empty()) {
+        os << ' ' << runtime.system_status();
+    }
 
     return os;
 }

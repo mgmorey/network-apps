@@ -50,30 +50,26 @@ namespace
 
 #ifdef WIN32
     constexpr auto expected_code_stopped {WSANOTINITIALISED};
-    constexpr auto expected_rt_platform_re
-    {
-        "WinSock 2.0"
-    };
-    constexpr auto expected_rt_version_re
-    {
-        "( Version \\d{1,3}\\.\\d{1,3})" // NOLINT
-    };
     constexpr auto expected_error_stopped_re {
         R"(Call to ::gethostname\(.+\) failed with error \d+: .+)"
     };
     constexpr auto expected_error_version {
         "The Windows Sockets version requested is not supported."
     };
+    constexpr auto expected_runtime_platform_re
+    {
+        "WinSock 2.0"
+    };
 #else
     constexpr auto expected_code_stopped {0};
-    constexpr auto expected_rt_platform_re {
+    constexpr auto expected_error_stopped_re {""};
+    constexpr auto expected_runtime_platform_re {
         "Berkeley Software Distribution Sockets"
     };
-    constexpr auto expected_rt_version_re {
+#endif
+    constexpr auto expected_runtime_version_re {
         "( Version \\d{1,3}\\.\\d{1,3})?" // NOLINT
     };
-    constexpr auto expected_error_stopped_re {""};
-#endif
 
     const auto fail_mode {FailMode::return_error};
     auto is_verbose {false};  // NOLINT
@@ -85,12 +81,12 @@ namespace
         return oss.str();
     }
 
-    auto get_expected_rt_re() -> std::string
+    auto get_expected_runtime_re() -> std::string
     {
         std::string result;
         result += "(";
-        result += expected_rt_platform_re;
-        result += expected_rt_version_re;
+        result += expected_runtime_platform_re;
+        result += expected_runtime_version_re;
         result += " Running)";
         return result;
     }
@@ -142,7 +138,7 @@ namespace
         print(rt, description);
         assert(rt->is_running());
         const std::string actual_str {get_actual_rt_str(rt)};
-        const std::regex expected_regex {get_expected_rt_re()};
+        const std::regex expected_regex {get_expected_runtime_re()};
         assert(std::regex_match(actual_str, expected_regex));
     }
 

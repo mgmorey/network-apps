@@ -19,6 +19,7 @@
 #ifdef WIN32
 
 #include "network/runtime.hpp"          // Runtime
+#include "network/optionalversion.hpp"  // OptionalVersion
 #include "network/runtimedata.hpp"      // RuntimeData
 #include "network/runtimestate.hpp"     // RuntimeState
 #include "network/socketapidata.hpp"    // SocketApiData
@@ -47,6 +48,8 @@ namespace Network
         auto stop() -> Runtime& final;
         [[nodiscard]] auto system_status() const noexcept ->
             std::string_view final;
+        [[nodiscard]] auto version() const noexcept ->
+            OptionalVersion final;
 
     private:
         RuntimeData m_rt_data;

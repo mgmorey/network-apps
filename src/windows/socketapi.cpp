@@ -17,6 +17,7 @@
 
 #include "network/error.hpp"            // Error
 #include "network/failmode.hpp"         // FailMode
+#include "network/optionalversion.hpp"  // OptionalVersion
 #include "network/runtimeerror.hpp"     // RuntimeError
 #include "network/socketapi.hpp"        // SocketApi
 #include "network/start.hpp"            // start()
@@ -113,6 +114,11 @@ auto Network::SocketApi::stop() -> void
 auto Network::SocketApi::system_status() const noexcept -> std::string_view
 {
     return m_sa_data.szSystemStatus;
+}
+
+auto Network::SocketApi::version() const noexcept -> OptionalVersion
+{
+    return WindowsVersion {m_sa_data.wVersion};
 }
 
 #endif
