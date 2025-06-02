@@ -24,7 +24,6 @@
 #include "network/runtimestate.hpp"     // RuntimeState
 #include "network/socketapidata.hpp"    // SocketApiData
 
-#include <string>       // std::string
 #include <string_view>  // std::string_view
 
 namespace Network
@@ -39,7 +38,6 @@ namespace Network
         auto operator=(const SocketApi&) -> SocketApi& = delete;
         auto operator=(const SocketApi&&) -> SocketApi& = delete;
 
-        explicit operator std::string() const final;
         [[nodiscard]] auto description() const noexcept ->
             std::string_view final;
         [[nodiscard]] auto error_code() const noexcept -> int final;

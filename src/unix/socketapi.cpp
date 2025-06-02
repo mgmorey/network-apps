@@ -36,22 +36,6 @@ Network::SocketApi::~SocketApi()
     }
 }
 
-Network::SocketApi::operator std::string() const
-{
-    std::ostringstream oss;
-
-    if (!m_sa_data.m_description.empty()) {
-        oss << m_sa_data.m_description;
-
-        if (!m_sa_data.m_system_status.empty()) {
-            oss << ' '
-                << m_sa_data.m_system_status;
-        }
-    }
-
-    return oss.str();
-}
-
 auto Network::SocketApi::description() const noexcept -> std::string_view
 {
     return m_sa_data.m_description;

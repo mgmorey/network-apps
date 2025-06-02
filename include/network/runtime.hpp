@@ -34,7 +34,6 @@ namespace Network
         auto operator=(const Runtime&) -> Runtime& = delete;
         auto operator=(const Runtime&&) -> Runtime& = delete;
 
-        explicit virtual operator std::string() const = 0;
         [[nodiscard]] virtual auto description() const noexcept ->
             std::string_view = 0;
         [[nodiscard]] virtual auto error_code() const noexcept -> int = 0;

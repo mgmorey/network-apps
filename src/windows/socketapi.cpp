@@ -42,24 +42,6 @@ Network::SocketApi::~SocketApi()
     }
 }
 
-Network::SocketApi::operator std::string() const
-{
-    std::ostringstream oss;
-
-    if (!m_description.empty()) {
-        oss << m_description
-            << " Version "
-            << WindowsVersion(m_sa_data.wVersion);
-
-        if (!m_system_status.empty()) {
-            oss << ' '
-                << m_system_status;
-        }
-    }
-
-    return oss.str();
-}
-
 auto Network::SocketApi::description() const noexcept -> std::string_view
 {
     return m_sa_data.szDescription;
