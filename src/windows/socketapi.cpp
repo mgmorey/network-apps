@@ -61,7 +61,7 @@ Network::SocketApi::operator std::string() const
 
 auto Network::SocketApi::description() const noexcept -> std::string_view
 {
-    return {};
+    return m_sa_data.szDescription;
 }
 
 auto Network::SocketApi::error_code() const noexcept -> int
@@ -112,7 +112,7 @@ auto Network::SocketApi::stop() -> void
 
 auto Network::SocketApi::system_status() const noexcept -> std::string_view
 {
-    return {};
+    return m_sa_data.szSystemStatus;
 }
 
 #endif
