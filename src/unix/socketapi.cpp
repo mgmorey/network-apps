@@ -23,7 +23,7 @@
 #include "network/stop.hpp"             // stop()
 
 #include <sstream>      // std::ostringstream
-#include <string>       // std::string
+#include <string_view>  // std::string_view
 
 Network::SocketApi::SocketApi(const RuntimeData& t_rd) : m_rt_data(t_rd)
 {
@@ -48,7 +48,7 @@ auto Network::SocketApi::error_code() const noexcept -> int
 
 auto Network::SocketApi::is_running() const noexcept -> bool
 {
-    return m_sa_data.m_system_status == "Running";
+    return system_status() == "Running";
 }
 
 auto Network::SocketApi::start() -> void
@@ -62,7 +62,7 @@ auto Network::SocketApi::start() -> void
     if (!is_running()) {
         std::ostringstream oss;
         oss << "BSD Socket API runtime status is \""
-            << m_sa_data.m_system_status
+            << system_status()
             << "\".";
         throw RuntimeError {oss.str()};
     }

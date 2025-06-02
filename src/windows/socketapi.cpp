@@ -26,7 +26,6 @@
 #include "network/windowsversion.hpp"   // WindowsVersion
 
 #include <sstream>      // std::ostringstream
-#include <string>       // std::string
 #include <string_view>  // std::string_view
 
 Network::SocketApi::SocketApi(const RuntimeData& t_rd) :
@@ -44,7 +43,7 @@ Network::SocketApi::~SocketApi()
 
 auto Network::SocketApi::description() const noexcept -> std::string_view
 {
-    return m_sa_data.szDescription;
+    return static_cast<const char*>(m_sa_data.szDescription);
 }
 
 auto Network::SocketApi::error_code() const noexcept -> int
@@ -54,7 +53,7 @@ auto Network::SocketApi::error_code() const noexcept -> int
 
 auto Network::SocketApi::is_running() const noexcept -> bool
 {
-    return m_system_status == "Running";
+    return system_status() == "Running";
 }
 
 auto Network::SocketApi::start() -> void
@@ -66,13 +65,11 @@ auto Network::SocketApi::start() -> void
     m_sa_data = m_rt_data.version() ?
         Network::start(*m_rt_data.version(), m_rt_data.is_verbose()) :
         Network::start(m_rt_data.is_verbose());
-    m_description = static_cast<const char*>(m_sa_data.szDescription);
-    m_system_status = static_cast<const char*>(m_sa_data.szSystemStatus);
 
     if (!is_running()) {
         std::ostringstream oss;
         oss << "Windows Socket API runtime status is \""
-            << m_system_status
+            << system_status()
             << "\".";
         throw RuntimeError {oss.str()};
     }
@@ -95,7 +92,7 @@ auto Network::SocketApi::stop() -> void
 
 auto Network::SocketApi::system_status() const noexcept -> std::string_view
 {
-    return m_sa_data.szSystemStatus;
+    return static_cast<const char*>(m_sa_data.szSystemStatus);
 }
 
 auto Network::SocketApi::version() const noexcept -> OptionalVersion

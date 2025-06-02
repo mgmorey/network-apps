@@ -13,10 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef WINDOWS_NETWORK_SOCKETAPI_HPP
-#define WINDOWS_NETWORK_SOCKETAPI_HPP
-
-#ifdef WIN32
+#ifndef NETWORK_SOCKETAPI_HPP
+#define NETWORK_SOCKETAPI_HPP
 
 #include "network/runtime.hpp"          // Runtime
 #include "network/optionalversion.hpp"  // OptionalVersion
@@ -31,7 +29,7 @@ namespace Network
     class SocketApi final : public Runtime
     {
     public:
-        explicit SocketApi(const RuntimeData& rd);
+        explicit SocketApi(const RuntimeData& t_rd);
         SocketApi(const SocketApi&) = delete;
         SocketApi(const SocketApi&&) = delete;
         ~SocketApi() final;
@@ -42,8 +40,8 @@ namespace Network
             std::string_view final;
         [[nodiscard]] auto error_code() const noexcept -> int final;
         [[nodiscard]] auto is_running() const noexcept -> bool final;
-        auto start() -> Runtime& final;
-        auto stop() -> Runtime& final;
+        auto start() -> void final;
+        auto stop() -> void final;
         [[nodiscard]] auto system_status() const noexcept ->
             std::string_view final;
         [[nodiscard]] auto version() const noexcept ->
@@ -53,11 +51,7 @@ namespace Network
         RuntimeData m_rt_data;
         RuntimeState m_rt_state;
         SocketApiData m_sa_data {};
-        std::string_view m_description;
-        std::string_view m_system_status;
     };
 }
-
-#endif
 
 #endif
