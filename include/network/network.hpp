@@ -60,8 +60,8 @@
                                                 // sun_length_min,
                                                 // sun_path_offset,
                                                 // sun_size
-#ifndef WIN32
 #include "network/create-runtime.hpp"           // create_runtime()
+#ifndef WIN32
 #include "network/create-socketpair.hpp"        // create_socketpair()
 #include "network/create-socketpairresult.hpp"  // create_socketpairresult()
 #endif
@@ -82,6 +82,7 @@
 #ifndef WIN32
 #include "network/get-path-length.hpp"          // get_path_length()
 #endif
+#include "network/get-runtime.hpp"              // get_runtime()
 #include "network/get-sa-family.hpp"            // get_sa_family()
 #include "network/get-sa-length.hpp"            // get_sa_length()
 #include "network/get-sa-pointer.hpp"           // get_sa_pointer()
