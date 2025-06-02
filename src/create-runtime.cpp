@@ -13,19 +13,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/run.hpp"              // run()
 #include "network/create-runtime.hpp"   // create_runtime()
 #include "network/runtimedata.hpp"      // RuntimeData
 #include "network/sharedruntime.hpp"    // SharedRuntime
+#include "network/socketapi.hpp"        // SocketApi
 
-auto Network::run(RuntimeData rd) -> SharedRuntime
-{
-    static auto sr {create_runtime(rd)};
-    sr->start();
-    return sr;
-}
+#include <memory>       // std::make_shared()
 
-auto Network::run(bool is_verbose) -> SharedRuntime
+auto Network::create_runtime(RuntimeData rd) -> SharedRuntime
 {
-    return run(RuntimeData {is_verbose});
+    return std::make_shared<SocketApi>(rd);
 }

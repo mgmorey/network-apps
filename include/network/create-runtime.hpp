@@ -13,19 +13,15 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/run.hpp"              // run()
-#include "network/create-runtime.hpp"   // create_runtime()
+#ifndef NETWORK_CREATE_RUNTIME_HPP
+#define NETWORK_CREATE_RUNTIME_HPP
+
 #include "network/runtimedata.hpp"      // RuntimeData
 #include "network/sharedruntime.hpp"    // SharedRuntime
 
-auto Network::run(RuntimeData rd) -> SharedRuntime
+namespace Network
 {
-    static auto sr {create_runtime(rd)};
-    sr->start();
-    return sr;
+    extern auto create_runtime(RuntimeData rd) -> SharedRuntime;
 }
 
-auto Network::run(bool is_verbose) -> SharedRuntime
-{
-    return run(RuntimeData {is_verbose});
-}
+#endif
