@@ -18,6 +18,7 @@
 
 #include <ostream>      // std::ostream
 #include <string>       // std::string
+#include <string_view>  // std::string_view
 
 namespace Network
 {
@@ -30,11 +31,16 @@ namespace Network
         virtual ~Runtime() = default;
         auto operator=(const Runtime&) -> Runtime& = delete;
         auto operator=(const Runtime&&) -> Runtime& = delete;
+
         explicit virtual operator std::string() const = 0;
+        [[nodiscard]] virtual auto description() const noexcept ->
+            std::string_view = 0;
         [[nodiscard]] virtual auto error_code() const noexcept -> int = 0;
         [[nodiscard]] virtual auto is_running() const noexcept -> bool = 0;
         virtual auto start() -> void = 0;
         virtual auto stop() -> void = 0;
+        [[nodiscard]] virtual auto system_status() const noexcept ->
+            std::string_view = 0;
     };
 
     extern auto operator<<(std::ostream& os,

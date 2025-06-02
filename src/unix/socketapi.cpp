@@ -51,6 +51,11 @@ Network::SocketApi::operator std::string() const
     return oss.str();
 }
 
+auto Network::SocketApi::description() const noexcept -> std::string_view
+{
+    return {};
+}
+
 auto Network::SocketApi::error_code() const noexcept -> int
 {
     return m_rt_state.m_error_code;
@@ -91,6 +96,11 @@ auto Network::SocketApi::stop() -> void
             m_sa_data = {};
         }
     }
+}
+
+auto Network::SocketApi::system_status() const noexcept -> std::string_view
+{
+    return {};
 }
 
 #endif
