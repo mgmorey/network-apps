@@ -24,11 +24,8 @@ auto Network::operator<<(std::ostream& os,
         return os;
     }
 
-    os << runtime.description();
-
-    if (runtime.version()) {
-        os << " Version " << *runtime.version();
-    }
+    os << runtime.description()
+       << " Version " << runtime.version();
 
     if (!runtime.system_status().empty()) {
         os << ' ' << runtime.system_status();

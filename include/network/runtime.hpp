@@ -16,7 +16,7 @@
 #ifndef NETWORK_RUNTIME_HPP
 #define NETWORK_RUNTIME_HPP
 
-#include "network/optionalversion.hpp"  // OptionalVersion
+#include "network/version.hpp"          // Version
 
 #include <ostream>      // std::ostream
 #include <string_view>  // std::string_view
@@ -40,8 +40,7 @@ namespace Network
         virtual auto stop() -> void = 0;
         [[nodiscard]] virtual auto system_status() const noexcept ->
             std::string_view = 0;
-        [[nodiscard]] virtual auto version() const noexcept ->
-            OptionalVersion = 0;
+        [[nodiscard]] virtual auto version() const noexcept -> Version = 0;
     };
 
     extern auto operator<<(std::ostream& os,

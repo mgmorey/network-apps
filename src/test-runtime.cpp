@@ -130,11 +130,9 @@ namespace
 
         std::cout << ": " << description << std::endl;
 
-        if (rt.version()) {
-            std::cout << "    Version:\t\t"
-                      << *rt.version()
-                      << std::endl;
-        }
+        std::cout << "    Version:\t\t"
+                  << rt.version()
+                  << std::endl;
 
         std::cout << "    Description:\t\""
                   << rt.description()

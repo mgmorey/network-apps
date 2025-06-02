@@ -16,11 +16,11 @@
 #ifndef NETWORK_SOCKETAPI_HPP
 #define NETWORK_SOCKETAPI_HPP
 
-#include "network/optionalversion.hpp"  // OptionalVersion
 #include "network/runtime.hpp"          // Runtime
 #include "network/runtimedata.hpp"      // RuntimeData
 #include "network/runtimestate.hpp"     // RuntimeState
 #include "network/socketapidata.hpp"    // SocketApiData
+#include "network/version.hpp"          // Version
 
 #include <string_view>  // std::string_view
 
@@ -43,8 +43,7 @@ namespace Network
         auto stop() -> void final;
         [[nodiscard]] auto system_status() const noexcept ->
             std::string_view final;
-        [[nodiscard]] auto version() const noexcept ->
-            OptionalVersion final;
+        [[nodiscard]] auto version() const noexcept -> Version final;
 
     private:
         RuntimeData m_rt_data;

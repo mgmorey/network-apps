@@ -17,10 +17,10 @@
 
 #include "network/socketapi.hpp"        // SocketApi
 #include "network/is-running.hpp"       // is_running()
-#include "network/optionalversion.hpp"  // OptionalVersion
 #include "network/runtimeerror.hpp"     // RuntimeError
 #include "network/start.hpp"            // start()
 #include "network/stop.hpp"             // stop()
+#include "network/version.hpp"          // Version
 
 #include <sstream>      // std::ostringstream
 #include <string_view>  // std::string_view
@@ -83,7 +83,7 @@ auto Network::SocketApi::system_status() const noexcept -> std::string_view
     return m_sa_data.m_system_status;
 }
 
-auto Network::SocketApi::version() const noexcept -> OptionalVersion
+auto Network::SocketApi::version() const noexcept -> Version
 {
     return m_sa_data.m_version;
 }
