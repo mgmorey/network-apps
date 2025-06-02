@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/commonsocket.hpp"     // CommonSocket
+#include "network/inetsocket.hpp"       // InetSocket
 #include "network/accept.hpp"           // accept()
 #include "network/acceptresult.hpp"     // AcceptResult
 #include "network/close.hpp"            // close()
@@ -33,12 +33,12 @@
 #include <iostream>     // std::cerr, std::endl
 #include <span>         // std::span
 
-Network::CommonSocket::CommonSocket(const SocketData& t_sd) :
+Network::InetSocket::InetSocket(const SocketData& t_sd) :
     m_sd(t_sd)
 {
 }
 
-Network::CommonSocket::~CommonSocket() noexcept
+Network::InetSocket::~InetSocket() noexcept
 {
     if (const auto result {Network::close(m_sd)}) {
         std::cerr << result.string()
@@ -46,75 +46,75 @@ Network::CommonSocket::~CommonSocket() noexcept
     }
 }
 
-Network::CommonSocket::operator bool() const noexcept
+Network::InetSocket::operator bool() const noexcept
 {
     return m_sd.handle() != handle_null;
 }
 
-Network::CommonSocket::operator handle_type() const noexcept
+Network::InetSocket::operator handle_type() const noexcept
 {
     return m_sd.handle();
 }
 
-auto Network::CommonSocket::accept() const -> AcceptResult
+auto Network::InetSocket::accept() const -> AcceptResult
 
 {
     return Network::accept(m_sd);
 }
 
-auto Network::CommonSocket::bind(std::span<const std::byte> t_bs) ->
+auto Network::InetSocket::bind(std::span<const std::byte> t_bs) ->
     OsErrorResult
 {
     return open(t_bs, true);
 }
 
-auto Network::CommonSocket::cache(Symbol symbol) const -> std::span<const std::byte>
+auto Network::InetSocket::cache(Symbol symbol) const -> std::span<const std::byte>
 {
     return m_cache[symbol];
 }
 
-auto Network::CommonSocket::connect(std::span<const std::byte> t_bs) ->
+auto Network::InetSocket::connect(std::span<const std::byte> t_bs) ->
     OsErrorResult
 {
     return open(t_bs, false);
 }
 
-auto Network::CommonSocket::is_verbose() const noexcept -> bool
+auto Network::InetSocket::is_verbose() const noexcept -> bool
 {
     return m_sd.is_verbose();
 }
 
-auto Network::CommonSocket::listen(int t_backlog) const -> OsErrorResult
+auto Network::InetSocket::listen(int t_backlog) const -> OsErrorResult
 {
     return Network::listen(m_sd, t_backlog);
 }
 
-auto Network::CommonSocket::peername() const -> std::span<const std::byte>
+auto Network::InetSocket::peername() const -> std::span<const std::byte>
 {
     return get_name(false);
 }
 
-auto Network::CommonSocket::read(std::span<char> t_cs) const -> ssize_t
+auto Network::InetSocket::read(std::span<char> t_cs) const -> ssize_t
 {
     return Network::read(m_sd, t_cs);
 }
 
-auto Network::CommonSocket::shutdown(int t_how) const -> OsErrorResult
+auto Network::InetSocket::shutdown(int t_how) const -> OsErrorResult
 {
     return Network::shutdown(m_sd, t_how);
 }
 
-auto Network::CommonSocket::sockname() const -> std::span<const std::byte>
+auto Network::InetSocket::sockname() const -> std::span<const std::byte>
 {
     return get_name(true);
 }
 
-auto Network::CommonSocket::write(std::string_view t_sv) const -> ssize_t
+auto Network::InetSocket::write(std::string_view t_sv) const -> ssize_t
 {
     return Network::write(m_sd, t_sv);
 }
 
-auto Network::CommonSocket::get_name(bool t_is_sockname) const ->
+auto Network::InetSocket::get_name(bool t_is_sockname) const ->
     std::span<const std::byte>
 {
     const auto api {t_is_sockname ? Symbol::sockname : Symbol::peername};
@@ -127,7 +127,7 @@ auto Network::CommonSocket::get_name(bool t_is_sockname) const ->
     return name;
 }
 
-auto Network::CommonSocket::open(std::span<const std::byte> t_bs,
+auto Network::InetSocket::open(std::span<const std::byte> t_bs,
                                  bool t_is_bind) const -> OsErrorResult
 {
     const auto api {t_is_bind ? Symbol::bind : Symbol::connect};

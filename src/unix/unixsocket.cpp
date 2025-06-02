@@ -24,7 +24,7 @@
 #include <span>         // std::span
 
 Network::UnixSocket::UnixSocket(const SocketData& t_sd) :
-    CommonSocket(t_sd)
+    InetSocket(t_sd)
 {
 }
 
@@ -35,7 +35,7 @@ Network::UnixSocket::~UnixSocket() noexcept
 
 auto Network::UnixSocket::bind(std::span<const std::byte> t_bs) -> OsErrorResult
 {
-    if (auto result {CommonSocket::bind(t_bs)}) {
+    if (auto result {InetSocket::bind(t_bs)}) {
         return result;
     }
 
@@ -46,7 +46,7 @@ auto Network::UnixSocket::bind(std::span<const std::byte> t_bs) -> OsErrorResult
 auto Network::UnixSocket::connect(std::span<const std::byte> t_bs) ->
     OsErrorResult
 {
-    if (auto result {CommonSocket::connect(t_bs)}) {
+    if (auto result {InetSocket::connect(t_bs)}) {
         return result;
     }
 

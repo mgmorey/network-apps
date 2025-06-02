@@ -14,7 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/assert.hpp"           // assert()
-#include "network/commonsocket.hpp"     // CommonSocket
+#include "network/inetsocket.hpp"       // InetSocket
 #include "network/network.hpp"          // Error, SocketData,
                                         // SocketHints, UniqueSocket,
                                         // close(), create_socket(),
@@ -41,7 +41,7 @@
 
 namespace
 {
-    using Network::CommonSocket;
+    using Network::InetSocket;
     using Network::Error;
     using Network::SocketData;
     using Network::SocketHints;
@@ -67,11 +67,11 @@ namespace
         }
     };
 
-    class TestCommonSocket : public CommonSocket
+    class TestInetSocket : public InetSocket
     {
     public:
-        explicit TestCommonSocket(const SocketData& t_sd) :
-            CommonSocket(t_sd)
+        explicit TestInetSocket(const SocketData& t_sd) :
+            InetSocket(t_sd)
         {
         }
     };
@@ -112,7 +112,7 @@ namespace
     auto create_null_socket() -> UniqueSocket
     {
         const TestSocketData sd {handle_null, AF_UNSPEC, is_verbose};
-        return std::make_unique<TestCommonSocket>(sd);
+        return std::make_unique<TestInetSocket>(sd);
     }
 
     auto parse_arguments(int argc, char** argv) -> void
@@ -141,7 +141,7 @@ namespace
         }
     }
 
-    auto test_common_socket(handle_type handle,
+    auto test_inet_socket(handle_type handle,
                             family_type family,
                             const std::string& expected_error_re) -> void
     {
@@ -149,7 +149,7 @@ namespace
 
         try {
             const SocketData sd {handle, family, is_verbose};
-            const CommonSocket sock {sd};
+            const InetSocket sock {sd};
             assert(static_cast<bool>(sock));
         }
         catch (const Error& error) {
@@ -166,17 +166,17 @@ namespace
         }
     }
 
-    auto test_common_socket_handle_invalid() -> void
+    auto test_inet_socket_handle_invalid() -> void
     {
-        test_common_socket(handle_null, AF_UNSPEC, expected_error_handle_re);
+        test_inet_socket(handle_null, AF_UNSPEC, expected_error_handle_re);
     }
 
-    auto test_common_socket_handle_valid() -> void
+    auto test_inet_socket_handle_valid() -> void
     {
         const family_type family {AF_INET};
         const handle_type handle {::socket(family, SOCK_STREAM, 0)};
         const SocketData sd {handle, family, is_verbose};
-        test_common_socket(handle, family, "");
+        test_inet_socket(handle, family, "");
         Network::close(sd);
     }
 
@@ -379,7 +379,7 @@ auto main(int argc, char* argv[]) -> int
             std::cout << *rt << std::endl;
         }
 
-        test_common_socket_handle_invalid();
+        test_inet_socket_handle_invalid();
         test_socket_accept_invalid();
         test_socket_family_invalid();
         test_socket_handle_invalid();
@@ -391,7 +391,7 @@ auto main(int argc, char* argv[]) -> int
         test_socket_socktype_invalid();
         test_socket_write_invalid();
 
-        test_common_socket_handle_valid();
+        test_inet_socket_handle_valid();
         test_valid();
     }
     catch (const std::exception& error) {

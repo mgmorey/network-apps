@@ -18,7 +18,7 @@
 
 #ifndef WIN32
 
-#include "network/commonsocket.hpp"     // CommonSocket
+#include "network/inetsocket.hpp"       // InetSocket
 #include "network/pathname.hpp"         // Pathname
 #include "network/pathnameview.hpp"     // PathnameView
 #include "network/socketdata.hpp"       // SocketData
@@ -29,7 +29,7 @@
 
 namespace Network
 {
-    class UnixSocket final : public CommonSocket
+    class UnixSocket final : public InetSocket
     {
     public:
         explicit UnixSocket(const SocketData& t_sd);

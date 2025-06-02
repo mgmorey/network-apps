@@ -33,16 +33,16 @@
 
 namespace Network
 {
-    class CommonSocket : public Socket
+    class InetSocket : public Socket
     {
     public:
-        explicit CommonSocket(const SocketData& t_sd);
+        explicit InetSocket(const SocketData& t_sd);
 
-        CommonSocket(const CommonSocket&) noexcept = delete;
-        CommonSocket(const CommonSocket&&) noexcept = delete;
-        ~CommonSocket() noexcept override;
-        auto operator=(const CommonSocket&) noexcept -> CommonSocket& = delete;
-        auto operator=(CommonSocket&&) noexcept -> CommonSocket& = delete;
+        InetSocket(const InetSocket&) noexcept = delete;
+        InetSocket(const InetSocket&&) noexcept = delete;
+        ~InetSocket() noexcept override;
+        auto operator=(const InetSocket&) noexcept -> InetSocket& = delete;
+        auto operator=(InetSocket&&) noexcept -> InetSocket& = delete;
 
         explicit operator bool() const noexcept final;
         explicit operator handle_type() const noexcept final;

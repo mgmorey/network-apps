@@ -16,7 +16,7 @@
 #ifdef WIN32
 
 #include "network/create-socket.hpp"    // create_socket()
-#include "network/commonsocket.hpp"     // CommonSocket
+#include "network/inetsocket.hpp"       // InetSocket
 #include "network/socketdata.hpp"       // SocketData
 #include "network/uniquesocket.hpp"     // UniqueSocket
 
@@ -24,7 +24,7 @@
 
 auto Network::create_socket(const SocketData& sd) -> UniqueSocket
 {
-    return std::make_unique<CommonSocket>(sd);
+    return std::make_unique<InetSocket>(sd);
 }
 
 #endif
