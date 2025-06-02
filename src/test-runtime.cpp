@@ -14,8 +14,10 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/assert.hpp"           // assert()
-#include "network/network.hpp"          // Error, SharedRuntime,
-                                        // Version, create_runtime(),
+#include "network/network.hpp"          // Error, FailMode, Runtime,
+                                        // RuntimeData, Version,
+                                        // WindowsVersion,
+                                        // create_runtime(),
                                         // get_hostname(),
                                         // is_running(), run()
 #include "network/parse.hpp"            // parse()
@@ -38,8 +40,8 @@ namespace
 {
     using Network::Error;
     using Network::FailMode;
+    using Network::Runtime;
     using Network::RuntimeData;
-    using Network::SharedRuntime;
 #ifdef WIN32
     using Network::Version;
     using Network::WindowsVersion;
@@ -51,7 +53,7 @@ namespace
 #ifdef WIN32
     constexpr auto expected_code_stopped {WSANOTINITIALISED};
     constexpr auto expected_error_stopped_re {
-        R"(Call to ::gethostname\(.+\) failed with error \d+: .+)"
+        "(Call to ::gethostname\\(.+\\) failed with error \\d+: .+)"
     };
     constexpr auto expected_error_version {
         "The Windows Sockets version requested is not supported."
@@ -68,16 +70,16 @@ namespace
     };
 #endif
     constexpr auto expected_runtime_version_re {
-        "( Version \\d{1,3}\\.\\d{1,3})?" // NOLINT
+        "Version \\d{1,3}\\.\\d{1,3}" // NOLINT
     };
 
     const auto fail_mode {FailMode::return_error};
     auto is_verbose {false};  // NOLINT
 
-    auto get_actual_rt_str(const SharedRuntime& rt) -> std::string
+    auto get_actual_rt_str(const Runtime& rt) -> std::string
     {
         std::ostringstream oss;
-        oss << *rt;
+        oss << rt;
         return oss.str();
     }
 
@@ -86,6 +88,7 @@ namespace
         std::string result;
         result += "(";
         result += expected_runtime_platform_re;
+        result += " ";
         result += expected_runtime_version_re;
         result += " Running)";
         return result;
@@ -117,26 +120,49 @@ namespace
         }
     }
 
-    auto print(const SharedRuntime& rt,
-               const std::string& description) -> void
+    auto print(Runtime& rt, const std::string& description) -> void
     {
         std::cout << "Runtime";
 
         if (is_verbose) {
-            std::cout << ' ' << rt;
+            std::cout << ' ' << &rt;
         }
 
         std::cout << ": " << description << std::endl;
-        std::cout << "    " << *rt << std::endl;
+
+        if (rt.version()) {
+            std::cout << "    Version:\t\t"
+                      << *rt.version()
+                      << std::endl;
+        }
+
+        std::cout << "    Description:\t\""
+                  << rt.description()
+                  << '"'
+                  << std::endl;
+        std::cout << "    System Status:\t\""
+                  << rt.system_status()
+                  << '"'
+                  << std::endl;
     }
 
-    auto test_runtime(const SharedRuntime& rt, const std::string& description) -> void
+    auto test(Runtime& rt, const std::string& description) -> void
     {
-        print(rt, description);
-        assert(is_running(*rt));
+        rt.start();
+        print(rt, description + " started");
+        assert(is_running(rt));
         const std::string actual_str {get_actual_rt_str(rt)};
         const std::regex expected_regex {get_expected_runtime_re()};
         assert(std::regex_match(actual_str, expected_regex));
+        rt.stop();
+        print(rt, description + " stopped");
+        assert(!rt.error_code());
+    }
+
+    auto test(const RuntimeData& rd, const std::string& description) -> void
+    {
+        auto rt {create_runtime(rd)};
+        test(*rt, description);
     }
 
     auto test_runtime_inactive() -> void
@@ -182,8 +208,7 @@ namespace
             constexpr Version invalid {0, 0};
             constexpr auto fail_mode_throw {FailMode::throw_error};
             const RuntimeData rd {invalid, fail_mode_throw, is_verbose};
-            auto rt {create_runtime(rd)};
-            rt->start();
+            test_runtime(rd, "invalid");
         }
         catch (const Error& error) {
             print(error);
@@ -207,11 +232,7 @@ namespace
 #else
             const RuntimeData rd {fail_mode, is_verbose};
 #endif
-            auto rt {create_runtime(rd)};
-            rt->start();
-            test_runtime(rt, "shared");
-            rt->stop();
-            assert(!rt->error_code());
+            test(rd, "shared");
         }
         catch (const Error& error) {
             print(error);
