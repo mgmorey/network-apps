@@ -16,11 +16,17 @@
 #include "network/runtime.hpp"          // Runtime, operator<<()
 
 #include <ostream>      // std::ostream
-#include <string>       // std::string
 
 auto Network::operator<<(std::ostream& os,
                          const Runtime& runtime) -> std::ostream&
 {
-    os << std::string(runtime);
+    os << runtime.description();
+
+    if (runtime.system_status().empty()) {
+        return os;
+    }
+
+    os << ' ' << runtime.system_status();
+
     return os;
 }
