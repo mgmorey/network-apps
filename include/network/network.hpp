@@ -94,6 +94,7 @@
 #endif
 #include "network/insert.hpp"                   // insert()
 #include "network/ipsockethints.hpp"            // IpSocketHints
+#include "network/is-running.hpp"               // is_running()
 #include "network/listen.hpp"                   // listen()
 #include "network/open-endpoint.hpp"            // open()
 #include "network/open-handle.hpp"              // open()

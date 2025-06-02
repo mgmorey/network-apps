@@ -17,6 +17,7 @@
 
 #include "network/socketapi.hpp"        // SocketApi
 #include "network/failmode.hpp"         // FailMode
+#include "network/is-running.hpp"       // is_running()
 #include "network/optionalversion.hpp"  // OptionalVersion
 #include "network/runtimeerror.hpp"     // RuntimeError
 #include "network/start.hpp"            // start()
@@ -46,11 +47,6 @@ auto Network::SocketApi::error_code() const noexcept -> int
     return m_rt_state.m_error_code;
 }
 
-auto Network::SocketApi::is_running() const noexcept -> bool
-{
-    return system_status() == "Running";
-}
-
 auto Network::SocketApi::start() -> void
 {
     if (m_rt_state.m_is_started) {
@@ -59,7 +55,7 @@ auto Network::SocketApi::start() -> void
 
     m_sa_data = Network::start(m_rt_data.is_verbose());
 
-    if (!is_running()) {
+    if (!is_running(*this)) {
         std::ostringstream oss;
         oss << "BSD Socket API runtime status is \""
             << system_status()

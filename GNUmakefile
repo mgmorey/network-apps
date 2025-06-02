@@ -100,8 +100,8 @@ get-nameresult.cpp get-operands.cpp get-option.cpp get-options.cpp	\
 get-runtime.cpp get-sa-family.cpp get-sa-length.cpp			\
 get-sa-pointer.cpp get-sa-span.cpp get-sin-addr.cpp			\
 get-sin-pointer.cpp get-sin-port.cpp get-sin6-addr.cpp			\
-get-sin6-pointer.cpp get-sin6-port.cpp inetsocket.cpp listen.cpp	\
-logicerror.cpp open-endpoint.cpp open-handle.cpp open.cpp		\
+get-sin6-pointer.cpp get-sin6-port.cpp inetsocket.cpp is-running.cpp	\
+listen.cpp logicerror.cpp open-endpoint.cpp open-handle.cpp open.cpp	\
 oserrorresult.cpp parse-argumentspan.cpp parse.cpp quote.cpp		\
 rangeerror.cpp reset-api-error.cpp reset-os-error.cpp run.cpp		\
 runtimedata.cpp runtimeerror.cpp shutdown.cpp socketdata.cpp		\

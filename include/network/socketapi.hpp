@@ -39,7 +39,6 @@ namespace Network
         [[nodiscard]] auto description() const noexcept ->
             std::string_view final;
         [[nodiscard]] auto error_code() const noexcept -> int final;
-        [[nodiscard]] auto is_running() const noexcept -> bool final;
         auto start() -> void final;
         auto stop() -> void final;
         [[nodiscard]] auto system_status() const noexcept ->

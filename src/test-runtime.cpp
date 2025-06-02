@@ -16,7 +16,8 @@
 #include "network/assert.hpp"           // assert()
 #include "network/network.hpp"          // Error, SharedRuntime,
                                         // Version, create_runtime(),
-                                        // get_hostname(), run()
+                                        // get_hostname(),
+                                        // is_running(), run()
 #include "network/parse.hpp"            // parse()
 #include "network/stop.hpp"             // stop()
 
@@ -37,7 +38,6 @@ namespace
 {
     using Network::Error;
     using Network::FailMode;
-    using Network::Hostname;
     using Network::RuntimeData;
     using Network::SharedRuntime;
 #ifdef WIN32
@@ -133,7 +133,7 @@ namespace
     auto test_runtime(const SharedRuntime& rt, const std::string& description) -> void
     {
         print(rt, description);
-        assert(rt->is_running());
+        assert(is_running(*rt));
         const std::string actual_str {get_actual_rt_str(rt)};
         const std::regex expected_regex {get_expected_runtime_re()};
         assert(std::regex_match(actual_str, expected_regex));
