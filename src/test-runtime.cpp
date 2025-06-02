@@ -121,19 +121,19 @@ namespace
         }
     }
 
-    auto print(SharedRuntime rt,
+    auto print(const SharedRuntime& rt,
                const std::string& description) -> void
     {
         std::cout << "Runtime";
 
         if (is_verbose) {
-            std::cout << ' ' << &rt;
+            std::cout << ' ' << rt;
         }
 
         std::cout << ": " << description << std::endl;
 
         if (rt->is_running()) {
-            std::cout << "    " << rt << std::endl;
+            std::cout << "    " << *rt << std::endl;
         }
     }
 
