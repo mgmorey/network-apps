@@ -15,22 +15,16 @@
 
 #include "network/runtimedata.hpp"              // RuntimeData
 #include "network/failmode.hpp"                 // FailMode
-#ifdef WIN32
 #include "network/optionalversion.hpp"          // OptionalVersion
-#endif
-
-#ifdef WIN32
 
 Network::RuntimeData::RuntimeData(OptionalVersion t_version,
                                   FailMode t_fail_mode,
                                   bool t_is_verbose) noexcept :
-    m_version(t_version),
     m_fail_mode(t_fail_mode),
-    m_is_verbose(t_is_verbose)
+    m_is_verbose(t_is_verbose),
+    m_version(t_version)
 {
 }
-
-#endif
 
 Network::RuntimeData::RuntimeData(FailMode t_fail_mode,
                                   bool t_is_verbose) noexcept :
@@ -54,11 +48,7 @@ auto Network::RuntimeData::is_verbose() const noexcept -> bool
     return m_is_verbose;
 }
 
-#ifdef WIN32
-
 auto Network::RuntimeData::version() const noexcept -> OptionalVersion
 {
     return m_version;
 }
-
-#endif

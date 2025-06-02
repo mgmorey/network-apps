@@ -17,19 +17,15 @@
 #define NETWORK_RUNTIMEDATA_HPP
 
 #include "network/failmode.hpp"                 // FailMode
-#ifdef WIN32
 #include "network/optionalversion.hpp"          // OptionalVersion
-#endif
 
 namespace Network
 {
     struct RuntimeData
     {
-#ifdef WIN32
         RuntimeData(OptionalVersion t_version,
                     FailMode t_fail_mode,
                     bool t_is_verbose) noexcept;
-#endif
         RuntimeData(FailMode t_fail_mode,
                     bool t_is_verbose) noexcept;
         explicit RuntimeData(bool t_is_verbose) noexcept;
@@ -43,16 +39,12 @@ namespace Network
 
         [[nodiscard]] auto fail_mode() const noexcept -> FailMode;
         [[nodiscard]] auto is_verbose() const noexcept -> bool;
-#ifdef WIN32
         [[nodiscard]] auto version() const noexcept -> OptionalVersion;
-#endif
 
     private:
-#ifdef WIN32
-        OptionalVersion m_version;                          // NOLINT
-#endif
         FailMode m_fail_mode {FailMode::throw_error};       // NOLINT
         bool m_is_verbose {false};                          // NOLINT
+        OptionalVersion m_version;                          // NOLINT
     };
 }
 
