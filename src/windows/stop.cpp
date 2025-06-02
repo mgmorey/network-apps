@@ -17,11 +17,11 @@
 
 #include "network/stop.hpp"             // stop()
 #include "network/error.hpp"            // Error
-#include "network/failmode.hpp"         // FailMode
 #include "network/format-os-error.hpp"  // format_os_error()
 #include "network/get-api-error.hpp"    // get_api_error()
 #include "network/logicerror.hpp"       // LogicError
 #include "network/reset-api-error.hpp"  // reset_api_error()
+#include "network/runtimedata.hpp"      // RuntimeData
 #include "network/runtimeerror.hpp"     // RuntimeError
 #include "network/socket-error.hpp"     // socket_error
 #include "network/to-os-error.hpp"      // to_os_error()
@@ -32,11 +32,11 @@
 #include <iostream>     // std::cout, std::endl
 #include <sstream>      // std::ostringstream
 
-auto Network::stop(FailMode fail_mode, bool is_verbose) -> int
+auto Network::stop(const RuntimeData& rd) -> int
 {
     reset_api_error();
 
-    if (is_verbose) {
+    if (rd.is_verbose()) {
         // clang-format off
         std::cout << "Stopping the network runtime.\n"
                   << "Calling ::WSACleanup()"
@@ -49,7 +49,7 @@ auto Network::stop(FailMode fail_mode, bool is_verbose) -> int
         const auto os_error {to_os_error(api_error)};
         const auto message {format_os_error(os_error)};
 
-        if (is_verbose) {
+        if (rd.is_verbose()) {
             // clang-format off
             std::cout << "Call to ::WSACleanup() failed with error "
                       << api_error
@@ -59,7 +59,7 @@ auto Network::stop(FailMode fail_mode, bool is_verbose) -> int
             // clang-format on
         }
 
-        switch (fail_mode) {
+        switch (rd.fail_mode()) {
         case FailMode::throw_error:
         {
             switch (api_error) {  // NOLINT

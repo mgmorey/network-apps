@@ -19,7 +19,7 @@
 #include "network/error.hpp"            // Error
 #include "network/format-os-error.hpp"  // format_os_error()
 #include "network/logicerror.hpp"       // LogicError
-#include "network/optionalversion.hpp"  // OptionalVersion
+#include "network/runtimedata.hpp"      // RuntimeData
 #include "network/runtimeerror.hpp"     // RuntimeError
 #include "network/socketapidata.hpp"    // SocketApiData
 #include "network/to-os-error.hpp"      // to_os_error()
@@ -33,16 +33,15 @@
 
 namespace
 {
-    auto start(Network::OptionalVersion version,
-               bool is_verbose) -> Network::SocketApiData
+    auto start(const RuntimeData& rd) -> Network::SocketApiData
     {
         Network::SocketApiData wsa_data {};
         const Network::WindowsVersion wsa_version
         {
-            version.value_or(Network::WindowsVersion::latest)
+            rd.version().value_or(Network::WindowsVersion::latest)
         };
 
-        if (is_verbose) {
+        if (rd.is_verbose()) {
             // clang-format off
             std::cout << "Starting the network runtime.\n"
                       << "Calling ::WSAStartup("
@@ -56,7 +55,7 @@ namespace
             const auto os_error {Network::to_os_error(api_error)};
             const auto message {Network::format_os_error(os_error)};
 
-            if (is_verbose) {
+            if (rd.is_verbose()) {
                 // clang-format off
                 std::cout << "Call to ::WSAStartup("
                           << wsa_version

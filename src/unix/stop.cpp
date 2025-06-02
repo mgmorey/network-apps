@@ -16,14 +16,13 @@
 #ifndef WIN32
 
 #include "network/stop.hpp"             // stop()
-#include "network/failmode.hpp"         // FailMode
+#include "network/runtimedata.hpp"      // RuntimeData
 
 #include <iostream>     // std::cout, std::endl
 
-auto Network::stop([[maybe_unused]] FailMode fail_mode,
-                   bool is_verbose) -> int
+auto Network::stop(const RuntimeData& rd) -> int
 {
-    if (is_verbose) {
+    if (rd.is_verbose()) {
         std::cout << "Stopping the network runtime."
                   << std::endl;
     }

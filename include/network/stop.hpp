@@ -16,11 +16,11 @@
 #ifndef NETWORK_STOP_HPP
 #define NETWORK_STOP_HPP
 
-#include "network/failmode.hpp"                 // FailMode
+#include "network/runtimedata.hpp"      // RuntimeData
 
 namespace Network
 {
-    extern auto stop(FailMode fail_mode, bool is_verbose) -> int;
+    extern auto stop(const RuntimeData& rd) -> int;
 }
 
 #endif

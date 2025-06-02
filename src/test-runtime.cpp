@@ -174,7 +174,8 @@ namespace
         int error_code {0};
 
         try {
-            error_code = Network::stop(fail_mode, is_verbose);
+            const RuntimeData rd {fail_mode, is_verbose};
+            error_code = Network::stop(rd);
         }
         catch (const Error& error) {
             print(error);

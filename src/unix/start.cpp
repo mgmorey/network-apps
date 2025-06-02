@@ -15,12 +15,13 @@
 
 #ifndef WIN32
 
-#include "network/socketapidata.hpp"    // SocketApiData
 #include "network/start.hpp"            // start()
+#include "network/runtimedata.hpp"      // RuntimeData
+#include "network/socketapidata.hpp"    // SocketApiData
 
 #include <iostream>     // std::cout, std::endl
 
-auto Network::start(bool is_verbose) -> SocketApiData
+auto Network::start(const RuntimeData& rd) -> SocketApiData
 {
     static constexpr SocketApiData data
     {
@@ -29,7 +30,7 @@ auto Network::start(bool is_verbose) -> SocketApiData
         .m_system_status = "Running"
     };
 
-    if (is_verbose) {
+    if (rd.is_verbose()) {
         std::cout << "Starting the network runtime."
                   << std::endl;
     }
