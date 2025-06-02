@@ -44,6 +44,7 @@ namespace
     using Network::Version;
     using Network::WindowsVersion;
 #endif
+    using Network::create_runtime;
     using Network::get_hostname;
     using Network::parse;
 
