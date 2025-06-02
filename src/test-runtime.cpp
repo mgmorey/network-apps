@@ -149,14 +149,16 @@ namespace
     auto test(Runtime& rt, const std::string& description) -> void
     {
         rt.start();
+        assert(!rt.error_code());
         print(rt, description + " started");
         assert(is_running(rt));
         const std::string actual_str {get_actual_rt_str(rt)};
         const std::regex expected_regex {get_expected_runtime_re()};
         assert(std::regex_match(actual_str, expected_regex));
         rt.stop();
-        print(rt, description + " stopped");
         assert(!rt.error_code());
+        print(rt, description + " stopped");
+        assert(!is_running(rt));
     }
 
     auto test(const RuntimeData& rd, const std::string& description) -> void
