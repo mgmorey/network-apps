@@ -148,6 +148,9 @@ namespace
 
     auto test(Runtime& rt, const std::string& description) -> void
     {
+        assert(!rt.error_code());
+        print(rt, description + " initialized");
+        assert(!is_running(rt));
         rt.start();
         assert(!rt.error_code());
         print(rt, description + " started");
