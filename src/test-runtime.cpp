@@ -213,7 +213,7 @@ namespace
             constexpr Version invalid {0, 0};
             constexpr auto fail_mode_throw {FailMode::throw_error};
             const RuntimeData rd {invalid, fail_mode_throw, is_verbose};
-            test_runtime(rd, "invalid");
+            test(rd, "invalid");
         }
         catch (const Error& error) {
             print(error);
