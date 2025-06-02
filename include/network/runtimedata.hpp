@@ -37,9 +37,9 @@ namespace Network
         auto operator=(const RuntimeData&) noexcept -> RuntimeData& = default;
         auto operator=(RuntimeData&&) noexcept -> RuntimeData& = default;
 
+        [[nodiscard]] auto version() const noexcept -> OptionalVersion;
         [[nodiscard]] auto fail_mode() const noexcept -> FailMode;
         [[nodiscard]] auto is_verbose() const noexcept -> bool;
-        [[nodiscard]] auto version() const noexcept -> OptionalVersion;
 
     private:
         FailMode m_fail_mode {FailMode::throw_error};       // NOLINT
