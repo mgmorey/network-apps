@@ -18,12 +18,15 @@
 
 #ifndef WIN32
 
+#include "network/optionalversion.hpp"          // OptionalVersion
+
 #include <string_view>  // std::string_view
 
 namespace Network
 {
     struct SocketApiData
     {
+        OptionalVersion m_version;
         std::string_view m_description;
         std::string_view m_system_status;
     };
