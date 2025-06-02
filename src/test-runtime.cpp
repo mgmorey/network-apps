@@ -127,10 +127,7 @@ namespace
         }
 
         std::cout << ": " << description << std::endl;
-
-        if (rt->is_running()) {
-            std::cout << "    " << *rt << std::endl;
-        }
+        std::cout << "    " << *rt << std::endl;
     }
 
     auto test_runtime(const SharedRuntime& rt, const std::string& description) -> void
