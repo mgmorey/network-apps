@@ -24,6 +24,8 @@
 #include "network/runtimestate.hpp"     // RuntimeState
 #include "network/socketapidata.hpp"    // SocketApiData
 
+#include <string_view>  // std::string_view
+
 namespace Network
 {
     class SocketApi final : public Runtime
