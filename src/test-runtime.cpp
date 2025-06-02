@@ -70,7 +70,7 @@ namespace
     };
 #endif
     constexpr auto expected_runtime_version_re {
-        "Version \\d{1,3}\\.\\d{1,3}" // NOLINT
+        "(Version \\d{1,3}\\.\\d{1,3} )?" // NOLINT
     };
 
     const auto fail_mode {FailMode::return_error};
@@ -90,7 +90,7 @@ namespace
         result += expected_runtime_platform_re;
         result += " ";
         result += expected_runtime_version_re;
-        result += " Running)";
+        result += "Running)";
         return result;
     }
 
