@@ -15,30 +15,25 @@
 
 #ifdef WIN32
 
-#include "network/error.hpp"            // Error
-#include "network/failmode.hpp"         // FailMode
+#include "network/socketapi.hpp"        // SocketApi
 #include "network/is-running.hpp"       // is_running()
 #include "network/optionalversion.hpp"  // OptionalVersion
 #include "network/runtimeerror.hpp"     // RuntimeError
-#include "network/socketapi.hpp"        // SocketApi
 #include "network/start.hpp"            // start()
 #include "network/stop.hpp"             // stop()
-#include "network/version.hpp"          // Version
 #include "network/windowsversion.hpp"   // WindowsVersion
 
 #include <sstream>      // std::ostringstream
 #include <string_view>  // std::string_view
 
-Network::SocketApi::SocketApi(const RuntimeData& t_rd) :
-    m_rt_data(t_rd)
+Network::SocketApi::SocketApi(const RuntimeData& t_rd) : m_rt_data(t_rd)
 {
 }
 
 Network::SocketApi::~SocketApi()
 {
     if (m_rt_state.m_is_started) {
-        Network::stop(m_rt_data.fail_mode(),
-                      m_rt_data.is_verbose());
+        Network::stop(m_rt_data.fail_mode(), m_rt_data.is_verbose());
     }
 }
 
