@@ -16,8 +16,8 @@
 #ifndef NETWORK_SOCKETAPI_HPP
 #define NETWORK_SOCKETAPI_HPP
 
-#include "network/runtime.hpp"          // Runtime
 #include "network/optionalversion.hpp"  // OptionalVersion
+#include "network/runtime.hpp"          // Runtime
 #include "network/runtimedata.hpp"      // RuntimeData
 #include "network/runtimestate.hpp"     // RuntimeState
 #include "network/socketapidata.hpp"    // SocketApiData
