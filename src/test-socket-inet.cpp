@@ -142,8 +142,8 @@ namespace
     }
 
     auto test_inet_socket(handle_type handle,
-                            family_type family,
-                            const std::string& expected_error_re) -> void
+                          family_type family,
+                          const std::string& expected_error_re) -> void
     {
         std::string actual_error_str;
 
