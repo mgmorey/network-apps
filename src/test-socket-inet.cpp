@@ -41,8 +41,8 @@
 
 namespace
 {
-    using Network::InetSocket;
     using Network::Error;
+    using Network::InetSocket;
     using Network::SocketData;
     using Network::SocketHints;
     using Network::UniqueSocket;
