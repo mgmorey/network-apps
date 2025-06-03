@@ -21,18 +21,24 @@
 #include "network/version.hpp"          // Version
 #include "network/windowsversion.hpp"   // WindowsVersion
 
-#include <winsock2.h>       // WSADATA
+#include <winsock2.h>       // WSAData
 
 #include <cstring>      // std::memset()
 #include <string_view>  // std::string_view
 
 namespace Network
 {
-    struct SocketApiData : public WSADATA
+    struct SocketApiData : public WSAData
     {
-        constexpr SocketApiData()
+        constexpr SocketApiData() :
+             WSAData {.wVersion = 0,
+                      .wHighVersion = 0,
+                      .iMaxSockets = 0,
+                      .iMaxUdpDg = 0,
+                      .lpVendorInfo = nullptr,
+                      .szDescription = "",
+                      .szSystemStatus = ""}
         {
-            std::memset(this, '\0', sizeof *this);
         }
 
         constexpr SocketApiData(const SocketApiData&) noexcept = default;
