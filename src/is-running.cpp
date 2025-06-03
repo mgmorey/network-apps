@@ -18,5 +18,6 @@
 
 auto Network::is_running(const Runtime& rt) noexcept -> bool
 {
-    return rt.is_started() && rt.system_status() == "Running";
+    return rt.error_code() == 0 && rt.is_started() &&
+        rt.system_status() == "Running";
 }
