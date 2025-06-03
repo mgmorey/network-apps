@@ -13,22 +13,24 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_FAILMODE_HPP
-#define NETWORK_FAILMODE_HPP
+#include "network/failmode.hpp"         // FailMode, operator<<()
 
-#include <cstdint>      // std::uint8_t
 #include <ostream>      // std::ostream
 
-namespace Network
+auto Network::operator<<(std::ostream& os,
+                         const FailMode& fm) noexcept -> std::ostream&
 {
-    enum class FailMode : std::uint8_t {
-        throw_error,
-        return_error,
-        return_zero
-    };
+    switch (fm) {
+    case FailMode::return_zero:
+        os << "return zero";
+        break;
+    case FailMode::return_error:
+        os << "return error";
+        break;
+    case FailMode::throw_error:
+        os << "throw error";
+        break;
+    }
 
-    extern auto operator<<(std::ostream& os,
-                           const FailMode& fm) noexcept -> std::ostream&;
+    return os;
 }
-
-#endif

@@ -126,30 +126,9 @@ namespace
         }
     }
 
-    auto print(const FailMode& fm) -> void
-    {
-        switch (fm) {
-        case FailMode::return_zero:
-            std::cout << "return zero";
-            break;
-        case FailMode::return_error:
-            std::cout << "return error";
-            break;
-        case FailMode::throw_error:
-            std::cout << "throw error";
-            break;
-        }
-    }
-
     auto print(Runtime& rt, const std::string& description) -> void
     {
-        std::cout << "Runtime";
-
-        if (is_verbose) {
-            std::cout << ' ' << &rt;
-        }
-
-        std::cout << ": " << description << std::endl;
+        std::cout << "Runtime: " << description << std::endl;
 
         std::cout << "    Version:\t\t"
                   << rt.version()
@@ -181,9 +160,9 @@ namespace
                       << std::endl;
         }
 
-        std::cout << "    Input Fail Mode:\t";
-        print(rd.fail_mode());
-        std::cout << std::endl;
+        std::cout << "    Input Fail Mode:\t"
+                  << rd.fail_mode()
+                  << std::endl;
     }
 
     auto test(Runtime& rt, const std::string& description) -> void
@@ -206,6 +185,7 @@ namespace
 
     auto test(const RuntimeData& rd, const std::string& description) -> void
     {
+        std::cout << "Test case: " << description << std::endl;
         print(rd, description);
         auto rt {create_runtime(rd)};
         test(*rt, description);
