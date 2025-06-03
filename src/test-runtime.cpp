@@ -42,8 +42,8 @@ namespace
     using Network::FailMode;
     using Network::Runtime;
     using Network::RuntimeData;
-#ifdef WIN32
     using Network::Version;
+#ifdef WIN32
     using Network::WindowsVersion;
 #endif
     using Network::create_runtime;
@@ -65,6 +65,7 @@ namespace
 #else
     constexpr auto expected_code_stopped {0};
     constexpr auto expected_error_stopped_re {""};
+    constexpr auto expected_error_version {""};
     constexpr auto expected_runtime_platform_re {
         "Berkeley Software Distribution Sockets"
     };
@@ -73,6 +74,11 @@ namespace
         "(Version \\d{1,3}\\.\\d{1,3} )?" // NOLINT
     };
 
+#ifdef WIN32
+    constexpr Version valid_version {WindowsVersion::latest};
+#else
+    constexpr Version valid_version {};
+#endif
     const auto fail_mode {FailMode::return_error};
     auto is_verbose {false};  // NOLINT
 
@@ -208,8 +214,6 @@ namespace
         assert(std::regex_match(actual_str, expected_regex));
     }
 
-#ifdef WIN32
-
     auto test_runtime_invalid() -> void
     {
         std::string actual_str;
@@ -229,19 +233,12 @@ namespace
         assert(actual_str == expected_error_version);
     }
 
-#endif
-
     auto test_runtime_valid() -> void
     {
         std::string actual_str;
 
         try {
-#ifdef WIN32
-            constexpr Version valid {WindowsVersion::latest};
-            const RuntimeData rd {valid, fail_mode, is_verbose};
-#else
-            const RuntimeData rd {fail_mode, is_verbose};
-#endif
+            const RuntimeData rd {valid_version, fail_mode, is_verbose};
             test(rd, "shared");
         }
         catch (const Error& error) {
@@ -257,9 +254,7 @@ auto main(int argc, char* argv[]) -> int
 {
     try {
         parse_arguments(argc, argv);
-#ifdef WIN32
         test_runtime_invalid();
-#endif
         test_runtime_valid();
         test_runtime_stopped();
         test_runtime_inactive();
