@@ -74,7 +74,6 @@ namespace
         "(Version \\d{1,3}\\.\\d{1,3} )?" // NOLINT
     };
 
-    constexpr Version version_invalid {0, 0};
 #ifdef WIN32
     constexpr Version version_latest {WindowsVersion::latest};
 #else
@@ -215,13 +214,13 @@ namespace
         assert(std::regex_match(actual_str, expected_regex));
     }
 
-    auto test_runtime_invalid() -> void
+    auto test_runtime_0() -> void
     {
         std::string actual_str;
 
         try {
-            const RuntimeData rd {version_invalid, fail_mode, is_verbose};
-            test(rd, "invalid");
+            const RuntimeData rd {Version {0, 0}, fail_mode, is_verbose};
+            test(rd, "0");
         }
         catch (const Error& error) {
             print(error);
@@ -232,13 +231,13 @@ namespace
         assert(actual_str == expected_error_version);
     }
 
-    auto test_runtime_valid_default() -> void
+    auto test_runtime_default() -> void
     {
         std::string actual_str;
 
         try {
             const RuntimeData rd {fail_mode, is_verbose};
-            test(rd, "shared");
+            test(rd, "default");
         }
         catch (const Error& error) {
             print(error);
@@ -248,13 +247,13 @@ namespace
         assert(actual_str.empty());
     }
 
-    auto test_runtime_valid_latest() -> void
+    auto test_runtime_latest() -> void
     {
         std::string actual_str;
 
         try {
             const RuntimeData rd {version_latest, fail_mode, is_verbose};
-            test(rd, "shared");
+            test(rd, "latest");
         }
         catch (const Error& error) {
             print(error);
@@ -269,9 +268,9 @@ auto main(int argc, char* argv[]) -> int
 {
     try {
         parse_arguments(argc, argv);
-        test_runtime_invalid();
-        test_runtime_valid_default();
-        test_runtime_valid_latest();
+        test_runtime_0();
+        test_runtime_default();
+        test_runtime_latest();
         test_runtime_stopped();
         test_runtime_inactive();
     }
