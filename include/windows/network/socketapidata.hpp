@@ -18,11 +18,32 @@
 
 #ifdef WIN32
 
+#include "network/version.hpp"          // Version
+#include "network/windowsversion.hpp"   // WindowsVersion
+
 #include <winsock2.h>       // WSADATA
+
+#include <string_view>  // std::string_view
 
 namespace Network
 {
-    using SocketApiData = WSADATA;
+    struct SocketApiData : public WSADATA
+    {
+        [[nodiscard]] auto version() const noexcept -> Version
+        {
+            return WindowsVersion {wVersion};
+        }
+
+        [[nodiscard]] auto description() const noexcept -> std::string_view
+        {
+            return static_cast<const char*>(szDescription);
+        }
+
+        [[nodiscard]] auto system_status() const noexcept -> std::string_view
+        {
+            return static_cast<const char*>(szSystemStatus);
+        }
+    };
 }
 
 #endif
