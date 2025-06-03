@@ -16,7 +16,6 @@
 #ifdef WIN32
 
 #include "network/socketapi.hpp"        // SocketApi
-#include "network/is-running.hpp"       // is_running()
 #include "network/runtimeerror.hpp"     // RuntimeError
 #include "network/start.hpp"            // start()
 #include "network/stop.hpp"             // stop()
@@ -44,6 +43,11 @@ auto Network::SocketApi::description() const noexcept -> std::string_view
 auto Network::SocketApi::error_code() const noexcept -> int
 {
     return m_rt_state.m_error_code;
+}
+
+auto Network::SocketApi::is_started() const noexcept -> bool
+{
+    return m_rt_state.m_is_started;
 }
 
 auto Network::SocketApi::start() -> void
