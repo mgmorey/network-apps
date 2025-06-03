@@ -16,7 +16,6 @@
 #include "network/assert.hpp"           // assert()
 #include "network/network.hpp"          // Error, FailMode, Runtime,
                                         // RuntimeData, Version,
-                                        // WindowsVersion,
                                         // create_runtime(),
                                         // get_hostname(),
                                         // is_running(), run()
@@ -44,9 +43,6 @@ namespace
     using Network::Runtime;
     using Network::RuntimeData;
     using Network::Version;
-#ifdef WIN32
-    using Network::WindowsVersion;
-#endif
     using Network::create_runtime;
     using Network::get_hostname;
     using Network::parse;
