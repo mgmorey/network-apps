@@ -26,24 +26,44 @@ namespace Network
 {
     struct SocketApiData
     {
-        [[nodiscard]] auto version() const noexcept -> Version
+        constexpr SocketApiData(Version t_version,
+                                std::string_view t_description,
+                                std::string_view t_system_status) :
+            m_version(t_version), m_description(t_description),
+            m_system_status(t_system_status)
+        {
+        }
+
+        constexpr SocketApiData() = default;
+        constexpr SocketApiData(const SocketApiData&) noexcept = default;
+        constexpr SocketApiData(SocketApiData&&) noexcept = default;
+        constexpr ~SocketApiData() noexcept = default;
+        constexpr auto operator=(const SocketApiData&) noexcept ->
+                SocketApiData& = default;
+        constexpr auto operator=(SocketApiData&&) noexcept ->
+                SocketApiData& = default;
+
+        [[nodiscard]] constexpr auto version() const noexcept -> Version
         {
             return m_version;
         }
 
-        [[nodiscard]] auto description() const noexcept -> std::string_view
+        [[nodiscard]] constexpr auto description() const noexcept ->
+                std::string_view
         {
             return m_description;
         }
 
-        [[nodiscard]] auto system_status() const noexcept -> std::string_view
+        [[nodiscard]] constexpr auto system_status() const noexcept ->
+                std::string_view
         {
             return m_system_status;
         }
 
-        Version m_version;                      // NOLINT
-        std::string_view m_description;         // NOLINT
-        std::string_view m_system_status;       // NOLINT
+    private:
+        Version m_version;
+        std::string_view m_description;
+        std::string_view m_system_status;
     };
 }
 

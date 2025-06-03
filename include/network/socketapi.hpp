@@ -49,7 +49,7 @@ namespace Network
     private:
         RuntimeData m_rt_data;
         RuntimeState m_rt_state;
-        SocketApiData m_sa_data {};
+        SocketApiData m_sa_data;
     };
 }
 

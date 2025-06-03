@@ -25,9 +25,9 @@ auto Network::start(const RuntimeData& rd) -> SocketApiData
 {
     static constexpr SocketApiData data
     {
-        .m_version = Version {0, 0},
-        .m_description = "Berkeley Software Distribution Sockets",
-        .m_system_status = "Running"
+        Version {0, 0},
+        "Berkeley Software Distribution Sockets",
+        "Running"
     };
 
     if (rd.is_verbose()) {
