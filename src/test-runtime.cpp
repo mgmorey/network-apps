@@ -227,7 +227,6 @@ namespace
             actual_str = error.what();
         }
 
-        std::cerr << actual_str << std::endl;
         assert(actual_str == expected_error_version);
     }
 
