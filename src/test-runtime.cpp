@@ -229,8 +229,8 @@ namespace
         assert(std::regex_match(actual_str, expected_regex));
     }
 
-    auto test_version(unsigned short major, const std::map <unsigned short,
-                      std::string>& version_errors) -> void
+    auto test_version(unsigned short major,
+                      const std::string& expected_str) -> void
     {
         std::string actual_str;
 
@@ -244,18 +244,18 @@ namespace
             actual_str = error.what();
         }
 
-        assert(actual_str == version_errors.at(major));
+        assert(actual_str == expected_str);
     }
 
     auto test_versions() -> void
     {
-        std::map<unsigned short, std::string> errors
+        const std::map<unsigned short, std::string> errors
         {
             get_expected_version_errors()
         };
 
         for (unsigned short major = 0; major < 3; ++major) {
-            test_version(major, errors);
+            test_version(major, errors.at(major));
         }
     }
 }
