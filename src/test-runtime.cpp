@@ -132,7 +132,7 @@ namespace
         }
     }
 
-    auto print(Runtime& rt) -> void
+    auto print(const Runtime& rt) -> void
     {
         std::cout << "    Version:\t\t"
                   << rt.version()
