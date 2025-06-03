@@ -54,7 +54,7 @@ auto Network::SocketApi::start() -> void
 
     m_sa_data = Network::start(m_rt_data);
 
-    if (!is_running(*this)) {
+    if (system_status() != "Running") {
         std::ostringstream oss;
         oss << description()
             << " status is \""
@@ -73,7 +73,7 @@ auto Network::SocketApi::stop() -> void
 
         if (m_rt_state.m_error_code == 0) {
             m_rt_state.m_is_started = false;
-            m_sa_data = {};
+            // m_sa_data = {};
         }
     }
 }

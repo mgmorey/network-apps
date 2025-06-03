@@ -142,6 +142,12 @@ namespace
                   << rt.system_status()
                   << '"'
                   << std::endl;
+        std::cout << "    Error Code:\t\t"
+                  << rt.error_code()
+                  << std::endl;
+        std::cout << "    Is Started:\t\t"
+                  << rt.is_started()
+                  << std::endl;
     }
 
     auto test(Runtime& rt, const std::string& description) -> void

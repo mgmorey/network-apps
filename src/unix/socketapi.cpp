@@ -16,7 +16,6 @@
 #ifndef WIN32
 
 #include "network/socketapi.hpp"        // SocketApi
-#include "network/is-running.hpp"       // is_running()
 #include "network/runtimeerror.hpp"     // RuntimeError
 #include "network/start.hpp"            // start()
 #include "network/stop.hpp"             // stop()
@@ -46,6 +45,11 @@ auto Network::SocketApi::error_code() const noexcept -> int
     return m_rt_state.m_error_code;
 }
 
+auto Network::SocketApi::is_started() const noexcept -> bool
+{
+    return m_rt_state.m_is_started;
+}
+
 auto Network::SocketApi::start() -> void
 {
     if (m_rt_state.m_is_started) {
@@ -54,7 +58,7 @@ auto Network::SocketApi::start() -> void
 
     m_sa_data = Network::start(m_rt_data);
 
-    if (!is_running(*this)) {
+    if (system_status() != "Running") {
         std::ostringstream oss;
         oss << description()
             << " status is \""
@@ -73,7 +77,7 @@ auto Network::SocketApi::stop() -> void
 
         if (m_rt_state.m_error_code == 0) {
             m_rt_state.m_is_started = false;
-            m_sa_data = {};
+            // m_sa_data = {};
         }
     }
 }

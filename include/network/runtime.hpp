@@ -36,6 +36,7 @@ namespace Network
         [[nodiscard]] virtual auto description() const noexcept ->
             std::string_view = 0;
         [[nodiscard]] virtual auto error_code() const noexcept -> int = 0;
+        [[nodiscard]] virtual auto is_started() const noexcept -> bool = 0;
         virtual auto start() -> void = 0;
         virtual auto stop() -> void = 0;
         [[nodiscard]] virtual auto system_status() const noexcept ->
