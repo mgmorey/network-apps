@@ -80,14 +80,16 @@ auto Network::start(const RuntimeData& rd) -> SocketApiData
         std::cout << "Call to ::WSAStartup("
                   << wsa_version
                   << ", ...) returned data {"
+                  << WindowsVersion(wsa_data.wVersion)
+                  << ", "
+                  << WindowsVersion(wsa_data.wHighVersion)
+                  << ", "
                   << wsa_data.iMaxSockets
                   << ", "
                   << wsa_data.iMaxUdpDg
                   << ", "
                   << (wsa_data.lpVendorInfo != nullptr ?
                       wsa_data.lpVendorInfo : "<NULL>")
-                  << ", "
-                  << WindowsVersion(wsa_data.wVersion)
                   << ", "
                   << static_cast<const char*>(wsa_data.szDescription)
                   << ", "
