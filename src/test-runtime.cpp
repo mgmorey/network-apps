@@ -74,10 +74,11 @@ namespace
         "(Version \\d{1,3}\\.\\d{1,3} )?" // NOLINT
     };
 
+    constexpr Version version_invalid {0, 0};
 #ifdef WIN32
-    constexpr Version valid_version {WindowsVersion::latest};
+    constexpr Version version_latest {WindowsVersion::latest};
 #else
-    constexpr Version valid_version {};
+    constexpr Version version_latest {0, 0};
 #endif
     const auto fail_mode {FailMode::return_error};
     auto is_verbose {false};  // NOLINT
@@ -219,9 +220,7 @@ namespace
         std::string actual_str;
 
         try {
-            constexpr Version invalid {0, 0};
-            constexpr auto fail_mode_throw {FailMode::throw_error};
-            const RuntimeData rd {invalid, fail_mode_throw, is_verbose};
+            const RuntimeData rd {version_invalid, fail_mode, is_verbose};
             test(rd, "invalid");
         }
         catch (const Error& error) {
@@ -233,12 +232,28 @@ namespace
         assert(actual_str == expected_error_version);
     }
 
-    auto test_runtime_valid() -> void
+    auto test_runtime_valid_default() -> void
     {
         std::string actual_str;
 
         try {
-            const RuntimeData rd {valid_version, fail_mode, is_verbose};
+            const RuntimeData rd {fail_mode, is_verbose};
+            test(rd, "shared");
+        }
+        catch (const Error& error) {
+            print(error);
+            actual_str = error.what();
+        }
+
+        assert(actual_str.empty());
+    }
+
+    auto test_runtime_valid_latest() -> void
+    {
+        std::string actual_str;
+
+        try {
+            const RuntimeData rd {version_latest, fail_mode, is_verbose};
             test(rd, "shared");
         }
         catch (const Error& error) {
@@ -255,7 +270,8 @@ auto main(int argc, char* argv[]) -> int
     try {
         parse_arguments(argc, argv);
         test_runtime_invalid();
-        test_runtime_valid();
+        test_runtime_valid_default();
+        test_runtime_valid_latest();
         test_runtime_stopped();
         test_runtime_inactive();
     }
