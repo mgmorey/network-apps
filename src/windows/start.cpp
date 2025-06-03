@@ -33,9 +33,9 @@
 
 auto Network::start(const RuntimeData& rd) -> SocketApiData
 {
-    SocketApiData wsa_data {};
-    const Version version {rd.version().value_or(WindowsVersion::latest)};
+    const auto version {rd.version().value_or(WindowsVersion::latest)};
     const WindowsVersion wsa_version {version};
+    SocketApiData wsa_data {};
 
     if (rd.is_verbose()) {
         // clang-format off
