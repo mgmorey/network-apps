@@ -33,15 +33,19 @@ namespace Network
         auto operator=(const Runtime&) -> Runtime& = delete;
         auto operator=(const Runtime&&) -> Runtime& = delete;
 
+        [[nodiscard]] virtual auto version() const noexcept ->
+                Version = 0;
+        [[nodiscard]] virtual auto high_version() const noexcept ->
+                Version = 0;
         [[nodiscard]] virtual auto description() const noexcept ->
+            std::string_view = 0;
+        [[nodiscard]] virtual auto system_status() const noexcept ->
             std::string_view = 0;
         [[nodiscard]] virtual auto error_code() const noexcept -> int = 0;
         [[nodiscard]] virtual auto is_started() const noexcept -> bool = 0;
+
         virtual auto start() -> void = 0;
         virtual auto stop() -> void = 0;
-        [[nodiscard]] virtual auto system_status() const noexcept ->
-            std::string_view = 0;
-        [[nodiscard]] virtual auto version() const noexcept -> Version = 0;
     };
 
     extern auto operator<<(std::ostream& os,

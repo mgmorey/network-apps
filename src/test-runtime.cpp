@@ -137,7 +137,9 @@ namespace
         std::cout << "    Version:\t\t"
                   << rt.version()
                   << std::endl;
-
+        std::cout << "    High Version:\t"
+                  << rt.high_version()
+                  << std::endl;
         std::cout << "    Description:\t\""
                   << rt.description()
                   << '"'
@@ -160,6 +162,10 @@ namespace
         if (rd.version()) {
             std::cout << "    Input Version:\t"
                       << *rd.version()
+                      << std::endl;
+        }
+        else {
+            std::cout << "    Input Version:\tNone"
                       << std::endl;
         }
 

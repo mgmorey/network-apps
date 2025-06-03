@@ -36,15 +36,17 @@ namespace Network
         auto operator=(const SocketApi&) -> SocketApi& = delete;
         auto operator=(const SocketApi&&) -> SocketApi& = delete;
 
+        [[nodiscard]] auto version() const noexcept -> Version final;
+        [[nodiscard]] auto high_version() const noexcept -> Version final;
         [[nodiscard]] auto description() const noexcept ->
+            std::string_view final;
+        [[nodiscard]] auto system_status() const noexcept ->
             std::string_view final;
         [[nodiscard]] auto error_code() const noexcept -> int final;
         [[nodiscard]] auto is_started() const noexcept -> bool final;
+
         auto start() -> void final;
         auto stop() -> void final;
-        [[nodiscard]] auto system_status() const noexcept ->
-            std::string_view final;
-        [[nodiscard]] auto version() const noexcept -> Version final;
 
     private:
         RuntimeData m_rt_data;

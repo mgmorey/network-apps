@@ -27,9 +27,12 @@ namespace Network
     struct SocketApiData
     {
         constexpr SocketApiData(Version t_version,
+                                Version t_high_version,
                                 std::string_view t_description,
                                 std::string_view t_system_status) :
-            m_version(t_version), m_description(t_description),
+            m_version(t_version),
+            m_high_version(t_high_version),
+            m_description(t_description),
             m_system_status(t_system_status)
         {
         }
@@ -48,6 +51,11 @@ namespace Network
             return m_version;
         }
 
+        [[nodiscard]] auto high_version() const noexcept -> Version
+        {
+            return m_high_version;
+        }
+
         [[nodiscard]] auto description() const noexcept -> std::string_view
         {
             return m_description;
@@ -60,6 +68,7 @@ namespace Network
 
     private:
         Version m_version;
+        Version m_high_version;
         std::string_view m_description;
         std::string_view m_system_status;
     };

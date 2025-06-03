@@ -26,6 +26,7 @@ auto Network::start(const RuntimeData& rd) -> SocketApiData
     static constexpr SocketApiData data
     {
         Version {0, 0},
+        Version {0, 0},
         "Berkeley Software Distribution Sockets",
         "Running"
     };

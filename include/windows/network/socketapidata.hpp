@@ -54,6 +54,11 @@ namespace Network
             return WindowsVersion {wVersion};
         }
 
+        [[nodiscard]] auto high_version() const noexcept -> Version
+        {
+            return WindowsVersion {wHighVersion};
+        }
+
         [[nodiscard]] auto description() const noexcept -> std::string_view
         {
             return static_cast<const char*>(szDescription);

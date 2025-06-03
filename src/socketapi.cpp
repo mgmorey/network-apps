@@ -33,9 +33,24 @@ Network::SocketApi::~SocketApi()
     }
 }
 
+auto Network::SocketApi::version() const noexcept -> Version
+{
+    return m_sa_data.version();
+}
+
+auto Network::SocketApi::high_version() const noexcept -> Version
+{
+    return m_sa_data.high_version();
+}
+
 auto Network::SocketApi::description() const noexcept -> std::string_view
 {
     return m_sa_data.description();
+}
+
+auto Network::SocketApi::system_status() const noexcept -> std::string_view
+{
+    return m_sa_data.system_status();
 }
 
 auto Network::SocketApi::error_code() const noexcept -> int
@@ -78,14 +93,4 @@ auto Network::SocketApi::stop() -> void
             // m_sa_data = {};
         }
     }
-}
-
-auto Network::SocketApi::system_status() const noexcept -> std::string_view
-{
-    return m_sa_data.system_status();
-}
-
-auto Network::SocketApi::version() const noexcept -> Version
-{
-    return m_sa_data.version();
 }
