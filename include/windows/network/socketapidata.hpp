@@ -23,12 +23,26 @@
 
 #include <winsock2.h>       // WSADATA
 
+#include <cstring>      // std::memset()
 #include <string_view>  // std::string_view
 
 namespace Network
 {
     struct SocketApiData : public WSADATA
     {
+        constexpr SocketApiData()
+        {
+            std::memset(this, '\0', sizeof *this);
+        }
+
+        constexpr SocketApiData(const SocketApiData&) noexcept = default;
+        constexpr SocketApiData(SocketApiData&&) noexcept = default;
+        constexpr ~SocketApiData() noexcept = default;
+        constexpr auto operator=(const SocketApiData&) noexcept ->
+                SocketApiData& = default;
+        constexpr auto operator=(SocketApiData&&) noexcept ->
+                SocketApiData& = default;
+
         [[nodiscard]] auto version() const noexcept -> Version
         {
             return WindowsVersion {wVersion};
