@@ -126,6 +126,21 @@ namespace
         }
     }
 
+    auto print(const FailMode& fm) -> void
+    {
+        switch (fm) {
+        case FailMode::return_zero:
+            std::cout << "return zero";
+            break;
+        case FailMode::return_error:
+            std::cout << "return error";
+            break;
+        case FailMode::throw_error:
+            std::cout << "throw error";
+            break;
+        }
+    }
+
     auto print(Runtime& rt, const std::string& description) -> void
     {
         std::cout << "Runtime";
@@ -156,6 +171,21 @@ namespace
                   << std::endl;
     }
 
+    auto print(const RuntimeData& rd, const std::string& description) -> void
+    {
+        std::cout << "Runtime Data: " << description << std::endl;
+
+        if (rd.version()) {
+            std::cout << "    Input Version:\t"
+                      << *rd.version()
+                      << std::endl;
+        }
+
+        std::cout << "    Input Fail Mode:\t";
+        print(rd.fail_mode());
+        std::cout << std::endl;
+    }
+
     auto test(Runtime& rt, const std::string& description) -> void
     {
         assert(!rt.error_code());
@@ -176,6 +206,7 @@ namespace
 
     auto test(const RuntimeData& rd, const std::string& description) -> void
     {
+        print(rd, description);
         auto rt {create_runtime(rd)};
         test(*rt, description);
     }
