@@ -21,7 +21,6 @@
 #include "network/start.hpp"            // start()
 #include "network/stop.hpp"             // stop()
 #include "network/version.hpp"          // Version
-#include "network/windowsversion.hpp"   // WindowsVersion
 
 #include <sstream>      // std::ostringstream
 #include <string_view>  // std::string_view
@@ -39,7 +38,7 @@ Network::SocketApi::~SocketApi()
 
 auto Network::SocketApi::description() const noexcept -> std::string_view
 {
-    return static_cast<const char*>(m_sa_data.szDescription);
+    return m_sa_data.description();
 }
 
 auto Network::SocketApi::error_code() const noexcept -> int
@@ -57,7 +56,8 @@ auto Network::SocketApi::start() -> void
 
     if (!is_running(*this)) {
         std::ostringstream oss;
-        oss << "Windows Socket API runtime status is \""
+        oss << description()
+            << " status is \""
             << system_status()
             << "\".";
         throw RuntimeError {oss.str()};
@@ -80,12 +80,12 @@ auto Network::SocketApi::stop() -> void
 
 auto Network::SocketApi::system_status() const noexcept -> std::string_view
 {
-    return static_cast<const char*>(m_sa_data.szSystemStatus);
+    return m_sa_data.system_status();
 }
 
 auto Network::SocketApi::version() const noexcept -> Version
 {
-    return WindowsVersion {m_sa_data.wVersion};
+    return m_sa_data.version();
 }
 
 #endif

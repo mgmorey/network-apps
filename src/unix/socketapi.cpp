@@ -38,7 +38,7 @@ Network::SocketApi::~SocketApi()
 
 auto Network::SocketApi::description() const noexcept -> std::string_view
 {
-    return m_sa_data.m_description;
+    return m_sa_data.description();
 }
 
 auto Network::SocketApi::error_code() const noexcept -> int
@@ -56,7 +56,8 @@ auto Network::SocketApi::start() -> void
 
     if (!is_running(*this)) {
         std::ostringstream oss;
-        oss << "BSD Socket API runtime status is \""
+        oss << description()
+            << " status is \""
             << system_status()
             << "\".";
         throw RuntimeError {oss.str()};
@@ -79,12 +80,12 @@ auto Network::SocketApi::stop() -> void
 
 auto Network::SocketApi::system_status() const noexcept -> std::string_view
 {
-    return m_sa_data.m_system_status;
+    return m_sa_data.system_status();
 }
 
 auto Network::SocketApi::version() const noexcept -> Version
 {
-    return m_sa_data.m_version;
+    return m_sa_data.version();
 }
 
 #endif
