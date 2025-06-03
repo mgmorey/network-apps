@@ -26,9 +26,24 @@ namespace Network
 {
     struct SocketApiData
     {
-        Version m_version;
-        std::string_view m_description;
-        std::string_view m_system_status;
+        [[nodiscard]] auto version() const noexcept -> Version
+        {
+            return m_version;
+        }
+
+        [[nodiscard]] auto description() const noexcept -> std::string_view
+        {
+            return m_description;
+        }
+
+        [[nodiscard]] auto system_status() const noexcept -> std::string_view
+        {
+            return m_system_status;
+        }
+
+        Version m_version;                      // NOLINT
+        std::string_view m_description;         // NOLINT
+        std::string_view m_system_status;       // NOLINT
     };
 }
 
