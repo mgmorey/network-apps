@@ -243,12 +243,9 @@ namespace
     auto test_versions() -> void
     {
         std::map<Version, std::string> errors {get_expected_version_errors()};
-        std::vector<Version> versions;
-        versions.emplace_back(Version {0, 0});
-        versions.emplace_back(Version {1, 0});
-        versions.emplace_back(Version {2, 0});
 
-        for (Version version : versions) {
+        for (unsigned short major = 0; major < 3; ++major) {
+            Version version {major, 0};
             test_version(version, errors);
         }
     }
