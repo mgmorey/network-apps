@@ -13,8 +13,6 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifdef WIN32
-
 #include "network/socketapi.hpp"        // SocketApi
 #include "network/runtimeerror.hpp"     // RuntimeError
 #include "network/start.hpp"            // start()
@@ -91,5 +89,3 @@ auto Network::SocketApi::version() const noexcept -> Version
 {
     return m_sa_data.version();
 }
-
-#endif

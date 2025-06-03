@@ -104,19 +104,18 @@ get-sin6-pointer.cpp get-sin6-port.cpp inetsocket.cpp is-running.cpp	\
 listen.cpp logicerror.cpp open-endpoint.cpp open-handle.cpp open.cpp	\
 oserrorresult.cpp parse-argumentspan.cpp parse.cpp quote.cpp		\
 rangeerror.cpp reset-api-error.cpp reset-os-error.cpp run.cpp		\
-runtimedata.cpp runtimeerror.cpp shutdown.cpp socketdata.cpp		\
-socketfamily.cpp socketflags.cpp sockethost.cpp socketlimits.cpp	\
-socketprotocol.cpp sockettype.cpp stream-address.cpp			\
+runtimedata.cpp runtimeerror.cpp shutdown.cpp socketapi.cpp		\
+socketdata.cpp socketfamily.cpp socketflags.cpp sockethost.cpp		\
+socketlimits.cpp socketprotocol.cpp sockettype.cpp stream-address.cpp	\
 stream-addrinfo.cpp stream-runtime.cpp stream-socket.cpp		\
 stream-version.cpp template.cpp textbuffer.cpp to-bytestring-void.cpp	\
 to-string-in-addr.cpp to-string-in6-addr.cpp to-string-span-byte.cpp	\
 to-string-void.cpp validate-bs.cpp validate-sa.cpp validate-sin.cpp	\
 validate-sin6.cpp
 
-library_native_sources = create-socket.cpp format-ai-error.cpp		\
-format-os-error.cpp get-api-error.cpp get-os-error.cpp read.cpp		\
-set-api-error.cpp set-os-error.cpp socketapi.cpp start.cpp stop.cpp	\
-write.cpp
+library_native_sources = create-socket.cpp format-ai-error.cpp	\
+format-os-error.cpp get-api-error.cpp get-os-error.cpp read.cpp	\
+set-api-error.cpp set-os-error.cpp start.cpp stop.cpp write.cpp
 
 library_unix_sources = address-sun.cpp create-socketpair.cpp		\
 create-socketpairresult.cpp get-path-length.cpp get-path-pointer.cpp	\
