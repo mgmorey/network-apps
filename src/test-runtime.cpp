@@ -32,6 +32,7 @@
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
+#include <map>          // std::map
 #include <regex>        // std::regex, std::regex_match
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
@@ -55,9 +56,6 @@ namespace
     constexpr auto expected_error_stopped_re {
         "(Call to ::gethostname\\(.+\\) failed with error \\d+: .+)"
     };
-    constexpr auto expected_error_version {
-        "The Windows Sockets version requested is not supported."
-    };
     constexpr auto expected_runtime_platform_re
     {
         "WinSock 2.0"
@@ -65,7 +63,6 @@ namespace
 #else
     constexpr auto expected_code_stopped {0};
     constexpr auto expected_error_stopped_re {""};
-    constexpr auto expected_error_version {""};
     constexpr auto expected_runtime_platform_re {
         "Berkeley Software Distribution Sockets"
     };
@@ -74,11 +71,6 @@ namespace
         "(Version \\d{1,3}\\.\\d{1,3} )?" // NOLINT
     };
 
-#ifdef WIN32
-    constexpr Version version_latest {WindowsVersion::latest};
-#else
-    constexpr Version version_latest {0, 0};
-#endif
     const auto fail_mode {FailMode::return_error};
     auto is_verbose {false};  // NOLINT
 
@@ -87,6 +79,20 @@ namespace
         std::ostringstream oss;
         oss << rt;
         return oss.str();
+    }
+
+    auto get_expected_version_errors() -> std::map<Version, std::string>
+    {
+        std::map<Version, std::string> version_errors;
+#ifdef WIN32
+        version_errors[Version {0, 0}] =
+            "The Windows Sockets version requested is not supported.";
+#else
+        version_errors[Version {0, 0}] = "";
+#endif
+        version_errors[Version {1, 0}] = "";
+        version_errors[Version {2, 0}] = "";
+        return version_errors;
     }
 
     auto get_expected_runtime_re() -> std::string
@@ -126,10 +132,8 @@ namespace
         }
     }
 
-    auto print(Runtime& rt, const std::string& description) -> void
+    auto print(Runtime& rt) -> void
     {
-        std::cout << "Runtime: " << description << std::endl;
-
         std::cout << "    Version:\t\t"
                   << rt.version()
                   << std::endl;
@@ -150,9 +154,8 @@ namespace
                   << std::endl;
     }
 
-    auto print(const RuntimeData& rd, const std::string& description) -> void
+    auto print(const RuntimeData& rd) -> void
     {
-        std::cout << "Runtime Data: " << description << std::endl;
 
         if (rd.version()) {
             std::cout << "    Input Version:\t"
@@ -165,33 +168,28 @@ namespace
                   << std::endl;
     }
 
-    auto test(Runtime& rt, const std::string& description) -> void
+    auto test(const RuntimeData& rd, Version version) -> void
     {
-        assert(!rt.error_code());
-        print(rt, description + " initialized");
-        assert(!is_running(rt));
-        rt.start();
-        assert(!rt.error_code());
-        print(rt, description + " started");
-        assert(is_running(rt));
-        const std::string actual_str {get_actual_rt_str(rt)};
+        std::cout << "Testing Socket API version: " << version << std::endl;
+        print(rd);
+        auto rt {create_runtime(rd)};
+        assert(!rt->error_code());
+        print(*rt);
+        assert(!is_running(*rt));
+        rt->start();
+        assert(!rt->error_code());
+        print(*rt);
+        assert(is_running(*rt));
+        const std::string actual_str {get_actual_rt_str(*rt)};
         const std::regex expected_regex {get_expected_runtime_re()};
         assert(std::regex_match(actual_str, expected_regex));
-        rt.stop();
-        assert(!rt.error_code());
-        print(rt, description + " stopped");
-        assert(!is_running(rt));
+        rt->stop();
+        assert(!rt->error_code());
+        print(*rt);
+        assert(!is_running(*rt));
     }
 
-    auto test(const RuntimeData& rd, const std::string& description) -> void
-    {
-        std::cout << "Test case: " << description << std::endl;
-        print(rd, description);
-        auto rt {create_runtime(rd)};
-        test(*rt, description);
-    }
-
-    auto test_runtime_inactive() -> void
+    auto test_inactive() -> void
     {
         std::string actual_str;
         int error_code {0};
@@ -209,7 +207,7 @@ namespace
         assert(error_code == expected_code_stopped);
     }
 
-    auto test_runtime_stopped() -> void
+    auto test_stopped() -> void
     {
         std::string actual_str;
 
@@ -225,52 +223,34 @@ namespace
         assert(std::regex_match(actual_str, expected_regex));
     }
 
-    auto test_runtime_0() -> void
+    auto test_version(Version version, const std::map <Version,
+                      std::string>& version_errors) -> void
     {
         std::string actual_str;
 
         try {
-            const RuntimeData rd {Version {0, 0}, fail_mode, is_verbose};
-            test(rd, "0");
+            const RuntimeData rd {version, fail_mode, is_verbose};
+            test(rd, version);
         }
         catch (const Error& error) {
             print(error);
             actual_str = error.what();
         }
 
-        assert(actual_str == expected_error_version);
+        assert(actual_str == version_errors.at(version));
     }
 
-    auto test_runtime_default() -> void
+    auto test_versions() -> void
     {
-        std::string actual_str;
+        std::map<Version, std::string> errors {get_expected_version_errors()};
+        std::vector<Version> versions;
+        versions.emplace_back(Version {0, 0});
+        versions.emplace_back(Version {1, 0});
+        versions.emplace_back(Version {2, 0});
 
-        try {
-            const RuntimeData rd {fail_mode, is_verbose};
-            test(rd, "default");
+        for (Version version : versions) {
+            test_version(version, errors);
         }
-        catch (const Error& error) {
-            print(error);
-            actual_str = error.what();
-        }
-
-        assert(actual_str.empty());
-    }
-
-    auto test_runtime_latest() -> void
-    {
-        std::string actual_str;
-
-        try {
-            const RuntimeData rd {version_latest, fail_mode, is_verbose};
-            test(rd, "latest");
-        }
-        catch (const Error& error) {
-            print(error);
-            actual_str = error.what();
-        }
-
-        assert(actual_str.empty());
     }
 }
 
@@ -278,11 +258,9 @@ auto main(int argc, char* argv[]) -> int
 {
     try {
         parse_arguments(argc, argv);
-        test_runtime_0();
-        test_runtime_default();
-        test_runtime_latest();
-        test_runtime_stopped();
-        test_runtime_inactive();
+        test_versions();
+        test_stopped();
+        test_inactive();
     }
     catch (const std::exception& error) {
         std::cerr << error.what()
