@@ -43,19 +43,17 @@ namespace Network
         constexpr auto operator=(SocketApiData&&) noexcept ->
                 SocketApiData& = default;
 
-        [[nodiscard]] constexpr auto version() const noexcept -> Version
+        [[nodiscard]] auto version() const noexcept -> Version
         {
             return m_version;
         }
 
-        [[nodiscard]] constexpr auto description() const noexcept ->
-                std::string_view
+        [[nodiscard]] auto description() const noexcept -> std::string_view
         {
             return m_description;
         }
 
-        [[nodiscard]] constexpr auto system_status() const noexcept ->
-                std::string_view
+        [[nodiscard]] auto system_status() const noexcept -> std::string_view
         {
             return m_system_status;
         }
