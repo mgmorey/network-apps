@@ -18,6 +18,15 @@
 # Add optimization level 1 flag to CXXFLAGS
 CXXFLAGS += -O1
 
+# Add no omit frame pointer flag to CXXFLAGS
+CXXFLAGS += -fno-omit-frame-pointer
+
+# Add sanitizer flags to CXXFLAGS
+CXXFLAGS += $(call get-compiler-sanitizer-flags,$(WITH_SANITIZE))
+
+# Add sanitizer flags to LDFLAGS
+LDFLAGS += $(call get-sanitizer-flags,$(WITH_SANITIZE))
+
 # Local Variables:
 # mode: makefile
 # End:
