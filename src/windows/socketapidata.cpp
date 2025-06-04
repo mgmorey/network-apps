@@ -13,11 +13,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#ifdef WIN32
+
 #include "network/socketapidata.hpp"    // SocketApiData
 #include "network/apidata.hpp"          // ApiData
 #include "network/windowsversion.hpp"   // WindowsVersion
-
-#ifdef WIN32
 
 Network::SocketApiData::SocketApiData() : ApiData {}
 {
