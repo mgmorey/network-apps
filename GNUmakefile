@@ -39,7 +39,7 @@ include gmake/functions.gmk
 include gmake/build-common.gmk
 
 # Set flags specific to the build type
-ifneq "$(filter Debug Release,$(BUILD_TYPE))" ""
+ifneq "$(filter Debug Minimal Release,$(BUILD_TYPE))" ""
 include gmake/build-type/$(BUILD_TYPE).gmk
 endif
 
