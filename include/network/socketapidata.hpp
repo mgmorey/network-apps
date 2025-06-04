@@ -26,6 +26,7 @@ namespace Network
     struct SocketApiData : public ApiData
     {
         SocketApiData();
+
         SocketApiData(const SocketApiData&) noexcept = default;
         SocketApiData(SocketApiData&&) noexcept = default;
         ~SocketApiData() noexcept = default;
