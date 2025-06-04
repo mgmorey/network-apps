@@ -18,8 +18,8 @@
 # Enable debugging support in C++ standard library
 CPPFLAGS += -D_GLIBCXX_DEBUG
 
-# Add optimization level 0 flag to CXXFLAGS
-CXXFLAGS += -O0
+# Add optimization level 1 flag to CXXFLAGS
+CXXFLAGS += -O1
 
 # Add no omit frame pointer flag to CXXFLAGS
 CXXFLAGS += -fno-omit-frame-pointer
