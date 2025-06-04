@@ -30,6 +30,7 @@
 
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
 #include <exception>    // std::exception
+#include <iomanip>      // std::quoted()
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <map>          // std::map
 #include <regex>        // std::regex, std::regex_match
@@ -136,13 +137,11 @@ namespace
         std::cout << "    High Version:\t"
                   << rt.high_version()
                   << std::endl;
-        std::cout << "    Description:\t\""
-                  << rt.description()
-                  << '"'
+        std::cout << "    Description:\t"
+                  << std::quoted(rt.description())
                   << std::endl;
-        std::cout << "    System Status:\t\""
-                  << rt.system_status()
-                  << '"'
+        std::cout << "    System Status:\t"
+                  << std::quoted(rt.system_status())
                   << std::endl;
         std::cout << "    Error Code:\t\t"
                   << rt.error_code()
