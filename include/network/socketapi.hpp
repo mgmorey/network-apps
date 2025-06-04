@@ -30,6 +30,7 @@ namespace Network
     {
     public:
         explicit SocketApi(const RuntimeData& t_rd);
+
         SocketApi(const SocketApi&) = delete;
         SocketApi(const SocketApi&&) = delete;
         ~SocketApi() final;
