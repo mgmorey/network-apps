@@ -13,10 +13,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef UNIX_NETWORK_APIDATA_HPP
-#define UNIX_NETWORK_APIDATA_HPP
+#ifndef WINDOWS_NETWORK_APIDATA_HPP
+#define WINDOWS_NETWORK_APIDATA_HPP
 
-#ifndef WIN32
+#ifdef WIN32
 
 #include <winsock2.h>       // WSADATA
 

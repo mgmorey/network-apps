@@ -14,6 +14,8 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/socketapidata.hpp"    // SocketApiData
+#include "network/apidata.hpp"          // ApiData
+#include "network/windowsversion.hpp"   // WindowsVersion
 
 #ifdef WIN32
 
