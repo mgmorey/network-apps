@@ -14,12 +14,12 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/socketapi.hpp"        // SocketApi
+#include "network/quote.hpp"            // quote()
 #include "network/runtimeerror.hpp"     // RuntimeError
 #include "network/start.hpp"            // start()
 #include "network/stop.hpp"             // stop()
 #include "network/version.hpp"          // Version
 
-#include <iomanip>      // std::quoted()
 #include <sstream>      // std::ostringstream
 #include <string_view>  // std::string_view
 
@@ -76,7 +76,7 @@ auto Network::SocketApi::start() -> void
         std::ostringstream oss;
         oss << description()
             << " status is "
-            << std::quoted(system_status())
+            << quote(system_status())
             << '.';
         throw RuntimeError {oss.str()};
     }
