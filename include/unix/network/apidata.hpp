@@ -1,4 +1,4 @@
-// Copyright (C) 2024  "Michael G. Morey" <mgmorey@gmail.com>
+// Copyright (C) 2025  "Michael G. Morey" <mgmorey@gmail.com>
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,27 +13,26 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#ifndef UNIX_NETWORK_APIDATA_HPP
+#define UNIX_NETWORK_APIDATA_HPP
+
 #ifndef WIN32
 
-#include "network/start.hpp"            // start()
-#include "network/runtimedata.hpp"      // RuntimeData
-#include "network/socketapidata.hpp"    // ApiData
+#include "network/version.hpp"          // Version
 
-#include <iostream>     // std::cout, std::endl
+#include <string_view>  // std::string_view
 
-auto Network::start(const RuntimeData& rd) -> SocketApiData
+namespace Network
 {
-    if (rd.is_verbose()) {
-        std::cout << "Starting the network runtime."
-                  << std::endl;
-    }
-
-    SocketApiData data;
-    data.m_version = Version {0, 0};
-    data.m_high_version = Version {0, 0},
-    data.m_description = "Berkeley Software Distribution Sockets",
-    data.m_system_status = "Running";
-    return data;
+    struct ApiData
+    {
+        Version m_version;
+        Version m_high_version;
+        std::string_view m_description;
+        std::string_view m_system_status;
+    };
 }
+
+#endif
 
 #endif

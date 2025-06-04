@@ -1,4 +1,4 @@
-// Copyright (C) 2024  "Michael G. Morey" <mgmorey@gmail.com>
+// Copyright (C) 2025  "Michael G. Morey" <mgmorey@gmail.com>
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,27 +13,32 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#include "network/socketapidata.hpp"    // SocketApiData
+
 #ifndef WIN32
 
-#include "network/start.hpp"            // start()
-#include "network/runtimedata.hpp"      // RuntimeData
-#include "network/socketapidata.hpp"    // ApiData
-
-#include <iostream>     // std::cout, std::endl
-
-auto Network::start(const RuntimeData& rd) -> SocketApiData
+Network::SocketApiData::SocketApiData() : ApiData {}
 {
-    if (rd.is_verbose()) {
-        std::cout << "Starting the network runtime."
-                  << std::endl;
-    }
+}
 
-    SocketApiData data;
-    data.m_version = Version {0, 0};
-    data.m_high_version = Version {0, 0},
-    data.m_description = "Berkeley Software Distribution Sockets",
-    data.m_system_status = "Running";
-    return data;
+auto Network::SocketApiData::version() const noexcept -> Version
+{
+    return m_version;
+}
+
+auto Network::SocketApiData::high_version() const noexcept -> Version
+{
+    return m_high_version;
+}
+
+auto Network::SocketApiData::description() const noexcept -> std::string_view
+{
+    return m_description;
+}
+
+auto Network::SocketApiData::system_status() const noexcept -> std::string_view
+{
+    return m_system_status;
 }
 
 #endif
