@@ -15,24 +15,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-# Debug build CPPFLAGS
-
-CPPFLAGS += -D_GLIBCXX_DEBUG
-
 # Debug build CXXFLAGS
 
-# Add debug format flag to CXXFLAGS
-CXXFLAGS += $(if $(filter true,$(USING_VALGRIND)),-gdwarf-4,)
+CXXFLAGS += $(if $(filter true,$(WITH_COVERAGE)),--coverage,)
 
-# Add debug flag to CXXFLAGS
-CXXFLAGS += $(if $(filter gnu,$(cxx_family)),-ggdb,-g3)
+GCOVRFLAGS_HTML = --html-details --html-theme=$(HTML_THEME)	\
+$(foreach file,$^,--json-add-tracefile=$(file))
+GCOVRFLAGS = --calls $(if $(GCOV),--gcov-executable='$(GCOV)',)	\
+$(if $(filter %.json,$@),--json,$(GCOVRFLAGS_HTML))		\
+--output=$@
 
-# Add optimization flag to CXXFLAGS
-CXXFLAGS += -O0
-
-# Add no omit frame pointer flag to CXXFLAGS
-CXXFLAGS += -fno-omit-frame-pointer
-
-# Local Variables:
-# mode: makefile
-# End:
+LDFLAGS += $(if $(filter true,$(WITH_COVERAGE)),--coverage,)

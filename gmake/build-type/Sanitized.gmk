@@ -15,23 +15,25 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-# Debug build CPPFLAGS
+# Sanitized build CPPFLAGS
 
 CPPFLAGS += -D_GLIBCXX_DEBUG
 
-# Debug build CXXFLAGS
+# Sanitized build CXXFLAGS
 
-# Add debug format flag to CXXFLAGS
-CXXFLAGS += $(if $(filter true,$(USING_VALGRIND)),-gdwarf-4,)
-
-# Add debug flag to CXXFLAGS
-CXXFLAGS += $(if $(filter gnu,$(cxx_family)),-ggdb,-g3)
+# Add sanitizer flags to CXXFLAGS
+CXXFLAGS += $(call get-compiler-sanitizer-flags,$(WITH_SANITIZE))
 
 # Add optimization flag to CXXFLAGS
 CXXFLAGS += -O0
 
 # Add no omit frame pointer flag to CXXFLAGS
 CXXFLAGS += -fno-omit-frame-pointer
+
+# Sanitized build LDFLAGS
+
+# Add sanitize flags to LDFLAGS
+LDFLAGS += $(call get-sanitizer-flags,$(WITH_SANITIZE))
 
 # Local Variables:
 # mode: makefile

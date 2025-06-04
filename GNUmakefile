@@ -19,7 +19,7 @@ VERSION ?= 0.0.1
 
 # Define variables for build defaults
 BUILD_DIR ?= .
-BUILD_TYPE ?= Debug
+BUILD_TYPE ?= Sanitized
 INSTALL_PREFIX ?= ~/.local
 HTML_THEME ?= green
 TMPDIR ?= /tmp
@@ -38,8 +38,13 @@ include gmake/functions.gmk
 # Set flags common to all build types
 include gmake/build-common.gmk
 
+# Set flags for code coverage
+ifneq "$(filter Debug Sanitized,$(BUILD_TYPE))" ""
+include gmake/coverage.gmk
+endif
+
 # Set flags specific to the build type
-ifneq "$(filter Debug Minimal Release,$(BUILD_TYPE))" ""
+ifneq "$(filter Debug Minimal Release Sanitized,$(BUILD_TYPE))" ""
 include gmake/build-type/$(BUILD_TYPE).gmk
 endif
 
@@ -194,10 +199,10 @@ program_args = $(strip $(if $(filter .,$(output_dir)),,-d $(output_dir)) -v)
 
 # Define target list variables
 
-all_targets = $(build_targets) test $(if $(filter	\
-Debug,$(BUILD_TYPE)),$(if $(GCOVR),$(if $(filter	\
-true,$(WITH_COVERAGE)),$(gcovr_targets),),))		\
-$(if $(is_windows_api),dos2unix,)
+all_targets = $(build_targets) test $(if $(filter Debug	\
+Sanitized,$(BUILD_TYPE)),$(if $(GCOVR),$(if $(filter	\
+true,$(WITH_COVERAGE)),$(gcovr_targets),),)) $(if	\
+$(is_windows_api),dos2unix,)
 
 build_targets = assert compile-flags objects libraries programs sizes	\
 $(if $(is_uctags),tags)
