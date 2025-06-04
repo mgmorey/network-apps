@@ -18,8 +18,8 @@
 # Define preprocessor symbol to enable libstdc++ debug mode
 CPPFLAGS += -D_GLIBCXX_DEBUG
 
-# Define preprocessor symbol to enable libstdc++ debug mode
-CPPFLAGS += -D_GLIBCXX_DEBUG_BACKTRACE
+# Define preprocessor symbol to enable libstdc++ backtraces on error
+CXXFLAGS += $(if $(filter true,$(WITH_BACKTRACE)),-D_GLIBCXX_DEBUG_BACKTRACE,)
 
 # Add optimization level 0 flag to CXXFLAGS
 CXXFLAGS += -O0
@@ -33,8 +33,8 @@ CXXFLAGS += $(if $(filter true,$(USING_VALGRIND)),-gdwarf-4,)
 # Add debug flag to CXXFLAGS
 CXXFLAGS += $(if $(filter gnu,$(cxx_family)),-ggdb,-g3)
 
-# Add library to enable libstdc++ backtraces on error
-LDLIBS += -lstdc++exp
+# Add library with support for libstdc++ backtraces on error
+LDLIBS += $(if $(filter true,$(WITH_BACKTRACE)),-lstdc++exp,)
 
 # Local Variables:
 # mode: makefile
