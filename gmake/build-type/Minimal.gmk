@@ -15,10 +15,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-# Minimal build CPPFLAGS
-
-CPPFLAGS += -D_FORTIFY_SOURCE=2
-
 # Minimal build CXXFLAGS
 
 CXXFLAGS += -O0
