@@ -20,6 +20,7 @@
                                         // get_hostname(),
                                         // is_running(), run()
 #include "network/parse.hpp"            // parse()
+#include "network/quote.hpp"            // quote()
 #include "network/stop.hpp"             // stop()
 
 #ifdef WIN32
@@ -30,7 +31,6 @@
 
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
 #include <exception>    // std::exception
-#include <iomanip>      // std::quoted()
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <map>          // std::map
 #include <regex>        // std::regex, std::regex_match
@@ -46,6 +46,7 @@ namespace
     using Network::Version;
     using Network::create_runtime;
     using Network::get_hostname;
+    using Network::quote;
     using Network::parse;
 
 #ifdef WIN32
@@ -138,10 +139,10 @@ namespace
                   << rt.high_version()
                   << std::endl;
         std::cout << "    Description:\t"
-                  << std::quoted(rt.description())
+                  << quote(rt.description())
                   << std::endl;
         std::cout << "    System Status:\t"
-                  << std::quoted(rt.system_status())
+                  << quote(rt.system_status())
                   << std::endl;
         std::cout << "    Error Code:\t\t"
                   << rt.error_code()
