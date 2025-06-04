@@ -15,8 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-# Minimal build CXXFLAGS
-
+# Add optimization level 0 flag to CXXFLAGS
 CXXFLAGS += -O0
 
 # Local Variables:

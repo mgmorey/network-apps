@@ -15,24 +15,19 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-# Sanitized build CPPFLAGS
-
+# Enable debugging support in C++ standard library
 CPPFLAGS += -D_GLIBCXX_DEBUG
 
-# Sanitized build CXXFLAGS
-
-# Add sanitizer flags to CXXFLAGS
-CXXFLAGS += $(call get-compiler-sanitizer-flags,$(WITH_SANITIZE))
-
-# Add optimization flag to CXXFLAGS
+# Add optimization level 0 flag to CXXFLAGS
 CXXFLAGS += -O0
 
 # Add no omit frame pointer flag to CXXFLAGS
 CXXFLAGS += -fno-omit-frame-pointer
 
-# Sanitized build LDFLAGS
+# Add sanitizer flags to CXXFLAGS
+CXXFLAGS += $(call get-compiler-sanitizer-flags,$(WITH_SANITIZE))
 
-# Add sanitize flags to LDFLAGS
+# Add sanitizer flags to LDFLAGS
 LDFLAGS += $(call get-sanitizer-flags,$(WITH_SANITIZE))
 
 # Local Variables:
