@@ -42,9 +42,9 @@ namespace Network
         [[nodiscard]] auto is_verbose() const noexcept -> bool;
 
     private:
-        FailMode m_fail_mode {FailMode::throw_error};       // NOLINT
-        bool m_is_verbose {false};                          // NOLINT
-        OptionalVersion m_version;                          // NOLINT
+        FailMode m_fm {FailMode::throw_error};
+        bool m_is_verbose {false};
+        OptionalVersion m_version;
     };
 }
 

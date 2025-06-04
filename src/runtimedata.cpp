@@ -20,7 +20,7 @@
 Network::RuntimeData::RuntimeData(OptionalVersion t_version,
                                   FailMode t_fail_mode,
                                   bool t_is_verbose) noexcept :
-    m_fail_mode(t_fail_mode),
+    m_fm(t_fail_mode),
     m_is_verbose(t_is_verbose),
     m_version(t_version)
 {
@@ -28,7 +28,7 @@ Network::RuntimeData::RuntimeData(OptionalVersion t_version,
 
 Network::RuntimeData::RuntimeData(FailMode t_fail_mode,
                                   bool t_is_verbose) noexcept :
-    m_fail_mode(t_fail_mode),
+    m_fm(t_fail_mode),
     m_is_verbose(t_is_verbose)
 {
 }
@@ -45,7 +45,7 @@ auto Network::RuntimeData::version() const noexcept -> OptionalVersion
 
 auto Network::RuntimeData::fail_mode() const noexcept -> FailMode
 {
-    return m_fail_mode;
+    return m_fm;
 }
 
 auto Network::RuntimeData::is_verbose() const noexcept -> bool
