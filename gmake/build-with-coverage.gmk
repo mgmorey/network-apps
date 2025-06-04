@@ -15,14 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-# Debug build CXXFLAGS
-
-CXXFLAGS += $(if $(filter true,$(WITH_COVERAGE)),--coverage,)
-
-GCOVRFLAGS_HTML = --html-details --html-theme=$(HTML_THEME)	\
-$(foreach file,$^,--json-add-tracefile=$(file))
-GCOVRFLAGS = --calls $(if $(GCOV),--gcov-executable='$(GCOV)',)	\
-$(if $(filter %.json,$@),--json,$(GCOVRFLAGS_HTML))		\
---output=$@
-
-LDFLAGS += $(if $(filter true,$(WITH_COVERAGE)),--coverage,)
+ifeq "$(WITH_COVERAGE)" "true"
+CXXFLAGS += --coverage
+LDFLAGS += --coverage
+endif

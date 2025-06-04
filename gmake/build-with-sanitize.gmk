@@ -15,18 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-# Add optimization level flag to CXXFLAGS
-CXXFLAGS += -O0
-
-# Add no omit frame pointer flag to CXXFLAGS
-CXXFLAGS += -fno-omit-frame-pointer
-
-# Add debug format flag to CXXFLAGS
-CXXFLAGS += $(if $(filter true,$(USING_VALGRIND)),-gdwarf-4,)
-
-# Add debug flag to CXXFLAGS
-CXXFLAGS += $(if $(filter gnu,$(cxx_family)),-ggdb,-g3)
-
-# Local Variables:
-# mode: makefile
-# End:
+ifneq "$(WITH_SANITIZE)" ""
+CXXFLAGS += $(call get-compiler-sanitizer-flags,$(WITH_SANITIZE))
+LDFLAGS += $(call get-sanitizer-flags,$(WITH_SANITIZE))
+endif

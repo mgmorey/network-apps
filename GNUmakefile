@@ -19,7 +19,7 @@ VERSION ?= 0.0.1
 
 # Define variables for build defaults
 BUILD_DIR ?= .
-BUILD_TYPE ?= Minimal
+BUILD_TYPE ?= Default
 INSTALL_PREFIX ?= ~/.local
 HTML_THEME ?= green
 TMPDIR ?= /tmp
@@ -35,17 +35,29 @@ include gmake/commands.gmk
 include gmake/features.gmk
 include gmake/functions.gmk
 
-# Set flags common to all build types
+# Set build flags common to all build types
 include gmake/build-common.gmk
 
-# Set flags for code coverage
-ifneq "$(filter Debug Minimal,$(BUILD_TYPE))" ""
-include gmake/coverage.gmk
+# Set build flags specific to build type
+ifneq "$(filter Debug Minimal Release,$(BUILD_TYPE))" ""
+include gmake/build-type/$(BUILD_TYPE).gmk
+else
+include gmake/build-type/Default.gmk
 endif
 
-# Set flags specific to the build type
-ifneq "$(filter Debug Minimal Release Minimal,$(BUILD_TYPE))" ""
-include gmake/build-type/$(BUILD_TYPE).gmk
+# Set build flags for coverage
+ifneq "$(filter Debug Default Minimal,$(BUILD_TYPE))" ""
+include gmake/build-with-coverage.gmk
+endif
+
+# Set build flags for C++ debug
+ifneq "$(filter Debug Default,$(BUILD_TYPE))" ""
+include gmake/build-with-cxxdebug.gmk
+endif
+
+# Set build flags for sanitize
+ifneq "$(filter Default Minimal,$(BUILD_TYPE))" ""
+include gmake/build-with-sanitize.gmk
 endif
 
 # Define variables for version components
@@ -199,9 +211,9 @@ program_args = $(strip $(if $(filter .,$(output_dir)),,-d $(output_dir)) -v)
 
 # Define target list variables
 
-all_targets = $(build_targets) test $(if $(filter Debug	\
-Minimal,$(BUILD_TYPE)),$(if $(GCOVR),$(if $(filter	\
-true,$(WITH_COVERAGE)),$(gcovr_targets),),)) $(if	\
+all_targets = $(build_targets) test $(if $(filter Debug Default	\
+Minimal,$(BUILD_TYPE)),$(if $(GCOVR),$(if $(filter		\
+true,$(WITH_COVERAGE)),$(gcovr_targets),),)) $(if		\
 $(is_windows_api),dos2unix,)
 
 build_targets = assert compile-flags objects libraries programs sizes	\

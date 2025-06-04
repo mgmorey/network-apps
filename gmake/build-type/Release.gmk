@@ -19,7 +19,7 @@
 # vulnerabilities
 CPPFLAGS += -D_FORTIFY_SOURCE=2
 
-# Add optimization level 2 flag to CXXFLAGS
+# Add optimization level flag to CXXFLAGS
 CXXFLAGS += -O2
 
 # Local Variables:
