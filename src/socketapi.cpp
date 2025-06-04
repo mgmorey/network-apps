@@ -19,6 +19,7 @@
 #include "network/stop.hpp"             // stop()
 #include "network/version.hpp"          // Version
 
+#include <iomanip>      // std::quoted()
 #include <sstream>      // std::ostringstream
 #include <string_view>  // std::string_view
 
@@ -74,9 +75,9 @@ auto Network::SocketApi::start() -> void
     if (system_status() != "Running") {
         std::ostringstream oss;
         oss << description()
-            << " status is \""
-            << system_status()
-            << "\".";
+            << " status is "
+            << std::quoted(system_status())
+            << '.';
         throw RuntimeError {oss.str()};
     }
 
