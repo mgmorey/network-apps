@@ -17,7 +17,10 @@
 
 #include "network/socketapidata.hpp"    // SocketApiData
 #include "network/apidata.hpp"          // ApiData
+#include "network/version.hpp"          // Version
 #include "network/windowsversion.hpp"   // WindowsVersion
+
+#include <string_view>  // std::string_view
 
 Network::SocketApiData::SocketApiData() : ApiData {}
 {
