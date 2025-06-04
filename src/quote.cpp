@@ -34,7 +34,13 @@ auto Network::quote(std::string_view sv) -> std::string
 
         for (const auto c : sv) {
             if (isprint(c) != 0) {
-                oss << c;
+                if (c == '"') {
+                    oss << '\\'
+                        << c;
+                }
+                else {
+                    oss << c;
+                }
             }
             else if (c != '\0') {
                 oss << '\\'
