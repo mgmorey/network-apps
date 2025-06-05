@@ -18,9 +18,6 @@
 # Add optimization level flag to CXXFLAGS
 CXXFLAGS += -O0
 
-# Add no omit frame pointer flag to CXXFLAGS
-CXXFLAGS += -fno-omit-frame-pointer
-
 # Local Variables:
 # mode: makefile
 # End:
