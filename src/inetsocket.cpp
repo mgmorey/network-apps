@@ -30,7 +30,6 @@
 #include "network/write.hpp"            // write()
 
 #include <cstddef>      // std::byte, std::size_t
-#include <iostream>     // std::cerr, std::endl
 #include <span>         // std::span
 
 Network::InetSocket::InetSocket(const SocketData& t_sd) :
@@ -40,10 +39,7 @@ Network::InetSocket::InetSocket(const SocketData& t_sd) :
 
 Network::InetSocket::~InetSocket() noexcept
 {
-    if (const auto result {Network::close(m_sd)}) {
-        std::cerr << result.string()
-                  << std::endl;
-    }
+    static_cast<void>(Network::close(m_sd));
 }
 
 Network::InetSocket::operator bool() const noexcept
