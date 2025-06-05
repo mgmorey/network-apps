@@ -274,7 +274,7 @@ namespace
                    const std::string& expected_error_re) -> void
     {
         const auto sock {create_socket(socket_hints, is_verbose)};
-        return test_path(*sock, path, expected_codes, expected_error_re);
+        test_path(*sock, path, expected_codes, expected_error_re);
     }
 
     auto test_path_valid(const auto& path) -> void
