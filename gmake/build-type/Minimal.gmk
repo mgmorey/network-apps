@@ -22,9 +22,6 @@ CPPFLAGS += -D_FORTIFY_SOURCE=2
 # Add optimization level flag to CXXFLAGS
 CXXFLAGS += -O1
 
-# Add no omit frame pointer flag to CXXFLAGS
-CXXFLAGS += -fno-omit-frame-pointer
-
 # Local Variables:
 # mode: makefile
 # End:

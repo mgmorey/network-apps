@@ -56,7 +56,7 @@ include gmake/build-with-cxxdebug.gmk
 endif
 
 # Set build flags for sanitize
-ifneq "$(filter Default Minimal,$(BUILD_TYPE))" ""
+ifneq "$(filter Default,$(BUILD_TYPE))" ""
 include gmake/build-with-sanitize.gmk
 endif
 
