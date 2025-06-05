@@ -20,10 +20,12 @@
 
 #include "network/bytestring.hpp"       // ByteString
 
-#include <string_view>      // std::string_view
+#include <cstddef>      // std::nullptr_t
+#include <string_view>  // std::string_view
 
 namespace Network
 {
+    extern auto to_bytestring(const std::nullptr_t& path) -> ByteString;
     extern auto to_bytestring(std::string_view path) -> ByteString;
 }
 

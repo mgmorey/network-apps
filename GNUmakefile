@@ -137,9 +137,8 @@ stop.cpp write.cpp
 
 library_unix_sources = address-sun.cpp create-socketpair.cpp		\
 create-socketpairresult.cpp get-path-length.cpp get-path-pointer.cpp	\
-get-sun-length.cpp get-sun-pointer.cpp to-bytestring-null.cpp		\
-to-bytestring-path.cpp to-path.cpp unixsocket.cpp validate-path.cpp	\
-validate-sun.cpp
+get-sun-length.cpp get-sun-pointer.cpp to-bytestring-path.cpp		\
+to-path.cpp unixsocket.cpp validate-path.cpp validate-sun.cpp
 
 test_common_sources = test-address.cpp test-bind.cpp test-connect.cpp	\
 test-errors.cpp test-host.cpp test-hostname.cpp test-limits.cpp		\
