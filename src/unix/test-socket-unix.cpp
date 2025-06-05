@@ -113,14 +113,6 @@ namespace
         return addr_path == path;
     }
 
-    auto operator==(std::span<const std::byte> addr,
-                    const std::nullptr_t& path) -> bool
-    {
-        const auto addr_path {to_path(addr)};
-        static_cast<void>(path);
-        return addr_path.empty();
-    }
-
     auto get_codes_bad_file_number() -> const ErrorCodeSet&
     {
 	static const ErrorCodeSet codes {EBADF};
@@ -245,7 +237,7 @@ namespace
     }
 
     auto test_path(Socket& sock,
-                   const auto& path,
+                   std::string_view path,
                    const ErrorCodeSet& expected_codes,
                    const std::string& expected_error_re) -> void
     {
@@ -277,7 +269,7 @@ namespace
         assert(std::regex_match(actual_error_str, expected_error_regex));
     }
 
-    auto test_path(const auto& path,
+    auto test_path(std::string_view path,
                    const ErrorCodeSet& expected_codes,
                    const std::string& expected_error_re) -> void
     {
@@ -293,7 +285,7 @@ namespace
 
     auto test_paths_invalid() -> void
     {
-        test_path(nullptr, {0}, expected_error_payload_length_re);
+        test_path({}, {0}, expected_error_payload_length_re);
 #if defined(OS_DARWIN) || defined(OS_CYGWIN_NT)
         test_path("", get_codes_no_such_file_or_directory(), {});
 #endif
