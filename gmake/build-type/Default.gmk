@@ -15,12 +15,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-# Enable runtime protection against certain types of security
-# vulnerabilities
-CPPFLAGS += -D_FORTIFY_SOURCE=2
-
 # Add optimization level flag to CXXFLAGS
-CXXFLAGS += -O1
+CXXFLAGS += -O0
 
 # Add no omit frame pointer flag to CXXFLAGS
 CXXFLAGS += -fno-omit-frame-pointer
