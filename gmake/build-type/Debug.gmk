@@ -18,11 +18,8 @@
 # Add optimization level flag to CXXFLAGS
 CXXFLAGS += -O0
 
-# Add no omit frame pointer flag to CXXFLAGS
-CXXFLAGS += -fno-omit-frame-pointer
-
 # Add debug format flag to CXXFLAGS
-CXXFLAGS += $(if $(filter true,$(USING_VALGRIND)),-gdwarf-4,)
+CXXFLAGS += $(if $(filter 2 3 4 5,$(USING_GDBDWARF)),-gdwarf-$(USING_GDBDWARF),)
 
 # Add debug flag to CXXFLAGS
 CXXFLAGS += $(if $(filter gnu,$(cxx_family)),-ggdb,-g3)
