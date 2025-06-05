@@ -123,7 +123,7 @@ auto main(int argc, char* argv[]) -> int
 
             // Receive result.
             const auto read_str {read(*data_socket)};
-            std::cerr << "Result: " << read_str << std::endl;
+            std::cout << "Result: " << read_str << std::endl;
         }
     }
     catch (const std::exception& error) {
