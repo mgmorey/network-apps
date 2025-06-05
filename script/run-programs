@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-run_program() (
+run_program() {
     basename=$(basename "$1" .exe)
     dirname=$(dirname "$1")
     filename="$dirname/$basename"
@@ -23,25 +23,27 @@ run_program() (
 
     case "$basename" in
 	(test-*)
-	    ${wrapper:+$wrapper }"$filename" "$@" >"$filename.log" 2>&1
+	    if ! ${wrapper:+$wrapper }$filename "$@" >"$filename.log"; then
+		printf '%s\n' "Program $basename returned a non-zero exit code"
+		errors=$(expr $errors + 1)
+	    fi
 	    ;;
 	(unix-client)
-	    "$filename" "$@" 1 2 3 4 >"$filename.log" 2>&1
-	    "$filename" "$@" DOWN >>"$filename.log" 2>&1
+	    ("$filename" "$@" 1 2 3 4;
+	     "$filename" "$@" DOWN) >"$filename.log"
 	    sleep 1
 	    ;;
 	(unix-server)
-	    "$filename" "$@" >"$filename.log" 2>&1 &
+	    "$filename" "$@" >"$filename.log" &
 	    sleep 1
 	    ;;
-	(*)
-	    ;;
     esac
-)
+}
 
 run_programs() {
     args=
     dir=
+    errors=0
 
     if [ "${USING_VALGRIND-}" = true ]; then
 	wrapper="valgrind -q"
@@ -76,6 +78,10 @@ run_programs() {
     for program; do
 	run_program "$program"
     done
+
+    if [ "$errors" -ne 0 ]; then
+	exit 1
+    fi
 
     if [ -n "$args" ]; then
 	for program; do
