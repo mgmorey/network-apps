@@ -14,7 +14,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 # Set build flags common to all build types
-include gmake/flags/common.gmk
+include gmake/flags/common-flags.gmk
 
 # Set build flags specific to build type
 ifneq "$(filter Debug Minimal Release,$(BUILD_TYPE))" ""
