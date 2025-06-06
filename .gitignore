@@ -131,6 +131,7 @@ test-parse
 test-runtime
 test-socket-api
 test-socket-inet
+test-socket-pair
 test-socket-unix
 test-version
 unix-client
