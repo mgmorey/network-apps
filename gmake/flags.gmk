@@ -14,26 +14,26 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 # Set build flags common to all build types
-include gmake/common-build.gmk
+include gmake/flags/common.gmk
 
 # Set build flags specific to build type
 ifneq "$(filter Debug Minimal Release,$(BUILD_TYPE))" ""
-include gmake/build-type/$(BUILD_TYPE).gmk
+include gmake/flags/build/$(BUILD_TYPE).gmk
 else
-include gmake/build-type/Default.gmk
+include gmake/flags/build/Default.gmk
 endif
 
 # Set build flags for coverage
 ifneq "$(filter Debug Default Minimal,$(BUILD_TYPE))" ""
-include gmake/build-with-coverage.gmk
+include gmake/flags/coverage-flags.gmk
 endif
 
 # Set build flags for C++ debug
 ifneq "$(filter Debug Default,$(BUILD_TYPE))" ""
-include gmake/build-with-cxxdebug.gmk
+include gmake/flags/cxxdebug-flags.gmk
 endif
 
 # Set build flags for sanitize
 ifneq "$(filter Default,$(BUILD_TYPE))" ""
-include gmake/build-with-sanitize.gmk
+include gmake/flags/sanitize-flags.gmk
 endif
