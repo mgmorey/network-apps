@@ -31,34 +31,10 @@ source_dir := src
 
 # Include variable definitions for toolchain commands/features and
 # functions.
-include gmake/commands.gmk
-include gmake/features.gmk
-include gmake/functions.gmk
-
-# Set build flags common to all build types
-include gmake/build-common.gmk
-
-# Set build flags specific to build type
-ifneq "$(filter Debug Minimal Release,$(BUILD_TYPE))" ""
-include gmake/build-type/$(BUILD_TYPE).gmk
-else
-include gmake/build-type/Default.gmk
-endif
-
-# Set build flags for coverage
-ifneq "$(filter Debug Default Minimal,$(BUILD_TYPE))" ""
-include gmake/build-with-coverage.gmk
-endif
-
-# Set build flags for C++ debug
-ifneq "$(filter Debug Default,$(BUILD_TYPE))" ""
-include gmake/build-with-cxxdebug.gmk
-endif
-
-# Set build flags for sanitize
-ifneq "$(filter Default,$(BUILD_TYPE))" ""
-include gmake/build-with-sanitize.gmk
-endif
+include gmake/common-commands.gmk
+include gmake/common-features.gmk
+include gmake/common-functions.gmk
+include gmake/flags.gmk
 
 # Define variables for version components
 major = $(call get-version-number,1,$(VERSION))
