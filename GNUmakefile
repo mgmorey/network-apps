@@ -385,6 +385,6 @@ $(output_prefix)%$(binary_suffix): $(object_prefix)%$(object_suffix)
 	$(call link-objects,$^,$@)
 
 # Include dependency files
-ifeq "$(filter %clean,$(MAKECMDGOALS))" "$(filter-out %clean,$(MAKECMDGOALS))"
+ifeq "$(filter distclean,$(MAKECMDGOALS))" ""
 include $(sort $(dependencies))
 endif
