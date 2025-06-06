@@ -18,13 +18,25 @@
 ifneq "$(WITH_SANITIZE)" ""
 
 ifneq "$(filter -O -O1 -O2,$(CXXFLAGS))" ""
+
+ifeq "$(filter -fno-omit-frame-pointer,$(CXXFLAGS))" ""
 CXXFLAGS += -fno-omit-frame-pointer
+endif
+
 ifneq "$(filter -O2,$(CXXFLAGS))" ""
+
+ifeq "$(filter -fno-optimize-sibling-calls,$(CXXFLAGS))" ""
 CXXFLAGS += -fno-optimize-sibling-calls
+endif
+
 endif
 endif
 
+ifeq "$(filter -fsanitize=%,$(CXXFLAGS))" ""
 CXXFLAGS += $(call get-compiler-sanitizer-flags,$(WITH_SANITIZE))
+endif
+ifeq "$(filter -fsanitize=%,$(LDFLAGS))" ""
 LDFLAGS += $(call get-sanitizer-flags,$(WITH_SANITIZE))
+endif
 
 endif

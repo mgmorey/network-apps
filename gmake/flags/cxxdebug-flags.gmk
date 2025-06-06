@@ -16,6 +16,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 ifeq "$(filter, -D_FORTIFY_SOURCE=%,$(CPPFLAGS))" ""
+ifeq "$(filter, -D_GLIBCXX_DEBUG,$(CPPFLAGS))" ""
 
 CPPFLAGS += -D_GLIBCXX_DEBUG
 
@@ -24,4 +25,5 @@ CPPFLAGS += -D_GLIBCXX_DEBUG_BACKTRACE
 LDLIBS += -lstdc++exp
 endif
 
+endif
 endif
