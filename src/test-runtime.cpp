@@ -157,7 +157,7 @@ namespace
 
         if (rd.version()) {
             std::cout << "    Input Version:\t"
-                      << *rd.version()
+                      << rd.version().value_or(Version {})
                       << std::endl;
         }
         else {
