@@ -121,7 +121,7 @@ test-errors.cpp test-host.cpp test-hostname.cpp test-limits.cpp		\
 test-option.cpp test-parse.cpp test-runtime.cpp test-socket-api.cpp	\
 test-socket-inet.cpp test-version.cpp
 
-test_unix_sources = test-socket-unix.cpp
+test_unix_sources = test-socket-pair.cpp test-socket-unix.cpp
 unix_sources = unix-server.cpp unix-client.cpp
 
 sizes = sizes.txt sizes.txt~

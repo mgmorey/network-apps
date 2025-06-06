@@ -19,10 +19,9 @@
 #include "network/network.hpp"          // Address, ByteString, Error,
                                         // LogicError, OsErrorResult,
                                         // Pathname, Socket,
-                                        // SocketHints, SocketPair,
+                                        // SocketHints,
                                         // UnixSocketHints, close(),
                                         // create_socket(),
-                                        // create_socketpair(),
                                         // handle_null, handle_type,
                                         // os_error_type,
                                         // path_length_max, run(),
@@ -61,7 +60,6 @@ namespace
     using Network::UnixSocketHints;
     using Network::close;
     using Network::create_socket;
-    using Network::create_socketpair;
     using Network::family_type;
     using Network::handle_null;
     using Network::handle_type;
@@ -95,9 +93,6 @@ namespace
     };
     constexpr auto expected_error_socket_re {
         R"(Call to ::socket\(.+\) failed with error \d+: .+)"
-    };
-    constexpr auto expected_error_socketpair_re {
-        R"(Call to ::socketpair\(.+\) failed with error \d+: .+)"
     };
     constexpr auto handle_width {6};
     constexpr std::size_t size_max {path_length_max};
@@ -308,53 +303,6 @@ namespace
         }
     }
 
-    auto test_socketpair(const SocketHints& hints,
-                         const std::string& expected_error_re) -> void
-    {
-        std::string actual_error_str;
-
-        try {
-            auto sp {create_socketpair(hints, is_verbose)};
-            std::cout << "Socket "
-                      << std::right << std::setw(handle_width) << *sp[0]
-                      << " connected to "
-                      << std::endl
-                      << "Socket "
-                      << std::right << std::setw(handle_width) << *sp[1]
-                      << std::endl;
-        }
-        catch (const Error& error) {
-            print(error);
-            actual_error_str = error.what();
-        }
-
-        if (expected_error_re.empty()) {
-            assert(actual_error_str.empty());
-        }
-        else {
-            const std::regex expected_error_regex {expected_error_re};
-            assert(std::regex_match(actual_error_str, expected_error_regex));
-        }
-    }
-
-    auto test_socketpair_invalid_protocol() -> void
-    {
-        const SocketHints hints {AF_UNIX, SOCK_STREAM, -1};
-        test_socketpair(hints, expected_error_socketpair_re);
-    }
-
-    auto test_socketpair_invalid_socktype() -> void
-    {
-        const SocketHints hints {AF_UNIX, 0, 0};
-        test_socketpair(hints, expected_error_socketpair_re);
-    }
-
-    auto test_socketpair_valid() -> void
-    {
-        const SocketHints hints {AF_UNIX, SOCK_STREAM, 0};
-        test_socketpair(hints, "");
-    }
-
     auto test_unix_socket(const SocketHints& hints,
                           const std::string& expected_error_re) -> void
     {
@@ -407,13 +355,10 @@ auto main(int argc, char* argv[]) -> int
         }
 
         test_paths_invalid();
-        test_socketpair_invalid_socktype();
-        test_socketpair_invalid_protocol();
         test_unix_socket_invalid_socktype();
         test_unix_socket_invalid_protocol();
         test_close_handle_null();
         test_paths_valid();
-        test_socketpair_valid();
         test_unix_socket_valid();
     }
     catch (const std::exception& error) {
