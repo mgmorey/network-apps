@@ -129,6 +129,7 @@ test-limits
 test-option
 test-parse
 test-runtime
+test-socket-api
 test-socket-inet
 test-socket-unix
 test-version
