@@ -44,7 +44,6 @@ namespace
     using Network::RuntimeData;
     using Network::SocketApi;
     using Network::Version;
-    using Network::create_runtime;
     using Network::get_hostname;
     using Network::quote;
     using Network::parse;
