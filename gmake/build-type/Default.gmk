@@ -16,7 +16,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 # Add optimization level flag to CXXFLAGS
-CXXFLAGS += -O0
+CXXFLAGS += -O1
 
 # Local Variables:
 # mode: makefile
