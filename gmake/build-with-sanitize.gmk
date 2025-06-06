@@ -16,6 +16,15 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 ifneq "$(WITH_SANITIZE)" ""
+
+ifneq "$(filter -O -O1 -O2,$(CXXFLAGS))" ""
+CXXFLAGS += -fno-omit-frame-pointer
+ifneq "$(filter -O2,$(CXXFLAGS))" ""
+CXXFLAGS += -fno-optimize-sibling-calls
+endif
+endif
+
 CXXFLAGS += $(call get-compiler-sanitizer-flags,$(WITH_SANITIZE))
 LDFLAGS += $(call get-sanitizer-flags,$(WITH_SANITIZE))
+
 endif
