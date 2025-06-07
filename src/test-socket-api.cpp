@@ -78,21 +78,21 @@ namespace
         return oss.str();
     }
 
-    auto get_expected_version_errors() -> std::map<unsigned short, std::string>
+    auto get_expected_errors() -> std::map<unsigned short, std::string>
     {
-        std::map<unsigned short, std::string> version_errors;
+        std::map<unsigned short, std::string> errors;
 #ifdef WIN32
-        version_errors[0] =
+        errors[0] =
             "The Windows Sockets version requested is not supported.";
 #else
-        version_errors[0] = "";
+        errors[0] = "";
 #endif
-        version_errors[1] = "";
-        version_errors[2] = "";
-        return version_errors;
+        errors[1] = "";
+        errors[2] = "";
+        return errors;
     }
 
-    auto get_expected_runtime_re() -> std::string
+    auto get_expected_re() -> std::string
     {
         std::string result;
         result += "(";
@@ -182,7 +182,7 @@ namespace
         print(sa);
         assert(is_running(sa));
         const std::string actual_str {get_actual_sa_str(sa)};
-        const std::regex expected_regex {get_expected_runtime_re()};
+        const std::regex expected_regex {get_expected_re()};
         assert(std::regex_match(actual_str, expected_regex));
         sa.stop();
         assert(!sa.error_code());
@@ -246,7 +246,7 @@ namespace
     {
         const std::map<unsigned short, std::string> errors
         {
-            get_expected_version_errors()
+            get_expected_errors()
         };
 
         for (unsigned short major = 0; major < 3; ++major) {
