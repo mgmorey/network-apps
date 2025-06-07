@@ -16,16 +16,16 @@
 #ifndef NETWORK_SOCKETAPIDATA_HPP
 #define NETWORK_SOCKETAPIDATA_HPP
 
-#include "network/apidata.hpp"          // ApiData
+#include "network/nativeapidata.hpp"    // NativeApiData
 #include "network/version.hpp"          // Version
 
 #include <string_view>  // std::string_view
 
 namespace Network
 {
-    struct SocketApiData : public ApiData
+    struct SocketApiData : public NativeApiData
     {
-        SocketApiData() noexcept : ApiData {} {}
+        SocketApiData() noexcept : NativeApiData {} {}
 
         SocketApiData(const SocketApiData&) noexcept = default;
         SocketApiData(SocketApiData&&) noexcept = default;
