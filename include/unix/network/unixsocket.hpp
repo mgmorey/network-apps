@@ -34,7 +34,7 @@ namespace Network
     public:
         explicit UnixSocket(const SocketData& t_sd);
         UnixSocket(const UnixSocket&) noexcept = delete;
-        UnixSocket(const UnixSocket&&) noexcept = delete;
+        UnixSocket(UnixSocket &&) noexcept = delete;
         ~UnixSocket() noexcept final;
         auto operator=(const UnixSocket&) noexcept -> UnixSocket& = delete;
         auto operator=(UnixSocket&&) noexcept -> UnixSocket& = delete;

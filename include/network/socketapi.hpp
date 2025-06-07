@@ -32,10 +32,10 @@ namespace Network
         explicit SocketApi(const RuntimeData& t_rd);
 
         SocketApi(const SocketApi&) = delete;
-        SocketApi(const SocketApi&&) = delete;
+        SocketApi(SocketApi&&) = delete;
         ~SocketApi() final;
         auto operator=(const SocketApi&) -> SocketApi& = delete;
-        auto operator=(const SocketApi&&) -> SocketApi& = delete;
+        auto operator=(SocketApi&&) -> SocketApi& = delete;
 
         [[nodiscard]] auto version() const noexcept -> Version final;
         [[nodiscard]] auto high_version() const noexcept -> Version final;

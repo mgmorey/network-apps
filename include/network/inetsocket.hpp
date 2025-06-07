@@ -39,7 +39,7 @@ namespace Network
         explicit InetSocket(const SocketData& t_sd);
 
         InetSocket(const InetSocket&) noexcept = delete;
-        InetSocket(const InetSocket&&) noexcept = delete;
+        InetSocket(InetSocket &&) noexcept = delete;
         ~InetSocket() noexcept override;
         auto operator=(const InetSocket&) noexcept -> InetSocket& = delete;
         auto operator=(InetSocket&&) noexcept -> InetSocket& = delete;

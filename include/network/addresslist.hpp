@@ -76,14 +76,14 @@ namespace Network
 
         AddressList() = delete;
         AddressList(const AddressList&) = delete;
-        AddressList(const AddressList&&) = delete;
+        AddressList(AddressList &&) = delete;
         AddressList(const HostnameView& t_hostname,
                     const ServiceView& t_service,
                     const OptionalHints& t_hints,
                     bool t_is_verbose);
         ~AddressList() noexcept;
         auto operator=(const AddressList&) noexcept -> AddressList& = delete;
-        auto operator=(const AddressList&&) noexcept -> AddressList& = delete;
+        auto operator=(AddressList &&) noexcept -> AddressList& = delete;
         [[nodiscard]] auto begin() const noexcept -> InputIterator;
         [[nodiscard]] auto end() const noexcept -> InputIterator;
         [[nodiscard]] auto result() const noexcept -> const OsErrorResult&;

@@ -28,10 +28,10 @@ namespace Network
     public:
         Runtime() noexcept = default;
         Runtime(const Runtime&) = delete;
-        Runtime(const Runtime&&) = delete;
+        Runtime(Runtime &&) = delete;
         virtual ~Runtime() = default;
         auto operator=(const Runtime&) -> Runtime& = delete;
-        auto operator=(const Runtime&&) -> Runtime& = delete;
+        auto operator=(Runtime &&) -> Runtime& = delete;
 
         [[nodiscard]] virtual auto version() const noexcept -> Version = 0;
         [[nodiscard]] virtual auto high_version() const noexcept -> Version = 0;
