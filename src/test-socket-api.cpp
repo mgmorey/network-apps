@@ -130,25 +130,25 @@ namespace
         }
     }
 
-    auto print(const Runtime& sa) -> void
+    auto print(const Runtime& rt) -> void
     {
         std::cout << "    Version:\t\t"
-                  << sa.version()
+                  << rt.version()
                   << std::endl;
         std::cout << "    High Version:\t"
-                  << sa.high_version()
+                  << rt.high_version()
                   << std::endl;
         std::cout << "    Description:\t"
-                  << quote(sa.description())
+                  << quote(rt.description())
                   << std::endl;
         std::cout << "    System Status:\t"
-                  << quote(sa.system_status())
+                  << quote(rt.system_status())
                   << std::endl;
         std::cout << "    Error Code:\t\t"
-                  << sa.error_code()
+                  << rt.error_code()
                   << std::endl;
-        std::cout << "    Is Stasaed:\t\t"
-                  << sa.is_started()
+        std::cout << "    Is Started:\t\t"
+                  << rt.is_started()
                   << std::endl;
     }
 
