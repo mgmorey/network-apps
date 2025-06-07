@@ -14,7 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/assert.hpp"           // assert()
-#include "network/network.hpp"          // Error, FailMode,
+#include "network/network.hpp"          // Error, FailMode, Runtime,
                                         // RuntimeData, SocketApi,
                                         // Version, get_hostname(),
                                         // is_running(), run()
@@ -41,6 +41,7 @@ namespace
 {
     using Network::Error;
     using Network::FailMode;
+    using Network::Runtime;
     using Network::RuntimeData;
     using Network::SocketApi;
     using Network::Version;
@@ -71,10 +72,10 @@ namespace
     const auto fail_mode {FailMode::return_error};
     auto is_verbose {false};  // NOLINT
 
-    auto get_actual_sa_str(const SocketApi& sa) -> std::string
+    auto get_actual_str(const Runtime& rt) -> std::string
     {
         std::ostringstream oss;
-        oss << sa;
+        oss << rt;
         return oss.str();
     }
 
@@ -129,7 +130,7 @@ namespace
         }
     }
 
-    auto print(const SocketApi& sa) -> void
+    auto print(const Runtime& sa) -> void
     {
         std::cout << "    Version:\t\t"
                   << sa.version()
@@ -169,30 +170,35 @@ namespace
                   << std::endl;
     }
 
+    auto test(Runtime& rt) -> void
+    {
+        assert(rt.version() == Version {});
+        assert(rt.high_version() == Version {});
+        assert(rt.description() == std::string_view {});
+        assert(rt.system_status() == std::string_view {});
+        assert(!rt.error_code());
+        assert(!rt.is_started());
+        print(rt);
+        assert(!is_running(rt));
+        rt.start();
+        assert(!rt.error_code());
+        print(rt);
+        assert(is_running(rt));
+        const std::string actual_str {get_actual_str(rt)};
+        const std::regex expected_regex {get_expected_re()};
+        assert(std::regex_match(actual_str, expected_regex));
+        rt.stop();
+        assert(!rt.error_code());
+        print(rt);
+        assert(!is_running(rt));
+    }
+
     auto test(const RuntimeData& rd, Version version) -> void
     {
         std::cout << "Testing Socket API version: " << version << std::endl;
         print(rd);
         auto sa {SocketApi(rd)};
-        assert(sa.version() == Version {});
-        assert(sa.high_version() == Version {});
-        assert(sa.description() == std::string_view {});
-        assert(sa.system_status() == std::string_view {});
-        assert(!sa.error_code());
-        assert(!sa.is_started());
-        print(sa);
-        assert(!is_running(sa));
-        sa.start();
-        assert(!sa.error_code());
-        print(sa);
-        assert(is_running(sa));
-        const std::string actual_str {get_actual_sa_str(sa)};
-        const std::regex expected_regex {get_expected_re()};
-        assert(std::regex_match(actual_str, expected_regex));
-        sa.stop();
-        assert(!sa.error_code());
-        print(sa);
-        assert(!is_running(sa));
+        test(sa);
     }
 
     auto test_inactive() -> void
