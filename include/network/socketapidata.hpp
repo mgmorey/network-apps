@@ -25,17 +25,15 @@ namespace Network
 {
     struct SocketApiData : public ApiData
     {
-        SocketApiData() : ApiData {}
-        {
-        }
+        SocketApiData() noexcept : ApiData {} {}
 
         SocketApiData(const SocketApiData&) noexcept = default;
         SocketApiData(SocketApiData&&) noexcept = default;
         ~SocketApiData() noexcept = default;
         auto operator=(const SocketApiData&) noexcept ->
-                SocketApiData& = default;
+            SocketApiData& = default;
         auto operator=(SocketApiData&&) noexcept ->
-                SocketApiData& = default;
+            SocketApiData& = default;
 
         [[nodiscard]] auto version() const noexcept -> Version;
         [[nodiscard]] auto high_version() const noexcept -> Version;
