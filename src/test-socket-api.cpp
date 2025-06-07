@@ -174,7 +174,12 @@ namespace
         std::cout << "Testing Socket API version: " << version << std::endl;
         print(rd);
         auto sa {SocketApi(rd)};
+        assert(sa.version() == Version {});
+        assert(sa.high_version() == Version {});
+        assert(sa.description() == std::string_view {});
+        assert(sa.system_status() == std::string_view {});
         assert(!sa.error_code());
+        assert(!sa.is_started());
         print(sa);
         assert(!is_running(sa));
         sa.start();
