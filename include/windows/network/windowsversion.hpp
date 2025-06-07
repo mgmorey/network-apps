@@ -33,10 +33,6 @@ namespace Network
 
         static constexpr Version latest {2, 2};
 
-        constexpr WindowsVersion() noexcept = default;
-        constexpr WindowsVersion(const WindowsVersion&) noexcept = default;
-        constexpr WindowsVersion(WindowsVersion&&) noexcept = default;
-
         // cppcheck-suppress noExplicitConstructor; NOLINTNEXTLINE
         constexpr WindowsVersion(const Version& t_version) noexcept :
             Version(t_version)
@@ -56,6 +52,9 @@ namespace Network
         {
         }
 
+        constexpr WindowsVersion() noexcept = default;
+        constexpr WindowsVersion(const WindowsVersion&) noexcept = default;
+        constexpr WindowsVersion(WindowsVersion&&) noexcept = default;
         constexpr ~WindowsVersion() noexcept = default;
         constexpr auto operator=(const WindowsVersion&) noexcept ->
             WindowsVersion& = default;
