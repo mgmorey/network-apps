@@ -17,7 +17,7 @@
 
 #include "network/start.hpp"            // start()
 #include "network/runtimedata.hpp"      // RuntimeData
-#include "network/socketapidata.hpp"    // ApiData
+#include "network/socketapidata.hpp"    // SocketApiData
 
 #include <iostream>     // std::cout, std::endl
 
@@ -28,12 +28,12 @@ auto Network::start(const RuntimeData& rd) -> SocketApiData
                   << std::endl;
     }
 
-    SocketApiData data;
-    data.m_version = Version {0, 0};
-    data.m_high_version = Version {0, 0},
-    data.m_description = "Berkeley Software Distribution Sockets",
-    data.m_system_status = "Running";
-    return data;
+    SocketApiData ad;
+    ad.m_version = Version {0, 0};
+    ad.m_high_version = Version {0, 0},
+    ad.m_description = "Berkeley Software Distribution Sockets",
+    ad.m_system_status = "Running";
+    return ad;
 }
 
 #endif
