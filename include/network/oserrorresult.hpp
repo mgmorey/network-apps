@@ -27,8 +27,14 @@ namespace Network
     {
         OsErrorResult() = default;
 
-        OsErrorResult(os_error_type t_number,
-                      std::string_view t_string);
+        OsErrorResult(os_error_type t_number, std::string_view t_string);
+
+        OsErrorResult(const OsErrorResult&) = default;
+        OsErrorResult(OsErrorResult&&) = default;
+        ~OsErrorResult() = default;
+        auto operator=(const OsErrorResult&) -> OsErrorResult& = default;
+        auto operator=(OsErrorResult&&) -> OsErrorResult& = default;
+
         operator bool() const noexcept;  // NOLINT
         [[nodiscard]] auto number() const noexcept -> os_error_type;
         [[nodiscard]] auto string() const -> const std::string&;
