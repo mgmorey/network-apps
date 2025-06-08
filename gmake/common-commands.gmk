@@ -26,6 +26,8 @@ else ifeq "$(USING_COMPILER)" "gcc"
 	CC := gcc$(GCC_SUFFIX)
 	CXX := g++$(GCC_SUFFIX)
 	GCOV := gcov$(GCC_SUFFIX)
+else ifeq "$(CXX)" ""
+	CXX := c++
 endif
 
 ifndef GCOVR

@@ -197,9 +197,9 @@ $(if $(is_uctags),tags)
 gcovr_targets = gcovr-html gcovr-json
 
 # Define variables for compiler and linker commands
-COMPILE$(depend_suffix) = $(if $(CXX),$(CXX),c++) $(sort $(CPPFLAGS) -MM)
-COMPILE$(source_suffix) = $(if $(CXX),$(CXX),c++) $(sort $(CXXFLAGS)	\
-$(CPPFLAGS) $(TARGET_ARCH)) -c
+COMPILE$(depend_suffix) = $(CXX) $(sort $(CPPFLAGS) -MM)
+COMPILE$(source_suffix) = $(CXX) $(sort $(CXXFLAGS) $(CPPFLAGS)	\
+$(TARGET_ARCH)) -c
 LINK$(object_suffix) = $(if $(CXX),$(CXX),c++) $(sort $(LDFLAGS))
 
 # Set virtual paths
