@@ -13,32 +13,31 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifdef WIN32
+#ifndef WIN32
 
-#include "network/socketapidata.hpp"    // SocketApiData
+#include "network/apidata.hpp"          // ApiData
 #include "network/version.hpp"          // Version
-#include "network/windowsversion.hpp"   // WindowsVersion
 
 #include <string_view>  // std::string_view
 
-auto Network::SocketApiData::version() const noexcept -> Version
+auto Network::ApiData::version() const noexcept -> Version
 {
-    return WindowsVersion {wVersion};
+    return m_version;
 }
 
-auto Network::SocketApiData::high_version() const noexcept -> Version
+auto Network::ApiData::high_version() const noexcept -> Version
 {
-    return WindowsVersion {wHighVersion};
+    return m_high_version;
 }
 
-auto Network::SocketApiData::description() const noexcept -> std::string_view
+auto Network::ApiData::description() const noexcept -> std::string_view
 {
-    return static_cast<const char*>(szDescription);
+    return m_description;
 }
 
-auto Network::SocketApiData::system_status() const noexcept -> std::string_view
+auto Network::ApiData::system_status() const noexcept -> std::string_view
 {
-    return static_cast<const char*>(szSystemStatus);
+    return m_system_status;
 }
 
 #endif

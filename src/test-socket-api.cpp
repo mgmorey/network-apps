@@ -14,8 +14,8 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/assert.hpp"           // assert()
-#include "network/network.hpp"          // Error, FailMode, Runtime,
-                                        // RuntimeData, SocketApi,
+#include "network/network.hpp"          // ApiInput, Error, FailMode,
+                                        // Runtime, SocketApi,
                                         // Version, get_hostname(),
                                         // is_running(), run()
 #include "network/parse.hpp"            // parse()
@@ -39,10 +39,10 @@
 
 namespace
 {
+    using Network::ApiInput;
     using Network::Error;
     using Network::FailMode;
     using Network::Runtime;
-    using Network::RuntimeData;
     using Network::SocketApi;
     using Network::Version;
     using Network::get_hostname;
@@ -152,12 +152,12 @@ namespace
                   << std::endl;
     }
 
-    auto print(const RuntimeData& rd) -> void
+    auto print(const ApiInput& ai) -> void
     {
 
-        if (rd.version()) {
+        if (ai.version()) {
             std::cout << "    Input Version:\t"
-                      << rd.version().value_or(Version {})
+                      << ai.version().value_or(Version {})
                       << std::endl;
         }
         else {
@@ -166,7 +166,7 @@ namespace
         }
 
         std::cout << "    Input Fail Mode:\t"
-                  << rd.fail_mode()
+                  << ai.fail_mode()
                   << std::endl;
     }
 
@@ -193,11 +193,11 @@ namespace
         assert(!is_running(rt));
     }
 
-    auto test(const RuntimeData& rd, Version version) -> void
+    auto test(const ApiInput& ai, Version version) -> void
     {
         std::cout << "Testing Socket API version: " << version << std::endl;
-        print(rd);
-        auto sa {SocketApi(rd)};
+        print(ai);
+        auto sa {SocketApi(ai)};
         test(sa);
     }
 
@@ -207,8 +207,8 @@ namespace
         int error_code {0};
 
         try {
-            const RuntimeData rd {fail_mode, is_verbose};
-            error_code = Network::stop(rd);
+            const ApiInput ai {fail_mode, is_verbose};
+            error_code = Network::stop(ai);
         }
         catch (const Error& error) {
             print(error);
@@ -242,8 +242,8 @@ namespace
 
         try {
             const Version version {major, 0};
-            const RuntimeData rd {version, fail_mode, is_verbose};
-            test(rd, version);
+            const ApiInput ai {version, fail_mode, is_verbose};
+            test(ai, version);
         }
         catch (const Error& error) {
             print(error);

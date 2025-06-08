@@ -14,8 +14,8 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/assert.hpp"           // assert()
-#include "network/network.hpp"          // Error, FailMode, Runtime,
-                                        // RuntimeData, Version,
+#include "network/network.hpp"          // ApiInput, Error, FailMode,
+                                        // Runtime, Version,
                                         // create_runtime(),
                                         // get_hostname(),
                                         // is_running(), run()
@@ -39,10 +39,10 @@
 
 namespace
 {
+    using Network::ApiInput;
     using Network::Error;
     using Network::FailMode;
     using Network::Runtime;
-    using Network::RuntimeData;
     using Network::Version;
     using Network::create_runtime;
     using Network::get_hostname;
@@ -152,7 +152,7 @@ namespace
                   << std::endl;
     }
 
-    auto print(const RuntimeData& rd) -> void
+    auto print(const ApiInput& rd) -> void
     {
 
         if (rd.version()) {
@@ -193,7 +193,7 @@ namespace
         assert(!is_running(rt));
     }
 
-    auto test(const RuntimeData& rd, Version version) -> void
+    auto test(const ApiInput& rd, Version version) -> void
     {
         std::cout << "Testing Socket API version: " << version << std::endl;
         print(rd);
@@ -207,8 +207,8 @@ namespace
         int error_code {0};
 
         try {
-            const RuntimeData rd {fail_mode, is_verbose};
-            error_code = Network::stop(rd);
+            const ApiInput ai {fail_mode, is_verbose};
+            error_code = Network::stop(ai);
         }
         catch (const Error& error) {
             print(error);
@@ -242,8 +242,8 @@ namespace
 
         try {
             const Version version {major, 0};
-            const RuntimeData rd {version, fail_mode, is_verbose};
-            test(rd, version);
+            const ApiInput ai {version, fail_mode, is_verbose};
+            test(ai, version);
         }
         catch (const Error& error) {
             print(error);

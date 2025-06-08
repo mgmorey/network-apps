@@ -16,12 +16,12 @@
 #ifndef NETWORK_START_HPP
 #define NETWORK_START_HPP
 
-#include "network/runtimedata.hpp"      // RuntimeData
-#include "network/socketapidata.hpp"    // SocketApiData
+#include "network/apidata.hpp"          // ApiData
+#include "network/apiinput.hpp"         // ApiInput
 
 namespace Network
 {
-    extern auto start(const RuntimeData& rd) -> SocketApiData;
+    extern auto start(const ApiInput& ai) -> ApiData;
 }
 
 #endif

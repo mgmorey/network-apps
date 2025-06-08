@@ -19,6 +19,7 @@
 #include "network/accept.hpp"                   // accept()
 #include "network/address.hpp"                  // Address
 #include "network/ai-error.hpp"                 // format_ai_error()
+#include "network/apiinput.hpp"                 // ApiInput
 #include "network/always-false.hpp"             // always_false_v
 #include "network/api-error.hpp"                // get_last_runtime_error()
                                                 // reset_last_runtime_error()
@@ -105,7 +106,6 @@
 #include "network/quote.hpp"                    // quote()
 #include "network/run.hpp"                      // run()
 #include "network/runtime.hpp"                  // Runtime
-#include "network/runtimedata.hpp"              // RuntimeDataa
 #include "network/sharedruntime.hpp"            // SharedRuntime
 #include "network/socket-error.hpp"             // socket_error
 #include "network/socket.hpp"                   // Socket

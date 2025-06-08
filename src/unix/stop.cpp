@@ -16,13 +16,13 @@
 #ifndef WIN32
 
 #include "network/stop.hpp"             // stop()
-#include "network/runtimedata.hpp"      // RuntimeData
+#include "network/apiinput.hpp"         // ApiInput
 
 #include <iostream>     // std::cout, std::endl
 
-auto Network::stop(const RuntimeData& rd) -> int
+auto Network::stop(const ApiInput& ai) -> int
 {
-    if (rd.is_verbose()) {
+    if (ai.is_verbose()) {
         std::cout << "Stopping the network runtime."
                   << std::endl;
     }

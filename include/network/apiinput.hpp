@@ -13,36 +13,36 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_RUNTIMEDATA_HPP
-#define NETWORK_RUNTIMEDATA_HPP
+#ifndef NETWORK_APIINPUT_HPP
+#define NETWORK_APIINPUT_HPP
 
 #include "network/failmode.hpp"                 // FailMode
 #include "network/optionalversion.hpp"          // OptionalVersion
 
 namespace Network
 {
-    struct RuntimeData
+    struct ApiInput
     {
-        RuntimeData(OptionalVersion t_version,
-                    FailMode t_fail_mode,
-                    bool t_is_verbose) noexcept;
-        RuntimeData(FailMode t_fail_mode,
-                    bool t_is_verbose) noexcept;
-        explicit RuntimeData(bool t_is_verbose) noexcept;
+        ApiInput(OptionalVersion t_version,
+                 FailMode t_fail_mode,
+                 bool t_is_verbose) noexcept;
+        ApiInput(FailMode t_fail_mode,
+                 bool t_is_verbose) noexcept;
+        explicit ApiInput(bool t_is_verbose) noexcept;
 
-        RuntimeData() noexcept = default;
-        RuntimeData(const RuntimeData&) noexcept = default;
-        RuntimeData(RuntimeData&&) noexcept = default;
-        ~RuntimeData() noexcept = default;
-        auto operator=(const RuntimeData&) noexcept -> RuntimeData& = default;
-        auto operator=(RuntimeData&&) noexcept -> RuntimeData& = default;
+        ApiInput() noexcept = default;
+        ApiInput(const ApiInput&) noexcept = default;
+        ApiInput(ApiInput&&) noexcept = default;
+        ~ApiInput() noexcept = default;
+        auto operator=(const ApiInput&) noexcept -> ApiInput& = default;
+        auto operator=(ApiInput&&) noexcept -> ApiInput& = default;
 
         [[nodiscard]] auto version() const noexcept -> OptionalVersion;
         [[nodiscard]] auto fail_mode() const noexcept -> FailMode;
         [[nodiscard]] auto is_verbose() const noexcept -> bool;
 
     private:
-        FailMode m_fm {FailMode::throw_error};
+        FailMode m_fail_mode {FailMode::throw_error};
         bool m_is_verbose {false};
         OptionalVersion m_version;
     };

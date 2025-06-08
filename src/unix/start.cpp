@@ -16,19 +16,19 @@
 #ifndef WIN32
 
 #include "network/start.hpp"            // start()
-#include "network/runtimedata.hpp"      // RuntimeData
-#include "network/socketapidata.hpp"    // SocketApiData
+#include "network/apidata.hpp"          // ApiData
+#include "network/apiinput.hpp"         // ApiInput
 
 #include <iostream>     // std::cout, std::endl
 
-auto Network::start(const RuntimeData& rd) -> SocketApiData
+auto Network::start(const ApiInput& ai) -> ApiData
 {
-    if (rd.is_verbose()) {
+    if (ai.is_verbose()) {
         std::cout << "Starting the network runtime."
                   << std::endl;
     }
 
-    SocketApiData ad;
+    ApiData ad;
     ad.m_version = Version {0, 0};
     ad.m_high_version = Version {0, 0},
     ad.m_description = "Berkeley Software Distribution Sockets",

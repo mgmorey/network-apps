@@ -13,16 +13,32 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_RUNTIMESTATE_HPP
-#define NETWORK_RUNTIMESTATE_HPP
+#ifdef WIN32
 
-namespace Network
+#include "network/apidata.hpp"          // ApiData
+#include "network/version.hpp"          // Version
+#include "network/windowsversion.hpp"   // WindowsVersion
+
+#include <string_view>  // std::string_view
+
+auto Network::ApiData::version() const noexcept -> Version
 {
-    struct RuntimeState
-    {
-        int m_error_code {0};
-        bool m_is_started {false};
-    };
+    return WindowsVersion {wVersion};
+}
+
+auto Network::ApiData::high_version() const noexcept -> Version
+{
+    return WindowsVersion {wHighVersion};
+}
+
+auto Network::ApiData::description() const noexcept -> std::string_view
+{
+    return static_cast<const char*>(szDescription);
+}
+
+auto Network::ApiData::system_status() const noexcept -> std::string_view
+{
+    return static_cast<const char*>(szSystemStatus);
 }
 
 #endif

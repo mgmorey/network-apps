@@ -16,11 +16,11 @@
 #ifndef NETWORK_STOP_HPP
 #define NETWORK_STOP_HPP
 
-#include "network/runtimedata.hpp"      // RuntimeData
+#include "network/apiinput.hpp"         // ApiInput
 
 namespace Network
 {
-    extern auto stop(const RuntimeData& rd) -> int;
+    extern auto stop(const ApiInput& ai) -> int;
 }
 
 #endif

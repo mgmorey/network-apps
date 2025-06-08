@@ -13,13 +13,13 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-runtime.hpp"      // get-runtime()
+#include "network/apiinput.hpp"         // ApiInput
 #include "network/create-runtime.hpp"   // create_runtime()
-#include "network/runtimedata.hpp"      // RuntimeData
+#include "network/get-runtime.hpp"      // get-runtime()
 #include "network/sharedruntime.hpp"    // SharedRuntime
 
-auto Network::get_runtime(RuntimeData rd) -> SharedRuntime
+auto Network::get_runtime(ApiInput ai) -> SharedRuntime
 {
-    static auto sr {create_runtime(rd)};
+    static auto sr {create_runtime(ai)};
     return sr;
 }

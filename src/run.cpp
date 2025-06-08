@@ -14,23 +14,23 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/run.hpp"              // run()
+#include "network/apiinput.hpp"         // ApiInput
 #include "network/create-runtime.hpp"   // create_runtime()
 #include "network/get-runtime.hpp"      // get_runtime()
 #include "network/logicerror.hpp"       // LogicError
-#include "network/runtimedata.hpp"      // RuntimeData
 #include "network/runtimescope.hpp"     // RuntimeScope
 #include "network/sharedruntime.hpp"    // SharedRuntime
 
-auto Network::run(RuntimeData rd, RuntimeScope scope) -> SharedRuntime
+auto Network::run(ApiInput ai, RuntimeScope scope) -> SharedRuntime
 {
     SharedRuntime sr;
 
     switch (scope) {
     case RuntimeScope::global:
-        sr = get_runtime(rd);
+        sr = get_runtime(ai);
         break;
     case RuntimeScope::shared:
-        sr = create_runtime(rd);
+        sr = create_runtime(ai);
         break;
     default:
         throw LogicError("Invalid scope");
@@ -42,7 +42,7 @@ auto Network::run(RuntimeData rd, RuntimeScope scope) -> SharedRuntime
 
 auto Network::run(RuntimeScope scope, bool is_verbose) -> SharedRuntime
 {
-    return run(RuntimeData {is_verbose}, scope);
+    return run(ApiInput {is_verbose}, scope);
 }
 
 auto Network::run(bool is_verbose) -> SharedRuntime

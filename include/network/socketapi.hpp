@@ -16,10 +16,10 @@
 #ifndef NETWORK_SOCKETAPI_HPP
 #define NETWORK_SOCKETAPI_HPP
 
+#include "network/apidata.hpp"          // ApiData
+#include "network/apiinput.hpp"         // ApiInput
+#include "network/apistate.hpp"         // ApiState
 #include "network/runtime.hpp"          // Runtime
-#include "network/runtimedata.hpp"      // RuntimeData
-#include "network/runtimestate.hpp"     // RuntimeState
-#include "network/socketapidata.hpp"    // SocketApiData
 #include "network/version.hpp"          // Version
 
 #include <string_view>  // std::string_view
@@ -29,7 +29,7 @@ namespace Network
     class SocketApi final : public Runtime
     {
     public:
-        explicit SocketApi(const RuntimeData& t_rd);
+        explicit SocketApi(const ApiInput& t_api_input);
 
         SocketApi(const SocketApi&) = delete;
         SocketApi(SocketApi&&) = delete;
@@ -50,9 +50,9 @@ namespace Network
         auto stop() -> void final;
 
     private:
-        RuntimeData m_rt_data;
-        RuntimeState m_rt_state;
-        SocketApiData m_sa_data;
+        ApiData m_api_data;
+        ApiInput m_api_input;
+        ApiState m_api_state;
     };
 }
 

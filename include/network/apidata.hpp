@@ -13,31 +13,31 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef WIN32
+#ifndef NETWORK_SOCKETAPIDATA_HPP
+#define NETWORK_SOCKETAPIDATA_HPP
 
-#include "network/socketapidata.hpp"    // SocketApiData
+#include "network/nativeapidata.hpp"    // NativeApiData
 #include "network/version.hpp"          // Version
 
 #include <string_view>  // std::string_view
 
-auto Network::SocketApiData::version() const noexcept -> Version
+namespace Network
 {
-    return m_version;
-}
+    struct ApiData : public NativeApiData
+    {
+        ApiData() noexcept : NativeApiData {} {}
 
-auto Network::SocketApiData::high_version() const noexcept -> Version
-{
-    return m_high_version;
-}
+        ApiData(const ApiData&) noexcept = default;
+        ApiData(ApiData&&) noexcept = default;
+        ~ApiData() noexcept = default;
+        auto operator=(const ApiData&) noexcept -> ApiData& = default;
+        auto operator=(ApiData&&) noexcept -> ApiData& = default;
 
-auto Network::SocketApiData::description() const noexcept -> std::string_view
-{
-    return m_description;
-}
-
-auto Network::SocketApiData::system_status() const noexcept -> std::string_view
-{
-    return m_system_status;
+        [[nodiscard]] auto version() const noexcept -> Version;
+        [[nodiscard]] auto high_version() const noexcept -> Version;
+        [[nodiscard]] auto description() const noexcept -> std::string_view;
+        [[nodiscard]] auto system_status() const noexcept -> std::string_view;
+    };
 }
 
 #endif

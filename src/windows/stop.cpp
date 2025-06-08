@@ -16,12 +16,12 @@
 #ifdef WIN32
 
 #include "network/stop.hpp"             // stop()
+#include "network/apiinput.hpp"         // ApiInput
 #include "network/error.hpp"            // Error
 #include "network/format-os-error.hpp"  // format_os_error()
 #include "network/get-api-error.hpp"    // get_api_error()
 #include "network/logicerror.hpp"       // LogicError
 #include "network/reset-api-error.hpp"  // reset_api_error()
-#include "network/runtimedata.hpp"      // RuntimeData
 #include "network/runtimeerror.hpp"     // RuntimeError
 #include "network/socket-error.hpp"     // socket_error
 #include "network/to-os-error.hpp"      // to_os_error()
@@ -32,7 +32,7 @@
 #include <iostream>     // std::cout, std::endl
 #include <sstream>      // std::ostringstream
 
-auto Network::stop(const RuntimeData& rd) -> int
+auto Network::stop(const ApiInput& rd) -> int
 {
     reset_api_error();
 

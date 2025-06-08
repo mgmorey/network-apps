@@ -16,12 +16,12 @@
 #ifdef WIN32
 
 #include "network/start.hpp"            // start()
+#include "network/apidata.hpp"          // ApiData
+#include "network/apiinput.hpp"         // ApiInput
 #include "network/error.hpp"            // Error
 #include "network/format-os-error.hpp"  // format_os_error()
 #include "network/logicerror.hpp"       // LogicError
-#include "network/runtimedata.hpp"      // RuntimeData
 #include "network/runtimeerror.hpp"     // RuntimeError
-#include "network/socketapidata.hpp"    // SocketApiData
 #include "network/to-os-error.hpp"      // to_os_error()
 #include "network/version.hpp"          // Version
 #include "network/windowsversion.hpp"   // WindowsVersion
@@ -31,11 +31,11 @@
 
 #include <iostream>     // std::cout, std::endl
 
-auto Network::start(const RuntimeData& rd) -> SocketApiData
+auto Network::start(const ApiInput& rd) -> ApiData
 {
     const auto version {rd.version().value_or(WindowsVersion::latest)};
     const WindowsVersion wsa_version {version};
-    SocketApiData wsa_data {};
+    ApiData wsa_data {};
 
     if (rd.is_verbose()) {
         // clang-format off

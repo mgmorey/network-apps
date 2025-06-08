@@ -1,4 +1,4 @@
-// Copyright (C) 2024  "Michael G. Morey" <mgmorey@gmail.com>
+// Copyright (C) 2025  "Michael G. Morey" <mgmorey@gmail.com>
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,14 +13,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/create-runtime.hpp"   // create_runtime()
-#include "network/apiinput.hpp"         // ApiInput
-#include "network/sharedruntime.hpp"    // SharedRuntime
-#include "network/socketapi.hpp"        // SocketApi
+#ifndef NETWORK_APISTATE_HPP
+#define NETWORK_APISTATE_HPP
 
-#include <memory>       // std::make_shared()
-
-auto Network::create_runtime(ApiInput ai) -> SharedRuntime
+namespace Network
 {
-    return std::make_shared<SocketApi>(ai);
+    struct ApiState
+    {
+        int m_error_code {0};
+        bool m_is_started {false};
+    };
 }
+
+#endif
