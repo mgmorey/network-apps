@@ -16,8 +16,8 @@
 #ifdef WIN32
 
 #include "network/start.hpp"            // start()
-#include "network/apidata.hpp"          // ApiData
-#include "network/apiinput.hpp"         // ApiInput
+#include "network/apioptions.hpp"       // ApiOptions
+#include "network/apistate.hpp"         // ApiState
 #include "network/error.hpp"            // Error
 #include "network/format-os-error.hpp"  // format_os_error()
 #include "network/logicerror.hpp"       // LogicError
@@ -31,13 +31,13 @@
 
 #include <iostream>     // std::cout, std::endl
 
-auto Network::start(const ApiInput& rd) -> ApiData
+auto Network::start(ApiOptions ao) -> ApiState
 {
-    const auto version {rd.version().value_or(WindowsVersion::latest)};
+    const auto version {ao.version().value_or(WindowsVersion::latest)};
     const WindowsVersion wsa_version {version};
-    ApiData wsa_data {};
+    ApiState wsa_data {};
 
-    if (rd.is_verbose()) {
+    if (ao.is_verbose()) {
         // clang-format off
         std::cout << "Starting the network runtime.\n"
                   << "Calling ::WSAStartup("
@@ -51,7 +51,7 @@ auto Network::start(const ApiInput& rd) -> ApiData
         const auto os_error {to_os_error(api_error)};
         const auto message {format_os_error(os_error)};
 
-        if (rd.is_verbose()) {
+        if (ao.is_verbose()) {
             // clang-format off
             std::cout << "Call to ::WSAStartup("
                       << wsa_version
@@ -75,7 +75,7 @@ auto Network::start(const ApiInput& rd) -> ApiData
         }
     }
 
-    if (rd.is_verbose()) {
+    if (ao.is_verbose()) {
         // clang-format off
         std::cout << "Call to ::WSAStartup("
                   << wsa_version

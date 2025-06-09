@@ -16,11 +16,11 @@
 #ifndef NETWORK_STOP_HPP
 #define NETWORK_STOP_HPP
 
-#include "network/apiinput.hpp"         // ApiInput
+#include "network/apioptions.hpp"       // ApiOptions
 
 namespace Network
 {
-    extern auto stop(const ApiInput& ai) -> int;
+    extern auto stop(ApiOptions ao) -> int;
 }
 
 #endif

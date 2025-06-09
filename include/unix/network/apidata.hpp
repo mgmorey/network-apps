@@ -13,31 +13,26 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_SOCKETAPIDATA_HPP
-#define NETWORK_SOCKETAPIDATA_HPP
+#ifndef UNIX_NETWORK_APIDATA_HPP
+#define UNIX_NETWORK_APIDATA_HPP
 
-#include "network/nativeapidata.hpp"    // NativeApiData
+#ifndef WIN32
+
 #include "network/version.hpp"          // Version
 
 #include <string_view>  // std::string_view
 
 namespace Network
 {
-    struct ApiData : public NativeApiData
+    struct ApiData
     {
-        ApiData() noexcept : NativeApiData {} {}
-
-        ApiData(const ApiData&) noexcept = default;
-        ApiData(ApiData&&) noexcept = default;
-        ~ApiData() noexcept = default;
-        auto operator=(const ApiData&) noexcept -> ApiData& = default;
-        auto operator=(ApiData&&) noexcept -> ApiData& = default;
-
-        [[nodiscard]] auto version() const noexcept -> Version;
-        [[nodiscard]] auto high_version() const noexcept -> Version;
-        [[nodiscard]] auto description() const noexcept -> std::string_view;
-        [[nodiscard]] auto system_status() const noexcept -> std::string_view;
+        Version m_version;
+        Version m_high_version;
+        std::string_view m_description;
+        std::string_view m_system_status;
     };
 }
+
+#endif
 
 #endif

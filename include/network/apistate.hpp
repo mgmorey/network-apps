@@ -16,12 +16,27 @@
 #ifndef NETWORK_APISTATE_HPP
 #define NETWORK_APISTATE_HPP
 
+#include "network/apidata.hpp"          // ApiData
+#include "network/version.hpp"          // Version
+
+#include <string_view>  // std::string_view
+
 namespace Network
 {
-    struct ApiState
+    struct ApiState : public ApiData
     {
-        int m_error_code {0};
-        bool m_is_started {false};
+        ApiState() noexcept : ApiData {} {}
+
+        ApiState(const ApiState&) noexcept = default;
+        ApiState(ApiState&&) noexcept = default;
+        ~ApiState() noexcept = default;
+        auto operator=(const ApiState&) noexcept -> ApiState& = default;
+        auto operator=(ApiState&&) noexcept -> ApiState& = default;
+
+        [[nodiscard]] auto version() const noexcept -> Version;
+        [[nodiscard]] auto high_version() const noexcept -> Version;
+        [[nodiscard]] auto description() const noexcept -> std::string_view;
+        [[nodiscard]] auto system_status() const noexcept -> std::string_view;
     };
 }
 

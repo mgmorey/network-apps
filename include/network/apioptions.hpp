@@ -21,21 +21,21 @@
 
 namespace Network
 {
-    struct ApiInput
+    struct ApiOptions
     {
-        ApiInput(OptionalVersion t_version,
-                 FailMode t_fail_mode,
-                 bool t_is_verbose) noexcept;
-        ApiInput(FailMode t_fail_mode,
-                 bool t_is_verbose) noexcept;
-        explicit ApiInput(bool t_is_verbose) noexcept;
+        ApiOptions(OptionalVersion t_version,
+                   FailMode t_fail_mode,
+                   bool t_is_verbose) noexcept;
+        ApiOptions(FailMode t_fail_mode,
+                   bool t_is_verbose) noexcept;
+        explicit ApiOptions(bool t_is_verbose) noexcept;
 
-        ApiInput() noexcept = default;
-        ApiInput(const ApiInput&) noexcept = default;
-        ApiInput(ApiInput&&) noexcept = default;
-        ~ApiInput() noexcept = default;
-        auto operator=(const ApiInput&) noexcept -> ApiInput& = default;
-        auto operator=(ApiInput&&) noexcept -> ApiInput& = default;
+        ApiOptions() noexcept = default;
+        ApiOptions(const ApiOptions&) noexcept = default;
+        ApiOptions(ApiOptions&&) noexcept = default;
+        ~ApiOptions() noexcept = default;
+        auto operator=(const ApiOptions&) noexcept -> ApiOptions& = default;
+        auto operator=(ApiOptions&&) noexcept -> ApiOptions& = default;
 
         [[nodiscard]] auto version() const noexcept -> OptionalVersion;
         [[nodiscard]] auto fail_mode() const noexcept -> FailMode;

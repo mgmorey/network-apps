@@ -84,7 +84,7 @@ cppcheck_log = cppcheck.log
 
 library_common_sources = accept.cpp address-sa.cpp address-sin.cpp	\
 address-sin6.cpp address.cpp addresserror.cpp addresslist.cpp		\
-apiinput.cpp argumentdata.cpp binarybuffer.cpp bind-endpoint.cpp	\
+apioptions.cpp argumentdata.cpp binarybuffer.cpp bind-endpoint.cpp	\
 close.cpp connect-endpoint.cpp create-runtime.cpp			\
 create-socket-handle.cpp create-socket-hints.cpp			\
 create-socketresult.cpp error.cpp familyerror.cpp format.cpp		\
@@ -107,7 +107,7 @@ to-string-in-addr.cpp to-string-in6-addr.cpp to-string-span-byte.cpp	\
 to-string-void.cpp validate-bs.cpp validate-sa.cpp validate-sin.cpp	\
 validate-sin6.cpp
 
-library_native_sources = apidata.cpp create-socket.cpp		\
+library_native_sources = apistate.cpp create-socket.cpp		\
 format-ai-error.cpp format-os-error.cpp get-api-error.cpp	\
 get-os-error.cpp read.cpp set-api-error.cpp set-os-error.cpp	\
 start.cpp stop.cpp write.cpp

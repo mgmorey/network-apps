@@ -16,8 +16,7 @@
 #ifndef NETWORK_SOCKETAPI_HPP
 #define NETWORK_SOCKETAPI_HPP
 
-#include "network/apidata.hpp"          // ApiData
-#include "network/apiinput.hpp"         // ApiInput
+#include "network/apioptions.hpp"       // ApiOptions
 #include "network/apistate.hpp"         // ApiState
 #include "network/runtime.hpp"          // Runtime
 #include "network/version.hpp"          // Version
@@ -29,7 +28,7 @@ namespace Network
     class SocketApi final : public Runtime
     {
     public:
-        explicit SocketApi(const ApiInput& t_api_input);
+        explicit SocketApi(ApiOptions t_ao);
 
         SocketApi(const SocketApi&) = delete;
         SocketApi(SocketApi&&) = delete;
@@ -50,9 +49,10 @@ namespace Network
         auto stop() -> void final;
 
     private:
-        ApiData m_api_data;
-        ApiInput m_api_input;
-        ApiState m_api_state;
+        ApiOptions m_ao;
+        ApiState m_as;
+        int m_error_code {0};
+        bool m_is_started {false};
     };
 }
 

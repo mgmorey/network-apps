@@ -14,13 +14,13 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/create-runtime.hpp"   // create_runtime()
-#include "network/apiinput.hpp"         // ApiInput
+#include "network/apioptions.hpp"       // ApiOptions
 #include "network/sharedruntime.hpp"    // SharedRuntime
 #include "network/socketapi.hpp"        // SocketApi
 
 #include <memory>       // std::make_shared()
 
-auto Network::create_runtime(ApiInput ai) -> SharedRuntime
+auto Network::create_runtime(ApiOptions ao) -> SharedRuntime
 {
-    return std::make_shared<SocketApi>(ai);
+    return std::make_shared<SocketApi>(ao);
 }

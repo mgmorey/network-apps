@@ -13,31 +13,18 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef WIN32
+#ifndef WINDOWS_NETWORK_APIDATA_HPP
+#define WINDOWS_NETWORK_APIDATA_HPP
 
-#include "network/apidata.hpp"          // ApiData
-#include "network/version.hpp"          // Version
+#ifdef WIN32
 
-#include <string_view>  // std::string_view
+#include <winsock2.h>       // WSADATA
 
-auto Network::ApiData::version() const noexcept -> Version
+namespace Network
 {
-    return m_version;
+    using ApiData = WSADATA;
 }
 
-auto Network::ApiData::high_version() const noexcept -> Version
-{
-    return m_high_version;
-}
-
-auto Network::ApiData::description() const noexcept -> std::string_view
-{
-    return m_description;
-}
-
-auto Network::ApiData::system_status() const noexcept -> std::string_view
-{
-    return m_system_status;
-}
+#endif
 
 #endif

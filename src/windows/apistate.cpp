@@ -15,28 +15,28 @@
 
 #ifdef WIN32
 
-#include "network/apidata.hpp"          // ApiData
+#include "network/apistate.hpp"         // ApiState
 #include "network/version.hpp"          // Version
 #include "network/windowsversion.hpp"   // WindowsVersion
 
 #include <string_view>  // std::string_view
 
-auto Network::ApiData::version() const noexcept -> Version
+auto Network::ApiState::version() const noexcept -> Version
 {
     return WindowsVersion {wVersion};
 }
 
-auto Network::ApiData::high_version() const noexcept -> Version
+auto Network::ApiState::high_version() const noexcept -> Version
 {
     return WindowsVersion {wHighVersion};
 }
 
-auto Network::ApiData::description() const noexcept -> std::string_view
+auto Network::ApiState::description() const noexcept -> std::string_view
 {
     return static_cast<const char*>(szDescription);
 }
 
-auto Network::ApiData::system_status() const noexcept -> std::string_view
+auto Network::ApiState::system_status() const noexcept -> std::string_view
 {
     return static_cast<const char*>(szSystemStatus);
 }

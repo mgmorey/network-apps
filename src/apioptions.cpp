@@ -13,42 +13,42 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/apiinput.hpp"                 // ApiInput
+#include "network/apioptions.hpp"               // ApiOptions
 #include "network/failmode.hpp"                 // FailMode
 #include "network/optionalversion.hpp"          // OptionalVersion
 
-Network::ApiInput::ApiInput(OptionalVersion t_version,
-                            FailMode t_fail_mode,
-                            bool t_is_verbose) noexcept :
+Network::ApiOptions::ApiOptions(OptionalVersion t_version,
+                                FailMode t_fail_mode,
+                                bool t_is_verbose) noexcept :
     m_fail_mode(t_fail_mode),
     m_is_verbose(t_is_verbose),
     m_version(t_version)
 {
 }
 
-Network::ApiInput::ApiInput(FailMode t_fail_mode,
-                            bool t_is_verbose) noexcept :
+Network::ApiOptions::ApiOptions(FailMode t_fail_mode,
+                                bool t_is_verbose) noexcept :
     m_fail_mode(t_fail_mode),
     m_is_verbose(t_is_verbose)
 {
 }
 
-Network::ApiInput::ApiInput(bool t_is_verbose) noexcept :
+Network::ApiOptions::ApiOptions(bool t_is_verbose) noexcept :
     m_is_verbose(t_is_verbose)
 {
 }
 
-auto Network::ApiInput::version() const noexcept -> OptionalVersion
+auto Network::ApiOptions::version() const noexcept -> OptionalVersion
 {
     return m_version;
 }
 
-auto Network::ApiInput::fail_mode() const noexcept -> FailMode
+auto Network::ApiOptions::fail_mode() const noexcept -> FailMode
 {
     return m_fail_mode;
 }
 
-auto Network::ApiInput::is_verbose() const noexcept -> bool
+auto Network::ApiOptions::is_verbose() const noexcept -> bool
 {
     return m_is_verbose;
 }

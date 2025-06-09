@@ -16,13 +16,13 @@
 #ifndef NETWORK_RUN_HPP
 #define NETWORK_RUN_HPP
 
-#include "network/apiinput.hpp"         // ApiInput
+#include "network/apioptions.hpp"       // ApiOptions
 #include "network/runtimescope.hpp"     // RuntimeScope
 #include "network/sharedruntime.hpp"    // SharedRuntime
 
 namespace Network
 {
-    extern auto run(ApiInput ai, RuntimeScope scope) -> SharedRuntime;
+    extern auto run(ApiOptions ao, RuntimeScope scope) -> SharedRuntime;
     extern auto run(RuntimeScope scope, bool is_verbose) -> SharedRuntime;
     extern auto run(bool is_verbose = false) -> SharedRuntime;
 }

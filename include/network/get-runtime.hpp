@@ -16,12 +16,12 @@
 #ifndef NETWORK_GET_RUNTIME_HPP
 #define NETWORK_GET_RUNTIME_HPP
 
-#include "network/apiinput.hpp"         // ApiInput
+#include "network/apioptions.hpp"       // ApiOptions
 #include "network/sharedruntime.hpp"    // SharedRuntime
 
 namespace Network
 {
-    extern auto get_runtime(ApiInput ai) -> SharedRuntime;
+    extern auto get_runtime(ApiOptions ao) -> SharedRuntime;
 }
 
 #endif

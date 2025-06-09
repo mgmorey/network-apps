@@ -14,7 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/assert.hpp"           // assert()
-#include "network/network.hpp"          // ApiInput, Error, FailMode,
+#include "network/network.hpp"          // ApiOptions, Error, FailMode,
                                         // Runtime, SocketApi,
                                         // Version, get_hostname(),
                                         // is_running(), run()
@@ -39,7 +39,7 @@
 
 namespace
 {
-    using Network::ApiInput;
+    using Network::ApiOptions;
     using Network::Error;
     using Network::FailMode;
     using Network::Runtime;
@@ -152,12 +152,12 @@ namespace
                   << std::endl;
     }
 
-    auto print(const ApiInput& ai) -> void
+    auto print(ApiOptions ao) -> void
     {
 
-        if (ai.version()) {
+        if (ao.version()) {
             std::cout << "    Input Version:\t"
-                      << ai.version().value_or(Version {})
+                      << ao.version().value_or(Version {})
                       << std::endl;
         }
         else {
@@ -166,7 +166,7 @@ namespace
         }
 
         std::cout << "    Input Fail Mode:\t"
-                  << ai.fail_mode()
+                  << ao.fail_mode()
                   << std::endl;
     }
 
@@ -193,11 +193,11 @@ namespace
         assert(!is_running(rt));
     }
 
-    auto test(const ApiInput& ai, Version version) -> void
+    auto test(ApiOptions ao, Version version) -> void
     {
         std::cout << "Testing Socket API version: " << version << std::endl;
-        print(ai);
-        auto sa {SocketApi(ai)};
+        print(ao);
+        auto sa {SocketApi(ao)};
         test(sa);
     }
 
@@ -207,8 +207,8 @@ namespace
         int error_code {0};
 
         try {
-            const ApiInput ai {fail_mode, is_verbose};
-            error_code = Network::stop(ai);
+            const ApiOptions ao {fail_mode, is_verbose};
+            error_code = Network::stop(ao);
         }
         catch (const Error& error) {
             print(error);
@@ -242,8 +242,8 @@ namespace
 
         try {
             const Version version {major, 0};
-            const ApiInput ai {version, fail_mode, is_verbose};
-            test(ai, version);
+            const ApiOptions ao {version, fail_mode, is_verbose};
+            test(ao, version);
         }
         catch (const Error& error) {
             print(error);

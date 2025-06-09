@@ -16,12 +16,12 @@
 #ifndef NETWORK_START_HPP
 #define NETWORK_START_HPP
 
-#include "network/apidata.hpp"          // ApiData
-#include "network/apiinput.hpp"         // ApiInput
+#include "network/apioptions.hpp"       // ApiOptions
+#include "network/apistate.hpp"         // ApiState
 
 namespace Network
 {
-    extern auto start(const ApiInput& ai) -> ApiData;
+    extern auto start(ApiOptions ao) -> ApiState;
 }
 
 #endif

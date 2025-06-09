@@ -13,26 +13,31 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef UNIX_NETWORK_NATIVEAPIDATA_HPP
-#define UNIX_NETWORK_NATIVEAPIDATA_HPP
-
 #ifndef WIN32
 
+#include "network/apistate.hpp"         // ApiState
 #include "network/version.hpp"          // Version
 
 #include <string_view>  // std::string_view
 
-namespace Network
+auto Network::ApiState::version() const noexcept -> Version
 {
-    struct NativeApiData
-    {
-        Version m_version;
-        Version m_high_version;
-        std::string_view m_description;
-        std::string_view m_system_status;
-    };
+    return m_version;
 }
 
-#endif
+auto Network::ApiState::high_version() const noexcept -> Version
+{
+    return m_high_version;
+}
+
+auto Network::ApiState::description() const noexcept -> std::string_view
+{
+    return m_description;
+}
+
+auto Network::ApiState::system_status() const noexcept -> std::string_view
+{
+    return m_system_status;
+}
 
 #endif

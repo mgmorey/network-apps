@@ -19,7 +19,7 @@
 #include "network/accept.hpp"                   // accept()
 #include "network/address.hpp"                  // Address
 #include "network/ai-error.hpp"                 // format_ai_error()
-#include "network/apiinput.hpp"                 // ApiInput
+#include "network/apioptions.hpp"               // ApiOptions
 #include "network/always-false.hpp"             // always_false_v
 #include "network/api-error.hpp"                // get_last_runtime_error()
                                                 // reset_last_runtime_error()

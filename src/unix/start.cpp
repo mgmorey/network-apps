@@ -16,24 +16,24 @@
 #ifndef WIN32
 
 #include "network/start.hpp"            // start()
-#include "network/apidata.hpp"          // ApiData
-#include "network/apiinput.hpp"         // ApiInput
+#include "network/apioptions.hpp"       // ApiOptions
+#include "network/apistate.hpp"         // ApiState
 
 #include <iostream>     // std::cout, std::endl
 
-auto Network::start(const ApiInput& ai) -> ApiData
+auto Network::start(ApiOptions ao) -> ApiState
 {
-    if (ai.is_verbose()) {
+    if (ao.is_verbose()) {
         std::cout << "Starting the network runtime."
                   << std::endl;
     }
 
-    ApiData ad;
-    ad.m_version = Version {0, 0};
-    ad.m_high_version = Version {0, 0},
-    ad.m_description = "Berkeley Software Distribution Sockets",
-    ad.m_system_status = "Running";
-    return ad;
+    ApiState as;
+    as.m_version = Version {0, 0};
+    as.m_high_version = Version {0, 0},
+    as.m_description = "Berkeley Software Distribution Sockets",
+    as.m_system_status = "Running";
+    return as;
 }
 
 #endif

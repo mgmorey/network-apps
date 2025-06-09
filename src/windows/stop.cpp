@@ -16,7 +16,7 @@
 #ifdef WIN32
 
 #include "network/stop.hpp"             // stop()
-#include "network/apiinput.hpp"         // ApiInput
+#include "network/apiinput.hpp"         // ApiOptions
 #include "network/error.hpp"            // Error
 #include "network/format-os-error.hpp"  // format_os_error()
 #include "network/get-api-error.hpp"    // get_api_error()
@@ -32,11 +32,11 @@
 #include <iostream>     // std::cout, std::endl
 #include <sstream>      // std::ostringstream
 
-auto Network::stop(const ApiInput& rd) -> int
+auto Network::stop(ApiOptions ao) -> int
 {
     reset_api_error();
 
-    if (rd.is_verbose()) {
+    if (ao.is_verbose()) {
         // clang-format off
         std::cout << "Stopping the network runtime.\n"
                   << "Calling ::WSACleanup()"
@@ -49,7 +49,7 @@ auto Network::stop(const ApiInput& rd) -> int
         const auto os_error {to_os_error(api_error)};
         const auto message {format_os_error(os_error)};
 
-        if (rd.is_verbose()) {
+        if (ao.is_verbose()) {
             // clang-format off
             std::cout << "Call to ::WSACleanup() failed with error "
                       << api_error
@@ -59,7 +59,7 @@ auto Network::stop(const ApiInput& rd) -> int
             // clang-format on
         }
 
-        switch (rd.fail_mode()) {
+        switch (ao.fail_mode()) {
         case FailMode::throw_error:
         {
             switch (api_error) {  // NOLINT
