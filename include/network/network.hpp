@@ -19,11 +19,11 @@
 #include "network/accept.hpp"                   // accept()
 #include "network/address.hpp"                  // Address
 #include "network/ai-error.hpp"                 // format_ai_error()
-#include "network/apioptions.hpp"               // ApiOptions
 #include "network/always-false.hpp"             // always_false_v
 #include "network/api-error.hpp"                // get_last_runtime_error()
                                                 // reset_last_runtime_error()
                                                 // set_last_runtime_error()
+#include "network/apioptions.hpp"               // ApiOptions
 #include "network/binarybuffer.hpp"             // BinaryBuffer
 #include "network/bind.hpp"                     // bind()
 #include "network/buffer.hpp"                   // Buffer
