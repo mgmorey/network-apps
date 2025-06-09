@@ -174,8 +174,8 @@ namespace
     {
         assert(rt.version() == Version {});
         assert(rt.high_version() == Version {});
-        assert(rt.description() == std::string_view {});
-        assert(rt.system_status() == std::string_view {});
+        assert(rt.description().empty());
+        assert(rt.system_status().empty());
         assert(!rt.error_code());
         assert(!rt.is_started());
         print(rt);
