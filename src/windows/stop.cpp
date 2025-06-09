@@ -16,7 +16,7 @@
 #ifdef WIN32
 
 #include "network/stop.hpp"             // stop()
-#include "network/apiinput.hpp"         // ApiOptions
+#include "network/apioptions.hpp"       // ApiOptions
 #include "network/error.hpp"            // Error
 #include "network/format-os-error.hpp"  // format_os_error()
 #include "network/get-api-error.hpp"    // get_api_error()
