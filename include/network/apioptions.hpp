@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_APIINPUT_HPP
-#define NETWORK_APIINPUT_HPP
+#ifndef NETWORK_APIOPTIONS_HPP
+#define NETWORK_APIOPTIONS_HPP
 
 #include "network/failmode.hpp"                 // FailMode
 #include "network/optionalversion.hpp"          // OptionalVersion
