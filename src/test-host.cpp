@@ -316,7 +316,7 @@ auto main(int argc, char* argv[]) -> int
         std::ranges::copy(args, std::back_inserter(hosts));
 
         if (hosts.empty()) {
-            hosts.emplace_back(get_hostname());
+            hosts.emplace_back(get_hostname(is_verbose));
         }
 
         std::ranges::for_each(hosts, test_valid);
