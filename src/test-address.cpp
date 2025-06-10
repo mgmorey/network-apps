@@ -16,6 +16,7 @@
 #include "network/assert.hpp"           // assert()
 #include "network/network.hpp"          // Address, Error, Hostname,
                                         // OsErrorResult,
+                                        // SharedRuntime,
                                         // SocketFamily, SocketHints,
                                         // SocketHost, SocketLimits,
                                         // insert(), run(),
@@ -60,6 +61,7 @@ namespace
     using Network::ByteString;
     using Network::Error;
     using Network::Hostname;
+    using Network::SharedRuntime;
     using Network::SocketFamily;
     using Network::SocketHints;
     using Network::SocketHost;
@@ -432,13 +434,13 @@ namespace
 
 #endif
 
-    auto test() -> void
+    auto test(const SharedRuntime& sr) -> void
     {
         static const Hostname localhost {"localhost"};
 
         std::vector<SocketHost> hosts;
         auto it {std::back_inserter(hosts)};
-        const auto result {insert(it, localhost, {}, unspec, is_verbose)};
+        const auto result {insert(it, localhost, {}, unspec, sr)};
 
         if (result) {
             std::cout << "No " << localhost << " addresses: " << result.string()
@@ -480,7 +482,7 @@ auto main(int argc, char* argv[]) -> int
 #endif
         test_sin_valid();
         test_sin6_valid();
-        test();
+        test(rt);
     }
     catch (const std::exception& error) {
         std::cerr << error.what()
