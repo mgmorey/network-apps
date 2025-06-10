@@ -25,10 +25,24 @@ namespace Network
     {
         ApiOptions(OptionalVersion t_version,
                    FailMode t_fail_mode,
-                   bool t_is_verbose) noexcept;
+                   bool t_is_verbose) noexcept :
+            m_fail_mode(t_fail_mode),
+            m_is_verbose(t_is_verbose),
+            m_version(t_version)
+        {
+        }
+
         ApiOptions(FailMode t_fail_mode,
-                   bool t_is_verbose) noexcept;
-        explicit ApiOptions(bool t_is_verbose) noexcept;
+                   bool t_is_verbose) noexcept :
+            m_fail_mode(t_fail_mode),
+            m_is_verbose(t_is_verbose)
+        {
+        }
+
+        explicit ApiOptions(bool t_is_verbose) noexcept :
+            m_is_verbose(t_is_verbose)
+        {
+        }
 
         ApiOptions() noexcept = default;
         ApiOptions(const ApiOptions&) noexcept = default;
@@ -37,9 +51,20 @@ namespace Network
         auto operator=(const ApiOptions&) noexcept -> ApiOptions& = default;
         auto operator=(ApiOptions&&) noexcept -> ApiOptions& = default;
 
-        [[nodiscard]] auto version() const noexcept -> OptionalVersion;
-        [[nodiscard]] auto fail_mode() const noexcept -> FailMode;
-        [[nodiscard]] auto is_verbose() const noexcept -> bool;
+        [[nodiscard]] auto version() const noexcept -> OptionalVersion
+        {
+            return m_version;
+        }
+
+        [[nodiscard]] auto fail_mode() const noexcept -> FailMode
+        {
+            return m_fail_mode;
+        }
+
+        [[nodiscard]] auto is_verbose() const noexcept -> bool
+        {
+            return m_is_verbose;
+        }
 
     private:
         FailMode m_fail_mode {FailMode::throw_error};
