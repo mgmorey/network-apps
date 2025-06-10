@@ -221,7 +221,7 @@ auto main(int argc, char* argv[]) -> int
             std::cout << *rt << std::endl;
         }
 
-        const auto hostname {get_hostname()};
+        const auto hostname {get_hostname(rt)};
 
         if (getenv("http_proxy") == nullptr) {
             test_connect_valid(endpoint, socket_hints, hostname);
