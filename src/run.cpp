@@ -21,11 +21,11 @@
 #include "network/runtimescope.hpp"     // RuntimeScope
 #include "network/sharedruntime.hpp"    // SharedRuntime
 
-auto Network::run(ApiOptions ao, RuntimeScope scope) -> SharedRuntime
+auto Network::run(ApiOptions ao, RuntimeScope rs) -> SharedRuntime
 {
     SharedRuntime sr;
 
-    switch (scope) {
+    switch (rs) {
     case RuntimeScope::global:
         sr = get_runtime(ao);
         break;
@@ -40,9 +40,9 @@ auto Network::run(ApiOptions ao, RuntimeScope scope) -> SharedRuntime
     return sr;
 }
 
-auto Network::run(RuntimeScope scope, bool is_verbose) -> SharedRuntime
+auto Network::run(RuntimeScope rs, bool is_verbose) -> SharedRuntime
 {
-    return run(ApiOptions {is_verbose}, scope);
+    return run(ApiOptions {is_verbose}, rs);
 }
 
 auto Network::run(bool is_verbose) -> SharedRuntime

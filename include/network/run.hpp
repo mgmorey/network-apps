@@ -22,8 +22,8 @@
 
 namespace Network
 {
-    extern auto run(ApiOptions ao, RuntimeScope scope) -> SharedRuntime;
-    extern auto run(RuntimeScope scope, bool is_verbose) -> SharedRuntime;
+    extern auto run(ApiOptions ao, RuntimeScope rs) -> SharedRuntime;
+    extern auto run(RuntimeScope rs, bool is_verbose) -> SharedRuntime;
     extern auto run(bool is_verbose = false) -> SharedRuntime;
 }
 
