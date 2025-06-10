@@ -43,7 +43,7 @@ namespace Network
         [[nodiscard]] auto system_status() const noexcept ->
             std::string_view final;
         [[nodiscard]] auto error_code() const noexcept -> int final;
-        [[nodiscard]] auto is_started() const noexcept -> bool final;
+        [[nodiscard]] auto is_running() const noexcept -> bool final;
 
         auto start() -> void final;
         auto stop() -> void final;
@@ -52,7 +52,6 @@ namespace Network
         ApiOptions m_ao;
         ApiState m_as;
         int m_error_code {0};
-        bool m_is_started {false};
     };
 }
 

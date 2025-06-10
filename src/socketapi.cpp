@@ -28,7 +28,7 @@ Network::SocketApi::SocketApi(ApiOptions t_ao) : m_ao(t_ao)
 
 Network::SocketApi::~SocketApi()
 {
-    if (m_is_started) {
+    if (is_running()) {
         Network::stop(m_ao);
     }
 }
@@ -58,20 +58,20 @@ auto Network::SocketApi::error_code() const noexcept -> int
     return m_error_code;
 }
 
-auto Network::SocketApi::is_started() const noexcept -> bool
+auto Network::SocketApi::is_running() const noexcept -> bool
 {
-    return m_is_started;
+    return m_as.system_status() == "Running";
 }
 
 auto Network::SocketApi::start() -> void
 {
-    if (m_is_started) {
+    if (is_running()) {
         return;
     }
 
     m_as = Network::start(m_ao);
 
-    if (system_status() != "Running") {
+    if (!is_running()) {
         std::ostringstream oss;
         oss << description()
             << " status is \""
@@ -79,17 +79,14 @@ auto Network::SocketApi::start() -> void
             << "\".";
         throw RuntimeError {oss.str()};
     }
-
-    m_is_started = true;
 }
 
 auto Network::SocketApi::stop() -> void
 {
-    if (m_is_started) {
+    if (is_running()) {
         m_error_code = Network::stop(m_ao);
 
         if (m_error_code == 0) {
-            m_is_started = false;
             m_as = {};
         }
     }

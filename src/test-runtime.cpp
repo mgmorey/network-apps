@@ -18,7 +18,7 @@
                                         // Runtime, Version,
                                         // create_runtime(),
                                         // get_hostname(),
-                                        // is_running(), run()
+                                        // run()
 #include "network/parse.hpp"            // parse()
 #include "network/quote.hpp"            // quote()
 #include "network/stop.hpp"             // stop()
@@ -147,9 +147,6 @@ namespace
         std::cout << "    Error Code:\t\t"
                   << rt.error_code()
                   << std::endl;
-        std::cout << "    Is Started:\t\t"
-                  << rt.is_started()
-                  << std::endl;
     }
 
     auto print(ApiOptions ao) -> void
@@ -177,20 +174,19 @@ namespace
         assert(rt.description().empty());
         assert(rt.system_status().empty());
         assert(!rt.error_code());
-        assert(!rt.is_started());
         print(rt);
-        assert(!is_running(rt));
+        assert(!rt.is_running());
         rt.start();
         assert(!rt.error_code());
         print(rt);
-        assert(is_running(rt));
+        assert(rt.is_running());
         const std::string actual_str {get_actual_str(rt)};
         const std::regex expected_regex {get_expected_re()};
         assert(std::regex_match(actual_str, expected_regex));
         rt.stop();
         assert(!rt.error_code());
         print(rt);
-        assert(!is_running(rt));
+        assert(!rt.is_running());
     }
 
     auto test(ApiOptions ao, Version version) -> void
