@@ -41,7 +41,7 @@ auto Network::get_hostnameresult(std::span<char> hostname,
 {
     const std::string_view hostname_sv {hostname.data(), hostname.size()};
 
-        if (is_verbose) {
+    if (is_verbose) {
         // clang-format off
         std::cout << "Calling ::gethostname("
                   << quote(hostname_sv)
