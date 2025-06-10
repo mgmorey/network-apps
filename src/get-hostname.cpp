@@ -29,7 +29,7 @@
 auto Network::get_hostname(const SharedRuntime& sr) -> Hostname
 {
     Hostname result;
-    auto hostname_result {get_hostnameresult(sr->is_verbose())};
+    auto hostname_result {get_hostnameresult(sr)};
     std::visit([&](auto&& arg) {
         using T = std::decay_t<decltype(arg)>;
 

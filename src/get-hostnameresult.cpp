@@ -21,6 +21,7 @@
 #include "network/oserrorresult.hpp"            // OsErrorResult
 #include "network/quote.hpp"                    // quote()
 #include "network/reset-api-error.hpp"          // reset_api_error()
+#include "network/run.hpp"                      // run()
 #include "network/textbuffer.hpp"               // TextBuffer
 #include "network/to-name-length.hpp"           // to_name_length()
 #include "network/to-os-error.hpp"              // to_os_error()
@@ -37,11 +38,11 @@
 #include <string_view>  // std::string_view
 
 auto Network::get_hostnameresult(std::span<char> hostname,
-                                 bool is_verbose) -> OsErrorResult
+                                 const SharedRuntime& sr) -> OsErrorResult
 {
     const std::string_view hostname_sv {hostname.data(), hostname.size()};
 
-    if (is_verbose) {
+    if (sr->is_verbose()) {
         // clang-format off
         std::cout << "Calling ::gethostname("
                   << quote(hostname_sv)
@@ -71,7 +72,7 @@ auto Network::get_hostnameresult(std::span<char> hostname,
         return OsErrorResult {os_error, oss.str()};
     }
 
-    if (is_verbose) {
+    if (sr->is_verbose()) {
         // clang-format off
         std::cout << "Call to ::gethostname("
                   << quote(hostname_sv)
@@ -86,13 +87,19 @@ auto Network::get_hostnameresult(std::span<char> hostname,
     return {};
 }
 
-auto Network::get_hostnameresult(bool is_verbose) -> HostnameResult
+auto Network::get_hostnameresult(const SharedRuntime& sr) -> HostnameResult
 {
     TextBuffer hostname {hostname_length_max};
 
-    if (auto result {get_hostnameresult(hostname, is_verbose)}) {
+    if (auto result {get_hostnameresult(hostname, sr)}) {
         return result;
     }
 
     return hostname;
+}
+
+auto Network::get_hostnameresult(bool is_verbose) -> HostnameResult
+{
+    const auto sr {run(is_verbose)};
+    return get_hostnameresult(sr);
 }

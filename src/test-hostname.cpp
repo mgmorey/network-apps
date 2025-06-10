@@ -16,8 +16,10 @@
 #include "network/always-false.hpp"     // always_false_v
 #include "network/assert.hpp"           // assert()
 #include "network/network.hpp"          // Error, Hostname,
-                                        // get_hostnameresult(),
-                                        // run()
+                                        // OsErrorResult,
+                                        // SharedRuntime,
+                                        // get_hostname(),
+                                        // get_hostnameresult(), run()
 #include "network/parse.hpp"            // parse()
 
 #ifdef WIN32
@@ -39,6 +41,7 @@ namespace
     using Network::Error;
     using Network::Hostname;
     using Network::OsErrorResult;
+    using Network::SharedRuntime;
     using Network::always_false_v;
     using Network::get_hostname;
     using Network::get_hostnameresult;
@@ -91,13 +94,12 @@ namespace
         }
     }
 
-    auto test_get_hostnameresult_overflow() -> void
+    auto test_get_hostnameresult_overflow(const SharedRuntime& sr) -> void
     {
         std::string hostname_str(1, '\0');
         std::string actual_str;
 
-        if (auto result {get_hostnameresult(hostname_str,
-                                            is_verbose)}) {
+        if (auto result {get_hostnameresult(hostname_str, sr)}) {
             print(result);
             actual_str = result.string();
         }
@@ -106,10 +108,10 @@ namespace
         assert(std::regex_match(actual_str, expected_regex));
     }
 
-    auto test_get_hostnameresult_valid() -> void
+    auto test_get_hostnameresult_valid(const SharedRuntime& sr) -> void
     {
         std::string actual_str;
-        const auto hostname_result {get_hostnameresult(is_verbose)};
+        const auto hostname_result {get_hostnameresult(sr)};
         std::visit([&](auto&& arg) {
             using T = std::decay_t<decltype(arg)>;
 
@@ -127,12 +129,12 @@ namespace
         assert(actual_str.empty());
     }
 
-    auto test_get_hostname_valid() -> void
+    auto test_get_hostname_valid(const SharedRuntime& sr) -> void
     {
         std::string actual_str;
 
         try {
-            static_cast<void>(get_hostname(is_verbose));
+            static_cast<void>(get_hostname(sr));
         }
         catch (const Error& error) {
             print(error);
@@ -152,9 +154,9 @@ auto main(int argc, char* argv[]) -> int
             std::cout << *rt << std::endl;
         }
 
-        test_get_hostnameresult_overflow();
-        test_get_hostnameresult_valid();
-        test_get_hostname_valid();
+        test_get_hostnameresult_overflow(rt);
+        test_get_hostnameresult_valid(rt);
+        test_get_hostname_valid(rt);
     }
     catch (const std::exception& error) {
         std::cerr << error.what()

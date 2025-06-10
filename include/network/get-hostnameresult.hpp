@@ -18,13 +18,15 @@
 
 #include "network/hostnameresult.hpp"   // HostnameResult
 #include "network/oserrorresult.hpp"    // OsErrorResult
+#include "network/sharedruntime.hpp"    // SharedRuntime
 
 #include <span>         // std::span
 
 namespace Network
 {
     extern auto get_hostnameresult(std::span<char> hostname,
-                                   bool is_verbose = false) -> OsErrorResult;
+                                   const SharedRuntime& sr) -> OsErrorResult;
+    extern auto get_hostnameresult(const SharedRuntime& sr) -> HostnameResult;
     extern auto get_hostnameresult(bool is_verbose = false) -> HostnameResult;
 }
 
