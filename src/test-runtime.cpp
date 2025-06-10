@@ -144,9 +144,6 @@ namespace
         std::cout << "    System Status:\t"
                   << quote(rt.system_status())
                   << std::endl;
-        std::cout << "    Error Code:\t\t"
-                  << rt.error_code()
-                  << std::endl;
     }
 
     auto print(ApiOptions ao) -> void
@@ -173,18 +170,16 @@ namespace
         assert(rt.high_version() == Version {});
         assert(rt.description().empty());
         assert(rt.system_status().empty());
-        assert(!rt.error_code());
         print(rt);
         assert(!rt.is_running());
         rt.start();
-        assert(!rt.error_code());
         print(rt);
         assert(rt.is_running());
         const std::string actual_str {get_actual_str(rt)};
         const std::regex expected_regex {get_expected_re()};
         assert(std::regex_match(actual_str, expected_regex));
-        rt.stop();
-        assert(!rt.error_code());
+        int error_code {rt.stop()};
+        assert(!error_code);
         print(rt);
         assert(!rt.is_running());
     }

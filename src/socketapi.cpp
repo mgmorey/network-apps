@@ -53,14 +53,14 @@ auto Network::SocketApi::system_status() const noexcept -> std::string_view
     return m_as.system_status();
 }
 
-auto Network::SocketApi::error_code() const noexcept -> int
-{
-    return m_error_code;
-}
-
 auto Network::SocketApi::is_running() const noexcept -> bool
 {
     return m_as.system_status() == "Running";
+}
+
+auto Network::SocketApi::is_verbose() const noexcept -> bool
+{
+    return m_ao.is_verbose();
 }
 
 auto Network::SocketApi::start() -> void
@@ -81,13 +81,17 @@ auto Network::SocketApi::start() -> void
     }
 }
 
-auto Network::SocketApi::stop() -> void
+auto Network::SocketApi::stop() -> int
 {
-    if (is_running()) {
-        m_error_code = Network::stop(m_ao);
+    int error_code {0};
 
-        if (m_error_code == 0) {
+    if (is_running()) {
+        error_code = Network::stop(m_ao);
+
+        if (error_code == 0) {
             m_as = {};
         }
     }
+
+    return error_code;
 }

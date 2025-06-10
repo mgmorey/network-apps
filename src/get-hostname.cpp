@@ -20,14 +20,16 @@
 #include "network/get-hostnameresult.hpp"       // get_hostname()
 #include "network/hostname.hpp"                 // Hostname
 #include "network/oserrorresult.hpp"            // OsErrorResult
+#include "network/run.hpp"                      // run()
+#include "network/sharedruntime.hpp"            // SharedRuntime
 
 #include <type_traits>  // std::decay_t, std::is_same_v
 #include <variant>      // std::visit()
 
-auto Network::get_hostname(bool is_verbose) -> Hostname
+auto Network::get_hostname(const SharedRuntime& sr) -> Hostname
 {
     Hostname result;
-    auto hostname_result {get_hostnameresult(is_verbose)};
+    auto hostname_result {get_hostnameresult(sr->is_verbose())};
     std::visit([&](auto&& arg) {
         using T = std::decay_t<decltype(arg)>;
 
@@ -42,4 +44,10 @@ auto Network::get_hostname(bool is_verbose) -> Hostname
         }
     }, hostname_result);
     return result;
+}
+
+auto Network::get_hostname(bool is_verbose) -> Hostname
+{
+    const auto rt {run(is_verbose)};
+    return get_hostname(rt);
 }
