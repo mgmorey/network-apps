@@ -17,11 +17,15 @@
 #define NETWORK_BIND_ENDPOINT_HPP
 
 #include "network/endpointview.hpp"             // EndpointView
+#include "network/sharedruntime.hpp"            // SharedRuntime
 #include "network/sockethints.hpp"              // SocketHints
 #include "network/socketresultvector.hpp"       // SocketResultVector
 
 namespace Network
 {
+    extern auto bind(const EndpointView& endpoint,
+                     const SocketHints& hints,
+                     const SharedRuntime& sr) -> SocketResultVector;
     extern auto bind(const EndpointView& endpoint,
                      const SocketHints& hints,
                      bool is_verbose = false) -> SocketResultVector;

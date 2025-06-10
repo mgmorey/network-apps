@@ -20,6 +20,7 @@
 #include "network/optionalhints.hpp"    // OptionalHints
 #include "network/oserrorresult.hpp"    // OsErrorResult
 #include "network/serviceview.hpp"      // ServiceView
+#include "network/sharedruntime.hpp"    // SharedRuntime
 
 #ifdef WIN32
 #include <ws2tcpip.h>       // addrinfo
@@ -80,7 +81,7 @@ namespace Network
         AddressList(const HostnameView& t_hostname,
                     const ServiceView& t_service,
                     const OptionalHints& t_hints,
-                    bool t_is_verbose);
+                    const SharedRuntime& t_sr);
         ~AddressList() noexcept;
         auto operator=(const AddressList&) noexcept -> AddressList& = delete;
         auto operator=(AddressList &&) noexcept -> AddressList& = delete;

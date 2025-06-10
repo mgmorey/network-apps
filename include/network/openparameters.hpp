@@ -17,6 +17,7 @@
 #define NETWORK_OPENPARAMETERS_HPP
 
 #include "network/endpointview.hpp"     // Endpoint
+#include "network/sharedruntime.hpp"    // SharedRuntime
 #include "network/sockethints.hpp"      // SocketHints
 
 namespace Network
@@ -25,7 +26,7 @@ namespace Network
     {
         const EndpointView& m_endpoint;
         const SocketHints& m_hints;
-        bool m_is_verbose;
+        const SharedRuntime& m_sr;
     };
 }
 

@@ -28,7 +28,7 @@ namespace Network
                       args.m_endpoint.at(0),
                       args.m_endpoint.at(1),
                       args.m_hints,
-                      args.m_is_verbose);
+                      args.m_sr);
     }
 }
 

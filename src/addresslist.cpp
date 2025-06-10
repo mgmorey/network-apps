@@ -19,6 +19,7 @@
 #include "network/optionalhints.hpp"    // OptionalHints
 #include "network/oserrorresult.hpp"    // OsErrorResult
 #include "network/serviceview.hpp"      // ServiceView
+#include "network/sharedruntime.hpp"    // SharedRuntime
 #include "network/stream-addrinfo.hpp"  // operator<<()
 #include "network/string-null.hpp"      // string_null
 #include "network/to-os-error.hpp"      // to_os_error()
@@ -79,14 +80,14 @@ auto Network::AddressList::StringOrNull::c_str() const -> const char*
 Network::AddressList::AddressList(const HostnameView& t_hostname,
                                   const ServiceView& t_service,
                                   const OptionalHints& t_hints,
-                                  bool t_is_verbose)
+                                  const SharedRuntime& t_sr)
 {
     const auto hints_ptr {to_ai_ptr(t_hints)};
     const auto hints_str {to_string(t_hints)};
     const StringOrNull hostname {t_hostname};
     const StringOrNull service {t_service};
 
-    if (t_is_verbose) {
+    if (t_sr->is_verbose()) {
         // clang-format off
         std::cout << "Calling ::getaddrinfo("
                   << hostname
@@ -119,7 +120,7 @@ Network::AddressList::AddressList(const HostnameView& t_hostname,
         // clang-format on
         m_result = {os_error, oss.str()};
     }
-    else if (t_is_verbose) {
+    else if (t_sr->is_verbose()) {
         for (const auto& node : *this) {
             std::cout << node << std::endl;
         }

@@ -20,7 +20,9 @@
 #include "network/hostnameview.hpp"     // HostnameView
 #include "network/optionalhints.hpp"    // OptionalHints
 #include "network/oserrorresult.hpp"    // OsErrorResult
+#include "network/run.hpp"              // run()
 #include "network/serviceview.hpp"      // ServiceView
+#include "network/sharedruntime.hpp"    // SharedRuntime
 
 #include <algorithm>    // std::copy()
 
@@ -28,13 +30,23 @@ namespace Network
 {
     auto insert(auto& it,
                 const HostnameView& hostname,
-                const ServiceView& service = {},
-                const OptionalHints& hints = {},
-                bool is_verbose = false) -> OsErrorResult
+                const ServiceView& service,
+                const OptionalHints& hints,
+                const SharedRuntime& sr) -> OsErrorResult
     {
-        const auto list {AddressList(hostname, service, hints, is_verbose)};
+        const auto list {AddressList(hostname, service, hints, sr)};
         std::copy(list.begin(), list.end(), it);
         return list.result();
+    }
+
+    auto insert(auto& it,
+                const HostnameView& hostname,
+                const ServiceView& service,
+                const OptionalHints& hints,
+                bool is_verbose) -> OsErrorResult
+    {
+        const auto rt {run(is_verbose)};
+        return insert(it, hostname, service, hints, rt);
     }
 }
 

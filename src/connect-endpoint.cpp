@@ -16,16 +16,26 @@
 #include "network/connect-endpoint.hpp"         // connect()
 #include "network/endpointview.hpp"             // EndpointView
 #include "network/open-endpoint.hpp"            // open()
+#include "network/run.hpp"                      // run()
+#include "network/sharedruntime.hpp"            // SharedRuntime
 #include "network/sockethints.hpp"              // SocketHints
 #include "network/socketresultvector.hpp"       // SocketResultVector
 
 auto Network::connect(const EndpointView& endpoint,
                       const SocketHints& hints,
-                      bool is_verbose) -> SocketResultVector
+                      const SharedRuntime& sr) -> SocketResultVector
 {
     return open({
-        .m_endpoint = endpoint,
-        .m_hints = hints,
-        .m_is_verbose = is_verbose
-    }, false);
+            .m_endpoint = endpoint,
+            .m_hints = hints,
+            .m_sr = sr
+        }, false);
+}
+
+auto Network::connect(const EndpointView& endpoint,
+                      const SocketHints& hints,
+                      bool is_verbose) -> SocketResultVector
+{
+    const auto rt {run(is_verbose)};
+    return connect(endpoint, hints, rt);
 }
