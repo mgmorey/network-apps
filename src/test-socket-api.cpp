@@ -14,10 +14,10 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/assert.hpp"           // assert()
-#include "network/network.hpp"          // ApiOptions, Error, FailMode,
-                                        // Runtime, SocketApi,
-                                        // Version, get_hostname(),
-                                        // run()
+#include "network/network.hpp"          // ApiOptions, Error,
+                                        // FailMode, Runtime,
+                                        // SocketApi, Version,
+                                        // get_hostname(), run()
 #include "network/parse.hpp"            // parse()
 #include "network/quote.hpp"            // quote()
 #include "network/socketapi.hpp"        // SocketApi()
