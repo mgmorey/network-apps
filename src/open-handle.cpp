@@ -66,7 +66,7 @@ auto Network::open(const SocketData& sd,
                            to_string(bs));
     }
 
-    if (sd.is_verbose()) {
+    if (sd.runtime()->is_verbose()) {
         // clang-format off
         std::cout << "Calling "
                   << binding.second

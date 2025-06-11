@@ -35,7 +35,7 @@ auto Network::listen(const SocketData& sd, int backlog) -> OsErrorResult
 {
     const auto handle {sd.handle()};
 
-    if (sd.is_verbose()) {
+    if (sd.runtime()->is_verbose()) {
         // clang-format off
         std::cout << "Calling ::listen("
                   << handle

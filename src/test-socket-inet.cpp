@@ -43,6 +43,7 @@ namespace
 {
     using Network::Error;
     using Network::InetSocket;
+    using Network::SharedRuntime;
     using Network::SocketData;
     using Network::SocketHints;
     using Network::UniqueSocket;
@@ -59,11 +60,11 @@ namespace
     public:
         TestSocketData(handle_type t_handle,
                        family_type t_family,
-                       bool t_is_verbose)
+                       const SharedRuntime& t_sr)
         {
+            runtime(t_sr);
             handle(t_handle);
             family(t_family);
-            is_verbose(t_is_verbose);
         }
     };
 
@@ -109,9 +110,9 @@ namespace
 
     auto is_verbose {false}; // NOLINT
 
-    auto create_null_socket() -> UniqueSocket
+    auto create_null_socket(const SharedRuntime& sr) -> UniqueSocket
     {
-        const TestSocketData sd {handle_null, AF_UNSPEC, is_verbose};
+        const TestSocketData sd {handle_null, AF_UNSPEC, sr};
         return std::make_unique<TestInetSocket>(sd);
     }
 
@@ -225,13 +226,13 @@ namespace
         }
     }
 
-    auto test_socket_accept_invalid() -> void
+    auto test_socket_accept_invalid(const SharedRuntime& sr) -> void
     {
         const std::string expected_error_re {expected_error_accept_re};
         std::string actual_error_str;
 
         try {
-            const auto sock {create_null_socket()};
+            const auto sock {create_null_socket(sr)};
             static_cast<void>(sock->accept());
         }
         catch (const Error& error) {
@@ -259,12 +260,12 @@ namespace
         test_socket(handle_null, AF_UNSPEC, expected_error_handle_re);
     }
 
-    auto test_socket_listen_invalid() -> void
+    auto test_socket_listen_invalid(const SharedRuntime& sr) -> void
     {
         std::string actual_error_str;
 
         try {
-            const auto sock {create_null_socket()};
+            const auto sock {create_null_socket(sr)};
             static_cast<void>(sock->listen(0));
         }
         catch (const Error& error) {
@@ -275,13 +276,13 @@ namespace
         assert(actual_error_str.empty());
     }
 
-    auto test_socket_peername_invalid() -> void
+    auto test_socket_peername_invalid(const SharedRuntime& sr) -> void
     {
         const std::string expected_error_re {expected_error_peername_re};
         std::string actual_error_str;
 
         try {
-            const auto sock {create_null_socket()};
+            const auto sock {create_null_socket(sr)};
             static_cast<void>(sock->peername());
         }
         catch (const Error& error) {
@@ -304,13 +305,13 @@ namespace
         test_socket(hints, expected_error_socket_re);
     }
 
-    auto test_socket_read_invalid() -> void
+    auto test_socket_read_invalid(const SharedRuntime& sr) -> void
     {
         const std::string expected_error_re {expected_error_read_re};
         std::string actual_error_str;
 
         try {
-            const auto sock {create_null_socket()};
+            const auto sock {create_null_socket(sr)};
             static_cast<void>(sock->read(std::span<char> {}));
         }
         catch (const Error& error) {
@@ -327,9 +328,9 @@ namespace
         }
     }
 
-    auto test_socket_shutdown_invalid() -> void
+    auto test_socket_shutdown_invalid(const SharedRuntime& sr) -> void
     {
-        const auto sock {create_null_socket()};
+        const auto sock {create_null_socket(sr)};
         static_cast<void>(sock->shutdown(0));
     }
 
@@ -339,13 +340,13 @@ namespace
         test_socket(hints, expected_error_socket_re);
     }
 
-    auto test_socket_write_invalid() -> void
+    auto test_socket_write_invalid(const SharedRuntime& sr) -> void
     {
         const std::string expected_error_re {expected_error_write_re};
         std::string actual_error_str;
 
         try {
-            const auto sock {create_null_socket()};
+            const auto sock {create_null_socket(sr)};
             static_cast<void>(sock->write({}));
         }
         catch (const Error& error) {
@@ -380,16 +381,16 @@ auto main(int argc, char* argv[]) -> int
         }
 
         test_inet_socket_handle_invalid();
-        test_socket_accept_invalid();
+        test_socket_accept_invalid(rt);
         test_socket_family_invalid();
         test_socket_handle_invalid();
-        test_socket_listen_invalid();
-        test_socket_peername_invalid();
+        test_socket_listen_invalid(rt);
+        test_socket_peername_invalid(rt);
         test_socket_protocol_invalid();
-        test_socket_read_invalid();
-        test_socket_shutdown_invalid();
+        test_socket_read_invalid(rt);
+        test_socket_shutdown_invalid(rt);
         test_socket_socktype_invalid();
-        test_socket_write_invalid();
+        test_socket_write_invalid(rt);
 
         test_inet_socket_handle_valid();
         test_valid();

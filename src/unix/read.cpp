@@ -37,7 +37,7 @@ auto Network::read(const SocketData& sd, std::span<char> cs) -> ssize_t
 {
     const std::string_view sv {cs.data(), cs.size()};
     const auto handle {sd.handle()};
-    const auto is_verbose {sd.is_verbose()};
+    const auto is_verbose {sd.runtime()->is_verbose()};
 
     if (is_verbose) {
         // clang-format off

@@ -44,6 +44,7 @@ namespace
     using Network::ByteString;
     using Network::Error;
     using Network::Pathname;
+    using Network::SharedRuntime;
     using Network::SocketData;
     using Network::SocketHints;
     using Network::SocketPair;
@@ -61,11 +62,11 @@ namespace
     public:
         TestSocketData(handle_type t_handle,
                        family_type t_family,
-                       bool t_is_verbose)
+                       const SharedRuntime& t_sr)
         {
+            runtime(t_sr);
             handle(t_handle);
             family(t_family);
-            is_verbose(t_is_verbose);
         }
     };
 

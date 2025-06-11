@@ -18,10 +18,14 @@
 
 #include "network/family-type.hpp"      // family_type
 #include "network/handle-type.hpp"      // handle_type
+#include "network/sharedruntime.hpp"    // SharedRuntime
 #include "network/uniquesocket.hpp"     // UniqueSocket
 
 namespace Network
 {
+    extern auto create_socket(handle_type handle,
+                              family_type family,
+                              const SharedRuntime& sr) -> UniqueSocket;
     extern auto create_socket(handle_type handle,
                               family_type family,
                               bool is_verbose = false) -> UniqueSocket;

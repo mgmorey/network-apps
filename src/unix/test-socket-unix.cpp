@@ -53,6 +53,7 @@ namespace
     using Network::LogicError;
     using Network::OsErrorResult;
     using Network::Pathname;
+    using Network::SharedRuntime;
     using Network::Socket;
     using Network::SocketData;
     using Network::SocketHints;
@@ -77,11 +78,11 @@ namespace
     public:
         TestSocketData(handle_type t_handle,
                        family_type t_family,
-                       bool t_is_verbose)
+                       const SharedRuntime& t_sr)
         {
+            runtime(t_sr);
             handle(t_handle);
             family(t_family);
-            is_verbose(t_is_verbose);
         }
     };
 
@@ -202,6 +203,7 @@ namespace
 
     auto test_close(handle_type handle,
                     family_type family,
+                    const SharedRuntime& sr,
                     const ErrorCodeSet& expected_codes,
                     const std::string& expected_error_re) -> void
     {
@@ -209,7 +211,7 @@ namespace
         std::string actual_error_str;
 
         try {
-            const TestSocketData sd {handle, family, is_verbose};
+            const TestSocketData sd {handle, family, sr};
 
             if (const auto result {close(sd)}) {
                 print(result);
@@ -226,9 +228,9 @@ namespace
         assert(std::regex_match(actual_error_str, expected_error_regex));
     }
 
-    auto test_close_handle_null() -> void
+    auto test_close_handle_null(const SharedRuntime& sr) -> void
     {
-        test_close(handle_null, AF_UNIX, get_codes_bad_file_number(), {});
+        test_close(handle_null, AF_UNIX, sr, get_codes_bad_file_number(), {});
     }
 
     auto test_path(Socket& sock,
@@ -357,7 +359,7 @@ auto main(int argc, char* argv[]) -> int
         test_paths_invalid();
         test_unix_socket_invalid_socktype();
         test_unix_socket_invalid_protocol();
-        test_close_handle_null();
+        test_close_handle_null(rt);
         test_paths_valid();
         test_unix_socket_valid();
     }

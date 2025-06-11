@@ -20,12 +20,16 @@
 #include "network/family-type.hpp"      // family_type
 #include "network/handle-null.hpp"      // handle_null
 #include "network/handle-type.hpp"      // handle_type
+#include "network/sharedruntime.hpp"    // SharedRuntime
 
 namespace Network
 {
     class SocketData
     {
     public:
+        SocketData(handle_type t_handle,
+                   family_type t_family,
+                   const SharedRuntime& t_sr);
         explicit SocketData(handle_type t_handle,
                             family_type t_family = family_null,
                             bool t_is_verbose = false);
@@ -40,19 +44,19 @@ namespace Network
 
         [[nodiscard]] auto family() const noexcept -> family_type;
         [[nodiscard]] auto handle() const noexcept -> handle_type;
-        [[nodiscard]] auto is_verbose() const noexcept -> bool;
+        [[nodiscard]] auto runtime() const noexcept -> SharedRuntime;
 
     protected:
         SocketData() = default;
 
         auto family(family_type t_family) -> SocketData&;
         auto handle(handle_type t_handle) -> SocketData&;
-        auto is_verbose(bool t_is_verbose) -> SocketData&;
+        auto runtime(const SharedRuntime& t_sr) -> SocketData&;
 
     private:
+        SharedRuntime m_sr;
         handle_type m_handle {handle_null};
         family_type m_family {family_null};
-        bool m_is_verbose {false};
     };
 }
 

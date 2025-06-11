@@ -18,24 +18,39 @@
 #include "network/handle-null.hpp"      // handle_null
 #include "network/handle-type.hpp"      // handle_type
 #include "network/logicerror.hpp"       // LogicError
+#include "network/run.hpp"              // Run
+#include "network/sharedruntime.hpp"    // SharedRuntime
 
 Network::SocketData::SocketData(handle_type t_handle,
                                 family_type t_family,
-                                bool t_is_verbose) :
+                                const SharedRuntime& t_sr) :
+    m_sr(t_sr),
     m_handle(t_handle),
-    m_family(t_family),
-    m_is_verbose(t_is_verbose)
+    m_family(t_family)
 {
     if (m_handle == handle_null) {
         throw LogicError("Invalid socket descriptor value");
     }
 }
 
+Network::SocketData::SocketData(handle_type t_handle,
+                                family_type t_family,
+                                bool t_is_verbose) :
+    m_handle(t_handle),
+    m_family(t_family)
+{
+    if (m_handle == handle_null) {
+        throw LogicError("Invalid socket descriptor value");
+    }
+
+    m_sr = run(t_is_verbose);
+}
+
 Network::SocketData::SocketData(const SocketData& t_sd,
                                 handle_type t_handle) :
     SocketData(t_handle,
                t_sd.m_family,
-               t_sd.m_is_verbose)
+               t_sd.m_sr)
 {
 }
 
@@ -49,9 +64,9 @@ auto Network::SocketData::handle() const noexcept -> handle_type
     return m_handle;
 }
 
-auto Network::SocketData::is_verbose() const noexcept -> bool
+auto Network::SocketData::runtime() const noexcept -> SharedRuntime
 {
-    return m_is_verbose;
+    return m_sr;
 }
 
 auto Network::SocketData::family(family_type t_family) -> SocketData&
@@ -66,8 +81,8 @@ auto Network::SocketData::handle(handle_type t_handle) -> SocketData&
     return *this;
 }
 
-auto Network::SocketData::is_verbose(bool t_is_verbose) -> SocketData&
+auto Network::SocketData::runtime(const SharedRuntime& t_sr) -> SocketData&
 {
-    m_is_verbose = t_is_verbose;
+    m_sr = t_sr;
     return *this;
 }

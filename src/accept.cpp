@@ -41,7 +41,7 @@ auto Network::accept(const SocketData& sd) -> AcceptResult
     const std::span bs {buffer};
     auto [sa, sa_length] {buffer.span()};
     const auto handle_1 {sd.handle()};
-    const auto is_verbose {sd.is_verbose()};
+    const auto is_verbose {sd.runtime()->is_verbose()};
 
     if (is_verbose) {
         // clang-format off

@@ -77,7 +77,7 @@ auto Network::InetSocket::connect(std::span<const std::byte> t_bs) ->
 
 auto Network::InetSocket::is_verbose() const noexcept -> bool
 {
-    return m_sd.is_verbose();
+    return m_sd.runtime()->is_verbose();
 }
 
 auto Network::InetSocket::listen(int t_backlog) const -> OsErrorResult
