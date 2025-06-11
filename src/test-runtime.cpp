@@ -17,8 +17,7 @@
 #include "network/network.hpp"          // ApiOptions, Error, FailMode,
                                         // Runtime, Version,
                                         // create_runtime(),
-                                        // get_hostname(),
-                                        // run()
+                                        // get_hostname()
 #include "network/parse.hpp"            // parse()
 #include "network/quote.hpp"            // quote()
 #include "network/stop.hpp"             // stop()
