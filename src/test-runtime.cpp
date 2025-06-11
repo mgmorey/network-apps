@@ -177,7 +177,7 @@ namespace
         const std::string actual_str {get_actual_str(rt)};
         const std::regex expected_regex {get_expected_re()};
         assert(std::regex_match(actual_str, expected_regex));
-        int error_code {rt.stop()};
+        const int error_code {rt.stop()};
         assert(!error_code);
         print(rt);
         assert(!rt.is_running());
