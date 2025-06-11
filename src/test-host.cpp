@@ -20,7 +20,8 @@
                                         // IpSocketHints,
                                         // OptionalHints,
                                         // OptionalHostname,
-                                        // OsErrorResult, SocketHints,
+                                        // OsErrorResult,
+                                        // SharedRuntime, SocketHints,
                                         // SocketHost, always_false_v,
                                         // get_hostname(), insert(),
                                         // os_error_type, run(),
@@ -58,6 +59,7 @@ namespace
     using Network::OptionalHints;
     using Network::OptionalHostname;
     using Network::OsErrorResult;
+    using Network::SharedRuntime;
     using Network::SocketHints;
     using Network::SocketHost;
     using Network::always_false_v;
@@ -240,7 +242,7 @@ namespace
         assert(expected_codes.contains(actual_code));
     }
 
-    auto test_get_endpoint_invalid_flag() -> void
+    auto test_get_endpoint_invalid_flag(const SharedRuntime& sr) -> void
     {
         const ByteString addr {get_inet_address()};
         std::string hostname_str {1};
@@ -250,7 +252,7 @@ namespace
         if (const auto result {get_endpointresult(hostname_str,
                                                   service_str,
                                                   addr, -1,
-                                                  is_verbose)}) {
+                                                  sr)}) {
             print(result);
             actual_str = result.string();
         }
@@ -305,7 +307,7 @@ auto main(int argc, char* argv[]) -> int
             std::cout << *rt << std::endl;
         }
 
-        test_get_endpoint_invalid_flag();
+        test_get_endpoint_invalid_flag(rt);
         test_invalid_family();
         test_invalid_socktype();
 #if !defined(OS_CYGWIN_NT) && !defined(OS_MINGW64_NT)

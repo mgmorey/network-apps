@@ -20,6 +20,8 @@
 #include "network/error.hpp"                    // Error
 #include "network/get-endpointresult.hpp"       // get_endpointresult()
 #include "network/oserrorresult.hpp"            // OsErrorResult,
+#include "network/run.hpp"                      // run()
+#include "network/sharedruntime.hpp"            // SharedRuntime
 
 #include <cstddef>      // std::byte
 #include <span>         // std::span
@@ -28,10 +30,10 @@
 
 auto Network::get_endpoint(std::span<const std::byte> bs,
                            int flags,
-                           bool is_verbose) -> Endpoint
+                           const SharedRuntime& sr) -> Endpoint
 {
     Endpoint result;
-    auto endpoint_result {get_endpointresult(bs, flags, is_verbose)};
+    auto endpoint_result {get_endpointresult(bs, flags, sr->is_verbose())};
     std::visit([&](auto&& arg) {
         using T = std::decay_t<decltype(arg)>;
 
@@ -46,4 +48,12 @@ auto Network::get_endpoint(std::span<const std::byte> bs,
         }
     }, endpoint_result);
     return result;
+}
+
+auto Network::get_endpoint(std::span<const std::byte> bs,
+                           int flags,
+                           bool is_verbose) -> Endpoint
+{
+    const auto rt {run(is_verbose)};
+    return get_endpoint(bs, flags, rt);
 }

@@ -21,7 +21,9 @@
 #include "network/hostname-length-limits.hpp"   // hostname_length_max
 #include "network/oserrorresult.hpp"            // OsErrorResult
 #include "network/quote.hpp"                    // quote()
+#include "network/run.hpp"                      // run()
 #include "network/service-length-limits.hpp"    // service_length_max
+#include "network/sharedruntime.hpp"            // SharedRuntime
 #include "network/textbuffer.hpp"               // TextBuffer
 #include "network/to-os-error.hpp"              // to_os_error()
 #include "network/to-string-span-byte.hpp"      // to_string()
@@ -40,13 +42,13 @@
 auto Network::get_endpointresult(std::span<char> hostname,
                                  std::span<char> service,
                                  std::span<const std::byte> bs, int flags,
-                                 bool is_verbose) -> OsErrorResult
+                                 const SharedRuntime& sr) -> OsErrorResult
 {
     const auto [sa, sa_length] {get_sa_span(bs)};
     const std::string_view hostname_sv {hostname.data(), hostname.size()};
     const std::string_view service_sv {service.data(), service.size()};
 
-    if (is_verbose) {
+    if (sr->is_verbose()) {
         // clang-format off
         std::cout << "Calling ::getnameinfo("
                   << to_string(bs)
@@ -100,7 +102,7 @@ auto Network::get_endpointresult(std::span<char> hostname,
         return OsErrorResult {os_error, oss.str()};
     }
 
-    if (is_verbose) {
+    if (sr->is_verbose()) {
         // clang-format off
         std::cout << "Call to ::getnameinfo("
                   << to_string(bs)
@@ -129,7 +131,7 @@ auto Network::get_endpointresult(std::span<char> hostname,
 }
 
 auto Network::get_endpointresult(std::span<const std::byte> bs, int flags,
-                                 bool is_verbose) -> EndpointResult
+                                 const SharedRuntime& sr) -> EndpointResult
 {
     TextBuffer hostname {hostname_length_max};
     TextBuffer service {service_length_max};
@@ -138,9 +140,16 @@ auto Network::get_endpointresult(std::span<const std::byte> bs, int flags,
                                         service,
                                         bs,
                                         flags,
-                                        is_verbose)}) {
+                                        sr)}) {
         return result;
     }
 
     return Endpoint {hostname, service};
+}
+
+auto Network::get_endpointresult(std::span<const std::byte> bs, int flags,
+                                 bool is_verbose) -> EndpointResult
+{
+    const auto sr {run(is_verbose)};
+    return get_endpointresult(bs, flags, sr);
 }

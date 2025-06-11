@@ -18,6 +18,7 @@
 
 #include "network/endpointresult.hpp"   // EndpointResult
 #include "network/oserrorresult.hpp"    // OsErrorResult
+#include "network/sharedruntime.hpp"    // SharedRuntime
 
 #include <cstddef>      // std::byte
 #include <span>         // std::span
@@ -27,7 +28,9 @@ namespace Network
     extern auto get_endpointresult(std::span<char> hostname,
                                    std::span<char> service,
                                    std::span<const std::byte> bs, int flags,
-                                   bool is_verbose = false) -> OsErrorResult;
+                                   const SharedRuntime& sr) -> OsErrorResult;
+    extern auto get_endpointresult(std::span<const std::byte> bs, int flags,
+                                   const SharedRuntime& sr) -> EndpointResult;
     extern auto get_endpointresult(std::span<const std::byte> bs, int flags,
                                    bool is_verbose = false) -> EndpointResult;
 }

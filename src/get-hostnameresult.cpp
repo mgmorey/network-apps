@@ -22,6 +22,7 @@
 #include "network/quote.hpp"                    // quote()
 #include "network/reset-api-error.hpp"          // reset_api_error()
 #include "network/run.hpp"                      // run()
+#include "network/sharedruntime.hpp"            // SharedRuntime
 #include "network/textbuffer.hpp"               // TextBuffer
 #include "network/to-name-length.hpp"           // to_name_length()
 #include "network/to-os-error.hpp"              // to_os_error()
