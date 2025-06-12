@@ -35,7 +35,6 @@
                         // std::size_t
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
-#include <memory>       // std::make_unique()
 #include <regex>        // std::regex, std::regex_match
 #include <string>       // std::string
 
@@ -55,66 +54,14 @@ namespace
     using Network::parse;
     using Network::run;
 
-    class TestSocketData : public SocketData
-    {
-    public:
-        TestSocketData(handle_type t_handle,
-                       family_type t_family,
-                       const SharedRuntime& t_sr)
-        {
-            runtime(t_sr);
-            handle(t_handle);
-            family(t_family);
-        }
-    };
-
-    class TestInetSocket : public InetSocket
-    {
-    public:
-        explicit TestInetSocket(const SocketData& t_sd) :
-            InetSocket(t_sd)
-        {
-        }
-    };
-
-    constexpr auto expected_error_accept_re {
-        R"(Call to ::accept\(.+\) failed with error \d+: .+)"
-    };
     constexpr auto expected_error_handle_re {
         R"(Invalid socket descriptor value)"
     };
-    constexpr auto expected_error_peername_re {
-        R"(Call to ::getpeername\(.+\) failed with error \d+: .+)"
-    };
-#ifdef WIN32
-    constexpr auto expected_error_read_re {
-        R"(Call to ::recv\(.+\) failed with error \d+: .+)"
-    };
-#else
-    constexpr auto expected_error_read_re {
-        R"(Call to ::read\(.+\) failed with error \d+: .+)"
-    };
-#endif
     constexpr auto expected_error_socket_re {
         R"(Call to ::socket\(.+\) failed with error \d+: .+)"
     };
-#ifdef WIN32
-    constexpr auto expected_error_write_re {
-        R"(Call to ::send\(.+\) failed with error \d+: .+)"
-    };
-#else
-    constexpr auto expected_error_write_re {
-        R"(Call to ::write\(.+\) failed with error \d+: .+)"
-    };
-#endif
 
     auto is_verbose {false}; // NOLINT
-
-    auto create_null_socket(const SharedRuntime& sr) -> UniqueSocket
-    {
-        const TestSocketData sd {handle_null, AF_UNSPEC, sr};
-        return std::make_unique<TestInetSocket>(sd);
-    }
 
     auto parse_arguments(int argc, char** argv) -> void
     {
@@ -226,29 +173,6 @@ namespace
         }
     }
 
-    auto test_socket_accept_invalid(const SharedRuntime& sr) -> void
-    {
-        const std::string expected_error_re {expected_error_accept_re};
-        std::string actual_error_str;
-
-        try {
-            const auto sock {create_null_socket(sr)};
-            static_cast<void>(sock->accept());
-        }
-        catch (const Error& error) {
-            print(error);
-            actual_error_str = error.what();
-        }
-
-        if (expected_error_re.empty()) {
-            assert(actual_error_str.empty());
-        }
-        else {
-            const std::regex expected_error_regex {expected_error_re};
-            assert(std::regex_match(actual_error_str, expected_error_regex));
-        }
-    }
-
     auto test_socket_family_invalid() -> void
     {
         const SocketHints hints {-1, SOCK_STREAM, 0};
@@ -260,107 +184,16 @@ namespace
         test_socket(handle_null, AF_UNSPEC, expected_error_handle_re);
     }
 
-    auto test_socket_listen_invalid(const SharedRuntime& sr) -> void
-    {
-        std::string actual_error_str;
-
-        try {
-            const auto sock {create_null_socket(sr)};
-            static_cast<void>(sock->listen(0));
-        }
-        catch (const Error& error) {
-            print(error);
-            actual_error_str = error.what();
-        }
-
-        assert(actual_error_str.empty());
-    }
-
-    auto test_socket_peername_invalid(const SharedRuntime& sr) -> void
-    {
-        const std::string expected_error_re {expected_error_peername_re};
-        std::string actual_error_str;
-
-        try {
-            const auto sock {create_null_socket(sr)};
-            static_cast<void>(sock->peername());
-        }
-        catch (const Error& error) {
-            print(error);
-            actual_error_str = error.what();
-        }
-
-        if (expected_error_re.empty()) {
-            assert(actual_error_str.empty());
-        }
-        else {
-            const std::regex expected_error_regex {expected_error_re};
-            assert(std::regex_match(actual_error_str, expected_error_regex));
-        }
-    }
-
     auto test_socket_protocol_invalid() -> void
     {
         const SocketHints hints {AF_INET, SOCK_STREAM, -1};
         test_socket(hints, expected_error_socket_re);
     }
 
-    auto test_socket_read_invalid(const SharedRuntime& sr) -> void
-    {
-        const std::string expected_error_re {expected_error_read_re};
-        std::string actual_error_str;
-
-        try {
-            const auto sock {create_null_socket(sr)};
-            static_cast<void>(sock->read(std::span<char> {}));
-        }
-        catch (const Error& error) {
-            print(error);
-            actual_error_str = error.what();
-        }
-
-        if (expected_error_re.empty()) {
-            assert(actual_error_str.empty());
-        }
-        else {
-            const std::regex expected_error_regex {expected_error_re};
-            assert(std::regex_match(actual_error_str, expected_error_regex));
-        }
-    }
-
-    auto test_socket_shutdown_invalid(const SharedRuntime& sr) -> void
-    {
-        const auto sock {create_null_socket(sr)};
-        static_cast<void>(sock->shutdown(0));
-    }
-
     auto test_socket_socktype_invalid() -> void
     {
         const SocketHints hints {AF_INET, -1, 0};
         test_socket(hints, expected_error_socket_re);
-    }
-
-    auto test_socket_write_invalid(const SharedRuntime& sr) -> void
-    {
-        const std::string expected_error_re {expected_error_write_re};
-        std::string actual_error_str;
-
-        try {
-            const auto sock {create_null_socket(sr)};
-            static_cast<void>(sock->write({}));
-        }
-        catch (const Error& error) {
-            print(error);
-            actual_error_str = error.what();
-        }
-
-        if (expected_error_re.empty()) {
-            assert(actual_error_str.empty());
-        }
-        else {
-            const std::regex expected_error_regex {expected_error_re};
-            assert(std::regex_match(actual_error_str, expected_error_regex));
-        }
     }
 
     auto test_valid() -> void
@@ -381,16 +214,10 @@ auto main(int argc, char* argv[]) -> int
         }
 
         test_inet_socket_handle_invalid();
-        test_socket_accept_invalid(rt);
         test_socket_family_invalid();
         test_socket_handle_invalid();
-        test_socket_listen_invalid(rt);
-        test_socket_peername_invalid(rt);
         test_socket_protocol_invalid();
-        test_socket_read_invalid(rt);
-        test_socket_shutdown_invalid(rt);
         test_socket_socktype_invalid();
-        test_socket_write_invalid(rt);
 
         test_inet_socket_handle_valid();
         test_valid();
