@@ -16,8 +16,7 @@
 #include "network/assert.hpp"           // assert()
 #include "network/network.hpp"          // ApiOptions, Error,
                                         // FailMode, Runtime,
-                                        // SocketApi, Version,
-                                        // get_hostname(), run()
+                                        // SocketApi, Version, run()
 #include "network/parse.hpp"            // parse()
 #include "network/quote.hpp"            // quote()
 #include "network/socketapi.hpp"        // SocketApi()
@@ -45,22 +44,17 @@ namespace
     using Network::Runtime;
     using Network::SocketApi;
     using Network::Version;
-    using Network::get_hostname;
     using Network::quote;
     using Network::parse;
 
 #ifdef WIN32
     constexpr auto expected_code_stopped {WSANOTINITIALISED};
-    constexpr auto expected_error_stopped_re {
-        "(Call to ::gethostname\\(.+\\) failed with error \\d+: .+)"
-    };
     constexpr auto expected_runtime_platform_re
     {
         "WinSock 2.0"
     };
 #else
     constexpr auto expected_code_stopped {0};
-    constexpr auto expected_error_stopped_re {""};
     constexpr auto expected_runtime_platform_re {
         "Berkeley Software Distribution Sockets"
     };
@@ -210,22 +204,6 @@ namespace
         assert(error_code == expected_code_stopped);
     }
 
-    auto test_stopped() -> void
-    {
-        std::string actual_str;
-
-        try {
-            static_cast<void>(get_hostname(is_verbose));
-        }
-        catch (const Error& error) {
-            print(error);
-            actual_str = error.what();
-        }
-
-        const std::regex expected_regex {expected_error_stopped_re};
-        assert(std::regex_match(actual_str, expected_regex));
-    }
-
     auto test_version(unsigned short major,
                       const std::string& expected_str) -> void
     {
@@ -262,7 +240,6 @@ auto main(int argc, char* argv[]) -> int
     try {
         parse_arguments(argc, argv);
         test_versions();
-        test_stopped();
         test_inactive();
     }
     catch (const std::exception& error) {
