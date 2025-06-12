@@ -45,7 +45,6 @@ namespace
     using Network::Error;
     using Network::Pathname;
     using Network::SharedRuntime;
-    using Network::SocketData;
     using Network::SocketHints;
     using Network::SocketPair;
     using Network::create_socketpair;
