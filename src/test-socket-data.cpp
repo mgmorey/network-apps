@@ -48,19 +48,6 @@ namespace
     using Network::parse;
     using Network::run;
 
-    class TestSocketData : public SocketData
-    {
-    public:
-        TestSocketData(handle_type t_handle,
-                       family_type t_family,
-                       const SharedRuntime& t_sr)
-        {
-            runtime(t_sr);
-            handle(t_handle);
-            family(t_family);
-        }
-    };
-
     constexpr auto expected_error_socket_invalid_re {
         R"(Invalid socket descriptor value)"
     };
