@@ -16,8 +16,8 @@
 #ifndef NETWORK_CREATE_SOCKETRESULT_HPP
 #define NETWORK_CREATE_SOCKETRESULT_HPP
 
-#include "network/sockethints.hpp"              // SocketHints
 #include "network/sharedruntime.hpp"            // SharedRuntime
+#include "network/sockethints.hpp"              // SocketHints
 #include "network/socketresult.hpp"             // SocketResult
 
 namespace Network

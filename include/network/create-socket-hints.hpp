@@ -16,8 +16,8 @@
 #ifndef NETWORK_CREATE_SOCKET_HINTS_HPP
 #define NETWORK_CREATE_SOCKET_HINTS_HPP
 
-#include "network/sockethints.hpp"      // SocketHints
 #include "network/sharedruntime.hpp"    // SharedRuntime
+#include "network/sockethints.hpp"      // SocketHints
 #include "network/uniquesocket.hpp"     // UniqueSocket
 
 namespace Network
