@@ -30,12 +30,13 @@ namespace Network
         SocketData(handle_type t_handle,
                    family_type t_family,
                    const SharedRuntime& t_sr);
-        explicit SocketData(handle_type t_handle,
-                            family_type t_family = family_null,
-                            bool t_is_verbose = false);
+        SocketData(handle_type t_handle,
+                   family_type t_family,
+                   bool t_is_verbose = false);
         SocketData(const SocketData& t_sd,
                    handle_type t_handle);
 
+        SocketData() = default;
         SocketData(const SocketData&) noexcept = default;
         SocketData(SocketData&&) noexcept = default;
         ~SocketData() noexcept = default;
@@ -47,8 +48,6 @@ namespace Network
         [[nodiscard]] auto runtime() const noexcept -> SharedRuntime;
 
     protected:
-        SocketData() = default;
-
         auto family(family_type t_family) -> SocketData&;
         auto handle(handle_type t_handle) -> SocketData&;
         auto runtime(const SharedRuntime& t_sr) -> SocketData&;

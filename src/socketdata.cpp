@@ -36,21 +36,13 @@ Network::SocketData::SocketData(handle_type t_handle,
 Network::SocketData::SocketData(handle_type t_handle,
                                 family_type t_family,
                                 bool t_is_verbose) :
-    m_handle(t_handle),
-    m_family(t_family)
+    SocketData(t_handle, t_family, run(t_is_verbose))
 {
-    if (m_handle == handle_null) {
-        throw LogicError("Invalid socket descriptor value");
-    }
-
-    m_sr = run(t_is_verbose);
 }
 
 Network::SocketData::SocketData(const SocketData& t_sd,
                                 handle_type t_handle) :
-    SocketData(t_handle,
-               t_sd.m_family,
-               t_sd.m_sr)
+    SocketData(t_handle, t_sd.m_family, t_sd.m_sr)
 {
 }
 
