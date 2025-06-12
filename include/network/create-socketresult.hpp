@@ -17,10 +17,13 @@
 #define NETWORK_CREATE_SOCKETRESULT_HPP
 
 #include "network/sockethints.hpp"              // SocketHints
+#include "network/sharedruntime.hpp"            // SharedRuntime
 #include "network/socketresult.hpp"             // SocketResult
 
 namespace Network
 {
+    extern auto create_socketresult(const SocketHints& hints,
+                                    const SharedRuntime& sr) -> SocketResult;
     extern auto create_socketresult(const SocketHints& hints,
                                     bool is_verbose = false) -> SocketResult;
 }

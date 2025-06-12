@@ -19,6 +19,8 @@
 #include "network/error-strings.hpp"            // VISITOR_ERROR
 #include "network/error.hpp"                    // Error
 #include "network/oserrorresult.hpp"            // OsErrorResult
+#include "network/run.hpp"                      // run()
+#include "network/sharedruntime.hpp"            // SharedRuntime
 #include "network/sockethints.hpp"              // SocketHints
 #include "network/uniquesocket.hpp"             // UniqueSocket
 
@@ -26,10 +28,10 @@
 #include <variant>      // std::visit()
 
 auto Network::create_socket(const SocketHints& hints,
-                            bool is_verbose) -> UniqueSocket
+                            const SharedRuntime& sr) -> UniqueSocket
 {
     UniqueSocket sock;
-    auto result {create_socketresult(hints, is_verbose)};
+    auto result {create_socketresult(hints, sr->is_verbose())};
     std::visit([&](auto&& arg) {
         using T = std::decay_t<decltype(arg)>;
 
@@ -44,4 +46,11 @@ auto Network::create_socket(const SocketHints& hints,
         }
     }, result);
     return sock;
+}
+
+auto Network::create_socket(const SocketHints& hints,
+                            bool is_verbose) -> UniqueSocket
+{
+    const auto rt {run(is_verbose)};
+    return create_socket(hints, rt);
 }
