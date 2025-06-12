@@ -36,7 +36,7 @@ auto Network::write(const SocketData& sd, std::string_view sv) -> ssize_t
 {
     const auto handle {sd.handle()};
 
-    if (sd.is_verbose()) {
+    if (sd.runtime()->is_verbose()) {
         // clang-format off
         std::cout << "Calling ::send("
                   << handle
