@@ -31,7 +31,7 @@ auto Network::create_socket(const SocketHints& hints,
                             const SharedRuntime& sr) -> UniqueSocket
 {
     UniqueSocket sock;
-    auto result {create_socketresult(hints, sr->is_verbose())};
+    auto result {create_socketresult(hints, sr)};
     std::visit([&](auto&& arg) {
         using T = std::decay_t<decltype(arg)>;
 
