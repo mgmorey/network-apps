@@ -125,7 +125,6 @@ test-connect
 test-errors
 test-host
 test-hostname
-test-limits
 test-option
 test-parse
 test-runtime
