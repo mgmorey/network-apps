@@ -60,21 +60,3 @@ auto Network::SocketData::runtime() const noexcept -> SharedRuntime
 {
     return m_sr;
 }
-
-auto Network::SocketData::family(family_type t_family) -> SocketData&
-{
-    m_family = t_family;
-    return *this;
-}
-
-auto Network::SocketData::handle(handle_type t_handle) -> SocketData&
-{
-    m_handle = t_handle;
-    return *this;
-}
-
-auto Network::SocketData::runtime(const SharedRuntime& t_sr) -> SocketData&
-{
-    m_sr = t_sr;
-    return *this;
-}

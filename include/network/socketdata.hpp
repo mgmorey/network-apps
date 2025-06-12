@@ -36,6 +36,7 @@ namespace Network
         SocketData(const SocketData& t_sd,
                    handle_type t_handle);
 
+        SocketData() = delete;
         SocketData(const SocketData&) noexcept = default;
         SocketData(SocketData&&) noexcept = default;
         ~SocketData() noexcept = default;
@@ -45,13 +46,6 @@ namespace Network
         [[nodiscard]] auto family() const noexcept -> family_type;
         [[nodiscard]] auto handle() const noexcept -> handle_type;
         [[nodiscard]] auto runtime() const noexcept -> SharedRuntime;
-
-    protected:
-        SocketData() = default;
-
-        auto family(family_type t_family) -> SocketData&;
-        auto handle(handle_type t_handle) -> SocketData&;
-        auto runtime(const SharedRuntime& t_sr) -> SocketData&;
 
     private:
         SharedRuntime m_sr;
