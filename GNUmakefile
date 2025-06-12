@@ -119,7 +119,7 @@ to-path.cpp unixsocket.cpp validate-path.cpp validate-sun.cpp
 test_common_sources = test-address.cpp test-bind.cpp test-connect.cpp	\
 test-errors.cpp test-host.cpp test-hostname.cpp test-limits.cpp		\
 test-option.cpp test-parse.cpp test-runtime.cpp test-socket-api.cpp	\
-test-socket-inet.cpp
+test-socket-data.cpp test-socket-inet.cpp
 
 test_unix_sources = test-socket-pair.cpp test-socket-unix.cpp
 unix_sources = unix-server.cpp unix-client.cpp

@@ -130,6 +130,7 @@ test-option
 test-parse
 test-runtime
 test-socket-api
+test-socket-data
 test-socket-inet
 test-socket-pair
 test-socket-unix
