@@ -15,14 +15,13 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-# Add optimization level flag to CXXFLAGS
 ifeq "$(filter -O,$(CXXFLAGS))" ""
-CXXFLAGS += -O1
+CXXFLAGS += -Og
 endif
 
 ifeq "$(filter -g,$(CXXFLAGS))" ""
 CXXFLAGS += $(if $(filter 2 3 4 5,$(USING_GDBDWARF)),-gdwarf-$(USING_GDBDWARF),)
-CXXFLAGS += $(if $(filter gnu,$(cxx_family)),-ggdb,-g3)
+CXXFLAGS += $(if $(filter Darwin,$(os_label_kernel)),-g3,-ggdb)
 endif
 
 # Local Variables:
