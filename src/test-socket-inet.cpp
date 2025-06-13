@@ -55,7 +55,7 @@ namespace
     using Network::run;
 
     constexpr auto expected_error_handle_re {
-        R"(Invalid socket descriptor value)"
+        R"(Null socket descriptor)"
     };
     constexpr auto expected_error_socket_re {
         R"(Call to ::socket\(.+\) failed with error \d+: .+)"

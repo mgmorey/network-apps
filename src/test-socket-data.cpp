@@ -49,7 +49,7 @@ namespace
     using Network::run;
 
     constexpr auto expected_error_socket_invalid_re {
-        R"(Invalid socket descriptor value)"
+        R"(Null socket descriptor)"
     };
 
     auto is_verbose {false}; // NOLINT

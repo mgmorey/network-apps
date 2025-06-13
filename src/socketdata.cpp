@@ -29,7 +29,11 @@ Network::SocketData::SocketData(handle_type t_handle,
     m_family(t_family)
 {
     if (m_handle == handle_null) {
-        throw LogicError("Invalid socket descriptor value");
+        throw LogicError("Null socket descriptor");
+    }
+
+    if (m_sr == nullptr) {
+        throw LogicError("Null runtime pointer");
     }
 }
 
