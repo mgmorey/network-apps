@@ -14,6 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/socketdata.hpp"       // SocketData
+#include "network/family-null.hpp"      // family_null
 #include "network/family-type.hpp"      // family_type
 #include "network/handle-null.hpp"      // handle_null
 #include "network/handle-type.hpp"      // handle_type
@@ -28,12 +29,16 @@ Network::SocketData::SocketData(handle_type t_handle,
     m_handle(t_handle),
     m_family(t_family)
 {
+    if (m_sr == nullptr) {
+        throw LogicError("Null runtime pointer");
+    }
+
     if (m_handle == handle_null) {
         throw LogicError("Null socket descriptor");
     }
 
-    if (m_sr == nullptr) {
-        throw LogicError("Null runtime pointer");
+    if (m_family == family_null) {
+        throw LogicError("Null socket domain/family");
     }
 }
 
