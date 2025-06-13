@@ -15,18 +15,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-# Enable runtime protection against certain types of security
-# vulnerabilities
 ifeq "$(filter, -D_FORTIFY_SOURCE=%,$(CPPFLAGS))" ""
 CPPFLAGS += -D_FORTIFY_SOURCE=2
 endif
 
-# Add optimization level flag to CXXFLAGS
 ifeq "$(filter -O,$(CXXFLAGS))" ""
 CXXFLAGS += -O1
 endif
 
-# Add no omit frame pointer flag to CXXFLAGS
 ifeq "$(filter,-fno-omit-frame-pointer,$(CXXFLAGS))" ""
 CXXFLAGS += -fno-omit-frame-pointer
 endif
