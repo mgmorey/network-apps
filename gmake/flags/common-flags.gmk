@@ -90,6 +90,9 @@ CPPFLAGS += $(addprefix -D,$(cpp_symbols))
 
 # CXXFLAGS
 
+# Add warning flags to CXXFLAGS
+CXXFLAGS += -Wall -Werror -Wextra -Wshadow -Wsign-conversion
+
 # Add position-independent code flag to CXXFLAGS
 CXXFLAGS += -fPIC
 
@@ -101,9 +104,6 @@ CXXFLAGS += $(if $(filter gnu,$(as_family)),-pipe,)
 
 # Add language standard flag to CXXFLAGS
 CXXFLAGS += $(if $(standard),-std=$(standard),)
-
-# Add warning flags to CXXFLAGS
-CXXFLAGS += -Wall -Werror -Wextra -Wshadow -Wsign-conversion
 
 # Define variables for assembler listing option flags
 listing = $(@:$(object_suffix)=.lst)
