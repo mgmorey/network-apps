@@ -15,6 +15,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-ifneq "$(filter -g -g1 -g2 -g3 -ggdb,$(CXXFLAGS))" ""
+ifneq "$(filter -g%,$(CXXFLAGS))" ""
 CXXFLAGS += $(if $(filter 2 3 4 5,$(USING_GDBDWARF)),-gdwarf-$(USING_GDBDWARF),)
 endif
