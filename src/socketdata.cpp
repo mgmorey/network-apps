@@ -22,6 +22,8 @@
 #include "network/run.hpp"              // Run
 #include "network/sharedruntime.hpp"    // SharedRuntime
 
+#include <string_view>  // std::string_view
+
 Network::SocketData::SocketData(handle_type t_handle,
                                 family_type t_family,
                                 const SharedRuntime& t_sr) :
@@ -29,16 +31,20 @@ Network::SocketData::SocketData(handle_type t_handle,
     m_handle(t_handle),
     m_family(t_family)
 {
+    std::string_view error;
+
     if (m_sr == nullptr) {
-        throw LogicError("Null runtime pointer");
+        error = "Null runtime pointer";
+    }
+    else if (m_handle == handle_null) {
+        error = "Null socket descriptor";
+    }
+    else if (m_family == family_null) {
+        error = "Null socket domain/family";
     }
 
-    if (m_handle == handle_null) {
-        throw LogicError("Null socket descriptor");
-    }
-
-    if (m_family == family_null) {
-        throw LogicError("Null socket domain/family");
+    if (!error.empty()) {
+        throw LogicError(error);
     }
 }
 
