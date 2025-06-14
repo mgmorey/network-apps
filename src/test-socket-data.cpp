@@ -51,6 +51,9 @@ namespace
     constexpr auto expected_error_socket_invalid_re {
         R"(Null socket descriptor)"
     };
+    constexpr auto expected_error_socket_valid_re {
+        R"()"
+    };
 
     auto is_verbose {false}; // NOLINT
 
@@ -88,6 +91,9 @@ namespace
 
         try {
             const auto sd {SocketData(handle, family, is_verbose)};
+            assert(sd.family() == family);
+            assert(sd.handle() == handle);
+            assert(sd.runtime()->is_verbose() == is_verbose);
         }
         catch (const Error& error) {
             print(error);
@@ -103,9 +109,16 @@ namespace
         }
     }
 
-    auto test_valid() -> void
+    auto test_invalid() -> void
     {
         test(handle_null, family_null, expected_error_socket_invalid_re);
+    }
+
+    auto test_valid() -> void
+    {
+        auto family {AF_INET};
+        auto handle {::socket(family, SOCK_STREAM, 0)};
+        test(handle, family, expected_error_socket_valid_re);
     }
 }
 
@@ -119,6 +132,7 @@ auto main(int argc, char* argv[]) -> int
             std::cout << *rt << std::endl;
         }
 
+        test_invalid();
         test_valid();
     }
     catch (const std::exception& error) {
