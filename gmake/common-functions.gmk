@@ -70,13 +70,6 @@ format-xx-flag = $(if $(strip $3),$(if $(filter gnu,$1),$2=$3,$2 $3),)
 # $(generate-code-coverage-report)
 generate-code-coverage-report = $(strip $(GCOVR) $(GCOVRFLAGS))
 
-# $(call get-compiler-sanitizer-flags,SANITIZERS)
-define get-compiler-sanitizer-flags
-$(if $(filter address,$1),-fsanitize-address-use-after-scope)	\
-$(if $(filter undefined,$1),-fno-sanitize-recover)		\
-$(call get-sanitizer-flags,$1)
-endef
-
 # $(call get-dependencies-from-sources,SOURCE-FILENAMES)
 define get-dependencies-from-sources
 $(addprefix $(depend_dir)/,$(addsuffix $(depend_suffix),$(basename $1)))
@@ -104,9 +97,15 @@ endef
 # $(call get-rpath-flag,RPATH-ARG)
 get-rpath-flag = $(foreach rpath,$1,$(call format-ld-flag,-rpath,$(rpath:/.=)))
 
+# $(call get-sanitizer-compiler-flags,SANITIZERS)
+define get-sanitizer-compiler-flags
+$(if $(filter undefined,$1),-fno-sanitize-recover)	\
+$(call get-sanitizer-flags,$1)
+endef
+
 # $(call get-sanitizer-flags,SANITIZERS)
 define get-sanitizer-flags
-$(foreach option,$(filter address undefined,$1),-fsanitize=$(option))
+$(foreach option,$(filter address leak undefined,$1),-fsanitize=$(option))
 endef
 
 # $(call get-soname-flag,SONAME-ARG)

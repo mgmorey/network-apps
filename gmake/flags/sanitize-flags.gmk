@@ -33,7 +33,7 @@ endif
 endif
 
 ifeq "$(filter -fsanitize=%,$(CXXFLAGS))" ""
-CXXFLAGS += $(call get-compiler-sanitizer-flags,$(WITH_SANITIZE))
+CXXFLAGS += $(call get-sanitizer-compiler-flags,$(WITH_SANITIZE))
 endif
 ifeq "$(filter -fsanitize=%,$(LDFLAGS))" ""
 LDFLAGS += $(call get-sanitizer-flags,$(WITH_SANITIZE))
