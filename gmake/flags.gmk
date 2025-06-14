@@ -33,6 +33,11 @@ ifneq "$(filter Debug Default,$(BUILD_TYPE))" ""
 include gmake/flags/cxxdebug-flags.gmk
 endif
 
+# Set build flags for GDB DWARF format
+ifneq "$(filter Debug Default,$(BUILD_TYPE))" ""
+include gmake/flags/gdbdwarf-flags.gmk
+endif
+
 # Set build flags for sanitize
 ifneq "$(filter Default,$(BUILD_TYPE))" ""
 include gmake/flags/sanitize-flags.gmk
