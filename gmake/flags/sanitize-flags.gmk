@@ -34,7 +34,6 @@ endif
 endif
 
 ifeq "$(filter -fsanitize=%,$(CXXFLAGS))" ""
-CXXFLAGS += -fno-sanitize-merge
 CXXFLAGS += -fno-sanitize-recover=null
 CXXFLAGS += -fsanitize=$(WITH_SANITIZE)
 endif
