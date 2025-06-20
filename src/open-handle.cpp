@@ -31,6 +31,7 @@
 #include <iostream>     // std::cout, std::endl
 #include <span>         // std::span
 #include <sstream>      // std::ostringstream
+#include <tuple>        // std::get()
 #include <utility>      // std::cmp_equal()
 
 auto Network::open(const SocketData& sd,
@@ -49,7 +50,7 @@ auto Network::open(const SocketData& sd,
     if (is_verbose) {
         // clang-format off
         std::cout << "Calling "
-                  << oh.second
+                  << std::get<1>(oh)
                   << '('
                   << handle
                   << ", "
@@ -63,13 +64,13 @@ auto Network::open(const SocketData& sd,
 
     reset_api_error();
 
-    if (oh.first(handle, sa, sa_length) == socket_error) {
+    if (std::get<0>(oh)(handle, sa, sa_length) == socket_error) {
         const auto api_error {get_api_error()};
         const auto os_error {to_os_error(api_error)};
         std::ostringstream oss;
         // clang-format off
         oss << "Call to "
-            << oh.second
+            << std::get<1>(oh)
             << '('
             << handle
             << ", "

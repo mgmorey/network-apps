@@ -26,12 +26,12 @@
 #endif
 
 #include <string_view>  // std::string_view
-#include <utility>      // std::pair
+#include <tuple>        // std::tuple
 
 namespace Network
 {
     using OpenFunction = int (*)(handle_type, const sockaddr*, socklen_t);
-    using OpenHandler = std::pair<OpenFunction, std::string_view>;
+    using OpenHandler = std::tuple<OpenFunction, std::string_view>;
 }
 
 #endif
