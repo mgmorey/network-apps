@@ -16,7 +16,7 @@
 #ifndef NETWORK_GETNAMEHANDLER_HPP
 #define NETWORK_GETNAMEHANDLER_HPP
 
-#include "network/handle-type.hpp"              // handle_type
+#include "network/handle-type.hpp"      // handle_type
 
 #ifdef WIN32
 #include <winsock2.h>       // sockaddr
