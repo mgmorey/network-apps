@@ -78,7 +78,8 @@ source_suffix = .cpp
 
 compile_commands = compile_commands.json
 compile_flags = compile_flags.txt
-coverage_html = coverage/coverage.html
+coverage_alias = coverage.html
+coverage_html = $(coverage_dir)/coverage.html
 coverage_json = coverage.json
 cppcheck_log = cppcheck.log
 
@@ -170,10 +171,9 @@ unix_logfiles = $(unix_programs:$(binary_suffix)=.log)
 artifacts = $(binary_artifacts) $(text_artifacts)
 binary_artifacts = $(gcov_files) $(libraries)	\
 $(objects) $(package) $(programs) TAGS
-text_artifacts = $(coverage_html) $(coverage_json)	\
-$(compile_commands) $(compile_flags) $(cppcheck_log)	\
-$(dependencies) $(listings) $(logfiles) $(mapfiles)	\
-$(stackdumps) $(sizes)
+text_artifacts = $(coverage_alias) $(coverage_html) $(coverage_json)	\
+$(compile_commands) $(compile_flags) $(cppcheck_log) $(dependencies)	\
+$(listings) $(logfiles) $(mapfiles) $(stackdumps) $(sizes)
 
 build_artifacts = $(gcov_files) $(libraries) $(mapfiles)	\
 $(objects) $(programs) $(sizes)
@@ -320,6 +320,7 @@ $(compile_flags):
 
 $(coverage_html): $(coverage_json)
 	$(generate-code-coverage-report)
+	ln -s $@ .
 
 $(coverage_json): $(logfiles)
 	$(generate-code-coverage-report)
