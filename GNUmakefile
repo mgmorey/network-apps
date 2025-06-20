@@ -320,7 +320,7 @@ $(compile_flags):
 
 $(coverage_html): $(coverage_json)
 	$(generate-code-coverage-report)
-	ln -s $@ .
+	ln -sf $@ .
 
 $(coverage_json): $(logfiles)
 	$(generate-code-coverage-report)
