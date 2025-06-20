@@ -18,7 +18,7 @@
 #include "network/bytestringresult.hpp"         // ByteStringResult
 #include "network/format-os-error.hpp"          // format_os_error()
 #include "network/get-api-error.hpp"            // get_api_error()
-#include "network/namehandler.hpp"              // NameHandler
+#include "network/get-namehandler.hpp"          // get_namehandler()
 #include "network/oserrorresult.hpp"            // OsErrorResult
 #include "network/reset-api-error.hpp"          // reset_api_error()
 #include "network/socket-error.hpp"             // socket_error
@@ -26,35 +26,14 @@
 #include "network/to-os-error.hpp"              // to_os_error()
 #include "network/to-string-span-byte.hpp"      // to_string()
 
-#ifdef WIN32
-#include <winsock2.h>       // ::getpeername(), ::getsockname()
-#else
-#include <sys/socket.h>     // ::getpeername(), ::getsockname()
-#endif
-
-#include <array>        // std::arrray
 #include <iostream>     // std::cout, std::endl
 #include <span>         // std::span
 #include <sstream>      // std::ostringstream
-#include <utility>      // std::make_pair
-
-namespace
-{
-    auto get_binding(bool is_sockname) -> Network::NameHandler
-    {
-        static const std::array<Network::NameHandler, 2> bindings {
-            std::make_pair(::getpeername, "::getpeername"),
-            std::make_pair(::getsockname, "::getsockname"),
-        };
-
-        return bindings.at(static_cast<std::size_t>(is_sockname));
-    }
-}
 
 auto Network::get_nameresult(const SocketData& sd, bool is_sockname) ->
     ByteStringResult
 {
-    const auto binding {get_binding(is_sockname)};
+    const auto handler {get_namehandler(is_sockname)};
     BinaryBuffer buffer;
     const std::span bs {buffer};
     auto [sa, sa_length] {buffer.span()};
@@ -64,7 +43,7 @@ auto Network::get_nameresult(const SocketData& sd, bool is_sockname) ->
     if (is_verbose) {
         // clang-format off
         std::cout << "Calling "
-                  << binding.second
+                  << handler.second
                   << '('
                   << handle
                   << ", "
@@ -78,13 +57,13 @@ auto Network::get_nameresult(const SocketData& sd, bool is_sockname) ->
 
     reset_api_error();
 
-    if (binding.first(handle, sa, &sa_length) == socket_error) {
+    if (handler.first(handle, sa, &sa_length) == socket_error) {
         const auto api_error {get_api_error()};
         const auto os_error {to_os_error(api_error)};
         std::ostringstream oss;
         // clang-format off
         oss << "Call to "
-            << binding.second
+            << handler.second
             << '('
             << handle
             << ", "
@@ -103,7 +82,7 @@ auto Network::get_nameresult(const SocketData& sd, bool is_sockname) ->
         const auto str {to_string(buffer)};
         // clang-format off
         std::cout << "Call to "
-                  << binding.second
+                  << handler.second
                   << '('
                   << handle
                   << ", "

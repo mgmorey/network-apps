@@ -17,8 +17,8 @@
 #include "network/addresserror.hpp"             // AddressError
 #include "network/format-os-error.hpp"          // format_os_error()
 #include "network/get-api-error.hpp"            // get_api_error()
+#include "network/get-openhandler.hpp"          // OpenHandler
 #include "network/get-sa-span.hpp"              // get_sa_span()
-#include "network/openhandler.hpp"              // OpenHandler
 #include "network/oserrorresult.hpp"            // OsErrorResult
 #include "network/reset-api-error.hpp"          // reset_api_error()
 #include "network/sa-length-limits.hpp"         // sa_length_min
@@ -33,31 +33,17 @@
 #include <sys/socket.h>     // ::bind(), ::connect()
 #endif
 
-#include <array>        // std::arrray
 #include <cstddef>      // std::byte, std::size_t
 #include <iostream>     // std::cout, std::endl
 #include <span>         // std::span
 #include <sstream>      // std::ostringstream
-#include <utility>      // std::cmp_equal(), std::make_pair
-
-namespace
-{
-    auto get_binding(bool is_bind) -> Network::OpenHandler
-    {
-        static const std::array<Network::OpenHandler, 2> bindings {
-            std::make_pair(::connect, "::connect"),
-            std::make_pair(::bind, "::bind"),
-        };
-
-        return bindings.at(static_cast<std::size_t>(is_bind));
-    }
-}
+#include <utility>      // std::cmp_equal()
 
 auto Network::open(const SocketData& sd,
                    std::span<const std::byte> bs,
                    bool is_bind) -> OsErrorResult
 {
-    const auto binding {get_binding(is_bind)};
+    const auto handler {get_openhandler(is_bind)};
     const auto [sa, sa_length] {get_sa_span(bs)};
     const auto handle {sd.handle()};
 
@@ -69,7 +55,7 @@ auto Network::open(const SocketData& sd,
     if (sd.runtime()->is_verbose()) {
         // clang-format off
         std::cout << "Calling "
-                  << binding.second
+                  << handler.second
                   << '('
                   << handle
                   << ", "
@@ -83,13 +69,13 @@ auto Network::open(const SocketData& sd,
 
     reset_api_error();
 
-    if (binding.first(handle, sa, sa_length) == socket_error) {
+    if (handler.first(handle, sa, sa_length) == socket_error) {
         const auto api_error {get_api_error()};
         const auto os_error {to_os_error(api_error)};
         std::ostringstream oss;
         // clang-format off
         oss << "Call to "
-            << binding.second
+            << handler.second
             << '('
             << handle
             << ", "
