@@ -13,14 +13,25 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_GETNAMEHANDLER_HPP
-#define NETWORK_GETNAMEHANDLER_HPP
+#ifndef NETWORK_NAMEHANDLER_HPP
+#define NETWORK_NAMEHANDLER_HPP
 
-#include "network/namehandler.hpp"      // NameHandler
+#include "network/handle-type.hpp"      // handle_type
+
+#ifdef WIN32
+#include <winsock2.h>       // sockaddr
+#include <ws2tcpip.h>       // socklen_t
+#else
+#include <sys/socket.h>     // sockaddr, socklen_t
+#endif
+
+#include <string_view>  // std::string_view
+#include <utility>      // std::pair
 
 namespace Network
 {
-    using GetNameHandler = NameHandler;
+    using NameFunction = int (*)(handle_type, sockaddr*, socklen_t*);
+    using NameHandler = std::pair<NameFunction, std::string_view>;
 }
 
 #endif

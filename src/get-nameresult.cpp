@@ -18,7 +18,7 @@
 #include "network/bytestringresult.hpp"         // ByteStringResult
 #include "network/format-os-error.hpp"          // format_os_error()
 #include "network/get-api-error.hpp"            // get_api_error()
-#include "network/getnamehandler.hpp"           // GetNameHandler
+#include "network/namehandler.hpp"              // NameHandler
 #include "network/oserrorresult.hpp"            // OsErrorResult
 #include "network/reset-api-error.hpp"          // reset_api_error()
 #include "network/socket-error.hpp"             // socket_error
@@ -40,9 +40,9 @@
 
 namespace
 {
-    auto get_binding(bool is_sockname) -> Network::GetNameHandler
+    auto get_binding(bool is_sockname) -> Network::NameHandler
     {
-        static const std::array<Network::GetNameHandler, 2> bindings {
+        static const std::array<Network::NameHandler, 2> bindings {
             std::make_pair(::getpeername, "::getpeername"),
             std::make_pair(::getsockname, "::getsockname"),
         };
