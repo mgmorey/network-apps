@@ -15,6 +15,7 @@
 
 #include "network/get-openhandler.hpp"  // get_openhandler()
 #include "network/openhandler.hpp"      // OpenHandler
+#include "network/symbol.hpp"           // Symbol
 
 #ifdef WIN32
 #include <winsock2.h>       // ::bind(), ::connect()
@@ -24,13 +25,13 @@
 
 #include <array>        // std::arrray
 #include <cstddef>      // std::size_t
-#include <utility>      // std::make_pair
+#include <tuple>        // std::make_tuple
 
 auto Network::get_openhandler(bool is_bind) -> OpenHandler
 {
     static const std::array<OpenHandler, 2> handlers {
-        std::make_pair(::connect, "::connect"),
-        std::make_pair(::bind, "::bind"),
+        std::make_tuple(::connect, "::connect", Symbol::connect),
+        std::make_tuple(::bind, "::bind", Symbol::bind),
     };
 
     return handlers.at(static_cast<std::size_t>(is_bind));

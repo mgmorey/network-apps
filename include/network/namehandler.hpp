@@ -17,6 +17,7 @@
 #define NETWORK_NAMEHANDLER_HPP
 
 #include "network/handle-type.hpp"      // handle_type
+#include "network/symbol.hpp"           // Symbol
 
 #ifdef WIN32
 #include <winsock2.h>       // sockaddr
@@ -26,12 +27,12 @@
 #endif
 
 #include <string_view>  // std::string_view
-#include <utility>      // std::pair
+#include <tuple>        // std::tuple
 
 namespace Network
 {
     using NameFunction = int (*)(handle_type, sockaddr*, socklen_t*);
-    using NameHandler = std::pair<NameFunction, std::string_view>;
+    using NameHandler = std::tuple<NameFunction, std::string_view, Symbol>;
 }
 
 #endif

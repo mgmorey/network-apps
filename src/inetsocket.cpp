@@ -32,6 +32,7 @@
 
 #include <cstddef>      // std::byte, std::size_t
 #include <span>         // std::span
+#include <tuple>        // std::get()
 #include <string>       // std::string, std::to_string()
 
 Network::InetSocket::InetSocket(const SocketData& t_sd) : m_sd(t_sd)
@@ -114,9 +115,8 @@ auto Network::InetSocket::write(std::string_view t_sv) const -> ssize_t
 auto Network::InetSocket::get_name(bool t_is_sockname) const ->
     std::span<const std::byte>
 {
-    const auto i {t_is_sockname ? Symbol::sockname : Symbol::peername};
     const auto nh {get_namehandler(t_is_sockname)};
-    auto& result {m_cache[i]};
+    auto& result {m_cache[std::get<2>(nh)]};
 
     if (result.empty()) {
         result = Network::get_name(m_sd, nh);
@@ -128,13 +128,12 @@ auto Network::InetSocket::get_name(bool t_is_sockname) const ->
 auto Network::InetSocket::open(std::span<const std::byte> t_bs,
                                bool t_is_bind) const -> OsErrorResult
 {
-    const auto i {t_is_bind ? Symbol::bind : Symbol::connect};
     const auto oh {get_openhandler(t_is_bind)};
 
-    if (const auto result {Network::open(m_sd, t_bs, oh)}) {
-        return result;
+    if (const auto os_error {Network::open(m_sd, t_bs, oh)}) {
+        return os_error;
     }
 
-    m_cache[i].assign(t_bs.begin(), t_bs.end());
+    m_cache[std::get<2>(oh)].assign(t_bs.begin(), t_bs.end());
     return {};
 }

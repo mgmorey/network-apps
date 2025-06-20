@@ -15,6 +15,7 @@
 
 #include "network/get-namehandler.hpp"  // get_namehandler()
 #include "network/namehandler.hpp"      // NameHandler
+#include "network/symbol.hpp"           // Symbol
 
 #ifdef WIN32
 #include <winsock2.h>       // ::getpeername(), ::getsockname()
@@ -24,13 +25,13 @@
 
 #include <array>        // std::arrray
 #include <cstddef>      // std::size_t
-#include <utility>      // std::make_pair
+#include <tuple>        // std::make_tuple
 
 auto Network::get_namehandler(bool is_sockname) -> NameHandler
 {
     static const std::array<NameHandler, 2> handlers {
-        std::make_pair(::getpeername, "::getpeername"),
-        std::make_pair(::getsockname, "::getsockname"),
+        std::make_tuple(::getpeername, "::getpeername", Symbol::peername),
+        std::make_tuple(::getsockname, "::getsockname", Symbol::sockname),
     };
 
     return handlers.at(static_cast<std::size_t>(is_sockname));

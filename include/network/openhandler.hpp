@@ -17,6 +17,7 @@
 #define NETWORK_OPENHANDLER_HPP
 
 #include "network/handle-type.hpp"      // handle_type
+#include "network/symbol.hpp"           // Symbol
 
 #ifdef WIN32
 #include <winsock2.h>       // sockaddr
@@ -31,7 +32,7 @@
 namespace Network
 {
     using OpenFunction = int (*)(handle_type, const sockaddr*, socklen_t);
-    using OpenHandler = std::tuple<OpenFunction, std::string_view>;
+    using OpenHandler = std::tuple<OpenFunction, std::string_view, Symbol>;
 }
 
 #endif

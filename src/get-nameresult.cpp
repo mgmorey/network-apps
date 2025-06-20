@@ -29,6 +29,7 @@
 #include <iostream>     // std::cout, std::endl
 #include <span>         // std::span
 #include <sstream>      // std::ostringstream
+#include <tuple>        // std::get()
 
 auto Network::get_nameresult(const SocketData& sd,
                              const NameHandler& nh) -> ByteStringResult
@@ -42,7 +43,7 @@ auto Network::get_nameresult(const SocketData& sd,
     if (is_verbose) {
         // clang-format off
         std::cout << "Calling "
-                  << nh.second
+                  << std::get<1>(nh)
                   << '('
                   << handle
                   << ", "
@@ -56,13 +57,13 @@ auto Network::get_nameresult(const SocketData& sd,
 
     reset_api_error();
 
-    if (nh.first(handle, sa, &sa_length) == socket_error) {
+    if (std::get<0>(nh)(handle, sa, &sa_length) == socket_error) {
         const auto api_error {get_api_error()};
         const auto os_error {to_os_error(api_error)};
         std::ostringstream oss;
         // clang-format off
         oss << "Call to "
-            << nh.second
+            << std::get<1>(nh)
             << '('
             << handle
             << ", "
@@ -81,7 +82,7 @@ auto Network::get_nameresult(const SocketData& sd,
         const auto str {to_string(buffer)};
         // clang-format off
         std::cout << "Call to "
-                  << nh.second
+                  << std::get<1>(nh)
                   << '('
                   << handle
                   << ", "
