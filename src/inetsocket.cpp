@@ -19,21 +19,21 @@
 #include "network/close.hpp"            // close()
 #include "network/get-name.hpp"         // get_name()
 #include "network/handle-null.hpp"      // handle_null
-#include "network/handle-type.hpp"      // handle_type
 #include "network/listen.hpp"           // listen()
 #include "network/open-handle.hpp"      // open()
 #include "network/oserrorresult.hpp"    // OsErrorResult
 #include "network/read.hpp"             // read()
 #include "network/shutdown.hpp"         // shutdown()
 #include "network/socketdata.hpp"       // SocketData
+#include "network/string-null.hpp"      // string_null
 #include "network/symbol.hpp"           // Symbol
 #include "network/write.hpp"            // write()
 
 #include <cstddef>      // std::byte, std::size_t
 #include <span>         // std::span
+#include <string>       // std::string, std::to_string()
 
-Network::InetSocket::InetSocket(const SocketData& t_sd) :
-    m_sd(t_sd)
+Network::InetSocket::InetSocket(const SocketData& t_sd) : m_sd(t_sd)
 {
 }
 
@@ -47,9 +47,13 @@ Network::InetSocket::operator bool() const noexcept
     return m_sd.handle() != handle_null;
 }
 
-Network::InetSocket::operator handle_type() const noexcept
+Network::InetSocket::operator std::string() const
 {
-    return m_sd.handle();
+    if (m_sd.handle() == handle_null) {
+        return string_null;
+    }
+
+    return std::to_string(m_sd.handle());
 }
 
 auto Network::InetSocket::accept() const -> AcceptResult

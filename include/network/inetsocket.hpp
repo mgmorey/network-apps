@@ -18,7 +18,6 @@
 
 #include "network/acceptresult.hpp"     // AcceptResult
 #include "network/bytestring.hpp"       // ByteString
-#include "network/handle-type.hpp"      // handle_type
 #include "network/oserrorresult.hpp"    // OsErrorResult
 #include "network/socket.hpp"           // Socket
 #include "network/socketdata.hpp"       // SocketData
@@ -29,6 +28,7 @@
 #include <cstddef>      // std::byte
 #include <map>          // std::map
 #include <span>         // std::span
+#include <string>       // std::string
 #include <string_view>  // std::string_view
 
 namespace Network
@@ -45,7 +45,7 @@ namespace Network
         auto operator=(InetSocket&&) noexcept -> InetSocket& = delete;
 
         explicit operator bool() const noexcept final;
-        explicit operator handle_type() const noexcept final;
+        explicit operator std::string() const final;
 
         [[nodiscard]] auto accept() const -> AcceptResult final;
         [[nodiscard]] auto bind(std::span<const std::byte> t_bs) ->
