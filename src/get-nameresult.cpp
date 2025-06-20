@@ -30,8 +30,8 @@
 #include <span>         // std::span
 #include <sstream>      // std::ostringstream
 
-auto Network::get_nameresult(const SocketData& sd, const NameHandler& nh) ->
-    ByteStringResult
+auto Network::get_nameresult(const SocketData& sd,
+                             const NameHandler& nh) -> ByteStringResult
 {
     BinaryBuffer buffer;
     const std::span bs {buffer};
