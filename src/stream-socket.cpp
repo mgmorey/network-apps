@@ -14,6 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/socket.hpp"           // Socket, operator<<()
+#include "network/string-null.hpp"      // string_null
 
 #include <ostream>      // std::ostream
 #include <string>       // std::string
@@ -21,5 +22,12 @@
 auto Network::operator<<(std::ostream& os,
                          const Socket& sock) -> std::ostream&
 {
-    return os << std::string(sock);
+    if (static_cast<bool>(sock)) {
+        os << static_cast<std::string>(sock);
+    }
+    else {
+        os << string_null;
+    }
+
+    return os;
 }

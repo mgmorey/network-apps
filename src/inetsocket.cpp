@@ -25,7 +25,6 @@
 #include "network/read.hpp"             // read()
 #include "network/shutdown.hpp"         // shutdown()
 #include "network/socketdata.hpp"       // SocketData
-#include "network/string-null.hpp"      // string_null
 #include "network/symbol.hpp"           // Symbol
 #include "network/write.hpp"            // write()
 
@@ -49,10 +48,6 @@ Network::InetSocket::operator bool() const noexcept
 
 Network::InetSocket::operator std::string() const
 {
-    if (m_sd.handle() == handle_null) {
-        return string_null;
-    }
-
     return std::to_string(m_sd.handle());
 }
 
