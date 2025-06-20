@@ -115,25 +115,26 @@ auto Network::InetSocket::write(std::string_view t_sv) const -> ssize_t
 auto Network::InetSocket::get_name(bool t_is_sockname) const ->
     std::span<const std::byte>
 {
-    const auto nh {get_namehandler(t_is_sockname)};
-    auto& result {m_cache[std::get<2>(nh)]};
+    const auto handler {get_namehandler(t_is_sockname)};
+    auto& name {m_cache[std::get<2>(handler)]};
 
-    if (result.empty()) {
-        result = Network::get_name(m_sd, nh);
+    if (name.empty()) {
+        name = Network::get_name(m_sd, handler);
     }
 
-    return result;
+    return name;
 }
 
 auto Network::InetSocket::open(std::span<const std::byte> t_bs,
                                bool t_is_bind) const -> OsErrorResult
 {
-    const auto oh {get_openhandler(t_is_bind)};
+    const auto handler {get_openhandler(t_is_bind)};
 
-    if (const auto os_error {Network::open(m_sd, t_bs, oh)}) {
+    if (const auto os_error {Network::open(m_sd, t_bs, handler)}) {
         return os_error;
     }
 
-    m_cache[std::get<2>(oh)].assign(t_bs.begin(), t_bs.end());
+    auto& name {m_cache[std::get<2>(handler)]};
+    name.assign(t_bs.begin(), t_bs.end());
     return {};
 }
