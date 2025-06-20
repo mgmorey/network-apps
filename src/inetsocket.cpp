@@ -117,13 +117,13 @@ auto Network::InetSocket::get_name(bool t_is_sockname) const ->
 
     if (name.empty()) {
         name = Network::get_name(m_sd, t_is_sockname);
-     }
+    }
 
     return name;
 }
 
 auto Network::InetSocket::open(std::span<const std::byte> t_bs,
-                                 bool t_is_bind) const -> OsErrorResult
+                               bool t_is_bind) const -> OsErrorResult
 {
     const auto symbol {t_is_bind ? Symbol::bind : Symbol::connect};
 
