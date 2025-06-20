@@ -17,8 +17,8 @@
 #include "network/addresserror.hpp"             // AddressError
 #include "network/format-os-error.hpp"          // format_os_error()
 #include "network/get-api-error.hpp"            // get_api_error()
-#include "network/get-openhandler.hpp"          // OpenHandler
 #include "network/get-sa-span.hpp"              // get_sa_span()
+#include "network/openhandler.hpp"              // OpenHandler
 #include "network/oserrorresult.hpp"            // OsErrorResult
 #include "network/reset-api-error.hpp"          // reset_api_error()
 #include "network/sa-length-limits.hpp"         // sa_length_min
@@ -35,21 +35,21 @@
 
 auto Network::open(const SocketData& sd,
                    std::span<const std::byte> bs,
-                   bool is_bind) -> OsErrorResult
+                   const OpenHandler& oh) -> OsErrorResult
 {
-    const auto handler {get_openhandler(is_bind)};
     const auto [sa, sa_length] {get_sa_span(bs)};
     const auto handle {sd.handle()};
+    const auto is_verbose {sd.runtime()->is_verbose()};
 
     if (std::cmp_equal(sa_length, sa_length_min)) {
         throw AddressError("Address payload length is zero: " +
                            to_string(bs));
     }
 
-    if (sd.runtime()->is_verbose()) {
+    if (is_verbose) {
         // clang-format off
         std::cout << "Calling "
-                  << handler.second
+                  << oh.second
                   << '('
                   << handle
                   << ", "
@@ -63,13 +63,13 @@ auto Network::open(const SocketData& sd,
 
     reset_api_error();
 
-    if (handler.first(handle, sa, sa_length) == socket_error) {
+    if (oh.first(handle, sa, sa_length) == socket_error) {
         const auto api_error {get_api_error()};
         const auto os_error {to_os_error(api_error)};
         std::ostringstream oss;
         // clang-format off
         oss << "Call to "
-            << handler.second
+            << oh.second
             << '('
             << handle
             << ", "

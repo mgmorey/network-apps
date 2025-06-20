@@ -19,6 +19,7 @@
 #include "network/close.hpp"            // close()
 #include "network/get-name.hpp"         // get_name()
 #include "network/get-namehandler.hpp"  // get_namehandler()
+#include "network/get-openhandler.hpp"  // get_openhandler()
 #include "network/handle-null.hpp"      // handle_null
 #include "network/listen.hpp"           // listen()
 #include "network/open-handle.hpp"      // open()
@@ -115,24 +116,25 @@ auto Network::InetSocket::get_name(bool t_is_sockname) const ->
 {
     const auto i {t_is_sockname ? Symbol::sockname : Symbol::peername};
     const auto nh {get_namehandler(t_is_sockname)};
-    auto& name {m_cache[i]};
+    auto& result {m_cache[i]};
 
-    if (name.empty()) {
-        name = Network::get_name(m_sd, nh);
+    if (result.empty()) {
+        result = Network::get_name(m_sd, nh);
     }
 
-    return name;
+    return result;
 }
 
 auto Network::InetSocket::open(std::span<const std::byte> t_bs,
                                bool t_is_bind) const -> OsErrorResult
 {
-    const auto symbol {t_is_bind ? Symbol::bind : Symbol::connect};
+    const auto i {t_is_bind ? Symbol::bind : Symbol::connect};
+    const auto oh {get_openhandler(t_is_bind)};
 
-    if (const auto result {Network::open(m_sd, t_bs, t_is_bind)}) {
+    if (const auto result {Network::open(m_sd, t_bs, oh)}) {
         return result;
     }
 
-    m_cache[symbol].assign(t_bs.begin(), t_bs.end());
+    m_cache[i].assign(t_bs.begin(), t_bs.end());
     return {};
 }
