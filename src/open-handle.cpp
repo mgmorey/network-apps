@@ -27,13 +27,7 @@
 #include "network/to-os-error.hpp"              // to_os_error()
 #include "network/to-string-span-byte.hpp"      // to_string()
 
-#ifdef WIN32
-#include <winsock2.h>       // ::bind(), ::connect()
-#else
-#include <sys/socket.h>     // ::bind(), ::connect()
-#endif
-
-#include <cstddef>      // std::byte, std::size_t
+#include <cstddef>      // std::byte
 #include <iostream>     // std::cout, std::endl
 #include <span>         // std::span
 #include <sstream>      // std::ostringstream
