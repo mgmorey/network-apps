@@ -32,8 +32,8 @@
 
 #include <cstddef>      // std::byte, std::size_t
 #include <span>         // std::span
-#include <tuple>        // std::get()
 #include <string>       // std::string, std::to_string()
+#include <tuple>        // std::get()
 
 Network::InetSocket::InetSocket(const SocketData& t_sd) : m_sd(t_sd)
 {
