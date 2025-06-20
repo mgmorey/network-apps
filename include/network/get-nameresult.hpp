@@ -17,12 +17,13 @@
 #define NETWORK_GET_NAMERESULT_HPP
 
 #include "network/bytestringresult.hpp"         // ByteStringResult
+#include "network/namehandler.hpp"              // NameHandler
 #include "network/socketdata.hpp"               // SocketData
 
 namespace Network
 {
-    extern auto get_nameresult(const SocketData& sd, bool is_sockname) ->
-        ByteStringResult;
+    extern auto get_nameresult(const SocketData& sd,
+                               const NameHandler& nh) -> ByteStringResult;
 }
 
 #endif

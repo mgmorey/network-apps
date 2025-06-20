@@ -18,7 +18,7 @@
 #include "network/bytestringresult.hpp"         // ByteStringResult
 #include "network/format-os-error.hpp"          // format_os_error()
 #include "network/get-api-error.hpp"            // get_api_error()
-#include "network/get-namehandler.hpp"          // get_namehandler()
+#include "network/namehandler.hpp"              // NameHandler
 #include "network/oserrorresult.hpp"            // OsErrorResult
 #include "network/reset-api-error.hpp"          // reset_api_error()
 #include "network/socket-error.hpp"             // socket_error
@@ -30,10 +30,9 @@
 #include <span>         // std::span
 #include <sstream>      // std::ostringstream
 
-auto Network::get_nameresult(const SocketData& sd, bool is_sockname) ->
+auto Network::get_nameresult(const SocketData& sd, const NameHandler& nh) ->
     ByteStringResult
 {
-    const auto handler {get_namehandler(is_sockname)};
     BinaryBuffer buffer;
     const std::span bs {buffer};
     auto [sa, sa_length] {buffer.span()};
@@ -43,7 +42,7 @@ auto Network::get_nameresult(const SocketData& sd, bool is_sockname) ->
     if (is_verbose) {
         // clang-format off
         std::cout << "Calling "
-                  << handler.second
+                  << nh.second
                   << '('
                   << handle
                   << ", "
@@ -57,13 +56,13 @@ auto Network::get_nameresult(const SocketData& sd, bool is_sockname) ->
 
     reset_api_error();
 
-    if (handler.first(handle, sa, &sa_length) == socket_error) {
+    if (nh.first(handle, sa, &sa_length) == socket_error) {
         const auto api_error {get_api_error()};
         const auto os_error {to_os_error(api_error)};
         std::ostringstream oss;
         // clang-format off
         oss << "Call to "
-            << handler.second
+            << nh.second
             << '('
             << handle
             << ", "
@@ -82,7 +81,7 @@ auto Network::get_nameresult(const SocketData& sd, bool is_sockname) ->
         const auto str {to_string(buffer)};
         // clang-format off
         std::cout << "Call to "
-                  << handler.second
+                  << nh.second
                   << '('
                   << handle
                   << ", "

@@ -17,11 +17,13 @@
 #define NETWORK_GET_NAME_HPP
 
 #include "network/bytestring.hpp"       // ByteString
+#include "network/namehandler.hpp"      // NameHandler
 #include "network/socketdata.hpp"       // SocketData
 
 namespace Network
 {
-    extern auto get_name(const SocketData& sd, bool is_sockname) -> ByteString;
+    extern auto get_name(const SocketData& sd,
+                         const NameHandler& nh) -> ByteString;
 }
 
 #endif

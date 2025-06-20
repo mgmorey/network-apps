@@ -18,6 +18,7 @@
 #include "network/acceptresult.hpp"     // AcceptResult
 #include "network/close.hpp"            // close()
 #include "network/get-name.hpp"         // get_name()
+#include "network/get-namehandler.hpp"  // get_namehandler()
 #include "network/handle-null.hpp"      // handle_null
 #include "network/listen.hpp"           // listen()
 #include "network/open-handle.hpp"      // open()
@@ -112,11 +113,12 @@ auto Network::InetSocket::write(std::string_view t_sv) const -> ssize_t
 auto Network::InetSocket::get_name(bool t_is_sockname) const ->
     std::span<const std::byte>
 {
-    const auto symbol {t_is_sockname ? Symbol::sockname : Symbol::peername};
-    auto& name {m_cache[symbol]};
+    const auto i {t_is_sockname ? Symbol::sockname : Symbol::peername};
+    const auto nh {get_namehandler(t_is_sockname)};
+    auto& name {m_cache[i]};
 
     if (name.empty()) {
-        name = Network::get_name(m_sd, t_is_sockname);
+        name = Network::get_name(m_sd, nh);
     }
 
     return name;
