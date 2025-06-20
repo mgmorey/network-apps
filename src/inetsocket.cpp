@@ -112,8 +112,8 @@ auto Network::InetSocket::write(std::string_view t_sv) const -> ssize_t
 auto Network::InetSocket::get_name(bool t_is_sockname) const ->
     std::span<const std::byte>
 {
-    const auto api {t_is_sockname ? Symbol::sockname : Symbol::peername};
-    auto& name {m_cache[api]};
+    const auto symbol {t_is_sockname ? Symbol::sockname : Symbol::peername};
+    auto& name {m_cache[symbol]};
 
     if (name.empty()) {
         name = Network::get_name(m_sd, t_is_sockname);
@@ -125,12 +125,12 @@ auto Network::InetSocket::get_name(bool t_is_sockname) const ->
 auto Network::InetSocket::open(std::span<const std::byte> t_bs,
                                  bool t_is_bind) const -> OsErrorResult
 {
-    const auto api {t_is_bind ? Symbol::bind : Symbol::connect};
+    const auto symbol {t_is_bind ? Symbol::bind : Symbol::connect};
 
     if (const auto result {Network::open(m_sd, t_bs, t_is_bind)}) {
         return result;
     }
 
-    m_cache[api].assign(t_bs.begin(), t_bs.end());
+    m_cache[symbol].assign(t_bs.begin(), t_bs.end());
     return {};
 }
