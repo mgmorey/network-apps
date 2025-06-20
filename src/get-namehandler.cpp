@@ -30,8 +30,8 @@
 auto Network::get_namehandler(bool is_sockname) -> NameHandler
 {
     static const std::array<NameHandler, 2> handlers {
-        std::make_tuple(::getpeername, "::getpeername", Symbol::peername),
-        std::make_tuple(::getsockname, "::getsockname", Symbol::sockname),
+        std::make_tuple(::getpeername, "::getpeername", Symbol::getpeername),
+        std::make_tuple(::getsockname, "::getsockname", Symbol::getsockname),
     };
 
     return handlers.at(static_cast<std::size_t>(is_sockname));

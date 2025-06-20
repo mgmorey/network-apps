@@ -23,8 +23,8 @@ namespace Network
     enum class Symbol : std::uint8_t {
         bind,
         connect,
-        peername,
-        sockname
+        getpeername,
+        getsockname
     };
 }
 
