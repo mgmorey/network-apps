@@ -103,9 +103,11 @@
                                                 // reset_last_os_error()
 #include "network/overloaded.hpp"               // Overloaded
 #include "network/quote.hpp"                    // quote()
+#include "network/read.hpp"                     // read()
 #include "network/run.hpp"                      // run()
 #include "network/runtime.hpp"                  // Runtime
 #include "network/sharedruntime.hpp"            // SharedRuntime
+#include "network/shutdown.hpp"                 // shutdown()
 #include "network/socket-error.hpp"             // socket_error
 #include "network/socket.hpp"                   // Socket
 #include "network/socketdata.hpp"               // SocketData
@@ -166,5 +168,6 @@
 #ifdef WIN32
 #include "network/windowsversion.hpp"           // WindowsVersion
 #endif
+#include "network/write.hpp"                    // write()
 
 #endif
