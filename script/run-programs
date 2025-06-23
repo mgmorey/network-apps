@@ -26,6 +26,7 @@ run_program() {
 	    if ! ${wrapper:+$wrapper }$filename "$@" >"$filename.log"; then
 		printf '%s\n' "Program $basename returned a non-zero exit code"
 		errors=$(expr $errors + 1)
+		/bin/rm -f "$filename.log"
 	    fi
 	    ;;
 	(unix-client)
