@@ -30,10 +30,10 @@
 
 namespace Network
 {
-    using NameFunction = int (*)(handle_type, sockaddr*, socklen_t*);
-
     struct NameHandler
     {
+        using NameFunction = int (*)(handle_type, sockaddr*, socklen_t*);
+
         NameHandler(NameFunction t_function,
                     std::string_view t_string,
                     Symbol t_symbol);

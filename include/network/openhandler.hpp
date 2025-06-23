@@ -30,10 +30,10 @@
 
 namespace Network
 {
-    using OpenFunction = int (*)(handle_type, const sockaddr*, socklen_t);
-
     struct OpenHandler
     {
+        using OpenFunction = int (*)(handle_type, const sockaddr*, socklen_t);
+
         OpenHandler(OpenFunction t_function,
                     std::string_view t_string,
                     Symbol t_symbol);
