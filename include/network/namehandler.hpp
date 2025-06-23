@@ -32,19 +32,20 @@ namespace Network
 {
     struct NameHandler
     {
-        using NameFunction = int (*)(handle_type, sockaddr*, socklen_t*);
+        using Function = int (*)(handle_type, sockaddr*, socklen_t*);
+        using String = std::string_view;
 
-        NameHandler(NameFunction t_function,
-                    std::string_view t_string,
+        NameHandler(Function t_function,
+                    String t_string,
                     Symbol t_symbol);
 
-        [[nodiscard]] auto function() const noexcept -> NameFunction;
-        [[nodiscard]] auto string() const noexcept -> std::string_view;
+        [[nodiscard]] auto function() const noexcept -> Function;
+        [[nodiscard]] auto string() const noexcept -> String;
         [[nodiscard]] auto symbol() const noexcept -> Symbol;
 
     private:
-        NameFunction m_function;
-        std::string_view m_string;
+        Function m_function;
+        String m_string;
         Symbol m_symbol;
     };
 }

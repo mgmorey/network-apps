@@ -16,10 +16,8 @@
 #include "network/openhandler.hpp"      // OpenHandler
 #include "network/symbol.hpp"           // Symbol
 
-#include <string_view>  // std::string_view
-
-Network::OpenHandler::OpenHandler(OpenFunction t_function,
-                                  std::string_view t_string,
+Network::OpenHandler::OpenHandler(Function t_function,
+                                  String t_string,
                                   Symbol t_symbol) :
         m_function(t_function),
         m_string(t_string),
@@ -27,12 +25,12 @@ Network::OpenHandler::OpenHandler(OpenFunction t_function,
 {
 }
 
-extern auto Network::OpenHandler::function() const noexcept -> OpenFunction
+extern auto Network::OpenHandler::function() const noexcept -> Function
 {
     return m_function;
 }
 
-extern auto Network::OpenHandler::string() const noexcept -> std::string_view
+extern auto Network::OpenHandler::string() const noexcept -> String
 {
     return m_string;
 }

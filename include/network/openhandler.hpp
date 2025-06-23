@@ -32,19 +32,20 @@ namespace Network
 {
     struct OpenHandler
     {
-        using OpenFunction = int (*)(handle_type, const sockaddr*, socklen_t);
+        using Function = int (*)(handle_type, const sockaddr*, socklen_t);
+        using String = std::string_view;
 
-        OpenHandler(OpenFunction t_function,
-                    std::string_view t_string,
+        OpenHandler(Function t_function,
+                    String t_string,
                     Symbol t_symbol);
 
-        [[nodiscard]] auto function() const noexcept -> OpenFunction;
-        [[nodiscard]] auto string() const noexcept -> std::string_view;
+        [[nodiscard]] auto function() const noexcept -> Function;
+        [[nodiscard]] auto string() const noexcept -> String;
         [[nodiscard]] auto symbol() const noexcept -> Symbol;
 
     private:
-        OpenFunction m_function;
-        std::string_view m_string;
+        Function m_function;
+        String m_string;
         Symbol m_symbol;
     };
 }

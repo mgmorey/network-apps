@@ -16,10 +16,8 @@
 #include "network/namehandler.hpp"      // NameHandler
 #include "network/symbol.hpp"           // Symbol
 
-#include <string_view>  // std::string_view
-
-Network::NameHandler::NameHandler(NameFunction t_function,
-                                  std::string_view t_string,
+Network::NameHandler::NameHandler(Function t_function,
+                                  String t_string,
                                   Symbol t_symbol) :
         m_function(t_function),
         m_string(t_string),
@@ -27,12 +25,12 @@ Network::NameHandler::NameHandler(NameFunction t_function,
 {
 }
 
-extern auto Network::NameHandler::function() const noexcept -> NameFunction
+extern auto Network::NameHandler::function() const noexcept -> Function
 {
     return m_function;
 }
 
-extern auto Network::NameHandler::string() const noexcept -> std::string_view
+extern auto Network::NameHandler::string() const noexcept -> String
 {
     return m_string;
 }
