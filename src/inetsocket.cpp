@@ -33,7 +33,6 @@
 #include <cstddef>      // std::byte, std::size_t
 #include <span>         // std::span
 #include <string>       // std::string, std::to_string()
-#include <tuple>        // std::get()
 
 Network::InetSocket::InetSocket(const SocketData& t_sd) : m_sd(t_sd)
 {
@@ -116,7 +115,7 @@ auto Network::InetSocket::get_name(bool t_is_sockname) const ->
     std::span<const std::byte>
 {
     const auto handler {get_namehandler(t_is_sockname)};
-    auto& name {m_cache[std::get<2>(handler)]};
+    auto& name {m_cache[handler.symbol()]};
 
     if (name.empty()) {
         name = Network::get_name(m_sd, handler);
@@ -134,7 +133,7 @@ auto Network::InetSocket::open(std::span<const std::byte> t_bs,
         return os_error;
     }
 
-    auto& name {m_cache[std::get<2>(handler)]};
+    auto& name {m_cache[handler.symbol()]};
     name.assign(t_bs.begin(), t_bs.end());
     return {};
 }

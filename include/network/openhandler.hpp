@@ -1,4 +1,4 @@
-// Copyright (C) 2022  "Michael G. Morey" <mgmorey@gmail.com>
+// Copyright (C) 2025  "Michael G. Morey" <mgmorey@gmail.com>
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -27,12 +27,26 @@
 #endif
 
 #include <string_view>  // std::string_view
-#include <tuple>        // std::tuple
 
 namespace Network
 {
     using OpenFunction = int (*)(handle_type, const sockaddr*, socklen_t);
-    using OpenHandler = std::tuple<OpenFunction, std::string_view, Symbol>;
+
+    struct OpenHandler
+    {
+        OpenHandler(OpenFunction t_function,
+                    std::string_view t_string,
+                    Symbol t_symbol);
+
+        [[nodiscard]] auto function() const noexcept -> OpenFunction;
+        [[nodiscard]] auto string() const noexcept -> std::string_view;
+        [[nodiscard]] auto symbol() const noexcept -> Symbol;
+
+    private:
+        OpenFunction m_function;
+        std::string_view m_string;
+        Symbol m_symbol;
+    };
 }
 
 #endif

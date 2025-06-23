@@ -1,4 +1,4 @@
-// Copyright (C) 2022  "Michael G. Morey" <mgmorey@gmail.com>
+// Copyright (C) 2025  "Michael G. Morey" <mgmorey@gmail.com>
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -27,12 +27,26 @@
 #endif
 
 #include <string_view>  // std::string_view
-#include <tuple>        // std::tuple
 
 namespace Network
 {
     using NameFunction = int (*)(handle_type, sockaddr*, socklen_t*);
-    using NameHandler = std::tuple<NameFunction, std::string_view, Symbol>;
+
+    struct NameHandler
+    {
+        NameHandler(NameFunction t_function,
+                    std::string_view t_string,
+                    Symbol t_symbol);
+
+        [[nodiscard]] auto function() const noexcept -> NameFunction;
+        [[nodiscard]] auto string() const noexcept -> std::string_view;
+        [[nodiscard]] auto symbol() const noexcept -> Symbol;
+
+    private:
+        NameFunction m_function;
+        std::string_view m_string;
+        Symbol m_symbol;
+    };
 }
 
 #endif

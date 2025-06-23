@@ -13,25 +13,31 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-namehandler.hpp"  // get_namehandler()
-#include "network/namehandler.hpp"      // NameHandler
+#include "network/openhandler.hpp"      // OpenHandler
 #include "network/symbol.hpp"           // Symbol
 
-#ifdef WIN32
-#include <winsock2.h>       // ::getpeername(), ::getsockname()
-#else
-#include <sys/socket.h>     // ::getpeername(), ::getsockname()
-#endif
+#include <string_view>  // std::string_view
 
-#include <array>        // std::arrray
-#include <cstddef>      // std::size_t
-
-auto Network::get_namehandler(bool is_sockname) -> NameHandler
+Network::OpenHandler::OpenHandler(OpenFunction t_function,
+                                  std::string_view t_string,
+                                  Symbol t_symbol) :
+        m_function(t_function),
+        m_string(t_string),
+        m_symbol(t_symbol)
 {
-    static const std::array<NameHandler, 2> handlers {
-        NameHandler {::getpeername, "::getpeername", Symbol::getpeername},
-        NameHandler {::getsockname, "::getsockname", Symbol::getsockname},
-    };
+}
 
-    return handlers.at(static_cast<std::size_t>(is_sockname));
+extern auto Network::OpenHandler::function() const noexcept -> OpenFunction
+{
+    return m_function;
+}
+
+extern auto Network::OpenHandler::string() const noexcept -> std::string_view
+{
+    return m_string;
+}
+
+extern auto Network::OpenHandler::symbol() const noexcept -> Symbol
+{
+    return m_symbol;
 }
