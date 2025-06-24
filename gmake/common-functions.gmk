@@ -160,6 +160,10 @@ $(if $(filter true,$(WITH_COVERAGE)),$(call install-objects,$1/object),)
 $(if $(filter true,$(WITH_COVERAGE)),$(call install-sources,$1/src),)
 endef
 
+# $(is-shared-library)
+is-shared-library = $(filter shared,$(WITH_LIBRARY))
+is-static-library = $(filter static,$(WITH_LIBRARY))
+
 # $(call join-flags,FLAG-OPTION,FLAG-ARG)
 join-flags = $(if $(strip $2),$(subst $(spc),$(com),$1 $(strip $2)),)
 
