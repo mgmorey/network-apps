@@ -28,14 +28,14 @@ ifneq "$(filter Debug Default Minimal,$(BUILD_TYPE))" ""
 include gmake/flags/coverage-flags.gmk
 endif
 
-# Set build flags for C++ debug
-ifneq "$(filter Debug Default,$(BUILD_TYPE))" ""
-include gmake/flags/cxxdebug-flags.gmk
-endif
-
 # Set build flags for GDB DWARF format
 ifneq "$(filter Debug Default,$(BUILD_TYPE))" ""
-include gmake/flags/gdbdwarf-flags.gmk
+include gmake/flags/dwarf-flags.gmk
+endif
+
+# Set build flags for Glib C++
+ifneq "$(filter Debug Default,$(BUILD_TYPE))" ""
+include gmake/flags/glibcxx-flags.gmk
 endif
 
 # Set build flags for sanitize
