@@ -109,8 +109,9 @@ TAGS
 *.log
 logfile
 
-# Size file
+# Size files
 sizes.txt
+*-sizes.txt
 
 # Object directory
 **/object/
