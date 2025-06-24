@@ -150,6 +150,10 @@ LDFLAGS += $(call join-flags,-Wl,$(ldflags))
 # Add shared library flag to LDFLAGS
 LDFLAGS += $(if $(is_shared),-shared,)
 
+# Add linker selection flag to LDFLAGS
+LDFLAGS += $(if $(filter clang,$(cxx_family)),$(if	\
+$(USING_LINKER),-fuse-ld=$(USING_LINKER),),)
+
 # LDLIBS
 
 LDLIBS += $(if $(filter MINGW64_NT,$(os_label_kernel)),-lws2_32,)

@@ -19,7 +19,7 @@ ifeq "$(filter, -D_FORTIFY_SOURCE=%,$(CPPFLAGS))" ""
 CPPFLAGS += -D_FORTIFY_SOURCE=2
 endif
 
-ifeq "$(filter -O,$(CXXFLAGS))" ""
+ifeq "$(filter -O%,$(CXXFLAGS))" ""
 CXXFLAGS += -O2
 endif
 
