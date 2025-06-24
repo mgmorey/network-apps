@@ -13,16 +13,17 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-# Define variables for project defaults
+# Define variables for project name
 PROJECT_NAME := network
-VERSION ?= 0.0.1
 
-# Define variables for build defaults
+# Define variables for project defaults
+VERSION ?= 0.0.1
 BUILD_DIR ?= .
 BUILD_TYPE ?= Default
 INSTALL_PREFIX ?= ~/.local
 HTML_THEME ?= green
 TMPDIR ?= /tmp
+WITH_LIBRARY ?= shared
 
 # Define variables for include, script, and source directories
 include_dir := include
@@ -156,7 +157,8 @@ test_programs = $(call get-programs-from-sources,$(test_sources))
 unix_programs = $(call get-programs-from-sources,$(unix_sources))
 
 library_aliases = $(addprefix $(output_prefix)$(library_stem),$(alias_suffixes))
-libraries = $(library_aliases) $(shared_library) $(static_library)
+libraries = $(if $(is-shared-library),$(library_aliases)	\
+$(shared_library),) $(if $(is-static-library),$(static_library),)
 
 gcov_files = $(gcov_datafiles) $(gcov_notefiles)
 gcov_datafiles = $(objects:$(object_suffix)=.gcda)
@@ -170,8 +172,8 @@ test_logfiles = $(test_programs:$(binary_suffix)=.log)
 unix_logfiles = $(unix_programs:$(binary_suffix)=.log)
 
 artifacts = $(binary_artifacts) $(text_artifacts)
-binary_artifacts = $(gcov_files) $(libraries)	\
-$(objects) $(package) $(programs) TAGS
+binary_artifacts = $(gcov_files) $(libraries) $(objects) $(package)	\
+$(programs) TAGS
 text_artifacts = $(coverage_alias) $(coverage_html) $(coverage_json)	\
 $(compile_commands) $(compile_flags) $(cppcheck_log) $(dependencies)	\
 $(listings) $(logfiles) $(mapfiles) $(stackdumps) $(sizes)
@@ -343,7 +345,7 @@ $(programs): $(firstword $(libraries))
 $(logfiles): $(programs)
 	$(call run-programs,$(^F),$(program_args))
 
-sizes.txt: $(shared_library) $(objects) $(programs)
+sizes.txt: $(if $(is-shared-library),$(shared_library),) $(objects) $(programs)
 	if [ -e $@ ]; then mv -f $@ $@~; fi
 	size $(sort $^) >$@
 
