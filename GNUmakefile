@@ -345,7 +345,7 @@ $(programs): $(firstword $(libraries))
 $(logfiles): $(programs)
 	$(call run-programs,$(^F),$(program_args))
 
-sizes.txt: $(if $(is-shared-library),$(shared_library),) $(objects) $(programs)
+sizes.txt: $(if $(is-shared-library),$(shared_library) $(objects)) $(programs)
 	if [ -e $@ ]; then mv -f $@ $@~; fi
 	size $(sort $^) >$@
 
