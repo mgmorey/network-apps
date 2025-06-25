@@ -39,14 +39,13 @@ auto Network::open(const SocketData& sd,
 {
     const auto [sa, sa_length] {get_sa_span(bs)};
     const auto handle {sd.handle()};
-    const auto is_verbose {sd.runtime()->is_verbose()};
 
     if (std::cmp_equal(sa_length, sa_length_min)) {
         throw AddressError("Address payload length is zero: " +
                            to_string(bs));
     }
 
-    if (is_verbose) {
+    if (sd.runtime()->is_verbose()) {
         // clang-format off
         std::cout << "Calling "
                   << oh.string()
