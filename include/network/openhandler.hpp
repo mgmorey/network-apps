@@ -16,8 +16,8 @@
 #ifndef NETWORK_OPENHANDLER_HPP
 #define NETWORK_OPENHANDLER_HPP
 
-#include "network/handler.hpp"          // Handler
 #include "network/handle-type.hpp"      // handle_type
+#include "network/handler.hpp"          // Handler
 
 #ifdef WIN32
 #include <winsock2.h>       // sockaddr
