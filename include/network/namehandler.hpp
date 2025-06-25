@@ -16,8 +16,8 @@
 #ifndef NETWORK_NAMEHANDLER_HPP
 #define NETWORK_NAMEHANDLER_HPP
 
+#include "network/handler.hpp"          // Handler
 #include "network/handle-type.hpp"      // handle_type
-#include "network/symbol.hpp"           // Symbol
 
 #ifdef WIN32
 #include <winsock2.h>       // sockaddr
@@ -26,28 +26,10 @@
 #include <sys/socket.h>     // sockaddr, socklen_t
 #endif
 
-#include <string_view>  // std::string_view
-
 namespace Network
 {
-    struct NameHandler
-    {
-        using Function = int (*)(handle_type, sockaddr*, socklen_t*);
-        using String = std::string_view;
-
-        NameHandler(Function t_function,
-                    String t_string,
-                    Symbol t_symbol);
-
-        [[nodiscard]] auto function() const noexcept -> Function;
-        [[nodiscard]] auto string() const noexcept -> String;
-        [[nodiscard]] auto symbol() const noexcept -> Symbol;
-
-    private:
-        Function m_function;
-        String m_string;
-        Symbol m_symbol;
-    };
+    using NameFunction = int (*)(handle_type, sockaddr*, socklen_t*);
+    using NameHandler = Handler<NameFunction>;
 }
 
 #endif
