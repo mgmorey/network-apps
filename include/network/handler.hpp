@@ -16,7 +16,7 @@
 #ifndef NETWORK_HANDLER_HPP
 #define NETWORK_HANDLER_HPP
 
-#include "network/symbol.hpp"           // Symbol
+#include "network/symbol.hpp"   // Symbol
 
 #include <string_view>  // std::string_view
 
