@@ -15,12 +15,16 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-ifeq "$(filter, -D_FORTIFY_SOURCE=%,$(CPPFLAGS))" ""
+ifeq "$(filter -D_FORTIFY_SOURCE=%,$(CPPFLAGS))" ""
 CPPFLAGS += -D_FORTIFY_SOURCE=2
 endif
 
 ifeq "$(filter -O%,$(CXXFLAGS))" ""
-CXXFLAGS += -O2
+CXXFLAGS += -Os
+endif
+
+ifeq "$(filter -fno-omit-frame-pointer,$(CXXFLAGS))" ""
+CXXFLAGS += -fno-omit-frame-pointer
 endif
 
 ifeq "$(filter clang,$(cxx_family))" "clang"

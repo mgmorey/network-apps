@@ -32,10 +32,10 @@ source_dir := src
 
 # Include variable definitions for toolchain commands/features and
 # functions.
-include gmake/common-commands.gmk
-include gmake/common-features.gmk
-include gmake/common-functions.gmk
-include gmake/flags.gmk
+include gmake/common-commands.mk
+include gmake/common-features.mk
+include gmake/common-functions.mk
+include gmake/flags.mk
 
 # Define variables for version components
 major = $(call get-version-number,1,$(VERSION))

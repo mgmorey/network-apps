@@ -15,15 +15,21 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-ifeq "$(filter, -D_FORTIFY_SOURCE=%,$(CPPFLAGS))" ""
-ifeq "$(filter, -D_GLIBCXX_%,$(CPPFLAGS))" ""
-
-CPPFLAGS += -D_GLIBCXX_DEBUG
-
-ifeq "$(WITH_BACKTRACE)" "true"
-CPPFLAGS += -D_GLIBCXX_DEBUG_BACKTRACE
-LDLIBS += -lstdc++exp
+ifeq "$(filter -D_FORTIFY_SOURCE=%,$(CPPFLAGS))" ""
+CPPFLAGS += -D_FORTIFY_SOURCE=2
 endif
 
+ifeq "$(filter -O%,$(CXXFLAGS))" ""
+CXXFLAGS += -O2
+endif
+
+ifeq "$(filter clang,$(cxx_family))" "clang"
+ifeq "$(filter shared,$(WITH_LIBRARY))" ""
+CXXFLAGS += -flto
+LDFLAGS += -flto
 endif
 endif
+
+# Local Variables:
+# mode: makefile
+# End:
