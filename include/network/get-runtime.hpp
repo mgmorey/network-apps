@@ -17,11 +17,13 @@
 #define NETWORK_GET_RUNTIME_HPP
 
 #include "network/apioptions.hpp"       // ApiOptions
+#include "network/runtimescope.hpp"     // RuntimeScope
 #include "network/sharedruntime.hpp"    // SharedRuntime
 
 namespace Network
 {
     extern auto get_runtime(ApiOptions ao) -> SharedRuntime;
+    extern auto get_runtime(ApiOptions ao, RuntimeScope rs) -> SharedRuntime;
 }
 
 #endif

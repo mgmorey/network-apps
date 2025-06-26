@@ -15,8 +15,10 @@
 
 #include "network/assert.hpp"           // assert()
 #include "network/network.hpp"          // ApiOptions, Error,
-                                        // FailMode, Runtime, Version,
-                                        // create_runtime()
+                                        // FailMode, Runtime,
+                                        // RuntimeScope, Version,
+                                        // create_runtime(),
+                                        // get_runtime()
 #include "network/parse.hpp"            // parse()
 #include "network/quote.hpp"            // quote()
 #include "network/stop.hpp"             // stop()
@@ -41,8 +43,10 @@ namespace
     using Network::Error;
     using Network::FailMode;
     using Network::Runtime;
+    using Network::RuntimeScope;
     using Network::Version;
     using Network::create_runtime;
+    using Network::get_runtime;
     using Network::quote;
     using Network::parse;
 
@@ -177,11 +181,13 @@ namespace
         assert(!rt.is_running());
     }
 
-    auto test(ApiOptions ao, Version version) -> void
+    auto test(ApiOptions ao, RuntimeScope rs, Version version) -> void
     {
-        std::cout << "Testing Socket API version: " << version << std::endl;
+        std::cout << "Testing Shared Socket API version: "
+                  << version
+                  << std::endl;
         print(ao);
-        auto rt {create_runtime(ao)};
+        auto rt {get_runtime(ao, rs)};
         test(*rt);
     }
 
@@ -203,7 +209,8 @@ namespace
         assert(error_code == expected_code_stopped);
     }
 
-    auto test_version(unsigned short major,
+    auto test_version(RuntimeScope rs,
+                      unsigned short major,
                       const std::string& expected_str) -> void
     {
         std::string actual_str;
@@ -211,7 +218,8 @@ namespace
         try {
             const Version version {major, 0};
             const ApiOptions ao {version, fail_mode, is_verbose};
-            test(ao, version);
+
+            test(ao, rs, version);
         }
         catch (const Error& error) {
             print(error);
@@ -221,7 +229,7 @@ namespace
         assert(actual_str == expected_str);
     }
 
-    auto test_versions() -> void
+    auto test_versions(RuntimeScope rs) -> void
     {
         const std::map<unsigned short, std::string> errors
         {
@@ -229,7 +237,7 @@ namespace
         };
 
         for (unsigned short major = 0; major < 3; ++major) {
-            test_version(major, errors.at(major));
+            test_version(rs, major, errors.at(major));
         }
     }
 }
@@ -238,7 +246,8 @@ auto main(int argc, char* argv[]) -> int
 {
     try {
         parse_arguments(argc, argv);
-        test_versions();
+        test_versions(RuntimeScope::shared);
+        test_versions(RuntimeScope::global);
         test_inactive();
     }
     catch (const std::exception& error) {

@@ -15,27 +15,13 @@
 
 #include "network/run.hpp"              // run()
 #include "network/apioptions.hpp"       // ApiOptions
-#include "network/create-runtime.hpp"   // create_runtime()
 #include "network/get-runtime.hpp"      // get_runtime()
-#include "network/logicerror.hpp"       // LogicError
 #include "network/runtimescope.hpp"     // RuntimeScope
 #include "network/sharedruntime.hpp"    // SharedRuntime
 
 auto Network::run(ApiOptions ao, RuntimeScope rs) -> SharedRuntime
 {
-    SharedRuntime sr;
-
-    switch (rs) {
-    case RuntimeScope::global:
-        sr = get_runtime(ao);
-        break;
-    case RuntimeScope::shared:
-        sr = create_runtime(ao);
-        break;
-    default:
-        throw LogicError("Invalid scope");
-    }
-
+    auto sr {get_runtime(ao, rs)};
     sr->start();
     return sr;
 }
