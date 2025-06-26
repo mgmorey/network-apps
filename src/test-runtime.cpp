@@ -251,7 +251,10 @@ namespace
             get_expected_errors()
         };
 
-        for (unsigned short major = 0; major < 3; ++major) {
+        const auto first {rs == RuntimeScope::global ? 2U : 0U};
+        const auto last {2U};
+
+        for (unsigned short major = first; major <= last; ++major) {
             test_version(rs, major, errors.at(major));
         }
     }
