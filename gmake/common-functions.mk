@@ -188,6 +188,11 @@ $(addsuffix /$(PROJECT_NAME)/*$(include_suffix),$1) \
 $(addsuffix /*$(source_suffix),$2)
 endef
 
+# $(call to-upper,STRING)
+define to-upper
+$(shell printf '%s\n' $1 | tr '[:lower:]' '[:upper:]')
+endef
+
 # Local Variables:
 # mode: makefile
 # End:

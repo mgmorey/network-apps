@@ -38,6 +38,9 @@ include gmake/common-features.mk
 include gmake/common-functions.mk
 include gmake/flags.mk
 
+# Define variable for code coverage report title
+html_title = $(call to-upper,$(PROJECT_NAME)) Code Coverage Report
+
 # Define variables for version components
 major = $(call get-version-number,1,$(VERSION))
 minor = $(call get-version-number,2,$(VERSION))
