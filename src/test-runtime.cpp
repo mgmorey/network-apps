@@ -17,7 +17,6 @@
 #include "network/network.hpp"          // ApiOptions, Error,
                                         // FailMode, Runtime,
                                         // RuntimeScope, Version,
-                                        // create_runtime(),
                                         // get_runtime()
 #include "network/parse.hpp"            // parse()
 #include "network/quote.hpp"            // quote()
@@ -33,6 +32,7 @@
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <map>          // std::map
+#include <ostream>      // std::ostream
 #include <regex>        // std::regex, std::regex_match
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
@@ -45,7 +45,6 @@ namespace
     using Network::Runtime;
     using Network::RuntimeScope;
     using Network::Version;
-    using Network::create_runtime;
     using Network::get_runtime;
     using Network::quote;
     using Network::parse;
@@ -68,6 +67,20 @@ namespace
 
     const auto fail_mode {FailMode::return_error};
     auto is_verbose {false};  // NOLINT
+
+    auto operator<<(std::ostream& os, RuntimeScope rs) -> std::ostream&
+    {
+        switch (rs) {
+        case RuntimeScope::global:
+            os << "Global";
+            break;
+        case RuntimeScope::shared:
+            os << "Shared";
+            break;
+        }
+
+        return os;
+    }
 
     auto get_actual_str(const Runtime& rt) -> std::string
     {
@@ -183,7 +196,9 @@ namespace
 
     auto test(ApiOptions ao, RuntimeScope rs, Version version) -> void
     {
-        std::cout << "Testing Shared Socket API version: "
+        std::cout << "Testing "
+                  << rs
+                  << " Socket API version: "
                   << version
                   << std::endl;
         print(ao);
