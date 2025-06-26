@@ -15,8 +15,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+ifneq "$(filter 1 2 3,$(WITH_FORTIFY_SOURCE)" ""
 ifeq "$(filter -D_FORTIFY_SOURCE=%,$(CPPFLAGS))" ""
-CPPFLAGS += -D_FORTIFY_SOURCE=2
+CPPFLAGS += -D_FORTIFY_SOURCE=$(WITH_FORTIFY_SOURCE)
+endif
 endif
 
 ifeq "$(filter -O%,$(CXXFLAGS))" ""

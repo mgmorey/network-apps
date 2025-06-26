@@ -26,7 +26,7 @@ include gmake/flags/build/Default.mk
 endif
 
 # Set build flags for coverage
-ifneq "$(filter Debug Default Minimal,$(BUILD_TYPE))" ""
+ifneq "$(filter Debug Default,$(BUILD_TYPE))" ""
 include gmake/flags/coverage-flags.mk
 endif
 
@@ -41,7 +41,7 @@ include gmake/flags/glibcxx-flags.mk
 endif
 
 # Set build flags for LTO
-ifneq "$(filter Release Small,$(BUILD_TYPE))" ""
+ifneq "$(filter Minimal Release Small,$(BUILD_TYPE))" ""
 include gmake/flags/lto-flags.mk
 endif
 

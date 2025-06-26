@@ -23,6 +23,7 @@ BUILD_TYPE ?= Default
 INSTALL_PREFIX ?= ~/.local
 HTML_THEME ?= green
 TMPDIR ?= /tmp
+WITH_FORTIFY_SOURCE ?= 2
 WITH_LIBRARY ?= shared
 
 # Define variables for include, script, and source directories
