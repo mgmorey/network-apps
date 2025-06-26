@@ -20,11 +20,7 @@ CPPFLAGS += -D_FORTIFY_SOURCE=2
 endif
 
 ifeq "$(filter -O%,$(CXXFLAGS))" ""
-CXXFLAGS += -O
-endif
-
-ifeq "$(filter -fno-omit-frame-pointer,$(CXXFLAGS))" ""
-CXXFLAGS += -fno-omit-frame-pointer
+CXXFLAGS += -Os
 endif
 
 # Local Variables:

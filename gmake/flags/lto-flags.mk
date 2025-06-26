@@ -15,18 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-ifeq "$(filter -D_FORTIFY_SOURCE=%,$(CPPFLAGS))" ""
-CPPFLAGS += -D_FORTIFY_SOURCE=2
+ifeq "$(filter shared,$(WITH_LIBRARY))" ""
+CXXFLAGS += -flto
+LDFLAGS += -flto
 endif
-
-ifeq "$(filter -O%,$(CXXFLAGS))" ""
-CXXFLAGS += -O
-endif
-
-ifeq "$(filter -fno-omit-frame-pointer,$(CXXFLAGS))" ""
-CXXFLAGS += -fno-omit-frame-pointer
-endif
-
-# Local Variables:
-# mode: makefile
-# End:

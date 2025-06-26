@@ -23,13 +23,6 @@ ifeq "$(filter -O%,$(CXXFLAGS))" ""
 CXXFLAGS += -O2
 endif
 
-ifeq "$(filter clang,$(cxx_family))" "clang"
-ifeq "$(filter shared,$(WITH_LIBRARY))" ""
-CXXFLAGS += -flto
-LDFLAGS += -flto
-endif
-endif
-
 # Local Variables:
 # mode: makefile
 # End:

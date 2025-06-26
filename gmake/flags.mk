@@ -1,3 +1,5 @@
+# -*- Mode: Makefile-GMake -*-
+
 # Copyright (C) 2025  "Michael G. Morey" <mgmorey@gmail.com>
 
 # This program is free software: you can redistribute it and/or modify
@@ -17,7 +19,7 @@
 include gmake/flags/common-flags.mk
 
 # Set build flags specific to build type
-ifneq "$(filter Debug Minimal Release,$(BUILD_TYPE))" ""
+ifneq "$(filter Debug Minimal Release Small,$(BUILD_TYPE))" ""
 include gmake/flags/build/$(BUILD_TYPE).mk
 else
 include gmake/flags/build/Default.mk
@@ -38,7 +40,12 @@ ifneq "$(filter Debug Default,$(BUILD_TYPE))" ""
 include gmake/flags/glibcxx-flags.mk
 endif
 
-# Set build flags for sanitize
+# Set build flags for LTO
+ifneq "$(filter Release Small,$(BUILD_TYPE))" ""
+include gmake/flags/lto-flags.mk
+endif
+
+# Set build flags for sanitizers
 ifneq "$(filter Default,$(BUILD_TYPE))" ""
 include gmake/flags/sanitize-flags.mk
 endif
