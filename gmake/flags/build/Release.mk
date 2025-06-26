@@ -15,11 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-ifneq "$(filter 0 1 2 3,$(WITH_FORTIFY_SOURCE))" ""
-ifeq "$(filter -D_FORTIFY_SOURCE=%,$(CPPFLAGS))" ""
-CPPFLAGS += -D_FORTIFY_SOURCE=$(WITH_FORTIFY_SOURCE)
-endif
-endif
+include gmake/flags/fortify-source-flags.mk
 
 ifeq "$(filter -O%,$(CXXFLAGS))" ""
 CXXFLAGS += -O2
