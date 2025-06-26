@@ -17,13 +17,13 @@
 
 ifneq "$(WITH_SANITIZE)" ""
 
-ifneq "$(filter -O -O1 -O2,$(CXXFLAGS))" ""
+ifneq "$(filter -O -O1 -O2 -Ofast -Os -Oz,$(CXXFLAGS))" ""
 
 ifeq "$(filter -fno-omit-frame-pointer,$(CXXFLAGS))" ""
 CXXFLAGS += -fno-omit-frame-pointer
 endif
 
-ifneq "$(filter -O2,$(CXXFLAGS))" ""
+ifneq "$(filter -O2 -Ofast -Os -Oz,$(CXXFLAGS))" ""
 
 ifeq "$(filter -fno-optimize-sibling-calls,$(CXXFLAGS))" ""
 CXXFLAGS += -fno-optimize-sibling-calls
