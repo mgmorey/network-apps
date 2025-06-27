@@ -28,14 +28,15 @@
                             // WSAVERNOTSUPPORTED
 #endif
 
+#include <array>        // std::array
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
-#include <map>          // std::map
 #include <ostream>      // std::ostream
 #include <regex>        // std::regex, std::regex_match
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
+#include <string_view>  // std::string_view
 
 namespace
 {
@@ -65,6 +66,14 @@ namespace
         "(Version \\d{1,3}\\.\\d{1,3} )?" // NOLINT
     };
 
+    const std::array<std::string_view, 3> expected_errors {
+#ifdef WIN32
+        "The Windows Sockets version requested is not supported.",
+#else
+        "",
+#endif
+        "", "",
+    };
     const auto fail_mode {FailMode::return_error};
     auto is_verbose {false};  // NOLINT
 
@@ -89,18 +98,9 @@ namespace
         return oss.str();
     }
 
-    auto get_expected_errors() -> std::map<unsigned short, std::string>
+    auto get_expected_error(Version version) -> std::string_view
     {
-        std::map<unsigned short, std::string> errors;
-#ifdef WIN32
-        errors[0] =
-            "The Windows Sockets version requested is not supported.";
-#else
-        errors[0] = "";
-#endif
-        errors[1] = "";
-        errors[2] = "";
-        return errors;
+        return expected_errors.at(version.major());
     }
 
     auto get_expected_re() -> std::string
@@ -194,12 +194,12 @@ namespace
         assert(!rt.is_running());
     }
 
-    auto test(ApiOptions ao, RuntimeScope rs, Version version) -> void
+    auto test(ApiOptions ao, RuntimeScope rs) -> void
     {
         std::cout << "Testing "
                   << rs
                   << " Socket API version: "
-                  << version
+                  << ao.version().value_or({})
                   << std::endl;
         print(ao);
         auto rt {get_runtime(ao, rs)};
@@ -224,17 +224,16 @@ namespace
         assert(error_code == expected_code_stopped);
     }
 
-    auto test_version(RuntimeScope rs,
-                      unsigned short major,
-                      const std::string& expected_str) -> void
+    auto test_version(RuntimeScope rs, Version version) -> void
     {
+
+        const auto expected_str {get_expected_error(version)};
         std::string actual_str;
 
         try {
-            const Version version {major, 0};
             const ApiOptions ao {version, fail_mode, is_verbose};
 
-            test(ao, rs, version);
+            test(ao, rs);
         }
         catch (const Error& error) {
             print(error);
@@ -246,16 +245,12 @@ namespace
 
     auto test_versions(RuntimeScope rs) -> void
     {
-        const std::map<unsigned short, std::string> errors
-        {
-            get_expected_errors()
-        };
+        const unsigned first {rs == RuntimeScope::global ? 2U : 0U};
+        const unsigned last {2U};
 
-        auto first {rs == RuntimeScope::global ? 2U : 0U};
-        const auto last {2U};
-
-        for (unsigned short major = first; major <= last; ++major) {
-            test_version(rs, major, errors.at(major));
+        for (unsigned major = first; major <= last; ++major) {
+            Version version {static_cast<Version::field_type>(major)};
+            test_version(rs, version);
         }
     }
 }

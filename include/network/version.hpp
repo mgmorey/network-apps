@@ -41,6 +41,16 @@ namespace Network
         constexpr auto operator=(const Version&) noexcept -> Version& = default;
         constexpr auto operator=(Version&&) noexcept -> Version& = default;
 
+        [[nodiscard]] constexpr auto major() const noexcept -> field_type
+        {
+            return m_major;
+        }
+
+        [[nodiscard]] constexpr auto minor() const noexcept -> field_type
+        {
+            return m_major;
+        }
+
         constexpr auto operator<(const Version& t_other) const noexcept -> bool
         {
             return (m_major < t_other.m_major ||
