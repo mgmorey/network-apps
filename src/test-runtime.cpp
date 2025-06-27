@@ -249,7 +249,7 @@ namespace
         const unsigned last {2U};
 
         for (unsigned major = first; major <= last; ++major) {
-            const Version version {static_cast<Version::field_type>(major)};
+            const Version version {major};
             test_version(rs, version);
         }
     }

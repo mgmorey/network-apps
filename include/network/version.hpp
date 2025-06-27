@@ -22,7 +22,7 @@ namespace Network
 {
     struct Version
     {
-        using field_type = unsigned short;
+        using field_type = unsigned;
 
         friend auto operator<<(std::ostream& os,
                                Version version) noexcept -> std::ostream&;
