@@ -199,7 +199,7 @@ namespace
         std::cout << "Testing "
                   << rs
                   << " Socket API version: "
-                  << ao.version().value_or({})
+                  << ao.version().value_or(Version {})
                   << std::endl;
         print(ao);
         auto rt {get_runtime(ao, rs)};
