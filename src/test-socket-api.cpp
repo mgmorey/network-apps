@@ -32,7 +32,6 @@
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
-#include <ostream>      // std::ostream
 #include <regex>        // std::regex, std::regex_match
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
@@ -65,14 +64,6 @@ namespace
         "(Version \\d{1,3}\\.\\d{1,3} )?" // NOLINT
     };
 
-    const std::array<std::string_view, 3> expected_errors {
-#ifdef WIN32
-        "The Windows Sockets version requested is not supported.",
-#else
-        "",
-#endif
-        "", "",
-    };
     const auto fail_mode {FailMode::return_error};
     auto is_verbose {false};  // NOLINT
 
@@ -85,7 +76,16 @@ namespace
 
     auto get_expected_error(Version version) -> std::string_view
     {
-        return expected_errors.at(version.major());
+        constexpr std::array<std::string_view, 3> errors {
+#ifdef WIN32
+            "The Windows Sockets version requested is not supported.",
+#else
+            "",
+#endif
+            "", "",
+        };
+
+        return errors.at(version.major());
     }
 
     auto get_expected_re() -> std::string
