@@ -251,7 +251,7 @@ namespace
             get_expected_errors()
         };
 
-        const auto first {rs == RuntimeScope::global ? 2U : 0U};
+        auto first {rs == RuntimeScope::global ? 2U : 0U};
         const auto last {2U};
 
         for (unsigned short major = first; major <= last; ++major) {
