@@ -226,13 +226,11 @@ namespace
 
     auto test_version(RuntimeScope rs, Version version) -> void
     {
-
         const auto expected_str {get_expected_error(version)};
         std::string actual_str;
 
         try {
             const ApiOptions ao {version, fail_mode, is_verbose};
-
             test(ao, rs);
         }
         catch (const Error& error) {
