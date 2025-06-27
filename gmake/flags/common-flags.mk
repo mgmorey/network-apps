@@ -80,8 +80,7 @@ $(filter-out -I$(SDKROOT)/usr/include,$(CPPFLAGS))
 cpp_symbols = OS_$(os_macro_kernel)		\
 $(if $(is_darwin_source),_DARWIN_C_SOURCE,)	\
 $(if $(is_gnu_source),_GNU_SOURCE,)		\
-$(if $(is_windows_api),WIN32,)			\
-_GLIBCXX_ASSERTIONS
+$(if $(is_windows_api),WIN32,)
 
 CPPFLAGS += $(addprefix -I,$(include_dirs:/.=))
 CPPFLAGS += $(addprefix -D,$(cpp_symbols))
