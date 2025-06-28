@@ -127,36 +127,41 @@ namespace
 
     auto print(const Runtime& rt) -> void
     {
-        std::cout << "    Version:\t\t"
-                  << rt.version()
-                  << std::endl;
-        std::cout << "    High Version:\t"
-                  << rt.high_version()
-                  << std::endl;
-        std::cout << "    Description:\t"
-                  << quote(rt.description())
-                  << std::endl;
-        std::cout << "    System Status:\t"
-                  << quote(rt.system_status())
-                  << std::endl;
+        if (is_verbose) {
+            std::cout << "    Version:\t\t"
+                      << rt.version()
+                      << std::endl;
+            std::cout << "    High Version:\t"
+                      << rt.high_version()
+                      << std::endl;
+            std::cout << "    Description:\t"
+                      << quote(rt.description())
+                      << std::endl;
+            std::cout << "    System Status:\t" << quote(rt.system_status())
+                      << std::endl;
+        }
+        else {
+            std::cout << rt << std::endl;
+        }
     }
 
     auto print(ApiOptions ao) -> void
     {
+        if (is_verbose) {
+            std::cout << "    Input Version:\t";
 
-        if (ao.version()) {
-            std::cout << "    Input Version:\t"
-                      << ao.version().value_or(Version {})
+            if (ao.version()) {
+                std::cout << ao.version().value_or(Version {});
+            }
+            else {
+                std::cout << "tNone";
+            }
+
+            std::cout << std::endl;
+            std::cout << "    Input Fail Mode:\t"
+                      << ao.fail_mode()
                       << std::endl;
         }
-        else {
-            std::cout << "    Input Version:\tNone"
-                      << std::endl;
-        }
-
-        std::cout << "    Input Fail Mode:\t"
-                  << ao.fail_mode()
-                  << std::endl;
     }
 
     auto test(Runtime& rt) -> void
