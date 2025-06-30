@@ -164,24 +164,24 @@ namespace
         }
     }
 
-    auto test(Runtime& rt) -> void
+    auto test(SocketApi& sa) -> void
     {
-        assert(rt.version() == Version {});
-        assert(rt.high_version() == Version {});
-        assert(rt.description().empty());
-        assert(rt.system_status().empty());
-        print(rt);
-        assert(!rt.is_running());
-        rt.start();
-        print(rt);
-        assert(rt.is_running());
-        const std::string actual_str {get_actual_str(rt)};
+        assert(sa.version() == Version {});
+        assert(sa.high_version() == Version {});
+        assert(sa.description().empty());
+        assert(sa.system_status().empty());
+        print(sa);
+        assert(!sa.is_running());
+        sa.start();
+        print(sa);
+        assert(sa.is_running());
+        const std::string actual_str {get_actual_str(sa)};
         const std::regex expected_regex {get_expected_re()};
         assert(std::regex_match(actual_str, expected_regex));
-        const int error_code {rt.stop()};
+        const int error_code {sa.stop()};
         assert(!error_code);
-        print(rt);
-        assert(!rt.is_running());
+        print(sa);
+        assert(!sa.is_running());
     }
 
     auto test(ApiOptions ao, Version version) -> void
