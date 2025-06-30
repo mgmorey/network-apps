@@ -43,6 +43,11 @@ Network::InetSocket::~InetSocket() noexcept
     static_cast<void>(Network::close(m_sd));
 }
 
+Network::InetSocket::operator handle_type() const noexcept
+{
+    return m_sd.handle();
+}
+
 Network::InetSocket::operator bool() const noexcept
 {
     return m_sd.handle() != handle_null;
