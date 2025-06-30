@@ -36,7 +36,7 @@
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <regex>        // std::regex, std::regex_match
-#include <string>       // std::string
+#include <string>       // std::stoi(), std::string, std::to_string()
 
 namespace
 {
@@ -99,6 +99,9 @@ namespace
             const SocketData sd {handle, family, is_verbose};
             const InetSocket sock {sd};
             assert(static_cast<bool>(sock));
+            const auto handle_str {static_cast<std::string>(sock)};
+            assert(std::stoi(handle_str) == handle);
+            assert(handle_str == std::to_string(handle));
         }
         catch (const Error& error) {
             print(error);
