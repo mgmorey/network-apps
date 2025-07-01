@@ -40,14 +40,11 @@ namespace Network
         explicit virtual operator std::string() const = 0;
 
         [[nodiscard]] virtual auto accept() const -> AcceptResult = 0;
-        [[nodiscard]] virtual auto bind(ByteSpan t_bs) ->
-            OsErrorResult = 0;
-        [[nodiscard]] virtual auto connect(ByteSpan t_bs) ->
-            OsErrorResult = 0;
+        [[nodiscard]] virtual auto bind(ByteSpan t_bs) -> OsErrorResult = 0;
+        [[nodiscard]] virtual auto connect(ByteSpan t_bs) -> OsErrorResult = 0;
         [[nodiscard]] virtual auto listen(int t_backlog) const ->
             OsErrorResult = 0;
-        [[nodiscard]] virtual auto peername() const ->
-            ByteSpan = 0;
+        [[nodiscard]] virtual auto peername() const -> ByteSpan = 0;
         [[nodiscard]] virtual auto read(std::span<char> t_cs) const ->
             ssize_t = 0;
         [[nodiscard]] virtual auto shutdown(int t_how) const ->
