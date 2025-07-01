@@ -122,13 +122,13 @@ auto Network::InetSocket::name(bool t_is_sockname) const ->
 auto Network::InetSocket::open(std::span<const std::byte> t_bs,
                                bool t_is_bind) const -> OsErrorResult
 {
-    const auto nh {get_openhandler(t_is_bind)};
+    const auto oh {get_openhandler(t_is_bind)};
 
-    if (const auto os_error {Network::open(m_sd, t_bs, nh)}) {
+    if (const auto os_error {Network::open(m_sd, t_bs, oh)}) {
         return os_error;
     }
 
-    auto& nm {m_names.at(static_cast<std::size_t>(nh.symbol()))};
+    auto& nm {m_names.at(static_cast<std::size_t>(oh.symbol()))};
     nm.assign(t_bs.begin(), t_bs.end());
     return {};
 }
