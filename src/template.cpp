@@ -14,6 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/template.hpp"         // Template
+#include "network/bytespan.hpp"         // ByteSpan
 #include "network/sockethints.hpp"      // SocketHints
 
 #ifdef WIN32

@@ -13,9 +13,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/bytespan.hpp"                 // ByteSpan
 #include "network/open-handle.hpp"              // open()
 #include "network/addresserror.hpp"             // AddressError
+#include "network/bytespan.hpp"                 // ByteSpan
 #include "network/format-os-error.hpp"          // format_os_error()
 #include "network/get-api-error.hpp"            // get_api_error()
 #include "network/get-sa-span.hpp"              // get_sa_span()

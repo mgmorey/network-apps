@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/bytespan.hpp"                 // ByteSpan
 #include "network/get-sin6-pointer.hpp"         // get_sin6_pointer()
+#include "network/bytespan.hpp"                 // ByteSpan
 #include "network/validate-sin6.hpp"            // validate()
 
 #ifdef WIN32

@@ -14,6 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/sockethost.hpp"               // SocketHost
+#include "network/bytespan.hpp"                 // ByteSpan
 #include "network/bytestring.hpp"               // ByteString
 #include "network/optionalhostname.hpp"         // OptionalHostname
 #include "network/to-bytestring-void.hpp"       // to_bytestring()

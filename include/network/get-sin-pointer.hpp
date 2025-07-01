@@ -17,7 +17,6 @@
 #define NETWORK_GET_SIN_POINTER_HPP
 
 #include "network/bytespan.hpp"         // ByteSpan
-#include "network/bytestring.hpp"       // ByteString
 
 #ifdef WIN32
 #include <winsock2.h>       // sockaddr_in

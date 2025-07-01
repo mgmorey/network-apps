@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/bytespan.hpp"                 // ByteSpan
 #include "network/get-sa-length.hpp"            // get_sa_length()
+#include "network/bytespan.hpp"                 // ByteSpan
 #include "network/socket-length-type.hpp"       // socket_length_type
 #include "network/to-socket-length.hpp"         // to_socket_length()
 

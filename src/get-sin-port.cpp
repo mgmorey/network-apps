@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/bytespan.hpp"         // ByteSpan
 #include "network/get-sin-port.hpp"     // get_sin_port()
+#include "network/bytespan.hpp"         // ByteSpan
 #include "network/get-sin-pointer.hpp"  // get_sin_pointer()
 #include "network/port-type.hpp"        // port_type
 

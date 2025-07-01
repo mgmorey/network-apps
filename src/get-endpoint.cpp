@@ -13,9 +13,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/bytespan.hpp"                 // ByteSpan
 #include "network/get-endpoint.hpp"             // get_endpoint()
 #include "network/always-false.hpp"             // always_false_v
+#include "network/bytespan.hpp"                 // ByteSpan
 #include "network/endpoint.hpp"                 // Endpoint
 #include "network/error-strings.hpp"            // VISITOR_ERROR
 #include "network/error.hpp"                    // Error
