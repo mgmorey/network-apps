@@ -63,7 +63,8 @@ namespace Network
     protected:
         explicit operator handle_type() const noexcept;
 
-        [[nodiscard]] auto get_name(bool t_is_sockname) const -> std::span<const std::byte>;
+        [[nodiscard]] auto get_name(bool t_is_sockname) const ->
+            std::span<const std::byte>;
         [[nodiscard]] auto open(std::span<const std::byte> t_bs,
                                 bool is_bind) const -> OsErrorResult;
 
