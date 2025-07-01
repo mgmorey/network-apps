@@ -38,7 +38,6 @@
 #endif
 
 #include <algorithm>    // std::ranges
-#include <cerrno>       // EFAULT, EINVAL, EAFNOSUPPORT
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
 #include <exception>    // std::exception
 #include <iomanip>      // std::right, std::setw()
@@ -91,7 +90,7 @@ namespace
                 using T = std::decay_t<decltype(arg)>;
 
                 if constexpr (std::is_same_v<T, UniqueSocket>) {
-                    test_socket(*arg);
+                    test(*arg);
                 }
                 else if constexpr (std::is_same_v<T, OsErrorResult>) {
                     std::cerr << arg.string()
@@ -103,7 +102,7 @@ namespace
             }, t_socket_result);
         }
 
-        auto test_socket(const Socket& t_sock) -> void
+        auto test(const Socket& t_sock) -> void
         {
             const Address self {t_sock.sockname()};
             m_os << "Socket "
