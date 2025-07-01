@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#include "network/bytespan.hpp"         // ByteSpan
 #include "network/get-sa-pointer.hpp"   // get_sa_pointer()
 #include "network/validate-sa.hpp"      // validate()
 
@@ -22,11 +23,7 @@
 #include <sys/socket.h>     // sockaddr
 #endif
 
-#include <cstddef>      // std::byte
-#include <span>         // std::span
-
-auto Network::get_sa_pointer(std::span<const std::byte> bs) ->
-    const sockaddr*
+auto Network::get_sa_pointer(ByteSpan bs) -> const sockaddr*
 {
     const void* pointer {bs.data()};
     return validate(static_cast<const sockaddr*>(pointer), bs.size());

@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#include "network/bytespan.hpp"                 // ByteSpan
 #include "network/get-sin6-pointer.hpp"         // get_sin6_pointer()
 #include "network/validate-sin6.hpp"            // validate()
 
@@ -22,11 +23,7 @@
 #include <netinet/in.h>     // sockaddr_in6
 #endif
 
-#include <cstddef>      // std::byte
-#include <span>         // std::span
-
-auto Network::get_sin6_pointer(std::span<const std::byte> bs) ->
-    const sockaddr_in6*
+auto Network::get_sin6_pointer(ByteSpan bs) -> const sockaddr_in6*
 {
     const void* pointer {bs.data()};
     return validate(static_cast<const sockaddr_in6*>(pointer));

@@ -16,19 +16,17 @@
 #ifndef NETWORK_GET_SIN6_ADDR_HPP
 #define NETWORK_GET_SIN6_ADDR_HPP
 
+#include "network/bytespan.hpp"         // ByteSpan
+
 #ifdef WIN32
 #include <ws2tcpip.h>       // in6_addr
 #else
 #include <netinet/in.h>     // in6_addr
 #endif
 
-#include <cstddef>      // std::byte
-#include <span>         // std::span
-
 namespace Network
 {
-    extern auto get_sin6_addr(std::span<const std::byte> bs) ->
-        in6_addr;
+    extern auto get_sin6_addr(ByteSpan bs) -> in6_addr;
 }
 
 #endif

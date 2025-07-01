@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#include "network/bytespan.hpp"         // ByteSpan
 #include "network/get-sin-port.hpp"     // get_sin_port()
 #include "network/get-sin-pointer.hpp"  // get_sin_pointer()
 #include "network/port-type.hpp"        // port_type
@@ -23,10 +24,7 @@
 #include <netinet/in.h>     // ntohs()
 #endif
 
-#include <cstddef>      // std::byte
-#include <span>         // std::span
-
-auto Network::get_sin_port(std::span<const std::byte> bs) -> port_type
+auto Network::get_sin_port(ByteSpan bs) -> port_type
 {
     const auto* const sin {get_sin_pointer(bs)};
     return ntohs(sin->sin_port);

@@ -13,14 +13,12 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#include "network/bytespan.hpp"         // ByteSpan
 #include "network/get-sa-family.hpp"    // get_sa_family()
 #include "network/family-type.hpp"      // socket_family_type
 #include "network/get-sa-pointer.hpp"   // get_sa_pointer()
 
-#include <cstddef>      // std::byte
-#include <span>         // std::span
-
-auto Network::get_sa_family(std::span<const std::byte> bs) -> family_type
+auto Network::get_sa_family(ByteSpan bs) -> family_type
 {
     const auto* const sa {get_sa_pointer(bs)};
     return static_cast<socket_family_type>(sa->sa_family);

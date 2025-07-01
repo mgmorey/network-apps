@@ -14,6 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/address.hpp"                  // Address
+#include "network/bytespan.hpp"                 // ByteSpan
 #include "network/family-type.hpp"              // family_type
 #include "network/familyerror.hpp"              // FamilyError
 #include "network/os-features.hpp"              // HAVE_SOCKADDR_SA_LEN
@@ -30,17 +31,16 @@
 #include <sys/socket.h>     // AF_INET, AF_INET6, AF_UNIX
 #endif
 
-#include <cstddef>      // std::byte
 #include <span>         // std::span
 #include <string>       // std::string
 
-Network::Address::Address(std::span<const std::byte> t_bs) :
+Network::Address::Address(ByteSpan t_bs) :
     m_addr(t_bs.begin(), t_bs.end()),
     m_span(m_addr)
 {
 }
 
-auto Network::Address::operator=(std::span<const std::byte> t_bs) -> Address&
+auto Network::Address::operator=(ByteSpan t_bs) -> Address&
 {
     m_addr.assign(t_bs.begin(), t_bs.end());
     m_span = m_addr;

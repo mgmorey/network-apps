@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#include "network/bytespan.hpp"                 // ByteSpan
 #include "network/get-endpoint.hpp"             // get_endpoint()
 #include "network/always-false.hpp"             // always_false_v
 #include "network/endpoint.hpp"                 // Endpoint
@@ -23,12 +24,10 @@
 #include "network/run.hpp"                      // run()
 #include "network/sharedruntime.hpp"            // SharedRuntime
 
-#include <cstddef>      // std::byte
-#include <span>         // std::span
 #include <type_traits>  // std::decay_t, std::is_same_v
 #include <variant>      // std::visit()
 
-auto Network::get_endpoint(std::span<const std::byte> bs,
+auto Network::get_endpoint(ByteSpan bs,
                            int flags,
                            const SharedRuntime& sr) -> Endpoint
 {
@@ -50,7 +49,7 @@ auto Network::get_endpoint(std::span<const std::byte> bs,
     return result;
 }
 
-auto Network::get_endpoint(std::span<const std::byte> bs,
+auto Network::get_endpoint(ByteSpan bs,
                            int flags,
                            bool is_verbose) -> Endpoint
 {

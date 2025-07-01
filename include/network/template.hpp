@@ -16,6 +16,7 @@
 #ifndef NETWORK_TEMPLATE_HPP
 #define NETWORK_TEMPLATE_HPP
 
+#include "network/bytespan.hpp"         // ByteSpan
 #include "network/sockethints.hpp"      // SocketHints
 #include "network/sockethost.hpp"       // SocketHost
 
@@ -24,9 +25,6 @@
 #else
 #include <netdb.h>          // addrinfo
 #endif
-
-#include <cstddef>      // std::byte
-#include <span>         // std::span
 
 namespace Network
 {
@@ -46,7 +44,7 @@ namespace Network
         auto operator=(Template&&) noexcept -> Template& = default;
 
         [[nodiscard]] auto hints() const noexcept -> const SocketHints&;
-        [[nodiscard]] auto address() const noexcept -> std::span<const std::byte>;
+        [[nodiscard]] auto address() const noexcept -> ByteSpan;
 
     private:
         SocketHints m_hints;

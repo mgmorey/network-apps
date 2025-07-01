@@ -14,14 +14,13 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/unixsocket.hpp"       // UnixSocket
+#include "network/bytespan.hpp"         // ByteSpan
 #include "network/oserrorresult.hpp"    // OsErrorResult
 #include "network/socketdata.hpp"       // SocketData
 #include "network/to-path.hpp"          // to_path()
 
-#include <cstddef>      // std::byte
 #include <filesystem>   // std::filesystem
 #include <iostream>     // std::cout, std::endl
-#include <span>         // std::span
 
 Network::UnixSocket::UnixSocket(const SocketData& t_sd) :
     InetSocket(t_sd)
@@ -33,7 +32,7 @@ Network::UnixSocket::~UnixSocket() noexcept
     state(SocketState::closing);
 }
 
-auto Network::UnixSocket::bind(std::span<const std::byte> t_bs) -> OsErrorResult
+auto Network::UnixSocket::bind(ByteSpan t_bs) -> OsErrorResult
 {
     if (auto result {InetSocket::bind(t_bs)}) {
         return result;
@@ -43,8 +42,7 @@ auto Network::UnixSocket::bind(std::span<const std::byte> t_bs) -> OsErrorResult
     return {};
 }
 
-auto Network::UnixSocket::connect(std::span<const std::byte> t_bs) ->
-    OsErrorResult
+auto Network::UnixSocket::connect(ByteSpan t_bs) -> OsErrorResult
 {
     if (auto result {InetSocket::connect(t_bs)}) {
         return result;

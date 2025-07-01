@@ -16,15 +16,14 @@
 #ifndef WIN32
 
 #include "network/to-path.hpp"                  // to_path()
+#include "network/bytespan.hpp"                 // ByteSpan
 #include "network/get-path-pointer.hpp"         // get_path_pointer()
 #include "network/get-sun-pointer.hpp"          // get_sun_pointer()
 #include "network/sun-offsets.hpp"              // sun_path_offset
 
-#include <cstddef>      // std::byte
-#include <span>         // std::span
 #include <string_view>  // std::string_view
 
-auto Network::to_path(std::span<const std::byte> bs) -> std::string_view
+auto Network::to_path(ByteSpan bs) -> std::string_view
 {
     const auto* const path_str {get_path_pointer(get_sun_pointer(bs))};
     const auto path_len {bs.size() - sun_path_offset};

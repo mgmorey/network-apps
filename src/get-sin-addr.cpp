@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#include "network/bytespan.hpp"         // ByteSpan
 #include "network/get-sin-addr.hpp"     // get_sin_addr()
 #include "network/get-sin-pointer.hpp"  // get_sin_pointer()
 
@@ -22,10 +23,7 @@
 #include <netinet/in.h>     // in_addr
 #endif
 
-#include <cstddef>      // std::byte
-#include <span>         // std::span
-
-auto Network::get_sin_addr(std::span<const std::byte> bs) -> in_addr
+auto Network::get_sin_addr(ByteSpan bs) -> in_addr
 {
     const auto* const sin {get_sin_pointer(bs)};
     return sin->sin_addr;

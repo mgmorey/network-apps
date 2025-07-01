@@ -16,6 +16,7 @@
 #ifndef NETWORK_SOCKETHOST_HPP
 #define NETWORK_SOCKETHOST_HPP
 
+#include "network/bytespan.hpp"                 // ByteSpan
 #include "network/bytestring.hpp"               // ByteString
 #include "network/optionalhostname.hpp"         // OptionalHostname
 
@@ -24,9 +25,6 @@
 #else
 #include <netdb.h>          // addrinfo
 #endif
-
-#include <cstddef>      // std::byte
-#include <span>         // std::span
 
 namespace Network
 {
@@ -44,7 +42,7 @@ namespace Network
 
         auto operator=(const addrinfo& t_ai) -> SocketHost&;
         auto operator<(const SocketHost& t_host) const noexcept -> bool;
-        [[nodiscard]] auto address() const noexcept -> std::span<const std::byte>;
+        [[nodiscard]] auto address() const noexcept -> ByteSpan;
         [[nodiscard]] auto canonical_name() const noexcept ->
             const OptionalHostname&;
 

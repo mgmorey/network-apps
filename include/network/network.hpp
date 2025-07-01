@@ -27,6 +27,7 @@
 #include "network/binarybuffer.hpp"             // BinaryBuffer
 #include "network/bind.hpp"                     // bind()
 #include "network/buffer.hpp"                   // Buffer
+#include "network/bytespan.hpp"                 // ByteSpan
 #include "network/bytestring.hpp"               // ByteString
 #include "network/bytestringresult.hpp"         // ByteStringResult
 #include "network/close.hpp"                    // close()

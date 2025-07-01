@@ -16,15 +16,12 @@
 #ifndef NETWORK_GET_SIN_PORT_HPP
 #define NETWORK_GET_SIN_PORT_HPP
 
+#include "network/bytespan.hpp"         // ByteSpan
 #include "network/port-type.hpp"        // port_type
-
-#include <cstddef>      // std::byte
-#include <span>         // std::span
 
 namespace Network
 {
-    extern auto get_sin_port(std::span<const std::byte> bs) ->
-        port_type;
+    extern auto get_sin_port(ByteSpan bs) -> port_type;
 }
 
 #endif

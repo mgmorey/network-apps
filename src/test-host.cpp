@@ -52,6 +52,7 @@ namespace
 {
     using Network::Address;
     using Network::ArgumentSpan;
+    using Network::ByteSpan;
     using Network::ByteString;
     using Network::Endpoint;
     using Network::HostnameView;
@@ -88,7 +89,7 @@ namespace
     class Print
     {
     public:
-        static auto get_endpoint(std::span<const std::byte> bs) -> Endpoint
+        static auto get_endpoint(ByteSpan bs) -> Endpoint
         {
             return Network::get_endpoint(bs, 0, is_verbose);
         }

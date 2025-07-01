@@ -25,9 +25,6 @@
 #include <netdb.h>          // addrinfo
 #endif
 
-#include <cstddef>      // std::byte
-#include <span>         // std::span
-
 Network::SocketHost::SocketHost(const addrinfo& t_ai) :
     m_addr(to_bytestring(t_ai)),
     m_name(to_canonical_name(t_ai))
@@ -47,7 +44,7 @@ auto Network::SocketHost::operator<(const SocketHost& t_host) const noexcept ->
     return m_addr < t_host.m_addr;
 }
 
-auto Network::SocketHost::address() const noexcept -> std::span<const std::byte>
+auto Network::SocketHost::address() const noexcept -> ByteSpan
 {
     return m_addr;
 }

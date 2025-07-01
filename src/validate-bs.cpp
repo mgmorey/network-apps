@@ -14,6 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/validate-bs.hpp"              // validate
+#include "network/bytespan.hpp"                 // ByteSpan
 #include "network/familyerror.hpp"              // FamilyError
 #include "network/get-sa-family.hpp"            // get_sa_family()
 #include "network/get-sin-pointer.hpp"          // get_sin_pointer()
@@ -28,11 +29,7 @@
 #include <sys/socket.h>     // AF_INET, AF_INET6, AF_UNIX
 #endif
 
-#include <cstddef>      // std::byte
-#include <span>         // std::span
-
-auto Network::validate(std::span<const std::byte> bs) ->
-    std::span<const std::byte>
+auto Network::validate(ByteSpan bs) -> ByteSpan
 {
     switch (const auto family {get_sa_family(bs)}) {
     case AF_INET:

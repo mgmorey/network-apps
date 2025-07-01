@@ -16,10 +16,10 @@
 #ifndef NETWORK_SOCKET_HPP
 #define NETWORK_SOCKET_HPP
 
+#include "network/bytespan.hpp"         // ByteSpan
 #include "network/acceptresult.hpp"     // AcceptResult
 #include "network/oserrorresult.hpp"    // OsErrorResult
 
-#include <cstddef>      // std::byte
 #include <ostream>      // std::ostream
 #include <span>         // std::span
 #include <string>       // std::string
@@ -40,20 +40,19 @@ namespace Network
         explicit virtual operator std::string() const = 0;
 
         [[nodiscard]] virtual auto accept() const -> AcceptResult = 0;
-        [[nodiscard]] virtual auto bind(std::span<const std::byte> t_bs) ->
+        [[nodiscard]] virtual auto bind(ByteSpan t_bs) ->
             OsErrorResult = 0;
-        [[nodiscard]] virtual auto connect(std::span<const std::byte> t_bs) ->
+        [[nodiscard]] virtual auto connect(ByteSpan t_bs) ->
             OsErrorResult = 0;
         [[nodiscard]] virtual auto listen(int t_backlog) const ->
             OsErrorResult = 0;
         [[nodiscard]] virtual auto peername() const ->
-            std::span<const std::byte> = 0;
+            ByteSpan = 0;
         [[nodiscard]] virtual auto read(std::span<char> t_cs) const ->
             ssize_t = 0;
         [[nodiscard]] virtual auto shutdown(int t_how) const ->
             OsErrorResult = 0;
-        [[nodiscard]] virtual auto sockname() const ->
-            std::span<const std::byte> = 0;
+        [[nodiscard]] virtual auto sockname() const -> ByteSpan = 0;
         [[nodiscard]] virtual auto write(std::string_view t_sv) const ->
             ssize_t = 0;
     };

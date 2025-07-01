@@ -22,9 +22,6 @@
 #include <netdb.h>          // addrinfo
 #endif
 
-#include <cstddef>      // std::byte
-#include <span>         // std::span
-
 Network::Template::Template(const addrinfo& t_ai) noexcept :
     m_hints(t_ai),
     m_host(t_ai)
@@ -36,7 +33,7 @@ auto Network::Template::hints() const noexcept -> const SocketHints&
     return m_hints;
 }
 
-auto Network::Template::address() const noexcept -> std::span<const std::byte>
+auto Network::Template::address() const noexcept -> ByteSpan
 {
     return m_host.address();
 }

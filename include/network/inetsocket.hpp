@@ -17,6 +17,7 @@
 #define NETWORK_INETSOCKET_HPP
 
 #include "network/acceptresult.hpp"     // AcceptResult
+#include "network/bytespan.hpp"         // ByteSpan
 #include "network/bytestring.hpp"       // ByteString
 #include "network/oserrorresult.hpp"    // OsErrorResult
 #include "network/sharedruntime.hpp"    // SharedRuntime
@@ -27,7 +28,6 @@
 #include <sys/types.h>      // ssize_t
 
 #include <array>        // std::array
-#include <cstddef>      // std::byte
 #include <span>         // std::span
 #include <string>       // std::string
 #include <string_view>  // std::string_view
@@ -50,21 +50,21 @@ namespace Network
         explicit operator std::string() const final;
 
         [[nodiscard]] auto accept() const -> AcceptResult final;
-        [[nodiscard]] auto bind(std::span<const std::byte> t_bs) ->
+        [[nodiscard]] auto bind(ByteSpan t_bs) ->
             OsErrorResult override;
-        [[nodiscard]] auto connect(std::span<const std::byte> t_bs) ->
+        [[nodiscard]] auto connect(ByteSpan t_bs) ->
             OsErrorResult override;
         [[nodiscard]] auto listen(int t_backlog) const -> OsErrorResult final;
-        [[nodiscard]] auto peername() const -> std::span<const std::byte> final;
+        [[nodiscard]] auto peername() const -> ByteSpan final;
         [[nodiscard]] auto read(std::span<char> t_cs) const -> ssize_t final;
         [[nodiscard]] auto shutdown(int t_how) const -> OsErrorResult final;
-        [[nodiscard]] auto sockname() const -> std::span<const std::byte> final;
+        [[nodiscard]] auto sockname() const -> ByteSpan final;
         [[nodiscard]] auto write(std::string_view t_sv) const -> ssize_t final;
 
     protected:
         [[nodiscard]] auto name(bool t_is_sockname) const ->
-            std::span<const std::byte>;
-        [[nodiscard]] auto open(std::span<const std::byte> t_bs,
+            ByteSpan;
+        [[nodiscard]] auto open(ByteSpan t_bs,
                                 bool is_bind) const -> OsErrorResult;
         [[nodiscard]] auto runtime() const noexcept -> SharedRuntime;
 

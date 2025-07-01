@@ -14,6 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/inetsocket.hpp"       // InetSocket
+#include "network/bytespan.hpp"         // ByteSpan
 #include "network/accept.hpp"           // accept()
 #include "network/acceptresult.hpp"     // AcceptResult
 #include "network/close.hpp"            // close()
@@ -30,7 +31,7 @@
 #include "network/socketdata.hpp"       // SocketData
 #include "network/write.hpp"            // write()
 
-#include <cstddef>      // std::byte, std::size_t
+#include <cstddef>      // std::size_t
 #include <span>         // std::span
 #include <string>       // std::string, std::to_string()
 
@@ -59,14 +60,12 @@ auto Network::InetSocket::accept() const -> AcceptResult
     return Network::accept(m_sd);
 }
 
-auto Network::InetSocket::bind(std::span<const std::byte> t_bs) ->
-    OsErrorResult
+auto Network::InetSocket::bind(ByteSpan t_bs) -> OsErrorResult
 {
     return open(t_bs, true);
 }
 
-auto Network::InetSocket::connect(std::span<const std::byte> t_bs) ->
-    OsErrorResult
+auto Network::InetSocket::connect(ByteSpan t_bs) -> OsErrorResult
 {
     return open(t_bs, false);
 }
@@ -76,7 +75,7 @@ auto Network::InetSocket::listen(int t_backlog) const -> OsErrorResult
     return Network::listen(m_sd, t_backlog);
 }
 
-auto Network::InetSocket::peername() const -> std::span<const std::byte>
+auto Network::InetSocket::peername() const -> ByteSpan
 {
     return name(false);
 }
@@ -91,7 +90,7 @@ auto Network::InetSocket::shutdown(int t_how) const -> OsErrorResult
     return Network::shutdown(m_sd, t_how);
 }
 
-auto Network::InetSocket::sockname() const -> std::span<const std::byte>
+auto Network::InetSocket::sockname() const -> ByteSpan
 {
     return name(true);
 }
@@ -107,7 +106,7 @@ Network::InetSocket::operator handle_type() const noexcept
 }
 
 auto Network::InetSocket::name(bool t_is_sockname) const ->
-    std::span<const std::byte>
+    ByteSpan
 {
     const auto nh {get_namehandler(t_is_sockname)};
     auto& nm {m_names.at(static_cast<std::size_t>(nh.symbol()))};
@@ -119,7 +118,7 @@ auto Network::InetSocket::name(bool t_is_sockname) const ->
     return nm;
 }
 
-auto Network::InetSocket::open(std::span<const std::byte> t_bs,
+auto Network::InetSocket::open(ByteSpan t_bs,
                                bool t_is_bind) const -> OsErrorResult
 {
     const auto oh {get_openhandler(t_is_bind)};

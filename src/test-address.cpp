@@ -14,8 +14,8 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/assert.hpp"           // assert()
-#include "network/network.hpp"          // Address, Error, Hostname,
-                                        // OsErrorResult,
+#include "network/network.hpp"          // Address, ByteSpan, Error,
+                                        // Hostname, OsErrorResult,
                                         // SharedRuntime,
                                         // SocketFamily, SocketHints,
                                         // SocketHost, SocketLimits,
@@ -43,7 +43,6 @@
                             // sockaddr_un
 #endif
 
-#include <cstddef>      // std::byte
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
 #include <cstring>      // std::memset()
 #include <exception>    // std::exception
@@ -51,13 +50,13 @@
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <iterator>     // std::back_inserter()
 #include <regex>        // std::regex, std::regex_match
-#include <span>         // std::span
 #include <string>       // std::string
 #include <vector>       // std::vector
 
 namespace
 {
     using Network::Address;
+    using Network::ByteSpan;
     using Network::ByteString;
     using Network::Error;
     using Network::Hostname;
@@ -172,7 +171,7 @@ namespace
         }
     }
 
-    auto print(std::span<const std::byte> bs) -> void
+    auto print(ByteSpan bs) -> void
     {
         const Address address {bs};
         const auto family {address.family()};
@@ -209,7 +208,7 @@ namespace
         }
     }
 
-    auto test(std::span<const std::byte> bs) -> void
+    auto test(ByteSpan bs) -> void
     {
         assert(!bs.empty());
         const auto size {bs.size()};
@@ -453,7 +452,7 @@ namespace
                       << std::endl;
 
             for (const auto& host : hosts) {
-                const std::span<const std::byte> bs {host.address()};
+                const ByteSpan bs {host.address()};
                 print(bs);
                 test(bs);
             }

@@ -18,14 +18,12 @@
 
 #ifndef WIN32
 
+#include "network/bytespan.hpp"         // ByteSpan
 #include "network/inetsocket.hpp"       // InetSocket
 #include "network/pathname.hpp"         // Pathname
 #include "network/pathnameview.hpp"     // PathnameView
 #include "network/socketdata.hpp"       // SocketData
 #include "network/socketstate.hpp"      // SocketState
-
-#include <cstddef>      // std::byte
-#include <span>         // std::span
 
 namespace Network
 {
@@ -39,10 +37,8 @@ namespace Network
         auto operator=(const UnixSocket&) noexcept -> UnixSocket& = delete;
         auto operator=(UnixSocket&&) noexcept -> UnixSocket& = delete;
 
-        [[nodiscard]] auto bind(std::span<const std::byte> t_bs) ->
-            OsErrorResult final;
-        [[nodiscard]] auto connect(std::span<const std::byte> t_bs) ->
-            OsErrorResult final;
+        [[nodiscard]] auto bind(ByteSpan t_bs) -> OsErrorResult final;
+        [[nodiscard]] auto connect(ByteSpan t_bs) -> OsErrorResult final;
 
     protected:
         [[nodiscard]] auto remove(const PathnameView& t_path) const -> bool;

@@ -16,6 +16,7 @@
 #ifndef NETWORK_GET_SA_SPAN_HPP
 #define NETWORK_GET_SA_SPAN_HPP
 
+#include "network/bytespan.hpp"                 // ByteSpan
 #include "network/socket-length-type.hpp"       // socket_length_type
 
 #ifdef WIN32
@@ -24,13 +25,11 @@
 #include <sys/socket.h>     // sockaddr
 #endif
 
-#include <cstddef>      // std::byte
-#include <span>         // std::span
 #include <utility>      // std::pair
 
 namespace Network
 {
-    extern auto get_sa_span(std::span<const std::byte> bs) ->
+    extern auto get_sa_span(ByteSpan bs) ->
         std::pair<const sockaddr*, socket_length_type>;
 }
 

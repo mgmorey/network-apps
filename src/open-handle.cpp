@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#include "network/bytespan.hpp"                 // ByteSpan
 #include "network/open-handle.hpp"              // open()
 #include "network/addresserror.hpp"             // AddressError
 #include "network/format-os-error.hpp"          // format_os_error()
@@ -27,14 +28,12 @@
 #include "network/to-os-error.hpp"              // to_os_error()
 #include "network/to-string-span-byte.hpp"      // to_string()
 
-#include <cstddef>      // std::byte
 #include <iostream>     // std::cout, std::endl
-#include <span>         // std::span
 #include <sstream>      // std::ostringstream
 #include <utility>      // std::cmp_equal()
 
 auto Network::open(const SocketData& sd,
-                   std::span<const std::byte> bs,
+                   ByteSpan bs,
                    const OpenHandler& oh) -> OsErrorResult
 {
     const auto [sa, sa_length] {get_sa_span(bs)};

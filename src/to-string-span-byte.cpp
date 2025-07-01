@@ -14,17 +14,16 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/address.hpp"                  // Address
+#include "network/bytespan.hpp"                 // ByteSpan
 #include "network/logicerror.hpp"               // LogicError
 #include "network/to-string-span-byte.hpp"      // to_string()
 
-#include <cstddef>      // std::byte
 #include <iomanip>      // std::setfill(), std::setw()
 #include <ios>          // std::hex, std::ios, std::uppercase
-#include <span>         // std::span
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
 
-auto Network::to_string(std::span<const std::byte> bs) -> std::string
+auto Network::to_string(ByteSpan bs) -> std::string
 {
     std::ostringstream oss;
 

@@ -16,15 +16,12 @@
 #ifndef NETWORK_GET_SA_LENGTH_HPP
 #define NETWORK_GET_SA_LENGTH_HPP
 
+#include "network/bytespan.hpp"                 // ByteSpan
 #include "network/socket-length-type.hpp"       // socket_length_type
-
-#include <cstddef>      // std::byte
-#include <span>         // std::span
 
 namespace Network
 {
-    extern auto get_sa_length(std::span<const std::byte> bs) ->
-        socket_length_type;
+    extern auto get_sa_length(ByteSpan bs) -> socket_length_type;
 }
 
 #endif

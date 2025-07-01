@@ -16,18 +16,17 @@
 #ifndef NETWORK_GET_SIN_ADDR_HPP
 #define NETWORK_GET_SIN_ADDR_HPP
 
+#include "network/bytespan.hpp"         // ByteSpan
+
 #ifdef WIN32
 #include <winsock2.h>       // in_addr
 #else
 #include <netinet/in.h>     // in_addr
 #endif
 
-#include <cstddef>      // std::byte
-#include <span>         // std::span
-
 namespace Network
 {
-    extern auto get_sin_addr(std::span<const std::byte> bs) -> in_addr;
+    extern auto get_sin_addr(ByteSpan bs) -> in_addr;
 }
 
 #endif

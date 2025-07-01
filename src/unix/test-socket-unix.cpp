@@ -32,7 +32,6 @@
 
 #include <cerrno>       // EACCES, EADDRINUSE, EBADF, EINVAL, ENOENT,
                         // EROFS
-#include <cstddef>      // std::byte
 #include <cstdlib>      // EXIT_FAILURE, std::exit(),
                         // std::size_t
 #include <exception>    // std::exception
@@ -40,7 +39,6 @@
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <regex>        // std::regex, std::regex_match
 #include <set>          // std::set
-#include <span>         // std::span
 #include <stack>        // std::stack
 #include <string>       // std::string
 #include <string_view>  // std::string_view
@@ -48,6 +46,7 @@
 namespace
 {
     using Network::Address;
+    using Network::ByteSpan;
     using Network::ByteString;
     using Network::Error;
     using Network::LogicError;
@@ -86,7 +85,7 @@ namespace
 
     auto is_verbose {false};  // NOLINT
 
-    auto operator==(std::span<const std::byte> addr,
+    auto operator==(ByteSpan addr,
                     std::string_view path) -> bool
     {
         const auto addr_path {to_path(addr)};
@@ -170,7 +169,7 @@ namespace
         }
     }
 
-    auto print(const Socket& sock, std::span<const std::byte> bs) -> void
+    auto print(const Socket& sock, ByteSpan bs) -> void
     {
         std::cout << "Socket "
                   << std::right << std::setw(handle_width) << sock

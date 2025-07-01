@@ -16,13 +16,11 @@
 #ifndef NETWORK_VALIDATE_BS_HPP
 #define NETWORK_VALIDATE_BS_HPP
 
-#include <cstddef>      // std::byte
-#include <span>         // std::span
+#include "network/bytespan.hpp"         // ByteSpan
 
 namespace Network
 {
-    extern auto validate(std::span<const std::byte> bs) ->
-        std::span<const std::byte>;
+    extern auto validate(ByteSpan bs) -> ByteSpan;
 }
 
 #endif

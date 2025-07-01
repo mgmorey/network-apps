@@ -16,6 +16,7 @@
 #ifndef NETWORK_GET_SIN_POINTER_HPP
 #define NETWORK_GET_SIN_POINTER_HPP
 
+#include "network/bytespan.hpp"         // ByteSpan
 #include "network/bytestring.hpp"       // ByteString
 
 #ifdef WIN32
@@ -24,13 +25,9 @@
 #include <netinet/in.h>     // sockaddr_in
 #endif
 
-#include <cstddef>      // std::byte
-#include <span>         // std::span
-
 namespace Network
 {
-    extern auto get_sin_pointer(std::span<const std::byte> bs) ->
-        const sockaddr_in*;
+    extern auto get_sin_pointer(ByteSpan bs) -> const sockaddr_in*;
 }
 
 #endif

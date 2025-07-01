@@ -16,6 +16,7 @@
 #ifndef NETWORK_ADDRESS_HPP
 #define NETWORK_ADDRESS_HPP
 
+#include "network/bytespan.hpp"                 // ByteSpan
 #include "network/bytestring.hpp"               // ByteString
 #include "network/family-type.hpp"              // family_type
 #include "network/os-features.hpp"              // HAVE_SOCKADDR_SA_LEN
@@ -32,9 +33,7 @@
 #include <netinet/in.h>     // in_addr, in6_addr
 #endif
 
-#include <cstddef>      // std::byte
 #include <ostream>      // std::ostream
-#include <span>         // std::span
 #include <string>       // std::string
 #ifndef WIN32
 #include <string_view> // std::string_view
@@ -51,7 +50,7 @@ namespace Network
     public:
         using address_type = ByteString;
 
-        explicit Address(std::span<const std::byte> t_bs);
+        explicit Address(ByteSpan t_bs);
 
         Address() = default;
         Address(const Address&) = default;
@@ -60,7 +59,7 @@ namespace Network
         auto operator=(const Address&) -> Address& = default;
         auto operator=(Address&&) -> Address& = default;
 
-        auto operator=(std::span<const std::byte> t_bs) -> Address&;
+        auto operator=(ByteSpan t_bs) -> Address&;
         explicit operator address_type() const;
 
         [[nodiscard]] auto empty() const -> bool;
@@ -89,7 +88,7 @@ namespace Network
 
     private:
         address_type m_addr;
-        std::span<const std::byte> m_span;
+        ByteSpan m_span;
     };
 
     extern auto operator<<(std::ostream& os,

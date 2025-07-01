@@ -16,15 +16,12 @@
 #ifndef NETWORK_GET_SA_FAMILY_HPP
 #define NETWORK_GET_SA_FAMILY_HPP
 
+#include "network/bytespan.hpp"         // ByteSpan
 #include "network/family-type.hpp"      // family_type
-
-#include <cstddef>      // std::byte
-#include <span>         // std::span
 
 namespace Network
 {
-    extern auto get_sa_family(std::span<const std::byte> bs) ->
-        family_type;
+    extern auto get_sa_family(ByteSpan bs) -> family_type;
 }
 
 #endif

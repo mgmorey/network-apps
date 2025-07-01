@@ -14,6 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/get-endpointresult.hpp"       // get_endpoint()
+#include "network/bytespan.hpp"                 // ByteSpan
 #include "network/endpoint.hpp"                 // Endpoint
 #include "network/endpointresult.hpp"           // EndpointResult
 #include "network/format-ai-error.hpp"          // format_ai_error()
@@ -41,7 +42,7 @@
 
 auto Network::get_endpointresult(std::span<char> hostname,
                                  std::span<char> service,
-                                 std::span<const std::byte> bs, int flags,
+                                 ByteSpan bs, int flags,
                                  const SharedRuntime& sr) -> OsErrorResult
 {
     const auto [sa, sa_length] {get_sa_span(bs)};
@@ -130,7 +131,7 @@ auto Network::get_endpointresult(std::span<char> hostname,
     return {};
 }
 
-auto Network::get_endpointresult(std::span<const std::byte> bs, int flags,
+auto Network::get_endpointresult(ByteSpan bs, int flags,
                                  const SharedRuntime& sr) -> EndpointResult
 {
     TextBuffer hostname {hostname_length_max};
@@ -147,7 +148,7 @@ auto Network::get_endpointresult(std::span<const std::byte> bs, int flags,
     return Endpoint {hostname, service};
 }
 
-auto Network::get_endpointresult(std::span<const std::byte> bs, int flags,
+auto Network::get_endpointresult(ByteSpan bs, int flags,
                                  bool is_verbose) -> EndpointResult
 {
     const auto sr {run(is_verbose)};

@@ -13,15 +13,12 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#include "network/bytespan.hpp"                 // ByteSpan
 #include "network/get-sa-length.hpp"            // get_sa_length()
 #include "network/socket-length-type.hpp"       // socket_length_type
 #include "network/to-socket-length.hpp"         // to_socket_length()
 
-#include <cstddef>      // std::byte
-#include <span>         // std::span
-
-auto Network::get_sa_length(std::span<const std::byte> bs) ->
-    socket_length_type
+auto Network::get_sa_length(ByteSpan bs) -> socket_length_type
 {
     return to_socket_length(bs.size());
 }

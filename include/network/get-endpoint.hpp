@@ -16,17 +16,15 @@
 #ifndef NETWORK_GET_ENDPOINT_HPP
 #define NETWORK_GET_ENDPOINT_HPP
 
+#include "network/bytespan.hpp"         // ByteSpan
 #include "network/endpoint.hpp"         // Endpoint
 #include "network/sharedruntime.hpp"    // SharedRuntime
 
-#include <cstddef>      // std::byte
-#include <span>         // std::span
-
 namespace Network
 {
-    extern auto get_endpoint(std::span<const std::byte> bs, int flags,
+    extern auto get_endpoint(ByteSpan bs, int flags,
                              const SharedRuntime& sr) -> Endpoint;
-    extern auto get_endpoint(std::span<const std::byte> bs, int flags,
+    extern auto get_endpoint(ByteSpan bs, int flags,
                              bool is_verbose = false) -> Endpoint;
 }
 

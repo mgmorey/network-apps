@@ -16,17 +16,15 @@
 #ifndef NETWORK_OPEN_HANDLE_HPP
 #define NETWORK_OPEN_HANDLE_HPP
 
+#include "network/bytespan.hpp"         // ByteSpan
 #include "network/openhandler.hpp"      // OpenHandler
 #include "network/oserrorresult.hpp"    // OsErrorResult
 #include "network/socketdata.hpp"       // SocketData
 
-#include <cstddef>      // std::byte
-#include <span>         // std::span
-
 namespace Network
 {
     extern auto open(const SocketData& sd,
-                     std::span<const std::byte> bs,
+                     ByteSpan bs,
                      const OpenHandler& oh) -> OsErrorResult;
 }
 

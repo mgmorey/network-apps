@@ -18,13 +18,13 @@
 
 #ifndef WIN32
 
-#include <cstddef>      // std::byte
-#include <span>         // std::span
+#include "network/bytespan.hpp"                 // ByteSpan
+
 #include <string_view>  // std::string_view
 
 namespace Network
 {
-    extern auto to_path(std::span<const std::byte> bs) -> std::string_view;
+    extern auto to_path(ByteSpan bs) -> std::string_view;
 }
 
 #endif
