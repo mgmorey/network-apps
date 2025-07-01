@@ -45,6 +45,7 @@ namespace Network
         auto operator=(const InetSocket&) noexcept -> InetSocket& = delete;
         auto operator=(InetSocket&&) noexcept -> InetSocket& = delete;
 
+        explicit operator handle_type() const noexcept;
         explicit operator bool() const noexcept final;
         explicit operator std::string() const final;
 
@@ -61,8 +62,6 @@ namespace Network
         [[nodiscard]] auto write(std::string_view t_sv) const -> ssize_t final;
 
     protected:
-        explicit operator handle_type() const noexcept;
-
         [[nodiscard]] auto name(bool t_is_sockname) const ->
             std::span<const std::byte>;
         [[nodiscard]] auto open(std::span<const std::byte> t_bs,

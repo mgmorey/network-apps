@@ -98,8 +98,9 @@ namespace
         try {
             const SocketData sd {handle, family, is_verbose};
             const InetSocket sock {sd};
+            const std::string handle_str {sock};
             assert(static_cast<bool>(sock));
-            const auto handle_str {static_cast<std::string>(sock)};
+            assert(static_cast<handle_type>(sock) == handle);
             assert(std::stoi(handle_str) == handle);
             assert(handle_str == std::to_string(handle));
         }
