@@ -14,9 +14,9 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/inetsocket.hpp"       // InetSocket
-#include "network/bytespan.hpp"         // ByteSpan
 #include "network/accept.hpp"           // accept()
 #include "network/acceptresult.hpp"     // AcceptResult
+#include "network/bytespan.hpp"         // ByteSpan
 #include "network/close.hpp"            // close()
 #include "network/get-name.hpp"         // get_name()
 #include "network/get-namehandler.hpp"  // get_namehandler()
