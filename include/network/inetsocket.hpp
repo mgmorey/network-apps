@@ -19,6 +19,7 @@
 #include "network/acceptresult.hpp"     // AcceptResult
 #include "network/bytestring.hpp"       // ByteString
 #include "network/oserrorresult.hpp"    // OsErrorResult
+#include "network/sharedruntime.hpp"    // SharedRuntime
 #include "network/socket.hpp"           // Socket
 #include "network/socketdata.hpp"       // SocketData
 #include "network/symbols.hpp"          // Symbols
@@ -62,11 +63,11 @@ namespace Network
     protected:
         explicit operator handle_type() const noexcept;
 
-        [[nodiscard]] auto is_verbose() const noexcept -> bool;
         [[nodiscard]] auto name(bool t_is_sockname) const ->
             std::span<const std::byte>;
         [[nodiscard]] auto open(std::span<const std::byte> t_bs,
                                 bool is_bind) const -> OsErrorResult;
+        [[nodiscard]] auto runtime() const noexcept -> SharedRuntime;
 
     private:
         mutable std::array<ByteString, symbols.size()> m_names;

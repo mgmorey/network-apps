@@ -25,6 +25,7 @@
 #include "network/open-handle.hpp"      // open()
 #include "network/oserrorresult.hpp"    // OsErrorResult
 #include "network/read.hpp"             // read()
+#include "network/sharedruntime.hpp"    // SharedRuntime
 #include "network/shutdown.hpp"         // shutdown()
 #include "network/socketdata.hpp"       // SocketData
 #include "network/write.hpp"            // write()
@@ -105,11 +106,6 @@ Network::InetSocket::operator handle_type() const noexcept
     return m_sd.handle();
 }
 
-auto Network::InetSocket::is_verbose() const noexcept -> bool
-{
-    return m_sd.runtime()->is_verbose();
-}
-
 auto Network::InetSocket::name(bool t_is_sockname) const ->
     std::span<const std::byte>
 {
@@ -135,4 +131,9 @@ auto Network::InetSocket::open(std::span<const std::byte> t_bs,
     auto& name {m_names.at(static_cast<std::size_t>(handler.symbol()))};
     name.assign(t_bs.begin(), t_bs.end());
     return {};
+}
+
+auto Network::InetSocket::runtime() const noexcept -> SharedRuntime
+{
+    return m_sd.runtime();
 }

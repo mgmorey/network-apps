@@ -60,7 +60,7 @@ auto Network::UnixSocket::remove(const PathnameView& t_path) const -> bool
         return false;
     }
 
-    if (is_verbose()) {
+    if (runtime()->is_verbose()) {
         std::cout << "Calling std::filesystem::remove("
                   << t_path
                   << ')'
