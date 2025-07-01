@@ -21,12 +21,11 @@
 #include "network/oserrorresult.hpp"    // OsErrorResult
 #include "network/socket.hpp"           // Socket
 #include "network/socketdata.hpp"       // SocketData
-#include "network/symbol.hpp"           // Symbol
 
 #include <sys/types.h>      // ssize_t
 
+#include <array>        // std::array
 #include <cstddef>      // std::byte
-#include <map>          // std::map
 #include <span>         // std::span
 #include <string>       // std::string
 #include <string_view>  // std::string_view
@@ -69,7 +68,7 @@ namespace Network
                                 bool is_bind) const -> OsErrorResult;
 
     private:
-        mutable std::map<Symbol, ByteString> m_cache;
+        mutable std::array<ByteString, 4> m_cache;
         SocketData m_sd;
     };
 }
