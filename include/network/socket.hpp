@@ -18,7 +18,6 @@
 
 #include "network/acceptresult.hpp"     // AcceptResult
 #include "network/oserrorresult.hpp"    // OsErrorResult
-#include "network/symbol.hpp"           // Symbol
 
 #include <cstddef>      // std::byte
 #include <ostream>      // std::ostream
@@ -43,8 +42,6 @@ namespace Network
         [[nodiscard]] virtual auto accept() const -> AcceptResult = 0;
         [[nodiscard]] virtual auto bind(std::span<const std::byte> t_bs) ->
             OsErrorResult = 0;
-        [[nodiscard]] virtual auto cache(Symbol symbol) const ->
-            std::span<const std::byte> = 0;
         [[nodiscard]] virtual auto connect(std::span<const std::byte> t_bs) ->
             OsErrorResult = 0;
         [[nodiscard]] virtual auto is_verbose() const noexcept -> bool = 0;

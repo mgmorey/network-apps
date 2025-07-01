@@ -27,7 +27,6 @@
 #include "network/read.hpp"             // read()
 #include "network/shutdown.hpp"         // shutdown()
 #include "network/socketdata.hpp"       // SocketData
-#include "network/symbol.hpp"           // Symbol
 #include "network/write.hpp"            // write()
 
 #include <cstddef>      // std::byte, std::size_t
@@ -41,11 +40,6 @@ Network::InetSocket::InetSocket(const SocketData& t_sd) : m_sd(t_sd)
 Network::InetSocket::~InetSocket() noexcept
 {
     static_cast<void>(Network::close(m_sd));
-}
-
-Network::InetSocket::operator handle_type() const noexcept
-{
-    return m_sd.handle();
 }
 
 Network::InetSocket::operator bool() const noexcept
@@ -68,11 +62,6 @@ auto Network::InetSocket::bind(std::span<const std::byte> t_bs) ->
     OsErrorResult
 {
     return open(t_bs, true);
-}
-
-auto Network::InetSocket::cache(Symbol symbol) const -> std::span<const std::byte>
-{
-    return m_cache[symbol];
 }
 
 auto Network::InetSocket::connect(std::span<const std::byte> t_bs) ->
@@ -114,6 +103,11 @@ auto Network::InetSocket::sockname() const -> std::span<const std::byte>
 auto Network::InetSocket::write(std::string_view t_sv) const -> ssize_t
 {
     return Network::write(m_sd, t_sv);
+}
+
+Network::InetSocket::operator handle_type() const noexcept
+{
+    return m_sd.handle();
 }
 
 auto Network::InetSocket::get_name(bool t_is_sockname) const ->

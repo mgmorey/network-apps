@@ -139,7 +139,6 @@ namespace
 
         auto test_socket(const Socket& t_sock) -> void
         {
-            const Address name {t_sock.cache(Symbol::connect)};
             const Address peer {t_sock.peername()};
             const Address self {t_sock.sockname()};
             m_os << "Socket "
@@ -161,7 +160,6 @@ namespace
                  << std::right << std::setw(indent_width) << "to "
                  << peer
                  << std::endl;
-            assert(name.value() == peer.value());
         }
 
     private:

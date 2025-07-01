@@ -44,15 +44,12 @@ namespace Network
         auto operator=(const InetSocket&) noexcept -> InetSocket& = delete;
         auto operator=(InetSocket&&) noexcept -> InetSocket& = delete;
 
-        explicit operator handle_type() const noexcept;
         explicit operator bool() const noexcept final;
         explicit operator std::string() const final;
 
         [[nodiscard]] auto accept() const -> AcceptResult final;
         [[nodiscard]] auto bind(std::span<const std::byte> t_bs) ->
             OsErrorResult override;
-        [[nodiscard]] auto cache(Symbol symbol) const ->
-            std::span<const std::byte> final;
         [[nodiscard]] auto connect(std::span<const std::byte> t_bs) ->
             OsErrorResult override;
         [[nodiscard]] auto is_verbose() const noexcept -> bool final;
@@ -64,7 +61,9 @@ namespace Network
         [[nodiscard]] auto write(std::string_view t_sv) const -> ssize_t final;
 
     protected:
-        auto get_name(bool t_is_sockname) const -> std::span<const std::byte>;
+        explicit operator handle_type() const noexcept;
+
+        [[nodiscard]] auto get_name(bool t_is_sockname) const -> std::span<const std::byte>;
         [[nodiscard]] auto open(std::span<const std::byte> t_bs,
                                 bool is_bind) const -> OsErrorResult;
 
