@@ -50,10 +50,8 @@ namespace Network
         explicit operator std::string() const final;
 
         [[nodiscard]] auto accept() const -> AcceptResult final;
-        [[nodiscard]] auto bind(ByteSpan t_bs) ->
-            OsErrorResult override;
-        [[nodiscard]] auto connect(ByteSpan t_bs) ->
-            OsErrorResult override;
+        [[nodiscard]] auto bind(ByteSpan t_bs) -> OsErrorResult override;
+        [[nodiscard]] auto connect(ByteSpan t_bs) -> OsErrorResult override;
         [[nodiscard]] auto listen(int t_backlog) const -> OsErrorResult final;
         [[nodiscard]] auto peername() const -> ByteSpan final;
         [[nodiscard]] auto read(std::span<char> t_cs) const -> ssize_t final;
