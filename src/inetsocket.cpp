@@ -70,11 +70,6 @@ auto Network::InetSocket::connect(std::span<const std::byte> t_bs) ->
     return open(t_bs, false);
 }
 
-auto Network::InetSocket::is_verbose() const noexcept -> bool
-{
-    return m_sd.runtime()->is_verbose();
-}
-
 auto Network::InetSocket::listen(int t_backlog) const -> OsErrorResult
 {
     return Network::listen(m_sd, t_backlog);
@@ -82,7 +77,7 @@ auto Network::InetSocket::listen(int t_backlog) const -> OsErrorResult
 
 auto Network::InetSocket::peername() const -> std::span<const std::byte>
 {
-    return get_name(false);
+    return name(false);
 }
 
 auto Network::InetSocket::read(std::span<char> t_cs) const -> ssize_t
@@ -97,7 +92,7 @@ auto Network::InetSocket::shutdown(int t_how) const -> OsErrorResult
 
 auto Network::InetSocket::sockname() const -> std::span<const std::byte>
 {
-    return get_name(true);
+    return name(true);
 }
 
 auto Network::InetSocket::write(std::string_view t_sv) const -> ssize_t
@@ -110,7 +105,12 @@ Network::InetSocket::operator handle_type() const noexcept
     return m_sd.handle();
 }
 
-auto Network::InetSocket::get_name(bool t_is_sockname) const ->
+auto Network::InetSocket::is_verbose() const noexcept -> bool
+{
+    return m_sd.runtime()->is_verbose();
+}
+
+auto Network::InetSocket::name(bool t_is_sockname) const ->
     std::span<const std::byte>
 {
     const auto handler {get_namehandler(t_is_sockname)};

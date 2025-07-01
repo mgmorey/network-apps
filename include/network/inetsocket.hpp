@@ -52,7 +52,6 @@ namespace Network
             OsErrorResult override;
         [[nodiscard]] auto connect(std::span<const std::byte> t_bs) ->
             OsErrorResult override;
-        [[nodiscard]] auto is_verbose() const noexcept -> bool final;
         [[nodiscard]] auto listen(int t_backlog) const -> OsErrorResult final;
         [[nodiscard]] auto peername() const -> std::span<const std::byte> final;
         [[nodiscard]] auto read(std::span<char> t_cs) const -> ssize_t final;
@@ -63,7 +62,8 @@ namespace Network
     protected:
         explicit operator handle_type() const noexcept;
 
-        [[nodiscard]] auto get_name(bool t_is_sockname) const ->
+        [[nodiscard]] auto is_verbose() const noexcept -> bool;
+        [[nodiscard]] auto name(bool t_is_sockname) const ->
             std::span<const std::byte>;
         [[nodiscard]] auto open(std::span<const std::byte> t_bs,
                                 bool is_bind) const -> OsErrorResult;

@@ -44,7 +44,6 @@ namespace Network
             OsErrorResult = 0;
         [[nodiscard]] virtual auto connect(std::span<const std::byte> t_bs) ->
             OsErrorResult = 0;
-        [[nodiscard]] virtual auto is_verbose() const noexcept -> bool = 0;
         [[nodiscard]] virtual auto listen(int t_backlog) const ->
             OsErrorResult = 0;
         [[nodiscard]] virtual auto peername() const ->
