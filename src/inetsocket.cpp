@@ -109,27 +109,27 @@ Network::InetSocket::operator handle_type() const noexcept
 auto Network::InetSocket::name(bool t_is_sockname) const ->
     std::span<const std::byte>
 {
-    const auto handler {get_namehandler(t_is_sockname)};
-    auto& name {m_names.at(static_cast<std::size_t>(handler.symbol()))};
+    const auto nh {get_namehandler(t_is_sockname)};
+    auto& nm {m_names.at(static_cast<std::size_t>(nh.symbol()))};
 
-    if (name.empty()) {
-        name = Network::get_name(m_sd, handler);
+    if (nm.empty()) {
+        nm = Network::get_name(m_sd, nh);
     }
 
-    return name;
+    return nm;
 }
 
 auto Network::InetSocket::open(std::span<const std::byte> t_bs,
                                bool t_is_bind) const -> OsErrorResult
 {
-    const auto handler {get_openhandler(t_is_bind)};
+    const auto nh {get_openhandler(t_is_bind)};
 
-    if (const auto os_error {Network::open(m_sd, t_bs, handler)}) {
+    if (const auto os_error {Network::open(m_sd, t_bs, nh)}) {
         return os_error;
     }
 
-    auto& name {m_names.at(static_cast<std::size_t>(handler.symbol()))};
-    name.assign(t_bs.begin(), t_bs.end());
+    auto& nm {m_names.at(static_cast<std::size_t>(nh.symbol()))};
+    nm.assign(t_bs.begin(), t_bs.end());
     return {};
 }
 
