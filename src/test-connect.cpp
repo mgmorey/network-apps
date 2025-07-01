@@ -62,7 +62,6 @@ namespace
     using Network::SocketHints;
     using Network::SocketResult;
     using Network::SocketResultVector;
-    using Network::Symbol;
     using Network::UniqueSocket;
     using Network::always_false_v;
     using Network::connect;
@@ -121,7 +120,7 @@ namespace
                 using T = std::decay_t<decltype(arg)>;
 
                 if constexpr (std::is_same_v<T, UniqueSocket>) {
-                    test_socket(*arg);
+                    test(*arg);
                 }
                 else if constexpr (std::is_same_v<T, OsErrorResult>) {
                     auto actual_code {arg.number()};
@@ -137,7 +136,7 @@ namespace
             }, t_socket_result);
         }
 
-        auto test_socket(const Socket& t_sock) -> void
+        auto test(const Socket& t_sock) -> void
         {
             const Address peer {t_sock.peername()};
             const Address self {t_sock.sockname()};
