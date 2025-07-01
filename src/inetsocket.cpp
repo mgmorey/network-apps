@@ -105,8 +105,7 @@ Network::InetSocket::operator handle_type() const noexcept
     return m_sd.handle();
 }
 
-auto Network::InetSocket::name(bool t_is_sockname) const ->
-    ByteSpan
+auto Network::InetSocket::name(bool t_is_sockname) const -> ByteSpan
 {
     const auto nh {get_namehandler(t_is_sockname)};
     auto& nm {m_names.at(static_cast<std::size_t>(nh.symbol()))};
