@@ -13,18 +13,20 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_SYMBOL_HPP
-#define NETWORK_SYMBOL_HPP
+#ifndef NETWORK_SYMBOLS_HPP
+#define NETWORK_SYMBOLS_HPP
 
-#include <cstdint>      // std::uint8_t
+#include "network/symbol.hpp"   // Symbol
+
+#include <array>        // std::array
 
 namespace Network
 {
-    enum class Symbol : std::uint8_t {
-        bind,
-        connect,
-        getpeername,
-        getsockname,
+    constexpr std::array<Symbol, 4> symbols {
+        Symbol::bind,
+        Symbol::connect,
+        Symbol::getpeername,
+        Symbol::getsockname,
     };
 }
 

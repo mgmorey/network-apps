@@ -114,7 +114,7 @@ auto Network::InetSocket::get_name(bool t_is_sockname) const ->
     std::span<const std::byte>
 {
     const auto handler {get_namehandler(t_is_sockname)};
-    auto& name {m_cache.at(static_cast<std::size_t>(handler.symbol()))};
+    auto& name {m_names.at(static_cast<std::size_t>(handler.symbol()))};
 
     if (name.empty()) {
         name = Network::get_name(m_sd, handler);
@@ -132,7 +132,7 @@ auto Network::InetSocket::open(std::span<const std::byte> t_bs,
         return os_error;
     }
 
-    auto& name {m_cache.at(static_cast<std::size_t>(handler.symbol()))};
+    auto& name {m_names.at(static_cast<std::size_t>(handler.symbol()))};
     name.assign(t_bs.begin(), t_bs.end());
     return {};
 }

@@ -21,6 +21,7 @@
 #include "network/oserrorresult.hpp"    // OsErrorResult
 #include "network/socket.hpp"           // Socket
 #include "network/socketdata.hpp"       // SocketData
+#include "network/symbols.hpp"          // Symbols
 
 #include <sys/types.h>      // ssize_t
 
@@ -68,7 +69,7 @@ namespace Network
                                 bool is_bind) const -> OsErrorResult;
 
     private:
-        mutable std::array<ByteString, 4> m_cache;
+        mutable std::array<ByteString, symbols.size()> m_names;
         SocketData m_sd;
     };
 }
