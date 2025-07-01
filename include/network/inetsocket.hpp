@@ -60,8 +60,7 @@ namespace Network
         [[nodiscard]] auto write(std::string_view t_sv) const -> ssize_t final;
 
     protected:
-        [[nodiscard]] auto name(bool t_is_sockname) const ->
-            ByteSpan;
+        [[nodiscard]] auto name(bool t_is_sockname) const -> ByteSpan;
         [[nodiscard]] auto open(ByteSpan t_bs,
                                 bool is_bind) const -> OsErrorResult;
         [[nodiscard]] auto runtime() const noexcept -> SharedRuntime;
