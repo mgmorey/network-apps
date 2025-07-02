@@ -17,7 +17,7 @@
 
 # Define variables for language and standard
 language = c++
-language_release = 20
+language_release = 23
 standard = $(language)$(language_release)
 
 # Define variables for character constants
