@@ -115,12 +115,12 @@ CXXFLAGS += $(call join-flags,-Wa,$(asflags))
 
 # GCOVRFLAGS
 
-GCOVRFLAGS_HTML = --html-details --html-theme=$(HTML_THEME)     \
---html-title='$(html_title)' $(foreach                          \
+GCOVRFLAGS_HTML = --html-nested --html-theme=$(HTML_THEME)	\
+--html-title='$(html_title)' $(foreach				\
 file,$^,--json-add-tracefile=$(file))
 
-GCOVRFLAGS = --exclude-unreachable-branches $(if        \
-$(GCOV),--gcov-executable='$(GCOV)',) $(if $(filter     \
+GCOVRFLAGS = --exclude-unreachable-branches $(if	\
+$(GCOV),--gcov-executable='$(GCOV)',) $(if $(filter	\
 %.json,$@),--json,$(GCOVRFLAGS_HTML)) --output=$@
 
 # LDFLAGS
