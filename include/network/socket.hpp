@@ -16,8 +16,8 @@
 #ifndef NETWORK_SOCKET_HPP
 #define NETWORK_SOCKET_HPP
 
-#include "network/bytespan.hpp"         // ByteSpan
 #include "network/acceptresult.hpp"     // AcceptResult
+#include "network/bytespan.hpp"         // ByteSpan
 #include "network/oserrorresult.hpp"    // OsErrorResult
 
 #include <ostream>      // std::ostream
