@@ -22,7 +22,6 @@
 
 #include <ostream>      // std::ostream
 #include <span>         // std::span
-#include <string>       // std::string
 
 namespace Network
 {
@@ -37,7 +36,7 @@ namespace Network
         auto operator=(Socket&&) noexcept -> Socket& = delete;
 
         explicit virtual operator bool() const noexcept = 0;
-        explicit virtual operator std::string() const = 0;
+        explicit virtual operator long long() const = 0;
 
         [[nodiscard]] virtual auto accept() const -> AcceptResult = 0;
         [[nodiscard]] virtual auto bind(ByteSpan t_bs) -> OsErrorResult = 0;

@@ -33,7 +33,6 @@
 
 #include <cstddef>      // std::size_t
 #include <span>         // std::span
-#include <string>       // std::string, std::to_string()
 
 Network::InetSocket::InetSocket(const SocketData& t_sd) : m_sd(t_sd)
 {
@@ -49,9 +48,9 @@ Network::InetSocket::operator bool() const noexcept
     return m_sd.handle() != handle_null;
 }
 
-Network::InetSocket::operator std::string() const
+Network::InetSocket::operator long long() const noexcept
 {
-    return std::to_string(m_sd.handle());
+    return m_sd.handle();
 }
 
 auto Network::InetSocket::accept() const -> AcceptResult
@@ -98,11 +97,6 @@ auto Network::InetSocket::sockname() const -> ByteSpan
 auto Network::InetSocket::write(std::string_view t_sv) const -> ssize_t
 {
     return Network::write(m_sd, t_sv);
-}
-
-Network::InetSocket::operator handle_type() const noexcept
-{
-    return m_sd.handle();
 }
 
 auto Network::InetSocket::name(bool t_is_sockname) const -> ByteSpan

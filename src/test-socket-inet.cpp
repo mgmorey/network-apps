@@ -99,11 +99,8 @@ namespace
         try {
             const SocketData sd {handle, family, is_verbose};
             const InetSocket sock {sd};
-            const std::string handle_str {sock};
             assert(static_cast<bool>(sock));
-            assert(static_cast<handle_type>(sock) == handle);
-            assert(std::cmp_equal(std::stoll(handle_str), handle));
-            assert(handle_str == std::to_string(handle));
+            assert(static_cast<long long>(sock) == handle);
         }
         catch (const Error& error) {
             print(error);

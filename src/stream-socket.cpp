@@ -17,13 +17,12 @@
 #include "network/string-null.hpp"      // string_null
 
 #include <ostream>      // std::ostream
-#include <string>       // std::string
 
 auto Network::operator<<(std::ostream& os,
                          const Socket& sock) -> std::ostream&
 {
     if (static_cast<bool>(sock)) {
-        os << static_cast<std::string>(sock);
+        os << static_cast<long long>(sock);
     }
     else {
         os << string_null;

@@ -29,7 +29,6 @@
 
 #include <array>        // std::array
 #include <span>         // std::span
-#include <string>       // std::string
 #include <string_view>  // std::string_view
 
 namespace Network
@@ -45,9 +44,8 @@ namespace Network
         auto operator=(const InetSocket&) noexcept -> InetSocket& = delete;
         auto operator=(InetSocket&&) noexcept -> InetSocket& = delete;
 
-        explicit operator handle_type() const noexcept;
         explicit operator bool() const noexcept final;
-        explicit operator std::string() const final;
+        explicit operator long long() const noexcept final;
 
         [[nodiscard]] auto accept() const -> AcceptResult final;
         [[nodiscard]] auto bind(ByteSpan t_bs) -> OsErrorResult override;
