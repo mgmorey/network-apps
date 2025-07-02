@@ -36,7 +36,8 @@
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <regex>        // std::regex, std::regex_match
-#include <string>       // std::stoi(), std::string, std::to_string()
+#include <string>       // std::stoll(), std::string, std::to_string()
+#include <utility>      // std::cmp_equal()
 
 namespace
 {
@@ -101,7 +102,7 @@ namespace
             const std::string handle_str {sock};
             assert(static_cast<bool>(sock));
             assert(static_cast<handle_type>(sock) == handle);
-            assert(std::stoi(handle_str) == handle);
+            assert(std::cmp_equal(std::stoll(handle_str), handle));
             assert(handle_str == std::to_string(handle));
         }
         catch (const Error& error) {
