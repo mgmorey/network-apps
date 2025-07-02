@@ -45,7 +45,7 @@ namespace Network
         auto operator=(InetSocket&&) noexcept -> InetSocket& = delete;
 
         explicit operator bool() const noexcept final;
-        explicit operator long long() const noexcept final;
+        explicit operator unsigned long long() const final;
 
         [[nodiscard]] auto accept() const -> AcceptResult final;
         [[nodiscard]] auto bind(ByteSpan t_bs) -> OsErrorResult override;

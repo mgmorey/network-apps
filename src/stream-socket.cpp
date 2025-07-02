@@ -22,7 +22,7 @@ auto Network::operator<<(std::ostream& os,
                          const Socket& sock) -> std::ostream&
 {
     if (static_cast<bool>(sock)) {
-        os << static_cast<long long>(sock);
+        os << static_cast<unsigned long long>(sock);
     }
     else {
         os << string_null;

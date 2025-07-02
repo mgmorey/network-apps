@@ -100,7 +100,7 @@ namespace
             const SocketData sd {handle, family, is_verbose};
             const InetSocket sock {sd};
             assert(static_cast<bool>(sock));
-            assert(static_cast<long long>(sock) == handle);
+            assert(std::cmp_equal(static_cast<unsigned long long>(sock), handle));
         }
         catch (const Error& error) {
             print(error);

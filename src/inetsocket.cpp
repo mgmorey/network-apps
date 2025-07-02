@@ -29,6 +29,7 @@
 #include "network/sharedruntime.hpp"    // SharedRuntime
 #include "network/shutdown.hpp"         // shutdown()
 #include "network/socketdata.hpp"       // SocketData
+#include "network/to-value.hpp"         // to_value()
 #include "network/write.hpp"            // write()
 
 #include <cstddef>      // std::size_t
@@ -48,9 +49,9 @@ Network::InetSocket::operator bool() const noexcept
     return m_sd.handle() != handle_null;
 }
 
-Network::InetSocket::operator long long() const noexcept
+Network::InetSocket::operator unsigned long long() const
 {
-    return m_sd.handle();
+    return to_value<unsigned long long>("unsigned long long", m_sd.handle());
 }
 
 auto Network::InetSocket::accept() const -> AcceptResult
