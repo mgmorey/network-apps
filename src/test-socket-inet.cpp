@@ -92,12 +92,13 @@ namespace
 
     auto test_inet_socket(handle_type handle,
                           family_type family,
+                          const SharedRuntime& sr,
                           const std::string& expected_error_re) -> void
     {
         std::string actual_error_str;
 
         try {
-            const SocketData sd {handle, family, is_verbose};
+            const SocketData sd {handle, family, sr};
             const InetSocket sock {sd};
             assert(static_cast<bool>(sock));
             assert(std::cmp_equal(static_cast<unsigned long long>(sock), handle));
@@ -116,17 +117,17 @@ namespace
         }
     }
 
-    auto test_inet_socket_handle_invalid() -> void
+    auto test_inet_socket_handle_invalid(const SharedRuntime& sr) -> void
     {
-        test_inet_socket(handle_null, AF_UNSPEC, expected_error_handle_re);
+        test_inet_socket(handle_null, AF_UNSPEC, sr, expected_error_handle_re);
     }
 
-    auto test_inet_socket_handle_valid() -> void
+    auto test_inet_socket_handle_valid(const SharedRuntime& sr) -> void
     {
         const family_type family {AF_INET};
         const handle_type handle {::socket(family, SOCK_STREAM, 0)};
-        const SocketData sd {handle, family, is_verbose};
-        test_inet_socket(handle, family, "");
+        const SocketData sd {handle, family, sr};
+        test_inet_socket(handle, family, sr, "");
         Network::close(sd);
     }
 
@@ -215,13 +216,13 @@ auto main(int argc, char* argv[]) -> int
             std::cout << *rt << std::endl;
         }
 
-        test_inet_socket_handle_invalid();
+        test_inet_socket_handle_invalid(rt);
         test_socket_family_invalid();
         test_socket_handle_invalid();
         test_socket_protocol_invalid();
         test_socket_socktype_invalid();
 
-        test_inet_socket_handle_valid();
+        test_inet_socket_handle_valid(rt);
         test_valid();
     }
     catch (const std::exception& error) {

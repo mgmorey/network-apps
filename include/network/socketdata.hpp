@@ -30,9 +30,6 @@ namespace Network
         SocketData(handle_type t_handle,
                    family_type t_family,
                    const SharedRuntime& t_sr);
-        SocketData(handle_type t_handle,
-                   family_type t_family,
-                   bool t_is_verbose = false);
         SocketData(const SocketData& t_sd,
                    handle_type t_handle);
 
