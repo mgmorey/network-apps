@@ -19,7 +19,6 @@
 #include "network/handle-null.hpp"      // handle_null
 #include "network/handle-type.hpp"      // handle_type
 #include "network/logicerror.hpp"       // LogicError
-#include "network/run.hpp"              // Run
 #include "network/sharedruntime.hpp"    // SharedRuntime
 
 #include <string_view>  // std::string_view
@@ -48,8 +47,7 @@ Network::SocketData::SocketData(handle_type t_handle,
     }
 }
 
-Network::SocketData::SocketData(const SocketData& t_sd,
-                                handle_type t_handle) :
+Network::SocketData::SocketData(const SocketData& t_sd, handle_type t_handle) :
     SocketData(t_handle, t_sd.m_family, t_sd.m_sr)
 {
 }
