@@ -66,7 +66,7 @@ namespace Network
 
     private:
         mutable std::array<ByteString, symbols.size()> m_names;
-        SocketData m_sd;
+        const SocketData m_sd;
     };
 }
 
