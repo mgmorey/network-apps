@@ -13,24 +13,25 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/inetsocket.hpp"       // InetSocket
-#include "network/accept.hpp"           // accept()
-#include "network/acceptresult.hpp"     // AcceptResult
-#include "network/bytespan.hpp"         // ByteSpan
-#include "network/close.hpp"            // close()
-#include "network/get-name.hpp"         // get_name()
-#include "network/get-namehandler.hpp"  // get_namehandler()
-#include "network/get-openhandler.hpp"  // get_openhandler()
-#include "network/handle-null.hpp"      // handle_null
-#include "network/listen.hpp"           // listen()
-#include "network/open-handle.hpp"      // open()
-#include "network/oserrorresult.hpp"    // OsErrorResult
-#include "network/read.hpp"             // read()
-#include "network/sharedruntime.hpp"    // SharedRuntime
-#include "network/shutdown.hpp"         // shutdown()
-#include "network/socketdata.hpp"       // SocketData
-#include "network/to-value.hpp"         // to_value()
-#include "network/write.hpp"            // write()
+#include "network/inetsocket.hpp"               // InetSocket
+#include "network/accept.hpp"                   // accept()
+#include "network/acceptresult.hpp"             // AcceptResult
+#include "network/bytespan.hpp"                 // ByteSpan
+#include "network/close.hpp"                    // close()
+#include "network/get-name.hpp"                 // get_name()
+#include "network/get-namehandler.hpp"          // get_namehandler()
+#include "network/get-openhandler.hpp"          // get_openhandler()
+#include "network/handle-null.hpp"              // handle_null
+#include "network/listen.hpp"                   // listen()
+#include "network/long-handle-type.hpp"         // long_handle_type
+#include "network/open-handle.hpp"              // open()
+#include "network/oserrorresult.hpp"            // OsErrorResult
+#include "network/read.hpp"                     // read()
+#include "network/sharedruntime.hpp"            // SharedRuntime
+#include "network/shutdown.hpp"                 // shutdown()
+#include "network/socketdata.hpp"               // SocketData
+#include "network/to-long-handle.hpp"           // to_long_handle()
+#include "network/write.hpp"                    // write()
 
 #include <cstddef>      // std::size_t
 #include <span>         // std::span
@@ -49,9 +50,9 @@ Network::InetSocket::operator bool() const noexcept
     return m_sd.handle() != handle_null;
 }
 
-Network::InetSocket::operator unsigned long long() const
+Network::InetSocket::operator long_handle_type() const
 {
-    return to_value<unsigned long long>("unsigned long long", m_sd.handle());
+    return to_long_handle(m_sd.handle());
 }
 
 auto Network::InetSocket::accept() const -> AcceptResult

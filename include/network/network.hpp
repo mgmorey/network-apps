@@ -147,6 +147,7 @@
                                                 // family_type,
                                                 // handle_type,
                                                 // length_type,
+                                                // long_handle_type,
                                                 // os_error_type,
                                                 // port_type,
                                                 // result_type,

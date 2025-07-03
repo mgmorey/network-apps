@@ -13,15 +13,21 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/assert.hpp"           // assert()
-#include "network/inetsocket.hpp"       // InetSocket
-#include "network/network.hpp"          // Error, SocketData,
-                                        // SocketHints, UniqueSocket,
-                                        // close(), create_socket(),
-                                        // family_type, handle_null,
-                                        // handle_type, os_error_type,
-                                        // run()
-#include "network/parse.hpp"            // parse()
+#include "network/assert.hpp"                   // assert()
+#include "network/inetsocket.hpp"               // InetSocket
+#include "network/network.hpp"                  // Error, SocketData,
+                                                // SocketHints,
+                                                // UniqueSocket,
+                                                // close(),
+                                                // create_socket(),
+                                                // family_type,
+                                                // handle_null,
+                                                // handle_type,
+                                                // long_handle_type,
+                                                // os_error_type,
+                                                // run()
+#include "network/parse.hpp"                    // parse()
+#include "network/to-long-handle.hpp"           // to_long_handle()
 
 #ifdef WIN32
 #include <winsock2.h>   // AF_INET, AF_UNSPEC, SOCK_STREAM, ::close(),
@@ -36,7 +42,7 @@
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <regex>        // std::regex, std::regex_match
-#include <string>       // std::stoll(), std::string, std::to_string()
+#include <string>       // std::string
 #include <utility>      // std::cmp_equal()
 
 namespace
@@ -53,9 +59,20 @@ namespace
     using Network::handle_type;
     using Network::os_error_type;
     using Network::parse;
+    using Network::long_handle_type;
     using Network::run;
+    using Network::to_long_handle;
 
-    constexpr auto expected_error_handle_re {
+#ifdef WIN32
+    constexpr auto expected_error_handle_null_re {
+        ""
+    };
+#else
+    constexpr auto expected_error_handle_null_re {
+        R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of .+)"
+    };
+#endif
+    constexpr auto expected_error_invalid_re {
         R"(Null socket descriptor)"
     };
     constexpr auto expected_error_socket_re {
@@ -90,6 +107,27 @@ namespace
         }
     }
 
+    auto test(handle_type handle, const std::string& expected_error_re) -> void
+    {
+        std::string actual_error_str;
+
+        try {
+            assert(std::cmp_equal(to_long_handle(handle), handle));
+        }
+        catch (const Error& error) {
+            print(error);
+            actual_error_str = error.what();
+        }
+
+        if (expected_error_re.empty()) {
+            assert(actual_error_str.empty());
+        }
+        else {
+            const std::regex expected_error_regex {expected_error_re};
+            assert(std::regex_match(actual_error_str, expected_error_regex));
+        }
+    }
+
     auto test(handle_type handle,
               family_type family,
               const SharedRuntime& sr,
@@ -101,7 +139,7 @@ namespace
             const SocketData sd {handle, family, sr};
             const InetSocket sock {sd};
             assert(static_cast<bool>(sock));
-            assert(std::cmp_equal(static_cast<unsigned long long>(sock), handle));
+            assert(std::cmp_equal(static_cast<long_handle_type>(sock), handle));
         }
         catch (const Error& error) {
             print(error);
@@ -162,12 +200,22 @@ namespace
         }
     }
 
-    auto test_inet_socket_handle_invalid(const SharedRuntime& sr) -> void
+    auto test_handle_null() -> void
     {
-        test(handle_null, AF_UNSPEC, sr, expected_error_handle_re);
+        test(handle_null, expected_error_handle_null_re);
     }
 
-    auto test_inet_socket_handle_valid(const SharedRuntime& sr) -> void
+    auto test_handle_zero() -> void
+    {
+        test(0, "");
+    }
+
+    auto test_inet_socket_invalid(const SharedRuntime& sr) -> void
+    {
+        test(handle_null, AF_UNSPEC, sr, expected_error_invalid_re);
+    }
+
+    auto test_inet_socket_valid(const SharedRuntime& sr) -> void
     {
         const family_type family {AF_INET};
         const handle_type handle {::socket(family, SOCK_STREAM, 0)};
@@ -184,7 +232,7 @@ namespace
 
     auto test_socket_handle_invalid() -> void
     {
-        test(handle_null, AF_UNSPEC, expected_error_handle_re);
+        test(handle_null, AF_UNSPEC, expected_error_invalid_re);
     }
 
     auto test_socket_protocol_invalid() -> void
@@ -216,13 +264,14 @@ auto main(int argc, char* argv[]) -> int
             std::cout << *rt << std::endl;
         }
 
-        test_inet_socket_handle_invalid(rt);
+        test_handle_null();
+        test_handle_zero();
+        test_inet_socket_invalid(rt);
+        test_inet_socket_valid(rt);
         test_socket_family_invalid();
         test_socket_handle_invalid();
         test_socket_protocol_invalid();
         test_socket_socktype_invalid();
-
-        test_inet_socket_handle_valid(rt);
         test_valid();
     }
     catch (const std::exception& error) {

@@ -16,14 +16,15 @@
 #ifndef NETWORK_INETSOCKET_HPP
 #define NETWORK_INETSOCKET_HPP
 
-#include "network/acceptresult.hpp"     // AcceptResult
-#include "network/bytespan.hpp"         // ByteSpan
-#include "network/bytestring.hpp"       // ByteString
-#include "network/oserrorresult.hpp"    // OsErrorResult
-#include "network/sharedruntime.hpp"    // SharedRuntime
-#include "network/socket.hpp"           // Socket
-#include "network/socketdata.hpp"       // SocketData
-#include "network/symbols.hpp"          // Symbols
+#include "network/acceptresult.hpp"             // AcceptResult
+#include "network/bytespan.hpp"                 // ByteSpan
+#include "network/bytestring.hpp"               // ByteString
+#include "network/long-handle-type.hpp"         // long_handle_type
+#include "network/oserrorresult.hpp"            // OsErrorResult
+#include "network/sharedruntime.hpp"            // SharedRuntime
+#include "network/socket.hpp"                   // Socket
+#include "network/socketdata.hpp"               // SocketData
+#include "network/symbols.hpp"                  // Symbols
 
 #include <sys/types.h>      // ssize_t
 
@@ -45,7 +46,7 @@ namespace Network
         auto operator=(InetSocket&&) noexcept -> InetSocket& = delete;
 
         explicit operator bool() const noexcept final;
-        explicit operator unsigned long long() const final;
+        explicit operator long_handle_type() const final;
 
         [[nodiscard]] auto accept() const -> AcceptResult final;
         [[nodiscard]] auto bind(ByteSpan t_bs) -> OsErrorResult override;
