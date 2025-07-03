@@ -42,6 +42,7 @@
 #include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <regex>        // std::regex, std::regex_match
+#include <sstream>      // std::ostringstream
 #include <string>       // std::string
 #include <utility>      // std::cmp_equal()
 
@@ -138,8 +139,11 @@ namespace
         try {
             const SocketData sd {handle, family, sr};
             const InetSocket sock {sd};
+            std::ostringstream oss;
+            oss << sock;
             assert(static_cast<bool>(sock));
             assert(std::cmp_equal(static_cast<long_handle_type>(sock), handle));
+            assert(oss.str() == std::to_string(static_cast<long_handle_type>(sock)));
         }
         catch (const Error& error) {
             print(error);
