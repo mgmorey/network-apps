@@ -18,7 +18,6 @@
 #include "network/error.hpp"            // Error
 #include "network/get-nameresult.hpp"   // get_nameresult()
 #include "network/namehandler.hpp"      // NameHandler
-#include "network/oserrorresult.hpp"    // OsErrorResult
 #include "network/socketdata.hpp"       // SocketData
 
 auto Network::get_name(const SocketData& sd,

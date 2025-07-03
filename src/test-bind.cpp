@@ -16,8 +16,7 @@
 #include "network/assert.hpp"           // assert()
 #include "network/network.hpp"          // Address, ByteString,
                                         // EndpointView,
-                                        // IpSocketHints,
-                                        // OsErrorResult, Socket,
+                                        // IpSocketHints, Socket,
                                         // SocketHints, SocketResult,
                                         // SocketResultVector,
                                         // UniqueSocket, bind(),

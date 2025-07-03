@@ -15,8 +15,7 @@
 
 #include "network/assert.hpp"           // assert()
 #include "network/network.hpp"          // Address, ByteSpan, Error,
-                                        // Hostname, OsErrorResult,
-                                        // SharedRuntime,
+                                        // Hostname, SharedRuntime,
                                         // SocketFamily, SocketHints,
                                         // SocketHost, SocketLimits,
                                         // insert(), run(),

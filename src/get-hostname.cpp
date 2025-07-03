@@ -17,7 +17,6 @@
 #include "network/error.hpp"                    // Error
 #include "network/get-hostnameresult.hpp"       // get_hostname()
 #include "network/hostname.hpp"                 // Hostname
-#include "network/oserrorresult.hpp"            // OsErrorResult
 #include "network/run.hpp"                      // run()
 #include "network/sharedruntime.hpp"            // SharedRuntime
 

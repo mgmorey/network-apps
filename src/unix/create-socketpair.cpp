@@ -18,7 +18,6 @@
 #include "network/create-socketpair.hpp"        // create_socketpair()
 #include "network/create-socketpairresult.hpp"  // create_socketpairresult()
 #include "network/error.hpp"                    // Error
-#include "network/oserrorresult.hpp"            // OsErrorResult
 #include "network/sockethints.hpp"              // SocketHints
 #include "network/socketpair.hpp"               // SocketPair
 
