@@ -21,15 +21,15 @@
 #include "network/sockethints.hpp"              // SocketHints
 #include "network/socketpair.hpp"               // SocketPair
 
+#include <utility>      // std::move()
+
 auto Network::create_socketpair(const SocketHints& hints,
                                 bool is_verbose) -> SocketPair
 {
-    SocketPair sp;
     auto result {create_socketpairresult(hints, is_verbose)};
 
     if (result) {
-        sp.swap(*result);
-        return sp;
+        return std::move(*result);
     }
 
     throw Error(result.error().string());
