@@ -26,6 +26,7 @@
 #include "network/to-os-error.hpp"              // to_os_error()
 #include "network/to-string-span-byte.hpp"      // to_string()
 
+#include <expected>     // std::unexpected
 #include <iostream>     // std::cout, std::endl
 #include <span>         // std::span
 #include <sstream>      // std::ostringstream
@@ -74,7 +75,7 @@ auto Network::get_nameresult(const SocketData& sd,
             << ": "
             << format_os_error(os_error);
         // clang-format on
-        return OsErrorResult {os_error, oss.str()};
+        return std::unexpected {OsErrorResult {os_error, oss.str()}};
     }
 
     if (is_verbose) {

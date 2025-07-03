@@ -35,6 +35,7 @@
 #include <sys/socket.h>     // ::socketpair()
 
 #include <algorithm>    // std::ranges::transform()
+#include <expected>     // std::unexpected
 #include <iostream>     // std::cout, std::endl
 #include <iterator>     // std::back_inserter
 #include <sstream>      // std::ostringstream
@@ -95,7 +96,7 @@ auto Network::create_socketpairresult(const SocketHints& hints,
             << ": "
             << format_os_error(os_error);
         // clang-format on
-        return OsErrorResult {os_error, oss.str()};
+        return std::unexpected {OsErrorResult {os_error, oss.str()}};
     }
 
     if (is_verbose) {

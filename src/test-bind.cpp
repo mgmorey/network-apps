@@ -43,8 +43,6 @@
 #include <iomanip>      // std::right, std::setw()
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <set>          // std::set
-#include <type_traits>  // std::decay_t, std::is_same_v
-#include <variant>      // std::visit()
 
 namespace
 {
@@ -52,13 +50,11 @@ namespace
     using Network::ByteString;
     using Network::EndpointView;
     using Network::IpSocketHints;
-    using Network::OsErrorResult;
     using Network::Socket;
     using Network::SocketHints;
     using Network::SocketResult;
     using Network::SocketResultVector;
     using Network::UniqueSocket;
-    using Network::always_false_v;
     using Network::bind;
     using Network::os_error_type;
     using Network::parse;
@@ -84,22 +80,14 @@ namespace
         {
         }
 
-        auto operator()(const SocketResult& t_socket_result) -> void
+        auto operator()(const SocketResult& t_result) -> void
         {
-            std::visit([&](auto&& arg) {
-                using T = std::decay_t<decltype(arg)>;
-
-                if constexpr (std::is_same_v<T, UniqueSocket>) {
-                    test(*arg);
-                }
-                else if constexpr (std::is_same_v<T, OsErrorResult>) {
-                    std::cerr << arg.string()
-                              << std::endl;
-                }
-                else {
-                    static_assert(always_false_v<T>, VISITOR_ERROR);
-                }
-            }, t_socket_result);
+            if (t_result) {
+                test(**t_result);
+            }
+            else {
+                std::cerr << t_result.error().string() << std::endl;
+            }
         }
 
         auto test(const Socket& t_sock) -> void

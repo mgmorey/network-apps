@@ -19,11 +19,11 @@
 #include "network/oserrorresult.hpp"    // OsErrorResult
 #include "network/socketpair.hpp"       // SocketPair
 
-#include <variant>      // std::variant
+#include <expected>     // std::expected
 
 namespace Network
 {
-    using SocketPairResult = std::variant<SocketPair, OsErrorResult>;
+    using SocketPairResult = std::expected<SocketPair, OsErrorResult>;
 }
 
 #endif

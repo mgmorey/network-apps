@@ -14,17 +14,12 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/open.hpp"                     // Open
-#include "network/always-false.hpp"             // always_false_v
 #include "network/create-socketresult.hpp"      // create_socketresult()
-#include "network/error-strings.hpp"            // VISITOR_ERROR
 #include "network/openparameters.hpp"           // OpenParameters
-#include "network/oserrorresult.hpp"            // OsErrorResult
 #include "network/socketresult.hpp"             // SocketResult
 #include "network/template.hpp"                 // Template
-#include "network/uniquesocket.hpp"             // UniqueSocket
 
-#include <type_traits>  // std::decay_t, std::is_same_v
-#include <variant>      // std::visit()
+#include <expected>     // std::unexpected
 
 Network::Open::Open(const OpenParameters& t_op, bool t_is_bind) :
     m_op(t_op),
@@ -35,22 +30,14 @@ Network::Open::Open(const OpenParameters& t_op, bool t_is_bind) :
 auto Network::Open::operator()(const Template& t_temp) const -> SocketResult
 {
     auto result {create_socketresult(t_temp.hints(), m_op.m_sr->is_verbose())};
-    std::visit([&](auto&& arg) {
-        using T = std::decay_t<decltype(arg)>;
 
-        if constexpr (std::is_same_v<T, UniqueSocket>) {
-            if (const auto error_result {m_is_bind ?
-                                         arg->bind(t_temp.address()) :
-                                         arg->connect(t_temp.address())}) {
-                result = error_result;
-            }
+    if (result) {
+        if (const auto error {m_is_bind ?
+                              (*result)->bind(t_temp.address()) :
+                              (*result)->connect(t_temp.address())}) {
+            return std::unexpected {error};
         }
-        else if constexpr (std::is_same_v<T, OsErrorResult>) {
-            static_cast<void>(arg);
-        }
-        else {
-            static_assert(always_false_v<T>, VISITOR_ERROR);
-        }
-    }, result);
+    }
+
     return result;
 }

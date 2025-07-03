@@ -35,6 +35,7 @@
 #include <netdb.h>      // ::getnameinfo()
 #endif
 
+#include <expected>     // std::unexpected
 #include <iostream>     // std::cout, std::endl
 #include <span>         // std::span
 #include <sstream>      // std::ostringstream
@@ -137,12 +138,12 @@ auto Network::get_endpointresult(ByteSpan bs, int flags,
     TextBuffer hostname {hostname_length_max};
     TextBuffer service {service_length_max};
 
-    if (auto result {get_endpointresult(hostname,
-                                        service,
-                                        bs,
-                                        flags,
-                                        sr)}) {
-        return result;
+    if (auto error {get_endpointresult(hostname,
+                                       service,
+                                       bs,
+                                       flags,
+                                       sr)}) {
+        return std::unexpected {error};
     }
 
     return Endpoint {hostname, service};

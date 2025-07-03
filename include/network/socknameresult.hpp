@@ -19,11 +19,11 @@
 #include "network/oserrorresult.hpp"    // OsErrorResult
 #include "network/sockname.hpp"         // SockName
 
-#include <variant>      // std::variant
+#include <expected>     // std::expected
 
 namespace Network
 {
-    using SockNameResult = std::variant<SockName, OsErrorResult>;
+    using SockNameResult = std::expected<SockName, OsErrorResult>;
 }
 
 #endif

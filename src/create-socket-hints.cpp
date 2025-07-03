@@ -14,9 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/create-socket-hints.hpp"      // create_socket()
-#include "network/always-false.hpp"             // always_false_v
 #include "network/create-socketresult.hpp"      // create_socketresult()
-#include "network/error-strings.hpp"            // VISITOR_ERROR
 #include "network/error.hpp"                    // Error
 #include "network/oserrorresult.hpp"            // OsErrorResult
 #include "network/run.hpp"                      // run()
@@ -24,28 +22,18 @@
 #include "network/sockethints.hpp"              // SocketHints
 #include "network/uniquesocket.hpp"             // UniqueSocket
 
-#include <type_traits>  // std::decay_t, std::is_same_v
-#include <variant>      // std::visit()
-
 auto Network::create_socket(const SocketHints& hints,
                             const SharedRuntime& sr) -> UniqueSocket
 {
     UniqueSocket sock;
     auto result {create_socketresult(hints, sr)};
-    std::visit([&](auto&& arg) {
-        using T = std::decay_t<decltype(arg)>;
 
-        if constexpr (std::is_same_v<T, UniqueSocket>) {
-            sock.swap(arg);
-        }
-        else if constexpr (std::is_same_v<T, OsErrorResult>) {
-            throw Error(arg.string());
-        }
-        else {
-            static_assert(always_false_v<T>, VISITOR_ERROR);
-        }
-    }, result);
-    return sock;
+    if (result) {
+        sock.swap(*result);
+        return sock;
+    }
+
+    throw Error(result.error().string());
 }
 
 auto Network::create_socket(const SocketHints& hints,

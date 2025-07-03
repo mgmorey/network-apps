@@ -14,39 +14,24 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/get-endpoint.hpp"             // get_endpoint()
-#include "network/always-false.hpp"             // always_false_v
 #include "network/bytespan.hpp"                 // ByteSpan
 #include "network/endpoint.hpp"                 // Endpoint
-#include "network/error-strings.hpp"            // VISITOR_ERROR
 #include "network/error.hpp"                    // Error
 #include "network/get-endpointresult.hpp"       // get_endpointresult()
-#include "network/oserrorresult.hpp"            // OsErrorResult,
 #include "network/run.hpp"                      // run()
 #include "network/sharedruntime.hpp"            // SharedRuntime
-
-#include <type_traits>  // std::decay_t, std::is_same_v
-#include <variant>      // std::visit()
 
 auto Network::get_endpoint(ByteSpan bs,
                            int flags,
                            const SharedRuntime& sr) -> Endpoint
 {
-    Endpoint result;
-    auto endpoint_result {get_endpointresult(bs, flags, sr->is_verbose())};
-    std::visit([&](auto&& arg) {
-        using T = std::decay_t<decltype(arg)>;
+    auto result {get_endpointresult(bs, flags, sr->is_verbose())};
 
-        if constexpr (std::is_same_v<T, Endpoint>) {
-            result = arg;
-        }
-        else if constexpr (std::is_same_v<T, OsErrorResult>) {
-            throw Error(arg.string());
-        }
-        else {
-            static_assert(always_false_v<T>, VISITOR_ERROR);
-        }
-    }, endpoint_result);
-    return result;
+    if (result) {
+        return *result;
+    }
+
+    throw Error(result.error().string());
 }
 
 auto Network::get_endpoint(ByteSpan bs,

@@ -19,11 +19,11 @@
 #include "network/bytestring.hpp"       // ByteString
 #include "network/oserrorresult.hpp"    // OsErrorResult
 
-#include <variant>      // std::variant
+#include <expected>     // std::expected
 
 namespace Network
 {
-    using ByteStringResult = std::variant<ByteString, OsErrorResult>;
+    using ByteStringResult = std::expected<ByteString, OsErrorResult>;
 }
 
 #endif

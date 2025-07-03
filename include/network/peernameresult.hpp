@@ -19,11 +19,11 @@
 #include "network/oserrorresult.hpp"    // OsErrorResult
 #include "network/peername.hpp"         // PeerName
 
-#include <variant>      // std::variant
+#include <expected>     // std::expected
 
 namespace Network
 {
-    using PeerNameResult = std::variant<PeerName, OsErrorResult>;
+    using PeerNameResult = std::expected<PeerName, OsErrorResult>;
 }
 
 #endif

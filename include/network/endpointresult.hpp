@@ -19,11 +19,11 @@
 #include "network/endpoint.hpp"         // Endpoint
 #include "network/oserrorresult.hpp"    // OsErrorResult
 
-#include <variant>      // std::variant
+#include <expected>     // std::expected
 
 namespace Network
 {
-    using EndpointResult = std::variant<Endpoint, OsErrorResult>;
+    using EndpointResult = std::expected<Endpoint, OsErrorResult>;
 }
 
 #endif

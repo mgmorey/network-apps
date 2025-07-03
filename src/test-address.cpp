@@ -65,7 +65,6 @@ namespace
     using Network::SocketHints;
     using Network::SocketHost;
     using Network::SocketLimits;
-    using Network::always_false_v;
 #ifndef WIN32
     using Network::af_unix;
 #endif

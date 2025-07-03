@@ -19,11 +19,11 @@
 #include "network/oserrorresult.hpp"    // OsErrorResult
 #include "network/uniquesocket.hpp"     // UniqueSocket
 
-#include <variant>      // std::variant
+#include <expected>     // std::expected
 
 namespace Network
 {
-    using SocketResult = std::variant<UniqueSocket, OsErrorResult>;
+    using SocketResult = std::expected<UniqueSocket, OsErrorResult>;
 }
 
 #endif

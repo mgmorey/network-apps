@@ -46,8 +46,6 @@
 #include <iomanip>      // std::right, std::setw()
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <set>          // std::set
-#include <type_traits>  // std::decay_t, std::is_same_v
-#include <variant>      // std::visit()
 
 namespace
 {
@@ -57,13 +55,11 @@ namespace
     using Network::Hostname;
     using Network::HostnameView;
     using Network::IpSocketHints;
-    using Network::OsErrorResult;
     using Network::Socket;
     using Network::SocketHints;
     using Network::SocketResult;
     using Network::SocketResultVector;
     using Network::UniqueSocket;
-    using Network::always_false_v;
     using Network::connect;
     using Network::get_hostname;
     using Network::os_error_type;
@@ -113,27 +109,19 @@ namespace
         {
         }
 
-        auto operator()(const SocketResult& t_socket_result) -> void
+        auto operator()(const SocketResult& t_result) -> void
         {
-            const auto& expected_codes {get_codes_unreachable()};
-            std::visit([&](auto&& arg) {
-                using T = std::decay_t<decltype(arg)>;
+            if (t_result) {
+                test(**t_result);
+            }
+            else {
+                const auto& expected_codes {get_codes_unreachable()};
 
-                if constexpr (std::is_same_v<T, UniqueSocket>) {
-                    test(*arg);
+                if (!expected_codes.contains(t_result.error().number())) {
+                    std::cerr << t_result.error().string()
+                              << std::endl;
                 }
-                else if constexpr (std::is_same_v<T, OsErrorResult>) {
-                    auto actual_code {arg.number()};
-
-                    if (!expected_codes.contains(actual_code)) {
-                        std::cerr << arg.string()
-                                  << std::endl;
-                    }
-                }
-                else {
-                    static_assert(always_false_v<T>, VISITOR_ERROR);
-                }
-            }, t_socket_result);
+            }
         }
 
         auto test(const Socket& t_sock) -> void

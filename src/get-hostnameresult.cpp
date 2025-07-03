@@ -33,6 +33,7 @@
 #include <unistd.h>     // ::gethostname()
 #endif
 
+#include <expected>     // std::unexpected
 #include <iostream>     // std::cout, std::endl
 #include <span>         // std::span
 #include <sstream>      // std::ostringstream
@@ -92,8 +93,8 @@ auto Network::get_hostnameresult(const SharedRuntime& sr) -> HostnameResult
 {
     TextBuffer hostname {hostname_length_max};
 
-    if (auto result {get_hostnameresult(hostname, sr)}) {
-        return result;
+    if (auto error {get_hostnameresult(hostname, sr)}) {
+        return std::unexpected {error};
     }
 
     return hostname;

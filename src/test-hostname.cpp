@@ -13,7 +13,6 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/always-false.hpp"     // always_false_v
 #include "network/assert.hpp"           // assert()
 #include "network/network.hpp"          // Error, Hostname,
                                         // OsErrorResult,
@@ -33,8 +32,6 @@
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <regex>        // std::regex, std::regex_match
 #include <string>       // std::string
-#include <type_traits>  // std::decay_t, std::is_same_v
-#include <variant>      // std::visit()
 
 namespace
 {
@@ -42,7 +39,6 @@ namespace
     using Network::Hostname;
     using Network::OsErrorResult;
     using Network::SharedRuntime;
-    using Network::always_false_v;
     using Network::get_hostname;
     using Network::get_hostnameresult;
     using Network::parse;
@@ -99,9 +95,9 @@ namespace
         std::string hostname_str(1, '\0');
         std::string actual_str;
 
-        if (auto result {get_hostnameresult(hostname_str, sr)}) {
-            print(result);
-            actual_str = result.string();
+        if (auto error {get_hostnameresult(hostname_str, sr)}) {
+            print(error);
+            actual_str = error.string();
         }
 
         const std::regex expected_regex {expected_error_gethostname_re};
@@ -111,21 +107,13 @@ namespace
     auto test_get_hostnameresult_valid(const SharedRuntime& sr) -> void
     {
         std::string actual_str;
-        const auto hostname_result {get_hostnameresult(sr)};
-        std::visit([&](auto&& arg) {
-            using T = std::decay_t<decltype(arg)>;
+        const auto result {get_hostnameresult(sr)};
 
-            if constexpr (std::is_same_v<T, Hostname>) {
-                static_cast<void>(arg);
-            }
-            else if constexpr (std::is_same_v<T, OsErrorResult>) {
-                print(arg);
-                actual_str = arg.string();
-            }
-            else {
-                static_assert(always_false_v<T>, VISITOR_ERROR);
-            }
-        }, hostname_result);
+        if (!result) {
+            print(result.error());
+            actual_str = result.error().string();
+        }
+
         assert(actual_str.empty());
     }
 

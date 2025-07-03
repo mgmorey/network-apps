@@ -22,10 +22,10 @@
                                         // OptionalHostname,
                                         // OsErrorResult,
                                         // SharedRuntime, SocketHints,
-                                        // SocketHost, always_false_v,
-                                        // get_hostname(), insert(),
-                                        // os_error_type, run(),
-                                        // to_bytestring(), uniquify()
+                                        // SocketHost, get_hostname(),
+                                        // insert(), os_error_type,
+                                        // run(), to_bytestring(),
+                                        // uniquify()
 #include "network/parse.hpp"            // parse()
 
 #ifdef WIN32
@@ -63,7 +63,6 @@ namespace
     using Network::SharedRuntime;
     using Network::SocketHints;
     using Network::SocketHost;
-    using Network::always_false_v;
     using Network::get_endpointresult;
     using Network::get_hostname;
     using Network::insert;

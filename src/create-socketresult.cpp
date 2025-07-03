@@ -36,6 +36,7 @@
 #include <sys/socket.h>     // ::socket()
 #endif
 
+#include <expected>     // std::unexpected
 #include <iostream>     // std::cout, std::endl
 #include <sstream>      // std::ostringstream
 
@@ -83,7 +84,7 @@ auto Network::create_socketresult(const SocketHints& hints,
             << ": "
             << format_os_error(os_error);
         // clang-format on
-        return OsErrorResult {os_error, oss.str()};
+        return std::unexpected {OsErrorResult {os_error, oss.str()}};
     }
 
     if (sr->is_verbose()) {

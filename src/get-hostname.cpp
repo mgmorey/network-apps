@@ -14,8 +14,6 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/get-hostname.hpp"             // get_hostname()
-#include "network/always-false.hpp"             // always_false_v
-#include "network/error-strings.hpp"            // VISITOR_ERROR
 #include "network/error.hpp"                    // Error
 #include "network/get-hostnameresult.hpp"       // get_hostname()
 #include "network/hostname.hpp"                 // Hostname
@@ -23,27 +21,15 @@
 #include "network/run.hpp"                      // run()
 #include "network/sharedruntime.hpp"            // SharedRuntime
 
-#include <type_traits>  // std::decay_t, std::is_same_v
-#include <variant>      // std::visit()
-
 auto Network::get_hostname(const SharedRuntime& sr) -> Hostname
 {
-    Hostname result;
-    auto hostname_result {get_hostnameresult(sr)};
-    std::visit([&](auto&& arg) {
-        using T = std::decay_t<decltype(arg)>;
+    auto result {get_hostnameresult(sr)};
 
-        if constexpr (std::is_same_v<T, Hostname>) {
-            result = arg;
-        }
-        else if constexpr (std::is_same_v<T, OsErrorResult>) {
-            throw Error(arg.string());
-        }
-        else {
-            static_assert(always_false_v<T>, VISITOR_ERROR);
-        }
-    }, hostname_result);
-    return result;
+    if (result) {
+        return *result;
+    }
+
+    throw Error(result.error().string());
 }
 
 auto Network::get_hostname(bool is_verbose) -> Hostname

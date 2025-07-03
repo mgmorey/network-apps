@@ -14,35 +14,21 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/get-name.hpp"         // get_name()
-#include "network/always-false.hpp"     // always_false_v
 #include "network/bytestring.hpp"       // ByteString
-#include "network/error-strings.hpp"    // VISITOR_ERROR
 #include "network/error.hpp"            // Error
 #include "network/get-nameresult.hpp"   // get_nameresult()
 #include "network/namehandler.hpp"      // NameHandler
 #include "network/oserrorresult.hpp"    // OsErrorResult
 #include "network/socketdata.hpp"       // SocketData
 
-#include <type_traits>  // std::decay_t, std::is_same_v
-#include <variant>      // std::visit()
-
 auto Network::get_name(const SocketData& sd,
                        const NameHandler& nh) -> ByteString
 {
-    ByteString result;
-    auto name_result {get_nameresult(sd, nh)};
-    std::visit([&](auto&& arg) {
-        using T = std::decay_t<decltype(arg)>;
+    auto result {get_nameresult(sd, nh)};
 
-        if constexpr (std::is_same_v<T, ByteString>) {
-            result = arg;
-        }
-        else if constexpr (std::is_same_v<T, OsErrorResult>) {
-            throw Error(arg.string());
-        }
-        else {
-            static_assert(always_false_v<T>, VISITOR_ERROR);
-        }
-    }, name_result);
-    return result;
+    if (result) {
+        return *result;
+    }
+
+    throw Error(result.error().string());
 }

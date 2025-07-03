@@ -16,36 +16,24 @@
 #ifndef WIN32
 
 #include "network/create-socketpair.hpp"        // create_socketpair()
-#include "network/always-false.hpp"             // always_false_v
 #include "network/create-socketpairresult.hpp"  // create_socketpairresult()
-#include "network/error-strings.hpp"            // VISITOR_ERROR
 #include "network/error.hpp"                    // Error
 #include "network/oserrorresult.hpp"            // OsErrorResult
 #include "network/sockethints.hpp"              // SocketHints
 #include "network/socketpair.hpp"               // SocketPair
-
-#include <type_traits>  // std::decay_t, std::is_same_v
-#include <variant>      // std::visit()
 
 auto Network::create_socketpair(const SocketHints& hints,
                                 bool is_verbose) -> SocketPair
 {
     SocketPair sp;
     auto result {create_socketpairresult(hints, is_verbose)};
-    std::visit([&](auto&& arg) {
-        using T = std::decay_t<decltype(arg)>;
 
-        if constexpr (std::is_same_v<T, SocketPair>) {
-            sp.swap(arg);
-        }
-        else if constexpr (std::is_same_v<T, OsErrorResult>) {
-            throw Error(arg.string());
-        }
-        else {
-            static_assert(always_false_v<T>, VISITOR_ERROR);
-        }
-    }, result);
-    return sp;
+    if (result) {
+        sp.swap(*result);
+        return sp;
+    }
+
+    throw Error(result.error().string());
 }
 
 #endif

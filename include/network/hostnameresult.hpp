@@ -19,11 +19,11 @@
 #include "network/hostname.hpp"         // Hostname
 #include "network/oserrorresult.hpp"    // OsErrorResult
 
-#include <variant>      // std::variant
+#include <expected>     // std::expected
 
 namespace Network
 {
-    using HostnameResult = std::variant<Hostname, OsErrorResult>;
+    using HostnameResult = std::expected<Hostname, OsErrorResult>;
 }
 
 #endif
