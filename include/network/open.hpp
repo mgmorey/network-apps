@@ -29,8 +29,8 @@ namespace Network
         auto operator()(const Template& t_temp) const -> SocketResult;
 
     private:
-        const OpenParameters& m_op;
         bool m_is_bind;
+        bool m_is_verbose;
     };
 }
 
