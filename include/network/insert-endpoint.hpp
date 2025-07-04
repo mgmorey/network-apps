@@ -22,13 +22,13 @@
 
 namespace Network
 {
-    auto insert(auto& it, const OpenParameters& args) -> OsError
+    auto insert(auto& it, const OpenParameters& op) -> OsError
     {
         return insert(it,
-                      args.m_endpoint.at(0),
-                      args.m_endpoint.at(1),
-                      args.m_hints,
-                      args.m_sr);
+                      op.m_endpoint.at(0),
+                      op.m_endpoint.at(1),
+                      op.m_hints,
+                      op.m_sr);
     }
 }
 
