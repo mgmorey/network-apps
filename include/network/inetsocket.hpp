@@ -60,8 +60,7 @@ namespace Network
 
     protected:
         [[nodiscard]] auto name(bool t_is_sockname) const -> ByteSpan;
-        [[nodiscard]] auto open(ByteSpan t_bs,
-                                bool is_bind) const -> OsError;
+        [[nodiscard]] auto open(ByteSpan t_bs, bool is_bind) const -> OsError;
         [[nodiscard]] auto runtime() const noexcept -> SharedRuntime;
 
     private:
