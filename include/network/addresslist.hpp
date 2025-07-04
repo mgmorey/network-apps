@@ -18,7 +18,7 @@
 
 #include "network/hostnameview.hpp"     // HostnameView
 #include "network/optionalhints.hpp"    // OptionalHints
-#include "network/oserrorresult.hpp"    // OsErrorResult
+#include "network/oserror.hpp"          // OsError
 #include "network/serviceview.hpp"      // ServiceView
 #include "network/sharedruntime.hpp"    // SharedRuntime
 
@@ -87,7 +87,7 @@ namespace Network
         auto operator=(AddressList &&) noexcept -> AddressList& = delete;
         [[nodiscard]] auto begin() const noexcept -> InputIterator;
         [[nodiscard]] auto end() const noexcept -> InputIterator;
-        [[nodiscard]] auto result() const noexcept -> const OsErrorResult&;
+        [[nodiscard]] auto result() const noexcept -> const OsError&;
 
     protected:
         static auto to_ai_ptr(const OptionalHints& t_hints) noexcept ->
@@ -96,7 +96,7 @@ namespace Network
 
     private:
         addrinfo* m_list {nullptr};
-        OsErrorResult m_result;
+        OsError m_result;
     };
 
     extern auto operator<<(std::ostream& os,

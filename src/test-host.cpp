@@ -20,7 +20,7 @@
                                         // IpSocketHints,
                                         // OptionalHints,
                                         // OptionalHostname,
-                                        // OsErrorResult,
+                                        // OsError,
                                         // SharedRuntime, SocketHints,
                                         // SocketHost, get_hostname(),
                                         // insert(), os_error_type,
@@ -59,7 +59,7 @@ namespace
     using Network::IpSocketHints;
     using Network::OptionalHints;
     using Network::OptionalHostname;
-    using Network::OsErrorResult;
+    using Network::OsError;
     using Network::SharedRuntime;
     using Network::SocketHints;
     using Network::SocketHost;
@@ -206,7 +206,7 @@ namespace
         return operands;
     }
 
-    auto print(const OsErrorResult& result) -> void
+    auto print(const OsError& result) -> void
     {
         if (is_verbose) {
             std::cout << result.string()

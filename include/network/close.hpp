@@ -16,12 +16,12 @@
 #ifndef NETWORK_CLOSE_HPP
 #define NETWORK_CLOSE_HPP
 
-#include "network/oserrorresult.hpp"    // OsErrorResult
+#include "network/oserror.hpp"          // OsError
 #include "network/socketdata.hpp"       // SocketData
 
 namespace Network
 {
-    extern auto close(const SocketData& sd) -> OsErrorResult;
+    extern auto close(const SocketData& sd) -> OsError;
 }
 
 #endif

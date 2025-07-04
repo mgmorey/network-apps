@@ -17,7 +17,7 @@
 #include "network/format-ai-error.hpp"  // format_ai_error()
 #include "network/hostnameview.hpp"     // HostnameView
 #include "network/optionalhints.hpp"    // OptionalHints
-#include "network/oserrorresult.hpp"    // OsErrorResult
+#include "network/oserror.hpp"          // OsError
 #include "network/serviceview.hpp"      // ServiceView
 #include "network/sharedruntime.hpp"    // SharedRuntime
 #include "network/stream-addrinfo.hpp"  // operator<<()
@@ -144,7 +144,7 @@ auto Network::AddressList::end() const noexcept -> InputIterator // NOLINT
     return nullptr;
 }
 
-auto Network::AddressList::result() const noexcept -> const OsErrorResult&
+auto Network::AddressList::result() const noexcept -> const OsError&
 {
     return m_result;
 }

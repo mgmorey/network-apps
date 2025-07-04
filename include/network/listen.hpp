@@ -16,12 +16,12 @@
 #ifndef NETWORK_LISTEN_HPP
 #define NETWORK_LISTEN_HPP
 
-#include "network/oserrorresult.hpp"    // OsErrorResult
+#include "network/oserror.hpp"          // OsError
 #include "network/socketdata.hpp"       // SocketData
 
 namespace Network
 {
-    extern auto listen(const SocketData& sd, int backlog) -> OsErrorResult;
+    extern auto listen(const SocketData& sd, int backlog) -> OsError;
 }
 
 #endif

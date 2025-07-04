@@ -16,14 +16,14 @@
 #ifndef UNIX_NETWORK_SOCKETPAIRRESULT_HPP
 #define UNIX_NETWORK_SOCKETPAIRRESULT_HPP
 
-#include "network/oserrorresult.hpp"    // OsErrorResult
+#include "network/oserror.hpp"          // OsError
 #include "network/socketpair.hpp"       // SocketPair
 
 #include <expected>     // std::expected
 
 namespace Network
 {
-    using SocketPairResult = std::expected<SocketPair, OsErrorResult>;
+    using SocketPairResult = std::expected<SocketPair, OsError>;
 }
 
 #endif

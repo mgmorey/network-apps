@@ -17,13 +17,13 @@
 #define NETWORK_BYTESTRINGRESULT_HPP
 
 #include "network/bytestring.hpp"       // ByteString
-#include "network/oserrorresult.hpp"    // OsErrorResult
+#include "network/oserror.hpp"          // OsError
 
 #include <expected>     // std::expected
 
 namespace Network
 {
-    using ByteStringResult = std::expected<ByteString, OsErrorResult>;
+    using ByteStringResult = std::expected<ByteString, OsError>;
 }
 
 #endif

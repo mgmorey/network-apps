@@ -18,14 +18,14 @@
 
 #include "network/bytespan.hpp"         // ByteSpan
 #include "network/openhandler.hpp"      // OpenHandler
-#include "network/oserrorresult.hpp"    // OsErrorResult
+#include "network/oserror.hpp"          // OsError
 #include "network/socketdata.hpp"       // SocketData
 
 namespace Network
 {
     extern auto open(const SocketData& sd,
                      ByteSpan bs,
-                     const OpenHandler& oh) -> OsErrorResult;
+                     const OpenHandler& oh) -> OsError;
 }
 
 #endif

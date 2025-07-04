@@ -16,14 +16,14 @@
 #ifndef NETWORK_SOCKETRESULT_HPP
 #define NETWORK_SOCKETRESULT_HPP
 
-#include "network/oserrorresult.hpp"    // OsErrorResult
+#include "network/oserror.hpp"          // OsError
 #include "network/uniquesocket.hpp"     // UniqueSocket
 
 #include <expected>     // std::expected
 
 namespace Network
 {
-    using SocketResult = std::expected<UniqueSocket, OsErrorResult>;
+    using SocketResult = std::expected<UniqueSocket, OsError>;
 }
 
 #endif

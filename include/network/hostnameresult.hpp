@@ -17,13 +17,13 @@
 #define NETWORK_HOSTNAMERESULT_HPP
 
 #include "network/hostname.hpp"         // Hostname
-#include "network/oserrorresult.hpp"    // OsErrorResult
+#include "network/oserror.hpp"          // OsError
 
 #include <expected>     // std::expected
 
 namespace Network
 {
-    using HostnameResult = std::expected<Hostname, OsErrorResult>;
+    using HostnameResult = std::expected<Hostname, OsError>;
 }
 
 #endif

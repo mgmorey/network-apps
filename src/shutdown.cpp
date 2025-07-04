@@ -16,7 +16,7 @@
 #include "network/shutdown.hpp"         // shutdown()
 #include "network/format-os-error.hpp"  // format_os_error()
 #include "network/get-api-error.hpp"    // get_api_error()
-#include "network/oserrorresult.hpp"    // OsErrorResult
+#include "network/oserror.hpp"          // OsError
 #include "network/reset-api-error.hpp"  // reset_api_error()
 #include "network/socket-error.hpp"     // socket_error
 #include "network/socketdata.hpp"       // SocketData
@@ -31,7 +31,7 @@
 #include <iostream>     // std::cout, std::endl
 #include <sstream>      // std::ostringstream
 
-auto Network::shutdown(const SocketData& sd, int how) -> OsErrorResult
+auto Network::shutdown(const SocketData& sd, int how) -> OsError
 {
     const auto handle {sd.handle()};
 
@@ -63,8 +63,8 @@ auto Network::shutdown(const SocketData& sd, int how) -> OsErrorResult
             << ": "
             << format_os_error(os_error);
         // clang-format on
-        return OsErrorResult {os_error, oss.str()};
+        return {os_error, oss.str()};
     }
 
-    return OsErrorResult {};
+    return {};
 }

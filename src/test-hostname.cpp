@@ -15,7 +15,7 @@
 
 #include "network/assert.hpp"           // assert()
 #include "network/network.hpp"          // Error, Hostname,
-                                        // OsErrorResult,
+                                        // OsError,
                                         // SharedRuntime,
                                         // get_hostname(),
                                         // get_hostnameresult(), run()
@@ -37,7 +37,7 @@ namespace
 {
     using Network::Error;
     using Network::Hostname;
-    using Network::OsErrorResult;
+    using Network::OsError;
     using Network::SharedRuntime;
     using Network::get_hostname;
     using Network::get_hostnameresult;
@@ -82,7 +82,7 @@ namespace
         }
     }
 
-    auto print(const OsErrorResult& result) -> void
+    auto print(const OsError& result) -> void
     {
         if (is_verbose) {
             std::cout << result.string()

@@ -17,7 +17,7 @@
 #define NETWORK_GET_HOSTNAMERESULT_HPP
 
 #include "network/hostnameresult.hpp"   // HostnameResult
-#include "network/oserrorresult.hpp"    // OsErrorResult
+#include "network/oserror.hpp"          // OsError
 #include "network/sharedruntime.hpp"    // SharedRuntime
 
 #include <span>         // std::span
@@ -25,7 +25,7 @@
 namespace Network
 {
     extern auto get_hostnameresult(std::span<char> hostname,
-                                   const SharedRuntime& sr) -> OsErrorResult;
+                                   const SharedRuntime& sr) -> OsError;
     extern auto get_hostnameresult(const SharedRuntime& sr) -> HostnameResult;
     extern auto get_hostnameresult(bool is_verbose = false) -> HostnameResult;
 }

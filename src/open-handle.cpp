@@ -20,7 +20,7 @@
 #include "network/get-api-error.hpp"            // get_api_error()
 #include "network/get-sa-span.hpp"              // get_sa_span()
 #include "network/openhandler.hpp"              // OpenHandler
-#include "network/oserrorresult.hpp"            // OsErrorResult
+#include "network/oserror.hpp"                  // OsError
 #include "network/reset-api-error.hpp"          // reset_api_error()
 #include "network/sa-length-limits.hpp"         // sa_length_min
 #include "network/socket-error.hpp"             // socket_error
@@ -34,7 +34,7 @@
 
 auto Network::open(const SocketData& sd,
                    ByteSpan bs,
-                   const OpenHandler& oh) -> OsErrorResult
+                   const OpenHandler& oh) -> OsError
 {
     const auto [sa, sa_length] {get_sa_span(bs)};
     const auto handle {sd.handle()};
@@ -79,8 +79,8 @@ auto Network::open(const SocketData& sd,
             << ": "
             << format_os_error(os_error);
         // clang-format on
-        return OsErrorResult {os_error, oss.str()};
+        return {os_error, oss.str()};
     }
 
-    return OsErrorResult {};
+    return {};
 }

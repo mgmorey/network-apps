@@ -15,7 +15,7 @@
 
 #include "network/unixsocket.hpp"       // UnixSocket
 #include "network/bytespan.hpp"         // ByteSpan
-#include "network/oserrorresult.hpp"    // OsErrorResult
+#include "network/oserror.hpp"          // OsError
 #include "network/socketdata.hpp"       // SocketData
 #include "network/to-path.hpp"          // to_path()
 
@@ -32,7 +32,7 @@ Network::UnixSocket::~UnixSocket() noexcept
     state(SocketState::closing);
 }
 
-auto Network::UnixSocket::bind(ByteSpan t_bs) -> OsErrorResult
+auto Network::UnixSocket::bind(ByteSpan t_bs) -> OsError
 {
     if (auto result {InetSocket::bind(t_bs)}) {
         return result;
@@ -42,7 +42,7 @@ auto Network::UnixSocket::bind(ByteSpan t_bs) -> OsErrorResult
     return {};
 }
 
-auto Network::UnixSocket::connect(ByteSpan t_bs) -> OsErrorResult
+auto Network::UnixSocket::connect(ByteSpan t_bs) -> OsError
 {
     if (auto result {InetSocket::connect(t_bs)}) {
         return result;

@@ -17,7 +17,7 @@
 
 #include "network/assert.hpp"           // assert()
 #include "network/network.hpp"          // Address, ByteString, Error,
-                                        // LogicError, OsErrorResult,
+                                        // LogicError, OsError,
                                         // Pathname, Socket,
                                         // SocketHints,
                                         // UnixSocketHints, close(),
@@ -50,7 +50,7 @@ namespace
     using Network::ByteString;
     using Network::Error;
     using Network::LogicError;
-    using Network::OsErrorResult;
+    using Network::OsError;
     using Network::Pathname;
     using Network::SharedRuntime;
     using Network::Socket;
@@ -161,7 +161,7 @@ namespace
         }
     }
 
-    auto print(const OsErrorResult& result) -> void
+    auto print(const OsError& result) -> void
     {
         if (is_verbose) {
             std::cout << result.string()
@@ -186,7 +186,7 @@ namespace
         std::string actual_error_str;
 
         try {
-            OsErrorResult actual_result;
+            OsError actual_result;
             const auto bs {to_bytestring(path)};  // NOLINT
             assert(bs == path);  // NOLINT
 

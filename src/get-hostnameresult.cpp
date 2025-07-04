@@ -18,7 +18,7 @@
 #include "network/get-api-error.hpp"            // get_api_error()
 #include "network/hostname-length-limits.hpp"   // hostname_length_max
 #include "network/hostnameresult.hpp"           // HostnameResult
-#include "network/oserrorresult.hpp"            // OsErrorResult
+#include "network/oserror.hpp"                  // OsError
 #include "network/quote.hpp"                    // quote()
 #include "network/reset-api-error.hpp"          // reset_api_error()
 #include "network/run.hpp"                      // run()
@@ -40,7 +40,7 @@
 #include <string_view>  // std::string_view
 
 auto Network::get_hostnameresult(std::span<char> hostname,
-                                 const SharedRuntime& sr) -> OsErrorResult
+                                 const SharedRuntime& sr) -> OsError
 {
     const std::string_view hostname_sv {hostname.data(), hostname.size()};
 
@@ -71,7 +71,7 @@ auto Network::get_hostnameresult(std::span<char> hostname,
             << ": "
             << format_os_error(os_error);
         // clang-format on
-        return OsErrorResult {os_error, oss.str()};
+        return {os_error, oss.str()};
     }
 
     if (sr->is_verbose()) {

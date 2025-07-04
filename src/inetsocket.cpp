@@ -25,7 +25,7 @@
 #include "network/listen.hpp"                   // listen()
 #include "network/long-handle-type.hpp"         // long_handle_type
 #include "network/open-handle.hpp"              // open()
-#include "network/oserrorresult.hpp"            // OsErrorResult
+#include "network/oserror.hpp"                  // OsError
 #include "network/read.hpp"                     // read()
 #include "network/sharedruntime.hpp"            // SharedRuntime
 #include "network/shutdown.hpp"                 // shutdown()
@@ -61,17 +61,17 @@ auto Network::InetSocket::accept() const -> AcceptResult
     return Network::accept(m_sd);
 }
 
-auto Network::InetSocket::bind(ByteSpan t_bs) -> OsErrorResult
+auto Network::InetSocket::bind(ByteSpan t_bs) -> OsError
 {
     return open(t_bs, true);
 }
 
-auto Network::InetSocket::connect(ByteSpan t_bs) -> OsErrorResult
+auto Network::InetSocket::connect(ByteSpan t_bs) -> OsError
 {
     return open(t_bs, false);
 }
 
-auto Network::InetSocket::listen(int t_backlog) const -> OsErrorResult
+auto Network::InetSocket::listen(int t_backlog) const -> OsError
 {
     return Network::listen(m_sd, t_backlog);
 }
@@ -86,7 +86,7 @@ auto Network::InetSocket::read(std::span<char> t_cs) const -> ssize_t
     return Network::read(m_sd, t_cs);
 }
 
-auto Network::InetSocket::shutdown(int t_how) const -> OsErrorResult
+auto Network::InetSocket::shutdown(int t_how) const -> OsError
 {
     return Network::shutdown(m_sd, t_how);
 }
@@ -114,7 +114,7 @@ auto Network::InetSocket::name(bool t_is_sockname) const -> ByteSpan
 }
 
 auto Network::InetSocket::open(ByteSpan t_bs,
-                               bool t_is_bind) const -> OsErrorResult
+                               bool t_is_bind) const -> OsError
 {
     const auto oh {get_openhandler(t_is_bind)};
 

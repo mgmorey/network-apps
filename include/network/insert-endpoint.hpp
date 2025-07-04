@@ -18,11 +18,11 @@
 
 #include "network/insert-hostname.hpp"  // insert()
 #include "network/openparameters.hpp"   // OpenParameters
-#include "network/oserrorresult.hpp"    // OsErrorResult
+#include "network/oserror.hpp"          // OsError
 
 namespace Network
 {
-    auto insert(auto& it, const OpenParameters& args) -> OsErrorResult
+    auto insert(auto& it, const OpenParameters& args) -> OsError
     {
         return insert(it,
                       args.m_endpoint.at(0),

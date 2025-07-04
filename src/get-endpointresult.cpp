@@ -20,7 +20,7 @@
 #include "network/format-ai-error.hpp"          // format_ai_error()
 #include "network/get-sa-span.hpp"              // get_sa_span()
 #include "network/hostname-length-limits.hpp"   // hostname_length_max
-#include "network/oserrorresult.hpp"            // OsErrorResult
+#include "network/oserror.hpp"                  // OsError
 #include "network/quote.hpp"                    // quote()
 #include "network/run.hpp"                      // run()
 #include "network/service-length-limits.hpp"    // service_length_max
@@ -44,7 +44,7 @@
 auto Network::get_endpointresult(std::span<char> hostname,
                                  std::span<char> service,
                                  ByteSpan bs, int flags,
-                                 const SharedRuntime& sr) -> OsErrorResult
+                                 const SharedRuntime& sr) -> OsError
 {
     const auto [sa, sa_length] {get_sa_span(bs)};
     const std::string_view hostname_sv {hostname.data(), hostname.size()};
@@ -101,7 +101,7 @@ auto Network::get_endpointresult(std::span<char> hostname,
             << format_ai_error(api_error)
             << ')';
         // clang-format on
-        return OsErrorResult {os_error, oss.str()};
+        return {os_error, oss.str()};
     }
 
     if (sr->is_verbose()) {

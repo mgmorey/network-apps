@@ -19,7 +19,7 @@
 #include "network/acceptresult.hpp"             // AcceptResult
 #include "network/bytespan.hpp"                 // ByteSpan
 #include "network/long-handle-type.hpp"         // long_handle_type
-#include "network/oserrorresult.hpp"            // OsErrorResult
+#include "network/oserror.hpp"                  // OsError
 
 #include <ostream>      // std::ostream
 #include <span>         // std::span
@@ -40,15 +40,13 @@ namespace Network
         explicit virtual operator long_handle_type() const = 0;
 
         [[nodiscard]] virtual auto accept() const -> AcceptResult = 0;
-        [[nodiscard]] virtual auto bind(ByteSpan t_bs) -> OsErrorResult = 0;
-        [[nodiscard]] virtual auto connect(ByteSpan t_bs) -> OsErrorResult = 0;
-        [[nodiscard]] virtual auto listen(int t_backlog) const ->
-            OsErrorResult = 0;
+        [[nodiscard]] virtual auto bind(ByteSpan t_bs) -> OsError = 0;
+        [[nodiscard]] virtual auto connect(ByteSpan t_bs) -> OsError = 0;
+        [[nodiscard]] virtual auto listen(int t_backlog) const -> OsError = 0;
         [[nodiscard]] virtual auto peername() const -> ByteSpan = 0;
         [[nodiscard]] virtual auto read(std::span<char> t_cs) const ->
             ssize_t = 0;
-        [[nodiscard]] virtual auto shutdown(int t_how) const ->
-            OsErrorResult = 0;
+        [[nodiscard]] virtual auto shutdown(int t_how) const -> OsError = 0;
         [[nodiscard]] virtual auto sockname() const -> ByteSpan = 0;
         [[nodiscard]] virtual auto write(std::string_view t_sv) const ->
             ssize_t = 0;

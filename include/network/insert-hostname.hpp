@@ -19,7 +19,7 @@
 #include "network/addresslist.hpp"      // AddressList
 #include "network/hostnameview.hpp"     // HostnameView
 #include "network/optionalhints.hpp"    // OptionalHints
-#include "network/oserrorresult.hpp"    // OsErrorResult
+#include "network/oserror.hpp"          // OsError
 #include "network/run.hpp"              // run()
 #include "network/serviceview.hpp"      // ServiceView
 #include "network/sharedruntime.hpp"    // SharedRuntime
@@ -32,7 +32,7 @@ namespace Network
                 const HostnameView& hostname,
                 const ServiceView& service,
                 const OptionalHints& hints,
-                const SharedRuntime& sr) -> OsErrorResult
+                const SharedRuntime& sr) -> OsError
     {
         const auto list {AddressList(hostname, service, hints, sr)};
         std::copy(list.begin(), list.end(), it);
@@ -43,7 +43,7 @@ namespace Network
                 const HostnameView& hostname,
                 const ServiceView& service,
                 const OptionalHints& hints,
-                bool is_verbose) -> OsErrorResult
+                bool is_verbose) -> OsError
     {
         const auto rt {run(is_verbose)};
         return insert(it, hostname, service, hints, rt);

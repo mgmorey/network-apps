@@ -16,12 +16,12 @@
 #ifndef NETWORK_SHUTDOWN_HPP
 #define NETWORK_SHUTDOWN_HPP
 
-#include "network/oserrorresult.hpp"            // OsErrorResult
+#include "network/oserror.hpp"                  // OsError
 #include "network/socketdata.hpp"               // SocketData
 
 namespace Network
 {
-    extern auto shutdown(const SocketData& sd, int how) -> OsErrorResult;
+    extern auto shutdown(const SocketData& sd, int how) -> OsError;
 }
 
 #endif

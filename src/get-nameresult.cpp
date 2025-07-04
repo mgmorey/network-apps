@@ -19,7 +19,7 @@
 #include "network/format-os-error.hpp"          // format_os_error()
 #include "network/get-api-error.hpp"            // get_api_error()
 #include "network/namehandler.hpp"              // NameHandler
-#include "network/oserrorresult.hpp"            // OsErrorResult
+#include "network/oserror.hpp"                  // OsError
 #include "network/reset-api-error.hpp"          // reset_api_error()
 #include "network/socket-error.hpp"             // socket_error
 #include "network/socketdata.hpp"               // SocketData
@@ -75,7 +75,7 @@ auto Network::get_nameresult(const SocketData& sd,
             << ": "
             << format_os_error(os_error);
         // clang-format on
-        return std::unexpected {OsErrorResult {os_error, oss.str()}};
+        return std::unexpected {OsError {os_error, oss.str()}};
     }
 
     if (is_verbose) {

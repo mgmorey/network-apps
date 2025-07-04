@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_OSERRORRESULT_HPP
-#define NETWORK_OSERRORRESULT_HPP
+#ifndef NETWORK_OSERROR_HPP
+#define NETWORK_OSERROR_HPP
 
 #include "network/os-error-type.hpp"    // os_error_type
 
@@ -23,17 +23,17 @@
 
 namespace Network
 {
-    struct OsErrorResult
+    struct OsError
     {
-        OsErrorResult() = default;
+        OsError() = default;
 
-        OsErrorResult(os_error_type t_number, std::string_view t_string);
+        OsError(os_error_type t_number, std::string_view t_string);
 
-        OsErrorResult(const OsErrorResult&) = default;
-        OsErrorResult(OsErrorResult&&) = default;
-        ~OsErrorResult() = default;
-        auto operator=(const OsErrorResult&) -> OsErrorResult& = default;
-        auto operator=(OsErrorResult&&) -> OsErrorResult& = default;
+        OsError(const OsError&) = default;
+        OsError(OsError&&) = default;
+        ~OsError() = default;
+        auto operator=(const OsError&) -> OsError& = default;
+        auto operator=(OsError&&) -> OsError& = default;
 
         operator bool() const noexcept;  // NOLINT
         [[nodiscard]] auto number() const noexcept -> os_error_type;

@@ -20,7 +20,7 @@
 #include "network/bytespan.hpp"                 // ByteSpan
 #include "network/bytestring.hpp"               // ByteString
 #include "network/long-handle-type.hpp"         // long_handle_type
-#include "network/oserrorresult.hpp"            // OsErrorResult
+#include "network/oserror.hpp"                  // OsError
 #include "network/sharedruntime.hpp"            // SharedRuntime
 #include "network/socket.hpp"                   // Socket
 #include "network/socketdata.hpp"               // SocketData
@@ -49,19 +49,19 @@ namespace Network
         explicit operator long_handle_type() const final;
 
         [[nodiscard]] auto accept() const -> AcceptResult final;
-        [[nodiscard]] auto bind(ByteSpan t_bs) -> OsErrorResult override;
-        [[nodiscard]] auto connect(ByteSpan t_bs) -> OsErrorResult override;
-        [[nodiscard]] auto listen(int t_backlog) const -> OsErrorResult final;
+        [[nodiscard]] auto bind(ByteSpan t_bs) -> OsError override;
+        [[nodiscard]] auto connect(ByteSpan t_bs) -> OsError override;
+        [[nodiscard]] auto listen(int t_backlog) const -> OsError final;
         [[nodiscard]] auto peername() const -> ByteSpan final;
         [[nodiscard]] auto read(std::span<char> t_cs) const -> ssize_t final;
-        [[nodiscard]] auto shutdown(int t_how) const -> OsErrorResult final;
+        [[nodiscard]] auto shutdown(int t_how) const -> OsError final;
         [[nodiscard]] auto sockname() const -> ByteSpan final;
         [[nodiscard]] auto write(std::string_view t_sv) const -> ssize_t final;
 
     protected:
         [[nodiscard]] auto name(bool t_is_sockname) const -> ByteSpan;
         [[nodiscard]] auto open(ByteSpan t_bs,
-                                bool is_bind) const -> OsErrorResult;
+                                bool is_bind) const -> OsError;
         [[nodiscard]] auto runtime() const noexcept -> SharedRuntime;
 
     private:

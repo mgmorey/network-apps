@@ -16,7 +16,6 @@
 #include "network/create-socket-hints.hpp"      // create_socket()
 #include "network/create-socketresult.hpp"      // create_socketresult()
 #include "network/error.hpp"                    // Error
-#include "network/oserrorresult.hpp"            // OsErrorResult
 #include "network/run.hpp"                      // run()
 #include "network/sharedruntime.hpp"            // SharedRuntime
 #include "network/sockethints.hpp"              // SocketHints

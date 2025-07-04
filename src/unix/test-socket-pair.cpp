@@ -17,7 +17,7 @@
 
 #include "network/assert.hpp"           // assert()
 #include "network/network.hpp"          // Address, ByteString, Error,
-                                        // LogicError, OsErrorResult,
+                                        // LogicError, OsError,
                                         // Pathname, Socket,
                                         // SocketHints, SocketPair,
                                         // UnixSocketHints, close(),

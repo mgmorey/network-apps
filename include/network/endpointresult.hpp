@@ -17,13 +17,13 @@
 #define NETWORK_ENDPOINTRESULT_HPP
 
 #include "network/endpoint.hpp"         // Endpoint
-#include "network/oserrorresult.hpp"    // OsErrorResult
+#include "network/oserror.hpp"          // OsError
 
 #include <expected>     // std::expected
 
 namespace Network
 {
-    using EndpointResult = std::expected<Endpoint, OsErrorResult>;
+    using EndpointResult = std::expected<Endpoint, OsError>;
 }
 
 #endif
