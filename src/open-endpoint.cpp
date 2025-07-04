@@ -25,18 +25,18 @@
 #include <iterator>     // std::back_inserter()
 #include <vector>       // std::vector
 
-auto Network::open(const OpenParameters& args, bool is_bind) -> SocketResultVector
+auto Network::open(const OpenParameters& op, bool is_bind) -> SocketResultVector
 {
     std::vector<Template> templates;
     auto it {std::back_inserter(templates)};
 
-    if (const auto error_result = insert(it, args)) {
+    if (const auto error_result = insert(it, op)) {
         throw Error(error_result.string());
     }
 
     SocketResultVector socket_results;
     std::ranges::transform(templates,
                            std::back_inserter(socket_results),
-                           Open(args, is_bind));
+                           Open(op, is_bind));
     return socket_results;
 }

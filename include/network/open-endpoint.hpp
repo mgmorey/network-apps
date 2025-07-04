@@ -21,7 +21,7 @@
 
 namespace Network
 {
-    extern auto open(const OpenParameters& args,
+    extern auto open(const OpenParameters& op,
                      bool is_bind) -> SocketResultVector;
 }
 
