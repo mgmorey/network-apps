@@ -18,11 +18,14 @@
 
 #ifndef WIN32
 
-#include "network/sockethints.hpp"              // SocketHints
-#include "network/socketpair.hpp"               // SocketPair
+#include "network/sharedruntime.hpp"    // SharedRuntime
+#include "network/sockethints.hpp"      // SocketHints
+#include "network/socketpair.hpp"       // SocketPair
 
 namespace Network
 {
+    extern auto create_socketpair(const SocketHints& hints,
+                                  const SharedRuntime& sr) -> SocketPair;
     extern auto create_socketpair(const SocketHints& hints,
                                   bool verbose = false) -> SocketPair;
 }

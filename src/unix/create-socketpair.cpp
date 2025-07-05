@@ -18,21 +18,30 @@
 #include "network/create-socketpair.hpp"        // create_socketpair()
 #include "network/create-socketpairresult.hpp"  // create_socketpairresult()
 #include "network/error.hpp"                    // Error
+#include "network/run.hpp"                      // run()
+#include "network/sharedruntime.hpp"            // SharedRuntime
 #include "network/sockethints.hpp"              // SocketHints
 #include "network/socketpair.hpp"               // SocketPair
 
 #include <utility>      // std::move()
 
 auto Network::create_socketpair(const SocketHints& hints,
-                                bool is_verbose) -> SocketPair
+                                const SharedRuntime& sr) -> SocketPair
 {
-    auto result {create_socketpairresult(hints, is_verbose)};
+    auto result {create_socketpairresult(hints, sr)};
 
     if (result) {
         return std::move(*result);
     }
 
     throw Error(result.error().string());
+}
+
+auto Network::create_socketpair(const SocketHints& hints,
+                                bool is_verbose) -> SocketPair
+{
+    const auto rt {run(is_verbose)};
+    return create_socketpair(hints, rt);
 }
 
 #endif
