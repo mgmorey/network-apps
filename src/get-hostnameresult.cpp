@@ -99,9 +99,3 @@ auto Network::get_hostnameresult(const SharedRuntime& sr) -> HostnameResult
 
     return hostname;
 }
-
-auto Network::get_hostnameresult(bool is_verbose) -> HostnameResult
-{
-    const auto rt {run(is_verbose)};
-    return get_hostnameresult(rt);
-}

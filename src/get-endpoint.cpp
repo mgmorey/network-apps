@@ -25,7 +25,7 @@ auto Network::get_endpoint(ByteSpan bs,
                            int flags,
                            const SharedRuntime& sr) -> Endpoint
 {
-    auto result {get_endpointresult(bs, flags, sr->is_verbose())};
+    auto result {get_endpointresult(bs, flags, sr)};
 
     if (result) {
         return *result;

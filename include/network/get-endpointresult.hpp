@@ -31,8 +31,6 @@ namespace Network
                                    const SharedRuntime& sr) -> OsError;
     extern auto get_endpointresult(ByteSpan bs, int flags,
                                    const SharedRuntime& sr) -> EndpointResult;
-    extern auto get_endpointresult(ByteSpan bs, int flags,
-                                   bool is_verbose = false) -> EndpointResult;
 }
 
 #endif

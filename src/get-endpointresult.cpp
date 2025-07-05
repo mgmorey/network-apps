@@ -148,10 +148,3 @@ auto Network::get_endpointresult(ByteSpan bs, int flags,
 
     return Endpoint {hostname, service};
 }
-
-auto Network::get_endpointresult(ByteSpan bs, int flags,
-                                 bool is_verbose) -> EndpointResult
-{
-    const auto sr {run(is_verbose)};
-    return get_endpointresult(bs, flags, sr);
-}
