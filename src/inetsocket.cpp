@@ -15,7 +15,6 @@
 
 #include "network/inetsocket.hpp"               // InetSocket
 #include "network/accept.hpp"                   // accept()
-#include "network/acceptdata.hpp"               // AcceptData
 #include "network/bytespan.hpp"                 // ByteSpan
 #include "network/close.hpp"                    // close()
 #include "network/get-name.hpp"                 // get_name()
@@ -33,7 +32,6 @@
 #include "network/to-long-handle.hpp"           // to_long_handle()
 #include "network/write.hpp"                    // write()
 
-#include <cstddef>      // std::size_t
 #include <span>         // std::span
 
 Network::InetSocket::InetSocket(const SocketData& t_sd) : m_sd(t_sd)
@@ -55,8 +53,7 @@ Network::InetSocket::operator long_handle_type() const
     return to_long_handle(m_sd.handle());
 }
 
-auto Network::InetSocket::accept() const -> AcceptData
-
+auto Network::InetSocket::accept() const -> SocketData
 {
     return Network::accept(m_sd);
 }
@@ -104,7 +101,7 @@ auto Network::InetSocket::write(std::string_view t_sv) const -> ssize_t
 auto Network::InetSocket::name(bool t_is_sockname) const -> ByteSpan
 {
     const auto nh {get_namehandler(t_is_sockname)};
-    auto& nm {m_names.at(static_cast<std::size_t>(nh.symbol()))};
+    auto& nm {m_sd.name(nh.symbol())};
 
     if (nm.empty()) {
         nm = Network::get_name(m_sd, nh);
@@ -122,7 +119,7 @@ auto Network::InetSocket::open(ByteSpan t_bs,
         return os_error;
     }
 
-    auto& nm {m_names.at(static_cast<std::size_t>(oh.symbol()))};
+    auto& nm {m_sd.name(oh.symbol())};
     nm.assign(t_bs.begin(), t_bs.end());
     return {};
 }

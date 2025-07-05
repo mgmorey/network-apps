@@ -16,19 +16,15 @@
 #ifndef NETWORK_INETSOCKET_HPP
 #define NETWORK_INETSOCKET_HPP
 
-#include "network/acceptdata.hpp"               // AcceptData
 #include "network/bytespan.hpp"                 // ByteSpan
-#include "network/bytestring.hpp"               // ByteString
 #include "network/long-handle-type.hpp"         // long_handle_type
 #include "network/oserror.hpp"                  // OsError
 #include "network/sharedruntime.hpp"            // SharedRuntime
 #include "network/socket.hpp"                   // Socket
 #include "network/socketdata.hpp"               // SocketData
-#include "network/symbols.hpp"                  // Symbols
 
 #include <sys/types.h>      // ssize_t
 
-#include <array>        // std::array
 #include <span>         // std::span
 #include <string_view>  // std::string_view
 
@@ -48,7 +44,7 @@ namespace Network
         explicit operator bool() const noexcept final;
         explicit operator long_handle_type() const final;
 
-        [[nodiscard]] auto accept() const -> AcceptData final;
+        [[nodiscard]] auto accept() const -> SocketData final;
         [[nodiscard]] auto bind(ByteSpan t_bs) -> OsError override;
         [[nodiscard]] auto connect(ByteSpan t_bs) -> OsError override;
         [[nodiscard]] auto listen(int t_backlog) const -> OsError final;
@@ -64,7 +60,6 @@ namespace Network
         [[nodiscard]] auto runtime() const noexcept -> SharedRuntime;
 
     private:
-        mutable std::array<ByteString, symbols.size()> m_names;
         const SocketData m_sd;
     };
 }

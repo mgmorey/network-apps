@@ -35,6 +35,7 @@ namespace
     using Network::Address;
     using Network::Error;
     using Network::Socket;
+    using Network::Symbol;
     using Network::TextBuffer;
     using Network::create_socket;
     using Network::socket_error;
@@ -48,16 +49,15 @@ namespace
 
     auto accept_verbose(const Socket& bind_sock)
     {
-        const auto [accept_data, accept_addr] {bind_sock.accept()};
-        auto accept_sock {create_socket(accept_data)};
+        const auto sd {bind_sock.accept()};
 
-        if (accept_data.runtime()->is_verbose()) {
+        if (sd.runtime()->is_verbose()) {
             std::cout << "Accepted connection from "
-                      << Address(accept_addr)
+                      << Address(sd.name(Symbol::accept))
                       << std::endl;
         }
 
-        return accept_sock;
+        return create_socket(sd);
     }
 
     auto bind()

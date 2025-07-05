@@ -16,10 +16,10 @@
 #ifndef NETWORK_SOCKET_HPP
 #define NETWORK_SOCKET_HPP
 
-#include "network/acceptdata.hpp"               // AcceptData
 #include "network/bytespan.hpp"                 // ByteSpan
 #include "network/long-handle-type.hpp"         // long_handle_type
 #include "network/oserror.hpp"                  // OsError
+#include "network/socketdata.hpp"               // SocketData
 
 #include <ostream>      // std::ostream
 #include <span>         // std::span
@@ -39,7 +39,7 @@ namespace Network
         explicit virtual operator bool() const noexcept = 0;
         explicit virtual operator long_handle_type() const = 0;
 
-        [[nodiscard]] virtual auto accept() const -> AcceptData = 0;
+        [[nodiscard]] virtual auto accept() const -> SocketData = 0;
         [[nodiscard]] virtual auto bind(ByteSpan t_bs) -> OsError = 0;
         [[nodiscard]] virtual auto connect(ByteSpan t_bs) -> OsError = 0;
         [[nodiscard]] virtual auto listen(int t_backlog) const -> OsError = 0;

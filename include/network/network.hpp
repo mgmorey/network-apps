@@ -120,6 +120,7 @@
 #include "network/socketprotocol.hpp"           // SocketProtocol
 #include "network/sockettype.hpp"               // SocketType
 #include "network/string-null.hpp"              // string_null
+#include "network/symbol.hpp"                   // Symbol
 #include "network/template.hpp"                 // Template
 #include "network/textbuffer.hpp"               // TextBuffer
 #include "network/to-bytestring.hpp"            // to_bytestring()

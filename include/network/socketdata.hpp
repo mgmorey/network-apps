@@ -16,21 +16,28 @@
 #ifndef NETWORK_SOCKETDATA_HPP
 #define NETWORK_SOCKETDATA_HPP
 
+#include "network/bytestring.hpp"       // ByteString
 #include "network/family-null.hpp"      // family_null
 #include "network/family-type.hpp"      // family_type
 #include "network/handle-null.hpp"      // handle_null
 #include "network/handle-type.hpp"      // handle_type
 #include "network/sharedruntime.hpp"    // SharedRuntime
+#include "network/symbol.hpp"           // Symbol
+
+#include <map>          // std::map
 
 namespace Network
 {
     class SocketData
     {
     public:
+        using NameCache = std::map<Symbol, ByteString>;
+
         SocketData(handle_type t_handle,
                    family_type t_family,
                    const SharedRuntime& t_sr);
         SocketData(const SocketData& t_sd,
+                   const ByteString& t_accept,
                    handle_type t_handle);
 
         SocketData() = delete;
@@ -42,12 +49,14 @@ namespace Network
 
         [[nodiscard]] auto family() const noexcept -> family_type;
         [[nodiscard]] auto handle() const noexcept -> handle_type;
+        [[nodiscard]] auto name(Symbol t_symbol) const noexcept -> ByteString&;
         [[nodiscard]] auto runtime() const noexcept -> SharedRuntime;
 
     private:
         SharedRuntime m_sr;
         handle_type m_handle {handle_null};
         family_type m_family {family_null};
+        mutable NameCache m_names;
     };
 }
 

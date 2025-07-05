@@ -21,6 +21,7 @@
 namespace Network
 {
     enum class Symbol : std::uint8_t {
+        accept,
         bind,
         connect,
         getpeername,

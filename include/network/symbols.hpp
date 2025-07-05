@@ -22,7 +22,8 @@
 
 namespace Network
 {
-    constexpr std::array<Symbol, 4> symbols {
+    constexpr std::array<Symbol, 5> symbols {
+        Symbol::accept,
         Symbol::bind,
         Symbol::connect,
         Symbol::getpeername,

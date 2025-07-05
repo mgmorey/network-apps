@@ -14,6 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/socketdata.hpp"       // SocketData
+#include "network/bytestring.hpp"       // ByteString
 #include "network/family-null.hpp"      // family_null
 #include "network/family-type.hpp"      // family_type
 #include "network/handle-null.hpp"      // handle_null
@@ -47,9 +48,12 @@ Network::SocketData::SocketData(handle_type t_handle,
     }
 }
 
-Network::SocketData::SocketData(const SocketData& t_sd, handle_type t_handle) :
+Network::SocketData::SocketData(const SocketData& t_sd,
+                                const ByteString& t_accept,
+                                handle_type t_handle) :
     SocketData(t_handle, t_sd.m_family, t_sd.m_sr)
 {
+    m_names[Symbol::accept] = t_accept;
 }
 
 auto Network::SocketData::family() const noexcept -> family_type
@@ -60,6 +64,11 @@ auto Network::SocketData::family() const noexcept -> family_type
 auto Network::SocketData::handle() const noexcept -> handle_type
 {
     return m_handle;
+}
+
+auto Network::SocketData::name(Symbol t_symbol) const noexcept -> ByteString&
+{
+    return m_names[t_symbol];
 }
 
 auto Network::SocketData::runtime() const noexcept -> SharedRuntime
