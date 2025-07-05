@@ -32,7 +32,6 @@
 
 #include <cstdlib>      // EXIT_FAILURE, std::exit(),
                         // std::size_t
-#include <exception>    // std::exception
 #include <iomanip>      // std::right, std::setw()
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <regex>        // std::regex, std::regex_match
@@ -151,7 +150,7 @@ auto main(int argc, char* argv[]) -> int
         test_socketpair_invalid_protocol();
         test_socketpair_valid();
     }
-    catch (const std::exception& error) {
+    catch (const Error& error) {
         std::cerr << error.what()
                   << std::endl;
     }

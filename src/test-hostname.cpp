@@ -14,8 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/assert.hpp"           // assert()
-#include "network/network.hpp"          // Error, Hostname,
-                                        // OsError,
+#include "network/network.hpp"          // Error, Hostname, OsError,
                                         // SharedRuntime,
                                         // get_hostname(),
                                         // get_hostnameresult(), run()
@@ -28,7 +27,6 @@
 #endif
 
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
-#include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <regex>        // std::regex, std::regex_match
 #include <string>       // std::string
@@ -146,7 +144,7 @@ auto main(int argc, char* argv[]) -> int
         test_get_hostnameresult_valid(rt);
         test_get_hostname_valid(rt);
     }
-    catch (const std::exception& error) {
+    catch (const Error& error) {
         std::cerr << error.what()
                   << std::endl;
     }

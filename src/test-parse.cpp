@@ -15,13 +15,13 @@
 
 #include "network/argumentdata.hpp"             // ArgumentData
 #include "network/assert.hpp"                   // assert()
+#include "network/error.hpp"                    // Error
 #include "network/get-option.hpp"               // get_optind()
 #include "network/parse-argumentspan.hpp"       // ArgumentSpan, parse(),
                                                 // std::span
 #include "network/to-size.hpp"                  // to_size()
 
 #include <cstring>      // std::strlen()
-#include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <span>         // std::span
 #include <string>       // std::string
@@ -31,6 +31,7 @@ namespace
 {
     using Network::ArgumentData;
     using Network::ArgumentSpan;
+    using Network::Error;
     using Network::get_optind;
     using Network::parse;
     using Network::to_size;
@@ -117,7 +118,7 @@ auto main(int argc, char* argv[]) -> int
     try {
         test_arguments(argc, argv);
     }
-    catch (const std::exception& error) {
+    catch (const Error& error) {
         std::cerr << error.what()
                   << std::endl;
     }

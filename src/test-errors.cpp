@@ -14,7 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/assert.hpp"           // assert()
-#include "network/network.hpp"          // RuntimeError
+#include "network/network.hpp"          // Error, RuntimeError
                                         // get_api_error()
                                         // get_os_error()
                                         // reset_api_error()
@@ -27,7 +27,6 @@
 #include "network/parse.hpp"            // parse()
 
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
-#include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <limits>       // std::numeric_limits
 #include <regex>        // std::regex, std::regex_match
@@ -347,7 +346,7 @@ auto main(int argc, char* argv[]) -> int
         test_throw_logic_error();
         test_throw_runtime_error();
     }
-    catch (const std::exception& error) {
+    catch (const Error& error) {
         std::cerr << error.what()
                   << std::endl;
     }

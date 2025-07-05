@@ -44,7 +44,6 @@
 
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
 #include <cstring>      // std::memset()
-#include <exception>    // std::exception
 #include <iomanip>      // std::right, std::setw()
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <iterator>     // std::back_inserter()
@@ -481,7 +480,7 @@ auto main(int argc, char* argv[]) -> int
         test_sin6_valid();
         test(rt);
     }
-    catch (const std::exception& error) {
+    catch (const Error& error) {
         std::cerr << error.what()
                   << std::endl;
     }

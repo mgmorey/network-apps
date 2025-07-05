@@ -17,7 +17,8 @@
 // example in https://www.man7.org/linux/man-pages/man7/unix.7.html.
 
 #include "network/argumentspan.hpp"     // ArgumentSpan
-#include "network/network.hpp"          // Socket, socket_error,
+#include "network/network.hpp"          // Error, Socket,
+                                        // socket_error,
                                         // to_bytestring()
 #include "network/parse.hpp"            // parse()
 #include "unix/connection.hpp"          // BUFFER_SIZE, SOCKET_HINTS,
@@ -25,13 +26,13 @@
 
 #include <cstdio>       // std::perror()
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
-#include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <string>       // std::string, std::to_string()
 
 namespace
 {
     using Network::ArgumentSpan;
+    using Network::Error;
     using Network::Socket;
     using Network::TextBuffer;
     using Network::create_socket;
@@ -126,7 +127,7 @@ auto main(int argc, char* argv[]) -> int
             std::cout << "Result: " << read_str << std::endl;
         }
     }
-    catch (const std::exception& error) {
+    catch (const Error& error) {
         std::cerr << error.what() << std::endl;
     }
 }

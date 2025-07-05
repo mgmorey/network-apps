@@ -30,7 +30,6 @@
 
 #include <array>        // std::array
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
-#include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <ostream>      // std::ostream
 #include <regex>        // std::regex, std::regex_match
@@ -266,7 +265,7 @@ auto main(int argc, char* argv[]) -> int
         test_versions(RuntimeScope::global);
         test_inactive();
     }
-    catch (const std::exception& error) {
+    catch (const Error& error) {
         std::cerr << error.what()
                   << std::endl;
     }

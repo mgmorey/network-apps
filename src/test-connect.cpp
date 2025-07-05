@@ -15,8 +15,8 @@
 
 #include "network/assert.hpp"           // assert()
 #include "network/network.hpp"          // Address, ByteString,
-                                        // EndpointView, Hostname,
-                                        // HostnameView,
+                                        // EndpointView, Error,
+                                        // Hostname, HostnameView,
                                         // IpSocketHints, Socket,
                                         // SocketHints, SocketResult,
                                         // SocketResultVector,
@@ -41,7 +41,6 @@
 #include <algorithm>    // std::ranges
 #include <cerrno>       // EFAULT, EINVAL, EAFNOSUPPORT
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
-#include <exception>    // std::exception
 #include <iomanip>      // std::right, std::setw()
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <set>          // std::set
@@ -51,6 +50,7 @@ namespace
     using Network::Address;
     using Network::ByteString;
     using Network::EndpointView;
+    using Network::Error;
     using Network::Hostname;
     using Network::HostnameView;
     using Network::IpSocketHints;
@@ -211,7 +211,7 @@ auto main(int argc, char* argv[]) -> int
             test_connect_valid(endpoint, socket_hints, hostname);
         }
     }
-    catch (const std::exception& error) {
+    catch (const Error& error) {
         std::cerr << error.what()
                   << std::endl;
     }

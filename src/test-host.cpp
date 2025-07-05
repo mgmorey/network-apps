@@ -16,11 +16,11 @@
 #include "network/argumentspan.hpp"     // ArgumentSpan
 #include "network/assert.hpp"           // assert()
 #include "network/network.hpp"          // Address, ByteString,
-                                        // Endpoint, HostnameView,
+                                        // Endpoint, Error,
+                                        // HostnameView,
                                         // IpSocketHints,
                                         // OptionalHints,
-                                        // OptionalHostname,
-                                        // OsError,
+                                        // OptionalHostname, OsError,
                                         // SharedRuntime, SocketHints,
                                         // SocketHost, get_hostname(),
                                         // insert(), os_error_type,
@@ -38,7 +38,6 @@
 
 #include <algorithm>    // std::ranges, std::sort()
 #include <cstdlib>      // EXIT_FAILURE, std::exit(), std::size_t
-#include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <iterator>     // std::back_inserter()
 #include <list>         // std::list
@@ -55,6 +54,7 @@ namespace
     using Network::ByteSpan;
     using Network::ByteString;
     using Network::Endpoint;
+    using Network::Error;
     using Network::HostnameView;
     using Network::IpSocketHints;
     using Network::OptionalHints;
@@ -323,7 +323,7 @@ auto main(int argc, char* argv[]) -> int
 
         std::ranges::for_each(hosts, test_valid);
     }
-    catch (const std::exception& error) {
+    catch (const Error& error) {
         std::cerr << error.what()
                   << std::endl;
     }

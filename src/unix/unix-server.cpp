@@ -16,7 +16,7 @@
 // This UNIX domain sequenced-packet socket example is adapted from the
 // example in https://www.man7.org/linux/man-pages/man7/unix.7.html.
 
-#include "network/network.hpp"          // Address, Socket,
+#include "network/network.hpp"          // Address, Error, Socket,
                                         // UnixSocketHints,
                                         // socket_error,
                                         // to_bytestring()
@@ -26,7 +26,6 @@
 
 #include <cstdio>       // std::perror()
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
-#include <exception>    // std::exception
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <string>       // std::stoll(), std::string, std::to_string()
 #include <utility>      // std::move()
@@ -34,6 +33,7 @@
 namespace
 {
     using Network::Address;
+    using Network::Error;
     using Network::Socket;
     using Network::TextBuffer;
     using Network::create_socket;
@@ -163,7 +163,7 @@ auto main(int argc, char* argv[]) -> int
             }
         }
     }
-    catch (const std::exception& error) {
+    catch (const Error& error) {
         std::cerr << error.what() << std::endl;
     }
 }
