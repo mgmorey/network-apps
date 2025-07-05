@@ -17,6 +17,7 @@
 #define NETWORK_OPEN_HPP
 
 #include "network/openparameters.hpp"   // OpenParameters
+#include "network/sharedruntime.hpp"    // SharedRuntime
 #include "network/socketresult.hpp"     // SocketResult
 #include "network/template.hpp"         // Template
 
@@ -29,8 +30,8 @@ namespace Network
         auto operator()(const Template& t_temp) const -> SocketResult;
 
     private:
+        SharedRuntime m_sr;
         bool m_is_bind;
-        bool m_is_verbose;
     };
 }
 

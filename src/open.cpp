@@ -22,14 +22,14 @@
 #include <expected>     // std::unexpected
 
 Network::Open::Open(const OpenParameters& t_op, bool t_is_bind) :
-    m_is_bind(t_is_bind),
-    m_is_verbose(t_op.m_sr->is_verbose())
+    m_sr(t_op.m_sr),
+    m_is_bind(t_is_bind)
 {
 }
 
 auto Network::Open::operator()(const Template& t_template) const -> SocketResult
 {
-    auto result {create_socketresult(t_template.hints(), m_is_verbose)};
+    auto result {create_socketresult(t_template.hints(), m_sr)};
 
     if (result) {
         const auto& bs {t_template.address()};
