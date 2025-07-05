@@ -23,6 +23,8 @@
 #include "network/handle-null.hpp"              // handle_null
 #include "network/oserror.hpp"                  // OsError
 #include "network/reset-api-error.hpp"          // reset_api_error()
+#include "network/run.hpp"                      // run()
+#include "network/sharedruntime.hpp"            // SharedRuntime
 #include "network/socket-error.hpp"             // socket_error
 #include "network/socketfamily.hpp"             // SocketFamily
 #include "network/sockethints.hpp"              // SocketHints
@@ -42,7 +44,7 @@
 #include <vector>       // std::vector
 
 auto Network::create_socketpairresult(const SocketHints& hints,
-                                      bool is_verbose) -> SocketPairResult
+                                      const SharedRuntime& sr) -> SocketPairResult
 {
     static constexpr auto delim {", "};
     static constexpr auto tab {0};
@@ -50,7 +52,7 @@ auto Network::create_socketpairresult(const SocketHints& hints,
     const auto family {hints.m_family};
     std::vector<handle_type> handles(2, handle_null);
 
-    if (is_verbose) {
+    if (sr->is_verbose()) {
         // clang-format off
         std::cout << "Calling ::socketpair("
                   << Format("domain")
@@ -99,7 +101,7 @@ auto Network::create_socketpairresult(const SocketHints& hints,
         return std::unexpected {OsError {os_error, oss.str()}};
     }
 
-    if (is_verbose) {
+    if (sr->is_verbose()) {
         // clang-format off
         std::cout << "Call to ::socketpair("
                   << Format("domain")
@@ -124,10 +126,17 @@ auto Network::create_socketpairresult(const SocketHints& hints,
 
     SocketPair sp;
     auto create = [=](handle_type handle) -> UniqueSocket {
-        return create_socket(handle, family, is_verbose);
+        return create_socket(handle, family, sr);
     };
     std::ranges::transform(handles, std::back_inserter(sp), create);
     return sp;
+}
+
+auto Network::create_socketpairresult(const SocketHints& hints,
+                                      bool is_verbose) -> SocketPairResult
+{
+    const auto rt {run(is_verbose)};
+    return create_socketpairresult(hints, rt);
 }
 
 #endif
