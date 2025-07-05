@@ -37,6 +37,6 @@ auto Network::open(const OpenParameters& op, bool is_bind) -> SocketResultVector
     SocketResultVector socket_results;
     std::ranges::transform(templates,
                            std::back_inserter(socket_results),
-                           Open(op, is_bind));
+                           Open(op.m_sr, is_bind));
     return socket_results;
 }

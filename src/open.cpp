@@ -15,14 +15,13 @@
 
 #include "network/open.hpp"                     // Open
 #include "network/create-socketresult.hpp"      // create_socketresult()
-#include "network/openparameters.hpp"           // OpenParameters
 #include "network/socketresult.hpp"             // SocketResult
 #include "network/template.hpp"                 // Template
 
 #include <expected>     // std::unexpected
 
-Network::Open::Open(const OpenParameters& t_op, bool t_is_bind) :
-    m_sr(t_op.m_sr),
+Network::Open::Open(const SharedRuntime& t_sr, bool t_is_bind) :
+    m_sr(t_sr),
     m_is_bind(t_is_bind)
 {
 }

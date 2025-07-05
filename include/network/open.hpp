@@ -16,7 +16,6 @@
 #ifndef NETWORK_OPEN_HPP
 #define NETWORK_OPEN_HPP
 
-#include "network/openparameters.hpp"   // OpenParameters
 #include "network/sharedruntime.hpp"    // SharedRuntime
 #include "network/socketresult.hpp"     // SocketResult
 #include "network/template.hpp"         // Template
@@ -26,7 +25,7 @@ namespace Network
     class Open
     {
     public:
-        Open(const OpenParameters& t_op, bool t_is_bind);
+        Open(const SharedRuntime& t_sr, bool t_is_bind);
         auto operator()(const Template& t_temp) const -> SocketResult;
 
     private:
