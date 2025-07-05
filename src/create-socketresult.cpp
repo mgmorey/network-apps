@@ -104,10 +104,3 @@ auto Network::create_socketresult(const SocketHints& hints,
 
      return create_socket(handle, family, sr->is_verbose());
 }
-
-auto Network::create_socketresult(const SocketHints& hints,
-                                  bool is_verbose) -> SocketResult
-{
-    const auto rt {run(is_verbose)};
-    return create_socketresult(hints, rt);
-}

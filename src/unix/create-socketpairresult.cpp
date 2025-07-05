@@ -132,11 +132,4 @@ auto Network::create_socketpairresult(const SocketHints& hints,
     return sp;
 }
 
-auto Network::create_socketpairresult(const SocketHints& hints,
-                                      bool is_verbose) -> SocketPairResult
-{
-    const auto rt {run(is_verbose)};
-    return create_socketpairresult(hints, rt);
-}
-
 #endif

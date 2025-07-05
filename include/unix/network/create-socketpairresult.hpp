@@ -27,9 +27,6 @@ namespace Network
     extern auto create_socketpairresult(const SocketHints& hints,
                                         const SharedRuntime& sr) ->
         SocketPairResult;
-    extern auto create_socketpairresult(const SocketHints& hints,
-                                        bool is_verbose = false) ->
-        SocketPairResult;
 }
 
 #endif

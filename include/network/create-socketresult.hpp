@@ -24,8 +24,6 @@ namespace Network
 {
     extern auto create_socketresult(const SocketHints& hints,
                                     const SharedRuntime& sr) -> SocketResult;
-    extern auto create_socketresult(const SocketHints& hints,
-                                    bool is_verbose = false) -> SocketResult;
 }
 
 #endif
