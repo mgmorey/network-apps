@@ -21,7 +21,6 @@
 #include "network/handle-null.hpp"              // handle_null
 #include "network/oserror.hpp"                  // OsError
 #include "network/reset-api-error.hpp"          // reset_api_error()
-#include "network/run.hpp"                      // run()
 #include "network/sharedruntime.hpp"            // SharedRuntime
 #include "network/socketfamily.hpp"             // SocketFamily
 #include "network/sockethints.hpp"              // SocketHints
