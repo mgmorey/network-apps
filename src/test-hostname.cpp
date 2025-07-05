@@ -115,12 +115,12 @@ namespace
         assert(actual_str.empty());
     }
 
-    auto test_get_hostname_valid(const SharedRuntime& sr) -> void
+    auto test_get_hostname_valid() -> void
     {
         std::string actual_str;
 
         try {
-            static_cast<void>(get_hostname(sr));
+            static_cast<void>(get_hostname(is_verbose));
         }
         catch (const Error& error) {
             print(error);
@@ -142,7 +142,7 @@ auto main(int argc, char* argv[]) -> int
 
         test_get_hostnameresult_overflow(rt);
         test_get_hostnameresult_valid(rt);
-        test_get_hostname_valid(rt);
+        test_get_hostname_valid();
     }
     catch (const Error& error) {
         std::cerr << error.what()
