@@ -22,8 +22,7 @@
 #include <filesystem>   // std::filesystem
 #include <iostream>     // std::cout, std::endl
 
-Network::UnixSocket::UnixSocket(const SocketData& t_sd) :
-    InetSocket(t_sd)
+Network::UnixSocket::UnixSocket(const SocketData& t_sd) : InetSocket(t_sd)
 {
 }
 
