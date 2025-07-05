@@ -181,8 +181,8 @@ text_artifacts = $(coverage_alias) $(coverage_html) $(coverage_json)	\
 $(compile_commands) $(compile_flags) $(cppcheck_log) $(dependencies)	\
 $(listings) $(logfiles) $(mapfiles) $(stackdumps) $(sizes)
 
-build_artifacts = $(gcov_files) $(libraries) $(mapfiles)	\
-$(objects) $(programs) $(sizes)
+build_artifacts = $(compile_commands) $(compile_flags) $(gcov_files)	\
+$(libraries) $(listings) $(mapfiles) $(objects) $(programs) $(sizes)
 
 dos2unix_files = $(filter-out %$(depend_suffix),$(wildcard	\
 $(text_artifacts)))
@@ -321,7 +321,7 @@ endif
 
 # Define targets
 
-$(compile_flags):
+$(compile_flags): GNUmakefile gmake/flags/*.mk
 	printf '%s\n' $(sort $(CXXFLAGS) $(CPPFLAGS) $(TARGET_ARCH)) >$@
 
 $(coverage_html): $(coverage_json)
