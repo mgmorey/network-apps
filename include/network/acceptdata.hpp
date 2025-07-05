@@ -1,4 +1,4 @@
-// Copyright (C) 2024  "Michael G. Morey" <mgmorey@gmail.com>
+// Copyright (C) 2025  "Michael G. Morey" <mgmorey@gmail.com>
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,14 +13,17 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_ACCEPTRESULT_HPP
-#define NETWORK_ACCEPTRESULT_HPP
+#ifndef NETWORK_ACCEPTDATA_HPP
+#define NETWORK_ACCEPTDATA_HPP
 
-#include "network/acceptdata.hpp"       // AcceptData
+#include "network/bytestring.hpp"       // ByteString
+#include "network/socketdata.hpp"       // SocketData
+
+#include <utility>      // std::pair
 
 namespace Network
 {
-    using AcceptResult = AcceptData;
+    using AcceptData = std::pair<SocketData, ByteString>;
 }
 
 #endif

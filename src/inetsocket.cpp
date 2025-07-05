@@ -15,7 +15,7 @@
 
 #include "network/inetsocket.hpp"               // InetSocket
 #include "network/accept.hpp"                   // accept()
-#include "network/acceptresult.hpp"             // AcceptResult
+#include "network/acceptdata.hpp"               // AcceptData
 #include "network/bytespan.hpp"                 // ByteSpan
 #include "network/close.hpp"                    // close()
 #include "network/get-name.hpp"                 // get_name()
@@ -55,7 +55,7 @@ Network::InetSocket::operator long_handle_type() const
     return to_long_handle(m_sd.handle());
 }
 
-auto Network::InetSocket::accept() const -> AcceptResult
+auto Network::InetSocket::accept() const -> AcceptData
 
 {
     return Network::accept(m_sd);

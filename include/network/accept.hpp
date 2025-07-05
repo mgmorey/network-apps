@@ -16,12 +16,12 @@
 #ifndef NETWORK_ACCEPT_HPP
 #define NETWORK_ACCEPT_HPP
 
-#include "network/acceptresult.hpp"     // AcceptResult
+#include "network/acceptdata.hpp"       // AcceptData
 #include "network/socketdata.hpp"       // SocketData
 
 namespace Network
 {
-    extern auto accept(const SocketData& sd) -> AcceptResult;
+    extern auto accept(const SocketData& sd) -> AcceptData;
 }
 
 #endif
