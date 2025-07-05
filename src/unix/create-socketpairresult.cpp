@@ -123,13 +123,10 @@ auto Network::create_socketpairresult(const SocketHints& hints,
     }
 
     SocketPair sp;
-    std::ranges::transform(handles,
-                           std::back_inserter(sp),
-                           [=](handle_type handle) {
-                               return create_socket(handle,
-                                                    family,
-                                                    is_verbose);
-                           });
+    auto create = [=](handle_type handle) -> UniqueSocket {
+        return create_socket(handle, family, is_verbose);
+    };
+    std::ranges::transform(handles, std::back_inserter(sp), create);
     return sp;
 }
 
