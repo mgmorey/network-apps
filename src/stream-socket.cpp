@@ -13,16 +13,17 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/socket.hpp"           // Socket, operator<<()
-#include "network/string-null.hpp"      // string_null
+#include "network/socket.hpp"                   // Socket, operator<<()
+#include "network/long-handle-type.hpp"         // long_handle_type
+#include "network/string-null.hpp"              // string_null
 
 #include <ostream>      // std::ostream
 
 auto Network::operator<<(std::ostream& os,
-                         const Socket& sock) -> std::ostream&
+                         const Socket& s) -> std::ostream&
 {
-    if (static_cast<bool>(sock)) {
-        os << static_cast<unsigned long long>(sock);
+    if (static_cast<bool>(s)) {
+        os << static_cast<long_handle_type>(s);
     }
     else {
         os << string_null;
