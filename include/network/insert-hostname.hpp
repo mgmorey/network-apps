@@ -28,7 +28,7 @@
 
 namespace Network
 {
-    auto insert(auto& it,
+    auto insert(auto it,
                 const HostnameView& hostname,
                 const ServiceView& service,
                 const OptionalHints& hints,
@@ -39,7 +39,7 @@ namespace Network
         return list.result();
     }
 
-    auto insert(auto& it,
+    auto insert(auto it,
                 const HostnameView& hostname,
                 const ServiceView& service,
                 const OptionalHints& hints,
