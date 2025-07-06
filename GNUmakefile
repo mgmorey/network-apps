@@ -101,7 +101,7 @@ get-sa-family.cpp get-sa-length.cpp get-sa-pointer.cpp			\
 get-sa-span.cpp get-sin-addr.cpp get-sin-pointer.cpp get-sin-port.cpp	\
 get-sin6-addr.cpp get-sin6-pointer.cpp get-sin6-port.cpp		\
 inetsocket.cpp listen.cpp logicerror.cpp open-endpoint.cpp		\
-open-handle.cpp open.cpp oserror.cpp parse-argumentspan.cpp parse.cpp	\
+open-handle.cpp oserror.cpp parse-argumentspan.cpp parse.cpp		\
 quote.cpp rangeerror.cpp reset-api-error.cpp reset-os-error.cpp		\
 run.cpp runtimeerror.cpp shutdown.cpp socketapi.cpp socketdata.cpp	\
 socketfamily.cpp socketflags.cpp sockethost.cpp socketlimits.cpp	\

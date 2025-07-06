@@ -14,10 +14,11 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/open-endpoint.hpp"            // open()
+#include "network/create-socketresult.hpp"      // create_socketresult()
 #include "network/error.hpp"                    // Error()
 #include "network/insert-endpoint.hpp"          // insert()
-#include "network/open.hpp"                     // Open
 #include "network/openparameters.hpp"           // OpenParameters
+#include "network/socketresult.hpp"             // SocketResult
 #include "network/socketresultvector.hpp"       // SocketResultVector
 #include "network/template.hpp"                 // Template
 
@@ -27,16 +28,28 @@
 
 auto Network::open(const OpenParameters& op, bool is_bind) -> SocketResultVector
 {
-    std::vector<Template> templates;
-    auto it {std::back_inserter(templates)};
+    std::vector<Template> tv;
+    auto it {std::back_inserter(tv)};
 
     if (const auto error_result = insert(it, op)) {
         throw Error(error_result.string());
     }
 
     SocketResultVector socket_results;
-    std::ranges::transform(templates,
-                           std::back_inserter(socket_results),
-                           Open(op.m_sr, is_bind));
+    auto open = [&](const Template& t) -> SocketResult {
+        auto result {create_socketresult(t.hints(), op.m_sr)};
+
+        if (result) {
+            const auto& bs {t.address()};
+            const auto& ps {*result};
+
+            if (const auto error {is_bind ? ps->bind(bs) : ps->connect(bs)}) {
+                return std::unexpected {error};
+            }
+        }
+
+        return result;
+    };
+    std::ranges::transform(tv, std::back_inserter(socket_results), open);
     return socket_results;
 }
