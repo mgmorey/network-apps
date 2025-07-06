@@ -56,9 +56,9 @@ auto Network::SocketHost::canonical_name() const noexcept ->
     return m_name;
 }
 
-auto Network::SocketHost::to_bytestring(const addrinfo& ai) -> ByteString
+auto Network::SocketHost::to_bytestring(const addrinfo& t_ai) -> ByteString
 {
-    return Network::to_bytestring(ai.ai_addr, to_sa_length(ai.ai_addrlen));
+    return Network::to_bytestring(t_ai.ai_addr, to_sa_length(t_ai.ai_addrlen));
 }
 
 auto Network::SocketHost::to_canonical_name(const addrinfo& t_ai) noexcept ->

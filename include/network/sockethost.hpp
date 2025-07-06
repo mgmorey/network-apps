@@ -47,7 +47,7 @@ namespace Network
             const OptionalHostname&;
 
     protected:
-        static auto to_bytestring(const addrinfo& ai) -> ByteString;
+        static auto to_bytestring(const addrinfo& t_ai) -> ByteString;
         static auto to_canonical_name(const addrinfo& t_ai) noexcept ->
             OptionalHostname;
 
