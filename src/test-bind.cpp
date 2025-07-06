@@ -18,7 +18,6 @@
                                         // EndpointView, Error,
                                         // IpSocketHints, Socket,
                                         // SocketHints, SocketResult,
-                                        // SocketResultVector,
                                         // UniqueSocket, bind(),
                                         // os_error_type, run(),
                                         // string_null
@@ -52,7 +51,6 @@ namespace
     using Network::Socket;
     using Network::SocketHints;
     using Network::SocketResult;
-    using Network::SocketResultVector;
     using Network::UniqueSocket;
     using Network::bind;
     using Network::os_error_type;

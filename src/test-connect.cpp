@@ -19,7 +19,6 @@
                                         // Hostname, HostnameView,
                                         // IpSocketHints, Socket,
                                         // SocketHints, SocketResult,
-                                        // SocketResultVector,
                                         // UniqueSocket, connect(),
                                         // get_hostname(),
                                         // os_error_type, run(),
@@ -57,7 +56,6 @@ namespace
     using Network::Socket;
     using Network::SocketHints;
     using Network::SocketResult;
-    using Network::SocketResultVector;
     using Network::UniqueSocket;
     using Network::connect;
     using Network::get_hostname;
