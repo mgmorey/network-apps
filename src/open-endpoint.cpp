@@ -20,7 +20,7 @@
 #include "network/openparameters.hpp"           // OpenParameters
 #include "network/socketresult.hpp"             // SocketResult
 #include "network/socketresultvector.hpp"       // SocketResultVector
-#include "network/template.hpp"                 // Template
+#include "network/sockettemplate.hpp"           // SocketTemplate
 
 #include <algorithm>    // std::ranges::transform()
 #include <iterator>     // std::back_inserter()
@@ -28,19 +28,19 @@
 
 auto Network::open(const OpenParameters& op, bool is_bind) -> SocketResultVector
 {
-    std::vector<Template> tv;
-    auto it {std::back_inserter(tv)};
+    std::vector<SocketTemplate> stv;
+    auto it {std::back_inserter(stv)};
 
-    if (const auto os_error = insert(it, op)) {
-        throw Error(os_error.string());
+    if (const auto error = insert(it, op)) {
+        throw Error(error.string());
     }
 
     SocketResultVector srv;
-    auto open = [&](const Template& t) -> SocketResult {
-        auto result {create_socketresult(t.hints(), op.m_sr)};
+    auto open = [&](const SocketTemplate& st) -> SocketResult {
+        auto result {create_socketresult(st.hints(), op.m_sr)};
 
         if (result) {
-            const auto& bs {t.address()};
+            const auto& bs {st.address()};
             const auto& ps {*result};
 
             if (const auto error {is_bind ? ps->bind(bs) : ps->connect(bs)}) {
@@ -50,6 +50,6 @@ auto Network::open(const OpenParameters& op, bool is_bind) -> SocketResultVector
 
         return result;
     };
-    std::ranges::transform(tv, std::back_inserter(srv), open);
+    std::ranges::transform(stv, std::back_inserter(srv), open);
     return srv;
 }

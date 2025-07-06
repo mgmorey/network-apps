@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_TEMPLATE_HPP
-#define NETWORK_TEMPLATE_HPP
+#ifndef NETWORK_SOCKETTEMPLATE_HPP
+#define NETWORK_SOCKETTEMPLATE_HPP
 
 #include "network/bytespan.hpp"         // ByteSpan
 #include "network/sockethints.hpp"      // SocketHints
@@ -28,23 +28,36 @@
 
 namespace Network
 {
-    struct Template
+    struct SocketTemplate
     {
         friend auto operator<<(std::ostream& os,
-                               const Template& sock) -> std::ostream&;
+                               const SocketTemplate& sock) -> std::ostream&;
 
         // cppcheck-suppress noExplicitConstructor; NOLINTNEXTLINE
-        Template(const addrinfo& t_ai) noexcept;
+        SocketTemplate(const addrinfo& t_ai) noexcept :
+            m_hints(t_ai),
+            m_host(t_ai)
+        {
+        }
 
-        Template() noexcept = default;
-        Template(const Template&) noexcept = default;
-        Template(Template&&) = default;
-        ~Template() noexcept = default;
-        auto operator=(const Template&) noexcept -> Template& = default;
-        auto operator=(Template&&) noexcept -> Template& = default;
+        SocketTemplate() noexcept = default;
+        SocketTemplate(const SocketTemplate&) noexcept = default;
+        SocketTemplate(SocketTemplate&&) = default;
+        ~SocketTemplate() noexcept = default;
+        auto operator=(const SocketTemplate&) noexcept ->
+            SocketTemplate& = default;
+        auto operator=(SocketTemplate&&) noexcept ->
+            SocketTemplate& = default;
 
-        [[nodiscard]] auto hints() const noexcept -> const SocketHints&;
-        [[nodiscard]] auto address() const noexcept -> ByteSpan;
+        [[nodiscard]] auto hints() const noexcept -> const SocketHints&
+        {
+            return m_hints;
+        }
+
+        [[nodiscard]] auto address() const noexcept -> ByteSpan
+        {
+            return m_host.address();
+        }
 
     private:
         SocketHints m_hints;

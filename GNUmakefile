@@ -107,7 +107,7 @@ run.cpp runtimeerror.cpp shutdown.cpp socketapi.cpp socketdata.cpp	\
 socketfamily.cpp socketflags.cpp sockethost.cpp socketlimits.cpp	\
 socketprotocol.cpp sockettype.cpp stream-address.cpp			\
 stream-addrinfo.cpp stream-failmode.cpp stream-runtime.cpp		\
-stream-socket.cpp stream-version.cpp template.cpp textbuffer.cpp	\
+stream-socket.cpp stream-version.cpp textbuffer.cpp			\
 to-bytestring-void.cpp to-string-in-addr.cpp to-string-in6-addr.cpp	\
 to-string-span-byte.cpp to-string-void.cpp validate-bs.cpp		\
 validate-sa.cpp validate-sin.cpp validate-sin6.cpp
