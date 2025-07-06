@@ -21,15 +21,15 @@
 #include "network/sockethints.hpp"              // SocketHints
 #include "network/uniquesocket.hpp"             // UniqueSocket
 
+#include <utility>      // std::move()
+
 auto Network::create_socket(const SocketHints& hints,
                             const SharedRuntime& sr) -> UniqueSocket
 {
-    UniqueSocket sock;
     auto result {create_socketresult(hints, sr)};
 
     if (result) {
-        sock.swap(*result);
-        return sock;
+        return std::move(*result);
     }
 
     throw Error(result.error().string());
