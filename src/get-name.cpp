@@ -25,9 +25,9 @@ auto Network::get_name(const SocketData& sd,
 {
     auto result {get_nameresult(sd, nh)};
 
-    if (result) {
-        return *result;
+    if (!result) {
+        throw Error(result.error().string());
     }
 
-    throw Error(result.error().string());
+    return *result;
 }

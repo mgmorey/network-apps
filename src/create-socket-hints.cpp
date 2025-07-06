@@ -28,11 +28,11 @@ auto Network::create_socket(const SocketHints& hints,
 {
     auto result {create_socketresult(hints, sr)};
 
-    if (result) {
-        return std::move(*result);
+    if (!result) {
+        throw Error(result.error().string());
     }
 
-    throw Error(result.error().string());
+    return std::move(*result);
 }
 
 auto Network::create_socket(const SocketHints& hints,
