@@ -13,21 +13,17 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/assert.hpp"                   // assert()
-#include "network/inetsocket.hpp"               // InetSocket
-#include "network/network.hpp"                  // Error, SocketData,
-                                                // SocketHints,
-                                                // UniqueSocket,
-                                                // close(),
-                                                // create_socket(),
-                                                // family_type,
-                                                // handle_null,
-                                                // handle_type,
-                                                // long_handle_type,
-                                                // os_error_type,
-                                                // run()
-#include "network/parse.hpp"                    // parse()
-#include "network/to-long-handle.hpp"           // to_long_handle()
+#include "network/assert.hpp"           // assert()
+#include "network/inetsocket.hpp"       // InetSocket
+#include "network/network.hpp"          // Error, SocketData,
+                                        // SocketHints, UniqueSocket,
+                                        // close(), create_socket(),
+                                        // family_type, handle_null,
+                                        // handle_type,
+                                        // long_handle_type,
+                                        // os_error_type, run()
+#include "network/parse.hpp"            // parse()
+#include "network/to-long-handle.hpp"   // to_long_handle()
 
 #ifdef WIN32
 #include <winsock2.h>   // AF_INET, AF_UNSPEC, SOCK_STREAM, ::close(),
