@@ -45,8 +45,7 @@ namespace Network
                 const OptionalHints& hints,
                 bool is_verbose) -> OsError
     {
-        const auto rt {run(is_verbose)};
-        return insert(it, hostname, service, hints, rt);
+        return insert(it, hostname, service, hints, run(is_verbose));
     }
 }
 

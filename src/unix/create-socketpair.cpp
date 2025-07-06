@@ -40,8 +40,7 @@ auto Network::create_socketpair(const SocketHints& hints,
 auto Network::create_socketpair(const SocketHints& hints,
                                 bool is_verbose) -> SocketPair
 {
-    const auto rt {run(is_verbose)};
-    return create_socketpair(hints, rt);
+    return create_socketpair(hints, run(is_verbose));
 }
 
 #endif

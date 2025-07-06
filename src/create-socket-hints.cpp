@@ -38,6 +38,5 @@ auto Network::create_socket(const SocketHints& hints,
 auto Network::create_socket(const SocketHints& hints,
                             bool is_verbose) -> UniqueSocket
 {
-    const auto rt {run(is_verbose)};
-    return create_socket(hints, rt);
+    return create_socket(hints, run(is_verbose));
 }

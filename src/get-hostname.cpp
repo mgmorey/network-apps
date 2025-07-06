@@ -33,6 +33,5 @@ auto Network::get_hostname(const SharedRuntime& sr) -> Hostname
 
 auto Network::get_hostname(bool is_verbose) -> Hostname
 {
-    const auto rt {run(is_verbose)};
-    return get_hostname(rt);
+    return get_hostname(run(is_verbose));
 }

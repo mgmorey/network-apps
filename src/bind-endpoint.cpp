@@ -36,6 +36,5 @@ auto Network::bind(const EndpointView& endpoint,
                    const SocketHints& hints,
                    bool is_verbose) -> SocketResultVector
 {
-    const auto rt {run(is_verbose)};
-    return bind(endpoint, hints, rt);
+    return bind(endpoint, hints, run(is_verbose));
 }

@@ -32,6 +32,5 @@ auto Network::create_socket(handle_type handle,
                             family_type family,
                             bool is_verbose) -> UniqueSocket
 {
-    const auto sr {run(is_verbose)};
-    return create_socket(SocketData {handle, family, sr});
+    return create_socket(SocketData {handle, family, run(is_verbose)});
 }
