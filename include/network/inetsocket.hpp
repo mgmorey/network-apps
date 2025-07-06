@@ -45,18 +45,14 @@ namespace Network
         explicit operator long_handle_type() const final;
 
         [[nodiscard]] auto accept() const -> SocketData final;
-        [[nodiscard]] auto bind(ByteSpan t_bs) -> OsError override;
-        [[nodiscard]] auto connect(ByteSpan t_bs) -> OsError override;
         [[nodiscard]] auto listen(int t_backlog) const -> OsError final;
-        [[nodiscard]] auto peername() const -> ByteSpan final;
+        [[nodiscard]] auto name(bool t_is_sock) const -> ByteSpan final;
+        [[nodiscard]] auto open(ByteSpan t_bs, bool t_is_bind) -> OsError override;
         [[nodiscard]] auto read(std::span<char> t_cs) const -> ssize_t final;
         [[nodiscard]] auto shutdown(int t_how) const -> OsError final;
-        [[nodiscard]] auto sockname() const -> ByteSpan final;
         [[nodiscard]] auto write(std::string_view t_sv) const -> ssize_t final;
 
     protected:
-        [[nodiscard]] auto name(bool t_is_sockname) const -> ByteSpan;
-        [[nodiscard]] auto open(ByteSpan t_bs, bool is_bind) const -> OsError;
         [[nodiscard]] auto runtime() const noexcept -> SharedRuntime;
 
     private:

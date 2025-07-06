@@ -20,7 +20,7 @@
 
 namespace Network
 {
-    extern auto get_namehandler(bool is_sockname) -> NameHandler;
+    extern auto get_namehandler(bool is_sock) -> NameHandler;
 }
 
 #endif

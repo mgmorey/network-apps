@@ -58,24 +58,34 @@ auto Network::InetSocket::accept() const -> SocketData
     return Network::accept(m_sd);
 }
 
-auto Network::InetSocket::bind(ByteSpan t_bs) -> OsError
-{
-    return open(t_bs, true);
-}
-
-auto Network::InetSocket::connect(ByteSpan t_bs) -> OsError
-{
-    return open(t_bs, false);
-}
-
 auto Network::InetSocket::listen(int t_backlog) const -> OsError
 {
     return Network::listen(m_sd, t_backlog);
 }
 
-auto Network::InetSocket::peername() const -> ByteSpan
+auto Network::InetSocket::name(bool t_is_sock) const -> ByteSpan
 {
-    return name(false);
+    const auto nh {get_namehandler(t_is_sock)};
+    auto& nm {m_sd.name(nh.symbol())};
+
+    if (nm.empty()) {
+        nm = Network::get_name(m_sd, nh);
+    }
+
+    return nm;
+}
+
+auto Network::InetSocket::open(ByteSpan t_bs, bool t_is_bind) -> OsError
+{
+    const auto oh {get_openhandler(t_is_bind)};
+
+    if (const auto os_error {Network::open(m_sd, t_bs, oh)}) {
+        return os_error;
+    }
+
+    auto& nm {m_sd.name(oh.symbol())};
+    nm.assign(t_bs.begin(), t_bs.end());
+    return {};
 }
 
 auto Network::InetSocket::read(std::span<char> t_cs) const -> ssize_t
@@ -88,40 +98,9 @@ auto Network::InetSocket::shutdown(int t_how) const -> OsError
     return Network::shutdown(m_sd, t_how);
 }
 
-auto Network::InetSocket::sockname() const -> ByteSpan
-{
-    return name(true);
-}
-
 auto Network::InetSocket::write(std::string_view t_sv) const -> ssize_t
 {
     return Network::write(m_sd, t_sv);
-}
-
-auto Network::InetSocket::name(bool t_is_sockname) const -> ByteSpan
-{
-    const auto nh {get_namehandler(t_is_sockname)};
-    auto& nm {m_sd.name(nh.symbol())};
-
-    if (nm.empty()) {
-        nm = Network::get_name(m_sd, nh);
-    }
-
-    return nm;
-}
-
-auto Network::InetSocket::open(ByteSpan t_bs,
-                               bool t_is_bind) const -> OsError
-{
-    const auto oh {get_openhandler(t_is_bind)};
-
-    if (const auto os_error {Network::open(m_sd, t_bs, oh)}) {
-        return os_error;
-    }
-
-    auto& nm {m_sd.name(oh.symbol())};
-    nm.assign(t_bs.begin(), t_bs.end());
-    return {};
 }
 
 auto Network::InetSocket::runtime() const noexcept -> SharedRuntime

@@ -37,8 +37,7 @@ namespace Network
         auto operator=(const UnixSocket&) noexcept -> UnixSocket& = delete;
         auto operator=(UnixSocket&&) noexcept -> UnixSocket& = delete;
 
-        [[nodiscard]] auto bind(ByteSpan t_bs) -> OsError final;
-        [[nodiscard]] auto connect(ByteSpan t_bs) -> OsError final;
+        [[nodiscard]] auto open(ByteSpan t_bs, bool t_is_bind) -> OsError final;
 
     protected:
         [[nodiscard]] auto remove(const PathnameView& t_path) const -> bool;

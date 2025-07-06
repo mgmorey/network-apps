@@ -31,23 +31,13 @@ Network::UnixSocket::~UnixSocket() noexcept
     state(SocketState::closing);
 }
 
-auto Network::UnixSocket::bind(ByteSpan t_bs) -> OsError
+auto Network::UnixSocket::open(ByteSpan t_bs, bool t_is_bind) -> OsError
 {
-    if (auto result {InetSocket::bind(t_bs)}) {
-        return result;
+    if (auto error {InetSocket::open(t_bs, t_is_bind)}) {
+        return error;
     }
 
-    state(SocketState::bound);
-    return {};
-}
-
-auto Network::UnixSocket::connect(ByteSpan t_bs) -> OsError
-{
-    if (auto result {InetSocket::connect(t_bs)}) {
-        return result;
-    }
-
-    state(SocketState::connected);
+    state(t_is_bind ? SocketState::bound : SocketState::connected);
     return {};
 }
 

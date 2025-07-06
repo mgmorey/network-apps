@@ -40,16 +40,35 @@ namespace Network
         explicit virtual operator long_handle_type() const = 0;
 
         [[nodiscard]] virtual auto accept() const -> SocketData = 0;
-        [[nodiscard]] virtual auto bind(ByteSpan t_bs) -> OsError = 0;
-        [[nodiscard]] virtual auto connect(ByteSpan t_bs) -> OsError = 0;
         [[nodiscard]] virtual auto listen(int t_backlog) const -> OsError = 0;
-        [[nodiscard]] virtual auto peername() const -> ByteSpan = 0;
+        [[nodiscard]] virtual auto name(bool t_is_sock) const -> ByteSpan = 0;
+        [[nodiscard]] virtual auto open(ByteSpan t_bs, bool is_bind) ->
+            OsError = 0;
         [[nodiscard]] virtual auto read(std::span<char> t_cs) const ->
             ssize_t = 0;
         [[nodiscard]] virtual auto shutdown(int t_how) const -> OsError = 0;
-        [[nodiscard]] virtual auto sockname() const -> ByteSpan = 0;
         [[nodiscard]] virtual auto write(std::string_view t_sv) const ->
             ssize_t = 0;
+
+        [[nodiscard]] auto bind(ByteSpan t_bs) -> OsError
+        {
+            return open(t_bs, true);
+        }
+
+        [[nodiscard]] auto connect(ByteSpan t_bs) -> OsError
+        {
+            return open(t_bs, false);
+        }
+
+        [[nodiscard]] auto peername() const -> ByteSpan
+        {
+            return name(false);
+        }
+
+        [[nodiscard]] auto sockname() const -> ByteSpan
+        {
+            return name(true);
+        }
     };
 
     extern auto operator<<(std::ostream& os,

@@ -42,7 +42,7 @@ auto Network::open(const OpenParameters& op, bool is_bind) -> SocketResultVector
             const auto& bs {st.address()};
             const auto& ps {*result};
 
-            if (const auto error {is_bind ? ps->bind(bs) : ps->connect(bs)}) {
+            if (const auto error {ps->open(bs, is_bind)}) {
                 return std::unexpected {error};
             }
         }
