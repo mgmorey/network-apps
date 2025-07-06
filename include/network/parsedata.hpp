@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_PARSERESULT_HPP
-#define NETWORK_PARSERESULT_HPP
+#ifndef NETWORK_PARSEDATA_HPP
+#define NETWORK_PARSEDATA_HPP
 
 #include "network/argumentspan.hpp"     // ArgumentSpan
 #include "network/options.hpp"          // Options
@@ -23,7 +23,7 @@
 
 namespace Network
 {
-    using ParseResult = std::pair<ArgumentSpan, Options>;
+    using ParseData = std::pair<ArgumentSpan, Options>;
 }
 
 #endif

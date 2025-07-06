@@ -17,12 +17,11 @@
 #define NETWORK_PARSE_ARGUMENTSPAN_HPP
 
 #include "network/argumentspan.hpp"     // ArgumentSpan
-#include "network/parseresult.hpp"      // ParseResult
+#include "network/parsedata.hpp"        // ParseData
 
 namespace Network
 {
-    auto parse(const ArgumentSpan& args,
-               const char* optstring) -> ParseResult;
+    auto parse(const ArgumentSpan& args, const char* optstring) -> ParseData;
 }
 
 #endif

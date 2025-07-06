@@ -16,11 +16,11 @@
 #ifndef NETWORK_PARSE_HPP
 #define NETWORK_PARSE_HPP
 
-#include "network/parseresult.hpp"      // ParseResult
+#include "network/parsedata.hpp"        // ParseData
 
 namespace Network
 {
-    auto parse(int argc, char** argv, const char* optstring) -> ParseResult;
+    auto parse(int argc, char** argv, const char* optstring) -> ParseData;
 }
 
 #endif

@@ -17,10 +17,10 @@
 #include "network/argumentspan.hpp"         // ArgumentSpan
 #include "network/get-operands.hpp"         // get_operands()
 #include "network/get-options.hpp"          // get_options()
-#include "network/parseresult.hpp"          // ParseResult
+#include "network/parsedata.hpp"            // ParseData
 
 auto Network::parse(const ArgumentSpan& args,
-                    const char* optstring) -> ParseResult
+                    const char* optstring) -> ParseData
 {
     const auto options {get_options(args, optstring)};
     const auto operands {get_operands(args)};

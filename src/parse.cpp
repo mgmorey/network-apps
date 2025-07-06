@@ -15,12 +15,12 @@
 
 #include "network/parse.hpp"                // parse()
 #include "network/parse-argumentspan.hpp"   // parse()
-#include "network/parseresult.hpp"          // ParseResult
+#include "network/parsedata.hpp"            // ParseData
 #include "network/to-size.hpp"              // to_size()
 
 #include <span>         // std::span
 
-auto Network::parse(int argc, char** argv, const char* optstring) -> ParseResult
+auto Network::parse(int argc, char** argv, const char* optstring) -> ParseData
 {
     return parse(std::span {argv, to_size(argc)}, optstring);
 }
