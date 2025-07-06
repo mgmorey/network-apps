@@ -68,13 +68,13 @@ namespace
 
     using ErrorCodeSet = std::set<os_error_type>;
 
-    constexpr auto expected_error_path_length_re {
+    constexpr auto expected_path_length_re {
         R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of path_length_type)"
     };
-    constexpr auto expected_error_payload_length_re {
+    constexpr auto expected_payload_length_re {
         R"(Address payload length is zero: .+)"
     };
-    constexpr auto expected_error_socket_re {
+    constexpr auto expected_socket_re {
         R"(Call to ::socket\(.+\) failed with error \d+: .+)"
     };
     constexpr auto handle_width {6};
@@ -180,9 +180,9 @@ namespace
     auto test_path(Socket& sock,
                    std::string_view path,
                    const ErrorCodeSet& expected_codes,
-                   const std::string& expected_error_re) -> void
+                   const std::string& expected_re) -> void
     {
-        std::string actual_error_str;
+        std::string actual_str;
 
         try {
             OsError actual_result;
@@ -203,19 +203,19 @@ namespace
         }
         catch (const LogicError& error) {
             print(error);
-            actual_error_str = error.what();
+            actual_str = error.what();
         }
 
-        const std::regex expected_error_regex {expected_error_re};
-        assert(std::regex_match(actual_error_str, expected_error_regex));
+        const std::regex expected_regex {expected_re};
+        assert(std::regex_match(actual_str, expected_regex));
     }
 
     auto test_path(std::string_view path,
                    const ErrorCodeSet& expected_codes,
-                   const std::string& expected_error_re) -> void
+                   const std::string& expected_re) -> void
     {
         const auto sock {create_socket(socket_hints, is_verbose)};
-        test_path(*sock, path, expected_codes, expected_error_re);
+        test_path(*sock, path, expected_codes, expected_re);
     }
 
     auto test_path_valid(const auto& path) -> void
@@ -226,7 +226,7 @@ namespace
 
     auto test_paths_invalid() -> void
     {
-        test_path({}, {0}, expected_error_payload_length_re);
+        test_path({}, {0}, expected_payload_length_re);
 #if defined(OS_DARWIN) || defined(OS_CYGWIN_NT)
         test_path("", get_codes_no_such_file_or_directory(), {});
 #endif
@@ -235,7 +235,7 @@ namespace
         test_path("/var/foo", get_codes_permission_denied(), {});
 #endif
         const auto path_max {get_pathname(path_length_max + 1)};
-        test_path(path_max, {}, expected_error_path_length_re);
+        test_path(path_max, {}, expected_path_length_re);
     }
 
     auto test_paths_valid() -> void
@@ -250,37 +250,37 @@ namespace
     }
 
     auto test_unix_socket(const SocketHints& hints,
-                          const std::string& expected_error_re) -> void
+                          const std::string& expected_re) -> void
     {
-        std::string actual_error_str;
+        std::string actual_str;
 
         try {
             const auto sock {create_socket(hints, is_verbose)};
         }
         catch (const Error& error) {
             print(error);
-            actual_error_str = error.what();
+            actual_str = error.what();
         }
 
-        if (expected_error_re.empty()) {
-            assert(actual_error_str.empty());
+        if (expected_re.empty()) {
+            assert(actual_str.empty());
         }
         else {
-            const std::regex expected_error_regex {expected_error_re};
-            assert(std::regex_match(actual_error_str, expected_error_regex));
+            const std::regex expected_regex {expected_re};
+            assert(std::regex_match(actual_str, expected_regex));
         }
     }
 
     auto test_unix_socket_invalid_protocol() -> void
     {
         const SocketHints hints {AF_UNIX, SOCK_STREAM, -1};
-        test_unix_socket(hints, expected_error_socket_re);
+        test_unix_socket(hints, expected_socket_re);
     }
 
     auto test_unix_socket_invalid_socktype() -> void
     {
         const SocketHints hints {AF_UNIX, 0, 0};
-        test_unix_socket(hints, expected_error_socket_re);
+        test_unix_socket(hints, expected_socket_re);
     }
 
     auto test_unix_socket_valid() -> void

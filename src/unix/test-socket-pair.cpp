@@ -55,7 +55,7 @@ namespace
 
     using ErrorCodeSet = std::set<os_error_type>;
 
-    constexpr auto expected_error_socketpair_re {
+    constexpr auto expected_socketpair_re {
         R"(Call to ::socketpair\(.+\) failed with error \d+: .+)"
     };
     constexpr auto handle_width {6};
@@ -89,9 +89,9 @@ namespace
     }
 
     auto test_socketpair(const SocketHints& hints,
-                         const std::string& expected_error_re) -> void
+                         const std::string& expected_re) -> void
     {
-        std::string actual_error_str;
+        std::string actual_str;
 
         try {
             auto sp {create_socketpair(hints, is_verbose)};
@@ -105,28 +105,28 @@ namespace
         }
         catch (const Error& error) {
             print(error);
-            actual_error_str = error.what();
+            actual_str = error.what();
         }
 
-        if (expected_error_re.empty()) {
-            assert(actual_error_str.empty());
+        if (expected_re.empty()) {
+            assert(actual_str.empty());
         }
         else {
-            const std::regex expected_error_regex {expected_error_re};
-            assert(std::regex_match(actual_error_str, expected_error_regex));
+            const std::regex expected_regex {expected_re};
+            assert(std::regex_match(actual_str, expected_regex));
         }
     }
 
     auto test_socketpair_invalid_protocol() -> void
     {
         const SocketHints hints {AF_UNIX, SOCK_STREAM, -1};
-        test_socketpair(hints, expected_error_socketpair_re);
+        test_socketpair(hints, expected_socketpair_re);
     }
 
     auto test_socketpair_invalid_socktype() -> void
     {
         const SocketHints hints {AF_UNIX, 0, 0};
-        test_socketpair(hints, expected_error_socketpair_re);
+        test_socketpair(hints, expected_socketpair_re);
     }
 
     auto test_socketpair_valid() -> void

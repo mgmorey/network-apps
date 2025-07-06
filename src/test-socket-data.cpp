@@ -93,7 +93,7 @@ namespace
               const SharedRuntime& sr,
               const std::string& expected_error_re) -> void
     {
-        std::string actual_error_str;
+        std::string actual_str;
 
         try {
             const auto sd {SocketData(handle, family, sr)};
@@ -104,15 +104,15 @@ namespace
         }
         catch (const Error& error) {
             print(error);
-            actual_error_str = error.what();
+            actual_str = error.what();
         }
 
         if (expected_error_re.empty()) {
-            assert(actual_error_str.empty());
+            assert(actual_str.empty());
         }
         else {
             const std::regex expected_error_regex {expected_error_re};
-            assert(std::regex_match(actual_error_str, expected_error_regex));
+            assert(std::regex_match(actual_str, expected_error_regex));
         }
     }
 

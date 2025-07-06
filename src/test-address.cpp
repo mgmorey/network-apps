@@ -85,10 +85,10 @@ namespace
     using Network::to_bytestring;
     using Network::validate;
 
-    constexpr auto expected_error_family_re {
+    constexpr auto expected_family_re {
         R"(Invalid socket address family: (\d+))"
     };
-    constexpr auto expected_error_length_re {
+    constexpr auto expected_length_re {
         R"(Value (\d+) is out of range \[\d+, \d+\] of \w+_type)"
     };
     constexpr auto print_key_width {20};
@@ -230,79 +230,79 @@ namespace
     }
 
     auto test_sa(const sockaddr& sa, std::size_t sa_len,
-                 const std::string& expected_error_re) -> void
+                 const std::string& expected_re) -> void
     {
-        const std::regex expected_error_regex {expected_error_re};
-        std::string actual_error_str;
+        const std::regex expected_regex {expected_re};
+        std::string actual_str;
 
         try {
             validate(&sa, sa_len);
         }
         catch (const Error& error) {
             print(error);
-            actual_error_str = error.what();
+            actual_str = error.what();
         }
 
-        if (!expected_error_re.empty()) {
-            assert(std::regex_match(actual_error_str, expected_error_regex));
+        if (!expected_re.empty()) {
+            assert(std::regex_match(actual_str, expected_regex));
         }
 
-        actual_error_str.clear();
+        actual_str.clear();
 
         try {
             test(validate(to_bytestring(&sa, sa_len)));
         }
         catch (const Error& error) {
             print(error);
-            actual_error_str = error.what();
+            actual_str = error.what();
         }
 
-        if (!expected_error_re.empty()) {
-            assert(std::regex_match(actual_error_str, expected_error_regex));
+        if (!expected_re.empty()) {
+            assert(std::regex_match(actual_str, expected_regex));
         }
     }
 
     auto test_sa_invalid_length() -> void
     {
         const auto sa {create_sa(AF_UNSPEC, 0)};
-        test_sa(sa, 0, expected_error_length_re);
+        test_sa(sa, 0, expected_length_re);
     }
 
     auto test_sin(const sockaddr_in& sin,
-                  const std::string& expected_error_re) -> void
+                  const std::string& expected_re) -> void
     {
-        const std::regex expected_error_regex {expected_error_re};
-        std::string actual_error_str;
+        const std::regex expected_regex {expected_re};
+        std::string actual_str;
 
         try {
             validate(&sin);
         }
         catch (const Error& error) {
             print(error);
-            actual_error_str = error.what();
+            actual_str = error.what();
         }
 
-        assert(std::regex_match(actual_error_str, expected_error_regex));
+        assert(std::regex_match(actual_str, expected_regex));
 
         if (sin.sin_family == AF_INET) {
-            actual_error_str.clear();
+            actual_str.clear();
 
             try {
                 test(validate(to_bytestring(&sin, sizeof sin)));
             }
             catch (const Error& error) {
                 print(error);
-                actual_error_str = error.what();
+                actual_str = error.what();
             }
 
-            assert(std::regex_match(actual_error_str, expected_error_regex));
+            assert(std::regex_match(actual_str, expected_regex));
         }
     }
 
     auto test_sin_invalid_family() -> void
     {
         const auto sin {create_sin(AF_UNSPEC)};
-        test_sin(sin, expected_error_family_re);
+        test_sin(sin, expected_family_re);
     }
 
     auto test_sin_valid() -> void
@@ -312,40 +312,40 @@ namespace
     }
 
     auto test_sin6(const sockaddr_in6& sin6,
-                   const std::string& expected_error_re) -> void
+                   const std::string& expected_re) -> void
     {
-        const std::regex expected_error_regex {expected_error_re};
-        std::string actual_error_str;
+        const std::regex expected_regex {expected_re};
+        std::string actual_str;
 
         try {
             validate(&sin6);
         }
         catch (const Error& error) {
             print(error);
-            actual_error_str = error.what();
+            actual_str = error.what();
         }
 
-        assert(std::regex_match(actual_error_str, expected_error_regex));
+        assert(std::regex_match(actual_str, expected_regex));
 
         if (sin6.sin6_family == AF_INET6) {
-            actual_error_str.clear();
+            actual_str.clear();
 
             try {
                 test(validate(to_bytestring(&sin6, sizeof sin6)));
             }
             catch (const Error& error) {
                 print(error);
-                actual_error_str = error.what();
+                actual_str = error.what();
             }
 
-            assert(std::regex_match(actual_error_str, expected_error_regex));
+            assert(std::regex_match(actual_str, expected_regex));
         }
     }
 
     auto test_sin6_invalid_family() -> void
     {
         const auto sin6 {create_sin6(AF_UNSPEC)};
-        test_sin6(sin6, expected_error_family_re);
+        test_sin6(sin6, expected_family_re);
     }
 
     auto test_sin6_valid() -> void
@@ -357,63 +357,63 @@ namespace
 #ifndef WIN32
 
     auto test_path(const std::string& path,
-                   const std::string& expected_error_re) -> void
+                   const std::string& expected_re) -> void
     {
-        const std::regex expected_error_regex {expected_error_re};
-        std::string actual_error_str;
+        const std::regex expected_regex {expected_re};
+        std::string actual_str;
 
         try {
             validate(path);
         }
         catch (const Error& error) {
             print(error);
-            actual_error_str = error.what();
+            actual_str = error.what();
         }
 
-        assert(std::regex_match(actual_error_str, expected_error_regex));
+        assert(std::regex_match(actual_str, expected_regex));
     }
 
     auto test_path_invalid_length() -> void
     {
         const std::string path(path_length_max + 1, '.' );
-        test_path(path, expected_error_length_re);
+        test_path(path, expected_length_re);
     }
 
     auto test_sun(const sockaddr_un& sun, std::size_t sun_len,
-                  const std::string& expected_error_re) -> void
+                  const std::string& expected_re) -> void
     {
-        const std::regex expected_error_regex {expected_error_re};
-        std::string actual_error_str;
+        const std::regex expected_regex {expected_re};
+        std::string actual_str;
 
         try {
             validate(&sun, sun_len);
         }
         catch (const Error& error) {
             print(error);
-            actual_error_str = error.what();
+            actual_str = error.what();
         }
 
-        assert(std::regex_match(actual_error_str, expected_error_regex));
+        assert(std::regex_match(actual_str, expected_regex));
 
         if (sun.sun_family == af_unix) {
-            actual_error_str.clear();
+            actual_str.clear();
 
             try {
                 test(validate(to_bytestring(&sun, sun_len)));
             }
             catch (const Error& error) {
                 print(error);
-                actual_error_str = error.what();
+                actual_str = error.what();
             }
 
-            assert(std::regex_match(actual_error_str, expected_error_regex));
+            assert(std::regex_match(actual_str, expected_regex));
         }
     }
 
     auto test_sun_invalid_family() -> void
     {
         const auto sun {create_sun(AF_UNSPEC, sun_length_min)};
-        test_sun(sun, sun_length_min, expected_error_family_re);
+        test_sun(sun, sun_length_min, expected_family_re);
     }
 
     auto test_sun_valid_path_large() -> void

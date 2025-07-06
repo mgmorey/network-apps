@@ -64,18 +64,18 @@ namespace
     using Network::to_long_handle;
 
 #ifdef WIN32
-    constexpr auto expected_error_handle_null_re {
+    constexpr auto expected_handle_null_re {
         ""
     };
 #else
-    constexpr auto expected_error_handle_null_re {
+    constexpr auto expected_handle_null_re {
         R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of .+)"
     };
 #endif
-    constexpr auto expected_error_invalid_re {
+    constexpr auto expected_invalid_re {
         R"(Null socket descriptor)"
     };
-    constexpr auto expected_error_socket_re {
+    constexpr auto expected_socket_re {
         R"(Call to ::socket\(.+\) failed with error \d+: .+)"
     };
 
@@ -107,33 +107,33 @@ namespace
         }
     }
 
-    auto test(handle_type handle, const std::string& expected_error_re) -> void
+    auto test(handle_type handle, const std::string& expected_re) -> void
     {
-        std::string actual_error_str;
+        std::string actual_str;
 
         try {
             assert(std::cmp_equal(to_long_handle(handle), handle));
         }
         catch (const Error& error) {
             print(error);
-            actual_error_str = error.what();
+            actual_str = error.what();
         }
 
-        if (expected_error_re.empty()) {
-            assert(actual_error_str.empty());
+        if (expected_re.empty()) {
+            assert(actual_str.empty());
         }
         else {
-            const std::regex expected_error_regex {expected_error_re};
-            assert(std::regex_match(actual_error_str, expected_error_regex));
+            const std::regex expected_regex {expected_re};
+            assert(std::regex_match(actual_str, expected_regex));
         }
     }
 
     auto test(handle_type handle,
               family_type family,
               const SharedRuntime& sr,
-              const std::string& expected_error_re) -> void
+              const std::string& expected_re) -> void
     {
-        std::string actual_error_str;
+        std::string actual_str;
 
         try {
             const SocketData sd {handle, family, sr};
@@ -146,66 +146,66 @@ namespace
         }
         catch (const Error& error) {
             print(error);
-            actual_error_str = error.what();
+            actual_str = error.what();
         }
 
-        if (expected_error_re.empty()) {
-            assert(actual_error_str.empty());
+        if (expected_re.empty()) {
+            assert(actual_str.empty());
         }
         else {
-            const std::regex expected_error_regex {expected_error_re};
-            assert(std::regex_match(actual_error_str, expected_error_regex));
+            const std::regex expected_regex {expected_re};
+            assert(std::regex_match(actual_str, expected_regex));
         }
     }
 
     auto test(handle_type handle,
               family_type family,
-              const std::string& expected_error_re) -> void
+              const std::string& expected_re) -> void
     {
-        std::string actual_error_str;
+        std::string actual_str;
 
         try {
             const auto sock {create_socket(handle, family, is_verbose)};
         }
         catch (const Error& error) {
             print(error);
-            actual_error_str = error.what();
+            actual_str = error.what();
         }
 
-        if (expected_error_re.empty()) {
-            assert(actual_error_str.empty());
+        if (expected_re.empty()) {
+            assert(actual_str.empty());
         }
         else {
-            const std::regex expected_error_regex {expected_error_re};
-            assert(std::regex_match(actual_error_str, expected_error_regex));
+            const std::regex expected_regex {expected_re};
+            assert(std::regex_match(actual_str, expected_regex));
         }
     }
 
     auto test(const SocketHints& hints,
-              const std::string& expected_error_re) -> void
+              const std::string& expected_re) -> void
     {
-        std::string actual_error_str;
+        std::string actual_str;
 
         try {
             const auto sock {create_socket(hints, is_verbose)};
         }
         catch (const Error& error) {
             print(error);
-            actual_error_str = error.what();
+            actual_str = error.what();
         }
 
-        if (expected_error_re.empty()) {
-            assert(actual_error_str.empty());
+        if (expected_re.empty()) {
+            assert(actual_str.empty());
         }
         else {
-            const std::regex expected_error_regex {expected_error_re};
-            assert(std::regex_match(actual_error_str, expected_error_regex));
+            const std::regex expected_regex {expected_re};
+            assert(std::regex_match(actual_str, expected_regex));
         }
     }
 
     auto test_handle_null() -> void
     {
-        test(handle_null, expected_error_handle_null_re);
+        test(handle_null, expected_handle_null_re);
     }
 
     auto test_handle_zero() -> void
@@ -215,7 +215,7 @@ namespace
 
     auto test_inet_socket_invalid(const SharedRuntime& sr) -> void
     {
-        test(handle_null, AF_UNSPEC, sr, expected_error_invalid_re);
+        test(handle_null, AF_UNSPEC, sr, expected_invalid_re);
     }
 
     auto test_inet_socket_valid(const SharedRuntime& sr) -> void
@@ -230,24 +230,24 @@ namespace
     auto test_socket_family_invalid() -> void
     {
         const SocketHints hints {-1, SOCK_STREAM, 0};
-        test(hints, expected_error_socket_re);
+        test(hints, expected_socket_re);
     }
 
     auto test_socket_handle_invalid() -> void
     {
-        test(handle_null, AF_UNSPEC, expected_error_invalid_re);
+        test(handle_null, AF_UNSPEC, expected_invalid_re);
     }
 
     auto test_socket_protocol_invalid() -> void
     {
         const SocketHints hints {AF_INET, SOCK_STREAM, -1};
-        test(hints, expected_error_socket_re);
+        test(hints, expected_socket_re);
     }
 
     auto test_socket_socktype_invalid() -> void
     {
         const SocketHints hints {AF_INET, -1, 0};
-        test(hints, expected_error_socket_re);
+        test(hints, expected_socket_re);
     }
 
     auto test_valid() -> void

@@ -73,7 +73,7 @@ namespace
         return oss.str();
     }
 
-    auto get_expected_error(Version version) -> std::string_view
+    auto get_expected(Version version) -> std::string_view
     {
         constexpr std::array<std::string_view, 3> errors {
 #ifdef WIN32
@@ -211,7 +211,7 @@ namespace
 
     auto test_version(Version version) -> void
     {
-        const auto expected_str {get_expected_error(version)};
+        const auto expected_str {get_expected(version)};
         std::string actual_str;
 
         try {
