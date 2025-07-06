@@ -29,9 +29,8 @@
 auto Network::open(const OpenParameters& op, bool is_bind) -> SocketResultVector
 {
     std::vector<SocketTemplate> stv;
-    auto it {std::back_inserter(stv)};
 
-    if (const auto error = insert(it, op)) {
+    if (const auto error = insert(std::back_inserter(stv), op)) {
         throw Error(error.string());
     }
 

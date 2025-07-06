@@ -22,7 +22,7 @@
 
 namespace Network
 {
-    auto insert(auto& it, const OpenParameters& op) -> OsError
+    auto insert(auto it, const OpenParameters& op) -> OsError
     {
         return insert(it,
                       op.m_endpoint.at(0),
