@@ -64,7 +64,6 @@ namespace
             return {};
         }
     }
-
 }
 
 auto Network::operator<<(std::ostream& os,
