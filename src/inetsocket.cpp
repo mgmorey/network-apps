@@ -79,8 +79,8 @@ auto Network::InetSocket::open(ByteSpan t_bs, bool t_is_bind) -> OsError
 {
     const auto oh {get_openhandler(t_is_bind)};
 
-    if (const auto os_error {Network::open(m_sd, t_bs, oh)}) {
-        return os_error;
+    if (const auto error {Network::open(m_sd, t_bs, oh)}) {
+        return error;
     }
 
     auto& nm {m_sd.name(oh.symbol())};
