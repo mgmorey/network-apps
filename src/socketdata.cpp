@@ -26,7 +26,8 @@
 
 #include <string_view>  // std::string_view
 
-Network::SocketData::SocketData(handle_type t_handle, family_type t_family,
+Network::SocketData::SocketData(handle_type t_handle,
+                                family_type t_family,
                                 const SharedRuntime& t_sr) :
     m_sr(t_sr),
     m_handle(t_handle),
