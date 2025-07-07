@@ -43,15 +43,14 @@ namespace
 
     auto connect()
     {
-        auto sock {create_socket(SOCKET_HINTS, is_verbose)};
-        const auto bs {to_bytestring(SOCKET_NAME)};
+        auto ps {create_socket(SOCKET_HINTS, is_verbose)};
 
-        if (const auto error {sock->connect(bs)}) {
+        if (const auto error {ps->connect(to_bytestring(SOCKET_NAME))}) {
             std::cerr << error.string() << std::endl;
             std::exit(EXIT_FAILURE);
         }
 
-        return sock;
+        return ps;
     }
 
     auto parse(int argc, char** argv)
@@ -73,10 +72,10 @@ namespace
         return operands;
     }
 
-    auto read(const Socket& sock) -> std::string
+    auto read(const Socket& s) -> std::string
     {
         TextBuffer buffer {BUFFER_SIZE};
-        const auto error {sock.read(buffer)};
+        const auto error {s.read(buffer)};
 
         if (error == socket_error) {
             std::perror("read");
@@ -86,9 +85,9 @@ namespace
         return buffer;
     }
 
-    auto write(const std::string& str, const Socket& sock)
+    auto write(const std::string& str, const Socket& s)
     {
-        const auto error {sock.write(str)};
+        const auto error {s.write(str)};
 
         if (error == socket_error) {
             std::perror("write");
