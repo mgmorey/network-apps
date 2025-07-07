@@ -47,11 +47,11 @@ namespace
 
     auto is_verbose {false};  // NOLINT
 
-    auto accept_verbose(const Socket& bind_sock)
+    auto accept_verbose(const Socket& s)
     {
-        const auto sd {bind_sock.accept()};
+        const auto sd {s.accept()};
 
-        if (sd.runtime()->is_verbose()) {
+        if (is_verbose) {
             std::cout << "Accepted connection from "
                       << Address(sd.name(Symbol::accept))
                       << std::endl;
@@ -62,21 +62,20 @@ namespace
 
     auto bind()
     {
-        auto sock {create_socket(SOCKET_HINTS, is_verbose)};
-        const auto bs {to_bytestring(SOCKET_NAME)};
+        auto ps {create_socket(SOCKET_HINTS, is_verbose)};
 
-        if (const auto result {sock->bind(bs)}) {
-            std::cerr << result.string() << std::endl;
+        if (const auto error {ps->bind(to_bytestring(SOCKET_NAME))}) {
+            std::cerr << error.string() << std::endl;
             std::exit(EXIT_FAILURE);
         }
 
-        return sock;
+        return ps;
     }
 
-    auto listen(const Socket& sock)
+    auto listen(const Socket& s)
     {
-        if (const auto result {sock.listen(backlog_size)}) {
-            std::cerr << result.string() << std::endl;
+        if (const auto error {s.listen(backlog_size)}) {
+            std::cerr << error.string() << std::endl;
             std::exit(EXIT_FAILURE);
         }
     }
@@ -99,10 +98,10 @@ namespace
         }
     }
 
-    auto read(const Socket& sock) -> std::string
+    auto read(const Socket& s) -> std::string
     {
         TextBuffer buffer {BUFFER_SIZE};
-        const auto error {sock.read(buffer)};
+        const auto error {s.read(buffer)};
 
         if (error == socket_error) {
             std::perror("read");
@@ -112,10 +111,10 @@ namespace
         return buffer;
     }
 
-    auto write(const Socket& sock, auto value)
+    auto write(const Socket& s, auto value)
     {
         const auto str {std::to_string(value)};
-        const auto error {sock.write(str)};
+        const auto error {s.write(str)};
 
         if (error == socket_error) {
             std::perror("write");
