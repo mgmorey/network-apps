@@ -31,7 +31,7 @@ namespace Network
     class SocketData
     {
     public:
-        using NameCache = std::map<Symbol, ByteString>;
+        using Cache = std::map<Symbol, ByteString>;
 
         SocketData(handle_type t_handle,
                    family_type t_family,
@@ -53,10 +53,10 @@ namespace Network
         [[nodiscard]] auto runtime() const noexcept -> SharedRuntime;
 
     private:
+        mutable Cache m_bs;
         SharedRuntime m_sr;
         handle_type m_handle {handle_null};
         family_type m_family {family_null};
-        mutable NameCache m_names;
     };
 }
 
