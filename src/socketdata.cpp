@@ -14,48 +14,23 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/socketdata.hpp"       // SocketData
-#include "network/acceptdata.hpp"       // AcceptData
+#include "network/acceptdata.hpp"       // SocketData
 #include "network/bytestring.hpp"       // ByteString
-#include "network/family-null.hpp"      // family_null
 #include "network/family-type.hpp"      // family_type
-#include "network/handle-null.hpp"      // handle_null
 #include "network/handle-type.hpp"      // handle_type
-#include "network/logicerror.hpp"       // LogicError
 #include "network/sharedruntime.hpp"    // SharedRuntime
-#include "network/to-handle.hpp"        // to_handle()
 
-#include <string_view>  // std::string_view
-
-Network::SocketData::SocketData(handle_type t_handle,
-                                family_type t_family,
-                                const SharedRuntime& t_sr) :
-    m_runtime(t_sr),
-    m_handle(t_handle),
-    m_family(t_family)
+Network::SocketData::SocketData(handle_type handle,
+                                family_type family,
+                                const SharedRuntime& t_runtime) :
+    m_core(handle, family, t_runtime)
 {
-    std::string_view error;
-
-    if (m_runtime == nullptr) {
-        error = "Null runtime pointer";
-    }
-    else if (m_handle == handle_null) {
-        error = "Null socket descriptor";
-    }
-    else if (m_family == family_null) {
-        error = "Null socket domain/family";
-    }
-
-    if (!error.empty()) {
-        throw LogicError(error);
-    }
 }
 
-Network::SocketData::SocketData(const AcceptData& ad) :
-    SocketData(to_handle(ad.handle()),
-               ad.family(),
-               ad.runtime())
+Network::SocketData::SocketData(const AcceptData& t_data) :
+    m_core(t_data.core())
 {
-    m_cache[Symbol::accept] = ad.accept();
+    m_cache[Symbol::accept] = t_data.accept();
 }
 
 auto Network::SocketData::cache(Symbol t_symbol) const noexcept -> ByteString&
@@ -63,17 +38,21 @@ auto Network::SocketData::cache(Symbol t_symbol) const noexcept -> ByteString&
     return m_cache[t_symbol];
 }
 
+auto Network::SocketData::core() const noexcept -> const SocketCore&
+{
+    return m_core;
+}
 auto Network::SocketData::family() const noexcept -> family_type
 {
-    return m_family;
+    return m_core.family();
 }
 
 auto Network::SocketData::handle() const noexcept -> handle_type
 {
-    return m_handle;
+    return m_core.handle();
 }
 
 auto Network::SocketData::runtime() const noexcept -> SharedRuntime
 {
-    return m_runtime;
+    return m_core.runtime();
 }

@@ -16,47 +16,31 @@
 #ifndef NETWORK_ACCEPTDATA_HPP
 #define NETWORK_ACCEPTDATA_HPP
 
-#include "network/bytestring.hpp"               // ByteString
-#include "network/family-type.hpp"              // family_type
-#include "network/handle-type.hpp"              // handle_type
-#include "network/sharedruntime.hpp"            // SharedRuntime
+#include "network/bytestring.hpp"       // ByteString
+#include "network/handle-type.hpp"      // handle_type
+#include "network/socketcore.hpp"       // SocketCore
 
 namespace Network
 {
     struct AcceptData
     {
-        AcceptData(handle_type t_handle, family_type t_family,
-                   const SharedRuntime& t_runtime, const ByteString& t_accept) :
-            m_runtime(t_runtime), m_accept(t_accept), m_handle(t_handle),
-            m_family(t_family)
-        {
-        }
+        AcceptData(const ByteString& t_accept,
+                   const SocketCore& t_core,
+                   handle_type t_handle);
 
-        [[nodiscard]] auto accept() const noexcept -> const ByteString&
-        {
-            return m_accept;
-        }
+        AcceptData() = delete;
+        AcceptData(const AcceptData&) noexcept = default;
+        AcceptData(AcceptData&&) noexcept = default;
+        ~AcceptData() noexcept = default;
+        auto operator=(const AcceptData&) noexcept -> AcceptData& = default;
+        auto operator=(AcceptData&&) noexcept -> AcceptData& = default;
 
-        [[nodiscard]] auto family() const noexcept -> family_type
-        {
-            return m_family;
-        }
-
-        [[nodiscard]] auto handle() const noexcept -> handle_type
-        {
-            return m_handle;
-        }
-
-        [[nodiscard]] auto runtime() const noexcept -> SharedRuntime
-        {
-            return m_runtime;
-        }
+        [[nodiscard]] auto accept() const noexcept -> const ByteString&;
+        [[nodiscard]] auto core() const noexcept -> const SocketCore&;
 
     private:
-        SharedRuntime m_runtime;
         ByteString m_accept;
-        handle_type m_handle;
-        family_type m_family;
+        SocketCore m_core;
     };
 }
 

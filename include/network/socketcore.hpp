@@ -13,46 +13,39 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_SOCKETDATA_HPP
-#define NETWORK_SOCKETDATA_HPP
+#ifndef NETWORK_SOCKETCORE_HPP
+#define NETWORK_SOCKETCORE_HPP
 
-#include "network/acceptdata.hpp"       // AcceptData
-#include "network/bytestring.hpp"       // ByteString
+#include "network/family-null.hpp"      // family_null
 #include "network/family-type.hpp"      // family_type
+#include "network/handle-null.hpp"      // handle_null
 #include "network/handle-type.hpp"      // handle_type
 #include "network/sharedruntime.hpp"    // SharedRuntime
-#include "network/symbol.hpp"           // Symbol
-
-#include <map>          // std::map
 
 namespace Network
 {
-    class SocketData
+    class SocketCore
     {
     public:
-        using Cache = std::map<Symbol, ByteString>;
+        SocketCore(handle_type t_handle,
+                   family_type t_family,
+                   const SharedRuntime& t_sr);
 
-        SocketData(handle_type handle,
-                   family_type family,
-                   const SharedRuntime& t_runtime);
-        explicit SocketData(const AcceptData& t_data);
+        SocketCore() = delete;
+        SocketCore(const SocketCore&) noexcept = default;
+        SocketCore(SocketCore&&) noexcept = default;
+        ~SocketCore() noexcept = default;
+        auto operator=(const SocketCore&) noexcept -> SocketCore& = default;
+        auto operator=(SocketCore&&) noexcept -> SocketCore& = default;
 
-        SocketData() = delete;
-        SocketData(const SocketData&) noexcept = default;
-        SocketData(SocketData&&) noexcept = default;
-        ~SocketData() noexcept = default;
-        auto operator=(const SocketData&) noexcept -> SocketData& = default;
-        auto operator=(SocketData&&) noexcept -> SocketData& = default;
-
-        [[nodiscard]] auto cache(Symbol t_symbol) const noexcept -> ByteString&;
-        [[nodiscard]] auto core() const noexcept -> const SocketCore&;
         [[nodiscard]] auto family() const noexcept -> family_type;
         [[nodiscard]] auto handle() const noexcept -> handle_type;
         [[nodiscard]] auto runtime() const noexcept -> SharedRuntime;
 
     private:
-        mutable Cache m_cache;
-        SocketCore m_core;
+        SharedRuntime m_runtime;
+        handle_type m_handle {handle_null};
+        family_type m_family {family_null};
     };
 }
 

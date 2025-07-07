@@ -88,22 +88,23 @@ coverage_html = $(coverage_dir)/coverage.html
 coverage_json = coverage.json
 cppcheck_log = cppcheck.log
 
-library_common_sources = accept.cpp address-sa.cpp address-sin.cpp	\
-address-sin6.cpp address.cpp addresserror.cpp addresslist.cpp		\
-argumentdata.cpp binarybuffer.cpp bind-endpoint.cpp close.cpp		\
-connect-endpoint.cpp create-runtime.cpp create-socket-handle.cpp	\
-create-socket-hints.cpp create-socketresult.cpp error.cpp		\
-familyerror.cpp format.cpp get-endpoint.cpp get-endpointresult.cpp	\
-get-hostname.cpp get-hostnameresult.cpp get-name.cpp			\
-get-namehandler.cpp get-nameresult.cpp get-openhandler.cpp		\
-get-operands.cpp get-option.cpp get-options.cpp get-runtime.cpp		\
-get-sa-family.cpp get-sa-length.cpp get-sa-pointer.cpp			\
-get-sa-span.cpp get-sin-addr.cpp get-sin-pointer.cpp get-sin-port.cpp	\
-get-sin6-addr.cpp get-sin6-pointer.cpp get-sin6-port.cpp		\
-inetsocket.cpp listen.cpp logicerror.cpp open-endpoint.cpp		\
-open-handle.cpp oserror.cpp parse-argumentspan.cpp parse.cpp		\
-quote.cpp rangeerror.cpp reset-api-error.cpp reset-os-error.cpp		\
-run.cpp runtimeerror.cpp shutdown.cpp socketapi.cpp socketdata.cpp	\
+library_common_sources = accept.cpp acceptdata.cpp address-sa.cpp	\
+address-sin.cpp address-sin6.cpp address.cpp addresserror.cpp		\
+addresslist.cpp argumentdata.cpp binarybuffer.cpp bind-endpoint.cpp	\
+close.cpp connect-endpoint.cpp create-runtime.cpp			\
+create-socket-handle.cpp create-socket-hints.cpp			\
+create-socketresult.cpp error.cpp familyerror.cpp format.cpp		\
+get-endpoint.cpp get-endpointresult.cpp get-hostname.cpp		\
+get-hostnameresult.cpp get-name.cpp get-namehandler.cpp			\
+get-nameresult.cpp get-openhandler.cpp get-operands.cpp			\
+get-option.cpp get-options.cpp get-runtime.cpp get-sa-family.cpp	\
+get-sa-length.cpp get-sa-pointer.cpp get-sa-span.cpp get-sin-addr.cpp	\
+get-sin-pointer.cpp get-sin-port.cpp get-sin6-addr.cpp			\
+get-sin6-pointer.cpp get-sin6-port.cpp inetsocket.cpp listen.cpp	\
+logicerror.cpp open-endpoint.cpp open-handle.cpp oserror.cpp		\
+parse-argumentspan.cpp parse.cpp quote.cpp rangeerror.cpp		\
+reset-api-error.cpp reset-os-error.cpp run.cpp runtimeerror.cpp		\
+shutdown.cpp socketapi.cpp socketcore.cpp socketdata.cpp		\
 socketfamily.cpp socketflags.cpp sockethost.cpp socketlimits.cpp	\
 socketprotocol.cpp sockettype.cpp stream-address.cpp			\
 stream-addrinfo.cpp stream-failmode.cpp stream-runtime.cpp		\
