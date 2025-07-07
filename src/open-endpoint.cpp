@@ -21,14 +21,14 @@
 #include "network/socketresult.hpp"             // SocketResult
 #include "network/socketresultvector.hpp"       // SocketResultVector
 #include "network/sockettemplate.hpp"           // SocketTemplate
+#include "network/sockettemplatevector.hpp"     // SocketTemplateVector
 
 #include <algorithm>    // std::ranges::transform()
 #include <iterator>     // std::back_inserter()
-#include <vector>       // std::vector
 
 auto Network::open(const OpenParameters& op, bool is_bind) -> SocketResultVector
 {
-    std::vector<SocketTemplate> stv;
+    SocketTemplateVector stv;
 
     if (const auto error = insert(std::back_inserter(stv), op)) {
         throw Error(error.string());
