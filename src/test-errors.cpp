@@ -148,7 +148,7 @@ namespace
         assert(get_os_error() == 0);
     }
 
-    auto test_handle_invalid(auto value) -> void
+    auto test_handle(auto value, const char* expected_re) -> void
     {
         std::string actual_str;
 
@@ -160,16 +160,16 @@ namespace
             actual_str = error.what();
         }
 
-        const std::regex expected_regex {expected_handle_re};
+        const std::regex expected_regex {expected_re};
         assert(std::regex_match(actual_str, expected_regex));
     }
 
-    auto test_handle_invalid() -> void
+    auto test_handle() -> void
     {
-        test_handle_invalid(-1);
+        test_handle(-1, expected_handle_re);
     }
 
-    auto test_name_length_invalid(auto value) -> void
+    auto test_name_length(auto value, const char* expected_re) -> void
     {
         std::string actual_str;
 
@@ -181,17 +181,17 @@ namespace
             actual_str = error.what();
         }
 
-        const std::regex expected_regex {expected_name_length_re};
+        const std::regex expected_regex {expected_re};
         assert(std::regex_match(actual_str, expected_regex));
     }
 
-    auto test_name_length_invalid() -> void
+    auto test_name_length() -> void
     {
-        test_name_length_invalid(name_length_min - 1);
-        test_name_length_invalid(name_length_max + 1);
+        test_name_length(name_length_min - 1, expected_name_length_re);
+        test_name_length(name_length_max + 1, expected_name_length_re);
     }
 
-    auto test_os_error_invalid(auto value) -> void
+    auto test_os_error(auto value, const char* expected_re) -> void
     {
         std::string actual_str;
 
@@ -203,21 +203,21 @@ namespace
             actual_str = error.what();
         }
 
-        const std::regex expected_regex {expected_os_error_re};
+        const std::regex expected_regex {expected_re};
         assert(std::regex_match(actual_str, expected_regex));
     }
 
-    auto test_os_error_invalid() -> void
+    auto test_os_error() -> void
     {
         const long long max {std::numeric_limits<os_error_type>::max()};
         const long long min {std::numeric_limits<os_error_type>::min()};
-        test_os_error_invalid(min - 1);
-        test_os_error_invalid(max + 1);
+        test_os_error(min - 1, expected_os_error_re);
+        test_os_error(max + 1, expected_os_error_re);
     }
 
 #ifndef WIN32
 
-    auto test_path_length_invalid(auto value) -> void
+    auto test_path_length(auto value, const char* expected_re) -> void
     {
         std::string actual_str;
 
@@ -229,19 +229,19 @@ namespace
             actual_str = error.what();
         }
 
-        const std::regex expected_regex {expected_path_length_re};
+        const std::regex expected_regex {expected_re};
         assert(std::regex_match(actual_str, expected_regex));
     }
 
-    auto test_path_length_invalid() -> void
+    auto test_path_length() -> void
     {
-        test_path_length_invalid(path_length_min - 1);
-        test_path_length_invalid(path_length_max + 1);
+        test_path_length(path_length_min - 1, expected_path_length_re);
+        test_path_length(path_length_max + 1, expected_path_length_re);
     }
 
 #endif
 
-    auto test_sa_length_invalid(auto value) -> void
+    auto test_sa_length(auto value, const char* expected_re) -> void
     {
         std::string actual_str;
 
@@ -253,17 +253,17 @@ namespace
             actual_str = error.what();
         }
 
-        const std::regex expected_regex {expected_sa_length_re};
+        const std::regex expected_regex {expected_re};
         assert(std::regex_match(actual_str, expected_regex));
     }
 
-    auto test_sa_length_invalid() -> void
+    auto test_sa_length() -> void
     {
-        test_sa_length_invalid(sa_length_min - 1);
-        test_sa_length_invalid(sa_length_max + 1);
+        test_sa_length(sa_length_min - 1, expected_sa_length_re);
+        test_sa_length(sa_length_max + 1, expected_sa_length_re);
     }
 
-    auto test_std_size_invalid(auto value) -> void
+    auto test_std_size(auto value, const char* expected_re) -> void
     {
         std::string actual_str;
 
@@ -275,18 +275,18 @@ namespace
             actual_str = error.what();
         }
 
-        const std::regex expected_regex {expected_std_size_re};
+        const std::regex expected_regex {expected_re};
         assert(std::regex_match(actual_str, expected_regex));
     }
 
-    auto test_std_size_invalid() -> void
+    auto test_std_size() -> void
     {
-        test_std_size_invalid(-1);
+        test_std_size(-1, expected_std_size_re);
     }
 
 #ifndef WIN32
 
-    auto test_sun_length_invalid(auto value) -> void
+    auto test_sun_length(auto value, const char* expected_re) -> void
     {
         std::string actual_str;
 
@@ -298,14 +298,14 @@ namespace
             actual_str = error.what();
         }
 
-        const std::regex expected_regex {expected_sun_length_re};
+        const std::regex expected_regex {expected_re};
         assert(std::regex_match(actual_str, expected_regex));
     }
 
-    auto test_sun_length_invalid() -> void
+    auto test_sun_length() -> void
     {
-        test_sun_length_invalid(sun_length_min - 1);
-        test_sun_length_invalid(sun_length_max + 1);
+        test_sun_length(sun_length_min - 1, expected_sun_length_re);
+        test_sun_length(sun_length_max + 1, expected_sun_length_re);
     }
 
 #endif
@@ -365,16 +365,16 @@ auto main(int argc, char* argv[]) -> int
         parse_arguments(argc, argv);
         test_get_api_error();
         test_get_os_error();
-        test_handle_invalid();
-        test_name_length_invalid();
-        test_os_error_invalid();
+        test_handle();
+        test_name_length();
+        test_os_error();
 #ifndef WIN32
-        test_path_length_invalid();
+        test_path_length();
 #endif
-        test_sa_length_invalid();
-        test_std_size_invalid();
+        test_sa_length();
+        test_std_size();
 #ifndef WIN32
-        test_sun_length_invalid();
+        test_sun_length();
 #endif
         test_throw_error();
         test_throw_logic_error();
