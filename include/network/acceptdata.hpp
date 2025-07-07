@@ -33,7 +33,7 @@ namespace Network
         {
         }
 
-        [[nodiscard]] auto accept() const noexcept -> ByteString
+        [[nodiscard]] auto accept() const noexcept -> const ByteString&
         {
             return m_accept;
         }
