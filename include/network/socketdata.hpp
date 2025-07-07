@@ -52,8 +52,8 @@ namespace Network
         [[nodiscard]] auto runtime() const noexcept -> SharedRuntime;
 
     private:
-        mutable Cache m_bs;
-        SharedRuntime m_sr;
+        mutable Cache m_cache;
+        SharedRuntime m_runtime;
         handle_type m_handle {handle_null};
         family_type m_family {family_null};
     };

@@ -29,13 +29,13 @@
 Network::SocketData::SocketData(handle_type t_handle,
                                 family_type t_family,
                                 const SharedRuntime& t_sr) :
-    m_sr(t_sr),
+    m_runtime(t_sr),
     m_handle(t_handle),
     m_family(t_family)
 {
     std::string_view error;
 
-    if (m_sr == nullptr) {
+    if (m_runtime == nullptr) {
         error = "Null runtime pointer";
     }
     else if (m_handle == handle_null) {
@@ -55,12 +55,12 @@ Network::SocketData::SocketData(const AcceptData& ad) :
                ad.family(),
                ad.runtime())
 {
-    m_bs[Symbol::accept] = ad.accept();
+    m_cache[Symbol::accept] = ad.accept();
 }
 
 auto Network::SocketData::cache(Symbol t_symbol) const noexcept -> ByteString&
 {
-    return m_bs[t_symbol];
+    return m_cache[t_symbol];
 }
 
 auto Network::SocketData::family() const noexcept -> family_type
@@ -75,5 +75,5 @@ auto Network::SocketData::handle() const noexcept -> handle_type
 
 auto Network::SocketData::runtime() const noexcept -> SharedRuntime
 {
-    return m_sr;
+    return m_runtime;
 }
