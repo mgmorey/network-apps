@@ -42,6 +42,7 @@ auto Network::SocketData::core() const noexcept -> const SocketCore&
 {
     return m_core;
 }
+
 auto Network::SocketData::family() const noexcept -> family_type
 {
     return m_core.family();
