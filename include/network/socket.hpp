@@ -45,8 +45,7 @@ namespace Network
         [[nodiscard]] virtual auto name(bool t_is_sock) const -> ByteSpan = 0;
         [[nodiscard]] virtual auto open(ByteSpan t_bs, bool t_is_bind) ->
             OsError = 0;
-        [[nodiscard]] virtual auto read(CharSpan t_cs) const ->
-            ssize_t = 0;
+        [[nodiscard]] virtual auto read(CharSpan t_cs) const -> ssize_t = 0;
         [[nodiscard]] virtual auto shutdown(int t_how) const -> OsError = 0;
         [[nodiscard]] virtual auto write(std::string_view t_sv) const ->
             ssize_t = 0;
